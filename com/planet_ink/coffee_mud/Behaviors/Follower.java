@@ -116,8 +116,8 @@ public class Follower extends ActiveTicker
 				MOB M=room.fetchInhabitant(i);
 				if((M!=null)
 				&&(M!=ticking)
-				&&(!CMSecurity.isAllowed(M,room,"CMDMOBS"))
-				&&(!CMSecurity.isAllowed(M,room,"CMDROOMS"))
+				&&(!CMSecurity.isAllowed(M,room,CMSecurity.SecFlag.CMDMOBS))
+				&&(!CMSecurity.isAllowed(M,room,CMSecurity.SecFlag.CMDROOMS))
 				&&(CMLib.masking().maskCheck(getParms(),M,false)))
 					return M;
 			}
@@ -151,8 +151,8 @@ public class Follower extends ActiveTicker
 			if((I.owner()!=null)
 			&&(I.owner() instanceof MOB)
 			&&(CMLib.masking().maskCheck(getParms(),I.owner(),false))
-			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDMOBS"))
-			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDROOMS")))
+			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),CMSecurity.SecFlag.CMDMOBS))
+			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),CMSecurity.SecFlag.CMDROOMS)))
 				lastOwner=(MOB)I.owner();
 			else
 			if(!inventory)
@@ -205,8 +205,8 @@ public class Follower extends ActiveTicker
 				{
 					MOB inhab=thisRoom.fetchInhabitant(m);
 					if((inhab!=null)
-					&&(CMSecurity.isAllowed(inhab,thisRoom,"CMDMOBS")
-					   ||CMSecurity.isAllowed(inhab,thisRoom,"CMDROOMS")))
+					&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDMOBS)
+					   ||CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDROOMS)))
 						move=false;
 				}
 				if(move)

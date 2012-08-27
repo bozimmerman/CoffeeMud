@@ -230,7 +230,7 @@ public class Hireling extends StdBehavior
 			&&((msg.target() instanceof Coins)||(msg.tool() instanceof Coins)))
 			{
 				if((msg.target() instanceof MOB)
-				&&(!CMSecurity.isAllowed(((MOB)msg.target()),source.location(),"CMDROOMS")))
+				&&(!CMSecurity.isAllowed(((MOB)msg.target()),source.location(),CMSecurity.SecFlag.CMDROOMS)))
 					CMLib.commands().postSay(observer,null,"I don't think so.",false,false);
 				return false;
 			}

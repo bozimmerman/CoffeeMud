@@ -79,9 +79,9 @@ public class AccountOnline extends StdWebMacro
 					else
 					if(authM!=null)
 					{
-						if(CMSecurity.isAllowedEverywhere(authM,"BAN"))
+						if(CMSecurity.isAllowedEverywhere(authM,CMSecurity.SecFlag.BAN))
 							canBan=true;
-						if(CMSecurity.isAllowedEverywhere(authM,"BOOT"))
+						if(CMSecurity.isAllowedEverywhere(authM,CMSecurity.SecFlag.BOOT))
 							canBoot=true;
 					}
 					

@@ -42,7 +42,7 @@ public class I3Cmd extends StdCommand
 
 	public void i3Error(MOB mob)
 	{
-		if(CMSecurity.isAllowed(mob,mob.location(),"I3"))
+		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3))
 			mob.tell("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], I3 RESTART, or I3 INFO [MUD].");
 		else
 			mob.tell("Try I3 LIST, I3 LOCATE [NAME], or I3 INFO [MUD-NAME].");
@@ -71,7 +71,7 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("add"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
 				mob.tell("You did not specify a channel name!");
@@ -85,7 +85,7 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("delete"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
 				mob.tell("You did not specify a channel name!");
@@ -96,7 +96,7 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("listen"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
 				mob.tell("You did not specify a channel name!");
@@ -107,13 +107,13 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("ping"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			CMLib.intermud().i3pingRouter(mob);
 		}
 		else
 		if(str.equalsIgnoreCase("restart"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			try {
 				mob.tell(CMLib.hosts().get(0).executeCommand("START I3"));
 			}catch(Exception e){ Log.errOut("I3Cmd",e);}
@@ -131,7 +131,7 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("silence"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.I3)){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
 				mob.tell("You did not specify a channel name!");

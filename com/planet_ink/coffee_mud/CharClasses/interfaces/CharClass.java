@@ -137,12 +137,12 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 */
 	public CharClass makeGenCharClass();
 	/**
-	 * Returns a Vector of security flag strings granted to all mobs/players
+	 * Returns a read only set of security flags granted to all mobs/players
 	 * who are this class, and the given class level or lower.
 	 * @param classLevel the class level of the mob
-	 * @return a vector of security flag strings
+	 * @return a vector of security flags
 	 */
-	public List<String> getSecurityGroups(int classLevel);
+	public CMSecurity.SecGroup getSecurityFlags(int classLevel);
 
 	/**
 	 * This method should be called whenever a mob has this class added to

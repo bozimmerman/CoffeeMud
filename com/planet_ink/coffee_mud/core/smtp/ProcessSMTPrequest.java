@@ -380,7 +380,7 @@ public class ProcessSMTPrequest implements Runnable
 									||subject.toUpperCase().startsWith("MOTY"))
 									{
 										MOB M=CMLib.players().getLoadPlayer(from);
-										if((M==null)||(!CMSecurity.isAllowedAnywhere(M,"JOURNALS")))
+										if((M==null)||(!CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)))
 											subject=subject.substring(4);
 									}
 									
@@ -401,7 +401,7 @@ public class ProcessSMTPrequest implements Runnable
 												if(server.isASubscribeOnlyJournal(journal))
 												{
 													MOB M=CMLib.players().getLoadPlayer(from);
-													if((M==null)||(!CMSecurity.isAllowedAnywhere(M,"JOURNALS")))
+													if((M==null)||(!CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)))
 													{
 														replyData=("552 Mailbox '"+journal+"' only accepts subscribe/unsubscribe."+cr).getBytes();
 														break;

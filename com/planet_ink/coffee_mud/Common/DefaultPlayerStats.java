@@ -3,7 +3,9 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -72,7 +74,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected STreeMap<String,String> alias=new STreeMap<String,String>();
 	
 	
-	protected SVector<String>   securityGroups=new SVector<String>();
+	protected SecGroup   		securityFlags=new SecGroup(new CMSecurity.SecFlag[]{});
 	protected long  			accountExpiration=0;
 	protected RoomnumberSet 	visitedRoomSet=null;
 	protected DVector   		levelInfo=new DVector(3);
@@ -189,7 +191,7 @@ public class DefaultPlayerStats implements PlayerStats
 				O.visitedRoomSet=(RoomnumberSet)visitedRoomSet.copyOf();
 			else
 				O.visitedRoomSet=null;
-			O.securityGroups=securityGroups.copyOf();
+			O.securityFlags=securityFlags.copyOf();
 			O.friends=friends.copyOf();
 			O.ignored=ignored.copyOf();
 			O.tellStack=tellStack.copyOf();
@@ -493,7 +495,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+CMLib.xml().parseOutAngleBrackets(tranpoofin)+"</TRANPOOFIN>":"")
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.xml().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
 			+"<DATES>"+this.getLevelDateTimesStr()+"</DATES>"
-			+getSecurityGroupStr()
+			+"<SECGRPS>"+getSetSecurityFlags(null)+"</SECGRPS>"
 			+roomSet().xml()
 			+rest.toString();
 	}
@@ -567,7 +569,7 @@ public class DefaultPlayerStats implements PlayerStats
 			pageBreak=CMath.s_int(oldBreak);
 		else
 			pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
-		setSecurityGroupStr(CMLib.xml().getValFromPieces(xml,"SECGRPS"));
+		getSetSecurityFlags(CMLib.xml().getValFromPieces(xml,"SECGRPS"));
 		setAliasXML(xml);
 		setTitleXML(xml);
 		String bday=CMLib.xml().getValFromPieces(xml,"BIRTHDAY");
@@ -656,33 +658,19 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return buf.toString();
 	}
-	
-	protected void setSecurityGroupStr(String grps)
+	public String getSetSecurityFlags(String newFlags)
 	{
-		securityGroups=new SVector<String>();
-		if((grps==null)||(grps.trim().length()==0))    
-			return;
-		int x=grps.indexOf(';');
-		while(x>=0)
+		if(newFlags != null)
 		{
-			String fi=grps.substring(0,x).trim();
-			if(fi.length()>0) securityGroups.addElement(fi.toUpperCase());
-			grps=grps.substring(x+1);
-			x=grps.indexOf(';');
+	        securityFlags=CMSecurity.instance().createGroup("", CMParms.parseSemicolons(newFlags,true));
 		}
-		if(grps.trim().length()>0)
-			securityGroups.addElement(grps.trim().toUpperCase());
-	}
-	protected String getSecurityGroupStr()
-	{
-		if(securityGroups.size()==0) return "";
-		StringBuffer list=new StringBuffer("");
-		for(Iterator<String> e=securityGroups.iterator();e.hasNext();)
-			list.append(((String)e.next())+";");
-		return "<SECGRPS>"+list.toString()+"</SECGRPS>";
+		return securityFlags.toString(';');
 		
 	}
-	public List<String> getSecurityGroups(){ return securityGroups;}
+	public CMSecurity.SecGroup getSecurityFlags()
+	{ 
+		return securityFlags;
+	}
 	public void setPoofs(String poofIn, String poofOut, String tranPoofIn, String tranPoofOut)
 	{
 		poofin=poofIn;

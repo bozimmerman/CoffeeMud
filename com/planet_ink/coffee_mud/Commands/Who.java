@@ -118,7 +118,7 @@ public class Who extends StdCommand
 
 			if((mob2!=null)
 			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
-				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
+				||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
 			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
 			&&(mob2.phyStats().level()>0))
 				msg.append(showWhoShort(mob2));

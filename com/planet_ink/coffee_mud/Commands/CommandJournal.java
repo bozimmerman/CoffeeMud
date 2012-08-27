@@ -70,8 +70,7 @@ public class CommandJournal extends StdCommand
 		String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
 		if(!("TRANSFER".startsWith(first.toUpperCase().trim())))
 		   return false;
-		if((!CMSecurity.isAllowed(mob,mob.location(),security))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"KILL"+security+"S")))
+		if(!CMSecurity.isJournalAccessAllowed(mob,security))
 		{
 			mob.tell("Transfer not allowed.");
 			return true;
@@ -141,8 +140,7 @@ public class CommandJournal extends StdCommand
 		String second=(commands.size()>2)?CMParms.combine(commands,2):"";
 		if(!("REVIEW".startsWith(first.toUpperCase().trim())))
 		   return false;
-		if((!CMSecurity.isAllowed(mob,mob.location(),security))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"KILL"+security+"S")))
+		if(!CMSecurity.isJournalAccessAllowed(mob,security))
 			return false;
 		if((second.length()>0)&&(!CMath.isNumber(second)))
 			return false;

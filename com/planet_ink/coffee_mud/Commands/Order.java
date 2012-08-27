@@ -53,7 +53,7 @@ public class Order extends StdCommand
 			mob.tell("Order them to do what?");
 			return false;
 		}
-		if((!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
+		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 		&&(!mob.isMonster())
 		&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST)))
 		{
@@ -112,7 +112,7 @@ public class Order extends StdCommand
 
 		CMObject O=CMLib.english().findCommand(mob,commands);
 		String order=CMParms.combine(commands,0);
-		if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
+		if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 		{
 			if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
 			{
@@ -126,7 +126,7 @@ public class Order extends StdCommand
 		{
 			target=(MOB)V.elementAt(v);
 			O=CMLib.english().findCommand(target,(Vector)commands.clone());
-			if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 			{
 				if((O instanceof Command)
 				&&((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))))

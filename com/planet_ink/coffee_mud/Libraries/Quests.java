@@ -1270,7 +1270,7 @@ public class Quests extends StdLibrary implements QuestManager
     public DVector getQuestTemplate(MOB mob, String fileToGet)
 	{
 		// user security doesn't matter, because this is read-only & system files.
-		CMFile tempF=new CMFile(Resources.makeFileResourceName("quests/templates"),null,true,CMSecurity.isAllowedAnywhere(mob, "CMDQUESTS"));
+		CMFile tempF=new CMFile(Resources.makeFileResourceName("quests/templates"),null,true,CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.CMDQUESTS));
 		if((!tempF.exists())||(!tempF.isDirectory()))
 			return null;
 		CMFile[] files=tempF.listFiles();

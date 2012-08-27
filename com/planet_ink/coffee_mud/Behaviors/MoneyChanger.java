@@ -113,7 +113,7 @@ public class MoneyChanger extends StdBehavior
 		if((source!=observer)
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
-		&&(!CMSecurity.isAllowed(source,source.location(),"CMDROOMS"))
+		&&(!CMSecurity.isAllowed(source,source.location(),CMSecurity.SecFlag.CMDROOMS))
 		&&(msg.tool()!=null))
 		{
 			if(!(msg.tool() instanceof Coins))

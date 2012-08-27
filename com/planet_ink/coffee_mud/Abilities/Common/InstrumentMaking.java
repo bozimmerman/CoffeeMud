@@ -154,7 +154,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		bundling=false;
 		String startStr=null;
 		int duration=4;
-		boolean archon=CMSecurity.isASysOp(mob)||CMSecurity.isAllowed(mob,mob.location(),"ALLSKILLS");
+		boolean archon=CMSecurity.isASysOp(mob)||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ALLSKILLS);
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);

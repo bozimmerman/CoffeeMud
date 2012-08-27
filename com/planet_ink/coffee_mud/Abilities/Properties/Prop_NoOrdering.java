@@ -47,7 +47,7 @@ public class Prop_NoOrdering extends Property
 		&&((msg.source().location()==affected)
 		   ||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(msg.source().location().getArea())))
 		   ||(msg.target()==affected))
-		&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDMOBS")))
+		&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDMOBS)))
 		{
 			if(affected instanceof MOB)
 				msg.source().tell("You don't feel very commanding around here.");

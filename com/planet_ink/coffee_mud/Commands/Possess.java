@@ -109,7 +109,7 @@ public class Possess extends StdCommand
 			{
 				List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
 				for(MOB mob2 : inhabs)
-					if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),"POSSESS")))
+					if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),CMSecurity.SecFlag.POSSESS)))
 					{
 						target=mob2;
 						break;
@@ -121,7 +121,7 @@ public class Possess extends StdCommand
 			mob.tell("You can't possess '"+MOBname+"' right now.");
 			return false;
 		}
-		if(!CMSecurity.isAllowed(mob,target.location(),"POSSESS"))
+		if(!CMSecurity.isAllowed(mob,target.location(),CMSecurity.SecFlag.POSSESS))
 		{
 			mob.tell("You can not possess "+target.Name()+".");
 			return false;
@@ -151,7 +151,7 @@ public class Possess extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"POSSESS");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POSSESS);}
 
 	
 }

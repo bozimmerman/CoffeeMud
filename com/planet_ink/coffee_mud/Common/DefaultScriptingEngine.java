@@ -2402,7 +2402,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=CMSecurity.isAllowed(((MOB)E),lastKnownLocation,"IMMORT");
+					returnable=CMSecurity.isAllowed(((MOB)E),lastKnownLocation,CMSecurity.SecFlag.IMMORT);
 				break;
 			}
 			case 12: // ischarmed

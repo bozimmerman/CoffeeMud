@@ -55,7 +55,7 @@ public class WizEmote extends StdCommand
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
-					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.WIZEMOTE)))
 	  					S.stdPrintln("^w"+msg+"^?");
 				}
 			}
@@ -66,7 +66,7 @@ public class WizEmote extends StdCommand
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()==R)
-					&&(CMSecurity.isAllowed(mob,R,"WIZEMOTE")))
+					&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WIZEMOTE)))
 						S.stdPrintln("^w"+msg+"^?");
 				}
 			}
@@ -78,7 +78,7 @@ public class WizEmote extends StdCommand
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(A.inMyMetroArea(S.mob().location().getArea()))
-					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.WIZEMOTE)))
 						S.stdPrintln("^w"+msg+"^?");
 				}
 			}
@@ -89,7 +89,7 @@ public class WizEmote extends StdCommand
 				{
 					if((S.mob()!=null)
 					&&(S.mob().getClanID().equals(C.clanID()))
-					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.WIZEMOTE)))
 						S.stdPrintln("^w"+msg+"^?");
 				}
 			}
@@ -100,7 +100,7 @@ public class WizEmote extends StdCommand
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
-					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE"))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.WIZEMOTE))
 					&&(CMLib.english().containsString(S.mob().name(),who)
 						||CMLib.english().containsString(S.mob().location().getArea().name(),who)))
 					{
@@ -119,7 +119,7 @@ public class WizEmote extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"WIZEMOTE");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.WIZEMOTE);}
 
 	
 }

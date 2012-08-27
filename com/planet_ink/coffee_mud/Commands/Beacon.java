@@ -67,7 +67,7 @@ public class Beacon extends StdCommand
 				mob.tell(M.name()+" is already at their beacon.");
 				return false;
 			}
-			if(!CMSecurity.isAllowed(mob,M.location(),"BEACON"))
+			if(!CMSecurity.isAllowed(mob,M.location(),CMSecurity.SecFlag.BEACON))
 			{
 				mob.tell("You cannot beacon "+M.name()+" there.");
 				return false;
@@ -79,7 +79,7 @@ public class Beacon extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"BEACON");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BEACON);}
 
 	
 }

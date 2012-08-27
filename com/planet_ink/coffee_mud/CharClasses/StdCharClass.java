@@ -72,8 +72,8 @@ public class StdCharClass implements CharClass
 	public int maxCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCRAFTINGSKILLS); }
 	public int maxCommonSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCOMMONSKILLS); }
 	public int maxLanguages() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXLANGUAGES); }
-	private static final Vector empty=new ReadOnlyVector();
-	public List<String> getSecurityGroups(int classLevel){return empty;}
+	private static final CMSecurity.SecGroup empty=new CMSecurity.SecGroup(new CMSecurity.SecFlag[]{});
+	public CMSecurity.SecGroup getSecurityFlags(int classLevel){return empty;}
 	public CMObject newInstance(){return this;}
 	protected String[] names=null;
 	public String[] nameSet()
@@ -374,7 +374,7 @@ public class StdCharClass implements CharClass
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-		if(CMSecurity.isAllowedEverywhere(mob,"ALLSKILLS"))
+		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS))
 		{
 			// the most efficient way of doing this -- just hash em!
 			Hashtable alreadyAble=new Hashtable();
@@ -595,7 +595,7 @@ public class StdCharClass implements CharClass
 			CR.nameSet()[n]=names[n];
 		int[] lvls=new int[names.length];
 		int nameDex=0;
-		List<String> firstSet=getSecurityGroups(0);
+		List<String> firstSet=CMParms.parseSemicolons(getSecurityFlags(0).toString(';'),true);
 		Vector cumulativeSet=new Vector();
 		cumulativeSet.addAll(firstSet);
 		securitySets.add(firstSet);
@@ -609,10 +609,10 @@ public class StdCharClass implements CharClass
 					break;
 				lvls[nameDex]=x;
 			}
-			if(getSecurityGroups(x).size()!=cumulativeSet.size())
+			if(getSecurityFlags(x).size()!=cumulativeSet.size())
 			{
 				List<String> V=new Vector();
-				V.addAll(getSecurityGroups(x));
+				V.addAll(CMParms.parseSemicolons(getSecurityFlags(x).toString(';'),true));
 				for(int i=0;i<cumulativeSet.size();i++)
 					V.remove(cumulativeSet.elementAt(i));
 				securitySets.add(V);

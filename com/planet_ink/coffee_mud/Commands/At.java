@@ -53,13 +53,13 @@ public class At extends StdCommand
 		Room room=CMLib.map().findWorldRoomLiberally(mob,cmd,"APMIR",100,120000);
 		if(room==null)
 		{
-			if(CMSecurity.isAllowedAnywhere(mob,"AT"))
+			if(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.AT))
 				mob.tell("At where? Try a Room ID, player name, area name, or room text!");
 			else
 				mob.tell("You aren't powerful enough to do that.");
 			return false;
 		}
-		if(!CMSecurity.isAllowed(mob,room,"AT"))
+		if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.AT))
 		{
 			mob.tell("You aren't powerful enough to do that there.");
 			return false;
@@ -72,7 +72,7 @@ public class At extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"AT");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.AT);}
 
 	
 }

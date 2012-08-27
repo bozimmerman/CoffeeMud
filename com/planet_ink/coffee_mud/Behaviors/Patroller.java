@@ -372,8 +372,8 @@ public class Patroller extends ActiveTicker
 	    		for(MOB inhab : mobsHere)
 	    		{
 					if((!inhab.isMonster())
-					&&(CMSecurity.isAllowed(inhab,thisRoom,"CMDMOBS")
-					   ||CMSecurity.isAllowed(inhab,thisRoom,"CMDROOMS")))
+					&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDMOBS)
+					   ||CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDROOMS)))
 					{
 						tickStatus=Tickable.STATUS_NOT;
 						return true;

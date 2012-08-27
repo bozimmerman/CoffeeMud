@@ -42,9 +42,9 @@ public class Take extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(CMSecurity.isAllowed(mob,mob.location(),"ORDER")
-		||CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")
-		||CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
+		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)
+		||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)
+		||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 		{
 			if(commands.size()<3)
 			{
@@ -64,7 +64,7 @@ public class Take extends StdCommand
 				mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
 				return false;
 			}
-			if((!victim.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,"ORDER")))
+			if((!victim.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER)))
 			{
 				mob.tell(victim.Name()+" is a player!");
 				return false;

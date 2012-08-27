@@ -64,7 +64,7 @@ public class StdBook extends StdItem
 			boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true);
 			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
 			&&(!admin)
-			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
+			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 			{
 				msg.source().tell("You are not allowed to write on "+name());
 				return false;
@@ -125,7 +125,7 @@ public class StdBook extends StdItem
 					}
 					if((entry.charAt(0)=='*')
 					   ||(admin)
-					   ||(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")))
+					   ||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)))
 						entry.setCharAt(0,' ');
 					else
 					if((newOnly)&&(msg.value()>0))
@@ -135,7 +135,7 @@ public class StdBook extends StdItem
 					&&(which>0)
 					&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
 						||(admin)
-						||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
+						||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 					{
 					}
 					else
@@ -170,7 +170,7 @@ public class StdBook extends StdItem
 					String message=CMParms.combineWith(vbuf, "\\n");
 					if(message.startsWith("<cmvp>")
 					&&(!admin)
-					&&(!(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))))
+					&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
 					{
 						mob.tell("Illegal code, aborted.");
 						return;

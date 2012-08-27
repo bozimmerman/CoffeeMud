@@ -216,7 +216,7 @@ public class Listen extends CM1Command
 				return false;
 			Set<ChannelsLibrary.ChannelFlag> flags=CMLib.channels().getChannelFlags(crit.parmInt);
 			if(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
-				return CMSecurity.isAllowedAnywhere(user, "STAT");
+				return CMSecurity.isAllowedAnywhere(user, CMSecurity.SecFlag.STAT);
 			return true;
 		}
 		case SOURCECODE: 
@@ -228,7 +228,7 @@ public class Listen extends CM1Command
 			if(crit.parmInt<0)
 				return false;
 			return true;
-		case PLAYER:  return CMSecurity.isAllowedEverywhere(user, "CMDPLAYERS");
+		case PLAYER:  return CMSecurity.isAllowedEverywhere(user, CMSecurity.SecFlag.CMDPLAYERS);
 		case MOB:
 		case ROOM:
 		case AREA:

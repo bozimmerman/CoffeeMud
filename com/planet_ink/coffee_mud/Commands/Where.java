@@ -61,7 +61,7 @@ public class Where extends StdCommand
 		&&(show.session()!=null)
 		&&(showTo!=null)
 		&&(((show.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
-			||((CMSecurity.isAllowedAnywhere(showTo,"CLOAK")||CMSecurity.isAllowedAnywhere(showTo,"WIZINV"))
+			||((CMSecurity.isAllowedAnywhere(showTo,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(showTo,CMSecurity.SecFlag.WIZINV))
 				&&(showTo.phyStats().level()>=show.phyStats().level()))))
 			return true;
 		return false;
@@ -81,7 +81,7 @@ public class Where extends StdCommand
 		boolean overrideSet = false;
 		if((commands.size()>1)&&(commands.elementAt(1).equals("!")))
 			overrideSet=commands.remove(commands.elementAt(1));
-		if((CMSecurity.isAllowed(mob,mob.location(),"WHERE"))
+		if((CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.WHERE))
 		&&(!overrideSet))
 		{
 			StringBuffer lines=new StringBuffer("^x");
@@ -204,7 +204,7 @@ public class Where extends StdCommand
 					for(;r.hasMoreElements();)
 					{
 						R=(Room)r.nextElement();
-						if((R!=null)&&(CMSecurity.isAllowed(mob,R,"WHERE"))&&(CMLib.flags().canAccess(mob,R.getArea())))
+						if((R!=null)&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))&&(CMLib.flags().canAccess(mob,R.getArea())))
 						{
 							if((!mobOnly)&&(!itemOnly)&&(!exitOnly))
 								if(CMLib.english().containsString(R.displayText(),who)

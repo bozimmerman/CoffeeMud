@@ -372,8 +372,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
     		for(MOB inhab : mobsHere)
     		{
     			if((!inhab.isMonster())
-    			&&(CMSecurity.isAllowed(inhab,oldRoom,"CMDMOBS")
-    			   ||CMSecurity.isAllowed(inhab,oldRoom,"CMDROOMS")))
+    			&&(CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDMOBS)
+    			   ||CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDROOMS)))
     			{
     				if(status!=null)status[0]=Tickable.STATUS_NOT;
     				return false;
@@ -407,8 +407,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		    		{
 		    			if((inhab!=null)
 		    			&&(!inhab.isMonster())
-		    			&&(CMSecurity.isAllowed(inhab,oldRoom,"CMDMOBS")
-		    			   ||CMSecurity.isAllowed(inhab,oldRoom,"CMDROOMS")))
+		    			&&(CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDMOBS)
+		    			   ||CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDROOMS)))
 		    			{
 		    				if(status!=null)status[0]=Tickable.STATUS_NOT;
 		    				nextRoom=null;
@@ -837,7 +837,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_arrives)+" from "+otherDirectionName+".");
 			leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName+".":null),leaveCode,null,leaveCode,((flee)?"<S-NAME> flee(s) "+directionName+".":"<S-NAME> "+CMLib.flags().dispositionString(mob,CMFlagLibrary.flag_leaves)+" "+directionName+"."));
 		}
-		final boolean gotoAllowed=(!mob.isMonster()) && CMSecurity.isAllowed(mob,destRoom,"GOTO");
+		final boolean gotoAllowed=(!mob.isMonster()) && CMSecurity.isAllowed(mob,destRoom,CMSecurity.SecFlag.GOTO);
 		if((exit==null)&&(!gotoAllowed))
 		{
 			mob.tell("You can't go that way.");

@@ -1442,14 +1442,14 @@ public class Modify extends StdCommand
 		}
 		if(commandType.equals("ITEM"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
 			items(mob,commands);
 		}
 		else
 		if(commandType.equals("RECIPE"))
 		{
 			//mob.tell("Not yet implemented"); if(true) return true;
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRECIPES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRECIPES)) return errorOut(mob);
 			if(commands.size()<3)
 			{
 				mob.tell("Modify which recipe?  Name a common skill ID -- use list abilities to find one.");
@@ -1481,100 +1481,100 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("ROOM"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)) return errorOut(mob);
 			rooms(mob,commands);
 		}
 		else
 		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
 			accounts(mob,commands);
 		}
 		else
 		if(commandType.equals("RACE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)) return errorOut(mob);
 			races(mob,commands);
 		}
 		else
 		if(commandType.equals("CLASS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLASSES)) return errorOut(mob);
 			classes(mob,commands);
 		}
 		else
 		if(commandType.equals("ABILITY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
 			abilities(mob,commands);
 		}
 		else
 		if(commandType.equals("LANGUAGE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
 			languages(mob,commands);
 		}
 		else
 		if(commandType.equals("CRAFTSKILL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
 			craftSkills(mob,commands);
 		}
 		else
 		if(commandType.equals("ALLQUALIFY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
 			allQualify(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDAREAS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDAREAS)) return errorOut(mob);
 			areas(mob,commands);
 		}
 		else
 		if(commandType.equals("EXIT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS)) return errorOut(mob);
 			exits(mob,commands);
 		}
 		else
 		if(commandType.equals("COMPONENT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS)) return errorOut(mob);
 			components(mob,commands);
 			return false;
 		}
 		else
 		if(commandType.equals("EXPERTISE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"EXPERTISES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EXPERTISES)) return errorOut(mob);
 			mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
 			return false;
 		}
 		else
 		if(commandType.equals("TITLE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"TITLES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TITLES)) return errorOut(mob);
 			mob.tell("You can't modify titles, you can only LIST, CREATE, and DESTROY them.");
 			return false;
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDSOCIALS)) return errorOut(mob);
 			socials(mob,commands);
 		}
 		else
 		if(commandType.equals("MOB"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)) return errorOut(mob);
 			mobs(mob,commands);
 		}
 		else
 		if(commandType.startsWith("JSCRIPT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS")) 
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS)) 
 				return errorOut(mob);
 			if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)!=1)
 			{
@@ -1604,13 +1604,13 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("USER")||commandType.equals("PLAYER"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
 			players(mob,commands);
 		}
 		else
 		if(commandType.equals("POLL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS)) return errorOut(mob);
 			String name=CMParms.combine(commands,2);
 			Poll P=null;
 			if(CMath.isInteger(name))
@@ -1632,7 +1632,7 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("HOLIDAY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
 			String name=CMParms.combine(commands,2);
 			int num=-1;
 			if(CMath.isInteger(name))
@@ -1653,8 +1653,8 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("NEWS"))
 		{
-			if((!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))
-			&&(!CMSecurity.isAllowed(mob,mob.location(),"NEWS")))
+			if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))
+			&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NEWS)))
 				return errorOut(mob);
 			
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
@@ -1672,7 +1672,7 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("QUEST"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
 			quests(mob,commands);
 		}
 		else
@@ -1702,7 +1702,7 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("GOVERNMENT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
 			if(commands.size()<3)
 				mob.tell("Modify which government?  Use list governments.");
 			else
@@ -1731,7 +1731,7 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("FACTION"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)) return errorOut(mob);
 			if(commands.size()<3)
 				mob.tell("Modify which faction?  Use list factions.");
 			else
@@ -1753,7 +1753,7 @@ public class Modify extends StdCommand
 		else
 		if(commandType.equals("CLAN"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
 			if(commands.size()<3)
 				mob.tell("Modify which clan?  Use clanlist.");
 			else
@@ -1818,7 +1818,7 @@ public class Modify extends StdCommand
 				thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord);
 			if((thang!=null)&&(thang instanceof Item))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) 
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) 
 					return errorOut(mob);
 				Item copyItem=(Item)thang.copyOf();
 				mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
@@ -1837,7 +1837,7 @@ public class Modify extends StdCommand
 			else
 			if((thang!=null)&&(thang instanceof MOB))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) 
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)) 
 					return errorOut(mob);
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
@@ -1850,7 +1850,7 @@ public class Modify extends StdCommand
 				else
 				if(!((MOB)thang).isMonster())
 				{
-					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
+					if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
 					players(mob,CMParms.parse("MODIFY USER \""+thang.Name()+"\""));
 				}
 				else
@@ -1873,7 +1873,7 @@ public class Modify extends StdCommand
 
 				if(thang!=null)
 				{
-					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
+					if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS)) return errorOut(mob);
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					Exit copyExit=(Exit)thang.copyOf();
 					CMLib.genEd().genMiscText(mob,thang,1,1);
@@ -1898,5 +1898,5 @@ public class Modify extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMD");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP);}
 }

@@ -69,7 +69,7 @@ public class MPRun extends StdCommand
 				commands.removeElementAt(1);
 			}
 		}
-		if(!CMSecurity.isAllowed(checkMOB,mob.location(),"JSCRIPTS"))
+		if(!CMSecurity.isAllowed(checkMOB,mob.location(),CMSecurity.SecFlag.JSCRIPTS))
 			return CMLib.commands().handleUnknownCommand(mob, commands);
 		if(commands.size()<2)
 		{

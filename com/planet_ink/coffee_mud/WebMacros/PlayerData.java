@@ -286,12 +286,15 @@ public class PlayerData extends StdWebMacro
 		case 59: 
 		{
 			if(M.playerStats()!=null)
-				for(int b=0;b<M.playerStats().getSecurityGroups().size();b++)
+			{
+				List<String> flags=CMParms.parseSemicolons(M.playerStats().getSetSecurityFlags(null), true);
+				for(int b=0;b<flags.size();b++)
 				{
-					String B=(String)M.playerStats().getSecurityGroups().get(b);
+					String B=flags.get(b);
 					if(B!=null)	str.append(B+", ");
 				}
-				break;
+			}
+			break;
 		}
 		case 60: 
 		{

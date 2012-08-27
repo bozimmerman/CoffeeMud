@@ -60,9 +60,9 @@ public class CheckAuthCode extends StdWebMacro
 						break;
 					}
 			}
-			auths.put("ANYMODAREAS",""+((subOp&&(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS")))
-														   ||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
-			auths.put("ALLMODAREAS",""+(CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
+			auths.put("ANYMODAREAS",""+((subOp&&(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS)))
+														   ||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDAREAS)));
+			auths.put("ALLMODAREAS",""+(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDAREAS)));
 			final List<String> dirs=CMSecurity.getAccessibleDirs(mob,mob.location());
 			auths.put("ANYFILEBROWSE",""+(dirs.size()>0));
 			if(dirs.size()>0)
@@ -83,8 +83,8 @@ public class CheckAuthCode extends StdWebMacro
 			auths.put("SYSOP",""+sysop);
 			auths.put("SUBOP",""+(sysop||subOp));
 			
-			for(Iterator<String> i = CMSecurity.getSecurityCodes(mob,R);i.hasNext();)
-				auths.put("AUTH_"+i.next(),"true");
+			for(Iterator<CMSecurity.SecFlag> i = CMSecurity.getSecurityCodes(mob,R);i.hasNext();)
+				auths.put("AUTH_"+i.next().toString(),"true");
 			httpReq.getRequestObjects().put("AUTHS_"+mob.Name().toUpperCase().trim(),auths);
 		}
 		return auths;

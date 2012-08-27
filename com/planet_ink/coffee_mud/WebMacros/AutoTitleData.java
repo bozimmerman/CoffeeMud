@@ -64,7 +64,7 @@ public class AutoTitleData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),"TITLES")) return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES)) return "[authentication error]";
 			String req=httpReq.getRequestParameter("ISREQUIRED");
 			String newTitle=httpReq.getRequestParameter("TITLE");
 			if((req!=null)&&(req.equalsIgnoreCase("on")))
@@ -101,7 +101,7 @@ public class AutoTitleData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),"TITLES")) return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES)) return "[authentication error]";
 			if(last==null) return " @break@";
 			if(!CMLib.titles().isExistingAutoTitle(last))
 				return "Unknown title!";

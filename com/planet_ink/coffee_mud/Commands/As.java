@@ -50,7 +50,7 @@ public class As extends StdCommand
 		}
 		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
-		if((!CMSecurity.isAllowed(mob,mob.location(),"AS"))||(mob.isMonster()))
+		if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AS))||(mob.isMonster()))
 		{
 			mob.tell("You aren't powerful enough to do that.");
 			return false;
@@ -86,7 +86,7 @@ public class As extends StdCommand
 		}
 		if(!M.isMonster())
 		{
-			if(!CMSecurity.isAllowedEverywhere(mob,"ORDER"))
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER))
 			{
 				mob.tell("You can't do things as players if you can't order them.");
 				return false;
@@ -153,7 +153,7 @@ public class As extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"AS");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.AS);}
 
 	
 }

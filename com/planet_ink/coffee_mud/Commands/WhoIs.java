@@ -83,7 +83,7 @@ public class WhoIs extends Who
 			MOB mob2=S.mob();
 			if((mob2!=null)
 			&&(((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
-				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))
+				||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))
 					&&(mob.phyStats().level()>=mob2.phyStats().level())))
 			&&(mob2.phyStats().level()>0)
 			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))

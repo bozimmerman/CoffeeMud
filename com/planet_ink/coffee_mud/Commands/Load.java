@@ -65,7 +65,7 @@ public class Load extends StdCommand
 		throws java.io.IOException
 	{
 		if(mob==null) return true;
-		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),"LOADUNLOAD");
+		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LOADUNLOAD);
 		if(commands.size()<3)
 		{
 			if(tryArchon)
@@ -149,7 +149,7 @@ public class Load extends StdCommand
 		else
 		{
 			if((what.equalsIgnoreCase("FACTION"))
-			&&(CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")))
+			&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)))
 			{
 				Faction F=CMLib.factions().getFaction(name);
 				if(F==null)

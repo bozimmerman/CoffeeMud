@@ -535,7 +535,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
 		&&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"ALLSKILLS")))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ALLSKILLS)))
 		{
 			mob.tell("You are not high enough level to do that.");
 			return false;
@@ -552,7 +552,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		if((CMLib.ableMapper().qualifyingLevel(mob,evokableAbility)>=0)
 		&&(!CMLib.ableMapper().qualifiesByLevel(mob,evokableAbility))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"ALLSKILLS")))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ALLSKILLS)))
 		{
 			mob.tell("You are not high enough level to do that.");
 			return;

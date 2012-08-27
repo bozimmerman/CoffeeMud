@@ -162,10 +162,9 @@ public class MOTD extends StdCommand
 				{
 					JournalsLibrary.CommandJournal CMJ=e.nextElement();
 					if((CMJ.getFlag(JournalsLibrary.CommandJournalFlags.ADMINECHO)!=null)
-					&&((CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME()))
-							||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")
-							||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")))
-						myEchoableCommandJournals.addElement(CMJ);
+					&&((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
+						||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)))
+    						myEchoableCommandJournals.addElement(CMJ);
 				}
 				boolean CJseparator=false;
 				for(int cj=0;cj<myEchoableCommandJournals.size();cj++)

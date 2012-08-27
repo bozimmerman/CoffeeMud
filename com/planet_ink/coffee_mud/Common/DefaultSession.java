@@ -1215,7 +1215,7 @@ public class DefaultSession implements Session
 			if(System.currentTimeMillis()>=timeoutTime)
 				throw new java.io.InterruptedIOException(TIMEOUT_MSG);
 
-			StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
+			StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
 			input=new StringBuffer("");
 			if(inStr==null) return null;
 			final String str=inStr.toString();
@@ -1256,7 +1256,7 @@ public class DefaultSession implements Session
 				return null;
 		}
 
-		StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
+		StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
 		input=new StringBuffer("");
 		if(inStr==null) return null;
 		final String str=inStr.toString();
@@ -1814,7 +1814,7 @@ public class DefaultSession implements Session
 				lastBlahCheck=System.currentTimeMillis();
 				Vector<String> V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
 				if((V.size()>0)
-				&&(!CMSecurity.isAllowed(mob(),mob().location(),"IDLEOK"))
+				&&(!CMSecurity.isAllowed(mob(),mob().location(),CMSecurity.SecFlag.IDLEOK))
 				&&(CMath.s_int((String)V.firstElement())>0))
 				{
 					int minsIdle=(int)(getIdleMillis()/60000);

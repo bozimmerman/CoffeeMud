@@ -87,12 +87,12 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 		if((allFlag)
 		||(text().length()==0)
 		||(!(R instanceof Room))
-		||(CMSecurity.isAllowed(mob,(Room)R,"GOTO")))
+		||(CMSecurity.isAllowed(mob,(Room)R,CMSecurity.SecFlag.GOTO)))
 			return true;
 
 		if((sysopFlag)
 		&&(R instanceof Room)
-		&&(!CMSecurity.isAllowed(mob,(Room)R,"GOTO")))
+		&&(!CMSecurity.isAllowed(mob,(Room)R,CMSecurity.SecFlag.GOTO)))
 			return false;
 
 		int lvl=mob.phyStats().level();

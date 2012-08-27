@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
@@ -3158,41 +3159,79 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		PlayerStats P=M.playerStats();
+		final PlayerStats P=M.playerStats();
 		if(P==null) return;
 		String behave="NO";
+		List<String> secFlags=CMParms.parseSemicolons(P.getSetSecurityFlags(null),true);
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
-			String behaviorstr="";
-			for(int b=0;b<P.getSecurityGroups().size();b++)
-			{
-				String B=(String)P.getSecurityGroups().get(b);
-				if(B!=null) behaviorstr+=B+", ";
-			}
-			if(behaviorstr.length()>0)
-				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell(showNumber+". Security Groups: '"+behaviorstr+"'.");
+			mob.tell(showNumber+". Security Groups: '"+CMParms.toStringList(secFlags)+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt("Enter a group to add/remove\n\r:","");
 			if(behave.length()>0)
 			{
-				if(P.getSecurityGroups().contains(behave.trim().toUpperCase()))
+				if(secFlags.contains(behave.trim().toUpperCase()))
 				{
-					P.getSecurityGroups().remove(behave.trim().toUpperCase());
+					secFlags.remove(behave.trim().toUpperCase());
+					P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
 					mob.tell(behave+" removed.");
 				}
 				else
-				if((behave.trim().toUpperCase().startsWith("AREA "))
-				&&(!CMSecurity.isAllowedAnywhere(mob,behave.trim().toUpperCase().substring(5).trim())))
-					mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
-				else
-				if((!behave.trim().toUpperCase().startsWith("AREA "))
-				&&(!CMSecurity.isAllowedEverywhere(mob,behave.trim().toUpperCase())))
-					mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
-				else
 				{
-					P.getSecurityGroups().add(behave.trim().toUpperCase());
-					mob.tell(behave+" added.");
+					behave=behave.trim().toUpperCase().replace(' ','_');
+					CMSecurity.SecFlag flag=(CMSecurity.SecFlag)CMath.s_valueOf(CMSecurity.SecFlag.class, behave);
+					List<String> grpNames=new ArrayList<String>();
+					for(Enumeration<SecGroup> g=CMSecurity.getSecurityGroups();g.hasMoreElements();)
+						grpNames.add(g.nextElement().getName().toUpperCase());
+					List<String> jFlagNames=new ArrayList<String>();
+					for(Enumeration<String> j=CMSecurity.getJournalSecurityFlags();j.hasMoreElements();)
+						jFlagNames.add(j.nextElement());
+					boolean isGroup = ((flag == null)?grpNames.contains(behave):false);
+					boolean isJournalFlag=(((flag == null)&&(!isGroup))?CMParms.contains(CMSecurity.getJournalSecurityFlags(), behave):false);
+					if((flag == null) && (!isGroup) && (!isJournalFlag))
+					{
+						mob.tell("No such security flag: "+behave+".");
+						mob.tell("Value flags include: "+CMParms.toStringList(CMSecurity.SecFlag.values()));
+						mob.tell("Valid groups include: "+CMParms.toStringList(grpNames));
+						mob.tell("Value journal flags include: "+CMParms.toStringList(jFlagNames));
+					}
+					else
+					{
+    					if(flag != null)
+    					{
+            				if((flag.getAreaAlias()==flag)
+            				&&(!CMSecurity.isAllowedAnywhere(mob,flag)))
+            				{
+            					mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
+            					continue;
+            				}
+            				else
+            				if((flag.getRegularAlias()==flag)
+            				&&(!CMSecurity.isAllowedEverywhere(mob,flag)))
+            				{
+            					mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
+            					continue;
+            				}
+    					}
+    					else
+    					if(isJournalFlag)
+    					{
+            				if(!CMSecurity.isJournalAccessAllowed(mob,behave))
+            				{
+            					mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
+            					continue;
+            				}
+    					}
+    					else
+    					if(!CMSecurity.isASysOp(mob))
+    					{
+        					mob.tell("You do not have clearance to add security group '"+behave+"' to this class.");
+        					continue;
+    					}
+    					secFlags.add(behave.trim().toUpperCase());
+    					P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+    					mob.tell(behave+" added.");
+					}
 				}
 			}
 			else

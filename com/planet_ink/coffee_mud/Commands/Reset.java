@@ -41,7 +41,7 @@ public class Reset extends StdCommand
 	private final String[] access={"RESET"};
 	public boolean canBeOrdered(){return true;}
 	public String[] getAccessWords(){return access;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"RESET");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESET);}
 
 	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable rememberI, String lead)
 		throws java.io.IOException
@@ -366,7 +366,7 @@ public class Reset extends StdCommand
 				mob.tell("Can't reset that trait -- as its not defined.");
 		}
 		else
-		if(s.equalsIgnoreCase("arearoomids")&&(CMSecurity.isAllowed(mob, mob.location(), "CMDROOMS")))
+		if(s.equalsIgnoreCase("arearoomids")&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDROOMS)))
 		{
 			Area A=mob.location().getArea();
 			boolean somethingDone=false;
@@ -411,7 +411,7 @@ public class Reset extends StdCommand
 				mob.tell("Done renumbering rooms.");
 		}
 		else
-		if(!CMSecurity.isAllowed(mob,mob.location(),"RESETUTILS"))
+		if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESETUTILS))
 		{
 			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
 			return false;
@@ -439,7 +439,7 @@ public class Reset extends StdCommand
 			}
 		}
 		else
-		if(s.equalsIgnoreCase("racestatgains")&&(CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")))
+		if(s.equalsIgnoreCase("racestatgains")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
 			for(Enumeration e=CMClass.races();e.hasMoreElements();)
 			{
@@ -469,7 +469,7 @@ public class Reset extends StdCommand
 			}
 		}
 		else
-		if(s.equalsIgnoreCase("genraceagingcharts")&&(CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")))
+		if(s.equalsIgnoreCase("genraceagingcharts")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
 			for(Enumeration e=CMClass.races();e.hasMoreElements();)
 			{

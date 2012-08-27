@@ -118,8 +118,8 @@ public class FieryRoom
 					}
 					else 
 					{
-						if((!CMSecurity.isAllowed(inhab,inhab.location(),"ORDER"))
-						&&(!CMSecurity.isAllowed(inhab,inhab.location(),"CMDROOMS"))) 
+						if((!CMSecurity.isAllowed(inhab,inhab.location(),CMSecurity.SecFlag.ORDER))
+						&&(!CMSecurity.isAllowed(inhab,inhab.location(),CMSecurity.SecFlag.CMDROOMS))) 
 						{
 							dealDamage(inhab);
 							if (CMLib.dice().rollPercentage() > eqChance)

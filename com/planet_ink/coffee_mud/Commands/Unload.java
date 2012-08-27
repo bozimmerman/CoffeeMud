@@ -46,7 +46,7 @@ public class Unload extends StdCommand
 		throws java.io.IOException
 	{
 		if(mob==null) return true;
-		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),"LOADUNLOAD");
+		boolean tryArchon=CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LOADUNLOAD);
 		if(commands.size()<2)
 		{
 			if(tryArchon)
@@ -165,7 +165,7 @@ public class Unload extends StdCommand
 			// User Unloading
 			if((((String)commands.elementAt(1)).equalsIgnoreCase("USER"))
 			&&(mob.session()!=null)
-			&&(CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")))
+			&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)))
 			{
 				String which=CMParms.combine(commands,2);
 				Vector users=new Vector();
@@ -224,7 +224,7 @@ public class Unload extends StdCommand
 			else
 			// Faction Unloading
 			if((((String)commands.elementAt(1)).equalsIgnoreCase("FACTION"))
-			&&(CMSecurity.isAllowed(mob, mob.location(), "CMDFACTIONS")))
+			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDFACTIONS)))
 			{
 				String which=CMParms.combine(commands,2);
 				if(which.length()==0) {
@@ -244,7 +244,7 @@ public class Unload extends StdCommand
 			else
 			// Area Unloading
 			if((((String)commands.elementAt(1)).equalsIgnoreCase("AREA"))
-			&&(CMSecurity.isAllowed(mob, mob.location(), "CMDAREAS")))
+			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDAREAS)))
 			{
 				String which=CMParms.combine(commands,2);
 				Area A=null;
@@ -259,7 +259,7 @@ public class Unload extends StdCommand
 			}
 			else
 			if(("EXPERTISE".startsWith(((String)commands.elementAt(1)).toUpperCase()))
-			&&(CMSecurity.isAllowed(mob, mob.location(), "EXPERTISE")))
+			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.EXPERTISE)))
 			{
 				Resources.removeResource("skills/expertises.txt");
 				CMLib.expertises().recompileExpertises();

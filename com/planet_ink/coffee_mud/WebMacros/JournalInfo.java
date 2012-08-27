@@ -207,7 +207,7 @@ public class JournalInfo extends StdWebMacro
 			return " @break@";
 		if(cardinal!=null)
 			entry.cardinal=CMath.s_int(cardinal);
-		boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.containsKey("NOPRIV"));
+		boolean priviledged=CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)&&(!parms.containsKey("NOPRIV"));
 		String to=entry.to;
 		if(to.equalsIgnoreCase("all")
 		||((M!=null)

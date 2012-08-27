@@ -82,7 +82,7 @@ public class Snoop extends StdCommand
 				return false;
 			}
 			else
-			if(CMSecurity.isAllowed(mob,S.mob().location(),"SNOOP"))
+			if(CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.SNOOP))
 				SnoopOn=S;
 		}
 		if(SnoopOn==null)
@@ -119,7 +119,7 @@ public class Snoop extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"SNOOP");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SNOOP);}
 
 	
 }

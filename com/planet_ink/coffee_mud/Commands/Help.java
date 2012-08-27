@@ -53,7 +53,7 @@ public class Help extends StdCommand
 			thisTag=new StringBuilder(Resources.getFileResource("help/help.txt",true));
 		else
 			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getHelpFile(),mob);
-		if((thisTag==null)&&(CMSecurity.isAllowed(mob,mob.location(),"AHELP")))
+		if((thisTag==null)&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)))
 			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
@@ -61,7 +61,7 @@ public class Help extends StdCommand
 				CMLib.help().getHelpList(
 				helpStr,
 				CMLib.help().getHelpFile(),
-				CMSecurity.isAllowed(mob,mob.location(),"AHELP")?CMLib.help().getArcHelpFile():null,
+				CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null,
 				mob);
 			if((thisList!=null)&&(thisList.length()>0))
 				mob.tell("No help is available on '"+helpStr+"'.\n\rHowever, here are some search matches:\n\r^N"+thisList.toString().replace('_',' '));

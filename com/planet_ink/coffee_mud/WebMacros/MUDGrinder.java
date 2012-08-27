@@ -139,7 +139,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last.length()==0) return "@break@";
 			PlayerAccount A=CMLib.players().getLoadAccount(last);
 			if(A==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"CMDPLAYERS")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS)) return "@break@";
 			String err=new GrinderAccounts().runMacro(httpReq,parm);
 			if(err.length()>0) return err;
 			Log.sysOut("Grinder",mob.Name()+" modified account "+A.accountName());
@@ -155,7 +155,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last.length()==0) return "@break@";
 			PlayerAccount A=CMLib.players().getLoadAccount(last);
 			if(A==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"CMDPLAYERS")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDPLAYERS)) return "@break@";
 			String playerList = CMParms.toStringList(A.getPlayers());
 			for(Enumeration<String> p=A.getPlayers();p.hasMoreElements();)
 			{
@@ -180,7 +180,7 @@ public class MUDGrinder extends StdWebMacro
 				last=last.substring(8);
 				MOB M=CMLib.catalog().getCatalogMob(last);
 				if(M==null) return "@break@";
-				if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CATALOG)) return "@break@";
 				CMLib.catalog().delCatalog(M);
 				Log.sysOut("Grinder",mob.Name()+" destroyed catalog mob "+last);
 				return "The catalog mob "+last+" has been removed.";
@@ -199,7 +199,7 @@ public class MUDGrinder extends StdWebMacro
 				last=last.substring(8);
 				Item I=CMLib.catalog().getCatalogItem(last);
 				if(I==null) return "@break@";
-				if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CATALOG)) return "@break@";
 				CMLib.catalog().delCatalog(I);
 				Log.sysOut("Grinder",mob.Name()+" destroyed catalog item "+last);
 				return "The catalog item "+last+" has been removed.";
@@ -216,7 +216,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last.length()==0) return "@break@";
 			List<AbilityComponent> list = CMLib.ableMapper().getAbilityComponentDVector(last);
 			if(list==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"COMPONENTS")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.COMPONENTS)) return "@break@";
 			CMLib.ableMapper().getAbilityComponentMap().remove(last.toUpperCase().trim());
 			CMLib.ableMapper().alterAbilityComponentFile(last, true);
 			Log.sysOut("Grinder",mob.Name()+" destroyed component "+last);
@@ -230,7 +230,7 @@ public class MUDGrinder extends StdWebMacro
 			String last=httpReq.getRequestParameter("COMPONENT");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"COMPONENTS")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.COMPONENTS)) return "@break@";
 			String err=new GrinderComponent().runMacro(httpReq,parm);
 			if(err.length()>0) return err;
 			Log.sysOut("Grinder",mob.Name()+" modified component "+last);
@@ -244,7 +244,7 @@ public class MUDGrinder extends StdWebMacro
 			String last=httpReq.getRequestParameter("ALLQUALID");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"ABILITIES")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ABILITIES)) return "@break@";
 			String which=httpReq.getRequestParameter("ALLQUALWHICH");
 			if(parms.containsKey("WHICH"))
 				which=parms.get("WHICH");	
@@ -266,7 +266,7 @@ public class MUDGrinder extends StdWebMacro
 			String last=httpReq.getRequestParameter("ALLQUALID");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"ABILITIES")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ABILITIES)) return "@break@";
 			String err=new GrinderAllQualifys().editAllQualify(httpReq, parms);
 			if(err.length()>0) return err;
 			Log.sysOut("Grinder",mob.Name()+" modified all qualify ability "+last);
@@ -282,7 +282,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last.length()==0) return "@break@";
 			Clan C=CMLib.clans().getClan(last);
 			if(C==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
 			C.destroyClan();
 			Log.sysOut("Grinder",mob.Name()+" destroyed clan "+C.clanID());
 			return "The clan "+C.clanID()+" has been successfully destroyed.";
@@ -297,7 +297,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last.length()==0) return "@break@";
 			Clan C=CMLib.clans().getClan(last);
 			if(C==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
 			String err=new GrinderClans().runMacro(httpReq,parm);
 			if(err.length()>0) return err;
 			C.update();
@@ -317,7 +317,7 @@ public class MUDGrinder extends StdWebMacro
 			||CMLib.players().playerExists(last)
 			||(last.equalsIgnoreCase("All")))
 				return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
 			Clan newClan=(Clan)CMClass.getCommon("DefaultClan");
 			newClan.setName(last);
 			newClan.setGovernmentID(CMLib.clans().getDefaultGovernment().getID());
@@ -337,7 +337,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last.length()==0) return "@break@";
 			ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
 			if(G==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
 			if(!CMLib.clans().removeGovernment(G)) 
 				return "Unable to remove last government.";
 			Log.sysOut("Grinder",mob.Name()+" destroyed clan government "+G.getName());
@@ -353,7 +353,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last.length()==0) return "@break@";
 			ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
 			if(G==null) return "@break@";
-			if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDCLANS)) return "@break@";
 			String err=new GrinderClanGovernments().runMacro(httpReq,parm);
 			if(err.length()>0) return err;
 			CMLib.clans().reSaveGovernmentsXML();

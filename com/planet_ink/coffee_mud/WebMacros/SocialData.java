@@ -147,7 +147,7 @@ public class SocialData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),"CMDSOCIALS")) return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS)) return "[authentication error]";
 			
 			boolean create=false;
 			List<Social> SV=CMLib.socials().getSocialsSet(last);
@@ -253,7 +253,7 @@ public class SocialData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),"CMDSOCIALS")) return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.CMDSOCIALS)) return "[authentication error]";
 			if(last==null) return " @break@";
 			List<Social> SV=CMLib.socials().getSocialsSet(last);
 			if(SV==null)

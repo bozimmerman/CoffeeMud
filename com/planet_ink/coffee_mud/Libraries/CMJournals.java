@@ -39,7 +39,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	public String ID(){return "CMJournals";}
 	public final int QUEUE_SIZE=100;
 	protected SHashtable<String,CommandJournal> commandJournals=new SHashtable<String,CommandJournal>();
-	protected SHashtable<String,ForumJournal> forumJournals=new SHashtable<String,ForumJournal>();
+	protected SHashtable<String,ForumJournal> 	forumJournals=new SHashtable<String,ForumJournal>();
 	
 	private CMSupportThread thread=null;
 	public CMSupportThread getSupportThread() { return thread;}
@@ -146,6 +146,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 				item=item.substring(0,x);
 			}
+			CMSecurity.registerJournal(item.toUpperCase().trim());
 			commandJournals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
 		}
 		return commandJournals.size();
@@ -165,7 +166,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			return false;
 		boolean priviledged=false;
 		if(readerM!=null)
-			priviledged=CMSecurity.isAllowedAnywhere(readerM,"JOURNALS")&&(!ignorePrivileges);
+			priviledged=CMSecurity.isAllowedAnywhere(readerM,CMSecurity.SecFlag.JOURNALS)&&(!ignorePrivileges);
 		if(to.equalsIgnoreCase("all")
 		||((readerM!=null)
 			&&(priviledged
@@ -232,6 +233,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					catch(Exception e){}
 				}
 			}
+			CMSecurity.registerJournal(item.toUpperCase().trim());
 			forumJournals.put(item.toUpperCase().trim(),new ForumJournal(item.trim(),flags));
 		}
 		return forumJournals.size();

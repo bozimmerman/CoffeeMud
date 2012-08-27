@@ -69,7 +69,7 @@ public class Skill_Recall extends StdSkill
 			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plane!":"<S-NAME> recall(s) body and spirit to the Java Plane!");
 			CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
 			if(((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
-			||CMSecurity.isAllowed(mob,recalledRoom,"GOTO"))
+			||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO))
 			{
 				if(mob.isInCombat())
 					CMLib.commands().postFlee(mob,"NOWHERE");
@@ -92,10 +92,10 @@ public class Skill_Recall extends StdSkill
 						msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plane!":"<S-NAME> <S-IS-ARE> sucked into the vortex created by "+mob.name()+"s recall.");
 						if(((follower.location()==fRecalledRoom))
 						&&(fRecalledRoom.isInhabitant(follower))
-						&&(fRecalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO")))
+						&&(fRecalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO)))
 						{
 							msg2=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
-							if(recallRoom.okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO"))
+							if(recallRoom.okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO))
 							{
 								if(follower.isInCombat())
 									CMLib.commands().postFlee(follower,("NOWHERE"));

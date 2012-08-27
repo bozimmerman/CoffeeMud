@@ -56,7 +56,7 @@ public class Pause extends StdCommand
 		{
 			if(!CMLib.threads().isAllSuspended())
 			{
-				if(!CMSecurity.isAllowedEverywhere(mob,"PAUSE"))
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.PAUSE))
 					mob.tell("You are not allowed to pause all threads.");
 				else
 				{
@@ -112,7 +112,7 @@ public class Pause extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"PAUSE");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PAUSE);}
 
 	
 }

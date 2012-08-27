@@ -70,7 +70,7 @@ public class Kill extends StdCommand
 		
 		boolean reallyKill=false;
 		String whomToKill=CMParms.combine(commands,1);
-		if(CMSecurity.isAllowed(mob,mob.location(),"KILLDEAD")&&(!mob.isMonster()))
+		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.KILLDEAD)&&(!mob.isMonster()))
 		{
 			if(((String)commands.lastElement()).equalsIgnoreCase("DEAD"))
 			{

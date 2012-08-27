@@ -387,13 +387,22 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	public long replyTime();
 	
 	/**
-	 * Returns a modifiable Vector of security flags and groups 
-	 * strings to which this player is privileged.
+	 * Returns a read-only Set of security flags that apply to this
+	 * player.  All groups are accounted for.
 	 * 
-	 * @return  a Vector of security flags and groups strings 
+	 * @return  a group of security flags 
 	 */
-	public List<String> getSecurityGroups();
+	public CMSecurity.SecGroup getSecurityFlags();
 
+	/**
+	 * Returns and/or sets the security flags and groups 
+	 * strings to which this player is privileged.  The
+	 * sets should be semicolon delimited.
+	 * @param newFlags null, or a semicolon list of flags and groups
+	 * @return the official parsed list of flags and groups 
+	 */
+	public String getSetSecurityFlags(String newFlags);
+	
 	/**
 	 * When a player is first created, this method is used to 
 	 * either initialize their birthday, or derive their 

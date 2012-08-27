@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -266,7 +267,7 @@ public class Destroy extends StdCommand
 		}
 		if(deadRoom!=null)
 		{
-			if(!CMSecurity.isAllowed(mob,deadRoom,"CMDROOMS"))
+			if(!CMSecurity.isAllowed(mob,deadRoom,CMSecurity.SecFlag.CMDROOMS))
 			{
 				mob.tell("Sorry Charlie! Not your room!");
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -289,7 +290,7 @@ public class Destroy extends StdCommand
 		}
 		else
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS))
 			{
 				errorOut(mob);
 				return;
@@ -512,7 +513,7 @@ public class Destroy extends StdCommand
 			}
 			Area A=CMLib.map().getArea(areaName);
 			Room R=A.getRandomProperRoom();
-			if((R!=null)&&(!CMSecurity.isAllowed(mob,R,"CMDAREAS")))
+			if((R!=null)&&(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.CMDAREAS)))
 			{
 				errorOut(mob);
 				return;
@@ -828,10 +829,10 @@ public class Destroy extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((!CMSecurity.isAllowedStartsWith(mob,"CMD"))
-		&&(!CMSecurity.isAllowedStartsWith(mob,mob.location(),"KILL"))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"BAN"))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")))
+		if((!CMSecurity.isAllowedContainsAny(mob,CMSecurity.SECURITY_CMD_GROUP))
+		&&(!CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_KILL_GROUP))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BAN))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE)))
 		{
 			commands.removeElementAt(0);
 			if(commands.size()==0)
@@ -941,8 +942,7 @@ public class Destroy extends StdCommand
 		{
 			JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if((CMJ.NAME().equals(commandType))
-			&&(CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME())
-				||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")))
+			&&(CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME())))
 			{
 				int which=-1;
 				if(commands.size()>2)
@@ -963,14 +963,14 @@ public class Destroy extends StdCommand
 		}
 		if(commandType.equals("EXIT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			exits(mob,commands);
 		}
 		else
 		if(commandType.equals("ITEM"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			items(mob,commands);
 		}
@@ -989,77 +989,77 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("RACE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			races(mob,commands);
 		}
 		else
 		if(commandType.equals("CLASS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLASSES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLASSES)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			classes(mob,commands);
 		}
 		else
 		if(commandType.equals("ABILITY")||commandType.equals("LANGUAGE")||commandType.equals("CRAFTSKILL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			abilities(mob,commands);
 		}
 		else
 		if(commandType.equals("ALLQUALIFY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDABILITIES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			allQualify(mob,commands);
 		}
 		else
 		if(commandType.equals("COMPONENT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			components(mob,commands);
 		}
 		else
 		if(commandType.equals("EXPERTISE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"EXPERTISES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EXPERTISES)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			expertises(mob,commands);
 		}
 		else
 		if(commandType.equals("TITLE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"TITLES")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TITLES)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			titles(mob,commands);
 		}
 		else
 	if(commandType.equals("USER")||commandType.equals("PLAYER"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			players(mob,commands);
 		}
 		else
 		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			accounts(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDSOCIALS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDSOCIALS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			socials(mob,commands);
 		}
 		else
 		if(commandType.equals("DISABLEFLAG"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)) 
 				return errorOut(mob);
 			String named=CMParms.combine(commands,2);
 			if(!CMSecurity.isDisabledSearch(named.toUpperCase()))
@@ -1074,7 +1074,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("DEBUGFLAG"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")) 
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)) 
 				return errorOut(mob);
 			String named=CMParms.combine(commands,2);
 			CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), named.toUpperCase().trim());
@@ -1095,7 +1095,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("NOPURGE"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.NOPURGE)) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=CMath.s_int((String)commands.elementAt(2));
@@ -1119,7 +1119,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("HOLIDAY"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
 			String name=CMParms.combine(commands,2);
 			int num=-1;
 			if(CMath.isInteger(name))
@@ -1166,7 +1166,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("BAN"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"BAN")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BAN)) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=CMath.s_int((String)commands.elementAt(2));
@@ -1198,7 +1198,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.startsWith("SESSION"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"BOOT")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BOOT)) return errorOut(mob);
 			int which=-1;
 			if(commands.size()>2)
 				which=CMath.s_int((String)commands.elementAt(2));
@@ -1217,7 +1217,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("JOURNAL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)) return errorOut(mob);
 			if(commands.size()<3)
 			{
 				mob.tell("Destroy which journal? Try List Journal");
@@ -1253,7 +1253,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("FACTION"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("Destroy which faction?  Use list factions.");
@@ -1286,14 +1286,14 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("MOB"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs(mob,commands);
 		}
 		else
 		if(commandType.equals("POLL"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"POLLS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS)) return errorOut(mob);
 			String name=CMParms.combine(commands,2);
 			Poll P=null;
 			if(CMath.isInteger(name))
@@ -1320,7 +1320,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("QUEST"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("Destroy which quest?  Use list quests.");
@@ -1347,7 +1347,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("CLAN"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("Destroy which clan?  Use clanlist.");
@@ -1368,7 +1368,7 @@ public class Destroy extends StdCommand
 		else
 		if(commandType.equals("GOVERNMENT"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDCLANS")) return errorOut(mob);
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
 				mob.tell("Destroy which government?  Use list governments.");

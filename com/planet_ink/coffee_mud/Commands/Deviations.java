@@ -312,8 +312,8 @@ public class Deviations extends StdCommand
 	
 	public boolean securityCheck(MOB mob)
 	{
-		return CMSecurity.isAllowedStartsWith(mob,mob.location(),"CMDITEMS")
-			|| CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")
-			|| CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS");
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)
+			|| CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)
+			|| CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS);
 	}
 }

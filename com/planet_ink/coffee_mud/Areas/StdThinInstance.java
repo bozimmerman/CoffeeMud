@@ -210,7 +210,7 @@ public class StdThinInstance extends StdThinArea
 		&&(msg.target() instanceof Room)
 		&&(CMath.bset(flags(),Area.FLAG_INSTANCE_PARENT))
 		&&(isRoom((Room)msg.target()))
-		&&(!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),"CMDAREAS"))
+		&&(!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),CMSecurity.SecFlag.CMDAREAS))
 		&&(((msg.source().getStartRoom()==null)||(msg.source().getStartRoom().getArea()!=this))))
 		{
 			synchronized(instanceChildren)

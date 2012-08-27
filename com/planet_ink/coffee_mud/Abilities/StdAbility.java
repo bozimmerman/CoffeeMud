@@ -682,7 +682,7 @@ public class StdAbility implements Ability
 			return true;
 		}
 
-		if((mob!=null)&&CMSecurity.isAllowed(mob,mob.location(),"SUPERSKILL"))
+		if((mob!=null)&&CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SUPERSKILL))
 		   return true;
 
 		isAnAutoEffect=false;
@@ -1047,7 +1047,7 @@ public class StdAbility implements Ability
 		if((mob!=null)
 		&&(mob.session()!=null)
 		&&(mob.soulMate()==null)
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS)))
 		{
 			Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
 			if(componentsRequirements!=null)

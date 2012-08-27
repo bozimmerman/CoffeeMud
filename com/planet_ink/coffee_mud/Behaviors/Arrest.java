@@ -1235,9 +1235,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		if(isAnyKindOfOfficer(laws,mob)
 		||(isTheJudge(laws,mob))
-		||CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW"))
+		||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW))
 		{
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is an officer ("+isAnyKindOfOfficer(laws,mob)+"), judge ("+isTheJudge(laws,mob)+"), or above the law ("+CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")+").");
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)) Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Accused is an officer ("+isAnyKindOfOfficer(laws,mob)+"), judge ("+isTheJudge(laws,mob)+"), or above the law ("+CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)+").");
 			return false;
 		}
 
@@ -1484,7 +1484,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	protected boolean isAnUltimateAuthorityHere(MOB M, Law laws)
 	{
-		if(CMSecurity.isAllowed(M,M.location(),"ABOVELAW")||(isTheJudge(laws,M)))
+		if(CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.ABOVELAW)||(isTheJudge(laws,M)))
 			return true;
 		return false;
 	}
@@ -2024,10 +2024,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(CMLib.flags().canBeSeenBy(W.criminal(),officer))
 				&&(canFocusOn(officer,W.criminal())))
 				{
-					if(CMSecurity.isAllowed(W.criminal(),W.criminal().location(),"ABOVELAW"))
+					if(CMSecurity.isAllowed(W.criminal(),W.criminal().location(),CMSecurity.SecFlag.ABOVELAW))
 					{
 						CMLib.commands().postSay(officer,W.criminal(),"Damn, I can't arrest you.",false,false);
-						if(CMSecurity.isAllowedEverywhere(W.criminal(),"ABOVELAW"))
+						if(CMSecurity.isAllowedEverywhere(W.criminal(),CMSecurity.SecFlag.ABOVELAW))
 						{
 							fileAllWarrants(laws,W,W.criminal());
 							unCuff(W.criminal());

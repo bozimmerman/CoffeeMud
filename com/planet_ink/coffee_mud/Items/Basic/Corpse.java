@@ -174,7 +174,7 @@ public class Corpse extends GenContainer implements DeadBody
 			&&(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).length()>0)
 			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
 			{
-				if(CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDITEMS"))
+				if(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDITEMS))
 					return true;
 				
 				MOB ultimateFollowing=msg.source().amUltimatelyFollowing();

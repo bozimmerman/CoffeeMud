@@ -44,7 +44,7 @@ public class Config extends StdCommand
 		StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
-			if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),"SYSMSGS"))))
+			if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
 				continue;
 			if((MOB.AUTODESC[i].equalsIgnoreCase("AUTOMAP"))&&(CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)<=0))
 			  continue;

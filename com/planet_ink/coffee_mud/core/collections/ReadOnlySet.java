@@ -18,6 +18,10 @@ limitations under the License.
 public class ReadOnlySet<K> implements Set<K> 
 {
 	private final Set<K> set;
+	public ReadOnlySet()
+	{
+		set=new HashSet<K>();
+	}
 	public ReadOnlySet(Set<K> s)
 	{
 		set=s;

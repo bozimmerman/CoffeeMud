@@ -157,11 +157,25 @@ public class Archon extends StdCharClass
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-		boolean allowed=CMSecurity.isAllowedEverywhere(mob,"ALLSKILLS");
-		if((!allowed)&&(mob.playerStats()!=null)&&(!mob.playerStats().getSecurityGroups().contains("ALLSKILLS"))) 
-			mob.playerStats().getSecurityGroups().add("ALLSKILLS");
+		boolean allowed=CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS);
+		if((!allowed)&&(mob.playerStats()!=null)&&(!mob.playerStats().getSecurityFlags().contains(CMSecurity.SecFlag.ALLSKILLS,false))) 
+		{
+			List<String> oldSet=CMParms.parseSemicolons(mob.playerStats().getSetSecurityFlags(null),true);
+			if(!oldSet.contains(CMSecurity.SecFlag.ALLSKILLS.name()))
+			{
+				oldSet.add(CMSecurity.SecFlag.ALLSKILLS.name());
+				mob.playerStats().getSetSecurityFlags(CMParms.toSemicolonList(oldSet));
+			}
+		}
 		super.grantAbilities(mob,isBorrowedClass);
-		if((!allowed)&&(mob.playerStats()!=null)&&(mob.playerStats().getSecurityGroups().contains("ALLSKILLS"))) 
-			mob.playerStats().getSecurityGroups().remove("ALLSKILLS");
+		if((!allowed)&&(mob.playerStats()!=null)&&(mob.playerStats().getSecurityFlags().contains(CMSecurity.SecFlag.ALLSKILLS,false)))
+		{
+			List<String> oldSet=CMParms.parseSemicolons(mob.playerStats().getSetSecurityFlags(null),true);
+			if(oldSet.contains(CMSecurity.SecFlag.ALLSKILLS.name()))
+			{
+				oldSet.remove(CMSecurity.SecFlag.ALLSKILLS.name());
+				mob.playerStats().getSetSecurityFlags(CMParms.toSemicolonList(oldSet));
+			}
+		}
 	}
 }

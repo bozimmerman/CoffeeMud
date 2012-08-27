@@ -381,7 +381,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					MOB M=R.fetchInhabitant(i);
-					if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,R,"CMDMOBS")))
+					if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,R,CMSecurity.SecFlag.CMDMOBS)))
 					{ newLastTickedDateTime=-1; break;}
 				}
 				if(newLastTickedDateTime==0)
@@ -1190,7 +1190,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case 'r': {   if(mob.location()!=null)
 							  buf.append(mob.location().displayText());
 							  c++; break; }
-				case 'R': {   if((mob.location()!=null)&&CMSecurity.isAllowed(mob,mob.location(),"SYSMSGS"))
+				case 'R': {   if((mob.location()!=null)&&CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))
 							  buf.append(mob.location().roomID());
 							  c++; break; }
 				case 'v': { buf.append("^<Move^>"+mob.curState().getMovement()+"^</Move^>"); c++; break;}

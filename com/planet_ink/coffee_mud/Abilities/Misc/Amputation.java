@@ -566,7 +566,7 @@ public class Amputation extends StdAbility implements Amputator
 			List<LegalWarrant> warrants=new Vector();
 			if(B!=null)
 				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
-			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))
+			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 			{
 				mob.tell("You are not authorized by law to amputate from "+target.Name()+" at this time.");
 				return false;

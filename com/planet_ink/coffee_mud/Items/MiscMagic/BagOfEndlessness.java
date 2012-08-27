@@ -61,8 +61,8 @@ public class BagOfEndlessness extends BagOfHolding
 			Item newitem=(Item)msg.tool();
 			if((newitem.container()==this)&&(newitem.owner() !=null))
 			{
-				if((!CMSecurity.isAllowedAnywhere(msg.source(), "COPYITEMS"))
-				&&(!CMSecurity.isAllowedAnywhere(msg.source(), "CMDITEMS")))
+				if((!CMSecurity.isAllowedAnywhere(msg.source(), CMSecurity.SecFlag.COPYITEMS))
+				&&(!CMSecurity.isAllowedAnywhere(msg.source(), CMSecurity.SecFlag.CMDITEMS)))
 				{
 					msg.source().tell("You aren't allowed to do that.");
 					return false;

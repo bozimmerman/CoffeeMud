@@ -57,7 +57,7 @@ public class HelpList extends StdCommand
 					CMLib.help().getHelpList(
 					helpStr,
 					CMLib.help().getHelpFile(),
-					CMSecurity.isAllowed(mob,mob.location(),"AHELP")?CMLib.help().getArcHelpFile():null,
+					CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AHELP)?CMLib.help().getArcHelpFile():null,
 					mob);
 		if((thisTag==null)||(thisTag.length()==0))
 		{

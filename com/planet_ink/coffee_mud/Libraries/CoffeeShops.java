@@ -175,7 +175,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	
 	protected boolean shownInInventory(MOB seller, MOB buyer, Environmental product, ShopKeeper shopKeeper)
 	{
-		if(CMSecurity.isAllowed(buyer,buyer.location(),"CMDMOBS")) 
+		if(CMSecurity.isAllowed(buyer,buyer.location(),CMSecurity.SecFlag.CMDMOBS)) 
 			return true;
 		if(seller == buyer) return true;
 		if(product instanceof Item) 
@@ -644,8 +644,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					return false;
 				}
 				if((CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)>0)
-				&&(!CMSecurity.isAllowed(seller,seller.location(),"ORDER"))
-				&&(!CMSecurity.isAllowed(buyer,buyer.location(),"ORDER")))
+				&&(!CMSecurity.isAllowed(seller,seller.location(),CMSecurity.SecFlag.ORDER))
+				&&(!CMSecurity.isAllowed(buyer,buyer.location(),CMSecurity.SecFlag.ORDER)))
 				{
 					if(seller.phyStats().level() > (buyer.phyStats().level() + CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
 					{

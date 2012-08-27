@@ -119,7 +119,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 				}
 				else
 				if((msg.targetMinor()==CMMsg.TYP_SPEAK)
-				&&(CMSecurity.isAllowed(msg.source(),R,"CMDROOMS"))
+				&&(CMSecurity.isAllowed(msg.source(),R,CMSecurity.SecFlag.CMDROOMS))
 				&&(msg.targetMessage()!=null))
 				{
 					String msgStr=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());

@@ -149,7 +149,7 @@ public class Prop_WizInvis extends Property
 			if((msg.amISource((MOB)affected))
 			&&(CMath.bset(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS))
 			&&(msg.source().location()!=null)
-			&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"SYSMSGS")))
+			&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.SYSMSGS)))
 				msg.source().setBitmap(CMath.unsetb(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS));
 		}
 

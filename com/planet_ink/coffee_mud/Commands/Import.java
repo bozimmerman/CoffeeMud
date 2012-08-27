@@ -4511,7 +4511,7 @@ public class Import extends StdCommand
 			}
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AREAS>")>=0))
 			{
-				if(!CMSecurity.isAllowedEverywhere(mob,"IMPORTROOMS"))
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
 				{
 					returnAnError(session,"You are not allowed to import areas in '"+areaFileName+"'.",compileErrors,commands);
 					continue;
@@ -4585,7 +4585,7 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AREA>")>=0))
 			{
-				if(!CMSecurity.isAllowedEverywhere(mob,"IMPORTROOMS"))
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
 				{
 					returnAnError(session,"You are not allowed to import area in '"+areaFileName+"'.",compileErrors,commands);
 					continue;
@@ -4631,7 +4631,7 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
 			{
-				if(!CMSecurity.isAllowedEverywhere(mob,"IMPORTROOMS"))
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
 				{
 					returnAnError(session,"You are not allowed to import room in '"+areaFileName+"'.",compileErrors,commands);
 					continue;
@@ -4678,7 +4678,7 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"IMPORTMOBS"))
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTMOBS))
 				{
 					returnAnError(session,"You are not allowed to import mobs in '"+areaFileName+"' here.",compileErrors,commands);
 					continue;
@@ -4712,7 +4712,7 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<PLAYERS>")>=0))
 			{
-				if(!CMSecurity.isAllowedEverywhere(mob,"IMPORTPLAYERS"))
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTPLAYERS))
 				{
 					returnAnError(session,"You are not allowed to import players in '"+areaFileName+"' here.",compileErrors,commands);
 					continue;
@@ -4798,7 +4798,7 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"IMPORTITEMS"))
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTITEMS))
 				{
 					returnAnError(session,"You are not allowed to import items in '"+areaFileName+"' here.",compileErrors,commands);
 					continue;
@@ -6206,7 +6206,7 @@ public class Import extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,"IMPORT");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,CMSecurity.SECURITY_IMPORT_GROUP);}
 
 	
 }

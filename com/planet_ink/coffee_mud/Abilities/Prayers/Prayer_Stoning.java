@@ -118,7 +118,7 @@ public class Prayer_Stoning extends Prayer
 		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
 			warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
-		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))
+		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW)))
 		{
 			mob.tell("You are not allowed to stone "+target.Name()+" at this time.");
 			return false;

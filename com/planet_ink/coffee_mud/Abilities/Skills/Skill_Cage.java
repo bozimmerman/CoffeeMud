@@ -82,7 +82,7 @@ public class Skill_Cage extends StdSkill
 
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if((!auto)&&(!(CMSecurity.isAllowed(mob,mob.location(),"ORDER")||target.willFollowOrdersOf(mob))))
+		if((!auto)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)||target.willFollowOrdersOf(mob))))
 		{
 			boolean ok=false;
 			if((target.isMonster())

@@ -61,10 +61,10 @@ public class StdJournal extends StdItem
 		{
 			String adminReq=getAdminReq().trim();
 			boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true))
-							||CMSecurity.isAllowed(msg.source(),msg.source().location(),Name());
+							||CMSecurity.isJournalAccessAllowed(msg.source(),Name());
 			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
 			&&(!admin)
-			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
+			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 			{
 				msg.source().tell("You are not allowed to write on "+name());
 				return false;
@@ -90,7 +90,7 @@ public class StdJournal extends StdItem
 			{
 				String adminReq=getAdminReq().trim();
 				boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
-								||CMSecurity.isAllowed(mob,mob.location(),Name());
+								||CMSecurity.isJournalAccessAllowed(mob,Name());
 				long lastTime=mob.playerStats().lastDateTime();
 				if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 				{
@@ -128,7 +128,7 @@ public class StdJournal extends StdItem
 					}
 					if((entry.charAt(0)=='*')
 					   ||(admin)
-					   ||(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")))
+					   ||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)))
 					{
 						mineAble=true;
 						entry.setCharAt(0,' ');
@@ -141,7 +141,7 @@ public class StdJournal extends StdItem
 					&&(which>0)
 					&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
 						||(admin)
-						||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
+						||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 					{
 						boolean repeat=true;
 						while(repeat)
@@ -153,7 +153,7 @@ public class StdJournal extends StdItem
 								String cmds="";
 								if(CMLib.masking().maskCheck(getReplyReq(),mob,true)
 								||admin
-								||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))
+								||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS)))
 								{
 									prompt+="^<MENU^>R^</MENU^>)eply ";
 									cmds+="R";
@@ -166,7 +166,7 @@ public class StdJournal extends StdItem
 								{ prompt+="^<MENU^>N^</MENU^>)ext "; cmds+="N";}
 								if(mineAble){ prompt+="^<MENU^>D^</MENU^>)elete "; cmds+="D";}
 								if((admin)
-								||(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))
+								||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS)))
 								{ prompt+="^<MENU^>T^</MENU^>)ransfer "; cmds+="T";}
 								prompt+="or RETURN: ";
 								String s=mob.session().choose(prompt,cmds+"\n","\n");
@@ -314,9 +314,9 @@ public class StdJournal extends StdItem
 			{
 				String adminReq=getAdminReq().trim();
 				boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
-								||CMSecurity.isAllowed(mob,mob.location(),Name());
+								||CMSecurity.isJournalAccessAllowed(mob,Name());
 				if((msg.targetMessage().toUpperCase().startsWith("DEL"))
-				   &&(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")||admin)
+				   &&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)||admin)
 				   &&(!mob.isMonster()))
 				{
 					if(mob.session().confirm("Delete all journal entries? Are you sure (y/N)?","N"))
@@ -334,7 +334,7 @@ public class StdJournal extends StdItem
 					{
 						to=mob.session().prompt("To whom:");
 						if(((!to.toUpperCase().trim().startsWith("MASK=")
-								||(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")&&(!admin))))
+								||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)&&(!admin))))
 						&&(!CMLib.players().playerExists(to)))
 						{
 							mob.tell("I'm sorry, there is no such user.");
@@ -349,7 +349,7 @@ public class StdJournal extends StdItem
 					}
 					if((subject.toUpperCase().startsWith("MOTD")||subject.toUpperCase().startsWith("MOTM")||subject.toUpperCase().startsWith("MOTY"))
 					   &&(!admin)
-					   &&(!(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))))
+					   &&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
 						subject=subject.substring(4);
 					String message=mob.session().prompt("Enter your message\n\r: ");
 					if(message.trim().length()==0)
@@ -359,7 +359,7 @@ public class StdJournal extends StdItem
 					}
 					if(message.startsWith("<cmvp>")
 					&&(!admin)
-					&&(!(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))))
+					&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
 					{
 						mob.tell("Illegal code, aborted.");
 						return;

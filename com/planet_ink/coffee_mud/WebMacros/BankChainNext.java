@@ -58,7 +58,7 @@ public class BankChainNext extends StdWebMacro
 		if((player!=null)&&(player.length()>0))
 		{
 			if(((!M.Name().equalsIgnoreCase(player)))
-			&&(!CMSecurity.isAllowedEverywhere(M,"CMDPLAYERS")))
+			&&(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS)))
 				return "";
 			Clan C=CMLib.clans().getClan(player);
 			if(C!=null)
@@ -85,7 +85,7 @@ public class BankChainNext extends StdWebMacro
 			}
 		}
 		else
-		if(!CMSecurity.isAllowedEverywhere(M,"CMDPLAYERS"))
+		if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS))
 			return "";
 		
 		for(Iterator j=CMLib.map().bankChains(null);j.hasNext();)

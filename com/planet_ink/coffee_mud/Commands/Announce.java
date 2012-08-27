@@ -118,7 +118,7 @@ public class Announce extends StdCommand
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
-					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE")))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.ANNOUNCE)))
 						sendAnnounce(mob,text,S);
 				}
 			}
@@ -130,7 +130,7 @@ public class Announce extends StdCommand
 				{
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
-					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE"))
+					&&(CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.ANNOUNCE))
 					&&(((name.equalsIgnoreCase("here"))&&(S.mob().location()==mob.location()))
 						||(CMLib.english().containsString(S.mob().name(),name))))
 					{
@@ -149,7 +149,7 @@ public class Announce extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"ANNOUNCE");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ANNOUNCE);}
 
 	
 }

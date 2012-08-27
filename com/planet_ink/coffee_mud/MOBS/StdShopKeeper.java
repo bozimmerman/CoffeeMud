@@ -251,10 +251,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					if((msg.tool()!=null)
-					&&((CMSecurity.isAllowed(msg.source(),location(),"ORDER")
+					&&((CMSecurity.isAllowed(msg.source(),location(),CMSecurity.SecFlag.ORDER)
 						||(CMLib.law().doesHavePriviledgesHere(msg.source(),getStartRoom()))
-						||(CMSecurity.isAllowed(msg.source(),location(),"CMDMOBS")&&(isMonster()))
-						||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
+						||(CMSecurity.isAllowed(msg.source(),location(),CMSecurity.SecFlag.CMDMOBS)&&(isMonster()))
+						||(CMSecurity.isAllowed(msg.source(),location(),CMSecurity.SecFlag.CMDROOMS)&&(isMonster()))))
 					&&((doISellThis(msg.tool()))||(isSold(DEAL_INVENTORYONLY))))
 					{
 						CMLib.commands().postSay(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);

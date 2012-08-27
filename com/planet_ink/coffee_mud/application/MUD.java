@@ -282,12 +282,6 @@ public class MUD extends Thread implements MudHost
 		if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
 			CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
 		
-		if((tCode==MAIN_HOST)||(page.getRawPrivateStr("SYSOPMASK")!=null))
-		{
-			CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
-			CMSecurity.parseGroups(page);
-		}
-
 		if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS"))||(privacyV.contains("JOURNALS")))
 		{
 			int numChannelsLoaded=0;
@@ -302,6 +296,12 @@ public class MUD extends Thread implements MudHost
 				numJournalsLoaded+=CMLib.journals().loadForumJournals(page.getStr("FORUMJOURNALS"));
 			}
 			Log.sysOut(Thread.currentThread().getName(),"Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
+		}
+
+		if((tCode==MAIN_HOST)||(page.getRawPrivateStr("SYSOPMASK")!=null)) // needs to be after journals, for journal flags
+		{
+			CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
+			CMSecurity.parseGroups(page);
 		}
 
 		if((tCode==MAIN_HOST)||(privacyV.contains("SOCIALS")))

@@ -80,7 +80,7 @@ public class Goto extends At
 			mob.tell("Goto where? Try a Room ID, player name, area name, room text, or PREVIOUS!");
 			return false;
 		}
-		if(!CMSecurity.isAllowed(mob,room,"GOTO"))
+		if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.GOTO))
 		{
 			mob.tell("You aren't powerful enough to do that. Try 'GO'.");
 			return false;
@@ -105,7 +105,7 @@ public class Goto extends At
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"GOTO");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.GOTO);}
 
 	
 }

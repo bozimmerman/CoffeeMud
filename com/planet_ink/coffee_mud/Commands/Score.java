@@ -156,7 +156,7 @@ public class Score extends Affect
 			msg.append("You are incorporeal, but still weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
 		else
 			msg.append("You are ^!"+mob.phyStats().height()+"^? inches tall and weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
-		if(CMSecurity.isAllowed(mob,mob.location(),"CARRYALL"))
+		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CARRYALL))
 			msg.append("You are carrying ^!"+mob.numItems()+"^? items weighing ^!"+mob.phyStats().weight()+"^? pounds.\n\r");
 		else
 			msg.append("You are carrying ^!"+mob.numItems()+"^?/^!"+mob.maxItems()+"^? items weighing ^!"+mob.phyStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");

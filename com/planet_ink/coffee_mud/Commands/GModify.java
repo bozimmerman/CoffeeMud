@@ -354,7 +354,7 @@ public class GModify extends StdCommand
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("room"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"GMODIFY"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
 				mob.tell("You are not allowed to do that here.");
 				return false;
@@ -365,7 +365,7 @@ public class GModify extends StdCommand
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("area"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"GMODIFY"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.GMODIFY))
 			{
 				mob.tell("You are not allowed to do that here.");
 				return false;
@@ -376,7 +376,7 @@ public class GModify extends StdCommand
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("world"))
 		{
-			if(!CMSecurity.isAllowedEverywhere(mob,"GMODIFY"))
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.GMODIFY))
 			{
 				mob.tell("You are not allowed to do that.");
 				return false;
@@ -554,7 +554,7 @@ public class GModify extends StdCommand
 		{
 			Area A=(Area)a.nextElement();
 			if(A.getCompleteMap().hasMoreElements()
-			&&CMSecurity.isAllowed(mob,((Room)A.getCompleteMap().nextElement()),"GMODIFY"))
+			&&CMSecurity.isAllowed(mob,((Room)A.getCompleteMap().nextElement()),CMSecurity.SecFlag.GMODIFY))
 				placesToDo.addElement(A);
 		}
 		if(placesToDo.size()==0)
@@ -571,7 +571,7 @@ public class GModify extends StdCommand
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(CMSecurity.isAllowed(mob,R,"GMODIFY"))
+					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.GMODIFY))
 						placesToDo.addElement(R);
 				}
 			}
@@ -596,7 +596,7 @@ public class GModify extends StdCommand
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.elementAt(r);
-			if(!CMSecurity.isAllowed(mob,R,"GMODIFY"))
+			if(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.GMODIFY))
 				continue;
 			if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
 			synchronized(("SYNC"+R.roomID()).intern())
@@ -689,7 +689,7 @@ public class GModify extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"GMODIFY");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.GMODIFY);}
 
 	
 }

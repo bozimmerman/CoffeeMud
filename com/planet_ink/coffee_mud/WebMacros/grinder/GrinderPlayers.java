@@ -221,8 +221,7 @@ public class GrinderPlayers extends GrinderMobs
 				if(M.playerStats()!=null)
 				{
 					Vector V=CMParms.parseCommas(old.toUpperCase(),true);
-					M.playerStats().getSecurityGroups().clear();
-					M.playerStats().getSecurityGroups().addAll(V);
+					M.playerStats().getSetSecurityFlags(CMParms.toSemicolonList(V));
 				}
 				break;
 			}

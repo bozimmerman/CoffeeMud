@@ -214,7 +214,7 @@ public class Sessions extends StdLibrary implements SessionsList
 					   ||((String)S.previousCMD().get(0)).equalsIgnoreCase("MERGE")))
 						check=check*600;
 					else
-					if((S.mob()!=null)&&(CMSecurity.isAllowed(S.mob(),S.mob().location(),"CMDROOMS")))
+					if((S.mob()!=null)&&(CMSecurity.isAllowed(S.mob(),S.mob().location(),CMSecurity.SecFlag.CMDROOMS)))
 						check=check*15;
 					else
 					if(S.getStatus()==Session.STATUS_LOGIN)

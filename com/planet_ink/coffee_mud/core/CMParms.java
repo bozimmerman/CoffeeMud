@@ -1218,9 +1218,10 @@ public class CMParms
 	
 	public final static String toSemicolonList(final List<?> bytes)
 	{
-		final StringBuffer str=new StringBuffer("");
-		for(int b=0;b<bytes.size();b++)
-			str.append(bytes.get(b)+(b<(bytes.size()-1)?";":""));
+		if((bytes==null)||(bytes.size()==0)) return "";
+		final StringBuffer str=new StringBuffer(""+bytes.get(0));
+		for(int b=1;b<bytes.size();b++)
+			str.append(';').append(""+bytes.get(b));
 		return str.toString();
 	}
 
@@ -1646,6 +1647,13 @@ public class CMParms
 	
 	public final static boolean contains(final String[] supported, final String expertise)
 	{ return indexOf(supported,expertise)>=0;}
+	public final static boolean contains(final Enumeration<String> supported, final String expertise)
+	{ 
+		for(;supported.hasMoreElements();)
+			if(supported.nextElement().equalsIgnoreCase(expertise))
+				return true;
+		return false;
+	}
 	public final static boolean contains(final char[] supported, final char c)
 	{    for(char c2 : supported) if(c2==c) return true; return false;}
 	public final static boolean contains(final byte[] supported, final byte b)

@@ -2517,8 +2517,34 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
-				case 7: // -Tattoos
+				case 80: // +security
 				case 79: // -security
+				{
+					final String plusMinus=(entryType.intValue()==80)?"+":"-"; 
+					final Vector<CMSecurity.SecFlag> parms=new Vector<CMSecurity.SecFlag>();
+					for(int v2=v+1;v2<V.size();v2++)
+					{
+						final String str2=(String)V.elementAt(v2);
+						if(zapCodes.containsKey(str2))
+						{
+							v=v2-1;
+							break;
+						}
+						else
+						if(str2.startsWith(plusMinus))
+						{
+							CMSecurity.SecFlag flag=(CMSecurity.SecFlag)CMath.s_valueOf(CMSecurity.SecFlag.class,str2.substring(1).toUpperCase().trim().replace(' ','_'));
+							if(flag == null)
+								Log.errOut("MUDZapper","Illegal security flag '"+str2);
+							else
+    							parms.addElement(flag);
+						}
+						v=V.size();
+					}
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new CMSecurity.SecFlag[0])));
+					break;
+				}
+				case 7: // -Tattoos
 				case 31: // -Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
@@ -2575,7 +2601,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				}
 				case 8: // +Tattoos
-				case 80: // +security
 				case 32: // +Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
@@ -3573,7 +3598,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					boolean found=false;
 					for(final Object o : entry.parms)
-						if(CMSecurity.isAllowed(mob,room,(String)o))
+						if(CMSecurity.isAllowed(mob,room,(CMSecurity.SecFlag)o))
 						{ found=true; break;}
 					if(!found) return false;
 				}
@@ -3581,7 +3606,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 80: // +security
 				{
 					for(final Object o : entry.parms)
-						if(CMSecurity.isAllowed(mob,room,(String)o))
+						if(CMSecurity.isAllowed(mob,room,(CMSecurity.SecFlag)o))
 						{ return false;}
 				}
 				break;

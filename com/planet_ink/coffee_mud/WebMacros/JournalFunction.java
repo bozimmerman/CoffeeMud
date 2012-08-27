@@ -52,7 +52,7 @@ public class JournalFunction extends StdWebMacro
 		{
 			if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 				return "Destruction cancelled -- You are not authorized to delete this forum.";
-			if(!CMSecurity.isAllowedEverywhere(M,"JOURNALS"))
+			if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.JOURNALS))
 				return "Destruction cancelled -- You are not authorized.";
 			CMLib.database().DBDeleteJournal(journalName, null);
 			return "Journal "+journalName+" deleted.";
@@ -61,7 +61,7 @@ public class JournalFunction extends StdWebMacro
 		{
 			if((forum==null)||(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 				return "Subscription cancelled -- You are not authorized to delete this forum.";
-			if(!CMSecurity.isAllowedEverywhere(M,"JOURNALS"))
+			if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.JOURNALS))
 				return "Destruction cancelled -- You are not authorized.";
 			CMLib.database().DBDeleteJournal(journalName, null);
 			return "Journal "+journalName+" deleted.";
@@ -82,7 +82,7 @@ public class JournalFunction extends StdWebMacro
 			}
 			else
 			if(journalName.equalsIgnoreCase(CMProps.getVar(CMProps.SYSTEM_MAILBOX))
-			&&(!CMSecurity.isAllowedEverywhere(M,"JOURNALS")))
+			&&(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.JOURNALS)))
 				return "Post not submitted -- You are not authorized to send email to ALL.";
 			String subject=httpReq.getRequestParameter("SUBJECT");
 			if(subject==null) subject="";
@@ -229,7 +229,7 @@ public class JournalFunction extends StdWebMacro
 				entry.cardinal=cardinalNumber;
 			String to=entry.to;
 			if((M!=null)
-			&&(CMSecurity.isAllowedAnywhere(M,"JOURNALS")||(to.equalsIgnoreCase(M.Name())))
+			&&(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)||(to.equalsIgnoreCase(M.Name())))
 			&&((forum==null)||(forum.authorizationCheck(M, ForumJournalFlags.READ))))
 			{
 				if(parms.containsKey("REPLY"))
@@ -310,7 +310,7 @@ public class JournalFunction extends StdWebMacro
 				{
 					if((entry.to.equals(M.Name()))
 					||((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
-					||CMSecurity.isAllowedAnywhere(M,"JOURNALS"))
+					||CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS))
 					{
 						String text=httpReq.getRequestParameter("NEWTEXT"+fieldSuffix);
 						if((text==null)||(text.length()==0))
@@ -347,7 +347,7 @@ public class JournalFunction extends StdWebMacro
 						return "Delete not authorized.";
 				}
 				else
-				if(CMSecurity.isAllowedAnywhere(M,"JOURNALS"))
+				if(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS))
 				{
 					if(parms.containsKey("TRANSFER"))
 					{

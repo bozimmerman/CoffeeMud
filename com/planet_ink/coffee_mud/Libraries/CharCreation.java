@@ -275,7 +275,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((acct!=null)&&(acct.isSet(PlayerAccount.FLAG_NOEXPIRE)))
 			return false;
 		if((session.mob()!=null)
-		&&((CMSecurity.isASysOp(session.mob()))||(CMSecurity.isAllowedEverywhere(session.mob(), "NOEXPIRE"))))
+		&&((CMSecurity.isASysOp(session.mob()))||(CMSecurity.isAllowedEverywhere(session.mob(), CMSecurity.SecFlag.NOEXPIRE))))
 			return false;
 		if(expiration<=System.currentTimeMillis())
 		{

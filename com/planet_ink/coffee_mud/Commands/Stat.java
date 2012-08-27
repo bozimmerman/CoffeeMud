@@ -418,7 +418,7 @@ public class Stat  extends Skills
 				for(MOB mob2 : inhabs)
 				{
 					Room R=mob2.location();
-					if(CMSecurity.isAllowed(mob,R,"STAT"))
+					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.STAT))
 					{
 						target=mob2;
 						break;
@@ -691,7 +691,7 @@ public class Stat  extends Skills
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"STAT");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT);}
 
 	
 }

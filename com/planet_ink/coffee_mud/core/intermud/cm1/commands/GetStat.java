@@ -160,21 +160,21 @@ public class GetStat extends CM1Command
 		if(target instanceof MOB)
 		{
 			if(CMLib.players().playerExists(target.Name()))
-				return CMSecurity.isAllowed(user,user.location(),"CMDPLAYERS");
-			return CMSecurity.isAllowed(user,user.location(),"CMDMOBS");
+				return CMSecurity.isAllowed(user,user.location(),CMSecurity.SecFlag.CMDPLAYERS);
+			return CMSecurity.isAllowed(user,user.location(),CMSecurity.SecFlag.CMDMOBS);
 		}
 		else
 		if(target instanceof Item)
-			return CMSecurity.isAllowed(user,user.location(),"CMDITEMS");
+			return CMSecurity.isAllowed(user,user.location(),CMSecurity.SecFlag.CMDITEMS);
 		else
 		if(target instanceof Room)
-			return CMSecurity.isAllowed(user,user.location(),"CMDROOMS");
+			return CMSecurity.isAllowed(user,user.location(),CMSecurity.SecFlag.CMDROOMS);
 		else
 		if(target instanceof Exit)
-			return CMSecurity.isAllowed(user,user.location(),"CMDEXITS");
+			return CMSecurity.isAllowed(user,user.location(),CMSecurity.SecFlag.CMDEXITS);
 		else
 		if(target instanceof Area)
-			return CMSecurity.isAllowed(user,user.location(),"CMDAREAS");
+			return CMSecurity.isAllowed(user,user.location(),CMSecurity.SecFlag.CMDAREAS);
 		else
 			return false;
 	}

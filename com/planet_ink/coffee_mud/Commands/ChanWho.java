@@ -82,7 +82,7 @@ public class ChanWho extends StdCommand
 			&&(mob2!=null)
 			&&(CMLib.flags().isInTheGame(mob2,true))
 			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
-					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.phyStats().level()>=mob2.phyStats().level())))))
+					||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))&&(mob.phyStats().level()>=mob2.phyStats().level())))))
 					buf.append("^x[^?^.^N"+CMStrings.padRight(mob2.name(),20)+"^x]^?^.^N\n\r");
 		}
 		if(buf.length()==0)

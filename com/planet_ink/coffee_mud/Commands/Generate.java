@@ -259,5 +259,5 @@ public class Generate extends StdCommand
 	
 	public boolean canBeOrdered(){return false;}
 
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"CMDAREAS");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS);}
 }

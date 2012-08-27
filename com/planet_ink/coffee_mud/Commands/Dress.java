@@ -61,7 +61,7 @@ public class Dress extends StdCommand
 			mob.tell("I don't see "+whom+" here.");
 			return false;
 		}
-		if((!target.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,"ORDER")))
+		if((!target.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER)))
 		{
 			mob.tell(target.Name()+" is a player!");
 			return false;
@@ -74,9 +74,9 @@ public class Dress extends StdCommand
 				mob.tell("I don't see "+what+" here.");
 				return false;
 			}
-			if(CMSecurity.isAllowed(mob,mob.location(),"ORDER")
-			||(CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")&&(target.isMonster()))
-			||(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")&&(target.isMonster())))
+			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)
+			||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)&&(target.isMonster()))
+			||(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)&&(target.isMonster())))
 			{
 				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
 				item.unWear();

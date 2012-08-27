@@ -629,7 +629,7 @@ public class StdMOB implements MOB
 
 	public int maxCarry() 
 	{
-		if (CMSecurity.isAllowed(this, location(), "CARRYALL"))
+		if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.CARRYALL))
 			return Integer.MAX_VALUE / 2;
 		final double str = (double) charStats().getStat(CharStats.STAT_STRENGTH);
 		final double bodyWeight = (double) baseWeight();
@@ -638,7 +638,7 @@ public class StdMOB implements MOB
 
 	public int maxItems() 
 	{
-		if (CMSecurity.isAllowed(this, location(), "CARRYALL"))
+		if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.CARRYALL))
 			return Integer.MAX_VALUE / 2;
 		return (2 * Wearable.CODES.TOTAL()) + (2 * charStats().getStat(CharStats.STAT_DEXTERITY))
 		        + (2 * phyStats().level());
@@ -1189,14 +1189,14 @@ public class StdMOB implements MOB
 			return true;
 		if (CMath.bset(getBitmap(), MOB.ATT_PLAYERKILL))
 		{
-			if (CMSecurity.isAllowed(this, location(), "PKILL") || (CMath.bset(mob.getBitmap(), MOB.ATT_PLAYERKILL)))
+			if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.PKILL) || (CMath.bset(mob.getBitmap(), MOB.ATT_PLAYERKILL)))
 				return true;
 			return false;
 		} 
 		else 
 		if (CMath.bset(mob.getBitmap(), MOB.ATT_PLAYERKILL))
 		{
-			if (CMSecurity.isAllowed(mob, location(), "PKILL") || (CMath.bset(getBitmap(), MOB.ATT_PLAYERKILL)))
+			if (CMSecurity.isAllowed(mob, location(), CMSecurity.SecFlag.PKILL) || (CMath.bset(getBitmap(), MOB.ATT_PLAYERKILL)))
 				return true;
 			return false;
 		} 
@@ -1918,7 +1918,7 @@ public class StdMOB implements MOB
 		final MOB srcM = msg.source();
 		if ((msg.sourceCode() != CMMsg.NO_EFFECT) && (msg.amISource(this)))
 		{
-			if ((msg.sourceMinor() == CMMsg.TYP_DEATH) && (CMSecurity.isAllowed(this, location(), "IMMORT")))
+			if ((msg.sourceMinor() == CMMsg.TYP_DEATH) && (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.IMMORT)))
 			{
 				curState().setHitPoints(1);
 				if ((msg.tool() != null) && (msg.tool() != this) && (msg.tool() instanceof MOB))
@@ -2412,8 +2412,8 @@ public class StdMOB implements MOB
 		        && (!srcM.isMonster())
 		        && (soulMate() == null)
 		        && (srcM.soulMate() == null)
-		        && (!CMSecurity.isAllowed(this, location(), "PKILL"))
-		        && (!CMSecurity.isAllowed(srcM, srcM.location(), "PKILL"))
+		        && (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.PKILL))
+		        && (!CMSecurity.isAllowed(srcM, srcM.location(), CMSecurity.SecFlag.PKILL))
 		        && (srcM.phyStats().level() > phyStats().level() + CMProps.getPKillLevelDiff())
 		        && ((!(msg.tool() instanceof Ability)) || (((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
 				{
@@ -2526,9 +2526,9 @@ public class StdMOB implements MOB
 					return false;
 				if (!(msg.tool() instanceof Item))
 					return false;
-				if (CMSecurity.isAllowed(this, location(), "ORDER")
-		        || (CMSecurity.isAllowed(this, location(), "CMDMOBS") && (isMonster()))
-		        || (CMSecurity.isAllowed(this, location(), "CMDROOMS") && (isMonster())))
+				if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.ORDER)
+		        || (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.CMDMOBS) && (isMonster()))
+		        || (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.CMDROOMS) && (isMonster())))
 					return true;
 				if ((getWearPositions(Wearable.WORN_ARMS) == 0) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
 				{
@@ -2568,8 +2568,8 @@ public class StdMOB implements MOB
 				if ((CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF) > 0) 
 				&& (!isMonster()) 
 				&& (!srcM.isMonster())
-		        && (!CMSecurity.isAllowed(this, location(), "ORDER"))
-		        && (!CMSecurity.isAllowed(srcM, srcM.location(), "ORDER")))
+		        && (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.ORDER))
+		        && (!CMSecurity.isAllowed(srcM, srcM.location(), CMSecurity.SecFlag.ORDER)))
 				{
 					if (phyStats.level() > (srcM.phyStats().level() + CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
 					{
@@ -3025,7 +3025,7 @@ public class StdMOB implements MOB
 					if (CMLib.flags().isSleeping(this))
 						curState().adjFatigue(-CharState.REST_PER_TICK, maxState());
 					else 
-					if (!CMSecurity.isAllowed(this, location(), "IMMORT"))
+					if (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.IMMORT))
 					{
 						curState().adjFatigue(CMProps.getTickMillis(), maxState());
 						if ((curState().getFatigue() > CharState.FATIGUED_MILLIS) 
@@ -3401,12 +3401,12 @@ public class StdMOB implements MOB
 	public boolean willFollowOrdersOf(MOB mob) 
 	{
 		if ((amFollowing() == mob) 
-		|| ((isMonster() && CMSecurity.isAllowed(mob, location(), "ORDER")))
+		|| ((isMonster() && CMSecurity.isAllowed(mob, location(), CMSecurity.SecFlag.ORDER)))
         || (getLiegeID().equals(mob.Name()))
         || (CMLib.law().doesOwnThisProperty(mob, CMLib.map().getStartRoom(this))))
 			return true;
 		if ((!isMonster()) 
-		&& (CMSecurity.isAllowedEverywhere(mob, "ORDER"))
+		&& (CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ORDER))
         && ((!CMSecurity.isASysOp(this)) || CMSecurity.isASysOp(mob)))
 			return true;
 		if ((getClanID().length() > 0) && (getClanID().equals(mob.getClanID())))

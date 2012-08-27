@@ -158,7 +158,7 @@ public class TrailTo extends StdCommand
 	}
 
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"TRAILTO");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TRAILTO);}
 
 
 }

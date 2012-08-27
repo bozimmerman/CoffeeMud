@@ -22,7 +22,7 @@ public class EmptyEnumeration<K> implements Enumeration<K>
 	@SuppressWarnings("rawtypes")
 	public static final Enumeration INSTANCE=new EmptyEnumeration();
 	
-	private EmptyEnumeration(){}
+	public EmptyEnumeration(){}
 	public boolean hasMoreElements(){ return false;}
 	public K nextElement(){ throw new NoSuchElementException(); }
 }

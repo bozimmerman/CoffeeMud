@@ -2,7 +2,9 @@ package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -107,22 +109,23 @@ public class GenCharClass extends StdCharClass
 	//protected Vector outfitChoices=null; from stdcharclass -- but don't forget them!
 	protected List<String>[] securityGroups=new List[0];
 	protected Integer[] securityGroupLevels={};
-	protected Map<Integer,List<String>> securityGroupCache=new Hashtable<Integer,List<String>>();
+	protected Map<Integer,CMSecurity.SecGroup> securityGroupCache=new Hashtable<Integer,CMSecurity.SecGroup>();
 	protected String helpEntry = "";
 	
-	public List<String> getSecurityGroups(int classLevel)
+	public SecGroup getSecurityFlags(int classLevel)
 	{
 		if(securityGroups.length==0)
-			return super.getSecurityGroups(classLevel);
-		List<String> V=securityGroupCache.get(Integer.valueOf(classLevel));
-		if(V!=null) return V;
-		V=new Vector();
+			return super.getSecurityFlags(classLevel);
+		if(securityGroupCache.containsKey(Integer.valueOf(classLevel)))
+			return securityGroupCache.get(Integer.valueOf(classLevel));
+		List<String> allFlags=new ArrayList<String>();
 		for(int i=securityGroupLevels.length-1;i>=0;i--)
 			if((classLevel>=securityGroupLevels[i].intValue())
 			&&(i<securityGroups.length))
-				V.addAll(securityGroups[i]);
-		securityGroupCache.put(Integer.valueOf(classLevel),V);
-		return V;
+				allFlags.addAll(securityGroups[i]);
+    	SecGroup g = CMSecurity.instance().createGroup("", allFlags);
+		securityGroupCache.put(Integer.valueOf(classLevel),g);
+		return g;
 	}
 
 

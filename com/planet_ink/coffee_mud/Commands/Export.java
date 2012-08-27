@@ -117,14 +117,14 @@ public class Export extends StdCommand
 		}
 		if(commandType.equalsIgnoreCase("PLAYER"))
 		{
-			if(!CMSecurity.isAllowedEverywhere(mob,"EXPORTPLAYERS"))
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORTPLAYERS))
 			{
 				if(S!=null) mob.tell("You are not allowed to export player data.");
 				return false;
 			}
 		}
 		else
-		if(!CMSecurity.isAllowed(mob,room,"EXPORT"))
+		if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.EXPORT))
 		{
 			if(S!=null) mob.tell("You are not allowed to export room, mob, or item data.");
 			return false;
@@ -168,7 +168,7 @@ public class Export extends StdCommand
 			else
 			if(fileName.equalsIgnoreCase("memory"))
 			{
-				if(!CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
+				if(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.EXPORTFILE))
 				{
 					if(S!=null) mob.tell("You are not allowed to export to memory.");
 					return false;
@@ -177,7 +177,7 @@ public class Export extends StdCommand
 			}
 			else
 			{
-				if(!CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
+				if(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.EXPORTFILE))
 				{
 					if(S!=null) mob.tell("You are not allowed to export to a file.");
 					return false;
@@ -275,7 +275,7 @@ public class Export extends StdCommand
 			}
 			else
 			{
-				if(!CMSecurity.isAllowedEverywhere(mob,"EXPORT"))
+				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORT))
 				{
 					if(S!=null) mob.tell("You are not allowed to export world data.");
 					return Boolean.FALSE;
@@ -467,7 +467,7 @@ public class Export extends StdCommand
 	}
 
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"EXPORT");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_EXPORT_GROUP);}
 
 
 }

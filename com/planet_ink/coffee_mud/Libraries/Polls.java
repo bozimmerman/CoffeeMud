@@ -194,7 +194,7 @@ public class Polls extends StdLibrary implements PollManager
 	
 	public void modifyVote(Poll P, MOB mob) throws java.io.IOException
 	{
-		if((mob.isMonster())||(!CMSecurity.isAllowedAnywhere(mob,"POLLS")))
+		if((mob.isMonster())||(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.POLLS)))
 			return;
 		boolean ok=false;
 		int showFlag=-1;

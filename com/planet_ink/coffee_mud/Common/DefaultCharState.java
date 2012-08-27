@@ -297,7 +297,7 @@ public class DefaultCharState implements CharState
 				adjMovement(move,maxState);
 			}
 			if((!CMLib.flags().isSleeping(mob))
-			&&(!CMSecurity.isAllowed(mob,room,"IMMORT")))
+			&&(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.IMMORT)))
 			{
 				int factor=mob.baseWeight()/500;
 				if(factor<1) factor=1;

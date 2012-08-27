@@ -92,7 +92,7 @@ public class AutoAffects extends StdCommand
 
 		if(S!=null)
 		{
-			if(CMSecurity.isAllowed(mob, mob.location(),"CMDMOBS"))
+			if(CMSecurity.isAllowed(mob, mob.location(),CMSecurity.SecFlag.CMDMOBS))
 			{
 				String name=CMParms.combine(commands,1);
 				if(name.length()>0)

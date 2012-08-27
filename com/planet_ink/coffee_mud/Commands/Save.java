@@ -81,7 +81,7 @@ public class Save extends StdCommand
 		
 		if(lastCommand.equals("USERS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
 				mob.tell("You are not allowed to save players.");
 				return false;
@@ -100,7 +100,7 @@ public class Save extends StdCommand
 		else
 		if(lastCommand.equals("ITEMS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
 				mob.tell("You are not allowed to save the mobs here.");
 				return false;
@@ -127,7 +127,7 @@ public class Save extends StdCommand
 		else
 		if(lastCommand.equals("ROOM"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
 				mob.tell("You are not allowed to save the contents here.");
 				return false;
@@ -154,7 +154,7 @@ public class Save extends StdCommand
 		else
 		if(lastCommand.equals("MOBS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
 				mob.tell("You are not allowed to save the mobs here.");
 				return false;
@@ -182,7 +182,7 @@ public class Save extends StdCommand
 		else
 		if(firstCommand.equals("QUESTS")||lastCommand.equals("QUESTS"))
 		{
-			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS))
 			{
 				mob.tell("You are not allowed to save the contents here.");
 				return false;
@@ -228,9 +228,9 @@ public class Save extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")
-												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")
-												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)
+												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)
+												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)
 												 ||CMSecurity.isSaveFlag("NOPLAYERS");}
 
 	

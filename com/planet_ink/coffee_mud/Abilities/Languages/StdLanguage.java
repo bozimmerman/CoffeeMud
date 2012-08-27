@@ -312,9 +312,9 @@ public class StdLanguage extends StdAbility implements Language
 					// yes, this means that a mob speaking Common to a marketing player will get failed,
 					// however, remember that the LISTer language doesn't matter, only the responding (this) language.
 					// also, think about muds where there is no Common (an interesting mud!)
-					if((!CMSecurity.isAllowed(msg.source(),msg.source().location(),"ORDER"))
-					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDMOBS")||(!((MOB)msg.target()).isMonster()))
-					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDROOMS")||(!((MOB)msg.target()).isMonster())))
+					if((!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.ORDER))
+					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDMOBS)||(!((MOB)msg.target()).isMonster()))
+					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDROOMS)||(!((MOB)msg.target()).isMonster())))
 					{
 						Language L=getAnyTranslator(ID(),msg.source());
 						if((L==null)

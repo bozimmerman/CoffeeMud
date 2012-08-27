@@ -171,7 +171,7 @@ public class Copy extends StdCommand
 		{
 			if(E instanceof MOB)
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYMOBS"))
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYMOBS))
 				{
 					mob.tell("You are not allowed to copy "+E.name());
 					return false;
@@ -197,7 +197,7 @@ public class Copy extends StdCommand
 			else
 			if((E instanceof Item)&&(!(E instanceof ArchonOnly)))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYITEMS"))
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYITEMS))
 				{
 					mob.tell("You are not allowed to copy "+E.name());
 					return false;
@@ -231,7 +231,7 @@ public class Copy extends StdCommand
 			else
 			if((E instanceof Room)&&(dirCode>=0))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYROOMS"))
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYROOMS))
 				{
 					mob.tell("You are not allowed to copy "+E.name());
 					return false;
@@ -289,7 +289,7 @@ public class Copy extends StdCommand
 			else
 			if((E instanceof Exit)&&(dirCode>=0))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"COPYROOMS"))
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYROOMS))
 				{
 					mob.tell("You are not allowed to copy "+E.name());
 					return false;
@@ -319,8 +319,8 @@ public class Copy extends StdCommand
 			else
 			if(E instanceof Area)
 			{
-				if((!CMSecurity.isAllowed(mob,mob.location(),"CMDAREAS"))
-				||(!CMSecurity.isAllowed(mob,mob.location(),"COPYROOMS")))
+				if((!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDAREAS))
+				||(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COPYROOMS)))
 				{
 					mob.tell("You are not allowed to copy "+E.name());
 					return false;
@@ -381,7 +381,7 @@ public class Copy extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"COPY");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_COPY_GROUP);}
 
 	
 }

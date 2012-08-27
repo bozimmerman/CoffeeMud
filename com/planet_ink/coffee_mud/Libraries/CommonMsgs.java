@@ -584,7 +584,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			while((currYear>birthDay[3])
 			&&((month>bmonth)||((month==bmonth)&&(day>=bday))))
 			{
-				if(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT"))
+				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
 				{
 					if((month==bmonth)&&(day==bday))
 						mob.tell("Happy Birthday!");
@@ -599,7 +599,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 				birthDay[3]++;
 			}
-			if(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT"))
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
 			{
 				if((mob.baseCharStats().ageCategory()>=Race.AGE_VENERABLE)
 				&&(CMLib.dice().rollPercentage()==1)
@@ -996,7 +996,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		boolean compress=CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS);
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
-			if(!CMSecurity.isAllowed(mob,room,"SYSMSGS"))
+			if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.SYSMSGS))
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 			else
 			{

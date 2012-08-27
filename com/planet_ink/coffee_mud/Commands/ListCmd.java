@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1472,24 +1473,21 @@ public class ListCmd extends StdCommand
 		return str.toString();
 	}
 
-	public Vector getMyCmdWords(MOB mob)
+	public List<String> getMyCmdWords(MOB mob)
 	{
-		Vector V=new Vector();
+		Vector<String> V=new Vector<String>();
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
 		{
-			String[] cmd=SECURITY_LISTMAP[i];
-			if(cmd.length==0) continue;
-			for(int c=1;c<cmd.length;c++)
-				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
-				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
-				{ V.addElement(cmd[0]); break;}
+			ListCmdEntry cmd=SECURITY_LISTMAP[i];
+			if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
+			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
+				V.addElement(cmd.cmd);
 		}
 		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			JournalsLibrary.CommandJournal CMJ=e.nextElement();
-			if((CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME()))
-					||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")
-					||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
+			if((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
+			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				V.addElement(CMJ.NAME()+"S");
 		}
 		return V;
@@ -1500,22 +1498,21 @@ public class ListCmd extends StdCommand
 		s=s.toUpperCase().trim();
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
 		{
-			String[] cmd=SECURITY_LISTMAP[i];
-			if(cmd.length==0) continue;
-			if(cmd[0].startsWith(s))
-			for(int c=1;c<cmd.length;c++)
-				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
-				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
-				{ return i;}
+			ListCmdEntry cmd=SECURITY_LISTMAP[i];
+			if(cmd.cmd.startsWith(s))
+				if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
+				||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
+				{ 
+					return i;
+				}
 		}
 		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if((CMJ.NAME()+"S").startsWith(s)
-					&&((CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME()))
-							||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")
-							||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")))
-				return 29;
+			&&((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
+				||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)))
+    				return 29;
 		}
 		return -1;
 	}
@@ -1524,19 +1521,18 @@ public class ListCmd extends StdCommand
 	{
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
 		{
-			String[] cmd=SECURITY_LISTMAP[i];
-			if(cmd.length==0) continue;
-			for(int c=1;c<cmd.length;c++)
-				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
-				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
-				{ return i;}
+			ListCmdEntry cmd=SECURITY_LISTMAP[i];
+			if((CMSecurity.isAllowedContainsAny(mob, cmd.flags))
+			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
+			{ 
+				return i;
+			}
 		}
 		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			JournalsLibrary.CommandJournal CMJ=e.nextElement();
-			if((CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME()))
-					||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")
-					||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
+			if((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
+			||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN))
 				return 29;
 		}
 		return -1;
@@ -1815,74 +1811,86 @@ public class ListCmd extends StdCommand
 		log.close();
 	}
 	
-	public final static String[][] SECURITY_LISTMAP={
-		/*00*/{"UNLINKEDEXITS","CMDEXITS","CMDROOMS","CMDAREAS"},
-		/*01*/{"ITEMS","CMDITEMS"},
-		/*02*/{"ARMOR","CMDITEMS"},
-		/*03*/{"ENVRESOURCES","CMDITEMS","CMDROOMS","CMDAREAS"},
-		/*04*/{"WEAPONS","CMDITEMS"},
-		/*05*/{"MOBS","CMDMOBS"},
-		/*06*/{"ROOMS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*07*/{"AREA","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*08*/{"LOCALES","CMDROOMS"},
-		/*09*/{"BEHAVIORS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*10*/{"EXITS","CMDEXITS"},
-		/*11*/{"RACES","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
-		/*12*/{"CLASSES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDCLASSES"},
-		/*13*/{"STAFF","CMDAREAS"},
-		/*14*/{"SPELLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*15*/{"SONGS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*16*/{"PRAYERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*17*/{"PROPERTIES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*18*/{"THIEFSKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*19*/{"COMMON","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*20*/{"JOURNALS","JOURNALS"},
-		/*21*/{"SKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*22*/{"QUESTS","CMDQUESTS"},
-		/*23*/{"DISEASES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*24*/{"POISONS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*25*/{"TICKS","LISTADMIN"},
-		/*26*/{"MAGIC","CMDITEMS"},
-		/*27*/{"TECH","CMDITEMS"},
-		/*28*/{"CLANITEMS","CMDITEMS","CMDCLANS"},
-		/*29*/{"COMMANDJOURNAL",""}, // blank, but used!
-		/*30*/{"REALESTATE","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*31*/{"NOPURGE","NOPURGE"},
-		/*32*/{"BANNED","BAN"},
-		/*33*/{"RACECATS","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
-		/*34*/{"LOG","LISTADMIN"},
-		/*35*/{"USERS","CMDPLAYERS","STAT"},
-		/*36*/{"LINKAGES","CMDAREAS"},
-		/*37*/{"REPORTS","LISTADMIN"},
-		/*38*/{"THREADS","LISTADMIN"},
-		/*39*/{"RESOURCES","LOADUNLOAD"},
-		/*40*/{"ONEWAYDOORS","CMDEXITS","CMDROOMS","CMDAREAS"},
-		/*41*/{"CHANTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*42*/{"POWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*43*/{"SUPERPOWERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES","CMDABILITIES"},
-		/*44*/{"COMPONENTS","LISTADMIN","COMPONENTS"},
-		/*45*/{"EXPERTISES","LISTADMIN","EXPERTISES"},
-		/*46*/{"FACTIONS","LISTADMIN","CMDFACTIONS"},
-		/*47*/{"MATERIALS","CMDITEMS","CMDROOMS","CMDAREAS"},
-		/*48*/{"OBJCOUNTERS","LISTADMIN"},
-		/*49*/{"POLLS","POLLS","LISTADMIN"},
-		/*50*/{"CONTENTS","CMDROOMS","CMDITEMS","CMDMOBS","CMDAREAS"},
-		/*51*/{"EXPIRES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*52*/{"TITLES","LISTADMIN","TITLES"},
-		/*53*/{"AREARESOURCES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*54*/{"CONQUERED","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*55*/{"HOLIDAYS","LISTADMIN","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*56*/{"RECIPES","LISTADMIN","CMDRECIPES"},
-		/*57*/{"HELPFILEREQUESTS","LISTADMIN"},
-		/*58*/{"SCRIPTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		/*59*/{"ACCOUNTS","CMDPLAYERS","STAT"},
-		/*60*/{"GOVERNMENTS","CMDCLANS"},
-		/*61*/{"CLANS","CMDCLANS"},
-		/*62*/{"DEBUGFLAG","LISTADMIN"},
-		/*63*/{"DISABLEFLAG","LISTADMIN"},
-		/*64*/{"ALLQUALIFYS","CMDABILITIES","LISTADMIN"},
-		/*65*/{"NEWS","LISTADMIN","JOURNALS","NEWS"},
-		/*66*/{"AREAS","LISTADMIN","CMDAREAS","CMDROOMS"},
+	private static class ListCmdEntry
+	{
+		public String 			   cmd;
+		public CMSecurity.SecGroup flags;
+		public ListCmdEntry(String cmd, SecFlag[] flags)
+		{
+			this.cmd=cmd;
+			this.flags=new CMSecurity.SecGroup(flags);
+		}
+		
+	}
+	
+	public final static ListCmdEntry[] SECURITY_LISTMAP={
+		/*00*/new ListCmdEntry("UNLINKEDEXITS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
+		/*01*/new ListCmdEntry("ITEMS",new SecFlag[]{SecFlag.CMDITEMS}),
+		/*02*/new ListCmdEntry("ARMOR",new SecFlag[]{SecFlag.CMDITEMS}),
+		/*03*/new ListCmdEntry("ENVRESOURCES",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
+		/*04*/new ListCmdEntry("WEAPONS",new SecFlag[]{SecFlag.CMDITEMS}),
+		/*05*/new ListCmdEntry("MOBS",new SecFlag[]{SecFlag.CMDMOBS}),
+		/*06*/new ListCmdEntry("ROOMS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		/*07*/new ListCmdEntry("AREA",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		/*08*/new ListCmdEntry("LOCALES",new SecFlag[]{SecFlag.CMDROOMS}),
+		/*09*/new ListCmdEntry("BEHAVIORS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		/*10*/new ListCmdEntry("EXITS",new SecFlag[]{SecFlag.CMDEXITS}),
+		/*11*/new ListCmdEntry("RACES",new SecFlag[]{SecFlag.CMDRACES,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS}),
+		/*12*/new ListCmdEntry("CLASSES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDCLASSES}),
+		/*13*/new ListCmdEntry("STAFF",new SecFlag[]{SecFlag.CMDAREAS}),
+		/*14*/new ListCmdEntry("SPELLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*15*/new ListCmdEntry("SONGS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*16*/new ListCmdEntry("PRAYERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*17*/new ListCmdEntry("PROPERTIES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*18*/new ListCmdEntry("THIEFSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*19*/new ListCmdEntry("COMMON",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*20*/new ListCmdEntry("JOURNALS",new SecFlag[]{SecFlag.JOURNALS}),
+		/*21*/new ListCmdEntry("SKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*22*/new ListCmdEntry("QUESTS",new SecFlag[]{SecFlag.CMDQUESTS}),
+		/*23*/new ListCmdEntry("DISEASES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*24*/new ListCmdEntry("POISONS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*25*/new ListCmdEntry("TICKS",new SecFlag[]{SecFlag.LISTADMIN}),
+		/*26*/new ListCmdEntry("MAGIC",new SecFlag[]{SecFlag.CMDITEMS}),
+		/*27*/new ListCmdEntry("TECH",new SecFlag[]{SecFlag.CMDITEMS}),
+		/*28*/new ListCmdEntry("CLANITEMS",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDCLANS}),
+		/*29*/new ListCmdEntry("COMMANDJOURNAL",new SecFlag[]{}), // blank, but used!
+		/*30*/new ListCmdEntry("REALESTATE",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		/*31*/new ListCmdEntry("NOPURGE",new SecFlag[]{SecFlag.NOPURGE}),
+		/*32*/new ListCmdEntry("BANNED",new SecFlag[]{SecFlag.BAN}),
+		/*33*/new ListCmdEntry("RACECATS",new SecFlag[]{SecFlag.CMDRACES,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS}),
+		/*34*/new ListCmdEntry("LOG",new SecFlag[]{SecFlag.LISTADMIN}),
+		/*35*/new ListCmdEntry("USERS",new SecFlag[]{SecFlag.CMDPLAYERS,SecFlag.STAT}),
+		/*36*/new ListCmdEntry("LINKAGES",new SecFlag[]{SecFlag.CMDAREAS}),
+		/*37*/new ListCmdEntry("REPORTS",new SecFlag[]{SecFlag.LISTADMIN}),
+		/*38*/new ListCmdEntry("THREADS",new SecFlag[]{SecFlag.LISTADMIN}),
+		/*39*/new ListCmdEntry("RESOURCES",new SecFlag[]{SecFlag.LOADUNLOAD}),
+		/*40*/new ListCmdEntry("ONEWAYDOORS",new SecFlag[]{SecFlag.CMDEXITS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
+		/*41*/new ListCmdEntry("CHANTS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*42*/new ListCmdEntry("POWERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*43*/new ListCmdEntry("SUPERPOWERS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
+		/*44*/new ListCmdEntry("COMPONENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.COMPONENTS}),
+		/*45*/new ListCmdEntry("EXPERTISES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.EXPERTISES}),
+		/*46*/new ListCmdEntry("FACTIONS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDFACTIONS}),
+		/*47*/new ListCmdEntry("MATERIALS",new SecFlag[]{SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS}),
+		/*48*/new ListCmdEntry("OBJCOUNTERS",new SecFlag[]{SecFlag.LISTADMIN}),
+		/*49*/new ListCmdEntry("POLLS",new SecFlag[]{SecFlag.POLLS,SecFlag.LISTADMIN}),
+		/*50*/new ListCmdEntry("CONTENTS",new SecFlag[]{SecFlag.CMDROOMS,SecFlag.CMDITEMS,SecFlag.CMDMOBS,SecFlag.CMDAREAS}),
+		/*51*/new ListCmdEntry("EXPIRES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		/*52*/new ListCmdEntry("TITLES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.TITLES}),
+		/*53*/new ListCmdEntry("AREARESOURCES",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		/*54*/new ListCmdEntry("CONQUERED",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		/*55*/new ListCmdEntry("HOLIDAYS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		/*56*/new ListCmdEntry("RECIPES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDRECIPES}),
+		/*57*/new ListCmdEntry("HELPFILEREQUESTS",new SecFlag[]{SecFlag.LISTADMIN}),
+		/*58*/new ListCmdEntry("SCRIPTS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES}),
+		/*59*/new ListCmdEntry("ACCOUNTS",new SecFlag[]{SecFlag.CMDPLAYERS,SecFlag.STAT}),
+		/*60*/new ListCmdEntry("GOVERNMENTS",new SecFlag[]{SecFlag.CMDCLANS}),
+		/*61*/new ListCmdEntry("CLANS",new SecFlag[]{SecFlag.CMDCLANS}),
+		/*62*/new ListCmdEntry("DEBUGFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
+		/*63*/new ListCmdEntry("DISABLEFLAG",new SecFlag[]{SecFlag.LISTADMIN}),
+		/*64*/new ListCmdEntry("ALLQUALIFYS",new SecFlag[]{SecFlag.CMDABILITIES,SecFlag.LISTADMIN}),
+		/*65*/new ListCmdEntry("NEWS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.JOURNALS,SecFlag.NEWS}),
+		/*66*/new ListCmdEntry("AREAS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 	};
 
 	public boolean pause(Session sess) 
@@ -2130,16 +2138,16 @@ public class ListCmd extends StdCommand
 			code=getMyCmdCode(mob, listWord);
 		if((code<0)||(listWord.length()==0))
 		{
-			Vector V=getMyCmdWords(mob);
+			List<String> V=getMyCmdWords(mob);
 			if(V.size()==0)
 				mob.tell("You are not allowed to use this command!");
 			else
 			{
 				StringBuilder str=new StringBuilder("");
 				for(int v=0;v<V.size();v++)
-					if(((String)V.elementAt(v)).length()>0)
+					if(((String)V.get(v)).length()>0)
 					{
-						str.append((String)V.elementAt(v));
+						str.append((String)V.get(v));
 						if(v==(V.size()-2))
 							str.append(", or ");
 						else

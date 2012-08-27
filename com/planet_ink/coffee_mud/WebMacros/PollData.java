@@ -60,7 +60,7 @@ public class PollData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),"POLLS")) return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.POLLS)) return "[authentication error]";
 			String newTitle=httpReq.getRequestParameter("TITLE");
 			if((newTitle==null)||(newTitle.length()==0))
 				return "[missing data error]";
@@ -145,7 +145,7 @@ public class PollData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			if(!CMSecurity.isAllowed(M,M.location(),"POLLS")) return "[authentication error]";
+			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.POLLS)) return "[authentication error]";
 			if(last==null) return " @break@";
 			Poll P=CMLib.polls().getPoll(last);
 			if(P==null)

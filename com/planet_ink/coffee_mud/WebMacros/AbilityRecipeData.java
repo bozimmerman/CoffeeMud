@@ -187,7 +187,7 @@ public class AbilityRecipeData extends StdWebMacro
 					MOB M = Authenticate.getAuthenticatedMob(httpReq);
 					if(M==null) return " @break@";
 					boolean saveToVFS = CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"));
-					if(CMSecurity.isAllowedAnywhere(M,"CMDRECIPES"))
+					if(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.CMDRECIPES))
 						CMLib.ableParms().resaveRecipeFile(M,recipeData.recipeFilename(),recipeData.dataRows(),recipeData.columns(), saveToVFS);
 					else
 						return " @break@";
@@ -203,7 +203,7 @@ public class AbilityRecipeData extends StdWebMacro
 					MOB M = Authenticate.getAuthenticatedMob(httpReq);
 					if(M==null) return " @break@";
 					boolean saveToVFS = CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"));
-					if(CMSecurity.isAllowedAnywhere(M,"CMDRECIPES"))
+					if(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.CMDRECIPES))
 						CMLib.ableParms().resaveRecipeFile(M,recipeData.recipeFilename(),recipeData.dataRows(),recipeData.columns(), saveToVFS);
 					else
 						return " @break@";

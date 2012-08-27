@@ -123,7 +123,7 @@ public class Shutdown extends StdCommand implements Tickable
 	}
 	
 	public boolean canBeOrdered(){return false;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"SHUTDOWN");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SHUTDOWN);}
 	
 	public void startShutdown(final MOB mob)
 	{

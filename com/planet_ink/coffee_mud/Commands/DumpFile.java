@@ -96,7 +96,7 @@ public class DumpFile extends StdCommand
 		{
 			for(Session S : CMLib.sessions().localOnlineIterable())
 			{
-				if(!CMSecurity.isAllowed(mob,S.mob().location(),"DUMPFILE"))
+				if(!CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.DUMPFILE))
 					continue;
 				if (allFlag || S.mob().name().equalsIgnoreCase(targetName))
 				{
@@ -113,7 +113,7 @@ public class DumpFile extends StdCommand
 	}
 
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"DUMPFILE");}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.DUMPFILE);}
 
 
 }

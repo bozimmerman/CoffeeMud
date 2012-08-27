@@ -171,7 +171,7 @@ public class DefaultPoll implements Poll
 		if(mob==null) return false;
 		if(!CMLib.masking().maskCheck(qualZapper,mob,true))
 			return false;
-		if(CMath.bset(bitmap,FLAG_HIDERESULTS)&&(!CMSecurity.isAllowedAnywhere(mob,"POLLS")))
+		if(CMath.bset(bitmap,FLAG_HIDERESULTS)&&(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.POLLS)))
 			return false;
 		if(CMath.bset(bitmap,FLAG_PREVIEWRESULTS))
 			return true;

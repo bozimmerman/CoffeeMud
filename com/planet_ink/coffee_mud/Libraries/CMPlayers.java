@@ -590,7 +590,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				&&((System.currentTimeMillis()-foundWarningDateTime)>TimeManager.MILI_DAY))
 				{
 					MOB M=getLoadPlayer(name);
-					if((M!=null)&&(!CMSecurity.isASysOp(M))&&(!CMSecurity.isAllowedAnywhere(M, "NOPURGE")))
+					if((M!=null)&&(!CMSecurity.isASysOp(M))&&(!CMSecurity.isAllowedAnywhere(M, CMSecurity.SecFlag.NOPURGE)))
 					{
 						obliteratePlayer(M,true);
 						M.destroy();
