@@ -1036,9 +1036,7 @@ public class CMSecurity
 				@Override
                 public SecPath next() 
 				{
-					if((p==null)||(!p.hasNext()))
-						doNext();
-					if(p.hasNext()) return p.next();
+					if(hasNext()) return p.next();
 					throw new java.util.NoSuchElementException();
                 }
 				@Override
@@ -1075,9 +1073,7 @@ public class CMSecurity
 				@Override
                 public SecFlag next() 
 				{
-					if((p==null)||(!p.hasNext()))
-						doNext();
-					if(p.hasNext()) return p.next();
+					if(hasNext()) return p.next();
 					throw new java.util.NoSuchElementException();
                 }
 				@Override
