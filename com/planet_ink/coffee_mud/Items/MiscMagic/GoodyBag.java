@@ -40,7 +40,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 	public GoodyBag()
 	{
 		super();
-		setName("a little bag");
+		setName("a goody bag");
 		setDisplayText("a small bag is sitting here.");
 		setDescription("A nice little bag to put your things in.");
 		secretIdentity="The Archon's Goody Bag";
