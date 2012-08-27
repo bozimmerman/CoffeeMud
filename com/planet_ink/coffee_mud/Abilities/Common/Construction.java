@@ -103,22 +103,75 @@ public class Construction extends CraftingSkill
 		E2.recoverPhyStats();
 		return E2;
 	}
-
 	
-	private boolean isUpstairs(Room room, HashSet<Room> doneRooms)
+	@SuppressWarnings("unused")
+    private boolean isUpstairs(Room room)
 	{
-		Room downRoom=room.getRoomInDir(Directions.DOWN);
-		if((downRoom!=null)&&(downRoom.ID().length()>0)&&(CMLib.law().getLandTitle(downRoom)!=null))
-			return true;
-		doneRooms.add(room);
+		Set<Room> peerRooms=getPeersOnThisFloor(room,new HashSet<Room>());
+		for(Room R : peerRooms)
+		{
+			if(isPeerRoom(R.getRoomInDir(Directions.DOWN)))
+				return true;
+		}
+		return false;
+	}
+
+	private boolean isPeerRoom(Room R)
+	{
+		return ifPeerLandTitle(R)!=null;
+	}
+	
+	private LandTitle ifPeerLandTitle(Room R)
+	{
+		if((R!=null)
+		&&(R.ID().length()>0)
+		&&(CMath.bset(R.domainType(),Room.INDOORS)))
+    		return CMLib.law().getLandTitle(R);
+		return null;
+	}
+	
+	@SuppressWarnings("unused")
+    private boolean isPeerRoomToMe(LandTitle title, Room R)
+	{
+		LandTitle ptitle = ifPeerLandTitle(R);
+		if(ptitle ==null) return false;
+		if(ptitle.landOwner().length()==0)
+		{
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				Room sideRoom=R.getRoomInDir(d);
+				LandTitle psTitle=ifPeerLandTitle(sideRoom);
+				if(psTitle.landOwner().equals(title.landOwner()))
+					return true;
+			}
+			return false;
+		}
+		else
+			return ptitle.landOwner().equals(title.landOwner());
+	}
+	
+	private Set<Room> getPeersOnThisFloor(Room room, Set<Room> doneRooms)
+	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
 			Room sideRoom=room.getRoomInDir(d);
-			if((sideRoom!=null)&&(sideRoom.ID().length()>0)&&(CMLib.law().getLandTitle(sideRoom)!=null))
+			if(isPeerRoom(sideRoom)  &&(!doneRooms.contains(sideRoom)))
 			{
-				if(isUpstairs(sideRoom,doneRooms))
-					return true;
+				doneRooms.add(sideRoom);
+				doneRooms.addAll(getPeersOnThisFloor(sideRoom, doneRooms));
 			}
+		}
+		return doneRooms;
+	}
+	
+	@SuppressWarnings("unused")
+    private boolean isDownstairs(Room room)
+	{
+		Set<Room> peerRooms=getPeersOnThisFloor(room,new HashSet<Room>());
+		for(Room R : peerRooms)
+		{
+			if(isPeerRoom(R.getRoomInDir(Directions.UP)))
+				return true;
 		}
 		return false;
 	}
@@ -647,44 +700,48 @@ public class Construction extends CraftingSkill
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("stairs")))
 		{
 			
-			int floor=0;
-			Room upRoom=room;
-			while((upRoom!=null)&&(upRoom.ID().length()>0)&&(CMLib.law().getLandTitle(upRoom)!=null))
+			Room upRoom=room.getRoomInDir(Directions.UP);
+			if(!isPeerRoom(upRoom))
 			{
-				upRoom=upRoom.getRoomInDir(Directions.UP);
-				floor++;
-			}
-			if(floor<=1)
-			{
-				commonTell(mob,"There is no upper floor here.");
+				commonTell(mob,"There is no way to the upper floor here.");
 				return false;
 			}
-			if(floor>2)
+			Set<Room> peerRooms=getPeersOnThisFloor(room, new HashSet<Room>());
+			Set<Room> upstairsRooms=getPeersOnThisFloor(upRoom, new HashSet<Room>());
+			boolean foundAnotherWayUp=false;
+			for(Room R : upstairsRooms)
 			{
-				commonTell(mob,"You need to demolish the upper floors first");
+				if((R!=upRoom)
+				&&(isPeerRoom(R.getRoomInDir(Directions.DOWN))||peerRooms.contains(R.getRoomInDir(Directions.DOWN))))
+				{
+					foundAnotherWayUp=true;
+					break;
+				}
+			}
+			if(!foundAnotherWayUp)
+			{
+				commonTell(mob,"You need to demolish all the upstair ceilings before destroying the last stairway up.");
 				return false;
 			}
 			dir=-1;
 		}
 		else
-		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof")))
+		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof")||dirName.equalsIgnoreCase("ceiling")))
 		{
-			
-			int floor=0;
-			Room upRoom=room;
-			while((upRoom!=null)&&(upRoom.ID().length()>0)&&(CMLib.law().getLandTitle(upRoom)!=null))
+			Room upRoom=room.getRoomInDir(Directions.UP);
+			if(isPeerRoom(upRoom))
 			{
-				upRoom=upRoom.getRoomInDir(Directions.UP);
-				floor++;
-			}
-			if(floor>1)
-			{
-				commonTell(mob,"You need to demolish the upper floors first");
+				commonTell(mob,"You need to demolish the stairs first.");
 				return false;
 			}
 			if(mob.location().domainType() == Room.DOMAIN_INDOORS_CAVE)
 			{
 				commonTell(mob,"A cave can not have its roof demolished.");
+				return false;
+			}
+			if(!CMath.bset(room.domainType(), Room.INDOORS))
+			{
+				commonTell(mob,"There is no ceiling here!");
 				return false;
 			}
 			dir=-1;
