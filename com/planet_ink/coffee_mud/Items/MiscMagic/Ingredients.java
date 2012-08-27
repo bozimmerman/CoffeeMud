@@ -38,6 +38,7 @@ public class Ingredients extends BagOfEndlessness
 	public Ingredients()
 	{
 		super();
+		setName("an ingredients bag");
 		secretIdentity="The Archon's Secret Ingredient Bag";
 		recoverPhyStats();
 	}

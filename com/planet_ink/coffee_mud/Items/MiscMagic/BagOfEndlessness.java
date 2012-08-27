@@ -52,11 +52,29 @@ public class BagOfEndlessness extends BagOfHolding
 		recoverPhyStats();
 	}
 
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if(msg.amITarget(this)&&(msg.tool() instanceof Item))
+		{
+			Item newitem=(Item)msg.tool();
+			if((newitem.container()==this)&&(newitem.owner() !=null))
+			{
+				if((!CMSecurity.isAllowedAnywhere(msg.source(), "COPYITEMS"))
+				&&(!CMSecurity.isAllowedAnywhere(msg.source(), "CMDITEMS")))
+				{
+					msg.source().tell("You aren't allowed to do that.");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(msg.amITarget(this)
-		&&(msg.tool()!=null)
-		&&(msg.tool() instanceof Item))
+		if(msg.amITarget(this)&&(msg.tool() instanceof Item))
 		{
 			Item newitem=(Item)msg.tool();
 			if((newitem.container()==this)
