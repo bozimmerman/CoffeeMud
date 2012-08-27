@@ -265,7 +265,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			int toggler=1;
 			int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(CMStrings.padRight("Item",16)+" Lvl "+CMStrings.padRight("Amt",3)+" ");
+				buf.append(CMStrings.padRight("Item",29)+" Lvl "+CMStrings.padRight("Amt",3)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{

@@ -49,8 +49,12 @@ public class MOTD extends StdCommand
 		throws java.io.IOException
 	{
 		boolean pause=false;
-		if(commands!=null)
+		String what="MOTD";
+		if((commands!=null)&&(commands.size()>0))
 		{
+			String firstWord=((String)commands.firstElement()).toUpperCase();
+			if(CMParms.indexOf(this.getAccessWords(), firstWord)>0)
+				what=firstWord;
 			if((((String)commands.lastElement()).equalsIgnoreCase("PAUSE")))
 			{
 				pause = true;
@@ -217,7 +221,7 @@ public class MOTD extends StdCommand
 						buf.append("\n\r^HYou are on "+qQVec.size()+" quest(s).  Enter QUESTS to see them!.^?^.\n\r");
 					else
 					if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
-						mob.session().println("No MOTD to re-read.");
+						mob.session().println("No "+what+" to re-read.");
 			}
 			catch(HTTPRedirectException e){}
 			return false;
