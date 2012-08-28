@@ -2011,7 +2011,7 @@ this
 command represents an action which a creature or player might
 reasonably be ordered to do by another player. Archons and those with
 the "ORDER" security code are exempt from this flag.</p>
-      <pre>  public boolean securityCheck( MOB mob )<br />  {<br />    return CMSecurity.isAllowed( mob, mob.location(), "IMMORT");<br />  }<br /></pre>
+      <pre>  public boolean securityCheck( MOB mob )<br />  {<br />    return CMSecurity.isAllowed( mob, mob.location(), CMSecurity.SecFlag.IMMORT);<br />  }<br /></pre>
       <p>And speaking of security, this method returns whether or not
 the given mob may even have access to this command. If the <code>securityCheck()</code>
 method returns false, the command and its access words will behave as
@@ -2021,7 +2021,7 @@ below may be accessed. Any further security would have to be
 implemented during execution of the command.</p>
       <p>In the above example, we call the <code>isAllowed()</code>
 method in CMSecurity with the mob reference, the room in which the mob
-is located, and the security code "IMMORT". This asks the Security
+is located, and the security code CMSecurity.SecFlag.IMMORT. This asks the Security
 module whether this mob, at this location, is authorized to perform
 functions designated by the "IMMORT" security code.</p>
       <pre>  public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)<br />    throws java.io.IOException;<br />  {<br />    if( secondsElapsed == 0 )<br />    {<br />      mob.tell( "You are preparing to do nothing." );<br />    }<br /><br />    if( secondsElapsed == 3 )<br />    {<br />      mob.tell( "You almost ready to do nothing." );<br />    }<br />  }<br /></pre>

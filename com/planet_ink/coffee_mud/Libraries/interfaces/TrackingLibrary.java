@@ -58,19 +58,25 @@ public interface TrackingLibrary extends CMLibrary
 	
 	public static abstract class RFilter
 	{
-		private RFilter next=null;
 		public abstract boolean isFilteredOut(final Room R, final Exit E, final int dir);
 	}
-	
+
+	public static class RFilterNode
+	{
+		private RFilterNode next=null;
+		private final RFilter filter;
+		public RFilterNode(RFilter fil){ this.filter=fil;}
+		
+	}
 	public static class RFilters
 	{
-		private RFilter head=null;
+		private RFilterNode head=null;
 		public boolean isFilteredOut(final Room R, final Exit E, final int dir)
 		{
-			RFilter me=head;
+			RFilterNode me=head;
 			while(me!=null)
 			{
-				if(me.isFilteredOut(R,E,dir))
+				if(me.filter.isFilteredOut(R,E,dir))
 					return true;
 				me=me.next;
 			}
@@ -78,14 +84,14 @@ public interface TrackingLibrary extends CMLibrary
 		}
 		public RFilters plus(RFilter filter) 
 		{ 
-			RFilter me=head;
+			RFilterNode me=head;
 			if(me==null)
-				head=filter;
+				head=new RFilterNode(filter);
 			else
 			{
     			while(me.next!=null)
     				me=me.next;
-    			me.next=filter;
+    			me.next=new RFilterNode(filter);
 			}
 			return this;
 		}
