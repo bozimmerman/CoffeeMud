@@ -1392,7 +1392,7 @@ public class StdMOB implements MOB
 	{
 		lastLocation = location;
 		location = newRoom;
-		if((playerStats != null) && (location != newRoom))
+		if((playerStats != null) && (lastLocation != newRoom))
 			CMLib.players().changePlayersLocation(this,newRoom);
 	}
 

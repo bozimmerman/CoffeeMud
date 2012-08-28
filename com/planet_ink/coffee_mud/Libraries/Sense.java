@@ -506,22 +506,27 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean aliveAwakeMobile(final MOB mob, final boolean quiet)
 	{
 		if(mob==null) return false;
-		if(mob.amDead()||(mob.curState()==null)||(mob.curState().getHitPoints()<0))
+		if(quiet)
 		{
-			if(!quiet)
-				mob.tell("You are DEAD!");
+			if(mob.amDead()
+			||(mob.curState().getHitPoints()<0)
+			||((mob.phyStats().disposition()&(PhyStats.IS_SLEEPING|PhyStats.CAN_NOT_MOVE))!=0))
+				return false;
+			return true;
+		}
+		if(mob.amDead()||(mob.curState().getHitPoints()<0))
+		{
+			mob.tell("You are DEAD!");
 			return false;
 		}
 		if(isSleeping(mob))
 		{
-			if(!quiet)
-				mob.tell("You are sleeping!");
+			mob.tell("You are sleeping!");
 			return false;
 		}
 		if(!canMove(mob))
 		{
-			if(!quiet)
-				mob.tell("You can't move!");
+			mob.tell("You can't move!");
 			return false;
 		}
 		return true;
@@ -722,9 +727,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(affecting instanceof MOB)
 		{
 			final MOB monster=(MOB)affecting;
-			if((monster.amDead())
+			if((!aliveAwakeMobile(monster,true))
 			||(monster.location()==null)
-			||(!aliveAwakeMobile(monster,true))
 			||(!isInTheGame(monster,false)))
 				return false;
 			return true;
@@ -1142,35 +1146,42 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return 0;
 	}
 
-	public boolean isInTheGame(Environmental E, boolean reqInhabitation)
+	public boolean isInTheGame(final Environmental E, final boolean reqInhabitation)
 	{
-		if(E instanceof Room)
-			return CMLib.map().getRoom(CMLib.map().getExtendedRoomID((Room)E))==E;
-		else
-		if(E instanceof MOB)
-			return (((MOB)E).location()!=null)
-				   &&((MOB)E).amActive()
-				   &&((!reqInhabitation)||(((MOB)E).location().isInhabitant((MOB)E)));
-		else
-		if(E instanceof Item)
-		{
-			if(((Item)E).owner() instanceof MOB)
-				return isInTheGame(((Item)E).owner(),reqInhabitation);
-			else
-			if(((Item)E).owner() instanceof Room)
-				return ((!((Item)E).amDestroyed())
-						&&((!reqInhabitation)||(((Room)((Item)E).owner()).isContent((Item)E))));
-			else
-				return false;
-		}
-		else
-		if(E instanceof Area)
-			return CMLib.map().getArea(E.Name())==E;
-		else
-			return true;
-
+		if(E instanceof MOB) return isInTheGame((MOB)E,reqInhabitation);
+		if(E instanceof Item) return isInTheGame((Item)E,reqInhabitation);
+		if(E instanceof Room) return isInTheGame((Room)E,reqInhabitation);
+		if(E instanceof Area) return isInTheGame((Area)E,reqInhabitation);
+		return true;
 	}
-
+	public boolean isInTheGame(final MOB E, final boolean reqInhabitation)
+	{
+		return (E.location()!=null) 
+				&& E.amActive()
+				&&((!reqInhabitation)||E.location().isInhabitant(E));
+	}
+	
+	public boolean isInTheGame(final Item E, final boolean reqInhabitation)
+	{
+		if(E.owner() instanceof MOB)
+			return isInTheGame((MOB)E.owner(),reqInhabitation);
+		else
+		if(E.owner() instanceof Room)
+			return ((!E.amDestroyed())
+					&&((!reqInhabitation)||(((Room)E.owner()).isContent(E))));
+		return false;
+	}
+	
+	public boolean isInTheGame(final Room E, final boolean reqInhabitation)
+	{
+		return CMLib.map().getRoom(CMLib.map().getExtendedRoomID(E))==E;
+	}
+	
+	public boolean isInTheGame(final Area E, final boolean reqInhabitation)
+	{
+		return CMLib.map().getArea(E.Name())==E;
+	}
+	
 	public boolean enchanted(Item I)
 	{
 		// poison is not an enchantment.

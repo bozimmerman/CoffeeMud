@@ -218,7 +218,7 @@ public class StdClanCommonItem extends StdClanItem
 		&&(((MOB)owner()).getClanID().equals(clanID()))
 		&&((--workDown)<=0)
 		&&(!CMLib.flags().isATrackingMonster((MOB)owner()))
-		&&(CMLib.flags().isInTheGame(owner,true))
+		&&(CMLib.flags().isInTheGame((MOB)owner,true))
 		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner())))
 		{
 			workDown=CMLib.dice().roll(1,7,0);

@@ -80,7 +80,7 @@ public class EndlessThinSky extends StdThinGrid
 	}
 	public String getGridChildLocaleID(){return "InTheAir";}
 
-	protected void fillExitsOfGridRoom(Room R, int x, int y)
+	protected void fillExitsOfGridRoom(final Room R, final int x, final int y)
 	{
 		super.fillExitsOfGridRoom(R,x,y);
 		
@@ -91,17 +91,18 @@ public class EndlessThinSky extends StdThinGrid
 		// it does NOT
 		if(ox==null) ox=CMClass.getExit("Open");
 		Room R2=null;
+		final Room[] doorsR=R.rawDoors();
 		if((y==0)
-		&&(R.rawDoors()[Directions.UP]!=rawDoors()[Directions.UP])
-		&&(rawDoors()[Directions.UP]!=null)
+		&&(doorsR[Directions.UP]!=doors[Directions.UP])
+		&&(doors[Directions.UP]!=null)
 		&&(exits[Directions.UP]!=null))
 		{
-			R.rawDoors()[Directions.UP]=null;
+			doorsR[Directions.UP]=null;
 			R.setRawExit(Directions.UP,null);
-			linkRoom(R,rawDoors()[Directions.UP],Directions.UP,exits[Directions.UP],exits[Directions.UP]);
+			linkRoom(R,doors[Directions.UP],Directions.UP,exits[Directions.UP],exits[Directions.UP]);
 		}
 		else
-		if(R.rawDoors()[Directions.UP]==null)
+		if(doorsR[Directions.UP]==null)
 		{
 			if(y>0)
 			{
@@ -124,16 +125,16 @@ public class EndlessThinSky extends StdThinGrid
 			}
 		}
 		if((y==yGridSize()-1)
-		&&(R.rawDoors()[Directions.DOWN]!=rawDoors()[Directions.DOWN])
-		&&(rawDoors()[Directions.DOWN]!=null)
+		&&(doorsR[Directions.DOWN]!=doors[Directions.DOWN])
+		&&(doors[Directions.DOWN]!=null)
 		&&(exits[Directions.DOWN]!=null))
 		{
-			R.rawDoors()[Directions.DOWN]=null;
+			doorsR[Directions.DOWN]=null;
 			R.setRawExit(Directions.DOWN,null);
-			linkRoom(R,rawDoors()[Directions.DOWN],Directions.DOWN,exits[Directions.DOWN],exits[Directions.DOWN]);
+			linkRoom(R,doors[Directions.DOWN],Directions.DOWN,exits[Directions.DOWN],exits[Directions.DOWN]);
 		}
 		else
-		if(R.rawDoors()[Directions.DOWN]==null)
+		if(doorsR[Directions.DOWN]==null)
 		{
 			if(y<yGridSize()-1)
 			{
@@ -156,14 +157,14 @@ public class EndlessThinSky extends StdThinGrid
 			}
 		}
 		
-		if((y==0)&&(R.rawDoors()[Directions.NORTH]==null))
+		if((y==0)&&(doorsR[Directions.NORTH]==null))
 		{
 			R2=getMakeSingleGridRoom(x,yGridSize()-1);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.NORTH,ox,ox);
 		}
 		else
-		if((y==yGridSize()-1)&&(R.rawDoors()[Directions.SOUTH]==null))
+		if((y==yGridSize()-1)&&(doorsR[Directions.SOUTH]==null))
 		{
 			R2=getMakeSingleGridRoom(x,0);
 			if(R2!=null)
@@ -171,14 +172,14 @@ public class EndlessThinSky extends StdThinGrid
 		}
 		
 		
-		if((x==0)&&(R.rawDoors()[Directions.WEST]==null))
+		if((x==0)&&(doorsR[Directions.WEST]==null))
 		{
 			R2=getMakeSingleGridRoom(xGridSize()-1,y);
 			if(R2!=null)
 				linkRoom(R,R2,Directions.WEST,ox,ox);
 		}
 		else
-		if((x==xGridSize()-1)&&(R.rawDoors()[Directions.EAST]==null))
+		if((x==xGridSize()-1)&&(doorsR[Directions.EAST]==null))
 		{
 			R2=getMakeSingleGridRoom(0,y);
 			if(R2!=null)
@@ -187,28 +188,28 @@ public class EndlessThinSky extends StdThinGrid
 		
 		if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
 		{
-			if(((x==0)||(y==0))&&(R.rawDoors()[Directions.NORTHWEST]==null))
+			if(((x==0)||(y==0))&&(doorsR[Directions.NORTHWEST]==null))
 			{
 				R2=getMakeSingleGridRoom(xGridSize()-1,yGridSize()-1);
 				if(R2!=null)
 					linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
 			}
 			else
-			if(((x==xGridSize()-1)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHEAST]==null))
+			if(((x==xGridSize()-1)||(y==yGridSize()-1))&&(doorsR[Directions.SOUTHEAST]==null))
 			{
 				R2=getMakeSingleGridRoom(0,0);
 				if(R2!=null)
 					linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
 			}
 			
-			if(((x==xGridSize()-1)||(y==0))&&(R.rawDoors()[Directions.NORTHEAST]==null))
+			if(((x==xGridSize()-1)||(y==0))&&(doorsR[Directions.NORTHEAST]==null))
 			{
 				R2=getMakeSingleGridRoom(0,yGridSize()-1);
 				if(R2!=null)
 					linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
 			}
 			else
-			if(((x==0)||(y==yGridSize()-1))&&(R.rawDoors()[Directions.SOUTHWEST]==null))
+			if(((x==0)||(y==yGridSize()-1))&&(doorsR[Directions.SOUTHWEST]==null))
 			{
 				R2=getMakeSingleGridRoom(xGridSize()-1,0);
 				if(R2!=null)

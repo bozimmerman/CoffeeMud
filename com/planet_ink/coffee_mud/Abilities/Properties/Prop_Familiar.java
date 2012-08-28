@@ -117,7 +117,7 @@ public class Prop_Familiar extends Property
 			if((!imthedaddy)
 			&&(familiarTo==null)
 			&&(familiarWith==null)
-			&&(CMLib.flags().isInTheGame(affected,true))
+			&&(CMLib.flags().isInTheGame((MOB)affected,true))
 			&&(((MOB)affected).amFollowing()!=null)
 			&&(CMLib.flags().isInTheGame(((MOB)affected).amFollowing(),true)))
 			{

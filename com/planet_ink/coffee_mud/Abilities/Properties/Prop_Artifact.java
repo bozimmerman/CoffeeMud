@@ -271,7 +271,7 @@ public class Prop_Artifact extends Property
 				&&(!affected.amDestroyed())
 				&&(((Item)affected).owner() instanceof MOB)
 				&&(!((MOB)((Item)affected).owner()).isMonster())
-				&&(CMLib.flags().isInTheGame(affected,true)))
+				&&(CMLib.flags().isInTheGame((Item)affected,true)))
 					return false;
 
 				List<PlayerData> itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());

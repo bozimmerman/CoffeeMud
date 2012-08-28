@@ -170,9 +170,8 @@ public class Pregnancy extends StdAbility
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		if((tickID==Tickable.TICKID_MOB)
-		&&(affected!=null)
 		&&(affected instanceof MOB)
-		&&(CMLib.flags().isInTheGame(affected,true)))
+		&&(CMLib.flags().isInTheGame((MOB)affected,true)))
 		{
 			MOB mob=(MOB)affected;
 			int x=text().indexOf('/');

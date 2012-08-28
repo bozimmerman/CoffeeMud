@@ -195,7 +195,8 @@ public class Emoter extends ActiveTicker
 				}
 				else
 				{
-					if((myHost instanceof Item)&&(!CMLib.flags().isInTheGame(myHost,false)))
+					if((myHost instanceof Item)
+					&&(!CMLib.flags().isInTheGame((Item)myHost,false)))
 						return;
 					emoter=CMClass.getFactoryMOB();
 					emoter.setName(myHost.name());

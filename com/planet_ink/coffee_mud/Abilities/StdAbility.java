@@ -1070,9 +1070,8 @@ public class StdAbility implements Ability
 	public Set<MOB> properTargets(MOB mob, Environmental givenTarget, boolean auto)
 	{
 		Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);
-		if((givenTarget!=null)
-		&&(givenTarget instanceof MOB)
-		&&(CMLib.flags().isInTheGame(givenTarget,true)))
+		if((givenTarget instanceof MOB)
+		&&(CMLib.flags().isInTheGame((MOB)givenTarget,true)))
 		{
 			if(h==null) h=new SHashSet();
 			if(!h.contains(givenTarget))

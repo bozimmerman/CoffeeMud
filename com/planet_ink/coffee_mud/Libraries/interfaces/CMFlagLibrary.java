@@ -75,6 +75,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isHidden(Physical P);
 	public boolean isInvisible(Physical P);
 	public boolean isEvil(Physical P);
+	public boolean isTrapped(Physical P);
 	public boolean isATrackingMonster(MOB M);
 	public boolean isTracking(MOB M);
 	public boolean isGood(Physical P);
@@ -130,6 +131,10 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canAccess(MOB mob, Room R);
 	public boolean isMetal(Environmental E);
 	public int burnStatus(Environmental E);
+	public boolean isInTheGame(Area E, boolean reqInhabitation);
+	public boolean isInTheGame(Room E, boolean reqInhabitation);
+	public boolean isInTheGame(Item E, boolean reqInhabitation);
+	public boolean isInTheGame(MOB E, boolean reqInhabitation);
 	public boolean isInTheGame(Environmental E, boolean reqInhabitation);
 	public boolean enchanted(Item I);
 	public boolean stillAffectedBy(Physical obj, List<Ability> oneOf, boolean anyTallF);

@@ -109,7 +109,7 @@ public class Age extends StdAbility
 		else
 		if((babe instanceof Item)
 		&&(((Item)babe).owner() instanceof MOB)
-		&&(CMLib.flags().isInTheGame(((Item)babe).owner(),true)))
+		&&(CMLib.flags().isInTheGame((MOB)((Item)babe).owner(),true)))
 			following=(MOB)((Item)babe).owner();
 		Room room=CMLib.map().roomLocation(babe);
 		if((following!=null)&&(babe.description().toUpperCase().indexOf(following.Name().toUpperCase())<0)&&(room!=null))
@@ -488,7 +488,7 @@ public class Age extends StdAbility
 			}
 			if((affected instanceof Item)
 			&&((msg.target()==affected)||(msg.tool()==affected))
-			&&(CMLib.flags().isInTheGame(affected,true)))
+			&&(CMLib.flags().isInTheGame((Item)affected,true)))
 			{
 				Behavior B=((Item)affected).fetchBehavior("Emoter");
 				Item baby=(Item)affected;

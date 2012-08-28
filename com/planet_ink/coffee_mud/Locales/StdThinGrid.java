@@ -610,27 +610,36 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(loc==null) return;
 		if(room==null) return;
 		int opCode=Directions.getOpDirectionCode(dirCode);
-		if(room.rawDoors()[dirCode]!=null)
+		final Room dirR=room.rawDoors()[dirCode];
+		if(dirR!=null)
 		{
-			if(room.rawDoors()[dirCode].getGridParent()==null)
+			if(dirR.getGridParent()==null)
 				return;
-			if(room.rawDoors()[dirCode].getGridParent().isMyGridChild(room.rawDoors()[dirCode]))
+			if(dirR.getGridParent().isMyGridChild(dirR))
 				return;
 			room.rawDoors()[dirCode]=null;
 		}
 		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
 		room.setRawExit(dirCode,o);
-		if(loc.rawDoors()[opCode]!=null)
+		final Room opR=loc.rawDoors()[opCode];
+		if(opR!=null)
 		{
-			if(loc.rawDoors()[opCode].getGridParent()==null)
+			if(opR.getGridParent()==null)
 				return;
-			if(loc.rawDoors()[opCode].getGridParent().isMyGridChild(loc.rawDoors()[opCode]))
+			if(opR.getGridParent().isMyGridChild(opR))
 				return;
 			loc.rawDoors()[opCode]=null;
 		}
-		if(ao==null) ao=CMClass.getExit("Open");
 		loc.rawDoors()[opCode]=alternativeLink(loc,room,opCode);
+		if(ao==null) 
+		{
+    		if((room.getGridParent()==loc.getGridParent())
+    		&&(loc.rawDoors()[opCode]==room))
+    			ao=o;
+    		else
+    			ao=CMClass.getExit("Open");
+		}
 		loc.setRawExit(opCode,ao);
 	}
 

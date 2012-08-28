@@ -52,7 +52,7 @@ public class Bleeding extends StdAbility
 		if((affected instanceof MOB)
 		&&(canBeUninvoked())
 		&&(!((MOB)affected).amDead())
-		&&(CMLib.flags().isInTheGame(affected,true)))
+		&&(CMLib.flags().isInTheGame((MOB)affected,true)))
 			((MOB)affected).location().show((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) bleeding.");
 		super.unInvoke();
 	}

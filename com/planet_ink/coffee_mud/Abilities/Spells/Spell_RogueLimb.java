@@ -49,7 +49,6 @@ public class Spell_RogueLimb extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((rogueLimb!=null)
-		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
 			if(rogueLimb.location()!=((MOB)affected).location())
@@ -61,7 +60,7 @@ public class Spell_RogueLimb extends Spell
 			||(rogueLimb.getVictim()!=affected)
 			||(!CMLib.flags().aliveAwakeMobileUnbound(rogueLimb,true))
 			||(!CMLib.flags().aliveAwakeMobileUnbound((MOB)affected,true))
-			||(!CMLib.flags().isInTheGame(affected,false))
+			||(!CMLib.flags().isInTheGame((MOB)affected,false))
 			||(!CMLib.flags().isInTheGame(rogueLimb,false)))
 				unInvoke();
 		}

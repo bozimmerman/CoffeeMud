@@ -402,8 +402,8 @@ public class Patroller extends ActiveTicker
 							if(mob.isMonster() 
 							&& mob.isSavable()
 							&& (mob.location() != thisRoom)
-							&& CMLib.flags().isInTheGame(R,true))
-								thisRoom.bringMobHere((MOB)R,false);
+							&& CMLib.flags().isInTheGame(mob,true))
+								thisRoom.bringMobHere(mob,false);
 							
 							CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 							CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);

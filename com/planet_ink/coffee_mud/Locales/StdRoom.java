@@ -1181,7 +1181,7 @@ public class StdRoom implements Room
 	
 	public Room getRoomInDir(int direction)
 	{
-		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS())||(amDestroyed))
+		if((direction<0)||(direction>=doors.length)||(amDestroyed))
 			return null;
 		Room nextRoom=rawDoors()[direction];
 		if(gridParent!=null) nextRoom=gridParent.prepareGridLocale(this,nextRoom,direction);
@@ -1195,7 +1195,7 @@ public class StdRoom implements Room
 	}
 	public Exit getExitInDir(int direction)
 	{
-		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
+		if((direction<0)||(direction>=exits.length))
 			return null;
 		if((gridParent!=null)&&(getRawExit(direction)==null)) getRoomInDir(direction);
 		return getRawExit(direction);

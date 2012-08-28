@@ -365,15 +365,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		Room oldRoom=mob.location();
 
-		if(status!=null)status[0]=Tickable.STATUS_MISC7+1;
 		Set<MOB> mobsHere=CMLib.players().getPlayersHere(oldRoom);
 		if(mobsHere.size()>0)
 		{
     		for(MOB inhab : mobsHere)
     		{
-    			if((!inhab.isMonster())
-    			&&(CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDMOBS)
-    			   ||CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDROOMS)))
+    			if((CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDROOMS))
+    			&&(CMLib.flags().isInTheGame(inhab, true)))
     			{
     				if(status!=null)status[0]=Tickable.STATUS_NOT;
     				return false;
@@ -381,7 +379,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
     		}
 		}
 
-		if(status!=null)status[0]=Tickable.STATUS_MISC7+2;
 		if(oldRoom instanceof GridLocale)
 		{
 			Room R=((GridLocale)oldRoom).getRandomGridChild();
@@ -394,7 +391,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		int direction=-1;
 		while(((tries++)<10)&&(direction<0))
 		{
-			if(status!=null)status[0]=Tickable.STATUS_MISC7+5;
 			direction=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1);
 			Room nextRoom=oldRoom.getRoomInDir(direction);
 			Exit nextExit=oldRoom.getExitInDir(direction);
@@ -405,41 +401,26 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				{
 		    		for(MOB inhab : mobsThere)
 		    		{
-		    			if((inhab!=null)
-		    			&&(!inhab.isMonster())
-		    			&&(CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDMOBS)
-		    			   ||CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDROOMS)))
+		    			if((CMSecurity.isAllowed(inhab,nextRoom,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,nextRoom,CMSecurity.SecFlag.CMDROOMS))
+		    			&&(CMLib.flags().isInTheGame(inhab, true)))
 		    			{
-		    				if(status!=null)status[0]=Tickable.STATUS_NOT;
-		    				nextRoom=null;
+		    				direction=-1;
 		    				break;
 		    			}
 		    		}
-		    		if(nextRoom == null)
+		    		if(direction<0)
 		    			continue;
 				}
 				
 				Exit opExit=nextRoom.getExitInDir(Directions.getOpDirectionCode(direction));
-				if(status!=null)status[0]=Tickable.STATUS_MISC7+6;
-				for(final Enumeration<Ability> a=nextExit.effects();a.hasMoreElements();)
-				{
-					final Ability A=a.nextElement();
-					if((A!=null)&&(A instanceof Trap))
-						direction=-1;
-				}
+				if(CMLib.flags().isTrapped(nextExit))
+					direction=-1;
 
-				if(status!=null)status[0]=Tickable.STATUS_MISC7+7;
 				if(opExit!=null)
 				{
-					if(status!=null)status[0]=Tickable.STATUS_MISC7+8;
-					for(final Enumeration<Ability> a=opExit.effects();a.hasMoreElements();)
-					{
-						final Ability A=a.nextElement();
-						if((A!=null)&&(A instanceof Trap))
-							direction=-1;
-					}
+					if(CMLib.flags().isTrapped(opExit))
+						direction=-1;
 				}
-				if(status!=null)status[0]=Tickable.STATUS_MISC7+9;
 				if((oldRoom.domainType()!=nextRoom.domainType())
 				&&(!CMLib.flags().isInFlight(mob))
 				&&((nextRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
@@ -485,32 +466,29 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return false;
 		}
 
-		if(status!=null)status[0]=Tickable.STATUS_MISC7+11;
-
-		final LandTitle landTitle=CMLib.law().getLandTitle(nextRoom);
-		if((landTitle!=null)&&(landTitle.landOwner().length()>0))
-			dooropen=false;
+		if(dooropen)
+		{
+    		final LandTitle landTitle=CMLib.law().getLandTitle(nextRoom);
+    		if((landTitle!=null)&&(landTitle.landOwner().length()>0))
+    			dooropen=false;
+		}
 
 		boolean reclose=false;
 		boolean relock=false;
 		// handle doors!
 		if(nextExit.hasADoor()&&(!nextExit.isOpen())&&(dooropen))
 		{
-			if(status!=null)status[0]=Tickable.STATUS_MISC7+12;
 			if((nextExit.hasALock())&&(nextExit.isLocked()))
 			{
-				if(status!=null)status[0]=Tickable.STATUS_MISC7+13;
 				CMMsg msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 				if(oldRoom.okMessage(mob,msg))
 				{
-					if(status!=null)status[0]=Tickable.STATUS_MISC7+14;
 					relock=true;
 					msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,"<S-NAME> unlock(s) <T-NAMESELF>.");
 					if(oldRoom.okMessage(mob,msg))
 						CMLib.utensils().roomAffectFully(msg,oldRoom,direction);
 				}
 			}
-			if(status!=null)status[0]=Tickable.STATUS_MISC7+15;
 			if(!nextExit.isOpen())
 			{
 				mob.doCommand(getOpenCommandSet(direction),Command.METAFLAG_FORCED);
@@ -518,7 +496,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					reclose=true;
 			}
 		}
-		if(status!=null)status[0]=Tickable.STATUS_MISC7+16;
 		if(!nextExit.isOpen())
 		{
 			if(status!=null)status[0]=Tickable.STATUS_NOT;
@@ -531,7 +508,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		   &&(!CMLib.flags().isInFlight(mob))
 		   &&(mob.fetchAbility("Skill_Swim")!=null))
 		{
-			if(status!=null)status[0]=Tickable.STATUS_MISC7+17;
 			Ability A=mob.fetchAbility("Skill_Swim");
 			Vector<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)	A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
@@ -546,7 +522,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		&&(!CMLib.flags().isInFlight(mob))
 		&&((mob.fetchAbility("Skill_Climb")!=null)||(mob.fetchAbility("Power_SuperClimb")!=null)))
 		{
-			if(status!=null)status[0]=Tickable.STATUS_MISC7+18;
 			Ability A=mob.fetchAbility("Skill_Climb");
 			if(A==null )A=mob.fetchAbility("Power_SuperClimb");
 			Vector<String> V=getDirectionCommandSet(direction);
@@ -559,7 +534,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		else
 		if((mob.fetchAbility("Thief_Sneak")!=null)&&(sneakIfAble))
 		{
-			if(status!=null)status[0]=Tickable.STATUS_MISC7+19;
 			Ability A=mob.fetchAbility("Thief_Sneak");
 			Vector<String> V=getDirectionCommandSet(direction);
 			if(A.proficiency()<50)
@@ -577,7 +551,6 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		else
 		{
-			if(status!=null)status[0]=Tickable.STATUS_MISC7+20;
 			walk(mob,direction,false,false);
 		}
 		if(status!=null)status[0]=Tickable.STATUS_MISC7+21;
@@ -589,11 +562,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			&&(opExit.hasADoor())
 			&&(opExit.isOpen()))
 			{
-				if(status!=null)status[0]=Tickable.STATUS_MISC7+22;
 				mob.doCommand(getCloseCommandSet(opDirection),Command.METAFLAG_FORCED);
 				if((opExit.hasALock())&&(relock))
 				{
-					if(status!=null)status[0]=Tickable.STATUS_MISC7+23;
 					CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 					if(nextRoom.okMessage(mob,msg))
 					{

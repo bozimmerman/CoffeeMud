@@ -53,7 +53,7 @@ public class Spell_Enlarge extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((canBeUninvoked())&&(affected instanceof Item)&&(CMLib.flags().isInTheGame(affected,true)))
+		if((canBeUninvoked())&&(affected instanceof Item)&&(CMLib.flags().isInTheGame((Item)affected,true)))
 		{
 			Item I=(Item)affected;
 			if(I.owner() instanceof MOB)

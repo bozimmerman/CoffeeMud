@@ -48,12 +48,12 @@ public class CrossRefTreeMap<T, K>
 	@SuppressWarnings("rawtypes")
     private static final Set empty=new TreeSet();
 	
-	public CrossRefTreeMap(int maxFirst, int maxSecond)
+	public CrossRefTreeMap(int maxFirstForEachSecond, int maxSecondForEachFirst)
 	{
-		if(maxFirst<=0) maxFirst=1;
-		if(maxSecond<=0) maxSecond=1;
-		maxKsInMap1=maxFirst;
-		maxTsInMap2=maxSecond;
+		if(maxSecondForEachFirst<=0) maxSecondForEachFirst=1;
+		if(maxFirstForEachSecond<=0) maxFirstForEachSecond=1;
+		maxKsInMap1=maxSecondForEachFirst;
+		maxTsInMap2=maxFirstForEachSecond;
 	}
 	
 	public boolean containsFirst(T t)
@@ -92,7 +92,10 @@ public class CrossRefTreeMap<T, K>
 			if(tKs.contains(k))
 			{
 				if(tKs.size()==1)
+				{
+					tKs.clear();
 					map1.remove(t);
+				}
 				else
     				tKs.remove(k);
 			}
@@ -100,10 +103,13 @@ public class CrossRefTreeMap<T, K>
 		final TreeSet<T> kTs=map2.get(k);
 		if(kTs!=null)
 		{
-			if(kTs.contains(k))
+			if(kTs.contains(t))
 			{
 				if(kTs.size()==1)
+				{
+					kTs.clear();
 					map2.remove(k);
+				}
 				else
     				kTs.remove(t);
 			}
@@ -121,7 +127,10 @@ public class CrossRefTreeMap<T, K>
 				if(kTs!=null)
 				{
     				if(kTs.size()==1)
+    				{
+    					kTs.clear();
     					map2.remove(k);
+    				}
     				else
         				kTs.remove(t);
     			}
@@ -141,7 +150,10 @@ public class CrossRefTreeMap<T, K>
 				if(tKs!=null)
 				{
 					if(tKs.size()==1)
+					{
+						tKs.clear();
 						map1.remove(t);
+					}
 					else
 	    				tKs.remove(k);
 				}
@@ -153,29 +165,27 @@ public class CrossRefTreeMap<T, K>
 	public synchronized void change(T t, K k)
 	{
 		TreeSet<K> tKs=map1.get(t);
+		while((tKs!=null)&&(tKs.size()>=maxKsInMap1))
+			remove(t,tKs.first());
+		tKs=map1.get(t);
 		if(tKs==null)
 		{
 			tKs=new TreeSet<K>();
 			map1.put(t, tKs);
 		}
 		TreeSet<T> kTs=map2.get(k);
+		while((kTs!=null)&&(kTs.size()>=maxTsInMap2))
+			remove(kTs.first(),k);
+		kTs=map2.get(k);
 		if(kTs==null)
 		{
 			kTs=new TreeSet<T>();
 			map2.put(k, kTs);
 		}
 		if(!kTs.contains(t))
-		{
-    		while(kTs.size()>=maxTsInMap2)
-    			kTs.remove(kTs.first());
     		kTs.add(t);
-		}
 		if(!tKs.contains(k))
-		{
-    		while(tKs.size()>=maxKsInMap1)
-    			tKs.remove(tKs.first());
     		tKs.add(k);
-		}
 	}
 	
 	public synchronized void clear()

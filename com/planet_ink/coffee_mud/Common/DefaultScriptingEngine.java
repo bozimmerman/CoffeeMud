@@ -4968,7 +4968,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				StringBuffer list=new StringBuffer("");
 				int num=1;
-				Environmental E=Q.getQuestMob(num);
+				MOB E=Q.getQuestMob(num);
 				while(E!=null)
 				{
 					if(CMLib.flags().isInTheGame(E,true))

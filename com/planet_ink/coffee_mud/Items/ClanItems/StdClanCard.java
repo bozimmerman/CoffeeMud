@@ -59,7 +59,7 @@ public class StdClanCard extends StdClanItem
 		&&(((MOB)owner()).isMonster())
 		&&(((ClanItem)msg.tool()).ciType()==ClanItem.CI_PROPAGANDA)
 		&&(!((ClanItem)msg.tool()).clanID().equals(clanID()))
-		&&(CMLib.flags().isInTheGame(owner(),true))
+		&&(CMLib.flags().isInTheGame((MOB)owner(),true))
 		&&(msg.source()!=owner())
 		&&(CMLib.flags().isInTheGame(msg.source(),true)))
 		{
