@@ -428,7 +428,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					}
 			}catch(Exception e){}
 		}
-		R.basePhyStats().setSensesMask(CMath.unsetb(R.basePhyStats().sensesMask(),PhyStats.SENSE_ROOMGRIDSYNC));
+		synchronized(R.basePhyStats())
+		{
+    		R.basePhyStats().setSensesMask(CMath.unsetb(R.basePhyStats().sensesMask(),PhyStats.SENSE_ROOMGRIDSYNC));
+		}
 	}
 
 	public void tryFillInExtraneousExternal(WorldMap.CrossExit EX, Exit ox, Room linkFrom)
