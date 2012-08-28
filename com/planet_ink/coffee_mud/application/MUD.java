@@ -865,6 +865,8 @@ public class MUD extends Thread implements MudHost
 		}
 
 		if(S!=null)S.print("Stopping all threads...");
+		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_STATS);e.hasMoreElements();)
+			((CMLibrary)e.nextElement()).shutdown();
 		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_THREADS);e.hasMoreElements();)
 		{
 			CMLibrary lib=(CMLibrary)e.nextElement();
@@ -873,7 +875,7 @@ public class MUD extends Thread implements MudHost
 		}
 		if(S!=null)S.println("done");
 		Log.sysOut(Thread.currentThread().getName(),"Map Threads Stopped.");
-
+		
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...closing db connections");
 		for(int d=0;d<databases.size();d++)
 			((DBConnector)databases.get(d)).killConnections();

@@ -106,7 +106,7 @@ public class CMSupportThread extends Thread implements CMRunnable
 				try{Thread.sleep(1000);}catch(Exception e){}
 			lastStart=System.currentTimeMillis();
 			setStatus("sleeping");
-			while(true)
+			while(started)
 			{
 				try
 				{
