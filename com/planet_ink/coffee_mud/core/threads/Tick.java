@@ -234,7 +234,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 						final TockClient client=i.next();
 						lastClient=client;
 						client.lastStart=System.currentTimeMillis();
-						if(client.tickTicker(allSuspended))
+						if(client.tickTicker())
 						{
 							delTicker(client); // cant do i.remove, its an streeset
 						}
