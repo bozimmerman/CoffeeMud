@@ -332,6 +332,22 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		for(Ability A : V)
 		{ A.unInvoke(); mob.delEffect(A);}
 	}
+	
+	public boolean isAnAdminHere(Room R)
+	{
+		final Set<MOB> mobsThere=CMLib.players().getPlayersHere(R);
+		if(mobsThere.size()>0)
+		{
+    		for(MOB inhab : mobsThere)
+    		{
+    			if((CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
+    			&&(CMLib.flags().isInTheGame(inhab, true))
+    			&&(CMath.bset(inhab.getBitmap(), MOB.ATT_SYSOPMSGS)))
+    				return true;
+    		}
+		}
+		return false;
+	}
 
 	public boolean beMobile(final MOB mob,
 							final boolean dooropen,
@@ -365,19 +381,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		Room oldRoom=mob.location();
 
-		Set<MOB> mobsHere=CMLib.players().getPlayersHere(oldRoom);
-		if(mobsHere.size()>0)
+		if(isAnAdminHere(oldRoom))
 		{
-    		for(MOB inhab : mobsHere)
-    		{
-    			if((CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDROOMS))
-    			&&(CMLib.flags().isInTheGame(inhab, true))
-    			&&(CMath.bset(inhab.getBitmap(), MOB.ATT_SYSOPMSGS)))
-    			{
-    				if(status!=null)status[0]=Tickable.STATUS_NOT;
-    				return false;
-    			}
-    		}
+			if(status!=null)status[0]=Tickable.STATUS_NOT;
+			return false;
 		}
 
 		if(oldRoom instanceof GridLocale)
@@ -397,21 +404,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			Exit nextExit=oldRoom.getExitInDir(direction);
 			if((nextRoom!=null)&&(nextExit!=null))
 			{
-				Set<MOB> mobsThere=CMLib.players().getPlayersHere(nextRoom);
-				if(mobsThere.size()>0)
+				if(isAnAdminHere(nextRoom))
 				{
-		    		for(MOB inhab : mobsThere)
-		    		{
-		    			if((CMSecurity.isAllowed(inhab,nextRoom,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,nextRoom,CMSecurity.SecFlag.CMDROOMS))
-		    			&&(CMLib.flags().isInTheGame(inhab, true))
-		    			&&(CMath.bset(inhab.getBitmap(), MOB.ATT_SYSOPMSGS)))
-		    			{
-		    				direction=-1;
-		    				break;
-		    			}
-		    		}
-		    		if(direction<0)
-		    			continue;
+    				direction=-1;
+	    			continue;
 				}
 				
 				Exit opExit=nextRoom.getExitInDir(Directions.getOpDirectionCode(direction));
