@@ -371,7 +371,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
     		for(MOB inhab : mobsHere)
     		{
     			if((CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,oldRoom,CMSecurity.SecFlag.CMDROOMS))
-    			&&(CMLib.flags().isInTheGame(inhab, true)))
+    			&&(CMLib.flags().isInTheGame(inhab, true))
+    			&&(CMath.bset(inhab.getBitmap(), MOB.ATT_SYSOPMSGS)))
     			{
     				if(status!=null)status[0]=Tickable.STATUS_NOT;
     				return false;
@@ -402,7 +403,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		    		for(MOB inhab : mobsThere)
 		    		{
 		    			if((CMSecurity.isAllowed(inhab,nextRoom,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,nextRoom,CMSecurity.SecFlag.CMDROOMS))
-		    			&&(CMLib.flags().isInTheGame(inhab, true)))
+		    			&&(CMLib.flags().isInTheGame(inhab, true))
+		    			&&(CMath.bset(inhab.getBitmap(), MOB.ATT_SYSOPMSGS)))
 		    			{
 		    				direction=-1;
 		    				break;
