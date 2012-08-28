@@ -177,6 +177,83 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return null;
 	}
 
+	public boolean isHomeRoomUpstairs(Room room)
+	{
+		Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
+		for(Room R : peerRooms)
+		{
+			if(isHomePeerRoom(R.getRoomInDir(Directions.DOWN)))
+				return true;
+		}
+		return false;
+	}
+
+    public boolean isHomePeerRoom(Room R)
+	{
+		return ifHomePeerLandTitle(R)!=null;
+	}
+	
+	public LandTitle ifHomePeerLandTitle(Room R)
+	{
+		if((R!=null)
+		&&(R.ID().length()>0)
+		&&(CMath.bset(R.domainType(),Room.INDOORS)))
+    		return CMLib.law().getLandTitle(R);
+		return null;
+	}
+
+	public LandTitle ifLandTitle(Room R)
+	{
+		if((R!=null)
+		&&(R.ID().length()>0))
+    		return CMLib.law().getLandTitle(R);
+		return null;
+	}
+
+	public boolean isRoomSimilarlyTitled(LandTitle title, Room R)
+	{
+		LandTitle ptitle = ifLandTitle(R);
+		if(ptitle ==null) return false;
+		if(ptitle.landOwner().length()==0)
+		{
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				Room sideRoom=R.getRoomInDir(d);
+				LandTitle psTitle=ifLandTitle(sideRoom);
+				if(psTitle.landOwner().equals(title.landOwner()))
+					return true;
+			}
+			return false;
+		}
+		else
+			return ptitle.landOwner().equals(title.landOwner());
+	}
+	
+	public Set<Room> getHomePeersOnThisFloor(Room room, Set<Room> doneRooms)
+	{
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			Room sideRoom=room.getRoomInDir(d);
+			if(isHomePeerRoom(sideRoom)  &&(!doneRooms.contains(sideRoom)))
+			{
+				doneRooms.add(sideRoom);
+				doneRooms.addAll(getHomePeersOnThisFloor(sideRoom, doneRooms));
+			}
+		}
+		return doneRooms;
+	}
+	
+    public boolean isHomeRoomDownstairs(Room room)
+	{
+		Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
+		for(Room R : peerRooms)
+		{
+			if(isHomePeerRoom(R.getRoomInDir(Directions.UP)))
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean doesHavePriviledgesInThisDirection(MOB mob, Room room, Exit exit)
 	{
 		final int dirCode=CMLib.map().getExitDir(room,exit);

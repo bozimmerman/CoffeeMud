@@ -60,6 +60,13 @@ public class StdTitle extends StdItem implements LandTitle
 		recoverPhyStats();
 	}
 
+	public boolean allowsExpansionConstruction()
+	{ 
+		LandTitle A=fetchALandTitle();
+		if(A==null)    return false;
+		return A.allowsExpansionConstruction();
+	}
+
 	public int landPrice()
 	{
 		LandTitle A=fetchALandTitle();

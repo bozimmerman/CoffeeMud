@@ -126,4 +126,10 @@ public interface LandTitle extends Environmental
 	 * @return a unique id
 	 */
 	public String getTitleID();
+	
+	/**
+	 * Returns whether this title allows property to be expanded through masonry or construction.
+	 * @return true if expansion is OK, false otherwise
+	 */
+	public boolean allowsExpansionConstruction();
 }

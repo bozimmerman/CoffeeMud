@@ -104,78 +104,6 @@ public class Construction extends CraftingSkill
 		return E2;
 	}
 	
-	@SuppressWarnings("unused")
-    private boolean isUpstairs(Room room)
-	{
-		Set<Room> peerRooms=getPeersOnThisFloor(room,new HashSet<Room>());
-		for(Room R : peerRooms)
-		{
-			if(isPeerRoom(R.getRoomInDir(Directions.DOWN)))
-				return true;
-		}
-		return false;
-	}
-
-	private boolean isPeerRoom(Room R)
-	{
-		return ifPeerLandTitle(R)!=null;
-	}
-	
-	private LandTitle ifPeerLandTitle(Room R)
-	{
-		if((R!=null)
-		&&(R.ID().length()>0)
-		&&(CMath.bset(R.domainType(),Room.INDOORS)))
-    		return CMLib.law().getLandTitle(R);
-		return null;
-	}
-	
-	@SuppressWarnings("unused")
-    private boolean isPeerRoomToMe(LandTitle title, Room R)
-	{
-		LandTitle ptitle = ifPeerLandTitle(R);
-		if(ptitle ==null) return false;
-		if(ptitle.landOwner().length()==0)
-		{
-			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-			{
-				Room sideRoom=R.getRoomInDir(d);
-				LandTitle psTitle=ifPeerLandTitle(sideRoom);
-				if(psTitle.landOwner().equals(title.landOwner()))
-					return true;
-			}
-			return false;
-		}
-		else
-			return ptitle.landOwner().equals(title.landOwner());
-	}
-	
-	private Set<Room> getPeersOnThisFloor(Room room, Set<Room> doneRooms)
-	{
-		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-		{
-			Room sideRoom=room.getRoomInDir(d);
-			if(isPeerRoom(sideRoom)  &&(!doneRooms.contains(sideRoom)))
-			{
-				doneRooms.add(sideRoom);
-				doneRooms.addAll(getPeersOnThisFloor(sideRoom, doneRooms));
-			}
-		}
-		return doneRooms;
-	}
-	
-	@SuppressWarnings("unused")
-    private boolean isDownstairs(Room room)
-	{
-		Set<Room> peerRooms=getPeersOnThisFloor(room,new HashSet<Room>());
-		for(Room R : peerRooms)
-		{
-			if(isPeerRoom(R.getRoomInDir(Directions.UP)))
-				return true;
-		}
-		return false;
-	}
-	
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -611,6 +539,20 @@ public class Construction extends CraftingSkill
 		super.unInvoke();
 	}
 
+    public boolean isHomePeerRoom(Room R)
+	{
+		return ifHomePeerLandTitle(R)!=null;
+	}
+	
+	public LandTitle ifHomePeerLandTitle(Room R)
+	{
+		if((R!=null)
+		&&(R.ID().length()>0)
+		&&(CMath.bset(R.domainType(),Room.INDOORS)))
+    		return CMLib.law().getLandTitle(R);
+		return null;
+	}
+
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
@@ -699,20 +641,19 @@ public class Construction extends CraftingSkill
 		dir=Directions.getGoodDirectionCode(dirName);
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("stairs")))
 		{
-			
-			Room upRoom=room.getRoomInDir(Directions.UP);
-			if(!isPeerRoom(upRoom))
+			Room upRoom=mob.location().getRoomInDir(Directions.UP);
+			if(!isHomePeerRoom(upRoom))
 			{
 				commonTell(mob,"There is no way to the upper floor here.");
 				return false;
 			}
-			Set<Room> peerRooms=getPeersOnThisFloor(room, new HashSet<Room>());
-			Set<Room> upstairsRooms=getPeersOnThisFloor(upRoom, new HashSet<Room>());
+			Set<Room> peerRooms=CMLib.law().getHomePeersOnThisFloor(mob.location(), new HashSet<Room>());
+			Set<Room> upstairsRooms=CMLib.law().getHomePeersOnThisFloor(upRoom, new HashSet<Room>());
 			boolean foundAnotherWayUp=false;
 			for(Room R : upstairsRooms)
 			{
 				if((R!=upRoom)
-				&&(isPeerRoom(R.getRoomInDir(Directions.DOWN))||peerRooms.contains(R.getRoomInDir(Directions.DOWN))))
+				&&(isHomePeerRoom(R.getRoomInDir(Directions.DOWN))||peerRooms.contains(R.getRoomInDir(Directions.DOWN))))
 				{
 					foundAnotherWayUp=true;
 					break;
@@ -720,7 +661,7 @@ public class Construction extends CraftingSkill
 			}
 			if(!foundAnotherWayUp)
 			{
-				commonTell(mob,"You need to demolish all the upstair ceilings before destroying the last stairway up.");
+				commonTell(mob,"You need to demolish all the upstairs rooms before destroying the last stairway up.");
 				return false;
 			}
 			dir=-1;
@@ -728,8 +669,9 @@ public class Construction extends CraftingSkill
 		else
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof")||dirName.equalsIgnoreCase("ceiling")))
 		{
-			Room upRoom=room.getRoomInDir(Directions.UP);
-			if(isPeerRoom(upRoom))
+			
+			Room upRoom=mob.location().getRoomInDir(Directions.UP);
+			if(isHomePeerRoom(upRoom))
 			{
 				commonTell(mob,"You need to demolish the stairs first.");
 				return false;
@@ -743,6 +685,68 @@ public class Construction extends CraftingSkill
 			{
 				commonTell(mob,"There is no ceiling here!");
 				return false;
+			}
+			if(CMLib.law().isHomeRoomUpstairs(mob.location()))
+			{
+				commonTell(mob,"You can't demolish upstairs ceilings.  Try demolishing the room.");
+				return false;
+			}
+			dir=-1;
+		}
+		else
+		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("room")))
+		{
+			//TODO: can't demolish the only way down?
+			if(!CMLib.law().doesOwnThisProperty(mob, mob.location()))
+			{
+				commonTell(mob,"You can't demolish property you don't own.");
+				return false;
+			}
+			Room upRoom=mob.location().getRoomInDir(Directions.UP);
+			if(isHomePeerRoom(upRoom))
+			{
+				commonTell(mob,"You need to demolish the stairs first.");
+				return false;
+			}
+			if(!CMLib.law().isHomeRoomUpstairs(mob.location()))
+			{
+				commonTell(mob,"You can only demolish upstairs rooms.  You might try just demolishing the ceiling/roof?");
+				return false;
+			}
+			int numAdjacentProperties=0;
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				Room adjacentRoom=mob.location().getRoomInDir(d);
+				if(isHomePeerRoom(adjacentRoom) && CMLib.law().doesOwnThisProperty(mob, adjacentRoom))
+				{
+					numAdjacentProperties++;
+				}
+			}
+			if(numAdjacentProperties>0)
+			{
+				mob.tell("You can not demolish a room if you own more than one room adjacent to it.  Demolish those first.");
+				return false;
+			}
+			Room downRoom=mob.location().getRoomInDir(Directions.DOWN);
+			if(isHomePeerRoom(downRoom))
+			{
+				Set<Room> peerRooms=CMLib.law().getHomePeersOnThisFloor(mob.location(), new HashSet<Room>());
+				Set<Room> downstairsRooms=CMLib.law().getHomePeersOnThisFloor(downRoom, new HashSet<Room>());
+				boolean foundAnotherWayUp=false;
+				for(Room R : downstairsRooms)
+				{
+					if((R!=downRoom)
+					&&(isHomePeerRoom(R.getRoomInDir(Directions.UP))||peerRooms.contains(R.getRoomInDir(Directions.UP))))
+					{
+						foundAnotherWayUp=true;
+						break;
+					}
+				}
+				if((!foundAnotherWayUp)&&(peerRooms.size()>1))
+				{
+					commonTell(mob,"Demolishing your only remaining way downstairs needs to be the LAST thing you do.");
+					return false;
+				}
 			}
 			dir=-1;
 		}
@@ -775,6 +779,26 @@ public class Construction extends CraftingSkill
 		{
 			commonTell(mob,"That can only be built outdoors!");
 			return false;
+		}
+		
+		if(doingCode==BUILD_STAIRS)
+		{
+			LandTitle title=CMLib.law().getLandTitle(mob.location());
+			if((title==null)||(!title.allowsExpansionConstruction()))
+			{
+				commonTell(mob,"You are not permitted to build stairs here.");
+				return false;
+			}
+			if(!CMath.bset(mob.location().domainType(), Room.INDOORS))
+			{
+				commonTell(mob,"You need to build a ceiling (or roof) first!");
+				return false;
+			}
+			if((mob.location().getRoomInDir(Directions.UP)!=null)||(mob.location().rawDoors()[Directions.UP]!=null))
+			{
+				commonTell(mob,"There are already stairs here.");
+				return false;
+			}
 		}
 
 		if(doingCode==BUILD_WALL)

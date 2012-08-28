@@ -39,6 +39,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	public String ID() { return "Prop_LotsForSale"; }
 	public String name(){ return "Putting many rooms up for sale";}
 
+	public boolean allowsExpansionConstruction(){ return true; }
 
 	protected static boolean isCleanRoom(Room fromRoom, Room theRoom)
 	{
@@ -88,8 +89,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			{
 				boolean updateExits=false;
 				boolean foundOne=false;
-				for(int d=0;d<4;d++)
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
+					if(d==Directions.GATE)
+						continue;
 					Room R2=R.rawDoors()[d];
 					foundOne=foundOne||(R2!=null);
 					Exit E=R.getRawExit(d);
@@ -133,8 +136,10 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			else
 			{
 				boolean updateExits=false;
-				for(int d=0;d<4;d++)
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
+					if((d==Directions.UP)||(d==Directions.DOWN)||(d==Directions.GATE))
+						continue;
 					Room R2=R.getRoomInDir(d);
 					if(R2==null)
 					{

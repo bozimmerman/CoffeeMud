@@ -46,6 +46,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	protected long lastMobSave=0;
 	protected int lastDayDone=-1;
 
+	public boolean allowsExpansionConstruction(){ return false;}
+
 	public int landPrice()
 	{
 		if(text().length()==0)

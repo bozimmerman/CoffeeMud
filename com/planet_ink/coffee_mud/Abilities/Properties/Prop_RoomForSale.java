@@ -51,6 +51,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public String accountForYourself()
 	{ return "For Sale";	}
 
+	public boolean allowsExpansionConstruction(){ return false;}
+	
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);

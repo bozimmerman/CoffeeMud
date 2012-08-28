@@ -39,6 +39,10 @@ public interface LegalLibrary extends CMLibrary
 	
 	public LandTitle getLandTitle(Area area);
 	public LandTitle getLandTitle(Room room);
+	public boolean isRoomSimilarlyTitled(LandTitle title, Room R);
+	public Set<Room> getHomePeersOnThisFloor(Room room, Set<Room> doneRooms);
+    public boolean isHomeRoomDownstairs(Room room);
+	public boolean isHomeRoomUpstairs(Room room);
 	public boolean doesHavePriviledgesHere(MOB mob, Room room);
 	public boolean doesHavePriviledgesInThisDirection(MOB mob, Room room, Exit exit);
 	public boolean doesOwnThisProperty(String name, Room room);
