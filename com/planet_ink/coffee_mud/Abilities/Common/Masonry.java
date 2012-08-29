@@ -426,11 +426,11 @@ public class Masonry extends CraftingSkill
 							}
 							room.rawDoors()[Directions.UP]=upRoom;
 							Exit upExit=CMClass.getExit("OpenDescriptable");
-							upExit.setDisplayText("Upstairs to the "+(floor+1)+CMath.numAppendage(floor+1)+" floor.");
+							upExit.setMiscText("Upstairs to the "+(floor+1)+CMath.numAppendage(floor+1)+" floor.");
 							room.setRawExit(Directions.UP,upExit);
 							
 							Exit downExit=CMClass.getExit("OpenDescriptable");
-							downExit.setDisplayText("Downstairs to the "+(floor)+CMath.numAppendage(floor)+" floor.");
+							downExit.setMiscText("Downstairs to the "+(floor)+CMath.numAppendage(floor)+" floor.");
 							upRoom.rawDoors()[Directions.DOWN]=room;
 							upRoom.setRawExit(Directions.DOWN,downExit);
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
