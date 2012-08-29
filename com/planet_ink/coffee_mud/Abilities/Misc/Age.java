@@ -307,10 +307,18 @@ public class Age extends StdAbility
 							if(T.tattooName.startsWith("PARENT:"))
 							{
 								MOB M=CMLib.players().getLoadPlayer(T.tattooName.substring(7));
-								if((M!=null)&&(M.getClanID().length()>0))
+								if(M!=null)
 								{
-									newMan.setClanID(M.getClanID());
-									break;
+									if((M.getClanID().length()>0)&&(newMan.getClanID().length()==0))
+										newMan.setClanID(M.getClanID());
+									if((M.getWorshipCharID().length()>0)&&(newMan.getWorshipCharID().length()==0))
+										newMan.setWorshipCharID(M.getWorshipCharID());
+									for(Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
+									{
+										Ability L=a.nextElement();
+										if((L instanceof Language)&&(newMan.fetchAbility(L.ID())==null))
+											newMan.addAbility((Ability)L.copyOf());
+									}
 								}
 							}
 						}
