@@ -2376,3 +2376,4 @@ ruthless programmer, and sentenced to a quick death.
 8. Can now COPY areas
 9. LIST command now supports AREAS for admins -- choose your own columns or sortings
 10.IMPORTANT: previously, mobs would never wander OUT of a room where an admin is -- now they also won't wander INTO a room where an admin is
+11.Construction and Masonry skills now support building stairs to create new floors -- rooms must still be purchased.
