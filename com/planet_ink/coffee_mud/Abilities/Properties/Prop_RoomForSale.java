@@ -292,7 +292,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			{
 				if(reset)
 				{
-					R.setDisplayText("An empty plot");
+					if(CMath.bset(R.domainType(), Room.INDOORS))
+    					R.setDisplayText("An empty room");
+					else
+    					R.setDisplayText("An empty plot");
 					R.setDescription("");
 				}
 				R.setDescription(R.description()+theStr);

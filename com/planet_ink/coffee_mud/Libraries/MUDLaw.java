@@ -179,6 +179,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 
 	public boolean isHomeRoomUpstairs(Room room)
 	{
+		if(isHomePeerRoom(room.getRoomInDir(Directions.DOWN)))
+			return true;
 		Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
 		for(Room R : peerRooms)
 		{
@@ -233,11 +235,14 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
-			Room sideRoom=room.getRoomInDir(d);
-			if(isHomePeerRoom(sideRoom)  &&(!doneRooms.contains(sideRoom)))
+			if((d!=Directions.UP)&&(d!=Directions.DOWN)&&(d!=Directions.GATE))
 			{
-				doneRooms.add(sideRoom);
-				doneRooms.addAll(getHomePeersOnThisFloor(sideRoom, doneRooms));
+    			Room sideRoom=room.getRoomInDir(d);
+    			if(isHomePeerRoom(sideRoom)  &&(!doneRooms.contains(sideRoom)))
+    			{
+    				doneRooms.add(sideRoom);
+    				doneRooms.addAll(getHomePeersOnThisFloor(sideRoom, doneRooms));
+    			}
 			}
 		}
 		return doneRooms;
@@ -245,6 +250,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	
     public boolean isHomeRoomDownstairs(Room room)
 	{
+		if(isHomePeerRoom(room.getRoomInDir(Directions.UP)))
+			return true;
 		Set<Room> peerRooms=getHomePeersOnThisFloor(room,new HashSet<Room>());
 		for(Room R : peerRooms)
 		{
