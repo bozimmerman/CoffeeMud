@@ -2378,3 +2378,4 @@ ruthless programmer, and sentenced to a quick death.
 10.IMPORTANT: previously, mobs would never wander OUT of a room where an admin is -- now they also won't wander INTO a room where an admin is
 11.Construction and Masonry skills now support building stairs to create new floors -- rooms must still be purchased.
 12.Children now inheret the languages of their parents
+13.Players can now sit from a sleeping position (not sure how that got missed).

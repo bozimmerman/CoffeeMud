@@ -2056,7 +2056,8 @@ public class StdMOB implements MOB
 
 					if (((CMLib.flags().isSleeping(this)) || (sitting)) 
 					&& (msg.sourceMinor() != CMMsg.TYP_STAND)
-			        && (msg.sourceMinor() != CMMsg.TYP_SITMOVE) 
+			        && (msg.sourceMinor() != CMMsg.TYP_SITMOVE)
+			        && (msg.sourceMinor() != CMMsg.TYP_SIT)
 			        && (msg.sourceMinor() != CMMsg.TYP_SLEEP))
 					{
 						tell("You need to stand up!");

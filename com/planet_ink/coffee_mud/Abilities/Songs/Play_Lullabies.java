@@ -95,7 +95,7 @@ public class Play_Lullabies extends Play
 
 
 		if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
-		&&(msg.targetMinor()==CMMsg.TYP_STAND)&&(asleep))
+		&&((msg.targetMinor()==CMMsg.TYP_STAND)||(msg.sourceMinor()==CMMsg.TYP_SIT))&&(asleep))
 			return false;
 		return true;
 	}
