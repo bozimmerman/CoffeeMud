@@ -13,9 +13,9 @@
             <POWER>PREMISE</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
-            <POWER>DEPOSIT_LIST</POWER>
             <POWER>DECLARE</POWER>
             <POWER>TAX</POWER>
             <POWER>ENCHANT</POWER>
@@ -139,6 +139,7 @@
             <POWER>REJECT</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
             <POWER>VOTE_ASSIGN</POWER>
@@ -169,6 +170,7 @@
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK="" PUBLIC="true">
             <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
             <POWER>DEPOSIT_LIST</POWER>
@@ -296,6 +298,7 @@
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK="" PUBLIC="true">
             <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
             <POWER>VOTE_ASSIGN</POWER>
             <POWER>DEPOSIT_LIST</POWER>
             <POWER>CHANNEL</POWER>
@@ -578,6 +581,7 @@
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK=" -DEITY +%[WORSHIPCHARID]%" PUBLIC="true">
             <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
             <POWER>DEPOSIT_LIST</POWER>
@@ -688,9 +692,9 @@
             <POWER>PREMISE</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
-            <POWER>DEPOSIT_LIST</POWER>
             <POWER>DECLARE</POWER>
             <POWER>TAX</POWER>
             <POWER>ENCHANT</POWER>
@@ -711,9 +715,9 @@
             <POWER>PREMISE</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
-            <POWER>DEPOSIT_LIST</POWER>
             <POWER>DECLARE</POWER>
             <POWER>TAX</POWER>
             <POWER>ENCHANT</POWER>
@@ -728,9 +732,9 @@
             <POWER>ACCEPT</POWER>
             <POWER>ASSIGN</POWER>
             <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
-            <POWER>DEPOSIT_LIST</POWER>
             <POWER>TAX</POWER>
             <POWER>ENCHANT</POWER>
             <POWER>CHANNEL</POWER>
@@ -744,9 +748,9 @@
             <POWER>ACCEPT</POWER>
             <POWER>ASSIGN</POWER>
             <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
-            <POWER>DEPOSIT_LIST</POWER>
             <POWER>TAX</POWER>
             <POWER>ENCHANT</POWER>
             <POWER>CHANNEL</POWER>
@@ -848,8 +852,8 @@
             <POWER>PREMISE</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
-            <POWER>ORDER_CONQUERED</POWER>
             <POWER>DEPOSIT_LIST</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
             <POWER>ENCHANT</POWER>
             <POWER>CHANNEL</POWER>
             <POWER>MORGUE</POWER>
