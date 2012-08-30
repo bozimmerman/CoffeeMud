@@ -849,7 +849,7 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 							{
 								String name=foundMacro.substring(6).trim().toUpperCase();
 								getRequestObjects().put(name,s.substring(i+l,v));
-								s.delete(i,v+l+1);
+								s.delete(i,v+8);
 							}
 							continue;
 						}
@@ -859,7 +859,10 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 							int l=foundMacro.length()+2;
 							String name=foundMacro.substring(7).trim().toUpperCase();
 							Object o=getRequestObjects().get(name);
-							s.replace(i,i+l,o.toString());
+							if(o!=null) 
+								s.replace(i,i+l,o.toString());
+							else
+								s.delete(i, i+l);
 							continue;
 						}
 						else

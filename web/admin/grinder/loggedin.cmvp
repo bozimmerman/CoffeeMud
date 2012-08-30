@@ -67,6 +67,11 @@
 		{
 			SSort(ME,0);
 		}
+		function openplayers()
+		{
+			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/pub/gamestatus.cmvp","Status",strFeatures, false);
+		}
 	//-->
 	</script>
 </head>
@@ -100,124 +105,20 @@
     </TD>
 </TR>
 </TABLE>
-<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
-<h3><FONT COLOR=WHITE>MUDGrinder Main Menu</FONT></H3>
-<br>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+	<TD VALIGN=TOP WIDTH=33%><a href="javascript:openplayers();"><FONT COLOR=WHITE ALIGN=LEFT>@NUMPLAYERS@ players online</FONT></a></TD>
+	<TD VALIGN=TOP ALIGN=CENTER WIDTH=33%>
+		<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
+	</TD>
+	<TD  WIDTH=33%></TD>
+</TR>
+</TABLE>
+<FONT SIZE=5 COLOR=WHITE><B>MUDGrinder Main Menu</B></FONT><br>
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-@if?CheckAuthCode?SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_LISTADMIN=true&||ANYFILEBROWSE=true&||AUTH_CMDPLAYERS&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
-<TABLE WIDTH=400 BORDER=1>
-<TR>
-    <TD WIDTH=50% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD>
-    <TD WIDTH=50% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Editors:</B></FONT></TD>
-</TR>
-<TR><TD ALIGN=CENTER VALIGN=TOP>
-    	@if?CheckAuthCode?SYSOP=true@
-    	<A href="javascript:Clicked('control.cmvp')"><FONT COLOR=WHITE>Control Panel</FONT></a>
-    	<BR>
-    	@endif@
-    	@if?CheckAuthCode?ANYFILEBROWSE=true@
-    	<A HREF="javascript:Browse('@RequestParameter?BESTFILEBROWSE@');"><FONT COLOR=WHITE>File Browser</FONT></a>
-    	<BR>
-    	@endif@
-    	@if?CheckAuthCode?AUTH_JOURNALS=true@
-    	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
-    	<BR>
-    	@endif@
-    	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
-	    	@if?IsAccountSystem@
-		    	<A href="javascript:Clicked('accounts.cmvp')"><FONT COLOR=WHITE>Account Manager</FONT></a>
-		    	<BR>
-		    @endif@
-    	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Player Manager</FONT></a>
-    	<BR>
-    	@endif@
-        @if?CheckAuthCode?AUTH_CMDCLANS=true@
-        <A href="javascript:Clicked('clans.cmvp')"><FONT COLOR=WHITE>Clan Manager</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_CMDCLANS=true@
-        <A href="javascript:Clicked('governments.cmvp')"><FONT COLOR=WHITE>Clan Governments</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_POLLS=true@
-        <A href="javascript:Clicked('polls.cmvp')"><FONT COLOR=WHITE>Polls Manager</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_LISTADMIN=true@
-        <A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
-        <BR>
-        <A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>Server Log</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_STAT=true@
-        <A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_LOADUNLOAD=true@
-        <A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
-        <BR>
-        @endif@
-	</TD><TD ALIGN=CENTER VALIGN=TOP>
-        @if?CheckAuthCode?AUTH_CMDRACE=true@
-        <A href="javascript:Clicked('races.cmvp')"><FONT COLOR=WHITE>Races</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_CMDCLASSES=true@
-        <A href="javascript:Clicked('charclasses.cmvp')"><FONT COLOR=WHITE>Classes</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_CMDABILITIES=true@
-        <A href="javascript:Clicked('abilities.cmvp')"><FONT COLOR=WHITE>Abilities</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_CMDRECIPES=true@
-        <A href="javascript:Clicked('recipes.cmvp')"><FONT COLOR=WHITE>Skill Recipes</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_COMPONENTS=true@
-        <A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
-        <BR>
-        @endif@
-    	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
-    	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
-    	<BR>
-    	@endif@
-    	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
-    	<A href="javascript:Clicked('holidays.cmvp')"><FONT COLOR=WHITE>Holidays</FONT></a>
-    	<BR>
-    	@endif@
-    	@if?CheckAuthCode?AUTH_TITLES=true@
-    	<A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE>Player Titles</FONT></a>
-    	<BR>
-    	@endif@
-        @if?CheckAuthCode?AUTH_CMDSOCIALS=true@
-        <A href="javascript:Clicked('socials.cmvp')"><FONT COLOR=WHITE>Socials</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_CMDFACTIONS=true@
-        <A href="javascript:Clicked('factions.cmvp')"><FONT COLOR=WHITE>Factions</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?ANYMODAREAS=true@
-        <A href="javascript:Clicked('deities.cmvp')"><FONT COLOR=WHITE>Deities</FONT></a>
-        <BR>
-        @endif@
-        @if?CheckAuthCode?AUTH_CATALOG=true@
-        <A href="javascript:Clicked('catalog.cmvp')"><FONT COLOR=WHITE>Catalog</FONT></a>
-        <BR>
-        @endif@
-	</TD></TR>
-</TD></TR>
-</TABLE>
-@else@
-<!-- Limited access SubOp -->
-@endif@
-@if?CheckAuthCode?ANYMODAREAS=true@
-	<P>
-	<TABLE WIDTH=200 BORDER=1>
-	<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Area Grinder:</B></FONT></TD></TR>
-	<TR><TD ALIGN=CENTER>
+
+@block?AREAEDITOR@
 	<SELECT NAME=AREA HEIGHT=10>
 	@MUDGrinder?AREALIST&NOINSTANCE@
 	</SELECT>
@@ -226,15 +127,15 @@
 		Sort(document.SELECTAREA.AREA);
 	-->
 	</SCRIPT>
-	</TD></TR>
-	<TR><TD ALIGN=CENTER>
+	<BR>
 	@if?CheckAuthCode?ALLMODAREAS=true@
+	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Edit" ONCLICK="Clicked('possmodarea.cmvp');">
+	<INPUT TYPE=BUTTON NAME=MAPAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
+	<br>
+	<INPUT TYPE=CHECKBOX NAME=MAPSTYLE VALUE=Z><FONT SIZE=-1 COLOR=WHITE>Use Z-Level Mapping</FONT>
+	<br>
 	<TABLE BORDER=0><TR><TD ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="New" ONCLICK="Clicked('newarea.cmvp');">
-	</TD><TD ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Edit" ONCLICK="Clicked('possmodarea.cmvp');">
-	</TD><TD ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=MAPAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
 	</TD><TD ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="if(confirm('Are you sure you want to delete this area?'))Clicked('areagone.cmvp');">
 	</TD>
@@ -242,12 +143,128 @@
 	@else@
 		<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
 	@endif@
-	</TD></TR>
-	<TR><TD ALIGN=CENTER>
-	<INPUT TYPE=CHECKBOX NAME=MAPSTYLE VALUE=Z>
-	<FONT COLOR=WHITE>Use Z-Level Mapping</FONT>
-	</TD></TR>
+	
+@/block@ @if?CheckAuthCode?SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_LISTADMIN=true&||ANYFILEBROWSE=true&||AUTH_CMDPLAYERS&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
+	<TABLE WIDTH=600 BORDER=1>
+	<TR>
+	    <TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD>
+	    <TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Editors:</B></FONT></TD>
+	@if?CheckAuthCode?ANYMODAREAS=true@
+	    <TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Areas:</B></FONT></TD>
+	@endif@
+	</TR>
+	<TR><TD ALIGN=CENTER VALIGN=TOP>
+	    	@if?CheckAuthCode?SYSOP=true@
+	    	<A href="javascript:Clicked('control.cmvp')"><FONT COLOR=WHITE>Control Panel</FONT></a>
+	    	<BR>
+	    	@endif@
+	    	@if?CheckAuthCode?ANYFILEBROWSE=true@
+	    	<A HREF="javascript:Browse('@RequestParameter?BESTFILEBROWSE@');"><FONT COLOR=WHITE>File Browser</FONT></a>
+	    	<BR>
+	    	@endif@
+	    	@if?CheckAuthCode?AUTH_JOURNALS=true@
+	    	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
+	    	<BR>
+	    	@endif@
+	    	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
+		    	@if?IsAccountSystem@
+			    	<A href="javascript:Clicked('accounts.cmvp')"><FONT COLOR=WHITE>Account Manager</FONT></a>
+			    	<BR>
+			    @endif@
+	    	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Player Manager</FONT></a>
+	    	<BR>
+	    	@endif@
+	        @if?CheckAuthCode?AUTH_CMDCLANS=true@
+	        <A href="javascript:Clicked('clans.cmvp')"><FONT COLOR=WHITE>Clan Manager</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_CMDCLANS=true@
+	        <A href="javascript:Clicked('governments.cmvp')"><FONT COLOR=WHITE>Clan Governments</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_POLLS=true@
+	        <A href="javascript:Clicked('polls.cmvp')"><FONT COLOR=WHITE>Polls Manager</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_LISTADMIN=true@
+	        <A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
+	        <BR>
+	        <A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>Server Log</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_STAT=true@
+	        <A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_LOADUNLOAD=true@
+	        <A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
+	        <BR>
+	        @endif@
+		</TD><TD ALIGN=CENTER VALIGN=TOP>
+	        @if?CheckAuthCode?AUTH_CMDRACE=true@
+	        <A href="javascript:Clicked('races.cmvp')"><FONT COLOR=WHITE>Races</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_CMDCLASSES=true@
+	        <A href="javascript:Clicked('charclasses.cmvp')"><FONT COLOR=WHITE>Classes</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_CMDABILITIES=true@
+	        <A href="javascript:Clicked('abilities.cmvp')"><FONT COLOR=WHITE>Abilities</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_CMDRECIPES=true@
+	        <A href="javascript:Clicked('recipes.cmvp')"><FONT COLOR=WHITE>Skill Recipes</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_COMPONENTS=true@
+	        <A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
+	        <BR>
+	        @endif@
+	    	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
+	    	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
+	    	<BR>
+	    	@endif@
+	    	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
+	    	<A href="javascript:Clicked('holidays.cmvp')"><FONT COLOR=WHITE>Holidays</FONT></a>
+	    	<BR>
+	    	@endif@
+	    	@if?CheckAuthCode?AUTH_TITLES=true@
+	    	<A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE>Player Titles</FONT></a>
+	    	<BR>
+	    	@endif@
+	        @if?CheckAuthCode?AUTH_CMDSOCIALS=true@
+	        <A href="javascript:Clicked('socials.cmvp')"><FONT COLOR=WHITE>Socials</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_CMDFACTIONS=true@
+	        <A href="javascript:Clicked('factions.cmvp')"><FONT COLOR=WHITE>Factions</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?ANYMODAREAS=true@
+	        <A href="javascript:Clicked('deities.cmvp')"><FONT COLOR=WHITE>Deities</FONT></a>
+	        <BR>
+	        @endif@
+	        @if?CheckAuthCode?AUTH_CATALOG=true@
+	        <A href="javascript:Clicked('catalog.cmvp')"><FONT COLOR=WHITE>Catalog</FONT></a>
+	        <BR>
+	        @endif@
+		</TD>
+		@if?CheckAuthCode?ANYMODAREAS=true@
+			<TD VALIGN=TOP ALIGN=CENTER><BR>@insert?AREAEDITOR@</TD>
+		@endif@
+	</TR>
 	</TABLE>
+@else@
+	@if?CheckAuthCode?ANYMODAREAS=true@
+		<P>
+		<TABLE WIDTH=200 BORDER=1>
+		<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Area Grinder:</B></FONT></TD></TR>
+		<TR><TD ALIGN=CENTER>
+			@insert?AREAEDITOR@
+		</TD></TR>
+		</TABLE>
+	@endif@
 @endif@
 <P>
 <CENTER>
