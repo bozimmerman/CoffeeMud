@@ -17,7 +17,7 @@ window.close();
 @if?CheckReqParm?FUNCTION=BOOT@ @PlayerOnline?BOOT@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-alert('Player @PlayerID@ has been booted from the system.');
+if(window.alert) alert('Player @PlayerID@ has been booted from the system.');
 document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
@@ -25,7 +25,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 @if?CheckReqParm?FUNCTION=DELIMG@ @PlayerOnline?DELIMG@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-alert('The personalized image for @PlayerID@ has been deleted.');
+if(window.alert) alert('The personalized image for @PlayerID@ has been deleted.');
 document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
@@ -33,7 +33,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 @if?CheckReqParm?FUNCTION=BANBYNAME@ @PlayerOnline?BANBYNAME@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-alert('Player @PlayerID@ has been banned.');
+if(window.alert) alert('Player @PlayerID@ has been banned.');
 document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
@@ -41,7 +41,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 @if?CheckReqParm?FUNCTION=BANBYEMAIL@ @PlayerOnline?BANBYEMAIL@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-alert('Player Email Address has been banned.');
+if(window.alert) alert('Player Email Address has been banned.');
 document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
@@ -49,7 +49,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 @if?CheckReqParm?FUNCTION=BANBYIP@ @PlayerOnline?BANBYIP@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-alert('Player IP Address has been banned.');
+if(window.alert) alert('Player IP Address has been banned.');
 document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
@@ -57,7 +57,7 @@ document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 @if?CheckReqParm?FUNCTION=EDITPLAYER@ @MUDGrinder?EDITPLAYER@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-alert('Player has been modified.');
+if(window.alert) alert('Player has been modified.');
 document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
 //-->
 </SCRIPT>
