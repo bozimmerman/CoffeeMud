@@ -367,21 +367,19 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		
 		if((auth != null) && (auth.getAuthType().length()>0))
 		{
-			sendLine(debug,"AUTH " + auth.getAuthType());
-			rstr = reply.readLine();
+			if(auth.getAuthType().equalsIgnoreCase("login"))
+    			sendLine(debug,"AUTH " + auth.getAuthType()+" "+auth.getLogin());
+			else
+    			sendLine(debug,"AUTH " + auth.getAuthType());
+			while(rstr.startsWith("250"))
+    			rstr = reply.readLine();
 			if(debug) Log.debugOut("SMTPclient",rstr);
 			if ((rstr==null)||(!rstr.startsWith("334"))) throw new ProtocolException(""+rstr);
 			if(auth.getAuthType().equalsIgnoreCase("plain"))
 				sendLine(debug,auth.getPlainLogin());
 			else
 			if(auth.getAuthType().equalsIgnoreCase("login"))
-			{
-				sendLine(debug,auth.getLogin());
-				rstr = reply.readLine();
-				if(debug) Log.debugOut("SMTPclient",rstr);
-				if ((rstr==null)||(!rstr.startsWith("334"))) throw new ProtocolException(""+rstr);
 				sendLine(debug,auth.getPassword());
-			}
 			rstr = reply.readLine();
 			if(debug) Log.debugOut("SMTPclient",rstr);
 			if ((rstr==null)||(!rstr.startsWith("235"))) throw new ProtocolException(""+rstr);

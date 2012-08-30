@@ -155,6 +155,16 @@ public class RoomLoader
 		}
 		return new Room[0];
 	}
+	
+	private void buildExistingRoomObject(ResultSet R, Room newRoom) throws SQLException
+	{
+		newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE))
+			newRoom.setDescription("");
+		else
+			newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
+		newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
+	}
 
 	private List<Room> buildRoomObjects(DBConnection D, ResultSet R, boolean reportStatus) throws SQLException
 	{
@@ -174,18 +184,39 @@ public class RoomLoader
 			else
 			{
 				newRoom.setRoomID(roomID);
-				newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
-				if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE))
-					newRoom.setDescription("");
-				else
-					newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
-				newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
+				buildExistingRoomObject(R,newRoom);
 				rooms.add(newRoom);
 			}
 			if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
 		}
 		return rooms;
+	}
+	
+	public boolean DBReReadRoomObject(Room room)
+	{
+		if((room==null)||(room.roomID()==null))
+			return false;
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
+			if(R.next())
+    			buildExistingRoomObject(R, room);
+			else
+				return false;
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+			return false;
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return true;
 	}
 	
 	public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus)

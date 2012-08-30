@@ -177,6 +177,9 @@ public class DBInterface implements DatabaseEngine
 	public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus)
 	{ return RoomLoader.DBReadRoomObject(roomIDtoLoad, reportStatus); }
 	
+	public boolean DBReReadRoomObject(Room room)
+	{ return RoomLoader.DBReReadRoomObject(room); }
+	
 	public void DBReadRoomExits(String roomID, Map<String, Room> allRooms, boolean reportStatus)
 	{RoomLoader.DBReadRoomExits(roomID,allRooms,reportStatus);}
 	
