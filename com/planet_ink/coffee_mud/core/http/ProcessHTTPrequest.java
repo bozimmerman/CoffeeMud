@@ -600,6 +600,23 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		return -1;
 	}
 
+	private int myEndBlock(StringBuffer s, int i)
+	{
+		for(;i<s.length();i++)
+		{
+			if(s.charAt(i)=='@')
+			{
+				String foundMacro=parseFoundMacro(s,i,true);
+				if((foundMacro!=null)&&(foundMacro.length()>0))
+				{
+					if(foundMacro.equalsIgnoreCase("/block"))
+						return i;
+				}
+			}
+		}
+		return -1;
+	}
+
 	protected String runMacro(String foundMacro)
 		throws HTTPRedirectException, HTTPServerException
 	{
@@ -786,6 +803,12 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 							s.replace(i,i+l,"[/jscript without jscript]");
 						}
 						else
+						if(foundMacro.equalsIgnoreCase("/html"))
+						{
+							int l=foundMacro.length()+2;
+							s.replace(i,i+l,"[/html without html]");
+						}
+						else
 						if(foundMacro.equalsIgnoreCase("jscript"))
 						{
 							int l=foundMacro.length()+2;
@@ -816,15 +839,39 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 							continue;
 						}
 						else
+						if(foundMacro.startsWith("block?"))
+						{
+							int l=foundMacro.length()+2;
+							int v=myEndBlock(s,i+l);
+							if(v<0)
+								s.replace(i,i+l,"[block without /block]");
+							else
+							{
+								String name=foundMacro.substring(6).trim().toUpperCase();
+								getRequestObjects().put(name,s.substring(i+l,v));
+								s.delete(i,v+l+1);
+							}
+							continue;
+						}
+						else
+						if(foundMacro.startsWith("insert?"))
+						{
+							int l=foundMacro.length()+2;
+							String name=foundMacro.substring(7).trim().toUpperCase();
+							Object o=getRequestObjects().get(name);
+							s.replace(i,i+l,o.toString());
+							continue;
+						}
+						else
 						if(foundMacro.equalsIgnoreCase("endif"))
 						{
-							s.replace(i,i+7,"");
+							s.delete(i,i+7);
 							continue;
 						}
 						else
 						if(foundMacro.equalsIgnoreCase("else"))
 						{
-							s.replace(i,i+6,"");
+							s.delete(i,i+6);
 							continue;
 						}
 						else
