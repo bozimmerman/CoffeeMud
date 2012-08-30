@@ -46,10 +46,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			{
     			LandTitle title = CMLib.law().getLandTitle(R);
     			if(title != null)
-    			{
-    				// this wont work .. the rooms come back pretty much at random, always with R first, in fact
-    				return CMLib.map().getExtendedRoomID(title.getPropertyRooms().iterator().next());
-    			}
+    				return title.getUniqueLotID();
     			else
     				return "";
 			}

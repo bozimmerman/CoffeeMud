@@ -102,6 +102,12 @@ public class StdTitle extends StdItem implements LandTitle
 		return A.rentalProperty();
 	}
 
+	public String getUniqueLotID()
+	{ 
+		LandTitle A=fetchALandTitle();
+		if(A==null)    return "";
+		return A.getUniqueLotID();
+	}
 	public void setRentalProperty(boolean truefalse)
 	{
 		LandTitle A=fetchALandTitle();
@@ -137,7 +143,7 @@ public class StdTitle extends StdItem implements LandTitle
 
 	public LandTitle fetchALandTitle()
 	{
-		List<Room> V=getPropertyRooms();
+		List<Room> V=getAllTitledRooms();
 		if((V!=null)&&(V.size()>0))
 			return CMLib.law().getLandTitle((Room)V.get(0));
 		return null;
@@ -152,7 +158,7 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		if(!name.startsWith("the title to"))
 		{
-			List<Room> V=getPropertyRooms();
+			List<Room> V=getAllTitledRooms();
 			if((V.size()<2)
 			||(CMLib.map().getArea(landPropertyID())!=null))
 				setName("the title to "+landPropertyID());
@@ -169,7 +175,7 @@ public class StdTitle extends StdItem implements LandTitle
 
 	public void updateLot(List optPlayerList)
 	{
-		List<Room> V=getPropertyRooms();
+		List<Room> V=getAllTitledRooms();
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.get(v);
@@ -184,19 +190,36 @@ public class StdTitle extends StdItem implements LandTitle
 		if(T!=null) T.updateTitle();
 	}
 
-	public List<Room> getPropertyRooms()
+	public List<Room> getConnectedPropertyRooms()
 	{
 		Room R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
 		{
 			LandTitle A=CMLib.law().getLandTitle(R);
-			if(A!=null) return A.getPropertyRooms();
+			if(A!=null) return A.getConnectedPropertyRooms();
 		}
 		Area area=CMLib.map().getArea(landPropertyID());
 		if(area!=null)
 		{
 			LandTitle A=CMLib.law().getLandTitle(area);
-			if(A!=null) return A.getPropertyRooms();
+			if(A!=null) return A.getConnectedPropertyRooms();
+		}
+		return new Vector();
+	}
+	
+	public List<Room> getAllTitledRooms()
+	{
+		Room R=CMLib.map().getRoom(landPropertyID());
+		if(R!=null)
+		{
+			LandTitle A=CMLib.law().getLandTitle(R);
+			if(A!=null) return A.getAllTitledRooms();
+		}
+		Area area=CMLib.map().getArea(landPropertyID());
+		if(area!=null)
+		{
+			LandTitle A=CMLib.law().getLandTitle(area);
+			if(A!=null) return A.getAllTitledRooms();
 		}
 		return new Vector();
 	}
@@ -381,7 +404,7 @@ public class StdTitle extends StdItem implements LandTitle
 				msg.source().tell("This property is a rental.  Your rent will be paid every mud-month out of your bank account.");
 			else
 			{
-				List<Room> allRooms=getPropertyRooms();
+				List<Room> allRooms=getAllTitledRooms();
 				if((allRooms!=null)&&(allRooms.size()>0))
 				{
 					Room R=(Room)allRooms.get(0);

@@ -97,7 +97,21 @@ public interface LandTitle extends Environmental
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return a Vector of the complete set of Room objects represented by this title
 	 */
-	public List<Room> getPropertyRooms();
+	public List<Room> getAllTitledRooms();
+	/**
+	 * The complete set of room objects that are tied together by one or more titles.
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 * @return a Vector of the complete set of Room objects represented by property
+	 */
+	public List<Room> getConnectedPropertyRooms();
+	/**
+	 * Returns a unique identifier corresponding to getConnectedPropertyRooms.
+	 * An identifier that uniquely identifies all the connected lots of this property,
+	 * even if they are unowned, or owned by different people.  Think of it as a "subdivision"
+	 * when lots are variously owned, or a "mansion id" when lots are owned by one person.
+	 * @return unique identifier
+	 */
+	public String getUniqueLotID();
 	/**
 	 * Whether this property is a rental.
 	 * @return true if the property is rental, false if ownable outright

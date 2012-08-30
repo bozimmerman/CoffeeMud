@@ -66,6 +66,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return price;
 	}
 	
+	public String getUniqueLotID(){ return "AREA_PROPERTY_"+landPropertyID();}
+	
 	public void setLandPrice(int price)
 	{   
 		setMiscText(landOwner()+"/"
@@ -170,7 +172,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		&&((System.currentTimeMillis()-lastMobSave)>360000))
 		{
 			lastMobSave=System.currentTimeMillis();
-			List<Room> V=getPropertyRooms();
+			List<Room> V=getAllTitledRooms();
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=(Room)V.get(v);
@@ -196,7 +198,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		}
 	}
 
-	public List<Room> getPropertyRooms()
+	public List<Room> getAllTitledRooms()
 	{
 		Vector V=new Vector();
 		Area A=null;
@@ -208,6 +210,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			V.addElement(e.nextElement());
 		return V;
 	}
+	public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
 	public void updateLot(List optPlayerList)
@@ -215,7 +218,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(((System.currentTimeMillis()-lastCall)>360000)
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
 		{
-			List<Room> V=getPropertyRooms();
+			List<Room> V=getAllTitledRooms();
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=(Room)V.get(v);

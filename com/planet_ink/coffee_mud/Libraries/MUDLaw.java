@@ -134,7 +134,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				||(owner.equals("*")&&(T.landOwner().length()>0))
 				||(T.landOwner().equals(owner))))
 			{
-				List<Room> V2=T.getPropertyRooms();
+				List<Room> V2=T.getAllTitledRooms();
 				boolean proceed=true;
 				for(int v=0;v<V2.size();v++)
 				{

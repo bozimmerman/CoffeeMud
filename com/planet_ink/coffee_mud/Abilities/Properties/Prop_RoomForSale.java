@@ -76,6 +76,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return price;
 	}
 
+	public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
+
 	public void setLandPrice(int price)
 	{
 		setMiscText(landOwner()+"/"
@@ -168,6 +170,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return "";
 	}
 	
+	public String getUniqueLotID(){ return "ROOM_PROPERTY_"+landPropertyID();}
+
 	public String landPropertyID()
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -315,15 +319,15 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
-	public List<Room> getPropertyRooms()
+	public List<Room> getAllTitledRooms()
 	{
-		Vector V=new Vector();
+		List<Room> V=new Vector();
 		if(affected instanceof Room)
-			V.addElement((Room)affected);
+			V.add((Room)affected);
 		else
 		{
 			Room R=CMLib.map().getRoom(landPropertyID());
-			if(R!=null) V.addElement(R);
+			if(R!=null) V.add(R);
 		}
 		return V;
 	}

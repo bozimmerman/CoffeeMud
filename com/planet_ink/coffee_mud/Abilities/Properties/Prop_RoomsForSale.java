@@ -32,15 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Prop_RoomsForSale extends Prop_RoomForSale
 {
 	public String ID() { return "Prop_RoomsForSale"; }
 	public String name(){ return "Putting a cluster of rooms up for sale";}
+	protected String uniqueLotID=null;
 
-	protected void fillCluster(Room R, Vector V)
+	protected void fillCluster(Room R, List<Room> V)
 	{
-		V.addElement(R);
+		V.add(R);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Room R2=R.getRoomInDir(d);
@@ -51,22 +52,22 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 					fillCluster(R2,V);
 				else
 				{
-					V.removeElement(R);
-					V.insertElementAt(R,0);
+					V.remove(R); // purpose here is to put the "front" door up front.
+					V.add(0,R);
 				}
 			}
 		}
 	}
 
-	public List<Room> getPropertyRooms()
+	public List<Room> getAllTitledRooms()
 	{
-		Vector V=new Vector();
+		List<Room> V=new ArrayList<Room>();
 		Room R=null;
 		if(affected instanceof Room)
 			R=(Room)affected;
 		else
 			R=CMLib.map().getRoom(landPropertyID());
-		if(R!=null)    fillCluster(R,V);
+		if(R!=null) fillCluster(R,V);
 		return V;
 	}
 
@@ -86,11 +87,14 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	// update title, since it may affect room clusters, worries about EVERYONE
 	public void updateTitle()
 	{
-		List<Room> V=getPropertyRooms();
+		List<Room> V=getAllTitledRooms();
 		String owner=landOwner();
 		int price=landPrice();
 		boolean rental=rentalProperty();
 		int back=backTaxes();
+		String uniqueID="ROOMS_PROPERTY_"+this;
+		if(V.size()>0)
+			uniqueID="ROOMS_PROPERTY_"+CMLib.map().getExtendedRoomID((Room)V.get(0));
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.get(v);
@@ -110,9 +114,18 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 					A.setRentalProperty(rental);
 					CMLib.database().DBUpdateRoom(R);
 				}
+				if(A instanceof Prop_RoomsForSale)
+					((Prop_RoomsForSale)A).uniqueLotID=uniqueID;
 			}
 		}
 	}
+
+	public String getUniqueLotID()
+	{
+		if(uniqueLotID==null) updateTitle();
+		return uniqueLotID;
+	}
+	
 	// update lot, since its called by the savethread, ONLY worries about itself
 	public void updateLot(List optPlayerList)
 	{
@@ -124,7 +137,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			{
 				Room R=(Room)affected;
 				lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
-				List<Room> V=getPropertyRooms();
+				List<Room> V=getAllTitledRooms();
 				for(int v=0;v<V.size();v++)
 				{
 					Room R2=(Room)V.get(v);

@@ -1134,7 +1134,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						roomsHandling.add(R);
 					else
 					{
-						List<Room> V2=A.getPropertyRooms();
+						List<Room> V2=A.getAllTitledRooms();
 						roomsHandling.addAll(V2);
 					}
 					if((A.landOwner().length()>0)

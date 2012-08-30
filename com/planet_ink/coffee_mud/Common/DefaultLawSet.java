@@ -235,7 +235,7 @@ public class DefaultLawSet implements Law
 				{
 					if(p>0) properties.append(", ");
 					T=((LandTitle)particulars.elementAt(p));
-					propertyRooms=T.getPropertyRooms();
+					propertyRooms=T.getAllTitledRooms();
 					if((propertyRooms.size()<2)
 					||(CMLib.map().getArea(T.landPropertyID())!=null))
 						properties.append(T.landPropertyID());
