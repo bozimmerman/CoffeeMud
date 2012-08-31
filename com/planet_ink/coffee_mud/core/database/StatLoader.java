@@ -50,9 +50,9 @@ public class StatLoader
 		{
 			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT="+startTime);
-			T=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
 			if(R.next())
 			{
+				T=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
 				long endTime=DBConnections.getLongRes(R,"CMENDT");
 				String data=DBConnections.getRes(R,"CMDATA");
 				T.populate(startTime,endTime,data);
