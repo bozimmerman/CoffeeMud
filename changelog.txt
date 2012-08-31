@@ -2379,3 +2379,7 @@ ruthless programmer, and sentenced to a quick death.
 11.Construction and Masonry skills now support building stairs to create new floors -- rooms must still be purchased.
 12.Children now inheret the languages of their parents
 13.Players can now sit from a sleeping position (not sure how that got missed).
+14.SHOWDAMAGE flag in your coffeemud.ini file now supports SOURCE and TARGET options
+15.CLANVOTE option, long supported in the codebase, is now exposed in the coffeemud.ini file
+16.(Internal) System can now cache commonly used world searches.  See NOCACHE in coffeemud.ini to turn it off!
+
