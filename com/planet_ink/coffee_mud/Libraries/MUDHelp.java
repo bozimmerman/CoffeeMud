@@ -961,7 +961,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&(item.length()>0)
 						&&item.toUpperCase().endsWith(".INI")
 						&&(item.toUpperCase().startsWith("ARC_")))
+						{
 							arcHelpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+							/*
+							Properties chker=new Properties();
+							chker.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+							for(Object key : chker.keySet())
+								System.out.println(item+": "+key);
+							*/
+						}
 					}
 				}
    				//DVector suspiciousPairs=suspiciousTags(arcHelpFile);
@@ -1031,7 +1039,15 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&(item.length()>0)
 						&&item.toUpperCase().endsWith(".INI")
 						&&(!item.toUpperCase().startsWith("ARC_")))
+						{
 							helpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+							/*
+							Properties chker=new Properties();
+							chker.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+							for(Object key : chker.keySet())
+								System.out.println(item+": "+key);
+							*/
+						}
 					}
 				}
    				//DVector suspiciousPairs=suspiciousTags(helpFile);

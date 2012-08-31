@@ -2365,7 +2365,7 @@ ruthless programmer, and sentenced to a quick death.
 11.NPC def hit point formula lowered slightly, some slight skill adjustments to decrease mage armor & increase thief dmg.
 12.New Property: Prop_AddDamage (no, really this time)
 13.New disposition: Unattackable -- effectively deprecates Prop_SafePet
-# Build 5.7.7 Release ??/??/2012
+# Build 5.7.7 Release 08/31/2012
 1. MUDGrinder area editor has easier to manage parent/child areas & subops -- the old multiselect thing was unbearable.
 2. GenBook now uses the Message Maker (from the SHELL command) to add book chapters.
 3. (Internal) Database connections can now be kept alive with pings.  See new coffeemud.ini entry: DBPINGINTERVALMINS
