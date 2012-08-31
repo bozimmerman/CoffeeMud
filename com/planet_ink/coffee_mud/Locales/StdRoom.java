@@ -1502,6 +1502,7 @@ public class StdRoom implements Room
 	public int numPCInhabitants()
 	{
 		final Set<MOB> playerInhabitants=CMLib.players().getPlayersHere(this);
+		if(playerInhabitants.size()==0) return 0;
 		int num=0;
 		for(MOB M : playerInhabitants)
 			if((M!=null)&&(M.session()!=null))
