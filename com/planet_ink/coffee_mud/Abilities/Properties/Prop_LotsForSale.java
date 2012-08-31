@@ -70,17 +70,22 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			R=(Room)affected;
 		else
 			R=CMLib.map().getRoom(landPropertyID());
-		if(R!=null) fillCluster(R,V);
-		String uniqueID="LOTS_PROPERTY_"+this;
-		if(V.size()>0)
-			uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID((Room)V.get(0));
-		for(Iterator<Room> r=V.iterator();r.hasNext();)
+		if(R!=null)
 		{
-			Ability A=null;
-			R=r.next();
-			if(R!=null) A=R.fetchEffect(ID());
-			if(A!=null) ((Prop_LotsForSale)A).uniqueLotID=uniqueID;
+			fillCluster(R,V);
+    		String uniqueID="LOTS_PROPERTY_"+this;
+    		if(V.size()>0)
+    			uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID((Room)V.get(0));
+    		for(Iterator<Room> r=V.iterator();r.hasNext();)
+    		{
+    			Ability A=null;
+    			R=r.next();
+    			if(R!=null) A=R.fetchEffect(ID());
+    			if(A!=null) ((Prop_LotsForSale)A).uniqueLotID=uniqueID;
+    		}
 		}
+		else
+			uniqueLotID="";
 		return V;
 		
 	}

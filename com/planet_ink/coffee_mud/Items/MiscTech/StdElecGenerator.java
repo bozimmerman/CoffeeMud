@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /* 
@@ -51,6 +52,8 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 	
 	protected int   generatedAmtPerTick = 1;
 	protected int[] generatedFuelTypes = new int[]{RawMaterial.RESOURCE_DEUTERIUM};
+	
+	protected SLinkedList<WeakReference<Room>> roomsToPower=new SLinkedList<WeakReference<Room>>();  
 	
 	@Override
 	public long containTypes(){return Container.CONTAIN_RAWMATERIALS;}

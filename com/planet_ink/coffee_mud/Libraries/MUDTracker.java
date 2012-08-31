@@ -340,7 +340,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
     		for(MOB inhab : mobsThere)
     		{
-    			if((CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
+    			if((inhab.session()!=null)
+    			&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
     			&&(CMLib.flags().isInTheGame(inhab, true))
     			&&(CMath.bset(inhab.getBitmap(), MOB.ATT_SYSOPMSGS)))
     				return true;
