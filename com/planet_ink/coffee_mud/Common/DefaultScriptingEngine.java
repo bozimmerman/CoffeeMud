@@ -7857,28 +7857,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null) return null;
 				}
 				Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				String tattooName=tt[2];
-				if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
+				String titleStr=varify(monster, newTarget, scripted, monster, secondaryItem, secondaryItem, msg, tmp, tt[2]);
+				if((newTarget!=null)&&(titleStr.length()>0)&&(newTarget instanceof MOB))
 				{
 					MOB themob=(MOB)newTarget;
-					boolean tattooMinus=tattooName.startsWith("-");
-					if(tattooMinus) tattooName=tattooName.substring(1);
-					String tattoo=tattooName;
-					if((tattoo.length()>0)
-					&&(Character.isDigit(tattoo.charAt(0)))
-					&&(tattoo.indexOf(' ')>0)
-					&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(' ')).trim())))
-						tattoo=tattoo.substring(tattoo.indexOf(' ')+1).trim();
+					boolean tattooMinus=titleStr.startsWith("-");
+					if(tattooMinus) titleStr=titleStr.substring(1);
 					if(themob.playerStats()!=null)
 					{
-						if(themob.playerStats().getTitles().contains(tattoo))
+						if(themob.playerStats().getTitles().contains(titleStr))
 						{
 							if(tattooMinus)
-								themob.playerStats().getTitles().remove(tattooName);
+								themob.playerStats().getTitles().remove(titleStr);
 						}
 						else
 						if(!tattooMinus)
-							themob.playerStats().getTitles().add(0,tattooName);
+							themob.playerStats().getTitles().add(0,titleStr);
 					}
 				}
 				break;
