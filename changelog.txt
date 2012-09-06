@@ -2383,3 +2383,7 @@ ruthless programmer, and sentenced to a quick death.
 15.CLANVOTE option, long supported in the codebase, is now exposed in the coffeemud.ini file
 16.(Internal) System can now cache commonly used world searches.  See NOCACHE in coffeemud.ini to turn it off!
 17.Bugs fixed in conventional manner.
+# Build 5.7.8 Release 09/0?/2012
+1. Fixed the statistics bug
+2. Fixed a bug with variables in Scriptable MPTITLE command
+
