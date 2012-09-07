@@ -171,7 +171,10 @@ public class Qualify  extends Skills
 		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(12.0,mob);
 		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(13.0,mob);
 		if((mob!=null)
-		&&(showAll||("CLASSES".startsWith(qual))))
+		&&(showAll||("CLASSES".startsWith(qual)))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
+		&&(!mob.baseCharStats().getMyRace().classless()))
+		)
 		{
 			int col=0;
 			StringBuffer msg2=new StringBuffer("");
