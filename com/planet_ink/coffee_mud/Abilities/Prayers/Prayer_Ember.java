@@ -59,10 +59,13 @@ public class Prayer_Ember extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"A flaming ember assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+".  A flaming ember appears and attacks <T-NAMESELF>!^?");
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final Room R=target.location();
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg);
+				R.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel),3+super.getX1Level(mob));
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The unholy ember <DAMAGE> <T-NAME>!");

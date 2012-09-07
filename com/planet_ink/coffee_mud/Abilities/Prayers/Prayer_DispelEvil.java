@@ -72,11 +72,14 @@ public class Prayer_DispelEvil extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exorcise(s)!":"^S<S-NAME> exorcise(s) the evil inside <T-NAMESELF>!^?");
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final Room R=target.location();
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
+				R.send(mob,msg2);
 				int harming=CMLib.dice().roll(2,adjustedLevel(mob,asLevel)+4,10);
-				if(msg.value()>0)
+				if((msg.value()>0)||(msg2.value()>0))
 					harming=(int)Math.round(CMath.div(harming,2.0));
 				if(CMLib.flags().isEvil(target))
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,"The righteous spell <DAMAGE> <T-NAME>!");

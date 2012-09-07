@@ -74,15 +74,18 @@ public class Prayer_Godstrike extends Prayer
 			// what happened.
 			Prayer_Godstrike newOne=(Prayer_Godstrike)this.copyOf();
 			CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,(auto?"<T-NAME> is filled with holy fury!":"^S<S-NAME> "+prayWord(mob)+" for power against the evil inside <T-NAMESELF>!^?")+CMProps.msp("spelldam1.wav",40));
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final Room R=target.location();
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
+				R.send(mob,msg2);
 				int harming=CMLib.dice().roll(3,adjustedLevel(mob,asLevel)+8,adjustedLevel(mob,asLevel));
-				if(msg.value()>0)
+				if((msg.value()>0)||(msg2.value()>0))
 					harming=(int)Math.round(CMath.div(harming,2.0));
 				if(undead) harming=harming*2;
 				if(CMLib.flags().isEvil(target))
-					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe holy STRIKE of the gods <DAMAGE> <T-NAME>!^?");
+					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,"^SThe holy STRIKE of the gods <DAMAGE> <T-NAME>!^?");
 			}
 		}
 		else

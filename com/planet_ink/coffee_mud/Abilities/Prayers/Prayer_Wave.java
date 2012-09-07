@@ -94,15 +94,22 @@ public class Prayer_Wave extends Prayer
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
-					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");					if(mob.location().okMessage(mob,msg))
+					final Room R=target.location();
+					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");					
+					CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
+					if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 					{
-						mob.location().send(mob,msg);
-						int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
-						CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
-						int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*4);
-						int roll=CMLib.dice().rollPercentage();
-						if((roll!=1)&&(roll>chanceToStay))
-							CMLib.tracking().walk(target,dir,true,false);
+						R.send(mob,msg);
+						R.send(mob,msg2);
+						if((msg.value()<=0)&&(msg2.value()<=0))
+						{
+    						int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
+    						CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
+    						int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*4);
+    						int roll=CMLib.dice().rollPercentage();
+    						if((roll!=1)&&(roll>chanceToStay))
+    							CMLib.tracking().walk(target,dir,true,false);
+						}
 					}
 				}
 				else

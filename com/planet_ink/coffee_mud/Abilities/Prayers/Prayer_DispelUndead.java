@@ -72,11 +72,14 @@ public class Prayer_DispelUndead extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"The evil inside <T-NAME> is exorcised!":"^S<S-NAME> "+prayForWord(mob)+" to dispel the coldness inside <T-NAMESELF>!^?");
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final Room R=target.location();
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
+				R.send(mob,msg2);
 				int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+15,adjustedLevel(mob,asLevel)/2);
-				if(msg.value()>0)
+				if((msg.value()>0)||(msg2.value()>0))
 					harming=(int)Math.round(CMath.div(harming,2.0));
 				CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BURSTING,"The holy spell <DAMAGE> <T-NAME>!");
 			}

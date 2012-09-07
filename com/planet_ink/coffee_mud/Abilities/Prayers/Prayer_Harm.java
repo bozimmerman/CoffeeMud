@@ -72,11 +72,14 @@ public class Prayer_Harm extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
+			final Room R=target.location();
 			CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),(auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> "+prayWord(mob)+" to deliver tremendous pain at <T-NAMESELF>!^?")+CMProps.msp("spelldam2.wav",40));
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg);
+				R.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+24,8);
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");

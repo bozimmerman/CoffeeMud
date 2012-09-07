@@ -60,10 +60,13 @@ public class Prayer_Deathfinger extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"A finger of death rages at <T-NAME>.":"^S<S-NAME> point(s) in rage at <T-NAMESELF> and "+prayWord(mob)+"!^?");
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final Room R=target.location();
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg);
+				R.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel),48 + 16);
 					int levelDiff=(mob.phyStats().level() - target.phyStats().level());

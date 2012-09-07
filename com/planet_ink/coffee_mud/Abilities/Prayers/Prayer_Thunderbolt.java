@@ -51,6 +51,7 @@ public class Prayer_Thunderbolt extends Prayer
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
+		final Room R=target.location();
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -59,10 +60,12 @@ public class Prayer_Thunderbolt extends Prayer
 			// what happened.
 			Prayer_Thunderbolt newOne=(Prayer_Thunderbolt)this.copyOf();
 			CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto),(auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> "+prayForWord(mob)+" to strike down <T-NAMESELF>!^?")+CMProps.msp("lightning.wav",40));
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg);
+				R.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel),adjustedLevel(mob,asLevel));
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"^SThe STRIKE of the gods <DAMAGE> <T-NAME>!^?");

@@ -2386,4 +2386,5 @@ ruthless programmer, and sentenced to a quick death.
 # Build 5.7.8 Release 09/0?/2012
 1. Fixed the statistics bug
 2. Fixed a bug with variables in Scriptable MPTITLE command
+3. Fixed numerous prayers that did not respect elemental immunity/resistance
 

@@ -65,8 +65,8 @@ public class Spell_Immunity extends Spell
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		&&(msg.targetMinor()==immunityType)
+		&&((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))||(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+		&&(msg.sourceMinor()==immunityType)
 		&&(!mob.amDead())
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 		{

@@ -66,6 +66,7 @@ public class Prayer_Hellfire extends Prayer
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
+		final Room R=target.location();
 		if((success)&&(CMLib.flags().isGood(target)))
 		{
 			// it worked, so build a copy of this ability,
@@ -74,10 +75,12 @@ public class Prayer_Hellfire extends Prayer
 			// what happened.
 			Prayer_Hellfire newOne=(Prayer_Hellfire)this.copyOf();
 			CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,(auto?"":"^S<S-NAME> "+prayForWord(mob)+" to rage against the good inside <T-NAMESELF>!^?")+CMProps.msp("spelldam1.wav",40));
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg);
+				R.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int harming=CMLib.dice().roll(2,adjustedLevel(mob,asLevel),6);
 					if(undead) harming=harming/2;

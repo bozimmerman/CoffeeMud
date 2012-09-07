@@ -73,10 +73,13 @@ public class Prayer_CauseSerious extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),(auto?"A seriously painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a serious burst of pain at <T-NAMESELF>!^?")+CMProps.msp("spelldam1.wav",40));
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final Room R=target.location();
+			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg);
+				R.send(mob,msg2);
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+6,4);
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
