@@ -48,6 +48,7 @@ public interface CharCreationLibrary extends CMLibrary
 	public LoginResult loginSystem(Session session, LoginSession loginObj) throws java.io.IOException;
 	public LoginResult doAccountMenu(PlayerAccount acct, Session session, boolean create) throws java.io.IOException;
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName);
+	public void repickStats(int theme, MOB mob, Session session, int pointsLeft, boolean randomRoll) throws IOException;
 	public void pageRooms(CMProps page, Map<String, String> table, String start);
 	public void initStartRooms(CMProps page);
 	public void initDeathRooms(CMProps page);
