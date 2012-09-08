@@ -94,6 +94,10 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 			if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELEC_GENERATOR))
     			CMLib.threads().startTickDown(this, Tickable.TICKID_ELEC_GENERATOR, 1);
 		}
+		else
+		{
+			CMLib.threads().deleteTick(this,Tickable.TICKID_ELEC_GENERATOR);
+		}
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)

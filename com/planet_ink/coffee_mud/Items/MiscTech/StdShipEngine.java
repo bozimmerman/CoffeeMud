@@ -59,4 +59,11 @@ public class StdShipEngine extends StdElecItem
 	protected int thrust=1000;
 	public int getThrust(){return thrust;}
 	public void setThrust(int current){thrust=current;}
+	
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(affected instanceof Room)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
+	}
 }

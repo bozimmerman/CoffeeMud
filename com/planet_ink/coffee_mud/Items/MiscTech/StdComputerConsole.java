@@ -77,6 +77,13 @@ public class StdComputerConsole extends StdRideable
 		return E instanceof Software;
 	}
 
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(affected instanceof Room)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
+	}
+
 	public String readableText()
 	{
 		final StringBuilder str=new StringBuilder(super.readableText());

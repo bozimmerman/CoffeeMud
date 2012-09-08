@@ -74,5 +74,11 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 	}
 
 	public boolean isGeneric(){return true;}
-
+	
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(affected instanceof Room)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
+	}
 }

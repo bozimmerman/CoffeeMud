@@ -380,8 +380,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int SENSE_ITEMNORUIN=8192;
 	/** a bit setting, as from sensesMask(), flagging this item/room being unwishable for */
 	public final static int SENSE_ITEMNOWISH=16384;
-	/** a bit setting, as from sensesMask(), flagging this item/room  */
-	public final static int SENSE_UNUSEDMASK16=32768;
+	/** a bit setting, as from sensesMask(), flagging this room contains electronic circuitry  */
+	public final static int SENSE_ROOMCIRCUITED=32768;
 	/** a bit setting, as from sensesMask(), flagging this item/room  */
 	public final static int SENSE_UNUSEDMASK17=65536;
 	
@@ -401,8 +401,8 @@ public interface PhyStats extends CMCommon, Modifiable
 		"ROOMUNMAPPABLE",
 		"ROOMGRIDSYNC",
 		"ITEMNORUIN",
-		"UNUSEDMASK15",
-		"UNUSEDMASK16",
+		"ITEMNOWISH",
+		"ROOMCIRCUITED",
 		"UNUSEDMASK17",
 	};
 
