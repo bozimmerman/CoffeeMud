@@ -387,7 +387,7 @@ public class Age extends StdAbility
 					Ability reRollA=CMClass.getAbility("Prop_ReRollStats");
 					if(reRollA!=null)
 					{
-						reRollA.setMiscText("BONUSPOINTS="+bonusPoints);
+						reRollA.setMiscText("BONUSPOINTS="+bonusPoints+" PICKCLASS=TRUE");
 						newMan.addNonUninvokableEffect(reRollA);
 					}
 					newMan.recoverCharStats();

@@ -40,6 +40,7 @@ public class Prop_ReRollStats extends Property
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int bonusPointsPerStat=0;
 	protected boolean reRollFlag=true;
+	protected boolean rePickClass=false;
 
 	public String accountForYourself()
 	{
@@ -50,6 +51,7 @@ public class Prop_ReRollStats extends Property
 	{
 		super.setMiscText(newMiscText);
 		bonusPointsPerStat=CMParms.getParmInt(newMiscText, "BONUSPOINTS", 0);
+		rePickClass=CMParms.getParmBool(newMiscText, "PICKCLASS", false);
 	}
 	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -58,21 +60,28 @@ public class Prop_ReRollStats extends Property
 		if((reRollFlag)
 		&&(affected instanceof MOB)
 		&&(msg.sourceMinor()==CMMsg.TYP_LIFE)
-		&&(msg.source()==affected)
-		&&(msg.source().session()!=null)
-		&&(msg.source().playerStats()!=null))
+		&&(msg.source()==affected))
 		{
-			final Ability me=this;
-			CMLib.threads().executeRunnable(new Runnable(){
-				public void run()
-				{
-					try
+			final MOB M=(MOB)msg.source();
+			if((M.session()!=null)
+			&&(M.playerStats()!=null))
+			{
+				final Ability me=this;
+				CMLib.threads().executeRunnable(new Runnable(){
+					public void run()
 					{
-						CMLib.login().promptPlayerStats(msg.source().playerStats().getTheme(), msg.source(), msg.source().session(), bonusPointsPerStat);
-						msg.source().delEffect(me);
-					} catch (IOException e){}
-				}
-			});
+						try
+						{
+							CMLib.login().promptPlayerStats(M.playerStats().getTheme(), M, M.session(), bonusPointsPerStat);
+							M.recoverCharStats();
+							if(rePickClass)
+								M.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(M.playerStats().getTheme(), M, M.session()));
+							M.recoverCharStats();
+							M.delEffect(me);
+						} catch (IOException e){}
+					}
+				});
+			}
 		}
 	}
 }
