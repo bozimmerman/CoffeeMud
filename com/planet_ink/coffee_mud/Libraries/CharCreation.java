@@ -792,11 +792,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return list.toString();
 	}
 
-	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPointsPerStat) throws IOException
+	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException
 	{
 		if(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)>0)
 		{
-			mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)+bonusPointsPerStat);
+			mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT));
+			for(int i=0;i<bonusPoints;i++)
+			{
+				int randStat=CMLib.dice().roll(1, CharStats.CODES.BASE().length, -1);
+				mob.baseCharStats().setStat(randStat, mob.baseCharStats().getStat(randStat)+1);
+			}
 			mob.recoverCharStats();
 		}
 		else
@@ -806,7 +811,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 	
 			final boolean randomRoll = CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT) == 0;
-			int pointsLeft = getTotalStatPoints() + (bonusPointsPerStat * CharStats.CODES.BASE().length);
+			int pointsLeft = getTotalStatPoints() + bonusPoints;
 			for(int i=0;i<CharStats.CODES.BASE().length;i++)
 				mob.baseCharStats().setStat(i,CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT));
 			mob.recoverCharStats();

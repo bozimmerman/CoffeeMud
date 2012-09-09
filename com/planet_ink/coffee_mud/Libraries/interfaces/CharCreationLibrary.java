@@ -34,7 +34,7 @@ import java.util.*;
 public interface CharCreationLibrary extends CMLibrary
 {
 	public void reRollStats(MOB mob, CharStats C, int pointsLeft);
-	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPointsPerStat) throws IOException;
+	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException;
 	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException;
 	public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme);
 	// mob is optional

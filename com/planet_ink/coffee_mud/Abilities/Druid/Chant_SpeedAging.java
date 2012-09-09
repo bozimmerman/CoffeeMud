@@ -147,9 +147,21 @@ public class Chant_SpeedAging extends Chant
 				{
 					long start=CMath.s_long(A.text());
 					long age=System.currentTimeMillis()-start;
-					if(age<(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis()))
-						age=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis());
-					A.setMiscText(""+(start-(age/10)));
+					long millisPerMudday=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis();
+					if(age<millisPerMudday)
+						age=millisPerMudday;
+					long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
+					long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
+					long ageBy=age/10;
+					if(ageBy<(millisPerMudday+1))
+						ageBy=millisPerMudday+1;
+					else
+					if(ageBy<millisPerMonth)
+						ageBy=millisPerMonth+1;
+					else
+					if(ageBy<millisPerYear)
+						ageBy=millisPerYear+1;
+					A.setMiscText(""+(start-ageBy));
 					if(target instanceof MOB)
 						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
 					else

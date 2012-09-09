@@ -59,7 +59,7 @@ public class Prop_ReRollStats extends Property
 		super.executeMsg(myHost, msg);
 		if((reRollFlag)
 		&&(affected instanceof MOB)
-		&&(msg.sourceMinor()==CMMsg.TYP_LIFE)
+		&&(msg.sourceMinor()==CMMsg.TYP_LOOK)
 		&&(msg.source()==affected))
 		{
 			final MOB M=(MOB)msg.source();
@@ -78,6 +78,7 @@ public class Prop_ReRollStats extends Property
 								M.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(M.playerStats().getTheme(), M, M.session()));
 							M.recoverCharStats();
 							M.delEffect(me);
+							M.baseCharStats().getCurrentClass().grantAbilities(M, false);
 						} catch (IOException e){}
 					}
 				});

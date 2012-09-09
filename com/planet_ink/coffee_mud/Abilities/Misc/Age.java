@@ -305,6 +305,7 @@ public class Age extends StdAbility
 					if(babe.getClanID().length()>0)
 						newMan.setClanID(babe.getClanID());
 					int theme=Area.THEME_FANTASY;
+					int highestLegacyLevel=0;
 					for(Enumeration<MOB.Tattoo> e=newMan.tattoos();e.hasMoreElements();)
 					{
 						MOB.Tattoo T=e.nextElement();
@@ -329,6 +330,20 @@ public class Age extends StdAbility
 										newMan.addAbility((Ability)L.copyOf());
 								}
 								theme=M.playerStats().getTheme();
+							}
+						}
+					}
+					for(Enumeration<MOB.Tattoo> e=newMan.tattoos();e.hasMoreElements();)
+					{
+						MOB.Tattoo T=e.nextElement();
+						if(T.tattooName.startsWith("PARENT:"))
+						{
+							MOB M=CMLib.players().getLoadPlayer(T.tattooName.substring(7));
+							if((M!=null)&&(M.playerStats()!=null))
+							{
+								int legacyLevel=M.playerStats().getLegacyLevel(highestBaseClass);
+								if(legacyLevel>highestLegacyLevel)
+									highestLegacyLevel=legacyLevel;
 							}
 						}
 					}
@@ -382,12 +397,14 @@ public class Age extends StdAbility
 					for(int i=0;i<CharStats.CODES.BASE().length;i++)
 						newMan.baseCharStats().setStat(i,baseStat);
 					if(highestParentLevel>=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))
-						newMan.playerStats().addLegacyLevel(highestBaseClass);
-					int bonusPoints=newMan.playerStats().getTotalLegacyLevels()+1;
+						for(int i=0;i<highestLegacyLevel+1;i++)
+							newMan.playerStats().addLegacyLevel(highestBaseClass);
+					int bonusPoints=newMan.playerStats().getTotalLegacyLevels();
 					Ability reRollA=CMClass.getAbility("Prop_ReRollStats");
 					if(reRollA!=null)
 					{
 						reRollA.setMiscText("BONUSPOINTS="+bonusPoints+" PICKCLASS=TRUE");
+						newMan.setSavable(true);
 						newMan.addNonUninvokableEffect(reRollA);
 					}
 					newMan.recoverCharStats();
@@ -401,8 +418,11 @@ public class Age extends StdAbility
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit(newMan));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
 					for(int i : CharStats.CODES.BASE())
+					{
 						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))
 							newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+bonusPoints);
+						newMan.baseCharStats().setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,bonusPoints);
+					}
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
 					newMan.recoverCharStats();
