@@ -664,6 +664,47 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * @return whether this object is the same as the one passed in
 	 */
 	public boolean sameAs(PlayerStats E);
+	
+	/**
+	 * Returns the theme used to create this player.
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setTheme(int)
+	 * @return the theme used to create this player.
+	 */
+	public int getTheme();
+	
+	/**
+	 * Sets the theme used to create this player.
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTheme()
+	 * @param theme the theme used to create this player.
+	 */
+	public void setTheme(int theme);
+	
+	/**
+	 * Returns the total legacy levels for this player, all categories
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addLegacyLevel(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getLegacyLevel(category)
+	 * @return the total legacy levels for this player
+	 */
+	public int getTotalLegacyLevels();
+	
+	/**
+	 * Adds a new legacy level in the given category.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTotalLegacyLevels()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getLegacyLevel(category)
+	 * @param category the category to add a legacy level for
+	 */
+	public void addLegacyLevel(String category);
+	
+	/**
+	 * Returns the legacy levels for this player, in the given categories
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addLegacyLevel(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTotalLegacyLevels()
+	 * @param category the category to add a legacy level for
+	 * @return the legacy levels for this player this category
+	 */
+	public int getLegacyLevel(String category);
 
 	/** Constant for private messenging, means the last private msg was a SAYTO */
 	public static final int REPLY_SAY=0;

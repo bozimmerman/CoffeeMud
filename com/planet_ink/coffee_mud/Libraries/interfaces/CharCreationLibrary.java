@@ -33,7 +33,9 @@ import java.util.*;
 */
 public interface CharCreationLibrary extends CMLibrary
 {
-	public void reRollStats(MOB mob, CharStats C);
+	public void reRollStats(MOB mob, CharStats C, int pointsLeft);
+	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPointsPerStat) throws IOException;
+	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException;
 	public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme);
 	// mob is optional
 	public List<CharClass> classQualifies(MOB mob, int theme);
@@ -48,7 +50,6 @@ public interface CharCreationLibrary extends CMLibrary
 	public LoginResult loginSystem(Session session, LoginSession loginObj) throws java.io.IOException;
 	public LoginResult doAccountMenu(PlayerAccount acct, Session session, boolean create) throws java.io.IOException;
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName);
-	public void repickStats(int theme, MOB mob, Session session, int pointsLeft, boolean randomRoll) throws IOException;
 	public void pageRooms(CMProps page, Map<String, String> table, String start);
 	public void initStartRooms(CMProps page);
 	public void initDeathRooms(CMProps page);

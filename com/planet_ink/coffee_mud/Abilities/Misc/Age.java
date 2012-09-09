@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -292,41 +293,49 @@ public class Age extends StdAbility
 					newMan.setAgeMinutes(babe.getAgeMinutes());
 					newMan.setBaseCharStats(babe.baseCharStats());
 					newMan.setBasePhyStats(babe.basePhyStats());
+					newMan.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 					if(liege!=null)	newMan.copyFactions(liege);
 					newMan.basePhyStats().setLevel(1);
 					newMan.setBitmap(babe.getBitmap());
 					for(Enumeration<MOB.Tattoo> e=babe.tattoos();e.hasMoreElements();)
 						newMan.addTattoo(e.nextElement());
+					String highestBaseClass="Orphan";
+					int highestBaseLevel=0;
+					int highestParentLevel=0;
 					if(babe.getClanID().length()>0)
 						newMan.setClanID(babe.getClanID());
-					else
+					int theme=Area.THEME_FANTASY;
+					for(Enumeration<MOB.Tattoo> e=newMan.tattoos();e.hasMoreElements();)
 					{
-						for(Enumeration<MOB.Tattoo> e=newMan.tattoos();e.hasMoreElements();)
+						MOB.Tattoo T=e.nextElement();
+						if(T.tattooName.startsWith("PARENT:"))
 						{
-							MOB.Tattoo T=e.nextElement();
-							if(T.tattooName.startsWith("PARENT:"))
+							MOB M=CMLib.players().getLoadPlayer(T.tattooName.substring(7));
+							if(M!=null)
 							{
-								MOB M=CMLib.players().getLoadPlayer(T.tattooName.substring(7));
-								if(M!=null)
+								if(M.basePhyStats().level()>highestParentLevel)
+									highestParentLevel=M.basePhyStats().level();
+								for(int i=0;i<M.baseCharStats().numClasses();i++)
+									if(M.baseCharStats().getClassLevel(M.baseCharStats().getMyClass(i))>highestBaseLevel)
+										highestBaseClass=M.baseCharStats().getMyClass(i).baseClass();
+								if((M.getClanID().length()>0)&&(newMan.getClanID().length()==0))
+									newMan.setClanID(M.getClanID());
+								if((M.getWorshipCharID().length()>0)&&(newMan.getWorshipCharID().length()==0))
+									newMan.setWorshipCharID(M.getWorshipCharID());
+								for(Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
 								{
-									if((M.getClanID().length()>0)&&(newMan.getClanID().length()==0))
-										newMan.setClanID(M.getClanID());
-									if((M.getWorshipCharID().length()>0)&&(newMan.getWorshipCharID().length()==0))
-										newMan.setWorshipCharID(M.getWorshipCharID());
-									for(Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
-									{
-										Ability L=a.nextElement();
-										if((L instanceof Language)&&(newMan.fetchAbility(L.ID())==null))
-											newMan.addAbility((Ability)L.copyOf());
-									}
+									Ability L=a.nextElement();
+									if((L instanceof Language)&&(newMan.fetchAbility(L.ID())==null))
+										newMan.addAbility((Ability)L.copyOf());
 								}
+								theme=M.playerStats().getTheme();
 							}
 						}
-						if((newMan.getClanID().length()==0)
-						&&(liege!=null)
-						&&(liege.getClanID().length()>0))
-							newMan.setClanID(liege.getClanID());
 					}
+					if((newMan.getClanID().length()==0)
+					&&(liege!=null)
+					&&(liege.getClanID().length()>0))
+						newMan.setClanID(liege.getClanID());
 					if(newMan.getClanID().length()>0)
 					{
 						Clan C = newMan.getMyClan();
@@ -341,7 +350,6 @@ public class Age extends StdAbility
 					newMan.setLocation(babe.location());
 					CMLib.beanCounter().setMoney(newMan,CMLib.beanCounter().getMoney(babe));
 					newMan.setName(babe.Name());
-					newMan.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 					newMan.setPractices(babe.getPractices());
 					newMan.setQuestPoint(babe.getQuestPoint());
 					newMan.setStartRoom(babe.getStartRoom());
@@ -370,27 +378,31 @@ public class Age extends StdAbility
 					newMan.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
 					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE));
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
-					CMLib.login().reRollStats(newMan,newMan.baseCharStats());
+					int baseStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT)+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))/2;
+					for(int i=0;i<CharStats.CODES.BASE().length;i++)
+						newMan.baseCharStats().setStat(i,baseStat);
+					if(highestParentLevel>=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))
+						newMan.playerStats().addLegacyLevel(highestBaseClass);
+					int bonusPoints=newMan.playerStats().getTotalLegacyLevels()+1;
+					Ability reRollA=CMClass.getAbility("Prop_ReRollStats");
+					if(reRollA!=null)
+					{
+						reRollA.setMiscText("BONUSPOINTS="+bonusPoints);
+						newMan.addNonUninvokableEffect(reRollA);
+					}
+					newMan.recoverCharStats();
 					newMan.baseCharStats().getMyRace().startRacing(newMan,false);
-					newMan.baseCharStats().setMyClasses(";Apprentice");
+					newMan.playerStats().setTheme(theme);
+					try { newMan.baseCharStats().setMyClasses(";"+CMLib.login().promptCharClass(theme, newMan, null).name()); } catch (IOException e){}
 					newMan.baseCharStats().setMyLevels(";1");
 					newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
 					for(int i=0;i<babe.numItems();i++)
 						newMan.moveItemTo(babe.getItem(i));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit(newMan));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
-					Vector<Integer> qualifiedStats = new Vector<Integer>();
-					for(int i : CharStats.CODES.MAX())
-						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+7)
-							qualifiedStats.addElement(Integer.valueOf(i));
-					if(qualifiedStats.size()>0)
-					{
-						int stat=qualifiedStats.elementAt(CMLib.dice().roll(1,qualifiedStats.size(),-1)).intValue();
-						newMan.baseCharStats().setStat(stat,newMan.baseCharStats().getStat(stat)+1);
-					}
 					for(int i : CharStats.CODES.BASE())
 						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))
-							newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
+							newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+bonusPoints);
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
 					newMan.recoverCharStats();

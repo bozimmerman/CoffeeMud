@@ -63,15 +63,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return points - (basemin * CharStats.CODES.BASE().length);
 	}
 	
-	public void reRollStats(MOB mob, CharStats C)
+	public void reRollStats(MOB mob, CharStats C, int pointsLeft)
 	{
 		final int basemax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
 		
 		int[] stats=new int[CharStats.CODES.BASE().length];
 		for(int i=0;i<stats.length;i++)
-			stats[i]=CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT);
+			stats[i]=C.getStat(i);
 		
-		int pointsLeft = getTotalStatPoints();
 		while (pointsLeft > 0)
 		{
 			int whichStat = CharStats.CODES.BASE()[CMLib.dice().roll(1,CharStats.CODES.BASE().length,-1)];
@@ -793,107 +792,101 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return list.toString();
 	}
 
-	public void repickStats(int theme, MOB mob, Session session, int pointsLeft, boolean randomRoll) throws IOException
+	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPointsPerStat) throws IOException
 	{
-		CharStats unmodifiedCT = (CharStats)mob.charStats().copyOf();
-		List<String> validStats = new ArrayList<String>(CharStats.CODES.BASE().length);
-		for(int i : CharStats.CODES.BASE())
-			validStats.add(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i)));
-		List<CharClass> qualifyingClassListV=new Vector<CharClass>(1);
-		while(!session.isStopped())
+		if(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)>0)
 		{
-			if(randomRoll)
-				reRollStats(mob,mob.baseCharStats());
-
+			mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)+bonusPointsPerStat);
 			mob.recoverCharStats();
-			qualifyingClassListV=classQualifies(mob,theme);
-				
-			if(!randomRoll || (qualifyingClassListV.size()>0)||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+		}
+		else
+		{
+			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text();
+			try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+			session.println(null,null,null,"\n\r\n\r"+introText.toString());
+	
+			final boolean randomRoll = CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT) == 0;
+			int pointsLeft = getTotalStatPoints() + (bonusPointsPerStat * CharStats.CODES.BASE().length);
+			for(int i=0;i<CharStats.CODES.BASE().length;i++)
+				mob.baseCharStats().setStat(i,CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT));
+			mob.recoverCharStats();
+			CharStats unmodifiedCT = (CharStats)mob.charStats().copyOf();
+			List<String> validStats = new ArrayList<String>(CharStats.CODES.BASE().length);
+			for(int i : CharStats.CODES.BASE())
+				validStats.add(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i)));
+			List<CharClass> qualifyingClassListV=new Vector<CharClass>(1);
+			while(!session.isStopped())
 			{
-				int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-				StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
-				CharStats CT=mob.baseCharStats();
-				int total=0;
-				for(int i : CharStats.CODES.BASE())
-				{
-					total += CT.getStat(i);
-					statstr.append(CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
-							+": "+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
-				}
-				statstr.append(CMStrings.padRight("STATS TOTAL",15)+": "+total+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
-				session.println(statstr.toString());
-				if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
-				&&(!mob.baseCharStats().getMyRace().classless())
-				&&(randomRoll || qualifyingClassListV.size()>0)
-				&&((qualifyingClassListV.size()!=1)||(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))))
-					session.println("\n\rThis would qualify you for ^H"+buildQualifyingClassList(qualifyingClassListV,"and")+"^N.");
-
 				if(randomRoll)
 				{
-					if(!session.confirm("^!Would you like to re-roll (y/N)?^N","N"))
-						break;
+					unmodifiedCT.copyInto(mob.baseCharStats());
+					reRollStats(mob,mob.baseCharStats(),pointsLeft);
 				}
-				else
+
+				mob.recoverCharStats();
+				qualifyingClassListV=classQualifies(mob,theme);
+					
+				if(!randomRoll || (qualifyingClassListV.size()>0)||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 				{
-					String promptStr;
-					if(pointsLeft == 0)
+					int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+					StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
+					CharStats CT=mob.baseCharStats();
+					int total=0;
+					for(int i : CharStats.CODES.BASE())
 					{
-						session.println("\n\r^!You have no more points remaining.^N");
-						promptStr = "^!Enter a Stat name to remove a point, or ENTER when you are done: ^N";
+						total += CT.getStat(i);
+						statstr.append(CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
+								+": "+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
+					}
+					statstr.append(CMStrings.padRight("STATS TOTAL",15)+": "+total+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
+					session.println(statstr.toString());
+					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
+					&&(!mob.baseCharStats().getMyRace().classless())
+					&&(randomRoll || qualifyingClassListV.size()>0)
+					&&((qualifyingClassListV.size()!=1)||(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))))
+						session.println("\n\rThis would qualify you for ^H"+buildQualifyingClassList(qualifyingClassListV,"and")+"^N.");
+
+					if(randomRoll)
+					{
+						if(!session.confirm("^!Would you like to re-roll (y/N)?^N","N"))
+							break;
 					}
 					else
 					{
-						session.println("\n\r^!You have "+pointsLeft+" points remaining.^N");
-						promptStr = "^!Enter one of the Stat names above to add or remove a point: ^N";
-					}
-						
-					String prompt = session.prompt(promptStr);
-					if(prompt == null) throw new NullPointerException();
-					if((pointsLeft == 0)&&(prompt.trim().length()==0))
-					{
-						if(qualifyingClassListV.size()==0)
+						String promptStr;
+						if(pointsLeft == 0)
 						{
-							session.println("^rYou do not qualify for any classes.  Please modify your stats until you do.^N");
+							session.println("\n\r^!You have no more points remaining.^N");
+							promptStr = "^!Enter a Stat name to remove a point, or ENTER when you are done: ^N";
 						}
 						else
-							return;
-					}
-					if(prompt.trim().length()>0)
-					{
-						prompt = prompt.trim();
-						boolean remove = prompt.startsWith("-");
-						int statPointsChange = 0;
-						if(remove) prompt = prompt.substring(1).trim();
-						int space = prompt.lastIndexOf(' ');
-						if((space > 0)&&(CMath.isInteger(prompt.substring(space+1).trim())))
 						{
-							String numStr = prompt.substring(space+1).trim();
-							prompt = prompt.substring(0,space).trim();
-							int num = CMath.s_int(numStr);
-							if((num > -1000)&&(num < 1000)&&(num != 0))
-								statPointsChange=num;
-							if(statPointsChange < 0)
+							session.println("\n\r^!You have "+pointsLeft+" points remaining.^N");
+							promptStr = "^!Enter one of the Stat names above to add or remove a point: ^N";
+						}
+							
+						String prompt = session.prompt(promptStr);
+						if(prompt == null) throw new NullPointerException();
+						if((pointsLeft == 0)&&(prompt.trim().length()==0))
+						{
+							if(qualifyingClassListV.size()==0)
 							{
-								remove=true;
-								statPointsChange = statPointsChange * -1;
+								session.println("^rYou do not qualify for any classes.  Please modify your stats until you do.^N");
 							}
+							else
+								return;
 						}
-						else
-						if(remove) statPointsChange=-1;
-						int statCode = CharStats.CODES.findWhole(prompt, false);
-						if((statCode < 0)||(!validStats.contains(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)))))
+						if(prompt.trim().length()>0)
 						{
-							session.println("^r'"+prompt+"' is an unknown code.  Try one of these: "+CMParms.toStringList(validStats)+"^N");
-							continue;
-						}
-						if(statPointsChange == 0)
-						{
-							String numStr = session.prompt("^!How many points to add or remove (ex: +4, -1): ");
-							if(numStr == null) numStr = "";
-							numStr=numStr.trim();
-							if(numStr.startsWith("+")) numStr=numStr.substring(1);
-							if(CMath.isInteger(numStr))
+							prompt = prompt.trim();
+							boolean remove = prompt.startsWith("-");
+							int statPointsChange = 0;
+							if(remove) prompt = prompt.substring(1).trim();
+							int space = prompt.lastIndexOf(' ');
+							if((space > 0)&&(CMath.isInteger(prompt.substring(space+1).trim())))
 							{
+								String numStr = prompt.substring(space+1).trim();
+								prompt = prompt.substring(0,space).trim();
 								int num = CMath.s_int(numStr);
 								if((num > -1000)&&(num < 1000)&&(num != 0))
 									statPointsChange=num;
@@ -904,94 +897,98 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 								}
 							}
 							else
-							if(numStr.length()>0)
-								session.println("^r'"+numStr+"' is not a positive or negative number.^N");
-						}
-						if(statPointsChange <= 0)
-						{
-							continue;
-						}
-						final String list = CMProps.getVar(CMProps.SYSTEM_STATCOSTS);
-						long[][] costs=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(list.trim(),true), 1, 0, 101);
-						int pointsCost=0;
-						int curStatValue=CT.getStat(statCode);
-						for(int i=0;i<statPointsChange;i++)
-						{
-							int statPoint=remove?curStatValue-1:curStatValue;
-							int statCost=1;
-							if((statPoint>0)&&(statPoint<costs.length)&&(costs[statPoint]!=null)&&(costs[statPoint].length>0)&&(costs[statPoint][0]!=0))
-								statCost=(int)costs[statPoint][0];
-							pointsCost += remove ? -statCost : statCost;
-							curStatValue += remove ? -1 : 1;
-						}
-						if(pointsLeft - pointsCost < 0)
-						{
-							if(pointsLeft > 0)
-								session.println("^rYou need "+pointsCost+" points to do that, but only have "+pointsLeft+" remaining.^N");
-							else
-								session.println("^rYou don't have enough remaining points to do that.^N");
-							continue;
-						}
-						else
-						{
-							String friendlyName = CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode));
-							if(remove)
+							if(remove) statPointsChange=-1;
+							int statCode = CharStats.CODES.findWhole(prompt, false);
+							if((statCode < 0)||(!validStats.contains(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)))))
 							{
-								if(CT.getStat(statCode) <= unmodifiedCT.getStat(statCode))
+								session.println("^r'"+prompt+"' is an unknown code.  Try one of these: "+CMParms.toStringList(validStats)+"^N");
+								continue;
+							}
+							if(statPointsChange == 0)
+							{
+								String numStr = session.prompt("^!How many points to add or remove (ex: +4, -1): ");
+								if(numStr == null) numStr = "";
+								numStr=numStr.trim();
+								if(numStr.startsWith("+")) numStr=numStr.substring(1);
+								if(CMath.isInteger(numStr))
 								{
-									session.println("^rYou can not lower '"+friendlyName+" any further.^N");
-									continue;
+									int num = CMath.s_int(numStr);
+									if((num > -1000)&&(num < 1000)&&(num != 0))
+										statPointsChange=num;
+									if(statPointsChange < 0)
+									{
+										remove=true;
+										statPointsChange = statPointsChange * -1;
+									}
 								}
 								else
-								if(CT.getStat(statCode)-statPointsChange < unmodifiedCT.getStat(statCode))
-								{
-									session.println("^rYou can not lower '"+friendlyName+" any further.^N");
-									continue;
-								}
+								if(numStr.length()>0)
+									session.println("^r'"+numStr+"' is not a positive or negative number.^N");
+							}
+							if(statPointsChange <= 0)
+							{
+								continue;
+							}
+							final String list = CMProps.getVar(CMProps.SYSTEM_STATCOSTS);
+							long[][] costs=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(list.trim(),true), 1, 0, 101);
+							int pointsCost=0;
+							int curStatValue=CT.getStat(statCode);
+							for(int i=0;i<statPointsChange;i++)
+							{
+								int statPoint=remove?curStatValue-1:curStatValue;
+								int statCost=1;
+								if((statPoint>0)&&(statPoint<costs.length)&&(costs[statPoint]!=null)&&(costs[statPoint].length>0)&&(costs[statPoint][0]!=0))
+									statCost=(int)costs[statPoint][0];
+								pointsCost += remove ? -statCost : statCost;
+								curStatValue += remove ? -1 : 1;
+							}
+							if(pointsLeft - pointsCost < 0)
+							{
+								if(pointsLeft > 0)
+									session.println("^rYou need "+pointsCost+" points to do that, but only have "+pointsLeft+" remaining.^N");
+								else
+									session.println("^rYou don't have enough remaining points to do that.^N");
+								continue;
 							}
 							else
 							{
-								if(CT.getStat(statCode) >= max)
+								String friendlyName = CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode));
+								if(remove)
 								{
-									session.println("^rYou can not raise '"+friendlyName+" any further.^N");
-									continue;
+									if(CT.getStat(statCode) <= unmodifiedCT.getStat(statCode))
+									{
+										session.println("^rYou can not lower '"+friendlyName+" any further.^N");
+										continue;
+									}
+									else
+									if(CT.getStat(statCode)-statPointsChange < unmodifiedCT.getStat(statCode))
+									{
+										session.println("^rYou can not lower '"+friendlyName+" any further.^N");
+										continue;
+									}
 								}
 								else
-								if(CT.getStat(statCode)+statPointsChange > max)
 								{
-									session.println("^rYou can not raise '"+friendlyName+" any by that amount.^N");
-									continue;
+									if(CT.getStat(statCode) >= max)
+									{
+										session.println("^rYou can not raise '"+friendlyName+" any further.^N");
+										continue;
+									}
+									else
+									if(CT.getStat(statCode)+statPointsChange > max)
+									{
+										session.println("^rYou can not raise '"+friendlyName+" any by that amount.^N");
+										continue;
+									}
 								}
+								if(remove) statPointsChange = statPointsChange * -1;
+								CT.setStat(statCode, CT.getStat(statCode)+statPointsChange);
+								pointsLeft -= pointsCost;
 							}
-							if(remove) statPointsChange = statPointsChange * -1;
-							CT.setStat(statCode, CT.getStat(statCode)+statPointsChange);
-							pointsLeft -= pointsCost;
 						}
 					}
 				}
 			}
-		}
-	}
-	
-	protected void promptPlayerStats(int theme, MOB mob, Session session) throws IOException
-	{
-		if(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)>0)
-		{
-			mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT));
-			mob.recoverCharStats();
-		}
-		else
-		{
-			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text();
-			try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
-			session.println(null,null,null,"\n\r\n\r"+introText.toString());
-	
-			final boolean randomRoll = CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT) == 0;
-			int pointsLeft = getTotalStatPoints();
-			for(int i=0;i<CharStats.CODES.BASE().length;i++)
-				mob.baseCharStats().setStat(i,CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT));
-			mob.recoverCharStats();
-			repickStats(theme, mob, session, pointsLeft, randomRoll);
 		}
 	}
 
@@ -1145,7 +1142,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 
-	protected CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException
+	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException
 	{
 		CharClass newClass=null;
 		List<CharClass> qualClassesV=classQualifies(mob,theme);
@@ -1170,6 +1167,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		if(qualClassesV.size()==1)
+			newClass=(CharClass)qualClassesV.get(0);
+		else
+		if((session == null)||(session.isStopped()))
 			newClass=(CharClass)qualClassesV.get(0);
 		else
 		{
@@ -1272,8 +1272,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
 	}
 	
-	public LoginResult createCharacter(PlayerAccount acct, String login, Session session)
-		throws java.io.IOException
+	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException
 	{
 		Map<String,List<String>> extraScripts = getLoginScripts();
 		
@@ -1420,7 +1419,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null)&&(acct==null))
 				mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
 			
-			promptPlayerStats(theme, mob, session);
+			promptPlayerStats(theme, mob, session, 0);
 			executeScript(mob,extraScripts.get("STATS"));
 			
 			CharClass newClass = promptCharClass(theme, mob, session);

@@ -42,44 +42,46 @@ public class DefaultPlayerStats implements PlayerStats
 	protected final static int TELL_STACK_MAX_SIZE=50;
 	protected final static int GTELL_STACK_MAX_SIZE=50;
 	
-	protected long  	hygiene=0; 
-	protected String[]  xtraValues=null;
-	protected String	lastIP="";
-	protected long  	lLastDateTime=System.currentTimeMillis();
-	protected long  	lastUpdated=0;
-	protected int   	channelMask;
-	protected String	email="";
-	protected String	password="";
-	protected String	colorStr="";
-	protected String	prompt="";
-	protected String	poofin="";
-	protected String	poofout="";
-	protected String	tranpoofin="";
-	protected String	tranpoofout="";
-	protected String	announceMsg="";
-	protected String	savedPose="";
-	protected String	notes="";
-	protected int   	wrap=78;
-	protected int   	pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
-	protected int[] 	birthday=null;
-	protected MOB   	replyTo=null;
-	protected int   	replyType=0;
-	protected long  	replyTime=0;
-	protected PlayerAccount 	  account = null;
-	protected SHashSet<String>    friends=new SHashSet<String>();
-	protected SHashSet<String>    ignored=new SHashSet<String>();
-	protected SVector<String>     tellStack=new SVector<String>();
-	protected SVector<String>     gtellStack=new SVector<String>();
-	protected SVector<String>     titles=new SVector<String>();
-	protected STreeMap<String,String> alias=new STreeMap<String,String>();
+	protected long			 hygiene		= 0;
+	protected int			 theme			= Area.THEME_FANTASY;
+	protected String[]		 xtraValues		= null;
+	protected String		 lastIP			= "";
+	protected long  		 lLastDateTime	= System.currentTimeMillis();
+	protected long  		 lastUpdated	= 0;
+	protected int   		 channelMask;
+	protected String		 email			= "";
+	protected String		 password		= "";
+	protected String		 colorStr		= "";
+	protected String		 prompt			= "";
+	protected String		 poofin			= "";
+	protected String		 poofout		= "";
+	protected String		 tranpoofin		= "";
+	protected String		 tranpoofout	= "";
+	protected String		 announceMsg	= "";
+	protected String		 savedPose		= "";
+	protected String		 notes			= "";
+	protected int   		 wrap			= 78;
+	protected int   		 pageBreak		= CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
+	protected int[] 		 birthday		= null;
+	protected MOB   		 replyTo		= null;
+	protected int   		 replyType		= 0;
+	protected long  		 replyTime		= 0;
+	protected Set<String>	 friends		= new SHashSet<String>();
+	protected Set<String>	 ignored		= new SHashSet<String>();
+	protected List<String>	 tellStack		= new SVector<String>();
+	protected List<String>	 gtellStack		= new SVector<String>();
+	protected List<String>	 titles			= new SVector<String>();
+	protected PlayerAccount  account		= null;
+	protected SecGroup		 securityFlags	= new SecGroup(new CMSecurity.SecFlag[]{});
+	protected long			 accountExpires	= 0;
+	protected RoomnumberSet  visitedRoomSet	= null;
+	protected DVector   	 levelInfo		= new DVector(3);
+	protected Set<String>	 introductions	= new SHashSet<String>();
+	protected ItemCollection extItems;
 	
+	protected Map<String,String>	alias	 = new STreeMap<String,String>();
+	protected Map<String,Integer>	legacy	 = new STreeMap<String,Integer>();
 	
-	protected SecGroup   		securityFlags=new SecGroup(new CMSecurity.SecFlag[]{});
-	protected long  			accountExpiration=0;
-	protected RoomnumberSet 	visitedRoomSet=null;
-	protected DVector   		levelInfo=new DVector(3);
-	protected SHashSet<String>  introductions=new SHashSet<String>();
-	protected ItemCollection	extItems;
 
 	public DefaultPlayerStats() 
 	{
@@ -95,7 +97,7 @@ public class DefaultPlayerStats implements PlayerStats
 									 "POOFOUT","TRANPOOFIN","TRAINPOOFOUT",
 									 "ANNOUNCEMSG","NOTES","WRAP","BIRTHDAY",
 									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK",
-									 "SAVEDPOSE"};
+									 "SAVEDPOSE","THEME", "LEGLEVELS"};
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -118,10 +120,12 @@ public class DefaultPlayerStats implements PlayerStats
 		case 15: return notes;
 		case 16: return ""+wrap;
 		case 17: return CMParms.toStringList(birthday);
-		case 18: return ""+accountExpiration;
+		case 18: return ""+accountExpires;
 		case 19: return getPrivateList(introductions);
 		case 20: return ""+pageBreak;
 		case 21: return ""+savedPose;
+		case 22: return ""+theme;
+		case 23: return ""+getTotalLegacyLevels();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -148,10 +152,12 @@ public class DefaultPlayerStats implements PlayerStats
 		case 15: notes=val; break;
 		case 16: wrap=CMath.s_int(val); break;
 		case 17: setBirthday(val); break;
-		case 18: accountExpiration=CMath.s_long(val); break;
+		case 18: accountExpires=CMath.s_long(val); break;
 		case 19: introductions=getHashFrom(val); break;
 		case 20: pageBreak=CMath.s_int(val); break;
 		case 21: savedPose=val; break;
+		case 22: theme=CMath.s_int(val); break;
+		case 23: break; // legacy levels
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -192,12 +198,13 @@ public class DefaultPlayerStats implements PlayerStats
 			else
 				O.visitedRoomSet=null;
 			O.securityFlags=securityFlags.copyOf();
-			O.friends=friends.copyOf();
-			O.ignored=ignored.copyOf();
-			O.tellStack=tellStack.copyOf();
-			O.gtellStack=gtellStack.copyOf();
-			O.titles=titles.copyOf();
-			O.alias=alias.copyOf();
+			O.friends=new SHashSet<String>(friends);
+			O.ignored=new SHashSet<String>(ignored);
+			O.tellStack=new SVector<String>(tellStack);
+			O.gtellStack=new SVector<String>(gtellStack);
+			O.titles=new SVector<String>(titles);
+			O.alias=new SHashtable<String,String>(alias);
+			O.legacy=new SHashtable<String,Integer>(legacy);
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			O.extItems=(ItemCollection)extItems.copyOf();
 			return O;
@@ -227,6 +234,14 @@ public class DefaultPlayerStats implements PlayerStats
 		email=newAdd;
 		if(account != null)
 			account.setEmail(newAdd);
+	}
+	public int getTheme()
+	{
+		return theme;
+	}
+	public void setTheme(int theme)
+	{
+		this.theme=theme;
 	}
 	public long lastUpdated(){return lastUpdated;}
 	public void setLastUpdated(long time)
@@ -316,8 +331,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public void addTellStack(String msg)
 	{
 		if(tellStack.size()>TELL_STACK_MAX_SIZE)
-			tellStack.removeElementAt(0);
-		tellStack.addElement(msg);
+			tellStack.remove(0);
+		tellStack.add(msg);
 	}
 	
 	public List<String> getTellStack()
@@ -333,8 +348,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public void addGTellStack(String msg)
 	{
 		if(gtellStack.size()>GTELL_STACK_MAX_SIZE)
-			gtellStack.removeElementAt(0);
-		gtellStack.addElement(msg);
+			gtellStack.remove(0);
+		gtellStack.add(msg);
 	}
 	
 	public List<String> getGTellStack()
@@ -384,22 +399,26 @@ public class DefaultPlayerStats implements PlayerStats
 	public String getAliasXML()
 	{
 		if(alias.size()==0) return "";
-		StringBuffer str=new StringBuffer("");
+		StringBuilder str=new StringBuilder("");
 		alias.remove("");
-		int t=0;
 		for(String key : alias.keySet())
-		{
-			str.append("<ALIAS"+t+">"+key+"</ALIAS"+t+">");
-			str.append("<ALIASV"+t+">"+alias.get(key)+"</ALIASV"+t+">");
-			t++;
-		}
+			str.append("<ALIAS CMD=\"").append(key).append("\" VAL=\"").append(CMLib.xml().parseOutAngleBrackets(alias.get(key))).append("\">");
+		return str.toString();
+	}
+	
+	public String getLegacyXML()
+	{
+		if(legacy.size()==0) return "";
+		StringBuilder str=new StringBuilder("");
+		for(String key : legacy.keySet())
+			str.append("<LEGACY CAT=\"").append(key).append("\" LVL=\"").append(legacy.get(key)).append("\">");
 		return str.toString();
 	}
 	
 	public String getActiveTitle()
 	{
 		if((titles==null)||(titles.size()==0)) return null;
-		String s=(String)titles.firstElement();
+		String s=(String)titles.get(0);
 		if((s.length()<2)||(s.charAt(0)!='{')||(s.charAt(s.length()-1)!='}'))
 			return s;
 		return s.substring(1,s.length()-1);
@@ -409,19 +428,19 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		return titles;
 	}
-	public String getTitleXML()
+	private String getTitleXML()
 	{
 		if(titles.size()==0) return "";
-		StringBuffer str=new StringBuffer("");
 		for(int t=titles.size()-1;t>=0;t--)
 		{
-			String s=(String)titles.elementAt(t);
-			if(s.length()==0) titles.removeElementAt(t);
+			String s=(String)titles.get(t);
+			if(s.length()==0) titles.remove(t);
 		}
+		StringBuilder str=new StringBuilder("");
 		for(int t=0;t<titles.size();t++)
 		{
-			String s=(String)titles.elementAt(t);
-			str.append("<TITLE"+t+">"+CMLib.coffeeFilter().safetyFilter(s)+"</TITLE"+t+">");
+			String s=(String)titles.get(t);
+			str.append("<TITLE>"+CMLib.xml().parseOutAngleBrackets(CMLib.coffeeFilter().safetyFilter(s))+"</TITLE>");
 		}
 		return str.toString();
 	}
@@ -481,11 +500,13 @@ public class DefaultPlayerStats implements PlayerStats
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
 			+((t.length()>0)?"<INTROS>"+t+"</INTROS>":"")
 			+"<WRAP>"+wrap+"</WRAP>"
+			+"<THEME>"+theme+"</THEME>"
 			+"<PAGEBREAK>"+pageBreak+"</PAGEBREAK>"
 			+((account!=null)?("<ACCOUNT>"+account.accountName()+"</ACCOUNT>"):"")
 			+getTitleXML()
 			+getAliasXML()
-			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
+			+getLegacyXML()
+			+"<ACCTEXP>"+accountExpires+"</ACCTEXP>"
 			+((birthday!=null)?"<BIRTHDAY>"+CMParms.toStringList(birthday)+"</BIRTHDAY>":"")
 			+((poofin.length()>0)?"<POOFIN>"+CMLib.xml().parseOutAngleBrackets(poofin)+"</POOFIN>":"")
 			+((notes.length()>0)?"<NOTES>"+CMLib.xml().parseOutAngleBrackets(notes)+"</NOTES>":"")
@@ -519,6 +540,17 @@ public class DefaultPlayerStats implements PlayerStats
 	private void setAliasXML(List<XMLpiece> xml)
 	{
 		alias.clear();
+		for(Iterator<XMLpiece> p=xml.iterator();p.hasNext();)
+		{
+			XMLpiece piece=p.next();
+			if((piece.tag.equals("ALIAS"))&&(piece.parms!=null))
+			{
+				String command=CMLib.xml().getParmValue(piece.parms, "CMD");
+				String value=CMLib.xml().getParmValue(piece.parms, "VAL");
+				if((command!=null)&&(value!=null))
+					alias.put(command, CMLib.xml().restoreAngleBrackets(value));
+			}
+		}
 		int a=-1;
 		while((++a)>=0)
 		{
@@ -526,20 +558,42 @@ public class DefaultPlayerStats implements PlayerStats
 			String value=CMLib.xml().getValFromPieces(xml,"ALIASV"+a);
 			if((name.length()==0)||(value.length()==0))
 				break;
-			alias.put(name.toUpperCase().trim(),value);
+			alias.put(name.toUpperCase().trim(),CMLib.xml().restoreAngleBrackets(value));
+		}
+	}
+	
+	private void setLegacyXML(List<XMLpiece> xml)
+	{
+		legacy.clear();
+		for(Iterator<XMLpiece> p=xml.iterator();p.hasNext();)
+		{
+			XMLpiece piece=p.next();
+			if((piece.tag.equals("LEGACY"))&&(piece.parms!=null))
+			{
+				String category=CMLib.xml().getParmValue(piece.parms, "CAT");
+				String levelStr=CMLib.xml().getParmValue(piece.parms, "LVL");
+				if((category!=null)&&(levelStr!=null))
+					legacy.put(category, Integer.valueOf(levelStr));
+			}
 		}
 	}
 	
 	private void setTitleXML(List<XMLpiece> xml)
 	{
 		titles.clear();
+		for(Iterator<XMLpiece> p=xml.iterator();p.hasNext();)
+		{
+			XMLpiece piece=p.next();
+			if(piece.tag.equals("TITLE"))
+				titles.add(CMLib.xml().restoreAngleBrackets(piece.value));
+		}
 		int t=-1;
 		while((++t)>=0)
 		{
-			String title=CMLib.xml().getValFromPieces(xml,"TITLE"+t);
+			String title=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"TITLE"+t));
 			if(title.length()==0)
 				break;
-			titles.addElement(title);
+			titles.add(title);
 		}
 		
 	}
@@ -553,6 +607,8 @@ public class DefaultPlayerStats implements PlayerStats
 		friends=getHashFrom(CMLib.xml().getValFromPieces(xml,"FRIENDS"));
 		ignored=getHashFrom(CMLib.xml().getValFromPieces(xml,"IGNORED"));
 		introductions=getHashFrom(CMLib.xml().getValFromPieces(xml,"INTROS"));
+		if(CMath.isInteger(CMLib.xml().getValFromPieces(xml, "THEME")))
+			theme=CMLib.xml().getIntFromPieces(xml, "THEME");
 		String expStr = CMLib.xml().getValFromPieces(xml,"ACCTEXP");
 		if((expStr!=null)&&(expStr.length()>0))
 			setAccountExpiration(CMath.s_long(expStr));
@@ -572,6 +628,7 @@ public class DefaultPlayerStats implements PlayerStats
 		getSetSecurityFlags(CMLib.xml().getValFromPieces(xml,"SECGRPS"));
 		setAliasXML(xml);
 		setTitleXML(xml);
+		setLegacyXML(xml);
 		String bday=CMLib.xml().getValFromPieces(xml,"BIRTHDAY");
 		setBirthday(bday);
 		
@@ -662,7 +719,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if(newFlags != null)
 		{
-	        securityFlags=CMSecurity.instance().createGroup("", CMParms.parseSemicolons(newFlags,true));
+			securityFlags=CMSecurity.instance().createGroup("", CMParms.parseSemicolons(newFlags,true));
 		}
 		return securityFlags.toString(';');
 		
@@ -695,13 +752,13 @@ public class DefaultPlayerStats implements PlayerStats
 
 	// Acct Expire Code
 	public long getAccountExpiration() {
-		return  (account != null) ? account.getAccountExpiration() : accountExpiration;
+		return  (account != null) ? account.getAccountExpiration() : accountExpires;
 	}
 	public void setAccountExpiration(long newVal)
 	{
 		if(account != null)
 			account.setAccountExpiration(newVal);
-		accountExpiration=newVal;
+		accountExpires=newVal;
 	}
 	
 	public void addRoomVisit(Room R)
@@ -809,6 +866,30 @@ public class DefaultPlayerStats implements PlayerStats
 		if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_HOUR)
 			return;
 		levelInfo.addElement(Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
+	}
+	
+	public int getTotalLegacyLevels()
+	{
+		int total=0;
+		for(Integer value : legacy.values())
+			total+=value.intValue();
+		return total;
+	}
+	
+	public void addLegacyLevel(String category)
+	{
+		Integer level=legacy.get(category);
+		if(level != null) 
+			legacy.put(category, Integer.valueOf(level.intValue()+1));
+		else
+			legacy.put(category, Integer.valueOf(1));
+	}
+	
+	public int getLegacyLevel(String category)
+	{
+		Integer level=legacy.get(category);
+		if(level != null) return level.intValue();
+		return 0;
 	}
 	
 	public PlayerAccount getAccount() { return account;}
