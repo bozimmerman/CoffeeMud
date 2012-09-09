@@ -20,20 +20,20 @@ public class CMObjUniqSortSVec<T extends CMObject> extends SVector<T>
 	{
 	}
 	
-    private int compareTo(CMObject arg0, String arg1)
+	private int compareTo(CMObject arg0, String arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 	
-    private int compareTo(CMObject arg0, CMObject arg1)
+	private int compareTo(CMObject arg0, CMObject arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1.ID());
 	}
 	
-    @Override
-    public synchronized boolean add(T arg0) 
-    {
-    	if(arg0==null) return false;
+	@Override
+	public synchronized boolean add(T arg0) 
+	{
+		if(arg0==null) return false;
 		if(size()==0)
 			return super.add(arg0);
 		int start=0;
@@ -77,133 +77,133 @@ public class CMObjUniqSortSVec<T extends CMObject> extends SVector<T>
 				super.add(mid,arg0);
 		}
 		return true;
-    }
+	}
 
 	@Override
-    public void add(int arg0, T arg1) {
+	public void add(int arg0, T arg1) {
 		throw new java.lang.UnsupportedOperationException();
-    }
+	}
 
 	@Override
-    public boolean addAll(int arg0, Collection<? extends T> arg1) {
+	public boolean addAll(int arg0, Collection<? extends T> arg1) {
 		throw new java.lang.UnsupportedOperationException();
-    }
+	}
 	@Override
-    public boolean contains(Object arg0) {
+	public boolean contains(Object arg0) {
 		return indexOf(arg0)>=0;
-    }
+	}
 
 	@Override
-    public boolean containsAll(Collection<?> arg0) {
+	public boolean containsAll(Collection<?> arg0) {
 		for(Object o : arg0)
 			if(!contains(o))
 				return false;
 		return true;
-    }
+	}
 
 	@Override
-    public T get(int arg0) {
+	public T get(int arg0) {
 		return super.get(arg0);
-    }
+	}
 
-    @Override
-    public synchronized int indexOf(Object arg0) {
-    	if(arg0==null) return -1;
+	@Override
+	public synchronized int indexOf(Object arg0) {
+		if(arg0==null) return -1;
 		if(size()==0) return -1;
 		int start=0;
 		int end=size()-1;
 		if(arg0 instanceof CMObject)
 		{
-    		while(start<=end)
-    		{
-    			int mid=(end+start)/2;
-    			int comp=compareTo(super.get(mid),(CMObject)arg0);
-    			if(comp==0)
-    				return mid;
-    			else
-    			if(comp>0)
-    				end=mid-1;
-    			else
-    				start=mid+1;
-    
-    		}
+			while(start<=end)
+			{
+				int mid=(end+start)/2;
+				int comp=compareTo(super.get(mid),(CMObject)arg0);
+				if(comp==0)
+					return mid;
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+	
+			}
 		}
 		else
 		if(arg0 instanceof String)
 		{
-    		while(start<=end)
-    		{
-    			int mid=(end+start)/2;
-    			int comp=compareTo(super.get(mid),(String)arg0);
-    			if(comp==0)
-    				return mid;
-    			else
-    			if(comp>0)
-    				end=mid-1;
-    			else
-    				start=mid+1;
-    
-    		}
+			while(start<=end)
+			{
+				int mid=(end+start)/2;
+				int comp=compareTo(super.get(mid),(String)arg0);
+				if(comp==0)
+					return mid;
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+	
+			}
 		}
 		return -1;
-    }
+	}
 
-    public synchronized T find(Object arg0) {
-    	if(arg0==null) return null;
+	public synchronized T find(Object arg0) {
+		if(arg0==null) return null;
 		if(size()==0) return null;
 		int start=0;
 		int end=size()-1;
 		if(arg0 instanceof CMObject)
 		{
-    		while(start<=end)
-    		{
-    			int mid=(end+start)/2;
-    			int comp=compareTo(super.get(mid),(CMObject)arg0);
-    			if(comp==0)
-    				return super.get(mid);
-    			else
-    			if(comp>0)
-    				end=mid-1;
-    			else
-    				start=mid+1;
-    
-    		}
+			while(start<=end)
+			{
+				int mid=(end+start)/2;
+				int comp=compareTo(super.get(mid),(CMObject)arg0);
+				if(comp==0)
+					return super.get(mid);
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+	
+			}
 		}
 		else
 		if(arg0 instanceof String)
 		{
-    		while(start<=end)
-    		{
-    			int mid=(end+start)/2;
-    			int comp=compareTo(super.get(mid),(String)arg0);
-    			if(comp==0)
-    				return super.get(mid);
-    			else
-    			if(comp>0)
-    				end=mid-1;
-    			else
-    				start=mid+1;
-    
-    		}
+			while(start<=end)
+			{
+				int mid=(end+start)/2;
+				int comp=compareTo(super.get(mid),(String)arg0);
+				if(comp==0)
+					return super.get(mid);
+				else
+				if(comp>0)
+					end=mid-1;
+				else
+					start=mid+1;
+	
+			}
 		}
 		return null;
-    }
-    
-    @Override
-    public synchronized int lastIndexOf(Object arg0) {
-    	return indexOf(arg0); // only holds one-of-a-kind, so all is well!
-    }
+	}
+	
+	@Override
+	public synchronized int lastIndexOf(Object arg0) {
+		return indexOf(arg0); // only holds one-of-a-kind, so all is well!
+	}
 
 	@Override
-    public synchronized boolean remove(Object arg0) {
+	public synchronized boolean remove(Object arg0) {
 		final int index=indexOf(arg0);
 		if(index >= 0) 
 			return remove(index)==arg0;
 		return false;
-    }
+	}
 
 	@Override
-    public T set(int arg0, T arg1) {
+	public T set(int arg0, T arg1) {
 		throw new java.lang.UnsupportedOperationException();
-    }
+	}
 }
