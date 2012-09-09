@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class SortedList<T extends Comparable<T>> implements List<T>
+public class SortedListWrap<T extends Comparable<T>> implements List<T>
 {
 	private final List<T> list;
-	public SortedList(List<T> list)
+	public SortedListWrap(List<T> list)
 	{
 		this.list=list;
 	}
