@@ -112,13 +112,15 @@ public class Spell_FlamingSword extends Spell
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-
-		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> erupts into flame!":"^S<S-NAME> invoke(s) a writhing flame around <T-NAMESELF>!^?");
-		if(mob.location().okMessage(mob,msg))
+		if(success)
 		{
-			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,asLevel,0);
-			mob.location().recoverRoomStats(); // attempt to handle followers
+    		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> erupts into flame!":"^S<S-NAME> invoke(s) a writhing flame around <T-NAMESELF>!^?");
+    		if(mob.location().okMessage(mob,msg))
+    		{
+    			mob.location().send(mob,msg);
+    			beneficialAffect(mob,target,asLevel,0);
+    			mob.location().recoverRoomStats(); // attempt to handle followers
+    		}
 		}
 		else
 			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to invoke a flame, but cause(s) a puff of smoke.");

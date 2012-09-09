@@ -91,6 +91,11 @@ public class Thief_FrameMark extends ThiefSkill
 		int levelDiff=(target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*15);
 		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
+		if(!success)
+		{
+			maliciousFizzle(mob,target,"<S-NAME> attempt(s) frame <T-NAMESELF>, but <S-IS-ARE> way too obvious.");
+			return false;
+		}
 
 		CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 

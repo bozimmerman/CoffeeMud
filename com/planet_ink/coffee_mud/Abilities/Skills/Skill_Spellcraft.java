@@ -46,6 +46,28 @@ public class Skill_Spellcraft extends StdSkill
 	public String lastID="";
 	public int craftType(){return Ability.ACODE_SPELL;}
 
+	public boolean autoInvocation(MOB mob)
+	{
+		if(!super.autoInvocation(mob))
+			return false;
+		if(text().length()>0)
+		{
+			List<String> abilities=CMParms.parseCommas(text(), true);
+			setMiscText("");
+			MOB casterM=CMClass.getFactoryMOB();
+			Ability A=(Ability)copyOf();
+			for(String ID : abilities)
+			{
+				A.setMiscText(ID);
+				lastID=ID;
+				Ability castA=CMClass.getAbility(ID);
+				if(castA!=null)
+    				executeMsg(mob, CMClass.getMsg(mob,casterM,castA,CMMsg.MSG_OK_VISUAL,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			}
+		}
+		return true;
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

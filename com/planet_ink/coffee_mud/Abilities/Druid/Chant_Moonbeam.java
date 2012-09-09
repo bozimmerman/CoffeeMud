@@ -90,6 +90,10 @@ public class Chant_Moonbeam extends Chant
 
 
 		boolean success=proficiencyCheck(mob,0,auto);
+		if(!success)
+		{
+			return beneficialWordsFizzle(mob,mob.location(),"<S-NAME> chant(s) for a moonbeam, but fail(s).");
+		}
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"A moonbeam begin(s) to follow <T-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
 		if(mob.location().okMessage(mob,msg))
@@ -98,8 +102,6 @@ public class Chant_Moonbeam extends Chant
 			beneficialAffect(mob,target,asLevel,0);
 			target.location().recoverRoomStats(); // attempt to handle followers
 		}
-		else
-			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> chant(s) for a moonbeam, but fail(s).");
 
 		return success;
 	}

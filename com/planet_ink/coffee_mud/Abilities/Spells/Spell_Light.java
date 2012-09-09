@@ -90,12 +90,15 @@ public class Spell_Light extends Spell
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<S-NAME> attain(s) a light above <S-HIS-HER> head!":"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
-		if(mob.location().okMessage(mob,msg))
+		if(success)
 		{
-			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,asLevel,0);
-			mob.location().recoverRoomStats(); // attempt to handle followers
+    		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<S-NAME> attain(s) a light above <S-HIS-HER> head!":"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
+    		if(mob.location().okMessage(mob,msg))
+    		{
+    			mob.location().send(mob,msg);
+    			beneficialAffect(mob,target,asLevel,0);
+    			mob.location().recoverRoomStats(); // attempt to handle followers
+    		}
 		}
 		else
 			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to invoke light, but fail(s).");

@@ -1326,11 +1326,10 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
+		final StringBuilder s=new StringBuilder(""+V[0]);
+		for(int v=1;v<V.length;v++)
 			s.append(", "+V[v]);
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String toStringList(final Object[] V)
@@ -1338,53 +1337,50 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
+		final StringBuilder s=new StringBuilder(""+V[0]);
+		for(int v=1;v<V.length;v++)
 			s.append(", "+V[v]);
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String toStringList(final Enumeration<?> e)
 	{
 		if(!e.hasMoreElements()) return "";
-		final StringBuffer s=new StringBuffer("");
-		Object o;
+		Environmental o=(Environmental)e.nextElement();
+		final StringBuilder s=new StringBuilder(""+o);
 		for(;e.hasMoreElements();)
-		{
-			o=e.nextElement();
-			s.append(", "+o);
-		}
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+			s.append(", "+e.nextElement());
+		return s.toString();
 	}
 
 	public final static String toEnvironmentalStringList(final Enumeration<? extends Environmental> e)
 	{
 		if(!e.hasMoreElements()) return "";
-		final StringBuffer s=new StringBuffer("");
-		Environmental o;
+		Environmental o=(Environmental)e.nextElement();
+		final StringBuilder s=new StringBuilder(o.name());
 		for(;e.hasMoreElements();)
-		{
-			o=(Environmental)e.nextElement();
-			s.append(", "+o.name());
-		}
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+			s.append(", "+e.nextElement().name());
+		return s.toString();
 	}
 
 	public final static String toCMObjectStringList(final Enumeration<? extends CMObject> e)
 	{
 		if(!e.hasMoreElements()) return "";
-		final StringBuffer s=new StringBuffer("");
-		CMObject o;
+		CMObject o=(CMObject)e.nextElement();
+		final StringBuilder s=new StringBuilder(o.ID());
 		for(;e.hasMoreElements();)
-		{
-			o=(CMObject)e.nextElement();
-			s.append(", "+o.ID());
-		}
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+			s.append(", "+e.nextElement().ID());
+		return s.toString();
+	}
+
+	public final static String toCMObjectStringList(final Iterator<? extends CMObject> e)
+	{
+		if(!e.hasNext()) return "";
+		CMObject o=(CMObject)e.next();
+		final StringBuilder s=new StringBuilder(o.ID());
+		for(;e.hasNext();)
+			s.append(", "+e.next().ID());
+		return s.toString();
 	}
 
 	public final static String toStringList(final long[] V)
@@ -1392,11 +1388,10 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
+		final StringBuilder s=new StringBuilder(""+V[0]);
+		for(int v=1;v<V.length;v++)
 			s.append(", "+V[v]);
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String toStringList(final short[] V)
@@ -1404,11 +1399,10 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
+		final StringBuilder s=new StringBuilder(V[0]);
+		for(int v=1;v<V.length;v++)
 			s.append(", "+V[v]);
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String toStringList(final boolean[] V)
@@ -1416,11 +1410,10 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
+		final StringBuilder s=new StringBuilder(""+V[0]);
+		for(int v=1;v<V.length;v++)
 			s.append(", "+V[v]);
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String toStringList(final byte[] V)
@@ -1428,11 +1421,10 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
+		final StringBuilder s=new StringBuilder((int)V[0]);
+		for(int v=1;v<V.length;v++)
 			s.append(", "+((int)V[v]));
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String toStringList(final char[] V)
@@ -1440,11 +1432,10 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
+		final StringBuilder s=new StringBuilder(""+((long)V[0]));
+		for(int v=1;v<V.length;v++)
 			s.append(", "+((long)V[v]));
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String toStringList(final int[] V)
@@ -1452,11 +1443,10 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
+		final StringBuilder s=new StringBuilder(V[0]);
+		for(int v=1;v<V.length;v++)
 			s.append(", "+V[v]);
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String toStringList(final double[] V)
@@ -1464,11 +1454,10 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.length;v++)
+		final StringBuilder s=new StringBuilder(""+V[0]);
+		for(int v=1;v<V.length;v++)
 			s.append(", "+V[v]);
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 
@@ -1477,11 +1466,10 @@ public class CMParms
 		if((V==null)||(V.size()==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(int v=0;v<V.size();v++)
+		final StringBuilder s=new StringBuilder(V.get(0).toString());
+		for(int v=1;v<V.size();v++)
 			s.append(", "+V.get(v).toString());
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String toStringList(final Set<?> V)
@@ -1489,11 +1477,11 @@ public class CMParms
 		if((V==null)||(V.size()==0)){
 			return "";
 		}
-		final StringBuffer s=new StringBuffer("");
-		for(Iterator<?> i=V.iterator();i.hasNext();)
+		Iterator<?> i=V.iterator();
+		final StringBuilder s=new StringBuilder(i.next().toString());
+		for(;i.hasNext();)
 			s.append(", "+i.next().toString());
-		if(s.length()==0) return "";
-		return s.toString().substring(2);
+		return s.toString();
 	}
 
 	public final static String[] appendToArray(final String[] front, final String[] back)

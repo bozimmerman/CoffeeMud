@@ -931,7 +931,12 @@ public class StdAbility implements Ability
 					// very important, since these can be autoinvoked affects (copies)!
 					A.setProficiency(A.proficiency()+1);
 					if((this!=A)&&(proficiency()<maxProficiency))
-						setProficiency(proficiency()+1);
+						setProficiency(A.proficiency());
+					Ability effA=mob.fetchEffect(ID());
+					if((effA!=null) && (effA!=A) && (effA!=this)
+					&&(effA.invoker()==mob)
+					&&(effA.proficiency()<maxProficiency))
+						effA.setProficiency(A.proficiency());
 					if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
 						mob.tell("You become better at "+A.name()+".");
 					((StdAbility)A).lastCastHelp=System.currentTimeMillis();
@@ -1227,6 +1232,8 @@ public class StdAbility implements Ability
 			Ability thatAbility=(Ability)copyOf();
 			((StdAbility)thatAbility).canBeUninvoked=true;
 			thatAbility.setSavable(false);
+			((StdAbility)thatAbility).invoker=mob;
+			((StdAbility)thatAbility).isAnAutoEffect=true;
 			mob.addEffect(thatAbility);
 			return true;
 		}
@@ -1531,8 +1538,7 @@ public class StdAbility implements Ability
 				if(newProf > prof75) newProf=prof75;
 				yourAbility.setProficiency(newProf);
 				Ability yourEffect=student.fetchEffect(ID());
-				if((yourEffect!=null)
-				&&((yourEffect.isNowAnAutoEffect())||(yourEffect.invoker()==student)))
+				if((yourEffect!=null)&&(yourEffect.invoker()==student))
 					yourEffect.setProficiency(yourAbility.proficiency());
 			}
 		}

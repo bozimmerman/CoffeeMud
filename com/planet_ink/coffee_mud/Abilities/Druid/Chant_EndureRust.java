@@ -94,6 +94,10 @@ public class Chant_EndureRust extends Chant
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
+		if(!success)
+		{
+			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but fail(s).");
+		}
 		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, causing a rust proof film to envelope <T-HIM-HER>!^?");
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -101,9 +105,6 @@ public class Chant_EndureRust extends Chant
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,asLevel,0);
 		}
-		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but fail(s).");
-
 		return success;
 	}
 }

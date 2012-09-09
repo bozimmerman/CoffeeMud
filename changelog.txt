@@ -2387,4 +2387,5 @@ ruthless programmer, and sentenced to a quick death.
 1. Fixed the statistics bug
 2. Fixed a bug with variables in Scriptable MPTITLE command
 3. Fixed numerous prayers that did not respect elemental immunity/resistance
+4. Arcanist Spellcrafted abilities persist over reboots
 

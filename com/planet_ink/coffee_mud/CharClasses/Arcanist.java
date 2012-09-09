@@ -208,6 +208,44 @@ public class Arcanist extends Thief
 		for(int a=0;a<otherChoices.size();a++)
 			mob.delAbility((Ability)otherChoices.elementAt(a));
 	}
+
+	private void addAbilityToSpellcraftList(MOB mob, Ability A)
+	{
+		Ability enabledA=mob.fetchAbility("Skill_Spellcraft");
+		if(enabledA!=null)
+		{
+			List<String> ables=CMParms.parseCommas(enabledA.text(), true);
+			if(!ables.contains(A.ID()))
+			{
+				if(enabledA.text().length()==0)
+					enabledA.setMiscText(A.ID());
+				else
+					enabledA.setMiscText(enabledA.text()+", "+A.ID());
+				mob.addAbility(A);
+			}
+			else
+			if(mob.isMine(A) && (A.proficiency()<75) && (!A.isSavable()))
+				A.setProficiency(A.proficiency()+(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)/3));
+		}
+	}
+	
+	private void clearAbilityFromSpellcraftList(MOB mob, Ability A)
+	{
+		Ability enabledA=mob.fetchAbility("Skill_Spellcraft");
+		if(enabledA!=null)
+		{
+			List<String> ables=CMParms.parseCommas(enabledA.text(), true);
+			if(ables.contains(A.ID()))
+			{
+				if(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ALLSKILLS))
+				{
+    				ables.remove(A.ID());
+    				enabledA.setMiscText(CMParms.toStringList(ables));
+    				mob.delAbility(A);
+				}
+			}
+		}
+	}
 	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -224,9 +262,17 @@ public class Arcanist extends Thief
 				&&(msg.target() instanceof MOB))
 				{
 					Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
-					if((A!=null)
-					&&(mob.fetchAbility(A.ID())==null)
-					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30))
+					if(A==null) return;
+					Ability myA=mob.fetchAbility(A.ID());
+					if(myA!=null)
+					{
+						if((!A.isSavable())
+						&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+						&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30))
+    						addAbilityToSpellcraftList(mob,A);
+					}
+					else
+					if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30)
 					{
 						Vector otherChoices=new Vector();
 						for(int a=0;a<mob.numAbilities();a++)
@@ -240,9 +286,12 @@ public class Arcanist extends Thief
 						A=(Ability)A.copyOf();
 						A.setProficiency(0);
 						A.setSavable(false);
-						mob.addAbility(A);
 						if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))
-							mob.delAbility((Ability)otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1)));
+						{
+							Ability A2=(Ability)otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1));
+							clearAbilityFromSpellcraftList(mob,A2);
+						}
+						addAbilityToSpellcraftList(mob,A);
 					}
 				}
 			}
@@ -255,7 +304,7 @@ public class Arcanist extends Thief
 			{
 				Ability A=mob.fetchAbility(msg.tool().text());
 				if((A!=null)&&(!A.isSavable()))
-					mob.delAbility(A);
+					clearAbilityFromSpellcraftList(mob,A);
 			}
 			else
 			if(msg.tool() instanceof Ability)
@@ -263,7 +312,7 @@ public class Arcanist extends Thief
 				Ability A=mob.fetchAbility(msg.tool().ID());
 				if((A!=null)&&(!A.isSavable())
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
-					mob.delAbility(A);
+					clearAbilityFromSpellcraftList(mob,A);
 			}
 		}
 	}
