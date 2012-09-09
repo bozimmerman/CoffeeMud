@@ -57,32 +57,30 @@ import java.sql.*;
 
 public class MUD extends Thread implements MudHost
 {
-	private static final float    HOST_VERSION_MAJOR=(float)5.7;
-	private static final long     HOST_VERSION_MINOR=8;
-	
-	private final static String[] STATE_STRING={"waiting","accepting","allowing"};
+	private static final float    HOST_VERSION_MAJOR	= (float)5.7;
+	private static final long     HOST_VERSION_MINOR	= 8;
+	private final static String[] STATE_STRING			= {"waiting","accepting","allowing"};
 
-	private static boolean serverIsRunning = false;
-	private static boolean isOK = false;
-	private int 		   state=0;
-	private ServerSocket   servsock=null;
-	private boolean 	   acceptConnections=false;
-	private String  	   host="MyHost";
-	private int 		   port=5555;
-	private final long     startupTime = System.currentTimeMillis();
-	
-	private static boolean  		bringDown=false;
-	private static String   		execExternalCommand=null;
-	private static I3Server 		i3server=null;
-	private static IMC2Driver   	imc2server=null;
-	private static List<HTTPserver> webServers=new Vector<HTTPserver>();
-	private static SMTPserver   	smtpServerThread=null;
-	private static List<String> 	autoblocked=new Vector<String>();
-	private static List<DBConnector>databases=new Vector<DBConnector>();
-	private static List<CM1Server>  cm1Servers=new Vector<CM1Server>();
-	private static List<Triad<String,Long,Integer>> 	  
-									accessed=new LinkedList<Triad<String,Long,Integer>>();
-	
+	private int				state		= 0;
+	private ServerSocket	servsock	= null;
+	private boolean			acceptConns	= false;
+	private String			host		= "MyHost";
+	private int				port		= 5555;
+	private final long		startupTime = System.currentTimeMillis();
+
+	private static boolean			serverIsRunning		= false;
+	private static boolean			isOK 				= false;
+	private static boolean			bringDown			= false;
+	private static String			execExternalCommand	= null;
+	private static I3Server			i3server			= null;
+	private static IMC2Driver		imc2server			= null;
+	private static List<HTTPserver> webServers			= new Vector<HTTPserver>();
+	private static SMTPserver		smtpServerThread	= null;
+	private static List<String> 	autoblocked			= new Vector<String>();
+	private static List<DBConnector>databases			= new Vector<DBConnector>();
+	private static List<CM1Server>  cm1Servers			= new Vector<CM1Server>();
+	private static List<Triad<String,Long,Integer>>
+									accessed			= new LinkedList<Triad<String,Long,Integer>>();
 
 	public MUD(String name)
 	{
@@ -444,7 +442,7 @@ public class MUD extends Thread implements MudHost
 			startTime=System.currentTimeMillis();
 			try
 			{
-				if (acceptConnections)
+				if (acceptConns)
 				{
 					String address="unknown";
 					try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
@@ -1247,7 +1245,7 @@ public class MUD extends Thread implements MudHost
 					while(pdex>0)
 					{
 						MUD mud=new MUD("MUD@"+ports.substring(0,pdex));
-						mud.acceptConnections=false;
+						mud.acceptConns=false;
 						mud.port=CMath.s_int(ports.substring(0,pdex));
 						ports=ports.substring(pdex+1);
 						mud.start();
@@ -1255,7 +1253,7 @@ public class MUD extends Thread implements MudHost
 						pdex=ports.indexOf(',');
 					}
 					MUD mud=new MUD("MUD@"+ports);
-					mud.acceptConnections=false;
+					mud.acceptConns=false;
 					mud.port=CMath.s_int(ports);
 					mud.start();
 					CMLib.hosts().add(mud);
@@ -1424,8 +1422,8 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
-	public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
-	public boolean isAcceptingConnections(){ return acceptConnections;}
+	public void setAcceptConnections(boolean truefalse){ acceptConns=truefalse;}
+	public boolean isAcceptingConnections(){ return acceptConns;}
 	public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
 
 	public String executeCommand(String cmd)
