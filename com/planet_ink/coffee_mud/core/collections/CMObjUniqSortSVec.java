@@ -7,7 +7,7 @@ import java.util.ListIterator;
 
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 
-public class CMObjUniqSortSVec<T extends CMObject> extends SVector<T>
+public class CMObjUniqSortSVec<T extends CMObject> extends SVector<T> implements SearchIDList<T>
 {
 	private static final long serialVersionUID = 6687178785122361992L;
 	
@@ -148,43 +148,45 @@ public class CMObjUniqSortSVec<T extends CMObject> extends SVector<T>
 		return -1;
 	}
 
-	public synchronized T find(Object arg0) {
+	public synchronized T find(String arg0) 
+	{
 		if(arg0==null) return null;
 		if(size()==0) return null;
 		int start=0;
 		int end=size()-1;
-		if(arg0 instanceof CMObject)
+		while(start<=end)
 		{
-			while(start<=end)
-			{
-				int mid=(end+start)/2;
-				int comp=compareTo(super.get(mid),(CMObject)arg0);
-				if(comp==0)
-					return super.get(mid);
-				else
-				if(comp>0)
-					end=mid-1;
-				else
-					start=mid+1;
-	
-			}
+			int mid=(end+start)/2;
+			int comp=compareTo(super.get(mid),(String)arg0);
+			if(comp==0)
+				return super.get(mid);
+			else
+			if(comp>0)
+				end=mid-1;
+			else
+				start=mid+1;
 		}
-		else
-		if(arg0 instanceof String)
-		{
-			while(start<=end)
-			{
-				int mid=(end+start)/2;
-				int comp=compareTo(super.get(mid),(String)arg0);
-				if(comp==0)
-					return super.get(mid);
-				else
-				if(comp>0)
-					end=mid-1;
-				else
-					start=mid+1;
+		return null;
+	}
 	
-			}
+	public synchronized T find(CMObject arg0) 
+	{
+		if(arg0==null) return null;
+		if(size()==0) return null;
+		int start=0;
+		int end=size()-1;
+		while(start<=end)
+		{
+			int mid=(end+start)/2;
+			int comp=compareTo(super.get(mid),(CMObject)arg0);
+			if(comp==0)
+				return super.get(mid);
+			else
+			if(comp>0)
+				end=mid-1;
+			else
+				start=mid+1;
+
 		}
 		return null;
 	}
