@@ -232,7 +232,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		};
 	}
 	
-	public static class Tattoo implements Cloneable
+	public static class Tattoo implements Cloneable, CMObject
 	{
 		public int tickDown=0;
 		public String tattooName;
@@ -240,6 +240,14 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		public Tattoo(String name, int down) { tattooName = name.toUpperCase().trim(); tickDown=down;}
 		public String toString() { return ((tickDown>0)?(tickDown+" "):"")+tattooName; }
 		public Tattoo copyOf(){ try{ return (Tattoo)this.clone(); } catch(Exception e){ return this; }}
+		public int compareTo(CMObject o) 
+		{ 
+			if(o==null) return (this==null)?0:1;
+			return (this==o)?0:this.ID().compareTo(o.ID());
+		}
+		public String ID() { return tattooName; }
+		public CMObject newInstance() { return new Tattoo(tattooName); }
+		public void initializeClass() {}
 	}
 	
 	public static class QMCommand
