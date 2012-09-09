@@ -399,7 +399,7 @@ public class Age extends StdAbility
 					if(highestParentLevel>=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))
 						for(int i=0;i<highestLegacyLevel+1;i++)
 							newMan.playerStats().addLegacyLevel(highestBaseClass);
-					int bonusPoints=newMan.playerStats().getTotalLegacyLevels();
+					int bonusPoints=newMan.playerStats().getTotalLegacyLevels()+1;
 					Ability reRollA=CMClass.getAbility("Prop_ReRollStats");
 					if(reRollA!=null)
 					{
