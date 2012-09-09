@@ -57,8 +57,8 @@ import java.sql.*;
 
 public class MUD extends Thread implements MudHost
 {
-	private static final float    HOST_VERSION_MAJOR	= (float)5.7;
-	private static final long     HOST_VERSION_MINOR	= 8;
+	private static final float	HOST_VERSION_MAJOR	= (float)5.7;
+	private static final long	 HOST_VERSION_MINOR	= 8;
 	private final static String[] STATE_STRING			= {"waiting","accepting","allowing"};
 
 	private int				state		= 0;
@@ -309,13 +309,13 @@ public class MUD extends Thread implements MudHost
 			if(CMLib.socials().numSocialSets()==0)
 				Log.errOut(Thread.currentThread().getName(),"WARNING: Unable to load socials from socials.txt!");
 			else
-				Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
+				Log.sysOut(Thread.currentThread().getName(),"Socials loaded	: "+CMLib.socials().numSocialSets());
 		}
 
 		if((tCode==MAIN_HOST)||(privacyV.contains("CLANS")))
 		{
 			CMLib.database().DBReadAllClans();
-			Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
+			Log.sysOut(Thread.currentThread().getName(),"Clans loaded	  : "+CMLib.clans().numClans());
 		}
 
 		if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
@@ -353,7 +353,7 @@ public class MUD extends Thread implements MudHost
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: filling map ("+A.Name()+")");
 				A.fillInAreaRooms();
 			}
-			Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
+			Log.sysOut(Thread.currentThread().getName(),"Mapped rooms	  : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
 	
 			if(!CMLib.map().roomIDs().hasMoreElements())
 			{
@@ -383,7 +383,7 @@ public class MUD extends Thread implements MudHost
 		{
 			CMLib.database().DBReadQuests(CMLib.mud(0));
 			if(CMLib.quests().numQuests()>0)
-				Log.sysOut(Thread.currentThread().getName(),"Quests loaded     : "+CMLib.quests().numQuests());
+				Log.sysOut(Thread.currentThread().getName(),"Quests loaded	 : "+CMLib.quests().numQuests());
 		}
 		
 		if(tCode!=MAIN_HOST)
@@ -593,7 +593,7 @@ public class MUD extends Thread implements MudHost
 		Socket sock=null;
 		serverIsRunning = false;
 
-		if (!isOK)    return;
+		if (!isOK)	return;
 
 		InetAddress bindAddr = null;
 
@@ -1149,7 +1149,7 @@ public class MUD extends Thread implements MudHost
 
 	private static class HostGroup extends Thread
 	{
-		private static int     grpid=0;
+		private static int	 grpid=0;
 		private String  	   name=null;
 		private String  	   iniFile=null;
 		private String  	   logName=null;
@@ -1336,21 +1336,21 @@ public class MUD extends Thread implements MudHost
 			try
 			{
 				idNumber=0;
-    			for(Enumeration<NetworkInterface> e=NetworkInterface.getNetworkInterfaces();e.hasMoreElements();)
-    			{
-    				NetworkInterface n=e.nextElement();
-    				idNumber^=n.getDisplayName().hashCode();
-    				try
-    				{
-    					Method m=n.getClass().getMethod("getHardwareAddress");
-    					Object o=m.invoke(n);
-    					if(o instanceof byte[])
-    					{
-    						for(int i=0;i<((byte[])o).length;i++)
-    							idNumber^=(long)(((byte[])o)[0] << (i*8));
-    					}
-    				}catch(Exception e1){}
-    			}
+				for(Enumeration<NetworkInterface> e=NetworkInterface.getNetworkInterfaces();e.hasMoreElements();)
+				{
+					NetworkInterface n=e.nextElement();
+					idNumber^=n.getDisplayName().hashCode();
+					try
+					{
+						Method m=n.getClass().getMethod("getHardwareAddress");
+						Object o=m.invoke(n);
+						if(o instanceof byte[])
+						{
+							for(int i=0;i<((byte[])o).length;i++)
+								idNumber^=(long)(((byte[])o)[0] << (i*8));
+						}
+					}catch(Exception e1){}
+				}
 			}catch(Exception e1){}
 			if(idNumber<0) idNumber=idNumber*-1;
 			nameID=nameID+idNumber;
