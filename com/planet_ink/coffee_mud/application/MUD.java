@@ -309,13 +309,13 @@ public class MUD extends Thread implements MudHost
 			if(CMLib.socials().numSocialSets()==0)
 				Log.errOut(Thread.currentThread().getName(),"WARNING: Unable to load socials from socials.txt!");
 			else
-				Log.sysOut(Thread.currentThread().getName(),"Socials loaded	: "+CMLib.socials().numSocialSets());
+				Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
 		}
 
 		if((tCode==MAIN_HOST)||(privacyV.contains("CLANS")))
 		{
 			CMLib.database().DBReadAllClans();
-			Log.sysOut(Thread.currentThread().getName(),"Clans loaded	  : "+CMLib.clans().numClans());
+			Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
 		}
 
 		if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
@@ -353,7 +353,7 @@ public class MUD extends Thread implements MudHost
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: filling map ("+A.Name()+")");
 				A.fillInAreaRooms();
 			}
-			Log.sysOut(Thread.currentThread().getName(),"Mapped rooms	  : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
+			Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
 	
 			if(!CMLib.map().roomIDs().hasMoreElements())
 			{
@@ -383,7 +383,7 @@ public class MUD extends Thread implements MudHost
 		{
 			CMLib.database().DBReadQuests(CMLib.mud(0));
 			if(CMLib.quests().numQuests()>0)
-				Log.sysOut(Thread.currentThread().getName(),"Quests loaded	 : "+CMLib.quests().numQuests());
+				Log.sysOut(Thread.currentThread().getName(),"Quests loaded     : "+CMLib.quests().numQuests());
 		}
 		
 		if(tCode!=MAIN_HOST)
