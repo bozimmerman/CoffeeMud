@@ -27,6 +27,7 @@ import com.planet_ink.fakedb.Backend.FakeTable;
 public class Statement implements java.sql.Statement
 {
    protected ResultSet myResultSet=null;
+   protected boolean closeStatementOnResultSetClose=false;
    
    static protected void log(String x) 
    {
@@ -755,4 +756,6 @@ public class Statement implements java.sql.Statement
    
    public java.sql.ResultSet getGeneratedKeys() throws java.sql.SQLException { return null; }
 
+   public void closeOnCompletion() throws SQLException { closeStatementOnResultSetClose=true; }
+   public boolean isCloseOnCompletion() throws SQLException { return closeStatementOnResultSetClose; }
 }

@@ -38,6 +38,7 @@ public class Backend
 	  boolean canNull;
 	  int     keyNumber=-1;
 	  int     indexNumber=-1;
+	  String  tableName;
 	  public static final int TYPE_UNKNOWN=0;
 	  public static final int TYPE_INTEGER=1;
 	  public static final int TYPE_STRING=2;
@@ -392,6 +393,19 @@ public class Backend
 		 if((index<0)||(index>columns.length))
 			 return null;
 		 return columns[index].name;
+	  }
+	  
+
+	  /**
+	   * 
+	   * @param index
+	   * @return
+	   */
+	  public FakeColumn getColumnInfo(int index) 
+	  {
+		 if((index<0)||(index>columns.length))
+			 return null;
+		 return columns[index];
 	  }
 	  
 	  /**
@@ -958,6 +972,7 @@ public class Backend
 				}
 	
 				FakeColumn info=new FakeColumn();
+				info.tableName=fakeTableName;
 				info.name=columnName;
 				if (columnType.equals("string")) 
 				   info.type=FakeColumn.TYPE_STRING;

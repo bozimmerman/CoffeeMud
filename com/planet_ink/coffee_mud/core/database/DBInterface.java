@@ -515,6 +515,14 @@ public class DBInterface implements DatabaseEngine
 		{
 			DBToUse=DB.DBFetch();
 			ResultSet R=DBToUse.query(sql);
+			ResultSetMetaData metaData=R.getMetaData();
+			if(metaData!=null)
+			{
+				List<String> header=new LinkedList<String>();
+				for(int c=1;c<=metaData.getColumnCount();c++)
+					header.add(CMStrings.padRight(metaData.getColumnName(c), metaData.getColumnDisplaySize(c)));
+				results.add(header.toArray(new String[0]));
+			}
 			while(R.next())
 			{
 				List<String> row=new LinkedList<String>();

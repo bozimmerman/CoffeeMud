@@ -2389,3 +2389,6 @@ ruthless programmer, and sentenced to a quick death.
 3. Fixed numerous prayers that did not respect elemental immunity/resistance
 4. Arcanist Spellcrafted abilities persist over reboots
 5. Children now track their number of high-level parents to which benefits are tied to, and can repick their stats and class.
+# Build 5.?.? Release ??/??/2012
+1. FakeDB now supports getResultSetMetaData, making room for some sort of sql browser feature
+

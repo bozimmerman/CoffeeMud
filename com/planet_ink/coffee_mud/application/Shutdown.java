@@ -46,6 +46,7 @@ public class Shutdown
 			System.out.println("Command usage: Shutdown <host> <port> <username> <password> (<true/false for reboot> <external command>)");
 			return;
 		}
+		Socket sock=null;
 		try
 		{
 			StringBuffer msg=new StringBuffer("\033[1z<SHUTDOWN "+a[2]+" "+a[3]);
@@ -54,7 +55,7 @@ public class Shutdown
 			if(a.length>=6)
 				for(int i=5;i<a.length;i++)
 				msg.append(" "+a[i]);
-			Socket sock=new Socket(a[0],CMath.s_int(a[1]));
+			sock=new Socket(a[0],CMath.s_int(a[1]));
 			OutputStream rawout=sock.getOutputStream();
 			rawout.write(CMStrings.strToBytes((msg.toString()+">\n")));
 			rawout.flush();
@@ -65,5 +66,6 @@ public class Shutdown
 			System.out.println(read.substring("\033[1z<".length()));
 		}
 		catch(Exception e){e.printStackTrace();}
+		finally { if(sock!=null) try{ sock.close(); } catch (IOException e) { } }
 	}
 }

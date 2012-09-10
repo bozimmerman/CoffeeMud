@@ -5,6 +5,7 @@ import java.io.Reader;
 import java.sql.NClob;
 import java.sql.RowId;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLXML;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -31,11 +32,11 @@ import com.planet_ink.fakedb.Backend.*;
 */
 public class ResultSet implements java.sql.ResultSet
 {
-   private Statement statement;
-   private Backend.FakeTable fakeTable;
+   private final Statement statement;
+   private final Backend.FakeTable fakeTable;
    private java.util.Iterator<Backend.RecordInfo> iter;
    private int currentRow=0;
-   private List<FakeCondition> conditions;
+   private final List<FakeCondition> conditions;
    private final ComparableValue[] values;
    private final int[] showCols;
    private final int[] orderByKeyDexCols;
@@ -43,6 +44,7 @@ public class ResultSet implements java.sql.ResultSet
    private final Map<String,Integer> showColMap=new Hashtable<String,Integer>();
    private boolean wasNullFlag = false;
    private Object countValue = null;
+   private boolean closeStatementOnClose;
    private static final List<RecordInfo> fakeList = new Vector<RecordInfo>(1);
    static
    {
@@ -58,8 +60,8 @@ public class ResultSet implements java.sql.ResultSet
 			 int[] orderByKeyDexCols,
 			 String[] orderByConditions) 
    {
-	  statement=stmt;
-	  fakeTable=table;
+	  this.statement=stmt;
+	  this.fakeTable=table;
 	  this.conditions = conditions;
 	  currentRow=0;
 	  this.values=new ComparableValue[table.numColumns()];
@@ -67,6 +69,7 @@ public class ResultSet implements java.sql.ResultSet
 	  this.orderByKeyDexCols=orderByKeyDexCols;
 	  this.orderByConditions=orderByConditions;
 	  this.iter = table.indexIterator(this.orderByKeyDexCols,this.orderByConditions);
+	  try { this.closeStatementOnClose=stmt.isCloseOnCompletion(); } catch (SQLException e) {this.closeStatementOnClose=false; }
 	  for(int s=0;s<showCols.length;s++)
 		  if(showCols[s]==FakeColumn.INDEX_COUNT)
 		  {
@@ -117,6 +120,8 @@ public class ResultSet implements java.sql.ResultSet
    }
    public void close() throws java.sql.SQLException
    {
+	   if((this.statement!=null)&&(closeStatementOnClose))
+		   this.statement.close();
    }
    public boolean wasNull() throws java.sql.SQLException
    {
@@ -403,7 +408,145 @@ public class ResultSet implements java.sql.ResultSet
    public String getCursorName() throws java.sql.SQLException
 	  { throw new java.sql.SQLException("Positioned Update not supported.", "S1C00"); }
    public java.sql.ResultSetMetaData getMetaData() throws java.sql.SQLException
-	  { return null; }
+   { 
+	   return new java.sql.ResultSetMetaData()
+	   {
+        public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
+        public boolean isWrapperFor(Class<?> iface) throws SQLException { return false; }
+        public int getColumnCount() throws SQLException { return showCols.length; }
+        public boolean isAutoIncrement(int column) throws SQLException { return false; }
+        public boolean isCaseSensitive(int column) throws SQLException { return true; }
+        public boolean isSearchable(int column) throws SQLException {
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return false;
+        	return true;
+        }
+        public boolean isCurrency(int column) throws SQLException { return false; }
+        public int isNullable(int column) throws SQLException {
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return columnNoNulls;
+        	return fakeTable.getColumnInfo(showCols[column-1]).canNull?columnNullable:columnNoNulls;
+        }
+        public boolean isSigned(int column) throws SQLException 
+        { 
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return false;
+        	switch(fakeTable.getColumnInfo(showCols[column-1]).type)
+        	{
+        	case FakeColumn.TYPE_INTEGER: return true;
+        	case FakeColumn.TYPE_LONG: return true;
+        	case FakeColumn.TYPE_STRING: return false;
+        	case FakeColumn.TYPE_UNKNOWN: return false;
+        	}
+        	return false;
+        }
+        public int getColumnDisplaySize(int column) throws SQLException 
+        {
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return 6;
+        	switch(fakeTable.getColumnInfo(showCols[column-1]).type)
+        	{
+        	case FakeColumn.TYPE_INTEGER: return 9;
+        	case FakeColumn.TYPE_LONG: return 19;
+        	case FakeColumn.TYPE_STRING: return 40;
+        	case FakeColumn.TYPE_UNKNOWN: return 10;
+        	}
+        	return 10;
+        }
+        public String getColumnLabel(int column) throws SQLException { return getColumnName(column); }
+        public String getColumnName(int column) throws SQLException {
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return "COUNT";
+        	return fakeTable.getColumnName(showCols[column-1]);
+        }
+        public String getSchemaName(int column) throws SQLException { return statement.getConnection().getSchema(); }
+        public int getPrecision(int column) throws SQLException {
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return 9;
+        	switch(fakeTable.getColumnInfo(showCols[column-1]).type)
+        	{
+        	case FakeColumn.TYPE_INTEGER: return 9;
+        	case FakeColumn.TYPE_LONG: return 19;
+        	case FakeColumn.TYPE_STRING: return Integer.MAX_VALUE;
+        	case FakeColumn.TYPE_UNKNOWN: return 0;
+        	}
+        	return 0;
+        }
+        public int getScale(int column) throws SQLException { return 0; }
+        public String getTableName(int column) throws SQLException {
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return "FAKEDB";
+        	return fakeTable.getColumnInfo(showCols[column-1]).tableName;
+        }
+        public String getCatalogName(int column) throws SQLException { return statement.getConnection().getCatalog(); }
+        public int getColumnType(int column) throws SQLException {
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return java.sql.Types.INTEGER;
+        	switch(fakeTable.getColumnInfo(showCols[column-1]).type)
+        	{
+        	case FakeColumn.TYPE_INTEGER: return java.sql.Types.INTEGER;
+        	case FakeColumn.TYPE_LONG: return java.sql.Types.BIGINT;
+        	case FakeColumn.TYPE_STRING: return java.sql.Types.VARCHAR;
+        	case FakeColumn.TYPE_UNKNOWN: return java.sql.Types.JAVA_OBJECT;
+        	}
+        	return java.sql.Types.JAVA_OBJECT;
+        }
+        public String getColumnTypeName(int column) throws SQLException {
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return "integer";
+        	switch(fakeTable.getColumnInfo(showCols[column-1]).type)
+        	{
+        	case FakeColumn.TYPE_INTEGER: return "integer";
+        	case FakeColumn.TYPE_LONG: return "long";
+        	case FakeColumn.TYPE_STRING: return "string";
+        	case FakeColumn.TYPE_UNKNOWN: return "unknown";
+        	}
+        	return "unknown";
+        }
+        public boolean isReadOnly(int column) throws SQLException { return false; }
+        public boolean isWritable(int column) throws SQLException 
+        { 
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return false;
+        	return true;
+        }
+        public boolean isDefinitelyWritable(int column) throws SQLException { return isWritable(column); }
+        public String getColumnClassName(int column) throws SQLException {
+        	if((column<1)||(column>=showCols.length))
+        		throw new SQLException("Value out of range.");
+        	if(showCols[column-1]==FakeColumn.INDEX_COUNT)
+        		return Integer.class.getName();
+        	switch(fakeTable.getColumnInfo(showCols[column-1]).type)
+        	{
+        	case FakeColumn.TYPE_INTEGER: return Integer.class.getName();
+        	case FakeColumn.TYPE_LONG: return Long.class.getName();
+        	case FakeColumn.TYPE_STRING: return String.class.getName();
+        	case FakeColumn.TYPE_UNKNOWN: return String.class.getName();
+        	}
+        	return String.class.getName();
+        }
+	   }; 
+   }
 
    public void updateArray(int columnIndex,java.sql.Array x) throws java.sql.SQLException { throw new java.sql.SQLException(); }
    public void updateArray(String columnName,java.sql.Array x) throws java.sql.SQLException { throw new java.sql.SQLException(); }
@@ -517,6 +660,32 @@ public class ResultSet implements java.sql.ResultSet
 	public RowId getRowId(String arg0) throws SQLException { return null; }
 	public SQLXML getSQLXML(int arg0) throws SQLException { return null; }
 	public SQLXML getSQLXML(String arg0) throws SQLException { return null;}
+    @SuppressWarnings("unchecked")
+    public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
+    	if(type == Long.class) return (T)Long.valueOf(this.getLong(columnIndex));
+    	if(type == Integer.class) return (T)Long.valueOf(this.getInt(columnIndex));
+    	if(type == Short.class) return (T)Short.valueOf(this.getShort(columnIndex));
+    	if(type == String.class) return (T)String.valueOf(this.getString(columnIndex));
+    	if(type == Short.class) return (T)Short.valueOf(this.getShort(columnIndex));
+    	if(type == Double.class) return (T)Double.valueOf(this.getDouble(columnIndex));
+    	if(type == Float.class) return (T)Float.valueOf(this.getFloat(columnIndex));
+    	if(type == Byte.class) return (T)Byte.valueOf(this.getByte(columnIndex));
+    	if(type == Boolean.class) return (T)Boolean.valueOf(this.getBoolean(columnIndex));
+    	if(type == java.sql.Array.class) return (T)this.getArray(columnIndex);
+    	if(type == java.sql.Blob.class) return (T)this.getBlob(columnIndex);
+    	if(type == java.sql.Clob.class) return (T)this.getClob(columnIndex);
+    	if(type == java.math.BigDecimal.class) return (T)this.getBigDecimal(columnIndex);
+    	if(type == byte[].class) return (T)this.getBytes(columnIndex);
+    	if(type == java.sql.Date.class) return (T)this.getDate(columnIndex);
+    	if(type == java.sql.Time.class) return (T)this.getTime(columnIndex);
+    	if(type == java.sql.Timestamp.class) return (T)this.getTimestamp(columnIndex);
+    	if(type == Object.class) return (T)this.getObject(columnIndex);
+	    throw new SQLFeatureNotSupportedException();
+    }
+	@Override
+    public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
+		return getObject(findColumn(columnLabel),type);
+    }
 	public boolean isClosed() throws SQLException { return false; }
 	public void updateAsciiStream(int arg0, InputStream arg1) throws SQLException {}
 	public void updateAsciiStream(String arg0, InputStream arg1) throws SQLException {}

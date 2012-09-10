@@ -28,6 +28,7 @@ limitations under the License.
  */
 public class AutoPlayTester
 {
+	private Socket 				sock=null;
 	private BufferedReader 		in = null;
 	private BufferedWriter		out = null;
 	private LinkedList<String> 	inbuffer = new LinkedList<String>();
@@ -136,7 +137,7 @@ public class AutoPlayTester
 	{
 		try
 		{
-			Socket sock=new Socket(host,port);
+			sock=new Socket(host,port);
 			sock.setSoTimeout(100);
 			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));

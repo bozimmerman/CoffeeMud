@@ -1688,6 +1688,35 @@ public class Modify extends StdCommand
 					mob.tell("Pings completed="+num+".");
 				}
 				else
+				if(sql.toUpperCase().trim().startsWith("SELECT"))
+				{
+					mob.tell("SQL Query: "+sql);
+					List<String[]> results=CMLib.database().DBRawQuery(sql.replace('`','\''));
+					StringBuilder buf=new StringBuilder("QueryResults\n\r");
+					if(results.size()>0)
+					{
+    					String[] headerRow=results.get(0);
+    					for(int c=0;c<headerRow.length;c++)
+    						buf.append(headerRow[c]);
+    					buf.append("\n\r");
+    					for(int r=1;r<results.size();r++)
+    					{
+    						String[] row=results.get(r);
+        					for(int c=0;c<row.length;c++)
+        					{
+        						if(c<headerRow.length)
+            						buf.append(CMStrings.padRight(row[c],headerRow[c].length()));
+        						else
+            						buf.append(row[c]);
+        					}
+        					buf.append("\n\r");
+    					}
+					}
+					if(mob.session()!=null)
+						mob.session().rawPrint(buf.toString());
+					mob.tell("Command completed.");
+				}
+				else
 				{
 					mob.tell("SQL Statement: "+sql);
 					int resp=CMLib.database().DBRawExecute(sql.replace('`','\''));

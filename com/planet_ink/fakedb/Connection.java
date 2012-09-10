@@ -2,6 +2,7 @@ package com.planet_ink.fakedb;
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executor;
 import java.lang.ref.WeakReference;
 
 /* 
@@ -38,7 +39,11 @@ public class Connection implements java.sql.Connection
 
    public Connection(String path) throws java.sql.SQLException
    {
-	  
+	   connect(path);
+   }
+
+   private void connect(String path) throws java.sql.SQLException
+   {
 	  try 
 	  {
 		 path=(new java.io.File(path)).getCanonicalPath();
@@ -74,7 +79,7 @@ public class Connection implements java.sql.Connection
 		  this.backend=backend;
 	  }
    }
-
+   
    public java.sql.Statement createStatement() throws java.sql.SQLException
    {
 	  return new Statement(this);
@@ -356,6 +361,12 @@ public class Connection implements java.sql.Connection
    { 
 	   return null; 
    }
+
+    public void setSchema(String schema) throws SQLException { connect(schema); }
+    public String getSchema() throws SQLException { return oldPath; }
+    public void abort(Executor executor) throws SQLException { this.close(); }
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException { }
+    public int getNetworkTimeout() throws SQLException { return 0; }
 
    // JDK 1.4 stuff
 /*
