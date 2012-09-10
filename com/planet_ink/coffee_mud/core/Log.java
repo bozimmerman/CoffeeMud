@@ -461,14 +461,14 @@ public class Log extends java.util.logging.Logger
 		return Header.toString();
 	}
 
-	public static final void infoOut(final String Out) { infoOut("UNKN",Out); }
+	public static final void infoOut(final String Out) { infoOut(Thread.currentThread().getName(),Out); }
 	public static final void sysOut(final String Out){ infoOut(Out); }
-	public static final void debugOut(final String Out){ debugOut("UNKN",Out); }
-	public static final void errOut(final String Out){ errOut("UNKN",Out); }
-	public static final void warnOut(final String Out){ warnOut("UNKN",Out); }
-	public static final void helpOut(final String Out) { helpOut("UNKN",Out); }
-	public static final void killsOut(final String Out) { killsOut("UNKN",Out); }
-	public static final void combatOut(final String Out) { combatOut("UNKN",Out); }
+	public static final void debugOut(final String Out){ debugOut(Thread.currentThread().getName(),Out); }
+	public static final void errOut(final String Out){ errOut(Thread.currentThread().getName(),Out); }
+	public static final void warnOut(final String Out){ warnOut(Thread.currentThread().getName(),Out); }
+	public static final void helpOut(final String Out) { helpOut(Thread.currentThread().getName(),Out); }
+	public static final void killsOut(final String Out) { killsOut(Thread.currentThread().getName(),Out); }
+	public static final void combatOut(final String Out) { combatOut(Thread.currentThread().getName(),Out); }
 	public static final void sysOut(final String Module, final String Message){ infoOut(Module,Message);}
 	public static final void infoOut(final String Module, final String Message){ l().standardOut(LogType.info,Module,Message,Integer.MIN_VALUE);}
 	public static final void errOut(final String Module, final String Message){ l().standardOut(LogType.error,Module,Message,Integer.MIN_VALUE);}
@@ -481,14 +481,14 @@ public class Log extends java.util.logging.Logger
 	public static final void errOut(final String Module, final Throwable e){ l().standardExOut(LogType.error,Module,Integer.MIN_VALUE,e);}
 	public static final void warnOut(final String Module, final Throwable e){ l().standardExOut(LogType.error,Module,Integer.MIN_VALUE,e);}
 	public static final void rawSysOut(final String Message){l().rawStandardOut(LogType.info,Message,Integer.MIN_VALUE);}
-	public static final void infoOut(final String Out, final int priority) { infoOut("UNKN",Out,priority); }
+	public static final void infoOut(final String Out, final int priority) { infoOut(Thread.currentThread().getName(),Out,priority); }
 	public static final void sysOut(final String Out, final int priority){ infoOut(Out,priority); }
-	public static final void debugOut(final String Out, final int priority){ debugOut("UNKN",Out,priority); }
-	public static final void errOut(final String Out, final int priority){ errOut("UNKN",Out,priority); }
-	public static final void warnOut(final String Out, final int priority){ warnOut("UNKN",Out,priority); }
-	public static final void helpOut(final String Out, final int priority) { helpOut("UNKN",Out,priority); }
-	public static final void killsOut(final String Out, final int priority) { killsOut("UNKN",Out,priority); }
-	public static final void combatOut(final String Out, final int priority) { combatOut("UNKN",Out,priority); }
+	public static final void debugOut(final String Out, final int priority){ debugOut(Thread.currentThread().getName(),Out,priority); }
+	public static final void errOut(final String Out, final int priority){ errOut(Thread.currentThread().getName(),Out,priority); }
+	public static final void warnOut(final String Out, final int priority){ warnOut(Thread.currentThread().getName(),Out,priority); }
+	public static final void helpOut(final String Out, final int priority) { helpOut(Thread.currentThread().getName(),Out,priority); }
+	public static final void killsOut(final String Out, final int priority) { killsOut(Thread.currentThread().getName(),Out,priority); }
+	public static final void combatOut(final String Out, final int priority) { combatOut(Thread.currentThread().getName(),Out,priority); }
 	public static final void infoOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.info,Module,Message,priority);}
 	public static final void sysOut(final String Out, final String Message, final int priority){ infoOut(Out,Message);}
 	public static final void errOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.error,Module,Message,priority);}
@@ -506,7 +506,7 @@ public class Log extends java.util.logging.Logger
 	* Handles long exception logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
  	*
-	* <br><br><b>Usage:</b> standardExOut("UNKN",Out);
+	* <br><br><b>Usage:</b> standardExOut(Thread.currentThread().getName(),Out);
 	* @param type The channel to print to
 	* @param Module The module to print
 	* @param e	The exception whose string one wishes to print
@@ -546,7 +546,7 @@ public class Log extends java.util.logging.Logger
 	* Handles error logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
  	*
-	* <br><br><b>Usage:</b> shortExOut(LogType.info,"UNKN",Out);
+	* <br><br><b>Usage:</b> shortExOut(LogType.info,Thread.currentThread().getName(),Out);
 	* @param type The type of channel
 	* @param Module The message to print
 	* @param e	The exception whose string one wishes to print
@@ -601,7 +601,7 @@ public class Log extends java.util.logging.Logger
 	* Handles debug logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
  	*
-	* <br><br><b>Usage:</b> standardOut(LogType.info,"UNKN",Out);
+	* <br><br><b>Usage:</b> standardOut(LogType.info,Thread.currentThread().getName(),Out);
 	* @param type The type of writer
 	* @param Module The file name
 	* @param Message The message to print
@@ -627,7 +627,7 @@ public class Log extends java.util.logging.Logger
 	* Handles debug timing entries.  Sends them to System.out,
 	* the log file, or nowhere.
  	*
-	* <br><br><b>Usage:</b> timeOut(LogType.info,"UNKN",Out);
+	* <br><br><b>Usage:</b> timeOut(LogType.info,Thread.currentThread().getName(),Out);
 	* @param type Channel name
 	* @param Module The file name
 	* @param Message The message to print
@@ -719,7 +719,7 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	config(String msg)
 	{
-		l().standardOut(LogType.debug, "UNKN", msg, Integer.MIN_VALUE);
+		l().standardOut(LogType.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
     //Log a method entry.
 	@Override
@@ -755,19 +755,19 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	fine(String msg) 
 	{
-		l().standardOut(LogType.debug, "UNKN", msg, Integer.MIN_VALUE);
+		l().standardOut(LogType.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
     //Log a FINER message.
 	@Override
 	public void	finer(String msg) 
 	{
-		l().standardOut(LogType.debug, "UNKN", msg, Integer.MIN_VALUE);
+		l().standardOut(LogType.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
     //Log a FINEST message.
 	@Override
 	public void	finest(String msg) 
 	{
-		l().standardOut(LogType.debug, "UNKN", msg, Integer.MIN_VALUE);
+		l().standardOut(LogType.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
     //Get the current filter for this Logger.
 	@Override
@@ -808,7 +808,7 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	info(String msg) 
 	{
-		standardOut(LogType.info,"UNKN",msg,Integer.MIN_VALUE);
+		standardOut(LogType.info,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
     //Check if a message of the given level would actually be logged by this logger.
 	@Override
@@ -823,30 +823,30 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	log(Level level, String msg) 
 	{
-		if(level==Level.INFO) standardOut(LogType.info,"UNKN",msg,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,"UNKN",msg,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,"UNKN",msg,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,"UNKN",msg,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(LogType.info,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(LogType.error,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(LogType.warning,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		else standardOut(LogType.debug,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
     //Log a message, with one object parameter.
 	@Override
 	public void	log(Level level, String msg, Object param1) 
 	{
 		String oStr=(param1==null)?"null":param1.toString();
-		if(level==Level.INFO) standardOut(LogType.info,"UNKN",msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,"UNKN",msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,"UNKN",msg+": "+oStr,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,"UNKN",msg+": "+oStr,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(LogType.info,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(LogType.error,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(LogType.warning,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else standardOut(LogType.debug,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
 	}
     //Log a message, with an array of object arguments.
 	@Override
 	public void	log(Level level, String msg, Object[] params) 
 	{
 		String oStr=toStringList(params);
-		if(level==Level.INFO) standardOut(LogType.info,"UNKN",msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,"UNKN",msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,"UNKN",msg+": "+oStr,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,"UNKN",msg+": "+oStr,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(LogType.info,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(LogType.error,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(LogType.warning,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else standardOut(LogType.debug,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
 	}
     //Log a message, with associated Throwable information.
 	@Override
@@ -946,7 +946,7 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	severe(String msg) 
 	{
-		standardOut(LogType.error,"UNKN",msg,Integer.MIN_VALUE);
+		standardOut(LogType.error,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
     //Log throwing an exception.
 	@Override
@@ -958,6 +958,6 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	warning(String msg) 
 	{
-		standardOut(LogType.warning,"UNKN",msg,Integer.MIN_VALUE);
+		standardOut(LogType.warning,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
 }
