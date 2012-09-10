@@ -895,6 +895,108 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"SB","","","ANSI","","" 			 //250-255
 	};
 	
+	public static abstract class InputCallback
+	{
+		public static enum Type { CONFIRM, PROMPT, CHOOSE }
+		
+		private final Type			type;
+		private final long			timeout;
+		private final String		defaultInput;
+		private final String		choicesStr;
+		protected volatile String	input		= "";
+		protected volatile boolean	confirmed	= false;
+		protected volatile boolean	waiting		= true;
+		
+		public InputCallback(Type type, String defaultInput, String choicesStr, long timeoutMs)
+		{
+			this.type=type;
+			if((choicesStr!=null)&&(choicesStr.trim().length()>0))
+				this.choicesStr=choicesStr.toUpperCase().trim();
+			else
+			switch(type)
+			{
+			case CONFIRM: this.choicesStr="YN"; break;
+			case CHOOSE: this.choicesStr="YN"; break;
+			default: this.choicesStr="";
+			}
+			this.timeout=timeoutMs;
+			this.waiting=false;
+			this.defaultInput=defaultInput;
+		}
+		
+		public InputCallback(Type type, String defaultInput, long timeoutMs)
+		{
+			this(type, defaultInput, "", timeoutMs);
+		}
+		
+		public InputCallback(Type type, long timeoutMs)
+		{
+			this(type, "", timeoutMs);
+		}
+		
+		public InputCallback(Type type)
+		{
+			this(type, 0);
+		}
+		
+		public boolean isTimedOut()
+		{
+			return (timeout > 0) && (System.currentTimeMillis() > timeout);
+		}
+		
+		public void setInput(String input)
+		{
+			this.input=input;
+			switch(type)
+			{
+			case PROMPT:
+			{
+				if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
+					this.input=input.substring(0,input.length()-1);
+				else
+					this.input=input;
+				if(this.input.trim().length()==0)
+					this.input=defaultInput;
+				waiting=false;
+				break;
+			}
+			case CONFIRM:
+				if(input.trim().toUpperCase().startsWith("T"))
+					input="Y";
+				//$FALL-THROUGH$
+			case CHOOSE:
+					this.input=input.toUpperCase().trim();
+				if(this.input.length()==0)
+					this.input=defaultInput;
+				if(this.input.length()>0)
+				{
+					this.input=this.input.substring(0,1);
+					if((choicesStr.length()==0)
+					||(choicesStr.indexOf(this.input)>=0))
+					{
+						waiting=false;
+						if(type==Type.CONFIRM)
+							this.confirmed=this.input.equals("Y");
+					}
+					else
+					{
+						//TODO: show prompt again
+					}
+				}
+				break;
+			}
+			waiting=false;
+		}
+		
+		public boolean waitForInput()
+		{
+			return waiting;
+		}
+		
+		public abstract void timedOut();
+		public abstract void callBack();
+	}
+
 	/** for REPLY command, constant for maximum number of saved strings */
 	public static final int MAX_PREVMSGS=100;
 	/** Some sort of TELNET protocol constant related to LINEMODE -- I've no idea what it does */

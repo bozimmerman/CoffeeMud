@@ -51,7 +51,7 @@ public class DefaultSession implements Session
 	protected static int		   sessionCounter   = 0;
 	
 	protected Thread		 thread = null;
-	protected int   		 status =0;
+	protected volatile int   status =0;
 	protected int   		 snoopSuspensionStack=0;
 	protected Socket		 sock;
 	protected BufferedReader in;
@@ -106,6 +106,7 @@ public class DefaultSession implements Session
 	protected long lastKeystroke=0;
 	protected long promptLastShown=0;
 	protected volatile long lastPing=System.currentTimeMillis();
+	protected volatile InputCallback inputCallback=null;
 
 	private static final String TIMEOUT_MSG="Timed Out.";
 	
@@ -839,8 +840,7 @@ public class DefaultSession implements Session
 		}
 	}
 
-	public void handleEscape()
-	throws IOException, InterruptedIOException
+	public void handleEscape() throws IOException, InterruptedIOException
 	{
 		if((in==null)||(out==null)) return;
 		int c=read();
@@ -1531,6 +1531,35 @@ public class DefaultSession implements Session
 			switch(status)
 			{
 			case Session.STATUS_IDLE:
+				if(this.inputCallback!=null)
+				{
+					try
+					{
+	    				String input=readlineContinue();
+	    				if(input != null)
+	    				{
+    	    				this.inputCallback.setInput(input);
+        					if(!this.inputCallback.waitForInput())
+        					{
+        						this.inputCallback.callBack();
+        					}
+	    				}
+	    				else
+	    				if(this.inputCallback.isTimedOut())
+	    				{
+	    					this.inputCallback.timedOut();
+	    				}
+					}
+					catch(Exception e)
+					{
+						
+					}
+				}
+				if((this.inputCallback==null)||(!this.inputCallback.waitForInput()))
+				{
+					this.inputCallback=null;
+					status=Session.STATUS_OK;
+				}
 				break;
 			case Session.STATUS_OK:
 				mainLoop();
