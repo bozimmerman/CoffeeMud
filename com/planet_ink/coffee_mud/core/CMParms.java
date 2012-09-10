@@ -1399,7 +1399,7 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuilder s=new StringBuilder(V[0]);
+		final StringBuilder s=new StringBuilder(Short.toString(V[0]));
 		for(int v=1;v<V.length;v++)
 			s.append(", "+V[v]);
 		return s.toString();
@@ -1421,7 +1421,7 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuilder s=new StringBuilder((int)V[0]);
+		final StringBuilder s=new StringBuilder(Integer.toString((int)V[0]));
 		for(int v=1;v<V.length;v++)
 			s.append(", "+((int)V[v]));
 		return s.toString();
@@ -1443,7 +1443,7 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuilder s=new StringBuilder(V[0]);
+		final StringBuilder s=new StringBuilder(Integer.toString(V[0]));
 		for(int v=1;v<V.length;v++)
 			s.append(", "+V[v]);
 		return s.toString();
