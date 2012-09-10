@@ -469,7 +469,7 @@ public class ResultSet implements java.sql.ResultSet
         		return "COUNT";
         	return fakeTable.getColumnName(showCols[column-1]);
         }
-        public String getSchemaName(int column) throws SQLException { return statement.getConnection().getSchema(); }
+        public String getSchemaName(int column) throws SQLException { return statement.getFakeConnection().getSchema(); }
         public int getPrecision(int column) throws SQLException {
         	if((column<1)||(column>=showCols.length))
         		throw new SQLException("Value out of range.");
@@ -682,7 +682,6 @@ public class ResultSet implements java.sql.ResultSet
     	if(type == Object.class) return (T)this.getObject(columnIndex);
 	    throw new SQLFeatureNotSupportedException();
     }
-	@Override
     public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
 		return getObject(findColumn(columnLabel),type);
     }

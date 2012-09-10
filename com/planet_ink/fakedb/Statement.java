@@ -41,6 +41,8 @@ public class Statement implements java.sql.Statement
 
    public java.sql.Connection getConnection() { return connection; }
 
+   public Connection getFakeConnection() { return connection; }
+   
    protected String split(String sql,String[] token)
    {
 	  while (true) 

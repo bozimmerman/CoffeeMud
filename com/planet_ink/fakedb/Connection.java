@@ -42,6 +42,11 @@ public class Connection implements java.sql.Connection
 	   connect(path);
    }
 
+   public String getOldPath()
+   {
+	   return oldPath;
+   }
+   
    private void connect(String path) throws java.sql.SQLException
    {
 	  try 
