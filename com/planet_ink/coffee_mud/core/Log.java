@@ -190,7 +190,7 @@ public class Log extends java.util.logging.Logger
 				}
 				catch(IOException e)
 				{
-					Log.errOut("Log",e);
+					e.printStackTrace(System.err);
 				}
 			}
 			int x=flag.length();
@@ -360,7 +360,7 @@ public class Log extends java.util.logging.Logger
 		}
 		catch(Exception e)
 		{
-			Log.errOut("Log",e.getMessage());
+			standardOut(LogType.error,"Log",e.getMessage(),Integer.MIN_VALUE);
 		}
 		return num;
 	}
@@ -385,7 +385,7 @@ public class Log extends java.util.logging.Logger
 					}
 					catch(Exception e)
 					{
-						Log.errOut("Log",e.getMessage());
+						standardOut(LogType.error,"Log",e.getMessage(),Integer.MIN_VALUE);
 						return null;
 					}
 				}
@@ -713,6 +713,14 @@ public class Log extends java.util.logging.Logger
 		return str.toString();
 	}
 	
+	private String toModuleName(String sourceClass)
+	{
+		if((sourceClass!=null)&&(sourceClass.length()>0)&&(sourceClass.indexOf('.')>=0))
+			return sourceClass.substring(sourceClass.lastIndexOf('.')+1);
+		else
+			return Thread.currentThread().getName();
+	}
+	
 	@Override
 	public synchronized void addHandler(Handler handler){}
     //Log a CONFIG message.
@@ -725,31 +733,31 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	entering(String sourceClass, String sourceMethod) 
 	{
-		l().standardOut(LogType.debug, sourceClass, sourceMethod, Integer.MIN_VALUE);
+		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
 	}
     //Log a method entry, with one parameter.
 	@Override
 	public void	entering(String sourceClass, String sourceMethod, Object param1) 
 	{
-		l().standardOut(LogType.debug, sourceClass, sourceMethod+": "+param1, Integer.MIN_VALUE);
+		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod+": "+param1, Integer.MIN_VALUE);
 	}
     //Log a method entry, with an array of parameters.
 	@Override
 	public void	entering(String sourceClass, String sourceMethod, Object[] params) 
 	{
-		l().standardOut(LogType.debug, sourceClass, sourceMethod+": "+toStringList(params), Integer.MIN_VALUE);
+		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod+": "+toStringList(params), Integer.MIN_VALUE);
 	}
     //Log a method return.
 	@Override
 	public void	exiting(String sourceClass, String sourceMethod) 
 	{
-		l().standardOut(LogType.debug, sourceClass, sourceMethod, Integer.MIN_VALUE);
+		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
 	}
     //Log a method return, with result object.
 	@Override
 	public void	exiting(String sourceClass, String sourceMethod, Object result) 
 	{
-		l().standardOut(LogType.debug, sourceClass, sourceMethod+": "+result, Integer.MIN_VALUE);
+		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod+": "+result, Integer.MIN_VALUE);
 	}
     //Log a FINE message.
 	@Override
@@ -853,10 +861,10 @@ public class Log extends java.util.logging.Logger
 	public void	log(Level level, String msg, Throwable thrown) 
 	{
 		if(thrown==null) log(level,msg);
-		else if(level==Level.INFO) standardExOut(LogType.info,msg,Integer.MIN_VALUE,thrown);
-		else if(level==Level.SEVERE) standardExOut(LogType.error,msg,Integer.MIN_VALUE,thrown);
-		else if(level==Level.WARNING) standardExOut(LogType.warning,msg,Integer.MIN_VALUE,thrown);
-		else shortExOut(LogType.debug,msg,Integer.MIN_VALUE,thrown);
+		else if(level==Level.INFO) standardExOut(LogType.info,toModuleName(msg),Integer.MIN_VALUE,thrown);
+		else if(level==Level.SEVERE) standardExOut(LogType.error,toModuleName(msg),Integer.MIN_VALUE,thrown);
+		else if(level==Level.WARNING) standardExOut(LogType.warning,toModuleName(msg),Integer.MIN_VALUE,thrown);
+		else shortExOut(LogType.debug,toModuleName(msg),Integer.MIN_VALUE,thrown);
 	}
     //Log a LogRecord.
 	@Override
@@ -868,40 +876,40 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	logp(Level level, String sourceClass, String sourceMethod, String msg) 
 	{
-		if(level==Level.INFO) standardOut(LogType.info,sourceClass,sourceMethod+": "+msg,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,sourceClass,sourceMethod+": "+msg,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,sourceClass,sourceMethod+": "+msg,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,sourceClass,sourceMethod+": "+msg,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(LogType.info,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(LogType.error,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(LogType.warning,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
+		else standardOut(LogType.debug,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
 	}
     //Log a message, specifying source class and method, with a single object parameter to the log message.
 	@Override
 	public void	logp(Level level, String sourceClass, String sourceMethod, String msg, Object param1) 
 	{
 		String oStr=(param1==null)?"null":param1.toString();
-		if(level==Level.INFO) standardOut(LogType.info,sourceClass,sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,sourceClass,sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,sourceClass,sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,sourceClass,sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(LogType.info,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(LogType.error,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(LogType.warning,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else standardOut(LogType.debug,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
 	}
     //Log a message, specifying source class and method, with an array of object arguments.
 	@Override
 	public void	logp(Level level, String sourceClass, String sourceMethod, String msg, Object[] params) 
 	{
 		String oStr=toStringList(params);
-		if(level==Level.INFO) standardOut(LogType.info,sourceClass,sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,sourceClass,sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,sourceClass,sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,sourceClass,sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(LogType.info,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(LogType.error,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(LogType.warning,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else standardOut(LogType.debug,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
 	}
     //Log a message, specifying source class and method, with associated Throwable information.
 	@Override
 	public void	logp(Level level, String sourceClass, String sourceMethod, String msg, Throwable thrown) 
 	{
 		if(thrown==null) log(level,msg);
-		else if(level==Level.INFO) standardExOut(LogType.info,msg,Integer.MIN_VALUE,thrown);
-		else if(level==Level.SEVERE) standardExOut(LogType.error,msg,Integer.MIN_VALUE,thrown);
-		else if(level==Level.WARNING) standardExOut(LogType.warning,msg,Integer.MIN_VALUE,thrown);
-		else shortExOut(LogType.debug,msg,Integer.MIN_VALUE,thrown);
+		else if(level==Level.INFO) standardExOut(LogType.info,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
+		else if(level==Level.SEVERE) standardExOut(LogType.error,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
+		else if(level==Level.WARNING) standardExOut(LogType.warning,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
+		else shortExOut(LogType.debug,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
 	}
     //Log a message, specifying source class, method, and resource bundle name with no arguments.
 	@Override
@@ -952,7 +960,7 @@ public class Log extends java.util.logging.Logger
 	@Override
 	public void	throwing(String sourceClass, String sourceMethod, Throwable thrown) 
 	{
-		standardExOut(LogType.error, sourceClass+": "+sourceMethod, Integer.MIN_VALUE, thrown);
+		standardExOut(LogType.error, toModuleName(sourceClass), Integer.MIN_VALUE, thrown);
 	}
     //Log a WARNING message.
 	@Override
