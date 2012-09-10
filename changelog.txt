@@ -2389,6 +2389,8 @@ ruthless programmer, and sentenced to a quick death.
 3. Fixed numerous prayers that did not respect elemental immunity/resistance
 4. Arcanist Spellcrafted abilities persist over reboots
 5. Children now track their number of high-level parents to which benefits are tied to, and can repick their stats and class.
-# Build 5.?.? Release ??/??/2012
+# Build 5.7.9 Release 09/10/2012
 1. FakeDB now supports getResultSetMetaData, making room for some sort of sql browser feature
+2. CoffeeMud (actually fakedb) is now build compatible with JDK 1.7
+3. Fixed a nasty bug in CMParms -- you do not want 5.7.8!
 
