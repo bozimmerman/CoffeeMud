@@ -1331,7 +1331,7 @@ public class ListCmd extends StdCommand
 
 	public String listHelpFileRequests(MOB mob, String rest)
 	{
-		String fileName=Log.instance().getLogFilename("help");
+		String fileName=Log.instance().getLogFilename(Log.LogType.help);
 		if(fileName==null)
 			return "This feature requires that help request log entries be directed to a file.";
 		CMFile f=new CMFile(fileName,mob,true);
