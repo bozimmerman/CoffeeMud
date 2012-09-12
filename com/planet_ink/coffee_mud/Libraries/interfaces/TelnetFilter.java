@@ -46,10 +46,11 @@ public interface TelnetFilter extends CMLibrary
 	public final static int SIRMADAM=10;
 	public final static int ISARE2=11;
 	public final static int NAMENOART=12;
+	public final static int ACCOUNTNAME=13;
 	public final static String[] FILTER_DESCS={"-HIS-HER","-HIM-HER","-NAME","-NAMESELF",
 											   "-HE-SHE","-IS-ARE","-HAS-HAVE","-YOUPOSS",
 											   "-HIM-HERSELF","-HIS-HERSELF",
-											   "-SIRMADAM","IS-ARE","-NAMENOART"};
+											   "-SIRMADAM","IS-ARE","-NAMENOART","-ACCOUNTNAME"};
 	
 	public Hashtable<Object, Integer> getTagTable();
 	public String simpleOutFilter(String msg);

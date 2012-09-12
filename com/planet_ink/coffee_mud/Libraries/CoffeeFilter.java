@@ -953,6 +953,34 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 										replacement=regarding.name();
 								}
 								break;
+							case ACCOUNTNAME:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(mob==regarding)
+									{
+										replacement="you";
+										if(!firstSdone) doSagain=true;
+									}
+									else
+									if((mob!=null)
+									&&((!CMLib.flags().canSee(mob))||(!CMLib.flags().canBeSeenBy(regarding,mob)))
+									&&(regarding.Name().trim().length()>0))
+										replacement=((regarding instanceof MOB)?"someone":"something");
+									else
+									if(regarding instanceof MOB)
+									{
+										if((((MOB)regarding).playerStats()!=null)
+										&&(((MOB)regarding).playerStats().getAccount()!=null))
+											replacement=((MOB)regarding).playerStats().getAccount().accountName();
+										else
+											replacement=((MOB)regarding).displayName(mob);
+									}
+									else
+										replacement=regarding.name();
+								}
+								break;
 							case NAMENOART:
 								{
 									if(regarding==null)
