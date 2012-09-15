@@ -48,8 +48,6 @@ public class ActiveTicker extends StdBehavior
 		tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
 	}
 
-
-
 	public void setParms(String newParms)
 	{
 		parms=newParms;
@@ -89,21 +87,30 @@ public class ActiveTicker extends StdBehavior
 
 	protected boolean canAct(Tickable ticking, int tickID)
 	{
-		if((tickID==Tickable.TICKID_MOB)
-		||(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
-		||(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
-		||((tickID==Tickable.TICKID_AREA)&&(ticking instanceof Area)))
+		switch(tickID)
 		{
-			int a=CMLib.dice().rollPercentage();
+		case Tickable.TICKID_AREA:
+			if(!(ticking instanceof Area))
+				break;
+		//$FALL-THROUGH$
+		case Tickable.TICKID_MOB:
+		case Tickable.TICKID_ITEM_BEHAVIOR:
+		case Tickable.TICKID_ROOM_BEHAVIOR:
+		{
 			if((--tickDown)<1)
 			{
 				tickReset();
 				if((ticking instanceof MOB)&&(!canActAtAll(ticking)))
 					return false;
+				int a=CMLib.dice().rollPercentage();
 				if(a>chance)
 					return false;
 				return true;
 			}
+			break;
+		}
+		default:
+			break;
 		}
 		return false;
 	}

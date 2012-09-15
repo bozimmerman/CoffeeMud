@@ -423,9 +423,7 @@ public class StdRoom implements Room
 	public void setResource(int resourceCode)
 	{
 		myResource=resourceCode;
-		resourceFound=0;
-		if(resourceCode>=0)
-			resourceFound=System.currentTimeMillis();
+		resourceFound= (resourceCode>=0) ? resourceFound=System.currentTimeMillis() : 0;
 	}
 
 	public int myResource()

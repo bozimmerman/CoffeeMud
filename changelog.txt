@@ -2393,4 +2393,7 @@ ruthless programmer, and sentenced to a quick death.
 1. FakeDB now supports getResultSetMetaData, making room for some sort of sql browser feature
 2. CoffeeMud (actually fakedb) is now build compatible with JDK 1.7
 3. Fixed a nasty bug in CMParms -- you do not want 5.7.8!
+# Build 5.7.10 Release ??/??/2012
+1. (Minor) ResourceOverride is now an ActiveTicker for better control over its behavior.  Also, room types bug fixed.
+
 

@@ -32,15 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
-public class ResourceOverride extends StdBehavior
+public class ResourceOverride extends ActiveTicker
 {
 	public String ID(){return "ResourceOverride";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
-	private int tickDown=1;
-	private Vector rscs=new Vector();
-	private Vector roomTypes=new Vector();
+	private List<Integer>	rscs		= new Vector<Integer>();
+	private Set<Integer>	roomTypes	= new TreeSet<Integer>();
 	
 	public String accountForYourself()
 	{ 
@@ -50,6 +48,7 @@ public class ResourceOverride extends StdBehavior
 	public void setParms(String newStr)
 	{
 		super.setParms(newStr);
+		super.tickDown=1;
 		rscs.clear();
 		roomTypes.clear();
 		Vector<String> V=CMParms.parse(getParms());
@@ -59,9 +58,8 @@ public class ResourceOverride extends StdBehavior
 			// first try for a real one
 			int code=-1;
 			String which=((String)V.elementAt(v)).toUpperCase().trim();
-			if((CMath.s_int(which)>0)||(which.equalsIgnoreCase("0")))
-			   code=CMath.s_int(which);
-	
+			if(CMath.isInteger(which))
+				code=CMath.s_int(which);
 			if(code<0) code = RawMaterial.CODES.FIND_IgnoreCase(which);
 			if(code<0)
 				for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
@@ -90,7 +88,7 @@ public class ResourceOverride extends StdBehavior
 					for(int i=0;i<Room.indoorDomainDescs.length;i++)
 						if(which.equalsIgnoreCase(Room.indoorDomainDescs[i]))
 						{ code=Room.INDOORS|i; break;}
-				if(!roomTypes.contains(Integer.valueOf(code)))
+				if(code>=0)
 					roomTypes.add(Integer.valueOf(code));
 			}
 		}
@@ -99,28 +97,31 @@ public class ResourceOverride extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 		if(rscs.size()==0) return true;
-		if((--tickDown)>0) return true;
-		if((tickID==Tickable.TICKID_ROOM_BEHAVIOR)
-		&&(ticking instanceof Room))
+		if(super.canAct(ticking, tickID))
 		{
-			tickDown=2;
-			Room R=(Room)ticking;
-			if(!rscs.contains(Integer.valueOf(R.myResource())))
-				R.setResource(((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue());
-		}
-		else
-		if((tickID==Tickable.TICKID_AREA)
-		&&(ticking instanceof Area))
-		{
-			tickDown=5;
-			Area A=(Area)ticking;
-			Room R=null;
-			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+			switch(tickID)
 			{
-				R=(Room)e.nextElement();
-				if(((roomTypes.size()==0)||(!roomTypes.contains(Integer.valueOf(R.domainType()))))
-				&&(!rscs.contains(Integer.valueOf(R.myResource()))))
-					R.setResource(((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue());
+			case Tickable.TICKID_ROOM_BEHAVIOR:
+				if(ticking instanceof Room)
+				{
+					Room R=(Room)ticking;
+					if(!rscs.contains(Integer.valueOf(R.myResource())))
+						R.setResource(rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue());
+				}
+				break;
+			case Tickable.TICKID_AREA:
+				if(ticking instanceof Area)
+				{
+					Area A=(Area)ticking;
+					Room R=null;
+					for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+					{
+						R=(Room)e.nextElement();
+						if(((roomTypes.size()==0)||(roomTypes.contains(Integer.valueOf(R.domainType()))))
+						&&(!rscs.contains(Integer.valueOf(R.myResource()))))
+							R.setResource(rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue());
+					}
+				}
 			}
 		}
 		return true;
