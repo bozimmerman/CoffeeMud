@@ -60,7 +60,7 @@ public class CommonSkill extends StdAbility
 	protected boolean helping=false;
 	protected boolean bundling=false;
 	public Ability helpingAbility=null;
-	protected int tickUp=0;
+	protected int tickDownBase=0;
 	protected String verb="working";
 	protected String playSound=null;
 	public int usageType(){return USAGE_MOVEMENT;}
@@ -92,12 +92,17 @@ public class CommonSkill extends StdAbility
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
-			{aborted=true; unInvoke(); return false;}
+			{
+				aborted=true; 
+				unInvoke(); 
+				return false;
+			}
 			String sound=(playSound!=null)?CMProps.msp(playSound,10):"";
+			final int tickUp=tickDownBase-tickDown;
 			if(tickDown==4)
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
 			else
@@ -115,7 +120,6 @@ public class CommonSkill extends StdAbility
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
-		tickUp++;
 		return super.tick(ticking,tickID);
 	}
 
@@ -457,6 +461,18 @@ public class CommonSkill extends StdAbility
 			if(remainders.specificSkillLimit<=Integer.MAX_VALUE/2)
 				student.tell(student.name()+" may learn "+remainders.specificSkillLimit+" more "+(crafting?"":"non-") +"crafting common skills.");
 		}
+	}
+	
+	public void bumpTickDown(long byThisMuch)
+	{
+		tickDownBase+=byThisMuch;
+		tickDown+=byThisMuch;
+	}
+	
+	public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
+	{
+		super.startTickDown(invokerMOB, affected, tickTime);
+		tickDownBase=tickDown;
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

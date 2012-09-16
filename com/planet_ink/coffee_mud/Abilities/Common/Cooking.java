@@ -109,6 +109,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
+			final int tickUp=tickDownBase-tickDown;
 			if((cookingPot==null)
 			||(building==null)
 			||(finalRecipe==null)

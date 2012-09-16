@@ -57,6 +57,7 @@ public class Digging extends GatheringSkill
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
+			final int tickUp=tickDownBase-tickDown;
 			if(tickUp==3)
 			{
 				if(found!=null)
@@ -65,7 +66,7 @@ public class Digging extends GatheringSkill
 					displayText="You are digging out "+foundShortName;
 					verb="digging out "+foundShortName;
 					if((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
-						tickDown=tickDown*3;
+						bumpTickDown(tickDown*2);
 				}
 				else
 				{

@@ -58,6 +58,7 @@ public class Farming extends GatheringSkill
 		if((affected!=null)&&(affected instanceof Room))
 		{
 			MOB mob=invoker();
+			final int tickUp=tickDownBase-tickDown;
 			if(tickUp==6)
 			{
 				if(found==null)
@@ -102,7 +103,7 @@ public class Farming extends GatheringSkill
 		{
 			Farming F=((Farming)copyOf());
 			F.unInvoked=false;
-			F.tickUp=0;
+			F.tickDownBase=50;
 			F.tickDown=50;
 			F.startTickDown(invoker,room,50);
 		}

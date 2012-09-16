@@ -55,6 +55,7 @@ public class PlantLore extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
+			final int tickUp=tickDownBase-tickDown;
 			if(tickUp==6)
 			{
 				if(success==false)

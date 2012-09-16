@@ -462,13 +462,13 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					case 1:
 						applyName(item,def.data[stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
-						affect.tickDown+=Math.round(0.25 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.25 * (double)affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.data[stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						//addStatAdjustment(item,"DEX","+1");
-						affect.tickDown+=Math.round(0.5 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.5 * (double)affect.tickDown));
 						break;
 					}
 					break;
@@ -489,14 +489,14 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						applyName(item,def.data[stage]);
 						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.1)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
-						affect.tickDown+=Math.round(0.25 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.25 * (double)affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.data[stage]);
 						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.25)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						//addStatAdjustment(item,"CON","+1");
-						affect.tickDown+=Math.round(0.5 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.5 * (double)affect.tickDown));
 						break;
 					}
 					break;
@@ -508,12 +508,12 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					case 0:
 						applyName(item,def.data[stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.5));
-						affect.tickDown+=Math.round(0.25 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.25 * (double)affect.tickDown));
 						break;
 					case 1:
 						applyName(item,def.data[stage]);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),1.5));
-						affect.tickDown+=Math.round(0.5 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.5 * (double)affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.data[stage]);
@@ -521,7 +521,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						if((item instanceof Armor)
 						&&(!CMath.bset(((Armor)item).getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR)))
 							addSpellAdjustment(item,"Spell_WellDressed","1");
-						affect.tickDown+=Math.round(0.75 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.75 * (double)affect.tickDown));
 						break;
 					}
 					break;
@@ -537,21 +537,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						applyName(item,def.data[stage]);
 						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.05));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
-						affect.tickDown+=Math.round(0.25 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.25 * (double)affect.tickDown));
 						break;
 					case 1:
 						applyName(item,def.data[stage]);
 						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.1));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
-						affect.tickDown+=Math.round(0.5 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.5 * (double)affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.data[stage]);
 						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.15)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
-						affect.tickDown+=Math.round(0.75 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.75 * (double)affect.tickDown));
 						break;
 					}
 					break;
@@ -567,21 +567,21 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						applyName(item,def.data[stage]);
 						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+3);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
-						affect.tickDown+=Math.round(0.25 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.25 * (double)affect.tickDown));
 						break;
 					case 1:
 						applyName(item,def.data[stage]);
 						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+6);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.05));
-						affect.tickDown+=Math.round(0.5 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(0.5 * (double)affect.tickDown));
 						break;
 					case 2:
 						applyName(item,def.data[stage]);
 						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+9);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
-						affect.tickDown+=Math.round(1.25 * (double)affect.tickDown);
+						affect.bumpTickDown(Math.round(1.25 * (double)affect.tickDown));
 						break;
 					}
 					break;

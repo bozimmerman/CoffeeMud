@@ -58,6 +58,7 @@ public class Drilling extends GatheringSkill
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
+			final int tickUp=tickDownBase-tickDown;
 			if(tickUp==6)
 			{
 				if(found!=null)

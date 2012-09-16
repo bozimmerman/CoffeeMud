@@ -124,6 +124,7 @@ public class Hunting extends CommonSkill
 				}
 			}
 
+			final int tickUp=tickDownBase-tickDown;
 			if(tickUp==0)
 			{
 				if(found!=null)
