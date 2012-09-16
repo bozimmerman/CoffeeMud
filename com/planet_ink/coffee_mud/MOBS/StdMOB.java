@@ -49,77 +49,77 @@ public class StdMOB implements MOB
 		return "StdMOB";
 	}
 
-	public String					username		= "";
+	public String				username		= "";
 
-	protected String				clanID			= null;
-	protected WeakReference<Clan>	cachedClan		= null;
-	protected int					clanRole		= 0;
+	protected String			clanID			= null;
+	protected WeakReference<Clan>cachedClan		= null;
+	protected int				clanRole		= 0;
 
-	protected CharStats				baseCharStats	= (CharStats) CMClass.getCommon("DefaultCharStats");
-	protected CharStats				charStats		= (CharStats) CMClass.getCommon("DefaultCharStats");
+	protected CharStats			baseCharStats	= (CharStats) CMClass.getCommon("DefaultCharStats");
+	protected CharStats			charStats		= (CharStats) CMClass.getCommon("DefaultCharStats");
 
-	protected PhyStats				phyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats				basePhyStats	= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats			phyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats			basePhyStats	= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 
-	protected PlayerStats			playerStats		= null;
+	protected PlayerStats		playerStats		= null;
 
-	protected boolean				amDead			= false;
-	protected volatile Room			location		= null;
-	protected volatile Room			lastLocation	= null;
-	protected Rideable				riding			= null;
+	protected boolean			amDead			= false;
+	protected volatile Room		location		= null;
+	protected volatile Room		lastLocation	= null;
+	protected Rideable			riding			= null;
 
-	protected volatile Session		mySession		= null;
-	protected boolean				pleaseDestroy	= false;
-	protected Object				description		= null;
-	protected String				displayText		= "";
-	protected String				rawImageName	= null;
-	protected String				cachedImageName	= null;
-	protected Object				miscText		= null;
-	protected String[]				xtraValues		= null;
+	protected volatile Session	mySession		= null;
+	protected boolean			pleaseDestroy	= false;
+	protected Object			description		= null;
+	protected String			displayText		= "";
+	protected String			rawImageName	= null;
+	protected String			cachedImageName	= null;
+	protected Object			miscText		= null;
+	protected String[]			xtraValues		= null;
 
 	// gained attributes
-	protected int					experience		= 0;
-	protected int					practices		= 0;
-	protected int					trains			= 0;
-	protected long					ageMinutes		= 0;
-	protected int					money			= 0;
-	protected double				moneyVariation	= 0.0;
-	protected int					attributesBitmap= MOB.ATT_NOTEACH;
-	protected String				databaseID		= "";
+	protected int				experience		= 0;
+	protected int				practices		= 0;
+	protected int				trains			= 0;
+	protected long				ageMinutes		= 0;
+	protected int				money			= 0;
+	protected double			moneyVariation	= 0.0;
+	protected int				attributesBitmap= MOB.ATT_NOTEACH;
+	protected String			databaseID		= "";
 
-	protected int					tickCounter		= 0;
-	protected int					recoverTickCter = 1;
-	private long					expirationDate	= 0;
-	private int						manaConsumeCter = CMLib.dice().roll(1, 10, 0);
-	private double					freeActions		= 0.0;
+	protected int				tickCounter		= 0;
+	protected int				recoverTickCter = 1;
+	private long				expirationDate	= 0;
+	private int					manaConsumeCter = CMLib.dice().roll(1, 10, 0);
+	private double				freeActions		= 0.0;
 
 	// the core state values
-	public CharState				curState		= (CharState) CMClass.getCommon("DefaultCharState");
-	public CharState				maxState		= (CharState) CMClass.getCommon("DefaultCharState");
-	public CharState				baseState		= (CharState) CMClass.getCommon("DefaultCharState");
-	private long					lastTickedTime  = 0;
-	private long					lastCommandTime	= System.currentTimeMillis();
+	public CharState			curState		= (CharState) CMClass.getCommon("DefaultCharState");
+	public CharState			maxState		= (CharState) CMClass.getCommon("DefaultCharState");
+	public CharState			baseState		= (CharState) CMClass.getCommon("DefaultCharState");
+	private long				lastTickedTime  = 0;
+	private long				lastCommandTime	= System.currentTimeMillis();
 
-	protected Room					possStartRoom   = null;
-	protected String				worshipCharID	= "";
-	protected String				liegeID			= "";
-	protected int					wimpHitPoint	= 0;
-	protected int					questPoint		= 0;
-	protected MOB					victim			= null;
-	protected MOB					amFollowing		= null;
-	protected MOB					soulMate		= null;
-	protected int					atRange			= -1;
-	protected long					peaceTime		= 0;
-	protected boolean				amDestroyed		= false;
-	protected boolean				kickFlag		= false;
-	protected boolean				imMobile		= false;
+	protected Room				possStartRoom   = null;
+	protected String			worshipCharID	= "";
+	protected String			liegeID			= "";
+	protected int				wimpHitPoint	= 0;
+	protected int				questPoint		= 0;
+	protected MOB				victim			= null;
+	protected MOB				amFollowing		= null;
+	protected MOB				soulMate		= null;
+	protected int				atRange			= -1;
+	protected long				peaceTime		= 0;
+	protected boolean			amDestroyed		= false;
+	protected boolean			kickFlag		= false;
+	protected boolean			imMobile		= false;
 
-	protected long					tickStatus		= Tickable.STATUS_NOT;
-	protected final MOB			 	me				= this;
+	protected long				tickStatus		= Tickable.STATUS_NOT;
+	protected final MOB			me				= this;
 
 	/* containers of items and attributes */
 	protected 		   SVector<Item>		 	 inventory		= new SVector<Item>(1);
-	protected 		   SVector<Ability>			 abilitys		= new CMObjUniqSortSVec<Ability>(1);
+	protected 		   SVector<Ability>			 abilitys		= new CMUniqSortSVec<Ability>(1);
 	protected 		   int[]					 abilityUseTrig = new int[3];
 	protected 		   STreeMap<String,int[][]>	 abilityUseCache= new STreeMap<String,int[][]>();
 	protected 		   SVector<Ability>		 	 affects		= new SVector<Ability>(1);
@@ -446,7 +446,7 @@ public class StdMOB implements MOB
 		pleaseDestroy = false;
 
 		inventory= new SVector<Item>(1);
-		abilitys= new CMObjUniqSortSVec<Ability>(1);
+		abilitys= new CMUniqSortSVec<Ability>(1);
 		abilityUseTrig = new int[3];
 		abilityUseCache= new STreeMap<String,int[][]>();
 		affects	= new SVector<Ability>(1);

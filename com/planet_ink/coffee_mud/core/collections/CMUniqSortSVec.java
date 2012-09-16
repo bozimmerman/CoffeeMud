@@ -7,16 +7,16 @@ import java.util.ListIterator;
 
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 
-public class CMObjUniqSortSVec<T extends CMObject> extends SVector<T> implements SearchIDList<T>
+public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements SearchIDList<T>
 {
 	private static final long serialVersionUID = 6687178785122361992L;
 	
-	public CMObjUniqSortSVec(int size)
+	public CMUniqSortSVec(int size)
 	{
 		super();
 	}
 	
-	public CMObjUniqSortSVec()
+	public CMUniqSortSVec()
 	{
 	}
 	
