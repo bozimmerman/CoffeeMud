@@ -38,17 +38,17 @@ public class StdAbility implements Ability
 {
 	public String ID() { return "StdAbility"; }
 	
-	protected boolean 	isAnAutoEffect	= false;
-	protected int 		proficiency		= 0;
-	protected boolean 	savable			= true;
-	protected String 	miscText		= "";
-	protected MOB 		invoker			= null;
-	protected Physical 	affected		= null;
-	protected boolean 	canBeUninvoked	= true;
-	protected boolean 	unInvoked		= false;
-	protected int 		tickDown		= -1;
-	protected long 		lastCastHelp	= 0;
-	protected boolean 	amDestroyed		= false;
+	protected boolean			isAnAutoEffect	= false;
+	protected int				proficiency		= 0;
+	protected boolean			savable			= true;
+	protected String			miscText		= "";
+	protected MOB				invoker			= null;
+	protected Physical			affected		= null;
+	protected boolean 			canBeUninvoked	= true;
+	protected volatile boolean	unInvoked		= false;
+	protected volatile int 		tickDown		= -1;
+	protected long 				lastCastHelp	= 0;
+	protected boolean 			amDestroyed		= false;
 	
 	private static final int[] STATIC_USAGE_NADA=new int[3];
 	

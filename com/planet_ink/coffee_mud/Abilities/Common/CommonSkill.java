@@ -60,7 +60,7 @@ public class CommonSkill extends StdAbility
 	protected boolean helping=false;
 	protected boolean bundling=false;
 	public Ability helpingAbility=null;
-	protected int tickDownBase=0;
+	protected volatile int tickUp=0;
 	protected String verb="working";
 	protected String playSound=null;
 	public int usageType(){return USAGE_MOVEMENT;}
@@ -102,7 +102,6 @@ public class CommonSkill extends StdAbility
 				return false;
 			}
 			String sound=(playSound!=null)?CMProps.msp(playSound,10):"";
-			final int tickUp=tickDownBase-tickDown;
 			if(tickDown==4)
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
 			else
@@ -120,7 +119,12 @@ public class CommonSkill extends StdAbility
 			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
-		return super.tick(ticking,tickID);
+		
+		int preTickDown=tickDown;
+		if(!super.tick(ticking,tickID))
+			return false;
+		tickUp+=(preTickDown-tickDown);
+		return true;
 	}
 
 	public void unInvoke()
@@ -465,14 +469,13 @@ public class CommonSkill extends StdAbility
 	
 	public void bumpTickDown(long byThisMuch)
 	{
-		tickDownBase+=byThisMuch;
 		tickDown+=byThisMuch;
 	}
 	
 	public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
 	{
 		super.startTickDown(invokerMOB, affected, tickTime);
-		tickDownBase=tickDown;
+		tickUp=0;
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

@@ -53,7 +53,6 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
-			final int tickUp=tickDownBase-tickDown;
 			if((building==null)
 			||(theSpell==null))
 			{
