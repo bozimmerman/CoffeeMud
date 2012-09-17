@@ -845,22 +845,42 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					contents.addAll(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).asList());
 			}
 			else
-			for(ItemCraftor skill : craftors)
 			{
-				List<List<String>> V=skill.matchingRecipeNames(recipe,false);
-				if((V!=null)&&(V.size()>0))
+				for(ItemCraftor skill : craftors)
 				{
-					ItemCraftor.ItemKeyPair pair;
-					if(material>=0)
-						pair=skill.craftItem(recipe,material);
-					else
-						pair=skill.craftItem(recipe);
-					if(pair!=null)
+					List<List<String>> V=skill.matchingRecipeNames(recipe,false);
+					if((V!=null)&&(V.size()>0))
 					{
-						contents.addAll(pair.asList());
-						break;
+						ItemCraftor.ItemKeyPair pair;
+						if(material>=0)
+							pair=skill.craftItem(recipe,material);
+						else
+							pair=skill.craftItem(recipe);
+						if(pair!=null)
+						{
+							contents.addAll(pair.asList());
+							break;
+						}
 					}
 				}
+				if((contents==null)||(contents.size()==0))
+					for(ItemCraftor skill : craftors)
+					{
+						List<List<String>> V=skill.matchingRecipeNames(recipe,true);
+						if((V!=null)&&(V.size()>0))
+						{
+							ItemCraftor.ItemKeyPair pair;
+							if(material>=0)
+								pair=skill.craftItem(recipe,material);
+							else
+								pair=skill.craftItem(recipe);
+							if(pair!=null)
+							{
+								contents.addAll(pair.asList());
+								break;
+							}
+						}
+					}
 			}
 			if((contents==null)||(contents.size()==0))
 				throw new CMException("Unable to metacraft an item called '"+recipe+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
