@@ -151,6 +151,18 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		&&(isRoom((Room)msg.target()))
 		&&(((msg.source().getStartRoom()==null)||(msg.source().getStartRoom().getArea()!=this))))
 		{
+			if(msg.source().isMonster())
+			{
+				Set<MOB> friends=msg.source().getGroupMembers(new HashSet<MOB>());
+				boolean playerInvolved=false;
+				for(MOB M : friends)
+					playerInvolved = playerInvolved || (!M.isMonster());
+				if(!playerInvolved)
+				{
+					msg.source().tell("You'll need to be accompanied by an adult to enter there.");
+					return false;
+				}
+			}
 			synchronized(instanceChildren)
 			{
 				int myDex=-1;
