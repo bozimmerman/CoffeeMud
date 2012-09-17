@@ -1428,9 +1428,9 @@ public class DefaultClan implements Clan
 			CMLib.commands().postChannel((String)channels.get(i),clanID(),msg,true);
 	}
 
-	private static final List<Ability> emptyAbles =new Vector<Ability>(1);
+	private static final SearchIDList<Ability> emptyAbles =new CMUniqSortSVec<Ability>(1);
 	
-	public List<Ability> clanAbilities(MOB mob)
+	public SearchIDList<Ability> clanAbilities(MOB mob)
 	{
 		if((mob==null)||(getAuthority(mob.getClanRole(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))
 			return govt().getClanLevelAbilities(Integer.valueOf(getClanLevel()));

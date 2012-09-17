@@ -266,9 +266,9 @@ public class PlayerData extends StdWebMacro
 		case 56: str.append(M.basePhyStats().speed()+", "); break;
 		case 57: 
 		{
-			for(int e=0;e<M.numExpertises();e++)
+			for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
 			{
-				String E=M.fetchExpertise(e);
+				String E=x.nextElement();
 				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(E);
 				if(X==null)
 					str.append(E+", ");

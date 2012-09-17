@@ -126,8 +126,7 @@ public class MOBloader
 				for(int v=0;v<V9.size();v++)
 					mob.addTattoo(parseTattoo((String)V9.get(v)));
 				V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
-				while(mob.numExpertises()>0)
-					mob.delExpertise(mob.fetchExpertise(0));
+				mob.delAllExpertises();
 				for(int v=0;v<V9.size();v++)
 					mob.addExpertise((String)V9.get(v));
 				if(pstats.getBirthday()==null)
@@ -763,11 +762,11 @@ public class MOBloader
 				pfxml.append(e.nextElement().toString()+";");
 			pfxml.append("</TATTS>");
 		}
-		if(mob.numExpertises()>0)
+		if(mob.expertises().hasMoreElements())
 		{
 			pfxml.append("<EDUS>");
-			for(int i=0;i<mob.numExpertises();i++)
-				pfxml.append(mob.fetchExpertise(i)+";");
+			for(Enumeration<String> x=mob.expertises();x.hasMoreElements();)
+				pfxml.append(x.nextElement()+";");
 			pfxml.append("</EDUS>");
 		}
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));

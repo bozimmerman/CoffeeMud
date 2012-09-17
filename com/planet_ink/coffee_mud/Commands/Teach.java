@@ -92,9 +92,9 @@ public class Teach extends StdCommand
 		{
 			ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
 			List<ExpertiseDefinition> V=CMLib.expertises().myListableExpertises(mob);
-			for(int exi=0;exi<mob.numExpertises();exi++)
+			for(Enumeration<String> exi=mob.expertises();exi.hasMoreElements();)
 			{
-				final String experID=mob.fetchExpertise(exi);
+				final String experID=exi.nextElement();
 				if(experID!=null)
 				{
 					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);

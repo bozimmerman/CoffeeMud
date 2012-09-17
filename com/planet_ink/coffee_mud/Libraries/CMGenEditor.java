@@ -3125,9 +3125,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
 			String behaviorstr="";
-			for(int b=0;b<M.numExpertises();b++)
+			for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
 			{
-				String B=M.fetchExpertise(b);
+				String B=x.nextElement();
 				if(B!=null) behaviorstr+=B+", ";
 			}
 			if(behaviorstr.length()>0)

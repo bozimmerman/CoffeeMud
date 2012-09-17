@@ -359,7 +359,7 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 * @param level clan level
 	 * @return list of abilities
 	 */
-	public List<Ability> getClanLevelAbilities(Integer level);
+	public SearchIDList<Ability> getClanLevelAbilities(Integer level);
 	
 	/**
 	 * Return the list of effects owned by someone

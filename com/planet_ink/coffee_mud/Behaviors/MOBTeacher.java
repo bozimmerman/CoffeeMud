@@ -385,9 +385,9 @@ public class MOBTeacher extends CombatAbilities
 					{
 						trainableExpertises=new LinkedList<ExpertiseLibrary.ExpertiseDefinition>();
 						trainableExpertises.addAll(CMLib.expertises().myListableExpertises(monster));
-						for(int exi=0;exi<monster.numExpertises();exi++)
+						for(Enumeration<String> exi=monster.expertises();exi.hasMoreElements();)
 						{
-							final String experID=monster.fetchExpertise(exi);
+							final String experID=exi.nextElement();
 							if(experID!=null)
 							{
 								ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);

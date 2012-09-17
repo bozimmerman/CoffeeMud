@@ -119,13 +119,13 @@ public class StdMOB implements MOB
 
 	/* containers of items and attributes */
 	protected 		   SVector<Item>		 	 inventory		= new SVector<Item>(1);
-	protected 		   SVector<Ability>			 abilitys		= new CMUniqSortSVec<Ability>(1);
+	protected 		   CMUniqSortSVec<Ability>	 abilitys		= new CMUniqSortSVec<Ability>(1);
 	protected 		   int[]					 abilityUseTrig = new int[3];
 	protected 		   STreeMap<String,int[][]>	 abilityUseCache= new STreeMap<String,int[][]>();
 	protected 		   SVector<Ability>		 	 affects		= new SVector<Ability>(1);
-	protected 		   SVector<Behavior>	 	 behaviors		= new SVector<Behavior>(1);
-	protected 		   SVector<Tattoo>		 	 tattoos		= new SVector<Tattoo>(1);
-	protected 		   SVector<String>		 	 expertises		= new SVector<String>(1);
+	protected 		   CMUniqSortSVec<Behavior>	 behaviors		= new CMUniqSortSVec<Behavior>(1);
+	protected 		   CMUniqSortSVec<Tattoo>	 tattoos		= new CMUniqSortSVec<Tattoo>(1);
+	protected 		   SVector<String>		 	 expertises		= new SVector<String>();
 	protected volatile SVector<Follower>	 	 followers		= null;
 	protected 		   LinkedList<QMCommand> 	 commandQue		= new LinkedList<QMCommand>();
 	protected 		   SVector<ScriptingEngine>	 scripts		= new SVector(1);
@@ -450,9 +450,9 @@ public class StdMOB implements MOB
 		abilityUseTrig = new int[3];
 		abilityUseCache= new STreeMap<String,int[][]>();
 		affects	= new SVector<Ability>(1);
-		behaviors= new SVector<Behavior>(1);
-		tattoos	= new SVector<Tattoo>(1);
-		expertises = new SVector<String>(1);
+		behaviors= new CMUniqSortSVec<Behavior>(1);
+		tattoos	= new CMUniqSortSVec<Tattoo>(1);
+		expertises = new SVector<String>();
 		followers = null;
 		commandQue = new LinkedList<QMCommand>();
 		scripts	= new SVector(1);
@@ -473,11 +473,8 @@ public class StdMOB implements MOB
 			Tattoo t=e.nextElement();
 			addTattoo(t.copyOf());
 		}
-		for(int i=0;i<M.numExpertises();i++)
-		{
-			String x=M.fetchExpertise(i);
-			if(x!=null) addExpertise(x);
-		}
+		for(Enumeration<String> s=M.expertises();s.hasMoreElements();)
+			addExpertise(s.nextElement());
 		
 		Item I = null;
 		for (int i = 0; i < M.numItems(); i++)
@@ -899,7 +896,7 @@ public class StdMOB implements MOB
 		affects.setSize(0);
 		behaviors.setSize(0);
 		tattoos.setSize(0);
-		expertises.setSize(0);
+		expertises.clear();
 		factions.clear();
 		commandQue.clear();
 		scripts.setSize(0);
@@ -3533,12 +3530,8 @@ public class StdMOB implements MOB
 	{
 		if (to == null)
 			return;
-		for (int a = 0; a < numAbilities(); a++)
-		{
-			final Ability A = fetchAbility(a);
-			if ((A != null) && (A.ID().equals(to.ID())))
-				return;
-		}
+		if(abilitys.find(to.ID())!=null)
+			return;
 		abilitys.addElement(to);
 	}
 
@@ -3600,15 +3593,17 @@ public class StdMOB implements MOB
 
 	public Ability fetchAbility(String ID) 
 	{
+		Ability A=abilitys.find(ID);
+		if(A!=null) return A;
+		final Clan C = getMyClan();
+		if(C!=null) A=C.clanAbilities(this).find(ID);
+		if(A!=null) return A;
+		final Race R = charStats().getMyRace();
+		A=R.racialAbilities(this).find(ID);
+		if(A!=null) return A;
 		for (final Enumeration<Ability> a = allAbilities(); a.hasMoreElements();)
 		{
-			final Ability A = a.nextElement();
-			if (A.ID().equalsIgnoreCase(ID))
-				return A;
-		}
-		for (final Enumeration<Ability> a = allAbilities(); a.hasMoreElements();)
-		{
-			final Ability A = a.nextElement();
+			A = a.nextElement();
 			if (A.Name().equalsIgnoreCase(ID))
 				return A;
 		}
@@ -3828,10 +3823,7 @@ public class StdMOB implements MOB
 
 	public Behavior fetchBehavior(String ID) 
 	{
-		for (final Behavior B : behaviors)
-			if (B.ID().equalsIgnoreCase(ID))
-				return B;
-		return null;
+		return behaviors.find(ID);
 	}
 
 	public void eachBehavior(final EachApplicable<Behavior> applier) 
@@ -3898,9 +3890,9 @@ public class StdMOB implements MOB
 			clearAbilityUsageCache();
 	}
 
-	public int numExpertises() 
+	public Enumeration<String> expertises()
 	{
-		return expertises.size();
+		return new IteratorEnumeration<String>(expertises.iterator());
 	}
 
 	public Enumeration<String> uniqueExpertises() 
@@ -3908,7 +3900,7 @@ public class StdMOB implements MOB
 		try
 		{
 			if (expertises.size() == 0)
-				return expertises.elements();
+				return EmptyEnumeration.INSTANCE;
 			SVector<String> exCopy = expertises.copyOf();
 			String exper = null, experRoot = null, expTest = null;
 			int num = -1, end = -1, num2 = -1;
@@ -3982,6 +3974,11 @@ public class StdMOB implements MOB
 			return exCopy.elements();
 		} catch (Exception e){}
 		return expertises.elements();
+	}
+
+	public int numExpertises()
+	{
+		return expertises.size();
 	}
 
 	public String fetchExpertise(int x) 
@@ -4089,11 +4086,7 @@ public class StdMOB implements MOB
 	{
 		if ((of == null) || (of.length() == 0))
 			return null;
-		of = of.toUpperCase().trim();
-		for (Tattoo s : tattoos)
-			if (s.tattooName.equals(of))
-				return s;
-		return null;
+		return tattoos.find(of.trim());
 	}
 
 	/** Manipulation of the factions list */
@@ -4388,7 +4381,7 @@ public class StdMOB implements MOB
 		else 
 		if (env instanceof Ability)
 		{
-			if (abilitys.contains(env))
+			if (abilitys.find(env.ID())==env)
 				return true;
 			if (affects.contains(env))
 				return true;

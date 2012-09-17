@@ -83,14 +83,15 @@ public class DefaultClanGovernment implements ClanGovernment
 	public Clan.AutoPromoteFlag 	autoPromoteBy;
 
 	// derived variable
-	public static final List<Ability>		   empty = new ReadOnlyList<Ability>(new Vector<Ability>());
+	public static final SearchIDList<Ability>  emptyIDs = new CMUniqSortSVec<Ability>(1);
+	public static final List<Ability>		   empty 	= new ReadOnlyList<Ability>(new Vector<Ability>());
 	public static final String 				   DEFAULT_XP_FORMULA = "(500 * @x1) + (1000 * @x1 * @x1 * @x1)";
 	public LinkedList<CMath.CompiledOperation> xpCalculationFormula = CMath.compileMathExpression(DEFAULT_XP_FORMULA);
 
 	// derived and internal vars
-	protected Map<Integer,List<Ability>>
+	protected Map<Integer,SearchIDList<Ability>>
 						clanAbilityMap			=null;
-	protected Map<Integer,List<Ability>>
+	protected Map<Integer,SearchIDList<Ability>>
 						clanEffectMap			=null;
 	protected String[] 	clanEffectNames			=null;
 	protected int[] 	clanEffectLevels		=null;
@@ -668,7 +669,7 @@ protected boolean[] clanAbilityQuals		=null;
 		return helpStr;
 	}
 
-	public List<Ability> getClanLevelAbilities(Integer level)
+	public SearchIDList<Ability> getClanLevelAbilities(Integer level)
 	{
 		if((clanAbilityMap==null)
 		&&(clanAbilityNames!=null)
@@ -677,7 +678,7 @@ protected boolean[] clanAbilityQuals		=null;
 		&&(clanAbilityQuals!=null))
 		{
 			CMLib.ableMapper().delCharMappings(ID()); // necessary for a "clean start"
-			clanAbilityMap=new Hashtable<Integer,List<Ability>>();
+			clanAbilityMap=new Hashtable<Integer,SearchIDList<Ability>>();
 			for(int i=0;i<clanAbilityNames.length;i++)
 			{
 				CMLib.ableMapper().addDynaAbilityMapping(ID(),
@@ -689,7 +690,7 @@ protected boolean[] clanAbilityQuals		=null;
 											 false);
 			}
 		}
-		if(clanAbilityMap==null) return empty;
+		if(clanAbilityMap==null) return emptyIDs;
 		if(clanAbilityMap.containsKey(level))
 			return clanAbilityMap.get(level);
 		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,true);
@@ -719,7 +720,7 @@ protected boolean[] clanAbilityQuals		=null;
 		&&(clanEffectNames!=null)
 		&&(clanEffectLevels!=null)
 		&&(clanEffectParms!=null))
-			clanEffectMap=new Hashtable<Integer,List<Ability>>();
+			clanEffectMap=new Hashtable<Integer,SearchIDList<Ability>>();
 
 		if(clanEffectMap==null) return empty;
 		

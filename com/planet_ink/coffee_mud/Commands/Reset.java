@@ -358,8 +358,7 @@ public class Reset extends StdCommand
 				what=CMParms.combine(commands,1).toUpperCase();
 			if(what.startsWith("EXPERTIS"))
 			{
-				while(M.numExpertises()>0)
-					M.delExpertise(M.fetchExpertise(0));
+				M.delAllExpertises();
 				mob.tell("Done.");
 			}
 			else

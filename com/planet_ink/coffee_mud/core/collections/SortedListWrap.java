@@ -5,6 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * List wrapper for an existing List that turns it into a sorted one.
+ * @author Bo Zimmerman
+ *
+ * @param <T>
+ */
 public class SortedListWrap<T extends Comparable<T>> implements List<T>
 {
 	private final List<T> list;
@@ -12,15 +18,15 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	{
 		this.list=list;
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
     private int compareTo(T arg0, Object arg1)
 	{
 		if(arg0 instanceof Comparable)
 			return ((Comparable)arg0).compareTo(arg1);
 		return arg0.toString().compareTo(arg1.toString());
 	}
-	
+
     @Override
     public synchronized boolean add(T arg0) 
     {

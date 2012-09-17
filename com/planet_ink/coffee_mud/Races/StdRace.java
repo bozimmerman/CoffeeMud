@@ -51,9 +51,9 @@ public class StdRace implements Race
 	protected boolean      mappedCulturalAbilities=false;
 	protected List<Item>   outfitChoices=null;
 	protected List<Weapon> naturalWeaponChoices=null;
-	protected Map<Integer,List<Ability>> 
+	protected Map<Integer,SearchIDList<Ability>> 
 						   racialAbilityMap=null;
-	protected Map<Integer,List<Ability>>
+	protected Map<Integer,SearchIDList<Ability>>
 						   racialEffectMap=null;
 	
 	public String   	name(){ return "StdRace"; }
@@ -90,7 +90,8 @@ public class StdRace implements Race
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public CMObject newInstance(){return this;}
 	public void 	initializeClass(){}
-	protected static final Vector empty=new ReadOnlyVector();
+	protected static final SearchIDList emptyIDs=new CMUniqSortSVec(1);
+	protected static final List empty=new ReadOnlyVector(1);
 
 	public boolean fertile(){return true;}
 
@@ -617,7 +618,7 @@ public class StdRace implements Race
 		&&(racialEffectNames()!=null)
 		&&(racialEffectLevels()!=null)
 		&&(racialEffectParms()!=null))
-			racialEffectMap=new Hashtable<Integer,List<Ability>>();
+			racialEffectMap=new Hashtable<Integer,SearchIDList<Ability>>();
 
 		if(racialEffectMap==null) return empty;
 
@@ -1073,7 +1074,7 @@ public class StdRace implements Race
 		return ables;
 	}
 	
-	public List<Ability> racialAbilities(MOB mob)
+	public SearchIDList<Ability> racialAbilities(MOB mob)
 	{
 		if((racialAbilityMap==null)
 		&&(racialAbilityNames()!=null)
@@ -1082,7 +1083,7 @@ public class StdRace implements Race
 		&&(racialAbilityQuals()!=null))
 		{
 			CMLib.ableMapper().delCharMappings(ID()); // necessary for a "clean start"
-			racialAbilityMap=new Hashtable<Integer,List<Ability>>();
+			racialAbilityMap=new Hashtable<Integer,SearchIDList<Ability>>();
 			for(int i=0;i<racialAbilityNames().length;i++)
 			{
 				CMLib.ableMapper().addDynaAbilityMapping(ID(),
@@ -1094,7 +1095,7 @@ public class StdRace implements Race
 											 false);
 			}
 		}
-		if(racialAbilityMap==null) return empty;
+		if(racialAbilityMap==null) return emptyIDs;
 		Integer level=null;
 		if(mob!=null)
 			level=Integer.valueOf(mob.phyStats().level());

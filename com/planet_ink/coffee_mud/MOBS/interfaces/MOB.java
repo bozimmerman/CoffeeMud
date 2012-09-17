@@ -201,9 +201,11 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void addExpertise(String of);
 	public void delExpertise(String of);
 	public int numExpertises();
-	public Enumeration<String> uniqueExpertises();
-	public String fetchExpertise(int x);
 	public String fetchExpertise(String of);
+	public String fetchExpertise(int x);
+	public void delAllExpertises();
+	public Enumeration<String> uniqueExpertises();
+	public Enumeration<String> expertises();
 	
 	/** Manipulation of the tatoo list */
 	public void addTattoo(Tattoo of);

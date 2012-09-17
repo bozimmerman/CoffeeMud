@@ -167,10 +167,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		if((mob==null)||(expertise==null)) return 0;
 		int level=0;
 		expertise=expertise.toUpperCase();
-		String X=null;
-		for(int i=0;i<mob.numExpertises();i++)
+		for(Enumeration<String> ex=mob.expertises();ex.hasMoreElements();)
 		{
-			X=mob.fetchExpertise(i);
+			final String X=ex.nextElement();
 			if((X!=null)&&(X.startsWith(expertise)))
 			{
 				int x=CMath.s_int(X.substring(expertise.length()));

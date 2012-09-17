@@ -600,11 +600,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					text.append(e.nextElement().toString()+";");
 				text.append("</TATTS>");
 			}
-			if(((MOB)E).numExpertises()>0)
+			if(((MOB)E).expertises().hasMoreElements())
 			{
 				text.append("<EDUS>");
-				for(int i=0;i<((MOB)E).numExpertises();i++)
-					text.append(((MOB)E).fetchExpertise(i)+";");
+				for(Enumeration<String> x=((MOB)E).expertises();x.hasMoreElements();)
+					text.append(x.nextElement()+";");
 				text.append("</EDUS>");
 			}
 		}
@@ -2606,7 +2606,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			for(int v=0;v<V9.size();v++) ((MOB)E).addTattoo(CMLib.database().parseTattoo((String)V9.elementAt(v)));
 
 			V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"EDUS"),true);
-			while(((MOB)E).numExpertises()>0)((MOB)E).delExpertise(((MOB)E).fetchExpertise(0));
+			((MOB)E).delAllExpertises();
 			for(int v=0;v<V9.size();v++) ((MOB)E).addExpertise((String)V9.elementAt(v));
 
 			if(E instanceof ShopKeeper)
@@ -2639,11 +2639,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 			pfxml.append("</TATTS>");
 		}
-		if(mob.numExpertises()>0)
+		if(mob.expertises().hasMoreElements())
 		{
 			pfxml.append("<EDUS>");
-			for(int i=0;i<mob.numExpertises();i++)
-				pfxml.append(mob.fetchExpertise(i)+";");
+			for(Enumeration<String> x=mob.expertises();x.hasMoreElements();)
+				pfxml.append(x.nextElement()+";");
 			pfxml.append("</EDUS>");
 		}
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
@@ -2801,7 +2801,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				mob.delTattoo(e.nextElement());
 			for(int v=0;v<V9.size();v++) mob.addTattoo(CMLib.database().parseTattoo((String)V9.get(v)));
 			V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
-			while(mob.numExpertises()>0)mob.delExpertise(mob.fetchExpertise(0));
+			mob.delAllExpertises();
 			for(int v=0;v<V9.size();v++) mob.addExpertise((String)V9.get(v));
 			mob.baseCharStats().setNonBaseStatsFromString(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
 			mob.setDescription(CMLib.xml().getValFromPieces(mblk.contents,"DESC"));
@@ -3430,8 +3430,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				 return str.toString();
 				}
 		case 19:{StringBuffer str=new StringBuffer("");
-				 for(int i=0;i<M.numExpertises();i++)
-					 str.append(M.fetchExpertise(i)+";");
+				 for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
+					str.append(x.nextElement()+";");
 				 return str.toString();
 				}
 		case 20: return M.rawImage();
@@ -3530,7 +3530,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case 19:
 			{
 				Vector<String> V9=CMParms.parseSemicolons(val,true);
-				while(M.numExpertises()>0)M.delExpertise(M.fetchExpertise(0));
+				M.delAllExpertises();
 				for(int v=0;v<V9.size();v++) M.addExpertise((String)V9.elementAt(v));
 			}
 			break;

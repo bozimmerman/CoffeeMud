@@ -205,7 +205,7 @@ public class GrinderMobs
 
 	public static String expertiseList(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
-		while(E.numExpertises()>0) E.delExpertise(E.fetchExpertise(0));
+		E.delAllExpertises();
 		if(httpReq.isRequestParameter("EXPER1"))
 		{
 			int num=1;
@@ -534,7 +534,7 @@ public class GrinderMobs
 				case 41: // expertises
 					{
 						Vector V=CMParms.parseSemicolons(old,true);
-						while(M.numExpertises()>0) M.delExpertise(M.fetchExpertise(0));
+						M.delAllExpertises();
 						for(int v=0;v<V.size();v++)
 							M.addExpertise((String)V.elementAt(v));
 					}

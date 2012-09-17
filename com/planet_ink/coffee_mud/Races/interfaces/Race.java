@@ -280,7 +280,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @param mob the mob to grant the abilities to
 	 * @return a vector of the Ability objects
 	 */
-	public List<Ability> racialAbilities(MOB mob);
+	public SearchIDList<Ability> racialAbilities(MOB mob);
 	/**
 	 * Return a vector of skills, spells, and other abilities granted to the given
 	 * mob of the given mobs level.  This method is not functionally used because

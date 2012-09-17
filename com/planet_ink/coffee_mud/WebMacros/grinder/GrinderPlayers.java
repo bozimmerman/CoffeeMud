@@ -201,7 +201,7 @@ public class GrinderPlayers extends GrinderMobs
 			case 57: 
 			{
 				Vector V=CMParms.parseCommas(old.toUpperCase(),true);
-				while(M.numExpertises()>0) M.delExpertise(M.fetchExpertise(0));
+				M.delAllExpertises();
 				for(int v=0;v<V.size();v++)
 					if(CMLib.expertises().getDefinition((String)V.elementAt(v))!=null)
 						M.addExpertise((String)V.elementAt(v));

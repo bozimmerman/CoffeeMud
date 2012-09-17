@@ -198,9 +198,9 @@ public class MobData extends StdWebMacro
 				}
 			}
 			else
-			for(int e=0;e<E.numExpertises();e++)
+			for(Enumeration<String> x=E.expertises();x.hasMoreElements();)
 			{
-				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(E.fetchExpertise(e));
+				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(x.nextElement());
 				if(X!=null)
 					theclasses.addElement(X.ID);
 			}
@@ -1364,8 +1364,8 @@ public class MobData extends StdWebMacro
 				if(firstTime)
 				{
 					old="";
-					for(int i=0;i<M.numExpertises();i++)
-						old+=M.fetchExpertise(i)+";";
+					for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
+						old+=x.nextElement()+";";
 				}
 				str.append(old);
 				break;
