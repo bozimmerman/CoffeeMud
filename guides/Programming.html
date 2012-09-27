@@ -2581,6 +2581,9 @@ StdCharClass seen above, are totally derivative of the value you
 already put in <code>allowedWeaponLevel()</code>. In other words, so
 long as you include the <code>allowedWeaponLevel()</code> method, you
 should also include those next four methods, exactly as you see them.</p>
+<pre>  public int getLevelCap() {return -1;}<br /></pre>
+<p>Although not often used, you can set a level cap for the character class by returning some number above -1 from the getLevelCap method. The engine will take care of the rest.
+</p>
       <pre>  public int availabilityCode()<br />  {<br />    return Area.THEME_FANTASY;<br />  }<br /></pre>
       <p>The method <code>availabilityCode()</code> defines how
 players
