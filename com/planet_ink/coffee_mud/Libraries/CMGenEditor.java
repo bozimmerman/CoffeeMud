@@ -1089,7 +1089,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((str.length()>0)&&(M.playerStats()!=null))
 		{
 			M.playerStats().setPassword(str);
-			CMLib.database().DBUpdatePassword(M.Name(),str);
+			CMLib.database().DBUpdatePassword(M.Name(),M.playerStats().getPasswordStr());
 		}
 		else
 			mob.tell("(no change)");

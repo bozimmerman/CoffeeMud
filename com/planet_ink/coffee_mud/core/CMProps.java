@@ -235,7 +235,8 @@ public class CMProps extends Properties
 	public static final int SYSTEMB_FILERESOURCENOCACHE=11;
 	public static final int SYSTEMB_CATALOGNOCACHE=12;
 	public static final int SYSTEMB_MAPFINDSNOCACHE=13;
-	public static final int NUMB_SYSTEM=14;
+	public static final int SYSTEMB_HASHPASSWORDS=14;
+	public static final int NUMB_SYSTEM=15;
 
 	public static final int NUML_SYSTEM=0;
 
@@ -1089,6 +1090,7 @@ public class CMProps extends Properties
 		setUpLowVar(SYSTEM_MXPIMAGEPATH,getStr("MXPIMAGEPATH"));
 		setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
 		setBoolVar(SYSTEMB_INTRODUCTIONSYSTEM,getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
+		setBoolVar(SYSTEMB_HASHPASSWORDS,getStr("HASHPASSWORDS").equalsIgnoreCase("YES")?true:false);
 		setUpLowVar(SYSTEM_PREFACTIONS,getStr("FACTIONS"));
 		setUpLowVar(SYSTEM_CHARCREATIONSCRIPTS,getStr("CHARCREATIONSCRIPTS"));
 		setUpLowVar(SYSTEM_CHARSETINPUT,getStr("CHARSETINPUT","iso-8859-1"));

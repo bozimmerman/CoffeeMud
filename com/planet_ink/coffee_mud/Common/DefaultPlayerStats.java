@@ -79,9 +79,8 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Set<String>	 introductions	= new SHashSet<String>();
 	protected ItemCollection extItems;
 	
-	protected Map<String,String>	alias	 = new STreeMap<String,String>();
-	protected Map<String,Integer>	legacy	 = new STreeMap<String,Integer>();
-	
+	protected Map<String,String>	alias	= new STreeMap<String,String>();
+	protected Map<String,Integer>	legacy	= new STreeMap<String,Integer>();
 
 	public DefaultPlayerStats() 
 	{
@@ -257,12 +256,27 @@ public class DefaultPlayerStats implements PlayerStats
 		if(account != null)
 			account.setLastDateTime(C);
 	}
-	public String password(){return (account!=null)?account.password():password;}
+	public String getPasswordStr()
+	{
+		return (account!=null)?account.getPasswordStr():password;
+	}
 	public void setPassword(String newPassword)
 	{
-		password=newPassword;
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_HASHPASSWORDS)
+		&&(!CMLib.encoder().isARandomHashString(newPassword)))
+			password=CMLib.encoder().makeRandomHashString(newPassword);
+		else
+    		password=newPassword;
 		if(account != null)
-			account.setPassword(newPassword);
+			account.setPassword(password);
+	}
+	public boolean matchesPassword(String checkPass)
+	{
+		if(account!=null)
+			return account.matchesPassword(checkPass);
+		if(CMLib.encoder().isARandomHashString(password))
+			return CMLib.encoder().checkAgainstRandomHashString(checkPass, password);
+		return checkPass.equalsIgnoreCase(password);
 	}
 	
 	public int getWrap(){return wrap;}

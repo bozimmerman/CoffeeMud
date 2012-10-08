@@ -91,18 +91,32 @@ public interface AccountStats extends CMCommon
 	public void setLastUpdated(long time);
 	
 	/**
-	 * Returns the players password.
+	 * Returns the players password, perhaps encoded, perhaps plain text.
+	 * Use matchesPassword(String) to do actual checks. 
 	 * 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#setPassword(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#matchesPassword(String)
 	 * 
 	 * @return the players password.
 	 */
-	public String password();
+	public String getPasswordStr();
+
+	/**
+	 * Returns the players password, perhaps encoded, perhaps plain text.
+	 * Use matchesPassword(String) to do actual checks. 
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#setPassword(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#getPasswordStr()
+	 * 
+	 * @return the players password.
+	 */
+	public boolean matchesPassword(String str);
 
 	/**
 	 * Sets the players password.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#password()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#getPasswordStr()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#matchesPassword(String)
 	 * 
 	 * @param newPassword the players password.
 	 */

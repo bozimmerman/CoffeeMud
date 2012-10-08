@@ -90,5 +90,11 @@ public interface PlayerLibrary extends CMLibrary, Runnable
 				public int compareTo(CMObject o) {return (o==this)?0:-1;}
 			};
 		}
+		public boolean matchesPassword(String checkPass)
+		{
+			return CMLib.encoder().isARandomHashString(password)
+				?CMLib.encoder().checkAgainstRandomHashString(checkPass,password):
+					checkPass.equalsIgnoreCase(password);
+		}
 	}
 }

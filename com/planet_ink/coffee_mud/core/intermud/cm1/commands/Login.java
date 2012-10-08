@@ -57,7 +57,7 @@ public class Login extends CM1Command
 				String user=parameters.substring(0,x);
 				String pass=parameters.substring(x+1);
 				MOB M=CMLib.players().getLoadPlayer(user);
-				if((M==null) || (M.playerStats()==null) || (!M.playerStats().password().equalsIgnoreCase(pass)))
+				if((M==null) || (M.playerStats()==null) || (!M.playerStats().matchesPassword(pass)))
 				{
 					Thread.sleep(5000);
 					req.sendMsg("[FAIL]");

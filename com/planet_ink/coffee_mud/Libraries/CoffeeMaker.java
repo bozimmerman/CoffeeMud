@@ -2650,7 +2650,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		StringBuffer str=new StringBuffer("");
 		str.append(CMLib.xml().convertXMLtoTag("NAME",mob.Name()));
-		str.append(CMLib.xml().convertXMLtoTag("PASS",pstats.password()));
+		str.append(CMLib.xml().convertXMLtoTag("PASS",pstats.getPasswordStr()));
 		str.append(CMLib.xml().convertXMLtoTag("CLASS",mob.baseCharStats().getMyClassesStr()));
 		str.append(CMLib.xml().convertXMLtoTag("RACE",mob.baseCharStats().getMyRace().ID()));
 		str.append(CMLib.xml().convertXMLtoTag("GEND",""+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))));

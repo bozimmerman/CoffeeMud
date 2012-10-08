@@ -238,16 +238,14 @@ public class Email extends StdCommand
 		&&(CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
 		&&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
 		{
-			String password="";
-			for(int i=0;i<6;i++)
-				password+=(char)('a'+CMLib.dice().roll(1,26,-1));
+			String password=CMLib.encoder().generateRandomPassword();
 			pstats.setPassword(password);
-			CMLib.database().DBUpdatePassword(mob.Name(),password);
+			CMLib.database().DBUpdatePassword(mob.Name(),pstats.getPasswordStr());
 			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
 					  mob.Name(),
 					  mob.Name(),
 					  "Password for "+mob.Name(),
-					  "Your new password for "+mob.Name()+" is: "+pstats.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
+					  "Your new password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
 			mob.tell("You will receive an email with your new password shortly.  Goodbye.");
 			if(mob.session()!=null)
 			{

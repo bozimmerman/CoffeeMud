@@ -1,9 +1,13 @@
 package com.planet_ink.coffee_mud.Libraries;
+import java.nio.ByteBuffer;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.TextEncoders;
+import com.planet_ink.coffee_mud.core.B64Encoder;
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMProps;
+import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.Log;
 
 /* 
@@ -84,6 +88,42 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		}
 
 		return result;
+	}
+
+	public String makeRandomHashString(final String password)
+	{
+		int passHash=password.toLowerCase().hashCode();
+		int salt=(int)Math.round(CMath.random() * (double)Integer.MAX_VALUE);
+		passHash=passHash ^ salt;
+		return "|"+B64Encoder.B64encodeBytes(ByteBuffer.allocate(4).putInt(salt).array())
+			  +"|"+B64Encoder.B64encodeBytes(ByteBuffer.allocate(4).putInt(passHash).array());
+	}
+	
+	public boolean isARandomHashString(final String password)
+	{
+		return ((password.length()>2) && (password.startsWith("|")) && (password.indexOf('|',1)>1));
+	}
+	
+	public boolean checkAgainstRandomHashString(final String checkString, final String hashString)
+	{
+		int hashDex=hashString.indexOf('|',1);
+		int salt=ByteBuffer.wrap(B64Encoder.B64decode(hashString.substring(1,hashDex))).getInt();
+		int hash=ByteBuffer.wrap(B64Encoder.B64decode(hashString.substring(hashDex+1))).getInt();
+		hash=hash^salt;
+		return hash==checkString.toLowerCase().hashCode();
+	}
+	
+	public String generateRandomPassword()
+	{
+		StringBuilder str=new StringBuilder("");
+		for(int i=0;i<10;i++)
+		{
+			if((i%2)==0)
+				str.append(CMLib.dice().roll(1, 10, -1));
+			else
+				str.append((char)('a'+CMLib.dice().roll(1, 26, -1)));
+		}
+		return str.toString();
 	}
 	
 }

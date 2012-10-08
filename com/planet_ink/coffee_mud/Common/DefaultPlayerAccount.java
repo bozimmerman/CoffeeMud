@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.StdMOB;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.nio.ByteBuffer;
 import java.util.*;
 
 /* 
@@ -36,21 +37,23 @@ import java.util.*;
 public class DefaultPlayerAccount implements PlayerAccount
 {
 	public String ID(){return "DefaultPlayerAccount";}
-	protected SHashSet<String> friends=new SHashSet<String>();
-	protected SHashSet<String> ignored=new SHashSet<String>();
-	protected SVector<String> players = new SVector<String>();
+
+	protected SHashSet<String>	friends				= new SHashSet<String>();
+	protected SHashSet<String>	ignored				= new SHashSet<String>();
+	protected SVector<String>	players				= new SVector<String>();
+	protected String			accountName 		= "";
+	protected String			lastIP				= "";
+	protected long				lastDateTime		= System.currentTimeMillis();
+	protected long				lastUpdated			= 0;
+	protected String			email				= "";
+	protected String			password			= "";
+	protected String			notes				= "";
+	protected long 				accountExpiration	= 0;
+	protected String[]			xtraValues			= null;
+	protected SHashSet<String>	acctFlags			= new SHashSet<String>();
+	protected volatile MOB 		fakePlayerM			= null;
+	
 	protected SVector<PlayerLibrary.ThinPlayer> thinPlayers = new SVector<PlayerLibrary.ThinPlayer>();
-	protected String accountName = "";
-	protected String lastIP="";
-	protected long LastDateTime=System.currentTimeMillis();
-	protected long lastUpdated=0;
-	protected String email="";
-	protected String Password="";
-	protected String notes="";
-	protected long accountExpiration=0;
-	protected String[] xtraValues=null;
-	protected SHashSet<String> acctFlags = new SHashSet<String>();
-	protected volatile MOB fakePlayerM=null;
 
 	public DefaultPlayerAccount() {
 		super();
@@ -67,7 +70,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 1: return getPrivateList(getFriends());
 		case 2: return getPrivateList(getIgnored());
 		case 3: return lastIP;
-		case 4: return ""+LastDateTime;
+		case 4: return ""+lastDateTime;
 		case 5: return notes;
 		case 6: return ""+accountExpiration;
 		case 7: return CMParms.toStringList(acctFlags);
@@ -84,7 +87,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 1: friends=getHashFrom(val); break;
 		case 2: ignored=getHashFrom(val); break;
 		case 3: lastIP=val; break;
-		case 4: LastDateTime=CMath.s_long(val); break;
+		case 4: lastDateTime=CMath.s_long(val); break;
 		case 5: notes=val; break;
 		case 6: accountExpiration=CMath.s_long(val); break;
 		case 7: acctFlags = new SHashSet<String>(CMParms.parseCommandFlags(val.toUpperCase(),PlayerAccount.FLAG_DESCS)); break;
@@ -139,10 +142,23 @@ public class DefaultPlayerAccount implements PlayerAccount
 	public void setEmail(String newAdd){email=newAdd;}
 	public long lastUpdated(){return lastUpdated;}
 	public void setLastUpdated(long time){lastUpdated=time;}
-	public long lastDateTime(){return LastDateTime;}
-	public void setLastDateTime(long C){ LastDateTime=C;}
-	public String password(){return Password;}
-	public void setPassword(String newPassword){Password=newPassword;}
+	public long lastDateTime(){return lastDateTime;}
+	public void setLastDateTime(long C){ lastDateTime=C;}
+	public String getPasswordStr(){return password;}
+	public void setPassword(String newPassword)
+	{
+		if(CMProps.getBoolVar(CMProps.SYSTEMB_HASHPASSWORDS)
+		&&(!CMLib.encoder().isARandomHashString(newPassword)))
+			password=CMLib.encoder().makeRandomHashString(newPassword);
+		else
+    		password=newPassword;
+	}
+	public boolean matchesPassword(String checkPass)
+	{
+		if(CMLib.encoder().isARandomHashString(password))
+			return CMLib.encoder().checkAgainstRandomHashString(checkPass, password);
+		return checkPass.equalsIgnoreCase(password);
+	}
 	public String notes(){return notes;}
 	public void setNotes(String newnotes){notes=newnotes;}
 	public SHashSet<String> getHashFrom(String str)

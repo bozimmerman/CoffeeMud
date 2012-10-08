@@ -157,7 +157,7 @@ public class Authenticate extends StdWebMacro
 		MOB mob=CMLib.players().getLoadPlayer(login);
 		if((mob!=null)
 		&&(mob.playerStats()!=null)
-		&&(mob.playerStats().password().equalsIgnoreCase(password))
+		&&(mob.playerStats().matchesPassword(password))
 		&&(mob.Name().trim().length()>0)
 		&&(!CMSecurity.isBanned(mob.Name())))
 		{
@@ -170,7 +170,7 @@ public class Authenticate extends StdWebMacro
 		{
 			final PlayerAccount acct=CMLib.players().getLoadAccount(login);
 			if((acct!=null)
-			&&(acct.password().equalsIgnoreCase(password))
+			&&(acct.matchesPassword(password))
 			&&(!CMSecurity.isBanned(acct.accountName())))
 			{
 				final long lastLogin = System.currentTimeMillis() - acct.lastDateTime();
@@ -202,7 +202,7 @@ public class Authenticate extends StdWebMacro
 				{
 					PlayerAccount acct=CMLib.players().getLoadAccount(login);
 					if((acct!=null)
-					&&(acct.password().equalsIgnoreCase(password))
+					&&(acct.matchesPassword(password))
 					&&(!CMSecurity.isBanned(acct.accountName())))
 						mob=acct.getAccountMob();
 					else
@@ -212,7 +212,7 @@ public class Authenticate extends StdWebMacro
 					mob=null;
 			}
 			else
-			if((!mob.playerStats().password().equalsIgnoreCase(password))
+			if((!mob.playerStats().matchesPassword(password))
 			||(mob.Name().trim().length()==0)
 			||(CMSecurity.isBanned(mob.Name()))
 			||((mob.playerStats().getAccount()!=null)&&(CMSecurity.isBanned(mob.playerStats().getAccount().accountName()))))

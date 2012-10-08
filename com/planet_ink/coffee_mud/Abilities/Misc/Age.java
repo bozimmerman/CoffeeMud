@@ -373,7 +373,7 @@ public class Age extends StdAbility
 					newMan.setWorshipCharID(babe.getWorshipCharID());
 					if(liege!=null)
 					{
-						newMan.playerStats().setPassword(liege.playerStats().password());
+						newMan.playerStats().setPassword(liege.playerStats().getPasswordStr());
 						newMan.playerStats().setEmail(liege.playerStats().getEmail());
 						newMan.playerStats().setAccount(liege.playerStats().getAccount());
 					}

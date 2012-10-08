@@ -47,7 +47,7 @@ public class Password extends StdCommand
 		String old=mob.session().prompt("Enter your old password : ");
 		String nep=mob.session().prompt("Enter a new password    : ");
 		String ne2=mob.session().prompt("Enter new password again: ");
-		if(!pstats.password().equals(old))
+		if(!pstats.matchesPassword(old))
 		{
 			mob.tell("Your old password was not entered correctly.");
 			return false;
@@ -61,7 +61,7 @@ public class Password extends StdCommand
 		mob.tell("Your password has been changed.");
 		if(pstats.getAccount()!=null)
 			CMLib.database().DBUpdateAccount(pstats.getAccount());
-		CMLib.database().DBUpdatePassword(mob.Name(),nep);
+		CMLib.database().DBUpdatePassword(mob.Name(),pstats.getPasswordStr());
 		return false;
 	}
 	
