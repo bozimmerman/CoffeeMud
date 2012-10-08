@@ -80,6 +80,15 @@ public interface ClanManager extends CMLibrary
 	public long getLastGovernmentLoad();
 
 	/**
+	 * Returns whether the given mob belongs to a clan, and if
+	 * so, whether they can do the given function in the clan.
+	 * @param mob the mob to check
+	 * @param func the function to check for
+	 * @return true if allowed, false otherwise
+	 */
+	public boolean checkClanPrivilege(MOB mob, Clan.Function func);
+	
+	/**
 	 * Returns the Clan object associated with the given clan name
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @param id the clan name

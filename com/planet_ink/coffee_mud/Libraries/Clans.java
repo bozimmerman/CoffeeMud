@@ -89,6 +89,18 @@ public class Clans extends StdLibrary implements ClanManager
 		return relation==i2;
 	}
 	
+	public boolean checkClanPrivilege(MOB mob, Clan.Function func)
+	{
+		if((mob==null)
+		||(mob.getClanID()==null) 
+		||(mob.getClanID().length()==0))
+			return false;
+		final Clan C=this.getClan(mob.getClanID());
+		if(C==null) return false;
+		return C.getAuthority(mob.getClanRole(), func) != Clan.Authority.CAN_NOT_DO;
+	}
+
+	
 	public int getClanRelations(String clanName1, String clanName2)
 	{
 		if((clanName1.length()==0)||(clanName2.length()==0)) return Clan.REL_NEUTRAL;

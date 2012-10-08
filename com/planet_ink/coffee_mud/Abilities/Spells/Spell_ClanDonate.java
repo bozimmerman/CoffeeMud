@@ -55,16 +55,26 @@ public class Spell_ClanDonate extends Spell
 		}
 		
 		Room clanDonateRoom=null;
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase(""))||(mob.getClanRole()==0))
+		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 		{
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
 		Clan C=mob.getMyClan();
+		if(C==null)
+		{
+			mob.tell("You aren't even a member of a clan.");
+			return false;
+		}
 		clanDonateRoom=CMLib.map().getRoom(C.getDonation());
 		if(clanDonateRoom==null)
 		{
 			mob.tell("Your clan does not have a donation home.");
+			return false;
+		}
+		if(C.getAuthority(mob.getClanRole(),Clan.Function.CLAN_BENEFITS)!=Clan.Authority.CAN_DO)
+		{
+			mob.tell("You are not authorized to draw from the power of your "+C.getGovernmentName()+".");
 			return false;
 		}
 		if(!CMLib.flags().canAccess(mob,clanDonateRoom))

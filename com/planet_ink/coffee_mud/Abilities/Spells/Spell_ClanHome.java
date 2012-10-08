@@ -46,16 +46,26 @@ public class Spell_ClanHome extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room clanHomeRoom=null;
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase(""))||(mob.getClanRole()==0))
+		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 		{
 			mob.tell("You aren't even a full member of a clan.");
 			return false;
 		}
 		Clan C=mob.getMyClan();
+		if(C==null)
+		{
+			mob.tell("You aren't even a full member of a clan.");
+			return false;
+		}
 		clanHomeRoom=CMLib.map().getRoom(C.getRecall());
 		if(clanHomeRoom==null)
 		{
 			mob.tell("Your clan does not have a clan home.");
+			return false;
+		}
+		if(C.getAuthority(mob.getClanRole(),Clan.Function.CLAN_BENEFITS)!=Clan.Authority.CAN_DO)
+		{
+			mob.tell("You are not authorized to draw from the power of your "+C.getGovernmentName()+".");
 			return false;
 		}
 		if(!CMLib.flags().canAccess(mob,clanHomeRoom))

@@ -72,9 +72,7 @@ public class Thief_TagTurf extends ThiefSkill
 		&&((CMLib.flags().canSeeHidden(msg.source()))||(msg.source().Name().equals(text()))))
 		{
 			if((msg.source().Name().equals(text()))
-			||((msg.source().getClanID().length()>0)
-				&&(msg.source().getClanRole()>0)
-				&&(msg.source().getClanID().equals(text()))))
+			||(msg.source().getClanID().equals(text()) && CMLib.clans().checkClanPrivilege(msg.source(), Clan.Function.CLAN_BENEFITS)))
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,
 										CMMsg.MSG_OK_VISUAL,"This is your turf.",
 										CMMsg.NO_EFFECT,null,
