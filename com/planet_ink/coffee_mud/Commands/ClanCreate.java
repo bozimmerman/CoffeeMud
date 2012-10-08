@@ -111,7 +111,8 @@ public class ClanCreate extends StdCommand
 											*/
 											newClan.setGovernmentID(govtType);
 											newRoleID=newClan.getTopQualifiedRoleID(Clan.Function.ASSIGN,mob);
-											if(newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)
+											if((newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)
+											&&(newClan.getRolesList().length>1))
 											{
 												mob.tell("You are not qualified to lead a clan of this style.\n\r");
 												govtType=-1;
