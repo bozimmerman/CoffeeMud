@@ -2231,15 +2231,31 @@ name, displayText, description, etc, etc.</p>
 a normal StdWeapon . The material, weight, attack and damage describe
 it completely. You'll even notice that by setting a disposition flag,
 we have made the sword glow! Now, what if we wanted a missile weapon?</p>
-      <pre>  public MyNewBow()<br />  {<br />    super();<br /><br />    setName( "a super bow" );<br />    setDescription( "A long super duper bow!" );<br />    setDisplayText( "Someone left their super bow here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_OAK );<br />    setBaseValue( 5000 );<br />    basePhyStats.setWeight( 15 );<br />    basePhyStats.setAttackAdjustment( 20 );<br />    basePhyStats.setDamage( 5 );<br />    setWeaponType( Weapon.TYPE_PIERCING );<br />    setWeaponClassification( Weapon.CLASS_RANGED );<br />    setRanges( 1, 5 );<br />    setAmmunitionType( "arrows" );<br />    recoverPhyStats();<br />  }<br /></pre>
+      <pre>  public MyNewBow()<br />  {<br />    super();<br /><br />    setName( "a super bow" );<br />    setDescription( "A long super duper bow!" );<br />    setDisplayText( "Someone left their super bow here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_OAK );<br />    setBaseValue( 5000 );<br />    basePhyStats.setWeight( 15 );<br />    basePhyStats.setAttackAdjustment( 20 );<br />    basePhyStats.setDamage( 5 );<br />    setWeaponType( Weapon.TYPE_PIERCING );<br />    setWeaponClassification( Weapon.CLASS_RANGED );<br />    setRanges( 1, 5 );<br />    setAmmunitionType( "arrows" );<br />    recoverPhyStats();<br />  }<br />
+  public void recoverPhyStats()
+  {
+    basePhyStats().setDamage(1 * basePhyStats().level());
+    basePhyStats().setAttackAdjustment(basePhyStats().level()*2);
+    super.recoverPhyStats();
+  }
+      </pre>
       <p>You'll notice we added two new methods, <code>setRanges()</code>,
 and <code>setAmmunitionType()</code>.
 With the former, we specify that this is a ranged-only weapon, usable
 from range 1 (0=melee) to range 5. The ammunition type specifies that
-it uses arrows. Other classes, however, have different requirements
+it uses arrows. We also added the method <code>recoverPhyStats()</code> in order to have the 
+attack and damage for the weapon always reflect the level of the item.
+<p>
+So those are weapons. Other classes, however, have different requirements
 altogether. For instance, if class extends
 com.planet_ink.coffee_mud.Items.Armor.StdArmor:</p>
-      <pre>  public MyNewArmor()<br />  {<br />    super();<br /><br />    setName( "a super bracer" );<br />    setDescription( "A super duper bracer" );<br />    setDisplayText( "Someone left their super bracer here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setBaseValue( 100 );<br />    basePhyStats.setWeight( 5 );<br />    basePhyStats.setArmor( 5 );<br />    setRawProperLocationBitmap( Wearable.WORN_LEFT_WRIST|Wearable.WORN_RIGHT_WRIST );<br />    setRawLogicalAnd( false );<br />    recoverPhyStats();<br />  }<br /></pre>
+      <pre>  public MyNewArmor()<br />  {<br />    super();<br /><br />    setName( "a super bracer" );<br />    setDescription( "A super duper bracer" );<br />    setDisplayText( "Someone left their super bracer here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setBaseValue( 100 );<br />    basePhyStats.setWeight( 5 );<br />    basePhyStats.setArmor( 5 );<br />    setRawProperLocationBitmap( Wearable.WORN_LEFT_WRIST|Wearable.WORN_RIGHT_WRIST );<br />    setRawLogicalAnd( false );<br />    recoverPhyStats();<br />  }<br />
+  public void recoverPhyStats()
+  {
+    basePhyStats().setArmor(2+(basePhyStats().level()/2));
+    super.recoverPhyStats();
+  }
+      </pre>
       <p>In this case, we made a bracer wearable on both left and right
 wrists. If it were something that could only be worn on both wrists at
 the same time (like handcuffs), then the RawLogicalAnd value would have
