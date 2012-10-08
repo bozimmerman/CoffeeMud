@@ -1346,7 +1346,7 @@ public class CMParms
 	public final static String toStringList(final Enumeration<?> e)
 	{
 		if(!e.hasMoreElements()) return "";
-		Environmental o=(Environmental)e.nextElement();
+		Object o=e.nextElement();
 		final StringBuilder s=new StringBuilder(""+o);
 		for(;e.hasMoreElements();)
 			s.append(", "+e.nextElement());
