@@ -494,6 +494,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			for(int i=0;i<presorted.length;i++)
 			{
 				final long[] set=presorted[i];
+				if((set==null)||(set.length<2))
+				{
+					Log.errOut("CMPlayers","Error in AUTOPURGE definition #"+(i+1)+" in coffeemud.ini file! Fix immediately!!");
+					continue;
+				}
 				long val=set[0];
 				if(set[0]<=0) continue;
 				long prepurge=set[1];
