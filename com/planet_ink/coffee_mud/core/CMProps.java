@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
@@ -270,7 +271,7 @@ public class CMProps extends Properties
 	public static final int SYSTEMLF_WEATHER_DROUGHT=27;
 	public static final int SYSTEMLF_WEATHER_COLD=28;
 	public static final int SYSTEMLF_WEATHER_NONE=29;
-	
+
 	public static final String[] SYSTEMLF_KEYS={
 									"DAMAGE_WORDS_THRESHOLDS",
 									"DAMAGE_WORDS",
@@ -305,6 +306,11 @@ public class CMProps extends Properties
 	};
 	public static final int NUMLF_SYSTEM=SYSTEMLF_KEYS.length;
 
+	public static final int SYSTEMWL_CONNS=0;
+	public static final int SYSTEMWL_LOGINS=1;
+	public static final int SYSTEMWL_NEWPLAYERS=2;
+	public static final int NUMWL_SYSTEM=3;
+	
 	protected final String[]	sysVars=new String[NUM_SYSTEM];
 	protected final Integer[]   sysInts=new Integer[NUMI_SYSTEM];
 	protected final Boolean[]   sysBools=new Boolean[NUMB_SYSTEM];
@@ -316,6 +322,7 @@ public class CMProps extends Properties
 	protected final List<String>poseFilter=new Vector<String>();
 	protected final DVector 	newusersByIP=new DVector(2);
 	protected String[][]		statCodeExtensions = null;
+	protected Pattern[][]		whiteLists = new Pattern[0][];
 	protected int   			pkillLevelDiff=26;
 	protected boolean   		loaded=false;
 	protected long  			TIME_TICK=4000;
@@ -753,6 +760,53 @@ public class CMProps extends Properties
 			   setUpLowVar(props[p],varNum,val);
 	}
 
+	public static final void setWhitelist(final CMProps props, final int listNum, final String list)
+	{
+		if((listNum<0)||(listNum>=NUMWL_SYSTEM)) return ;
+		if(props.whiteLists.length<=listNum)
+			props.whiteLists=Arrays.copyOf(props.whiteLists, listNum+1);
+		props.whiteLists[listNum]=new Pattern[0];
+		if((list==null)||(list.trim().length()==0))
+			return;
+		final List<String> parts=CMParms.parseCommas(list.trim(),true);
+		for(String part : parts)
+		{
+			if(part.trim().length()==0)
+				continue;
+			props.whiteLists[listNum]=Arrays.copyOf(props.whiteLists[listNum], props.whiteLists[listNum].length+1);
+			props.whiteLists[listNum][props.whiteLists[listNum].length-1]=Pattern.compile(part.trim(),Pattern.CASE_INSENSITIVE|Pattern.DOTALL|Pattern.CANON_EQ);
+		}
+	}
+
+	public static final void setWhitelist(final int listNum, final String list)
+	{
+		setWhitelist(p(), listNum, list);
+	}
+
+	public static final boolean isOnWhiteList(final CMProps props, final int listNum, final String chk)
+	{
+		if((listNum<0)||(listNum>=NUMWL_SYSTEM)) 
+			return false;
+		if(props.whiteLists.length<=listNum)
+			return false;
+		if((chk==null)||(chk.trim().length()==0))
+			return false;
+		final Pattern[] patts=props.whiteLists[listNum];
+		final String chkTrim=chk.trim();
+		final CharSequence seq=chkTrim.subSequence(0, chkTrim.length());
+		for(final Pattern p : patts)
+		{
+			if(p.matcher(seq).matches())
+				return true;
+		}
+		return false;
+	}
+
+	public static final boolean isOnWhiteList(final int listNum, final String chk)
+	{
+		return isOnWhiteList(p(), listNum, chk);
+	}
+
 	public static final void setUpCosts(final String fieldName, final Map<String,ExpertiseLibrary.SkillCostDefinition> map, final Vector<String> fields)
 	{
 		final double[] doubleChecker=new double[10];
@@ -1099,6 +1153,10 @@ public class CMProps extends Properties
 		setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
 		setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
 
+		setWhitelist(CMProps.SYSTEMWL_CONNS,getStr("WHITELISTIPSCONN"));
+		setWhitelist(CMProps.SYSTEMWL_LOGINS,getStr("WHITELISTLOGINS"));
+		setWhitelist(CMProps.SYSTEMWL_NEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));
+		
 		if(CMLib.color()!=null) CMLib.color().clearLookups();
 		if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);

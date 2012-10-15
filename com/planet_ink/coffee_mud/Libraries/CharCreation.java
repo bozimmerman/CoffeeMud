@@ -637,6 +637,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)>0)
 			&&(numAccountOnline>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT))
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
+			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_CONNS, session.getAddress()))
+			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, playMe.accountName))
+			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, playMe.name))
 			&&(!acct.isSet(PlayerAccount.FLAG_MAXCONNSOVERRIDE)))
 			{
 				session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)+" of your characters on at one time.");
@@ -1528,7 +1531,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	private boolean loginsDisabled(MOB mob)
 	{
-		if((CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS))&&(!CMSecurity.isASysOp(mob)))
+		if((CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS))
+		&&(!CMSecurity.isASysOp(mob))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, mob.Name()))
+		&&(!((mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null)&&(CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, mob.playerStats().getAccount().accountName()))))
+		&&(!((mob.session()!=null)&&(CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, mob.session().getAddress())))))
 		{
 			StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
 			try { rejectText = CMLib.httpUtils().doVirtualPage(rejectText);}catch(Exception ex){}
@@ -1988,7 +1995,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName)
 	{
-		if(CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS))
+		if((CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, login))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, ipAddress)))
 			return NewCharNameCheckResult.NO_NEW_PLAYERS;
 		else
 		if((!isOkName(login))
@@ -1997,12 +2006,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return NewCharNameCheckResult.BAD_USED_NAME;
 		else
 		if((CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)==0)
-		||(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS)))
-			return NewCharNameCheckResult.NO_NEW_LOGINS;
+		||((CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS))
+			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, login))
+			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, ipAddress))))
+				return NewCharNameCheckResult.NO_NEW_LOGINS;
 		else
 		if((CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP)>0)
 		&&(CMProps.getCountNewUserByIP(ipAddress)>=CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP))
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXNEWPERIP)))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXNEWPERIP))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, login))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, ipAddress)))
 			return NewCharNameCheckResult.CREATE_LIMIT_REACHED;
 		return NewCharNameCheckResult.OK;
 	}
@@ -2055,7 +2068,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP)>0)
 		&&(numAtAddress>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP))
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERIP)))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERIP))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_CONNS, session.getAddress()))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, login)))
 		{
 			session.println("The maximum player limit has already been reached for your IP address.");
 			return LoginResult.NO_LOGIN;

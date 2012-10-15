@@ -58,7 +58,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	private static final float	HOST_VERSION_MAJOR	= (float)5.7;
-	private static final long	 HOST_VERSION_MINOR	= 9;
+	private static final long	 HOST_VERSION_MINOR	= 10;
 	private final static String[] STATE_STRING			= {"waiting","accepting","allowing"};
 
 	private int				state		= 0;
@@ -455,37 +455,40 @@ public class MUD extends Thread implements MudHost
 					int maxAtThisAddress=6;
 					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONNSPAMBLOCK))
 					{
-						synchronized(accessed)
+						if(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_CONNS, address))
 						{
-							for(Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
+							synchronized(accessed)
 							{
-								Triad<String,Long,Integer> triad=i.next();
-								if((triad.second.longValue()+LastConnectionDelay)<System.currentTimeMillis())
-									i.remove();
-								else
-								if(triad.first.trim().equalsIgnoreCase(address))
+								for(Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
 								{
-									anyAtThisAddress=true;
-									triad.second=Long.valueOf(System.currentTimeMillis());
-									numAtThisAddress=triad.third.intValue()+1;
-									triad.third=Integer.valueOf(numAtThisAddress);
+									Triad<String,Long,Integer> triad=i.next();
+									if((triad.second.longValue()+LastConnectionDelay)<System.currentTimeMillis())
+										i.remove();
+									else
+									if(triad.first.trim().equalsIgnoreCase(address))
+									{
+										anyAtThisAddress=true;
+										triad.second=Long.valueOf(System.currentTimeMillis());
+										numAtThisAddress=triad.third.intValue()+1;
+										triad.third=Integer.valueOf(numAtThisAddress);
+									}
 								}
+								if(!anyAtThisAddress)
+									accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
 							}
-							if(!anyAtThisAddress)
-								accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
-						}
-						if(autoblocked.contains(address.toUpperCase()))
-						{
-							if(!anyAtThisAddress)
-								autoblocked.remove(address.toUpperCase());
+							if(autoblocked.contains(address.toUpperCase()))
+							{
+								if(!anyAtThisAddress)
+									autoblocked.remove(address.toUpperCase());
+								else
+									proceed=2;
+							}
 							else
+							if(numAtThisAddress>=maxAtThisAddress)
+							{
+								autoblocked.add(address.toUpperCase());
 								proceed=2;
-						}
-						else
-						if(numAtThisAddress>=maxAtThisAddress)
-						{
-							autoblocked.add(address.toUpperCase());
-							proceed=2;
+							}
 						}
 					}
 

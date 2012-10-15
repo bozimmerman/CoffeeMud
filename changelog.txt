@@ -2395,5 +2395,5 @@ ruthless programmer, and sentenced to a quick death.
 3. Fixed a nasty bug in CMParms -- you do not want 5.7.8!
 # Build 5.7.10 Release ??/??/2012
 1. (Minor) ResourceOverride is now an ActiveTicker for better control over its behavior.  Also, room types bug fixed.
-
+2. New INI entries for whitelisting over ip/login/newplayer blocks: WHITELISTIPSCONN, WHITELISTLOGINS, WHITELISTIPSNEWPLAYERS
 
