@@ -349,7 +349,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				commonTell(mob,"A "+jewelE.name()+" is not suitable to "+word+" on anything."); 
 				return false;
 			}
-			final Item jewelI=(Item)CMLib.materials().unbundle((Item)jewelE,1);
+			final Item jewelI=(Item)CMLib.materials().unbundle((Item)jewelE,1,null);
 			if(jewelI==null)
 			{
 				commonTell(mob,jewelE.name()+" is not pure enough to be "+word+"ed with.  You will need to use a gathered one.");

@@ -35,7 +35,8 @@ import java.util.*;
 */
 public interface MaterialLibrary extends CMLibrary
 {
-	public Environmental unbundle(Item I, int number);
+	public Environmental unbundle(Item I, int number, Container C);
+	public Environmental splitBundle(Item I, int size, Container C);
 	public int getMaterialRelativeInt(String s);
 	public int getMaterialCode(String s, boolean exact);
 	public int getResourceCode(String s, boolean exact);

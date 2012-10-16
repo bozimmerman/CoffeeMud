@@ -261,7 +261,7 @@ public class Farming extends GatheringSkill
 			return false;
 		}
 		String mineName=mine.name();
-		mine=(Item)CMLib.materials().unbundle(mine,-1);
+		mine=(Item)CMLib.materials().unbundle(mine,-1,null);
 		if(mine==null)
 		{
 			commonTell(mob,"'"+mineName+"' is not suitable for use as a seed crop.");

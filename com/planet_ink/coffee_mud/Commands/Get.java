@@ -152,7 +152,7 @@ public class Get extends StdCommand
 				doBugFix=false;
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
-				   getThis=R.fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
+					getThis=R.fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
 				else
 				{
 					if(!allFlag)
@@ -161,11 +161,25 @@ public class Get extends StdCommand
 						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr);
 				}
 				if(getThis==null) break;
+				
+				if((maxToGet>1)&&(getThis instanceof RawMaterial)&&(container!=null)
+				&&(((RawMaterial)getThis).container()==container))
+				{
+					int weight=((RawMaterial)getThis).phyStats().weight();
+					if((weight>1) &&(weight>=maxToGet) &&(CMStrings.containsWordIgnoreCase(((RawMaterial)getThis).name(), "bundle")))
+					{
+						if(weight>maxToGet)
+							getThis=CMLib.materials().splitBundle((RawMaterial)getThis, maxToGet,container);
+						maxToGet=1;
+					}
+				}
+				
 				if((getThis instanceof Item)
 				&&((CMLib.flags().canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
 				&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
 				&&(!V.contains(getThis)))
 					V.addElement(getThis);
+
 				addendumStr="."+(++addendum);
 			}
 

@@ -1618,13 +1618,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(comp.getType()==AbilityComponent.CompType.STRING)
 		{
 			if(I instanceof PackagedItems)
-				I=(Item)CMLib.materials().unbundle(I,amt[0]);
+				I=(Item)CMLib.materials().unbundle(I,amt[0],null);
 			amt[0]-=I.numberOfItems();
 		}
 		else
 		if(I.phyStats().weight()>amt[0])
 		{
-			I=(Item)CMLib.materials().unbundle(I,amt[0]);
+			I=(Item)CMLib.materials().unbundle(I,amt[0],null);
 			if(I==null) 
 				return false;
 			amt[0]=amt[0]-I.phyStats().weight();

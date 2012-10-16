@@ -200,12 +200,26 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return true;
 	}
 	
-	public Environmental unbundle(Item I, int number)
+	public Environmental splitBundle(Item I, int size, Container C)
 	{
-		if((I==null)||(I.amDestroyed())) 
+		List<Environmental> set=disBundle(I,1,size,C);
+		if((set==null)||(set.size()==0)) return null;
+		return set.get(0);
+	}
+
+	public Environmental unbundle(Item I, int number, Container C)
+	{
+		List<Environmental> set=disBundle(I,number,1,C);
+		if((set==null)||(set.size()==0)) return null;
+		return set.get(0);
+	}
+	
+	protected List<Environmental> disBundle(Item I, int number, int bundleSize, Container C)
+	{
+		if((I==null)||(I.amDestroyed())||(bundleSize<1)) 
 			return null;
 		if((I instanceof PackagedItems)
-		&&(I.container()==null)
+		&&(I.container()==C)
 		&&(!CMLib.flags().isOnFire(I)))
 		{
 			PackagedItems pkg=(PackagedItems)I;
@@ -215,15 +229,26 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				number=pkg.numberOfItemsInPackage();
 			Environmental owner=I.owner();
 			List<Item> parts=((PackagedItems)I).unPackage(number);
-			if(parts.size()==0) return I;
-			for(int p=0;p<parts.size();p++)
+			if(parts.size()==0) return new XVector<Environmental>(I);
+			List<Environmental> bundle=new XVector<Environmental>();
+			for(int p=0;p<parts.size();p+=bundleSize)
 			{
 				I=(Item)parts.get(p);
+				if(bundleSize>1)
+				{
+					PackagedItems thePackage=(PackagedItems)CMClass.getItem("GenPackagedItems");
+					thePackage.packageMe(I, bundleSize);
+					for(int pp=p;(pp<p+bundleSize) && (pp<parts.size());pp++)
+						((Item)parts.get(pp)).destroy();
+					I=thePackage;
+				}
 				if(owner instanceof Room)
 					((Room)owner).addItem(I,ItemPossessor.Expire.Player_Drop);
 				else
 				if(owner instanceof MOB)
 					((MOB)owner).addItem(I);
+				I.setContainer(C);
+				bundle.add(I);
 			}
 			if(!pkg.amDestroyed())
 			{
@@ -231,21 +256,23 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				{
 					((Room)owner).delItem(pkg);
 					((Room)owner).addItem(pkg,ItemPossessor.Expire.Player_Drop);
+					bundle.add(pkg);
 				}
 				else
 				if(owner instanceof MOB)
 				{
 					((MOB)owner).delItem(pkg);
 					((MOB)owner).addItem(pkg);
+					bundle.add(pkg);
 				}
 				else
 					pkg.destroy();
 			}
-			return I;
+			return bundle;
 		}
 		else
 		if((I instanceof RawMaterial)
-		&&(I.container()==null)
+		&&(I.container()==C)
 		&&(!CMLib.flags().isOnFire(I))
 		&&(!CMLib.flags().enchanted(I)))
 		{
@@ -263,11 +290,13 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				int loseThirstHeld=0;
 				int loseThirstRemain=0;
 				Physical E=null;
-				for(int x=0;x<number;x++)
+				List<Environmental> bundle=new XVector<Environmental>();
+				for(int x=0;x<number;x+=bundleSize)
 				{
 					E=makeResource(I.material(),null,true,I.rawSecretIdentity());
 					if(E instanceof Item)
 					{
+						((Item)E).setContainer(C);
 						loseValue+=I.baseGoldValue();
 						if((E instanceof Decayable)&&(I instanceof Decayable))
 							((Decayable)E).setDecayTime(((Decayable)I).decayTime());
@@ -280,11 +309,23 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 						}
 						if(rott!=null)
 							E.addNonUninvokableEffect((Ability)rott.copyOf());
+						if(bundleSize>1)
+						{
+							((Item)E).basePhyStats().setWeight(bundleSize);
+							((Item)E).phyStats().setWeight(bundleSize);
+							adjustResourceName((Item)E);
+						}
 						if(owner instanceof Room)
+						{
 							((Room)owner).addItem((Item)E,ItemPossessor.Expire.Player_Drop);
+							bundle.add(E);
+						}
 						else
 						if(owner instanceof MOB)
+						{
 							((MOB)owner).addItem((Item)E);
+							bundle.add(E);
+						}
 					}
 					else
 						E=null;
@@ -315,21 +356,24 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					{
 						((Room)owner).delItem(I);
 						((Room)owner).addItem(I,ItemPossessor.Expire.Player_Drop);
+						bundle.add(I);
 					}
 					else
 					if(owner instanceof MOB)
 					{
 						((MOB)owner).delItem(I);
 						((MOB)owner).addItem(I);
+						bundle.add(I);
 					}
 					else
 						I.destroy();
 				}
 				else
 					I.destroy();
-				return E;
+				return bundle;
 			}
-			return I;
+			else
+				return new XVector<Environmental>(I);
 		}
 		return null;
 	}
