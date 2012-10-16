@@ -1,86 +1,109 @@
-% Cup	1	10	8	1	GenDrink		5		1	
+ Cup	1	10	8	1	GenDrink		5		1	
 % Bowl	1	10	8	1	GenContainer		5		1	
-% Toy	1	10	5	1	GenItem					
-Puppet	1	10	5	1	GenItem					
-Marionette	1	10	5	1	GenItem					
-% Chopsticks	1	5	1	1	GenItem					
-% Mug	1	10	8	1	GenDrink		5		1	
-% Plate	1	10	8	1	GenContainer		5		0	
-% Pitcher	1	15	15	1	GenDrink		15		1	
-% Barrel	1	30	30	5	GenDrink		50		0	
-% Wheel	1	20	10	1	GenItem					
-% Bucket	1	20	20	5	GenDrink		15		0	
-% Plaque	1	20	5	20	GenItem					
-% pipe	1	10	1	2	GenPipe	SMOKE	200		8192	
-Small % Table	1	15	30	15	GenRideable	TABLE	20		0	
-Small % Desk	1	15	30	15	GenRideable	TABLE	20		0	
-Small % Stool	1	15	10	3	GenChair	CHAIR	1		0	
-Small % Chair	1	15	15	5	GenChair	CHAIR	1		0	
-% Podium	1	15	15	5	GenRideable	TABLE	1		0	
-Small % Bench	1	20	20	10	GenChair	CHAIR	2		0	
-Small % Bed	1	25	30	15	GenBed	BED	1		0	
-Small % Box	1	15	15	5	GenContainer		25		0	
+Torch	1	15	5	10	GenLightSource		200			
+% Toy	2	10	5	1	GenItem					
+Puppet	2	10	5	1	GenItem					
 % Club	2	15	10	200	GenWeapon	BLUNT	1	6	-20	
+Marionette	3	10	5	1	GenItem					
+% Chopsticks	3	5	1	1	GenItem					
 % Mace	3	20	20	528	GenWeapon	BLUNT	1	5	0	
-% Bookshelf	3	30	10	15	GenContainer		100		384	
-% Scroll Case	3	30	10	10	GenContainer		3		256	
 a Pair of % Sabots	3	20	10	15	GenShoes	2:FEET	0	2	0	
 a Pair of % Clogs	3	30	10	15	GenShoes	2:FEET	0	2	0	
 Small % Shield	3	30	15	5	GenShield	HELD	1	6	0	
-% Shelf	3	30	10	10	GenContainer		50		0	
 % Box	3	30	30	8	GenContainer		50		0	
+% Shiv	3	15	15	250	GenWeapon	DAGGER	1	6	0	
+% Mug	4	10	8	1	GenDrink		5		1	
+% Plate	4	10	8	1	GenContainer		5		0	
 % Staff	4	20	15	392	GenWeapon	STAFF	2	12	0	
-% Jewelry Box	5	15	15	15	GenContainer	LID	5		0	
+% Pitcher	5	15	15	1	GenDrink		15		1	
+% Barrel	5	30	30	5	GenDrink		50		0	
 % Quarterstaff	5	15	10	267	GenWeapon	STAFF	2	10	0	
-% Table	6	30	60	20	GenRideable	TABLE	50		0	
-% Coffin	6	40	50	35	GenContainer		500		64	Prop_NoPurge
-% Potion Rack	6	30	30	8	GenContainer		100		2048	Prop_NoPurge
-% Desk	6	30	60	20	GenRideable	TABLE	50		0	
-% Stool	6	30	20	6	GenChair	CHAIR	1		0	
-% Chair	6	30	30	10	GenChair	CHAIR	5		0	
-% Bench	6	40	40	15	GenChair	CHAIR	10		0	
-% Bed	6	50	60	20	GenBed	BED	2		0	
+% Wheel	6	20	10	1	GenItem					
+% Bucket	6	20	20	5	GenDrink		15		0	
 Small % Chest	6	50	20	20	GenContainer	LOCK	25		0	
-% Ladder	6	40	20	10	GenRideable	LADDER	0		0	
 % Shield	6	50	30	8	GenShield	HELD	1	8	0	
 Large % Box	6	40	40	10	GenContainer	LID	65		0	
-Small % Crib	8	50	20	60	GenContainer		20		0	
-% Bar	12	30	60	20	GenRideable	TABLE	50		0	
-Large % Table	12	45	90	30	GenRideable	TABLE	100		0	
-Ornate % Chair	12	45	45	15	GenChair	CHAIR	5		0	
-Long % Bench	12	60	60	22	GenChair	CHAIR	15		0	
-King sized % Bed	12	75	90	30	GenBed	BED	4		0	
-% Chest	12	75	30	30	GenContainer	LOCK	50		0	
-Large % Shield	12	75	40	16	GenShield	HELD	1	13	0	
-% Crib	13	60	30	80	GenContainer		60		0	
-Torch	15	15	5	10	GenLightSource		200			
-Large % Chest	15	100	45	45	GenContainer	LOCK	100		0	
-% Wardrobe	15	75	70	60	GenContainer	LID	500		4096	Prop_NoPurge
-% Armor Rack	15	85	80	75	GenContainer		1000		4096	Prop_NoPurge
-% Weapon Rack	15	70	65	60	GenContainer		500		60	Prop_NoPurge
-% China Cabinet	18	90	60	250	GenContainer	LID	100		0	
-Large % Crib	18	70	50	200	GenContainer		200		0	
-% Chest of Drawers	20	100	45	45	GenContainer	LID	100		0	
-% Wand	22	30	5	3	GenWand					
-% Vanity	25	120	40	250	GenContainer	LOCK	50		0	
-Four Poster % Bed	30	150	200	1500	GenBed	BED	4		0	
-% Armoire	9	80	50	40	GenContainer	LID	100		4096	
-% Hat Rack	2	20	5	10	GenContainer		10		4096	
-% Coat Rack	7	30	10	10	GenContainer		50		4096	
-% Couch	10	80	120	200	GenChair	CHAIR	3		0	
-% Sofa	16	90	100	250	GenChair	CHAIR	4		0	
+% Plaque	7	20	5	20	GenItem					
+% pipe	7	10	1	2	GenPipe	SMOKE	200		8192	
+Small % Table	8	15	30	15	GenRideable	TABLE	20		0	
+Small % Desk	8	15	30	15	GenRideable	TABLE	20		0	
+% Ladder	8	40	20	10	GenRideable	LADDER	0		0	
+Small % Stool	9	15	10	3	GenChair	CHAIR	1		0	
+Small % Chair	9	15	15	5	GenChair	CHAIR	1		0	
+% Podium	10	15	15	5	GenRideable	TABLE	1		0	
+Small % Bench	10	20	20	10	GenChair	CHAIR	2		0	
 % Peg Leg	10	30	10	100	GenLimb					
+Small % Bed	11	25	30	15	GenBed	BED	1		0	
+Small % Box	11	15	15	5	GenContainer		25		0	
+% Bookshelf	12	30	10	15	GenContainer		100		384	
+% Scroll Case	12	30	10	10	GenContainer		3		256	
+Large % Shield	12	75	40	16	GenShield	HELD	1	13	0	
+% Shelf	13	30	10	10	GenContainer		50		0	
+% Jewelry Box	14	15	15	15	GenContainer	LID	5		0	
+% Table	15	30	60	20	GenRideable	TABLE	50		0	
+% Coffin	16	40	50	35	GenContainer		500		64	Prop_NoPurge
 Solid % Club	16	85	50	350	GenWeapon	BLUNT	1	12	-20	
-Solid % Mace	20	95	60	1028	GenWeapon	BLUNT	1	16	0	
-Solid % Quarterstaff	22	105	75	667	GenWeapon	STAFF	2	27	0	
-Ornate % Club	32	130	100	650	GenWeapon	BLUNT	1	16	-20	
-Ornate % Mace	40	160	120	2056	GenWeapon	BLUNT	1	22	0	
-Ornate % Quarterstaff	55	180	150	1376	GenWeapon	STAFF	2	55	0	
-The % Club	64	150	200	1300	GenWeapon	BLUNT	1	40	-20	
-The % Mace	70	180	240	4000	GenWeapon	BLUNT	1	35	0	
-The % Quarterstaff	80	270	300	2700	GenWeapon	STAFF	2	80	0	
-% Shiv	3	15	15	250	GenWeapon	DAGGER	1	6	0	
+% Potion Rack	17	30	30	8	GenContainer		100		2048	Prop_NoPurge
+% Desk	18	30	60	20	GenRideable	TABLE	50		0	
 % Stake	18	20	40	300	GenWeapon	DAGGER	1	14	0	
+% Stool	19	30	20	6	GenChair	CHAIR	1		0	
+% Chair	20	30	30	10	GenChair	CHAIR	5		0	
+Solid % Mace	20	95	60	1028	GenWeapon	BLUNT	1	16	0	
+% Bench	21	40	40	15	GenChair	CHAIR	10		0	
+% Bed	22	50	60	20	GenBed	BED	2		0	
+% Wand	22	30	5	3	GenWand					
+Solid % Quarterstaff	22	105	75	667	GenWeapon	STAFF	2	27	0	
+Small % Crib	23	50	20	60	GenContainer		20		0	
+% Bar	24	30	60	20	GenRideable	TABLE	50		0	
+Large % Table	25	45	90	30	GenRideable	TABLE	100		0	
+Ornate % Chair	26	45	45	15	GenChair	CHAIR	5		0	
+Long % Bench	27	60	60	22	GenChair	CHAIR	15		0	
+King sized % Bed	28	75	90	30	GenBed	BED	4		0	
 % Cermonial Dagger	28	20	80	350	GenWeapon	DAGGER	1	16	10	
+% Chest	29	75	30	30	GenContainer	LOCK	50		0	
+% Crib	30	60	30	80	GenContainer		60		0	
+Large % Chest	31	100	45	45	GenContainer	LOCK	100		0	
+% Wardrobe	32	75	70	60	GenContainer	LID	500		4096	Prop_NoPurge
+Ornate % Club	32	130	100	650	GenWeapon	BLUNT	1	16	-20	
+% Armor Rack	33	85	80	75	GenContainer		1000		4096	Prop_NoPurge
+% Weapon Rack	34	70	65	60	GenContainer		500		60	Prop_NoPurge
+% China Cabinet	35	90	60	250	GenContainer	LID	100		0	
+Large % Crib	36	70	50	200	GenContainer		200		0	
+% Chest of Drawers	37	100	45	45	GenContainer	LID	100		0	
+% Vanity	38	120	40	250	GenContainer	LOCK	50		0	
+Four Poster % Bed	40	150	200	1500	GenBed	BED	4		0	
+Ornate % Mace	40	160	120	2056	GenWeapon	BLUNT	1	22	0	
+% Armoire	42	80	50	40	GenContainer	LID	100		4096	
+% Hat Rack	44	20	5	10	GenContainer		10		4096	
 The Mighty % Shiv	45	30	100	500	GenWeapon	DAGGER	1	20	10	
+% Coat Rack	46	30	10	10	GenContainer		50		4096	
+% Couch	48	80	120	200	GenChair	CHAIR	3		0	
+% Sofa	50	90	100	250	GenChair	CHAIR	4		0	
+Kingly % Coffin	52	50	70	70	GenContainer		500		64	Prop_NoPurge
+Ornate % Desk	54	60	80	40	GenRideable	TABLE	100		0	
+Decorative % Desk	54	90	180	80	GenRideable	TABLE	150		0	
+Ornate % Quarterstaff	55	180	150	1376	GenWeapon	STAFF	2	55	0	
+Ornate % Stool	56	60	40	24	GenChair	CHAIR	1		0	
+Decorative % Stool	56	90	60	24	GenChair	CHAIR	1		0	
+Ornate % Bar	58	60	80	80	GenRideable	TABLE	100		0	
+Decorative % Bar	58	90	180	80	GenRideable	TABLE	150		0	
+Lordly % Table	60	90	90	60	GenRideable	TABLE	100		0	
+Decorative % Chair	62	90	90	60	GenChair	CHAIR	5		0	
+The % Club	64	150	200	1300	GenWeapon	BLUNT	1	40	-20	
+Ornate % Bench	64	80	80	88	GenChair	CHAIR	15		0	
+Decorative % Bench	64	180	180	88	GenChair	CHAIR	15		0	
+Kingly % Bed	66	150	180	120	GenBed	BED	6		0	
+Lordly % Chest	68	150	60	120	GenContainer	LOCK	50		0	
+Decorative % Chest	68	210	120	120	GenContainer	LOCK	150		0	
+The % Mace	70	180	240	4000	GenWeapon	BLUNT	1	35	0	
+Princely % Crib	70	120	60	160	GenContainer		60		0	
+Queenly % Wardrobe	72	150	140	120	GenContainer	LID	500		4096	Prop_NoPurge
+Knights % Armor Rack	74	150	160	300	GenContainer		1500		4096	Prop_NoPurge
 The Mighty % Dagger	75	40	120	1200	GenWeapon	DAGGER	1	36	10	
+Knights % Weapon Rack	76	130	130	240	GenContainer		1000		60	Prop_NoPurge
+Kingly % Crib	78	140	100	250	GenContainer		400		0	
+The % Quarterstaff	80	270	300	2700	GenWeapon	STAFF	2	80	0	
+Princely % Chest of Drawers	80	200	90	180	GenContainer	LID	200		0	
+Decorative % Vanity	82	200	80	400	GenContainer	LOCK	120		0	
+Decorative % Armoire	84	40	50	80	GenContainer	LID	150		4096	
+Ornate % Hat Rack	86	40	50	69	GenContainer		30		4096	

@@ -45,6 +45,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 	public int maxRange(){return adjustedMaxInvokerRange(0);}
 	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int usageType(){return USAGE_MOVEMENT;}
+	protected int overrideMana(){return 150;}
 
 	public int castingQuality(MOB mob, Physical target)
 	{
@@ -59,7 +60,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			if((ww.weaponType()!=Weapon.TYPE_SLASHING)
 			&&(ww.weaponType()!=Weapon.TYPE_PIERCING))
 				 return Ability.QUALITY_INDIFFERENT;
-			if(mob.curState().getMovement()<150) return Ability.QUALITY_INDIFFERENT;
+			if(mob.curState().getMovement()<overrideMana()) return Ability.QUALITY_INDIFFERENT;
 			if(!CMLib.flags().isSleeping(mob.getVictim())) return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -118,7 +119,6 @@ public class Fighter_CoupDeGrace extends FighterSkill
 			levelDiff=levelDiff*3;
 		else
 			levelDiff=0;
-		mob.curState().adjMovement(-150,mob.maxState());
 		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.STAT_CONSTITUTION)*2));
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,chance,auto)&&(hit);

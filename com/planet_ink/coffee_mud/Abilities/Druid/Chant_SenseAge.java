@@ -41,7 +41,7 @@ public class Chant_SenseAge extends Chant
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	protected int manaOverride(){return 5;}
+	protected int overrideMana(){return 5;}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
