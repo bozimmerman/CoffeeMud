@@ -516,6 +516,11 @@ public class CMFile
 		return false;
 	}
 
+	public final InputStream getTextStream()
+	{
+		return new ByteArrayInputStream(text().toString().getBytes());
+	}
+	
 	public final StringBuffer text()
 	{
 		final StringBuffer buf=new StringBuffer("");
@@ -591,6 +596,11 @@ public class CMFile
 		return buf;
 	}
 
+	public final InputStream getUnformattedTextStream()
+	{
+		return new ByteArrayInputStream(text().toString().getBytes());
+	}
+	
 	public final StringBuffer textUnformatted()
 	{
 		final StringBuffer buf=new StringBuffer("");
@@ -661,6 +671,11 @@ public class CMFile
 		return buf;
 	}
 
+	public final InputStream getRawStream()
+	{
+		return new ByteArrayInputStream(raw());
+	}
+	
 	public final byte[] raw()
 	{
 		byte[] buf=new byte[0];
