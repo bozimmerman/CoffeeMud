@@ -76,6 +76,17 @@ public class StdTub extends StdRideable implements Drink
 	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
 	public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
 
+	protected int getExtraLiquidResourceType()
+	{
+		List<Item> V=getContents();
+		for(int v=0;v<V.size();v++)
+			if((V.get(v) instanceof Item)
+			&&(V.get(v) instanceof Drink)
+			&&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+				return ((Item)V.get(v)).material();
+		return -1;
+	}
+	
 	public boolean containsDrink()
 	{
 		if((!CMLib.flags().isGettable(this))
@@ -85,15 +96,7 @@ public class StdTub extends StdRideable implements Drink
 		&&(((Room)owner()).getArea().getClimateObj().weatherType((Room)owner())==Climate.WEATHER_DROUGHT))
 			return false;
 		if(liquidRemaining()<1)
-		{
-			List<Item> V=getContents();
-			for(int v=0;v<V.size();v++)
-				if((V.get(v) instanceof Item)
-				&&(V.get(v) instanceof Drink)
-				&&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
-					return true;
-			return false;
-		}
+			return (getExtraLiquidResourceType()>0);
 		return true;
 	}
 
@@ -251,9 +254,16 @@ public class StdTub extends StdRideable implements Drink
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(msg.source().riding()==this)
+		if((msg.source().riding()==this)
+		&&(CMLib.commands().isHygenicMessage(msg, 0, PlayerStats.HYGIENE_WATERCLEAN)))
 		{
-			CMLib.commands().handleHygenicMessage(msg, 0, PlayerStats.HYGIENE_WATERCLEAN);
+			int extraRsc=getExtraLiquidResourceType();
+			if((amountOfLiquidRemaining>1)
+			&&(this.liquidType==RawMaterial.RESOURCE_FRESHWATER)
+			&&((extraRsc<0)||(extraRsc==RawMaterial.RESOURCE_FRESHWATER)))
+			{
+				CMLib.commands().handleHygenicMessage(msg, 0, PlayerStats.HYGIENE_WATERCLEAN);
+			}
 		}
 
 		if(msg.amITarget(this))

@@ -76,6 +76,7 @@ public interface CommonCommands extends CMLibrary
 	public void handleBeingWielded(CMMsg msg);
 	public void handleBeingHeld(CMMsg msg);
 	public void handleHygenicMessage(final CMMsg msg, final int minHygeine, final long adjHygiene);
+	public boolean isHygenicMessage(final CMMsg msg, final int minHygeine, final long adjHygiene);
 	public void handleObserveComesToLife(MOB observer, MOB lifer, CMMsg msg);
 	public boolean handleUnknownCommand(MOB mob, List<String> command);
 	public void handleIntroductions(MOB speaker, MOB me, String said);
