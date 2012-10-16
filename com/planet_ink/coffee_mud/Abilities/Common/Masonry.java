@@ -762,7 +762,7 @@ public class Masonry extends CraftingSkill
 				commonTell(mob,"A cave can not have its roof demolished.");
 				return false;
 			}
-			if(!CMath.bset(room.domainType(), Room.INDOORS))
+			if(!CMath.bset(mob.location().domainType(), Room.INDOORS))
 			{
 				commonTell(mob,"There is no ceiling here!");
 				return false;

@@ -1202,7 +1202,7 @@ public class MOBloader
 			// certainly by amateurs is the answer. That, and fakedb 
 			// doesn't understand 'LIKE'
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM='"+CMStrings.capitalizeAndLower(Login).replace('\'', 'n')+"'");
+			ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM='"+CMStrings.replaceAll(CMStrings.capitalizeAndLower(Login),"\'", "n")+"'");
 			if(R!=null) while(R.next())
 			{
 				String username=DB.getRes(R,"CMANAM");

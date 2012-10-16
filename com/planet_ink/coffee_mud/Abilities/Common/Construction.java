@@ -710,7 +710,6 @@ public class Construction extends CraftingSkill
 		dir=Directions.getGoodDirectionCode(dirName);
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))
 		{
-			
 			Room upRoom=mob.location().getRoomInDir(Directions.UP);
 			if(isHomePeerRoom(upRoom))
 			{
@@ -722,7 +721,7 @@ public class Construction extends CraftingSkill
 				commonTell(mob,"A cave can not have its roof demolished.");
 				return false;
 			}
-			if(!CMath.bset(room.domainType(), Room.INDOORS))
+			if(!CMath.bset(mob.location().domainType(), Room.INDOORS))
 			{
 				commonTell(mob,"There is no ceiling here!");
 				return false;
