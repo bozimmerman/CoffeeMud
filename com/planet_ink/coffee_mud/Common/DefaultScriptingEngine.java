@@ -9796,7 +9796,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					String channel=t[1];
 					int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
 					String str=null;
-					if(channel.equalsIgnoreCase(CMLib.channels().getChannelName(channelInt)))
+					if(channel.equalsIgnoreCase(CMLib.channels().getChannel(channelInt).name))
 					{
 						str=msg.sourceMessage();
 						if(str==null) str=msg.othersMessage();

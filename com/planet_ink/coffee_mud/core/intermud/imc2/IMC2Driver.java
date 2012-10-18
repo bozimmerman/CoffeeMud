@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.intermud.imc2;
 
 import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
@@ -149,47 +150,15 @@ public final class IMC2Driver extends Thread {
 		//imc_register_call_out(25, "ev_keepalive", null);
 	}
 	
-	final public String[][] buildChannelMap(String s)
+	final public List<CMChannel> rebuildChannelMap()
 	{
-		
-		Vector V=CMParms.parseCommas(s,true);
-		Vector finalV=new Vector();
-		for(int v=0;v<V.size();v++)
-		{
-			String s2=(String)V.elementAt(v);
-			Vector V2=CMParms.parse(s2);
-			String[] bit=new String[3];
-			bit[0]="";
-			bit[1]="";
-			bit[2]="";
-			if(V2.size()<1) continue;
-			bit[0]=(String)V2.elementAt(0);
-			if(V2.size()==1)
-				bit[2]=(String)V2.elementAt(0);
-			else
-			{
-				bit[2]=(String)V2.lastElement();
-				if(V2.size()>2)
-					bit[1]=CMParms.combine(V2,1,V.size()-1);
-			}
-			
-			finalV.addElement(bit);
-		}
-		String[][] finalS=new String[finalV.size()][3];
-		for(int i=0;i<finalV.size();i++)
-			finalS[i]=(String[])finalV.elementAt(i);
-		return finalS;
-	}
-	
-	final public String[][] buildChannelMap()
-	{
-		String[][] map=new String[chan_conf.size()][3];
-		int dex=0;
+		List<CMChannel> map=new Vector<CMChannel>(chan_conf.size());
 		for(Enumeration e=chan_conf.keys();e.hasMoreElements();)
 		{
-			map[dex][0]=(String)e.nextElement();
-			map[dex][1]=(String)chan_mask.get(map[dex][0]);
-			map[dex][2]=(String)chan_conf.get(map[dex][0]);
+			CMChannel chan=new CMChannel();
+			chan.name=(String)e.nextElement();
+			chan.mask=(String)chan_mask.get(chan.name);
+			chan.imc2Name=(String)chan_conf.get(chan.name);
 		}
 		return map;
 	}
@@ -353,7 +322,7 @@ public final class IMC2Driver extends Thread {
 									  int port,
 									  String passclient,
 									  String passsrvr,
-									  String[][] channelMap)
+									  List<CMChannel> imc2Channels)
 	{
 	   if( imc_active != IA_NONE )
 	   {
@@ -365,12 +334,11 @@ public final class IMC2Driver extends Thread {
 
 	   imc_sequencenumber = imc_now;
 
-		for(int i=0;i<channelMap.length;i++)
-			if((channelMap[i][0]!=null)&&(channelMap[i][1]!=null)&&(channelMap[i][2]!=null))
-			{
-				chan_mask.put(channelMap[i][0],channelMap[i][1]);
-				chan_conf.put(channelMap[i][0],channelMap[i][2]);
-			}
+		for(CMChannel chan : imc2Channels)
+		{
+			chan_mask.put(chan.name,chan.mask);
+			chan_conf.put(chan.name,chan.imc2Name);
+		}
 		
 		imc_name=loginName;
 		imc_log_on=1; // logging?
@@ -387,25 +355,25 @@ public final class IMC2Driver extends Thread {
 		this_imcmud.port=port;
 		this_imcmud.clientpw=passclient;
 		this_imcmud.serverpw=passsrvr;
-	   if( !this_imcmud.autoconnect && !force )
-	   {
+		if( !this_imcmud.autoconnect && !force )
+		{
 			tracef(8,  "IMC2 data loaded. Autoconnect not set. "+
 						 "IMC will need to be connected manually." );
 			return false;
-	   }
+		}
 
-	   imc_active = !imc_name.equals("") ? IA_CONFIG2 : IA_CONFIG1;
+		imc_active = !imc_name.equals("") ? IA_CONFIG2 : IA_CONFIG1;
 
-	   if( imc_active == IA_CONFIG2 && ( this_imcmud.autoconnect || force ) )
-	   {
-		  if( imc_startup_network() )
-		  {
+		if( imc_active == IA_CONFIG2 && ( this_imcmud.autoconnect || force ) )
+		{
+			if( imc_startup_network() )
+			{
 				ev_imc_firstrefresh();
 				return true;
-		  }
-		  imc_active = IA_NONE;
-	   }
-	   return false;
+			}
+			imc_active = IA_NONE;
+		}
+		return false;
 	}
 
 	final String normal2(String data)
@@ -1100,7 +1068,7 @@ public final class IMC2Driver extends Thread {
 		if(channelName.length()==0) return;
 		int channelInt=CMLib.channels().getChannelIndex(channelName);
 		if(channelInt<0) return;
-		String channelColor=CMLib.channels().getChannelColorOverride(channelInt);
+		String channelColor=CMLib.channels().getChannel(channelInt).colorOverride;
 		if(channelColor.length()==0)
 			channelColor="^Q";
 		MOB mob=CMClass.getFactoryMOB();
@@ -1460,7 +1428,7 @@ public final class IMC2Driver extends Thread {
 								 this_imcmud.port,
 								 this_imcmud.clientpw,
 								 this_imcmud.serverpw,
-								 buildChannelMap());
+								 rebuildChannelMap());
 			}
 		}
 	}
@@ -1492,7 +1460,7 @@ public final class IMC2Driver extends Thread {
 							 this_imcmud.port,
 							 this_imcmud.clientpw,
 							 this_imcmud.serverpw,
-							 buildChannelMap());
+							 rebuildChannelMap());
 		}
 	}
 

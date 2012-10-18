@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -38,57 +39,27 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public String ID(){return "CMChannels";}
 	public final int QUEUE_SIZE=100;
 	
-	public int numChannelsLoaded=0;
-	public int numIChannelsLoaded=0;
-	public int numImc2ChannelsLoaded=0;
-	public List<String> channelNames=new Vector<String>();
-	public List<String> channelColorOverrides=new Vector<String>();
-	public List<String> channelMasks=new Vector<String>();
-	public List<HashSet<ChannelFlag>> channelFlags=new Vector<HashSet<ChannelFlag>>();
-	public List<String> ichannelList=new Vector<String>();
-	public List<String> imc2channelList=new Vector<String>();
-	public List<List<ChannelMsg>> channelQue=new Vector<List<ChannelMsg>>();
+	public String[] baseChannelNames=new String[0];
+	public List<CMChannel> channelList=new Vector<CMChannel>();
 	public final static List<ChannelMsg> emptyQueue=new ReadOnlyList<ChannelMsg>(new Vector<ChannelMsg>(1));
 	public final static Set<ChannelFlag> emptyFlags=new ReadOnlySet<ChannelFlag>(new HashSet<ChannelFlag>(1));
 	
 	public int getNumChannels()
 	{
-		return channelNames.size();
+		return channelList.size();
 	}
 	
-	public String getChannelMask(int i)
+	public CMChannel getChannel(int i)
 	{
-		if((i>=0)&&(i<channelMasks.size()))
-			return channelMasks.get(i);
-		return "";
-	}
-
-	public String getChannelColorOverride(int i)
-	{
-		if((i>=0)&&(i<channelColorOverrides.size()))
-			return channelColorOverrides.get(i);
-		return "";
-	}
-
-	
-	public Set<ChannelFlag> getChannelFlags(int i)
-	{
-		if((i>=0)&&(i<channelFlags.size()))
-			return channelFlags.get(i);
-		return emptyFlags;
-	}
-
-	public String getChannelName(int i)
-	{
-		if((i>=0)&&(i<channelNames.size()))
-			return channelNames.get(i);
-		return "";
+		if((i>=0)&&(i<channelList.size()))
+			return channelList.get(i);
+		return null;
 	}
 
 	public List<ChannelMsg> getChannelQue(int i)
 	{
-		if((i>=0)&&(i<channelQue.size()))
-			return channelQue.get(i);
+		if((i>=0)&&(i<channelList.size()))
+			return channelList.get(i).queue;
 		return emptyQueue;
 	}
 	
@@ -107,20 +78,22 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(((!offlineOK))
 		&&((M.amDead())||(R==null)))
 			return false;
-		if(getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
+		CMChannel chan=getChannel(i);
+		if(chan==null) return false;
+		if(chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		{
 			// only way to fail an all-clan send is to have NO clan.
 			if((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL)))
 				return false;
 			if((!sender.getClanID().equalsIgnoreCase("ALL"))
 			&&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
-			&&((!getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
+			&&((!chan.flags.contains(ChannelFlag.CLANALLYONLY))
 				||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
 				return false;
 		}
 		
 		if((!pstats.getIgnored().contains(sender.Name()))
-		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
+		&&(CMLib.masking().maskCheck(chan.mask,M,true))
 		&&((!areaReq)
 		   ||(sender.location()==null)
 		   ||(R.getArea()==sender.location().getArea()))
@@ -148,15 +121,16 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		String senderName=sender.Name();
 		int x=senderName.indexOf('@');
 		if(x>0) senderName=senderName.substring(0,x);
-		
-		if(getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
+		CMChannel chan=getChannel(i);
+		if(chan==null) return false;
+		if(chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		{
 			// only way to fail an all-clan send is to have NO clan.
 			if((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL)))
 				return false;
 			if((!sender.getClanID().equalsIgnoreCase("ALL"))
 			&&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
-			&&((!getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
+			&&((!chan.flags.contains(ChannelFlag.CLANALLYONLY))
 				||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
 				return false;
 		}
@@ -165,7 +139,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if((!ses.isStopped())
 		&&(R!=null)
 		&&(!pstats.getIgnored().contains(senderName))
-		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
+		&&(CMLib.masking().maskCheck(chan.mask,M,true))
 		&&((!areaReq)
 		   ||(sender.location()==null)
 		   ||(R.getArea()==sender.location().getArea()))
@@ -181,12 +155,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(i>=getNumChannels())
 			return false;
 		
-		if((getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
+		CMChannel chan=getChannel(i);
+		if(chan==null) return false;
+		if((chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		&&((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL))))
 			return false;
 
 		if(((zapCheckOnly)||((!M.amDead())&&(M.location()!=null)))
-		&&(CMLib.masking().maskCheck(getChannelMask(i),M,true))
+		&&(CMLib.masking().maskCheck(chan.mask,M,true))
 		&&(!CMath.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
 		return false;
@@ -207,8 +183,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public int getChannelIndex(String channelName)
 	{
 		channelName=channelName.toUpperCase();
-		for(int c=0;c<channelNames.size();c++)
-			if((channelNames.get(c)).startsWith(channelName))
+		for(int c=0;c<channelList.size();c++)
+			if((channelList.get(c)).name.startsWith(channelName))
 				return c;
 		return -1;
 	}
@@ -216,27 +192,27 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public int getChannelCodeNumber(String channelName)
 	{
 		channelName=channelName.toUpperCase();
-		for(int c=0;c<channelNames.size();c++)
-			if((channelNames.get(c)).startsWith(channelName))
+		for(int c=0;c<channelList.size();c++)
+			if((channelList.get(c)).name.startsWith(channelName))
 				return 1<<c;
 		return -1;
 	}
 
-	public String getChannelName(String channelName)
+	public String findChannelName(String channelName)
 	{
 		channelName=channelName.toUpperCase();
-		for(int c=0;c<channelNames.size();c++)
-			if((channelNames.get(c)).startsWith(channelName))
-				return (channelNames.get(c)).toUpperCase();
+		for(int c=0;c<channelList.size();c++)
+			if((channelList.get(c)).name.startsWith(channelName))
+				return (channelList.get(c)).name.toUpperCase();
 		return "";
 	}
 
 	public List<String> getFlaggedChannelNames(ChannelFlag flag)
 	{
 		List<String> channels=new Vector<String>();
-		for(int c=0;c<channelNames.size();c++)
-			if(channelFlags.get(c).contains(flag))
-				channels.add(channelNames.get(c).toUpperCase());
+		for(int c=0;c<channelList.size();c++)
+			if(channelList.get(c).flags.contains(flag))
+				channels.add(channelList.get(c).name.toUpperCase());
 		return channels;
 	}
 	
@@ -246,8 +222,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		int dex = getChannelIndex(channelName);
 		if(dex >= 0)
 		{
-			Set<ChannelFlag> flags = getChannelFlags(dex);
-			String mask = getChannelMask(dex);
+			CMChannel chan=getChannel(dex);
+			Set<ChannelFlag> flags = chan.flags;
+			String mask = chan.mask;
 			if(flags.contains(ChannelFlag.CLANALLYONLY))
 				str.append(" This is a channel for clans and their allies.");
 			if(flags.contains(ChannelFlag.CLANONLY))
@@ -264,16 +241,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	private void clearChannels()
 	{
-		numChannelsLoaded=0;
-		numIChannelsLoaded=0;
-		numImc2ChannelsLoaded=0;
-		channelNames=new Vector<String>();
-		channelMasks=new Vector<String>();
-		channelColorOverrides=new Vector<String>();
-		channelFlags=new Vector<HashSet<ChannelFlag>>();
-		ichannelList=new Vector<String>();
-		imc2channelList=new Vector<String>();
-		channelQue=new Vector<List<ChannelMsg>>();
+		channelList=new Vector<CMChannel>();
 	}
 	
 	public boolean shutdown()
@@ -282,56 +250,29 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return true;
 	}
 
-	public String[][] imc2ChannelsArray()
+	public List<CMChannel> getIMC2ChannelsList()
 	{
-		String[][] array=new String[numImc2ChannelsLoaded][5];
-		int num=0;
-		for(int i=0;i<channelNames.size();i++)
-		{
-			String name=channelNames.get(i);
-			String mask=channelMasks.get(i);
-			String colorOverride=channelColorOverrides.get(i);
-			HashSet<ChannelFlag> flags=channelFlags.get(i);
-			String iname=imc2channelList.get(i);
-			if((iname!=null)&&(iname.trim().length()>0))
-			{
-				array[num][0]=iname.trim();
-				array[num][1]=name.trim();
-				array[num][2]=mask;
-				array[num][3]=CMParms.combine(flags);
-				array[num][4]=colorOverride;
-				num++;
-			}
-		}
-		return array;
+		List<CMChannel> list=new Vector<CMChannel>();
+		for(int i=0;i<channelList.size();i++)
+			if((channelList.get(i).imc2Name!=null)
+			&&(channelList.get(i).imc2Name.length()>0))
+				list.add(channelList.get(i));
+		return list;
 	}
-	public String[][] iChannelsArray()
+
+	public List<CMChannel> getI3ChannelsList()
 	{
-		String[][] array=new String[numIChannelsLoaded][5];
-		int num=0;
-		for(int i=0;i<channelNames.size();i++)
-		{
-			String name=channelNames.get(i);
-			String mask=channelMasks.get(i);
-			String colorOverride=channelColorOverrides.get(i);
-			String iname=ichannelList.get(i);
-			HashSet<ChannelFlag> flags=channelFlags.get(i);
-			if((iname!=null)&&(iname.trim().length()>0))
-			{
-				array[num][0]=iname.trim();
-				array[num][1]=name.trim();
-				array[num][2]=mask;
-				array[num][3]=CMParms.combine(flags);
-				array[num][4]=colorOverride;
-				num++;
-			}
-		}
-		return array;
+		List<CMChannel> list=new Vector<CMChannel>();
+		for(int i=0;i<channelList.size();i++)
+			if((channelList.get(i).i3name!=null)
+			&&(channelList.get(i).i3name.length()>0))
+				list.add(channelList.get(i));
+		return list;
 	}
+	
 	public String[] getChannelNames()
 	{
-		if(channelNames.size()==0) return null;
-		return CMParms.toStringArray(channelNames);
+		return baseChannelNames;
 	}
 	
 	public List<Session> clearInvalidSnoopers(Session mySession, int channelCode)
@@ -362,7 +303,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			mySession.startBeingSnoopedBy((Session)invalid.get(s));
 	}
 
-	public String parseOutFlags(String mask, HashSet<ChannelFlag> flags, String[] colorOverride)
+	public String parseOutFlags(String mask, Set<ChannelFlag> flags, String[] colorOverride)
 	{
 		Vector<String> V=CMParms.parseSpaces(mask,true);
 		for(int v=V.size()-1;v>=0;v--)
@@ -410,26 +351,17 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				item=list.substring(0,x).trim();
 				list=list.substring(x+1);
 			}
-			numChannelsLoaded++;
 			x=item.indexOf(' ');
-			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
+			CMChannel chan=new CMChannel();
 			if(x>0)
 			{
 				String[] colorOverride=new String[]{""};
-				channelMasks.add(parseOutFlags(item.substring(x+1).trim(),flags,colorOverride));
-				channelColorOverrides.add(colorOverride[0]);
+				chan.mask=parseOutFlags(item.substring(x+1).trim(),chan.flags,colorOverride);
+				chan.colorOverride=colorOverride[0];
 				item=item.substring(0,x);
 			}
-			else
-			{
-				channelMasks.add("");
-				channelColorOverrides.add("");
-			}
-			ichannelList.add("");
-			imc2channelList.add("");
-			channelNames.add(item.toUpperCase().trim());
-			channelFlags.add(flags);
-			channelQue.add(new Vector<ChannelMsg>());
+			chan.name=item.toUpperCase().trim();
+			channelList.add(chan);
 		}
 		while(ilist.length()>0)
 		{
@@ -449,20 +381,16 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			int y1=item.indexOf(' ');
 			int y2=item.lastIndexOf(' ');
 			if((y1<0)||(y2<=y1)) continue;
-			numChannelsLoaded++;
-			numIChannelsLoaded++;
+			CMChannel chan=new CMChannel();
 			String lvl=item.substring(y1+1,y2).trim();
 			String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
-			channelNames.add(item.toUpperCase().trim());
-			channelQue.add(new Vector<ChannelMsg>());
-			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
+			chan.name=item.toUpperCase().trim();
 			String[] colorOverride=new String[]{""};
-			channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
-			channelColorOverrides.add(colorOverride[0]);
-			channelFlags.add(flags);
-			imc2channelList.add("");
-			ichannelList.add(ichan);
+			chan.mask=parseOutFlags(lvl,chan.flags,colorOverride);
+			chan.colorOverride=colorOverride[0];
+			chan.i3name=ichan;
+			channelList.add(chan);
 		}
 		while(imc2list.length()>0)
 		{
@@ -482,36 +410,27 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			int y1=item.indexOf(' ');
 			int y2=item.lastIndexOf(' ');
 			if((y1<0)||(y2<=y1)) continue;
-			numChannelsLoaded++;
-			numImc2ChannelsLoaded++;
+			CMChannel chan=new CMChannel();
 			String lvl=item.substring(y1+1,y2).trim();
 			String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
-			channelNames.add(item.toUpperCase().trim());
-			channelQue.add(new Vector<ChannelMsg>());
-			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
+			chan.name=item.toUpperCase().trim();
 			String[] colorOverride=new String[]{""};
-			channelMasks.add(parseOutFlags(lvl,flags,colorOverride));
-			channelColorOverrides.add(colorOverride[0]);
-			channelFlags.add(flags);
-			imc2channelList.add(ichan);
-			ichannelList.add("");
+			chan.mask=parseOutFlags(lvl,chan.flags,colorOverride);
+			chan.colorOverride=colorOverride[0];
+			chan.imc2Name=ichan;
+			channelList.add(chan);
 		}
-
+		baseChannelNames=new String[channelList.size()];
+		for(int i=0;i<channelList.size();i++)
+			baseChannelNames[i]=channelList.get(i).name;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION))
 		{
-			channelNames.add("AUCTION");
-			channelQue.add(new Vector<ChannelMsg>());
-			channelMasks.add("");
-			channelFlags.add(new HashSet<ChannelFlag>());
-			channelColorOverrides.add("");
-			ichannelList.add("");
-			imc2channelList.add("");
-			numChannelsLoaded++;
+			CMChannel chan=new CMChannel();
+			chan.name="AUCTION";
+			channelList.add(chan);
 		}
-
-		numChannelsLoaded++;
-		return numChannelsLoaded;
+		return channelList.size();
 	}
 	
 	public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender)
@@ -541,10 +460,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(channelInt<0) return;
 		
 		message=CMProps.applyINIFilter(message,CMProps.SYSTEM_CHANNELFILTER);
-		
-		Set<ChannelFlag> flags=getChannelFlags(channelInt);
-		channelName=getChannelName(channelInt);
-		String channelColor=getChannelColorOverride(channelInt);
+		CMChannel chan=getChannel(channelInt);
+		Set<ChannelFlag> flags=chan.flags;
+		channelName=chan.name;
+		String channelColor=chan.colorOverride;
 		if(channelColor.length()==0)
 			channelColor="^Q";
 

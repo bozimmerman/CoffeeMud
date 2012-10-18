@@ -873,12 +873,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		// internal exceptions
 		if((thisTag==null)||(thisTag.length()==0))
 		{
-			String s=CMLib.channels().getChannelName(helpStr.trim());
+			String s=CMLib.channels().findChannelName(helpStr.trim());
 			boolean no=false;
 			if(((s==null)||(s.length()==0))
 			&&(helpStr.toLowerCase().startsWith("no")))
 			{
-				s=CMLib.channels().getChannelName(helpStr.trim().substring(2));
+				s=CMLib.channels().findChannelName(helpStr.trim().substring(2));
 				no=true;
 			}
 			if((s!=null)&&(s.length()>0))

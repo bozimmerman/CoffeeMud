@@ -275,13 +275,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			if(CMLib.channels().getChannelName(c).equalsIgnoreCase(firstWord))
+			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
+			if(chan.name.equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("Channel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 			else
-			if(("NO"+CMLib.channels().getChannelName(c)).equalsIgnoreCase(firstWord))
+			if(("NO"+chan.name).equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("NoChannel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
@@ -336,16 +337,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			if(CMLib.channels().getChannelName(c).startsWith(firstWord))
+			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
+			if(chan.name.startsWith(firstWord))
 			{
-				commands.set(0,CMLib.channels().getChannelName(c));
+				commands.set(0,chan.name);
 				C=CMClass.getCommand("Channel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 			else
-			if(("NO"+CMLib.channels().getChannelName(c)).startsWith(firstWord))
+			if(("NO"+chan.name).startsWith(firstWord))
 			{
-				commands.set(0,"NO"+CMLib.channels().getChannelName(c));
+				commands.set(0,"NO"+chan.name);
 				C=CMClass.getCommand("NoChannel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}

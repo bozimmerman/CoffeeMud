@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -118,6 +120,45 @@ public class Intermud implements Runnable, Persistent, Serializable
 	static public boolean isAPossibleMUDName(String mud) {
 		if(!isConnected()) return false;
 		return thread.getMudNameFor(mud) != null;
+	}
+
+	/**
+	 * Register a fake channel
+	 * @param c the remote channel name
+	 * @return the local channel name for the specified new local channel name
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
+	 */
+	static public String registerFakeChannel(String c) {
+		if((!isConnected())||(thread.intermud.getLocalChannel(c).length()>0))
+			return "";
+		CMChannel chan=new CMChannel();
+		String name=c.toUpperCase();
+		int x=1;
+		while(thread.intermud.getRemoteChannel(name).length()>0)
+			name=c.toUpperCase()+x;
+		chan.name=name;
+		chan.i3name=c;
+		chan.mask="+FAKE";
+		if(thread.intermud.addChannel(chan))
+			return chan.name;
+		return "";
+	}
+
+	/**
+	 * Register a fake channel
+	 * @param c the remote channel name
+	 * @return the local channel name for the specified new local channel name
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
+	 */
+	static public String removeFakeChannel(String c) {
+		if((!isConnected())||(thread.intermud.getLocalChannel(c).length()==0))
+			return "";
+		String mask=thread.intermud.getRemoteMask(c);
+		String name=thread.intermud.getLocalChannel(c);
+		if((mask.equalsIgnoreCase("+FAKE"))
+		&&(thread.intermud.delChannel(c)))
+			return name;
+		return "";
 	}
 
 	/**

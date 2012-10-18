@@ -155,13 +155,12 @@ public class IMudClient implements I3Interface
 	public void i3channelAdd(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
-		if((channel==null)
-		   ||(channel.length()==0)
-		   ||(Intermud.getLocalChannel(channel).length()==0))
+		if((channel==null)||(channel.length()==0)||(Intermud.getLocalChannel(channel).length()==0))
 		{
-			mob.tell("You must specify a channel name listed in your INI file.");
+			mob.tell("You must specify an existing channel to add it to the i3 network.");
 			return;
 		}
+		
 		ChannelAdd ck=new ChannelAdd();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;
@@ -173,12 +172,17 @@ public class IMudClient implements I3Interface
 	public void i3channelListen(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
-		if((channel==null)
-		   ||(channel.length()==0)
-		   ||(Intermud.getLocalChannel(channel).length()==0))
+		if((channel==null)||(channel.length()==0))
 		{
 			mob.tell("You must specify a channel name listed in your INI file.");
 			return;
+		}
+		if(Intermud.getLocalChannel(channel).length()==0)
+		{
+			if(Intermud.registerFakeChannel(channel).length()>0)
+				mob.tell("Channel was not officially registered.");
+			else
+				mob.tell("Channel listen failed.");
 		}
 		ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
@@ -196,9 +200,12 @@ public class IMudClient implements I3Interface
 		   ||(channel.length()==0)
 		   ||(Intermud.getLocalChannel(channel).length()==0))
 		{
-			mob.tell("You must specify a channel name listed in your INI file.");
+			mob.tell("You must specify an actual channel name.");
 			return;
 		}
+		if(Intermud.removeFakeChannel(channel).length()>0)
+			mob.tell("Unofficial channel closed.");
+
 		ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.Name();
 		ck.channel=channel;

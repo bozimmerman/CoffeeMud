@@ -49,7 +49,7 @@ public class Channels extends StdCommand
 		String[] names=CMLib.channels().getChannelNames();
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(24.0,mob);
 		for(int x=0;x<names.length;x++)
-			if(CMLib.masking().maskCheck(CMLib.channels().getChannelMask(x),mob,true))
+			if(CMLib.masking().maskCheck(CMLib.channels().getChannel(x).mask,mob,true))
 			{
 				if((++col)>3)
 				{

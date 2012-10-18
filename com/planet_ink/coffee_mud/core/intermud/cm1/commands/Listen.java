@@ -212,9 +212,10 @@ public class Listen extends CM1Command
 		{
 			if(crit.parmInt<0)
 				return false;
-			if(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(crit.parmInt),user,true))
+			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(crit.parmInt);
+			if(!CMLib.masking().maskCheck(chan.mask,user,true))
 				return false;
-			Set<ChannelsLibrary.ChannelFlag> flags=CMLib.channels().getChannelFlags(crit.parmInt);
+			Set<ChannelsLibrary.ChannelFlag> flags=chan.flags;
 			if(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
 				return CMSecurity.isAllowedAnywhere(user, CMSecurity.SecFlag.STAT);
 			return true;

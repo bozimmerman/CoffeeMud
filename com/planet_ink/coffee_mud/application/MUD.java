@@ -981,7 +981,7 @@ public class MUD extends Thread implements MudHost
 													 "CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER),
 													 CMLib.mud(0).getPort(),
 													 playstate,
-													 CMLib.channels().iChannelsArray());
+													 CMLib.channels().getI3ChannelsList());
 				i3server=new I3Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0) i3port=27766;
@@ -1044,7 +1044,7 @@ public class MUD extends Thread implements MudHost
 										page.getInt("IMC2HUBPORT"),
 										page.getStr("IMC2PASS1").trim(),
 										page.getStr("IMC2PASS2").trim(),
-										imc2server.buildChannelMap(page.getStr("IMC2CHANNELS").trim())))
+										CMLib.channels().getIMC2ChannelsList()))
 				{
 					Log.errOut(Thread.currentThread().getName(),"IMC2 Failed to start!");
 					imc2server=null;

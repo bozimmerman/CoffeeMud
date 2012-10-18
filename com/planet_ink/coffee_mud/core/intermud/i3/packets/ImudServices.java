@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -78,6 +79,27 @@ public interface ImudServices {
 	 */
 	public abstract String getMudName();
 
+	/**
+	 * Returns the mask of a remote channel
+	 * @param str the remote channel
+	 * @return the mask;
+	 */
+	public String getRemoteMask(String str);
+	
+	/**
+	 * Add a new channel
+	 * @param chan the channel to add
+	 * @return true if no conflicts
+	 */
+	public boolean addChannel(CMChannel chan);
+	
+	/**
+	 * Remove a channel
+	 * @param remoteChannelName the i3 channel to remove
+	 * @return true if remove worked
+	 */
+	public boolean delChannel(String remoteChannelName);
+	
 	/**
 	 * @return the status of this mud
 	 */

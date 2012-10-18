@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -48,23 +49,25 @@ public class NoChannel extends StdCommand
 		int channelNum=-1;
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			if(CMLib.channels().getChannelName(c).equalsIgnoreCase(channelName))
+			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
+			if(chan.name.equalsIgnoreCase(channelName))
 			{
 				channelNum=c;
-				channelName=CMLib.channels().getChannelName(c);
+				channelName=chan.name;
 			}
 		}
 		if(channelNum<0)
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
-			if(CMLib.channels().getChannelName(c).toUpperCase().startsWith(channelName))
+			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(c);
+			if(chan.name.toUpperCase().startsWith(channelName))
 			{
 				channelNum=c;
-				channelName=CMLib.channels().getChannelName(c);
+				channelName=chan.name;
 			}
 		}
 		if((channelNum<0)
-		||(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(channelNum),mob,true)))
+		||(!CMLib.masking().maskCheck(CMLib.channels().getChannel(channelNum).mask,mob,true)))
 		{
 			mob.tell("This channel is not available to you.");
 			return false;

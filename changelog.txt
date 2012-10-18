@@ -2398,3 +2398,4 @@ ruthless programmer, and sentenced to a quick death.
 2. New INI entries for whitelisting over ip/login/newplayer blocks: WHITELISTIPSCONN, WHITELISTLOGINS, WHITELISTIPSNEWPLAYERS
 3. Special GET case: Can now get parts of a bundle from a container -- get 2 oak from wagon will break a 2# bundle from inside in a wagon.
 4. Carpentry skills list underwent a little makeover.
+5. I3 LISTEN/SILENCE can be used by i3 admins to test out other channels... if you turn one on, be sure to turn it off before you leave!

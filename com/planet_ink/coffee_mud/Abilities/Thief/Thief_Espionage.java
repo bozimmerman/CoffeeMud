@@ -59,9 +59,10 @@ public class Thief_Espionage extends ThiefSkill
 		if((msg.othersMajor(CMMsg.MASK_CHANNEL)))
 		{
 			int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
-			boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-			if((CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.CLANONLY)
-				||CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
+			ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
+			boolean areareq=chan.flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
+			if((chan.flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)
+				||chan.flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
 			&&(invoker()!=null)
 			&&(invoker().getClanID().length()>0)
 			&&(!((MOB)affected).getClanID().equals(invoker().getClanID()))

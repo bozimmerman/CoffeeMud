@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -47,9 +48,10 @@ public class IMudInterface implements ImudServices, Serializable
 	public String name="CoffeeMud";
 	public String i3state="Development";
 	public int port=5555;
-	public String[][] channels={{"diku_chat","CHAT",""},
-								{"diku_immortals","GOSSIP",""},
-								{"diku_code","GREET",""}};
+	public List<CMChannel> channels=new XVector<CMChannel>(
+			new CMChannel[]{new CMChannel("I3CHAT","diku_chat",""),
+							new CMChannel("I3GOSSIP","diku_immortals",""),
+							new CMChannel("GREET","diku_code","")});
 
 	String[][] i3ansi_conversion=
 	{
@@ -121,7 +123,7 @@ public class IMudInterface implements ImudServices, Serializable
 
 
 
-	public IMudInterface (String Name, String Version, int Port, String i3status, String[][] Channels)
+	public IMudInterface(String Name, String Version, int Port, String i3status, List<CMChannel> Channels)
 	{
 		if(Name!=null) name=Name;
 		if(i3status!=null) i3state=i3status;
@@ -130,6 +132,11 @@ public class IMudInterface implements ImudServices, Serializable
 		port=Port;
 	}
 
+	public void setChannelsMap(List<CMChannel> channels)
+	{
+		this.channels=channels;
+	}
+	
 	protected MOB findSessMob(String mobName)
 	{
 		return CMLib.sessions().findPlayerOnline(mobName, true);
@@ -224,9 +231,17 @@ public class IMudInterface implements ImudServices, Serializable
 				   return;
 				if((ck.channel==null)||(ck.channel.length()==0))
 					return;
+				String channelColor="";
 				int channelInt=CMLib.channels().getChannelIndex(channelName);
-				if(channelInt<0) return;
-				String channelColor=CMLib.channels().getChannelColorOverride(channelInt);
+				int channelCode=channelInt;
+				if(channelInt >= 0)
+				{
+					channelColor=CMLib.channels().getChannel(channelInt).colorOverride;
+				}
+				else
+				{
+					channelCode=47;
+				}
 				if(channelColor.length()==0)
 					channelColor="^Q";
 				ck.message=fixColors(CMProps.applyINIFilter(ck.message,CMProps.SYSTEM_CHANNELFILTER));
@@ -254,7 +269,7 @@ public class IMudInterface implements ImudServices, Serializable
 					targmsgs=CMProps.applyINIFilter(targmsgs,CMProps.SYSTEM_EMOTEFILTER);
 					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
 					String str2=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^N^.";
-					msg=CMClass.getMsg(mob,targetMOB,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str2,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
+					msg=CMClass.getMsg(mob,targetMOB,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str2,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				else
 				if(ck.type==Packet.CHAN_EMOTE)
@@ -262,19 +277,19 @@ public class IMudInterface implements ImudServices, Serializable
 					String msgs=socialFixIn(ck.message);
 					msgs=CMProps.applyINIFilter(msgs,CMProps.SYSTEM_EMOTEFILTER);
 					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
-					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
+					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				else
 				{
 					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+ck.message+"'^</CHANNEL^>^N^.";
-					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
+					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
 				CMLib.commands().monitorGlobalMessage(mob.location(), msg);
-				CMLib.channels().channelQueUp(channelInt,msg);
+				if(channelInt>=0) CMLib.channels().channelQueUp(channelInt,msg);
 				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
 					MOB M=S.mob();
-					if((CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
+					if(((channelInt<0)||CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
 					&&(M.location()!=null)
 					&&(M.location().okMessage(M,msg)))
 						M.executeMsg(M,msg);
@@ -551,11 +566,45 @@ public class IMudInterface implements ImudServices, Serializable
 	public java.util.Enumeration getChannels()
 	{
 		Vector V=new Vector();
-		for(int i=0;i<channels.length;i++)
-			V.addElement(channels[i][0]);
+		for(CMChannel chan : channels)
+			V.addElement(chan.i3name);
 		return V.elements();
 	}
 
+	/**
+	 * Register a fake channel
+	 * @param c the remote channel name
+	 * @return the local channel name for the specified new local channel name
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
+	 */
+	public boolean addChannel(CMChannel chan) 
+	{
+		if((getLocalChannel(chan.i3name).length()==0)
+		&&(getRemoteChannel(chan.name).length()==0))
+		{
+			channels.add(chan);
+			return true;
+		}
+		return false;
+	}
+	
+
+	/**
+	 * Remote a channel
+	 * @param remoteChannelName the remote name
+	 * @return true if remove succeeds
+	 */
+	public boolean delChannel(String remoteChannelName)
+	{
+		for(int i=0;i<channels.size();i++)
+			if(channels.get(i).i3name.equalsIgnoreCase(remoteChannelName))
+			{
+				channels.remove(i);
+				return true;
+			}
+		return false;
+	}
+	
 	/**
 	 * Given a I3 channel name, this method should provide
 	 * the local name for that channel.
@@ -568,27 +617,27 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @see #getRemoteChannel
 	 */
 	public String getLocalChannel(String str){
-		for(int i=0;i<channels.length;i++)
-			if(channels[i][0].equalsIgnoreCase(str))
-				return channels[i][1];
+		for(CMChannel chan : channels)
+			if(chan.i3name.equalsIgnoreCase(str))
+				return chan.name;
 		return "";
 	}
 
 	/**
-	 * Given a I3 channel name, this method should provide
-	 * the local level for that channel.
+	 * Given a local channel name, this method should provide
+	 * the local mask for that channel.
 	 * Example:
 	 * <PRE>
-	 * if( str.equals("imud_code") ) return "intercre";
+	 * if( str.equals("ICODE") ) return "";
 	 * </PRE>
-	 * @param str the remote name of the desired channel
-	 * @return the local channel name for a remote channel
-	 * @see #getRemoteChannel
+	 * @param str the local name of the desired channel
+	 * @return the local channel mask for a remote channel
+	 * @see #getLocalMask
 	 */
 	public String getLocalMask(String str){
-		for(int i=0;i<channels.length;i++)
-			if(channels[i][1].equalsIgnoreCase(str))
-				return channels[i][2];
+		for(CMChannel chan : channels)
+			if(chan.name.equalsIgnoreCase(str))
+				return chan.mask;
 		return "";
 	}
 
@@ -624,19 +673,19 @@ public class IMudInterface implements ImudServices, Serializable
 
 
 	/**
-	 * Given a local channel name, returns the level
+	 * Given a remote channel name, returns the mask
 	 * required.
 	 * Example:
 	 * <PRE>
 	 * if( str.equals("intercre") ) return "";
 	 * </PRE>
-	 * @param str the local name of the desired channel
-	 * @return the remote name of the specified local channel
+	 * @param str the remote name of the desired channel
+	 * @return the remote mask of the specified local channel
 	 */
-	public String getChannelMask(String str){
-		for(int i=0;i<channels.length;i++)
-			if(channels[i][1].equalsIgnoreCase(str))
-				return channels[i][2];
+	public String getRemoteMask(String str){
+		for(CMChannel chan : channels)
+			if(chan.i3name.equalsIgnoreCase(str))
+				return chan.mask;
 		return "";
 	}
 
@@ -651,9 +700,9 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @return the remote name of the specified local channel
 	 */
 	public String getRemoteChannel(String str){
-		for(int i=0;i<channels.length;i++)
-			if(channels[i][1].equalsIgnoreCase(str))
-				return channels[i][0];
+		for(CMChannel chan : channels)
+			if(chan.name.equalsIgnoreCase(str))
+				return chan.i3name;
 		return "";
 	}
 }

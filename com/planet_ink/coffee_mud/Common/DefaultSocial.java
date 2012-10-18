@@ -186,7 +186,7 @@ public class DefaultSocial implements Social
 								Vector commands,
 								boolean makeTarget)
 	{
-		String channelColor=CMLib.channels().getChannelColorOverride(channelInt);
+		String channelColor=CMLib.channels().getChannel(channelInt).colorOverride;
 		if(channelColor.length()==0)
 			channelColor="^Q";
 		String str=makeTarget?"":(channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] ");

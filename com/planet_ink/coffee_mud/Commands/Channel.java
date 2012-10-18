@@ -36,19 +36,7 @@ import java.util.*;
 public class Channel extends StdCommand
 {
 	public Channel(){}
-	public static String[] access=null;
-	public String[] getAccessWords()
-	{
-		if(access!=null) return access;
-		access=CMLib.channels().getChannelNames();
-		if(access!=null)
-		{
-			for(int i=0;i<access.length;i++)
-				if(access[i].equalsIgnoreCase("AUCTION"))
-					access[i]="";
-		}
-		return access;
-	}
+	public String[] getAccessWords() { return CMLib.channels().getChannelNames(); }
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -108,13 +96,14 @@ public class Channel extends StdCommand
 			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
-		if(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(channelInt),mob,true))
+		ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
+		if(!CMLib.masking().maskCheck(chan.mask,mob,true))
 		{
 			mob.tell("This channel is not available to you.");
 			return false;
 		}
 		
-		Set<ChannelsLibrary.ChannelFlag> flags=CMLib.channels().getChannelFlags(channelInt);
+		Set<ChannelsLibrary.ChannelFlag> flags=chan.flags;
 		if((mob.getClanID().equalsIgnoreCase("")||(!CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.CHANNEL)))
 		&&(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
 		{

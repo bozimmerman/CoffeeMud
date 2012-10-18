@@ -34,10 +34,7 @@ public interface ChannelsLibrary extends CMLibrary
 	public final int QUEUE_SIZE=100;
 	
 	public int getNumChannels();
-	public String getChannelMask(int i);
-	public Set<ChannelFlag> getChannelFlags(int i);
-	public String getChannelName(int i);
-	public String getChannelColorOverride(int i);
+	public CMChannel getChannel(int i);
 	public List<ChannelMsg> getChannelQue(int i);
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i);
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i, boolean offlineOK);
@@ -46,18 +43,37 @@ public interface ChannelsLibrary extends CMLibrary
 	public void channelQueUp(int i, CMMsg msg);
 	public int getChannelIndex(String channelName);
 	public int getChannelCodeNumber(String channelName);
-	public String getChannelName(String channelName);
 	public List<String> getFlaggedChannelNames(ChannelFlag flag);
 	public String getExtraChannelDesc(String channelName);
-	public String[][] imc2ChannelsArray();
-	public String[][] iChannelsArray();
+	public List<CMChannel> getIMC2ChannelsList();
+	public List<CMChannel> getI3ChannelsList();
 	public String[] getChannelNames();
+	public String findChannelName(String channelName);
 	public List<Session> clearInvalidSnoopers(Session mySession, int channelCode);
 	public void restoreInvalidSnoopers(Session mySession, List<Session> invalid);
 	public int loadChannels(String list, String ilist, String imc2list);
 	public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender);
 	public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg);
 	
+
+	/**
+	 * Basic Channel definition
+	 * @author Bo Zimmerman
+	 */
+	public static class CMChannel
+	{
+		public String name="";
+		public String i3name="";
+		public String imc2Name="";
+		public String mask="";
+		public String colorOverride="";
+		public Set<ChannelFlag> flags=new HashSet<ChannelFlag>();
+		public List<ChannelMsg> queue=new SLinkedList<ChannelMsg>();
+		public CMChannel(){}
+		public CMChannel(String name, String i3name, String imc2name)
+		{ this.name=name; this.i3name=i3name; this.imc2Name=imc2name;}
+	}
+
 	public static class ChannelMsg
 	{
 		public final CMMsg msg; 

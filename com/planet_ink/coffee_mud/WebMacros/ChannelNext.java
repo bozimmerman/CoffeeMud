@@ -51,7 +51,7 @@ public class ChannelNext extends StdWebMacro
 			String lastID="";
 			for(int i=0;i<CMLib.channels().getNumChannels();i++)
 			{
-				String name=CMLib.channels().getChannelName(i);
+				String name=CMLib.channels().getChannel(i).name;
 				if((last==null)
 				||((last.length()>0)&&(last.equals(lastID))&&(!name.equals(lastID))))
 				{
