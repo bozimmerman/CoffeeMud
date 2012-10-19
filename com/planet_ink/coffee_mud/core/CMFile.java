@@ -37,6 +37,8 @@ limitations under the License.
 */
 public class CMFile extends File
 {
+	private static final long serialVersionUID = -3965083655590304708L;
+
 	public static final int  VFS_MASK_MASKSAVABLE=1+2+4;
 
 	//private static final int VFS_MASK_BINARY=1;
