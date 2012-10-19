@@ -35,7 +35,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class CMFile
+public class CMFile extends File
 {
 	public static final int  VFS_MASK_MASKSAVABLE=1+2+4;
 
@@ -69,13 +69,13 @@ public class CMFile
 	private String parentDir=null;
 
 	public CMFile(final String filename, final MOB user, final boolean pleaseLogErrors)
-	{ super(); buildCMFile(filename,user,pleaseLogErrors,false);}
+	{ super(filename); buildCMFile(filename,user,pleaseLogErrors,false);}
 	public CMFile(final String filename, final MOB user, final boolean pleaseLogErrors, final boolean forceAllow)
-	{ super(); buildCMFile(filename,user,pleaseLogErrors,forceAllow);}
+	{ super(filename); buildCMFile(filename,user,pleaseLogErrors,forceAllow);}
 	public CMFile (final String currentPath, final String filename, final MOB user, final boolean pleaseLogErrors)
-	{ super(); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors,false); }
+	{ super(filename); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors,false); }
 	public CMFile (final String currentPath, final String filename, final MOB user, final boolean pleaseLogErrors, final boolean forceAllow)
-	{ super(); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors,forceAllow); }
+	{ super(filename); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors,forceAllow); }
 
 	public static class CMVFSFile 
 	{
@@ -386,7 +386,8 @@ public class CMFile
 			vfsBits=vfsBits|CMFile.VFS_MASK_ISLOCAL;
 	}
 
-	public final CMFile getParent(){return new CMFile(path,accessor,false,false);}
+	@Override
+	public final CMFile getParentFile(){return new CMFile(path,accessor,false,false);}
 
 	public final boolean mustOverwrite()
 	{
@@ -401,6 +402,12 @@ public class CMFile
 		return (info!=null);
 	}
 
+	@Override
+	public final boolean canExecute()
+	{
+		return false;
+	}
+	@Override
 	public final boolean canRead()
 	{
 		if(!exists()) return false;
@@ -416,6 +423,7 @@ public class CMFile
 		}
 		return true;
 	}
+	@Override
 	public final boolean canWrite()
 	{
 		if(CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL))
@@ -433,17 +441,24 @@ public class CMFile
 
 	public final boolean demandedVFS(){return demandVFS;}
 	public final boolean demandedLocal(){return demandLocal;}
+	@Override
 	public final boolean isDirectory(){return exists()&&CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY);}
+	@Override
 	public final boolean exists(){ return !(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS)&&CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL));}
+	@Override
 	public final boolean isFile(){return canRead()&&(!CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY));}
+	@Override
 	public final long lastModified(){return modifiedDateTime;}
 	public final String author(){return ((author!=null))?author:"SYS_UNK";}
 	public final boolean isLocalFile(){return CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL);}
 	public final boolean isVFSFile(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL));}
 	public final boolean canVFSEquiv(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS));}
 	public final boolean canLocalEquiv(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL));}
+	@Override
 	public final String getName(){return name;}
+	@Override
 	public final String getAbsolutePath(){return "/"+getVFSPathAndName();}
+	@Override
 	public final String getCanonicalPath(){return getVFSPathAndName();}
 	public final String getLocalPathAndName()
 	{
@@ -500,6 +515,7 @@ public class CMFile
 		return false;
 	}
 
+	@Override
 	public final boolean delete()
 	{
 		if(!exists()) return false;
@@ -914,6 +930,7 @@ public class CMFile
 		return false;
 	}
 
+	@Override
 	public final boolean mkdir()
 	{
 		if(mustOverwrite())
@@ -980,6 +997,7 @@ public class CMFile
 		return false;
 	}
 
+	@Override
 	public final String[] list()
 	{
 		if(!isDirectory()) return new String[0];
@@ -1036,6 +1054,7 @@ public class CMFile
 		return (localFile!=null)&&(localFile.isDirectory());
 	}
 
+	@Override
 	public final CMFile[] listFiles()
 	{
 		if((!isDirectory())||(!canRead()))
@@ -1277,4 +1296,219 @@ public class CMFile
 			cset[s]=(CMFile)set.elementAt(s);
 		return cset;
 	}
+	
+	//Compares two abstract pathnames lexicographically.
+	@Override
+	public int	compareTo(File pathname) 
+	{
+		if(pathname instanceof CMFile)
+			return ((CMFile)pathname).getAbsolutePath().compareTo(getAbsolutePath());
+		else
+		if(pathname instanceof File)
+		{
+			if(this.localFile!=null)
+				return this.localFile.compareTo(pathname);
+		}
+		return pathname.compareTo(this);
+	}
+	//Atomically creates a new, empty file named by this abstract pathname if and only if a file with this name does not yet exist.
+	@Override
+	public boolean	createNewFile() throws IOException
+	{
+		if(isVFSFile())
+		{
+			if(!exists())
+				return this.saveRaw(new byte[0]);
+			else
+				return false;
+		}
+		else
+		if(this.localFile!=null)
+			return this.localFile.createNewFile();
+		return false;
+	}
+//	          Requests that the file or directory denoted by this abstract pathname be deleted when the virtual machine terminates.
+	@Override
+	public void	deleteOnExit() {
+		if((this.localFile!=null)&&(!this.isVFSFile()))
+			this.localFile.deleteOnExit();
+	}
+//	          Tests this abstract pathname for equality with the given object.
+	@Override
+	public boolean	equals(Object obj) 
+	{
+		if(obj instanceof CMFile)
+			return ((CMFile)obj).getAbsolutePath().equalsIgnoreCase(getAbsolutePath());
+		else
+		if(obj instanceof File)
+		{
+			if(this.localFile!=null)
+				return this.localFile.equals(obj);
+		}
+		return obj==this;
+	}
+//	          Returns the absolute form of this abstract pathname.
+	@Override
+	public File	getAbsoluteFile() { return this; }
+//	          Returns the canonical form of this abstract pathname.
+	@Override
+	public File	getCanonicalFile() { return this; } 
+//	          Returns the number of unallocated bytes in the partition named by this abstract path name.
+	@Override
+	public long	getFreeSpace() 
+	{
+		if(this.localFile!=null)
+			return this.localFile.getFreeSpace();
+		return 65536;
+	}
+//	          Returns the pathname string of this abstract pathname's parent, or null if this pathname does not name a parent directory.
+	@Override
+	public String	getParent()
+	{
+		return this.getParentFile().getAbsolutePath();
+	}
+//	          Converts this abstract pathname into a pathname string.
+	@Override
+	public String	getPath() { return this.getAbsolutePath(); }
+//	          Returns the size of the partition named by this abstract pathname.
+	@Override
+	public long	getTotalSpace() 
+	{
+		if(this.localFile!=null)
+			return this.localFile.getTotalSpace();
+		return 65536;
+	}
+//	          Returns the number of bytes available to this virtual machine on the partition named by this abstract pathname.
+	@Override
+	public long	getUsableSpace() 
+	{
+		if(this.localFile!=null)
+			return this.localFile.getUsableSpace();
+		return 65536;
+	}
+//	          Computes a hash code for this abstract pathname.
+	@Override
+	public int	hashCode() { return this.getAbsolutePath().hashCode(); }
+//	          Tests whether this abstract pathname is absolute.
+	@Override
+	public boolean	isAbsolute() { return true; } 
+//	          Tests whether the file named by this abstract pathname is a hidden file.
+	@Override
+	public boolean	isHidden() { return false; }
+//	          Returns the length of the file denoted by this abstract pathname.
+	@Override
+	public long	length()
+	{
+		if(!this.exists())
+			return 0;
+		if(this.isDirectory())
+			return 0;
+		if(this.isLocalFile()&&(this.localFile!=null))
+			return this.localFile.length();
+		final byte[] buf=this.raw();
+		if(buf==null) return 0;
+		return buf.length;
+	}
+//	          Returns an array of strings naming the files and directories in the directory denoted by this abstract pathname that satisfy the specified filter.
+	@Override
+	public String[]	list(FilenameFilter filter) 
+	{
+		if(filter==null) return this.list();
+		List<String> filteredList=new Vector<String>();
+		for(CMFile f : this.listFiles())
+			if(filter.accept(f.getParentFile(), f.getName()))
+				filteredList.add(f.getName());
+		return filteredList.toArray(new String[0]);
+	}
+//	          Returns an array of abstract pathnames denoting the files and directories in the directory denoted by this abstract pathname that satisfy the specified filter.
+	@Override
+	public File[]	listFiles(FileFilter filter)
+	{
+		if(filter==null) return this.listFiles();
+		List<CMFile> filteredList=new Vector<CMFile>();
+		for(CMFile f : this.listFiles())
+			if(filter.accept(f))
+				filteredList.add(f);
+		return filteredList.toArray(new CMFile[0]);
+	}
+//	          Returns an array of abstract pathnames denoting the files and directories in the directory denoted by this abstract pathname that satisfy the specified filter.
+	@Override
+	public File[]	listFiles(FilenameFilter filter) 
+	{
+		if(filter==null) return this.listFiles();
+		List<CMFile> filteredList=new Vector<CMFile>();
+		for(CMFile f : this.listFiles())
+			if(filter.accept(f.getParentFile(),f.getName()))
+				filteredList.add(f);
+		return filteredList.toArray(new CMFile[0]);
+	}
+//	          Creates the directory named by this abstract pathname, including any necessary but nonexistent parent directories.
+	@Override
+	public boolean	mkdirs()
+	{
+		if((this.localFile!=null)&&(this.canLocalEquiv()))
+			return this.localFile.mkdirs();
+		return true;
+	}
+//	          Renames the file denoted by this abstract pathname.
+	@Override
+	public boolean	renameTo(File dest)
+	{
+		if(dest.exists())
+			return false;
+		if(dest instanceof CMFile)
+		{
+			CMFile cmDest=(CMFile)dest;
+			if((this.canVFSEquiv())&&(cmDest.canVFSEquiv()))
+			{
+				if(!this.isDirectory())
+				{
+					if(!cmDest.saveRaw(this.raw()))
+						return false;
+					this.deleteVFS();
+				}
+			}
+			if(this.canLocalEquiv()&&(cmDest.canLocalEquiv()))
+			{
+				if((this.localFile!=null)&&(this.localFile.exists()))
+					return this.localFile.renameTo(new File(cmDest.getLocalPathAndName()));
+				return false;
+			}
+		}
+		else
+		if(this.canLocalEquiv())
+		{
+			if((this.localFile!=null)&&(this.localFile.exists()))
+				return this.localFile.renameTo(dest);
+			return false;
+		}
+		return false;
+	}
+//	          A convenience method to set the owner's execute permission for this abstract pathname.
+	@Override
+	public boolean	setExecutable(boolean executable)  { return false; }
+//	          Sets the owner's or everybody's execute permission for this abstract pathname.
+	@Override
+	public boolean	setExecutable(boolean executable, boolean ownerOnly)  { return false; }
+//	          Sets the last-modified time of the file or directory named by this abstract pathname.
+	@Override
+	public boolean	setLastModified(long time)  { return false; }
+//	          A convenience method to set the owner's read permission for this abstract pathname.
+	@Override
+	public boolean	setReadable(boolean readable) { return false; }
+//	          Sets the owner's or everybody's read permission for this abstract pathname.
+	@Override
+	public boolean	setReadable(boolean readable, boolean ownerOnly) { return false; }
+//	          Marks the file or directory named by this abstract pathname so that only read operations are allowed.
+	@Override
+	public boolean	setReadOnly() { return false; }
+//	          A convenience method to set the owner's write permission for this abstract pathname.
+	@Override
+	public boolean	setWritable(boolean writable) { return false; }
+//	          Sets the owner's or everybody's write permission for this abstract pathname.
+	@Override
+	public boolean	setWritable(boolean writable, boolean ownerOnly) { return false; } 
+//	          Returns the pathname string of this abstract pathname.
+	@Override
+	public String	toString() { return this.getAbsolutePath(); }
 }
