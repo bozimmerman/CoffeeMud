@@ -132,11 +132,30 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-	public StringBuilder roomPropertyDetails(Session viewerS, Enumeration these, Room likeRoom)
+	public StringBuilder roomPropertyDetails(Session viewerS, Area A, String rest)
+	{
+		if(rest.trim().length()==0)
+			return roomPropertyDetails(viewerS, A.getMetroMap(), null);
+		else
+		if(rest.trim().equalsIgnoreCase("area"))
+			return roomPropertyDetails(viewerS, A.getMetroMap(), null);
+		else
+		if(rest.trim().equalsIgnoreCase("world"))
+			return roomPropertyDetails(viewerS, CMLib.map().rooms(), null);
+		else
+		if(rest.trim().toLowerCase().startsWith("area "))
+			return roomPropertyDetails(viewerS, A.getMetroMap(), rest.trim().substring(5).trim());
+		else
+		if(rest.trim().toLowerCase().startsWith("world "))
+			return roomPropertyDetails(viewerS, CMLib.map().rooms(), rest.trim().substring(6).trim());
+		else
+			return new StringBuilder("Illegal parameters... try LIST REALESTATE AREA/WORLD (USERNAME/CLANNAME)");
+	}
+	
+	public StringBuilder roomPropertyDetails(Session viewerS, Enumeration these, String owner)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
-		if(likeRoom==null) return lines;
 		LandTitle t=null;
 		Room thisThang=null;
 		String thisOne=null;
@@ -147,7 +166,7 @@ public class ListCmd extends StdCommand
 			if(t!=null)
 			{
 				thisOne=thisThang.roomID();
-				if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
+				if((thisOne.length()>0)&&((owner==null)||(t.landOwner().equalsIgnoreCase(owner))))
 					lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),23)+CMStrings.limit(" ("+t.landOwner()+", $"+t.landPrice()+")",20)+"\n\r");
 			}
 		}
@@ -2190,7 +2209,7 @@ public class ListCmd extends StdCommand
 		case 27: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.miscTech()).toString()); break;
 		case 28: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.clanItems()).toString()); break;
 		case 29: s.println(journalList(mob.session(),listWord).toString()); break;
-		case 30: s.wraplessPrintln(roomPropertyDetails(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case 30: s.wraplessPrintln(roomPropertyDetails(mob.session(),mob.location().getArea(),rest).toString()); break;
 		case 31:
 		{
 			StringBuilder str=new StringBuilder("\n\rProtected players:\n\r");
