@@ -2399,3 +2399,5 @@ ruthless programmer, and sentenced to a quick death.
 3. Special GET case: Can now get parts of a bundle from a container -- get 2 oak from wagon will break a 2# bundle from inside in a wagon.
 4. Carpentry skills list underwent a little makeover.
 5. I3 LISTEN/SILENCE can be used by i3 admins to test out other channels... if you turn one on, be sure to turn it off before you leave!
+6. (internal) XMLManager optomized for More Speed!
+7. Missing INI entry (WRNMSGS) now added and documented.

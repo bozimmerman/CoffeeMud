@@ -1001,6 +1001,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		String classID = findString("class",piece,defined);
 		Ability A=CMClass.getAbility(classID);
+		if(A == null) A=CMClass.findAbility(classID);
 		if(A == null) throw new CMException("Unable to build ability on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 		String value = findOptionalString("PARMS",piece,defined);
 		if(value != null)
@@ -1012,6 +1013,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		String classID = findString("class",piece,defined);
 		Behavior B=CMClass.getBehavior(classID);
+		if(B == null) B=CMClass.findBehavior(classID);
 		if(B == null) throw new CMException("Unable to build behavior on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 		String value = findOptionalString("PARMS",piece,defined);
 		if(value != null)

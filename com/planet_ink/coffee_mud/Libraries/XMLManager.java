@@ -38,6 +38,47 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 {
 	public String ID(){return "XMLManager";}
 	
+	protected final String[][] IGNORE_TAG_BOUNDS={{"!--","-->"},{"?","?>"},{"![CDATA[","]]>"}};
+	protected enum State {	START, BEFORETAG, INTAG, BEFOREATTRIB, BEGINTAGSELFEND, BEFORECLOSETAG, INCLOSETAG, 
+							AFTERCLOSETAG, INATTRIB, INPOSTATTRIB, BEFOREATTRIBVALUE, INATTRIBVALUE, 
+							INQUOTEDATTRIBVALUE }
+	protected int 			bufDex;
+	protected XMLpiece		piece;
+	protected State			state;
+	protected int[]			beginDex;
+	protected int[]			endDex;
+	protected StringBuffer	buf;
+	protected List<XMLpiece>contents;
+	protected Set<Object>	illegalTags;
+	
+	public XMLManager()
+	{
+		super();
+	}
+	private XMLManager(final StringBuffer buf, final int startDex)
+	{
+		bufDex=startDex;
+		piece=null;
+		state=State.START;
+		this.buf=buf;
+		beginDex = new int[State.values().length];
+		endDex = new int[State.values().length];
+		contents=new XVector<XMLpiece>();
+		for(int i=0;i<State.values().length;i++)
+		{
+			beginDex[i]=-1;
+			endDex[i]=-1;
+		}
+		try
+		{
+			illegalTags=CMLib.coffeeFilter().getTagTable().keySet();
+		}
+		catch(Exception e)
+		{
+			illegalTags=new HashSet<Object>();
+		}
+	}
+
 	public String parseOutAngleBrackets(String s)
 	{
 		int x=s.indexOf('<');
@@ -248,95 +289,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return Blob;
 	}
 
-	protected String parseOutParms(String blk, Map<String,String> parmList)
-	{
-		blk=blk.trim();
-		for(int x=0;x<blk.length();x++)
-			if(Character.isWhitespace(blk.charAt(x)))
-			{
-				if(!blk.substring(x).trim().startsWith("/"))
-				{
-					parmList.putAll(parseParms(blk.substring(x).trim()));
-					if(blk.endsWith("/"))
-						return blk.substring(0,x).trim()+" /";
-					return blk.substring(0,x).trim();
-				}
-				break;
-			}
-		return blk;
-	}
-
-
-	protected Map<String,String> parseParms(String Blob)
-	{
-		Map<String,String> H=new Hashtable<String,String>();
-		StringBuffer curVal=null;
-		StringBuffer key=new StringBuffer("");
-		boolean quoteMode=false;
-		char c=' ';
-		char[] cs=Blob.toCharArray();
-		for(int i=0;i<cs.length;i++)
-		{
-			c=cs[i];
-			switch(c)
-			{
-			case '\"':
-				if((curVal!=null)&&(!quoteMode)&&(curVal.length()==0))
-					quoteMode=true;
-				else
-				if((curVal!=null)&&(quoteMode))
-				{
-					if((curVal.length()==0)||(curVal.charAt(curVal.length()-1)!='\\'))
-					{
-						quoteMode=false;
-						H.put(key.toString().toUpperCase().trim(),curVal.toString());
-						key=new StringBuffer("");
-						curVal=null;
-					}
-					else
-						curVal.setCharAt(curVal.length()-1,c);
-				}
-				else
-				if(curVal!=null)
-					curVal.append(c);
-				else
-					key.append(c);
-				break;
-			case ' ':
-			case '\t':
-				if((curVal!=null)&&(curVal.length()>0)&&(!quoteMode))
-				{
-					quoteMode=false;
-					H.put(key.toString().toUpperCase().trim(),curVal.toString());
-					key=new StringBuffer("");
-					curVal=null;
-				}
-				else
-				if((curVal!=null)&&((curVal.length()>0)||(quoteMode)))
-					curVal.append(c);
-				break;
-			case '=':
-				if(curVal==null)
-					curVal=new StringBuffer("");
-				else
-					curVal.append(c);
-				break;
-			default:
-				if(curVal!=null)
-					curVal.append(c);
-				else
-					key.append(c);
-				break;
-			}
-		}
-		if((curVal!=null)
-		&&(curVal.length()>0)
-		&&(key.length()>0)
-		&&(!H.containsKey(key.toString().toUpperCase().trim())))
-			H.put(key.toString().toUpperCase().trim(),curVal.toString());
-		return H;
-	}
-
 	public String getValFromPieces(List<XMLpiece> V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
@@ -400,111 +352,457 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		return s_double(getValFromPieces(V,tag));
 	}
-
-	protected boolean acceptableTag(StringBuffer str, int start, int end)
+	
+	protected void changeTagState(State newState)
 	{
-		while(Character.isWhitespace(str.charAt(start)))
-			start++;
-		while(Character.isWhitespace(str.charAt(end)))
-			end--;
-		if((start>=end)
-		||(end>(start+250))
-		||((str.charAt(start)!='/')&&(!Character.isLetter(str.charAt(start)))))
-			return false;
-		if(start+1==end) return true;
-		if(CMLib.coffeeFilter().getTagTable().containsKey(str.substring(start,end).toUpperCase()))
+		this.endDex[state.ordinal()]=bufDex;
+		state=newState;
+		bufDex++;
+		this.beginDex[state.ordinal()]=bufDex;
+	}
+
+	protected void changedTagState(State newState)
+	{
+		this.endDex[state.ordinal()]=bufDex-1;
+		state=newState;
+		this.beginDex[state.ordinal()]=bufDex;
+		bufDex++;
+	}
+
+	protected void abandonTagState(State newState)
+	{
+		if((piece!=null)&&(piece.outerEnd<0))
+		{
+			if(piece.parent!=null)
+				piece.parent.contents.remove(piece);
+			else
+				contents.remove(piece);
+			XMLpiece childPiece=piece;
+			piece=piece.parent;
+			Log.warnOut("XMLManager","Abandoned tag "+childPiece.tag+((piece!=null)?" of parent "+piece.tag:""));
+		}
+		changeTagState(newState);
+	}
+	
+	protected void handleTagBounds()
+	{
+		int x=0;
+		for(int b=0;b<IGNORE_TAG_BOUNDS.length;b++)
+		{
+			final String[] bounds=IGNORE_TAG_BOUNDS[b];
+			final String boundStart=bounds[0];
+			if(bufDex <= (buf.length()-boundStart.length()))
+			{
+				for(x=0;x<boundStart.length();x++)
+					if(buf.charAt(bufDex+x)!=boundStart.charAt(x))
+						break;
+				if(x>=boundStart.length())
+				{
+					int comDex=bufDex+boundStart.length();
+					final String boundEnd=bounds[1];
+					while(comDex <= (buf.length()-boundEnd.length()))
+					{
+						if(buf.charAt(comDex)==boundEnd.charAt(0))
+						{
+							for(x=1;x<boundEnd.length();x++)
+								if(buf.charAt(comDex+x)!=boundEnd.charAt(x))
+									break;
+							if(x>=boundEnd.length())
+							{
+								buf.delete(bufDex-1, comDex+boundEnd.length());
+								bufDex-=2;
+								changeTagState(State.START);
+								return;
+							}
+						}
+						comDex++;
+					}
+					buf.delete(bufDex-1,buf.length());
+					bufDex-=2;
+					changeTagState(State.START);
+				}
+			}
+		}
+	}
+	
+
+	protected void startState(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case '<':
+		{
+			changeTagState(State.BEFORETAG);
+			handleTagBounds();
+			return;
+		}
+		default: bufDex++; return;
+		}
+	}
+
+	protected void beforeTag(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case '<': changeTagState(State.BEFORETAG); return;
+		case '/': changedTagState(State.BEFORECLOSETAG); return;
+		default:
+			if(Character.isLetter(c))
+				changedTagState(State.INTAG);
+			else
+				changeTagState(State.START);
+			return;
+		}
+	}
+
+	protected boolean canStartPiece(int endOfTagName)
+	{
+		final String tagName=buf.substring(beginDex[State.INTAG.ordinal()],endOfTagName).toUpperCase().trim();
+		if(illegalTags.contains(tagName))
 			return false;
 		return true;
 	}
-
-	protected XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start)
+	
+	protected void startPiece(int endOfTagName)
 	{
-		int end=-1;
-		start--;
-		while((end<(start+1))||(!acceptableTag(buf,start+1,end)))
+		XMLpiece newPiece=new XMLpiece();
+		newPiece.outerStart=beginDex[State.BEFORETAG.ordinal()];
+		newPiece.tag=buf.substring(beginDex[State.INTAG.ordinal()],endOfTagName).toUpperCase().trim();
+		if(piece!=null)
+			piece.contents.add(newPiece);
+		else
+			contents.add(newPiece);
+		newPiece.parent=piece;
+		piece=newPiece;
+	}
+	
+	protected void doneWithPiece(int outerEnd)
+	{
+		if(piece!=null)
 		{
-			start=buf.indexOf("<",start+1);
-			if(start<0) return null;
-			end=buf.indexOf(">",start);
-			if(end<=start) return null;
-			if((buf.charAt(start+1)=='!')&&(buf.substring(start,start+4).equals("<!--")))
-			{
-				int commentEnd=buf.indexOf("-->",start+1);
-				if(commentEnd<0) return null;
-				end=-1;
-				start=commentEnd;
-				continue;
-			}
-			if((buf.charAt(start+1)=='?')&&(buf.charAt(end-1)=='?'))
-			{
-				start=end;
-				end=-1;
-				continue;
-			}
-			if((buf.charAt(start+1)=='!')&&(buf.substring(start,start+9).equals("<![CDATA[")))
-			{
-				int commentEnd=buf.indexOf("]]>",start+1);
-				if(commentEnd<0) return null;
-				end=-1;
-				start=commentEnd;
-				continue;
-			}
-			int nextStart=buf.indexOf("<",start+1);
-			while((nextStart>=0)&&(nextStart<end))
-			{
-				start=nextStart;
-				nextStart=buf.indexOf("<",start+1);
-			}
+			piece.outerEnd=outerEnd;
+			piece=piece.parent;
 		}
-		Map<String,String> parmList = new Hashtable<String,String>();
-		String tag=parseOutParms(buf.substring(start+1,end).trim(),parmList).toUpperCase().trim();
-
-		if(!tag.startsWith("/"))
+	}
+	
+	protected void closePiece(int outerEnd)
+	{
+		String closeTag=buf.substring(beginDex[State.INCLOSETAG.ordinal()],endDex[State.INCLOSETAG.ordinal()]).toUpperCase().trim();
+		XMLpiece closePiece=piece;
+		while((closePiece!=null)&&(!closePiece.tag.equalsIgnoreCase(closeTag)))
+			closePiece=closePiece.parent;
+		if(closePiece!=null)
 		{
-			XMLpiece piece=new XMLpiece();
-			piece.parms=parmList;
-			if(tag.endsWith("/"))
-			{
-				piece.tag=tag.substring(0,tag.length()-1).trim();
-				piece.value="";
-				piece.contents=new Vector<XMLpiece>();
-				piece.outerStart=start;
-				piece.outerEnd=end;
-			}
-			else
-			{
-				piece.tag=tag.trim();
-				piece.outerStart=start;
-				piece.innerStart=end+1;
-				piece.contents=new Vector<XMLpiece>();
-				XMLpiece next=null;
-				while(next!=piece)
-				{
-					next=nextXML(buf,piece,end+1);
-					if(next==null) // this was probably a faulty start tag
-						return nextXML(buf,parent,end+1);
-					else
-					if(next!=piece)
-					{
-						end=next.outerEnd;
-						piece.addContent(next);
-					}
-				}
-			}
-			return piece;
+			if(closePiece.innerStart>=0)
+				closePiece.value=buf.substring(closePiece.innerStart,beginDex[State.BEFORETAG.ordinal()]-1);
+			piece=closePiece;
+			doneWithPiece(outerEnd);
 		}
-		tag=tag.substring(1);
-		if((parent!=null)&&(tag.equals(parent.tag)))
-		{
-			parent.value=buf.substring(parent.innerStart,start);
-			parent.innerEnd=start;
-			parent.outerEnd=end;
-			return parent;
-		}
-		return null;
+		else
+			Log.errOut("XMLManager","Unable to close tag "+closeTag);
 	}
 
+	protected void inTag(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': 
+			if(canStartPiece(bufDex))
+			{
+				startPiece(bufDex);
+				changedTagState(State.BEFOREATTRIB);
+			}
+			else
+				changeTagState(State.START);
+			return;
+		case '<': changeTagState(State.BEFORETAG); return;
+		case '>': 
+			if(canStartPiece(bufDex))
+			{
+				startPiece(bufDex);
+				piece.innerStart=bufDex+1;
+			}
+			changeTagState(State.START);
+			return;
+		case '/':
+			startPiece(bufDex);
+			changedTagState(State.BEGINTAGSELFEND); 
+			return;
+		default: bufDex++; return;
+		}
+	}
 
+	protected void beginTagSelfEnd(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case '/': bufDex++; break;
+		case '<': abandonTagState(State.BEFORETAG); return;
+		case '>': doneWithPiece(bufDex); changeTagState(State.START); return;
+		default: changeTagState(State.BEFOREATTRIB); return;
+		}
+	}
+
+	protected void beforeCloseTag(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case '<': changeTagState(State.BEFORETAG); return;
+		case '/': changeTagState(State.BEFORECLOSETAG); return;
+		default:
+			if(Character.isLetter(c))
+				changedTagState(State.INCLOSETAG);
+			else
+				changeTagState(State.START);
+			return;
+		}
+	}
+
+	protected void inCloseTag(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': 
+			changedTagState(State.AFTERCLOSETAG);
+			return;
+		case '<': changeTagState(State.BEFORETAG); return;
+		case '>':
+			changeTagState(State.START); 
+			closePiece(bufDex-1);
+			return;
+		case '/': changedTagState(State.BEFORECLOSETAG); return;
+		default: bufDex++; return;
+		}
+	}
+
+	protected void afterCloseTag(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case '<': 
+			closePiece(bufDex);
+			changeTagState(State.BEFORETAG); 
+			return;
+		case '>':
+			closePiece(bufDex);
+			changeTagState(State.START); 
+			return;
+		default: bufDex++; return;
+		}
+	}
+
+	protected void beforeAttrib(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case '<':
+			piece.innerStart=bufDex;
+			abandonTagState(State.BEFORETAG); 
+			return;
+		case '>':
+			changeTagState(State.START); 
+			piece.innerStart=bufDex;
+			return;
+		case '/':
+			changedTagState(State.BEGINTAGSELFEND); 
+			return;
+		default:
+			changedTagState(State.INATTRIB); 
+			return;
+		}
+	}
+	
+	protected void beAttrib(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case '<':
+			piece.innerStart=bufDex;
+			abandonTagState(State.BEFORETAG); 
+			return;
+		case '>':
+			changeTagState(State.START); 
+			piece.innerStart=bufDex;
+			return;
+		case '/':
+			endEmptyAttrib(bufDex);
+			changedTagState(State.BEGINTAGSELFEND); 
+			return;
+		default:
+			changedTagState(State.INATTRIB); 
+			return;
+		}
+	}
+	
+	protected void endEmptyAttrib(int endOfAttrib)
+	{
+		if(piece!=null)
+		{
+			String value="";
+			String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()],endOfAttrib);
+			if((parmName.length()>15)||(parmName.length()==0))
+				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag);
+			piece.parms.put(parmName, value);
+		}
+	}
+
+	protected void inAttrib(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n':  changedTagState(State.INPOSTATTRIB); return;
+		case '=':  changeTagState(State.BEFOREATTRIBVALUE); return;
+		case '<':
+			endEmptyAttrib(bufDex);
+			piece.innerStart=bufDex;
+			abandonTagState(State.BEFORETAG); 
+			return;
+		case '>':
+			endEmptyAttrib(bufDex);
+			changeTagState(State.START); 
+			piece.innerStart=bufDex;
+			return;
+		case '/':
+			endEmptyAttrib(bufDex);
+			changedTagState(State.BEGINTAGSELFEND); 
+			return;
+		default: bufDex++; return;
+		}
+	}
+
+	protected void inPostAttrib(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n':  bufDex++; return;
+		case '=':  changeTagState(State.BEFOREATTRIBVALUE); return;
+		case '<':
+			endEmptyAttrib(endDex[State.INATTRIB.ordinal()]);
+			piece.innerStart=bufDex;
+			abandonTagState(State.BEFORETAG); 
+			return;
+		case '>':
+			endEmptyAttrib(endDex[State.INATTRIB.ordinal()]);
+			changeTagState(State.START); 
+			piece.innerStart=bufDex;
+			return;
+		case '/':
+			endEmptyAttrib(endDex[State.INATTRIB.ordinal()]);
+			changedTagState(State.BEGINTAGSELFEND); 
+			return;
+		default: changedTagState(State.INATTRIB); return;
+		}
+	}
+	
+	protected void assignAttrib(int endOfValue)
+	{
+		if(piece!=null)
+		{
+			String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()], endDex[State.INATTRIB.ordinal()]).toUpperCase().trim();
+			String value=buf.substring(beginDex[state.ordinal()],endOfValue).toUpperCase().trim();
+			if((parmName.length()>15)||(parmName.length()==0))
+				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag);
+			piece.parms.put(parmName, value);
+		}
+
+	}
+
+	protected void beforeAttribValue(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n':  bufDex++; return;
+		case '=':  bufDex++; return;
+		case '<':
+			assignAttrib(bufDex);
+			piece.innerStart=bufDex;
+			abandonTagState(State.BEFORETAG); 
+			return;
+		case '>':
+			assignAttrib(bufDex);
+			changeTagState(State.START); 
+			piece.innerStart=bufDex;
+			return;
+		case '/':
+			assignAttrib(bufDex);
+			changedTagState(State.BEGINTAGSELFEND); 
+			return;
+		case '"': changeTagState(State.INQUOTEDATTRIBVALUE); return; 
+		default: changedTagState(State.INATTRIBVALUE); return;
+		}
+	}
+
+	protected void inAttribValue(final char c)
+	{
+		switch(c)
+		{
+		case ' ': case '\t': case '\r': case '\n': 
+			assignAttrib(bufDex); 
+			changedTagState(State.BEFOREATTRIB); 
+			return;
+		case '<':
+			assignAttrib(bufDex);
+			piece.innerStart=bufDex;
+			abandonTagState(State.BEFORETAG); 
+			return;
+		case '>':
+			assignAttrib(bufDex);
+			changeTagState(State.START); 
+			piece.innerStart=bufDex;
+			return;
+		case '/':
+			assignAttrib(bufDex);
+			changedTagState(State.BEGINTAGSELFEND); 
+			return;
+		default: bufDex++; return;
+		}
+	}
+
+	protected void inQuotedAttribValue(final char c)
+	{
+		switch(c)
+		{
+		case '"':
+			assignAttrib(bufDex); 
+			changeTagState(State.BEFOREATTRIB); 
+			return;
+		default: bufDex++; return;
+		}
+	}
+
+	protected XMLpiece parseXML()
+	{
+		while(bufDex<buf.length())
+		{
+			switch(state)
+			{
+			case START:				startState(buf.charAt(bufDex)); break;
+			case BEFORETAG:			beforeTag(buf.charAt(bufDex)); break;
+			case INTAG:				inTag(buf.charAt(bufDex)); break;
+			case BEGINTAGSELFEND:	beginTagSelfEnd(buf.charAt(bufDex)); break;
+			case BEFORECLOSETAG:	beforeCloseTag(buf.charAt(bufDex)); break;
+			case INCLOSETAG:		inCloseTag(buf.charAt(bufDex)); break;
+			case AFTERCLOSETAG:		afterCloseTag(buf.charAt(bufDex)); break;
+			case BEFOREATTRIB:		beforeAttrib(buf.charAt(bufDex)); break;
+			case INATTRIB:			inAttrib(buf.charAt(bufDex)); break;
+			case INPOSTATTRIB:		inPostAttrib(buf.charAt(bufDex)); break;
+			case BEFOREATTRIBVALUE:	beforeAttribValue(buf.charAt(bufDex)); break;
+			case INATTRIBVALUE:		inAttribValue(buf.charAt(bufDex)); break;
+			case INQUOTEDATTRIBVALUE: inQuotedAttribValue(buf.charAt(bufDex)); break;
+			}
+		}
+		while((piece!=null)&&(piece.parent!=null))
+			piece=piece.parent;
+		return piece;
+	}
+	
 	public List<XMLpiece> parseAllXML(String buf)
 	{  
 		return parseAllXML(new StringBuffer(buf));
@@ -512,16 +810,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	public List<XMLpiece> parseAllXML(StringBuffer buf)
 	{
-		Vector<XMLpiece> V=new Vector<XMLpiece>();
-		int end=-1;
-		XMLpiece next=nextXML(buf,null,end+1);
-		while(next!=null)
-		{
-			end=next.outerEnd;
-			V.addElement(next);
-			next=nextXML(buf,null,end+1);
-		}
-		return V;
+		XMLManager manager=new XMLManager(buf, 0);
+		manager.parseXML();
+		return manager.contents;
 	}
 
 	public String returnXMLValue(String Blob)
