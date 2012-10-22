@@ -2401,3 +2401,4 @@ ruthless programmer, and sentenced to a quick death.
 5. I3 LISTEN/SILENCE can be used by i3 admins to test out other channels... if you turn one on, be sure to turn it off before you leave!
 6. (internal) XMLManager optomized for More Speed!
 7. Missing INI entry (WRNMSGS) now added and documented.
+8. New Property (Prop_RoomList) -- more lightweight way to keep rooms from going dark at night.
