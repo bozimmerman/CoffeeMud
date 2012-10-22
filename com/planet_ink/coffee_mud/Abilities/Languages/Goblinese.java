@@ -76,7 +76,7 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		hashwords.put("ABLE","gafnahkk");
 		hashwords.put("ABOUT","bah");
 		hashwords.put("ABOVE","hat");
-		hashwords.put("ACCORDING TO","gi");
+		hashwords.put("ACCORDING","gi");
 		hashwords.put("AGAIN","vi");
 		hashwords.put("AGREE","yoess");
 		hashwords.put("ALIVE","gongki");
@@ -96,7 +96,6 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		hashwords.put("ARE","ko");
 		hashwords.put("AREA","rrey");
 		hashwords.put("AS","gon");
-		hashwords.put("AS WELL","dok");
 		hashwords.put("ASK","banrahk");
 		hashwords.put("ASSIST","pod");
 		hashwords.put("ASSISTANCE","podum");
@@ -129,7 +128,7 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		hashwords.put("BY","gi");
 		hashwords.put("BYE","dzo");
 		hashwords.put("CAN","gafnahkk");
-		hashwords.put("CAST SPELL","uvoj");
+		hashwords.put("CAST","uvoj");
 		hashwords.put("CHIEF","kore");
 		hashwords.put("COME","ling");
 		hashwords.put("RETURN","umkloer");
@@ -168,7 +167,7 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		hashwords.put("EXIT","keh");
 		hashwords.put("FAERY","feyri");
 		hashwords.put("FAIL","poep");
-		hashwords.put("FAR AWAY","eysah");
+		hashwords.put("FAR","eysah");
 		hashwords.put("FAT","nerri");
 		hashwords.put("FATHER","hatkihn");
 		hashwords.put("FAVOR","rekyom");
@@ -200,7 +199,7 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		hashwords.put("GO","loer");
 		hashwords.put("GOBLIN","goblin");
 		hashwords.put("GOBLINESE","goblintan");
-		hashwords.put("GOING TO","po");
+		hashwords.put("GOING","po");
 		hashwords.put("GOOD","yoe");
 		hashwords.put("EVENING","hayke");
 		hashwords.put("MORNING","hayli");
@@ -306,6 +305,7 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		hashwords.put("NUMBER","doh");
 		hashwords.put("OBJECT","ezo");
 		hashwords.put("OCEAN","relahle");
+		hashwords.put("CARES","nyah");
 		hashwords.put("OF","o");
 		hashwords.put("OGRE","ogrh");
 		hashwords.put("OKAY","yoess");
@@ -338,7 +338,7 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		hashwords.put("RECIEVE","tuhg");
 		hashwords.put("RED","urde");
 		hashwords.put("RELATE","gong");
-		hashwords.put("RELATED TO","gong");
+		hashwords.put("RELATED","gong");
 		hashwords.put("RELATION","gongah");
 		hashwords.put("RELATIVE","gongah");
 		hashwords.put("REMEMBER","vidoj");
@@ -460,7 +460,8 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		hashwords.put("UNDER","get");
 		hashwords.put("UNLESS","vw");
 		hashwords.put("US","jad");
-		hashwords.put("USED AS A RESPECTFUL GREETING THAT BASICALLY WISHES THE PERSON A LONG","ghrakh");
+		hashwords.put("USE","ghrakh");
+		hashwords.put("USED","ghrakh");
 		hashwords.put("VERY","baso");
 		hashwords.put("VIOLENT","znavo");
 		hashwords.put("VIOLENCE","znavo");
@@ -480,7 +481,6 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		hashwords.put("WHICH","yr");
 		hashwords.put("WHITE","epli");
 		hashwords.put("WHO","fah");
-		hashwords.put("WHO CARES","nyah");
 		hashwords.put("WHY","fi");
 		hashwords.put("WIDE","nerri");
 		hashwords.put("WIFE","rihnkahn");
