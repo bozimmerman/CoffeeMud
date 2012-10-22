@@ -79,6 +79,7 @@ public class Spell_FindFamiliar extends Spell
 
 		int experienceToLose=getXPCOSTAdjustment(mob,100);
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+		mob.tell("The effort causes you to lose "+experienceToLose+" experience.");
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
