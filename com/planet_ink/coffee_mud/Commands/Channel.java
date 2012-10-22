@@ -125,7 +125,6 @@ public class Channel extends StdCommand
 				boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 				long elapsedTime=0;
 				long now=System.currentTimeMillis();
-				int countDown=num;
 				LinkedList<ChannelsLibrary.ChannelMsg> showThese=new LinkedList<ChannelsLibrary.ChannelMsg>(); 
 				for(Iterator<ChannelsLibrary.ChannelMsg> i=que.iterator();i.hasNext();)
 				{
