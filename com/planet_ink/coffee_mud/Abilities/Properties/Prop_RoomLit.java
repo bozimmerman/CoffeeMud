@@ -37,6 +37,7 @@ public class Prop_RoomLit extends Property
 	public String ID() { return "Prop_RoomLit"; }
 	public String name(){ return "Lighting Property";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
+	public boolean bubbleAffect(){return true;}
 
 	public String accountForYourself()
 	{ return "Always Lit";	}
@@ -46,8 +47,6 @@ public class Prop_RoomLit extends Property
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if(!(affected instanceof Room))
-			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 		if(CMLib.flags().isInDark(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
