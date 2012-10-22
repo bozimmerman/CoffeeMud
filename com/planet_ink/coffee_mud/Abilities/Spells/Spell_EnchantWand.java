@@ -135,7 +135,7 @@ public class Spell_EnchantWand extends Spell
 				wand.setSpell((Ability)wandThis.copyOf());
 				if((wand.usesRemaining()==Integer.MAX_VALUE)||(wand.usesRemaining()<0))
 					wand.setUsesRemaining(0);
-				wand.basePhyStats().setLevel(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())+2);
+				wand.basePhyStats().setLevel(wandThis.adjustedLevel(mob, asLevel));
 				wand.setUsesRemaining(wand.usesRemaining()+5);
 				wand.text();
 				wand.recoverPhyStats();
