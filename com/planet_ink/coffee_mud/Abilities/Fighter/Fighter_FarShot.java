@@ -72,8 +72,8 @@ public class Fighter_FarShot extends FighterSkill
 			&&(targetW.ammunitionType().length()>0))
 			{
 				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
-				   ||(msg.targetMinor()==CMMsg.TYP_WIELD)
-				   ||(msg.targetMinor()==CMMsg.TYP_HOLD))
+					||(msg.targetMinor()==CMMsg.TYP_WIELD)
+					||(msg.targetMinor()==CMMsg.TYP_HOLD))
 				&&(!qualifiedWeapons.contains(msg.target()))
 				&&((msg.source().fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 				{
