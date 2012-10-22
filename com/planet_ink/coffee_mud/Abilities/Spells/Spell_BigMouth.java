@@ -120,9 +120,17 @@ public class Spell_BigMouth extends Spell
 			if(msg.target() instanceof MOB)
 			{
 				MOB TastyMorsel=(MOB)msg.target();
-				Stomach().bringMobHere(TastyMorsel,false);
-				CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
-				Stomach().send(TastyMorsel,enterMsg);
+				CMMsg msg2=CMClass.getMsg(mob,TastyMorsel,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,null);
+				if(TastyMorsel.location().okMessage(mob,msg2))
+				{
+					TastyMorsel.location().send(mob,msg2);
+					if(msg2.value()<=0)
+					{
+						Stomach().bringMobHere(TastyMorsel,false);
+						CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,"<S-NAME> <S-IS-ARE> swallowed whole by "+mob.name()+"!",CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+						Stomach().send(TastyMorsel,enterMsg);
+					}
+				}
 			}
 			if((msg.target() instanceof Item)
 			&&(!(msg.target() instanceof Food)))
