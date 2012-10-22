@@ -95,6 +95,14 @@ public class Thief_Listen extends ThiefSkill
 			unInvoke();
 	}
 
+	public void unInvoke()
+	{
+		MOB M=invoker();
+		super.unInvoke();
+		if((M!=null)&&(!M.amDead()))
+			M.tell("You stop listening.");
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String whom=CMParms.combine(commands,0);
