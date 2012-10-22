@@ -147,6 +147,13 @@ public class Masonry extends CraftingSkill
 		});
 		title.setLandOwner("");
 		title.updateLot(null); // this is neat -- this will obliterate leaf rooms around this one.
+		if((theRoomToReturnTo!=null)
+		&&(theRoomToReturnTo.rawDoors()[Directions.UP]==room)
+		&&(theRoomToReturnTo.getRawExit(Directions.UP)!=null))
+		{
+			theRoomToReturnTo.getRawExit(Directions.UP).destroy();
+			theRoomToReturnTo.setRawExit(Directions.UP, null);
+		}
 		CMLib.map().obliterateRoom(room);
 	}
 
