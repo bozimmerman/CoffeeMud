@@ -76,7 +76,12 @@ public class Skill_Recall extends StdSkill
 				recalledRoom.send(mob,msg);
 				recallRoom.send(mob,msg2);
 				if(recalledRoom.isInhabitant(mob))
-					recallRoom.bringMobHere(mob,false);
+				{
+					if(recallRoom.isInhabitant(mob)&&(recallRoom==recalledRoom))
+						beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to recall, but go(es) nowhere.");
+					else
+						recallRoom.bringMobHere(mob,false);
+				}
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					MOB follower=mob.fetchFollower(f);
