@@ -403,17 +403,10 @@ public class MOBloader
 				thisUser.race=(R2.name());
 			else
 				thisUser.race=rrace;
-			String lvl=DBConnections.getRes(R,"CMLEVL");
-			x=lvl.indexOf(';');
-			int level=0;
-			while(x>=0)
-			{
-				level+=CMath.s_int(lvl.substring(0,x));
-				lvl=lvl.substring(x+1);
-				x=lvl.indexOf(';');
-			}
-			if(lvl.length()>0) level+=CMath.s_int(lvl);
-			thisUser.level=level;
+			List<String> lvls=CMParms.parseSemicolons(DBConnections.getRes(R,"CMLEVL"), true);
+			thisUser.level=0;
+			for(String lvl : lvls)
+				thisUser.level+=CMath.s_int(lvl);
 			thisUser.age=(int)DBConnections.getLongRes(R,"CMAGEH");
 			MOB M=CMLib.players().getPlayer((String)thisUser.name);
 			if((M!=null)&&(M.lastTickedDateTime()>0))
@@ -524,16 +517,10 @@ public class MOBloader
 					int x=cclass.lastIndexOf(';');
 					if((x>0)&&(x<cclass.length()-2)) cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
 					String race=(CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
-					String lvl=DBConnections.getRes(R,"CMLEVL");
-					x=lvl.indexOf(';');
+					List<String> lvls=CMParms.parseSemicolons(DBConnections.getRes(R,"CMLEVL"), true);
 					int level=0;
-					while(x>=0)
-					{
-						level+=CMath.s_int(lvl.substring(0,x));
-						lvl=lvl.substring(x+1);
-						x=lvl.indexOf(';');
-					}
-					if(lvl.length()>0) level+=CMath.s_int(lvl);
+					for(String lvl : lvls)
+						level+=CMath.s_int(lvl);
 					int exp=CMath.s_int(DBConnections.getRes(R,"CMEXPE"));
 					int exlv=CMath.s_int(DBConnections.getRes(R,"CMEXLV"));
 					head.append("[");
@@ -586,16 +573,10 @@ public class MOBloader
 				int x=cclass.lastIndexOf(';');
 				if((x>0)&&(x<cclass.length()-2)) cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
 				String race=(CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
-				String lvl=DBConnections.getRes(R,"CMLEVL");
-				x=lvl.indexOf(';');
+				List<String> lvls=CMParms.parseSemicolons(DBConnections.getRes(R,"CMLEVL"), true);
 				int level=0;
-				while(x>=0)
-				{
-					level+=CMath.s_int(lvl.substring(0,x));
-					lvl=lvl.substring(x+1);
-					x=lvl.indexOf(';');
-				}
-				if(lvl.length()>0) level+=CMath.s_int(lvl);
+				for(String lvl : lvls)
+					level+=CMath.s_int(lvl);
 				DV.addElement(username,
 							  cclass,
 							  ""+level,
@@ -695,11 +676,15 @@ public class MOBloader
 			if(R!=null) while(R.next())
 			{
 				String username=DB.getRes(R,"CMUSERID");
+				List<String> lvls=CMParms.parseSemicolons(DBConnections.getRes(R,"CMLEVL"), true);
+				int level=0;
+				for(String lvl : lvls)
+					level+=CMath.s_int(lvl);
 				long lastDateTime=CMath.s_long(DBConnections.getRes(R,"CMDATE"));
 				int clanRole = (int)DBConnections.getLongRes(R,"CMCLRO");
 				if(clanRole >= 7)
 					clanRole = CMath.bitNumber(clanRole); 
-				Clan.MemberRecord member = new Clan.MemberRecord(username,clanRole,lastDateTime);
+				Clan.MemberRecord member = new Clan.MemberRecord(username,level,clanRole,lastDateTime);
 				members.add(member);
 				MOB M=CMLib.players().getPlayer(username);
 				if((M!=null)&&(M.lastTickedDateTime()>0))

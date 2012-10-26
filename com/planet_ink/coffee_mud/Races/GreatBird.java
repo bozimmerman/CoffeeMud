@@ -118,7 +118,7 @@ public class GreatBird extends StdRace
 			return "^g" + mob.displayName(viewer) + "^g has a few feathers out of place.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName(viewer) + "^g has a some ruffled features.^N";
+			return "^g" + mob.displayName(viewer) + "^g has a some ruffled feathers.^N";
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}

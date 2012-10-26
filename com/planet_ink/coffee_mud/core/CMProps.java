@@ -141,7 +141,9 @@ public class CMProps extends Properties
 	public static final int SYSTEM_POSEFILTER=81;
 	public static final int SYSTEM_STARTINGITEMS=82;
 	public static final int SYSTEM_STATCOSTS=83;
-	public static final int NUM_SYSTEM=84;
+	public static final int SYSTEM_CLANTROPMB=84;
+	public static final int SYSTEM_CLANTROPLVL=85;
+	public static final int NUM_SYSTEM=86;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -1135,6 +1137,8 @@ public class CMProps extends Properties
 		setVar(SYSTEM_CLANTROPCP,getStr("CLANTROPCP"));
 		setVar(SYSTEM_CLANTROPEXP,getStr("CLANTROPEXP"));
 		setVar(SYSTEM_CLANTROPPK,getStr("CLANTROPPK"));
+		setVar(SYSTEM_CLANTROPMB,getStr("CLANTROPMB"));
+		setVar(SYSTEM_CLANTROPLVL,getStr("CLANTROPLVL"));
 		setVar(SYSTEM_COLORSCHEME,getStr("COLORSCHEME"));
 		setUpLowVar(SYSTEM_SMTPSERVERNAME,getStr("SMTPSERVERNAME"));
 		setVar(SYSTEM_EXPCONTACTLINE,getStr("EXPCONTACTLINE"));

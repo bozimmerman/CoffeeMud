@@ -717,10 +717,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public class MemberRecord
 	{
 		public String name;
+		public int level;
 		public int role;
 		public long timestamp;
-		public MemberRecord(String name, int role, long timestamp) {
-			this.name=name; this.role=role; this.timestamp=timestamp;
+		public MemberRecord(String name, int level, int role, long timestamp) {
+			this.name=name; this.level=level; this.role=role; this.timestamp=timestamp;
 		}
 		public String toString() { return name;}
 	}
@@ -807,18 +808,28 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"AN ALLIANCE WITH"
 	};
 
-	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes control points. */
-	public static final int TROPHY_CONTROL=1;
-	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes exp. */
-	public static final int TROPHY_EXP=2;
-	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes most areas. */
-	public static final int TROPHY_AREA=4;
-	/** constant for the getTrophies @see Clan#getTrophies() method. Denotes most pkills. */
-	public static final int TROPHY_PK=8;
-	/** descriptor strings for the TROPHY_* constants, ordered by their value.  @see Clan */
-	public static final String TROPHY_DESCS_SHORT[]={"","CP","EXP","","AREA","","","","PK"};
-	/** long descriptor strings for the TROPHY_* constants, ordered by their value.  @see Clan */
-	public static final String TROPHY_DESCS[]={"","Most control points","Most clan experience","","Most controlled areas","","","","Most rival player-kills"};
+	/**
+	 * enum for the getTrophies @see Clan#getTrophies() method.
+	 * @author Bo Zimmerman
+	 */
+	public static enum Trophy
+	{
+		Points("Most control points","Control Points"),
+		Experience("Most clan experience","Experience"),
+		Areas("Most controlled areas","Areas Controlles"),
+		PlayerKills("Most rival player-kills","PlayerKills"),
+		Members("Most members","Most Members"),
+		MemberLevel("Highest median level","Highest Levels")
+		;
+		public final String description;
+		public final String codeString;
+		private Trophy(String desc, String codeName)
+		{
+			this.description=desc;
+			this.codeString=codeName;
+		}
+		public int flagNum(){return (int)Math.round(Math.pow(2.0, (double)ordinal())); }
+	}
 
 	/**
 	 * An enumeration of relationships between a clan position and a

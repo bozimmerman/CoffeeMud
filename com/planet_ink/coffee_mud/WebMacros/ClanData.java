@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -249,9 +250,9 @@ public class ClanData extends StdWebMacro
 						str.append("None");
 					else
 					{
-						for(int i=0;i<Clan.TROPHY_DESCS.length;i++)
-							if((Clan.TROPHY_DESCS[i].length()>0)&&((C.getTrophies()&i)==i))
-								str.append(Clan.TROPHY_DESCS[i]+", ");
+						for(Trophy t : Trophy.values())
+							if(CMath.bset(C.getTrophies(),t.flagNum()))
+								str.append(t.description+", ");
 					}
 				}
 				if(parms.containsKey("TROPHIESHORT"))
@@ -260,9 +261,9 @@ public class ClanData extends StdWebMacro
 						str.append("None");
 					else
 					{
-						for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
-							if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&((C.getTrophies()&i)==i))
-								str.append(Clan.TROPHY_DESCS_SHORT[i]+", ");
+						for(Trophy t : Trophy.values())
+							if(CMath.bset(C.getTrophies(),t.flagNum()))
+								str.append(t.codeString+", ");
 					}
 				}
 				if(parms.containsKey("DONATIONID"))

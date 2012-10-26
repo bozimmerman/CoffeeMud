@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.AutoPromoteFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -214,15 +215,17 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 
 	public Enumeration<String> clansNames(){return all.keys();}
-	public String translatePrize(int trophy)
+	public String translatePrize(Trophy trophy)
 	{
 		String prizeStr="";
 		switch(trophy)
 		{
-			case Clan.TROPHY_AREA: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA); break;
-			case Clan.TROPHY_CONTROL: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPCP); break;
-			case Clan.TROPHY_EXP: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP); break;
-			case Clan.TROPHY_PK: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPPK); break;
+			case Areas: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA); break;
+			case Points: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPCP); break;
+			case Experience: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP); break;
+			case PlayerKills: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPPK); break;
+			case Members: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPMB); break;
+			case MemberLevel: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPLVL); break;
 		}
 		if(prizeStr.length()==0) return "None";
 		if(prizeStr.length()>0)
@@ -243,6 +246,8 @@ public class Clans extends StdLibrary implements ClanManager
 		return (CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
 			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0)
 			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP).length()>0)
+			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPMB).length()>0)
+			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPLVL).length()>0)
 			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPPK).length()>0);
 		
 	}

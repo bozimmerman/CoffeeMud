@@ -2402,3 +2402,5 @@ ruthless programmer, and sentenced to a quick death.
 6. (internal) XMLManager optomized for More Speed!
 7. Missing INI entry (WRNMSGS) now added and documented.
 8. New Property (Prop_RoomList) -- more lightweight way to keep rooms from going dark at night (pun intended).
+9. New Skill (Urban Tactics)
+10.New Clan Trophies: Most Members, and Highest Median Member Level

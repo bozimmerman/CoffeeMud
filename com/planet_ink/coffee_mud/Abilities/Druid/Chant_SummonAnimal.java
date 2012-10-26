@@ -223,6 +223,7 @@ public class Chant_SummonAnimal extends Chant
 			}
 		}
 
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setLocation(caster.location());
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.recoverCharStats();

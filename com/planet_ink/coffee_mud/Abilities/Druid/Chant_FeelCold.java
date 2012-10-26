@@ -157,7 +157,7 @@ public class Chant_FeelCold extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) very cold");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) very cold.");
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

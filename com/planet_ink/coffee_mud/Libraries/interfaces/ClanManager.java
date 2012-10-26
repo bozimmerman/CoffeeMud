@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -155,7 +156,7 @@ public interface ClanManager extends CMLibrary
 	 * @param trophy the trophy code number
 	 * @return the descriptive name
 	 */
-	public String translatePrize(int trophy);
+	public String translatePrize(Trophy trophy);
 	
 	/**
 	 * Returns whether this mud has activated its trophy system for clans.

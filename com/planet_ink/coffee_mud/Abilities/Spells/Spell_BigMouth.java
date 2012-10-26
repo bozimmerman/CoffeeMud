@@ -70,7 +70,7 @@ public class Spell_BigMouth extends Spell
 					boolean isHit=CMLib.combat().rollToHit(msg.source(),target);
 					if(!isHit)
 					{
-						mob.tell("You fail to eat "+target.name());
+						mob.tell("You fail to eat "+target.name()+".");
 						return false;
 					}
 				}
@@ -83,7 +83,7 @@ public class Spell_BigMouth extends Spell
 				else
 				if((!CMLib.flags().isGettable((Item)msg.target()))||(msg.target().displayText().length()==0))
 				{
-					mob.tell("You can not eat "+msg.target().name());
+					mob.tell("You can not eat "+msg.target().name()+".");
 					return false;
 				}
 

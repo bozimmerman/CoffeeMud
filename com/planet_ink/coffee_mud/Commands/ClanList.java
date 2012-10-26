@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -60,9 +61,9 @@ public class ClanList extends StdCommand
 			
 			StringBuffer trophySet = new StringBuffer("");
 			if(trophySystemActive)
-				for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
-					if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&(CMath.bset(thisClan.getTrophies(),i)))
-						trophySet.append(Clan.TROPHY_DESCS_SHORT[i]+" ");
+				for(Trophy t : Trophy.values())
+					if(CMath.bset(thisClan.getTrophies(),t.flagNum()))
+						trophySet.append(t.codeString.charAt(0));
 			
 			msg.append(" ");
 			msg.append("^<CLAN^>"+CMStrings.padRight(CMStrings.removeColors(thisClan.clanID()),30)+"^</CLAN^>  ");
