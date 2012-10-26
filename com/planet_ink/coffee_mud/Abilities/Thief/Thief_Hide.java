@@ -129,7 +129,8 @@ public class Thief_Hide extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(mob.fetchEffect(this.ID())!=null)
+		final Room room=mob.location();
+		if((mob.fetchEffect(this.ID())!=null)||(room==null))
 		{
 			mob.tell("You are already hiding.");
 			return false;
@@ -161,9 +162,9 @@ public class Thief_Hide extends ThiefSkill
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT|CMMsg.MASK_MOVE),str,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-			if(mob.location().okMessage(mob,msg))
+			if(room.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				room.send(mob,msg);
 				invoker=mob;
 				Ability newOne=(Ability)this.copyOf();
 				((Thief_Hide)newOne).bonus=getXLEVELLevel(mob)*2;
