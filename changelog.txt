@@ -2404,3 +2404,5 @@ ruthless programmer, and sentenced to a quick death.
 8. New Property (Prop_RoomList) -- more lightweight way to keep rooms from going dark at night (pun intended).
 9. New Skill (Urban Tactics)
 10.New Clan Trophies: Most Members, and Highest Median Member Level
+11.Pregnancy will fail if either participant is exhausted or below 1/2 movement.  A message was added so the players know.
+
