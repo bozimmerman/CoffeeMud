@@ -54,7 +54,8 @@ public class Spell_Transformation extends Spell
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setDamage(affectableStats.damage()+affected.phyStats().level()+getXLEVELLevel(invoker()));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+affected.phyStats().level()+getXLEVELLevel(invoker()));
+		affectableStats.setDamage(affectableStats.damage()+(affected.phyStats().level()/2)+getXLEVELLevel(invoker()));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
