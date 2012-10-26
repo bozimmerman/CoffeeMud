@@ -86,7 +86,7 @@ public class Pregnancy extends StdAbility
 		&&(affected instanceof MOB)
 		&&((daysRemaining>0)&&(monthsRemaining<=3)))
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-										  CMMsg.MSG_OK_VISUAL,"\n\r"+affected.name()+" is obviously with child.\n\r",
+										  CMMsg.MSG_OK_VISUAL,"\n\r<S-NAME> <S-IS-ARE> obviously with child.\n\r",
 										  CMMsg.NO_EFFECT,null,
 										  CMMsg.NO_EFFECT,null));
 		super.executeMsg(host,msg);
