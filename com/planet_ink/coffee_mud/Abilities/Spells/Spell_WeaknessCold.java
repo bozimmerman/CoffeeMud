@@ -47,7 +47,7 @@ public class Spell_WeaknessCold extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
@@ -117,7 +117,7 @@ public class Spell_WeaknessCold extends Spell
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;

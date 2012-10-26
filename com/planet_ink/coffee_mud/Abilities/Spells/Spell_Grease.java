@@ -55,7 +55,7 @@ public class Spell_Grease extends Spell
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		CMMsg msg2 = null;
@@ -140,7 +140,7 @@ public class Spell_Grease extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();

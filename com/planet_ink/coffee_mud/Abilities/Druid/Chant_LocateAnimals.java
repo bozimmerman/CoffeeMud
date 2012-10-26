@@ -93,7 +93,7 @@ public class Chant_LocateAnimals extends Chant
 	{
 		super.executeMsg(myHost,msg);
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 
 		MOB mob=(MOB)affected;

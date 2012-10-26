@@ -61,7 +61,7 @@ public class Chant_CheetahBurst extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
@@ -73,7 +73,7 @@ public class Chant_CheetahBurst extends Chant
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 		MOB mob=(MOB)affected;
 		if((--cheetahTick)==0)

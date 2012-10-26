@@ -52,7 +52,7 @@ public class Fighter_Roll extends FighterSkill
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;
@@ -85,7 +85,7 @@ public class Fighter_Roll extends FighterSkill
 	{
 		super.executeMsg(myHost,msg);
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 
 		MOB mob=(MOB)affected;

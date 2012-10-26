@@ -72,7 +72,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		{
 			super.unInvoke();
 			return;

@@ -146,7 +146,7 @@ public class Skill_Juggle extends BardSkill
 	protected synchronized void juggle()
 	{
 		boolean anythingToDo=false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB M=(MOB)affected;
 		Room R=M.location();

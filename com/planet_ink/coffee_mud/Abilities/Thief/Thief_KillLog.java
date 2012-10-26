@@ -141,7 +141,7 @@ public class Thief_KillLog extends ThiefSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 		MOB mob=(MOB)affected;
 		MOB m=getMark(mob);

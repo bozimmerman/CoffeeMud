@@ -47,7 +47,7 @@ public class Chant_Chlorophyll extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
@@ -60,7 +60,7 @@ public class Chant_Chlorophyll extends Chant
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		{
 			unInvoke();
 			return false;

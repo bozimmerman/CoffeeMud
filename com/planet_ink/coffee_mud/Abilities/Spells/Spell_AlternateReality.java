@@ -44,7 +44,7 @@ public class Spell_AlternateReality extends Spell
 
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 
@@ -56,7 +56,7 @@ public class Spell_AlternateReality extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return false;
 		MOB mob=(MOB)affected;
 		if(!mob.isInCombat())

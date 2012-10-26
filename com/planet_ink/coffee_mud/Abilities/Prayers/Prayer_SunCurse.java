@@ -58,7 +58,7 @@ public class Prayer_SunCurse extends Prayer
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 		MOB mob=(MOB)affected;
 		if((mob.location()!=null)
@@ -77,7 +77,7 @@ public class Prayer_SunCurse extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 

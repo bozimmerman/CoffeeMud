@@ -48,7 +48,7 @@ public class Prayer_Cannibalism extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 
@@ -103,7 +103,7 @@ public class Prayer_Cannibalism extends Prayer
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		   return true;
 		MOB M=(MOB)affected;
 		if((M.location()!=null)&&(!CMLib.flags().isSleeping(M)))

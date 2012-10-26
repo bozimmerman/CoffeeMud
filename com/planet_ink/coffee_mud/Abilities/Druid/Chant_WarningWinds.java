@@ -47,7 +47,7 @@ public class Chant_WarningWinds extends Chant
 
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())

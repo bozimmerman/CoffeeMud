@@ -51,7 +51,7 @@ public class Fighter_Cleave extends FighterSkill
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;
@@ -83,7 +83,7 @@ public class Fighter_Cleave extends FighterSkill
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;

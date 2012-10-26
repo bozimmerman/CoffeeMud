@@ -54,7 +54,7 @@ public class Disease_Migraines extends Disease
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;

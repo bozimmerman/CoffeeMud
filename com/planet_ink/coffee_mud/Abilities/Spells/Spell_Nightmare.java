@@ -48,7 +48,7 @@ public class Spell_Nightmare extends Spell
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;
@@ -148,7 +148,7 @@ public class Spell_Nightmare extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 

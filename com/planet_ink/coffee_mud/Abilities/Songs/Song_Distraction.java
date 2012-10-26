@@ -41,7 +41,7 @@ public class Song_Distraction extends Song
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 		if(affected==invoker) return true;
 

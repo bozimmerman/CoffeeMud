@@ -66,7 +66,7 @@ public class Prayer_HolyAura extends Prayer implements MendingSkill
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 

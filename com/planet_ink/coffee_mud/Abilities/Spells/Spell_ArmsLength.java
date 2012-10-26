@@ -45,7 +45,7 @@ public class Spell_ArmsLength extends Spell
 	
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 

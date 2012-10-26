@@ -49,7 +49,7 @@ public class Chant_ColdMoon extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		{
 			if(affected instanceof Room)
 				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The cold moon sets.");

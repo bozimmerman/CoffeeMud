@@ -48,7 +48,7 @@ public class Chant_TremorSense extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		{
 			super.unInvoke();
 			return;

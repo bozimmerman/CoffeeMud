@@ -100,7 +100,7 @@ public class Fighter_BackHand extends MonkSkill
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;

@@ -118,7 +118,7 @@ public class Spell_DetectWeaknesses extends Spell
 
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 

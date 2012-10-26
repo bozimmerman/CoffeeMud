@@ -115,7 +115,7 @@ public class Ranger_Track extends StdAbility
 	{
 		super.executeMsg(myHost,msg);
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 
 		MOB mob=(MOB)affected;

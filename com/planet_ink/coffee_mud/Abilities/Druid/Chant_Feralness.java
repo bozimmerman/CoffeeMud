@@ -82,7 +82,7 @@ public class Chant_Feralness extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		int lostpoints=mob.maxState().getHitPoints()-mob.curState().getHitPoints();

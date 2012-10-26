@@ -107,7 +107,7 @@ public class Thief_Bind extends ThiefSkill
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		{
 			super.unInvoke();
 			return;

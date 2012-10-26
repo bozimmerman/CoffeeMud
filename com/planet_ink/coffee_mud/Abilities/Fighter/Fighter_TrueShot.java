@@ -47,7 +47,7 @@ public class Fighter_TrueShot extends FighterSkill
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if((affected==null)||(!(affected instanceof MOB))) return;
+		if(!(affected instanceof MOB)) return;
 		Item w=((MOB)affected).fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon))) return;
 		if((((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
@@ -64,7 +64,7 @@ public class Fighter_TrueShot extends FighterSkill
 	{
 		super.executeMsg(myHost,msg);
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 
 		MOB mob=(MOB)affected;

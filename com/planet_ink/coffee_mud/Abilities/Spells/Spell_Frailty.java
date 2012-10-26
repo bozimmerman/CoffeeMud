@@ -47,7 +47,7 @@ public class Spell_Frailty extends Spell
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;
@@ -68,7 +68,7 @@ public class Spell_Frailty extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 

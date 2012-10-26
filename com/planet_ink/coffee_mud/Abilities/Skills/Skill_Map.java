@@ -50,7 +50,7 @@ public class Skill_Map extends StdSkill
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
@@ -62,7 +62,7 @@ public class Skill_Map extends StdSkill
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		if((map.owner()==null)

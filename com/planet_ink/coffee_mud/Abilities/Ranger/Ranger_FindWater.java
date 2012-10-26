@@ -53,7 +53,7 @@ public class Ranger_FindWater extends StdAbility
 	public int nextDirection=-2;
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		super.unInvoke();
 	}
@@ -116,7 +116,7 @@ public class Ranger_FindWater extends StdAbility
 	{
 		super.executeMsg(myHost,msg);
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 
 		MOB mob=(MOB)affected;

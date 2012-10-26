@@ -48,7 +48,7 @@ public class Prayer_SenseUndead extends Prayer
 	Room lastRoom=null;
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		lastRoom=null;

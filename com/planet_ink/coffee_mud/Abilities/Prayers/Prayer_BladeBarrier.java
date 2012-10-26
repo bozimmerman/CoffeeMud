@@ -51,7 +51,7 @@ public class Prayer_BladeBarrier extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 
@@ -65,7 +65,7 @@ public class Prayer_BladeBarrier extends Prayer
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		if(msg.target()==affected)
 		{

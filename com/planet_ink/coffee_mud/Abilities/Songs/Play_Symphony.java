@@ -675,7 +675,7 @@ public class Play_Symphony extends Play
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		   return true;
 		int per=-1;
 		int addedLevel=0;

@@ -46,7 +46,7 @@ public class Prayer_Revival extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())

@@ -49,7 +49,7 @@ public class Prayer_PeaceRitual extends Prayer
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return false;
 
 		if(invoker==null)
@@ -93,7 +93,7 @@ public class Prayer_PeaceRitual extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		super.unInvoke();
 

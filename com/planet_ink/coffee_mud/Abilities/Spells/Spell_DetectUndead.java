@@ -47,7 +47,7 @@ public class Spell_DetectUndead extends Spell
 	Room lastRoom=null;
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		lastRoom=null;

@@ -49,7 +49,7 @@ public class Skill_Songcraft extends BardSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		   return;
 		MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)

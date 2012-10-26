@@ -172,7 +172,7 @@ public class Archon_Banish extends ArchonSkill
 
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		{
 			super.unInvoke();
 			return;

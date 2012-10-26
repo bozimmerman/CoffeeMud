@@ -57,7 +57,7 @@ public class Prayer_Stoning extends Prayer
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 		MOB mob=(MOB)affected;
 		Room R=mob.location();

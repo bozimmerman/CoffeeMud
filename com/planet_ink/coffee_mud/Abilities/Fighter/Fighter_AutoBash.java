@@ -48,7 +48,7 @@ public class Fighter_AutoBash extends FighterSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 		if(!super.tick(ticking,tickID))
 			return false;

@@ -77,7 +77,7 @@ public class Chant_Reincarnation extends Chant
 			tickDown=-1;
 
 			// undo the affects of this spell
-			if((affected==null)||(!(affected instanceof MOB)))
+			if(!(affected instanceof MOB))
 				return super.tick(ticking,tickID);
 			MOB mob=(MOB)affected;
 			mob.tell("Your reincarnation geas is lifted as your form solidifies.");
@@ -108,7 +108,7 @@ public class Chant_Reincarnation extends Chant
 	{
 		super.executeMsg(myHost,msg);
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)

@@ -53,7 +53,7 @@ public class Chant_Tangle extends Chant
 	}
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		if((thePlants==null)||(thePlants.owner()==null)||(!(thePlants.owner() instanceof Room)))
@@ -87,7 +87,7 @@ public class Chant_Tangle extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 

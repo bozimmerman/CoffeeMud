@@ -54,7 +54,7 @@ public class Thief_Hide extends ThiefSkill
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 
 		MOB mob=(MOB)affected;

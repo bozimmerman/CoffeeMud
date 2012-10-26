@@ -48,7 +48,7 @@ public class Prop_Hidden extends Property
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 
 		MOB mob=(MOB)affected;

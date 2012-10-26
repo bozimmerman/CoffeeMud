@@ -62,7 +62,7 @@ public class Chant_WindSnatcher extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 
@@ -97,7 +97,7 @@ public class Chant_WindSnatcher extends Chant
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		if((msg.tool()!=null)&&(msg.tool() instanceof Ability)

@@ -47,7 +47,7 @@ public class Spell_KnowBliss extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
@@ -65,7 +65,7 @@ public class Spell_KnowBliss extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
@@ -79,7 +79,7 @@ public class Spell_KnowBliss extends Spell
 		if(tickID==Tickable.TICKID_MOB)
 		{
 			// undo the affects of this spell
-			if((affected==null)||(!(affected instanceof MOB)))
+			if(!(affected instanceof MOB))
 				return super.tick(ticking,tickID);
 			MOB mob=(MOB)affected;
 			CMLib.tracking().wanderAway(mob,false,true);
@@ -90,7 +90,7 @@ public class Spell_KnowBliss extends Spell
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)

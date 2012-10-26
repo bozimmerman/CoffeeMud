@@ -114,7 +114,7 @@ public class Poison_Alcohol extends Poison
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		if(disableHappiness){disableHappiness=false; return true;}

@@ -102,7 +102,7 @@ public class Prop_Familiar extends Property
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			if((affected==null)||(!(affected instanceof MOB)))
+			if(!(affected instanceof MOB))
 				return removeMeFromFamiliarTo();
 			if(((familiarTo != null) && (familiarTo.amDestroyed()))
 			||((familiarWith != null) && (familiarWith.amDestroyed())))

@@ -49,7 +49,7 @@ public class Dance_Manipuri extends Dance
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 		MOB mob=(MOB)affected;
 		if(mob.location()!=lastRoom)

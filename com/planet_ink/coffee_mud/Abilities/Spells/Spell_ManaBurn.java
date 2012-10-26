@@ -65,7 +65,7 @@ public class Spell_ManaBurn extends Spell
 	public void adjustMana()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
@@ -80,7 +80,7 @@ public class Spell_ManaBurn extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 

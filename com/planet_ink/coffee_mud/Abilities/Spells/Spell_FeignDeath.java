@@ -48,7 +48,7 @@ public class Spell_FeignDeath extends Spell
 	public Room deathRoom=null;
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 
@@ -76,7 +76,7 @@ public class Spell_FeignDeath extends Spell
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 		MOB mob=(MOB)affected;
 

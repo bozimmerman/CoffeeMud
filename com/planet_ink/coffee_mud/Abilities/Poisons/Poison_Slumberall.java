@@ -66,7 +66,7 @@ public class Poison_Slumberall extends Poison
 	}
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;
@@ -93,7 +93,7 @@ public class Poison_Slumberall extends Poison
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;

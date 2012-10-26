@@ -60,7 +60,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 		if((msg.target()==affected)
 		&&((msg.targetMinor()==CMMsg.TYP_EXAMINE)||(msg.targetMinor()==CMMsg.TYP_LOOK)))

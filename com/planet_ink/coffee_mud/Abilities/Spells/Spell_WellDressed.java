@@ -60,7 +60,7 @@ public class Spell_WellDressed extends Spell
 	
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 	   // MOB mob=(MOB)affected;
 

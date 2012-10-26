@@ -47,7 +47,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	double drawups=1.0;
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 
 		if(!super.tick(ticking,tickID))
@@ -91,7 +91,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 

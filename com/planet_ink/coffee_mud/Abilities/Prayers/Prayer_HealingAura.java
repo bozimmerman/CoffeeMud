@@ -63,7 +63,7 @@ public class Prayer_HealingAura extends Prayer
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		   return false;
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		MOB myChar=(MOB)affected;

@@ -47,7 +47,7 @@ public class Chant_PaleMoon extends Chant
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		{
 			if((affected instanceof Room)&&(canBeUninvoked()))
 				((Room)affected).showHappens(CMMsg.MSG_OK_VISUAL,"The pale moon sets.");

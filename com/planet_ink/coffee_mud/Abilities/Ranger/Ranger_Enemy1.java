@@ -49,7 +49,7 @@ public class Ranger_Enemy1 extends StdAbility
 	{
 		if(miscText.length()==0)
 		{
-			if((affected==null)||(!(affected instanceof MOB)))
+			if(!(affected instanceof MOB))
 				return super.text();
 			MOB mob=(MOB)affected;
 			Vector choices=new Vector();
@@ -97,7 +97,7 @@ public class Ranger_Enemy1 extends StdAbility
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		MOB victim=mob.getVictim();

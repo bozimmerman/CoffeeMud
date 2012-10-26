@@ -92,7 +92,7 @@ public class Thief_Flank extends ThiefSkill
 
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		if((canBeUninvoked())&&(mob!=null)&&(target!=null)&&(!mob.amDead()))

@@ -54,7 +54,7 @@ public class Disease_Alzheimers extends Disease
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;

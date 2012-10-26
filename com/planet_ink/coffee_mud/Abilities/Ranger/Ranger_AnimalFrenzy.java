@@ -49,7 +49,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return false;
 		if(invoker==null)
 		{

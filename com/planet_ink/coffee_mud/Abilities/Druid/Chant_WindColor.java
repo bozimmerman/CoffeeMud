@@ -46,7 +46,7 @@ public class Chant_WindColor extends Chant
 
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())

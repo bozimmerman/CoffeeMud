@@ -67,7 +67,7 @@ public class Spell_HeatMetal extends Spell
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(tickID!=Tickable.TICKID_MOB) return true;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 		if(invoker==null)
 			return true;

@@ -49,7 +49,7 @@ public class Prayer_AuraIntolerance extends Prayer
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return;
 		MOB M=(MOB)affected;
 
@@ -64,7 +64,7 @@ public class Prayer_AuraIntolerance extends Prayer
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return true;
 
 		if((msg.source()==affected)
@@ -83,7 +83,7 @@ public class Prayer_AuraIntolerance extends Prayer
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
 
 		if(!super.tick(ticking,tickID))

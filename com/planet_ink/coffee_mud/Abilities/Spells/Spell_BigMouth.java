@@ -44,7 +44,7 @@ public class Spell_BigMouth extends Spell
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 			return super.okMessage(myHost,msg);
 
 		MOB mob=(MOB)affected;
@@ -103,7 +103,7 @@ public class Spell_BigMouth extends Spell
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(!(affected instanceof MOB))
 		{
 			super.executeMsg(myHost,msg);
 			return;

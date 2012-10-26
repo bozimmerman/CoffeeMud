@@ -51,7 +51,7 @@ public class Spell_CauseStink extends Spell
 		if(tickID==Tickable.TICKID_MOB)
 		{
 			if(CMLib.dice().rollPercentage()>25) return true;
-			if((affected==null)||(!(affected instanceof MOB))) return false;
+			if(!(affected instanceof MOB)) return false;
 			MOB mob=(MOB)affected;
 			Room room=mob.location();
 			if(room==null) return false;
