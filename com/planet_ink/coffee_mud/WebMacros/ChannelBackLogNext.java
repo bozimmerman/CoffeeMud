@@ -55,7 +55,17 @@ public class ChannelBackLogNext extends StdWebMacro
 		{
 			if(CMLib.channels().mayReadThisChannel(mob,channelInt,true))
 			{
-				List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt);
+				@SuppressWarnings("unchecked")
+				List<ChannelsLibrary.ChannelMsg> que=(List<ChannelsLibrary.ChannelMsg>)httpReq.getRequestObjects().get("CHANNELMSG_"+channelInt+" QUE");
+				if(que==null)
+				{
+					List<ChannelsLibrary.ChannelMsg> oldQue=CMLib.channels().getChannelQue(channelInt);
+					que=new Vector<ChannelsLibrary.ChannelMsg>(oldQue.size());
+					for(ChannelsLibrary.ChannelMsg msg : oldQue)
+						que.add(msg);
+					httpReq.getRequestObjects().put("CHANNELMSG_"+channelInt+" QUE",que);
+				}
+				
 				while(true)
 				{
 					int num=CMath.s_int(last);
@@ -69,7 +79,8 @@ public class ChannelBackLogNext extends StdWebMacro
 						return " @break@";
 					}
 					boolean areareq=CMLib.channels().getChannel(channelInt).flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-					final ChannelsLibrary.ChannelMsg cmsg =que.get(num); 
+					
+					final ChannelsLibrary.ChannelMsg cmsg=que.get(num); 
 					final CMMsg msg=cmsg.msg;
 					String str=null;
 					if((mob==msg.source())&&(msg.sourceMessage()!=null))

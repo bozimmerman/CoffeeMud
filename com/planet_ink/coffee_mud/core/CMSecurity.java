@@ -140,6 +140,64 @@ public class CMSecurity
 		}
 	}
 
+	public Object parseSecurityFlag(String s)
+	{
+		SecGroup group=groups.get(s);
+		if(group != null)
+			return group;
+		else
+		if(s.startsWith("FS:"))
+		{
+			s=s.substring(3).trim();
+			boolean isAreaOnly=false;
+			if(s.startsWith("AREA "))
+			{
+				s=s.substring(5).trim();
+				isAreaOnly=true;
+			}
+			while(s.startsWith("/")) s=s.substring(1).trim();
+			return new SecPath(s,false,isAreaOnly);
+			
+		}
+		else
+		if(s.startsWith("VFS:"))
+		{
+			s=s.substring(4);
+			boolean isAreaOnly=false;
+			if(s.startsWith("AREA "))
+			{
+				s=s.substring(5).trim();
+				isAreaOnly=true;
+			}
+			while(s.startsWith("/")) s=s.substring(1).trim();
+			return new SecPath(s,false,isAreaOnly);
+		}
+		else
+		if(journalFlags.contains(s))
+			return s;
+		else
+		if(s.startsWith("KILL") && journalFlags.contains(s.substring(4)))
+			return s.substring(4);
+		else
+		if(s.startsWith("KILL") && s.endsWith("S") && journalFlags.contains(s.substring(4,s.length()-1)))
+			return s.substring(4,s.length()-1);
+		else
+		if(s.endsWith("S") && journalFlags.contains(s.substring(0,s.length()-1)))
+			return s.substring(0,s.length()-1);
+		else
+		{
+			s=s.replace(' ','_');
+			SecFlag flag=(SecFlag)CMath.s_valueOf(SecFlag.class, s);
+			if(flag==null) flag=(SecFlag)CMath.s_valueOf(SecFlag.class, s+"S");
+			if((flag==null)&&(s.equals("POOF"))) flag=(SecFlag)CMath.s_valueOf(SecFlag.class, "GOTO");
+			if((flag==null)&&(s.equals("AREA_POOF"))) flag=(SecFlag)CMath.s_valueOf(SecFlag.class, "AREA_GOTO");
+			if(flag==null)
+				return null;
+			else
+				return flag;
+		}
+	}
+
 	public final SecGroup createGroup(String name, final List<String> set)
 	{
 		final Set<SecFlag> 	 newFlags=new HashSet<SecFlag>();
@@ -149,60 +207,23 @@ public class CMSecurity
 		for(int v=0;v<set.size();v++)
 		{
 			String s=((String)set.get(v)).trim().toUpperCase();
-			SecGroup group=groups.get(s);
-			if(group != null)
-				newGroups.add(group);
+			Object o=this.parseSecurityFlag(s);
+			if(o==null)
+				Log.errOut("CMSecurity","Unknown security flag: "+s+" in group "+name);
 			else
-			if(s.startsWith("FS:"))
-			{
-				s=s.substring(3).trim();
-				boolean isAreaOnly=false;
-				if(s.startsWith("AREA "))
-				{
-					s=s.substring(5).trim();
-					isAreaOnly=true;
-				}
-				while(s.startsWith("/")) s=s.substring(1).trim();
-				newPaths.add(new SecPath(s,false,isAreaOnly));
-				
-			}
+			if(o instanceof SecGroup)
+				newGroups.add((SecGroup)o);
 			else
-			if(s.startsWith("VFS:"))
-			{
-				s=s.substring(4);
-				boolean isAreaOnly=false;
-				if(s.startsWith("AREA "))
-				{
-					s=s.substring(5).trim();
-					isAreaOnly=true;
-				}
-				while(s.startsWith("/")) s=s.substring(1).trim();
-				newPaths.add(new SecPath(s,false,isAreaOnly));
-			}
+			if(o instanceof SecPath)
+				newPaths.add((SecPath)o);
 			else
-			if(journalFlags.contains(s))
-				newJFlags.add(s);
+			if(o instanceof SecFlag)
+				newFlags.add((SecFlag)o);
 			else
-			if(s.startsWith("KILL") && journalFlags.contains(s.substring(4)))
-				newJFlags.add(s.substring(4));
+			if(o instanceof String)
+				newJFlags.add((String)o);
 			else
-			if(s.startsWith("KILL") && s.endsWith("S") && journalFlags.contains(s.substring(4,s.length()-1)))
-				newJFlags.add(s.substring(4,s.length()-1));
-			else
-			if(s.endsWith("S") && journalFlags.contains(s.substring(0,s.length()-1)))
-				newJFlags.add(s.substring(0,s.length()-1));
-			else
-			{
-				s=s.replace(' ','_');
-				SecFlag flag=(SecFlag)CMath.s_valueOf(SecFlag.class, s);
-				if(flag==null) flag=(SecFlag)CMath.s_valueOf(SecFlag.class, s+"S");
-				if((flag==null)&&(s.equals("POOF"))) flag=(SecFlag)CMath.s_valueOf(SecFlag.class, "GOTO");
-				if((flag==null)&&(s.equals("AREA_POOF"))) flag=(SecFlag)CMath.s_valueOf(SecFlag.class, "AREA_GOTO");
-				if(flag==null)
-					Log.errOut("CMSecurity","Unknown security flag: "+s+" in group "+name);
-				else
-					newFlags.add(flag);
-			}
+				Log.errOut("CMSecurity","Unparsed security flag: "+s+" in group "+name);
 		}
 		return new SecGroup(name,newFlags,newGroups,newPaths,newJFlags);
 	}

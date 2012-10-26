@@ -72,10 +72,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{ E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,false,false,maxChars,help,null,null)); }
 	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices)
 	throws IOException
-	{    E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,false,false,help,CMEvalStrChoice.INSTANCE,choices)); }
+	{	E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,false,false,help,CMEvalStrChoice.INSTANCE,choices)); }
 	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices)
 	throws IOException
-	{    E.setStat(Field,this.promptCommaList(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, help, CMEvalStrChoice.INSTANCE, choices)); }
+	{	E.setStat(Field,this.promptCommaList(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, help, CMEvalStrChoice.INSTANCE, choices)); }
 	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
 	throws IOException
 	{ return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,false,false,null,null,null); }
@@ -1608,7 +1608,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			for(int i=1;i<=recipes.length;i++)
 				str.append(i+") "+CMStrings.replaceAll(recipes[i-1],"\t",",")).append("\n");
 			if(recipes.length<E.getTotalRecipePages())
-    			str.append((recipes.length+1)+") ADD NEW RECIPE").append("\n");
+				str.append((recipes.length+1)+") ADD NEW RECIPE").append("\n");
 			mob.tell(str.toString());
 			String newName=mob.session().prompt("Enter a number to add/edit/remove\n\r:","");
 			int x=CMath.s_int(newName);
@@ -1621,7 +1621,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					return "Skill "+E.getCommonSkillID()+" is not a crafting skill!";
 				try
 				{
-    				CMLib.ableParms().testRecipeParsing(new StringBuffer(CMStrings.replaceAll(line,",","\t")), C.parametersFormat());
+					CMLib.ableParms().testRecipeParsing(new StringBuffer(CMStrings.replaceAll(line,",","\t")), C.parametersFormat());
 				}
 				catch(CMException cme)
 				{
@@ -1642,11 +1642,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					mob.tell("(No change)");
 				else
 				{
-    				String errors = new Checker().getErrors(newLine);
-    				if((errors==null)||(errors.length()==0))
-    					recipeList.set(x-1, CMStrings.replaceAll(newLine,",","\t"));
-    				else
-    					mob.tell("Error: "+errors+", aborting change.");
+					String errors = new Checker().getErrors(newLine);
+					if((errors==null)||(errors.length()==0))
+						recipeList.set(x-1, CMStrings.replaceAll(newLine,",","\t"));
+					else
+						mob.tell("Error: "+errors+", aborting change.");
 				}
 			}
 			else
@@ -1658,11 +1658,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						mob.tell((C==null)?"?":CMStrings.replaceAll(C.parametersFormat(), "\t", ","));
 					else
 					{
-        				String errors = new Checker().getErrors(newLine);
-        				if((errors==null)||(errors.length()==0))
-        					recipeList.add(CMStrings.replaceAll(newLine,",","\t"));
-        				else
-        					mob.tell("Error: "+errors+", aborting change.");
+						String errors = new Checker().getErrors(newLine);
+						if((errors==null)||(errors.length()==0))
+							recipeList.add(CMStrings.replaceAll(newLine,",","\t"));
+						else
+							mob.tell("Error: "+errors+", aborting change.");
 					}
 				}
 				else
@@ -2296,9 +2296,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void genAbility(MOB mob, Physical P, int showNumber, int showFlag) throws IOException
 	{
 		if(P instanceof Electronics)
-    		genAbility(mob,P,showNumber,showFlag,"Technical Level");
+			genAbility(mob,P,showNumber,showFlag,"Technical Level");
 		else
-    		genAbility(mob,P,showNumber,showFlag,"Magical Ability"); 
+			genAbility(mob,P,showNumber,showFlag,"Magical Ability"); 
 	}
 	
 	protected void genCoinStuff(MOB mob, Coins I, int showNumber, int showFlag)
@@ -2642,14 +2642,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		Session S=mob.session();
 		while((S!=null)&&(!S.isStopped())&&(!q))
 		{
-    		StringBuilder str=new StringBuilder("");
-    		for(int i=0;i<E.getConsumedFuelTypes().length;i++)
-    		{
-    			if(i>0) str.append(", ");
-    			str.append(RawMaterial.CODES.NAME(E.getConsumedFuelTypes()[i]));
-    		}
-    		mob.tell(showNumber+". Consumed Resources: '"+str.toString()+"'.");
-    		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			StringBuilder str=new StringBuilder("");
+			for(int i=0;i<E.getConsumedFuelTypes().length;i++)
+			{
+				if(i>0) str.append(", ");
+				str.append(RawMaterial.CODES.NAME(E.getConsumedFuelTypes()[i]));
+			}
+			mob.tell(showNumber+". Consumed Resources: '"+str.toString()+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			String newType=mob.session().prompt("Enter a resource to add/remove (?)\n\r:","");
 			if((newType==null)||(newType.length()==0))
 				return;
@@ -2803,7 +2803,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String newFact="Q";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newFact.length()>0))
 		{
-			mob.tell(showNumber+". Factions: "+E.getFactionListing());
+			String listing=E.getFactionListing();
+			if((listing.length()>50)&&((showFlag!=showNumber)&&(showFlag>-999)))
+				listing=CMStrings.limit(listing, 50)+((listing.length()>50)?"...":"");
+			mob.tell(showNumber+". Factions: "+listing);
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			newFact=mob.session().prompt("Enter a faction name to add or remove\n\r:","");
 			if(newFact.length()>0)
@@ -3178,18 +3181,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				else
 				{
-					behave=behave.trim().toUpperCase().replace(' ','_');
+					Object o=CMSecurity.instance().parseSecurityFlag(behave.trim().toUpperCase());
 					CMSecurity.SecFlag flag=(CMSecurity.SecFlag)CMath.s_valueOf(CMSecurity.SecFlag.class, behave);
-					List<String> grpNames=new ArrayList<String>();
-					for(Enumeration<SecGroup> g=CMSecurity.getSecurityGroups();g.hasMoreElements();)
-						grpNames.add(g.nextElement().getName().toUpperCase());
-					List<String> jFlagNames=new ArrayList<String>();
-					for(Enumeration<String> j=CMSecurity.getJournalSecurityFlags();j.hasMoreElements();)
-						jFlagNames.add(j.nextElement());
-					boolean isGroup = ((flag == null)?grpNames.contains(behave):false);
-					boolean isJournalFlag=(((flag == null)&&(!isGroup))?CMParms.contains(CMSecurity.getJournalSecurityFlags(), behave):false);
-					if((flag == null) && (!isGroup) && (!isJournalFlag))
+					boolean isFs=(o instanceof CMSecurity.SecPath);
+					boolean isGroup=(o instanceof CMSecurity.SecGroup);
+					boolean isFlag=(o instanceof CMSecurity.SecFlag) && (flag!=null);
+					boolean isJournalFlag=(o instanceof String);
+					behave=behave.trim().toUpperCase().replace(' ','_');
+					if((!isFlag) && (!isGroup) && (!isJournalFlag)&& (!isFs))
 					{
+						List<String> grpNames=new ArrayList<String>();
+						for(Enumeration<SecGroup> g=CMSecurity.getSecurityGroups();g.hasMoreElements();)
+							grpNames.add(g.nextElement().getName().toUpperCase());
+						List<String> jFlagNames=new ArrayList<String>();
+						for(Enumeration<String> j=CMSecurity.getJournalSecurityFlags();j.hasMoreElements();)
+							jFlagNames.add(j.nextElement());
 						mob.tell("No such security flag: "+behave+".");
 						mob.tell("Value flags include: "+CMParms.toStringList(CMSecurity.SecFlag.values()));
 						mob.tell("Valid groups include: "+CMParms.toStringList(grpNames));
@@ -3197,40 +3203,40 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					}
 					else
 					{
-    					if(flag != null)
-    					{
-            				if((flag.getAreaAlias()==flag)
-            				&&(!CMSecurity.isAllowedAnywhere(mob,flag)))
-            				{
-            					mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
-            					continue;
-            				}
-            				else
-            				if((flag.getRegularAlias()==flag)
-            				&&(!CMSecurity.isAllowedEverywhere(mob,flag)))
-            				{
-            					mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
-            					continue;
-            				}
-    					}
-    					else
-    					if(isJournalFlag)
-    					{
-            				if(!CMSecurity.isJournalAccessAllowed(mob,behave))
-            				{
-            					mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
-            					continue;
-            				}
-    					}
-    					else
-    					if(!CMSecurity.isASysOp(mob))
-    					{
-        					mob.tell("You do not have clearance to add security group '"+behave+"' to this class.");
-        					continue;
-    					}
-    					secFlags.add(behave.trim().toUpperCase());
-    					P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
-    					mob.tell(behave+" added.");
+						if(flag != null)
+						{
+							if((flag.getAreaAlias()==flag)
+							&&(!CMSecurity.isAllowedAnywhere(mob,flag)))
+							{
+								mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
+								continue;
+							}
+							else
+							if((flag.getRegularAlias()==flag)
+							&&(!CMSecurity.isAllowedEverywhere(mob,flag)))
+							{
+								mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
+								continue;
+							}
+						}
+						else
+						if(isJournalFlag)
+						{
+							if(!CMSecurity.isJournalAccessAllowed(mob,behave))
+							{
+								mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
+								continue;
+							}
+						}
+						else
+						if(!CMSecurity.isASysOp(mob))
+						{
+							mob.tell("You do not have clearance to add security group '"+behave+"' to this class.");
+							continue;
+						}
+						secFlags.add(behave.trim().toUpperCase());
+						P.getSetSecurityFlags(CMParms.toSemicolonList(secFlags));
+						mob.tell(behave+" added.");
 					}
 				}
 			}
@@ -3766,8 +3772,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
-			if((abilitiestr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
-				abilitiestr=abilitiestr.substring(0,60)+"...";
+			if((abilitiestr.length()>50)&&((showFlag!=showNumber)&&(showFlag>-999)))
+				abilitiestr=abilitiestr.substring(0,50)+"...";
 			mob.tell(showNumber+". Abilities: '"+abilitiestr+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
@@ -5779,7 +5785,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@SuppressWarnings("unchecked")
-    protected DVector genClassAbleMod(MOB mob, DVector sets, String ableID, int origLevelIndex, int origAbleIndex)
+	protected DVector genClassAbleMod(MOB mob, DVector sets, String ableID, int origLevelIndex, int origAbleIndex)
 	throws IOException
 	{
 		Integer level=null;
@@ -5860,7 +5866,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@SuppressWarnings("unchecked")
-    protected void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
+	protected void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
