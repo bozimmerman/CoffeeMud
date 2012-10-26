@@ -258,14 +258,20 @@ public class StdRace implements Race
 						||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
 								&&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 				{
-					msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
-					myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
-					msg.source().curState().adjMovement(-msg.source().maxState().getMovement()/2, msg.source().maxState());
-					myChar.curState().adjMovement(-myChar.maxState().getMovement()/2, myChar.maxState());
 					if(srcExhausted)
 						msg.source().tell("You are exhausted!");
+					else
+					{
+						msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+						msg.source().curState().adjMovement(-msg.source().maxState().getMovement()/2, msg.source().maxState());
+					}
 					if(meExhausted)
 						myChar.tell("You are exhausted!");
+					else
+					{
+						myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+						myChar.curState().adjMovement(-myChar.maxState().getMovement()/2, myChar.maxState());
+					}
 					if(!srcExhausted && !meExhausted && (CMLib.dice().rollPercentage()<10))
 					{
 						Ability A=CMClass.getAbility("Pregnancy");
