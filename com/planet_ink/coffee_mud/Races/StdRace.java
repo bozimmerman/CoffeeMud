@@ -39,7 +39,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdRace implements Race
 {
-	public String     ID(){    return "StdRace"; }
+	public String	 ID(){	return "StdRace"; }
 	
 	private int[]   	   agingChart={0,1,3,15,35,53,70,74,78};
 	protected String	   baseStatChgDesc = null;
@@ -48,7 +48,7 @@ public class StdRace implements Race
 	protected String	   abilitiesDesc = null;
 	protected String	   languagesDesc = null;
 	protected Weapon	   naturalWeapon=null;
-	protected boolean      mappedCulturalAbilities=false;
+	protected boolean	   mappedCulturalAbilities=false;
 	protected List<Item>   outfitChoices=null;
 	protected List<Weapon> naturalWeaponChoices=null;
 	protected Map<Integer,SearchIDList<Ability>> 
@@ -238,10 +238,11 @@ public class StdRace implements Race
 			if((msg.target()==myChar)
 			&&(msg.tool().Name().endsWith("<T-NAME>")))
 			{
-				msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
-				myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
-				if((CMLib.dice().rollPercentage()<10)
-				&&(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F'))
+				boolean srcExhausted=((msg.source().curState().getMovement()<(msg.source().maxState().getMovement()/2))
+						||(msg.source().curState().getFatigue()>=CharState.FATIGUED_MILLIS));
+				boolean meExhausted=((myChar.curState().getMovement()<(myChar.maxState().getMovement()/2))
+						||(myChar.curState().getFatigue()>=CharState.FATIGUED_MILLIS));
+				if((myChar.charStats().getStat(CharStats.STAT_GENDER)==('F'))
 				&&(msg.source().charStats().getStat(CharStats.STAT_GENDER)==('M'))
 				&&(fertile())
 				&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
@@ -257,11 +258,22 @@ public class StdRace implements Race
 						||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
 								&&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 				{
-					Ability A=CMClass.getAbility("Pregnancy");
-					if((A!=null)
-					&&(myChar.fetchAbility(A.ID())==null)
-					&&(myChar.fetchEffect(A.ID())==null))
-						A.invoke(msg.source(),myChar,true,0);
+					msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+					myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+					msg.source().curState().adjMovement(-msg.source().maxState().getMovement()/2, msg.source().maxState());
+					myChar.curState().adjMovement(-myChar.maxState().getMovement()/2, myChar.maxState());
+					if(srcExhausted)
+						msg.source().tell("You are exhausted!");
+					if(meExhausted)
+						myChar.tell("You are exhausted!");
+					if(!srcExhausted && !meExhausted && (CMLib.dice().rollPercentage()<10))
+					{
+						Ability A=CMClass.getAbility("Pregnancy");
+						if((A!=null)
+						&&(myChar.fetchAbility(A.ID())==null)
+						&&(myChar.fetchEffect(A.ID())==null))
+							A.invoke(msg.source(),myChar,true,0);
+					}
 				}
 			}
 		}
