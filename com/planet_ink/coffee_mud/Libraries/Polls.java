@@ -178,7 +178,7 @@ public class Polls extends StdLibrary implements PollManager
 				if(CMath.isInteger(s)&&(CMath.s_int(s)>=1)&&(CMath.s_int(s)<=P.getOptions().size()))
 					choice=CMath.s_int(s);
 			}
-			Poll.PollResult R=new Poll.PollResult(mob.name(),"",""+choice);
+			Poll.PollResult R=new Poll.PollResult(mob.Name(),"",""+choice);
 			if(CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP))
 				R.ip=mob.session().getAddress();
 			P.addVoteResult(R);
