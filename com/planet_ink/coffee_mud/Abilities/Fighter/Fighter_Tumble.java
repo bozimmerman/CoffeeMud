@@ -69,6 +69,9 @@ public class Fighter_Tumble extends FighterSkill
 			return true;
 
 		MOB mob=(MOB)affected;
+		if(!mob.isInCombat())
+			this.unInvoke();
+		else
 		if((msg.amITarget(mob))
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&((msg.value())>0))
