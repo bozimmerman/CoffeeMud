@@ -439,7 +439,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			playSound="scissor.wav";
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight((int)Math.round( (double)woodRequired * this.getItemWeightMultiplier( bundling )));
+			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE))*multiplier);
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.setSecretIdentity(getBrand(mob));

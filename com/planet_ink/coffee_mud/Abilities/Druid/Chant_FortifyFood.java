@@ -66,7 +66,7 @@ public class Chant_FortifyFood extends Chant
 			return false;
 		}
 
-		if(success)
+		if(success && (((Food)target).nourishment()<=0))
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))

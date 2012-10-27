@@ -65,6 +65,14 @@ public class CraftingSkill extends GatheringSkill
 		return 1.0;
 	}
 	
+	public int getStandardWeight(int baseWoodRequired, boolean bundling)
+	{
+		int newWeight=(int)Math.round( (double)baseWoodRequired * this.getItemWeightMultiplier( bundling ));
+		if((baseWoodRequired>0) && (newWeight<=0))
+			return 1;
+		return newWeight;
+	}
+	
 	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)

@@ -403,7 +403,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			playSound="scissor.wav";
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight((int)Math.round( (double)woodRequired * this.getItemWeightMultiplier( bundling )));
+			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-1;
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);

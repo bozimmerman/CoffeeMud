@@ -415,7 +415,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			verb="carving "+building.name();
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight((int)Math.round( (double)woodRequired * this.getItemWeightMultiplier( bundling )));
+			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
