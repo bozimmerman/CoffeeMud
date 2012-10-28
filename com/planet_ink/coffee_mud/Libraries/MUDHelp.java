@@ -501,19 +501,21 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					for(Enumeration<Integer> e=sortedByLevel.keys();e.hasMoreElements();)
 					{
 						Integer I=(Integer)e.nextElement();
-						if(((int[])sortedByLevel.get(I))[0]>2)
+						int[] count=(int[])sortedByLevel.get(I);
+						if(count[0]>2)
 						{
 							String s=null;
+							final String endsWith="("+I.intValue()+")";
 							for(int i=avail.size()-1;i>=0;i--)
 							{
 								s=(String)avail.elementAt(i);
-								if(s.endsWith("("+I.intValue()+")"))
+								if(s.endsWith(endsWith))
 									avail.removeElementAt(i);
 							}
-							if(((int[])sortedByLevel.get(I))[0]>5)
-								avail.addElement("Numerous Classes("+I.intValue()+")");
+							if(count[0]>5)
+								avail.addElement("Numerous Classes"+endsWith);
 							else
-								avail.addElement("Several Classes("+I.intValue()+")");
+								avail.addElement("Several Classes"+endsWith);
 						}
 					}
 					for(int c=0;c<avail.size();c++)
@@ -972,27 +974,27 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						}
 					}
 				}
-   				//DVector suspiciousPairs=suspiciousTags(arcHelpFile);
-   				//for(int d=0;d<suspiciousPairs.size();d++)
-   				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
-   				for(Enumeration<Object> e=arcHelpFile.keys();e.hasMoreElements();)
-   				{
-   					String key=(String)e.nextElement();
-   					String entry=(String)arcHelpFile.get(key);
-   					int x=entry.indexOf("<ZAP=");
-   					if(x>=0)
-   					{
-   						int y=entry.indexOf('>',x);
-   						if(y>(x+5))
-   						{
-   							String word=entry.substring(x+5,y).trim();
-   							entry=entry.substring(0,x)+CMLib.masking().maskHelp("\n\r",word)+entry.substring(y+1);
-   							arcHelpFile.remove(key);
-   							arcHelpFile.put(key,entry);
-   						}
-   					}
-   				}
-   				Resources.submitResource("ARCHON HELP FILE",arcHelpFile);
+				//DVector suspiciousPairs=suspiciousTags(arcHelpFile);
+				//for(int d=0;d<suspiciousPairs.size();d++)
+				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
+				for(Enumeration<Object> e=arcHelpFile.keys();e.hasMoreElements();)
+				{
+					String key=(String)e.nextElement();
+					String entry=(String)arcHelpFile.get(key);
+					int x=entry.indexOf("<ZAP=");
+					if(x>=0)
+					{
+						int y=entry.indexOf('>',x);
+						if(y>(x+5))
+						{
+							String word=entry.substring(x+5,y).trim();
+							entry=entry.substring(0,x)+CMLib.masking().maskHelp("\n\r",word)+entry.substring(y+1);
+							arcHelpFile.remove(key);
+							arcHelpFile.put(key,entry);
+						}
+					}
+				}
+				Resources.submitResource("ARCHON HELP FILE",arcHelpFile);
 			}
 			return arcHelpFile;
 		}
@@ -1050,10 +1052,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						}
 					}
 				}
-   				//DVector suspiciousPairs=suspiciousTags(helpFile);
-   				//for(int d=0;d<suspiciousPairs.size();d++)
-   				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
-   				Resources.submitResource("MAIN HELP FILE",helpFile);
+				//DVector suspiciousPairs=suspiciousTags(helpFile);
+				//for(int d=0;d<suspiciousPairs.size();d++)
+				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
+				Resources.submitResource("MAIN HELP FILE",helpFile);
 			}
 			return helpFile;
 		}
