@@ -159,6 +159,12 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
+		if(target instanceof Coins)
+		{
+			mob.tell("You can not bless that.");
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

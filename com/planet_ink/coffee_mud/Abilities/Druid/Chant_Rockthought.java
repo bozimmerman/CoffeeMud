@@ -58,6 +58,19 @@ public class Chant_Rockthought extends Chant
 		super.executeMsg(host,msg);
 	}
 
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if((affected instanceof MOB)
+		&&(stubb!=null)
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)
+		&&(!stubb.equals(msg))))
+		{
+			// this can cause all kinds of potential problems .. 
+			// the number of checks to get around them probably isn't worth the cost.
+		}
+		return super.okMessage(host,msg);
+	}
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)

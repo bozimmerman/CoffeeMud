@@ -110,6 +110,12 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
+		
+		if(target instanceof Coins)
+		{
+			mob.tell("You can not bless that.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

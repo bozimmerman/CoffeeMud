@@ -162,7 +162,7 @@ public class Arcanist extends Thief
 	}
 	public String getOtherBonusDesc()
 	{
-		return "Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft.";
+		return "Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft. Can see wand charges at level 30.";
 	}
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -253,66 +253,77 @@ public class Arcanist extends Thief
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return;
 		MOB mob=(MOB)myHost;
-		if(msg.amISource(mob)&&(msg.tool()!=null))
+		if(msg.amISource(mob))
 		{
-			if(msg.tool().ID().equals("Skill_Spellcraft"))
+			if(((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
+			&&(msg.target() instanceof Wand)
+			&&(mob.charStats().getClassLevel(this)>=30))
 			{
-				if((msg.tool().text().length()>0)
-				&&(msg.target()!=null)
-				&&(msg.target() instanceof MOB))
-				{
-					Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
-					if(A==null) return;
-					Ability myA=mob.fetchAbility(A.ID());
-					if(myA!=null)
-					{
-						if((!A.isSavable())
-						&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-						&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30))
+				String message="<O-NAME> has "+((Wand)msg.target()).usesRemaining()+" charges remaining.";
+				msg.addTrailerMsg(CMClass.getMsg(mob, null, msg.target(), CMMsg.MSG_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, message));
+			}
+			else
+			if(msg.tool()!=null)
+			{
+    			if(msg.tool().ID().equals("Skill_Spellcraft"))
+    			{
+    				if((msg.tool().text().length()>0)
+    				&&(msg.target()!=null)
+    				&&(msg.target() instanceof MOB))
+    				{
+    					Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
+    					if(A==null) return;
+    					Ability myA=mob.fetchAbility(A.ID());
+    					if(myA!=null)
+    					{
+    						if((!A.isSavable())
+    						&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+    						&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30))
+        						addAbilityToSpellcraftList(mob,A);
+    					}
+    					else
+    					if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30)
+    					{
+    						Vector otherChoices=new Vector();
+    						for(int a=0;a<mob.numAbilities();a++)
+    						{
+    							Ability A2=mob.fetchAbility(a);
+    							if((A2!=null)
+    							&&(!A2.isSavable())
+    							&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
+    								otherChoices.addElement(A2);
+    						}
+    						A=(Ability)A.copyOf();
+    						A.setProficiency(0);
+    						A.setSavable(false);
+    						if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))
+    						{
+    							Ability A2=(Ability)otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1));
+    							clearAbilityFromSpellcraftList(mob,A2);
+    						}
     						addAbilityToSpellcraftList(mob,A);
-					}
-					else
-					if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<30)
-					{
-						Vector otherChoices=new Vector();
-						for(int a=0;a<mob.numAbilities();a++)
-						{
-							Ability A2=mob.fetchAbility(a);
-							if((A2!=null)
-							&&(!A2.isSavable())
-							&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
-								otherChoices.addElement(A2);
-						}
-						A=(Ability)A.copyOf();
-						A.setProficiency(0);
-						A.setSavable(false);
-						if(otherChoices.size()>(mob.charStats().getClassLevel(this)/3))
-						{
-							Ability A2=(Ability)otherChoices.elementAt(CMLib.dice().roll(1,otherChoices.size(),-1));
-							clearAbilityFromSpellcraftList(mob,A2);
-						}
-						addAbilityToSpellcraftList(mob,A);
-					}
-				}
-			}
-			else
-			if(msg.tool().ID().equals("Spell_Scribe")
-			||msg.tool().ID().equals("Spell_EnchantWand")
-			||msg.tool().ID().equals("Spell_MagicItem")
-			||msg.tool().ID().equals("Spell_StoreSpell")
-			||msg.tool().ID().equals("Spell_WardArea"))
-			{
-				Ability A=mob.fetchAbility(msg.tool().text());
-				if((A!=null)&&(!A.isSavable()))
-					clearAbilityFromSpellcraftList(mob,A);
-			}
-			else
-			if(msg.tool() instanceof Ability)
-			{
-				Ability A=mob.fetchAbility(msg.tool().ID());
-				if((A!=null)&&(!A.isSavable())
-				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
-					clearAbilityFromSpellcraftList(mob,A);
+    					}
+    				}
+    			}
+    			else
+    			if(msg.tool().ID().equals("Spell_Scribe")
+    			||msg.tool().ID().equals("Spell_EnchantWand")
+    			||msg.tool().ID().equals("Spell_MagicItem")
+    			||msg.tool().ID().equals("Spell_StoreSpell")
+    			||msg.tool().ID().equals("Spell_WardArea"))
+    			{
+    				Ability A=mob.fetchAbility(msg.tool().text());
+    				if((A!=null)&&(!A.isSavable()))
+    					clearAbilityFromSpellcraftList(mob,A);
+    			}
+    			else
+    			if(msg.tool() instanceof Ability)
+    			{
+    				Ability A=mob.fetchAbility(msg.tool().ID());
+    				if((A!=null)&&(!A.isSavable())
+    				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
+    					clearAbilityFromSpellcraftList(mob,A);
+    			}
 			}
 		}
 	}

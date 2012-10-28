@@ -324,4 +324,29 @@ public class DefaultMessage implements CMMsg
 		return matches(major, minor, I.intValue());
 	}
 	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o instanceof CMMsg)
+		{
+			CMMsg m=(CMMsg)o;
+			return (m.sourceCode()==sourceCode())
+					&&(m.targetCode()==targetCode())
+					&&(m.othersCode()==othersCode())
+					&&(m.source()==source())
+					&&(m.target()==target())
+					&&(m.tool()==tool())
+					&&((m.sourceMessage()==sourceMessage())||((sourceMessage()!=null)&&(sourceMessage().equals(m.sourceMessage()))))
+					&&((m.targetMessage()==targetMessage())||((targetMessage()!=null)&&(targetMessage().equals(m.targetMessage()))))
+					&&((m.othersMessage()==othersMessage())||((othersMessage()!=null)&&(othersMessage().equals(m.othersMessage()))));
+		}
+		else
+			return super.equals(o);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
 }
