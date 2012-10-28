@@ -118,6 +118,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 				else
 				if(CMLib.flags().isEvil(target))
 					A.values[7]="evil";
+				A.makeLongLasting();
 
 				mob.recoverCharStats();
 				mob.recoverPhyStats();
