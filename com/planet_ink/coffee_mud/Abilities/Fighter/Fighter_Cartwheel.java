@@ -83,7 +83,7 @@ public class Fighter_Cartwheel extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int tries=10;
+				int tries=2;
 				while(((--tries)>=0)&&(mob.rangeToTarget()<mob.location().maxRange()))
 				{
 					msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_RETREAT,null);

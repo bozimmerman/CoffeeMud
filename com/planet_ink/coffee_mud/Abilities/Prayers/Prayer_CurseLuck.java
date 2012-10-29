@@ -108,7 +108,7 @@ public class Prayer_CurseLuck extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
+		int adjustment=target.phyStats().level()-(mob.phyStats().level()+super.getXLEVELLevel(mob));
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 
 		if(success)

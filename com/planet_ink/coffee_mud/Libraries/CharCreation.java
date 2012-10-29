@@ -891,9 +891,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 							int statPointsChange = 0;
 							if(remove) prompt = prompt.substring(1).trim();
 							int space = prompt.lastIndexOf(' ');
-							if((space > 0)&&(CMath.isInteger(prompt.substring(space+1).trim())))
+							if((space > 0)&&(CMath.isInteger(prompt.substring(space+1).trim())||(prompt.substring(space+1).trim().startsWith("+"))))
 							{
 								String numStr = prompt.substring(space+1).trim();
+								if(numStr.startsWith("+"))
+									numStr=numStr.substring(1).trim();
 								prompt = prompt.substring(0,space).trim();
 								int num = CMath.s_int(numStr);
 								if((num > -1000)&&(num < 1000)&&(num != 0))
@@ -905,7 +907,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 								}
 							}
 							else
-							if(remove) statPointsChange=-1;
+							if(remove) 
+								statPointsChange=-1;
 							int statCode = CharStats.CODES.findWhole(prompt, false);
 							if((statCode < 0)||(!validStats.contains(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode)))))
 							{

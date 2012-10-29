@@ -237,7 +237,7 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 
-	public String systemReport(String itemCode)
+	public String systemReport(final String itemCode)
 	{
 		long totalMOBMillis=0;
 		long totalMOBTicks=0;
@@ -285,6 +285,49 @@ public class ServiceEngine implements ThreadEngine
 			if(topMOBClient!=null)
 				return topMOBClient.Name();
 			return "";
+		}
+		else
+		if(itemCode.toLowerCase().startsWith("tickerproblems"))
+		{
+			int x=itemCode.indexOf('-');
+			int total=10;
+			if(x>0)
+				total=CMath.s_int(itemCode.substring(x+1));
+			Vector<Triad<Long,Integer,Integer>> list=new Vector<Triad<Long,Integer,Integer>>();
+			int group=0;
+			for(Iterator<Tick> e=tickGroups();e.hasNext();)
+			{
+				final Tick almostTock=e.next();
+				int tick=0;
+				for(Iterator<TockClient> et=almostTock.tickers();et.hasNext();)
+				{
+					TockClient C=(TockClient)et.next();
+					if(C.tickTotal==0) continue;
+					Long avg=Long.valueOf(C.milliTotal/C.tickTotal);
+					int i=0;
+					for(;i<list.size();i++)
+					{
+						Triad<Long,Integer,Integer> t=list.get(i);
+						if(avg.longValue()>=t.first.longValue())
+						{
+							list.add(i,new Triad<Long,Integer,Integer>(avg,Integer.valueOf(group),Integer.valueOf(tick)));
+							break;
+						}
+					}
+					if((list.size()==0)||((i>=list.size())&&(list.size()<total)))
+						list.add(new Triad<Long,Integer,Integer>(avg,Integer.valueOf(group),Integer.valueOf(tick)));
+					while(list.size()>total)
+						list.remove(list.size()-1);
+					tick++;
+				}
+				group++;
+			}
+			if(list.size()==0)
+				return "";
+			StringBuilder str=new StringBuilder("");
+			for(Triad<Long,Integer,Integer> t : list)
+				str.append(';').append(t.second).append(',').append(t.third);
+			return str.toString().substring(1);
 		}
 
 		int totalTickers=0;
@@ -660,7 +703,7 @@ public class ServiceEngine implements ThreadEngine
 			((TimeClock)timeObjects.elementAt(t)).save();
 		for(CMThreadPoolExecutor pool : threadPools)
 			if(pool != null)
-        		pool.shutdown();
+				pool.shutdown();
 		Log.sysOut("ServiceEngine","Shutdown complete.");
 		return true;
 	}

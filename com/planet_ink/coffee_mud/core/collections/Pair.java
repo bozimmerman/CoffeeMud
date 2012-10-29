@@ -38,4 +38,22 @@ public class Pair<T,K> implements Map.Entry<T, K>
     public K getValue() { return second; }
 	@Override
     public K setValue(K value) { second=value; return value; }
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o==this) return true;
+		if(o instanceof Pair)
+		{
+			@SuppressWarnings("rawtypes")
+			Pair p=(Pair)o;
+			return ((p.first==first)||((p.first!=null)&&(p.first.equals(first))))
+					&&((p.second==second)||((p.second!=null)&&(p.second.equals(second))));
+		}
+		return super.equals(o);
+	}
+	@Override
+	public int hashCode() 
+	{
+		return ((first==null)?0:first.hashCode()) ^ ((second==null)?0:second.hashCode());
+	}
 }

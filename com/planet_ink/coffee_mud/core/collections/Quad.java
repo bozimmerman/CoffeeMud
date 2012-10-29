@@ -39,4 +39,25 @@ public class Quad<T,K,L,M> extends Triad<T,K,L>
 	{
 		public M convert(Quad<T, K, L, M> obj) { return obj.fourth;}
 	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o==this) return true;
+		if(o instanceof Quad)
+		{
+			@SuppressWarnings("rawtypes")
+			Quad p=(Quad)o;
+			return ((p.first==first)||((p.first!=null)&&(p.first.equals(first))))
+					&&((p.second==second)||((p.second!=null)&&(p.second.equals(second))))
+					&&((p.third==third)||((p.third!=null)&&(p.third.equals(third))))
+					&&((p.fourth==fourth)||((p.fourth!=null)&&(p.fourth.equals(fourth))));
+		}
+		return super.equals(o);
+	}
+	@Override
+	public int hashCode() 
+	{
+		return super.hashCode()  ^ ((fourth==null)?0:fourth.hashCode());
+	}
 }

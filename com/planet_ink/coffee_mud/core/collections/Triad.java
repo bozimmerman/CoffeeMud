@@ -35,4 +35,23 @@ public class Triad<T,K,L> extends Pair<T,K>
 	{
 		public L convert(Triad<T, K, L> obj) { return obj.third;}
 	}
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o==this) return true;
+		if(o instanceof Triad)
+		{
+			@SuppressWarnings("rawtypes")
+			Triad p=(Triad)o;
+			return ((p.first==first)||((p.first!=null)&&(p.first.equals(first))))
+					&&((p.second==second)||((p.second!=null)&&(p.second.equals(second))))
+					&&((p.third==third)||((p.third!=null)&&(p.third.equals(third))));
+		}
+		return super.equals(o);
+	}
+	@Override
+	public int hashCode() 
+	{
+		return super.hashCode()  ^ ((third==null)?0:third.hashCode());
+	}
 }

@@ -28,5 +28,25 @@ public class Quint<T,K,L,M,N> extends Quad<T,K,L,M>
 	{
 		public N convert(Quint<T, K, L, M, N> obj) { return obj.fifth;}
 	}
-
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o==this) return true;
+		if(o instanceof Quint)
+		{
+			@SuppressWarnings("rawtypes")
+			Quint p=(Quint)o;
+			return ((p.first==first)||((p.first!=null)&&(p.first.equals(first))))
+					&&((p.second==second)||((p.second!=null)&&(p.second.equals(second))))
+					&&((p.third==third)||((p.third!=null)&&(p.third.equals(third))))
+					&&((p.fourth==fourth)||((p.fourth!=null)&&(p.fourth.equals(fourth))))
+					&&((p.fifth==fifth)||((p.fifth!=null)&&(p.fifth.equals(fifth))));
+		}
+		return super.equals(o);
+	}
+	@Override
+	public int hashCode() 
+	{
+		return super.hashCode()  ^ ((fifth==null)?0:fifth.hashCode());
+	}
 }

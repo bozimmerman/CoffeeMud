@@ -1187,60 +1187,113 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listTicks(Session viewerS, String whichTickTock)
+	public StringBuilder listTicks(Session viewerS, String whichGroupStr)
 	{
 		StringBuilder msg=new StringBuilder("\n\r");
 		boolean activeOnly=false;
 		String mask=null;
-		if("ACTIVE".startsWith(whichTickTock.toUpperCase())&&(whichTickTock.length()>0))
+		Set<Pair<Integer,Integer>> whichTicks=null;
+		Set<Integer> whichGroups=null;
+		int x=whichGroupStr.lastIndexOf(' ');
+		String finalCol="tickercodeword";
+		String finalColName="Status";
+		if(x>0)
 		{
+			String lastWord=whichGroupStr.substring(x+1).trim().toLowerCase();
+			final String[] validCols={"tickername","tickerid","tickerstatus","tickercodeword","tickertickdown","tickerretickdown","tickermillitotal","tickermilliavg","tickerlaststartmillis","tickerlaststopmillis","tickerlaststartdate","tickerlaststopdate","tickerlastduration","tickersuspended"};
+			int y=CMParms.indexOf(validCols,lastWord);
+			if(y>=0)
+				finalCol=lastWord;
+			else
+			for(String w : validCols)
+				if(w.endsWith(lastWord))
+				{
+					lastWord=w;
+					finalCol=lastWord;
+				}
+			if(!finalCol.equals(lastWord))
+				return new StringBuilder("Invalid column: '"+lastWord+"'.  Valid cols are: "+CMParms.toStringList(validCols));
+			else
+			{
+				whichGroupStr=whichGroupStr.substring(0,x).trim();
+				finalColName=finalCol;
+				if(finalColName.startsWith("ticker"))
+					finalColName=finalColName.substring(6);
+				if(finalColName.startsWith("milli")) 
+					finalColName="ms"+finalColName.substring(5);
+				finalColName=CMStrings.limit(CMStrings.capitalizeAndLower(finalColName),5);
+			}
+		}
+		
+		if("ACTIVE".startsWith(whichGroupStr.toUpperCase())&&(whichGroupStr.length()>0))
 			activeOnly=true;
-			whichTickTock="";
+		else
+		if("PROBLEMS".startsWith(whichGroupStr.toUpperCase())&&(whichGroupStr.length()>0))
+		{
+			whichTicks=new HashSet<Pair<Integer,Integer>>();
+			String problemSets=CMLib.threads().systemReport("tickerProblems");
+			List<String> sets=CMParms.parseSemicolons(problemSets, true);
+			for(String set : sets)
+			{
+				List<String> pair=CMParms.parseCommas(set, true);
+				if(pair.size()==2)
+					whichTicks.add(new Pair<Integer,Integer>(Integer.valueOf(CMath.s_int(pair.get(0))), Integer.valueOf(CMath.s_int(pair.get(1)))));
+			}
+		}
+		else
+		if(CMath.isInteger(whichGroupStr)&&(whichGroupStr.length()>0))
+		{
+			whichGroups=new HashSet<Integer>();
+			whichGroups.add(Integer.valueOf(CMath.s_int(whichGroupStr)));
+		}
+		else
+		if(whichGroupStr.length()>0)
+		{
+			mask=whichGroupStr.toUpperCase().trim();
 		}
 		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(4.0,viewerS);
 		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(20.0,viewerS);
 		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
 		final int COL_LEN4=ListingLibrary.ColFixer.fixColWidth(8.0,viewerS);
 		if(!activeOnly)
-			msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight("ID",COL_LEN3)+CMStrings.padRight("Status",COL_LEN4));
-		msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight("ID",COL_LEN3)+CMStrings.padRight("Status",COL_LEN4)+"\n\r");
+			msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight("ID",COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4));
+		msg.append(CMStrings.padRight("Grp",COL_LEN1)+CMStrings.padRight("Client",COL_LEN2)+" "+CMStrings.padRight("ID",COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
 		int col=0;
 		int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
-		int whichTick=-1;
-		if(CMath.isInteger(whichTickTock)&&(whichTickTock.length()>0))
-			whichTick=CMath.s_int(whichTickTock);
-		else
-		if(whichTickTock.length()>0)
-			mask=whichTickTock.toUpperCase().trim();
 		if((mask!=null)&&(mask.length()==0)) mask=null;
 		String chunk=null;
-		for(int v=0;v<numGroups;v++)
+		for(int group=0;group<numGroups;group++)
 		{
-			int tickersSize=CMath.s_int(CMLib.threads().tickInfo("tickersSize"+v));
-			if((whichTick<0)||(whichTick==v))
-			for(int t=0;t<tickersSize;t++)
+			if((whichGroups==null)||(whichGroups.contains(Integer.valueOf(group))))
 			{
-				long tickerlaststartdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststartmillis"+v+"-"+t));
-				long tickerlaststopdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststopmillis"+v+"-"+t));
-				boolean isActive=(tickerlaststopdate<tickerlaststartdate);
-				if((!activeOnly)||(isActive))
+				int tickersSize=CMath.s_int(CMLib.threads().tickInfo("tickersSize"+group));
+				for(int tick=0;tick<tickersSize;tick++)
 				{
-					String name=CMLib.threads().tickInfo("tickerName"+v+"-"+t);
-					if((mask==null)||(name.toUpperCase().indexOf(mask)>=0))
+					if((whichTicks==null)||(whichTicks.contains(new Pair<Integer,Integer>(Integer.valueOf(group), Integer.valueOf(tick)))))
 					{
-						String id=CMLib.threads().tickInfo("tickerID"+v+"-"+t);
-						String status=CMLib.threads().tickInfo("tickercodeword"+v+"-"+t);
-						boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+v+"-"+t));
-						if(((col++)>=2)||(activeOnly))
+						long tickerlaststartdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststartmillis"+group+"-"+tick));
+						long tickerlaststopdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststopmillis"+group+"-"+tick));
+						boolean isActive=(tickerlaststopdate<tickerlaststartdate);
+						if((!activeOnly)||(isActive))
 						{
-							msg.append("\n\r");
-							col=1;
+							String name=CMLib.threads().tickInfo("tickerName"+group+"-"+tick);
+							if((mask==null)||(name.toUpperCase().indexOf(mask)>=0))
+							{
+								String id=CMLib.threads().tickInfo("tickerID"+group+"-"+tick);
+								String status=CMLib.threads().tickInfo(finalCol+group+"-"+tick);
+								boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+group+"-"+tick));
+								if(((col++)>=2)||(activeOnly))
+								{
+									msg.append("\n\r");
+									col=1;
+								}
+								chunk=CMStrings.padRight(""+group,COL_LEN1)
+								   +CMStrings.padRight(name,COL_LEN2)
+								   +" "+CMStrings.padRight(id+"",COL_LEN3)
+								   +CMStrings.padRight((activeOnly?(status+(suspended?"*":"")):status+(suspended?"*":"")),COL_LEN4);
+								msg.append(chunk);
+							}
 						}
-						chunk=CMStrings.padRight(""+v,COL_LEN1)
-						   +CMStrings.padRight(name,COL_LEN2)
-						   +" "+CMStrings.padRight(id+"",COL_LEN3)
-						   +CMStrings.padRight((activeOnly?(status+(suspended?"*":"")):status+(suspended?"*":"")),COL_LEN4);
-						msg.append(chunk);
 					}
 				}
 			}
@@ -1452,7 +1505,7 @@ public class ListCmd extends StdCommand
 			return CMParms.toStringList(RawMaterial.CODES.NAMES());
 		StringBuilder str=new StringBuilder("");
 		//for(String S : RawMaterial.CODES.NAMES())
-		//    str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
+		//	str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
 		final int COL_LEN1=ListingLibrary.ColFixer.fixColWidth(15.0,viewerS);
 		final int COL_LEN2=ListingLibrary.ColFixer.fixColWidth(10.0,viewerS);
 		final int COL_LEN3=ListingLibrary.ColFixer.fixColWidth(3.0,viewerS);
@@ -1531,7 +1584,7 @@ public class ListCmd extends StdCommand
 			if((CMJ.NAME()+"S").startsWith(s)
 			&&((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
 				||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)))
-    				return 29;
+					return 29;
 		}
 		return -1;
 	}
@@ -1972,16 +2025,16 @@ public class ListCmd extends StdCommand
 		}
 		public Object getFromArea(Area A)
 		{
-    		switch(this)
-    		{
-    		case NAME: return A.Name();
-    		case HIDDEN: return ""+CMLib.flags().isHidden(A);
-    		case ROOMS: return Integer.valueOf(A.getProperRoomnumbers().roomCountAllAreas());
-    		case STATE: return A.getAreaState().name();
-    		case AUTHOR: return A.getAuthorID();
-    		case DESCRIPTION: return A.description().replace('\n', ' ').replace('\r', ' ');
-    		default: return "";
-    		}
+			switch(this)
+			{
+			case NAME: return A.Name();
+			case HIDDEN: return ""+CMLib.flags().isHidden(A);
+			case ROOMS: return Integer.valueOf(A.getProperRoomnumbers().roomCountAllAreas());
+			case STATE: return A.getAreaState().name();
+			case AUTHOR: return A.getAuthorID();
+			case DESCRIPTION: return A.description().replace('\n', ' ').replace('\r', ' ');
+			default: return "";
+			}
 		}
 	} 
 
@@ -2052,21 +2105,21 @@ public class ListCmd extends StdCommand
 				ListAreaStats ls=(ListAreaStats)CMath.s_valueOf(ListAreaStats.class, newCol);
 				Area.Stats as=(Area.Stats)CMath.s_valueOf(Area.Stats.class, newCol);
 				if(ls!=null)
-		    		columns.add(new Triad<String,String,Integer>(ls.shortName,ls.name(),ls.len));
+					columns.add(new Triad<String,String,Integer>(ls.shortName,ls.name(),ls.len));
 				else
 				if(as!=null)
-		    		columns.add(new Triad<String,String,Integer>(CMStrings.scrunchWord(CMStrings.capitalizeAndLower(newCol), 6),as.name(),Integer.valueOf(6)));
+					columns.add(new Triad<String,String,Integer>(CMStrings.scrunchWord(CMStrings.capitalizeAndLower(newCol), 6),as.name(),Integer.valueOf(6)));
 			}
 		}
 		else
 		{
-    		//AREASTAT_DESCS
-    		columns.add(new Triad<String,String,Integer>(ListAreaStats.NAME.shortName,ListAreaStats.NAME.name(),ListAreaStats.NAME.len));
-    		columns.add(new Triad<String,String,Integer>(ListAreaStats.HIDDEN.shortName,ListAreaStats.HIDDEN.name(),ListAreaStats.HIDDEN.len));
-    		columns.add(new Triad<String,String,Integer>(ListAreaStats.ROOMS.shortName,ListAreaStats.ROOMS.name(),ListAreaStats.ROOMS.len));
-    		columns.add(new Triad<String,String,Integer>(ListAreaStats.STATE.shortName,ListAreaStats.STATE.name(),ListAreaStats.STATE.len));
-    		columns.add(new Triad<String,String,Integer>("Pop",Area.Stats.POPULATION.name(),Integer.valueOf(6)));
-    		columns.add(new Triad<String,String,Integer>("MedLv",Area.Stats.MED_LEVEL.name(),Integer.valueOf(6)));
+			//AREASTAT_DESCS
+			columns.add(new Triad<String,String,Integer>(ListAreaStats.NAME.shortName,ListAreaStats.NAME.name(),ListAreaStats.NAME.len));
+			columns.add(new Triad<String,String,Integer>(ListAreaStats.HIDDEN.shortName,ListAreaStats.HIDDEN.name(),ListAreaStats.HIDDEN.len));
+			columns.add(new Triad<String,String,Integer>(ListAreaStats.ROOMS.shortName,ListAreaStats.ROOMS.name(),ListAreaStats.ROOMS.len));
+			columns.add(new Triad<String,String,Integer>(ListAreaStats.STATE.shortName,ListAreaStats.STATE.name(),ListAreaStats.STATE.len));
+			columns.add(new Triad<String,String,Integer>("Pop",Area.Stats.POPULATION.name(),Integer.valueOf(6)));
+			columns.add(new Triad<String,String,Integer>("MedLv",Area.Stats.MED_LEVEL.name(),Integer.valueOf(6)));
 		}
 		
 		Session s=mob.session();
@@ -2099,18 +2152,18 @@ public class ListCmd extends StdCommand
 			for(int si=sortBys.size()-1; si>=0;si--)
 			{
 				TreeMap<Comparable,Area> newsorted=new TreeMap<Comparable,Area>();
-    			for(Iterator<Area> a2=sorted.values().iterator();a2.hasNext();)
-    			{
-    				Area A=a2.next();
-    				Object val=getAreaStatFromSomewhere(A,sortBys.get(si));
-    				if(val==null)
-    				{
-    					newsorted=sorted;
-    					break;
-    				}
-    				newsorted.put((Comparable)val, A);
-    			}
-    			sorted=newsorted;
+				for(Iterator<Area> a2=sorted.values().iterator();a2.hasNext();)
+				{
+					Area A=a2.next();
+					Object val=getAreaStatFromSomewhere(A,sortBys.get(si));
+					if(val==null)
+					{
+						newsorted=sorted;
+						break;
+					}
+					newsorted.put((Comparable)val, A);
+				}
+				sorted=newsorted;
 			}
 			if(sorted.size()>0)
 				a=new IteratorEnumeration<Area>(sorted.values().iterator());
@@ -2134,7 +2187,7 @@ public class ListCmd extends StdCommand
 			str.append("\n\r");
 		}
 		if(s!=null)
-    		s.colorOnlyPrint(str.toString(), true);
+			s.colorOnlyPrint(str.toString(), true);
 	}
 	
 	public void archonlist(MOB mob, Vector commands)
