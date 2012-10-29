@@ -64,6 +64,24 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 
 	public String parametersFile(){ return "masterleatherworking.txt";}
 
+	
+	public enum Stage
+	{
+		Designer(30,4),
+		Cuirbouli(37,5),
+		Reinforced(45,6),
+		Masterwork(54,7),
+		Laminar(63,8),
+		Battlemoulded(72,9);
+		public int recipeLevel;
+		public int multiplier;
+		private Stage(int recipeLevel, int multiplier)
+		{
+			this.recipeLevel=recipeLevel;
+			this.multiplier=multiplier;
+		}
+	}
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -193,7 +211,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				Log.errOut("LeatherWorking","Recipes not found!");
 			else
 			{
-				List<List<String>> pleaseAdd=new Vector();
+				List<List<String>> newRecipes=new Vector<List<String>>();
 				for(int r=0;r<recipes.size();r++)
 				{
 					List<String> V=recipes.get(r);
@@ -201,38 +219,29 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					{
 						String name=(String)V.get(RCP_FINALNAME);
 						int baseLevel=CMath.s_int((String)V.get(RCP_LEVEL))+2;
-						
-						List<String> V1=new XVector<String>(V);
-						V1.set(RCP_FINALNAME,"Cuirbouli "+name);
-						V1.set(RCP_LEVEL,""+(baseLevel+37));
-						pleaseAdd.add(V1);
-						
-						V1=new XVector<String>(V);
-						V1.set(RCP_FINALNAME,"Reinforced "+name);
-						V1.set(RCP_LEVEL,""+(baseLevel+45));
-						pleaseAdd.add(V1);
-						
-						V1=new XVector<String>(V);
-						V1.set(RCP_FINALNAME,"Masterwork "+name);
-						V1.set(RCP_LEVEL,""+(baseLevel+54));
-						pleaseAdd.add(V1);
-						
-						V1=new XVector<String>(V);
-						V1.set(RCP_FINALNAME,"Laminar "+name);
-						V1.set(RCP_LEVEL,""+(baseLevel+63));
-						pleaseAdd.add(V1);
-						
-						V1=new XVector<String>(V);
-						V1.set(RCP_FINALNAME,"Battlemoulded "+name);
-						V1.set(RCP_LEVEL,""+(baseLevel+72));
-						pleaseAdd.add(V1);
-						
-						V.set(RCP_FINALNAME,"Designer "+name);
-						V.set(RCP_LEVEL,""+(baseLevel+30));
+						for(Stage s : Stage.values())
+						{
+							List<String> V1=new XVector<String>(V);
+							V1.set(RCP_FINALNAME,s.name()+" "+name);
+							int level=baseLevel+s.recipeLevel;
+							V1.set(RCP_LEVEL,""+level);
+							for(int i=0;i<=newRecipes.size();i++)
+								if(newRecipes.size()==i)
+								{
+									newRecipes.add(V1);
+									break;
+								}
+								else
+								if(CMath.s_int(newRecipes.get(i).get(RCP_LEVEL))>level)
+								{
+									newRecipes.add(i,V1);
+									break;
+								}
+						}
 					}
 				}
-				for(int i=0;i<pleaseAdd.size();i++)
-					recipes.add(pleaseAdd.get(i));
+				recipes.clear();
+				recipes=newRecipes;
 			}
 			Resources.submitResource("PARSED_RECIPE: "+filename,recipes);
 		}
@@ -388,49 +397,11 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				{
 					String name=(String)V.get(RCP_FINALNAME);
 					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					if((level<=xlevel(mob))
-					&&(name.toUpperCase().indexOf("BATTLEMOULDED")>=0))
+					if(level<=xlevel(mob))
 					{
-						multiplier=9;
-						foundRecipe=V;
-						break;
-					}
-					else
-					if((level<=xlevel(mob))
-					&&(name.toUpperCase().indexOf("LAMINAR")>=0))
-					{
-						multiplier=8;
-						foundRecipe=V;
-						break;
-					}
-					else
-					if((level<=(xlevel(mob)))
-					&&(name.toUpperCase().indexOf("MASTERWORK")>=0))
-					{
-						multiplier=7;
-						foundRecipe=V;
-						break;
-					}
-					else
-					if((level<=xlevel(mob))
-					&&(name.toUpperCase().indexOf("REINFORCED")>=0))
-					{
-						multiplier=6;
-						foundRecipe=V;
-						break;
-					}
-					else
-					if((level<=(xlevel(mob)))
-					&&(name.toUpperCase().indexOf("CUIRBOULI")>=0))
-					{
-						multiplier=5;
-						foundRecipe=V;
-						break;
-					}
-					else
-					if(level<=(xlevel(mob)))
-					{
-						multiplier=4;
+						int x=name.indexOf(' ');
+						Stage stage=Stage.valueOf(name.substring(0,x));
+						multiplier=stage.multiplier;
 						foundRecipe=V;
 						break;
 					}
