@@ -284,6 +284,27 @@ public class Equipment extends StdCommand
 		return msg;
 	}
 
+	private void viewEquipment(MOB mob, boolean longView)
+	{
+		Session session=mob.session();
+		if(session!=null)
+		{
+			boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)==2);
+			if(paragraphView)
+			{
+				if(longView)
+					session.wraplessPrintln("You are wearing "+getEquipment(mob,mob,true));
+				else
+					session.wraplessPrintln("You are wearing "+getEquipment(mob,mob,false));
+			}
+			else
+			if(longView)
+				session.wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,true));
+			else
+				session.wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));
+		}
+	}
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -292,26 +313,22 @@ public class Equipment extends StdCommand
 			commands.addElement(getEquipment((MOB)commands.firstElement(),mob,false));
 			return true;
 		}
-		if(!mob.isMonster())
-		{
-			boolean paragraphView=(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)==2);
-			if(paragraphView)
-			{
-				if((commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")))
-					mob.session().wraplessPrintln("You are wearing "+getEquipment(mob,mob,true));
-				else
-					mob.session().wraplessPrintln("You are wearing "+getEquipment(mob,mob,false));
-			}
-			else
-			if((commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")))
-				mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,true));
-			else
-				mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));
-		}
+		viewEquipment(mob,(commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")));
 		return false;
 	}
 	
 	public boolean canBeOrdered(){return true;}
 
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if((args.length>0)&&(args[0] instanceof MOB))
+			return getEquipment((MOB)args[0],mob,false);
+		else
+		if((args.length>0)&&(args[0] instanceof Boolean))
+			viewEquipment(mob,((Boolean)args[0]).booleanValue());
+		else
+			viewEquipment(mob,false);
+		return null;
+	}
 	
 }

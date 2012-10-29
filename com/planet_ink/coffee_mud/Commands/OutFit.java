@@ -64,7 +64,7 @@ public class OutFit extends StdCommand
 			CMLib.utensils().outfit(mob,R.outfit(mob));
 		mob.tell("\n\r");
 		Command C2=CMClass.getCommand("Equipment");
-		if(C2!=null) C2.execute(mob,CMParms.parse("EQUIPMENT"),metaFlags);
+		if(C2!=null) C2.executeInternal(mob, metaFlags);
 		mob.tell("\n\rUseful equipment appears mysteriously out of the Java Plane.");
 		return false;
 	}

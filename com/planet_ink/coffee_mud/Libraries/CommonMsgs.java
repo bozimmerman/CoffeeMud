@@ -164,13 +164,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 	public StringBuilder getEquipment(MOB viewer, MOB mob)
 	{
-		Vector<Object> V=new Vector<Object>();
-		V.addElement(viewer);
-		forceStandardCommand(mob,"Equipment",V);
-		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuilder))
-			return (StringBuilder)V.elementAt(1);
-		return new StringBuilder("");
+		return (StringBuilder)forceInternalCommand(mob,"Equipment",viewer);
 	}
+
 	public StringBuilder getInventory(MOB viewer, MOB mob)
 	{
 		Vector<Object> V=new Vector<Object>();
