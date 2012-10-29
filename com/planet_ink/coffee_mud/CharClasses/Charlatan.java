@@ -224,12 +224,13 @@ public class Charlatan extends StdCharClass
 				{
 					curRef.clear();
 					Ability A=((Ability)msg.tool());
+					final int[] usageCost=A.usageCost(myChar, false);
 					if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
-						myChar.curState().adjMana(A.usageCost(myChar,false)[Ability.USAGEINDEX_MANA]/4,myChar.maxState());
+						myChar.curState().adjMana(usageCost[Ability.USAGEINDEX_MANA]/4,myChar.maxState());
 					if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT))
-						myChar.curState().adjMovement(A.usageCost(myChar,false)[Ability.USAGEINDEX_MOVEMENT]/4,myChar.maxState());
+						myChar.curState().adjMovement(usageCost[Ability.USAGEINDEX_MOVEMENT]/4,myChar.maxState());
 					if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS))
-						myChar.curState().adjHitPoints(A.usageCost(myChar,false)[Ability.USAGEINDEX_HITPOINTS]/4,myChar.maxState());
+						myChar.curState().adjHitPoints(usageCost[Ability.USAGEINDEX_HITPOINTS]/4,myChar.maxState());
 				}
 			}
 			else

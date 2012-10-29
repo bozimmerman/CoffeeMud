@@ -47,7 +47,7 @@ public class Config extends StdCommand
 			if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
 				continue;
 			if((MOB.AUTODESC[i].equalsIgnoreCase("AUTOMAP"))&&(CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)<=0))
-			  continue;
+				continue;
 			
 			msg.append(CMStrings.padRight(MOB.AUTODESC[i],15)+": ");
 			boolean set=CMath.isSet(mob.getBitmap(),i);
@@ -55,12 +55,15 @@ public class Config extends StdCommand
 			msg.append(set?"ON":"OFF");
 			msg.append("\n\r");
 		}
-		String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-		msg.append(CMStrings.padRight("LINEWRAP",15)+": "+wrap);
-		msg.append("\n\r");
-		String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
-		msg.append(CMStrings.padRight("PAGEBREAK",15)+": "+pageBreak);
-		msg.append("\n\r");
+		if(mob.playerStats()!=null)
+		{
+			String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
+			msg.append(CMStrings.padRight("LINEWRAP",15)+": "+wrap);
+			msg.append("\n\r");
+			String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
+			msg.append(CMStrings.padRight("PAGEBREAK",15)+": "+pageBreak);
+			msg.append("\n\r");
+		}
 		mob.tell(msg.toString());
 		return false;
 	}

@@ -109,6 +109,12 @@ public class Prayer_Blindsight extends Prayer
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
+				Ability A=target.fetchEffect(ID());
+				if(A!=null)
+				{
+					target.delEffect(A);
+					target.addPriorityEffect(A);
+				}
 			}
 		}
 		else
