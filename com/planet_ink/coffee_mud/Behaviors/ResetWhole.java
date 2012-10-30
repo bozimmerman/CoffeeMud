@@ -50,13 +50,16 @@ public class ResetWhole extends StdBehavior
 		super.executeMsg(E,msg);
 		if(!msg.source().isMonster())
 		{
-			if((E instanceof Area)
-			&&(((Area)E).inMyMetroArea(msg.source().location().getArea())))
-				lastAccess=System.currentTimeMillis();
-			else
-			if((E instanceof Room)
-			&&(msg.source().location()==E))
-				lastAccess=System.currentTimeMillis();
+			Room R=msg.source().location();
+			if(R!=null)
+			{
+				if((E instanceof Area)
+				&&(((Area)E).inMyMetroArea(R.getArea())))
+					lastAccess=System.currentTimeMillis();
+				else
+				if((E instanceof Room) &&(R==E))
+					lastAccess=System.currentTimeMillis();
+			}
 		}
 	}
 
