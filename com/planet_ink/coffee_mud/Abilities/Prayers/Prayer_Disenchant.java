@@ -51,7 +51,10 @@ public class Prayer_Disenchant extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,5-(((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-target.phyStats().level())*5),auto);
+		int levelBonus=mob.phyStats().level()+(2*super.getXLEVELLevel(mob));
+		int levelDiff=levelBonus-target.phyStats().level();
+		levelDiff=levelDiff*5;
+		boolean success=proficiencyCheck(mob,5+levelDiff,auto);
 
 		if(success)
 		{
