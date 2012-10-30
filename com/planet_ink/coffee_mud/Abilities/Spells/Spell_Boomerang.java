@@ -55,37 +55,29 @@ public class Spell_Boomerang extends Spell
 		}
 		return true;
 	}
-
-	public void executeMsg(Environmental host, CMMsg msg)
+	
+	public MOB getOwner(Item I)
 	{
-		super.executeMsg(host,msg);
-		if((msg.targetMinor()==CMMsg.TYP_GET)
-		&&(msg.amITarget(affected))
-		&&(text().length()==0))
+		if(owner==null)
 		{
-			setMiscText(msg.source().Name());
-			msg.source().tell(affected.name()+" will now return back to you.");
-			makeNonUninvokable();
+			if((I.owner()!=null)
+			&&(I.owner() instanceof MOB)
+			&&(I.owner().Name().equals(text())))
+				owner=(MOB)I.owner();
+			else
+				owner=CMLib.players().getPlayer(text());
 		}
-		if((affected instanceof Item)&&(text().length()>0))
+		return owner;
+	}
+
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(affected instanceof Item)
 		{
-			Item I=(Item)affected;
-			if(owner==null)
-			{
-				if((I.owner()!=null)
-				&&(I.owner() instanceof MOB)
-				&&(I.owner().Name().equals(text())))
-					owner=(MOB)I.owner();
-				else
-					owner=CMLib.players().getPlayer(text());
-			}
+			final Item I=(Item)affected;
+			MOB owner=getOwner(I);
 			if((owner!=null)&&(I.owner()!=null)&&(I.owner()!=owner))
 			{
-				if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.target()==I)||(msg.tool()==I))
-				{
-					msg.addTrailerMsg(CMClass.getMsg(owner,null,CMMsg.NO_EFFECT,null));
-				}
-				else
 				if(!owner.isMine(I))
 				{
 					owner.tell(I.name()+" returns to your inventory!");
@@ -101,6 +93,35 @@ public class Spell_Boomerang extends Spell
 					I.setOwner(owner);
 				}
 			}
+		}
+		return (tickID!=Tickable.TICKID_ITEM_BOUNCEBACK);
+	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		super.executeMsg(host,msg);
+		if((msg.targetMinor()==CMMsg.TYP_GET)
+		&&(msg.amITarget(affected))
+		&&(text().length()==0))
+		{
+			setMiscText(msg.source().Name());
+			msg.source().tell(affected.name()+" will now return back to you.");
+			makeNonUninvokable();
+		}
+		if((affected instanceof Item)&&(text().length()>0))
+		{
+			Item I=(Item)affected;
+			MOB owner=getOwner(I);
+			if((owner!=null)&&(I.owner()!=null)&&(I.owner()!=owner))
+			{
+				if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.target()==I)||(msg.tool()==I))
+				{
+					msg.addTrailerMsg(CMClass.getMsg(owner,null,CMMsg.NO_EFFECT,null));
+				}
+			}
+			else
+			if(!CMLib.threads().isTicking(this, -1))
+				CMLib.threads().startTickDown(this, Tickable.TICKID_ITEM_BOUNCEBACK, 1);
 		}
 	}
 	
