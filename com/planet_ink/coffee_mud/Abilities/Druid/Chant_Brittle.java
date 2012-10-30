@@ -51,7 +51,7 @@ public class Chant_Brittle extends Chant
 		if((E instanceof Item)&&(!noRecurse)&&(((Item)E).subjectToWearAndTear()))
 		{
 			noRecurse=true;
-			if(oldCondition==-1)
+			if(oldCondition<((Item)E).usesRemaining())
 				oldCondition=((Item)E).usesRemaining();
 			if(((Item)E).usesRemaining()<oldCondition)
 			{
@@ -60,13 +60,12 @@ public class Chant_Brittle extends Chant
 					R.showHappens(CMMsg.MSG_OK_ACTION,E.name()+" is destroyed!");
 				((Item)E).destroy();
 			}
-			else
-				((Item)E).setUsesRemaining(oldCondition);
 			noRecurse=false;
 		}
 	}
 	
-	private Item getItem(MOB mobTarget) {
+	private Item getItem(MOB mobTarget) 
+	{
 		Vector goodPossibilities=new Vector();
 		Vector possibilities=new Vector();
 		for(int i=0;i<mobTarget.numItems();i++)

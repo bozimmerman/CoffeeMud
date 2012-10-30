@@ -41,7 +41,6 @@ public class Spell_Nondetection extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
-	int amountAbsorbed=0;
 
 	public void unInvoke()
 	{
@@ -86,7 +85,6 @@ public class Spell_Nondetection extends Spell
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an globe of resistance around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
-				amountAbsorbed=0;
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 			}

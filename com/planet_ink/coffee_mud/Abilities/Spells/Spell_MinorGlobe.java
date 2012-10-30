@@ -52,7 +52,7 @@ public class Spell_MinorGlobe extends Spell
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> great anti-magic globe fades.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> minor anti-magic globe fades.");
 
 		super.unInvoke();
 
@@ -81,7 +81,7 @@ public class Spell_MinorGlobe extends Spell
 			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The absorbing globe around <S-NAME> absorbs the "+msg.tool().name()+" from <T-NAME>.");
 			return false;
 		}
-		if((invoker!=null)&&(amountAbsorbed>(invoker.phyStats().level()*2)))
+		if((invoker!=null)&&(amountAbsorbed>((invoker.phyStats().level()+super.getXLEVELLevel(invoker))*2)))
 			unInvoke();
 		return true;
 	}
