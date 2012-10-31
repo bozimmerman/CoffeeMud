@@ -484,7 +484,7 @@ public class StdCharClass implements CharClass
 				}
 		CR.setStat("QUAL",quals.toString().trim());
 
-		MOB fakeMOB=CMClass.getMOB("StdMOB");
+		MOB fakeMOB=CMClass.getFactoryMOB();
 		fakeMOB.baseCharStats().setMyClasses(ID());
 		fakeMOB.baseCharStats().setMyLevels("0");
 		fakeMOB.recoverCharStats();

@@ -46,7 +46,10 @@ public class Spell_Mend extends Spell
 		Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		if(!target.subjectToWearAndTear())
-		{	mob.tell(target.name()+" cannot be mended."); return false;}
+		{	
+			mob.tell(target.name()+" cannot be mended."); 
+			return false;
+		}
 
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;

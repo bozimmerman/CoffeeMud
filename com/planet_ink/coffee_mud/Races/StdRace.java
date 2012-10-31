@@ -718,7 +718,7 @@ public class StdRace implements Race
 
 		PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS.setAllValues(0);
-		MOB fakeMOB=CMClass.getMOB("StdMOB");
+		MOB fakeMOB=CMClass.getFactoryMOB();
 		affectPhyStats(fakeMOB,RS);
 		RS.setRejuv(PhyStats.NO_REJUV);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));

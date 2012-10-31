@@ -167,7 +167,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			return false;
 
 		int targetStatTotal=0;
-		MOB fakeMOB=CMClass.getMOB("StdMOB");
+		MOB fakeMOB=CMClass.getFactoryMOB();
 		for(int s: CharStats.CODES.BASE())
 		{
 			targetStatTotal+=target.baseCharStats().getStat(s);

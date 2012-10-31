@@ -137,7 +137,7 @@ public class Spell_PolymorphSelf extends Spell
 		for(int s: CharStats.CODES.BASE())
 			mobStatTotal+=mob.baseCharStats().getStat(s);
 
-		MOB fakeMOB=CMClass.getMOB("StdMOB");
+		MOB fakeMOB=CMClass.getFactoryMOB();
 		for(int s: CharStats.CODES.BASE())
 			fakeMOB.baseCharStats().setStat(s,mob.baseCharStats().getStat(s));
 		fakeMOB.baseCharStats().setMyRace(R);
