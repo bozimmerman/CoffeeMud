@@ -120,7 +120,7 @@ public class Spell_LedFoot extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> feet seem as heavy as led!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> feet seem as heavy as lead!");
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}
