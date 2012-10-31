@@ -62,7 +62,8 @@ public interface ListingLibrary extends CMLibrary
 		
 		public static final int fixColWidth(final double colWidth, final Session session)
 		{
-			final double totalWidth=(session==null)?78.0:(double)session.getWrap();
+			double totalWidth=(session==null)?78.0:(double)session.getWrap();
+			if(totalWidth==0.0) totalWidth=1024.0;
 			return (int)Math.round((colWidth/78.0)*totalWidth);
 		}
 		
