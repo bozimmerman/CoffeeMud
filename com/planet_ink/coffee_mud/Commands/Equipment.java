@@ -270,8 +270,6 @@ public class Equipment extends StdCommand
 		}
 		if(msg.length()==0)
 		{
-			if(mob.isMonster())
-				return null;
 			msg.append("^!(nothing)^?\n\r");
 		}
 		else
