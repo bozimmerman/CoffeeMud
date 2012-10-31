@@ -57,7 +57,18 @@ public class Spell_FakeWeapon extends Spell
 		{
 			if((msg.tool()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+			{
+				int damageType=Weapon.TYPE_BURSTING;
+				if(affected instanceof Weapon) 
+					damageType=((Weapon)affected).weaponType();
+				if(msg.sourceMessage()!=null)
+					msg.setSourceMessage(CMLib.combat().replaceDamageTag(msg.sourceMessage(), msg.value(), damageType, 'S'));
+				if(msg.targetMessage()!=null)
+					msg.setTargetMessage(CMLib.combat().replaceDamageTag(msg.targetMessage(), msg.value(), damageType, 'T'));
+				if(msg.othersMessage()!=null)
+					msg.setOthersMessage(CMLib.combat().replaceDamageTag(msg.othersMessage(), msg.value(), damageType, 'O'));
 				msg.setValue(0);
+			}
 			else
 			if((msg.target()!=null)
 			&&((msg.target()==affected)

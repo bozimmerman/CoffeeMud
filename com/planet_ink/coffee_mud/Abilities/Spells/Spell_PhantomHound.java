@@ -78,6 +78,8 @@ public class Spell_PhantomHound extends Spell
 				}
 				if((!beast.isInCombat())||(beast.getVictim()!=victim))
 				{
+					Room R=beast.location();
+					if(R!=null) R.show(beast, null,CMMsg.MSG_OK_VISUAL, "<S-NAME> vanish(es)!");
 					if(beast.amDead()) beast.setLocation(null);
 					beast.destroy();
 				}
@@ -90,6 +92,8 @@ public class Spell_PhantomHound extends Spell
 						pointsLeft-=pointsLost/4;
 					if(pointsLeft<0)
 					{
+						Room R=beast.location();
+						if(R!=null) R.show(victim, beast,CMMsg.MSG_OK_VISUAL, "<S-NAME> disbelieve(s) <T-NAME>, who vanish(es)!");
 						if(beast.amDead()) beast.setLocation(null);
 						beast.destroy();
 					}
@@ -130,7 +134,16 @@ public class Spell_PhantomHound extends Spell
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+		{
+			int damageType=Weapon.TYPE_NATURAL;
+			if(msg.sourceMessage()!=null)
+				msg.setSourceMessage(CMLib.combat().replaceDamageTag(msg.sourceMessage(), msg.value(), damageType, 'S'));
+			if(msg.targetMessage()!=null)
+				msg.setTargetMessage(CMLib.combat().replaceDamageTag(msg.targetMessage(), msg.value(), damageType, 'T'));
+			if(msg.othersMessage()!=null)
+				msg.setOthersMessage(CMLib.combat().replaceDamageTag(msg.othersMessage(), msg.value(), damageType, 'O'));
 			msg.setValue(0);
+		}
 		return super.okMessage(myHost,msg);
 
 	}
@@ -185,7 +198,7 @@ public class Spell_PhantomHound extends Spell
 					victim.setVictim(beast);
 					beast.setVictim(victim);
 				}
-				pointsLeft=130;
+				pointsLeft=100+(5*this.adjustedLevel(mob, asLevel));
 				beneficialAffect(mob,beast,asLevel,0);
 			}
 		}
