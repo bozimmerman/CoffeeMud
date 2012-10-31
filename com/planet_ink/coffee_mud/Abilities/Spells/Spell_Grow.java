@@ -45,7 +45,7 @@ public class Spell_Grow extends Spell
 	
 	protected int getOldWeight()
 	{
-		if(!CMath.isInteger(super.text()))
+		if(!CMath.isInteger(text()))
 		{
 			if(affected!=null)
 				super.setMiscText(Integer.toString(affected.basePhyStats().weight()));

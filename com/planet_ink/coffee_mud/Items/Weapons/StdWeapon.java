@@ -264,17 +264,19 @@ public class StdWeapon extends StdItem implements Weapon
 				setAmmoRemaining(ammunitionCapacity());
 			if(ammunitionRemaining()<=0)
 			{
-				msg.source().tell("Your "+name()+" is out of "+ammunitionType()+".");
-				if((msg.source().isMine(this))
-				   &&(msg.source().location()!=null)
-				   &&(CMLib.flags().aliveAwakeMobile(msg.source(),true))
-				   &&(lastReloadTime < (System.currentTimeMillis() - CMProps.getTickMillis())))
+				if(lastReloadTime != msg.source().lastTickedDateTime())
 				{
-					lastReloadTime=System.currentTimeMillis();
-					if((!msg.source().isMonster())||inventoryAmmoCheck(msg.source()))
-						msg.source().enqueCommand(CMParms.parse("LOAD ALL \"$"+name()+"$\""), 0, 0);
-					else
-						msg.source().enqueCommand(CMParms.parse("REMOVE \"$"+name()+"$\""), 0, 0);
+					msg.source().tell(name()+" is out of "+ammunitionType()+".");
+					if((msg.source().isMine(this))
+					   &&(msg.source().location()!=null)
+					   &&(CMLib.flags().aliveAwakeMobile(msg.source(),true)))
+					{
+						lastReloadTime=msg.source().lastTickedDateTime();
+						if((!msg.source().isMonster())||inventoryAmmoCheck(msg.source()))
+							msg.source().enqueCommand(CMParms.parse("LOAD ALL \"$"+name()+"$\""), 0, 0);
+						else
+							msg.source().enqueCommand(CMParms.parse("REMOVE \"$"+name()+"$\""), 0, 0);
+					}
 				}
 				return false;
 			}

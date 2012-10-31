@@ -131,7 +131,7 @@ public class Thief_BackStab extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if(((!success)||(CMLib.flags().canBeSeenBy(mob,target)))&&(!CMLib.flags().isSleeping(target)))
+			if(((!success)||(CMLib.flags().canBeSeenBy(mob,target))||(msg.value()>0))&&(!CMLib.flags().isSleeping(target)))
 				mob.location().show(target,mob,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> spot(s) <T-NAME>!");
 			else
 			{
