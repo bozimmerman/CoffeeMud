@@ -201,13 +201,16 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"Brew what? Enter \"brew list\" for a list.");
 			return false;
 		}
+		int[] cols={
+				ListingLibrary.ColFixer.fixColWidth(25,mob.session()),
+			};
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		String pos=(String)commands.lastElement();
 		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
-			buf.append(CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25));
+			buf.append(CMStrings.padRight("Spell",cols[0])+" "+CMStrings.padRight("Spell",cols[0])+" "+CMStrings.padRight("Spell",cols[0]));
 			int toggler=1;
 			int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)
@@ -222,7 +225,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 					&&(xlevel(mob)>=spellLevel(mob,A))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
-						buf.append(CMStrings.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(A.name(),cols[0])+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

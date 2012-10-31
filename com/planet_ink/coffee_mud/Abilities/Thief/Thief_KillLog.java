@@ -178,7 +178,11 @@ public class Thief_KillLog extends ThiefSkill
 		if(proficiencyCheck(mob,0,auto))
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append(CMStrings.padRight("Name",20)+CMStrings.padRight("Level",6)+"Kill Pct.\n\r");
+			int[] cols={
+					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
+					ListingLibrary.ColFixer.fixColWidth(6,mob.session())
+				};
+			str.append(CMStrings.padRight("Name",cols[0])+CMStrings.padRight("Level",cols[1])+"Kill Pct.\n\r");
 			Vector order=new Vector();
 			int lowLevel=Integer.MIN_VALUE;
 			String[] addOne=null;
@@ -208,7 +212,7 @@ public class Thief_KillLog extends ThiefSkill
 				int kills=CMath.s_int(one[3]);
 				if(total>0)
 					pct=(int)Math.round((CMath.div(kills,total)*100.0));
-				str.append(CMStrings.padRight(one[0],20)+CMStrings.padRight(one[1],6)+pct+"%\n\r");
+				str.append(CMStrings.padRight(one[0],cols[0])+CMStrings.padRight(one[1],cols[1])+pct+"%\n\r");
 			}
 			if(mob.session()!=null)
 				mob.session().rawPrintln(str.toString());

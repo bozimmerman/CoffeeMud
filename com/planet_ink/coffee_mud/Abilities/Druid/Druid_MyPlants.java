@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -130,6 +131,11 @@ public class Druid_MyPlants extends StdAbility
 				mob.location().send(mob,msg);
 				StringBuffer yourPlants=new StringBuffer("");
 				int plantNum=0;
+				int[] cols={
+						ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
+						ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
+						ListingLibrary.ColFixer.fixColWidth(40,mob.session())
+					};
 				Vector V=myPlantRooms(mob);
 				for(int v=0;v<V.size();v++)
 				{
@@ -140,9 +146,9 @@ public class Druid_MyPlants extends StdAbility
 						Item I=myPlant(R,mob,0);
 						while(I!=null)
 						{
-							yourPlants.append(CMStrings.padRight(""+(++plantNum),3)+" ");
-							yourPlants.append(CMStrings.padRight(I.name(),20)+" ");
-							yourPlants.append(CMStrings.padRight(R.roomTitle(mob),40));
+							yourPlants.append(CMStrings.padRight(""+(++plantNum),cols[0])+" ");
+							yourPlants.append(CMStrings.padRight(I.name(),cols[1])+" ");
+							yourPlants.append(CMStrings.padRight(R.roomTitle(mob),cols[2]));
 							yourPlants.append("\n\r");
 							I=myPlant(R,mob,++i);
 						}

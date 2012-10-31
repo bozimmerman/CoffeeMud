@@ -2801,11 +2801,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String newFact="Q";
+		int wrap=ListingLibrary.ColFixer.fixColWidth(50,mob.session());
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newFact.length()>0))
 		{
 			String listing=E.getFactionListing();
-			if((listing.length()>50)&&((showFlag!=showNumber)&&(showFlag>-999)))
-				listing=CMStrings.limit(listing, 50)+((listing.length()>50)?"...":"");
+			if((listing.length()>wrap)&&((showFlag!=showNumber)&&(showFlag>-999)))
+				listing=CMStrings.limit(listing, wrap)+((listing.length()>wrap)?"...":"");
 			mob.tell(showNumber+". Factions: "+listing);
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			newFact=mob.session().prompt("Enter a faction name to add or remove\n\r:","");

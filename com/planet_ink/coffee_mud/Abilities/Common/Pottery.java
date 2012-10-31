@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -199,7 +200,11 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Clay required\n\r");
+			int[] cols={
+					ListingLibrary.ColFixer.fixColWidth(26,mob.session()),
+					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
+				};
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" Clay required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				List<String> V=recipes.get(r);
@@ -210,7 +215,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+"\n\r");
+						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());

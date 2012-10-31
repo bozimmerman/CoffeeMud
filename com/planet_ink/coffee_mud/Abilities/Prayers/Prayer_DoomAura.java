@@ -44,8 +44,8 @@ public class Prayer_DoomAura extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	String lastMessage=null;
 	private final static String msgStr="The aura of doom around <S-NAME> <DAMAGE> <T-NAME>.";
+	protected long oncePerTickTime=0;
 
 
 	public void unInvoke()
@@ -65,15 +65,14 @@ public class Prayer_DoomAura extends Prayer
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((invoker==null)
-		||(affected==null)
+		if((affected==null)
 		||(!(affected instanceof MOB)))
 			return;
-		if(msg.target()==invoker)
+		if(msg.target()==affected)
 		{
 			if((CMLib.dice().rollPercentage()>60+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
 			&&(msg.source().rangeToTarget()==0)
-			&&((lastMessage==null)||(!lastMessage.equals(msgStr)))
+			&&(oncePerTickTime!=((MOB)affected).lastTickedDateTime())
 			&&(CMLib.dice().rollPercentage() <= 33)
 			&&((msg.targetMajor(CMMsg.MASK_HANDS))
 			   ||(msg.targetMajor(CMMsg.MASK_MOVE))))
@@ -88,13 +87,9 @@ public class Prayer_DoomAura extends Prayer
 				if(hitWord.charAt(hitWord.length()-3)=='(')
 					hitWord.deleteCharAt(hitWord.length()-3);
 				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.TYP_UNDEAD|CMMsg.MASK_ALWAYS,Weapon.TYPE_BURNING,msgStr);
-				lastMessage=msgStr;
+				oncePerTickTime=((MOB)affected).lastTickedDateTime();
 			}
-			else
-				lastMessage=msg.othersMessage();
 		}
-		else
-			lastMessage=msg.othersMessage();
 		return;
 	}
 

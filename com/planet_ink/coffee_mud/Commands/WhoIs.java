@@ -77,6 +77,7 @@ public class WhoIs extends Who
 			return false;
 		}
 
+		int[] colWidths=getShortColWidths(mob);
 		StringBuffer msg=new StringBuffer("");
 		for(Session S : CMLib.sessions().localOnlineIterable())
 		{
@@ -87,19 +88,13 @@ public class WhoIs extends Who
 					&&(mob.phyStats().level()>=mob2.phyStats().level())))
 			&&(mob2.phyStats().level()>0)
 			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))
-				msg.append(showWhoShort(mob2));
+				msg.append(showWhoShort(mob2,colWidths));
 		}
 		if(msg.length()==0)
 			mob.tell("That person doesn't appear to be online.\n\r");
 		else
 		{
-			StringBuffer head=new StringBuffer("");
-			head.append("^x[");
-			head.append(CMStrings.padRight("Race",12)+" ");
-			head.append(CMStrings.padRight("Class",12)+" ");
-			head.append(CMStrings.padRight("Level",7));
-			head.append("] Character name^.^N\n\r");
-			mob.tell(head.toString()+msg.toString());
+			mob.tell(getHead(colWidths)+msg.toString());
 		}
 		return false;
 	}

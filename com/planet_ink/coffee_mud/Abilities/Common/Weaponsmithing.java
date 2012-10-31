@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -264,7 +265,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			StringBuffer buf=new StringBuffer("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r");
 			int toggler=1;
 			int toggleTop=displayColumns();
-			int itemWidth=(78/toggleTop)-9;
+			int itemWidth=ListingLibrary.ColFixer.fixColWidth((78/toggleTop)-9,mob.session());
 			for(int r=0;r<toggleTop;r++)
 				buf.append(CMStrings.padRight("Item",itemWidth)+" Lvl "+CMStrings.padRight("Amt",3)+((r<(toggleTop-1)?" ":"")));
 			buf.append("\n\r");

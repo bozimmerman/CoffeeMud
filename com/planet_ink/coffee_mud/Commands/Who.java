@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -39,24 +40,40 @@ public class Who extends StdCommand
 	private final String[] access={"WHO","WH"};
 	public String[] getAccessWords(){return access;}
 	
-	protected static final String shortHead=
-		 "^x["
-		+CMStrings.padRight("Race",12)+" "
-		+CMStrings.padRight("Class",12)+" "
-		+CMStrings.padRight("Level",7)
-		+"] Character name^.^N\n\r";
-		 
+	public int[] getShortColWidths(MOB seer)
+	{
+		return new int[]{
+			ListingLibrary.ColFixer.fixColWidth(12,seer.session()),
+			ListingLibrary.ColFixer.fixColWidth(12,seer.session()),
+			ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
+			ListingLibrary.ColFixer.fixColWidth(40,seer.session())
+		};
+	}
 	
-	public StringBuffer showWhoShort(MOB who)
+	public String getHead(int[] colWidths)
+	{
+		StringBuilder head=new StringBuilder("");
+		head.append("^x[");
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
+			head.append(CMStrings.padRight("Race",colWidths[0])+" ");
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+			head.append(CMStrings.padRight("Class",colWidths[1])+" ");
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
+			head.append(CMStrings.padRight("Level",colWidths[2]));
+		head.append("] Character name^.^N\n\r");
+		return head.toString();
+	}
+	
+	public StringBuffer showWhoShort(MOB who, int[] colWidths)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			if(who.charStats().getCurrentClass().raceless())
-				msg.append(CMStrings.padRight(" ",12)+" ");
+				msg.append(CMStrings.padRight(" ",colWidths[0])+" ");
 			else
-				msg.append(CMStrings.padRight(who.charStats().raceName(),12)+" ");
+				msg.append(CMStrings.padRight(who.charStats().raceName(),colWidths[0])+" ");
 		}
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(' ');
@@ -64,17 +81,17 @@ public class Who extends StdCommand
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 			if(who.charStats().getMyRace().classless())
-				msg.append(CMStrings.padRight(" ",12)+" ");
+				msg.append(CMStrings.padRight(" ",colWidths[1])+" ");
 			else
-				msg.append(CMStrings.padRight(who.charStats().displayClassName(),12)+" ");
+				msg.append(CMStrings.padRight(who.charStats().displayClassName(),colWidths[1])+" ");
 		}
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 		{
 			if(who.charStats().getMyRace().leveless()
 			||who.charStats().getCurrentClass().leveless())
-				msg.append(CMStrings.padRight(" ",7));
+				msg.append(CMStrings.padRight(" ",colWidths[2]));
 			else
-				msg.append(CMStrings.padRight(levelStr,7));
+				msg.append(CMStrings.padRight(levelStr,colWidths[2]));
 		}
 		String name=null;
 		if(CMath.bset(who.phyStats().disposition(),PhyStats.IS_CLOAKED))
@@ -102,7 +119,7 @@ public class Who extends StdCommand
 			}
 			name=name+(" (idle: "+s+")");
 		}
-		msg.append("] "+CMStrings.padRight(name,40));
+		msg.append("] "+CMStrings.padRight(name,colWidths[3]));
 		msg.append("\n\r");
 		return msg;
 	}
@@ -110,6 +127,7 @@ public class Who extends StdCommand
 	public String getWho(MOB mob, Set<String> friends, String mobName)
 	{
 		StringBuffer msg=new StringBuffer("");
+		int[] colWidths=getShortColWidths(mob);
 		for(Session S : CMLib.sessions().localOnlineIterable())
 		{
 			MOB mob2=S.mob();
@@ -121,21 +139,13 @@ public class Who extends StdCommand
 				||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
 			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
 			&&(mob2.phyStats().level()>0))
-				msg.append(showWhoShort(mob2));
+				msg.append(showWhoShort(mob2,colWidths));
 		}
 		if((mobName!=null)&&(msg.length()==0))
 			return "";
 		else
 		{
-			StringBuffer head=new StringBuffer("");
-			head.append("^x[");
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
-				head.append(CMStrings.padRight("Race",12)+" ");
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-				head.append(CMStrings.padRight("Class",12)+" ");
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
-				head.append(CMStrings.padRight("Level",7));
-			head.append("] Character name^.^N\n\r");
+			StringBuffer head=new StringBuffer(getHead(colWidths));
 			head.append(msg.toString());
 			return head.toString();
 		}

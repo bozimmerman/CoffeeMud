@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -59,11 +60,16 @@ public class Email extends StdCommand
 			{
 				String journalName=CMProps.getVar(CMProps.SYSTEM_MAILBOX);
 				List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
+				int[] cols={
+						ListingLibrary.ColFixer.fixColWidth(48,mob.session()),
+						ListingLibrary.ColFixer.fixColWidth(15,mob.session()),
+						ListingLibrary.ColFixer.fixColWidth(20,mob.session())
+					};
 				while((mob.session()!=null)&&(!mob.session().isStopped()))
 				{
 					Vector mymsgs=new Vector();
-					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",48)+"^?^.\n\r");
-					messages.append("^X### "+CMStrings.padRight("From",15)+" "+CMStrings.padRight("Date",20)+" Subject^?^.\n\r");
+					StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",cols[0])+"^?^.\n\r");
+					messages.append("^X### "+CMStrings.padRight("From",cols[1])+" "+CMStrings.padRight("Date",cols[2])+" Subject^?^.\n\r");
 					for(int num=0;num<msgs.size();num++)
 					{
 						JournalsLibrary.JournalEntry thismsg=msgs.get(num);
@@ -74,8 +80,8 @@ public class Email extends StdCommand
 						{
 							mymsgs.addElement(thismsg);
 							messages.append(CMStrings.padRight(""+mymsgs.size(),4)
-									+CMStrings.padRight((thismsg.from),16)
-									+CMStrings.padRight(CMLib.time().date2String(thismsg.date),21)
+									+CMStrings.padRight((thismsg.from),cols[1])+" "
+									+CMStrings.padRight(CMLib.time().date2String(thismsg.date),cols[2])+" "
 									+(thismsg.subj)
 									+"\n\r");
 						}

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -179,16 +180,24 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int duration=4;
+		int[] cols={
+				ListingLibrary.ColFixer.fixColWidth(24,mob.session()),
+				ListingLibrary.ColFixer.fixColWidth(9,mob.session()),
+				ListingLibrary.ColFixer.fixColWidth(14,mob.session()),
+				ListingLibrary.ColFixer.fixColWidth(4,mob.session()),
+				ListingLibrary.ColFixer.fixColWidth(14,mob.session()),
+				ListingLibrary.ColFixer.fixColWidth(4,mob.session())
+			};
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("");
-			buf.append(CMStrings.padRight("Item",24)+" "
-					   +CMStrings.padRight("Exp",9)+" "
-					   +CMStrings.padRight("Material#1",14)+" "
-					   +CMStrings.padRight("Amt#1",4)+" "
-					   +CMStrings.padRight("Material#2",14)+" "
-					   +CMStrings.padRight("Amt#2",4)+"\n\r");
+			buf.append(CMStrings.padRight("Item",cols[0])+" "
+					   +CMStrings.padRight("Exp",cols[1])+" "
+					   +CMStrings.padRight("Material#1",cols[2])+" "
+					   +CMStrings.padRight("Amt#1",cols[3])+" "
+					   +CMStrings.padRight("Material#2",cols[4])+" "
+					   +CMStrings.padRight("Amt#2",cols[5])+"\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				List<String> V=recipes.get(r);
@@ -218,12 +227,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 							mat2=mat2.substring(0,m2).toLowerCase();
 							//amt2=""+adjustWoodRequired(CMath.s_int(amt2),mob);
 						}
-						buf.append(CMStrings.padRight(item,24)+" "
-								   +CMStrings.padRight(""+exp,9)+" "
-								   +CMStrings.padRight(mat1,14)+" "
-								   +CMStrings.padRight(amt1,4)+" "
-								   +CMStrings.padRight(mat2,14)+" "
-								   +CMStrings.padRight(amt2,4)+"\n\r");
+						buf.append(CMStrings.padRight(item,cols[0])+" "
+								   +CMStrings.padRight(""+exp,cols[1])+" "
+								   +CMStrings.padRight(mat1,cols[2])+" "
+								   +CMStrings.padRight(amt1,cols[3])+" "
+								   +CMStrings.padRight(mat2,cols[4])+" "
+								   +CMStrings.padRight(amt2,cols[5])+"\n\r");
 					}
 				}
 			}

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -671,16 +672,17 @@ public class Masonry extends CraftingSkill
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			String mask=CMParms.combine(commands,1);
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Stone required\n\r");
+			int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",colWidth)+" Stone required\n\r");
 			for(int r=0;r<data.length;r++)
 			{
 				if(((r!=BUILD_MONUMENT)
 						||(mob.charStats().getCurrentClass().baseClass().equals("Druid"))
 						||CMSecurity.isASysOp(mob))
-				&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(CMStrings.padRight(data[r][DAT_NAME],20),mask)))
+				&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(data[r][DAT_NAME],mask)))
 				{
 					int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
-					buf.append(CMStrings.padRight(data[r][DAT_NAME],20)+" "+woodRequired);
+					buf.append(CMStrings.padRight(data[r][DAT_NAME],colWidth)+" "+woodRequired);
 					if(doingCode==BUILD_PORTCULIS)
 						buf.append(" metal");
 					buf.append("\n\r");

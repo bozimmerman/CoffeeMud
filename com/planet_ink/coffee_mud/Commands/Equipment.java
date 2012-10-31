@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -45,6 +46,10 @@ public class Equipment extends StdCommand
 		if(CMLib.flags().isSleeping(seer))
 			return new StringBuilder("(nothing you can see right now)");
 
+		int wrap=ListingLibrary.ColFixer.fixColWidth(74,seer.session());
+		int shortWrap=ListingLibrary.ColFixer.fixColWidth(50,seer.session());
+		int headWrap=26;
+		
 		long wornCode=0;
 		String header=null;
 		String wornName=null;
@@ -64,7 +69,7 @@ public class Equipment extends StdCommand
 			else
 			{
 				header="^N(^H"+wornName+"^?)";
-				header+=CMStrings.SPACES.substring(0,26-header.length())+": ^!";
+				header+=CMStrings.SPACES.substring(0,headWrap-header.length())+": ^!";
 			}
 			List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
 			int shownThisLoc=0;
@@ -173,7 +178,7 @@ public class Equipment extends StdCommand
 							if(paragraphView)
 							{
 								String name=thisItem.name();
-								if((name.length()>75)&&(!allPlaces)) name=name.substring(0,75)+"...";
+								if((name.length()>wrap)&&(!allPlaces)) name=name.substring(0,wrap)+"...";
 								if(wornCode==Wearable.WORN_HELD)
 								{
 									if(msg.length()==0) msg.append("nothing.");
@@ -204,7 +209,7 @@ public class Equipment extends StdCommand
 							else
 							{
 								String name=thisItem.name();
-								if((name.length()>53)&&(!allPlaces)) name=name.substring(0,50)+"...";
+								if((name.length()>shortWrap)&&(!allPlaces)) name=name.substring(0,shortWrap)+"...";
 								if(mob==seer)
 									msg.append(header+"^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^?\n\r");
 								else
@@ -242,13 +247,13 @@ public class Equipment extends StdCommand
 						if(paragraphView)
 						{
 							tat=tat.substring(wornName.length()+1).toLowerCase();
-							if(tat.length()>75) tat=tat.substring(0,75)+"...";
+							if(tat.length()>wrap) tat=tat.substring(0,wrap)+"...";
 							msg.append(header+tat+"^?,");
 						}
 						else
 						{
 							tat=CMStrings.capitalizeAndLower(tat.substring(wornName.length()+1).toLowerCase());
-							if(tat.length()>53) tat=tat.substring(0,50)+"...";
+							if(tat.length()>shortWrap) tat=tat.substring(0,shortWrap)+"...";
 							msg.append(header+tat+"^?\n\r");
 						}
 						shownThisLoc++;

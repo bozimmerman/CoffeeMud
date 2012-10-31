@@ -51,6 +51,7 @@ public class ClanWho extends Who
 			return false;
 		}
 		StringBuffer msg=new StringBuffer("");
+		int[] colWidths=getShortColWidths(mob);
 		for(Session S : CMLib.sessions().localOnlineIterable())
 		{
 			MOB mob2=S.mob();
@@ -64,9 +65,9 @@ public class ClanWho extends Who
 			&&(mob2.getClanID().equals(mob.getClanID()))
 			&&(CMLib.flags().isInTheGame(mob2,true))
 			&&(mob2.phyStats().level()>0))
-				msg.append(showWhoShort(mob2));
+				msg.append(showWhoShort(mob2,colWidths));
 		}
-		mob.tell(shortHead+msg.toString());
+		mob.tell(getHead(colWidths)+msg.toString());
 		return false;
 	}
 	

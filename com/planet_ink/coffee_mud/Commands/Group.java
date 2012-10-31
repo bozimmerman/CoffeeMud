@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -39,17 +40,25 @@ public class Group extends StdCommand
 	private final String[] access={"GROUP","GR"};
 	public String[] getAccessWords(){return access;}
 	
-	public static StringBuffer showWhoLong(MOB who)
+	public static StringBuffer showWhoLong(MOB seer, MOB who)
 	{
 
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
+		int[] cols={
+				ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
+				ListingLibrary.ColFixer.fixColWidth(7,seer.session()),
+				ListingLibrary.ColFixer.fixColWidth(5,seer.session()),
+				ListingLibrary.ColFixer.fixColWidth(13,seer.session()),
+				ListingLibrary.ColFixer.fixColWidth(3,seer.session()),
+				ListingLibrary.ColFixer.fixColWidth(12,seer.session())
+			};
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			if(who.charStats().getCurrentClass().raceless())
-				msg.append(CMStrings.padRight(" ",7)+" ");
+				msg.append(CMStrings.padRight(" ",cols[0])+" ");
 			else
-				msg.append(CMStrings.padRight(who.charStats().raceName(),7)+" ");
+				msg.append(CMStrings.padRight(who.charStats().raceName(),cols[0])+" ");
 		}
 			
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
@@ -58,22 +67,22 @@ public class Group extends StdCommand
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 			if(who.charStats().getMyRace().classless())
-				msg.append(CMStrings.padRight(" ",7)+" ");
+				msg.append(CMStrings.padRight(" ",cols[1])+" ");
 			else
-				msg.append(CMStrings.padRight(who.charStats().displayClassName(),7)+" ");
+				msg.append(CMStrings.padRight(who.charStats().displayClassName(),cols[1])+" ");
 		}
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 		{
 			if(who.charStats().getCurrentClass().leveless()
 			||who.charStats().getMyRace().leveless())
-				msg.append(CMStrings.padRight(" ",5));
+				msg.append(CMStrings.padRight(" ",cols[2]));
 			else
-				msg.append(CMStrings.padRight(levelStr,5));
+				msg.append(CMStrings.padRight(levelStr,cols[2]));
 		}
-		msg.append("] "+CMStrings.padRight(who.name(),13)+" ");
-		msg.append(CMStrings.padRightPreserve("hp("+CMStrings.padRightPreserve(""+who.curState().getHitPoints(),3)+"/"+CMStrings.padRightPreserve(""+who.maxState().getHitPoints(),3)+")",12));
-		msg.append(CMStrings.padRightPreserve("mn("+CMStrings.padRightPreserve(""+who.curState().getMana(),3)+"/"+CMStrings.padRightPreserve(""+who.maxState().getMana(),3)+")",12));
-		msg.append(CMStrings.padRightPreserve("mv("+CMStrings.padRightPreserve(""+who.curState().getMovement(),3)+"/"+CMStrings.padRightPreserve(""+who.maxState().getMovement(),3)+")",12));
+		msg.append("] "+CMStrings.padRight(who.name(),cols[3])+" ");
+		msg.append(CMStrings.padRightPreserve("hp("+CMStrings.padRightPreserve(""+who.curState().getHitPoints(),cols[4])+"/"+CMStrings.padRightPreserve(""+who.maxState().getHitPoints(),cols[4])+")",cols[5]));
+		msg.append(CMStrings.padRightPreserve("mn("+CMStrings.padRightPreserve(""+who.curState().getMana(),cols[4])+"/"+CMStrings.padRightPreserve(""+who.maxState().getMana(),cols[4])+")",cols[5]));
+		msg.append(CMStrings.padRightPreserve("mv("+CMStrings.padRightPreserve(""+who.curState().getMovement(),cols[4])+"/"+CMStrings.padRightPreserve(""+who.maxState().getMovement(),cols[4])+")",cols[5]));
 		msg.append("\n\r");
 		return msg;
 	}
@@ -87,7 +96,7 @@ public class Group extends StdCommand
 		for(Iterator e=group.iterator();e.hasNext();)
 		{
 			MOB follower=(MOB)e.next();
-			msg.append(showWhoLong(follower));
+			msg.append(showWhoLong(mob,follower));
 		}
 		mob.tell(msg.toString());
 		return false;

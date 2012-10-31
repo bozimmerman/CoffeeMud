@@ -43,7 +43,7 @@ public class Spell_Flameshield extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 	final static String msgStr="The flame shield around <S-NAME> flares and <DAMAGES> <T-NAME>!";
-	String lastMessage=null;
+	protected long oncePerTickTime=0;
 
 
 	public void unInvoke()
@@ -71,12 +71,11 @@ public class Spell_Flameshield extends Spell
 		MOB source=msg.source();
 		if(source.location()==null) return;
 
-
 		if(msg.amITarget(mob))
 		{
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)||(msg.targetMajor(CMMsg.MASK_MOVE)))
 			   &&(msg.source().rangeToTarget()==0)
-			   &&((lastMessage==null)||(!lastMessage.equals(msgStr))))
+			   &&(oncePerTickTime!=mob.lastTickedDateTime()))
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3)))
 				{
@@ -91,13 +90,9 @@ public class Spell_Flameshield extends Spell
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,msgStr);
 						}
 					}
-					lastMessage=msgStr;
+					oncePerTickTime=mob.lastTickedDateTime();
 				}
-				else
-					lastMessage=msg.othersMessage();
 			}
-			else
-				lastMessage=msg.othersMessage();
 		}
 		return;
 	}

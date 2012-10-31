@@ -161,7 +161,8 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 		{
 			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("Scrolls you know how to enscribe:\n\r");
-			buf.append(CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25));
+			int colWidth=ListingLibrary.ColFixer.fixColWidth(25,mob.session());
+			buf.append(CMStrings.padRight("Spell",colWidth)+" "+CMStrings.padRight("Spell",colWidth)+" "+CMStrings.padRight("Spell",colWidth));
 			int toggler=1;
 			int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)
@@ -176,7 +177,7 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 					&&(xlevel(mob)>=spellLevel(mob,A))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
-						buf.append(CMStrings.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(A.name(),colWidth)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

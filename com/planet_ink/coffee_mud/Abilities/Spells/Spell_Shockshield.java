@@ -43,8 +43,7 @@ public class Spell_Shockshield extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_AIRBASED;}
 	final static String msgStr="The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!";
-	String lastMessage=null;
-
+	protected long oncePerTickTime=0;
 
 	public void unInvoke()
 	{
@@ -76,7 +75,7 @@ public class Spell_Shockshield extends Spell
 		{
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)||(msg.targetMajor(CMMsg.MASK_MOVE)))
 			   &&(msg.source().rangeToTarget()==0)
-			   &&((lastMessage==null)||(!lastMessage.equals(msgStr))))
+			   &&(oncePerTickTime!=mob.lastTickedDateTime()))
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3)))
 				{
@@ -91,13 +90,9 @@ public class Spell_Shockshield extends Spell
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,msgStr);
 						}
 					}
-					lastMessage=msgStr;
+					oncePerTickTime=mob.lastTickedDateTime();
 				}
-				else
-					lastMessage=msg.othersMessage();
 			}
-			else
-				lastMessage=msg.othersMessage();
 		}
 		return;
 	}

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -449,8 +450,13 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			StringBuffer buf=new StringBuffer("Item <S-NAME> <S-IS-ARE> skilled at "+verbing+":\n\r");
 			int toggler=1;
 			int toggleTop=2;
+			int[] cols={
+					ListingLibrary.ColFixer.fixColWidth(29,mob.session()),
+					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
+					ListingLibrary.ColFixer.fixColWidth(4,mob.session())
+				};
 			for(int r=0;r<toggleTop;r++)
-				buf.append(CMStrings.padRight("Item",15)+" Lvl "+CMStrings.padRight("Mats",4)+" ");
+				buf.append((r>0?" ":"")+CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" "+CMStrings.padRight("Mats",cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -468,7 +474,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,29)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+mats,4)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+mats,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

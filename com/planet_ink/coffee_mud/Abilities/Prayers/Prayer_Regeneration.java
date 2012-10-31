@@ -43,7 +43,6 @@ public class Prayer_Regeneration extends Prayer
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	String lastMessage=null;
 
 
 	public void unInvoke()

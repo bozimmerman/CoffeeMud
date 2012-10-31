@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -264,8 +265,13 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			StringBuffer buf=new StringBuffer("");
 			int toggler=1;
 			int toggleTop=2;
+			int[] cols={
+					ListingLibrary.ColFixer.fixColWidth(29,mob.session()),
+					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
+					ListingLibrary.ColFixer.fixColWidth(3,mob.session())
+				};
 			for(int r=0;r<toggleTop;r++)
-				buf.append(CMStrings.padRight("Item",29)+" Lvl "+CMStrings.padRight("Amt",3)+" ");
+				buf.append((r>0?" ":"")+CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" "+CMStrings.padRight("Amt",cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -283,7 +289,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,29)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

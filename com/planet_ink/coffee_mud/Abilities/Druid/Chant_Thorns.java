@@ -43,7 +43,7 @@ public class Chant_Thorns extends Chant
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	final static String msgStr="The thorns around <S-NAME> <DAMAGE> <T-NAME>!";
-	String lastMessage=null;
+	protected long oncePerTickTime=0;
 
 	public void unInvoke()
 	{
@@ -75,7 +75,7 @@ public class Chant_Thorns extends Chant
 		{
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)||(msg.targetMajor(CMMsg.MASK_MOVE)))
 			   &&(msg.source().rangeToTarget()==0)
-			   &&((lastMessage==null)||(!lastMessage.equals(msgStr))))
+			   &&(oncePerTickTime!=mob.lastTickedDateTime()))
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*2)))
 				{
@@ -92,14 +92,9 @@ public class Chant_Thorns extends Chant
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_PIERCING,msgStr);
 						}
 					}
-					lastMessage=msgStr;
+					oncePerTickTime=mob.lastTickedDateTime();
 				}
-				else
-					lastMessage=msg.othersMessage();
 			}
-			else
-				lastMessage=msg.othersMessage();
-
 		}
 		return;
 	}

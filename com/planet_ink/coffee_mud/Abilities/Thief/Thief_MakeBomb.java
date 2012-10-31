@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -58,17 +59,18 @@ public class Thief_MakeBomb extends ThiefSkill
 			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
 				traps.addElement(A);
 		}
+		int colWidth=ListingLibrary.ColFixer.fixColWidth(15,mob.session());
 		Physical trapThis=givenTarget;
 		if(trapThis!=null)
 			theTrap=(Trap)traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
 		else
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Bomb Name",15)+" Requires\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Bomb Name",colWidth)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				buf.append(CMStrings.padRight(T.name(),15)+" ");
+				buf.append(CMStrings.padRight(T.name(),colWidth)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
 			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());

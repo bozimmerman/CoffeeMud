@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -215,7 +216,11 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		{
 			//String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
-			buf.append(CMStrings.padRight("Chant",20)+" "+CMStrings.padRight("Level",5)+" Ingredients\n\r");
+			int[] cols={
+					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
+					ListingLibrary.ColFixer.fixColWidth(5,mob.session())
+				};
+			buf.append(CMStrings.padRight("Chant",cols[0])+" "+CMStrings.padRight("Level",cols[1])+" Ingredients\n\r");
 			boolean fillUsage=(usage.size()==0);
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -229,7 +234,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 					&&(level>=0)
 					&&(xlevel(mob)>=level))
 					{
-						buf.append(CMStrings.padRight(A.name(),20)+" "+CMStrings.padRight(""+level,5)+" ");
+						buf.append(CMStrings.padRight(A.name(),cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" ");
 						for(int i=2;i<V.size();i++)
 						{
 							String s=((String)V.get(i)).toLowerCase();

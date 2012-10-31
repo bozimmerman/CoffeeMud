@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -69,13 +70,14 @@ public class Skill_Warrants extends BardSkill
 					return false;
 				}
 				StringBuffer buf=new StringBuffer("");
-				buf.append(CMStrings.padRight("Name",14)+" "+CMStrings.padRight("Victim",14)+" "+CMStrings.padRight("Witness",14)+" Crime\n\r");
+				int colWidth=ListingLibrary.ColFixer.fixColWidth(14,mob.session());
+				buf.append(CMStrings.padRight("Name",colWidth)+" "+CMStrings.padRight("Victim",colWidth)+" "+CMStrings.padRight("Witness",colWidth)+" Crime\n\r");
 				for(int v=0;v<V.size();v++)
 				{
 					LegalWarrant W=(LegalWarrant)V.get(v);
-					buf.append(CMStrings.padRight(W.criminal().Name(),14)+" ");
-					buf.append(CMStrings.padRight(W.victim()!=null?W.victim().Name():"N/A",14)+" ");
-					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():"N/A",14)+" ");
+					buf.append(CMStrings.padRight(W.criminal().Name(),colWidth)+" ");
+					buf.append(CMStrings.padRight(W.victim()!=null?W.victim().Name():"N/A",colWidth)+" ");
+					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():"N/A",colWidth)+" ");
 					buf.append(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,W.criminal(),W.victim(),null,W.crime(),false)+"\n\r");
 				}
 				if(!mob.isMonster()) mob.session().rawPrintln(buf.toString());

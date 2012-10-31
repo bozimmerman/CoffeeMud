@@ -44,7 +44,7 @@ public class Prayer_Demonshield extends Prayer
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
 	final static String msgStr="The unholy flames around <S-NAME> flare and <DAMAGE> <T-NAME>!";
-	String lastMessage=null;
+	protected long oncePerTickTime=0;
 
 	public void unInvoke()
 	{
@@ -76,7 +76,7 @@ public class Prayer_Demonshield extends Prayer
 		{
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)||(msg.targetMajor(CMMsg.MASK_MOVE)))
 			   &&(msg.source().rangeToTarget()==0)
-			   &&((lastMessage==null)||(!lastMessage.equals(msgStr))))
+			   &&(oncePerTickTime!=mob.lastTickedDateTime()))
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3))
 				   &&(!CMLib.flags().isEvil(source)))
@@ -94,13 +94,9 @@ public class Prayer_Demonshield extends Prayer
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,msgStr);
 						}
 					}
-					lastMessage=msgStr;
+					oncePerTickTime=mob.lastTickedDateTime();
 				}
-				else
-					lastMessage=msg.othersMessage();
 			}
-			else
-				lastMessage=msg.othersMessage();
 		}
 		return;
 	}

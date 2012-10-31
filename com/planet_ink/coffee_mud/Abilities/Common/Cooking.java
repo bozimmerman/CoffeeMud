@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -662,12 +663,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			return true;
 		}
 		randomRecipeFix(mob,allRecipes,commands,-1);
+		int colWidth=ListingLibrary.ColFixer.fixColWidth(20,mob.session());
+		int lineWidth=ListingLibrary.ColFixer.fixColWidth(78,mob.session());
 		if((commands.size()>0)
 		&&(commands.firstElement() instanceof String)
 		&&((String)commands.firstElement()).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("^xRecipe",20)+"^.^? ^wIngredients required^N\n\r");
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("^xRecipe",colWidth)+"^.^? ^B^~wIngredients required^N\n\r");
 			for(int r=0;r<allRecipes.size();r++)
 			{
 				List<String> Vr=allRecipes.get(r);
@@ -679,7 +682,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),20)+"^w ");
+						StringBuilder line=new StringBuilder("");
+						line.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),colWidth)+"^w ");
 						for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 						{
 							String ingredient=(String)Vr.get(vr);
@@ -695,10 +699,16 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 								}
 								if(ingredient.equalsIgnoreCase("water"))
 									amount=amount*10;
-								buf.append(ingredient.toLowerCase()+"("+amount+") ");
+								String next=ingredient.toLowerCase()+"("+amount+") ";
+								if(line.length()+next.length()-2>=lineWidth)
+								{
+									buf.append(line).append("\n\r");
+									line=new StringBuilder("^w ").append(CMStrings.padRight(" ", colWidth));
+								}
+								line.append(next);
 							}
 						}
-						buf.append("\n\r");
+						buf.append(line).append("\n\r");
 					}
 				}
 			}

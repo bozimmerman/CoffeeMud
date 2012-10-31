@@ -45,7 +45,7 @@ public class Prayer_BladeBarrier extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	final static String msgStr="The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.";
-	String lastMessage=null;
+	protected long oncePerTickTime=0;
 
 
 	public void unInvoke()
@@ -71,7 +71,7 @@ public class Prayer_BladeBarrier extends Prayer
 		{
 			if((CMLib.dice().rollPercentage()>60+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
 			&&(msg.source().rangeToTarget()==0)
-			&&((lastMessage==null)||(!lastMessage.equals(msgStr)))
+			&&(oncePerTickTime!=((MOB)affected).lastTickedDateTime())
 			&&((msg.targetMajor(CMMsg.MASK_HANDS))
 			   ||(msg.targetMajor(CMMsg.MASK_MOVE))))
 			{
@@ -85,13 +85,9 @@ public class Prayer_BladeBarrier extends Prayer
 				if(hitWord.charAt(hitWord.length()-3)=='(')
 					hitWord.deleteCharAt(hitWord.length()-3);
 				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,msgStr);
-				lastMessage=msgStr;
+				oncePerTickTime=((MOB)msg.target()).lastTickedDateTime();
 			}
-			else
-				lastMessage=msg.othersMessage();
 		}
-		else
-			lastMessage=msg.othersMessage();
 		return;
 	}
 

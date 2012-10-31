@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -158,7 +159,12 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
-			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl "+CMStrings.padRight("Type",10)+" Material required\n\r");
+			int[] cols={
+					ListingLibrary.ColFixer.fixColWidth(23,mob.session()),
+					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
+					ListingLibrary.ColFixer.fixColWidth(10,mob.session())
+				};
+			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" "+CMStrings.padRight("Type",cols[2])+" Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				List<String> V=recipes.get(r);
@@ -174,7 +180,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 					if((level<xlevel(mob))
 					&&((race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(itype,10)+" "+wood+" "+type+"\n\r");
+						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(itype,cols[2])+" "+wood+" "+type+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());

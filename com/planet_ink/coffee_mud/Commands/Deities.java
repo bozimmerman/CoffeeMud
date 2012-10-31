@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -114,6 +115,7 @@ public class Deities extends StdCommand
 		else
 			msg.append("\n\r^HThe known deities named '"+str+"':^? \n\r");
 		int col=0;
+		int colWidth=ListingLibrary.ColFixer.fixColWidth(18,mob.session());
 		for(Enumeration d=CMLib.map().deities();d.hasMoreElements();)
 		{
 			Deity D=(Deity)d.nextElement();
@@ -124,7 +126,7 @@ public class Deities extends StdCommand
 			{
 				col++;
 				if(col>4){ msg.append("\n\r"); col=0;}
-				msg.append(CMStrings.padRight("^H"+D.name()+"^?",18));
+				msg.append(CMStrings.padRight("^H"+D.name()+"^?",colWidth));
 			}
 		}
 		if(str.length()==0)
