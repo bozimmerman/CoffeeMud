@@ -1482,6 +1482,7 @@ public class DefaultSession implements Session
 			preLogout(mob);
 			if(removeMOB)
 				removeMOBFromGame(false);
+			mob.setSession(null);
 			mob=null;
 		}
 	}
