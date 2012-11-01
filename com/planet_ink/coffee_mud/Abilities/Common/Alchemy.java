@@ -195,10 +195,12 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 			commands.addElement(building);
 			return true;
 		}
+		if(super.checkStop(mob, commands))
+			return true;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Brew what? Enter \"brew list\" for a list.");
+			commonTell(mob,"Brew what? Enter \"brew list\" for a list, or \"brew stop\" to cancel.");
 			return false;
 		}
 		int[] cols={

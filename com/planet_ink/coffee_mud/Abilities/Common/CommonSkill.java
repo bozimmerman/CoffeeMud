@@ -478,6 +478,26 @@ public class CommonSkill extends StdAbility
 		tickUp=0;
 	}
 	
+	public boolean checkStop(MOB mob, Vector commands)
+	{
+		if((commands!=null)
+		&&(commands.size()==1)
+		&&(commands.get(0) instanceof String)
+		&&(((String)commands.get(0)).equalsIgnoreCase("stop")))
+		{
+			Ability A=mob.fetchEffect(ID());
+			if((A!=null)&&(!A.isNowAnAutoEffect())&&(A.canBeUninvoked()))
+			{
+				if(A instanceof CommonSkill)
+					((CommonSkill)A).aborted=true;
+				A.unInvoke();
+				return true;
+			}
+			mob.tell("You are not doing that right now.");
+		}
+		return false;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		aborted=false;

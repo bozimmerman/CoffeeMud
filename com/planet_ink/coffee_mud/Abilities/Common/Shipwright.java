@@ -174,6 +174,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -184,7 +186,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", or \"shipwright mend <item>\".");
+			commonTell(mob,"Shipwright what? Enter \"shipwright list\" for a list, \"shipwright scan\", \"shipwright learn <item>\", \"shipwright mend <item>\", or \"shipwright stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

@@ -97,6 +97,8 @@ public class Domesticating extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		taming=null;
 		String str=CMParms.combine(commands,0);
 		String newName=null;

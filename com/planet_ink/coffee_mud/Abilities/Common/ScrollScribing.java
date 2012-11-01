@@ -140,6 +140,8 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
 			commands.removeElementAt(0);
@@ -152,7 +154,7 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Enscribe what? Enter \"enscribe list\" for a list.");
+			commonTell(mob,"Enscribe what? Enter \"enscribe list\" for a list, or \"enscribe stop\" to cancel.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());

@@ -56,6 +56,8 @@ public class MasterTailoring extends Tailoring
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -65,7 +67,7 @@ public class MasterTailoring extends Tailoring
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Knit what? Enter \"mknit list\" for a list, \"mknit refit <item>\" to resize, \"mknit learn <item>\", \"mknit scan\", or \"mknit mend <item>\".");
+			commonTell(mob,"Knit what? Enter \"mknit list\" for a list, \"mknit refit <item>\" to resize, \"mknit learn <item>\", \"mknit scan\", \"mknit mend <item>\", or \"mknit stop\" to cancel.");
 			return false;
 		}
 		if(autoGenerate>0)

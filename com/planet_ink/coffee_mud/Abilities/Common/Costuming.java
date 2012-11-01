@@ -196,6 +196,8 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -207,7 +209,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Costume what? Enter \"costume list\" for a list, \"costume refit <item>\" to resize, \"costume learn <item>\", \"costume scan\", or \"costume mend <item>\".");
+			commonTell(mob,"Costume what? Enter \"costume list\" for a list, \"costume refit <item>\" to resize, \"costume learn <item>\", \"costume scan\", \"costume mend <item>\", or \"costume stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

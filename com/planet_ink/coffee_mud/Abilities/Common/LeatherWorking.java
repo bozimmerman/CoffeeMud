@@ -230,6 +230,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -241,7 +243,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"leatherwork list\" for a list, \"leatherwork refit <item>\" to resize, \"leatherwork learn <item>\", \"leatherwork scan\", or \"leatherwork mend <item>\".");
+			commonTell(mob,"Make what? Enter \"leatherwork list\" for a list, \"leatherwork refit <item>\" to resize, \"leatherwork learn <item>\", \"leatherwork scan\", \"leatherwork mend <item>\", or \"leatherwork stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

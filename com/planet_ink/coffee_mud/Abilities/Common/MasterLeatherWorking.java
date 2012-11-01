@@ -256,6 +256,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -267,7 +269,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"mleatherwork list\" for a list, \"mleatherwork refit <item>\" to resize, \"mleatherwork learn <item>\", \"mleatherwork scan\", or \"mleatherwork mend <item>\".");
+			commonTell(mob,"Make what? Enter \"mleatherwork list\" for a list, \"mleatherwork refit <item>\" to resize, \"mleatherwork learn <item>\", \"mleatherwork scan\", \"mleatherwork mend <item>\", or \"mleatherwork stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

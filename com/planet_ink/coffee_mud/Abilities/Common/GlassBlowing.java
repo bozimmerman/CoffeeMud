@@ -191,6 +191,8 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		fireRequired=true;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -202,7 +204,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"glassblow list\" for a list, \"glassblow learn <item>\" to gain recipes.");
+			commonTell(mob,"Make what? Enter \"glassblow list\" for a list, \"glassblow learn <item>\" to gain recipes, or \"glassblow stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

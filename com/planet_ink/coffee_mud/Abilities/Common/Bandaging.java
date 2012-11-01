@@ -106,7 +106,9 @@ public class Bandaging extends CommonSkill implements MendingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		verb="taming";
+		if(super.checkStop(mob, commands))
+			return true;
+		verb="bandaging";
 		bandaging=null;
 		MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

@@ -67,9 +67,11 @@ public class CageBuilding extends Wainwrighting
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Build what? Enter \"buildcage list\" for a list, \"buildcage learn <item>\" to gain recipes.");
+			commonTell(mob,"Build what? Enter \"buildcage list\" for a list, \"buildcage learn <item>\" to gain recipes, or \"buildcage stop\" to cancel.");
 			return false;
 		}
 		return super.invoke(mob,commands,givenTarget,auto,asLevel);

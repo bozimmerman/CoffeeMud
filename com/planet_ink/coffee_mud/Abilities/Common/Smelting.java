@@ -105,10 +105,12 @@ public class Smelting extends CraftingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"smelt list\" for a list.");
+			commonTell(mob,"Make what? Enter \"smelt list\" for a list, or \"smelt stop\" to cancel.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());

@@ -130,6 +130,9 @@ public class AnimalTraining extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
+
 		verb="training";
 		taming=null;
 		Item cage=null;

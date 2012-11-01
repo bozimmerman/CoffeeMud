@@ -195,6 +195,8 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		fireRequired=true;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -207,7 +209,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"armorsmith list\" for a list, \"armorsmith refit <item>\" to resize, \"armorsmith learn <item>\", \"armorsmith scan\", or \"armorsmith mend <item>\".");
+			commonTell(mob,"Make what? Enter \"armorsmith list\" for a list, \"armorsmith refit <item>\" to resize, \"armorsmith learn <item>\", \"armorsmith scan\", \"armorsmith mend <item>\", or \"armorsmith stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

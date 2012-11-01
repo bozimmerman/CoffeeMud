@@ -68,6 +68,8 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -77,7 +79,7 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"marmorsmith list\" for a list,\"marmorsmith scan\", \"marmorsmith learn <item>\", or \"marmorsmith mend <item>\".");
+			commonTell(mob,"Make what? Enter \"marmorsmith list\" for a list,\"marmorsmith scan\", \"marmorsmith learn <item>\", \"marmorsmith mend <item>\", or \"marmorsmith stop\" to cancel.");
 			return false;
 		}
 		if(autoGenerate>0)

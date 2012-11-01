@@ -109,6 +109,8 @@ public class Shearing extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		MOB target=null;
 		Room R=mob.location();
 		if(R==null) return false;

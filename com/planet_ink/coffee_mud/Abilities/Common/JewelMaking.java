@@ -244,6 +244,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		fireRequired=true;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -256,7 +258,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, or jewel mount <gem name> <item name>, or jewel refit <item name>, jewel learn <item>, or jewel scan, or jewel mend <item name>.");
+			commonTell(mob,"Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, jewel mount <gem name> <item name>, jewel refit <item name>, jewel learn <item>, jewel scan, jewel mend <item name>, or jewel stop to cancel.");
 			return false;
 		}
 		if((!auto)

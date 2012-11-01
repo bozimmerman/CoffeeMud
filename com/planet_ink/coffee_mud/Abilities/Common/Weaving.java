@@ -229,6 +229,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -240,7 +242,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, \"weave learn <item>\", \"weave scan\", or \"weave mend <item>\".");
+			commonTell(mob,"Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, \"weave learn <item>\", \"weave scan\", \"weave mend <item>\", or \"weave stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

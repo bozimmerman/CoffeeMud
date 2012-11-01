@@ -96,6 +96,8 @@ public class Herbology extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		if(commands.size()<1)
 		{
 			commonTell(mob,"You must specify what herb you want to identify.");

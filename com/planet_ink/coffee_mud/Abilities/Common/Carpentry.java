@@ -219,6 +219,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -230,7 +232,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve learn <item>\", \"carve scan\", or \"carve mend <item>\".");
+			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve learn <item>\", \"carve scan\", \"carve mend <item>\", or \"carve stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

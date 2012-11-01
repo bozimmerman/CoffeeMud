@@ -140,6 +140,8 @@ public class PlantLore extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		verb="observing plant growth";
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

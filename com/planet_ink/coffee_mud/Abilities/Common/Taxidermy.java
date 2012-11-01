@@ -111,6 +111,8 @@ public class Taxidermy extends CraftingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		List<List<String>> POSES=loadRecipes();
 		String pose=null;
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))

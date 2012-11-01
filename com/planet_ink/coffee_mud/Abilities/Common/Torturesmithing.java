@@ -146,6 +146,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -156,7 +158,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \""+triggerStrings()[0].toLowerCase()+" list\" for a list, \""+triggerStrings()[0].toLowerCase()+" learn <item>\" to gain recipes.");
+			commonTell(mob,"Make what? Enter \""+triggerStrings()[0].toLowerCase()+" list\" for a list, \""+triggerStrings()[0].toLowerCase()+" learn <item>\" to gain recipes, or \""+triggerStrings()[0].toLowerCase()+" stop\" to cancel.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());

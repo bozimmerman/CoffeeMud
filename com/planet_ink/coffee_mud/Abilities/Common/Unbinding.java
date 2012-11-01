@@ -120,7 +120,8 @@ public class Unbinding extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-
+		if(super.checkStop(mob, commands))
+			return true;
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((!auto)&&(target==mob))

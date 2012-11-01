@@ -106,6 +106,8 @@ public class Scrapping extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		verb="scrapping";
 		String str=CMParms.combine(commands,0);
 		Item I=mob.location().findItem(null,str);

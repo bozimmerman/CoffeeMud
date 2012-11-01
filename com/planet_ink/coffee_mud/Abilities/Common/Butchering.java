@@ -99,6 +99,9 @@ public class Butchering extends GatheringSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
+
 		body=null;
 		Item I=null;
 		

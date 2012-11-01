@@ -195,6 +195,8 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,-1);
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -207,7 +209,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		}
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes.");
+			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list, \"hbrew learn <item>\" to learn recipes, or \"hbrew stop\" to cancel.");
 			return false;
 		}
 		List<List<String>> recipes=addRecipes(mob,loadRecipes());

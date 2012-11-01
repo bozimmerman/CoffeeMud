@@ -105,6 +105,8 @@ public class Scalp extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		body=null;
 		Item I=null;
 		if((mob.isMonster()

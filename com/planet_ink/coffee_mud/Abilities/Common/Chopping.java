@@ -111,6 +111,8 @@ public class Chopping extends GatheringSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)

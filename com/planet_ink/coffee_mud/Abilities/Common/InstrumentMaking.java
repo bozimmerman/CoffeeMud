@@ -128,6 +128,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -138,7 +140,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake learn <item>\" to gain recipes.");
+			commonTell(mob,"Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake learn <item>\" to gain recipes, or \"instrumentmake stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

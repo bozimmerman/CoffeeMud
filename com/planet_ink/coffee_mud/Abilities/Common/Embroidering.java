@@ -75,6 +75,8 @@ public class Embroidering extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		if(commands.size()<2)
 		{
 			commonTell(mob,"You must specify what you want to embroider onto, and what words to embroider on it.");

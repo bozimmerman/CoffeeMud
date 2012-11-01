@@ -163,6 +163,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -174,7 +176,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", \"sculpt learn <item>\", or \"sculpt mend <item>\".");
+			commonTell(mob,"Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", \"sculpt learn <item>\", \"sculpt mend <item>\", or \"sculpt stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

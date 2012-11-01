@@ -405,6 +405,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -425,7 +427,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			if(canMendB.booleanValue()) features.append(", \""+noun.toLowerCase()+" mend <item>\" to mend broken items, \""+noun.toLowerCase()+" scan\" to scan for mendable items");
 			if(canRefitB.booleanValue()) features.append(", \""+noun.toLowerCase()+" refit <item>\" to resize wearables");
 			if(canBundleB.booleanValue()) features.append(", \""+noun.toLowerCase()+" bundle\" to make bundles");
-			features.append(".");
+			features.append(", or \""+noun.toLowerCase()+" stop\" to cancel.");
 			commonTell(mob,features.toString());
 			return false;
 		}

@@ -191,6 +191,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -202,7 +204,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Scrim what? Enter \"scrim list\" for a list, \"scrim scan\", \"scrim learn <item>\" to gain recipes, or \"scrim mend <item>\".");
+			commonTell(mob,"Scrim what? Enter \"scrim list\" for a list, \"scrim scan\", \"scrim learn <item>\" to gain recipes, \"scrim mend <item>\", or \"scrim stop\" to cancel.");
 			return false;
 		}
 		if((!auto)

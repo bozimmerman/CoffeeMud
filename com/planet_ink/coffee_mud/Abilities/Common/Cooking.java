@@ -613,6 +613,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		verb=cookWord();
 		cookingPot=null;
 		finalRecipe=null;

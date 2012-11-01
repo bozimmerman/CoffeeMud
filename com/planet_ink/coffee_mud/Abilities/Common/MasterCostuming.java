@@ -55,6 +55,8 @@ public class MasterCostuming extends Costuming
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -64,7 +66,7 @@ public class MasterCostuming extends Costuming
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"mcostume list\" for a list, \"mcostume scan\", \"mcostume refit\", \"mcostume learn <item>\", or \"mcostume mend <item>\".");
+			commonTell(mob,"Make what? Enter \"mcostume list\" for a list, \"mcostume scan\", \"mcostume refit\", \"mcostume learn <item>\", \"mcostume mend <item>\", or \"mcostume stop\" to cancel.");
 			return false;
 		}
 		if(autoGenerate>0)

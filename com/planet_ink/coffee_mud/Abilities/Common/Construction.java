@@ -631,6 +631,8 @@ public class Construction extends CraftingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Construct what, where? Try Construct list.");

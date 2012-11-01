@@ -182,6 +182,8 @@ public class LockSmith extends CraftingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		if((commands.size()==0)
 		||(CMParms.combine(commands,0).equalsIgnoreCase("list")))
 		{

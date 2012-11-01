@@ -175,6 +175,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(super.checkStop(mob, commands))
+			return true;
 		int autoGenerate=0;
 		fireRequired=true;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -187,7 +189,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \""+triggerStrings()[0].toLowerCase()+" list\" for a list, \""+triggerStrings()[0].toLowerCase()+" learn <item>\" to gain recipes.");
+			commonTell(mob,"Make what? Enter \""+triggerStrings()[0].toLowerCase()+" list\" for a list, \""+triggerStrings()[0].toLowerCase()+" learn <item>\" to gain recipes, or \""+triggerStrings()[0].toLowerCase()+" stop\" to cancel.");
 			return false;
 		}
 		if((!auto)
