@@ -68,6 +68,13 @@ public class Chant_FurCoat extends Chant
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if(theArmor==null) return true;
+		
+		if((msg.source()==theArmor.owner())
+		&&(msg.tool() instanceof Druid_ShapeShift))
+		{
+			unInvoke();
+			return true;
+		}
 
 		if((theArmor.amWearingAt(Wearable.IN_INVENTORY)
 		||(theArmor.owner()==null)

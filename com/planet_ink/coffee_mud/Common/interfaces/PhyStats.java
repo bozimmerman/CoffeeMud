@@ -382,8 +382,8 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int SENSE_ITEMNOWISH=16384;
 	/** a bit setting, as from sensesMask(), flagging this room contains electronic circuitry  */
 	public final static int SENSE_ROOMCIRCUITED=32768;
-	/** a bit setting, as from sensesMask(), flagging this item/room  */
-	public final static int SENSE_UNUSEDMASK17=65536;
+	/** a bit setting, as from sensesMask(), flagging this item/room and unable to be destroyed */
+	public final static int SENSE_UNDESTROYABLE=65536;
 	
 	/** STAT codes list, indexed by the 2nd root of the various sensesMask() SENSE_ bitmasks */ 
 	public static final String[] SENSE_CODES={

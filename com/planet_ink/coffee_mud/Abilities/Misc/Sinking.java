@@ -186,8 +186,8 @@ public class Sinking extends StdAbility
 		{
 			Item item=(Item)affected;
 			if((room==null)
-			   &&(item.owner()!=null)
-			   &&(item.owner() instanceof Room))
+			&&(item.owner()!=null)
+			&&(item.owner() instanceof Room))
 				room=(Room)item.owner();
 
 			if((room==null)

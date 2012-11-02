@@ -1164,6 +1164,8 @@ public class StdItem implements Item
 	public void stopTicking(){destroyed=true;CMLib.threads().deleteTick(this,-1);}
 	public void destroy()
 	{
+		if((phyStats().sensesMask()&PhyStats.SENSE_UNDESTROYABLE)>0)
+			return;
 		myContainer=null;
 		CMLib.map().registerWorldObjectDestroyed(null,null,this);
 		try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Exception t){}

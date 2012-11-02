@@ -1393,6 +1393,8 @@ public class StdRoom implements Room
 
 	public void destroy()
 	{
+		if((phyStats().sensesMask()&PhyStats.SENSE_UNDESTROYABLE)>0)
+			return;
 		CMLib.map().registerWorldObjectDestroyed(getArea(),this,this);
 		delAllEffects(true);
 		delAllInhabitants(true);
