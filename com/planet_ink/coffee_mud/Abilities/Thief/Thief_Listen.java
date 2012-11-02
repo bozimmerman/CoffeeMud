@@ -167,7 +167,7 @@ public class Thief_Listen extends ThiefSkill
 					if(proficiency()>((room==mob.location())?50:75))
 					{
 						sourceRoom=mob.location();
-						beneficialAffect(mob,room,asLevel,((room==mob.location())?0:10));
+						beneficialAffect(mob,room,asLevel,0);
 					}
 				}
 				else
