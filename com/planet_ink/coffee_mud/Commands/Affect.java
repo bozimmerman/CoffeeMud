@@ -56,7 +56,7 @@ public class Affect extends StdCommand
 				if(x<=7) msg.append("^!You need to bathe, soon.^?\n\r");
 				else
 				if(x<15) msg.append("^!You desperately need to bathe.^?\n\r");
-				else msg.append("^!Your stench is horrendous! Bathe dammit!.^?\n\r");
+				else msg.append("^!Your stench is horrendous! Bathe dammit!^?\n\r");
 			}
 		}
 
