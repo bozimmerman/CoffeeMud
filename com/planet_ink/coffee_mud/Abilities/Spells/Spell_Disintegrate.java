@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Spell_Disintegrate extends Spell
 {
 	public String ID() { return "Spell_Disintegrate"; }
@@ -86,12 +86,12 @@ public class Spell_Disintegrate extends Spell
 				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
-					Hashtable V=new Hashtable();
+					HashSet<DeadBody> oldBodies=new HashSet<DeadBody>();
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item item=R.getItem(i);
-						if((item!=null)&&(item instanceof DeadBody))
-							V.put(item,item);
+						Item I=R.getItem(i);
+						if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null))
+							oldBodies.add((DeadBody)I);
 					}
 
 					if(target instanceof MOB)
@@ -108,17 +108,17 @@ public class Spell_Disintegrate extends Spell
 
 					if(target instanceof Item)
 						((Item)target).destroy();
-					else
+					else // destroy any newly created bodies
 					{
-						int i=0;
-						while(i<R.numItems())
+						for(int i=0;i<R.numItems();i++)
 						{
-							int s=R.numItems();
-							Item item=R.getItem(i);
-							if((item!=null)&&(item instanceof DeadBody)&&(V.get(item)==null))
-								item.destroy();
-							if(s==R.numItems())
-								i++;
+							Item I=R.getItem(i);
+							if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null)&&(!oldBodies.contains(I))
+							&&(!((DeadBody)I).playerCorpse()))
+							{
+								I.destroy();
+								break;
+							}
 						}
 					}
 					R.recoverRoomStats();

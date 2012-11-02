@@ -2407,3 +2407,4 @@ ruthless programmer, and sentenced to a quick death.
 11.Pregnancy will fail if either participant is exhausted or below 1/2 movement.  A message was added so the players know.
 12.Arcanists can LOOK at wand charges at level 30.
 13.Common Skills now support "STOP" to cancel.
+14.Troll regeneration moved from the MOB to the Race

@@ -89,32 +89,40 @@ public class Troll extends StdRace
 		if(tickID!=Tickable.TICKID_MOB) return false;
 		if(ticking instanceof MOB)
 		{
-			MOB M=(MOB)ticking;
-			Room room=M.location();
-			if(room!=null)
+			final MOB M=(MOB)ticking;
+			final Room room=M.location();
+			if((room!=null)&&(!M.amDead()))
 			{
-				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HEAT_WAVE)
-				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
+				if(M.curState().adjHitPoints((int)Math.round(CMath.div(M.phyStats().level(),2.0)),M.maxState()))
+					M.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> regenerate(s).");
+				final Area A=room.getArea();
+				if(A!=null)
 				{
-					int damage=CMLib.dice().roll(1,8,0);
-					CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
+					switch(A.getClimateObj().weatherType(room))
+					{
+					case Climate.WEATHER_HEAT_WAVE:
+						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
+						{
+							int damage=CMLib.dice().roll(1,8,0);
+							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
+						}
+						break;
+					case Climate.WEATHER_DUSTSTORM:
+						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
+						{
+							int damage=CMLib.dice().roll(1,16,0);
+							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
+						}
+						break;
+					case Climate.WEATHER_DROUGHT:
+						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
+						{
+							int damage=CMLib.dice().roll(1,8,0);
+							CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
+						}
+						break;
+					}
 				}
-				else
-				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DUSTSTORM)
-				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
-				{
-					int damage=CMLib.dice().roll(1,16,0);
-					CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
-				}
-				else
-				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DROUGHT)
-				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
-				{
-					int damage=CMLib.dice().roll(1,8,0);
-					CMLib.combat().postDamage(M,M,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning dry heat <DAMAGE> <T-NAME>!");
-				}
-				else
-					return true;
 			}
 		}
 		return true;

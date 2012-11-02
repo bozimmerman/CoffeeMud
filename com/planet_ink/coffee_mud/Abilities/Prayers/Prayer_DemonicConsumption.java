@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Prayer_DemonicConsumption extends Prayer
 {
 	public String ID() { return "Prayer_DemonicConsumption"; }
@@ -66,20 +66,21 @@ public class Prayer_DemonicConsumption extends Prayer
 
 		if(auto)affectType=affectType|CMMsg.MASK_ALWAYS;
 
-		if(success)
+		Room R=mob.location();
+		if(success && (R!=null))
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+" treacherously!^?");
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
-					Hashtable V=new Hashtable();
-					for(int i=0;i<mob.location().numItems();i++)
+					HashSet<DeadBody> oldBodies=new HashSet<DeadBody>();
+					for(int i=0;i<R.numItems();i++)
 					{
-						Item item=mob.location().getItem(i);
-						if((item!=null)&&(item instanceof DeadBody))
-							V.put(item,item);
+						Item I=R.getItem(i);
+						if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null))
+							oldBodies.add((DeadBody)I);
 					}
 
 					if(target instanceof MOB)
@@ -87,29 +88,29 @@ public class Prayer_DemonicConsumption extends Prayer
 						if(((MOB)target).curState().getHitPoints()>0)
 							CMLib.combat().postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*100),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe evil <DAMAGE> <T-NAME>!^?");
 						if(((MOB)target).amDead())
-							mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> <T-IS-ARE> consumed!");
+							R.show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> <T-IS-ARE> consumed!");
 						else
 							return false;
 					}
 					else
-						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> is consumed!");
+						R.show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> is consumed!");
 
 					if(target instanceof Item)
 						((Item)target).destroy();
-					else
+					else // destroy any newly created bodies
 					{
-						int i=0;
-						while(i<mob.location().numItems())
+						for(int i=0;i<R.numItems();i++)
 						{
-							int s=mob.location().numItems();
-							Item item=mob.location().getItem(i);
-							if((item!=null)&&(item instanceof DeadBody)&&(V.get(item)==null))
-								item.destroy();
-							if(s==mob.location().numItems())
-								i++;
+							Item I=R.getItem(i);
+							if((I!=null)&&(I instanceof DeadBody)&&(I.container()==null)&&(!oldBodies.contains(I))
+							&&(!((DeadBody)I).playerCorpse()))
+							{
+								I.destroy();
+								break;
+							}
 						}
 					}
-					mob.location().recoverRoomStats();
+					R.recoverRoomStats();
 				}
 
 			}

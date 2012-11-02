@@ -61,11 +61,6 @@ public class Dress extends StdCommand
 			mob.tell("I don't see "+whom+" here.");
 			return false;
 		}
-		if((!target.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER)))
-		{
-			mob.tell(target.Name()+" is a player!");
-			return false;
-		}
 		if((target.willFollowOrdersOf(mob))||(CMLib.flags().isBoundOrHeld(target)))
 		{
 			Item item=mob.findItem(null,what);

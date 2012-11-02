@@ -42,13 +42,14 @@ public class Chant_MetalMold extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-	private Item getItem(MOB mobTarget) {
+	private Item findMobTargetItem(MOB mobTarget) 
+	{
 		Vector goodPossibilities=new Vector();
 		Vector possibilities=new Vector();
 		for(int i=0;i<mobTarget.numItems();i++)
 		{
 			Item item=mobTarget.getItem(i);
-			if(item!=null)
+			if((item!=null) && (item.subjectToWearAndTear()) && (CMLib.flags().isMetal(item)))
 			{
 				if(item.amWearingAt(Wearable.IN_INVENTORY))
 					possibilities.addElement(item);
@@ -70,7 +71,7 @@ public class Chant_MetalMold extends Chant
 		{
 			if((target instanceof MOB)&&(target!=mob))
 			{
-				if(getItem((MOB)target)==null)
+				if(findMobTargetItem((MOB)target)==null)
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -82,19 +83,17 @@ public class Chant_MetalMold extends Chant
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
-			target=getItem(mobTarget);
+			target=findMobTargetItem(mobTarget);
 
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
-
-		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		if(success)
+		if(success && (target!=null) && CMLib.flags().isMetal(target) && target.subjectToWearAndTear())
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
@@ -135,7 +134,14 @@ public class Chant_MetalMold extends Chant
 			}
 		}
 		else
+		if(mobTarget!=null)
+			return maliciousFizzle(mob,mobTarget,"<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens.");
+		else
+		if(target!=null)
+			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAME> for mold, but nothing happens.");
+		else
 			return maliciousFizzle(mob,null,"<S-NAME> chant(s) for mold, but nothing happens.");
+		
 
 
 		// return whether it worked

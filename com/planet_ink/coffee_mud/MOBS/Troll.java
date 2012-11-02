@@ -70,39 +70,4 @@ public class Troll extends StdMOB
 		recoverPhyStats();
 		recoverCharStats();
 	}
-
-
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
-		{
-			if((--regDown)<=0)
-			{
-				regDown=3;
-				regenerate();
-			}
-		}
-		return super.tick(ticking,tickID);
-	}
-
-	protected boolean regenerate()
-	{
-		Room target = null;
-		target = location();
-
-		if(curState.getHitPoints() < maxState.getHitPoints())
-		{
-			String msgText = "The troll regenerates wounds";
-
-			CMMsg message = CMClass.getMsg(this, target, null, CMMsg.MSG_OK_ACTION, msgText);
-
-			target.send(this, message);
-
-			curState.adjHitPoints(3, maxState);
-		}
-		return(true);
-
-	}
-
-
 }

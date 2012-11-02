@@ -96,7 +96,7 @@ public class Prayer_HealUndead extends Prayer implements MendingSkill
 					target.tell("You feel tons better!");
 				}
 				else
-					CMLib.combat().postDamage(mob,target,this,healing,
+					CMLib.combat().postDamage(mob,target,this,healing/3,
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,
 											Weapon.TYPE_BURNING,
 											"The unholy spell <DAMAGE> <T-NAME>!");

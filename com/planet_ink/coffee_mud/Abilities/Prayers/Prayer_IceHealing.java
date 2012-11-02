@@ -69,9 +69,9 @@ public class Prayer_IceHealing extends Prayer
 
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		   &&((msg.sourceMinor()==CMMsg.TYP_COLD)
-			   ||(msg.sourceMinor()==CMMsg.TYP_WATER))
-		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+		&&((msg.sourceMinor()==CMMsg.TYP_COLD)
+			||(msg.sourceMinor()==CMMsg.TYP_WATER))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The icy attack heals <S-NAME> "+recovery+" points.");
