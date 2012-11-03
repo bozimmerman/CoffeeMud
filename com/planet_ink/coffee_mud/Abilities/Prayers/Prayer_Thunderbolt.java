@@ -68,7 +68,7 @@ public class Prayer_Thunderbolt extends Prayer
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel),adjustedLevel(mob,asLevel));
-					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"^SThe STRIKE of the gods <DAMAGE> <T-NAME>!^?");
+					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"^SThe STRIKE of "+hisHerDiety(mob)+" <DAMAGES> <T-NAME>!^?");
 				}
 			}
 		}
