@@ -137,7 +137,8 @@ public class Spell_MirrorImage extends Spell
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()-1-getXLEVELLevel(invoker()));
+		if(numberOfImages > 0)
+			affectableStats.setArmor(affectableStats.armor()-1-getXLEVELLevel(invoker()));
 	}
 
 	public void unInvoke()
