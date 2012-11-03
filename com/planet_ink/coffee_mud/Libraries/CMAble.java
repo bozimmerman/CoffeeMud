@@ -42,13 +42,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	
 	protected Map<String, Map<String, AbilityMapping>> 
 										completeAbleMap 			= new SHashtable<String, Map<String, AbilityMapping>>();
-	protected Map<String, Integer>  	lowestQualifyingLevelMap	= new SHashtable<String, Integer>();
-	protected Map<String, Integer>  	maxProficiencyMap   		= new SHashtable<String, Integer>();
-	protected Map<String, Object>   	allows  					= new SHashtable<String, Object>();
+	protected Map<String, Integer>		lowestQualifyingLevelMap	= new SHashtable<String, Integer>();
+	protected Map<String, Integer>		maxProficiencyMap   		= new SHashtable<String, Integer>();
+	protected Map<String, Object>		allows  					= new SHashtable<String, Object>();
 	protected Map<Integer, Set<Integer>>completeDomainMap   		= new SHashtable<Integer,Set<Integer>>();
 	protected Map<String, Map<String, AbilityMapping>> 
 										reverseAbilityMap   		= new TreeMap<String, Map<String, AbilityMapping>>();
-	protected List<AbilityMapping>  	eachClassSet				= null;
+	protected List<AbilityMapping>		eachClassSet				= null;
 	protected Map<String,int[]> 		hardOverrideCache			= new Hashtable<String,int[]>(); 
 
 	public void addCharAbilityMapping(String ID,
@@ -526,7 +526,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 	}
 	
-	
 	public boolean qualifiesByAnyCharClass(String abilityID)
 	{
 		if(completeAbleMap.containsKey("All"))
@@ -573,7 +572,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return true;
 	}
-
 
 	public boolean classOnly(MOB mob, String classID, String abilityID)
 	{
@@ -643,6 +641,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return V;
 	}
+
 	public List<AbilityMapping> getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly)
 	{
 		List<AbilityMapping> DV=new Vector<AbilityMapping>();
@@ -796,7 +795,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		fillPreRequisites(A,preReqs);
 		return preReqs;
 	}
-	
+
 	public DVector getCommonPreRequisites(Ability A)
 	{
 		DVector preReqs=getRawPreRequisites("All", false, A.ID());
@@ -836,7 +835,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return mask;
 	}
 
-	
 	public DVector getUnmetPreRequisites(MOB studentM, Ability A)
 	{
 		DVector V=getRawPreRequisites(studentM,A);
@@ -897,7 +895,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return null;
 	}
 
-	
 	public String formatPreRequisites(DVector preReqs)
 	{
 		StringBuffer names=new StringBuffer("");
@@ -980,7 +977,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return ids;
 	}
-	
+
 	public DVector getRawPreRequisites(MOB studentM, Ability A)
 	{
 		if((studentM==null)||(A==null)) return new DVector(2);
@@ -1145,7 +1142,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return theClass;
 	}
 
-	
 	public boolean qualifiesByCurrentClassAndLevel(MOB studentM, Ability A)
 	{
 		if(studentM==null) return false;
@@ -1166,7 +1162,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return false;
 	}
-	
+
 	public AbilityLimits getCommonSkillLimit(MOB studentM)
 	{
 		AbilityLimits aL=new AbilityLimits();
@@ -1181,7 +1177,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(aL.nonCraftingSkills == 0) aL.nonCraftingSkills = Integer.MAX_VALUE;
 		return aL;
 	}
-	
+
 	public AbilityLimits getCommonSkillLimit(MOB studentM, Ability A)
 	{
 		AbilityLimits aL=getCommonSkillLimit(studentM);
@@ -1194,7 +1190,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return aL;
 	}
-	
+
 	public AbilityLimits getCommonSkillRemainder(MOB studentM, Ability A)
 	{
 		AbilityLimits aL = getCommonSkillRemainders(studentM);
@@ -1207,7 +1203,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return aL;
 	}
-	
+
 	public AbilityLimits getCommonSkillRemainders(MOB student)
 	{
 		AbilityLimits aL = getCommonSkillLimit(student);
@@ -1303,6 +1299,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return null;
 	}
+
 	public AbilityMapping getAllAbleMap(String abilityID){ return getAbleMap("All",abilityID);}
 
 	public boolean getSecretSkill(String ID, boolean checkAll, String abilityID)
@@ -1533,7 +1530,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(C==null) return getMaxProficiency(abilityID);
 		return getMaxProficiency(C.ID(),checkAll,abilityID);
 	}
-	
+
 	public int getMaxProficiency(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1550,12 +1547,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return getMaxProficiency(abilityID);
 	}
+
 	public int getMaxProficiency(String abilityID)
 	{
 		if(maxProficiencyMap.containsKey(abilityID))
 			return ((Integer)maxProficiencyMap.get(abilityID)).intValue();
 		return 100;
 	}
+
 	public int getDefaultProficiency(String ID, boolean checkAll, String abilityID)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1641,7 +1640,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return false;
 	}
-	
+
 	// returns Vector of components found if all good, returns Integer of bad row if not.
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req)
 	{
@@ -1696,7 +1695,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 	public List<AbilityComponent> getAbilityComponentDVector(String AID){ return (List<AbilityComponent>)getAbilityComponentMap().get(AID.toUpperCase().trim());}
+
 	public List<DVector> getAbilityComponentDecodedDVectors(String AID){ return getAbilityComponentDecodedDVectors(getAbilityComponentDVector(AID));}
+
 	public DVector getAbilityComponentDecodedDVector(AbilityComponent comp)
 	{
 		DVector curr=new DVector(2);
@@ -1801,7 +1802,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	{
 		return getAbilityComponentCodedStringFromDVectors(getAbilityComponentDecodedDVectors(comps));
 	}
-	
+
 	protected String getAbilityComponentCodedStringFromDVectors(List<DVector> comps)
 	{
 		StringBuilder buf=new StringBuilder("");
@@ -1824,7 +1825,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return buf.toString();
 	}
-	
+
 	public String getAbilityComponentCodedString(String AID)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -2015,7 +2016,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 	// format of each data entry is 1=ANDOR(B), 2=DISPO(I), 3=CONSUMED(B), 4=AMT(I), 5=MATERIAL(L)RESOURCE(I)NAME(S), 6=MASK(S)
-	
 	public Map<String, List<AbilityComponent>> getAbilityComponentMap()
 	{
 		Map<String, List<AbilityComponent>> H=(Map)Resources.getResource("COMPONENT_MAP");
@@ -2040,7 +2040,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return H;
 	}
-	
+
 	public int destroyAbilityComponents(List<Object> found)
 	{
 		int value=0;
@@ -2068,7 +2068,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return value;
 	}
-	
+
 	public void alterAbilityComponentFile(String compID, boolean delete)
 	{
 		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
@@ -2129,7 +2129,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		F.saveText(text.toString(),false);
 	}
-	
+
 	public AbilityMapping makeAllQualifyMapping(String s)
 	{
 		int x=s.indexOf(' ');
@@ -2205,7 +2205,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			makeAbilityMapping(abilityID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,false,
 					true,CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
 	}
-	
+
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache)
 	{
 		Map<String, Map<String,AbilityMapping>> bothMaps;
@@ -2321,7 +2321,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				ableMap.remove(abilityID);
 		}
 	}
-	
+
 	public synchronized void saveAllQualifysFile(Map<String, Map<String,AbilityMapping>> newMap)
 	{
 		// undo and then reapply the all qualifys list
