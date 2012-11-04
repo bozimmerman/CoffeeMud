@@ -98,22 +98,11 @@ public interface AbilityMapper extends CMLibrary
 	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, String extraMasks);
 	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, boolean autoGain, List<String> preReqSkillsList, String extraMasks);
 	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, String defParm, boolean autoGain);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, String defParm, boolean autoGain, String extraMasks);
 	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, boolean autoGain);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, boolean autoGain, String extraMasks);
 	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
 									  String defaultParam, boolean autoGain, boolean secret);
 	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
-									  String defaultParam, boolean autoGain, boolean secret, String extraMasks);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
 									  String defaultParam, boolean autoGain, boolean secret,
-									  List<String> preReqSkillsList, String extraMask);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
-									  int maxProficiency, String defaultParam, boolean autoGain, boolean secret);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
-									  int maxProficiency, String defaultParam, boolean autoGain, boolean secret, String extraMasks);
-	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
-									  int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
 									  List<String> preReqSkillsList, String extraMask);
 	public void addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, 
 									  int maxProficiency, String defaultParam, boolean autoGain, boolean secret,

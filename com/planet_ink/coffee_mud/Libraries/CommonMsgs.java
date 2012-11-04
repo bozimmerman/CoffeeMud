@@ -1105,11 +1105,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			MOB mob2=room.fetchInhabitant(i);
 			if((mob2!=null)&&(mob2!=mob))
 			{
-			   if((mob2.displayText(mob).length()>0)
-			   ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
-			   {
-				   if(CMLib.flags().canBeSeenBy(mob2,mob))
-				   {
+				if((mob2.displayText(mob).length()>0)
+				||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+				{
+					if(CMLib.flags().canBeSeenBy(mob2,mob))
+					{
 						if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 							Say.append("^H("+CMClass.classID(mob2)+")^N ");
 
@@ -1126,11 +1126,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							Say.append(CMLib.flags().colorCodes(mob2,mob)+"^N\n\r");
 						else
 							Say.append("^N");
-				   }
-				   else
-				   if(CMLib.flags().canBarelyBeSeenBy(mob2,mob))
-					   mobsInTheDarkness++;
-			   }
+					}
+					else
+					if(CMLib.flags().canBarelyBeSeenBy(mob2,mob))
+						mobsInTheDarkness++;
+				}
 			}
 		}
 

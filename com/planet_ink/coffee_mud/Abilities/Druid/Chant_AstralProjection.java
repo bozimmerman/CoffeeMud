@@ -153,14 +153,12 @@ public class Chant_AstralProjection extends Chant
 			mob.location().send(mob,msg);
 			target.makePeace();
 			peaceAt(target);
-			MOB spirit=(MOB)target.copyOf();
-			for(final Enumeration<Ability> a=spirit.effects();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				if(A.canBeUninvoked()) spirit.delEffect(A);
-			}
-			spirit.delAllItems(true);
-			CMLib.beanCounter().clearZeroMoney(spirit,null);
+			MOB spirit=CMClass.getFactoryMOB();
+			spirit.setName("The Spirit of "+target.Name());
+			spirit.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
+			spirit.setPlayerStats(((MOB)target).playerStats());
+			spirit.setLocation(((MOB)target).location());
+			spirit.setBitmap(((MOB)target).getBitmap());
 			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
 			CMLib.threads().startTickDown(spirit,Tickable.TICKID_MOB,1);
 			beneficialAffect(spirit,target,asLevel,0);

@@ -550,7 +550,8 @@ public class GenCharClass extends StdCharClass
 									 CMLib.xml().getBoolFromPieces(iblk.contents,"CAAGAIN"),
 									 CMLib.xml().getBoolFromPieces(iblk.contents,"CASECR"),
 									 CMParms.parseCommas(CMLib.xml().getValFromPieces(iblk.contents,"CAPREQ"),true),
-									 CMLib.xml().getValFromPieces(iblk.contents,"CAMASK"));
+									 CMLib.xml().getValFromPieces(iblk.contents,"CAMASK"),
+									 null);
 			}
 
 		// now WEAPON RESTRICTIONS!
@@ -805,7 +806,8 @@ public class GenCharClass extends StdCharClass
 														 CMath.s_bool(tempables[3]),
 														 CMath.s_bool(tempables[4]),
 														 CMParms.parseCommas(tempables[6],true),
-														 tempables[7]);
+														 tempables[7],
+														 null);
 														 break;
 		case 26: tempables[1]=val; break;
 		case 27: tempables[2]=val; break;

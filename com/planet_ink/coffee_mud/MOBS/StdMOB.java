@@ -431,7 +431,10 @@ public class StdMOB implements MOB
 		if (M == null)
 			return;
 		if (!isGeneric())
-			basePhyStats.copyInto(phyStats);
+		{
+			M.basePhyStats().copyInto(basePhyStats);
+			M.phyStats().copyInto(phyStats);
+		}
 		else
 		{
 			basePhyStats = (PhyStats) M.basePhyStats().copyOf();
