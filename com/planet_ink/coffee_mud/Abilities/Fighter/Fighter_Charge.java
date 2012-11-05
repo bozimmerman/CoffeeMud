@@ -149,7 +149,7 @@ public class Fighter_Charge extends FighterSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to charge, but then give(s) up.");
+			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to charge <T-NAME>, but then give(s) up.");
 
 		// return whether it worked
 		return success;
