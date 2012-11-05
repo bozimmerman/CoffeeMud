@@ -123,7 +123,8 @@ public class Skill_Dirt extends StdSkill
 		return true;
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	@SuppressWarnings("unchecked")
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -150,9 +151,13 @@ public class Skill_Dirt extends StdSkill
 		
 		if(CMLib.flags().isSleeping(target))
 		{
-			if(!auto)
-				mob.tell(target.name()+" has "+target.charStats().hisher()+" eyes closed.");
-			return false;
+			CMLib.commands().forceStandardCommand(target, "Wake", new XVector("Wake"));
+			if(CMLib.flags().isSleeping(target))
+			{
+				if(!auto)
+					mob.tell(target.name()+" has "+target.charStats().hisher()+" eyes closed.");
+				return false;
+			}
 		}
 		
 		if((!auto)&&CMLib.flags().isFlying(mob))

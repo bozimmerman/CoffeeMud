@@ -289,9 +289,9 @@ public class StdWeapon extends StdItem implements Weapon
 	public boolean inventoryAmmoCheck(MOB M)
 	{
 		if(M==null) return false;
-		for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+		for(int i=0;i<M.numItems();i++)
 		{
-			final Item I=i.nextElement();
+			final Item I=M.getItem(i);
 			if((I!=null)&&(I instanceof Ammunition)&&(((Ammunition)I).ammunitionType().equalsIgnoreCase(ammunitionType())))
 				return true;
 		}

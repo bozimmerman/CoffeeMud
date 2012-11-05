@@ -580,6 +580,8 @@ public interface SlaveryLibrary extends CMLibrary
 			{"murder %m","mobfind %m;kill %m"},
 			{"find and murder %m","mobfind %m;kill %m"},
 			{"find and destroy %m","mobfind %m;kill %m"},
+			{"find %m and kill him","mobfind %m;kill %m"},
+			{"find %m and kill her","mobfind %m;kill %m"},
 			{"search and destroy %m","mobfind %m;kill %m"},
 			{"destroy %i","itemfind %i;recall"},
 			{"find and destroy %i","mobfind %i;recall"},
