@@ -143,7 +143,8 @@ public class Prayer_AnimateGhost extends Prayer
 		}
 
 		DeadBody body=(DeadBody)target;
-		if(body.playerCorpse()||(body.mobName().length()==0))
+		if(body.playerCorpse()||(body.mobName().length()==0)
+		||((body.charStats()!=null)&&(body.charStats().getMyRace()!=null)&&(body.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))))
 		{
 			mob.tell("You can't animate that.");
 			return false;

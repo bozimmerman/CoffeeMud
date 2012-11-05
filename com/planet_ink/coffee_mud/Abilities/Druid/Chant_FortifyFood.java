@@ -73,7 +73,13 @@ public class Chant_FortifyFood extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> look(s) much more nutritious!");
+				int bites=1;
+				if(((Food)target).bite()>0)
+					bites=((Food)target).nourishment()/((Food)target).bite();
+				if(bites<1)
+					bites=1;
 				((Food)target).setNourishment(((Food)target).nourishment()+1000);
+				((Food)target).setBite(((Food)target).nourishment()/bites);
 			}
 		}
 		else
