@@ -67,6 +67,10 @@ public class Prayer_AnimateGhast extends Prayer
 			mob.tell("You can't animate that.");
 			return false;
 		}
+		String race="a";
+		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
+			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
+		
 		String description=body.mobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
@@ -91,9 +95,9 @@ public class Prayer_AnimateGhast extends Prayer
 			{
 				mob.location().send(mob,msg);
 				MOB newMOB=CMClass.getMOB("GenUndead");
-				newMOB.setName("a ghast");
+				newMOB.setName(race+" ghast");
 				newMOB.setDescription(description);
-				newMOB.setDisplayText("a ghast is here");
+				newMOB.setDisplayText(race+" ghast is here");
 				newMOB.basePhyStats().setLevel(6+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));

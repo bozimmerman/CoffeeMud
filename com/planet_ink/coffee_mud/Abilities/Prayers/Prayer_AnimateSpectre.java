@@ -67,6 +67,9 @@ public class Prayer_AnimateSpectre extends Prayer
 			mob.tell("You can't animate that.");
 			return false;
 		}
+		String race="a";
+		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
+			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
 		String description=body.mobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
@@ -91,9 +94,9 @@ public class Prayer_AnimateSpectre extends Prayer
 			{
 				mob.location().send(mob,msg);
 				MOB newMOB=CMClass.getMOB("GenUndead");
-				newMOB.setName("a spectre");
+				newMOB.setName(race+" spectre");
 				newMOB.setDescription(description);
-				newMOB.setDisplayText("a spectre is here");
+				newMOB.setDisplayText(race+" spectre is here");
 				newMOB.basePhyStats().setLevel(9+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));

@@ -46,6 +46,9 @@ public class Prayer_AnimateGhost extends Prayer
 
 	public void makeGhostFrom(Room R, DeadBody body, MOB mob, int level)
 	{
+		String race="a";
+		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
+			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
 		String description=body.mobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
@@ -53,7 +56,7 @@ public class Prayer_AnimateGhost extends Prayer
 			description+="\n\rIt also looks dead.";
 
 		MOB newMOB=CMClass.getMOB("GenUndead");
-		newMOB.setName((mob==null)?"a poltergeist":"a ghost");
+		newMOB.setName(race+((mob==null)?" poltergeist":" ghost"));
 		newMOB.setDescription(description);
 		newMOB.setDisplayText(newMOB.Name()+" is here");
 		newMOB.basePhyStats().setLevel(level+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
