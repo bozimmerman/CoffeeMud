@@ -1105,7 +1105,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			MOB mob2=room.fetchInhabitant(i);
 			if((mob2!=null)&&(mob2!=mob))
 			{
-				if((mob2.displayText(mob).length()>0)
+				final String displayText=mob2.displayText(mob);
+				if((displayText.length()>0)
 				||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 				{
 					if(CMLib.flags().canBeSeenBy(mob2,mob))
@@ -1117,8 +1118,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							Say.append(CMProps.mxpImage(mob2," H=10 W=10",""," "));
 						Say.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
 						if(compress) Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");
-						if(mob2.displayText(mob).length()>0)
-							Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.displayText(mob))));
+						if(displayText.length()>0)
+							Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
 						else
 							Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
 						Say.append("^</RMob^>");

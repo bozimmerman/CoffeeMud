@@ -493,9 +493,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						}
 				}
 			}
-			((Food)building).setMaterial(material<0?RawMaterial.RESOURCE_BEEF:material);
+			food.setMaterial(material<0?RawMaterial.RESOURCE_BEEF:material);
 			if(mob!=null)
 				food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
+			if(!messedUp) CMLib.materials().addEffectsToResource((Item)food);
 			food.basePhyStats().setWeight(food.basePhyStats().weight()/finalAmount);
 			playSound=defaultFoodSound;
 		}
@@ -537,7 +538,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			playSound=defaultDrinkSound;
 			building.setMaterial(liquidType);
 			drink.setLiquidType(liquidType);
-			CMLib.materials().addEffectsToResource((Item)drink);
+			if(!messedUp) CMLib.materials().addEffectsToResource((Item)drink);
 		}
 		else
 		if(CMClass.getItem(foodType)!=null)
@@ -573,6 +574,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				drink.setLiquidType(liquidType);
 			}
 			building.basePhyStats().setWeight(building.basePhyStats().weight()/finalAmount);
+			if(!messedUp) CMLib.materials().addEffectsToResource((Item)building);
 			playSound=defaultFoodSound;
 		}
 		else
@@ -782,7 +784,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				{ found=true; break;}
 			}
 			if(found)
-			   closeRecipes.addElement(Vr);
+				closeRecipes.addElement(Vr);
 			if((missingIngredientsFromOldContents(Vr,true).size()==0)
 			&&(extraIngredientsInOldContents(Vr,true).size()==0))
 				perfectRecipes.addElement(Vr);

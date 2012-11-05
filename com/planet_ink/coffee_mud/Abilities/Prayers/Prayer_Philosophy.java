@@ -37,7 +37,7 @@ public class Prayer_Philosophy extends Prayer
 {
 	public String ID() { return "Prayer_Philosophy"; }
 	public String name(){return "Philosophy";}
-	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HOLY;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public String displayText(){return "(Philosophy spell)";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}

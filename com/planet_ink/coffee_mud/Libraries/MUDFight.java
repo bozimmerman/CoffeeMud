@@ -778,6 +778,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				pickNextVictim(M, target, hisGroupH);
 		}
 		Set<MOB> dividers=getCombatDividers(source,target,combatCharClass);
+		
 
 		dispenseExperience(beneficiaries,dividers,target);
 
