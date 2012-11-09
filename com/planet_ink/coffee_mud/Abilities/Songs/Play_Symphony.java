@@ -603,8 +603,8 @@ public class Play_Symphony extends Play
 			if((affected==invoker())
 			&&(msg.sourceMinor()==toDoVal)
 			&&(msg.target() instanceof Physical)
-			&&(((Physical)msg.target()).fetchEffect(ID())==null)
-			&&(((Physical)msg.target()).fetchEffect(ID()).invoker()!=invoker()))
+			&&((((Physical)msg.target()).fetchEffect(ID())==null)
+				||(((Physical)msg.target()).fetchEffect(ID()).invoker()!=invoker())))
 			{
 				int dmg=0;
 				if(toDoCode==CODE_UPDAMAGEPER3)

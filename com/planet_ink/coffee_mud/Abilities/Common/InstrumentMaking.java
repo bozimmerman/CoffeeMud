@@ -211,7 +211,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 				String race=((String)V.get(RCP_RACES)).trim();
 				int level=CMath.s_int((String)V.get(RCP_LEVEL));
 				if(((autoGenerate>0)||(level<=xlevel(mob)))
-				&&((race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
+				&&((autoGenerate>0)||(race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 				{
 					foundRecipe=V;
 					break;

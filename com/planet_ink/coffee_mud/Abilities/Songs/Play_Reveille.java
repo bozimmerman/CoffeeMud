@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Play_Reveille extends Play
 {
 	public String ID() { return "Play_Reveille"; }
@@ -81,21 +81,26 @@ public class Play_Reveille extends Play
 					else
 						R.sendOthers(mob,msg);
 					invoker=mob;
-					Hashtable h=new Hashtable();
+					HashSet<MOB> h=new HashSet<MOB>();
 					for(int i=0;i<R.numInhabitants();i++)
-					{ MOB M=R.fetchInhabitant(i); h.put(M,M);}
+					{ 
+						MOB M=R.fetchInhabitant(i); 
+						h.add(M);
+					}
 					
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room R3=R.getRoomInDir(d);
 						if((R3!=null)&&(!commonRoomSet.contains(R3)))
 							for(int i=0;i<R3.numInhabitants();i++)
-							{ MOB M=R3.fetchInhabitant(i); h.put(M,M);}
+							{ 
+								MOB M=R3.fetchInhabitant(i); 
+								h.add(M);
+							}
 					}
 	
-					for(Enumeration f=h.elements();f.hasMoreElements();)
+					for(MOB follower : h)
 					{
-						MOB follower=(MOB)f.nextElement();
 						Room R2=follower.location();
 	
 						// malicious songs must not affect the invoker!

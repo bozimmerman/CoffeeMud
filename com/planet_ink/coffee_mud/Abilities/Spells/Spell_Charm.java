@@ -157,7 +157,7 @@ public class Spell_Charm extends Spell
 				if((CMLib.dice().rollPercentage()>50)
 				||((mob.getStartRoom()!=null)
 					&&(mob.getStartRoom().getArea()!=mob.location().getArea())
-					&&(CMLib.flags().isAggressiveTo(mob,null)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
+					&&(CMLib.flags().isAggressiveTo(mob,invoker)||(invoker==null)||(!mob.location().isInhabitant(invoker)))))
 					CMLib.tracking().wanderAway(mob,true,true);
 				else
 				if((invoker!=null)&&(invoker!=mob))
