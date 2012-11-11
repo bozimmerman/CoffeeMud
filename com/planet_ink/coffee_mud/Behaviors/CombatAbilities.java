@@ -137,7 +137,7 @@ public class CombatAbilities extends StdBehavior
 
 	protected void newCharacter(MOB mob)
 	{
-		Vector oldAbilities=new Vector();
+		Set<Ability> oldAbilities=new HashSet<Ability>();
 		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			Ability A=a.nextElement();
@@ -146,7 +146,7 @@ public class CombatAbilities extends StdBehavior
 				int proficiency=CMLib.ableMapper().getMaxProficiency(mob,true,A.ID())/2;
 				if(A.proficiency()<proficiency)	
 					A.setProficiency(proficiency);
-				oldAbilities.addElement(A);
+				oldAbilities.add(A);
 			}
 		}
 		mob.charStats().getCurrentClass().startCharacter(mob,true,false);

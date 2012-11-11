@@ -10,6 +10,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -37,6 +39,8 @@ public class InstantDeath extends ActiveTicker
 {
 	public String ID(){return "InstantDeath";}
 	public long flags() { return super.flags()|Behavior.FLAG_POTENTIALLYAUTODEATHING; }
+	protected CompiledZapperMask mask=null;
+
 	public InstantDeath()
 	{
 		super();
@@ -44,6 +48,15 @@ public class InstantDeath extends ActiveTicker
 		tickReset();
 	}
 
+	public void setParms(String parms)
+	{
+		super.setParms(parms);
+		String maskStr=CMParms.getParmStr(parms,"mask","");
+		mask=null;
+		if((maskStr!=null)&&(maskStr.trim().length()>0))
+			mask=CMLib.masking().getPreCompiledMask(maskStr);
+	}
+	
 	boolean activated=false;
 
 	public String accountForYourself()
@@ -60,7 +73,9 @@ public class InstantDeath extends ActiveTicker
 			MOB M=R.fetchInhabitant(i);
 			if((spareMe!=null)&&(spareMe==M))
 				continue;
-			if((M!=null)&&(!CMSecurity.isAllowed(M,R,CMSecurity.SecFlag.IMMORT)))
+			if((M!=null)
+			&&(!CMSecurity.isAllowed(M,R,CMSecurity.SecFlag.IMMORT))
+			&&((mask==null)||(CMLib.masking().maskCheck(mask, M, false))))
 				V.addElement(M);
 		}
 		for(int v=0;v<V.size();v++)
@@ -91,7 +106,7 @@ public class InstantDeath extends ActiveTicker
 				if(E==null) return true;
 				Room room=getBehaversRoom(ticking);
 				if(room==null) return true;
-				if(E instanceof MOB)
+				if((E instanceof MOB)&&((mask==null)||(CMLib.masking().maskCheck(mask, (MOB)E, false))))
 					CMLib.combat().postDeath(null,(MOB)E,null);
 				else
 				if(E instanceof Room)

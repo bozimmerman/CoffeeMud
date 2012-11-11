@@ -2408,3 +2408,4 @@ ruthless programmer, and sentenced to a quick death.
 12.Arcanists can LOOK at wand charges at level 30.
 13.Common Skills now support "STOP" to cancel.
 14.Troll regeneration moved from the MOB to the Race
+15.InstantDeath behavior now allows a zappermask
