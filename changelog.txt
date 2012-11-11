@@ -2412,3 +2412,4 @@ ruthless programmer, and sentenced to a quick death.
 16.New race: Slime
 17.New Conjurer spell: Acid Spray
 18.Some common skills can now be done sitting done.
+19.Bandaging also restores a few hit points.

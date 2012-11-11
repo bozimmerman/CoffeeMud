@@ -68,7 +68,7 @@ public class Prayer_CauseExhaustion extends Prayer
 					int harming=CMLib.dice().roll(5,adjustedLevel(mob,asLevel),20);
 					if(target.curState().getFatigue()<=CharState.FATIGUED_MILLIS)
 						target.curState().setFatigue(CharState.FATIGUED_MILLIS+1);
-					target.curState().adjMovement(harming,target.maxState());
+					target.curState().adjMovement(-harming,target.maxState());
 					target.tell("You feel slightly more fatigued!");
 				}
 			}
