@@ -226,9 +226,9 @@ public class Gaian extends StdCharClass
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		if(affected.location()!=null)
+		final Room room=affected.location();
+		if(room!=null)
 		{
-			Room room=affected.location();
 			if(affected.charStats().getClassLevel(this)>=5)
 			{
 				if(CMLib.flags().isInDark(room))
@@ -237,7 +237,7 @@ public class Gaian extends StdCharClass
 					affectableState.setMovement(affectableState.getMovement()-(affectableState.getMovement()/4));
 				}
 				else
-				if((room.domainType()&Room.INDOORS)==0)
+				if(room.getArea().getClimateObj().canSeeTheSun(room))
 					switch(room.getArea().getClimateObj().weatherType(room))
 					{
 					case Climate.WEATHER_BLIZZARD:
@@ -301,7 +301,7 @@ public class Gaian extends StdCharClass
 				if(CMLib.flags().isInDark(room))
 					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-((classLevel/5)+1));
 				else
-				if((room.domainType()&Room.INDOORS)==0)
+				if(room.getArea().getClimateObj().canSeeTheSun(room))
 					switch(room.getArea().getClimateObj().weatherType(room))
 					{
 					case Climate.WEATHER_BLIZZARD:
