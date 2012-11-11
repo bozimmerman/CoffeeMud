@@ -200,7 +200,7 @@ public class GatheringSkill extends CommonSkill
 		I.setName("a "+amount+"# "+RawMaterial.CODES.NAME(foundResource).toLowerCase()+" bundle");
 		I.setDisplayText(I.name()+" is here.");
 		I.basePhyStats().setWeight(amount);
-		if(R.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> create(s) <O-NAME>."))
+		if(R.show(mob,null,I,getActivityMessageType(),"<S-NAME> create(s) <O-NAME>."))
 		{
 			int lostValue=CMLib.materials().destroyResources(R,amount,foundResource,-1,I);
 			I.setBaseValue(lostValue);

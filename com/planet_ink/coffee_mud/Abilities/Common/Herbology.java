@@ -47,6 +47,7 @@ public class Herbology extends CommonSkill
 
 	protected Item found=null;
 	protected boolean messedUp=false;
+	protected boolean canBeDoneSittingDown() { return true; }
 
 	public Herbology()
 	{
@@ -128,7 +129,7 @@ public class Herbology extends CommonSkill
 		messedUp=false;
 		if(!proficiencyCheck(mob,0,auto)) messedUp=true;
 		int duration=getDuration(15,mob,1,2);
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name()+".");
+		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> stud(ys) "+target.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

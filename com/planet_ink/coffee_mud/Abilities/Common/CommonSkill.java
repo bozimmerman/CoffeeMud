@@ -45,6 +45,16 @@ public class CommonSkill extends StdAbility
 	public String supportedResourceString(){return "";}
 	public static final Map<String,Integer[]> resourcesMap=new Hashtable<String,Integer[]>();
 	protected static Item fakeFire=null;
+	
+	protected volatile Room activityRoom=null;
+	protected boolean aborted=false;
+	protected boolean helping=false;
+	protected boolean bundling=false;
+	public Ability helpingAbility=null;
+	protected volatile int tickUp=0;
+	protected String verb="working";
+	protected String playSound=null;
+	protected int yield=1;
 
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected String displayText="(Doing something productive)";
@@ -55,22 +65,15 @@ public class CommonSkill extends StdAbility
 
 	protected boolean allowedWhileMounted(){return true;}
 	
-	protected Room activityRoom=null;
-	protected boolean aborted=false;
-	protected boolean helping=false;
-	protected boolean bundling=false;
-	public Ability helpingAbility=null;
-	protected volatile int tickUp=0;
-	protected String verb="working";
-	protected String playSound=null;
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
 	public int classificationCode()	{	return Ability.ACODE_COMMON_SKILL; }
+	protected boolean canBeDoneSittingDown() { return false; }
+	protected int getActivityMessageType() { return canBeDoneSittingDown()?CMMsg.MSG_HANDS|CMMsg.MASK_SOUND:CMMsg.MSG_NOISYMOVEMENT; }
 
-	protected int yield=1;
 	public int abilityCode(){return yield;}
 	public void setAbilityCode(int newCode){yield=newCode;}
 
@@ -95,7 +98,9 @@ public class CommonSkill extends StdAbility
 		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((mob.isInCombat())||(mob.location()!=activityRoom)||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
+			if((mob.isInCombat())
+			||(mob.location()!=activityRoom)
+			||(!CMLib.flags().aliveAwakeMobileUnbound(mob,true)))
 			{
 				aborted=true; 
 				unInvoke(); 
@@ -103,13 +108,13 @@ public class CommonSkill extends StdAbility
 			}
 			String sound=(playSound!=null)?CMProps.msp(playSound,10):"";
 			if(tickDown==4)
-				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
+				mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
 			else
 			if((tickUp%4)==0)
 			{
 				int total=tickUp+tickDown;
 				int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
-				mob.location().show(mob,null,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+" ("+pct+"% completed)."+sound,null,"<S-NAME> continue(s) "+verb+"."+sound);
+				mob.location().show(mob,null,null,getActivityMessageType(),"<S-NAME> continue(s) "+verb+" ("+pct+"% completed)."+sound,null,"<S-NAME> continue(s) "+verb+"."+sound);
 			}
 			if((helping)
 			&&(helpingAbility!=null)
@@ -137,9 +142,9 @@ public class CommonSkill extends StdAbility
 			{
 				MOB mob=(MOB)affected;
 				if(aborted)
-					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stop(s) "+verb+".");
+					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> stop(s) "+verb+".");
 				else
-					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> done "+verb+".");
+					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> <S-IS-ARE> done "+verb+".");
 				helping=false;
 				helpingAbility=null;
 			}
@@ -201,7 +206,7 @@ public class CommonSkill extends StdAbility
 	protected void commonEmote(MOB mob, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_ALWAYS,str);
+			mob.location().show(mob,null,getActivityMessageType()|CMMsg.MASK_ALWAYS,str);
 		else
 			mob.tell(mob,null,null,str);
 	}
@@ -517,7 +522,7 @@ public class CommonSkill extends StdAbility
 			commonTell(mob,"<S-NAME> can't see to do that!");
 			return false;
 		}
-		if(CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob))
+		if((CMLib.flags().isSitting(mob)&&(!canBeDoneSittingDown()))||CMLib.flags().isSleeping(mob))
 		{
 			commonTell(mob,"You need to stand up!");
 			return false;

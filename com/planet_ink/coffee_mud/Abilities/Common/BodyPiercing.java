@@ -195,7 +195,7 @@ public class BodyPiercing extends CommonSkill
 		String msgStr="<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".";
 		if("REMOVE".equals(command))
 			msgStr="<S-NAME> heal(s) the piercing on <T-YOUPOSS> "+wornName.toLowerCase()+".";
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,msgStr);
+		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),msgStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

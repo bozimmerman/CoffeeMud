@@ -85,7 +85,7 @@ public class Domesticating extends CommonSkill
 						{
 							CMLib.commands().postFollow(taming,mob,true);
 							if(taming.amFollowing()==mob)
-								mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to domesticate "+taming.name()+".");
+								mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to domesticate "+taming.name()+".");
 						}
 					}
 				}
@@ -177,7 +177,7 @@ public class Domesticating extends CommonSkill
 		messedUp=!proficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;
 		if(duration<10) duration=10;
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,
+		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),
 			(newName!=null)?"<S-NAME> name(s) "+M.name()+" '"+theName+"'.":"<S-NAME> start(s) domesticating "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{

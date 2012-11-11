@@ -186,7 +186,7 @@ public class Hunting extends CommonSkill
 					found.location().delInhabitant(found);
 					found.setLocation(null);
 					found.destroy();
-					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-HAS-HAVE> lost the trail.");
+					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> <S-HAS-HAVE> lost the trail.");
 				}
 			}
 		}
@@ -231,7 +231,7 @@ public class Hunting extends CommonSkill
 			}
 		}
 		int duration=10+mob.phyStats().level()+(super.getXTIMELevel(mob)*2);
-		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) hunting.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -399,7 +399,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			beingDone.addElement(jewelI);
 			messedUp=!proficiencyCheck(mob,0,auto);
 			duration=10;
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
+			CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				jewelI.destroy();
@@ -616,7 +616,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		CMMsg msg=CMClass.getMsg(mob,building,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

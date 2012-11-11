@@ -394,7 +394,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			if(duration<10) duration=10;
 
 			messedUp=!proficiencyCheck(mob,0,auto);
-			CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,null);
+			CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

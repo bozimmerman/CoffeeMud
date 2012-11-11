@@ -95,7 +95,7 @@ public class Chopping extends GatheringSkill
 					int amount=CMLib.dice().roll(1,7,3)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
-					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to chop up "+amount+" pound"+s+" of "+foundShortName+".");
+					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to chop up "+amount+" pound"+s+" of "+foundShortName+".");
 					for(int i=0;i<amount;i++)
 					{
 						Item newFound=(Item)found.copyOf();
@@ -144,7 +144,7 @@ public class Chopping extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		int duration=getDuration(40,mob,1,15);
-		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) looking for a good tree to chop.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) looking for a good tree to chop.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

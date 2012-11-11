@@ -46,6 +46,8 @@ public class FireBuilding extends CommonSkill
 	protected int durationOfBurn=0;
 	protected boolean failed=false;
 
+	protected boolean canBeDoneSittingDown() { return true; }
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -241,7 +243,7 @@ public class FireBuilding extends CommonSkill
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(duration<4) duration=4;
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> start(s) building a fire.");
+		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),auto?"":"<S-NAME> start(s) building a fire.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

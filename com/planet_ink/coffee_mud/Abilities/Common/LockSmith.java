@@ -341,7 +341,7 @@ public class LockSmith extends CraftingSkill
 			proficiencyAddition=workingOn.phyStats().level()-xlevel(mob);
 		messedUp=!proficiencyCheck(mob,proficiencyAddition*5,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -510,7 +510,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			if(mob.amDead()
 			||(mob.curState().getHitPoints()<0)
-			||((mob.phyStats().disposition()&(PhyStats.IS_SLEEPING|PhyStats.CAN_NOT_MOVE))!=0))
+			||((mob.phyStats().disposition()&PhyStats.IS_SLEEPING)!=0)
+			||((mob.phyStats().sensesMask()&PhyStats.CAN_NOT_MOVE)!=0))
 				return false;
 			return true;
 		}

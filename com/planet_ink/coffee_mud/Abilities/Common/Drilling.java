@@ -102,7 +102,7 @@ public class Drilling extends GatheringSkill
 						amount=(container.liquidHeld()-container.liquidRemaining());
 					if(amount>((Container)container).capacity())
 						amount=((Container)container).capacity();
-					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to drill out "+amount+" pound"+s+" of "+foundShortName+".");
+					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to drill out "+amount+" pound"+s+" of "+foundShortName+".");
 					for(int i=0;i<amount;i++)
 					{
 						Item newFound=(Item)found.copyOf();
@@ -187,7 +187,7 @@ public class Drilling extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		int duration=getDuration(35,mob,1,10);
-		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) drilling.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) drilling.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

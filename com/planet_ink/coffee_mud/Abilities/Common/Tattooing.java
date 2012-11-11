@@ -181,7 +181,7 @@ public class Tattooing extends CommonSkill
 		if("REMOVE".startsWith(message.toUpperCase()))
 			str="<S-NAME> remove(s) the tattoo on <T-YOUPOSS> "+wornName.toLowerCase()+".";
 		
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
+		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),str);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -46,6 +46,7 @@ public class Dyeing extends CommonSkill
 	protected String writing="";
 	protected boolean brightFlag = false;
 	protected boolean lightFlag = false;
+	protected boolean canBeDoneSittingDown() { return true; }
 	
 	public Dyeing()
 	{
@@ -199,7 +200,7 @@ public class Dyeing extends CommonSkill
 		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 			duration*=2;
 		duration=getDuration(duration,mob,1,6);
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) dyeing "+target.name()+".");
+		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) dyeing "+target.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -397,7 +397,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

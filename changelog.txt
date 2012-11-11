@@ -2411,3 +2411,4 @@ ruthless programmer, and sentenced to a quick death.
 15.InstantDeath behavior now allows a zappermask, also New Property (Prop_InstantDeath) -- more lightweight than the behavior.
 16.New race: Slime
 17.New Conjurer spell: Acid Spray
+18.Some common skills can now be done sitting done.

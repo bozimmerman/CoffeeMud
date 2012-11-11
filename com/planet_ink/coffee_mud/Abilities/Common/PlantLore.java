@@ -149,7 +149,7 @@ public class PlantLore extends CommonSkill
 		if(proficiencyCheck(mob,0,auto))
 			success=true;
 		int duration=getDuration(45,mob,1,5);
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) observing the growth in this area.");
+		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),"<S-NAME> start(s) observing the growth in this area.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

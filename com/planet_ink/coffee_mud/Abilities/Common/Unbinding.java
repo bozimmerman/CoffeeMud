@@ -108,9 +108,9 @@ public class Unbinding extends CommonSkill
 				{
 					removing.unInvoke();
 					if(found.fetchEffect(removing.ID())==null)
-						mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to remove "+removing.name()+" from "+found.name()+".");
+						mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to remove "+removing.name()+" from "+found.name()+".");
 					else
-						mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> fail(s) to remove "+removing.name()+" from "+found.name()+".");
+						mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> fail(s) to remove "+removing.name()+" from "+found.name()+".");
 				}
 			}
 		}

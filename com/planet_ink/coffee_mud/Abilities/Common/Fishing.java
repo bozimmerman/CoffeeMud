@@ -84,7 +84,7 @@ public class Fishing extends GatheringSkill
 					int amount=CMLib.dice().roll(1,3,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
-					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to catch "+amount+" pound"+s+" of "+foundShortName+".");
+					mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> manage(s) to catch "+amount+" pound"+s+" of "+foundShortName+".");
 					for(int i=0;i<amount;i++)
 					{
 						Item newFound=(Item)found.copyOf();
@@ -149,7 +149,7 @@ public class Fishing extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		int duration=getDuration(45,mob,1,15);
-		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) fishing.");
+		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) fishing.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

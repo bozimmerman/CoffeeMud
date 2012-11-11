@@ -44,6 +44,8 @@ public class Engraving extends CommonSkill
 
 	protected Item found=null;
 	protected String writing="";
+	protected boolean canBeDoneSittingDown() { return true; }
+	
 	public Engraving()
 	{
 		super();
@@ -138,7 +140,7 @@ public class Engraving extends CommonSkill
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
 		int duration=getDuration(30,mob,1,3);
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> start(s) engraving on <T-NAME>.");
+		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),"<S-NAME> start(s) engraving on <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

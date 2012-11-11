@@ -734,7 +734,7 @@ public class Masonry extends CraftingSkill
 			helping=true;
 			verb="helping "+targetMOB.name()+" with "+helpingAbility.name();
 			startStr="<S-NAME> start(s) "+verb;
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
+			CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -1063,7 +1063,7 @@ public class Masonry extends CraftingSkill
 		playSound="stone.wav";
 		if(duration<15) duration=15;
 
-		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
+		CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

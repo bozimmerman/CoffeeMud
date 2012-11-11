@@ -175,6 +175,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return getStartArea().finalDevalueRate();
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((unInvoked)&&(canBeUninvoked())) // override all normal common skill behavior!!
+			return false;
+		return true;
+	}
+	
 	public MOB deriveMerchant(MOB roomHelper)
 	{
 		if(affected ==null) return null;

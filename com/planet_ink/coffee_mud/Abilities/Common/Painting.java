@@ -190,7 +190,7 @@ public class Painting extends CommonSkill
 		messedUp=!proficiencyCheck(mob,0,auto);
 		duration=getDuration(25,mob,1,2);
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

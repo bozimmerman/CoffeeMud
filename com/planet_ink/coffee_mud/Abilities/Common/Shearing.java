@@ -90,7 +90,7 @@ public class Shearing extends CommonSkill
 						commonTell(mob,"You messed up your shearing completely.");
 					else
 					{
-						mob.location().show(mob,null,sheep,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to shear <O-NAME>.");
+						mob.location().show(mob,null,sheep,getActivityMessageType(),"<S-NAME> manage(s) to shear <O-NAME>.");
 						spreadImmunity(sheep);
 						Vector V=getMyWool(sheep);
 						for(int v=0;v<V.size();v++)
@@ -145,7 +145,7 @@ public class Shearing extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		failed=!proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) shearing <T-NAME>.");
+		CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),"<S-NAME> start(s) shearing <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
