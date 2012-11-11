@@ -61,7 +61,7 @@ public class InstantDeath extends ActiveTicker
 
 	public String accountForYourself()
 	{ 
-		return "instant indescriminate killing";
+		return "instant killing";
 	}
 
 	public void killEveryoneHere(MOB spareMe, Room R)

@@ -914,6 +914,8 @@ public interface Ability extends Environmental
 	public static final long FLAG_ENABLER=16777216;
 	/** constant mask for the flags() method designating that the thing with this ability cant be learned as a recipe @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_UNCRAFTABLE=33554432L;
+	/** constant mask for the flags() method designating that the thing with this ability might kill you @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_POTENTIALLY_DEADLY=67108864;
 	
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={
