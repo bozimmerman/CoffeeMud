@@ -82,11 +82,12 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			return false;
 		}
 
-		if(getMarkTicks(mob)<15)
+		int ticksWaited=getMarkTicks(mob);
+		if(ticksWaited<15)
 		{
 			if(target==getMark(mob))
 			{
-				mob.tell("You'll need to observe your mark a little longer (15 ticks) before you can get the disguise right.");
+				mob.tell("You'll need to observe your mark a little longer ("+ticksWaited+"/15 ticks) before you can get the disguise right.");
 				return false;
 			}
 		}
