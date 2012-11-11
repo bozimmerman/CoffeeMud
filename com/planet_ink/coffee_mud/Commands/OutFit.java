@@ -66,6 +66,9 @@ public class OutFit extends StdCommand
 		Command C2=CMClass.getCommand("Equipment");
 		if(C2!=null) C2.executeInternal(mob, metaFlags);
 		mob.tell("\n\rUseful equipment appears mysteriously out of the Java Plane.");
+		mob.recoverCharStats();
+		mob.recoverMaxState();
+		mob.recoverPhyStats();
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds)

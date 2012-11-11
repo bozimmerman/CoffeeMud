@@ -82,6 +82,7 @@ public class Spell_Grow extends Spell
 				mob.basePhyStats().setWeight(getOldWeight());
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shrink(s) back down to size.");
+			CMLib.utensils().confirmWearability(mob);
 		}
 		super.unInvoke();
 	}
@@ -108,20 +109,26 @@ public class Spell_Grow extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				double aff=1.0 + CMath.mul(0.1,(target.phyStats().level()));
-				aff=aff*aff;
-				beneficialAffect(mob,target,asLevel,0);
-				Ability A=target.fetchEffect(ID());
-				if(A!=null)
+				Ability A=target.fetchEffect("Spell_Shrink");
+				if((A!=null)&&(A.canBeUninvoked()))
+					A.unInvoke();
+				else
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
-					setMiscText(Integer.toString(target.basePhyStats().weight()));
-					A.setMiscText(Integer.toString(target.basePhyStats().weight()));
-					target.basePhyStats().setWeight((int)Math.round(CMath.mul(target.basePhyStats().weight(),aff)));
-					CMLib.utensils().confirmWearability(target);
+					double aff=1.0 + CMath.mul(0.1,(target.phyStats().level()));
+					aff=aff*aff;
+					beneficialAffect(mob,target,asLevel,0);
+				
+					A=target.fetchEffect(ID());
+					if(A!=null)
+					{
+						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
+						setMiscText(Integer.toString(target.basePhyStats().weight()));
+						A.setMiscText(Integer.toString(target.basePhyStats().weight()));
+						target.basePhyStats().setWeight((int)Math.round(CMath.mul(target.basePhyStats().weight(),aff)));
+						CMLib.utensils().confirmWearability(target);
+					}
 				}
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens.");

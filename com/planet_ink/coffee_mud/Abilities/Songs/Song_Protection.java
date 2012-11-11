@@ -41,7 +41,7 @@ public class Song_Protection extends Song
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-super.adjustedLevel(invoker(),0));
+		affectableStats.setArmor(affectableStats.armor()-super.adjustedLevel(invoker(),0));
 	}
 
 

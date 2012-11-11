@@ -47,6 +47,7 @@ public class Spell_Shrink extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
+		MOB recheckMOB=null;
 		if((canBeUninvoked())&&(affected!=null))
 		{
 			if(affected instanceof MOB)
@@ -54,6 +55,7 @@ public class Spell_Shrink extends Spell
 				MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(!mob.amDead()))
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> return(s) to <S-HIS-HER> normal size.");
+				recheckMOB=mob;
 			}
 			else
 			if(affected instanceof Item)
@@ -65,11 +67,16 @@ public class Spell_Shrink extends Spell
 						((Room)item.owner()).showHappens(CMMsg.MSG_OK_VISUAL,item.name()+" returns to its proper size.");
 					else
 					if(item.owner() instanceof MOB)
+					{
 						((MOB)item.owner()).tell(item.name()+" returns to its proper size.");
+						recheckMOB=(MOB)item.owner();
+					}
 				}
 			}
 		}
 		super.unInvoke();
+		if(recheckMOB!=null) 
+			CMLib.utensils().confirmWearability(recheckMOB);
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

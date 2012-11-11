@@ -184,6 +184,7 @@ public class Necromancer extends Cleric
 
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(myChar.baseCharStats().getClassLevel(this)>=30)
 		&&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
 		{
