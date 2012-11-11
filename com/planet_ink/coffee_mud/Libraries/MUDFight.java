@@ -146,6 +146,37 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						};
 		return (int)Math.round(CMath.parseMathExpression(attackAdjustmentFormula, vars, 0.0));
 	}
+
+	public void postItemDamage(MOB mob, Item I, Environmental tool, int damageAmount, int messageType, String message)
+	{
+		if(mob==null) return ;
+		Room R=mob.location();
+		if(R==null) return ;
+		CMMsg msg=CMClass.getMsg(mob,I,tool,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|messageType,message,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|messageType,message,CMMsg.NO_EFFECT,null);
+		if(R.okMessage(mob,msg))
+		{
+			R.send(mob,msg);
+			if(msg.value()<=0)
+			{
+				I.setUsesRemaining(I.usesRemaining()-damageAmount);
+				I.recoverPhyStats();
+				if(I.usesRemaining()<=0)
+				{
+					I.setUsesRemaining(100);
+					I.unWear();
+					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" carried by "+mob.name()+" is destroyed!");
+					if(R.okMessage(mob,msg))
+						R.send(mob,msg);
+					I.destroy();
+				}
+				else
+				if(I.usesRemaining()<=10)
+				{
+					mob.tell(I.name()+" is looking really bad.");
+				}
+			}
+		}
+	}
 	
 	public int adjustedArmor(MOB mob)
 	{
@@ -636,7 +667,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@SuppressWarnings("unchecked")
-    public List<MOB>[] getFormation(MOB mob)
+	public List<MOB>[] getFormation(MOB mob)
 	{
 		MOB leader=mob;
 		if(leader.amFollowing()!=null)

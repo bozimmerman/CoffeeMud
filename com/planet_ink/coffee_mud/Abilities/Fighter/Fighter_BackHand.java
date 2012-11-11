@@ -84,10 +84,12 @@ public class Fighter_BackHand extends MonkSkill
 					{
 						naturalWeapon=CMClass.getWeapon("GenWeapon");
 						naturalWeapon.setName("a back hand");
+						naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
 						naturalWeapon.basePhyStats().setDamage(5);
 						naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 						naturalWeapon.recoverPhyStats();
 					}
+					naturalWeapon.setUsesRemaining(100);
 					CMLib.combat().postAttack(mob,elligibleTarget,naturalWeapon);
 				}
 			}

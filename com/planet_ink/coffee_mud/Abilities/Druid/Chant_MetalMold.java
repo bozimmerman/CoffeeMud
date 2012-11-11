@@ -116,20 +116,7 @@ public class Chant_MetalMold extends Chant
 						damage=(int)Math.round(CMath.div(damage,2.0));
 					if(target.phyStats().ability()>0)
 						damage=(int)Math.round(CMath.div(damage,1+target.phyStats().ability()));
-					target.setUsesRemaining(target.usesRemaining()-damage);
-					if(target.usesRemaining()>0)
-						target.recoverPhyStats();
-					else
-					{
-						target.setUsesRemaining(100);
-						if(mobTarget==null)
-							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is destroyed by mold!");
-						else
-							mob.location().show(mobTarget,target,CMMsg.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed by mold!");
-						target.unWear();
-						target.destroy();
-						mob.location().recoverRoomStats();
-					}
+					CMLib.combat().postItemDamage(mob, target, null, damage, CMMsg.TYP_ACID, null);
 				}
 			}
 		}

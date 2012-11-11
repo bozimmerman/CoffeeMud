@@ -67,10 +67,12 @@ public class Fighter_KnifeHand extends MonkSkill
 				{
 					naturalWeapon=CMClass.getWeapon("GenWeapon");
 					naturalWeapon.setName("a knife hand");
+					naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
 					naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
 					naturalWeapon.basePhyStats().setDamage(7);
 					naturalWeapon.recoverPhyStats();
 				}
+				naturalWeapon.setUsesRemaining(100);
 				CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
 			}
 		}

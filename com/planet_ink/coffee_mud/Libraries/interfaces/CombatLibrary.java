@@ -51,6 +51,7 @@ public interface CombatLibrary extends CMLibrary
 	public String replaceDamageTag(String str, int damage, int damageType, char sourceTargetSTO);
 	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
 	public void postWeaponDamage(MOB source, MOB target, Item item, boolean success);
+	public void postItemDamage(MOB mob, Item I, Environmental tool, int damageAmount, int messageType, String message);
 	public void processFormation(List<MOB>[] done, MOB leader, int level);
 	public MOB getFollowedLeader(MOB mob);
 	public List<MOB>[] getFormation(MOB mob);

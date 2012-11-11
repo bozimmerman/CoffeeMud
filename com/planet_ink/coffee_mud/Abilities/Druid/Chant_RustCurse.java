@@ -90,24 +90,7 @@ public class Chant_RustCurse extends Chant
 				Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 				if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)
 				||(CMLib.dice().rollPercentage()<10))
-				{
-					CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,"<T-NAME> rusts!","You rust!",null);
-					if(mob.location().okMessage(mob,msg))
-					{
-						mob.location().send(mob,msg);
-						I.setUsesRemaining(I.usesRemaining()-1);
-						if(I.usesRemaining()<=0)
-						{
-							mob.tell(I.name()+" is destroyed!");
-							I.destroy();
-						}
-						else
-						if(I.usesRemaining()<=10)
-						{
-							mob.tell(I.name()+" is looking really bad.");
-						}
-					}
-				}
+					CMLib.combat().postItemDamage(mob, I, null, 1, CMMsg.TYP_ACID, "<T-NAME> rusts!");
 			}
 		}
 

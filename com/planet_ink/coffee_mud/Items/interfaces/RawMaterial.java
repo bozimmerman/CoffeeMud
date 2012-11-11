@@ -288,6 +288,7 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_PLASMA=MATERIAL_ENERGY|177;
 	public final static int RESOURCE_ELECTRICITY=MATERIAL_ENERGY|178;
 	public final static int RESOURCE_DEUTERIUM=MATERIAL_SYNTHETIC|179;
+	public final static int RESOURCE_SLIME=MATERIAL_LIQUID|180;
 	public final static int RESOURCE_MASK=255;
 
 	
@@ -472,6 +473,7 @@ public interface RawMaterial extends Item
 	"PLASMA", // 177
 	"ELECTRICITY", // 178
 	"SYNTHETIC", // 179
+	"SLIME", // 180
 	};
 	
 	public final static String[] DEFAULT_RESOURCE_EFFECTS={
@@ -655,6 +657,7 @@ public interface RawMaterial extends Item
 	"",// 177
 	"",// 178
 	"",// 179
+	"Prop_UseSpellCast2(Spell_AcidSpray)",// 180
 	};
 	
 	public final static int RSCDATAINDX_CODE=0;
@@ -845,6 +848,7 @@ public interface RawMaterial extends Item
 	{RESOURCE_PLASMA,  	 	 100,    0,    0,    0},
 	{RESOURCE_ELECTRICITY,   100,    0,    0,    0},
 	{RESOURCE_DEUTERIUM,     100,    0,    0,    0},
+	{RESOURCE_SLIME,  		   5,   10,    1,  750},
 	};
 	// full code, base value, frequency, hardness (1-10), bouancy
 	
@@ -1050,6 +1054,7 @@ public interface RawMaterial extends Item
 		"",//RESOURCE_PLASMA
 		"",//RESOURCE_ELECTRICITY
 		"",//RESOURCE_DEUTERIUM
+		"horridly acidic",//RESOURCE_SLIME  
 		};
 	
 	/**

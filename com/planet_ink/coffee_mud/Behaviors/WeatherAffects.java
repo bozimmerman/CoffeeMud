@@ -788,22 +788,7 @@ public class WeatherAffects extends PuddleMaker
 					for(int i=0;i<rustThese.size();i++)
 					{
 						Item I=(Item)rustThese.elementAt(i);
-						CMMsg msg=CMClass.getMsg(M,I,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,(weatherType!=0)?"<T-NAME> rusts.":"<T-NAME> rusts in the water.",CMMsg.TYP_WATER,null,CMMsg.NO_EFFECT,null);
-						if(R.okMessage(M,msg))
-						{
-							R.send(M,msg);
-							if(msg.value()<=0)
-							{
-								I.setUsesRemaining(I.usesRemaining()-1);
-								if(I.usesRemaining()<=0)
-								{
-									msg=CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" carried by "+M.name()+" is destroyed!");
-									if(R.okMessage(M,msg))
-										R.send(M,msg);
-									I.destroy();
-								}
-							}
-						}
+						CMLib.combat().postItemDamage(M, I, null, 1, CMMsg.TYP_WATER, (weatherType!=0)?"<T-NAME> rusts.":"<T-NAME> rusts in the water.");
 					}
 				}
 			}

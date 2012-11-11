@@ -2409,3 +2409,5 @@ ruthless programmer, and sentenced to a quick death.
 13.Common Skills now support "STOP" to cancel.
 14.Troll regeneration moved from the MOB to the Race
 15.InstantDeath behavior now allows a zappermask
+16.New race: Slime
+17.New Conjurer spell: Acid Spray
