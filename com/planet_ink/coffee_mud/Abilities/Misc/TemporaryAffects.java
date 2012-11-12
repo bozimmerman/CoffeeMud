@@ -44,7 +44,8 @@ public class TemporaryAffects extends StdAbility
 	private static final String[] triggerStrings = {"TEMPORARYAFFECTS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_PROPERTY;}
-	
+	protected boolean initialized=false;
+
 	protected SVector<Object[]> affects = new SVector<Object[]>();
 	
 	public String displayText()
@@ -189,7 +190,8 @@ public class TemporaryAffects extends StdAbility
 					((Ability)A).setMiscText(parms);
 				if((A instanceof Behavior) && (affected instanceof PhysicalAgent))
 					((Behavior)A).setParms(parms);
-				finishInit(A);
+				if(finishInit(A))
+					initialized=true;
 			}
 		}
 	}
@@ -197,7 +199,7 @@ public class TemporaryAffects extends StdAbility
 	public void setAffectedOne(Physical P)
 	{
 		super.setAffectedOne(P);
-		if(affects!=null)
+		if((affects!=null)&&(!initialized))
 			for(Object[] set : affects)
 				finishInit((CMObject)set[0]);
 	}
