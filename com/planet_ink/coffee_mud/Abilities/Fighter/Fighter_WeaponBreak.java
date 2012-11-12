@@ -116,10 +116,13 @@ public class Fighter_WeaponBreak extends FighterSkill
 			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> attack(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.unWear();
 			CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,str);
-			if(mob.location().okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,hisWeapon,this,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_CAST_SPELL,null);
+			if(mob.location().okMessage(mob,msg)&&mob.location().okMessage(mob,msg2))
 			{
-				hisWeapon.destroy();
 				mob.location().send(mob,msg);
+				mob.location().send(mob,msg2);
+				if(msg2.value()<=0)
+					hisWeapon.destroy();
 				mob.location().recoverRoomStats();
 			}
 		}
