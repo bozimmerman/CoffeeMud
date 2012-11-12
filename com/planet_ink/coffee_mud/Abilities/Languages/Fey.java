@@ -32,7 +32,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Fey extends StdLanguage
 {
 	public String ID() { return "Fey"; }//Based on Gevey from http://www.kalieda.org/gevey/lexicon.html
@@ -56,7 +55,7 @@ public class Fey extends StdLanguage
 			String[] four={"tath","pehm","nith","nana","jaath","isc","glou","gafr","dost","daes","ciel","cahve","begm","braup","blom","belag","abrol","adeci","agehr","ajet","basacont"};
 			String[] five={"shasy","rewist","pae","nuwan","noest","nafozdomuu","kreet","jaas","guhnt","glaa","caebiste","abdist","afosk","belguu","andenav","asatehrh"};
 			String[] six={"sats","retas","pokat","os","mieplust-eh","iha","hosh","griste","fot","begmevrhe","abdisem","soufuuwh","aelnebaduuu"};
-			wordLists=new Vector();
+			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);
 			wordLists.add(three);
@@ -66,7 +65,7 @@ public class Fey extends StdLanguage
 		}
 		return wordLists; 
 	}
-	private static final Hashtable hashwords=new Hashtable();
+	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0)) 

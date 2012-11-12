@@ -32,20 +32,14 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Druidic extends StdLanguage
 {
 	public String ID() { return "Druidic"; }
 	public String name(){ return "Druidic";}
 	public static List<String[]> wordLists=null;
-	private static boolean mapped=false;
 	public Druidic()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("Druid",1,ID(),true);
-					CMLib.ableMapper().addCharAbilityMapping("Beastmaster",1,ID(),true);
-					}
 	}
 
 	public List<String[]> translationVector(String language)
@@ -53,18 +47,20 @@ public class Druidic extends StdLanguage
 		if(wordLists==null)
 		{
 			String[] one={""};
-			String[] two={"hissssss","hoo","caw","arf","bow-wow","bzzzzzz"};
-			String[] three={"chirp","tweet","mooooo","oink","quack","tweet"};
-			String[] four={"ruff","meow","grrrrowl","roar","cluck","honk"};
-			String[] five={"croak","bark","blub-blub","cuckoo","squeak","peep"};
-			String[] six={"gobble-gobble","ribbit","b-a-a-a-h","n-a-a-a-y","heehaw","cock-a-doodle-doo"};
-			wordLists=new Vector();
+			String[] two={"hissssss","hoo","caw","arf","bow-wow","bzzzzzz","grunt","bawl"};
+			String[] three={"chirp","tweet","mooooo","oink","quack","tweet","bellooooow","cackle","hooooowwwwl","!dook!"};
+			String[] four={"ruff","meow","grrrrowl","roar","cluck","honk","gibber","hoot","snort","groooan","trill","snarl"};
+			String[] five={"croak","bark","blub-blub","cuckoo","squeak","peep","screeech!","twitter","cherp","wail"};
+			String[] six={"hummmmmm","bleat","*whistle*","yelp","neigh","whinny","growl","screeaam!!"};
+			String[] seven={"gobble-gobble","ribbit","b-a-a-a-h","n-a-a-a-y","heehaw","cock-a-doodle-doo"};
+			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);
 			wordLists.add(three);
 			wordLists.add(four);
 			wordLists.add(five);
 			wordLists.add(six);
+			wordLists.add(seven);
 		}
 		return wordLists;
 	}

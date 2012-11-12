@@ -39,7 +39,6 @@ import java.util.*;
 	Respect to all who work on Coffee, keep the tradition going!
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ThievesCant extends StdLanguage
 {
 	public String ID() { return "ThievesCant"; }
@@ -63,7 +62,7 @@ public class ThievesCant extends StdLanguage
 			String[] four={"arch","buck","bulk","adam","door","back","bear","beef","bell","cove","cull","hank","gull","jack","lily","mort","nask","prig","bite","fine","gelt","stag","stam","stow","wink"};
 			String[] five={"nasty","abram","rogue","royal","blood","bluff","break","teeth","blade","fitch","purse","burnt","chink","chive","chife","clear","drunk","court","cramp","flash","glaze","sharp","ketch","merry","stool","peery","board","queer","boots","smear","smoke","snapt","flash","unrig","whack"};
 			String[] six={"baggage","sodomite","banging","battle","garden","beater","beggar","bobbed","bracket","brother","poxed","canters","cousins","money","clanker","damber","fencing","gentry","glimflashy","lavender","jemmy","nubbing","penance","pothooks","rigging","trumps","weeping"};
-			wordLists=new Vector();
+			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);
 			wordLists.add(three);
@@ -73,7 +72,7 @@ public class ThievesCant extends StdLanguage
 		}
 		return wordLists;
 	}
-	private static final Hashtable hashwords=new Hashtable();
+	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))

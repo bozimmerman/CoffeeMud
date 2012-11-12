@@ -32,7 +32,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Gigantic extends StdLanguage
 {
 	public String ID() { return "Gigantic"; }
@@ -47,16 +46,12 @@ public class Gigantic extends StdLanguage
 		if(wordLists==null)
 		{
 			String[] one={"o","est","e","am"};
-			String[]
-two={"on","dva","sa","is","id","et","bo","ja","te","me","za","ve"};
+			String[] two={"on","dva","sa","is","id","et","bo","ja","te","me","za","ve"};
 			String[] three={"pet","set","tre","mal","maz","mat","ane","dom"};
-			String[]
-four={"nast","sest","osam","bedu","beda","mene","mame","maja","beli","nesi"};
-			String[]
-five={"sedam","devat","flanon","dvade","matke","trede","horat","jesam","taram","anaht","maram","nezme"};
-			String[]
-six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","trenast","staronast","starde","delaja"};
-			wordLists=new Vector();
+			String[] four={"nast","sest","osam","bedu","beda","mene","mame","maja","beli","nesi"};
+			String[] five={"sedam","devat","flanon","dvade","matke","trede","horat","jesam","taram","anaht","maram","nezme"};
+			String[] six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","trenast","staronast","starde","delaja"};
+			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);
 			wordLists.add(three);
@@ -91,7 +86,7 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 		return super.okMessage(myHost,msg);
 	}
 
-	private static final Hashtable hashwords=new Hashtable();
+	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))

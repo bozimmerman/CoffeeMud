@@ -32,7 +32,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Orcish extends StdLanguage
 {
 	public String ID() { return "Orcish"; }
@@ -52,7 +51,7 @@ public class Orcish extends StdLanguage
 			String[] four={"blec","mugo","guck","gook","kill","dead","twak","kwat","klug"};
 			String[] five={"bleko","thwak","klarg","gluck","kulgo","mucka","splat","kwath","garth","blark"};
 			String[] six={"kalarg","murder","bleeke","kwargh","guttle","thungo"};
-			wordLists=new Vector();
+			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);
 			wordLists.add(three);

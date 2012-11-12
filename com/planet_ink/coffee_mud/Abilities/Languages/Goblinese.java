@@ -32,7 +32,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Goblinese extends StdLanguage
 {
 	public String ID() { return "Goblinese"; }
@@ -49,13 +48,10 @@ public class Goblinese extends StdLanguage
 			String[] one={"i","klpt","ih","g"};
 			String[] two={"te","il","ag","go"};
 			String[] three={"nik","rem","tit","nip","pop","pon","ipi","wip","pec"};
-			String[]
-four={"perp","merp","nerp","pein","noog","gobo","koer","werp","terp","tert","grlt","Jrl","gran","kert"};
-			String[]
-five={"whamb","thwam","nipgo","pungo","upoin","krepe","tungo","pongo","twang","hrgap","splt","krnch","baam","poww"};
-			String[]
-six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak","grnoc","pisspiss","phlyyytt","plllb","hrangnok","ticktick","nurang"};
-			wordLists=new Vector();
+			String[] four={"perp","merp","nerp","pein","noog","gobo","koer","werp","terp","tert","grlt","Jrl","gran","kert"};
+			String[] five={"whamb","thwam","nipgo","pungo","upoin","krepe","tungo","pongo","twang","hrgap","splt","krnch","baam","poww"};
+			String[] six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak","grnoc","pisspiss","phlyyytt","plllb","hrangnok","ticktick","nurang"};
+			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);
 			wordLists.add(three);
@@ -66,7 +62,7 @@ six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak"
 		return wordLists;
 	}
 	
-	private static final Hashtable hashwords=new Hashtable();
+	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))

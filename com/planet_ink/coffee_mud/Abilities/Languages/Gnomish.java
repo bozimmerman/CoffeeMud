@@ -32,7 +32,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Gnomish extends StdLanguage
 {
 	public String ID() { return "Gnomish"; }
@@ -52,7 +51,7 @@ public class Gnomish extends StdLanguage
 			String[] four={"peep","meep","neep","pein","nopo","popo","woop","weep","teep","teet"};
 			String[] five={"whemp","thwam","nippo","punno","upoon","teepe","tunno","ponno","twano","ywhap"};
 			String[] six={"tawhag","ponsol","paleep","ponpopol","niptittle","minwap","tinmipmip","niptemtem","wipwippoo"};
-			wordLists=new Vector();
+			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);
 			wordLists.add(three);

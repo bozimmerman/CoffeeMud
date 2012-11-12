@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Ignan extends StdLanguage
 {
 	public String ID() { return "Ignan"; }
@@ -40,7 +39,7 @@ public class Ignan extends StdLanguage
 			String[] four={"nahi","ty'aj","tras","dams","dagh","jatu","chik","jhak","gruk","k'sip","kuha","ucca","inkh","asya","abhi","arya","isti","id'va","mala","mrga","s'ami","sira","skus","stup"};
 			String[] five={"stigh","stubh","stoka","me'das","mraks","ghana","buk'ni","narka","pams'u","niska","netrya","ni'jh","dhu'li","dhraj","taran","tarus","jungu","chupna","jattu","chirnu","cukvu","jhakut","jhaur","udaya","ilih"};
 			String[] six={"masu'ra","marttika","bhai'sa","bollai","vila'sini","barhis't'ha","barkro","parada","nikauriya","nird'har","dhanik","ja'n'o","tanakti","chikka'ra","kullada","uccaya","utsava","istaka","i'rsya","inkhuksa","akha'ra","adhuna","avas'dyak"};
-			wordLists=new Vector();
+			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);
 			wordLists.add(three);
@@ -50,7 +49,7 @@ public class Ignan extends StdLanguage
 		}
 		return wordLists;
 	}
-	private static final Hashtable hashwords=new Hashtable();
+	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))

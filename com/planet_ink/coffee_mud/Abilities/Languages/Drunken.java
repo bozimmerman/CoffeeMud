@@ -32,7 +32,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Drunken extends StdLanguage
 {
 	public String ID() { return "Drunken"; }
@@ -51,9 +50,9 @@ public class Drunken extends StdLanguage
 		return wordLists;
 	}
 
-	protected Vector getSChoices(StringBuffer word)
+	protected Vector<Integer> getSChoices(StringBuffer word)
 	{
-		Vector V=new Vector();
+		Vector<Integer> V=new Vector<Integer>();
 		int x=word.toString().toUpperCase().indexOf('S');
 		while(x>=0)
 		{
@@ -64,9 +63,9 @@ public class Drunken extends StdLanguage
 		return V;
 	}
 
-	protected Vector getVChoices(StringBuffer word)
+	protected Vector<Integer> getVChoices(StringBuffer word)
 	{
-		Vector V=new Vector();
+		Vector<Integer> V=new Vector<Integer>();
 		for(int x=0;x<word.length();x++)
 		{
 			if(("AEIOU").indexOf(Character.toUpperCase(word.charAt(x)))>=0)
@@ -82,7 +81,7 @@ public class Drunken extends StdLanguage
 	public String translate(String language, String word)
 	{
 		StringBuffer sbw=new StringBuffer(word);
-		Vector V=getSChoices(sbw);
+		Vector<Integer> V=getSChoices(sbw);
 		if(V.size()>0)
 			sbw.insert(((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue()+1,'h');
 		if(CMLib.dice().rollPercentage()<50)

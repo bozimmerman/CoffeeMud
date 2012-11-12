@@ -32,7 +32,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Draconic extends StdLanguage
 {
 	public String ID() { return "Draconic"; }
@@ -53,7 +52,7 @@ public class Draconic extends StdLanguage
 			String[] four={"nirg","avet","sav`e","choc","sess","sens","vent","vens","sven","yans","vays"};
 			String[] five={"splut","svets","fruite","dwagg","vrers","verrs","srens","swath","senys","varen"};
 			String[] six={"choccie","svenren","yorens","vyrues","whyrie","vrysenso","forin","sinnes","sessis","uroven","xorers","nosees"};
-			wordLists=new Vector();
+			wordLists=new Vector<String[]>();
 			wordLists.add(one);
 			wordLists.add(two);
 			wordLists.add(three);
