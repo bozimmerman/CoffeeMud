@@ -97,7 +97,7 @@ public class LockSmith extends CraftingSkill
 				unInvoke();
 				return super.tick(ticking, tickID);
 			}
-			if(tickDown==6)
+			if(tickDown<=1)
 			{
 				if(building==null) building=getBuilding(workingOn);
 				if((workingOn!=null)&&(mob.location()!=null)&&(!aborted))

@@ -120,6 +120,11 @@ public class Chant_Treemorph extends Chant
 			MOB mob=(MOB)affected;
 			if(msg.source().getVictim()==affected)
 				msg.source().setVictim(null);
+			if((msg.target()==mob)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS)))
+			{
+				msg.source().tell(msg.source(),mob,null,"You can't do that to <T-NAME>.");
+				return false;
+			}
 			if(mob.isInCombat())
 			{
 				MOB victim=mob.getVictim();
@@ -153,7 +158,6 @@ public class Chant_Treemorph extends Chant
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
-			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 		}
 	}
 

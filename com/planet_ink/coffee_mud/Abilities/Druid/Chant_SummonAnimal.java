@@ -173,7 +173,10 @@ public class Chant_SummonAnimal extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=null;
-
+		if(level>5)
+			level=level-5;
+		else
+			level=1;
 		while(newMOB==null)
 		{
 			switch(CMLib.dice().rollPercentage())
@@ -225,6 +228,9 @@ public class Chant_SummonAnimal extends Chant
 
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setLocation(caster.location());
+		newMOB.basePhyStats().setLevel(level);
+		CMLib.leveler().fillOutMOB(newMOB,newMOB.basePhyStats().level());
+		newMOB.setMoney(0);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();

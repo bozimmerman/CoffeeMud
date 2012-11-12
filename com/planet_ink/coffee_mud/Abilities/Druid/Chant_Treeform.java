@@ -83,7 +83,7 @@ public class Chant_Treeform extends Chant
 		}
 		if(msg.amITarget(mob))
 		{
-			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)||(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS)))
 			{
 				msg.source().tell("Attack a tree?!");
 				msg.source().setVictim(null);

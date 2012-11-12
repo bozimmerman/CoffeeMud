@@ -64,9 +64,10 @@ public class Prayer_Behemoth extends Prayer
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.STAT_STRENGTH,affectedStats.getStat(CharStats.STAT_STRENGTH)+5);
 		affectedStats.setStat(CharStats.STAT_DEXTERITY,affectedStats.getStat(CharStats.STAT_DEXTERITY)-5);
-		affectedStats.setStat(CharStats.STAT_WEIGHTADJ,
-				affectedStats.getStat(CharStats.STAT_WEIGHTADJ)
-				+(affectedMOB.basePhyStats().weight()*4));
+		long newWeight=affectedStats.getStat(CharStats.STAT_WEIGHTADJ)+(affectedMOB.basePhyStats().weight()*4);
+		if(newWeight>Short.MAX_VALUE)
+			newWeight=Short.MAX_VALUE;
+		affectedStats.setStat(CharStats.STAT_WEIGHTADJ,(int)newWeight);
 	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectedStats)

@@ -124,7 +124,10 @@ public class Spell_Grow extends Spell
 						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
 						setMiscText(Integer.toString(target.basePhyStats().weight()));
 						A.setMiscText(Integer.toString(target.basePhyStats().weight()));
-						target.basePhyStats().setWeight((int)Math.round(CMath.mul(target.basePhyStats().weight(),aff)));
+						long newWeight=Math.round(CMath.mul(target.basePhyStats().weight(),aff));
+						if(newWeight>Short.MAX_VALUE)
+							newWeight=Short.MAX_VALUE;
+						target.basePhyStats().setWeight((int)newWeight);
 						CMLib.utensils().confirmWearability(target);
 					}
 				}
