@@ -190,8 +190,7 @@ public class TemporaryAffects extends StdAbility
 					((Ability)A).setMiscText(parms);
 				if((A instanceof Behavior) && (affected instanceof PhysicalAgent))
 					((Behavior)A).setParms(parms);
-				if(finishInit(A))
-					initialized=true;
+				finishInit(A);
 			}
 		}
 	}
@@ -205,9 +204,9 @@ public class TemporaryAffects extends StdAbility
 	}
 	
 	
-	public boolean finishInit(CMObject A)
+	public void finishInit(CMObject A)
 	{
-		if(affected == null) return false;
+		if(affected == null) return;
 		if(A instanceof Ability)
 		{
 			((Ability)A).makeNonUninvokable();
@@ -223,7 +222,7 @@ public class TemporaryAffects extends StdAbility
 			((MOB)affected).recoverCharStats();
 			((MOB)affected).recoverMaxState();
 		}
-		return true;
+		initialized=true;
 	}
 	
 	public boolean destroyIfNecessary()
