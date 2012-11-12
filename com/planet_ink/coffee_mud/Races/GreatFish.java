@@ -80,6 +80,8 @@ public class GreatFish extends GiantFish
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName("a heat butt");
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
+			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;

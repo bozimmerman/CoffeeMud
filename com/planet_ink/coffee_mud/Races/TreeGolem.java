@@ -74,6 +74,8 @@ public class TreeGolem extends StdRace
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName("a jagged limb");
 			naturalWeapon.setRanges(0,2);
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_OAK);
+			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;

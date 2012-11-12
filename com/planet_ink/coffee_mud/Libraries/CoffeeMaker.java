@@ -3227,6 +3227,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		((Ammunition)neww).setAmmunitionType(ammo);
 		neww.setUsesRemaining(number);
+		neww.setMaterial(RawMaterial.RESOURCE_OAK);
 		neww.basePhyStats().setWeight(number);
 		neww.setBaseValue(0);
 		neww.recoverPhyStats();

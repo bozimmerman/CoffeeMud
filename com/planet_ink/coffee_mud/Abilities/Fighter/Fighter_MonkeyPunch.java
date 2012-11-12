@@ -67,7 +67,8 @@ public class Fighter_MonkeyPunch extends MonkSkill
 				{
 					naturalWeapon=CMClass.getWeapon("GenWeapon");
 					naturalWeapon.setName("a monkey punch");
-					naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
+					naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
+					naturalWeapon.setUsesRemaining(1000);
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					naturalWeapon.basePhyStats().setDamage(5);
 					naturalWeapon.recoverPhyStats();

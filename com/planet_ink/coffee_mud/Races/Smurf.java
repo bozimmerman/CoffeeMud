@@ -100,6 +100,8 @@ public class Smurf extends StdRace
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}
+				naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
+				naturalWeapon.setUsesRemaining(1000);
 				naturalWeaponChoices.add(naturalWeapon);
 			}
 		}

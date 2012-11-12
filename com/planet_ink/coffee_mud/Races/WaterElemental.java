@@ -83,6 +83,8 @@ public class WaterElemental extends StdRace
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName("an arm of ice");
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_FRESHWATER);
+			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
 		}
 		return naturalWeapon;

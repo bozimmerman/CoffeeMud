@@ -85,6 +85,8 @@ public class Spirit extends Undead
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 				}
+				naturalWeapon.setMaterial(RawMaterial.RESOURCE_PLASMA);
+				naturalWeapon.setUsesRemaining(1000);
 				naturalWeaponChoices.add(naturalWeapon);
 			}
 		}

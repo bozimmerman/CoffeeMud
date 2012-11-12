@@ -87,6 +87,8 @@ public class Flower extends Vine
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName("a nasty bloom");
 			naturalWeapon.setRanges(0,3);
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_FLOWERS);
+			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;

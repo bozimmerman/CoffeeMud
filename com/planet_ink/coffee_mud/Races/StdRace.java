@@ -369,6 +369,7 @@ public class StdRace implements Race
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");
 				if(naturalWeapon==null) continue;
+				naturalWeapon.setMaterial(RawMaterial.RESOURCE_LEATHER);
 				switch(i)
 				{
 					case 1:
@@ -406,6 +407,7 @@ public class StdRace implements Race
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}
+				naturalWeapon.setUsesRemaining(1000);
 				naturalWeaponChoices.add(naturalWeapon);
 			}
 		}

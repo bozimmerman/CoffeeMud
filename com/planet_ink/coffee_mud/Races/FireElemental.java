@@ -74,6 +74,8 @@ public class FireElemental extends StdRace
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName("an arm of flame");
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_PLASMA);
+			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_BURNING);
 		}
 		return naturalWeapon;

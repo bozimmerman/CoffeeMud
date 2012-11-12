@@ -158,18 +158,19 @@ public class Chant_SummonTornado extends Chant
 						}
 						if(I.subjectToWearAndTear())
 						{
+							int damage=0;
 							switch(I.material()&RawMaterial.MATERIAL_MASK)
 							{
 							case RawMaterial.MATERIAL_PRECIOUS:
 							case RawMaterial.MATERIAL_ROCK:
 							case RawMaterial.MATERIAL_MITHRIL:
-								I.setUsesRemaining(I.usesRemaining()-1);
+								damage=1;
 								break;
 							case RawMaterial.MATERIAL_LIQUID:
 							case RawMaterial.MATERIAL_UNKNOWN:
 								break;
 							case RawMaterial.MATERIAL_GLASS:
-								I.setUsesRemaining(I.usesRemaining()-75);
+								damage=75;
 								break;
 							case RawMaterial.MATERIAL_CLOTH:
 							case RawMaterial.MATERIAL_FLESH:
@@ -178,19 +179,16 @@ public class Chant_SummonTornado extends Chant
 							case RawMaterial.MATERIAL_VEGETATION:
 							case RawMaterial.MATERIAL_WOODEN:
 							case RawMaterial.MATERIAL_SYNTHETIC:
-								I.setUsesRemaining(I.usesRemaining()-50);
+								damage=50;
 								break;
 							case RawMaterial.MATERIAL_METAL:
-								I.setUsesRemaining(I.usesRemaining()-20);
+								damage=20;
 								break;
 							case RawMaterial.MATERIAL_ENERGY:
 								break;
 							}
-							if(I.usesRemaining()<=0)
-							{
-								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is destroyed!");
-								I.destroy();
-							}
+							if(damage>0)
+								CMLib.combat().postItemDamage(mob, I, this, damage, CMMsg.TYP_COLD, null);
 						}
 					}
 					else

@@ -93,6 +93,8 @@ public class Vine extends StdRace
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName("a whip-like arm");
 			naturalWeapon.setRanges(0,3);
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_VINE);
+			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;

@@ -42,7 +42,7 @@ public class Slime extends StdRace
 	public int lightestWeight(){return 80;}
 	public int weightVariance(){return 80;}
 	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Slime";}
+	public String racialCategory(){return "Unique";}
 	public boolean fertile(){return false;}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -54,6 +54,57 @@ public class Slime extends StdRace
 	
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_WORK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
+	}
+
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		affectableStats.setStat(CharStats.STAT_GENDER,'N');
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
+		affectableStats.setRacialStat(CharStats.STAT_WISDOM,1);
+		affectableStats.setRacialStat(CharStats.STAT_CHARISMA,1);
+		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)-100);
+		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
+		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
+	}
+
+	public String arriveStr()
+	{
+		return "slides in";
+	}
+
+	public String leaveStr()
+	{
+		return "slides";
+	}
+
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("a slimy protrusion");
+			naturalWeapon.setRanges(0,5);
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_SLIME);
+			naturalWeapon.setUsesRemaining(1000);
+			naturalWeapon.setWeaponType(Weapon.TYPE_MELTING);
+		}
+		return naturalWeapon;
+	}
 
 	public String healthText(MOB viewer, MOB mob)
 	{

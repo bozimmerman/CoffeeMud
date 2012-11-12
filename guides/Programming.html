@@ -2824,7 +2824,8 @@ of the mob or player which must be set due to their being this race,
 this would be the appropriate method in which to do so. This method is
 not called for Polymorph, Shape Shift, or similar changes in race, but
 only for those whose permanent race is this one.</p>
-      <pre>  public Weapon myNaturalWeapon()<br />  {<br />    if( naturalWeapon == null )<br />    {<br />      naturalWeapon = CMClass.getWeapon( "StdWeapon" );<br />      naturalWeapon.setName( "huge claws" );<br />      naturalWeapon.setWeaponType( Weapon.TYPE_PIERCING );<br />    }<br /><br />    return naturalWeapon;<br />  }<br /></pre>
+      <pre>  public Weapon myNaturalWeapon()<br />  {<br />    if( naturalWeapon == null )<br />    {<br />      naturalWeapon = CMClass.getWeapon( "StdWeapon" );<br />      naturalWeapon.setName( "huge claws" );<br />      naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);<br />      naturalWeapon.setUsesRemaining(1000);<br />      naturalWeapon.setWeaponType( Weapon.TYPE_PIERCING );<br />    }<br /><br />    return naturalWeapon;<br />  }<br /></pre>
+
       <p>This method allows you to create (see item creation above) a
 special weapon to serve the creature whenever they are not wielding
 something. Since our Grumbler cannot wield weapons anyway, it is

@@ -55,6 +55,8 @@ public class Jelly extends Unique
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName("an appendange");
 			naturalWeapon.setRanges(0,2);
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BERRIES);
+			naturalWeapon.setUsesRemaining(1000);
 			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;
