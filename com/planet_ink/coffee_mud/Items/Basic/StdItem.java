@@ -443,19 +443,19 @@ public class StdItem implements Item
 		}
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
-        }});
+		}});
 	}
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
-        }});
+		}});
 	}
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
-        }});
+		}});
 	}
 	public void setMiscText(String newText)
 	{
@@ -706,9 +706,10 @@ public class StdItem implements Item
 			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		num=numEffects();
+		for(int i=0;i<num;i++)
 		{
-			N=a.nextElement();
+			N=fetchEffect(i);
 			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}

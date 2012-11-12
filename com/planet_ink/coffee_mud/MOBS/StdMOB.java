@@ -691,16 +691,16 @@ public class StdMOB implements MOB
 		final Deity deity = getMyDeity();
 		if (deity != null)
 			deity.affectCharStats(this, charStats);
-		eachEffect(recoverCharStatsAffectApplier);
-		eachItem(recoverCharStatsItemApplier);
-		if (location() != null)
-			location().affectCharStats(this, charStats);
 
 		final int num = charStats.numClasses();
 		for (int c = 0; c < num; c++)
 			charStats.getMyClass(c).affectCharStats(this, charStats);
 		charStats.getMyRace().affectCharStats(this, charStats);
 		baseCharStats.getMyRace().agingAffects(this, baseCharStats, charStats);
+		eachEffect(recoverCharStatsAffectApplier);
+		eachItem(recoverCharStatsItemApplier);
+		if (location() != null)
+			location().affectCharStats(this, charStats);
 		for (final Enumeration e = factions.elements(); e.hasMoreElements();)
 			((Faction.FData) e.nextElement()).affectCharStats(this, charStats);
 		if ((playerStats != null) && (soulMate == null) && (playerStats.getHygiene() >= PlayerStats.HYGIENE_DELIMIT))

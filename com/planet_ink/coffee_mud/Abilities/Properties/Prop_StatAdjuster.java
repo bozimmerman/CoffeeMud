@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Behaviors;
+package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,30 +32,48 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Clericness extends CombatAbilities
+public class Prop_StatAdjuster extends Property
 {
-	public String ID(){return "Clericness";}
+	public String ID() { return "Prop_StatAdjuster"; }
+	public String name(){ return "Char Stats Adjusted MOB";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected static final int[] all25=new int[CharStats.CODES.instance().total()];
+	static { for(int i : CharStats.CODES.BASE()) all25[i]=0;}
+	protected int[] stats=all25;
+	public boolean bubbleAffect(){return false;}
+	public long flags(){return Ability.FLAG_ADJUSTER;}
+	public int triggerMask() 
+	{ 
+		return TriggeredAffect.TRIGGER_ALWAYS;
+	}
 
 	public String accountForYourself()
-	{ 
-		return "clericliness";
-	}
+	{ return "Stats Trainer";	}
 
-	boolean confirmedSetup=false;
-
-	public void startBehavior(PhysicalAgent forMe)
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		super.startBehavior(forMe);
-		if(!(forMe instanceof MOB)) return;
-		MOB mob=(MOB)forMe;
-		combatMode=COMBAT_RANDOM;
-		makeClass(mob,getParmsMinusCombatMode(),"Cleric");
-		newCharacter(mob);
-		//%%%%%att,armor,damage,hp,mana,move
-		if((preCastSet==Integer.MAX_VALUE)||(preCastSet<=0))
+		for(int i: CharStats.CODES.BASE())
+			if(stats[i]!=0)
+			{
+				int newStat=affectableStats.getStat(i)+stats[i];
+				final int maxStat=affectableStats.getMaxStat(i);
+				if(newStat>maxStat)
+					newStat=maxStat;
+				else
+				if(newStat<1) 
+					newStat=1;
+				affectableStats.setStat(i,newStat);
+			}
+	}
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if(newMiscText.length()>0)
 		{
-			setCombatStats(mob,0,0,-25,-30,+25,-50);
-			setCharStats(mob);
+			stats=new int[CharStats.CODES.TOTAL()];
+			for(int i : CharStats.CODES.BASE())
+				stats[i]=CMParms.getParmInt(newMiscText, CMStrings.limit(CharStats.CODES.NAME(i),3), 0);
 		}
 	}
+
 }

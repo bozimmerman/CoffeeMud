@@ -81,6 +81,9 @@ public class Mageness extends CombatAbilities
 		getSomeMoreMageAbilities(mob);
 		//%%%%%att,armor,damage,hp,mana,move
 		if((preCastSet==Integer.MAX_VALUE)||(preCastSet<=0))
+		{
 			setCombatStats(mob,-50,-50,-25,-45,50,-50);
+			setCharStats(mob);
+		}
 	}
 }

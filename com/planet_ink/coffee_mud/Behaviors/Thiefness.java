@@ -54,7 +54,10 @@ public class Thiefness extends CombatAbilities
 		newCharacter(mob);
 		//%%%%%att,armor,damage,hp,mana,move
 		if((preCastSet==Integer.MAX_VALUE)||(preCastSet<=0))
+		{
 			setCombatStats(mob,0,50,-25,-35,-25,-25);
+			setCharStats(mob);
+		}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

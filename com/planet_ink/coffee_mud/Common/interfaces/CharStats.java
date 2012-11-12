@@ -136,6 +136,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the max stat.
 	 */
 	public int getMaxStat(int abilityCode);
+
 	/**
 	 * Set the value of one of the STAT_ constants, representing attributes,
 	 * saving throws, and max attributes, from the CharStats interface.
@@ -144,6 +145,7 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @param value the value of the given STAT
 	 */
 	public void setStat(int statNum, int value);
+
 	/**
 	 * Set one of the basic attributes to a given value.  The basic attributes
 	 * are defined as the first 6 STAT_ constants from the CharStats interface.

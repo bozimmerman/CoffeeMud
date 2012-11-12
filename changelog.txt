@@ -2413,3 +2413,4 @@ ruthless programmer, and sentenced to a quick death.
 17.New Conjurer spell: Acid Spray
 18.Some common skills can now be done sitting done.
 19.Bandaging also restores a few hit points.
+20.CombatAbilities and its derivatives (Bardness/Clericness/etc..) will adjust base char stats of mobs to reflect class, unless NOSTATS in the parms.

@@ -48,6 +48,7 @@ public class CombatAbilities extends StdBehavior
 	protected int preCastSet=Integer.MAX_VALUE;
 	protected int preCastDown=Integer.MAX_VALUE;
 	protected String lastSpell=null;
+	protected boolean noStat=false;
 	protected StringBuffer record=null;
 	protected int physicalDamageTaken=0;
 	protected InternalWeaponSet weaponSet=new InternalWeaponSet();
@@ -207,6 +208,43 @@ public class CombatAbilities extends StdBehavior
 		}
 	}
 
+	public void setCharStats(MOB mob)
+	{
+		if(this.noStat) return;
+		Ability A=mob.fetchEffect("Prop_StatAdjuster");
+		if(A==null)
+		{
+			A=CMClass.getAbility("Prop_StatAdjuster");
+			if(A!=null)
+			{
+				final CharClass C=mob.charStats().getCurrentClass();
+				final int[] stats=C.maxStatAdjustments();
+				int numStats=0;
+				for(int stat : CharStats.CODES.BASE())
+					if(stats[stat]!=0)
+						numStats++;
+				if(numStats==0) return;
+				int numPoints=mob.phyStats().level();
+				if(mob.phyStats().level()>5)
+					numPoints=5+((mob.phyStats().level()-5)/8);
+				numPoints=numPoints/numStats;
+				StringBuilder parm=new StringBuilder("");
+				for(int stat : CharStats.CODES.BASE())
+					if(stats[stat]!=0)
+						parm.append(CMStrings.limit(CharStats.CODES.NAME(stat),3)).append("=").append(numPoints).append(" ");
+				if(parm.length()>0)
+				{
+					mob.addNonUninvokableEffect(A);
+					A.setMiscText(parm.toString().trim());
+					A.setSavable(false);
+					mob.recoverPhyStats();
+					mob.recoverMaxState();
+					mob.resetToMaxState();
+				}
+			}
+		}
+	}
+	
 	public void adjustAggro(MOB hostM, MOB attackerM, int amt)
 	{
 		if(aggro==null) aggro=new Hashtable<MOB,int[]>();
@@ -312,6 +350,9 @@ public class CombatAbilities extends StdBehavior
 			s=(String)V.elementAt(v);
 			if(s.equalsIgnoreCase("proficient"))
 				proficient=true;
+			else
+			if(s.equalsIgnoreCase("nostat")||s.equalsIgnoreCase("nostats"))
+				noStat=true;
 			else
 			if((s.startsWith("-"))
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))

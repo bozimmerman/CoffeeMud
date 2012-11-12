@@ -53,6 +53,9 @@ public class Druidness extends CombatAbilities
 		newCharacter(mob);
 		//%%%%%att,armor,damage,hp,mana,move
 		if((preCastSet==Integer.MAX_VALUE)||(preCastSet<=0))
+		{
 			setCombatStats(mob,0,-25,-25,0,+25,0);
+			setCharStats(mob);
+		}
 	}
 }

@@ -138,7 +138,6 @@ public class Score extends Affect
 		msg.append("\n\r^NYour stats are: ");
 		msg.append(CMProps.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
 		msg.append("\n\r");
-		int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
 		CharStats CT=mob.charStats();
 		if(parm.equalsIgnoreCase("BASE")) CT=mob.baseCharStats();
 		msg.append("^N^!");
@@ -147,7 +146,7 @@ public class Score extends Affect
 					+": "
 					+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
 					+"/"
-					+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
+					+(CT.getMaxStat(i))+"\n\r");
 		msg.append("^?\n\r");
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? ^<HELP^>hit points^</HELP^>, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? ^<HELP^>mana^</HELP^>, and ^H");
