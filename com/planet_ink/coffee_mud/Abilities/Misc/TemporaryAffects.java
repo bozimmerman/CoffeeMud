@@ -184,28 +184,44 @@ public class TemporaryAffects extends StdAbility
 				A=CMClass.findBehavior(abilityStr);
 			if(A!=null)
 			{
-				if(A instanceof Ability)
-				{
-					((Ability)A).setMiscText(parms);
-					((Ability)A).makeNonUninvokable();
-					((Ability)A).makeLongLasting();
-					((Ability)A).setAffectedOne(affected);
-				}
-				if((A instanceof Behavior) && (affected instanceof PhysicalAgent))
-				{
-					((Behavior)A).setParms(parms);
-					((Behavior)A).startBehavior((PhysicalAgent)affected);
-				}
 				affects.addElement(new Object[]{A,new int[]{CMath.s_int(numTicksStr)}});
-				if(affected != null)
-					affected.recoverPhyStats();
-				if(affected instanceof MOB)
-				{
-					((MOB)affected).recoverCharStats();
-					((MOB)affected).recoverMaxState();
-				}
+				if(A instanceof Ability)
+					((Ability)A).setMiscText(parms);
+				if((A instanceof Behavior) && (affected instanceof PhysicalAgent))
+					((Behavior)A).setParms(parms);
+				finishInit(A);
 			}
 		}
+	}
+	
+	public void setAffectedOne(Physical P)
+	{
+		super.setAffectedOne(P);
+		if(affects!=null)
+			for(Object[] set : affects)
+				finishInit((CMObject)set[0]);
+	}
+	
+	
+	public boolean finishInit(CMObject A)
+	{
+		if(affected == null) return false;
+		if(A instanceof Ability)
+		{
+			((Ability)A).makeNonUninvokable();
+			((Ability)A).makeLongLasting();
+			((Ability)A).setAffectedOne(affected);
+		}
+		if((A instanceof Behavior) && (affected instanceof PhysicalAgent))
+			((Behavior)A).startBehavior((PhysicalAgent)affected);
+		if(affected != null)
+			affected.recoverPhyStats();
+		if(affected instanceof MOB)
+		{
+			((MOB)affected).recoverCharStats();
+			((MOB)affected).recoverMaxState();
+		}
+		return true;
 	}
 	
 	public boolean destroyIfNecessary()
