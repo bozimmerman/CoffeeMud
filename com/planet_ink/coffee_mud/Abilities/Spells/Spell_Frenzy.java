@@ -40,8 +40,8 @@ public class Spell_Frenzy extends Spell
 	public String displayText(){return "(Frenzy spell)";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int hpAdjustment=0;
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int hpAdjustment=0;
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -62,6 +62,13 @@ public class Spell_Frenzy extends Spell
 			affectedMaxState.setHitPoints(affectedMaxState.getHitPoints()+hpAdjustment);
 	}
 
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		if(CMath.isInteger(newText))
+			hpAdjustment=CMath.s_int(newText);
+	}
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -79,8 +86,6 @@ public class Spell_Frenzy extends Spell
 			mob.recoverMaxState();
 		}
 	}
-
-
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -114,6 +119,8 @@ public class Spell_Frenzy extends Spell
 					R.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) wild!");
 					hpAdjustment=(int)Math.round(CMath.div(target.maxState().getHitPoints(),5.0));
 					beneficialAffect(mob,target,asLevel,0);
+					Ability A=target.fetchEffect(ID());
+					if(A!=null) A.setMiscText(Integer.toString(hpAdjustment));
 					target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 					target.recoverMaxState();
 					target.recoverPhyStats();
