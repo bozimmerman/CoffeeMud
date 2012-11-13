@@ -64,6 +64,15 @@ public class Fighter_FarShot extends FighterSkill
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
+		if((affected instanceof Weapon)
+		&&((Weapon)affected).amWearingAt(Wearable.IN_INVENTORY))
+		{
+			Weapon targetW=(Weapon)affected;
+			qualifiedWeapons.remove(targetW);
+			targetW.delEffect(targetW.fetchEffect(ID()));
+			targetW.recoverPhyStats();
+		}
+		else
 		if((msg.source()==affected)
 		&&(msg.target() instanceof Weapon))
 		{
@@ -91,13 +100,6 @@ public class Fighter_FarShot extends FighterSkill
 				&&(qualifiedWeapons.contains(targetW)))
 				{
 					qualifiedWeapons.remove(targetW);
-					targetW.delEffect(targetW.fetchEffect(ID()));
-					targetW.recoverPhyStats();
-				}
-				else
-				if(targetW.amWearingAt(Wearable.IN_INVENTORY))
-				{
-					qualifiedWeapons.clear();
 					targetW.delEffect(targetW.fetchEffect(ID()));
 					targetW.recoverPhyStats();
 				}

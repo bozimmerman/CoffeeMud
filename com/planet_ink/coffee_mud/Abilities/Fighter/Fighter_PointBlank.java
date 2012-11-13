@@ -64,6 +64,15 @@ public class Fighter_PointBlank extends FighterSkill
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
+		if((affected instanceof Weapon)
+		&&((Weapon)affected).amWearingAt(Wearable.IN_INVENTORY))
+		{
+			Weapon targetW=(Weapon)affected;
+			qualifiedWeapons.remove(targetW);
+			targetW.delEffect(targetW.fetchEffect(ID()));
+			targetW.recoverPhyStats();
+		}
+		else
 		if((msg.source()==affected)
 		&&(msg.target() instanceof Weapon))
 		{
@@ -90,13 +99,6 @@ public class Fighter_PointBlank extends FighterSkill
 				&&(qualifiedWeapons.contains(msg.target())))
 				{
 					qualifiedWeapons.remove(msg.target());
-					W.delEffect(W.fetchEffect(ID()));
-					W.recoverPhyStats();
-				}
-				else
-				if(W.amWearingAt(Wearable.IN_INVENTORY))
-				{
-					qualifiedWeapons.clear();
 					W.delEffect(W.fetchEffect(ID()));
 					W.recoverPhyStats();
 				}

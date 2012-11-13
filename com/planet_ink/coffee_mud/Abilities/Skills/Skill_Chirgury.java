@@ -44,7 +44,23 @@ public class Skill_Chirgury extends StdSkill
 	private static final String[] triggerStrings = {"CHIRGURY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
-	public static final String[] parts={"FETUS","BLOOD","HEART","LUNGS","STOMACH","PANCREAS","SPLEEN","BRAIN","LIVER","INTESTINES","TONGUE","EYES","BLADDER"};
+	public static final Object[][] parts={{"FETUS"},
+										  {"BLOOD"},
+										  {"HEART",Integer.valueOf(Race.BODY_TORSO)},
+										  {"LUNGS",Integer.valueOf(Race.BODY_TORSO)},
+										  {"STOMACH",Integer.valueOf(Race.BODY_TORSO)},
+										  {"PANCREAS",Integer.valueOf(Race.BODY_TORSO)},
+										  {"SPLEEN",Integer.valueOf(Race.BODY_TORSO)},
+										  {"BRAIN",Integer.valueOf(Race.BODY_HEAD)},
+										  {"LIVER",Integer.valueOf(Race.BODY_TORSO)},
+										  {"INTESTINES",Integer.valueOf(Race.BODY_TORSO)},
+										  {"TONGUE",Integer.valueOf(Race.BODY_MOUTH)},
+										  {"EYES",Integer.valueOf(Race.BODY_EYE)},
+										  {"BLADDER",Integer.valueOf(Race.BODY_TORSO)}};
+	
+	public static final String[] badRaceCats={"Earth Elemental","Fire Elemental", "Water Elemental", "Air Elemental", "Unique", 
+											  "Slime", "Vegetation", "Metal Golem", "Wood Golem", "Electricity Elemental", "Stone Golem",
+											  "Stone Golem", "Unknown"};
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -57,42 +73,71 @@ public class Skill_Chirgury extends StdSkill
 		String part=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		int partCode=-1;
+		Object[] partSet=new Object[1];
 		for(int i=0;i<parts.length;i++)
 		{
-			if(parts[i].startsWith(part.toUpperCase()))
+			if(parts[i][0].toString().startsWith(part.toUpperCase()))
+			{
 				partCode=i;
+				partSet=parts[i];
+				break;
+			}
 		}
 		if(partCode<0)
 		{
-			mob.tell("'"+part+"' is not a valid part to remove.  Try one of these: "+CMParms.toStringList(parts));
+			StringBuilder str=new StringBuilder("");
+			for(Object[] o : parts)
+				str.append(", ").append(o[0].toString());
+			mob.tell("'"+part+"' is not a valid part to remove.  Try one of these: "+str.toString().substring(2));
 			return false;
 		}
-		
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY,false,true);
 		if(target==null) return false;
+
+		CharStats C=null;
+		if(target instanceof MOB) C=((MOB)target).charStats();
+		if(target instanceof DeadBody) C=((DeadBody)target).charStats();
+
+		if((partSet[1] instanceof Integer)
+		&&(C!=null) && (C.getMyRace().bodyMask()[((Integer)partSet[1]).intValue()]<=0))
+		{
+			mob.tell(target.name()+" doesn't have a "+part);
+			return false;
+		}
+
+		if(C!=null)
+			for(String raceCat : badRaceCats)
+				if(C.getMyRace().racialCategory().equalsIgnoreCase(raceCat))
+				{
+					mob.tell(target.name()+" doesn't have a "+part);
+					return false;
+				}
 
 		if((partCode==0)&&((!(target instanceof MOB))||(target.fetchEffect("Pregnancy")==null)))
 		{
 			mob.tell("A baby can not be removed from "+target.name()+".");
 			return false;
 		}
+
 		if((target instanceof MOB)&&((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target))))
 		{
 			mob.tell(((MOB)target).charStats().HeShe()+" must be bound, and asleep on an operating bed before you can perform chirgury.");
 			return false;
 		}
+
 		if((partCode>1)&&(!(target instanceof DeadBody)))
 		{
 			mob.tell("That can only be removed from a corpse.");
 			return false;
 		}
+
 		Ability oldChirge=target.fetchEffect(ID());
 		if((oldChirge!=null)&&(oldChirge.text().indexOf(";"+parts[partCode])>=0))
 		{
 			mob.tell("That has already been removed from "+target.name()+".");
 			return false;
 		}
-		
+
 		Item w=mob.fetchWieldedItem();
 		Weapon ww=null;
 		if((w==null)||(!(w instanceof Weapon)))
@@ -100,19 +145,20 @@ public class Skill_Chirgury extends StdSkill
 			mob.tell("You cannot perform chirgury without a weapon!");
 			return false;
 		}
+
 		ww=(Weapon)w;
 		if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
 		{
 			mob.tell("You cannot perform chirgury with a "+ww.name()+"!");
 			return false;
 		}
-		
+
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
 			mob.tell("You are too far away to try that!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -158,11 +204,11 @@ public class Skill_Chirgury extends StdSkill
 						if(target instanceof MOB)
 							CMLib.combat().postDamage(mob,(MOB)target,this,amt*3,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,"The bleeding <DAMAGE> <T-NAME>!");
 					}
-					meat.setName("the "+parts[partCode].toLowerCase()+" of "+target.Name());
-					if((parts[partCode].endsWith("S"))&&(!parts[partCode].equalsIgnoreCase("PANCREAS")))
-						meat.setDisplayText("the "+parts[partCode].toLowerCase()+" of "+target.Name()+" lie here.");
+					meat.setName("the "+parts[partCode][0].toString().toLowerCase()+" of "+target.Name());
+					if((parts[partCode][0].toString().endsWith("S"))&&(!parts[partCode][0].toString().equalsIgnoreCase("PANCREAS")))
+						meat.setDisplayText("the "+parts[partCode][0].toString().toLowerCase()+" of "+target.Name()+" lie here.");
 					else
-						meat.setDisplayText("the "+parts[partCode].toLowerCase()+" of "+target.Name()+" lies here.");
+						meat.setDisplayText("the "+parts[partCode][0].toString().toLowerCase()+" of "+target.Name()+" lies here.");
 					CMLib.materials().addEffectsToResource(meat);
 					meat.recoverPhyStats();
 					meat.text();

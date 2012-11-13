@@ -42,7 +42,7 @@ public class Blob extends Unique
 	public int lightestWeight(){return 200;}
 	public int weightVariance(){return 200;}
 	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Unique";}
+	public String racialCategory(){return "Slime";}
 	public boolean fertile(){return true;}
 
 	public String arriveStr() { return "drags itself in"; }

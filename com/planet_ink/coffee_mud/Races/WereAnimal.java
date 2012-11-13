@@ -42,7 +42,7 @@ public class WereAnimal extends StdRace
 	public int lightestWeight(){return 80;}
 	public int weightVariance(){return 80;}
 	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Unique";}
+	public String racialCategory(){return "Animal";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };

@@ -129,6 +129,8 @@ public class Chant_SpeedAging extends Chant
 						int years=(int)Math.round(Math.floor(aging));
 						int monthsInYear=CMLib.time().globalClock().getMonthsInYear();
 						int months=(int)Math.round(CMath.mul(aging-Math.floor(aging),monthsInYear));
+						if((years<=0)&&(months==0))
+							months++;
 						M.playerStats().getBirthday()[2]-=years;
 						M.playerStats().getBirthday()[1]-=months;
 						if(M.playerStats().getBirthday()[1]<1)
@@ -153,9 +155,6 @@ public class Chant_SpeedAging extends Chant
 					long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
 					long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
 					long ageBy=age/10;
-					if(ageBy<(millisPerMudday+1))
-						ageBy=millisPerMudday+1;
-					else
 					if(ageBy<millisPerMonth)
 						ageBy=millisPerMonth+1;
 					else
