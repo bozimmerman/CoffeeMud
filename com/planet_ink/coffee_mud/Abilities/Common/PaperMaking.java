@@ -176,13 +176,16 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				}
 			}
 		}
-		if(materialDesc.length()==0) materialDesc="WOODEN";
+
+		if(materialDesc.length()==0) 
+			materialDesc="WOODEN";
+
 		if(foundRecipe==null)
 		{
 			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"make list\" for a list.");
 			return false;
 		}
-		
+
 		final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
 		if(componentsFoundList==null) return false;
@@ -197,8 +200,10 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 											null);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
+
 		if(autoGenerate<=0)
 		{
 			CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
@@ -235,7 +240,6 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		building.recoverPhyStats();
 		building.text();
 		building.recoverPhyStats();
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
