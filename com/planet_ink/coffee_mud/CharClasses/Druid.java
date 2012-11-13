@@ -239,7 +239,10 @@ public class Druid extends StdCharClass
 			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
-			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
+			{
+				if (!grantable.contains(A.ID())) 
+					grantable.addElement(A.ID());
+			}
 		}
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -398,7 +401,12 @@ public class Druid extends StdCharClass
 		}
 	}
 
-	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg); Druid.doAnimalFreeingCheck(this,host,msg);}
+	public void executeMsg(Environmental host, CMMsg msg)
+	{ 
+		super.executeMsg(host,msg); 
+		Druid.doAnimalFollowerLevelingCheck(this,host,msg); 
+		Druid.doAnimalFreeingCheck(this,host,msg);
+	}
 	
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{

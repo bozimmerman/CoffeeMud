@@ -379,7 +379,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		{
 			if(!room.okMessage(mob,msg))
 				return;
-			room.executeMsg(mob,msg);
+			room.send(mob,msg);
 		}
 
 		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)

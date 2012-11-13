@@ -351,9 +351,12 @@ public class StdCharClass implements CharClass
 		return true;
 	}
 
-	protected void giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedClass)
-	{ giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedClass,true);}
-	protected void giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedClass, boolean autoInvoke)
+	protected boolean giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedClass)
+	{ 
+		return giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedClass,true);
+	}
+
+	protected boolean giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedClass, boolean autoInvoke)
 	{
 		if(mob.fetchAbility(A.ID())==null)
 		{
@@ -364,7 +367,9 @@ public class StdCharClass implements CharClass
 			mob.addAbility(A);
 			if(autoInvoke)
 				A.autoInvocation(mob);
+			return true;
 		}
+		return false;
 	}
 
 	public int[] maxStatAdjustments()
