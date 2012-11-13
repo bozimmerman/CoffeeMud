@@ -49,7 +49,7 @@ public class StdRoom implements Room
 	protected Exit[]  		exits=new Exit[Directions.NUM_DIRECTIONS()];
 	protected Room[]  		doors=new Room[Directions.NUM_DIRECTIONS()];
 	protected String[]   	xtraValues=null;
-	protected boolean    	mobility=true;
+	protected boolean		mobility=true;
 	protected GridLocale 	gridParent=null;
 	protected long  	 	tickStatus=Tickable.STATUS_NOT;
 	protected long  	 	expirationDate=0;
@@ -91,7 +91,7 @@ public class StdRoom implements Room
 
 	public String roomID()
 	{
-		return myID    ;
+		return myID	;
 	}
 	public String Name(){ return name;}
 	public void setName(String newName){name=newName;}
@@ -832,9 +832,9 @@ public class StdRoom implements Room
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
 			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
-    			if(!A.tick(ticking,tickID))
-    				A.unInvoke();
-	        } });
+				if(!A.tick(ticking,tickID))
+					A.unInvoke();
+			} });
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return !amDestroyed();
@@ -903,28 +903,28 @@ public class StdRoom implements Room
 	{
 		getArea().affectPhyStats(affected,affectableStats);
 		//if(phyStats().sensesMask()>0)
-		//    affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
+		//	affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
 		final int disposition=phyStats().disposition()
 			&((~(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
-        } });
+		} });
 	}
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		getArea().affectCharStats(affectedMob,affectableStats);
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
-        } });
+		} });
 	}
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
-        } });
+		} });
 	}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
@@ -1527,12 +1527,12 @@ public class StdRoom implements Room
 		final List<MOB> inhabitants=this.inhabitants;
 		if(contents!=null)
 		try{
-    		for(int a=0;a<inhabitants.size();a++)
-    		{
-    			final MOB M=inhabitants.get(a);
-    			if(M!=null) applier.apply(M);
-    		}
-    	} catch(ArrayIndexOutOfBoundsException e){}
+			for(int a=0;a<inhabitants.size();a++)
+			{
+				final MOB M=inhabitants.get(a);
+				if(M!=null) applier.apply(M);
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delInhabitant(MOB mob)
 	{
@@ -1657,12 +1657,12 @@ public class StdRoom implements Room
 		final List<Item> contents=this.contents;
 		if(contents!=null)
 		try{
-    		for(int a=0;a<contents.size();a++)
-    		{
-    			final Item I=contents.get(a);
-    			if(I!=null) applier.apply(I);
-    		}
-    	} catch(ArrayIndexOutOfBoundsException e){}
+			for(int a=0;a<contents.size();a++)
+			{
+				final Item I=contents.get(a);
+				if(I!=null) applier.apply(I);
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public Item getRandomItem()
 	{
@@ -1709,7 +1709,7 @@ public class StdRoom implements Room
 		{
 			found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,true);
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornFilter,true);
-			if(found==null)    found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
+			if(found==null)	found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornFilter,false);
 			
 			if((found instanceof Item)  // the smurfy well/gate exception
@@ -1856,7 +1856,7 @@ public class StdRoom implements Room
 	}
 
 	public int pointsPerMove(MOB mob)
-	{    return getArea().getClimateObj().adjustMovement(phyStats().weight(),mob,this);    }
+	{	return getArea().getClimateObj().adjustMovement(phyStats().weight(),mob,this);	}
 	protected int baseThirst(){return 1;}
 	public int thirstPerRound(MOB mob)
 	{
@@ -1907,11 +1907,11 @@ public class StdRoom implements Room
 		if(affects==null) return;
 		try
 		{
-    		for(int a=0;a<affects.size();a++)
-    		{
-    			final Ability A=affects.get(a);
-    			if(A!=null) applier.apply(A);
-    		}
+			for(int a=0;a<affects.size();a++)
+			{
+				final Ability A=affects.get(a);
+				if(A!=null) applier.apply(A);
+			}
 		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delAllEffects(boolean unInvoke)
@@ -2020,12 +2020,12 @@ public class StdRoom implements Room
 		final List<Behavior> behaviors=this.behaviors;
 		if(behaviors!=null)
 		try{
-    		for(int a=0;a<behaviors.size();a++)
-    		{
-    			final Behavior B=behaviors.get(a);
-    			if(B!=null) applier.apply(B);
-    		}
-    	} catch(ArrayIndexOutOfBoundsException e){}
+			for(int a=0;a<behaviors.size();a++)
+			{
+				final Behavior B=behaviors.get(a);
+				if(B!=null) applier.apply(B);
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the scripts list */
@@ -2075,12 +2075,12 @@ public class StdRoom implements Room
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
 		try{
-    		for(int a=0;a<scripts.size();a++)
-    		{
-    			final ScriptingEngine S=scripts.get(a);
-    			if(S!=null) applier.apply(S);
-    		}
-    	} catch(ArrayIndexOutOfBoundsException e){}
+			for(int a=0;a<scripts.size();a++)
+			{
+				final ScriptingEngine S=scripts.get(a);
+				if(S!=null) applier.apply(S);
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
