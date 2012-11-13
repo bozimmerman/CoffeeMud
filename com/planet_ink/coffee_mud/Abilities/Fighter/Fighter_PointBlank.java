@@ -93,6 +93,13 @@ public class Fighter_PointBlank extends FighterSkill
 					W.delEffect(W.fetchEffect(ID()));
 					W.recoverPhyStats();
 				}
+				else
+				if(W.amWearingAt(Wearable.IN_INVENTORY))
+				{
+					qualifiedWeapons.clear();
+					W.delEffect(W.fetchEffect(ID()));
+					W.recoverPhyStats();
+				}
 			}
 		}
 	}
