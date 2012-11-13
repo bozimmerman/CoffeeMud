@@ -52,7 +52,7 @@ public class Spell_Frenzy extends Spell
 		float f=(float)0.1*(float)xlvl;
 		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),6.0-f)));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0-f)));
-		affectableStats.setArmor(affectableStats.armor()+20+(2*xlvl));
+		affectableStats.setArmor(affected.basePhyStats().armor()+30+(3*xlvl));
 	}
 
 	public void affectCharState(MOB affectedMOB, CharState affectedMaxState)

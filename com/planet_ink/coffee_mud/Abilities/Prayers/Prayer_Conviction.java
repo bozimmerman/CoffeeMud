@@ -60,7 +60,7 @@ public class Prayer_Conviction extends Prayer
 			if(xlvl>7) xlvl=7;
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(affectableStats.attackAdjustment()/(8-xlvl)));
 			affectableStats.setDamage(affectableStats.damage()+3+xlvl);
-			affectableStats.setArmor(affectableStats.armor()+(affectableStats.armor()/(8-xlvl)));
+			affectableStats.setArmor(affectableStats.armor()-(20+(3*xlvl)));
 		}
 	}
 
