@@ -413,4 +413,102 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				ID=WKID;
 		}
 	}
+	
+	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg)
+	{
+		String teachWhat="";
+		if(item instanceof Ability)
+		{
+			teachWhat=item.name();
+			if(!((Ability)item).canBeTaughtBy(teacher,student))
+				return false;
+			if(!((Ability)item).canBeLearnedBy(teacher,student))
+				return false;
+			if(student.fetchAbility(item.ID())!=null)
+			{
+				teacher.tell(student.name()+" already knows how to do that.");
+				return false;
+			}
+		}
+		else
+		if((msg!=null)&&(msg.indexOf("^<EXPERTISE")>0))
+		{
+			int start=msg.indexOf("\"",msg.indexOf("^<EXPERTISE"));
+			int end=msg.indexOf("\"",start+1);
+			final String expertiseID=msg.substring(start+1,end);
+			ExpertiseDefinition theExpertise=this.findDefinition(expertiseID, true);
+			if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+			{
+				teacher.tell("You are refusing to teach right now.");
+				return false;
+			}
+			if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+			&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
+			{
+				teacher.tell(student.name()+" is refusing training at this time.");
+				return false;
+			}
+			if(!CMLib.expertises().myQualifiedExpertises(student).contains(theExpertise))
+			{
+				teacher.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()));
+				return false;
+			}
+			if(!theExpertise.meetsCostRequirements(student))
+			{
+				teacher.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
+				return false;
+			}
+			teachWhat=theExpertise.name;
+		}
+		try
+		{
+			if((student.session()!=null)
+			&&(!student.session().confirm("\n\r"+teacher.Name()+" wants to teach you "+teachWhat+".  Is this Ok (y/N)?","N",5000)))
+			{
+				if(student.session()!=null)
+					student.session().println("\n\r");
+				teacher.tell(student.charStats().HeShe()+" does not want you to.");
+				return false;
+			}
+		}
+		catch(Exception e)
+		{
+			try
+			{
+				if(student.session()!=null)
+					student.session().println("\n\r");
+			}
+			catch(Exception e1)
+			{
+			}
+			teacher.tell(student.charStats().HeShe()+" does not answer you.");
+			return false;
+		}
+		return true;
+	}
+	
+	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg)
+	{
+		if(item instanceof Ability)
+		{
+			teacher.charStats().setStat(CharStats.STAT_WISDOM, teacher.charStats().getStat(CharStats.STAT_WISDOM)+5);
+			teacher.charStats().setStat(CharStats.STAT_INTELLIGENCE, teacher.charStats().getStat(CharStats.STAT_INTELLIGENCE)+5);
+			((Ability)item).teach(teacher,student);
+			teacher.recoverCharStats();
+			if((!teacher.isMonster()) && (!student.isMonster()))
+				CMLib.leveler().postExperience(teacher, null, null, 100, false);
+		}
+		else
+		if((msg!=null)&&(msg.indexOf("^<EXPERTISE")>0))
+		{
+			int start=msg.indexOf("\"",msg.indexOf("^<EXPERTISE"));
+			int end=msg.indexOf("\"",start+1);
+			final String expertiseID=msg.substring(start+1,end);
+			ExpertiseDefinition theExpertise=this.findDefinition(expertiseID, true);
+			theExpertise.spendCostRequirements(student);
+			student.addExpertise(theExpertise.ID);
+			if((!teacher.isMonster()) && (!student.isMonster()))
+				CMLib.leveler().postExperience(teacher, null, null, 100, false);
+		}
+	}
 }

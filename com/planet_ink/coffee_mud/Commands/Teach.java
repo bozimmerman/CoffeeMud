@@ -42,19 +42,13 @@ public class Teach extends StdCommand
 	public String[] getAccessWords(){return access;}
 	
 	
-	public boolean tryTeach(MOB teacher, MOB student, String teachWhat)
+	public boolean tryTeach(MOB teacher, MOB student, Environmental tool, String teachWhat, String ID)
 	throws java.io.IOException
 	{
-		if((student.session()!=null)
-		&&(!student.session().confirm(teacher.Name()+" wants to teach you "+teachWhat+".  Is this Ok (y/N)?","N")))
-		{
-			teacher.tell(student.charStats().HeShe()+" does not want you to.");
-			return false;
-		}
 		CMMsg msg=CMClass.getMsg(teacher,student,null,CMMsg.MSG_SPEAK,null);
 		if(!teacher.location().okMessage(teacher,msg))
 			return false;
-		msg=CMClass.getMsg(teacher,student,null,CMMsg.MSG_TEACH,"<S-NAME> teach(es) <T-NAMESELF> '"+teachWhat+"'.");
+		msg=CMClass.getMsg(teacher,student,tool,CMMsg.MSG_TEACH,"<S-NAME> teach(es) <T-NAMESELF> '"+teachWhat+"'^<EXPERTISE NAME=\""+ID+"\" /^>.");
 		if(!teacher.location().okMessage(teacher,msg))
 			return false;
 		teacher.location().send(teacher,msg);
@@ -119,49 +113,12 @@ public class Teach extends StdCommand
 			}
 			if(theExpertise!=null)
 			{
-				if(CMath.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
-				{
-					mob.tell("You are refusing to teach right now.");
-					return false;
-				}
-				if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
-				&&((!student.isMonster())||(!student.willFollowOrdersOf(mob))))
-				{
-					mob.tell(student.name()+" is refusing training at this time.");
-					return false;
-				}
-				if(!CMLib.expertises().myQualifiedExpertises(student).contains(theExpertise))
-				{
-					mob.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()));
-					return false;
-				}
-				if(!theExpertise.meetsCostRequirements(student))
-				{
-					mob.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
-					return false;
-				}
-				if(!tryTeach(mob,student,theExpertise.name))
-					return false;
-				theExpertise.spendCostRequirements(student);
-				student.addExpertise(theExpertise.ID);
-				return true;
+				return tryTeach(mob,student,null,theExpertise.name, theExpertise.ID);
 			}
 			mob.tell("You don't seem to know "+abilityName+".");
 			return false;
 		}
-		if(!myAbility.canBeTaughtBy(mob,student))
-			return false;
-		if(!myAbility.canBeLearnedBy(mob,student))
-			return false;
-		if(student.fetchAbility(myAbility.ID())!=null)
-		{
-			mob.tell(student.name()+" already knows how to do that.");
-			return false;
-		}
-		if(!tryTeach(mob,student,myAbility.name()))
-			return false;
-		myAbility.teach(mob,student);
-		return false;
+		return tryTeach(mob,student,myAbility,myAbility.name(), myAbility.ID());
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
 	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}

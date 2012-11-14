@@ -2490,6 +2490,11 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_WIELD:
 				srcM.tell(srcM, this, null, "You can't do that to <T-NAMESELF>.");
 				return false;
+			case CMMsg.TYP_TEACH:
+				if((msg.target() instanceof MOB)
+				&&(!CMLib.expertises().canBeTaught(msg.source(), (MOB)msg.target(), msg.tool(), msg.targetMessage())))
+					return false;
+				break;
 			case CMMsg.TYP_PULL:
 				if ((!CMLib.flags().isBoundOrHeld(this)) && (!CMLib.flags().isSleeping(this)))
 				{
@@ -2661,6 +2666,10 @@ public class StdMOB implements MOB
 				break;
 			case CMMsg.TYP_DAMAGE:
 				CMLib.combat().handleBeingDamaged(msg);
+				break;
+			case CMMsg.TYP_TEACH:
+				if(msg.target() instanceof MOB)
+					CMLib.expertises().handleBeingTaught(msg.source(), (MOB)msg.target(), msg.tool(), msg.targetMessage());
 				break;
 			default:
 				break;
