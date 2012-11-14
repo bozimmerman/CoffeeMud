@@ -37,6 +37,8 @@ public class StdLimb extends StdItem implements FalseLimb
 	public String ID(){    return "StdLimb";}
 	protected int partnum=-1;
 	protected long wearplace=-1;
+	protected short layer=-10;
+	protected short layerAttributes=0;
 	
 	public StdLimb()
 	{
@@ -72,9 +74,11 @@ public class StdLimb extends StdItem implements FalseLimb
 			Wearable.CODES codes = Wearable.CODES.instance();
 			for(int w=0;w<codes.total();w++)
 				if((amWearingAt(codes.get(w)))
+				&&(codes.get(w)!=Wearable.IN_INVENTORY)
 				&&(codes.dependency_masks()[w]>0))
 					for(int w2=0;w2<codes.total();w2++)
 						if(!amWearingAt(codes.get(w2))
+						&&(codes.get(w2)!=Wearable.IN_INVENTORY)
 						&&(CMath.bset(codes.dependency_masks()[w], codes.get(w2))))
 						{
 							Item I=mob.fetchFirstWornItem(codes.get(w2));
@@ -195,5 +199,29 @@ public class StdLimb extends StdItem implements FalseLimb
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public short getClothingLayer() 
+	{
+		return layer;
+	}
+
+	@Override
+	public void setClothingLayer(short newLayer) 
+	{
+		layer=newLayer;
+	}
+
+	@Override
+	public short getLayerAttributes() 
+	{
+		return layerAttributes;
+	}
+
+	@Override
+	public void setLayerAttributes(short newAttributes) 
+	{
+		layerAttributes=newAttributes;
 	}
 }

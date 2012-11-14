@@ -491,12 +491,12 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
-			if(building instanceof Armor)
+			if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
 			{
-				if(capacity>0)
+				if((capacity>0)&&(building instanceof Container))
 				{
-					((Armor)building).setCapacity(capacity+woodRequired);
-					((Armor)building).setContainTypes(canContain);
+					((Container)building).setCapacity(capacity+woodRequired);
+					((Container)building).setContainTypes(canContain);
 				}
 				((Armor)building).basePhyStats().setArmor(0);
 				if(armordmg!=0)

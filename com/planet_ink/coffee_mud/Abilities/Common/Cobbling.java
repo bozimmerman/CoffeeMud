@@ -380,7 +380,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
 			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
-			if(building instanceof Armor)
+			if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
 			{
 				((Armor)building).basePhyStats().setArmor(0);
 				if(armordmg!=0)

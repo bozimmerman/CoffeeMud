@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Armor extends Container
+public interface Armor extends Item
 {
 	public static final String[] LAYERMASK_DESCS={"SEETHROUGH","MULTIWEAR"};
 	public static final short LAYERMASK_SEETHROUGH=(short)1;

@@ -7210,8 +7210,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);
-			genCapacity(mob,me,++showNumber,showFlag);
-			genLidsNLocks(mob,me,++showNumber,showFlag);
+			if(me instanceof Container)
+			{
+				genCapacity(mob,(Container)me,++showNumber,showFlag);
+				genLidsNLocks(mob,(Container)me,++showNumber,showFlag);
+			}
 			//genReadable1(mob,me,++showNumber,showFlag); // since they can have keys, no readability for you.
 			//genReadable2(mob,me,++showNumber,showFlag);
 			if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);

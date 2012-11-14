@@ -290,6 +290,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 				((Rideable)building).setRiderCapacity(1);
 		}
 		else
+		if(!(building instanceof FalseLimb))
 		{
 			setWearLocation(building,misctype,0);
 		}

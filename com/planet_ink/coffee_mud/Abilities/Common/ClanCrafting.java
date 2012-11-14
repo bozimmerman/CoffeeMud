@@ -388,7 +388,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			building.setMaterial(RawMaterial.RESOURCE_PAPER);
 
 		addSpells(building,spell);
-		if(building instanceof Armor)
+		if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
 		{
 			((Armor)building).basePhyStats().setArmor(0);
 			if(armordmg!=0)

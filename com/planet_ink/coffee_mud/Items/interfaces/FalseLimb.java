@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface FalseLimb extends Item
+public interface FalseLimb extends Armor
 {
 	public int partNum();
 	public void setPartNum(int partNum);

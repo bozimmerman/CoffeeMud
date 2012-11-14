@@ -3692,24 +3692,24 @@ public class Import extends StdCommand
 			if(materialchange)
 				I.setDescription("");
 
-			if((I instanceof Armor)&&(((Armor)I).containTypes()==Container.CONTAIN_ANYTHING))
+			if((I instanceof Container)&&(((Container)I).containTypes()==Container.CONTAIN_ANYTHING))
 			{
 				if(CMLib.english().containsString(objectName,"belt")
 				||CMLib.english().containsString(objectName,"bandolier")
 				||CMLib.english().containsString(objectName,"sheath"))
 				{
-					((Armor)I).setContainTypes(Container.CONTAIN_ONEHANDWEAPONS);
-					if(((Armor)I).capacity()-I.basePhyStats().weight()<30)
-						((Armor)I).setCapacity(I.basePhyStats().weight()+30);
+					((Container)I).setContainTypes(Container.CONTAIN_ONEHANDWEAPONS);
+					if(((Container)I).capacity()-I.basePhyStats().weight()<30)
+						((Container)I).setCapacity(I.basePhyStats().weight()+30);
 				}
 				else
 				if(CMLib.english().containsString(objectName,"boot")
 				||CMLib.english().containsString(objectName,"bracer")
 				||CMLib.english().containsString(objectName,"sheath"))
 				{
-					((Armor)I).setContainTypes(Container.CONTAIN_DAGGERS);
-					if(((Armor)I).capacity()-I.basePhyStats().weight()<10)
-						((Armor)I).setCapacity(I.basePhyStats().weight()+10);
+					((Container)I).setContainTypes(Container.CONTAIN_DAGGERS);
+					if(((Container)I).capacity()-I.basePhyStats().weight()<10)
+						((Container)I).setCapacity(I.basePhyStats().weight()+10);
 				}
 			}
 			

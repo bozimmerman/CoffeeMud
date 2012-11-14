@@ -318,7 +318,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			if(capacity<5)
 				((Rideable)building).setRiderCapacity(capacity);
 		}
-		if(building instanceof Armor)
+		if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
 		{
 			((Armor)building).basePhyStats().setArmor(0);
 			if(armordmg!=0)

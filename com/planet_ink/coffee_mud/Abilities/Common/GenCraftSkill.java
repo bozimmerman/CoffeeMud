@@ -680,7 +680,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				if(!(building instanceof Container))
 					building.basePhyStats().setAttackAdjustment(building.basePhyStats().attackAdjustment()+(int)canContain);
 			}
-			if(building instanceof Armor)
+			if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
 			{
 				((Armor)building).basePhyStats().setArmor(0);
 				if(armordmg!=0)
