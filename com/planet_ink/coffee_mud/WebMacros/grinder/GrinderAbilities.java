@@ -127,6 +127,8 @@ public class GrinderAbilities {
 		A.setStat("CANREFIT",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getRequestParameter("CANBUNDLE");
 		A.setStat("CANBUNDLE",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
+		old=httpReq.getRequestParameter("CANSIT");
+		A.setStat("CANSIT",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getRequestParameter("SOUND");
 		A.setStat("SOUND",(old==null)?"":old);
 		old=httpReq.getRequestParameter("VERB");

@@ -58,7 +58,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	private static final int V_CNRF=7;//B
 	private static final int V_CNBN=8;//B
 	private static final int V_SOND=9;//S
-	private static final int NUM_VS=10;//S
+	private static final int V_CNST=10;//B
+	private static final int NUM_VS=11;//S
 
 	public String parametersFormat(){ return 
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
@@ -96,11 +97,14 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		O[V_CNRF]=Boolean.valueOf(true);
 		O[V_CNBN]=Boolean.valueOf(true);
 		O[V_SOND]="sawing.wav";
+		O[V_CNST]=Boolean.valueOf(false);
 		return O;
 	}
 
 	public String[] triggerStrings(){return (String[])V(ID,V_TRIG);}
 
+	protected boolean canBeDoneSittingDown() { return ((Boolean)V(ID,V_CNST)).booleanValue(); }
+	
 	public String parametersFile(){ return (String)V(ID,V_FNAM);}
 
 	public String supportedResourceString(){return (String)V(ID,V_RSCS);}
@@ -166,6 +170,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 										 "CANREFIT",//2S
 										 "CANBUNDLE",//2S
 										 "SOUND",//2S
+										 "CANSIT",//2S
 										};
 
 	public String[] getStatCodes(){return CODES;}
@@ -202,6 +207,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		case 9: return Boolean.toString(((Boolean)V(ID,V_CNRF)).booleanValue());
 		case 10: return Boolean.toString(((Boolean)V(ID,V_CNBN)).booleanValue());
 		case 11: return (String)V(ID,V_SOND);
+		case 12: return Boolean.toString(((Boolean)V(ID,V_CNST)).booleanValue());
 		default:
 			if(code.equalsIgnoreCase("allxml")) return getAllXML();
 			break;
@@ -249,6 +255,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		case 9: SV(ID,V_CNRF,Boolean.valueOf(CMath.s_bool(val))); break;
 		case 10: SV(ID,V_CNBN,Boolean.valueOf(CMath.s_bool(val))); break;
 		case 11: SV(ID,V_SOND,val); break;
+		case 12: SV(ID,V_CNST,Boolean.valueOf(CMath.s_bool(val))); break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenCraftSkill")) parseAllXML(val);
 			break;

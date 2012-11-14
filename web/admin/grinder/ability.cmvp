@@ -205,6 +205,14 @@
                 </TD>
             </TR>
             <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Sitting OK: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANSIT @AbilityData?CANSIT@>
+                </TD>
+            </TR>
+            <TR>
                 <TD><FONT COLOR=YELLOW>Raw Resources / Material Types: </FONT></TD>
                 <TD>
                     <SELECT NAME=MATLIST MULTIPLE>@AbilityData?MATLIST@</SELECT>
