@@ -270,7 +270,8 @@ public class WeatherAffects extends PuddleMaker
 			case Climate.WEATHER_HAIL:
 			case Climate.WEATHER_THUNDERSTORM:
 			case Climate.WEATHER_RAIN:
-				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				Enumeration<Room> r=(ticking instanceof Room)?new SingleEnumeration<Room>((Room)ticking):A.getProperMap();
+				for(;r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMLib.map().hasASky(R))
@@ -503,9 +504,9 @@ public class WeatherAffects extends PuddleMaker
 				if(playerAround)
 				{
 					int attempts=50;
-					Room R=null;
-					MOB M=null;
-					while((R==null)||(M==null)||((--attempts)>=0))
+					Room R=(ticking instanceof Room)?(Room)ticking:null;
+					MOB M=(R!=null)?R.fetchRandomInhabitant():null;
+					while(((R==null)||(M==null))&&((--attempts)>=0)&&(ticking==A))
 					{
 						R=A.getRandomProperRoom();
 						if(C.weatherType(R)!=Climate.WEATHER_THUNDERSTORM)
@@ -525,7 +526,8 @@ public class WeatherAffects extends PuddleMaker
 							A2.invoke(M,M,true,M.phyStats().level());
 						}
 						Room R2=null;
-						for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+						Enumeration<Room> e=(ticking instanceof Room)?new SingleEnumeration<Room>((Room)ticking):A.getProperMap();
+						for(;e.hasMoreElements();)
 						{
 							R2=(Room)e.nextElement();
 							if((R2!=R)&&(R2.numInhabitants()>0))
@@ -564,9 +566,9 @@ public class WeatherAffects extends PuddleMaker
 				if(playerAround)
 				{
 					int attempts=50;
-					Room R=null;
-					MOB M=null;
-					while((R==null)||(M==null)||((--attempts)>=0))
+					Room R=(ticking instanceof Room)?(Room)ticking:null;
+					MOB M=(R!=null)?R.fetchRandomInhabitant():null;
+					while(((R==null)||(M==null))&&((--attempts)>=0)&&(ticking==A))
 					{
 						R=A.getRandomProperRoom();
 						if(C.weatherType(R)!=Climate.WEATHER_THUNDERSTORM)
@@ -588,7 +590,8 @@ public class WeatherAffects extends PuddleMaker
 							mob.destroy();
 						}
 						Room R2=null;
-						for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+						Enumeration<Room> e=(ticking instanceof Room)?new SingleEnumeration<Room>((Room)ticking):A.getProperMap();
+						for(;e.hasMoreElements();)
 						{
 							R2=(Room)e.nextElement();
 							if((R2!=R)&&(R2.numInhabitants()>0))
