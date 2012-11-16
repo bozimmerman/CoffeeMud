@@ -34,6 +34,7 @@ import java.util.*;
 public class GenUndead extends GenMob
 {
 	public String ID(){return "GenUndead";}
+	protected final Race undeadRace;
 	public GenUndead()
 	{
 		super();
@@ -45,7 +46,8 @@ public class GenUndead extends GenMob
 		basePhyStats.setWeight(150);
 		setWimpHitPoint(0);
 
-		baseCharStats().setMyRace(CMClass.getRace("Undead"));
+		undeadRace=CMClass.getRace("Undead");
+		baseCharStats().setMyRace(undeadRace);
 		baseCharStats().getMyRace().startRacing(this,false);
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 
@@ -59,6 +61,63 @@ public class GenUndead extends GenMob
 		resetToMaxState();
 		recoverPhyStats();
 		recoverCharStats();
+	}
+	
+	public void recoverMaxState(MOB affectedMOB, CharState affectableState)
+	{
+		super.recoverMaxState();
+		if(charStats().getMyRace()!=undeadRace)
+			undeadRace.affectCharState(this, maxState);
+	}
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		if(charStats().getMyRace()!=undeadRace)
+			undeadRace.affectPhyStats(this, phyStats);
+	}
+
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if(charStats().getMyRace()!=undeadRace)
+			undeadRace.executeMsg(this, msg);
+	}
+	
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if(charStats().getMyRace()!=undeadRace)
+			return undeadRace.okMessage(this, msg);
+		return true;
+	}
+
+	public void recoverCharStats()
+	{
+		super.recoverCharStats();
+		if(charStats().getMyRace()!=undeadRace)
+			undeadRace.affectCharStats(this, charStats);
+	}
+	public DeadBody killMeDead(boolean createBody)
+	{
+		DeadBody body=super.killMeDead(createBody);
+		if((createBody)&&(charStats().getMyRace()!=undeadRace)&&(body!=null))
+		{
+			if((name().toUpperCase().indexOf("DRACULA")>=0)
+			||(name().toUpperCase().indexOf("VAMPIRE")>=0))
+				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Vampirism"));
+			else
+			if((name().toUpperCase().indexOf("GHOUL")>=0)
+			||(name().toUpperCase().indexOf("GHAST")>=0))
+				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
+			Ability A=CMClass.getAbility("Prop_Smell");
+			if(A!=null)
+			{
+				body.addNonUninvokableEffect(A);
+				A.setMiscText(body.name()+" SMELLS HORRIBLE!");
+			}
+		}
+		return body;
 	}
 
 	public boolean isGeneric(){return true;}

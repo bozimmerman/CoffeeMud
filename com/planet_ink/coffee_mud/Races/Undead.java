@@ -182,6 +182,7 @@ public class Undead extends StdRace
 		}
 		return body;
 	}
+
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

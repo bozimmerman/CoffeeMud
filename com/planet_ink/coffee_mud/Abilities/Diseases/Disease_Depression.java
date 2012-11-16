@@ -43,7 +43,7 @@ public class Disease_Depression extends Disease
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 4;}
 
-	protected int DISEASE_TICKS(){return 99999;}
+	protected int DISEASE_TICKS(){return 900;}
 	protected int DISEASE_DELAY(){return 20;}
 	protected String DISEASE_DONE(){return "You feel better.";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) depressed.^?";}
