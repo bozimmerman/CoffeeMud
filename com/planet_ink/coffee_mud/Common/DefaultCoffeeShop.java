@@ -43,6 +43,7 @@ limitations under the License.
 public class DefaultCoffeeShop implements CoffeeShop
 {
 	public String ID(){return "DefaultCoffeeShop";}
+	public String name() { return ID();}
 	WeakReference<ShopKeeper> shopKeeper = null;
 	public SVector<Environmental> enumerableInventory=new SVector<Environmental>(); // for Only Inventory situations
 	public List<ShelfProduct> storeInventory=new SVector<ShelfProduct>();

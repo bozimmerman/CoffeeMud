@@ -42,6 +42,7 @@ limitations under the License.
 public class DefaultClanGovernment implements ClanGovernment
 {
 	public String ID(){return "DefaultClanGovernment";}
+	public String name() { return ID();}
 	
 	/** If this is a default government type, this is its ID, otherwise -1 */
 	public int		ID;

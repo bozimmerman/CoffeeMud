@@ -43,6 +43,7 @@ public class FakeSession implements Session
 	
 	public boolean tick(Tickable ticking, int tickID){return false;}
 	public String ID(){return "FakeSession";}
+	public String name() { return ID();}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new FakeSession();}}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

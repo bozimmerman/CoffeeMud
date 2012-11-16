@@ -33,6 +33,7 @@ import java.util.Vector;
 public class DefaultPhyStats implements PhyStats
 {
 	public String ID(){return "DefaultPhyStats";}
+	public String name() { return ID();}
 	protected int[] DEFAULT_STATS={0,0,100,0,0,0,0,0,0,0};
 	protected int[] stats=DEFAULT_STATS.clone();
 	protected double Speed=1.0;			// should be positive

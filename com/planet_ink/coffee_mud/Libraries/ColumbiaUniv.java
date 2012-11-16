@@ -414,55 +414,106 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 	}
 	
+	protected Object parseLearnID(final String msg)
+	{
+		if(msg==null)
+			return null;
+		int learnStart=msg.indexOf("^<LEARN");
+		if(learnStart>=0)
+		{
+			int end=-1;
+			learnStart=msg.indexOf("\"",learnStart+1);
+			if(learnStart>=0)
+				end=msg.indexOf("\"",learnStart+1);
+			if(end>learnStart)
+			{
+				final String ID=msg.substring(learnStart+1,end);
+				Ability A=CMClass.getAbility(ID);
+				if(A!=null) return A;
+				ExpertiseDefinition X = this.findDefinition(ID, true);
+				if(X!=null) return X;
+				return CMClass.getObjectOrPrototype(ID);
+			}
+		}
+		return null;
+	}
+	
 	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg)
 	{
-		String teachWhat="";
-		if(item instanceof Ability)
+		if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
 		{
-			teachWhat=item.name();
-			if(!((Ability)item).canBeTaughtBy(teacher,student))
+			teacher.tell("You are refusing to teach right now.");
+			return false;
+		}
+		
+		if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
+		{
+			if(teacher.isMonster())
+				CMLib.commands().postSay(teacher,student,"You are refusing training at this time.",true,false);
+			else
+				teacher.tell(student.name()+" is refusing training at this time.");
+			return false;
+		}
+
+		Object learnThis=item;
+		if(learnThis==null)
+			learnThis=parseLearnID(msg);
+
+		String teachWhat="";
+		if(learnThis instanceof Ability)
+		{
+			Ability theA=(Ability)learnThis;
+			teachWhat=theA.name();
+			if(!theA.canBeTaughtBy(teacher,student))
 				return false;
-			if(!((Ability)item).canBeLearnedBy(teacher,student))
+			if(!theA.canBeLearnedBy(teacher,student))
 				return false;
-			if(student.fetchAbility(item.ID())!=null)
+			if(student.fetchAbility(theA.ID())!=null)
 			{
-				teacher.tell(student.name()+" already knows how to do that.");
+				if(teacher.isMonster())
+					CMLib.commands().postSay(teacher,student,"You already know '"+teachWhat+"'.",true,false);
+				else
+					teacher.tell(student.name()+" already knows how to do that.");
 				return false;
 			}
 		}
 		else
-		if((msg!=null)&&(msg.indexOf("^<EXPERTISE")>0))
+		if(learnThis instanceof ExpertiseDefinition)
 		{
-			int start=msg.indexOf("\"",msg.indexOf("^<EXPERTISE"));
-			int end=msg.indexOf("\"",start+1);
-			final String expertiseID=msg.substring(start+1,end);
-			ExpertiseDefinition theExpertise=this.findDefinition(expertiseID, true);
-			if(CMath.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+			ExpertiseDefinition theExpertise=(ExpertiseDefinition)learnThis;
+			teachWhat=theExpertise.name();
+			if(student.fetchExpertise(theExpertise.ID)!=null)
 			{
-				teacher.tell("You are refusing to teach right now.");
+				if(teacher.isMonster())
+					CMLib.commands().postSay(teacher,student,"You already know "+theExpertise.name,true,false);
+				else
+					teacher.tell(student.name()+" already knows "+theExpertise.name);
 				return false;
 			}
-			if((CMath.bset(student.getBitmap(),MOB.ATT_NOTEACH))
-			&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
-			{
-				teacher.tell(student.name()+" is refusing training at this time.");
-				return false;
-			}
+			
 			if(!CMLib.expertises().myQualifiedExpertises(student).contains(theExpertise))
 			{
-				teacher.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rQualifications:"+CMLib.masking().maskDesc(theExpertise.finalRequirements()));
+				if(teacher.isMonster())
+					CMLib.commands().postSay(teacher,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()),true,false);
+				else
+					teacher.tell(student.name()+" does not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()));
 				return false;
 			}
 			if(!theExpertise.meetsCostRequirements(student))
 			{
-				teacher.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
+				if(teacher.isMonster())
+					CMLib.commands().postSay(teacher,student,"I'm sorry, but to learn the expertise '"+theExpertise.name+"' requires: "+theExpertise.costDescription(),true,false);
+				else
+					teacher.tell("Training for that expertise requires "+theExpertise.costDescription()+".");
 				return false;
 			}
 			teachWhat=theExpertise.name;
 		}
 		try
 		{
-			if((student.session()!=null)
+			if((!teacher.isMonster())
+			&&(student.session()!=null)
 			&&(!student.session().confirm("\n\r"+teacher.Name()+" wants to teach you "+teachWhat+".  Is this Ok (y/N)?","N",5000)))
 			{
 				if(student.session()!=null)
@@ -489,26 +540,44 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	
 	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg)
 	{
-		if(item instanceof Ability)
+		Object learnThis=item;
+		if(learnThis==null)
+			learnThis=parseLearnID(msg);
+
+		if(learnThis instanceof Ability)
 		{
+			Ability theA=(Ability)learnThis;
 			teacher.charStats().setStat(CharStats.STAT_WISDOM, teacher.charStats().getStat(CharStats.STAT_WISDOM)+5);
 			teacher.charStats().setStat(CharStats.STAT_INTELLIGENCE, teacher.charStats().getStat(CharStats.STAT_INTELLIGENCE)+5);
-			((Ability)item).teach(teacher,student);
+			theA.teach(teacher,student);
 			teacher.recoverCharStats();
 			if((!teacher.isMonster()) && (!student.isMonster()))
 				CMLib.leveler().postExperience(teacher, null, null, 100, false);
 		}
 		else
-		if((msg!=null)&&(msg.indexOf("^<EXPERTISE")>0))
+		if(learnThis instanceof ExpertiseDefinition)
 		{
-			int start=msg.indexOf("\"",msg.indexOf("^<EXPERTISE"));
-			int end=msg.indexOf("\"",start+1);
-			final String expertiseID=msg.substring(start+1,end);
-			ExpertiseDefinition theExpertise=this.findDefinition(expertiseID, true);
+			ExpertiseDefinition theExpertise=(ExpertiseDefinition)learnThis;
 			theExpertise.spendCostRequirements(student);
 			student.addExpertise(theExpertise.ID);
 			if((!teacher.isMonster()) && (!student.isMonster()))
 				CMLib.leveler().postExperience(teacher, null, null, 100, false);
 		}
 	}
+	
+	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj)
+	{
+		CMMsg msg=CMClass.getMsg(teacher,student,null,CMMsg.MSG_SPEAK,null);
+		if(!teacher.location().okMessage(teacher,msg))
+			return false;
+		final Environmental tool=(teachObj instanceof Environmental)?(Environmental)teachObj:null;
+		final String teachWhat=teachObj.name();
+		final String ID=teachObj.ID();
+		msg=CMClass.getMsg(teacher,student,tool,CMMsg.MSG_TEACH,"<S-NAME> teach(es) <T-NAMESELF> '"+teachWhat+"'^<LEARN NAME=\""+ID+"\" /^>.");
+		if(!teacher.location().okMessage(teacher,msg))
+			return false;
+		teacher.location().send(teacher,msg);
+		return true;
+	}
+	
 }

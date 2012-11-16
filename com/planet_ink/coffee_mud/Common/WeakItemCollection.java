@@ -56,6 +56,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 					public Item convert(WeakReference<Item> obj) { return obj.get();}
 				});
 	public String ID() { return "WeakItemCollection"; }
+	public String name() { return ID();}
 	
 	public CMObject copyOf() 
 	{

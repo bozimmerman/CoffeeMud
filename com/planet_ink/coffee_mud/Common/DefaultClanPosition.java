@@ -34,6 +34,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class DefaultClanPosition implements ClanPosition
 {
 	public String ID(){return "DefaultClanPosition";}
+	public String name() { return ID();}
 	
 	/** the named ID of the position */
 	protected String 	ID;

@@ -37,6 +37,7 @@ import java.util.*;
 public class DefaultPlayerAccount implements PlayerAccount
 {
 	public String ID(){return "DefaultPlayerAccount";}
+	public String name() { return ID();}
 
 	protected SHashSet<String>	friends				= new SHashSet<String>();
 	protected SHashSet<String>	ignored				= new SHashSet<String>();

@@ -248,6 +248,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 			return (this==o)?0:this.ID().compareTo(o.ID());
 		}
 		public String ID() { return tattooName; }
+		public String name() { return ID();}
 		public CMObject newInstance() { return new Tattoo(tattooName); }
 		public void initializeClass() {}
 	}

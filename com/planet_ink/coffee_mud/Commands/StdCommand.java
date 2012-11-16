@@ -45,6 +45,7 @@ public class StdCommand implements Command
 		}
 		return ID;
 	}
+	public String name() { return ID();}
 	
 	private String[] access=null;
 	public String[] getAccessWords(){return access;}

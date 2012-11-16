@@ -36,6 +36,7 @@ import java.util.*;
 public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 {
 	public String ID(){return "DefaultCMIntegerGrouper";}
+	public String name() { return ID();}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public void initializeClass(){}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCMIntegerGrouper();}}

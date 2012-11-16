@@ -45,6 +45,7 @@ limitations under the License.
 public class AuctionCoffeeShop implements CoffeeShop
 {
 	public String ID(){return "AuctionCoffeeShop";}
+	public String name() { return ID();}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public static final Vector emptyV=new Vector();
 	public String auctionShop="";

@@ -51,6 +51,13 @@ public interface CMObject extends Cloneable, Comparable<CMObject>
 	 */
 	public String ID();
 	/**
+	 * The displayable name of this object.  May be modified by phyStats() object. Is
+	 * derived from the Name().
+	 * @see  Environmental#Name()
+	 * @return the modified final name of this object on the map.
+	 */
+	public String name();
+	/**
 	 * Returns a new instance of this class.
 	 * @return a new instance of this class
 	 */

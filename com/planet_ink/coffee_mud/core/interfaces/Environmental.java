@@ -45,13 +45,6 @@ import java.util.*;
 public interface Environmental extends Tickable, StatsAffecting, MsgListener, Contingent, Modifiable
 {
 	/**
-	 * The displayable name of this object.  May be modified by phyStats() object. Is
-	 * derived from the Name().
-	 * @see  Environmental#Name()
-	 * @return the modified final name of this object on the map.
-	 */
-	public String name();
-	/**
 	 * The raw unmodified name of this object as stored in the database.
 	 * This is the name set by builders and used as a basis for the name() method.
 	 * @see  Environmental#name()

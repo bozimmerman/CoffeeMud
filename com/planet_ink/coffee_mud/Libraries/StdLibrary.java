@@ -24,6 +24,7 @@ limitations under the License.
 public class StdLibrary implements CMLibrary
 {
 	public String ID(){return "StdLibrary";}
+	public String name() { return ID();}
 	public CMObject newInstance()
 	{
 		try

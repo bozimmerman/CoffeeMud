@@ -42,19 +42,6 @@ public class Teach extends StdCommand
 	public String[] getAccessWords(){return access;}
 	
 	
-	public boolean tryTeach(MOB teacher, MOB student, Environmental tool, String teachWhat, String ID)
-	throws java.io.IOException
-	{
-		CMMsg msg=CMClass.getMsg(teacher,student,null,CMMsg.MSG_SPEAK,null);
-		if(!teacher.location().okMessage(teacher,msg))
-			return false;
-		msg=CMClass.getMsg(teacher,student,tool,CMMsg.MSG_TEACH,"<S-NAME> teach(es) <T-NAMESELF> '"+teachWhat+"'^<EXPERTISE NAME=\""+ID+"\" /^>.");
-		if(!teacher.location().okMessage(teacher,msg))
-			return false;
-		teacher.location().send(teacher,msg);
-		return true;
-	}
-	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -113,12 +100,12 @@ public class Teach extends StdCommand
 			}
 			if(theExpertise!=null)
 			{
-				return tryTeach(mob,student,null,theExpertise.name, theExpertise.ID);
+				return CMLib.expertises().postTeach(mob,student,theExpertise);
 			}
 			mob.tell("You don't seem to know "+abilityName+".");
 			return false;
 		}
-		return tryTeach(mob,student,myAbility,myAbility.name(), myAbility.ID());
+		return CMLib.expertises().postTeach(mob,student,myAbility);
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
 	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}

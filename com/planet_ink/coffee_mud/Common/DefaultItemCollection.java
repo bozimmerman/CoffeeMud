@@ -51,6 +51,7 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 	private SVector<Item> contents = new SVector<Item>(0);
 	
 	public String ID() { return "DefaultItemCollection"; }
+	public String name() { return ID();}
 	
 	public CMObject copyOf() 
 	{

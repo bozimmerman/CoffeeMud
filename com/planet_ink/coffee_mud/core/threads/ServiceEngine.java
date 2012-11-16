@@ -50,6 +50,7 @@ public class ServiceEngine implements ThreadEngine
 	private CMThreadPoolExecutor[]	threadPools=new CMThreadPoolExecutor[256];
 	
 	public String ID(){return "ServiceEngine";}
+	public String name() { return ID();}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ServiceEngine();}}
 	
 	public void initializeClass() 

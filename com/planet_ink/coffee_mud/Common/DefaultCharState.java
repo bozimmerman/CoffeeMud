@@ -33,6 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class DefaultCharState implements CharState
 {
 	public String ID(){return "DefaultCharState";}
+	public String name() { return ID();}
 	protected final int[] DEFAULT_STATES={10,100,50,1000,500};
 	protected int[] states=DEFAULT_STATES.clone();
 	protected long Fatigue=0;

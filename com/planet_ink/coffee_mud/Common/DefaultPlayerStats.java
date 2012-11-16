@@ -39,6 +39,7 @@ import java.util.*;
 public class DefaultPlayerStats implements PlayerStats
 {
 	public String ID(){return "DefaultPlayerStats";}
+	public String name() { return ID();}
 	protected final static int TELL_STACK_MAX_SIZE=50;
 	protected final static int GTELL_STACK_MAX_SIZE=50;
 	

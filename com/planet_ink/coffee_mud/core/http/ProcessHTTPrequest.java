@@ -46,6 +46,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 {
 	public String ID(){return "ProcessHTTPrequest";}
+	public String name() { return runnableName;}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ProcessHTTPrequest();}}
 	public void initializeClass(){}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}

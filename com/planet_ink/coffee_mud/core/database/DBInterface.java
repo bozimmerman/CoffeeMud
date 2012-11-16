@@ -46,6 +46,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEnt
 public class DBInterface implements DatabaseEngine
 {
 	public String ID(){return "DBInterface";}
+	public String name() { return ID();}
 	
 	MOBloader MOBloader=null;
 	RoomLoader RoomLoader=null;

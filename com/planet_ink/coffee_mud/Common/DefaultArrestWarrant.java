@@ -39,6 +39,7 @@ import java.util.Vector;
 public class DefaultArrestWarrant implements LegalWarrant
 {
 	public String ID(){return "DefaultArrestWarrant";}
+	public String name() { return ID();}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultArrestWarrant();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public void initializeClass(){}

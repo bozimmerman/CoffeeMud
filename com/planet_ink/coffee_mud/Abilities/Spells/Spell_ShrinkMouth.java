@@ -53,7 +53,7 @@ public class Spell_ShrinkMouth extends Spell
 			{
 				MOB mob=(MOB)affected;
 				if((mob.location()!=null)&&(!mob.amDead()))
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> mouth return(s) to its normal size.");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> mouth returns to its normal size.");
 			}
 		}
 		super.unInvoke();
@@ -84,7 +84,7 @@ public class Spell_ShrinkMouth extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&((target instanceof MOB)||(target instanceof Item)))
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-YOUPOSS> mouth pucker(s) shut!":"^S<S-NAME> cast(s) a puckering spell on <T-NAMESELF>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> cast(s) a puckering spell on <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

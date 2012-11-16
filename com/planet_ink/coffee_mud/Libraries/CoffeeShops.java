@@ -1027,9 +1027,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(shop.isSold(ShopKeeper.DEAL_TRAINER))
 		{
 			MOB teacher=CMClass.getMOB("Teacher");
+			teacher.setName(seller.name());
+			teacher.setBaseCharStats(seller.baseCharStats());
+			teacher.setLocation(room);
+			teacher.recoverCharStats();
 			Ability teachableA=getTrainableAbility(teacher,A);
 			if(teachableA!=null)
-				teachableA.teach(teacher,mobFor);
+				CMLib.expertises().postTeach(teacher,mobFor,A);
 			teacher.destroy();
 		}
 		else

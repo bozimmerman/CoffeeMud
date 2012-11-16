@@ -198,6 +198,7 @@ public interface WorldMap extends CMLibrary, Runnable
 		public volatile long lastAccessed=System.currentTimeMillis();
 		public MapCacheEntry(final String ID, final List<Room> rooms) {this.ID=ID; this.rooms=rooms;}
 		public String ID() { return ID;}
+		public String name() { return ID();}
 		public CMObject copyOf() { return this;}
 		public void initializeClass() {}
 		public CMObject newInstance() { return this;}

@@ -39,6 +39,7 @@ import org.mozilla.javascript.ScriptableObject;
 public class DefaultCharStats implements CharStats
 {
 	public String ID(){return "DefaultCharStats";}
+	public String name() { return ID();}
 	
 	public CMObject newInstance()
 	{

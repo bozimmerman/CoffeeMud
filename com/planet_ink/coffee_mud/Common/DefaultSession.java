@@ -111,6 +111,7 @@ public class DefaultSession implements Session
 	private static final String TIMEOUT_MSG="Timed Out.";
 	
 	public String ID(){return "DefaultSession";}
+	public String name() { return ID();}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
 	public void initializeClass(){}
 	public boolean isFake() { return false;}

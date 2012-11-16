@@ -19,7 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.Map;
 
 /*
    Copyright 2000-2012 Bo Zimmerman
@@ -39,6 +38,7 @@ import java.util.Map;
 public class DefaultLawSet implements Law
 {
 	public String ID(){return "DefaultLawSet";}
+	public String name() { return ID();}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultLawSet();}}
 	public void initializeClass(){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

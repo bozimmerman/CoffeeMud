@@ -49,7 +49,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		"LEVEL","TIME","MAXRANGE","LOWCOST",
 		"XPCOST"
 	};
-	public static class ExpertiseDefinition
+	public static class ExpertiseDefinition implements CMObject
 	{
 		public String 	ID="";
 		public String 	name="";
@@ -61,6 +61,10 @@ public interface ExpertiseLibrary extends CMLibrary
 		private MaskingLibrary.CompiledZapperMask compiledListMask=null;
 		public ExpertiseDefinition parent=null;
 		private MaskingLibrary.CompiledZapperMask compiledFinalMask=null;
+		public String name() 
+		{ 
+			return name;
+		}
 		public int getMinimumLevel()
 		{
 			if(minLevel==Integer.MIN_VALUE+1)
@@ -144,6 +148,11 @@ public interface ExpertiseLibrary extends CMLibrary
 			for(SkillCost cost : costs)
 				cost.spendSkillCost(mob);
 		}
+		public int compareTo(CMObject o) { return (o==this)?0:1; }
+		public String ID() { return ID; }
+		public CMObject newInstance() { return this; }
+		public CMObject copyOf() { return this; }
+		public void initializeClass() {}
 	}
 	
 	/** Enumeration of the types of costs of gaining this ability */
@@ -282,4 +291,5 @@ public interface ExpertiseLibrary extends CMLibrary
 	public String getGuessedBaseExpertiseName(final String expertiseCode);
 	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg);
 	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg);
+	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
 }

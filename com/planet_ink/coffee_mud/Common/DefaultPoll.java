@@ -36,6 +36,7 @@ import java.util.*;
 public class DefaultPoll implements Poll
 {
 	public String ID(){return "DefaultPoll";}
+	public String name() { return ID();}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
 	public void initializeClass(){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

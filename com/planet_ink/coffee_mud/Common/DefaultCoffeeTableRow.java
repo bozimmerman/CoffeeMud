@@ -36,6 +36,7 @@ import java.util.*;
 public class DefaultCoffeeTableRow implements CoffeeTableRow
 {
 	public String ID(){return "DefaultCoffeeTableRow";}
+	public String name() { return ID();}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	
 	public SHashtable<String,long[]> stats=new SHashtable<String,long[]>();

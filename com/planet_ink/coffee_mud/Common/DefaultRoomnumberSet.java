@@ -35,8 +35,9 @@ limitations under the License.
 */
 public class DefaultRoomnumberSet implements RoomnumberSet
 {
-	public STreeMap<String,CMIntegerGrouper> root=new STreeMap<String,CMIntegerGrouper>();
 	public String ID(){return "DefaultRoomnumberSet";}
+	public String name() { return ID();}
+	public STreeMap<String,CMIntegerGrouper> root=new STreeMap<String,CMIntegerGrouper>();
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultRoomnumberSet();}}
 	public void initializeClass(){}

@@ -856,6 +856,7 @@ public class RoomData extends StdWebMacro
 			public void propertiesLoaded() { httpReq.propertiesLoaded(); }
 			public boolean shutdown() { return httpReq.shutdown(); }
 			public String ID() { return httpReq.ID(); }
+			public String name() { return httpReq.name();}
 			public CMObject copyOf() { return this; }
 			public void initializeClass() { }
 			public CMObject newInstance() { return this; }
