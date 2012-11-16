@@ -70,6 +70,8 @@ public class Skeleton extends Undead
 						("knuckle bone",RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
 						("a skull",RawMaterial.RESOURCE_BONE));
+				resources.addElement(makeResource
+						("a bone",RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;
