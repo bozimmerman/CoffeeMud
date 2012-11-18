@@ -99,7 +99,7 @@ public class Spell_Scribe extends Spell
 		}
 		
 		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this));
-		if(numSpells<0) numSpells=0;
+		if(numSpells<0) numSpells=1;
 		if(scroll.getSpells().size()>numSpells)
 		{
 			mob.tell("You aren't powerful enough to scribe any more spells onto "+scroll.name()+".");
