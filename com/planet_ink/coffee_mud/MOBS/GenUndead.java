@@ -47,9 +47,13 @@ public class GenUndead extends GenMob
 		setWimpHitPoint(0);
 
 		undeadRace=CMClass.getRace("Undead");
-		baseCharStats().setMyRace(undeadRace);
-		baseCharStats().getMyRace().startRacing(this,false);
-		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
+		if(undeadRace!=null)
+		{
+			baseCharStats().setMyRace(undeadRace);
+			baseCharStats().getMyRace().startRacing(this,false);
+			baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
+			recoverCharStats();
+		}
 
 		basePhyStats().setAbility(10);
 		basePhyStats().setLevel(1);
@@ -62,24 +66,24 @@ public class GenUndead extends GenMob
 		recoverPhyStats();
 		recoverCharStats();
 	}
-	
+
 	public void recoverMaxState(MOB affectedMOB, CharState affectableState)
 	{
 		super.recoverMaxState();
-		if(charStats().getMyRace()!=undeadRace)
+		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			undeadRace.affectCharState(this, maxState);
 	}
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
-		if(charStats().getMyRace()!=undeadRace)
+		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			undeadRace.affectPhyStats(this, phyStats);
 	}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(charStats().getMyRace()!=undeadRace)
+		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			undeadRace.executeMsg(this, msg);
 	}
 	
@@ -87,7 +91,7 @@ public class GenUndead extends GenMob
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if(charStats().getMyRace()!=undeadRace)
+		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			return undeadRace.okMessage(this, msg);
 		return true;
 	}
@@ -95,13 +99,13 @@ public class GenUndead extends GenMob
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
-		if(charStats().getMyRace()!=undeadRace)
+		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
 			undeadRace.affectCharStats(this, charStats);
 	}
 	public DeadBody killMeDead(boolean createBody)
 	{
 		DeadBody body=super.killMeDead(createBody);
-		if((createBody)&&(charStats().getMyRace()!=undeadRace)&&(body!=null))
+		if((createBody)&&(charStats().getMyRace()!=undeadRace)&&(body!=null)&&(undeadRace!=null))
 		{
 			if((name().toUpperCase().indexOf("DRACULA")>=0)
 			||(name().toUpperCase().indexOf("VAMPIRE")>=0))

@@ -212,41 +212,13 @@ public class Monk extends StdCharClass
 			affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)
 			+(affectableStats.getClassLevel(this)*2));
 	}
-	public void unLevel(MOB mob)
-	{
-		if(mob.phyStats().level()<2)
-			return;
-		super.unLevel(mob);
-		if(((mob.basePhyStats().level()+1) % 2)==0)
-		{
-			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
-			if(dexStat>maxDexStat) dexStat=maxDexStat;
-			int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
-			attArmor=attArmor*-1;
-			mob.basePhyStats().setArmor(mob.basePhyStats().armor()-attArmor);
-			mob.phyStats().setArmor(mob.phyStats().armor()-attArmor);
-		}
-
-		mob.recoverPhyStats();
-		mob.recoverCharStats();
-		mob.recoverMaxState();
-	}
-
 	
 	public void level(MOB mob, List<String> newAbilityIDs)
 	{
+		super.level(mob, newAbilityIDs);
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)) return;
-		if((mob.basePhyStats().level() % 2)==0)
-		{
-			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
-			if(dexStat>maxDexStat) dexStat=maxDexStat;
-			int attArmor=((int)Math.round(CMath.div(dexStat,9.0)))+1;
-			mob.tell("^NYour dexterity grants you a defensive bonus of ^H"+attArmor+"^?.^N");
-		}
+		int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY),9.0)))+1);
+		mob.tell("^NYour dexterity grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 
 	

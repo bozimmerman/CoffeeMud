@@ -234,53 +234,16 @@ public class Prancer extends StdCharClass
 		}
 	}
 
-	public void unLevel(MOB mob)
-	{
-		if(mob.phyStats().level()<2)
-			return;
-		super.unLevel(mob);
-		if(((mob.basePhyStats().level()+1) % 3)==0)
-		{
-			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
-			if(dexStat>maxDexStat) dexStat=maxDexStat;
-			int attArmor=(int)Math.round(CMath.div(dexStat,10.0));
-			if(dexStat>=25)attArmor+=2;
-			else
-			if(dexStat>=22)attArmor+=1;
-			attArmor=attArmor*-1;
-			mob.basePhyStats().setArmor(mob.basePhyStats().armor()-attArmor);
-			mob.phyStats().setArmor(mob.phyStats().armor()-attArmor);
-		}
-
-		mob.recoverPhyStats();
-		mob.recoverCharStats();
-		mob.recoverMaxState();
-	}
-
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
 	
 	public String getOtherBonusDesc(){return "Receives defensive bonus for high dexterity.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
 
 	public void level(MOB mob, List<String> newAbilityIDs)
 	{
+		super.level(mob, newAbilityIDs);
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))  return;
-		if((mob.basePhyStats().level() % 3)==0)
-		{
-			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
-			if(dexStat>maxDexStat) dexStat=maxDexStat;
-			int attArmor=((int)Math.round(CMath.div(dexStat,10.0)))+1;
-			if(dexStat>=25)attArmor+=2;
-			else
-			if(dexStat>=22)attArmor+=1;
-			
-			mob.basePhyStats().setArmor(mob.basePhyStats().armor()-attArmor);
-			mob.phyStats().setArmor(mob.phyStats().armor()-attArmor);
-			mob.tell("^NYour grace grants you a defensive bonus of ^H"+attArmor+"^?.^N");
-		}
+		int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY),9.0)))+1);
+		mob.tell("^NYour grace grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 }
 

@@ -52,7 +52,7 @@ public class Spell_PolymorphSelf extends Spell
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
+				affectableStats.setName(CMLib.english().startWithAorAn(newRace.name())+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
 			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
@@ -111,7 +111,7 @@ public class Spell_PolymorphSelf extends Spell
 		Race R=CMClass.getRace(race);
 		if((R==null)||(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 		{
-			mob.tell("You can't turn yourself into a '"+race+"'!");
+			mob.tell("You can't turn yourself into "+CMLib.english().startWithAorAn(race)+"!");
 			return false;
 		}
 		if(target.fetchEffect(this.ID())!=null)
@@ -150,7 +150,7 @@ public class Spell_PolymorphSelf extends Spell
 
 		fakeMOB.destroy();
 		int statDiff=mobStatTotal-fakeStatTotal;
-		boolean success=proficiencyCheck(mob,-(statDiff*5),auto);
+		boolean success=proficiencyCheck(mob,(statDiff*5),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -158,14 +158,14 @@ public class Spell_PolymorphSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF> about "+R.name()+"s.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF> about "+CMLib.english().makePlural(R.name())+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					newRace=R;
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+CMLib.english().startWithAorAn(newRace.name())+"!");
 					success=beneficialAffect(mob,target,asLevel,0);
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);
