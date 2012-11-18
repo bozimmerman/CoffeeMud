@@ -924,6 +924,8 @@ public class StdRace implements Race
 		RS.setAbility((RS1.ability()+RS2.ability())/2);
 		RS.setArmor((RS2.armor()+RS2.armor())/2);
 		RS.setAttackAdjustment((RS1.attackAdjustment()+RS2.attackAdjustment())/2);
+		RS.setSensesMask(RS1.sensesMask()|RS2.sensesMask());
+		RS.setDisposition(RS1.disposition());
 		RS.setDamage((RS1.damage()+RS2.damage())/2);
 		RS.setHeight((RS1.height()+RS2.height())/2);
 		RS.setSpeed((RS1.speed()+RS2.speed())/2.0);
