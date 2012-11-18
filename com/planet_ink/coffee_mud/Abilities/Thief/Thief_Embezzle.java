@@ -46,26 +46,27 @@ public class Thief_Embezzle extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
-	public Vector mobs=new Vector();
-	private DVector lastOnes=new DVector(2);
+	public List<MOB> mobs=new Vector<MOB>();
+	private LinkedList<Pair<MOB,Integer>> lastOnes=new LinkedList<Pair<MOB,Integer>>();
 
 	protected int timesPicked(MOB target)
 	{
 		int times=0;
-		for(int x=0;x<lastOnes.size();x++)
+		for(Iterator<Pair<MOB,Integer>> p=lastOnes.iterator();p.hasNext();)
 		{
-			MOB M=(MOB)lastOnes.elementAt(x,1);
-			Integer I=(Integer)lastOnes.elementAt(x,2);
+			Pair<MOB,Integer> P=p.next();
+			MOB M=(MOB)P.first;
+			Integer I=(Integer)P.second;
 			if(M==target)
 			{
 				times=I.intValue();
-				lastOnes.removeElement(M);
+				p.remove();
 				break;
 			}
 		}
 		if(lastOnes.size()>=50)
-			lastOnes.removeElementAt(0);
-		lastOnes.addElement(target,Integer.valueOf(times+1));
+			lastOnes.removeFirst();
+		lastOnes.add(new Pair<MOB,Integer>(target,Integer.valueOf(times+1)));
 		return times+1;
 	}
 
