@@ -37,8 +37,9 @@ public class Prop_SafePet extends Property
 	public String ID() { return "Prop_SafePet"; }
 	public String name(){ return "Unattackable Pets";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	boolean disabled=false;
-
+	protected boolean disabled=false;
+	protected String displayMessage="Awww, leave <T-NAME> alone.";
+	
 	public String accountForYourself()
 	{ return "Unattackable";	}
 
@@ -46,6 +47,16 @@ public class Prop_SafePet extends Property
 	{
 		super.affectPhyStats(affected, affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_UNATTACKABLE);
+	}
+	
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		String newDisplayMsg=CMParms.getParmStr(newMiscText, "MSG", "");
+		if(newDisplayMsg.trim().length()>0)
+		{
+			displayMessage=newDisplayMsg.trim();
+		}
 	}
 	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -58,7 +69,7 @@ public class Prop_SafePet extends Property
 				&&(!disabled))
 				{
 					if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-						msg.source().tell("Ah, leave "+affected.name()+" alone.");
+						msg.source().tell(msg.source(),affected,null,displayMessage);
 					((MOB)affected).makePeace();
 					return false;
 				}
@@ -74,7 +85,7 @@ public class Prop_SafePet extends Property
 		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS) && msg.amITarget(affected))
 		{
 			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-				msg.source().tell("Ah, leave "+affected.name()+" alone.");
+				msg.source().tell(msg.source(),affected,null,displayMessage);
 			return false;
 		}
 		return super.okMessage(myHost,msg);
