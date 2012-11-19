@@ -77,7 +77,8 @@ public class Thief_Snatch extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!mob.isInCombat())
+		MOB target=(auto&&(givenTarget instanceof MOB))?(MOB)givenTarget:mob.getVictim();
+		if((!mob.isInCombat())||(target==null))
 		{
 			mob.tell("You must be in combat to do this!");
 			return false;
@@ -100,12 +101,12 @@ public class Thief_Snatch extends ThiefSkill
 			return false;
 		}
 
-		Item hisItem=mob.getVictim().fetchWieldedItem();
+		Item hisItem=target.fetchWieldedItem();
 		if((hisItem==null)
 		||(!(hisItem instanceof Weapon))
 		||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
-			mob.tell(mob.getVictim().charStats().HeShe()+" is not wielding a weapon!");
+			mob.tell(target.charStats().HeShe()+" is not wielding a weapon!");
 			return false;
 		}
 		else
@@ -119,25 +120,25 @@ public class Thief_Snatch extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=mob.getVictim().phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
 		if(levelDiff>0)
 			levelDiff=levelDiff*6;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||CMLib.combat().rollToHit(mob,mob.getVictim());
+		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
 		   &&((hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)
 			  ||(hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
 		{
-			CMMsg msg=CMClass.getMsg(mob.getVictim(),hisWeapon,null,CMMsg.MSG_DROP,null);
+			CMMsg msg=CMClass.getMsg(target,hisWeapon,null,CMMsg.MSG_DROP,null);
 			CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
-				mob.location().send(mob.getVictim(),msg);
+				mob.location().send(target,msg);
 				mob.location().send(mob,msg2);
-				mob.location().show(mob,mob.getVictim(),CMMsg.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
 				if(mob.location().isContent(hisWeapon))
 				{
 					CMLib.commands().postGet(mob,null,hisWeapon,true);
@@ -151,7 +152,7 @@ public class Thief_Snatch extends ThiefSkill
 			}
 		}
 		else
-			maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!");
+			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!");
 		return success;
 	}
 }
