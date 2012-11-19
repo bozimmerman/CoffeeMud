@@ -843,9 +843,9 @@ public class Spell_Wish extends Spell
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
 					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).basePhyStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.STAT_GENDER));
-					CMLib.utensils().confirmWearability((MOB)target);
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverPhyStats();
+					CMLib.utensils().confirmWearability((MOB)target);
 					if(!((MOB)target).isMonster())
 						((MOB)target).baseCharStats().setStat(CharStats.STAT_AGE,R.getAgingChart()[oldCat]);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now a "+R.name()+"!");
