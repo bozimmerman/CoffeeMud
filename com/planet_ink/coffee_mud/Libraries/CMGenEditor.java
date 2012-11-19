@@ -2969,7 +2969,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			{
 				CharClass C=CMClass.getCharClass(classID);
-				if(C!=null)
+				if((C!=null)&&((C.availabilityCode()>0)||CMSecurity.isASysOp(mob)))
 				{
 					if(M.baseCharStats().getClassLevel(C)>=0)
 					{
