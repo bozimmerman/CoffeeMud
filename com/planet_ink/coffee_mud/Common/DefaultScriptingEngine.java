@@ -7933,7 +7933,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						else
 						{
 							CharClass C=CMClass.findCharClass((String)V.elementAt(i));
-							if(C!=null)
+							if((C!=null)&&(C.availabilityCode()!=0))
 								((MOB)newTarget).baseCharStats().setCurrentClass(C);
 						}
 					}

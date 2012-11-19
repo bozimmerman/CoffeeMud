@@ -1926,6 +1926,6 @@ public class Modify extends StdCommand
 		return false;
 	}
 	
-	public boolean canBeOrdered(){return true;}
+	public boolean canBeOrdered(){return false;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP);}
 }

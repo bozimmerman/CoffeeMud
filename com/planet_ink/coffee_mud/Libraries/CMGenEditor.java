@@ -7739,7 +7739,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					newC=CC;
 			}
 			clss=new StringBuffer(clss.substring(0,clss.length()-2));
-			if(newC==null)
+			if((newC==null)||(newC.availabilityCode()==0))
 				mob.tell("That class name is invalid.  Valid names include: "+clss.toString());
 			else
 			{
