@@ -326,10 +326,14 @@ public class Skill_Enslave extends StdSkill
 		if(success)
 		{
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE,auto?"":"^S<S-NAME> enslave(s) <T-NAMESELF>!^?");
+			boolean peace1=!mob.isInCombat();
+			boolean peace2=!target.isInCombat();
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISE|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> enslave(s) <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				if(peace2) target.makePeace();
+				if(peace1) mob.makePeace();
 				Ability A=target.fetchEffect(ID());
 				if(A==null)
 				{

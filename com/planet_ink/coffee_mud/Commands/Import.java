@@ -1709,7 +1709,8 @@ public class Import extends StdCommand
 						   List<String> objProgData,
 						   List<String> shopData,
 						   List<String> specialData,
-						   List<String> socialData)
+						   List<String> socialData,
+						   List<String> roomProgData)
 	{
 		Vector helpsToEat=new Vector();
 
@@ -1789,6 +1790,12 @@ public class Import extends StdCommand
 					useThisOne=mobProgData;
 				}
 				else
+				if(s.startsWith("ROOMPROG"))
+				{
+					wasUsingThisOne=null;
+					useThisOne=roomProgData;
+				}
+				else
 				if(s.startsWith("ROOM"))
 				{
 					wasUsingThisOne=roomData;
@@ -1833,7 +1840,7 @@ public class Import extends StdCommand
 				if((s.equals("")||s.equals("~"))&&(useThisOne==socialData))
 					okString=true;
 				else
-				if(useThisOne==mobProgData)
+				if((useThisOne==mobProgData)||(useThisOne==roomProgData))
 					okString=true;
 				else
 				{
@@ -2669,19 +2676,24 @@ public class Import extends StdCommand
 				String rest=null;
 				if(s.startsWith("#")&&(s.length()>1)&&(CMath.isNumber(""+s.charAt(1))))
 				{
-					s="M "+s.substring(1);
-					rest="";
+					String newS="M "+s.substring(1);
+					StringBuilder b=new StringBuilder("");
 					while(s.indexOf('~')<=0)
 					{
 						mp++;
 						if(mp<mobProgData.size())
 						{
-							rest+=(String)mobProgData.elementAt(mp);
+							String s1=(String)mobProgData.elementAt(mp);
+							//s1=CMStrings.replaceAll(s1, ";", "\\;");
+							b.append(s1);
+							//b.append(";");
 							s=(String)mobProgData.elementAt(mp);
 						}
 						else
 							break;
 					}
+					rest=b.toString();
+					s=newS;
 				}
 				if(s.startsWith("M "))
 				{
@@ -4392,6 +4404,7 @@ public class Import extends StdCommand
 		Vector roomData=new Vector();
 		Vector resetData=new Vector();
 		Vector mobProgData=new Vector();
+		Vector roomProgData=new Vector();
 		Vector objProgData=new Vector();
 		Vector shopData=new Vector();
 		Vector specialData=new Vector();
@@ -4840,7 +4853,7 @@ public class Import extends StdCommand
 		// sort the data into general blocks, and identify area
 		if(session!=null) session.println("\n\rSorting data from file '"+areaFileName+"'...");
 		Log.sysOut("Import","Importing data from file '"+areaFileName+"'");
-		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData,socialData);
+		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData,socialData,roomProgData);
 		boolean didSocials=false;
 		try
 		{
@@ -5350,6 +5363,8 @@ public class Import extends StdCommand
 						String descStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						String nameStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
+						if(codeStr.equalsIgnoreCase("~"))
+							codeStr=eatLine(roomV);
 						if(dirCode<Directions.NUM_DIRECTIONS())
 						switch(dirCode)
 						{
@@ -5544,6 +5559,12 @@ public class Import extends StdCommand
 					{
 						// mana heal rate
 						// not important enough to generate an error from
+					}
+					else
+					if(nextLine.toUpperCase().startsWith("R"))
+					{
+						// R ERROR 700 100~
+						// No idea what this is.  Not important enough to generate an error from
 					}
 					else
 					if(nextLine.toUpperCase().startsWith("C"))

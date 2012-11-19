@@ -344,9 +344,7 @@
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on affected:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2>
-    <SELECT NAME=READABLESPELLS MULTIPLE>
     @ItemData?READABLESPELLS@
-    </SELECT>
     </TD>
 </TR>
 @else@
@@ -468,9 +466,7 @@
 		<TR>
 			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on eater:</B></FONT></TD>
 		    <TD WIDTH=450 COLSPAN=2>
-		    <SELECT NAME=READABLESPELLS MULTIPLE>
 		    @ItemData?READABLESPELLS@
-		    </SELECT>
 		    </TD>
 		</TR>
 		@endif@
@@ -491,11 +487,9 @@
 	@if?ItemData?ISPOTION@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on drinker:</B></FONT></TD>
-	    <TD WIDTH=450 COLSPAN=2>
-	    <SELECT NAME=READABLESPELLS MULTIPLE>
-	    @ItemData?READABLESPELLS@
-	    </SELECT>
-	    </TD>
+		<TD WIDTH=450 COLSPAN=2>
+		@ItemData?READABLESPELLS@
+		</TD>
 	</TR>
 	@else@
 	<TR>
@@ -714,9 +708,7 @@
 			<TR>
 				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells on Scroll:</B></FONT></TD>
 			    <TD WIDTH=450 COLSPAN=2>
-			    <SELECT NAME=READABLESPELLS MULTIPLE>
 			    @ItemData?READABLESPELLS@
-			    </SELECT>
 			    <INPUT TYPE=HIDDEN NAME=ISREADABLE VALUE="">
 			    </TD>
 			</TR>

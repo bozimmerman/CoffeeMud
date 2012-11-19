@@ -58,7 +58,10 @@ public class Spell_Teleport extends Spell
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
-			commands.addElement(CMLib.map().getRandomArea().Name());
+			if((text().length()>0)&&(CMLib.map().findArea(text())!=null))
+				commands.add(text());
+			else
+				commands.addElement(CMLib.map().getRandomArea().Name());
 		}
 		if(commands.size()<1)
 		{

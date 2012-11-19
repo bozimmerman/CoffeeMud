@@ -74,7 +74,10 @@ public class Spell_Portal extends Spell
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
-			commands.addElement(CMLib.map().getRandomRoom().displayText());
+			if(text().trim().length()>0)
+				commands.add(text());
+			else
+				commands.addElement(CMLib.map().getRandomRoom().displayText());
 		}
 		if(commands.size()<1)
 		{

@@ -70,10 +70,8 @@ public class GenPotion extends StdPotion
 	public int liquidType(){
 		if((material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			return material();
-		if(CMath.s_int(readableText)==0) return RawMaterial.RESOURCE_DRINKABLE;
-		return CMath.s_int(readableText);
+		return super.liquidType();
 	}
-	public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}
 
 	public void setMiscText(String newText)
 	{

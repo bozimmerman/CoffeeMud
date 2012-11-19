@@ -57,18 +57,23 @@ public class Spell_Gate extends Spell
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
-			MOB M=null;
-			int tries=0;
-			while(((++tries)<100)&&(M==null))
+			if(text().length()>0)
+				commands.add(text());
+			else
 			{
-				Room R=CMLib.map().getRandomRoom();
-				if(R.numInhabitants()>0)
-					M=R.fetchRandomInhabitant();
-				if((M!=null)&&(M.name().equals(mob.name())))
-					M=null;
+				MOB M=null;
+				int tries=0;
+				while(((++tries)<100)&&(M==null))
+				{
+					Room R=CMLib.map().getRandomRoom();
+					if(R.numInhabitants()>0)
+						M=R.fetchRandomInhabitant();
+					if((M!=null)&&(M.name().equals(mob.name())))
+						M=null;
+				}
+				if(M!=null)
+					commands.addElement(M.Name());
 			}
-			if(M!=null)
-				commands.addElement(M.Name());
 		}
 		if(commands.size()<1)
 		{

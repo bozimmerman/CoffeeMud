@@ -295,17 +295,30 @@ public class GrinderItems
 					if(((I instanceof SpellHolder))
 					&&(CMClass.classID(I).indexOf("SuperPill")<0))
 					{
-						if(httpReq.isRequestParameter("READABLESPELLS"))
+						StringBuilder sp=new StringBuilder("");
+						if(httpReq.isRequestParameter("RSPELL1"))
 						{
-							old=";"+httpReq.getRequestParameter("READABLESPELLS");
-							for(int i=1;;i++)
-								if(httpReq.isRequestParameter("READABLESPELLS"+(Integer.toString(i))))
-									old+=";"+httpReq.getRequestParameter("READABLESPELLS"+(Integer.toString(i)));
-								else
-									break;
+							int num=1;
+							String aff=httpReq.getRequestParameter("RSPELL"+num);
+							String theparm=httpReq.getRequestParameter("RSPDATA"+num);
+							while((aff!=null)&&(theparm!=null))
+							{
+								if(aff.length()>0)
+								{
+									Ability B=CMClass.getAbility(aff);
+									if(B==null) return "Unknown Ability '"+aff+"'.";
+									if(sp.length()>0)
+										sp.append(";");
+									sp.append(B.ID());
+									if(theparm.trim().length()>0)
+										sp.append("(").append(theparm).append(")");
+								}
+								num++;
+								aff=httpReq.getRequestParameter("RSPELL"+num);
+								theparm=httpReq.getRequestParameter("RSPDATA"+num);
+							}
 						}
-						old=old+";";
-						((SpellHolder)I).setSpellList(old);
+						((SpellHolder)I).setSpellList(sp.toString());
 					}
 					break;
 				case 35: // is wand

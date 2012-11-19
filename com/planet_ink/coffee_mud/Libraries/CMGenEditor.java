@@ -1478,6 +1478,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							while(x>=0)
 							{
 								String spellName=newName.substring(0,x).trim();
+								int x1=spellName.indexOf('(');
+								if((x1>0)&&(spellName.endsWith(")"))) 
+									spellName=spellName.substring(0,x1);
 								if(CMClass.getAbility(spellName)!=null)
 									ok=true;
 								else

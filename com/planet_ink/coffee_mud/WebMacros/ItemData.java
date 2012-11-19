@@ -528,28 +528,8 @@ public class ItemData extends StdWebMacro
 				case 33: // is trapped
 					break;
 				case 34: // readable spells
-					{
-						if(I instanceof SpellHolder)
-							old=";"+((SpellHolder)I).getSpellList();
-						if(httpReq.isRequestParameter("READABLESPELLS"))
-						{
-							old=";"+httpReq.getRequestParameter("READABLESPELLS");
-							for(int i=1;;i++)
-								if(httpReq.isRequestParameter("READABLESPELLS"+(Integer.toString(i))))
-									old+=";"+httpReq.getRequestParameter("READABLESPELLS"+(Integer.toString(i)));
-								else
-									break;
-						}
-						old=old.toUpperCase()+";";
-						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
-						{
-							String cnam=((Ability)a.nextElement()).ID();
-							str.append("<OPTION VALUE=\""+cnam+"\"");
-							if(old.indexOf(";"+cnam.toUpperCase()+";")>=0)
-								str.append(" SELECTED");
-							str.append(">"+cnam);
-						}
-					}
+					if(I instanceof SpellHolder)
+						str.append(readableSpells((SpellHolder)I,httpReq,parms,1));
 					break;
 				case 35: // is wand
 					if(I instanceof Wand) return "true";
@@ -1017,5 +997,82 @@ public class ItemData extends StdWebMacro
 			return clearWebMacros(strstr);
 		}
 		return "";
+	}
+	
+	public static StringBuffer readableSpells(SpellHolder P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("READABLESPELLS"))
+		{
+			Vector theclasses=new Vector();
+			Vector theparms=new Vector();
+			if(httpReq.isRequestParameter("RSPELL1"))
+			{
+				int num=1;
+				String behav=httpReq.getRequestParameter("RSPELL"+num);
+				String theparm=httpReq.getRequestParameter("RSPDATA"+num);
+				while((behav!=null)&&(theparm!=null))
+				{
+					if(behav.length()>0)
+					{
+						theclasses.addElement(behav);
+						String t=theparm;
+						t=CMStrings.replaceAll(t,"\"","&quot;");
+						theparms.addElement(t);
+					}
+					num++;
+					behav=httpReq.getRequestParameter("RSPELL"+num);
+					theparm=httpReq.getRequestParameter("RSPDATA"+num);
+				}
+			}
+			else
+			{
+				List<Ability> SP=P.getSpells();
+				for(int a=0;a<SP.size();a++) // readable spells
+				{
+					Ability Able=SP.get(a);
+					if((Able!=null)&&(Able.isSavable()))
+					{
+						theclasses.addElement(CMClass.classID(Able));
+						String t=Able.text();
+						t=CMStrings.replaceAll(t,"\"","&quot;");
+						theparms.addElement(t);
+					}
+				}
+			}
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
+			HashSet<String> alreadyHave=new HashSet<String>();
+			for(int i=0;i<theclasses.size();i++)
+			{
+				String theclass=(String)theclasses.elementAt(i);
+				alreadyHave.add(theclass.toLowerCase());
+				String theparm=(String)theparms.elementAt(i);
+				str.append("<TR><TD WIDTH=50%>");
+				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=RSPELL"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
+				str.append("</SELECT>");
+				str.append("</TD><TD WIDTH=50%>");
+				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=RSPDATA"+(i+1)+" VALUE=\""+theparm+"\">");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=50%>");
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RSPELL"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			{
+				Ability A=(Ability)a.nextElement();
+				if(((!A.canAffect(P))||(alreadyHave.contains(A.ID().toLowerCase())))
+				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
+					continue;
+				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
+			}
+			str.append("</SELECT>");
+			str.append("</TD><TD WIDTH=50%>");
+			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=RSPDATA"+(theclasses.size()+1)+" VALUE=\"\">");
+			str.append("</TD></TR>");
+			str.append("</TABLE>");
+		}
+		return str;
 	}
 }

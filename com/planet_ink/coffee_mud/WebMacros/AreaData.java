@@ -193,6 +193,7 @@ public class AreaData extends StdWebMacro
 		}
 		return str;
 	}
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))

@@ -2415,3 +2415,4 @@ ruthless programmer, and sentenced to a quick death.
 19.Bandaging also restores a few hit points.
 20.CombatAbilities and its derivatives (Bardness/Clericness/etc..) will adjust base char stats of mobs to reflect class, unless NOSTATS in the parms.
 21.Players Teaching Players is now more beneficial for both.  Also, (internally), Teach is now StdMOB managed, as it should be.
+22.Potions/Pills/Scrolls/Powders now support parameters for spells on them.

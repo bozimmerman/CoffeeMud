@@ -102,29 +102,22 @@ public class StdPotion extends StdDrink implements Potion
 		int baseValue=200;
 		Vector<Ability> theSpells=new Vector<Ability>();
 		String names=me.getSpellList();
-		int del=names.indexOf(';');
-		while(del>=0)
+		List<String> parsedSpells=CMParms.parseSemicolons(names, true);
+		for(String thisOne : parsedSpells)
 		{
-			String thisOne=names.substring(0,del);
-			if((thisOne.length()>0)&&(!thisOne.equals(";")))
+			thisOne=thisOne.trim();
+			String parms="";
+			int x=thisOne.indexOf('(');
+			if((x>0)&&(thisOne.endsWith(")")))
 			{
-				Ability A=CMClass.getAbility(thisOne);
-				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
-				{
-					A=(Ability)A.copyOf();
-					baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-					theSpells.addElement(A);
-				}
+				parms=thisOne.substring(x+1,thisOne.length()-1);
+				thisOne=thisOne.substring(0,x).trim();
 			}
-			names=names.substring(del+1);
-			del=names.indexOf(';');
-		}
-		if((names.length()>0)&&(!names.equals(";")))
-		{
-			Ability A=CMClass.getAbility(names);
-			if(A!=null)
+			Ability A=CMClass.getAbility(thisOne);
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 			{
 				A=(Ability)A.copyOf();
+				A.setMiscText(parms);
 				baseValue+=(100*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
 				theSpells.addElement(A);
 			}
