@@ -49,7 +49,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 		for(int n=0;n<mob.baseCharStats().numClasses();n++)
 			if(mob.baseCharStats().getMyClass(n).ID().equals(C.ID()))
 			{ found=true; break;}
-		if(!found)
+		if((!found)&&(C.availabilityCode()!=0))
 		{
 			mob.baseCharStats().setCurrentClass(C);
 			mob.baseCharStats().setClassLevel(C,0);

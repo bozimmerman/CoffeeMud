@@ -123,8 +123,12 @@ public class Prop_EnterAdjuster extends Property implements TriggeredAffect
 				mob.baseCharStats().setStat(CharStats.STAT_GENDER,val.charAt(0));
 			mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)+CMParms.getParmPlus(parameters[0],"int"));
 			val=CMParms.getParmStr(parameters[0],"cla","").toUpperCase();
-			if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
-				mob.baseCharStats().setCurrentClass(CMClass.findCharClass(val));
+			if(val.length()>0)
+			{
+				CharClass C=CMClass.findCharClass(val);
+				if((C!=null)&&(C.availabilityCode()!=0))
+					mob.baseCharStats().setCurrentClass(C);
+			}
 			val=CMParms.getParmStr(parameters[0],"rac","").toUpperCase();
 			if((val.length()>0)&&(CMClass.getRace(val)!=null))
 			{

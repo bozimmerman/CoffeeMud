@@ -131,11 +131,15 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 			mob.baseCharStats().setStat(CharStats.STAT_GENDER,val.charAt(0));
 		val=CMParms.getParmStr(readableText,"cla","").toUpperCase();
-		if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
+		if(val.length()>0)
 		{
-			mob.baseCharStats().setCurrentClass(CMClass.findCharClass(val));
-			if((!mob.isMonster())&&(mob.soulMate()==null))
-				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
+			CharClass C=CMClass.findCharClass(val);
+			if((C!=null)&&(C.availabilityCode()!=0))
+			{
+				mob.baseCharStats().setCurrentClass(C);
+				if((!mob.isMonster())&&(mob.soulMate()==null))
+					CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
+			}
 		}
 		if(CMParms.getParmPlus(readableText,"lev")!=0)
 			mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())+CMParms.getParmPlus(readableText,"lev"));

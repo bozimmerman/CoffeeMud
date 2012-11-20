@@ -110,10 +110,14 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			charStatsV.addElement(new Character(val.charAt(0)));
 		}
 		val=CMParms.getParmStr(parameters[0],"cla","").toUpperCase();
-		if((val.length()>0)&&(CMClass.findCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))
+		if(val.length()>0)
 		{
-			charStatsV.addElement(new Character('C'));
-			charStatsV.addElement(CMClass.findCharClass(val));
+			CharClass C=CMClass.findCharClass(val);
+			if((C!=null)&&(C.availabilityCode()!=0))
+			{
+				charStatsV.addElement(new Character('C'));
+				charStatsV.addElement(C);
+			}
 		}
 		val=CMParms.getParmStr(parameters[0],"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))

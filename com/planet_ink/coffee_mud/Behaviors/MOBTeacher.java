@@ -227,7 +227,7 @@ public class MOBTeacher extends CombatAbilities
 
 			A=CMClass.getAbility(s);
 			CharClass C=CMClass.findCharClass(s);
-			if((C!=null)&&(!C.ID().equals("StdCharClass")))
+			if((C!=null)&&(C.availabilityCode()!=0))
 			{
 				teachEverything=false;
 				setTheCharClass(myMOB,C);

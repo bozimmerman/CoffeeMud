@@ -405,15 +405,14 @@ public class DefaultClan implements Clan
 		if(M.getClanID().equals(clanID())
 		&&(getAuthority(M.getClanRole(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))
 		{
-			if(getClanClassC()!=null)
+			CharClass CC=getClanClassC();
+			if((CC!=null)
+			&&(CC.availabilityCode()!=0)
+			&&(M.baseCharStats().getCurrentClass()!=CC))
 			{
-				CharClass CC=getClanClassC();
-				if(M.baseCharStats().getCurrentClass()!=CC)
-				{
-					M.baseCharStats().setCurrentClass(CC);
-					did=true;
-					M.recoverCharStats();
-				}
+				M.baseCharStats().setCurrentClass(CC);
+				did=true;
+				M.recoverCharStats();
 			}
 		}
 		M.delAbility(M.fetchAbility("Spell_ClanHome"));
