@@ -46,6 +46,7 @@ public class Druid_ShapeShift extends StdAbility
 	protected int canTargetCode(){return 0;}
 
 	public int myRaceCode=-1;
+	public int myRaceLevel=-1;
 	public Race newRace=null;
 	public String raceName="";
 
@@ -58,7 +59,7 @@ public class Druid_ShapeShift extends StdAbility
 
 	private static String[][] shapes={
 	{"Mouse",   "Kitten",   "Puppy",	"Robin",  "Garden Snake", "Cub",	"Grasshopper","Spider Monkey","Calf"},
-	{"Rat", 	"Cat",  	"Dog",  	"Owl",    "Snake",  	  "Cub",	"Centipede",  "Chimp",  	  "Cow"},
+	{"Rat", 	"Cat",  	"Dog",  	"Owl",    "Snake",     "Young Bear","Centipede",  "Chimp",  	  "Cow"},
 	{"Dire Rat","Puma", 	"Wolf", 	"Hawk",   "Python",    "Brown Bear","Tarantula",  "Ape",		  "Buffalo"},
 	{"WereRat", "Lion", 	"Dire Wolf","Eagle",  "Cobra",     "Black Bear","Scarab",     "Gorilla",	  "Bull"},
 	{"WereBat", "Manticore","WereWolf", "Harpy",  "Naga",      "WereBear",  "ManScorpion","Sasquatch",    "Minotaur"}
@@ -137,15 +138,22 @@ public class Druid_ShapeShift extends StdAbility
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
 	}
 
-	public void setRaceName(MOB mob)
+	public int getClassLevel(MOB mob)
 	{
 		int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
 		if(qualClassLevel<0) classLevel=30;
+		return classLevel;
+	}
+	
+	public void setRaceName(MOB mob)
+	{
+		int classLevel=getClassLevel(mob);
 		raceName=getRaceName(classLevel,myRaceCode);
 		newRace=getRace(classLevel,myRaceCode);
 	}
-	public int getRaceLevel(int classLevel)
+
+	public int getMaxRaceLevel(int classLevel)
 	{
 		if(classLevel<6)
 			return 0;
@@ -161,6 +169,20 @@ public class Druid_ShapeShift extends StdAbility
 		else
 			return 4;
 	}
+	
+	public int getRaceLevel(MOB mob)
+	{
+		return getRaceLevel(getClassLevel(mob));
+	}
+
+	public int getRaceLevel(int classLevel)
+	{
+		int maxLevel=getMaxRaceLevel(classLevel);
+		if((myRaceLevel<0)||(myRaceLevel>maxLevel))
+			return maxLevel;
+		return myRaceLevel;
+	}
+	
 	public int getRaceCode()
 	{
 		if((myRaceCode<0)||
@@ -221,6 +243,7 @@ public class Druid_ShapeShift extends StdAbility
 			}
 		}
 
+		this.myRaceLevel=-1;
 		int[] racesTaken=new int[forms.length];
 		Vector allShapeshifts=new Vector();
 		if((myRaceCode>=0)&&(myRaceCode<racesTaken.length))
@@ -274,11 +297,23 @@ public class Druid_ShapeShift extends StdAbility
 
 		if(myRaceCode<0)
 			return false;
+		
+		String parm=CMParms.combine(commands,0);
+		if(parm.length()>0)
+		{
+			int raceLevel=getRaceLevel(mob);
+			for(int i1=raceLevel;i1>=0;i1--)
+				if(CMLib.english().containsString(shapes[i1][myRaceCode],parm))
+				{
+					parm="";
+					this.myRaceLevel=i1;
+				}
+		}
 		setMiscText(""+myRaceCode);
 		setRaceName(mob);
 
 		// now check for alternate shapeshifts
-		if((triggerStrings().length>0)&&(commands.size()>0)&&(allShapeshifts.size()>1))
+		if((triggerStrings().length>0)&&(parm.length()>0)&&(allShapeshifts.size()>1))
 		{
 			Vector V=allShapeshifts;
 			allShapeshifts=new Vector();
@@ -302,7 +337,6 @@ public class Druid_ShapeShift extends StdAbility
 				allShapeshifts.addElement(choice);
 				V.removeElement(choice);
 			}
-			String parm=CMParms.combine(commands,0);
 			StringBuffer list=new StringBuffer("");
 			for(int i=0;i<allShapeshifts.size();i++)
 			{
@@ -315,11 +349,21 @@ public class Druid_ShapeShift extends StdAbility
 						list.append(CMStrings.padLeft(""+(i+1),2)+") Not yet chosen.\n\r");
 					else
 					{
-						list.append(CMStrings.padLeft(""+(i+1),2)+") "+A.raceName+" ("+forms[A.myRaceCode]+")\n\r");
+						list.append(CMStrings.padLeft(""+(i+1),2)+") "+forms[A.myRaceCode]+": ");
+						int raceLevel=A.getRaceLevel(mob);
+						for(int i1=raceLevel;i1>=0;i1--)
+						{
+							list.append(shapes[i1][A.myRaceCode]);
+							if(i1!=0) list.append(", ");
+						}
+						list.append("\n\r");
 						if(CMLib.english().containsString(A.raceName,parm))
 							return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
 						if(CMLib.english().containsString(forms[A.myRaceCode],parm))
 							return A.invoke(mob,new Vector(),givenTarget,auto,asLevel);
+						for(int i1=raceLevel;i1>=0;i1--)
+							if(CMLib.english().containsString(shapes[i1][A.myRaceCode],parm))
+								return A.invoke(mob,new XVector(parm),givenTarget,auto,asLevel);
 					}
 				}
 			}

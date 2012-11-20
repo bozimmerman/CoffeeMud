@@ -131,7 +131,10 @@ public class Prayer_SummonElemental extends Prayer
 		MOB newMOB=CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
 		newMOB.basePhyStats().setAbility(13);
-		newMOB.basePhyStats().setLevel(level/2);
+		if(level>5)
+			newMOB.basePhyStats().setLevel(level-5);
+		else
+			newMOB.basePhyStats().setLevel(level);
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.basePhyStats().setWeight(850);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);

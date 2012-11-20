@@ -520,7 +520,7 @@ public class StdArmor extends StdContainer implements Armor
 		if((basePhyStats().height()==0)
 		   &&(!amWearingAt(Wearable.IN_INVENTORY))
 		   &&(owner() instanceof MOB))
-			basePhyStats().setHeight(((MOB)owner()).basePhyStats().height());
+			basePhyStats().setHeight(((MOB)owner()).phyStats().height());
 	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
