@@ -402,6 +402,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(mob==null) return null;
 		Ability A=null;
 		HashSet<String[]> done=new HashSet<String[]>();
+		word=word.toUpperCase().trim();
 		for(Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();

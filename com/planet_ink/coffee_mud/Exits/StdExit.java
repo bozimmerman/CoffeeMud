@@ -528,7 +528,10 @@ public class StdExit implements Exit
 		case CMMsg.TYP_OPEN:
 			if((!hasADoor())||(isOpen())) return;
 			if(defaultsClosed()||defaultsLocked())
+			{
+				CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_REOPEN);
 				CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,openDelayTicks());
+			}
 			isLocked=false;
 			isOpen=true;
 			break;
