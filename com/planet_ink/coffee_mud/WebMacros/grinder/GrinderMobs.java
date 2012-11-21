@@ -78,9 +78,16 @@ public class GrinderMobs
 	public static String abilities(MOB M, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		boolean player=M.playerStats()!=null;
-		while(M.numAbilities()>0)
+		LinkedList<Ability> onesToDel=new LinkedList<Ability>();
+		for(int a=0;a<M.numAbilities();a++)
 		{
-			Ability A=M.fetchAbility(0);
+			Ability A=M.fetchAbility(a);
+			if((A!=null)&&((!player)||(A.isSavable())))
+				onesToDel.add(A);
+		}
+		for(Iterator<Ability> a=onesToDel.iterator();a.hasNext();)
+		{
+			Ability A=a.next();
 			if(M.fetchEffect(A.ID())!=null)
 				M.delEffect(M.fetchEffect(A.ID()));
 			M.delAbility(A);
