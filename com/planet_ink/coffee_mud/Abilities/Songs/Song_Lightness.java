@@ -64,7 +64,6 @@ public class Song_Lightness extends Song
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==CMMsg.TYP_GET)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof Item)
 		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
 		{

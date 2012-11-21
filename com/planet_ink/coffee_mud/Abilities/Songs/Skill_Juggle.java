@@ -104,7 +104,6 @@ public class Skill_Juggle extends BardSkill
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((msg.targetMinor()==CMMsg.TYP_GET)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof Item)
 		&&(juggles.contains(msg.target()))
 		&&(affected instanceof MOB)

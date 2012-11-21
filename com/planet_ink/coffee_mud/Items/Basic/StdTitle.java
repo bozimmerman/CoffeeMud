@@ -255,7 +255,6 @@ public class StdTitle extends StdItem implements LandTitle
 		else
 		if((msg.targetMinor()==CMMsg.TYP_GET)
 		&&(msg.amITarget(this))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof ShopKeeper))
 		{
 			LandTitle A=fetchALandTitle();

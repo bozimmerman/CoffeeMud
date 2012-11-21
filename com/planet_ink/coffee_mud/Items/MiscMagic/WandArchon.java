@@ -90,7 +90,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 			case CMMsg.TYP_WEAR:
 			case CMMsg.TYP_WIELD:
 			case CMMsg.TYP_GET:
-				if(mob.charStats().getClassLevel("Archon")<0)
+				if(!CMSecurity.isASysOp(msg.source()))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,name()+" flashes and falls out of <S-HIS-HER> hands!");
 					return false;
