@@ -152,6 +152,25 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return mob;
 	}
 	
+	public boolean isFilledOutMOB(MOB mob)
+	{
+		if(!mob.isMonster()) return false;
+		PhyStats mobP=mob.basePhyStats();
+		
+		MOB filledM=fillOutMOB((MOB)null,mobP.level());
+		PhyStats filP=filledM.basePhyStats();
+		if((mobP.speed()==filP.speed()) 
+		&&(mobP.armor()==filP.armor())
+		&&(mobP.damage()==filP.damage())
+		&&(mobP.attackAdjustment()==filP.attackAdjustment()))
+		{
+			filledM.destroy();
+			return true;
+		}
+		filledM.destroy();
+		return false;
+	}
+	
 	public MOB fillOutMOB(MOB mob, int level)
 	{
 		if(mob==null) mob=CMClass.getFactoryMOB();
@@ -460,7 +479,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					mob.tell("^NYou have learned the "+type+" ^H"+A.name()+"^?.^N");
 				}
 			}
-
+		
 		// wrap it all up
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
