@@ -43,7 +43,7 @@ public class Spell_WellDressed extends Spell
 	public int classificationCode(){ return Ability.ACODE_SKILL;}
 	protected int dressCode=1;
 	
-	private static final String[] triggerStrings = {"WELLDRESSED"};
+	private static final String[] triggerStrings = {"CAST"};
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
