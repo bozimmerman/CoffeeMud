@@ -1356,18 +1356,20 @@ public class MobData extends StdWebMacro
 				{
 					old="";
 					for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
-						old +=e.nextElement().toString()+";";
+						str.append(e.nextElement().toString()).append(";");
 				}
-				str.append(old);
+				else
+					str.append(old);
 				break;
 			case 39: // expertises
 				if(firstTime)
 				{
 					old="";
 					for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
-						old+=x.nextElement()+";";
+						str.append(x.nextElement()).append(";");
 				}
-				str.append(old);
+				else
+					str.append(old);
 				break;
 			case 40: // budget
 				if((firstTime)&&(M instanceof ShopKeeper))
