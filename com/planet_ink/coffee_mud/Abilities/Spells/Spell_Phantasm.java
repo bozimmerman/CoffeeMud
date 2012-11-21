@@ -190,7 +190,7 @@ public class Spell_Phantasm extends Spell
 		newMOB.basePhyStats().setAbility(11);
 		CharClass C=CMClass.getCharClass("Fighter");
 		newMOB.baseCharStats().setCurrentClass(C);
-		newMOB.basePhyStats().setLevel(level+10);
+		newMOB.basePhyStats().setLevel(level);
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 		newMOB.basePhyStats().setWeight(850);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);

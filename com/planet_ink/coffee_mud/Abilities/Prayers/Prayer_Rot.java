@@ -51,8 +51,7 @@ public class Prayer_Rot extends Prayer
 		if((host instanceof Item)
 		&&(((msg.tool() instanceof ShopKeeper)&&(msg.targetMinor()==CMMsg.TYP_GET))
 			||(msg.targetMinor()==CMMsg.TYP_ROOMRESET))
-		&&((msg.target()==host)
-			||((msg.target()==((Item)host).container())&&(((Item)host).container()!=null))))
+		&&(msg.target()==host))
 		{
 			if(host instanceof Decayable)
 			{

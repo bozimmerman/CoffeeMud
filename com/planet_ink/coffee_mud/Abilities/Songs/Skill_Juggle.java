@@ -251,7 +251,6 @@ public class Skill_Juggle extends BardSkill
 		{
 			juggle();
 			if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_REMOVE))
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item)
 			&&(juggles.contains(msg.target())))
 			{

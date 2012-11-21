@@ -70,14 +70,18 @@ public class Get extends StdCommand
 		CMMsg msg=CMClass.getMsg(mob,target,tool,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
 		if(!R.okMessage(mob,msg))
 			return false;
-		R.send(mob,msg);
 		// we do this next step because, when a container is involved,
 		// the item deserves to be the target of the GET.
 		if(!mob.isMine(target))
 		{
-			msg=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,null);
-			if(!R.okMessage(mob,msg))
+			CMMsg msg2=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,null);
+			if(!R.okMessage(mob,msg2))
 				return false;
+			R.send(mob,msg);
+			R.send(mob,msg2);
+		}
+		else
+		{
 			R.send(mob,msg);
 		}
 		return true;

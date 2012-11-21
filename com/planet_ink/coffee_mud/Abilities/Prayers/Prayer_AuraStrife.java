@@ -56,6 +56,18 @@ public class Prayer_AuraStrife extends Prayer
 		}
 	}
 
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((affected instanceof MOB)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			unInvoke();
+		else
+		if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+			unInvoke();
+		return super.okMessage(myHost,msg);
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

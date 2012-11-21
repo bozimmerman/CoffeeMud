@@ -87,6 +87,8 @@ public class Prayer_Absorption extends Prayer
 		while((absorbed==null)&&((++tries)<100))
 		{
 			absorbed=target.fetchRandomAbility();
+			if(absorbed==null)
+				break;
 			if(mob.fetchAbility(absorbed.ID())!=null)
 				absorbed=null;
 			else
