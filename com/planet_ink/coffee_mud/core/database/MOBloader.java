@@ -498,7 +498,7 @@ public class MOBloader
 		{
 			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+liegeID+"'");
-			StringBuffer head=new StringBuffer("");
+			StringBuilder head=new StringBuilder("");
 			head.append("[");
 			head.append(CMStrings.padRight("Race",8)+" ");
 			head.append(CMStrings.padRight("Class",10)+" ");
@@ -739,7 +739,7 @@ public class MOBloader
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return "";
-		StringBuffer pfxml=new StringBuffer(pstats.getXML());
+		StringBuilder pfxml=new StringBuilder(pstats.getXML());
 		if(mob.tattoos().hasMoreElements())
 		{
 			pfxml.append("<TATTS>");
@@ -790,7 +790,7 @@ public class MOBloader
 			strOtherRoomID=strStartRoomID;
 		
 		String pfxml=getPlayerStatsXML(mob);
-		StringBuffer cleanXML=new StringBuffer();
+		StringBuilder cleanXML=new StringBuilder();
 		cleanXML.append(CMLib.coffeeMaker().getFactionXML(mob));
 		DB.updateWithClobs(
 				 "UPDATE CMCHAR SET  CMPASS='"+pstats.getPasswordStr()+"'"

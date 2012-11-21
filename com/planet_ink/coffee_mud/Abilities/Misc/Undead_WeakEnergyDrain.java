@@ -79,7 +79,9 @@ public class Undead_WeakEnergyDrain extends StdAbility
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setClassLevel(affectableStats.getCurrentClass(),affected.basePhyStats().level()-levelsDown-affectableStats.combinedSubLevels());
+		int newLevel=affected.basePhyStats().level()-levelsDown-affectableStats.combinedSubLevels();
+		if(newLevel<0) newLevel=0;
+		affectableStats.setClassLevel(affectableStats.getCurrentClass(),newLevel);
 	}
 
 	public void unInvoke()
