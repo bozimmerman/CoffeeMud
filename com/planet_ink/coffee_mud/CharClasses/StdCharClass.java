@@ -300,7 +300,6 @@ public class StdCharClass implements CharClass
 		return null;
 	}
 
-
 	protected boolean isQualifyingAuthority(MOB mob, Ability A)
 	{
 		CharClass C=null;

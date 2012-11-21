@@ -301,6 +301,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				mob.delEffect(A);
 			}
 		}
+		fixMobStatsIfNecessary(mob,-1);
 	}
 
 	public void loseExperience(MOB mob, int amount)
@@ -480,6 +481,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				}
 			}
 		
+		fixMobStatsIfNecessary(mob,1);
+		
 		// wrap it all up
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
@@ -490,6 +493,24 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	}
 
+	protected boolean fixMobStatsIfNecessary(MOB mob, int direction)
+	{
+		if((mob.playerStats()==null)&&(mob.baseCharStats().getCurrentClass().name().equals("mob"))) // mob leveling
+		{
+			mob.basePhyStats().setSpeed(getLevelMOBSpeed(mob));
+			mob.basePhyStats().setArmor(getLevelMOBArmor(mob));
+			mob.basePhyStats().setDamage(getLevelMOBDamage(mob));
+			mob.basePhyStats().setAttackAdjustment(getLevelAttack(mob));
+			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+((mob.basePhyStats().ability()/2)*direction));
+			mob.baseState().setMana(getLevelMana(mob));
+			mob.baseState().setMovement(getLevelMove(mob));
+			if(mob.getWimpHitPoint()>0)
+				mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
+			return true;
+		}
+		return false;
+	}
+	
 	public int adjustedExperience(MOB mob, MOB victim, int amount)
 	{
 		int highestLevelPC = 0;

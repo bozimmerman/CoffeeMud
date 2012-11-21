@@ -432,8 +432,15 @@ public class StdMOB implements MOB
 			return;
 		if (!isGeneric())
 		{
+			PhyStats oldBase=(PhyStats)basePhyStats.copyOf();
 			M.basePhyStats().copyInto(basePhyStats);
+			basePhyStats.setAbility(oldBase.ability());
+			basePhyStats.setRejuv(oldBase.rejuv());
+			basePhyStats.setLevel(oldBase.level());
 			M.phyStats().copyInto(phyStats);
+			phyStats.setAbility(oldBase.ability());
+			phyStats.setRejuv(oldBase.rejuv());
+			phyStats.setLevel(oldBase.level());
 		}
 		else
 		{
