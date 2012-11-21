@@ -40,9 +40,12 @@ public class Spell_WellDressed extends Spell
 	public String displayText(){return "(Well Dressed)";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+	public int classificationCode(){ return Ability.ACODE_SKILL;}
 	protected int dressCode=1;
 	
+	private static final String[] triggerStrings = {"WELLDRESSED"};
+	public String[] triggerStrings(){return triggerStrings;}
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -62,7 +65,7 @@ public class Spell_WellDressed extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-	   // MOB mob=(MOB)affected;
+		// MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		/*
@@ -86,7 +89,7 @@ public class Spell_WellDressed extends Spell
 		return super.castingQuality(mob,target);
 	}
 
-   public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int newDressCode=1;
 		MOB target=this.getTarget(mob,commands,givenTarget);
