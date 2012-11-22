@@ -44,35 +44,27 @@ public class Fighter_KiStrike extends FighterSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_PUNCHING;}
-	boolean done=false;
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(!done)
 		&&((msg.tool() instanceof Weapon)||(msg.tool()==null))
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.value()>0))
 		{
-			done=true;
 			MOB mob=(MOB)affected;
 			if((CMLib.flags().aliveAwakeMobile(mob,true))
 			&&(mob.location()!=null))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,"<S-NAME> yell(s) 'KIA'!");
+				msg.setValue(msg.value()+adjustedLevel(invoker(),0));
 				unInvoke();
 			}
 
 		}
 		return super.okMessage(myHost,msg);
-	}
-
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		if(!done)
-			affectableStats.setDamage(affectableStats.damage()+(adjustedLevel(invoker(),0)));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -106,7 +98,6 @@ public class Fighter_KiStrike extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				done=false;
 				beneficialAffect(mob,target,asLevel,mob.isInCombat()?2:4);
 			}
 		}
