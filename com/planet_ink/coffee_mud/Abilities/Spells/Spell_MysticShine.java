@@ -81,14 +81,15 @@ public class Spell_MysticShine extends Spell
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
+		final Room room=mob.location();
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> begin(s) to really shine!":"^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?");
-			if(mob.location().okMessage(mob,msg))
+			if(room.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				room.send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				mob.location().recoverRoomStats(); // attempt to handle followers
+				room.recoverRoomStats(); // attempt to handle followers
 			}
 		}
 		else
