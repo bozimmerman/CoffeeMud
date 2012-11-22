@@ -38,20 +38,20 @@ public class CombatAbilities extends StdBehavior
 {
 	public String ID(){return "CombatAbilities";}
 
-	public int combatMode=0;
-	public Hashtable<MOB,int[]> aggro=null;
-	public short chkDown=0;
-	public Vector skillsNever=null;
-	public Vector skillsAlways=null;
-	protected boolean[] wandUseCheck={false,false};
-	protected boolean proficient=false;
-	protected int preCastSet=Integer.MAX_VALUE;
-	protected int preCastDown=Integer.MAX_VALUE;
-	protected String lastSpell=null;
-	protected boolean noStat=false;
-	protected StringBuffer record=null;
-	protected int physicalDamageTaken=0;
-	protected InternalWeaponSet weaponSet=new InternalWeaponSet();
+	public int				combatMode	= 0;
+	public Map<MOB,int[]>	aggro		= null;
+	public short			chkDown		= 0;
+	public List<String>		skillsNever = null;
+	public List<String>		skillsAlways= null;
+	protected boolean[]		wandUseCheck= {false,false};
+	protected boolean		proficient	= false;
+	protected int			preCastSet	= Integer.MAX_VALUE;
+	protected int			preCastDown	= Integer.MAX_VALUE;
+	protected String		lastSpell	= null;
+	protected boolean		noStat		= false;
+	protected StringBuffer	record		= null;
+	protected int			physicalDamageTaken=0;
+	protected InternalWeaponSet weaponSet	= new InternalWeaponSet();
 	
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
@@ -274,7 +274,12 @@ public class CombatAbilities extends StdBehavior
 				else
 				{
 					hostM.setVictim(attackerM);
-					aggro.clear();
+					for(MOB M : aggro.keySet())
+					if(M!=attackerM)
+					{
+						int[] set=aggro.get(M);
+						set[0]=set[0]/2;
+					}
 				}
 			}
 		}
@@ -315,6 +320,12 @@ public class CombatAbilities extends StdBehavior
 					||(msg.source().getGroupMembers(new HashSet<MOB>()).contains(victim)))
 						adjustAggro(mob,msg.source(),msg.value()*2);
 				}
+				else
+				if((msg.target()==victim)
+				&&(msg.source()!=host)
+				&&(msg.tool() instanceof Ability)
+				&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_AGGROFYING)))
+					adjustAggro(mob,msg.source(),((Ability)msg.tool()).adjustedLevel(msg.source(), 0)*2);
 				else
 				if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 				&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
@@ -358,17 +369,18 @@ public class CombatAbilities extends StdBehavior
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))
 			{
 				if(skillsNever==null) skillsNever=new Vector();
-				skillsNever.addElement(A.ID());
+				skillsNever.add(A.ID());
 			}
 			else
 			if((s.startsWith("+"))
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))
 			{
 				if(skillsAlways==null) skillsAlways=new Vector();
-				skillsAlways.addElement(A.ID());
+				skillsAlways.add(A.ID());
 			}
 		}
-		if(skillsNever!=null) skillsNever.trimToSize();
+		if(skillsNever instanceof Vector) ((Vector)skillsNever).trimToSize();
+		if(skillsAlways instanceof Vector) ((Vector)skillsAlways).trimToSize();
 	}
 
 	protected boolean isRightCombatAbilities(MOB mob)
@@ -402,7 +414,7 @@ public class CombatAbilities extends StdBehavior
 		while((tryA==null)&&((++tries)<100)&&(mob.numAllAbilities()>0))
 		{
 			if((combatMode==COMBAT_ONLYALWAYS)&&(this.skillsAlways!=null)&&(this.skillsAlways.size()>0))
-				A=mob.fetchAbility((String)skillsAlways.elementAt(CMLib.dice().roll(1,skillsAlways.size(),-1)));
+				A=mob.fetchAbility((String)skillsAlways.get(CMLib.dice().roll(1,skillsAlways.size(),-1)));
 			else
 				A=mob.fetchRandomAbility();
 			
