@@ -2139,13 +2139,32 @@ public class Import extends StdCommand
 				R=CMClass.getRace(raceName);
 				if(R==null)
 					R=CMClass.findRace(raceName);
+				String lowerRaceName=raceName.toUpperCase();
 				if(R==null)
 					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
 						Race R2=r.nextElement();
-						if((R2.name().toLowerCase().startsWith(raceName.toLowerCase()))
-						||(R2.name().toLowerCase().endsWith(raceName.toLowerCase()))
-						||(R2.name().toLowerCase().indexOf(raceName.toLowerCase()))>=0)
+						if(R2.name().toLowerCase().startsWith(lowerRaceName))
+						{
+							R=R2;
+							break;
+						}
+					}
+				if(R==null)
+					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+					{
+						Race R2=r.nextElement();
+						if(R2.name().toLowerCase().endsWith(lowerRaceName))
+						{
+							R=R2;
+							break;
+						}
+					}
+				if(R==null)
+					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+					{
+						Race R2=r.nextElement();
+						if(R2.name().toLowerCase().indexOf(lowerRaceName)>=0)
 						{
 							R=R2;
 							break;
