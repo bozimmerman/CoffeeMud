@@ -83,13 +83,13 @@ public class Spell_MysticShine extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-    		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> begin(s) to really shine!":"^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?");
-    		if(mob.location().okMessage(mob,msg))
-    		{
-    			mob.location().send(mob,msg);
-    			beneficialAffect(mob,target,asLevel,0);
-    			mob.location().recoverRoomStats(); // attempt to handle followers
-    		}
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"^S<T-NAME> begin(s) to really shine!":"^S<S-NAME> cause(s) the surface of <T-NAME> to mystically shine!^?");
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,target,asLevel,0);
+				mob.location().recoverRoomStats(); // attempt to handle followers
+			}
 		}
 		else
 			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to cause shininess, but fail(s).");
