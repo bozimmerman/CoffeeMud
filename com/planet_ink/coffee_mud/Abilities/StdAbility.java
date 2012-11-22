@@ -1232,7 +1232,7 @@ public class StdAbility implements Ability
 			Ability thatAbility=(Ability)copyOf();
 			((StdAbility)thatAbility).canBeUninvoked=true;
 			thatAbility.setSavable(false);
-			((StdAbility)thatAbility).invoker=mob;
+			thatAbility.setInvoker(mob);
 			((StdAbility)thatAbility).isAnAutoEffect=true;
 			mob.addEffect(thatAbility);
 			return true;

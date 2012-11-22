@@ -63,14 +63,11 @@ public class Spell_Light extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if(!(affected instanceof MOB))
-			return;
-		MOB mob=(MOB)affected;
-		Room room=((MOB)affected).location();
-		if(canBeUninvoked())
-			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
+		Room room=CMLib.map().roomLocation(affected);
+		if(canBeUninvoked()&&(room!=null)&&(affected instanceof MOB))
+			room.show((MOB)affected,null,CMMsg.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
 		super.unInvoke();
-		if(canBeUninvoked())
+		if(canBeUninvoked()&&(room!=null))
 			room.recoverRoomStats();
 	}
 
