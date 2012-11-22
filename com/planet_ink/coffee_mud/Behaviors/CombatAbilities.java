@@ -318,7 +318,7 @@ public class CombatAbilities extends StdBehavior
 				{
 					if((msg.target()==victim)
 					||(msg.source().getGroupMembers(new HashSet<MOB>()).contains(victim)))
-						adjustAggro(mob,msg.source(),msg.value()*2);
+						adjustAggro(mob,msg.source(),msg.value()*3);
 				}
 				else
 				if((msg.target()==victim)
