@@ -915,7 +915,9 @@ public interface Ability extends Environmental
 	/** constant mask for the flags() method designating that the thing with this ability cant be learned as a recipe @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_UNCRAFTABLE=33554432L;
 	/** constant mask for the flags() method designating that the thing with this ability might kill you @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
-	public static final long FLAG_POTENTIALLY_DEADLY=67108864;
+	public static final long FLAG_POTENTIALLY_DEADLY=67108864L;
+	/** constant mask for the flags() method designating that the thing with this ability might kill you @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_AGGROFYING=134217728L;
 	
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS={
@@ -944,7 +946,9 @@ public interface Ability extends Environmental
 		"ZAPPER",
 		"CASTER",
 		"ENABLER",
-		"UNCRAFTABLE"
+		"UNCRAFTABLE",
+		"DEADLY",
+		"AGGROING"
 	};
 
 	/* constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()*/
