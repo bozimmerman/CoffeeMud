@@ -59,7 +59,18 @@ public class Spell_Ignite extends Spell
 			durationOfBurn=40+(I.phyStats().weight()*2);
 			break;
 		default:
-			return;
+			switch(I.material())
+			{
+			case RawMaterial.RESOURCE_COAL:
+				durationOfBurn=20*(1+I.phyStats().weight()*3);
+				break;
+			case RawMaterial.RESOURCE_LAMPOIL:
+				durationOfBurn=5+I.phyStats().weight();
+				break;
+			default:
+				return;
+			}
+			break;
 		}
 		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" ignites!");
 		Ability B=CMClass.getAbility("Burning");

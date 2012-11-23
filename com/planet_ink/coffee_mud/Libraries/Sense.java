@@ -1118,6 +1118,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(E instanceof Item)
 		{
 			Item lighting=(Item)E;
+			switch(lighting.material())
+			{
+			case RawMaterial.RESOURCE_COAL:
+				if(E instanceof RawMaterial)
+					return 40;
+				return 20*(1+lighting.phyStats().weight());
+			case RawMaterial.RESOURCE_LAMPOIL:
+				return 5+lighting.phyStats().weight();
+			default:
+				break;
+			}
 			switch(lighting.material()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_LEATHER:
