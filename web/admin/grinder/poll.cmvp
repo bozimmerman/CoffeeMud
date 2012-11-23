@@ -185,7 +185,7 @@
             <TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=ISABSTAIN @PollData?ISABSTAIN@></TD>
         </TR>
         <TR>
-            <TD WIDTH=25%><FONT COLOR=YELLOW>Use IP Addresses: </FONT></TD>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Use IP Addresses/Accounts: </FONT></TD>
             <TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=ISVOTEBYIP @PollData?ISVOTEBYIP@></TD>
         </TR>
         <TR>

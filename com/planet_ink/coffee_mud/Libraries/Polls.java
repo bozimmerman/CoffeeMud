@@ -180,7 +180,11 @@ public class Polls extends StdLibrary implements PollManager
 			}
 			Poll.PollResult R=new Poll.PollResult(mob.Name(),"",""+choice);
 			if(CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP))
+			{
 				R.ip=mob.session().getAddress();
+				if((mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
+					R.ip+="\t"+mob.playerStats().getAccount().accountName();
+			}
 			P.addVoteResult(R);
 		}
 		catch(java.io.IOException x)
@@ -219,7 +223,7 @@ public class Polls extends StdLibrary implements PollManager
 					CMath.setb(P.getFlags(),Poll.FLAG_PREVIEWRESULTS):CMath.unsetb(P.getFlags(),Poll.FLAG_PREVIEWRESULTS));
 			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN),++showNumber,showFlag,"Allow Abstention"))?
 					CMath.setb(P.getFlags(),Poll.FLAG_ABSTAIN):CMath.unsetb(P.getFlags(),Poll.FLAG_ABSTAIN));
-			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP),++showNumber,showFlag,"Use IP Addresses"))?
+			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP),++showNumber,showFlag,"Use IP Addresses/Accounts"))?
 					CMath.setb(P.getFlags(),Poll.FLAG_VOTEBYIP):CMath.unsetb(P.getFlags(),Poll.FLAG_VOTEBYIP));
 			P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_HIDERESULTS),++showNumber,showFlag,"Hide Results"))?
 					CMath.setb(P.getFlags(),Poll.FLAG_HIDERESULTS):CMath.unsetb(P.getFlags(),Poll.FLAG_HIDERESULTS));

@@ -137,8 +137,18 @@ public class DefaultPoll implements Poll
 			R=(PollResult)results.get(r);
 			if((mob.Name().equals(R.user)))
 				return R;
-			if((R.ip.length()>0)&&(S!=null)&&(S.getAddress().equals(R.ip)))
-				return R;
+			if(R.ip.length()>0)
+			{
+				final String address=(S!=null)?S.getAddress():"\n\r\t";
+				final String accountName;
+				final PlayerStats pstats=mob.playerStats();
+				if((pstats!=null)&&(pstats.getAccount()!=null))
+					accountName="\t"+pstats.getAccount().accountName();
+				else
+					accountName="\t\n";
+				if((R.ip.equals(address)||R.ip.startsWith(address+"\t")||R.ip.endsWith(accountName)))
+					return R;
+			}
 		}
 		return null;
 	}
