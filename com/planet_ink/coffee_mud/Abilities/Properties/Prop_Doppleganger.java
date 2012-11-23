@@ -41,6 +41,7 @@ public class Prop_Doppleganger extends Property
 	private int maxLevel=Integer.MAX_VALUE;
 	private int minLevel=Integer.MIN_VALUE;
 	protected Physical lastOwner=null;
+	protected int lastLevel=Integer.MIN_VALUE;
 
 	public long flags(){return Ability.FLAG_ADJUSTER;}
 
@@ -57,10 +58,11 @@ public class Prop_Doppleganger extends Property
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof Item)
-		&&(((Item)affected).owner()!=lastOwner)
+		&&((((Item)affected).owner()!=lastOwner)||((lastOwner!=null)&&(lastOwner.phyStats().level()!=lastLevel)))
 		&&(((Item)affected).owner() instanceof MOB))
 		{
 			lastOwner=((Item)affected).owner();
+			lastLevel=lastOwner.phyStats().level();
 			int level=((MOB)lastOwner).phyStats().level()+CMath.s_int(text());
 			if(text().endsWith("%")) level=(int)Math.round(CMath.mul(level,CMath.s_pct(text())));
 			if(level<minLevel) level=minLevel;
