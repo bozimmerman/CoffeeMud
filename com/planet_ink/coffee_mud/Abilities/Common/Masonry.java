@@ -824,7 +824,7 @@ public class Masonry extends CraftingSkill
 			canBuild=true;
 		}
 		else
-		if(((dir<0)||(dir>3))
+		if(((dir<0)||(dir==Directions.UP)||(dir==Directions.DOWN))
 		&&(CMath.s_int(data[doingCode][DAT_REQDIR])==1))
 		{
 			commonTell(mob,"A valid direction in which to build must also be specified.");
@@ -881,6 +881,22 @@ public class Masonry extends CraftingSkill
 			if((nextRoom!=null)&&(CMLib.law().getLandTitle(nextRoom)==null))
 			{
 				commonTell(mob,"You can not build a wall blocking off the main entrance!");
+				return false;
+			}
+			if(mob.location().getExitInDir(dir)==null)
+			{
+				commonTell(mob,"There is already a wall in that direction!");
+				return false;
+			}
+		}
+		
+		if(doingCode==BUILD_POOL)
+		{
+			Room nextRoom=mob.location().getRoomInDir(Directions.DOWN);
+			Exit exitRoom=mob.location().getExitInDir(Directions.DOWN);
+			if((nextRoom!=null)||(exitRoom!=null))
+			{
+				commonTell(mob,"You may not build a pool here!");
 				return false;
 			}
 		}

@@ -783,7 +783,7 @@ public class Construction extends CraftingSkill
 			canBuild=true;
 		}
 		else
-		if(((dir<0)||(dir>3))
+		if(((dir<0)||(dir==Directions.UP)||(dir==Directions.DOWN))
 		   &&(data[doingCode][DAT_REQDIR].equals("1")))
 		{
 			commonTell(mob,"A valid direction in which to build must also be specified.");
@@ -839,6 +839,11 @@ public class Construction extends CraftingSkill
 			if((nextRoom!=null)&&(CMLib.law().getLandTitle(nextRoom)==null))
 			{
 				commonTell(mob,"You can not build a wall blocking off the main entrance!");
+				return false;
+			}
+			if(mob.location().getExitInDir(dir)==null)
+			{
+				commonTell(mob,"There is already a wall in that direction!");
 				return false;
 			}
 		}
