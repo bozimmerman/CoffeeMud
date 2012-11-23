@@ -58,15 +58,51 @@ public class Spell_ChangeSex extends Spell
 		{
 			if(M.charStats().getStat(CharStats.STAT_GENDER)=='F')
 			{
-				M.setDescription(CMStrings.replaceAll(M.description()," son "," daughter "));
+				M.setDescription(CMStrings.replaceWord(M.description(), "son", "daughter"));
+				M.setName(CMStrings.replaceWord(M.Name(), "son", "daughter"));
+				M.setDisplayText(CMStrings.replaceWord(M.displayText(), "son", "daughter"));
+				M.setDescription(CMStrings.replaceWord(M.description(), "male", "female"));
+				M.setName(CMStrings.replaceWord(M.Name(), "male", "female"));
+				M.setDisplayText(CMStrings.replaceWord(M.displayText(), "male", "female"));
+				M.setDescription(CMStrings.replaceWord(M.description(), "boy", "girl"));
+				M.setName(CMStrings.replaceWord(M.Name(), "boy", "girl"));
+				M.setDisplayText(CMStrings.replaceWord(M.displayText(), "boy", "girl"));
 				if(target!=null)
-					target.setDescription(CMStrings.replaceAll(target.description()," son "," daughter "));
+				{
+					target.setDescription(CMStrings.replaceWord(target.description(), "son", "daughter"));
+					target.setName(CMStrings.replaceWord(target.Name(), "son", "daughter"));
+					target.setDisplayText(CMStrings.replaceWord(target.displayText(), "son", "daughter"));
+					target.setDescription(CMStrings.replaceWord(target.description(), "male", "female"));
+					target.setName(CMStrings.replaceWord(target.Name(), "male", "female"));
+					target.setDisplayText(CMStrings.replaceWord(target.displayText(), "male", "female"));
+					target.setDescription(CMStrings.replaceWord(target.description(), "boy", "girl"));
+					target.setName(CMStrings.replaceWord(target.Name(), "boy", "girl"));
+					target.setDisplayText(CMStrings.replaceWord(target.displayText(), "boy", "girl"));
+				}
 			}
 			else
 			{
-				M.setDescription(CMStrings.replaceAll(M.description()," daughter "," son "));
+				M.setDescription(CMStrings.replaceWord(M.description(), "daughter", "son"));
+				M.setName(CMStrings.replaceWord(M.Name(), "daughter", "son"));
+				M.setDisplayText(CMStrings.replaceWord(M.displayText(), "daughter", "son"));
+				M.setDescription(CMStrings.replaceWord(M.description(), "female", "male"));
+				M.setName(CMStrings.replaceWord(M.Name(), "female", "male"));
+				M.setDisplayText(CMStrings.replaceWord(M.displayText(), "female", "male"));
+				M.setDescription(CMStrings.replaceWord(M.description(), "girl", "boy"));
+				M.setName(CMStrings.replaceWord(M.Name(), "girl", "boy"));
+				M.setDisplayText(CMStrings.replaceWord(M.displayText(), "girl", "boy"));
 				if(target!=null)
-					target.setDescription(CMStrings.replaceAll(target.description()," daughter "," son "));
+				{
+					target.setDescription(CMStrings.replaceWord(target.description(), "daughter", "son"));
+					target.setName(CMStrings.replaceWord(target.Name(), "daughter", "son"));
+					target.setDisplayText(CMStrings.replaceWord(target.displayText(), "daughter", "son"));
+					target.setDescription(CMStrings.replaceWord(target.description(), "female", "male"));
+					target.setName(CMStrings.replaceWord(target.Name(), "female", "male"));
+					target.setDisplayText(CMStrings.replaceWord(target.displayText(), "female", "male"));
+					target.setDescription(CMStrings.replaceWord(target.description(), "girl", "boy"));
+					target.setName(CMStrings.replaceWord(target.Name(), "girl", "boy"));
+					target.setDisplayText(CMStrings.replaceWord(target.displayText(), "girl", "boy"));
+				}
 			}
 		}
 	}

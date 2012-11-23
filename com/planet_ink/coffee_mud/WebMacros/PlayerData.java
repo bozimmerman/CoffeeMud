@@ -146,7 +146,7 @@ public class PlayerData extends StdWebMacro
 		case 10: if(M.maxCarry()>(Integer.MAX_VALUE/3)) str.append("NA, "); else str.append(M.maxCarry()+", "); break;
 		case 11: str.append(CMStrings.capitalizeAndLower(CMStrings.removeColors(CMLib.combat().fightingProwessStr(M)))+", "); break;
 		case 12: str.append(CMStrings.capitalizeAndLower(CMStrings.removeColors(CMLib.combat().armorStr(M)))+", "); break;
-		case 13: str.append(CMLib.combat().adjustedDamage(M,null,null)+", "); break;
+		case 13: str.append(CMLib.combat().adjustedDamage(M,null,null,0,false)+", "); break;
 		case 14: str.append(Math.round(CMath.div(M.getAgeMinutes(),60.0))+", "); break;
 		case 15: str.append(M.getPractices()+", "); break;
 		case 16: str.append(M.getExperience()+", "); break;

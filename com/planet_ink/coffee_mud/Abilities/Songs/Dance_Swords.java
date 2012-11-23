@@ -97,45 +97,54 @@ public class Dance_Swords extends Dance
 		if(affected==M)
 		{
 			Weapon sword=null;
+			int num=0;
 			for(int i=0;i<M.location().numItems();i++)
 			{
 				Item I=M.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Weapon)
-				&&(((Weapon)I).weaponClassification()==Weapon.CLASS_SWORD)
-				&&(I.fetchEffect(ID())==null))
+				&&(((Weapon)I).weaponClassification()==Weapon.CLASS_SWORD))
 				{
-					sword=(Weapon)I;
-					break;
+					if((!CMLib.flags().isFlying(I))&&(I.fetchEffect(ID())==null))
+					{
+						sword=(Weapon)I;
+						break;
+					}
+					else
+					{
+						num++;
+					}
 				}
 			}
 			if(sword==null) return true;
+			final int max=3+(super.getXLEVELLevel(invoker())/2);
+			if(num>max) return true;
 			Dance newOne=(Dance)this.copyOf();
 			newOne.invokerManaCost=-1;
 			newOne.startTickDown(M,sword,99999);
 			return true;
 		}
 		else
-		if((affected!=null)
-		&&(affected instanceof Item)
-		&&(((Item)affected).owner()!=null)
-		&&(((Item)affected).owner() instanceof Room)
+		if((affected instanceof Weapon)
+		&&(((Weapon)affected).owner() instanceof Room)
 		&&(M!=null)
-		&&(M.location().isContent((Item)affected))
+		&&(M.location().isContent((Weapon)affected))
 		&&(M.fetchEffect(ID())!=null)
 		&&(CMLib.flags().aliveAwakeMobile(M,true)))
 		{
 			MOB victiM=M.getVictim();
 			if(M.isInCombat())
 			{
-				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+((Item)affected).phyStats().attackAdjustment(), CMLib.combat().adjustedArmor(victiM), 0));
+				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+((Weapon)affected).phyStats().attackAdjustment(), CMLib.combat().adjustedArmor(victiM), 0));
 				if((!isHit)||(!(affected instanceof Weapon)))
 					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
-					CMLib.combat().postDamage(M,victiM,affected,
-											CMLib.dice().roll(1,affected.phyStats().damage(),5+getXLEVELLevel(M)),
-											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
+				{
+					int bonusDamage=(affected.phyStats().damage()+5+getXLEVELLevel(M))-M.phyStats().damage();
+					int damage=CMLib.combat().adjustedDamage(M, (Weapon)affected, victiM, bonusDamage,false);
+					CMLib.combat().postDamage(M,victiM,affected,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
+				}
 			}
 			else
 			if(CMLib.dice().rollPercentage()>75)

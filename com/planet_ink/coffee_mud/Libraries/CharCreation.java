@@ -865,12 +865,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						if(pointsLeft == 0)
 						{
 							session.println("\n\r^!You have no more points remaining.^N");
-							promptStr = "^!Enter a Stat name to remove a point, or ENTER when you are done: ^N";
+							promptStr = "^!Enter a Stat Name to remove a point, R for a random roll, or ENTER when done.^N\n\r: ^N";
 						}
 						else
 						{
 							session.println("\n\r^!You have "+pointsLeft+" points remaining.^N");
-							promptStr = "^!Enter one of the Stat names above to add or remove a point: ^N";
+							promptStr = "^!Enter a Stat Name to add or remove a point, or R for a random roll.^N\n\r: ^N";
 						}
 							
 						String prompt = session.prompt(promptStr);
@@ -884,6 +884,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 							else
 								return;
 						}
+						if(prompt.toLowerCase().startsWith("r"))
+						{
+							unmodifiedCT.copyInto(mob.baseCharStats());
+							reRollStats(mob,mob.baseCharStats(),getTotalStatPoints() + bonusPoints);
+							pointsLeft=0;
+							prompt="";
+						}
+						else
 						if(prompt.trim().length()>0)
 						{
 							prompt = prompt.trim();

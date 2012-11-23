@@ -478,7 +478,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return baseDamage;
 	}
 	
-	public int adjustedDamage(MOB mob, Weapon weapon, MOB target)
+	public int adjustedDamage(MOB mob, Weapon weapon, MOB target, int bonusDamage, boolean allowCrits)
 	{
 		double damageAmount=0.0;
 		Physical useDmg = null;
@@ -494,7 +494,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(target!=null)
 		{
 			double[] vars = {
-					useDmg.phyStats().damage(),
+					useDmg.phyStats().damage()+bonusDamage,
 					mob.charStats().getStat(CharStats.STAT_STRENGTH),
 					mob.phyStats().level(),
 					target.phyStats().level(),
@@ -513,7 +513,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		else
 		{
 			double[] vars = {
-					useDmg.phyStats().damage(),
+					useDmg.phyStats().damage()+bonusDamage,
 					mob.charStats().getStat(CharStats.STAT_STRENGTH),
 					mob.phyStats().level(),
 					0,
@@ -552,11 +552,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				mob.phyStats().level(),
 				(target==null)?0:target.phyStats().level()
 			};
-		int weaponCritChancePct = (int)Math.round(CMath.parseMathExpression(weaponCritChanceFormula, vars, 0.0));
-		if(CMLib.dice().rollPercentage()<weaponCritChancePct)
+		if(allowCrits)
 		{
-			int weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(weaponCritDmgFormula, vars, 0.0));
-			damageAmount += weaponCritDmgAmt;
+			int weaponCritChancePct = (int)Math.round(CMath.parseMathExpression(weaponCritChanceFormula, vars, 0.0));
+			if(CMLib.dice().rollPercentage()<weaponCritChancePct)
+			{
+				int weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(weaponCritDmgFormula, vars, 0.0));
+				damageAmount += weaponCritDmgAmt;
+			}
 		}
 		if(target != null)
 		{
@@ -579,7 +582,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(item instanceof Weapon)
 		{
 			weapon=(Weapon)item;
-			damageInt=CMLib.combat().adjustedDamage(source,weapon,target);
+			damageInt=CMLib.combat().adjustedDamage(source,weapon,target,0,true);
 			damageType=weapon.weaponType();
 		}
 		if(success)

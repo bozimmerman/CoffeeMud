@@ -2418,3 +2418,4 @@ ruthless programmer, and sentenced to a quick death.
 22.Potions/Pills/Scrolls/Powders now support parameters for spells on them.
 23.Scriptable: get_prog now applies to getting items from containers on the ground.
 24.Druids can now shapeshift into lower versions of their existing shapeshift forms.
+25.Char Creation Stat picker now has Random Roll option.
