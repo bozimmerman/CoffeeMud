@@ -139,7 +139,6 @@ public class Skill_Subdue extends StdSkill
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,0);
-				mob.setVictim(target);
 				Skill_Subdue SK=(Skill_Subdue)mob.fetchEffect(ID());
 				if(SK!=null)
 				{
