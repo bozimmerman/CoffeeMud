@@ -164,7 +164,11 @@ public class StdWand extends StdItem implements Wand
 							V.addElement(message);
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly.");
 							this.setUsesRemaining(this.usesRemaining()-1);
-							A.invoke(mob, V, target, true,phyStats().level());
+							int level=phyStats().level();
+							int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+							if(level<lowest)
+								level=lowest;
+							A.invoke(mob, V, target, true,level);
 							wandUse.helpProficiency(mob, 0);
 							return;
 						}
@@ -216,7 +220,11 @@ public class StdWand extends StdItem implements Wand
 							V.addAll(CMParms.parse(message));
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
 							me.setUsesRemaining(me.usesRemaining()-1);
-							A.invoke(mob, V, target, true, me.phyStats().level());
+							int level=me.phyStats().level();
+							int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+							if(level<lowest)
+								level=lowest;
+							A.invoke(mob, V, target, true, level);
 							wandUse.helpProficiency(mob, 0);
 							return;
 						}
