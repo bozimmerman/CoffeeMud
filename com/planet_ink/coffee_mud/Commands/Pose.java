@@ -36,11 +36,27 @@ public class Pose extends StdCommand
 {
 	public Pose(){}
 
-	private final String[] access={"POSE"};
+	private final String[] access={"POSE","NOPOSE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		if((commands.size()>0)&&(commands.firstElement().toString().equalsIgnoreCase("NOPOSE")))
+		{
+			PlayerStats pstats = mob.playerStats();
+			if(pstats != null)
+			{
+				if((pstats.getSavedPose()==null)||(pstats.getSavedPose().length()==0))
+				{
+					mob.tell("You are not currently posing.");
+					return false;
+				}
+				pstats.setSavedPose("");
+				mob.setDisplayText("");
+				mob.tell("You stop posing.");
+			}
+			return false;
+		}
 		if(commands.size()<2)
 		{
 			if(mob.displayText().length()==0)
