@@ -103,6 +103,7 @@ public class Monk extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_BlindFighting",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_PressurePoints",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_CatchProjectile",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Fighter_FlyingKick",false,CMParms.parseSemicolons("Fighter_AxKick",true));
