@@ -183,7 +183,12 @@ public class Barbarian extends StdCharClass
 		   &&(msg.tool() instanceof Weapon)
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int recovery=(myChar.charStats().getClassLevel(this)/5);
+			int classLevel=myChar.charStats().getClassLevel(this);
+			int recovery=(classLevel/5);
+			double minPct=.10+((classLevel>33)?((classLevel-30)*.0025):0);
+			int minAmount=(int)Math.round(CMath.mul(msg.value(), minPct));
+			if(recovery < minAmount)
+				recovery=minAmount;
 			msg.setValue(msg.value()-recovery);
 		}
 		else
