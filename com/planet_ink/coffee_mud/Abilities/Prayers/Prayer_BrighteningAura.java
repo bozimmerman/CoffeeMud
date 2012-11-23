@@ -65,7 +65,7 @@ public class Prayer_BrighteningAura extends Prayer
 		MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
-		&&(msg.sourceMinor()==CMMsg.TYP_HEALING)
+		&&(msg.targetMinor()==CMMsg.TYP_HEALING)
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 		&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)

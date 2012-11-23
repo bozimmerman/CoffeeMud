@@ -250,7 +250,7 @@ public class Healer extends Cleric
 			if(msg.sourceMinor()==CMMsg.TYP_LIFE)
 				affectHealingAura(myChar);
 			if((!myChar.isMonster())
-			&&(msg.sourceMinor()==CMMsg.TYP_HEALING)
+			&&(msg.targetMinor()==CMMsg.TYP_HEALING)
 			&&(msg.tool() instanceof Ability)
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 			&&(myChar.isMine(msg.tool()))

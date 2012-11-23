@@ -46,6 +46,7 @@ public class Prayer_DivineConstitution extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int conPts=1;
 	protected int xtraHPs=0;
+	protected int maxPoints=6;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -67,11 +68,11 @@ public class Prayer_DivineConstitution extends Prayer
 
 		if((msg.target()==affected)
 		&&(affected instanceof MOB)
-		&&(msg.sourceMinor()==CMMsg.TYP_HEALING)
+		&&(msg.targetMinor()==CMMsg.TYP_HEALING)
 		&&(msg.source().location()!=null)
 		&&(msg.source()==invoker())
-		&&(conPts<6)
-		&&(CMLib.dice().rollPercentage()<(10+getX1Level(msg.source()))))
+		&&(conPts<maxPoints)
+		&&(CMLib.dice().rollPercentage()<(50+(5*getX1Level(msg.source())))))
 		{
 			MOB M=(MOB)affected;
 			Room R=M.location();
@@ -83,6 +84,8 @@ public class Prayer_DivineConstitution extends Prayer
 				R.show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> gain(s) divine health!");
 				conPts++;
 				xtraHPs+=1+diff;
+				msg.source().recoverCharStats();
+				msg.source().recoverMaxState();
 			}
 		}
 		return super.okMessage(host,msg);
@@ -121,8 +124,9 @@ public class Prayer_DivineConstitution extends Prayer
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"<T-NAME> become(s) covered by divine constitution.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to be covered by divine constitution.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
-				conPts=1;
+				conPts=1+(super.getXLEVELLevel(mob)/2);
 				xtraHPs=0;
+				maxPoints=6+(super.getXLEVELLevel(mob)/2);
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 				target.recoverPhyStats();
