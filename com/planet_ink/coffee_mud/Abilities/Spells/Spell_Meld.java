@@ -376,6 +376,8 @@ public class Spell_Meld extends Spell
 					}
 					melded.recoverPhyStats();
 				}
+				if((melded!=null)&&(melded.subjectToWearAndTear()))
+					melded.setUsesRemaining(100);
 				itemOne.destroy();
 				itemTwo.destroy();
 				mob.location().recoverRoomStats();
