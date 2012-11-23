@@ -47,6 +47,7 @@ public class WingFlying extends StdAbility
 	private static final String[] triggerStrings = {"FLAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
+	public int usageType(){return USAGE_MOVEMENT;}
 	protected Race flyingRace=null;
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
