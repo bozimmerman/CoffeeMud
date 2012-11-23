@@ -136,7 +136,7 @@ public class Wear extends StdCommand
 				}
 				// will always break out here, one way or the other.
 			}
-		List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
+		List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
