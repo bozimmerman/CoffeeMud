@@ -113,16 +113,16 @@ public class Chant_StarGazing extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -ratePct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> whisper(s) to infinity."); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> learn(s) the patterns of the heavens."); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> watch(es) a single point of light."); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> embrace(s) the cosmos."); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> inhale(s) the heavens."); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> watch(es) the stars move across the sky."); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> become(s) one with the universe."); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> seek(s) the inner beauty of the cosmic order."); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> find(s) clarity in the stars."); break;
+				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> whisper(s) to infinity."); break;
+				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> learn(s) the patterns of the heavens."); break;
+				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> watch(es) a single point of light."); break;
+				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> embrace(s) the cosmos."); break;
+				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> inhale(s) the heavens."); break;
+				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> watch(es) the stars move across the sky."); break;
+				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> become(s) one with the universe."); break;
+				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> seek(s) the inner beauty of the cosmic order."); break;
+				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."); break;
+				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> find(s) clarity in the stars."); break;
 				}
 			}
 		}

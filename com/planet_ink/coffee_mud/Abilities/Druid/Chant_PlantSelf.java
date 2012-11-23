@@ -112,16 +112,16 @@ public class Chant_PlantSelf extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> whisper(s) to the wind."); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> lean(s) towards the sun."); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> feel(s) the life of the insects."); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> feed(s) on the moisture of the earth."); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> take(s) in the energy of the sun."); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> feel(s) <S-HIM-HERSELF> grow."); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> become(s) one with the earth."); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> seek(s) the inner beauty of the natural order."); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> find(s) clarity in the natural world."); break;
+				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> whisper(s) to the wind."); break;
+				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> lean(s) towards the sun."); break;
+				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> feel(s) the life of the insects."); break;
+				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> feed(s) on the moisture of the earth."); break;
+				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> take(s) in the energy of the sun."); break;
+				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> feel(s) <S-HIM-HERSELF> grow."); break;
+				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> become(s) one with the earth."); break;
+				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> seek(s) the inner beauty of the natural order."); break;
+				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."); break;
+				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,"<S-NAME> find(s) clarity in the natural world."); break;
 				}
 			}
 		}

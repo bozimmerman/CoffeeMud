@@ -123,6 +123,24 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(msg.tool()==myShopkeeper)
 		&&(msg.target()==this))
 			CMLib.threads().startTickDown(this,Tickable.TICKID_ITEM_BOUNCEBACK,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+		&&(msg.target() instanceof Room)
+		&&(owner()==msg.source())
+		&&(msg.source().location() instanceof Room)
+		&&(((Room)msg.target()).getArea()!=msg.source().location().getArea())
+		&&(super.miscText!=null))
+		{
+			Area shopArea=CMLib.map().areaLocation(myShopkeeper);
+			if((shopArea==((Room)msg.target()).getArea())||(shopArea==null))
+			{
+				if(super.miscText.startsWith("-"))
+					super.miscText=super.miscText.substring(1);
+			}
+			else
+			if(!super.miscText.startsWith("-"))
+				super.miscText="-"+super.miscText;
+		}
 		return true;
 	}
 }

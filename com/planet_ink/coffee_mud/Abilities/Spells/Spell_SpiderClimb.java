@@ -59,10 +59,10 @@ public class Spell_SpiderClimb extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		Room room=((MOB)affected).location();
-		if((canBeUninvoked())&&(!mob.amDead()))
+		if((canBeUninvoked())&&(!mob.amDead())&&(room!=null))
 			room.show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> no longer <S-HAS-HAVE> a spidery gait.");
 		super.unInvoke();
-		if(canBeUninvoked())
+		if(canBeUninvoked()&&(room!=null))
 			room.recoverRoomStats();
 	}
 
