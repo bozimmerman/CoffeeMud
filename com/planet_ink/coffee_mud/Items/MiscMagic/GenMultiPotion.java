@@ -106,7 +106,11 @@ public class GenMultiPotion extends GenDrink implements Potion
 				for(int i=0;i<spells.size();i++)
 				{
 					Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
-					thisOne.invoke(mob,mob,true,phyStats().level());
+					int level=phyStats().level();
+					int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
+					if(level<lowest)
+						level=lowest;
+					thisOne.invoke(mob,mob,true,level);
 				}
 			}
 
