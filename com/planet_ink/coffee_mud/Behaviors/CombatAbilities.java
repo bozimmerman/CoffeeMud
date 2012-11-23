@@ -197,7 +197,9 @@ public class CombatAbilities extends StdBehavior
 				if(move!=0) text+=" MOVE"+(move>0?"+":"")+move;
 				if(text.length()>0)
 				{
-					mob.addNonUninvokableEffect(A);
+					mob.addPriorityEffect(A);
+					A.makeNonUninvokable();
+					A.makeLongLasting();
 					A.setMiscText(text);
 					A.setSavable(false);
 					mob.recoverPhyStats();
