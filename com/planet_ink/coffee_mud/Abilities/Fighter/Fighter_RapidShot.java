@@ -63,7 +63,7 @@ public class Fighter_RapidShot extends FighterSkill
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
 				helpProficiency(mob, 0);
-				final int extraAttacks=1+(int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,0),10.0)));
+				final int extraAttacks=1+(int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,0),16.0)));
 				for(int i=0;i<extraAttacks;i++)
 					CMLib.combat().postAttack(mob,mob.getVictim(),w);
 			}
