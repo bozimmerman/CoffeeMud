@@ -45,9 +45,13 @@ public class Spell_Wish extends Spell
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overridemana(){return Ability.COST_ALL;}
 
-	protected Physical maybeAdd(Physical E, Vector foundAll, Physical foundThang)
+	protected Physical maybeAdd(MOB mob, Physical E, Vector foundAll, Physical foundThang)
 	{
+		Room R=CMLib.map().roomLocation(E);
 		if((E!=null)
+		&&(!(E instanceof ArchonOnly))
+		&&(!(E instanceof ClanItem))
+		&&((R==null)||(CMLib.law().getLandTitle(R)==null)||(CMLib.law().doesHavePriviledgesHere(mob, R)))
 		&&((foundThang==null)
 		   ||((foundThang.ID().equals(E.ID()))&&(foundThang.name().equals(E.name())))))
 		{
@@ -228,7 +232,7 @@ public class Spell_Wish extends Spell
 			Vector thangsFound=new Vector();
 			Physical foundThang=null;
 			Physical P=mob.location().fetchFromRoomFavorItems(null,objectWish);
-			foundThang=maybeAdd(P,thangsFound,foundThang);
+			foundThang=maybeAdd(mob,P,thangsFound,foundThang);
 			try
 			{
 				List<Environmental> items=new LinkedList<Environmental>();
@@ -238,7 +242,7 @@ public class Spell_Wish extends Spell
 				items.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), mob,objectWish,10));
 				for(final Environmental O : items)
 					if(O instanceof Physical)
-						foundThang=maybeAdd(((Physical)O),thangsFound,foundThang);
+						foundThang=maybeAdd(mob,((Physical)O),thangsFound,foundThang);
 			}catch(NoSuchElementException nse){}
 
 			if(foundThang instanceof PackagedItems)

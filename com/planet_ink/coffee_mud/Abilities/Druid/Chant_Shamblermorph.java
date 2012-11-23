@@ -127,6 +127,7 @@ public class Chant_Shamblermorph extends Chant
 						maliciousAffect(mob,target,asLevel,0,-1);
 					else
 						beneficialAffect(mob,target,asLevel,0);
+					CMLib.utensils().confirmWearability(target);
 				}
 			}
 		}
