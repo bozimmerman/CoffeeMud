@@ -118,7 +118,7 @@ public class After extends StdCommand implements Tickable
 		return false;
 	}
 
-	public boolean canBeOrdered(){return true;}
+	public boolean canBeOrdered(){return false;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.AFTER);}
 
 
