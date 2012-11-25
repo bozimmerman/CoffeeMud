@@ -91,4 +91,50 @@ public class ThiefSkill extends StdAbility
 		}
 		return highestMOB;
 	}
+	
+	public Physical getOpenable(MOB mob, Room room, Physical givenTarget, Vector commands, int[] dirCode, boolean failOnOpen)
+	{
+		if((room==null)||(mob==null)) return null;
+		String whatToOpen=CMParms.combine(commands,0);
+		Physical unlockThis=null;
+		dirCode[0]=Directions.getGoodDirectionCode(whatToOpen);
+		if(dirCode[0]>=0)
+			unlockThis=room.getExitInDir(dirCode[0]);
+		if(unlockThis==null)
+			unlockThis=getTarget(mob,room,givenTarget,commands,Wearable.FILTER_ANY);
+		else
+		if(givenTarget != null)
+			unlockThis = givenTarget;
+		
+		if(unlockThis instanceof Exit)
+		{
+			if(((Exit)unlockThis).isOpen()==failOnOpen)
+			{
+				if(failOnOpen)
+					mob.tell(mob,unlockThis,null,"<T-NAME> is open!");
+				else
+					mob.tell(mob,unlockThis,null,"<T-NAME> is closed!");
+				return null;
+			}
+			
+		}
+		else
+		if(unlockThis instanceof Container)
+		{
+			if(((Container)unlockThis).isOpen()==failOnOpen)
+			{
+				if(failOnOpen)
+					mob.tell(mob,unlockThis,null,"<T-NAME> is open!");
+				else
+					mob.tell(mob,unlockThis,null,"<T-NAME> is closed!");
+				return null;
+			}
+		}
+		else
+		{
+			mob.tell(mob,unlockThis,null,"You can't do that to <T-NAME>.");
+			return null;
+		}
+		return unlockThis;
+	}
 }
