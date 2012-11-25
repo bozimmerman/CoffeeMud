@@ -92,7 +92,7 @@ public class GetsAllEquipped extends ActiveTicker
 				}
 			}
 			for(int d=0;d<dropThisStuff.size();d++)
-				mob.enqueCommand(new XVector("DROP",((Item)dropThisStuff.elementAt(d)).Name()),Command.METAFLAG_FORCED,0);
+				mob.enqueCommand(new XVector("DROP","$"+((Item)dropThisStuff.elementAt(d)).Name()+"$"),Command.METAFLAG_FORCED,0);
 			mob.enqueCommand(new XVector("WEAR","ALL"),Command.METAFLAG_FORCED,0);
 		}
 		return true;

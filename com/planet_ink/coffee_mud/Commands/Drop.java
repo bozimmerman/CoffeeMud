@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.io.IOException;
 import java.util.*;
 
 /* 
@@ -179,5 +180,16 @@ public class Drop extends StdCommand
 	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if((args.length>=3)
+		&&(args[0] instanceof Environmental)
+		&&(args[1] instanceof Boolean)
+		&&(args[2] instanceof Boolean))
+		{
+			return Boolean.valueOf(drop(mob,(Environmental)args[0],((Boolean)args[1]).booleanValue(),((Boolean)args[2]).booleanValue()));
+		}
+		return super.executeInternal(mob, metaFlags, args);
+	}
 	
 }

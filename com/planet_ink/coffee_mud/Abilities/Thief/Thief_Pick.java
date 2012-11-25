@@ -53,27 +53,15 @@ public class Thief_Pick extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		String whatTounlock=CMParms.combine(commands,0);
-		Physical unlockThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
-		if(dirCode>=0)
-			unlockThis=mob.location().getExitInDir(dirCode);
-		if(unlockThis==null)
-			unlockThis=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
+		int[] dirCode=new int[]{-1};
+		Physical unlockThis=super.getOpenable(mob, mob.location(), givenTarget, commands, dirCode, true);
 		if(unlockThis==null) return false;
-
+		
 		if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).hasALock()))
 		||((unlockThis instanceof Container)&&(!((Container)unlockThis).hasALock()))
 		||((unlockThis instanceof Item)&&(!(unlockThis instanceof Container))))
 		{
 			mob.tell("There is no lock on "+unlockThis.name()+"!");
-			return false;
-		}
-
-		if(((unlockThis instanceof Exit)&&(((Exit)unlockThis).isOpen()))
-		||((unlockThis instanceof Container)&&(((Container)unlockThis).isOpen())))
-		{
-			mob.tell(unlockThis.name()+" is open!");
 			return false;
 		}
 
@@ -103,7 +91,7 @@ public class Thief_Pick extends ThiefSkill
 					lastDone.addElement(""+unlockThis);
 					msg.setValue(1);
 				}
-				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode);
+				CMLib.utensils().roomAffectFully(msg,mob.location(),dirCode[0]);
 			}
 		}
 
