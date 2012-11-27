@@ -104,7 +104,9 @@ public class Paralysis extends StdAbility
 				target.location().send(target,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					int levelDiff=(adjustedLevel(mob, asLevel)-target.phyStats().level());
+					if(levelDiff<0) levelDiff=0;
+					success=maliciousAffect(mob,target,asLevel,10 + (levelDiff/10),-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't move!");
 				}
 			}

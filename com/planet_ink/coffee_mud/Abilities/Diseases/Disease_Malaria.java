@@ -77,7 +77,7 @@ public class Disease_Malaria extends Disease
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
-			int damage=CMLib.dice().roll(2,diseaser.phyStats().level()+1,1);
+			int damage=CMLib.dice().roll(2,mob.phyStats().level()+1,1);
 			CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);
 			if(CMLib.dice().rollPercentage()==1)

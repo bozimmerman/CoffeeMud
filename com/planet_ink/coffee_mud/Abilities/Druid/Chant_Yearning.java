@@ -73,8 +73,8 @@ public class Chant_Yearning extends Chant
 		MOB myChar=(MOB)affected;
 
 		if((msg.amISource(myChar))
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
+		&&(msg.source()!=msg.target())
 		&&(msg.tool() instanceof Social)
 		&&(msg.tool().Name().equals("MATE <T-NAME>")
 			||msg.tool().Name().equals("SEX <T-NAME>"))
