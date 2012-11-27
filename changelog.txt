@@ -2421,3 +2421,4 @@ ruthless programmer, and sentenced to a quick death.
 25.Char Creation Stat picker now has Random Roll option.
 26.POSE can now be turned off with NOPOSE
 27.The POLL system now supports 1 vote per account for those using the account system.
+28.Prop_TrashCan supports a DELAY parameter

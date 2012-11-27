@@ -37,6 +37,52 @@ public class Prop_Trashcan extends Property
 	public String ID() { return "Prop_Trashcan"; }
 	public String name(){ return "Auto purges items put into a container";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	protected SLinkedList<Item> trashables=new SLinkedList<Item>();
+	protected int tickDelay=0;
+	protected volatile long lastAddition=0;
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(tickID==Tickable.TICKID_PROPERTY_SPECIAL)
+		{
+			synchronized(trashables)
+			{
+				if((System.currentTimeMillis()-lastAddition)<((tickDelay-1)*CMProps.getTickMillis()))
+					return true;
+				for(Item I : trashables)
+					I.destroy();
+				lastAddition=0;
+			}
+			return false;
+		}
+		return true;
+	}
+
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		tickDelay=CMParms.getParmInt(newMiscText, "DELAY", 0);
+	}
+	
+	protected void process(Item I)
+	{
+		if(tickDelay==0)
+			I.destroy();
+		else
+		synchronized(trashables)
+		{
+			lastAddition=System.currentTimeMillis()-10;
+			if(lastAddition==0)
+			{
+				CMLib.threads().deleteTick(this, Tickable.TICKID_PROPERTY_SPECIAL);
+				CMLib.threads().startTickDown(this, Tickable.TICKID_PROPERTY_SPECIAL, tickDelay);
+			}
+			trashables.add(I);
+		}
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -45,12 +91,12 @@ public class Prop_Trashcan extends Property
 		&&(msg.amITarget(affected))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
-			((Item)msg.tool()).destroy();
+			process((Item)msg.tool());
 		else
 		if((affected instanceof Room)
 		&&(msg.targetMinor()==CMMsg.TYP_DROP)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Item))
-			((Item)msg.target()).destroy();
+			process((Item)msg.target());
 	}
 }
