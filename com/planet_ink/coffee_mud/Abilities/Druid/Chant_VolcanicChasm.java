@@ -54,7 +54,7 @@ public class Chant_VolcanicChasm extends Chant
 				MOB M=R.fetchInhabitant(i);
 				if((M!=null)&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
 				{
-					CMLib.combat().postDamage(invoker(),M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*super.getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_MELTING,"The extreme heat <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(invoker(),M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*super.getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_MELTING,"The extreme heat <DAMAGES> <T-NAME>!");
 					if((!M.isInCombat())
 					&&(M!=invoker)
 					&&(!M.amDead())
@@ -75,7 +75,7 @@ public class Chant_VolcanicChasm extends Chant
 				}
 			}
 		}
-		return true;
+		return super.tick(ticking, tickID);
 	}
 
 	protected boolean checked=false;

@@ -136,7 +136,7 @@ public class Prayer_Gateway extends Prayer
 				mob.location().setRawExit(Directions.GATE,e);
 				newRoom.setRawExit(Directions.GATE,e);
 				oldRoom=mob.location();
-				beneficialAffect(mob,e,asLevel,5);
+				beneficialAffect(mob,e,asLevel,15);
 			}
 		}
 		else

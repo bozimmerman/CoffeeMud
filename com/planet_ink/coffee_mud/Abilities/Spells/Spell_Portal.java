@@ -170,7 +170,7 @@ public class Spell_Portal extends Spell
 				mob.location().setRawExit(Directions.GATE,e);
 				newRoom.setRawExit(Directions.GATE,e2);
 				oldRoom=mob.location();
-				beneficialAffect(mob,e,asLevel,5);
+				beneficialAffect(mob,e,asLevel,15);
 			}
 		}
 		else

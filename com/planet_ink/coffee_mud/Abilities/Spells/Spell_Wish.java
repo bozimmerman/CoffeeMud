@@ -627,9 +627,10 @@ public class Spell_Wish extends Spell
 				x=wsh.lastIndexOf(' ');
 				int amount=25;
 				if((x>=0)&&(CMath.isNumber(wsh.substring(x).trim())))
-				   amount=CMath.s_int(wsh.substring(x).trim());
+					amount=CMath.s_int(wsh.substring(x).trim());
 				if((amount*4)>mob.getExperience())
 					amount=mob.getExperience()/4;
+				
 				CMLib.leveler().postExperience(mob,null,null,-(amount*4),false);
 				mob.tell("Your wish has drained you of "+(amount*4)+" experience points.");
 				CMLib.leveler().postExperience((MOB)target,null,null,amount,false);

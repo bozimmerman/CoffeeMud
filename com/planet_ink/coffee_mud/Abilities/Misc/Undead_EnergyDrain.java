@@ -46,6 +46,7 @@ public class Undead_EnergyDrain extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int levelsDown=1;
+	public int direction=1;
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -53,13 +54,13 @@ public class Undead_EnergyDrain extends StdAbility
 		if(affected==null) return;
 		if(levelsDown<0) return;
 		int attacklevel=affectableStats.attackAdjustment()/affectableStats.level();
-		affectableStats.setLevel(affectableStats.level()-levelsDown);
+		affectableStats.setLevel(affectableStats.level()-(levelsDown*direction));
 		if(affectableStats.level()<=0)
 		{
 			levelsDown=-1;
 			CMLib.combat().postDeath(invoker(),(MOB)affected,null);
 		}
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(attacklevel*levelsDown));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(attacklevel*(levelsDown*direction)));
 	}
 
 	public void affectCharState(MOB affected, CharState affectableState)
@@ -67,18 +68,18 @@ public class Undead_EnergyDrain extends StdAbility
 		super.affectCharState(affected,affectableState);
 		if(affected==null) return;
 		int hplevel=affectableState.getHitPoints()/affected.basePhyStats().level();
-		affectableState.setHitPoints(affectableState.getHitPoints()-(hplevel*levelsDown));
+		affectableState.setHitPoints(affectableState.getHitPoints()-(hplevel*(levelsDown*direction)));
 		int manalevel=affectableState.getMana()/affected.basePhyStats().level();
-		affectableState.setMana(affectableState.getMana()-(manalevel*levelsDown));
+		affectableState.setMana(affectableState.getMana()-(manalevel*(levelsDown*direction)));
 		int movelevel=affectableState.getMovement()/affected.basePhyStats().level();
-		affectableState.setMovement(affectableState.getMovement()-(movelevel*levelsDown));
+		affectableState.setMovement(affectableState.getMovement()-(movelevel*(levelsDown*direction)));
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		int newLevel=affected.basePhyStats().level()-levelsDown-affectableStats.combinedSubLevels();
+		int newLevel=affected.basePhyStats().level()-(direction*(levelsDown-affectableStats.combinedSubLevels()));
 		if(newLevel<0) newLevel=0;
 		affectableStats.setClassLevel(affectableStats.getCurrentClass(),newLevel);
 	}
@@ -141,7 +142,13 @@ public class Undead_EnergyDrain extends StdAbility
 						mob.recoverMaxState();
 					}
 					else
+					{
+						direction=1;
+						if(target.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
+							direction=-1;
 						success=maliciousAffect(mob,target,asLevel,0,-1);
+						
+					}
 				}
 			}
 		}
