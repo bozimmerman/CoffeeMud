@@ -45,6 +45,14 @@ public class Spell_CauseStink extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	public int cycle=1;
 
+	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMob, affectableStats);
+		int amount=affectableStats.getStat(CharStats.STAT_CHARISMA)/2;
+		affectableStats.setStat(CharStats.STAT_CHARISMA, amount);
+		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ, affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-amount);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

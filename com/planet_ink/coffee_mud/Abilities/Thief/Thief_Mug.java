@@ -82,6 +82,11 @@ public class Thief_Mug extends ThiefSkill
 			return false;
 
 		Item stolen=target.fetchCarried(null,itemToSteal);
+		if(stolen instanceof Coins)
+		{
+			mob.tell("You can not mug that from "+target.name()+".");
+			return false;
+		}
 		boolean success=proficiencyCheck(mob,levelDiff,auto);
 		if(!success)
 		{
