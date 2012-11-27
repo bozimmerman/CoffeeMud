@@ -178,7 +178,7 @@ public class Equipment extends StdCommand
 							if(paragraphView)
 							{
 								String name=thisItem.name();
-								if((name.length()>wrap)&&(!allPlaces)) name=name.substring(0,wrap)+"...";
+								if(!allPlaces) name=CMStrings.ellipse(name,wrap);
 								if(wornCode==Wearable.WORN_HELD)
 								{
 									if(msg.length()==0) msg.append("nothing.");
@@ -186,7 +186,7 @@ public class Equipment extends StdCommand
 										msg.append("\n\rHolding ^<EItem^>"+name+"^</EItem^>"+CMLib.flags().colorCodes(thisItem,seer).toString().trim()+"^N");
 									else
 										msg.append("\n\r" + mob.charStats().HeShe() + " is holding " +
-												 name.trim() + CMLib.flags().colorCodes(thisItem, seer).toString().trim() + "^N."); 				 
+												 name.trim() + CMLib.flags().colorCodes(thisItem, seer).toString().trim() + "^N.");
 								}
 								else
 								if(wornCode==Wearable.WORN_WIELD)

@@ -150,15 +150,20 @@ public class Slime extends StdRace
 		{
 			if((msg.amITarget(myHost))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
-			&&(msg.source().getVictim()==myHost)
+			&&(msg.source()!=myHost)
 			&&(msg.source().rangeToTarget()==0)
-			&&((((Weapon)msg.tool()).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-			&&(((Weapon)msg.tool()).subjectToWearAndTear())
-			&&(CMLib.dice().rollPercentage()<20)
 			&&(!((MOB)myHost).amDead()))
-				CMLib.combat().postItemDamage(msg.source(), (Item)msg.tool(), null, 10, CMMsg.TYP_ACID,"<T-NAME> sizzle(s)!");
+			{
+				if(((((Weapon)msg.tool()).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+				&&(msg.source().getVictim()==myHost)
+				&&(((Weapon)msg.tool()).subjectToWearAndTear())
+				&&(CMLib.dice().rollPercentage()<20))
+					CMLib.combat().postItemDamage(msg.source(), (Item)msg.tool(), null, 10, CMMsg.TYP_ACID,"<T-NAME> sizzle(s)!");
+				if(((((Weapon)msg.tool()).weaponType()==Weapon.TYPE_PIERCING)||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SHOOT))
+				&&(msg.value()>0))
+					msg.setValue((int)Math.round(((double)msg.value())*.85));
+			}
 		}
 	}
 

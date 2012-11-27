@@ -63,6 +63,18 @@ public class Prayer_Absorption extends Prayer
 		}
 	}
 
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+		{
+			unInvoke();
+		}
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -119,7 +131,7 @@ public class Prayer_Absorption extends Prayer
 				absorbed.setSavable(false);
 				mob.addAbility(absorbed);
 				mob.tell("You have absorbed "+absorbed.name()+"!");
-				beneficialAffect(mob,mob,asLevel,0);
+				beneficialAffect(mob,mob,asLevel,15);
 			}
 		}
 		else

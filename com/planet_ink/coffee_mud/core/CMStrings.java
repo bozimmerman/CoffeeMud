@@ -1079,6 +1079,13 @@ public class CMStrings
 			return removeColors(thisStr).substring(0,thisMuch);
 		return thisStr;
 	}
+	public final static String ellipse(final String thisStr, final int thisMuch)
+	{
+		final int lenMinusColors=lengthMinusColors(thisStr);
+		if(lenMinusColors>thisMuch)
+			return removeColors(thisStr).substring(0,thisMuch)+"...";
+		return thisStr;
+	}
 	public final static String padRight(final String thisStr, final String colorSuffix, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
