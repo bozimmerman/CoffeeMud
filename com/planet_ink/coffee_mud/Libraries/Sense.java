@@ -148,6 +148,21 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			I.phyStats().setSensesMask(CMath.setb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE));
 		}
 	}
+
+	public boolean isEnspelled(Physical F)
+	{
+		for(int a=0;a<F.numEffects();a++) // personal affects
+		{
+			Ability A=F.fetchEffect(a);
+			if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())&&(!A.isSavable())
+			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
+				return true;
+		}
+		return false;
+	}
 	
 	public void setGettable(Item I, boolean truefalse)
 	{

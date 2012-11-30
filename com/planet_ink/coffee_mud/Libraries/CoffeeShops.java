@@ -540,6 +540,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				CMLib.commands().postSay(seller,buyer,"I'm not interested.",true,false);
 				return false;
 			}
+			if((product instanceof Physical)&&CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product))
+			{
+				CMLib.commands().postSay(seller, buyer, "I won't buy that in it's present state.", true, false);
+				return false;
+			}
 			if((sellNotValue)&&(yourValue>maxToPay))
 			{
 				if(yourValue>maxEverPaid)
@@ -563,6 +568,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					if((I instanceof DoorKey)
 					&&(((DoorKey)I).getKey().equals(((Container)product).keyName())))
 						found=true;
+					else
+					if(CMLib.flags().isEnspelled(I) || CMLib.flags().isOnFire(I))
+					{
+						CMLib.commands().postSay(seller, buyer, "I won't buy the contents of that in it's present state.", true, false);
+						return false;
+					}
 				}
 				if(!found)
 				{

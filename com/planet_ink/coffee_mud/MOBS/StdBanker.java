@@ -770,6 +770,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
 						return false;
 					}
+					if(CMLib.flags().isEnspelled((Item)msg.tool()) || CMLib.flags().isOnFire((Item)msg.tool()))
+					{
+						mob.tell(this,msg.tool(),null,"<S-HE-SHE> refuses to accept <T-NAME> for deposit.");
+						return false;
+					}
 					double minbalance=(totalItemsWorth(mob)/MIN_ITEM_BALANCE_DIVIDEND)+CMath.div(((Item)msg.tool()).value(),MIN_ITEM_BALANCE_DIVIDEND);
 					if(balance<minbalance)
 					{

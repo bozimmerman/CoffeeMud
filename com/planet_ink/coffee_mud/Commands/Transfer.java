@@ -124,7 +124,7 @@ public class Transfer extends At
 					{
 						M=R.fetchInhabitant(mobname+"."+num);
 						if((M!=null)&&(!V.contains(M)))
-						   V.addElement(M);
+							V.addElement(M);
 						num++;
 						if((!allFlag)&&(V.size()>0)) break;
 					}
@@ -174,14 +174,22 @@ public class Transfer extends At
 		if(V.elementAt(i) instanceof Item)
 		{
 			Item I=(Item)V.elementAt(i);
-			if(!room.isContent(I))
+			Room itemRoom=CMLib.map().roomLocation(I);
+			if((itemRoom!=null)
+			&&(!room.isContent(I))
+			&&(CMSecurity.isAllowed(mob, itemRoom, CMSecurity.SecFlag.TRANSFER))
+			&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
 				room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 		}
 		else
 		if(V.elementAt(i) instanceof MOB)
 		{
 			MOB M=(MOB)V.elementAt(i);
-			if(!room.isInhabitant(M))
+			Room mobRoom=CMLib.map().roomLocation(M);
+			if((mobRoom!=null)
+			&&(!room.isInhabitant(M))
+			&&(CMSecurity.isAllowed(mob, mobRoom, CMSecurity.SecFlag.TRANSFER))
+			&&(CMSecurity.isAllowed(mob, room, CMSecurity.SecFlag.TRANSFER)))
 			{
 				if((mob.playerStats().tranPoofOut().length()>0)&&(mob.location()!=null))
 					M.location().show(mob,M,CMMsg.MSG_OK_VISUAL,mob.playerStats().tranPoofOut());

@@ -59,7 +59,7 @@ public class Package extends StdCommand
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
-		Vector V=new Vector();
+		Vector<Item> V=new Vector<Item>();
 		int addendum=1;
 		String addendumStr="";
 		do
@@ -71,7 +71,7 @@ public class Package extends StdCommand
 			&&(CMLib.flags().canBeSeenBy(getThis,mob))
 			&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
 			&&(!V.contains(getThis)))
-				V.addElement(getThis);
+				V.addElement((Item)getThis);
 			addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxToGet));
@@ -83,12 +83,16 @@ public class Package extends StdCommand
 		}
 		
 		for(int i=0;i<V.size();i++)
-			if((V.elementAt(i) instanceof Coins)
-			||(!(V.elementAt(i) instanceof Item)))
+		{
+			Item I=V.get(i);
+			if((I instanceof Coins)
+			||(CMLib.flags().isEnspelled(I))
+			||(CMLib.flags().isOnFire(I)))
 			{
-				mob.tell("Items such as "+((Item)V.elementAt(i)).name()+" may not be packaged.");
+				mob.tell("Items such as "+I.name()+" may not be packaged.");
 				return false;
 			}
+		}
 		PackagedItems thePackage=(PackagedItems)CMClass.getItem("GenPackagedItems");
 		if(thePackage==null) return false;
 		if(!thePackage.isPackagable(V))

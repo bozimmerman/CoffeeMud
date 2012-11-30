@@ -58,6 +58,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canWorkOnSomething(MOB M);
 	public boolean canConcentrate(MOB M);
 	public boolean isReadable(Item I);
+	public boolean isEnspelled(Physical F);
 	public boolean isGettable(Item I);
 	public boolean isDroppable(Item I);
 	public boolean isCataloged(Environmental E);

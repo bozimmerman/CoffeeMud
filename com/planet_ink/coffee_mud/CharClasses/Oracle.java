@@ -258,33 +258,6 @@ public class Oracle extends Cleric
 		}
 	}
 
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
-		if(!super.okMessage(myChar, msg))
-			return false;
-
-		if((msg.amITarget(myChar))
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&((msg.sourceMinor()==CMMsg.TYP_COLD)
-			||(msg.sourceMinor()==CMMsg.TYP_WATER)))
-		{
-			int recovery=myChar.charStats().getClassLevel(this);
-			if(recovery>msg.value()) recovery=msg.value();
-			msg.setValue(msg.value()-recovery);
-		}
-		else
-		if((msg.amITarget(myChar))
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.sourceMinor()==CMMsg.TYP_FIRE))
-		{
-			int recovery=msg.value();
-			msg.setValue(msg.value()+recovery);
-		}
-		return true;
-	}
-
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

@@ -214,33 +214,6 @@ public class Healer extends Cleric
 	public String getOtherBonusDesc(){return "All healing prayers give bonus healing.  Attains healing aura after 30th level.";}
 	public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
 
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
-		if(!super.okMessage(myChar, msg))
-			return false;
-
-		if((msg.amITarget(myChar))
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&((msg.sourceMinor()==CMMsg.TYP_COLD)
-			||(msg.sourceMinor()==CMMsg.TYP_WATER)))
-		{
-			int recovery=myChar.charStats().getClassLevel(this);
-			if(recovery>msg.value()) recovery=msg.value();
-			msg.setValue(msg.value()-recovery);
-		}
-		else
-		if((msg.amITarget(myChar))
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.sourceMinor()==CMMsg.TYP_FIRE))
-		{
-			int recovery=msg.value();
-			msg.setValue(msg.value()+recovery);
-		}
-		return true;
-	}
-
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
