@@ -616,15 +616,6 @@ public class DefaultClanGovernment implements ClanGovernment
 				}
 				str.append("\n\r").append(lineDraw.toString()).append("\n\r");
 			}
-/*
-protected String[] 	clanEffectNames			=null;
-protected int[] 	clanEffectLevels		=null;
-protected String[] 	clanEffectParms			=null;
-protected String[] 	clanAbilityNames		=null;
-protected int[] 	clanAbilityLevels		=null;
-protected int[] 	clanAbilityProficiencies=null;
-protected boolean[] clanAbilityQuals		=null;
-*/
 			
 			if((clanAbilityLevels!=null)&&(clanEffectLevels!=null)
 			&&(clanAbilityLevels.length>0)&&(clanEffectLevels.length>0))
@@ -672,6 +663,7 @@ protected boolean[] clanAbilityQuals		=null;
 
 	public SearchIDList<Ability> getClanLevelAbilities(Integer level)
 	{
+		final String clanGvtID=name;
 		if((clanAbilityMap==null)
 		&&(clanAbilityNames!=null)
 		&&(clanAbilityLevels!=null)
@@ -682,28 +674,32 @@ protected boolean[] clanAbilityQuals		=null;
 			clanAbilityMap=new Hashtable<Integer,SearchIDList<Ability>>();
 			for(int i=0;i<clanAbilityNames.length;i++)
 			{
-				CMLib.ableMapper().addDynaAbilityMapping(ID(),
-											 clanAbilityLevels[i],
-											 clanAbilityNames[i],
-											 clanAbilityProficiencies[i],
-											 "",
-											 !clanAbilityQuals[i],
-											 false);
+				Ability A=CMClass.getAbility(clanAbilityNames[i]);
+				if(A!=null)
+				{
+					CMLib.ableMapper().addDynaAbilityMapping(clanGvtID,
+															 clanAbilityLevels[i],
+															 A.ID(),
+															 clanAbilityProficiencies[i],
+															 "",
+															 !clanAbilityQuals[i],
+															 false);
+				}
 			}
 		}
 		if(clanAbilityMap==null) return emptyIDs;
 		if(clanAbilityMap.containsKey(level))
 			return clanAbilityMap.get(level);
-		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,true);
+		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(clanGvtID,level.intValue(),true,true);
 		CMUniqSortSVec<Ability> finalV=new CMUniqSortSVec<Ability>();
 		for(AbilityMapper.AbilityMapping able : V)
 		{
 			Ability A=CMClass.getAbility(able.abilityID);
 			if(A!=null)
 			{
-				A.setProficiency(100);
+				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(clanGvtID,false,A.ID()));
 				A.setSavable(false);
-				A.setMiscText(CMLib.ableMapper().getDefaultParm(ID(),false,A.ID()));
+				A.setMiscText(CMLib.ableMapper().getDefaultParm(clanGvtID,false,A.ID()));
 				finalV.add(A);
 			}
 		}

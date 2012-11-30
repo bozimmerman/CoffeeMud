@@ -971,9 +971,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final Clan clan=studentM.getMyClan();
 		if(clan!=null)
 		{
-			int qualClanlevel=getQualifyingLevel(clan.getGovernment().ID(),false,AID);
+			int qualClanlevel=getQualifyingLevel(clan.getGovernmentName(),false,AID);
 			if((qualClanlevel>=0)&&(clan.getClanLevel()>=qualClanlevel))
-				ids.add(clan.getGovernment().ID());
+				ids.add(clan.getGovernmentName());
 		}
 		return ids;
 	}
@@ -1058,7 +1058,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final Clan clan = studentM.getMyClan();
 		if(clan != null)
 		{
-			int clanLevel=getQualifyingLevel(clan.getGovernment().ID(),false,A.ID());
+			int clanLevel=getQualifyingLevel(clan.getGovernmentName(),false,A.ID());
 			if((clanLevel>=0)
 			&&(clan.getClanLevel()>=clanLevel)
 			&&((charLevel-clanLevel)>greatestDiff))
@@ -1099,7 +1099,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final Clan clan = studentM.getMyClan();
 		if(clan != null)
 		{
-			int clanLevel=getQualifyingLevel(clan.getGovernment().ID(),false,A.ID());
+			int clanLevel=getQualifyingLevel(clan.getGovernmentName(),false,A.ID());
 			if((clanLevel>=0)
 			&&(clan.getClanLevel()>=clanLevel)
 			&&((charLevel-clanLevel)>greatestDiff))
@@ -1135,7 +1135,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final Clan clan = studentM.getMyClan();
 		if(clan != null)
 		{
-			int clanLevel=getQualifyingLevel(clan.getGovernment().ID(),false,A.ID());
+			int clanLevel=getQualifyingLevel(clan.getGovernmentName(),false,A.ID());
 			if((clanLevel>=0)&&(clan.getClanLevel()>=clanLevel)&&(theLevel>clanLevel))
 				theClass=clan.getGovernment();
 		}
@@ -1156,7 +1156,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final Clan clan = studentM.getMyClan();
 		if(clan != null)
 		{
-			level=getQualifyingLevel(clan.getGovernment().ID(),false,A.ID());
+			level=getQualifyingLevel(clan.getGovernmentName(),false,A.ID());
 			if((level>=0)&&(clan.getClanLevel()>=level))
 				return true;
 		}
@@ -1248,8 +1248,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final Clan clan = studentM.getMyClan();
 		if(clan != null)
 		{
-			level=getQualifyingLevel(clan.getGovernment().ID(),false,abilityID);
-			if((level>=0)&&(clan.getClanLevel()>=level))
+			level=getQualifyingLevel(clan.getGovernmentName(),false,abilityID);
+			if((level>=0)
+			&&(clan.getClanLevel()>=level))
 				return true;
 		}
 		return false;
@@ -1353,9 +1354,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		final Clan clan = mob.getMyClan();
 		if(clan!=null)
 		{
-			if(completeAbleMap.containsKey(clan.getGovernment().ID()))
+			if(completeAbleMap.containsKey(clan.getGovernmentName()))
 			{
-				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(clan.getGovernment().ID());
+				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(clan.getGovernmentName());
 				if(ableMap.containsKey(abilityID))
 					list.add(ableMap.get(abilityID));
 			}
