@@ -47,7 +47,7 @@ public class Spell_ChainLightening extends Spell
 		if(h==null) h=new HashSet();
 
 		Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
-		Vector targets=new Vector();
+		Vector targets=new Vector(h);
 		for(Iterator e=h.iterator();e.hasNext();)
 			targets.addElement(e.next());
 		for(Iterator e=myGroup.iterator();e.hasNext();)
@@ -55,7 +55,8 @@ public class Spell_ChainLightening extends Spell
 			MOB M=(MOB)e.next();
 			if((M!=mob)&&(!targets.contains(M))) targets.addElement(M);
 		}
-		targets.addElement(mob);
+		if(!targets.contains(mob))
+			targets.addElement(mob);
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -110,7 +111,7 @@ public class Spell_ChainLightening extends Spell
 						invoker=mob;
 
 						int dmg=damage;
-						if((msg.value()>0)||(msg2.value()>0))
+						if((msg.value()>0)||(msg2.value()>0)||myGroup.contains(target)||(mob==target))
 							dmg = (int)Math.round(CMath.div(dmg,2.0));
 						if(target.location()==mob.location())
 						{

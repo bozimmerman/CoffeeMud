@@ -47,16 +47,7 @@ public class Prayer_ChainStrike extends Prayer
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) h=new HashSet();
 
-		Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
-		Vector targets=new Vector();
-		for(Iterator e=h.iterator();e.hasNext();)
-			targets.addElement(e.next());
-		for(Iterator e=myGroup.iterator();e.hasNext();)
-		{
-			MOB M=(MOB)e.next();
-			if((M!=mob)&&(!targets.contains(M))) targets.addElement(M);
-		}
-		targets.addElement(mob);
+		Vector targets=new Vector(h);
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -98,8 +89,6 @@ public class Prayer_ChainStrike extends Prayer
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					boolean oldAuto=auto;
-					if((target==mob)||(myGroup.contains(target)))
-					   auto=true;
 					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 					CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
 					auto=oldAuto;
