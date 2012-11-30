@@ -417,7 +417,7 @@ public class DefaultPlayerStats implements PlayerStats
 		StringBuilder str=new StringBuilder("");
 		alias.remove("");
 		for(String key : alias.keySet())
-			str.append("<ALIAS CMD=\"").append(key).append("\" VAL=\"").append(CMLib.xml().parseOutAngleBrackets(alias.get(key))).append("\">");
+			str.append("<ALIAS CMD=\"").append(key).append("\" VAL=\"").append(CMLib.xml().parseOutAngleBracketsAndQuotes(alias.get(key))).append("\">");
 		return str.toString();
 	}
 	
