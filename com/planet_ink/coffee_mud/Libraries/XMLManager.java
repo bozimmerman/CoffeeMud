@@ -96,6 +96,29 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return s;
 	}
 
+	public String parseOutAngleBracketsAndQuotes(String s)
+	{
+		int x=s.indexOf('<');
+		while(x>=0)
+		{
+			s=s.substring(0,x)+"&lt;"+s.substring(x+1);
+			x=s.indexOf('<');
+		}
+		x=s.indexOf('>');
+		while(x>=0)
+		{
+			s=s.substring(0,x)+"&gt;"+s.substring(x+1);
+			x=s.indexOf('>');
+		}
+		x=s.indexOf('\"');
+		while(x>=0)
+		{
+			s=s.substring(0,x)+"&quot;"+s.substring(x+1);
+			x=s.indexOf('\"');
+		}
+		return s;
+	}
+
 	public String restoreAngleBrackets(String s)
 	{
 		if(s==null) return null;
@@ -113,6 +136,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 					else
 					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
 						buf.replace(loop,loop+4,">");
+					else
+					if(buf.substring(loop+1,loop+6).equalsIgnoreCase("quot;"))
+						buf.replace(loop,loop+6,"\"");
 				}
 				break;
 			case '%':

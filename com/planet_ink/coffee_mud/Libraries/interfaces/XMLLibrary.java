@@ -253,6 +253,15 @@ public interface XMLLibrary extends CMLibrary
 	 * @return String parsed value
 	 */
 	public String parseOutAngleBrackets(String s);
+	
+	/**
+	 * parse a tag value for safety
+	 * 
+	 * <br><br><b>Usage:</b> String val=parseOutAngleBracketsAndQuotes(ThisValue);
+	 * @param s String to parse
+	 * @return String parsed value
+	 */
+	public String parseOutAngleBracketsAndQuotes(String s);
 	/**
 	 * restore a tag value parsed for safety
 	 * 
