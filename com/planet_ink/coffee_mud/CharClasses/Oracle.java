@@ -271,6 +271,7 @@ public class Oracle extends Cleric
 			||(msg.sourceMinor()==CMMsg.TYP_WATER)))
 		{
 			int recovery=myChar.charStats().getClassLevel(this);
+			if(recovery>msg.value()) recovery=msg.value();
 			msg.setValue(msg.value()-recovery);
 		}
 		else
