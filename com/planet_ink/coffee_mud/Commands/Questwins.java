@@ -41,9 +41,10 @@ public class Questwins extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()==1)&&(((String)commands.firstElement()).startsWith("QUESTW")))
+		if(((String)commands.firstElement()).toUpperCase().startsWith("QUESTW"))
 			commands.addElement("WON");
-		if((commands.size()>1)&&(((String)commands.elementAt(1)).equalsIgnoreCase("WON")))
+
+		if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("WON")))
 		{
 			Vector qVec=new Vector();
 			for(int q=0;q<CMLib.quests().numQuests();q++)
