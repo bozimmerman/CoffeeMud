@@ -249,6 +249,16 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public int classDurationModifier(MOB myChar, Ability skill, int duration);
 
 	/**
+	 * This method is called whenever a player casts a spell which has an affect
+	 * that is level dependent.  This method is called even if the class is not the
+	 * players CURRENT class.
+	 * @param myChar the caster or skill user
+	 * @param skill the skill or spell that was cast.
+	 * @param level the default level
+	 * @return usually, it just returns level again
+	 */
+	public int classLevelModifier(MOB myChar, Ability skill, int level);
+	/**
 	 * Returns the number of bonus practices received by members of
 	 * this class when they gain a level.  This is over and above
 	 * the normal formula applied during the leveling process.

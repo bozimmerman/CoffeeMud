@@ -366,7 +366,11 @@ public class StdAbility implements Ability
 		if(adjLevel<lowestQualifyingLevel)
 			adjLevel=lowestQualifyingLevel;
 		if(adjLevel<1) return 1;
-		return adjLevel+getXLEVELLevel(caster);
+		int level=adjLevel+getXLEVELLevel(caster);
+		final CharStats CS=caster.charStats();
+		for(int c=0;c<CS.numClasses();c++)
+			level=CS.getMyClass(c).classDurationModifier(invoker(),this,level);
+		return level;
 	}
 
 	public int experienceLevels(MOB caster, int asLevel)

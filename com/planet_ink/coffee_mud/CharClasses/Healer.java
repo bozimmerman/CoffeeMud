@@ -145,6 +145,16 @@ public class Healer extends Cleric
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	public int classLevelModifier(MOB myChar, Ability skill, int level)
+	{
+		if((myChar.charStats().getCurrentClass()==this)
+		&&(skill.ID().equals("Prayer_CureDisease")||skill.ID().equals("Prayer_MassCureDisease")))
+		{
+			return level+level;
+		}
+		return level;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);

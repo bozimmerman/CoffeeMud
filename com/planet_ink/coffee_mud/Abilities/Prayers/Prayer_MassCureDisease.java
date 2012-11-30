@@ -41,6 +41,13 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
+	protected int abilityCode=0;
+	
+	public void setAbilityCode(int newCode)
+	{
+		super.setAbilityCode(newCode);
+		this.abilityCode=newCode;
+	}
 
 	public boolean supportsMending(Physical item)
 	{ 
@@ -113,7 +120,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 									if(A instanceof DiseaseAffect)
 									{
 										if((A.invoker()!=mob)
-										&&((((DiseaseAffect)A).difficultyLevel()*10)>adjustedLevel(mob,asLevel)))
+										&&((((DiseaseAffect)A).difficultyLevel()*10)>adjustedLevel(mob,asLevel)+abilityCode))
 											badOnes=true;
 										else
 											A.unInvoke();

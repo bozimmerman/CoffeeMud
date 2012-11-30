@@ -112,6 +112,9 @@ public class StdCharClass implements CharClass
 	public int classDurationModifier(MOB myChar, Ability skill, int duration)
 	{ return duration;}
 
+	public int classLevelModifier(MOB myChar, Ability skill, int level)
+	{ return level;}
+
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	
 	public boolean tick(Tickable myChar, int tickID)
