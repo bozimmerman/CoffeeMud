@@ -174,7 +174,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public Enumeration<MOB> players() { return playersList.elements(); }
 	public Enumeration<PlayerAccount> accounts() { return accountsList.elements(); }
 
-	public void obliteratePlayer(MOB deadMOB, boolean quiet)
+	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet)
 	{
 		if(deadMOB==null) return;
 		if(getPlayer(deadMOB.Name())!=null)
@@ -184,28 +184,31 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		for(Session S : CMLib.sessions().allIterable())
 			if((!S.isStopped())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
-			   deadMOB=S.mob();
-		CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
+				deadMOB=S.mob();
 		Room deadLoc=deadMOB.location();
-		if(deadLoc!=null)
-			deadLoc.send(deadMOB,msg);
-		try
+		if(deleteAssets)
 		{
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
+			if(deadLoc!=null)
+				deadLoc.send(deadMOB,msg);
+			try
 			{
-				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R!=deadLoc))
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					if(R.okMessage(deadMOB,msg))
-						R.sendOthers(deadMOB,msg);
-					else
+					Room R=(Room)r.nextElement();
+					if((R!=null)&&(R!=deadLoc))
 					{
-						addPlayer(deadMOB);
-						return;
+						if(R.okMessage(deadMOB,msg))
+							R.sendOthers(deadMOB,msg);
+						else
+						{
+							addPlayer(deadMOB);
+							return;
+						}
 					}
 				}
-			}
-		}catch(NoSuchElementException e){}
+			}catch(NoSuchElementException e){}
+		}
 		StringBuffer newNoPurge=new StringBuffer("");
 		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		boolean somethingDone=false;
@@ -223,7 +226,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
 		}
 
-		CMLib.database().DBDeleteMOB(deadMOB);
+		CMLib.database().DBDeletePlayer(deadMOB, deleteAssets);
 		if(deadMOB.session()!=null)
 			deadMOB.session().stopSession(false,false,false);
 		Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
@@ -597,7 +600,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					MOB M=getLoadPlayer(name);
 					if((M!=null)&&(!CMSecurity.isASysOp(M))&&(!CMSecurity.isAllowedAnywhere(M, CMSecurity.SecFlag.NOPURGE)))
 					{
-						obliteratePlayer(M,true);
+						obliteratePlayer(M,true, true);
 						M.destroy();
 						Log.sysOut(thread.getName(),"AutoPurged user "+name+". Last logged in "+(CMLib.time().date2String(userLastLoginDateTime))+".");
 					}

@@ -160,7 +160,7 @@ public class MUDGrinder extends StdWebMacro
 			for(Enumeration<String> p=A.getPlayers();p.hasMoreElements();)
 			{
 				MOB deadMOB=CMLib.players().getLoadPlayer(p.nextElement());
-				CMLib.players().obliteratePlayer(deadMOB,false);
+				CMLib.players().obliteratePlayer(deadMOB,true,false);
 				Log.sysOut("Grinder",mob.Name()+" destroyed user "+deadMOB.Name()+".");
 				deadMOB.destroy();
 			}

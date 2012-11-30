@@ -1018,7 +1018,7 @@ public class MOBloader
 		}
 	}
 	
-	public void DBDelete(MOB mob)
+	public void DBDelete(MOB mob, boolean deleteAssets)
 	{
 		if(mob.Name().length()==0) return;
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
@@ -1039,11 +1039,17 @@ public class MOBloader
 			MOB follower=mob.fetchFollower(0);
 			if(follower!=null) follower.setFollowing(null);
 		}
-		DBUpdateFollowers(mob);
+		if(deleteAssets)
+		{
+			DBUpdateFollowers(mob);
+		}
 		mob.delAllAbilities();
 		DBUpdateAbilities(mob);
-		CMLib.database().DBDeletePlayerJournals(mob.Name());
-		CMLib.database().DBDeletePlayerData(mob.Name());
+		if(deleteAssets)
+		{
+			CMLib.database().DBDeletePlayerJournals(mob.Name());
+			CMLib.database().DBDeletePlayerData(mob.Name());
+		}
 		PlayerStats pstats = mob.playerStats();
 		if(pstats!=null)
 		{
@@ -1055,11 +1061,14 @@ public class MOBloader
 				account.setLastUpdated(System.currentTimeMillis());
 			}
 		}
-		for(int q=0;q<CMLib.quests().numQuests();q++)
+		if(deleteAssets)
 		{
-			Quest Q=CMLib.quests().fetchQuest(q);
-			if(Q.wasWinner(mob.Name()))
-				Q.declareWinner("-"+mob.Name());
+			for(int q=0;q<CMLib.quests().numQuests();q++)
+			{
+				Quest Q=CMLib.quests().fetchQuest(q);
+				if(Q.wasWinner(mob.Name()))
+					Q.declareWinner("-"+mob.Name());
+			}
 		}
 	}
 

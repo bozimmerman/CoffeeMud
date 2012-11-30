@@ -1757,7 +1757,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				MOB deadMOB=CMLib.players().getLoadPlayer(mob.Name());
 				if(deadMOB!=null)
 				{
-					CMLib.players().obliteratePlayer(deadMOB,false);
+					CMLib.players().obliteratePlayer(deadMOB,true,false);
 					return false;
 				}
 			}

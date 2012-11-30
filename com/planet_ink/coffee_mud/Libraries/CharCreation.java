@@ -510,7 +510,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					MOB M=CMLib.players().getLoadPlayer(delMe.name);
 					if(M!=null)
 					{
-						CMLib.players().obliteratePlayer(M, false);
+						CMLib.players().obliteratePlayer(M, true, false);
 					}
 					session.println(delMe.name+" has been deleted.");
 				}

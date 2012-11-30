@@ -433,6 +433,12 @@ public class Stat  extends Skills
 			mob.tell("You can't stat '"+MOBname+"'  -- he doesn't exist.");
 			return false;
 		}
+		if(((target.isMonster())&&(!CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDMOBS)))
+		||((!target.isMonster())&&(!CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDPLAYERS))))
+		{
+			mob.tell("You aren't allowed to stat '"+target.Name()+"'.");
+			return false;
+		}
 
 		StringBuilder str=new StringBuilder("");
 		if(ableTypes>=0)

@@ -55,7 +55,7 @@ public class Retire extends StdCommand
 			return false;
 		}
 		CMLib.login().getRetireReason(mob.Name(),mob.session());
-		CMLib.players().obliteratePlayer(mob,false);
+		CMLib.players().obliteratePlayer(mob,true,false);
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

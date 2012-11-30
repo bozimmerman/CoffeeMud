@@ -47,7 +47,7 @@ public class PlayerDelete extends StdWebMacro
 		MOB M=CMLib.players().getLoadPlayer(last);
 		if(M==null) return " @break@";
 
-		CMLib.players().obliteratePlayer(M,true);
+		CMLib.players().obliteratePlayer(M,true,true);
 		Log.sysOut("PlayerDelete","Someone destroyed the user "+M.Name()+".");
 		return "";
 	}

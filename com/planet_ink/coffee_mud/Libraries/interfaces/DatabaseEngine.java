@@ -105,7 +105,7 @@ public interface DatabaseEngine extends CMLibrary
 	public List<String> getUserList();
 	public List<MOB> DBScanFollowers(MOB mob);
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
-	public void DBDeleteMOB(MOB mob);
+	public void DBDeletePlayer(MOB mob, boolean deleteAssets);
 	public void DBCreateCharacter(MOB mob);
 	public void DBCreateArea(Area A);
 	public void DBDeleteArea(Area A);

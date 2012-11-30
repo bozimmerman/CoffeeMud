@@ -359,8 +359,8 @@ public class DBInterface implements DatabaseEngine
 	public List<MOB> DBScanFollowers(MOB mob)
 	{return MOBloader.DBScanFollowers(mob);}
 	
-	public void DBDeleteMOB(MOB mob)
-	{MOBloader.DBDelete(mob);}
+	public void DBDeletePlayer(MOB mob, boolean deleteAssets)
+	{MOBloader.DBDelete(mob, deleteAssets);}
 	
 	public void DBDeleteAccount(PlayerAccount account)
 	{ MOBloader.DBDeleteAccount(account);}
