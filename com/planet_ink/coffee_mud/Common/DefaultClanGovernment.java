@@ -701,7 +701,7 @@ protected boolean[] clanAbilityQuals		=null;
 			Ability A=CMClass.getAbility(able.abilityID);
 			if(A!=null)
 			{
-				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));
+				A.setProficiency(100);
 				A.setSavable(false);
 				A.setMiscText(CMLib.ableMapper().getDefaultParm(ID(),false,A.ID()));
 				finalV.add(A);

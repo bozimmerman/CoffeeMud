@@ -105,7 +105,7 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=65%>");
-			str.append("<INPUT TYPE=TEXT NAME="+c+"ESTATSV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>");
+			str.append("<INPUT TYPE=TEXT NAME="+c+"ESTATSV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=4 MAXLENGTH=4>");
 			str.append("</TD>");
 			str.append("</TR>");
 		}
@@ -118,7 +118,7 @@ public class RaceData extends StdWebMacro
 		str.append("</SELECT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=65%>");
-		str.append("<INPUT TYPE=TEXT NAME="+c+"ESTATSV"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
+		str.append("<INPUT TYPE=TEXT NAME="+c+"ESTATSV"+(theclasses.size()+1)+" VALUE=\"\" SIZE=4 MAXLENGTH=4>");
 		str.append("</TD>");
 		str.append("</TR>");
 		str.append("</TABLE>");
@@ -163,7 +163,7 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=65%>");
-			str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATSV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>");
+			str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATSV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=4 MAXLENGTH=4>");
 			str.append("</TD>");
 			str.append("</TR>");
 		}
@@ -176,7 +176,7 @@ public class RaceData extends StdWebMacro
 		str.append("</SELECT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=65%>");
-		str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATSV"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
+		str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATSV"+(theclasses.size()+1)+" VALUE=\"\" SIZE=4 MAXLENGTH=4>");
 		str.append("</TD>");
 		str.append("</TR>");
 		str.append("</TABLE>");
@@ -221,7 +221,7 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=65%>");
-			str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATEV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>");
+			str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATEV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=4 MAXLENGTH=4>");
 			str.append("</TD>");
 			str.append("</TR>");
 		}
@@ -235,7 +235,7 @@ public class RaceData extends StdWebMacro
 		str.append("</SELECT>");
 		str.append("</TD>");
 		str.append("<TD WIDTH=65%>");
-		str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATEV"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
+		str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATEV"+(theclasses.size()+1)+" VALUE=\"\" SIZE=4 MAXLENGTH=4>");
 		str.append("</TD>");
 		str.append("</TR>");
 		str.append("</TABLE>");
