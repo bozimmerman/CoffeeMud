@@ -170,7 +170,7 @@ public class CMSecurity
 				isAreaOnly=true;
 			}
 			while(s.startsWith("/")) s=s.substring(1).trim();
-			return new SecPath(s,false,isAreaOnly);
+			return new SecPath(s,true,isAreaOnly);
 		}
 		else
 		if(journalFlags.contains(s))
