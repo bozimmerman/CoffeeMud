@@ -95,15 +95,19 @@ public class Where extends StdCommand
 					MOB mob2=S.mob();
 					if(canShowTo(mob,mob2))
 					{
-						lines.append("^!"+CMStrings.padRight(mob2.Name(),17)+"^N| ");
-						if(S.mob().location() != null )
+						Room R=mob2.location();
+						if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))
 						{
-							lines.append(S.mob().location().displayText());
-							lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(S.mob().location())+"^</LSTROOMID^>)");
+							lines.append("^!"+CMStrings.padRight(mob2.Name(),17)+"^N| ");
+							if(R != null )
+							{
+								lines.append(R.displayText());
+								lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+							}
+							else
+								lines.append("^!(no location)^?");
+							lines.append("\n\r");
 						}
-						else
-							lines.append("^!(no location)^?");
-						lines.append("\n\r");
 					}
 					else
 					{

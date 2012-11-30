@@ -233,6 +233,8 @@ public class Necromancer extends Cleric
 				}
 			}
 		}
+		else
+			super.executeMsg(myHost,msg);
 	}
 	
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
