@@ -37,11 +37,11 @@ import java.util.*;
 public class Skill_Chirgury extends StdSkill
 {
 	public String ID() { return "Skill_Chirgury"; }
-	public String name(){ return "Chirgury";}
+	public String name(){ return "Chirurgy";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"CHIRGURY"};
+	private static final String[] triggerStrings = {"CHIRURGY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public static final Object[][] parts={{"FETUS"},
@@ -121,7 +121,7 @@ public class Skill_Chirgury extends StdSkill
 
 		if((target instanceof MOB)&&((!CMLib.flags().isBoundOrHeld(target))||(!CMLib.flags().isSleeping(target))))
 		{
-			mob.tell(((MOB)target).charStats().HeShe()+" must be bound, and asleep on an operating bed before you can perform chirgury.");
+			mob.tell(((MOB)target).charStats().HeShe()+" must be bound, and asleep on an operating bed before you can perform chirurgy.");
 			return false;
 		}
 
@@ -142,14 +142,14 @@ public class Skill_Chirgury extends StdSkill
 		Weapon ww=null;
 		if((w==null)||(!(w instanceof Weapon)))
 		{
-			mob.tell("You cannot perform chirgury without a weapon!");
+			mob.tell("You cannot perform chirurgy without a weapon!");
 			return false;
 		}
 
 		ww=(Weapon)w;
 		if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
 		{
-			mob.tell("You cannot perform chirgury with a "+ww.name()+"!");
+			mob.tell("You cannot perform chirurgy with a "+ww.name()+"!");
 			return false;
 		}
 
@@ -170,7 +170,7 @@ public class Skill_Chirgury extends StdSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully perform(s) chirgury upon <T-NAME>.^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> carefully perform(s) chirurgy upon <T-NAME>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
