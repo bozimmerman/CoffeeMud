@@ -59,6 +59,7 @@ public class Trap_ElectricShock extends StdTrap
 			V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
 	}
+
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
@@ -89,7 +90,7 @@ public class Trap_ElectricShock extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off an shocking trap!"))
 			{
 				super.spring(target);
-				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),8,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock <DAMAGE> <T-NAME>!"+CMProps.msp("shock.wav",30));
+				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),8,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock <DAMAGES> <T-NAME>!"+CMProps.msp("shock.wav",30));
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}
