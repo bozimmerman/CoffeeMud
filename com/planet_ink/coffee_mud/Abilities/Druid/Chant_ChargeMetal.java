@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /* 
@@ -43,7 +44,8 @@ public class Chant_ChargeMetal extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-
+	private WeakReference<CMMsg> lastMsg=null;
+	
 	protected Vector affectedItems=new Vector();
 
 	public void setMiscText(String newText)
@@ -83,18 +85,21 @@ public class Chant_ChargeMetal extends Chant
 		MOB mob=(MOB)I.owner();
 		if((!msg.amITarget(mob))
 		&&((msg.targetMinor()==CMMsg.TYP_ELECTRIC)
-			||((msg.sourceMinor()==CMMsg.TYP_ELECTRIC)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))))
+			||((msg.sourceMinor()==CMMsg.TYP_ELECTRIC)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)))
+		&&((lastMsg==null)||(lastMsg.get()!=msg)))
 		{
+			lastMsg=new WeakReference<CMMsg>(msg);
 			msg.source().location().show(mob,null,I,CMMsg.MSG_OK_VISUAL,"<O-NAME> attracts a charge to <S-NAME>!");
-			msg.modify(msg.source(),
-					   mob,
-					   msg.tool(),
-					   msg.sourceCode(),
-					   msg.sourceMessage(),
-					   msg.targetCode(),
-					   msg.targetMessage(),
-					   msg.othersCode(),
-					   msg.othersMessage());
+			if(mob.okMessage(mob, msg))
+				msg.modify(msg.source(),
+							mob,
+							msg.tool(),
+							msg.sourceCode(),
+							msg.sourceMessage(),
+							msg.targetCode(),
+							msg.targetMessage(),
+							msg.othersCode(),
+							msg.othersMessage());
 		}
 		return true;
 	}
