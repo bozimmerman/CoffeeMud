@@ -91,7 +91,6 @@ public class Undead extends StdRace
 			{
 				int amount=msg.value();
 				if((amount>0)
-				&&(msg.tool()!=null)
 				&&(msg.tool() instanceof Ability)
 				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALINGMAGIC|Ability.FLAG_HOLY))
 				&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
@@ -105,17 +104,14 @@ public class Undead extends StdRace
 			else
 			if((msg.amITarget(mob))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
-			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
-			&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
+			&&((msg.targetMinor()==CMMsg.TYP_UNDEAD)
+				||((msg.tool() instanceof Ability)
+					&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
+					&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))))
 			{
 				int amount=msg.value();
 				if(amount>0)
-				{
-					CMLib.combat().postHealing(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,amount,"The harming magic heals <T-NAMESELF>.");
-					return false;
-				}
+					msg.modify(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,"The harming magic heals <T-NAMESELF>.");
 			}
 			else
 			if((msg.amITarget(mob))
@@ -126,13 +122,11 @@ public class Undead extends StdRace
 				||(msg.targetMinor()==CMMsg.TYP_MIND)
 				||(msg.targetMinor()==CMMsg.TYP_PARALYZE)
 				||(msg.targetMinor()==CMMsg.TYP_POISON)
-				||(msg.targetMinor()==CMMsg.TYP_UNDEAD)
 				||(msg.sourceMinor()==CMMsg.TYP_DISEASE)
 				||(msg.sourceMinor()==CMMsg.TYP_GAS)
 				||(msg.sourceMinor()==CMMsg.TYP_MIND)
 				||(msg.sourceMinor()==CMMsg.TYP_PARALYZE)
-				||(msg.sourceMinor()==CMMsg.TYP_POISON)
-				||(msg.sourceMinor()==CMMsg.TYP_UNDEAD))
+				||(msg.sourceMinor()==CMMsg.TYP_POISON))
 			&&(!mob.amDead()))
 			{
 				String immunityName="certain";
