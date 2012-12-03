@@ -447,7 +447,7 @@ public class StdMOB implements MOB
 			basePhyStats = (PhyStats) M.basePhyStats().copyOf();
 			phyStats = (PhyStats) M.phyStats().copyOf();
 		}
-		affects.setSize(0);
+		affects	= new SVector<Ability>();
 		baseCharStats = (CharStats) M.baseCharStats().copyOf();
 		charStats = (CharStats) M.charStats().copyOf();
 		baseState = (CharState) M.baseState().copyOf();
@@ -455,17 +455,16 @@ public class StdMOB implements MOB
 		maxState = (CharState) M.maxState().copyOf();
 		pleaseDestroy = false;
 
-		inventory= new SVector<Item>(1);
-		abilitys= new CMUniqSortSVec<Ability>(1);
+		inventory= new SVector<Item>();
+		abilitys= new CMUniqSortSVec<Ability>();
 		abilityUseTrig = new int[3];
 		abilityUseCache= new STreeMap<String,int[][]>();
-		affects	= new SVector<Ability>(1);
-		behaviors= new CMUniqSortSVec<Behavior>(1);
-		tattoos	= new CMUniqSortSVec<Tattoo>(1);
+		behaviors= new CMUniqSortSVec<Behavior>();
+		tattoos	= new CMUniqSortSVec<Tattoo>();
 		expertises = new SVector<String>();
 		followers = null;
 		commandQue = new LinkedList<QMCommand>();
-		scripts	= new SVector(1);
+		scripts	= new SVector();
 		racialAffects = null;
 		clanAffects	= null;
 		factions = new SHashtable<String, FData>(1);

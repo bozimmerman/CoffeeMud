@@ -576,7 +576,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if((mob.getClanID().length()>0)&&(amount>2))
 		{
 			Clan C=mob.getMyClan();
-			if(C!=null) amount=C.applyExpMods(amount);
+			if((C!=null)&&(mob.phyStats().level()>=CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL)))
+				amount=C.applyExpMods(amount);
 		}
 
 		if((mob.getLiegeID().length()>0)&&(amount>2))

@@ -55,8 +55,7 @@ public class Fighter_RapidShot extends FighterSkill
 		if(mob.isInCombat())
 		{
 			Item w=mob.fetchWieldedItem();
-			if((w!=null)
-			&&(w instanceof Weapon)
+			if((w instanceof Weapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(((Weapon)w).ammunitionType().length()>0)
 			&&((mob.rangeToTarget()>=w.minRange())||((w.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOMINRANGE)==PhyStats.SENSE_ITEMNOMINRANGE))
@@ -64,7 +63,7 @@ public class Fighter_RapidShot extends FighterSkill
 			{
 				helpProficiency(mob, 0);
 				final int extraAttacks=1+(int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,0),16.0)));
-				for(int i=0;i<extraAttacks;i++)
+				for(int i=0; (i<extraAttacks) && (w.usesRemaining()>0) ;i++)
 					CMLib.combat().postAttack(mob,mob.getVictim(),w);
 			}
 		}

@@ -67,7 +67,7 @@ public class Prayer_BladeBarrier extends Prayer
 		super.executeMsg(myHost,msg);
 		if(!(affected instanceof MOB))
 			return;
-		if(msg.target()==affected)
+		if((msg.target()==affected)&&(!msg.amISource((MOB)affected)))
 		{
 			if((CMLib.dice().rollPercentage()>60+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))
 			&&(msg.source().rangeToTarget()==0)

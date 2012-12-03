@@ -43,6 +43,15 @@ public class Spell_MageClaws extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;	}
 	protected Weapon naturalWeapon=null;
 
+	private boolean freeHands(MOB mob)
+	{
+		if((mob==null) 
+		||(mob.fetchWieldedItem()!=null)
+		||(mob.fetchHeldItem()!=null))
+			return false;
+		return true;
+	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))
@@ -52,7 +61,8 @@ public class Spell_MageClaws extends Spell
 
 		if((msg.amISource(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(msg.tool()==null))
+		&&(msg.tool()==null)
+		&&(!freeHands(mob)))
 		{
 			if((naturalWeapon==null)
 			||(naturalWeapon.amDestroyed()))
@@ -104,6 +114,11 @@ public class Spell_MageClaws extends Spell
 			return false;
 		}
 
+		if(!freeHands(target))
+		{
+			mob.tell(target,null,null,"<S-NAME> do(es) not have <S-HIS-HER> hands free.");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

@@ -276,10 +276,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 					{
 						String paddedName=CMStrings.padRight(room.r.displayText().trim(),30);
 						line1+="---"+dirChar(Directions.NORTH,grid,x,y,'-')+"----";
-						line2+="!"+paddedName.substring(0,6)+"!";
-						line3+=dirChar(Directions.WEST,grid,x,y,'!')+paddedName.substring(6,12)+dirChar(Directions.EAST,grid,x,y,'!');
-						line4+="!"+paddedName.substring(12,18)+"!";
-						line5+="!"+paddedName.substring(18,24)+"!";
+						line2+="|"+paddedName.substring(0,6)+"|";
+						line3+=dirChar(Directions.WEST,grid,x,y,'|')+paddedName.substring(6,12)+dirChar(Directions.EAST,grid,x,y,'|');
+						line4+="|"+paddedName.substring(12,18)+"|";
+						line5+="|"+paddedName.substring(18,24)+"|";
 						line6+="---"+dirChar(Directions.SOUTH,grid,x,y,'-')+"----";
 					}
 				}

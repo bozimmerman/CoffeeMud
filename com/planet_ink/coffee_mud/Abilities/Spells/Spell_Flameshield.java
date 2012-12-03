@@ -71,11 +71,11 @@ public class Spell_Flameshield extends Spell
 		MOB source=msg.source();
 		if(source.location()==null) return;
 
-		if(msg.amITarget(mob))
+		if(msg.amITarget(mob)&&(!msg.amISource(mob)))
 		{
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS)||(msg.targetMajor(CMMsg.MASK_MOVE)))
-			   &&(msg.source().rangeToTarget()==0)
-			   &&(oncePerTickTime!=mob.lastTickedDateTime()))
+				&&(msg.source().rangeToTarget()==0)
+				&&(oncePerTickTime!=mob.lastTickedDateTime()))
 			{
 				if((CMLib.dice().rollPercentage()>(source.charStats().getStat(CharStats.STAT_DEXTERITY)*3)))
 				{

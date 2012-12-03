@@ -42,7 +42,6 @@ public class Chant_Reincarnation extends Chant
 	public String displayText(){return "(Reincarnation Geas)";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
-	public boolean canBeUninvoked(){return false;}
 	protected int overrideMana(){return 200;}
 
 	Race newRace=null;
@@ -53,7 +52,7 @@ public class Chant_Reincarnation extends Chant
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
+				affectableStats.setName(CMLib.english().startWithAorAn(newRace.name())+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
 			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
@@ -68,51 +67,70 @@ public class Chant_Reincarnation extends Chant
 			affectableStats.setMyRace(newRace);
 	}
 
+	public void unInvoke()
+	{
+		super.unInvoke();
+		if((!this.canBeUninvoked)&&(affected!=null)&&(affected.fetchEffect(ID())==this))
+			this.unInvoked=false;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Tickable.TICKID_MOB)
-		&&(tickDown!=Integer.MAX_VALUE)
-		&&((--tickDown)<0))
-		{
-			tickDown=-1;
-
-			// undo the affects of this spell
-			if(!(affected instanceof MOB))
-				return super.tick(ticking,tickID);
-			MOB mob=(MOB)affected;
-			mob.tell("Your reincarnation geas is lifted as your form solidifies.");
-			if(newRace!=null)
-				mob.baseCharStats().setMyRace(newRace);
-			mob.delEffect(this);
-			if(mob.location()!=null)
-				mob.location().recoverRoomStats();
-			else
-			{
-				mob.recoverPhyStats();
-				mob.recoverCharStats();
-				mob.recoverMaxState();
-			}
+		if(!super.tick(ticking,tickID))
 			return false;
+		if((tickID==Tickable.TICKID_MOB)
+		&&(tickDown!=Integer.MAX_VALUE))
+		{
+			if((tickDown<=1)&&(!unInvoked))
+			{
+				tickDown=-1;
+				// undo the affects of this spell
+				if(!(affected instanceof MOB))
+					return super.tick(ticking,tickID);
+				MOB mob=(MOB)affected;
+				mob.tell("Your reincarnation geas is lifted as your form solidifies.");
+				if(newRace!=null)
+				{
+					mob.baseCharStats().setMyRace(newRace);
+					newRace.setHeightWeight(mob.basePhyStats(), (char)mob.charStats().getStat(CharStats.STAT_GENDER));
+					mob.recoverPhyStats();
+					mob.recoverCharStats();
+					mob.recoverMaxState();
+				}
+				unInvoke();
+				if(mob.location()!=null)
+					mob.location().recoverRoomStats();
+			}
+			if(!super.canBeUninvoked) // called during bring-to-life, which is why its down here
+			{
+				if(CMLib.flags().isInTheGame(affected, true))
+					super.canBeUninvoked=true;
+				else
+					tickDown--;
+			}
 		}
-		return super.tick(ticking,tickID);
+		return true;
 	}
 
 	public boolean isGolem(Race R)
 	{
-		MOB M=(MOB)CMClass.sampleMOB().copyOf();
+		MOB M=(MOB)CMClass.getFactoryMOB();
 		R.affectPhyStats(M,M.phyStats());
-		return CMLib.flags().isGolem(M);
+		boolean golem= CMLib.flags().isGolem(M);
+		M.destroy();
+		return golem;
 	}
 
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
+		if(!super.okMessage(myHost,msg))
+			return false;
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
-			return;
+			return true;
 		MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-		   &&(msg.amISource(mob)))
+			&&(msg.amISource(mob)))
 		{
 			newRace=null;
 			while((newRace==null)
@@ -126,7 +144,9 @@ public class Chant_Reincarnation extends Chant
 				mob.tell("You are being reincarnated as a "+newRace.name()+"!!");
 			msg.source().recoverCharStats();
 			msg.source().recoverPhyStats();
+			super.canBeUninvoked=false; // without this, bring to life removes it
 		}
+		return true;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -148,9 +168,10 @@ public class Chant_Reincarnation extends Chant
 		}
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+		Set<MOB> groupMembers=mob.getGroupMembers(new HashSet<MOB>());
+		if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!groupMembers.contains(target)))
 		{
-			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
+			mob.tell(target.name()+" is a player, so you must be group members, and your playerkill flags must be on for this to work.");
 			success=false;
 		}
 		
@@ -160,7 +181,8 @@ public class Chant_Reincarnation extends Chant
 		if(success)
 		{
 			int modifier=0;
-			if(target!=mob) modifier=CMMsg.MASK_MALICIOUS;
+			if((target!=mob)&&(!groupMembers.contains(target))) 
+				modifier=CMMsg.MASK_MALICIOUS;
 			CMMsg msg=CMClass.getMsg(mob,target,this,modifier|verbalCastCode(mob,target,auto),(auto?"^S<S-NAME> get(s) put under a reincarnation geas!^?":"^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{

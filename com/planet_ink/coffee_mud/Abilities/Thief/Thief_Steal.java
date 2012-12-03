@@ -188,7 +188,7 @@ public class Thief_Steal extends ThiefSkill
 				hisStr=null;
 			else
 			{
-				str+=" <T-NAME> spots you!";
+				str+=" ^Z<T-NAME> spots you!^.^N";
 				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
 			}
 

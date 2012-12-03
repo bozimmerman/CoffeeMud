@@ -435,7 +435,8 @@ public class StdItem implements Item
 			{
 				if(!(this instanceof Light))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
+				if((this instanceof Armor)&&(!CMath.bset(((Armor)this).getClothingLayer(),Armor.LAYERMASK_SEETHROUGH)))
+					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
 			}
 			if((!amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))

@@ -130,7 +130,7 @@ public class Fighter_PointBlank extends FighterSkill
 			&&(((Weapon)w).ammunitionType().length()>0)
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
-				if((CMLib.dice().rollPercentage()<10)&&(mob.isInCombat())&&(mob.rangeToTarget() > 0))
+				if((CMLib.dice().rollPercentage()<5)&&(mob.isInCombat())&&(mob.rangeToTarget() == 0))
 					helpProficiency(mob, 0);
 				if(w.fetchEffect(ID())==null)
 				{
