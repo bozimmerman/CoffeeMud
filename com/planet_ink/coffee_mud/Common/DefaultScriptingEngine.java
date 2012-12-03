@@ -98,14 +98,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	public void setVarScope(String newScope){
-		if((newScope==null)||(newScope.trim().length()==0))
+		if((newScope==null)||(newScope.trim().length()==0)||newScope.equalsIgnoreCase("GLOBAL"))
 		{
 			scope="";
 			resources=Resources.instance();
 		}
 		else
 			scope=newScope.toUpperCase().trim();
-		if(scope.equalsIgnoreCase("*"))
+		if(scope.equalsIgnoreCase("*")||scope.equals("INDIVIDUAL"))
 			resources = Resources.newResources();
 		else
 		{
@@ -7700,7 +7700,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						m2=m2.substring(6).trim();
 					}
 					else
-					if(m2.toUpperCase().startsWith("INDIVIDUAL"))
+					if(m2.toUpperCase().startsWith("INDIVIDUAL")||m2.equals("*"))
 					{
 						scope="*";
 						proceed=true;

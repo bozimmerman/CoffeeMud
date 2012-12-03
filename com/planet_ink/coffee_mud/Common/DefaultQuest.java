@@ -2667,7 +2667,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								proceed=true;
 							}
 							else
-							if(word.equalsIgnoreCase("INDIVIDUAL"))
+							if(word.equalsIgnoreCase("INDIVIDUAL")||word.equals("*"))
 							{
 								scope="*";
 								proceed=true;
