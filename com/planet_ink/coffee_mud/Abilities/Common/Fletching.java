@@ -350,9 +350,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			int level=CMath.s_int((String)foundRecipe.get(RCP_LEVEL));
-			if(woodRequired>0)
-				level+=hardness;
-			building.basePhyStats().setLevel(level);
+			if(woodRequired==0) hardness=0;
+			building.basePhyStats().setLevel(level+hardness);
 			building.setSecretIdentity(getBrand(mob));
 			String ammotype=(String)foundRecipe.get(RCP_AMMOTYPE);
 			int capacity=CMath.s_int((String)foundRecipe.get(RCP_AMOCAPACITY));
@@ -368,8 +367,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 					((Weapon)building).setAmmoRemaining(0);
 					((Weapon)building).setAmmunitionType(ammotype);
 				}
-				building.basePhyStats().setAttackAdjustment((abilityCode()-1));
-				building.basePhyStats().setDamage(armordmg);
+				building.basePhyStats().setAttackAdjustment((abilityCode()-1+(hardness*5)));
+				building.basePhyStats().setDamage(armordmg+hardness);
 				((Weapon)building).setRanges(((Weapon)building).minRange(),maxrange);
 			}
 			else
