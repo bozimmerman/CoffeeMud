@@ -326,6 +326,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			bundling=spell.equalsIgnoreCase("BUNDLE");
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
+			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
@@ -348,7 +349,10 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
+			int level=CMath.s_int((String)foundRecipe.get(RCP_LEVEL));
+			if(woodRequired>0)
+				level+=hardness;
+			building.basePhyStats().setLevel(level);
 			building.setSecretIdentity(getBrand(mob));
 			String ammotype=(String)foundRecipe.get(RCP_AMMOTYPE);
 			int capacity=CMath.s_int((String)foundRecipe.get(RCP_AMOCAPACITY));
