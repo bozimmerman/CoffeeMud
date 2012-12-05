@@ -45,17 +45,27 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	protected LinkedList<CMath.CompiledOperation> attackAdjustmentFormula = null;
 	protected LinkedList<CMath.CompiledOperation> armorAdjustmentFormula = null;
 	protected LinkedList<CMath.CompiledOperation> attackerFudgeBonusFormula  = null;
+	protected LinkedList<CMath.CompiledOperation> pvpAttackerFudgeBonusFormula  = null;
 	protected LinkedList<CMath.CompiledOperation> spellFudgeDamageFormula  = null;
+	protected LinkedList<CMath.CompiledOperation> pvpSpellFudgeDamageFormula  = null;
 	protected LinkedList<CMath.CompiledOperation> spellCritChanceFormula = null;
+	protected LinkedList<CMath.CompiledOperation> pvpSpellCritChanceFormula = null;
 	protected LinkedList<CMath.CompiledOperation> spellCritDmgFormula = null;
+	protected LinkedList<CMath.CompiledOperation> pvpSpellCritDmgFormula = null;
 	protected LinkedList<CMath.CompiledOperation> targetedRangedDamageFormula = null;
+	protected LinkedList<CMath.CompiledOperation> pvpTargetedRangedDamageFormula = null;
 	protected LinkedList<CMath.CompiledOperation> rangedFudgeDamageFormula  = null;
+	protected LinkedList<CMath.CompiledOperation> pvpRangedFudgeDamageFormula  = null;
 	protected LinkedList<CMath.CompiledOperation> targetedMeleeDamageFormula = null;
+	protected LinkedList<CMath.CompiledOperation> pvpTargetedMeleeDamageFormula = null;
 	protected LinkedList<CMath.CompiledOperation> meleeFudgeDamageFormula  = null;
+	protected LinkedList<CMath.CompiledOperation> pvpMeleeFudgeDamageFormula  = null;
 	protected LinkedList<CMath.CompiledOperation> staticRangedDamageFormula = null;
 	protected LinkedList<CMath.CompiledOperation> staticMeleeDamageFormula = null;
 	protected LinkedList<CMath.CompiledOperation> weaponCritChanceFormula = null;
+	protected LinkedList<CMath.CompiledOperation> pvpWeaponCritChanceFormula = null;
 	protected LinkedList<CMath.CompiledOperation> weaponCritDmgFormula = null;
+	protected LinkedList<CMath.CompiledOperation> pvpWeaponCritDmgFormula = null;
 	
 	private static final int ATTACK_ADJUSTMENT = 50;
 
@@ -64,17 +74,27 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		attackAdjustmentFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_ATTACKADJUSTMENT));
 		armorAdjustmentFormula= CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_ARMORADJUSTMENT));
 		attackerFudgeBonusFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_ATTACKFUDGEBONUS));
+		pvpAttackerFudgeBonusFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPATTACKFUDGEBONUS));
 		spellCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_CHANCESPELLCRIT));
+		pvpSpellCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPCHANCESPELLCRIT));
 		spellCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGESPELLCRIT));
+		pvpSpellCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGESPELLCRIT));
 		targetedRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGERANGEDTARGETED));
+		pvpTargetedRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGERANGEDTARGETED));
 		targetedMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEETARGETED));
+		pvpTargetedMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGEMELEETARGETED));
 		staticRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGERANGEDSTATIC));
 		staticMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEESTATIC));
 		weaponCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_CHANCEWEAPONCRIT));
+		pvpWeaponCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPCHANCEWEAPONCRIT));
 		weaponCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEWEAPONCRIT));
+		pvpWeaponCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGEWEAPONCRIT));
 		spellFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGESPELLFUDGE));
+		pvpSpellFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGESPELLFUDGE));
 		meleeFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEEFUDGE));
+		pvpMeleeFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGEMELEEFUDGE));
 		rangedFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGERANGEDFUDGE));
+		pvpRangedFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGERANGEDFUDGE));
 		return true; 
 	}
 	
@@ -213,7 +233,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			defender.phyStats().level(),
 			attacker.phyStats().level() > defender.phyStats().level() ? 1 : -1
 		};
-		int attackerFudgeBonusAmt = (int)Math.round(CMath.parseMathExpression(attackerFudgeBonusFormula, vars, 0.0));
+		final boolean isPVP=(attacker.isPlayer()&&defender.isPlayer());
+		int attackerFudgeBonusAmt = (int)Math.round(CMath.parseMathExpression(isPVP?pvpAttackerFudgeBonusFormula:attackerFudgeBonusFormula, vars, 0.0));
 		return rollToHit(adjustedAttackBonus(attacker,defender),adjustedArmor(defender),attackerFudgeBonusAmt);
 	}
 
@@ -467,12 +488,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				attacker.phyStats().level(),
 				target.phyStats().level()
 				};
-		baseDamage = (int)Math.round(CMath.parseMathExpression(spellFudgeDamageFormula, vars, 0.0));
+		final boolean isPVP=(attacker.isPlayer()&&target.isPlayer());
+		baseDamage = (int)Math.round(CMath.parseMathExpression(isPVP?pvpSpellFudgeDamageFormula:spellFudgeDamageFormula, vars, 0.0));
 		vars[0]=baseDamage;
-		int spellCritChancePct = (int)Math.round(CMath.parseMathExpression(spellCritChanceFormula, vars, 0.0));
+		int spellCritChancePct = (int)Math.round(CMath.parseMathExpression(isPVP?pvpSpellCritChanceFormula:spellCritChanceFormula, vars, 0.0));
 		if(CMLib.dice().rollPercentage()<spellCritChancePct)
 		{
-			int spellCritDamageAmt = (int)Math.round(CMath.parseMathExpression(spellCritDmgFormula, vars, 0.0));
+			int spellCritDamageAmt = (int)Math.round(CMath.parseMathExpression(isPVP?pvpSpellCritDmgFormula:spellCritDmgFormula, vars, 0.0));
 			baseDamage+=spellCritDamageAmt;
 		}
 		return baseDamage;
@@ -491,6 +513,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		else
 			useDmg = mob;
+		final boolean isPVP=((target!=null)&&mob.isPlayer()&&target.isPlayer());
 		if(target!=null)
 		{
 			double[] vars = {
@@ -506,9 +529,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					CMLib.flags().isSitting(target)?1:0
 				};
 			if(rangedAttack)
-				damageAmount = CMath.parseMathExpression(targetedRangedDamageFormula, vars, 0.0);
+				damageAmount = CMath.parseMathExpression(isPVP?pvpTargetedRangedDamageFormula:targetedRangedDamageFormula, vars, 0.0);
 			else
-				damageAmount = CMath.parseMathExpression(targetedMeleeDamageFormula, vars, 0.0);
+				damageAmount = CMath.parseMathExpression(isPVP?pvpTargetedMeleeDamageFormula:targetedMeleeDamageFormula, vars, 0.0);
 		}
 		else
 		{
@@ -554,10 +577,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			};
 		if(allowCrits)
 		{
-			int weaponCritChancePct = (int)Math.round(CMath.parseMathExpression(weaponCritChanceFormula, vars, 0.0));
+			int weaponCritChancePct = (int)Math.round(CMath.parseMathExpression(isPVP?pvpWeaponCritChanceFormula:weaponCritChanceFormula, vars, 0.0));
 			if(CMLib.dice().rollPercentage()<weaponCritChancePct)
 			{
-				int weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(weaponCritDmgFormula, vars, 0.0));
+				int weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(isPVP?pvpWeaponCritDmgFormula:weaponCritDmgFormula, vars, 0.0));
 				damageAmount += weaponCritDmgAmt;
 			}
 		}
@@ -565,9 +588,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			vars[0] = damageAmount;
 			if(rangedAttack)
-				damageAmount = CMath.parseMathExpression(rangedFudgeDamageFormula, vars, 0.0);
+				damageAmount = CMath.parseMathExpression(isPVP?pvpRangedFudgeDamageFormula:rangedFudgeDamageFormula, vars, 0.0);
 			else
-				damageAmount = CMath.parseMathExpression(meleeFudgeDamageFormula, vars, 0.0);
+				damageAmount = CMath.parseMathExpression(isPVP?pvpMeleeFudgeDamageFormula:meleeFudgeDamageFormula, vars, 0.0);
 		}
 		return (int)Math.round(damageAmount);
 	}

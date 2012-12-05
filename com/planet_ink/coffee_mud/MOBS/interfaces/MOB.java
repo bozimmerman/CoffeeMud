@@ -97,6 +97,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Session session();
 	public void setSession(Session newSession);
 	public boolean isMonster();
+	public boolean isPlayer();
 	public boolean isPossessing();
 	public MOB soulMate();
 	public void setSoulMate(MOB mob);

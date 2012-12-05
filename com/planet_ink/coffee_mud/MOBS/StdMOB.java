@@ -3166,6 +3166,9 @@ public class StdMOB implements MOB
 		return !pleaseDestroy;
 	}
 
+	public boolean isPlayer() {
+		return playerStats != null;
+	}
 	public boolean isMonster() {
 		return (mySession == null) || (mySession.isFake());
 	}
