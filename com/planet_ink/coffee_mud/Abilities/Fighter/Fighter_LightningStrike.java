@@ -175,7 +175,8 @@ public class Fighter_LightningStrike extends MonkSkill
 			{
 				mob.location().send(mob,msg);
 				int num=getXLEVELLevel(mob)+CMLib.ableMapper().qualifyingClassLevel(mob,this);
-				for(int i=0;i<num;i++)
+				final Room R=target.location();
+				for(int i=0;(i<num) && (target.location()==R);i++)
 					if((!target.amDead())&&(!anyWeapons(mob)))
 						CMLib.combat().postAttack(mob,target,null);
 				if((!anyWeapons(mob))&&(msg.value()<=0))
