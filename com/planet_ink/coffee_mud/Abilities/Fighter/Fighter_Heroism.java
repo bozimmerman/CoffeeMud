@@ -44,7 +44,17 @@ public class Fighter_Heroism extends FighterSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+	private boolean activated=false;
 
+	public void setActivated(boolean activate)
+	{
+		if(activate==activated)
+			return;
+		activated=activate;
+		if(affected instanceof MOB)
+			((MOB)affected).recoverCharStats();
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))
@@ -54,10 +64,15 @@ public class Fighter_Heroism extends FighterSkill
 
 		if((CMLib.flags().isStanding(mob))
 		&&(mob.isInCombat())
-		&&(CMLib.dice().rollPercentage()==1)
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
 		&&(tickID==Tickable.TICKID_MOB))
-			helpProficiency(mob, 0);
+		{
+			setActivated(true);
+			if(CMLib.dice().rollPercentage()==1)
+				helpProficiency(mob, 0);
+		}
+		else
+			setActivated(false);
 		return super.tick(ticking,tickID);
 	}
 

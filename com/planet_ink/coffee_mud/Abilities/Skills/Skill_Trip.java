@@ -169,8 +169,11 @@ public class Skill_Trip extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				maliciousAffect(mob,target,asLevel,2,-1);
-				target.tell("You hit the floor!");
+				if(msg.value()<=0)
+				{
+					maliciousAffect(mob,target,asLevel,2,-1);
+					target.tell("You hit the floor!");
+				}
 			}
 		}
 		else

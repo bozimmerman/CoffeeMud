@@ -258,9 +258,19 @@ public class Poison_Alcohol extends Poison
 			&&(CMLib.dice().rollPercentage()<(drunkness*20))
 			&&(msg.targetMajor()>0))
 			{
-				if((msg.target() !=null)
-					&&(msg.target() instanceof MOB))
-						msg.modify(msg.source(),msg.source().location().fetchInhabitant(CMLib.dice().roll(1,msg.source().location().numInhabitants(),0)-1),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+				
+				Room room=msg.source().location();
+				if((msg.target() !=null)&&(msg.target() instanceof MOB)&&(room!=null))
+				{
+					Environmental target=msg.target();
+					if(room.numInhabitants()>2)
+					{
+						target=room.fetchInhabitant(CMLib.dice().roll(1,room.numInhabitants(),0)-1);
+						if(!CMLib.flags().canBeSeenBy(target, msg.source()))
+							target=msg.target();
+					}
+					msg.modify(msg.source(),target,msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+				}
 			}
 		}
 		else

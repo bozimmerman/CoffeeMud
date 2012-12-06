@@ -61,7 +61,7 @@ public class MichaelsMithrilChain extends StdArmor
 		if((msg.targetMinor()==CMMsg.TYP_ELECTRIC)
 		&&(!this.amWearingAt(Wearable.IN_INVENTORY))
 		&&(!this.amWearingAt(Wearable.WORN_HELD))
-		&&(mob.isMine(this)))
+		&&(owner()==mob))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> appear(s) to be unaffected.");
 			return false;

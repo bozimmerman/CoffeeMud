@@ -48,7 +48,7 @@ public class Polls extends StdLibrary implements PollManager
 	}
 	
 	public void addPoll(Poll P){if(getCache()!=null) getCache().add(P);}
-	public void removePoll(Poll P){if(getCache()!=null) getCache().add(P);}
+	public void removePoll(Poll P){if(getCache()!=null) getCache().remove(P);}
 	
 	public synchronized List<Poll> getCache()
 	{
@@ -87,16 +87,15 @@ public class Polls extends StdLibrary implements PollManager
 	
 	public Poll getPoll(int x)
 	{
-		if(x<0) return null;
-		Iterator<Poll> i=getPollList();
-		if((x>=0)&&(i.hasNext()))
+		Iterator<Poll> p=getPollList();
+		Poll P=null;
+		for(int i=0;i<=x;i++)
 		{
-			Poll P=i.next();
-			if((x==0)&&(loadPollIfNecessary(P)))
-				return P;
-			x--;
+			if(!p.hasNext())
+				return null;
+			P=p.next();
 		}
-		return null;
+		return P;
 	}
 	
 	@SuppressWarnings("unchecked")
