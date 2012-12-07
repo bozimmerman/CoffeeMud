@@ -459,7 +459,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-				A.autoInvocation(mob);
+			{
+				Ability eA=mob.fetchEffect(A.ID());
+				if((eA==null)||(!eA.isNowAnAutoEffect()))
+					A.autoInvocation(mob);
+			}
 		}
 
 		List<String> newAbilityIDs=new Vector<String>();

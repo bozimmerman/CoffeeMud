@@ -1687,7 +1687,7 @@ public class StdRoom implements Room
 		else
 		if(E instanceof Item)
 		{
-			String ctxName=CMLib.english().getContextName(inhabitants,E);
+			String ctxName=CMLib.english().getContextName(contents,E);
 			if(ctxName!=null) return ctxName;
 		}
 		else

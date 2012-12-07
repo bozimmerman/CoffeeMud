@@ -2415,13 +2415,14 @@ public class StdMOB implements MOB
 					return false;
 				}
 
-				if ((!isMonster())
+				if ((srcM != this)
+				&& (!isMonster())
 				&& (!srcM.isMonster())
 				&& (soulMate() == null)
 				&& (srcM.soulMate() == null)
+				&& (CMath.abs(srcM.phyStats().level() - phyStats().level()) > CMProps.getPKillLevelDiff())
 				&& (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.PKILL))
 				&& (!CMSecurity.isAllowed(srcM, srcM.location(), CMSecurity.SecFlag.PKILL))
-				&& (CMath.abs(srcM.phyStats().level() - phyStats().level()) <= CMProps.getPKillLevelDiff())
 				&& ((!(msg.tool() instanceof Ability)) || (((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
 				{
 					srcM.tell("That is not EVEN a fair fight.");
