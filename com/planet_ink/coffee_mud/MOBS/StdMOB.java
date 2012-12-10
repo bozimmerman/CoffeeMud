@@ -2686,9 +2686,9 @@ public class StdMOB implements MOB
 		if ((msg.sourceCode() != CMMsg.NO_EFFECT) && (msg.amISource(this)))
 		{
 			if ((CMath.bset(msg.sourceMajor(), CMMsg.MASK_MALICIOUS))
-					&& (msg.target() instanceof MOB)
-					&& (getVictim() != msg.target())
-					&& ((!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)) || (!(msg.tool() instanceof DiseaseAffect))))
+				&& (msg.target() instanceof MOB)
+				&& (getVictim() != msg.target())
+				&& ((!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS)) || (!(msg.tool() instanceof DiseaseAffect))))
 			{
 				CMLib.combat().establishRange(this, (MOB) msg.target(), msg.tool());
 				if ((msg.tool() instanceof Weapon) 

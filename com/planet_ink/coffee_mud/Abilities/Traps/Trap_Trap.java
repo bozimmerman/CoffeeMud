@@ -253,7 +253,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 				int damage=CMLib.dice().roll(mob.phyStats().level(),3,1);
-				CMLib.combat().postDamage(invoker(),mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
+				CMLib.combat().postDamage(invoker(),mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,-1,null);
 			}
 			CMLib.commands().postLook(mob,true);
 		}

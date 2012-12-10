@@ -426,25 +426,24 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return str;
 	}
 
-	public void postDamage(MOB attacker,
-						   MOB target,
-						   Environmental weapon,
-						   int damage,
-						   int messageCode,
-						   int damageType,
-						   String allDisplayMessage)
+	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage)
 	{
 		if((attacker==null)||(target==null)||(target.location()==null)) return;
 		if(allDisplayMessage!=null) allDisplayMessage="^F^<FIGHT^>"+allDisplayMessage+"^</FIGHT^>^?";
-		if((weapon instanceof Ability)
-		&&(damage>0)
-		&&(attacker != target)
-		&&(attacker != null)
-		&&(target != null)
-		&&(attacker.isMine(weapon)||(attacker.phyStats().level()>1))) // why >1? because quickly made fake-mobs tend to have lvl=1
-			damage = modifySpellDamage(attacker, target, damage);
 		
-		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
+		final int damageTypeMsg;
+		if((attacker != target) &&(attacker != null) &&(target != null))
+		{
+			if((weapon instanceof Ability)
+			&&(damage>0)
+			&&(attacker.isMine(weapon)||(attacker.phyStats().level()>1))) // why >1? because quickly made fake-mobs tend to have lvl=1
+				damage = modifySpellDamage(attacker, target, damage);
+			damageTypeMsg = CMMsg.TYP_DAMAGE | (CMMsg.MASK_MALICIOUS & messageCode);
+		}
+		else
+			damageTypeMsg = CMMsg.TYP_DAMAGE;
+		
+		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,damageTypeMsg,messageCode,allDisplayMessage);
 		msg.setValue(damage);
 		CMLib.color().fixSourceFightColor(msg);
 		Room R=(target==null)?null:target.location();
