@@ -48,6 +48,65 @@ public class Thief_Listen extends ThiefSkill
 	protected Room room=null;
 	protected String lastSaid="";
 
+	protected MOB getInvisibleMOB()
+	{
+		MOB mrInvisible=CMClass.getFactoryMOB();
+		mrInvisible.setName("Someone");
+		mrInvisible.basePhyStats().setDisposition(mrInvisible.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
+		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
+		return mrInvisible;
+	}
+	
+	protected Item getInvisibleItem()
+	{
+		Item mrInvisible=CMClass.getItem("StdItem");
+		mrInvisible.setName("Something");
+		mrInvisible.basePhyStats().setDisposition(mrInvisible.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
+		mrInvisible.phyStats().setDisposition(mrInvisible.phyStats().disposition()|PhyStats.IS_NOT_SEEN);
+		return mrInvisible;
+	}
+	
+	protected Environmental[] makeTalkers(MOB s, Environmental p, Environmental t)
+	{
+		Environmental[] Ms=new Environmental[]{s,p,t};
+		Ms[0]=getInvisibleMOB();
+		if(p instanceof MOB)
+		{
+			if(p==s)
+				Ms[1]=Ms[0];
+			else
+				Ms[1]=getInvisibleMOB();
+		}
+		else
+		if(p!=null)
+		{
+			Ms[1]=getInvisibleItem();
+		}
+		if(t instanceof MOB)
+		{
+			if(p==s)
+				Ms[2]=Ms[0];
+			else
+			if(p==s)
+				Ms[2]=Ms[0];
+			else
+				Ms[2]=getInvisibleMOB();
+		}
+		else
+		if(t!=null)
+		{
+			Ms[2]=getInvisibleItem();
+		}
+		return Ms;
+	}
+	
+	public void cleanTalkers(Environmental[] Ps)
+	{
+		for(Environmental P : Ps)
+			if(P!=null)
+				P.destroy();
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -85,7 +144,11 @@ public class Thief_Listen extends ThiefSkill
 			{
 				lastSaid=msg.sourceMessage();
 				if((invoker().phyStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().phyStats().level())
-					invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
+				{
+					Environmental[] Ps=makeTalkers(msg.source(),msg.target(),msg.tool());
+					invoker().tell((MOB)Ps[0],Ps[1],Ps[2],msg.othersMessage());
+					this.cleanTalkers(Ps);
+				}
 				else
 					invoker().tell(msg.source(),null,null,"<S-NAME> said something, but you couldn't quite make it out.");
 			}

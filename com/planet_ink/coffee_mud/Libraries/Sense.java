@@ -643,7 +643,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 
 		if((isInvisible(seenP))&&(!canSeeInvisible(seer)))
-		   return false;
+			return false;
 
 		if((isHidden(seenP))&&(!(seenP instanceof Room)))
 		{

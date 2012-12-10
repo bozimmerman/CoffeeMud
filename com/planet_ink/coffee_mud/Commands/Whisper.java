@@ -122,7 +122,7 @@ public class Whisper extends StdCommand
 		{
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+CMStrings.removeColors(target.name())+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'.^</WHISPER^>^?"+CMProps.msp("whisper.wav",40)
 										   ,CMMsg.MSG_SPEAK,"^T^<WHISPER \""+CMStrings.removeColors(target.name())+"\"^><S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'^</WHISPER^>.^?"+CMProps.msp("whisper.wav",40)
-										   ,CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) something to <T-NAMESELF>.^</WHISPER^>^?"+CMProps.msp("whisper.wav",40));
+										   ,CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) something to <T-NAMESELF>.^?"+CMProps.msp("whisper.wav",40));
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
 		}
