@@ -69,6 +69,7 @@ public class Spell_DetectSentience extends Spell
 				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 				{
 					Room R=CMLib.map().getRoom(r.next());
+					if(CMLib.flags().canAccess(mob, R))
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);

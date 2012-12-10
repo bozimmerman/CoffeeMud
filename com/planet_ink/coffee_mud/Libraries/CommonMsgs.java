@@ -742,13 +742,22 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				response.append("It is mostly made of "+RawMaterial.CODES.NAME(item.material()).toLowerCase()+".  ");
 			if((item instanceof Recipe)&&((Recipe)item).getTotalRecipePages()>1)
 				response.append( "There are "+((Recipe)item).getTotalRecipePages()+" blank pages/entries remaining.  " );
-			if((item instanceof Weapon)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)) {
-				response.append("It is a ");
-				if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Wearable.WORN_WIELD|Wearable.WORN_HELD))
-					response.append("two handed ");
-				else
-					response.append("one handed ");
-				response.append(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])+" damage.  ");
+			if(item instanceof Ammunition)
+				response.append("It is "+((Ammunition)item).usesRemaining()+" ammunition of type '"+((Ammunition)item).ammunitionType()+".  ");
+			else
+			if(item instanceof Weapon) 
+			{
+				if((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)
+				{
+					response.append("It is a ");
+					if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Wearable.WORN_WIELD|Wearable.WORN_HELD))
+						response.append("two handed ");
+					else
+						response.append("one handed ");
+					response.append(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])+" damage.  ");
+				}
+				if(((Weapon)item).requiresAmmunition())
+					response.append("It requires ammunition of type '"+((Weapon)item).ammunitionType()+".  ");
 			}
 			else
 			if((item instanceof Armor)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
