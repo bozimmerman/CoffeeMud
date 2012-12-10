@@ -78,10 +78,14 @@ public class Spell_LimbRack extends Spell
 					mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!");
 				Amputator A=(Amputator)mob.fetchEffect("Amputation");
 				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
+				boolean success=true;
 				for(int i=0;i<limbsToRemove.size();i++)
-					A.amputate(mob,A,(String)limbsToRemove.get(i));
-				if(mob.fetchEffect(A.ID())==null)
-					mob.addNonUninvokableEffect(A);
+					success=success && (A.amputate(mob,A,(String)limbsToRemove.get(i))!=null);
+				if(success)
+				{
+					if(mob.fetchEffect(A.ID())==null)
+						mob.addNonUninvokableEffect(A);
+				}
 			}
 			CMLib.utensils().confirmWearability(mob);
 		}

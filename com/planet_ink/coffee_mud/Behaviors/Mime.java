@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class Mime extends ActiveTicker
 {
-	protected boolean disabled=false;
-	protected CMMsg lastMsg=null;
+	protected volatile boolean disabled=false;
+	protected volatile CMMsg lastMsg=null;
 
 	public String ID(){return "Mime";}
 	public long flags(){return Behavior.FLAG_MOBILITY;}
@@ -130,7 +130,7 @@ public class Mime extends ActiveTicker
 			}
 		}
 		else
-		if((msg.tool()!=null)&&(msg.tool().ID().equals("Social")))
+		if(msg.tool() instanceof Social)
 		{
 			MOB target=null;
 			if((msg.target()!=null)&&(msg.target() instanceof MOB))

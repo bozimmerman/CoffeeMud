@@ -62,10 +62,13 @@ public class Fighter_CalledStrike extends FighterSkill
 		if(mob==null) return false;
 		Amputator A=(Amputator)mob.fetchEffect("Amputation");
 		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
-		A.amputate(mob,A,gone);
-		if(mob.fetchEffect(A.ID())==null)
-			mob.addNonUninvokableEffect(A);
-		return true;
+		if(A.amputate(mob,A,gone)!=null)
+		{
+			if(mob.fetchEffect(A.ID())==null)
+				mob.addNonUninvokableEffect(A);
+			return true;
+		}
+		return false;
 	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

@@ -410,10 +410,13 @@ public class Amputation extends StdAbility implements Amputator
 			if(target instanceof MOB)
 			{
 				R=((MOB)target).charStats().getMyRace();
+				boolean success;
 				if(gone.toLowerCase().endsWith("eye"))
-					((MOB)target).location().show(((MOB)target),null,CMMsg.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" is destroyed!^?");
+					success=((MOB)target).location().show(((MOB)target),A,CMMsg.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" is destroyed!^?");
 				else
-					((MOB)target).location().show(((MOB)target),null,CMMsg.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" falls off!^?");
+					success=((MOB)target).location().show(((MOB)target),A,CMMsg.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" falls off!^?");
+				if(!success)
+					return null;
 			}
 			else
 			if((target instanceof DeadBody)
@@ -672,16 +675,20 @@ public class Amputation extends StdAbility implements Amputator
 				target.location().send(target,msg);
 				if(msg.value()<=0)
 				{
-					amputate(target,A,gone);
-					if(newOne==true)
-						target.addNonUninvokableEffect(A);
-					target.recoverCharStats();
-					target.recoverPhyStats();
-					target.recoverMaxState();
-					target.location().recoverRoomStats();
-					CMLib.utensils().confirmWearability(target);
-					target.setVictim(vic);
-					mob.setVictim(vic2);
+					if(amputate(target,A,gone)!=null)
+					{
+						if(newOne==true)
+							target.addNonUninvokableEffect(A);
+						target.recoverCharStats();
+						target.recoverPhyStats();
+						target.recoverMaxState();
+						target.location().recoverRoomStats();
+						CMLib.utensils().confirmWearability(target);
+						target.setVictim(vic);
+						mob.setVictim(vic2);
+					}
+					else
+						success=false;
 				}
 			}
 			else

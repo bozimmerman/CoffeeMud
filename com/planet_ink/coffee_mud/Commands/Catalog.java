@@ -286,7 +286,7 @@ public class Catalog extends StdCommand
 						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(I.Name(),ID)))
 						{
 							list.append(CMStrings.padRight(I.Name(),34)+" ");
-							list.append(CMStrings.padRight(Integer.toBinaryString(data.numReferences()),3)+" ");
+							list.append(CMStrings.padRight(Integer.toString(data.numReferences()),3)+" ");
 							if(data.getRate()<=0.0)
 							{
 								list.append("N/A   ");

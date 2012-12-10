@@ -436,9 +436,11 @@ public class Injury extends StdAbility
 									bodyVec.removeElement(O);
 									if(bodyVec.size()==0)
 										injuries[bodyLoc]=null;
-									A.amputate(mob,A,((String)O[0]).toLowerCase());
-									if(mob.fetchEffect(A.ID())==null)
-										mob.addNonUninvokableEffect(A);
+									if(A.amputate(mob,A,((String)O[0]).toLowerCase())!=null)
+									{
+										if(mob.fetchEffect(A.ID())==null)
+											mob.addNonUninvokableEffect(A);
+									}
 								}
 							}
 						}

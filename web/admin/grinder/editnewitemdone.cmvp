@@ -12,12 +12,12 @@
 @if?CheckReqParm?<ITEM=CATALOG-@
     <SCRIPT LANGUAGE=JavaScript>
     <!--
+        opener.EditItemDone();
         @if?!CheckReqParm?DELITEM=@
             var v='@MUDGrinder?DELCATALOGITEM@';
-            if(v.length>0)
-                alert(v);
+            if(v && window.alert)
+                window.alert(v);
         @endif@
-        opener.EditItemDone();
         window.close();
     //-->
     </SCRIPT>
