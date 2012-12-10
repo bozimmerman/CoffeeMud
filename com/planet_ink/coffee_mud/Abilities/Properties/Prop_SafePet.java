@@ -84,6 +84,9 @@ public class Prop_SafePet extends Property
 					disabled=true;
 			}
 			else
+			if((msg.targetMinor()==CMMsg.TYP_DAMAGE) && msg.amITarget(affected))
+				msg.setValue(0);
+			else
 			if(!((MOB)affected).isInCombat())
 				disabled=false;
 		}

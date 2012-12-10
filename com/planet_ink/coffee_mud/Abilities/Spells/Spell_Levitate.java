@@ -99,9 +99,6 @@ public class Spell_Levitate extends Spell
 		{
 			if((mob.isMonster())&&(mob.isInCombat()))
 				return Ability.QUALITY_INDIFFERENT;
-			if(target instanceof MOB)
-			{
-			}
 		}
 		return super.castingQuality(mob,target);
 	}
@@ -145,7 +142,7 @@ public class Spell_Levitate extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1);
 					if(target instanceof MOB)
 						((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) straight up!");
 					else

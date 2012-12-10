@@ -40,6 +40,7 @@ public class Spell_Summon extends Spell
 	public String displayText(){return "(Summoned)";}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return 0;}
+	protected int overrideMana(){return Ability.COST_PCT+50;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
