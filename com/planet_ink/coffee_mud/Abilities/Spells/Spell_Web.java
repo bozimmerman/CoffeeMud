@@ -132,7 +132,7 @@ public class Spell_Web extends Spell
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
 					{
-						amountRemaining=160;
+						amountRemaining=super.adjustedLevel(mob, asLevel)*10;
 						if(target.location()==mob.location())
 						{
 							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);

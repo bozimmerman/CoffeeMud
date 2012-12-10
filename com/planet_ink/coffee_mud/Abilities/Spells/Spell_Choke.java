@@ -41,7 +41,7 @@ public class Spell_Choke extends Spell
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;	}
-
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -87,7 +87,7 @@ public class Spell_Choke extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,5,-1);
+					success=maliciousAffect(mob,target,asLevel,5+super.getXLEVELLevel(mob),-1);
 					if(target.location()==mob.location())
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,("<S-NAME> start(s) choking!"+CMProps.msp("choke.wav",40)));
 				}

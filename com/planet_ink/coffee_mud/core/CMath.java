@@ -174,6 +174,30 @@ public class CMath
 	}
 	
 	/**
+	 * Returns how many bits are set in the given 64 bit long
+	 * @param i the long to count bits in
+	 * @return the number of bits set
+	 */
+	public static int numberOfSetBits(long i)
+	{
+		i = i - ((i >> 1) & 0x5555555555555555L);
+		i = (i & 0x3333333333333333L) + ((i >> 2) & 0x3333333333333333L);
+		return (int)((((i + (i >> 4)) & 0xF0F0F0F0F0F0F0FL) * 0x101010101010101L) >> 56);
+	}
+	
+	/**
+	 * Returns how many bits are set in the given 32 bit int
+	 * @param i the int to count bits in
+	 * @return the number of bits set
+	 */
+	public static int numberOfSetBits(int i)
+	{
+		i = i - ((i >> 1) & 0x55555555);
+		i = (i & 0x33333333) + ((i >> 2) & 0x33333333);
+		return (((i + (i >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24;
+	}
+	
+	/**
 	 * Returns the matching enum.  Case Sensitive!
 	 * @param c the enum class to look in
 	 * @param s the string to look

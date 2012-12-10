@@ -82,7 +82,7 @@ public class Prayer_CurseFlames extends Prayer
 				break;
 			}
 		}
-		return null;
+		return fireSource;
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

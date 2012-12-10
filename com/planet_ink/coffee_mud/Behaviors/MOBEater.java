@@ -154,7 +154,7 @@ public class MOBEater extends ActiveTicker
 		{
 			MOB TastyMorsel = mob.getVictim();
 			if(TastyMorsel==null) return true;
-			if (TastyMorsel.phyStats().weight()<(mob.phyStats().weight()/2))
+			if (TastyMorsel.baseWeight()<(mob.phyStats().weight()/2))
 			{
 				// ===== The player has been eaten.
 				// ===== move the tasty morsel to the stomach

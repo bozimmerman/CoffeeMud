@@ -76,11 +76,11 @@ public class Spell_WeaknessCold extends Spell
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_WINDY)
 				&&((room.getArea().climateType()&Area.CLIMASK_COLD)>0)
 				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_COLD)))
-					CMLib.combat().postDamage(invoker,M,null,1,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The cold biting wind <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(invoker,M,null,1,CMMsg.MASK_MALICIOUS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The cold biting wind <DAMAGE> <T-NAME>!");
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_WINTER_COLD)
 				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_COLD)))
-					CMLib.combat().postDamage(invoker,M,null,1,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting cold <DAMAGE> <T-NAME>!");
+					CMLib.combat().postDamage(invoker,M,null,1,CMMsg.MASK_MALICIOUS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting cold <DAMAGE> <T-NAME>!");
 				else
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_SNOW)
 				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_COLD)))

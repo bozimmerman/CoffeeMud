@@ -93,8 +93,9 @@ public class StdWeapon extends StdItem implements Weapon
 		super.recoverPhyStats();
 		if(phyStats().damage()!=0)
 		{
-			phyStats().setDamage(phyStats().damage()+(phyStats().ability()*2));
-			phyStats().setAttackAdjustment(phyStats().attackAdjustment()+(phyStats().ability()*10));
+			final int ability=super.wornLogicalAnd ? (phyStats().ability()*CMath.numberOfSetBits(super.myWornCode)) : phyStats().ability();
+			phyStats().setDamage(phyStats().damage()+(ability*2));
+			phyStats().setAttackAdjustment(phyStats().attackAdjustment()+(ability*10));
 		}
 		if((subjectToWearAndTear())&&(usesRemaining()<100))
 			phyStats().setDamage(((int)Math.round(CMath.mul(phyStats().damage(),CMath.div(usesRemaining(),100)))));
