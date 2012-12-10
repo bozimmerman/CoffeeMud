@@ -150,9 +150,14 @@ public class Spell_LocateObject extends Spell
 						&&(((Item)item).phyStats().level()>minLevel)
 						&&(((Item)item).phyStats().level()<maxLevel))
 						{
-							String str=item.name()+((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle(mob)+"'.";
-							itemsFound.add(str);
-							break;
+							CMMsg msg2=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,null,auto),null);
+							if(room.okMessage(mob,msg2))
+							{
+								room.send(mob,msg2);
+								String str=item.name()+((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle(mob)+"'.";
+								itemsFound.add(str);
+								break;
+							}
 						}
 					}
 					if(itemsFound.size()>=maxFound) break;
