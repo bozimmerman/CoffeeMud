@@ -80,6 +80,7 @@ public class Spell_Scry extends Spell
 		&&(invoker.location()!=((MOB)affected).location())
 		&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 		&&(msg.othersMessage()!=null)
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		&&(!recurse))
 		{
 			recurse=true;

@@ -214,10 +214,8 @@ public class Thief extends StdCharClass
 			if(msg.amISource(myChar)
 			   &&(!myChar.isMonster())
 			   &&(msg.sourceCode()==CMMsg.MSG_THIEF_ACT)
-			   &&(msg.target()!=null)
 			   &&(msg.target() instanceof MOB)
 			   &&(msg.targetMessage()==null)
-			   &&(msg.tool()!=null)
 			   &&(msg.tool() instanceof Ability)
 			   &&(msg.tool().ID().equals("Thief_Steal")
 				  ||msg.tool().ID().equals("Thief_Robbery")
@@ -227,7 +225,10 @@ public class Thief extends StdCharClass
 				  ||(msg.tool().ID().equals("Thief_RemoveTraps")&&(msg.value()==1))
 				  ||msg.tool().ID().equals("Thief_Racketeer")
 				  ||msg.tool().ID().equals("Thief_Swipe")))
-				CMLib.leveler().postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),10,false);
+			{
+				int xp=CMLib.flags().aliveAwakeMobileUnbound((MOB)msg.target(), true)?10:5;
+				CMLib.leveler().postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),xp,false);
+			}
 		}
 		super.executeMsg(myHost,msg);
 	}

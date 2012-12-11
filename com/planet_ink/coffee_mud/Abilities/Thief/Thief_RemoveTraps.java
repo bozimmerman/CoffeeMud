@@ -122,7 +122,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 		{
 			while(lastDone.size()>40) lastDone.removeElementAt(0);
 			lastDone.addElement(""+unlockThis);
-			msg.setValue(1);
+			msg.setValue(1); // this is to notify that the thief gets xp from doing this.
 		}
 		else
 			msg.setValue(0);
