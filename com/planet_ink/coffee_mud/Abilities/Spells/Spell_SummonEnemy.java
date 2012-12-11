@@ -42,7 +42,7 @@ public class Spell_SummonEnemy extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	protected int overridemana(){return Ability.COST_PCT+50;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
@@ -127,7 +127,6 @@ public class Spell_SummonEnemy extends Spell
 				&&(mob.charStats()!=null)
 				&&(mob.charStats().getMyRace()!=null)
 				&&(CMProps.isTheme(mob.charStats().getMyRace().availabilityCode()))
-				&&(CMath.bset(mob.charStats().getMyRace().availabilityCode(),Area.THEME_SKILLONLYMASK))
 				&&((CMLib.flags().isGood(caster)&&CMLib.flags().isEvil(mob))
 					|| (CMLib.flags().isNeutral(mob))
 					|| (CMLib.flags().isEvil(caster)&&CMLib.flags().isGood(mob)))

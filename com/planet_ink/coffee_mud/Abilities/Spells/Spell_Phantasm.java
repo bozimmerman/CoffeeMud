@@ -129,7 +129,7 @@ public class Spell_Phantasm extends Spell
 			{
 				if((R!=null)
 				&&(CMProps.isTheme(R.availabilityCode()))
-				&&(CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+				&&(R!=mob.charStats().getMyRace()))
 					break;
 				R=CMClass.randomRace();
 			}
@@ -151,8 +151,7 @@ public class Spell_Phantasm extends Spell
 		}
 		Race R=CMClass.getRace(type);
 		if((R==null)
-		||(!CMProps.isTheme(R.availabilityCode()))
-		||(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+		||(!CMProps.isTheme(R.availabilityCode())))
 		{
 			mob.tell("You don't know how to create a phantasm of a '"+type+"'.");
 			return false;

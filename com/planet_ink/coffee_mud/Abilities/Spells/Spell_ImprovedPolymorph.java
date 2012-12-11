@@ -122,7 +122,7 @@ public class Spell_ImprovedPolymorph extends Spell
 				{
 					if((R!=null)
 					&&(CMProps.isTheme(R.availabilityCode()))
-					&&(CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+					&&(R!=mob.charStats().getMyRace()))
 						break;
 					R=CMClass.randomRace();
 				}
@@ -141,7 +141,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			{
 				if((R!=null)
 				&&(CMProps.isTheme(R.availabilityCode()))
-				&&(CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+				&&(R!=mob.charStats().getMyRace()))
 					break;
 				R=CMClass.randomRace();
 			}
