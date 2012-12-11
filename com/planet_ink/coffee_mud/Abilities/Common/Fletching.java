@@ -348,7 +348,10 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			building.setDescription(itemName+". ");
 			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
-			building.setMaterial(data[0][FOUND_CODE]);
+			if((woodRequired==0)&&(data[1][FOUND_CODE]>0))
+				building.setMaterial(data[1][FOUND_CODE]);
+			else
+				building.setMaterial(data[0][FOUND_CODE]);
 			int level=CMath.s_int((String)foundRecipe.get(RCP_LEVEL));
 			if(woodRequired==0) hardness=0;
 			building.basePhyStats().setLevel(level+hardness);

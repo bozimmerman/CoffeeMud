@@ -743,7 +743,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((item instanceof Recipe)&&((Recipe)item).getTotalRecipePages()>1)
 				response.append( "There are "+((Recipe)item).getTotalRecipePages()+" blank pages/entries remaining.  " );
 			if(item instanceof Ammunition)
-				response.append("It is "+((Ammunition)item).usesRemaining()+" ammunition of type '"+((Ammunition)item).ammunitionType()+".  ");
+				response.append("It is "+((Ammunition)item).usesRemaining()+" ammunition of type '"+((Ammunition)item).ammunitionType()+"'.  ");
 			else
 			if(item instanceof Weapon) 
 			{
@@ -757,7 +757,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					response.append(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])+" damage.  ");
 				}
 				if(((Weapon)item).requiresAmmunition())
-					response.append("It requires ammunition of type '"+((Weapon)item).ammunitionType()+".  ");
+					response.append("It requires ammunition of type '"+((Weapon)item).ammunitionType()+"'.  ");
 			}
 			else
 			if((item instanceof Armor)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
