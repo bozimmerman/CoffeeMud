@@ -132,13 +132,14 @@ public class Thief_Bribe extends ThiefSkill
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"' for "+costWords+".^?");
 			CMLib.beanCounter().subtractMoney(mob,currency,amountRequired);
 			mob.recoverPhyStats();
-			CMMsg msg2=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
+			CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
-			&&(mob.location().okMessage(mob,msg2)))
+			&&(mob.location().okMessage(mob,omsg)))
 			{
 				mob.location().send(mob,msg);
-				mob.location().send(mob,msg2);
-				target.doCommand(commands,Command.METAFLAG_FORCED);
+				mob.location().send(mob,omsg);
+				if(omsg.sourceMinor()==CMMsg.TYP_ORDER)
+					target.doCommand(commands,Command.METAFLAG_FORCED);
 			}
 			CMLib.beanCounter().addMoney(mob,currency,amountRequired);
 			target.recoverPhyStats();

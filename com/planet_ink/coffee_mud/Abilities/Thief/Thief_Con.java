@@ -171,11 +171,14 @@ public class Thief_Con extends ThiefSkill
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
 			mob.recoverPhyStats();
+			CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
-			&&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))
+			&&(mob.location().okMessage(mob, omsg)))
 			{
 				mob.location().send(mob,msg);
-				target.enqueCommand(commands,Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
+				mob.location().send(mob,omsg);
+				if(omsg.sourceMinor()==CMMsg.TYP_ORDER)
+					target.enqueCommand(commands,Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
 			}
 			target.recoverPhyStats();
 		}

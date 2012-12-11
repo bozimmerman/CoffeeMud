@@ -173,56 +173,15 @@ public interface Room extends PhysicalAgent, ItemPossessor
 	public void sendOthers(MOB source, CMMsg msg);
 	public void showHappens(int allCode, String allMessage);
 	public void showHappens(int allCode, Environmental like, String allMessage);
-	public boolean show(MOB source,
-						Environmental target,
-						int allCode,
-						String allMessage);
-	public boolean show(MOB source,
-						Environmental target,
-						Environmental tool,
-						int allCode,
-						String allMessage);
-	public boolean show(MOB source,
-						Environmental target,
-						Environmental tool,
-						int srcCode,
-						int tarCode,
-						int othCode,
-						String allMessage);
-	public boolean show(MOB source,
-						Environmental target,
-						Environmental tool,
-						int srcCode,
-						String srcMessage,
-						int tarCode,
-						String tarMessage,
-						int othCode,
-						String othMessage);
-	public boolean show(MOB source,
-						Environmental target,
-						Environmental tool,
-						int allCode,
-						String srcMessage,
-						String tarMessage,
-						String othMessage);
-	public boolean showOthers(MOB source,
-							  Environmental target,
-							  int allCode,
-							  String allMessage);
-	public boolean showSource(MOB source,
-							  Environmental target,
-							  int allCode,
-							  String allMessage);
-	public boolean showOthers(MOB source,
-							  Environmental target,
-							  Environmental tool,
-							  int allCode,
-							  String allMessage);
-	public boolean showSource(MOB source,
-							  Environmental target,
-							  Environmental tool,
-							  int allCode,
-							  String allMessage);
+	public boolean show(MOB source, Environmental target, int allCode, String allMessage);
+	public boolean show(MOB source, Environmental target, Environmental tool, int allCode, String allMessage);
+	public boolean show(MOB source, Environmental target, Environmental tool, int srcCode, int tarCode, int othCode, String allMessage);
+	public boolean show(MOB source, Environmental target, Environmental tool, int srcCode, String srcMessage, int tarCode, String tarMessage, int othCode, String othMessage);
+	public boolean show(MOB source, Environmental target, Environmental tool, int allCode, String srcMessage, String tarMessage, String othMessage);
+	public boolean showOthers(MOB source, Environmental target, int allCode, String allMessage);
+	public boolean showSource(MOB source, Environmental target, int allCode, String allMessage);
+	public boolean showOthers(MOB source, Environmental target, Environmental tool, int allCode, String allMessage);
+	public boolean showSource(MOB source, Environmental target, Environmental tool, int allCode, String allMessage);
 	public boolean isHere(Environmental E);
 
 	public MOB fetchInhabitant(String inhabitantID);

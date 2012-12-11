@@ -65,14 +65,19 @@ public class Dance_Square extends Dance
 			if(cmd!=null)
 			{
 				MOB M=(MOB)affected;
+				CMMsg omsg=CMClass.getMsg(invoker(),affected,null,CMMsg.MSG_ORDER,null);
 				if(CMLib.flags().canBeHeardMovingBy(invoker(),M)
 				&&CMLib.flags().canBeSeenBy(invoker(),M)
 				&&(M.location()==invoker().location())
-				&&(M.location().show(invoker(),affected,CMMsg.MSG_ORDER,null)))
+				&&(M.location().okMessage(M, omsg)))
 				{
-					CMObject O=CMLib.english().findCommand(M,CMParms.parse(cmd));
-					if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
-						M.enqueCommand(CMParms.parse(cmd),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
+					M.location().send(M, omsg);
+					if(omsg.sourceMinor()==CMMsg.TYP_ORDER)
+					{
+						CMObject O=CMLib.english().findCommand(M,CMParms.parse(cmd));
+						if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
+							M.enqueCommand(CMParms.parse(cmd),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
+					}
 				}
 			}
 		}

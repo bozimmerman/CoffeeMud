@@ -115,15 +115,17 @@ public class Spell_Command extends Spell
 			// what happened.
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> command(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
+			CMMsg omsg=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
 			&&((mob.location().okMessage(mob,msg2)))
-			&&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))
+			&&(mob.location().okMessage(mob, omsg)))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
 					mob.location().send(mob,msg2);
-					if(msg2.value()<=0)
+					mob.location().send(mob,omsg);
+					if((msg2.value()<=0)&&(omsg.sourceMinor()==CMMsg.TYP_ORDER))
 					{
 						invoker=mob;
 						target.makePeace();
