@@ -62,9 +62,9 @@ public class Eat extends StdCommand
 			mob.tell("You don't seem to have '"+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
-		String eatMsg="<S-NAME> eat(s) <T-NAMESELF>.";
 		String eatSound=CMProps.msp("gulp.wav",10);
-		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,hasHands?CMMsg.MSG_EAT:CMMsg.MSG_EAT_GROUND,eatMsg+eatSound);
+		String eatMsg="<S-NAME> eat(s) <T-NAMESELF>."+eatSound;
+		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,hasHands?CMMsg.MSG_EAT:CMMsg.MSG_EAT_GROUND,eatMsg);
 		if(mob.location().okMessage(mob,newMsg)) 
 		{
 			if((thisThang instanceof Food)
@@ -75,9 +75,10 @@ public class Eat extends StdCommand
 			&&(newMsg.sourceMessage().equalsIgnoreCase(newMsg.othersMessage()))
 			&&(newMsg.targetMessage().equalsIgnoreCase(newMsg.othersMessage())))
 			{
-				newMsg.setSourceMessage("<S-NAME> take(s) a bite of <T-NAMESELF>."+eatSound);
-				newMsg.setTargetMessage(newMsg.sourceMessage());
-				newMsg.setOthersMessage(newMsg.othersMessage());
+				String biteMsg="<S-NAME> take(s) a bite of <T-NAMESELF>."+eatSound;
+				newMsg.setSourceMessage(biteMsg);
+				newMsg.setTargetMessage(biteMsg);
+				newMsg.setOthersMessage(biteMsg);
 			}
 			mob.location().send(mob,newMsg);
 		}

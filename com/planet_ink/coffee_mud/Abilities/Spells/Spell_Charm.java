@@ -222,13 +222,13 @@ public class Spell_Charm extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			String str=auto?"":"^S<S-NAME> smile(s) and wink(s) at <T-NAMESELF>.^?";
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,str);
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_SOMANTIC_SPELL,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,-levelDiff,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
+					success=maliciousAffect(mob,target,asLevel,-levelDiff,CMMsg.MSK_CAST_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
 					if(success)
 					{
 						if(target.isInCombat()) target.makePeace();
