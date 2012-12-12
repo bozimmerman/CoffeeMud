@@ -189,7 +189,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					List<Ability> diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
 					if(diseaseV.size()>0){ Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
-					List<Ability> poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
+					List<Ability> poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_POISON);
 					if(poisonV.size()>0){ Ability A=CMClass.getAbility("Prayer_RemovePoison"); if(A!=null) A.invoke(mob,target,true,0);}
 					Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					Ability injury=target.fetchEffect("Injury"); if(injury!=null){ injury.unInvoke(); target.delEffect(injury);}
