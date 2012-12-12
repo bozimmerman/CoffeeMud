@@ -89,6 +89,7 @@ public class Thief_UsePoison extends ThiefSkill
 			mob.tell(poison.name()+" is not a poison!");
 			return false;
 		}
+		Drink dPoison=(Drink)poison;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -103,10 +104,20 @@ public class Thief_UsePoison extends ThiefSkill
 			{
 				Ability A=(Ability)V.get(0);
 				if(A!=null)
+				{
 					if(target instanceof Weapon)
 						A.invoke(mob,target,true,adjustedLevel(mob,asLevel));
 					else
 						target.addNonUninvokableEffect(A);
+					
+					int amountToTake=dPoison.thirstQuenched()/5;
+					if(amountToTake<1) amountToTake=1;
+					dPoison.setLiquidRemaining(dPoison.liquidRemaining()-amountToTake);
+					if(dPoison.disappearsAfterDrinking()
+					||((dPoison instanceof RawMaterial)&&(dPoison.liquidRemaining()<=0)))
+						dPoison.destroy();
+				}
+				
 			}
 		}
 		return success;
