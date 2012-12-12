@@ -63,10 +63,10 @@ public class Spell_StinkingCloud extends Spell
 			{
 				int damage= (M.phyStats().level()/2) + super.getXLEVELLevel(invoker);
 				if((M.curState().getHunger()<=0))
-					CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");
+					CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");
 				else
 				{
-					CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
+					CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
 					M.curState().adjHunger(-500,M.maxState().maxHunger(M.baseWeight()));
 				}
 				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))

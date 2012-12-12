@@ -84,7 +84,7 @@ public class Prayer_BladeBarrier extends Prayer
 					hitWord.deleteCharAt(hitWord.length()-2);
 				if(hitWord.charAt(hitWord.length()-3)=='(')
 					hitWord.deleteCharAt(hitWord.length()-3);
-				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,msgStr);
+				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,msgStr);
 				oncePerTickTime=((MOB)msg.target()).lastTickedDateTime();
 			}
 		}

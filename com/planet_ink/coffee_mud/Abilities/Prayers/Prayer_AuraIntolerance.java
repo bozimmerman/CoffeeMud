@@ -99,9 +99,9 @@ public class Prayer_AuraIntolerance extends Prayer
 				||(((MOB)affected).getWorshipCharID().length()>0)&&(!M.getWorshipCharID().equals(((MOB)affected).getWorshipCharID()))))
 			{
 				if(M.getWorshipCharID().length()>0)
-					CMLib.combat().postDamage(((MOB)affected),M,this,3,CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!");
+					CMLib.combat().postDamage(((MOB)affected),M,this,3,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!");
 				else
-					CMLib.combat().postDamage(((MOB)affected),M,this,1,CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!");
+					CMLib.combat().postDamage(((MOB)affected),M,this,1,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGES> <T-NAMESELF>!");
 				if((!M.isInCombat())&&(M.isMonster())&&(M!=invoker)&&(invoker!=null)&&(M.location()==invoker.location())&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
 					CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 			}

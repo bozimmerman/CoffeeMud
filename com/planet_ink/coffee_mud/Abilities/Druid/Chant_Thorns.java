@@ -87,7 +87,7 @@ public class Chant_Thorns extends Chant
 						if(msg2.value()<=0)
 						{
 							int damage = CMLib.dice().roll( 1, (int)Math.round( ((double) adjustedLevel( invoker(), 0 ) ) / 3.0 ), 1 );
-							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_PIERCING,msgStr);
+							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_PIERCING,msgStr);
 						}
 					}
 					oncePerTickTime=mob.lastTickedDateTime();

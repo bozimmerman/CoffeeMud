@@ -59,7 +59,7 @@ public class Paladin_Aura extends PaladinSkill
 				if(CMLib.flags().isEvil(mob))
 				{
 					int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*getXLEVELLevel(invoker)),3.0));
-					CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGES> <T-NAME>!^?");
+					CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGES> <T-NAME>!^?");
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException e)

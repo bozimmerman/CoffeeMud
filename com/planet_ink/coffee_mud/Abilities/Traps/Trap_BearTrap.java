@@ -132,7 +132,7 @@ public class Trap_BearTrap extends StdTrap
 				int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 				trapped=target;
 				amountRemaining=250+((trapLevel()+abilityCode())*10);
-				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");
+				CMLib.combat().postDamage(invoker(),target,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");
 			}
 		}
 	}
