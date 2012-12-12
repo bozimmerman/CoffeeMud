@@ -100,7 +100,6 @@ public class Disease_Depression extends Disease
 			mob.tell("Whats the point in fighting, really?");
 			mob.makePeace();
 		}
-		else
 		if((!mob.isInCombat())
 		&&(mob.session()!=null)
 		&&(mob.session().getIdleMillis()>10000)
