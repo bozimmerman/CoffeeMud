@@ -68,9 +68,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 		&&(!mob.amDead()))
 			helpProficiency(mob, 0);
 		else
-		if(msg.amISource(mob)
-		&&(msg.target() instanceof Shield)
-		&&((msg.targetMinor()==CMMsg.TYP_DROP))||(msg.targetMinor()==CMMsg.TYP_REMOVE)||(msg.targetMinor()==CMMsg.TYP_HOLD))
+		if(msg.amISource(mob)&&(msg.target() instanceof Shield))
 			amountOfShieldArmor=-1;
 	}
 

@@ -96,9 +96,7 @@ public class Fighter_AutoBash extends FighterSkill
 
 		MOB mob=(MOB)affected;
 
-		if(msg.amISource(mob)
-		&&(msg.target() instanceof Shield)
-		&&((msg.targetMinor()==CMMsg.TYP_DROP))||(msg.targetMinor()==CMMsg.TYP_REMOVE)||(msg.targetMinor()==CMMsg.TYP_HOLD))
+		if(msg.amISource(mob)&&(msg.target() instanceof Shield))
 			numberOfShields=-1;
 	}
 
