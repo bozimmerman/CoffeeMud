@@ -45,7 +45,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
-	private boolean enabledFlag=true;
+	protected volatile int amountOfShieldArmor=-1;
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -55,7 +55,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		&&(enabledFlag)
+		&&(amountOfShieldArmor>0)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 		&&(msg.tool()!=null)
@@ -74,20 +74,56 @@ public class Fighter_ShieldBlock extends FighterSkill
 		return true;
 	}
 	
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+
+		if(!(affected instanceof MOB))
+			return;
+
+		MOB mob=(MOB)affected;
+
+		if(msg.amISource(mob)
+		&&(msg.target() instanceof Shield)
+		&&((msg.targetMinor()==CMMsg.TYP_DROP))||(msg.targetMinor()==CMMsg.TYP_REMOVE)||(msg.targetMinor()==CMMsg.TYP_HOLD))
+			amountOfShieldArmor=-1;
+	}
+
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((amountOfShieldArmor<0)&&(tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
+		{
+			amountOfShieldArmor=0;
+			for(Enumeration<Item> i=((MOB)ticking).items(); i.hasMoreElements(); )
+			{
+				final Item I=i.nextElement();
+				if((I instanceof Shield)
+				&&(I.amWearingAt(Wearable.WORN_HELD)||I.amWearingAt(Wearable.WORN_WIELD))
+				&&(I.owner()==ticking)
+				&&(I.container() == null))
+					amountOfShieldArmor+=I.phyStats().armor();
+			}
+			((MOB)ticking).recoverPhyStats();
+		}
+		return true;
+	}
+	
 	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(amountOfShieldArmor>0))
 		{
-			Item shield=((MOB)affected).fetchHeldItem();
-			enabledFlag=(shield instanceof Shield);
-			if(enabledFlag)
-			{
-				stats.setArmor(stats.armor()+(int)Math.round(
-					CMath.mul(shield.phyStats().armor(),
-						CMath.mul(getXLEVELLevel((MOB)affected),0.5))));
-			}
+			stats.setArmor(stats.armor()-(int)Math.round(
+				CMath.mul(amountOfShieldArmor,
+					CMath.mul(getXLEVELLevel((MOB)affected),0.5))));
 		}
-
+	}
+	
+	public boolean autoInvocation(MOB mob)
+	{
+		amountOfShieldArmor=-1;
+		return super.autoInvocation(mob);
 	}
 }

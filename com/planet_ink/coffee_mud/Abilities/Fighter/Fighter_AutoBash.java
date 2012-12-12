@@ -45,6 +45,7 @@ public class Fighter_AutoBash extends FighterSkill
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
+	protected volatile int numberOfShields=-1;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -54,19 +55,53 @@ public class Fighter_AutoBash extends FighterSkill
 			return false;
 
 		MOB mob=(MOB)affected;
-		if(mob.isInCombat()
-		&&(mob.rangeToTarget()==0)
-		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-		&&(mob.fetchHeldItem() instanceof Shield)
-		&&(proficiencyCheck(null,0,false)))
+		
+		if((numberOfShields<0)&&(tickID==Tickable.TICKID_MOB))
 		{
-			Ability A=mob.fetchAbility("Skill_Bash");
-			if(A!=null) A.invoke(mob,mob.getVictim(),false,adjustedLevel(mob,0));
-			if(CMLib.dice().rollPercentage()<10)
-				helpProficiency(mob, 0);
+			numberOfShields=0;
+			for(Enumeration<Item> i=mob.items(); i.hasMoreElements(); )
+			{
+				final Item I=i.nextElement();
+				if((I instanceof Shield)
+				&&(I.amWearingAt(Wearable.WORN_HELD)||I.amWearingAt(Wearable.WORN_WIELD))
+				&&(I.owner()==ticking)
+				&&(I.container() == null))
+					numberOfShields++;
+			}
+			mob.recoverPhyStats();
+		}
+		
+		for(int i=0;i<numberOfShields;i++)
+		{
+			if(mob.isInCombat()
+			&&(mob.rangeToTarget()==0)
+			&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+			&&(proficiencyCheck(null,0,false)))
+			{
+				Ability A=mob.fetchAbility("Skill_Bash");
+				if(A!=null) A.invoke(mob,mob.getVictim(),false,adjustedLevel(mob,0));
+				if(CMLib.dice().rollPercentage()<(10/numberOfShields))
+					helpProficiency(mob, 0);
+			}
 		}
 		return true;
 	}
+	
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+
+		if(!(affected instanceof MOB))
+			return;
+
+		MOB mob=(MOB)affected;
+
+		if(msg.amISource(mob)
+		&&(msg.target() instanceof Shield)
+		&&((msg.targetMinor()==CMMsg.TYP_DROP))||(msg.targetMinor()==CMMsg.TYP_REMOVE)||(msg.targetMinor()==CMMsg.TYP_HOLD))
+			numberOfShields=-1;
+	}
+
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null))
@@ -90,5 +125,11 @@ public class Fighter_AutoBash extends FighterSkill
 		else
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to get into <S-HIS-HER> bashing mood, but fail(s).");
 		return success;
+	}
+	
+	public boolean autoInvocation(MOB mob)
+	{
+		numberOfShields=-1;
+		return super.autoInvocation(mob);
 	}
 }

@@ -43,17 +43,14 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_SHIELDUSE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	protected boolean gettingBonus=false;
+	protected volatile int amountOfShieldArmor=-1;
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		gettingBonus=false;
-		if(!(affected instanceof MOB)) return;
-		Item w=((MOB)affected).fetchHeldItem();
-		if((w==null)||(!(w instanceof Shield))) return;
-		gettingBonus=true;
-		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(w.phyStats().armor(),(CMath.div(proficiency(),100.0+(5.0*getXLEVELLevel(invoker()))))))));
+		if((!(affected instanceof MOB))||(amountOfShieldArmor<=0)) return;
+		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(amountOfShieldArmor,(CMath.div(proficiency(),100.0+(5.0*getXLEVELLevel(invoker()))))))));
 	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -64,12 +61,43 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 		MOB mob=(MOB)affected;
 
 		if((msg.amITarget(mob))
-		&&(gettingBonus)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(amountOfShieldArmor>0)
 		&&(mob.isInCombat())
 		&&(CMLib.dice().rollPercentage()==1)
 		&&(!mob.amDead()))
 			helpProficiency(mob, 0);
+		else
+		if(msg.amISource(mob)
+		&&(msg.target() instanceof Shield)
+		&&((msg.targetMinor()==CMMsg.TYP_DROP))||(msg.targetMinor()==CMMsg.TYP_REMOVE)||(msg.targetMinor()==CMMsg.TYP_HOLD))
+			amountOfShieldArmor=-1;
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((amountOfShieldArmor<0)&&(tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
+		{
+			amountOfShieldArmor=0;
+			for(Enumeration<Item> i=((MOB)ticking).items(); i.hasMoreElements(); )
+			{
+				final Item I=i.nextElement();
+				if((I instanceof Shield)
+				&&(I.amWearingAt(Wearable.WORN_HELD)||I.amWearingAt(Wearable.WORN_WIELD))
+				&&(I.owner()==ticking)
+				&&(I.container() == null))
+					amountOfShieldArmor+=I.phyStats().armor();
+			}
+			((MOB)ticking).recoverPhyStats();
+		}
+		return true;
+	}
+	
+	public boolean autoInvocation(MOB mob)
+	{
+		amountOfShieldArmor=-1;
+		return super.autoInvocation(mob);
+	}
 }
