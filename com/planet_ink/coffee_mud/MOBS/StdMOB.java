@@ -2021,7 +2021,10 @@ public class StdMOB implements MOB
 						}
 						if (!CMLib.flags().canTaste(this))
 						{
-							tell("You can't eat or drink!");
+							if ((msg.sourceMinor()==CMMsg.TYP_EAT)||(msg.sourceMinor()==CMMsg.TYP_DRINK))
+								tell("You can't eat or drink.");
+							else
+								tell("Your mouth is out of order.");
 							return false;
 						}
 					}

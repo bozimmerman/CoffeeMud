@@ -80,7 +80,7 @@ public class SignLanguage extends StdLanguage
 		msg.modify(msg.source(),
 				   msg.target(),
 				   this,
-				   CMath.unsetb(msg.sourceCode(), CMMsg.MASK_SOUND) | CMMsg.MASK_MOVE,
+				   CMath.unsetb(msg.sourceCode(), CMMsg.MASK_SOUND|CMMsg.MASK_MOUTH) | CMMsg.MASK_MOVE,
 				   startFullMsg + fullMsgStr.substring(wordStart),
 				   msg.targetCode(),
 				   msg.targetMessage(),
