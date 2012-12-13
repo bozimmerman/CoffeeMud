@@ -43,8 +43,8 @@ public class Prop_NoPKill extends Property
 		if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
 		||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)))
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof MOB)
+			&&(msg.target()!=msg.source())
 			&&(!((MOB)msg.target()).isMonster())
 			&&(!msg.source().isMonster()))
 		{
