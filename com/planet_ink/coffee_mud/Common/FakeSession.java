@@ -8,6 +8,7 @@ import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
@@ -114,6 +115,11 @@ public class FakeSession implements Session
 		String msg  = readlineContinue();
 		if(msg.length()==0) return Default;
 		return msg;
+	}
+	public void prompt(InputCallback callBack) {
+		callBack.showPrompt();
+		callBack.setInput(readlineContinue());
+		callBack.callBack();
 	}
 	public String prompt(String Message, String Default, long maxTime) { return prompt(Message,Default);}
 	public String prompt(String Message) { return prompt(Message,"");}

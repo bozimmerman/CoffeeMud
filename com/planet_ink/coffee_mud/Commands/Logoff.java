@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -39,7 +40,7 @@ public class Logoff extends StdCommand
 	private final String[] access={"LOGOFF","LOGOUT"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)
@@ -47,7 +48,7 @@ public class Logoff extends StdCommand
 		else
 		if(!mob.isMonster())
 		{
-			Session session=mob.session();
+			final Session session=mob.session();
 			if((session!=null)
 			&&(session.getLastPKFight()>0)
 			&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
@@ -57,17 +58,31 @@ public class Logoff extends StdCommand
 			}
 			try
 			{
-				if ((session != null)&& (session.confirm("\n\rLogout -- are you sure (y/N)?","N")))
-				{
-					CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
-					Room R=mob.location();
-					if((R!=null)&&(R.okMessage(mob,msg))) 
-					{
-						CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
-						session.logout(true);
-					}
-					CMLib.commands().monitorGlobalMessage(R, msg);
-				}
+				if(session != null)
+					session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", System.currentTimeMillis()+30000){
+						@Override
+						public void showPrompt() {
+							if(session!=null)
+								session.print("\n\rLogout -- are you sure (y/N)?");
+						}
+						@Override
+						public void timedOut() {}
+
+						@Override
+						public void callBack() {
+							if("Y".equalsIgnoreCase(this.input))
+							{
+								CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
+								Room R=mob.location();
+								if((R!=null)&&(R.okMessage(mob,msg))) 
+								{
+									CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
+									session.logout(true);
+								}
+								CMLib.commands().monitorGlobalMessage(R, msg);
+							}
+						}
+					});
 			}
 			catch(Exception e)
 			{

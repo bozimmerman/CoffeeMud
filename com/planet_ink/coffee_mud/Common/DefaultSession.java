@@ -732,8 +732,16 @@ public class DefaultSession implements Session
 		return Msg;
 	}
 
-	public String prompt(String Message, long maxTime)
-		throws IOException
+	public void prompt(InputCallback callBack)
+	{
+		if(callBack!=null)
+			callBack.showPrompt();
+		this.inputCallback=callBack;
+		this.status=STATUS_IDLE;
+	}
+
+	public String prompt(String Message, long maxTime) 
+			throws IOException
 	{
 		print(Message);
 		String input=blockingIn(maxTime);
@@ -1587,6 +1595,7 @@ public class DefaultSession implements Session
 			case Session.STATUS_LOGOUT12:
 			case Session.STATUS_LOGOUTFINAL:
 			{
+				this.inputCallback=null;
 				preLogout(mob);
 				logoutFinal();
 				break;

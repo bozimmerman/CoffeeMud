@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -55,7 +56,7 @@ public class Quit extends StdCommand
 		}
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)
@@ -63,7 +64,7 @@ public class Quit extends StdCommand
 		else
 		if(!mob.isMonster())
 		{
-			Session session=mob.session();
+			final Session session=mob.session();
 			if((session!=null)
 			&&(session.getLastPKFight()>0)
 			&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
@@ -71,18 +72,15 @@ public class Quit extends StdCommand
 				mob.tell("You must wait a few more minutes before you are allowed to quit.");
 				return false;
 			}
-			if((session!=null)&&(mob.getAgeMinutes()<=0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.QUITREASON)))
-			{
-				String reason=session.prompt("Since your character is brand new, please leave a short"
-						 						  +" message as to why you are leaving so soon."
-												  +" Your answers will be kept confidential,"
-												  +" and are for administrative purposes only.\n\r: ","",120000);
-				Log.sysOut("Quit",mob.Name()+" L.W.O.: "+reason);
-			}
-			try
-			{
-				if ((session!=null)&&(session.confirm("\n\rQuit -- are you sure (y/N)?","N")))
-				{
+			session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", System.currentTimeMillis()+30000){
+				@Override
+				public void showPrompt() {
+					session.print("\n\rQuit -- are you sure (y/N)?");
+				}
+				@Override
+				public void timedOut() {}
+				@Override
+				public void callBack() {
 					CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
 					Room R=mob.location();
 					if((R!=null)&&(R.okMessage(mob,msg))) 
@@ -92,12 +90,8 @@ public class Quit extends StdCommand
 						CMLib.commands().monitorGlobalMessage(R, msg);
 					}
 				}
-			}
-			catch(Exception e)
-			{
-				if(mob.session()!=null)
-					mob.session().stopSession(false,false,false);
-			}
+				
+			});
 		}
 		return false;
 	}

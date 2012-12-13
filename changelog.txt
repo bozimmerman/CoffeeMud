@@ -2423,3 +2423,4 @@ ruthless programmer, and sentenced to a quick death.
 27.The POLL system now supports 1 vote per account for those using the account system.
 28.Prop_TrashCan supports a DELAY parameter
 29.New formulas for PVP combat -- INI/Control Panel support.  The defaults basically remove level fudging.
+30.(Internal) New experiments in Fully Async sessions continues apace.  Converted Logout and Quit.

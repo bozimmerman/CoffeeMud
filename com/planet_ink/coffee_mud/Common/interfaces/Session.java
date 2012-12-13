@@ -329,6 +329,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		throws IOException;
 	
 	/**
+	 * Puts the session into an input state, returning immediately.  The
+	 * given callback will be made when the ENTER key has been hit, and
+	 * the session will go back into a prompt state.
+	 * This is basically for non-blocking input.
+	 * @see #InputCallback
+	 * @param callBack the callback to modify and make when done
+	 */
+	public void prompt(InputCallback callBack);
+	
+	/**
 	 * Prompts the user to enter a string, and then returns what
 	 * the enter.  Possibly times out, and may throw an exception
 	 * on disconnnect or time out.
@@ -920,7 +930,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			default: this.choicesStr="";
 			}
 			this.timeout=timeoutMs;
-			this.waiting=false;
+			this.waiting=true;
 			this.defaultInput=defaultInput;
 		}
 		
@@ -941,7 +951,10 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		
 		public boolean isTimedOut()
 		{
-			return (timeout > 0) && (System.currentTimeMillis() > timeout);
+			boolean isTimedOut=(timeout > 0) && (System.currentTimeMillis() > timeout);
+			if(isTimedOut)
+				waiting=false;
+			return isTimedOut;
 		}
 		
 		public void setInput(String input)
@@ -980,7 +993,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 					}
 					else
 					{
-						//TODO: show prompt again
+						showPrompt();
 					}
 				}
 				break;
@@ -993,6 +1006,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			return waiting;
 		}
 		
+		public abstract void showPrompt();
 		public abstract void timedOut();
 		public abstract void callBack();
 	}
