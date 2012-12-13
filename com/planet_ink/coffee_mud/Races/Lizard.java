@@ -130,7 +130,7 @@ public class Lizard extends StdRace
 				resources.addElement(makeResource
 				("a "+name().toLowerCase()+" tongue",RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_SCALES));
+				("a "+name().toLowerCase()+" scale",RawMaterial.RESOURCE_SCALES));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
