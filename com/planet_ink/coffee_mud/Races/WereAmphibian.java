@@ -138,7 +138,7 @@ public class WereAmphibian extends StdRace
 					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
 				for(int i=0;i<15;i++)
 					resources.addElement(makeResource
-					("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_SCALES));
+					("a "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
