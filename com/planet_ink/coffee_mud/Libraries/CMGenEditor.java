@@ -1101,6 +1101,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		A.setEmail(prompt(mob,A.getEmail(),showNumber,showFlag,"Email",true,false,null));
 	}
 
+	protected void genBirthday(MOB mob, PlayerStats A, int showNumber, int showFlag) throws IOException
+	{
+		if(A==null) return;
+		A.setStat("BIRTHDAY",prompt(mob,A.getStat("BIRTHDAY"),showNumber,showFlag,"Birthday (m,d,y)",true,false,null));
+	}
+
 	public void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -7552,6 +7558,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genTattoos(mob,me,++showNumber,showFlag);
 			genExpertises(mob,me,++showNumber,showFlag);
 			genTitles(mob,me,++showNumber,showFlag);
+			genBirthday(mob,me.playerStats(),++showNumber,showFlag);
 			genEmail(mob,me.playerStats(),++showNumber,showFlag);
 			genSecurity(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
