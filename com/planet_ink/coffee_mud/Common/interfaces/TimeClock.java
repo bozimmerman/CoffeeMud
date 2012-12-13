@@ -421,6 +421,12 @@ public interface TimeClock extends Tickable, CMCommon
 	 */
 	public void initializeINIClock(CMProps page);
 	
+	
+	/**
+	 * Causes the world to visibly react to a change in time
+	 */
+	public void handleTimeChange();
+
 	/** The Moon Phase Constant MOON_PHASES, with long sentence descriptions of the various phases. */
 	public final static String[] MOON_PHASES={
 		"There is a new moon in the sky.",

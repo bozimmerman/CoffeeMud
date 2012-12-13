@@ -1570,6 +1570,67 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)) return errorOut(mob);
 			mobs(mob,commands);
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
+		}
+		else
+		if(commandType.equals("DAY"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
+			if(commands.size()<3)
+			{
+				mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY DAY [INT]\n\r");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell.");
+				return false;
+			}
+			mob.location().getArea().getTimeObj().setDayOfMonth(CMath.s_int((String)commands.get(2)));
+			mob.location().getArea().getTimeObj().save();
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
+		}
+		else
+		if(commandType.equals("MONTH"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
+			if(commands.size()<3)
+			{
+				mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY MONTH [INT]\n\r");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell.");
+				return false;
+			}
+			mob.location().getArea().getTimeObj().setMonth(CMath.s_int((String)commands.get(2)));
+			mob.location().getArea().getTimeObj().save();
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
+		}
+		else
+		if(commandType.equals("YEAR"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
+			if(commands.size()<3)
+			{
+				mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY YEAR [INT]\n\r");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell.");
+				return false;
+			}
+			mob.location().getArea().getTimeObj().setYear(CMath.s_int((String)commands.get(2)));
+			mob.location().getArea().getTimeObj().save();
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
+		}
+		else
+		if((commandType.equals("TIME"))||(commandType.equals("HOUR")))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.TICKTOCK)) return errorOut(mob);
+			if(commands.size()<3)
+			{
+				mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY TIME [INT]\n\r");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell.");
+				return false;
+			}
+			TimeClock C=mob.location().getArea().getTimeObj();
+			int oldTOD=C.getTODCode();
+			C.setTimeOfDay(CMath.s_int((String)commands.get(2)));
+			if(oldTOD!=C.getTODCode())
+				C.handleTimeChange();
+			C.save();
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"The space-time continuum shake(s) under the transforming power.");
 		}
 		else
 		if(commandType.startsWith("JSCRIPT"))
@@ -1921,7 +1982,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM.");
 		}
 		return false;
 	}

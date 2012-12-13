@@ -569,7 +569,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final int[] birthDay = stats.getBirthday();
 		if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 		&&(birthDay!=null)
-		&&((mob.getAgeMinutes()%1)==0))
+		&&((mob.getAgeMinutes()%20)==0))
 		{
 			final TimeClock clock = CMLib.time().globalClock();
 			final int currYear=clock.getYear();

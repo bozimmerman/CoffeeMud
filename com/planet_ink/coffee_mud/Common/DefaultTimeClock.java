@@ -313,7 +313,7 @@ public class DefaultTimeClock implements TimeClock
 		return numMudHours*CMProps.getMillisPerMudHour();
 	}
 	
-	public void raiseLowerTheSunEverywhere()
+	public void handleTimeChange()
 	{
 		try
 		{
@@ -395,7 +395,7 @@ public class DefaultTimeClock implements TimeClock
 				}
 			}
 		}
-		if(getTODCode()!=todCode) raiseLowerTheSunEverywhere();
+		if(getTODCode()!=todCode) handleTimeChange();
 	}
 	public void save()
 	{
