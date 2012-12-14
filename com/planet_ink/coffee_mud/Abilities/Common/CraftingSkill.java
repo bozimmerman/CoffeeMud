@@ -586,9 +586,7 @@ public class CraftingSkill extends GatheringSkill
 		for(int r=0;r<recipes.size();r++)
 		{
 			s=(String)((recipes.get(r)).get(0));
-			s=CMStrings.replaceAll(s,"%","").trim();
-			while(s.indexOf("  ")>0)
-				s=CMStrings.replaceAll(s,"  "," ").trim();
+			s=replacePercent((String)((recipes.get(r)).get(0)),"").trim();
 			pair=craftItem(s,material);
 			if(pair==null) continue;
 			built=pair.item;
