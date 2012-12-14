@@ -1273,7 +1273,7 @@ public class Destroy extends StdCommand
 						if(F2.exists()) F2.delete();
 						Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
 						mob.tell("Faction File '"+F.factionID()+"' deleted.");
-						Resources.removeResource(F.factionID());
+						CMLib.factions().removeFaction(F.factionID());
 					}
 					catch(Exception e)
 					{
