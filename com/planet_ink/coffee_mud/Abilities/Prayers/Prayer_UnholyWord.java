@@ -80,7 +80,6 @@ public class Prayer_UnholyWord extends Prayer
 			mob.tell("The unholy word has been spoken.");
 	}
 
-
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

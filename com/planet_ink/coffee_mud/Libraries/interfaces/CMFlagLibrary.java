@@ -75,6 +75,8 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isCloaked(Physical P);
 	public boolean isHidden(Physical P);
 	public boolean isInvisible(Physical P);
+	public boolean isReallyGood(Physical P);
+	public boolean isReallyEvil(Physical P);
 	public boolean isEvil(Physical P);
 	public boolean isTrapped(Physical P);
 	public boolean isATrackingMonster(MOB M);

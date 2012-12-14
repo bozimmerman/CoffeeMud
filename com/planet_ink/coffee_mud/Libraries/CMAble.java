@@ -1207,8 +1207,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public AbilityLimits getCommonSkillRemainders(MOB student)
 	{
 		AbilityLimits aL = getCommonSkillLimit(student);
-		CharClass C=student.charStats().getCurrentClass();
-		if(C==null) return aL;
+		CharStats CS=student.charStats();
+		if(CS.getCurrentClass()==null) return aL;
 		HashSet culturalAbilities=new HashSet();
 		DVector culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
 		for(int i=0;i<culturalAbilitiesDV.size();i++)
@@ -1218,7 +1218,16 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			Ability A2=student.fetchAbility(a);
 			if(A2 instanceof CommonSkill)
 			{
-				if((CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A2.ID())>=0)||(culturalAbilities.contains(A2.ID().toLowerCase())))
+				if(culturalAbilities.contains(A2.ID().toLowerCase()))
+					continue;
+				boolean foundInAClass=false;
+				for(int c=0;c<CS.numClasses();c++)
+					if(CMLib.ableMapper().getQualifyingLevel(CS.getMyClass(c).ID(), false, A2.ID())>=0)
+					{
+						foundInAClass=true;
+						break;
+					}
+				if(foundInAClass)
 					continue;
 				aL.commonSkills--;
 				if((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)

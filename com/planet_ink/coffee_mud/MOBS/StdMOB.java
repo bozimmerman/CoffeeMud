@@ -1842,7 +1842,8 @@ public class StdMOB implements MOB
 		if (commands == null)
 			return;
 		final CMObject O = CMLib.english().findCommand(this, commands);
-		if (O == null)
+		if((O == null)
+		||((O instanceof Ability)&&CMath.bset(metaFlags, Command.METAFLAG_ORDER)&&CMath.bset(((Ability)O).flags(), Ability.FLAG_NOORDERING)))
 		{
 			CMLib.commands().handleUnknownCommand(this, commands);
 			return;

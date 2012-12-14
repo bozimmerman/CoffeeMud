@@ -158,10 +158,14 @@ public class Spell_Clone extends Spell
 			if(I instanceof Pill)
 				((Pill)I).setSpellList("");
 			else
+			if(I instanceof Scroll)
+				((Scroll)I).setSpellList("");
+			else
 			if(I instanceof Wand)
 			{
 				((Wand)I).setMaxUses(0);
 				((Wand)I).setUsesRemaining(0);
+				((Wand)I).setSpell(null);
 			}
 			I.recoverPhyStats();
 			I.text();

@@ -236,12 +236,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_UNATTACKABLE)==PhyStats.IS_UNATTACKABLE); }
 	public boolean isInvisible(Physical P)
 	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_INVISIBLE)==PhyStats.IS_INVISIBLE); }
-	public boolean isEvil(Physical P)
+
+	public boolean isReallyEvil(Physical P)
 	{
-		if(P==null) return false;
-		if ((P.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
-			return true;
-		else
 		if(P instanceof MOB)
 		{
 			Faction F=null;
@@ -259,6 +256,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return false;
 	}
+	public boolean isEvil(Physical P)
+	{
+		if(P==null) return false;
+		if ((P.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
+			return true;
+		else
+			return isReallyEvil(P);
+	}
 
   public boolean isTracking(MOB M)
   {
@@ -274,12 +279,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	public boolean isGood(Physical P)
+	public boolean isReallyGood(Physical P)
 	{
-		if(P==null) return false;
-		if ((P.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
-			return true;
-		else
 		if(P instanceof MOB)
 		{
 			Faction F=null;
@@ -296,6 +297,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			}
 		}
 		return false;
+	}
+	
+	public boolean isGood(Physical P)
+	{
+		if(P==null) return false;
+		if ((P.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
+			return true;
+		else
+			return isReallyGood(P);
 	}
 
 	public boolean isTrapped(Physical P)
