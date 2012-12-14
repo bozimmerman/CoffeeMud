@@ -111,7 +111,8 @@ public class Ranger_Hide extends StdAbility
 			&&(M!=meMOB)
 			&&(!CMLib.flags().isSleeping(M))
 			&&(!H.contains(M))
-			&&(highestLevel<M.phyStats().level()))
+			&&(highestLevel<M.phyStats().level())
+			&&(!CMSecurity.isASysOp(M)))
 			{
 				highestLevel=M.phyStats().level();
 				highestMOB=M;
