@@ -58,6 +58,11 @@ public class Spell_Duplicate extends Spell
 			mob.tell("Clan items can not be duplicated.");
 			return false;
 		}
+		if(target instanceof ArchonOnly)
+		{
+			mob.tell("That item can not be duplicated.");
+			return false;
+		}
 
 		int value=(target instanceof Coins)?(int)Math.round(((Coins)target).getTotalValue()):target.value();
 		int multiPlier=5+(((target.phyStats().weight())+value)/2);
