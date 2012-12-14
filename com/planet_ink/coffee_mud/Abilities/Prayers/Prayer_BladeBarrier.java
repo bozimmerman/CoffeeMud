@@ -44,9 +44,14 @@ public class Prayer_BladeBarrier extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	final static String msgStr="The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.";
 	protected long oncePerTickTime=0;
 
+	protected String startStr() { return "A barrier of blades begin to spin around <T-NAME>!^?"; }
+	
+	protected void doDamage(MOB srcM, MOB targetM, int damage) 
+	{
+		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,"The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>.");
+	}
 
 	public void unInvoke()
 	{
@@ -59,7 +64,7 @@ public class Prayer_BladeBarrier extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> blade barrier disappears.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> "+name().toLowerCase()+" disappears.");
 	}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -84,7 +89,7 @@ public class Prayer_BladeBarrier extends Prayer
 					hitWord.deleteCharAt(hitWord.length()-2);
 				if(hitWord.charAt(hitWord.length()-3)=='(')
 					hitWord.deleteCharAt(hitWord.length()-3);
-				CMLib.combat().postDamage((MOB)msg.target(),msg.source(),this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,msgStr);
+				this.doDamage(meM, msg.source(), damage);
 				oncePerTickTime=((MOB)msg.target()).lastTickedDateTime();
 			}
 		}
@@ -105,7 +110,7 @@ public class Prayer_BladeBarrier extends Prayer
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> the blade barrier.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> "+name().toLowerCase()+".");
 			return false;
 		}
 
@@ -120,7 +125,7 @@ public class Prayer_BladeBarrier extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+"A barrier of blades begin to spin around <T-NAME>!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+startStr());
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

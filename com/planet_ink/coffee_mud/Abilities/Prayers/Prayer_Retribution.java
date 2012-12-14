@@ -33,18 +33,18 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_DoomAura extends Prayer_BladeBarrier
+public class Prayer_Retribution extends Prayer_BladeBarrier
 {
-	public String ID() { return "Prayer_DoomAura"; }
-	public String name(){ return "Doom Aura";}
-	public String displayText(){ return "(Doom Aura)";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CORRUPTION;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public String ID() { return "Prayer_Retribution"; }
+	public String name(){ return "Retribution";}
+	public String displayText(){ return "(Retribution)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HOLY;}
 	
-	protected String startStr() { return "An aura of doom appears around <T-NAME>!^?"; }
+	protected String startStr() { return "The power of retribution fills <T-NAME>!^?"; }
 	
 	protected void doDamage(MOB srcM, MOB targetM, int damage) 
 	{
-		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.TYP_UNDEAD|CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS,Weapon.TYPE_BURNING,"The aura of doom around <S-NAME> <DAMAGE> <T-NAME>.");
+		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.TYP_ELECTRIC|CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS,Weapon.TYPE_STRIKING,"A bolt of retribution from <S-NAME> <DAMAGE> <T-NAME>.");
 	}
 }

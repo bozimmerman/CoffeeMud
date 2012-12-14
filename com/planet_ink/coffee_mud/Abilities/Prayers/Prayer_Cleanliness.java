@@ -39,7 +39,7 @@ public class Prayer_Cleanliness extends Prayer
 {
 	public String ID() { return "Prayer_Cleanliness"; }
 	public String name(){ return "Cleanliness";}
-	public int classificationCode(){return Ability.ACODE_PRAYER;}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
