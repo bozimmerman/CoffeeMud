@@ -3623,7 +3623,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		StringBuffer facts=new StringBuffer();
 		for(Enumeration<String> e=mob.fetchFactions();e.hasMoreElements();) {
 			String name=(String)e.nextElement();
-			facts.append("<FCTN ID=\""+name+"\">"+mob.fetchFaction(name)+"</FCTN>");
+			int val=mob.fetchFaction(name);
+			if(val!=Integer.MAX_VALUE)
+				facts.append("<FCTN ID=\""+name+"\">"+val+"</FCTN>");
 		}
 		return CMLib.xml().convertXMLtoTag("FACTIONS",facts.toString());
 	}

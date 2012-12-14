@@ -258,7 +258,8 @@ public class StdMOB implements MOB
 		for (final Enumeration e = fetchFactions(); e.hasMoreElements();)
 		{
 			final Faction F = CMLib.factions().getFaction((String) e.nextElement());
-			msg.append(F.name() + "(" + fetchFaction(F.factionID()) + ");");
+			if(F!=null)
+				msg.append(F.name() + "(" + fetchFaction(F.factionID()) + ");");
 		}
 		return msg.toString();
 	}

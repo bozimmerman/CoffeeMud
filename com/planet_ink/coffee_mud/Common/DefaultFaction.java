@@ -63,18 +63,19 @@ public class DefaultFaction implements Faction, MsgListener
 	protected boolean    showInSpecialReported=false;
 	protected boolean    showInEditor=false;
 	protected boolean    showInFactionsCommand=true;
+	protected boolean    destroyed=false;
 	protected SVector<String>   					 defaults=new SVector<String>();
 	protected SVector<String>   					 autoDefaults=new SVector<String>();
-	protected SHashtable<String,FRange>   	 ranges=new SHashtable<String,FRange>();
+	protected SHashtable<String,FRange> 			 ranges=new SHashtable<String,FRange>();
 	protected SHashtable<String,String[]>   		 affBehavs=new SHashtable<String,String[]>();
 	protected double								 rateModifier=1.0;
 	protected SHashtable<String,FactionChangeEvent[]>changes=new SHashtable<String,FactionChangeEvent[]>();
 	protected SHashtable<String,FactionChangeEvent[]>abilityChangesCache=new SHashtable<String,FactionChangeEvent[]>();
-	protected SVector<Faction.FZapFactor> 	 factors=new SVector<Faction.FZapFactor>();
+	protected SVector<Faction.FZapFactor>			 factors=new SVector<Faction.FZapFactor>();
 	protected SHashtable<String,Double> 			 relations=new SHashtable<String,Double>();
-	protected SVector<Faction.FAbilityUsage>   abilityUsages=new SVector<Faction.FAbilityUsage>();
+	protected SVector<Faction.FAbilityUsage>		 abilityUsages=new SVector<Faction.FAbilityUsage>();
 	protected SVector<String>   					 choices=new SVector<String>();
-	protected SVector<Faction.FReactionItem>   reactions=new SVector<Faction.FReactionItem>();
+	protected SVector<Faction.FReactionItem>		 reactions=new SVector<Faction.FReactionItem>();
 	protected SHashtable<String,SVector<Faction.FReactionItem>> reactionHash=new SHashtable<String,SVector<Faction.FReactionItem>>();
 	public Enumeration<Faction.FReactionItem> reactions(){return reactions.elements();}
 	public Enumeration<Faction.FReactionItem> reactions(String rangeName)
@@ -1903,4 +1904,26 @@ public class DefaultFaction implements Faction, MsgListener
 			return unknowns;
 		}
 	}
+
+	public void destroy() 
+	{ 
+		CMLib.factions().removeFaction(this.factionID()); 
+		this.destroyed=true; 
+		defaults.clear();
+		autoDefaults.clear();
+		ranges.clear();
+		affBehavs.clear();
+		changes.clear();
+		abilityChangesCache.clear();
+		factors.clear();
+		relations.clear();
+		abilityUsages.clear();
+		choices.clear();
+		reactions.clear();
+		reactionHash.clear();
+	}
+
+	public boolean isSavable() { return true; }
+	public void setSavable(boolean truefalse) {}
+	public boolean amDestroyed() { return destroyed; }
 }

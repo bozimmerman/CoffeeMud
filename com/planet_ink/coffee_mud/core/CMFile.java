@@ -517,6 +517,20 @@ public class CMFile extends File
 		return false;
 	}
 
+	public final boolean deleteAll()
+	{
+		if(!exists()) return false;
+		if(!canWrite()) return false;
+		if(!mayDeleteIfDirectory()) return false;
+		if(demandVFS)
+			return deleteVFS();
+		if(demandLocal)
+			return deleteLocal();
+		boolean delVfs=deleteVFS();
+		boolean delLoc=deleteLocal();
+		return delVfs || delLoc;
+	}
+	
 	@Override
 	public final boolean delete()
 	{

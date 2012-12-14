@@ -1265,20 +1265,23 @@ public class Destroy extends StdCommand
 				if(F==null)
 					mob.tell("Faction '"+name+"' is unknown.  Try list factions.");
 				else
-				if((!mob.isMonster())&&(mob.session().confirm("Destroy file '"+F.factionID()+"' -- this could have unexpected consequences in the future -- (N/y)? ","N")))
+				if((!mob.isMonster())&&(mob.session().confirm("Destroy faction '"+F.factionID()+"' -- this could have unexpected consequences in the future -- (N/y)? ","N")))
 				{
 					try
 					{
-						java.io.File F2=new java.io.File(Resources.makeFileResourceName(F.factionID()));
-						if(F2.exists()) F2.delete();
+						CMFile F2=new CMFile(Resources.makeFileResourceName(F.factionID()),null,false);
+						if(F2.exists()) 
+							F2.deleteAll();
+						else
+							throw new IOException("Could not delete "+F2.getAbsolutePath());
+						F.destroy();
 						Log.sysOut("CreateEdit",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
 						mob.tell("Faction File '"+F.factionID()+"' deleted.");
-						CMLib.factions().removeFaction(F.factionID());
 					}
 					catch(Exception e)
 					{
 						Log.errOut("CreateEdit",e);
-						mob.tell("Faction File '"+F.factionID()+"' could NOT be deleted.");
+						mob.tell("Faction '"+F.factionID()+"' could NOT be deleted.");
 					}
 				}
 			}

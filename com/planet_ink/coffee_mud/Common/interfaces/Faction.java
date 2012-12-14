@@ -44,7 +44,7 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#fetchFaction(String)
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addFaction(String, int)
  */
-public interface Faction extends CMCommon, MsgListener
+public interface Faction extends CMCommon, MsgListener, Contingent
 {
 	/**
 	 * Initializes a new faction with default values

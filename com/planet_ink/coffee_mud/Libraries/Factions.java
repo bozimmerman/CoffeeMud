@@ -130,7 +130,14 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		if(factionID==null) return null;
 		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
-		if(F!=null) return F;
+		if(F!=null)
+		{
+			if(!F.amDestroyed())
+				return F;
+			factionSet.remove(F.factionID().toUpperCase());
+			Resources.removeResource(F.factionID());
+			return null;
+		}
 		CMFile FILE=new CMFile(Resources.makeFileResourceName(factionID),null,true);
 		if(!FILE.exists()) return null;
 		StringBuffer buf=FILE.text();
@@ -147,7 +154,14 @@ public class Factions extends StdLibrary implements FactionManager
 		{
 			Faction.FRange FR=hashedFactionRanges.get(rangeCodeName.toUpperCase());
 			if(FR!=null) 
-				return FR.getFaction();
+			{
+				Faction F=FR.getFaction();
+				if(!F.amDestroyed())
+					return F;
+				factionSet.remove(F.factionID().toUpperCase());
+				Resources.removeResource(F.factionID());
+				return null;
+			}
 		}
 		return null;
 	}
@@ -159,7 +173,13 @@ public class Factions extends StdLibrary implements FactionManager
 		{
 			F=(Faction)factionSet.get(e.nextElement());
 			if(F.name().equalsIgnoreCase(factionNamed)) 
-				return F;
+			{
+				if(!F.amDestroyed())
+					return F;
+				factionSet.remove(F.factionID().toUpperCase());
+				Resources.removeResource(F.factionID());
+				return null;
+			}
 		}
 		return null;
 	}

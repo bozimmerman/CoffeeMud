@@ -691,11 +691,11 @@ public class MUDGrinder extends StdWebMacro
 			if(last==null) return " @break@";
 			F=CMLib.factions().getFaction(last);
 			if(F==null) return " @break@";
-			java.io.File F2=new java.io.File(Resources.makeFileResourceName(F.factionID()));
-			if(F2.exists()) F2.delete();
+			CMFile F2=new CMFile(Resources.makeFileResourceName(F.factionID()),null,true);
+			if(F2.exists()) F2.deleteAll();
 			Log.sysOut("Grinder",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
 			Resources.removeResource(F.factionID());
-			CMLib.factions().removeFaction(F.factionID());
+			F.destroy();
 			return "Faction "+F.ID()+" deleted.";
 		}
 		else
