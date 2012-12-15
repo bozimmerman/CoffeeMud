@@ -155,6 +155,7 @@ public class FieryRoom
 	private void dealDamage(MOB mob) 
 	{
 		MOB M=CMLib.map().getFactoryMOB(mob.location());
+		M.setName("fire");
 		CMLib.combat().postDamage(M, mob, null, directDamage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
 							"The fire here <DAMAGE> <T-NAME>!");
 		M.destroy();
@@ -175,6 +176,7 @@ public class FieryRoom
 					// all these we'll make get hot and be dropped.
 					int damage = CMLib.dice().roll(1, 6, 1);
 					MOB M=CMLib.map().getFactoryMOB(mob.location());
+					M.setName("fire");
 					CMLib.combat().postDamage(M, mob, null, damage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
 					if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_STRENGTH)) {
 						CMLib.commands().postDrop(mob, target, false, false);
