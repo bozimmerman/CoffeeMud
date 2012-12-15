@@ -352,7 +352,8 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		/*
 		 * ********************** Shield Thorns Damage **********************
 		 */
-		if((mob!=null)&&(msg.amITarget(mob))&&(affected instanceof Shield)&&(TypeOfEffect<1000)&&(!msg.amISource(mob)))
+		if((mob!=null)&&(msg.amITarget(mob))&&(affected instanceof Shield)&&(!((Shield)affected).amWearingAt(Wearable.IN_INVENTORY))
+		&&(TypeOfEffect<1000)&&(!msg.amISource(mob)))
 		{
 			if((CMLib.dice().rollPercentage()>32+msg.source().charStats().getStat(CharStats.STAT_DEXTERITY))&&(msg.source().rangeToTarget()==0)
 					&&((lastMessage==null)||(lastMessage.indexOf("The magic around")<0))
