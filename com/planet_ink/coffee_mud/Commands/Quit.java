@@ -65,33 +65,34 @@ public class Quit extends StdCommand
 		if(!mob.isMonster())
 		{
 			final Session session=mob.session();
-			if((session!=null)
-			&&(session.getLastPKFight()>0)
-			&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
+			if(session!=null)
 			{
-				mob.tell("You must wait a few more minutes before you are allowed to quit.");
-				return false;
-			}
-			session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", System.currentTimeMillis()+30000){
-				@Override
-				public void showPrompt() {
-					session.print("\n\rQuit -- are you sure (y/N)?");
+				if((session.getLastPKFight()>0)
+				&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
+				{
+					mob.tell("You must wait a few more minutes before you are allowed to quit.");
+					return false;
 				}
-				@Override
-				public void timedOut() {}
-				@Override
-				public void callBack() {
-					CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
-					Room R=mob.location();
-					if((R!=null)&&(R.okMessage(mob,msg))) 
-					{
-						CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
-						session.stopSession(false,false, false);
-						CMLib.commands().monitorGlobalMessage(R, msg);
+				session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", System.currentTimeMillis()+30000){
+					@Override
+					public void showPrompt() {
+						session.print("\n\rQuit -- are you sure (y/N)?");
 					}
-				}
-				
-			});
+					@Override
+					public void timedOut() {}
+					@Override
+					public void callBack() {
+						CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
+						Room R=mob.location();
+						if((R!=null)&&(R.okMessage(mob,msg))) 
+						{
+							CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
+							session.stopSession(false,false, false);
+							CMLib.commands().monitorGlobalMessage(R, msg);
+						}
+					}
+				});
+			}
 		}
 		return false;
 	}
