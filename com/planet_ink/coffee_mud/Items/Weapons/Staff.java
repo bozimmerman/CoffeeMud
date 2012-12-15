@@ -58,6 +58,7 @@ public class Staff extends StdWeapon implements Wand
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
+		setUsesRemaining(0);
 	}
 
 	public int maxUses(){return Integer.MAX_VALUE;}

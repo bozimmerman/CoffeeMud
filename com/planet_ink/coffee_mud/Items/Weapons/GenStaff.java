@@ -52,6 +52,7 @@ public class GenStaff extends GenWeapon implements Wand
 		basePhyStats.setWeight(4);
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(4);
+		setUsesRemaining(0);
 		baseGoldValue=1;
 		recoverPhyStats();
 		wornLogicalAnd=true;

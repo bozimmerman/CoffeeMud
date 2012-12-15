@@ -51,6 +51,7 @@ public class StdWand extends StdItem implements Wand
 		baseGoldValue=200;
 		material=RawMaterial.RESOURCE_OAK;
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		setUsesRemaining(0);
 		recoverPhyStats();
 	}
 
