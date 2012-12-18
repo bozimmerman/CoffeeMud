@@ -44,24 +44,38 @@ public class Chant_Brittle extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int oldCondition=-1;
 	protected boolean noRecurse=true;
+
+	public void checkBritality(final Physical E)
+	{
+		synchronized(this)
+		{
+			if((E instanceof Item)&&(!noRecurse)&&(((Item)E).subjectToWearAndTear()))
+			{
+				noRecurse=true;
+				if(oldCondition<((Item)E).usesRemaining())
+					oldCondition=((Item)E).usesRemaining();
+				if(((Item)E).usesRemaining()<oldCondition)
+				{
+					Room R=CMLib.map().roomLocation(E);
+					if(R!=null)
+						R.showHappens(CMMsg.MSG_OK_ACTION,E.name()+" is destroyed!");
+					((Item)E).destroy();
+				}
+				noRecurse=false;
+			}
+		}
+	}
 	
 	public void affectPhyStats(Physical E, PhyStats stats)
 	{
 		super.affectPhyStats(E,stats);
-		if((E instanceof Item)&&(!noRecurse)&&(((Item)E).subjectToWearAndTear()))
-		{
-			noRecurse=true;
-			if(oldCondition<((Item)E).usesRemaining())
-				oldCondition=((Item)E).usesRemaining();
-			if(((Item)E).usesRemaining()<oldCondition)
-			{
-				Room R=CMLib.map().roomLocation(E);
-				if(R!=null)
-					R.showHappens(CMMsg.MSG_OK_ACTION,E.name()+" is destroyed!");
-				((Item)E).destroy();
-			}
-			noRecurse=false;
-		}
+		checkBritality(affected);
+	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		super.executeMsg(host, msg);
+		//checkBritality(affected);
 	}
 	
 	private Item getItem(MOB mobTarget) 

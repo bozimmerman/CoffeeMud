@@ -183,7 +183,12 @@ public class Archon_Banish extends ArchonSkill
 
 		mob.tell("You are released from banishment!");
 		mob.getStartRoom().bringMobHere(mob,true);
-		if(prisonRoom!=null){ prisonRoom.destroy(); prisonRoom=null;}
+		if(prisonRoom!=null)
+		{
+			CMLib.map().emptyRoom(prisonRoom, mob.getStartRoom());
+			prisonRoom.destroy(); 
+			prisonRoom=null;
+		}
 		mob.delEffect(this);
 	}
 
