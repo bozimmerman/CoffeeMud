@@ -731,6 +731,33 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return 0;
 	}
+	
+	public MOB getCombatDominentKiller(MOB killer, MOB killed)
+	{
+		if((!killer.isMonster())&&(killer.charStats()!=null))
+			return killer;
+		MOB M=killer;
+		Set<MOB> checked=new HashSet<MOB>();
+		checked.add(M);
+		while(M.isMonster()
+		&&(M.amFollowing()!=null)
+		&&(!checked.contains(M.amFollowing())))
+		{
+			M=M.amFollowing();
+			checked.add(M);
+		}
+		if((!M.isMonster())&&(M.charStats()!=null))
+			return M;
+		checked.clear();
+		checked=killer.getGroupMembers(checked);
+		for(Iterator<MOB> m=checked.iterator(); m.hasNext(); )
+		{
+			M=m.next();
+			if((!M.isMonster())&&(M.charStats()!=null))
+				return M;
+		}
+		return killer;
+	}
 
 	public CharClass getCombatDominantClass(MOB killer, MOB killed)
 	{
