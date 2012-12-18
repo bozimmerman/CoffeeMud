@@ -40,7 +40,7 @@ public class Immunities extends StdAbility
 	public String name(){ return "Immunities";}
 	protected String displayText="";
 	public String displayText(){ return displayText;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS|CAN_AREAS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
@@ -85,12 +85,7 @@ public class Immunities extends StdAbility
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!(affected instanceof MOB))
-			return true;
-
-		MOB mob=(MOB)affected;
-		if((msg.amITarget(mob))
-		&&(!mob.amDead())
+		if(((!(affected instanceof MOB))||(msg.amITarget(affected)&&(!((MOB)affected).amDead())))
 		&&(immunes.contains(Integer.valueOf(msg.targetMinor()))
 			|| immunes.contains(Integer.valueOf(msg.sourceMinor())))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)||(msg.targetMinor()==CMMsg.TYP_DAMAGE)||(msg.targetMinor()==CMMsg.TYP_LEGALWARRANT)))
@@ -100,10 +95,11 @@ public class Immunities extends StdAbility
 				immunityName=msg.tool().name();
 			if(!msg.sourceMajor(CMMsg.MASK_CNTRLMSG) && !msg.targetMajor(CMMsg.MASK_CNTRLMSG))
 			{
-				if(mob!=msg.source())
-					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+immunityName+" attacks from <T-NAME>.");
+				Room R=CMLib.map().roomLocation(msg.target());
+				if(msg.target()!=msg.source())
+					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,"<T-NAME> seem(s) immune to "+immunityName+" attacks from <S-NAME>.");
 				else
-					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) immune to "+immunityName+".");
+					R.show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL,"<T-NAME> seem(s) immune to "+immunityName+".");
 			}
 			return false;
 		}
