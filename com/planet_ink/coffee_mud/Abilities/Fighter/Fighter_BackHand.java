@@ -90,7 +90,10 @@ public class Fighter_BackHand extends MonkSkill
 						naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 						naturalWeapon.recoverPhyStats();
 					}
+					final MOB prevVictim=mob.getVictim();
 					CMLib.combat().postAttack(mob,elligibleTarget,naturalWeapon);
+					if((prevVictim!=mob.getVictim())&&(elligibleTarget==mob.getVictim())&&((prevVictim==null)||(!prevVictim.amDead())))
+						mob.setVictim(prevVictim);
 				}
 			}
 		}

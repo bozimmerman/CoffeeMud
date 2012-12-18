@@ -90,7 +90,10 @@ public class Fighter_SideKick extends MonkSkill
 						naturalWeapon.recoverPhyStats();
 					}
 					naturalWeapon.setUsesRemaining(100);
+					final MOB prevVictim=mob.getVictim();
 					CMLib.combat().postAttack(mob,elligibleTarget,naturalWeapon);
+					if((prevVictim!=mob.getVictim())&&(elligibleTarget==mob.getVictim())&&((prevVictim==null)||(!prevVictim.amDead())))
+						mob.setVictim(prevVictim);
 				}
 			}
 		}
