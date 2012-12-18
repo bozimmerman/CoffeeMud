@@ -275,6 +275,9 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			// which means they dont go away when item is removed.
 			if(EA!=null)
 			{
+				if((maxTicks>0)&&(maxTicks<Short.MAX_VALUE)&&(CMath.s_int(EA.getStat("TICKDOWN"))>maxTicks))
+					EA.setStat("TICKDOWN", Short.toString(maxTicks));
+				else
 				if(makeLongLasting)
 				{
 					EA.makeLongLasting();
@@ -285,9 +288,6 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 						unrevocableSpells.add(EA);
 					}
 				}
-				else
-				if((maxTicks>0)&&(maxTicks<Short.MAX_VALUE)&&(CMath.s_int(EA.getStat("TICKDOWN"))>maxTicks))
-					EA.setStat("TICKDOWN", Short.toString(maxTicks));
 			}
 		}
 		return true;
