@@ -967,9 +967,8 @@ public class MOBloader
 		DB.updateWithClobs(statements);
 	}
 
-	public void DBNameChange(String oldName, MOB mob)
+	public void DBNameChange(String oldName, String newName)
 	{
-		String newName = mob.Name();
 		if((oldName==null)
 		||(oldName.trim().length()==0)
 		||(oldName.indexOf('\'')>=0)
@@ -981,41 +980,12 @@ public class MOBloader
 		DB.update("UPDATE CMCHAR SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
 		DB.update("UPDATE CMCHAR SET CMWORS='"+newName+"' WHERE CMWORS='"+oldName+"'");
 		DB.update("UPDATE CMCHAR SET CMLEIG='"+newName+"' WHERE CMLEIG='"+oldName+"'");
-		for(Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
-		{
-			MOB playerM=p.nextElement();
-			if(playerM.getWorshipCharID().equalsIgnoreCase(oldName))
-				playerM.setWorshipCharID(newName);
-			if(playerM.getLiegeID().equalsIgnoreCase(oldName))
-				playerM.setLiegeID(newName);
-		}
 			
 		DB.update("UPDATE CMCHFO SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
 		DB.update("UPDATE CMCHIT SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
 		DB.update("UPDATE CMJRNL SET CMFROM='"+newName+"' WHERE CMFROM='"+oldName+"'");
 		DB.update("UPDATE CMJRNL SET CMTONM='"+newName+"' WHERE CMTONM='"+oldName+"'");
 		DB.update("UPDATE CMPDAT SET CMPLID='"+newName+"' WHERE CMPLID='"+oldName+"'");
-		for(int q=0;q<CMLib.quests().numQuests();q++)
-		{
-			Quest Q=CMLib.quests().fetchQuest(q);
-			if(Q.wasWinner(oldName))
-			{
-				Q.declareWinner("-"+oldName);
-				Q.declareWinner(newName);
-			}
-		}
-		PlayerStats pstats = mob.playerStats();
-		if(pstats!=null)
-		{
-			PlayerAccount account = pstats.getAccount();
-			if(account != null)
-			{
-				account.delPlayer(oldName);
-				account.addNewPlayer(mob);
-				DBUpdateAccount(account);
-				account.setLastUpdated(System.currentTimeMillis());
-			}
-		}
 	}
 	
 	public void DBDelete(MOB mob, boolean deleteAssets)

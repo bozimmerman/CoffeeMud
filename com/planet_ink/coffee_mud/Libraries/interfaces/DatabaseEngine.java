@@ -77,7 +77,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBDeleteAccount(PlayerAccount account);
 	public PlayerAccount DBReadAccount(String Login);
 	public List<PlayerAccount> DBListAccounts(String mask);
-	public void DBPlayerNameChange(String oldName, MOB mob);
+	public void DBPlayerNameChange(String oldName, String newName);
 	public void DBUpdateMOB(String roomID, MOB mob);
 	public void DBUpdateItem(String roomID, Item item);
 	public void DBDeleteMOB(String roomID, MOB mob);

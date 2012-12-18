@@ -7584,7 +7584,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		me.resetToMaxState();
 		if(!oldName.equals(me.Name()))
 		{
-			CMLib.database().DBPlayerNameChange(oldName, me);
+			if(mob.session()!=null) mob.session().print("Changing player name...");
+			CMLib.players().renamePlayer(me, oldName);
+			if(mob.session()!=null) mob.session().println(".");
 			Log.sysOut("CMGenEditor",mob.name()+" changed user "+oldName+" to "+me.name());
 		}
 		Log.sysOut("CMGenEditor",mob.name()+" edited user "+me.name());

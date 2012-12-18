@@ -160,8 +160,8 @@ public class DBInterface implements DatabaseEngine
 	public List<PlayerAccount> DBListAccounts(String mask)
 	{ return MOBloader.DBListAccounts(mask);}
 	
-	public void DBPlayerNameChange(String oldName, MOB mob)
-	{ MOBloader.DBNameChange(oldName, mob);}
+	public void DBPlayerNameChange(String oldName, String newName)
+	{ MOBloader.DBNameChange(oldName, newName);}
 	
 	public List<Area> DBReadAreaData(String areaID, boolean reportStatus)
 	{return RoomLoader.DBReadAreaData(areaID,reportStatus);}

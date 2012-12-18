@@ -174,6 +174,76 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public Enumeration<MOB> players() { return playersList.elements(); }
 	public Enumeration<PlayerAccount> accounts() { return accountsList.elements(); }
 
+	public void renamePlayer(MOB mob, String oldName)
+	{
+		String newName = mob.Name();
+		CMLib.database().DBPlayerNameChange(oldName, newName);
+		for(Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
+		{
+			MOB playerM=p.nextElement();
+			if(playerM.getWorshipCharID().equalsIgnoreCase(oldName))
+				playerM.setWorshipCharID(newName);
+			if(playerM.getLiegeID().equalsIgnoreCase(oldName))
+				playerM.setLiegeID(newName);
+		}
+		for(int q=0;q<CMLib.quests().numQuests();q++)
+		{
+			Quest Q=CMLib.quests().fetchQuest(q);
+			if(Q.wasWinner(oldName))
+			{
+				Q.declareWinner("-"+oldName);
+				Q.declareWinner(newName);
+			}
+		}
+		PlayerStats pstats = mob.playerStats();
+		if(pstats!=null)
+		{
+			PlayerAccount account = pstats.getAccount();
+			if(account != null)
+			{
+				account.delPlayer(oldName);
+				account.addNewPlayer(mob);
+				CMLib.database().DBUpdateAccount(account);
+				account.setLastUpdated(System.currentTimeMillis());
+			}
+		}
+		for(Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			if((R!=null)&&(R.roomID().length()>0))
+			{
+				synchronized(("SYNC"+R.roomID()).intern())
+				{
+					R=CMLib.map().getRoom(R);
+					boolean changed=false;
+					for(Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+					{
+						Ability A=a.nextElement();
+						if(A==null) continue;
+						if(A instanceof LandTitle)
+						{
+							if(((LandTitle)A).landOwner().equals(oldName))
+							{
+								((LandTitle)A).setLandOwner(newName);
+								changed=true;
+							}
+						}
+						else
+						if(A.text().equals(oldName))
+						{
+							changed=true;
+							A.setMiscText(newName);
+						}
+					}
+					if(changed)
+					{
+						CMLib.database().DBUpdateRoom(R);
+					}
+				}
+			}
+		}
+	}
+	
 	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet)
 	{
 		if(deadMOB==null) return;

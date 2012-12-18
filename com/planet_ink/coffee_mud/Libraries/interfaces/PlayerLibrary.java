@@ -43,6 +43,7 @@ public interface PlayerLibrary extends CMLibrary, Runnable
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
 	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet);
 	public void obliterateAccountOnly(PlayerAccount deadAccount);
+	public void renamePlayer(MOB mob, String oldName);
 	public boolean playerExists(String name);
 	public void forceTick();
 	public int savePlayers();
