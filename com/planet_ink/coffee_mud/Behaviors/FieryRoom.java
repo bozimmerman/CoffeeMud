@@ -165,6 +165,8 @@ public class FieryRoom
 	{
 		Item target = getSomething(mob);
 		if (target != null) {
+			MOB M=CMLib.map().getFactoryMOB(mob.location());
+			M.setName("fire");
 			switch (target.material() & RawMaterial.MATERIAL_MASK) {
 				case RawMaterial.MATERIAL_GLASS:
 				case RawMaterial.MATERIAL_METAL:
@@ -175,30 +177,30 @@ public class FieryRoom
 				case RawMaterial.MATERIAL_UNKNOWN: {
 					// all these we'll make get hot and be dropped.
 					int damage = CMLib.dice().roll(1, 6, 1);
-					MOB M=CMLib.map().getFactoryMOB(mob.location());
-					M.setName("fire");
 					CMLib.combat().postDamage(M, mob, null, damage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
 					if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_STRENGTH)) {
 						CMLib.commands().postDrop(mob, target, false, false);
 					}
-					M.destroy();
 					break;
 				}
 				default: {
 					Ability burn = CMClass.getAbility("Burning");
 					if (burn != null) {
 						mob.location().showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
-						target.addEffect(burn);
+						burn.invoke(M, target, true, 0);
 						target.recoverPhyStats();
 					}
+					break;
 				}
 			}
+			M.destroy();
 		}
 	}
 
 	private static void roastRoom(Room which) 
 	{
 		MOB mob=CMLib.map().getFactoryMOB(which);
+		mob.setName("fire");
 		for(int i=0;i<which.numItems();i++) 
 		{
 			Item target=which.getItem(i);
