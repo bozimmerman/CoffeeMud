@@ -208,11 +208,18 @@ public class Burning extends StdAbility
 			{
 				if(!ouch((MOB)owner))
 					CMLib.commands().postDrop((MOB)owner,I,false,false);
-				if(I.subjectToWearAndTear())
+			}
+			if((I.subjectToWearAndTear())
+			&&(I.usesRemaining()>1))
+			{
+				if(owner instanceof MOB)
+					CMLib.combat().postItemDamage((MOB)owner, I, null, 1, CMMsg.TYP_FIRE, null);
+				else
+				if(owner instanceof Room)
 				{
-					if((I.usesRemaining()<1000)
-					&&(I.usesRemaining()>1))
-						I.setUsesRemaining(I.usesRemaining()-1);
+					MOB M=CMLib.map().getFactoryMOB((Room)owner);
+					CMLib.combat().postItemDamage(M, I, null, 1, CMMsg.TYP_FIRE, null);
+					M.destroy();
 				}
 			}
 		}

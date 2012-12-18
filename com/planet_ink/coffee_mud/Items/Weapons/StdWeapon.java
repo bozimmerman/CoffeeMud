@@ -184,13 +184,12 @@ public class StdWeapon extends StdItem implements Weapon
 		&&(amWearingAt(Wearable.WORN_WIELD))
 		&&(weaponClassification()!=Weapon.CLASS_NATURAL)
 		&&(weaponType()!=Weapon.TYPE_NATURAL)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&((msg.value())>0)
-		&&(owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(msg.amISource((MOB)owner())))
 		{
+			MOB ownerM=(MOB)owner();
 			int hurt=(msg.value());
 			MOB tmob=(MOB)msg.target();
 			if((hurt>(tmob.maxState().getHitPoints()/10)||(hurt>50))
@@ -225,29 +224,7 @@ public class StdWeapon extends StdItem implements Weapon
 			&&(CMLib.dice().rollPercentage()>((phyStats().level()/2)+(10*phyStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
 			&&((material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY))
 			{
-				setUsesRemaining(usesRemaining()-1);
-				recoverPhyStats();
-				if((usesRemaining()<10)
-				&&(owner()!=null)
-				&&(owner() instanceof MOB)
-				&&(usesRemaining()>0))
-					((MOB)owner()).tell(name()+" is nearly destroyed! ("+usesRemaining()+"%");
-				else
-				if((usesRemaining()<=0)
-				&&(owner()!=null)
-				&&(owner() instanceof MOB))
-				{
-					MOB owner=(MOB)owner();
-					setUsesRemaining(100);
-					msg.addTrailerMsg(CMClass.getMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" being wielded by <S-NAME> is destroyed!^?"));
-					unWear();
-					destroy();
-					owner.recoverPhyStats();
-					owner.recoverCharStats();
-					owner.recoverMaxState();
-					if(owner.location()!=null)
-						owner.location().recoverRoomStats();
-				}
+				CMLib.combat().postItemDamage(ownerM, this, null, 1, CMMsg.TYP_JUSTICE, null);
 			}
 		}
 	}

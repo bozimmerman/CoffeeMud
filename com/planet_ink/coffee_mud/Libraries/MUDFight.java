@@ -179,7 +179,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(msg.value()<=0)
 			{
 				I.setUsesRemaining(I.usesRemaining()-damageAmount);
-				I.recoverPhyStats();
+				I.recoverPhyStats(); // important relation to setuses -- for brittle
 				if(I.usesRemaining()<=0)
 				{
 					I.setUsesRemaining(100);
@@ -188,6 +188,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					if(R.okMessage(mob,msg))
 						R.send(mob,msg);
 					I.destroy();
+					mob.recoverPhyStats();
+					mob.recoverCharStats();
+					mob.recoverMaxState();
+					if(R!=null)
+						R.recoverRoomStats();
 				}
 				else
 				if(I.usesRemaining()<=10)
