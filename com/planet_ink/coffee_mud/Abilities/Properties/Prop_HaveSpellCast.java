@@ -77,7 +77,7 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 			if((lastMOB==null)
 			&&(myItem.owner() instanceof MOB)
 			&&(((MOB)myItem.owner()).location()!=null))
-				addMeIfNeccessary(myItem.owner(),myItem.owner(),true,0);
+				addMeIfNeccessary(myItem.owner(),myItem.owner(),true,0,maxTicks);
 		}
 		processing=false;
 	}

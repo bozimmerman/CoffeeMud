@@ -104,10 +104,10 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 		else
 			super.executeMsg(host,msg);
 	}
-	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting)
+	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting, short maxTicks)
 	{
 		if(disabled&&checked) return false;
-		return super.addMeIfNeccessary(source,target,makeLongLasting);
+		return super.addMeIfNeccessary(source,target,makeLongLasting, maxTicks);
 	}
 
 	public String accountForYourself()
@@ -137,7 +137,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 			{
 				if(myItem instanceof Armor)
 					check((MOB)myItem.owner(),((Armor)myItem));
-				addMeIfNeccessary(myItem.owner(),myItem.owner(),false);
+				addMeIfNeccessary(myItem.owner(),myItem.owner(),false,maxTicks);
 			}
 		}
 		processing=false;

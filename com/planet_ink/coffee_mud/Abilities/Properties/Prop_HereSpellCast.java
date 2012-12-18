@@ -73,7 +73,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 		if((!lastMOBs.contains(mob))
 		&&((code==1)||((code==0)&&(room.isInhabitant(mob)))))
 		{
-			if(addMeIfNeccessary(mob,mob,true,0))
+			if(addMeIfNeccessary(mob,mob,true,0,maxTicks))
 				lastMOBs.addElement(mob);
 		}
 	}

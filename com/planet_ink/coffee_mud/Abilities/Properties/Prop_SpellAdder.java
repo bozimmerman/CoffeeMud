@@ -44,8 +44,9 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	protected MOB invokerMOB=null;
 	protected boolean processing=false;
 	protected boolean uninvocable=true;
-	protected int level=-1;
-	protected int chanceToHappen=-1;
+	protected short level=-1;
+	protected short maxTicks=-1;
+	protected short chanceToHappen=-1;
 	protected List<Ability> spellV=null;
 	protected MaskingLibrary.CompiledZapperMask compiledMask=null;
 	protected List<Ability> unrevocableSpells = null;
@@ -90,6 +91,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		compiledMask=null;
 		lastMOB=null;
 		chanceToHappen=-1;
+		maxTicks=-1;
 		String maskString=getMaskString(newText);
 		if(maskString.length()>0)
 			compiledMask=CMLib.masking().getPreCompiledMask(maskString);
@@ -112,8 +114,14 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			}
 			if(thisOne.toUpperCase().startsWith("LEVEL"))
 			{
-				level=CMParms.getParmInt(thisOne,"LEVEL",-1);
+				level=(short)CMParms.getParmInt(thisOne,"LEVEL",-1);
 				if(level>=0)
+					continue;
+			}
+			if(thisOne.toUpperCase().startsWith("MAXTICKS"))
+			{
+				maxTicks=(short)CMParms.getParmInt(thisOne,"MAXTICKS",-1);
+				if(maxTicks!=-1)
 					continue;
 			}
 			int pctDex=thisOne.indexOf("% ");
@@ -162,7 +170,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 					x=-1;
 				mul=mul*10;
 			}
-			chanceToHappen=tot;
+			chanceToHappen=(short)tot;
 		}
 		if(CMLib.dice().rollPercentage()<=chanceToHappen)
 			return true;
@@ -240,7 +248,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return VTOO;
 	}
 	
-	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel)
+	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel, short maxTicks)
 	{
 		List<Ability> V=getMySpellsV();
 		if((target==null)
@@ -265,15 +273,21 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			lastMOB=target;
 			// this needs to go here because otherwise it makes non-item-invoked spells long lasting,
 			// which means they dont go away when item is removed.
-			if((EA!=null)&&(makeLongLasting))
+			if(EA!=null)
 			{
-				EA.makeLongLasting();
-				if(!uninvocable) {
-					EA.makeNonUninvokable();
-					if(unrevocableSpells == null)
-						unrevocableSpells = new Vector();
-					unrevocableSpells.add(EA);
+				if(makeLongLasting)
+				{
+					EA.makeLongLasting();
+					if(!uninvocable) {
+						EA.makeNonUninvokable();
+						if(unrevocableSpells == null)
+							unrevocableSpells = new Vector();
+						unrevocableSpells.add(EA);
+					}
 				}
+				else
+				if((maxTicks>0)&&(maxTicks<Short.MAX_VALUE)&&(CMath.s_int(EA.getStat("TICKDOWN"))>maxTicks))
+					EA.setStat("TICKDOWN", Short.toString(maxTicks));
 			}
 		}
 		return true;
@@ -284,7 +298,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		String s=CMParms.combine(commands,0);
 		if(s.length()>0) setMiscText(s);
 		if(givenTarget!=null)
-			addMeIfNeccessary(mob,givenTarget,false,asLevel);
+			addMeIfNeccessary(mob,givenTarget,false,asLevel,maxTicks);
 		else
 		{
 			List<Ability> V=getMySpellsV();
@@ -362,7 +376,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			||(msg.sourceMinor()==CMMsg.TYP_RECALL))
 				removeMyAffectsFrom(msg.source());
 			if(msg.targetMinor()==CMMsg.TYP_ENTER)
-				addMeIfNeccessary(msg.source(),msg.source(),true,0);
+				addMeIfNeccessary(msg.source(),msg.source(),true,0,maxTicks);
 		}
 		super.executeMsg(host,msg);
 	}
@@ -379,7 +393,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 				removeMyAffectsFrom(lastMOB);
 
 			if((lastMOB==null)&&(host instanceof PhysicalAgent))
-				addMeIfNeccessary((PhysicalAgent)host,(Physical)host,true,0);
+				addMeIfNeccessary((PhysicalAgent)host,(Physical)host,true,0,maxTicks);
 			processing=false;
 		}
 	}

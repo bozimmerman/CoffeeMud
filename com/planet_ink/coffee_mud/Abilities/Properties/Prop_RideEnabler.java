@@ -67,7 +67,7 @@ public class Prop_RideEnabler extends Prop_HaveEnabler
 					MOB M=(MOB)R;
 					if((!lastRiders.contains(M))&&(RI.amRiding(M)))
 					{
-						if(addMeIfNeccessary(M,M,false))
+						if(addMeIfNeccessary(M,M,false,maxTicks))
 							lastRiders.add(M);
 					}
 				}
