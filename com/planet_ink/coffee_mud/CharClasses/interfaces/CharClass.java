@@ -600,7 +600,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 /*7*/"Must use polearms, axes, swords, daggers, or edged weapons.",
 /*8*/"Must use hammers, staves, flailed, natural, or blunt weapons.",
 /*9*/"Must use swords, staves, natural, ranged, or blunt weapons",
-/*10*/"Evil must use polearm, sword, axe, edged, or natural.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.",
+/*10*/"Evil must use polearm, sword, axe, edged, or daggers.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.",
 /*11*/"Must use flailed weapons."
 	};
 
