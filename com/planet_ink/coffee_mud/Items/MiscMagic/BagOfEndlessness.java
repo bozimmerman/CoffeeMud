@@ -33,7 +33,7 @@ import java.util.Vector;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class BagOfEndlessness extends BagOfHolding
+public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 {
 	public String ID(){	return "BagOfEndlessness";}
 	public BagOfEndlessness()
