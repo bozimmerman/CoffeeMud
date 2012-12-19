@@ -72,6 +72,10 @@ public class Spell_BigMouth extends Spell
 					if(!isHit)
 					{
 						mob.tell("You fail to eat "+target.name()+".");
+						if((!target.isInCombat())&&(target.isMonster())&&(target!=msg.source())
+						&&(target.location()==msg.source().location())&&(target.location().isInhabitant(msg.source()))
+						&&(CMLib.flags().canBeSeenBy(msg.source(),target)))
+							CMLib.combat().postAttack(target,msg.source(),target.fetchWieldedItem());
 						return false;
 					}
 				}
@@ -92,6 +96,7 @@ public class Spell_BigMouth extends Spell
 						  msg.sourceCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.sourceMessage(),
 						  CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,msg.targetMessage(),
 						  msg.othersCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.othersMessage());
+				
 			}
 			else
 			{
