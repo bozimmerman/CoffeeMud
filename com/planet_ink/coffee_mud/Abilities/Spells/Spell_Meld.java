@@ -200,6 +200,9 @@ public class Spell_Meld extends Spell
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 
+				if((msg.value()>0)||(msg2.value()>0))
+					return false;
+				
 				String itemOneName=itemOne.Name();
 				String itemTwoName=itemTwo.Name();
 				int x=itemOneName.indexOf("melded together");
@@ -207,12 +210,13 @@ public class Spell_Meld extends Spell
 				x=itemTwoName.indexOf("melded together");
 				if(x>0) itemTwoName=itemTwoName.substring(0,x).trim();
 
+				int material=itemOne.material();
+				if(getHeiarchy(material&RawMaterial.MATERIAL_MASK)<getHeiarchy(itemTwo.material()&RawMaterial.MATERIAL_MASK))
+					material=itemTwo.material();
+				
 				String newName=itemOneName+" and "+itemTwoName+" melded together";
 				if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 				{
-					int material=((Armor)itemOne).material();
-					if(getHeiarchy(material&RawMaterial.MATERIAL_MASK)<getHeiarchy(((Armor)itemTwo).material()&RawMaterial.MATERIAL_MASK))
-						material=((Armor)itemTwo).material();
 
 					long wornLocation=itemOne.rawProperLocationBitmap()|itemTwo.rawProperLocationBitmap();
 					if((wornLocation&Wearable.WORN_HELD)==(Wearable.WORN_HELD))
@@ -257,6 +261,7 @@ public class Spell_Meld extends Spell
 
 
 					Armor gc=CMClass.getArmor("GenArmor");
+					gc.setMaterial(material);
 					gc.setName(newName);
 					gc.setDisplayText(newName+" sits here.");
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
@@ -264,7 +269,6 @@ public class Spell_Meld extends Spell
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
 					gc.basePhyStats().setArmor((itemOne.basePhyStats().armor()+itemTwo.basePhyStats().armor())/2);
-					gc.setMaterial(material);
 					if(gc instanceof Container)
 					{
 						Container cgc=(Container)gc;
@@ -288,6 +292,7 @@ public class Spell_Meld extends Spell
 				if((itemOne instanceof Weapon)||(itemTwo instanceof Weapon))
 				{
 					Weapon gc=CMClass.getWeapon("GenWeapon");
+					gc.setMaterial(material);
 					gc.setName(newName);
 					gc.setDisplayText(newName+" sits here.");
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
@@ -331,6 +336,7 @@ public class Spell_Meld extends Spell
 						keyName=((Container)itemTwo).keyName();
 					}
 					Container gc=(Container)CMClass.getItem("GenContainer");
+					gc.setMaterial(material);
 					gc.setName(newName);
 					gc.setDisplayText(newName+" sits here.");
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
