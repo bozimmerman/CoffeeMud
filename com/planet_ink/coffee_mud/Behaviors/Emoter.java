@@ -50,7 +50,7 @@ public class Emoter extends ActiveTicker
 	{
 		super.setParms(newParms);
 		expires=CMParms.getParmInt(parms,"expires",0);
-		inroom=CMParms.getParmStr(parms,"inroom","").toUpperCase();
+		inroomIDs=CMParms.parseSemicolons(CMParms.getParmStr(parms,"inroom","").toUpperCase().trim(),true);
 		emotes=null;
 		smells=null;
 	}
@@ -58,7 +58,7 @@ public class Emoter extends ActiveTicker
 	protected List<EmoteObj> emotes=null;
 	protected List<EmoteObj> smells=null;
 	protected boolean broadcast=false;
-	protected String inroom="";
+	protected List<String> inroomIDs=new XVector<String>(0,true);
 
 	protected static class EmoteObj
 	{
@@ -207,6 +207,21 @@ public class Emoter extends ActiveTicker
 		}
 	}
 
+	protected boolean inRoom(final Room room)
+	{
+		if(inroomIDs.size()>0)
+		{
+			String ID=CMLib.map().getExtendedRoomID(room).toUpperCase();
+			if(ID.length()==0) return false;
+			if(inroomIDs.contains(ID)) return true;
+			for(String roomID : inroomIDs)
+				if(ID.endsWith(roomID))
+					return true;
+			return false;
+		}
+		return true;
+	}
+	
 	protected void emoteHere(Room room,
 							 MOB emoter,
 							 EmoteObj emote,
@@ -214,13 +229,7 @@ public class Emoter extends ActiveTicker
 							 boolean Wrapper)
 	{
 		if(room==null) return;
-		if(inroom.length()>0)
-		{
-			String ID=CMLib.map().getExtendedRoomID(room);
-			if((ID.length()==0)
-			||((!inroom.equals(ID))&&(!inroom.endsWith(ID))&&(inroom.indexOf(ID+";")<0)))
-				return;
-		}
+		if(!inRoom(room)) return;
 		CMMsg msg;
 		Room oldLoc=emoter.location();
 		String str=emote.msg;
@@ -322,7 +331,7 @@ public class Emoter extends ActiveTicker
 					name=((Environmental)ticking).name();
 				if(mob!=null)
 				{
-					if(!CMLib.flags().isInTheGame(mob,false))
+					if(CMLib.flags().isInTheGame(mob,false))
 						emoter.setName(name+" carried by "+mob.name());
 					else
 						emoter=null;

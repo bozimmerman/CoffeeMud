@@ -921,7 +921,8 @@ public class Spell_Wish extends Spell
 					MOB tm=(MOB)target;
 					Ability A=CMClass.findAbility(myWish.substring(code).trim());
 					if((A!=null)
-					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0))
+					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)
+					&&(!CMath.bset(A.classificationCode(),Ability.DOMAIN_ARCHON)))
 					{
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
 						{

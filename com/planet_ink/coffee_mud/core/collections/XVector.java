@@ -34,6 +34,11 @@ public class XVector<T> extends Vector<T>
 			addAll(V);
 	}
 	
+	public XVector(int size, boolean boo)
+	{
+		super(size);
+	}
+	
 	public XVector(T... E)
 	{
 		super();
