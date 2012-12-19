@@ -1082,8 +1082,11 @@ public class Spell_Wish extends Spell
 				case CharStats.STAT_INTELLIGENCE:
 				case CharStats.STAT_STRENGTH:
 				case CharStats.STAT_WISDOM:
-					baseLoss+=500;
+				{
+					int trainsRequired=CMLib.login().getTrainingCost(mob, foundAttribute, false);
+					baseLoss+=((CMLib.leveler().getLevelExperienceJustThisLevel(mob.basePhyStats().level())/5)*(1+trainsRequired));
 					break;
+				}
 				default:
 					baseLoss+=10;
 					break;
@@ -1097,7 +1100,7 @@ public class Spell_Wish extends Spell
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);
 				else
-					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+33);
+					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+10);
 				mob.recoverCharStats();
 				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,target.name()+" has gained "+CharStats.CODES.DESC(foundAttribute).toLowerCase()+".");
