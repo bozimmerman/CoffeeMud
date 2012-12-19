@@ -58,7 +58,7 @@ public class Paladin_HealingHands extends StdAbility
 			return false;
 		}
 
-		int healing=1+((int)Math.round(CMath.div(adjustedLevel(mob,asLevel),5.0)));
+		int healing=1+((int)Math.round(CMath.div(adjustedLevel(mob,asLevel),4.0)));
 		if(mob.curState().getMana()<healing)
 		{
 			mob.tell("You don't have enough mana to do that.");
