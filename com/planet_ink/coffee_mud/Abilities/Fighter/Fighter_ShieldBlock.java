@@ -113,9 +113,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		super.affectPhyStats(affected,stats);
 		if((affected instanceof MOB)&&(amountOfShieldArmor>0))
 		{
-			stats.setArmor(stats.armor()-(int)Math.round(
-				CMath.mul(amountOfShieldArmor,
-					CMath.mul(getXLEVELLevel((MOB)affected),0.5))));
+			stats.setArmor(stats.armor()-(int)Math.round(CMath.mul(amountOfShieldArmor,CMath.mul(getXLEVELLevel((MOB)affected),0.5))));
 		}
 	}
 	
