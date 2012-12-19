@@ -714,6 +714,15 @@ public class DefaultCharStats implements CharStats
 		return baseMax + getStat(CharStats.CODES.toMAXBASE(abilityCode));
 	}
 	
+	public int getRacialStat(MOB mob, int statNum)
+	{
+		CharStats copyStats=(CharStats)copyOf();
+		getMyRace().affectCharStats(mob,copyStats);
+		for(int c=0;c<numClasses();c++)
+			getMyClass(c).affectCharStats(mob,copyStats);
+		return copyStats.getStat(statNum);
+	}
+
 	public void setRacialStat(int abilityCode, int racialMax)
 	{
 		if((!CharStats.CODES.isBASE(abilityCode))||(getStat(abilityCode)==VALUE_ALLSTATS_DEFAULT)) 

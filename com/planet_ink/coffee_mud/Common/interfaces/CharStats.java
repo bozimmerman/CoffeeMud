@@ -169,6 +169,15 @@ public interface CharStats extends CMCommon, Modifiable
 	public void setRacialStat(int statNum, int value);
 	
 	/**
+	 * Get one of the basic attributes after racial adjustment.
+	 * @see CharStats
+	 * @param mob the mob to get adjustments for
+	 * @param statNum which STAT_ constant to get
+	 * @return the value
+	 */
+	public int getRacialStat(MOB mob, int statNum);
+
+	/**
 	 * This method cross-references the given stat name string with the STAT_DESCS
 	 * string list in the CharStats interface to return the STAT_ constant which
 	 * the given string represents.

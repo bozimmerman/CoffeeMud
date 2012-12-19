@@ -89,21 +89,10 @@ public class Train extends StdCommand
 		int curStat=-1;
 		if((abilityCode>=0)&&(CharStats.CODES.isBASE(abilityCode)))
 		{
-			CharStats copyStats=(CharStats)mob.baseCharStats().copyOf();
-			mob.charStats().getMyRace().affectCharStats(mob,copyStats);
-			for(int c=0;c<mob.charStats().numClasses();c++)
-				mob.charStats().getMyClass(c).affectCharStats(mob,copyStats);
-			curStat=copyStats.getStat(abilityCode);
-			final String list = CMProps.getVar(CMProps.SYSTEM_STATCOSTS);
-			final int maxStat = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(abilityCode));
-			if(curStat>=maxStat)
-			{
-				mob.tell("You cannot train that any further.");
+			curStat=mob.baseCharStats().getRacialStat(mob, abilityCode);
+			trainsRequired=CMLib.login().getTrainingCost(mob, abilityCode, false);
+			if(trainsRequired<0)
 				return false;
-			}
-			long[][] costs=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(list.trim(),true), 1, 0, maxStat+10);
-			if((curStat>0)&&(curStat<100)&&(costs[curStat]!=null)&&(costs[curStat].length>0))
-				trainsRequired=(int)costs[curStat][0];
 		}
 		else
 			abilityCode=-1;

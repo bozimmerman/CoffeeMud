@@ -38,6 +38,14 @@ public interface ExpLevelLibrary extends CMLibrary
 	 */
 	public int getLevelExperience(int level);
 	
+	/**
+	 * Returns how much experience a player must gain at this level to
+	 * advance to the next.
+	 * @param level the level to check at
+	 * @return the amount of experience
+	 */
+	public int getLevelExperienceJustThisLevel(int level);
+	
 	public void handleExperienceChange(CMMsg msg);
 	
 	public int adjustedExperience(MOB mob, MOB victim, int amount);

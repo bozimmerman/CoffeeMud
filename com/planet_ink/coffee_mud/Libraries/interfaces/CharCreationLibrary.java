@@ -36,6 +36,7 @@ public interface CharCreationLibrary extends CMLibrary
 	public void reRollStats(MOB mob, CharStats C, int pointsLeft);
 	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException;
 	public CharClass promptCharClass(int theme, MOB mob, Session session) throws IOException;
+	public int getTrainingCost(MOB mob, int abilityCode, boolean quiet);
 	public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme);
 	// mob is optional
 	public List<CharClass> classQualifies(MOB mob, int theme);

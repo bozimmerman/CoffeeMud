@@ -49,7 +49,7 @@ public class Spell_Permanency extends Spell
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
-		if((mob.baseState().getMana()<100)||(mob.maxState().getMana()<100))
+		if(((mob.baseState().getMana()<100)||(mob.maxState().getMana()<100))||(mob.isMonster()))
 		{
 			mob.tell("You aren't powerful enough to cast this.");
 			return false;

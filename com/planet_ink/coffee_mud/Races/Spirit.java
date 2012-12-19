@@ -84,6 +84,10 @@ public class Spirit extends Undead
 					naturalWeapon.setName("a translucent knee");
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
+					case 10:
+					naturalWeapon.setName("an otherworldly slap");
+					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+					break;
 				}
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_PLASMA);
 				naturalWeapon.setUsesRemaining(1000);

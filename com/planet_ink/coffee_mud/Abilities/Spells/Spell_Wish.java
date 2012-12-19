@@ -1083,7 +1083,10 @@ public class Spell_Wish extends Spell
 				case CharStats.STAT_STRENGTH:
 				case CharStats.STAT_WISDOM:
 				{
-					int trainsRequired=CMLib.login().getTrainingCost(mob, foundAttribute, false);
+					int trainsRequired=CMLib.login().getTrainingCost(mob, foundAttribute, true);
+					if(trainsRequired<0)
+						trainsRequired=-trainsRequired;
+					if(trainsRequired>100) trainsRequired=100;
 					baseLoss+=((CMLib.leveler().getLevelExperienceJustThisLevel(mob.basePhyStats().level())/5)*(1+trainsRequired));
 					break;
 				}

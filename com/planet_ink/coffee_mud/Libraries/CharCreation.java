@@ -2334,6 +2334,28 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return room;
 	}
 
+	public int getTrainingCost(MOB mob, int abilityCode, boolean quiet)
+	{
+		int curStat=mob.baseCharStats().getRacialStat(mob, abilityCode);
+		final String list = CMProps.getVar(CMProps.SYSTEM_STATCOSTS);
+		final int maxStat = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(abilityCode));
+		long[][] costs=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(list.trim(),true), 1, 0, maxStat+10);
+		int curStatIndex=curStat;
+		while((curStatIndex>0)
+		&&((curStatIndex>=costs.length)||(costs[curStatIndex]==null)||(costs[curStatIndex].length==0)))
+			curStatIndex--;
+		int val=1;
+		if(curStatIndex>0)
+			val=(int)costs[curStatIndex][0];
+		if((curStat>=maxStat)&&(!quiet))
+		{
+			mob.tell("You cannot train that any further.");
+			if(val<=0) val=1;
+			return -val;
+		}
+		return val;
+	}
+	
 	public void pageRooms(CMProps page, Map<String, String> table, String start)
 	{
 		for(Enumeration<Object> i=page.keys();i.hasMoreElements();)
