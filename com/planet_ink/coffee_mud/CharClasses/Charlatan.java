@@ -75,6 +75,7 @@ public class Charlatan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Swipe",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_Revoke",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Disguise",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Climb",false);
