@@ -115,7 +115,7 @@ public class Spell_Shatter extends Spell
 				R.send(mob,msg);
 				if(mobTarget!=null)
 					R.send(mob,msg2);
-				if(msg.value()<=0)
+				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					int damage=100+adjustedLevel(mob,asLevel)-target.phyStats().level();
 					if(CMLib.flags().isABonusItems(target))
