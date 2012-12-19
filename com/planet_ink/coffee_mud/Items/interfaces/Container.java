@@ -43,7 +43,7 @@ public interface Container extends Item
 	public boolean isInside(Item I);
 	public long containTypes();
 	public void setContainTypes(long containTypes);
-	public void emptyPlease();
+	public void emptyPlease(boolean flatten);
 	
 	/**
 	 * For containers with lids and locks, this returns the unique string

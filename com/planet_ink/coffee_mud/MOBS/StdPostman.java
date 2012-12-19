@@ -535,7 +535,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					if(msg.tool() instanceof Container)
-						((Container)msg.tool()).emptyPlease();
+						((Container)msg.tool()).emptyPlease(true);
 					Session S=msg.source().session();
 					if((!msg.source().isMonster())&&(S!=null)&&(msg.tool() instanceof Item))
 					{

@@ -102,6 +102,8 @@ public class Chant_SpeedAging extends Chant
 							case RawMaterial.MATERIAL_WOODEN:
 							{
 								mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" rots away!");
+								if(target instanceof Container)
+									((Container)target).emptyPlease(false);
 								((Item)target).destroy();
 								break;
 							}

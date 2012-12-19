@@ -1526,7 +1526,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	public void saveAuction(Auctioneer.AuctionData data, String auctionHouse, boolean updateOnly)
 	{
-		if(data.auctioningI instanceof Container) ((Container)data.auctioningI).emptyPlease();
+		if(data.auctioningI instanceof Container) ((Container)data.auctioningI).emptyPlease(false);
 		StringBuffer xml=new StringBuffer("<AUCTION>");
 		xml.append("<PRICE>"+data.bid+"</PRICE>");
 		xml.append("<BUYOUT>"+data.buyOutPrice+"</BUYOUT>");

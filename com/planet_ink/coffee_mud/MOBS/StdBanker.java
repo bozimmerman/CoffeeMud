@@ -454,7 +454,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					if(msg.tool() instanceof Container)
-						((Container)msg.tool()).emptyPlease();
+						((Container)msg.tool()).emptyPlease(true);
 					CMMsg msg2=CMClass.getMsg(msg.source(),msg.tool(),null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null);
 					location().send(this,msg2);
 					msg2=CMClass.getMsg((MOB)msg.target(),msg.tool(),null,CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_GET|CMMsg.MASK_INTERMSG,null);

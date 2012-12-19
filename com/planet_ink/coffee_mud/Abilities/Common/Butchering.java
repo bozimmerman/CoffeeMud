@@ -166,7 +166,7 @@ public class Butchering extends GatheringSkill
 			if(duration<3) duration=3;
 			if(duration>40) duration=40;
 			beneficialAffect(mob,mob,asLevel,duration);
-			body.emptyPlease();
+			body.emptyPlease(false);
 			body.destroy();
 		}
 		return true;

@@ -530,13 +530,29 @@ public class StdContainer extends StdItem implements Container
 	{
 		miscText=newKeyName;
 	}
-	public void emptyPlease()
+	public void emptyPlease(boolean flatten)
 	{
-		List<Item> V=getContents();
-		for(int v=0;v<V.size();v++)
+		final ItemPossessor C=owner();
+		if(C!=null)
 		{
-			Item I=(Item)V.get(v);
-			I.setContainer(null);
+			Item I;
+			if(flatten)
+			{
+				List<Item> V=getContents();
+				for(int v=0;v<V.size();v++)
+				{
+					I=(Item)V.get(v);
+					I.setContainer(null);
+				}
+			}
+			else
+			for(Enumeration<Item> e = C.items(); e.hasMoreElements();)
+			{
+				I=e.nextElement();
+				if(I==null) continue;
+				if(I.container()==this)
+					I.setContainer(null);
+			}
 		}
 	}
 	public boolean isInside(Item I)

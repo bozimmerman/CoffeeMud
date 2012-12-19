@@ -120,7 +120,7 @@ public class CorpseEater extends ActiveTicker
 						continue;
 						
 					if((I instanceof Container)&&(!EatItems))
-						((Container)I).emptyPlease();
+						((Container)I).emptyPlease(false);
 					thisRoom.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> eat(s) <O-NAME>.");
 					I.destroy();
 					return true;
