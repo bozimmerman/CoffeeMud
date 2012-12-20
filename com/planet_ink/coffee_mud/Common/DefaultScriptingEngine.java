@@ -43,41 +43,41 @@ public class DefaultScriptingEngine implements ScriptingEngine
 {
 	public String ID(){return "DefaultScriptingEngine";}
 	public String name(){return "Default Scripting Engine";}
-	protected static final Hashtable funcH=new Hashtable();
-	protected static final Hashtable methH=new Hashtable();
-	protected static final Hashtable progH=new Hashtable();
-	protected static final Hashtable connH=new Hashtable();
-	protected static final Hashtable gstatH=new Hashtable();
-	protected static final Hashtable signH=new Hashtable();
+	protected static final Map<String,Integer>	funcH	= new Hashtable<String,Integer>();
+	protected static final Map<String,Integer>	methH	= new Hashtable<String,Integer>();
+	protected static final Map<String,Integer>	progH	= new Hashtable<String,Integer>();
+	protected static final Map<String,Integer>	connH	= new Hashtable<String,Integer>();
+	protected static final Map<String,Integer>	gstatH	= new Hashtable<String,Integer>();
+	protected static final Map<String,Integer>	signH	= new Hashtable<String,Integer>();
 	
-	protected static Hashtable patterns=new Hashtable();
-	protected boolean noDelay=CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLEDELAY);
+	protected static final Map<String,Pattern>	patterns= new Hashtable<String,Pattern>();
+
+	protected boolean 				noDelay			= CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLEDELAY);
 	
-	protected String scope="";
+	protected String				scope			 = "";
+	protected long					tickStatus		 = Tickable.STATUS_NOT;
+	protected boolean				isSavable		 = true;
+	protected boolean				alwaysTriggers	 = false;
 
-	protected long tickStatus=Tickable.STATUS_NOT;
-	protected boolean isSavable=true;
-	protected boolean alwaysActiveTriggers=false;
-
-	protected MOB lastToHurtMe=null;
-	protected Room lastKnownLocation=null;
-	protected Tickable altStatusTickable=null;
-	protected Vector que=new Vector();
-	protected Vector oncesDone=new Vector();
-	protected Hashtable delayTargetTimes=new Hashtable();
-	protected Hashtable delayProgCounters=new Hashtable();
-	protected Hashtable lastTimeProgsDone=new Hashtable();
-	protected Hashtable lastDayProgsDone=new Hashtable();
-	protected HashSet registeredSpecialEvents=new HashSet();
-	protected Hashtable noTrigger=new Hashtable();
-	protected MOB backupMOB=null;
-	protected CMMsg lastMsg=null;
-	protected Resources resources=Resources.instance();
-	protected Environmental lastLoaded=null;
-	protected String myScript="";
-	protected String defaultQuestName="";
-	protected String scriptKey=null;
-	protected boolean debugBadScripts=false;
+	protected MOB					lastToHurtMe	 = null;
+	protected Room					lastKnownLocation= null;
+	protected Tickable				altStatusTickable= null;
+	protected List<DVector>			oncesDone		 = new Vector<DVector>();
+	protected Map<Integer,Integer>	delayTargetTimes = new Hashtable<Integer,Integer>();
+	protected Map<Integer,Integer>	delayProgCounters= new Hashtable<Integer,Integer>();
+	protected Map<Integer,Integer>	lastTimeProgsDone= new Hashtable<Integer,Integer>();
+	protected Map<Integer,Integer>	lastDayProgsDone = new Hashtable<Integer,Integer>();
+	protected Set<Integer>			registeredEvents = new HashSet<Integer>();
+	protected Map<Integer,Long>		noTrigger		 = new Hashtable<Integer,Long>();
+	protected MOB					backupMOB		 = null;
+	protected CMMsg					lastMsg			 = null;
+	protected Resources				resources		 = Resources.instance();
+	protected Environmental			lastLoaded		 = null;
+	protected String				myScript		 = "";
+	protected String				defaultQuestName = "";
+	protected String				scriptKey		 = null;
+	protected boolean				debugBadScripts	 = false;
+	protected List<ScriptableResponse>que			 = new Vector<ScriptableResponse>();
 
 	public DefaultScriptingEngine()
 	{
@@ -378,7 +378,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if((tt[1].equals(quest)||(tt[1].equals("*")))
 						&&(CMath.s_int(tt[2])<0))
 						{
-							oncesDone.addElement(script);
+							oncesDone.add(script);
 							execute(hostObj,mob,mob,mob,null,null,script,null,newObjs());
 							return true;
 						}
@@ -509,6 +509,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public String getScript(){ return myScript;}
 
+	public void reset()
+	{
+		que = new Vector<ScriptableResponse>();
+		lastToHurtMe = null;
+		lastKnownLocation= null;
+		altStatusTickable= null;
+		oncesDone = new Vector<DVector>();
+		delayTargetTimes = new Hashtable<Integer,Integer>();
+		delayProgCounters= new Hashtable<Integer,Integer>();
+		lastTimeProgsDone= new Hashtable<Integer,Integer>();
+		lastDayProgsDone = new Hashtable<Integer,Integer>();
+		registeredEvents = new HashSet<Integer>();
+		noTrigger = new Hashtable<Integer,Long>();
+		backupMOB = null;
+		lastMsg = null;
+	}
+	
 	public void setScript(String newParms)
 	{
 		newParms=CMStrings.replaceAll(newParms,"'","`");
@@ -518,17 +535,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			Resources.removeResource(getScriptResourceKey());
 			newParms=superParms+";"+newParms.substring(1);
 		}
-		que=new Vector();
-		oncesDone=new Vector();
-		delayTargetTimes=new Hashtable();
-		delayProgCounters=new Hashtable();
-		lastTimeProgsDone=new Hashtable();
-		lastDayProgsDone=new Hashtable();
-		registeredSpecialEvents=new HashSet();
-		noTrigger=new Hashtable();
 		myScript=newParms;
-		if(oncesDone.size()>0)
-			oncesDone.clear();
+		reset();
 		if(myScript.length()>100)
 			scriptKey="PARSEDPRG: "+myScript.substring(0,100)+myScript.length()+myScript.hashCode();
 		else
@@ -537,7 +545,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public boolean isFreeToBeTriggered(Tickable affecting)
 	{ 
-		if(alwaysActiveTriggers)
+		if(alwaysTriggers)
 			return CMLib.flags().canActAtAll(affecting);
 		else
 			return CMLib.flags().canFreelyBehaveNormal(affecting);
@@ -6459,7 +6467,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					noDelay=CMath.s_bool(arg3);
 				else
 				if(arg2.equals("ACTIVETRIGGER")||arg2.equals("ACTIVETRIGGERS"))
-					alwaysActiveTriggers=CMath.s_bool(arg3);
+					alwaysTriggers=CMath.s_bool(arg3);
 				else
 				if(arg2.equals("DEFAULTQUEST"))
 					registerDefaultQuest(arg3);
@@ -9558,7 +9566,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int prcnt=CMath.s_int(t[1]);
 					if(CMLib.dice().rollPercentage()<prcnt)
 					{
-						List V=(List)que.clone();
+						List<ScriptableResponse> V=new XVector(que);
 						ScriptableResponse SB=null;
 						String roomID=null;
 						if(msg.target()!=null)
@@ -9568,7 +9576,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							SB=(ScriptableResponse)V.get(q);
 							if((SB.scr==script)&&(SB.s==msg.source()))
 							{
-								if(que.removeElement(SB))
+								if(que.remove(SB))
 									execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
 								break;
 							}
@@ -9588,7 +9596,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int prcnt=CMath.s_int(t[1]);
 					if(CMLib.dice().rollPercentage()<prcnt)
 					{
-						List V=(List)que.clone();
+						List<ScriptableResponse> V=new XVector(que);
 						ScriptableResponse SB=null;
 						String roomID=null;
 						if(msg.target()!=null)
@@ -9598,7 +9606,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							SB=(ScriptableResponse)V.get(q);
 							if((SB.scr==script)&&(SB.s==msg.source()))
 							{
-								if(que.removeElement(SB))
+								if(que.remove(SB))
 									execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
 								break;
 							}
@@ -9651,10 +9659,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			case 29: // login_prog
-				if(!registeredSpecialEvents.contains(Integer.valueOf(CMMsg.TYP_LOGIN)))
+				if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_LOGIN)))
 				{
 					CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LOGIN);
-					registeredSpecialEvents.add(Integer.valueOf(CMMsg.TYP_LOGIN));
+					registeredEvents.add(Integer.valueOf(CMMsg.TYP_LOGIN));
 				}
 				if((msg.sourceMinor()==CMMsg.TYP_LOGIN)&&canTrigger(29)
 				&&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB)))
@@ -9670,10 +9678,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			case 32: // level_prog
-				if(!registeredSpecialEvents.contains(Integer.valueOf(CMMsg.TYP_LEVEL)))
+				if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_LEVEL)))
 				{
 					CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LEVEL);
-					registeredSpecialEvents.add(Integer.valueOf(CMMsg.TYP_LEVEL));
+					registeredEvents.add(Integer.valueOf(CMMsg.TYP_LEVEL));
 				}
 				if((msg.sourceMinor()==CMMsg.TYP_LEVEL)&&canTrigger(32)
 				&&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB)))
@@ -9782,10 +9790,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			case 33: // channel prog
-				if(!registeredSpecialEvents.contains(Integer.valueOf(CMMsg.TYP_CHANNEL)))
+				if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_CHANNEL)))
 				{
 					CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_CHANNEL);
-					registeredSpecialEvents.add(Integer.valueOf(CMMsg.TYP_CHANNEL));
+					registeredEvents.add(Integer.valueOf(CMMsg.TYP_CHANNEL));
 				}
 				if(!msg.amISource(monster)
 				&&(msg.othersMajor(CMMsg.MASK_CHANNEL))
@@ -10086,7 +10094,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(!oncesDone.contains(script)&&canTrigger(6))
 				{
 					if(t==null) t=parseBits(script,0,"C");
-					oncesDone.addElement(script);
+					oncesDone.add(script);
 					execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
 				}
 				break;
@@ -10157,7 +10165,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						int time=CMath.s_int(t[2]);
 						if(time>=Q.minsRemaining())
 						{
-							oncesDone.addElement(script);
+							oncesDone.add(script);
 							execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
 						}
 					}
@@ -10189,7 +10197,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(noDelay)
 			execute(host,source,target,monster,primaryItem,secondaryItem,script,msg,newObjs());
 		else
-			que.addElement(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
+			que.add(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
 	}
 	
 	public void prequeResponse(PhysicalAgent host,
@@ -10202,7 +10210,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							   int ticks,
 							   String msg)
 	{
-		que.insertElementAt(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg),0);
+		que.add(0,new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
 	}
 	
 	public void dequeResponses()
@@ -10212,11 +10220,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			for(int q=que.size()-1;q>=0;q--)
 			{
 				ScriptableResponse SB=null;
-				try{SB=(ScriptableResponse)que.elementAt(q);}catch(ArrayIndexOutOfBoundsException x){continue;}
+				try{SB=(ScriptableResponse)que.get(q);}catch(ArrayIndexOutOfBoundsException x){continue;}
 				if(SB.checkTimeToExecute())
 				{
 					execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
-					que.removeElement(SB);
+					que.remove(SB);
 				}
 			}
 		}catch(Exception e){Log.errOut("DefaultScriptingEngine",e);}
