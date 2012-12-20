@@ -66,6 +66,7 @@ public class StdBehavior implements Behavior
 		}
 		return new StdBehavior();
 	}
+
 	public CMObject copyOf()
 	{
 		try
