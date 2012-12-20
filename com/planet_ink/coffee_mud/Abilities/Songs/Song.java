@@ -85,7 +85,8 @@ public class Song extends StdAbility
 			}
 			else
 			if((msg.target() instanceof Armor)
-			&&(msg.targetMinor()==CMMsg.TYP_WEAR))
+			&&(msg.targetMinor()==CMMsg.TYP_WEAR)
+			&&(CMath.bset(((Armor)msg.target()).rawProperLocationBitmap(),Wearable.WORN_MOUTH)))
 			{
 				if(msg.source().location()!=null)
 					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) singing.");
