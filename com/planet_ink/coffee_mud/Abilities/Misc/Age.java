@@ -161,7 +161,7 @@ public class Age extends StdAbility
 								   CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) );
 
 		int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
-		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
+		if((affected instanceof Item)&&(affected instanceof CagedAnimal)&&(!(affected instanceof DeadBody)))
 		{
 			((Item)affected).setExpirationDate(0);
 			if(getMyRace()==null) return;
@@ -504,7 +504,7 @@ public class Age extends StdAbility
 			if((msg.target()==affected)
 			&&(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			{
-				if((((affected instanceof Item)&&(affected instanceof CagedAnimal))
+				if((((affected instanceof Item)&&(affected instanceof CagedAnimal)&&(!(affected instanceof DeadBody)))
 					||((affected instanceof MOB)&&(!((MOB)affected).isSavable())))
 				&&(affected.description().toUpperCase().indexOf(msg.source().name().toUpperCase())>=0))
 				{
@@ -527,6 +527,7 @@ public class Age extends StdAbility
 				}
 			}
 			if((affected instanceof Item)
+			&&(!(affected instanceof DeadBody))
 			&&((msg.target()==affected)||(msg.tool()==affected))
 			&&(CMLib.flags().isInTheGame((Item)affected,true)))
 			{
@@ -570,7 +571,7 @@ public class Age extends StdAbility
 				else
 				{
 					lastSoiling=System.currentTimeMillis();
-					boolean soil=(affected instanceof CagedAnimal);
+					boolean soil=((affected instanceof CagedAnimal)&&(!(affected instanceof DeadBody)));
 					MOB mob=null;
 					if(affected instanceof MOB)
 					{
