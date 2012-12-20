@@ -91,13 +91,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	public String defaultQuestName(){ return defaultQuestName;}
 
-	protected Quest defaultQuest() {
+	protected Quest defaultQuest() 
+	{
 		if(defaultQuestName.length()==0)
 			return null;
 		return CMLib.quests().fetchQuest(defaultQuestName);
 	}
 
-	public void setVarScope(String newScope){
+	public void setVarScope(String newScope)
+	{
 		if((newScope==null)||(newScope.trim().length()==0)||newScope.equalsIgnoreCase("GLOBAL"))
 		{
 			scope="";
@@ -220,9 +222,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		try
 		{
-			ScriptingEngine S=(ScriptingEngine)this.clone();
+			DefaultScriptingEngine S=(DefaultScriptingEngine)this.clone();
 			//CMClass.bumpCounter(S,CMClass.CMObjectType.COMMON);//removed for mem & perf
-			S.setScript(getScript());
+			S.reset();
 			return S;
 		}
 		catch(CloneNotSupportedException e)

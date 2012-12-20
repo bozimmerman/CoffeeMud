@@ -70,10 +70,17 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 
 	public CMObject copyOf()
 	{
-		Scriptable B=(Scriptable)super.copyOf();
-		if(B.engine!=null)
-			B.engine=(ScriptingEngine)B.copyOf();
-		return B;
+		try
+		{
+			Scriptable B=(Scriptable)this.clone();
+			if(B.engine!=null)
+				B.engine=(ScriptingEngine)engine.copyOf();
+			return B;
+		}
+		catch(CloneNotSupportedException e)
+		{
+			return new Scriptable();
+		}
 	}
 
 	public List<String> externalFiles()
