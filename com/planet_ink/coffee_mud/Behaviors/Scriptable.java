@@ -68,6 +68,14 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return false;
 	}
 
+	public CMObject copyOf()
+	{
+		Scriptable B=(Scriptable)super.copyOf();
+		if(B.engine!=null)
+			B.engine=(ScriptingEngine)B.copyOf();
+		return B;
+	}
+
 	public List<String> externalFiles()
 	{
 		return engine().externalFiles();
