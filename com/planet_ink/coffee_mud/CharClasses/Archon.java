@@ -74,34 +74,45 @@ public class Archon extends StdCharClass
 		
 		// new thieves skills
 		//TODO: GIVE THESE TO A DAMN CLASS!
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_EscapeBonds",false,null,"+DEX 14");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentDrop",false,null,"+DEX 10");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Footlocks",false,null,"+DEX 7");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Hideout",false,null,"+DEX 7");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_MarkTrapped",false,CMParms.parseSemicolons("Thief_DetectTraps",true),"+WIS 12");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UndergroundConnections",false,CMParms.parseSemicolons("Thief_Sneak",true),"+CHA 14");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Autocaltrops",false,CMParms.parseSemicolons("Thief_Caltrops",true),"+CON 12 +DEX 14");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_IdentifyTraps",false,CMParms.parseSemicolons("Thief_DetectTraps",true),"+INT 14");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_AutoDetectTraps",false,CMParms.parseSemicolons("Thief_DetectTraps",true),"+INT 12 +WIS 12");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_ConcealItem",false,CMParms.parseSemicolons("Thief_Hide",true),"+WIS 14");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_DisablingCaltrops",false,CMParms.parseSemicolons("Thief_Caltrops",true),"+WIS 10");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Spying",false,null,"+WIS 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Evesdrop",false,CMParms.parseSemicolons("Thief_Listen",true),"+DEX 14 +WIS 16");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_SetDecoys",false,CMParms.parseSemicolons("Specialization_Ranged(75)",true),"+WIS 16");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Safehouse",false,CMParms.parseSemicolons("Thief_Sneak;Thief_SenseLaw",true),"+WIS 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_AutoMarkTraps",false,CMParms.parseSemicolons("Thief_DetectTraps;Thief_MarkTraps",true),"+CON 14 +WIS 16");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_HideOther",false,CMParms.parseSemicolons("Thief_ImprovedHiding",true),"+INT 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Espionage",false,null,"+CHA 18 +WIS 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_DazzlingCaltrops",false,CMParms.parseSemicolons("Thief_Caltrops",true),"+INT 12");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowpass",false,CMParms.parseSemicolons("Thief_Pick;Thief_DetectTraps",true),"+WIS 18 +DEX 22");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Thief_MarkerSpying",false,CMParms.parseSemicolons("Thief_Mark;Thief_Spying",true),"+WIS 20 +INT 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_SlipperyMind",false,CMParms.parseSemicolons("Thief_Con",true),"+CHA 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_ConcealDoor",false,CMParms.parseSemicolons("Thief_ConcealItem",true),"+WIS 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_TapRoom",false,CMParms.parseSemicolons("Thief_ConcealItem;Thief_Evesdrop",true),"+INT 14 +DEX 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_DampenAuras",false,CMParms.parseSemicolons("Thief_SlipperyMind",true),"+CHA 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Thief_HideInPlainSight",false,CMParms.parseSemicolons("Thief_ImprovedHiding;Thief_PlantItem;Thief_Swipe;Thief_Nondetection",true),"+DEX 24");
+		// TRAPPER
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_MarkTrapped",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Autocaltrops",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_IdentifyTraps",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_AutoDetectTraps",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_DisablingCaltrops",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_AutoMarkTraps",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_DazzlingCaltrops",false);
+		
+		// ASSASSIN
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Espionage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowpass",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Thief_MarkerSpying",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Spying",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Evesdrop",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_TapRoom",false);
+
+		// THIEF
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_EscapeBonds",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Hideout",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_SetDecoys",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_ConcealItem",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_ConcealDoor",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),55,"Thief_ConcealWalkway",false);
+		
+		// BURGLAR
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UndergroundConnections",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Safehouse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Thief_HideInPlainSight",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Footlocks",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentDrop",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_HideOther",false);
+
+		// ARCANIST
+		CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_SlipperyMind",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_DampenAuras",false);
+
+		// RANGER
 		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Ranger_WoodlandCreep",false,null,"+DEX 18");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),55,"Thief_ConcealWalkway",false,CMParms.parseSemicolons("Thief_ConcealDoor",true),"+WIS 20");
 	}
 
 	public int availabilityCode(){return 0;}
