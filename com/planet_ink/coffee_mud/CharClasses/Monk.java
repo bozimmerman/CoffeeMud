@@ -181,28 +181,39 @@ public class Monk extends StdCharClass
 		return (mob.fetchWieldedItem()!=null) || (mob.fetchHeldItem()!=null);
 	}
 
-	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-	public String getOtherBonusDesc(){return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest experience.";}
+	public void executeMsg(Environmental host, CMMsg msg)
+	{ 
+		super.executeMsg(host,msg); 
+		Fighter.conquestExperience(this,host,msg);
+	}
+	
+	public String getOtherBonusDesc()
+	{
+		return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest experience.";
+	}
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			if(CMLib.flags().isStanding((MOB)affected))
+			final MOB mob=(MOB)affected;
+			final int classLevel=mob.charStats().getClassLevel(this);
+			if(CMLib.flags().isStanding(mob))
 			{
-				MOB mob=(MOB)affected;
-				int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
+				int attArmor=(((int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY),9.0)))+1)*(classLevel-1);
 				affectableStats.setArmor(affectableStats.armor()-attArmor);
 			}
-			if(!anyWeapons((MOB)affected))
+			if(!anyWeapons(mob))
 			{
 				affectableStats.setSpeed(affectableStats.speed()+1.0);
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((MOB)affected).charStats().getClassLevel(this));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+classLevel);
 			}
 			if(affected.fetchEffect("Falling")!=null)
 				affectableStats.setWeight(0);
 		}
 	}
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
@@ -222,7 +233,6 @@ public class Monk extends StdCharClass
 		mob.tell("^NYour dexterity grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 
-	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

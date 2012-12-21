@@ -170,8 +170,11 @@ public class Spell_Scry extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);
-				scries.addElement(target,mob);
-				beneficialAffect(mob,target,asLevel,0);
+				if((msg.value()<=0)&&(msg2.value()<=0))
+				{
+					scries.addElement(target,mob);
+					beneficialAffect(mob,target,asLevel,0);
+				}
 			}
 			else
 				mob.tell("You attempt to invoke scrying, but fizzle the spell.");
