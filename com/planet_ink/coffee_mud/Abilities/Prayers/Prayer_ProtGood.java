@@ -68,7 +68,7 @@ public class Prayer_ProtGood extends Prayer
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
-		if(msg.target()==affected)
+		if((msg.target()==affected)&&(msg.source()!=affected))
 		{
 			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 			&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)

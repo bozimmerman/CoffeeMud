@@ -37,8 +37,8 @@ public class Prayer_ProtEvil extends Prayer
 {
 	public String ID() { return "Prayer_ProtEvil"; }
 	public String name(){ return "Protection Evil";}
-	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	public String displayText(){ return "(Protection from Evil)";}
+	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -48,7 +48,6 @@ public class Prayer_ProtEvil extends Prayer
 	{
 		if(!(affected instanceof MOB))
 			return false;
-
 		if(invoker==null)
 			return false;
 
@@ -101,8 +100,6 @@ public class Prayer_ProtEvil extends Prayer
 				affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));
 		}
 	}
-
-
 
 	public void unInvoke()
 	{
