@@ -299,7 +299,7 @@ public class Druid extends StdCharClass
 			&& !(R.racialCategory().equals("Vegetation"))
 			&& !(R.racialCategory().equals("Dwarf"))
 			&& !(R.racialCategory().equals("Giant-kin"))
-			&& !(R.racialCategory().equals("Golbinoids"))
+			&& !(R.racialCategory().equals("Goblinoids"))
 			&& !(R.racialCategory().equals("HalfElf")))
 			{
 				if(!quiet)
