@@ -37,9 +37,9 @@ public class Arcanist extends Thief
 	public String ID(){return "Arcanist";}
 	public String name(){return "Arcanist";}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-	public int getManaDivisor(){return 4;}
+	public int getManaDivisor(){return 5;}
 	public int getManaDice(){return 1;}
-	public int getManaDie(){return 4;}
+	public int getManaDie(){return 3;}
 
 	public Arcanist()
 	{
