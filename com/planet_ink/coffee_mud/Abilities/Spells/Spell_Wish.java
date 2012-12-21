@@ -254,14 +254,33 @@ public class Spell_Wish extends Spell
 				int experienceRequired=100*(foundThang.phyStats().level()-1);
 				if(foundThang instanceof MOB)
 				{
-					MOB newMOB=(MOB)foundThang.copyOf();
-					newMOB.setStartRoom(null);
-					newMOB.setLocation(mob.location());
-					newMOB.recoverCharStats();
-					newMOB.recoverPhyStats();
-					newMOB.recoverMaxState();
-					newMOB.resetToMaxState();
-					newMOB.bringToLife(mob.location(),true);
+					MOB foundMOB=(MOB)foundThang;
+					MOB newMOB;
+					boolean isPlayer=foundMOB.playerStats()!=null;
+					if(isPlayer && (!foundMOB.isMonster()) && CMLib.flags().isInTheGame(foundMOB, true))
+					{
+						newMOB=foundMOB;
+						mob.location().bringMobHere(newMOB, false);
+					}
+					else
+					{
+						if(isPlayer)
+						{
+							newMOB=CMClass.getMOB("GenMOB");
+							newMOB.setName("CopyOf"+foundThang.Name());
+							newMOB.setDisplayText(((MOB) foundThang).displayText(mob));
+							newMOB.setDescription(foundThang.description());
+						}
+						else
+							newMOB=(MOB)foundMOB.copyOf();
+						newMOB.setStartRoom(null);
+						newMOB.setLocation(mob.location());
+						newMOB.recoverCharStats();
+						newMOB.recoverPhyStats();
+						newMOB.recoverMaxState();
+						newMOB.resetToMaxState();
+						newMOB.bringToLife(mob.location(),true);
+					}
 					newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java Plane.");
 					newMOB.setFollowing(mob);
