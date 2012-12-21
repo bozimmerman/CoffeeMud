@@ -103,12 +103,12 @@ public class Prayer_Wave extends Prayer
 						R.send(mob,msg2);
 						if((msg.value()<=0)&&(msg2.value()<=0))
 						{
-    						int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
-    						CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
-    						int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*4);
-    						int roll=CMLib.dice().rollPercentage();
-    						if((roll!=1)&&(roll>chanceToStay))
-    							CMLib.tracking().walk(target,dir,true,false);
+							int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
+							CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
+							int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*4);
+							int roll=CMLib.dice().rollPercentage();
+							if((roll!=1)&&(roll>chanceToStay))
+								CMLib.tracking().walk(target,dir,true,false);
 						}
 					}
 				}
