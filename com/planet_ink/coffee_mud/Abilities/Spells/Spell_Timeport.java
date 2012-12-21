@@ -83,6 +83,7 @@ public class Spell_Timeport extends Spell
 		if(room!=null)
 			room.show(mob, null, CMMsg.MSG_OK_VISUAL, "<S-NAME> reappear(s)!");
 	}
+
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -92,6 +93,14 @@ public class Spell_Timeport extends Spell
 				msg.source().tell("The timeport spell on you fizzles away.");
 				affected.delEffect(this);
 			}
+			else
+			if((((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.source()==affected))
+					||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+					||((msg.targetMinor()==CMMsg.TYP_EXPIRE))
+					||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET)))
+				{
+					unInvoke();
+				}
 			else
 			if(msg.amISource((MOB)affected))
 				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
