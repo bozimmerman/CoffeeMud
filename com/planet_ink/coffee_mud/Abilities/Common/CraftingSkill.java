@@ -248,7 +248,8 @@ public class CraftingSkill extends GatheringSkill
 				armor.setClothingLayer(layers[0]);
 				armor.setLayerAttributes(layerAtt[0]);
 			}
-			I.basePhyStats().setArmor(I.basePhyStats().armor()+(int)Math.round(hardBonus[0]));
+			if(I.basePhyStats().armor()>0)
+				I.basePhyStats().setArmor(I.basePhyStats().armor()+(int)Math.round(hardBonus[0]));
 			I.setRawLogicalAnd(logicalAnd[0]);
 			I.setRawProperLocationBitmap(wornLoc[0]);
 		}
