@@ -69,6 +69,7 @@ public class Chant_Crossbreed extends Chant
 			&&(msg.tool() instanceof Social)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>"))
+			&&(msg.sourceMinor()!=CMMsg.TYP_CHANNEL)
 			&&(myChar.charStats().getStat(CharStats.STAT_GENDER)!=mate.charStats().getStat(CharStats.STAT_GENDER))
 			&&((mate.charStats().getStat(CharStats.STAT_GENDER)==('M'))
 			   ||(mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))

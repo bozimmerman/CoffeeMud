@@ -140,11 +140,12 @@ public class CharGen extends StdCommand
 	}
 	
 	
-	protected MOB levelMOBup(int level, CharClass C)
+	protected MOB levelMOBup(int level, CharClass C, boolean player)
 	{
 		MOB mob=CMClass.getFactoryMOB();
 		CMLib.factions().setAlignment(mob,Faction.ALIGN_NEUTRAL);
 		mob.setName("Average Joe");
+		if(player) mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		for(int i : CharStats.CODES.BASE())
@@ -236,22 +237,22 @@ public class CharGen extends StdCommand
 		avgMob.resetToMaxState();
 	}
 
-	public MOB AverageClassMOB(MOB mob, int level, CharClass C, int numTries)
+	public MOB AverageClassMOB(MOB mob, int level, CharClass C, int numTries, boolean player)
 	{
-		MOB avgMob=levelMOBup(level,C);
-		int tries=0;
+		MOB avgMob=levelMOBup(level,C, player);
+		int tries=1;
 		for(;tries<numTries;tries++)
 		{
 			if(((tries % 20)==0)&&(mob!=null))
 				mob.session().print(".");
-			MOB mob2=levelMOBup(level,C);
+			MOB mob2=levelMOBup(level,C, player);
 			addHimIn(avgMob,mob2);
 		}
-		averageout(avgMob,tries+1);
+		averageout(avgMob,tries);
 		return avgMob;
 	}
 
-	public MOB AverageAllClassMOB(MOB mob, int level, int numTriesClass, int numTriesMOB)
+	public MOB AverageAllClassMOB(MOB mob, int level, int numTriesClass, int numTriesMOB, boolean player)
 	{
 		MOB avgMob=null;
 		int tries=0;
@@ -264,7 +265,7 @@ public class CharGen extends StdCommand
 				if(C.availabilityCode()!=0)
 				{
 					numClasses++;
-					MOB mob2=AverageClassMOB(mob,level,C,numTriesMOB);
+					MOB mob2=AverageClassMOB(mob,level,C,numTriesMOB,player);
 					if(avgMob==null)
 					{
 						avgMob=mob2;
@@ -570,7 +571,7 @@ public class CharGen extends StdCommand
 							}
 							else
 							{
-								M1=AverageClassMOB(null,level,C,1);
+								M1=AverageClassMOB(null,level,C,1,false);
 								M1.baseCharStats().setMyRace(humanR);
 								M1.setName("GOODGUY");
 								M1.recoverCharStats();
@@ -951,6 +952,7 @@ public class CharGen extends StdCommand
 			return false;
 		commands.removeElementAt(0);
 		boolean createNewOnly=false;
+		boolean createPlayer=false;
 		if(commands.size()>0)
 		{
 			if(((String)commands.firstElement()).equalsIgnoreCase("COMBAT"))
@@ -964,6 +966,12 @@ public class CharGen extends StdCommand
 			{
 				commands.removeElementAt(0);
 				createNewOnly=true;
+			}
+			
+			if(((String)commands.firstElement()).equalsIgnoreCase("PLAYER"))
+			{
+				commands.removeElementAt(0);
+				createPlayer=true;
 			}
 		}
 		CharClass C=null;
@@ -1008,9 +1016,9 @@ public class CharGen extends StdCommand
 
 		MOB avgMob=null;
 		if(C!=null)
-			avgMob=AverageClassMOB(mob, level,C, createNewOnly?1:100);
+			avgMob=AverageClassMOB(mob, level,C, createNewOnly?1:100, createPlayer);
 		else
-			avgMob=AverageAllClassMOB(mob,level, 20, 40);
+			avgMob=AverageAllClassMOB(mob,level, 20, 40, createPlayer);
 
 		mob.session().println("\n\r");
 

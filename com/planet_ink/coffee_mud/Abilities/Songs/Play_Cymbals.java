@@ -91,7 +91,7 @@ public class Play_Cymbals extends Play_Instrument
 				{
 					int levelDiff=P.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 					if(levelDiff<0) levelDiff=0;
-					if(proficiencyCheck(mob,-(levelDiff*25),true))
+					if(proficiencyCheck(mob,-(levelDiff*25),false))
 					{
 						CMMsg msg=CMClass.getMsg(mob,P,this,CMMsg.MSG_CAST_VERBAL_SPELL,P.name()+" begin(s) to glow!");
 						if(R.okMessage(mob,msg))

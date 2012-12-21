@@ -135,6 +135,8 @@ public interface AbilityMapper extends CMLibrary
 	public String getCommonExtraMask(Ability A);
 	public String formatPreRequisites(DVector preReqs);
 	public int qualifyingClassLevel(MOB studentM, Ability A);
+	public boolean qualifiesOnlyByClan(MOB studentM, Ability A);
+	public boolean qualifiesOnlyByRace(MOB studentM, Ability A);
 	public CMObject lowestQualifyingClassRaceGovt(MOB studentM, Ability A);
 	public boolean qualifiesByCurrentClassAndLevel(MOB studentM, Ability A);
 	public boolean qualifiesOnlyByACharClass(MOB studentM, Ability A);

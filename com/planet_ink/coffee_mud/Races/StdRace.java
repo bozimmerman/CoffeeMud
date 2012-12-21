@@ -219,6 +219,7 @@ public class StdRace implements Race
 		if((msg.tool() instanceof Social)
 		&&(msg.amITarget(myChar)||(msg.source()==myChar))
 		&&(myChar.location()==msg.source().location())
+		&&(msg.sourceMinor()!=CMMsg.TYP_CHANNEL)
 		&&(msg.tool().Name().startsWith("MATE ")
 			||msg.tool().Name().startsWith("SEX ")))
 		{

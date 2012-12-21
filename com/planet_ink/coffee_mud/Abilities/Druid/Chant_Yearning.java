@@ -79,6 +79,7 @@ public class Chant_Yearning extends Chant
 		&&(msg.tool().Name().equals("MATE <T-NAME>")
 			||msg.tool().Name().equals("SEX <T-NAME>"))
 		&&(myChar.location()==((MOB)msg.target()).location())
+		&&(msg.sourceMinor()!=CMMsg.TYP_CHANNEL)
 		&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 		&&(((MOB)msg.target()).fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0))
 			unInvoke();
