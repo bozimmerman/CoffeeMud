@@ -259,36 +259,46 @@ public class Charlatan extends StdCharClass
 			int classLevel=mob.baseCharStats().getClassLevel(this);
 			if(classLevel<2) return;
 			if((classLevel%2)!=0) return;
+			
+			int maxSkills=classLevel/2;
 
-			for(int a=0;a<mob.numAbilities();a++)
-			{
-				Ability A=mob.fetchAbility(a);
-				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)
-				&&((CMLib.ableMapper().lowestQualifyingLevel(A.ID())==classLevel)
-				  ||(CMLib.ableMapper().lowestQualifyingLevel(A.ID())==classLevel-1)))
-					return;
-			}
 			// now only give one, for current level, respecting alignment!
-			Vector choices=new Vector();
+			List<Ability> choices=new Vector<Ability>();
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)
-				&&(mob.fetchAbility(A.ID())==null)
 				&&(lql<25)
 				&&(lql>0)
-				&&((lql==classLevel)
-					||(lql==classLevel-1)
-					||(classLevel>=25))
+				&&(mob.fetchAbility(ID())==null)
 				&&(!CMLib.ableMapper().getSecretSkill(A.ID()))
 				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 				&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
+				&&(!CMLib.ableMapper().qualifiesOnlyByClan(mob, A))
+				&&(!CMLib.ableMapper().qualifiesOnlyByRace(mob, A))
 				&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0))))
-					choices.addElement(A);
+					choices.add(A);
 			}
-			if(choices.size()==0) return;
-			Ability A=(Ability)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+			for(int a=choices.size()-1;a>=0;a--)
+			{
+				Ability A=choices.get(a);
+				if(mob.fetchAbility(A.ID())!=null)
+					maxSkills--;
+			}
+			if(maxSkills<1)
+				return;
+			for(int a=choices.size()-1;a>=0;a--)
+			{
+				Ability A=choices.get(a);
+				int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+				if((mob.fetchAbility(A.ID())!=null)
+				||((lql!=classLevel)&&(lql!=classLevel-1)&&(classLevel>=25)))
+					choices.remove(a);
+			}
+			if(choices.size()==0) 
+				return;
+			Ability A=(Ability)choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			if(A!=null)	giveMobAbility(mob,A,0,"",isBorrowedClass);
 		}
 		else
