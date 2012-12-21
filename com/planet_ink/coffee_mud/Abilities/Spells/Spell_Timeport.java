@@ -95,12 +95,12 @@ public class Spell_Timeport extends Spell
 			}
 			else
 			if((((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.source()==affected))
-					||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
-					||((msg.targetMinor()==CMMsg.TYP_EXPIRE))
-					||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET)))
-				{
-					unInvoke();
-				}
+				||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+				||((msg.targetMinor()==CMMsg.TYP_EXPIRE))
+				||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET)))
+			{
+				unInvoke();
+			}
 			else
 			if(msg.amISource((MOB)affected))
 				if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
