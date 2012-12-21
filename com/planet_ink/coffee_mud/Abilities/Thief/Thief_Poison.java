@@ -65,11 +65,14 @@ public class Thief_Poison extends ThiefSkill
 		{
 			str=auto?"":"^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.MSG_THIEF_ACT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
+			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,null,CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON|(auto?CMMsg.MASK_ALWAYS:0),null,CMMsg.NO_EFFECT,null);
 			CMLib.color().fixSourceFightColor(msg);
-			if(mob.location().okMessage(mob,msg))
+			final Room R=mob.location();
+			if(R.okMessage(mob,msg) && R.okMessage(mob,msg2))
 			{
-				mob.location().send(mob,msg);
-				if(msg.value()<=0)
+				R.send(mob,msg);
+				R.send(mob,msg2);
+				if((msg.value()<=0) && (msg2.value()<=0))
 				{
 					Ability A=CMClass.getAbility("Poison");
 					A.invoke(mob,target,true,asLevel);
