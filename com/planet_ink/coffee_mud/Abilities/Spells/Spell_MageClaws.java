@@ -62,7 +62,7 @@ public class Spell_MageClaws extends Spell
 		if((msg.amISource(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(msg.tool()==null)
-		&&(!freeHands(mob)))
+		&&(freeHands(mob)))
 		{
 			if((naturalWeapon==null)
 			||(naturalWeapon.amDestroyed()))
