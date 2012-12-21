@@ -55,7 +55,9 @@ public class WanderHomeLater extends StdAbility
 			else
 			if(CMLib.flags().canActAtAll(M)
 			&&(!M.isInCombat())
-			&&(M.amFollowing()==null))
+			&&(M.amFollowing()==null)
+			&&(M.getStartRoom()!=null)
+			&&(M.getStartRoom().numPCInhabitants()==0))
 			{
 				CMLib.tracking().wanderAway(M, true, true);
 				if(M.getStartRoom()==M.location())
