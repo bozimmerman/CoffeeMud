@@ -51,6 +51,7 @@ public interface TrackingLibrary extends CMLibrary
 	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always);
 	public int findExitDir(MOB mob, Room R, String desc);
 	public int findRoomDir(MOB mob, Room R);
+	public void markToWanderHomeLater(MOB M);
 	public List<Integer> getShortestTrail(final List<List<Integer>> finalSets);
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
 	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);

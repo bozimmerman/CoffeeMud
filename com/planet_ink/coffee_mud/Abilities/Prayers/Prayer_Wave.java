@@ -44,8 +44,6 @@ public class Prayer_Wave extends Prayer
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_EXITS;}
 
-
-
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
@@ -108,7 +106,11 @@ public class Prayer_Wave extends Prayer
 							int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*4);
 							int roll=CMLib.dice().rollPercentage();
 							if((roll!=1)&&(roll>chanceToStay))
+							{
 								CMLib.tracking().walk(target,dir,true,false);
+								if((!R.isInhabitant(target))&&(target.isMonster()))
+									CMLib.tracking().markToWanderHomeLater(target);
+							}
 						}
 					}
 				}

@@ -90,7 +90,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 											TrackingFlags flags,
 											int maxRadius,
 											List<Room> radiant)
-   {
+	{
 		if((radiant==null)||(radiant.size()==0)){
 			radiant=new Vector<Room>();
 			getRadiantRooms(location,radiant,flags,destRoom,maxRadius,null);
@@ -160,8 +160,17 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return thisTrail;
 		}
 		return null;
-   }
+	}
 
+	public void markToWanderHomeLater(MOB M)
+	{
+		Ability A=CMClass.getAbility("WanderHomeLater");
+		if(A!=null)
+		{
+			M.addEffect(A);
+			A.makeLongLasting();
+		}
+	}
 
 	public List<Room> findBastardTheBestWay(Room location,
 											List<Room> destRooms,
