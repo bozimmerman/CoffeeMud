@@ -39,7 +39,7 @@ import java.util.*;
 */
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Herbalism extends CraftingSkill implements ItemCraftor
+public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Herbalism"; }
 	public String name(){ return "Herbalism";}
@@ -179,12 +179,14 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 	
-	protected Item buildItem(Ability theSpell)
+	protected Item buildItem(Ability theSpell, int level)
 	{
 		building=CMClass.getItem("GenMultiPotion");
 		((Potion)building).setSpellList(theSpell.ID());
 		building.setName("a potion of "+theSpell.name().toLowerCase());
 		building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
+		building.basePhyStats().setLevel(level);
+		building.phyStats().setLevel(level);
 		((Drink)building).setThirstQuenched(10);
 		((Drink)building).setLiquidHeld(100);
 		((Drink)building).setLiquidRemaining(100);
@@ -201,9 +203,11 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
 			commands.removeElementAt(0);
-			Ability theSpell=super.getCraftableSpellRecipe(commands);
+			Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null) return false;
-			building=buildItem(theSpell);
+			int level=super.getCraftableSpellLevel(commands);
+			if(level<0) level=1;
+			building=buildItem(theSpell, level);
 			commands.addElement(building);
 			return true;
 		}
@@ -229,8 +233,8 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.get(0);
-					int level=CMath.s_int((String)V.get(1));
+					String spell=(String)V.get(RCP_FINALNAME);
+					int level=CMath.s_int((String)V.get(RCP_LEVEL));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(level>=0)
@@ -305,20 +309,22 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			}
 			String recipeName=CMParms.combine(commands,0);
 			theSpell=null;
+			int theLevel=-1;
 			List<String> recipe=null;
 			for(int r=0;r<recipes.size();r++)
 			{
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.get(0);
-					int level=CMath.s_int((String)V.get(1));
+					String spell=(String)V.get(RCP_FINALNAME);
+					int level=CMath.s_int((String)V.get(RCP_LEVEL));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(xlevel(mob)>=level)
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
+						theLevel=level;
 						recipe=V;
 					}
 				}
@@ -387,7 +393,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();
-			building=buildItem(theSpell);
+			building=buildItem(theSpell, theLevel);
 			playSound="hotspring.wav";
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;

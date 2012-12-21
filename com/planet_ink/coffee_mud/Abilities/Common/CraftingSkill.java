@@ -355,35 +355,6 @@ public class CraftingSkill extends GatheringSkill
 
 	protected List<List<String>> loadRecipes(){ return new Vector();}
 
-	protected Ability getCraftableSpellRecipe(Vector commands)
-	{
-		Ability theSpell=null;
-		String spellName=null;
-		if((commands.size()>0)&&(commands.firstElement() instanceof String))
-			spellName=CMParms.combine(commands,0);
-		else
-		{
-			List<List<String>> recipes=loadRecipes();
-			List<String> V=recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
-			spellName=(String)V.get(0);
-		}
-		if(spellName!=null)
-		{
-			theSpell=CMClass.getAbility((String)commands.firstElement());
-			if(theSpell==null)
-			{
-				List<List<String>> recipes=loadRecipes();
-				for(List<String> V : recipes)
-				{
-					if(CMLib.english().containsString((String)V.get(0),spellName))
-						theSpell=CMClass.getAbility((String)V.get(0));
-					if(theSpell!=null) break;    
-				}
-			}
-		}
-		return theSpell;
-	}
-
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,
@@ -521,7 +492,7 @@ public class CraftingSkill extends GatheringSkill
 				}
 				if((proceed)||(tries==(maxtries-1)))
 				{
-					commands.addElement(randomRecipe.get(0));
+					commands.addElement(randomRecipe.get(RCP_FINALNAME));
 					break;
 				}
 			}
@@ -585,8 +556,8 @@ public class CraftingSkill extends GatheringSkill
 		String s=null;
 		for(int r=0;r<recipes.size();r++)
 		{
-			s=(String)((recipes.get(r)).get(0));
-			s=replacePercent((String)((recipes.get(r)).get(0)),"").trim();
+			s=(String)((recipes.get(r)).get(RCP_FINALNAME));
+			s=replacePercent((String)((recipes.get(r)).get(RCP_FINALNAME)),"").trim();
 			pair=craftItem(s,material);
 			if(pair==null) continue;
 			built=pair.item;
@@ -637,7 +608,7 @@ public class CraftingSkill extends GatheringSkill
 			List<String> V=recipes.get(r);
 			if(V.size()>0)
 			{
-				String item=(String)V.get(0);
+				String item=(String)V.get(RCP_FINALNAME);
 				if(replacePercent(item,"").equalsIgnoreCase(recipeName))
 					matches.add(V);
 			}
@@ -648,7 +619,7 @@ public class CraftingSkill extends GatheringSkill
 			List<String> V=recipes.get(r);
 			if(V.size()>0)
 			{
-				String item=(String)V.get(0);
+				String item=(String)V.get(RCP_FINALNAME);
 				if((replacePercent(item,"").toUpperCase().indexOf(recipeName.toUpperCase())>=0))
 					matches.add(V);
 			}
@@ -661,7 +632,7 @@ public class CraftingSkill extends GatheringSkill
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=(String)V.get(0);
+					String item=(String)V.get(RCP_FINALNAME);
 					if((recipeName.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
 						matches.add(V);
 				}
@@ -674,7 +645,7 @@ public class CraftingSkill extends GatheringSkill
 					List<String> V=recipes.get(r);
 					if(V.size()>0)
 					{
-						String item=(String)V.get(0);
+						String item=(String)V.get(RCP_FINALNAME);
 						if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
 						||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
 							matches.add(V);

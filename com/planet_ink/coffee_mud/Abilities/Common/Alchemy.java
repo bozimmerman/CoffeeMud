@@ -36,7 +36,7 @@ import java.util.*;
 */
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Alchemy extends CraftingSkill implements ItemCraftor
+public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Alchemy"; }
 	public String name(){ return "Alchemy";}
@@ -172,13 +172,15 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 
 	public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0); }
 
-	protected Item buildItem(Ability theSpell)
+	protected Item buildItem(Ability theSpell, int level)
 	{
 		building=CMClass.getItem("GenPotion");
 		((Potion)building).setSpellList(theSpell.ID());
 		building.setName("a potion of "+theSpell.name().toLowerCase());
 		building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
 		building.setDescription("");
+		building.basePhyStats().setLevel(level);
+		building.phyStats().setLevel(level);
 		building.recoverPhyStats();
 		building.text();
 		return building;
@@ -189,9 +191,10 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
 			commands.removeElementAt(0);
-			Ability theSpell=super.getCraftableSpellRecipe(commands);
+			Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null) return false;
-			building=buildItem(theSpell);
+			int level=spellLevel(mob,theSpell);
+			building=buildItem(theSpell, level);
 			commands.addElement(building);
 			return true;
 		}
@@ -274,6 +277,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 			}
 			String recipeName=CMParms.combine(commands,0);
 			theSpell=null;
+			int theSpellLevel=1;
 			String ingredient="";
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -287,6 +291,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
+						theSpellLevel=spellLevel(mob, A);
 						ingredient=(String)V.get(1);
 					}
 				}
@@ -355,7 +360,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();
-			building=buildItem(theSpell);
+			building=buildItem(theSpell, theSpellLevel);
 			building.setSecretIdentity(getBrand(mob));
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
