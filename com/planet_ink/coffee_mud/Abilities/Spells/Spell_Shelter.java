@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -64,23 +66,45 @@ public class Spell_Shelter extends Spell
 	{
 		if(!(affected instanceof MOB))
 			return;
-		MOB mob=(MOB)affected;
+		MOB M=(MOB)affected;
 
 		if(canBeUninvoked())
 		{
-			int i=0;
 			if(shelter==null)
-				shelter=mob.location();
-			while(i<shelter.numInhabitants())
+				shelter=M.location();
+			Room backToRoom=M.getStartRoom();
+			int i=0;
+			LinkedList<MOB> mobs=new LinkedList<MOB>();
+			for(Enumeration<MOB> m=shelter.inhabitants();m.hasMoreElements();)
+				mobs.add(m.nextElement());
+			for(MOB mob : mobs)
 			{
-				mob=shelter.fetchInhabitant(0);
 				if(mob==null) break;
 				mob.tell("You return to your previous location.");
 
 				CMMsg enterMsg=CMClass.getMsg(mob,previousLocation,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere!");
-				getPreviousLocation(mob).bringMobHere(mob,false);
-				getPreviousLocation(mob).send(mob,enterMsg);
+				backToRoom=getPreviousLocation(mob);
+				if(backToRoom==null)
+					backToRoom=mob.getStartRoom();
+				backToRoom.bringMobHere(mob,false);
+				backToRoom.send(mob,enterMsg);
 				CMLib.commands().postLook(mob,true);
+			}
+			LinkedList<Item> items=new LinkedList<Item>();
+			for(Enumeration<Item> e=shelter.items();e.hasMoreElements();)
+				items.add(e.nextElement());
+			for(Item I : items)
+			{
+				if(I.container()==null)
+					backToRoom.moveItemTo(I, Expire.Player_Drop, Move.Followers);
+			}
+			i=0;
+			while(i<shelter.numItems())
+			{
+				Item I=shelter.getItem(i);
+				backToRoom.moveItemTo(I, Expire.Player_Drop, Move.Followers);
+				if(shelter.isContent(I))
+					i++;
 			}
 			shelter=null;
 			previousLocation=null;
