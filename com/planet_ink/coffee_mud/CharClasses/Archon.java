@@ -72,14 +72,12 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
 		
-		// temporarily here until we find a place for them
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Enslave",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SlaveTrading",false);
-		
 		// new thieves skills
+		//TODO: GIVE THESE TO A DAMN CLASS!
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_EscapeBonds",false,null,"+DEX 14");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentDrop",false,null,"+DEX 10");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Footlocks",false,null,"+DEX 7");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Hideout",false,null,"+DEX 7");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_MarkTrapped",false,CMParms.parseSemicolons("Thief_DetectTraps",true),"+WIS 12");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UndergroundConnections",false,CMParms.parseSemicolons("Thief_Sneak",true),"+CHA 14");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Autocaltrops",false,CMParms.parseSemicolons("Thief_Caltrops",true),"+CON 12 +DEX 14");

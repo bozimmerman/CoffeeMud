@@ -2402,7 +2402,7 @@ ruthless programmer, and sentenced to a quick death.
 6. (internal) XMLManager optomized for More Speed!
 7. Missing INI entry (WRNMSGS) now added and documented.
 8. New Property (Prop_RoomList) -- more lightweight way to keep rooms from going dark at night (pun intended).
-9. New Skills: Urban Tactics, Pressure Points
+9. New Skills: Urban Tactics, Pressure Points, Hideout
 10.New Clan Trophies: Most Members, and Highest Median Member Level
 11.Pregnancy will fail if either participant is exhausted or below 1/2 movement.  A message was added so the players know.
 12.Arcanists can LOOK at wand charges at level 30.
