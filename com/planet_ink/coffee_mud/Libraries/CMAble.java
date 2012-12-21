@@ -1163,6 +1163,40 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
+	public boolean qualifiesOnlyByRace(MOB studentM, Ability A)
+	{
+		int level=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
+		if((level>=0)&&(studentM.phyStats().level()>=level))
+			return true;
+		return false;
+	}
+	
+	public boolean qualifiesOnlyByClan(MOB studentM, Ability A)
+	{
+		final Clan clan = studentM.getMyClan();
+		if(clan != null)
+		{
+			int level=getQualifyingLevel(clan.getGovernmentName(),false,A.ID());
+			if((level>=0)&&(clan.getClanLevel()>=level))
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean qualifiesOnlyByACharClass(MOB studentM, Ability A)
+	{
+		if(studentM==null) return false;
+		for(int c=0;c<studentM.charStats().numClasses();c++)
+		{
+			CharClass C=studentM.charStats().getMyClass(c);
+			int level=getQualifyingLevel(C.ID(),true,A.ID());
+			if((level>=0)
+			&&(studentM.charStats().getClassLevel(C)>=level))
+				return true;
+		}
+		return false;
+	}
+
 	public AbilityLimits getCommonSkillLimit(MOB studentM)
 	{
 		AbilityLimits aL=new AbilityLimits();

@@ -137,6 +137,7 @@ public interface AbilityMapper extends CMLibrary
 	public int qualifyingClassLevel(MOB studentM, Ability A);
 	public CMObject lowestQualifyingClassRaceGovt(MOB studentM, Ability A);
 	public boolean qualifiesByCurrentClassAndLevel(MOB studentM, Ability A);
+	public boolean qualifiesOnlyByACharClass(MOB studentM, Ability A);
 	public boolean qualifiesByLevel(MOB studentM, Ability A);
 	public boolean qualifiesByLevel(MOB studentM, String abilityID);
 	public boolean getDefaultGain(String ID, boolean checkAll, String abilityID);
@@ -164,7 +165,7 @@ public interface AbilityMapper extends CMLibrary
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req);
 	public int destroyAbilityComponents(List<Object> found);
 	public String getAbilityComponentDesc(MOB mob, String AID);
-  public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req);
+	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req);
 	public Map<String, List<AbilityComponent>> getAbilityComponentMap();
 	public String addAbilityComponent(String s, Map<String, List<AbilityComponent>> H);
 	public String getAbilityComponentCodedString(String AID);
