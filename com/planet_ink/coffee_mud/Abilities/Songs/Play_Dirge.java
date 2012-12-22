@@ -67,6 +67,11 @@ public class Play_Dirge extends Play
 			mob.tell("You may only play this for the dead.");
 			return false;
 		}
+		if((((DeadBody)target).playerCorpse())&&(((DeadBody)target).getContents().size()>0))
+		{
+			mob.tell("You may not play for that body");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
