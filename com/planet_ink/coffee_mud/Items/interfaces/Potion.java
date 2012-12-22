@@ -34,5 +34,5 @@ public interface Potion extends Drink, MiscMagic, SpellHolder
 {
 	public boolean isDrunk();
 	public void setDrunk(boolean isTrue);
-	public void drinkIfAble(MOB mob);
+	public void drinkIfAble(MOB owner, Physical drinkerTarget);
 }

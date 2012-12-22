@@ -73,6 +73,9 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 						A.setMiscText(t.substring(x+1));
 					}
 				}
+				if((target instanceof Item)
+				&&((!A.canTarget(target))&&(!A.canAffect(target))))
+					return false;
 				A.invoke(qualMOB,V2,target,true,asLevel>0?asLevel:((affected!=null)?affected.phyStats().level():0));
 				if((maxTicks>0)&&(maxTicks<Short.MAX_VALUE))
 				{

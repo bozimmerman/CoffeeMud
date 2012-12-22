@@ -2425,3 +2425,4 @@ ruthless programmer, and sentenced to a quick death.
 29.New formulas for PVP combat -- INI/Control Panel support.  The defaults basically remove level fudging.
 30.(Internal) New experiments in Fully Async sessions continues apace.  Converted Logout and Quit.
 31.New prayer: Retribution (neutral Blade Barriar for Missionaries & Shaman)
+32.POUR command can now be used to activate a potion on an item (for example, enchant weapon potion)

@@ -79,19 +79,22 @@ public class StdPotion extends StdDrink implements Potion
 		}
 	}
 
-	public void drinkIfAble(MOB mob)
+	public void drinkIfAble(MOB owner, Physical drinkerTarget)
 	{
 		List<Ability> spells=getSpells();
-		if(mob.isMine(this))
+		if(owner.isMine(this))
 			if((!isDrunk())&&(spells.size()>0))
 				for(int i=0;i<spells.size();i++)
 				{
 					Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
+					if((drinkerTarget instanceof Item)
+					&&((!thisOne.canTarget(drinkerTarget))&&(!thisOne.canAffect(drinkerTarget))))
+						continue;
 					int level=phyStats().level();
 					int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
 					if(level<lowest)
 						level=lowest;
-					thisOne.invoke(mob,mob,true,level);
+					thisOne.invoke(owner,drinkerTarget,true,level);
 					setDrunk(true);
 					setLiquidRemaining(0);
 				}
@@ -141,10 +144,14 @@ public class StdPotion extends StdDrink implements Potion
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this))
-		   &&(msg.targetMinor()==CMMsg.TYP_DRINK)
-		   &&(msg.othersMessage()==null)
-		   &&(msg.sourceMessage()==null))
-				return true;
+		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
+		&&(msg.othersMessage()==null)
+		&&(msg.sourceMessage()==null))
+			return true;
+		else
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_POUR))
+			return true;
 		return super.okMessage(myHost,msg);
 	}
 
@@ -158,7 +165,7 @@ public class StdPotion extends StdDrink implements Potion
 			case CMMsg.TYP_DRINK:
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
-					drinkIfAble(mob);
+					drinkIfAble(mob,mob);
 					mob.tell(name()+" vanishes!");
 					destroy();
 					mob.recoverPhyStats();
@@ -172,6 +179,23 @@ public class StdPotion extends StdDrink implements Potion
 			default:
 				super.executeMsg(myHost,msg);
 				break;
+			}
+		}
+		else
+		if((msg.tool()==this)&&(msg.targetMinor()==CMMsg.TYP_POUR)&&(msg.target() instanceof Physical))
+		{
+			if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
+			{
+				drinkIfAble(msg.source(),(Physical)msg.target());
+				msg.source().tell(name()+" vanishes!");
+				destroy();
+				msg.source().recoverPhyStats();
+				((Physical)msg.target()).recoverPhyStats();
+			}
+			else
+			{
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
+				super.executeMsg(myHost,msg);
 			}
 		}
 		else

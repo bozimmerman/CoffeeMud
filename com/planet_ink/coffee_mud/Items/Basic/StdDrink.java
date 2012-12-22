@@ -226,7 +226,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					destroy();
 				break;
 			case CMMsg.TYP_FILL:
-				if((msg.tool()!=null)&&(msg.tool() instanceof Drink))
+				if(msg.tool() instanceof Drink)
 				{
 					Drink thePuddle=(Drink)msg.tool();
 					int amountToTake=amountTakenToFillMe(thePuddle);
@@ -272,6 +272,21 @@ public class StdDrink extends StdContainer implements Drink,Item
 					&&((disappearsAfterDrinking)||(this instanceof RawMaterial)))
 						destroy();
 				}
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		if(msg.tool()==this)
+		{
+			switch(msg.sourceMinor())
+			{
+			case CMMsg.TYP_DRINK:
+				amountOfLiquidRemaining-=amountOfThirstQuenched;
+				if(disappearsAfterDrinking
+				||((this instanceof RawMaterial)&&(amountOfLiquidRemaining<=0)))
+					destroy();
 				break;
 			default:
 				break;

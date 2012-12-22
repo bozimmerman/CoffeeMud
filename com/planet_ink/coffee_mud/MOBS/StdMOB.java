@@ -2499,6 +2499,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_OPEN:
 			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_POUR:
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_WEAR:
 			case CMMsg.TYP_WIELD:

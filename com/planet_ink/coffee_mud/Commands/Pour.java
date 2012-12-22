@@ -38,12 +38,15 @@ public class Pour extends StdCommand
 
 	private final String[] access={"POUR"};
 	public String[] getAccessWords(){return access;}
+	
+	enum PourVerb{DEFAULT,INTO,ONTO,OUT}
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Pour what, into what?");
+			mob.tell("Pour what, into/onto what?");
 			return false;
 		}
 		commands.removeElementAt(0);
@@ -57,38 +60,69 @@ public class Pour extends StdCommand
 		}
 		commands.removeElementAt(0);
 
-		if((commands.size()>1)&&(((String)commands.firstElement())).equalsIgnoreCase("into"))
-			commands.removeElementAt(0);
-
-		if(commands.size()<1)
+		PourVerb verb=PourVerb.DEFAULT;
+		if(commands.size()>1)
 		{
-			mob.tell("Into what should I pour the "+thingToFillFrom+"?");
-			return false;
+			if((((String)commands.firstElement())).equalsIgnoreCase("into"))
+				commands.removeElementAt(0);
+			else
+			if((((String)commands.firstElement())).equalsIgnoreCase("onto"))
+			{
+				commands.removeElementAt(0);
+				verb=PourVerb.ONTO;
+			}
+			else
+			if((((String)commands.firstElement())).equalsIgnoreCase("out"))
+			{
+				commands.removeElementAt(0);
+				verb=PourVerb.OUT;
+			}
 		}
 
-		String thingToFill=CMParms.combine(commands,0);
-		Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Wearable.FILTER_ANY);
-		Item out=null;
-		if((fillThis==null)&&(thingToFill.equalsIgnoreCase("out")))
+		Environmental fillThis;
+		String msgStr;
+		if(verb==PourVerb.OUT)
 		{
-			out=CMClass.getItem("StdDrink");
+			Item out=CMClass.getItem("StdDrink");
 			((Drink)out).setLiquidHeld(999999);
 			((Drink)out).setLiquidRemaining(0);
 			out.setDisplayText("");
 			out.setName("out");
+			msgStr="<S-NAME> pour(s) <O-NAME> <T-NAME>.";
 			mob.location().addItem(out,ItemPossessor.Expire.Resource);
 			fillThis=out;
 		}
-		if((fillThis==null)
-		||(!CMLib.flags().canBeSeenBy(fillThis,mob)))
-			mob.tell("I don't see '"+thingToFill+"' here.");
 		else
 		{
-			CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,CMMsg.MSG_FILL,(out==null)?"<S-NAME> pour(s) <O-NAME> into <T-NAME>.":"<S-NAME> pour(s) <O-NAME> <T-NAME>.");
-			if(mob.location().okMessage(mob,fillMsg))
-				mob.location().send(mob,fillMsg);
+			if(commands.size()<1)
+			{
+				mob.tell(CMStrings.capitalizeAndLower(verb.name())+" what should I pour the "+thingToFillFrom+"?");
+				return false;
+			}
+			String thingToFill=CMParms.combine(commands,0);
+			fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Wearable.FILTER_ANY);
+			if((fillThis==null)||(!CMLib.flags().canBeSeenBy(fillThis,mob)))
+			{
+				mob.tell("I don't see '"+thingToFill+"' here.");
+				return false;
+			}
+			if((verb==PourVerb.DEFAULT)&&(!(fillThis instanceof Drink)))
+				verb=PourVerb.ONTO;
+			else
+			if((verb==PourVerb.ONTO)&&(fillThis instanceof Drink))
+				verb=PourVerb.INTO;
+			if(verb==PourVerb.ONTO)
+				msgStr="<S-NAME> pour(s) <O-NAME> onto <T-NAME>.";
+			else
+				msgStr="<S-NAME> pour(s) <O-NAME> into <T-NAME>.";
 		}
-		if(out!=null) out.destroy();
+
+		CMMsg fillMsg=CMClass.getMsg(mob,fillThis,fillFromThis,(verb==PourVerb.ONTO)?CMMsg.MSG_POUR:CMMsg.MSG_FILL,msgStr);
+		if(mob.location().okMessage(mob,fillMsg))
+			mob.location().send(mob,fillMsg);
+
+		if(verb==PourVerb.OUT)
+			fillThis.destroy();
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

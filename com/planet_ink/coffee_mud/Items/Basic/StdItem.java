@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdItem implements Item
 {
-	public String ID(){    return "StdItem";}
+	public String ID(){	return "StdItem";}
 
 	protected String		name="an ordinary item";
 	protected String		displayText="a nondescript item sits here doing nothing.";
@@ -129,7 +129,7 @@ public class StdItem implements Item
 		basePhyStats.copyInto(phyStats);
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			A.affectPhyStats(me,phyStats);
-        } });
+		} });
 		if(((phyStats().ability()>0)&&abilityImbuesMagic())||(this instanceof MiscMagic))
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 		if((owner()!=null)
@@ -167,7 +167,7 @@ public class StdItem implements Item
 		for(Enumeration<Behavior> e=I.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
-			if(B!=null)    addBehavior((Behavior)B.copyOf());
+			if(B!=null)	addBehavior((Behavior)B.copyOf());
 		}
 		for(Enumeration<ScriptingEngine> e=I.scripts();e.hasMoreElements();)
 		{
@@ -259,7 +259,7 @@ public class StdItem implements Item
 	}
 	public boolean fitsOn(long wornCode)
 	{
-		if(wornCode<=0)    return true;
+		if(wornCode<=0)	return true;
 		return ((properWornBitmap & wornCode)==wornCode);
 	}
 	public void wearEvenIfImpossible(MOB mob)
@@ -717,20 +717,35 @@ public class StdItem implements Item
 
 		MOB mob=msg.source();
 		
-		if((msg.tool()==this)
-		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
-		&&(mob.isMine(this)))
+		if(msg.tool()==this)
 		{
-			if((phyStats().weight()>(mob.maxCarry()/5))
-			&&(phyStats().weight()!=0))
+			switch(msg.sourceMinor())
 			{
-				mob.tell(name()+" is too heavy to throw.");
-				return false;
-			}
-			if(!CMLib.flags().isDroppable(this))
-			{
-				mob.tell("You can't seem to let go of "+name()+".");
-				return false;
+			case CMMsg.TYP_THROW:
+				if(mob.isMine(this))
+				{
+					if((phyStats().weight()>(mob.maxCarry()/5))
+					&&(phyStats().weight()!=0))
+					{
+						mob.tell(name()+" is too heavy to throw.");
+						return false;
+					}
+					if(!CMLib.flags().isDroppable(this))
+					{
+						mob.tell("You can't seem to let go of "+name()+".");
+						return false;
+					}
+				}
+				break;
+			case CMMsg.TYP_POUR:
+				if(!(this instanceof Drink))
+				{
+					mob.tell(mob,this,null,"You can't do that with <T-NAMESELF>.");
+					return false;
+				}
+				break;
+			default:
+				break;
 			}
 			return true;
 		}
@@ -1065,6 +1080,10 @@ public class StdItem implements Item
 			if(this instanceof Lantern)
 				return true;
 			break;
+		case CMMsg.TYP_POUR:
+			if(msg.tool() instanceof Drink)
+				return true;
+			break;
 		case CMMsg.TYP_EAT:
 			if(this instanceof Food)
 				return true;
@@ -1104,7 +1123,7 @@ public class StdItem implements Item
 		} });
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			A.executeMsg(me, msg);
-        }});
+		}});
 
 		MOB mob=msg.source();
 		if((msg.tool()==this)
@@ -1288,11 +1307,11 @@ public class StdItem implements Item
 		if(affects==null) return;
 		try
 		{
-    		for(int a=0;a<affects.size();a++)
-    		{
-    			final Ability A=affects.get(a);
-    			if(A!=null) applier.apply(A);
-    		}
+			for(int a=0;a<affects.size();a++)
+			{
+				final Ability A=affects.get(a);
+				if(A!=null) applier.apply(A);
+			}
 		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delAllEffects(boolean unInvoke)
@@ -1414,12 +1433,12 @@ public class StdItem implements Item
 		final List<Behavior> behaviors=this.behaviors;
 		if(behaviors!=null)
 		try{
-    		for(int a=0;a<behaviors.size();a++)
-    		{
-    			final Behavior B=behaviors.get(a);
-    			if(B!=null) applier.apply(B);
-    		}
-    	} catch(ArrayIndexOutOfBoundsException e){}
+			for(int a=0;a<behaviors.size();a++)
+			{
+				final Behavior B=behaviors.get(a);
+				if(B!=null) applier.apply(B);
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	/** Manipulation of the scripts list */
@@ -1471,12 +1490,12 @@ public class StdItem implements Item
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
 		try{
-    		for(int a=0;a<scripts.size();a++)
-    		{
-    			final ScriptingEngine S=scripts.get(a);
-    			if(S!=null) applier.apply(S);
-    		}
-    	} catch(ArrayIndexOutOfBoundsException e){}
+			for(int a=0;a<scripts.size();a++)
+			{
+				final ScriptingEngine S=scripts.get(a);
+				if(S!=null) applier.apply(S);
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	protected String tackOns()
@@ -1487,7 +1506,7 @@ public class StdItem implements Item
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.accountForYourself().length()>0)
 				identity.append("\n\r"+A.accountForYourself());
-        }});
+		}});
 		return identity.toString();
 	}
 
