@@ -33,13 +33,8 @@ import java.util.*;
 public interface ThreadEngine extends CMLibrary, Runnable
 {
 	// tick related
-	public void startTickDown(Tickable E,
-							  int tickID,
-							  long TICK_TIME,
-							  int numTicks);
-	public void startTickDown(Tickable E,
-							  int tickID,
-							  int numTicks);
+	public void startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks);
+	public void startTickDown(Tickable E, int tickID, int numTicks);
 	public boolean deleteTick(Tickable E, int tickID);
 	public void suspendTicking(Tickable E, int tickID);
 	public void resumeTicking(Tickable E, int tickID);
