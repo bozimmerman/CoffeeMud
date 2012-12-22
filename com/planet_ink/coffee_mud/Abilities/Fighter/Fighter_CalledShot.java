@@ -39,24 +39,27 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 	private static final String[] triggerStrings = {"CALLEDSHOT"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	protected boolean prereqs(MOB mob)
+	protected boolean prereqs(MOB mob, boolean quiet)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))
 		{
-			mob.tell("You are too close to perform a called shot!");
+			if(!quiet)
+				mob.tell("You are too close to perform a called shot!");
 			return false;
 		}
 
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
-			mob.tell("You need a weapon to perform a called shot!");
+			if(!quiet)
+				mob.tell("You need a weapon to perform a called shot!");
 			return false;
 		}
 		Weapon wp=(Weapon)w;
 		if((wp.weaponClassification()!=Weapon.CLASS_RANGED)&&(wp.weaponClassification()!=Weapon.CLASS_THROWN))
 		{
-			mob.tell("You cannot shoot with "+wp.name()+"!");
+			if(!quiet)
+				mob.tell("You cannot shoot with "+wp.name()+"!");
 			return false;
 		}
 		return true;
