@@ -114,7 +114,7 @@ public class Doll extends StdRace
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" clothes",RawMaterial.RESOURCE_COTTON));
 				resources.addElement(makeResource
-				("a pile of "+name().toLowerCase()+" parts",RawMaterial.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" parts",RawMaterial.RESOURCE_WOOD));
 			}
 		}
 		return resources;
