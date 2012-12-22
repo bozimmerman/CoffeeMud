@@ -242,7 +242,7 @@ public class SkyWatcher extends StdCharClass
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String getOtherBonusDesc(){return "Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.  Can create a druidic connection with an area.  Benefits from freeing animals from cities.  Benefits from balancing the weather.";}
 
-	private static final double[] moonfactors={2.0,1.0,0.0,-1.0,-2.0,-1.0,0.0,1.0,4.0};
+	private static final double[] moonfactors={1.0,0.5,0.0,-0.5,-1.0,-0.5,0.0,0.5,2.0};
 
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
