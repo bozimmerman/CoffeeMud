@@ -3020,7 +3020,7 @@ public class StdMOB implements MOB
 					location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> can't breathe!^.^?") + CMProps.msp("choke.wav", 10));
 					CMLib.combat().postDamage(this, this, null,
 							(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
-							CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, null);
+							CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
 				}
 
 				if (commandQueSize() == 0)

@@ -170,19 +170,11 @@ public class UnderWater extends StdRoom implements Drink
 		if(CMLib.flags().isSleeping(room))
 			return 0;
 
-		if((msg.source()==msg.target()) // suffocation is a valid gas attack
-		&&(msg.sourceMinor()==msg.targetMinor())
-		&&(msg.sourceMinor()==CMMsg.TYP_GAS))
+		if((msg.targetMinor()==CMMsg.TYP_FIRE)||(msg.sourceMinor()==CMMsg.TYP_FIRE)
+		||(msg.targetMinor()==CMMsg.TYP_GAS)||(msg.sourceMinor()==CMMsg.TYP_GAS))
 		{
-			return 0;
-		}
-		
-		if((msg.targetMinor()==CMMsg.TYP_FIRE)
-		||(msg.targetMinor()==CMMsg.TYP_GAS)
-		||(msg.sourceMinor()==CMMsg.TYP_FIRE)
-		||(msg.sourceMinor()==CMMsg.TYP_GAS))
-		{
-			msg.source().tell("That won't work underwater.");
+			if((!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
+				msg.source().tell("That won't work underwater.");
 			return -1;
 		}
 		else
