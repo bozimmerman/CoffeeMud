@@ -318,6 +318,7 @@ public class Spell_Meld extends Spell
 					else
 						gc.setWeaponClassification(((Weapon)itemOne).weaponClassification());
 					gc.setRawLogicalAnd(true);
+					gc.setRanges((itemOne.minRange()+itemTwo.minRange())/2, (itemOne.maxRange()+itemTwo.maxRange())/2);
 					gc.basePhyStats().setLevel(itemOne.basePhyStats().level());
 					if(itemTwo.basePhyStats().level()>itemOne.basePhyStats().level())
 						gc.basePhyStats().setLevel(itemTwo.basePhyStats().level());
