@@ -61,7 +61,8 @@ public class Thief_Bribe extends ThiefSkill
 		commands.removeElementAt(0);
 
 		if((!target.mayIFight(mob))
-		||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
+		||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3)
+		||(!target.isMonster()))
 		{
 			mob.tell("You can't bribe "+target.name()+".");
 			return false;

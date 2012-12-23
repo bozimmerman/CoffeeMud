@@ -63,7 +63,7 @@ public class Spell_Command extends Spell
 			}
 		}
 		
-		if(!target.mayIFight(mob))
+		if((!target.mayIFight(mob))||(!target.isMonster()))
 		{
 			mob.tell("You can't command "+target.name()+".");
 			return false;

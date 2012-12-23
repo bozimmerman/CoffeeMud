@@ -85,7 +85,9 @@ public class Thief_Con extends ThiefSkill
 		
 		commands.remove(0);
 
-		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
+		if((!target.mayIFight(mob))
+		||(!target.isMonster())
+		||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{
 			mob.tell("You can't con "+target.name()+".");
 			return false;
