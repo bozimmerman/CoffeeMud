@@ -74,9 +74,11 @@ public class Prayer_Sacrifice extends Prayer
 			return false;
 		}
 
-		if((((DeadBody)target).playerCorpse())&&(!((DeadBody)target).mobName().equals(mob.Name())))
+		if((((DeadBody)target).playerCorpse())
+		&&(!((DeadBody)target).mobName().equals(mob.Name()))
+		&&(((DeadBody)target).getContents().size()>0))
 		{
-			mob.tell("You are not allowed to sacrifice a players corpse.");
+			mob.tell("You are not allowed to sacrifice that corpse.");
 			return false;
 		}
 

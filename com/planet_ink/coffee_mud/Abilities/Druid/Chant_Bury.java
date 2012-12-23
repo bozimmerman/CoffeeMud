@@ -95,9 +95,11 @@ public class Chant_Bury extends Chant
 			return false;
 		}
 
-		if((((DeadBody)target).playerCorpse())&&(!((DeadBody)target).mobName().equals(mob.Name())))
+		if((((DeadBody)target).playerCorpse())
+		&&(!((DeadBody)target).mobName().equals(mob.Name()))
+		&&(((DeadBody)target).getContents().size()>0))
 		{
-			mob.tell("You are not allowed to bury a players corpse.");
+			mob.tell("You are not allowed to bury that corpse.");
 			return false;
 		}
 
