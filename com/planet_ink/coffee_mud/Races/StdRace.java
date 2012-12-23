@@ -862,12 +862,29 @@ public class StdRace implements Race
 		GR.setStat("WEAPONRACE",otherRace.getStat("WEAPONRACE"));
 		int[] aging=(int[])race1.getAgingChart().clone();
 		for(int i=0;i<aging.length;i++)
-			aging[i]+=race2.getAgingChart()[i];
-		for(int i=0;i<aging.length;i++)
 		{
-			aging[i]=aging[i]/2;
-			if(aging[i]<0)
-				aging[i]=Race.YEARS_AGE_LIVES_FOREVER;
+			if((aging[i]==Race.YEARS_AGE_LIVES_FOREVER)&&(race2.getAgingChart()[i]==Race.YEARS_AGE_LIVES_FOREVER))
+			{}
+			else
+			if(((aging[i]==Race.YEARS_AGE_LIVES_FOREVER)&&(race2.getAgingChart()[i]==0))
+			||((aging[i]==0)&&(race2.getAgingChart()[i]==Race.YEARS_AGE_LIVES_FOREVER)))
+				aging[i]=0;
+			else
+			if((aging[i]==Race.YEARS_AGE_LIVES_FOREVER))
+				aging[i]=race2.getAgingChart()[i]*2;
+			else
+			if((race2.getAgingChart()[i]==Race.YEARS_AGE_LIVES_FOREVER))
+				aging[i]=aging[i]*2;
+			else
+			{
+				aging[i]+=race2.getAgingChart()[i];
+				aging[i]=aging[i]/2;
+			}
+		}
+		for(int i=aging.length-2;i>=0;i--)
+		{
+			if(aging[i]>aging[i+1])
+				aging[i]=aging[i+1];
 		}
 
 		long race1worn=CMath.s_long(otherRace.getStat("WEAR"));
