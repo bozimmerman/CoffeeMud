@@ -113,8 +113,10 @@ public class Chant_ControlFire extends Chant
 
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
+				CMLib.utensils().extinguish(mob,fireSource,false);
+				target.recoverPhyStats();
+				mob.location().recoverRoomStats();
 			}
-			fireSource.destroy();
 		}
 		else
 			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens.");
