@@ -76,11 +76,11 @@ public class Archon extends StdCharClass
 		//TODO: GIVE THESE TO A DAMN CLASS!
 		// TRAPPER
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_MarkTrapped",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Autocaltrops",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_IdentifyTraps",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_AutoDetectTraps",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Autocaltrops",false,CMParms.parseSemicolons("Thief_Caltrops", true),null);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_IdentifyTraps",false,CMParms.parseSemicolons("Thief_DetectTraps", true),null);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_AutoDetectTraps",false,CMParms.parseSemicolons("Thief_DetectTraps", true),null);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_DisablingCaltrops",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_AutoMarkTraps",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_AutoMarkTraps",false,CMParms.parseSemicolons("Thief_MarkTrapped;Thief_DetectTraps", true),null);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_DazzlingCaltrops",false);
 		
 		// ASSASSIN

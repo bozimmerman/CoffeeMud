@@ -44,41 +44,53 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 	private static final String[] triggerStrings = {"AUTODETECTTRAPS"};
 	public int classificationCode(){	return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;}
 	public String[] triggerStrings(){return triggerStrings;}
-	protected boolean noRepeat=false;
-	protected String skillName(){return "detect";}
+	
+	protected Room roomToCheck=null;
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)
-		&&(!noRepeat)
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.source()==affected)
 		&&(msg.target() instanceof Room)
 		&&(msg.tool() instanceof Exit)
-		&&(((MOB)affected).location()!=null))
+		&&(((MOB)affected).location()!=null)
+		&&(roomToCheck==null))
 		{
-			Room R=(Room)msg.target();
+			roomToCheck=(Room)msg.target();
+		}
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((roomToCheck!=null)&&(affected instanceof MOB))
+		{
+			Room R=roomToCheck;
 			Room R2=null;
-			dropem(msg.source(),R);
+			dropem((MOB)affected,R);
 			Exit E=null;
 			Item I=null;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				R2=R.getRoomInDir(d);
 				E=R.getExitInDir(d);
-				if((E!=null)&&(CMLib.utensils().fetchMyTrap(E)!=null)) dropem(msg.source(),E);
+				if((E!=null)&&(CMLib.utensils().fetchMyTrap(E)!=null)) dropem((MOB)affected,E);
 				E=R.getReverseExit(d);
-				if((E!=null)&&(CMLib.utensils().fetchMyTrap(E)!=null)) dropem(msg.source(),E);
-				if((R2!=null)&&(CMLib.utensils().fetchMyTrap(R2)!=null)) dropem(msg.source(),R2);
-				for(int i=0;i<R.numItems();i++)
-				{
-					I=R.getItem(i);
-					if((I.container()==null)&&(CMLib.utensils().fetchMyTrap(E)!=null))
-						dropem(msg.source(),I);
-				}
+				if((E!=null)&&(CMLib.utensils().fetchMyTrap(E)!=null)) dropem((MOB)affected,E);
+				if((R2!=null)&&(CMLib.utensils().fetchMyTrap(R2)!=null)) dropem((MOB)affected,R2);
 			}
+			for(int i=0;i<R.numItems();i++)
+			{
+				I=R.getItem(i);
+				if((I.container()==null)&&(CMLib.utensils().fetchMyTrap(I)!=null))
+					dropem((MOB)affected,I);
+			}
+			roomToCheck=null;
 		}
+		return true;
 	}
 	
 	public void dropem(MOB mob, Physical P)
@@ -95,7 +107,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 		A.invoke(mob,P,false,0);
 		mob.curState().setMana(savedState.getMana());
 		mob.curState().setHitPoints(savedState.getHitPoints());
-		mob.curState().setMana(savedState.getMovement());
+		mob.curState().setMovement(savedState.getMovement());
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -103,7 +115,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 		MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are no longer automatically automatically "+skillName()+"ing traps.");
+			target.tell("You are no longer automatically detecting traps.");
 			target.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
@@ -119,14 +131,14 @@ public class Thief_AutoDetectTraps extends ThiefSkill
 
 		if(success)
 		{
-			target.tell("You will now automatically "+skillName()+" traps when you enter a room.");
+			target.tell("You will now automatically detect traps when you enter a room.");
 			beneficialAffect(mob,target,asLevel,0);
 			Ability A=mob.fetchEffect(ID());
 			if(A!=null) A.makeLongLasting();
 			dropem(target,target.location());
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to "+skillName()+" traps, but can't seem to concentrate.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to detect traps, but can't seem to concentrate.");
 		return success;
 	}
 }

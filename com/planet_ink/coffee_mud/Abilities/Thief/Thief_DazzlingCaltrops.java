@@ -49,7 +49,7 @@ public class Thief_DazzlingCaltrops extends Thief_Caltrops
 		else
 		if(mob.curState().getMana()>6)
 		{
-			mob.curState().adjMana(-CMLib.dice().roll(3+getX1Level(mob),6,3),mob.maxState());
+			mob.curState().adjMana(-CMLib.dice().roll(3+getX1Level(mob),8,20),mob.maxState());
 			mob.location().show(invoker(),mob,this,CMMsg.MSG_OK_ACTION,"The "+caltropTypeName()+"caltrops on the ground sparkle and confuse <T-NAME>");
 		}
 		// does not set sprung flag -- as this trap never goes out of use

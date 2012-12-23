@@ -63,7 +63,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 			{
 				Physical P2=(Physical)lastMarked.removeFirst();
 				Ability A=P2.fetchEffect(ID());
-				if(A.invoker()==invoker())
+				if((A!=null)&&(A.invoker()==invoker()))
 				{
 					A.unInvoke();
 					P2.delEffect(A);
@@ -122,7 +122,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 		{
 			CMMsg msg;
 			Ability A=item.fetchEffect(ID());
-			if(A!=null)
+			if((A!=null)&&((givenTarget==null)||(auto)))
 				msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_THIEF_ACT,"<S-NAME> remove(s) the mark on <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			else
 				msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_THIEF_ACT,"<S-NAME> mark(s) <T-NAME> as trapped.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
@@ -131,8 +131,11 @@ public class Thief_MarkTrapped extends ThiefSkill
 				mob.location().send(mob,msg);
 				if(A!=null)
 				{
-					A.unInvoke();
-					item.delEffect(A);
+					if((givenTarget==null)||(auto))
+					{
+						A.unInvoke();
+						item.delEffect(A);
+					}
 				}
 				else
 				{
