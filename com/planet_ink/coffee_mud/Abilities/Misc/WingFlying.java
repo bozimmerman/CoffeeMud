@@ -48,7 +48,6 @@ public class WingFlying extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
 	public int usageType(){return USAGE_MOVEMENT;}
-	protected Race flyingRace=null;
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -56,7 +55,7 @@ public class WingFlying extends StdAbility
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		if((!CMLib.flags().isSleeping(affected))&&(flyingRace!=null))
+		if(!CMLib.flags().isSleeping(affected))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 		else
 			affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),PhyStats.IS_FLYING));
@@ -64,11 +63,8 @@ public class WingFlying extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Tickable.TICKID_MOB)&&(flyingRace!=null)&&(ticking instanceof MOB)&&(((MOB)ticking).charStats().getMyRace()!=flyingRace))
-		{
-			flyingRace=null;
+		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB)&&(((MOB)ticking).charStats().getBodyPart(Race.BODY_WING)<=0))
 			unInvoke();
-		}
 		return super.tick(ticking,tickID);
 	}
 	
@@ -88,15 +84,9 @@ public class WingFlying extends StdAbility
 		target.recoverPhyStats();
 		String str="";
 		if(wasFlying)
-		{
-			flyingRace=null;
 			str="<S-NAME> stop(s) flapping <S-HIS-HER> wings.";
-		}
 		else
-		{
-			flyingRace=target.charStats().getMyRace();
 			str="<S-NAME> start(s) flapping <S-HIS-HER> wings.";
-		}
 
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
