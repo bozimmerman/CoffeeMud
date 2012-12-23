@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Sinking extends StdAbility
 {
 	public String ID() { return "Sinking"; }
@@ -195,6 +195,7 @@ public class Sinking extends StdAbility
 			||(!CMLib.flags().isGettable(item))
 			||CMLib.flags().isInFlight(item.ultimateContainer(null))
 			||(CMLib.flags().isWaterWorthy(item.ultimateContainer(null)))
+			||(item.container()!=null)
 			||(item.phyStats().weight()<1))
 			{
 				unInvoke();
@@ -210,14 +211,7 @@ public class Sinking extends StdAbility
 			if((nextRoom!=null)&&(canSinkFrom(room,direction)))
 			{
 				room.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks "+addStr+".");
-				Vector V=new Vector();
-				recursiveRoomItems(V,item,room);
-				for(int v=0;v<V.size();v++)
-				{
-					Item thisItem=(Item)V.elementAt(v);
-					room.delItem(thisItem);
-					nextRoom.addItem(thisItem,ItemPossessor.Expire.Player_Drop);
-				}
+				nextRoom.moveItemTo(item,ItemPossessor.Expire.Player_Drop);
 				room=nextRoom;
 				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks in from "+(reversed()?"below":"above")+".");
 				return true;
@@ -228,17 +222,6 @@ public class Sinking extends StdAbility
 			return false;
 		}
 		return false;
-	}
-
-	public void recursiveRoomItems(Vector V, Item item, Room room)
-	{
-		V.addElement(item);
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item newItem=room.getItem(i);
-			if((newItem!=null)&&(newItem.container()==item))
-				recursiveRoomItems(V,newItem,room);
-		}
 	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

@@ -116,7 +116,8 @@ public class UnderWater extends StdRoom implements Drink
 			{
 				MOB mob=room.fetchInhabitant(i);
 				if((mob!=null)
-				&&((mob.getStartRoom()==null)||(mob.getStartRoom()!=room)))
+				&&((mob.getStartRoom()==null)||(mob.getStartRoom()!=room))
+				&&(mob.riding()==null))
 				{
 					Ability A=mob.fetchEffect("Sinking");
 					if(A!=null)
@@ -138,7 +139,7 @@ public class UnderWater extends StdRoom implements Drink
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item item=room.getItem(i);
-			if(item!=null)
+			if((item!=null)&&(item.container()==null))
 			{
 				Ability A=item.fetchEffect("Sinking");
 				if(A!=null)
