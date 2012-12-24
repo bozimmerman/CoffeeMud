@@ -268,16 +268,30 @@ public class CMLib
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static final void killThread(final Thread t, final long sleepTime, final int attempts)
 	{
+		if(t==null) return;
+		if(t==Thread.currentThread())
+			throw new java.lang.ThreadDeath();
 		try{
-			if(t==null) return;
 			t.interrupt();
 			try{Thread.sleep(sleepTime);}catch(Exception e){}
 			int att=0;
-			while((att<attempts)&&t.isAlive())try{att++;Thread.sleep(sleepTime);}catch(Exception e){}
-			try {if(t.isAlive()) { try { t.stop();}catch(Throwable tx){} } }catch(java.lang.ThreadDeath td) {}
+			while((att++<attempts)&&t.isAlive())
+			{
+				try { Thread.sleep(sleepTime); }catch(Exception e){}
+				try { t.interrupt(); }catch(Exception e){}
+			}
+			try {
+				if(t.isAlive()) 
+				{ 
+					java.lang.StackTraceElement[] s=t.getStackTrace();
+					StringBuffer dump = new StringBuffer("Unable to kill thread "+t.getName()+".  It is still running.\n\r");
+					for(int i=0;i<s.length;i++)
+						dump.append("\n   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
+					Log.errOut("CMLib",dump.toString());
+				} 
+			} catch(java.lang.ThreadDeath td) {}
 		}
 		catch(Throwable th){}
 

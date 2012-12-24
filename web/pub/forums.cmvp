@@ -9,6 +9,11 @@
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
+		function Clicked(action)
+		{
+			document.ACCESS.action=action;
+			document.ACCESS.submit();
+		}
 		function DoForum(journal)
 		{
 			document.FORUM.action="forum.cmvp";
