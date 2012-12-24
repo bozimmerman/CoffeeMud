@@ -998,30 +998,31 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			lookCode=(msg.sourceMessage()==null)?LOOK_BRIEFOK:LOOK_NORMAL;
 
 		StringBuilder Say=new StringBuilder("");
-		boolean compress=CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS);
-		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+		boolean sysmsgs=CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS);
+		final boolean compress=CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS);
+		if(sysmsgs && (!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.SYSMSGS)))
 		{
-			if(!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.SYSMSGS))
-				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+			sysmsgs=false;
+		}
+		if(sysmsgs)
+		{
+			if(room.getArea()!=null)
+				Say.append("^!Area  :^N "+room.getArea().Name()+"\n\r");
+			final String rscName=room.myResource()>=0?RawMaterial.CODES.NAME(room.myResource()):"";
+			final String domType;
+			final StringBuilder domCond=new StringBuilder("");
+			if((room.domainType()&Room.INDOORS)==0)
+				domType=Room.outdoorDomainDescs[room.domainType()];
 			else
+				domType=Room.indoorDomainDescs[CMath.unsetb(room.domainType(),Room.INDOORS)];
+			switch(room.domainConditions())
 			{
-				if(room.getArea()!=null)
-					Say.append("^!Area  :^N "+room.getArea().Name()+"\n\r");
-				final String rscName=room.myResource()>=0?RawMaterial.CODES.NAME(room.myResource()):"";
-				final String domType;
-				final StringBuilder domCond=new StringBuilder("");
-				if((room.domainType()&Room.INDOORS)==0)
-					domType=Room.outdoorDomainDescs[room.domainType()];
-				else
-					domType=Room.indoorDomainDescs[CMath.unsetb(room.domainType(),Room.INDOORS)];
-				switch(room.domainConditions())
-				{
-				case Room.CONDITION_COLD: domCond.append(" cold"); break;
-				case Room.CONDITION_HOT: domCond.append(" hot"); break;
-				case Room.CONDITION_WET: domCond.append(" wet"); break;
-				}
-				Say.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room)+"\n\r^!"+room.ID()+"^N: "+domType+" "+domCond.toString()+" <"+rscName+"> "+room.basePhyStats().weight()+"mv \n\r");
+			case Room.CONDITION_COLD: domCond.append(" cold"); break;
+			case Room.CONDITION_HOT: domCond.append(" hot"); break;
+			case Room.CONDITION_WET: domCond.append(" wet"); break;
 			}
+			Say.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room)+"\n\r^!"+room.ID()+"^N: "+domType+" "+domCond.toString()+" <"+rscName+"> "+room.basePhyStats().weight()+"mv \n\r");
 		}
 		if(CMLib.flags().canBeSeenBy(room,mob))
 		{
@@ -1116,13 +1117,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			{
 				final String displayText=mob2.displayText(mob);
 				if((displayText.length()>0)
-				||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+				||(sysmsgs))
 				{
 					if(CMLib.flags().canBeSeenBy(mob2,mob))
 					{
-						if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-							Say.append("^H("+CMClass.classID(mob2)+")^N ");
-
 						if((!compress)&&(!mob.isMonster())&&(sess.clientTelnetMode(Session.TELNET_MXP)))
 							Say.append(CMProps.mxpImage(mob2," H=10 W=10",""," "));
 						Say.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
@@ -1132,6 +1130,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						else
 							Say.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
 						Say.append("^</RMob^>");
+						if(sysmsgs)
+							Say.append("^H("+CMClass.classID(mob2)+")^N ");
 						if(!compress)
 							Say.append(CMLib.flags().colorCodes(mob2,mob)+"^N\n\r");
 						else
@@ -1691,6 +1691,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				Say.append(room2.roomID()+" via NULL");
 			if(Say.length()>0)
 			{
+				Say.append(CMLib.flags().colorCodes(exit, mob));
 				Dir=CMStrings.padRightPreserve(Directions.getDirectionName(d),5);
 				if((mob.playerStats()!=null)
 				&&(room2!=null)
@@ -1704,14 +1705,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		for(int i=0;i<room.numItems();i++)
 		{
 			I=room.getItem(i);
-			if((I instanceof Exit)&&(((Exit)I).doorName().length()>0))
+			if((I instanceof Exit)&&(((Exit)I).doorName().length()>0)&&(I.container()==null))
 			{
 				StringBuilder Say=((Exit)I).viewableText(mob, room);
-				if(Say.length()>5)
-					buf.append("^D^<MEX^>" + ((Exit)I).doorName()+"^</MEX^>:^.^N ^d"+Say+"^.^N\n\r");
-				else
 				if(Say.length()>0)
-					buf.append("^D^<MEX^>" + CMStrings.padRight(((Exit)I).doorName(),5)+"^</MEX^>:^.^N ^d"+Say+"^.^N\n\r");
+				{
+					Say.append(CMLib.flags().colorCodes(I, mob));
+					if(Say.length()>5)
+						buf.append("^D^<MEX^>" + ((Exit)I).doorName()+"^</MEX^>:^.^N ^d"+Say+"^.^N\n\r");
+					else
+						buf.append("^D^<MEX^>" + CMStrings.padRight(((Exit)I).doorName(),5)+"^</MEX^>:^.^N ^d"+Say+"^.^N\n\r");
+				}
 			}
 		}
 		mob.tell(buf.toString());
@@ -1733,7 +1737,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		for(int i=0;i<room.numItems();i++)
 		{
 			I=room.getItem(i);
-			if((I instanceof Exit)&&(((Exit)I).viewableText(mob, room).length()>0))
+			if((I instanceof Exit)&&(I.container()==null)&&(((Exit)I).viewableText(mob, room).length()>0))
 				buf.append("^<MEX^>"+((Exit)I).doorName()+"^</MEX^> ");
 		}
 		mob.tell(buf.toString().trim()+"]^.^N");

@@ -43,21 +43,21 @@ public class CMLister extends StdLibrary implements ListingLibrary
 								 boolean sysmsgs)
 	{
 		if(useName)
-			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ("+item.ID()+")":"");
+			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		else
 		if((longLook)&&(item instanceof Item)&&(((Item)item).container()!=null))
-			return CMStrings.capitalizeFirstLetter("     "+item.name())+(sysmsgs?" ("+item.ID()+")":"");
+			return CMStrings.capitalizeFirstLetter("     "+item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		else
 		if(!item.name().equals(item.Name()))
-			return CMStrings.capitalizeFirstLetter(item.name()+" is here.")+(sysmsgs?" ("+item.ID()+")":"");
+			return CMStrings.capitalizeFirstLetter(item.name()+" is here.")+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		else
 		if(item instanceof MOB)
-			return CMStrings.capitalizeFirstLetter(((MOB)item).displayText(viewerM))+(sysmsgs?" ("+item.ID()+")":"");
+			return CMStrings.capitalizeFirstLetter(((MOB)item).displayText(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		else
 		if(item.displayText().length()>0)
-			return CMStrings.capitalizeFirstLetter(item.displayText())+(sysmsgs?" ("+item.ID()+")":"");
+			return CMStrings.capitalizeFirstLetter(item.displayText())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		else
-			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ("+item.ID()+")":"");
+			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 	}
 	
 	public int getReps(MOB viewerM, 
@@ -177,8 +177,6 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			{
 				numShown++;
 				appendReps(reps,say,compress);
-				if(sysmsgs)
-					say.append("^H("+CMClass.classID(item)+")^N ");
 				if((!compress)&&(viewerM!=null)&&(!viewerM.isMonster())&&(viewerM.session().clientTelnetMode(Session.TELNET_MXP)))
 					say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
 				say.append("^I");
