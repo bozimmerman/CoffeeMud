@@ -191,15 +191,8 @@ public class Thief_TapRoom extends ThiefSkill
 						}
 						else
 						{
-							Item I=(Item)lineV.get(0);
-							if(I.basePhyStats().weight()>1)
-							{
-								I.basePhyStats().setWeight(I.basePhyStats().weight()-1);
-								I.phyStats().setWeight(I.phyStats().weight()-1);
-								I.text();
-							}
-							else
-								I.destroy();
+							RawMaterial I=lineV.get(0);
+							CMLib.materials().destroyResources(msg.source(),1,I.material(),0,null);
 							msg.addTrailerMsg(CMClass.getMsg(msg.source(),I,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"You stretch out another length of tap-line here using some of <T-NAME>",null,"<S-NAME> do(es) something in the corner with <T-NAME>"));
 							int roomsLeft=0;
 							if(p.size()>3)
@@ -266,7 +259,7 @@ public class Thief_TapRoom extends ThiefSkill
 			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
 			&&(!(I instanceof Potion))
-			&&(((Drink)I).liquidHeld()<8)
+			&&(((Drink)I).liquidHeld()<400)
 			&&(I.fetchEffect(ID())==null)
 			&&(CMLib.flags().canBeSeenBy(I,mob))
 			&&(!CMLib.flags().enchanted(I)))
