@@ -301,7 +301,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			{
 				CommandJournal CMJ=e.nextElement();
 				String num=CMJ.getFlag(CommandJournalFlags.EXPIRE);
-				if((num!=null)&&(CMath.isNumber(num)))
+				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
 					thread.setStatus("updating journal "+CMJ.NAME());
 					List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
@@ -329,7 +329,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			{
 				ForumJournal FMJ=e.nextElement();
 				String num=FMJ.getFlag(CommandJournalFlags.EXPIRE);
-				if((num!=null)&&(CMath.isNumber(num)))
+				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
 					thread.setStatus("updating journal "+FMJ.NAME());
 					List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
