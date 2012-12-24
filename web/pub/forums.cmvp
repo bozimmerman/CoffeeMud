@@ -11,8 +11,8 @@
 	<!--
 		function Clicked(action)
 		{
-			document.ACCESS.action=action;
-			document.ACCESS.submit();
+			document.FORUM.action=action;
+			document.FORUM.submit();
 		}
 		function DoForum(journal)
 		{
@@ -29,7 +29,7 @@
 		}
 		function Register()
 		{
-			document.ACCESS.LASTPAGE.value='forums.cmvp';
+			document.FORUM.LASTPAGE.value='forums.cmvp';
 			Clicked('register.cmvp');
 		}
 	//-->
