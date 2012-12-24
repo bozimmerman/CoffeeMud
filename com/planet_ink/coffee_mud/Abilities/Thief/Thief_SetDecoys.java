@@ -60,6 +60,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	private int lastSet=0;
 
 	public boolean sprung(){return false;}
+
 	public void spring(MOB mob)
 	{
 		if((mob==null)||(invoker()==null)) return;
@@ -76,7 +77,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 			while((mob.isInCombat())&&(mob.rangeToTarget()<max))
 			{
 				int r=mob.rangeToTarget();
-				if(!R.show(mob,null,this,CMMsg.MSG_RETREAT,"<S-NAME> advance(s) toward(s) the decoy."))
+				if(!R.show(mob,mob.getVictim(),null,CMMsg.MSG_RETREAT,"<S-NAME> advance(s) toward(s) the decoy."))
 					break;
 				if(mob.rangeToTarget()==r)
 					break;

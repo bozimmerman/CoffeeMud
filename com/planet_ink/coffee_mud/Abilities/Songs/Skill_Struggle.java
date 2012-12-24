@@ -32,14 +32,14 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Skill_StruggleBonds extends BardSkill
+public class Skill_Struggle extends BardSkill
 {
-	public String ID() { return "Skill_StruggleBonds"; }
-	public String name(){ return "Struggle at Bonds";}
+	public String ID() { return "Skill_Struggle"; }
+	public String name(){ return "Struggle";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"STRUGGLEBONDS"};
+	private static final String[] triggerStrings = {"STRUGGLE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MANA;}
