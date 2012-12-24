@@ -80,15 +80,15 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_IdentifyTraps",false,CMParms.parseSemicolons("Thief_DetectTraps", true),null);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_AutoDetectTraps",false,CMParms.parseSemicolons("Thief_DetectTraps", true),null);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_DisablingCaltrops",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_AutoMarkTraps",false,CMParms.parseSemicolons("Thief_MarkTrapped;Thief_DetectTraps", true),null);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_DazzlingCaltrops",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_AutoMarkTraps",false,CMParms.parseSemicolons("Thief_MarkTrapped;Thief_DetectTraps", true),null);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_DazzlingCaltrops",false);
 		
 		// ASSASSIN
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Spying",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Evesdrop",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Espionage",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowpass",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Thief_MarkerSpying",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_Espionage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_Shadowpass",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_MarkerSpying",false,CMParms.parseSemicolons("Thief_Mark;Thief_Spying", true),null);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_TapRoom",false);
 
 		// THIEF

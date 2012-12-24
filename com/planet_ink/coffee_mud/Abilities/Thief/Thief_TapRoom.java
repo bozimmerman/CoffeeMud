@@ -182,8 +182,8 @@ public class Thief_TapRoom extends ThiefSkill
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 							if(newRoom.getRoomInDir(d)==lastRoom)
 								ok=true;
-						Vector V=getAvailableLine(msg.source());
-						if((!ok)||(V.size()==0)||(lastRoom==null)||(pairA==null)||(pairA.getParsedText().size()<2))
+						List<RawMaterial> lineV=getAvailableLine(msg.source());
+						if((!ok)||(lineV.size()==0)||(lastRoom==null)||(pairA==null)||(pairA.getParsedText().size()<2))
 						{
 							canBeUninvoked=true;
 							unInvoke();
@@ -191,7 +191,7 @@ public class Thief_TapRoom extends ThiefSkill
 						}
 						else
 						{
-							Item I=(Item)V.firstElement();
+							Item I=(Item)lineV.get(0);
 							if(I.basePhyStats().weight()>1)
 							{
 								I.basePhyStats().setWeight(I.basePhyStats().weight()-1);
@@ -261,10 +261,14 @@ public class Thief_TapRoom extends ThiefSkill
 			I=mob.getItem(i);
 			if((I instanceof Drink)
 			&&(I.container()==null)
-			&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
+			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
+			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH)
+			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
+			&&(!(I instanceof Potion))
+			&&(((Drink)I).liquidHeld()<8)
 			&&(I.fetchEffect(ID())==null)
 			&&(CMLib.flags().canBeSeenBy(I,mob))
-			&&(!((Drink)I).containsDrink())
 			&&(!CMLib.flags().enchanted(I)))
 			{
 				if(returnI[0]==null)
@@ -281,10 +285,10 @@ public class Thief_TapRoom extends ThiefSkill
 		return returnI;
 	}
 
-	public Vector getAvailableLine(MOB mob)
+	public List<RawMaterial> getAvailableLine(MOB mob)
 	{
 		Item I=null;
-		Vector available=new Vector();
+		List<RawMaterial> available=new Vector();
 		for(int i=0;i<mob.numItems();i++)
 		{
 			I=mob.getItem(i);
@@ -294,7 +298,7 @@ public class Thief_TapRoom extends ThiefSkill
 			&&(!CMLib.flags().enchanted(I))
 			&&(I.container()==null)
 			&&(I.fetchEffect(ID())==null))
-				available.addElement(I);
+				available.add((RawMaterial)I);
 		}
 		return available;
 	}
@@ -327,7 +331,7 @@ public class Thief_TapRoom extends ThiefSkill
 			mob.tell("You'll need 2 unused glass cups, emptied of liquid, to start tapping a room.");
 			abort=true;
 		}
-		Vector line=getAvailableLine(mob);
+		List<RawMaterial> line=getAvailableLine(mob);
 		if((!auto)&&(line.size()==0))
 		{
 			mob.tell("You'll need several pounds of raw cloth material (like cotton or wool) to start tapping a room.");
