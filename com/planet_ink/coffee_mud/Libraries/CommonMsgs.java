@@ -1691,7 +1691,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				Say.append(room2.roomID()+" via NULL");
 			if(Say.length()>0)
 			{
-				Say.append(CMLib.flags().colorCodes(exit, mob));
+				if(exit!=null) Say.append(CMLib.flags().colorCodes(exit, mob));
 				Dir=CMStrings.padRightPreserve(Directions.getDirectionName(d),5);
 				if((mob.playerStats()!=null)
 				&&(room2!=null)

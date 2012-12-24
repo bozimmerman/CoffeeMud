@@ -71,8 +71,37 @@ public class Thief_ConcealDoor extends ThiefSkill
 		&&(super.canBeUninvoked()))
 		{
 			unInvoke();
-			affected.delEffect(this);
-			affected.recoverPhyStats();
+			if(affected!=null)
+			{
+				affected.delEffect(this);
+				affected.recoverPhyStats();
+			}
+		}
+		else
+		if(canBeUninvoked() && (invoker()!=null) && (!msg.source().isMonster()) && (msg.source()!=invoker()) && (msg.sourceMinor()==CMMsg.TYP_ENTER) && (affected!=null))
+		{
+			if(!CMLib.flags().isInTheGame(invoker(), true))
+			{
+				unInvoke();
+				if(affected!=null)
+				{
+					affected.delEffect(this);
+					affected.recoverPhyStats();
+				}
+			}
+			else
+			{
+				Set<MOB> grp=invoker().getGroupMembers(new HashSet<MOB>());
+				if(!grp.contains(msg.source()))
+				{
+					unInvoke();
+					if(affected!=null)
+					{
+						affected.delEffect(this);
+						affected.recoverPhyStats();
+					}
+				}
+			}
 		}
 	}
 	
@@ -119,7 +148,7 @@ public class Thief_ConcealDoor extends ThiefSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,X,null,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			CMMsg msg=CMClass.getMsg(mob,X,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

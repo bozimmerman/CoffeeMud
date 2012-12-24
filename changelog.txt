@@ -2393,7 +2393,7 @@ ruthless programmer, and sentenced to a quick death.
 1. FakeDB now supports getResultSetMetaData, making room for some sort of sql browser feature
 2. CoffeeMud (actually fakedb) is now build compatible with JDK 1.7
 3. Fixed a nasty bug in CMParms -- you do not want 5.7.8!
-# Build 5.7.10 Release ??/??/2012
+# Build 5.7.10 Release ??/??/2012 (** Thanks to TGMUD for publishing their changelogs!!!)
 1. (Minor) ResourceOverride is now an ActiveTicker for better control over its behavior.  Also, room types bug fixed.
 2. New INI entries for whitelisting over ip/login/newplayer blocks: WHITELISTIPSCONN, WHITELISTLOGINS, WHITELISTIPSNEWPLAYERS
 3. Special GET case: Can now get parts of a bundle from a container -- get 2 oak from wagon will break a 2# bundle from inside in a wagon.
@@ -2411,7 +2411,7 @@ ruthless programmer, and sentenced to a quick death.
 15.InstantDeath behavior now allows a zappermask, also New Property (Prop_InstantDeath) -- more lightweight than the behavior.
 16.New race: Slime, and racial category to go with it
 17.New spells: Acid Spray, Mass Hold
-18.Some common skills can now be done sitting done.
+18.Some common skills can now be done sitting now.
 19.Bandaging also restores a few hit points.
 20.CombatAbilities and its derivatives (Bardness/Clericness/etc..) will adjust base char stats of mobs to reflect class, unless NOSTATS in the parms.
 21.Players Teaching Players is now more beneficial for both.  Also, (internally), Teach is now StdMOB managed, as it should be.
@@ -2425,6 +2425,7 @@ ruthless programmer, and sentenced to a quick death.
 29.New formulas for PVP combat -- INI/Control Panel support.  The defaults basically remove level fudging.
 30.(Internal) New experiments in Fully Async sessions continues apace.  Converted Logout and Quit.
 31.New prayer: Retribution (neutral Blade Barriar for Missionaries & Shaman)
-32.POUR command can now be used to activate a potion on an item (for example, enchant weapon potion) (like powders and throwing)
+32.POUR command can now be used to activate a potion on an item (for example, enchant weapon potion) (like thrown powders)
 33.About two dozen thief skills have been finished and assigned to various classes. Skill_EscapeBonds renamed to Struggle Bonds.
 34.Potions and Pills are more scaled to their levels.
+35.Normally mobile mobs will walk by hidden/invis exits now (unless they can see hidden, etc..)

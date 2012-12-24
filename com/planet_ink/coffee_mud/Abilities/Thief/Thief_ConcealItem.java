@@ -82,6 +82,15 @@ public class Thief_ConcealItem extends ThiefSkill
 			mob.tell("You aren't good enough to conceal anything that large.");
 			return false;
 		}
+		
+		if(((!CMLib.flags().isGettable(item))
+			||(item.isSavable())
+			||(!CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
+		&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
+		{
+			mob.tell("You may not conceal that.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -90,13 +99,19 @@ public class Thief_ConcealItem extends ThiefSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+			CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Ability A=(Ability)super.copyOf();
 				A.setInvoker(mob);
-				item.addNonUninvokableEffect(A);
+				A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-item.phyStats().level());
+				Room R=mob.location();
+				if(CMLib.law().doesOwnThisProperty(mob,R))
+					item.addNonUninvokableEffect(A);
+				else
+					A.startTickDown(mob,item,15*(adjustedLevel(mob,asLevel)));
+				item.recoverPhyStats();
 				item.recoverPhyStats();
 			}
 		}

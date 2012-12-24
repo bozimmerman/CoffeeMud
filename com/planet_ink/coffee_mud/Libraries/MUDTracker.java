@@ -416,19 +416,19 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			{
 				if(isAnAdminHere(nextRoom))
 				{
-    				direction=-1;
-	    			continue;
+					direction=-1;
+					continue;
 				}
 				
 				Exit opExit=nextRoom.getExitInDir(Directions.getOpDirectionCode(direction));
-				if(CMLib.flags().isTrapped(nextExit))
+				if(CMLib.flags().isTrapped(nextExit)
+				||(CMLib.flags().isHidden(nextExit)&&(!CMLib.flags().canSeeHidden(mob)))
+				||(CMLib.flags().isInvisible(nextExit)&&(!CMLib.flags().canSeeInvisible(mob))))
 					direction=-1;
-
-				if(opExit!=null)
-				{
-					if(CMLib.flags().isTrapped(opExit))
-						direction=-1;
-				}
+				else
+				if((opExit!=null)&&(CMLib.flags().isTrapped(opExit)))
+					direction=-1;
+				else
 				if((oldRoom.domainType()!=nextRoom.domainType())
 				&&(!CMLib.flags().isInFlight(mob))
 				&&((nextRoom.domainType()==Room.DOMAIN_INDOORS_AIR)

@@ -111,7 +111,7 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_DampenAuras",false);
 
 		// RANGER
-		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Ranger_WoodlandCreep",false,null,"+DEX 18");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Ranger_WoodlandCreep",false);
 	}
 
 	public int availabilityCode(){return 0;}
