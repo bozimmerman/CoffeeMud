@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<h3>Cross Class Information</h3><P>
+<h1>Cross Class Information</h1><P>
 <a href="#STAT">Stats Chart</a><P>
 <a href="#CROSS">Skills Chart</a><P>
 <a href="#BAL">Balance Chart</a><P>
@@ -38,15 +38,20 @@ of 25.<P><BR></FONT>
 @back@
 </TABLE>
 <P><BR>
-<a name=CROSS>Cross Class Skills Chart</a><P>
+<HR>
+<CENTER><a name=CROSS><H2>Cross Class Skills Chart</H2></a></CENTER><P>
+<HR>
 	@CrossBaseClassAbilities@
 <P>
 <BR>
 <BR>
-<a name=BAL>Cross Class Balance Chart</a><P>
+<HR>
+<CENTER><a name=BAL><H2>Cross Class Balance Chart</H2></a></CENTER><P>
+<HR>
 @BaseCharClassNext?RESET@
 @loop@
 @BaseCharClassNext@
+	<HR><CENTER><H3>@BaseCharClassName@</H3></CENTER>
 	@CharClassNext?RESET@
 	@loop@
 		@CharClassNext@

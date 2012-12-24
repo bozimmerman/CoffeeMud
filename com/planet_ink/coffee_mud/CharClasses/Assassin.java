@@ -103,7 +103,7 @@ public class Assassin extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Specialization_FlailedWeapon",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_BackStab",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_TarAndFeather",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Spying",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Fighter_CritStrike",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Trip",true);
@@ -116,6 +116,7 @@ public class Assassin extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Observation",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Assassinate",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Shadowpass",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Attack2",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_TrueShot",false);
@@ -136,8 +137,8 @@ public class Assassin extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Trap",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_Stability",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Fighter_AxKick",false,CMParms.parseSemicolons("Fighter_Kick",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_Stability",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_MarkerSpying",false,CMParms.parseSemicolons("Thief_Mark;Thief_Spying", true),null);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_TapRoom",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Ambush",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Flank",false);
@@ -146,8 +147,10 @@ public class Assassin extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Cleave",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Tumble",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Evesdrop",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_Espionage",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowstrike",true);
 	}

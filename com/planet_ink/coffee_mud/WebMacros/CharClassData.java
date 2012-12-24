@@ -1010,10 +1010,13 @@ public class CharClassData extends StdWebMacro
 		int totalgained=0;
 		int totalqualified=0;
 		int uniqueClassSkills=0;
+		List<String> uniqueClassSkillsV=new LinkedList<String>();
 		int uniqueClassSkillsGained=0;
 		int uncommonClassSkills=0;
+		List<String> uncommonClassSkillsV=new LinkedList<String>();
 		int uncommonClassSkillsGained=0;
 		int totalCrossClassSkills=0;
+		List<String> totalCrossClassSkillsV=new LinkedList<String>();
 		int totalCrossClassLevelDiffs=0;
 		int maliciousSkills=0;
 		int maliciousSkillsGained=0;
@@ -1032,7 +1035,9 @@ public class CharClassData extends StdWebMacro
 				if(seenBefore.contains(able)) continue;
 				seenBefore.add(able);
 				int numOthers=0;
+				int numOutsiders=0;
 				int thisCrossClassLevelDiffs=0;
+				int tlvl=0;
 				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					CharClass C2=(CharClass)c.nextElement();
@@ -1040,7 +1045,7 @@ public class CharClassData extends StdWebMacro
 					if(!CMProps.isTheme(C2.availabilityCode())) continue;
 					if(C2.baseClass().equals(C.baseClass()))
 					{
-						int tlvl=CMLib.ableMapper().getQualifyingLevel(C2.ID(),true,able);
+						tlvl=CMLib.ableMapper().getQualifyingLevel(C2.ID(),true,able);
 						if(tlvl>0)
 						{
 							if(tlvl>l)
@@ -1050,25 +1055,43 @@ public class CharClassData extends StdWebMacro
 							numOthers++;
 						}
 					}
+					else
+					{
+						tlvl=CMLib.ableMapper().getQualifyingLevel(C2.ID(),true,able);
+						if(tlvl>0)
+						{
+							if(tlvl>l)
+								thisCrossClassLevelDiffs+=(tlvl-l);
+							else
+								thisCrossClassLevelDiffs+=(l-tlvl);
+							numOutsiders++;
+						}
+					}
 				}
-				if(numOthers==0)
+				if((numOthers==0)&&(numOutsiders==0))
 				{
 					uniqueClassSkills++;
+					uniqueClassSkillsV.add(able+"("+l+")");
+				}
+				else
+				if(numOutsiders==0)
+				{
 					uncommonClassSkills++;
+					uncommonClassSkillsV.add(able+"("+l+")");
 				}
 				else
 				{
-					totalCrossClassLevelDiffs+=(thisCrossClassLevelDiffs/numOthers);
+					totalCrossClassLevelDiffs+=(thisCrossClassLevelDiffs/numOutsiders);
 					totalCrossClassSkills++;
+					totalCrossClassSkillsV.add(able+"("+l+")");
 				}
-				if(numOthers==1)
-					uncommonClassSkills++;
 				boolean gained=(M.fetchAbility(able)!=null);
 				if(gained)
 				{
 					totalgained++;
-					if(numOthers==0){ uniqueClassSkillsGained++; uncommonClassSkillsGained++;}
-					if(numOthers==1) uncommonClassSkillsGained++;
+					if((numOthers==0)&&(numOutsiders==0)){ uniqueClassSkillsGained++; }
+					else
+					if(numOutsiders==0){ uncommonClassSkillsGained++; }
 				}
 				else
 					totalqualified++;
@@ -1092,10 +1115,13 @@ public class CharClassData extends StdWebMacro
 		str.append("<BR>Rule#1: Avg gained skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalgained,30)),(long)100));
 		str.append("<BR>Rule#2: Avg qualified skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalqualified,30)),(long)100));
 		str.append("<BR>Rule#3: Unique class skills gained: "+uniqueClassSkillsGained+"/"+uniqueClassSkills);
+		str.append("<BR><FONT COLOR=WHITE>Rule#3</FONT>: Unique class skills: "+CMParms.toStringList(uniqueClassSkillsV));
 		str.append("<BR>Rule#4: Uncommon class skills gained: "+uncommonClassSkillsGained+"/"+uncommonClassSkills);
+		str.append("<BR><FONT COLOR=WHITE>Rule#4</FONT>: Uncommon class skills: "+CMParms.toStringList(uncommonClassSkillsV));
 		str.append("<BR>Rule#5: Combat skills gained: "+(maliciousSkillsGained+beneficialSkillsGained)+"/"+(maliciousSkills+beneficialSkills));
 		str.append("<BR>Rule#6: Avg Unique class skill/level: "+CMath.div(Math.round(100.0*CMath.div(uniqueClassSkills,30)),(long)100));
 		str.append("<BR>Rule#7: CrossClass class skills diff: "+totalCrossClassLevelDiffs+"/"+totalCrossClassSkills);
+		str.append("<BR><FONT COLOR=WHITE>Rule#7</FONT>: CrossClass class skills: "+CMParms.toStringList(totalCrossClassSkillsV));
 		str.append("<BR>Rule#8: Avg Cross class skill/level: "+CMath.div(Math.round(100.0*CMath.div(totalCrossClassSkills,30)),(long)100));
 		M.destroy();
 		return str.toString();

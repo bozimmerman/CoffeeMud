@@ -71,48 +71,6 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Amputation",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
-		
-		// new thieves skills
-		//TODO: GIVE THESE TO A DAMN CLASS!
-		// TRAPPER
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_MarkTrapped",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Autocaltrops",false,CMParms.parseSemicolons("Thief_Caltrops", true),null);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_IdentifyTraps",false,CMParms.parseSemicolons("Thief_DetectTraps", true),null);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_AutoDetectTraps",false,CMParms.parseSemicolons("Thief_DetectTraps", true),null);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_DisablingCaltrops",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_AutoMarkTraps",false,CMParms.parseSemicolons("Thief_MarkTrapped;Thief_DetectTraps", true),null);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_DazzlingCaltrops",false);
-		
-		// ASSASSIN
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Spying",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Evesdrop",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_Espionage",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_Shadowpass",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_MarkerSpying",false,CMParms.parseSemicolons("Thief_Mark;Thief_Spying", true),null);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_TapRoom",false);
-
-		// THIEF
-		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Hideout",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_SetDecoys",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_ConcealItem",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_ConcealDoor",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),55,"Thief_ConcealWalkway",false);
-		
-		// BURGLAR
-		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UndergroundConnections",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Safehouse",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Thief_HideInPlainSight",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Footlocks",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentOpen",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentDrop",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_HideOther",false);
-
-		// ARCANIST
-		CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_SlipperyMind",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),45,"Thief_DampenAuras",false);
-
-		// RANGER
-		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Ranger_WoodlandCreep",false);
 	}
 
 	public int availabilityCode(){return 0;}

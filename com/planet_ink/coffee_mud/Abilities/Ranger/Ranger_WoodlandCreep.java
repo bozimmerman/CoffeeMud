@@ -127,10 +127,10 @@ public class Ranger_WoodlandCreep extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				Ability newOne=(Ability)this.copyOf();
-				((Ranger_WoodlandCreep)newOne).bonus=getXLEVELLevel(mob)*2;
-				if(mob.fetchEffect(newOne.ID())==null)
-					mob.addEffect(newOne);
+				beneficialAffect(mob, mob, asLevel, 0);
+				Ranger_WoodlandCreep newOne=(Ranger_WoodlandCreep)mob.fetchEffect(ID());
+				newOne.bonus=getXLEVELLevel(mob)*2;
+				newOne.makeLongLasting();
 				mob.recoverPhyStats();
 			}
 			else

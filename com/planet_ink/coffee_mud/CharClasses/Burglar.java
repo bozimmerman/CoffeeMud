@@ -63,6 +63,7 @@ public class Burglar extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_Hide",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_UndergroundConnections",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Appraise",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Palm",false);
@@ -103,21 +104,26 @@ public class Burglar extends Thief
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_SilentGold",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_HideOther",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_Safecracking",false,CMParms.parseSemicolons("Thief_Pick",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_SilentLoot",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_BlindFighting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_SilentDrop",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Robbery",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_Map",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_SilentOpen",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_SenseLaw",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Mug",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Safehouse",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Lore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Footlocks",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Racketeer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_StripItem",true);
@@ -132,6 +138,7 @@ public class Burglar extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Comprehension",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_Embezzle",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_HideInPlainSight",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_ContractHit",true);
 	}

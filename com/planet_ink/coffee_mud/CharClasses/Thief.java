@@ -121,9 +121,11 @@ public class Thief extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_Snatch",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_ConcealItem",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_SilentGold",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_Hideout",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Shadow",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
@@ -131,6 +133,7 @@ public class Thief extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_SilentLoot",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_Comprehension",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_SetDecoys",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Distract",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Snatch",false);
@@ -142,6 +145,7 @@ public class Thief extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Sap",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Panhandling",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_ConcealDoor",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Flank",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_ImprovedDistraction",false,CMParms.parseSemicolons("Thief_Distract",true));
@@ -151,6 +155,7 @@ public class Thief extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Bribe",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_EscapeBonds",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_ConcealWalkway",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_Ambush",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_Squatting",false);
