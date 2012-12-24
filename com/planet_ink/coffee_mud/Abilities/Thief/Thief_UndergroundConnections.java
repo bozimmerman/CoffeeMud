@@ -96,6 +96,18 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		return super.tick(ticking,tickID);
 	}
 	
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
+			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+			||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(storage.contains(msg.target())))
+			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET)))
+		{
+			unInvoke();
+		}
+		return super.okMessage(host,msg);
+	}
+	
 	public void unInvoke()
 	{
 		if(pathOut!=null)

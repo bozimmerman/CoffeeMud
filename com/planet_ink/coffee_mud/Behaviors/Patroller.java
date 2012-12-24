@@ -350,7 +350,7 @@ public class Patroller extends ActiveTicker
 				}
 				else
 				{
-					Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" is utterly unknown!");
+					Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" ("+CMLib.map().getExtendedRoomID(CMLib.map().getStartRoom((Environmental)ticking))+") is utterly unknown!");
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
 				}

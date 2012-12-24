@@ -237,6 +237,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isInvisible(Physical P)
 	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_INVISIBLE)==PhyStats.IS_INVISIBLE); }
 
+	public boolean isRejuvingItem(Item I)
+	{
+		if(I==null) return false;
+		for(int i=0;i<I.numEffects();i++)
+			if(I.fetchEffect(i) instanceof ItemTicker)
+				return true;
+		return false;
+	}
+	
 	public boolean isReallyEvil(Physical P)
 	{
 		if(P instanceof MOB)

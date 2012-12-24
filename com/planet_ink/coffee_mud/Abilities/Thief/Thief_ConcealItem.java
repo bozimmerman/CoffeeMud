@@ -84,8 +84,8 @@ public class Thief_ConcealItem extends ThiefSkill
 		}
 		
 		if(((!CMLib.flags().isGettable(item))
-			||(item.isSavable())
-			||(!CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
+			||(CMLib.flags().isRejuvingItem(item))
+			||(CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
 		&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))
 		{
 			mob.tell("You may not conceal that.");

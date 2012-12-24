@@ -47,6 +47,7 @@ public interface CommonCommands extends CMLibrary
 	public void postChannel(MOB mob, String channelName, String message, boolean systemMsg);
 	public void postChannel(String channelName, String clanID, String message, boolean systemMsg);
 	public boolean postDrop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized);
+	public boolean postOpen(MOB mob, Environmental openThis, boolean quiet);
 	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet);
 	public boolean postRemove(MOB mob, Item item, boolean quiet);
 	public void postLook(MOB mob, boolean quiet);

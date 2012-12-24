@@ -125,7 +125,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 			if((A!=null)&&((givenTarget==null)||(auto)))
 				msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_THIEF_ACT,"<S-NAME> remove(s) the mark on <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			else
-				msg=CMClass.getMsg(mob,item,null,CMMsg.MSG_THIEF_ACT,"<S-NAME> mark(s) <T-NAME> as trapped.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+				msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> mark(s) <T-NAME> as trapped.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

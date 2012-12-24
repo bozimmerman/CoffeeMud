@@ -88,6 +88,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isABonusItems(Physical P);
 	public boolean isInDark(Physical P);
 	public boolean isLightSource(Physical P);
+	public boolean isRejuvingItem(Item I);
 	public boolean isGlowing(Physical P);
 	public boolean isGolem(Physical P);
 	public boolean isSleeping(Physical P);

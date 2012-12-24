@@ -80,7 +80,7 @@ public class Thief_DampenAuras extends ThiefSkill
 		Environmental E=affected;
 		super.unInvoke();
 		if((E instanceof MOB)&&(!((MOB)E).amDead()))
-			((MOB)E).tell("You noticed the aura dampening is wearing away.");
+			((MOB)E).tell("You noticed the aura dampening is wearing away on "+E.name()+".");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -118,7 +118,7 @@ public class Thief_DampenAuras extends ThiefSkill
 				for(int i=0;i<target.numItems();i++)
 				{
 					I=target.getItem(i);
-					if(I!=null)
+					if((I!=null)&&(I.container()==null))
 					{
 						I.addEffect(A);
 						A.setAffectedOne(affecting);

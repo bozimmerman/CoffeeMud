@@ -92,7 +92,7 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_TapRoom",false);
 
 		// THIEF
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Hideout",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Hideout",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_SetDecoys",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_ConcealItem",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),40,"Thief_ConcealDoor",false);
@@ -100,9 +100,10 @@ public class Archon extends StdCharClass
 		
 		// BURGLAR
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_UndergroundConnections",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_Safehouse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_Safehouse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),50,"Thief_HideInPlainSight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Footlocks",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentOpen",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_SilentDrop",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_HideOther",false);
 

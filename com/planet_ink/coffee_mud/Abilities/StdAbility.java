@@ -512,6 +512,7 @@ public class StdAbility implements Ability
 								 boolean checkOthersInventory,
 								 boolean alreadyAffOk)
 	{
+		Room R=mob.location();
 		String targetName=CMParms.combine(commands,0);
 		Physical target=null;
 		if(givenTarget instanceof Physical)
@@ -523,20 +524,24 @@ public class StdAbility implements Ability
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
 		   target=mob;
 		else
-		if(mob.location()!=null)
+		if(R!=null)
 		{
-			target=mob.location().fetchFromRoomFavorMOBs(null,targetName);
 			if(target==null)
-				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,wornFilter);
+				target=R.fetchFromRoomFavorMOBs(null,targetName);
+			if(target==null)
+				target=R.fetchFromMOBRoomFavorsItems(mob,null,targetName,wornFilter);
 			if((target==null)
 			&&(targetName.equalsIgnoreCase("room")
 				||targetName.equalsIgnoreCase("here")
 				||targetName.equalsIgnoreCase("place")))
-				target=mob.location();
+				target=R;
+			int dir=-1;
+			if((target==null)&&((dir=Directions.getGoodDirectionCode(targetName))>=0))
+				target=R.getExitInDir(dir);
 			if((target==null)&&(checkOthersInventory))
-				for(int i=0;i<mob.location().numInhabitants();i++)
+				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=mob.location().fetchInhabitant(i);
+					MOB M=R.fetchInhabitant(i);
 					target=M.findItem(null,targetName);
 					if(target!=null)
 					{

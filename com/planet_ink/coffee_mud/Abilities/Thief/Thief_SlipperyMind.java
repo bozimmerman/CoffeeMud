@@ -43,7 +43,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"SLIPPERYMIND"};
 	public String[] triggerStrings(){return triggerStrings;}
-	DVector oldFactions=null;
+	protected volatile LinkedList<Pair<Faction,Integer>> oldFactions=null;
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -56,21 +56,21 @@ public class Thief_SlipperyMind extends ThiefSkill
 			Faction F=null;
 			if(oldFactions==null)
 			{
-				oldFactions=new DVector(2);
+				oldFactions=new LinkedList<Pair<Faction,Integer>>();
 				for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) 
 				{
 					F=CMLib.factions().getFaction((String)e.nextElement());
 					if(F!=null)
 					{
-						oldFactions.addElement(F,Integer.valueOf(mob.fetchFaction(F.factionID())));
+						oldFactions.add(new Pair<Faction,Integer>(F,Integer.valueOf(mob.fetchFaction(F.factionID()))));
 						mob.addFaction(F.factionID(),F.middle());
 					}
 				}
 			}
 			else
-			for(int f=0;f<oldFactions.size();f++)
+			for(Pair<Faction,Integer> p : oldFactions)
 			{
-				F=(Faction)oldFactions.elementAt(f,1);
+				F=p.first;
 				if(mob.fetchFaction(F.factionID())!=F.middle())
 					mob.addFaction(F.factionID(),F.middle());
 			}
@@ -94,6 +94,18 @@ public class Thief_SlipperyMind extends ThiefSkill
 		}
 	}
 	
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
+			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+			||(msg.sourceMinor()==CMMsg.TYP_DEATH) // yes, intentional
+			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET)))
+		{
+			unInvoke();
+		}
+		return super.okMessage(host,msg);
+	}
+	
 	public void unInvoke()
 	{
 		Environmental E=affected;
@@ -102,8 +114,8 @@ public class Thief_SlipperyMind extends ThiefSkill
 		{
 			if(!((MOB)E).amDead())
 				((MOB)E).tell("You've lost your slippery mind concentration.");
-			for(int f=0;f<oldFactions.size();f++)
-				((MOB)E).addFaction(((Faction)oldFactions.elementAt(f,1)).factionID(),((Integer)oldFactions.elementAt(f,2)).intValue());
+			for(Pair<Faction,Integer> p : oldFactions)
+				((MOB)E).addFaction(p.first.factionID(),p.second.intValue());
 			oldFactions=null;
 		}
 	}
@@ -132,6 +144,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			oldFactions=null;
 			beneficialAffect(mob,target,asLevel,0);
 			Ability A=target.fetchEffect(ID());
 			if(A!=null)

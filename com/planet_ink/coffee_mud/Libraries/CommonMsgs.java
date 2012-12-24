@@ -205,6 +205,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		return ((Boolean)forceInternalCommand(mob,"Drop",dropThis,Boolean.valueOf(quiet),Boolean.valueOf(optimized))).booleanValue();
 	}
+	public boolean postOpen(MOB mob, Environmental openThis, boolean quiet)
+	{
+		return ((Boolean)forceInternalCommand(mob,"Open",openThis,Boolean.valueOf(quiet))).booleanValue();
+	}
 	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		if(container==null)

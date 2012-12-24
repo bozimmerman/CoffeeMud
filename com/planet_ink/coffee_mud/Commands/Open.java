@@ -38,30 +38,12 @@ public class Open extends StdCommand
 
 	private final String[] access={"OPEN","OP","O"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
+	
+	public boolean open(MOB mob, Environmental openThis, String openableWord, int dirCode, boolean quietly)
 	{
-		String whatToOpen=CMParms.combine(commands,1);
-		if(whatToOpen.length()==0)
-		{
-			mob.tell("Open what?");
-			return false;
-		}
-		Environmental openThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
-		if(dirCode>=0)
-			openThis=mob.location().getExitInDir(dirCode);
-		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToOpen,Wearable.FILTER_ANY);
-
-		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
-		{
-			mob.tell("You don't see '"+whatToOpen+"' here.");
-			return false;
-		}
 		final String openWord=(!(openThis instanceof Exit))?"open":((Exit)openThis).openWord();
-		final String openMsg=("<S-NAME> "+openWord+"(s) <T-NAMESELF>.")+CMProps.msp("dooropen.wav",10);
-		CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,openMsg,whatToOpen,openMsg);
+		final String openMsg=quietly?null:("<S-NAME> "+openWord+"(s) <T-NAMESELF>.")+CMProps.msp("dooropen.wav",10);
+		CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,openMsg,openableWord,openMsg);
 		if(openThis instanceof Exit)
 		{
 			boolean open=((Exit)openThis).isOpen();
@@ -86,14 +68,55 @@ public class Open extends StdCommand
 					int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)&&(opE.isOpen())&&(((Exit)openThis).isOpen()))
 					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+Directions.getInDirectionName(opCode)+" opens.");
+					return true;
 				}
 			}
 		}
 		else
 		if(mob.location().okMessage(mob,msg))
+		{
 			mob.location().send(mob,msg);
+			return true;
+		}
 		return false;
 	}
+	
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
+		throws java.io.IOException
+	{
+		String whatToOpen=CMParms.combine(commands,1);
+		if(whatToOpen.length()==0)
+		{
+			mob.tell("Open what?");
+			return false;
+		}
+		Environmental openThis=null;
+		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		if(dirCode>=0)
+			openThis=mob.location().getExitInDir(dirCode);
+		if(openThis==null)
+			openThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToOpen,Wearable.FILTER_ANY);
+
+		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
+		{
+			mob.tell("You don't see '"+whatToOpen+"' here.");
+			return false;
+		}
+		open(mob,openThis,whatToOpen,dirCode,false);
+		return false;
+	}
+	
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if((args.length>=2)
+		&&(args[0] instanceof Environmental)
+		&&(args[1] instanceof Boolean))
+		{
+			return Boolean.valueOf(open(mob,(Environmental)args[0],((Environmental)args[0]).name(),-1,((Boolean)args[1]).booleanValue()));
+		}
+		return super.executeInternal(mob, metaFlags, args);
+	}
+	
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
 	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}

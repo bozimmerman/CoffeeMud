@@ -37,7 +37,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 {
 	public String ID() { return "Thief_HideInPlainSight"; }
 	public String name(){ return "Hide In Plain Sight";}
-	public String displayText(){ return "";}
+	public String displayText(){ return "(Hiding in plain sight)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -87,6 +87,68 @@ public class Thief_HideInPlainSight extends ThiefSkill
 	}
 	
 	
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if(!(affected instanceof MOB))
+			return;
+
+		MOB mob=(MOB)affected;
+
+		if(msg.amISource(mob))
+		{
+			if(((msg.sourceMinor()==CMMsg.TYP_ENTER)
+				||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				||(msg.sourceMinor()==CMMsg.TYP_FLEE)
+				||(msg.sourceMinor()==CMMsg.TYP_RECALL))
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(msg.sourceMajor()>0))
+			{
+				unInvoke();
+				mob.recoverPhyStats();
+			}
+			else
+			if((abilityCode()==0)
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(msg.othersMinor()!=CMMsg.TYP_LOOK)
+			&&(msg.othersMinor()!=CMMsg.TYP_EXAMINE)
+			&&(msg.othersMajor()>0))
+			{
+				if(msg.othersMajor(CMMsg.MASK_SOUND))
+				{
+					unInvoke();
+					mob.recoverPhyStats();
+				}
+				else
+				switch(msg.othersMinor())
+				{
+				case CMMsg.TYP_SPEAK:
+				case CMMsg.TYP_CAST_SPELL:
+					{
+						unInvoke();
+						mob.recoverPhyStats();
+					}
+					break;
+				case CMMsg.TYP_OPEN:
+				case CMMsg.TYP_CLOSE:
+				case CMMsg.TYP_LOCK:
+				case CMMsg.TYP_UNLOCK:
+				case CMMsg.TYP_PUSH:
+				case CMMsg.TYP_PULL:
+					if((msg.target()!=null)
+					&&((msg.target() instanceof Exit)
+						||((msg.target() instanceof Item)
+						   &&(!msg.source().isMine(msg.target())))))
+					{
+						unInvoke();
+						mob.recoverPhyStats();
+					}
+					break;
+				}
+			}
+		}
+		return;
+	}
+
 	public void unInvoke()
 	{
 		MOB M=(MOB)affected;

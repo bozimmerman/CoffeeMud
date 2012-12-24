@@ -98,6 +98,12 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	public String accountForYourself()
 	{ return ""; }
 
+	public boolean isVerifiedContents(Item item)
+	{
+		if(item==null) return false;
+		return contents.contains(item);
+	}
+	
 	public void verifyFixContents()
 	{
 		for(int i=0;i<contents.size();i++)

@@ -32,15 +32,15 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Thief_SilentDrop extends ThiefSkill
+public class Thief_SilentOpen extends ThiefSkill
 {
-	public String ID() { return "Thief_SilentDrop"; }
-	public String name(){ return "Silent Drop";}
+	public String ID() { return "Thief_SilentOpen"; }
+	public String name(){ return "Silent Open";}
 	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
-	private static final String[] triggerStrings = {"SILENTDROP","SDROP"};
+	private static final String[] triggerStrings = {"SILENTOPEN","SOPEN"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
@@ -52,11 +52,18 @@ public class Thief_SilentDrop extends ThiefSkill
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
-			mob.tell("What would you like to drop?");
+			mob.tell("What would you like to open?");
 			return false;
 		}
-		Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		Environmental item=super.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(item==null) return false;
+		if((item instanceof MOB)
+		||(item instanceof Area)
+		||(item instanceof Room))
+		{
+			mob.tell("You can't open that!");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -65,17 +72,17 @@ public class Thief_SilentDrop extends ThiefSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> drop(s) <T-NAME>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,item,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> open(s) <T-NAME>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				CMLib.commands().postDrop(mob, item, true, false);
+				CMLib.commands().postOpen(mob,item,true);
 			}
 		}
 		else
 		{
-			beneficialVisualFizzle(mob,item,"<S-NAME> attempt(s) to drop <T-NAME> quietly, but fail(s).");
-			CMLib.commands().postDrop(mob, item, false, false);
+			beneficialVisualFizzle(mob,item,"<S-NAME> attempt(s) to open <T-NAME> quietly, but fail(s).");
+			CMLib.commands().postOpen(mob,item,false);
 		}
 		return success;
 	}

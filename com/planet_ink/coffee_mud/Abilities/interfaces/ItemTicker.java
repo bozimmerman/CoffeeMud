@@ -68,4 +68,12 @@ public interface ItemTicker extends Ability
 	 * @param room a room object
 	 */
 	public void setProperLocation(Room room);
+	
+	/**
+	 * Returns whether the given item is an official item
+	 * being managed as a rejuving item
+	 * @param item the item to check for
+	 * @return true if it belongs, false otherwise
+	 */
+	public boolean isVerifiedContents(Item item);
 }
