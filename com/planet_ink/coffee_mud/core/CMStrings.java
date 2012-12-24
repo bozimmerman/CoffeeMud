@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 
@@ -203,6 +204,51 @@ public class CMStrings
 				buf.deleteCharAt(i);
 			}
 		return buf.toString();
+	}
+
+	public final static boolean isNumberFollowedByString(final String str)
+	{
+		if((str==null)||(str.length()<2)) return false;
+		if(!Character.isDigit(str.charAt(0))) return false;
+		int dex=1;
+		for(;dex<str.length();dex++)
+			if(Character.isLetter(str.charAt(dex)))
+				break;
+			else
+			if(!Character.isDigit(str.charAt(dex)))
+				return false;
+		if(dex>=str.length())
+			return false;
+		for(;dex<str.length();dex++)
+			if(!Character.isLetter(str.charAt(dex)))
+				return false;
+		return true;
+	}
+	
+	public final static Entry<Integer,String> getNumberFollowedByString(final String str)
+	{
+		if((str==null)||(str.length()<2)) return null;
+		if(!Character.isDigit(str.charAt(0))) return null;
+		int dex=1;
+		for(;dex<str.length();dex++)
+			if(Character.isLetter(str.charAt(dex)))
+				break;
+			else
+			if(!Character.isDigit(str.charAt(dex)))
+				return null;
+		if(dex>=str.length())
+			return null;
+		int endNumber=dex;
+		for(;dex<str.length();dex++)
+			if(!Character.isLetter(str.charAt(dex)))
+				return null;
+		final Integer num=Integer.valueOf(CMath.s_int(str.substring(0,endNumber)));
+		final String rest=str.substring(endNumber);
+		return new Entry<Integer,String>(){
+			@Override public Integer getKey() { return num;}
+			@Override public String getValue() { return rest;}
+			@Override public String setValue(String value) { return value;}
+		};
 	}
 	
 	public final static String replaceAll(String str, final String thisStr, final String withThisStr)
