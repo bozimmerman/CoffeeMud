@@ -84,6 +84,9 @@ public class StdPotion extends StdDrink implements Potion
 		List<Ability> spells=getSpells();
 		if(owner.isMine(this))
 			if((!isDrunk())&&(spells.size()>0))
+			{
+				MOB caster=CMLib.map().getFactoryMOB(owner.location());
+				MOB finalCaster=(owner!=drinkerTarget)?owner:caster;
 				for(int i=0;i<spells.size();i++)
 				{
 					Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
@@ -94,10 +97,14 @@ public class StdPotion extends StdDrink implements Potion
 					int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
 					if(level<lowest)
 						level=lowest;
-					thisOne.invoke(owner,drinkerTarget,true,level);
+					caster.basePhyStats().setLevel(level);
+					caster.phyStats().setLevel(level);
+					thisOne.invoke(finalCaster,drinkerTarget,true,level);
 					setDrunk(true);
 					setLiquidRemaining(0);
 				}
+				caster.destroy();
+			}
 	}
 
 	public String getSpellList()

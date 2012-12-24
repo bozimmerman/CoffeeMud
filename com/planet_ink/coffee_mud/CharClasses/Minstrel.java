@@ -136,7 +136,7 @@ public class Minstrel extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Song_Quickness",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_EscapeBonds",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_StruggleBonds",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Play_Harmonicas",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Play_Lullabies",true);
 

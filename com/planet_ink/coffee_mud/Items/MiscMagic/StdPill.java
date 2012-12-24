@@ -65,6 +65,8 @@ public class StdPill extends StdFood implements Pill
 	{
 		List<Ability> spells=getSpells();
 		if((mob.isMine(this))&&(spells.size()>0))
+		{
+			MOB caster=CMLib.map().getFactoryMOB(mob.location());
 			for(int i=0;i<spells.size();i++)
 			{
 				Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
@@ -72,8 +74,12 @@ public class StdPill extends StdFood implements Pill
 				int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
 				if(level<lowest)
 					level=lowest;
-				thisOne.invoke(mob,mob,true,level);
+				caster.basePhyStats().setLevel(level);
+				caster.phyStats().setLevel(level);
+				thisOne.invoke(caster,mob,true,level);
 			}
+			caster.destroy();
+		}
 	}
 
 	public String getSpellList()

@@ -32,14 +32,14 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Skill_EscapeBonds extends BardSkill
+public class Skill_StruggleBonds extends BardSkill
 {
-	public String ID() { return "Skill_EscapeBonds"; }
-	public String name(){ return "Escape Bonds";}
+	public String ID() { return "Skill_StruggleBonds"; }
+	public String name(){ return "Struggle at Bonds";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"ESCAPEBONDS","ESCAPE"};
+	private static final String[] triggerStrings = {"STRUGGLEBONDS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MANA;}
@@ -71,7 +71,7 @@ public class Skill_EscapeBonds extends BardSkill
 	{
 		if(!CMLib.flags().isBound(mob))
 		{
-			mob.tell("You don't seem to be bound by anything you can escape!");
+			mob.tell("You don't seem to be bound by anything you can struggle against!");
 			return false;
 		}
 
@@ -82,7 +82,7 @@ public class Skill_EscapeBonds extends BardSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),"<S-NAME> attempt(s) to escape <S-HIS-HER> bonds.");
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to struggle with <S-HIS-HER> bonds.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.addEffect(this);
@@ -93,7 +93,7 @@ public class Skill_EscapeBonds extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> fumble(s) <S-HIS-HER> attempt to escape.");
+			return beneficialVisualFizzle(mob,null,"<S-NAME> fumble(s) <S-HIS-HER> attempt to struggle.");
 
 		return success;
 	}

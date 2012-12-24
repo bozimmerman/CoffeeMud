@@ -130,7 +130,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:(CMMsg.MSG_DELICATE_HANDS_ACT),auto?"<T-NAME> start(s) slipping from <T-HIS-HER> bonds.":"<S-NAME> attempt(s) to slip free of <S-HIS-HER> bonds.");
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,auto?"<T-NAME> start(s) slipping from <T-HIS-HER> bonds.":"<S-NAME> attempt(s) to slip free of <S-HIS-HER> bonds.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to slip free of <S-HIS-HER> bonds, but can't seem to concentrate.");
 		else

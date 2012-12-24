@@ -102,6 +102,8 @@ public class GenMultiPotion extends GenDrink implements Potion
 		{
 			if((!isDrunk())&&(spells.size()>0))
 			{
+				MOB caster=CMLib.map().getFactoryMOB(owner.location());
+				MOB finalCaster=(owner!=drinkerTarget)?owner:caster;
 				for(int i=0;i<spells.size();i++)
 				{
 					Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
@@ -112,8 +114,11 @@ public class GenMultiPotion extends GenDrink implements Potion
 					int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
 					if(level<lowest)
 						level=lowest;
-					thisOne.invoke(owner,drinkerTarget,true,level);
+					caster.basePhyStats().setLevel(level);
+					caster.phyStats().setLevel(level);
+					thisOne.invoke(finalCaster,drinkerTarget,true,level);
 				}
+				caster.destroy();
 			}
 
 			if((liquidRemaining()<=thirstQuenched())&&(!isDrunk()))

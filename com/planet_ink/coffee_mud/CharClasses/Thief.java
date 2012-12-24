@@ -150,7 +150,7 @@ public class Thief extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_Warrants",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Bribe",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_EscapeBonds",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_EscapeBonds",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_Ambush",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Thief_Squatting",false);
