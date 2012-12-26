@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import org.mozilla.javascript.*;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -4635,8 +4636,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
 					if(X!=null)
 					{
-						String s=((MOB)E).fetchExpertise(X.ID());
-						if(s!=null) results.append(s);
+						Entry<String,Integer> s=((MOB)E).fetchExpertise(X.ID());
+						if(s!=null) results.append(s.getKey()+((s.getValue()!=null)?s.getValue().toString():""));
 					}
 					else
 					{

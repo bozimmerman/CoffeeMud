@@ -48,7 +48,7 @@ public class Expertises extends StdCommand
 		int col=0;
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
 		XVector<String> expers=new XVector<String>();
-		for(Enumeration<String> e=mob.uniqueExpertises();e.hasMoreElements();)
+		for(Enumeration<String> e=mob.expertises();e.hasMoreElements();)
 		{
 			String exper=e.nextElement();
 			ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(exper);

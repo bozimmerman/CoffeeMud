@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /* 
    Copyright 2000-2012 Bo Zimmerman
@@ -108,12 +109,8 @@ public class MOBTeacher extends CombatAbilities
 			MOB mob=(MOB)ticking;
 			if(teachEverything)
 			{
-				for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
-				{
-					ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
-					if(mob.fetchExpertise(def.ID)==null)
-						mob.addExpertise(def.ID);
-				}
+				for(Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+					mob.addExpertise(e.nextElement().ID);
 				trainableExpertises=null;
 			}
 			else
@@ -373,29 +370,22 @@ public class MOBTeacher extends CombatAbilities
 						trainableExpertises.addAll(CMLib.expertises().myListableExpertises(monster));
 						for(Enumeration<String> exi=monster.expertises();exi.hasMoreElements();)
 						{
-							final String experID=exi.nextElement();
-							if(experID!=null)
+							Entry<String,Integer> EXI=monster.fetchExpertise(exi.nextElement());
+							if(EXI.getValue()==null)
 							{
-								ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
+								ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(EXI.getKey());
 								if((def != null) && (!trainableExpertises.contains(def))) 
 									trainableExpertises.add(def);
 							}
-						}
-						HashSet<String> allExperParentsIDs=new HashSet();
-						for(int v=0;v<trainableExpertises.size();v++)
-						{
-							ExpertiseLibrary.ExpertiseDefinition def=trainableExpertises.get(v);
-							if(!allExperParentsIDs.contains(def.baseName))
-								allExperParentsIDs.add(def.baseName);
-						}
-						for(String experParentID : allExperParentsIDs)
-						{
-							List<String> childrenIDs=CMLib.expertises().getStageCodes(experParentID);
-							for(String experID : childrenIDs)
+							else
 							{
-							  ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
-							  if((def != null) && (!trainableExpertises.contains(def))) 
-								  trainableExpertises.add(def);
+								List<String> childrenIDs=CMLib.expertises().getStageCodes(EXI.getKey());
+								for(String experID : childrenIDs)
+								{
+									ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
+									if((def != null) && (!trainableExpertises.contains(def))) 
+										trainableExpertises.add(def);
+								}
 							}
 						}
 					}

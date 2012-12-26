@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.ref.WeakReference;
 import java.util.*;
+import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
@@ -122,10 +123,10 @@ public class StdMOB implements MOB
 	protected 		   CMUniqSortSVec<Ability>	 abilitys		= new CMUniqSortSVec<Ability>(1);
 	protected 		   int[]					 abilityUseTrig = new int[3];
 	protected 		   STreeMap<String,int[][]>	 abilityUseCache= new STreeMap<String,int[][]>();
+	protected 		   STreeMap<String,Integer>  expertises 	= new STreeMap<String,Integer>();
 	protected 		   SVector<Ability>		 	 affects		= new SVector<Ability>(1);
 	protected 		   CMUniqSortSVec<Behavior>	 behaviors		= new CMUniqSortSVec<Behavior>(1);
 	protected 		   CMUniqSortSVec<Tattoo>	 tattoos		= new CMUniqSortSVec<Tattoo>(1);
-	protected 		   SVector<String>		 	 expertises		= new SVector<String>();
 	protected volatile SVector<Follower>	 	 followers		= null;
 	protected 		   LinkedList<QMCommand> 	 commandQue		= new LinkedList<QMCommand>();
 	protected 		   SVector<ScriptingEngine>	 scripts		= new SVector(1);
@@ -462,7 +463,7 @@ public class StdMOB implements MOB
 		abilityUseCache= new STreeMap<String,int[][]>();
 		behaviors= new CMUniqSortSVec<Behavior>();
 		tattoos	= new CMUniqSortSVec<Tattoo>();
-		expertises = new SVector<String>();
+		expertises = new STreeMap<String,Integer>();
 		followers = null;
 		commandQue = new LinkedList<QMCommand>();
 		scripts	= new SVector();
@@ -3893,143 +3894,74 @@ public class StdMOB implements MOB
 		abilityUseCache.clear();
 	}
 
-	/** Manipulation of the expertise list */
-	public void addExpertise(String of) 
+	@Override public void addExpertise(String code)
 	{
-		if (fetchExpertise(of) != null)
-			return;
-		expertises.add(of);
-		clearAbilityUsageCache();
-	}
-
-	public void delExpertise(String of) 
-	{
-		of = fetchExpertise(of);
-		if (of != null)
+		final Entry<String,Integer> p=CMath.getStringFollowedByNumber(code, true);
+		final String key=p.getKey().toUpperCase();
+		final Integer oldNum=expertises.get(key);
+		if((oldNum==null) || ((p.getValue()!=null) && (oldNum.intValue()<p.getValue().intValue())))
 		{
-			if (expertises.remove(of))
-				clearAbilityUsageCache();
+			expertises.put(key, p.getValue());
+			clearAbilityUsageCache();
 		}
 	}
-
-	public void delAllExpertises() 
+	
+	@Override public void delExpertise(String baseCode)
 	{
-		boolean clearExpertiseCache = expertises.size() > 0;
-		expertises.clear();
-		if (clearExpertiseCache)
+		if(baseCode==null) return;
+		if(expertises.remove(baseCode.toUpperCase())==null)
+		{
+			final Entry<String,Integer> p=CMath.getStringFollowedByNumber(baseCode, true);
+			if(expertises.remove(p.getKey().toUpperCase())!=null)
+				clearAbilityUsageCache();
+		}
+		else
 			clearAbilityUsageCache();
 	}
 
-	public Enumeration<String> expertises()
+	@Override public Entry<String,Integer> fetchExpertise(final String baseCode)
 	{
-		return new IteratorEnumeration<String>(expertises.iterator());
+		if(baseCode==null) return null;
+		final Entry<String,Integer> p=CMath.getStringFollowedByNumber(baseCode, true);
+		final String key=p.getKey().toUpperCase();
+		final Integer num=expertises.get(key);
+		if((expertises.containsKey(key))
+		&&((num==null)||(p.getValue()==null)||(p.getValue().intValue()<=num.intValue())))
+		{
+			final Integer i=(p.getValue()==null)?num:p.getValue();
+			return new Entry<String,Integer>(){
+				@Override public String getKey() { return key; }
+				@Override public Integer getValue() { return i; }
+				@Override public Integer setValue(Integer value) { return value; }
+			};
+		}
+		return null;
 	}
 
-	public Enumeration<String> uniqueExpertises() 
+	@Override public void delAllExpertises()
 	{
-		try
+		if(expertises.size()>0)
 		{
-			if (expertises.size() == 0)
-				return EmptyEnumeration.INSTANCE;
-			SVector<String> exCopy = expertises.copyOf();
-			String exper = null, experRoot = null, expTest = null;
-			int num = -1, end = -1, num2 = -1;
-			HashSet remove = new HashSet();
-			for (int i1 = exCopy.size() - 1; i1 >= 0; i1--)
+			expertises.clear();
+			clearAbilityUsageCache();
+		}
+	}
+
+	@Override public Enumeration<String> expertises()
+	{
+		return new Enumeration<String>(){
+			final Iterator<Entry<String,Integer>> i=expertises.entrySet().iterator();
+			@Override public boolean hasMoreElements() { return i.hasNext(); }
+			@Override public String nextElement() 
 			{
-				exper = (String) exCopy.elementAt(i1);
-				if ((exper.length() == 0) || (remove.contains(exper)))
-					continue;
-				end = exper.length();
-				while (Character.isDigit(exper.charAt(end - 1)))
-					end--;
-				if (end < exper.length())
-				{
-					num = CMath.s_int(exper.substring(end));
-					experRoot = exper.substring(0, end);
-					for (int i2 = i1 - 1; i2 >= 0; i2--)
-					{
-						expTest = (String) exCopy.elementAt(i2);
-						if ((!remove.contains(expTest)) 
-						&& (expTest.startsWith(experRoot))
-						&& (CMath.isInteger(expTest.substring(experRoot.length()))))
-						{
-							num2 = CMath.s_int(expTest.substring(experRoot.length()));
-							if (num < num2)
-							{
-								remove.add(exper);
-								exper = expTest;
-								num = num2;
-							} 
-							else
-								remove.add(expTest);
-						}
-					}
-				} 
-				else
-				{
-					ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(exper);
-					if (def == null)
-						continue;
-					int x = def.name.lastIndexOf(' ');
-					if (x < 0)
-						continue;
-					if (CMath.isRomanNumeral(def.name.substring(x + 1).trim())
-							&& (exper.endsWith(def.name.substring(x + 1).trim())))
-					{
-						num = CMath.convertFromRoman(def.name.substring(x + 1).trim());
-						experRoot = exper.substring(0, exper.length() - def.name.substring(x + 1).trim().length());
-						for (int i2 = i1 - 1; i2 >= 0; i2--)
-						{
-							expTest = (String) exCopy.elementAt(i2);
-							if ((!remove.contains(expTest)) 
-							&& (expTest.startsWith(experRoot))
-							&& (CMath.isRomanNumeral(expTest.substring(experRoot.length()))))
-							{
-								num2 = CMath.convertFromRoman(expTest.substring(experRoot.length()));
-								if (num < num2)
-								{
-									remove.add(exper);
-									exper = expTest;
-									num = num2;
-								} 
-								else
-									remove.add(expTest);
-							}
-						}
-					}
-				}
+				final Entry<String,Integer> s=i.next();
+				if(s.getValue()==null)
+					return s.getKey();
+				return s.getKey()+s.getValue().toString();
 			}
-			exCopy.removeAll(remove);
-			return exCopy.elements();
-		} catch (Exception e){}
-		return expertises.elements();
+		};
 	}
-
-	public int numExpertises()
-	{
-		return expertises.size();
-	}
-
-	public String fetchExpertise(int x) 
-	{
-		try
-		{
-			return (String) expertises.elementAt(x);
-		} catch (Exception e){}
-		return null;
-	}
-
-	public String fetchExpertise(String of) 
-	{
-		try
-		{
-			for (final String X : expertises)
-				if (X.equalsIgnoreCase(of))
-					return X;
-		} catch (Exception e){}
-		return null;
-	}
+	
 
 	/** Manipulation of the scripts list */
 	public void addScript(ScriptingEngine S) 

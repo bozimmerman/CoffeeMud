@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
@@ -604,7 +605,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				text.append("<EDUS>");
 				for(Enumeration<String> x=((MOB)E).expertises();x.hasMoreElements();)
-					text.append(x.nextElement()+";");
+					text.append(x.nextElement()).append(';');
 				text.append("</EDUS>");
 			}
 		}
@@ -2643,7 +2644,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			pfxml.append("<EDUS>");
 			for(Enumeration<String> x=mob.expertises();x.hasMoreElements();)
-				pfxml.append(x.nextElement()+";");
+				pfxml.append(x.nextElement()).append(';');
 			pfxml.append("</EDUS>");
 		}
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
@@ -3432,7 +3433,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				}
 		case 19:{StringBuffer str=new StringBuffer("");
 				 for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
-					str.append(x.nextElement()+";");
+					str.append(x.nextElement()).append(';');
 				 return str.toString();
 				}
 		case 20: return M.rawImage();

@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /* 
    Copyright 2000-2012 Bo Zimmerman
@@ -75,10 +76,14 @@ public class Teach extends StdCommand
 			List<ExpertiseDefinition> V=CMLib.expertises().myListableExpertises(mob);
 			for(Enumeration<String> exi=mob.expertises();exi.hasMoreElements();)
 			{
-				final String experID=exi.nextElement();
-				if(experID!=null)
+				Entry<String,Integer> e=mob.fetchExpertise(exi.nextElement());
+				List<String> codes = CMLib.expertises().getStageCodes(e.getKey());
+				if((codes==null)||(codes.size()==0))
+					V.add(CMLib.expertises().getDefinition(e.getKey()));
+				else
+				for(String ID : codes)
 				{
-					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(experID);
+					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(ID);
 					if((def != null) && (!V.contains(def))) 
 						V.add(def);
 				}
@@ -91,13 +96,13 @@ public class Teach extends StdCommand
 					theExpertise=def;
 			}
 			if(theExpertise==null)
-			for(int v=0;v<V.size();v++)
-			{
-				ExpertiseLibrary.ExpertiseDefinition def=V.get(v);
-				if((CMLib.english().containsString(def.name,abilityName)
-				&&(theExpertise==null)))
-					theExpertise=def;
-			}
+				for(int v=0;v<V.size();v++)
+				{
+					ExpertiseLibrary.ExpertiseDefinition def=V.get(v);
+					if((CMLib.english().containsString(def.name,abilityName)
+					&&(theExpertise==null)))
+						theExpertise=def;
+				}
 			if(theExpertise!=null)
 			{
 				return CMLib.expertises().postTeach(mob,student,theExpertise);

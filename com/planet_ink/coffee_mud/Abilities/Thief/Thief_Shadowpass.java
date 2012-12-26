@@ -69,9 +69,9 @@ public class Thief_Shadowpass extends ThiefSkill
 					s=(String)commands.elementAt(v);
 			}
 			else
-			if(CMStrings.isNumberFollowedByString(s))
+			if(CMath.isNumberFollowedByString(s))
 			{
-				Entry<Integer,String> pair=CMStrings.getNumberFollowedByString(s);
+				Entry<Integer,String> pair=CMath.getNumberFollowedByString(s);
 				num=pair.getKey().intValue();
 				s=pair.getValue();
 			}

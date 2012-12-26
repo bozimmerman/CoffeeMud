@@ -108,10 +108,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 				addCharClassIfNotFound(mob,C);
 			}
 			for(int e=0;e<allowedExpertises.size();e++)
-			{
-				ExpertiseLibrary.ExpertiseDefinition def=(ExpertiseLibrary.ExpertiseDefinition)allowedExpertises.elementAt(e);
-				if(mob.fetchExpertise(def.ID)==null) mob.addExpertise(def.ID);
-			}
+				mob.addExpertise(((ExpertiseLibrary.ExpertiseDefinition)allowedExpertises.elementAt(e)).ID);
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();

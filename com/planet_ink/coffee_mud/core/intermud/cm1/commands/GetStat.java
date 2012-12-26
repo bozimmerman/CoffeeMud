@@ -22,6 +22,7 @@ import java.nio.CharBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.*;
 
 /* 
@@ -310,14 +311,26 @@ public class GetStat extends CM1Command
 					case 2: 
 					{
 						if(rest.trim().length()==0)
-							req.sendMsg("[OK "+((MOB)mod).numExpertises()+"]");
+						{
+							int numExpertises=0;
+							for(Enumeration<String> i=((MOB)mod).expertises();i.hasMoreElements();numExpertises++)
+								i.nextElement();
+							req.sendMsg("[OK "+numExpertises+"]");
+						}
 						else
 						{
-							String s=((MOB)mod).fetchExpertise(CMath.s_int(rest));
-							if(s==null)
+							int whichExpertise=CMath.s_int(rest);
+							Enumeration<String> i=((MOB)mod).expertises();
+							String EX=null;
+							while((whichExpertise>=0)&&(i.hasMoreElements()))
+							{
+								EX=i.nextElement();
+								whichExpertise--;
+							}
+							if((whichExpertise>=0)||(EX==null))
 								req.sendMsg("[FAIL NO EXPERTISE "+rest+"]"); 
 							else
-								req.sendMsg("[OK "+s+"]");
+								req.sendMsg("[OK "+EX+"]");
 						}
 						return;
 					}

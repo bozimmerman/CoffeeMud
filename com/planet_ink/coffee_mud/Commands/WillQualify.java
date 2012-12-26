@@ -96,23 +96,21 @@ public class WillQualify  extends Skills
 					int minLevel=E.getMinimumLevel();
 					if(minLevel<qualLevel.intValue())
 						minLevel=qualLevel.intValue();
-					if(minLevel==l)
-					{
-						if((types.size()==0)
+					if((minLevel==l)
+					&&((types.size()==0)
 						||types.contains("EXPERTISE")
 						||types.contains("EXPERTISES")
 						||types.contains(E.ID.toUpperCase())
-						||types.contains(E.name.toUpperCase()))
+						||types.contains(E.name.toUpperCase())))
+					{
+						if ( (++col) > 2) 
 						{
-							if ( (++col) > 2) 
-							{
-								thisLine.append("\n\r");
-								col = 1;
-							}
-							thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
-									+ CMStrings.padRight("^<HELP^>"+E.name+"^</HELP^>", 19) + " "
-									+ CMStrings.padRight(E.costDescription(), (col == 2) ? 12 : 13));
+							thisLine.append("\n\r");
+							col = 1;
 						}
+						thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
+								+ CMStrings.padRight("^<HELP^>"+E.name+"^</HELP^>", 19) + " "
+								+ CMStrings.padRight(E.costDescription(), (col == 2) ? 12 : 13));
 					}
 				}
 			}

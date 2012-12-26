@@ -283,7 +283,6 @@ public interface ExpertiseLibrary extends CMLibrary
 	public String getExpertiseHelp(String ID, boolean exact);
 	public String getApplicableExpertise(String ID, int code);
 	public int getApplicableExpertiseLevel(String ID, int code, MOB mob);
-	public int getExpertiseLevel(MOB mob, String expertise);
 	public int getStages(String baseExpertiseCode);
 	public List<String> getStageCodes(String baseExpertiseCode);
 	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible);

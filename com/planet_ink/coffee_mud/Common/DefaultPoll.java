@@ -44,7 +44,7 @@ public class DefaultPoll implements Poll
 	{
 		try
 		{
-			return (Clan)this.clone();
+			return (Poll)this.clone();
 		}
 		catch(CloneNotSupportedException e)
 		{

@@ -18,6 +18,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 
 /*
@@ -198,14 +199,38 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Ability findAbility(String name);
 	public int[][] getAbilityUsageCache(final String abilityID);
 
-	/** Manipulation of the expertise list */
-	public void addExpertise(String of);
-	public void delExpertise(String of);
-	public int numExpertises();
-	public String fetchExpertise(String of);
-	public String fetchExpertise(int x);
+	/**
+	 * Adds a new expertise, or updates an existing one.
+	 * Requires a coded expertise name (string followed by
+	 * roman or decimal number)
+	 * @param code the expertise to add or update
+	 */
+	public void addExpertise(String code);
+
+	/**
+	 * Deletes an expertise.
+	 * 
+	 * @param baseCode the expertise code
+	 */
+	public void delExpertise(String baseCode);
+
+	/**
+	 * Returns the expertise and number for the given code
+	 * @param code the expertise code
+	 * @return the entry with the string and number
+	 */
+	public Entry<String,Integer> fetchExpertise(String code);
+
+	/**
+	 * Deletes all expertises from the collection
+	 */
 	public void delAllExpertises();
-	public Enumeration<String> uniqueExpertises();
+
+	/**
+	 * Returns an enumerator of all the expertise names
+	 * with their numbers if any .
+	 * @return an enumerator
+	 */
 	public Enumeration<String> expertises();
 	
 	/** Manipulation of the tatoo list */

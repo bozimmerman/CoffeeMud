@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /* 
    Copyright 2000-2012 Bo Zimmerman
@@ -162,23 +163,6 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return s;
 	}
 	
-	public int getExpertiseLevel(MOB mob, String expertise)
-	{
-		if((mob==null)||(expertise==null)) return 0;
-		int level=0;
-		expertise=expertise.toUpperCase();
-		for(Enumeration<String> ex=mob.expertises();ex.hasMoreElements();)
-		{
-			final String X=ex.nextElement();
-			if((X!=null)&&(X.startsWith(expertise)))
-			{
-				int x=CMath.s_int(X.substring(expertise.length()));
-				if(x>level) level=x;
-			}
-		}
-		return level;
-	}
-
 	public List<String> getStageCodes(String baseExpertiseCode)
 	{
 		String key=null;
@@ -227,7 +211,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 	public int getApplicableExpertiseLevel(String ID, int code, MOB mob)
 	{
-		return getExpertiseLevel(mob,(String)completeUsageMap[code].get(ID));
+		Entry<String,Integer> e=mob.fetchExpertise((String)completeUsageMap[code].get(ID));
+		if((e!=null)&&(e.getValue()!=null))
+			return e.getValue().intValue();
+		return 0;
 	}
 	
 	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible)
@@ -492,7 +479,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				return false;
 			}
 			
-			if(!CMLib.expertises().myQualifiedExpertises(student).contains(theExpertise))
+			if(!myQualifiedExpertises(student).contains(theExpertise))
 			{
 				if(teacher.isMonster())
 					CMLib.commands().postSay(teacher,student,"I'm sorry, you do not yet fully qualify for the expertise '"+theExpertise.name+"'.\n\rRequirements: "+CMLib.masking().maskDesc(theExpertise.allRequirements()),true,false);

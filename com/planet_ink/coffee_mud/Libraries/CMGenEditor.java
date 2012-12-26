@@ -23,6 +23,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.regex.*;
 
 /*
@@ -3137,16 +3138,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String behave="NO";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
-			String behaviorstr="";
+			StringBuilder behaviorstr=new StringBuilder("");
 			for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
-			{
-				String B=x.nextElement();
-				if(B!=null) behaviorstr+=B+", ";
-			}
+				behaviorstr.append(x.nextElement()).append(", ");
 			if(behaviorstr.length()>0)
-				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
+				behaviorstr.setLength(behaviorstr.length()-2);
 			if((behaviorstr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
-				behaviorstr=behaviorstr.substring(0,60)+"...";
+			{
+				behaviorstr.setLength(60);
+				behaviorstr.append("...");
+			}
 			mob.tell(showNumber+". Expertises: '"+behaviorstr+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt("Enter a lesson to add/remove\n\r:","");
@@ -3156,6 +3157,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					mob.tell(behave+" removed.");
 					M.delExpertise(behave);
+				}
+				else
+				if(CMLib.expertises().getDefinition(behave)==null)
+				{
+					mob.tell(behave+" is undefined.");
+					continue;
 				}
 				else
 				{

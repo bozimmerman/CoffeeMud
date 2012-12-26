@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 
 
@@ -200,9 +201,10 @@ public class MobData extends StdWebMacro
 			else
 			for(Enumeration<String> x=E.expertises();x.hasMoreElements();)
 			{
-				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(x.nextElement());
+				final String ID=x.nextElement();
+				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(ID);
 				if(X!=null)
-					theclasses.addElement(X.ID);
+					theclasses.addElement(ID);
 			}
 			for(int i=0;i<theclasses.size();i++)
 			{
@@ -1366,7 +1368,7 @@ public class MobData extends StdWebMacro
 				{
 					old="";
 					for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
-						str.append(x.nextElement()).append(";");
+						str.append(x.nextElement()).append(';');
 				}
 				else
 					str.append(old);

@@ -48,35 +48,22 @@ public class Specialization_Weapon extends StdAbility
 	protected int secondWeaponClass=-1;
 	
 	protected short[] bonuses=null;
-	protected int numExpertises=-1;
+	protected Object cachePtr=null;
 
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
 
-	protected int getDamageBonus(int dmgType)
+	protected int getDamageBonus(MOB mob, int dmgType)
 	{
 		switch(dmgType)
 		{
-		case Weapon.TYPE_SLASHING: return bonuses[0];
-		case Weapon.TYPE_PIERCING: return bonuses[1];
-		case Weapon.TYPE_BASHING: return bonuses[2];
-		case Weapon.TYPE_SHOOT: return bonuses[1];
+		case Weapon.TYPE_SLASHING: return getX1Level(mob);
+		case Weapon.TYPE_PIERCING: return getX2Level(mob);
+		case Weapon.TYPE_BASHING: return getX3Level(mob);
+		case Weapon.TYPE_SHOOT: return getX2Level(mob);
 		default:
 			return 0;
 		}
 	}
-	protected int getDamageBonus(MOB mob, int dmgType)
-	{
-		if(mob==null) return 0;
-		if((numExpertises==mob.numExpertises())&&(bonuses!=null))
-			return getDamageBonus(dmgType);
-		if(bonuses==null) bonuses=new short[3];
-		bonuses[0]=(short)getX1Level(mob);
-		bonuses[1]=(short)getX2Level(mob);
-		bonuses[2]=(short)getX3Level(mob);
-		numExpertises=mob.numExpertises();
-		return getDamageBonus(dmgType);
-	}
-	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((activated)

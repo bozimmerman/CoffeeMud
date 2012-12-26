@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.sql.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 /*
  * Copyright 2000-2012 Bo Zimmerman Licensed under the Apache License, Version
@@ -751,7 +752,7 @@ public class MOBloader
 		{
 			pfxml.append("<EDUS>");
 			for(Enumeration<String> x=mob.expertises();x.hasMoreElements();)
-				pfxml.append(x.nextElement()+";");
+				pfxml.append(x.nextElement()).append(';');
 			pfxml.append("</EDUS>");
 		}
 		pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));

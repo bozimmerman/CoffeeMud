@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /*
    Copyright 2000-2012 Bo Zimmerman
@@ -284,17 +285,19 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			int code=getLocalExpCode(key);
 			if(code>=0)
 			{
-    			for(int s=stages-1;s>=0;s--)
-    			{
-    				stage=CMath.convertToRoman(s+1);
-					String expertiseID=mob.fetchExpertise(key+stage);
-					if(expertiseID==null)expertiseID=mob.fetchExpertise(key+(s+1));
-    				if(expertiseID!=null)
-    				{
-        				final ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID);
-    					extras.append(def.data[s]+", ");
-    				}
-    			}
+				Entry<String,Integer> X=mob.fetchExpertise(key);
+				for(int s=stages-1;s>=0;s--)
+				{
+					if((X!=null)&&(X.getValue().intValue()>=(s+1)))
+					{
+						stage=CMath.convertToRoman(s+1);
+						ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(key+stage);
+						if(def==null) def=CMLib.expertises().getDefinition(key+(s+1));
+						if(def==null) def=CMLib.expertises().getDefinition(key);
+						if(def!=null)
+							extras.append(def.data[s]+", ");
+					}
+				}
 			}
 		}
 		if(extras.length()>0)
@@ -365,32 +368,35 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						int code=getLocalExpCode(key);
 						if(code>=0)
 						{
-    						for(int s=stages-1;s>=0;s--)
-    						{
-    							stage=CMath.convertToRoman(s+1);
-    							String expertiseID=mob.fetchExpertise(key+stage);
-    							if(expertiseID==null)expertiseID=mob.fetchExpertise(key+(s+1));
-    							if(expertiseID!=null)
-    							{
-    								final ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID);
-        							if(cmd.equalsIgnoreCase(def.data[s]))
-        							{
-        								commands.removeElementAt(0);
-        								if(types==null) types=new DVector(2);
-        								if(!types.contains(Integer.valueOf(code)))
-        								{
-        									types.addElement(Integer.valueOf(code),Integer.valueOf(s));
-        									if(commands.size()>0)
-        										cmd=(String)commands.firstElement();
-        									else
-        										cmd="";
-        									foundSomething=true;
-        									break; // you can do any from a stage, but only 1 per stage!
-        								}
-        							}
-    							}
-    						}
-    					}
+							Entry<String,Integer> X=mob.fetchExpertise(key);
+							for(int s=stages-1;s>=0;s--)
+							{
+								if((X==null)||(X.getValue().intValue()<(s+1)))
+									continue;
+								stage=CMath.convertToRoman(s+1);
+								ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(key+stage);
+								if(def==null) def=CMLib.expertises().getDefinition(key+(s+1));
+								if(def==null) def=CMLib.expertises().getDefinition(key);
+								if(def!=null)
+								{
+									if(cmd.equalsIgnoreCase(def.data[s]))
+									{
+										commands.removeElementAt(0);
+										if(types==null) types=new DVector(2);
+										if(!types.contains(Integer.valueOf(code)))
+										{
+											types.addElement(Integer.valueOf(code),Integer.valueOf(s));
+											if(commands.size()>0)
+												cmd=(String)commands.firstElement();
+											else
+												cmd="";
+											foundSomething=true;
+											break; // you can do any from a stage, but only 1 per stage!
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -448,7 +454,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				int type=((Integer)types.elementAt(t,1)).intValue();
 				int stage=((Integer)types.elementAt(t,2)).intValue();
 				final String expertiseID=CMLib.expertises().getApplicableExpertise(ID(),type);
-				final ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID+CMath.convertToRoman(1));
+				ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID+CMath.convertToRoman(1));
+				if(def==null) def = CMLib.expertises().getDefinition(expertiseID+1);
+				if(def==null) def = CMLib.expertises().getDefinition(expertiseID);
+				if(def==null) continue;
 				switch(type)
 				{
 				case TYPE_LITECRAFT:

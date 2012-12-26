@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core;
 import java.util.*;
+import java.util.Map.Entry;
 import java.io.*;
 
 /*
@@ -571,7 +572,7 @@ public class CMath
 		if(s==null) return false;
 		final String ts=s.trim();
 		if(!ts.endsWith("%")) return false;
-		return CMath.isNumber(ts.substring(0,ts.length()-1));
+		return isNumber(ts.substring(0,ts.length()-1));
 	}
 
 	/**
@@ -1189,7 +1190,7 @@ public class CMath
 	{
 		if(mask<=0) return 0;
 		for(int i=0;i<64;i++)
-			if((mask&CMath.pow(2,i))>0)
+			if((mask&pow(2,i))>0)
 				return i+1;
 		return 0;
 	}
@@ -1324,15 +1325,15 @@ public class CMath
 	 */
 	public final static long s_parseBitLongExpression(final String[] bits, String val)
 	{
-		if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
-			return CMath.s_parseLongExpression(val);
+		if((val==null)||(val.trim().length()==0)||(isMathExpression(val)))
+			return s_parseLongExpression(val);
 		final StringTokenizer tokens=new StringTokenizer(val,",");
 		long l=0;
 		while(tokens.hasMoreElements())
 		{
 			val=tokens.nextToken().trim();
-			if((val.length()==0)||(CMath.isMathExpression(val)))
-				l|=CMath.s_parseLongExpression(val);
+			if((val.length()==0)||(isMathExpression(val)))
+				l|=s_parseLongExpression(val);
 			else
 			for(int x=0;x<bits.length;x++)
 				if(bits[x].equalsIgnoreCase(val))
@@ -1367,8 +1368,8 @@ public class CMath
 	 */
 	public final static long s_parseListLongExpression(final String[] descs, final String val)
 	{
-		if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
-			return CMath.s_parseLongExpression(val);
+		if((val==null)||(val.trim().length()==0)||(isMathExpression(val)))
+			return s_parseLongExpression(val);
 		for(int x=0;x<descs.length;x++)
 			if(descs[x].equalsIgnoreCase(val))
 				return x;
@@ -1421,6 +1422,118 @@ public class CMath
 		return alreadyDot;
 	}
 
+	/**
+	 * Returns whether the given string is a number followed
+	 * by 1 or more characters.
+	 * @param str the string to check
+	 * @return true if its a numstring.
+	 */
+	public final static boolean isNumberFollowedByString(final String str)
+	{
+		if((str==null)||(str.length()<2)) return false;
+		if(!Character.isDigit(str.charAt(0))) return false;
+		int dex=1;
+		for(;dex<str.length();dex++)
+			if(Character.isLetter(str.charAt(dex)))
+				break;
+			else
+			if(!Character.isDigit(str.charAt(dex)))
+				return false;
+		if(dex>=str.length())
+			return false;
+		for(;dex<str.length();dex++)
+			if(!Character.isLetter(str.charAt(dex)))
+				return false;
+		return true;
+	}
+	
+	/**
+	 * Returns a number/string pair built from a given string, if it is a string with
+	 * a number followed by one or more characters.  Returns null if the given string
+	 * does not match that criteria
+	 * @param str the string to check
+	 * @return a Math.Entry pair of the separated number/string.
+	 */
+	public final static Entry<Integer,String> getNumberFollowedByString(final String str)
+	{
+		if((str==null)||(str.length()<2)) return null;
+		if(!Character.isDigit(str.charAt(0))) return null;
+		int dex=1;
+		for(;dex<str.length();dex++)
+			if(Character.isLetter(str.charAt(dex)))
+				break;
+			else
+			if(!Character.isDigit(str.charAt(dex)))
+				return null;
+		if(dex>=str.length())
+			return null;
+		int endNumber=dex;
+		for(;dex<str.length();dex++)
+			if(!Character.isLetter(str.charAt(dex)))
+				return null;
+		final Integer num=Integer.valueOf(s_int(str.substring(0,endNumber)));
+		final String rest=str.substring(endNumber);
+		return new Entry<Integer,String>(){
+			@Override public Integer getKey() { return num;}
+			@Override public String getValue() { return rest;}
+			@Override public String setValue(String value) { return value;}
+		};
+	}
+	
+	/**
+	 * If the given string is 1 or more characters followed by decimal digits, this will return a Map.Entry
+	 * with those parts separated.  If the string is characters followed by a roman numeral digits, it will
+	 * return a Map.Entry with those parts separated.  Otherwise, it will return a Map.Entry with the string
+	 * and a null integer.
+	 * @param str the string to check
+	 * @param romanOK true to check for roman numerals, false to just check for decimal
+	 * @return the Map.Entry
+	 */
+	public final static Entry<String,Integer> getStringFollowedByNumber(final String str, final boolean romanOK)
+	{
+		final String codeStr;
+		final Integer number;
+		if((str==null)||(str.length()<1))
+		{
+			codeStr=str;
+			number=null;
+		}
+		else
+		{
+			int dex=str.length()-1;
+			if(!Character.isDigit(str.charAt(dex)))
+			{
+				if((!romanOK)||(!isRomanDigit(str.charAt(dex))))
+				{
+					codeStr=str;
+					number=null;
+				}
+				else
+				{
+					dex--;
+					while((dex>0)&&(isRomanDigit(str.charAt(dex))))
+						dex--;
+					codeStr=str.substring(0,dex+1);
+					number=Integer.valueOf(convertFromRoman(str.substring(dex+1)));
+				}
+			}
+			else
+			{
+				dex--;
+				while((dex>0)&&(Character.isDigit(str.charAt(dex))))
+					dex--;
+				codeStr=str.substring(0,dex+1);
+				number=Integer.valueOf(s_int(str.substring(dex+1)));
+			}
+		}
+		return new Entry<String,Integer>(){
+			@Override public String getKey() { return codeStr;}
+			@Override public Integer getValue() { return number;}
+			@Override public Integer setValue(Integer value) { return value;}
+		};
+	}
+	
+	
 	/**
 	 * @see java.lang.Math#round(double)
 	 * @param d the real number
