@@ -2271,7 +2271,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			roomID=(String)deathRooms.get("ALL");
 
 		Room room=null;
-		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
+		if((roomID!=null)&&(roomID.equalsIgnoreCase("MORGUE")))
+			return getDefaultBodyRoom(mob);
+		if((room==null)&&(roomID!=null)&&(roomID.equalsIgnoreCase("START")))
 			room=mob.getStartRoom();
 		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
 			room=CMLib.map().getRoom(roomID);
