@@ -1229,7 +1229,7 @@ public class CMath
 	 */
 	public final static boolean isBool(final String BOOL)
 	{
-		return BOOL.equalsIgnoreCase("true")||BOOL.equalsIgnoreCase("false");
+		return "true".equalsIgnoreCase(BOOL)||"false".equalsIgnoreCase(BOOL);
 	}
 
 	/**
