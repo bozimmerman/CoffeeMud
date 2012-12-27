@@ -2118,7 +2118,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		{
-			mob=CMLib.players().getLoadPlayer(login);
+			final boolean resetStats=(mob==null);
+			if(resetStats)
+				mob=CMLib.players().getLoadPlayer(login);
 			if((mob == null) || (session == null))
 			{
 				Log.errOut("CharCreation",login+" does not exist ("+(session!=null)+")! FAIL!");
@@ -2143,7 +2145,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					C.execute(mob,new XVector<Object>("WIZINV"),0);
 			}
 			showTheNews(mob);
-			mob.bringToLife(mob.location(),true);
+			mob.bringToLife(mob.location(),resetStats);
 			CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
 			mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
 		}
