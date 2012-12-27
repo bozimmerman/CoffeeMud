@@ -90,9 +90,9 @@ public interface TrackingLibrary extends CMLibrary
 				head=new RFilterNode(filter);
 			else
 			{
-    			while(me.next!=null)
-    				me=me.next;
-    			me.next=new RFilterNode(filter);
+				while(me.next!=null)
+					me=me.next;
+				me.next=new RFilterNode(filter);
 			}
 			return this;
 		}

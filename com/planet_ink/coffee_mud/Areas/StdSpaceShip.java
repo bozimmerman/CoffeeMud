@@ -497,11 +497,11 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		final List<Ability> affects=this.affects;
 		if(affects==null) return;
 		try{
-    		for(int a=0;a<affects.size();a++)
-    		{
-    			final Ability A=affects.get(a);
-    			if(A!=null) applier.apply(A);
-    		}
+			for(int a=0;a<affects.size();a++)
+			{
+				final Ability A=affects.get(a);
+				if(A!=null) applier.apply(A);
+			}
 		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	public void delAllEffects(boolean unInvoke)
@@ -750,12 +750,12 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		final List<Behavior> behaviors=this.behaviors;
 		if(behaviors!=null)
 		try{
-    		for(int a=0;a<behaviors.size();a++)
-    		{
-    			final Behavior B=behaviors.get(a);
-    			if(B!=null) applier.apply(B);
-    		}
-    	} catch(ArrayIndexOutOfBoundsException e){}
+			for(int a=0;a<behaviors.size();a++)
+			{
+				final Behavior B=behaviors.get(a);
+				if(B!=null) applier.apply(B);
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 
 	/** Manipulation of the scripts list */
@@ -790,12 +790,12 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		final List<ScriptingEngine> scripts=this.scripts;
 		if(scripts!=null)
 		try{
-    		for(int a=0;a<scripts.size();a++)
-    		{
-    			final ScriptingEngine S=scripts.get(a);
-    			if(S!=null) applier.apply(S);
-    		}
-    	} catch(ArrayIndexOutOfBoundsException e){}
+			for(int a=0;a<scripts.size();a++)
+			{
+				final ScriptingEngine S=scripts.get(a);
+				if(S!=null) applier.apply(S);
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void addProperRoom(Room R)

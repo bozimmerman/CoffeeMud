@@ -1285,15 +1285,15 @@ public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 		}
 		finally
 		{
-    		try
-    		{
-    			if (sock != null)
-    			{
-    				sock.close();
-    				sock = null;
-    			}
-    		}
-    		catch (Exception e)	{}
+			try
+			{
+				if (sock != null)
+				{
+					sock.close();
+					sock = null;
+				}
+			}
+			catch (Exception e)	{}
 			completed=true;
 		}
 	}

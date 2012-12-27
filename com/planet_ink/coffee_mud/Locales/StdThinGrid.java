@@ -430,7 +430,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		synchronized(R.basePhyStats())
 		{
-    		R.basePhyStats().setSensesMask(CMath.unsetb(R.basePhyStats().sensesMask(),PhyStats.SENSE_ROOMGRIDSYNC));
+			R.basePhyStats().setSensesMask(CMath.unsetb(R.basePhyStats().sensesMask(),PhyStats.SENSE_ROOMGRIDSYNC));
 		}
 	}
 
@@ -637,11 +637,11 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		loc.rawDoors()[opCode]=alternativeLink(loc,room,opCode);
 		if(ao==null) 
 		{
-    		if((room.getGridParent()==loc.getGridParent())
-    		&&(loc.rawDoors()[opCode]==room))
-    			ao=o;
-    		else
-    			ao=CMClass.getExit("Open");
+			if((room.getGridParent()==loc.getGridParent())
+			&&(loc.rawDoors()[opCode]==room))
+				ao=o;
+			else
+				ao=CMClass.getExit("Open");
 		}
 		loc.setRawExit(opCode,ao);
 	}

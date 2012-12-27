@@ -152,7 +152,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		&&(!CMLib.encoder().isARandomHashString(newPassword)))
 			password=CMLib.encoder().makeRandomHashString(newPassword);
 		else
-    		password=newPassword;
+			password=newPassword;
 	}
 	public boolean matchesPassword(String checkPass)
 	{

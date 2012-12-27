@@ -1695,7 +1695,7 @@ public class CMProps extends Properties
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,"POWERGENERATOR_"+key);
 			else
-    			image=getHashedMXPImage(H,"POWERGENERATOR");
+				image=getHashedMXPImage(H,"POWERGENERATOR");
 		}
 		else
 		if(O instanceof Electronics.PowerSource)

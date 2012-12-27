@@ -516,7 +516,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					{
 						final Ability myA=mob.fetchAbility(A.ID());
 						if(((myA!=null)&&(myA.usageCost(mob,false)[0]>0))||(A.usageCost(mob, false)[0]>0))
-    						expenseAffects.addElement(A);
+							expenseAffects.addElement(A);
 					}
 				}
 			}

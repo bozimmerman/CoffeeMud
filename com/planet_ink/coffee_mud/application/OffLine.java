@@ -330,9 +330,9 @@ public class OffLine extends Thread implements MudHost
 			{
 				try
 				{
-    				state=0;
-    				sock=servsock.accept();
-    				acceptConnection(sock);
+					state=0;
+					sock=servsock.accept();
+					acceptConnection(sock);
 				}
 				catch(Exception t)
 				{

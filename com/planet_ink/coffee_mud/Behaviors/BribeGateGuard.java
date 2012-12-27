@@ -545,39 +545,39 @@ public class BribeGateGuard extends StdBehavior
 			MOB M = mob.location().fetchInhabitant(j);
 			if(M.playerStats()!=null)
 			{
-    			if ( (paidPlayers.contains(M)) && (toldAlready.containsKey(M.Name()))) {
-    			  Boolean B = (Boolean) toldAlready.get(M.Name());
-    			  if (!B.booleanValue())
-    			  {
-    				  String currency=CMLib.beanCounter().getCurrency(mob);
-    				  double denomination=CMLib.beanCounter().getLowestDenomination(currency);
-    				  String balanceStr=CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(getBalance(M)/denomination));
-    				CMLib.commands().postSay(mob, M,
-    									  "We still have record that you gave us " +
-    									  balanceStr +
-    									  " before if you're heading through", true, false);
-    			  }
-    			  toldAlready.put(M.Name(), Boolean.TRUE);
-    			if (dir >= 0)
-    				mob.doCommand(CMParms.parse("OPEN " +
-    								Directions.
-    								getDirectionName(dir)),Command.METAFLAG_FORCED);
-    			}
-    			else {
-    			  if(toldAlready.containsKey(M.Name()))
-    				 continue;
-    			  String currency=CMLib.beanCounter().getCurrency(mob);
-    			  double denomination=CMLib.beanCounter().getLowestDenomination(currency);
-    			  String priceStr=CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(price()/denomination));
-    			  CMLib.commands().postSay(mob, M,
-    				  "I'll let you through here if you pay the fee of " + priceStr +
-    				  ".", true, false);
-    			  toldAlready.put(M.Name(), Boolean.TRUE);
-    			  if (debug)  // debugging
-    				CMLib.commands().postSay(mob, M,
-    									  "I'm telling you this from tick", true, false);
-    			}
-    		  }
+				if ( (paidPlayers.contains(M)) && (toldAlready.containsKey(M.Name()))) {
+				  Boolean B = (Boolean) toldAlready.get(M.Name());
+				  if (!B.booleanValue())
+				  {
+					  String currency=CMLib.beanCounter().getCurrency(mob);
+					  double denomination=CMLib.beanCounter().getLowestDenomination(currency);
+					  String balanceStr=CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(getBalance(M)/denomination));
+					CMLib.commands().postSay(mob, M,
+										  "We still have record that you gave us " +
+										  balanceStr +
+										  " before if you're heading through", true, false);
+				  }
+				  toldAlready.put(M.Name(), Boolean.TRUE);
+				if (dir >= 0)
+					mob.doCommand(CMParms.parse("OPEN " +
+									Directions.
+									getDirectionName(dir)),Command.METAFLAG_FORCED);
+				}
+				else {
+				  if(toldAlready.containsKey(M.Name()))
+					 continue;
+				  String currency=CMLib.beanCounter().getCurrency(mob);
+				  double denomination=CMLib.beanCounter().getLowestDenomination(currency);
+				  String priceStr=CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(price()/denomination));
+				  CMLib.commands().postSay(mob, M,
+					  "I'll let you through here if you pay the fee of " + priceStr +
+					  ".", true, false);
+				  toldAlready.put(M.Name(), Boolean.TRUE);
+				  if (debug)  // debugging
+					CMLib.commands().postSay(mob, M,
+										  "I'm telling you this from tick", true, false);
+				}
+			  }
 		  }
 		}
 		boolean nightTime = (mob.location().getArea().getTimeObj().getTODCode() ==

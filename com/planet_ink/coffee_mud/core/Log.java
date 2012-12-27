@@ -518,26 +518,26 @@ public class Log extends java.util.logging.Logger
 		{
 			synchronized(outWriter)
 			{
-    			if(e!=null)
-    			{
-    				outWriter.println(getLogHeader(type,Module, e.getMessage()));
-    				e.printStackTrace(outWriter);
-    				outWriter.flush();
-    			}
-    			else
-    				outWriter.println(getLogHeader(type,Module,"Null/Unknown error occurred."));
-    			if(prop(type).startsWith("BOTH"))
-    			{
-    				if(e!=null)
-    				{
-    					System.out.println(getLogHeader(type,Module, e.getMessage()));
-    					e.printStackTrace(System.out);
-    					System.out.flush();
-    				}
-    				else
-    					System.out.println(getLogHeader(type,Module,"Null/Unknown error occurred."));
-    			}
-    			close(outWriter);
+				if(e!=null)
+				{
+					outWriter.println(getLogHeader(type,Module, e.getMessage()));
+					e.printStackTrace(outWriter);
+					outWriter.flush();
+				}
+				else
+					outWriter.println(getLogHeader(type,Module,"Null/Unknown error occurred."));
+				if(prop(type).startsWith("BOTH"))
+				{
+					if(e!=null)
+					{
+						System.out.println(getLogHeader(type,Module, e.getMessage()));
+						e.printStackTrace(System.out);
+						System.out.flush();
+					}
+					else
+						System.out.println(getLogHeader(type,Module,"Null/Unknown error occurred."));
+				}
+				close(outWriter);
 			}
 		}
 	}
@@ -558,16 +558,16 @@ public class Log extends java.util.logging.Logger
 		{
 			synchronized(outWriter)
 			{
-    			outWriter.println(getLogHeader(type,Module, e.getMessage()));
-    			e.printStackTrace(outWriter);
-    			outWriter.flush();
-    			if(prop(type).startsWith("BOTH"))
-    			{
-    				System.out.println(getLogHeader(type,Module, e.getMessage()));
-    				e.printStackTrace(System.out);
-    				System.out.flush();
-    			}
-    			close(outWriter);
+				outWriter.println(getLogHeader(type,Module, e.getMessage()));
+				e.printStackTrace(outWriter);
+				outWriter.flush();
+				if(prop(type).startsWith("BOTH"))
+				{
+					System.out.println(getLogHeader(type,Module, e.getMessage()));
+					e.printStackTrace(System.out);
+					System.out.flush();
+				}
+				close(outWriter);
 			}
 		}
 	}
@@ -588,11 +588,11 @@ public class Log extends java.util.logging.Logger
 		{
 			synchronized(outWriter)
 			{
-    			outWriter.println(Message);
-    			outWriter.flush();
-    			if(prop(type).startsWith("BOTH"))
-    				System.out.println(Message);
-    			close(outWriter);
+				outWriter.println(Message);
+				outWriter.flush();
+				if(prop(type).startsWith("BOTH"))
+					System.out.println(Message);
+				close(outWriter);
 			}
 		}
 	}
@@ -640,13 +640,13 @@ public class Log extends java.util.logging.Logger
 		{
 			synchronized(outWriter)
 			{
-    			final Calendar C=Calendar.getInstance();
-    			Message=C.get(Calendar.MINUTE)+":"+C.get(Calendar.SECOND)+":"+C.get(Calendar.MILLISECOND)+": "+Message;
-    			outWriter.println(getLogHeader(type,Module, Message));
-    			outWriter.flush();
-    			if(prop(type).startsWith("BOTH"))
-    				System.out.println(getLogHeader(type,Module, Message));
-    			close(outWriter);
+				final Calendar C=Calendar.getInstance();
+				Message=C.get(Calendar.MINUTE)+":"+C.get(Calendar.SECOND)+":"+C.get(Calendar.MILLISECOND)+": "+Message;
+				outWriter.println(getLogHeader(type,Module, Message));
+				outWriter.flush();
+				if(prop(type).startsWith("BOTH"))
+					System.out.println(getLogHeader(type,Module, Message));
+				close(outWriter);
 			}
 		}
 	}

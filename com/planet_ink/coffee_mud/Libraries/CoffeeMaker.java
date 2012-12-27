@@ -401,7 +401,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("SKILLID",((Recipe)E).getCommonSkillID()));
 			String[] recipes = ((Recipe)E).getRecipeCodeLines();
 			for(String recipe : recipes)
-    			text.append(CMLib.xml().convertXMLtoTag("RECIPE",recipe));
+				text.append(CMLib.xml().convertXMLtoTag("RECIPE",recipe));
 		}
 
 		if(E instanceof Light)

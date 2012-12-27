@@ -50,9 +50,9 @@ public class Sit extends StdCommand
 		{
 			CMMsg msg;
 			if(CMLib.flags().isSleeping(mob))
-    			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,"<S-NAME> awake(s) and sit(s) up.");
+				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,"<S-NAME> awake(s) and sit(s) up.");
 			else
-    			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,"<S-NAME> sit(s) down and take(s) a rest.");
+				msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,"<S-NAME> sit(s) down and take(s) a rest.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return false;

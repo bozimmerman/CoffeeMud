@@ -647,9 +647,9 @@ public class Masonry extends CraftingSkill
 	
     public boolean isHomePeerTitledRoom(Room R)
 	{
-    	LandTitle title = ifHomePeerLandTitle(R);
-    	if(title == null) return false;
-    	return title.landOwner().length()>0;
+		LandTitle title = ifHomePeerLandTitle(R);
+		if(title == null) return false;
+		return title.landOwner().length()>0;
 	}
 	
 	public LandTitle ifHomePeerLandTitle(Room R)
@@ -657,7 +657,7 @@ public class Masonry extends CraftingSkill
 		if((R!=null)
 		&&(R.ID().length()>0)
 		&&(CMath.bset(R.domainType(),Room.INDOORS)))
-    		return CMLib.law().getLandTitle(R);
+			return CMLib.law().getLandTitle(R);
 		return null;
 	}
 

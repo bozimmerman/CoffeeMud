@@ -708,8 +708,8 @@ public class ProcessSMTPrequest implements Runnable
 									else
 									{
 										replyData=("502 Parameters not supported... \""+parmparms+"\""+cr).getBytes();
-    									error=true;
-    								}
+										error=true;
+									}
 								}
 								if(!error)
 								{

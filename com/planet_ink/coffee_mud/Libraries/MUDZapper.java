@@ -2537,7 +2537,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(flag == null)
 								Log.errOut("MUDZapper","Illegal security flag '"+str2);
 							else
-    							parms.addElement(flag);
+								parms.addElement(flag);
 						}
 						v=V.size();
 					}

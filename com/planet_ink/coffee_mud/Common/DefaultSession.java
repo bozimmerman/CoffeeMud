@@ -1548,7 +1548,7 @@ public class DefaultSession implements Session
 	    				String input=readlineContinue();
 	    				if(input != null)
 	    				{
-    	    				this.inputCallback.setInput(input);
+		    				this.inputCallback.setInput(input);
         					if(!this.inputCallback.waitForInput())
         					{
         						this.inputCallback.callBack();

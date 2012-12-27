@@ -113,45 +113,45 @@ public class Thief_TarAndFeather extends ThiefSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-    		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> tar(s) and feather(s) <T-NAMESELF>!");
-    		if(mob.location().okMessage(mob,msg))
-    		{
-    			mob.location().send(mob,msg);
-    			Item I=CMClass.getArmor("GenArmor");
-    			if(I!=null)
-    			{
-    				target.addItem(I);
-    				long wearCode=0;
-    				Wearable.CODES codes = Wearable.CODES.instance();
-    				for(int i=0;i<codes.all_ordered().length;i++)
-    				{
-    					long code = codes.all_ordered()[i];
-    					if((!CMath.bset(target.charStats().getWearableRestrictionsBitmap(),code))
-    					&&(code!=Wearable.WORN_FLOATING_NEARBY)
-    					&&(code!=Wearable.WORN_EYES)
-    					&&(code!=Wearable.WORN_MOUTH))
-    						wearCode|=code;
-    				}
-    				for(int i=0;i<Race.BODY_WEARGRID.length;i++)
-    				{
-    					if((target.charStats().getBodyPart(i)<=0)
-    					&&(Race.BODY_WEARGRID[i][1]>0))
-    						wearCode=CMath.unsetb(wearCode,Race.BODY_WEARGRID[i][0]);
-    				}
-    				I.setRawProperLocationBitmap(wearCode);
-    				I.setRawWornCode(wearCode);
-    				I.setName("a coating of tar and feathers");
-    				I.setDisplayText("a pile of tar and feathers sits here.");
-    				I.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
-    				I.phyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
-    				I.setRawLogicalAnd(true);
-    				I.addNonUninvokableEffect((Ability)this.copyOf());
-    				Behavior B=CMClass.getBehavior("Decay");
-    				long thetime=(long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*3;
-    				B.setParms("notrigger=1 answer=dissolves! min="+thetime+" max="+thetime+" chance=100");
-    				I.addBehavior(B);
-    			}
-    		}
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> tar(s) and feather(s) <T-NAMESELF>!");
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				Item I=CMClass.getArmor("GenArmor");
+				if(I!=null)
+				{
+					target.addItem(I);
+					long wearCode=0;
+					Wearable.CODES codes = Wearable.CODES.instance();
+					for(int i=0;i<codes.all_ordered().length;i++)
+					{
+						long code = codes.all_ordered()[i];
+						if((!CMath.bset(target.charStats().getWearableRestrictionsBitmap(),code))
+						&&(code!=Wearable.WORN_FLOATING_NEARBY)
+						&&(code!=Wearable.WORN_EYES)
+						&&(code!=Wearable.WORN_MOUTH))
+							wearCode|=code;
+					}
+					for(int i=0;i<Race.BODY_WEARGRID.length;i++)
+					{
+						if((target.charStats().getBodyPart(i)<=0)
+						&&(Race.BODY_WEARGRID[i][1]>0))
+							wearCode=CMath.unsetb(wearCode,Race.BODY_WEARGRID[i][0]);
+					}
+					I.setRawProperLocationBitmap(wearCode);
+					I.setRawWornCode(wearCode);
+					I.setName("a coating of tar and feathers");
+					I.setDisplayText("a pile of tar and feathers sits here.");
+					I.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
+					I.phyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
+					I.setRawLogicalAnd(true);
+					I.addNonUninvokableEffect((Ability)this.copyOf());
+					Behavior B=CMClass.getBehavior("Decay");
+					long thetime=(long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*3;
+					B.setParms("notrigger=1 answer=dissolves! min="+thetime+" max="+thetime+" chance=100");
+					I.addBehavior(B);
+				}
+			}
 		}
 		else
 			maliciousFizzle(mob,target,"<S-NAME> attempt(s) to tar and feather <T-NAMESELF>, but fail(s).");

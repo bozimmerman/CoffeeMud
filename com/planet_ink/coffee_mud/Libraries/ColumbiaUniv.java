@@ -258,12 +258,12 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			{
 				List<String> stages=getStageCodes(ID);
 				if(addIfPossible)
-    				for(int s1=0;s1<stages.size();s1++)
-    				{
-    					def=getDefinition(stages.get(s1));
-    					if(def==null) continue;
-    					def.data=CMParms.parseCommas(row,true).toArray(new String[0]);
-    				}
+					for(int s1=0;s1<stages.size();s1++)
+					{
+						def=getDefinition(stages.get(s1));
+						if(def==null) continue;
+						def.data=CMParms.parseCommas(row,true).toArray(new String[0]);
+					}
 			}
 			return null;
 		}

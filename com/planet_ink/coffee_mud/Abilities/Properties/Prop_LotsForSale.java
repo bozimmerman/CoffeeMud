@@ -73,16 +73,16 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if(R!=null)
 		{
 			fillCluster(R,V);
-    		String uniqueID="LOTS_PROPERTY_"+this;
-    		if(V.size()>0)
-    			uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID((Room)V.get(0));
-    		for(Iterator<Room> r=V.iterator();r.hasNext();)
-    		{
-    			Ability A=null;
-    			R=r.next();
-    			if(R!=null) A=R.fetchEffect(ID());
-    			if(A!=null) ((Prop_LotsForSale)A).uniqueLotID=uniqueID;
-    		}
+			String uniqueID="LOTS_PROPERTY_"+this;
+			if(V.size()>0)
+				uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID((Room)V.get(0));
+			for(Iterator<Room> r=V.iterator();r.hasNext();)
+			{
+				Ability A=null;
+				R=r.next();
+				if(R!=null) A=R.fetchEffect(ID());
+				if(A!=null) ((Prop_LotsForSale)A).uniqueLotID=uniqueID;
+			}
 		}
 		else
 			uniqueLotID="";
@@ -138,109 +138,109 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		boolean didAnything=false;
 		try
 		{
-    		synchronized(("SYNC"+R.roomID()).intern())
-    		{
-    			R=CMLib.map().getRoom(R);
-    			lastItemNums=updateLotWithThisData(R,this,true,scheduleReset,optPlayerList,lastItemNums);
-    	
-    			if(landOwner().length()==0)
-    			{
-    				boolean updateExits=false;
-    				boolean foundOne=false;
-    				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-    				{
-    					if(d==Directions.GATE)
-    						continue;
-    					Room R2=R.rawDoors()[d];
-    					foundOne=foundOne||(R2!=null);
-    					Exit E=R.getRawExit(d);
-    					if((R2!=null)&&(isCleanRoom(R,R2)))
-    					{
-    						R.rawDoors()[d]=null;
-    						R.setRawExit(d,null);
-    						updateExits=true;
-    						CMLib.map().obliterateRoom(R2);
+			synchronized(("SYNC"+R.roomID()).intern())
+			{
+				R=CMLib.map().getRoom(R);
+				lastItemNums=updateLotWithThisData(R,this,true,scheduleReset,optPlayerList,lastItemNums);
+		
+				if(landOwner().length()==0)
+				{
+					boolean updateExits=false;
+					boolean foundOne=false;
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						if(d==Directions.GATE)
+							continue;
+						Room R2=R.rawDoors()[d];
+						foundOne=foundOne||(R2!=null);
+						Exit E=R.getRawExit(d);
+						if((R2!=null)&&(isCleanRoom(R,R2)))
+						{
+							R.rawDoors()[d]=null;
+							R.setRawExit(d,null);
+							updateExits=true;
+							CMLib.map().obliterateRoom(R2);
         					didAnything=true;
-    					}
-    					else
-    					if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
-    					{
-    						E.setKeyName("");
-    						E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-    						updateExits=true;
-    						if(R2!=null)
-    						{
-    							E=R2.getRawExit(Directions.getOpDirectionCode(d));
-    							if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
-    							{
-    								E.setKeyName("");
-    								E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-    								CMLib.database().DBUpdateExits(R2);
-    								R2.getArea().fillInAreaRoom(R2);
-    		    					didAnything=true;
-    							}
-    						}
-    					}
-    				}
-    				if(!foundOne)
-    				{
-    					CMLib.map().obliterateRoom(R);
-    					didAnything=true;
-    					return;
-    				}
-    				if(updateExits)
-    				{
-    					CMLib.database().DBUpdateExits(R);
-    					R.getArea().fillInAreaRoom(R);
-    					didAnything=true;
-    				}
-    			}
-    			else
-    			{
-    				boolean updateExits=false;
-    				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-    				{
-    					if((d==Directions.UP)||(d==Directions.DOWN)||(d==Directions.GATE))
-    						continue;
-    					Room R2=R.getRoomInDir(d);
-    					if(R2==null)
-    					{
-    						R2=CMClass.getLocale(CMClass.classID(R));
-    						R2.setRoomID(R.getArea().getNewRoomID(R,d));
-    						if(R2.roomID().length()==0) continue;
-    						R2.setArea(R.getArea());
-    						LandTitle newTitle=CMLib.law().getLandTitle(R);
-    						if((newTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
-    						{
-    							newTitle=(LandTitle)((Ability)newTitle).copyOf();
-    							newTitle.setLandOwner("");
-    							newTitle.setBackTaxes(0);
-    							R2.addNonUninvokableEffect((Ability)newTitle);
-    						}
-    						R.rawDoors()[d]=R2;
-    						R.setRawExit(d,CMClass.getExit("Open"));
-    						R2.rawDoors()[Directions.getOpDirectionCode(d)]=R;
-    						R2.setRawExit(Directions.getOpDirectionCode(d),CMClass.getExit("Open"));
-    						updateExits=true;
-    						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
-    							Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
-    						CMLib.database().DBCreateRoom(R2);
-    						if(newTitle!=null)
-    							colorForSale(R2,newTitle.rentalProperty(),true);
-    						R2.getArea().fillInAreaRoom(R2);
-    						CMLib.database().DBUpdateExits(R2);
+						}
+						else
+						if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+						{
+							E.setKeyName("");
+							E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+							updateExits=true;
+							if(R2!=null)
+							{
+								E=R2.getRawExit(Directions.getOpDirectionCode(d));
+								if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
+								{
+									E.setKeyName("");
+									E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+									CMLib.database().DBUpdateExits(R2);
+									R2.getArea().fillInAreaRoom(R2);
+			    					didAnything=true;
+								}
+							}
+						}
+					}
+					if(!foundOne)
+					{
+						CMLib.map().obliterateRoom(R);
+						didAnything=true;
+						return;
+					}
+					if(updateExits)
+					{
+						CMLib.database().DBUpdateExits(R);
+						R.getArea().fillInAreaRoom(R);
+						didAnything=true;
+					}
+				}
+				else
+				{
+					boolean updateExits=false;
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						if((d==Directions.UP)||(d==Directions.DOWN)||(d==Directions.GATE))
+							continue;
+						Room R2=R.getRoomInDir(d);
+						if(R2==null)
+						{
+							R2=CMClass.getLocale(CMClass.classID(R));
+							R2.setRoomID(R.getArea().getNewRoomID(R,d));
+							if(R2.roomID().length()==0) continue;
+							R2.setArea(R.getArea());
+							LandTitle newTitle=CMLib.law().getLandTitle(R);
+							if((newTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
+							{
+								newTitle=(LandTitle)((Ability)newTitle).copyOf();
+								newTitle.setLandOwner("");
+								newTitle.setBackTaxes(0);
+								R2.addNonUninvokableEffect((Ability)newTitle);
+							}
+							R.rawDoors()[d]=R2;
+							R.setRawExit(d,CMClass.getExit("Open"));
+							R2.rawDoors()[Directions.getOpDirectionCode(d)]=R;
+							R2.setRawExit(Directions.getOpDirectionCode(d),CMClass.getExit("Open"));
+							updateExits=true;
+							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
+								Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
+							CMLib.database().DBCreateRoom(R2);
+							if(newTitle!=null)
+								colorForSale(R2,newTitle.rentalProperty(),true);
+							R2.getArea().fillInAreaRoom(R2);
+							CMLib.database().DBUpdateExits(R2);
         					didAnything=true;
-    					}
-    				}
-    				if(updateExits)
-    				{
-    					CMLib.database().DBUpdateExits(R);
-    					R.getArea().fillInAreaRoom(R);
-    					didAnything=true;
-    				}
-    			}
-    		}
-    		scheduleReset=false;
+						}
+					}
+					if(updateExits)
+					{
+						CMLib.database().DBUpdateExits(R);
+						R.getArea().fillInAreaRoom(R);
+						didAnything=true;
+					}
+				}
+			}
+			scheduleReset=false;
 		}
 		finally
 		{

@@ -267,7 +267,7 @@ public class DefaultPlayerStats implements PlayerStats
 		&&(!CMLib.encoder().isARandomHashString(newPassword)))
 			password=CMLib.encoder().makeRandomHashString(newPassword);
 		else
-    		password=newPassword;
+			password=newPassword;
 		if(account != null)
 			account.setPassword(password);
 	}

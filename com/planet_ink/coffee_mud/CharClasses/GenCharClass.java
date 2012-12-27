@@ -123,7 +123,7 @@ public class GenCharClass extends StdCharClass
 			if((classLevel>=securityGroupLevels[i].intValue())
 			&&(i<securityGroups.length))
 				allFlags.addAll(securityGroups[i]);
-    	SecGroup g = CMSecurity.instance().createGroup("", allFlags);
+		SecGroup g = CMSecurity.instance().createGroup("", allFlags);
 		securityGroupCache.put(Integer.valueOf(classLevel),g);
 		return g;
 	}

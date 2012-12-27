@@ -194,19 +194,19 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 		final List<Item> contents=this.contents;
 		if(contents!=null)
 		try{
-    		for(int a=0;a<contents.size();a++)
-    		{
-    			final Item I=contents.get(a);
-    			if(I!=null) 
-    				applier.apply(I);
-    			else
-    				try { innerContents.remove(a); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
-    		}
-    	} catch(ArrayIndexOutOfBoundsException e){}
+			for(int a=0;a<contents.size();a++)
+			{
+				final Item I=contents.get(a);
+				if(I!=null) 
+					applier.apply(I);
+				else
+					try { innerContents.remove(a); }catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
     public Item getRandomItem()
     {
-    	if(numItems()==0) return null;
-    	return getItem(CMLib.dice().roll(1,numItems(),-1));
+		if(numItems()==0) return null;
+		return getItem(CMLib.dice().roll(1,numItems(),-1));
     }
 }

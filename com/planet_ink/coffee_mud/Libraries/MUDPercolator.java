@@ -941,11 +941,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		{
 			List<Ability> V= findAffects(piece,defined);
-    		for(int i=0;i<V.size();i++)
-    		{
-    			Ability A=(Ability)V.get(i);
-    			I.addNonUninvokableEffect(A);
-    		}
+			for(int i=0;i<V.size();i++)
+			{
+				Ability A=(Ability)V.get(i);
+				I.addNonUninvokableEffect(A);
+			}
 		}
 		List<Behavior> V = findBehaviors(piece,defined);
 		for(int i=0;i<V.size();i++)

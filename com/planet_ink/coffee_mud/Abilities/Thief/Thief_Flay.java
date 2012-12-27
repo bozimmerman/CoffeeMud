@@ -150,21 +150,21 @@ public class Thief_Flay extends ThiefSkill
 		
 		if(success)
 		{
-    		if(mob.location().okMessage(mob,msg))
-    		{
-    			mob.location().send(mob,msg);
-    			maliciousAffect(mob,target,asLevel,0,-1);
-    			if(target.fetchEffect(ID())!=null)
-    			{
-    				Ability A=CMClass.getAbility("Bleeding");
-    				if(A!=null) A.invoke(mob,target,true,asLevel);
-    				if(makePeace)
-    				{
-    					mob.makePeace();
-    					target.makePeace();
-    				}
-    			}
-    		}
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				maliciousAffect(mob,target,asLevel,0,-1);
+				if(target.fetchEffect(ID())!=null)
+				{
+					Ability A=CMClass.getAbility("Bleeding");
+					if(A!=null) A.invoke(mob,target,true,asLevel);
+					if(makePeace)
+					{
+						mob.makePeace();
+						target.makePeace();
+					}
+				}
+			}
 		}
 		else
 			maliciousFizzle(mob,target,"<S-NAME> attempt(s) flay <T-NAMESELF>, but fail(s).");

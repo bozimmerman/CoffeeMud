@@ -1086,8 +1086,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(P!=null)
 			P.eachEffect(new EachApplicable<Ability>(){
                 public void apply(Ability A) {
-    				if((A.flags()&flag)>0)
-    					V.addElement(A);
+					if((A.flags()&flag)>0)
+						V.addElement(A);
                 }
 			});
 		return V;

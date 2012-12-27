@@ -64,7 +64,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	
     public PrioritizingLimitedMap(int itemLimit, long touchAgeLimitMillis, long maxAgeLimitMillis)
 	{
-    	this(itemLimit,touchAgeLimitMillis,maxAgeLimitMillis,Integer.MAX_VALUE);
+		this(itemLimit,touchAgeLimitMillis,maxAgeLimitMillis,Integer.MAX_VALUE);
 	}
 	
 	@Override
@@ -211,7 +211,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		else
 		{
 			if(p.second!=arg1)
-    			p.second=arg1;
+				p.second=arg1;
 			markFoundAgain(p);
 		}
 		trimDeadwood();

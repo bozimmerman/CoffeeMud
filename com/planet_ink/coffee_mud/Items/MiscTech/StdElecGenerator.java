@@ -92,7 +92,7 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 		if(newOwner instanceof Room)
 		{
 			if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELEC_GENERATOR))
-    			CMLib.threads().startTickDown(this, Tickable.TICKID_ELEC_GENERATOR, 1);
+				CMLib.threads().startTickDown(this, Tickable.TICKID_ELEC_GENERATOR, 1);
 		}
 		else
 		{
@@ -118,12 +118,12 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_POWERCURRENT)&&(msg.tool()==this))
 			{
-    			if(((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
-    			||(powerRemaining() < getGeneratedAmountPerTick()))
-    			{
-    				//TODO: decrease fuel, and potentially put into cold state!
-    				setPowerRemaining(powerRemaining() + getGeneratedAmountPerTick());
-    			}
+				if(((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
+				||(powerRemaining() < getGeneratedAmountPerTick()))
+				{
+					//TODO: decrease fuel, and potentially put into cold state!
+					setPowerRemaining(powerRemaining() + getGeneratedAmountPerTick());
+				}
 			}
 		}
 	}

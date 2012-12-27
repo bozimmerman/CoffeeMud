@@ -203,7 +203,7 @@ public class RoomLoader
 			D=DB.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
 			if(R.next())
-    			buildExistingRoomObject(R, room);
+				buildExistingRoomObject(R, room);
 			else
 				return false;
 		}

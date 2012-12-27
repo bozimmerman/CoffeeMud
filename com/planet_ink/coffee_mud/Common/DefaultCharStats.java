@@ -119,7 +119,7 @@ public class DefaultCharStats implements CharStats
 			else
 				((DefaultCharStats)intoStats).myLevels=(Integer[])myLevels.clone();
 			if(myRace!=null)
-    			((DefaultCharStats)intoStats).myRace=myRace;
+				((DefaultCharStats)intoStats).myRace=myRace;
 			((DefaultCharStats)intoStats).raceName=raceName;
 			((DefaultCharStats)intoStats).genderName=genderName;
 			((DefaultCharStats)intoStats).displayClassName=displayClassName;
@@ -475,7 +475,7 @@ public class DefaultCharStats implements CharStats
 	public void setMyRace(Race newVal)
 	{
 		if(newVal != null)
-    		myRace=newVal;
+			myRace=newVal;
 	}
 	public int getBodyPart(int racialPartNumber)
 	{

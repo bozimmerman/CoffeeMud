@@ -858,31 +858,31 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final int myBucket = getAppropriateResourceBucket(I,A);
 		if(myBucket != RawMaterial.RESOURCE_NOTHING)
 		{
-    		final SPairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedBucket(myBucket);
-    		Integer resourceCode = (bucket.size()==0) 
-    				? Integer.valueOf(CMLib.dice().pick( RawMaterial.CODES.ALL(), I.material() )) 
-    				: bucket.get( (weight>=.99) ? bucket.size()-1 : 0 ).first;
-    		for(Iterator<Pair<Integer,Double>> b = bucket.iterator(); b.hasNext();)
-    		{
-    			final Pair<Integer,Double> p = b.next();
-    			if((weight <= p.second.doubleValue())&&(isResourceCodeRoomMapped(p.first.intValue())))
-    			{
-    				resourceCode = p.first;
-    				break;
-    			}
-    		}
-    		int tries=100;
-    		while((--tries>0)&&(!isResourceCodeRoomMapped(resourceCode.intValue())))
-    			resourceCode=bucket.get(CMLib.dice().roll(1, bucket.size(), -1)).first;
-    		resourceCode = Integer.valueOf( resourceCode.intValue() );
-    		for(int x=0;x<times;x++)
-    		{
-    			int[] amt = extraMatsM.get( resourceCode );
-    			if(amt == null)
-    				extraMatsM.put( resourceCode, new int[]{1} );
-    			else
-    				amt[0]++;
-    		}
+			final SPairList<Integer,Double> bucket = RawMaterial.CODES.instance().getValueSortedBucket(myBucket);
+			Integer resourceCode = (bucket.size()==0) 
+					? Integer.valueOf(CMLib.dice().pick( RawMaterial.CODES.ALL(), I.material() )) 
+					: bucket.get( (weight>=.99) ? bucket.size()-1 : 0 ).first;
+			for(Iterator<Pair<Integer,Double>> b = bucket.iterator(); b.hasNext();)
+			{
+				final Pair<Integer,Double> p = b.next();
+				if((weight <= p.second.doubleValue())&&(isResourceCodeRoomMapped(p.first.intValue())))
+				{
+					resourceCode = p.first;
+					break;
+				}
+			}
+			int tries=100;
+			while((--tries>0)&&(!isResourceCodeRoomMapped(resourceCode.intValue())))
+				resourceCode=bucket.get(CMLib.dice().roll(1, bucket.size(), -1)).first;
+			resourceCode = Integer.valueOf( resourceCode.intValue() );
+			for(int x=0;x<times;x++)
+			{
+				int[] amt = extraMatsM.get( resourceCode );
+				if(amt == null)
+					extraMatsM.put( resourceCode, new int[]{1} );
+				else
+					amt[0]++;
+			}
 		}
 	}
 	

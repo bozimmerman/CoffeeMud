@@ -44,11 +44,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			Room R=(Room)E.owner();
 			if(E.container() instanceof Electronics.ElecPanel)
 			{
-    			LandTitle title = CMLib.law().getLandTitle(R);
-    			if(title != null)
-    				return title.getUniqueLotID();
-    			else
-    				return "";
+				LandTitle title = CMLib.law().getLandTitle(R);
+				if(title != null)
+					return title.getUniqueLotID();
+				else
+					return "";
 			}
 			else
 			if(E.container() instanceof Electronics) // must be a gizmo that requires a battery or generator
@@ -114,8 +114,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						Item I=R.getItem(i);
 						if(!(I instanceof Electronics.PowerSource))
 						{
-    						if(I instanceof Electronics)
-    							serviceableItems.add((Electronics)I);
+							if(I instanceof Electronics)
+								serviceableItems.add((Electronics)I);
 						}
 					}
 				}
@@ -130,15 +130,15 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			}
 			if(currentGeneratorI.activated())
 			{
-    			if(powerMsg == null)
-    				powerMsg = CMClass.getMsg(CMClass.sampleMOB(),null,currentGeneratorI,CMMsg.MSG_POWERCURRENT, null);
-    			else
-    				powerMsg.setTool(currentGeneratorI);
+				if(powerMsg == null)
+					powerMsg = CMClass.getMsg(CMClass.sampleMOB(),null,currentGeneratorI,CMMsg.MSG_POWERCURRENT, null);
+				else
+					powerMsg.setTool(currentGeneratorI);
 				powerMsg.setTarget(currentGeneratorI);
 				if(currentGeneratorI.okMessage(currentGeneratorI, powerMsg))
 					currentGeneratorI.executeMsg(currentGeneratorI, powerMsg);
-    			if(currentSize>0)
-    			{
+				if(currentSize>0)
+				{
         			powerMsg.setValue((int)(currentGeneratorI.powerRemaining()/currentSize));
         			for(Iterator<Electronics> i=currentSet.iterator();i.hasNext();)
         			{
@@ -147,7 +147,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
         				if(E.activated() && E.okMessage(E, powerMsg))
             				E.executeMsg(E, powerMsg);
         			}
-    			}
+				}
 			}
 			if(batterySet.size()>0)
 			{

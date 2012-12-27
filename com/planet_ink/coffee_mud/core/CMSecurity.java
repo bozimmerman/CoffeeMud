@@ -290,7 +290,7 @@ public class CMSecurity
 		{
 			SecPath p=g.next();
 			if((!p.isAreaOnly)||(subop))
-    			DIRSV.add((p.isVfs?"::":"//")+p.path);
+				DIRSV.add((p.isVfs?"::":"//")+p.path);
 		}
 		String dir=null;
 		for(int d=0;d<DIRSV.size();d++)
@@ -351,7 +351,7 @@ public class CMSecurity
 		{
 			SecPath p=g.next();
 			if((!p.isAreaOnly)||(subop))
-    			return true;
+				return true;
 		}
 		return false;
 	}
@@ -521,18 +521,18 @@ public class CMSecurity
 		if(isAllowedEverywhere(mob,flag.getRegularAlias()))
 			return true;
 		if(flag.areaAlias!=flag)
-    		for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-    		{
-    			final boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
-    			if(subop)
-    			{
-    				if(mob.playerStats().getSecurityFlags().contains(flag, true))
-    					return true;
-    				if(mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).contains(flag, true))
-    					return true;
-    				break;
-    			}
-    		}
+			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+			{
+				final boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
+				if(subop)
+				{
+					if(mob.playerStats().getSecurityFlags().contains(flag, true))
+						return true;
+					if(mob.baseCharStats().getCurrentClass().getSecurityFlags(mob.baseCharStats().getCurrentClassLevel()).contains(flag, true))
+						return true;
+					break;
+				}
+			}
 		return isAllowedEverywhere(mob,flag.getRegularAlias());
 	}
 	
@@ -881,16 +881,16 @@ public class CMSecurity
 		{
 			if(regularAlias==null)
 			{
-    			if(this.name().startsWith("AREA_"))
-    			{
-    				regularAlias=(SecFlag)CMath.s_valueOf(SecFlag.class, this.name().substring(5));
-    				areaAlias=this;
-    			}
-    			else
-    			{
-    				areaAlias=(SecFlag)CMath.s_valueOf(SecFlag.class, "AREA_"+this.name());
-    				regularAlias=this;
-    			}
+				if(this.name().startsWith("AREA_"))
+				{
+					regularAlias=(SecFlag)CMath.s_valueOf(SecFlag.class, this.name().substring(5));
+					areaAlias=this;
+				}
+				else
+				{
+					areaAlias=(SecFlag)CMath.s_valueOf(SecFlag.class, "AREA_"+this.name());
+					regularAlias=this;
+				}
 			}
 		}
 		public SecFlag getRegularAlias()
@@ -1024,7 +1024,7 @@ public class CMSecurity
 			for(String flag : jFlags)
 				str.append(flag).append(separatorChar);
 			if(str.length()>0)
-    			return str.toString().substring(0,str.length()-1);
+				return str.toString().substring(0,str.length()-1);
 			return "";
 		}
 		public Iterator<SecPath> paths(){return new Iterator<SecPath>()
@@ -1041,9 +1041,9 @@ public class CMSecurity
 						g=groups.iterator();
 					while(!p.hasNext())
 					{
-    					if(!g.hasNext())
-    						return false;
-    					p=g.next().paths();
+						if(!g.hasNext())
+							return false;
+						p=g.next().paths();
 					}
 					return true;
 				}
@@ -1078,9 +1078,9 @@ public class CMSecurity
 						g=groups.iterator();
 					while(!p.hasNext())
 					{
-    					if(!g.hasNext())
-    						return false;
-    					p=g.next().flags();
+						if(!g.hasNext())
+							return false;
+						p=g.next().flags();
 					}
 					return true;
 				}

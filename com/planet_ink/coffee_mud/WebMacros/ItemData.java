@@ -883,21 +883,21 @@ public class ItemData extends StdWebMacro
 							int x=0;
 							if(httpReq.isRequestParameter(thisFieldName))
 							{
-    							while(httpReq.isRequestParameter(thisFieldName))
-    							{
-    								String value=httpReq.getRequestParameter(thisFieldName);
-    								if(value.length()>0)
-    									allData.add(value);
-    								thisFieldName=CMStrings.replaceAll(fieldName,"###",""+(++x));
-    							}
+								while(httpReq.isRequestParameter(thisFieldName))
+								{
+									String value=httpReq.getRequestParameter(thisFieldName);
+									if(value.length()>0)
+										allData.add(value);
+									thisFieldName=CMStrings.replaceAll(fieldName,"###",""+(++x));
+								}
 							}
 							else
 							{
 								String[] allRecipes=((Recipe)I).getRecipeCodeLines();
 								for(String recipe : allRecipes)
 								{
-    								if(recipe.length()>0)
-    									allData.add(CMStrings.replaceAll(recipe,"\t",","));
+									if(recipe.length()>0)
+										allData.add(CMStrings.replaceAll(recipe,"\t",","));
 								}
 							}
 							allData.add("");

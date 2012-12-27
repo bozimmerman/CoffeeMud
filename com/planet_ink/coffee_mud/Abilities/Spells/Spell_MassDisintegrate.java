@@ -130,7 +130,7 @@ public class Spell_MassDisintegrate extends Spell
 					{
 						mob.location().send(mob,msg);
 						if(msg.value()<=0)
-    						I.destroy();
+							I.destroy();
 					}
 				}
 			}

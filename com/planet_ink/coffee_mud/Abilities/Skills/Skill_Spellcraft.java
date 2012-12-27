@@ -62,7 +62,7 @@ public class Skill_Spellcraft extends StdSkill
 				lastID=ID;
 				Ability castA=CMClass.getAbility(ID);
 				if(castA!=null)
-    				executeMsg(mob, CMClass.getMsg(mob,casterM,castA,CMMsg.MSG_OK_VISUAL,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					executeMsg(mob, CMClass.getMsg(mob,casterM,castA,CMMsg.MSG_OK_VISUAL,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}
 		return true;

@@ -200,7 +200,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if((R!=null)
 		&&(R.ID().length()>0)
 		&&(CMath.bset(R.domainType(),Room.INDOORS)))
-    		return CMLib.law().getLandTitle(R);
+			return CMLib.law().getLandTitle(R);
 		return null;
 	}
 
@@ -208,7 +208,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		if((R!=null)
 		&&(R.ID().length()>0))
-    		return CMLib.law().getLandTitle(R);
+			return CMLib.law().getLandTitle(R);
 		return null;
 	}
 
@@ -237,12 +237,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		{
 			if((d!=Directions.UP)&&(d!=Directions.DOWN)&&(d!=Directions.GATE))
 			{
-    			Room sideRoom=room.getRoomInDir(d);
-    			if(isHomePeerRoom(sideRoom)  &&(!doneRooms.contains(sideRoom)))
-    			{
-    				doneRooms.add(sideRoom);
-    				doneRooms.addAll(getHomePeersOnThisFloor(sideRoom, doneRooms));
-    			}
+				Room sideRoom=room.getRoomInDir(d);
+				if(isHomePeerRoom(sideRoom)  &&(!doneRooms.contains(sideRoom)))
+				{
+					doneRooms.add(sideRoom);
+					doneRooms.addAll(getHomePeersOnThisFloor(sideRoom, doneRooms));
+				}
 			}
 		}
 		return doneRooms;

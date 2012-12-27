@@ -841,8 +841,8 @@ public class StdAbility implements Ability
 			if(!overrideCache.containsKey(ID()))
 			{
 				int[] usage=new int[3];
-    			Arrays.fill(usage,overrideMana());
-    			overrideCache.put(ID(), usage);
+				Arrays.fill(usage,overrideMana());
+				overrideCache.put(ID(), usage);
 			}
 			return overrideCache.get(ID());
 		}
@@ -858,50 +858,50 @@ public class StdAbility implements Ability
 		if(!rebuildCache && (myCache!=null ))
 		{
 			if(myCache.length==3)
-    			return myCache;
+				return myCache;
 			consumed=myCache[0];
 			minimum=myCache[1];
 		}
 		else
 		{
-    		int diff=0;
-    		int lowest=Integer.MAX_VALUE;
-    		for(int c=0;c<mob.charStats().numClasses();c++)
-    		{
-    			CharClass C=mob.charStats().getMyClass(c);
-    			int qualifyingLevel=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,ID());
-    			int classLevel=mob.charStats().getClassLevel(C.ID());
-    			if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
-    			{
-    				diff+=(classLevel-qualifyingLevel);
-    				if(qualifyingLevel<lowest) lowest=qualifyingLevel;
-    			}
-    		}
-    		if(lowest==Integer.MAX_VALUE)
-    		{
-    			lowest=CMLib.ableMapper().lowestQualifyingLevel(ID());
-    			if(lowest<0) lowest=0;
-    		}
+			int diff=0;
+			int lowest=Integer.MAX_VALUE;
+			for(int c=0;c<mob.charStats().numClasses();c++)
+			{
+				CharClass C=mob.charStats().getMyClass(c);
+				int qualifyingLevel=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,ID());
+				int classLevel=mob.charStats().getClassLevel(C.ID());
+				if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
+				{
+					diff+=(classLevel-qualifyingLevel);
+					if(qualifyingLevel<lowest) lowest=qualifyingLevel;
+				}
+			}
+			if(lowest==Integer.MAX_VALUE)
+			{
+				lowest=CMLib.ableMapper().lowestQualifyingLevel(ID());
+				if(lowest<0) lowest=0;
+			}
     
-    		Integer[] costOverrides=null;
-    		if(!ignoreClassOverride)
-    			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
-    		consumed=CMProps.getMaxManaException(ID());
-    		if(consumed==Short.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
-    		if(consumed<0) consumed=(50+lowest);
-    		minimum=CMProps.getMinManaException(ID());
-    		if(minimum==Short.MIN_VALUE)
-    			minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
-    		if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
-    		if(diff>0) consumed=(consumed - (consumed /10 * diff));
-    		if(consumed<minimum)
-    			consumed=minimum;
-    		if(overrideMana()>=0) consumed=overrideMana();
-    		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
-    		{
-    			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
-    			if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
-    		}
+			Integer[] costOverrides=null;
+			if(!ignoreClassOverride)
+				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
+			consumed=CMProps.getMaxManaException(ID());
+			if(consumed==Short.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
+			if(consumed<0) consumed=(50+lowest);
+			minimum=CMProps.getMinManaException(ID());
+			if(minimum==Short.MIN_VALUE)
+				minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
+			if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
+			if(diff>0) consumed=(consumed - (consumed /10 * diff));
+			if(consumed<minimum)
+				consumed=minimum;
+			if(overrideMana()>=0) consumed=overrideMana();
+			if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+			{
+				consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
+				if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
+			}
 		}
 		final int[] usageCost=buildCostArray(mob,consumed,minimum);
 		if(rebuildCache)

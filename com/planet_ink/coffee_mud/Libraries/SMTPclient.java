@@ -358,9 +358,9 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		}
 		String host = local.getHostName();
 		if((auth != null) && (auth.getAuthType().length()>0))
-    		sendLine(debug,"EHLO " + host);
+			sendLine(debug,"EHLO " + host);
 		else
-    		sendLine(debug,"HELO " + host);
+			sendLine(debug,"HELO " + host);
 		rstr = reply.readLine();
 		if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
@@ -368,11 +368,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if((auth != null) && (auth.getAuthType().length()>0))
 		{
 			if(auth.getAuthType().equalsIgnoreCase("login"))
-    			sendLine(debug,"AUTH " + auth.getAuthType()+" "+auth.getLogin());
+				sendLine(debug,"AUTH " + auth.getAuthType()+" "+auth.getLogin());
 			else
-    			sendLine(debug,"AUTH " + auth.getAuthType());
+				sendLine(debug,"AUTH " + auth.getAuthType());
 			while(rstr.startsWith("250"))
-    			rstr = reply.readLine();
+				rstr = reply.readLine();
 			if(debug) Log.debugOut("SMTPclient",rstr);
 			if ((rstr==null)||(!rstr.startsWith("334"))) throw new ProtocolException(""+rstr);
 			if(auth.getAuthType().equalsIgnoreCase("plain"))

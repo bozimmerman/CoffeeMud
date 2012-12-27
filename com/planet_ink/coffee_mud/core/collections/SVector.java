@@ -180,7 +180,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if(newSize==0)
 			clear();
 		else
-    		throw new IllegalArgumentException();
+			throw new IllegalArgumentException();
 	}
 
 	public synchronized void trimToSize() {

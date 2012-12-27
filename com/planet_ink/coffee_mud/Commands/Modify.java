@@ -1756,13 +1756,13 @@ public class Modify extends StdCommand
 					StringBuilder buf=new StringBuilder("QueryResults\n\r");
 					if(results.size()>0)
 					{
-    					String[] headerRow=results.get(0);
-    					for(int c=0;c<headerRow.length;c++)
-    						buf.append(headerRow[c]);
-    					buf.append("\n\r");
-    					for(int r=1;r<results.size();r++)
-    					{
-    						String[] row=results.get(r);
+						String[] headerRow=results.get(0);
+						for(int c=0;c<headerRow.length;c++)
+							buf.append(headerRow[c]);
+						buf.append("\n\r");
+						for(int r=1;r<results.size();r++)
+						{
+							String[] row=results.get(r);
         					for(int c=0;c<row.length;c++)
         					{
         						if(c<headerRow.length)
@@ -1771,7 +1771,7 @@ public class Modify extends StdCommand
             						buf.append(row[c]);
         					}
         					buf.append("\n\r");
-    					}
+						}
 					}
 					if(mob.session()!=null)
 						mob.session().rawPrint(buf.toString());

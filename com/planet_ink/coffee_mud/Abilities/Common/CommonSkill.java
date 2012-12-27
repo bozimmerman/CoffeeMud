@@ -174,9 +174,9 @@ public class CommonSkill extends StdAbility
 	protected String getBrand(MOB mob)
 	{
 		if(mob==null)
-    		return "This is the work of an anonymous craftsman.";
+			return "This is the work of an anonymous craftsman.";
 		else
-    		return "This is the work of "+mob.Name()+".";
+			return "This is the work of "+mob.Name()+".";
 	}
 
 	protected void commonTell(MOB mob, Environmental target, Environmental tool, String str)
@@ -284,34 +284,34 @@ public class CommonSkill extends StdAbility
 		if(!rebuildCache && (myCache!=null ))
 		{
 			if(myCache.length==3)
-    			return myCache;
+				return myCache;
 			consumed=myCache[0];
 			minimum=myCache[1];
 		}
 		else
 		{
-    		consumed=25;
-    		int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
-    		Integer[] costOverrides=null;
-    		if(!ignoreClassOverride) 
-    			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
-    		if(diff>0)
-    		switch(diff)
-    		{
-    		case 1: consumed=20; break;
-    		case 2: consumed=16; break;
-    		case 3: consumed=13; break;
-    		case 4: consumed=11; break;
-    		case 5: consumed=8; break;
-    		default: consumed=5; break;
-    		}
-    		if(overrideMana()>=0) consumed=overrideMana();
-    		minimum=5;
-    		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
-    		{
-    			consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
-    			if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
-    		}
+			consumed=25;
+			int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
+			Integer[] costOverrides=null;
+			if(!ignoreClassOverride) 
+				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
+			if(diff>0)
+			switch(diff)
+			{
+			case 1: consumed=20; break;
+			case 2: consumed=16; break;
+			case 3: consumed=13; break;
+			case 4: consumed=11; break;
+			case 5: consumed=8; break;
+			default: consumed=5; break;
+			}
+			if(overrideMana()>=0) consumed=overrideMana();
+			minimum=5;
+			if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
+			{
+				consumed=costOverrides[AbilityMapper.AbilityMapping.COST_MANA].intValue();
+				if((consumed<minimum)&&(consumed>=0)) minimum=consumed;
+			}
 		}
 		int[] usageCost=buildCostArray(mob,consumed,minimum);
 		if(rebuildCache)
@@ -375,25 +375,25 @@ public class CommonSkill extends StdAbility
 						restV=CMParms.parseAny(setMat.substring(y+1),"-", true);
 						setMat=setMat.substring(0, y);
 					}
-    				for(int j=0;j<RawMaterial.MATERIAL_DESCS.length;j++)
-    					if(RawMaterial.MATERIAL_DESCS[j].equalsIgnoreCase(setMat))
-    					{ 
-    						x=RawMaterial.MATERIAL_CODES[j];
-    						if((restV!=null)&&(restV.size()>0))
-    						{
-    							List<Integer> rscsV=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(x));
-    							for(String sv : restV)
-    							{
-    								int code = RawMaterial.CODES.FIND_CaseSensitive(sv);
-    								if(code >=0)
-    									rscsV.remove(Integer.valueOf(code));
-    							}
+					for(int j=0;j<RawMaterial.MATERIAL_DESCS.length;j++)
+						if(RawMaterial.MATERIAL_DESCS[j].equalsIgnoreCase(setMat))
+						{ 
+							x=RawMaterial.MATERIAL_CODES[j];
+							if((restV!=null)&&(restV.size()>0))
+							{
+								List<Integer> rscsV=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(x));
+								for(String sv : restV)
+								{
+									int code = RawMaterial.CODES.FIND_CaseSensitive(sv);
+									if(code >=0)
+										rscsV.remove(Integer.valueOf(code));
+								}
 								for(int codeDex=0;codeDex<rscsV.size()-1;codeDex++)
 									finalSet.add(rscsV.get(codeDex));
 								x=rscsV.get(rscsV.size()-1).intValue();
-    						}
-    						break;
-    					}
+							}
+							break;
+						}
 				}
 				if(x<0)
 					x=RawMaterial.CODES.FIND_IgnoreCase(setMat);

@@ -49,8 +49,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
 		{
-    		Vector<String> V=new ReadOnlyVector<String>(Directions.getDirectionName(direction));
-    		directionCommandSets.put(dir, V);
+			Vector<String> V=new ReadOnlyVector<String>(Directions.getDirectionName(direction));
+			directionCommandSets.put(dir, V);
 		}
 		return directionCommandSets.get(dir);
 	}
@@ -60,8 +60,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
 		{
-    		Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("OPEN "+Directions.getDirectionName(direction)));
-    		directionCommandSets.put(dir, V);
+			Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("OPEN "+Directions.getDirectionName(direction)));
+			directionCommandSets.put(dir, V);
 		}
 		return directionCommandSets.get(dir);
 	}
@@ -71,8 +71,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
 		{
-    		Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("CLOSE "+Directions.getDirectionName(direction)));
-    		directionCommandSets.put(dir, V);
+			Vector<String> V=new ReadOnlyVector<String>(CMParms.parse("CLOSE "+Directions.getDirectionName(direction)));
+			directionCommandSets.put(dir, V);
 		}
 		return directionCommandSets.get(dir);
 	}
@@ -278,9 +278,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				filters=EMPTY_FILTERS;
 			else
 			{
-    			filters=new RFilters();
-    			for(TrackingFlag flag : flags)
-    				filters.plus(flag.myFilter);
+				filters=new RFilters();
+				for(TrackingFlag flag : flags)
+					filters.plus(flag.myFilter);
 			}
 			trackingFilters.put(flags, filters);
 		}
@@ -347,14 +347,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final Set<MOB> mobsThere=CMLib.players().getPlayersHere(R);
 		if(mobsThere.size()>0)
 		{
-    		for(MOB inhab : mobsThere)
-    		{
-    			if((inhab.session()!=null)
-    			&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
-    			&&(CMLib.flags().isInTheGame(inhab, true))
-    			&&(CMath.bset(inhab.getBitmap(), MOB.ATT_SYSOPMSGS)))
-    				return true;
-    		}
+			for(MOB inhab : mobsThere)
+			{
+				if((inhab.session()!=null)
+				&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDMOBS)||CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS))
+				&&(CMLib.flags().isInTheGame(inhab, true))
+				&&(CMath.bset(inhab.getBitmap(), MOB.ATT_SYSOPMSGS)))
+					return true;
+			}
 		}
 		return false;
 	}
@@ -476,9 +476,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		if(dooropen)
 		{
-    		final LandTitle landTitle=CMLib.law().getLandTitle(nextRoom);
-    		if((landTitle!=null)&&(landTitle.landOwner().length()>0))
-    			dooropen=false;
+			final LandTitle landTitle=CMLib.law().getLandTitle(nextRoom);
+			if((landTitle!=null)&&(landTitle.landOwner().length()>0))
+				dooropen=false;
 		}
 
 		boolean reclose=false;

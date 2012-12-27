@@ -164,7 +164,7 @@ public class MOTD extends StdCommand
 					if((CMJ.getFlag(JournalsLibrary.CommandJournalFlags.ADMINECHO)!=null)
 					&&((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
 						||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)))
-    						myEchoableCommandJournals.addElement(CMJ);
+							myEchoableCommandJournals.addElement(CMJ);
 				}
 				boolean CJseparator=false;
 				for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
@@ -227,28 +227,28 @@ public class MOTD extends StdCommand
 		}
 		if(parm.equalsIgnoreCase("ON"))
 		{
-    		if(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
-    		{
-    			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
-    			mob.tell("The daily messages have been turned on.");
-    		}
-    		else
-    		{
-    			mob.tell("The daily messages are already on.");
-    		}
+			if(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
+			{
+				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
+				mob.tell("The daily messages have been turned on.");
+			}
+			else
+			{
+				mob.tell("The daily messages are already on.");
+			}
 		}
 		else
 		if(parm.equalsIgnoreCase("OFF"))
 		{
-    		if(!CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
-    		{
-    			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
-    			mob.tell("The daily messages have been turned off.");
-    		}
-    		else
-    		{
-    			mob.tell("The daily messages are already off.");
-    		}
+			if(!CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
+			{
+				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
+				mob.tell("The daily messages have been turned off.");
+			}
+			else
+			{
+				mob.tell("The daily messages are already off.");
+			}
 		}
 		else
 		{

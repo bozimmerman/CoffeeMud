@@ -89,16 +89,16 @@ public class Spell_ContinualLight extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-    		String str="^S<S-NAME> invoke(s) a continual light toward(s) <T-NAMESELF>!^?";
-    		if(!(target instanceof MOB))
-    			str="^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?";
-    		CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
-    		if(mob.location().okMessage(mob,msg))
-    		{
-    			mob.location().send(mob,msg);
-    			beneficialAffect(mob,target,asLevel,Ability.TICKS_FOREVER);
-    			mob.location().recoverRoomStats(); // attempt to handle followers
-    		}
+			String str="^S<S-NAME> invoke(s) a continual light toward(s) <T-NAMESELF>!^?";
+			if(!(target instanceof MOB))
+				str="^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?";
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,target,asLevel,Ability.TICKS_FOREVER);
+				mob.location().recoverRoomStats(); // attempt to handle followers
+			}
 		}
 		else
 			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke light, but fail(s).");

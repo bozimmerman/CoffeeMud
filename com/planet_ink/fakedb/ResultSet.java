@@ -662,24 +662,24 @@ public class ResultSet implements java.sql.ResultSet
 	public SQLXML getSQLXML(String arg0) throws SQLException { return null;}
     @SuppressWarnings("unchecked")
     public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
-    	if(type == Long.class) return (T)Long.valueOf(this.getLong(columnIndex));
-    	if(type == Integer.class) return (T)Long.valueOf(this.getInt(columnIndex));
-    	if(type == Short.class) return (T)Short.valueOf(this.getShort(columnIndex));
-    	if(type == String.class) return (T)String.valueOf(this.getString(columnIndex));
-    	if(type == Short.class) return (T)Short.valueOf(this.getShort(columnIndex));
-    	if(type == Double.class) return (T)Double.valueOf(this.getDouble(columnIndex));
-    	if(type == Float.class) return (T)Float.valueOf(this.getFloat(columnIndex));
-    	if(type == Byte.class) return (T)Byte.valueOf(this.getByte(columnIndex));
-    	if(type == Boolean.class) return (T)Boolean.valueOf(this.getBoolean(columnIndex));
-    	if(type == java.sql.Array.class) return (T)this.getArray(columnIndex);
-    	if(type == java.sql.Blob.class) return (T)this.getBlob(columnIndex);
-    	if(type == java.sql.Clob.class) return (T)this.getClob(columnIndex);
-    	if(type == java.math.BigDecimal.class) return (T)this.getBigDecimal(columnIndex);
-    	if(type == byte[].class) return (T)this.getBytes(columnIndex);
-    	if(type == java.sql.Date.class) return (T)this.getDate(columnIndex);
-    	if(type == java.sql.Time.class) return (T)this.getTime(columnIndex);
-    	if(type == java.sql.Timestamp.class) return (T)this.getTimestamp(columnIndex);
-    	if(type == Object.class) return (T)this.getObject(columnIndex);
+		if(type == Long.class) return (T)Long.valueOf(this.getLong(columnIndex));
+		if(type == Integer.class) return (T)Long.valueOf(this.getInt(columnIndex));
+		if(type == Short.class) return (T)Short.valueOf(this.getShort(columnIndex));
+		if(type == String.class) return (T)String.valueOf(this.getString(columnIndex));
+		if(type == Short.class) return (T)Short.valueOf(this.getShort(columnIndex));
+		if(type == Double.class) return (T)Double.valueOf(this.getDouble(columnIndex));
+		if(type == Float.class) return (T)Float.valueOf(this.getFloat(columnIndex));
+		if(type == Byte.class) return (T)Byte.valueOf(this.getByte(columnIndex));
+		if(type == Boolean.class) return (T)Boolean.valueOf(this.getBoolean(columnIndex));
+		if(type == java.sql.Array.class) return (T)this.getArray(columnIndex);
+		if(type == java.sql.Blob.class) return (T)this.getBlob(columnIndex);
+		if(type == java.sql.Clob.class) return (T)this.getClob(columnIndex);
+		if(type == java.math.BigDecimal.class) return (T)this.getBigDecimal(columnIndex);
+		if(type == byte[].class) return (T)this.getBytes(columnIndex);
+		if(type == java.sql.Date.class) return (T)this.getDate(columnIndex);
+		if(type == java.sql.Time.class) return (T)this.getTime(columnIndex);
+		if(type == java.sql.Timestamp.class) return (T)this.getTimestamp(columnIndex);
+		if(type == Object.class) return (T)this.getObject(columnIndex);
 	    throw new SQLFeatureNotSupportedException();
     }
     public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {

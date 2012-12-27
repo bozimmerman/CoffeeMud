@@ -66,8 +66,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{ 
 		if(oneToDel != null)
 		{
-    		playersList.remove(oneToDel);
-    		playerLocations.removeFirst(oneToDel);
+			playersList.remove(oneToDel);
+			playerLocations.removeFirst(oneToDel);
 		}
 	}
 	
@@ -80,10 +80,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(mob != null)
 		{
-    		if(room == null)
-    			playerLocations.removeFirst(mob);
-    		else
-    			playerLocations.change(mob, room);
+			if(room == null)
+				playerLocations.removeFirst(mob);
+			else
+				playerLocations.change(mob, room);
 		}
 	}
 

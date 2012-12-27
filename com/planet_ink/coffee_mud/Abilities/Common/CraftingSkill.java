@@ -773,9 +773,9 @@ public class CraftingSkill extends GatheringSkill
 			return false;
 		try
 		{
-    		existingRecipes.add(CMLib.ableParms().makeRecipeFromItem(C, I));
-    		R.setRecipeCodeLines(existingRecipes.toArray(new String[0]));
-    		R.setCommonSkillID( ID() );
+			existingRecipes.add(CMLib.ableParms().makeRecipeFromItem(C, I));
+			R.setRecipeCodeLines(existingRecipes.toArray(new String[0]));
+			R.setCommonSkillID( ID() );
 		}
 		catch(CMException cme)
 		{
@@ -843,15 +843,15 @@ public class CraftingSkill extends GatheringSkill
 		{
 			if (this instanceof EnhancedCraftingSkill)
 			{
-    			List<ExpertiseLibrary.ExpertiseDefinition> V = ((EnhancedCraftingSkill)this).getAllThisSkillsDefinitions();
-    			allExpertiseWords = new TreeSet<String>();
-    			for(final ExpertiseLibrary.ExpertiseDefinition def : V )
-    			{
-    				if(def.data != null)
-    					for(String s : def.data)
-    						allExpertiseWords.add(s.toUpperCase());
-    			}
-    			Resources.submitResource("CRAFTING_SKILL_EXPERTISE_WORDS", allExpertiseWords);
+				List<ExpertiseLibrary.ExpertiseDefinition> V = ((EnhancedCraftingSkill)this).getAllThisSkillsDefinitions();
+				allExpertiseWords = new TreeSet<String>();
+				for(final ExpertiseLibrary.ExpertiseDefinition def : V )
+				{
+					if(def.data != null)
+						for(String s : def.data)
+							allExpertiseWords.add(s.toUpperCase());
+				}
+				Resources.submitResource("CRAFTING_SKILL_EXPERTISE_WORDS", allExpertiseWords);
 			}
 			else
 				allExpertiseWords=new TreeSet<String>();
@@ -913,16 +913,16 @@ public class CraftingSkill extends GatheringSkill
 						n--;
 					}
 					else
-    				if(nw.equals(ow))
-    				{
+					if(nw.equals(ow))
+					{
 						o++; // match!
 						match=true;
-    				}
-    				else
-    				{
-    					match=false;
-    					break;
-    				}
+					}
+					else
+					{
+						match=false;
+						break;
+					}
 				}
 			}
 			if(match)

@@ -97,7 +97,7 @@ public class CrossRefTreeMap<T, K>
 					map1.remove(t);
 				}
 				else
-    				tKs.remove(k);
+					tKs.remove(k);
 			}
 		}
 		final TreeSet<T> kTs=map2.get(k);
@@ -111,7 +111,7 @@ public class CrossRefTreeMap<T, K>
 					map2.remove(k);
 				}
 				else
-    				kTs.remove(t);
+					kTs.remove(t);
 			}
 		}
 	}
@@ -121,21 +121,21 @@ public class CrossRefTreeMap<T, K>
 		final TreeSet<K> tKs=map1.get(t);
 		if(tKs!=null)
 		{
-    		for(K k : tKs)
-    		{
+			for(K k : tKs)
+			{
 				final TreeSet<T> kTs=map2.get(k);
 				if(kTs!=null)
 				{
-    				if(kTs.size()==1)
-    				{
-    					kTs.clear();
-    					map2.remove(k);
-    				}
-    				else
+					if(kTs.size()==1)
+					{
+						kTs.clear();
+						map2.remove(k);
+					}
+					else
         				kTs.remove(t);
-    			}
-    		}
-    		map1.remove(t);
+				}
+			}
+			map1.remove(t);
 		}
 	}
 	
@@ -183,9 +183,9 @@ public class CrossRefTreeMap<T, K>
 			map2.put(k, kTs);
 		}
 		if(!kTs.contains(t))
-    		kTs.add(t);
+			kTs.add(t);
 		if(!tKs.contains(k))
-    		tKs.add(k);
+			tKs.add(k);
 	}
 	
 	public synchronized void clear()

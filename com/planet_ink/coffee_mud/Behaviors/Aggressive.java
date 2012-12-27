@@ -126,18 +126,18 @@ public class Aggressive extends StdBehavior
 			{
 				lastRoom=R;
 				lastRoomInhabCount=R.numInhabitants();
-    			Set<MOB> groupMembers=observer.getGroupMembers(new HashSet<MOB>());
-    			for(int i=0;i<R.numInhabitants();i++)
-    			{
-    				MOB mob=R.fetchInhabitant(i);
-    				if((mob!=null)
-    				&&(mob!=observer)
-    				&&((!mob.isMonster())||(mobKiller))
-    				&&(CMLib.masking().maskCheck(zapStr,mob,false))
-    				&&(!groupMembers.contains(mob))
-    				&&(startFight(observer,mob,mobKiller,misBehave,attackMsg)))
-    					return true;
-    			}
+				Set<MOB> groupMembers=observer.getGroupMembers(new HashSet<MOB>());
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+					MOB mob=R.fetchInhabitant(i);
+					if((mob!=null)
+					&&(mob!=observer)
+					&&((!mob.isMonster())||(mobKiller))
+					&&(CMLib.masking().maskCheck(zapStr,mob,false))
+					&&(!groupMembers.contains(mob))
+					&&(startFight(observer,mob,mobKiller,misBehave,attackMsg)))
+						return true;
+				}
 			}
 		}
 		return false;
