@@ -1320,6 +1320,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			mob.setSession(session);
 			session.setMob(mob);
+			mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
 			setGlobalBitmaps(mob);
 			
 			if((acct==null)||(acct.getPasswordStr().length()==0))
@@ -1352,7 +1353,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			Log.sysOut("FrontDoor","Creating user: "+mob.Name());
 			executeScript(mob,extraScripts.get("EMAIL"));
 	
-			mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
 			if(acct!=null)
 			{
 				if(acct.isSet(PlayerAccount.FLAG_ANSI))
