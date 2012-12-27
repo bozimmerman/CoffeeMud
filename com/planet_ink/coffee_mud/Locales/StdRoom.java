@@ -818,7 +818,7 @@ public class StdRoom implements Room
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
 		{
-			if((numBehaviors()>0)&&(numScripts()<=0)) return false;
+			if((numBehaviors()<=0)&&(numScripts()<=0)) return false;
 			tickStatus=Tickable.STATUS_BEHAVIOR;
 			eachBehavior(new EachApplicable<Behavior>(){ public final void apply(final Behavior B){
 				B.tick(ticking, tickID);

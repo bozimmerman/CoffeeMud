@@ -338,23 +338,23 @@ HELP_=<EXPERTISE>The ability to engineer using fewer materials.
 
 LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
-HELP_LITECRAFTI=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are little lighter, and worth a little more in value.
-HELP_LITECRAFTII=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.
-HELP_LITECRAFTIII=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Agile" are much lighter, and worth much more in value.
+HELP_LITECRAFT1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are little lighter, and worth a little more in value.
+HELP_LITECRAFT2=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.
+HELP_LITECRAFT3=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Agile" are much lighter, and worth much more in value.
 DATA_=Light,Supple,Agile
 
 DURACRAFT@x1=Durable Crafting @x2,3,X2,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Cobbling +Costuming +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Tailoring +Weaving,,+STR {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft armors and clothing to be more protective.
-HELP_DURACRAFTI=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Strong" are a little heavier, slightly more protective, and worth a little more.
-HELP_DURACRAFTII=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Reinforced" are heavier, more protective, and worth more.
-HELP_DURACRAFTIII=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Fortified" are much heavier, a lot more protective, and worth much more.
+HELP_DURACRAFT1=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Strong" are a little heavier, slightly more protective, and worth a little more.
+HELP_DURACRAFT2=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Reinforced" are heavier, more protective, and worth more.
+HELP_DURACRAFT3=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Fortified" are much heavier, a lot more protective, and worth much more.
 DATA_=Strong,Reinforced,Fortified
 
 QUALCRAFT@x1=Quality Crafting @x2,3,X3,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+CHA {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items of the highest quality.
-HELP_QUALCRAFTI=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Fine" are worth more.
-HELP_QUALCRAFTII=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth more.
-HELP_QUALCRAFTIII=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth much more and grant extra charisma from being well dressed.
+HELP_QUALCRAFT1=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Fine" are worth more.
+HELP_QUALCRAFT2=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth more.
+HELP_QUALCRAFT3=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth much more and grant extra charisma from being well dressed.
 DATA_=Fine,Beautiful,Exquisite
 
 QUICKCRAFT@x1=Quick Worker @x2,10,TIME,-SKILLFLAG "+COMMON SKILL",,+WIS {10+@x1},0,1,0,0,0
@@ -362,16 +362,16 @@ HELP_=<EXPERTISE>The ability to craft items more quickly and efficiently.
 
 LTHLCRAFT@x1=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+CON {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more deadly than usual.
-HELP_LTHLCRAFTI=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Damaging" are slightly more damaging, and worth slightly more.
-HELP_LTHLCRAFTII=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Brutal" are a little more damaging, and worth more.
-HELP_LTHLCRAFTIII=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Lethal" are more damaging, and worth much more.
+HELP_LTHLCRAFT1=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Damaging" are slightly more damaging, and worth slightly more.
+HELP_LTHLCRAFT2=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Brutal" are a little more damaging, and worth more.
+HELP_LTHLCRAFT3=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Lethal" are more damaging, and worth much more.
 DATA_=Damaging,Brutal,Lethal
 
 CNTRCRAFT@x1=Counterbalance Crafting @x2,3,X5,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+INT {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual.
-HELP_CNTRCRAFTI=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Even" are slightly better for attack, and worth a little more.
-HELP_CNTRCRAFTII=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Balanced" are better for attack, and worth more.
-HELP_CNTRCRAFTIII=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Counterbalanced" are much better for attack, and worth a lot more.
+HELP_CNTRCRAFT1=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Even" are slightly better for attack, and worth a little more.
+HELP_CNTRCRAFT2=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Balanced" are better for attack, and worth more.
+HELP_CNTRCRAFT3=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Counterbalanced" are much better for attack, and worth a lot more.
 DATA_=Even,Balanced,Counterbalanced
 
 AIRELIST@x1=Airelist @x2,10,X1,-SKILLFLAG +ELECTROCUTING,-MAXCLASSLEVEL +>={26+(5*@x1)},+DEX {12+@x1} ,0,1,0,0,0
