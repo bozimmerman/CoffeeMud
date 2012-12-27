@@ -138,6 +138,8 @@ public class GrinderClans
 					Room R=CMLib.map().getRoom(str);
 					if(R!=null) C.setDonation(CMLib.map().getExtendedRoomID(R));
 				}
+				str=httpReq.getRequestParameter("VISIBLE");
+				C.setVisible((str==null)?true:str.equalsIgnoreCase("on"));
 				str=httpReq.getRequestParameter("TAX");
 				if(str!=null) C.setTaxes(CMath.s_pct(str));
 				str=httpReq.getRequestParameter("CCLASSID");

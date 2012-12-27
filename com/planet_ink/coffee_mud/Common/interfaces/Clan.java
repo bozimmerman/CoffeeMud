@@ -460,6 +460,20 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public double getTaxes();
 	
 	/**
+	 * Sets the visibility for this 
+	 * @see Clan#isVisible()
+	 * @param visible the visibility
+	 */
+	public void setVisible(boolean visible);
+	
+	/**
+	 * Gets the visibility for this 
+	 * @see Clan#setVisible(boolean)
+	 * @return the visibility
+	 */
+	public boolean isVisible();
+	
+	/**
 	 * Returns the maximum number of players who can hold the given 
 	 * role in this   For assignment purposes.
 	 * @param roleID the role to get a max for
@@ -759,7 +773,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"AREAS", // 14
 		"MEMBERLIST", // 15
 		"TOPMEMBER", // 16
-		"CLANLEVEL" // 17
+		"CLANLEVEL", // 17
+		"VISIBLE" // 18
 	};
 
 	/** constant for the getStatus() method, denoting normal status. @see Clan#getStatus() .*/

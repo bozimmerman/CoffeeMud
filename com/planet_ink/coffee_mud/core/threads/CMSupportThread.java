@@ -111,36 +111,41 @@ public class CMSupportThread extends Thread implements CMRunnable
 				try
 				{
 					while(CMLib.threads().isAllSuspended())
-						try{Thread.sleep(2000);}catch(Exception e){}
+						try{
+							Thread.sleep(2000);
+						}catch(InterruptedException e){
+							if(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
+								throw e;
+						}
 					try
 					{
-    					if(!CMSecurity.isDisabled(disableFlag))
-    					{
-    						if(checkDBHealth)
-    						{
-        						setStatus("checking database health");
-        						String ok=CMLib.database().errorStatus();
-        						setStatus("sleeping");
-        						if((ok.length()!=0)&&(!ok.startsWith("OK")))
-        						{
-        							Log.errOut(getName(),"DB: "+ok);
-            						Thread.sleep(10000);
-            						continue;
-        						}
-    						}
-    						lastStop=System.currentTimeMillis();
-    						milliTotal+=(lastStop-lastStart);
-    						tickTotal++;
-    						//setStatus("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
-    						Thread.sleep(sleepTime);
-    						lastStart=System.currentTimeMillis();
-    						setStatus("LASTSTART");
-    						engine.run();
-    					}
-    					else
-    					{
-    						Thread.sleep(sleepTime);
-    					}
+						if(!CMSecurity.isDisabled(disableFlag))
+						{
+							if(checkDBHealth)
+							{
+								setStatus("checking database health");
+								String ok=CMLib.database().errorStatus();
+								setStatus("sleeping");
+								if((ok.length()!=0)&&(!ok.startsWith("OK")))
+								{
+									Log.errOut(getName(),"DB: "+ok);
+									Thread.sleep(10000);
+									continue;
+								}
+							}
+							lastStop=System.currentTimeMillis();
+							milliTotal+=(lastStop-lastStart);
+							tickTotal++;
+							//setStatus("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
+							Thread.sleep(sleepTime);
+							lastStart=System.currentTimeMillis();
+							setStatus("LASTSTART");
+							engine.run();
+						}
+						else
+						{
+							Thread.sleep(sleepTime);
+						}
 					}
 					finally
 					{
@@ -169,13 +174,13 @@ public class CMSupportThread extends Thread implements CMRunnable
 	}
 
 	@Override
-    public long activeTimeMillis() 
+	public long activeTimeMillis() 
 	{
 		final long ls = lastStart;
 		final long le = lastStop;
 		final long mt = milliTotal;
 		if(le > ls)
-    		return mt;
+			return mt;
 		return mt + (System.currentTimeMillis()-ls);
 	}
 	

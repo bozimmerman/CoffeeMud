@@ -7811,6 +7811,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			C.setPremise(prompt(mob,C.getPremise(),++showNumber,showFlag,"Clan Premise: ",true));
 			C.setExp(prompt(mob,C.getExp(),++showNumber,showFlag,"Clan Experience: "));
 			C.setTaxes(prompt(mob,C.getTaxes(),++showNumber,showFlag,"Clan Tax Rate (X 100%): "));
+			C.setVisible(prompt(mob,C.isVisible(),++showNumber,showFlag,"Is visible: "));
 			C.setMorgue(genClanRoom(mob,C,C.getMorgue(),". Morgue RoomID: '@x1'.",++showNumber,showFlag));
 			C.setRecall(genClanRoom(mob,C,C.getRecall(),". Clan Home RoomID: '@x1'.",++showNumber,showFlag));
 			C.setDonation(genClanRoom(mob,C,C.getDonation(),". Clan Donate RoomID: '@x1'.",++showNumber,showFlag));

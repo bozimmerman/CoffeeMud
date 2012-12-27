@@ -2430,3 +2430,4 @@ ruthless programmer, and sentenced to a quick death.
 34.Potions and Pills are more scaled to their levels.
 35.Normally mobile mobs will walk by hidden/invis exits now (unless they can see hidden, etc..)
 36.Death room (DEATH) coffeemud.ini entry now supports MORGUE to keep players where they died.
+37.Expertises have been optimized such that players only store the highest version.  Functionally identical, but with new editor expression.

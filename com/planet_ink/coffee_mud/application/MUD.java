@@ -945,7 +945,7 @@ public class MUD extends Thread implements MudHost
 			if(CMLib.hosts().get(m) instanceof Thread)
 			{
 				try{
-					CMLib.killThread((Thread)CMLib.hosts().get(m),100,1);
+					CMLib.killThread((Thread)CMLib.hosts().get(m),100,30);
 				} catch(Exception t){}
 			}
 		if(!keepItDown)
@@ -1103,7 +1103,7 @@ public class MUD extends Thread implements MudHost
 		{
 			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != thisOne))
 			{
-				CMLib.killThread(tArray[i],500,1);
+				CMLib.killThread(tArray[i],500,10);
 				killed++;
 			}
 		}

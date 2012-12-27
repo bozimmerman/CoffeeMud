@@ -56,6 +56,7 @@ public class DefaultClan implements Clan
 	protected int 	 clanStatus=0;
 	protected String lastClanKillRecord=null;
 	protected double taxRate=0.0;
+	protected boolean isVisible=true;
 	protected volatile long exp=0;
 	protected Object expSync = new Object();
 	protected Vector<ClanVote> voteList=null;
@@ -346,6 +347,13 @@ public class DefaultClan implements Clan
 		taxRate=rate;
 	}
 	public double getTaxes(){return taxRate;}
+
+
+	public void setVisible(boolean visible)
+	{
+		isVisible=visible;
+	}
+	public boolean isVisible(){return isVisible;}
 
 	public int getClanRelations(String id)
 	{
@@ -785,6 +793,7 @@ public class DefaultClan implements Clan
 		str.append(CMLib.xml().convertXMLtoTag("EXP",""+getExp()));
 		str.append(CMLib.xml().convertXMLtoTag("LEVEL",""+getClanLevel()));
 		str.append(CMLib.xml().convertXMLtoTag("CCLASS",""+getClanClass()));
+		str.append(CMLib.xml().convertXMLtoTag("VIS",""+isVisible()));
 		str.append(CMLib.xml().convertXMLtoTag("AUTOPOS",""+getAutoPosition()));
 		if(relations.size()==0)
 			str.append("<RELATIONS/>");
@@ -826,6 +835,8 @@ public class DefaultClan implements Clan
 		taxRate=CMLib.xml().getDoubleFromPieces(poliData,"TAXRATE");
 		clanClass=CMLib.xml().getValFromPieces(poliData,"CCLASS");
 		autoPosition=CMLib.xml().getIntFromPieces(poliData,"AUTOPOS");
+		String visiStr=CMLib.xml().getValFromPieces(poliData, "VIS");
+		isVisible=((visiStr!=null)&&(CMath.isBool(visiStr)))?CMath.s_bool(visiStr):true;
 
 		// now RESOURCES!
 		List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
@@ -965,7 +976,7 @@ public class DefaultClan implements Clan
 	
 	public boolean isPubliclyListedFor(MOB mob)
 	{
-		if((!govt().isPublic())
+		if(((!govt().isPublic())||(!isVisible()))
 		&&(!mob.getClanID().equals(clanID())))
 			return false;
 		return true;
@@ -1651,6 +1662,7 @@ public class DefaultClan implements Clan
 			return "";
 		}
 		case 17: return Integer.toString(getClanLevel());
+		case 19: return Boolean.toString(isVisible());
 		}
 		return "";
 	}
@@ -1677,6 +1689,7 @@ public class DefaultClan implements Clan
 		case 15: break; // memberlist
 		case 16: break; // topmember
 		case 17: setClanLevel(CMath.s_int(val.trim())); break; // clanlevel
+		case 18: setVisible(CMath.s_bool(val.trim())); break;
 		}
 	}
 	
