@@ -1173,7 +1173,7 @@ public class Create extends StdCommand
 					return false;
 				}
 				else
-				if(CMLib.clans().getClan(C.name())!=null)
+				if(CMLib.clans().getClan(C.clanID())!=null)
 				{
 					mob.tell("That clan already exists, try CLANLIST.");
 					return false;
@@ -1183,7 +1183,7 @@ public class Create extends StdCommand
 					mob.tell("Clan '"+C.name()+"' created.");
 					C.setStatus(Clan.CLANSTATUS_ACTIVE);
 					C.create();
-					if(CMLib.clans().getClan(C.ID())==null)
+					if(CMLib.clans().getClan(C.clanID())==null)
 						CMLib.clans().addClan(C);
 				}
 			}
