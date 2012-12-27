@@ -59,7 +59,8 @@ public class Spell_BigMouth extends Spell
 			&&(mob.location()!=null)
 			&&(mob.location().okMessage(myHost, maliciousNessMsg)))
 			{
-				if((Stomach()!=null)&&(Stomach().numInhabitants()>(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this))))
+				int maxInhabitants=1+((mob.fetchAbility(ID())!=null)?super.getXLEVELLevel(mob):0);
+				if((Stomach()!=null)&&(Stomach().numInhabitants()>maxInhabitants))
 				{
 					mob.tell("Your stomach is too full.");
 					return false;

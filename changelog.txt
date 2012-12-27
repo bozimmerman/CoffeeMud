@@ -2429,3 +2429,4 @@ ruthless programmer, and sentenced to a quick death.
 33.About two dozen thief skills have been finished and assigned to various classes. Skill_EscapeBonds renamed to Struggle Bonds.
 34.Potions and Pills are more scaled to their levels.
 35.Normally mobile mobs will walk by hidden/invis exits now (unless they can see hidden, etc..)
+36.Death room (DEATH) coffeemud.ini entry now supports MORGUE to keep players where they died.
