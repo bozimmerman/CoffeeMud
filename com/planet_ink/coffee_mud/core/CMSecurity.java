@@ -59,9 +59,9 @@ public class CMSecurity
 	protected final static Set<String>  	expDisVars  	 = new HashSet<String>();
 	protected final static Set<DbgFlag> 	dbgVars 		 = new HashSet<DbgFlag>();
 	protected final static Set<String>  	saveFlags   	 = new HashSet<String>();
-	protected final static Set<String>  	journalFlags 	 = new HashSet<String>(); // global, because of cross-library issues
+	protected final static Set<String>  	journalFlags	 = new HashSet<String>(); // global, because of cross-library issues
 	
-	protected final long						startTime    = System.currentTimeMillis();
+	protected final long						startTime	 = System.currentTimeMillis();
 	protected MaskingLibrary.CompiledZapperMask compiledSysop= null;
 	protected final Map<String,SecGroup> 		groups  	 = new Hashtable<String,SecGroup>();
 	
@@ -402,7 +402,7 @@ public class CMSecurity
 			&&(!p.isVfs || isVFS))
 			{
 				if(path.startsWith(p.slashPath) || (path.equals(p.path)))
-        			return true;
+					return true;
 			}
 		}
 		return false;
@@ -1048,20 +1048,20 @@ public class CMSecurity
 					return true;
 				}
 				@Override
-                public boolean hasNext() 
+				public boolean hasNext() 
 				{
 					if((p==null)||(!p.hasNext()))
 						return doNext();
 					return p.hasNext();
 				}
 				@Override
-                public SecPath next() 
+				public SecPath next() 
 				{
 					if(hasNext()) return p.next();
 					throw new java.util.NoSuchElementException();
-                }
+				}
 				@Override
-                public void remove() {}
+				public void remove() {}
 			};
 		}
 		public Iterator<SecFlag> flags(){return new Iterator<SecFlag>()
@@ -1085,20 +1085,20 @@ public class CMSecurity
 					return true;
 				}
 				@Override
-                public boolean hasNext() 
+				public boolean hasNext() 
 				{
 					if((p==null)||(!p.hasNext()))
 						return doNext();
 					return p.hasNext();
 				}
 				@Override
-                public SecFlag next() 
+				public SecFlag next() 
 				{
 					if(hasNext()) return p.next();
 					throw new java.util.NoSuchElementException();
-                }
+				}
 				@Override
-                public void remove() {}
+				public void remove() {}
 			};
 		}
 	}
@@ -1157,7 +1157,7 @@ public class CMSecurity
 	{
 		LEVELS("player leveling"), EXPERIENCE("player XP gains"), PROPERTYOWNERCHECKS("confirm property ownership"), AUTODISEASE("diseases from races, weather, age, etc.."), 
 		DBERRORQUE("save SQL errors"), DBERRORQUESTART("retry SQL errors on boot"), CONNSPAMBLOCK("connection spam blocker"), FATAREAS("standard non-thin cached areas"), 
-		PASSIVEAREAS("inactive area sleeping"),    DARKWEATHER("weather causing room darkness"), DARKNIGHTS("time causing room darkness"), ARREST("legal system"), 
+		PASSIVEAREAS("inactive area sleeping"), DARKWEATHER("weather causing room darkness"), DARKNIGHTS("time causing room darkness"), ARREST("legal system"), 
 		EMOTERS("emoter behaviors"), CONQUEST("area clan conquest"), RANDOMITEMS("random item behavior"), MOBILITY("mobile behaviors"), MUDCHAT("MOB chat behavior"), 
 		RANDOMMONSTERS("random monster behaviors"), RACES("player races"), CLASSES("player classes"), MXP("MXP system"), MSP("MSP system"), QUITREASON("early quitting prompt"), 
 		CLASSTRAINING("class training"), ROOMVISITS("room visits"), THIRST("player thirst"), HUNGER("player hunger"), WEATHER("area weather"), WEATHERCHANGES("weather changes"), 
