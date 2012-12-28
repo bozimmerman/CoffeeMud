@@ -299,6 +299,36 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param newStatus a CLANSTAT_* constant
 	 */
 	public void setStatus(int newStatus);
+	
+	/**
+	 * Returns the bitmap of the Flag enum describing the flags
+	 * set on this clan.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Flag
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setFlags(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#isFlagged(Flag)
+	 * @return a Flag bitmap
+	 */
+	public int getFlags();
+	
+	/**
+	 * Returns whether the bitmap of the Flag enum describing the flags
+	 * set on this clan.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Flag
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setFlags(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getFlags()
+	 * @return whether a flag is set
+	 */
+	public boolean isFlagged(Flag flag);
+	
+	/**
+	 * Set the bitmap of the Flag enum describing the flags
+	 * set on this clan.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Flag
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getFlags()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#isFlagged(Flag)
+	 * @param newFlags a Flag bitmap
+	 */
+	public void setFlags(int newFlags);
 
 	/**
 	 * Returns the current clan level
@@ -458,20 +488,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return rate the tax rate 0-100.0
 	 */
 	public double getTaxes();
-	
-	/**
-	 * Sets the visibility for this 
-	 * @see Clan#isVisible()
-	 * @param visible the visibility
-	 */
-	public void setVisible(boolean visible);
-	
-	/**
-	 * Gets the visibility for this 
-	 * @see Clan#setVisible(boolean)
-	 * @return the visibility
-	 */
-	public boolean isVisible();
 	
 	/**
 	 * Returns the maximum number of players who can hold the given 
@@ -774,7 +790,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"MEMBERLIST", // 15
 		"TOPMEMBER", // 16
 		"CLANLEVEL", // 17
-		"VISIBLE" // 18
+		"FLAGS", // 18
 	};
 
 	/** constant for the getStatus() method, denoting normal status. @see Clan#getStatus() .*/
@@ -822,6 +838,21 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"FRIENDSHIP WITH",
 		"AN ALLIANCE WITH"
 	};
+
+	/**
+	 * enum for the getFlags @see Clan#getFlags() method.
+	 * @author Bo Zimmerman
+	 */
+	public static enum Flag {
+		VISIBLE;
+		private int bit;
+		private Flag()
+		{ bit=(int)Math.round(Math.pow(2.0, (double)ordinal())); }
+		public int getBit(){ return bit;}
+	}
+	
+	/** default bitmap for various flags.  @see Flag */
+	public static final int FLAGS_DEFAULT_BITMAP=Flag.VISIBLE.getBit();
 
 	/**
 	 * enum for the getTrophies @see Clan#getTrophies() method.

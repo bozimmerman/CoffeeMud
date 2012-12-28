@@ -287,15 +287,16 @@ public class ClanData extends StdWebMacro
 						old=((int)Math.round(CMath.s_pct(old)*100.0))+"%";
 					str.append(old+", ");
 				}
-				if(parms.containsKey("VISIBLE"))
-				{
-					String old=httpReq.getRequestParameter("VISIBLE");
-					if(old==null) 
-						old=C.isVisible()?"CHECKED":"";
-					else
-						old="on".equalsIgnoreCase(old)?"CHECKED":"";
-					str.append(old+", ");
-				}
+				for(Clan.Flag f : Clan.Flag.values())
+					if(parms.containsKey("FLAG_"+f.name().toUpperCase()))
+					{
+						String old=httpReq.getRequestParameter("FLAG_"+f.name().toUpperCase());
+						if(old==null) 
+							old=C.isFlagged(f)?"CHECKED":"";
+						else
+							old="on".equalsIgnoreCase(old)?"CHECKED":"";
+						str.append(old+", ");
+					}
 				if(parms.containsKey("CCLASSID"))
 				{
 					String old=httpReq.getRequestParameter("CCLASSID");

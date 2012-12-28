@@ -1633,6 +1633,16 @@ public class CMParms
 		return -1;
 	}
 	
+	public final static int indexOfIgnoreCase(final List<?> supported, final String str)
+	{
+		if(supported==null) return -1;
+		if(str==null) return -1;
+		for(int i=0;i<supported.size();i++)
+			if(supported.get(i).toString().equalsIgnoreCase(str))
+				return i;
+		return -1;
+	}
+	
 	public final static boolean contains(final String[] supported, final String expertise)
 	{ return indexOf(supported,expertise)>=0;}
 	public final static boolean contains(final Enumeration<String> supported, final String expertise)
@@ -1648,6 +1658,9 @@ public class CMParms
 	{    for(byte b2 : supported) if(b2==b) return true; return false; }
 	public final static boolean containsIgnoreCase(final String[] supported, final String expertise)
 	{ return indexOfIgnoreCase(supported,expertise)>=0;}
+
+	public final static boolean containsIgnoreCase(final List<?> supported, final String str)
+	{ return indexOfIgnoreCase(supported,str)>=0;}
 
 	public final static int indexOf(final Object[] supported, final Object expertise)
 	{

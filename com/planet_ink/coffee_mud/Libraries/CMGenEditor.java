@@ -2098,7 +2098,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return canContain.substring(2);
 	}
 
-
 	protected void genLidsNLocks(MOB mob, Container E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4621,6 +4620,48 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		E.setStat("WEAR",""+flags);
 	}
 
+	protected void modifyClanFlags(MOB mob, Clan E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		int flags=E.getFlags();
+		String newName="?";
+		List<String> flagList=new LinkedList<String>();
+		for(Clan.Flag f : Clan.Flag.values())
+			flagList.add(f.name());
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newName.equals("?")))
+		{
+			StringBuffer flagStr=new StringBuffer("");
+			for(Clan.Flag f : Clan.Flag.values())
+				if(CMath.isSet(flags,f.getBit()))
+					flagStr.append(f.name()+" ");
+
+			mob.tell(showNumber+". Clan flags: '"+flagStr.toString()+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+
+			newName=mob.session().prompt("Enter a flag to toggle (?)\n\r:","").toUpperCase();
+			if(newName.length()==0)
+				mob.tell("(no change)");
+			else
+			if(CMParms.containsIgnoreCase(flagList,newName))
+			{
+				int bit=CMParms.indexOfIgnoreCase(flagList,newName);
+				if(bit>=0)
+				{
+					if(CMath.isSet(flags,bit))
+						flags=flags-(int)CMath.pow(2,bit);
+					else
+						flags=flags+(int)CMath.pow(2,bit);
+				}
+			}
+			else
+			if(newName.equalsIgnoreCase("?"))
+				mob.tell("Valid values: "+CMParms.toStringList(flagList));
+			else
+				mob.tell("(no change)");
+		}
+		E.setFlags(flags);
+	}
 
 	protected void genRaceAvailability(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
@@ -7811,7 +7852,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			C.setPremise(prompt(mob,C.getPremise(),++showNumber,showFlag,"Clan Premise: ",true));
 			C.setExp(prompt(mob,C.getExp(),++showNumber,showFlag,"Clan Experience: "));
 			C.setTaxes(prompt(mob,C.getTaxes(),++showNumber,showFlag,"Clan Tax Rate (X 100%): "));
-			C.setVisible(prompt(mob,C.isVisible(),++showNumber,showFlag,"Is visible: "));
+			modifyClanFlags(mob, C, ++showNumber, showFlag);
 			C.setMorgue(genClanRoom(mob,C,C.getMorgue(),". Morgue RoomID: '@x1'.",++showNumber,showFlag));
 			C.setRecall(genClanRoom(mob,C,C.getRecall(),". Clan Home RoomID: '@x1'.",++showNumber,showFlag));
 			C.setDonation(genClanRoom(mob,C,C.getDonation(),". Clan Donate RoomID: '@x1'.",++showNumber,showFlag));

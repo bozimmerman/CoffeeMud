@@ -138,8 +138,12 @@ public class GrinderClans
 					Room R=CMLib.map().getRoom(str);
 					if(R!=null) C.setDonation(CMLib.map().getExtendedRoomID(R));
 				}
-				str=httpReq.getRequestParameter("VISIBLE");
-				C.setVisible((str==null)?true:str.equalsIgnoreCase("on"));
+				C.setFlags(0);
+				for(Clan.Flag f : Clan.Flag.values())
+				{
+					str=httpReq.getRequestParameter("FLAG_"+f.name().toUpperCase());
+					if((str!=null)&&str.equalsIgnoreCase("on")) C.setFlags(C.getFlags()|f.getBit());
+				}
 				str=httpReq.getRequestParameter("TAX");
 				if(str!=null) C.setTaxes(CMath.s_pct(str));
 				str=httpReq.getRequestParameter("CCLASSID");
