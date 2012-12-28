@@ -4633,7 +4633,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			StringBuffer flagStr=new StringBuffer("");
 			for(Clan.Flag f : Clan.Flag.values())
-				if(CMath.isSet(flags,f.getBit()))
+				if(CMath.bset(flags,f.getBit()))
 					flagStr.append(f.name()+" ");
 
 			mob.tell(showNumber+". Clan flags: '"+flagStr.toString()+"'.");

@@ -844,7 +844,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @author Bo Zimmerman
 	 */
 	public static enum Flag {
-		VISIBLE;
+		VISIBLE,
+		PERMANENT;
 		private int bit;
 		private Flag()
 		{ bit=(int)Math.round(Math.pow(2.0, (double)ordinal())); }

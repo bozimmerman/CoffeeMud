@@ -1011,6 +1011,8 @@ public class DefaultClan implements Clan
 
 	protected boolean isSafeFromPurge()
 	{
+		if(isFlagged(Clan.Flag.PERMANENT))
+			return true;
 		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
 			for(int b=0;b<protectedOnes.size();b++)
@@ -1083,6 +1085,9 @@ public class DefaultClan implements Clan
 					clanAnnounce(""+getGovernmentName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
 					update();
 				}
+				else
+				if(getStatus()!=CLANSTATUS_ACTIVE)
+					setStatus(CLANSTATUS_ACTIVE);
 			}
 			else
 			switch(getStatus())
