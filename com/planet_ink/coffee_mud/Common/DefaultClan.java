@@ -52,7 +52,6 @@ public class DefaultClan implements Clan
 	protected String clanDonationRoom="";
 	protected int	 clanTrophies=0;
 	protected int	 autoPosition=-1;
-	protected int	 flags=FLAGS_DEFAULT_BITMAP;
 	protected String acceptanceSettings="";
 	protected int 	 clanStatus=0;
 	protected String lastClanKillRecord=null;
@@ -786,7 +785,6 @@ public class DefaultClan implements Clan
 		str.append(CMLib.xml().convertXMLtoTag("EXP",""+getExp()));
 		str.append(CMLib.xml().convertXMLtoTag("LEVEL",""+getClanLevel()));
 		str.append(CMLib.xml().convertXMLtoTag("CCLASS",""+getClanClass()));
-		str.append(CMLib.xml().convertXMLtoTag("FLAGS",""+flags));
 		str.append(CMLib.xml().convertXMLtoTag("AUTOPOS",""+getAutoPosition()));
 		if(relations.size()==0)
 			str.append("<RELATIONS/>");
@@ -828,8 +826,6 @@ public class DefaultClan implements Clan
 		taxRate=CMLib.xml().getDoubleFromPieces(poliData,"TAXRATE");
 		clanClass=CMLib.xml().getValFromPieces(poliData,"CCLASS");
 		autoPosition=CMLib.xml().getIntFromPieces(poliData,"AUTOPOS");
-		String flagStr=CMLib.xml().getValFromPieces(poliData, "FLAGS");
-		flags=((flagStr!=null)&&(CMath.isInteger(flagStr)))?CMath.s_int(flagStr):FLAGS_DEFAULT_BITMAP;
 
 		// now RESOURCES!
 		List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
@@ -969,8 +965,7 @@ public class DefaultClan implements Clan
 	
 	public boolean isPubliclyListedFor(MOB mob)
 	{
-		if(((!govt().isPublic())||(!isFlagged(Flag.VISIBLE)))
-		&&(!mob.getClanID().equals(clanID())))
+		if((!govt().isPublic())&&(!mob.getClanID().equals(clanID())))
 			return false;
 		return true;
 	}
@@ -1011,7 +1006,7 @@ public class DefaultClan implements Clan
 
 	protected boolean isSafeFromPurge()
 	{
-		if(isFlagged(Clan.Flag.PERMANENT))
+		if((govt().getOverrideMinMembers()!=null)&&(govt().getOverrideMinMembers().intValue()<=0))
 			return true;
 		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
@@ -1024,12 +1019,6 @@ public class DefaultClan implements Clan
 		return false;
 	}
 	
-	@Override public int getFlags() { return flags;}
-
-	@Override public boolean isFlagged(Flag flag) { return CMath.bset(flags, flag.getBit()); }
-
-	@Override public void setFlags(int newFlags) { flags=newFlags;}
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Tickable.TICKID_CLAN)
@@ -1666,7 +1655,6 @@ public class DefaultClan implements Clan
 			return "";
 		}
 		case 17: return Integer.toString(getClanLevel());
-		case 19: return Integer.toString(getFlags());
 		}
 		return "";
 	}
@@ -1693,7 +1681,6 @@ public class DefaultClan implements Clan
 		case 15: break; // memberlist
 		case 16: break; // topmember
 		case 17: setClanLevel(CMath.s_int(val.trim())); break; // clanlevel
-		case 18: setFlags(CMath.s_int(val.trim())); break;
 		}
 	}
 }

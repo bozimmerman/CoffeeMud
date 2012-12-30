@@ -301,36 +301,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public void setStatus(int newStatus);
 	
 	/**
-	 * Returns the bitmap of the Flag enum describing the flags
-	 * set on this clan.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Flag
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setFlags(int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#isFlagged(Flag)
-	 * @return a Flag bitmap
-	 */
-	public int getFlags();
-	
-	/**
-	 * Returns whether the bitmap of the Flag enum describing the flags
-	 * set on this clan.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Flag
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setFlags(int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getFlags()
-	 * @return whether a flag is set
-	 */
-	public boolean isFlagged(Flag flag);
-	
-	/**
-	 * Set the bitmap of the Flag enum describing the flags
-	 * set on this clan.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Flag
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getFlags()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#isFlagged(Flag)
-	 * @param newFlags a Flag bitmap
-	 */
-	public void setFlags(int newFlags);
-
-	/**
 	 * Returns the current clan level
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setClanLevel(int)
 	 * @return the current clan level
@@ -838,22 +808,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"FRIENDSHIP WITH",
 		"AN ALLIANCE WITH"
 	};
-
-	/**
-	 * enum for the getFlags @see Clan#getFlags() method.
-	 * @author Bo Zimmerman
-	 */
-	public static enum Flag {
-		VISIBLE,
-		PERMANENT;
-		private int bit;
-		private Flag()
-		{ bit=(int)Math.round(Math.pow(2.0, (double)ordinal())); }
-		public int getBit(){ return bit;}
-	}
-	
-	/** default bitmap for various flags.  @see Flag */
-	public static final int FLAGS_DEFAULT_BITMAP=Flag.VISIBLE.getBit();
 
 	/**
 	 * enum for the getTrophies @see Clan#getTrophies() method.
