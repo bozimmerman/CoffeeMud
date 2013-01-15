@@ -135,6 +135,7 @@ in CoffeeMud
             <li><a href="#mpsavevar">mpsavevar</a></li>
             <li><a href="#mpscript">mpscript</a></li>
             <li><a href="#mpset">mpset</a></li>
+            <li><a href="#mpsetclan">mpsetclan</a></li>
             <li><a href="#mpsetclandata">mpsetclandata</a></li>
             <li><a href="#mpsetinternal">mpsetinternal</a></li>
             <li><a href="#mpsetvar">mpsetvar</a></li>
@@ -166,6 +167,7 @@ in CoffeeMud
             <li><a href="#clan">clan</a></li>
             <li><a href="#clandata">clandata</a></li>
             <li><a href="#clanrank">clanrank</a></li>
+            <li><a href="#clanqualifies">clanqualifies</a></li>
             <li><a href="#class">class</a></li>
             <li><a href="#currency">currency</a></li>
             <li><a href="#datetime">datetime</a></li>
@@ -1933,13 +1935,17 @@ the RETURN statement.</td>
           </tr>
           <tr>
             <td>CLAN([code])</td>
-            <td>Returns the clan
+            <td>Returns the prominent rivalrous clan
 of the given mob.</td>
           </tr>
           <tr>
             <td>CLANRANK([code])</td>
             <td>Returns the rank
-of the given mob in their clan.</td>
+of the given mob in their prominent rivalrous clan.</td>
+          </tr>
+          <tr>
+            <td>CLANQUALIFIES([code])</td>
+            <td>Returns a description of the qualifications for clan [code]</td>
           </tr>
           <tr>
             <td>CLANDATA([clan
@@ -3644,6 +3650,15 @@ careful with this command when dealing
 with players. If used poorly it can cause bad things to happen to them,
 so make sure you have good checks to ensure they get affected correctly
 and fairly.</p>
+      <h3><a name="mpsetclan">mpsetclan</a></h3>
+      <p>Usage:</p>
+      <pre>mpsetclan [target] [clan] [role]<br /></pre>
+      <p>This command allows you to add or remove the target to/from
+the given clan. A role of -1 will remove the target from the clan.  A
+valid clan role will add them.</p>
+      <p>EXAMPLES:</p>
+      <pre>mpsetclan $i 'Groovy Clan' 0<br />
+      mpsetclan $i 'Groovy Clan' Boss<br /></pre>
       <h3><a name="mpsetclandata">mpsetclandata</a></h3>
       <p>Usage:</p>
       <pre>mpsetclandata [clan] [variable] [value]<br /></pre>
@@ -3986,10 +4001,10 @@ includes a RETURN statement that includes a non-empty string parameter.</p>
       <p>Usage:</p>
       <pre>clan(character == clanname)<br /></pre>
       <p>This checks the name of
-the clan of the character variable.
-Where '==' may be another logical operator from above.</p>
+the prominent rivalrous clan of the character variable.
+Where '==' may be ==, != to check the prominent clan, or "in" or "notin" to check membership in a clan.</p>
       <p>EXAMPLE:</p>
-      <pre>if clan($n == 'The Unholy Goobers')<br /> mpecho The actor triggering me appears to be an Unholy Goober.<br />else<br /> mpecho The actor triggering me appears not to be a Goober.<br />endif<br /></pre>
+      <pre>if clan($n in 'The Unholy Goobers')<br /> mpecho The actor triggering me appears to be an Unholy Goober.<br />else<br /> mpecho The actor triggering me appears not to be a Goober.<br />endif<br /></pre>
       <h3><a name="clandata">clandata</a></h3>
       <p>Usage:</p>
       <pre>clandata(clan variable == value)<br /></pre>
@@ -4007,12 +4022,19 @@ value may be any numeric, string, or literal.</p>
       <p>Usage:</p>
       <pre>clanrank(character == integer)<br /></pre>
       <p>This checks the rank of
-the character in their clan. Where
+the character in their prominent rivalrous clan. Where
 '==' may be another logical operator from above. Valid values include:
 APPLICANT=0, MEMBER=1, STAFF=2, ENCHANTER=4, TREASURER=8, LEADER=16,
 BOSS=32</p>
       <p>EXAMPLE:</p>
       <pre>if clanrank($n == 0)<br /> mpecho The actor triggering me appears to be an APPLICANT.<br />else<br /> mpecho The actor triggering me appears not to be an APPLICANT.<br />endif<br /></pre>
+      <h3><a name="clanqualifies">clanqualifies</a></h3>
+      <p>Usage:</p>
+      <pre>clanqualifies(character clanname)<br /></pre>
+      <p>This checks the given character to see if they qualify to be a new member
+      of the given clan.</p>
+      <p>EXAMPLE:</p>
+      <pre>if clanqualifies($n 'MyClan')<br /> mpecho The actor triggering me appears qualify.<br />else<br /> mpecho The actor triggering me appears not to qualify.<br />endif<br /></pre>
       <h3><a name="class">class</a></h3>
       <p>Usage:</p>
       <pre>class(character == classname)<br /></pre>

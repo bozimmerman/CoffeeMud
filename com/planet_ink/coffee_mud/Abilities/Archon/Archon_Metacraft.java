@@ -233,14 +233,18 @@ public class Archon_Metacraft extends ArchonSkill
 			if(toWHERE.equals("SELF")||toWHERE.equals("HERE"))
 				for(Item building : items)
 				{
-					if((building instanceof ClanItem)&&(mob.getClanID().length()>0))
+					if(building instanceof ClanItem)
 					{
-						Clan C=CMLib.clans().getClan(mob.getClanID());
-						String clanName = (C==null)?" Clan "+mob.getClanID():(" "+C.getGovernmentName()+" "+C.name());
-						building.setName(CMStrings.replaceFirst(building.Name(), " Clan None", clanName));
-						building.setDisplayText(CMStrings.replaceFirst(building.displayText(), " Clan None", clanName));
-						building.setDescription(CMStrings.replaceFirst(building.description(), " Clan None", clanName));
-						((ClanItem)building).setClanID(mob.getClanID());
+						Pair<Clan,Integer> p=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
+						if(p!=null)
+						{
+							Clan C=p.first;
+							String clanName=(" "+C.getGovernmentName()+" "+C.name());
+							building.setName(CMStrings.replaceFirst(building.Name(), " Clan None", clanName));
+							building.setDisplayText(CMStrings.replaceFirst(building.displayText(), " Clan None", clanName));
+							building.setDescription(CMStrings.replaceFirst(building.description(), " Clan None", clanName));
+							((ClanItem)building).setClanID(C.clanID());
+						}
 					}
 					if(toWHERE.equals("HERE"))
 					{

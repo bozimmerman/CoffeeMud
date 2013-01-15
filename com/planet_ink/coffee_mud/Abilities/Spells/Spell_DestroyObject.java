@@ -64,7 +64,7 @@ public class Spell_DestroyObject extends Spell
 		boolean success=proficiencyCheck(mob,(((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*25),auto);
 
 		if((target instanceof ClanItem)
-		&&(!((ClanItem)target).clanID().equals(mob.getClanID())))
+		&&(mob.getClanRole(((ClanItem)target).clanID())==null))
 			success=false;
 		
 		if(success)

@@ -143,6 +143,26 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public void setName(String newName);
 	
 	/**
+	 * Returns the category of the clan, which is almost always the
+	 * same as the government category.  This is significant since a player
+	 * can only belong to N clans of a given category.  See also MAXCLANS
+	 * in coffeemud.ini.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setCategory(String)
+	 * @return the name of the 
+	 */
+	public String getCategory();
+	
+	/**
+	 * Sets a new category for this, which is almost always the
+	 * same as the government category.  This is significant since a player
+	 * can only belong to N clans of a given category.  See also MAXCLANS
+	 * in coffeemud.ini.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getCategory()
+	 * @param newName the new name of this clan
+	 */
+	public void setCategory(String newCategory);
+	
+	/**
 	 * Returns Clan, Republic, or another one of the
 	 * clan government types.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
@@ -299,6 +319,25 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param newStatus a CLANSTAT_* constant
 	 */
 	public void setStatus(int newStatus);
+	
+	/**
+	 * Returns true if this clan is rivalrous with other rivalrous clans,
+	 * meaning that pvp is enabled between them, and war can be declared
+	 * between them.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setRivalrous(boolean)
+	 * @return true or false
+	 */
+	public boolean isRivalrous();
+	
+	/**
+	 * Set to true if this clan is rivalrous with other rivalrous clans,
+	 * meaning that pvp is enabled between them, and war can be declared
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#isRivalrous()
+	 * @param isRivalrous true or false
+	 */
+	public void setRivalrous(boolean isRivalrous);
 	
 	/**
 	 * Returns the current clan level
@@ -513,11 +552,21 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Returns the set of members, where
 	 * each row represents a MemberRecord
 	 * @see Clan#getMemberList(int)
+	 * @see Clan#getFullMemberList()
 	 * @see MemberRecord
 	 * @return the membership
 	 */
 	public List<MemberRecord> getMemberList();
 	
+	/**
+	 * Returns the set of members, where
+	 * each row represents a FullMemberRecord
+	 * @see Clan#getMemberList()
+	 * @see FullMemberRecord
+	 * @return the membership
+	 */
+	public List<FullMemberRecord> getFullMemberList();
+
 	/**
 	 * Returns the set of members, where
 	 * each row represents a MemberRecord.
@@ -717,13 +766,24 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public class MemberRecord
 	{
 		public String name;
-		public int level;
 		public int role;
-		public long timestamp;
-		public MemberRecord(String name, int level, int role, long timestamp) {
-			this.name=name; this.level=level; this.role=role; this.timestamp=timestamp;
+		public MemberRecord(String name, int role) {
+			this.name=name; this.role=role;
 		}
 		public String toString() { return name;}
+	}
+	/**
+	 * A internal membership record, as returned by the database,
+	 * plus extra fields from cmchar
+	 * @author Bo Zimmerman
+	 */
+	public class FullMemberRecord extends MemberRecord
+	{
+		public int level;
+		public long timestamp;
+		public FullMemberRecord(String name, int level, int role, long timestamp) {
+			super(name,role); this.level=level; this.timestamp=timestamp;
+		}
 	}
 	
 	/** Vote just started constant for the ClanVote.voteStatus member. @see ClanVote#voteStatus */
@@ -760,7 +820,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"MEMBERLIST", // 15
 		"TOPMEMBER", // 16
 		"CLANLEVEL", // 17
-		"FLAGS", // 18
+		"CATEGORY", // 18
+		"RIVALROUS"//19
 	};
 
 	/** constant for the getStatus() method, denoting normal status. @see Clan#getStatus() .*/
@@ -882,6 +943,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		PROPERTY_OWNER,
 		/** constant for the clan function of withdrawing from clan bank accounts. @see Clan#getAuthority(int,Function) */
 		WITHDRAW,
+		/** constant for the clan function of depositing into clan bank accounts. @see Clan#getAuthority(int,Function) */
+		DEPOSIT,
 		/** constant for the clan function of ordering lower ranked clan members. @see Clan#getAuthority(int,Function) */
 		ORDER_UNDERLINGS,
 		/** constant for the clan function of ordering mobs in clan conquered areas. @see Clan#getAuthority(int,Function) */

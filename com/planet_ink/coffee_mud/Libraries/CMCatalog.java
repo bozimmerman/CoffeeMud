@@ -654,8 +654,15 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 					}
 					if((P instanceof MOB)&&(cataE instanceof MOB))
 					{
+						boolean firstChecked=false;
 						if(diffs==null) diffs=new StringBuffer("");
-						if(!((MOB)P).getClanID().equalsIgnoreCase(((MOB)cataE).getClanID()))
+						for(Pair<Clan,Integer> p : ((MOB)P).clans())
+							if((((MOB)cataE).getClanRole(p.first.clanID())==null)||(((MOB)cataE).getClanRole(p.first.clanID()).second.intValue()!=p.second.intValue()))
+								firstChecked=true;
+						for(Pair<Clan,Integer> p : ((MOB)cataE).clans())
+							if((((MOB)P).getClanRole(p.first.clanID())==null)||(((MOB)P).getClanRole(p.first.clanID()).second.intValue()!=p.second.intValue()))
+								firstChecked=true;
+						if(firstChecked)
 							diffs.append("CLANID,");
 					}
 					changeCatalogFlag(P,true);

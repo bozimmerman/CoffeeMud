@@ -52,14 +52,13 @@ public class ClanHelper extends StdBehavior
 		{
 			if(parms.length()>0)
 			{
-				((MOB)forMe).setClanID(parms.trim());
 				Clan C=CMLib.clans().getClan(parms.trim());
 				if(C==null)
 					C=CMLib.clans().findClan(parms.trim());
 				if(C!=null)
-					((MOB)forMe).setClanRole(C.getGovernment().getAcceptPos());
+					((MOB)forMe).setClan(C.clanID(),C.getGovernment().getAcceptPos());
 				else
-					((MOB)forMe).setClanRole(0);
+					Log.errOut("ClanHelper","Unknown clan "+parms+" for "+forMe.Name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(forMe)));
 			}
 		}
 	}
@@ -77,18 +76,24 @@ public class ClanHelper extends StdBehavior
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(target!=observer)
 		&&(source!=target)
-		&&(observer.getClanID().length()>0)
 		&&(!observer.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer,false)))
 		{
-			if(observer.getClanID().equalsIgnoreCase(target.getClanID()))
+			List<Triad<Clan,Integer,Integer>> list=CMLib.clans().findCommonRivalrousClans(observer, target);
+			if(list.size()>0)
 			{
+				Clan C=null;
+				for(Triad<Clan,Integer,Integer> t : list)
+					if(source.getClanRole(t.first.clanID())==null)
+					{
+						C=t.first;
+						break;
+					}
 				String reason="WE ARE UNDER ATTACK!! CHARGE!!";
-				if((observer.getClanID().equals(target.getClanID()))
-				&&(!observer.getClanID().equals(source.getClanID())))
-					reason=observer.getClanID().toUpperCase()+"S UNITE! CHARGE!";
+				if(C!=null)
+					reason=C.getName().toUpperCase()+"S UNITE! CHARGE!";
 				Aggressive.startFight(observer,source,true,false,reason);
 			}
 		}

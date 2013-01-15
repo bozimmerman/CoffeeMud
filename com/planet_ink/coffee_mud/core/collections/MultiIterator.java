@@ -34,6 +34,25 @@ public class MultiIterator<K> implements Iterator<K>
 		setup();
 	}
 
+	public MultiIterator(Iterable<K>[] esets) 
+	{
+		if((esets==null)||(esets.length==0)) 
+			return;
+		for(Iterable<K> I : esets)
+			iters.add(I.iterator());
+		setup();
+	}
+	
+	public MultiIterator(Iterable<? extends Iterable<K>> esets) 
+	{
+		if(esets==null) 
+			return;
+		for(Iterable<K> I : esets)
+			iters.add(I.iterator());
+		setup();
+	}
+	
+
 	public MultiIterator()
 	{
 		

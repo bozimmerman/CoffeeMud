@@ -104,11 +104,13 @@ public class Channel extends StdCommand
 		}
 		
 		Set<ChannelsLibrary.ChannelFlag> flags=chan.flags;
-		if((mob.getClanID().equalsIgnoreCase("")||(!CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.CHANNEL)))
-		&&(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
+		if((flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
 		{
-			mob.tell("You can't talk to your clan - you don't have one.");
-			return false;
+			if(!CMLib.clans().checkClanPrivilege(mob, Clan.Function.CHANNEL))
+			{
+				mob.tell("You can't talk to your clan - you don't have one that allows you.");
+				return false;
+			}
 		}
 		
 		if((commands.size()==2)

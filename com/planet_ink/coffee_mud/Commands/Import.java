@@ -4810,7 +4810,7 @@ public class Import extends StdCommand
 					CMLib.login().notifyFriends(M,"^X"+M.Name()+" has just been created.^.^?");
 					List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel((String)channels.get(i),M.getClanID(),M.Name()+" has just been created.",true);
+						CMLib.commands().postChannel((String)channels.get(i),M.clans(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
 						M.setStartRoom(CMLib.login().getDefaultStartRoom(M));
 					if(M.location()==null)

@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -42,32 +43,28 @@ public class ClanResign extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
+		
+		Clan C=null;
+		for(Pair<Clan,Integer> c : mob.clans())
+			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName)))
+			{	C=c.first; break; }
+		
 		StringBuffer msg=new StringBuffer("");
-		if((mob.getClanID()==null)
-		||(mob.getClanID().equalsIgnoreCase("")))
+		if(C==null)
 		{
-			msg.append("You aren't even a member of a clan.");
+			msg.append("You can't resign from "+((clanName.length()==0)?"anything":clanName)+".");
 		}
 		else
 		if(!mob.isMonster())
 		{
-			Clan C=mob.getMyClan();
 			try
 			{
 				String check=mob.session().prompt("Are you absolutely SURE (y/N)?","N");
 				if(check.equalsIgnoreCase("Y"))
 				{
-					if(C!=null)
-						CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.getGovernmentName()+" "+C.name()+": "+mob.Name());
-					if(C!=null)
-						C.delMember(mob);
-					else
-					{
-						CMLib.database().DBUpdateClanMembership(mob.Name(), "", 0);
-						mob.setClanID("");
-						mob.setClanRole(0);
-						CMLib.database().DBUpdateClanMembership(mob.Name(),"",0);
-					}
+					CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.getGovernmentName()+" "+C.name()+": "+mob.Name());
+					C.delMember(mob);
 				}
 				else
 				{

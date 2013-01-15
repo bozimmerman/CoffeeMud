@@ -240,7 +240,7 @@ public class CommandJournal extends StdCommand
 						prePend+msgString);
 				mob.tell("Your "+journal.NAME().toLowerCase()+" message has been sent.  Thank you.");
 				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL)!=null)
-					CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),"",mob.Name()+" posted to "+journal.NAME()+": "+CMParms.combine(commands,1),true);
+					CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.CommandJournalFlags.CHANNEL).toUpperCase().trim(),null,mob.Name()+" posted to "+journal.NAME()+": "+CMParms.combine(commands,1),true);
 			}
 			else
 			{

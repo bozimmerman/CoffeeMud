@@ -52,10 +52,6 @@ public class StdMOB implements MOB
 
 	public String				username		= "";
 
-	protected String			clanID			= null;
-	protected WeakReference<Clan>cachedClan		= null;
-	protected int				clanRole		= 0;
-
 	protected CharStats			baseCharStats	= (CharStats) CMClass.getCommon("DefaultCharStats");
 	protected CharStats			charStats		= (CharStats) CMClass.getCommon("DefaultCharStats");
 
@@ -130,11 +126,13 @@ public class StdMOB implements MOB
 	protected volatile SVector<Follower>	 	 followers		= null;
 	protected 		   LinkedList<QMCommand> 	 commandQue		= new LinkedList<QMCommand>();
 	protected 		   SVector<ScriptingEngine>	 scripts		= new SVector(1);
-	protected volatile ChameleonList<Ability>	 racialAffects	= null;
-	protected volatile ChameleonList<Ability>	 clanAffects	= null;
+	protected volatile List<Ability>			 racialAffects	= null;
+	protected volatile List<Ability>			 clanAffects	= null;
 	protected 		   SHashtable<String, FData> factions 		= new SHashtable<String, FData>(1);
 	protected volatile WeakReference<Item>		 possWieldedItem= null;
 	protected volatile WeakReference<Item>	 	 possHeldItem	= null;
+	
+	protected		   OrderedMap<String,Pair<Clan,Integer>> 	clans = new OrderedMap<String,Pair<Clan,Integer>>();
 
 	public StdMOB()
 	{
@@ -307,10 +305,6 @@ public class StdMOB implements MOB
 		return bob;
 	}
 
-	public final Clan getMyClan() {
-		return (cachedClan != null) ? cachedClan.get() : null;
-	}
-
 	public void initializeClass() {
 	}
 
@@ -472,8 +466,12 @@ public class StdMOB implements MOB
 		factions = new SHashtable<String, FData>(1);
 		possWieldedItem= null;
 		possHeldItem = null;
-		setClanID(M.getClanID());
-		
+		clans.clear();
+
+		for(Pair<Clan,Integer> p : M.clans())
+		{
+			setClan(p.first.clanID(), p.second.intValue());
+		}
 		for(Enumeration<String> e=M.fetchFactions();e.hasMoreElements();)
 		{
 			String fac=e.nextElement();
@@ -889,8 +887,8 @@ public class StdMOB implements MOB
 		if (kickFlag)
 			CMLib.threads().deleteTick(this, -1);
 		kickFlag = false;
-		clanID = null;
-		cachedClan = null;
+		clans.clear();
+		clanAffects=null;
 		charStats = baseCharStats;
 		phyStats = basePhyStats;
 		playerStats = null;
@@ -965,41 +963,7 @@ public class StdMOB implements MOB
 		}
 		setRiding(null);
 	}
-
-	public String getClanID() {
-		return ((clanID == null) ? "" : clanID);
-	}
-
-	public void setClanID(String clan) 
-	{
-		clanID = clan;
-		if ((clan == null) || (clan.trim().length() == 0))
-		{
-			if (cachedClan != null)
-			{
-				cachedClan = null;
-				clanAffects = null;
-			}
-		} 
-		else
-		{
-			final Clan newClan = CMLib.clans().getClan(clan);
-			if (newClan != cachedClan)
-			{
-				cachedClan = new WeakReference(newClan);
-				clanAffects = null;
-			}
-		}
-	}
-
-	public int getClanRole() {
-		return clanRole;
-	}
-
-	public void setClanRole(int role) {
-		clanRole = role;
-	}
-
+	
 	public void bringToLife() 
 	{
 		amDead = false;
@@ -1193,7 +1157,7 @@ public class StdMOB implements MOB
 			return true;
 		if (CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
 			return false;
-		if (CMLib.clans().isCommonClanRelations(getClanID(), mob.getClanID(), Clan.REL_WAR))
+		if (CMLib.clans().isAtClanWar(this, mob))
 			return true;
 		if (CMath.bset(getBitmap(), MOB.ATT_PLAYERKILL))
 		{
@@ -3438,23 +3402,22 @@ public class StdMOB implements MOB
 		&& (CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.ORDER))
 		&& ((!CMSecurity.isASysOp(this)) || CMSecurity.isASysOp(mob)))
 			return true;
-		if ((getClanID().length() > 0) && (getClanID().equals(mob.getClanID())))
+		for(Triad<Clan,Integer,Integer> t : CMLib.clans().findCommonRivalrousClans(this, mob))
 		{
-			final Clan C = getMyClan();
-			if (C != null)
+			final Clan C=t.first;
+			final int myRole=t.second.intValue();
+			final int hisRole=t.third.intValue();
+			if ((C.getAuthority(hisRole, Clan.Function.ORDER_UNDERLINGS) != Clan.Authority.CAN_NOT_DO)
+			&& (C.doesOutRank(hisRole, myRole)))
+				return true;
+			else 
+			if ((isMonster())
+			&& (C.getAuthority(hisRole, Clan.Function.ORDER_CONQUERED) != Clan.Authority.CAN_NOT_DO)
+			&& (getStartRoom() != null))
 			{
-				if ((C.getAuthority(mob.getClanRole(), Clan.Function.ORDER_UNDERLINGS) != Clan.Authority.CAN_NOT_DO)
-				&& (C.doesOutRank(mob.getClanRole(), getClanRole())))
+				LegalBehavior B = CMLib.law().getLegalBehavior(getStartRoom());
+				if ((B != null) && (mob.getClanRole(B.rulingOrganization())!=null))
 					return true;
-				else 
-				if ((isMonster())
-				&& (C.getAuthority(mob.getClanRole(), Clan.Function.ORDER_CONQUERED) != Clan.Authority.CAN_NOT_DO)
-				&& (getStartRoom() != null))
-				{
-					LegalBehavior B = CMLib.law().getLegalBehavior(getStartRoom());
-					if ((B != null) && (B.rulingOrganization().equals(mob.getClanID())))
-						return true;
-				}
 			}
 		}
 		return false;
@@ -3585,19 +3548,19 @@ public class StdMOB implements MOB
 
 	public Enumeration<Ability> allAbilities() 
 	{
-		final Clan C = getMyClan();
 		final MultiListEnumeration multi = new MultiListEnumeration(new List[] { abilitys,
 				charStats().getMyRace().racialAbilities(this) });
-		if (C != null)
-			multi.addEnumeration(C.clanAbilities(this));
+		for(Pair<Clan,Integer> p : clans())
+			multi.addEnumeration(p.first.clanAbilities(this));
 		return multi;
 	}
 
 	public int numAllAbilities() 
 	{
-		final Clan C = getMyClan();
-		return abilitys.size() + charStats().getMyRace().racialAbilities(this).size()
-				+ ((C == null) ? 0 : C.clanAbilities(this).size());
+		int size=abilitys.size() + charStats().getMyRace().racialAbilities(this).size();
+		for(Pair<Clan,Integer> p : clans())
+			size+=p.first.clanAbilities(this).size();
+		return size;
 	}
 
 	public Ability fetchRandomAbility() 
@@ -3615,9 +3578,15 @@ public class StdMOB implements MOB
 				return (Ability) abilitys.elementAt(index);
 			final List<Ability> racialAbilities = charStats().getMyRace().racialAbilities(this);
 			if (index < abilitys.size() + racialAbilities.size())
-				return (Ability) charStats().getMyRace().racialAbilities(this).get(index - abilitys.size());
-			final Clan C = getMyClan();
-			return (C == null) ? null : C.clanAbilities(this).get(index - abilitys.size() - racialAbilities.size());
+				return (Ability) racialAbilities.get(index - abilitys.size());
+			index-=(abilitys.size() + racialAbilities.size());
+			for(Pair<Clan,Integer> p : clans())
+			{
+				SearchIDList<Ability> list = p.first.clanAbilities(this);
+				if(index<list.size())
+					return list.get(index);
+				index-=list.size();
+			}
 		} catch (java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
@@ -3626,9 +3595,11 @@ public class StdMOB implements MOB
 	{
 		Ability A=abilitys.find(ID);
 		if(A!=null) return A;
-		final Clan C = getMyClan();
-		if(C!=null) A=C.clanAbilities(this).find(ID);
-		if(A!=null) return A;
+		for(Pair<Clan,Integer> p : clans())
+		{
+			A=p.first.clanAbilities(this).find(ID);
+			if(A!=null) return A;
+		}
 		final Race R = charStats().getMyRace();
 		A=R.racialAbilities(this).find(ID);
 		if(A!=null) return A;
@@ -3643,42 +3614,106 @@ public class StdMOB implements MOB
 
 	public Ability findAbility(String ID) 
 	{
-		final Clan C = getMyClan();
 		final Race R = charStats().getMyRace();
 		Ability A = (Ability) CMLib.english().fetchEnvironmental(abilitys, ID, true);
 		if (A == null)
 			A = (Ability) CMLib.english().fetchEnvironmental(R.racialAbilities(this), ID, true);
-		if ((A == null) && (C != null))
-			A = (Ability) CMLib.english().fetchEnvironmental(C.clanAbilities(this), ID, true);
+		if (A == null)
+			for(Pair<Clan,Integer> p : clans())
+			{
+				A = (Ability) CMLib.english().fetchEnvironmental(p.first.clanAbilities(this), ID, true);
+				if(A!=null) return A;
+			}
 		if (A == null)
 			A = (Ability) CMLib.english().fetchEnvironmental(abilitys, ID, false);
 		if (A == null)
 			A = (Ability) CMLib.english().fetchEnvironmental(R.racialAbilities(this), ID, false);
-		if ((A == null) && (C != null))
-			A = (Ability) CMLib.english().fetchEnvironmental(C.clanAbilities(this), ID, false);
+		if (A == null)
+			for(Pair<Clan,Integer> p : clans())
+			{
+				A = (Ability) CMLib.english().fetchEnvironmental(p.first.clanAbilities(this), ID, false);
+				if(A!=null) return A;
+			}
 		if (A == null)
 			A = fetchAbility(ID);
 		return A;
 	}
 
-	protected final ChameleonList<Ability> racialEffects() 
+	protected final List<Ability> racialEffects() 
 	{
 		if (racialAffects == null)
 			racialAffects = charStats.getMyRace().racialEffects(this);
 		return racialAffects;
 	}
 
-	protected final ChameleonList<Ability> clanEffects() 
+	protected final List<Ability> clanEffects() 
 	{
 		if (clanAffects == null)
 		{
-			final Clan C = getMyClan();
-			if (C == null)
-				clanAffects = CMLib.clans().getDefaultGovernment().getClanLevelEffects(this, null);
+			final Iterator<Pair<Clan,Integer>> c=clans().iterator();
+			if(!c.hasNext())
+				clanAffects = CMLib.clans().getDefaultGovernment().getClanLevelEffects(this, null, null);
 			else
-				clanAffects = C.clanEffects(this);
+			{
+				ReadOnlyMultiList<Ability> effects=new ReadOnlyMultiList<Ability>(); 
+				for(;c.hasNext();)
+					effects.addList(c.next().first.clanEffects(this));
+				clanAffects=effects;
+			}
 		}
 		return clanAffects;
+	}
+	@Override
+	public Iterable<Pair<Clan, Integer>> clans() { return this.clans; }
+
+	@Override
+	public Pair<Clan, Integer> getClanRole(String clanID) 
+	{
+		if((clanID==null)||(clanID.length()==0))
+			return null;
+		return clans.get(clanID);
+	}
+
+	@Override
+	public void setClan(String clanID, int role) 
+	{
+		if((clanID==null)||(clanID.length()==0))
+		{
+			if(role==Integer.MIN_VALUE)
+			{
+				clans.clear();
+				clanAffects=null;
+			}
+			return;
+		}
+		if(role<0)
+		{
+			Pair<Clan,Integer> p=clans.get(clanID);
+			if(p!=null)
+			{
+				clans.remove(clanID);
+				clanAffects=null;
+			}
+		}
+		else
+		{
+			Pair<Clan,Integer> p=clans.get(clanID);
+			if(p==null)
+			{
+				Clan C=CMLib.clans().getClan(clanID);
+				if(C==null)
+					Log.errOut("StdMOB","Unknown clan: "+clanID+" on "+Name()+" in "+CMLib.map().getExtendedRoomID(location()));
+				else
+					clans.put(clanID, new Pair<Clan,Integer>(C,Integer.valueOf(role)));
+				clanAffects=null;
+			}
+			else
+			{
+				if(p.second.intValue()!=role)
+					p.second=Integer.valueOf(role);
+				clans.put(clanID, p);
+			}
+		}
 	}
 
 	public void addNonUninvokableEffect(Ability to) 
@@ -3738,12 +3773,10 @@ public class StdMOB implements MOB
 				for (final Ability A : racialEffects)
 					applier.apply(A);
 		} catch (ArrayIndexOutOfBoundsException e){}
-		final List<Ability> clanEffects = clanEffects();
 		try
 		{
-			if (clanEffects.size() > 0)
-				for (final Ability A : clanEffects)
-					applier.apply(A);
+			for (final Ability A : clanEffects())
+				applier.apply(A);
 		} catch (ArrayIndexOutOfBoundsException e){}
 	}
 
@@ -3764,9 +3797,10 @@ public class StdMOB implements MOB
 
 	public int numAllEffects() 
 	{
-		final Clan C = getMyClan();
-		return affects.size() + charStats().getMyRace().numRacialEffects(this)
-				+ ((C == null) ? 0 : C.numClanEffects(this));
+		int size=affects.size() + charStats().getMyRace().numRacialEffects(this);
+		for(Pair<Clan,Integer> p : clans())
+			size+=p.first.numClanEffects(this);
+		return size;
 	}
 
 	public int numEffects() 
@@ -3782,8 +3816,7 @@ public class StdMOB implements MOB
 				return affects.elementAt(index);
 			if (index < abilitys.size() + charStats().getMyRace().numRacialEffects(this))
 				return racialEffects().get(index - affects.size());
-			final Clan C = getMyClan();
-			return (C == null) ? null : clanEffects().get(index - affects.size() - C.numClanEffects(this));
+			return clanEffects().get(index - affects.size() - racialEffects().size());
 		} catch (java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
@@ -3806,11 +3839,7 @@ public class StdMOB implements MOB
 
 	public Enumeration<Ability> effects() 
 	{
-		final Clan C = getMyClan();
-		final MultiListEnumeration multi = new MultiListEnumeration(new List[] { affects, racialEffects() });
-		if (C != null)
-			multi.addEnumeration(clanEffects());
-		return multi;
+		return new MultiListEnumeration(new List[] { affects, racialEffects(), clanEffects() });
 	}
 
 	/**

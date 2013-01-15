@@ -51,23 +51,7 @@ public class Prayer_SanctifyRoom extends Prayer
 
 	protected boolean inRoom(MOB mob, Room R)
 	{
-		boolean inRoom=((CMLib.law().doesHavePriviledgesHere(mob,R))
-						||((text().length()>0)&&(mob.Name().equals(text())))
-						||((text().length()>0)&&(mob.getClanID().equals(text()))));
-		inRoom = inRoom || CMSecurity.isAllowed(mob, R,CMSecurity.SecFlag.CMDROOMS);
-		inRoom = inRoom || CMSecurity.isAllowed(mob, R,CMSecurity.SecFlag.CMDITEMS);
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			MOB M=R.fetchInhabitant(i);
-			if(CMLib.law().doesHavePriviledgesHere(M,R))
-			{ inRoom=true; break;}
-			if((text().length()>0)&&(M.Name().equals(text())))
-			{ inRoom=true; break;}
-			if((text().length()>0)&&(M.getClanID().equals(text())))
-			{ inRoom=true; break;}
-
-		}
-		if(!inRoom)
+		if(!CMLib.law().doesAnyoneHavePrivilegesHere(mob, text(), R))
 		{
 			mob.tell("You feel your muscles unwilling to cooperate.");
 			return false;
@@ -129,21 +113,17 @@ public class Prayer_SanctifyRoom extends Prayer
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
+				
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					String clanID=mob.getClanID();
-					if((mob.amFollowing()!=null)&&(clanID.length()==0))
-						clanID=mob.amFollowing().getClanID();
-					if((clanID.length()>0)
-					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
-						setMiscText(clanID);
-					
-					if((clanID.length()>0)
-					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target)))
-					&&(CMLib.clans().getClan(clanID)!=null)
-					&&(!CMLib.clans().getClan(clanID).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
+					String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					if((CMLib.clans().getClan(landOwnerName)!=null)
+					&&(!CMLib.clans().getClan(landOwnerName).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
+					{
+						setMiscText(landOwnerName);
 						beneficialAffect(mob,target,asLevel,0);
+					}
 					else
 					{
 						target.addNonUninvokableEffect((Ability)this.copyOf());

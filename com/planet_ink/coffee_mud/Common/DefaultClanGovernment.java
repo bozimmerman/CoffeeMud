@@ -48,6 +48,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	public int		ID;
 	/** The name of this government type, which is its identifier when ID above is -1 */
 	public String	name;
+	/** The category of this government type.  Players can only belong to one of each category */
+	public String category;
 	/** The role automatically assigned to those who apply successfully */
 	public int		autoRole;
 	/** The role automatically assigned to those who are accepted */
@@ -62,6 +64,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	public boolean	isPublic;
 	/**  Whether mambers must all be in the same family */
 	public boolean	isFamilyOnly;
+	/** Whether clans made from this government are rivalrous by default */
+	public boolean isRivalrous;
 	/**  The number of minimum members for the clan to survive -- overrides coffeemud.ini */
 	public Integer	overrideMinMembers;
 	/** Whether conquest is enabled for this clan */
@@ -130,11 +134,24 @@ public class DefaultClanGovernment implements ClanGovernment
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category){
+		if(category==null) category="";
+		this.category=category.toUpperCase();
+	}
 	public int getAutoRole() {
 		return autoRole;
 	}
 	public void setAutoRole(int autoRole) {
 		this.autoRole = autoRole;
+	}
+	public boolean isRivalrous() { 
+		return isRivalrous; 
+	}
+	public void setRivalrous(boolean isRivalrous) {
+		this.isRivalrous=isRivalrous;
 	}
 	public int getAcceptPos() {
 		return acceptPos;
@@ -324,7 +341,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		CONQUESTENABLED,CONQUESTITEMLOYALTY,CONQUESTDEITYBASIS,MAXVOTEDAYS,VOTEQUORUMPCT,
 		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC,XPLEVELFORMULA,
 		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,
-		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,
+		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,CATEGORY,ISRIVALROUS
 	}
 	
 	public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
@@ -360,6 +377,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		case MAXVOTEDAYS: return Integer.toString(maxVoteDays);
 		case VOTEQUORUMPCT: return Integer.toString(voteQuorumPct);
 		case AUTOPROMOTEBY: return autoPromoteBy.toString();
+		case ISRIVALROUS: return Boolean.toString(isRivalrous);
 		case VOTEFUNCS:{
 			final StringBuilder str=new StringBuilder("");
 			for(ClanPosition pos : positions)
@@ -383,6 +401,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		case GETREFF: return (clanEffectNames==null)?"":(""+clanEffectNames[num]);
 		case GETREFFPARM: return (clanEffectParms==null)?"0":(""+clanEffectParms[num]);
 		case GETREFFLVL: return (clanEffectLevels==null)?"0":(""+clanEffectLevels[num]);
+		case CATEGORY: return category;
 		default: Log.errOut("Clan","getStat:Unhandled:"+stat.toString()); break;
 		}
 		return "";
@@ -403,6 +422,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		switch(stat)
 		{
 		case NAME: name=val; break;
+		case CATEGORY: category=val; break;
 		case AUTOROLE: { ClanPosition P=getPosition(val); if(P!=null) autoRole=P.getRoleID(); break; }
 		case ACCEPTPOS: { ClanPosition P=getPosition(val); if(P!=null) acceptPos=P.getRoleID(); break; }
 		case SHORTDESC: shortDesc=val; break;
@@ -421,6 +441,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		case CONQUESTDEITYBASIS: conquestByWorship=CMath.s_bool(val); break;
 		case MAXVOTEDAYS: maxVoteDays=CMath.s_int(val); break;
 		case VOTEQUORUMPCT: voteQuorumPct=CMath.s_int(val); break;
+		case ISRIVALROUS: this.isRivalrous=CMath.s_bool(val); break;
 		case AUTOPROMOTEBY:{
 			Clan.AutoPromoteFlag flag=(Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(),val);
 			if(flag!=null) autoPromoteBy=flag;
@@ -752,25 +773,24 @@ public class DefaultClanGovernment implements ClanGovernment
 		return getClanLevelEffectsList(mob, level).size();
 	}
 	
-	public ChameleonList<Ability> getEmptyClanLevelEffects(final MOB mob)
+	public ChameleonList<Ability> getEmptyClanLevelEffects(final MOB mob, final Clan clan)
 	{
 		return new ChameleonList<Ability>(empty,
 			new ChameleonList.Signaler<Ability>(empty) 
 			{
-				public boolean isDeprecated() { return (mob!=null)&&(mob.getMyClan())!=null;}
+				public boolean isDeprecated() { return (mob!=null)&&(mob.clans().iterator().hasNext());}
 				public void rebuild(final ChameleonList<Ability> me)
 				{
-					if(mob==null) return;
-					final Clan C=mob.getMyClan();
-					if(C!=null)
-						me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, Integer.valueOf(C.getClanLevel())));
+					if((mob==null)||(clan==null)) return;
+					if(mob.getClanRole(clan.clanID())!=null)
+						me.changeMeInto(clan.getGovernment().getClanLevelEffects(mob, clan, Integer.valueOf(clan.getClanLevel())));
 				}
 			});
 	}
 	
-	public ChameleonList<Ability> getClanLevelEffects(final MOB mob, final Integer level)
+	public ChameleonList<Ability> getClanLevelEffects(final MOB mob, final Clan clan, final Integer level)
 	{
-		if(level == null) return getEmptyClanLevelEffects(mob);
+		if(level == null) return getEmptyClanLevelEffects(mob, clan);
 		final DefaultClanGovernment myGovt = this;
 		final List<Ability> myList=getClanLevelEffectsList(mob, level);
 		final List<Ability> finalV=new Vector<Ability>(myList.size());
@@ -799,23 +819,21 @@ public class DefaultClanGovernment implements ClanGovernment
 				{
 					public boolean isDeprecated()
 					{
-						if((mob==null)||(mob.amDestroyed())) 
+						if((mob==null)||(mob.amDestroyed())||(clan==null)||(mob.getClanRole(clan.clanID())==null)) 
 							return true;
-						final Clan C = mob.getMyClan();
-						if(C==null) return true;
-						if((C.getGovernment() != myGovt)
-						|| (getClanLevelEffectsList(mob, Integer.valueOf(C.getClanLevel())) != oldReferenceListRef.get()))
+						if((clan.getGovernment() != myGovt)
+						|| (getClanLevelEffectsList(mob, Integer.valueOf(clan.getClanLevel())) != oldReferenceListRef.get()))
 							return true;
 						return false;
 					}
 					public void rebuild(final ChameleonList<Ability> me)
 					{
 						
-						final Clan C=(mob!=null)?mob.getMyClan():null;
+						final Clan C=(mob!=null)?clan:null;
 						if((mob==null)||(mob.amDestroyed())||(C==null))
-							me.changeMeInto(getEmptyClanLevelEffects(mob));
+							me.changeMeInto(getEmptyClanLevelEffects(mob,C));
 						else
-							me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, Integer.valueOf(C.getClanLevel())));
+							me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, clan, Integer.valueOf(C.getClanLevel())));
 					}
 				});
 		}

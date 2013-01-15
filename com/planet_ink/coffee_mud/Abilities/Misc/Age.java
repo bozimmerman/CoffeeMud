@@ -302,8 +302,8 @@ public class Age extends StdAbility
 					String highestBaseClass="Orphan";
 					int highestBaseLevel=0;
 					int highestParentLevel=0;
-					if(babe.getClanID().length()>0)
-						newMan.setClanID(babe.getClanID());
+					for(Pair<Clan,Integer> p : babe.clans())
+						newMan.setClan(p.first.clanID(),p.second.intValue());
 					int theme=Area.THEME_FANTASY;
 					int highestLegacyLevel=0;
 					for(Enumeration<MOB.Tattoo> e=newMan.tattoos();e.hasMoreElements();)
@@ -319,8 +319,9 @@ public class Age extends StdAbility
 								for(int i=0;i<M.baseCharStats().numClasses();i++)
 									if(M.baseCharStats().getClassLevel(M.baseCharStats().getMyClass(i))>highestBaseLevel)
 										highestBaseClass=M.baseCharStats().getMyClass(i).baseClass();
-								if((M.getClanID().length()>0)&&(newMan.getClanID().length()==0))
-									newMan.setClanID(M.getClanID());
+								if(!newMan.clans().iterator().hasNext())
+									for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(M))
+										newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
 								if((M.getWorshipCharID().length()>0)&&(newMan.getWorshipCharID().length()==0))
 									newMan.setWorshipCharID(M.getWorshipCharID());
 								for(Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
@@ -347,14 +348,12 @@ public class Age extends StdAbility
 							}
 						}
 					}
-					if((newMan.getClanID().length()==0)
-					&&(liege!=null)
-					&&(liege.getClanID().length()>0))
-						newMan.setClanID(liege.getClanID());
-					if(newMan.getClanID().length()>0)
+					if((!newMan.clans().iterator().hasNext())&&(liege!=null))
+						for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(liege))
+    						newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+					if(CMLib.clans().findRivalrousClan(newMan)!=null)
 					{
-						Clan C = newMan.getMyClan();
-						newMan.setClanRole(C.getGovernment().getAcceptPos());
+						Clan C = CMLib.clans().findRivalrousClan(newMan);
 						if(C!=null) C.addMember(newMan, C.getGovernment().getAcceptPos());
 					}
 					newMan.setDescription(babe.description());
@@ -447,7 +446,7 @@ public class Age extends StdAbility
 
 					List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel((String)channels.get(i),newMan.getClanID(),newMan.Name()+" has just been created.",true);
+						CMLib.commands().postChannel((String)channels.get(i),newMan.clans(),newMan.Name()+" has just been created.",true);
 
 					if(liege != null)
 					{

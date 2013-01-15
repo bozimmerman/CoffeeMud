@@ -67,6 +67,20 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	public void setName(String name);
 	
 	/**
+	 * Gets the category.
+	 *
+	 * @return the category
+	 */
+	public String getCategory();
+	
+	/**
+	 * Sets the category.
+	 *
+	 * @param category the new category
+	 */
+	public void setCategory(String category);
+
+	/**
 	 * Gets the auto role.
 	 *
 	 * @return the auto role
@@ -163,6 +177,22 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 * @param isFamilyOnly the new family only
 	 */
 	public void setFamilyOnly(boolean isFamilyOnly);
+	
+	/**
+	 * Returns true if this clan is rivalrous with other rivalrous clans,
+	 * meaning that pvp is enabled between them, and war can be declared
+	 * between them.
+	 * @return true or false
+	 */
+	public boolean isRivalrous();
+	
+	/**
+	 * Set to true if this clan is rivalrous with other rivalrous clans,
+	 * meaning that pvp is enabled between them, and war can be declared
+	 * @param isRivalrous true or false
+	 */
+	public void setRivalrous(boolean isRivalrous);
+	
 	
 	/**
 	 * Gets the override min members.
@@ -365,10 +395,11 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 * Return the list of effects owned by someone
 	 * who is part of a clan of the given level.
 	 * @param mob the mob affected
+	 * @param clan the clan the effects come from
 	 * @param level clan level
 	 * @return list of abilities
 	 */
-	public ChameleonList<Ability> getClanLevelEffects(MOB mob, Integer level);
+	public ChameleonList<Ability> getClanLevelEffects(MOB mob, Clan clan, Integer level);
 	
 	/**
 	 * Return the size of the list of effects owned by someone

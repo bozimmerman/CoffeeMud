@@ -127,7 +127,7 @@ public class Prop_Retainable extends Property
 							if((t!=null)
 							&&(t.landOwner().length()>0)
 							&&(!t.landOwner().equalsIgnoreCase(mob.amFollowing().Name()))
-							&&(!t.landOwner().equalsIgnoreCase(mob.amFollowing().getClanID())))
+							&&(mob.amFollowing().getClanRole(t.landOwner())==null))
 							{
 								CMLib.commands().postSay(mob,null,"Hey, I'm not a crook!",false,false);
 								mob.setFollowing(null);

@@ -66,7 +66,7 @@ public class ClanData extends StdWebMacro
 							if(role!=null)
 								theroles.addElement(Integer.valueOf(CMath.s_int(role)));
 							else
-								theroles.addElement(Integer.valueOf(M.getClanRole()));
+								theroles.addElement(Integer.valueOf(C.getGovernment().getAcceptPos()));
 						}
 					}
 					num++;
@@ -234,6 +234,18 @@ public class ClanData extends StdWebMacro
 				{
 					int pos=C.getAutoPosition();
 					str.append(C.getRoleName(pos,true,false)+", ");
+				}
+				if(parms.containsKey("CATEGORY"))
+				{
+					String old=httpReq.getRequestParameter("CATEGORY");
+					if(old==null) old=C.getCategory();
+					str.append(old);
+				}
+				if(parms.containsKey("ISRIVALROUS"))
+				{
+					String old=httpReq.getRequestParameter("ISRIVALROUS");
+					if(old==null) old=C.isRivalrous()?"on":"";
+					str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 				}
 				if(parms.containsKey("AUTOPOSITIONID"))
 				{

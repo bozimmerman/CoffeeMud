@@ -73,9 +73,9 @@ public class Thief_Racketeer extends ThiefSkill
 			return false;
 		}
 		MOB source=msg.source();
-		if((!msg.source().Name().equals(text()))&&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
-				&&(msg.tool() instanceof Ability)&&(msg.target()==affected)
-				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
+		if((!msg.source().Name().equals(text()))&&((msg.source().getClanRole(text())==null))
+			&&(msg.tool() instanceof Ability)&&(msg.target()==affected)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
 		{
 			if(invoker()==source)
 			{

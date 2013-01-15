@@ -62,8 +62,8 @@ public class PlayerData extends StdWebMacro
 		"MONEY",
 		"DEITYNAME",
 		"LIEGE",
-		"CLANNAME",
-		"CLANROLE",
+		"CLANNAMES",
+		"CLANROLE", // deprecated
 		"ALIGNMENTNAME",
 		"ALIGNMENTSTRING",
 		"WIMP",
@@ -160,12 +160,11 @@ public class PlayerData extends StdWebMacro
 		case 19: str.append(CMLib.beanCounter().getMoney(M)+", "); break;
 		case 20: str.append(M.getWorshipCharID()+", "); break;
 		case 21: str.append(M.getLiegeID()+", "); break;
-		case 22: str.append(M.getClanID()+", "); break;
-		case 23: if(M.getClanID().length()>0)
-				 {
-					 Clan C=M.getMyClan();
-					 if(C!=null)
-						str.append(C.getRoleName(M.getClanRole(),true,false)+", ");
+		case 22: 
+		case 23: {
+					StringBuilder buf=new StringBuilder("");
+					for(Pair<Clan,Integer> p : M.clans())
+						buf.append(p.first.getName()).append(", ");
 				 }
 				 break;
 		case 24: str.append(M.fetchFaction(CMLib.factions().AlignID())+", ");
@@ -464,20 +463,6 @@ public class PlayerData extends StdWebMacro
 					str.append("<INPUT TYPE=TEXT NAME=TITLE"+titles.size()+" SIZE=60 VALUE=\"\">");
 				}
 			}
-			if(parms.containsKey("CLAN"))
-			{
-				String old=httpReq.getRequestParameter("CLAN");
-				if(firstTime) old=M.getClanID();
-				str.append("<OPTION "+((old.length()==0)?"SELECTED":"")+" VALUE=\"\">Clanless");
-				for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
-				{
-					Clan C=(Clan)e.nextElement();
-					str.append("<OPTION VALUE=\""+C.clanID()+"\"");
-					if(C.clanID().equalsIgnoreCase(old))
-						str.append(" SELECTED");
-					str.append(">"+C.getName());
-				}
-			}
 			if(parms.containsKey("ALIGNMENT"))
 			{
 				String old=httpReq.getRequestParameter("ALIGNMENT");
@@ -511,6 +496,7 @@ public class PlayerData extends StdWebMacro
 			str.append(AreaData.behaves(M,httpReq,parms,0));
 			str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
 			str.append(MobData.senses(M,firstTime,httpReq,parms));
+			str.append(MobData.clans(M,httpReq,parms,0));
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
 				strstr=strstr.substring(0,strstr.length()-2);

@@ -192,7 +192,7 @@ public class Fighter extends StdCharClass
 		&&(msg.targetMessage().equalsIgnoreCase("CONQUEST"))
 		&&(host instanceof MOB)
 		&&(((MOB)host).charStats().getCurrentClass().ID().equals(C.ID()))
-		&&(msg.source().Name().equals(((MOB)host).getClanID()))
+		&&(((MOB)host).getClanRole(msg.source().Name())!=null)
 		)
 		{
 			Area A=(Area)msg.target();

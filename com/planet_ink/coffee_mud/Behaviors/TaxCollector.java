@@ -44,7 +44,7 @@ public class TaxCollector extends StdBehavior
 	protected long graceTime=1000*60*60;
 	protected int lastMonthChecked=-1;
 	protected List<LandTitle> taxableProperties=new Vector<LandTitle>();
-	protected HashSet peopleWhoOwe=new HashSet();
+	protected Set<String> peopleWhoOwe=new HashSet<String>();
 	protected String treasuryRoomID=null;
 	protected Container treasuryContainer=null;
 
@@ -67,17 +67,25 @@ public class TaxCollector extends StdBehavior
 	public final static int OWE_BACKTAXES=2;
 	public final static int OWE_FINES=3;
 
+	protected boolean belongsToAnOweingClan(MOB M)
+	{
+		for(String clanID : peopleWhoOwe)
+			if(M.getClanRole(clanID)!=null)
+				return true;
+		return false;
+	}
+	
 	public double[] totalMoneyOwed(MOB collector,MOB M)
 	{
 		double[] owed=new double[4];
 		if((peopleWhoOwe.contains(M.Name()))
-		||((M.getClanID().length()>0)&&(peopleWhoOwe.contains(M.getClanID()))))
+		||(belongsToAnOweingClan(M)))
 		{
 			for(int t=0;t<taxableProperties.size();t++)
 			{
 				LandTitle T=(LandTitle)taxableProperties.get(t);
 				if((T.landOwner().equals(M.Name())
-						||((M.getClanID().length()>0)&&T.landOwner().equals(M.getClanID())))
+					||(M.getClanRole(T.landOwner())!=null))
 				&&(T.backTaxes()>0))
 					owed[OWE_BACKTAXES]+=(double)T.backTaxes();
 			}
@@ -169,7 +177,7 @@ public class TaxCollector extends StdBehavior
 				{
 					LandTitle T=(LandTitle)taxableProperties.get(i);
 					if(T.landOwner().equals(msg.source().Name())
-						||((msg.source().getClanID().length()>0)&&T.landOwner().equals(msg.source().getClanID())))
+						||(msg.source().getClanRole(T.landOwner())!=null))
 					{
 						numProperties++;
 						if(T.backTaxes()>0)
@@ -313,12 +321,10 @@ public class TaxCollector extends StdBehavior
 			MOB M=R.fetchRandomInhabitant();
 			if((M!=null)
 			&&(M!=mob)
-			&&((mob.getClanID().length()==0)
-			   ||(M.getClanID().length()==0)
-			   ||(!M.getClanID().equals(mob.getClanID())))
 			&&(!CMLib.flags().isAnimalIntelligence(M))
 			&&(!CMSecurity.isAllowed(M,R,CMSecurity.SecFlag.ORDER))
 			&&(!CMSecurity.isAllowed(M,R,CMSecurity.SecFlag.CMDROOMS))
+			&&(CMLib.clans().findCommonRivalrousClans(mob, M).size()==0)
 			&&(CMLib.flags().canBeSeenBy(M,mob)))
 			{
 				int demandDex=demanded.indexOf(M);

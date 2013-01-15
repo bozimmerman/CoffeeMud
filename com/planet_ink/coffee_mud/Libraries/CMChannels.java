@@ -83,12 +83,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		{
 			// only way to fail an all-clan send is to have NO clan.
-			if((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL)))
+			if(!CMLib.clans().checkClanPrivilege(M, Clan.Function.CHANNEL))
 				return false;
-			if((!sender.getClanID().equalsIgnoreCase("ALL"))
-			&&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
+
+			if((!CMLib.clans().isAnyCommonClan(sender,M))
 			&&((!chan.flags.contains(ChannelFlag.CLANALLYONLY))
-				||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
+				||(!CMLib.clans().findAnyClanRelations(M,sender,Clan.REL_ALLY))))
 				return false;
 		}
 		
@@ -126,12 +126,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		if(chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
 		{
 			// only way to fail an all-clan send is to have NO clan.
-			if((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL)))
+			if(!CMLib.clans().checkClanPrivilege(M, Clan.Function.CHANNEL))
 				return false;
-			if((!sender.getClanID().equalsIgnoreCase("ALL"))
-			&&(!M.getClanID().equalsIgnoreCase(sender.getClanID()))
+			if((!CMLib.clans().isAnyCommonClan(sender,M))
 			&&((!chan.flags.contains(ChannelFlag.CLANALLYONLY))
-				||(CMLib.clans().getClanRelations(M.getClanID(),sender.getClanID())!=Clan.REL_ALLY)))
+				||(!CMLib.clans().findAnyClanRelations(M,sender,Clan.REL_ALLY))))
 				return false;
 		}
 		
@@ -158,7 +157,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		CMChannel chan=getChannel(i);
 		if(chan==null) return false;
 		if((chan.flags.contains(ChannelFlag.CLANONLY)||chan.flags.contains(ChannelFlag.CLANALLYONLY))
-		&&((M.getClanID().length()==0)||(!CMLib.clans().authCheck(M.getClanID(), M.getClanRole(), Clan.Function.CHANNEL))))
+		&&(!CMLib.clans().checkClanPrivilege(M, Clan.Function.CHANNEL)))
 			return false;
 
 		if(((zapCheckOnly)||((!M.amDead())&&(M.location()!=null)))

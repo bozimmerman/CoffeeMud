@@ -35,17 +35,15 @@ import java.util.Vector;
 */
 public interface PostOffice extends ShopKeeper
 {
+	public String getSenderName(MOB mob, Clan.Function func, boolean checked);
 	public void addToBox(String boxName, Item thisThang, String from, String to, long holdTime, double COD);
-	public void addToBox(MOB mob, Item thisThang, String from, String to, long holdTime, double COD);
-	public boolean delFromBox(String mob, Item thisThang);
-	public boolean delFromBox(MOB mob, Item thisThang);
-	public void emptyBox(String mob);
-	public Map<String, String> getOurOpenBoxes(String mob);
-	public void createBoxHere(String mob, String forward);
-	public void deleteBoxHere(String mob);
+	public boolean delFromBox(String boxName, Item thisThang);
+	public void emptyBox(String boxName);
+	public Map<String, String> getOurOpenBoxes(String boxName);
+	public void createBoxHere(String boxName, String forward);
+	public void deleteBoxHere(String boxName);
 	public MailPiece parsePostalItemData(String data);
-	public Item findBoxContents(String mob, String likeThis);
-	public Item findBoxContents(MOB mob, String likeThis);
+	public Item findBoxContents(String boxName, String likeThis);
 	public String postalChain();
 	public void setPostalChain(String name);
 	public String postalBranch(); // based on individual shopkeeper

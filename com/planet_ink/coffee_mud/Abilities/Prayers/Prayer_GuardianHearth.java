@@ -75,7 +75,7 @@ public class Prayer_GuardianHearth extends Prayer
 				if((CMLib.law().doesHavePriviledgesHere(M,R))
 				||((text().length()>0)
 					&&((M.Name().equals(text()))
-						||(M.getClanID().equals(text())))))
+						||(M.getClanRole(text())!=null))))
 				{
 					R.show(((MOB)msg.target()),null,this,CMMsg.MSG_OK_VISUAL,"The guardian hearth protect(s) <S-NAME>!");
 					break;
@@ -107,15 +107,13 @@ public class Prayer_GuardianHearth extends Prayer
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
+				
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					String clanID=mob.getClanID();
-					if((mob.amFollowing()!=null)&&(clanID.length()==0))
-						clanID=mob.amFollowing().getClanID();
-					if((clanID.length()>0)
-					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
-						setMiscText(clanID);
+					String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					if(CMLib.clans().getClan(landOwnerName)!=null)
+						setMiscText(landOwnerName);
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);
 				}

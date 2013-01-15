@@ -3078,6 +3078,10 @@ be destroyed. Name your clans carefully!<br>
 oligarchy (Guild), a republic (Union), a family, a theocracy, or a
 democracy (Fellowship)<br>
 </td>
+<tr>
+<td><em>Category</em></td>
+<td>places this clan in a named category, which can be used to membership. Normally derived from the government type.<br>
+</td>
 </tr>
 <tr>
 <td><em>Clan Premise</em><br>
@@ -3131,7 +3135,7 @@ filled in when the Archon wishes to have clan based classes.<br>
 </td>
 </tr>
 <tr>
-<td>Clan Auto-Role<br>
+<td><em>Clan Auto-Role</em><br>
 </td>
 <td>the role (rank/position) of the player who enters the
 CLANAPPLY command. Normally this is set to Applicant, meaning that the
@@ -3149,6 +3153,10 @@ players to become active), a state of Active, or a state of Fading
 settable in the coffeemud.ini file). This state is changed
 automatically by CoffeeMud, but can be altered here.<br>
 </td>
+</tr>
+<tr>
+<td><em>Rivalrous Clan</em></td>
+<td>True if the clan can rival other clans, False otherwise.  Normally derived from the government type.</td>
 </tr>
 <tr>
 <td><em>Clan Members</em></td>
@@ -3194,6 +3202,11 @@ unchanged. The properties include:</p>
 </td>
 </tr>
 <tr>
+<td><em>Category</em></td>
+<td>places this government in a named category, which can be used to govern clan types. Can also be overridden at the clan level.<br>
+</td>
+</tr>
+<tr>
 <td><em>Short Desc</em></td>
 <td>6-10 word description shown during clan creation<br>
 </td>
@@ -3214,8 +3227,12 @@ unchanged. The properties include:</p>
 </td>
 </tr>
 <tr>
+<td><em>Is Rivalrous</em></td>
+<td>true if clans of this government type can rival other clans, false otherwise. Can also be manually set at the clan level.</td>
+</tr>
+<tr>
 <td><em>Min Members</em></td>
-<td>if set, overrides the minimum members in coffeemud.ini<br>
+<td>if set, overrides the minimum members in coffeemud.ini.  Setting to 0 will also make the clan immortal.<br>
 </td>
 </tr>
 <tr>

@@ -36,6 +36,7 @@ public interface LegalLibrary extends CMLibrary
 	public LegalBehavior getLegalBehavior(Room R);
 	public Area getLegalObject(Area A);
 	public Area getLegalObject(Room R);
+	public String getLandOwnerName(Room room);
 	
 	public LandTitle getLandTitle(Area area);
 	public LandTitle getLandTitle(Room room);
@@ -44,6 +45,7 @@ public interface LegalLibrary extends CMLibrary
     public boolean isHomeRoomDownstairs(Room room);
 	public boolean isHomeRoomUpstairs(Room room);
 	public boolean doesHavePriviledgesHere(MOB mob, Room room);
+	public boolean doesAnyoneHavePrivilegesHere(MOB mob, String overrideID, Room R);
 	public boolean doesHavePriviledgesInThisDirection(MOB mob, Room room, Exit exit);
 	public boolean doesOwnThisProperty(String name, Room room);
 	public boolean doesOwnThisProperty(MOB mob, Room room);

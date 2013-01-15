@@ -802,54 +802,67 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag<=0)||(showFlag==showNumber))
 		{
-			mob.tell(showNumber+". Clan (ID): '"+M.getClanID()+"'.");
-			if((showFlag==showNumber)||(showFlag<=-999))
+			boolean more=true;
+			while(more && (mob.session()!=null) && (!mob.session().isStopped()))
 			{
-				String newName=mob.session().prompt("Enter a new one (null)\n\r:","");
-				if(newName.equalsIgnoreCase("null"))
-					M.setClanID("");
-				else
+				more=false;
+				StringBuilder clanList=new StringBuilder("");
+				for(Pair<Clan,Integer> c : M.clans())
+					clanList.append(c.first.getName()).append(" (").append(c.first.getRoleName(c.second.intValue(), false, false)).append("), ");
+				if(clanList.length()>2) clanList.setLength(clanList.length()-2);
+				mob.tell(showNumber+". Clan(s): '"+clanList.toString()+"'.");
+				if((showFlag==showNumber)||(showFlag<=-999))
 				{
-					Clan C=CMLib.clans().getClan(newName);
-					if(C==null)
-						C=CMLib.clans().findClan(newName);
-					if((newName.length()>0)&&(C!=null))
+					more=true;
+					String newName=mob.session().prompt("Enter a new clan to add, remove, or change (?):","");
+					Clan C=null;
+					if(newName.trim().length()==0)
+						more=false;
+					else
 					{
-						M.setClanID(C.clanID());
-						M.setClanRole(C.getGovernment().getAcceptPos());
+						C=CMLib.clans().getClan(newName);
+						if(C==null)
+							C=CMLib.clans().findClan(newName);
+						if(C!=null)
+						{
+							if(M.getClanRole(C.clanID())==null)
+							{
+								String role=C.getRoleName(C.getGovernment().getAcceptPos(), false, false);
+								String newRole=mob.session().prompt("Enter role ["+CMParms.toStringList(C.getRolesList())+"]\n\r: ("+role+"):",role);
+								if(newRole.trim().length()>0)
+								{
+									int roleID=-1;
+									if(CMath.isInteger(newRole.trim()))
+										roleID=CMath.s_int(newRole.trim());
+									else
+										roleID=C.getRoleFromName(newRole.trim());
+									if(roleID<0)
+										mob.tell("Invalid role '"+newRole+"'");
+									else
+									{
+										M.setClan(C.clanID(), roleID);
+										mob.tell("Clan added.");
+									}
+								}
+								else
+									mob.tell("(no change)");
+							}
+							else
+							{
+								M.setClan(C.clanID(), -1);
+								mob.tell("Clan removed.");
+							}
+						}
+						else
+						{
+							StringBuilder list=new StringBuilder("(no clan '"+newName+"', try: ");
+							for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
+								list.append(e.nextElement().getName()).append(", ");
+							list.setLength(list.length()-2);
+							mob.tell(list.toString()+")");
+						}
 					}
-					else
-					if(C==null)
-					{
-						mob.tell("(no clan "+newName+")");
-						return;
-					}
-					else
-						mob.tell("(no change)");
 				}
-			}
-		}
-		if(((showFlag<=0)||(showFlag==showNumber))
-		   &&(!M.isMonster())
-		   &&(M.getClanID().length()>0)
-		   &&(M.getMyClan()!=null))
-		{
-
-			Clan C=M.getMyClan();
-			mob.tell(showNumber+". Clan (Role): '"+C.getRoleName(M.getClanRole(),true,false)+"'.");
-			if((showFlag==showNumber)||(showFlag<=-999))
-			{
-				String newName=mob.session().prompt("Enter a new one\n\r:","");
-				if(newName.length()>0)
-				{
-					int newRole=C.getRoleFromName(newName);
-					if(newRole<0)
-						mob.tell("That role is invalid. Try: "+CMParms.toStringList(C.getRolesList()));
-					else
-						M.setClanRole(newRole);
-				}
-				else
-					mob.tell("(no change)");
 			}
 		}
 	}
@@ -3966,7 +3979,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if(index<0)
 						{
 							index=members.size();
-							members.add(new MemberRecord(M.name(),M.basePhyStats().level(),E.getGovernment().getAcceptPos(),M.playerStats().lastDateTime()));
+							members.add(new MemberRecord(M.name(),E.getGovernment().getAcceptPos()));
 						}
 
 						int newRole=-1;
@@ -3999,22 +4012,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(!membersCopy.contains(newName))
 					{
 						MOB M=CMLib.players().getLoadPlayer(newName);
-						if(M!=null)
-						{
-							Clan oldC=M.getMyClan();
-							if((oldC!=null)
-							&&(!M.getClanID().equalsIgnoreCase(E.clanID())))
-							{
-								M.setClanID("");
-								M.setClanRole(0);
-								oldC.updateClanPrivileges(M);
-							}
-							int role=members.get(m).role;
-							CMLib.database().DBUpdateClanMembership(M.Name(), E.clanID(), role);
-							M.setClanID(E.clanID());
-							M.setClanRole(role);
-							E.updateClanPrivileges(M);
-						}
+						if((M!=null)&&(M.getClanRole(E.clanID())==null))
+							E.addMember(M, 0);
 					}
 				}
 				// now adjust changed roles
@@ -4024,11 +4023,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(membersCopy.contains(newName))
 					{
 						MOB M=CMLib.players().getLoadPlayer(newName);
+						Pair<Clan,Integer> oldClanRole=M.getClanRole(E.clanID());
 						int newRole=members.get(m).role;
-						if((M!=null)&&(newRole!=M.getClanRole()))
+						if((M!=null)&&(oldClanRole!=null)&&(newRole!=oldClanRole.second.intValue()))
 						{
 							CMLib.database().DBUpdateClanMembership(M.Name(), E.clanID(), newRole);
-							M.setClanRole(newRole);
+							M.setClan(E.clanID(),newRole);
 							E.updateClanPrivileges(M);
 						}
 					}
@@ -4040,12 +4040,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(!members.contains(newName))
 					{
 						MOB M=CMLib.players().getLoadPlayer(newName);
-						if(M!=null)
-						{
-							M.setClanID("");
-							M.setClanRole(0);
-							E.updateClanPrivileges(M);
-						}
+						if((M!=null)&&(M.getClanRole(E.clanID())!=null))
+							E.delMember(M);
 					}
 				}
 			}
@@ -6337,11 +6333,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			int showNumber=0;
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Type Name","NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Category","CATEGORY",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Short Desc","SHORTDESC",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Long Desc","LONGDESC",60);
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Member Mask","REQUIREDMASK",true);
 			promptStatBool(mob, me,++showNumber, showFlag,"Is Public", "ISPUBLIC");
 			promptStatBool(mob, me,++showNumber, showFlag,"Is Family", "ISFAMILYONLY");
+			promptStatBool(mob, me,++showNumber, showFlag,"Is Rivalrous", "ISRIVALROUS");
 			promptStatStr(mob, me,null,++showNumber, showFlag,"Minimum Members", "OVERRIDEMINMEMBERS",true);
 			if((me.getOverrideMinMembers()!=null)&&((me.getOverrideMinMembers().intValue()<0)||(me.getOverrideMinMembers().intValue()>999)))
 				me.setOverrideMinMembers(null);
@@ -7806,6 +7804,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell("*. Name: '"+C.name()+"'.");
 			int showNumber=0;
 			genClanGovt(mob,C,++showNumber,showFlag);
+			C.setCategory(prompt(mob,C.getCategory(),++showNumber,showFlag,"Category: ",true));
 			C.setPremise(prompt(mob,C.getPremise(),++showNumber,showFlag,"Clan Premise: ",true));
 			C.setExp(prompt(mob,C.getExp(),++showNumber,showFlag,"Clan Experience: "));
 			C.setTaxes(prompt(mob,C.getTaxes(),++showNumber,showFlag,"Clan Tax Rate (X 100%): "));
@@ -7816,6 +7815,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genClanClass(mob,C,++showNumber,showFlag);
 			genClanRole(mob,C,++showNumber,showFlag);
 			genClanStatus(mob,C,++showNumber,showFlag);
+			C.setRivalrous(prompt(mob,C.isRivalrous(),++showNumber,showFlag,"Rivalrous Clan"));
 			genClanMembers(mob,C,++showNumber,showFlag);
 			/*setClanRelations, votes?*/
 			if(showFlag<-900){ ok=true; break;}

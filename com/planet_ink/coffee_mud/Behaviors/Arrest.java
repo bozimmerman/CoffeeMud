@@ -238,7 +238,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			{
 				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel((String)channels.get(i),"",W.criminal().name()+" has been accused of "+fixCharge(W)+".",true);
+					CMLib.commands().postChannel((String)channels.get(i),null,W.criminal().name()+" has been accused of "+fixCharge(W)+".",true);
 			}
 			return true;
 		}

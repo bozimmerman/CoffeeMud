@@ -68,7 +68,7 @@ public class StdClanSpecialItem extends StdClanItem
 		&&(owner() instanceof MOB)
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())
-		&&((((MOB)owner()).getClanID().equals(clanID()))
+		&&((((MOB)owner()).getClanRole(clanID())!=null)
 		&&(CMLib.flags().aliveAwakeMobile((MOB)owner(),true))
 		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner())))
 		&&(B!=null))
@@ -93,7 +93,7 @@ public class StdClanSpecialItem extends StdClanItem
 		&&(owner() instanceof MOB)
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())
-		&&((((MOB)owner()).getClanID().equals(clanID()))
+		&&((((MOB)owner()).getClanRole(clanID())!=null)
 		&&(CMLib.flags().aliveAwakeMobileUnbound((MOB)owner(),true))
 		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner()))))
 		{

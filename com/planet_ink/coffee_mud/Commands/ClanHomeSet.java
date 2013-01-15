@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -42,7 +43,18 @@ public class ClanHomeSet extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean skipChecks=mob.Name().equals(mob.getClanID());
+		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
+		
+		Clan C=null;
+		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
+			
+		if(C==null)
+		for(Pair<Clan,Integer> c : mob.clans())
+			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
+			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.SET_HOME)!=Authority.CAN_NOT_DO))
+			{	C=c.first; break; }
+		
 		commands.setElementAt(getAccessWords()[0],0);
 
 		Room R=mob.location();
@@ -55,17 +67,12 @@ public class ClanHomeSet extends StdCommand
 			commands.addElement(CMLib.map().getExtendedRoomID(R));
 		}
 
-		if((mob.getClanID()==null)||(R==null)||(mob.getClanID().equalsIgnoreCase("")))
-		{
-			mob.tell("You aren't even a member of a clan.");
-			return false;
-		}
-		Clan C=mob.getMyClan();
 		if(C==null)
 		{
-			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+			mob.tell("You aren't allowed to set a home room for "+((clanName.length()==0)?"anything":clanName)+".");
 			return false;
 		}
+
 		if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 		{
 			mob.tell("You cannot set a home.  Your "+C.getGovernmentName()+" does not have enough members to be considered active.");

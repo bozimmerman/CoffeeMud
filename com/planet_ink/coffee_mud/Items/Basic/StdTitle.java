@@ -281,7 +281,7 @@ public class StdTitle extends StdItem implements LandTitle
 			{
 				ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
 				if((((SK.isSold(ShopKeeper.DEAL_CLANBANKER))||(SK.isSold(ShopKeeper.DEAL_CLANDSELLER)))
-						&&(!A.landOwner().equals(msg.source().getClanID())))
+						&&(msg.source().getClanRole(A.landOwner())==null))
 				||(((SK.isSold(ShopKeeper.DEAL_BANKER))||(SK.isSold(ShopKeeper.DEAL_CLANBANKER)))
 						&&(!A.landOwner().equals(msg.source().Name())))
 				||(((SK.isSold(ShopKeeper.DEAL_POSTMAN))||(SK.isSold(ShopKeeper.DEAL_CLANPOSTMAN)))
@@ -310,7 +310,7 @@ public class StdTitle extends StdItem implements LandTitle
 			||((A.landOwner().length()>0)
 				&&(!A.landOwner().equals(msg.source().Name()))
 				&&(!((msg.source().isMarriedToLiege())&&(A.landOwner().equals(msg.source().getLiegeID()))))
-				&&(!A.landOwner().equals(msg.source().getClanID())))))
+				&&(msg.source().getClanRole(A.landOwner())==null))))
 			{
 				String str="I'm sorry, '"+msg.tool().Name()+" must be destroyed.";
 				if(((MOB)msg.target()).isMonster())
@@ -372,9 +372,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(landOwner().length()>0)
 		&&((msg.source().Name().equals(landOwner()))
 			||(msg.source().getLiegeID().equals(landOwner())&&msg.source().isMarriedToLiege())
-			||(msg.source().getClanID().equals(landOwner())
-				&&(CMLib.clans().getClan(msg.source().getClanID())!=null)
-				&&(CMLib.clans().getClan(msg.source().getClanID()).getAuthority(msg.source().getClanRole(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO)))
+			||(CMLib.clans().checkClanPrivilege(msg.source(), landOwner(), Clan.Function.PROPERTY_OWNER)))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker))
@@ -388,10 +386,14 @@ public class StdTitle extends StdItem implements LandTitle
 				destroy();
 				return;
 			}
-			if(msg.source().getClanID().equals(landOwner())
-			&&(CMLib.clans().getClan(msg.source().getClanID())!=null)
-			&&(CMLib.clans().getClan(msg.source().getClanID()).getAuthority(msg.source().getClanRole(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
-				A.setLandOwner(((MOB)msg.target()).getClanID());
+			if(CMLib.clans().checkClanPrivilege(msg.source(), landOwner(), Clan.Function.PROPERTY_OWNER))
+			{
+				Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan((MOB)msg.target(), Clan.Function.PROPERTY_OWNER);
+				if(targetClan!=null)
+					A.setLandOwner(targetClan.first.clanID());
+				else
+					A.setLandOwner(msg.target().Name());
+			}
 			else
 				A.setLandOwner(msg.target().Name());
 			A.setBackTaxes(0);
@@ -509,21 +511,23 @@ public class StdTitle extends StdItem implements LandTitle
 						((SpaceShip)AREA).dockHere(spacePort);
 						msg.source().tell("Your ship is located at "+spacePort.displayText()+".");
 					}
-
 				}
-				if((((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CLANDSELLER))
-				&&(msg.source().getClanID().length()>0))
-					A.setLandOwner(msg.source().getClanID());
-				else
-				if((((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CSHIPSELLER))
-				&&(msg.source().getClanID().length()>0))
-					A.setLandOwner(msg.source().getClanID());
+				
+				if(((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CLANDSELLER)||((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CSHIPSELLER))
+				{
+					Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(msg.source(), Clan.Function.PROPERTY_OWNER);
+					if(clanPair!=null)
+						A.setLandOwner(clanPair.first.clanID());
+				}
 				else
 					A.setLandOwner(msg.source().Name());
-				setBackTaxes(0);
-				updateTitle();
-				updateLot(null);
-				msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
+				if(A.landOwner().length()>0)
+				{
+					setBackTaxes(0);
+					updateTitle();
+					updateLot(null);
+					msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
+				}
 			}
 			recoverPhyStats();
 		}

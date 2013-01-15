@@ -69,22 +69,18 @@ public class Spell_BaseClanEq extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(type.length()==0) return false;
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+		if(!mob.clans().iterator().hasNext())
 		{
 			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		Clan C=mob.getMyClan();
-		if(C==null)
+		Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
+		if(clanPair==null)
 		{
-			mob.tell("You aren't even a member of a clan.");
+			mob.tell("You are not authorized to draw from the power of your clan.");
 			return false;
 		}
-		if(C.getAuthority(mob.getClanRole(),Clan.Function.ENCHANT)!=Clan.Authority.CAN_DO)
-		{
-			mob.tell("You are not authorized to draw from the power of your "+C.getGovernmentName()+".");
-			return false;
-		}
+		Clan C=clanPair.first;
 		String ClanName=C.clanID();
 		String ClanType=C.getGovernmentName();
 

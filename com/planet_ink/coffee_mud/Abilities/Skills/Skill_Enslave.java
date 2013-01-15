@@ -48,7 +48,10 @@ public class Skill_Enslave extends StdSkill
 	public String displayText(){ return "(Enslaved)";}
 	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	
-	protected MOB myMaster=null;
+	protected String masterName="";
+	protected String oldLeige="";
+	protected List<Pair<Clan,Integer>> oldClans=null;
+	protected MOB masterMOB=null;
 	protected SlaveryLibrary.geasSteps STEPS=null;
 	protected int masterAnger=0;
 	protected int speedDown=0;
@@ -59,8 +62,33 @@ public class Skill_Enslave extends StdSkill
 	
 	public void setMiscText(String txt)
 	{
-		myMaster=null;
+		masterMOB=null;
+		masterName=txt;
 		super.setMiscText(txt);
+	}
+
+	public MOB getMaster()
+	{
+		if(masterMOB==null){
+			masterMOB=CMLib.players().getLoadPlayer(masterName);
+			if(masterMOB!=null) {
+				oldLeige=masterMOB.getLiegeID();
+				oldClans=new Vector<Pair<Clan,Integer>>();
+				for(Pair<Clan,Integer> p : masterMOB.clans())
+					oldClans.add(p);
+			}
+		}
+		return masterMOB;
+	}
+	
+	public void unMaster(MOB mob)
+	{
+		if((masterMOB!=null) && (mob!=null)){
+			mob.setLiegeID(oldLeige);
+			mob.setClan("", Integer.MIN_VALUE);
+			for(Pair<Clan,Integer> p : oldClans)
+				mob.setClan(p.first.clanID(),p.second.intValue());
+		}
 	}
 	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -160,11 +188,11 @@ public class Skill_Enslave extends StdSkill
 			}
 		}
 		else
-		if((mob.location()!=null)&&(myMaster!=null))
+		if((mob.location()!=null)&&(getMaster()!=null))
 		{
 			Room room=mob.location();
 			if((room!=lastRoom)
-			&&(CMLib.law().doesHavePriviledgesHere(myMaster,room))
+			&&(CMLib.law().doesHavePriviledgesHere(getMaster(),room))
 			&&(room.isInhabitant(mob)))
 			{
 				lastRoom=room;
@@ -202,15 +230,13 @@ public class Skill_Enslave extends StdSkill
 				mob.curState().expendEnergy(mob,mob.maxState(),false);
 				if((!mob.isInCombat())&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<(masterAnger/10)))
 				{
-					if(myMaster==null) myMaster=CMLib.players().getPlayer(text());
+					MOB myMaster=getMaster();
 					if((myMaster!=null)&&(mob.location().isInhabitant(myMaster)))
 					{
 						mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> rebel(s) against <T-NAMESELF>!");
+						MOB master=getMaster();
+						unMaster(mob);
 						setMiscText("");
-						MOB master=myMaster;
-						myMaster=null;
-						mob.setLiegeID("");
-						mob.setClanID("");
 						mob.recoverCharStats();
 						mob.recoverPhyStats();
 						mob.resetToMaxState();
@@ -259,11 +285,15 @@ public class Skill_Enslave extends StdSkill
 					}
 				}
 			}
-			if(!mob.getLiegeID().equals(text()))
+			if(!mob.getLiegeID().equals(masterName))
 			{
-				mob.setLiegeID(text());
-				if(myMaster==null) myMaster=CMLib.players().getPlayer(text());
-				if(myMaster!=null) mob.setClanID(myMaster.getClanID());
+				mob.setLiegeID(masterName);
+				MOB myMaster=getMaster();
+				if(myMaster!=null)
+				{
+					for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(myMaster))
+						mob.setClan(p.first.clanID(),p.first.getGovernment().getAcceptPos());
+				}
 			}
 			if((STEPS==null)||(STEPS.size()==0)||(STEPS.done))
 			{
@@ -288,6 +318,16 @@ public class Skill_Enslave extends StdSkill
 			}
 		}
 		return super.tick(ticking,tickID);
+	}
+
+	public void unInvoke()
+	{
+		MOB mob=null;
+		if(affected instanceof MOB)
+			mob=(MOB)affected;
+		super.unInvoke();
+		if(this.masterMOB!=null)
+			unMaster(mob);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

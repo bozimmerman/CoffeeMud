@@ -49,15 +49,15 @@ public class BankAccountInfo extends StdWebMacro
 		BankAccountStuff info=(BankAccountStuff)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
 		if(info!=null) return info;
 		info=new BankAccountStuff();
-		if((!playerM.Name().equals(playerM.getClanID()))&&(B.isSold(Banker.DEAL_CLANBANKER)))
+		if((B.isSold(Banker.DEAL_CLANBANKER))&&(playerM.getClanRole(playerM.Name())==null))
 		{
 		}
 		else
 		{
-			Double bal=Double.valueOf(B.getBalance(playerM));
+			Double bal=Double.valueOf(B.getBalance(playerM.Name())); // this works for clans because name==clan name
 			info.balance=bal.doubleValue();
-			info.debt=B.getDebtInfo(playerM);
-			info.items=B.getDepositedItems(playerM);
+			info.debt=B.getDebtInfo(playerM.Name());
+			info.items=B.getDepositedItems(playerM.Name());
 		}
 		httpReq.getRequestObjects().put("BANKINFO: "+B.bankChain()+": "+playerM.Name(),info);
 		return info;
@@ -91,8 +91,7 @@ public class BankAccountInfo extends StdWebMacro
 				playerM.setName(C.clanID());
 				playerM.setLocation(M.location());
 				playerM.setStartRoom(M.getStartRoom());
-				playerM.setClanID(C.clanID());
-				playerM.setClanRole(C.getTopRankedRoles(Function.DEPOSIT_LIST).get(0).intValue());
+				playerM.setClan(C.clanID(),C.getTopRankedRoles(Function.DEPOSIT_LIST).get(0).intValue());
 				destroyPlayer=true;
 			}
 			else
@@ -104,7 +103,7 @@ public class BankAccountInfo extends StdWebMacro
 					playerM.setName(CMStrings.capitalizeAndLower(player));
 					playerM.setLocation(M.location());
 					playerM.setStartRoom(M.getStartRoom());
-					playerM.setClanID("");
+					playerM.setClan("", Integer.MIN_VALUE); // delete all sequence
 					destroyPlayer=true;
 				}
 			}
@@ -153,8 +152,8 @@ public class BankAccountInfo extends StdWebMacro
 			if(parms.containsKey("DEBTDUE")) return dueDate;
 			if(parms.containsKey("DEBTINT")) return intRate;
 		}
-		if(parms.containsKey("NUMITEMS")) return ""+(B.getDepositedItems(playerM).size()-1);
-		if(parms.containsKey("ITEMSWORTH")) return CMLib.beanCounter().nameCurrencyLong(playerM,B.totalItemsWorth(playerM));
+		if(parms.containsKey("NUMITEMS")) return ""+(B.getDepositedItems(playerM.Name()).size()-1);
+		if(parms.containsKey("ITEMSWORTH")) return CMLib.beanCounter().nameCurrencyLong(playerM,B.totalItemsWorth(playerM.Name()));
 		if(parms.containsKey("ITEMSLIST"))
 		{
 			List<Item> items=acct.items;

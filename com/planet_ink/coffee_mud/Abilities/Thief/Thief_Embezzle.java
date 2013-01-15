@@ -145,14 +145,13 @@ public class Thief_Embezzle extends ThiefSkill
 		String myAcct=mob.Name();
 		if(bank.isSold(ShopKeeper.DEAL_CLANBANKER))
 		{
-			if(mob.getClanID().length()>0)
-			{
-				myAcct=mob.getClanID();
-				myCoins=bank.findDepositInventory(mob.getClanID(),"1");
-			}
+			Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.WITHDRAW);
+			if(clanPair == null) clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.DEPOSIT_LIST);
+			if(clanPair == null) clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.DEPOSIT);
+			if(clanPair!=null)
+				myAcct=clanPair.first.clanID();
 		}
-		else
-			myCoins=bank.findDepositInventory(mob.Name(),"1");
+		myCoins=bank.findDepositInventory(myAcct,"1");
 		if((myCoins==null)||(!(myCoins instanceof Coins)))
 		{
 			mob.tell("You don't have your own account with "+target.name()+".");

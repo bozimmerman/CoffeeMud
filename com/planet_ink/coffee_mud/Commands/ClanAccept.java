@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -42,75 +43,78 @@ public class ClanAccept extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean skipChecks=mob.Name().equals(mob.getClanID());
-
-		commands.setElementAt(getAccessWords()[0],0);
-		String qual=CMParms.combine(commands,1).toUpperCase();
-		StringBuffer msg=new StringBuffer("");
+		String memberStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
+		String clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
+		
 		Clan C=null;
+		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
+			
+		if(C==null)
+		for(Pair<Clan,Integer> c : mob.clans())
+			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
+			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.ACCEPT)!=Authority.CAN_NOT_DO))
+			{	C=c.first; break; }
+
+		commands.clear();
+		commands.add(getAccessWords()[0]);
+		commands.add(memberStr);
+		StringBuffer msg=new StringBuffer("");
 		boolean found=false;
-		if(qual.length()>0)
+		if(memberStr.length()>0)
 		{
-			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+			if(C==null)
 			{
-				msg.append("You aren't even a member of a clan.");
+				mob.tell("You aren't allowed to accept anyone into "+((clanName.length()==0)?"anything":clanName)+".");
+				return false;
 			}
-			else
+			if(C.getGovernment().getAutoRole() == C.getGovernment().getAcceptPos())
 			{
-				C=mob.getMyClan();
-				if(C==null)
+				mob.tell("Everyone is already accepted.");
+				return false;
+			}
+			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,false))
+			{
+				List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
+				if(apps.size()<1)
 				{
-					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
+					mob.tell("There are no applicants to your "+C.getGovernmentName()+".");
 					return false;
 				}
-				if(C.getGovernment().getAutoRole() == C.getGovernment().getAcceptPos())
+				memberStr=CMStrings.capitalizeAndLower(memberStr);
+				for(MemberRecord member : apps)
 				{
-					mob.tell("Everyone is already accepted.");
-					return false;
-				}
-				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,false))
-				{
-					List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
-					if(apps.size()<1)
+					if(member.name.equalsIgnoreCase(memberStr))
 					{
-						mob.tell("There are no applicants to your "+C.getGovernmentName()+".");
+						found=true;
+					}
+				}
+				if(found)
+				{
+					MOB M=CMLib.players().getLoadPlayer(memberStr);
+					if(M==null)
+					{
+						mob.tell(memberStr+" was not found.  Could not add to "+C.getGovernmentName()+".");
 						return false;
 					}
-					qual=CMStrings.capitalizeAndLower(qual);
-					for(MemberRecord member : apps)
+					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,true))
 					{
-						if(member.name.equalsIgnoreCase(qual))
-						{
-							found=true;
-						}
-					}
-					if(found)
-					{
-						MOB M=CMLib.players().getLoadPlayer(qual);
-						if(M==null)
-						{
-							mob.tell(qual+" was not found.  Could not add to "+C.getGovernmentName()+".");
-							return false;
-						}
-						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,true))
-						{
-							C.addMember(M,C.getGovernment().getAcceptPos());
-							CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.getGovernmentName()+" "+C.name()+".");
-							mob.tell(M.Name()+" has been accepted into "+C.getGovernmentName()+" '"+C.clanID()+"'.");
-							if((M.session()!=null)&&(M.session().mob()==M))
-								M.tell(mob.Name()+" has accepted you as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");
-							return false;
-						}
-					}
-					else
-					{
-						msg.append(qual+" isn't an applicant of your "+C.getGovernmentName()+".");
+						C.addMember(M,C.getGovernment().getAcceptPos());
+						CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.getGovernmentName()+" "+C.name()+".");
+						mob.tell(M.Name()+" has been accepted into "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+						if((M.session()!=null)&&(M.session().mob()==M))
+							M.tell(mob.Name()+" has accepted you as a member of "+C.getGovernmentName()+" '"+C.clanID()+"'.");
+						return false;
 					}
 				}
 				else
 				{
-					msg.append("You aren't in the right position to accept members into your "+C.getGovernmentName()+".");
+					msg.append(memberStr+" isn't an applicant of your "+C.getGovernmentName()+".");
 				}
+			}
+			else
+			{
+				msg.append("You aren't in the right position to accept members into your "+C.getGovernmentName()+".");
 			}
 		}
 		else

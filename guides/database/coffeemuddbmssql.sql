@@ -76,8 +76,6 @@ CMWEIT integer NULL,
 CMPRPT nvarchar (250) NULL,
 CMCOLR nvarchar (100) NULL,
 CMLSIP nvarchar (100) NULL,
-CMCLAN nvarchar (100) NULL,
-CMCLRO integer NULL,
 CMEMAL nvarchar (255),
 CMPFIL ntext NULL,
 CMSAVE nvarchar (150) NULL,
@@ -93,6 +91,13 @@ CMFOTX ntext  NULL,
 CMFOLV integer NULL,
 CMFOAB integer NULL,
 PRIMARY KEY (CMUSERID, CMFONM)
+);
+
+CREATE TABLE CMCHCL (
+CMUSERID nvarchar (50),
+CMCLAN nvarchar (100),
+CMCLRO integer NULL,
+PRIMARY KEY(CMUSERID, CMCLAN)
 );
 
 CREATE TABLE CMCHIT (

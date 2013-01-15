@@ -75,8 +75,6 @@ CREATE TABLE CMvarchar (
 	CMPRPT varchar (250) ,
 	CMCOLR varchar (100) ,
 	CMLSIP varchar (100) ,
-	CMCLAN varchar (100) ,
-	CMCLRO integer ,
 	CMEMAL varchar (255) ,
 	CMPFIL CLOB ,
 	CMSAVE varchar (150) ,
@@ -92,6 +90,13 @@ CREATE TABLE CMCHFO (
 	CMFOLV int,
 	CMFOAB int ,
 	PRIMARY KEY (CMUSERID,CMFONM)
+);
+
+CREATE TABLE CMCHCL (
+	CMUSERID varchar (50) NOT NULL,
+	CMCLAN varchar (100) NOT NULL,
+	CMCLRO int ,
+	PRIMARY KEY(CMUSERID, CMCLAN)
 );
 
 CREATE TABLE CMCHIT (

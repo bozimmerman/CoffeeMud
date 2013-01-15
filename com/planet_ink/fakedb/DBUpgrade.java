@@ -34,7 +34,7 @@ public class DBUpgrade
 		if(out!=null) out.print(str);
 	}
 	
-	public static String fieldValue(final String field, int oldIndex, List<String> row)
+	public static String getStringFieldValue(final String field, int oldIndex, List<String> row)
 	{
 		if(field.startsWith("#"))
 		{
@@ -52,6 +52,44 @@ public class DBUpgrade
 		}
 	}
 	
+	private static long s_long(String str)
+	{
+		try { return Long.valueOf(str).longValue(); } catch(Exception e){ return 0;}
+	}
+	
+	public static Object getFieldValue(final String field, int oldIndex, List<String> row)
+	{
+		if(field.startsWith("#"))
+		{
+			if(oldIndex>=0)
+				return Long.valueOf(s_long(row.get(oldIndex)));
+			else
+				return Long.valueOf(0);
+		}
+		else
+		{
+			if(oldIndex>=0)
+				return ((String)row.get(oldIndex));
+			else
+				return "";
+		}
+	}
+	
+	public static int[] getMatrix(List<String> ofields, List<String> nfields)
+	{
+		int[] matrix=new int[nfields.size()];
+		for(int i=0;i<nfields.size();i++)
+		{
+			String field=(String)nfields.get(i);
+			int oldIndex=-1;
+			for(int u=0;u<ofields.size();u++)
+				if(((String)ofields.get(u)).substring(1).equals(field.substring(1)))
+				{ oldIndex=u; break;}
+			matrix[i]=oldIndex;
+		}
+		return matrix;
+	}
+	
 	public static void main(String a[]) throws IOException
 	{
 		pl("Welcome to the CoffeeMud Database Upgrade Tool!");
@@ -59,7 +97,7 @@ public class DBUpgrade
 		pl("Another product of ...Planet Ink!");
 		pl("");
 		pl("");
-		Hashtable oldTables=new Hashtable();
+		Hashtable<String,List<String>> oldTables=new Hashtable<String,List<String>>();
 		while(oldTables.size()==0)
 		{
 			pl("Enter the path to the 'fakedb.schema' file");
@@ -140,7 +178,7 @@ public class DBUpgrade
 		pl("");
 		pl("Cool.. I got the old schema now.");
 		pl("");
-		Hashtable newTables=new Hashtable();
+		Hashtable<String,List<String>> newTables=new Hashtable<String,List<String>>();
 		while(newTables.size()==0)
 		{
 			pl("Enter the path to the 'fakedb.schema' file");
@@ -575,7 +613,7 @@ public class DBUpgrade
 		pl("");
 		pl("");
 		p("Reading source tables: ");
-		Hashtable data=new Hashtable();
+		Hashtable<String,List<List<String>>> data=new Hashtable<String,List<List<String>>>();
 		try
 		{
 			Class.forName(sclass);
@@ -583,14 +621,14 @@ public class DBUpgrade
 			for(Enumeration e=oldTables.keys();e.hasMoreElements();)
 			{
 				String table=(String)e.nextElement();
-				List fields=(List)oldTables.get(table);
-				Vector rows=new Vector();
+				List<String> fields=(List<String>)oldTables.get(table);
+				Vector<List<String>> rows=new Vector<List<String>>();
 				data.put(table,rows);
 				java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 				java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
 				while(R.next())
 				{
-					Vector row=new Vector();
+					Vector<String> row=new Vector<String>();
 					rows.addElement(row);
 					for(int s=0;s<fields.size();s++)
 					{
@@ -611,6 +649,46 @@ public class DBUpgrade
 			pl("Fix it and run this again!");
 			return;
 		}
+
+		// first, look for the CLAN conversion
+		if(newTables.containsKey("CMCHCL") && (!oldTables.containsKey("CMCHCL")))
+		{
+			List<List<String>> charRows=(List)data.get("CMCHAR");
+			List<List<String>> cmchclRows=(List)data.get("CMCHCL");
+			if(cmchclRows==null)
+			{
+				cmchclRows=new Vector<List<String>>();
+				data.put("CMCHCL", cmchclRows);
+			}
+			pl(" ");
+			pl(" ");
+			p("Making CMCHCL conversion: ");
+			List<String> ofields=(List)oldTables.get("CMCHAR");
+			List<String> nfields=(List)newTables.get("CMCHCL");
+			int cmUserIDIndex=ofields.indexOf("$CMUSERID");
+			int cmClanIndex=ofields.indexOf("$CMCLAN");
+			int cmClRoIndex=ofields.indexOf("#CMCLRO");
+			int cm2UserIDIndex=nfields.indexOf("$CMUSERID");
+			int cm2ClanIndex=nfields.indexOf("$CMCLAN");
+			int cm2ClRoIndex=nfields.indexOf("#CMCLRO");
+			for(int r=0;r<charRows.size();r++)
+			{
+				List<String> row=(List<String>)charRows.get(r);
+				String userID=row.get(cmUserIDIndex);
+				String clanID=row.get(cmClanIndex);
+				String clanRo=row.get(cmClRoIndex);
+				if((clanID==null)||(clanID.length()==0))
+					continue;
+				Vector<String> newRow=new Vector<String>(3);
+				newRow.add(""); newRow.add(""); newRow.add("");
+				newRow.add(cm2UserIDIndex,userID);
+				newRow.add(cm2ClanIndex,clanID);
+				newRow.add(cm2ClRoIndex,clanRo);
+				cmchclRows.add(newRow);
+			}
+			if(cmchclRows.size()>0)
+				oldTables.put("CMCHCL", newTables.get("CMCHCL"));
+		}
 		pl(" ");
 		pl(" ");
 		p("OK! Writing destination tables: ");
@@ -622,8 +700,8 @@ public class DBUpgrade
 			for(Enumeration e=newTables.keys();e.hasMoreElements();)
 			{
 				String table=(String)e.nextElement();
-				List ofields=(List)oldTables.get(table);
-				List nfields=(List)newTables.get(table);
+				List<String> ofields=(List<String>)oldTables.get(table);
+				List<String> nfields=(List)newTables.get(table);
 				List rows=(List)data.get(table);
 				p(table);
 				if((rows==null)||(rows.size()==0))
@@ -631,23 +709,13 @@ public class DBUpgrade
 					p(" ");
 					continue;
 				}
-				int[] matrix=new int[nfields.size()];
-				for(int i=0;i<nfields.size();i++)
-				{
-					String field=(String)nfields.get(i);
-					int oldIndex=-1;
-					for(int u=0;u<ofields.size();u++)
-						if(((String)ofields.get(u)).substring(1).equals(field.substring(1)))
-						{ oldIndex=u; break;}
-					matrix[i]=oldIndex;
-				}
+				int[] matrix=getMatrix(ofields,nfields);
 				
 				for(int r=0;r<rows.size();r++)
 				{
 					List row=(List)rows.get(r);
 					try
 					{
-						java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 						StringBuffer str=new StringBuffer("INSERT INTO "+table+" (");
 						for(int i=0;i<nfields.size();i++)
 							str.append(((String)nfields.get(i)).substring(1)+",");
@@ -655,18 +723,25 @@ public class DBUpgrade
 							str.setCharAt(str.length()-1,' ');
 						str.append(") VALUES (");
 						for(int i=0;i<nfields.size();i++)
-						{
-							String field=(String)nfields.get(i);
-							int oldIndex=matrix[i];
-							String value=fieldValue(field,oldIndex,row);
-							str.append(value+",");
-						}
+							str.append("?,");
 						if(nfields.size()>0)
 							str.setCharAt(str.length()-1,')');
 						else
 							str.append(")");
-						myStatement.executeUpdate(str.toString());
+						java.sql.PreparedStatement myStatement=myConnection.prepareStatement(str.toString());
+						for(int i=0;i<nfields.size();i++)
+						{
+							String field=(String)nfields.get(i);
+							int oldIndex=matrix[i];
+							Object value=getFieldValue(field,oldIndex,row);
+							if(value instanceof String)
+								myStatement.setString(i+1, (String)value);
+							else
+							if(value instanceof Long)
+								myStatement.setLong(i+1, ((Long)value).longValue());
+						}
 						if(debug) p(".");
+						myStatement.executeUpdate();
 						myStatement.close();
 					}
 					catch(SQLException sqle)
@@ -677,7 +752,7 @@ public class DBUpgrade
 							final String field=((String)nfields.get(i)).substring(1);
 							str.append((i>0)?" and ":"").append(field).append("=");
 							int oldIndex=matrix[i];
-							str.append(fieldValue(field,oldIndex,row));
+							str.append(getStringFieldValue(field,oldIndex,row));
 						}
 						java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 						java.sql.ResultSet R=myStatement.executeQuery(str.toString());
@@ -697,6 +772,7 @@ public class DBUpgrade
 		{
 			pl("\n\nOops.. something bad happened writing to your target database!");
 			pl(ce.getMessage());
+			ce.printStackTrace(System.err);
 			pl("Probably out of luck -- was a good try though!");
 			return;
 		}

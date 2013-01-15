@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -41,84 +42,110 @@ public class ClanDeclare extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean skipChecks=mob.Name().equals(mob.getClanID());
-
-		commands.setElementAt(getAccessWords()[0],0);
 		if(commands.size()<3)
 		{
 			mob.tell("You must specify the clans name, and a new relationship.");
 			return false;
 		}
+		commands.setElementAt(getAccessWords()[0],0);
 		String rel=((String)commands.lastElement()).toUpperCase();
-		commands.removeElementAt(commands.size()-1);
-		String clan=CMParms.combine(commands,1).toUpperCase();
-		commands.addElement(rel);
-		StringBuffer msg=new StringBuffer("");
 		Clan C=null;
-		if((clan.length()>0)&&(rel.length()>0))
+		Clan C2=null;
+		String clanName="";
+		
+		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
+
+		String clan2Name=CMParms.combine(commands,1,commands.size()-1);
+		C2=CMLib.clans().findClan(clan2Name);
+		if((C2==null)&&(C==null)&&(commands.size()>3))
 		{
-			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+			clanName=(String)commands.get(1);
+			clan2Name=CMParms.combine(commands,2,commands.size()-1);
+		}
+
+		if(C==null)
+		{
+			for(Pair<Clan,Integer> c : mob.clans())
+				if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
+				&&(c.first.getAuthority(c.second.intValue(), Clan.Function.DECLARE)!=Authority.CAN_NOT_DO))
+				{	C=c.first; break; }
+		}
+		if(C2==null)
+		{
+			for(Pair<Clan,Integer> c : mob.clans())
+				if(CMLib.english().containsString(c.first.getName(), clan2Name))
+				{	C2=c.first; break; }
+		}
+		
+		if(C2==null)
+		{
+			mob.tell(clan2Name+" is unknown.");
+			return false;
+		}
+
+		if(C==null)
+		{
+			mob.tell("You aren't allowed to declare "+rel.toLowerCase()+" on behalf of "+((clanName.length()==0)?"anything":clanName)+".");
+			return false;
+		}
+		
+		if((!C2.isRivalrous())||(!C.isRivalrous()))
+		{
+			mob.tell("Relations between "+C.getName()+" and "+C2.getName()+" are impossible.");
+			return false;
+		}
+
+		StringBuffer msg=new StringBuffer("");
+		if((C!=null)&&(C2!=null)&&(rel.length()>0))
+		{
+			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,false))
 			{
-				msg.append("You aren't even a member of a clan.");
+				int newRole=-1;
+				for(int i=0;i<Clan.REL_DESCS.length;i++)
+					if(rel.equalsIgnoreCase(Clan.REL_DESCS[i]))
+						newRole=i;
+				if(newRole<0)
+				{
+					mob.tell("'"+rel+"' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.");
+					return false;
+				}
+				if(C2==C)
+				{
+					mob.tell("You can't do that.");
+					return false;
+				}
+				if(C.getClanRelations(C2.clanID())==newRole)
+				{
+					mob.tell(C.getName()+"is already in that state with "+C2.getName()+".");
+					return false;
+
+				}
+				long last=C.getLastRelationChange(C2.clanID());
+				if(last>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*CMProps.getTickMillis()))
+				{
+					last=last+(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*CMProps.getTickMillis());
+					if(System.currentTimeMillis()<last)
+					{
+						mob.tell("You must wait at least 1 mud month between relation changes.");
+						return false;
+					}
+				}
+				commands.clear();
+				commands.add(getAccessWords()[0]);
+				commands.add(clan2Name);
+				commands.add(rel);
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,true))
+				{
+					CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has declared "+CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
+					C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
+					C.update();
+					return false;
+				}
 			}
 			else
 			{
-				C=mob.getMyClan();
-				if(C==null)
-				{
-					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
-					return false;
-				}
-				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,false))
-				{
-					int newRole=-1;
-					for(int i=0;i<Clan.REL_DESCS.length;i++)
-						if(rel.equalsIgnoreCase(Clan.REL_DESCS[i]))
-							newRole=i;
-					if(newRole<0)
-					{
-						mob.tell("'"+rel+"' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.");
-						return false;
-					}
-					Clan C2=CMLib.clans().findClan(clan);
-					if(C2==null)
-					{
-						mob.tell(clan+" isn't valid clan.");
-						return false;
-					}
-					if(C2==C)
-					{
-						mob.tell("You can't do that.");
-						return false;
-					}
-					if(C.getClanRelations(C2.clanID())==newRole)
-					{
-						mob.tell("You are already in that state with "+C2.clanID()+".");
-						return false;
-
-					}
-					long last=C.getLastRelationChange(C2.clanID());
-					if(last>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*CMProps.getTickMillis()))
-					{
-						last=last+(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*CMProps.getTickMillis());
-						if(System.currentTimeMillis()<last)
-						{
-							mob.tell("You must wait at least 1 mud month between relation changes.");
-							return false;
-						}
-					}
-					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,true))
-					{
-						CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has declared "+CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
-						C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
-						C.update();
-						return false;
-					}
-				}
-				else
-				{
-					msg.append("You aren't in the right position to declare relationships with your "+C.getGovernmentName()+".");
-				}
+				msg.append("You aren't in the right position to declare relationships with your "+C.getGovernmentName()+".");
 			}
 		}
 		else

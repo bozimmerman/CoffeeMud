@@ -1,5 +1,6 @@
 drop table cmvfs;
 drop table cmchab;
+drop table cmchcl;
 drop table cmstat;
 drop table cmpoll;
 drop table cmchar;

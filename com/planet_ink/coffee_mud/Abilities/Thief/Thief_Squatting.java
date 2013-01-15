@@ -152,7 +152,7 @@ public class Thief_Squatting extends ThiefSkill
 				{
 					if((S.mob()!=null)
 					&&(S.mob()!=mob)
-					&&(S.mob().getClanID().equals(C.clanID())))
+					&&(S.mob().getClanRole(C.clanID())!=null))
 						warnMOB=S.mob();
 				}
 			}

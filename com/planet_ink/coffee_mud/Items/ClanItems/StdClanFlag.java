@@ -95,7 +95,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 			super.executeMsg(myHost,msg);
 			if((msg.amITarget(this))
 			&&(clanID().length()>0)
-			&&(msg.source().getClanID().equals(clanID())))
+			&&(msg.source().getClanRole(clanID())!=null))
 			{
 				Room R=msg.source().location();
 				if(R==null)
@@ -138,15 +138,15 @@ public class StdClanFlag extends StdItem implements ClanItem
 	{
 		if((clanID().length()>0)&&(msg.amITarget(this)))
 		{
-			if(!msg.source().getClanID().equals(clanID()))
+			if(msg.source().getClanRole(clanID())==null)
 			{
 				if((msg.targetMinor()==CMMsg.TYP_GET)
 				||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 				{
 					Room R=CMLib.map().roomLocation(this);
-					if(msg.source().getClanID().length()==0)
+					if(CMLib.clans().findRivalrousClan(msg.source())==null)
 					{
-						msg.source().tell("You must belong to a clan to take a clan item.");
+						msg.source().tell("You must belong to an elligible clan to take a clan item.");
 						return false;
 					}
 					else
@@ -157,10 +157,10 @@ public class StdClanFlag extends StdItem implements ClanItem
 							MOB M=R.fetchInhabitant(i);
 							if((M!=null)
 							&&(M.isMonster())
-							&&(M.getClanID().equals(clanID())
+							&&(M.getClanRole(clanID())!=null)
 							&&(CMLib.flags().aliveAwakeMobileUnbound(M,true))
 							&&(CMLib.flags().canBeSeenBy(this,M))
-							&&(!CMLib.flags().isAnimalIntelligence(M))))
+							&&(!CMLib.flags().isAnimalIntelligence(M)))
 							{
 								R.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> guard(s) "+name()+" closely.");
 								return false;
@@ -169,7 +169,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 						String rulingClan="";
 						LegalBehavior B=CMLib.law().getLegalBehavior(R);
 						if(B!=null) rulingClan=B.rulingOrganization();
-						if(!rulingClan.equals(msg.source().getClanID()))
+						if(msg.source().getClanRole(rulingClan)==null)
 						{
 							msg.source().tell("You must conquer and fully control this area to take the clan flag.");
 							return false;
@@ -223,7 +223,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					MOB M=msg.source().location().fetchInhabitant(i);
 					if((M!=null)
 					&&(!M.isMonster())
-					&&(M.getClanID().equals(clanID())))
+					&&(M.getClanRole(clanID())!=null))
 					{ foundOne=true; break;}
 				}
 				if(!foundOne)

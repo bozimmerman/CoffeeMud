@@ -58,6 +58,7 @@ public class ClanGovernmentData extends StdWebMacro
 					usedTypeIDs.add(Integer.valueOf(G2.getID()));
 				G=CMLib.clans().createSampleGovernment();
 				G.setName(httpReq.getRequestParameter("NAME"));
+				G.setCategory(httpReq.getRequestParameter("CATEGORY"));
 				for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
 					if(!usedTypeIDs.contains(Integer.valueOf(i)))
 					{
@@ -223,6 +224,12 @@ public class ClanGovernmentData extends StdWebMacro
 					if(old==null) old=G.getShortDesc();
 					str.append(old+", ");
 				}
+				if(parms.containsKey("CATEGORY"))
+				{
+					String old=httpReq.getRequestParameter("CATEGORY");
+					if(old==null) old=G.getCategory();
+					str.append(old+", ");
+				}
 				if(parms.containsKey("REQUIREDMASK"))
 				{
 					String old=httpReq.getRequestParameter("REQUIREDMASK");
@@ -269,6 +276,12 @@ public class ClanGovernmentData extends StdWebMacro
 				{
 					String old=httpReq.getRequestParameter("CONQUESTDEITYBASIS");
 					if(old==null) old=G.isConquestByWorship()?"on":"";
+					str.append(old.equalsIgnoreCase("on")?"checked, ":"");
+				}
+				if(parms.containsKey("ISRIVALROUS"))
+				{
+					String old=httpReq.getRequestParameter("ISRIVALROUS");
+					if(old==null) old=G.isRivalrous()?"on":"";
 					str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 				}
 				if(parms.containsKey("MAXVOTEDAYS"))
@@ -343,7 +356,7 @@ public class ClanGovernmentData extends StdWebMacro
 					str.append(RaceData.dynAbilities(G.getClanLevelAbilities(Integer.valueOf(1000)),G.ID(),G,httpReq,parms,0,(String)parms.get("FONT"))+", ");
 				}
 				if(parms.containsKey("REFFS"))
-					str.append(RaceData.dynEffects(G.ID(),G.getClanLevelEffects(null, Integer.valueOf(1000)),G,httpReq,parms,0,(String)parms.get("FONT"))+", ");
+					str.append(RaceData.dynEffects(G.ID(),G.getClanLevelEffects(null, null, Integer.valueOf(Integer.MAX_VALUE)),G,httpReq,parms,0,(String)parms.get("FONT"))+", ");
 
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))

@@ -634,17 +634,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if((product instanceof LandTitle)
 			&&((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))))
 			{
-				Clan C=null;
-				if(buyer.getClanID().length()>0)C=buyer.getMyClan();
-				if(C==null)
+				Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
+				if(clanPair==null)
 				{
-					CMLib.commands().postSay(seller,buyer,"I only sell to clans.",true,false);
-					return false;
-				}
-				if((C.getAuthority(buyer.getClanRole(),Clan.Function.PROPERTY_OWNER)==Clan.Authority.CAN_NOT_DO)
-				&&(!buyer.isMonster()))
-				{
-					CMLib.commands().postSay(seller,buyer,"You are not authorized by your clan to handle property.",true,false);
+					if(!buyer.clans().iterator().hasNext())
+						CMLib.commands().postSay(seller,buyer,"I only sell to clans.",true,false);
+					else
+					if(!buyer.isMonster())
+						CMLib.commands().postSay(seller,buyer,"You are not authorized by your clan to handle property.",true,false);
 					return false;
 				}
 			}
@@ -887,7 +884,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				Ability A=newMOB.fetchEffect("Skill_Enslave");
 				if(A!=null) A.setMiscText("");
 				newMOB.setLiegeID("");
-				newMOB.setClanID("");
+				newMOB.setClan("", Integer.MIN_VALUE); // delete all sequence
 				shop.getShop().addStoreInventory(newMOB);
 				((MOB)product).setFollowing(null);
 				if((((MOB)product).basePhyStats().rejuv()>0)
@@ -1014,7 +1011,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(slaveA!=null)
 		{
 			product.setLiegeID("");
-			product.setClanID("");
+			product.setClan("", Integer.MIN_VALUE); // delete all sequence
 			product.setStartRoom(null);
 			slaveA.setMiscText(mobFor.Name());
 			product.text();
@@ -1097,15 +1094,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		if((myRoom==null)||(buyer==null)) return V;
 		Area myArea=myRoom.getArea();
-		if(((shop.isSold(ShopKeeper.DEAL_LANDSELLER))
-			||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))
-			||((shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))&&(buyer.getClanID().length()>0))
-			||((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))&&(buyer.getClanID().length()>0)))
+		String name=buyer.Name();
+		Pair<Clan,Integer> buyerClanPair=null;
+		if((shop.isSold(ShopKeeper.DEAL_CLANDSELLER)||shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))
+		&&((buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER))!=null))
+			name=buyerClanPair.first.clanID();
+		if(((shop.isSold(ShopKeeper.DEAL_LANDSELLER))||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))||(buyerClanPair!=null))
 		&&(myArea!=null))
 		{
-			String name=buyer.Name();
-			if((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)))
-				name=buyer.getClanID();
 			HashSet<Environmental> roomsHandling=new HashSet<Environmental>();
 			Map<Environmental,LandTitle> titles=new Hashtable<Environmental,LandTitle>();
 			if((shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER)))

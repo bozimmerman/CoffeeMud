@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -43,28 +44,41 @@ public class ClanVote extends StdCommand
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		if((mob.getClanID()==null)
-		||(mob.getClanID().equalsIgnoreCase(""))
-		||(mob.getMyClan()==null))
+		String voteNumStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
+		String clanName="";
+		if(!CMath.isInteger(voteNumStr))
 		{
-			msg.append("You aren't even a member of a clan.");
+			clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()):"";
+			voteNumStr="";
+		}
+		else
+			clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
+		
+		Clan C=null;
+		Integer clanRole=null;
+		for(Pair<Clan,Integer> c : mob.clans())
+			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName)))
+			{	C=c.first; clanRole=c.second; break; }
+
+		if((C==null)||(clanRole==null))
+		{
+			mob.tell("You can't vote for anything in "+((clanName.length()==0)?"any clan":clanName)+".");
+			return false;
 		}
 		else
 		if(!mob.isMonster())
 		{
-			Clan C=mob.getMyClan();
-			if(C==null) return false;
 			Vector votesForYou=new Vector();
 			for(Enumeration e=C.votes();e.hasMoreElements();)
 			{
 				Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
 				if(((CV.function==Clan.Function.ASSIGN.ordinal())
-					&&(C.getAuthority(mob.getClanRole(),Clan.Function.VOTE_ASSIGN)!=Clan.Authority.CAN_NOT_DO))
+					&&(C.getAuthority(clanRole.intValue(),Clan.Function.VOTE_ASSIGN)!=Clan.Authority.CAN_NOT_DO))
 				||((CV.function!=Clan.Function.ASSIGN.ordinal())
-					&&(C.getAuthority(mob.getClanRole(),Clan.Function.VOTE_OTHER)!=Clan.Authority.CAN_NOT_DO)))
+					&&(C.getAuthority(clanRole.intValue(),Clan.Function.VOTE_OTHER)!=Clan.Authority.CAN_NOT_DO)))
 						votesForYou.addElement(CV);
 			}
-			if(commands.size()<2)
+			if(voteNumStr.length()==0)
 			{
 				if(votesForYou.size()==0)
 					msg.append("Your "+C.getGovernmentName()+" does not have anything up for your vote.");
@@ -88,7 +102,7 @@ public class ClanVote extends StdCommand
 			}
 			else
 			{
-				int which=CMath.s_int(CMParms.combine(commands,1))-1;
+				int which=CMath.s_int(voteNumStr)-1;
 				Clan.ClanVote CV=null;
 				if((which>=0)&&(which<votesForYou.size()))
 					CV=(Clan.ClanVote)votesForYou.elementAt(which);
@@ -189,8 +203,7 @@ public class ClanVote extends StdCommand
 								CV.voteStatus=Clan.VSTAT_PASSED;
 								MOB mob2=CMClass.getFactoryMOB();
 								mob2.setName(C.clanID());
-								mob2.setClanID(C.clanID());
-								mob2.setClanRole(C.getTopRankedRoles(Function.ASSIGN).get(0).intValue());
+								mob2.setClan(C.clanID(),C.getTopRankedRoles(Function.ASSIGN).get(0).intValue());
 								mob2.basePhyStats().setLevel(1000);
 								if(mob2.location()==null)
 								{

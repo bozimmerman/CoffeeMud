@@ -1452,7 +1452,7 @@ public class DefaultSession implements Session
 		{
 			List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel((String)channels.get(i),M.getClanID(),name+" has logged out",true);
+				CMLib.commands().postChannel((String)channels.get(i),M.clans(),name+" has logged out",true);
 		}
 		CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
 			

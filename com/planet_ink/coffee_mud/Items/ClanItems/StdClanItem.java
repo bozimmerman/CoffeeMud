@@ -72,7 +72,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			if((clanID().length()>0)&&(owner() instanceof MOB)&&(!amDestroyed()))
 			{
 				if((CMLib.clans().getClan(clanID())==null)
-				||((!((MOB)owner()).getClanID().equals(clanID()))&&(ciType()!=ClanItem.CI_PROPAGANDA)))
+				||((ciType()!=ClanItem.CI_PROPAGANDA)&&(((MOB)owner()).getClanRole(clanID())==null)))
 				{
 					Room R=CMLib.map().roomLocation(this);
 					setRightfulOwner(null);
@@ -128,8 +128,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		if(CI.owner() instanceof MOB)
 		{
 			MOB M=((MOB)((Item)ticking).owner());
-			if((!M.getClanID().equals(CI.clanID()))
-			&&(CI.ciType()!=ClanItem.CI_PROPAGANDA))
+			if((CI.ciType()!=ClanItem.CI_PROPAGANDA)&&(M.getClanRole(CI.clanID())==null))
 			{
 				if(M.location()!=null)
 				{
@@ -267,7 +266,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				LegalBehavior theLaw=CMLib.law().getLegalBehavior(startRoom.getArea());
 				if((theLaw!=null)
 				&&(theLaw.rulingOrganization()!=null)
-				&&(theLaw.rulingOrganization().equals(targetMOB.getClanID())))
+				&&(targetMOB.getClanRole(theLaw.rulingOrganization())!=null))
 				{
 					if(giver!=null)
 						giver.tell("You can only give a clan item to a conquered mob within the conquered area.");
@@ -290,7 +289,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		&&(((ClanItem)myHost).clanID().length()>0))
 		{
 			MOB targetMOB=(MOB)msg.target();
-			if((!targetMOB.getClanID().equals(((ClanItem)myHost).clanID()))
+			if((targetMOB.getClanRole(((ClanItem)myHost).clanID())==null)
 			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 			{
 				msg.source().tell("You cannot give this item to "+targetMOB.name()+".");
@@ -309,9 +308,9 @@ public class StdClanItem extends StdItem implements ClanItem
 			||(msg.targetMinor()==CMMsg.TYP_PULL)
 			||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 			{
-				if(msg.source().getClanID().length()==0)
+				if(CMLib.clans().findRivalrousClan(msg.source())==null)
 				{
-					msg.source().tell("You must belong to a clan to do that to a clan item.");
+					msg.source().tell("You must belong to an elligible clan to do that to a clan item.");
 					return false;
 				}
 				else
@@ -327,18 +326,15 @@ public class StdClanItem extends StdItem implements ClanItem
 					&&(!stdOkMessageMOBS(null,msg.source(),(Item)myHost)))
 						return false;
 					else
-					if((!msg.source().getClanID().equals(itemC.clanID()))
+					if((msg.source().getClanRole(itemC.clanID())==null)
 					&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 					{
-						Clan C=msg.source().getMyClan();
 						int relation=-1;
-						if(C!=null)
-							relation=C.getClanRelations(itemC.clanID());
-						else
+						for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(msg.source()))
 						{
-							C=itemC;
-							if(C!=null)
-								relation=C.getClanRelations(msg.source().getClanID());
+							relation=itemC.getClanRelations(p.first.clanID());
+							if(relation==Clan.REL_WAR)
+								break;
 						}
 						if(relation!=Clan.REL_WAR)
 						{
@@ -375,7 +371,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 		{
 			MOB M=msg.source();
-			if(M.getClanID().equals(((ClanItem)myHost).clanID()))
+			if(M.getClanRole(((ClanItem)myHost).clanID())!=null)
 			{
 				if(M.isMonster())
 					((ClanItem)myHost).setRightfulOwner(M);
@@ -384,11 +380,11 @@ public class StdClanItem extends StdItem implements ClanItem
 			}
 			else
 			{
-				Clan C=M.getMyClan();
 				if(M.location()!=null)
 					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");
-				if(C!=null)
+				for(Pair<Clan,Integer> clanP : CMLib.clans().findRivalrousClans(M))
 				{
+					Clan C=clanP.first;
 					List<List<String>> recipes=loadRecipes();
 					for(int v=0;v<recipes.size();v++)
 					{
@@ -399,7 +395,7 @@ public class StdClanItem extends StdItem implements ClanItem
 							if(exp>0)
 							{
 								C.setExp(C.getExp()+exp);
-								M.tell("Your clan gains "+exp+" experience points for this capture.");
+								M.tell(CMStrings.capitalizeFirstLetter(C.getName())+" gains "+exp+" experience points for this capture.");
 							}
 							break;
 						}

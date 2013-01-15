@@ -134,22 +134,25 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 
 	// misc characteristics
 	public String getLiegeID();
-	public boolean isMarriedToLiege();
-	public String getWorshipCharID();
-	public Deity getMyDeity();
-	public Clan getMyClan();
-	public String getClanID();
-	public void setClanID(String clan);
-	public int getClanRole();
-	public void setClanRole(int role);
 	public void setLiegeID(String newVal);
-	public int getWimpHitPoint();
-	public int getQuestPoint();
+	public boolean isMarriedToLiege();
+
+	public String getWorshipCharID();
 	public void setWorshipCharID(String newVal);
+	public Deity getMyDeity();
+
+	public int getWimpHitPoint();
 	public void setWimpHitPoint(int newVal);
+
+	public int getQuestPoint();
 	public void setQuestPoint(int newVal);
 	public long lastTickedDateTime();
 
+	public Iterable<Pair<Clan,Integer>> clans();
+	public Pair<Clan,Integer> getClanRole(String clanID);
+	public void setClan(String clanID, int role);
+
+	
 	// location!
 	public Room getStartRoom();
 	public void setStartRoom(Room newRoom);

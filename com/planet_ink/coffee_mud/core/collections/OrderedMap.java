@@ -72,4 +72,10 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 		}
 		return super.remove(key);
 	}
+	
+	@Override public synchronized void clear()
+	{
+		list=new ArrayList<J>(0);
+		super.clear();
+	}
 }

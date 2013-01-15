@@ -45,21 +45,7 @@ public class Prayer_Sanctum extends Prayer
 
 	protected boolean inRoom(MOB mob, Room R)
 	{
-		boolean inRoom=((CMLib.law().doesHavePriviledgesHere(mob,R))
-				||((text().length()>0)&&(mob.Name().equals(text())))
-				||((text().length()>0)&&(mob.getClanID().equals(text()))&&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.HOME_PRIVS))));
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			MOB M=R.fetchInhabitant(i);
-			if(CMLib.law().doesHavePriviledgesHere(M,R))
-			{ inRoom=true; break;}
-			if((text().length()>0)&&(M.Name().equals(text())))
-			{ inRoom=true; break;}
-			if((text().length()>0)&&(M.getClanID().equals(text())))
-			{ inRoom=true; break;}
-
-		}
-		if(!inRoom)
+		if(!CMLib.law().doesAnyoneHavePrivilegesHere(mob, text(), R))
 		{
 			mob.tell("You feel your muscles unwilling to cooperate.");
 			return false;
@@ -76,10 +62,10 @@ public class Prayer_Sanctum extends Prayer
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target()==R)
 		&&(!msg.source().Name().equals(text()))
-		&&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
+		&&(msg.source().getClanRole(text())==null)
 		&&((msg.source().amFollowing()==null)
 			||((!msg.source().amFollowing().Name().equals(text()))
-				&&(msg.source().amFollowing().getClanID().length()==0)||(!msg.source().amFollowing().getClanID().equals(text()))))
+				&&(msg.source().amFollowing().getClanRole(text())==null)))
 		&&(!CMLib.law().doesHavePriviledgesHere(msg.source(),R)))
 		{
 			msg.source().tell("You feel your muscles unwilling to cooperate.");
@@ -153,18 +139,16 @@ public class Prayer_Sanctum extends Prayer
 			{
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
+				
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					String clanID=mob.getClanID();
-					if((mob.amFollowing()!=null)&&(clanID.length()==0))
-						clanID=mob.amFollowing().getClanID();
-					if((clanID.length()>0)
-					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
-						setMiscText(clanID);
-					
-					if((clanID.length()>0)&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
+					String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					if(CMLib.clans().getClan(landOwnerName)!=null)
+					{
+						setMiscText(landOwnerName);
 						beneficialAffect(mob,target,asLevel,0);
+					}
 					else
 					{
 						target.addNonUninvokableEffect((Ability)this.copyOf());

@@ -343,12 +343,14 @@ public class CMProps extends Properties
 	protected long  			TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
 	protected long  			TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
 	protected double			TIME_TICK_DOUBLE=(double)TIME_TICK;
-	protected final Map<String,Double>     skillMaxManaExceptions      =new HashMap<String,Double>();
-	protected final Map<String,Double>     skillMinManaExceptions      =new HashMap<String,Double>();
-	protected final Map<String,Double>     skillActionCostExceptions   =new HashMap<String,Double>();
-	protected final Map<String,Double>     skillComActionCostExceptions=new HashMap<String,Double>();
-	protected final Map<String,Double>     cmdActionCostExceptions     =new HashMap<String,Double>();
-	protected final Map<String,Double>     cmdComActionCostExceptions  =new HashMap<String,Double>();
+	protected final Map<String,Integer>		maxClanCatsMap				=new HashMap<String,Integer>();
+	protected final Set<String>				publicClanCats				=new HashSet<String>();
+	protected final Map<String,Double>		skillMaxManaExceptions		=new HashMap<String,Double>();
+	protected final Map<String,Double>		skillMinManaExceptions		=new HashMap<String,Double>();
+	protected final Map<String,Double>		skillActionCostExceptions	=new HashMap<String,Double>();
+	protected final Map<String,Double>		skillComActionCostExceptions=new HashMap<String,Double>();
+	protected final Map<String,Double>		cmdActionCostExceptions		=new HashMap<String,Double>();
+	protected final Map<String,Double>		cmdComActionCostExceptions	=new HashMap<String,Double>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> commonCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
@@ -1271,6 +1273,25 @@ public class CMProps extends Properties
 		setIntVar(SYSTEMI_MINSESSIONTHREADS,getStr("MINSESSIONTHREADS"),5);
 		setIntVar(SYSTEMI_MAXSESSIONTHREADS,getStr("MAXSESSIONTHREADS"),100);
 		setIntVar(SYSTEMI_DUELTICKDOWN,getStr("DUELTICKDOWN"),5);
+		V=CMParms.parseCommas(getStr("MAXCLANCATS"), true);
+		p().maxClanCatsMap.clear();
+		for(String cat : V)
+			if(CMath.isInteger(cat.trim()))
+				p().maxClanCatsMap.put("", Integer.valueOf(CMath.s_int(cat.trim())));
+			else
+			{
+				int x=cat.lastIndexOf(' ');
+				if((x>0)&&CMath.isInteger(cat.substring(x+1).trim()))
+					p().maxClanCatsMap.put(cat.substring(0,x).trim().toUpperCase(), Integer.valueOf(CMath.s_int(cat.substring(x+1).trim())));
+			}
+		if(!p().maxClanCatsMap.containsKey(""))
+			p().maxClanCatsMap.put("", Integer.valueOf(1));
+
+		p().publicClanCats.clear();
+		V=CMParms.parseCommas(getStr("PUBLICCLANCATS"), true);
+		for(String cat : V)
+			p().publicClanCats.add(cat.trim().toUpperCase());
+		p().publicClanCats.add("");
 
 		V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 
@@ -1485,6 +1506,22 @@ public class CMProps extends Properties
 		if(H==null) return "";
 		return getHashedMXPImage(H,key);
 
+	}
+	public static final boolean isPublicClanGvtCategory(final String clanCategory)
+	{
+		if((clanCategory==null)||(clanCategory.trim().length()==0))
+			return true;
+		String upperClanCategory=clanCategory.toUpperCase().trim();
+		return p().publicClanCats.contains(upperClanCategory);
+	}
+	public static final int getMaxClansThisCategory(final String clanCategory)
+	{
+		if(clanCategory==null)
+			return p().maxClanCatsMap.get("").intValue();
+		String upperClanCategory=clanCategory.toUpperCase().trim();
+		if(p().maxClanCatsMap.containsKey(upperClanCategory))
+			return p().maxClanCatsMap.get(upperClanCategory).intValue();
+		return p().maxClanCatsMap.get("").intValue();
 	}
 	public static final String getHashedMXPImage(final Map<String, String> H, final String key)
 	{

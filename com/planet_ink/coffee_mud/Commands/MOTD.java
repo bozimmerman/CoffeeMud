@@ -134,12 +134,12 @@ public class MOTD extends StdCommand
 						buf.append("\n\r"+report("You have",P,ct));
 					}
 					Hashtable res2=new Hashtable();
+					Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.WITHDRAW);
 					Clan C=null;
-					if(mob.getClanID().length()>0)
+					if(clanPair!=null)
 					{
-						C=mob.getMyClan();
-						if((C!=null)
-						&&(C.getAuthority(mob.getClanRole(),Clan.Function.WITHDRAW)!=Clan.Authority.CAN_NOT_DO))
+						C=clanPair.first;
+						if(C.getAuthority(clanPair.second.intValue(),Clan.Function.WITHDRAW)!=Clan.Authority.CAN_NOT_DO)
 						{
 							V=CMLib.database().DBReadData(C.name(),postalChains);
 							if(V.size()>0)

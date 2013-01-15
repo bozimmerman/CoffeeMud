@@ -42,7 +42,7 @@ public class Chant_Hippieness extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	protected String oldClan="";
+	protected List<Pair<Clan,Integer>> oldClans=null;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -50,23 +50,26 @@ public class Chant_Hippieness extends Chant
 		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)-2);
 		if(affectableStats.getStat(CharStats.STAT_WISDOM)<1)
 			affectableStats.setStat(CharStats.STAT_WISDOM,1);
-		if((oldClan.length()>0)&&(affected.getClanID().length()>0))
-		   affected.setClanID("");
+		for(Pair<Clan,Integer> p : affected.clans())
+			oldClans.add(p);
+		affected.setClan("",Integer.MIN_VALUE); // deletes all clans
 	}
 
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if((affected instanceof MOB)
-		&&(((MOB)affected).getClanID().length()>0)
-		&&(oldClan.length()>0))
-			((MOB)affected).setClanID("");
+		if(affected instanceof MOB)
+		{
+			for(Pair<Clan,Integer> p : ((MOB)affected).clans())
+				oldClans.add(p);
+			((MOB)affected).setClan("",Integer.MIN_VALUE); // deletes all clans
+		}
 
 		if((msg.source()==affected)
 		&&(msg.tool() instanceof Ability)
 		&&(!msg.tool().ID().equals("FoodPrep"))
 		&&(!msg.tool().ID().equals("Cooking"))
 		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
-		   ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)))
+			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)))
 		{
 			msg.source().tell("No, man... work is so bourgeois...");
 			return false;
@@ -81,6 +84,10 @@ public class Chant_Hippieness extends Chant
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
+			for(Pair<Clan,Integer> p : mob.clans())
+				oldClans.add(p);
+			mob.setClan("",Integer.MIN_VALUE); // deletes all clans
+			
 			boolean mouthed=mob.fetchFirstWornItem(Wearable.WORN_MOUTH)!=null;
 			Room R=mob.location();
 			if((!mouthed)&&(R!=null)&&(R.numItems()>0))
@@ -141,7 +148,8 @@ public class Chant_Hippieness extends Chant
 
 		if(canBeUninvoked())
 		{
-			if(oldClan.length()>0) mob.setClanID(oldClan);
+			for(Pair<Clan,Integer> p : oldClans)
+				mob.setClan(p.first.clanID(),p.second.intValue());
 			mob.tell("You don't feel quite so groovy.");
 		}
 	}
@@ -195,8 +203,10 @@ public class Chant_Hippieness extends Chant
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					oldClan=target.getClanID();
-					target.setClanID("");
+					oldClans=new LinkedList<Pair<Clan,Integer>>();
+					for(Pair<Clan,Integer> p : target.clans())
+						oldClans.add(p);
+					target.setClan("",Integer.MIN_VALUE); // deletes all clans
 					CMLib.commands().postSay(target,null,"Far out...",false,false);
 					maliciousAffect(mob,target,asLevel,0,verbalCastMask(mob,target,auto)|CMMsg.TYP_MIND);
 				}

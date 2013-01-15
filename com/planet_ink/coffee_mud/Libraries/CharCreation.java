@@ -1521,7 +1521,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				CMLib.database().DBUpdatePlayer(mob);
 				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has just been created.",true);
+					CMLib.commands().postChannel((String)channels.get(i),mob.clans(),mob.Name()+" has just been created.",true);
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
 			}
@@ -2198,8 +2198,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
 		if(!CMLib.flags().isCloaked(mob))
-		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has logged on.",true);
+			for(int i=0;i<channels.size();i++)
+				CMLib.commands().postChannel((String)channels.get(i),mob.clans(),mob.Name()+" has logged on.",true);
 		setGlobalBitmaps(mob);
 		return LoginResult.NORMAL_LOGIN;
 	}
@@ -2286,12 +2286,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public Room getDefaultBodyRoom(MOB mob)
 	{
-		if((mob.getClanID().length()>0)
-		&&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.MORGUE))
-		&&((!mob.isMonster())||(mob.getStartRoom()==null)))
+		Pair<Clan,Integer> clanMorgue=CMLib.clans().findPrivilegedClan(mob, Clan.Function.MORGUE);
+		if((clanMorgue!=null)&&((!mob.isMonster())||(mob.getStartRoom()==null)))
 		{
-			Clan C=mob.getMyClan();
-			if((C!=null)&&(C.getMorgue().length()>0))
+			Clan C=clanMorgue.first;
+			if(C.getMorgue().length()>0)
 			{
 				Room room=CMLib.map().getRoom(C.getMorgue());
 				if((room!=null)&&(CMLib.law().doesHavePriviledgesHere(mob,room)))

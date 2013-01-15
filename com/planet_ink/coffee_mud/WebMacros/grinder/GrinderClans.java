@@ -54,18 +54,7 @@ public class GrinderClans
 					if(M==null) return "Unknown player '"+aff+"'.";
 					newMembersNames.addElement(M.Name());
 					int newRole=CMath.s_int(httpReq.getRequestParameter("ROLE"+num));
-					if(!M.getClanID().equalsIgnoreCase(C.clanID()))
-					{
-						if(M.getClanID().length()>0)
-						{
-							Clan oldClan=M.getMyClan();
-							if(oldClan!=null) oldClan.delMember(M);
-						}
-						C.addMember(M,newRole);
-					}
-					else
-					if(M.getClanRole()!=newRole)
-						C.addMember(M,newRole);
+					C.addMember(M,newRole);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("MEMB"+num);
@@ -149,6 +138,10 @@ public class GrinderClans
 				}
 				str=httpReq.getRequestParameter("EXP");
 				if(str!=null) C.setExp(CMath.s_int(str));
+				str=httpReq.getRequestParameter("CATEGORY");
+				if(str!=null) C.setCategory(str);
+				str=httpReq.getRequestParameter("ISRIVALROUS");
+				if(str!=null) C.setRivalrous(str.equalsIgnoreCase("on"));
 				str=httpReq.getRequestParameter("STATUSID");
 				if(str!=null) C.setStatus(CMath.s_int(str));
 				str=httpReq.getRequestParameter("ACCEPTANCEID");

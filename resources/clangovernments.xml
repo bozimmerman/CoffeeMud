@@ -1,5 +1,5 @@
 <CLANTYPES>
-<CLANTYPE TYPEID=0 NAME="Gang">
+<CLANTYPE TYPEID=0 NAME="Gang" CATEGORY="">
     <SHORTDESC>ruled by a boss who assigns underlings</SHORTDESC>
     <LONGDESC>The traditional Gang is an efficient organization run by a single boss. The boss has all the powers and authority mentioned above, and can assign lieutentants, treasurers, or staff to assist with some menial chores.  Gang bosses and lieutentants also have the authority to maintain discipline in the ranks using the ORDER command.</LONGDESC>
     <POSITIONS>
@@ -25,6 +25,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="LIEUTENANT" ROLEID=5 RANK=1 NAME="Lieutenant" PLURAL="Lieutenants" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -38,6 +39,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK="" PUBLIC="true">
             <POWER>WITHDRAW</POWER>
@@ -49,6 +51,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=3 INNERMASK="" PUBLIC="true">
             <POWER>ORDER_CONQUERED</POWER>
@@ -59,6 +62,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="STAFF" ROLEID=2 RANK=4 NAME="Staff" PLURAL="Staff" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ORDER_CONQUERED</POWER>
@@ -68,6 +72,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="MEMBER" ROLEID=1 RANK=5 NAME="Member" PLURAL="Members" MAX=999999 INNERMASK="" PUBLIC="false">
             <POWER>CHANNEL</POWER>
@@ -76,8 +81,9 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
-        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="" PUBLIC="false">
+        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicants" MAX=999999 INNERMASK="" PUBLIC="false">
         </POSITION>
     </POSITIONS>
     <VOTING />
@@ -129,7 +135,7 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
-<CLANTYPE TYPEID=1 NAME="Guild">
+<CLANTYPE TYPEID=1 NAME="Guild" CATEGORY="">
     <SHORTDESC>ruled by a numerous bosses who assign underlings</SHORTDESC>
     <LONGDESC>The Guild is run by several elite members called Guildmasters.  These guildmasters reserve many tasks for themselves, though they must often vote amongst themselves on matters affecting the good of the whole clan.  The guild is very hierarchical, so that those with rank above the others may use the ORDER command to those below to maintain discipline.  They may also assign a treasurer to help them handle money, though like the CLAN, the masters of the guild also reserve that authority as well.</LONGDESC>
     <POSITIONS>
@@ -152,6 +158,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="SECRETARY" ROLEID=5 RANK=1 NAME="Secretary" PLURAL="Secretaries" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -167,6 +174,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK="" PUBLIC="true">
             <POWER>WITHDRAW</POWER>
@@ -180,6 +188,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=3 INNERMASK="" PUBLIC="true">
             <POWER>ORDER_UNDERLINGS</POWER>
@@ -191,6 +200,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="CHIEF" ROLEID=2 RANK=4 NAME="Chief" PLURAL="Chiefs" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ORDER_UNDERLINGS</POWER>
@@ -201,6 +211,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="MEMBER" ROLEID=1 RANK=5 NAME="Member" PLURAL="Members" MAX=999999 INNERMASK="" PUBLIC="false">
             <POWER>ORDER_CONQUERED</POWER>
@@ -210,8 +221,9 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
-        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="" PUBLIC="false">
+        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicants" MAX=999999 INNERMASK="" PUBLIC="false">
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=24 QUORUMPCT=100>
@@ -270,7 +282,7 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
-<CLANTYPE TYPEID=2 NAME="Union">
+<CLANTYPE TYPEID=2 NAME="Union" CATEGORY="">
     <SHORTDESC>ruled by an elected set of leaders and staff</SHORTDESC>
     <LONGDESC>The Union is a clan where all members can vote to elect Senators to handle important decisions such as membership, interclan relations, and setting clan polity.  The Senators, like the Guildmasters in a guild, must vote amongst themselves on these matters.  All the union members may also vote to elect secretaries to handle clan property, treasurers to take care of money, and sheriffs to take care of military matters. In a Union, there are no members who may use the ORDER command on other members. </LONGDESC>
     <POSITIONS>
@@ -284,6 +296,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="SECRETARY" ROLEID=5 RANK=1 NAME="Secretary" PLURAL="Secretaries" MAX=1 INNERMASK="" PUBLIC="true">
             <POWER>PROPERTY_OWNER</POWER>
@@ -295,6 +308,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK="" PUBLIC="true">
             <POWER>WITHDRAW</POWER>
@@ -307,6 +321,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=3 INNERMASK="" PUBLIC="true">
             <POWER>VOTE_ASSIGN</POWER>
@@ -318,6 +333,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="SHERIFF" ROLEID=2 RANK=4 NAME="Sheriff" PLURAL="Sheriffs" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ORDER_CONQUERED</POWER>
@@ -329,6 +345,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="CITIZEN" ROLEID=1 RANK=5 NAME="Citizen" PLURAL="Citizens" MAX=999999 INNERMASK="" PUBLIC="false">
             <POWER>VOTE_ASSIGN</POWER>
@@ -339,8 +356,9 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
-        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="" PUBLIC="false">
+        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicants" MAX=999999 INNERMASK="" PUBLIC="false">
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=48 QUORUMPCT=66>
@@ -402,7 +420,7 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
-<CLANTYPE TYPEID=3 NAME="Fellowship">
+<CLANTYPE TYPEID=3 NAME="Fellowship" CATEGORY="">
     <SHORTDESC>all decisions and staff are set through the vote</SHORTDESC>
     <LONGDESC>The Fellowship is a clan where all members vote on any and all clan related matters.  Interclan relations, membership, elections to office, and clan policy are able to be placed to the vote of the entire membership by any member at any time.  For safety, only two powers are reserved to clan offices: the power to withdraw from the clan bank account is given only to the Treasurer, and the power to maintain clan property is given only to the Manager.  Soldiers may also be appointed to handle military matters out in the field. </LONGDESC>
     <POSITIONS>
@@ -416,6 +434,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="MANAGER" ROLEID=5 RANK=1 NAME="Manager" PLURAL="Managers" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>PROPERTY_OWNER</POWER>
@@ -428,6 +447,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>WITHDRAW</POWER>
@@ -440,6 +460,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>VOTE_ASSIGN</POWER>
@@ -452,6 +473,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="SOLDIER" ROLEID=2 RANK=4 NAME="Soldier" PLURAL="Soldiers" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ORDER_CONQUERED</POWER>
@@ -464,6 +486,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="CITIZEN" ROLEID=1 RANK=5 NAME="Citizen" PLURAL="Citizens" MAX=999999 INNERMASK="" PUBLIC="false">
             <POWER>VOTE_ASSIGN</POWER>
@@ -475,8 +498,9 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
-        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="" PUBLIC="false">
+        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicants" MAX=999999 INNERMASK="" PUBLIC="false">
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=100 QUORUMPCT=33>
@@ -538,7 +562,7 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
-<CLANTYPE TYPEID=4 NAME="Theocracy">
+<CLANTYPE TYPEID=4 NAME="Theocracy" CATEGORY="">
     <SHORTDESC>clerics rule, can conquer through conversion</SHORTDESC>
     <LONGDESC>The theocracy is an organization that is always run by the highest level cleric.  All other clerics enjoy second-in-command privileges.  All members are required to worship the clans deity, which is the deity of the high priest. The high priest has all the powers and authority mentioned above, and can assign priests, treasurers, or crusaders to assist with some menial clan chores.  All members have the authority to maintain discipline in the ranks using the ORDER command.\n\nTheocracies have a unique benefit among all other clan types.  They are the only clan type that can attain conquest control points by converting the area inhabitants to their religion.  They are also uniquely allowed to sanctify churches in conquered areas and hold services.</LONGDESC>
     <POSITIONS>
@@ -563,6 +587,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="PRIEST" ROLEID=5 RANK=1 NAME="Priest" PLURAL="Priests" MAX=999999 INNERMASK="-BASECLASS +Cleric -DEITY +%[WORSHIPCHARID]%" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -578,6 +603,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="TREASURER" ROLEID=4 RANK=2 NAME="Treasurer" PLURAL="Treasurers" MAX=1 INNERMASK=" -DEITY +%[WORSHIPCHARID]%" PUBLIC="true">
             <POWER>WITHDRAW</POWER>
@@ -591,6 +617,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="ENCHANTER" ROLEID=3 RANK=3 NAME="Enchanter" PLURAL="Enchanters" MAX=3 INNERMASK=" -DEITY +%[WORSHIPCHARID]%" PUBLIC="true">
             <POWER>ORDER_UNDERLINGS</POWER>
@@ -603,6 +630,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="CRUSADER" ROLEID=2 RANK=4 NAME="Crusader" PLURAL="Crusaders" MAX=999999 INNERMASK=" -DEITY +%[WORSHIPCHARID]%" PUBLIC="true">
             <POWER>ORDER_UNDERLINGS</POWER>
@@ -614,8 +642,9 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
-        <POSITION ID="BELIEVER" ROLEID=1 RANK=5 NAME="Believer" PLURAL="Believer" MAX=999999 INNERMASK="  -DEITY +%[WORSHIPCHARID]%" PUBLIC="false">
+        <POSITION ID="BELIEVER" ROLEID=1 RANK=5 NAME="Believer" PLURAL="Believers" MAX=999999 INNERMASK="  -DEITY +%[WORSHIPCHARID]%" PUBLIC="false">
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
             <POWER>DEPOSIT_LIST</POWER>
@@ -625,8 +654,9 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
-        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicant" MAX=999999 INNERMASK="  -DEITY +%[WORSHIPCHARID]%" PUBLIC="false">
+        <POSITION ID="APPLICANT" ROLEID=0 RANK=6 NAME="Applicant" PLURAL="Applicants" MAX=999999 INNERMASK="  -DEITY +%[WORSHIPCHARID]%" PUBLIC="false">
         </POSITION>
     </POSITIONS>
     <VOTING />
@@ -678,7 +708,7 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
-<CLANTYPE TYPEID=5 NAME="Family">
+<CLANTYPE TYPEID=5 NAME="Family" CATEGORY="">
     <SHORTDESC>patron/patron rules a private group only family can join</SHORTDESC>
     <LONGDESC>The Family is a clan rules by either a Matron, a Patron, or both.  The traditional powers of treasurer and enchanter can be held by any of the adult members of the family, which includes Misters and Mistresses.  All other minor powers are held equally by all members, including the cousins, the children, and even the black sheep of the family.</LONGDESC>
     <POSITIONS>
@@ -704,6 +734,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="MATRON" ROLEID=5 RANK=0 NAME="Matron" PLURAL="Matrons" MAX=1 INNERMASK="-MALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -727,6 +758,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="MISTRESS" ROLEID=4 RANK=1 NAME="Mistress" PLURAL="Mistresses" MAX=1 INNERMASK="-MALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -743,6 +775,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="MISTER" ROLEID=3 RANK=1 NAME="Mister" PLURAL="Misters" MAX=999999 INNERMASK="-FEMALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -759,6 +792,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="COUSIN" ROLEID=2 RANK=2 NAME="Cousin" PLURAL="Cousins" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -771,6 +805,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="CHILD" ROLEID=1 RANK=3 NAME="Child" PLURAL="Children" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ORDER_UNDERLINGS</POWER>
@@ -781,6 +816,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
         <POSITION ID="BLACKSHEEP" ROLEID=0 RANK=4 NAME="Black-Sheep" PLURAL="Black-Sheeps" MAX=999999 INNERMASK="" PUBLIC="true">
             <POWER>ORDER_UNDERLINGS</POWER>
@@ -791,6 +827,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
     </POSITIONS>
     <VOTING />
@@ -842,7 +879,7 @@
         <EFFECT ID="Prop_Adjuster" LEVEL=25 PARMS="armor-1 hitpoints+5 movement+5 mana+5" />
     </EFFECTS>
 </CLANTYPE>
-<CLANTYPE TYPEID=6 NAME="Anarchy">
+<CLANTYPE TYPEID=6 NAME="Anarchy" CATEGORY="">
     <SHORTDESC>anyone can join, anyone can do anything</SHORTDESC>
     <LONGDESC>The most primitive and purely human of social arrangements. Anyone can join, so there is no acceptance or rejection.  Any member can perform any clan function, from moving the clan home to declaring war.</LONGDESC>
     <POSITIONS>
@@ -861,6 +898,7 @@
             <POWER>HOME_PRIVS</POWER>
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
+            <POWER>DEPOSIT</POWER>
         </POSITION>
     </POSITIONS>
     <VOTING />

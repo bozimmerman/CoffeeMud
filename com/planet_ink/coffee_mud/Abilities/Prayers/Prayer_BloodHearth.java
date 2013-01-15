@@ -63,7 +63,7 @@ public class Prayer_BloodHearth extends Prayer
 				if((CMLib.law().doesHavePriviledgesHere(M,R))
 				||((text().length()>0)
 					&&((M.Name().equals(text()))
-						||(M.getClanID().equals(text())))))
+						||(M.getClanRole(text())!=null))))
 				{
 					msg.setValue(msg.value()+(msg.value()/2));
 					break;
@@ -77,8 +77,7 @@ public class Prayer_BloodHearth extends Prayer
 	{
 		if((mob!=null)&&(target instanceof Room))
 		{
-			if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
-			&&(!((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))
+			if(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 				return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -106,15 +105,11 @@ public class Prayer_BloodHearth extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&((CMLib.law().doesOwnThisProperty(mob,((Room)target)))
-					||((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))
+				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					String clanID=mob.getClanID();
-					if((mob.amFollowing()!=null)&&(clanID.length()==0))
-						clanID=mob.amFollowing().getClanID();
-					if((clanID.length()>0)
-					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
-						setMiscText(clanID);
+					String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					if(CMLib.clans().getClan(landOwnerName)!=null)
+						setMiscText(landOwnerName);
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);
 				}

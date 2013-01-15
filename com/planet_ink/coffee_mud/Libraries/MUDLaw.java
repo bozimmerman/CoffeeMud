@@ -279,11 +279,47 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(title.landOwner().equals(mob.Name())) return true;
 		if((title.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		if(title.landOwner().equals(mob.getClanID())&&(CMLib.clans().authCheck(mob.getClanID(), mob.getClanRole(), Clan.Function.HOME_PRIVS)))
+		Pair<Clan,Integer> clanRole=mob.getClanRole(title.landOwner());
+		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
 			return true;
 		if(mob.amFollowing()!=null) 
 			return doesHavePriviledgesHere(mob.amFollowing(),room);
 		return false;
+	}
+	
+	public boolean doesAnyoneHavePrivilegesHere(MOB mob, String overrideID, Room R)
+	{
+		if((CMLib.law().doesHavePriviledgesHere(mob,R))||((overrideID.length()>0)&&(mob.Name().equals(overrideID))))
+			return true;
+		if(overrideID.length()>0)
+		{
+			Pair<Clan,Integer> clanPair=mob.getClanRole(overrideID);
+			if((clanPair!=null)&&(clanPair.first.getAuthority(clanPair.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+				return true;
+		}
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if(CMLib.law().doesHavePriviledgesHere(M,R))
+				return true;
+			if(overrideID.length()>0)
+			{
+				if(M.Name().equals(overrideID))
+					return true;
+				Pair<Clan,Integer> clanPair=M.getClanRole(overrideID);
+				if((clanPair!=null)&&(clanPair.first.getAuthority(clanPair.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	public String getLandOwnerName(Room room)
+	{
+		LandTitle title=getLandTitle(room);
+		if(title==null) return "";
+		if(title.landOwner()==null) return "";
+		return title.landOwner();
 	}
 	
 	public boolean doesOwnThisProperty(String name, Room room)
@@ -322,14 +358,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(title.landOwner().length()==0) return false;
 		if(title.landOwner().equals(mob.Name())) return true;
 		if((title.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
-		   return true;
-		if(title.landOwner().equals(mob.getClanID()))
-		{
-			Clan C=mob.getMyClan();
-			if((C!=null)
-			&&(C.getAuthority(mob.getClanRole(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
-				return true;
-		}
+			return true;
+		Pair<Clan,Integer> clanRole=mob.getClanRole(title.landOwner());
+		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
+			return true;
 		if(mob.amFollowing()!=null) 
 			return doesOwnThisProperty(mob.amFollowing(),room);
 		return false;

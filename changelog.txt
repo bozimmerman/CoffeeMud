@@ -2393,7 +2393,10 @@ ruthless programmer, and sentenced to a quick death.
 1. FakeDB now supports getResultSetMetaData, making room for some sort of sql browser feature
 2. CoffeeMud (actually fakedb) is now build compatible with JDK 1.7
 3. Fixed a nasty bug in CMParms -- you do not want 5.7.8!
-# Build 5.7.10 Release ??/??/2012 (** Thanks to TGMUD for publishing their changelogs!!!)
+# Build 5.7.10 Release ??/??/2012 (* DB CHANGE!) (** Thanks to TGMUD for publishing their changelogs!!!)
+0. Database Schema Updated! Run DBUpgrade, OR create table CMCHCL (see appropriate schema file), then:
+   INSERT INTO CMCHCL VALUES (SELECT USERID, CMCLAN, CMCLRO from CMCHAR where CMCLAN != ''); // lastly:
+   ALTER TABLE CMCHAR DROP COLUMN CMCLAN; ALTER TABLE CMCHAR DROP COLUMN CMCLRO;   
 1. (Minor) ResourceOverride is now an ActiveTicker for better control over its behavior.  Also, room types bug fixed.
 2. New INI entries for whitelisting over ip/login/newplayer blocks: WHITELISTIPSCONN, WHITELISTLOGINS, WHITELISTIPSNEWPLAYERS
 3. Special GET case: Can now get parts of a bundle from a container -- get 2 oak from wagon will break a 2# bundle from inside in a wagon.
@@ -2431,3 +2434,7 @@ ruthless programmer, and sentenced to a quick death.
 35.Normally mobile mobs will walk by hidden/invis exits now (unless they can see hidden, etc..)
 36.Death room (DEATH) coffeemud.ini entry now supports MORGUE to keep players where they died.
 37.Expertises have been optimized such that players only store the highest version.  Functionally identical, but with new editor expression.
+38.Clans and Governments now support categories, and visibility flags, and mobs may belong to more than one, if setup properly. 
+39.New INI entries: MAXCLANCATS and PUBLICCLANCATS for controlling player access to clan gvts by category
+
+ 

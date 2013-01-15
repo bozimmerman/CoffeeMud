@@ -230,6 +230,68 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
+	public static StringBuffer clans(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("CLANS"))
+		{
+			Vector<Pair<Clan,Integer>> theclasses=new Vector<Pair<Clan,Integer>>();
+			if(httpReq.isRequestParameter("CLAN1"))
+			{
+				int num=1;
+				String behav=httpReq.getRequestParameter("CLAN"+num);
+				while(behav!=null)
+				{
+					int role=CMath.s_int(httpReq.getRequestParameter("CLANROLE"+num));
+					if(behav.length()>0)
+					{
+						Clan C=CMLib.clans().getClan(behav);
+						if(C!=null)
+							theclasses.add(new Pair<Clan,Integer>(C,Integer.valueOf(role)));
+					}
+					num++;
+					behav=httpReq.getRequestParameter("CLAN"+num);
+				}
+			}
+			else
+			for(Pair<Clan,Integer> p : E.clans())
+				theclasses.add(p);
+			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
+			for(int i=0;i<theclasses.size();i++)
+			{
+				Pair<Clan,Integer> clanPair=theclasses.get(i);
+				str.append("<TR><TD WIDTH=100%>");
+				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CLAN"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				str.append("<OPTION VALUE=\""+clanPair.first.clanID()+"\" SELECTED>"+clanPair.first.getName());
+				str.append("</SELECT>");
+				str.append("<SELECT NAME=CLANROLE"+(i+1)+">");
+				for(int r=0;r<clanPair.first.getRolesList().length;r++)
+				{
+					str.append("<OPTION VALUE="+r+" ");
+					if(r==clanPair.second.intValue()) str.append("SELECTED");
+					str.append(">"+clanPair.first.getRolesList()[r]);
+				}
+				str.append("</SELECT>");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=100%>");
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CLAN"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a clan");
+			for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
+			{
+				Clan C=e.nextElement();
+				str.append("<OPTION VALUE=\""+C.clanID()+"\">"+C.getName());
+			}
+			str.append("</SELECT>");
+			str.append("<SELECT NAME=CLANROLE"+(theclasses.size()+1)+">");
+			str.append("</SELECT>");
+			str.append("</TD></TR>");
+			str.append("</TABLE>");
+		}
+		return str;
+	}
+
 	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -291,6 +353,7 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
+
 	public static StringBuffer curses(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -1350,7 +1413,13 @@ public class MobData extends StdWebMacro
 				str.append(old);
 				break;
 			case 37: // clanid
-				if(firstTime) old=M.getClanID();
+				if(firstTime)
+				{
+					StringBuilder oldBuf=new StringBuilder("");
+					for(Pair<Clan,Integer> p : M.clans())
+						oldBuf.append(p.first.getName()).append("(").append(p.second.toString()).append("), ");
+					old=oldBuf.toString();
+				}
 				str.append(old);
 				break;
 			case 38: // tattoos
@@ -1519,6 +1588,7 @@ public class MobData extends StdWebMacro
 		str.append(AreaData.behaves(M,httpReq,parms,1));
 		str.append(factions(M,httpReq,parms,1));
 		str.append(MobData.abilities(M,httpReq,parms,1));
+		str.append(MobData.clans(M,httpReq,parms,1));
 		if(M instanceof Deity)
 		{
 			str.append(MobData.blessings((Deity)M,httpReq,parms,1));

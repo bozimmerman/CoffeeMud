@@ -93,7 +93,7 @@ public class Prayer_HolyDay extends Prayer
 		if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
 			||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 			||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)))
-		&&(msg.source().getClanID().length()>0))
+		&&(CMLib.clans().findConquerableClan(msg.source())!=null))
 		{
 			LegalBehavior B=null;
 			if(msg.source().location()!=null) 

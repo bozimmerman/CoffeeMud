@@ -60,7 +60,7 @@ public class StdClanCommonContainer extends StdClanContainer
 		&&(owner() instanceof MOB)
 		&&(((MOB)owner()).isMonster())
 		&&(readableText().length()>0)
-		&&(((MOB)owner()).getClanID().equals(clanID()))
+		&&(((MOB)owner()).getClanRole(clanID())!=null)
 		&&((--workDown)<=0)
 		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner())))
 		{

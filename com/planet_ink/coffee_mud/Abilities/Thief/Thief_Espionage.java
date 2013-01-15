@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -64,10 +65,11 @@ public class Thief_Espionage extends ThiefSkill
 			if((chan.flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)
 				||chan.flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
 			&&(invoker()!=null)
-			&&(invoker().getClanID().length()>0)
-			&&(!((MOB)affected).getClanID().equals(invoker().getClanID()))
+			&&((!CMLib.clans().isAnyCommonClan(invoker(),msg.source()))
+			&&((!chan.flags.contains(ChannelFlag.CLANALLYONLY))
+				||(!CMLib.clans().findAnyClanRelations(invoker(),msg.source(),Clan.REL_ALLY))))
 			&&(!CMLib.channels().mayReadThisChannel(msg.source(),areareq,invoker(),channelInt)))
-				invoker.executeMsg(myHost,msg);
+				invoker().executeMsg(myHost,msg);
 		}
 	}
 

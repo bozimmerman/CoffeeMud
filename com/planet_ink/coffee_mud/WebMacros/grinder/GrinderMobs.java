@@ -101,18 +101,22 @@ public class GrinderMobs
 				if(aff.length()>0)
 				{
 					Ability B=CMClass.getAbility(aff);
-					if(B==null) return "Unknown Ability '"+aff+"'.";
-					if(player)
+					if(B==null) 
+						return "Unknown Ability '"+aff+"'.";
+					else
 					{
-						String prof=httpReq.getRequestParameter("ABPOF"+num);
-						if(prof==null) prof="0";
-						String txt=httpReq.getRequestParameter("ABTXT"+num);
-						if(txt==null) txt="";
-						B.setProficiency(CMath.s_int(prof));
-						B.setMiscText(txt);
+						if(player)
+						{
+							String prof=httpReq.getRequestParameter("ABPOF"+num);
+							if(prof==null) prof="0";
+							String txt=httpReq.getRequestParameter("ABTXT"+num);
+							if(txt==null) txt="";
+							B.setProficiency(CMath.s_int(prof));
+							B.setMiscText(txt);
+						}
+						M.addAbility(B);
+						B.autoInvocation(M);
 					}
-					M.addAbility(B);
-					B.autoInvocation(M);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("ABLES"+num);
@@ -172,11 +176,42 @@ public class GrinderMobs
 				{
 					boolean clericOnly=(httpReq.isRequestParameter("BLONLY"+num))&&(httpReq.getRequestParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					Ability B=CMClass.getAbility(aff);
-					if(B==null) return "Unknown Blessing '"+aff+"'.";
-					E.addBlessing(B,clericOnly);
+					if(B==null) 
+						return "Unknown Blessing '"+aff+"'.";
+					else
+						E.addBlessing(B,clericOnly);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("BLESS"+num);
+			}
+		}
+		return "";
+	}
+
+	public static String clans(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	{
+		List<String> clans=new Vector<String>();
+		for(Pair<Clan,Integer> p : E.clans())
+			clans.add(p.first.clanID());
+		for(String clanID : clans)
+			E.setClan(clanID, -1);
+		if(httpReq.isRequestParameter("CLAN1"))
+		{
+			int num=1;
+			String aff=httpReq.getRequestParameter("CLAN"+num);
+			while(aff!=null)
+			{
+				if(aff.length()>0)
+				{
+					int role=CMath.s_int(httpReq.getRequestParameter("CLANROLE"+num));
+					Clan C=CMLib.clans().getClan(aff);
+					if(C==null) 
+						return "Unknown Clan '"+aff+"'.";
+					else
+						E.setClan(C.clanID(), role);
+				}
+				num++;
+				aff=httpReq.getRequestParameter("CLAN"+num);
 			}
 		}
 		return "";
@@ -200,8 +235,10 @@ public class GrinderMobs
 				{
 					Ability B=CMClass.getAbility(aff);
 					boolean clericOnly=(httpReq.isRequestParameter("CUONLY"+num))&&(httpReq.getRequestParameter("CUONLY"+num)).equalsIgnoreCase("on");
-					if(B==null) return "Unknown Curse '"+aff+"'.";
-					E.addCurse(B,clericOnly);
+					if(B==null) 
+						return "Unknown Curse '"+aff+"'.";
+					else
+						E.addCurse(B,clericOnly);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("CURSE"+num);
@@ -224,7 +261,8 @@ public class GrinderMobs
 					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(aff);
 					if(def==null) 
 						return "Unknown Expertise '"+aff+"'.";
-					E.addExpertise(def.ID);
+					else
+						E.addExpertise(def.ID);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("EXPER"+num);
@@ -307,8 +345,10 @@ public class GrinderMobs
 				if(aff.length()>0)
 				{
 					Ability B=CMClass.getAbility(aff);
-					if(B==null) return "Unknown Power '"+aff+"'.";
-					E.addPower(B);
+					if(B==null) 
+						return "Unknown Power '"+aff+"'.";
+					else
+						E.addPower(B);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("POWER"+num);
@@ -518,17 +558,34 @@ public class GrinderMobs
 					break;
 				case 38: // powers
 					break;
-				case 39: // clan
-					M.setClanID(old);
-					if(M.getClanID().length()>0)
+				case 39: // clanid
+				{
+					List<String> list=CMParms.parseCommas(old,true);
+					M.setClan("", Integer.MIN_VALUE); // signal to clear the list
+					for(String entry : list)
 					{
-						Clan C=M.getMyClan();
+						entry=entry.trim();
+						String clanID=entry;
+						int role=-1;
+						int x=entry.lastIndexOf('(');
+						if(x>0)
+						{
+							clanID=entry.substring(0,x).trim();
+							if(entry.endsWith(")"))
+								role=CMath.s_int(entry.substring(x+1,entry.length()-1));
+							else
+								role=CMath.s_int(entry.substring(x+1));
+						}
+						Clan C=CMLib.clans().getClan(clanID);
+						if(C==null) C=CMLib.clans().findClan(clanID);
 						if(C!=null)
-							M.setClanRole(C.getGovernment().getAcceptPos());
-						else
-							M.setClanRole(0);
+						{
+							if(role<0) role=C.getGovernment().getAcceptPos();
+							M.setClan(C.clanID(), role);
+						}
 					}
 					break;
+				}
 				case 40: // tattoos
 					{
 						Vector V=CMParms.parseSemicolons(old,true);
@@ -682,6 +739,8 @@ public class GrinderMobs
 				error=GrinderMobs.factions(M,httpReq,parms);
 				if(error.length()>0) return error;
 				error=GrinderMobs.abilities(M,httpReq,parms);
+				if(error.length()>0) return error;
+				error=GrinderMobs.clans(M,httpReq,parms);
 				if(error.length()>0) return error;
 				if(M instanceof Deity)
 				{

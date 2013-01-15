@@ -44,8 +44,6 @@ CMWEIT integer NULL
 CMPRPT string NULL
 CMCOLR string NULL
 CMLSIP string NULL
-CMCLAN string NULL
-CMCLRO integer NULL
 CMEMAL string NULL
 CMPFIL string NULL
 CMSAVE string NULL
@@ -58,6 +56,11 @@ CMFOID string NULL
 CMFOTX string NULL
 CMFOLV integer NULL
 CMFOAB integer NULL
+
+CMCHCL
+CMUSERID string KEY
+CMCLAN string KEY
+CMCLRO integer NULL
 
 CMCHIT
 CMUSERID string KEY

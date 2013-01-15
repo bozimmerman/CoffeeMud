@@ -70,6 +70,8 @@ public class GrinderClanGovernments
 			String str=null;
 			str=httpReq.getRequestParameter("NAME");
 			if(str!=null) G.setName(str);
+			str=httpReq.getRequestParameter("CATEGORY");
+			if(str!=null) G.setCategory(str);
 			str=httpReq.getRequestParameter("ACCEPTPOS");
 			if(str!=null) G.setAcceptPos(CMath.s_int(str));
 			str=httpReq.getRequestParameter("AUTOROLE");
@@ -92,6 +94,8 @@ public class GrinderClanGovernments
 			G.setConquestItemLoyalty((str==null)?false:str.equalsIgnoreCase("on"));
 			str=httpReq.getRequestParameter("CONQUESTDEITYBASIS");
 			G.setConquestByWorship((str==null)?false:str.equalsIgnoreCase("on"));
+			str=httpReq.getRequestParameter("ISRIVALROUS");
+			G.setRivalrous((str==null)?false:str.equalsIgnoreCase("on"));
 			str=httpReq.getRequestParameter("MAXVOTEDAYS");
 			if(str!=null) G.setMaxVoteDays(CMath.s_int(str));
 			str=httpReq.getRequestParameter("VOTEQUORUMPCT");

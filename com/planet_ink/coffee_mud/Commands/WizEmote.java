@@ -88,7 +88,7 @@ public class WizEmote extends StdCommand
 				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
 					if((S.mob()!=null)
-					&&(S.mob().getClanID().equals(C.clanID()))
+					&&(S.mob().getClanRole(C.clanID())!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),CMSecurity.SecFlag.WIZEMOTE)))
 						S.stdPrintln("^w"+msg+"^?");
 				}

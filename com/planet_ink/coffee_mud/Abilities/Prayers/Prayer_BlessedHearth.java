@@ -63,7 +63,7 @@ public class Prayer_BlessedHearth extends Prayer
 				if((CMLib.law().doesHavePriviledgesHere(M,R))
 				||((text().length()>0)
 					&&((M.Name().equals(text()))
-						||(M.getClanID().equals(text())))))
+						||(M.getClanRole(text())!=null))))
 				{
 					R.show(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,"The blessed powers block the unholy magic from <S-NAMESELF>.");
 					return false;
@@ -81,7 +81,7 @@ public class Prayer_BlessedHearth extends Prayer
 				if((CMLib.law().doesHavePriviledgesHere(M,R))
 				||((text().length()>0)
 					&&((M.Name().equals(text()))
-						||(M.getClanID().equals(text())))))
+						||(M.getClanRole(text())!=null))))
 				{
 					msg.setValue(msg.value()/10);
 					break;
@@ -116,12 +116,9 @@ public class Prayer_BlessedHearth extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-					String clanID=mob.getClanID();
-					if((mob.amFollowing()!=null)&&(clanID.length()==0))
-						clanID=mob.amFollowing().getClanID();
-					if((clanID.length()>0)
-					&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
-						setMiscText(clanID);
+					String landOwnerName=CMLib.law().getLandOwnerName((Room)target);
+					if(CMLib.clans().getClan(landOwnerName)!=null)
+						setMiscText(landOwnerName);
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);
 				}

@@ -327,7 +327,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 			}
 		}
 		// if held by the wrong clan, it is inactive.
-		if((mob!=null)&&(mob.getClanID().equalsIgnoreCase(clanName)))
+		if((mob!=null)&&(mob.getClanRole(clanName)!=null))
 			activated=true;
 		else
 			activated=false;

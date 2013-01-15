@@ -55,17 +55,18 @@ public class Spell_Flagportation extends Spell
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		Clan C=mob.getClanID().length()>0?mob.getMyClan():null;
-		if(C==null)
+		if(!mob.clans().iterator().hasNext())
 		{
-			mob.tell("You must belong to a clan to use this spell.");
+			mob.tell("You aren't even a member of a clan.");
 			return false;
 		}
-		if((!auto)&&(C.getAuthority(mob.getClanRole(), Clan.Function.ENCHANT)==Clan.Authority.CAN_NOT_DO))
+		Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
+		if(clanPair==null)
 		{
-			mob.tell("You do not have priviledges to use this spell.");
+			mob.tell("You are not authorized to draw from the power of your clan.");
 			return false;
 		}
+		Clan C=clanPair.first;
 		Vector candidates=new Vector();
 		Room R=null;
 		Item I=null;

@@ -23,11 +23,11 @@ limitations under the License.
 */
 public class MultiListEnumeration<K> implements Enumeration<K>
 {
-	private final LinkedList<List<K>> lists=new LinkedList<List<K>>();
-	private volatile Iterator<List<K>> listIter = null; 
+	private final LinkedList<Iterable<K>> lists=new LinkedList<Iterable<K>>();
+	private volatile Iterator<Iterable<K>> listIter = null; 
 	private volatile Iterator<K> iter = null; 
 	
-	public MultiListEnumeration(final List<K>... esets) 
+	public MultiListEnumeration(final Iterable<K>... esets) 
 	{
 		if((esets!=null)&&(esets.length>0))
 			lists.addAll(Arrays.asList(esets));
@@ -41,7 +41,7 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 		setup(false);
 	}
 	
-	public MultiListEnumeration(final List<K> eset) 
+	public MultiListEnumeration(final Iterable<K> eset) 
 	{
 		lists.add(eset);
 		setup(false);

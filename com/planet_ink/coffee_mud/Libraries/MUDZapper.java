@@ -3660,22 +3660,41 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			}
 			case 14: // -clan
 				{
-					final String clanID=(E instanceof MOB)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
-					if(clanID.length()==0)
-						return false;
 					boolean found=false;
-					for(final Object o : entry.parms)
-						if(clanID.equalsIgnoreCase((String)o))
-						{ found=true; break;}
+					if(E instanceof ClanItem)
+					{
+						final String clanID=((ClanItem)E).clanID();
+						for(final Object o : entry.parms)
+							if(clanID.equalsIgnoreCase((String)o))
+							{ found=true; break;}
+					}
+					else
+					if(E instanceof MOB)
+						for(Pair<Clan,Integer> c : ((MOB)E).clans())
+						{
+							for(final Object o : entry.parms)
+								if(c.first.clanID().equalsIgnoreCase((String)o))
+								{ found=true; break;}
+						}
 					if(!found) return false;
 				}
 				break;
 			case 15: // +clan
-				final String clanID=(E instanceof MOB)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
-				if(clanID.length()>0)
+				if(E instanceof ClanItem)
+				{
+					final String clanID=((ClanItem)E).clanID();
 					for(final Object o : entry.parms)
 						if(clanID.equalsIgnoreCase((String)o))
-						{ return false;}
+							return false;
+				}
+				else
+				if(E instanceof MOB)
+					for(Pair<Clan,Integer> c : ((MOB)E).clans())
+					{
+						for(final Object o : entry.parms)
+							if(c.first.clanID().equalsIgnoreCase((String)o))
+								return false;
+					}
 				break;
 			case 49: // +material
 				if((item!=null)&&CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))

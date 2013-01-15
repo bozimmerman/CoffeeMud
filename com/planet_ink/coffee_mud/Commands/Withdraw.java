@@ -62,6 +62,7 @@ public class Withdraw extends StdCommand
 		Item thisThang=null;
 		if(SHOP instanceof Banker)
 		{
+			String accountName=((Banker)SHOP).getBankClientName(mob, Clan.Function.WITHDRAW, false);
 			if(numCoins>0)
 			{
 				if(denomination==0.0)
@@ -69,43 +70,52 @@ public class Withdraw extends StdCommand
 					mob.tell("Withdraw how much?");
 					return false;
 				}
-				thisThang=((Banker)SHOP).findDepositInventory(mob,""+Integer.MAX_VALUE);
+				thisThang=((Banker)SHOP).findDepositInventory(accountName,""+Integer.MAX_VALUE);
 				if(thisThang instanceof Coins)
 					thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
 			}
 			else
-				thisThang=((Banker)SHOP).findDepositInventory(mob,str);
+				thisThang=((Banker)SHOP).findDepositInventory(accountName,str);
 	
 			if(((thisThang==null)||((thisThang instanceof Coins)&&(((Coins)thisThang).getNumberOfCoins()<=0)))
 			&&(!((Banker)SHOP).isSold(ShopKeeper.DEAL_CLANBANKER))
 			&&(mob.isMarriedToLiege()))
 			{
 				MOB mob2=CMLib.players().getPlayer(mob.getLiegeID());
-				if(numCoins>0)
+				if(mob2!=null)
 				{
-					thisThang=((Banker)SHOP).findDepositInventory(mob2,""+Integer.MAX_VALUE);
-					if(thisThang instanceof Coins)
-						thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
-					else
+					String accountName2=((Banker)SHOP).getBankClientName(mob2, Clan.Function.WITHDRAW, false);
+					if(numCoins>0)
 					{
-						mob.tell("Withdraw how much?");
-						return false;
+						thisThang=((Banker)SHOP).findDepositInventory(accountName2,""+Integer.MAX_VALUE);
+						if(thisThang instanceof Coins)
+							thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
+						else
+						{
+							mob.tell("Withdraw how much?");
+							return false;
+						}
 					}
+					else
+						thisThang=((Banker)SHOP).findDepositInventory(accountName2,str);
 				}
-				else
-					thisThang=((Banker)SHOP).findDepositInventory(mob2,str);
 			}
 		}
 		else
 		if(SHOP instanceof PostOffice)
 		{
-			thisThang=((PostOffice)SHOP).findBoxContents(mob,str);
+			String accountName=((PostOffice)SHOP).getSenderName(mob, Clan.Function.WITHDRAW, false);
+			thisThang=((PostOffice)SHOP).findBoxContents(accountName,str);
 			if((thisThang==null)
 			&&(!((PostOffice)SHOP).isSold(ShopKeeper.DEAL_CLANPOSTMAN))
 			&&(mob.isMarriedToLiege()))
 			{
 				MOB mob2=CMLib.players().getPlayer(mob.getLiegeID());
-				thisThang=((PostOffice)SHOP).findBoxContents(mob2,str);
+				if(mob2!=null)
+				{
+					String accountName2=((PostOffice)SHOP).getSenderName(mob, Clan.Function.WITHDRAW, false);
+					thisThang=((PostOffice)SHOP).findBoxContents(accountName2,str);
+				}
 			}
 		}
 

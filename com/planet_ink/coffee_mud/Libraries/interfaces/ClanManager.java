@@ -50,6 +50,7 @@ public interface ClanManager extends CMLibrary
 	 * @return the number of clans in the game.
 	 */
 	public int numClans();
+
 	/**
 	 * This method is used to determine the basic relationship between two clans.  The
 	 * two clans are evaluated, based on their declared relationship to each other, and
@@ -62,18 +63,53 @@ public interface ClanManager extends CMLibrary
 	 * @return true if the common relationship matches the given relation, and false otherwise
 	 */
 	public boolean isCommonClanRelations(String clanName1, String clanName2, int relation);
+
+	/**
+	 * This method is used to determine the basic relationship between two clan members.  The
+	 * two mobs first rivalrous clans are evaluated, based on their declared relationship to 
+	 * each other, and the relations they inherit from allys.  It is then compared with the 
+	 * passed the War status.  If they match, true is returned, and false otherwise.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#REL_DESCS
+	 * @param M1 the first mobs first rivalrous clan to evaluate
+	 * @param M2 the second mobs first rivalrous clan to evaluate
+	 * @return true if the common relationship matches war, and false otherwise
+	 */
+	public boolean isAtClanWar(MOB M1, MOB M2);
+
+	/**
+	 * Returns whether the two mobs share ANY common clans, even
+	 * non-rivalrous ones.
+	 * @param M1 first mob
+	 * @param M2 second mob
+	 * @return true if they share a clan, false otherwise
+	 */
+	public boolean isAnyCommonClan(MOB M1, MOB M2);
+	
+	/**
+	 * This method is used to determine the basic relationship between two mobs clans. The
+	 * two sets of clans are evaluated, based on their declared relationship to each other, and
+	 * the relations they inherit from allys.  This relationship is then checked against the given
+	 * relation.  If any pairing matches the relation, true is returned.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#REL_DESCS
+	 * @param M1 the first mob whose clans to evaluate
+	 * @param M2 the second mob whose clans to evaluate
+	 * @param relation the relation to look for
+	 * @return true if any clans relate in the given way, false otherwise
+	 */
+	public boolean findAnyClanRelations(MOB M1, MOB M2, int relation);
+	
 	/**
 	 * This method is used to determine the basic relationship between two clans.  The
 	 * two clans are evaluated, based on their declared relationship to each other, and
 	 * the relations they inherit from allys.  This relationship is then returned as
 	 * a relation constant number.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#REL_DESCS
-	 * @param clanName1 the first clan to evaluate
-	 * @param clanName2 the second clan to evaluate
+	 * @param clanID1 the first clan to evaluate
+	 * @param clanID2 the second clan to evaluate
 	 * @return the relation code integer
 	 */
-	public int getClanRelations(String clanName1, String clanName2);
-	
+	public int getClanRelations(String clanID1, String clanID2);
+
 	/**
 	 * Get last time governments were loaded/updated
 	 * @return time in ms
@@ -81,13 +117,74 @@ public interface ClanManager extends CMLibrary
 	public long getLastGovernmentLoad();
 
 	/**
-	 * Returns whether the given mob belongs to a clan, and if
-	 * so, whether they can do the given function in the clan.
-	 * @param mob the mob to check
+	 * Returns whether the given clan set contains a clan that
+	 * allows the given mob to do the given function in the clan.
+	 * @param mob the mob to check the clans of
 	 * @param func the function to check for
 	 * @return true if allowed, false otherwise
 	 */
 	public boolean checkClanPrivilege(MOB mob, Clan.Function func);
+	
+	/**
+	 * Returns whether the given mob belongs to the given clan, and if
+	 * so, whether they can do the given function in the clan.
+	 * @param mob the mob to look for privileges for
+	 * @param clanID the clanID to check for to check for
+	 * @param func the function to check for
+	 * @return true if allowed, false otherwise
+	 */
+	public boolean checkClanPrivilege(MOB mob, String clanID, Clan.Function func);
+	
+	/**
+	 * If the given mob belongs to a clan, and if they can do the 
+	 * given function in a clan, this will return that clan object
+	 * and the integer.
+	 * @param mob the mob to check the clans of
+	 * @param func the function to check for
+	 * @return the clan and role integer
+	 */
+	public Pair<Clan,Integer> findPrivilegedClan(MOB mob, Clan.Function func);
+	
+	/**
+	 * Returns a list of clans that the source mob belongs to which the filter
+	 * mob does NOT also belong.  The clans will be rivalrous only.
+	 * @param clanSourceMob the mob to source the clan list from
+	 * @param filterMob the mob to use to filter out source clans
+	 * @return the clan and role integers
+	 */
+	public List<Pair<Clan,Integer>> findRivalrousClans(MOB clanSourceMob, MOB filterMob);
+	
+	/**
+	 * Searches for all clansthat can be rivalrous with other clans that are
+	 * commonly shared between two mobs.
+	 * @param mob1 the first mob to check the clans of
+	 * @param mob2 the second mob to check the clans of
+	 * @return
+	 */
+	public List<Triad<Clan,Integer,Integer>> findCommonRivalrousClans(MOB mob1, MOB mob2);
+	
+	/**
+	 * Searches for a clan in the list that can be rivalrous with other clans.  
+	 * First one found is returned.
+	 * @param mob the mob to check the clans of
+	 * @return First clan of the mobs that is rivalrous
+	 */
+	public Clan findRivalrousClan(MOB mob);
+	
+	/**
+	 * Searches for a clan in the list that can be conquerable with other clans.  
+	 * First one found is returned.
+	 * @param mob the mob to check the clans of
+	 * @return First clan of the mobs that is conquerable of others
+	 */
+	public Clan findConquerableClan(MOB mob);
+	
+	/**
+	 * Searches for all clans that can be rivalrous with other clans.  
+	 * @param mob the mob to check the clans of
+	 * @return List of the mobs clans that are rivalrous
+	 */
+	public List<Pair<Clan,Integer>> findRivalrousClans(MOB mob);
 	
 	/**
 	 * Returns the Clan object associated with the given clan name
@@ -111,6 +208,13 @@ public interface ClanManager extends CMLibrary
 	 * @return an enumeration of all the Clans in the game
 	 */
 	public Enumeration<Clan> clans();
+
+	/**
+	 * Returns all clans and their last-cached accept-positions
+	 * The auto-positions may be inaccurate.
+	 * @return all clans and their last-cached accept-positions
+	 */
+	public Iterable<Pair<Clan,Integer>> clanRoles();
 	
 	/**
 	 * Adds the given clan to the games list
@@ -139,18 +243,6 @@ public interface ClanManager extends CMLibrary
 	public void clanAnnounceAll(String msg);
 	
 	/**
-	 * If the clan exists, it will check to see if the given role
-	 * is allowed (or at least not disallowed) from the given
-	 * clan function
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
-	 * @param clanID the clan name
-	 * @param roleID the clan roleID
-	 * @param function the clan function
-	 * @return true if they aren't disallowed, false otherwise
-	 */
-	public boolean authCheck(String clanID, int roleID, Clan.Function function);
-	
-	/**
 	 * Returns a descriptive name for the given trophy code number.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#TROPHY_DESCS
 	 * @param trophy the trophy code number
@@ -171,6 +263,14 @@ public interface ClanManager extends CMLibrary
 	 * @return true if the mob is a family member, and false otherwise
 	 */
 	public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members);
+	
+	/**
+	 * Returns the list of clans this mob belongs to in the given category.
+	 * @param M the mob to evaluate
+	 * @param category the clan goverment category
+	 * @return the list of clans this mob belongs to
+	 */
+	public List<Pair<Clan,Integer>> getClansByCategory(MOB M, String category);
 	
 	/**
 	 * Returns help on the government type named, if it is available

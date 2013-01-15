@@ -68,17 +68,23 @@ public class StdClanApron extends StdClanItem
 			case CMMsg.TYP_LIST:
 				if((clanID().length()>0)
 				&&(msg.source()!=owner())
-				&&(!msg.source().getClanID().equals(clanID())))
+				&&(msg.source().getClanRole(clanID())==null))
 				{
 					Clan C=CMLib.clans().getClan(clanID());
-					int state=Clan.REL_NEUTRAL;
-					if(C!=null) state=C.getClanRelations(msg.source().getClanID());
-					if((state!=Clan.REL_NEUTRAL)
-					&&(state!=Clan.REL_ALLY)
-					&&(state!=Clan.REL_FRIENDLY))
+					if(C!=null)
 					{
-						msg.source().tell(((MOB)owner()),null,null,"<S-NAME> seem(s) to be ignoring you.");
-						return false;
+						int state=Clan.REL_NEUTRAL;
+						for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(msg.source()))
+						{
+							state=C.getClanRelations(p.first.clanID());
+							if((state!=Clan.REL_NEUTRAL)
+							&&(state!=Clan.REL_ALLY)
+							&&(state!=Clan.REL_FRIENDLY))
+							{
+								msg.source().tell(((MOB)owner()),null,null,"<S-NAME> seem(s) to be ignoring you.");
+								return false;
+							}
+						}
 					}
 				}
 				break;

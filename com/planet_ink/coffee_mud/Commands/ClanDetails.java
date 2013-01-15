@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -41,24 +42,33 @@ public class ClanDetails extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String qual=CMParms.combine(commands,1).toUpperCase();
-		if(qual.length()==0) qual=mob.getClanID();
+		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
+		if((clanName.length()==0)&&(mob.clans().iterator().hasNext()))
+			clanName=mob.clans().iterator().next().first.clanID();
 		StringBuffer msg=new StringBuffer("");
-		if(qual.length()>0)
+		if(clanName.length()>0)
 		{
-			boolean found=false;
+			Clan foundClan=null;
 			for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 			{
 				Clan C=(Clan)e.nextElement();
-				if(CMLib.english().containsString(C.getName(), qual))
+				if(CMLib.english().containsString(C.getName(), clanName))
 				{
 					msg.append(C.getDetail(mob));
-					found=true;
+					foundClan=C;
+					break;
 				}
 			}
-			if(!found)
+			if(foundClan==null)
+				msg.append("No clan was found by the name of '"+clanName+"'.\n\r");
+			else
 			{
-				msg.append("No clan was found by the name of '"+qual+"'.\n\r");
+				Pair<Clan,Integer> p=mob.getClanRole(foundClan.clanID());
+				if((p!=null)&&(mob.clans().iterator().next().first!=p.first))
+				{
+					mob.setClan(foundClan.clanID(), mob.getClanRole(foundClan.clanID()).second.intValue());
+					msg.append("\n\rYour default clan is now "+p.first.getName()+".");
+				}
 			}
 		}
 		else

@@ -39,18 +39,15 @@ public interface Banker extends ShopKeeper
 {
 	public final static double MIN_ITEM_BALANCE_DIVIDEND=10.0;
 	
-	public void addDepositInventory(String mob, Item thisThang);
-	public void addDepositInventory(MOB mob, Item thisThang);
-	public boolean delDepositInventory(String mob, Item thisThang);
-	public boolean delDepositInventory(MOB mob, Item thisThang);
-	public void delAllDeposits(String mob);
-	public int numberDeposited(String mob);
+	public String getBankClientName(MOB mob, Clan.Function func, boolean checked);
+	public void addDepositInventory(String depositorName, Item thisThang);
+	public boolean delDepositInventory(String depositorName, Item thisThang);
+	public void delAllDeposits(String depositorName);
+	public int numberDeposited(String depositorName);
 	public List<String> getAccountNames();
-	public List<PlayerData> getRawPDDepositInventory(String mob);
-	public List<Item> getDepositedItems(MOB mob);
+	public List<PlayerData> getRawPDDepositInventory(String depositorName);
 	public List<Item> getDepositedItems(String depositorName);
 	public Item findDepositInventory(String mob, String likeThis);
-	public Item findDepositInventory(MOB mob, String likeThis);
 	public void setCoinInterest(double interest);
 	public void setItemInterest(double interest);
 	public void setLoanInterest(double interest);
@@ -59,7 +56,7 @@ public interface Banker extends ShopKeeper
 	public double getItemInterest();
 	public String bankChain();
 	public void setBankChain(String name);
-	public double getBalance(MOB mob);
-	public double totalItemsWorth(MOB mob);
-	public MoneyLibrary.DebtItem getDebtInfo(MOB mob);
+	public double getBalance(String depositorName);
+	public double totalItemsWorth(String depositorName);
+	public MoneyLibrary.DebtItem getDebtInfo(String depositorName);
 }

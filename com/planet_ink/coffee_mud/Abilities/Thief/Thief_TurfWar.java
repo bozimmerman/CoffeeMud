@@ -83,8 +83,9 @@ public class Thief_TurfWar extends ThiefSkill
 		if(R==null) return false;
 		Ability A=R.fetchEffect("Thief_TagTurf");
 		if(A==null) return false;
-		return ((A.text().equals(M.Name())
-				||((M.getClanID().length()>0)&&(M.getClanID().equals(A.text()))&&(M.getClanRole()>0))));
+		Pair<Clan,Integer> clanRole=M.getClanRole(A.text());
+		return (A.text().equals(M.Name())
+			||((clanRole!=null)&&(clanRole.second.intValue()>=clanRole.first.getGovernment().getAcceptPos())));
 	}
 	
 	public void executeMsg(Environmental host, CMMsg msg)
@@ -199,8 +200,9 @@ public class Thief_TurfWar extends ThiefSkill
 		MOB turfM=null;
 		if(A!=null)
 		{
-			if((A.text().equals(mob.Name())
-				||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))&&(mob.getClanRole()>0))))
+			Pair<Clan,Integer> clanRole=mob.getClanRole(A.text());
+			if(A.text().equals(mob.Name())
+				||((clanRole!=null)&&(clanRole.second.intValue()>=clanRole.first.getGovernment().getAcceptPos())))
 			{
 				mob.tell("You can't declare war on your own turf!");
 				return true;

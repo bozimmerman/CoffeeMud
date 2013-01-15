@@ -494,7 +494,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("VARMONEY",""+((MOB)E).getMoneyVariation()));
 			CMLib.beanCounter().clearInventoryMoney((MOB)E,null);
 			((MOB)E).setMoney(money);
-			text.append(CMLib.xml().convertXMLtoTag("CLAN",((MOB)E).getClanID()));
+			for(Pair<Clan,Integer> p : ((MOB)E).clans())
+				text.append("<CLAN ROLE=").append(p.second.toString()).append(">").append(p.first.clanID()).append("</CLAN>");
 			text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER)));
 			text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
 			text.append(getFactionXML((MOB)E));
@@ -2241,14 +2242,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			MOB mob=(MOB)E;
 			mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
-			mob.setClanID(CMLib.xml().getValFromPieces(buf,"CLAN"));
-			if(mob.getClanID().length()>0)
+			List<XMLpiece> clanPieces=CMLib.xml().getPiecesFromPieces(buf,"CLAN");
+			for(XMLpiece p : clanPieces)
 			{
-				Clan C=mob.getMyClan();
+				final String clanID=p.value;
+				final Clan C=CMLib.clans().getClan(clanID);
 				if(C!=null)
-					mob.setClanRole(C.getGovernment().getAcceptPos());
-				else
-					mob.setClanRole(0);
+				{
+					int roleID=C.getGovernment().getAcceptPos();
+					if(p.parms.containsKey("ROLE"))
+						roleID=CMath.s_int(p.parms.get("ROLE"));
+					mob.setClan(C.clanID(), roleID);
+				}
 			}
 			String raceID=CMLib.xml().getValFromPieces(buf,"MRACE");
 			Race R=(raceID.length()>0)?CMClass.getRace(raceID):null;
@@ -2682,9 +2687,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("WEIT",mob.basePhyStats().weight()));
 		str.append(CMLib.xml().convertXMLtoTag("PRPT",CMLib.xml().parseOutAngleBrackets(pstats.getPrompt())));
 		str.append(CMLib.xml().convertXMLtoTag("COLR",pstats.getColorStr()));
-		str.append(CMLib.xml().convertXMLtoTag("CLAN",mob.getClanID()));
+		for(Pair<Clan,Integer> p : mob.clans())
+			str.append("<CLAN ROLE=").append(p.second.toString()).append(">").append(p.first.clanID()).append("</CLAN>");
 		str.append(CMLib.xml().convertXMLtoTag("LSIP",pstats.lastIP()));
-		str.append(CMLib.xml().convertXMLtoTag("CLRO",mob.getClanRole()));
 		str.append(CMLib.xml().convertXMLtoTag("EMAL",pstats.getEmail()));
 		str.append(CMLib.xml().convertXMLtoTag("PFIL",pfxml.toString()));
 		str.append(CMLib.xml().convertXMLtoTag("SAVE",mob.baseCharStats().getNonBaseStatsAsString()));
@@ -2791,9 +2796,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			String colorStr=CMLib.xml().getValFromPieces(mblk.contents,"COLR");
 			if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL")))
 				mob.playerStats().setColorStr(colorStr);
-			mob.setClanID(CMLib.xml().getValFromPieces(mblk.contents,"CLAN"));
+			List<XMLpiece> clanPieces=CMLib.xml().getPiecesFromPieces(mblk.contents, "CLAN");
+			String oldRole=CMLib.xml().getValFromPieces(mblk.contents,"CLRO");
+			if((clanPieces.size()==1)&&(oldRole!=null)&&(oldRole.length()>0))
+				mob.setClan(clanPieces.get(0).value, CMath.s_int(oldRole));
+			else
+			for(XMLpiece p : clanPieces)
+				mob.setClan(p.value, CMath.s_int(p.parms.get("ROLE")));
 			mob.playerStats().setLastIP(CMLib.xml().getValFromPieces(mblk.contents,"LSIP"));
-			mob.setClanRole(CMLib.xml().getIntFromPieces(mblk.contents,"CLRO"));
 			mob.playerStats().setEmail(CMLib.xml().getValFromPieces(mblk.contents,"EMAL"));
 			String buf=CMLib.xml().getValFromPieces(mblk.contents,"CMPFIL");
 			mob.playerStats().setXML(buf);

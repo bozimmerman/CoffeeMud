@@ -257,7 +257,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOSTLEVELS);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
+				CMLib.commands().postChannel((String)channels.get(i),mob.clans(),mob.Name()+" has just lost a level.",true);
 		}
 
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
@@ -325,17 +325,20 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
 			}
 		}
-		if((mob.getClanID().length()>0)&&(amount>2)&&(!mob.isMonster()))
+		if((amount>2)&&(!mob.isMonster()))
 		{
-			Clan C=mob.getMyClan();
-			if((C!=null)&&(C.getTaxes()>0.0))
+			for(Pair<Clan,Integer> p : mob.clans())
 			{
-				int clanshare=(int)Math.round(CMath.mul(amount,C.getTaxes()));
-				if(clanshare>0)
+				Clan C=p.first;
+				if(C.getTaxes()>0.0)
 				{
-					amount-=clanshare;
-					C.adjExp(clanshare*-1);
-					C.update();
+					int clanshare=(int)Math.round(CMath.mul(amount,C.getTaxes()));
+					if(clanshare>0)
+					{
+						amount-=clanshare;
+						C.adjExp(clanshare*-1);
+						C.update();
+					}
 				}
 			}
 		}
@@ -432,10 +435,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(room)+".",true);
+				CMLib.commands().postChannel((String)channels.get(i),mob.clans(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(room)+".",true);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels2.size();i++)
-				CMLib.commands().postChannel((String)channels2.get(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);
+				CMLib.commands().postChannel((String)channels2.get(i),mob.clans(),mob.Name()+" has just gained a level.",true);
 			if(mob.soulMate()==null)
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
 		}
@@ -590,11 +593,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		amount=adjustedExperience(mob,victim,amount);
 
-		if((mob.getClanID().length()>0)&&(amount>2))
+		if(mob.phyStats().level()>=CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL))
 		{
-			Clan C=mob.getMyClan();
-			if((C!=null)&&(mob.phyStats().level()>=CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL)))
-				amount=C.applyExpMods(amount);
+			for(Pair<Clan,Integer> p : mob.clans())
+				if(amount>2)
+					amount=p.first.applyExpMods(amount);
 		}
 
 		if((mob.getLiegeID().length()>0)&&(amount>2))

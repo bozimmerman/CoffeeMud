@@ -65,52 +65,56 @@ public class StdClanPamphlet extends StdClanItem
 		&&(((MOB)owner()).location()!=null)
 		&&(((MOB)owner()).getStartRoom().getArea()==((MOB)owner()).location().getArea()))
 		{
-			String rulingClan=null;
 			Room R=((MOB)owner()).location();
-			if((((MOB)owner()).getClanID().length()>0)
+			if((((MOB)owner()).getClanRole(clanID())!=null)
 			||(((--tradeTime)<=0)))
 			{
 				LegalBehavior B=CMLib.law().getLegalBehavior(R);
-				if(B!=null) rulingClan=B.rulingOrganization();
-			}
-			if((rulingClan!=null)&&(rulingClan.length()>0)
-			&&(!rulingClan.equals(clanID()))
-			&&(((MOB)owner()).getClanID().equals(rulingClan)))
-				((MOB)owner()).setClanID("");
-			if(tradeTime<=0)
-			{
-				MOB mob=(MOB)owner();
-				tradeTime=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
-				if((mob.getClanID().length()==0)
-				&&(rulingClan!=null)
-				&&(rulingClan.length()>0)
-				&&(!rulingClan.equals(clanID()))
-				&&(CMLib.flags().canSpeak(mob))
-				&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-				&&(R!=null))
+				if(B!=null)
 				{
-					MOB M=R.fetchRandomInhabitant();
-					if((M!=null)
-					&&(M!=mob)
-					&&(M.isMonster())
-					&&(M.getClanID().equals(rulingClan))
-					&&(!CMLib.flags().isAnimalIntelligence(M))
-					&&(CMLib.flags().canBeSeenBy(M,mob))
-					&&(CMLib.flags().canBeHeardMovingBy(M,mob)))
+					String rulingClan=B.rulingOrganization();
+					if((rulingClan!=null)&&(rulingClan.length()>0)
+					&&(!rulingClan.equals(clanID()))
+					&&(((MOB)owner()).getClanRole(rulingClan)!=null))
+						((MOB)owner()).setClan(rulingClan,-1);
+					if(tradeTime<=0)
 					{
-						CMLib.commands().postSay(mob,M,"Hey, take a look at this.",false,false);
-						ClanItem I=(ClanItem)copyOf();
-						mob.addItem(I);
-						CMMsg newMsg=CMClass.getMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
-						if(mob.location().okMessage(mob,newMsg)&&(!((Item)I).amDestroyed()))
-							mob.location().send(mob,newMsg);
-						if(!M.isMine(I)) 
-							((Item)I).destroy();
-						else
-						if(mob.isMine(I))
-							((Item)I).destroy();
+						MOB mob=(MOB)owner();
+						if((rulingClan!=null)
+						&&(rulingClan.length()>0)
+						&&(!rulingClan.equals(clanID()))
+						&&(mob.getClanRole(rulingClan)==null)
+						&&(mob.getClanRole(clanID())==null)
+						&&(CMLib.flags().canSpeak(mob))
+						&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+						&&(R!=null))
+						{
+							MOB M=R.fetchRandomInhabitant();
+							if((M!=null)
+							&&(M!=mob)
+							&&(M.isMonster())
+							&&(M.getClanRole(rulingClan)!=null)
+							&&(!CMLib.flags().isAnimalIntelligence(M))
+							&&(CMLib.flags().canBeSeenBy(M,mob))
+							&&(CMLib.flags().canBeHeardMovingBy(M,mob)))
+							{
+								CMLib.commands().postSay(mob,M,"Hey, take a look at this.",false,false);
+								ClanItem I=(ClanItem)copyOf();
+								mob.addItem(I);
+								CMMsg newMsg=CMClass.getMsg(mob,M,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+								if(mob.location().okMessage(mob,newMsg)&&(!((Item)I).amDestroyed()))
+									mob.location().send(mob,newMsg);
+								if(!M.isMine(I)) 
+									((Item)I).destroy();
+								else
+								if(mob.isMine(I))
+									((Item)I).destroy();
+							}
+						}
 					}
 				}
+				if(tradeTime<=0)
+					tradeTime=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 			}
 		}
 		return true;

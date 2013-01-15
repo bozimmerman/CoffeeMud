@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -41,52 +42,61 @@ public class ClanPremise extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean skipChecks=mob.Name().equals(mob.getClanID());
+		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
+		
+		Clan C=null;
+		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
+		
+		if(C==null)
+		for(Pair<Clan,Integer> c : mob.clans())
+			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
+			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
+			{	C=c.first; break; }
+		
 		commands.setElementAt(getAccessWords()[0],0);
 
-		StringBuffer msg=new StringBuffer("");
-		if((mob.getClanID()==null)
-		||(mob.getClanID().equalsIgnoreCase(""))
-		||(mob.getMyClan()==null))
+		if(C==null)
 		{
-			msg.append("You aren't even a member of a clan.");
+			mob.tell("You aren't allowed to set a premise for "+((clanName.length()==0)?"anything":clanName)+".");
+			return false;
+		}
+
+		StringBuffer msg=new StringBuffer("");
+		if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,false)))
+		{
+			msg.append("You aren't in the right position to set the premise to your "+C.getGovernmentName()+".");
 		}
 		else
 		{
-			Clan C=mob.getMyClan();
-			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,false)))
+			try
 			{
-				msg.append("You aren't in the right position to set the premise to your "+C.getGovernmentName()+".");
-			}
-			else
-			{
-				try
+				String premise="";
+				if((skipChecks)&&(commands.size()>1))
+					premise=CMParms.combine(commands,1);
+				else
+				if(mob.session()!=null)
+					premise=mob.session().prompt("Describe your "+C.getGovernmentName()+"'s Premise\n\r: ","");
+				if(premise.length()>0)
 				{
-					String premise="";
-					if((skipChecks)&&(commands.size()>1))
-						premise=CMParms.combine(commands,1);
-					else
-					if(mob.session()!=null)
-						premise=mob.session().prompt("Describe your "+C.getGovernmentName()+"'s Premise\n\r: ","");
-					if(premise.length()>0)
+					commands.clear();
+					commands.addElement(getAccessWords()[0]);
+					commands.addElement(premise);
+					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,true))
 					{
-						commands.addElement(premise);
-						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,true))
-						{
-							C.setPremise(premise);
-							C.update();
-							CMLib.clans().clanAnnounce(mob,"The premise of "+C.getGovernmentName()+" "+C.clanID()+" has been changed.");
-							return false;
-						}
-					}
-					else
-					{
+						C.setPremise(premise);
+						C.update();
+						CMLib.clans().clanAnnounce(mob,"The premise of "+C.getGovernmentName()+" "+C.clanID()+" has been changed.");
 						return false;
 					}
 				}
-				catch(java.io.IOException e)
+				else
 				{
+					return false;
 				}
+			}
+			catch(java.io.IOException e)
+			{
 			}
 		}
 		mob.tell(msg.toString());

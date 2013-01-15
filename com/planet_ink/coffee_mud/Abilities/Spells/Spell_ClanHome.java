@@ -45,27 +45,23 @@ public class Spell_ClanHome extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if(!mob.clans().iterator().hasNext())
+		{
+			mob.tell("You aren't even a member of a clan.");
+			return false;
+		}
+		Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
+		if(clanPair==null)
+		{
+			mob.tell("You are not authorized to draw from the power of your clan.");
+			return false;
+		}
+		Clan C=clanPair.first;
 		Room clanHomeRoom=null;
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
-		{
-			mob.tell("You aren't even a full member of a clan.");
-			return false;
-		}
-		Clan C=mob.getMyClan();
-		if(C==null)
-		{
-			mob.tell("You aren't even a full member of a clan.");
-			return false;
-		}
 		clanHomeRoom=CMLib.map().getRoom(C.getRecall());
 		if(clanHomeRoom==null)
 		{
 			mob.tell("Your clan does not have a clan home.");
-			return false;
-		}
-		if(C.getAuthority(mob.getClanRole(),Clan.Function.CLAN_BENEFITS)!=Clan.Authority.CAN_DO)
-		{
-			mob.tell("You are not authorized to draw from the power of your "+C.getGovernmentName()+".");
 			return false;
 		}
 		if(!CMLib.flags().canAccess(mob,clanHomeRoom))
@@ -73,7 +69,7 @@ public class Spell_ClanHome extends Spell
 			mob.tell("You can't use this magic to get there from here.");
 			return false;
 		}
-		if(!CMLib.law().doesOwnThisProperty(mob.getClanID(),clanHomeRoom))
+		if(!CMLib.law().doesOwnThisProperty(C.clanID(),clanHomeRoom))
 		{
 			mob.tell("Your clan no longer owns that room.");
 			return false;

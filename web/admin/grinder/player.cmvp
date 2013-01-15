@@ -633,14 +633,12 @@
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Start Room: </FONT></TD>
 		<TD WIDTH=40%><FONT COLOR=WHITE>@PlayerData?STARTROOM@</FONT></TD>
-		<TD WIDTH=20%><FONT COLOR=YELLOW>Clan: </FONT></TD>
+		<TD WIDTH=20%><FONT COLOR=YELLOW>Clan(s): </FONT></TD>
 		<TD WIDTH=20%>
 			@if?CheckReqParm?FUNCTION=EDIT@
-			    <SELECT NAME=CLAN>
-			    @PlayerData?CLAN@
-			    </SELECT>
+				@PlayerData?CLANS@
 			@else@
-				<FONT COLOR=WHITE>@PlayerData?CLANNAME@</FONT>
+				<FONT COLOR=WHITE>@PlayerData?CLANNAMES@</FONT>
 			@endif@
 		</TD>
 	</TR>

@@ -288,11 +288,14 @@ public class DefaultLawSet implements Law
 								T.setBackTaxes((int)Math.round(((double)T.backTaxes())+owedOnThisLand));
 								if((T.landPrice()/T.backTaxes())<4)
 								{
-									if(CMLib.clans().getClan(T.landOwner())!=null)
+									Clan clanC=CMLib.clans().getClan(T.landOwner());
+									if(clanC!=null)
 									{
+										List<Pair<Clan,Integer>> clanSet=new Vector<Pair<Clan,Integer>>();
+										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
 										List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 										for(int i=0;i<channels.size();i++)
-											CMLib.commands().postChannel((String)channels.get(i),T.landOwner(),T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
+											CMLib.commands().postChannel((String)channels.get(i),clanSet,T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
 									}
 									else
 									if(CMLib.players().getPlayer(T.landOwner())!=null)

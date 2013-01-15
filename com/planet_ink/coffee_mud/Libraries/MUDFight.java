@@ -1282,15 +1282,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				for(int i=0;i<channels.size();i++)
 				{
 					if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-						CMLib.commands().postChannel((String)channels.get(i),deadmob.getClanID(),deadmob.Name()+" was just killed in "+CMLib.map().getExtendedRoomID(deadmob.location())+" by "+msg.tool().Name()+".",true);
+						CMLib.commands().postChannel((String)channels.get(i),deadmob.clans(),deadmob.Name()+" was just killed in "+CMLib.map().getExtendedRoomID(deadmob.location())+" by "+msg.tool().Name()+".",true);
 					else
-						CMLib.commands().postChannel((String)channels.get(i),deadmob.getClanID(),deadmob.Name()+" has just died at "+CMLib.map().getExtendedRoomID(deadmob.location()),true);
+						CMLib.commands().postChannel((String)channels.get(i),deadmob.clans(),deadmob.Name()+" has just died at "+CMLib.map().getExtendedRoomID(deadmob.location()),true);
 				}
 				if(!CMLib.flags().isCloaked(deadmob))
 				{
 					for(int i=0;i<channels2.size();i++)
 						if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-							CMLib.commands().postChannel((String)channels2.get(i),deadmob.getClanID(),deadmob.Name()+" was just killed.",true);
+							CMLib.commands().postChannel((String)channels2.get(i),deadmob.clans(),deadmob.Name()+" was just killed.",true);
 				}
 			}
 			if(msg.tool() instanceof MOB)
@@ -1333,15 +1333,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(killer!=deadmob)&&(!killer.isMonster()))
 			{
 				CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
-				if((deadmob.getClanID().length()>0)
-				&&(killer.getClanID().length()>0)
-				&&(!deadmob.getClanID().equals(killer.getClanID()))
-				&&(deadmob.session()!=null)
+				if((deadmob.session()!=null)
 				&&(killer.session()!=null)
 				&&(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress())))
 				{
-					Clan C=killer.getMyClan();
-					if(C!=null) C.recordClanKill();
+					List<Pair<Clan,Integer>> list = CMLib.clans().findRivalrousClans(killer, deadmob);
+					for(Pair<Clan,Integer> c : list)
+						c.first.recordClanKill();
 				}
 			}
 		}

@@ -125,15 +125,20 @@ public class Score extends Affect
 		if(mob.getWorshipCharID().length()>0)
 			msg.append(" worshipping ^H"+mob.getWorshipCharID()+"^?");
 		msg.append(".\n\r");
-		if((mob.getClanID()!=null)&&(mob.getClanID().length()>0))
+		if(mob.clans().iterator().hasNext())
 		{
-			Clan C=mob.getMyClan();
-			if(C!=null)
+			msg.append("You are ");
+			for(Iterator<Pair<Clan,Integer>> c = mob.clans().iterator();c.hasNext();)
 			{
-				String role=C.getRoleName(mob.getClanRole(),true,false);
+				Pair<Clan,Integer> p=c.next();
+				Clan C=p.first;
+				String role=C.getRoleName(p.second.intValue(),true,false);
 				role=CMLib.english().startWithAorAn(role);
-				msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^?^. Clan.\n\r");
+				msg.append(role+" of ^H"+C.getName()+"^?^.");
+				if(c.hasNext())
+					msg.append(", ");
 			}
+			msg.append("\n\r");
 		}
 		msg.append("\n\r^NYour stats are: ");
 		msg.append(CMProps.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));

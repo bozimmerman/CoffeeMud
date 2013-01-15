@@ -1544,8 +1544,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				found=true;
 				switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
 				case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
-				case GSTATADD_CLAN: val=M.getClanID(); break;
-				case GSTATADD_CLANROLE: val=""+M.getClanRole(); break;
+				case GSTATADD_CLAN: {
+					Clan C=CMLib.clans().findRivalrousClan(M);
+					if(C==null) C=M.clans().iterator().hasNext()?M.clans().iterator().next().first:null;
+					val=(C!=null)?C.clanID():"";
+					break;
+				}
+				case GSTATADD_CLANROLE: {
+					Clan C=CMLib.clans().findRivalrousClan(M);
+					if(C==null) C=M.clans().iterator().hasNext()?M.clans().iterator().next().first:null;
+					if(C!=null)
+					{
+						Pair<Clan,Integer> p=M.getClanRole(C.clanID());
+						val=(p!=null)?p.second.toString():"";
+					}
+					break;
+				}
 				}
 			}
 		}
@@ -1622,8 +1636,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					found=true;
 					switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
 					case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
-					case GSTATADD_CLAN: val=M.getClanID(); break;
-					case GSTATADD_CLANROLE: val=""+M.getClanRole(); break;
+					case GSTATADD_CLAN: {
+						Clan C=CMLib.clans().findRivalrousClan(M);
+						if(C==null) C=M.clans().iterator().hasNext()?M.clans().iterator().next().first:null;
+						val=(C!=null)?C.clanID():"";
+						break;
+					}
+					case GSTATADD_CLANROLE: {
+						Clan C=CMLib.clans().findRivalrousClan(M);
+						if(C==null) C=M.clans().iterator().hasNext()?M.clans().iterator().next().first:null;
+						if(C!=null)
+						{
+							Pair<Clan,Integer> p=M.getClanRole(C.clanID());
+							val=(p!=null)?p.second.toString():"";
+						}
+						break;
+					}
 					}
 				}
 			}
@@ -3756,11 +3784,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(scripted,"CLANRANK","Syntax",funcParms);
 					return returnable;
 				}
-				if(E==null)
+				if(!(E instanceof MOB))
 					returnable=false;
 				else
 				{
-					int val1=(E instanceof MOB)?((MOB)E).getClanRole():-1;
+					int val1=-1;
+					Clan C=CMLib.clans().findRivalrousClan((MOB)E);
+					if(C==null) C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
+					if(C!=null) val1=((MOB)E).getClanRole(C.clanID()).second.intValue();
 					returnable=simpleEval(scripted,""+val1,arg3,arg2,"CLANRANK");
 				}
 				break;
@@ -3810,7 +3841,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				String clanID=null;
 				if((E!=null)&&(E instanceof MOB))
-					clanID=((MOB)E).getClanID();
+				{
+					Clan C=CMLib.clans().findRivalrousClan((MOB)E);
+					if(C==null) C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
+					if(C!=null) clanID=C.clanID();
+				}
 				else
 					clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1);
 				Clan C=CMLib.clans().findClan(clanID);
@@ -3826,6 +3861,40 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						else
 							returnable=simpleEvalStr(scripted,whichVal,arg4,arg3,"CLANDATA");
 					}
+				}
+				break;
+			}
+			case 98: // clanqualifies
+			{
+				if(tlen==1) tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+				String arg1=tt[t+0];
+				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if(arg2.length()==0)
+				{
+					logError(scripted,"CLANQUALIFIES","Syntax",funcParms);
+					return returnable;
+				}
+				Clan C=CMLib.clans().findClan(arg2);
+				if((C!=null)&&(E instanceof MOB))
+				{
+					MOB mob=(MOB)E;
+					if(C.isOnlyFamilyApplicants()
+					&&(!CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
+						returnable=false;
+					else
+					if(CMLib.clans().getClansByCategory(mob, C.getCategory()).size()>CMProps.getMaxClansThisCategory(C.getCategory()))
+						returnable=false;
+					if(returnable && (!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true)))
+						returnable=false;
+					else
+					if(returnable && (CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true)))
+						returnable=false;
+				}
+				else
+				{
+					logError(scripted,"CLANQUALIFIES","Unknown clan "+arg2+" or "+arg1+" is not a mob",funcParms);
+					return returnable;
 				}
 				break;
 			}
@@ -3845,12 +3914,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					returnable=false;
 				else
 				{
-					String sex=((MOB)E).getClanID();
+					String clanID="";
+					Clan C=CMLib.clans().findRivalrousClan((MOB)E);
+					if(C==null) C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
+					if(C!=null) clanID=C.clanID();
 					if(arg2.equals("=="))
-						returnable=sex.equalsIgnoreCase(arg3);
+						returnable=clanID.equalsIgnoreCase(arg3);
 					else
 					if(arg2.equals("!="))
-						returnable=!sex.equalsIgnoreCase(arg3);
+						returnable=!clanID.equalsIgnoreCase(arg3);
+					else
+					if(arg2.equals("in"))
+						returnable=((MOB)E).getClanRole(arg3)!=null;
+					else
+					if(arg2.equals("notin"))
+						returnable=((MOB)E).getClanRole(arg3)==null;
 					else
 					{
 						logError(scripted,"CLAN","Syntax",funcParms);
@@ -5562,7 +5640,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String clanID=null;
 				if((E!=null)&&(E instanceof MOB))
-					clanID=((MOB)E).getClanID();
+				{
+					Clan C=CMLib.clans().findRivalrousClan((MOB)E);
+					if(C==null) C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
+					if(C!=null) clanID=C.clanID();
+				}
 				else
 					clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1);
 				Clan C=CMLib.clans().findClan(clanID);
@@ -5572,6 +5654,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						logError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
 					else
 						results.append(C.getStat(arg2));
+				}
+				break;
+			}
+			case 98: // clanqualifies
+			{
+				String arg1=CMParms.cleanBit(funcParms);
+				Clan C=CMLib.clans().getClan(arg1);
+				if(C==null) C=CMLib.clans().findClan(arg1);
+				if(C!=null)
+				{
+					if(C.getAcceptanceSettings().length()>0)
+						results.append(CMLib.masking().maskDesc(C.getAcceptanceSettings()));
+					if(C.getBasicRequirementMask().length()>0)
+						results.append(CMLib.masking().maskDesc(C.getBasicRequirementMask()));
+					if(C.isOnlyFamilyApplicants())
+						results.append("Must belong to the family.");
+					int total=CMProps.getMaxClansThisCategory(C.getCategory());
+					if(C.getCategory().length()>0)
+						results.append("May belong to only "+total+" "+C.getCategory()+" clan. ");
+					else
+						results.append("May belong to only "+total+" standard clan. ");
 				}
 				break;
 			}
@@ -5591,8 +5694,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				String arg1=CMParms.cleanBit(funcParms);
 				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E!=null)&&(E instanceof MOB))
-					results.append(((MOB)E).getClanRole()+"");
+				Clan C=null;
+				if(E instanceof MOB)
+				{
+					C=CMLib.clans().findRivalrousClan((MOB)E);
+					if(C==null) C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
+				}
+				else
+					C=CMLib.clans().findClan(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1));
+				if(C!=null)
+				{
+					Pair<Clan,Integer> p=((MOB)E).getClanRole(C.clanID());
+					if(p!=null)
+						results.append(p.second.toString());
+				}
 				break;
 			}
 			case 21: // class
@@ -5620,8 +5735,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 				{
-					String sex=((MOB)E).getClanID();
-					results.append(sex);
+					Clan C=CMLib.clans().findRivalrousClan((MOB)E);
+					if(C==null) C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
+					if(C!=null)
+						results.append(C.clanID());
 				}
 				break;
 			}
@@ -6622,8 +6739,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							found=true;
 							switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
 							case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
-							case GSTATADD_CLAN: M.setClanID(arg3); break;
-							case GSTATADD_CLANROLE: M.setClanRole(CMath.s_int(arg3)); break;
+							case GSTATADD_CLAN: {
+								Pair<Clan,Integer> p=M.getClanRole(arg3);
+								if(p==null){
+									Clan C=CMLib.clans().getClan(arg3);
+									if(C!=null)
+										p=new Pair<Clan,Integer>(C,Integer.valueOf(C.getGovernment().getAcceptPos()));
+								}
+								if(p!=null)
+									M.setClan(p.first.clanID(),p.second.intValue());
+								break;
+							}
+							case GSTATADD_CLANROLE: {
+								Clan C=CMLib.clans().findRivalrousClan((MOB)newTarget);
+								if(C==null) C=((MOB)newTarget).clans().iterator().hasNext()?((MOB)newTarget).clans().iterator().next().first:null;
+								if(C!=null) M.setClan(C.clanID(),CMath.s_int(arg3));
+								break;
+							}
 							}
 						}
 					}
@@ -6814,8 +6946,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								found=true;
 								switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
 								case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
-								case GSTATADD_CLAN: M.setClanID(arg3); break;
-								case GSTATADD_CLANROLE: M.setClanRole(CMath.s_int(arg3)); break;
+								case GSTATADD_CLAN: {
+									Pair<Clan,Integer> p=M.getClanRole(arg3);
+									if(p==null){
+										Clan C=CMLib.clans().getClan(arg3);
+										if(C!=null)
+											p=new Pair<Clan,Integer>(C,Integer.valueOf(C.getGovernment().getAcceptPos()));
+									}
+									if(p!=null)
+										M.setClan(p.first.clanID(),p.second.intValue());
+									break;
+								}
+								case GSTATADD_CLANROLE: {
+									Clan C=CMLib.clans().findRivalrousClan((MOB)newTarget);
+									if(C==null) C=((MOB)newTarget).clans().iterator().hasNext()?((MOB)newTarget).clans().iterator().next().first:null;
+									if(C!=null) M.setClan(C.clanID(),CMath.s_int(arg3));
+									break;
+								}
 								}
 							}
 						}
@@ -7644,6 +7791,36 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 81: // mpsetclan
+			{
+				if(tt==null){
+					tt=parseBits(script,si,"Cccr");
+					if(tt==null) return null;
+				}
+				PhysicalAgent newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				String clan=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+				String roleStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+				Clan C=CMLib.clans().getClan(clan);
+				if(C==null) C=CMLib.clans().findClan(clan);
+				if((newTarget instanceof MOB)&&(C!=null))
+				{
+					int role=Integer.MIN_VALUE;
+					if(!CMath.isInteger(roleStr))
+						role=CMath.s_int(roleStr);
+					else
+					for(int i=0;i<C.getRolesList().length;i++)
+						if(roleStr.equalsIgnoreCase(C.getRolesList()[i]))
+							role=i;
+					if(role!=Integer.MIN_VALUE)
+					{
+						if(((MOB)newTarget).isPlayer())
+							C.addMember((MOB)newTarget, role);
+						else
+							((MOB)newTarget).setClan(C.clanID(), role);
+					}
+				}
+				break;
+			}
 			case 31: // mpbehave
 			{
 				if(tt==null){
@@ -7908,7 +8085,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				String clanID=null;
 				if((newTarget!=null)&&(newTarget instanceof MOB))
-					clanID=((MOB)newTarget).getClanID();
+				{
+					Clan C=CMLib.clans().findRivalrousClan((MOB)newTarget);
+					if(C==null) C=((MOB)newTarget).clans().iterator().hasNext()?((MOB)newTarget).clans().iterator().next().first:null;
+					if(C!=null) clanID=C.clanID();
+				}
 				else
 					clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 				String clanvar=tt[2];

@@ -89,11 +89,25 @@ public class Spell_Torture extends Spell
 			break;
 		case 12:
 		{
-			if(mob.getClanID().length()==0)
+			if(!mob.clans().iterator().hasNext())
 				roll=CMLib.dice().roll(1,10,0);
 			else
 			{
-				Clan C=mob.getMyClan();
+				int numClans=0;
+				for(@SuppressWarnings("unused") Pair<Clan,Integer> p : mob.clans())
+					numClans++;
+				int clanNum=CMLib.dice().roll(1,numClans,-1);
+				Clan C=null;
+				for(Pair<Clan,Integer> p : mob.clans())
+				{
+					if(clanNum==0)
+					{
+						C=p.first;
+						break;
+					}
+					else
+						clanNum--;
+				}
 				if(C==null)
 					roll=CMLib.dice().roll(1,10,0);
 				else
@@ -106,23 +120,37 @@ public class Spell_Torture extends Spell
 							roll=CMLib.dice().roll(1,10,0);
 						else
 							mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-							"<S-NAME> mutters that "+name+" is a part of his clan, called "+mob.getClanID()+".");
+							"<S-NAME> mutters that "+name+" is a part of his clan, called "+C.getName()+".");
 					}
 				}
 			}
 			break;
 		}
 		case 13:
-			if(mob.getClanID().length()==0)
+			if(!mob.clans().iterator().hasNext())
 				roll=CMLib.dice().roll(1,10,0);
 			else
 			{
-				Clan C=mob.getMyClan();
+				int numClans=0;
+				for(@SuppressWarnings("unused") Pair<Clan,Integer> p : mob.clans())
+					numClans++;
+				int clanNum=CMLib.dice().roll(1,numClans,-1);
+				Clan C=null;
+				for(Pair<Clan,Integer> p : mob.clans())
+				{
+					if(clanNum==0)
+					{
+						C=p.first;
+						break;
+					}
+					else
+						clanNum--;
+				}
 				if(C==null)
 					roll=CMLib.dice().roll(1,10,0);
 				else
 					mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-					"<S-NAME> mutters that "+mob.getClanID()+" has "+C.getExp()+" experience points.");
+					"<S-NAME> mutters that "+C.getName()+" has "+C.getExp()+" experience points.");
 			}
 			break;
 		case 14:

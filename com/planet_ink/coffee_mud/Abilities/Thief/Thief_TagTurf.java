@@ -53,7 +53,7 @@ public class Thief_TagTurf extends ThiefSkill
 
 		if((msg.tool() instanceof Ability)
 		&&(!msg.source().Name().equals(text()))
-		&&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
+		&&(msg.source().getClanRole(text())==null)
 		&&(!msg.tool().ID().equals("Thief_TurfWar"))
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
 		{
@@ -72,7 +72,7 @@ public class Thief_TagTurf extends ThiefSkill
 		&&((CMLib.flags().canSeeHidden(msg.source()))||(msg.source().Name().equals(text()))))
 		{
 			if((msg.source().Name().equals(text()))
-			||(msg.source().getClanID().equals(text()) && CMLib.clans().checkClanPrivilege(msg.source(), Clan.Function.CLAN_BENEFITS)))
+			||((msg.source().getClanRole(text())!=null) && CMLib.clans().checkClanPrivilege(msg.source(), Clan.Function.CLAN_BENEFITS)))
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,
 										CMMsg.MSG_OK_VISUAL,"This is your turf.",
 										CMMsg.NO_EFFECT,null,
@@ -96,8 +96,9 @@ public class Thief_TagTurf extends ThiefSkill
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
+			Pair<Clan,Integer> clanRole=mob.getClanRole(A.text());
 			if((A.text().equals(mob.Name())
-				||((mob.getClanID().length()>0)&&(mob.getClanID().equals(A.text()))&&(mob.getClanRole()>0)))
+				||((clanRole!=null)&&(clanRole.second.intValue()>=clanRole.first.getGovernment().getAcceptPos())))
 			&&(CMParms.combine(commands,0).equalsIgnoreCase("UNTAG")))
 			{
 				A.unInvoke();
@@ -134,8 +135,9 @@ public class Thief_TagTurf extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if(mob.getClanID().length()>0)
-				setMiscText(mob.getClanID());
+			Clan C=CMLib.clans().findRivalrousClan(mob);
+			if(C!=null)
+				setMiscText(C.clanID());
 			else
 				setMiscText(mob.Name());
 			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)));

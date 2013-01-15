@@ -76,8 +76,6 @@ CMWEIT integer NULL,
 CMPRPT varchar (250) NULL,
 CMCOLR varchar (100) NULL,
 CMLSIP varchar (100) NULL,
-CMCLAN varchar (100) NULL,
-CMCLRO integer NULL,
 CMEMAL varchar (255),
 CMPFIL memo NULL,
 CMSAVE varchar (150) NULL,
@@ -93,6 +91,13 @@ CMFOTX memo  NULL,
 CMFOLV integer NULL,
 CMFOAB integer NULL,
 PRIMARY KEY (CMUSERID, CMFONM)
+);
+
+CREATE TABLE CMCHCL (
+CMUSERID varchar (50) ,
+CMCLAN varchar (100) ,
+CMCLRO integer NULL,
+PRIMARY KEY(CMUSERID, CMCLAN)
 );
 
 CREATE TABLE CMCHIT (

@@ -187,7 +187,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 
 	public void postChannel(String channelName,
-							String clanID,
+			 				Iterable<Pair<Clan,Integer>> clanList,
 							String message,
 							boolean systemMsg)
 	{
@@ -196,7 +196,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		talker.setLocation(CMLib.map().getRandomRoom());
 		talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
 		talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
-		talker.setClanID(clanID);
+		if(clanList != null)
+		{
+			for(Pair<Clan,Integer> c : clanList)
+				talker.setClan(c.first.clanID(),c.second.intValue());
+		}
 		postChannel(talker,channelName,message,systemMsg);
 		talker.destroy();
 	}

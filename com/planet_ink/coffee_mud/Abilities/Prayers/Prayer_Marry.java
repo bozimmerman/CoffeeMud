@@ -146,7 +146,7 @@ public class Prayer_Marry extends Prayer
 				CMLib.commands().postSay(mob,husband,"You may kiss your bride!",false,false);
 				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.MARRIAGES);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel((String)channels.get(i),husband.getClanID(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
+					CMLib.commands().postChannel((String)channels.get(i),husband.clans(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
 			 }
 		}
 		else

@@ -63,8 +63,8 @@ public class GrinderPlayers extends GrinderMobs
 		"MONEY",
 		"DEITYNAME",
 		"LIEGE",
-		"CLANNAME",
-		"CLANROLE",
+		"CLANNAMES",
+		"CLANROLE", // deprecated
 		"ALIGNMENTNAME",
 		"ALIGNMENTSTRING",
 		"WIMP",
@@ -163,8 +163,8 @@ public class GrinderPlayers extends GrinderMobs
 			case 19: CMLib.beanCounter().setMoney(M,CMath.s_int(old)); break;
 			case 20: if(CMLib.map().getDeity(old)!=null) M.setWorshipCharID(old); break;
 			case 21: if(CMLib.players().getPlayer(old)!=null) M.setLiegeID(old); break;
-			case 22: if(CMLib.clans().getClan(old)!=null) M.setClanID(old); break;
-			case 23: M.setClanRole(CMath.s_int(old)); break;
+			case 22: break; //if(CMLib.clans().getClan(old)!=null) M.setClan(old); break;
+			case 23: break; //M.setClanRole(CMath.s_int(old)); break;
 			case 24: CMLib.factions().setAlignment(M,CMath.s_int(old));break;
 			case 25: CMLib.factions().setAlignment(M,CMath.s_int(old));break;
 			case 26: M.setWimpHitPoint(CMath.s_int(old)); break;
@@ -370,12 +370,6 @@ public class GrinderPlayers extends GrinderMobs
 			if((old!=null)&&(CMLib.map().getDeity(old)!=null))
 				M.setWorshipCharID(CMLib.map().getDeity(old).Name());
 		}
-		if(httpReq.isRequestParameter("CLAN"))
-		{
-			String old=httpReq.getRequestParameter("CLAN");
-			if((old!=null)&&(CMLib.clans().getClan(old)!=null))
-				M.setClanID(CMLib.clans().getClan(old).clanID());
-		}
 		if(httpReq.isRequestParameter("ALIGNMENT"))
 		{
 			String old=httpReq.getRequestParameter("ALIGNMENT");
@@ -402,6 +396,8 @@ public class GrinderPlayers extends GrinderMobs
 		error=GrinderMobs.items(M,allitems,httpReq);
 		if(error.length()>0) return error;
 		error=GrinderMobs.expertiseList(M,httpReq,parms);
+		if(error.length()>0) return error;
+		error=GrinderMobs.clans(M,httpReq,parms);
 		if(error.length()>0) return error;
 		error=classList(M,httpReq,parms);
 		if(error.length()>0) return error;

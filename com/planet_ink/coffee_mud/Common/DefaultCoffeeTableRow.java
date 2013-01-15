@@ -134,7 +134,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			bumpVal("L"+mob.basePhyStats().level(),type);
 			bumpVal("G"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER)),type);
 			bumpVal("F"+tagFix(mob.getWorshipCharID()),type);
-			bumpVal("Q"+tagFix(mob.getClanID()),type);
+			for(Pair<Clan,Integer> p : mob.clans())
+				bumpVal("Q"+tagFix(p.first.clanID()),type);
 			Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 			bumpVal("J"+H.size(),type);
 			int pct=0;
