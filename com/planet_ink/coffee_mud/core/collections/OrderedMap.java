@@ -27,9 +27,12 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 {
 	private static final long serialVersionUID = -6379440278237091571L;
 	private volatile ArrayList<J> list = new ArrayList<J>(0);
+	@SuppressWarnings("rawtypes" )
+	private static final Iterator empty=EmptyIterator.INSTANCE;
 
-
+	@SuppressWarnings("unchecked")
 	@Override public Iterator<J> iterator() {
+		if(list.size()==0) return empty;
 		return list.iterator();
 	}
 
@@ -39,10 +42,14 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 		{
 			if((list.size()>0)&&(list.get(0)==value))
 				return;
-			list.remove(value);
+			newList.addAll(list);
+			newList.remove(value);
 		}
-		newList.add(value);
-		newList.addAll(list);
+		else
+		{
+			newList.add(value);
+			newList.addAll(list);
+		}
 	}
 	
 	@Override public synchronized J put(K key, J value)
