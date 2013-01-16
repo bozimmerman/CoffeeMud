@@ -44,7 +44,7 @@ public class Areas extends StdCommand
 		throws java.io.IOException
 	{
 		String expression=null;
-		Enumeration<Area> a=CMLib.map().areas();
+		Enumeration<Area> a=CMLib.map().sortedAreas();
 		int addStat=-1;
 		String append="";
 		
