@@ -26,18 +26,19 @@ limitations under the License.
 public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 {
 	private static final long serialVersionUID = -6379440278237091571L;
-	private volatile ArrayList<J> list = new ArrayList<J>(0);
+	private volatile ArrayList<J> list = null;
 	@SuppressWarnings("rawtypes" )
 	private static final Iterator empty=EmptyIterator.INSTANCE;
 
 	@SuppressWarnings("unchecked")
 	@Override public Iterator<J> iterator() {
-		if(list.size()==0) return empty;
+		if(size()==0) return empty;
 		return list.iterator();
 	}
 
 	private void addToList(final ArrayList<J> newList, K key, J value)
 	{
+		if(list == null) list=new ArrayList<J>(0);
 		if(containsKey(key))
 		{
 			if((list.size()>0)&&(list.get(0)==value))
@@ -54,7 +55,7 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	
 	@Override public synchronized J put(K key, J value)
 	{
-		ArrayList<J> newList=new ArrayList<J>(list.size()+1);
+		ArrayList<J> newList=new ArrayList<J>(size()+1);
 		addToList(newList, key,value);
 		list=newList;
 		return super.put(key, value);
@@ -62,7 +63,7 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	
 	@Override public synchronized void putAll(Map<? extends K, ? extends J> t)
 	{
-		ArrayList<J> newList=new ArrayList<J>(list.size()+t.size());
+		ArrayList<J> newList=new ArrayList<J>(size()+t.size());
 		for(Map.Entry<? extends K,? extends J> i : t.entrySet())
 			addToList(newList, i.getKey(), i.getValue());
 		list=newList;
@@ -76,13 +77,14 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 			@SuppressWarnings("unchecked")
 			ArrayList<J> newList=(ArrayList<J>)list.clone();
 			newList.remove(get(key));
+			list=newList;
 		}
 		return super.remove(key);
 	}
 	
 	@Override public synchronized void clear()
 	{
-		list=new ArrayList<J>(0);
+		list=null;
 		super.clear();
 	}
 }

@@ -136,7 +136,9 @@ public class Clans extends StdLibrary implements ClanManager
 		for(Pair<Clan,Integer> c : mob.clans())
 		{
 			if(c.first.isRivalrous())
+			{
 				return c.first;
+			}
 		}
 		return null;
 	}
@@ -146,7 +148,9 @@ public class Clans extends StdLibrary implements ClanManager
 		for(Pair<Clan,Integer> c : mob.clans())
 		{
 			if(c.first.getGovernment().isConquestEnabled())
+			{
 				return c.first;
+			}
 		}
 		return null;
 	}

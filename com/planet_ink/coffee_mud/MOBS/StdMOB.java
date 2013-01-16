@@ -3704,8 +3704,11 @@ public class StdMOB implements MOB
 				if(C==null)
 					Log.errOut("StdMOB","Unknown clan: "+clanID+" on "+Name()+" in "+CMLib.map().getExtendedRoomID(location()));
 				else
-					clans.put(clanID, new Pair<Clan,Integer>(C,Integer.valueOf(role)));
-				clanAffects=null;
+				{
+					p=new Pair<Clan,Integer>(C,Integer.valueOf(role));
+					clans.put(clanID, p);
+					clanAffects=null;
+				}
 			}
 			else
 			{

@@ -861,6 +861,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public static final String[] REL_DESCS={
 		"NEUTRAL","WAR","HOSTILE","FRIENDLY","ALLY"
 	};
+	
 	/** long descriptor strings for the REL_* constants, ordered by their value.  @see Clan */
 	public static final String[] REL_STATES={
 		"NEUTRALITY TOWARDS",
@@ -974,5 +975,4 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
 		CLAN_TITLES,
 	}
-	
 }
