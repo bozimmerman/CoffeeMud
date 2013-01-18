@@ -895,7 +895,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	{
 		Points("Most control points","Control Points"),
 		Experience("Most clan experience","Experience"),
-		Areas("Most controlled areas","Areas Controlles"),
+		Areas("Most controlled areas","Areas Controlled"),
 		PlayerKills("Most rival player-kills","PlayerKills"),
 		Members("Most members","Most Members"),
 		MemberLevel("Highest median level","Highest Levels")
