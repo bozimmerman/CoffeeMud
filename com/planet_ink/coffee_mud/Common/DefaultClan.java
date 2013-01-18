@@ -64,6 +64,7 @@ public class DefaultClan implements Clan
 	protected Object 			expSync = new Object();
 	protected List<ClanVote> 	voteList=null;
 	protected List<Long> 		clanKills=new Vector<Long>();
+	protected Integer			overrideMinClanMembers=null;
 
 	//*****************
 	public Hashtable<String,long[]> relations=new Hashtable<String,long[]>();
@@ -382,6 +383,30 @@ public class DefaultClan implements Clan
 		if(clanCategory!=null)
 			return clanCategory;
 		return govt().getCategory();
+	}
+	public int getMinClanMembers()
+	{
+		if(overrideMinClanMembers!=null)
+			return overrideMinClanMembers.intValue();
+		if(govt().getOverrideMinMembers()!=null)
+			return govt().getOverrideMinMembers().intValue();
+		return CMProps.getIntVar(CMProps.SYSTEMI_MINCLANMEMBERS);
+	}
+	public void setMinClanMembers(int amt)
+	{
+		overrideMinClanMembers=null;
+		if(govt().getOverrideMinMembers()!=null)
+		{
+			if(govt().getOverrideMinMembers().intValue()==amt)
+				return;
+			overrideMinClanMembers=Integer.valueOf(amt);
+		}
+		else
+		{
+			if(CMProps.getIntVar(CMProps.SYSTEMI_MINCLANMEMBERS)==amt)
+				return;
+			overrideMinClanMembers=Integer.valueOf(amt);
+		}
 	}
 	public void setCategory(String newCategory)
 	{
@@ -817,6 +842,8 @@ public class DefaultClan implements Clan
 		str.append(CMLib.xml().convertXMLtoTag("AUTOPOS",""+getAutoPosition()));
 		if(clanCategory!=null)
 			str.append(CMLib.xml().convertXMLtoTag("CATE",clanCategory));
+		if(overrideMinClanMembers!=null)
+			str.append(CMLib.xml().convertXMLtoTag("MINM",overrideMinClanMembers.toString()));
 		if(isRivalrous!=null)
 			str.append(CMLib.xml().convertXMLtoTag("RIVAL",isRivalrous.toString()));
 		if(relations.size()==0)
@@ -864,6 +891,10 @@ public class DefaultClan implements Clan
 		piece=CMLib.xml().getPieceFromPieces(poliData, "CATE");
 		if(piece!=null)
 			setCategory(piece.value);
+		overrideMinClanMembers=null;
+		piece=CMLib.xml().getPieceFromPieces(poliData, "MINM");
+		if(piece!=null)
+			this.setMinClanMembers(CMath.s_int(piece.value));
 		isRivalrous=null;
 		piece=CMLib.xml().getPieceFromPieces(poliData, "RIVAL");
 		if(piece!=null)
@@ -1068,7 +1099,7 @@ public class DefaultClan implements Clan
 
 	protected boolean isSafeFromPurge()
 	{
-		if((govt().getOverrideMinMembers()!=null)&&(govt().getOverrideMinMembers().intValue()<=0))
+		if(getMinClanMembers()<=0)
 			return true;
 		final List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
@@ -1098,9 +1129,7 @@ public class DefaultClan implements Clan
 					activeMembers++;
 			}
 			
-			int minimumMembers = CMProps.getIntVar(CMProps.SYSTEMI_MINCLANMEMBERS);
-			if(govt().getOverrideMinMembers()!=null)
-				minimumMembers = govt().getOverrideMinMembers().intValue();
+			int minimumMembers = getMinClanMembers();
 			if(activeMembers<minimumMembers)
 			{
 				if(!isSafeFromPurge())
@@ -1727,6 +1756,7 @@ public class DefaultClan implements Clan
 		case 17: return Integer.toString(getClanLevel());
 		case 18: return ""+getCategory();
 		case 19: return ""+isRivalrous();
+		case 20: return ""+getMinClanMembers();
 		}
 		return "";
 	}
@@ -1755,6 +1785,7 @@ public class DefaultClan implements Clan
 		case 17: setClanLevel(CMath.s_int(val.trim())); break; // clanlevel
 		case 18: setCategory(val.trim()); break; // clancategory
 		case 19: setRivalrous(CMath.s_bool(val.trim())); break; // isrivalrous
+		case 20: setMinClanMembers(CMath.s_int(val.trim())); break; //minmembers
 		}
 	}
 }

@@ -241,6 +241,12 @@ public class ClanData extends StdWebMacro
 					if(old==null) old=C.getCategory();
 					str.append(old);
 				}
+				if(parms.containsKey("MINMEMBERS"))
+				{
+					String old=httpReq.getRequestParameter("MINMEMBERS");
+					if(old==null) old=""+C.getMinClanMembers();
+					str.append(old);
+				}
 				if(parms.containsKey("ISRIVALROUS"))
 				{
 					String old=httpReq.getRequestParameter("ISRIVALROUS");

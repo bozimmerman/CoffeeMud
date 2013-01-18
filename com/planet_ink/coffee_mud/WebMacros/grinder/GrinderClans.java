@@ -140,6 +140,8 @@ public class GrinderClans
 				if(str!=null) C.setExp(CMath.s_int(str));
 				str=httpReq.getRequestParameter("CATEGORY");
 				if(str!=null) C.setCategory(str);
+				str=httpReq.getRequestParameter("MINMEMBERS");
+				if(str!=null) C.setMinClanMembers(CMath.s_int(str));
 				str=httpReq.getRequestParameter("ISRIVALROUS");
 				if(str!=null) C.setRivalrous(str.equalsIgnoreCase("on"));
 				str=httpReq.getRequestParameter("STATUSID");

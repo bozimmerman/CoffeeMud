@@ -634,6 +634,21 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public ClanGovernment getGovernment();
 	
 	/**
+	 * Returns the minimum clan members for the clan
+	 * to become active, or to prevent being purged.
+	 * A value of 0 keeps the clan alive forever
+	 * @return minimum number of clan members.
+	 */
+	public int getMinClanMembers();
+	
+	/**
+	 * Sets the minimum clan members for the clan
+	 * to become active, or to prevent being purged.
+	 * A value of 0 keeps the clan alive forever
+	 * @param amt the new min clan members
+	 */
+	public void setMinClanMembers(int amt);
+	/**
 	 * Returns whether this clan attains conquest loyalty 
 	 * through giving out clan items.
 	 * @return true if if does, false otherwise
@@ -821,7 +836,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"TOPMEMBER", // 16
 		"CLANLEVEL", // 17
 		"CATEGORY", // 18
-		"RIVALROUS"//19
+		"RIVALROUS",//19
+		"MINMEMBERS" //20
 	};
 
 	/** constant for the getStatus() method, denoting normal status. @see Clan#getStatus() .*/
