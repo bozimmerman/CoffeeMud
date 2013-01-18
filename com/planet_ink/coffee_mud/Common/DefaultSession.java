@@ -1797,7 +1797,8 @@ public class DefaultSession implements Session
 					prevMsgs.add(input);
 				setAfkFlag(false);
 				List<String> CMDS=CMParms.parse(input);
-				if(CMDS.size()>0)
+				MOB mob=mob();
+				if((CMDS.size()>0)&&(mob!=null))
 				{
 					waiting=false;
 					String firstWord=(String)CMDS.get(0);
@@ -1831,8 +1832,7 @@ public class DefaultSession implements Session
 						if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
 						List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
 						for(int m=0;m<MORE_CMDS.size();m++)
-							if(mob!=null)
-								mob.enqueCommand(MORE_CMDS.get(m),metaFlags(),0);
+							mob.enqueCommand(MORE_CMDS.get(m),metaFlags(),0);
 						lastStop=System.currentTimeMillis();
 					}
 				}
