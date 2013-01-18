@@ -531,7 +531,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+CMLib.xml().parseOutAngleBrackets(tranpoofin)+"</TRANPOOFIN>":"")
 			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+CMLib.xml().parseOutAngleBrackets(tranpoofout)+"</TRANPOOFOUT>":"")
 			+"<DATES>"+this.getLevelDateTimesStr()+"</DATES>"
-			+"<SECGRPS>"+getSetSecurityFlags(null)+"</SECGRPS>"
+			+"<SECGRPS>"+CMLib.xml().parseOutAngleBrackets(getSetSecurityFlags(null))+"</SECGRPS>"
 			+roomSet().xml()
 			+rest.toString();
 	}
@@ -640,7 +640,7 @@ public class DefaultPlayerStats implements PlayerStats
 			pageBreak=CMath.s_int(oldBreak);
 		else
 			pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
-		getSetSecurityFlags(CMLib.xml().getValFromPieces(xml,"SECGRPS"));
+		getSetSecurityFlags(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"SECGRPS")));
 		setAliasXML(xml);
 		setTitleXML(xml);
 		setLegacyXML(xml);
