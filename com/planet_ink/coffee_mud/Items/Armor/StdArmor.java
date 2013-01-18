@@ -553,17 +553,21 @@ public class StdArmor extends StdContainer implements Armor
 		switch(material()&RawMaterial.MATERIAL_MASK)
 		{
 		case RawMaterial.MATERIAL_METAL:
-			affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-2);
+			if(affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)>(Short.MIN_VALUE/2))
+				affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectableStats.getStat(CharStats.STAT_SAVE_ELECTRIC)-10);
 			break;
 		case RawMaterial.MATERIAL_LEATHER:
-			affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+2);
+			if(affectableStats.getStat(CharStats.STAT_SAVE_ACID)<(Short.MAX_VALUE/2))
+				affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+10);
 			break;
 		case RawMaterial.MATERIAL_MITHRIL:
-			affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+2);
+			if(affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)<(Short.MAX_VALUE/2))
+				affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+10);
 			break;
 		case RawMaterial.MATERIAL_CLOTH:
 		case RawMaterial.MATERIAL_PAPER:
-			affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-2);
+			if(affectableStats.getStat(CharStats.STAT_SAVE_FIRE)>(Short.MIN_VALUE/2))
+				affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)-10);
 			break;
 		case RawMaterial.MATERIAL_GLASS:
 		case RawMaterial.MATERIAL_ROCK:
@@ -571,10 +575,12 @@ public class StdArmor extends StdContainer implements Armor
 		case RawMaterial.MATERIAL_VEGETATION:
 		case RawMaterial.MATERIAL_FLESH:
 		case RawMaterial.MATERIAL_SYNTHETIC:
-			affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+2);
+			if(affectableStats.getStat(CharStats.STAT_SAVE_FIRE)<(Short.MAX_VALUE/2))
+				affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+10);
 			break;
 		case RawMaterial.MATERIAL_ENERGY:
-			affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+2);
+			if(affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)<(Short.MAX_VALUE/2))
+				affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)+10);
 			break;
 		}
 	}
