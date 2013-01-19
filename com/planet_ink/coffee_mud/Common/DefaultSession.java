@@ -511,16 +511,17 @@ public class DefaultSession implements Session
 				final String name=(mob!=null)?mob.Name():getAddress();
 				Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
 				stopSession(true,true,true);
+				Thread killThisThread=null;
 				synchronized(this)
 				{
 					if(thread==Thread.currentThread())
-					{
 						killFlag=true;
-					}
 					else
-					if(thread!=null) 
-						CMLib.killThread(thread,500,1);
+					if(thread!=null)
+						killThisThread=thread;
 				}
+				if(killThisThread!=null)
+					CMLib.killThread(killThisThread,500,1);
 			}
 		}
 		catch(Exception ioe){ killFlag=true;}
@@ -1344,21 +1345,20 @@ public class DefaultSession implements Session
 			preLogout(mob);
 			logoutFinal();
 		}
+		Thread killThisThread=null;
 		synchronized(this)
 		{
 			if(killThread)
 			{
 				if(thread==Thread.currentThread())
-				{
 					killFlag=true;
-				}
 				else
-				if(thread!=null) 
-				{
-					CMLib.killThread(thread,1000,1);
-				}
+				if(thread!=null)
+					killThisThread=thread;
 			}
 		}
+		if(killThisThread!=null)
+			CMLib.killThread(killThisThread,1000,1);
 	}
 
 	public void showPrompt()
