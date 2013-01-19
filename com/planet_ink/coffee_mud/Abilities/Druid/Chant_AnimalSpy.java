@@ -112,14 +112,9 @@ public class Chant_AnimalSpy extends Chant
 			&&(msg.sourceMessage()!=null)
 			&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
 			{
-				int start=msg.sourceMessage().indexOf("\'");
-				int end=msg.sourceMessage().lastIndexOf("\'");
-				if((start>0)&&(end>start))
-				{
-					String msg2=msg.sourceMessage().substring(start+1,end).trim();
-					if(msg2.length()>0)
-						spy.enqueCommand(CMParms.parse(msg2.trim()),Command.METAFLAG_FORCED,0);
-				}
+				String msg2=CMStrings.getSayFromMessage(msg.sourceMessage());
+				if((msg2!=null)&&(msg2.length()>0))
+					spy.enqueCommand(CMParms.parse(msg2.trim()),Command.METAFLAG_FORCED,0);
 			}
 		}
 		finally

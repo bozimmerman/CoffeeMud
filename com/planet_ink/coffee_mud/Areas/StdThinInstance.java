@@ -145,6 +145,50 @@ public class StdThinInstance extends StdThinArea
 		}
 		return R;
 	}
+
+	protected boolean flushInstance(int index)
+	{
+		Area childA=instanceChildren.elementAt(index).A;
+		if(childA.getAreaState() != Area.State.ACTIVE)
+		{
+			List<WeakReference<MOB>> V=instanceChildren.elementAt(index).mobs;
+			boolean anyInside=false;
+			for(WeakReference<MOB> wmob : V)
+			{
+				MOB M=wmob.get();
+				if((M!=null)
+				&&CMLib.flags().isInTheGame(M,true)
+				&&(M.location()!=null)
+				&&(M.location().getArea()==childA))
+				{
+					anyInside=true;
+					break;
+				}
+			}
+			if(!anyInside)
+			{
+				instanceChildren.remove(index);
+				for(WeakReference<MOB> wmob : V)
+				{
+					MOB M=wmob.get();
+					if((M!=null)
+					&&(M.location()!=null)
+					&&(M.location().getArea()==this))
+						M.setLocation(M.getStartRoom());
+				}
+				MOB mob=CMClass.sampleMOB();
+				for(Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
+				{
+					Room R=e.nextElement();
+					R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+				}
+				CMLib.map().delArea(childA);
+				childA.destroy();
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -157,52 +201,79 @@ public class StdThinInstance extends StdThinArea
 			childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
 			synchronized(instanceChildren)
 			{
-				for(int i=instanceChildren.size()-1;i>=0;i--) 
-				{
-					Area childA=instanceChildren.elementAt(i).A;
-					if(childA.getAreaState() != Area.State.ACTIVE)
-					{
-						List<WeakReference<MOB>> V=instanceChildren.elementAt(i).mobs;
-						boolean anyInside=false;
-						for(WeakReference<MOB> wmob : V)
-						{
-							MOB M=wmob.get();
-							if((M!=null)
-							&&CMLib.flags().isInTheGame(M,true)
-							&&(M.location()!=null)
-							&&(M.location().getArea()==childA))
-							{
-								anyInside=true;
-								break;
-							}
-						}
-						if(!anyInside)
-						{
-							instanceChildren.remove(i);
-							for(WeakReference<MOB> wmob : V)
-							{
-								MOB M=wmob.get();
-								if((M!=null)
-								&&(M.location()!=null)
-								&&(M.location().getArea()==this))
-									M.setLocation(M.getStartRoom());
-							}
-							MOB mob=CMClass.sampleMOB();
-							for(Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
-							{
-								Room R=e.nextElement();
-								R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
-							}
-							CMLib.map().delArea(childA);
-							childA.destroy();
-						}
-					}
-				}
+				for(int i=instanceChildren.size()-1;i>=0;i--)
+					flushInstance(i);
 			}
 		}
 		return true;
 	}
 	
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if(CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD)
+		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		&&(msg.sourceMessage()!=null)
+		&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
+		{
+			String said=CMStrings.getSayFromMessage(msg.sourceMessage());
+			if(said.toUpperCase().trim().equals("RESET INSTANCE"))
+			{
+				Room returnToRoom=null;
+				Room thisRoom=msg.source().location();
+				if(thisRoom.getArea()==this)
+				{
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						Room R=thisRoom.getRoomInDir(d);
+						if((R!=null)&&(R.getArea()!=null)&&(R.getArea()!=this))
+							returnToRoom=R;
+					}
+				}
+				if(returnToRoom==null)
+				{
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, "You must be at an entrance to reset the area."));
+					return;
+				}
+				Area A=this.getParentArea();
+				if(A instanceof StdThinInstance)
+				{
+					StdThinInstance parentA=(StdThinInstance)A;
+					synchronized(instanceChildren)
+					{
+						for(int i=0;i<parentA.instanceChildren.size();i++) 
+						{
+							List<WeakReference<MOB>> V=parentA.instanceChildren.elementAt(i).mobs;
+							if(parentA.instanceChildren.elementAt(i).A==this)
+							{
+								for(WeakReference<MOB> wM : V)
+								{
+									MOB M=wM.get();
+									if((M!=null)
+									&&CMLib.flags().isInTheGame(M,true)
+									&&(M.location()!=null)
+									&&(M.location()!=returnToRoom)
+									&&(M.location().getArea()==this))
+									{
+										returnToRoom.bringMobHere(M, true);
+										CMLib.commands().postLook(M, true);
+									}
+								}
+								setAreaState(Area.State.PASSIVE);
+								if(flushInstance(i))
+									msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance has been reset."));
+								else
+									msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance was unable to be reset."));
+								return;
+							}
+						}
+					}
+				}
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance failed to reset."));
+			}
+		}
+	}
+
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))

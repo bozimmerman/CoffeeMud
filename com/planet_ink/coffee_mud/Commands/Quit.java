@@ -82,13 +82,16 @@ public class Quit extends StdCommand
 					public void timedOut() {}
 					@Override
 					public void callBack() {
-						CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
-						Room R=mob.location();
-						if((R!=null)&&(R.okMessage(mob,msg))) 
+						if(this.confirmed)
 						{
-							CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
-							session.stopSession(false,false, false);
-							CMLib.commands().monitorGlobalMessage(R, msg);
+							CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
+							Room R=mob.location();
+							if((R!=null)&&(R.okMessage(mob,msg))) 
+							{
+								CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
+								session.stopSession(false,false, false);
+								CMLib.commands().monitorGlobalMessage(R, msg);
+							}
 						}
 					}
 				});

@@ -70,7 +70,7 @@ public class Logoff extends StdCommand
 
 						@Override
 						public void callBack() {
-							if("Y".equalsIgnoreCase(this.input))
+							if(this.confirmed)
 							{
 								CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
 								Room R=mob.location();
