@@ -94,7 +94,13 @@ public class StdThinInstance extends StdThinArea
 			if(R==null) return null;
 			
 			Room origRoom=R;
-			R=(Room)R.copyOf();
+			R=CMLib.database().DBReadRoomObject(R.roomID(), false);
+			CMLib.database().DBReadContent(R, null, true);
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				Exit E=origRoom.getRawExit(d);
+				if(E!=null) R.setRawExit(d, (Exit)E.copyOf());
+			}
 			R.clearSky();
 			if(R instanceof GridLocale)
 				((GridLocale)R).clearGrid(null);
