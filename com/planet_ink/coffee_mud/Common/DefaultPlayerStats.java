@@ -618,71 +618,95 @@ public class DefaultPlayerStats implements PlayerStats
 		account = null;
 		if(str==null) 
 			return;
+		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERSTATS);
 		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
-		friends=getHashFrom(CMLib.xml().getValFromPieces(xml,"FRIENDS"));
-		ignored=getHashFrom(CMLib.xml().getValFromPieces(xml,"IGNORED"));
-		introductions=getHashFrom(CMLib.xml().getValFromPieces(xml,"INTROS"));
-		if(CMath.isInteger(CMLib.xml().getValFromPieces(xml, "THEME")))
-			theme=CMLib.xml().getIntFromPieces(xml, "THEME");
-		String expStr = CMLib.xml().getValFromPieces(xml,"ACCTEXP");
-		if((expStr!=null)&&(expStr.length()>0))
-			setAccountExpiration(CMath.s_long(expStr));
+		str=CMLib.xml().getValFromPieces(xml,"FRIENDS");
+		if(debug) Log.debugOut("FRIENDS="+str);
+		friends=getHashFrom(str);
+		str=CMLib.xml().getValFromPieces(xml,"IGNORED");
+		if(debug) Log.debugOut("IGNORED="+str);
+		ignored=getHashFrom(str);
+		str=CMLib.xml().getValFromPieces(xml,"INTROS");
+		if(debug) Log.debugOut("INTROS="+str);
+		introductions=getHashFrom(str);
+		str=CMLib.xml().getValFromPieces(xml, "THEME");
+		if(debug) Log.debugOut("THEME="+str);
+		if(CMath.isInteger(str))
+			theme=CMath.s_int(str);
+		str = CMLib.xml().getValFromPieces(xml,"ACCTEXP");
+		if(debug) Log.debugOut("ACCTEXP="+str);
+		if((str!=null)&&(str.length()>0))
+			setAccountExpiration(CMath.s_long(str));
 		else
 		{
 			Calendar C=Calendar.getInstance();
 			C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
 			setAccountExpiration(C.getTimeInMillis());
 		}
-		String oldWrap=CMLib.xml().getValFromPieces(xml,"WRAP");
-		if(CMath.isInteger(oldWrap)) wrap=CMath.s_int(oldWrap);
-		String oldBreak=CMLib.xml().getValFromPieces(xml,"PAGEBREAK");
-		if(CMath.isInteger(oldBreak)) 
-			pageBreak=CMath.s_int(oldBreak);
+		str=CMLib.xml().getValFromPieces(xml,"WRAP");
+		if(debug) Log.debugOut("WRAP="+str);
+		if(CMath.isInteger(str)) 
+			wrap=CMath.s_int(str);
+		str=CMLib.xml().getValFromPieces(xml,"PAGEBREAK");
+		if(debug) Log.debugOut("PAGEBREAK="+str);
+		if(CMath.isInteger(str)) 
+			pageBreak=CMath.s_int(str);
 		else
 			pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
-		getSetSecurityFlags(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"SECGRPS")));
+		str=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"SECGRPS"));
+		if(debug) Log.debugOut("SECGRPS="+str);
+		getSetSecurityFlags(str);
 		setAliasXML(xml);
 		setTitleXML(xml);
 		setLegacyXML(xml);
-		String bday=CMLib.xml().getValFromPieces(xml,"BIRTHDAY");
-		setBirthday(bday);
+		str=CMLib.xml().getValFromPieces(xml,"BIRTHDAY");
+		if(debug) Log.debugOut("BIRTHDAY="+str);
+		setBirthday(str);
 		
 		poofin=CMLib.xml().getValFromPieces(xml,"POOFIN");
+		if(debug) Log.debugOut("POOFIN="+poofin);
 		if(poofin==null) poofin="";
 		poofin=CMLib.xml().restoreAngleBrackets(poofin);
 		
 		poofout=CMLib.xml().getValFromPieces(xml,"POOFOUT");
+		if(debug) Log.debugOut("POOFOUT="+poofout);
 		if(poofout==null) poofout="";
 		poofout=CMLib.xml().restoreAngleBrackets(poofout);
 		
 		tranpoofin=CMLib.xml().getValFromPieces(xml,"TRANPOOFIN");
+		if(debug) Log.debugOut("TRANPOOFIN="+tranpoofin);
 		if(tranpoofin==null) tranpoofin="";
 		tranpoofin=CMLib.xml().restoreAngleBrackets(tranpoofin);
 		
 		tranpoofout=CMLib.xml().getValFromPieces(xml,"TRANPOOFOUT");
+		if(debug) Log.debugOut("TRANPOOFOUT="+tranpoofout);
 		if(tranpoofout==null) tranpoofout="";
 		tranpoofout=CMLib.xml().restoreAngleBrackets(tranpoofout);
 		
 		announceMsg=CMLib.xml().getValFromPieces(xml,"ANNOUNCE");
+		if(debug) Log.debugOut("ANNOUNCE="+announceMsg);
 		if(announceMsg==null) announceMsg="";
 		announceMsg=CMLib.xml().restoreAngleBrackets(announceMsg);
 		
 		savedPose=CMLib.xml().getValFromPieces(xml,"POSE");
+		if(debug) Log.debugOut("POSE="+savedPose);
 		if(savedPose==null) savedPose="";
 		savedPose=CMLib.xml().restoreAngleBrackets(savedPose);
 		
 		notes=CMLib.xml().getValFromPieces(xml,"NOTES");
+		if(debug) Log.debugOut("NOTES="+notes);
 		if(notes==null) notes="";
 		notes=CMLib.xml().restoreAngleBrackets(notes);
 		
-		String dates=CMLib.xml().getValFromPieces(xml,"DATES");
-		if(dates==null) dates="";
+		str=CMLib.xml().getValFromPieces(xml,"DATES");
+		if(debug) Log.debugOut("DATES="+str);
+		if(str==null) str="";
 		// now parse all the level date/times
 		int lastNum=Integer.MIN_VALUE;
 		levelInfo.clear();
-		if(dates.length()>0)
+		if(str.length()>0)
 		{
-			Vector<String> sets=CMParms.parseSemicolons(dates,true);
+			Vector<String> sets=CMParms.parseSemicolons(str,true);
 			for(int ss=0;ss<sets.size();ss++)
 			{
 				String sStr=(String)sets.elementAt(ss);
@@ -699,22 +723,24 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		if(levelInfo.size()==0)
 			levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
-		String roomSetStr = CMLib.xml().getValFromPieces(xml,"AREAS");
-		if(roomSetStr!=null)
-			roomSet().parseXML("<AREAS>"+roomSetStr+"</AREAS>");
+		str = CMLib.xml().getValFromPieces(xml,"AREAS");
+		if(debug) Log.debugOut("AREAS="+str);
+		if(str!=null)
+			roomSet().parseXML("<AREAS>"+str+"</AREAS>");
 		else
 			roomSet().parseXML("<AREAS />");
 		String[] codes=getStatCodes();
 		for(int i=getSaveStatIndex();i<codes.length;i++)
 		{
-			String val=CMLib.xml().getValFromPieces(xml,codes[i].toUpperCase());
-			if(val==null) val="";
-			setStat(codes[i].toUpperCase(),CMLib.xml().restoreAngleBrackets(val));
+			str=CMLib.xml().getValFromPieces(xml,codes[i].toUpperCase());
+			if(str==null) str="";
+			setStat(codes[i].toUpperCase(),CMLib.xml().restoreAngleBrackets(str));
 		}
 		
-		String accountName = CMLib.xml().getValFromPieces(xml,"ACCOUNT");
-		if((accountName != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
-			account = CMLib.players().getLoadAccount(accountName);
+		str = CMLib.xml().getValFromPieces(xml,"ACCOUNT");
+		if(debug) Log.debugOut("ACCOUNT="+str);
+		if((str != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+			account = CMLib.players().getLoadAccount(str);
 	}
 
 	private String getLevelDateTimesStr()
