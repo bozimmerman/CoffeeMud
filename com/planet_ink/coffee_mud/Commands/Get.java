@@ -72,7 +72,7 @@ public class Get extends StdCommand
 			return false;
 		// we do this next step because, when a container is involved,
 		// the item deserves to be the target of the GET.
-		if(!mob.isMine(target))
+		if((!mob.isMine(target))&&(target!=getThis))
 		{
 			CMMsg msg2=CMClass.getMsg(mob,getThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_GET,null);
 			if(!R.okMessage(mob,msg2))
