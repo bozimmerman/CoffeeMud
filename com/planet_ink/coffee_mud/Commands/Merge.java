@@ -695,7 +695,7 @@ public class Merge extends StdCommand
 			return false;
 		}
 		for(Room R : rooms)
-			dbInterface.DBReadContent(R,null,false);
+			dbInterface.DBReadContent(R.roomID(),R,false);
 		mob.tell("Data loaded, starting scan.");
 		Comparator<MOB> convM=new Comparator<MOB>() {
 			public int compare(MOB arg0, MOB arg1) {

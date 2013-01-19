@@ -181,13 +181,13 @@ public class DBInterface implements DatabaseEngine
 	public boolean DBReReadRoomObject(Room room)
 	{ return RoomLoader.DBReReadRoomObject(room); }
 	
-	public void DBReadRoomExits(String roomID, Map<String, Room> allRooms, boolean reportStatus)
-	{RoomLoader.DBReadRoomExits(roomID,allRooms,reportStatus);}
+	public void DBReadRoomExits(String roomID, Room room, boolean reportStatus)
+	{RoomLoader.DBReadRoomExits(roomID,room,reportStatus);}
 	
 	public void DBReadCatalogs() {RoomLoader.DBReadCatalogs();}
 	
-	public void DBReadContent(Room thisRoom, Map<String, Room> rooms, boolean makeLive)
-	{RoomLoader.DBReadContent((thisRoom!=null)?thisRoom.roomID():null,thisRoom, rooms,null,false,makeLive);}
+	public void DBReadContent(String roomID, Room thisRoom, boolean makeLive)
+	{RoomLoader.DBReadContent(roomID,thisRoom, null,null,false,makeLive);}
 
 	public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
 	{return RoomLoader.DBReadAreaRoomList(areaName,reportStatus);}

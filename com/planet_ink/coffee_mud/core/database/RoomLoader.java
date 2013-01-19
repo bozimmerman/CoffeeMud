@@ -327,8 +327,12 @@ public class RoomLoader
 		return roomSet;
 	}
 
-	public void DBReadRoomExits(String roomID, Map<String, Room> allRooms, boolean reportStatus)
-	{ DBReadRoomExits(roomID,allRooms,reportStatus,null);}
+	public void DBReadRoomExits(String roomID, Room room, boolean reportStatus)
+	{
+		Map<String,Room> map=new TreeMap<String,Room>();
+		map.put(roomID, room);
+		DBReadRoomExits(roomID,map,reportStatus,null);
+	}
 	
 	public void DBReadRoomExits(String roomID, Map<String, Room> allRooms, boolean reportStatus, RoomnumberSet unloadedRooms)
 	{

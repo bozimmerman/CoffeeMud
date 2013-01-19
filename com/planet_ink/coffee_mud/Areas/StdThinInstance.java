@@ -95,12 +95,10 @@ public class StdThinInstance extends StdThinArea
 			
 			Room origRoom=R;
 			R=CMLib.database().DBReadRoomObject(R.roomID(), false);
-			CMLib.database().DBReadContent(R, null, true);
-			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-			{
-				Exit E=origRoom.getRawExit(d);
-				if(E!=null) R.setRawExit(d, (Exit)E.copyOf());
-			}
+			TreeMap<String,Room> V=new TreeMap<String,Room>();
+			V.put(roomID,R);
+			CMLib.database().DBReadRoomExits(R.roomID(), R, false);
+			CMLib.database().DBReadContent(R.roomID(), R, true);
 			R.clearSky();
 			if(R instanceof GridLocale)
 				((GridLocale)R).clearGrid(null);

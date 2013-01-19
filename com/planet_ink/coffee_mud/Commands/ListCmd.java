@@ -1722,7 +1722,7 @@ public class ListCmd extends StdCommand
 			else
 			{
 				TR=set.entrySet().iterator().next().getValue();
-				CMLib.database().DBReadContent(TR,set,false);
+				CMLib.database().DBReadContent(TR.roomID(),TR,false);
 				buf.append("\n\r^NRoomID: "+CMLib.map().getExtendedRoomID(TR)+"\n\r");
 				for(int m=0;m<TR.numInhabitants();m++)
 				{

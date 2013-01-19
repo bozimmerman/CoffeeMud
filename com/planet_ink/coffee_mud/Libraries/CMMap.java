@@ -1433,7 +1433,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					A.unInvoke();
 			}
 			CMLib.database().DBReReadRoomObject(room);
-			CMLib.database().DBReadContent(room,null,true);
+			CMLib.database().DBReadContent(room.roomID(),room,true);
 			room.startItemRejuv();
 			room.setResource(-1);
 			room.toggleMobility(mobile);

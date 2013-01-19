@@ -94,8 +94,8 @@ public class ThinRoom implements Room {
 					Iterator<String> i=V.keySet().iterator();
 					myR=V.get(i.next());
 					while(i.hasNext()) V.remove(i.next());
-					CMLib.database().DBReadRoomExits(roomID,V,false);
-					CMLib.database().DBReadContent(myR,V,true);
+					CMLib.database().DBReadRoomExits(roomID,myR,false);
+					CMLib.database().DBReadContent(roomID,myR,true);
 					myR.getArea().fillInAreaRoom(R);
 					if(CMath.bset(myR.getArea().flags(),Area.FLAG_THIN))
 						myR.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
