@@ -417,7 +417,7 @@ public class DefaultPlayerStats implements PlayerStats
 		StringBuilder str=new StringBuilder("");
 		alias.remove("");
 		for(String key : alias.keySet())
-			str.append("<ALIAS CMD=\"").append(key).append("\" VAL=\"").append(CMLib.xml().parseOutAngleBracketsAndQuotes(alias.get(key))).append("\">");
+			str.append("<ALIAS CMD=\"").append(key).append("\" VAL=\"").append(CMLib.xml().parseOutAngleBracketsAndQuotes(alias.get(key))).append("\" />");
 		return str.toString();
 	}
 	
@@ -426,7 +426,7 @@ public class DefaultPlayerStats implements PlayerStats
 		if(legacy.size()==0) return "";
 		StringBuilder str=new StringBuilder("");
 		for(String key : legacy.keySet())
-			str.append("<LEGACY CAT=\"").append(key).append("\" LVL=\"").append(legacy.get(key)).append("\">");
+			str.append("<LEGACY CAT=\"").append(key).append("\" LVL=\"").append(legacy.get(key)).append("\" />");
 		return str.toString();
 	}
 	
