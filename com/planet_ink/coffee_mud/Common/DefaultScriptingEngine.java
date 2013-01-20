@@ -648,9 +648,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(thisName.length()==0) return null;
 		if((imHere!=null)&&(imHere.roomID().equalsIgnoreCase(thisName)))
 			return imHere;
+		if((imHere!=null)&&(thisName.startsWith("#"))&&(CMath.isLong(thisName.substring(1))))
+			return CMLib.map().getRoom(imHere.getArea().Name()+thisName);
 		Room room=CMLib.map().getRoom(thisName);
 		if((room!=null)&&(room.roomID().equalsIgnoreCase(thisName)))
+		{
+			if(CMath.bset(room.getArea().flags(),Area.FLAG_INSTANCE_PARENT)
+			&&(imHere!=null)
+			&&(CMath.bset(imHere.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
+			&&(imHere.getArea().Name().endsWith("_"+room.getArea().Name()))
+			&&(thisName.indexOf('#')>=0))
+			{
+				Room otherRoom=CMLib.map().getRoom(imHere.getArea().Name()+thisName.substring(thisName.indexOf('#')));
+				if((otherRoom!=null)&&(otherRoom.roomID().endsWith(thisName)))
+					return otherRoom;
+			}
 			return room;
+		}
 		
 		List<Room> rooms=new Vector(1);
 		if((imHere!=null)&&(imHere.getArea()!=null))
