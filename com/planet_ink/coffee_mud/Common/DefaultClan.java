@@ -965,9 +965,12 @@ public class DefaultClan implements Clan
 		for(MemberRecord member : subMembers)
 		{
 			MOB M=CMLib.players().getPlayer(member.name);
-			if((M!=null)&&(M.lastTickedDateTime()>0))
+			if(M!=null)
 			{
-				members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime()));
+				if(M.lastTickedDateTime()>0)
+					members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime()));
+				else
+					members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().lastDateTime()));
 			}
 			else
 			{
