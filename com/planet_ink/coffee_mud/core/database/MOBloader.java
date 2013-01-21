@@ -708,7 +708,8 @@ public class MOBloader
 		}
 		List<String> clanStatements=new LinkedList<String>();
 		clanStatements.add("DELETE FROM CMCHCL WHERE CMUSERID='"+name+"' AND CMCLAN='"+clan+"'");
-		clanStatements.add("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO) values ('"+name+"','"+clan+"',"+role+")");
+		if(role>=0)
+			clanStatements.add("INSERT INTO CMCHCL (CMUSERID, CMCLAN, CMCLRO) values ('"+name+"','"+clan+"',"+role+")");
 		DB.update(clanStatements.toArray(new String[0]));
 	}
 

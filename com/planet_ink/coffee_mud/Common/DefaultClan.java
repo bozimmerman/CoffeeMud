@@ -446,7 +446,7 @@ public class DefaultClan implements Clan
 	}
 	public void delMember(MOB M)
 	{
-		CMLib.database().DBUpdateClanMembership(M.Name(), "", 0);
+		CMLib.database().DBUpdateClanMembership(M.Name(), clanID(), -1);
 		M.setClan(clanID(),-1);
 		updateClanPrivileges(M);
 	}
@@ -540,7 +540,7 @@ public class DefaultClan implements Clan
 			{
 				M.setClan(clanID(),-1);
 				updateClanPrivileges(M);
-				CMLib.database().DBUpdateClanMembership(M.Name(), "", 0);
+				CMLib.database().DBUpdateClanMembership(M.Name(), clanID(), -1);
 			}
 		}
 		CMLib.database().DBDeleteJournal("a Journal of "+getGovernmentName()+" "+getName(), null);
