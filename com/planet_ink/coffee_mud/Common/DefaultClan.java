@@ -1133,6 +1133,8 @@ public class DefaultClan implements Clan
 			}
 			
 			int minimumMembers = getMinClanMembers();
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+				Log.debugOut("DefaultClan","("+clanID()+"): "+activeMembers+"/"+minimumMembers+" active members.");
 			if(activeMembers<minimumMembers)
 			{
 				if(!isSafeFromPurge())
@@ -1417,6 +1419,8 @@ public class DefaultClan implements Clan
 							winnerMembers=numMembers;
 						}
 					}
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+						Log.debugOut("DefaultClan","("+clanID()+"): MBTrophy: "+((winner==null)?"Noone":winner.clanID())+" won with "+winnerMembers);
 					if(winner==this)
 					{
 						if((!CMath.bset(getTrophies(),Trophy.Members.flagNum()))&&(getExp()>0))
@@ -1437,17 +1441,19 @@ public class DefaultClan implements Clan
 				if(CMProps.getVar(CMProps.SYSTEM_CLANTROPLVL).length()>0)
 				{
 					Clan winner=this;
-					int winnerMembers=filterMedianLevel(members);
+					int winnerLevel=filterMedianLevel(members);
 					for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 					{
 						Clan C=(Clan)e.nextElement();
 						int highestLevel=filterMedianLevel(members);
-						if((winner!=C)&&(highestLevel>winnerMembers))
+						if((winner!=C)&&(highestLevel>winnerLevel))
 						{
 							winner=C;
-							winnerMembers=highestLevel;
+							winnerLevel=highestLevel;
 						}
 					}
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+						Log.debugOut("DefaultClan","("+clanID()+"): LVLTrophy: "+((winner==null)?"Noone":winner.clanID())+" won with "+winnerLevel);
 					if(winner==this)
 					{
 						if((!CMath.bset(getTrophies(),Trophy.MemberLevel.flagNum()))&&(getExp()>0))
@@ -1474,6 +1480,8 @@ public class DefaultClan implements Clan
 						if((winner==null)||(C.getExp()>winner.getExp()))
 							winner=C;
 					}
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+						Log.debugOut("DefaultClan","("+clanID()+"): EXPTrophy: "+((winner==null)?"Noone":winner.clanID())+" won with "+((winner==null)?"0":winner.getExp()));
 					if(winner==this)
 					{
 						if((!CMath.bset(getTrophies(),Trophy.Experience.flagNum()))&&(getExp()>0))
@@ -1500,6 +1508,8 @@ public class DefaultClan implements Clan
 						if((winner==null)||(C.getCurrentClanKills()>winner.getCurrentClanKills()))
 							winner=C;
 					}
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+						Log.debugOut("DefaultClan","("+clanID()+"): PKTrophy: "+((winner==null)?"Noone":winner.clanID())+" won with "+((winner==null)?"0":winner.getCurrentClanKills()));
 					if(winner==this)
 					{
 						if((!CMath.bset(getTrophies(),Trophy.PlayerKills.flagNum()))
@@ -1543,6 +1553,10 @@ public class DefaultClan implements Clan
 							mostControlPoints=tempNumber;
 						}
 					}
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+						Log.debugOut("DefaultClan","("+clanID()+"): AREATrophy: "+((winnerMostClansControlled==null)?"Noone":winnerMostClansControlled.clanID())+" won with "+mostClansControlled);
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+						Log.debugOut("DefaultClan","("+clanID()+"): PKTrophy: "+((winnerMostControlPoints==null)?"Noone":winnerMostControlPoints.clanID())+" won with "+mostControlPoints);
 					if((winnerMostClansControlled==this)
 					&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
 					&&(mostClansControlled>0))
