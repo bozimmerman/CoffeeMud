@@ -482,7 +482,8 @@ public class Test extends StdCommand
 			MOB[] mobs=new MOB[2];
 			MOB[] backups=new MOB[2];
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_HaveEnabler")))
+			||(what.equalsIgnoreCase("Prop_HaveEnabler"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability HaveEnabler=CMClass.getAbility("Prop_HaveEnabler");
@@ -510,7 +511,8 @@ public class Test extends StdCommand
 				if(spellCheck(spells,mobs[1])){ mob.tell("Error1-6"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_HaveSpellCast")))
+			||(what.equalsIgnoreCase("Prop_HaveSpellCast"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability HaveSpellCast=CMClass.getAbility("Prop_HaveSpellCast");
@@ -552,7 +554,8 @@ public class Test extends StdCommand
 				if(effectCheck(spells,mobs[1])){ mob.tell("Error2-10"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_WearEnabler")))
+			||(what.equalsIgnoreCase("Prop_WearEnabler"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability WearEnabler=CMClass.getAbility("Prop_WearEnabler");
@@ -577,7 +580,8 @@ public class Test extends StdCommand
 				if(spellCheck(spells,mobs[1])){ mob.tell("Error3-6"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_WearSpellCast")))
+			||(what.equalsIgnoreCase("Prop_WearSpellCast"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability WearSpellCast=CMClass.getAbility("Prop_WearSpellCast");
@@ -614,7 +618,8 @@ public class Test extends StdCommand
 				if(effectCheck(spells,mobs[1])){ mob.tell("Error4-10"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_RideEnabler")))
+			||(what.equalsIgnoreCase("Prop_RideEnabler"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability RideEnabler=CMClass.getAbility("Prop_RideEnabler");
@@ -639,7 +644,8 @@ public class Test extends StdCommand
 				if(spellCheck(spells,mobs[1])){ mob.tell("Error5-6"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_RideSpellCast")))
+			||(what.equalsIgnoreCase("Prop_RideSpellCast"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability RideSpellCast=CMClass.getAbility("Prop_RideSpellCast");
@@ -676,7 +682,8 @@ public class Test extends StdCommand
 				if(effectCheck(spells,mobs[1])){ mob.tell("Error6-10"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_HereSpellCast")))
+			||(what.equalsIgnoreCase("Prop_HereSpellCast"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability HereSpellCast=CMClass.getAbility("Prop_HereSpellCast");
@@ -724,7 +731,8 @@ public class Test extends StdCommand
 				if(effectCheck(spells,mobs[1])){ mob.tell("Error7-10"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_SpellAdder")))
+			||(what.equalsIgnoreCase("Prop_SpellAdder"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability SpellAdder=CMClass.getAbility("Prop_SpellAdder");
@@ -738,7 +746,8 @@ public class Test extends StdCommand
 				if(effectCheck(spells,mobs[0])){ mob.tell("Error8-2"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_UseSpellCast")))
+			||(what.equalsIgnoreCase("Prop_UseSpellCast"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability UseSpellCast=CMClass.getAbility("Prop_UseSpellCast"); // put IN
@@ -769,7 +778,8 @@ public class Test extends StdCommand
 				R.recoverRoomStats();
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_UseSpellCast2")))
+			||(what.equalsIgnoreCase("Prop_UseSpellCast2"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability UseSpellCast2=CMClass.getAbility("Prop_UseSpellCast2"); // EAT
@@ -793,7 +803,7 @@ public class Test extends StdCommand
 				if(effectCheck(spells,mobs[1])){ mob.tell("Error10-3"); return false;}
 				R.recoverRoomStats();
 			}
-			if(what.equalsIgnoreCase("metaflags"))
+			if(what.equalsIgnoreCase("metaflags")||what.equalsIgnoreCase("all"))
 			{
 				StringBuffer str=new StringBuffer("");
 				if(CMath.bset(metaFlags,Command.METAFLAG_AS))
@@ -810,7 +820,7 @@ public class Test extends StdCommand
 					str.append(" SNOOPED ");
 				mob.tell(str.toString());
 			}
-			if(what.equalsIgnoreCase("cmparms"))
+			if(what.equalsIgnoreCase("cmparms")||what.equalsIgnoreCase("all"))
 			{
 				Vector V=CMParms.parseAny("blah~BLAH~BLAH!",'~',true);
 				if(V.size()!=3){ mob.tell("Error cmparms-1"); return false;}
@@ -859,7 +869,8 @@ public class Test extends StdCommand
 				if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~~~")){ mob.tell("Error cmparms-24"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_FightSpellCast")))
+			||(what.equalsIgnoreCase("Prop_FightSpellCast"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability FightSpellCast=CMClass.getAbility("Prop_FightSpellCast");
@@ -914,7 +925,8 @@ public class Test extends StdCommand
 				R.recoverRoomStats();
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_HaveZapper")))
+			||(what.equalsIgnoreCase("Prop_HaveZapper"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability HaveZapper=CMClass.getAbility("Prop_HaveZapper");
@@ -927,7 +939,8 @@ public class Test extends StdCommand
 				if(mobs[1].isMine(IS[1])){ mob.tell("Error12-2"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_RideZapper")))
+			||(what.equalsIgnoreCase("Prop_RideZapper"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability RideZapper=CMClass.getAbility("Prop_RideZapper");
@@ -942,7 +955,8 @@ public class Test extends StdCommand
 				if(mobs[1].riding()==IS[1]){ mob.tell("Error13-2"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_WearZapper")))
+			||(what.equalsIgnoreCase("Prop_WearZapper"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability WearZapper=CMClass.getAbility("Prop_WearZapper");
@@ -957,7 +971,8 @@ public class Test extends StdCommand
 				if(!IS[1].amWearingAt(Wearable.IN_INVENTORY)){ mob.tell("Error14-2"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_Resistance")))
+			||(what.equalsIgnoreCase("Prop_Resistance"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability Resistance=CMClass.getAbility("Prop_Resistance");
@@ -980,7 +995,8 @@ public class Test extends StdCommand
 				if(testResistance(mobs[1])){ mob.tell("Error15-6"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_HaveResister")))
+			||(what.equalsIgnoreCase("Prop_HaveResister"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability HaveResister=CMClass.getAbility("Prop_HaveResister");
@@ -1013,7 +1029,8 @@ public class Test extends StdCommand
 				if(testResistance(mobs[1])){ mob.tell("Error16-9"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_WearResister")))
+			||(what.equalsIgnoreCase("Prop_WearResister"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability WearResister=CMClass.getAbility("Prop_WearResister");
@@ -1043,7 +1060,8 @@ public class Test extends StdCommand
 				if(testResistance(mobs[1])){ mob.tell("Error17-9"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_RideResister")))
+			||(what.equalsIgnoreCase("Prop_RideResister"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability RideResister=CMClass.getAbility("Prop_RideResister");
@@ -1073,7 +1091,8 @@ public class Test extends StdCommand
 				if(testResistance(mobs[1])){ mob.tell("Error18-9"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_HaveAdjuster")))
+			||(what.equalsIgnoreCase("Prop_HaveAdjuster"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability HaveAdjuster=CMClass.getAbility("Prop_HaveAdjuster");
@@ -1105,7 +1124,8 @@ public class Test extends StdCommand
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-9"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_WearAdjuster")))
+			||(what.equalsIgnoreCase("Prop_WearAdjuster"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability WearAdjuster=CMClass.getAbility("Prop_WearAdjuster");
@@ -1134,7 +1154,8 @@ public class Test extends StdCommand
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error20-9"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_RideAdjuster")))
+			||(what.equalsIgnoreCase("Prop_RideAdjuster"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability RideAdjuster=CMClass.getAbility("Prop_RideAdjuster");
@@ -1163,7 +1184,8 @@ public class Test extends StdCommand
 				if(isAnyAdjusted(mobs[0])){ mob.tell("Error21-9"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_HereAdjuster")))
+			||(what.equalsIgnoreCase("Prop_HereAdjuster"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability HereAdjuster=CMClass.getAbility("Prop_HereAdjuster");
@@ -1218,7 +1240,8 @@ public class Test extends StdCommand
 				if(isAnyAdjusted(mobs[1])){ mob.tell("Error22-10"); return false;}
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_ReqAlignments")))
+			||(what.equalsIgnoreCase("Prop_ReqAlignments"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability reqA=CMClass.getAbility("Prop_ReqAlignments");
@@ -1254,7 +1277,8 @@ public class Test extends StdCommand
 				
 			}
 			if((what.equalsIgnoreCase("all_properties"))
-			||(what.equalsIgnoreCase("Prop_ReqCapacity")))
+			||(what.equalsIgnoreCase("Prop_ReqCapacity"))
+			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
 				Ability reqA=CMClass.getAbility("Prop_ReqCapacity");
@@ -1328,6 +1352,37 @@ public class Test extends StdCommand
 			||(what.equalsIgnoreCase("Prop_ReqTattoo")))
 			{
 				
+			}
+			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("clans")))
+			{
+				reset(mobs,backups,R,IS,R2);
+				mobs[0].setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
+				mobs[1].setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
+				Session S1=(Session)CMClass.getCommon("FakeSession");
+				Session S2=(Session)CMClass.getCommon("FakeSession");
+				S1.initializeSession(null, "MEMORY");
+				S2.initializeSession(null, "MEMORY");
+				mobs[0].setSession(S1);
+				mobs[1].setSession(S2);
+				Clan C1=null;
+				Clan C2=null;
+				try
+				{
+					S1.previousCMD().add("Y");
+					S1.previousCMD().add("TESTCLAN");
+					S1.previousCMD().add("Y");
+					
+				}
+				finally
+				{
+					mobs[0].setSession(null);
+					mobs[1].setSession(null);
+					mobs[0].setPlayerStats(null);
+					mobs[1].setPlayerStats(null);
+					if(C1!=null) C1.destroyClan();
+					if(C2!=null) C2.destroyClan();
+				}
 			}
 			reset(mobs,backups,R,IS,R2);
 			CMLib.map().emptyRoom(R2,null);
