@@ -2427,13 +2427,13 @@ ruthless programmer, and sentenced to a quick death.
 28.Prop_TrashCan supports a DELAY parameter
 29.New formulas for PVP combat -- INI/Control Panel support.  The defaults basically remove level fudging.
 30.(Internal) New experiments in Fully Async sessions continues apace.  Converted Logout and Quit.
-31.New prayer: Retribution (neutral Blade Barriar for Missionaries & Shaman)
+31.New prayer: Retribution (neutral Blade Barrier for Missionaries & Shaman)
 32.POUR command can now be used to activate a potion on an item (for example, enchant weapon potion) (like thrown powders)
 33.About two dozen thief skills have been finished and assigned to various classes. Skill_EscapeBonds renamed to Struggle Bonds.
 34.Potions and Pills are more scaled to their levels.
 35.Normally mobile mobs will walk by hidden/invis exits now (unless they can see hidden, etc..)
 36.Death room (DEATH) coffeemud.ini entry now supports MORGUE to keep players where they died.
-37.Expertises have been optimized such that players only store the highest version.  Functionally identical, but with new editor expression.
+37.(Internal) Expertises have been optimized such that players only store the highest version.  Functionally identical, but with new editor expression.
 38.Clans and Governments now support categories, and visibility flags, and mobs may belong to more than one, if setup properly. 
 39.New INI entries: MAXCLANCATS and PUBLICCLANCATS for controlling player access to clan gvts by category
 
