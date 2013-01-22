@@ -783,11 +783,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
 	public void forceTick()
 	{
-		if(thread.getStatus().equalsIgnoreCase("sleeping"))
-		{
-			thread.interrupt();
-			return;
-		}
+		thread.forceTick();
 	}
 
 	public void run()

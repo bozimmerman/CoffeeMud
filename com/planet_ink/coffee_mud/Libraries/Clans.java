@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -13,6 +14,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.DefaultClan;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.AutoPromoteFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.FullMemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
@@ -46,6 +48,10 @@ public class Clans extends StdLibrary implements ClanManager
 	public List<Pair<Clan,Integer>>all2				  = new Vector<Pair<Clan,Integer>>();
 	public long	 		  		   lastGovernmentLoad = 0;
 
+	private CMSupportThread thread=null;
+	
+	public CMSupportThread getSupportThread() { return thread;}
+
 	public String ID(){return "Clans";}
 
 	public boolean shutdown()
@@ -57,6 +63,7 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 		all.clear();
 		all2.clear();
+		thread.shutdown();
 		return true;
 	}
 
@@ -1077,5 +1084,258 @@ public class Clans extends StdLibrary implements ClanManager
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 		for(int i=0;i<channels.size();i++)
 			CMLib.commands().postChannel(mob,(String)channels.get(i),msg,true);
+	}
+
+	protected int filterMedianLevel(List<FullMemberRecord> members)
+	{
+		List<Integer> lvls=new SortedListWrap<Integer>(new XVector<Integer>());
+		for(FullMemberRecord r : members)
+			lvls.add(Integer.valueOf(r.level));
+		if(lvls.size()>0)
+			return lvls.get(lvls.size()/2).intValue();
+		return 0;
+	}
+
+	protected Clan getTrophyWinner(Trophy trophy)
+	{
+		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+		{
+			Clan C=(Clan)e.nextElement();
+			if(CMath.bset(C.getTrophies(),trophy.flagNum()))
+				return C;
+		}
+		return null;
+	}
+	
+	public void clanTrophyScan()
+	{
+		if(trophySystemActive())
+		{
+			// calculate winner of the members count contest
+			if(CMProps.getVar(CMProps.SYSTEM_CLANTROPMB).length()>0)
+			{
+				Clan winnerC=getTrophyWinner(Trophy.Members);
+				int winnerMembers=(winnerC==null)?0:winnerC.getSize();
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement(); if(C==winnerC) continue;
+					int numMembers=C.getSize();
+					if(numMembers>winnerMembers)
+					{
+						winnerC=C;
+						winnerMembers=numMembers;
+					}
+				}
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+					Log.debugOut("Clans","MBTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+winnerMembers);
+				if((winnerC!=null)&&(!CMath.bset(winnerC.getTrophies(),Trophy.Members.flagNum()))&&(winnerC.getExp()>0))
+				{
+					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Members.flagNum());
+					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.Members.description+".");
+				}
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement();
+					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Members.flagNum())))
+					{
+						C.setTrophies(C.getTrophies()-Trophy.Members.flagNum());
+						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.Members.description+".");
+					}
+				}
+			}
+
+			// calculate winner of the member level contest
+			if(CMProps.getVar(CMProps.SYSTEM_CLANTROPLVL).length()>0)
+			{
+				Clan winnerC=getTrophyWinner(Trophy.MemberLevel);
+				int winnerLevel=(winnerC==null)?0:filterMedianLevel(winnerC.getFullMemberList());
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement(); if(C==winnerC) continue;
+					int highestLevel=filterMedianLevel(C.getFullMemberList());
+					if(highestLevel>winnerLevel)
+					{
+						winnerC=C;
+						winnerLevel=highestLevel;
+					}
+				}
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+					Log.debugOut("DefaultClan","LVLTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+winnerLevel);
+				if((winnerC!=null)&&(!CMath.bset(winnerC.getTrophies(),Trophy.MemberLevel.flagNum()))&&(winnerC.getExp()>0))
+				{
+					winnerC.setTrophies(winnerC.getTrophies()|Trophy.MemberLevel.flagNum());
+					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.MemberLevel.description+".");
+				}
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement();
+					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.MemberLevel.flagNum())))
+					{
+						C.setTrophies(C.getTrophies()-Trophy.MemberLevel.flagNum());
+						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.MemberLevel.description+".");
+					}
+				}
+			}
+			
+			// calculate winner of the exp contest
+			if(CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP).length()>0)
+			{
+				Clan winnerC=getTrophyWinner(Trophy.Experience);
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement(); if(C==winnerC) continue;
+					if((winnerC==null)||(C.getExp()>winnerC.getExp()))
+						winnerC=C;
+				}
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+					Log.debugOut("DefaultClan","EXPTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getExp()));
+				if((winnerC!=null)&&(!CMath.bset(winnerC.getTrophies(),Trophy.Experience.flagNum()))&&(winnerC.getExp()>0))
+				{
+					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Experience.flagNum());
+					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.Experience.description+".");
+				}
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement();
+					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Experience.flagNum())))
+					{
+						C.setTrophies(C.getTrophies()-Trophy.Experience.flagNum());
+						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.Experience.description+".");
+					}
+				}
+			}
+
+			// calculate winner of the pk contest
+			if(CMProps.getVar(CMProps.SYSTEM_CLANTROPPK).length()>0)
+			{
+				Clan winnerC=getTrophyWinner(Trophy.PlayerKills);
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement(); if(C==winnerC) continue;
+					if((winnerC==null)||(C.getCurrentClanKills()>winnerC.getCurrentClanKills()))
+						winnerC=C;
+				}
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+					Log.debugOut("DefaultClan","PKTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getCurrentClanKills()));
+				if((winnerC!=null)
+				&&(!CMath.bset(winnerC.getTrophies(),Trophy.PlayerKills.flagNum()))
+				&&(winnerC.getCurrentClanKills()>0))
+				{
+					winnerC.setTrophies(winnerC.getTrophies()|Trophy.PlayerKills.flagNum());
+					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.PlayerKills.description+".");
+				}
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement();
+					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerKills.flagNum())))
+					{
+						C.setTrophies(C.getTrophies()-Trophy.PlayerKills.flagNum());
+						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.PlayerKills.description+".");
+					}
+				}
+			}
+
+			// calculate winner of the conquest contests
+			if((CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
+			||(CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0))
+			{
+				Clan winnerMostClansControlledC=getTrophyWinner(Trophy.Areas);
+				long mostClansControlled=(winnerMostClansControlledC==null)?-1:winnerMostClansControlledC.getControlledAreas().size();
+				Clan winnerMostControlPointsC=getTrophyWinner(Trophy.Points);
+				long mostControlPoints=(winnerMostControlPointsC==null)?-1:winnerMostControlPointsC.calculateMapPoints();
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement();
+					if((C!=winnerMostClansControlledC)&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0))
+					{
+						int controlledAreas=C.getControlledAreas().size();
+						if(controlledAreas>mostClansControlled)
+						{
+							winnerMostClansControlledC=C;
+							mostClansControlled=controlledAreas;
+						}
+					}
+					if((C!=winnerMostControlPointsC)&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0))
+					{
+						long mapPoints=C.calculateMapPoints();
+						if(mapPoints>mostControlPoints)
+						{
+							winnerMostControlPointsC=C;
+							mostControlPoints=mapPoints;
+						}
+					}
+				}
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+					Log.debugOut("DefaultClan","AREATrophy: "+((winnerMostClansControlledC==null)?"Noone":winnerMostClansControlledC.clanID())+" won with "+mostClansControlled);
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+					Log.debugOut("DefaultClan","CPTrophy: "+((winnerMostControlPointsC==null)?"Noone":winnerMostControlPointsC.clanID())+" won with "+mostControlPoints);
+				if((winnerMostClansControlledC!=null)
+				&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
+				&&(mostClansControlled>0))
+				{
+					if(!CMath.bset(winnerMostClansControlledC.getTrophies(),Trophy.Areas.flagNum()))
+					{
+						winnerMostClansControlledC.setTrophies(winnerMostClansControlledC.getTrophies()|Trophy.Areas.flagNum());
+						clanAnnounceAll("The "+winnerMostClansControlledC.getGovernmentName()+" "+winnerMostClansControlledC.name()+" has been awarded the trophy for "+Trophy.Areas.description+".");
+					}
+				}
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement();
+					if((winnerMostClansControlledC!=C)
+					&&(CMath.bset(C.getTrophies(),Trophy.Areas.flagNum())))
+					{
+						C.setTrophies(C.getTrophies()-Trophy.Areas.flagNum());
+						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.Areas.description+".");
+					}
+				}
+				if((winnerMostControlPointsC!=null)
+				&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0)
+				&&(mostControlPoints>0))
+				{
+					if(!CMath.bset(winnerMostControlPointsC.getTrophies(),Trophy.Points.flagNum()))
+					{
+						winnerMostControlPointsC.setTrophies(winnerMostControlPointsC.getTrophies()|Trophy.Points.flagNum());
+						clanAnnounceAll("The "+winnerMostControlPointsC.getGovernmentName()+" "+winnerMostControlPointsC.name()+" has been awarded the trophy for "+Trophy.Points.description+".");
+					}
+				}
+				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					Clan C=(Clan)e.nextElement();
+					if((winnerMostControlPointsC!=C)
+					&&(CMath.bset(C.getTrophies(),Trophy.Points.flagNum())))
+					{
+						C.setTrophies(C.getTrophies()-Trophy.Points.flagNum());
+						C.clanAnnounce("The "+C.getGovernmentName()+" "+C.name()+" has lost control of the trophy for "+Trophy.Points.description+".");
+					}
+				}
+			}
+		}
+	}
+	
+	public boolean activate() 
+	{
+		if(thread==null)
+			thread=new CMSupportThread("THClans"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+					CMProps.getTickMillis()*CMProps.getTicksPerDay(), this, CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS), CMSecurity.DisFlag.CLANTICKS);
+		if(!thread.isStarted())
+			thread.start();
+		return true;
+	}
+	
+	public void forceTick()
+	{
+		thread.forceTick();
+	}
+
+	public void run()
+	{
+		thread.setStatus("not doing clan trophy scan");
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
+		{
+			thread.setStatus("clan trophy scan");
+			clanTrophyScan();
+		}
+		thread.setStatus("not scanning trophies");
 	}
 }

@@ -36,7 +36,7 @@ import java.util.*;
  * administer their most basic functions.
  * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
  */
-public interface ClanManager extends CMLibrary
+public interface ClanManager extends CMLibrary, Runnable
 {
 	/**
 	 * Returns a list of all available clans names in the game,
@@ -389,4 +389,9 @@ public interface ClanManager extends CMLibrary
 	 * @return true to execute the given command, and false not to.
 	 */
 	public boolean goForward(MOB mob, Clan C, Vector<? extends Object> commands, Clan.Function function, boolean voteIfNecessary);
+	
+	/**
+	 * Force the clans maintenance thread
+	 */
+	public void forceTick();
 }

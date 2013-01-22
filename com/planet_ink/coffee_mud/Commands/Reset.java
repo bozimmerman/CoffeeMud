@@ -1087,7 +1087,10 @@ public class Reset extends StdCommand
 		else
 		if(s.startsWith("clantick"))
 		{
+			mob.session().println("clantick: tick clans");
 			CMLib.clans().tickAllClans();
+			mob.session().println("clantick: clans tick");
+			CMLib.clans().forceTick();
 			mob.session().println("clantick: done!");
 		}
 		else

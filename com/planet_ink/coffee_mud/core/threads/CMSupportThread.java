@@ -37,6 +37,7 @@ public class CMSupportThread extends Thread implements CMRunnable
 	private volatile boolean  	checkDBHealth=true;
 	private final long 	 		sleepTime;
 	private final Runnable 		engine;
+	private volatile boolean	forced=false;
 
 	private final CMSecurity.DisFlag  disableFlag;
 	
@@ -58,6 +59,15 @@ public class CMSupportThread extends Thread implements CMRunnable
 	public boolean isStarted()
 	{
 		return started;
+	}
+	
+	public void forceTick()
+	{
+		if(getStatus().equalsIgnoreCase("sleeping"))
+		{
+			forced=true;
+			interrupt();
+		}
 	}
 	
 	public String getStatus()
@@ -137,7 +147,13 @@ public class CMSupportThread extends Thread implements CMRunnable
 							milliTotal+=(lastStop-lastStart);
 							tickTotal++;
 							//setStatus("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
-							Thread.sleep(sleepTime);
+							try{
+								forced=false;
+								Thread.sleep(sleepTime);
+							} catch(InterruptedException ioe) {
+								if(!forced) throw ioe;
+							}
+							forced=false;
 							lastStart=System.currentTimeMillis();
 							setStatus("LASTSTART");
 							engine.run();

@@ -734,11 +734,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	
 	public void forceTick()
 	{
-		if(thread.getStatus().equalsIgnoreCase("sleeping"))
-		{
-			thread.interrupt();
-			return;
-		}
+		thread.forceTick();
 	}
 
 	public void run()
