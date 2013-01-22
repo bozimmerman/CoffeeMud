@@ -7817,7 +7817,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genClanRole(mob,C,++showNumber,showFlag);
 			genClanStatus(mob,C,++showNumber,showFlag);
 			C.setRivalrous(prompt(mob,C.isRivalrous(),++showNumber,showFlag,"Rivalrous Clan"));
-			C.setMinClanMembers(prompt(mob,C.getMinClanMembers(),++showNumber,showFlag,"Minimum Members: "));
 			genClanMembers(mob,C,++showNumber,showFlag);
 			/*setClanRelations, votes?*/
 			if(showFlag<-900){ ok=true; break;}

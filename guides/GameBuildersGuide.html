@@ -3044,7 +3044,15 @@ items, to keep a collective treasury, to collect taxes from other
 players, and to override normal PK (playerkill) settings. Clans can be
 tyrannical, run by a select few, run by elected members, or run
 collectively. Clans can even be used as an alternative means of
-learning new Classes.<br>
+learning new Classes.
+</p>
+<p>
+Players may belong, by default, to a single clan from each clan
+category (which are inherited from their government by default).
+Since (again, by default) there is only one category, players can
+only belong to one clan.  All of this can be changed of course,
+starting with the numeric requirements defined by the MAXCLANCATS
+setting.
 </p>
 <p>By default, clans can be created and managed entirely by
 players. This ability can be removed by disabling the several clan
@@ -3060,113 +3068,120 @@ then enter the following commands at any time:<br>
 <p>When a clan modified, you are presented with a list of
 properties to fill in. Pressing enter will leave the property
 unchanged. The properties include:</p>
-<table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
-<tbody>
-<tr>
-<td width="25%"><strong>Property</strong></td>
-<td width="75%"><strong>Description</strong></td>
-</tr>
-<tr>
-<td><em>Name</em></td>
-<td>the name of the clan can never be changed. It can only
-be destroyed. Name your clans carefully!<br>
-</td>
-</tr>
-<tr>
-<td><em>Government Type</em></td>
-<td>how the players rule the clan -- as a tyranny (Clan), a
-oligarchy (Guild), a republic (Union), a family, a theocracy, or a
-democracy (Fellowship)<br>
-</td>
-<tr>
-<td><em>Category</em></td>
-<td>places this clan in a named category, which can be used to membership. Normally derived from the government type.<br>
-</td>
-</tr>
-<tr>
-<td><em>Clan Premise</em><br>
-</td>
-<td>a description of the clan for all to read</td>
-</tr>
-<tr>
-<td><em>Clan Experience</em><br>
-</td>
-<td>the number of experience points the clan has earned,
-usually through taxation<br>
-</td>
-</tr>
-<tr>
-<td><em>Morgue RoomID</em><br>
-</td>
-<td>the room ID of the room where the bodies of the members
-of the clan appear when they die. This room must be properly owned by
-the Clan using a property like Prop_RoomForSale.<br>
-</td>
-</tr>
-<tr>
-<td><em>Clan Home RoomID</em></td>
-<td>the room ID of the room where the members of the clan
-appear when they cast Clan Home spell. This room must be properly owned
-by the Clan using a property like Prop_RoomForSale.<br>
-</td>
-</tr>
-<tr>
-<td><em>Clan Donation RoomID</em><br>
-</td>
-<td>the room ID of the room where items appear when a
-member of the clan casts the Clan Donate spell. This room must be
-properly owned by the Clan using a property like Prop_RoomForSale.</td>
-</tr>
-<tr>
-<td><em>Clan Qualifications</em><br>
-</td>
-<td>this is a mask describing what sort of people are
-allowed to apply and join the clan using the CLANAPPLY command. The
-mask is a standard CoffeeMud ZapperMask. You can use ? for a
-description at the prompt.<br>
-</td>
-</tr>
-<tr>
-<td><em>Clan Auto-Class</em><br>
-</td>
-<td>the name of a character class which all players who
-join the clan also gain for free. Normally not used, this field can be
-filled in when the Archon wishes to have clan based classes.<br>
-</td>
-</tr>
-<tr>
-<td><em>Clan Auto-Role</em><br>
-</td>
-<td>the role (rank/position) of the player who enters the
-CLANAPPLY command. Normally this is set to Applicant, meaning that the
-clan must approve all new members. Setting this value to something else
-can override that behavior.<br>
-</td>
-</tr>
-<tr>
-<td><em>Clan Status</em><br>
-</td>
-<td>depending upon your coffeemud.ini settings,
-clans can be in a state of pending (awaiting a sufficient number of
-players to become active), a state of Active, or a state of Fading
-(because an insufficient number of members has logged in lately, again
-settable in the coffeemud.ini file). This state is changed
-automatically by CoffeeMud, but can be altered here.<br>
-</td>
-</tr>
-<tr>
-<td><em>Rivalrous Clan</em></td>
-<td>True if the clan can rival other clans, False otherwise.  Normally derived from the government type.</td>
-</tr>
-<tr>
-<td><em>Clan Members</em></td>
-<td>the list of all current members and their
-position/rank/role within the clan. This list can be altered manually
-here.</td>
-</tr>
-</tbody>
-</table>
-<br>
+<table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1"
+							cellspacing="1" width="100%">
+							<tbody>
+								<tr>
+									<td width="25%"><strong>Property</strong></td>
+									<td width="75%"><strong>Description</strong></td>
+								</tr>
+								<tr>
+									<td><em>Name</em></td>
+									<td>the name of the clan can never be changed. It can only
+										be destroyed. Name your clans carefully!<br>
+									</td>
+								</tr>
+								<tr>
+									<td><em>Government Type</em></td>
+									<td>how the players rule the clan -- as a tyranny (Clan),
+										a oligarchy (Guild), a republic (Union), a family, a
+										theocracy, or a democracy (Fellowship)<br>
+									</td>
+								<tr>
+									<td><em>Category</em></td>
+									<td>places this clan in a named category, which can be
+										used to membership. Normally derived from the government type.<br>
+									</td>
+								</tr>
+								<tr>
+									<td><em>Clan Premise</em><br></td>
+									<td>a description of the clan for all to read</td>
+								</tr>
+								<tr>
+									<td><em>Min Members</em></td>
+									<td>if set, overrides the minimum members from the government settings. Setting to 0 will make the clan immortal.</td>
+								</tr>
+								<tr>
+									<td><em>Clan Experience</em><br></td>
+									<td>the number of experience points the clan has earned,
+										usually through taxation<br>
+									</td>
+								</tr>
+								<tr>
+									<td><em>Clan Tax rate</em></td>
+									<td>the clan experience tax rate, normally set by players</td>
+								</tr>
+								<tr>
+									<td><em>Morgue RoomID</em><br></td>
+									<td>the room ID of the room where the bodies of the
+										members of the clan appear when they die. This room must be
+										properly owned by the Clan using a property like
+										Prop_RoomForSale.<br>
+									</td>
+								</tr>
+								<tr>
+									<td><em>Clan Home RoomID</em></td>
+									<td>the room ID of the room where the members of the clan
+										appear when they cast Clan Home spell. This room must be
+										properly owned by the Clan using a property like
+										Prop_RoomForSale.<br>
+									</td>
+								</tr>
+								<tr>
+									<td><em>Clan Donation RoomID</em><br></td>
+									<td>the room ID of the room where items appear when a
+										member of the clan casts the Clan Donate spell. This room must
+										be properly owned by the Clan using a property like
+										Prop_RoomForSale.</td>
+								</tr>
+								<tr>
+									<td><em>Clan Qualifications</em><br></td>
+									<td>this is a mask describing what sort of people are
+										allowed to apply and join the clan using the CLANAPPLY
+										command. The mask is a standard CoffeeMud ZapperMask. You can
+										use ? for a description at the prompt.<br>
+									</td>
+								</tr>
+								<tr>
+									<td><em>Clan Auto-Class</em><br></td>
+									<td>the name of a character class which all players who
+										join the clan also gain for free. Normally not used, this
+										field can be filled in when the Archon wishes to have clan
+										based classes.<br>
+									</td>
+								</tr>
+								<tr>
+									<td><em>Clan Auto-Role</em><br></td>
+									<td>the role (rank/position) of the player who enters the
+										CLANAPPLY command. Normally this is set to Applicant, meaning
+										that the clan must approve all new members. Setting this value
+										to something else can override that behavior.<br>
+									</td>
+								</tr>
+								<tr>
+									<td><em>Clan Status</em><br></td>
+									<td>depending upon your coffeemud.ini settings, clans can
+										be in a state of pending (awaiting a sufficient number of
+										players to become active), a state of Active, or a state of
+										Fading (because an insufficient number of members has logged
+										in lately, again settable in the coffeemud.ini file). This
+										state is changed automatically by CoffeeMud, but can be
+										altered here.<br>
+									</td>
+								</tr>
+								<tr>
+									<td><em>Rivalrous Clan</em></td>
+									<td>True if the clan can rival other clans, False
+										otherwise. Normally derived from the government type.</td>
+								</tr>
+								<tr>
+									<td><em>Clan Members</em></td>
+									<td>the list of all current members and their
+										position/rank/role within the clan. This list can be altered
+										manually here.</td>
+								</tr>
+							</tbody>
+						</table> <br>
 <br>
 <br>
 <p class="MsoNormal"><a name="governments"><strong><font color="#008000" size="5">Clan Governments</font></strong></a></p>
@@ -3176,7 +3191,12 @@ proceeding.</p>
 basic structure to clans, and serve a purpose similar to the one
 Character Classes do for players. However, as clans are social
 arrangements, most aspects of governments deal with the structuring of
-these arrangements.<br>
+these arrangements.
+</p>
+<p>By default, all governments belong to a "blank" category, which
+means that all governments are available for players to create clans
+out of.  Governments with other categories are available to players
+as governed by the PUBLICCLANCATS setting.
 </p>
 <p>By default, clan governments are defined in your resources
 directory in the file clangovernments.xml. The Archon commands
@@ -3231,8 +3251,14 @@ unchanged. The properties include:</p>
 <td>true if clans of this government type can rival other clans, false otherwise. Can also be manually set at the clan level.</td>
 </tr>
 <tr>
-<td><em>Min Members</em></td>
+<td><em>Minimum Members</em></td>
 <td>if set, overrides the minimum members in coffeemud.ini.  Setting to 0 will also make the clan immortal.<br>
+</td>
+</tr>
+<tr>
+<tr>
+<td><em>XP/Level Formula</em></td>
+<td>formula for xp required for clan to gain a level. Empty = (500 * @x1) + (1000 * @x1 * @x1 * @x1) where @x1 is current level<br>
 </td>
 </tr>
 <tr>
@@ -3271,6 +3297,18 @@ existing leader can be replaced<br>
 <td>the position users receive when they are CLANACCEPted. If this
 is the same as the Apply Position, CLANACCEPT and CLANREJECT are
 disabled.<br>
+</td>
+</tr>
+<tr>
+<td><em>Clan Char Abilities</em></td>
+<td>abilities granted or made available to clan members who have privileges, based
+on the clan level.<br>
+</td>
+</tr>
+<tr>
+<td><em>Clan Char Effects</em></td>
+<td>auto-effects imposed on clan members who have privileges, based
+on the clan level.<br>
 </td>
 </tr>
 </tbody>
