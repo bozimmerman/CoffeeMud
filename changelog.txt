@@ -2436,5 +2436,6 @@ ruthless programmer, and sentenced to a quick death.
 37.(Internal) Expertises have been optimized such that players only store the highest version.  Functionally identical, but with new editor expression.
 38.Clans and Governments now support categories, and visibility flags, and mobs may belong to more than one, if setup properly. 
 39.New INI entries: MAXCLANCATS and PUBLICCLANCATS for controlling player access to clan gvts by category
+40.Player passwords can now be optionally hashed into the DB -- see HASHPASSWORDS in coffeemud.ini
 
  
