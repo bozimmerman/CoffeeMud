@@ -163,6 +163,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBPlayerNameChange(String oldName, String newName)
 	{ MOBloader.DBNameChange(oldName, newName);}
 	
+	public Area DBReadArea(Area A)
+	{ return RoomLoader.DBReadArea(A); }
+
 	public List<Area> DBReadAreaData(String areaID, boolean reportStatus)
 	{return RoomLoader.DBReadAreaData(areaID,reportStatus);}
 	

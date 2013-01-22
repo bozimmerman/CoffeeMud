@@ -55,6 +55,50 @@ public class RoomLoader
 		public Hashtable<String,Hashtable<MOB, String>> mobRides=new Hashtable<String,Hashtable<MOB, String>>();
 	}
 
+	protected Area DBReadAreaData(ResultSet R, Area A)
+	{
+		String areaName=DBConnections.getRes(R,"CMAREA");
+		String areaType=DBConnections.getRes(R,"CMTYPE");
+		if(A==null) A=CMClass.getAreaType(areaType);
+		if(A==null) A=CMClass.getAreaType("StdArea");
+		if(A==null)
+		{
+			Log.errOut("Could not create area: "+areaName);
+			return null;
+		}
+		A.setName(areaName);
+		A.setClimateType((int)DBConnections.getLongRes(R,"CMCLIM"));
+		A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
+		A.setDescription(DBConnections.getRes(R,"CMDESC"));
+		A.setMiscText(DBConnections.getRes(R,"CMROTX"));
+		A.setTechLevel((int)DBConnections.getLongRes(R,"CMTECH"));
+		return A;
+	}
+	
+	public Area DBReadArea(Area A)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMAREA WHERE CMAREA='"+A.Name()+"'");
+			while(R.next())
+			{
+				A=this.DBReadAreaData(R, A);
+				if(A!=null) return A;
+			}
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Area",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+	
 	public List<Area> DBReadAreaData(String areaID, boolean reportStatus)
 	{
 		DBConnection D=null;
@@ -70,21 +114,8 @@ public class RoomLoader
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();
-				String areaName=DBConnections.getRes(R,"CMAREA");
-				String areaType=DBConnections.getRes(R,"CMTYPE");
-				Area A=CMClass.getAreaType(areaType);
-				if(A==null) A=CMClass.getAreaType("StdArea");
-				if(A==null)
-				{
-					Log.errOut("Could not create area: "+areaName);
-					continue;
-				}
-				A.setName(areaName);
-				A.setClimateType((int)DBConnections.getLongRes(R,"CMCLIM"));
-				A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
-				A.setDescription(DBConnections.getRes(R,"CMDESC"));
-				A.setMiscText(DBConnections.getRes(R,"CMROTX"));
-				A.setTechLevel((int)DBConnections.getLongRes(R,"CMTECH"));
+				Area A=DBReadAreaData(R,null);
+				if(A==null) continue;
 				A.setAreaState(Area.State.ACTIVE);
 				if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
 					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");

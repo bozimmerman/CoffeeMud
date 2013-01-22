@@ -1876,6 +1876,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(R!=null) 
 				R.bringMobHere(M,false);
 		}
+		CMLib.database().DBReadArea(area);
 		area.setAreaState(oldFlag);
 	}
 

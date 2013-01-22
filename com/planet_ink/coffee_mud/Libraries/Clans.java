@@ -264,7 +264,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		if((clanID1==null)||(clanID2==null)||(clanID1.length()==0)||(clanID2.length()==0))
 			return Clan.REL_NEUTRAL;
-		return getClanRelations(getClan(clanID1),getClan(clanID1));
+		return getClanRelations(getClan(clanID1),getClan(clanID2));
 	}
 
 	public boolean findAnyClanRelations(MOB M1, MOB M2, int relation)

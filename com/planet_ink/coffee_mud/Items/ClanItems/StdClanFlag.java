@@ -182,7 +182,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 					}
 				}
 				else
-				if(msg.targetMinor()==CMMsg.TYP_DROP)
+				if((msg.targetMinor()==CMMsg.TYP_DROP)
+				&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG)))
 				{
 					Room R=msg.source().location();
 					LandTitle T=null;
