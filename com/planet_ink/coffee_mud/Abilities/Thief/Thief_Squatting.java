@@ -55,12 +55,19 @@ public class Thief_Squatting extends ThiefSkill
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if((msg.source()==mob)
-			&&(msg.target()==mob.location())
-			&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
+			if(msg.source()==mob)
 			{
-				failed=true;
-				unInvoke();
+				if((msg.target()==mob.location()) && (msg.targetMinor()==CMMsg.TYP_LEAVE))
+				{
+					failed=true;
+					unInvoke();
+				}
+				else
+				if((msg.sourceMinor()==CMMsg.TYP_DEATH)||(msg.sourceMinor()==CMMsg.TYP_QUIT))
+				{
+					failed=true;
+					unInvoke();
+				}
 			}
 			else
 			if((CMLib.flags().isStanding(mob))||(mob.location()!=room))
