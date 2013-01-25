@@ -90,8 +90,7 @@ public class DefaultSession implements Session
 	protected boolean   	 bNextByteIs255		 = false;
 	protected boolean   	 connectionComplete	 = false;
 	protected ReentrantLock  writeLock 			 = new ReentrantLock(true);
-	protected CharCreationLibrary.LoginSession 
-							 loginSession = null;
+	protected CharCreationLibrary.LoginSession loginSession = null;
 
 	protected ColorState	 currentColor		 = ColorLibrary.COLORSTATE_NORMAL;
 	protected ColorState	 lastColor			 = ColorLibrary.COLORSTATE_NORMAL;
@@ -109,8 +108,7 @@ public class DefaultSession implements Session
 	protected long			 lastKeystroke		 = 0;
 	protected long			 promptLastShown	 = 0;
 	protected volatile long  lastPing			 = System.currentTimeMillis();
-	protected volatile InputCallback 
-							 inputCallback=null;
+	protected volatile InputCallback inputCallback=null;
 
 	public String ID(){return "DefaultSession";}
 	public String name() { return ID();}
