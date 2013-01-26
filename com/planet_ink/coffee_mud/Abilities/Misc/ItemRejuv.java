@@ -106,10 +106,11 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	
 	public void verifyFixContents()
 	{
+		final Room R=myProperLocation;
 		for(int i=0;i<contents.size();i++)
 		{
 			Item thisItem=(Item)contents.elementAt(i);
-			if((!myProperLocation.isContent(thisItem))
+			if((!R.isContent(thisItem))
 			&&((!CMLib.flags().isMobile(thisItem)) || (!CMLib.flags().isInTheGame(thisItem,true))))
 			{
 				Item newThisItem=(Item)((Item)ccontents.elementAt(i)).copyOf();
@@ -130,7 +131,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 					C.setLidsNLocks(C.hasALid(),open,C.hasALock(),locked);
 				}
 				thisItem.setExpirationDate(0);
-				myProperLocation.addItem(thisItem);
+				R.addItem(thisItem);
 			}
 			thisItem.setContainer(((Item)ccontents.elementAt(i)).container());
 		}
@@ -141,17 +142,18 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			return false;
 
 		Item item=(Item)affected;
-		if((item==null)||(myProperLocation==null))
+		final Room R=myProperLocation;
+		if((item==null)||(R==null))
 			return false;
 
 		if(tickID==Tickable.TICKID_ROOM_ITEM_REJUV)
 		{
 			verifyFixContents();
-			if((!myProperLocation.isContent(item))
+			if((!R.isContent(item))
 			&&((!CMLib.flags().isMobile(item)) || (!CMLib.flags().isInTheGame(item,true))))
 			{
 				unloadIfNecessary(item);
-				loadMeUp((Item)contents.elementAt(0),myProperLocation);
+				loadMeUp((Item)contents.elementAt(0),R);
 				return false;
 			}
 			if(item instanceof Container)
