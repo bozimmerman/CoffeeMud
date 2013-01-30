@@ -36,38 +36,38 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 		return list.iterator();
 	}
 
-	private void addToList(final ArrayList<J> newList, K key, J value)
-	{
-		if(list == null) list=new ArrayList<J>(0);
-		if(containsKey(key))
-		{
-			if((list.size()>0)&&(list.get(0)==value))
-				return;
-			newList.addAll(list);
-			newList.remove(value);
-		}
-		else
-		{
-			newList.add(value);
-			newList.addAll(list);
-		}
-	}
-	
+	@SuppressWarnings("unchecked")
 	@Override public synchronized J put(K key, J value)
 	{
-		ArrayList<J> newList=new ArrayList<J>(size()+1);
-		addToList(newList, key,value);
+		final ArrayList<J> newList;
+		if (list == null) 
+		{
+			newList=new ArrayList<J>(0);
+			newList.add(value);
+		} 
+		else 
+		{
+			if(containsKey(key))
+			{
+				if((list.size()>0)&&(list.get(0)==value))
+					return value;
+			}
+			newList=(ArrayList<J>)list.clone();
+			if(containsKey(key))
+				newList.remove(value);
+			if(newList.size()==0)
+				newList.add(value);
+			else
+				newList.add(0, value);
+		}
 		list=newList;
 		return super.put(key, value);
 	}
 	
 	@Override public synchronized void putAll(Map<? extends K, ? extends J> t)
 	{
-		ArrayList<J> newList=new ArrayList<J>(size()+t.size());
 		for(Map.Entry<? extends K,? extends J> i : t.entrySet())
-			addToList(newList, i.getKey(), i.getValue());
-		list=newList;
-		super.putAll(t);
+			put(i.getKey(),i.getValue());
 	}
 	
 	@Override public synchronized J remove(Object key)
