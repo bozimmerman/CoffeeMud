@@ -46,9 +46,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	protected Vector contents=new Vector();
 	protected Vector ccontents=new Vector();
 
-	public void loadContent(ItemTicker ticker,
-							Item item,
-							Room room)
+	public synchronized void loadContent(ItemTicker ticker, Item item, Room room)
 	{
 		if(ticker instanceof ItemRejuv)
 		{
@@ -104,12 +102,13 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		return contents.contains(item);
 	}
 	
-	public void verifyFixContents()
+	public synchronized void verifyFixContents()
 	{
 		final Room R=myProperLocation;
 		for(int i=0;i<contents.size();i++)
 		{
 			Item thisItem=(Item)contents.elementAt(i);
+			if(thisItem==null) continue;
 			if((!R.isContent(thisItem))
 			&&((!CMLib.flags().isMobile(thisItem)) || (!CMLib.flags().isInTheGame(thisItem,true))))
 			{
