@@ -217,7 +217,7 @@ public class StdThinInstance extends StdThinArea
 		&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
 		{
 			String said=CMStrings.getSayFromMessage(msg.sourceMessage());
-			if(said.toUpperCase().trim().equals("RESET INSTANCE"))
+			if((said!=null)&&(said.toUpperCase().trim().equals("RESET INSTANCE")))
 			{
 				Room returnToRoom=null;
 				Room thisRoom=msg.source().location();
