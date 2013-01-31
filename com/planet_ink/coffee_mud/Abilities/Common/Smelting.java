@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -145,6 +146,7 @@ public class Smelting extends CraftingSkill
 		}
 		Item fire=getRequiredFire(mob,0);
 		if(fire==null) return false;
+		activity = CraftingActivity.CRAFTING;
 		building=null;
 		messedUp=false;
 		String recipeName=CMParms.combine(commands,0);

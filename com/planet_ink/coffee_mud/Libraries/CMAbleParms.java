@@ -993,34 +993,56 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public String convertFromItem(final ItemCraftor A, final Item I) 
 					{ 
 						String oldName=I.Name();
-						String newName=CMStrings.replaceWord(oldName, RawMaterial.CODES.NAME(I.material()), "%");
+						if(I.material()==RawMaterial.RESOURCE_GLASS)
+							return CMLib.english().cleanArticles(oldName);
+						
+						String newName=oldName;
+						List<String> V=CMParms.parseSpaces( oldName,true);
+						for(int i=0;i<V.size();i++)
+						{
+							String s=V.get(i);
+							int code=RawMaterial.CODES.FIND_IgnoreCase(s);
+							if((code>0)&&(code==I.material()))
+							{
+								V.set(i, "%");
+								if((i>0)&&(CMLib.english().isAnArticle(V.get(i-1))))
+									V.remove(i-1);
+								newName=CMParms.combine(V);
+								break;
+							}
+						}
 						if(oldName.equals(newName))
 						{
-							String upperName=newName.toUpperCase();
-							for(int code : RawMaterial.CODES.ALL())
-								if(upperName.indexOf(RawMaterial.CODES.NAME(code))>0)
+							for(int i=0;i<V.size();i++)
+							{
+								String s=V.get(i);
+								int code=RawMaterial.CODES.FIND_IgnoreCase(s);
+								if(code>0)
 								{
-									String newNewName=CMStrings.replaceWord(newName, RawMaterial.CODES.NAME(code), "%");
-									if(!newNewName.equals(newName))
-									{
-										break;
-									}
+									V.set(i, "%");
+									if((i>0)&&(CMLib.english().isAnArticle(V.get(i-1))))
+										V.remove(i-1);
+									newName=CMParms.combine(V);
+									break;
 								}
+							}
 						}
 						if(newName.indexOf( '%' )<0)
 						{
-							List<String> V=CMParms.parseSpaces( newName,true);
 							for(int i=0;i<V.size()-1;i++)
 								if(CMLib.english().isAnArticle( V.get( i ) ))
 								{
-									V.add( i+1, "%" );
+									if(i==0)
+										V.set( i, "%" );
+									else
+										V.add(i+1, "%");
 									break;
 								}
 							newName=CMParms.combine( V );
 						}
 						if(newName.indexOf( '%' )<0)
 						{
-							newName="a % "+newName;
+							newName="% "+newName;
 						}
 						return newName;
 					}

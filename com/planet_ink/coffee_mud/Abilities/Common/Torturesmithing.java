@@ -194,6 +194,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
 
+		activity = CraftingActivity.CRAFTING;
 		building=null;
 		messedUp=false;
 		int amount=-1;

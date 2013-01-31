@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -275,6 +276,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 				commonTell(mob,"You can only brew into glass containers.");
 				return false;
 			}
+			activity = CraftingActivity.CRAFTING;
 			String recipeName=CMParms.combine(commands,0);
 			theSpell=null;
 			int theSpellLevel=1;

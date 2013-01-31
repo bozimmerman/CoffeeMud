@@ -193,6 +193,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		{
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
+		activity = CraftingActivity.CRAFTING;
 		building=null;
 		int amount=-1;
 		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))

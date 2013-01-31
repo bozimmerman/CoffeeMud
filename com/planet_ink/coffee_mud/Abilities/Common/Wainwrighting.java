@@ -220,6 +220,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		{
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
+		activity = CraftingActivity.CRAFTING;
 		building=null;
 		key=null;
 		messedUp=false;

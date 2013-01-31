@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -193,6 +194,7 @@ public class LockSmith extends CraftingSkill
 		keyCode=""+Math.random();
 		String startStr=null;
 		int duration=8;
+		activity = CraftingActivity.CRAFTING;
 		building=null;
 		boolean keyFlag=false;
 		workingOn=null;

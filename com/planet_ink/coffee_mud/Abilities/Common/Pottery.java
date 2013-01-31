@@ -230,6 +230,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		}
 		Item fire=getRequiredFire(mob,autoGenerate);
 		if(fire==null) return false;
+		activity = CraftingActivity.CRAFTING;
 		building=null;
 		messedUp=false;
 		int amount=-1;
