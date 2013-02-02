@@ -53,7 +53,8 @@ public class DefaultSession implements Session
 	private static final String	   TIMEOUT_MSG		= "Timed Out.";
 	
 	
-	protected Thread		 thread 			 = null;
+	private volatile Thread  runThread 			 = null;
+	private volatile Thread	 writeThread 		 = null;
 	protected volatile int   status 			 = 0;
 	protected int   		 snoopSuspensionStack= 0;
 	protected Socket		 sock;
@@ -496,6 +497,7 @@ public class DefaultSession implements Session
 			{
 				try
 				{
+					writeThread=Thread.currentThread();
 					writeStartTime=System.currentTimeMillis();
 					out.write(c);
 					if(out.checkError())
@@ -503,6 +505,7 @@ public class DefaultSession implements Session
 				}
 				finally
 				{
+					writeThread=null;
 					lastPing=System.currentTimeMillis();
 					writeStartTime=0;
 					writeLock.unlock();
@@ -514,15 +517,7 @@ public class DefaultSession implements Session
 				final String name=(mob!=null)?mob.Name():getAddress();
 				Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
 				stopSession(true,true,true);
-				Thread killThisThread=null;
-				synchronized(this)
-				{
-					if(thread==Thread.currentThread())
-						killFlag=true;
-					else
-					if(thread!=null)
-						killThisThread=thread;
-				}
+				final Thread killThisThread=writeThread;
 				if(killThisThread!=null)
 					CMLib.killThread(killThisThread,500,1);
 			}
@@ -598,7 +593,7 @@ public class DefaultSession implements Session
 			else
 				lastStr=msg;
 
-			if(thread==Thread.currentThread())
+			if(runThread==Thread.currentThread())
 			{
 				int pageBreak=getPageBreak();
 				int lines=0;
@@ -1404,14 +1399,17 @@ public class DefaultSession implements Session
 		{
 			if(killThread)
 			{
-				if(thread==Thread.currentThread())
+				if(runThread==Thread.currentThread())
 					killFlag=true;
 				else
-				if(thread!=null)
-					killThisThread=thread;
+				if(runThread!=null)
+					killThisThread=runThread;
 			}
 		}
 		if(killThisThread!=null)
+			CMLib.killThread(killThisThread,1000,1);
+		killThisThread=writeThread;
+		if((killThisThread!=null)&&(killThisThread!=Thread.currentThread()))
 			CMLib.killThread(killThisThread,1000,1);
 	}
 
@@ -1560,7 +1558,7 @@ public class DefaultSession implements Session
 
 	public boolean isRunning() 
 	{
-		return thread!=null;
+		return runThread!=null;
 	}
 	
 	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj)
@@ -1591,12 +1589,12 @@ public class DefaultSession implements Session
 	{
 		synchronized(this)
 		{
-			if(thread!=null)
+			if(runThread!=null)
 			{
 				// one at a time, thank you.
 				return;
 			}
-			thread=Thread.currentThread();
+			runThread=Thread.currentThread();
 		}
 		activeMillis=System.currentTimeMillis();
 		try
@@ -1671,7 +1669,7 @@ public class DefaultSession implements Session
 		{
 			synchronized(this)
 			{
-				thread=null;
+				runThread=null;
 			}
 			activeMillis=0;
 		}
