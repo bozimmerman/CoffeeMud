@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -82,7 +83,7 @@ public class MOBTeacher extends CombatAbilities
 		mob.recoverCharStats();
 	}
 
-	protected void classAbles(MOB mob, Hashtable myAbles, int pct)
+	protected void classAbles(MOB mob, Map<String,Ability> myAbles, int pct)
 	{
 		boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
 		String className=mob.charStats().getCurrentClass().ID();
@@ -96,57 +97,70 @@ public class MOBTeacher extends CombatAbilities
 			&&((!stdCharClass)||(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))))
 				addAbility(mob,A,pct,myAbles);
 		}
+		for(ClanGovernment G : CMLib.clans().getStockGovernments())
+		{
+			G.getClanLevelAbilities(Integer.valueOf(Integer.MAX_VALUE));
+			for(final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(G.getName(), false);m.hasMoreElements();)
+			{
+				AbilityMapping M=m.nextElement();
+				Ability A2=CMClass.getAbility(M.abilityID);
+				addAbility(mob,A2,pct,myAbles);
+			}
+		}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
-		&&(!noExpertises)
 		&&((--tickDownToKnowledge)==0)
 		&&(ticking instanceof MOB))
 		{
-			noExpertises=true;
-			MOB mob=(MOB)ticking;
-			if(teachEverything)
+			if(!noExpertises)
 			{
-				for(Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
-					mob.addExpertise(e.nextElement().ID);
-				trainableExpertises=null;
-			}
-			else
-			{
-				boolean someNew=true;
-				CharStats oldBase=(CharStats)mob.baseCharStats().copyOf();
-				for(int i: CharStats.CODES.BASE())
-					mob.baseCharStats().setStat(i,100);
-				for(int i=0;i<mob.baseCharStats().numClasses();i++)
-					mob.baseCharStats().setClassLevel(mob.baseCharStats().getMyClass(i),100);
-				mob.recoverCharStats();
-				while(someNew)
+				noExpertises=true;
+				MOB mob=(MOB)ticking;
+				if(teachEverything)
 				{
-					someNew=false;
-					List<ExpertiseDefinition> V=CMLib.expertises().myQualifiedExpertises(mob);
-					ExpertiseLibrary.ExpertiseDefinition def=null;
-					for(int v=0;v<V.size();v++)
-					{
-						def=V.get(v);
-						if(mob.fetchExpertise(def.ID)==null)
-						{
-							mob.addExpertise(def.ID);
-							someNew=true;
-						}
-					}
-					if(someNew)
-						trainableExpertises=null;
+					for(Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+						mob.addExpertise(e.nextElement().ID);
+					trainableExpertises=null;
 				}
-				mob.setBaseCharStats(oldBase);
-				mob.recoverCharStats();
+				else
+				{
+					boolean someNew=true;
+					CharStats oldBase=(CharStats)mob.baseCharStats().copyOf();
+					for(int i: CharStats.CODES.BASE())
+						mob.baseCharStats().setStat(i,100);
+					for(int i=0;i<mob.baseCharStats().numClasses();i++)
+						mob.baseCharStats().setClassLevel(mob.baseCharStats().getMyClass(i),100);
+					mob.recoverCharStats();
+					while(someNew)
+					{
+						someNew=false;
+						List<ExpertiseDefinition> V=CMLib.expertises().myQualifiedExpertises(mob);
+						ExpertiseLibrary.ExpertiseDefinition def=null;
+						for(int v=0;v<V.size();v++)
+						{
+							def=V.get(v);
+							if(mob.fetchExpertise(def.ID)==null)
+							{
+								mob.addExpertise(def.ID);
+								someNew=true;
+							}
+						}
+						if(someNew)
+							trainableExpertises=null;
+					}
+					mob.setBaseCharStats(oldBase);
+					mob.recoverCharStats();
+				}
 			}
+			
 		}
 		return super.tick(ticking,tickID);
 	}
 	
-	public void addAbility(MOB mob, Ability A, int pct, Hashtable myAbles)
+	public void addAbility(MOB mob, Ability A, int pct, Map<String,Ability> myAbles)
 	{
 		if(CMLib.dice().rollPercentage()<=pct)
 		{

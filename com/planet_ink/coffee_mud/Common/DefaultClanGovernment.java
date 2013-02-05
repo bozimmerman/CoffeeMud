@@ -709,6 +709,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			}
 		}
 		if(clanAbilityMap==null) return emptyIDs;
+		if(level==null) level=Integer.valueOf(Integer.MAX_VALUE);
 		if(clanAbilityMap.containsKey(level))
 			return clanAbilityMap.get(level);
 		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(clanGvtID,level.intValue(),true,true);
@@ -744,7 +745,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		
 		if(clanEffectMap.containsKey(level))
 			return clanEffectMap.get(level); 
-		final CMUniqSortSVec<Ability> finalV = new CMUniqSortSVec<Ability>();
+		final CMSortSVec<Ability> finalV = new CMSortSVec<Ability>();
 		for(int v=0;v<clanEffectLevels.length;v++)
 		{
 			if((clanEffectLevels[v]<=level.intValue())

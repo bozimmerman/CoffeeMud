@@ -716,7 +716,7 @@ public class DefaultClan implements Clan
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
 			msg.append("^xClan Level Benefits:^.^N\n\r");
-			List<AbilityMapper.AbilityMapping> abilities=CMLib.ableMapper().getUpToLevelListings(govt().ID(),getClanLevel(),true,false);
+			List<AbilityMapper.AbilityMapping> abilities=CMLib.ableMapper().getUpToLevelListings(govt().getName(),getClanLevel(),true,false);
 			if(abilities.size()>0)
 			{
 				final List<String> names = new Vector<String>();
