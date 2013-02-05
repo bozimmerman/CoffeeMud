@@ -322,22 +322,24 @@ public class DefaultClan implements Clan
 			if(oldxp < exp) // we gained
 			{
 				double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
-				if((double)exp > nextLevelXP)
+				while((double)exp > nextLevelXP)
 				{
 					setClanLevel(getClanLevel()+1);
 					clanAnnounce(""+getGovernmentName()+" "+name()+" has attained clan level "+getClanLevel()+"!");
 					update();
+					nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
 				}
 			}
 			else
 			if((oldxp > exp) && (getClanLevel()>1))
 			{
 				double prevLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()-1}, 0.0);
-				if((double)exp < prevLevelXP)
+				while((double)exp < prevLevelXP)
 				{
 					setClanLevel(getClanLevel()-1);
 					clanAnnounce(""+getGovernmentName()+" "+name()+" has reverted to clan level "+getClanLevel()+"!");
 					update();
+					prevLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()-1}, 0.0);
 				}
 			}
 		}
