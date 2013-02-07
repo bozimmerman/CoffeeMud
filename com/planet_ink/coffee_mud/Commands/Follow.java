@@ -39,7 +39,6 @@ public class Follow extends StdCommand
 	private final String[] access={"FOLLOW","FOL","FO","F"};
 	public String[] getAccessWords(){return access;}
 
-
 	public boolean nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
 		if(mob==null) return false;

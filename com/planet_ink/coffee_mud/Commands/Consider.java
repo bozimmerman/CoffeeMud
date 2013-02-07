@@ -40,6 +40,8 @@ public class Consider extends StdCommand
 	private final String[] access={"CONSIDER","COS","CO"};
 	public String[] getAccessWords(){return access;}
 
+	private final static Class[][] internalParameters=new Class[][]{{MOB.class}};
+	
 	public int relativeLevelDiff(MOB mob1, MOB mob2)
 	{
 		if((mob1==null)||(mob2==null)) return 0;
@@ -208,8 +210,8 @@ public class Consider extends StdCommand
 	
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
-		if((args.length==0)||(!(args[0] instanceof MOB)))
-			return null;
+		if(!super.checkArguments(internalParameters, args))
+			return Integer.valueOf(0);
 		return Integer.valueOf(doConsider(mob, (MOB)args[0]));
 	}
 	

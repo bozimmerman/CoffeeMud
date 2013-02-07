@@ -73,6 +73,38 @@ public class StdCommand implements Command
 		return Boolean.valueOf(execute(mob,commands,metaFlags));
 	}
 	
+	public boolean checkArguments(Class[][] fmt, Object... args)
+	{
+		for(int f=0;f<fmt.length;f++)
+		{
+			Class[] ff=fmt[f];
+			if(ff.length==args.length)
+			{
+				boolean check=true; 
+				for(int i=0;i<ff.length;i++)
+				{
+					if(!ff[i].isAssignableFrom(args[i].getClass()))
+					{
+						check=false;
+						break;
+					}
+				}
+				if(check)
+					return true;
+			}
+		}
+		StringBuilder str=new StringBuilder("");
+		str.append("Illegal arguments. Sent: ");
+		for(Object o : args)
+			str.append(o.getClass().getSimpleName()).append(" ");
+		str.append(". Correct: ");
+		for(int f=0;f<fmt.length;f++)
+			for(Class c : fmt[f])
+				str.append(c.getSimpleName()).append(" ");
+		Log.errOut(ID(),str.toString());
+		return false;
+	}
+	
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getActionCost(ID(), 0.0);

@@ -39,6 +39,8 @@ public class Export extends StdCommand
 	private final String[] access={"EXPORT"};
 	public String[] getAccessWords(){return access;}
 
+	private final static Class[][] internalParameters=new Class[][]{{String.class,String.class,String.class,Integer.class,Session.class,Area.class,Room.class}};
+	
 	public static void reallyExport(MOB mob, Session S, String fileName, String xml)
 	{
 		if(fileName==null) return;
@@ -211,11 +213,9 @@ public class Export extends StdCommand
 	 */
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
-		if(args.length<7)
-		{
-			Log.errOut("Export","Illegal arguments");
+		if(!super.checkArguments(internalParameters, args))
 			return null;
-		}
+		
 		String commandType=(String)args[0];
 		String subType=(String)args[1];
 		String fileName=(String)args[2];

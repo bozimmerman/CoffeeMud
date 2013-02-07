@@ -39,6 +39,8 @@ public class Affect extends StdCommand
 	private final String[] access={"AFFECTS","AFFECT","AFF","AF"};
 	public String[] getAccessWords(){return access;}
 
+//	private final static Class[][] internalParameters=new Class[][]{{Physical.class}};
+	
 	public String getMOBState(final MOB mob)
 	{
 		final StringBuffer msg=new StringBuffer("");
@@ -212,6 +214,8 @@ public class Affect extends StdCommand
 
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
+		//if(!super.checkArguments(internalParameters, args)) return Boolean.FALSE.toString();
+
 		Physical target=mob;
 		Session S=(mob!=null)?mob.session():null;
 		for(Object o : args)

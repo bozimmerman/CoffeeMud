@@ -80,7 +80,7 @@ public class ClanDeclare extends StdCommand
 		
 		if(C2==null)
 		{
-			mob.tell(clan2Name+" is unknown.");
+			mob.tell(clan2Name+" is an unknown clan.");
 			return false;
 		}
 
@@ -117,7 +117,7 @@ public class ClanDeclare extends StdCommand
 				}
 				if(C.getClanRelations(C2.clanID())==newRole)
 				{
-					mob.tell(C.getName()+"is already in that state with "+C2.getName()+".");
+					mob.tell(C.getName()+" is already in that state with "+C2.getName()+".");
 					return false;
 
 				}

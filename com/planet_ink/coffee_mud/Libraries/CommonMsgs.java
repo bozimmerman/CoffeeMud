@@ -182,8 +182,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							String message,
 							boolean systemMsg)
 	{
-		forceStandardCommand(mob,"Channel",
-						  new XVector<Object>(Boolean.valueOf(systemMsg),channelName,message));
+		forceInternalCommand(mob,"Channel",Boolean.valueOf(systemMsg),channelName,message);
 	}
 
 	public void postChannel(String channelName,
@@ -192,7 +191,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							boolean systemMsg)
 	{
 		MOB talker=CMClass.getFactoryMOB();
-		talker.setName("^?");
+		talker.setName("^</B^>");
 		talker.setLocation(CMLib.map().getRandomRoom());
 		talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
 		talker.phyStats().setDisposition(PhyStats.IS_GOLEM);

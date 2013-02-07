@@ -40,6 +40,8 @@ public class Equipment extends StdCommand
 	private final String[] access={"EQUIPMENT","EQ","EQUIP"};
 	public String[] getAccessWords(){return access;}
 
+	private final static Class[][] internalParameters=new Class[][]{{MOB.class},{Boolean.class},{}};
+	
 	public static StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)
 	{
 		StringBuilder msg=new StringBuilder("");
@@ -324,6 +326,9 @@ public class Equipment extends StdCommand
 
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
+		if(!super.checkArguments(internalParameters, args))
+			return null;
+
 		if((args.length>0)&&(args[0] instanceof MOB))
 			return getEquipment((MOB)args[0],mob,false);
 		else

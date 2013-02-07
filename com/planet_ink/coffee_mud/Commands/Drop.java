@@ -41,6 +41,8 @@ public class Drop extends StdCommand
 	private final String[] access={"DROP","DRO"};
 	public String[] getAccessWords(){return access;}
 
+	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class,Boolean.class}};
+	
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
 	{
 		Room R=mob.location();
@@ -182,14 +184,9 @@ public class Drop extends StdCommand
 
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
-		if((args.length>=3)
-		&&(args[0] instanceof Environmental)
-		&&(args[1] instanceof Boolean)
-		&&(args[2] instanceof Boolean))
-		{
-			return Boolean.valueOf(drop(mob,(Environmental)args[0],((Boolean)args[1]).booleanValue(),((Boolean)args[2]).booleanValue()));
-		}
-		return super.executeInternal(mob, metaFlags, args);
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		return Boolean.valueOf(drop(mob,(Environmental)args[0],((Boolean)args[1]).booleanValue(),((Boolean)args[2]).booleanValue()));
 	}
 	
 }

@@ -67,7 +67,7 @@ public class Prayer_PeaceRitual extends Prayer
 		}
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel((String)channels.get(i),clan2Set,mob.name()+" located in '"+mob.location().displayText()+" is performing a peace ritual on behalf of "+clan2+".",false);
+			CMLib.commands().postChannel((String)channels.get(i),clan2Set,mob.name()+" located in '"+mob.location().displayText()+"' is performing a peace ritual on behalf of "+clan1.name()+".",false);
 		return super.tick(ticking,tickID);
 	}
 

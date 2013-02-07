@@ -38,20 +38,25 @@ public class Channel extends StdCommand
 	public Channel(){}
 	public String[] getAccessWords() { return CMLib.channels().getChannelNames(); }
 
+	private final static Class[][] internalParameters=new Class[][]{{Boolean.class,String.class,String.class}};
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((commands.size()>2)&&(commands.firstElement() instanceof Boolean))
-		{
-			boolean systemMsg=((Boolean)commands.firstElement()).booleanValue();
-			String channelName=(String)commands.elementAt(1);
-			String message=(String)commands.elementAt(2);
-			CMLib.channels().reallyChannel(mob,channelName,message,systemMsg);
-			return true;
-		}
 		return channel(mob, commands, false);
 	}
 
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		boolean systemMsg=((Boolean)args[0]).booleanValue();
+		String channelName=(String)args[1];
+		String message=(String)args[2];
+		CMLib.channels().reallyChannel(mob,channelName,message,systemMsg);
+		return Boolean.TRUE;
+	}
+	
 	public boolean channel(MOB mob, Vector commands, boolean systemMsg)
 	{
 		PlayerStats pstats=mob.playerStats();

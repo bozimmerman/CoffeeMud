@@ -40,6 +40,8 @@ public class Deities extends StdCommand
 	private final String[] access={"DEITIES","GODS","DEITY"};
 	public String[] getAccessWords(){return access;}
 
+	private final static Class[][] internalParameters=new Class[][]{{Deity.class}};
+	
 	public String getDeityInformation(MOB mob, Deity D)
 	{
 		StringBuffer msg = new StringBuffer("");
@@ -100,9 +102,9 @@ public class Deities extends StdCommand
 	
 	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
-		if((args.length>0)&&(args[0] instanceof Deity))
-			return this.getDeityInformation(mob, (Deity)args[0]);
-		return null;
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE.toString();
+		return this.getDeityInformation(mob, (Deity)args[0]);
 	}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
