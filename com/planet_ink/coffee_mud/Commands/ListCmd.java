@@ -1968,7 +1968,7 @@ public class ListCmd extends StdCommand
 	public boolean pause(Session sess) 
 	{
 		if((sess==null)||(sess.isStopped())) return false;
-		sess.out("<pause - enter>".toCharArray());
+		sess.rawCharsOut("<pause - enter>".toCharArray());
 		try{ 
 			String s=sess.blockingIn(10 * 60 * 1000); 
 			if(s!=null)

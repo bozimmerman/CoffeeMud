@@ -96,7 +96,7 @@ public class FakeSession implements Session
 	public void stdPrint(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
 	public void stdPrintln(String msg){ onlyPrint(msg+"\n",false); }
 	public void stdPrintln(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
-	public void out(char[] c){ onlyPrint(new String(c),false); }
+	public void rawCharsOut(char[] c){ onlyPrint(new String(c),false); }
 	public void print(String msg){ onlyPrint(msg,false); }
 	public void print(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
 	public void println(String msg){ onlyPrint(msg+"\n",false); }

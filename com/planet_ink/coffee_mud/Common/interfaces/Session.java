@@ -64,7 +64,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * Low level text output method.
 	 * Implements such features as snoops, spam-stacking, page
 	 * breaks, and line caching
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#out(char[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawCharsOut(char[])
 	 * @param msg the string to send to the user
 	 * @param noCache true to disable line caching, false otherwise
 	 */
@@ -82,7 +82,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/**
 	 * Lowest level user-output method.  Does nothing
 	 * but send the string to the user, period.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#out(char[])
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawCharsOut(char[])
 	 * @param msg the string to send to the user
 	 */
 	
@@ -160,7 +160,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * but send the string to the user, period.
 	 * @param c string (as char array) to send out to the user
 	 */
-	public void out(char[] c);
+	public void rawCharsOut(char[] c);
 	
 	/**
 	 * Checks whether this session is currently over its 

@@ -272,12 +272,12 @@ public class DefaultSession implements Session
 		if(optionCode==TELNET_TERMTYPE)
 		{
 			byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)1,(byte)TELNET_IAC,(byte)TELNET_SE};
-			reallyRawOut(out, stream);
+			rawBytesOut(out, stream);
 		}
 		else
 		{
 			byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)TELNET_IAC,(byte)TELNET_SE};
-			reallyRawOut(out, stream);
+			rawBytesOut(out, stream);
 		}
 		out.flush();
 	}
@@ -312,7 +312,7 @@ public class DefaultSession implements Session
 	throws IOException
 	{
 		byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
-		reallyRawOut(out, command);
+		rawBytesOut(out, command);
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
@@ -321,7 +321,7 @@ public class DefaultSession implements Session
 	public void changeTelnetMode(int telnetCode, boolean onOff) 
 	{
 		char[] command={(char)TELNET_IAC,onOff?(char)TELNET_WILL:(char)TELNET_WONT,(char)telnetCode};
-		reallyRawOut(out, command);
+		rawCharsOut(out, command);
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
@@ -329,7 +329,7 @@ public class DefaultSession implements Session
 	public void changeTelnetModeBackwards(int telnetCode, boolean onOff)
 	{
 		char[] command={(char)TELNET_IAC,onOff?(char)TELNET_DO:(char)TELNET_DONT,(char)telnetCode};
-		reallyRawOut(out, command);
+		rawCharsOut(out, command);
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
@@ -338,7 +338,7 @@ public class DefaultSession implements Session
 	throws IOException
 	{
 		byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
-		reallyRawOut(out, command);
+		rawBytesOut(out, command);
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
@@ -348,12 +348,12 @@ public class DefaultSession implements Session
 		if(telnetCode==TELNET_TERMTYPE)
 		{
 			char[] command={(char)TELNET_IAC,(char)TELNET_SB,(char)telnetCode,(char)1,(char)TELNET_IAC,(char)TELNET_SE};
-			reallyRawOut(out, command);
+			rawCharsOut(out, command);
 		}
 		else
 		{
 			char[] command={(char)TELNET_IAC,(char)TELNET_SB,(char)telnetCode,(char)TELNET_IAC,(char)TELNET_SE};
-			reallyRawOut(out, command);
+			rawCharsOut(out, command);
 		}
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
@@ -501,43 +501,7 @@ public class DefaultSession implements Session
 		return ((System.currentTimeMillis()-time)>10000);
 	}
 	
-	public final void reallyRawOut(final PrintWriter out, final char[] chars)
-	{
-		try
-		{
-			if(debugOutput && Log.debugChannelOn())
-			{
-				StringBuilder str=new StringBuilder("OUTPUT: '");
-				for(char c : chars)
-					str.append(c);
-				Log.debugOut("Session", str.toString()+"'");
-			}
-			out.write(chars);
-		}
-		finally
-		{
-			lastWriteTime=System.currentTimeMillis();
-		}
-	}
-
-	public final void reallyRawOut(final PrintWriter out, final char c)
-	{
-		try
-		{
-			if(debugOutput && Log.debugChannelOn())
-			{
-				StringBuilder str=new StringBuilder("OUTPUT: '").append(c).append('\'');
-				Log.debugOut("Session", str.toString());
-			}
-			out.write(c);
-		}
-		finally
-		{
-			lastWriteTime=System.currentTimeMillis();
-		}
-	}
-
-	public final void reallyRawOut(final OutputStream out, final byte[] bytes) throws IOException
+	public final void rawBytesOut(final OutputStream out, final byte[] bytes) throws IOException
 	{
 		try
 		{
@@ -556,9 +520,14 @@ public class DefaultSession implements Session
 		}
 	}
 
-	public void out(char[] c)
+	public void rawCharsOut(char[] chars)
 	{
-		if((out==null)||(c==null)||(c.length==0))
+		rawCharsOut(out,chars);
+	}
+	
+	public void rawCharsOut(final PrintWriter out, char[] chars)
+	{
+		if((out==null)||(chars==null)||(chars.length==0))
 			return;
 		try
 		{
@@ -568,7 +537,14 @@ public class DefaultSession implements Session
 				{
 					writeThread=Thread.currentThread();
 					writeStartTime=System.currentTimeMillis();
-					reallyRawOut(out,c);
+					if(debugOutput && Log.debugChannelOn())
+					{
+						StringBuilder str=new StringBuilder("OUTPUT: '");
+						for(char c : chars)
+							str.append(c);
+						Log.debugOut("Session", str.toString()+"'");
+					}
+					out.write(chars);
 					if(out.checkError())
 						stopSession(true,true,true);
 				}
@@ -576,6 +552,7 @@ public class DefaultSession implements Session
 				{
 					writeThread=null;
 					writeStartTime=0;
+					lastWriteTime=System.currentTimeMillis();
 					writeLock.unlock();
 				}
 			}
@@ -593,15 +570,15 @@ public class DefaultSession implements Session
 		catch(Exception ioe){ killFlag=true;}
 	}
 	
-	public void out(String c)
+	public void rawCharsOut(String c)
 	{
 		if(c!=null) 
-			out(c.toCharArray());
+			rawCharsOut(c.toCharArray());
 	}
-	public void out(char c)
+	public void rawCharsOut(char c)
 	{
 		char[] cs={c}; 
-		out(cs);
+		rawCharsOut(cs);
 	}
 	public void snoopSupportPrint(final String msg, final boolean noCache)
 	{
@@ -652,7 +629,7 @@ public class DefaultSession implements Session
 			{
 				if(spamStack>1)
 					lastStr=lastStr.substring(0,lastStr.length()-2)+"("+spamStack+")"+lastStr.substring(lastStr.length()-2);
-				out(lastStr.toCharArray());
+				rawCharsOut(lastStr.toCharArray());
 			}
 
 			spamStack=0;
@@ -677,9 +654,9 @@ public class DefaultSession implements Session
 							lines=0;
 							if((i<(msg.length()-1)&&(msg.charAt(i+1)=='\r')))
 								i++;
-							out(msg.substring(last,i+1).toCharArray());
+							rawCharsOut(msg.substring(last,i+1).toCharArray());
 							last=i+1;
-							out("<pause - enter>".toCharArray());
+							rawCharsOut("<pause - enter>".toCharArray());
 							try{ 
 								String s=blockingIn(-1); 
 								if(s!=null)
@@ -716,14 +693,14 @@ public class DefaultSession implements Session
 				}
 				curPrevMsg.append(msg.charAt(i));
 			}
-			out(msg.toCharArray());
+			rawCharsOut(msg.toCharArray());
 		}
 		catch(java.lang.NullPointerException e){}
 	}
 
 	public void rawOut(String msg)
 	{
-		out(msg);
+		rawCharsOut(msg);
 	}
 	public void rawPrint(String msg)
 	{
@@ -1044,7 +1021,7 @@ public class DefaultSession implements Session
 						Command C=CMClass.getCommand("Shutdown");
 						l="";
 						killFlag=true;
-						reallyRawOut(out,"\n\n\033[1z<Executing Shutdown...\n\n".toCharArray());
+						rawCharsOut(out,"\n\n\033[1z<Executing Shutdown...\n\n".toCharArray());
 						M.setSession(this);
 						if(C!=null) C.execute(M,cmd,0);
 					}
@@ -1162,7 +1139,7 @@ public class DefaultSession implements Session
 			break;
 		}
 		case TELNET_AYT:
-			out(" \b");
+			rawCharsOut(" \b");
 			break;
 		default:
 			return;
@@ -1260,7 +1237,7 @@ public class DefaultSession implements Session
 							lastWasLF = false;
 						lastWasCR = false;
 						if (clientTelnetMode(TELNET_ECHO))
-							out(""+(char)13+(char)10);  // CR
+							rawCharsOut(""+(char)13+(char)10);  // CR
 						break;
 					}
 					case 13:
@@ -1275,7 +1252,7 @@ public class DefaultSession implements Session
 							lastWasCR = false;
 						lastWasLF = false;
 						if (clientTelnetMode(TELNET_ECHO))
-							out(""+(char)13+(char)10);  // CR
+							rawCharsOut(""+(char)13+(char)10);  // CR
 						break;
 					}
 					case 27:
@@ -1301,7 +1278,7 @@ public class DefaultSession implements Session
 					lastKeystroke=System.currentTimeMillis();
 					if(appendInputFlag) input.append((char)c);
 					if (clientTelnetMode(TELNET_ECHO))
-						out((char)c);
+						rawCharsOut((char)c);
 					if(!appendInputFlag) return c;
 				}
 				if(rv) return 0;
@@ -1337,7 +1314,7 @@ public class DefaultSession implements Session
 				{
 					if(now > nextPingAtTime)
 					{
-						out(PINGCHARS);
+						rawCharsOut(PINGCHARS);
 						nextPingAtTime=now +PINGTIMEOUT;
 					}
 					CMLib.s_sleep(100); // if they entered nothing, make sure we dont do a busy poll
@@ -1525,7 +1502,7 @@ public class DefaultSession implements Session
 					try{
 						if(!out.checkError())
 						{
-							reallyRawOut(out,' ');
+							rawCharsOut(out,PINGCHARS);
 							out.checkError();
 						}
 					} catch(Exception t){}
@@ -1926,7 +1903,7 @@ public class DefaultSession implements Session
 			if(input==null)
 			{
 				if((System.currentTimeMillis()-lastWriteTime)>PINGTIMEOUT)
-					out(PINGCHARS);
+					rawCharsOut(PINGCHARS);
 			}
 			else
 			{
