@@ -49,7 +49,6 @@ public class DefaultSession implements Session
 	private final HashSet		   telnetSupportSet = new HashSet();
 	private static final HashSet   mxpSupportSet	= new HashSet();
 	private static final Hashtable mxpVersionInfo   = new Hashtable();
-	protected static int		   sessionCounter   = 0;
 	private static final String	   TIMEOUT_MSG		= "Timed Out.";
 	
 	
@@ -60,6 +59,7 @@ public class DefaultSession implements Session
 	protected Socket		 sock;
 	protected BufferedReader in;
 	protected PrintWriter	 out;
+	protected InputStream    rawin;
 	protected OutputStream   rawout;
 	protected MOB   		 mob;
 	protected PlayerAccount  acct				 = null;
@@ -108,7 +108,10 @@ public class DefaultSession implements Session
 	protected long			 tickTotal			 = 0;
 	protected long			 lastKeystroke		 = 0;
 	protected long			 promptLastShown	 = 0;
-	protected volatile long  lastPing			 = System.currentTimeMillis();
+	protected volatile long  lastWriteTime		 = System.currentTimeMillis();
+	protected boolean   	 debugOutput		 = false;
+	protected boolean   	 debugInput			 = false;
+	protected StringBuffer   debugInputBuf		 = new StringBuffer("");
 	protected volatile InputCallback inputCallback=null;
 
 	public String ID(){return "DefaultSession";}
@@ -123,7 +126,6 @@ public class DefaultSession implements Session
 	public DefaultSession()
 	{
 		threadGroupChar=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		++sessionCounter;
 	}
 
 	public void initializeSession(Socket s, String introTextStr)
@@ -131,9 +133,30 @@ public class DefaultSession implements Session
 		sock=s;
 		try
 		{
+			debugOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
+			debugInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BININ);
+			if(debugInput)
+				CMLib.threads().startTickDown(new Tickable(){
+					@Override public String ID() { return "SessionTicker";}
+					@Override public CMObject newInstance() { return null; }
+					@Override public CMObject copyOf() { return null; }
+					@Override public void initializeClass() {}
+					@Override public int compareTo(CMObject o) { return 0;}
+					@Override public String name() { return ID(); }
+					@Override public long getTickStatus() { return 0; }
+					@Override public boolean tick(Tickable ticking, int tickID) {
+						if(debugInputBuf.length()>0)
+						{
+							Log.sysOut("Session","INPUT: '"+debugInputBuf.toString()+"'");
+							debugInputBuf.setLength(0);
+						}
+						return !killFlag;
+					} }, 0, 100, 1);
 			sock.setSoTimeout(SOTIMEOUT);
 			rawout=sock.getOutputStream();
-			InputStream rawin=sock.getInputStream();
+			rawin=sock.getInputStream();
+			in=new BufferedReader(new InputStreamReader(sock.getInputStream(),CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
+			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
@@ -153,9 +176,6 @@ public class DefaultSession implements Session
 				changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
 			rawout.flush();
 			preliminaryRead(250);
-
-			out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
-			in = new BufferedReader(new InputStreamReader(rawin,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
 
 			preliminaryRead(250);
 			if(clientTelnetMode(TELNET_COMPRESS2))
@@ -252,15 +272,14 @@ public class DefaultSession implements Session
 		if(optionCode==TELNET_TERMTYPE)
 		{
 			byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)1,(byte)TELNET_IAC,(byte)TELNET_SE};
-			out.write(stream);
+			reallyRawOut(out, stream);
 		}
 		else
 		{
 			byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)TELNET_IAC,(byte)TELNET_SE};
-			out.write(stream);
+			reallyRawOut(out, stream);
 		}
 		out.flush();
-		lastPing=System.currentTimeMillis();
 	}
 
 	private boolean mightSupportTelnetMode(int telnetCode)
@@ -293,55 +312,50 @@ public class DefaultSession implements Session
 	throws IOException
 	{
 		byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
-		out.write(command);
+		reallyRawOut(out, command);
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
-		lastPing=System.currentTimeMillis();
 	}
 	// this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
 	public void changeTelnetMode(int telnetCode, boolean onOff) 
 	{
 		char[] command={(char)TELNET_IAC,onOff?(char)TELNET_WILL:(char)TELNET_WONT,(char)telnetCode};
-		out.write(command);
+		reallyRawOut(out, command);
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
-		lastPing=System.currentTimeMillis();
 	}
 	public void changeTelnetModeBackwards(int telnetCode, boolean onOff)
 	{
 		char[] command={(char)TELNET_IAC,onOff?(char)TELNET_DO:(char)TELNET_DONT,(char)telnetCode};
-		out.write(command);
+		reallyRawOut(out, command);
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
-		lastPing=System.currentTimeMillis();
 	}
 	public void changeTelnetModeBackwards(OutputStream out, int telnetCode, boolean onOff)
 	throws IOException
 	{
 		byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
-		out.write(command);
+		reallyRawOut(out, command);
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
-		lastPing=System.currentTimeMillis();
 	}
 	public void negotiateTelnetMode(int telnetCode)
 	{
 		if(telnetCode==TELNET_TERMTYPE)
 		{
 			char[] command={(char)TELNET_IAC,(char)TELNET_SB,(char)telnetCode,(char)1,(char)TELNET_IAC,(char)TELNET_SE};
-			out.write(command);
+			reallyRawOut(out, command);
 		}
 		else
 		{
 			char[] command={(char)TELNET_IAC,(char)TELNET_SB,(char)telnetCode,(char)TELNET_IAC,(char)TELNET_SE};
-			out.write(command);
+			reallyRawOut(out, command);
 		}
 		out.flush();
-		lastPing=System.currentTimeMillis();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
 	}
 
@@ -486,6 +500,61 @@ public class DefaultSession implements Session
 		if(time==0) return false;
 		return ((System.currentTimeMillis()-time)>10000);
 	}
+	
+	public final void reallyRawOut(final PrintWriter out, final char[] chars)
+	{
+		try
+		{
+			if(debugOutput && Log.debugChannelOn())
+			{
+				StringBuilder str=new StringBuilder("OUTPUT: '");
+				for(char c : chars)
+					str.append(c);
+				Log.debugOut("Session", str.toString()+"'");
+			}
+			out.write(chars);
+		}
+		finally
+		{
+			lastWriteTime=System.currentTimeMillis();
+		}
+	}
+
+	public final void reallyRawOut(final PrintWriter out, final char c)
+	{
+		try
+		{
+			if(debugOutput && Log.debugChannelOn())
+			{
+				StringBuilder str=new StringBuilder("OUTPUT: '").append(c).append('\'');
+				Log.debugOut("Session", str.toString());
+			}
+			out.write(c);
+		}
+		finally
+		{
+			lastWriteTime=System.currentTimeMillis();
+		}
+	}
+
+	public final void reallyRawOut(final OutputStream out, final byte[] bytes) throws IOException
+	{
+		try
+		{
+			if(debugOutput && Log.debugChannelOn())
+			{
+				StringBuilder str=new StringBuilder("OUTPUT: '");
+				for(byte c : bytes)
+					str.append((int)c).append(" ");
+				Log.debugOut("Session", str.toString()+"'");
+			}
+			out.write(bytes);
+		}
+		finally
+		{
+			lastWriteTime=System.currentTimeMillis();
+		}
+	}
 
 	public void out(char[] c)
 	{
@@ -499,14 +568,13 @@ public class DefaultSession implements Session
 				{
 					writeThread=Thread.currentThread();
 					writeStartTime=System.currentTimeMillis();
-					out.write(c);
+					reallyRawOut(out,c);
 					if(out.checkError())
 						stopSession(true,true,true);
 				}
 				finally
 				{
 					writeThread=null;
-					lastPing=System.currentTimeMillis();
 					writeStartTime=0;
 					writeLock.unlock();
 				}
@@ -976,7 +1044,7 @@ public class DefaultSession implements Session
 						Command C=CMClass.getCommand("Shutdown");
 						l="";
 						killFlag=true;
-						out.write("\n\n\033[1z<Executing Shutdown...\n\n");
+						reallyRawOut(out,"\n\n\033[1z<Executing Shutdown...\n\n".toCharArray());
 						M.setSession(this);
 						if(C!=null) C.execute(M,cmd,0);
 					}
@@ -992,6 +1060,7 @@ public class DefaultSession implements Session
 			return;
 		int c=read();
 		if(c>255)c=c&0xff;
+
 		switch(c)
 		{
 		case TELNET_IAC:
@@ -1103,8 +1172,10 @@ public class DefaultSession implements Session
 	public int read() throws IOException
 	{
 		if(bNextByteIs255) 
+		{
+			bNextByteIs255 = false;
 			return 255;
-		bNextByteIs255 = false;
+		}
 		if(fakeInput!=null)
 		{
 			if(fakeInput.length()>0)
@@ -1115,8 +1186,13 @@ public class DefaultSession implements Session
 			}
 			fakeInput=null;
 		}
-		if(in.ready()) 
-			return in.read();
+		if(in.ready())
+		{
+			int read = in.read();
+			if(debugInput && Log.debugChannelOn())
+				debugInputBuf.append(read).append(" ");
+			return read;
+		}
 		throw new java.io.InterruptedIOException(".");
 	}
 
@@ -1449,12 +1525,11 @@ public class DefaultSession implements Session
 					try{
 						if(!out.checkError())
 						{
-							out.write(' ');
+							reallyRawOut(out,' ');
 							out.checkError();
 						}
 					} catch(Exception t){}
 					out.close();
-					lastPing=System.currentTimeMillis();
 				}
 				status=Session.STATUS_LOGOUT9;
 				if(sock!=null)
@@ -1850,7 +1925,7 @@ public class DefaultSession implements Session
 				input=readlineContinue();
 			if(input==null)
 			{
-				if((System.currentTimeMillis()-lastPing)>PINGTIMEOUT)
+				if((System.currentTimeMillis()-lastWriteTime)>PINGTIMEOUT)
 					out(PINGCHARS);
 			}
 			else
