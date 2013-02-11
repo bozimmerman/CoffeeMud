@@ -57,7 +57,8 @@ public class DefaultSession implements Session
 	protected volatile int   status 			 = 0;
 	protected int   		 snoopSuspensionStack= 0;
 	protected Socket		 sock;
-	protected BufferedReader in;
+	protected BufferedReader reader;
+	protected InputStream	 in;
 	protected PrintWriter	 out;
 	protected InputStream    rawin;
 	protected OutputStream   rawout;
@@ -152,11 +153,12 @@ public class DefaultSession implements Session
 						}
 						return !killFlag;
 					} }, 0, 100, 1);
+
 			sock.setSoTimeout(SOTIMEOUT);
 			rawout=sock.getOutputStream();
 			rawin=sock.getInputStream();
-			in=new BufferedReader(new InputStreamReader(sock.getInputStream(),CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
-			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
+			in=rawin;
+			
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
@@ -177,6 +179,9 @@ public class DefaultSession implements Session
 			rawout.flush();
 			preliminaryRead(250);
 
+			//reader=new BufferedReader(new InputStreamReader(sock.getInputStream(),CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
+			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
+
 			preliminaryRead(250);
 			if(clientTelnetMode(TELNET_COMPRESS2))
 			{
@@ -191,6 +196,7 @@ public class DefaultSession implements Session
 				rawout.flush();
 				preliminaryRead(250);
 				ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
+				rawout=zOut;
 				zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
 				out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
 				try{Thread.sleep(50);}catch(Exception e){}
@@ -238,13 +244,12 @@ public class DefaultSession implements Session
 			connectionComplete=true;
 			status=Session.STATUS_LOGIN;
 		}
-		catch(SocketException e)
-		{
-			Log.errOut("Session",e.getMessage());
-		}
 		catch(Exception e)
 		{
-			Log.errOut("Session",e.getMessage());
+			if(e.getMessage()==null)
+				Log.errOut("Session",e);
+			else
+				Log.errOut("Session",e.getMessage());
 		}
 		if(preliminaryInput.length()>0)
 			fakeInput=preliminaryInput;
@@ -308,8 +313,7 @@ public class DefaultSession implements Session
 	{ clientTelnetCodes[telnetCode]=onOff; }
 	public boolean clientTelnetMode(int telnetCode)
 	{ return clientTelnetCodes[telnetCode]; }
-	private void changeTelnetMode(OutputStream out, int telnetCode, boolean onOff)
-	throws IOException
+	private void changeTelnetMode(OutputStream out, int telnetCode, boolean onOff) throws IOException
 	{
 		byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
 		rawBytesOut(out, command);
@@ -318,24 +322,29 @@ public class DefaultSession implements Session
 		setServerTelnetMode(telnetCode,onOff);
 	}
 	// this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
-	public void changeTelnetMode(int telnetCode, boolean onOff) 
+	public void changeTelnetMode(int telnetCode, boolean onOff)
 	{
-		char[] command={(char)TELNET_IAC,onOff?(char)TELNET_WILL:(char)TELNET_WONT,(char)telnetCode};
-		rawCharsOut(out, command);
-		out.flush();
+		try
+		{
+			byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
+			out.flush();
+			rawBytesOut(rawout, command);
+			rawout.flush();
+		}
+		catch(Exception e){}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
-	public void changeTelnetModeBackwards(int telnetCode, boolean onOff)
+	public void changeTelnetModeBackwards(int telnetCode, boolean onOff) throws IOException
 	{
-		char[] command={(char)TELNET_IAC,onOff?(char)TELNET_DO:(char)TELNET_DONT,(char)telnetCode};
-		rawCharsOut(out, command);
+		byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
 		out.flush();
+		rawBytesOut(rawout, command);
+		rawout.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
-	public void changeTelnetModeBackwards(OutputStream out, int telnetCode, boolean onOff)
-	throws IOException
+	public void changeTelnetModeBackwards(OutputStream out, int telnetCode, boolean onOff) throws IOException
 	{
 		byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
 		rawBytesOut(out, command);
@@ -345,17 +354,22 @@ public class DefaultSession implements Session
 	}
 	public void negotiateTelnetMode(int telnetCode)
 	{
-		if(telnetCode==TELNET_TERMTYPE)
+		try
 		{
-			char[] command={(char)TELNET_IAC,(char)TELNET_SB,(char)telnetCode,(char)1,(char)TELNET_IAC,(char)TELNET_SE};
-			rawCharsOut(out, command);
+			out.flush();
+			if(telnetCode==TELNET_TERMTYPE)
+			{
+				byte[] command={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)telnetCode,(byte)1,(byte)TELNET_IAC,(byte)TELNET_SE};
+				rawBytesOut(rawout, command);
+			}
+			else
+			{
+				byte[] command={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)telnetCode,(byte)TELNET_IAC,(byte)TELNET_SE};
+				rawBytesOut(rawout, command);
+			}
+			rawout.flush();
 		}
-		else
-		{
-			char[] command={(char)TELNET_IAC,(char)TELNET_SB,(char)telnetCode,(char)TELNET_IAC,(char)TELNET_SE};
-			rawCharsOut(out, command);
-		}
-		out.flush();
+		catch(Exception e){}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
 	}
 
@@ -425,8 +439,14 @@ public class DefaultSession implements Session
 		}
 		return -1;
 	}
-	public boolean isStopped(){return killFlag;}
-	public void setKillFlag(boolean truefalse){killFlag=truefalse;}
+	public boolean isStopped()
+	{
+		return killFlag;
+	}
+	public void setKillFlag(boolean truefalse)
+	{ 
+		killFlag=truefalse;
+	}
 	public List<String> previousCMD(){return previousCmd;}
 	public void startBeingSnoopedBy(Session S)
 	{
@@ -491,7 +511,7 @@ public class DefaultSession implements Session
 	{
 		Log.errOut("Session",t);
 		CMLib.sessions().remove(this);
-		killFlag=true;
+		setKillFlag(true);
 	}
 
 	protected long getWriteStartTime(){return writeStartTime;}
@@ -567,7 +587,7 @@ public class DefaultSession implements Session
 					CMLib.killThread(killThisThread,500,1);
 			}
 		}
-		catch(Exception ioe){ killFlag=true;}
+		catch(Exception ioe){ setKillFlag(true);}
 	}
 	
 	public void rawCharsOut(String c)
@@ -1020,7 +1040,7 @@ public class DefaultSession implements Session
 						}
 						Command C=CMClass.getCommand("Shutdown");
 						l="";
-						killFlag=true;
+						setKillFlag(true);
 						rawCharsOut(out,"\n\n\033[1z<Executing Shutdown...\n\n".toCharArray());
 						M.setSession(this);
 						if(C!=null) C.execute(M,cmd,0);
@@ -1096,7 +1116,7 @@ public class DefaultSession implements Session
 			if(!serverTelnetMode(last))
 				changeTelnetMode(last,true);
 			if(serverTelnetCodes[TELNET_LOGOUT])
-				killFlag = true;
+				setKillFlag(true);
 			break;
 		}
 		case TELNET_DONT:
@@ -1126,7 +1146,7 @@ public class DefaultSession implements Session
 			if(!serverTelnetMode(last))
 				changeTelnetModeBackwards(last,true);
 			if(serverTelnetCodes[TELNET_LOGOUT])
-				killFlag = true;
+				setKillFlag(true);
 			break;
 		}
 		case TELNET_WONT:
@@ -1149,10 +1169,8 @@ public class DefaultSession implements Session
 	public int read() throws IOException
 	{
 		if(bNextByteIs255) 
-		{
-			bNextByteIs255 = false;
 			return 255;
-		}
+		bNextByteIs255 = false;
 		if(fakeInput!=null)
 		{
 			if(fakeInput.length()>0)
@@ -1163,7 +1181,7 @@ public class DefaultSession implements Session
 			}
 			fakeInput=null;
 		}
-		if(in.ready())
+		if(in.available()>0)
 		{
 			int read = in.read();
 			if(debugInput && Log.debugChannelOn())
@@ -1355,7 +1373,7 @@ public class DefaultSession implements Session
 		{
 			if(sock.isClosed() || (!sock.isConnected()))
 			{
-				killFlag=true;
+				setKillFlag(true);
 				return null;
 			}
 			code=nonBlockingIn(true);
@@ -1436,7 +1454,7 @@ public class DefaultSession implements Session
 	
 	public void stopSession(boolean removeMOB, boolean dropSession, boolean killThread)
 	{
-		killFlag=true;
+		setKillFlag(true);
 		status=Session.STATUS_LOGOUT5;
 		if(removeMOB)
 		{
@@ -1453,7 +1471,7 @@ public class DefaultSession implements Session
 			if(killThread)
 			{
 				if(runThread==Thread.currentThread())
-					killFlag=true;
+					setKillFlag(true);
 				else
 				if(runThread!=null)
 					killThisThread=runThread;
@@ -1787,7 +1805,7 @@ public class DefaultSession implements Session
 						{
 							CMMsg msg = CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null);
 							if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,msg))
-								killFlag=true;
+								setKillFlag(true);
 							else
 								CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 						}
@@ -1857,7 +1875,7 @@ public class DefaultSession implements Session
 		}
 		
 		status=Session.STATUS_LOGOUT4;
-		killFlag=true;
+		setKillFlag(true);
 		waiting=false;
 		needPrompt=false;
 		acct=null;
