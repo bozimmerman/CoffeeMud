@@ -1208,17 +1208,19 @@ public class DefaultSession implements Session
 		if((b==TELNET_IAC)||((b&0xff)==TELNET_IAC)||(b=='\033')||(b==27)||(in==null))
 			return b;
 		charWriter.write(b);
-		do
+		int tries=0;
+		while((in!=null) && !in.ready() && !killFlag && (rawin!=null) &&(rawin.available()>0) && (++tries<10))
 		{
-			try {
+			try{
 				return in.read();
-			}catch(IOException e) {
+			} 
+			catch(java.io.InterruptedIOException e)
+			{
 				b = readByte();
 				charWriter.write(b);
 			}
 		}
-		while(!killFlag && (in!=null) && (rawin!=null) &&(rawin.available()>0));
-		return b;
+		return in.read();
 	}
 	
 	public char hotkey(long maxWait)
