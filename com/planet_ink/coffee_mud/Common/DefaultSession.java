@@ -24,6 +24,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.sql.*;
 import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 
 /*
    Copyright 2000-2012 Bo Zimmerman
@@ -57,8 +61,8 @@ public class DefaultSession implements Session
 	protected volatile int   status 			 = 0;
 	protected int   		 snoopSuspensionStack= 0;
 	protected Socket		 sock;
-	protected BufferedReader reader;
-	protected InputStream	 in;
+	protected SesInputStream charWriter;
+	protected BufferedReader in;
 	protected PrintWriter	 out;
 	protected InputStream    rawin;
 	protected OutputStream   rawout;
@@ -157,7 +161,6 @@ public class DefaultSession implements Session
 			sock.setSoTimeout(SOTIMEOUT);
 			rawout=sock.getOutputStream();
 			rawin=sock.getInputStream();
-			in=rawin;
 			
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
@@ -179,7 +182,8 @@ public class DefaultSession implements Session
 			rawout.flush();
 			preliminaryRead(250);
 
-			//reader=new BufferedReader(new InputStreamReader(sock.getInputStream(),CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
+			charWriter=new SesInputStream();
+			in=new BufferedReader(new InputStreamReader(charWriter,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
 
 			preliminaryRead(250);
@@ -959,12 +963,12 @@ public class DefaultSession implements Session
 	public void handleEscape() throws IOException, InterruptedIOException
 	{
 		if((in==null)||(out==null)) return;
-		int c=read();
+		int c=readByte();
 		if((char)c!='[') return;
 
 		boolean quote=false;
 		StringBuffer escapeStr=new StringBuffer("");
-		while(((c=read())!=-1)
+		while(((c=readByte())!=-1)
 		&&(!killFlag)
 		&&((quote)||(!Character.isLetter((char)c))))
 		{
@@ -984,7 +988,7 @@ public class DefaultSession implements Session
 		if(escNum>3) return;
 		sock.setSoTimeout(30000);
 		StringBuffer line=new StringBuffer("");
-		while(((c=read())!=-1)&&(!killFlag))
+		while(((c=readByte())!=-1)&&(!killFlag))
 		{
 			if(c=='\n') break;
 			line.append((char)c);
@@ -1055,7 +1059,7 @@ public class DefaultSession implements Session
 	{
 		if((in==null)||(out==null))
 			return;
-		int c=read();
+		int c=readByte();
 		if(c>255)c=c&0xff;
 
 		switch(c)
@@ -1066,17 +1070,17 @@ public class DefaultSession implements Session
 		case TELNET_SB:
 		{
 			char[] subOptionData = new char[1024];
-			int subOptionCode = read();
+			int subOptionCode = readByte();
 			int numBytes = 0;
 			int last = 0;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Reading sub-option "+subOptionCode);
-			while(((last = read()) != -1)
+			while(((last = readByte()) != -1)
 			&&(numBytes<subOptionData.length)
 			&&(!killFlag))
 			{
 				if (last == TELNET_IAC)
 				{
-					last = read();
+					last = readByte();
 					if (last == TELNET_IAC)
 						subOptionData[numBytes++] = TELNET_IAC;
 					else
@@ -1091,7 +1095,7 @@ public class DefaultSession implements Session
 		}
 		case TELNET_DO:
 		{
-			int last=read();
+			int last=readByte();
 			setClientTelnetMode(last,true);
 			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
 				setClientTelnetMode(Session.TELNET_ECHO,false);
@@ -1121,7 +1125,7 @@ public class DefaultSession implements Session
 		}
 		case TELNET_DONT:
 		{
-			int last=read();
+			int last=readByte();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got DONT "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,false);
 			if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
@@ -1135,7 +1139,7 @@ public class DefaultSession implements Session
 		}
 		case TELNET_WILL:
 		{
-			int last=read();
+			int last=readByte();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got WILL "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,true);
 			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
@@ -1151,7 +1155,7 @@ public class DefaultSession implements Session
 		}
 		case TELNET_WONT:
 		{
-			int last=read();
+			int last=readByte();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got WONT "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,false);
 			if((mightSupportTelnetMode(last))&&(serverTelnetMode(last)))
@@ -1166,7 +1170,26 @@ public class DefaultSession implements Session
 		}
 	}
 
-	public int read() throws IOException
+	public int readByte() throws IOException
+	{
+		if(bNextByteIs255) 
+			return (byte)255;
+		bNextByteIs255 = false;
+		if(fakeInput!=null)
+			throw new java.io.InterruptedIOException(".");
+		if((rawin!=null) && (rawin.available()>0))
+		{
+			int read = rawin.read();
+			if(read==-1)
+				throw new java.io.InterruptedIOException(".");
+			if(debugInput && Log.debugChannelOn())
+				debugInputBuf.append(read).append(" ");
+			return read;
+		}
+		throw new java.io.InterruptedIOException(".");
+	}
+
+	public int readChar() throws IOException
 	{
 		if(bNextByteIs255) 
 			return 255;
@@ -1175,22 +1198,29 @@ public class DefaultSession implements Session
 		{
 			if(fakeInput.length()>0)
 			{
-				int c=fakeInput.charAt(0);
-				fakeInput=new StringBuffer(fakeInput.substring(1));
+				char c=fakeInput.charAt(0);
+				fakeInput.delete(0, 1);
 				return c;
 			}
 			fakeInput=null;
 		}
-		if(in.available()>0)
+		int b = readByte();
+		if((b==TELNET_IAC)||((b&0xff)==TELNET_IAC)||(b=='\033')||(b==27)||(in==null))
+			return b;
+		charWriter.write(b);
+		do
 		{
-			int read = in.read();
-			if(debugInput && Log.debugChannelOn())
-				debugInputBuf.append(read).append(" ");
-			return read;
+			try {
+				return in.read();
+			}catch(IOException e) {
+				b = readByte();
+				charWriter.write(b);
+			}
 		}
-		throw new java.io.InterruptedIOException(".");
+		while(!killFlag && (in!=null) && (rawin!=null) &&(rawin.available()>0));
+		return b;
 	}
-
+	
 	public char hotkey(long maxWait)
 	{
 		if((in==null)||(out==null)) 
@@ -1222,7 +1252,7 @@ public class DefaultSession implements Session
 	{
 		try
 		{
-			int c=read();
+			int c=readChar();
 			if(c<0)
 				throw new IOException("reset by peer");
 			else
@@ -1541,6 +1571,7 @@ public class DefaultSession implements Session
 		}
 		finally
 		{
+			rawin=null;
 			in=null;
 			out=null;
 			sock=null;
@@ -2202,4 +2233,29 @@ public class DefaultSession implements Session
 		}
 	}
 	
+	private static class SesInputStream extends InputStream
+	{
+		private int[] bytes = new int[12];
+		private int start=0;
+		private int end=0;
+		public int read() throws IOException
+		{
+			if(start==end)
+				throw new java.io.InterruptedIOException();
+			int b=bytes[start];
+			if(start==bytes.length-1)
+				start=0;
+			else
+				start++;
+			return b;
+		}
+		public void write(int b)
+		{
+			bytes[end]=b;
+			if(end==bytes.length-1)
+				end=0;
+			else
+				end++;
+		}
+	}
 }
