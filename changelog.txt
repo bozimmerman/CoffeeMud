@@ -2437,5 +2437,4 @@ ruthless programmer, and sentenced to a quick death.
 38.Clans and Governments now support categories, and visibility flags, and mobs may belong to more than one, if setup properly. 
 39.New INI entries: MAXCLANCATS and PUBLICCLANCATS for controlling player access to clan gvts by category
 40.Player passwords can now be optionally hashed into the DB -- see HASHPASSWORDS in coffeemud.ini
-
- 
+41.If you've been having MXP problems with ZMUD/CMUD or Siplet, those problems are over.
