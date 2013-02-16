@@ -24,10 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.sql.*;
 import java.net.*;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 
 /*
    Copyright 2000-2012 Bo Zimmerman
@@ -62,6 +59,7 @@ public class DefaultSession implements Session
 	protected int   		 snoopSuspensionStack= 0;
 	protected Socket		 sock;
 	protected SesInputStream charWriter;
+	protected int			 inMaxBytesPerChar	 = 1;
 	protected BufferedReader in;
 	protected PrintWriter	 out;
 	protected InputStream    rawin;
@@ -182,8 +180,10 @@ public class DefaultSession implements Session
 			rawout.flush();
 			preliminaryRead(250);
 
-			charWriter=new SesInputStream();
-			in=new BufferedReader(new InputStreamReader(charWriter,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
+			Charset charSet=Charset.forName(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+			inMaxBytesPerChar=(int)Math.round(Math.ceil((double)charSet.newEncoder().maxBytesPerChar()));
+			charWriter=new SesInputStream(inMaxBytesPerChar);
+			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
 
 			preliminaryRead(250);
@@ -1205,11 +1205,13 @@ public class DefaultSession implements Session
 			fakeInput=null;
 		}
 		int b = readByte();
+		if(1==inMaxBytesPerChar)
+			return b;
 		if((b==TELNET_IAC)||((b&0xff)==TELNET_IAC)||(b=='\033')||(b==27)||(in==null))
 			return b;
 		charWriter.write(b);
-		int tries=0;
-		while((in!=null) && !in.ready() && !killFlag && (rawin!=null) &&(rawin.available()>0) && (++tries<10))
+		int maxBytes=inMaxBytesPerChar;
+		while((in!=null) && !in.ready() && !killFlag && (rawin!=null) &&(rawin.available()>0) && (--maxBytes>=0))
 		{
 			try{
 				return in.read();
@@ -1220,6 +1222,8 @@ public class DefaultSession implements Session
 				charWriter.write(b);
 			}
 		}
+		if(in==null)
+			throw new java.io.InterruptedIOException();
 		return in.read();
 	}
 	
@@ -2237,9 +2241,13 @@ public class DefaultSession implements Session
 	
 	private static class SesInputStream extends InputStream
 	{
-		private int[] bytes = new int[12];
+		private int[] bytes;
 		private int start=0;
 		private int end=0;
+		protected SesInputStream(int maxBytesPerChar)
+		{
+			bytes=new int[maxBytesPerChar+1];
+		}
 		public int read() throws IOException
 		{
 			if(start==end)

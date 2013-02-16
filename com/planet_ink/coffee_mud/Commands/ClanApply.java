@@ -73,9 +73,13 @@ public class ClanApply extends StdCommand
 
 				if(!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true))
 				{
-					msg.append("You are not of the right qualities to join "+C.clanID()+". Use CLANDETAILS \""+C.clanID()+"\" for more information.");
+					mob.tell("You are not of the right qualities to join "+C.clanID()+". Use CLANDETAILS \""+C.clanID()+"\" for more information.");
 					return false;
 				}
+				
+				CharClass CC = CMClass.getCharClass(C.getClanClass());
+				if((CC!=null) && (!CC.qualifiesForThisClass(mob, false)))
+					return false;
 				
 				if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))
 				{

@@ -456,8 +456,8 @@ public class DefaultClanGovernment implements ClanGovernment
 						pos.getFunctionChart()[a]=Authority.CAN_NOT_DO;
 				for(final String funcName : funcs)
 				{
-					Authority auth=(Authority)CMath.s_valueOf(Function.values(), funcName);
-					if(auth!=null) pos.getFunctionChart()[auth.ordinal()] = Authority.MUST_VOTE_ON;
+					Clan.Function func=(Clan.Function)CMath.s_valueOf(Function.values(), funcName);
+					if(func!=null) pos.getFunctionChart()[func.ordinal()] = Authority.MUST_VOTE_ON;
 				}
 			}
 			break;
