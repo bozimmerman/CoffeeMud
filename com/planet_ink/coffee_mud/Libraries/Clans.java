@@ -800,7 +800,7 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 		str.append(indt(1)).append("</CONQUEST>\n");
 		gvt.getClanLevelAbilities(Integer.valueOf(Integer.MAX_VALUE));
-		final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(gvt.ID(), false);
+		final Enumeration<AbilityMapping> m= CMLib.ableMapper().getClassAbles(gvt.getName(), false);
 		if(!m.hasMoreElements())
 			str.append(indt(1)).append("<ABILITIES />\n");
 		else
