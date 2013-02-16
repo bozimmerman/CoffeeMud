@@ -871,8 +871,8 @@
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=7 NAME="PROFESSION" CATEGORY="CLASSCLAN">
-    <SHORTDESC>A clan for professions.  Grant a class to members</SHORTDESC>
-    <LONGDESC></LONGDESC>
+    <SHORTDESC>a clan for professions that should also grant a class to members</SHORTDESC>
+    <LONGDESC>A simple, permanent membership clan that decides most things with votes. Use for system-based clans, and grant a class on entry.</LONGDESC>
     <POSITIONS>
         <POSITION ID="OFFICER" ROLEID=2 RANK=2 NAME="OFFICER" PLURAL="OFFICERS" MAX=2147483647 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -932,7 +932,7 @@
     <FAMILYONLY>false</FAMILYONLY>
     <RIVALROUS>false</RIVALROUS>
     <XPPERLEVELFORMULA></XPPERLEVELFORMULA>
-    <OVERRIDEMINMEMBERS>1</OVERRIDEMINMEMBERS>
+    <OVERRIDEMINMEMBERS>0</OVERRIDEMINMEMBERS>
     <CONQUEST>
         <ENABLED>false</ENABLED>
         <ITEMLOYALTY>true</ITEMLOYALTY>
