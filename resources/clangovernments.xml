@@ -364,7 +364,21 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
+    </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="INT+1 MOVEMENT+2" />
         <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="CON+1 HITPOINTS+3" />
@@ -495,7 +509,21 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
+    </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="INT+1 MOVEMENT+2" />
         <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="CON+1 HITPOINTS+3" />
@@ -629,7 +657,21 @@
         <ITEMLOYALTY>false</ITEMLOYALTY>
         <DEITYBASIS>true</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
+    </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="INT+1 MOVEMENT+2" />
         <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="CON+1 HITPOINTS+3" />
@@ -789,7 +831,21 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
+    </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="INT+1 MOVEMENT+2" />
         <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="CON+1 HITPOINTS+3" />
@@ -849,7 +905,21 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <ABILITIES />
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
+    </ABILITIES>
     <EFFECTS>
         <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="INTELLIGENCE+1 MOVEMENT+2" />
         <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="CONSTITUTION+1 HITPOINTS+3" />
