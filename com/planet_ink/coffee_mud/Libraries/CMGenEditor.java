@@ -3971,7 +3971,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						for(int m=0;m<membersCopy.size();m++)
 							if(behave.equalsIgnoreCase(membersCopy.get(m).name))
 							{
-								oldNum=m;
+								oldNum=members.size();
 								members.add(membersCopy.get(m));
 								break;
 							}
@@ -3986,11 +3986,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						while((mob.session()!=null)&&(!mob.session().isStopped())&&(newRole<0))
 						{
 							String newRoleStr=mob.session().prompt("Enter this members role (?) '"+E.getRoleName(members.get(index).role,true,false)+"': ","");
-							StringBuffer roles=new StringBuffer();
 							newRole =E.getRoleFromName(newRoleStr);
-							roles=new StringBuffer(roles.substring(0,roles.length()-2));
 							if(newRole<0)
-								mob.tell("That role is invalid.  Valid roles include: "+roles.toString());
+								mob.tell("That role is invalid.  Valid roles include: "+CMParms.toStringList(E.getRolesList()));
 							else
 								break;
 						}
@@ -3998,7 +3996,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							mob.tell(M.Name()+" added.");
 						else
 							mob.tell(M.Name()+" re-added.");
-						members.get(index).role=newRole;
+						if(newRole>=0)
+							members.get(index).role=newRole;
 					}
 					else
 					{
@@ -4020,7 +4019,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				for(int m=0;m<members.size();m++)
 				{
 					String newName=members.get(m).name;
-					if(membersCopy.contains(newName))
+					boolean found=false;
+					for(MemberRecord R : membersCopy)
+						found=found||R.name.equals(newName);
+					if(found)
 					{
 						MOB M=CMLib.players().getLoadPlayer(newName);
 						Pair<Clan,Integer> oldClanRole=M.getClanRole(E.clanID());
@@ -4037,7 +4039,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				for(int m=0;m<membersCopy.size();m++)
 				{
 					String newName=membersCopy.get(m).name;
-					if(!members.contains(newName))
+					boolean found=false;
+					for(MemberRecord R : members)
+						found=found||R.name.equals(newName);
+					if(!found)
 					{
 						MOB M=CMLib.players().getLoadPlayer(newName);
 						if((M!=null)&&(M.getClanRole(E.clanID())!=null))
