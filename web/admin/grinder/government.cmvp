@@ -148,11 +148,17 @@
 	</TR>
 	<TR>
 		<TD WIDTH=25%><FONT COLOR=YELLOW>Entry Script:</TD>
-		<TD WIDTH=75%><INPUT TYPE=TEXT SIZE=100 NAME=ENTRYSCRIPT VALUE="@ClanGovernmentData?ENTRYSCRIPT@">&nbsp;&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','Scriptable')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+		<TD WIDTH=75%>
+			<TEXTAREA NAME=ENTRYSCRIPT ROWS=4 COLS=40>@ClanGovernmentData?ENTRYSCRIPT@</TEXTAREA>
+			&nbsp;&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','Scriptable')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT>
+		</TD>
 	</TR>
 	<TR>
 		<TD WIDTH=25%><FONT COLOR=YELLOW>Exit Script:</TD>
-		<TD WIDTH=75%><INPUT TYPE=TEXT SIZE=100 NAME=EXITSCRIPT VALUE="@ClanGovernmentData?EXITSCRIPT@">&nbsp;&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','Scriptable')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+		<TD WIDTH=75%>
+			<TEXTAREA NAME=EXITSCRIPT ROWS=4 COLS=40>@ClanGovernmentData?EXITSCRIPT@</TEXTAREA>
+			&nbsp;&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','Scriptable')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT>
+		</TD>
 	</TR>
     <TR>
         <TD WIDTH=25%><FONT COLOR=YELLOW>Clan Abilities: </FONT></TD>
