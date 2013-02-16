@@ -2434,7 +2434,7 @@ ruthless programmer, and sentenced to a quick death.
 35.Normally mobile mobs will walk by hidden/invis exits now (unless they can see hidden, etc..)
 36.Death room (DEATH) coffeemud.ini entry now supports MORGUE to keep players where they died.
 37.(Internal) Expertises have been optimized such that players only store the highest version.  Functionally identical, but with new editor expression.
-38.Clans and Governments now support categories, and visibility flags, and mobs may belong to more than one, if setup properly. 
+38.Clans and Governments now support categories, scripts, and visibility flags, and mobs may belong to more than one, if setup properly. 
 39.New INI entries: MAXCLANCATS and PUBLICCLANCATS for controlling player access to clan gvts by category
 40.Player passwords can now be optionally hashed into the DB -- see HASHPASSWORDS in coffeemud.ini
 41.If you've been having MXP problems with ZMUD/CMUD or Siplet, those problems are over.

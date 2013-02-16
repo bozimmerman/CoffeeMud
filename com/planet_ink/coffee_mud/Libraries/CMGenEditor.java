@@ -6364,6 +6364,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatChoices(mob,me,CMParms.toStringList(Clan.AutoPromoteFlag.values()),++showNumber,showFlag,"Auto-Promotion","AUTOPROMOTEBY",Clan.AutoPromoteFlag.values());
 			promptStatChoices(mob,me,CMParms.toStringList(me.getPositions()),++showNumber,showFlag,"Apply Position","AUTOROLE",me.getPositions());
 			promptStatChoices(mob,me,CMParms.toStringList(me.getPositions()),++showNumber,showFlag,"Accept Position","ACCEPTPOS",me.getPositions());
+			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,"Entry Scriptable","ENTRYSCRIPT",true);
+			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,"Exit Scriptable","EXITSCRIPT",true);
 			genDynamicAbilities(mob,me,"Clan & Char","clan",++showNumber,showFlag);
 			genDynamicEffects(mob,me,"Clan","clan",++showNumber,showFlag);
 			

@@ -63,6 +63,20 @@ public class ClanResign extends StdCommand
 				String check=mob.session().prompt("Are you absolutely SURE (y/N)?","N");
 				if(check.equalsIgnoreCase("Y"))
 				{
+					if(C.getGovernment().getExitScript().trim().length()>0)
+					{
+						Pair<Clan,Integer> curClanRole=mob.getClanRole(C.clanID());
+						if(curClanRole!=null)
+							mob.setClan(C.clanID(), curClanRole.second.intValue());
+						ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+						S.setSavable(false);
+						S.setVarScope("*");
+						S.setScript(C.getGovernment().getExitScript());
+						CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
+						S.executeMsg(mob, msg2);
+						S.dequeResponses();
+						S.tick(mob,Tickable.TICKID_MOB);
+					}
 					CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.getGovernmentName()+" "+C.name()+": "+mob.Name());
 					C.delMember(mob);
 				}

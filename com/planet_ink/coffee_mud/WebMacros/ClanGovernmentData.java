@@ -236,6 +236,18 @@ public class ClanGovernmentData extends StdWebMacro
 					if(old==null) old=G.getRequiredMaskStr();
 					str.append(old+", ");
 				}
+				if(parms.containsKey("ENTRYSCRIPT"))
+				{
+					String old=httpReq.getRequestParameter("ENTRYSCRIPT");
+					if(old==null) old=G.getEntryScript();
+					str.append(old+", ");
+				}
+				if(parms.containsKey("EXITSCRIPT"))
+				{
+					String old=httpReq.getRequestParameter("EXITSCRIPT");
+					if(old==null) old=G.getExitScript();
+					str.append(old+", ");
+				}
 				if(parms.containsKey("ISPUBLIC"))
 				{
 					String old=httpReq.getRequestParameter("ISPUBLIC");

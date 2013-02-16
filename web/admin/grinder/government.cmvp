@@ -146,6 +146,14 @@
 		<TD WIDTH=25%><FONT COLOR=YELLOW>Auto Promotion: </FONT></TD>
 		<TD WIDTH=75%><SELECT NAME=AUTOPROMOTEBY>@ClanGovernmentData?AUTOPROMOTEBY@</SELECT></TD>
 	</TR>
+	<TR>
+		<TD WIDTH=25%><FONT COLOR=YELLOW>Entry Script:</TD>
+		<TD WIDTH=75%><INPUT TYPE=TEXT SIZE=100 NAME=ENTRYSCRIPT VALUE="@ClanGovernmentData?ENTRYSCRIPT@">&nbsp;&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','Scriptable')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=25%><FONT COLOR=YELLOW>Exit Script:</TD>
+		<TD WIDTH=75%><INPUT TYPE=TEXT SIZE=100 NAME=EXITSCRIPT VALUE="@ClanGovernmentData?EXITSCRIPT@">&nbsp;&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','Scriptable')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+	</TR>
     <TR>
         <TD WIDTH=25%><FONT COLOR=YELLOW>Clan Abilities: </FONT></TD>
         <TD WIDTH=75%><FONT COLOR=WHITE SIZE=-1>@ClanGovernmentData?RABLE&FONT=<FONT COLOR=WHITE SIZE=-2>@</FONT></TD>

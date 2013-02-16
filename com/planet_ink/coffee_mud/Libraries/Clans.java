@@ -628,6 +628,8 @@ public class Clans extends StdLibrary implements ClanManager
 		G.setAutoRole(0);
 		G.setAcceptPos(1);
 		G.setRequiredMaskStr("");
+		G.setEntryScript("");
+		G.setExitScript("");
 		G.setAutoPromoteBy(AutoPromoteFlag.NONE);
 		G.setPublic(true);
 		G.setFamilyOnly(false);
@@ -779,6 +781,8 @@ public class Clans extends StdLibrary implements ClanManager
 		str.append(indt(1)).append("<AUTOPOSITION>").append(gvt.getPositions()[gvt.getAutoRole()].getID()).append("</AUTOPOSITION>\n");
 		str.append(indt(1)).append("<ACCEPTPOSITION>").append(gvt.getPositions()[gvt.getAcceptPos()].getID()).append("</ACCEPTPOSITION>\n");
 		str.append(indt(1)).append("<REQUIREDMASK>").append(CMLib.xml().parseOutAngleBrackets(gvt.getRequiredMaskStr())).append("</REQUIREDMASK>\n");
+		str.append(indt(1)).append("<ENTRYSCRIPT>").append(CMLib.xml().parseOutAngleBrackets(gvt.getEntryScript())).append("</ENTRYSCRIPT>\n");
+		str.append(indt(1)).append("<EXITSCRIPT>").append(CMLib.xml().parseOutAngleBrackets(gvt.getExitScript())).append("</EXITSCRIPT>\n");
 		str.append(indt(1)).append("<AUTOPROMOTEBY>").append(gvt.getAutoPromoteBy().toString()).append("</AUTOPROMOTEBY>\n");
 		str.append(indt(1)).append("<PUBLIC>").append(gvt.isPublic()).append("</PUBLIC>\n");
 		str.append(indt(1)).append("<FAMILYONLY>").append(gvt.isFamilyOnly()).append("</FAMILYONLY>\n");
@@ -976,6 +980,8 @@ public class Clans extends StdLibrary implements ClanManager
 				continue;
 			}
 			String requiredMaskStr=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "REQUIREDMASK"));
+			String entryScript=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "ENTRYSCRIPT"));
+			String exitScript=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "EXITSCRIPT"));
 			String shortDesc=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "SHORTDESC"));
 			String longDesc=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "LONGDESC"));
 			String autoPromoteStr=CMLib.xml().getValFromPieces(clanTypePieceTag.contents, "AUTOPROMOTEBY");
@@ -1014,6 +1020,8 @@ public class Clans extends StdLibrary implements ClanManager
 			G.setAutoRole(autoRole.getRoleID());
 			G.setAcceptPos(acceptRole.getRoleID());
 			G.setRequiredMaskStr(requiredMaskStr);
+			G.setEntryScript(entryScript);
+			G.setExitScript(exitScript);
 			G.setAutoPromoteBy(autoPromote);
 			G.setPublic(isPublic);
 			G.setFamilyOnly(isFamilyOnly);

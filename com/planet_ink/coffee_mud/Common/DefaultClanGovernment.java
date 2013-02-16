@@ -60,6 +60,10 @@ public class DefaultClanGovernment implements ClanGovernment
 	public String	longDesc;
 	/** Zapper mask for requirements to even apply */
 	public String	requiredMaskStr;
+	/** Entry script parameter */
+	public String	entryScriptParam;
+	/** Exit script parameter */
+	public String	exitScriptParam;
 	/**  Whether this clan type is shown on the list  */
 	public boolean	isPublic;
 	/**  Whether mambers must all be in the same family */
@@ -273,6 +277,19 @@ public class DefaultClanGovernment implements ClanGovernment
 		this.levelProgression = levelProgression;
 	}
 	
+	public String getEntryScript() {
+		return entryScriptParam;
+	}
+	public void setEntryScript(String scriptParm) {
+		entryScriptParam=scriptParm;
+	}
+	public String getExitScript() {
+		return exitScriptParam;
+	}
+	public void setExitScript(String scriptParm) {
+		exitScriptParam=scriptParm;
+	}
+	
 	// the follow are derived, or post-create set options:
 	/** The list of xp amounts to progress in level */
 	public int[] 	levelProgression = new int[0];
@@ -341,7 +358,8 @@ public class DefaultClanGovernment implements ClanGovernment
 		CONQUESTENABLED,CONQUESTITEMLOYALTY,CONQUESTDEITYBASIS,MAXVOTEDAYS,VOTEQUORUMPCT,
 		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC,XPLEVELFORMULA,
 		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,
-		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,CATEGORY,ISRIVALROUS
+		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,CATEGORY,ISRIVALROUS,
+		ENTRYSCRIPT,EXITSCRIPT
 	}
 	
 	public String[] getStatCodes() { return CMParms.toStringArray(GOVT_STAT_CODES.values());}
@@ -378,6 +396,8 @@ public class DefaultClanGovernment implements ClanGovernment
 		case VOTEQUORUMPCT: return Integer.toString(voteQuorumPct);
 		case AUTOPROMOTEBY: return autoPromoteBy.toString();
 		case ISRIVALROUS: return Boolean.toString(isRivalrous);
+		case ENTRYSCRIPT: return entryScriptParam;
+		case EXITSCRIPT: return exitScriptParam;
 		case VOTEFUNCS:{
 			final StringBuilder str=new StringBuilder("");
 			for(ClanPosition pos : positions)
@@ -442,6 +462,8 @@ public class DefaultClanGovernment implements ClanGovernment
 		case MAXVOTEDAYS: maxVoteDays=CMath.s_int(val); break;
 		case VOTEQUORUMPCT: voteQuorumPct=CMath.s_int(val); break;
 		case ISRIVALROUS: this.isRivalrous=CMath.s_bool(val); break;
+		case ENTRYSCRIPT: this.entryScriptParam=val; break;
+		case EXITSCRIPT: this.exitScriptParam=val; break;
 		case AUTOPROMOTEBY:{
 			Clan.AutoPromoteFlag flag=(Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(),val);
 			if(flag!=null) autoPromoteBy=flag;

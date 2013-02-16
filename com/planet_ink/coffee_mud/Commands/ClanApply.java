@@ -102,6 +102,17 @@ public class ClanApply extends StdCommand
 							}
 							else
 							{
+								if(C.getGovernment().getEntryScript().trim().length()>0)
+								{
+									ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+									S.setSavable(false);
+									S.setVarScope("*");
+									S.setScript(C.getGovernment().getEntryScript());
+									CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANENTRY");
+									S.executeMsg(mob, msg2);
+									S.dequeResponses();
+									S.tick(mob,Tickable.TICKID_MOB);
+								}
 								CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" has a new member: "+mob.Name());
 								mob.tell("You have successfully joined "+C.clanID()+".  Use CLANDETAILS for information.");
 							}

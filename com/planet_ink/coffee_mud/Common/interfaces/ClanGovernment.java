@@ -151,6 +151,34 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	public void setRequiredMaskStr(String requiredMaskStr);
 	
 	/**
+	 * Gets the Scriptable parm when joining/creating a clan.
+	 *
+	 * @return the script for joining/creating a clan
+	 */
+	public String getEntryScript();
+	
+	/**
+	 * Sets the Scriptable parm when joining/creating a clan.
+	 *
+	 * @param scriptParm the Scriptable parm
+	 */
+	public void setEntryScript(String scriptParm);
+	
+	/**
+	 * Gets the Scriptable parm when resigning/exiling a clan.
+	 *
+	 * @return the script for resigning/exiling a clan
+	 */
+	public String getExitScript();
+	
+	/**
+	 * Sets the Scriptable parm when resigning/exiling a clan.
+	 *
+	 * @param scriptParm the Scriptable parm
+	 */
+	public void setExitScript(String scriptParm);
+	
+	/**
 	 * Checks if is public.
 	 *
 	 * @return true, if is public

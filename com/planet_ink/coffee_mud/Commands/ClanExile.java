@@ -95,6 +95,20 @@ public class ClanExile extends StdCommand
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.EXILE,true))
 					{
+						if(C.getGovernment().getExitScript().trim().length()>0)
+						{
+							Pair<Clan,Integer> curClanRole=M.getClanRole(C.clanID());
+							if(curClanRole!=null)
+								M.setClan(C.clanID(), curClanRole.second.intValue());
+							ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+							S.setSavable(false);
+							S.setVarScope("*");
+							S.setScript(C.getGovernment().getExitScript());
+							CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
+							S.executeMsg(mob, msg2);
+							S.dequeResponses();
+							S.tick(mob,Tickable.TICKID_MOB);
+						}
 						CMLib.clans().clanAnnounce(mob,"Member exiled from "+C.getGovernmentName()+" "+C.name()+": "+M.Name());
 						mob.tell(M.Name()+" has been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");
 						if((M.session()!=null)&&(M.session().mob()==M))
