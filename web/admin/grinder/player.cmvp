@@ -633,14 +633,14 @@
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Start Room: </FONT></TD>
 		<TD WIDTH=40%><FONT COLOR=WHITE>@PlayerData?STARTROOM@</FONT></TD>
-		<TD WIDTH=20%><FONT COLOR=YELLOW>Clan(s): </FONT></TD>
-		<TD WIDTH=20%>
-			@if?CheckReqParm?FUNCTION=EDIT@
+		@if?CheckReqParm?FUNCTION=EDIT@
+			<TD WIDTH=40% COLSPAN=2><FONT COLOR=YELLOW>Clan(s): </FONT>
 				@PlayerData?CLANS@
-			@else@
-				<FONT COLOR=WHITE>@PlayerData?CLANNAMES@</FONT>
-			@endif@
-		</TD>
+			</TD>
+		@else@
+			<TD WIDTH=20%><FONT COLOR=YELLOW>Clan(s): </FONT></TD>
+			<TD WIDTH=20%><FONT COLOR=WHITE>@PlayerData?CLANNAMES@</FONT></TD>
+		@endif@
 	</TR>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Email: </FONT></TD>

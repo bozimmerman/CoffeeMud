@@ -106,10 +106,10 @@ public class ClanAccept extends StdCommand
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getEntryScript());
-							CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANENTRY");
-							S.executeMsg(mob, msg2);
+							CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANENTRY");
+							S.executeMsg(M, msg2);
 							S.dequeResponses();
-							S.tick(mob,Tickable.TICKID_MOB);
+							S.tick(M,Tickable.TICKID_MOB);
 						}
 						CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.getGovernmentName()+" "+C.name()+".");
 						mob.tell(M.Name()+" has been accepted into "+C.getGovernmentName()+" '"+C.clanID()+"'.");

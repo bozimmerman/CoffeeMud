@@ -104,10 +104,10 @@ public class ClanExile extends StdCommand
 							S.setSavable(false);
 							S.setVarScope("*");
 							S.setScript(C.getGovernment().getExitScript());
-							CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
-							S.executeMsg(mob, msg2);
+							CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
+							S.executeMsg(M, msg2);
 							S.dequeResponses();
-							S.tick(mob,Tickable.TICKID_MOB);
+							S.tick(M,Tickable.TICKID_MOB);
 						}
 						CMLib.clans().clanAnnounce(mob,"Member exiled from "+C.getGovernmentName()+" "+C.name()+": "+M.Name());
 						mob.tell(M.Name()+" has been exiled from "+C.getGovernmentName()+" '"+C.clanID()+"'.");

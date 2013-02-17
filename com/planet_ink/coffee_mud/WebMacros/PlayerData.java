@@ -165,6 +165,8 @@ public class PlayerData extends StdWebMacro
 					StringBuilder buf=new StringBuilder("");
 					for(Pair<Clan,Integer> p : M.clans())
 						buf.append(p.first.getName()).append(", ");
+					if(buf.length()>2)
+						str.append(buf.substring(0, buf.length()-2));
 				 }
 				 break;
 		case 24: str.append(M.fetchFaction(CMLib.factions().AlignID())+", ");
