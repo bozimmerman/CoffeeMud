@@ -138,6 +138,17 @@ public class Clans extends StdLibrary implements ClanManager
 		return null;
 	}
 
+	public List<Pair<Clan,Integer>> findPrivilegedClans(MOB mob, Clan.Function func)
+	{
+		List<Pair<Clan,Integer>> set=new Vector<Pair<Clan,Integer>>();
+		for(Pair<Clan,Integer> c : mob.clans())
+		{
+			if(c.first.getAuthority(c.second.intValue(), func) != Clan.Authority.CAN_NOT_DO)
+				set.add(c);
+		}
+		return set;
+	}
+
 	public Clan findRivalrousClan(MOB mob)
 	{
 		for(Pair<Clan,Integer> c : mob.clans())

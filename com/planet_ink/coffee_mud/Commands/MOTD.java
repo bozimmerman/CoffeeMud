@@ -126,34 +126,36 @@ public class MOTD extends StdCommand
 				if((postalChains.size()>0)&&(P!=null))
 				{
 					List<PlayerData> V=CMLib.database().DBReadData(mob.Name(),postalChains);
-					Hashtable res=getPostalResults(V,mob.playerStats().lastDateTime());
-					for(Enumeration e=res.keys();e.hasMoreElements();)
+					Map<PostOffice,int[]> res=getPostalResults(V,mob.playerStats().lastDateTime());
+					for(Iterator<PostOffice> e=res.keySet().iterator();e.hasNext();)
 					{
-						P=(PostOffice)e.nextElement();
+						P=(PostOffice)e.next();
 						int[] ct=(int[])res.get(P);
 						buf.append("\n\r"+report("You have",P,ct));
 					}
-					Hashtable res2=new Hashtable();
-					Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.WITHDRAW);
-					Clan C=null;
-					if(clanPair!=null)
+					Map<PostOffice,int[]> res2=new Hashtable();
+					for(Pair<Clan,Integer> clanPair : CMLib.clans().findPrivilegedClans(mob, Clan.Function.WITHDRAW))
 					{
-						C=clanPair.first;
-						if(C.getAuthority(clanPair.second.intValue(),Clan.Function.WITHDRAW)!=Clan.Authority.CAN_NOT_DO)
+						if(clanPair!=null)
 						{
-							V=CMLib.database().DBReadData(C.name(),postalChains);
-							if(V.size()>0)
-								res=getPostalResults(V,mob.playerStats().lastDateTime());
+							Clan C=clanPair.first;
+							if(C.getAuthority(clanPair.second.intValue(),Clan.Function.WITHDRAW)!=Clan.Authority.CAN_NOT_DO)
+							{
+								V=CMLib.database().DBReadData(C.name(),postalChains);
+								if(V.size()>0)
+								{
+									res2.putAll(getPostalResults(V,mob.playerStats().lastDateTime()));
+								}
+							}
+							for(Iterator<PostOffice> e=res2.keySet().iterator();e.hasNext();)
+							{
+								P=(PostOffice)e.next();
+								int[] ct=(int[])res2.get(P);
+								buf.append("\n\r"+report("Your "+C.getGovernmentName()+" "+C.getName()+" has",P,ct));
+							}
 						}
 					}
-					if(C!=null)
-					for(Enumeration e=res2.keys();e.hasMoreElements();)
-					{
-						P=(PostOffice)e.nextElement();
-						int[] ct=(int[])res2.get(P);
-						buf.append("\n\r"+report("Your "+C.getGovernmentName()+" has",P,ct));
-					}
-					if((res.size()>0)||((C!=null)&&(res2.size()>0)))
+					if((res.size()>0)||(res2.size()>0))
 						buf.append("\n\r--------------------------------------\n\r");
 				}
 				
@@ -272,9 +274,9 @@ public class MOTD extends StdCommand
 		return whom+" "+ct[1]+" items still waiting at the "+branchName+" branch of the "+P.postalChain()+" post office.";
 	}
 	
-	private Hashtable getPostalResults(List<PlayerData> mailData, long newTimeDate)
+	private Map<PostOffice,int[]> getPostalResults(List<PlayerData> mailData, long newTimeDate)
 	{
-		Hashtable results=new Hashtable();
+		Hashtable<PostOffice,int[]> results=new Hashtable<PostOffice,int[]>();
 		PostOffice P=null;
 		for(int i=0;i<mailData.size();i++)
 		{
@@ -287,7 +289,7 @@ public class MOTD extends StdCommand
 			P=CMLib.map().getPostOffice(chain,branch);
 			if(P==null) continue;
 			PostOffice.MailPiece pieces=P.parsePostalItemData(letter.xml);
-			int[] ct=(int[])results.get(P);
+			int[] ct=results.get(P);
 			if(ct==null)
 			{
 				ct=new int[2];

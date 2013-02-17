@@ -146,6 +146,16 @@ public interface ClanManager extends CMLibrary, Runnable
 	public Pair<Clan,Integer> findPrivilegedClan(MOB mob, Clan.Function func);
 	
 	/**
+	 * If the given mob belongs to a clan, and if they can do the 
+	 * given function in a clan, this will return those clan objects
+	 * and their role integer.
+	 * @param mob the mob to check the clans of
+	 * @param func the function to check for
+	 * @return the clan and role integers
+	 */
+	public List<Pair<Clan,Integer>> findPrivilegedClans(MOB mob, Clan.Function func);
+	
+	/**
 	 * Returns a list of clans that the source mob belongs to which the filter
 	 * mob does NOT also belong.  The clans will be rivalrous only.
 	 * @param clanSourceMob the mob to source the clan list from

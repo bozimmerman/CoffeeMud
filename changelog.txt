@@ -2438,3 +2438,4 @@ ruthless programmer, and sentenced to a quick death.
 39.New INI entries: MAXCLANCATS and PUBLICCLANCATS for controlling player access to clan gvts by category
 40.Player passwords can now be optionally hashed into the DB -- see HASHPASSWORDS in coffeemud.ini
 41.If you've been having MXP problems with ZMUD/CMUD or Siplet, those problems are over.
+42.New private Government type (Profession) for class clans.  Make sure you add CLASSCLAN to the new MAXCLANCATS ini entry.
