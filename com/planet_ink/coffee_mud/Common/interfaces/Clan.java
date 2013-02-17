@@ -838,7 +838,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		"CATEGORY", // 18
 		"RIVALROUS",//19
 		"MINMEMBERS", //20
-		"CLANCHARCLASS" // 21
+		"CLANCHARCLASS", // 21
+		"NAME" // 22
 	};
 
 	/** constant for the getStatus() method, denoting normal status. @see Clan#getStatus() .*/

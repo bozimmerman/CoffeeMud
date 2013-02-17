@@ -535,7 +535,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"ISSPEAKING", // 95
 		"ISCONTENT", // 96
 		"WORNON", // 97
-		"CLANQUALIFY", // 98
+		"CLANQUALIFIES", // 98
 	};
 	
 	/** String list of all valid mobprog commands */

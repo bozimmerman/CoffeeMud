@@ -627,7 +627,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				for(int i=0;i<GSTATCODES_ADDITIONAL.length;i++)
 					gstatH.put(GSTATCODES_ADDITIONAL[i],Integer.valueOf(i));
 				for(int i=0;i<SIGNS.length;i++)
-				   signH.put(SIGNS[i],Integer.valueOf(i));
+					signH.put(SIGNS[i],Integer.valueOf(i));
 			}
 		}
 		text=parseLoads(text,0,null,null);
@@ -8115,7 +8115,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 					clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 				String clanvar=tt[2];
-				String clanval=tt[3];
+				String clanval=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				Clan C=CMLib.clans().getClan(clanID);
 				if(C!=null)
 				{

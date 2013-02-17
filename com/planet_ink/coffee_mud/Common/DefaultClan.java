@@ -1589,6 +1589,7 @@ public class DefaultClan implements Clan
 		case 19: return ""+isRivalrous();
 		case 20: return ""+getMinClanMembers();
 		case 21: return ""+getClanClass();
+		case 22: return ""+getName(); 
 		}
 		return "";
 	}
@@ -1619,6 +1620,7 @@ public class DefaultClan implements Clan
 		case 19: setRivalrous(CMath.s_bool(val.trim())); break; // isrivalrous
 		case 20: setMinClanMembers(CMath.s_int(val.trim())); break; //minmembers
 		case 21: setClanClass(val.trim()); break; // clancharclass
+		case 22: this.setName(val.trim()); break; // name
 		}
 	}
 }
