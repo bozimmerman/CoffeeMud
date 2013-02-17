@@ -767,6 +767,9 @@ public class DefaultClan implements Clan
 			{
 				String tag=mask.substring(x+2,y);
 				String value="Unknown";
+				if(isStat(tag))
+					value=getStat(tag);
+				else
 				if(M!=null)
 				{
 					if(tag.equalsIgnoreCase("WORSHIPCHARID"))
@@ -1585,6 +1588,7 @@ public class DefaultClan implements Clan
 		case 18: return ""+getCategory();
 		case 19: return ""+isRivalrous();
 		case 20: return ""+getMinClanMembers();
+		case 21: return ""+getClanClass();
 		}
 		return "";
 	}
@@ -1614,6 +1618,7 @@ public class DefaultClan implements Clan
 		case 18: setCategory(val.trim()); break; // clancategory
 		case 19: setRivalrous(CMath.s_bool(val.trim())); break; // isrivalrous
 		case 20: setMinClanMembers(CMath.s_int(val.trim())); break; //minmembers
+		case 21: setClanClass(val.trim()); break; // clancharclass
 		}
 	}
 }

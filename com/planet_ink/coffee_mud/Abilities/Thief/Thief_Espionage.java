@@ -90,7 +90,7 @@ public class Thief_Espionage extends ThiefSkill
 			mob.tell("Commit espionage through whom?");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		MOB target=this.getTarget(mob,commands,givenTarget,false,true);
 		if(target==null) return false;
 		if(target==mob)
 		{
@@ -101,7 +101,10 @@ public class Thief_Espionage extends ThiefSkill
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
+			{
 				A.unInvoke();
+				return false;
+			}
 			else
 			{
 				mob.tell(mob,target,null,"It is too crowded to commit espionage with <T-NAME>.");

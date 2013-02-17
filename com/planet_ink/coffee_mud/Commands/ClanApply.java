@@ -78,7 +78,7 @@ public class ClanApply extends StdCommand
 				}
 				
 				CharClass CC = CMClass.getCharClass(C.getClanClass());
-				if((CC!=null) && (!CC.qualifiesForThisClass(mob, false)))
+				if((CC!=null) && (mob.charStats().getClassLevel(CC)<0) && (!CC.qualifiesForThisClass(mob, false)))
 					return false;
 				
 				if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))

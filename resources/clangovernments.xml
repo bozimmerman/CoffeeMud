@@ -104,12 +104,12 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -119,23 +119,23 @@
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="STR+1 MOVEMENT+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="ATTACK+1 HITPOINTS+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="DEX+1 MANA+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="WIS+1 MANA+2" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="MOVEMENT+1 MANA+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WIS+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CON+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
         <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="HITPOINTS+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="ATTACK+1 MANA+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="CON+1 HITPOINTS+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
         <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
         <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=1 NAME="GUILD" CATEGORY="">
@@ -253,12 +253,12 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -268,23 +268,23 @@
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="STR+1 MOVEMENT+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="ATTACK+1 HITPOINTS+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="DEX+1 MANA+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="WIS+1 MANA+2" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="MOVEMENT+1 MANA+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WIS+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CON+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
         <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="HITPOINTS+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="ATTACK+1 MANA+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="CON+1 HITPOINTS+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
         <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
         <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=2 NAME="UNION" CATEGORY="">
@@ -393,12 +393,12 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -408,23 +408,23 @@
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="STR+1 MOVEMENT+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="ATTACK+1 HITPOINTS+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="DEX+1 MANA+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="WIS+1 MANA+2" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="MOVEMENT+1 MANA+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WIS+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CON+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
         <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="HITPOINTS+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="ATTACK+1 MANA+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="CON+1 HITPOINTS+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
         <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
         <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=3 NAME="FELLOWSHIP" CATEGORY="">
@@ -538,12 +538,12 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -553,23 +553,23 @@
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="STR+1 MOVEMENT+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="ATTACK+1 HITPOINTS+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="DEX+1 MANA+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="WIS+1 MANA+2" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="MOVEMENT+1 MANA+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WIS+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CON+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
         <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="HITPOINTS+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="ATTACK+1 MANA+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="CON+1 HITPOINTS+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
         <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
         <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=4 NAME="THEOCRACY" CATEGORY="">
@@ -686,12 +686,12 @@
         <DEITYBASIS>true</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -701,23 +701,23 @@
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="STR+1 MOVEMENT+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="ATTACK+1 HITPOINTS+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="DEX+1 MANA+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="WIS+1 MANA+2" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="MOVEMENT+1 MANA+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WIS+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CON+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
         <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="HITPOINTS+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="ATTACK+1 MANA+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="CON+1 HITPOINTS+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
         <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
         <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=5 NAME="FAMILY" CATEGORY="">
@@ -860,12 +860,12 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -875,23 +875,23 @@
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="STR+1 MOVEMENT+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="ATTACK+1 HITPOINTS+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="DEX+1 MANA+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="WIS+1 MANA+2" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="MOVEMENT+1 MANA+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WIS+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CON+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
         <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="HITPOINTS+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="ATTACK+1 MANA+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="CON+1 HITPOINTS+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
         <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
         <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=6 NAME="ANARCHY" CATEGORY="">
@@ -934,12 +934,12 @@
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
     <ABILITIES>
-        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
-        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
@@ -949,28 +949,33 @@
         <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
     </ABILITIES>
     <EFFECTS>
-        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ARMOR-1 MOVEMENT+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="STRENGTH+1 MOVEMENT+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="ATTACK+1 HITPOINTS+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="DEXTERITY+1 MANA+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="WISDOM+1 MANA+2" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="MOVEMENT+1 MANA+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="CHARISMA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WISDOM+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHARISMA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CONSTITUTION+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INTELLIGENCE+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
         <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="HITPOINTS+1" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="ATTACK+1 MANA+4" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="CONSTITUTION+1 HITPOINTS+3" />
-        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="INTELLIGENCE+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEXTERITY+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STRENGTH+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
         <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
         <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
         <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
-        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=7 NAME="PROFESSION" CATEGORY="CLASSCLAN">
     <SHORTDESC>a clan for professions that should also grant a class to members</SHORTDESC>
-    <LONGDESC>A simple, permanent membership clan that decides most things with votes. Use for system-based clans, and grant a class on entry.</LONGDESC>
+    <LONGDESC>
+    A simple, permanent membership clan that decides most things with votes. Use for system-based clans, and grant a class on entry.
+    Players must be an Apprentice to join a profession, and once in a profession, players can not gain experience outside of one.
+    When the Archon creates clans from this government, they should designate the clans auto-class, and make sure players only
+    qualify for Apprentice when creating characters.
+    </LONGDESC>
     <POSITIONS>
         <POSITION ID="OFFICER" ROLEID=2 RANK=2 NAME="OFFICER" PLURAL="OFFICERS" MAX=2147483647 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
@@ -1020,9 +1025,9 @@
     </VOTING>
     <AUTOPOSITION>MEMBER</AUTOPOSITION>
     <ACCEPTPOSITION>MEMBER</ACCEPTPOSITION>
-    <REQUIREDMASK></REQUIREDMASK>
-    <ENTRYSCRIPT></ENTRYSCRIPT>
-    <EXITSCRIPT></EXITSCRIPT>
+    <REQUIREDMASK>-CLASS +Apprentice +%[CLANCHARCLASS]%</REQUIREDMASK>
+    <ENTRYSCRIPT>ONCE_PROG all;mpunaffect $i Prop_ModExperience;~;</ENTRYSCRIPT>
+    <EXITSCRIPT>ONCE_PROG all;mpaffect Prop_ModExperience $i *0;~;</EXITSCRIPT>
     <AUTOPROMOTEBY>NONE</AUTOPROMOTEBY>
     <PUBLIC>false</PUBLIC>
     <FAMILYONLY>false</FAMILYONLY>

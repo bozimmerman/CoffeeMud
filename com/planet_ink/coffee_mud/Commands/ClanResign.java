@@ -60,7 +60,7 @@ public class ClanResign extends StdCommand
 		{
 			try
 			{
-				String check=mob.session().prompt("Are you absolutely SURE (y/N)?","N");
+				String check=mob.session().prompt("Resign from "+C.getName()+".  Are you absolutely SURE (y/N)?","N");
 				if(check.equalsIgnoreCase("Y"))
 				{
 					if(C.getGovernment().getExitScript().trim().length()>0)

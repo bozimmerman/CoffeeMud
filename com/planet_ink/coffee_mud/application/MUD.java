@@ -877,12 +877,6 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)S.println("done");
 		Log.sysOut(Thread.currentThread().getName(),"Map Threads Stopped.");
 		
-		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...closing db connections");
-		for(int d=0;d<databases.size();d++)
-			((DBConnector)databases.get(d)).killConnections();
-		if(S!=null)S.println("Database connections closed");
-		Log.sysOut(Thread.currentThread().getName(),"Database connections closed.");
-
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
 		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_SOCIALS);e.hasMoreElements();)
 			((CMLibrary)e.nextElement()).shutdown();
@@ -911,6 +905,11 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut(Thread.currentThread().getName(),"Resources Cleared.");
 		if(S!=null)S.println("All resources unloaded");
 
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...closing db connections");
+		for(int d=0;d<databases.size();d++)
+			((DBConnector)databases.get(d)).killConnections();
+		if(S!=null)S.println("Database connections closed");
+		Log.sysOut(Thread.currentThread().getName(),"Database connections closed.");
 
 		for(int i=0;i<webServers.size();i++)
 		{
