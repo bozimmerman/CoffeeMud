@@ -39,7 +39,7 @@ public class Unload extends StdCommand
 
 	private final String[] access={"UNLOAD"};
 	public String[] getAccessWords(){return access;}
-	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "INIFILE", "[FILENAME]"};
+	final String[] ARCHON_LIST={"CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "[FILENAME]"};
 	
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
@@ -267,6 +267,68 @@ public class Unload extends StdCommand
 				return false;
 			}
 			else
+			if(((String)commands.elementAt(1)).equalsIgnoreCase("RESOURCE"))
+			{
+				String which=CMParms.combine(commands,2);
+				Iterator<String> k=Resources.findResourceKeys(which);
+				if(!k.hasNext())
+				{
+					mob.tell("Unknown resource '"+which+"'.  Use LIST RESOURCES.");
+					return false;
+				}
+				for(;k.hasNext();)
+				{
+					String key=k.next();
+					Resources.removeResource(key);
+					mob.tell("Resource '"+key+"' unloaded.");
+				}
+			}
+			else
+			if(((String)commands.elementAt(1)).equalsIgnoreCase("FILE"))
+			{
+				String which=CMParms.combine(commands,2);
+				CMFile F1=new CMFile(which,mob,false,true);
+				if(!F1.exists())
+				{
+					int x=which.indexOf(':');
+					if(x<0) x=which.lastIndexOf(' ');
+					if(x>=0) F1=new CMFile(which.substring(x+1).trim(),mob,false,true);
+				}
+				if(!F1.exists())
+				{
+					F1=new CMFile(Resources.buildResourcePath(which),mob,false,true);
+					if(!F1.exists())
+					{
+						int x=which.indexOf(':');
+						if(x<0) x=which.lastIndexOf(' ');
+						if(x>=0) F1=new CMFile(Resources.buildResourcePath(which.substring(x+1).trim()),mob,false,true);
+					}
+				}
+				if(F1.exists())
+				{
+					CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,true);
+					if((!F2.exists())||(!F2.canRead()))
+					{
+						mob.tell("Inaccessible file resource: '"+which+"'");
+						return false;
+					}
+					Iterator<String> k=Resources.findResourceKeys(which);
+					if(!k.hasNext())
+					{
+						mob.tell("Unknown resource '"+which+"'.  Use LIST RESOURCES.");
+						return false;
+					}
+					for(;k.hasNext();)
+					{
+						String key=k.next();
+						Resources.removeResource(key);
+						mob.tell("Resource '"+key+"' unloaded.");
+					}
+				}
+				else
+					mob.tell("Unknown file resource: '"+which+"'");
+			}
+			else
 			{
 				CMFile F1=new CMFile(str,mob,false,true);
 				if(!F1.exists())
@@ -290,23 +352,24 @@ public class Unload extends StdCommand
 					CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,true);
 					if((!F2.exists())||(!F2.canRead()))
 					{
-						mob.tell("Inaccessible resource: '"+str+"'");
+						mob.tell("Inaccessible file resource: '"+str+"'");
 						return false;
 					}
+					Iterator<String> k=Resources.findResourceKeys(str);
+					if(!k.hasNext())
+					{
+						mob.tell("Unknown resource '"+str+"'.  Use LIST RESOURCES.");
+						return false;
+					}
+					for(;k.hasNext();)
+					{
+						String key=k.next();
+						Resources.removeResource(key);
+						mob.tell("Resource '"+key+"' unloaded.");
+					}
 				}
-				
-				Iterator<String> k=Resources.findResourceKeys(str);
-				if(!k.hasNext())
-				{
-					mob.tell("Unknown resource '"+str+"'.  Use LIST RESOURCES.");
-					return false;
-				}
-				for(;k.hasNext();)
-				{
-					String key=k.next();
-					Resources.removeResource(key);
-					mob.tell("Resource '"+key+"' unloaded.");
-				}
+				else
+					mob.tell("Unknown resource type '"+((String)commands.elementAt(1))+". Try "+CMParms.toStringList(ARCHON_LIST)+".");
 			}
 		}
 		return false;
