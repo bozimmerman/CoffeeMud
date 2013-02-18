@@ -19,7 +19,7 @@ import java.util.*;
 
 /*
 * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
-* <p>Portions Copyright (c) 2004-2012 Bo Zimmerman</p>
+* <p>Portions Copyright (c) 2004-2013 Bo Zimmerman</p>
 
 
    Licensed under the Apache License, Version 2.0 (the "License");

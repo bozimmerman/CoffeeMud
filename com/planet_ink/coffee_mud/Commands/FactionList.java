@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 /**
  * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
- * <p>Portions Copyright (c) 2004-2012 Bo Zimmerman</p>
+ * <p>Portions Copyright (c) 2004-2013 Bo Zimmerman</p>
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
