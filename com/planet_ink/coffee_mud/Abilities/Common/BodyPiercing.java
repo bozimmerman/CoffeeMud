@@ -156,7 +156,7 @@ public class BodyPiercing extends CommonSkill
 		if((target.getWearPositions(wornCode)<=0)
 		||(target.freeWearPositions(wornCode,(short)(Short.MIN_VALUE+1),(short)0)<=0))
 		{
-			commonTell(mob,"That location is not available for piercing.");
+			commonTell(mob,"That location is not available for piercing. Make sure no clothing is being worn there.");
 			return false;
 		}
 		
