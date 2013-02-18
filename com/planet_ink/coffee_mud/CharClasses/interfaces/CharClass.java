@@ -471,6 +471,11 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return whether players of this class can gain or lose experience points
 	 */
 	public boolean expless();
+	/**
+	 * Whether players of this class see qualifying skills only if they meet all prereqs.
+	 * @return whether players of this class see qualifying skills only if they meet all prereqs
+	 */
+	public boolean showThinQualifyList();
 
 	/**
 	 * Max number of common gathering/non-crafting skills this class can learn.
@@ -610,6 +615,8 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public final static int GENFLAG_NOLEVELS=2;
 	/** for character classes that define themselves using getParms, this can designate expless bitmaps */
 	public final static int GENFLAG_NOEXP=4;
+	/** for character classes that define themselves using getParms, this can designate expless bitmaps */
+	public final static int GENFLAG_THINQUALLIST=8;
 	/** constant string list naming each of the GENFLAG_* constants in the order of their value */
-	public final static String[] GENFLAG_DESCS={"RACELESS","LEVELLESS","EXPLESS"};
+	public final static String[] GENFLAG_DESCS={"RACELESS","LEVELLESS","EXPLESS","THINQUALLIST"};
 }

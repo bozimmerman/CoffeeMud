@@ -143,7 +143,7 @@ public class Artisan extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"InstrumentMaking",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Haggle",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Haggle",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"MasterTailoring",false,CMParms.parseSemicolons("Tailoring(100)",true),"+DEX 16");
 		

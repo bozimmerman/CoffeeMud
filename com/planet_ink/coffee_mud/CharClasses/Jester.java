@@ -77,7 +77,7 @@ public class Jester extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_BellyRolling",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Climsiness",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Clumsiness",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_IdentifyPoison",true,CMParms.parseSemicolons("Apothecary",true));

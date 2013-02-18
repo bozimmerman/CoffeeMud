@@ -96,7 +96,7 @@ public class Trapper extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Observation",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Lure",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Plant",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_PlantItem",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_BackStab",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);

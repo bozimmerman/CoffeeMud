@@ -68,6 +68,7 @@ public class Qualify  extends Skills
 	{
 		int highestLevel=0;
 		StringBuffer msg=new StringBuffer("");
+		boolean checkUnMet=ableM.charStats().getCurrentClass().showThinQualifyList();
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -78,7 +79,8 @@ public class Qualify  extends Skills
 			&&(level<(CMLib.ableMapper().qualifyingClassLevel(ableM,A)+1))
 			&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask)))
 			&&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit > 0)
-			&&(ableM.fetchAbility(A.ID())==null))
+			&&(ableM.fetchAbility(A.ID())==null)
+			&&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 				highestLevel=level;
 		}
 		int col=0;
@@ -97,7 +99,8 @@ public class Qualify  extends Skills
 				   &&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
 				   &&(ableM.fetchAbility(A.ID())==null)
 				   &&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask)))
-				   &&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit > 0))
+				   &&(CMLib.ableMapper().getCommonSkillRemainder(ableM, A).specificSkillLimit > 0)
+				   &&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 				{
 					if((++col)>2)
 					{

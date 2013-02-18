@@ -128,7 +128,7 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_SummonPeace",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_VenomWard",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Ranger_Lore",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Ranger_WoodlandLore",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Fighter_CriticalShot",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);

@@ -5589,6 +5589,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			sets.append("Leveless ");
 		if(CMath.bset(flags,CharClass.GENFLAG_NOEXP))
 			sets.append("Expless ");
+		if(CMath.bset(flags,CharClass.GENFLAG_THINQUALLIST))
+			sets.append("ThinQualList ");
 
 		mob.tell(showNumber+". Extra CharClass Flags: "+sets.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999))

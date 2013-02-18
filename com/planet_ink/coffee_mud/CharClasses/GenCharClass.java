@@ -106,6 +106,8 @@ public class GenCharClass extends StdCharClass
 	public boolean raceless(){return (disableFlags&CharClass.GENFLAG_NORACE)==CharClass.GENFLAG_NORACE;}
 	public boolean leveless(){return (disableFlags&CharClass.GENFLAG_NOLEVELS)==CharClass.GENFLAG_NOLEVELS;}
 	public boolean expless(){return (disableFlags&CharClass.GENFLAG_NOEXP)==CharClass.GENFLAG_NOEXP;}
+	public boolean showThinQualifyList(){return (disableFlags&CharClass.GENFLAG_THINQUALLIST)==CharClass.GENFLAG_THINQUALLIST;}
+
 	//protected Vector outfitChoices=null; from stdcharclass -- but don't forget them!
 	protected List<String>[] securityGroups=new List[0];
 	protected Integer[] securityGroupLevels={};

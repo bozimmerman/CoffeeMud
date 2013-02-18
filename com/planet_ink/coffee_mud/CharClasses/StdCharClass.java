@@ -68,6 +68,7 @@ public class StdCharClass implements CharClass
 	public boolean raceless(){return false;}
 	public boolean leveless(){return false;}
 	public boolean expless(){return false;}
+	public boolean showThinQualifyList(){return false;}
 	public int maxNonCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXNONCRAFTINGSKILLS); }
 	public int maxCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCRAFTINGSKILLS); }
 	public int maxCommonSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCOMMONSKILLS); }
@@ -590,7 +591,8 @@ public class StdCharClass implements CharClass
 		CR.setStat("LEVELCAP",""+getLevelCap());
 		CR.setStat("DISFLAGS",""+((raceless()?CharClass.GENFLAG_NORACE:0)
 								|(leveless()?CharClass.GENFLAG_NOLEVELS:0)
-								|(expless()?CharClass.GENFLAG_NOEXP:0)));
+								|(expless()?CharClass.GENFLAG_NOEXP:0)
+								|(showThinQualifyList()?CharClass.GENFLAG_THINQUALLIST:0)));
 		//CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState"); STARTCS.setAllValues(0);
 		//this.startCharacter(mob,isBorrowedClass,verifyOnly)
 		//CR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));

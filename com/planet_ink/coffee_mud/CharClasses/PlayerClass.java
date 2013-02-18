@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -39,6 +40,7 @@ public class PlayerClass extends StdCharClass
 	public String ID(){return "PlayerClass";}
 	public String name(){return "PlayerClass";}
 	public String baseClass(){return ID();}
+	public boolean showThinQualifyList(){return true;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;}
@@ -59,18 +61,123 @@ public class PlayerClass extends StdCharClass
 			mob.tell("This class cannot be learned.");
 		return false;
 	}
+
+	private boolean isSkill(int classCode)
+	{
+		switch(classCode&Ability.ALL_ACODES)
+		{
+		case Ability.ACODE_COMMON_SKILL:
+		case Ability.ACODE_DISEASE:
+		case Ability.ACODE_POISON:
+		case Ability.ACODE_SKILL:
+		case Ability.ACODE_THIEF_SKILL:
+		case Ability.ACODE_TRAP:
+		case Ability.ACODE_LANGUAGE: 
+		case Ability.ACODE_PROPERTY:
+			return true;
+		case Ability.ACODE_CHANT:
+		case Ability.ACODE_PRAYER:
+		case Ability.ACODE_SPELL:
+		case Ability.ACODE_SUPERPOWER:
+			return false;
+		}
+		return true;
+	}
+	
+	private List<String> makeRequirements(LinkedList<List<String>> prevSets, Ability A)
+	{
+		for(Iterator<List<String>> i=prevSets.descendingIterator();i.hasNext();)
+		{
+			List<String> prevSet=i.next();
+			List<String> reqSet=new Vector<String>();
+			for(String prevID : prevSet)
+			{
+				Ability pA=CMClass.getAbility(prevID);
+				if(A.classificationCode()==pA.classificationCode())
+					reqSet.add(pA.ID());
+			}
+			if(reqSet.size()==0)
+				for(String prevID : prevSet)
+				{
+					Ability pA=CMClass.getAbility(prevID);
+					if((A.classificationCode()&Ability.ALL_ACODES)==(pA.classificationCode()&Ability.ALL_ACODES))
+						reqSet.add(pA.ID());
+				}
+			if(reqSet.size()==0)
+			{
+				boolean aIsSkill=isSkill(A.classificationCode());
+				for(String prevID : prevSet)
+				{
+					Ability pA=CMClass.getAbility(prevID);
+					if(aIsSkill==isSkill(pA.classificationCode()))
+						reqSet.add(pA.ID());
+				}
+			}
+			if(reqSet.size()>0)
+				return reqSet;
+		}
+		return new Vector<String>();
+	}
 	
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
 		if(!loaded())
 		{
 			setLoaded(true);
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			LinkedList<CharClass> charClassesOrder=new LinkedList<CharClass>();
+			HashSet<String> names=new HashSet<String>();
+			for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				Ability A=(Ability)a.nextElement();
-				int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-				if(lvl>0)
-					CMLib.ableMapper().addCharAbilityMapping(ID(),1,A.ID(),false);
+				CharClass C=c.nextElement();
+				if(C.baseClass().equals(C.ID()) && (!C.baseClass().equalsIgnoreCase("Archon"))&& (!C.baseClass().equalsIgnoreCase("PlayerClass"))&& (!C.baseClass().equalsIgnoreCase("Qualifier"))&& (!C.baseClass().equalsIgnoreCase("StdCharClass")))
+				{
+					names.add(C.ID());
+					charClassesOrder.add(C);
+				}
+			}
+			for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+			{
+				CharClass C=c.nextElement();
+				if(!names.contains(C.ID()) && names.contains(C.baseClass()))
+					charClassesOrder.add(C);
+			}
+			for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+			{
+				CharClass C=c.nextElement();
+				if(C.baseClass().equals("Commoner") && (!names.contains(C.ID())))
+					charClassesOrder.add(C);
+			}
+			
+			for(CharClass C : charClassesOrder)
+			{
+				LinkedList<List<String>> prevSets=new LinkedList<List<String>>();
+				for(int lvl=1;lvl<CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);lvl++)
+				{
+					List<String> curSet=CMLib.ableMapper().getLevelListings(C.ID(), false, lvl);
+					for(String ID : curSet)
+					{
+						String defaultParam=CMLib.ableMapper().getDefaultParm(C.ID(), true, ID);
+						if(CMLib.ableMapper().getQualifyingLevel(ID(), false, ID)<0)
+						{
+							Ability A=CMClass.getAbility(ID);
+							if(A==null)
+							{
+								Log.errOut("Unknonwn class: "+ID);
+								continue;
+							}
+							List<String> reqSet=makeRequirements(prevSets,A);
+							if(reqSet.size()>0)
+								reqSet=new XVector<String>(CMParms.toStringList(reqSet));
+							int level=0;
+							if(!this.leveless() && (!CMSecurity.isDisabled(DisFlag.LEVELS)))
+								level=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+							if(level<0) level=0;
+							CMLib.ableMapper().addCharAbilityMapping(ID(), 0, ID, 0, defaultParam, false, false, reqSet, "");
+						}
+					}
+					if(curSet.size()>0)
+						prevSets.add(curSet);
+				}
 			}
 		}
 		super.startCharacter(mob, false, verifyOnly);
