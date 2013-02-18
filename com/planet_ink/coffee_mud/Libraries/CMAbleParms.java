@@ -2640,8 +2640,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				break;
 			}
 			case PARMTYPE_NUMBER:
-				str = Integer.toString(CMLib.genEd().prompt(mob,Integer.parseInt(oldVal),++showNumber[0],showFlag,prompt()));
+			{
+				String newStr=CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),true);
+				if(newStr.trim().length()==0)
+					str="";
+				else
+					str = Integer.toString(CMath.s_int(newStr));
 				break;
+			}
 			case PARMTYPE_CHOICES:
 				str = CMLib.genEd().promptMultiOrExtra(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
 				break;
