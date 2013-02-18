@@ -106,13 +106,20 @@ public class Drilling extends GatheringSkill
 					for(int i=0;i<amount;i++)
 					{
 						Item newFound=(Item)found.copyOf();
-						mob.location().addItem(newFound,ItemPossessor.Expire.Player_Drop);
+						Room R=mob.location();
+						if(R==null) break;
+						R.addItem(newFound,ItemPossessor.Expire.Player_Drop);
 						if((container!=null)
-						&&(mob.isMine(container))
 						&&(container instanceof Container))
 						{
-							CMLib.commands().postGet(mob,null,newFound,true);
-							if(mob.isMine(newFound))
+							if(mob.isMine(container))
+							{
+								CMLib.commands().postGet(mob,null,newFound,true);
+								if(mob.isMine(newFound))
+									newFound.setContainer((Container)container);
+							}
+							else
+							if(R.isContent((Item)container))
 								newFound.setContainer((Container)container);
 						}
 					}
@@ -146,25 +153,32 @@ public class Drilling extends GatheringSkill
 			commonTell(mob,I.name()+" doesn't look like it can hold anything.");
 			return false;
 		}
-		List<Item> V=((Container)I).getContents();
-		for(int v=0;v<V.size();v++)
-		{
-			Item I2=(Item)V.get(v);
-			if((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-			{
-				commonTell(mob,I.name()+" needs to have the "+I2.name()+" removed first.");
-				return false;
-			}
-		}
+		int resourceType=mob.location().myResource();
 		if((!(I instanceof Drink))||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 		{
 			commonTell(mob,I.name()+" doesn't look like it can hold a liquid.");
 			return false;
 		}
+		List<Item> V=((Container)I).getContents();
 		if(((Drink)I).containsDrink())
 		{
-			commonTell(mob,"You need to empty "+I.name()+" first.");
-			return false;
+			for(int v=0;v<V.size();v++)
+			{
+				Item I2=(Item)V.get(v);
+				if((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+				{
+					if(I2.material()!=resourceType)
+					{
+						commonTell(mob,I.name()+" needs to have the "+I2.name()+" removed first.");
+						return false;
+					}
+				}
+			}
+			if(((Drink)I).liquidRemaining()>0)
+			{
+				commonTell(mob,"You need to empty "+I.name()+" first.");
+				return false;
+			}
 		}
 
 		verb="drilling";
@@ -177,7 +191,6 @@ public class Drilling extends GatheringSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		int resourceType=mob.location().myResource();
 		if((proficiencyCheck(mob,0,auto))
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
 		{
