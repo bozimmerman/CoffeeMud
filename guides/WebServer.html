@@ -976,7 +976,7 @@ public class HTTPclientIP extends StdWebMacro
 {
  public String name() {return "HTTPclientIP";}
 
- public String runMacro(ExternalHTTPRequests httpReq, String parms)
+ public String runMacro(HTTPRequest httpReq, String parms)
  {
   return httpReq.getHTTPclientIP();
  }
@@ -1000,7 +1000,7 @@ return sock.getInetAddress().getHostAddress();
               <strong>cmvp</strong> web pages. The Javascript to do this is inserted directly into your web page at the point where you want
               the script-generated content to appear using the embedded macros@jscript@ and @/jscript@. The script included between those two
               tags will follow the rules for JavaScripting found in the <a href="Programming.html">Programmers Guide</a>. The web server makes
-              the <code>ExternalHTTPRequests request()</code> object available to the script, as well as the method <code>void write(String
+              the <code>HTTPRequest request()</code> object available to the script, as well as the method <code>void write(String
               s)</code> for writing text into the page.</p>
 
               <p>Here is our first example:</p>
