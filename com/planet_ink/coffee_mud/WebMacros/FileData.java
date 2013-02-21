@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,7 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -39,16 +40,16 @@ public class FileData extends StdWebMacro
 	public boolean isAWebPath(){return true;}
 	public boolean preferBinary(){return true;}
 	
-	public String getFilename(ExternalHTTPRequests httpReq, String filename)
+	public String getFilename(HTTPRequest httpReq, String filename)
 	{
-		String path=httpReq.getRequestParameter("PATH");
+		String path=httpReq.getUrlParameter("PATH");
 		if(path==null) return filename;
-		String file=httpReq.getRequestParameter("FILE");
+		String file=httpReq.getUrlParameter("FILE");
 		if(file==null) return filename;
 		return path+"/"+file;
 	}
 	
-	public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		String filename=getFilename(httpReq,"");
 		if(filename.length()==0) return null;
@@ -59,7 +60,7 @@ public class FileData extends StdWebMacro
 		return F.raw();
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";
 	}

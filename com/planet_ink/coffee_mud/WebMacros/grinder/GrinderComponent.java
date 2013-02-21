@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,24 +37,24 @@ public class GrinderComponent
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getRequestParameter("COMPONENT");
+		String last=httpReq.getUrlParameter("COMPONENT");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
 			String fixedCompID=last.replace(' ','_').toUpperCase();
 			List<AbilityComponent> set=new Vector<AbilityComponent>();
 			int posDex=1;
-			while(httpReq.isRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex) && httpReq.getRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex).trim().length()>0)
+			while(httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex) && httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex).trim().length()>0)
 			{
-				String mask=httpReq.getRequestParameter(fixedCompID+"_PIECE_MASK_"+posDex);
-				String str=httpReq.getRequestParameter(fixedCompID+"_PIECE_STRING_"+posDex);
-				String amt=httpReq.getRequestParameter(fixedCompID+"_PIECE_AMOUNT_"+posDex);
-				String conn=httpReq.getRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex);
-				String loc=httpReq.getRequestParameter(fixedCompID+"_PIECE_LOCATION_"+posDex);
-				String type=httpReq.getRequestParameter(fixedCompID+"_PIECE_TYPE_"+posDex);
-				String consumed=httpReq.getRequestParameter(fixedCompID+"_PIECE_CONSUMED_"+posDex);
+				String mask=httpReq.getUrlParameter(fixedCompID+"_PIECE_MASK_"+posDex);
+				String str=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+posDex);
+				String amt=httpReq.getUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+posDex);
+				String conn=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex);
+				String loc=httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+posDex);
+				String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+posDex);
+				String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+posDex);
 				if(!conn.equalsIgnoreCase("DELETE"))
 				{
 					AbilityComponent able=(AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,17 +37,17 @@ public class RoomNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String area=httpReq.getRequestParameter("AREA");
+		String area=httpReq.getUrlParameter("AREA");
 		if((area==null)||(CMLib.map().getArea(area)==null))
 			return " @break@";
 		Area A=CMLib.map().getArea(area);
-		String last=httpReq.getRequestParameter("ROOM");
+		String last=httpReq.getUrlParameter("ROOM");
 		if(parms.containsKey("RESET"))
 		{   
-			if(last!=null) httpReq.removeRequestParameter("ROOM");
+			if(last!=null) httpReq.removeUrlParameter("ROOM");
 			return "";
 		}
 		String lastID="";
@@ -57,12 +57,12 @@ public class RoomNext extends StdWebMacro
 			String roomid=(String)d.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!roomid.equals(lastID))))
 			{
-				httpReq.addRequestParameters("ROOM",roomid);
+				httpReq.addFakeUrlParameter("ROOM",roomid);
 				return "";
 			}
 			lastID=roomid;
 		}
-		httpReq.addRequestParameters("ROOM","");
+		httpReq.addFakeUrlParameter("ROOM","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

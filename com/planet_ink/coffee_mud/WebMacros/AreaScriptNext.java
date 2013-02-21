@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -129,7 +129,7 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	}
 	
-	public TreeMap<String,ArrayList<AreaScriptInstance>> getAreaScripts(ExternalHTTPRequests httpReq, String area)
+	public TreeMap<String,ArrayList<AreaScriptInstance>> getAreaScripts(HTTPRequest httpReq, String area)
 	{
 		TreeMap<String,ArrayList<AreaScriptInstance>> list;
 		list = (TreeMap<String,ArrayList<AreaScriptInstance>>)httpReq.getRequestObjects().get("AREA_"+area+" SCRIPTSLIST");
@@ -180,15 +180,15 @@ public class AreaScriptNext extends StdWebMacro
 		return list;
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String area=httpReq.getRequestParameter("AREA");
+		String area=httpReq.getUrlParameter("AREA");
 		if((area==null)||(area.length()==0)) return "@break@";
-		String last=httpReq.getRequestParameter("AREASCRIPT");
+		String last=httpReq.getUrlParameter("AREASCRIPT");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeRequestParameter("AREASCRIPT");
+			if(last!=null) httpReq.removeUrlParameter("AREASCRIPT");
 			return "";
 		}
 		String lastID="";
@@ -197,13 +197,13 @@ public class AreaScriptNext extends StdWebMacro
 		{
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!scriptName.equals(lastID))))
 			{
-				httpReq.addRequestParameters("AREASCRIPT",scriptName);
+				httpReq.addFakeUrlParameter("AREASCRIPT",scriptName);
 				last=scriptName;
 				return "";
 			}
 			lastID=scriptName;
 		}
-		httpReq.addRequestParameters("AREASCRIPT","");
+		httpReq.addFakeUrlParameter("AREASCRIPT","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

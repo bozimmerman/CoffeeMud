@@ -1,4 +1,8 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.miniweb.util.MiniWebConfig;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -34,11 +38,11 @@ public class WebServerVersion extends StdWebMacro
 {
 	public String name()	{return "WebServerVersion";}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-//		return httpReq.getWebServer().ServerVersionString;
-		// it's static
-		return httpReq.getServerVersionString();
+		if(Thread.currentThread() instanceof MWThread)
+			return "MiniWebServer "+((MWThread)Thread.currentThread()).getConfig().getMiniWebServer().getVersion();
+		return Float.toString(httpReq.getHttpVer());
 	}
 
 }

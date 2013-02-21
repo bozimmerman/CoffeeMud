@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -38,12 +38,12 @@ public class SystemFunction extends StdWebMacro
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()	{return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.get("ANNOUNCE")!=null)
 		{
-			String s=httpReq.getRequestParameter("TEXT");
+			String s=httpReq.getUrlParameter("TEXT");
 			if((s!=null)&&(s.length()>0))
 			{
 				MOB M=((MOB)CMClass.sampleMOB().copyOf());

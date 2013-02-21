@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -35,16 +37,16 @@ public class AllQualifyNext extends StdWebMacro
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()   {return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ALLQUALID");
+		String last=httpReq.getUrlParameter("ALLQUALID");
 		if(parms.containsKey("RESET"))
 		{   
-			if(last!=null) httpReq.removeRequestParameter("ALLQUALID");
+			if(last!=null) httpReq.removeUrlParameter("ALLQUALID");
 			return "";
 		}
-		String which=httpReq.getRequestParameter("ALLQUALWHICH");
+		String which=httpReq.getUrlParameter("ALLQUALWHICH");
 		if(parms.containsKey("WHICH"))
 			which=parms.get("WHICH");	
 		if((which==null)||(which.length()==0)) which="ALL";
@@ -59,12 +61,12 @@ public class AllQualifyNext extends StdWebMacro
 			abilityID=(String)i.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!abilityID.equalsIgnoreCase(lastID))))
 			{
-				httpReq.addRequestParameters("ALLQUALID",abilityID);
+				httpReq.addFakeUrlParameter("ALLQUALID",abilityID);
 				return "";
 			}
 			lastID=abilityID;
 		}
-		httpReq.addRequestParameters("ALLQUALID","");
+		httpReq.addFakeUrlParameter("ALLQUALID","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

@@ -14,11 +14,9 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.AreaScriptNext.AreaScriptInstance;
+import com.planet_ink.miniweb.interfaces.*;
 
 import java.util.*;
-
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -41,12 +39,12 @@ public class AbilityData extends StdWebMacro
 
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		MOB mob=Authenticate.getAuthenticatedMob(httpReq);
 		
-		String replaceCommand=httpReq.getRequestParameter("REPLACE");
+		String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null) 
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
@@ -54,16 +52,16 @@ public class AbilityData extends StdWebMacro
 			int eq=replaceCommand.indexOf('=');
 			String field=replaceCommand.substring(0,eq);
 			String value=replaceCommand.substring(eq+1);
-			httpReq.addRequestParameters(field, value);
-			httpReq.addRequestParameters("REPLACE","");
+			httpReq.addFakeUrlParameter(field, value);
+			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 		
-		String last=httpReq.getRequestParameter("ABILITY");
+		String last=httpReq.getUrlParameter("ABILITY");
 		if(last==null) return " @break@";
 		Ability A=null;
-		String newAbilityID=httpReq.getRequestParameter("NEWABILITY");
-		String newLanguageID=httpReq.getRequestParameter("NEWLANGUAGE");
-		String newCraftSkillID=httpReq.getRequestParameter("NEWCRAFTSKILL");
+		String newAbilityID=httpReq.getUrlParameter("NEWABILITY");
+		String newLanguageID=httpReq.getUrlParameter("NEWLANGUAGE");
+		String newCraftSkillID=httpReq.getUrlParameter("NEWCRAFTSKILL");
 		if(A==null)
 			A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
 		if((A==null)
@@ -74,7 +72,7 @@ public class AbilityData extends StdWebMacro
 			A=(Ability)CMClass.getAbility("GenAbility").copyOf();
 			A.setStat("CLASS9",newAbilityID);
 			last=newAbilityID;
-			httpReq.addRequestParameters("ABILITY",newAbilityID);
+			httpReq.addFakeUrlParameter("ABILITY",newAbilityID);
 		}
 		if((A==null)
 		&&(newLanguageID!=null)
@@ -84,7 +82,7 @@ public class AbilityData extends StdWebMacro
 			A=(Ability)CMClass.getAbility("GenLanguage").copyOf();
 			A.setStat("CLASS9",newLanguageID);
 			last=newLanguageID;
-			httpReq.addRequestParameters("ABILITY",newLanguageID);
+			httpReq.addFakeUrlParameter("ABILITY",newLanguageID);
 		}
 		if((A==null)
 		&&(newCraftSkillID!=null)
@@ -94,7 +92,7 @@ public class AbilityData extends StdWebMacro
 			A=(Ability)CMClass.getAbility("GenCraftSkill").copyOf();
 			A.setStat("CLASS9",newCraftSkillID);
 			last=newCraftSkillID;
-			httpReq.addRequestParameters("ABILITY",newCraftSkillID);
+			httpReq.addFakeUrlParameter("ABILITY",newCraftSkillID);
 		}
 		if(last.length()>0)
 		{
@@ -120,13 +118,13 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("NAME"))
 				{
-					String old=httpReq.getRequestParameter("NAME");
+					String old=httpReq.getUrlParameter("NAME");
 					if(old==null) old=A.name();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("GENHELP"))
 				{
-					String old=httpReq.getRequestParameter("GENHELP");
+					String old=httpReq.getUrlParameter("GENHELP");
 					if(old==null) old=A.getStat("HELP");
 					str.append(old+", ");
 				}
@@ -136,21 +134,21 @@ public class AbilityData extends StdWebMacro
 					if(parms.containsKey("WORDLISTS"))
 					{
 						List<String[]> wordLists=((Language)A).translationVector(A.ID());
-						if(httpReq.isRequestParameter("WORDLIST1"))
+						if(httpReq.isUrlParameter("WORDLIST1"))
 						{
 							wordLists=new Vector<String[]>();
 							int x=1;
-							while(httpReq.isRequestParameter("WORDLIST"+x))
+							while(httpReq.isUrlParameter("WORDLIST"+x))
 							{
-								wordLists.add(CMParms.parseCommas(httpReq.getRequestParameter("WORDLIST"+x), true).toArray(new String[0]));
+								wordLists.add(CMParms.parseCommas(httpReq.getUrlParameter("WORDLIST"+x), true).toArray(new String[0]));
 								x++;
 							}
 						}
 						else
 						{
 							for(int i=wordLists.size()-1;i>=0;i--)
-								httpReq.addRequestParameters("WORDLIST"+(i+1), CMParms.toStringList(wordLists.get(i)));
-							httpReq.removeRequestParameter("WORDLIST"+(wordLists.size()+1));
+								httpReq.addFakeUrlParameter("WORDLIST"+(i+1), CMParms.toStringList(wordLists.get(i)));
+							httpReq.removeUrlParameter("WORDLIST"+(wordLists.size()+1));
 						}
 						
 						for(int i=wordLists.size()-1;i>=0;i--)
@@ -161,15 +159,15 @@ public class AbilityData extends StdWebMacro
 						
 						if(parms.containsKey("RESET"))
 						{
-							httpReq.removeRequestParameter("WORDLISTNUM");
-							httpReq.removeRequestParameter("WORDLISTNEXT");
+							httpReq.removeUrlParameter("WORDLISTNUM");
+							httpReq.removeUrlParameter("WORDLISTNEXT");
 							return "";
 						}
 						else
 						if(parms.containsKey("NEXT"))
 						{
 							String lastID="";
-							String lastNum = httpReq.getRequestParameter("WORDLISTNUM");
+							String lastNum = httpReq.getUrlParameter("WORDLISTNUM");
 							String nextName = "WORDLIST1";
 							for(int i=0;i<wordLists.size();i++)
 							{
@@ -177,14 +175,14 @@ public class AbilityData extends StdWebMacro
 								nextName="WORDLIST"+Integer.toString(i+2);
 								if((lastNum==null)||((lastNum.length()>0)&&(lastNum.equals(lastID))&&(!thisName.equals(lastID))))
 								{
-									httpReq.addRequestParameters("WORDLISTNUM",thisName);
+									httpReq.addFakeUrlParameter("WORDLISTNUM",thisName);
 									last=thisName;
 									return "";
 								}
 								lastID=thisName;
 							}
-							httpReq.addRequestParameters("WORDLISTNUM","");
-							httpReq.addRequestParameters("WORDLISTNEXT",nextName);
+							httpReq.addFakeUrlParameter("WORDLISTNUM","");
+							httpReq.addFakeUrlParameter("WORDLISTNEXT",nextName);
 							if(parms.containsKey("EMPTYOK"))
 								return "<!--EMPTY-->";
 							return " @break@";
@@ -194,14 +192,14 @@ public class AbilityData extends StdWebMacro
 					if(parms.containsKey("HASHWORDS"))
 					{
 						Map<String,String> hashWords=((Language)A).translationHash(A.ID());
-						if(httpReq.isRequestParameter("HASHWORD1"))
+						if(httpReq.isUrlParameter("HASHWORD1"))
 						{
 							hashWords=new Hashtable<String,String>();
 							int x=1;
-							while(httpReq.isRequestParameter("HASHWORD"+x))
+							while(httpReq.isUrlParameter("HASHWORD"+x))
 							{
-								String word=httpReq.getRequestParameter("HASHWORD"+x).toUpperCase().trim();
-								String def=httpReq.getRequestParameter("HASHWORDDEF"+x);
+								String word=httpReq.getUrlParameter("HASHWORD"+x).toUpperCase().trim();
+								String def=httpReq.getUrlParameter("HASHWORDDEF"+x);
 								if((def!=null)&&(def.length()>0)&&(word.length()>0))
 									hashWords.put(word,def);
 								x++;
@@ -212,27 +210,27 @@ public class AbilityData extends StdWebMacro
 							int x=1;
 							for(String key : hashWords.keySet()) 
 							{
-								httpReq.addRequestParameters("HASHWORD"+x, key);
-								httpReq.addRequestParameters("HASHWORDDEF"+x, hashWords.get(key));
+								httpReq.addFakeUrlParameter("HASHWORD"+x, key);
+								httpReq.addFakeUrlParameter("HASHWORDDEF"+x, hashWords.get(key));
 								x++;
 							}
-							httpReq.removeRequestParameter("HASHWORD"+x);
-							httpReq.removeRequestParameter("HASHWORDDEF"+x);
+							httpReq.removeUrlParameter("HASHWORD"+x);
+							httpReq.removeUrlParameter("HASHWORDDEF"+x);
 						}
 						
 						if(parms.containsKey("RESET"))
 						{
-							httpReq.removeRequestParameter("HASHWORDNUM");
-							httpReq.removeRequestParameter("HASHWORDDEFNUM");
-							httpReq.removeRequestParameter("HASHWORDNEXT");
-							httpReq.removeRequestParameter("HASHWORDDEFNEXT");
+							httpReq.removeUrlParameter("HASHWORDNUM");
+							httpReq.removeUrlParameter("HASHWORDDEFNUM");
+							httpReq.removeUrlParameter("HASHWORDNEXT");
+							httpReq.removeUrlParameter("HASHWORDDEFNEXT");
 							return "";
 						}
 						else
 						if(parms.containsKey("NEXT"))
 						{
 							String lastID="";
-							String lastNum = httpReq.getRequestParameter("HASHWORDNUM");
+							String lastNum = httpReq.getUrlParameter("HASHWORDNUM");
 							String nextName = "HASHWORD1";
 							String nextDefName = "HASHWORDDEF1";
 							for(int i=1;i<=hashWords.keySet().size();i++) 
@@ -243,18 +241,18 @@ public class AbilityData extends StdWebMacro
 								nextDefName="HASHWORDDEF"+Integer.toString(i+1);
 								if((lastNum==null)||((lastNum.length()>0)&&(lastNum.equals(lastID))&&(!thisName.equals(lastID))))
 								{
-									httpReq.addRequestParameters("HASHWORDNUM",thisName);
-									httpReq.addRequestParameters("HASHWORDDEFNUM",thisDefName);
+									httpReq.addFakeUrlParameter("HASHWORDNUM",thisName);
+									httpReq.addFakeUrlParameter("HASHWORDDEFNUM",thisDefName);
 									last=thisName;
 									return "";
 								}
 								lastID=thisName;
 								i++;
 							}
-							httpReq.addRequestParameters("HASHWORDNUM","");
-							httpReq.addRequestParameters("HASHWORDDEFNUM","");
-							httpReq.addRequestParameters("HASHWORDNEXT",nextName);
-							httpReq.addRequestParameters("HASHWORDDEFNEXT",nextDefName);
+							httpReq.addFakeUrlParameter("HASHWORDNUM","");
+							httpReq.addFakeUrlParameter("HASHWORDDEFNUM","");
+							httpReq.addFakeUrlParameter("HASHWORDNEXT",nextName);
+							httpReq.addFakeUrlParameter("HASHWORDDEFNEXT",nextDefName);
 							if(parms.containsKey("EMPTYOK"))
 								return "<!--EMPTY-->";
 							return " @break@";
@@ -265,7 +263,7 @@ public class AbilityData extends StdWebMacro
 				// here starts CLASSIFICATION
 				if(parms.containsKey("CLASSIFICATION_ACODE"))
 				{
-					String old=httpReq.getRequestParameter("CLASSIFICATION_ACODE");
+					String old=httpReq.getUrlParameter("CLASSIFICATION_ACODE");
 					if(old==null) old=""+(A.classificationCode()&Ability.ALL_ACODES);
 					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 					{
@@ -287,7 +285,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CLASSIFICATION_DOMAIN"))
 				{
-					String old=httpReq.getRequestParameter("CLASSIFICATION_DOMAIN");
+					String old=httpReq.getUrlParameter("CLASSIFICATION_DOMAIN");
 					if(old==null) old=""+((A.classificationCode()&Ability.ALL_DOMAINS)>>5);
 					for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
@@ -297,14 +295,14 @@ public class AbilityData extends StdWebMacro
 				
 				if(parms.containsKey("TRIGSTR"))
 				{
-					String old=httpReq.getRequestParameter("TRIGSTR");
+					String old=httpReq.getUrlParameter("TRIGSTR");
 					if(old==null) old=CMParms.toStringList(A.triggerStrings());
 					// remember to sort by longest->shortest on put-back
 					str.append(old.toUpperCase().trim()+", ");
 				}
 				if(parms.containsKey("MINRANGE"))
 				{
-					String old=httpReq.getRequestParameter("MINRANGE");
+					String old=httpReq.getUrlParameter("MINRANGE");
 					if(old==null) old=""+A.minRange();
 					for(int i=0;i<Ability.RANGE_CHOICES.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.RANGE_CHOICES[i]));
@@ -312,7 +310,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("MAXRANGE"))
 				{
-					String old=httpReq.getRequestParameter("MAXRANGE");
+					String old=httpReq.getUrlParameter("MAXRANGE");
 					if(old==null) old=""+A.maxRange();
 					for(int i=0;i<Ability.RANGE_CHOICES.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.RANGE_CHOICES[i]));
@@ -320,19 +318,19 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("TICKSBETWEENCASTS"))
 				{
-					String old=httpReq.getRequestParameter("TICKSBETWEENCASTS");
+					String old=httpReq.getUrlParameter("TICKSBETWEENCASTS");
 					if(old==null) old=""+A.getTicksBetweenCasts();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("DISPLAY")) // affected string
 				{
-					String old=httpReq.getRequestParameter("DISPLAY");
+					String old=httpReq.getUrlParameter("DISPLAY");
 					if(old==null) old=A.displayText();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("AUTOINVOKE"))
 				{
-					String old=httpReq.getRequestParameter("AUTOINVOKE");
+					String old=httpReq.getUrlParameter("AUTOINVOKE");
 					if(old==null) 
 						old=A.getStat("AUTOINVOKE");
 					else
@@ -343,12 +341,12 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("ABILITY_FLAGS"))
 				{
 					Vector<String> list=new Vector<String>();
-					if(httpReq.isRequestParameter("ABILITY_FLAGS"))
+					if(httpReq.isUrlParameter("ABILITY_FLAGS"))
 					{
 						String id="";
 						int num=0;
-						for(;httpReq.isRequestParameter("ABILITY_FLAGS"+id);id=""+(++num))
-							list.addElement(httpReq.getRequestParameter("ABILITY_FLAGS"+id));
+						for(;httpReq.isUrlParameter("ABILITY_FLAGS"+id);id=""+(++num))
+							list.addElement(httpReq.getUrlParameter("ABILITY_FLAGS"+id));
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("FLAGS"),true);
@@ -358,7 +356,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CUSTOMOVERRIDEMANA"))
 				{
-					String old=httpReq.getRequestParameter("OVERRIDEMANA");
+					String old=httpReq.getUrlParameter("OVERRIDEMANA");
 					if(old==null) old=""+A.getStat("OVERRIDEMANA");
 					int x=CMath.s_int(old);
 					if((x>0) && (x<Ability.COST_PCT))
@@ -366,7 +364,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("OVERRIDEMANA"))
 				{
-					String old=httpReq.getRequestParameter("OVERRIDEMANA");
+					String old=httpReq.getUrlParameter("OVERRIDEMANA");
 					if(old==null) old=""+A.getStat("OVERRIDEMANA");
 					int o=CMath.s_int(old);
 					str.append("<OPTION VALUE=\"-1\""+((o==-1)?" SELECTED":"")+">Use Default");
@@ -381,12 +379,12 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("USAGEMASK"))
 				{
 					Vector<String> list=new Vector<String>();
-					if(httpReq.isRequestParameter("USAGEMASK"))
+					if(httpReq.isUrlParameter("USAGEMASK"))
 					{
 						String id="";
 						int num=0;
-						for(;httpReq.isRequestParameter("USAGEMASK"+id);id=""+(++num))
-							list.addElement(httpReq.getRequestParameter("USAGEMASK"+id));
+						for(;httpReq.isUrlParameter("USAGEMASK"+id);id=""+(++num))
+							list.addElement(httpReq.getUrlParameter("USAGEMASK"+id));
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("USAGEMASK"),true);
@@ -397,12 +395,12 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("CANAFFECTMASK"))
 				{
 					Vector<String> list=new Vector<String>();
-					if(httpReq.isRequestParameter("CANAFFECTMASK"))
+					if(httpReq.isUrlParameter("CANAFFECTMASK"))
 					{
 						String id="";
 						int num=0;
-						for(;httpReq.isRequestParameter("CANAFFECTMASK"+id);id=""+(++num))
-							list.addElement(httpReq.getRequestParameter("CANAFFECTMASK"+id));
+						for(;httpReq.isUrlParameter("CANAFFECTMASK"+id);id=""+(++num))
+							list.addElement(httpReq.getUrlParameter("CANAFFECTMASK"+id));
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("CANAFFECTMASK"),true);
@@ -413,12 +411,12 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("CANTARGETMASK"))
 				{
 					Vector<String> list=new Vector<String>();
-					if(httpReq.isRequestParameter("CANTARGETMASK"))
+					if(httpReq.isUrlParameter("CANTARGETMASK"))
 					{
 						String id="";
 						int num=0;
-						for(;httpReq.isRequestParameter("CANTARGETMASK"+id);id=""+(++num))
-							list.addElement(httpReq.getRequestParameter("CANTARGETMASK"+id));
+						for(;httpReq.isUrlParameter("CANTARGETMASK"+id);id=""+(++num))
+							list.addElement(httpReq.getUrlParameter("CANTARGETMASK"+id));
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("CANTARGETMASK"),true);
@@ -428,7 +426,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("VQUALITY")) //QUALITY
 				{
-					String old=httpReq.getRequestParameter("VQUALITY");
+					String old=httpReq.getUrlParameter("VQUALITY");
 					if(old==null) old=""+A.abstractQuality();
 					for(int i=0;i<Ability.QUALITY_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.QUALITY_DESCS[i]));
@@ -436,73 +434,73 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("HERESTATS")) // affect adj: Prop_HereAdjuster
 				{
-					String old=httpReq.getRequestParameter("HERESTATS");
+					String old=httpReq.getUrlParameter("HERESTATS");
 					if(old==null) old=A.getStat("HERESTATS");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("SCRIPT"))
 				{
-					String old=httpReq.getRequestParameter("SCRIPT");
+					String old=httpReq.getUrlParameter("SCRIPT");
 					if(old==null) old=A.getStat("SCRIPT");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("CASTMASK"))
 				{
-					String old=httpReq.getRequestParameter("CASTMASK");
+					String old=httpReq.getUrlParameter("CASTMASK");
 					if(old==null) old=A.getStat("CASTMASK");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("TARGETMASK"))
 				{
-					String old=httpReq.getRequestParameter("TARGETMASK");
+					String old=httpReq.getUrlParameter("TARGETMASK");
 					if(old==null) old=A.getStat("TARGETMASK");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("FIZZLEMSG"))
 				{
-					String old=httpReq.getRequestParameter("FIZZLEMSG");
+					String old=httpReq.getUrlParameter("FIZZLEMSG");
 					if(old==null) old=A.getStat("FIZZLEMSG");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("AUTOCASTMSG"))
 				{
-					String old=httpReq.getRequestParameter("AUTOCASTMSG");
+					String old=httpReq.getUrlParameter("AUTOCASTMSG");
 					if(old==null) old=A.getStat("AUTOCASTMSG");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("CASTMSG"))
 				{
-					String old=httpReq.getRequestParameter("CASTMSG");
+					String old=httpReq.getUrlParameter("CASTMSG");
 					if(old==null) old=A.getStat("CASTMSG");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("FILENAME"))
 				{
-					String old=httpReq.getRequestParameter("FILENAME");
+					String old=httpReq.getUrlParameter("FILENAME");
 					if(old==null) old=A.getStat("FILENAME");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("VERB"))
 				{
-					String old=httpReq.getRequestParameter("VERB");
+					String old=httpReq.getUrlParameter("VERB");
 					if(old==null) old=A.getStat("VERB");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("SOUND"))
 				{
-					String old=httpReq.getRequestParameter("SOUND");
+					String old=httpReq.getUrlParameter("SOUND");
 					if(old==null) old=A.getStat("SOUND");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("POSTCASTMSG"))
 				{
-					String old=httpReq.getRequestParameter("POSTCASTMSG");
+					String old=httpReq.getUrlParameter("POSTCASTMSG");
 					if(old==null) old=A.getStat("POSTCASTMSG");
 					str.append(old+", ");
 				}
 				if(parms.containsKey("ATTACKCODE"))
 				{
-					String old=httpReq.getRequestParameter("ATTACKCODE");
+					String old=httpReq.getUrlParameter("ATTACKCODE");
 					if(old==null) old=""+CMParms.indexOf(CMMsg.TYPE_DESCS,A.getStat("ATTACKCODE"));
 					for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CMMsg.TYPE_DESCS[i]));
@@ -510,7 +508,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CANMEND"))
 				{
-					String old=httpReq.getRequestParameter("CANMEND");
+					String old=httpReq.getUrlParameter("CANMEND");
 					if(old==null) 
 						old=A.getStat("CANMEND");
 					else
@@ -519,7 +517,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CANREFIT"))
 				{
-					String old=httpReq.getRequestParameter("CANREFIT");
+					String old=httpReq.getUrlParameter("CANREFIT");
 					if(old==null) 
 						old=A.getStat("CANREFIT");
 					else
@@ -528,7 +526,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CANBUNDLE"))
 				{
-					String old=httpReq.getRequestParameter("CANBUNDLE");
+					String old=httpReq.getUrlParameter("CANBUNDLE");
 					if(old==null) 
 						old=A.getStat("CANBUNDLE");
 					else
@@ -537,7 +535,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CANSIT"))
 				{
-					String old=httpReq.getRequestParameter("CANSIT");
+					String old=httpReq.getUrlParameter("CANSIT");
 					if(old==null) 
 						old=A.getStat("CANSIT");
 					else
@@ -548,12 +546,12 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("MATLIST"))
 				{
 					Vector<String> list=new Vector<String>();
-					if(httpReq.isRequestParameter("MATLIST"))
+					if(httpReq.isUrlParameter("MATLIST"))
 					{
 						String id="";
 						int num=0;
-						for(;httpReq.isRequestParameter("MATLIST"+id);id=""+(++num))
-							list.addElement(httpReq.getRequestParameter("MATLIST"+id).toUpperCase().trim());
+						for(;httpReq.isUrlParameter("MATLIST"+id);id=""+(++num))
+							list.addElement(httpReq.getUrlParameter("MATLIST"+id).toUpperCase().trim());
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("MATLIST"),true);
@@ -567,12 +565,12 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("POSTCASTAFFECT"))
 				{
 					Vector<String> list=new Vector<String>();
-					if(httpReq.isRequestParameter("POSTCASTAFFECT"))
+					if(httpReq.isUrlParameter("POSTCASTAFFECT"))
 					{
 						String id="";
 						int num=0;
-						for(;httpReq.isRequestParameter("POSTCASTAFFECT"+id);id=""+(++num))
-							list.addElement(httpReq.getRequestParameter("POSTCASTAFFECT"+id).toUpperCase());
+						for(;httpReq.isUrlParameter("POSTCASTAFFECT"+id);id=""+(++num))
+							list.addElement(httpReq.getUrlParameter("POSTCASTAFFECT"+id).toUpperCase());
 					} 
 					else 
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTAFFECT").toUpperCase(),true);
@@ -590,12 +588,12 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("POSTCASTABILITY"))
 				{
 					Vector<String> list=new Vector<String>();
-					if(httpReq.isRequestParameter("POSTCASTABILITY"))
+					if(httpReq.isUrlParameter("POSTCASTABILITY"))
 					{
 						String id="";
 						int num=0;
-						for(;httpReq.isRequestParameter("POSTCASTABILITY"+id);id=""+(++num))
-							list.addElement(httpReq.getRequestParameter("POSTCASTABILITY"+id).toUpperCase());
+						for(;httpReq.isUrlParameter("POSTCASTABILITY"+id);id=""+(++num))
+							list.addElement(httpReq.getUrlParameter("POSTCASTABILITY"+id).toUpperCase());
 					} 
 					else 
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTABILITY").toUpperCase(),true);
@@ -617,7 +615,7 @@ public class AbilityData extends StdWebMacro
 						Use +/-*()?. @x1=caster level, @x2=target level.
 						Formula evaluates >0 for damage, <0 for healing. Requires Can Target!"
 					*/
-					String old=httpReq.getRequestParameter("POSTCASTDAMAGE");
+					String old=httpReq.getUrlParameter("POSTCASTDAMAGE");
 					if(old==null) old=A.getStat("POSTCASTDAMAGE");
 					str.append(old+", ");
 				}
@@ -776,7 +774,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("QLEVEL"))
 				{
-					String className=httpReq.getRequestParameter("CLASS");
+					String className=httpReq.getUrlParameter("CLASS");
 					int level=0;
 					if((className!=null)&&(className.length()>0))
 						level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
@@ -784,9 +782,9 @@ public class AbilityData extends StdWebMacro
 						level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
 					str.append(level+", ");
 				}
-				if(parms.containsKey("QUALIFYQ")&&(httpReq.isRequestParameter("CLASS")))
+				if(parms.containsKey("QUALIFYQ")&&(httpReq.isUrlParameter("CLASS")))
 				{
-					String className=httpReq.getRequestParameter("CLASS");
+					String className=httpReq.getUrlParameter("CLASS");
 					if((className!=null)&&(className.length()>0))
 					{
 						boolean defaultGain=CMLib.ableMapper().getDefaultGain(className,true,A.ID());

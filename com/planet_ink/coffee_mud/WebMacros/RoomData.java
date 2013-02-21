@@ -1,4 +1,8 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.http.HTTPMethod;
+import com.planet_ink.miniweb.http.MultiPartData;
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
@@ -17,9 +21,11 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.grinder.GrinderRooms;
 
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
 /*
    Copyright 2000-2013 Bo Zimmerman
 
@@ -821,52 +827,38 @@ public class RoomData extends StdWebMacro
 		}
 	}
 	
-	public static ExternalHTTPRequests mergeRoomFields(final ExternalHTTPRequests httpReq, Pair<String,String> setPairs[], Room R)
+	public static HTTPRequest mergeRoomFields(final HTTPRequest httpReq, Pair<String,String> setPairs[], Room R)
 	{
 		final Hashtable<String,String> mergeParams=new Hashtable<String,String>();
-		ExternalHTTPRequests mergeReq=new ExternalHTTPRequests()
+		HTTPRequest mergeReq=new HTTPRequest()
 		{
 			public final Hashtable<String,String> params=mergeParams;
-			public void addRequestParameters(String key, String value) { params.put(key.toUpperCase(), value); }
-			public byte[] doVirtualPage(byte[] data) throws HTTPRedirectException {	return httpReq.doVirtualPage(data); }
-			public String doVirtualPage(String s) throws HTTPRedirectException { return httpReq.doVirtualPage(s); }
-			public StringBuffer doVirtualPage(StringBuffer s) throws HTTPRedirectException { return httpReq.doVirtualPage(s); }
-			public List<String> getAllRequestParameterKeys(String keyMask) { return httpReq.getAllRequestParameterKeys(keyMask); }
-			public String getHTTPclientIP() { return httpReq.getHTTPclientIP(); }
-			public InetAddress getHTTPclientInetAddress() { return httpReq.getHTTPclientInetAddress(); }
-			public String getHTTPstatus() { return httpReq.getHTTPstatus(); }
-			public String getHTTPstatusInfo() { return httpReq.getHTTPstatusInfo(); }
-			public MudHost getMUD() { return httpReq.getMUD(); }
-			public String getMimeType(String aExtension) { return httpReq.getMimeType(aExtension); }
-			public String getPageContent(String filename) { return httpReq.getPageContent(filename); }
-			public String getRequestEncodedParameters() { return httpReq.getRequestEncodedParameters(); }
-			public Map<String, Object> getRequestObjects() { return httpReq.getRequestObjects(); }
-			public String getRequestParameter(String key) { return params.get(key.toUpperCase()); }
-			public InetAddress getServerAddress() { return httpReq.getServerAddress(); }
-			public String getServerVersionString() { return httpReq.getServerVersionString(); }
-			public Map<String, String> getVirtualDirectories() { return httpReq.getVirtualDirectories(); }
-			public String getWebServerPartialName() { return httpReq.getWebServerPartialName(); }
-			public int getWebServerPort() { return httpReq.getWebServerPort(); }
-			public String getWebServerPortStr() { return httpReq.getWebServerPortStr(); }
-			public CMFile grabFile(String filename) { return httpReq.grabFile(filename); }
-			public boolean isRequestParameter(String key) { return params.containsKey(key.toUpperCase()); }
-			public void removeRequestParameter(String key) { params.remove(key.toUpperCase()); }
-			public boolean activate() { return httpReq.activate(); }
-			public CMSupportThread getSupportThread() { return httpReq.getSupportThread(); }
-			public void propertiesLoaded() { httpReq.propertiesLoaded(); }
-			public boolean shutdown() { return httpReq.shutdown(); }
-			public String ID() { return httpReq.ID(); }
-			public String name() { return httpReq.name();}
-			public CMObject copyOf() { return this; }
-			public void initializeClass() { }
-			public CMObject newInstance() { return this; }
-			public int compareTo(CMObject arg0) { return (arg0==this)?0:1; }
+			@Override public String getHost() { return httpReq.getHost(); }
+			@Override public String getUrlPath() { return httpReq.getUrlPath(); }
+			@Override public String getUrlParameter(String name) { return params.get(name.toUpperCase()); }
+			@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toUpperCase()); }
+			@Override public Set<String> getUrlParameters() { return params.keySet(); }
+			@Override public HTTPMethod getMethod() { return httpReq.getMethod(); }
+			@Override public String getHeader(String name) { return httpReq.getHeader(name); }
+			@Override public InetAddress getClientAddress() { return httpReq.getClientAddress(); }
+			@Override public int getClientPort() { return httpReq.getClientPort(); }
+			@Override public InputStream getBody() { return httpReq.getBody(); }
+			@Override public String getCookie(String name) { return httpReq.getCookie(name); }
+			@Override public Set<String> getCookieNames() { return httpReq.getCookieNames(); }
+			@Override public List<MultiPartData> getMultiParts() { return httpReq.getMultiParts(); }
+			@Override public double getSpecialEncodingAcceptability(String type) { return httpReq.getSpecialEncodingAcceptability(type); }
+			@Override public String getFullHost() { return httpReq.getFullHost(); }
+			@Override public List<int[]> getRangeAZ() { return httpReq.getRangeAZ(); }
+			@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toUpperCase(), value); }
+			@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
+			@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
+			@Override public float getHttpVer() { return httpReq.getHttpVer(); }
 		};
-		for(String key : httpReq.getAllRequestParameterKeys(".*"))
-			mergeReq.addRequestParameters(key.trim(), httpReq.getRequestParameter(key));
+		for(String key : httpReq.getUrlParameters())
+			mergeReq.addFakeUrlParameter(key.trim(), httpReq.getUrlParameter(key));
 		for(String[] pair : STAT_CHECKS)
-			if(mergeReq.isRequestParameter(pair[1]) && (mergeReq.getRequestParameter(pair[1]).length()==0))
-				mergeReq.addRequestParameters(pair[1], R.getStat(pair[0]));
+			if(mergeReq.isUrlParameter(pair[1]) && (mergeReq.getUrlParameter(pair[1]).length()==0))
+				mergeReq.addFakeUrlParameter(pair[1], R.getStat(pair[0]));
 		CMLib.map().resetRoom(R);
 		R=(Room)R.copyOf();
 		RoomStuff stuff=new RoomStuff(R);
@@ -892,19 +884,19 @@ public class RoomData extends StdWebMacro
 		return mergeReq;
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ROOM");
+		String last=httpReq.getUrlParameter("ROOM");
 		if(last==null) return " @break@";
 		if(last.length()==0) return "";
 
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		String multiFlagStr=httpReq.getRequestParameter("MULTIROOMFLAG");
+		String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 		boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
-		Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getRequestParameter("MULTIROOMLIST"),false);
+		Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		boolean useRoomItems=true;
 		if(R==null)
@@ -915,17 +907,17 @@ public class RoomData extends StdWebMacro
 			CMLib.map().resetRoom(R);
 			if(multiFlag 
 			&&(multiRoomList.size()>1)
-			&&(httpReq.getRequestParameter("MOB1")==null)
-			&&(httpReq.getRequestParameter("ITEM1")==null))
+			&&(httpReq.getUrlParameter("MOB1")==null)
+			&&(httpReq.getUrlParameter("ITEM1")==null))
 			{
 				Pair<String,String> pairs[]=makeMergableRoomFields(R,multiRoomList);
 				if(pairs!=null)
 					for(final Pair<String,String> p : pairs)
 					{
 						if(p.second==null)
-							httpReq.removeRequestParameter(p.first);
+							httpReq.removeUrlParameter(p.first);
 						else
-							httpReq.addRequestParameters(p.first,p.second);
+							httpReq.addFakeUrlParameter(p.first,p.second);
 					}
 				useRoomItems=false;
 			}
@@ -938,14 +930,14 @@ public class RoomData extends StdWebMacro
 			StringBuffer str=new StringBuffer("");
 			if(parms.containsKey("NAME"))
 			{
-				String name=httpReq.getRequestParameter("NAME");
+				String name=httpReq.getUrlParameter("NAME");
 				if((name==null)||((name.length()==0)&&(!multiFlag)))
 					name=R.displayText();
 				str.append(name);
 			}
 			if(parms.containsKey("CLASSES"))
 			{
-				String className=httpReq.getRequestParameter("CLASSES");
+				String className=httpReq.getUrlParameter("CLASSES");
 				if((className==null)||((className.length()==0)&&(!multiFlag)))
 					className=CMClass.classID(R);
 				Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-LOCALES");
@@ -978,28 +970,28 @@ public class RoomData extends StdWebMacro
 			str.append(AreaData.behaves(R,httpReq,parms,1));
 			if(parms.containsKey("IMAGE"))
 			{
-				String name=httpReq.getRequestParameter("IMAGE");
+				String name=httpReq.getUrlParameter("IMAGE");
 				if((name==null)||((name.length()==0)&&(!multiFlag)))
 					name=R.rawImage();
 				str.append(name);
 			}
 			if(parms.containsKey("DESCRIPTION"))
 			{
-				String desc=httpReq.getRequestParameter("DESCRIPTION");
+				String desc=httpReq.getUrlParameter("DESCRIPTION");
 				if((desc==null)||((desc.length()==0)&&(!multiFlag)))
 					desc=R.description();
 				str.append(desc);
 			}
 			if((parms.containsKey("XGRID"))&&(R instanceof GridLocale))
 			{
-				String size=httpReq.getRequestParameter("XGRID");
+				String size=httpReq.getUrlParameter("XGRID");
 				if((size==null)||((size.length()==0)&&(!multiFlag)))
 					size=((GridLocale)R).xGridSize()+"";
 				str.append(size);
 			}
 			if((parms.containsKey("YGRID"))&&(R instanceof GridLocale))
 			{
-				String size=httpReq.getRequestParameter("YGRID");
+				String size=httpReq.getUrlParameter("YGRID");
 				if((size==null)||((size.length()==0)&&(!multiFlag)))
 					size=((GridLocale)R).yGridSize()+"";
 				str.append(size);
@@ -1014,12 +1006,12 @@ public class RoomData extends StdWebMacro
 			{
 				Vector classes=new Vector();
 				List moblist=null;
-				if(httpReq.isRequestParameter("MOB1"))
+				if(httpReq.isUrlParameter("MOB1"))
 				{
 					moblist=getMOBCache();
 					for(int i=1;;i++)
 					{
-						String MATCHING=httpReq.getRequestParameter("MOB"+i);
+						String MATCHING=httpReq.getUrlParameter("MOB"+i);
 						if(MATCHING==null)
 							break;
 						else
@@ -1129,21 +1121,21 @@ public class RoomData extends StdWebMacro
 				Vector containers=new Vector();
 				Vector beingWorn=new Vector();
 				List<Item> itemlist=null;
-				if(httpReq.isRequestParameter("ITEM1"))
+				if(httpReq.isUrlParameter("ITEM1"))
 				{
 					itemlist=getItemCache();
 					Vector cstrings=new Vector();
 					for(int i=1;;i++)
 					{
-						String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-						String WORN=httpReq.getRequestParameter("ITEMWORN"+i);
+						String MATCHING=httpReq.getUrlParameter("ITEM"+i);
+						String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
 						if(MATCHING==null) break;
 						Item I2=getItemFromAnywhere(R,MATCHING);
 						if(I2!=null)
 						{
 							classes.addElement(I2);
 							beingWorn.addElement(Boolean.valueOf((WORN!=null)&&(WORN.equalsIgnoreCase("on"))));
-							String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
+							String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
 							cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 						}
 					}

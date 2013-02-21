@@ -13,9 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,17 +35,17 @@ public class AbilityAffectNext extends StdWebMacro
 {
 	public String name(){return getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ABILITY");
+		String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("ABILITY");
+			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
 		String lastID="";
-		String ableType=httpReq.getRequestParameter("ABILITYTYPE");
+		String ableType=httpReq.getUrlParameter("ABILITYTYPE");
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
@@ -67,13 +66,13 @@ public class AbilityAffectNext extends StdWebMacro
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
 				{
-					httpReq.addRequestParameters("ABILITY",A.ID());
+					httpReq.addFakeUrlParameter("ABILITY",A.ID());
 					return "";
 				}
 				lastID=A.ID();
 			}
 		}
-		httpReq.addRequestParameters("ABILITY","");
+		httpReq.addFakeUrlParameter("ABILITY","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,16 +37,16 @@ public class RaceClassNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String race=httpReq.getRequestParameter("RACE");
+		String race=httpReq.getUrlParameter("RACE");
 		if(race.length()==0) return " @break@";
 		Race R=CMClass.getRace(race);
-		String last=httpReq.getRequestParameter("CLASS");
+		String last=httpReq.getUrlParameter("CLASS");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("CLASS");
+			if(last!=null) httpReq.removeUrlParameter("CLASS");
 			return "";
 		}
 		String lastID="";
@@ -65,7 +65,7 @@ public class RaceClassNext extends StdWebMacro
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))
 				{
-					httpReq.addRequestParameters("CLASS",C.ID());
+					httpReq.addFakeUrlParameter("CLASS",C.ID());
 					mob.destroy();
 					return "";
 				}
@@ -73,7 +73,7 @@ public class RaceClassNext extends StdWebMacro
 			}
 		}
 		mob.destroy();
-		httpReq.addRequestParameters("CLASS","");
+		httpReq.addFakeUrlParameter("CLASS","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

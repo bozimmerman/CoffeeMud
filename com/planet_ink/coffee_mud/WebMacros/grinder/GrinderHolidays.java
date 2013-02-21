@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -16,8 +18,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -56,7 +56,7 @@ public class GrinderHolidays {
 	}
 
 
-	public static String createModifyHoliday(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String holidayName)
+	public static String createModifyHoliday(HTTPRequest httpReq, java.util.Map<String,String> parms, String holidayName)
 	{
 		int index=CMLib.quests().getHolidayIndex(holidayName);
 		if(index<=0)
@@ -87,14 +87,14 @@ public class GrinderHolidays {
 		//List stepV=(List)encodedData.elementAt(4);
 		//int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
 
-		String name=setText(settings,"NAME",httpReq.getRequestParameter("NAME"));
+		String name=setText(settings,"NAME",httpReq.getUrlParameter("NAME"));
 		if((name==null)||(name.trim().length()==0)) return "A name is required.";
 
-		String duration=setText(settings,"DURATION",httpReq.getRequestParameter("DURATION"));
+		String duration=setText(settings,"DURATION",httpReq.getUrlParameter("DURATION"));
 		if((duration==null)||(!CMath.isMathExpression(duration))) return "Duration is mal-formed.";
 
-		if(!httpReq.isRequestParameter("SCHEDULETYPE")) return "Schedule not found.";
-		int typeIndex=CMath.s_int(httpReq.getRequestParameter("SCHEDULETYPE"));
+		if(!httpReq.isUrlParameter("SCHEDULETYPE")) return "Schedule not found.";
+		int typeIndex=CMath.s_int(httpReq.getUrlParameter("SCHEDULETYPE"));
 		int mudDayIndex=settings.indexOf("MUDDAY");
 		int dateIndex=settings.indexOf("DATE");
 		int waitIndex=settings.indexOf("WAIT");
@@ -105,7 +105,7 @@ public class GrinderHolidays {
 			settings.removeElement("MUDDAY");
 		if((typeIndex!=2)&&(dateIndex>=0))
 			settings.removeElement("DATE");
-		String newWait = setText(settings,scheduleName,httpReq.getRequestParameter(scheduleName));
+		String newWait = setText(settings,scheduleName,httpReq.getUrlParameter(scheduleName));
 		switch(typeIndex)
 		{
 		case 0: {
@@ -128,8 +128,8 @@ public class GrinderHolidays {
 		StringBuffer areaGroup = new StringBuffer("");
 		HashSet areaCodes=new HashSet();
 		String id="";
-		for(int i=0;httpReq.isRequestParameter("AREAGROUP"+id);id=Integer.toString(++i))
-			areaCodes.add(httpReq.getRequestParameter("AREAGROUP"+id));
+		for(int i=0;httpReq.isUrlParameter("AREAGROUP"+id);id=Integer.toString(++i))
+			areaCodes.add(httpReq.getUrlParameter("AREAGROUP"+id));
 		if(areaCodes.contains("AREAGROUP1"))
 			areaGroup.append("ANY");
 		else
@@ -149,45 +149,45 @@ public class GrinderHolidays {
 		}
 
 		setText(settings,"AREAGROUP",areaGroup.toString().trim());
-		setText(settings,"MOBGROUP",httpReq.getRequestParameter("MOBGROUP"));
+		setText(settings,"MOBGROUP",httpReq.getUrlParameter("MOBGROUP"));
 
 		behaviors.clear();
-		setText(behaviors,"AGGRESSIVE",httpReq.getRequestParameter("AGGRESSIVE"));
-		for(int i=1;httpReq.isRequestParameter("BEHAV"+i);i++)
-			if(httpReq.getRequestParameter("BEHAV"+i).trim().length()>0)
-				setText(behaviors,httpReq.getRequestParameter("BEHAV"+i),httpReq.getRequestParameter("BDATA"+i));
+		setText(behaviors,"AGGRESSIVE",httpReq.getUrlParameter("AGGRESSIVE"));
+		for(int i=1;httpReq.isUrlParameter("BEHAV"+i);i++)
+			if(httpReq.getUrlParameter("BEHAV"+i).trim().length()>0)
+				setText(behaviors,httpReq.getUrlParameter("BEHAV"+i),httpReq.getUrlParameter("BDATA"+i));
 		StringBuffer mudChats=new StringBuffer("");
-		for(int i=1;httpReq.isRequestParameter("MCWDS"+i);i++)
+		for(int i=1;httpReq.isUrlParameter("MCWDS"+i);i++)
 		{
-			String words=httpReq.getRequestParameter("MCWDS"+i).trim();
+			String words=httpReq.getUrlParameter("MCWDS"+i).trim();
 			words=CMStrings.replaceAll(words,",","|");
-			if((words.length()>0)&&(httpReq.isRequestParameter("MCSAYS"+i+"_1")))
+			if((words.length()>0)&&(httpReq.isUrlParameter("MCSAYS"+i+"_1")))
 			{
 				mudChats.append("("+words+");");
-				for(int ii=1;httpReq.isRequestParameter("MCSAYW"+i+"_"+ii);ii++)
-					if(CMath.isInteger(httpReq.getRequestParameter("MCSAYW"+i+"_"+ii)))
-						mudChats.append(httpReq.getRequestParameter("MCSAYW"+i+"_"+ii)+httpReq.getRequestParameter("MCSAYS"+i+"_"+ii)+";");
+				for(int ii=1;httpReq.isUrlParameter("MCSAYW"+i+"_"+ii);ii++)
+					if(CMath.isInteger(httpReq.getUrlParameter("MCSAYW"+i+"_"+ii)))
+						mudChats.append(httpReq.getUrlParameter("MCSAYW"+i+"_"+ii)+httpReq.getUrlParameter("MCSAYS"+i+"_"+ii)+";");
 				mudChats.append(";");
 			}
 		}
 		setText(behaviors,"MUDCHAT",mudChats.toString());
 
 		properties.clear();
-		setText(properties,"MOOD",httpReq.getRequestParameter("MOOD"));
-		for(int i=1;httpReq.isRequestParameter("AFFECT"+i);i++)
-			if(httpReq.getRequestParameter("AFFECT"+i).trim().length()>0)
-				setText(properties,httpReq.getRequestParameter("AFFECT"+i),httpReq.getRequestParameter("ADATA"+i));
+		setText(properties,"MOOD",httpReq.getUrlParameter("MOOD"));
+		for(int i=1;httpReq.isUrlParameter("AFFECT"+i);i++)
+			if(httpReq.getUrlParameter("AFFECT"+i).trim().length()>0)
+				setText(properties,httpReq.getUrlParameter("AFFECT"+i),httpReq.getUrlParameter("ADATA"+i));
 
 
 		Vector priceFV=new Vector();
-		for(int i=1;httpReq.isRequestParameter("PRCFAC"+i);i++)
-			if(CMath.isPct(httpReq.getRequestParameter("PRCFAC"+i).trim()))
-				priceFV.add(((String)(CMath.s_pct(httpReq.getRequestParameter("PRCFAC"+i).trim())+" "+httpReq.getRequestParameter("PMASK"+i).trim())).trim());
+		for(int i=1;httpReq.isUrlParameter("PRCFAC"+i);i++)
+			if(CMath.isPct(httpReq.getUrlParameter("PRCFAC"+i).trim()))
+				priceFV.add(((String)(CMath.s_pct(httpReq.getUrlParameter("PRCFAC"+i).trim())+" "+httpReq.getUrlParameter("PMASK"+i).trim())).trim());
 		setText(stats,"PRICEMASKS",CMParms.toStringList(priceFV));
 
 		String err=CMLib.quests().alterHoliday(holidayName, encodedData);
 		if(err.length()==0)
-			httpReq.addRequestParameters("HOLIDAY",name);
+			httpReq.addFakeUrlParameter("HOLIDAY",name);
 		return err;
 	}
 }

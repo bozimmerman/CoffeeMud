@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.util.MWThread;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -349,7 +350,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(!autoCharCreate)
 		{
 			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,true).text();
-			try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		}
 		while((!session.isStopped())&&(!charSelected))
@@ -413,7 +414,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP"))||s.equalsIgnoreCase("H"))
 			{
 				StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
-				try { accountHelp = CMLib.httpUtils().doVirtualPage(accountHelp);}catch(Exception ex){}
+				try { accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp);}catch(Exception ex){}
 				session.println(null,null,null,"\n\r\n\r"+accountHelp.toString());
 				continue;
 			}
@@ -672,7 +673,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newacct.txt",null,true).text();
-		try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		
 		boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
@@ -725,7 +726,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			CMLib.database().DBCreateAccount(acct);
 			StringBuffer doneText=new CMFile(Resources.buildResourcePath("text")+"doneacct.txt",null,true).text();
-			try { doneText = CMLib.httpUtils().doVirtualPage(doneText);}catch(Exception ex){}
+			try { doneText = CMLib.webMacroFilter().virtualPageFilter(doneText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+doneText.toString());
 		}
 		session.setAccount(acct);
@@ -744,7 +745,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
 		StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text();
-		try { emailIntro = CMLib.httpUtils().doVirtualPage(emailIntro);}catch(Exception ex){}
+		try { emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);}catch(Exception ex){}
 		session.println(null,null,null,emailIntro.toString());
 		while(!session.isStopped())
 		{
@@ -810,7 +811,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		{
 			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text();
-			try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 	
 			final boolean randomRoll = CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT) == 0;
@@ -1031,7 +1032,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text();
-			try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,introText.toString());
 		}
 		StringBuffer listOfRaces=new StringBuffer("[");
@@ -1118,7 +1119,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if((F.choiceIntro()!=null)&&(F.choiceIntro().length()>0))
 				{
 					StringBuffer intro = new CMFile(Resources.makeFileResourceName(F.choiceIntro()),null,true).text();
-					try { intro = CMLib.httpUtils().doVirtualPage(intro);}catch(Exception ex){}
+					try { intro = CMLib.webMacroFilter().virtualPageFilter(intro);}catch(Exception ex){}
 					session.println(null,null,null,"\n\r\n\r"+intro.toString());
 				}
 				StringBuffer menu=new StringBuffer("Select one: ");
@@ -1298,7 +1299,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		login=CMStrings.capitalizeAndLower(login.trim());
 		
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text();
-		try { introText = CMLib.httpUtils().doVirtualPage(introText); }catch(Exception ex){}
+		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText); }catch(Exception ex){}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
 		boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
@@ -1406,7 +1407,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					while((theme<0)&&(!session.isStopped()))
 					{
 						introText=new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,true).text();
-						try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+						try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 						session.println(null,null,null,introText.toString());
 						session.print("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r");
 						String themeStr=session.choose(": ",choices,"");
@@ -1475,7 +1476,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
 	
 			introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text();
-			try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 			session.prompt("");
 			if(!session.isStopped())
@@ -1549,7 +1550,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		&&(!((mob.session()!=null)&&(CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, mob.session().getAddress())))))
 		{
 			StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
-			try { rejectText = CMLib.httpUtils().doVirtualPage(rejectText);}catch(Exception ex){}
+			try { rejectText = CMLib.webMacroFilter().virtualPageFilter(rejectText);}catch(Exception ex){}
 			if((rejectText!=null)&&(rejectText.length()>0))
 				mob.session().println(rejectText.toString());
 			try{Thread.sleep(1000);}catch(Exception e){}
@@ -1644,8 +1645,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			rpt.append("\t"); rpt.append(host.getHost());
 			rpt.append("\r\n"); rpt.append("PORT");
 			rpt.append("\t"); rpt.append(Integer.toString(host.getPort()));
-			rpt.append("\r\n"); rpt.append("WEBSITE");
-			rpt.append("\t"); rpt.append(("http://"+host.getHost()+":"+CMLib.httpUtils().getWebServerPort()));
+			if(Thread.currentThread() instanceof MWThread)
+			{
+				String webServerPort=Integer.toString(((MWThread)Thread.currentThread()).getConfig().getHttpListenPorts()[0]);
+				rpt.append("\r\n"); rpt.append("WEBSITE");
+				rpt.append("\t"); rpt.append(("http://"+host.getHost()+":"+webServerPort));
+			}
 			rpt.append("\r\n"); rpt.append("LANGUAGE");
 			rpt.append("\t"); rpt.append(host.getLanguage());
 		}

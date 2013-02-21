@@ -13,8 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,9 +36,9 @@ public class AbilityGainReport extends StdWebMacro
 {
 	public String name()	{return "AbilityGainReport";}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String className=httpReq.getRequestParameter("CLASS");
+		String className=httpReq.getUrlParameter("CLASS");
 		if(className==null) className="";
 		List<String> players=CMLib.database().getUserList();
 		HashSet trainedFor=new HashSet();

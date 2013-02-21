@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,7 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -39,7 +40,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 	public boolean isAWebPath(){return true;}
 	public boolean isAdminMacro() { return true;}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null)
@@ -59,7 +60,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 				CMFile df=new CMFile("/guides/refs/"+sf.getName().substring(0,sfLen-5)+".html",M,false);
 				if(!df.canWrite())
 					return "[Unwrittable: "+df.getName()+"]";
-				byte[] savable = httpReq.doVirtualPage(sf.raw());
+				byte[] savable = CMLib.webMacroFilter().virtualPageFilter(sf.raw());
 				for(int b=0;b<savable.length-5;b++)
 					if((savable[b]=='.') &&(savable[b+1]=='c') &&(savable[b+2]=='m') &&(savable[b+3]=='v') &&(savable[b+4]=='p'))
 					{ savable[b+1]='h'; savable[b+2]='t'; savable[b+3]='m'; savable[b+4]='l'; b+=4;}

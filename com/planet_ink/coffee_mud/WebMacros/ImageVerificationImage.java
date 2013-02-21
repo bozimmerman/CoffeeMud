@@ -30,7 +30,7 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests;
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.B64Encoder;
@@ -100,26 +100,26 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		return verSet;
 	}
  	
-	 public String getFilename(ExternalHTTPRequests httpReq, String filename)
+	 public String getFilename(HTTPRequest httpReq, String filename)
 	 {
-		 String foundFilename=httpReq.getRequestParameter("FILENAME");
+		 String foundFilename=httpReq.getUrlParameter("FILENAME");
 		 if((foundFilename!=null)&&(foundFilename.length()>0))
 			 return foundFilename;
 		 return filename;
 	 }
 	 
-	 public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	 public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	 {
 		 ByteArrayOutputStream bout=new ByteArrayOutputStream();
 		 try
 		 {
 			 synchronized(sync)
 			 {
-				 boolean imageRequest=httpReq.isRequestParameter("IMAGE");
+				 boolean imageRequest=httpReq.isUrlParameter("IMAGE");
 				 SLinkedList<ImgCacheEntry> cache = getVerifyCache();
 				 String value=null;
 				 String key=null;
-				 final String hisIp=httpReq.getHTTPclientIP();
+				 final String hisIp=httpReq.getClientAddress().getHostAddress();
 				 if(imageRequest)
 				 {
 		 		   	for(Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
@@ -149,7 +149,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 					 bout.reset();
 					 bout.write(key.getBytes());
 				 }
-				 httpReq.addRequestParameters("IMGVERKEY", key);
+				 httpReq.addFakeUrlParameter("IMGVERKEY", key);
 			 }
 		 }
 		 catch(IOException ioe) 
@@ -159,7 +159,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 		 return bout.toByteArray();
 	 }
 	 
-	 public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	 public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	 {
 		 return "[Unimplemented string method!]";
 	 }

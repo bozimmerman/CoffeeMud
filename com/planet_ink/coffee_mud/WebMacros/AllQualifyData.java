@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,11 +37,11 @@ public class AllQualifyData extends StdWebMacro
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()   {return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ALLQUALID");
-		String which=httpReq.getRequestParameter("ALLQUALWHICH");
+		String last=httpReq.getUrlParameter("ALLQUALID");
+		String which=httpReq.getUrlParameter("ALLQUALWHICH");
 		if(parms.containsKey("WHICH"))
 			which=parms.get("WHICH");
 		String origiWhich=which;
@@ -68,7 +68,7 @@ public class AllQualifyData extends StdWebMacro
 		
 		if(parms.containsKey("LEVEL"))
 		{
-			String lvl=httpReq.getRequestParameter("LEVEL");
+			String lvl=httpReq.getUrlParameter("LEVEL");
 			if(lvl==null) 
 				lvl=Integer.toString(mapped.qualLevel);
 			else
@@ -78,7 +78,7 @@ public class AllQualifyData extends StdWebMacro
 		
 		if(parms.containsKey("PROF"))
 		{
-			String prof=httpReq.getRequestParameter("PROF");
+			String prof=httpReq.getUrlParameter("PROF");
 			if(prof==null) 
 				prof=Integer.toString(mapped.defaultProficiency);
 			else
@@ -88,21 +88,21 @@ public class AllQualifyData extends StdWebMacro
 		
 		if(parms.containsKey("MASK"))
 		{
-			String s=httpReq.getRequestParameter("MASK");
+			String s=httpReq.getUrlParameter("MASK");
 			if(s==null) s=mapped.extraMask;
 			str.append(s).append(", ");
 		}
 		
 		if(parms.containsKey("AUTOGAIN"))
 		{
-			String s=httpReq.getRequestParameter("AUTOGAIN");
+			String s=httpReq.getUrlParameter("AUTOGAIN");
 			if(s==null) s=mapped.autoGain?"on":"";
 			str.append(s.equalsIgnoreCase("on")?"true":"false").append(", ");
 		}
 		
 		if(parms.containsKey("REQUIRES"))
 		{
-			if(!httpReq.isRequestParameter("REQABLE1"))
+			if(!httpReq.isUrlParameter("REQABLE1"))
 			{
 				int pnum=1;
 				for(String s : CMParms.parseCommas(mapped.originalSkillPreReqList,true))
@@ -118,73 +118,73 @@ public class AllQualifyData extends StdWebMacro
 					Ability A=CMClass.getAbility(ableID);
 					if(A!=null)
 					{
-						httpReq.addRequestParameters("REQABLE"+pnum, ableID);
-						httpReq.addRequestParameters("REQLEVEL"+pnum, lvl);
+						httpReq.addFakeUrlParameter("REQABLE"+pnum, ableID);
+						httpReq.addFakeUrlParameter("REQLEVEL"+pnum, lvl);
 						pnum++;
 					}
 				}
-				httpReq.addRequestParameters("REQABLE"+pnum, "");
-				httpReq.addRequestParameters("REQLEVEL"+pnum, "");
+				httpReq.addFakeUrlParameter("REQABLE"+pnum, "");
+				httpReq.addFakeUrlParameter("REQLEVEL"+pnum, "");
 			}
 			else
 			{
 				int curChkNum=1;
 				int curWriteNum=1;
-				while(httpReq.isRequestParameter("REQABLE"+curChkNum))
+				while(httpReq.isUrlParameter("REQABLE"+curChkNum))
 				{
-					String curVal=httpReq.getRequestParameter("REQABLE"+curChkNum);
+					String curVal=httpReq.getUrlParameter("REQABLE"+curChkNum);
 					if(curVal.equals("DEL")||curVal.equals("DELETE")||curVal.trim().length()==0)
 					{
 						curChkNum++;
 						continue;
 					}
-					httpReq.addRequestParameters("REQABLE"+curWriteNum, curVal);
-					httpReq.addRequestParameters("REQLEVEL"+curWriteNum, httpReq.getRequestParameter("REQLEVEL"+curChkNum));
+					httpReq.addFakeUrlParameter("REQABLE"+curWriteNum, curVal);
+					httpReq.addFakeUrlParameter("REQLEVEL"+curWriteNum, httpReq.getUrlParameter("REQLEVEL"+curChkNum));
 					curChkNum++;
 					curWriteNum++;
 				}
-				httpReq.removeRequestParameter("REQABLE"+curWriteNum);
-				httpReq.removeRequestParameter("REQLEVEL"+curWriteNum);
+				httpReq.removeUrlParameter("REQABLE"+curWriteNum);
+				httpReq.removeUrlParameter("REQLEVEL"+curWriteNum);
 			}
 			if(parms.containsKey("RESET"))
 			{
-				httpReq.removeRequestParameter("REQUIRESNUM");
-				httpReq.removeRequestParameter("REQUIRESNAME1");
-				httpReq.removeRequestParameter("REQUIRESNAME2");
+				httpReq.removeUrlParameter("REQUIRESNUM");
+				httpReq.removeUrlParameter("REQUIRESNAME1");
+				httpReq.removeUrlParameter("REQUIRESNAME2");
 				return "";
 			}
 			if(parms.containsKey("NEXT"))
 			{
-				String lastR=httpReq.getRequestParameter("REQUIRESNUM");
+				String lastR=httpReq.getUrlParameter("REQUIRESNUM");
 				String lastID="";
 				int curChkNum=1;
 				int curWriteNum=1;
-				while(httpReq.isRequestParameter("REQABLE"+curChkNum))
+				while(httpReq.isUrlParameter("REQABLE"+curChkNum))
 				{
 					String thisName=Integer.toString(curChkNum);
 					if((lastR==null)||((lastR.length()>0)&&(lastR.equals(lastID))&&(!thisName.equals(lastID))))
 					{
-						httpReq.addRequestParameters("REQUIRESNUM",thisName);
+						httpReq.addFakeUrlParameter("REQUIRESNUM",thisName);
 						lastR=thisName;
-						httpReq.addRequestParameters("REQUIRESNAME1","REQABLE"+curWriteNum);
-						httpReq.addRequestParameters("REQUIRESNAME2","REQLEVEL"+curWriteNum);
+						httpReq.addFakeUrlParameter("REQUIRESNAME1","REQABLE"+curWriteNum);
+						httpReq.addFakeUrlParameter("REQUIRESNAME2","REQLEVEL"+curWriteNum);
 						return "";
 					}
 					curChkNum++;
 					curWriteNum++;
 					lastID=thisName;
 				}
-				httpReq.addRequestParameters("REQUIRESNUM","");
-				httpReq.addRequestParameters("REQUIRESNAME1","REQABLE"+curWriteNum);
-				httpReq.addRequestParameters("REQUIRESNAME2","REQLEVEL"+curWriteNum);
+				httpReq.addFakeUrlParameter("REQUIRESNUM","");
+				httpReq.addFakeUrlParameter("REQUIRESNAME1","REQABLE"+curWriteNum);
+				httpReq.addFakeUrlParameter("REQUIRESNAME2","REQLEVEL"+curWriteNum);
 				if(parms.containsKey("EMPTYOK"))
 					return "<!--EMPTY-->";
 				return " @break@";
 			}
 			if(parms.containsKey("ABLEEDIT"))
 			{
-				String lastR=httpReq.getRequestParameter("REQUIRESNUM");
-				String ableID=httpReq.getRequestParameter("REQABLE"+lastR);
+				String lastR=httpReq.getUrlParameter("REQUIRESNUM");
+				String ableID=httpReq.getUrlParameter("REQABLE"+lastR);
 				if((ableID!=null)&&(ableID.length()>0))
 				{
 					str.append("<OPTION VALUE=\"DEL\">Delete!");

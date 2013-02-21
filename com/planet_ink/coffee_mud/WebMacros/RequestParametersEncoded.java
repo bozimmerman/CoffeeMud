@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.URLEncoder;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,8 +37,24 @@ public class RequestParametersEncoded extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		return clearWebMacros(httpReq.getRequestEncodedParameters());
+		
+		StringBuilder str=new StringBuilder();
+		try
+		{
+			for(final String key : httpReq.getUrlParameters())
+			{
+				final String value=httpReq.getUrlParameter(key);
+				if(str.length()>0)
+					str.append("&");
+				str.append(URLEncoder.encode(key,"UTF-8")).append("=").append(URLEncoder.encode(value,"UTF-8"));
+			}
+		}
+		catch(java.io.UnsupportedEncodingException e)
+		{
+			Log.errOut(name(),e);
+		}
+		return clearWebMacros(str.toString());
 	}
 }

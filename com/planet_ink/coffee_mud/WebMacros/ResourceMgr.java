@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,13 +37,13 @@ public class ResourceMgr extends StdWebMacro
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()	{return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("RESOURCE");
+		String last=httpReq.getUrlParameter("RESOURCE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeRequestParameter("RESOURCE");
+			if(last!=null) httpReq.removeUrlParameter("RESOURCE");
 			return "";
 		}
 		else
@@ -55,12 +55,12 @@ public class ResourceMgr extends StdWebMacro
 				String key=k.next();
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!key.equals(lastID))))
 				{
-					httpReq.addRequestParameters("RESOURCE",key);
+					httpReq.addFakeUrlParameter("RESOURCE",key);
 					return "";
 				}
 				lastID=key;
 			}
-			httpReq.addRequestParameters("RESOURCE","");
+			httpReq.addFakeUrlParameter("RESOURCE","");
 			if(parms.containsKey("EMPTYOK"))
 				return "<!--EMPTY-->";
 			return " @break@";
@@ -68,7 +68,7 @@ public class ResourceMgr extends StdWebMacro
 		else
 		if(parms.containsKey("DELETE"))
 		{
-			String key=httpReq.getRequestParameter("RESOURCE");
+			String key=httpReq.getUrlParameter("RESOURCE");
 			if((key!=null)&&(Resources.getResource(key)!=null))
 			{
 				Resources.removeResource(key);

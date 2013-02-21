@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,9 +37,9 @@ public class GrinderClanGovernments
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getRequestParameter("GOVERNMENT");
+		String last=httpReq.getUrlParameter("GOVERNMENT");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
@@ -50,73 +50,73 @@ public class GrinderClanGovernments
 				G=CMLib.clans().getStockGovernment(lastID);
 			}
 			else
-			if((httpReq.getRequestParameter("NAME")==null)||httpReq.getRequestParameter("NAME").length()==0)
+			if((httpReq.getUrlParameter("NAME")==null)||httpReq.getUrlParameter("NAME").length()==0)
 				return " @break@";
 			else
 			{
 				Set<Integer> usedTypeIDs=new HashSet<Integer>();
 				for(ClanGovernment G2 : CMLib.clans().getStockGovernments())
 					usedTypeIDs.add(Integer.valueOf(G2.getID()));
-				G=CMLib.clans().createGovernment(httpReq.getRequestParameter("NAME"));
+				G=CMLib.clans().createGovernment(httpReq.getUrlParameter("NAME"));
 				for(int i=0;i<CMLib.clans().getStockGovernments().length;i++)
 					if(!usedTypeIDs.contains(Integer.valueOf(i)))
 					{
-						httpReq.addRequestParameters("GOVERNMENT", Integer.toString(i));
+						httpReq.addFakeUrlParameter("GOVERNMENT", Integer.toString(i));
 						G.setID(i);
 						break;
 					}
 			}
 				
 			String str=null;
-			str=httpReq.getRequestParameter("NAME");
+			str=httpReq.getUrlParameter("NAME");
 			if(str!=null) G.setName(str);
-			str=httpReq.getRequestParameter("CATEGORY");
+			str=httpReq.getUrlParameter("CATEGORY");
 			if(str!=null) G.setCategory(str);
-			str=httpReq.getRequestParameter("ACCEPTPOS");
+			str=httpReq.getUrlParameter("ACCEPTPOS");
 			if(str!=null) G.setAcceptPos(CMath.s_int(str));
-			str=httpReq.getRequestParameter("AUTOROLE");
+			str=httpReq.getUrlParameter("AUTOROLE");
 			if(str!=null) G.setAutoRole(CMath.s_int(str));
-			str=httpReq.getRequestParameter("SHORTDESC");
+			str=httpReq.getUrlParameter("SHORTDESC");
 			if(str!=null) G.setShortDesc(str);
-			str=httpReq.getRequestParameter("REQUIREDMASK");
+			str=httpReq.getUrlParameter("REQUIREDMASK");
 			if(str!=null){ G.setRequiredMaskStr(str);}
-			str=httpReq.getRequestParameter("ENTRYSCRIPT");
+			str=httpReq.getUrlParameter("ENTRYSCRIPT");
 			if(str!=null){ G.setEntryScript(str);}
-			str=httpReq.getRequestParameter("EXITSCRIPT");
+			str=httpReq.getUrlParameter("EXITSCRIPT");
 			if(str!=null){ G.setExitScript(str);}
-			str=httpReq.getRequestParameter("ISPUBLIC");
+			str=httpReq.getUrlParameter("ISPUBLIC");
 			G.setPublic((str==null)?false:str.equalsIgnoreCase("on"));
-			str=httpReq.getRequestParameter("ISFAMILYONLY");
+			str=httpReq.getUrlParameter("ISFAMILYONLY");
 			G.setFamilyOnly((str==null)?false:str.equalsIgnoreCase("on"));
-			str=httpReq.getRequestParameter("XPLEVELFORMULA");
+			str=httpReq.getUrlParameter("XPLEVELFORMULA");
 			if(str!=null) G.setXpCalculationFormulaStr(str);
-			str=httpReq.getRequestParameter("OVERRIDEMINMEMBERS");
+			str=httpReq.getUrlParameter("OVERRIDEMINMEMBERS");
 			if(str!=null) G.setOverrideMinMembers((str.trim().length()==0)?null:Integer.valueOf(CMath.s_int(str)));
-			str=httpReq.getRequestParameter("CONQUESTENABLED");
+			str=httpReq.getUrlParameter("CONQUESTENABLED");
 			G.setConquestEnabled((str==null)?false:str.equalsIgnoreCase("on"));
-			str=httpReq.getRequestParameter("CONQUESTITEMLOYALTY");
+			str=httpReq.getUrlParameter("CONQUESTITEMLOYALTY");
 			G.setConquestItemLoyalty((str==null)?false:str.equalsIgnoreCase("on"));
-			str=httpReq.getRequestParameter("CONQUESTDEITYBASIS");
+			str=httpReq.getUrlParameter("CONQUESTDEITYBASIS");
 			G.setConquestByWorship((str==null)?false:str.equalsIgnoreCase("on"));
-			str=httpReq.getRequestParameter("ISRIVALROUS");
+			str=httpReq.getUrlParameter("ISRIVALROUS");
 			G.setRivalrous((str==null)?false:str.equalsIgnoreCase("on"));
-			str=httpReq.getRequestParameter("MAXVOTEDAYS");
+			str=httpReq.getUrlParameter("MAXVOTEDAYS");
 			if(str!=null) G.setMaxVoteDays(CMath.s_int(str));
-			str=httpReq.getRequestParameter("VOTEQUORUMPCT");
+			str=httpReq.getUrlParameter("VOTEQUORUMPCT");
 			if(str!=null) G.setVoteQuorumPct(CMath.s_int(str));
-			str=httpReq.getRequestParameter("AUTOPROMOTEBY");
+			str=httpReq.getUrlParameter("AUTOPROMOTEBY");
 			if(str!=null) G.setAutoPromoteBy((Clan.AutoPromoteFlag)CMath.s_valueOf(Clan.AutoPromoteFlag.values(), str));
-			str=httpReq.getRequestParameter("LONGDESC");
+			str=httpReq.getUrlParameter("LONGDESC");
 			if(str!=null) G.setLongDesc(str);
-			String old=httpReq.getRequestParameter("VOTEFUNCS");
+			String old=httpReq.getUrlParameter("VOTEFUNCS");
 			Set<String> voteFuncs=new HashSet<String>();
 			if((old!=null)&&(old.length()>0))
 			{
 				voteFuncs.add(old);
 				int x=1;
-				while(httpReq.getRequestParameter("VOTEFUNCS"+x)!=null)
+				while(httpReq.getUrlParameter("VOTEFUNCS"+x)!=null)
 				{
-					voteFuncs.add(httpReq.getRequestParameter("VOTEFUNCS"+x));
+					voteFuncs.add(httpReq.getUrlParameter("VOTEFUNCS"+x));
 					x++;
 				}
 			}
@@ -124,25 +124,25 @@ public class GrinderClanGovernments
 			List<ClanPosition> posList=new Vector<ClanPosition>();
 			String posDexStr="0";
 			int posDex=0;
-			while(httpReq.isRequestParameter("GPOSID_"+posDexStr) && httpReq.getRequestParameter("GPOSID_"+posDexStr).trim().length()>0)
+			while(httpReq.isUrlParameter("GPOSID_"+posDexStr) && httpReq.getUrlParameter("GPOSID_"+posDexStr).trim().length()>0)
 			{
-				String oldID=httpReq.getRequestParameter("GPOSID_"+posDexStr);
-				String oldName=httpReq.getRequestParameter("GPOSNAME_"+posDexStr);
-				String oldPluralName=httpReq.getRequestParameter("GPOSPLURALNAME_"+posDexStr);
-				int oldRoleID=CMath.s_int(httpReq.getRequestParameter("GPOSROLEID_"+posDexStr));
-				int oldRank=CMath.s_int(httpReq.getRequestParameter("GPOSRANK_"+posDexStr));
-				int oldMax=CMath.s_int(httpReq.getRequestParameter("GPOSMAX_"+posDexStr));
-				String oldMask=httpReq.getRequestParameter("GPOSINNERMASK_"+posDexStr);
-				String oldIsPublicStr=httpReq.getRequestParameter("GPOSISPUBLIC_"+posDexStr);
+				String oldID=httpReq.getUrlParameter("GPOSID_"+posDexStr);
+				String oldName=httpReq.getUrlParameter("GPOSNAME_"+posDexStr);
+				String oldPluralName=httpReq.getUrlParameter("GPOSPLURALNAME_"+posDexStr);
+				int oldRoleID=CMath.s_int(httpReq.getUrlParameter("GPOSROLEID_"+posDexStr));
+				int oldRank=CMath.s_int(httpReq.getUrlParameter("GPOSRANK_"+posDexStr));
+				int oldMax=CMath.s_int(httpReq.getUrlParameter("GPOSMAX_"+posDexStr));
+				String oldMask=httpReq.getUrlParameter("GPOSINNERMASK_"+posDexStr);
+				String oldIsPublicStr=httpReq.getUrlParameter("GPOSISPUBLIC_"+posDexStr);
 				boolean oldIsPublic=oldIsPublicStr==null?false:oldIsPublicStr.equalsIgnoreCase("on");
 				Clan.Authority powerFuncs[]=new Clan.Authority[Clan.Function.values().length];
 				for(int f=0;f<Clan.Function.values().length;f++)
 					powerFuncs[f]=Clan.Authority.CAN_NOT_DO;
 				String authDexStr="";
 				int authDex=0;
-				while(httpReq.getRequestParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr)!=null)
+				while(httpReq.getUrlParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr)!=null)
 				{
-					Clan.Function auth = (Clan.Function)CMath.s_valueOf(Clan.Function.values(),httpReq.getRequestParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr));
+					Clan.Function auth = (Clan.Function)CMath.s_valueOf(Clan.Function.values(),httpReq.getUrlParameter("GPOSPOWER_"+posDexStr+"_"+authDexStr));
 					powerFuncs[auth.ordinal()]=Clan.Authority.CAN_DO;
 					authDex++;
 					authDexStr=Integer.toString(authDex);

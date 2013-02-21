@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -17,8 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.URLEncoder;
 import java.util.*;
 
-
-
 /* 
    Copyright 2000-2013 Bo Zimmerman
 
@@ -36,19 +36,19 @@ import java.util.*;
 */
 public class AreaScriptData extends AreaScriptNext 
 {
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		
-		String area=httpReq.getRequestParameter("AREA");
+		String area=httpReq.getUrlParameter("AREA");
 		if((area==null)||(area.length()==0)) return "@break@";
-		String script=httpReq.getRequestParameter("AREASCRIPT");
+		String script=httpReq.getUrlParameter("AREASCRIPT");
 		if((script==null)||(script.length()==0)) return "@break@";
 		TreeMap<String,ArrayList<AreaScriptInstance>> list = getAreaScripts(httpReq,area);
 		ArrayList<AreaScriptInstance> subList = list.get(script);
 		if(subList == null) return " @break@";
 		AreaScriptInstance entry = null;
-		String last=httpReq.getRequestParameter("AREASCRIPTHOST");
+		String last=httpReq.getUrlParameter("AREASCRIPTHOST");
 		if((last!=null)&&(last.length()>0))
 		{
 			for(AreaScriptInstance inst : subList)
@@ -68,7 +68,7 @@ public class AreaScriptData extends AreaScriptNext
 		{
 			if(parms.containsKey("RESET"))
 			{
-				if(last!=null) httpReq.removeRequestParameter("AREASCRIPTHOST");
+				if(last!=null) httpReq.removeUrlParameter("AREASCRIPTHOST");
 				return "";
 			}
 			String lastID="";
@@ -77,13 +77,13 @@ public class AreaScriptData extends AreaScriptNext
 				String hostName = CMParms.combineWith(inst.path, '.',0, inst.path.size()) + "." + inst.fileName;
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!hostName.equals(lastID))))
 				{
-					httpReq.addRequestParameters("AREASCRIPTHOST",hostName);
+					httpReq.addFakeUrlParameter("AREASCRIPTHOST",hostName);
 					last=hostName;
 					return "";
 				}
 				lastID=hostName;
 			}
-			httpReq.addRequestParameters("AREASCRIPTHOST","");
+			httpReq.addFakeUrlParameter("AREASCRIPTHOST","");
 			if(parms.containsKey("EMPTYOK"))
 				return "<!--EMPTY-->";
 			return " @break@";

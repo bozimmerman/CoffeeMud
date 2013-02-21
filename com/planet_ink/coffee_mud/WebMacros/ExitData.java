@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -47,7 +47,7 @@ public class ExitData extends StdWebMacro
 		"MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
 	public static String dispositions(Physical P,
 									  boolean firstTime,
-									  ExternalHTTPRequests httpReq,
+									  HTTPRequest httpReq,
 									  java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -55,7 +55,7 @@ public class ExitData extends StdWebMacro
 		{
 			if(parms.containsKey(PhyStats.IS_CODES[d]))
 			{
-				String parm=httpReq.getRequestParameter(PhyStats.IS_CODES[d]);
+				String parm=httpReq.getUrlParameter(PhyStats.IS_CODES[d]);
 				if(firstTime)
 					parm=(((P.basePhyStats().disposition()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))
@@ -65,11 +65,11 @@ public class ExitData extends StdWebMacro
 		return str.toString();
 	}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 
-		String last=httpReq.getRequestParameter("ROOM");
+		String last=httpReq.getUrlParameter("ROOM");
 		if(last==null) return " @break@";
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
@@ -82,7 +82,7 @@ public class ExitData extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		String linkdir=httpReq.getRequestParameter("LINK");
+		String linkdir=httpReq.getUrlParameter("LINK");
 		if(linkdir==null) return "@break@";
 		int link=Directions.getGoodDirectionCode(linkdir);
 		if((link<0)||(link>=Directions.NUM_DIRECTIONS())) return " @break@";
@@ -90,13 +90,13 @@ public class ExitData extends StdWebMacro
 		Exit X=R.getRawExit(link);
 
 		// important generic<->non generic swap!
-		String newClassID=httpReq.getRequestParameter("CLASSES");
+		String newClassID=httpReq.getUrlParameter("CLASSES");
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(X))))
 				X=CMClass.getExit(newClassID);
 
-		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
-					||(!httpReq.getRequestParameter("ACTION").equals("MODIFYEXIT"))
-					||(((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true")));
+		boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
+					||(!httpReq.getUrlParameter("ACTION").equals("MODIFYEXIT"))
+					||(((httpReq.isUrlParameter("CHANGEDCLASS"))&&(httpReq.getUrlParameter("CHANGEDCLASS")).equals("true")));
 
 		if(X==null) return "@break@";
 
@@ -104,7 +104,7 @@ public class ExitData extends StdWebMacro
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
-			String old=httpReq.getRequestParameter(okparms[o]);
+			String old=httpReq.getUrlParameter(okparms[o]);
 			if(old==null) old="";
 			switch(o)
 			{
@@ -245,7 +245,7 @@ public class ExitData extends StdWebMacro
 				break;
 			}
 			if(firstTime)
-				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
+				httpReq.addFakeUrlParameter(okparms[o],old.equals("checked")?"on":old);
 
 		}
 		str.append(ExitData.dispositions(X,firstTime,httpReq,parms));

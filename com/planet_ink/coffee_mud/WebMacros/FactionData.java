@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -38,10 +38,10 @@ public class FactionData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String replaceCommand=httpReq.getRequestParameter("REPLACE");
+		String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null) 
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
@@ -49,17 +49,17 @@ public class FactionData extends StdWebMacro
 			int eq=replaceCommand.indexOf('=');
 			String field=replaceCommand.substring(0,eq);
 			String value=replaceCommand.substring(eq+1);
-			httpReq.addRequestParameters(field, value);
-			httpReq.addRequestParameters("REPLACE","");
+			httpReq.addFakeUrlParameter(field, value);
+			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 		
 		
-		String last=httpReq.getRequestParameter("FACTION");
+		String last=httpReq.getUrlParameter("FACTION");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
 			Faction F=null;
-			String newFactionID=httpReq.getRequestParameter("NEWFACTION");
+			String newFactionID=httpReq.getUrlParameter("NEWFACTION");
 			if(F==null)
 				F=(Faction)httpReq.getRequestObjects().get("FACTION-"+last);
 			if((F==null)
@@ -70,7 +70,7 @@ public class FactionData extends StdWebMacro
 				F=(Faction)CMClass.getCommon("DefaultFaction");
 				F.initializeFaction(newFactionID);
 				last=newFactionID;
-				httpReq.addRequestParameters("FACTION",newFactionID);
+				httpReq.addFakeUrlParameter("FACTION",newFactionID);
 			}
 			if(F==null)
 				F=CMLib.factions().getFaction(last);
@@ -81,7 +81,7 @@ public class FactionData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("NAME"))
 				{
-					String old=httpReq.getRequestParameter("NAME");
+					String old=httpReq.getUrlParameter("NAME");
 					if(old==null) old=F.name();
 					str.append(old+", ");
 				}
@@ -91,31 +91,31 @@ public class FactionData extends StdWebMacro
 					str.append(F.maximum()+", ");
 				if(parms.containsKey("SHOWINSCORE"))
 				{
-					String old=httpReq.getRequestParameter("SHOWINSCORE");
+					String old=httpReq.getUrlParameter("SHOWINSCORE");
 					if(old==null) old=F.showInScore()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 				if(parms.containsKey("SHOWINFACTIONS"))
 				{
-					String old=httpReq.getRequestParameter("SHOWINFACTIONS");
+					String old=httpReq.getUrlParameter("SHOWINFACTIONS");
 					if(old==null) old=F.showInFactionsCommand()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 				if(parms.containsKey("SHOWINEDITOR"))
 				{
-					String old=httpReq.getRequestParameter("SHOWINEDITOR");
+					String old=httpReq.getUrlParameter("SHOWINEDITOR");
 					if(old==null) old=F.showInEditor()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 				if(parms.containsKey("SHOWINREPORTS"))
 				{
-					String old=httpReq.getRequestParameter("SHOWINREPORTS");
+					String old=httpReq.getUrlParameter("SHOWINREPORTS");
 					if(old==null) old=F.showInSpecialReported()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
 				if(parms.containsKey("RANGES"))
 				{
-					String oldName=httpReq.getRequestParameter("RANGENAME0");
+					String oldName=httpReq.getUrlParameter("RANGENAME0");
 					String oldLow=null;
 					String oldHigh=null;
 					String code=null;
@@ -126,27 +126,27 @@ public class FactionData extends StdWebMacro
 						for(Enumeration e=F.ranges();e.hasMoreElements();)
 						{
 							Faction.FRange FR=(Faction.FRange)e.nextElement();
-							httpReq.addRequestParameters("RANGENAME"+v,FR.name());
-							httpReq.addRequestParameters("RANGELOW"+v,""+FR.low());
-							httpReq.addRequestParameters("RANGEHIGH"+v,""+FR.high());
-							httpReq.addRequestParameters("RANGECODE"+v,""+FR.codeName());
-							httpReq.addRequestParameters("RANGEFLAG"+v,""+Faction.ALIGN_NAMES[FR.alignEquiv()]);
+							httpReq.addFakeUrlParameter("RANGENAME"+v,FR.name());
+							httpReq.addFakeUrlParameter("RANGELOW"+v,""+FR.low());
+							httpReq.addFakeUrlParameter("RANGEHIGH"+v,""+FR.high());
+							httpReq.addFakeUrlParameter("RANGECODE"+v,""+FR.codeName());
+							httpReq.addFakeUrlParameter("RANGEFLAG"+v,""+Faction.ALIGN_NAMES[FR.alignEquiv()]);
 							v++;
 						}
 					}
 					
 					int num=0;
 					int showNum=-1;
-					while(httpReq.getRequestParameter("RANGENAME"+num)!=null)
+					while(httpReq.getUrlParameter("RANGENAME"+num)!=null)
 					{
-						oldName=httpReq.getRequestParameter("RANGENAME"+num);
+						oldName=httpReq.getUrlParameter("RANGENAME"+num);
 						if(oldName.length()>0)
 						{
 							++showNum;
-							oldLow=httpReq.getRequestParameter("RANGELOW"+num);
-							oldHigh=httpReq.getRequestParameter("RANGEHIGH"+num);
-							code=httpReq.getRequestParameter("RANGECODE"+num);
-							align=httpReq.getRequestParameter("RANGEFLAG"+num);
+							oldLow=httpReq.getUrlParameter("RANGELOW"+num);
+							oldHigh=httpReq.getUrlParameter("RANGEHIGH"+num);
+							code=httpReq.getUrlParameter("RANGECODE"+num);
+							align=httpReq.getUrlParameter("RANGEFLAG"+num);
 							if(CMath.s_int(oldHigh)<CMath.s_int(oldLow)) oldHigh=oldLow;
 							str.append("<TR><TD>");
 							str.append("<INPUT TYPE=TEXT NAME=RANGENAME"+showNum+" SIZE=20 VALUE=\""+oldName+"\">");
@@ -190,7 +190,7 @@ public class FactionData extends StdWebMacro
 				
 				if(parms.containsKey("PLAYERCHOICETEXT"))
 				{
-					String oldName=httpReq.getRequestParameter("PLAYERCHOICETEXT");
+					String oldName=httpReq.getUrlParameter("PLAYERCHOICETEXT");
 					if(oldName==null) oldName=F.choiceIntro();
 					str.append(oldName+", ");
 				}
@@ -220,7 +220,7 @@ public class FactionData extends StdWebMacro
 					}
 						
 					
-					String value=httpReq.getRequestParameter(prefix+"0");
+					String value=httpReq.getUrlParameter(prefix+"0");
 					String mask="";
 					int v=0;
 					if((value==null)&&(Fset!=null))
@@ -246,20 +246,20 @@ public class FactionData extends StdWebMacro
 								finalValue=CMath.s_int(def.substring(lastSp).trim());
 								def=def.substring(0,lastSp);
 							}
-							httpReq.addRequestParameters(prefix+v,""+finalValue);
-							httpReq.addRequestParameters(prefix+"MASK"+v,def);
+							httpReq.addFakeUrlParameter(prefix+v,""+finalValue);
+							httpReq.addFakeUrlParameter(prefix+"MASK"+v,def);
 							v++;
 						}
 					
 					int num=0;
 					int showNum=-1;
-					while(httpReq.getRequestParameter(prefix+num)!=null)
+					while(httpReq.getUrlParameter(prefix+num)!=null)
 					{
-						value=httpReq.getRequestParameter(prefix+num);
+						value=httpReq.getUrlParameter(prefix+num);
 						if(value.length()>0)
 						{
 							++showNum;
-							mask=httpReq.getRequestParameter(prefix+"MASK"+num);
+							mask=httpReq.getUrlParameter(prefix+"MASK"+num);
 							str.append("<TR><TD>");
 							str.append("<INPUT TYPE=TEXT NAME="+prefix+showNum+" SIZE=8 VALUE=\""+CMath.s_int(value)+"\">");
 							str.append("</TD><TD>");
@@ -278,7 +278,7 @@ public class FactionData extends StdWebMacro
 				
 				if(parms.containsKey("ADJUSTMENTCHANGES"))
 				{
-					String trigger=httpReq.getRequestParameter("CHANGESTRIGGER0");
+					String trigger=httpReq.getUrlParameter("CHANGESTRIGGER0");
 					if(trigger==null)
 					{
 						int v=0;
@@ -290,18 +290,18 @@ public class FactionData extends StdWebMacro
 							for(int e1=0;e1<Es.length;e1++)
 							{
 								Faction.FactionChangeEvent E=Es[e1];
-								httpReq.addRequestParameters("CHANGESTRIGGER"+v,def);
-								httpReq.addRequestParameters("CHANGESDIR"+v,""+E.direction());
-								httpReq.addRequestParameters("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
-								httpReq.addRequestParameters("CHANGESTPARM"+v,E.triggerParameters());
+								httpReq.addFakeUrlParameter("CHANGESTRIGGER"+v,def);
+								httpReq.addFakeUrlParameter("CHANGESDIR"+v,""+E.direction());
+								httpReq.addFakeUrlParameter("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
+								httpReq.addFakeUrlParameter("CHANGESTPARM"+v,E.triggerParameters());
 								String id="";
 								Vector flags=CMParms.parse(E.flagCache());
 								for(int f=0;f<flags.size();f++)
 								{
-									httpReq.addRequestParameters("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
+									httpReq.addFakeUrlParameter("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
 									id=""+(f+1);
 								}
-								httpReq.addRequestParameters("CHANGESMASK"+v,E.targetZapper());
+								httpReq.addFakeUrlParameter("CHANGESMASK"+v,E.targetZapper());
 								v++;
 							}
 						}
@@ -309,9 +309,9 @@ public class FactionData extends StdWebMacro
 					
 					int num=0;
 					int showNum=-1;
-					while(httpReq.getRequestParameter("CHANGESTRIGGER"+num)!=null)
+					while(httpReq.getUrlParameter("CHANGESTRIGGER"+num)!=null)
 					{
-						trigger=httpReq.getRequestParameter("CHANGESTRIGGER"+num);
+						trigger=httpReq.getUrlParameter("CHANGESTRIGGER"+num);
 						if(trigger.length()>0)
 						{
 							++showNum;
@@ -322,10 +322,10 @@ public class FactionData extends StdWebMacro
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+CMStrings.capitalizeAndLower(val));
 							str.append("</SELECT>");
 							str.append("<BR>");
-							val=""+httpReq.getRequestParameter("CHANGESTPARM"+num);
+							val=""+httpReq.getUrlParameter("CHANGESTPARM"+num);
 							str.append("<INPUT TYPE=TEXT NAME=CHANGESTPARM"+showNum+" SIZE=10 MAXLENGTH=255 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 							str.append("</TD><TD>");
-							val=""+CMath.s_int(httpReq.getRequestParameter("CHANGESDIR"+num));
+							val=""+CMath.s_int(httpReq.getUrlParameter("CHANGESDIR"+num));
 							str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
 							for(int f=0;f<Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS.length;f++)
 							{
@@ -336,14 +336,14 @@ public class FactionData extends StdWebMacro
 							}
 							str.append("</SELECT>");
 							str.append("</TD><TD>");
-							val=CMath.toPct(httpReq.getRequestParameter("CHANGESFACTOR"+num));
+							val=CMath.toPct(httpReq.getUrlParameter("CHANGESFACTOR"+num));
 							str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=4 VALUE=\""+val+"\">");
 							str.append("</TD><TD>");
 							Vector flags=new Vector();
 							String id="";
 							int x=0;
-							for(;httpReq.isRequestParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))
-								flags.addElement(httpReq.getRequestParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase());
+							for(;httpReq.isUrlParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))
+								flags.addElement(httpReq.getUrlParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase());
 							str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
 							for(int f=0;f<Faction.FactionChangeEvent.FLAG_DESCS.length;f++)
 							{
@@ -354,7 +354,7 @@ public class FactionData extends StdWebMacro
 							}
 							str.append("</SELECT>");
 							str.append("</TD><TD>");
-							val=""+httpReq.getRequestParameter("CHANGESMASK"+num);
+							val=""+httpReq.getUrlParameter("CHANGESMASK"+num);
 							str.append("<INPUT TYPE=TEXT NAME=CHANGESMASK"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 							str.append("</TD></TR>");
 						}
@@ -398,7 +398,7 @@ public class FactionData extends StdWebMacro
 				}
 				if(parms.containsKey("ADJUSTMENTFACTORS"))
 				{
-					String mask=httpReq.getRequestParameter("ADJFACTOR0");
+					String mask=httpReq.getUrlParameter("ADJFACTOR0");
 					String gain="";
 					String loss="";
 					if((mask==null)&&(F.factors()!=null))
@@ -407,23 +407,23 @@ public class FactionData extends StdWebMacro
 						for(Enumeration<Faction.FZapFactor> e=F.factors();e.hasMoreElements();)
 						{
 							Faction.FZapFactor factor=e.nextElement();
-							httpReq.addRequestParameters("ADJFACTOR"+v,factor.MOBMask());
-							httpReq.addRequestParameters("ADJFACTORGAIN"+v,CMath.toPct(factor.gainFactor()));
-							httpReq.addRequestParameters("ADJFACTORLOSS"+v,CMath.toPct(factor.gainFactor()));
+							httpReq.addFakeUrlParameter("ADJFACTOR"+v,factor.MOBMask());
+							httpReq.addFakeUrlParameter("ADJFACTORGAIN"+v,CMath.toPct(factor.gainFactor()));
+							httpReq.addFakeUrlParameter("ADJFACTORLOSS"+v,CMath.toPct(factor.gainFactor()));
 							v++;
 						}
 					}
 					
 					int num=0;
 					int showNum=-1;
-					while(httpReq.getRequestParameter("ADJFACTOR"+num)!=null)
+					while(httpReq.getUrlParameter("ADJFACTOR"+num)!=null)
 					{
-						mask=httpReq.getRequestParameter("ADJFACTOR"+num);
+						mask=httpReq.getUrlParameter("ADJFACTOR"+num);
 						if(mask.length()>0)
 						{
 							++showNum;
-							gain=CMath.toPct(httpReq.getRequestParameter("ADJFACTORGAIN"+num));
-							loss=CMath.toPct(httpReq.getRequestParameter("ADJFACTORLOSS"+num));
+							gain=CMath.toPct(httpReq.getUrlParameter("ADJFACTORGAIN"+num));
+							loss=CMath.toPct(httpReq.getUrlParameter("ADJFACTORLOSS"+num));
 							str.append("<TR><TD>");
 							str.append("<INPUT TYPE=TEXT NAME=ADJFACTOR"+showNum+" SIZE=40 MAXLENGTH=255 VALUE=\""+htmlOutgoingFilter(mask)+"\">");
 							str.append("</TD><TD>");
@@ -445,26 +445,26 @@ public class FactionData extends StdWebMacro
 				}
 				if(parms.containsKey("FACTIONRELATIONS"))
 				{
-					String faction=httpReq.getRequestParameter("RELATIONS0");
+					String faction=httpReq.getUrlParameter("RELATIONS0");
 					int x=0;
 					if(faction==null)
 						for(Enumeration e=F.relationFactions();e.hasMoreElements();x++)
 						{
 							String def=(String)e.nextElement();
 							double pctD=F.getRelation(def);
-							httpReq.addRequestParameters("RELATIONS"+x,""+def);
-							httpReq.addRequestParameters("RELATIONSAMT"+x,CMath.toPct(pctD));
+							httpReq.addFakeUrlParameter("RELATIONS"+x,""+def);
+							httpReq.addFakeUrlParameter("RELATIONSAMT"+x,CMath.toPct(pctD));
 						}
 					
 					int num=0;
 					int showNum=-1;
-					while(httpReq.getRequestParameter("RELATIONS"+num)!=null)
+					while(httpReq.getUrlParameter("RELATIONS"+num)!=null)
 					{
-						faction=httpReq.getRequestParameter("RELATIONS"+num);
+						faction=httpReq.getUrlParameter("RELATIONS"+num);
 						if(faction.length()>0)
 						{
 							++showNum;
-							String pct=CMath.toPct(httpReq.getRequestParameter("RELATIONSAMT"+num));
+							String pct=CMath.toPct(httpReq.getUrlParameter("RELATIONSAMT"+num));
 							str.append("<TR><TD>");
 							str.append("<SELECT NAME=RELATIONS"+showNum+" ONCHANGE=\"DelItem(this);\">");
 							str.append("<OPTION VALUE=\"\">Delete");
@@ -495,7 +495,7 @@ public class FactionData extends StdWebMacro
 				if(parms.containsKey("ABILITYALLOWANCES"))
 				{
 					String abilityID="";
-					abilityID=httpReq.getRequestParameter("ABILITYUSE0");
+					abilityID=httpReq.getUrlParameter("ABILITYUSE0");
 					if((abilityID==null)&&(F.abilityUsages()!=null))
 					{
 						int v=0;
@@ -508,12 +508,12 @@ public class FactionData extends StdWebMacro
 								String id="";
 								int x=-1;
 								for(Enumeration e2=V.elements();e2.hasMoreElements();id="_"+(++x))
-									httpReq.addRequestParameters("ABILITYUSE"+v+id,(String)e2.nextElement());
+									httpReq.addFakeUrlParameter("ABILITYUSE"+v+id,(String)e2.nextElement());
 							}
 							else
-								httpReq.addRequestParameters("ABILITYUSE"+v,CMClass.getAbility(E.abilityFlags()).ID());
-							httpReq.addRequestParameters("ABILITYMIN"+v,""+E.low());
-							httpReq.addRequestParameters("ABILITYMAX"+v,""+E.high());
+								httpReq.addFakeUrlParameter("ABILITYUSE"+v,CMClass.getAbility(E.abilityFlags()).ID());
+							httpReq.addFakeUrlParameter("ABILITYMIN"+v,""+E.low());
+							httpReq.addFakeUrlParameter("ABILITYMAX"+v,""+E.high());
 						}
 					}
 					
@@ -521,9 +521,9 @@ public class FactionData extends StdWebMacro
 					String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 					int num=0;
 					int showNum=-1;
-					while(httpReq.getRequestParameter("ABILITYUSE"+num)!=null)
+					while(httpReq.getUrlParameter("ABILITYUSE"+num)!=null)
 					{
-						abilityID=httpReq.getRequestParameter("ABILITYUSE"+num);
+						abilityID=httpReq.getUrlParameter("ABILITYUSE"+num);
 						if(abilityID.length()>0)
 						{
 							showNum++;
@@ -540,9 +540,9 @@ public class FactionData extends StdWebMacro
 								int sx=-1;
 								HashSet doneSet=new HashSet();
 								addDoneAbilityUsage(doneSet,val);
-								while(httpReq.isRequestParameter("ABILITYUSE"+num+"_"+(++x)))
+								while(httpReq.isUrlParameter("ABILITYUSE"+num+"_"+(++x)))
 								{
-									val=httpReq.getRequestParameter("ABILITYUSE"+num+"_"+x);
+									val=httpReq.getUrlParameter("ABILITYUSE"+num+"_"+x);
 									if(val.length()>0)
 									{
 										++sx;
@@ -573,10 +573,10 @@ public class FactionData extends StdWebMacro
 								str.append("</SELECT>");
 							}
 							str.append("</TD><TD VALIGN=TOP>");
-							val=""+CMath.s_int(httpReq.getRequestParameter("ABILITYMIN"+num));
+							val=""+CMath.s_int(httpReq.getUrlParameter("ABILITYMIN"+num));
 							str.append("<INPUT TYPE=TEXT NAME=ABILITYMIN"+showNum+" SIZE=5 VALUE=\""+val+"\">");
 							str.append("</TD><TD VALIGN=TOP>");
-							val=""+CMath.s_int(httpReq.getRequestParameter("ABILITYMAX"+num));
+							val=""+CMath.s_int(httpReq.getUrlParameter("ABILITYMAX"+num));
 							str.append("<INPUT TYPE=TEXT NAME=ABILITYMAX"+showNum+" SIZE=5 VALUE=\""+val+"\">");
 							str.append("</TD></TR>");
 						}
@@ -609,25 +609,25 @@ public class FactionData extends StdWebMacro
 				if(parms.containsKey("AFFECTSBEHAVIORS"))
 				{
 					String abilityID="";
-					abilityID=httpReq.getRequestParameter("AFFBEHAV0");
+					abilityID=httpReq.getUrlParameter("AFFBEHAV0");
 					if((abilityID==null)&&(F.affectsBehavs()!=null))
 					{
 						int v=0;
 						for(Enumeration e=F.affectsBehavs();e.hasMoreElements();v++)
 						{
 							String ID=(String)e.nextElement();
-							httpReq.addRequestParameters("AFFBEHAV"+v,ID);
+							httpReq.addFakeUrlParameter("AFFBEHAV"+v,ID);
 							String[] affBehavParms=F.getAffectBehav(ID);
-							httpReq.addRequestParameters("AFFBEHAVPARM"+v,affBehavParms[0]);
-							httpReq.addRequestParameters("AFFBEHAVMASK"+v,affBehavParms[1]);
+							httpReq.addFakeUrlParameter("AFFBEHAVPARM"+v,affBehavParms[0]);
+							httpReq.addFakeUrlParameter("AFFBEHAVMASK"+v,affBehavParms[1]);
 						}
 					}
 					
 					int num=0;
 					int showNum=-1;
-					while(httpReq.getRequestParameter("AFFBEHAV"+num)!=null)
+					while(httpReq.getUrlParameter("AFFBEHAV"+num)!=null)
 					{
-						abilityID=httpReq.getRequestParameter("AFFBEHAV"+num);
+						abilityID=httpReq.getUrlParameter("AFFBEHAV"+num);
 						if(abilityID.length()>0)
 						{
 							showNum++;
@@ -640,10 +640,10 @@ public class FactionData extends StdWebMacro
 								str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
 								str.append("</SELECT>");
 								str.append("</TD><TD VALIGN=TOP>");
-								val=""+httpReq.getRequestParameter("AFFBEHAVPARM"+num);
+								val=""+httpReq.getUrlParameter("AFFBEHAVPARM"+num);
 								str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 								str.append("</TD><TD VALIGN=TOP>");
-								val=""+httpReq.getRequestParameter("AFFBEHAVMASK"+num);
+								val=""+httpReq.getUrlParameter("AFFBEHAVMASK"+num);
 								str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVMASK"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 								str.append("</TD></TR>");
 							}
@@ -674,7 +674,7 @@ public class FactionData extends StdWebMacro
 				
 				if(parms.containsKey("USELIGHTREACTIONS"))
 				{
-					String old=httpReq.getRequestParameter("USELIGHTREACTIONS");
+					String old=httpReq.getUrlParameter("USELIGHTREACTIONS");
 					if(old==null) old=F.useLightReactions()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
@@ -682,17 +682,17 @@ public class FactionData extends StdWebMacro
 				if(parms.containsKey("REACTIONS"))
 				{
 					String rangeCode="";
-					rangeCode=httpReq.getRequestParameter("REACTIONRANGE0");
+					rangeCode=httpReq.getUrlParameter("REACTIONRANGE0");
 					if((rangeCode==null)&&(F.reactions().hasMoreElements()))
 					{
 						int v=0;
 						for(Enumeration e=F.reactions();e.hasMoreElements();v++)
 						{
 							Faction.FReactionItem item=(Faction.FReactionItem)e.nextElement();
-							httpReq.addRequestParameters("REACTIONRANGE"+v,item.rangeName());
-							httpReq.addRequestParameters("REACTIONABC"+v,item.reactionObjectID());
-							httpReq.addRequestParameters("REACTIONPARM"+v,item.parameters());
-							httpReq.addRequestParameters("REACTIONMASK"+v,item.presentMOBMask());
+							httpReq.addFakeUrlParameter("REACTIONRANGE"+v,item.rangeName());
+							httpReq.addFakeUrlParameter("REACTIONABC"+v,item.reactionObjectID());
+							httpReq.addFakeUrlParameter("REACTIONPARM"+v,item.parameters());
+							httpReq.addFakeUrlParameter("REACTIONMASK"+v,item.presentMOBMask());
 						}
 					}
 					
@@ -700,9 +700,9 @@ public class FactionData extends StdWebMacro
 					
 					int num=0;
 					int showNum=-1;
-					while(httpReq.getRequestParameter("REACTIONRANGE"+num)!=null)
+					while(httpReq.getUrlParameter("REACTIONRANGE"+num)!=null)
 					{
-						rangeCode=httpReq.getRequestParameter("REACTIONRANGE"+num);
+						rangeCode=httpReq.getUrlParameter("REACTIONRANGE"+num);
 						if(rangeCode.length()>0)
 						{
 							showNum++;
@@ -716,11 +716,11 @@ public class FactionData extends StdWebMacro
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
 							str.append("</SELECT>");
 							str.append("</TD><TD VALIGN=TOP>");
-							val=""+httpReq.getRequestParameter("REACTIONMASK"+num);
+							val=""+httpReq.getUrlParameter("REACTIONMASK"+num);
 							str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 							str.append("</TD><TD>");
 							str.append("<SELECT NAME=REACTIONABC"+showNum+">");
-							val=""+httpReq.getRequestParameter("REACTIONABC"+num);
+							val=""+httpReq.getUrlParameter("REACTIONABC"+num);
 							name=getAbleBehavCmdName(val,true);
 							if(name==null) name="";
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
@@ -744,7 +744,7 @@ public class FactionData extends StdWebMacro
 							}
 							str.append("</SELECT>");
 							str.append("</TD><TD VALIGN=TOP>");
-							val=""+httpReq.getRequestParameter("REACTIONPARM"+num);
+							val=""+httpReq.getUrlParameter("REACTIONPARM"+num);
 							str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 							str.append("</TD>");
 							str.append("</TR>");
@@ -789,7 +789,7 @@ public class FactionData extends StdWebMacro
 				
 				if(parms.containsKey("RATEMODIFIER"))
 				{
-					String old=httpReq.getRequestParameter("RATEMODIFIER");
+					String old=httpReq.getUrlParameter("RATEMODIFIER");
 					if(old==null) 
 						old=CMath.toPct(F.rateModifier());
 					else
@@ -798,7 +798,7 @@ public class FactionData extends StdWebMacro
 				}
 				if(parms.containsKey("AFFECTONEXP"))
 				{
-					String old=httpReq.getRequestParameter("AFFECTONEXP");
+					String old=httpReq.getUrlParameter("AFFECTONEXP");
 					if(old==null) old=F.experienceFlag();
 					for(int i=0;i<Faction.EXPAFFECT_NAMES.length;i++)
 					{
@@ -852,9 +852,9 @@ public class FactionData extends StdWebMacro
 		return C.ID();
 	}
 	
-	public DVector getRangeCodesNames(Faction F, ExternalHTTPRequests httpReq)
+	public DVector getRangeCodesNames(Faction F, HTTPRequest httpReq)
 	{
-		String oldName=httpReq.getRequestParameter("RANGENAME0");
+		String oldName=httpReq.getUrlParameter("RANGENAME0");
 		String code=null;
 		DVector codes=new DVector(2);
 		int num=0;
@@ -865,10 +865,10 @@ public class FactionData extends StdWebMacro
 				codes.addElement(FR.codeName(),FR.name());
 			}
 		else
-		while(httpReq.getRequestParameter("RANGENAME"+num)!=null)
+		while(httpReq.getUrlParameter("RANGENAME"+num)!=null)
 		{
-			oldName=httpReq.getRequestParameter("RANGENAME"+num);
-			code=httpReq.getRequestParameter("RANGECODE"+num);
+			oldName=httpReq.getUrlParameter("RANGENAME"+num);
+			code=httpReq.getUrlParameter("RANGECODE"+num);
 			codes.addElement(code,oldName);
 			num++;
 		}

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,13 +36,13 @@ public class ClanGovernmentNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("GOVERNMENT");
+		String last=httpReq.getUrlParameter("GOVERNMENT");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("GOVERNMENT");
+			if(last!=null) httpReq.removeUrlParameter("GOVERNMENT");
 			return "";
 		}
 		int lastID=-1;
@@ -50,12 +50,12 @@ public class ClanGovernmentNext extends StdWebMacro
 		{
 			if((last==null)||((last.length()>0)&&(CMath.s_int(last)==lastID)&&(G.getID()!=lastID)))
 			{
-				httpReq.addRequestParameters("GOVERNMENT",Integer.toString(G.getID()));
+				httpReq.addFakeUrlParameter("GOVERNMENT",Integer.toString(G.getID()));
 				return "";
 			}
 			lastID=G.getID();
 		}
-		httpReq.addRequestParameters("GOVERNMENT","");
+		httpReq.addFakeUrlParameter("GOVERNMENT","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

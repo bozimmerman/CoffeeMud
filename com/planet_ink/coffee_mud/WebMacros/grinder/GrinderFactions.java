@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -17,8 +19,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -40,9 +40,9 @@ public class GrinderFactions {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	
-	public static String modifyFaction(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, Faction F)
+	public static String modifyFaction(HTTPRequest httpReq, java.util.Map<String,String> parms, Faction F)
 	{
-		String replaceCommand=httpReq.getRequestParameter("REPLACE");
+		String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null) 
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
@@ -50,47 +50,47 @@ public class GrinderFactions {
 			int eq=replaceCommand.indexOf('=');
 			String field=replaceCommand.substring(0,eq);
 			String value=replaceCommand.substring(eq+1);
-			httpReq.addRequestParameters(field, value);
-			httpReq.addRequestParameters("REPLACE","");
+			httpReq.addFakeUrlParameter(field, value);
+			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 		String old;
 		
-		old=httpReq.getRequestParameter("NAME");
+		old=httpReq.getUrlParameter("NAME");
 		F.setName(old==null?"NAME":old);
 		
-		old=httpReq.getRequestParameter("SHOWINSCORE");
+		old=httpReq.getUrlParameter("SHOWINSCORE");
 		F.setShowInScore((old!=null)&&(old.equalsIgnoreCase("on")));
 		
-		old=httpReq.getRequestParameter("SHOWINFACTIONS");
+		old=httpReq.getUrlParameter("SHOWINFACTIONS");
 		F.setShowInFactionsCommand((old!=null)&&(old.equalsIgnoreCase("on")));
 		
-		old=httpReq.getRequestParameter("SHOWINEDITOR");
+		old=httpReq.getUrlParameter("SHOWINEDITOR");
 		F.setShowInEditor((old!=null)&&(old.equalsIgnoreCase("on")));
 		
-		old=httpReq.getRequestParameter("SHOWINREPORTS");
+		old=httpReq.getUrlParameter("SHOWINREPORTS");
 		F.setShowInSpecialReported((old!=null)&&(old.equalsIgnoreCase("on")));
 		
 		int num=0;
 		for(Enumeration e=F.ranges();e.hasMoreElements();)
 			F.delRange((Faction.FRange)e.nextElement());
-		while(httpReq.getRequestParameter("RANGENAME"+num)!=null)
+		while(httpReq.getUrlParameter("RANGENAME"+num)!=null)
 		{
-			old=httpReq.getRequestParameter("RANGENAME"+num);
-			String code=httpReq.getRequestParameter("RANGECODE"+num);
+			old=httpReq.getUrlParameter("RANGENAME"+num);
+			String code=httpReq.getUrlParameter("RANGECODE"+num);
 			if(old.length()>0)
 			{
 				if(code.length()==0) 
 					code=CMStrings.replaceAll(old.toUpperCase().trim()," ","_");
-				int low=CMath.s_int(httpReq.getRequestParameter("RANGELOW"+num));
-				int high=CMath.s_int(httpReq.getRequestParameter("RANGEHIGH"+num));
+				int low=CMath.s_int(httpReq.getUrlParameter("RANGELOW"+num));
+				int high=CMath.s_int(httpReq.getUrlParameter("RANGEHIGH"+num));
 				if(high<low) high=low;
-				String flag=httpReq.getRequestParameter("RANGEFLAG"+num);
+				String flag=httpReq.getUrlParameter("RANGEFLAG"+num);
 				F.addRange(low+";"+high+";"+old+";"+code+";"+flag);
 			}
 			num++;
 		}
 		
-		old=httpReq.getRequestParameter("PLAYERCHOICETEXT");
+		old=httpReq.getUrlParameter("PLAYERCHOICETEXT");
 		F.setChoiceIntro(old==null?"":old);
 		
 		String[] prefixes={"AUTOVALUE","DEFAULTVALUE","PLAYERCHOICE"};
@@ -105,12 +105,12 @@ public class GrinderFactions {
 			case 2: F.setChoices(V); break;
 			}
 			num=0;
-			while(httpReq.getRequestParameter(prefix+num)!=null)
+			while(httpReq.getUrlParameter(prefix+num)!=null)
 			{
-				String value=httpReq.getRequestParameter(prefix+num);
+				String value=httpReq.getUrlParameter(prefix+num);
 				if(value.length()>0)
 				{
-					String mask=httpReq.getRequestParameter(prefix+"MASK"+num);
+					String mask=httpReq.getUrlParameter(prefix+"MASK"+num);
 					V.addElement((CMath.s_long(value)+" "+mask).trim());
 				}
 				num++;
@@ -119,25 +119,25 @@ public class GrinderFactions {
 		
 		F.clearChangeEvents();
 		num=0;
-		while(httpReq.getRequestParameter("CHANGESTRIGGER"+num)!=null)
+		while(httpReq.getUrlParameter("CHANGESTRIGGER"+num)!=null)
 		{
-			old=httpReq.getRequestParameter("CHANGESTRIGGER"+num);
+			old=httpReq.getUrlParameter("CHANGESTRIGGER"+num);
 			if(old.length()>0)
 			{
-				String ctparms=httpReq.getRequestParameter("CHANGESTPARM"+num);
+				String ctparms=httpReq.getUrlParameter("CHANGESTPARM"+num);
 				if(ctparms.trim().length()>0)
 					old+="("+ctparms.trim()+")";
 				old+=";";
-				old+=Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CMath.s_int(httpReq.getRequestParameter("CHANGESDIR"+num))];
+				old+=Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CMath.s_int(httpReq.getUrlParameter("CHANGESDIR"+num))];
 				old+=";";
-				old+=CMath.toPct(httpReq.getRequestParameter("CHANGESFACTOR"+num));
+				old+=CMath.toPct(httpReq.getUrlParameter("CHANGESFACTOR"+num));
 				old+=";";
 				String id="";
 				int x=0;
-				for(;httpReq.isRequestParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))
-					old+=" "+httpReq.getRequestParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase();
+				for(;httpReq.isUrlParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))
+					old+=" "+httpReq.getUrlParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase();
 				old+=";";
-				old+=httpReq.getRequestParameter("CHANGESMASK"+num);
+				old+=httpReq.getUrlParameter("CHANGESMASK"+num);
 				F.createChangeEvent(old);
 			}
 			num++;
@@ -146,13 +146,13 @@ public class GrinderFactions {
 		for(Enumeration<Faction.FZapFactor> e=F.factors();e.hasMoreElements();)
 			F.delFactor(e.nextElement());
 		num=0;
-		while(httpReq.getRequestParameter("ADJFACTOR"+num)!=null)
+		while(httpReq.getUrlParameter("ADJFACTOR"+num)!=null)
 		{
-			old=httpReq.getRequestParameter("ADJFACTOR"+num);
+			old=httpReq.getUrlParameter("ADJFACTOR"+num);
 			if(old.length()>0)
 			{
-				double gain=CMath.s_pct(httpReq.getRequestParameter("ADJFACTORGAIN"+num));
-				double loss=CMath.s_pct(httpReq.getRequestParameter("ADJFACTORLOSS"+num));
+				double gain=CMath.s_pct(httpReq.getUrlParameter("ADJFACTORGAIN"+num));
+				double loss=CMath.s_pct(httpReq.getUrlParameter("ADJFACTORLOSS"+num));
 				F.addFactor(gain,loss,old);
 			}
 			num++;
@@ -161,11 +161,11 @@ public class GrinderFactions {
 		num=0;
 		for(Enumeration e=F.relationFactions();e.hasMoreElements();)
 			F.delRelation((String)e.nextElement());
-		while(httpReq.getRequestParameter("RELATIONS"+num)!=null)
+		while(httpReq.getUrlParameter("RELATIONS"+num)!=null)
 		{
-			old=httpReq.getRequestParameter("RELATIONS"+num);
+			old=httpReq.getUrlParameter("RELATIONS"+num);
 			if(old.length()>0)
-				F.addRelation(old,CMath.s_pct(httpReq.getRequestParameter("RELATIONSAMT"+num)));
+				F.addRelation(old,CMath.s_pct(httpReq.getUrlParameter("RELATIONSAMT"+num)));
 			num++;
 		}
 		
@@ -173,13 +173,13 @@ public class GrinderFactions {
 		DVector affBehav=new DVector(3);
 		HashSet affBehavKeepers=new HashSet();
 		// its done this strange way to minimize impact on mob recalculations.
-		while(httpReq.getRequestParameter("AFFBEHAV"+num)!=null)
+		while(httpReq.getUrlParameter("AFFBEHAV"+num)!=null)
 		{
-			old=httpReq.getRequestParameter("AFFBEHAV"+num);
+			old=httpReq.getUrlParameter("AFFBEHAV"+num);
 			if(old.length()>0)
 			{
-				String parm=""+httpReq.getRequestParameter("AFFBEHAVPARM"+num);
-				String mask=""+httpReq.getRequestParameter("AFFBEHAVMASK"+num);
+				String parm=""+httpReq.getUrlParameter("AFFBEHAVPARM"+num);
+				String mask=""+httpReq.getUrlParameter("AFFBEHAVMASK"+num);
 				String[] oldParms=F.getAffectBehav(old);
 				if((oldParms==null)||(!oldParms[0].equals(parm))||(!oldParms[1].equals(mask)))
 					affBehav.addElement(old.toUpperCase().trim(),parm,mask);
@@ -203,26 +203,26 @@ public class GrinderFactions {
 		num=0;
 		for(Enumeration e=F.abilityUsages();e.hasMoreElements();)
 			F.delAbilityUsage((Faction.FAbilityUsage)e.nextElement());
-		while(httpReq.getRequestParameter("ABILITYUSE"+num)!=null)
+		while(httpReq.getUrlParameter("ABILITYUSE"+num)!=null)
 		{
-			old=httpReq.getRequestParameter("ABILITYUSE"+num);
+			old=httpReq.getUrlParameter("ABILITYUSE"+num);
 			if(old.length()>0)
 			{
 				int usedType=CMLib.factions().getAbilityFlagType(old);
 				if(usedType>0)
 				{
 					int x=-1;
-					while(httpReq.isRequestParameter("ABILITYUSE"+num+"_"+(++x)))
+					while(httpReq.isUrlParameter("ABILITYUSE"+num+"_"+(++x)))
 					{
-						String s=httpReq.getRequestParameter("ABILITYUSE"+num+"_"+x);
+						String s=httpReq.getUrlParameter("ABILITYUSE"+num+"_"+x);
 						if(s.length()>0)
 						{
 							old+=" "+s.toUpperCase().trim();
 						}
 					}
 				}
-				old+=";"+CMath.s_int(httpReq.getRequestParameter("ABILITYMIN"+num));
-				old+=";"+CMath.s_int(httpReq.getRequestParameter("ABILITYMAX"+num));
+				old+=";"+CMath.s_int(httpReq.getUrlParameter("ABILITYMIN"+num));
+				old+=";"+CMath.s_int(httpReq.getUrlParameter("ABILITYMAX"+num));
 				F.addAbilityUsage(old);
 			}
 			num++;
@@ -232,23 +232,23 @@ public class GrinderFactions {
 		num=0;
 		for(Enumeration e=F.reactions();e.hasMoreElements();)
 			F.delReaction((Faction.FReactionItem)e.nextElement());
-		while(httpReq.getRequestParameter("REACTIONRANGE"+num)!=null)
+		while(httpReq.getUrlParameter("REACTIONRANGE"+num)!=null)
 		{
-			old=httpReq.getRequestParameter("REACTIONRANGE"+num);
-			String old1=httpReq.getRequestParameter("REACTIONMASK"+num);
-			String old2=httpReq.getRequestParameter("REACTIONABC"+num);
-			String old3=httpReq.getRequestParameter("REACTIONPARM"+num);
+			old=httpReq.getUrlParameter("REACTIONRANGE"+num);
+			String old1=httpReq.getUrlParameter("REACTIONMASK"+num);
+			String old2=httpReq.getUrlParameter("REACTIONABC"+num);
+			String old3=httpReq.getUrlParameter("REACTIONPARM"+num);
 			if(old.length()>0)
 				F.addReaction(old,old1,old2,old3);
 			num++;
 		}
-		old=httpReq.getRequestParameter("USELIGHTREACTIONS");
+		old=httpReq.getUrlParameter("USELIGHTREACTIONS");
 		F.setLightReactions((old!=null)&&(old.equalsIgnoreCase("on")));
 		
-		old=httpReq.getRequestParameter("RATEMODIFIER");
+		old=httpReq.getUrlParameter("RATEMODIFIER");
 		F.setRateModifier(old==null?0.0:CMath.s_pct(old));
 
-		old=httpReq.getRequestParameter("AFFECTONEXP");
+		old=httpReq.getUrlParameter("AFFECTONEXP");
 		F.setExperienceFlag(old);
 		
 		return "";

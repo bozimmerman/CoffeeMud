@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,13 +36,13 @@ public class ChannelNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("CHANNEL");
+		String last=httpReq.getUrlParameter("CHANNEL");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeRequestParameter("CHANNEL");
+			if(last!=null) httpReq.removeUrlParameter("CHANNEL");
 			return "";
 		}
 		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
@@ -57,14 +57,14 @@ public class ChannelNext extends StdWebMacro
 				{
 					if(CMLib.channels().mayReadThisChannel(mob,i,true))
 					{
-						httpReq.addRequestParameters("CHANNEL",name);
+						httpReq.addFakeUrlParameter("CHANNEL",name);
 						return "";
 					}
 					last=name;
 				}
 				lastID=name;
 			}
-			httpReq.addRequestParameters("CHANNEL","");
+			httpReq.addFakeUrlParameter("CHANNEL","");
 			if(parms.containsKey("EMPTYOK"))
 				return "<!--EMPTY-->";
 			return " @break@";

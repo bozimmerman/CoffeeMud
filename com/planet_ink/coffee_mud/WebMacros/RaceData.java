@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
@@ -16,8 +18,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -67,25 +67,25 @@ public class RaceData extends StdWebMacro
 		return str.toString();
 	}
 
-	public static StringBuffer estats(PhyStats E, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer estats(PhyStats E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		DVector theclasses=new DVector(2);
-		if(httpReq.isRequestParameter(c+"ESTATS1"))
+		if(httpReq.isUrlParameter(c+"ESTATS1"))
 		{
 			int num=1;
-			String behav=httpReq.getRequestParameter(c+"ESTATS"+num);
+			String behav=httpReq.getUrlParameter(c+"ESTATS"+num);
 			while(behav!=null)
 			{
 				if(behav.length()>0)
 				{
-					String prof=httpReq.getRequestParameter(c+"ESTATSV"+num);
+					String prof=httpReq.getUrlParameter(c+"ESTATSV"+num);
 					if(prof==null) prof="0";
 					prof=""+CMath.s_int(prof);
 					theclasses.addElement(behav,prof);
 				}
 				num++;
-				behav=httpReq.getRequestParameter(c+"ESTATS"+num);
+				behav=httpReq.getUrlParameter(c+"ESTATS"+num);
 			}
 		}
 		else
@@ -125,25 +125,25 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer cstats(CharStats E, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer cstats(CharStats E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		DVector theclasses=new DVector(2);
-		if(httpReq.isRequestParameter(c+"CSTATS1"))
+		if(httpReq.isUrlParameter(c+"CSTATS1"))
 		{
 			int num=1;
-			String behav=httpReq.getRequestParameter(c+"CSTATS"+num);
+			String behav=httpReq.getUrlParameter(c+"CSTATS"+num);
 			while(behav!=null)
 			{
 				if(behav.length()>0)
 				{
-					String prof=httpReq.getRequestParameter(c+"CSTATSV"+num);
+					String prof=httpReq.getUrlParameter(c+"CSTATSV"+num);
 					if(prof==null) prof="0";
 					prof=""+CMath.s_int(prof);
 					theclasses.addElement(behav,prof);
 				}
 				num++;
-				behav=httpReq.getRequestParameter(c+"CSTATS"+num);
+				behav=httpReq.getUrlParameter(c+"CSTATS"+num);
 			}
 		}
 		else
@@ -183,25 +183,25 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer cstate(CharState E, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer cstate(CharState E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		DVector theclasses=new DVector(2);
-		if(httpReq.isRequestParameter(c+"CSTATE1"))
+		if(httpReq.isUrlParameter(c+"CSTATE1"))
 		{
 			int num=1;
-			String behav=httpReq.getRequestParameter(c+"CSTATE"+num);
+			String behav=httpReq.getUrlParameter(c+"CSTATE"+num);
 			while(behav!=null)
 			{
 				if(behav.length()>0)
 				{
-					String prof=httpReq.getRequestParameter(c+"CSTATEV"+num);
+					String prof=httpReq.getUrlParameter(c+"CSTATEV"+num);
 					if(prof==null) prof="0";
 					prof=""+CMath.s_int(prof);
 					theclasses.addElement(behav,prof);
 				}
 				num++;
-				behav=httpReq.getRequestParameter(c+"CSTATE"+num);
+				behav=httpReq.getUrlParameter(c+"CSTATE"+num);
 			}
 		}
 		else
@@ -242,18 +242,18 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer itemList(List<? extends Item> items, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, boolean one)
+	public static StringBuffer itemList(List<? extends Item> items, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, boolean one)
 	{
 		if(items==null) items=new Vector();
 		StringBuffer str=new StringBuffer("");
 		Vector classes=new Vector();
 		List<Item> itemlist=null;
-		if(httpReq.isRequestParameter(c+"ITEM1"))
+		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
 			itemlist=RoomData.getItemCache();
 			for(int i=1;;i++)
 			{
-				String MATCHING=httpReq.getRequestParameter(c+"ITEM"+i);
+				String MATCHING=httpReq.getUrlParameter(c+"ITEM"+i);
 				if(MATCHING==null)
 					break;
 				Item I2=RoomData.getItemFromAnywhere(itemlist,MATCHING);
@@ -349,28 +349,28 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer dynAbilities(List<Ability> ables, String ID, Modifiable obj, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer dynAbilities(List<Ability> ables, String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		StringBuffer str=new StringBuffer("");
 		DVector theclasses=new DVector(4);
-		if(httpReq.isRequestParameter("RABLES1"))
+		if(httpReq.isUrlParameter("RABLES1"))
 		{
 			int num=1;
-			String behav=httpReq.getRequestParameter("RABLES"+num);
+			String behav=httpReq.getUrlParameter("RABLES"+num);
 			while(behav!=null)
 			{
 				if(behav.length()>0)
 				{
-					String prof=httpReq.getRequestParameter("RABPOF"+num);
+					String prof=httpReq.getUrlParameter("RABPOF"+num);
 					if(prof==null) prof="0";
-					String qual=httpReq.getRequestParameter("RABQUA"+num);
+					String qual=httpReq.getUrlParameter("RABQUA"+num);
 					if(qual==null) qual="";
-					String levl=httpReq.getRequestParameter("RABLVL"+num);
+					String levl=httpReq.getUrlParameter("RABLVL"+num);
 					if(levl==null) levl="0";
 					theclasses.addElement(behav,prof,qual,levl);
 				}
 				num++;
-				behav=httpReq.getRequestParameter("RABLES"+num);
+				behav=httpReq.getUrlParameter("RABLES"+num);
 			}
 		}
 		else
@@ -441,26 +441,26 @@ public class RaceData extends StdWebMacro
 	}
 
 
-	public static StringBuffer dynEffects(String ID, List<Ability> ables, Modifiable obj, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer dynEffects(String ID, List<Ability> ables, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		StringBuffer str=new StringBuffer("");
 		DVector theclasses=new DVector(3);
-		if(httpReq.isRequestParameter("REFFS1"))
+		if(httpReq.isUrlParameter("REFFS1"))
 		{
 			int num=1;
-			String behav=httpReq.getRequestParameter("REFFS"+num);
+			String behav=httpReq.getUrlParameter("REFFS"+num);
 			while(behav!=null)
 			{
 				if(behav.length()>0)
 				{
-					String parm=httpReq.getRequestParameter("REFPRM"+num);
+					String parm=httpReq.getUrlParameter("REFPRM"+num);
 					if(parm==null) parm="";
-					String levl=httpReq.getRequestParameter("REFLVL"+num);
+					String levl=httpReq.getUrlParameter("REFLVL"+num);
 					if(levl==null) levl="0";
 					theclasses.addElement(behav,parm,levl);
 				}
 				num++;
-				behav=httpReq.getRequestParameter("REFFS"+num);
+				behav=httpReq.getUrlParameter("REFFS"+num);
 			}
 		}
 		else
@@ -515,24 +515,24 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer cabilities(Race E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		StringBuffer str=new StringBuffer("");
 		DVector theclasses=new DVector(2);
-		if(httpReq.isRequestParameter("CABLES1"))
+		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
-			String behav=httpReq.getRequestParameter("CABLES"+num);
+			String behav=httpReq.getUrlParameter("CABLES"+num);
 			while(behav!=null)
 			{
 				if(behav.length()>0)
 				{
-					String prof=httpReq.getRequestParameter("CABPOF"+num);
+					String prof=httpReq.getUrlParameter("CABPOF"+num);
 					if(prof==null) prof="0";
 					theclasses.addElement(behav,prof);
 				}
 				num++;
-				behav=httpReq.getRequestParameter("CABLES"+num);
+				behav=httpReq.getUrlParameter("CABLES"+num);
 			}
 		}
 		else
@@ -575,11 +575,11 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 
-		String replaceCommand=httpReq.getRequestParameter("REPLACE");
+		String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
@@ -587,11 +587,11 @@ public class RaceData extends StdWebMacro
 			int eq=replaceCommand.indexOf('=');
 			String field=replaceCommand.substring(0,eq);
 			String value=replaceCommand.substring(eq+1);
-			httpReq.addRequestParameters(field, value);
-			httpReq.addRequestParameters("REPLACE","");
+			httpReq.addFakeUrlParameter(field, value);
+			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 
-		String last=httpReq.getRequestParameter("RACE");
+		String last=httpReq.getUrlParameter("RACE");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
@@ -601,7 +601,7 @@ public class RaceData extends StdWebMacro
 				return ""+((R2!=null)&&(R2.isGeneric()));
 			}
 
-			String newRaceID=httpReq.getRequestParameter("NEWRACE");
+			String newRaceID=httpReq.getUrlParameter("NEWRACE");
 			Race R = null;
 			if(R==null)
 				R=(Race)httpReq.getRequestObjects().get("RACE-"+last);
@@ -613,7 +613,7 @@ public class RaceData extends StdWebMacro
 				R=(Race)CMClass.getRace("GenRace").copyOf();
 				R.setRacialParms("<RACE><ID>"+newRaceID+"</ID><NAME>"+newRaceID+"</NAME></RACE>");
 				last=newRaceID;
-				httpReq.addRequestParameters("RACE",newRaceID);
+				httpReq.addFakeUrlParameter("RACE",newRaceID);
 			}
 			if(R==null)
 				R=CMClass.getRace(last);
@@ -639,25 +639,25 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("NAME"))
 				{
-					String old=httpReq.getRequestParameter("NAME");
+					String old=httpReq.getUrlParameter("NAME");
 					if(old==null) old=R.name();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("CAT"))
 				{
-					String old=httpReq.getRequestParameter("CAT");
+					String old=httpReq.getUrlParameter("CAT");
 					if(old==null) old=R.racialCategory();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("VWEIGHT"))
 				{
-					String old=httpReq.getRequestParameter("VWEIGHT");
+					String old=httpReq.getUrlParameter("VWEIGHT");
 					if(old==null) old=""+R.weightVariance();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("BWEIGHT"))
 				{
-					String old=httpReq.getRequestParameter("BWEIGHT");
+					String old=httpReq.getUrlParameter("BWEIGHT");
 					if(old==null) old=""+R.lightestWeight();
 					str.append(old+", ");
 				}
@@ -673,37 +673,37 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("VHEIGHT"))
 				{
-					String old=httpReq.getRequestParameter("VHEIGHT");
+					String old=httpReq.getUrlParameter("VHEIGHT");
 					if(old==null) old=""+R.heightVariance();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MHEIGHT"))
 				{
-					String old=httpReq.getRequestParameter("MHEIGHT");
+					String old=httpReq.getUrlParameter("MHEIGHT");
 					if(old==null) old=""+R.shortestMale();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("FHEIGHT"))
 				{
-					String old=httpReq.getRequestParameter("FHEIGHT");
+					String old=httpReq.getUrlParameter("FHEIGHT");
 					if(old==null) old=""+R.shortestFemale();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("LEAVESTR"))
 				{
-					String old=httpReq.getRequestParameter("LEAVESTR");
+					String old=httpReq.getUrlParameter("LEAVESTR");
 					if(old==null) old=""+R.leaveStr();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("ARRIVESTR"))
 				{
-					String old=httpReq.getRequestParameter("ARRIVESTR");
+					String old=httpReq.getUrlParameter("ARRIVESTR");
 					if(old==null) old=""+R.arriveStr();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("GENHELP"))
 				{
-					String old=httpReq.getRequestParameter("GENHELP");
+					String old=httpReq.getUrlParameter("GENHELP");
 					if(old==null){
 						R=R.makeGenRace();
 						old=R.getStat("HELP");
@@ -712,7 +712,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("HEALTHRACE"))
 				{
-					String old=httpReq.getRequestParameter("HEALTHRACE");
+					String old=httpReq.getUrlParameter("HEALTHRACE");
 					if(old==null){
 						R=R.makeGenRace();
 						old=""+R.getStat("HEALTHRACE");
@@ -721,7 +721,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("WEAPONRACE"))
 				{
-					String old=httpReq.getRequestParameter("WEAPONRACE");
+					String old=httpReq.getUrlParameter("WEAPONRACE");
 					if(old==null){
 						R=R.makeGenRace();
 						old=""+R.getStat("WEAPONRACE");
@@ -730,7 +730,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("EVENTRACE"))
 				{
-					String old=httpReq.getRequestParameter("EVENTRACE");
+					String old=httpReq.getUrlParameter("EVENTRACE");
 					if(old==null){
 						R=R.makeGenRace();
 						old=""+R.getStat("EVENTRACE");
@@ -745,7 +745,7 @@ public class RaceData extends StdWebMacro
 					int col=-1;
 					for(int i=0;i<Race.BODYPARTSTR.length;i++)
 					{
-						String old=httpReq.getRequestParameter("BODYPART"+i);
+						String old=httpReq.getUrlParameter("BODYPART"+i);
 						if(old==null) old=""+R.bodyMask()[i];
 						if((++col)==4)
 						{
@@ -774,7 +774,7 @@ public class RaceData extends StdWebMacro
 					str.append(cabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
 				if(parms.containsKey("WEARID"))
 				{
-					String old=httpReq.getRequestParameter("WEARID");
+					String old=httpReq.getUrlParameter("WEARID");
 					long mask=0;
 					if(old==null)
 						mask=R.forbiddenWornBits();
@@ -782,8 +782,8 @@ public class RaceData extends StdWebMacro
 					{
 						mask|=CMath.s_long(old);
 						for(int i=1;;i++)
-							if(httpReq.isRequestParameter("WEARID"+(Integer.toString(i))))
-								mask|=CMath.s_long(httpReq.getRequestParameter("WEARID"+(Integer.toString(i))));
+							if(httpReq.isUrlParameter("WEARID"+(Integer.toString(i))))
+								mask|=CMath.s_long(httpReq.getUrlParameter("WEARID"+(Integer.toString(i))));
 							else
 								break;
 					}
@@ -799,7 +799,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("PLAYABLEID"))
 				{
-					String old=httpReq.getRequestParameter("PLAYABLEID");
+					String old=httpReq.getUrlParameter("PLAYABLEID");
 					long mask=0;
 					if(old==null)
 						mask=R.availabilityCode();
@@ -872,7 +872,7 @@ public class RaceData extends StdWebMacro
 					str.append(itemList(R.myResources(),'R',httpReq,parms,0,false)+", ");
 				if(parms.containsKey("BODYKILL"))
 				{
-					String old=httpReq.getRequestParameter("BODYKILL");
+					String old=httpReq.getUrlParameter("BODYKILL");
 					boolean bodyKill=false;
 					if(old==null)
 						bodyKill=CMath.s_bool(R.makeGenRace().getStat("BODYKILL"));
@@ -882,12 +882,12 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("DISFLAGS"))
 				{
-					if(!httpReq.isRequestParameter("DISFLAGS"))
+					if(!httpReq.isUrlParameter("DISFLAGS"))
 					{
 						R=R.makeGenRace();
-						httpReq.addRequestParameters("DISFLAGS",R.getStat("DISFLAGS"));
+						httpReq.addFakeUrlParameter("DISFLAGS",R.getStat("DISFLAGS"));
 					}
-					int flags=CMath.s_int(httpReq.getRequestParameter("DISFLAGS"));
+					int flags=CMath.s_int(httpReq.getUrlParameter("DISFLAGS"));
 					for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
 					{
 						str.append("<OPTION VALUE="+CMath.pow(2,i));
@@ -899,15 +899,15 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("AGING"))
 				{
 					int[] ageChart=R.getAgingChart();
-					if(!httpReq.isRequestParameter("AGE0"))
+					if(!httpReq.isUrlParameter("AGE0"))
 						for(int i=0;i<Race.AGE_DESCS.length;i++)
-							httpReq.addRequestParameters("AGE"+i,""+ageChart[i]);
+							httpReq.addFakeUrlParameter("AGE"+i,""+ageChart[i]);
 					int val=-1;
 					for(int i=0;i<Race.AGE_DESCS.length;i++)
 					{
 						int lastVal=val;
-						val=CMath.s_int((String)httpReq.getRequestParameter("AGE"+i));
-						if(val<lastVal){ val=lastVal; httpReq.addRequestParameters("AGE"+i,""+val);}
+						val=CMath.s_int((String)httpReq.getUrlParameter("AGE"+i));
+						if(val<lastVal){ val=lastVal; httpReq.addFakeUrlParameter("AGE"+i,""+val);}
 						str.append("<INPUT TYPE=TEXT SIZE=4 NAME=AGE"+i+" VALUE="+val+">"+Race.AGE_DESCS[i]+"<BR>");
 					}
 					str.append(", ");

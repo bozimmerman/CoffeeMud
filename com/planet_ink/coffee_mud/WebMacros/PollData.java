@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -37,14 +37,14 @@ public class PollData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("POLL");
+		String last=httpReq.getUrlParameter("POLL");
 		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
 
 
-		String replaceCommand=httpReq.getRequestParameter("REPLACE");
+		String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
@@ -52,8 +52,8 @@ public class PollData extends StdWebMacro
 			int eq=replaceCommand.indexOf('=');
 			String field=replaceCommand.substring(0,eq);
 			String value=replaceCommand.substring(eq+1);
-			httpReq.addRequestParameters(field, value);
-			httpReq.addRequestParameters("REPLACE","");
+			httpReq.addFakeUrlParameter(field, value);
+			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 
 		if(parms.containsKey("EDIT"))
@@ -61,7 +61,7 @@ public class PollData extends StdWebMacro
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.POLLS)) return "[authentication error]";
-			String newTitle=httpReq.getRequestParameter("TITLE");
+			String newTitle=httpReq.getUrlParameter("TITLE");
 			if((newTitle==null)||(newTitle.length()==0))
 				return "[missing data error]";
 
@@ -75,58 +75,58 @@ public class PollData extends StdWebMacro
 				create=true;
 			}
 
-			String old=httpReq.getRequestParameter("TITLE");
+			String old=httpReq.getUrlParameter("TITLE");
 			if(old!=null) P.setName(old);
-			old=httpReq.getRequestParameter("SUBJECT");
+			old=httpReq.getUrlParameter("SUBJECT");
 			if(old!=null) P.setSubject(old);
-			old=httpReq.getRequestParameter("DESCRIPTION");
+			old=httpReq.getUrlParameter("DESCRIPTION");
 			if(old!=null) P.setDescription(old);
-			old=httpReq.getRequestParameter("QUALZAPPER");
+			old=httpReq.getUrlParameter("QUALZAPPER");
 			if(old!=null) P.setQualZapper(old);
 			long flag=0;
-			old=httpReq.getRequestParameter("ISACTIVE");
+			old=httpReq.getUrlParameter("ISACTIVE");
 			if((old!=null)&&(old.equalsIgnoreCase("on")))
 				flag|=Poll.FLAG_ACTIVE;
-			old=httpReq.getRequestParameter("ISPREVIEWRESULTS");
+			old=httpReq.getUrlParameter("ISPREVIEWRESULTS");
 			if((old!=null)&&(old.equalsIgnoreCase("on")))
 				flag|=Poll.FLAG_PREVIEWRESULTS;
-			old=httpReq.getRequestParameter("ISABSTAIN");
+			old=httpReq.getUrlParameter("ISABSTAIN");
 			if((old!=null)&&(old.equalsIgnoreCase("on")))
 				flag|=Poll.FLAG_ABSTAIN;
-			old=httpReq.getRequestParameter("ISVOTEBYIP");
+			old=httpReq.getUrlParameter("ISVOTEBYIP");
 			if((old!=null)&&(old.equalsIgnoreCase("on")))
 				flag|=Poll.FLAG_VOTEBYIP;
-			old=httpReq.getRequestParameter("ISHIDERESULTS");
+			old=httpReq.getUrlParameter("ISHIDERESULTS");
 			if((old!=null)&&(old.equalsIgnoreCase("on")))
 				flag|=Poll.FLAG_HIDERESULTS;
-			old=httpReq.getRequestParameter("ISNOTATLOGIN");
+			old=httpReq.getUrlParameter("ISNOTATLOGIN");
 			if((old!=null)&&(old.equalsIgnoreCase("on")))
 				flag|=Poll.FLAG_NOTATLOGIN;
 			P.setFlags(flag);
-			old=httpReq.getRequestParameter("DOESEXPIRE");
+			old=httpReq.getUrlParameter("DOESEXPIRE");
 			if((old==null)||(!old.equalsIgnoreCase("on")))
 				P.setExpiration(0);
 			else
 			{
 				String AP="AM";
-				int hr=CMath.s_int(httpReq.getRequestParameter("HOUR"));
+				int hr=CMath.s_int(httpReq.getUrlParameter("HOUR"));
 				if(hr>12){
 					hr-=12;
 					AP="PM";
 				}
 				P.setExpiration(CMLib.time().string2Date(
-				   (CMath.s_int(httpReq.getRequestParameter("MONTH"))+1)
-				   +"/"+httpReq.getRequestParameter("DAY")
-				   +"/"+httpReq.getRequestParameter("YEAR")
+				   (CMath.s_int(httpReq.getUrlParameter("MONTH"))+1)
+				   +"/"+httpReq.getUrlParameter("DAY")
+				   +"/"+httpReq.getUrlParameter("YEAR")
 				   +" "+hr
-				   +":"+httpReq.getRequestParameter("MINUTE")
+				   +":"+httpReq.getUrlParameter("MINUTE")
 				   +" "+AP).getTimeInMillis());
 			}
 			P.getOptions().clear();
 			int num=0;
-			while(httpReq.isRequestParameter("OPTION"+(++num)))
+			while(httpReq.isUrlParameter("OPTION"+(++num)))
 			{
-				old=httpReq.getRequestParameter("OPTION"+num);
+				old=httpReq.getUrlParameter("OPTION"+num);
 				if((old!=null)&&(old.trim().length()>0))
 					P.getOptions().add(new Poll.PollOption(old));
 			}
@@ -160,7 +160,7 @@ public class PollData extends StdWebMacro
 			if(last.length()>0)
 			{
 				Poll P=null;
-				String newPollID=httpReq.getRequestParameter("NEWPOLL");
+				String newPollID=httpReq.getUrlParameter("NEWPOLL");
 				if(P==null)
 					P=(Poll)httpReq.getRequestObjects().get("POLL-"+last);
 				if((P==null)
@@ -171,7 +171,7 @@ public class PollData extends StdWebMacro
 					P=(Poll)CMClass.getCommon("DefaultPoll");
 					P.setName(newPollID);
 					last=newPollID;
-					httpReq.addRequestParameters("POLL",newPollID);
+					httpReq.addFakeUrlParameter("POLL",newPollID);
 				}
 				if(P==null)
 				{
@@ -187,7 +187,7 @@ public class PollData extends StdWebMacro
 					boolean input=parms.containsKey("INPUT");
 					if(parms.containsKey("TITLE"))
 					{
-						String old=httpReq.getRequestParameter("TITLE");
+						String old=httpReq.getUrlParameter("TITLE");
 						if(old==null)
 							old=P.getName();
 						if(old!=null)
@@ -195,7 +195,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("SUBJECT"))
 					{
-						String old=httpReq.getRequestParameter("SUBJECT");
+						String old=httpReq.getUrlParameter("SUBJECT");
 						if(old==null)
 							old=P.getSubject();
 						if(old!=null)
@@ -203,7 +203,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("DESCRIPTION"))
 					{
-						String old=httpReq.getRequestParameter("DESCRIPTION");
+						String old=httpReq.getUrlParameter("DESCRIPTION");
 						if(old==null)
 							old=P.getDescription();
 						if(old!=null)
@@ -211,7 +211,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("QUALZAPPER"))
 					{
-						String old=httpReq.getRequestParameter("QUALZAPPER");
+						String old=httpReq.getUrlParameter("QUALZAPPER");
 						if(old==null)
 							old=P.getQualZapper();
 						if(old!=null)
@@ -219,7 +219,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("ISACTIVE"))
 					{
-						String old=httpReq.getRequestParameter("ISACTIVE");
+						String old=httpReq.getUrlParameter("ISACTIVE");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE)?"on":"");
 						if(old!=null)
@@ -227,7 +227,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("ISPREVIEWRESULTS"))
 					{
-						String old=httpReq.getRequestParameter("ISPREVIEWRESULTS");
+						String old=httpReq.getUrlParameter("ISPREVIEWRESULTS");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_PREVIEWRESULTS)?"on":"");
 						if(old!=null)
@@ -235,7 +235,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("ISABSTAIN"))
 					{
-						String old=httpReq.getRequestParameter("ISABSTAIN");
+						String old=httpReq.getUrlParameter("ISABSTAIN");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)?"on":"");
 						if(old!=null)
@@ -243,7 +243,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("ISVOTEBYIP"))
 					{
-						String old=httpReq.getRequestParameter("ISVOTEBYIP");
+						String old=httpReq.getUrlParameter("ISVOTEBYIP");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP)?"on":"");
 						if(old!=null)
@@ -251,7 +251,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("ISHIDERESULTS"))
 					{
-						String old=httpReq.getRequestParameter("ISHIDERESULTS");
+						String old=httpReq.getUrlParameter("ISHIDERESULTS");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_HIDERESULTS)?"on":"");
 						if(old!=null)
@@ -259,7 +259,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("ISNOTATLOGIN"))
 					{
-						String old=httpReq.getRequestParameter("ISNOTATLOGIN");
+						String old=httpReq.getUrlParameter("ISNOTATLOGIN");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN)?"on":"");
 						if(old!=null)
@@ -267,7 +267,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("DOESEXPIRE"))
 					{
-						String old=httpReq.getRequestParameter("DOESEXPIRE");
+						String old=httpReq.getUrlParameter("DOESEXPIRE");
 						if(old==null)
 							old=(P.getExpiration()!=0)?"on":"";
 						str.append(""+old.equalsIgnoreCase("on"));
@@ -275,20 +275,20 @@ public class PollData extends StdWebMacro
 					if(parms.containsKey("EXPIRATION")) // req input
 					{
 						Calendar exp=Calendar.getInstance();
-						if(httpReq.isRequestParameter("MONTH"))
+						if(httpReq.isUrlParameter("MONTH"))
 						{
 							String AP="AM";
-							int hr=CMath.s_int(httpReq.getRequestParameter("HOUR"));
+							int hr=CMath.s_int(httpReq.getUrlParameter("HOUR"));
 							if(hr>12){
 								hr-=12;
 								AP="PM";
 							}
 
-							String date=(CMath.s_int(httpReq.getRequestParameter("MONTH"))+1)
-									   +"/"+httpReq.getRequestParameter("DAY")
-									   +"/"+httpReq.getRequestParameter("YEAR")
+							String date=(CMath.s_int(httpReq.getUrlParameter("MONTH"))+1)
+									   +"/"+httpReq.getUrlParameter("DAY")
+									   +"/"+httpReq.getUrlParameter("YEAR")
 									   +" "+hr
-									   +":"+httpReq.getRequestParameter("MINUTE")
+									   +":"+httpReq.getUrlParameter("MINUTE")
 									   +" "+AP;
 
 							exp=CMLib.time().string2Date(date);
@@ -368,17 +368,17 @@ public class PollData extends StdWebMacro
 						int which=-1;
 						if(parms.containsKey("NUM"))
 							which=CMath.s_int((String)parms.get("NUM"));
-						if(!httpReq.isRequestParameter("OPTION1"))
+						if(!httpReq.isUrlParameter("OPTION1"))
 						{
 							for(int v=0;v<P.getOptions().size();v++)
 							{
 								Poll.PollOption O=(Poll.PollOption)P.getOptions().get(v);
-								httpReq.addRequestParameters("OPTION"+(v+1),O.text);
+								httpReq.addFakeUrlParameter("OPTION"+(v+1),O.text);
 							}
 						}
 						int num=0;
 						int showNum=0;
-						String sfont=httpReq.getRequestParameter("FONT");
+						String sfont=httpReq.getUrlParameter("FONT");
 						String efont="";
 						if(sfont==null)
 							sfont="<BR>";
@@ -393,9 +393,9 @@ public class PollData extends StdWebMacro
 							if(s.indexOf("<TR")>=0) efont+="</TR>";
 						}
 
-						while(httpReq.isRequestParameter("OPTION"+(++num)))
+						while(httpReq.isUrlParameter("OPTION"+(++num)))
 						{
-							String option=httpReq.getRequestParameter("OPTION"+num);
+							String option=httpReq.getUrlParameter("OPTION"+num);
 							if((option.length()>0)
 							&&((which<0)||(which==showNum)))
 							{
@@ -437,7 +437,7 @@ public class PollData extends StdWebMacro
 									votes[choice-1]++;
 							}
 						}
-						String sfont=httpReq.getRequestParameter("FONT");
+						String sfont=httpReq.getUrlParameter("FONT");
 						String efont="";
 						if(sfont==null)
 							sfont="<BR>";
@@ -474,7 +474,7 @@ public class PollData extends StdWebMacro
 					}
 					if(parms.containsKey("MASKDESC"))
 					{
-						String mask=httpReq.getRequestParameter("MASK");
+						String mask=httpReq.getUrlParameter("MASK");
 						if((mask==null)&&(last.length()>0))
 							mask=CMLib.titles().getAutoTitleMask(last);
 						if(mask!=null)

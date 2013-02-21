@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -36,14 +36,14 @@ public class HelpTopics extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("HELPTOPIC");
+		String last=httpReq.getUrlParameter("HELPTOPIC");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeRequestParameter("HELPTOPIC");
-			httpReq.removeRequestParameter("HELPFIRSTLETTER");
+			if(last!=null) httpReq.removeUrlParameter("HELPTOPIC");
+			httpReq.removeUrlParameter("HELPFIRSTLETTER");
 			return "";
 		}
 		else
@@ -62,18 +62,18 @@ public class HelpTopics extends StdWebMacro
 		else
 		if(parms.containsKey("NEXTLETTER"))
 		{
-			String fletter=httpReq.getRequestParameter("HELPFIRSTLETTER");
+			String fletter=httpReq.getUrlParameter("HELPFIRSTLETTER");
 			if((fletter==null)||(fletter.length()==0))
 				fletter="A";
 			else
 			if(fletter.charAt(0)>='Z')
 			{
-				httpReq.addRequestParameters("HELPFIRSTLETTER","");
+				httpReq.addFakeUrlParameter("HELPFIRSTLETTER","");
 				return " @break@";
 			}
 			else
 				fletter=Character.toString((char)(fletter.charAt(0)+1));
-			httpReq.addRequestParameters("HELPFIRSTLETTER",fletter);
+			httpReq.addFakeUrlParameter("HELPFIRSTLETTER",fletter);
 		}
 		else
 		if(parms.containsKey("NEXT"))
@@ -89,7 +89,7 @@ public class HelpTopics extends StdWebMacro
 
 			boolean noables=parms.containsKey("SHORT");
 			String fletter=(String)parms.get("FIRSTLETTER");
-			if(fletter==null) fletter=httpReq.getRequestParameter("FIRSTLETTER");
+			if(fletter==null) fletter=httpReq.getUrlParameter("FIRSTLETTER");
 			if(fletter==null) fletter="";
 
 			String lastID="";
@@ -101,12 +101,12 @@ public class HelpTopics extends StdWebMacro
 				if(topic.startsWith(fletter)||(fletter.length()==0))
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!topic.equals(lastID))))
 				{
-					httpReq.addRequestParameters("HELPTOPIC",topic);
+					httpReq.addFakeUrlParameter("HELPTOPIC",topic);
 					return "";
 				}
 				lastID=topic;
 			}
-			httpReq.addRequestParameters("HELPTOPIC","");
+			httpReq.addFakeUrlParameter("HELPTOPIC","");
 			if(parms.containsKey("EMPTYOK"))
 				return "<!--EMPTY-->";
 			return " @break@";

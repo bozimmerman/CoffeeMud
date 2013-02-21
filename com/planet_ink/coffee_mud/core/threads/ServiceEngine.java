@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.core.threads;
 import com.planet_ink.coffee_mud.core.database.DBInterface;
-import com.planet_ink.coffee_mud.core.http.ProcessHTTPrequest;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -22,6 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.miniweb.interfaces.HTTPRequest;
 
 
 /* 
@@ -866,8 +866,8 @@ public class ServiceEngine implements ThreadEngine
 		if(T instanceof MudHost)
 			return " ("+((MudHost)T).getStatus()+")";
 		else
-		if(T instanceof ExternalHTTPRequests)
-			return " ("+((ExternalHTTPRequests)T).getHTTPstatus()+" - "+((ExternalHTTPRequests)T).getHTTPstatusInfo()+")";
+		if(T instanceof HTTPRequest)
+			return " ("+((HTTPRequest)T).getUrlPath();
 		return "";
 		
 	}

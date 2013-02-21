@@ -13,9 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,25 +36,25 @@ public class AccountPlayerNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("PLAYER");
+		String last=httpReq.getUrlParameter("PLAYER");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("PLAYER");
+			if(last!=null) httpReq.removeUrlParameter("PLAYER");
 			return "";
 		}
-		String accountName=httpReq.getRequestParameter("ACCOUNT");
+		String accountName=httpReq.getUrlParameter("ACCOUNT");
 		if(accountName==null) return "";
 		PlayerAccount account=CMLib.players().getLoadAccount(accountName);
 		if(account==null) return "";
 		
 		String lastID="";
-		String sort=httpReq.getRequestParameter("SORTBY");
+		String sort=httpReq.getUrlParameter("SORTBY");
 		if(sort==null) sort="";
 		Enumeration pe=account.getThinPlayers();
 		for(;pe.hasMoreElements();)
@@ -63,12 +62,12 @@ public class AccountPlayerNext extends StdWebMacro
 			PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.name.equals(lastID))))
 			{
-				httpReq.addRequestParameters("PLAYER",user.name);
+				httpReq.addFakeUrlParameter("PLAYER",user.name);
 				return "";
 			}
 			lastID=user.name;
 		}
-		httpReq.addRequestParameters("PLAYER","");
+		httpReq.addFakeUrlParameter("PLAYER","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

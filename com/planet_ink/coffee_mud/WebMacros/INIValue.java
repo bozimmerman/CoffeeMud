@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -76,11 +76,11 @@ public class INIValue extends StdWebMacro
 		return "";
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms==null) return "";
-		String last=httpReq.getRequestParameter("INI");
+		String last=httpReq.getUrlParameter("INI");
 		if((parms.size()==0)&&(last!=null)&&(last.length()>0))
 		{
 			CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
@@ -89,7 +89,7 @@ public class INIValue extends StdWebMacro
 		}
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("INI");
+			if(last!=null) httpReq.removeUrlParameter("INI");
 			return "";
 		}
 		if(parms.containsKey("NEXT"))
@@ -118,7 +118,7 @@ public class INIValue extends StdWebMacro
 					else
 					if(!mask.equalsIgnoreCase(id)) 
 						continue;
-					httpReq.addRequestParameters("INI",id);
+					httpReq.addFakeUrlParameter("INI",id);
 					if(parms.containsKey("VALUE"))
 					{
 						CMProps realPage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
@@ -128,7 +128,7 @@ public class INIValue extends StdWebMacro
 				}
 				lastID=id;
 			}
-			httpReq.addRequestParameters("INI","");
+			httpReq.addFakeUrlParameter("INI","");
 			if(parms.containsKey("EMPTYOK"))
 				return "<!--EMPTY-->";
 			return " @break@";
@@ -144,7 +144,7 @@ public class INIValue extends StdWebMacro
 				String key=((String)e.nextElement()).toUpperCase();
 				if(key.startsWith(mask.substring(0,mask.length()-1)))
 				{
-					httpReq.addRequestParameters("INI",key);
+					httpReq.addFakeUrlParameter("INI",key);
 					if(parms.containsKey("VALUE"))
 						return clearWebMacros(page.getStr(key));
 					else
@@ -153,7 +153,7 @@ public class INIValue extends StdWebMacro
 					return "";
 				}
 			}
-		httpReq.addRequestParameters("INI",mask);
+		httpReq.addFakeUrlParameter("INI",mask);
 		if(parms.containsKey("VALUE"))
 			return clearWebMacros(page.getStr(mask));
 		else

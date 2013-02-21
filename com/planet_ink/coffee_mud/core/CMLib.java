@@ -57,7 +57,7 @@ public class CMLib
 	public static final int LIBRARY_DATABASE=0;
 	public static final int LIBRARY_THREADS=1;
 	public static final int LIBRARY_INTERMUD=2;
-	public static final int LIBRARY_HTTP=3;
+	public static final int LIBRARY_WEBMACS=3;
 	public static final int LIBRARY_LISTER=4;
 	public static final int LIBRARY_MONEY=5;
 	public static final int LIBRARY_SHOPS=6;
@@ -149,7 +149,7 @@ public class CMLib
 	public static final ThreadEngine threads(){return (ThreadEngine)l().libraries[LIBRARY_THREADS];}
 	public static final I3Interface intermud(){return (I3Interface)l().libraries[LIBRARY_INTERMUD];}
 	public static final ItemBalanceLibrary itemBuilder(){return (ItemBalanceLibrary)l().libraries[LIBRARY_TIMS];}
-	public static final ExternalHTTPRequests httpUtils(){return (ExternalHTTPRequests)l().libraries[LIBRARY_HTTP];}
+	public static final WebMacroLibrary webMacroFilter(){return (WebMacroLibrary)l().libraries[LIBRARY_WEBMACS];}
 	public static final ListingLibrary lister(){return (ListingLibrary)l().libraries[LIBRARY_LISTER];}
 	public static final MoneyLibrary beanCounter(){return (MoneyLibrary)l().libraries[LIBRARY_MONEY];}
 	public static final ShoppingLibrary coffeeShops(){return (ShoppingLibrary)l().libraries[LIBRARY_SHOPS];}
@@ -199,7 +199,7 @@ public class CMLib
 		if(O instanceof DatabaseEngine) return LIBRARY_DATABASE;
 		if(O instanceof ThreadEngine) return LIBRARY_THREADS;
 		if(O instanceof I3Interface) return LIBRARY_INTERMUD;
-		if(O instanceof ExternalHTTPRequests) return LIBRARY_HTTP;
+		if(O instanceof WebMacroLibrary) return LIBRARY_WEBMACS;
 		if(O instanceof ListingLibrary) return LIBRARY_LISTER;
 		if(O instanceof MoneyLibrary) return LIBRARY_MONEY;
 		if(O instanceof ShoppingLibrary) return LIBRARY_SHOPS;

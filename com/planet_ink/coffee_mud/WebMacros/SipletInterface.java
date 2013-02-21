@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -108,7 +110,7 @@ public class SipletInterface extends StdWebMacro
 		public InetAddress getInetAddress() { return addr; }
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return "false;";
@@ -151,10 +153,10 @@ public class SipletInterface extends StdWebMacro
 			}, Tickable.TICKID_MISCELLANEOUS, 10);
 		}
 		
-		if(httpReq.isRequestParameter("CONNECT"))
+		if(httpReq.isUrlParameter("CONNECT"))
 		{
-			String url=httpReq.getRequestParameter("URL");
-			int port=CMath.s_int(httpReq.getRequestParameter("PORT"));
+			String url=httpReq.getUrlParameter("URL");
+			int port=CMath.s_int(httpReq.getUrlParameter("PORT"));
 			String hex="";
 			Siplet sip = new Siplet();
 			boolean success=false;
@@ -168,8 +170,8 @@ public class SipletInterface extends StdWebMacro
 						{
 							try
 							{
-								PipeSocket lsock=new PipeSocket(httpReq.getHTTPclientInetAddress(),null);
-								PipeSocket rsock=new PipeSocket(httpReq.getHTTPclientInetAddress(),lsock);
+								PipeSocket lsock=new PipeSocket(httpReq.getClientAddress(),null);
+								PipeSocket rsock=new PipeSocket(httpReq.getClientAddress(),lsock);
 								success=sip.connectToURL(url, port,lsock);
 								sip.setFeatures(true, Siplet.MSPStatus.External, false);
 								h.acceptConnection(rsock);
@@ -191,7 +193,7 @@ public class SipletInterface extends StdWebMacro
 							tokenNum = new Random().nextInt();
 							if(tokenNum<0) tokenNum = tokenNum * -1;
 							hex=Integer.toHexString(tokenNum);
-							if(httpReq.isRequestParameter(hex))
+							if(httpReq.isUrlParameter(hex))
 								tokenNum=0;
 						}
 						siplets.put(hex, new SipletSession(sip));
@@ -201,9 +203,9 @@ public class SipletInterface extends StdWebMacro
 			return Boolean.toString(success)+';'+hex+';'+sip.info()+hex+';';
 		}
 		else
-		if(httpReq.isRequestParameter("DISCONNECT"))
+		if(httpReq.isUrlParameter("DISCONNECT"))
 		{
-			String token=httpReq.getRequestParameter("TOKEN");
+			String token=httpReq.getUrlParameter("TOKEN");
 			boolean success = false;
 			if(token != null)
 			{
@@ -218,16 +220,16 @@ public class SipletInterface extends StdWebMacro
 			return Boolean.toString(success)+';';
 		}
 		else
-		if(httpReq.isRequestParameter("SENDDATA"))
+		if(httpReq.isUrlParameter("SENDDATA"))
 		{
-			String token=httpReq.getRequestParameter("TOKEN");
+			String token=httpReq.getUrlParameter("TOKEN");
 			boolean success = false;
 			if(token != null)
 			{
 				SipletSession p = siplets.get(token);
 				if(p!=null)
 				{
-					String data=httpReq.getRequestParameter("DATA");
+					String data=httpReq.getUrlParameter("DATA");
 					if(data!=null)
 					{
 						p.lastTouched=System.currentTimeMillis();
@@ -239,9 +241,9 @@ public class SipletInterface extends StdWebMacro
 			return Boolean.toString(success)+';';
 		}
 		else
-		if(httpReq.isRequestParameter("POLL"))
+		if(httpReq.isUrlParameter("POLL"))
 		{
-			final String token=httpReq.getRequestParameter("TOKEN");
+			final String token=httpReq.getUrlParameter("TOKEN");
 			if(token != null)
 			{
 				final SipletSession p = siplets.get(token);
@@ -249,7 +251,7 @@ public class SipletInterface extends StdWebMacro
 				{
 					if(p.siplet.isConnectedToURL())
 					{
-						if(httpReq.isRequestParameter("LAST"))
+						if(httpReq.isUrlParameter("LAST"))
 							return p.response;
 						else
 						{

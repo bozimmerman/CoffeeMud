@@ -1,5 +1,6 @@
-
 package com.planet_ink.coffee_mud.Libraries;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.AbilityParmEditor;
@@ -1081,24 +1082,24 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("MATERIALS_REQUIRED","Amount/Cmp",PARMTYPE_SPECIAL){
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return true;}
-					public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
-						if(httpReq.isRequestParameter(fieldName+"_WHICH"))
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+						if(httpReq.isUrlParameter(fieldName+"_WHICH"))
 						{
-							String which=httpReq.getRequestParameter(fieldName+"_WHICH");
+							String which=httpReq.getUrlParameter(fieldName+"_WHICH");
 							if((which.trim().length()==0)||(which.trim().equalsIgnoreCase("AMOUNT")))
-								return httpReq.getRequestParameter(fieldName+"_AMOUNT");
+								return httpReq.getUrlParameter(fieldName+"_AMOUNT");
 							if(which.trim().equalsIgnoreCase("COMPONENT"))
-								return httpReq.getRequestParameter(fieldName+"_COMPONENT");
+								return httpReq.getUrlParameter(fieldName+"_COMPONENT");
 							int x=1;
 							List<AbilityComponent> comps=new Vector<AbilityComponent>();
-							while(httpReq.isRequestParameter(fieldName+"_CUST_TYPE_"+x))
+							while(httpReq.isUrlParameter(fieldName+"_CUST_TYPE_"+x))
 							{
-								String connector=httpReq.getRequestParameter(fieldName+"_CUST_CONN_"+x);
-								String amt=httpReq.getRequestParameter(fieldName+"_CUST_AMT_"+x);
-								String strVal=httpReq.getRequestParameter(fieldName+"_CUST_STR_"+x);
-								String loc=httpReq.getRequestParameter(fieldName+"_CUST_LOC_"+x);
-								String typ=httpReq.getRequestParameter(fieldName+"_CUST_TYPE_"+x);
-								String con=httpReq.getRequestParameter(fieldName+"_CUST_CON_"+x);
+								String connector=httpReq.getUrlParameter(fieldName+"_CUST_CONN_"+x);
+								String amt=httpReq.getUrlParameter(fieldName+"_CUST_AMT_"+x);
+								String strVal=httpReq.getUrlParameter(fieldName+"_CUST_STR_"+x);
+								String loc=httpReq.getUrlParameter(fieldName+"_CUST_LOC_"+x);
+								String typ=httpReq.getUrlParameter(fieldName+"_CUST_TYPE_"+x);
+								String con=httpReq.getUrlParameter(fieldName+"_CUST_CON_"+x);
 								if(connector==null) connector="AND";
 								if(connector.equalsIgnoreCase("DEL")||(connector.length()==0)){x++; continue;}
 								try
@@ -1151,12 +1152,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						return CMLib.ableMapper().getAbilityComponentCodedString(comps);
 					}
-					public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						String value=webValue(httpReq,parms,oldVal,fieldName);
 						if(value.endsWith("$")) 
 							value = value.substring(0,oldVal.length()-1);
 						value = value.trim();
-						String curWhich=httpReq.getRequestParameter(fieldName+"_WHICH");
+						String curWhich=httpReq.getUrlParameter(fieldName+"_WHICH");
 						int type=0;
 						if("COMPONENT".equalsIgnoreCase(curWhich)) type=1;
 						else if("EMBEDDED".equalsIgnoreCase(curWhich)) type=2;
@@ -1352,34 +1353,34 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
 					public String defaultValue(){ return "NECK";}
-					public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						short[] layerAtt = new short[1];
 						short[] layers = new short[1];
 						long[] wornLoc = new long[1];
 						boolean[] logicalAnd = new boolean[1];
 						double[] hardBonus=new double[1];
 						CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
-						if(httpReq.isRequestParameter(fieldName+"_WORNDATA"))
+						if(httpReq.isUrlParameter(fieldName+"_WORNDATA"))
 						{
-							wornLoc[0]=CMath.s_long(httpReq.getRequestParameter(fieldName+"_WORNDATA"));
+							wornLoc[0]=CMath.s_long(httpReq.getUrlParameter(fieldName+"_WORNDATA"));
 							for(int i=1;;i++)
-								if(httpReq.isRequestParameter(fieldName+"_WORNDATA"+(Integer.toString(i))))
-									wornLoc[0]=wornLoc[0]|CMath.s_long(httpReq.getRequestParameter(fieldName+"_WORNDATA"+(Integer.toString(i))));
+								if(httpReq.isUrlParameter(fieldName+"_WORNDATA"+(Integer.toString(i))))
+									wornLoc[0]=wornLoc[0]|CMath.s_long(httpReq.getUrlParameter(fieldName+"_WORNDATA"+(Integer.toString(i))));
 								else
 									break;
-							logicalAnd[0] = httpReq.getRequestParameter(fieldName+"_ISTWOHANDED").equalsIgnoreCase("on");
-							layers[0] = CMath.s_short(httpReq.getRequestParameter(fieldName+"_LAYER"));
+							logicalAnd[0] = httpReq.getUrlParameter(fieldName+"_ISTWOHANDED").equalsIgnoreCase("on");
+							layers[0] = CMath.s_short(httpReq.getUrlParameter(fieldName+"_LAYER"));
 							layerAtt[0] = 0;
-							if((httpReq.isRequestParameter(fieldName+"_SEETHRU"))
-							&&(httpReq.getRequestParameter(fieldName+"_SEETHRU").equalsIgnoreCase("on")))
+							if((httpReq.isUrlParameter(fieldName+"_SEETHRU"))
+							&&(httpReq.getUrlParameter(fieldName+"_SEETHRU").equalsIgnoreCase("on")))
 								layerAtt[0] |= Armor.LAYERMASK_SEETHROUGH;
-							if((httpReq.isRequestParameter(fieldName+"_MULTIWEAR"))
-							&&(httpReq.getRequestParameter(fieldName+"_MULTIWEAR").equalsIgnoreCase("on")))
+							if((httpReq.isUrlParameter(fieldName+"_MULTIWEAR"))
+							&&(httpReq.getUrlParameter(fieldName+"_MULTIWEAR").equalsIgnoreCase("on")))
 								layerAtt[0] |= Armor.LAYERMASK_MULTIWEAR;
 						}
 						return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 					}
-					public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						String value = webValue(httpReq,parms,oldVal,fieldName);
 						short[] layerAtt = new short[1];
 						short[] layers = new short[1];
@@ -1606,15 +1607,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						V.addElement("");
 						return CMParms.toStringArray(V);
 					}
-					public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) 
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) 
 					{
 						List<Ability> spells=null;
-						if(httpReq.isRequestParameter(fieldName+"_AFFECT1"))
+						if(httpReq.isUrlParameter(fieldName+"_AFFECT1"))
 						{
 							spells = new Vector<Ability>();
 							int num=1;
-							String behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
-							String theparm=httpReq.getRequestParameter(fieldName+"_ADATA"+num);
+							String behav=httpReq.getUrlParameter(fieldName+"_AFFECT"+num);
+							String theparm=httpReq.getUrlParameter(fieldName+"_ADATA"+num);
 							while((behav!=null)&&(theparm!=null))
 							{
 								if(behav.length()>0)
@@ -1625,8 +1626,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 									spells.add(A);
 								}
 								num++;
-								behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
-								theparm=httpReq.getRequestParameter(fieldName+"_ADATA"+num);
+								behav=httpReq.getUrlParameter(fieldName+"_AFFECT"+num);
+								theparm=httpReq.getUrlParameter(fieldName+"_ADATA"+num);
 							}
 						}
 						else
@@ -1637,7 +1638,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return oldVal;
 						}
 					}
-					public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						List<Ability> spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
 						StringBuffer str = new StringBuffer("");
 						str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
@@ -1917,13 +1918,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resc/Itm",PARMTYPE_SPECIAL) {
 					public void createChoices() {}
 					public boolean confirmValue(String oldVal) { return true;}
-					public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
-						if(httpReq.isRequestParameter(fieldName+"_WHICH"))
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+						if(httpReq.isUrlParameter(fieldName+"_WHICH"))
 						{
-							String which=httpReq.getRequestParameter(fieldName+"_WHICH");
+							String which=httpReq.getUrlParameter(fieldName+"_WHICH");
 							if(which.trim().length()>0)
-								return httpReq.getRequestParameter(fieldName+"_RESOURCE");
-							return httpReq.getRequestParameter(fieldName+"_WORD");
+								return httpReq.getUrlParameter(fieldName+"_RESOURCE");
+							return httpReq.getUrlParameter(fieldName+"_WORD");
 						}
 						return oldVal;
 					}
@@ -1931,7 +1932,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						return "";
 					}
-					public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						String value=webValue(httpReq,parms,oldVal,fieldName);
 						if(value.endsWith("$")) 
 							value = value.substring(0,oldVal.length()-1);
@@ -2002,7 +2003,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return new String[]{oldVal.substring(0,oldVal.length()-1)}; 
 						return new String[]{oldVal}; 
 					}
-					public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
 						if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
 						String value = A.webValue(httpReq,parms,oldVal,fieldName);
@@ -2010,11 +2011,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						if(r>=0) return RawMaterial.CODES.NAME(r);
 						return (value.trim().length()==0)?"":(value+"$");
 					}
-					public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
 						return A.webField(httpReq,parms,oldVal,fieldName);
 					}
-					public String webTableField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal) {
+					public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal) {
 						if(oldVal.endsWith("$"))
 							return oldVal.substring(0,oldVal.length()-1);
 						return oldVal;
@@ -2173,20 +2174,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								return false;
 						return true;
 					}
-					public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						Vector<String> raceIDs=null;
-						if(httpReq.isRequestParameter(fieldName+"_RACE"))
+						if(httpReq.isUrlParameter(fieldName+"_RACE"))
 						{
 							String id="";
 							raceIDs=new Vector<String>();
-							for(int i=0;httpReq.isRequestParameter(fieldName+"_RACE"+id);id=""+(++i))
-								raceIDs.addElement(httpReq.getRequestParameter(fieldName+"_RACE"+id).toUpperCase().trim());
+							for(int i=0;httpReq.isUrlParameter(fieldName+"_RACE"+id);id=""+(++i))
+								raceIDs.addElement(httpReq.getUrlParameter(fieldName+"_RACE"+id).toUpperCase().trim());
 						}
 						else
 							raceIDs = CMParms.parse(oldVal.toUpperCase().trim());
 						return CMParms.combine(raceIDs,0);
 					}
-					public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						Vector<String> raceIDs=CMParms.parse(webValue(httpReq,parms,oldVal,fieldName).toUpperCase());
 						StringBuffer str = new StringBuffer("");
 						str.append("\n\r<SELECT NAME="+fieldName+"_RACE MULTIPLE>");
@@ -2340,7 +2341,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0||oldVal.equals("0");}
 					public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
 					{ return "";}
-					public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) { return ""; }
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) { return ""; }
 				},
 				new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL) {
 					public void createChoices() { 
@@ -2355,18 +2356,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					public String defaultValue(){ return "";}
 					public int appliesToClass(Object o) { return 0;}
-					public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
-						if(httpReq.isRequestParameter(fieldName+"_RESOURCE"))
+					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+						if(httpReq.isUrlParameter(fieldName+"_RESOURCE"))
 						{
-							String rsc=httpReq.getRequestParameter(fieldName+"_RESOURCE");
-							String amt=httpReq.getRequestParameter(fieldName+"_AMOUNT");
+							String rsc=httpReq.getUrlParameter(fieldName+"_RESOURCE");
+							String amt=httpReq.getUrlParameter(fieldName+"_AMOUNT");
 							if((rsc.trim().length()==0)||(rsc.equalsIgnoreCase("NOTHING"))||(CMath.s_int(amt)<=0))
 								return "";
 							return rsc+"/"+amt;
 						}
 						return oldVal;
 					}
-					public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 						String value=webValue(httpReq,parms,oldVal,fieldName);
 						String rsc = "";
 						int amt = 0;
@@ -2660,8 +2661,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return str;
 		}
 		
-		public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
-			String webValue = httpReq.getRequestParameter(fieldName);
+		public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+			String webValue = httpReq.getUrlParameter(fieldName);
 			switch(fieldType) {
 			case PARMTYPE_ONEWORD:
 			case PARMTYPE_STRINGORNULL:
@@ -2675,9 +2676,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				String id="";
 				long num=0;
 				int index=0;
-				for(;httpReq.isRequestParameter(fieldName+id);id=""+(++index))
+				for(;httpReq.isUrlParameter(fieldName+id);id=""+(++index))
 				{
-					String newVal = httpReq.getRequestParameter(fieldName+id); 
+					String newVal = httpReq.getUrlParameter(fieldName+id); 
 					if(CMath.s_long(newVal)<=0)
 						return newVal;
 					num |= CMath.s_long(newVal);
@@ -2690,9 +2691,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return "";
 		}
 		
-		public String webTableField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal) { return oldVal; }
+		public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal) { return oldVal; }
 		
-		public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
+		public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
 			int textSize = 50;
 			String webValue = webValue(httpReq,parms,oldVal,fieldName);
 			String onChange = null;

@@ -33,28 +33,28 @@
 			if(oldex>=0) val=ME.options[oldex].value;
 			
 			var h=0;
-		    while((h*3+1)<ME.options.length)
-			    h=3*h+1;
-		    while(h>0)
-		    {
-		        for (i=h-1;i<ME.options.length;i++) 
-		        {
-		            var T1 = ME.options[i].text;
-		            var T2 = ME.options[i].value;
-		            var j=i;
-		            for(j=i;(j>=h)&&(j>=start)&&((j-h)>=start)&&(ME.options[j-h].text>T1);j-=h) 
-		            {
-		                ME.options[j].value = ME.options[j-h].value;
-		                ME.options[j].text = ME.options[j-h].text;
-		            }
-		            ME.options[j].value = T2;
-		            ME.options[j].text = T1;
-		        }
-		        h = Math.round(h / 3);
-		    }
-		    
-		    ME.selectedIndex=oldex;
-		    if((oldex>=0)&&(ME.options[ME.selectedIndex].value!=val))
+			while((h*3+1)<ME.options.length)
+				h=3*h+1;
+			while(h>0)
+			{
+				for (i=h-1;i<ME.options.length;i++) 
+				{
+					var T1 = ME.options[i].text;
+					var T2 = ME.options[i].value;
+					var j=i;
+					for(j=i;(j>=h)&&(j>=start)&&((j-h)>=start)&&(ME.options[j-h].text>T1);j-=h) 
+					{
+						ME.options[j].value = ME.options[j-h].value;
+						ME.options[j].text = ME.options[j-h].text;
+					}
+					ME.options[j].value = T2;
+					ME.options[j].text = T1;
+				}
+				h = Math.round(h / 3);
+			}
+			
+			ME.selectedIndex=oldex;
+			if((oldex>=0)&&(ME.options[ME.selectedIndex].value!=val))
 				for(oldex=0;oldex<ME.options.length;oldex++)
 					if(ME.options[oldex].value==val)
 					{
@@ -62,7 +62,7 @@
 						break;
 					}
 		}
-    
+	
 		function Sort(ME)
 		{
 			SSort(ME,0);
@@ -80,29 +80,29 @@
 <CENTER>
 <TABLE WIDTH=100% BORDER=1>
 <TR>
-    <TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
-    <B><FONT COLOR=WHITE>Builders Guides</FONT></B><br>
-    <a target=OtherBrowser href="/pub/guides/ArchonGuide.html"><FONT COLOR=BLUE>Archon's Guide</FONT></a><BR>
-    <A target=OtherBrowser HREF="/pub/guides/GameBuildersGuide.html"><FONT COLOR=BLUE>Game Builders Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="/pub/guides/Scriptable.html"><FONT COLOR=BLUE>Scripting Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="/pub/guides/MUDChat.html"><FONT COLOR=BLUE>MUDChat Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="/pub/guides/MUDGrinder.html"><FONT COLOR=BLUE>MUDGrinder Guide</FONT></A><br>
-    </TD>
-    <TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
-    <B><FONT COLOR=WHITE>Builders Lists</FONT></B><br>
-    <a target=OtherBrowser href="/ahelps.cmvp"><FONT COLOR=BLUE>Archon Help Topics</FONT></A><br>
-    <A target=OtherBrowser href="/abilities.cmvp"><FONT COLOR=BLUE>Skills List</FONT></a><BR>
-    <A target=OtherBrowser href="/behaviors.cmvp"><FONT COLOR=BLUE>Behaviors List</FONT></a><BR>
-    <A target=OtherBrowser href="/affects.cmvp"><FONT COLOR=BLUE>Affects List</FONT></a><BR>
-    </TD>
-    <TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
-    <B><FONT COLOR=WHITE>Other Guides</FONT></B><br>
-    <A target=OtherBrowser HREF="/pub/guides/InstallationGuide.html"><FONT COLOR=BLUE>Installation Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="/pub/guides/WebServer.html"><FONT COLOR=BLUE>Web Server guide</FONT></A><br>
-    <A target=OtherBrowser HREF="/pub/guides/SMTPServer.html"><FONT COLOR=BLUE>SMTP Server guide</FONT></A><br>
-    <A target=OtherBrowser HREF="/pub/guides/Programming.html"><FONT COLOR=BLUE>Programmers Guide</FONT></A><br>
-    <A target=OtherBrowser HREF="/pub/guides/BuildersFAQ.html"><FONT COLOR=BLUE>Builders FAQ</FONT></A><br>
-    </TD>
+	<TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
+		<B><FONT COLOR=WHITE>Builders Guides</FONT></B><br>
+		<a target=OtherBrowser href="/pub/guides/ArchonGuide.html"><FONT COLOR=BLUE>Archon's Guide</FONT></a><BR>
+		<A target=OtherBrowser HREF="/pub/guides/GameBuildersGuide.html"><FONT COLOR=BLUE>Game Builders Guide</FONT></A><br>
+		<A target=OtherBrowser HREF="/pub/guides/Scriptable.html"><FONT COLOR=BLUE>Scripting Guide</FONT></A><br>
+		<A target=OtherBrowser HREF="/pub/guides/MUDChat.html"><FONT COLOR=BLUE>MUDChat Guide</FONT></A><br>
+		<A target=OtherBrowser HREF="/pub/guides/MUDGrinder.html"><FONT COLOR=BLUE>MUDGrinder Guide</FONT></A><br>
+	</TD>
+	<TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
+		<B><FONT COLOR=WHITE>Builders Lists</FONT></B><br>
+		<a target=OtherBrowser href="/ahelps.cmvp"><FONT COLOR=BLUE>Archon Help Topics</FONT></A><br>
+		<A target=OtherBrowser href="/abilities.cmvp"><FONT COLOR=BLUE>Skills List</FONT></a><BR>
+		<A target=OtherBrowser href="/behaviors.cmvp"><FONT COLOR=BLUE>Behaviors List</FONT></a><BR>
+		<A target=OtherBrowser href="/affects.cmvp"><FONT COLOR=BLUE>Affects List</FONT></a><BR>
+	</TD>
+	<TD WIDTH=25% ALIGN=CENTER VALIGN=TOP>
+		<B><FONT COLOR=WHITE>Other Guides</FONT></B><br>
+		<A target=OtherBrowser HREF="/pub/guides/InstallationGuide.html"><FONT COLOR=BLUE>Installation Guide</FONT></A><br>
+		<A target=OtherBrowser HREF="/pub/guides/WebServer.html"><FONT COLOR=BLUE>Web Server guide</FONT></A><br>
+		<A target=OtherBrowser HREF="/pub/guides/SMTPServer.html"><FONT COLOR=BLUE>SMTP Server guide</FONT></A><br>
+		<A target=OtherBrowser HREF="/pub/guides/Programming.html"><FONT COLOR=BLUE>Programmers Guide</FONT></A><br>
+		<A target=OtherBrowser HREF="/pub/guides/BuildersFAQ.html"><FONT COLOR=BLUE>Builders FAQ</FONT></A><br>
+	</TD>
 </TR>
 </TABLE>
 <TABLE WIDTH=100% BORDER=0>
@@ -148,108 +148,108 @@
 @/block@ @if?CheckAuthCode?SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_LISTADMIN=true&||ANYFILEBROWSE=true&||AUTH_CMDPLAYERS&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
 	<TABLE WIDTH=600 BORDER=1>
 	<TR>
-	    <TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD>
-	    <TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Editors:</B></FONT></TD>
+		<TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD>
+		<TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Editors:</B></FONT></TD>
 	@if?CheckAuthCode?ANYMODAREAS=true@
-	    <TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Areas:</B></FONT></TD>
+		<TD WIDTH=33% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Areas:</B></FONT></TD>
 	@endif@
 	</TR>
 	<TR><TD ALIGN=CENTER VALIGN=TOP>
-	    	@if?CheckAuthCode?SYSOP=true@
-	    	<A href="javascript:Clicked('control.cmvp')"><FONT COLOR=WHITE>Control Panel</FONT></a>
-	    	<BR>
-	    	@endif@
-	    	@if?CheckAuthCode?ANYFILEBROWSE=true@
-	    	<A HREF="javascript:Browse('@RequestParameter?BESTFILEBROWSE@');"><FONT COLOR=WHITE>File Browser</FONT></a>
-	    	<BR>
-	    	@endif@
-	    	@if?CheckAuthCode?AUTH_JOURNALS=true@
-	    	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
-	    	<BR>
-	    	@endif@
-	    	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
-		    	@if?IsAccountSystem@
-			    	<A href="javascript:Clicked('accounts.cmvp')"><FONT COLOR=WHITE>Account Manager</FONT></a>
-			    	<BR>
-			    @endif@
-	    	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Player Manager</FONT></a>
-	    	<BR>
-	    	@endif@
-	        @if?CheckAuthCode?AUTH_CMDCLANS=true@
-	        <A href="javascript:Clicked('clans.cmvp')"><FONT COLOR=WHITE>Clan Manager</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_CMDCLANS=true@
-	        <A href="javascript:Clicked('governments.cmvp')"><FONT COLOR=WHITE>Clan Governments</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_POLLS=true@
-	        <A href="javascript:Clicked('polls.cmvp')"><FONT COLOR=WHITE>Polls Manager</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_LISTADMIN=true@
-	        <A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
-	        <BR>
-	        <A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>Server Log</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_STAT=true@
-	        <A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_LOADUNLOAD=true@
-	        <A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
-	        <BR>
-	        @endif@
+			@if?CheckAuthCode?SYSOP=true@
+			<A href="javascript:Clicked('control.cmvp')"><FONT COLOR=WHITE>Control Panel</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?ANYFILEBROWSE=true@
+			<A HREF="javascript:Browse('@RequestParameter?BESTFILEBROWSE@');"><FONT COLOR=WHITE>File Browser</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_JOURNALS=true@
+			<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
+				@if?IsAccountSystem@
+					<A href="javascript:Clicked('accounts.cmvp')"><FONT COLOR=WHITE>Account Manager</FONT></a>
+					<BR>
+				@endif@
+			<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Player Manager</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDCLANS=true@
+			<A href="javascript:Clicked('clans.cmvp')"><FONT COLOR=WHITE>Clan Manager</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDCLANS=true@
+			<A href="javascript:Clicked('governments.cmvp')"><FONT COLOR=WHITE>Clan Governments</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_POLLS=true@
+			<A href="javascript:Clicked('polls.cmvp')"><FONT COLOR=WHITE>Polls Manager</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_LISTADMIN=true@
+			<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
+			<BR>
+			<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>Server Log</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_STAT=true@
+			<A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
+			<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
+			<BR>
+			@endif@
 		</TD><TD ALIGN=CENTER VALIGN=TOP>
-	        @if?CheckAuthCode?AUTH_CMDRACE=true@
-	        <A href="javascript:Clicked('races.cmvp')"><FONT COLOR=WHITE>Races</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_CMDCLASSES=true@
-	        <A href="javascript:Clicked('charclasses.cmvp')"><FONT COLOR=WHITE>Classes</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_CMDABILITIES=true@
-	        <A href="javascript:Clicked('abilities.cmvp')"><FONT COLOR=WHITE>Abilities</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_CMDRECIPES=true@
-	        <A href="javascript:Clicked('recipes.cmvp')"><FONT COLOR=WHITE>Skill Recipes</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_COMPONENTS=true@
-	        <A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
-	        <BR>
-	        @endif@
-	    	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
-	    	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
-	    	<BR>
-	    	@endif@
-	    	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
-	    	<A href="javascript:Clicked('holidays.cmvp')"><FONT COLOR=WHITE>Holidays</FONT></a>
-	    	<BR>
-	    	@endif@
-	    	@if?CheckAuthCode?AUTH_TITLES=true@
-	    	<A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE>Player Titles</FONT></a>
-	    	<BR>
-	    	@endif@
-	        @if?CheckAuthCode?AUTH_CMDSOCIALS=true@
-	        <A href="javascript:Clicked('socials.cmvp')"><FONT COLOR=WHITE>Socials</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_CMDFACTIONS=true@
-	        <A href="javascript:Clicked('factions.cmvp')"><FONT COLOR=WHITE>Factions</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?ANYMODAREAS=true@
-	        <A href="javascript:Clicked('deities.cmvp')"><FONT COLOR=WHITE>Deities</FONT></a>
-	        <BR>
-	        @endif@
-	        @if?CheckAuthCode?AUTH_CATALOG=true@
-	        <A href="javascript:Clicked('catalog.cmvp')"><FONT COLOR=WHITE>Catalog</FONT></a>
-	        <BR>
-	        @endif@
+			@if?CheckAuthCode?AUTH_CMDRACE=true@
+			<A href="javascript:Clicked('races.cmvp')"><FONT COLOR=WHITE>Races</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDCLASSES=true@
+			<A href="javascript:Clicked('charclasses.cmvp')"><FONT COLOR=WHITE>Classes</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDABILITIES=true@
+			<A href="javascript:Clicked('abilities.cmvp')"><FONT COLOR=WHITE>Abilities</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDRECIPES=true@
+			<A href="javascript:Clicked('recipes.cmvp')"><FONT COLOR=WHITE>Skill Recipes</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_COMPONENTS=true@
+			<A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDQUESTS=true@
+			<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDQUESTS=true@
+			<A href="javascript:Clicked('holidays.cmvp')"><FONT COLOR=WHITE>Holidays</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_TITLES=true@
+			<A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE>Player Titles</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDSOCIALS=true@
+			<A href="javascript:Clicked('socials.cmvp')"><FONT COLOR=WHITE>Socials</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDFACTIONS=true@
+			<A href="javascript:Clicked('factions.cmvp')"><FONT COLOR=WHITE>Factions</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?ANYMODAREAS=true@
+			<A href="javascript:Clicked('deities.cmvp')"><FONT COLOR=WHITE>Deities</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CATALOG=true@
+			<A href="javascript:Clicked('catalog.cmvp')"><FONT COLOR=WHITE>Catalog</FONT></a>
+			<BR>
+			@endif@
 		</TD>
 		@if?CheckAuthCode?ANYMODAREAS=true@
 			<TD VALIGN=TOP ALIGN=CENTER><BR>@insert?AREAEDITOR@</TD>

@@ -13,9 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,13 +35,13 @@ public class AbilityDomainNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("DOMAIN");
+		String last=httpReq.getUrlParameter("DOMAIN");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("DOMAIN");
+			if(last!=null) httpReq.removeUrlParameter("DOMAIN");
 			return "";
 		}
 		String lastID="";
@@ -51,12 +50,12 @@ public class AbilityDomainNext extends StdWebMacro
 			String S=Ability.DOMAIN_DESCS[i];
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!S.equals(lastID))))
 			{
-				httpReq.addRequestParameters("DOMAIN",S);
+				httpReq.addFakeUrlParameter("DOMAIN",S);
 				return "";
 			}
 			lastID=S;
 		}
-		httpReq.addRequestParameters("DOMAIN","");
+		httpReq.addFakeUrlParameter("DOMAIN","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

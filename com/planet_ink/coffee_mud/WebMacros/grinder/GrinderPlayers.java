@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.AreaData;
 import com.planet_ink.coffee_mud.WebMacros.ExitData;
 import com.planet_ink.coffee_mud.WebMacros.MobData;
@@ -19,7 +21,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -116,28 +117,28 @@ public class GrinderPlayers extends GrinderMobs
 		return -1;
 	}
 
-	public static String titleList(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String titleList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		if(E.playerStats()==null) return "";
 		E.playerStats().getTitles().clear();
-		if(httpReq.isRequestParameter("TITLE0"))
+		if(httpReq.isUrlParameter("TITLE0"))
 		{
 			int num=0;
-			while(httpReq.isRequestParameter("TITLE"+num))
+			while(httpReq.isUrlParameter("TITLE"+num))
 			{
-				String aff=httpReq.getRequestParameter("TITLE"+num);
+				String aff=httpReq.getUrlParameter("TITLE"+num);
 				if(aff.trim().length()>0) E.playerStats().getTitles().add(aff.trim());
 				num++;
 			}
 		}
 		return "";
 	}
-	public static String setBasics(ExternalHTTPRequests httpReq,MOB M)
+	public static String setBasics(HTTPRequest httpReq,MOB M)
 	{
 		for(int i=0;i<BASICS.length;i++)
-		if(httpReq.isRequestParameter(BASICS[i]))
+		if(httpReq.isUrlParameter(BASICS[i]))
 		{
-			String old=httpReq.getRequestParameter(BASICS[i]);
+			String old=httpReq.getUrlParameter(BASICS[i]);
 			if(old==null) old="";
 			switch(i)
 			{
@@ -260,9 +261,9 @@ public class GrinderPlayers extends GrinderMobs
 		{
 			int b=0;
 			M.playerStats().getTitles().clear();
-			while(httpReq.isRequestParameter("TITLE"+b))
+			while(httpReq.isUrlParameter("TITLE"+b))
 			{
-				String old=httpReq.getRequestParameter("TITLE"+b);
+				String old=httpReq.getUrlParameter("TITLE"+b);
 				if(old==null) old="";
 				M.playerStats().getTitles().add(old);
 				b++;
@@ -271,14 +272,14 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 
-	public static String classList(MOB M, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String classList(MOB M, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		if(httpReq.isRequestParameter("CHARCLASS1"))
+		if(httpReq.isUrlParameter("CHARCLASS1"))
 		{
 			StringBuffer classList=new StringBuffer("");
 			StringBuffer levelsList=new StringBuffer("");
 			int num=1;
-			String aff=httpReq.getRequestParameter("CHARCLASS"+num);
+			String aff=httpReq.getUrlParameter("CHARCLASS"+num);
 			int totalLevel=0;
 			while(aff!=null)
 			{
@@ -287,13 +288,13 @@ public class GrinderPlayers extends GrinderMobs
 					CharClass C=CMClass.getCharClass(aff);
 					if(C==null) return "Unknown class '"+aff+"'.";
 					classList.append(C.ID()+";");
-					String lvl=httpReq.getRequestParameter("CHARCLASSLVL"+num);
+					String lvl=httpReq.getUrlParameter("CHARCLASSLVL"+num);
 					if(lvl==null)lvl="0";
 					totalLevel+=CMath.s_int(lvl);
 					levelsList.append(lvl+";");
 				}
 				num++;
-				aff=httpReq.getRequestParameter("CHARCLASS"+num);
+				aff=httpReq.getUrlParameter("CHARCLASS"+num);
 			}
 			M.baseCharStats().setMyClasses(classList.toString());
 			M.baseCharStats().setMyLevels(levelsList.toString());
@@ -302,7 +303,7 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 	
-	public static String editPlayer(MOB whom, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, MOB M)
+	public static String editPlayer(MOB whom, HTTPRequest httpReq, java.util.Map<String,String> parms, MOB M)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
@@ -317,9 +318,9 @@ public class GrinderPlayers extends GrinderMobs
 		
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
-			if(httpReq.isRequestParameter(MOB.AUTODESC[i]))
+			if(httpReq.isUrlParameter(MOB.AUTODESC[i]))
 			{
-				String old=httpReq.getRequestParameter(MOB.AUTODESC[i]);
+				String old=httpReq.getUrlParameter(MOB.AUTODESC[i]);
 				if(old==null) old="";
 				if(old.equalsIgnoreCase("on"))
 					M.setBitmap((int)(M.getBitmap()|CMath.pow(2,i)));
@@ -331,9 +332,9 @@ public class GrinderPlayers extends GrinderMobs
 		{
 			CharStats C=M.charStats();
 			String stat=CharStats.CODES.NAME(i);
-			if(httpReq.isRequestParameter(stat))
+			if(httpReq.isUrlParameter(stat))
 			{
-				String old=httpReq.getRequestParameter(stat);
+				String old=httpReq.getUrlParameter(stat);
 				if(old==null) old="";
 				if(!stat.equalsIgnoreCase("GENDER"))
 					C.setStat(i,CMath.s_int(old));
@@ -346,9 +347,9 @@ public class GrinderPlayers extends GrinderMobs
 		{
 			CharStats C=M.baseCharStats();
 			String stat=CharStats.CODES.NAME(i);
-			if(httpReq.isRequestParameter("BASE"+stat))
+			if(httpReq.isUrlParameter("BASE"+stat))
 			{
-				String old=httpReq.getRequestParameter("BASE"+stat);
+				String old=httpReq.getUrlParameter("BASE"+stat);
 				if(old==null) old="";
 				if(!stat.equalsIgnoreCase("GENDER"))
 					C.setStat(i,CMath.s_int(old));
@@ -358,21 +359,21 @@ public class GrinderPlayers extends GrinderMobs
 			}
 		}
 		GrinderPlayers.setBasics(httpReq,M);
-		if(httpReq.isRequestParameter("RACE"))
+		if(httpReq.isUrlParameter("RACE"))
 		{
-			String old=httpReq.getRequestParameter("RACE");
+			String old=httpReq.getUrlParameter("RACE");
 			if((old!=null)&&(CMClass.getRace(old)!=null))
 				M.baseCharStats().setMyRace(CMClass.getRace(old));
 		}
-		if(httpReq.isRequestParameter("DEITY"))
+		if(httpReq.isUrlParameter("DEITY"))
 		{
-			String old=httpReq.getRequestParameter("DEITY");
+			String old=httpReq.getUrlParameter("DEITY");
 			if((old!=null)&&(CMLib.map().getDeity(old)!=null))
 				M.setWorshipCharID(CMLib.map().getDeity(old).Name());
 		}
-		if(httpReq.isRequestParameter("ALIGNMENT"))
+		if(httpReq.isUrlParameter("ALIGNMENT"))
 		{
-			String old=httpReq.getRequestParameter("ALIGNMENT");
+			String old=httpReq.getUrlParameter("ALIGNMENT");
 			Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
 			if((F!=null)&&(old!=null)&&(old.length()>0))
 				for(int v=1;v<Faction.ALIGN_NAMES.length;v++)

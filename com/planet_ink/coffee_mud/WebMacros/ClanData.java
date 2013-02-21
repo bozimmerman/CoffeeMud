@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -16,8 +18,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -43,17 +43,17 @@ public class ClanData extends StdWebMacro
 	// ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS, MEMBERSTART, MEMBERNEXT,
 	// MEMBERNAME, MEMBERPOS
 
-	public static StringBuffer members(Clan C, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer members(Clan C, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("MEMBERSLIST"))
 		{
 			Vector themembers=new Vector();
 			Vector theroles=new Vector();
-			if(httpReq.isRequestParameter("MEMB1"))
+			if(httpReq.isUrlParameter("MEMB1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("MEMB"+num);
+				String behav=httpReq.getUrlParameter("MEMB"+num);
 				while(behav!=null)
 				{
 					if(behav.length()>0)
@@ -62,7 +62,7 @@ public class ClanData extends StdWebMacro
 						if(M!=null)
 						{
 							themembers.addElement(behav);
-							String role=httpReq.getRequestParameter("ROLE"+num);
+							String role=httpReq.getUrlParameter("ROLE"+num);
 							if(role!=null)
 								theroles.addElement(Integer.valueOf(CMath.s_int(role)));
 							else
@@ -70,7 +70,7 @@ public class ClanData extends StdWebMacro
 						}
 					}
 					num++;
-					behav=httpReq.getRequestParameter("MEMB"+num);
+					behav=httpReq.getUrlParameter("MEMB"+num);
 				}
 			}
 			else
@@ -132,23 +132,23 @@ public class ClanData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer relations(Clan C, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer relations(Clan C, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("RELATIONS"))
 		{
 			Vector therelations=new Vector();
 			Clan CC=null;
-			if(httpReq.isRequestParameter("RELATION1"))
+			if(httpReq.isUrlParameter("RELATION1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("RELATION"+num);
+				String behav=httpReq.getUrlParameter("RELATION"+num);
 				while(behav!=null)
 				{
 					if(behav.length()>0)
 						therelations.addElement(Integer.valueOf(CMath.s_int(behav)));
 					num++;
-					behav=httpReq.getRequestParameter("RELATION"+num);
+					behav=httpReq.getUrlParameter("RELATION"+num);
 				}
 			}
 			else
@@ -187,10 +187,10 @@ public class ClanData extends StdWebMacro
 		return str;
 	}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("CLAN");
+		String last=httpReq.getUrlParameter("CLAN");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
@@ -202,13 +202,13 @@ public class ClanData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("PREMISE"))
 				{
-					String old=httpReq.getRequestParameter("PREMISE");
+					String old=httpReq.getUrlParameter("PREMISE");
 					if(old==null) old=C.getPremise();
 					str.append(old+", ");
 				}
 				if(parms.containsKey("RECALLID"))
 				{
-					String old=httpReq.getRequestParameter("RECALLID");
+					String old=httpReq.getUrlParameter("RECALLID");
 					if(old==null) old=C.getRecall();
 					str.append(old+", ");
 				}
@@ -220,7 +220,7 @@ public class ClanData extends StdWebMacro
 				}
 				if(parms.containsKey("MORGUEID"))
 				{
-					String old=httpReq.getRequestParameter("MORGUEID");
+					String old=httpReq.getUrlParameter("MORGUEID");
 					if(old==null) old=C.getMorgue();
 					str.append(old+", ");
 				}
@@ -237,25 +237,25 @@ public class ClanData extends StdWebMacro
 				}
 				if(parms.containsKey("CATEGORY"))
 				{
-					String old=httpReq.getRequestParameter("CATEGORY");
+					String old=httpReq.getUrlParameter("CATEGORY");
 					if(old==null) old=C.getCategory();
 					str.append(old);
 				}
 				if(parms.containsKey("MINMEMBERS"))
 				{
-					String old=httpReq.getRequestParameter("MINMEMBERS");
+					String old=httpReq.getUrlParameter("MINMEMBERS");
 					if(old==null) old=""+C.getMinClanMembers();
 					str.append(old);
 				}
 				if(parms.containsKey("ISRIVALROUS"))
 				{
-					String old=httpReq.getRequestParameter("ISRIVALROUS");
+					String old=httpReq.getUrlParameter("ISRIVALROUS");
 					if(old==null) old=C.isRivalrous()?"on":"";
 					str.append(old.equalsIgnoreCase("on")?"checked, ":"");
 				}
 				if(parms.containsKey("AUTOPOSITIONID"))
 				{
-					String old=httpReq.getRequestParameter("AUTOPOSITIONID");
+					String old=httpReq.getUrlParameter("AUTOPOSITIONID");
 					if(old==null) old=""+C.getAutoPosition();
 					int autoPos=CMath.s_int(old);
 					ClanGovernment govt=C.getGovernment();
@@ -286,7 +286,7 @@ public class ClanData extends StdWebMacro
 				}
 				if(parms.containsKey("DONATIONID"))
 				{
-					String old=httpReq.getRequestParameter("DONATIONID");
+					String old=httpReq.getUrlParameter("DONATIONID");
 					if(old==null) old=C.getDonation();
 					str.append(old+", ");
 				}
@@ -298,7 +298,7 @@ public class ClanData extends StdWebMacro
 				}
 				if(parms.containsKey("TAX"))
 				{
-					String old=httpReq.getRequestParameter("TAX");
+					String old=httpReq.getUrlParameter("TAX");
 					if(old==null) 
 						old=((int)Math.round(C.getTaxes()*100.0))+"%";
 					else
@@ -307,7 +307,7 @@ public class ClanData extends StdWebMacro
 				}
 				if(parms.containsKey("CCLASSID"))
 				{
-					String old=httpReq.getRequestParameter("CCLASSID");
+					String old=httpReq.getUrlParameter("CCLASSID");
 					if(old==null) old=C.getClanClass();
 					str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
 					CharClass CC=null;
@@ -325,13 +325,13 @@ public class ClanData extends StdWebMacro
 				}
 				if(parms.containsKey("EXP"))
 				{
-					String old=httpReq.getRequestParameter("EXP");
+					String old=httpReq.getUrlParameter("EXP");
 					if(old==null) old=C.getExp()+"";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("LEVEL"))
 				{
-					String old=httpReq.getRequestParameter("LEVEL");
+					String old=httpReq.getUrlParameter("LEVEL");
 					if(old==null) old=C.getClanLevel()+"";
 					str.append(old+", ");
 				}
@@ -339,7 +339,7 @@ public class ClanData extends StdWebMacro
 					str.append(CMStrings.capitalizeAndLower(Clan.CLANSTATUS_DESC[C.getStatus()].toLowerCase())+", ");
 				if(parms.containsKey("STATUSID"))
 				{
-					String old=httpReq.getRequestParameter("STATUSID");
+					String old=httpReq.getUrlParameter("STATUSID");
 					if(old==null) old=C.getStatus()+"";
 					for(int i=0;i<Clan.CLANSTATUS_DESC.length;i++)
 						str.append("<OPTION VALUE="+i+" "+((old.equals(""+i))?"SELECTED":"")+">"+CMStrings.capitalizeAndLower(Clan.CLANSTATUS_DESC[i]));
@@ -348,7 +348,7 @@ public class ClanData extends StdWebMacro
 					str.append(CMLib.masking().maskDesc(C.getAcceptanceSettings())+", ");
 				if(parms.containsKey("ACCEPTANCEID"))
 				{
-					String old=httpReq.getRequestParameter("ACCEPTANCEID");
+					String old=httpReq.getUrlParameter("ACCEPTANCEID");
 					if(old==null) old=C.getAcceptanceSettings()+"";
 					str.append(old+", ");
 				}
@@ -356,29 +356,29 @@ public class ClanData extends StdWebMacro
 					str.append(C.getGovernmentName()+", ");
 				if(parms.containsKey("TYPEID"))
 				{
-					String old=httpReq.getRequestParameter("TYPEID");
+					String old=httpReq.getUrlParameter("TYPEID");
 					if(old==null) old=C.getGovernmentID()+"";
 					ClanGovernment[] gvts=CMLib.clans().getStockGovernments();
 					for(ClanGovernment gvt : gvts)
 						str.append("<OPTION VALUE="+gvt.getID()+" "+((old.equals(""+gvt.getID()))?"SELECTED":"")+">"+CMStrings.capitalizeAndLower(gvt.getName()));
 				}
 				if(parms.containsKey("CLANIDRELATIONS"))
-					str.append(CMStrings.capitalizeAndLower(Clan.REL_DESCS[C.getClanRelations(httpReq.getRequestParameter("CLANID"))].toLowerCase())+", ");
+					str.append(CMStrings.capitalizeAndLower(Clan.REL_DESCS[C.getClanRelations(httpReq.getUrlParameter("CLANID"))].toLowerCase())+", ");
 				if(parms.containsKey("POINTS"))
 					str.append(""+C.calculateMapPoints()+", ");
 				if(parms.containsKey("MEMBERSTART"))
 				{
-					if(httpReq.getRequestParameter("CLANMEMBER")!=null)
-						httpReq.removeRequestParameter("CLANMEMBER");
+					if(httpReq.getUrlParameter("CLANMEMBER")!=null)
+						httpReq.removeUrlParameter("CLANMEMBER");
 					return "";
 				}
 				if(parms.containsKey("NUMMEMBERS"))
 					str.append(""+C.getMemberList().size()+", ");
 				if(parms.containsKey("MEMBERNEXT"))
 				{
-					final String cmember=httpReq.getRequestParameter("CLANMEMBER");
+					final String cmember=httpReq.getUrlParameter("CLANMEMBER");
 					String lastID="";
-					String posFilter=httpReq.getRequestParameter("CLANFUNCFILTER");
+					String posFilter=httpReq.getUrlParameter("CLANFUNCFILTER");
 					if(posFilter==null) posFilter=(String)parms.get("CLANFUNCFILTER");
 					if(posFilter==null) posFilter="";
 					final Clan.Function reqFunction = (Clan.Function)CMath.s_valueOf(Clan.Function.values(), posFilter);
@@ -391,24 +391,24 @@ public class ClanData extends StdWebMacro
 						if((cmember==null)
 						||((cmember.length()>0)&&(cmember.equals(lastID))&&(!name.equals(lastID))))
 						{
-							httpReq.addRequestParameters("CLANMEMBER",name);
+							httpReq.addFakeUrlParameter("CLANMEMBER",name);
 							return "";
 						}
 						lastID=name;
 					}
-					httpReq.addRequestParameters("CLANMEMBER","");
+					httpReq.addFakeUrlParameter("CLANMEMBER","");
 					if(parms.containsKey("EMPTYOK"))
 						return "<!--EMPTY-->";
 					return " @break@";
 				}
 				if(parms.containsKey("MEMBERNAME"))
 				{
-					String member=httpReq.getRequestParameter("CLANMEMBER");
+					String member=httpReq.getUrlParameter("CLANMEMBER");
 					str.append(member+", ");
 				}
 				if(parms.containsKey("MEMBERPOS"))
 				{
-					String cmember=httpReq.getRequestParameter("CLANMEMBER");
+					String cmember=httpReq.getUrlParameter("CLANMEMBER");
 					if(cmember!=null)
 					{
 						List<MemberRecord> members=C.getMemberList();
@@ -426,13 +426,13 @@ public class ClanData extends StdWebMacro
 				}
 				if(parms.containsKey("OTHERCLANSTART"))
 				{
-					if(httpReq.getRequestParameter("CLANID")!=null)
-						httpReq.removeRequestParameter("CLANID");
+					if(httpReq.getUrlParameter("CLANID")!=null)
+						httpReq.removeUrlParameter("CLANID");
 					return "";
 				}
 				if(parms.containsKey("OTHERCLANNEXT"))
 				{
-					String member=httpReq.getRequestParameter("CLANID");
+					String member=httpReq.getUrlParameter("CLANID");
 					String lastID="";
 					Clan CC=null;
 					for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
@@ -442,19 +442,19 @@ public class ClanData extends StdWebMacro
 						String name=CC.clanID();
 						if((member==null)||((member.length()>0)&&(member.equals(lastID))&&(!name.equals(lastID))))
 						{
-							httpReq.addRequestParameters("CLANID",name);
+							httpReq.addFakeUrlParameter("CLANID",name);
 							return "";
 						}
 						lastID=name;
 					}
-					httpReq.addRequestParameters("CLANID","");
+					httpReq.addFakeUrlParameter("CLANID","");
 					if(parms.containsKey("EMPTYOK"))
 						return "<!--EMPTY-->";
 					return " @break@";
 				}
 				if(parms.containsKey("OTHERCLANNAME"))
 				{
-					String member=httpReq.getRequestParameter("CLANID");
+					String member=httpReq.getUrlParameter("CLANID");
 					Clan CC=CMLib.clans().getClan(member);
 					if(CC!=null) str.append(CC.getName()+", ");
 				}

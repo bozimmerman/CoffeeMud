@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,13 +37,13 @@ public class BehaviorNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("BEHAVIOR");
+		String last=httpReq.getUrlParameter("BEHAVIOR");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("BEHAVIOR");
+			if(last!=null) httpReq.removeUrlParameter("BEHAVIOR");
 			return "";
 		}
 		String lastID="";
@@ -52,12 +52,12 @@ public class BehaviorNext extends StdWebMacro
 			Behavior B=(Behavior)b.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.ID().equals(lastID))))
 			{
-				httpReq.addRequestParameters("BEHAVIOR",B.ID());
+				httpReq.addFakeUrlParameter("BEHAVIOR",B.ID());
 				return "";
 			}
 			lastID=B.ID();
 		}
-		httpReq.addRequestParameters("BEHAVIOR","");
+		httpReq.addFakeUrlParameter("BEHAVIOR","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

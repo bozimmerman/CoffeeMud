@@ -9,8 +9,8 @@
 	<title>Player Access Login</title>
 	<script language=JavaScript>
 	<!--
-	    var newloc='';
-        var errorCode='';
+		var newloc='';
+		var errorCode='';
 		function Clicked(action)
 		{
 			document.ACCESS.action=action;
@@ -22,11 +22,11 @@
 			Clicked('register.cmvp');
 		}
 		var register='@RequestParameter?ACTION@';
-        @if?CheckReqParm?ACTION=REGISTER@
-            errorCode='@AccountCreate?CREATE&LOGIN@';
-            newloc='@RequestParameter?LASTPAGE@?AUTH=@RequestParameterEncoded?AUTH@';
-            Clicked(newloc);
-        @endif@
+		@if?CheckReqParm?ACTION=REGISTER@
+			errorCode='@AccountCreate?CREATE&LOGIN@';
+			newloc='@RequestParameter?LASTPAGE@?AUTH=@RequestParameterEncoded?AUTH@';
+			Clicked(newloc);
+		@endif@
 		
 	//-->
 	</SCRIPT>
@@ -40,44 +40,44 @@
 	<br>
 	<FORM NAME=LOGIN METHOD=POST ACTION=register.cmvp TARGET=_top>
 	<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="@RequestParameter?LASTPAGE@">
-    <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@RequestParameter?AUTH@">
+	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@RequestParameter?AUTH@">
 	<INPUT TYPE=HIDDEN NAME=ACTION VALUE="REGISTER">
 	@if?CheckReqParm?ACTION=REGISTER@
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
-	   if(errorCode=='')
-	   {
-	       alert('Account successfully created.');
-       }
-	   else
-	   {
-           if(errorCode=='NO_NAME')
-               alert('You need to specify a valid account name.');
-           else
-           if(errorCode=='NO_PASSWORD')
-               alert('You need to specify a password.');
-           else
-           if((errorCode=='NO_PASSWORDAGAIN')
-           ||(errorCode=='BAD_PASSWORDMATCH'))
-               alert('Your password entries don\'t match. Please re-enter your password.');
-           else
-           if((errorCode=='NO_VERIFY')||(errorCode=='NO_VERIFYKEY')||(errorCode=='BAD_VERIFY'))
-               alert('You need to enter the characters in the image.  Case is not sensitive.');
-           else
-           if(errorCode=='BAD_EMAILADDRESS')
-               alert('The email address you entered is not valid.');
-           else
-           if(errorCode=='BAD_USED_NAME')
-               alert('The account name you entered is invalid, or in use by someone else.  Please enter another (no spaces or special characters allowed!');
-           else
-           if((errorCode=='NO_NEW_PLAYERS')||(errorCode=='NO_NEW_LOGINS')||(errorCode=='CREATE_LIMIT_REACHED'))
-           {
-               alert('This system is not accepting new accounts at this time.  Please try again later.');
-               document.location.href=document.LOGIN.LASTPAGE.value;
-           }
-           else
-              alert(errorCode);
-	   }
+		if(errorCode=='')
+		{
+			alert('Account successfully created.');
+		}
+		else
+		{
+			if(errorCode=='NO_NAME')
+				alert('You need to specify a valid account name.');
+			else
+			if(errorCode=='NO_PASSWORD')
+				alert('You need to specify a password.');
+			else
+			if((errorCode=='NO_PASSWORDAGAIN')
+			||(errorCode=='BAD_PASSWORDMATCH'))
+				alert('Your password entries don\'t match. Please re-enter your password.');
+			else
+			if((errorCode=='NO_VERIFY')||(errorCode=='NO_VERIFYKEY')||(errorCode=='BAD_VERIFY'))
+				alert('You need to enter the characters in the image.  Case is not sensitive.');
+			else
+			if(errorCode=='BAD_EMAILADDRESS')
+				alert('The email address you entered is not valid.');
+			else
+			if(errorCode=='BAD_USED_NAME')
+				alert('The account name you entered is invalid, or in use by someone else.  Please enter another (no spaces or special characters allowed!');
+			else
+			if((errorCode=='NO_NEW_PLAYERS')||(errorCode=='NO_NEW_LOGINS')||(errorCode=='CREATE_LIMIT_REACHED'))
+			{
+				alert('This system is not accepting new accounts at this time.  Please try again later.');
+				document.location.href=document.LOGIN.LASTPAGE.value;
+			}
+			else
+				alert(errorCode);
+		}
 	//-->
 	</SCRIPT>
 	@endif@ 
@@ -87,17 +87,17 @@
 	<TR><TD WIDTH=400 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Create New Account</B></FONT></TD></TR>
 	<TR><TD WIDTH=100><FONT COLOR=BLACK>Account Name:</FONT></TD><TD><INPUT TYPE=TEXT SIZE=10 ID=ACCOUNTNAME NAME=ACCOUNTNAME VALUE="@RequestParameter?ACCOUNTNAME@"></TD></TR>
 	@if?AccountCreate?SHOWPASSWORD@
-    	<TR><TD><FONT COLOR=BLACK>Password:</FONT></TD><TD><INPUT TYPE=PASSWORD SIZE=15 ID=PASSWORD NAME=PASSWORD VALUE="@RequestParameter?PASSWORD@"></TD></TR>
-    	<TR><TD><FONT COLOR=BLACK>Password Again:</FONT></TD><TD><INPUT TYPE=PASSWORD SIZE=15 ID=PASSWORDAGAIN NAME=PASSWORDAGAIN></TD></TR>
-    @endif@
-    @if?AccountCreate?SHOWEMAILADDRESS@
-        <TR><TD WIDTH=100><FONT COLOR=BLACK>Email Address:</FONT></TD><TD><INPUT TYPE=TEXT SIZE=20 ID=EMAILADDRESS NAME=EMAILADDRESS VALUE="@RequestParameter?EMAILADDRESS@"></TD></TR>
-    @endif@
+		<TR><TD><FONT COLOR=BLACK>Password:</FONT></TD><TD><INPUT TYPE=PASSWORD SIZE=15 ID=PASSWORD NAME=PASSWORD VALUE="@RequestParameter?PASSWORD@"></TD></TR>
+		<TR><TD><FONT COLOR=BLACK>Password Again:</FONT></TD><TD><INPUT TYPE=PASSWORD SIZE=15 ID=PASSWORDAGAIN NAME=PASSWORDAGAIN></TD></TR>
+	@endif@
+	@if?AccountCreate?SHOWEMAILADDRESS@
+		<TR><TD WIDTH=100><FONT COLOR=BLACK>Email Address:</FONT></TD><TD><INPUT TYPE=TEXT SIZE=20 ID=EMAILADDRESS NAME=EMAILADDRESS VALUE="@RequestParameter?EMAILADDRESS@"></TD></TR>
+	@endif@
 	<TR><TD><IMG SRC="/ImageVerificationImage?IMAGE"></TD>
 		<TD><INPUT TYPE=HIDDEN SIZE=15 NAME=VERIFYKEY VALUE="@ImageVerificationImage@"><INPUT TYPE=TEXT SIZE=15 ID=VERIFY NAME=VERIFY></TD>
 	</TR>
 	<TR><TD COLSPAN=2 ALIGN=CENTER>
-		<INPUT TYPE=SUBMIT NAME=LOGIN VALUE=Create>
+		<INPUT TYPE=SUBMIT NAME=LOGINBUTTON VALUE=Create>
 	</TD></TR>
 	</TABLE>
 	</CENTER>

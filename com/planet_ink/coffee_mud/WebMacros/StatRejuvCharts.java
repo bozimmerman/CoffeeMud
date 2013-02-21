@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -35,17 +36,17 @@ public class StatRejuvCharts extends StdWebMacro
 {
 	public String name()	{return "StatRejuvCharts";}
 
-	protected String getReq(ExternalHTTPRequests httpReq, String tag)
+	protected String getReq(HTTPRequest httpReq, String tag)
 	{
-		String s=httpReq.getRequestParameter(tag);
+		String s=httpReq.getUrlParameter(tag);
 		if(s==null) s="";
 		return s;
 	}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		StringBuffer buf=new StringBuffer("");
-		String which=httpReq.getRequestParameter("WHICH");
+		String which=httpReq.getUrlParameter("WHICH");
 		MOB mob=CMClass.getMOB("StdMOB");
 		mob.baseState().setMana(100);
 		mob.baseState().setMovement(100);
@@ -77,9 +78,9 @@ public class StatRejuvCharts extends StdWebMacro
 		{ disposition=PhyStats.IS_SWIMMING; buf.append("Swimming ");}
 		if((getReq(httpReq,"RIDING").length()>0))
 		{ mob.setRiding((Rideable)CMClass.getMOB("GenRideable")); buf.append("Riding ");}
-		boolean hungry=(httpReq.getRequestParameter("HUNGRY")!=null)&&(httpReq.getRequestParameter("HUNGRY").length()>0);
+		boolean hungry=(httpReq.getUrlParameter("HUNGRY")!=null)&&(httpReq.getUrlParameter("HUNGRY").length()>0);
 		if(hungry){ buf.append("Hungry ");		mob.curState().setHunger(0);}
-		boolean thirsty=(httpReq.getRequestParameter("THIRSTY")!=null)&&(httpReq.getRequestParameter("THIRSTY").length()>0);
+		boolean thirsty=(httpReq.getUrlParameter("THIRSTY")!=null)&&(httpReq.getUrlParameter("THIRSTY").length()>0);
 		if(thirsty){ buf.append("Thirsty ");		mob.curState().setThirst(0);}
 		mob.basePhyStats().setDisposition(disposition);
 		mob.recoverPhyStats();

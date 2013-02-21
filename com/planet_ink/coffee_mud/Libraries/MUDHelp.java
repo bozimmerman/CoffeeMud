@@ -649,7 +649,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		try{
 			if(str!=null)
-				return CMLib.httpUtils().doVirtualPage(str);
+				return CMLib.webMacroFilter().virtualPageFilter(str);
 		}catch(com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException x){}
 		return str;
 	}

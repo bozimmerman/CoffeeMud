@@ -1,4 +1,11 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.http.HTTPException;
+import com.planet_ink.miniweb.http.HTTPMethod;
+import com.planet_ink.miniweb.http.MultiPartData;
+import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.miniweb.util.MiniWebConfig;
 import com.planet_ink.coffee_mud.WebMacros.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -17,6 +24,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import com.planet_ink.coffee_mud.core.exceptions.*;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.InetAddress;
 import java.util.*;
 
 /* 
@@ -47,18 +57,18 @@ public class StdWebMacro implements WebMacro
 	public CMObject copyOf(){return this;}
 	public String getSpecialContentHeader(String filename){return null;}
 	
-	public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return runMacro(httpReq,parm).getBytes();
 	}
-	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return "[Unimplemented macro!]";
 	}
 	
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	
-	public String getFilename(ExternalHTTPRequests httpReq, String filename)
+	public String getFilename(HTTPRequest httpReq, String filename)
 	{
 		return filename;
 	}
@@ -449,6 +459,80 @@ public class StdWebMacro implements WebMacro
 			}
 		}
 		return buf;
+	}
+	
+	protected byte[] getHTTPFileData(final HTTPRequest httpReq, final String file) throws HTTPException
+	{
+		if(Thread.currentThread() instanceof MWThread)
+		{
+			MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+			HTTPRequest newReq=new HTTPRequest()
+			{
+				public final Hashtable<String,String> params=new Hashtable<String,String>();
+				@Override public String getHost() { return httpReq.getHost(); }
+				@Override public String getUrlPath() { return file; }
+				@Override public String getUrlParameter(String name) { return params.get(name.toUpperCase()); }
+				@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toUpperCase()); }
+				@Override public Set<String> getUrlParameters() { return params.keySet(); }
+				@Override public HTTPMethod getMethod() { return httpReq.getMethod(); }
+				@Override public String getHeader(String name) { return httpReq.getHeader(name); }
+				@Override public InetAddress getClientAddress() { return httpReq.getClientAddress(); }
+				@Override public int getClientPort() { return httpReq.getClientPort(); }
+				@Override public InputStream getBody() { return httpReq.getBody(); }
+				@Override public String getCookie(String name) { return httpReq.getCookie(name); }
+				@Override public Set<String> getCookieNames() { return httpReq.getCookieNames(); }
+				@Override public List<MultiPartData> getMultiParts() { return httpReq.getMultiParts(); }
+				@Override public double getSpecialEncodingAcceptability(String type) { return httpReq.getSpecialEncodingAcceptability(type); }
+				@Override public String getFullHost() { return httpReq.getFullHost(); }
+				@Override public List<int[]> getRangeAZ() { return httpReq.getRangeAZ(); }
+				@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toUpperCase(), value); }
+				@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
+				@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
+				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
+			};
+			
+			DataBuffers data=config.getFileGetter().getFileData(newReq);
+			return data.flushToBuffer().array();
+		}
+		return new byte[0];
+	}
+	
+	protected File grabFile(final HTTPRequest httpReq, String filename)
+	{
+		if(Thread.currentThread() instanceof MWThread)
+		{
+			filename=filename.replace(File.separatorChar,'/');
+			if (!filename.startsWith("/")) filename = '/' + filename;
+			final String file=filename;
+			MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+			HTTPRequest newReq=new HTTPRequest()
+			{
+				public final Hashtable<String,String> params=new Hashtable<String,String>();
+				@Override public String getHost() { return httpReq.getHost(); }
+				@Override public String getUrlPath() { return file; }
+				@Override public String getUrlParameter(String name) { return params.get(name.toUpperCase()); }
+				@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toUpperCase()); }
+				@Override public Set<String> getUrlParameters() { return params.keySet(); }
+				@Override public HTTPMethod getMethod() { return httpReq.getMethod(); }
+				@Override public String getHeader(String name) { return httpReq.getHeader(name); }
+				@Override public InetAddress getClientAddress() { return httpReq.getClientAddress(); }
+				@Override public int getClientPort() { return httpReq.getClientPort(); }
+				@Override public InputStream getBody() { return httpReq.getBody(); }
+				@Override public String getCookie(String name) { return httpReq.getCookie(name); }
+				@Override public Set<String> getCookieNames() { return httpReq.getCookieNames(); }
+				@Override public List<MultiPartData> getMultiParts() { return httpReq.getMultiParts(); }
+				@Override public double getSpecialEncodingAcceptability(String type) { return httpReq.getSpecialEncodingAcceptability(type); }
+				@Override public String getFullHost() { return httpReq.getFullHost(); }
+				@Override public List<int[]> getRangeAZ() { return httpReq.getRangeAZ(); }
+				@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toUpperCase(), value); }
+				@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
+				@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
+				@Override public float getHttpVer() { return httpReq.getHttpVer(); }
+			};
+			
+			return config.getFileGetter().assembleFileRequest(newReq);
+		}
+		return null;
 	}
 	
 	protected java.util.Map<String,String> parseParms(String parm)

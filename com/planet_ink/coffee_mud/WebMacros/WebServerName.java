@@ -1,4 +1,8 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.miniweb.util.MiniWebConfig;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -35,9 +39,16 @@ public class WebServerName extends StdWebMacro
 {
 	public String name()	{return "WebServerName";}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		return httpReq.getWebServerPartialName();
+		if(Thread.currentThread() instanceof MWThread)
+		{
+			String fullThreadName=((MWThread)Thread.currentThread()).getName();
+			int x=fullThreadName.lastIndexOf('#');
+			if(x>0)
+				return fullThreadName.substring(0, x);
+		}
+		return "MiniWebServer";
 	}
 
 }

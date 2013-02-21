@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,11 +37,11 @@ public class CrossClassAbilities extends StdWebMacro
 {
 	public String name()	{return "CrossClassAbilities";}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		Vector rowsFavoring=new Vector();
 		Vector allOtherRows=new Vector();
-		String sort=httpReq.getRequestParameter("SORTBY");
+		String sort=httpReq.getUrlParameter("SORTBY");
 		int sortByClassNum=-1;
 		if((sort!=null)&&(sort.length()>0))
 		{

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -54,10 +54,10 @@ public class AutoTitleData extends StdWebMacro
 		return "Unable to open titles.txt!";
 	}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("AUTOTITLE");
+		String last=httpReq.getUrlParameter("AUTOTITLE");
 		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
 
 		if(parms.containsKey("EDIT"))
@@ -65,11 +65,11 @@ public class AutoTitleData extends StdWebMacro
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
 			if(!CMSecurity.isAllowed(M,M.location(),CMSecurity.SecFlag.TITLES)) return "[authentication error]";
-			String req=httpReq.getRequestParameter("ISREQUIRED");
-			String newTitle=httpReq.getRequestParameter("TITLE");
+			String req=httpReq.getUrlParameter("ISREQUIRED");
+			String newTitle=httpReq.getUrlParameter("TITLE");
 			if((req!=null)&&(req.equalsIgnoreCase("on")))
 				newTitle="{"+newTitle+"}";
-			String newMask=httpReq.getRequestParameter("MASK");
+			String newMask=httpReq.getUrlParameter("MASK");
 			if((newTitle==null)||(newMask==null)||(newTitle.length()==0))
 				return "[missing data error]";
 			
@@ -115,7 +115,7 @@ public class AutoTitleData extends StdWebMacro
 
 		if(parms.containsKey("MASK"))
 		{
-			String mask=httpReq.getRequestParameter("MASK");
+			String mask=httpReq.getUrlParameter("MASK");
 			if((mask==null)&&(last!=null)&&(last.length()>0))
 				mask=CMLib.titles().getAutoTitleMask(last);
 			if(mask!=null)
@@ -123,7 +123,7 @@ public class AutoTitleData extends StdWebMacro
 		}
 		if(parms.containsKey("TITLE"))
 		{
-			String title=httpReq.getRequestParameter("TITLE");
+			String title=httpReq.getUrlParameter("TITLE");
 			if(title==null) 
 				title=last;
 			if(title!=null)
@@ -135,7 +135,7 @@ public class AutoTitleData extends StdWebMacro
 		}
 		if(parms.containsKey("ISREQUIRED"))
 		{
-			String req=httpReq.getRequestParameter("ISREQUIRED");
+			String req=httpReq.getUrlParameter("ISREQUIRED");
 			if((req==null)&&(last!=null)) 
 				req=(last.startsWith("{")&&last.endsWith("}"))?"on":"";
 			if(req!=null)
@@ -143,7 +143,7 @@ public class AutoTitleData extends StdWebMacro
 		}
 		if(parms.containsKey("MASKDESC"))
 		{
-			String mask=httpReq.getRequestParameter("MASK");
+			String mask=httpReq.getUrlParameter("MASK");
 			if((mask==null)&&(last!=null)&&(last.length()>0))
 				mask=CMLib.titles().getAutoTitleMask(last);
 			if(mask!=null)

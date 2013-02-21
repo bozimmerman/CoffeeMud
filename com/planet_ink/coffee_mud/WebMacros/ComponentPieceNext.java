@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,13 +37,13 @@ public class ComponentPieceNext extends StdWebMacro
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()   {return true;}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String compID=httpReq.getRequestParameter("COMPONENT");
+		String compID=httpReq.getUrlParameter("COMPONENT");
 		if(compID==null) return " @break@";
 		String fixedCompID=compID.replace(' ','_').toUpperCase();
-		if(!httpReq.isRequestParameter(fixedCompID+"_PIECE_CONNECTOR_1"))
+		if(!httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_1"))
 		{
 			List<AbilityComponent> set=CMLib.ableMapper().getAbilityComponentDVector(compID);
 			if(set!=null)
@@ -51,79 +51,79 @@ public class ComponentPieceNext extends StdWebMacro
 				int index=1;
 				for(AbilityComponent A : set)
 				{
-					httpReq.addRequestParameters(fixedCompID+"_PIECE_MASK_"+index, A.getMaskStr());
+					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_MASK_"+index, A.getMaskStr());
 					if(A.getType()==AbilityComponent.CompType.STRING)
-						httpReq.addRequestParameters(fixedCompID+"_PIECE_STRING_"+index, A.getStringType());
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_STRING_"+index, A.getStringType());
 					else
-						httpReq.addRequestParameters(fixedCompID+"_PIECE_STRING_"+index, Long.toString(A.getLongType()));
-					httpReq.addRequestParameters(fixedCompID+"_PIECE_AMOUNT_"+index, Integer.toString(A.getAmount()));
-					httpReq.addRequestParameters(fixedCompID+"_PIECE_CONNECTOR_"+index, A.getConnector().toString());
-					httpReq.addRequestParameters(fixedCompID+"_PIECE_LOCATION_"+index, A.getLocation().toString());
-					httpReq.addRequestParameters(fixedCompID+"_PIECE_TYPE_"+index, A.getType().toString());
-					httpReq.addRequestParameters(fixedCompID+"_PIECE_CONSUMED_"+index, A.isConsumed()?"on":"");
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_STRING_"+index, Long.toString(A.getLongType()));
+					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+index, Integer.toString(A.getAmount()));
+					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+index, A.getConnector().toString());
+					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_LOCATION_"+index, A.getLocation().toString());
+					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_TYPE_"+index, A.getType().toString());
+					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+index, A.isConsumed()?"on":"");
 					index++;
 				}
 			}
 			else
 			{
-				httpReq.addRequestParameters(fixedCompID+"_PIECE_MASK_1", "");
-				httpReq.addRequestParameters(fixedCompID+"_PIECE_STRING_1", "item name");
-				httpReq.addRequestParameters(fixedCompID+"_PIECE_AMOUNT_1", "1");
-				httpReq.addRequestParameters(fixedCompID+"_PIECE_CONNECTOR_1", "AND");
-				httpReq.addRequestParameters(fixedCompID+"_PIECE_LOCATION_1", "INVENTORY");
-				httpReq.addRequestParameters(fixedCompID+"_PIECE_TYPE_1", "STRING");
-				httpReq.addRequestParameters(fixedCompID+"_PIECE_CONSUMED_1", "on");
+				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_MASK_1", "");
+				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_STRING_1", "item name");
+				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_AMOUNT_1", "1");
+				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONNECTOR_1", "AND");
+				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_LOCATION_1", "INVENTORY");
+				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_TYPE_1", "STRING");
+				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONSUMED_1", "on");
 			}
 		}
 		else
 		{
 			int oldIndex=1;
 			int newIndex=1;
-			while(httpReq.isRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex))
+			while(httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex))
 			{
-				String type=httpReq.getRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex);
+				String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex);
 				if((type.length()>0)&&(!type.equalsIgnoreCase("DELETE")))
 				{
 					if(newIndex != oldIndex)
 					{
-						httpReq.addRequestParameters(fixedCompID+"_PIECE_MASK_"+newIndex, httpReq.getRequestParameter(fixedCompID+"_PIECE_MASK_"+oldIndex));
-						httpReq.addRequestParameters(fixedCompID+"_PIECE_STRING_"+newIndex, httpReq.getRequestParameter(fixedCompID+"_PIECE_STRING_"+oldIndex));
-						httpReq.addRequestParameters(fixedCompID+"_PIECE_AMOUNT_"+newIndex, httpReq.getRequestParameter(fixedCompID+"_PIECE_AMOUNT_"+oldIndex));
-						httpReq.addRequestParameters(fixedCompID+"_PIECE_CONNECTOR_"+newIndex, httpReq.getRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex));
-						httpReq.addRequestParameters(fixedCompID+"_PIECE_LOCATION_"+newIndex, httpReq.getRequestParameter(fixedCompID+"_PIECE_LOCATION_"+oldIndex));
-						httpReq.addRequestParameters(fixedCompID+"_PIECE_TYPE_"+newIndex, httpReq.getRequestParameter(fixedCompID+"_PIECE_TYPE_"+oldIndex));
-						httpReq.addRequestParameters(fixedCompID+"_PIECE_CONSUMED_"+newIndex, httpReq.getRequestParameter(fixedCompID+"_PIECE_CONSUMED_"+oldIndex));
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_MASK_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_MASK_"+oldIndex));
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_STRING_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+oldIndex));
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+oldIndex));
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex));
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_LOCATION_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+oldIndex));
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_TYPE_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+oldIndex));
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+oldIndex));
 					}
 					newIndex++;
 				}
 				oldIndex++;
 			}
-			httpReq.removeRequestParameter(fixedCompID+"_PIECE_MASK_"+newIndex);
-			httpReq.removeRequestParameter(fixedCompID+"_PIECE_STRING_"+newIndex);
-			httpReq.removeRequestParameter(fixedCompID+"_PIECE_AMOUNT_"+newIndex);
-			httpReq.removeRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+newIndex);
-			httpReq.removeRequestParameter(fixedCompID+"_PIECE_LOCATION_"+newIndex);
-			httpReq.removeRequestParameter(fixedCompID+"_PIECE_TYPE_"+newIndex);
-			httpReq.removeRequestParameter(fixedCompID+"_PIECE_CONSUMED_"+newIndex);
+			httpReq.removeUrlParameter(fixedCompID+"_PIECE_MASK_"+newIndex);
+			httpReq.removeUrlParameter(fixedCompID+"_PIECE_STRING_"+newIndex);
+			httpReq.removeUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+newIndex);
+			httpReq.removeUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+newIndex);
+			httpReq.removeUrlParameter(fixedCompID+"_PIECE_LOCATION_"+newIndex);
+			httpReq.removeUrlParameter(fixedCompID+"_PIECE_TYPE_"+newIndex);
+			httpReq.removeUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+newIndex);
 		}
-		String last=httpReq.getRequestParameter("COMPONENTPIECE");
+		String last=httpReq.getUrlParameter("COMPONENTPIECE");
 		if(parms.containsKey("RESET"))
 		{   
-			if(last!=null) httpReq.removeRequestParameter("COMPONENTPIECE");
+			if(last!=null) httpReq.removeUrlParameter("COMPONENTPIECE");
 			return "";
 		}
 		String lastID="";
-		for(int index=1;httpReq.isRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+index);index++)
+		for(int index=1;httpReq.isUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+index);index++)
 		{
 			String id=Integer.toString(index);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!id.equalsIgnoreCase(lastID))))
 			{
-				httpReq.addRequestParameters("COMPONENTPIECE",id);
+				httpReq.addFakeUrlParameter("COMPONENTPIECE",id);
 				return "";
 			}
 			lastID=id;
 		}
-		httpReq.addRequestParameters("COMPONENTPIECE","");
+		httpReq.addFakeUrlParameter("COMPONENTPIECE","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

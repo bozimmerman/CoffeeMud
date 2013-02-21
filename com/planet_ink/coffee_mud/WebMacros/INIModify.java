@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -57,7 +57,7 @@ public class INIModify extends StdWebMacro
 		return H.contains(s);
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms==null) return "";
@@ -136,14 +136,14 @@ public class INIModify extends StdWebMacro
 				if(x<0) continue;
 				String thisKey=s.substring(0,x).trim().toUpperCase();
 				
-				if(httpReq.isRequestParameter(thisKey)
+				if(httpReq.isUrlParameter(thisKey)
 				&&(ipage.containsKey(thisKey))
 				&&(!modified.contains(thisKey))
-				&&(!httpReq.getRequestParameter(thisKey).equals(ipage.getStr(thisKey))))
+				&&(!httpReq.getUrlParameter(thisKey).equals(ipage.getStr(thisKey))))
 				{
 					modified.add(thisKey);
 					Log.sysOut("INIModify","Key '"+thisKey+"' modified.");
-					page.set(p,thisKey+"="+httpReq.getRequestParameter(thisKey));
+					page.set(p,thisKey+"="+httpReq.getUrlParameter(thisKey));
 				}
 			}
 			if(modified.size()>0)

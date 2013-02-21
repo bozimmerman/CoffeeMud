@@ -42,7 +42,7 @@ public class Credits extends StdCommand
 		throws java.io.IOException
 	{
 		StringBuffer credits=new CMFile(Resources.buildResourcePath("text")+"credits.txt",null,true).text();
-		try { credits = CMLib.httpUtils().doVirtualPage(credits);}catch(Exception ex){}
+		try { credits = CMLib.webMacroFilter().virtualPageFilter(credits);}catch(Exception ex){}
 		if((credits!=null)&&(mob.session()!=null)&&(credits.length()>0))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else

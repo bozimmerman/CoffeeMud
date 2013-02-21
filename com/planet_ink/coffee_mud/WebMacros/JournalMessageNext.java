@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -34,10 +36,10 @@ public class JournalMessageNext extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String journalName=httpReq.getRequestParameter("JOURNAL");
+		String journalName=httpReq.getUrlParameter("JOURNAL");
 		if(journalName==null) 
 			return " @break@";
 		
@@ -48,17 +50,17 @@ public class JournalMessageNext extends StdWebMacro
 				return " @break@";
 		}
 		
-		String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
+		String srch=httpReq.getUrlParameter("JOURNALMESSAGESEARCH");
 		if(srch!=null) 
 			srch=srch.toLowerCase();
-		String last=httpReq.getRequestParameter("JOURNALMESSAGE");
-		int cardinal=CMath.s_int(httpReq.getRequestParameter("JOURNALCARDINAL"));
+		String last=httpReq.getUrlParameter("JOURNALMESSAGE");
+		int cardinal=CMath.s_int(httpReq.getUrlParameter("JOURNALCARDINAL"));
 		if(parms.containsKey("RESET"))
 		{	
 			if(last!=null)
 			{
-				httpReq.removeRequestParameter("JOURNALMESSAGE");
-				httpReq.removeRequestParameter("JOURNALCARDINAL");
+				httpReq.removeUrlParameter("JOURNALMESSAGE");
+				httpReq.removeUrlParameter("JOURNALCARDINAL");
 			}
 			return "";
 		}
@@ -71,7 +73,7 @@ public class JournalMessageNext extends StdWebMacro
 			entry = JournalInfo.getNextEntry(msgs,last);
 			if(entry==null)
 			{
-				httpReq.addRequestParameters("JOURNALMESSAGE","");
+				httpReq.addFakeUrlParameter("JOURNALMESSAGE","");
 				if(parms.containsKey("EMPTYOK"))
 					return "<!--EMPTY-->";
 				return " @break@";
@@ -79,8 +81,8 @@ public class JournalMessageNext extends StdWebMacro
 			last=entry.key;
 		}
 		entry.cardinal=cardinal;
-		httpReq.addRequestParameters("JOURNALCARDINAL",""+cardinal);
-		httpReq.addRequestParameters("JOURNALMESSAGE",last);
+		httpReq.addFakeUrlParameter("JOURNALCARDINAL",""+cardinal);
+		httpReq.addFakeUrlParameter("JOURNALMESSAGE",last);
 		return "";
 	}
 }

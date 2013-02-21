@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.Map.Entry;
-
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -66,7 +66,7 @@ public class MobData extends StdWebMacro
 
 	public static String senses(Physical P,
 								boolean firstTime,
-								ExternalHTTPRequests httpReq,
+								HTTPRequest httpReq,
 								java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -74,7 +74,7 @@ public class MobData extends StdWebMacro
 		{
 			if(parms.containsKey(PhyStats.CAN_SEE_CODES[d]))
 			{
-				String parm=httpReq.getRequestParameter(PhyStats.CAN_SEE_CODES[d]);
+				String parm=httpReq.getUrlParameter(PhyStats.CAN_SEE_CODES[d]);
 				if(firstTime)
 					parm=(((P.basePhyStats().sensesMask()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))
@@ -84,7 +84,7 @@ public class MobData extends StdWebMacro
 		return str.toString();
 	}
 
-	public static StringBuffer abilities(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer abilities(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ABILITIES"))
@@ -93,10 +93,10 @@ public class MobData extends StdWebMacro
 			Vector theclasses=new Vector();
 			Vector theprofs=new Vector();
 			Vector thetext=new Vector();
-			if(httpReq.isRequestParameter("ABLES1"))
+			if(httpReq.isUrlParameter("ABLES1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("ABLES"+num);
+				String behav=httpReq.getUrlParameter("ABLES"+num);
 				while(behav!=null)
 				{
 					if(behav.length()>0)
@@ -104,16 +104,16 @@ public class MobData extends StdWebMacro
 						theclasses.addElement(behav);
 						if(player)
 						{
-							String prof=httpReq.getRequestParameter("ABPOF"+num);
+							String prof=httpReq.getUrlParameter("ABPOF"+num);
 							if(prof==null) prof="0";
-							String text=httpReq.getRequestParameter("ABTXT"+num);
+							String text=httpReq.getUrlParameter("ABTXT"+num);
 							if(text==null) text="";
 							theprofs.addElement(prof);
 							thetext.addElement(text);
 						}
 					}
 					num++;
-					behav=httpReq.getRequestParameter("ABLES"+num);
+					behav=httpReq.getUrlParameter("ABLES"+num);
 				}
 			}
 			else
@@ -180,22 +180,22 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer expertiseList(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static StringBuffer expertiseList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("EXPERTISELIST"))
 		{
 			Vector theclasses=new Vector();
-			if(httpReq.isRequestParameter("EXPER1"))
+			if(httpReq.isUrlParameter("EXPER1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("EXPER"+num);
+				String behav=httpReq.getUrlParameter("EXPER"+num);
 				while(behav!=null)
 				{
 					if(behav.length()>0)
 						theclasses.addElement(behav);
 					num++;
-					behav=httpReq.getRequestParameter("EXPER"+num);
+					behav=httpReq.getUrlParameter("EXPER"+num);
 				}
 			}
 			else
@@ -230,19 +230,19 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer clans(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer clans(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CLANS"))
 		{
 			Vector<Pair<Clan,Integer>> theclasses=new Vector<Pair<Clan,Integer>>();
-			if(httpReq.isRequestParameter("CLAN1"))
+			if(httpReq.isUrlParameter("CLAN1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("CLAN"+num);
+				String behav=httpReq.getUrlParameter("CLAN"+num);
 				while(behav!=null)
 				{
-					int role=CMath.s_int(httpReq.getRequestParameter("CLANROLE"+num));
+					int role=CMath.s_int(httpReq.getUrlParameter("CLANROLE"+num));
 					if(behav.length()>0)
 					{
 						Clan C=CMLib.clans().getClan(behav);
@@ -250,7 +250,7 @@ public class MobData extends StdWebMacro
 							theclasses.add(new Pair<Clan,Integer>(C,Integer.valueOf(role)));
 					}
 					num++;
-					behav=httpReq.getRequestParameter("CLAN"+num);
+					behav=httpReq.getUrlParameter("CLAN"+num);
 				}
 			}
 			else
@@ -292,27 +292,27 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer blessings(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BLESSINGS"))
 		{
 			Vector theclasses=new Vector();
 			Vector theclerics=new Vector();
-			if(httpReq.isRequestParameter("BLESS1"))
+			if(httpReq.isUrlParameter("BLESS1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("BLESS"+num);
+				String behav=httpReq.getUrlParameter("BLESS"+num);
 				while(behav!=null)
 				{
-					boolean clericOnly=(httpReq.isRequestParameter("BLONLY"+num))&&(httpReq.getRequestParameter("BLONLY"+num)).equalsIgnoreCase("on");
+					boolean clericOnly=(httpReq.isUrlParameter("BLONLY"+num))&&(httpReq.getUrlParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					if(behav.length()>0)
 					{
 						theclasses.addElement(behav);
 						theclerics.addElement(Boolean.valueOf(clericOnly));
 					}
 					num++;
-					behav=httpReq.getRequestParameter("BLESS"+num);
+					behav=httpReq.getUrlParameter("BLESS"+num);
 				}
 			}
 			else
@@ -354,27 +354,27 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer curses(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer curses(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CURSES"))
 		{
 			Vector theclasses=new Vector();
 			Vector theclerics=new Vector();
-			if(httpReq.isRequestParameter("CURSE1"))
+			if(httpReq.isUrlParameter("CURSE1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("CURSE"+num);
+				String behav=httpReq.getUrlParameter("CURSE"+num);
 				while(behav!=null)
 				{
-					boolean clericOnly=(httpReq.isRequestParameter("BLONLY"+num))&&(httpReq.getRequestParameter("BLONLY"+num)).equalsIgnoreCase("on");
+					boolean clericOnly=(httpReq.isUrlParameter("BLONLY"+num))&&(httpReq.getUrlParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					if(behav.length()>0)
 					{
 						theclasses.addElement(behav);
 						theclerics.addElement(Boolean.valueOf(clericOnly));
 					}
 					num++;
-					behav=httpReq.getRequestParameter("CURSE"+num);
+					behav=httpReq.getUrlParameter("CURSE"+num);
 				}
 			}
 			else
@@ -416,18 +416,18 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer factions(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer factions(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("FACTIONS"))
 		{
 			Vector theclasses=new Vector();
 			Vector theparms=new Vector();
-			if(httpReq.isRequestParameter("FACTION1"))
+			if(httpReq.isUrlParameter("FACTION1"))
 			{
 				int num=1;
-				String facti=httpReq.getRequestParameter("FACTION"+num);
-				String theparm=httpReq.getRequestParameter("FACTDATA"+num);
+				String facti=httpReq.getUrlParameter("FACTION"+num);
+				String theparm=httpReq.getUrlParameter("FACTDATA"+num);
 				if(theparm==null) theparm="";
 				while((facti!=null)&&(theparm!=null))
 				{
@@ -439,8 +439,8 @@ public class MobData extends StdWebMacro
 						theparms.addElement(t);
 					}
 					num++;
-					facti=httpReq.getRequestParameter("FACTION"+num);
-					theparm=httpReq.getRequestParameter("FACTDATA"+num);
+					facti=httpReq.getUrlParameter("FACTION"+num);
+					theparm=httpReq.getUrlParameter("FACTDATA"+num);
 				}
 			}
 			else
@@ -513,18 +513,18 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer classList(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static StringBuffer classList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CLASSLIST"))
 		{
 			Vector theclasses=new Vector();
 			Vector theparms=new Vector();
-			if(httpReq.isRequestParameter("CHARCLASS1"))
+			if(httpReq.isUrlParameter("CHARCLASS1"))
 			{
 				int num=1;
-				String facti=httpReq.getRequestParameter("CHARCLASS"+num);
-				String theparm=httpReq.getRequestParameter("CHARCLASSLVL"+num);
+				String facti=httpReq.getUrlParameter("CHARCLASS"+num);
+				String theparm=httpReq.getUrlParameter("CHARCLASSLVL"+num);
 				while(facti!=null)
 				{
 					if(theparm==null) theparm="0";
@@ -536,8 +536,8 @@ public class MobData extends StdWebMacro
 						theparms.addElement(t);
 					}
 					num++;
-					facti=httpReq.getRequestParameter("CHARCLASS"+num);
-					theparm=httpReq.getRequestParameter("CHARCLASSLVL"+num);
+					facti=httpReq.getUrlParameter("CHARCLASS"+num);
+					theparm=httpReq.getUrlParameter("CHARCLASSLVL"+num);
 				}
 			}
 			else
@@ -592,22 +592,22 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer powers(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer powers(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("POWERS"))
 		{
 			Vector theclasses=new Vector();
-			if(httpReq.isRequestParameter("POWER1"))
+			if(httpReq.isUrlParameter("POWER1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("POWER"+num);
+				String behav=httpReq.getUrlParameter("POWER"+num);
 				while(behav!=null)
 				{
 					if(behav.length()>0)
 						theclasses.addElement(behav);
 					num++;
-					behav=httpReq.getRequestParameter("POWER"+num);
+					behav=httpReq.getUrlParameter("POWER"+num);
 				}
 			}
 			else
@@ -643,7 +643,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer priceFactors(Economics E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer priceFactors(Economics E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("PRICEFACTORS"))
@@ -651,7 +651,7 @@ public class MobData extends StdWebMacro
 			Vector theprices=new Vector();
 			Vector themasks=new Vector();
 			int num=1;
-			if(!httpReq.isRequestParameter("IPRIC"+num))
+			if(!httpReq.isUrlParameter("IPRIC"+num))
 			{
 				String[] prics=E.itemPricingAdjustments();
 				for(int p=0;p<prics.length;p++)
@@ -670,10 +670,10 @@ public class MobData extends StdWebMacro
 				}
 			}
 			else
-			while(httpReq.isRequestParameter("IPRIC"+num))
+			while(httpReq.isUrlParameter("IPRIC"+num))
 			{
-				String PRICE=httpReq.getRequestParameter("IPRIC"+num);
-				String MASK=httpReq.getRequestParameter("IPRICM"+num);
+				String PRICE=httpReq.getUrlParameter("IPRIC"+num);
+				String MASK=httpReq.getUrlParameter("IPRICM"+num);
 				if((PRICE!=null)&&(PRICE.length()>0)&&(CMath.isNumber(PRICE)))
 				{
 					theprices.addElement(PRICE);
@@ -708,7 +708,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer shopkeeper(ShopKeeper E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		str.append(priceFactors(E,httpReq,parms,borderSize));
@@ -717,12 +717,12 @@ public class MobData extends StdWebMacro
 			Vector theclasses=new Vector();
 			Vector theparms=new Vector();
 			Vector theprices=new Vector();
-			if(httpReq.isRequestParameter("SHP1"))
+			if(httpReq.isUrlParameter("SHP1"))
 			{
 				int num=1;
-				String MATCHING=httpReq.getRequestParameter("SHP"+num);
-				String theparm=httpReq.getRequestParameter("SDATA"+num);
-				String theprice=httpReq.getRequestParameter("SPRIC"+num);
+				String MATCHING=httpReq.getUrlParameter("SHP"+num);
+				String theparm=httpReq.getUrlParameter("SDATA"+num);
+				String theprice=httpReq.getUrlParameter("SPRIC"+num);
 				XVector inventory=new XVector(E.getShop().getStoreInventory());
 				while((MATCHING!=null)&&(theparm!=null))
 				{
@@ -779,9 +779,9 @@ public class MobData extends StdWebMacro
 					theparms.addElement(theparm);
 					theprices.addElement(theprice);
 					num++;
-					MATCHING=httpReq.getRequestParameter("SHP"+num);
-					theparm=httpReq.getRequestParameter("SDATA"+num);
-					theprice=httpReq.getRequestParameter("SPRIC"+num);
+					MATCHING=httpReq.getUrlParameter("SHP"+num);
+					theparm=httpReq.getUrlParameter("SDATA"+num);
+					theprice=httpReq.getUrlParameter("SPRIC"+num);
 				}
 			}
 			else
@@ -881,7 +881,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer itemList(MOB oldM, MOB M, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer itemList(MOB oldM, MOB M, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ITEMLIST"))
@@ -890,7 +890,7 @@ public class MobData extends StdWebMacro
 			Vector containers=new Vector();
 			Vector beingWorn=new Vector();
 			List<Item> itemlist=null;
-			if(httpReq.isRequestParameter("ITEM1"))
+			if(httpReq.isUrlParameter("ITEM1"))
 			{
 				if(oldM!=M)
 					for(int i=0;i<oldM.numItems();i++)
@@ -901,15 +901,15 @@ public class MobData extends StdWebMacro
 				Vector cstrings=new Vector();
 				for(int i=1;;i++)
 				{
-					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-					String WORN=httpReq.getRequestParameter("ITEMWORN"+i);
+					String MATCHING=httpReq.getUrlParameter("ITEM"+i);
+					String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
 					if(MATCHING==null) break;
 					Item I2=RoomData.getItemFromAnywhere(M,MATCHING);
 					if(I2!=null)
 					{
 						classes.addElement(I2);
 						beingWorn.addElement(Boolean.valueOf((WORN!=null)&&(WORN.equalsIgnoreCase("on"))));
-						String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
+						String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
 						cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 					}
 				}
@@ -1002,12 +1002,12 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ROOM");
+		String last=httpReq.getUrlParameter("ROOM");
 		if(last==null) return " @break@";
-		String mobCode=httpReq.getRequestParameter("MOB");
+		String mobCode=httpReq.getUrlParameter("MOB");
 		if(mobCode==null) return "@break@";
 
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
@@ -1047,7 +1047,7 @@ public class MobData extends StdWebMacro
 				if(mobCode.equals("NEWDEITY"))
 				{
 					M=CMClass.getMOB("GenDeity");
-					String deityName=httpReq.getRequestParameter("NEWMOBNAME");
+					String deityName=httpReq.getUrlParameter("NEWMOBNAME");
 					if((M!=null)&&(deityName!=null))
 					{
 						M.setDisplayText(CMStrings.replaceAll(((Deity)M).displayText(),CMStrings.capitalizeFirstLetter(M.name()),deityName));
@@ -1079,48 +1079,48 @@ public class MobData extends StdWebMacro
 		}
 		MOB oldM=M;
 		// important generic<->non generic swap!
-		String newClassID=httpReq.getRequestParameter("CLASSES");
+		String newClassID=httpReq.getUrlParameter("CLASSES");
 		if((newClassID!=null)
 		&&(!newClassID.equals(CMClass.classID(M)))
 		&&(CMClass.getMOB(newClassID)!=null))
 			M=CMClass.getMOB(newClassID);
 
-		boolean changedClass=((httpReq.isRequestParameter("CHANGEDCLASS"))
-							 &&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true"));
+		boolean changedClass=((httpReq.isUrlParameter("CHANGEDCLASS"))
+							 &&(httpReq.getUrlParameter("CHANGEDCLASS")).equals("true"));
 		changedClass=changedClass
 					 &&(mobCode.equals("NEW")
 							 ||mobCode.equalsIgnoreCase("NEWDEITY")
 							 ||mobCode.startsWith("CATALOG-")
 							 ||mobCode.startsWith("NEWCATA-"));
-		boolean changedLevel=((httpReq.isRequestParameter("CHANGEDLEVEL"))&&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true"));
-		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
-				||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYMOB"))
+		boolean changedLevel=((httpReq.isUrlParameter("CHANGEDLEVEL"))&&(httpReq.getUrlParameter("CHANGEDLEVEL")).equals("true"));
+		boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
+				||(!(httpReq.getUrlParameter("ACTION")).equals("MODIFYMOB"))
 				||(changedClass);
 
 		if(((changedLevel)||(changedClass))&&(M.isGeneric()))
 		{
-			CMLib.leveler().fillOutMOB(M,CMath.s_int(firstTime?"0":httpReq.getRequestParameter("LEVEL")));
-			httpReq.addRequestParameters("REJUV",""+M.basePhyStats().rejuv());
-			httpReq.addRequestParameters("ARMOR",""+M.basePhyStats().armor());
-			httpReq.addRequestParameters("DAMAGE",""+M.basePhyStats().damage());
-			httpReq.addRequestParameters("SPEED",""+M.basePhyStats().speed());
-			httpReq.addRequestParameters("ATTACK",""+M.basePhyStats().attackAdjustment());
-			httpReq.addRequestParameters("MONEY",""+CMLib.beanCounter().getMoney(M));
+			CMLib.leveler().fillOutMOB(M,CMath.s_int(firstTime?"0":httpReq.getUrlParameter("LEVEL")));
+			httpReq.addFakeUrlParameter("REJUV",""+M.basePhyStats().rejuv());
+			httpReq.addFakeUrlParameter("ARMOR",""+M.basePhyStats().armor());
+			httpReq.addFakeUrlParameter("DAMAGE",""+M.basePhyStats().damage());
+			httpReq.addFakeUrlParameter("SPEED",""+M.basePhyStats().speed());
+			httpReq.addFakeUrlParameter("ATTACK",""+M.basePhyStats().attackAdjustment());
+			httpReq.addFakeUrlParameter("MONEY",""+CMLib.beanCounter().getMoney(M));
 		}
 
 		StringBuffer str=new StringBuffer("");
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
-			String old=httpReq.getRequestParameter(okparms[o]);
+			String old=httpReq.getUrlParameter(okparms[o]);
 			if(old==null) old="";
 			switch(o)
 			{
 			case 0: // name
 				if(firstTime) {
 					if((mobCode.equalsIgnoreCase("NEW")||mobCode.equalsIgnoreCase("NEWDEITY")||mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
-					&&(httpReq.isRequestParameter("NEWMOBNAME")))
-						old=httpReq.getRequestParameter("NEWMOBNAME");
+					&&(httpReq.isUrlParameter("NEWMOBNAME")))
+						old=httpReq.getUrlParameter("NEWMOBNAME");
 					else
 						old=M.Name();
 				}
@@ -1192,13 +1192,13 @@ public class MobData extends StdWebMacro
 				{
 					Race R3=CMClass.getRace(old);
 					char G=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
-					if((httpReq.isRequestParameter("GENDER"))&&((httpReq.getRequestParameter("GENDER")).length()>0))
-						G=(httpReq.getRequestParameter("GENDER")).charAt(0);
+					if((httpReq.isUrlParameter("GENDER"))&&((httpReq.getUrlParameter("GENDER")).length()>0))
+						G=(httpReq.getUrlParameter("GENDER")).charAt(0);
 					if(R3!=null)
 					{
 						R3.setHeightWeight(M.basePhyStats(),G);
-						httpReq.addRequestParameters("WEIGHT",""+M.basePhyStats().weight());
-						httpReq.addRequestParameters("HEIGHT",""+M.basePhyStats().height());
+						httpReq.addFakeUrlParameter("WEIGHT",""+M.basePhyStats().weight());
+						httpReq.addFakeUrlParameter("HEIGHT",""+M.basePhyStats().height());
 					}
 				}
 				break;
@@ -1304,9 +1304,9 @@ public class MobData extends StdWebMacro
 				{
 					shopTypes.add(Integer.valueOf(CMath.s_int(old)));
 					int x=1;
-					while(httpReq.getRequestParameter(okparms[o]+x)!=null)
+					while(httpReq.getUrlParameter(okparms[o]+x)!=null)
 					{
-						shopTypes.add(Integer.valueOf(CMath.s_int(httpReq.getRequestParameter(okparms[o]+x))));
+						shopTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter(okparms[o]+x))));
 						x++;
 					}
 				}
@@ -1580,7 +1580,7 @@ public class MobData extends StdWebMacro
 				break;
 			}
 			if(firstTime)
-				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
+				httpReq.addFakeUrlParameter(okparms[o],old.equals("checked")?"on":old);
 		}
 		str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
 		str.append(MobData.senses(M,firstTime,httpReq,parms));

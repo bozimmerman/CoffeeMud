@@ -13,9 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -38,10 +37,10 @@ public class AccountData extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()	{return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ACCOUNT");
+		String last=httpReq.getUrlParameter("ACCOUNT");
 		if(last==null) return "";
 		if(last.length()>0)
 		{
@@ -66,7 +65,7 @@ public class AccountData extends StdWebMacro
 					return ""+A.isSet(flag);
 			if(parms.containsKey("FLAGS"))
 			{
-				String old=httpReq.getRequestParameter("FLAGS");
+				String old=httpReq.getUrlParameter("FLAGS");
 				Vector set=null;
 				if(old==null)
 				{
@@ -77,8 +76,8 @@ public class AccountData extends StdWebMacro
 				{
 					String id="";
 					set=new Vector();
-					for(int i=0;httpReq.isRequestParameter("FLAG"+id);id=""+(++i))
-						set.addElement(httpReq.getRequestParameter("FLAG"+id));
+					for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
+						set.addElement(httpReq.getUrlParameter("FLAG"+id));
 				}
 				StringBuffer str=new StringBuffer("");
 				for(int i=0;i<PlayerAccount.FLAG_DESCS.length;i++)

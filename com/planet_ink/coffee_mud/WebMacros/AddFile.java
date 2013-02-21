@@ -13,9 +13,16 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.http.HTTPException;
+import com.planet_ink.miniweb.http.HTTPMethod;
+import com.planet_ink.miniweb.http.MultiPartData;
+import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.miniweb.util.MiniWebConfig;
+
+import java.io.InputStream;
+import java.net.InetAddress;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,7 +44,7 @@ public class AddFile extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
@@ -50,13 +57,20 @@ public class AddFile extends StdWebMacro
 			String file=(String)V.elementAt(v);
 			if(file.length()>0)
 			{
-				if(file.equalsIgnoreCase("webify"))
-					webify=true;
-				else
-				if(webify)
-					buf.append(webify(new StringBuffer(httpReq.getPageContent(file))));
-				else
-					buf.append(httpReq.getPageContent(file));
+				try
+				{
+					if(file.equalsIgnoreCase("webify"))
+						webify=true;
+					else
+					if(webify)
+						buf.append(webify(new StringBuffer(new String(getHTTPFileData(httpReq,file)))));
+					else
+						buf.append(new String(getHTTPFileData(httpReq,file)));
+				}
+				catch(HTTPException e)
+				{
+					Log.warnOut("Failed "+name()+" "+file);
+				}
 			}
 		}
 		return buf.toString();

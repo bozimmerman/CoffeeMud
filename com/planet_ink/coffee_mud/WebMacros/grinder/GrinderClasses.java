@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -16,8 +18,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -39,45 +39,45 @@ public class GrinderClasses
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public static DVector cabilities(ExternalHTTPRequests httpReq)
+	public static DVector cabilities(HTTPRequest httpReq)
 	{
 		DVector theclasses=new DVector(9);
-		if(httpReq.isRequestParameter("CABLES1"))
+		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
-			String behav=httpReq.getRequestParameter("CABLES"+num);
+			String behav=httpReq.getUrlParameter("CABLES"+num);
 			while(behav!=null)
 			{
 				if(behav.length()>0)
 				{
-					String prof=httpReq.getRequestParameter("CABPOF"+num);
+					String prof=httpReq.getUrlParameter("CABPOF"+num);
 					if(prof==null) prof="0";
-					String qual=httpReq.getRequestParameter("CABQUA"+num);
+					String qual=httpReq.getUrlParameter("CABQUA"+num);
 					if(qual==null) qual="";// null means unchecked
-					String levl=httpReq.getRequestParameter("CABLVL"+num);
+					String levl=httpReq.getUrlParameter("CABLVL"+num);
 					if(levl==null) levl="0";
-					String secr=httpReq.getRequestParameter("CABSCR"+num);
+					String secr=httpReq.getUrlParameter("CABSCR"+num);
 					if(secr==null) secr="";// null means unchecked
-					Object parm=httpReq.getRequestParameter("CABPRM"+num);
+					Object parm=httpReq.getUrlParameter("CABPRM"+num);
 					if(parm==null) parm="";
-					Object prereq=httpReq.getRequestParameter("CABPRE"+num);
+					Object prereq=httpReq.getUrlParameter("CABPRE"+num);
 					if(prereq==null) prereq="";
-					Object mask=httpReq.getRequestParameter("CABMSK"+num);
+					Object mask=httpReq.getUrlParameter("CABMSK"+num);
 					if(mask==null) mask="";
-					String maxp=httpReq.getRequestParameter("CABMPOF"+num);
+					String maxp=httpReq.getUrlParameter("CABMPOF"+num);
 					if(maxp==null) maxp="100";
 					theclasses.addElement(behav,levl,prof,qual,secr,parm,prereq,mask,maxp);
 				}
 				num++;
-				behav=httpReq.getRequestParameter("CABLES"+num);
+				behav=httpReq.getUrlParameter("CABLES"+num);
 			}
 		}
 		return theclasses;
 	}
 
-	public static String modifyCharClass(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, CharClass oldC, CharClass C)
+	public static String modifyCharClass(HTTPRequest httpReq, java.util.Map<String,String> parms, CharClass oldC, CharClass C)
 	{
-		String replaceCommand=httpReq.getRequestParameter("REPLACE");
+		String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null) 
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
@@ -85,18 +85,18 @@ public class GrinderClasses
 			int eq=replaceCommand.indexOf('=');
 			String field=replaceCommand.substring(0,eq);
 			String value=replaceCommand.substring(eq+1);
-			httpReq.addRequestParameters(field, value);
-			httpReq.addRequestParameters("REPLACE","");
+			httpReq.addFakeUrlParameter(field, value);
+			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 		String old;
 		// names are numerous
 		DVector DV=new DVector(2);
 		int num=0;
-		while(httpReq.isRequestParameter("NAME"+(++num)))
-			if(CMath.isInteger(httpReq.getRequestParameter("NAMELEVEL"+(num))))
+		while(httpReq.isUrlParameter("NAME"+(++num)))
+			if(CMath.isInteger(httpReq.getUrlParameter("NAMELEVEL"+(num))))
 			{
-				int minLevel = CMath.s_int(httpReq.getRequestParameter("NAMELEVEL"+(num)));
-				String name=httpReq.getRequestParameter("NAME"+(num));
+				int minLevel = CMath.s_int(httpReq.getUrlParameter("NAMELEVEL"+(num)));
+				String name=httpReq.getUrlParameter("NAME"+(num));
 				if((name!=null)&&(name.length()>0))
 				{
 					if(DV.size()==0)
@@ -130,68 +130,68 @@ public class GrinderClasses
 			C.setStat("NAMELEVEL"+l, ((Integer)DV.elementAt(l,1)).toString());
 		}
 			
-		old=httpReq.getRequestParameter("");
+		old=httpReq.getUrlParameter("");
 		C.setStat("",(old==null)?"":old);
 		
-		old=httpReq.getRequestParameter("BASE");
+		old=httpReq.getUrlParameter("BASE");
 		C.setStat("BASE",(old==null)?"BASECLASS":old);
-		old=httpReq.getRequestParameter("HPDIV");
+		old=httpReq.getUrlParameter("HPDIV");
 		C.setStat("HPDIV",(old==null)?"1":old);
-		old=httpReq.getRequestParameter("HPDICE");
+		old=httpReq.getUrlParameter("HPDICE");
 		C.setStat("HPDICE",(old==null)?"1":old);
-		old=httpReq.getRequestParameter("HPDIE");
+		old=httpReq.getUrlParameter("HPDIE");
 		C.setStat("HPDIE",(old==null)?"6":old);
-		old=httpReq.getRequestParameter("MANADIV");
+		old=httpReq.getUrlParameter("MANADIV");
 		C.setStat("MANADIV",(old==null)?"1":old);
-		old=httpReq.getRequestParameter("MANADICE");
+		old=httpReq.getUrlParameter("MANADICE");
 		C.setStat("MANADICE",(old==null)?"1":old);
-		old=httpReq.getRequestParameter("MANADIE");
+		old=httpReq.getUrlParameter("MANADIE");
 		C.setStat("MANADIE",(old==null)?"6":old);
-		old=httpReq.getRequestParameter("LVLPRAC");
+		old=httpReq.getUrlParameter("LVLPRAC");
 		C.setStat("LVLPRAC",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("LVLATT");
+		old=httpReq.getUrlParameter("LVLATT");
 		C.setStat("LVLATT",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("ATTATT");
+		old=httpReq.getUrlParameter("ATTATT");
 		C.setStat("ATTATT",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("FSTTRAN");
+		old=httpReq.getUrlParameter("FSTTRAN");
 		C.setStat("FSTTRAN",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("FSTPRAC");
+		old=httpReq.getUrlParameter("FSTPRAC");
 		C.setStat("FSTPRAC",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("LVLDAM");
+		old=httpReq.getUrlParameter("LVLDAM");
 		C.setStat("LVLDAM",(old==null)?"10":old);
-		old=httpReq.getRequestParameter("MAXNCS");
+		old=httpReq.getUrlParameter("MAXNCS");
 		C.setStat("MAXNCS",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("MAXCRS");
+		old=httpReq.getUrlParameter("MAXCRS");
 		C.setStat("MAXCRS",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("MAXCMS");
+		old=httpReq.getUrlParameter("MAXCMS");
 		C.setStat("MAXCMS",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("MAXLGS");
+		old=httpReq.getUrlParameter("MAXLGS");
 		C.setStat("MAXLGS",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("LEVELCAP");
+		old=httpReq.getUrlParameter("LEVELCAP");
 		C.setStat("LEVELCAP",(old==null)?"-1":old);
-		old=httpReq.getRequestParameter("LVLMOVE");
+		old=httpReq.getUrlParameter("LVLMOVE");
 		C.setStat("LVLMOVE",(old==null)?"1":old);
-		old=httpReq.getRequestParameter("ARMOR");
+		old=httpReq.getUrlParameter("ARMOR");
 		C.setStat("ARMOR",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("STRLMT");
+		old=httpReq.getUrlParameter("STRLMT");
 		C.setStat("STRLMT",(old==null)?"STRLMT":old);
-		old=httpReq.getRequestParameter("STRBON");
+		old=httpReq.getUrlParameter("STRBON");
 		C.setStat("STRBON",(old==null)?"STRBON":old);
-		old=httpReq.getRequestParameter("QUAL");
+		old=httpReq.getUrlParameter("QUAL");
 		C.setStat("QUAL",(old==null)?"":old);
-		old=httpReq.getRequestParameter("PLAYER");
+		old=httpReq.getUrlParameter("PLAYER");
 		C.setStat("PLAYER",(old==null)?"0":old);
 		C.setStat("ESTATS",GrinderRaces.getPStats('E',httpReq));
 		C.setStat("CSTATS",GrinderRaces.getCStats('S',httpReq));
 		C.setStat("ASTATS",GrinderRaces.getCStats('A',httpReq));
 		C.setStat("ASTATE",GrinderRaces.getCState('A',httpReq));
 		C.setStat("STARTASTATE",GrinderRaces.getCState('S',httpReq));
-		old=httpReq.getRequestParameter("GENHELP");
+		old=httpReq.getUrlParameter("GENHELP");
 		C.setStat("HELP", ((old==null)?"":old));
 		String id="";
 		Vector V=new Vector();
-		for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
-			V.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
+		for(int i=0;httpReq.isUrlParameter("NOWEAPS"+id);id=""+(++i))
+			V.addElement(httpReq.getUrlParameter("NOWEAPS"+id));
 		C.setStat("GETWEP",CMParms.toStringList(V));
 		List<Item> Ivs=GrinderRaces.itemList(oldC.outfit(null),'O',httpReq,false);
 		C.setStat("NUMOFT",""+Ivs.size());
@@ -200,14 +200,14 @@ public class GrinderClasses
 			C.setStat("GETOFTID"+l,((Environmental)Ivs.get(l)).ID());
 			C.setStat("GETOFTPARM"+l,((Environmental)Ivs.get(l)).text());
 		}
-		C.setStat("DISFLAGS",""+CMath.s_long(httpReq.getRequestParameter("DISFLAGS")));
+		C.setStat("DISFLAGS",""+CMath.s_long(httpReq.getUrlParameter("DISFLAGS")));
 		num=0;
 		DV.clear();
-		while(httpReq.isRequestParameter("SSET"+(++num)))
-			if(CMath.isInteger(httpReq.getRequestParameter("SSETLEVEL"+(num))))
+		while(httpReq.isUrlParameter("SSET"+(++num)))
+			if(CMath.isInteger(httpReq.getUrlParameter("SSETLEVEL"+(num))))
 			{
-				int minLevel = CMath.s_int(httpReq.getRequestParameter("SSETLEVEL"+(num)));
-				String name=httpReq.getRequestParameter("SSET"+(num));
+				int minLevel = CMath.s_int(httpReq.getUrlParameter("SSETLEVEL"+(num)));
+				String name=httpReq.getUrlParameter("SSET"+(num));
 				if((name!=null)&&(name.length()>0))
 				{
 					if(DV.size()==0)
@@ -243,16 +243,16 @@ public class GrinderClasses
 		}
 		id="";
 		V=new Vector();
-		for(int i=0;httpReq.isRequestParameter("WEAPMATS"+id);id=""+(++i))
-			if(CMath.isInteger(httpReq.getRequestParameter("WEAPMATS"+id)))
-				V.addElement(httpReq.getRequestParameter("WEAPMATS"+id));
+		for(int i=0;httpReq.isUrlParameter("WEAPMATS"+id);id=""+(++i))
+			if(CMath.isInteger(httpReq.getUrlParameter("WEAPMATS"+id)))
+				V.addElement(httpReq.getUrlParameter("WEAPMATS"+id));
 		C.setStat("NUMWMAT",""+V.size());
 		C.setStat("GETWMAT",CMParms.toStringList(V));
-		old=httpReq.getRequestParameter("ARMORMINOR");
+		old=httpReq.getUrlParameter("ARMORMINOR");
 		C.setStat("ARMORMINOR",(old==null)?"-1":old);
-		old=httpReq.getRequestParameter("STATCLASS");
+		old=httpReq.getUrlParameter("STATCLASS");
 		C.setStat("STATCLASS",(old==null)?"":old);
-		old=httpReq.getRequestParameter("EVENTCLASS");
+		old=httpReq.getUrlParameter("EVENTCLASS");
 		C.setStat("EVENTCLASS",(old==null)?"":old);
 		DV=cabilities(httpReq);
 		C.setStat("NUMCABLE", ""+DV.size());

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -15,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -52,12 +53,12 @@ public class GrinderMobs
 	  "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
 	  "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
 	  "MINDAYS","ISAUCTION","DEITYID"};
-	public static String senses(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String senses(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setSensesMask(0);
 		for(int d=0;d<PhyStats.CAN_SEE_CODES.length;d++)
 		{
-			String parm=httpReq.getRequestParameter(PhyStats.CAN_SEE_CODES[d]);
+			String parm=httpReq.getUrlParameter(PhyStats.CAN_SEE_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
 			   P.basePhyStats().setSensesMask(P.basePhyStats().sensesMask()|(1<<d));
 		}
@@ -75,7 +76,7 @@ public class GrinderMobs
 		M.recoverMaxState();
 	}
 
-	public static String abilities(MOB M, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String abilities(MOB M, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		boolean player=M.playerStats()!=null;
 		LinkedList<Ability> onesToDel=new LinkedList<Ability>();
@@ -92,10 +93,10 @@ public class GrinderMobs
 				M.delEffect(M.fetchEffect(A.ID()));
 			M.delAbility(A);
 		}
-		if(httpReq.isRequestParameter("ABLES1"))
+		if(httpReq.isUrlParameter("ABLES1"))
 		{
 			int num=1;
-			String aff=httpReq.getRequestParameter("ABLES"+num);
+			String aff=httpReq.getUrlParameter("ABLES"+num);
 			while(aff!=null)
 			{
 				if(aff.length()>0)
@@ -107,9 +108,9 @@ public class GrinderMobs
 					{
 						if(player)
 						{
-							String prof=httpReq.getRequestParameter("ABPOF"+num);
+							String prof=httpReq.getUrlParameter("ABPOF"+num);
 							if(prof==null) prof="0";
-							String txt=httpReq.getRequestParameter("ABTXT"+num);
+							String txt=httpReq.getUrlParameter("ABTXT"+num);
 							if(txt==null) txt="";
 							B.setProficiency(CMath.s_int(prof));
 							B.setMiscText(txt);
@@ -119,24 +120,24 @@ public class GrinderMobs
 					}
 				}
 				num++;
-				aff=httpReq.getRequestParameter("ABLES"+num);
+				aff=httpReq.getUrlParameter("ABLES"+num);
 			}
 		}
 		return "";
 	}
 
-	public static String factions(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String factions(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		for(Enumeration e=E.fetchFactions();e.hasMoreElements();)
 		{
 			String strip=(String)e.nextElement();
 			E.removeFaction(strip);
 		}
-		if(httpReq.isRequestParameter("FACTION1"))
+		if(httpReq.isUrlParameter("FACTION1"))
 		{
 			int num=1;
-			String whichFaction=httpReq.getRequestParameter("FACTION"+num);
-			String howMuch=httpReq.getRequestParameter("FACTDATA"+num);
+			String whichFaction=httpReq.getUrlParameter("FACTION"+num);
+			String howMuch=httpReq.getUrlParameter("FACTDATA"+num);
 			while((whichFaction!=null)&&(howMuch!=null))
 			{
 				if(whichFaction.length()>0)
@@ -151,14 +152,14 @@ public class GrinderMobs
 					}
 				}
 				num++;
-				whichFaction=httpReq.getRequestParameter("FACTION"+num);
-				howMuch=httpReq.getRequestParameter("FACTDATA"+num);
+				whichFaction=httpReq.getUrlParameter("FACTION"+num);
+				howMuch=httpReq.getUrlParameter("FACTDATA"+num);
 			}
 		}
 		return "";
 	}
 
-	public static String blessings(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String blessings(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numBlessings()>0)
 		{
@@ -166,15 +167,15 @@ public class GrinderMobs
 			if(A!=null)
 				E.delBlessing(A);
 		}
-		if(httpReq.isRequestParameter("BLESS1"))
+		if(httpReq.isUrlParameter("BLESS1"))
 		{
 			int num=1;
-			String aff=httpReq.getRequestParameter("BLESS"+num);
+			String aff=httpReq.getUrlParameter("BLESS"+num);
 			while(aff!=null)
 			{
 				if(aff.length()>0)
 				{
-					boolean clericOnly=(httpReq.isRequestParameter("BLONLY"+num))&&(httpReq.getRequestParameter("BLONLY"+num)).equalsIgnoreCase("on");
+					boolean clericOnly=(httpReq.isUrlParameter("BLONLY"+num))&&(httpReq.getUrlParameter("BLONLY"+num)).equalsIgnoreCase("on");
 					Ability B=CMClass.getAbility(aff);
 					if(B==null) 
 						return "Unknown Blessing '"+aff+"'.";
@@ -182,28 +183,28 @@ public class GrinderMobs
 						E.addBlessing(B,clericOnly);
 				}
 				num++;
-				aff=httpReq.getRequestParameter("BLESS"+num);
+				aff=httpReq.getUrlParameter("BLESS"+num);
 			}
 		}
 		return "";
 	}
 
-	public static String clans(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String clans(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		List<String> clans=new Vector<String>();
 		for(Pair<Clan,Integer> p : E.clans())
 			clans.add(p.first.clanID());
 		for(String clanID : clans)
 			E.setClan(clanID, -1);
-		if(httpReq.isRequestParameter("CLAN1"))
+		if(httpReq.isUrlParameter("CLAN1"))
 		{
 			int num=1;
-			String aff=httpReq.getRequestParameter("CLAN"+num);
+			String aff=httpReq.getUrlParameter("CLAN"+num);
 			while(aff!=null)
 			{
 				if(aff.length()>0)
 				{
-					int role=CMath.s_int(httpReq.getRequestParameter("CLANROLE"+num));
+					int role=CMath.s_int(httpReq.getUrlParameter("CLANROLE"+num));
 					Clan C=CMLib.clans().getClan(aff);
 					if(C==null) 
 						return "Unknown Clan '"+aff+"'.";
@@ -211,13 +212,13 @@ public class GrinderMobs
 						E.setClan(C.clanID(), role);
 				}
 				num++;
-				aff=httpReq.getRequestParameter("CLAN"+num);
+				aff=httpReq.getUrlParameter("CLAN"+num);
 			}
 		}
 		return "";
 	}
 
-	public static String curses(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String curses(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numCurses()>0)
 		{
@@ -225,35 +226,35 @@ public class GrinderMobs
 			if(A!=null)
 				E.delCurse(A);
 		}
-		if(httpReq.isRequestParameter("CURSE1"))
+		if(httpReq.isUrlParameter("CURSE1"))
 		{
 			int num=1;
-			String aff=httpReq.getRequestParameter("CURSE"+num);
+			String aff=httpReq.getUrlParameter("CURSE"+num);
 			while(aff!=null)
 			{
 				if(aff.length()>0)
 				{
 					Ability B=CMClass.getAbility(aff);
-					boolean clericOnly=(httpReq.isRequestParameter("CUONLY"+num))&&(httpReq.getRequestParameter("CUONLY"+num)).equalsIgnoreCase("on");
+					boolean clericOnly=(httpReq.isUrlParameter("CUONLY"+num))&&(httpReq.getUrlParameter("CUONLY"+num)).equalsIgnoreCase("on");
 					if(B==null) 
 						return "Unknown Curse '"+aff+"'.";
 					else
 						E.addCurse(B,clericOnly);
 				}
 				num++;
-				aff=httpReq.getRequestParameter("CURSE"+num);
+				aff=httpReq.getUrlParameter("CURSE"+num);
 			}
 		}
 		return "";
 	}
 
-	public static String expertiseList(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String expertiseList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		E.delAllExpertises();
-		if(httpReq.isRequestParameter("EXPER1"))
+		if(httpReq.isUrlParameter("EXPER1"))
 		{
 			int num=1;
-			String aff=httpReq.getRequestParameter("EXPER"+num);
+			String aff=httpReq.getUrlParameter("EXPER"+num);
 			while(aff!=null)
 			{
 				if(aff.length()>0)
@@ -265,23 +266,23 @@ public class GrinderMobs
 						E.addExpertise(def.ID);
 				}
 				num++;
-				aff=httpReq.getRequestParameter("EXPER"+num);
+				aff=httpReq.getUrlParameter("EXPER"+num);
 			}
 		}
 		return "";
 	}
 
 
-	public static String items(MOB M, Vector allitems, ExternalHTTPRequests httpReq)
+	public static String items(MOB M, Vector allitems, HTTPRequest httpReq)
 	{
-		if(httpReq.isRequestParameter("ITEM1"))
+		if(httpReq.isUrlParameter("ITEM1"))
 		{
 			Vector items=new Vector();
 			Vector cstrings=new Vector();
 			for(int i=1;;i++)
 			{
-				String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-				String WORN=httpReq.getRequestParameter("ITEMWORN"+i);
+				String MATCHING=httpReq.getUrlParameter("ITEM"+i);
+				String WORN=httpReq.getUrlParameter("ITEMWORN"+i);
 				if(MATCHING==null) break;
 				Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 				if(I2!=null)
@@ -295,7 +296,7 @@ public class GrinderMobs
 					happilyAddItem(I2,M);
 					items.addElement(I2);
 					I2.setContainer(null);
-					String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
+					String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
 					cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 				}
 			}
@@ -328,7 +329,7 @@ public class GrinderMobs
 		return "No Item Data!";
 	}
 
-	public static String powers(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String powers(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numPowers()>0)
 		{
@@ -336,10 +337,10 @@ public class GrinderMobs
 			if(A!=null)
 				E.delPower(A);
 		}
-		if(httpReq.isRequestParameter("POWER1"))
+		if(httpReq.isUrlParameter("POWER1"))
 		{
 			int num=1;
-			String aff=httpReq.getRequestParameter("POWER"+num);
+			String aff=httpReq.getUrlParameter("POWER"+num);
 			while(aff!=null)
 			{
 				if(aff.length()>0)
@@ -351,18 +352,18 @@ public class GrinderMobs
 						E.addPower(B);
 				}
 				num++;
-				aff=httpReq.getRequestParameter("POWER"+num);
+				aff=httpReq.getUrlParameter("POWER"+num);
 			}
 		}
 		return "";
 	}
 
-	public static String editMob(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
+	public static String editMob(HTTPRequest httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
 	{
-		String mobCode=httpReq.getRequestParameter("MOB");
+		String mobCode=httpReq.getUrlParameter("MOB");
 		if(mobCode==null) return "@break@";
 
-		String newClassID=httpReq.getRequestParameter("CLASSES");
+		String newClassID=httpReq.getUrlParameter("CLASSES");
 		synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
 		{
 			if(R!=null)
@@ -416,7 +417,7 @@ public class GrinderMobs
 					generic=false;
 					parm=parm.substring(1);
 				}
-				String old=httpReq.getRequestParameter(parm);
+				String old=httpReq.getUrlParameter(parm);
 				if(old==null) old="";
 				if((M.isGeneric()||(!generic)))
 				switch(o)
@@ -497,9 +498,9 @@ public class GrinderMobs
 						((ShopKeeper)M).setWhatIsSoldMask(0);
 						((ShopKeeper)M).addSoldType(CMath.s_int(old));
 						int x=1;
-						while(httpReq.getRequestParameter(okparms[o]+x)!=null)
+						while(httpReq.getUrlParameter(okparms[o]+x)!=null)
 						{
-							((ShopKeeper)M).addSoldType(CMath.s_int(httpReq.getRequestParameter(okparms[o]+x)));
+							((ShopKeeper)M).addSoldType(CMath.s_int(httpReq.getUrlParameter(okparms[o]+x)));
 							x++;
 						}
 					}
@@ -756,16 +757,16 @@ public class GrinderMobs
 				if(error.length()>0) return error;
 
 				if((M instanceof ShopKeeper)
-				&&(httpReq.isRequestParameter("SHP1")))
+				&&(httpReq.isUrlParameter("SHP1")))
 				{
 					ShopKeeper SK=(ShopKeeper)M;
 					XVector inventory=new XVector(SK.getShop().getStoreInventory());
 					SK.getShop().emptyAllShelves();
 
 					int num=1;
-					String MATCHING=httpReq.getRequestParameter("SHP"+num);
-					String theparm=httpReq.getRequestParameter("SDATA"+num);
-					String theprice=httpReq.getRequestParameter("SPRIC"+num);
+					String MATCHING=httpReq.getUrlParameter("SHP"+num);
+					String theparm=httpReq.getUrlParameter("SDATA"+num);
+					String theprice=httpReq.getUrlParameter("SPRIC"+num);
 					while((MATCHING!=null)&&(theparm!=null))
 					{
 						if(CMath.isNumber(MATCHING)&&(inventory.size()>0))
@@ -820,26 +821,26 @@ public class GrinderMobs
 								SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						num++;
-						MATCHING=httpReq.getRequestParameter("SHP"+num);
-						theparm=httpReq.getRequestParameter("SDATA"+num);
-						theprice=httpReq.getRequestParameter("SPRIC"+num);
+						MATCHING=httpReq.getUrlParameter("SHP"+num);
+						theparm=httpReq.getUrlParameter("SDATA"+num);
+						theprice=httpReq.getUrlParameter("SPRIC"+num);
 					}
 				}
 
 				int num=1;
 				if((M instanceof Economics)
-				&&(httpReq.isRequestParameter("IPRIC1")))
+				&&(httpReq.isUrlParameter("IPRIC1")))
 				{
 					Vector prics=new Vector();
-					String DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
-					String MASK=httpReq.getRequestParameter("IPRICM"+num);
+					String DOUBLE=httpReq.getUrlParameter("IPRIC"+num);
+					String MASK=httpReq.getUrlParameter("IPRICM"+num);
 					while((DOUBLE!=null)&&(MASK!=null))
 					{
 						if(CMath.isNumber(DOUBLE))
 							prics.addElement((DOUBLE+" "+MASK).trim());
 						num++;
-						DOUBLE=httpReq.getRequestParameter("IPRIC"+num);
-						MASK=httpReq.getRequestParameter("IPRICM"+num);
+						DOUBLE=httpReq.getUrlParameter("IPRIC"+num);
+						MASK=httpReq.getUrlParameter("IPRICM"+num);
 					}
 					((Economics)M).setItemPricingAdjustments(CMParms.toStringArray(prics));
 				}
@@ -895,7 +896,7 @@ public class GrinderMobs
 				CMLib.database().DBUpdateMOBs(R);
 				newMobCode=RoomData.getMOBCode(R,M);
 			}
-			httpReq.addRequestParameters("MOB",newMobCode);
+			httpReq.addFakeUrlParameter("MOB",newMobCode);
 			if(!copyMOB.sameAs(M))
 				Log.sysOut("Grinder",whom.Name()+" modified mob "+copyMOB.Name()+((R!=null)?" in room "+R.roomID():"")+".");
 		}

@@ -1,4 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.http.HTTPException;
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,7 +37,7 @@ public class AddRandomFile extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
@@ -56,10 +57,17 @@ public class AddRandomFile extends StdWebMacro
 		}
 		if((file!=null)&&(file.length()>0))
 		{
-			if(LINKONLY)
-				buf.append(file);
-			else
-				buf.append(httpReq.getPageContent(file));
+			try
+			{
+				if(LINKONLY)
+					buf.append(file);
+				else
+					buf.append(new String(getHTTPFileData(httpReq,file)));
+			}
+			catch(HTTPException e)
+			{
+				Log.warnOut("Failed "+name()+" "+file);
+			}
 		}
 		return buf.toString();
 	}

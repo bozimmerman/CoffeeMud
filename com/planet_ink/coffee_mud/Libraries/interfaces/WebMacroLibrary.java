@@ -1,7 +1,8 @@
-package com.planet_ink.coffee_mud.core.http;
+package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -13,17 +14,9 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.HTTPOutputConverter;
 
 import java.util.*;
-
-
-// simple wrapper for returned file from FileGrabber
-//  contains a File and a state integer
-// yes yes should be using wrapper functions, but it's
-//  so simple I don't see the point
-
-// if state != OK, file is not guaranteed to be non-null
-
 /* 
    Copyright 2000-2013 Bo Zimmerman
 
@@ -39,16 +32,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GrabbedFile
+public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 {
-	public CMFile file;
-	public int state;
-	
-	public static final int STATE_OK = 0;
-	public static final int STATE_IS_DIRECTORY = 1;	// file will be valid - not an error
-	public static final int STATE_BAD_FILENAME = 2;
-	public static final int STATE_NOT_FOUND = 3;
-	public static final int STATE_INTERNAL_ERROR = 4;
-	public static final int STATE_SECURITY_VIOLATION = 5;
+	public byte [] virtualPageFilter(byte [] data) throws HTTPRedirectException;
+	public String virtualPageFilter(String s) throws HTTPRedirectException;
+	public StringBuffer virtualPageFilter(StringBuffer s) throws HTTPRedirectException;
 	
 }

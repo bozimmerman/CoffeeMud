@@ -14,7 +14,9 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
+
 /* 
    Copyright 2000-2013 Bo Zimmerman
 
@@ -55,9 +57,9 @@ public interface AbilityParameters extends CMLibrary
 		public String colHeader();
 		public String prompt();
 		public String defaultValue();
-		public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName);
-		public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName);
-		public String webTableField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal);
+		public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName);
+		public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName);
+		public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal);
 		public String convertFromItem(final ItemCraftor A, final Item I);
 	}
 	

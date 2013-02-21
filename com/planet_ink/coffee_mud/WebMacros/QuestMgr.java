@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -37,7 +37,7 @@ public class QuestMgr extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()	{return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		Quest Q=null;
@@ -50,12 +50,12 @@ public class QuestMgr extends StdWebMacro
 			if(err.length()>0) return err;
 			CMLib.quests().addQuest(Q);
 			CMLib.quests().save();
-			httpReq.addRequestParameters("QUEST",Q.name());
+			httpReq.addFakeUrlParameter("QUEST",Q.name());
 			Log.sysOut("QuestMgr",name+" created quest '"+Q.name()+"'");
 			return "Quest '"+Q.name()+"' created.";
 		}
 
-		String last=httpReq.getRequestParameter("QUEST");
+		String last=httpReq.getUrlParameter("QUEST");
 		if(last==null) return "";
 		if(last.length()>0)
 		{
@@ -72,7 +72,7 @@ public class QuestMgr extends StdWebMacro
 			{
 				String err=populateQuest(httpReq,Q,parms.containsKey("REDIRECT"));
 				if(err.length()>0) return err;
-				httpReq.addRequestParameters("QUEST",Q.name());
+				httpReq.addFakeUrlParameter("QUEST",Q.name());
 				CMLib.quests().save();
 				Log.sysOut("QuestMgr",name+" modified quest '"+Q.name()+"'");
 			}
@@ -80,7 +80,7 @@ public class QuestMgr extends StdWebMacro
 			{
 				CMLib.quests().delQuest(Q);
 				CMLib.quests().save();
-				httpReq.addRequestParameters("QUEST","");
+				httpReq.addFakeUrlParameter("QUEST","");
 				CMFile F=new CMFile(Resources.makeFileResourceName("quests/"+Q.name()+".quest"),M,false,true);
 				if(F.exists())
 				{
@@ -131,10 +131,10 @@ public class QuestMgr extends StdWebMacro
 		return "";
 	}
 
-	public String populateQuest(ExternalHTTPRequests httpReq, Quest Q, boolean redirect)
+	public String populateQuest(HTTPRequest httpReq, Quest Q, boolean redirect)
 	{
 		Q.script();
-		String script=httpReq.getRequestParameter("RAWTEXT");
+		String script=httpReq.getUrlParameter("RAWTEXT");
 		String unRedirectedScript=script;
 		CMFile redirectF=null;
 		if(redirect

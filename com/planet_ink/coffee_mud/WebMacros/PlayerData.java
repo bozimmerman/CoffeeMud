@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -16,8 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.util.Map.Entry;
-
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -338,13 +338,13 @@ public class PlayerData extends StdWebMacro
 		return str.toString();
 	}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("PLAYER");
+		String last=httpReq.getUrlParameter("PLAYER");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
@@ -358,8 +358,8 @@ public class PlayerData extends StdWebMacro
 					return " @break@";
 			}
 
-			boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
-							||(httpReq.getRequestParameter("ACTION")).equals("FIRSTTIME");
+			boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
+							||(httpReq.getUrlParameter("ACTION")).equals("FIRSTTIME");
 			StringBuffer str=new StringBuffer("");
 			for(int i=0;i<MOB.AUTODESC.length;i++)
 			{
@@ -378,7 +378,7 @@ public class PlayerData extends StdWebMacro
 					CharStats C=M.charStats();
 					if(parms.containsKey(stat))
 					{
-						String old=httpReq.getRequestParameter(stat);
+						String old=httpReq.getUrlParameter(stat);
 						if((firstTime)||(old.length()==0)) 
 						{
 							if((!CharStats.CODES.isBASE(i))&&(i!=CharStats.STAT_GENDER))
@@ -398,7 +398,7 @@ public class PlayerData extends StdWebMacro
 					CharStats C=M.baseCharStats();
 					if(parms.containsKey("BASE"+stat))
 					{
-						String old=httpReq.getRequestParameter("BASE"+stat);
+						String old=httpReq.getUrlParameter("BASE"+stat);
 						if((firstTime)||(old.length()==0)) 
 							old=""+C.getStat(i);
 						str.append(old+", ");
@@ -409,15 +409,15 @@ public class PlayerData extends StdWebMacro
 			{
 				if(parms.containsKey(BASICS[i]))
 				{
-					if(httpReq.isRequestParameter(BASICS[i]))
-						str.append(httpReq.getRequestParameter(BASICS[i])+", ");
+					if(httpReq.isUrlParameter(BASICS[i]))
+						str.append(httpReq.getUrlParameter(BASICS[i])+", ");
 					else
 						str.append(getBasic(M,i));
 				}
 			}
 			if(parms.containsKey("RACE"))
 			{
-				String old=httpReq.getRequestParameter("RACE");
+				String old=httpReq.getUrlParameter("RACE");
 				if((firstTime)||(old.length()==0)) 
 					old=""+M.baseCharStats().getMyRace().ID();
 				for(Enumeration r=CMClass.races();r.hasMoreElements();)
@@ -431,7 +431,7 @@ public class PlayerData extends StdWebMacro
 			}
 			if(parms.containsKey("DEITY"))
 			{
-				String old=httpReq.getRequestParameter("DEITY");
+				String old=httpReq.getUrlParameter("DEITY");
 				if(firstTime) old=M.getWorshipCharID();
 				str.append("<OPTION "+((old.length()==0)?"SELECTED":"")+" VALUE=\"\">Godless");
 				for(Enumeration e=CMLib.map().deities();e.hasMoreElements();)
@@ -451,9 +451,9 @@ public class PlayerData extends StdWebMacro
 					Vector titles=new Vector();
 					if(firstTime) titles.addAll(M.playerStats().getTitles());
 					else
-					while(httpReq.isRequestParameter("TITLE"+b))
+					while(httpReq.isUrlParameter("TITLE"+b))
 					{
-						String B=httpReq.getRequestParameter("TITLE"+b);
+						String B=httpReq.getUrlParameter("TITLE"+b);
 						if((B!=null)&&(B.trim().length()>0)) titles.addElement(B);
 						b++;
 					}
@@ -467,7 +467,7 @@ public class PlayerData extends StdWebMacro
 			}
 			if(parms.containsKey("ALIGNMENT"))
 			{
-				String old=httpReq.getRequestParameter("ALIGNMENT");
+				String old=httpReq.getUrlParameter("ALIGNMENT");
 				if((firstTime)||(old.length()==0)) 
 					old=""+M.fetchFaction(CMLib.factions().AlignID());
 				if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
@@ -483,7 +483,7 @@ public class PlayerData extends StdWebMacro
 			}
 			if(parms.containsKey("BASEGENDER"))
 			{
-				String old=httpReq.getRequestParameter("BASEGENDER");
+				String old=httpReq.getUrlParameter("BASEGENDER");
 				if(firstTime) old=""+(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
 				str.append("<OPTION VALUE=M "+((old.equalsIgnoreCase("M"))?"SELECTED":"")+">M");
 				str.append("<OPTION VALUE=F "+((old.equalsIgnoreCase("F"))?"SELECTED":"")+">F");

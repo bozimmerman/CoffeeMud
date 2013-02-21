@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -35,13 +37,13 @@ public class ComponentNext extends StdWebMacro
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()   {return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("COMPONENT");
+		String last=httpReq.getUrlParameter("COMPONENT");
 		if(parms.containsKey("RESET"))
 		{   
-			if(last!=null) httpReq.removeRequestParameter("COMPONENT");
+			if(last!=null) httpReq.removeUrlParameter("COMPONENT");
 			return "";
 		}
 		String lastID="";
@@ -51,12 +53,12 @@ public class ComponentNext extends StdWebMacro
 			componentID=(String)i.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!componentID.equalsIgnoreCase(lastID))))
 			{
-				httpReq.addRequestParameters("COMPONENT",componentID);
+				httpReq.addFakeUrlParameter("COMPONENT",componentID);
 				return "";
 			}
 			lastID=componentID;
 		}
-		httpReq.addRequestParameters("COMPONENT","");
+		httpReq.addFakeUrlParameter("COMPONENT","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

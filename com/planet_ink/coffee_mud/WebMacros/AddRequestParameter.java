@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.URLEncoder;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,7 +37,7 @@ public class AddRequestParameter extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String str="";
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -48,13 +48,13 @@ public class AddRequestParameter extends StdWebMacro
 			{
 				String val=(String)parms.get(key);
 				if(val==null) val="";
-				if((val.equals("++")&&(httpReq.isRequestParameter(key))))
-					val=""+(CMath.s_int(httpReq.getRequestParameter(key))+1);
+				if((val.equals("++")&&(httpReq.isUrlParameter(key))))
+					val=""+(CMath.s_int(httpReq.getUrlParameter(key))+1);
 				else
-				if((val.equals("--")&&(httpReq.isRequestParameter(key))))
-					val=""+(CMath.s_int(httpReq.getRequestParameter(key))-1);
+				if((val.equals("--")&&(httpReq.isUrlParameter(key))))
+					val=""+(CMath.s_int(httpReq.getUrlParameter(key))-1);
 			
-				httpReq.addRequestParameters(key,val);
+				httpReq.addFakeUrlParameter(key,val);
 			}
 		}
 		return clearWebMacros(str);

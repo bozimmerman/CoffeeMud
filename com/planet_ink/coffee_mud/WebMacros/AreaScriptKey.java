@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -16,8 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.net.URLEncoder;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -38,9 +38,9 @@ public class AreaScriptKey extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getRequestParameter("AREASCRIPT");
+		String last=httpReq.getUrlParameter("AREASCRIPT");
 		if(last==null) return " @break@";
 		java.util.Map<String,String> parms=parseParms(parm);
 		try

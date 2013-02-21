@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -17,7 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -41,17 +42,17 @@ public class PlayerPortrait extends StdWebMacro
 	public boolean isAWebPath(){return true;}
 	public boolean preferBinary(){return true;}
 	
-	public String getFilename(ExternalHTTPRequests httpReq, String filename)
+	public String getFilename(HTTPRequest httpReq, String filename)
 	{
-		String foundFilename=httpReq.getRequestParameter("FILENAME");
+		String foundFilename=httpReq.getUrlParameter("FILENAME");
 		if((foundFilename!=null)&&(foundFilename.length()>0))
 			return foundFilename;
 		return filename;
 	}
 	
-	public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
-		String last=httpReq.getRequestParameter("PLAYER");
+		String last=httpReq.getUrlParameter("PLAYER");
 		if(last==null) return null; // for binary macros, null is BREAK
 		byte[] img=null;
 		if(last.length()>0)
@@ -72,7 +73,7 @@ public class PlayerPortrait extends StdWebMacro
 		return img;
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
+	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";
 	}

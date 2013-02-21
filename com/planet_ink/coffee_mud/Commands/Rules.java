@@ -42,7 +42,7 @@ public class Rules extends StdCommand
 		throws java.io.IOException
 	{
 		StringBuffer credits=new CMFile(Resources.buildResourcePath("text")+"rules.txt",null,true).text();
-		try { credits = CMLib.httpUtils().doVirtualPage(credits); } catch(Exception e){}
+		try { credits = CMLib.webMacroFilter().virtualPageFilter(credits); } catch(Exception e){}
 		if((credits!=null)&&(mob.session()!=null)&&(credits.length()>0))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -38,18 +38,18 @@ public class AreaData extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 
-	public static StringBuffer behaves(PhysicalAgent E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer behaves(PhysicalAgent E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
 		{
 			Vector theclasses=new Vector();
 			Vector theparms=new Vector();
-			if(httpReq.isRequestParameter("BEHAV1"))
+			if(httpReq.isUrlParameter("BEHAV1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("BEHAV"+num);
-				String theparm=httpReq.getRequestParameter("BDATA"+num);
+				String behav=httpReq.getUrlParameter("BEHAV"+num);
+				String theparm=httpReq.getUrlParameter("BDATA"+num);
 				while((behav!=null)&&(theparm!=null))
 				{
 					if(behav.length()>0)
@@ -60,8 +60,8 @@ public class AreaData extends StdWebMacro
 						theparms.addElement(t);
 					}
 					num++;
-					behav=httpReq.getRequestParameter("BEHAV"+num);
-					theparm=httpReq.getRequestParameter("BDATA"+num);
+					behav=httpReq.getUrlParameter("BEHAV"+num);
+					theparm=httpReq.getUrlParameter("BDATA"+num);
 				}
 			}
 			else
@@ -120,18 +120,18 @@ public class AreaData extends StdWebMacro
 		return str;
 	}
 	
-	public static StringBuffer affects(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer affects(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
 		{
 			Vector theclasses=new Vector();
 			Vector theparms=new Vector();
-			if(httpReq.isRequestParameter("AFFECT1"))
+			if(httpReq.isUrlParameter("AFFECT1"))
 			{
 				int num=1;
-				String behav=httpReq.getRequestParameter("AFFECT"+num);
-				String theparm=httpReq.getRequestParameter("ADATA"+num);
+				String behav=httpReq.getUrlParameter("AFFECT"+num);
+				String theparm=httpReq.getUrlParameter("ADATA"+num);
 				while((behav!=null)&&(theparm!=null))
 				{
 					if(behav.length()>0)
@@ -142,8 +142,8 @@ public class AreaData extends StdWebMacro
 						theparms.addElement(t);
 					}
 					num++;
-					behav=httpReq.getRequestParameter("AFFECT"+num);
-					theparm=httpReq.getRequestParameter("ADATA"+num);
+					behav=httpReq.getUrlParameter("AFFECT"+num);
+					theparm=httpReq.getUrlParameter("ADATA"+num);
 				}
 			}
 			else
@@ -194,7 +194,7 @@ public class AreaData extends StdWebMacro
 		return str;
 	}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
@@ -215,7 +215,7 @@ public class AreaData extends StdWebMacro
 			Area A=CMLib.map().getArea(""+parms.get("AREAISGRID"));
 			return ""+(A instanceof GridZones);
 		}
-		String last=httpReq.getRequestParameter("AREA");
+		String last=httpReq.getUrlParameter("AREA");
 		if(last==null) return " @break@";
 
 		if(last.length()>0)
@@ -235,12 +235,12 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("CLIMATES"))
 				{
 					int climate=A.climateType();
-					if(httpReq.isRequestParameter("CLIMATE"))
+					if(httpReq.isUrlParameter("CLIMATE"))
 					{
-						climate=CMath.s_int(httpReq.getRequestParameter("CLIMATE"));
+						climate=CMath.s_int(httpReq.getUrlParameter("CLIMATE"));
 						for(int i=1;;i++)
-							if(httpReq.isRequestParameter("CLIMATE"+(Integer.toString(i))))
-								climate=climate|CMath.s_int(httpReq.getRequestParameter("CLIMATE"+(Integer.toString(i))));
+							if(httpReq.isUrlParameter("CLIMATE"+(Integer.toString(i))))
+								climate=climate|CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
 							else
 								break;
 					}
@@ -255,7 +255,7 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("TECHLEVEL"))
 				{
-					String level=httpReq.getRequestParameter("TECHLEVEL");
+					String level=httpReq.getUrlParameter("TECHLEVEL");
 					if((level==null)||(level.length()==0))
 						level=""+A.getTechLevel();
 					for(int i=1;i<Area.THEME_PHRASE.length;i++)
@@ -267,28 +267,28 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("NAME"))
 				{
-					String name=httpReq.getRequestParameter("NAME");
+					String name=httpReq.getUrlParameter("NAME");
 					if((name==null)||(name.length()==0))
 						name=A.Name();
 					str.append(name);
 				}
 				if(parms.containsKey("IMAGE"))
 				{
-					String name=httpReq.getRequestParameter("IMAGE");
+					String name=httpReq.getUrlParameter("IMAGE");
 					if((name==null)||(name.length()==0))
 						name=A.rawImage();
 					str.append(name);
 				}
 				if((parms.containsKey("GRIDX"))&&(A instanceof GridZones))
 				{
-					String name=httpReq.getRequestParameter("GRIDX");
+					String name=httpReq.getUrlParameter("GRIDX");
 					if((name==null)||(name.length()==0))
 						name=""+((GridZones)A).xGridSize();
 					str.append(name);
 				}
 				if((parms.containsKey("GRIDY"))&&(A instanceof GridZones))
 				{
-					String name=httpReq.getRequestParameter("GRIDY");
+					String name=httpReq.getUrlParameter("GRIDY");
 					if((name==null)||(name.length()==0))
 						name=""+((GridZones)A).yGridSize();
 					str.append(name);
@@ -299,14 +299,14 @@ public class AreaData extends StdWebMacro
 					str.append(""+(A instanceof AutoGenArea));
 				if(parms.containsKey("AUTHOR"))
 				{
-					String author=httpReq.getRequestParameter("AUTHOR");
+					String author=httpReq.getUrlParameter("AUTHOR");
 					if((author==null)||(author.length()==0))
 						author=A.getAuthorID();
 					str.append(author);
 				}
 				if(parms.containsKey("ARCHP"))
 				{
-					String path=httpReq.getRequestParameter("ARCHP");
+					String path=httpReq.getUrlParameter("ARCHP");
 					if((path==null)||(path.length()==0))
 						path=A.getArchivePath();
 					str.append(path);
@@ -329,42 +329,42 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("CURRENCY"))
 				{
-					String currency=httpReq.getRequestParameter("CURRENCY");
+					String currency=httpReq.getUrlParameter("CURRENCY");
 					if((currency==null)||(currency.length()==0))
 						currency=A.getCurrency();
 					str.append(currency);
 				}
 				if(parms.containsKey("SHOPPREJ"))
 				{
-					String val=httpReq.getRequestParameter("SHOPPREJ");
+					String val=httpReq.getUrlParameter("SHOPPREJ");
 					if((val==null)||(val.length()==0))
 						val=A.prejudiceFactors();
 					str.append(val);
 				}
 				if(parms.containsKey("BUDGET"))
 				{
-					String val=httpReq.getRequestParameter("BUDGET");
+					String val=httpReq.getUrlParameter("BUDGET");
 					if((val==null)||(val.length()==0))
 						val=A.budget();
 					str.append(val);
 				}
 				if(parms.containsKey("DEVALRATE"))
 				{
-					String val=httpReq.getRequestParameter("DEVALRATE");
+					String val=httpReq.getUrlParameter("DEVALRATE");
 					if((val==null)||(val.length()==0))
 						val=A.devalueRate();
 					str.append(val);
 				}
 				if(parms.containsKey("INVRESETRATE"))
 				{
-					String val=httpReq.getRequestParameter("INVRESETRATE");
+					String val=httpReq.getUrlParameter("INVRESETRATE");
 					if((val==null)||(val.length()==0))
 						val=A.invResetRate()+"";
 					str.append(val);
 				}
 				if(parms.containsKey("IGNOREMASK"))
 				{
-					String val=httpReq.getRequestParameter("IGNOREMASK");
+					String val=httpReq.getUrlParameter("IGNOREMASK");
 					if((val==null)||(val.length()==0))
 						val=A.ignoreMask();
 					str.append(val);
@@ -373,7 +373,7 @@ public class AreaData extends StdWebMacro
 					str.append(MobData.priceFactors(A,httpReq,parms,0));
 				if(parms.containsKey("CLASSES"))
 				{
-					String className=httpReq.getRequestParameter("CLASS");
+					String className=httpReq.getUrlParameter("CLASS");
 					if((className==null)||(className.length()==0))
 						className=CMClass.classID(A);
 					Object[] sortedA=(Object[])Resources.getResource("MUDGRINDER-AREAS");
@@ -400,7 +400,7 @@ public class AreaData extends StdWebMacro
 					Vector theprices=new Vector();
 					Vector themasks=new Vector();
 					int num=1;
-					if(!httpReq.isRequestParameter("IPRIC"+num))
+					if(!httpReq.isUrlParameter("IPRIC"+num))
 					{
 						for(Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
 						{
@@ -410,10 +410,10 @@ public class AreaData extends StdWebMacro
 						}
 					}
 					else
-					while(httpReq.isRequestParameter("BLURBFLAG"+num))
+					while(httpReq.isUrlParameter("BLURBFLAG"+num))
 					{
-						String PRICE=httpReq.getRequestParameter("BLURBFLAG"+num);
-						String MASK=httpReq.getRequestParameter("BLURB"+num);
+						String PRICE=httpReq.getUrlParameter("BLURBFLAG"+num);
+						String MASK=httpReq.getUrlParameter("BLURB"+num);
 						if((PRICE!=null)&&(PRICE.length()>0))
 						{
 							theprices.addElement(PRICE);
@@ -457,7 +457,7 @@ public class AreaData extends StdWebMacro
 					List<String> V=CMLib.database().getUserList();
 					List<String> theSubOps=new LinkedList<String>();
 					int num=1;
-					if(!httpReq.isRequestParameter("SUBOP"+num))
+					if(!httpReq.isUrlParameter("SUBOP"+num))
 					{
 						List<String> subV=CMParms.parseSemicolons(A.getSubOpList(),true);
 						for(String subOp : subV)
@@ -467,9 +467,9 @@ public class AreaData extends StdWebMacro
 						}
 					}
 					else
-					while(httpReq.isRequestParameter("SUBOP"+num))
+					while(httpReq.isUrlParameter("SUBOP"+num))
 					{
-						String subOp=httpReq.getRequestParameter("SUBOP"+num);
+						String subOp=httpReq.getUrlParameter("SUBOP"+num);
 						if((subOp!=null)&&(subOp.length()>0))
 						{
 							if(CMLib.players().playerExists(subOp))
@@ -499,7 +499,7 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("DESCRIPTION"))
 				{
-					String desc=httpReq.getRequestParameter("DESCRIPTION");
+					String desc=httpReq.getUrlParameter("DESCRIPTION");
 					if((desc==null)||(desc.length()==0))
 						desc=A.description();
 					str.append(desc);
@@ -510,7 +510,7 @@ public class AreaData extends StdWebMacro
 					List<String> V=CMParms.toNameVector(CMLib.map().sortedAreas());
 					List<String> theAreas=new LinkedList<String>();
 					int num=1;
-					if(!httpReq.isRequestParameter("PARENT"+num))
+					if(!httpReq.isUrlParameter("PARENT"+num))
 					{
 						List<String> subV=CMParms.parseSemicolons(A.getParentsList(),true);
 						for(String areaName : subV)
@@ -521,9 +521,9 @@ public class AreaData extends StdWebMacro
 						}
 					}
 					else
-					while(httpReq.isRequestParameter("PARENT"+num))
+					while(httpReq.isUrlParameter("PARENT"+num))
 					{
-						String areaName=httpReq.getRequestParameter("PARENT"+num);
+						String areaName=httpReq.getUrlParameter("PARENT"+num);
 						if((areaName!=null)&&(areaName.length()>0))
 						{
 							Area findA=CMLib.map().getArea(areaName);
@@ -558,7 +558,7 @@ public class AreaData extends StdWebMacro
 					List<String> V=CMParms.toNameVector(CMLib.map().sortedAreas());
 					List<String> theAreas=new LinkedList<String>();
 					int num=1;
-					if(!httpReq.isRequestParameter("CHILDREN"+num))
+					if(!httpReq.isUrlParameter("CHILDREN"+num))
 					{
 						List<String> subV=CMParms.parseSemicolons(A.getChildrenList(),true);
 						for(String areaName : subV)
@@ -569,9 +569,9 @@ public class AreaData extends StdWebMacro
 						}
 					}
 					else
-					while(httpReq.isRequestParameter("CHILDREN"+num))
+					while(httpReq.isUrlParameter("CHILDREN"+num))
 					{
-						String areaName=httpReq.getRequestParameter("CHILDREN"+num);
+						String areaName=httpReq.getUrlParameter("CHILDREN"+num);
 						if((areaName!=null)&&(areaName.length()>0))
 						{
 							Area findA=CMLib.map().getArea(areaName);
@@ -607,14 +607,14 @@ public class AreaData extends StdWebMacro
 					
 					if(parms.containsKey("AGAUTOVAR"))
 					{
-						String value=httpReq.getRequestParameter("AGAUTOVAR");
+						String value=httpReq.getUrlParameter("AGAUTOVAR");
 						if((value==null)||(value.length()==0))
 							value=CMParms.toStringEqList(AG.getAutoGenVariables());
 						str.append(value);
 					}
 					if(parms.containsKey("AGXMLPATH"))
 					{
-						String value=httpReq.getRequestParameter("AGXMLPATH");
+						String value=httpReq.getUrlParameter("AGXMLPATH");
 						if((value==null)||(value.length()==0))
 							value=AG.getGeneratorXmlPath();
 						str.append(value);

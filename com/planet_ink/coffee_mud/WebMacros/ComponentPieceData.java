@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,12 +36,12 @@ public class ComponentPieceData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String compID=httpReq.getRequestParameter("COMPONENT");
+		String compID=httpReq.getUrlParameter("COMPONENT");
 		if(compID==null) return " @break@";
-		String last=httpReq.getRequestParameter("COMPONENTPIECE");
+		String last=httpReq.getUrlParameter("COMPONENTPIECE");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
@@ -49,14 +49,14 @@ public class ComponentPieceData extends StdWebMacro
 			StringBuilder str=new StringBuilder("");
 			if(parms.containsKey("MASK")||parms.containsKey("MASKEDIT"))
 			{
-				String s=httpReq.getRequestParameter(fixedCompID+"_PIECE_MASK_"+last);
+				String s=httpReq.getUrlParameter(fixedCompID+"_PIECE_MASK_"+last);
 				if(s==null) s="";
 				str.append(s);
 			}
 			if(parms.containsKey("STRING"))
 			{
-				String type=httpReq.getRequestParameter(fixedCompID+"_PIECE_TYPE_"+last);
-				String strType=httpReq.getRequestParameter(fixedCompID+"_PIECE_STRING_"+last);
+				String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
+				String strType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+last);
 				AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
 				if((C==null)||(C==AbilityComponent.CompType.STRING)||(!CMath.isNumber(strType)))
 					str.append(strType);
@@ -65,8 +65,8 @@ public class ComponentPieceData extends StdWebMacro
 			}
 			if(parms.containsKey("STRINGEDIT"))
 			{
-				String type=httpReq.getRequestParameter(fixedCompID+"_PIECE_TYPE_"+last);
-				String strType=httpReq.getRequestParameter(fixedCompID+"_PIECE_STRING_"+last);
+				String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);
+				String strType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+last);
 				if(strType==null) strType="item name";
 				AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
 				if((C==null)||(C==AbilityComponent.CompType.STRING))
@@ -104,13 +104,13 @@ public class ComponentPieceData extends StdWebMacro
 			}
 			if(parms.containsKey("AMOUNT")||parms.containsKey("AMOUNTEDIT"))
 			{
-				String s=httpReq.getRequestParameter(fixedCompID+"_PIECE_AMOUNT_"+last);
+				String s=httpReq.getUrlParameter(fixedCompID+"_PIECE_AMOUNT_"+last);
 				if(s==null) s="1";
 				str.append(s);
 			}
 			if(parms.containsKey("CONSUMED"))
 			{
-				String consumed=httpReq.getRequestParameter(fixedCompID+"_PIECE_CONSUMED_"+last);
+				String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+last);
 				if((consumed!=null)&&(consumed.equalsIgnoreCase("on")||consumed.equalsIgnoreCase("checked")))
 					str.append("consumed");
 				else
@@ -118,45 +118,45 @@ public class ComponentPieceData extends StdWebMacro
 			}
 			if(parms.containsKey("CONSUMEDEDIT"))
 			{
-				String consumed=httpReq.getRequestParameter(fixedCompID+"_PIECE_CONSUMED_"+last);
+				String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+last);
 				if((consumed!=null)&&(consumed.equalsIgnoreCase("on")||consumed.equalsIgnoreCase("checked")))
 					str.append("checked");
 				else
 					str.append("");
 			}
 			if(parms.containsKey("CONNECTOR"))
-				str.append(httpReq.getRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+last));
+				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+last));
 			if(parms.containsKey("CONNECTOREDIT"))
 			{
 				str.append("<OPTION VALUE=\"DELETE\">Delete Component");
 				for(AbilityComponent.CompConnector conn : AbilityComponent.CompConnector.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
-					if(conn.toString().equalsIgnoreCase(httpReq.getRequestParameter(fixedCompID+"_PIECE_CONNECTOR_"+last)))
+					if(conn.toString().equalsIgnoreCase(httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+last)))
 						str.append("SELECTED ");
 					str.append(">"+CMStrings.capitalizeAndLower(conn.toString()));
 				}
 			}
 			if(parms.containsKey("TYPE"))
-				str.append(httpReq.getRequestParameter(fixedCompID+"_PIECE_TYPE_"+last));
+				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last));
 			if(parms.containsKey("TYPEEDIT"))
 			{
 				for(AbilityComponent.CompType conn : AbilityComponent.CompType.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
-					if(conn.toString().equalsIgnoreCase(httpReq.getRequestParameter(fixedCompID+"_PIECE_TYPE_"+last)))
+					if(conn.toString().equalsIgnoreCase(httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last)))
 						str.append("SELECTED ");
 					str.append(">"+CMStrings.capitalizeAndLower(conn.toString()));
 				}
 			}
 			if(parms.containsKey("LOCATION"))
-				str.append(httpReq.getRequestParameter(fixedCompID+"_PIECE_LOCATION_"+last));
+				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+last));
 			if(parms.containsKey("LOCATIONEDIT"))
 			{
 				for(AbilityComponent.CompLocation conn : AbilityComponent.CompLocation.values())
 				{
 					str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
-					if(conn.toString().equalsIgnoreCase(httpReq.getRequestParameter(fixedCompID+"_PIECE_LOCATION_"+last)))
+					if(conn.toString().equalsIgnoreCase(httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+last)))
 						str.append("SELECTED ");
 					str.append(">"+CMStrings.capitalizeAndLower(conn.toString()));
 				}

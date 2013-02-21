@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -44,7 +44,7 @@ public class BankAccountInfo extends StdWebMacro
 		List<Item> items=new Vector<Item>(1);
 	}
 	
-	public static synchronized BankAccountStuff getMakeAccountInfo(ExternalHTTPRequests httpReq, Banker B, MOB playerM)
+	public static synchronized BankAccountStuff getMakeAccountInfo(HTTPRequest httpReq, Banker B, MOB playerM)
 	{
 		BankAccountStuff info=(BankAccountStuff)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
 		if(info!=null) return info;
@@ -63,20 +63,20 @@ public class BankAccountInfo extends StdWebMacro
 		return info;
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		MOB playerM=null;
 		Area playerA=null;
 		boolean destroyPlayer=false;
 		try{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("BANKCHAIN");
+		String last=httpReq.getUrlParameter("BANKCHAIN");
 		if(last==null) return " @break@";
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return " @break@";
-		String player=httpReq.getRequestParameter("PLAYER");
+		String player=httpReq.getUrlParameter("PLAYER");
 		if((player==null)||(player.length()==0))
-			player=httpReq.getRequestParameter("CLAN");
+			player=httpReq.getUrlParameter("CLAN");
 		Banker B=CMLib.map().getBank(last,last);
 		if(B==null) return "BANKER not found?!";
 		if((player!=null)&&(player.length()>0))

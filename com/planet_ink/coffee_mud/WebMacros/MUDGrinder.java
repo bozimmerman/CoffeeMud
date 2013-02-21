@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.grinder.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -18,8 +20,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -42,7 +42,7 @@ public class MUDGrinder extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()	{return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
@@ -51,7 +51,7 @@ public class MUDGrinder extends StdWebMacro
 		if(parms!=null)
 		if(parms.containsKey("AREAMAP"))
 		{
-			String AREA=httpReq.getRequestParameter("AREA");
+			String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
 			Area A=CMLib.map().getArea(AREA);
@@ -59,9 +59,9 @@ public class MUDGrinder extends StdWebMacro
 			if((A.properSize()==0)&&(A.getRandomProperRoom()==null))
 				GrinderRooms.createLonelyRoom(A,null,0,false);
 			GrinderFlatMap map=null;
-			int[] xyxy=this.getAppropriateXY(A,httpReq.getRequestParameter("MAPSTYLE"));
-			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
-			&&(httpReq.getRequestParameter("MAPSTYLE").length()>0)
+			int[] xyxy=this.getAppropriateXY(A,httpReq.getUrlParameter("MAPSTYLE"));
+			if((httpReq.getUrlParameter("MAPSTYLE")!=null)
+			&&(httpReq.getUrlParameter("MAPSTYLE").length()>0)
 			&&(xyxy==null))
 				map=new GrinderMap(A,null);
 			else
@@ -74,7 +74,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			try
 			{
-				String AREA = httpReq.getRequestParameter("AREA");
+				String AREA = httpReq.getUrlParameter("AREA");
 				if (AREA == null) return "";
 				if (AREA.length() == 0) return "";
 				Area A = CMLib.map().getArea(AREA);
@@ -82,14 +82,14 @@ public class MUDGrinder extends StdWebMacro
 				if((A.properSize()==0)&&(A.getRandomProperRoom()==null))
 					GrinderRooms.createLonelyRoom(A, null, 0, false);
 				GrinderFlatMap map=null;
-				if((httpReq.getRequestParameter("MAPSTYLE")!=null)
-				&&(httpReq.getRequestParameter("MAPSTYLE").length()>0)
+				if((httpReq.getUrlParameter("MAPSTYLE")!=null)
+				&&(httpReq.getUrlParameter("MAPSTYLE").length()>0)
 				&&(!(A instanceof GridZones)))
 					map=new GrinderMap(A,null);
 				else
 					map=new GrinderFlatMap(A,null);
 				map.rePlaceRooms();
-				String rS = httpReq.getRequestParameter("ROOMSIZE");
+				String rS = httpReq.getUrlParameter("ROOMSIZE");
 				int roomSize = (rS!=null)?CMath.s_int(rS):4;
 				if (roomSize <= 4)
 					return map.getHTMLMap(httpReq).toString();
@@ -101,8 +101,8 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("WORLDMAP"))
 		{
 			GrinderFlatMap map=null;
-			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
-			&&(httpReq.getRequestParameter("MAPSTYLE").length()>0))
+			if((httpReq.getUrlParameter("MAPSTYLE")!=null)
+			&&(httpReq.getUrlParameter("MAPSTYLE").length()>0))
 				map=new GrinderMap();
 			else
 				map=new GrinderFlatMap();
@@ -134,7 +134,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("ACCOUNT");
+			String last=httpReq.getUrlParameter("ACCOUNT");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			PlayerAccount A=CMLib.players().getLoadAccount(last);
@@ -150,7 +150,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("ACCOUNT");
+			String last=httpReq.getUrlParameter("ACCOUNT");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			PlayerAccount A=CMLib.players().getLoadAccount(last);
@@ -173,7 +173,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("DELMOB");
+			String last=httpReq.getUrlParameter("DELMOB");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			if(last.startsWith("CATALOG-")) {
@@ -192,7 +192,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("DELITEM");
+			String last=httpReq.getUrlParameter("DELITEM");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			if(last.startsWith("CATALOG-")) {
@@ -211,7 +211,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("COMPONENT");
+			String last=httpReq.getUrlParameter("COMPONENT");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			List<AbilityComponent> list = CMLib.ableMapper().getAbilityComponentDVector(last);
@@ -227,7 +227,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("COMPONENT");
+			String last=httpReq.getUrlParameter("COMPONENT");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.COMPONENTS)) return "@break@";
@@ -241,11 +241,11 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("ALLQUALID");
+			String last=httpReq.getUrlParameter("ALLQUALID");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ABILITIES)) return "@break@";
-			String which=httpReq.getRequestParameter("ALLQUALWHICH");
+			String which=httpReq.getUrlParameter("ALLQUALWHICH");
 			if(parms.containsKey("WHICH"))
 				which=parms.get("WHICH");	
 			if((which==null)||(which.length()==0))
@@ -263,7 +263,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("ALLQUALID");
+			String last=httpReq.getUrlParameter("ALLQUALID");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ABILITIES)) return "@break@";
@@ -277,7 +277,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("CLAN");
+			String last=httpReq.getUrlParameter("CLAN");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			Clan C=CMLib.clans().getClan(last);
@@ -292,7 +292,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("CLAN");
+			String last=httpReq.getUrlParameter("CLAN");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			Clan C=CMLib.clans().getClan(last);
@@ -309,7 +309,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("NEWCLANID");
+			String last=httpReq.getUrlParameter("NEWCLANID");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			Clan C=CMLib.clans().findClan(last);
@@ -324,7 +324,7 @@ public class MUDGrinder extends StdWebMacro
 			newClan.setStatus(Clan.CLANSTATUS_PENDING);
 			newClan.create();
 			Log.sysOut("Grinder",mob.Name()+" created clan "+newClan.clanID());
-			httpReq.addRequestParameters("CLAN",last);
+			httpReq.addFakeUrlParameter("CLAN",last);
 			return "The clan "+newClan.clanID()+" has been successfully created.";
 		}
 		else
@@ -332,7 +332,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("GOVERNMENT");
+			String last=httpReq.getUrlParameter("GOVERNMENT");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
@@ -348,7 +348,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("GOVERNMENT");
+			String last=httpReq.getUrlParameter("GOVERNMENT");
 			if(last==null) return "@break@";
 			if(last.length()==0) return "@break@";
 			ClanGovernment G=CMLib.clans().getStockGovernment(CMath.s_int(last));
@@ -365,14 +365,14 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String file=httpReq.getRequestParameter("FILE");
+			String file=httpReq.getUrlParameter("FILE");
 			if(file==null) file="";
 			byte[] bufBytes=(byte[])httpReq.getRequestObjects().get("FILE");
 			if((file.length()==0)||(bufBytes==null)||(bufBytes.length==0))
 				return "That file was empty.";
 			boolean deleteIfExists=false;
-			if(httpReq.getRequestParameter("DELFIRST")!=null)
-				deleteIfExists=httpReq.getRequestParameter("DELFIRST").equalsIgnoreCase("ON");
+			if(httpReq.getUrlParameter("DELFIRST")!=null)
+				deleteIfExists=httpReq.getUrlParameter("DELFIRST").equalsIgnoreCase("ON");
 			StringBuffer buf=new StringBuffer(CMStrings.bytesToStr(bufBytes));
 			Vector<Object> V=new Vector<Object>();
 			V.addAll(CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT"));
@@ -392,13 +392,13 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("ADDAREA"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			String AREA=httpReq.getRequestParameter("AREA");
+			String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null) return "false";
 			if(AREA.length()==0) return "false";
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null)
 			{
-				String areaClass=httpReq.getRequestParameter("AREATYPE");
+				String areaClass=httpReq.getUrlParameter("AREATYPE");
 				A=CMClass.getAreaType(areaClass);
 				if(A==null) return "false";
 				A.setName(AREA);
@@ -415,13 +415,13 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("EDITAREA"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			String AREA=httpReq.getRequestParameter("AREA");
+			String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null) return "";
 			GrinderAreas.modifyArea(httpReq,parms);
-			AREA=httpReq.getRequestParameter("AREA");
+			AREA=httpReq.getUrlParameter("AREA");
 			Log.sysOut("Grinder",mob.Name()+" edited area "+A.Name());
 		}
 		else
@@ -429,40 +429,40 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
 			if(R==null) return "@break@";
-			int dir=Directions.getGoodDirectionCode(httpReq.getRequestParameter("LINK"));
+			int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
 			if(dir<0) return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" deleted exit "+dir+" from "+R.roomID());
 			String errMsg=GrinderExits.delExit(R,dir);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("EDITEXIT"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
 			if(R==null) return "@break@";
-			int dir=Directions.getGoodDirectionCode(httpReq.getRequestParameter("LINK"));
+			int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
 			if(dir<0) return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" modified exit "+dir+" from "+R.roomID());
 			String errMsg=GrinderExits.editExit(R,dir,httpReq,parms);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("QUICKFIND"))
 		{
-			String find=httpReq.getRequestParameter("QUICKFIND");
+			String find=httpReq.getUrlParameter("QUICKFIND");
 			if(find==null) return "@break@";
-			String AREA=httpReq.getRequestParameter("AREA");
+			String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null) return "";
 			String roomID=quickfind(A,find.toUpperCase());
 			if(roomID!=null)
-				httpReq.addRequestParameters("ROOM",roomID);
+				httpReq.addFakeUrlParameter("ROOM",roomID);
 			return "";
 		}
 		else
@@ -470,28 +470,28 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
 			if(R==null) return "@break@";
-			int dir=Directions.getGoodDirectionCode(httpReq.getRequestParameter("LINK"));
+			int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
 			if(dir<0) return "@break@";
-			Room R2=CMLib.map().getRoom(httpReq.getRequestParameter("OLDROOM"));
+			Room R2=CMLib.map().getRoom(httpReq.getUrlParameter("OLDROOM"));
 			if(R2==null) return "@break@";
-			int dir2=Directions.getGoodDirectionCode(httpReq.getRequestParameter("OLDLINK"));
+			int dir2=Directions.getGoodDirectionCode(httpReq.getUrlParameter("OLDLINK"));
 			if(dir2<0) return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" linked exit "+dir+" from "+R.roomID());
 			String errMsg=GrinderExits.linkRooms(R,R2,dir,dir2);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("LINKAREA"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
 			if(R==null) return "@break@";
-			int dir=Directions.getGoodDirectionCode(httpReq.getRequestParameter("LINK"));
+			int dir=Directions.getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
 			if(dir<0) return "@break@";
-			String oldroom=httpReq.getRequestParameter("OLDROOM");
+			String oldroom=httpReq.getUrlParameter("OLDROOM");
 			if(oldroom==null) oldroom="";
 			Room R2=CMLib.map().getRoom(oldroom);
 			String errMsg="";
@@ -502,18 +502,18 @@ public class MUDGrinder extends StdWebMacro
 				errMsg=GrinderExits.linkRooms(R,R2,dir,Directions.getOpDirectionCode(dir));
 				Log.sysOut("Grinder",mob.Name()+" linked area "+R.roomID()+" to "+R2.roomID());
 			}
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("EDITROOM"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
 			if(R==null) return "@break@";
-			final String multiFlagStr=httpReq.getRequestParameter("MULTIROOMFLAG");
+			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
-			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getRequestParameter("MULTIROOMLIST"),false);
+			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
 			String errMsg;
 			if((multiFlag)&&(multiRoomList.size()>0))
 			{
@@ -524,20 +524,20 @@ public class MUDGrinder extends StdWebMacro
 					if(id.length()==0) continue;
 					R=CMLib.map().getRoom(id);
 					if(R==null) return "@break@";
-					ExternalHTTPRequests mergeReq=RoomData.mergeRoomFields(httpReq, setPairs, R);
+					HTTPRequest mergeReq=RoomData.mergeRoomFields(httpReq, setPairs, R);
 					errMsg+=GrinderRooms.editRoom(mergeReq,parms,mob,R);
 				}
 			}
 			else
 				errMsg=GrinderRooms.editRoom(httpReq,parms,mob,R);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("DELHOLIDAY"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("HOLIDAY");
+			String last=httpReq.getUrlParameter("HOLIDAY");
 			if(last==null) return " @break@";
 			int dex=CMLib.quests().getHolidayIndex(last);
 			if(dex<0) return "Holiday '" + last +"' does not exist.";
@@ -550,7 +550,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String last=httpReq.getRequestParameter("HOLIDAY");
+			String last=httpReq.getUrlParameter("HOLIDAY");
 			if(last==null) return " @break@";
 			int holidayIndex=CMLib.quests().getHolidayIndex(last);
 			String err=GrinderHolidays.createModifyHoliday(httpReq, parms, last);
@@ -566,7 +566,7 @@ public class MUDGrinder extends StdWebMacro
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Race R=null;
-			String last=httpReq.getRequestParameter("RACE");
+			String last=httpReq.getUrlParameter("RACE");
 			if(last==null) return " @break@";
 			R=CMClass.getRace(last);
 			if((R==null)||(!R.isGeneric()))
@@ -588,7 +588,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			Race R=null;
 			Race oldR=null;
-			String last=httpReq.getRequestParameter("RACE");
+			String last=httpReq.getUrlParameter("RACE");
 			if(last==null) return " @break@";
 			R=CMClass.getRace(last);
 			boolean create=false;
@@ -601,7 +601,7 @@ public class MUDGrinder extends StdWebMacro
 			}
 			R=R.makeGenRace();
 			String errMsg=GrinderRaces.modifyRace(httpReq, parms, (oldR==null)?R:oldR, R);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 			if(!create)
 			{
 				CMLib.database().DBDeleteRace(R.ID());
@@ -626,7 +626,7 @@ public class MUDGrinder extends StdWebMacro
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			CharClass C=null;
-			String last=httpReq.getRequestParameter("CLASS");
+			String last=httpReq.getUrlParameter("CLASS");
 			if(last==null) return " @break@";
 			C=CMClass.getCharClass(last);
 			if((C==null)||(!C.isGeneric()))
@@ -649,7 +649,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			CharClass C=null;
 			CharClass oldC=null;
-			String last=httpReq.getRequestParameter("CLASS");
+			String last=httpReq.getUrlParameter("CLASS");
 			if(last==null) return " @break@";
 			C=CMClass.getCharClass(last);
 			boolean create=false;
@@ -662,7 +662,7 @@ public class MUDGrinder extends StdWebMacro
 			}
 			C=C.makeGenCharClass();
 			String errMsg=GrinderClasses.modifyCharClass(httpReq, parms, (oldC==null)?C:oldC, C);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 			if(!create)
 			{
 				CMLib.database().DBDeleteClass(C.ID());
@@ -687,7 +687,7 @@ public class MUDGrinder extends StdWebMacro
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Faction F=null;
-			String last=httpReq.getRequestParameter("FACTION");
+			String last=httpReq.getUrlParameter("FACTION");
 			if(last==null) return " @break@";
 			F=CMLib.factions().getFaction(last);
 			if(F==null) return " @break@";
@@ -704,7 +704,7 @@ public class MUDGrinder extends StdWebMacro
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Faction F=null;
-			String last=httpReq.getRequestParameter("FACTION");
+			String last=httpReq.getUrlParameter("FACTION");
 			if(last==null) return " @break@";
 			F=CMLib.factions().getFaction(last);
 			//boolean create=false;
@@ -724,7 +724,7 @@ public class MUDGrinder extends StdWebMacro
 			String errMsg=GrinderFactions.modifyFaction(httpReq, parms, F);
 			if(errMsg.length()==0)
 				errMsg=CMLib.factions().resaveFaction(F);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 			if(errMsg.length()==0)
 				return "Faction "+F.ID()+" created/modified";
 			return errMsg;
@@ -735,7 +735,7 @@ public class MUDGrinder extends StdWebMacro
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Ability A=null;
-			String last=httpReq.getRequestParameter("ABILITY");
+			String last=httpReq.getUrlParameter("ABILITY");
 			if(last==null) return " @break@";
 			A=CMClass.getAbility(last);
 			if((A==null)||(!A.isGeneric()))
@@ -755,14 +755,14 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			Ability A=null;
 			Ability oldA=null;
-			String last=httpReq.getRequestParameter("ABILITY");
+			String last=httpReq.getUrlParameter("ABILITY");
 			if(last==null) return " @break@";
 			A=CMClass.getAbility(last);
 			boolean create=false;
 			if((A!=null)&&(!A.isGeneric()))
 				return " @break@";
 			String type="GenAbility";
-			int code=CMath.s_int(httpReq.getRequestParameter("CLASSIFICATION_ACODE"));
+			int code=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_ACODE"));
 			if(code==Ability.ACODE_LANGUAGE) type="GenLanguage";
 			if(code==Ability.ACODE_COMMON_SKILL) type="GenCraftSkill";
 			if(A==null) {
@@ -772,7 +772,7 @@ public class MUDGrinder extends StdWebMacro
 				A.setStat("CLASS",last);
 			}
 			String errMsg=GrinderAbilities.modifyAbility(httpReq, parms, (oldA==null)?A:oldA, A);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 			if(!create)
 			{
 				CMLib.database().DBDeleteAbility(A.ID());
@@ -789,43 +789,43 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String player=httpReq.getRequestParameter("PLAYER");
+			String player=httpReq.getUrlParameter("PLAYER");
 			MOB playerM=(player!=null)?CMLib.players().getLoadPlayer(player):null;
-			String roomID=httpReq.getRequestParameter("ROOM");
+			String roomID=httpReq.getUrlParameter("ROOM");
 			Room R=CMLib.map().getRoom(roomID);
 			if((R==null)&&(playerM==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY")))) return "@break@";
 			String errMsg=GrinderItems.editItem(httpReq,parms,mob,R,playerM);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("EDITMOB"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String roomID=httpReq.getRequestParameter("ROOM");
+			String roomID=httpReq.getUrlParameter("ROOM");
 			Room R=CMLib.map().getRoom(roomID);
 			if((R==null)&&((roomID==null)||(!roomID.equalsIgnoreCase("ANY")))) return "@break@";
 			String errMsg=GrinderMobs.editMob(httpReq,parms,mob,R);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("EDITPLAYER"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			MOB M=CMLib.players().getLoadPlayer(httpReq.getRequestParameter("PLAYER"));
+			MOB M=CMLib.players().getLoadPlayer(httpReq.getUrlParameter("PLAYER"));
 			if(M==null) return "@break@";
 			String errMsg=GrinderPlayers.editPlayer(mob,httpReq,parms,M);
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("DELROOM"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			final String multiFlagStr=httpReq.getRequestParameter("MULTIROOMFLAG");
+			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
-			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getRequestParameter("MULTIROOMLIST"),false);
+			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
 			List<Room> rooms = new LinkedList<Room>();
 			if((multiFlag)&&(multiRoomList.size()>0))
 			{
@@ -839,7 +839,7 @@ public class MUDGrinder extends StdWebMacro
 			}
 			else
 			{
-				Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+				Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
 				if(R==null) return "@break@";
 				rooms.add(R);
 			}
@@ -849,26 +849,26 @@ public class MUDGrinder extends StdWebMacro
 				for(int d=0;d<R.rawDoors().length;d++)
 					if(R.rawDoors()[d]!=null)
 					{
-						httpReq.addRequestParameters("ROOM",R.rawDoors()[d].roomID());
-						httpReq.addRequestParameters("LINK","");
+						httpReq.addFakeUrlParameter("ROOM",R.rawDoors()[d].roomID());
+						httpReq.addFakeUrlParameter("LINK","");
 						break;
 					}
 				Log.sysOut("Grinder",mob.Name()+" deleted room "+R.roomID());
 				errMsg+=GrinderRooms.delRoom(R)+" ";
 			}
-			httpReq.addRequestParameters("ERRMSG",errMsg);
-			httpReq.removeRequestParameter("ROOM");
-			httpReq.removeRequestParameter("MULTIROOMLIST");
-			httpReq.removeRequestParameter("MULTIROOMFLAG");
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
+			httpReq.removeUrlParameter("ROOM");
+			httpReq.removeUrlParameter("MULTIROOMLIST");
+			httpReq.removeUrlParameter("MULTIROOMFLAG");
 		}
 		else
 		if(parms.containsKey("RESETROOM"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			final String multiFlagStr=httpReq.getRequestParameter("MULTIROOMFLAG");
+			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
-			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getRequestParameter("MULTIROOMLIST"),false);
+			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
 			List<Room> rooms = new LinkedList<Room>();
 			if((multiFlag)&&(multiRoomList.size()>0))
 			{
@@ -882,7 +882,7 @@ public class MUDGrinder extends StdWebMacro
 			}
 			else
 			{
-				Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+				Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
 				if(R==null) return "@break@";
 				rooms.add(R);
 			}
@@ -892,39 +892,39 @@ public class MUDGrinder extends StdWebMacro
 				CMLib.map().resetRoom(R,true);
 				errMsg+="Room "+R.roomID()+" reset.  ";
 			}
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("ADDROOM"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String link=httpReq.getRequestParameter("LINK");
-			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
+			String link=httpReq.getUrlParameter("LINK");
+			Room R=CMLib.map().getRoom(httpReq.getUrlParameter("ROOM"));
 			if(R==null) return "@break@";
 			int dir=Directions.getGoodDirectionCode(link);
 			if(dir<0) return "@break@";
-			String copyThisOne=httpReq.getRequestParameter("COPYROOM");
+			String copyThisOne=httpReq.getUrlParameter("COPYROOM");
 			String errMsg=GrinderRooms.createRoom(R,dir,(copyThisOne!=null)&&(copyThisOne.equalsIgnoreCase("ON")));
-			httpReq.addRequestParameters("ERRMSG",errMsg);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 			R=R.rawDoors()[dir];
 			if(R!=null)
 			{
-				httpReq.addRequestParameters("ROOM",R.roomID());
+				httpReq.addFakeUrlParameter("ROOM",R.roomID());
 				Log.sysOut("Grinder",mob.Name()+" added room "+R.roomID());
 			}
-			httpReq.addRequestParameters("LINK","");
+			httpReq.addFakeUrlParameter("LINK","");
 		}
 		else
 		if(parms.containsKey("PAINTROOMS"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String AREA=httpReq.getRequestParameter("AREA");
+			String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null) return "@break@";
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null) return "@break@";
-			String like=httpReq.getRequestParameter("ROOM");
+			String like=httpReq.getUrlParameter("ROOM");
 			Vector likeList=CMParms.parseCommas(like,true);
 			Vector RS=new Vector();
 			for(int l=0;l<likeList.size();l++)
@@ -941,11 +941,11 @@ public class MUDGrinder extends StdWebMacro
 				RS.addElement(likeRoom);
 			}
 			if(RS.size()==0) return "You did not specify a room or room list to paint from!";
-			boolean overwrite=httpReq.getRequestParameter("NOVERLAP")!=null
-								&&(httpReq.getRequestParameter("NOVERLAP").length()>0);
-			int brushSize=CMath.s_int(httpReq.getRequestParameter("BRUSHSIZE"));
+			boolean overwrite=httpReq.getUrlParameter("NOVERLAP")!=null
+								&&(httpReq.getUrlParameter("NOVERLAP").length()>0);
+			int brushSize=CMath.s_int(httpReq.getUrlParameter("BRUSHSIZE"));
 			if(brushSize<=0) return "Your brush size should be a number greater than 0!";
-			int[] coords=getAppropriateXY(A,httpReq.getRequestParameter("PAINTAT"));
+			int[] coords=getAppropriateXY(A,httpReq.getUrlParameter("PAINTAT"));
 			if(coords==null) return "An error occurred trying to paint.  Relogin and try again.";
 			int radius=(int)Math.round(Math.floor(CMath.div(brushSize,2)));
 			if(radius<1) radius=1;
@@ -999,25 +999,25 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
-			String AREA=httpReq.getRequestParameter("AREA");
+			String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null) return "false";
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null) return "@break@";
-			String roomID=httpReq.getRequestParameter("ROOM");
-			String link=httpReq.getRequestParameter("AUTOLINK");
+			String roomID=httpReq.getUrlParameter("ROOM");
+			String link=httpReq.getUrlParameter("AUTOLINK");
 			Room R=CMLib.map().getRoom(roomID);
 			if((roomID==null)||(R!=null)||(roomID.length()==0)) return "@break@";
-			String copyThisOne=httpReq.getRequestParameter("COPYROOM");
+			String copyThisOne=httpReq.getUrlParameter("COPYROOM");
 			Room copyRoom=CMLib.map().getRoom(copyThisOne);
 			Room newRoom=GrinderRooms.createGridRoom(A,roomID,copyRoom,null,((link!=null)&&(link.length()>0)));
 			if(newRoom==null) 
-				httpReq.addRequestParameters("ERRMSG","An error occurred trying to create your room.");
+				httpReq.addFakeUrlParameter("ERRMSG","An error occurred trying to create your room.");
 			else
 			{
 				Log.sysOut("Grinder",mob.Name()+" added room "+newRoom.roomID());
-				httpReq.addRequestParameters("ROOM",newRoom.roomID());
+				httpReq.addFakeUrlParameter("ROOM",newRoom.roomID());
 			}
-			httpReq.addRequestParameters("LINK","");
+			httpReq.addFakeUrlParameter("LINK","");
 		}
 		return "";
 	}
@@ -1064,9 +1064,9 @@ public class MUDGrinder extends StdWebMacro
 		return null;
 	}
 
-	protected Area getLoggedArea(ExternalHTTPRequests httpReq, MOB mob)
+	protected Area getLoggedArea(HTTPRequest httpReq, MOB mob)
 	{
-		String AREA=httpReq.getRequestParameter("AREA");
+		String AREA=httpReq.getUrlParameter("AREA");
 		if(AREA==null) return null;
 		if(AREA.length()==0) return null;
 		Area A=CMLib.map().getArea(AREA);

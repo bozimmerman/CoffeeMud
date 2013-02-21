@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -17,7 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.*;
 import java.util.*;
 import java.net.URLEncoder;
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -595,7 +596,7 @@ public class GrinderFlatMap
 		return V;
 	}
 
-	public StringBuffer getHTMLTable(ExternalHTTPRequests httpReq)
+	public StringBuffer getHTMLTable(HTTPRequest httpReq)
 	{
 		StringBuffer buf=new StringBuffer("");
 		buf.append("<TABLE WIDTH="+((Xbound+1)*130)+" BORDER=0 CELLSPACING=0 CELLPADDING=0>");
@@ -791,7 +792,7 @@ public class GrinderFlatMap
 		return -1;
 	}
 
-	protected String getDoorLabelGif(int d, GrinderRoom room, ExternalHTTPRequests httpReq)
+	protected String getDoorLabelGif(int d, GrinderRoom room, HTTPRequest httpReq)
 	{
 		if((room==null)
 		||(room.doors==null)
@@ -856,13 +857,13 @@ public class GrinderFlatMap
 		return xy;
 	}
 
-	public StringBuffer getHTMLMap(ExternalHTTPRequests httpReq)
+	public StringBuffer getHTMLMap(HTTPRequest httpReq)
 	{
 		return getHTMLMap(httpReq, 4);
 	}
 
 	// this is much like getHTMLTable, but tiny rooms for world map viewing. No exits or ID's for now.
-	public StringBuffer getHTMLMap(ExternalHTTPRequests httpReq, int roomSize)
+	public StringBuffer getHTMLMap(HTTPRequest httpReq, int roomSize)
 	{
 		StringBuffer buf = new StringBuffer("");
 		buf.append("<TABLE WIDTH=" + ( (Xbound + 1) * roomSize) +

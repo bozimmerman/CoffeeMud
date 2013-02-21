@@ -14,8 +14,9 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
+import com.planet_ink.miniweb.interfaces.*;
+import java.util.*;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -47,8 +48,8 @@ public interface WebMacro extends CMObject
 	public String name();
 	/**
 	 * Whether the runMacro or runBinaryMacro executor should be called.
-	 * @see WebMacro#runBinaryMacro(ExternalHTTPRequests, String)
-	 * @see WebMacro#runMacro(ExternalHTTPRequests, String)
+	 * @see WebMacro#runBinaryMacro(HTTPRequest, String)
+	 * @see WebMacro#runMacro(HTTPRequest, String)
 	 * @return whether the runBinaryMacro executor should be called instead of runMacro
 	 */
 	public boolean preferBinary();
@@ -62,7 +63,7 @@ public interface WebMacro extends CMObject
 	 * Whether this macro returns an attachment instead of something
 	 * displayable.  If true, the content-disposition will reflect
 	 * the filename parameter.
-	 * @see WebMacro#getFilename(ExternalHTTPRequests, String)
+	 * @see WebMacro#getFilename(HTTPRequest, String)
 	 * @param filename the filename from getFilename
 	 * @return  this is an attachment macro, so send back header
 	 */
@@ -73,7 +74,7 @@ public interface WebMacro extends CMObject
 	 * of a standard web macro.  If true is returned, URLs such as:
 	 * http://mydomain.com/mymacroname?firstparm=value&secondparm=value
 	 * might succeeed
-	 * @see WebMacro#getFilename(ExternalHTTPRequests, String)
+	 * @see WebMacro#getFilename(HTTPRequest, String)
 	 * @return whether this is a wierd URL macro
 	 */
 	public boolean isAWebPath();
@@ -82,34 +83,34 @@ public interface WebMacro extends CMObject
 	 * filename to use as a page for returning to the caller.  It may simply
 	 * return what is given to it.
 	 * @see WebMacro#isAWebPath()
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.HTTPRequest
 	 * @param httpReq the requests object
 	 * @param filename the default filename
 	 * @return usually the default filename again
 	 */
-	public String getFilename(ExternalHTTPRequests httpReq, String filename);
+	public String getFilename(HTTPRequest httpReq, String filename);
 	
 	/**
 	 * This method is executed only if this macro returns true for preferBinary().
 	 * It will execute the macro and return its results as a binary byte array.
 	 * @see WebMacro#preferBinary()
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.HTTPRequest
 	 * @param httpReq the external requests object
 	 * @param parm any parameter strigs given to the macro
 	 * @return the binary stream result of running this macro
 	 * @throws HTTPServerException
 	 */
-	public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException;
+	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException;
 	/**
 	 * This method is executed only if this macro returns false for preferBinary().
 	 * It will execute the macro and return its results as a string, which is then
 	 * substituted for the macro reference in the web page where the macro was found.
 	 * @see WebMacro#preferBinary()
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExternalHTTPRequests
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.HTTPRequest
 	 * @param httpReq the external requests object
 	 * @param parm any parameter strigs given to the macro
 	 * @return the string result of running this macro
 	 * @throws HTTPServerException
 	 */
-	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException;
+	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException;
 }

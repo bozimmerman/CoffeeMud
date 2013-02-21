@@ -13,9 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,21 +35,21 @@ public class AbilityCursesNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return " @break@";
 
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ABILITY");
+		String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("ABILITY");
+			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
 		
 		String lastID="";
-		String deityName=httpReq.getRequestParameter("DEITY");
+		String deityName=httpReq.getUrlParameter("DEITY");
 		Deity D=null;
 		if((deityName!=null)&&(deityName.length()>0))
 			D=CMLib.map().getDeity(deityName);
@@ -65,12 +64,12 @@ public class AbilityCursesNext extends StdWebMacro
 			Ability A=D.fetchCurse(a);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
 			{
-				httpReq.addRequestParameters("ABILITY",A.ID());
+				httpReq.addFakeUrlParameter("ABILITY",A.ID());
 				return "";
 			}
 			lastID=A.ID();
 		}
-		httpReq.addRequestParameters("ABILITY","");
+		httpReq.addFakeUrlParameter("ABILITY","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

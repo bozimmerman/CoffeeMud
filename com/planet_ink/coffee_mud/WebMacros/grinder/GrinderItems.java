@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -15,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -53,17 +54,17 @@ public class GrinderItems
 		  "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
 		  "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED",
 		  "CATARATE","CATALIVE","CATAMASK","BITE","MAXUSES"};
-	public static String editItem(ExternalHTTPRequests httpReq,
+	public static String editItem(HTTPRequest httpReq,
 								  java.util.Map<String,String> parms,
 								  MOB whom,
 								  Room R,
 								  MOB playerM)
 	{
-		String itemCode=httpReq.getRequestParameter("ITEM");
+		String itemCode=httpReq.getUrlParameter("ITEM");
 		if(itemCode==null) return "@break@";
 
-		String mobNum=httpReq.getRequestParameter("MOB");
-		String newClassID=httpReq.getRequestParameter("CLASSES");
+		String mobNum=httpReq.getUrlParameter("MOB");
+		String newClassID=httpReq.getUrlParameter("CLASSES");
 
 		String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
 		synchronized(sync.intern())
@@ -155,7 +156,7 @@ public class GrinderItems
 					generic=false;
 					parm=parm.substring(1);
 				}
-				if((!httpReq.isRequestParameter(parm))
+				if((!httpReq.isUrlParameter(parm))
 				&&(oldI!=null)
 				&&(newClassID==null)
 				&&(CMLib.flags().isCataloged(oldI))
@@ -163,7 +164,7 @@ public class GrinderItems
 				&&(!parm.equalsIgnoreCase("BEINGWORN")))
 					continue;
 
-				String old=httpReq.getRequestParameter(parm);
+				String old=httpReq.getUrlParameter(parm);
 				if(old==null) old="";
 
 				if((I.isGeneric()||(!generic)))
@@ -232,12 +233,12 @@ public class GrinderItems
 					break;
 				case 19: // worn data
 					if(((I instanceof Armor)||(I instanceof MusicalInstrument))
-					&&(httpReq.isRequestParameter("WORNDATA")))
+					&&(httpReq.isUrlParameter("WORNDATA")))
 					{
-						int climate=CMath.s_int(httpReq.getRequestParameter("WORNDATA"));
+						int climate=CMath.s_int(httpReq.getUrlParameter("WORNDATA"));
 						for(int i=1;;i++)
-							if(httpReq.isRequestParameter("WORNDATA"+(Integer.toString(i))))
-								climate=climate|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(Integer.toString(i))));
+							if(httpReq.isUrlParameter("WORNDATA"+(Integer.toString(i))))
+								climate=climate|CMath.s_int(httpReq.getUrlParameter("WORNDATA"+(Integer.toString(i))));
 							else
 								break;
 						I.setRawProperLocationBitmap(climate);
@@ -296,11 +297,11 @@ public class GrinderItems
 					&&(CMClass.classID(I).indexOf("SuperPill")<0))
 					{
 						StringBuilder sp=new StringBuilder("");
-						if(httpReq.isRequestParameter("RSPELL1"))
+						if(httpReq.isUrlParameter("RSPELL1"))
 						{
 							int num=1;
-							String aff=httpReq.getRequestParameter("RSPELL"+num);
-							String theparm=httpReq.getRequestParameter("RSPDATA"+num);
+							String aff=httpReq.getUrlParameter("RSPELL"+num);
+							String theparm=httpReq.getUrlParameter("RSPDATA"+num);
 							while((aff!=null)&&(theparm!=null))
 							{
 								if(aff.length()>0)
@@ -314,8 +315,8 @@ public class GrinderItems
 										sp.append("(").append(theparm).append(")");
 								}
 								num++;
-								aff=httpReq.getRequestParameter("RSPELL"+num);
-								theparm=httpReq.getRequestParameter("RSPDATA"+num);
+								aff=httpReq.getUrlParameter("RSPELL"+num);
+								theparm=httpReq.getUrlParameter("RSPDATA"+num);
 							}
 						}
 						((SpellHolder)I).setSpellList(sp.toString());
@@ -338,15 +339,15 @@ public class GrinderItems
 					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 					{
 						Vector<String> V=new Vector<String>();
-						if(httpReq.isRequestParameter("MAPAREAS"))
+						if(httpReq.isUrlParameter("MAPAREAS"))
 						{
-							old=httpReq.getRequestParameter("MAPAREAS").trim();
+							old=httpReq.getUrlParameter("MAPAREAS").trim();
 							if(old.length()>0)
 								V.add(old);
 							for(int i=1;;i++)
-								if(httpReq.isRequestParameter("MAPAREAS"+(Integer.toString(i))))
+								if(httpReq.isUrlParameter("MAPAREAS"+(Integer.toString(i))))
 								{
-									old=httpReq.getRequestParameter("MAPAREAS"+(Integer.toString(i))).trim();
+									old=httpReq.getUrlParameter("MAPAREAS"+(Integer.toString(i))).trim();
 									if(old.length()>0)
 										V.add(old);
 								}
@@ -446,13 +447,13 @@ public class GrinderItems
 				case 61: // is key
 					break;
 				case 62: // content types
-					if((I instanceof Container)&&(httpReq.isRequestParameter("CONTENTTYPES")))
+					if((I instanceof Container)&&(httpReq.isUrlParameter("CONTENTTYPES")))
 					{
-						long content=CMath.s_long(httpReq.getRequestParameter("CONTENTTYPES"));
+						long content=CMath.s_long(httpReq.getUrlParameter("CONTENTTYPES"));
 						if(content>0)
 						for(int i=1;;i++)
-							if(httpReq.isRequestParameter("CONTENTTYPES"+(Integer.toString(i))))
-								content=content|CMath.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(Integer.toString(i))));
+							if(httpReq.isUrlParameter("CONTENTTYPES"+(Integer.toString(i))))
+								content=content|CMath.s_int(httpReq.getUrlParameter("CONTENTTYPES"+(Integer.toString(i))));
 							else
 								break;
 						((Container)I).setContainTypes(content);
@@ -515,9 +516,9 @@ public class GrinderItems
 						int x=0;
 						String thisFieldname = CMStrings.replaceAll(fieldName,"###", ""+x);
 						List<String> finalData=new ArrayList<String>();
-						while(httpReq.isRequestParameter(thisFieldname))
+						while(httpReq.isUrlParameter(thisFieldname))
 						{
-							old = httpReq.getRequestParameter(thisFieldname);
+							old = httpReq.getUrlParameter(thisFieldname);
 							finalData.add(CMStrings.replaceAll(old,",","\t"));
 							thisFieldname = CMStrings.replaceAll(fieldName,"###", ""+(++x));
 						}
@@ -598,7 +599,7 @@ public class GrinderItems
 				Item I2=CMLib.catalog().getCatalogItem(itemCode.substring(8));
 				if((I2!=null)&&(!I.Name().equalsIgnoreCase(I2.Name())))
 					I.setName(I2.Name());
-				httpReq.addRequestParameters("ITEM",itemCode);
+				httpReq.addFakeUrlParameter("ITEM",itemCode);
 				if(I2==null)
 				{
 					CMLib.catalog().addCatalog(I);
@@ -698,20 +699,20 @@ public class GrinderItems
 					&&(!itemCode.startsWith("NEWCATA-")))
 					{
 						RoomData.contributeItems(new XVector<Item>(I));
-						httpReq.addRequestParameters("ITEM",RoomData.getItemCode(RoomData.getItemCache(),I));
+						httpReq.addFakeUrlParameter("ITEM",RoomData.getItemCode(RoomData.getItemCache(),I));
 					}
 				}
 				else
 				{
 					CMLib.database().DBUpdateItems(R);
-					httpReq.addRequestParameters("ITEM",RoomData.getItemCode(R,I));
+					httpReq.addFakeUrlParameter("ITEM",RoomData.getItemCode(R,I));
 					R.startItemRejuv();
 				}
 			}
 			else
 			{
-				if((httpReq.isRequestParameter("BEINGWORN"))
-				&&((httpReq.getRequestParameter("BEINGWORN")).equals("on")))
+				if((httpReq.isUrlParameter("BEINGWORN"))
+				&&((httpReq.getUrlParameter("BEINGWORN")).equals("on")))
 				{
 					// deprecated back to room/mob, where it belongs
 					//if(I.amWearingAt(Wearable.IN_INVENTORY))
@@ -721,9 +722,9 @@ public class GrinderItems
 				if((R!=null)&&(playerM==null))
 				{
 					CMLib.database().DBUpdateMOBs(R);
-					httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
+					httpReq.addFakeUrlParameter("MOB",RoomData.getMOBCode(R,M));
 				}
-				httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
+				httpReq.addFakeUrlParameter("ITEM",RoomData.getItemCode(M,I));
 				if((mobNum==null)||(mobNum.startsWith("CATALOG-"))||(mobNum.startsWith("NEWCATA-")))
 				{
 					CMLib.catalog().updateCatalog(M);

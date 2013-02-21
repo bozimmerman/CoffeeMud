@@ -14,10 +14,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
-
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -41,11 +39,11 @@ public class AbilityRecipeData extends StdWebMacro
 
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		
-		String replaceCommand=httpReq.getRequestParameter("REPLACE");
+		String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null) 
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
@@ -53,14 +51,14 @@ public class AbilityRecipeData extends StdWebMacro
 			int eq=replaceCommand.indexOf('=');
 			String field=replaceCommand.substring(0,eq);
 			String value=replaceCommand.substring(eq+1);
-			httpReq.addRequestParameters(field, value);
-			httpReq.addRequestParameters("REPLACE","");
+			httpReq.addFakeUrlParameter(field, value);
+			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 		
-		String last=httpReq.getRequestParameter("ABILITY");
+		String last=httpReq.getUrlParameter("ABILITY");
 		if(last==null) return " @break@";
 		
-		String rownum=httpReq.getRequestParameter("ABILITYRECIPEROW");
+		String rownum=httpReq.getUrlParameter("ABILITYRECIPEROW");
 		
 		if(last.length()>0)
 		{
@@ -96,8 +94,8 @@ public class AbilityRecipeData extends StdWebMacro
 				
 				if(parms.containsKey("SAVETOVFS"))
 				{
-					if(httpReq.isRequestParameter("SAVETOVFS"))
-						str.append(CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"))?"CHECKED":"");
+					if(httpReq.isUrlParameter("SAVETOVFS"))
+						str.append(CMath.s_bool(httpReq.getUrlParameter("SAVETOVFS"))?"CHECKED":"");
 					else
 						str.append(recipeData.wasVFS()?"CHECKED":"");
 				}
@@ -110,7 +108,7 @@ public class AbilityRecipeData extends StdWebMacro
 					if((row>0)&&((row-1)<recipeData.dataRows().size()))
 						dataRow = (DVector)recipeData.dataRows().elementAt(row-1);
 					else
-						dataRow=recipeData.newRow(httpReq.getRequestParameter("CLASSFIELD"));
+						dataRow=recipeData.newRow(httpReq.getUrlParameter("CLASSFIELD"));
 					str.append("\n\r<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 					for(int c=0;c<dataRow.size();c++)
 					{
@@ -172,7 +170,7 @@ public class AbilityRecipeData extends StdWebMacro
 						dataRow = (DVector)recipeData.dataRows().elementAt(row-1);
 					else
 					{
-						dataRow=recipeData.newRow(httpReq.getRequestParameter("CLASSFIELD"));
+						dataRow=recipeData.newRow(httpReq.getUrlParameter("CLASSFIELD"));
 						recipeData.dataRows().addElement(dataRow);
 					}
 					for(int c=0;c<dataRow.size();c++)
@@ -186,7 +184,7 @@ public class AbilityRecipeData extends StdWebMacro
 					}
 					MOB M = Authenticate.getAuthenticatedMob(httpReq);
 					if(M==null) return " @break@";
-					boolean saveToVFS = CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"));
+					boolean saveToVFS = CMath.s_bool(httpReq.getUrlParameter("SAVETOVFS"));
 					if(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.CMDRECIPES))
 						CMLib.ableParms().resaveRecipeFile(M,recipeData.recipeFilename(),recipeData.dataRows(),recipeData.columns(), saveToVFS);
 					else
@@ -202,7 +200,7 @@ public class AbilityRecipeData extends StdWebMacro
 						return " @break@";
 					MOB M = Authenticate.getAuthenticatedMob(httpReq);
 					if(M==null) return " @break@";
-					boolean saveToVFS = CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"));
+					boolean saveToVFS = CMath.s_bool(httpReq.getUrlParameter("SAVETOVFS"));
 					if(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.CMDRECIPES))
 						CMLib.ableParms().resaveRecipeFile(M,recipeData.recipeFilename(),recipeData.dataRows(),recipeData.columns(), saveToVFS);
 					else

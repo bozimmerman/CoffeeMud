@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -17,8 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.StdWebMacro;
 
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -39,12 +39,12 @@ public class GrinderAllQualifys
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String editAllQualify(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public String editAllQualify(HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		String last=httpReq.getRequestParameter("ALLQUALID");
+		String last=httpReq.getUrlParameter("ALLQUALID");
 		if((last==null)||(last.length()==0))
 			return " @break@";
-		String which=httpReq.getRequestParameter("ALLQUALWHICH");
+		String which=httpReq.getUrlParameter("ALLQUALWHICH");
 		if(parms.containsKey("WHICH"))
 			which=parms.get("WHICH");	
 		if((which==null)||(which.length()==0))
@@ -61,26 +61,26 @@ public class GrinderAllQualifys
 			newMap.allQualifyFlag=true;
 		}
 		String s;
-		s=httpReq.getRequestParameter("LEVEL");
+		s=httpReq.getUrlParameter("LEVEL");
 		if(s!=null) newMap.qualLevel=CMath.s_int(s);
-		s=httpReq.getRequestParameter("PROF");
+		s=httpReq.getUrlParameter("PROF");
 		if(s!=null) newMap.defaultProficiency=CMath.s_int(s);
-		s=httpReq.getRequestParameter("MASK");
+		s=httpReq.getUrlParameter("MASK");
 		if(s!=null) newMap.extraMask=s;
-		s=httpReq.getRequestParameter("AUTOGAIN");
+		s=httpReq.getUrlParameter("AUTOGAIN");
 		if(s!=null) newMap.autoGain=s.equalsIgnoreCase("on");
 		StringBuilder preReqs=new StringBuilder("");
 		int curChkNum=1;
-		while(httpReq.isRequestParameter("REQABLE"+curChkNum))
+		while(httpReq.isUrlParameter("REQABLE"+curChkNum))
 		{
-			String curVal=httpReq.getRequestParameter("REQABLE"+curChkNum);
+			String curVal=httpReq.getUrlParameter("REQABLE"+curChkNum);
 			if(curVal.equals("DEL")||curVal.equals("DELETE")||curVal.trim().length()==0)
 			{
 				// do nothing
 			}
 			else
 			{
-				String curLvl=httpReq.getRequestParameter("REQLEVEL"+curChkNum);
+				String curLvl=httpReq.getUrlParameter("REQLEVEL"+curChkNum);
 				preReqs.append(curVal);
 				if((curLvl!=null)&&(curLvl.trim().length()>0)&&(CMath.s_int(curLvl.trim())>0))
 					preReqs.append("(").append(curLvl).append(")");

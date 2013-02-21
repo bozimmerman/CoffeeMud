@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,13 +36,13 @@ public class LevelNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("LEVEL");
+		String last=httpReq.getUrlParameter("LEVEL");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("LEVEL");
+			if(last!=null) httpReq.removeUrlParameter("LEVEL");
 			return "";
 		}
 		int lastLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
@@ -58,11 +58,11 @@ public class LevelNext extends StdWebMacro
 			level++;
 			if(level<=lastLevel)
 			{
-				httpReq.addRequestParameters("LEVEL",""+level);
+				httpReq.addFakeUrlParameter("LEVEL",""+level);
 				return "";
 			}
 		}
-		httpReq.addRequestParameters("LEVEL","");
+		httpReq.addFakeUrlParameter("LEVEL","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

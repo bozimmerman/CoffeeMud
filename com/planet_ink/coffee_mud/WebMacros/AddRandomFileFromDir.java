@@ -1,4 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.http.HTTPException;
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -13,10 +16,9 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.io.File;
 import java.util.*;
-
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -38,7 +40,7 @@ public class AddRandomFileFromDir extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
@@ -51,7 +53,7 @@ public class AddRandomFileFromDir extends StdWebMacro
 		for(String filePath : parms.values())
 		{
 			if(filePath.equalsIgnoreCase("LINKONLY")) continue;
-			CMFile directory=httpReq.grabFile(filePath);
+			File directory=grabFile(httpReq,filePath);
 			if((!filePath.endsWith("/"))&&(!filePath.endsWith("/")))
 				filePath+="/";
 			if((directory!=null)&&(directory.canRead())&&(directory.isDirectory()))
@@ -65,10 +67,18 @@ public class AddRandomFileFromDir extends StdWebMacro
 		}
 		if(fileList.size()==0) 
 			return buf.toString();
-		if(LINKONLY)
-			buf.append((String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
-		else
-			buf.append(httpReq.getPageContent((String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1))));
+		
+		try
+		{
+			if(LINKONLY)
+				buf.append((String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
+			else
+				buf.append(new String(getHTTPFileData(httpReq,(String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)))));
+		}
+		catch(HTTPException e)
+		{
+			Log.warnOut("Failed "+name()+" "+(String)fileList.elementAt(CMLib.dice().roll(1,fileList.size(),-1)));
+		}
 		return buf.toString();
 	}
 }

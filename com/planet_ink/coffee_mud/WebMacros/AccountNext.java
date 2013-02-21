@@ -13,9 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,20 +35,20 @@ public class AccountNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ACCOUNT");
+		String last=httpReq.getUrlParameter("ACCOUNT");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("ACCOUNT");
+			if(last!=null) httpReq.removeUrlParameter("ACCOUNT");
 			return "";
 		}
 		String lastID="";
-		String sort=httpReq.getRequestParameter("SORTBY");
+		String sort=httpReq.getUrlParameter("SORTBY");
 		if(sort==null) sort="";
 		Enumeration<PlayerAccount> pe=CMLib.players().accounts(sort,httpReq.getRequestObjects());
 		for(;pe.hasMoreElements();)
@@ -57,12 +56,12 @@ public class AccountNext extends StdWebMacro
 			PlayerAccount account=pe.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!account.accountName().equals(lastID))))
 			{
-				httpReq.addRequestParameters("ACCOUNT",account.accountName());
+				httpReq.addFakeUrlParameter("ACCOUNT",account.accountName());
 				return "";
 			}
 			lastID=account.accountName();
 		}
-		httpReq.addRequestParameters("ACCOUNT","");
+		httpReq.addFakeUrlParameter("ACCOUNT","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

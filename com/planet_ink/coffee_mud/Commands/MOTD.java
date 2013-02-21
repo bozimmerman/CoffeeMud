@@ -78,7 +78,7 @@ public class MOTD extends StdCommand
 				if(msg.length()>0)
 				{
 					if(msg.startsWith("<cmvp>"))
-						msg=new String(CMLib.httpUtils().doVirtualPage(msg.substring(6).getBytes()));
+						msg=new String(CMLib.webMacroFilter().virtualPageFilter(msg.substring(6).getBytes()));
 					buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 		
@@ -106,7 +106,7 @@ public class MOTD extends StdCommand
 						if(to.equalsIgnoreCase("ALL")||allMine)
 						{
 							if(message.startsWith("<cmvp>"))
-								message=new String(CMLib.httpUtils().doVirtualPage(message.substring(6).getBytes()));
+								message=new String(CMLib.webMacroFilter().virtualPageFilter(message.substring(6).getBytes()));
 							buf.append("\n\rNews: "+CMLib.time().date2String(last)+"\n\rFROM: "+CMStrings.padRight(from,15)+"\n\rTO  : "+CMStrings.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
 							buf.append("\n\r--------------------------------------\n\r");
 						}

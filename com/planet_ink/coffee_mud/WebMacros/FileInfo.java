@@ -1,4 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.http.MIMEType;
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,12 +38,12 @@ public class FileInfo extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()	{return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String path=httpReq.getRequestParameter("PATH");
+		String path=httpReq.getUrlParameter("PATH");
 		if(path==null) path="";
-		String file=httpReq.getRequestParameter("FILE");
+		String file=httpReq.getUrlParameter("FILE");
 		if(file==null) file="";
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[authentication error]";
@@ -63,7 +64,7 @@ public class FileInfo extends StdWebMacro
 			{
 				int x=F.getName().lastIndexOf('.');
 				if(x<0) return "false";
-				String mime=httpReq.getMimeType(F.getName().substring(x));
+				String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
 				if(mime.toUpperCase().startsWith("TEXT"))
 					return "true";
 				return "false";
@@ -72,7 +73,7 @@ public class FileInfo extends StdWebMacro
 			{
 				int x=F.getName().lastIndexOf('.');
 				if(x<0) return "true";
-				String mime=httpReq.getMimeType(F.getName().substring(x));
+				String mime=MIMEType.getMIMEType(F.getName().substring(x)).getType();
 				if(mime.toUpperCase().startsWith("TEXT"))
 					return "false";
 				return "true";

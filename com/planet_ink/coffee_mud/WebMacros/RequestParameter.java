@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.URLEncoder;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -44,15 +44,15 @@ public class RequestParameter extends StdWebMacro
 			modifiers.add(M.name());
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		String str="";
 		java.util.Map<String,String> parms=parseParms(parm);
 		for(String key : parms.keySet())
 		{
 			if(!modifiers.contains(key))
-				if(httpReq.isRequestParameter(key))
-					str+=httpReq.getRequestParameter(key);
+				if(httpReq.isUrlParameter(key))
+					str+=httpReq.getUrlParameter(key);
 		}
 		for(String key : parms.keySet())
 		{

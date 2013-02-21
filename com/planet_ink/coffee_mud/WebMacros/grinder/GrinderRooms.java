@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -16,8 +18,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -58,22 +58,22 @@ public class GrinderRooms
 		R.recoverRoomStats();
 	}
 
-	public static String editRoom(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
+	public static String editRoom(HTTPRequest httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
 	{
 		if(R==null) return "Old Room not defined!";
 		boolean redoAllMyDamnRooms=false;
 		Room oldR=R;
 		
 		// class!
-		String className=httpReq.getRequestParameter("CLASSES");
+		String className=httpReq.getUrlParameter("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this room.";
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
 	
-			boolean singleMobMode=CMath.s_bool(httpReq.getRequestParameter("SINGLEMOB"));
-			String delMOB=singleMobMode?httpReq.getRequestParameter("DELMOB"):null;
+			boolean singleMobMode=CMath.s_bool(httpReq.getUrlParameter("SINGLEMOB"));
+			String delMOB=singleMobMode?httpReq.getUrlParameter("DELMOB"):null;
 			
 			CMLib.map().resetRoom(R);
 			Room copyRoom=(Room)R.copyOf();
@@ -107,31 +107,31 @@ public class GrinderRooms
 			}
 	
 			// name
-			String name=httpReq.getRequestParameter("NAME");
+			String name=httpReq.getUrlParameter("NAME");
 			if((name==null)||(name.length()==0))
 				return "Please enter a name for this room.";
 			R.setDisplayText(name);
 	
 	
 			// description
-			String desc=httpReq.getRequestParameter("DESCRIPTION");
+			String desc=httpReq.getUrlParameter("DESCRIPTION");
 			if(desc==null)desc="";
 			R.setDescription(desc);
 	
 			// image
 			if(!skipImage)
 			{
-				String img=httpReq.getRequestParameter("IMAGE");
+				String img=httpReq.getUrlParameter("IMAGE");
 				if(img==null)img="";
 				R.setImage(img);
 			}
 	
 			if(R instanceof GridLocale)
 			{
-				String x=httpReq.getRequestParameter("XGRID");
+				String x=httpReq.getUrlParameter("XGRID");
 				if(x==null)x="";
 				((GridLocale)R).setXGridSize(CMath.s_int(x));
-				String y=httpReq.getRequestParameter("YGRID");
+				String y=httpReq.getUrlParameter("YGRID");
 				if(y==null)y="";
 				((GridLocale)R).setYGridSize(CMath.s_int(y));
 				((GridLocale)R).clearGrid(null);
@@ -172,11 +172,11 @@ public class GrinderRooms
 				oldR.delItem(I);
 			}
 	
-			if(httpReq.isRequestParameter("MOB1"))
+			if(httpReq.isUrlParameter("MOB1"))
 			{
 				for(int i=1;;i++)
 				{
-					String MATCHING=httpReq.getRequestParameter("MOB"+i);
+					String MATCHING=httpReq.getUrlParameter("MOB"+i);
 					if(MATCHING==null)
 						break;
 					else
@@ -231,13 +231,13 @@ public class GrinderRooms
 				return "No MOB Data!";
 	
 	
-			if(httpReq.isRequestParameter("ITEM1"))
+			if(httpReq.isUrlParameter("ITEM1"))
 			{
 				Vector items=new Vector();
 				Vector cstrings=new Vector();
 				for(int i=1;;i++)
 				{
-					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
+					String MATCHING=httpReq.getUrlParameter("ITEM"+i);
 					if(MATCHING==null) break;
 					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 					if(I2!=null)
@@ -249,7 +249,7 @@ public class GrinderRooms
 						happilyAddItem(I2,R);
 						items.addElement(I2);
 						I2.setContainer(null);
-						String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
+						String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
 						cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 					}
 				}

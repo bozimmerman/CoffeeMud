@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -16,8 +18,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.lang.reflect.Method;
 import java.net.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -40,7 +40,7 @@ public class Authenticate extends StdWebMacro
 	public boolean isAdminMacro()    {return false;}
 	private static final long ONE_REAL_DAY=(long)1000*60*60*24;
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if((parms!=null)&&(parms.containsKey("AUTH")))
@@ -56,12 +56,12 @@ public class Authenticate extends StdWebMacro
 		}
 		String login=getLogin(httpReq);
 		if((parms!=null)&&(parms.containsKey("SETPLAYER")))
-			httpReq.addRequestParameters("PLAYER",login);
+			httpReq.addFakeUrlParameter("PLAYER",login);
 		if((parms!=null)&&(parms.containsKey("SETACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0))
 		{
 			MOB mob=getAuthenticatedMob(httpReq);
 			if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
-				httpReq.addRequestParameters("ACCOUNT",mob.playerStats().getAccount().accountName());
+				httpReq.addFakeUrlParameter("ACCOUNT",mob.playerStats().getAccount().accountName());
 		}
 		if(authenticated(httpReq,login,getPassword(httpReq)))
 			return "true";
@@ -152,7 +152,7 @@ public class Authenticate extends StdWebMacro
 		}
 	}
 
-	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
+	public static boolean authenticated(HTTPRequest httpReq, String login, String password)
 	{
 		MOB mob=CMLib.players().getLoadPlayer(login);
 		if((mob!=null)
@@ -182,9 +182,9 @@ public class Authenticate extends StdWebMacro
 		return false;
 	}
 
-	public static MOB getAuthenticatedMob(ExternalHTTPRequests httpReq)
+	public static MOB getAuthenticatedMob(HTTPRequest httpReq)
 	{
-		if(httpReq.getRequestObjects().containsKey("AUTHENTICATED_USER"))
+		if(httpReq.getRequestObjects().get("AUTHENTICATED_USER")!=null)
 		{
 			Object o=httpReq.getRequestObjects().get("AUTHENTICATED_USER");
 			if(!(o instanceof MOB)) return null;
@@ -225,9 +225,9 @@ public class Authenticate extends StdWebMacro
 		return mob;
 	}
 	
-	public static String getLogin(ExternalHTTPRequests httpReq)
+	public static String getLogin(HTTPRequest httpReq)
 	{
-		String login=httpReq.getRequestParameter("LOGIN");
+		String login=httpReq.getUrlParameter("LOGIN");
 		if((login!=null)&&(login.length()>0))
 		{
 			if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0)
@@ -253,14 +253,14 @@ public class Authenticate extends StdWebMacro
 					if(highestM!=null)
 					{
 						if(!highestM.Name().equals(login))
-							httpReq.addRequestParameters("LOGIN", highestM.Name());
+							httpReq.addFakeUrlParameter("LOGIN", highestM.Name());
 						return highestM.Name();
 					}
 				}
 			}
 			return login;
 		}
-		String auth=httpReq.getRequestParameter("AUTH");
+		String auth=httpReq.getUrlParameter("AUTH");
 		if(auth==null) return "";
 		int x = auth.indexOf('-');
 		if(x>=0) 
@@ -268,12 +268,12 @@ public class Authenticate extends StdWebMacro
 		return login;
 	}
 
-	public static String getPassword(ExternalHTTPRequests httpReq)
+	public static String getPassword(HTTPRequest httpReq)
 	{
-		String password=httpReq.getRequestParameter("PASSWORD");
+		String password=httpReq.getUrlParameter("PASSWORD");
 		if((password!=null)&&(password.length()>0))
 			return password;
-		String auth=httpReq.getRequestParameter("AUTH");
+		String auth=httpReq.getUrlParameter("AUTH");
 		if(auth==null) return "";
 		int x = auth.indexOf('-');
 		if(x>=0) 

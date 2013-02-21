@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -36,9 +36,9 @@ public class GrinderAccounts
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		String last=httpReq.getRequestParameter("ACCOUNT");
+		String last=httpReq.getUrlParameter("ACCOUNT");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
@@ -48,7 +48,7 @@ public class GrinderAccounts
 			{
 				String str=null;
 				String err="";
-				str=httpReq.getRequestParameter("NAME");
+				str=httpReq.getUrlParameter("NAME");
 				if((str!=null)&&(!str.equalsIgnoreCase(A.accountName())))
 				{
 					str=CMStrings.capitalizeAndLower(str);
@@ -57,11 +57,11 @@ public class GrinderAccounts
 					else
 						err="Account name '"+str+"' already exists";
 				}
-				str=httpReq.getRequestParameter("EMAIL");
+				str=httpReq.getUrlParameter("EMAIL");
 				if(str!=null) A.setEmail(str);
-				str=httpReq.getRequestParameter("NOTES");
+				str=httpReq.getUrlParameter("NOTES");
 				if(str!=null) A.setNotes(str);
-				str=httpReq.getRequestParameter("EXPIRATION");
+				str=httpReq.getUrlParameter("EXPIRATION");
 				if(str!=null)
 				{
 					if(!CMLib.time().isValidDateString(str))
@@ -74,8 +74,8 @@ public class GrinderAccounts
 				}
 				String id="";
 				StringBuffer flags=new StringBuffer("");
-				for(int i=0;httpReq.isRequestParameter("FLAG"+id);id=""+(++i))
-					flags.append(httpReq.getRequestParameter("FLAG"+id)+",");
+				for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
+					flags.append(httpReq.getUrlParameter("FLAG"+id)+",");
 				A.setStat("FLAGS",flags.toString());
 				if(err.length()>0) 
 					return err;
@@ -95,7 +95,7 @@ public class GrinderAccounts
 					CMLib.database().DBCreateAccount(A);
 					for(MOB playerM : V)
 						CMLib.database().DBUpdatePlayerPlayerStats(playerM);
-					httpReq.addRequestParameters("ACCOUNT", newName);
+					httpReq.addFakeUrlParameter("ACCOUNT", newName);
 				}
 				else
 				{

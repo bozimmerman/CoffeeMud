@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -77,11 +77,11 @@ public class CatalogItemNext extends StdWebMacro
 		return "";
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ITEM");
-		String optCol=httpReq.getRequestParameter("OPTIONALCOLUMN");
+		String last=httpReq.getUrlParameter("ITEM");
+		String optCol=httpReq.getUrlParameter("OPTIONALCOLUMN");
 		final String optionalColumn;
 		if(optCol==null)
 			optionalColumn="";
@@ -89,11 +89,11 @@ public class CatalogItemNext extends StdWebMacro
 			optionalColumn=optCol.trim().toUpperCase();
 		if(parms.containsKey("RESET"))
 		{   
-			if(last!=null) httpReq.removeRequestParameter("ITEM");
+			if(last!=null) httpReq.removeUrlParameter("ITEM");
 			for(int d=0;d<DATA.length;d++)
-				httpReq.removeRequestParameter(DATA[d]);
+				httpReq.removeUrlParameter(DATA[d]);
 			if(optionalColumn.length()>0)
-				httpReq.removeRequestParameter("CATALOG_ITEM_"+optionalColumn);
+				httpReq.removeUrlParameter("CATALOG_ITEM_"+optionalColumn);
 			return "";
 		}
 		String lastID="";
@@ -101,7 +101,7 @@ public class CatalogItemNext extends StdWebMacro
 		String name=null;
 		CatalogLibrary.CataData data=null;
 		String[] names=CMLib.catalog().getCatalogItemNames();
-		String sortBy=httpReq.getRequestParameter("SORTBY");
+		String sortBy=httpReq.getUrlParameter("SORTBY");
 		if((sortBy!=null)&&(sortBy.length()>0))
 		{
 			String[] sortedNames=(String[])httpReq.getRequestObjects().get("CATALOG_ITEM_"+sortBy.toUpperCase());
@@ -144,20 +144,20 @@ public class CatalogItemNext extends StdWebMacro
 				data=CMLib.catalog().getCatalogItemData(names[s]);
 				I=CMLib.catalog().getCatalogItem(names[s]);
 				if(I==null) continue;
-				httpReq.addRequestParameters("ITEM",name);
+				httpReq.addFakeUrlParameter("ITEM",name);
 				for(int d=0;d<DATA.length;d++)
-					httpReq.addRequestParameters(DATA[d],getCataStat(I,data,d,null));
+					httpReq.addFakeUrlParameter(DATA[d],getCataStat(I,data,d,null));
 				if(optionalColumn.length()>0)
-					httpReq.addRequestParameters("CATALOG_ITEM_"+optionalColumn,getCataStat(I,data,-1,optionalColumn));
+					httpReq.addFakeUrlParameter("CATALOG_ITEM_"+optionalColumn,getCataStat(I,data,-1,optionalColumn));
 				return "";
 			}
 			lastID=name;
 		}
-		httpReq.addRequestParameters("ITEM","");
+		httpReq.addFakeUrlParameter("ITEM","");
 		for(int d=0;d<DATA.length;d++)
-			httpReq.addRequestParameters(DATA[d],"");
+			httpReq.addFakeUrlParameter(DATA[d],"");
 		if(optionalColumn.length()>0)
-			httpReq.addRequestParameters("CATALOG_ITEM_"+optionalColumn,"");
+			httpReq.addFakeUrlParameter("CATALOG_ITEM_"+optionalColumn,"");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,9 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.util.regex.Pattern;
-
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -85,12 +84,12 @@ public class FileMgr extends StdWebMacro
 	}
 	
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String path=httpReq.getRequestParameter("PATH");
+		String path=httpReq.getUrlParameter("PATH");
 		if(path==null) path="";
-		String file=httpReq.getRequestParameter("FILE");
+		String file=httpReq.getUrlParameter("FILE");
 		if(file==null) file="";
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[authentication error]";
@@ -125,7 +124,7 @@ public class FileMgr extends StdWebMacro
 			else
 			if(parms.containsKey("CREATE"))
 			{
-				String s=httpReq.getRequestParameter("RAWTEXT");
+				String s=httpReq.getUrlParameter("RAWTEXT");
 				if(s==null) return "File `"+last+"` not updated -- no buffer!";
 				if(parms.containsKey("VFS")||parms.containsKey("LOCAL")||parms.containsKey("BOTH")) 
 				{
@@ -249,14 +248,14 @@ public class FileMgr extends StdWebMacro
 				if(newPath.endsWith("/")) newPath=newPath.substring(0,newPath.length()-1);
 				int x=newPath.lastIndexOf('/');
 				if(x>0) newPath=newPath.substring(0,x);
-				httpReq.addRequestParameters("PATH",newPath);
-				httpReq.removeRequestParameter("FILE");
+				httpReq.addFakeUrlParameter("PATH",newPath);
+				httpReq.removeUrlParameter("FILE");
 				return "Deleted directory.";
 			}
 			else
 			if(parms.containsKey("APPEND"))
 			{
-				String s=httpReq.getRequestParameter("RAWTEXT");
+				String s=httpReq.getUrlParameter("RAWTEXT");
 				if(s==null) return "File `"+last+"` not appended -- no buffer!";
 				StringBuffer buf=F.textUnformatted();
 				buf.append(s);

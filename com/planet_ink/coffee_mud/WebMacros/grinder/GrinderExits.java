@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -42,19 +43,19 @@ public class GrinderExits
 	  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
 	  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
 	
-	public static String dispositions(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String dispositions(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setDisposition(0);
 		for(int d=0;d<PhyStats.IS_CODES.length;d++)
 		{
-			String parm=httpReq.getRequestParameter(PhyStats.IS_CODES[d]);
+			String parm=httpReq.getUrlParameter(PhyStats.IS_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
 			   P.basePhyStats().setDisposition(P.basePhyStats().disposition()|(1<<d));
 		}
 		return "";
 	}
 	
-	public static String editExit(Room R, int dir,ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String editExit(Room R, int dir,HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
@@ -63,7 +64,7 @@ public class GrinderExits
 			if(X==null) return "No Exit to edit?!";
 			
 			// important generic<->non generic swap!
-			String newClassID=httpReq.getRequestParameter("CLASSES");
+			String newClassID=httpReq.getUrlParameter("CLASSES");
 			if((newClassID!=null)&&(!CMClass.classID(X).equals(newClassID)))
 			{
 				X=CMClass.getExit(newClassID);
@@ -79,7 +80,7 @@ public class GrinderExits
 					generic=false;
 					parm=parm.substring(1);
 				}
-				String old=httpReq.getRequestParameter(parm);
+				String old=httpReq.getUrlParameter(parm);
 				if(old==null) old="";
 				if(X.isGeneric()||(!generic))
 				switch(o)
@@ -180,7 +181,7 @@ public class GrinderExits
 				X.setDoorsNLocks(false,true,false,false,false,false);
 					
 			CMLib.database().DBUpdateExits(R);
-			String makeSame=httpReq.getRequestParameter("MAKESAME");
+			String makeSame=httpReq.getUrlParameter("MAKESAME");
 			if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
 			{
 				Room R2=R.rawDoors()[dir];

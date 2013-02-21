@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -54,12 +54,12 @@ public class JournalInfo extends StdWebMacro
 	}
 
 
-	public static List<JournalsLibrary.JournalEntry> getMessages(ExternalHTTPRequests httpReq, String journalName)
+	public static List<JournalsLibrary.JournalEntry> getMessages(HTTPRequest httpReq, String journalName)
 	{
-		String page=httpReq.getRequestParameter("JOURNALPAGE");
-		String mpage=httpReq.getRequestParameter("MESSAGEPAGE");
-		String parent=httpReq.getRequestParameter("JOURNALPARENT");
-		String dbsearch=httpReq.getRequestParameter("DBSEARCH");
+		String page=httpReq.getUrlParameter("JOURNALPAGE");
+		String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
+		String parent=httpReq.getUrlParameter("JOURNALPARENT");
+		String dbsearch=httpReq.getUrlParameter("DBSEARCH");
 		if((parent!=null)&&(parent.length()>0))
 			page=mpage;
 		if(page!=null)
@@ -130,10 +130,10 @@ public class JournalInfo extends StdWebMacro
 		return msgs;
 	}
 	
-	public static void clearJournalCache(ExternalHTTPRequests httpReq, String journalName)
+	public static void clearJournalCache(HTTPRequest httpReq, String journalName)
 	{
-		SHashtable<String,Object> h = new SHashtable<String,Object>(httpReq.getRequestObjects());
-		for(String o : h.keySet())
+		List<String> h = new XVector<String>(httpReq.getRequestObjects().keySet());
+		for(String o : h)
 			if((o!=null)&&(o.startsWith("JOURNAL: "+journalName+": ")))
 				httpReq.getRequestObjects().remove(o.toString());
 	}
@@ -157,10 +157,10 @@ public class JournalInfo extends StdWebMacro
 		return null;
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String journalName=httpReq.getRequestParameter("JOURNAL");
+		String journalName=httpReq.getUrlParameter("JOURNAL");
 		if(journalName==null) 
 			return " @break@";
 		
@@ -172,10 +172,10 @@ public class JournalInfo extends StdWebMacro
 		
 		if(parms.containsKey("UNPAGEDCOUNT"))
 		{
-			String page=httpReq.getRequestParameter("JOURNALPAGE");
-			httpReq.removeRequestParameter("JOURNALPAGE");
+			String page=httpReq.getUrlParameter("JOURNALPAGE");
+			httpReq.removeUrlParameter("JOURNALPAGE");
 			int ct= JournalInfo.getMessages(httpReq,journalName).size();
-			httpReq.addRequestParameters("JOURNALPAGE",page);
+			httpReq.addFakeUrlParameter("JOURNALPAGE",page);
 			return String.valueOf(ct);
 		}
 		
@@ -186,8 +186,8 @@ public class JournalInfo extends StdWebMacro
 		if((CMLib.journals().isArchonJournalName(journalName))&&((M==null)||(!CMSecurity.isASysOp(M))))
 			return " @break@";
 		
-		String msgKey=httpReq.getRequestParameter("JOURNALMESSAGE");
-		String cardinal=httpReq.getRequestParameter("JOURNALCARDINAL");
+		String msgKey=httpReq.getUrlParameter("JOURNALMESSAGE");
+		String cardinal=httpReq.getUrlParameter("JOURNALCARDINAL");
 		JournalsLibrary.JournalEntry entry=null;
 		if(msgKey.equalsIgnoreCase("FORUMLATEST"))
 		{
@@ -196,7 +196,7 @@ public class JournalInfo extends StdWebMacro
 			{
 				entry=CMLib.database().DBReadJournalEntry(journalName, stats.latestKey);
 				if(entry != null)
-					httpReq.addRequestParameters("JOURNALMESSAGE", entry.key);
+					httpReq.addFakeUrlParameter("JOURNALMESSAGE", entry.key);
 			}
 		}
 		else
@@ -226,9 +226,9 @@ public class JournalInfo extends StdWebMacro
 						);
 			}
 			else
-			if(parms.containsKey("QUOTEDTEXT") && httpReq.isRequestParameter("QUOTEDMESSAGE"))
+			if(parms.containsKey("QUOTEDTEXT") && httpReq.isUrlParameter("QUOTEDMESSAGE"))
 			{
-				String quotedMessage=httpReq.getRequestParameter("QUOTEDMESSAGE");
+				String quotedMessage=httpReq.getUrlParameter("QUOTEDMESSAGE");
 				if((quotedMessage==null)||(quotedMessage.length()==0))
 					return "";
 				JournalsLibrary.JournalEntry quotedEntry =CMLib.database().DBReadJournalEntry(journalName, quotedMessage);

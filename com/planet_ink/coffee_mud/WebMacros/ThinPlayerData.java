@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,18 +37,18 @@ public class ThinPlayerData extends StdWebMacro {
 	
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("PLAYER");
+		String last=httpReq.getUrlParameter("PLAYER");
 		if(last==null) return " @break@";
 		StringBuffer str=new StringBuffer("");
 		if(last.length()>0)
 		{
-			String sort=httpReq.getRequestParameter("SORTBY");
+			String sort=httpReq.getUrlParameter("SORTBY");
 			if(sort==null) sort="";
 			PlayerLibrary.ThinPlayer player = null;
 			Enumeration pe=CMLib.players().thinPlayers(sort, httpReq.getRequestObjects());

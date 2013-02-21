@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -38,13 +38,13 @@ public class RaceCatNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("RACECAT");
+		String last=httpReq.getUrlParameter("RACECAT");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("RACECAT");
+			if(last!=null) httpReq.removeUrlParameter("RACECAT");
 			return "";
 		}
 		Vector raceCats=new Vector();
@@ -63,12 +63,12 @@ public class RaceCatNext extends StdWebMacro
 			String RC=(String)r.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!RC.equals(lastID))))
 			{
-				httpReq.addRequestParameters("RACECAT",RC);
+				httpReq.addFakeUrlParameter("RACECAT",RC);
 				return "";
 			}
 			lastID=RC;
 		}
-		httpReq.addRequestParameters("RACECAT","");
+		httpReq.addFakeUrlParameter("RACECAT","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -15,8 +17,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.URLEncoder;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -41,7 +41,7 @@ public class DeityData extends StdWebMacro
 	// valid parms include description, worshipreq, clericreq,
 	// worshiptrig, clerictrig, worshipsintrig,clericsintrig,powertrig
 
-	private DVector getDeityData(ExternalHTTPRequests httpReq, String deityName)
+	private DVector getDeityData(HTTPRequest httpReq, String deityName)
 	{
 		DVector folData=(DVector)httpReq.getRequestObjects().get("DEITYDATAFOR-"+deityName.toUpperCase().trim());
 		if(folData!=null) return folData;
@@ -50,10 +50,10 @@ public class DeityData extends StdWebMacro
 		return folData;
 	}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("DEITY");
+		String last=httpReq.getUrlParameter("DEITY");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{

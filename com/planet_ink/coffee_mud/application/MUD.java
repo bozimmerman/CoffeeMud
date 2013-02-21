@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.application;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
@@ -19,8 +20,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
 import com.planet_ink.coffee_mud.core.database.DBConnection;
 import com.planet_ink.coffee_mud.core.database.DBInterface;
-import com.planet_ink.coffee_mud.core.http.HTTPserver;
-import com.planet_ink.coffee_mud.core.http.ProcessHTTPrequest;
 import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.threads.Tick;
@@ -30,7 +29,15 @@ import com.planet_ink.coffee_mud.core.intermud.cm1.CM1Server;
 import com.planet_ink.coffee_mud.core.intermud.i3.IMudInterface;
 import com.planet_ink.coffee_mud.core.intermud.imc2.IMC2Driver;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
+import com.planet_ink.miniweb.http.MIMEType;
+import com.planet_ink.miniweb.interfaces.FileManager;
+import com.planet_ink.miniweb.server.MiniWebServer;
+import com.planet_ink.miniweb.util.MiniWebConfig;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.PrintWriter; // for writing to sockets
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -68,19 +75,19 @@ public class MUD extends Thread implements MudHost
 	private int				port		= 5555;
 	private final long		startupTime = System.currentTimeMillis();
 
-	private static boolean			serverIsRunning		= false;
-	private static boolean			isOK 				= false;
-	private static boolean			bringDown			= false;
-	private static String			execExternalCommand	= null;
-	private static I3Server			i3server			= null;
-	private static IMC2Driver		imc2server			= null;
-	private static List<HTTPserver> webServers			= new Vector<HTTPserver>();
-	private static SMTPserver		smtpServerThread	= null;
-	private static List<String> 	autoblocked			= new Vector<String>();
-	private static List<DBConnector>databases			= new Vector<DBConnector>();
-	private static List<CM1Server>  cm1Servers			= new Vector<CM1Server>();
+	private static boolean				serverIsRunning		= false;
+	private static boolean				isOK 				= false;
+	private static boolean				bringDown			= false;
+	private static String				execExternalCommand	= null;
+	private static I3Server				i3server			= null;
+	private static IMC2Driver			imc2server			= null;
+	private static List<MiniWebServer>	webServers			= new Vector<MiniWebServer>();
+	private static SMTPserver			smtpServerThread	= null;
+	private static List<String> 		autoblocked			= new Vector<String>();
+	private static List<DBConnector>	databases			= new Vector<DBConnector>();
+	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
 	private static List<Triad<String,Long,Integer>>
-									accessed			= new LinkedList<Triad<String,Long,Integer>>();
+										accessed			= new LinkedList<Triad<String,Long,Integer>>();
 
 	public MUD(String name)
 	{
@@ -243,23 +250,40 @@ public class MUD extends Thread implements MudHost
 				String serverName=(String)serverNames.elementAt(s);
 				try
 				{
-					HTTPserver webServerThread = new HTTPserver(CMLib.mud(0),serverName,0);
-					webServerThread.start();
-					webServers.add(webServerThread);
-					int numToDo=webServerThread.totalPorts();
-					while((--numToDo)>0)
-					{
-						webServerThread = new HTTPserver(CMLib.mud(0),"pub",numToDo);
-						webServerThread.start();
-						webServers.add(webServerThread);
-					}
+					StringBuffer commonProps=new CMFile("web/common.ini", null, true).text();
+					StringBuffer finalProps=new CMFile("web/"+serverName+".ini", null, true).text();
+					commonProps.append("\n").append(finalProps.toString());
+					MiniWebConfig config=new MiniWebConfig();
+					config.setFileManager(new FileManager(){
+						@Override public char getFileSeparator() { 
+							return '/';
+						}
+						@Override public File createFileFromPath(String localPath) {
+							return new CMFile(localPath,null,false);
+						}
+						@Override public File createFileFromPath(File parent, String localPath) {
+							return new CMFile(parent.getAbsolutePath()+'/'+localPath,null,false);
+						}
+						@Override public byte[] readFile(File file) throws IOException, FileNotFoundException {
+							return ((CMFile)file).raw();
+						}
+						@Override public InputStream getFileStream(File file) throws IOException, FileNotFoundException {
+							return ((CMFile)file).getRawStream();
+						}
+					});
+					MiniWebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
+					if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
+						config.setDebugFlag("BOTH");
+					MiniWebServer webServer=new MiniWebServer(serverName,config);
+					config.setMiniWebServer(webServer);
+					webServer.start();
+					webServers.add(webServer);
 				}
 				catch(Exception e)
 				{
 					Log.errOut("MUD","HTTP server "+serverName+"NOT started: "+e.getMessage());
 				}
 			}
-			CMLib.registerLibrary(new ProcessHTTPrequest(null,(webServers.size()>0)?(HTTPserver)webServers.get(0):null,null,true));
 		}
 
 		if(page.getPrivateStr("RUNSMTPSERVER").equalsIgnoreCase("true"))
@@ -535,7 +559,7 @@ public class MUD extends Thread implements MudHost
 							if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 						}
 						StringBuffer introText=Resources.getFileResource(introFilename,true);
-						try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+						try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 						Session S=(Session)CMClass.getCommon("DefaultSession");
 						S.initializeSession(sock, introText != null ? introText.toString() : null);
 						CMLib.sessions().add(S);
@@ -913,9 +937,9 @@ public class MUD extends Thread implements MudHost
 
 		for(int i=0;i<webServers.size();i++)
 		{
-			HTTPserver webServerThread=(HTTPserver)webServers.get(i);
+			MiniWebServer webServerThread=(MiniWebServer)webServers.get(i);
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down web server "+webServerThread.getName()+"...");
-			webServerThread.shutdown(S);
+			webServerThread.close();
 			Log.sysOut(Thread.currentThread().getName(),"Web server "+webServerThread.getName()+" stopped.");
 			if(S!=null)S.println("Web server "+webServerThread.getName()+" stopped");
 		}
@@ -1220,7 +1244,6 @@ public class MUD extends Thread implements MudHost
 			
 			DBConnector currentDBconnector=new DBConnector();
 			CMLib.registerLibrary(new DBInterface(currentDBconnector,CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true)));
-			CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
 			CMProps.setVar(CMProps.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
 			
 			// an arbitrary dividing line. After threadCode 0 
@@ -1302,7 +1325,7 @@ public class MUD extends Thread implements MudHost
 	{
 		Vector<Runnable> V=new Vector<Runnable>();
 		for(int w=0;w<webServers.size();w++)
-			V.addAll(((HTTPserver)webServers.get(w)).getOverdueThreads());
+			V.addAll(((MiniWebServer)webServers.get(w)).getOverdueThreads());
 		return V;
 	}
 

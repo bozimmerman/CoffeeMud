@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -16,8 +18,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -38,9 +38,9 @@ import java.util.*;
 public class GrinderAbilities {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public static String modifyAbility(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, Ability oldA, Ability A)
+	public static String modifyAbility(HTTPRequest httpReq, java.util.Map<String,String> parms, Ability oldA, Ability A)
 	{
-		String replaceCommand=httpReq.getRequestParameter("REPLACE");
+		String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null) 
 		&& (replaceCommand.length()>0)
 		&& (replaceCommand.indexOf('=')>0))
@@ -48,143 +48,143 @@ public class GrinderAbilities {
 			int eq=replaceCommand.indexOf('=');
 			String field=replaceCommand.substring(0,eq);
 			String value=replaceCommand.substring(eq+1);
-			httpReq.addRequestParameters(field, value);
-			httpReq.addRequestParameters("REPLACE","");
+			httpReq.addFakeUrlParameter(field, value);
+			httpReq.addFakeUrlParameter("REPLACE","");
 		}
 		String old;
-		old=httpReq.getRequestParameter("NAME");
+		old=httpReq.getUrlParameter("NAME");
 		A.setStat("NAME",(old==null)?"NAME":old);
-		int x1=CMath.s_int(httpReq.getRequestParameter("CLASSIFICATION_ACODE"));
-		int x2=CMath.s_int(httpReq.getRequestParameter("CLASSIFICATION_DOMAIN"));
+		int x1=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_ACODE"));
+		int x2=CMath.s_int(httpReq.getUrlParameter("CLASSIFICATION_DOMAIN"));
 		A.setStat("CLASSIFICATION",""+((x2<<5)+x1));
-		old=httpReq.getRequestParameter("TRIGSTR");
+		old=httpReq.getUrlParameter("TRIGSTR");
 		A.setStat("TRIGSTR",(old==null)?"TRIGSTR":old.toUpperCase().trim());
-		old=httpReq.getRequestParameter("MINRANGE");
+		old=httpReq.getUrlParameter("MINRANGE");
 		A.setStat("MINRANGE",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("MAXRANGE");
+		old=httpReq.getUrlParameter("MAXRANGE");
 		A.setStat("MAXRANGE",(old==null)?"":old);
-		old=httpReq.getRequestParameter("TICKSBETWEENCASTS");
+		old=httpReq.getUrlParameter("TICKSBETWEENCASTS");
 		A.setStat("TICKSBETWEENCASTS",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("DISPLAY");
+		old=httpReq.getUrlParameter("DISPLAY");
 		A.setStat("DISPLAY",(old==null)?"DISPLAY":old);
-		old=httpReq.getRequestParameter("AUTOINVOKE");
+		old=httpReq.getUrlParameter("AUTOINVOKE");
 		A.setStat("AUTOINVOKE",(old==null)?"":""+old.equalsIgnoreCase("on"));
 		Vector V=new Vector();
-		if(httpReq.isRequestParameter("ABILITY_FLAGS"))
+		if(httpReq.isUrlParameter("ABILITY_FLAGS"))
 		{
 			String id="";
 			int num=0;
-			for(;httpReq.isRequestParameter("ABILITY_FLAGS"+id);id=""+(++num))
-				V.addElement(httpReq.getRequestParameter("ABILITY_FLAGS"+id));
+			for(;httpReq.isUrlParameter("ABILITY_FLAGS"+id);id=""+(++num))
+				V.addElement(httpReq.getUrlParameter("ABILITY_FLAGS"+id));
 		} 
 		A.setStat("FLAGS",CMParms.toStringList(V));
-		old=httpReq.getRequestParameter("GENHELP");
+		old=httpReq.getUrlParameter("GENHELP");
 		A.setStat("HELP", old==null?"":old);
-		old=httpReq.getRequestParameter("OVERRIDEMANA");
+		old=httpReq.getUrlParameter("OVERRIDEMANA");
 		x1=CMath.s_int(old);
 		if(((x1>0)&&(x1<Ability.COST_PCT))) 
-			old=httpReq.getRequestParameter("CUSTOMOVERRIDEMANA");
+			old=httpReq.getUrlParameter("CUSTOMOVERRIDEMANA");
 		A.setStat("OVERRIDEMANA",(old==null)?"-1":old);
 		V.clear();
-		if(httpReq.isRequestParameter("USAGEMASK"))
+		if(httpReq.isUrlParameter("USAGEMASK"))
 		{
 			String id="";
 			int num=0;
-			for(;httpReq.isRequestParameter("USAGEMASK"+id);id=""+(++num))
-				V.addElement(httpReq.getRequestParameter("USAGEMASK"+id));
+			for(;httpReq.isUrlParameter("USAGEMASK"+id);id=""+(++num))
+				V.addElement(httpReq.getUrlParameter("USAGEMASK"+id));
 		} 
 		A.setStat("USAGEMASK",CMParms.toStringList(V));
 		V.clear();
-		if(httpReq.isRequestParameter("MATLIST"))
+		if(httpReq.isUrlParameter("MATLIST"))
 		{
 			String id="";
 			int num=0;
-			for(;httpReq.isRequestParameter("MATLIST"+id);id=""+(++num))
-				V.addElement(httpReq.getRequestParameter("MATLIST"+id));
+			for(;httpReq.isUrlParameter("MATLIST"+id);id=""+(++num))
+				V.addElement(httpReq.getUrlParameter("MATLIST"+id));
 		} 
 		A.setStat("MATLIST",CMParms.toStringList(V));
 		V.clear();
-		if(httpReq.isRequestParameter("CANAFFECTMASK"))
+		if(httpReq.isUrlParameter("CANAFFECTMASK"))
 		{
 			String id="";
 			int num=0;
-			for(;httpReq.isRequestParameter("CANAFFECTMASK"+id);id=""+(++num))
-				V.addElement(httpReq.getRequestParameter("CANAFFECTMASK"+id));
+			for(;httpReq.isUrlParameter("CANAFFECTMASK"+id);id=""+(++num))
+				V.addElement(httpReq.getUrlParameter("CANAFFECTMASK"+id));
 		} 
 		A.setStat("CANAFFECTMASK",CMParms.toStringList(V));
 		V.clear();
-		if(httpReq.isRequestParameter("CANTARGETMASK"))
+		if(httpReq.isUrlParameter("CANTARGETMASK"))
 		{
 			String id="";
 			int num=0;
-			for(;httpReq.isRequestParameter("CANTARGETMASK"+id);id=""+(++num))
-				V.addElement(httpReq.getRequestParameter("CANTARGETMASK"+id));
+			for(;httpReq.isUrlParameter("CANTARGETMASK"+id);id=""+(++num))
+				V.addElement(httpReq.getUrlParameter("CANTARGETMASK"+id));
 		} 
 		A.setStat("CANTARGETMASK",CMParms.toStringList(V));
-		old=httpReq.getRequestParameter("CANMEND");
+		old=httpReq.getUrlParameter("CANMEND");
 		A.setStat("CANMEND",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
-		old=httpReq.getRequestParameter("CANREFIT");
+		old=httpReq.getUrlParameter("CANREFIT");
 		A.setStat("CANREFIT",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
-		old=httpReq.getRequestParameter("CANBUNDLE");
+		old=httpReq.getUrlParameter("CANBUNDLE");
 		A.setStat("CANBUNDLE",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
-		old=httpReq.getRequestParameter("CANSIT");
+		old=httpReq.getUrlParameter("CANSIT");
 		A.setStat("CANSIT",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
-		old=httpReq.getRequestParameter("SOUND");
+		old=httpReq.getUrlParameter("SOUND");
 		A.setStat("SOUND",(old==null)?"":old);
-		old=httpReq.getRequestParameter("VERB");
+		old=httpReq.getUrlParameter("VERB");
 		A.setStat("VERB",(old==null)?"":old);
-		old=httpReq.getRequestParameter("FILENAME");
+		old=httpReq.getUrlParameter("FILENAME");
 		A.setStat("FILENAME",(old==null)?"":old);
-		old=httpReq.getRequestParameter("QUALITY");
+		old=httpReq.getUrlParameter("QUALITY");
 		A.setStat("QUALITY",(old==null)?"":old);
-		old=httpReq.getRequestParameter("HERESTATS");
+		old=httpReq.getUrlParameter("HERESTATS");
 		A.setStat("HERESTATS",(old==null)?"":old);
-		old=httpReq.getRequestParameter("SCRIPT");
+		old=httpReq.getUrlParameter("SCRIPT");
 		A.setStat("SCRIPT",(old==null)?"":old);
-		old=httpReq.getRequestParameter("CASTMASK");
+		old=httpReq.getUrlParameter("CASTMASK");
 		A.setStat("CASTMASK",(old==null)?"":old);
-		old=httpReq.getRequestParameter("TARGETMASK");
+		old=httpReq.getUrlParameter("TARGETMASK");
 		A.setStat("TARGETMASK",(old==null)?"":old);
-		old=httpReq.getRequestParameter("FIZZLEMSG");
+		old=httpReq.getUrlParameter("FIZZLEMSG");
 		A.setStat("FIZZLEMSG",(old==null)?"":old);
-		old=httpReq.getRequestParameter("AUTOCASTMSG");
+		old=httpReq.getUrlParameter("AUTOCASTMSG");
 		A.setStat("AUTOCASTMSG",(old==null)?"":old);
-		old=httpReq.getRequestParameter("CASTMSG");
+		old=httpReq.getUrlParameter("CASTMSG");
 		A.setStat("CASTMSG",(old==null)?"":old);
-		old=httpReq.getRequestParameter("POSTCASTMSG");
+		old=httpReq.getUrlParameter("POSTCASTMSG");
 		A.setStat("POSTCASTMSG",(old==null)?"":old);
-		old=httpReq.getRequestParameter("ATTACKCODE");
+		old=httpReq.getUrlParameter("ATTACKCODE");
 		A.setStat("ATTACKCODE",(old==null)?"0":old);
-		old=httpReq.getRequestParameter("POSTCASTDAMAGE");
+		old=httpReq.getUrlParameter("POSTCASTDAMAGE");
 		A.setStat("POSTCASTDAMAGE",(old==null)?"":old);
 		V.clear();
-		if(httpReq.isRequestParameter("POSTCASTAFFECT"))
+		if(httpReq.isUrlParameter("POSTCASTAFFECT"))
 		{
 			String id="";
 			int num=0;
-			for(;httpReq.isRequestParameter("POSTCASTAFFECT"+id);id=""+(++num))
-				V.addElement(httpReq.getRequestParameter("POSTCASTAFFECT"+id));
+			for(;httpReq.isUrlParameter("POSTCASTAFFECT"+id);id=""+(++num))
+				V.addElement(httpReq.getUrlParameter("POSTCASTAFFECT"+id));
 		} 
 		A.setStat("POSTCASTAFFECT",CMParms.toSemicolonList(V));
 		V.clear();
-		if(httpReq.isRequestParameter("POSTCASTABILITY"))
+		if(httpReq.isUrlParameter("POSTCASTABILITY"))
 		{
 			String id="";
 			int num=0;
-			for(;httpReq.isRequestParameter("POSTCASTABILITY"+id);id=""+(++num))
-				V.addElement(httpReq.getRequestParameter("POSTCASTABILITY"+id));
+			for(;httpReq.isUrlParameter("POSTCASTABILITY"+id);id=""+(++num))
+				V.addElement(httpReq.getUrlParameter("POSTCASTABILITY"+id));
 		} 
 		A.setStat("POSTCASTABILITY",CMParms.toSemicolonList(V));
 		if(A instanceof Language)
 		{
 			((Language)A).translationVector(A.ID()).clear();
-			if(httpReq.isRequestParameter("WORDLIST1"))
+			if(httpReq.isUrlParameter("WORDLIST1"))
 			{
 				int x=1;
-				while(httpReq.isRequestParameter("WORDLIST"+x))
+				while(httpReq.isUrlParameter("WORDLIST"+x))
 				{
 					((Language)A).translationVector(A.ID())
-					.add(CMParms.parseCommas(httpReq.getRequestParameter("WORDLIST"+x), true).toArray(new String[0]));
+					.add(CMParms.parseCommas(httpReq.getUrlParameter("WORDLIST"+x), true).toArray(new String[0]));
 					x++;
 				}
 			}
@@ -194,13 +194,13 @@ public class GrinderAbilities {
 				else
 					break;
 			((Language)A).translationHash(A.ID()).clear();
-			if(httpReq.isRequestParameter("HASHWORD1"))
+			if(httpReq.isUrlParameter("HASHWORD1"))
 			{
 				int x=1;
-				while(httpReq.isRequestParameter("HASHWORD"+x))
+				while(httpReq.isUrlParameter("HASHWORD"+x))
 				{
-					String word=httpReq.getRequestParameter("HASHWORD"+x).toUpperCase().trim();
-					String def=httpReq.getRequestParameter("HASHWORDDEF"+x);
+					String word=httpReq.getUrlParameter("HASHWORD"+x).toUpperCase().trim();
+					String def=httpReq.getUrlParameter("HASHWORDDEF"+x);
 					if((def!=null)&&(def.length()>0)&&(word.length()>0))
 						((Language)A).translationHash(A.ID()).put(word,def);
 					x++;

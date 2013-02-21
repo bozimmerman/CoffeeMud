@@ -13,9 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -37,23 +36,23 @@ public class AbilityNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ABILITY");
+		String last=httpReq.getUrlParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("ABILITY");
+			if(last!=null) httpReq.removeUrlParameter("ABILITY");
 			return "";
 		}
-		String ableType=httpReq.getRequestParameter("ABILITYTYPE");
+		String ableType=httpReq.getUrlParameter("ABILITYTYPE");
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
-		String domainType=httpReq.getRequestParameter("DOMAIN");
+		String domainType=httpReq.getUrlParameter("DOMAIN");
 		if((domainType!=null)&&(domainType.length()>0))
 			parms.put("DOMAIN",domainType);
 		long flags=0;
-		String flagString=httpReq.getRequestParameter("FLAGS");
+		String flagString=httpReq.getUrlParameter("FLAGS");
 		if((flagString!=null)&&(flagString.length()>0))
 		{
 			Vector V=CMParms.parseSquiggles(flagString.toUpperCase());
@@ -63,11 +62,11 @@ public class AbilityNext extends StdWebMacro
 		}
 		
 		String lastID="";
-		String className=httpReq.getRequestParameter("CLASS");
+		String className=httpReq.getUrlParameter("CLASS");
 		boolean genericOnly =parms.containsKey("GENERIC");
 		boolean parmsEditable=parms.containsKey("PARMSEDITABLE");
 		boolean unqualifiedOK=parms.containsKey("UNQUALIFIEDOK");
-		String levelName=httpReq.getRequestParameter("LEVEL");
+		String levelName=httpReq.getUrlParameter("LEVEL");
 		boolean notFlag =parms.containsKey("NOT"); 
 		boolean allFlag =parms.containsKey("ALL");
 		boolean domainFlag=parms.containsKey("DOMAIN");
@@ -138,13 +137,13 @@ public class AbilityNext extends StdWebMacro
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
 				{
-					httpReq.addRequestParameters("ABILITY",A.ID());
+					httpReq.addFakeUrlParameter("ABILITY",A.ID());
 					return "";
 				}
 				lastID=A.ID();
 			}
 		}
-		httpReq.addRequestParameters("ABILITY","");
+		httpReq.addFakeUrlParameter("ABILITY","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

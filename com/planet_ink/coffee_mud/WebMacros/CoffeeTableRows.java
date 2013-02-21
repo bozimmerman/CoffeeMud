@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,9 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -39,7 +38,7 @@ public class CoffeeTableRows extends StdWebMacro
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	//HEADER, FOOTER, DATERANGE, DATESTART, DATEEND, LEVELSUP, DIVORCES, BIRTHS, MARRIAGES, PURGES, CLASSCHANGES, PKDEATHS, DEATHS, NEWPLAYERS, TOTALHOURS, AVERAGETICKS, AVERAGEONLINE, MOSTONLINE, LOGINS, 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(parm.length()==0) parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -48,12 +47,12 @@ public class CoffeeTableRows extends StdWebMacro
 		if(header==null) header="";
 		String footer=(String)parms.get("FOOTER");
 		if(footer==null) footer="";
-		int scale=CMath.s_int(httpReq.getRequestParameter("SCALE"));
+		int scale=CMath.s_int(httpReq.getUrlParameter("SCALE"));
 		if(scale<=0) scale=1;
-		int days=CMath.s_int(httpReq.getRequestParameter("DAYS"));
+		int days=CMath.s_int(httpReq.getUrlParameter("DAYS"));
 		days=days*scale;
 		if(days<=0) days=0;
-		String code=httpReq.getRequestParameter("CODE");
+		String code=httpReq.getUrlParameter("CODE");
 		if((code==null)||(code.length()==0)) code="*";
 		
 		Calendar ENDQ=Calendar.getInstance();

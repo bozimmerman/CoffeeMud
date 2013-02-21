@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,8 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -38,12 +38,12 @@ public class PlayerOnline extends StdWebMacro
 
 	public static final int MAX_IMAGE_SIZE=50*1024;
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		String last=httpReq.getRequestParameter("PLAYER");
+		String last=httpReq.getUrlParameter("PLAYER");
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(last==null) return " @break@";
 		if(last.length()>0)
@@ -106,7 +106,7 @@ public class PlayerOnline extends StdWebMacro
 						if(canModify&&(parms.containsKey("NEWIMAGE")))
 						{
 							Resources.removeResource("CMPORTRAIT-"+M.Name());
-							String file=httpReq.getRequestParameter("FILE");
+							String file=httpReq.getUrlParameter("FILE");
 							if(file==null) file="";
 							byte[] buf=(byte[])httpReq.getRequestObjects().get("FILE");
 							if(file.length()==0) return "File not uploaded -- no name!";

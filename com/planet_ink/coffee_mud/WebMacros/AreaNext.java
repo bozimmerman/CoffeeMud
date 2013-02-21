@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -37,13 +39,13 @@ public class AreaNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("AREA");
+		String last=httpReq.getUrlParameter("AREA");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeRequestParameter("AREA");
+			if(last!=null) httpReq.removeUrlParameter("AREA");
 			return "";
 		}
 		String lastID="";
@@ -52,14 +54,14 @@ public class AreaNext extends StdWebMacro
 			Area A=(Area)a.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))
 			{
-				httpReq.addRequestParameters("AREA",A.Name());
+				httpReq.addFakeUrlParameter("AREA",A.Name());
 				if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 					return "";
 				last=A.Name();
 			}
 			lastID=A.Name();
 		}
-		httpReq.addRequestParameters("AREA","");
+		httpReq.addFakeUrlParameter("AREA","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

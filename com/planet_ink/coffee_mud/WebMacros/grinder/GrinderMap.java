@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+
+import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -17,7 +19,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.*;
 import java.util.*;
 import java.net.URLEncoder;
-
 
 /*
    Copyright 2000-2013 Bo Zimmerman
@@ -320,7 +321,7 @@ public class GrinderMap extends GrinderFlatMap
 					   " room(s) were not placed.");
 	}
 
-	public StringBuffer getHTMLTable(ExternalHTTPRequests httpReq)
+	public StringBuffer getHTMLTable(HTTPRequest httpReq)
 	{
 		StringBuffer buf = new StringBuffer("");
 		// For now, we will populate the SELECT element prior to the
@@ -452,13 +453,13 @@ public class GrinderMap extends GrinderFlatMap
 		return buf;
 	}
 
-	public StringBuffer getHTMLMap(ExternalHTTPRequests httpReq)
+	public StringBuffer getHTMLMap(HTTPRequest httpReq)
 	{
 		return getHTMLMap(httpReq, 4);
 	}
 
 	// this is much like getHTMLTable, but tiny rooms for world map viewing. No exits or ID's for now.
-	public StringBuffer getHTMLMap(ExternalHTTPRequests httpReq, int roomSize)
+	public StringBuffer getHTMLMap(HTTPRequest httpReq, int roomSize)
 	{
 		StringBuffer buf = new StringBuffer("");
 		// For now, we will populate the SELECT element prior to the
@@ -467,7 +468,7 @@ public class GrinderMap extends GrinderFlatMap
 					 + "height:200px; z-index:1000000" +
 					 "; left: 0px; top: 10px; visibility: show\">");
 		buf.append("<select name=\"layerSelect\" size=\"18\" onChange=\"showSelected()\">");
-		String MaPlayer=httpReq.getRequestParameter("MAPLAYER");
+		String MaPlayer=httpReq.getUrlParameter("MAPLAYER");
 		if(MaPlayer==null) MaPlayer="";
 		for (int z = minZ; z <= maxZ; z++)
 		{
