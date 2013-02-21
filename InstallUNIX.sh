@@ -65,7 +65,6 @@ $JAVACPATH com/planet_ink/coffee_mud/Common/*.java
 $JAVACPATH com/planet_ink/coffee_mud/core/*.java
 $JAVACPATH com/planet_ink/coffee_mud/core/database/*.java
 $JAVACPATH com/planet_ink/coffee_mud/core/exceptions/*.java
-$JAVACPATH com/planet_ink/coffee_mud/core/http/*.java
 $JAVACPATH com/planet_ink/coffee_mud/core/interfaces/*.java
 $JAVACPATH com/planet_ink/coffee_mud/core/intermud/*.java
 $JAVACPATH com/planet_ink/coffee_mud/core/intermud/cm1/*.java
@@ -126,6 +125,12 @@ $JAVACPATH com/planet_ink/coffee_mud/MOBS/interfaces/*.java
 $JAVACPATH com/planet_ink/coffee_mud/Races/interfaces/*.java
 $JAVACPATH com/planet_ink/coffee_mud/WebMacros/grinder/*.java
 $JAVACPATH com/planet_ink/coffee_mud/WebMacros/interfaces/*.java
+$JAVACPATH com/planet_ink/miniweb/converters/*.java
+$JAVACPATH com/planet_ink/miniweb/http/*.java
+$JAVACPATH com/planet_ink/miniweb/interfaces/*.java
+$JAVACPATH com/planet_ink/miniweb/server/*.java
+$JAVACPATH com/planet_ink/miniweb/servlets/*.java
+$JAVACPATH com/planet_ink/miniweb/util/*.java
 $JAVACPATH com/planet_ink/siplet/applet/*.java
 $JAVACPATH com/planet_ink/siplet/support/*.java
 

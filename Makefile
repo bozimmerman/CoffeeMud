@@ -116,7 +116,6 @@ com.planet_ink.coffee_mud.core \
 com.planet_ink.coffee_mud.core.collections \
 com.planet_ink.coffee_mud.core.database \
 com.planet_ink.coffee_mud.core.exceptions \
-com.planet_ink.coffee_mud.core.http \
 com.planet_ink.coffee_mud.core.interfaces \
 com.planet_ink.coffee_mud.core.intermud \
 com.planet_ink.coffee_mud.core.intermud.cm1 \
@@ -176,6 +175,12 @@ com.planet_ink.coffee_mud.MOBS.interfaces \
 com.planet_ink.coffee_mud.Races.interfaces \
 com.planet_ink.coffee_mud.WebMacros.grinder \
 com.planet_ink.coffee_mud.WebMacros.interfaces \
+com.planet_ink.miniweb.converters \
+com.planet_ink.miniweb.http \
+com.planet_ink.miniweb.interfaces \
+com.planet_ink.miniweb.server \
+com.planet_ink.miniweb.servlets \
+com.planet_ink.miniweb.util \
 com.planet_ink.siplet.applet \
 com.planet_ink.siplet.support \
 
@@ -530,7 +535,6 @@ com.planet_ink.coffee_mud.Common.interfaces : $(call PACKAGE_OBJS,com.planet_ink
 com.planet_ink.coffee_mud.core.collections : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.collections)
 com.planet_ink.coffee_mud.core.database : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.database)
 com.planet_ink.coffee_mud.core.exceptions : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.exceptions)
-com.planet_ink.coffee_mud.core.http : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.http)
 com.planet_ink.coffee_mud.core.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.interfaces)
 com.planet_ink.coffee_mud.core.intermud : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.intermud)
 com.planet_ink.coffee_mud.core.smtp : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.core.smtp)
@@ -559,6 +563,12 @@ com.planet_ink.coffee_mud.MOBS.interfaces : $(call PACKAGE_OBJS,com.planet_ink.c
 com.planet_ink.coffee_mud.Races.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Races.interfaces)
 com.planet_ink.coffee_mud.WebMacros.grinder : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.WebMacros.grinder)
 com.planet_ink.coffee_mud.WebMacros.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.WebMacros.interfaces)
+com.planet_ink.miniweb.converters : $(call PACKAGE_OBJS,com.planet_ink.miniweb.converters)
+com.planet_ink.miniweb.http : $(call PACKAGE_OBJS,com.planet_ink.miniweb.http)
+com.planet_ink.miniweb.interfaces : $(call PACKAGE_OBJS,com.planet_ink.miniweb.interfaces)
+com.planet_ink.miniweb.server : $(call PACKAGE_OBJS,com.planet_ink.miniweb.server)
+com.planet_ink.miniweb.servlets : $(call PACKAGE_OBJS,com.planet_ink.miniweb.servlets)
+com.planet_ink.miniweb.util : $(call PACKAGE_OBJS,com.planet_ink.miniweb.util)
 com.planet_ink.siplet.applet : $(call PACKAGE_OBJS,com.planet_ink.siplet.applet)
 com.planet_ink.siplet.support : $(call PACKAGE_OBJS,com.planet_ink.siplet.support)
 
