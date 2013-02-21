@@ -53,102 +53,81 @@ public class DVector implements Cloneable, java.io.Serializable
 		stuff=new SVector<Object[]>(startingSize);
 	}
 	
-	public void clear()
+	public synchronized void clear()
 	{
-		synchronized(stuff)
-		{
-			stuff.clear();
-		}
+		stuff.clear();
 	}
 
-	public void trimToSize()
+	public synchronized void trimToSize()
 	{
-		synchronized(stuff)
-		{
-			stuff.trimToSize();
-		}
+		stuff.trimToSize();
 	}
 	
-	public int indexOf(Object O)
+	public synchronized int indexOf(Object O)
 	{
-		synchronized(stuff)
+		int x=0;
+		if(O==null)
 		{
-			int x=0;
-			if(O==null)
-			{
-				for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
-					if(e.nextElement()[0]==null)
-						return x;
-			}
-			else
 			for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
-				if(O.equals(e.nextElement()[0]))
+				if(e.nextElement()[0]==null)
 					return x;
 		}
+		else
+		for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
+			if(O.equals(e.nextElement()[0]))
+				return x;
 		return -1;
 	}
-	public Object[] elementsAt(int x)
+	public synchronized Object[] elementsAt(int x)
 	{
-		synchronized(stuff)
-		{
-			if((x<0)||(x>=stuff.size())) throw new java.lang.IndexOutOfBoundsException();
-			return stuff.elementAt(x);
-		}
+		if((x<0)||(x>=stuff.size())) throw new java.lang.IndexOutOfBoundsException();
+		return stuff.elementAt(x);
 	}
 	
-	public Object[] removeElementsAt(int x)
+	public synchronized Object[] removeElementsAt(int x)
 	{
-		synchronized(stuff)
-		{
-			if((x<0)||(x>=stuff.size())) throw new java.lang.IndexOutOfBoundsException();
-			Object[] O=stuff.elementAt(x);
-			stuff.removeElementAt(x);
-			return O;
-		}
+		if((x<0)||(x>=stuff.size())) throw new java.lang.IndexOutOfBoundsException();
+		Object[] O=stuff.elementAt(x);
+		stuff.removeElementAt(x);
+		return O;
 	}
 	
-	public DVector copyOf()
+	public synchronized DVector copyOf()
 	{
 		DVector V=new DVector(dimensions);
 		if(stuff!=null)
 		{
-			synchronized(stuff)
-			{
-				for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
-					V.stuff.addElement(s.nextElement().clone());
-			}
+			for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
+				V.stuff.addElement(s.nextElement().clone());
 		}
 		return V;
 	}
 	
-	public void sortBy(int dim)
+	public synchronized void sortBy(int dim)
 	{
 		if((dim<1)||(dim>dimensions)) throw new java.lang.IndexOutOfBoundsException();
 		dim--;
 		if(stuff!=null)
 		{
 			TreeSet sorted=new TreeSet();
-			synchronized(stuff)
+			Object O=null;
+			for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
 			{
-				Object O=null;
+				O=(s.nextElement())[dim];
+				if(!sorted.contains(O))
+					sorted.add(O);
+			}
+			SVector<Object[]> newStuff = new SVector<Object[]>(stuff.size());
+			for(Iterator i=sorted.iterator();i.hasNext();)
+			{
+				O=i.next();
 				for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
 				{
-					O=(s.nextElement())[dim];
-					if(!sorted.contains(O))
-						sorted.add(O);
+					Object[] Os=s.nextElement();
+					if(O==Os[dim]) newStuff.addElement(Os);
 				}
-				SVector<Object[]> newStuff = new SVector<Object[]>(stuff.size());
-				for(Iterator i=sorted.iterator();i.hasNext();)
-				{
-					O=i.next();
-					for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
-					{
-						Object[] Os=s.nextElement();
-						if(O==Os[dim]) newStuff.addElement(Os);
-					}
-				}
-				stuff=newStuff;
 			}
+			stuff=newStuff;
 		}
 	}
 
@@ -163,101 +142,71 @@ public class DVector implements Cloneable, java.io.Serializable
 		return DV;
 	}
 	
-	public void addSharedElements(Object[] O)
+	public synchronized void addSharedElements(Object[] O)
 	{
 		if(dimensions!=O.length) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-			stuff.addElement(O);
-		}
+		stuff.addElement(O);
 	}
-	public void addElement(Object... Os)
+	public synchronized void addElement(Object... Os)
 	{
 		if(dimensions!=Os.length) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-			stuff.addElement(Os);
-		}
+		stuff.addElement(Os);
 	}
 	public boolean contains(Object O){
 		return indexOf(O)>=0;
 	}
-	public boolean containsIgnoreCase(String S)
+	public synchronized boolean containsIgnoreCase(String S)
 	{
-		synchronized(stuff)
-		{
-			if(S==null) return indexOf(null)>=0;
-			for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();)
-				if(S.equalsIgnoreCase(e.nextElement()[0].toString()))
-					return true;
-		}
+		if(S==null) return indexOf(null)>=0;
+		for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();)
+			if(S.equalsIgnoreCase(e.nextElement()[0].toString()))
+				return true;
 		return false;
 	}
 	public int size()
 	{
 		return stuff.size();
 	}
-	public void removeElementAt(int i)
+	public synchronized void removeElementAt(int i)
 	{
-		synchronized(stuff)
-		{
-			if(i>=0)
-				stuff.removeElementAt(i);
-		}
+		if(i>=0)
+			stuff.removeElementAt(i);
 	}
-	public void removeElement(Object O)
+	public synchronized void removeElement(Object O)
 	{
-		synchronized(stuff)
-		{
-			removeElementAt(indexOf(O));
-		}
+		removeElementAt(indexOf(O));
 	}
-	public Vector getDimensionVector(int dim)
+	public synchronized Vector getDimensionVector(int dim)
 	{
 		Vector V=new Vector<Object>(stuff.size());
-		synchronized(stuff)
-		{
-			if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
-			for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();)
-				V.addElement(e.nextElement()[dim-1]);
-		}
+		if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
+		for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();)
+			V.addElement(e.nextElement()[dim-1]);
 		return V;
 	}
-	public Vector getRowVector(int row)
+	public synchronized Vector getRowVector(int row)
 	{
 		Vector V=new Vector<Object>(dimensions);
-		synchronized(stuff)
-		{
-			Object[] O=elementsAt(row);
-			for(int v=0;v<O.length;v++)
-				V.add(O[v]);
-		}
+		Object[] O=elementsAt(row);
+		for(int v=0;v<O.length;v++)
+			V.add(O[v]);
 		return V;
 	}
-	public Object elementAt(int i, int dim)
-	{
-		synchronized(stuff)
-		{
-			if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
-			return (stuff.elementAt(i))[dim-1];
-		}
-	}
-	
-	public void setElementAt(int index, int dim, Object O)
+	public synchronized Object elementAt(int i, int dim)
 	{
 		if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-			stuff.elementAt(index)[dim-1]=O;
-		}
+		return (stuff.elementAt(i))[dim-1];
 	}
 	
-	public void insertElementAt(int here, Object... Os)
+	public synchronized void setElementAt(int index, int dim, Object O)
+	{
+		if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
+		stuff.elementAt(index)[dim-1]=O;
+	}
+	
+	public synchronized void insertElementAt(int here, Object... Os)
 	{
 		if(dimensions!=Os.length) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-			stuff.insertElementAt(Os,here);
-		}
+		stuff.insertElementAt(Os,here);
 	}
 }
