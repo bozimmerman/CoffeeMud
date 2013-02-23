@@ -2444,6 +2444,4 @@ ruthless programmer, and sentenced to a quick death.
 1. CoffeeMud and MiniWebServer are now integrated -- this means a much faster and better web service all around.
 TODO:
 1. Write MiniWebServer docs, esp for CoffeeMud
-2. Fix Player Portrait parts
-3. Test MXP Player Portraits
-4. Fix WebSiplet
+

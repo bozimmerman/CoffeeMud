@@ -484,9 +484,16 @@ public class CMFile extends File
 	public final boolean mayDeleteIfDirectory()
 	{
 		if(!isDirectory()) return true;
-		if((localFile!=null)&&(localFile.isDirectory())&&(localFile.list().length>0))
+		if(localFile!=null)
+		{
+			if(!localFile.isDirectory())
+				return false;
+			if(localFile.list().length>0)
+				return false;
+		}
+		if(getVFSDirectory().fetchSubDir(getVFSPathAndName().toUpperCase(), false)!=null)
 			return false;
-		return getVFSDirectory().fetchSubDir(getVFSPathAndName().toUpperCase(), false)!=null;
+		return true;
 	}
 
 	public final boolean deleteLocal()

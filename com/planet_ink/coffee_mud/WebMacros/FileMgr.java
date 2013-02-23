@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.miniweb.http.MultiPartData;
 import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -92,7 +93,9 @@ public class FileMgr extends StdWebMacro
 		String path=httpReq.getUrlParameter("PATH");
 		if(path==null) path="";
 		String file=httpReq.getUrlParameter("FILE");
-		if(file==null) file="";
+		if(file==null){
+			file="";
+		}
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[authentication error]";
 		try
@@ -268,11 +271,20 @@ public class FileMgr extends StdWebMacro
 			else
 			if(parms.containsKey("UPLOAD"))
 			{
-				byte[] buf=(byte[])httpReq.getRequestObjects().get("FILE");
+				byte[] buf=null;
+				for(MultiPartData d : httpReq.getMultiParts())
+				{
+					if((d.getVariables().containsKey("filename"))&&(d.getData()!=null))
+					{
+						F=new CMFile(prefix+filePath+d.getVariables().get("filename"),M,false);
+						last=F.getVFSPathAndName();
+						buf=d.getData();
+					}
+				}
 				if(buf==null) return "File `"+last+"` not uploaded -- no buffer!";
 				if((!F.canWrite())||(!F.saveRaw(buf)))
-					return "File `"+last+"` not uploaded -- error!";
-				return "File `"+last+"` uploaded.";
+					return "File `"+F.getAbsolutePath()+"` not uploaded -- error!";
+				return "File `"+F.getAbsolutePath()+"` uploaded.";
 			}
 		}
 		catch(Exception e)
