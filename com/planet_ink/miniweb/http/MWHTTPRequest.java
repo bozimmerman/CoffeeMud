@@ -19,7 +19,6 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import com.planet_ink.coffee_mud.core.collections.XHashtable;
 import com.planet_ink.miniweb.interfaces.HTTPIOHandler;
 import com.planet_ink.miniweb.interfaces.HTTPRequest;
 import com.planet_ink.miniweb.util.MiniWebConfig;
@@ -193,7 +192,9 @@ public class MWHTTPRequest implements HTTPRequest
 	{
 		if(urlParameters==null)
 			return new TreeMap<String,String>();
-		return new XHashtable<String,String>(urlParameters);
+		Hashtable<String,String> parms=new Hashtable<String,String>();
+		parms.putAll(urlParameters);
+		return parms;
 	}
 	
 	/**
@@ -655,7 +656,7 @@ public class MWHTTPRequest implements HTTPRequest
 		&&(headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName()).startsWith("application/x-www-form-urlencoded")))
 		{
 			bodyStream = emptyInput;
-			String byteStr=new String(buffer.array());
+			final String byteStr=new String(buffer.array());
 			parseUrlEncodedKeypairs(byteStr);
 			if (isDebugging) debugLogger.fine("Urlencoded data: "+byteStr);
 			buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
