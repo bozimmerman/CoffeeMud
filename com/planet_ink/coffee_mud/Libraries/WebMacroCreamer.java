@@ -651,7 +651,6 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 
 	@Override
 	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response) {
-		doGet(request,response);
 	}
 
 }

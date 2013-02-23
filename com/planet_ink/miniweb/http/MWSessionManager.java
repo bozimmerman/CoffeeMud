@@ -59,6 +59,24 @@ public class MWSessionManager implements ServletSessionManager
 	}
 
 	/**
+	 * Internal method to find an existing session based on the request data.
+	 * If the session does not exist, it will be created and returned
+	 * @param sessionID the id of the session
+	 */
+	@Override
+	public SimpleServletSession findOrCreateSession(String sessionID)
+	{
+		SimpleServletSession session = sessions.get(sessionID);
+		if(session != null) return session;
+		session = new MWServletSession(sessionID);
+		synchronized(sessions)
+		{
+			sessions.put(sessionID, session);
+			return session;
+		}
+	}
+	
+	/**
 	 * A maintence method forcing the manager to examine all sessions
 	 * for any that have timed out and remove them, if so.
 	 * @return the list of servlet classes

@@ -361,12 +361,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		}
 		else
 		{
-			session = config.getSessions().findSession(oldSessionID);
-			if(session == null)
-			{
-				session = config.getSessions().createSession(request);
-				servletResponse.setCookie("mwsessid", session.getSessionId());
-			}
+			session = config.getSessions().findOrCreateSession(oldSessionID);
 		}
 		return session;
 	}

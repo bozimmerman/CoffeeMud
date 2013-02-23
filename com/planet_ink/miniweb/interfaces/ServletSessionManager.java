@@ -32,6 +32,13 @@ public interface ServletSessionManager
 	public SimpleServletSession findSession(String sessionID);
 	
 	/**
+	 * Internal method to find an existing session based on the request data.
+	 * If the session does not exist, it will be created and returned
+	 * @param sessionID the id of the session
+	 */
+	public SimpleServletSession findOrCreateSession(String sessionID);
+	
+	/**
 	 * For generating a new servlet session and returning its ID
 	 * @param request the current request to base the new session on
 	 * @return the new servlet session obj
