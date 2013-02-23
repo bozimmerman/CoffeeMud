@@ -5,7 +5,8 @@
 		<title>@HTTPSTATUS@</title>
 		
 	</head>
-	<body>
+	<body BGCOLOR=BLACK>
+		<FONT COLOR=WHITE>
 		<IMG SRC="/images/skull.jpg" WIDTH=60 HEIGHT=60 ALT="" BORDER="0" align="left" hspace="20" vspace="2">
 		<h2>@HTTPSTATUS@</h2>
 
@@ -13,5 +14,6 @@
 
 		<br>
 		<hr><i>@WEBSERVERVERSION@ '@WEBSERVERNAME@' on port @WEBSERVERPORT@</i>
+		</FONT>
 	</body>
 </html>
