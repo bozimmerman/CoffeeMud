@@ -524,19 +524,25 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	public int writeBlockingBytesToChannel(final DataBuffers buffers) throws IOException
 	{
 		int written=0;
+		DataBuffers bufs=null;
 		synchronized(writeables)
 		{
-			while(buffers.hasNext())
+			writeables.addLast(buffers);
+			while(writeables.size()>0)
 			{
-				ByteBuffer buffer=buffers.next();
-				while(buffer.remaining()>0)
+				bufs=writeables.getFirst();
+				while(bufs.hasNext())
 				{
-					int bytesWritten=chan.write(buffer);
-					if(bytesWritten>=0)
-						written+=bytesWritten;
-					if(buffer.remaining()>0)
+					ByteBuffer buffer=buffers.next();
+					while(buffer.remaining()>0)
 					{
-						try{Thread.sleep(1);}catch(Exception e){}
+						int bytesWritten=chan.write(buffer);
+						if(bytesWritten>=0)
+							written+=bytesWritten;
+						if(buffer.remaining()>0)
+						{
+							try{Thread.sleep(1);}catch(Exception e){}
+						}
 					}
 				}
 			}
@@ -619,7 +625,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				}
 				catch(HTTPException me) // if an exception is generated, go ahead and send it out
 				{
-					writeBytesToChannel(me.generateOutput(currentReq));
+					writeBlockingBytesToChannel(me.generateOutput(currentReq));
 					// have to assume any exception caused
 					// before a finish is malformed and needs a closed connection.
 					if(currentReq.isFinished())
