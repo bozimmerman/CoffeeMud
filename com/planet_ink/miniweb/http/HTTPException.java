@@ -156,13 +156,20 @@ public class HTTPException extends Exception
 					if(converterClass != null)
 					{
 						HTTPOutputConverter converter=converterClass.newInstance();
+						finalBody.close();
 						finalBody=new MWDataBuffers(converter.convertOutput(config, request, status, fileBytes.flushToBuffer()),0);
 					}
 					else
+					{
+						finalBody.close();
 						finalBody=fileBytes;
+					}
 				}
 				else
+				{
+					finalBody.close();
 					finalBody=fileBytes;
+				}
 			}
 			catch(Exception e)
 			{
