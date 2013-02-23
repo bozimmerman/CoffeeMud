@@ -137,7 +137,7 @@ public class HTTPException extends Exception
 		str.append(HTTPHeader.getKeepAliveHeader());
 		str.append(HTTPHeader.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
 		
-		DataBuffers finalBody=new MWDataBuffers(body.getBytes(), 0);
+		DataBuffers finalBody=null;
 		if((body.length()==0)
 		&&(status.isAnError())
 		&&(config!=null)
@@ -156,26 +156,23 @@ public class HTTPException extends Exception
 					if(converterClass != null)
 					{
 						HTTPOutputConverter converter=converterClass.newInstance();
-						finalBody.close();
 						finalBody=new MWDataBuffers(converter.convertOutput(config, request, status, fileBytes.flushToBuffer()),0);
 					}
 					else
-					{
-						finalBody.close();
 						finalBody=fileBytes;
-					}
 				}
 				else
-				{
-					finalBody.close();
 					finalBody=fileBytes;
-				}
 			}
 			catch(Exception e)
 			{
 				if(fileBytes!=null)
 					fileBytes.close();
 			}
+		}
+		if(finalBody==null)
+		{
+			finalBody=new MWDataBuffers(body.getBytes(), 0);
 		}
 		for(HTTPHeader header : headers.keySet())
 		{
