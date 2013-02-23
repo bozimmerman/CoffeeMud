@@ -129,7 +129,6 @@ public class MWDataBuffers implements DataBuffers
 	{
 		if(list.size()>0)
 		{
-			close();
 			System.err.println("^^^^^^^^^^^^^^^^^^^^^^^");
 			System.err.println("MWDataBuffer Not Closed!");
 			System.err.println("First stack trace:");
@@ -145,6 +144,7 @@ public class MWDataBuffers implements DataBuffers
 			for(StackTraceElement f : closedStackTrace)
 				System.err.println(f.toString());
 			System.err.println("VVVVVVVVVVVVVVVVVVVVVVV");
+			close();
 		}
 		super.finalize();
 	}
