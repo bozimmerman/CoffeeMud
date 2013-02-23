@@ -545,6 +545,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						}
 					}
 				}
+				writeables.removeFirst();
 			}
 			return written;
 		}
