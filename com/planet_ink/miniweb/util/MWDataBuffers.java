@@ -32,25 +32,32 @@ public class MWDataBuffers implements DataBuffers
 	private int									length=0;
 	private long								lastModifiedTime=0;
 	//TODO: Remove/Comment out this stuff after the leak is found.
+	private volatile StackTraceElement[]		lastStackTrace=new StackTraceElement[0];
+	private volatile StackTraceElement[]		createdStackTrace=new StackTraceElement[0];
+	private volatile StackTraceElement[]		closedStackTrace=new StackTraceElement[0];
 	
 	public MWDataBuffers()
 	{
 		list=new LinkedList<Pair<Object,Long>>();
+		createdStackTrace=Thread.currentThread().getStackTrace();
 	}
 	public MWDataBuffers(final ByteBuffer buf, final long lastModifiedTime)
 	{
 		this();
 		add(buf, lastModifiedTime);
+		createdStackTrace=Thread.currentThread().getStackTrace();
 	}
 	public MWDataBuffers(final byte[] buf, final long lastModifiedTime)
 	{
 		this();
 		add(buf, lastModifiedTime);
+		createdStackTrace=Thread.currentThread().getStackTrace();
 	}
 	public MWDataBuffers(final InputStream stream, final int length, final long lastModifiedTime)
 	{
 		this();
 		add(stream, length, lastModifiedTime);
+		createdStackTrace=Thread.currentThread().getStackTrace();
 	}
 	
 	@SuppressWarnings("resource")
@@ -58,6 +65,7 @@ public class MWDataBuffers implements DataBuffers
 	{
 		if(list.size()==0)
 			return null;
+		lastStackTrace=Thread.currentThread().getStackTrace();
 		Pair<Object,Long> p=list.getFirst();
 		final Object o=p.first;
 		if(o instanceof ByteBuffer)
@@ -121,7 +129,22 @@ public class MWDataBuffers implements DataBuffers
 	{
 		if(list.size()>0)
 		{
+			System.err.println("^^^^^^^^^^^^^^^^^^^^^^^");
 			System.err.println("MWDataBuffer Not Closed!");
+			
+			System.err.println("First stack trace:");
+			if(createdStackTrace!=null)
+			for(StackTraceElement f : createdStackTrace)
+				System.err.println("  "+f.toString());
+			System.err.println("Last stack trace:");
+			if(lastStackTrace!=null)
+			for(StackTraceElement f : lastStackTrace)
+				System.err.println(f.toString());
+			System.err.println("Closed stack trace:");
+			if(closedStackTrace!=null)
+			for(StackTraceElement f : closedStackTrace)
+				System.err.println(f.toString());
+			System.err.println("VVVVVVVVVVVVVVVVVVVVVVV");
 			close();
 		}
 		super.finalize();
@@ -130,6 +153,7 @@ public class MWDataBuffers implements DataBuffers
 	@Override
 	public void close()
 	{
+		closedStackTrace=Thread.currentThread().getStackTrace();
 		for(Object o : list)
 			if(o instanceof InputStream)
 				try{ ((InputStream)o).close(); } catch(Exception e){}
@@ -203,8 +227,7 @@ public class MWDataBuffers implements DataBuffers
 		if((list.size()==1)&&(list.getFirst().first instanceof ByteBuffer))
 		{
 			ByteBuffer b=(ByteBuffer)list.getFirst().first;
-			list.clear();
-			length=0;
+			close();
 			return b;
 		}
 		ByteArrayOutputStream bout=new ByteArrayOutputStream();
