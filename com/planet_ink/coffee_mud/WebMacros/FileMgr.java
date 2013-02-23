@@ -44,6 +44,8 @@ public class FileMgr extends StdWebMacro
 	{
 		if(s1.length()==0) return true;
 		if(s2.length()==0) return false;
+		if(Pattern.matches(s1, s2))
+			return true;
 		if(s1.startsWith("*")&&(s1.endsWith("*")))
 			return s2.toUpperCase().indexOf(s1.toUpperCase().substring(1,s1.length()-1))>=0;
 		else
