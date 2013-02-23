@@ -625,7 +625,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				}
 				catch(HTTPException me) // if an exception is generated, go ahead and send it out
 				{
-					writeBlockingBytesToChannel(me.generateOutput(currentReq));
+					writeBytesToChannel(me.generateOutput(currentReq));
 					// have to assume any exception caused
 					// before a finish is malformed and needs a closed connection.
 					if(currentReq.isFinished())
