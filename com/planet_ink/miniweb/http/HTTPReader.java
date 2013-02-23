@@ -125,9 +125,12 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		if(!closeMe)
 		{
 			closeMe=true;
-			for(DataBuffers buf : this.writeables)
-				buf.close();
-			this.writeables.clear();
+			synchronized(this.writeables)
+			{
+				for(DataBuffers buf : this.writeables)
+					buf.close();
+				this.writeables.clear();
+			}
 			if((isDebugging)&&(chan.isOpen()))
 				config.getLogger().fine("Closed request handler '"+name);
 			try {
@@ -559,7 +562,10 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	 */
 	public void writeBytesToChannel(final DataBuffers buffers) throws IOException
 	{
-		writeables.addLast(buffers);
+		synchronized(this.writeables)
+		{
+			writeables.addLast(buffers);
+		}
 		handleWrites();
 	}
 	
