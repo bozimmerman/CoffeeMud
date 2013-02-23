@@ -829,14 +829,15 @@ public class RoomData extends StdWebMacro
 	
 	public static HTTPRequest mergeRoomFields(final HTTPRequest httpReq, Pair<String,String> setPairs[], Room R)
 	{
-		final Hashtable<String,String> mergeParams=new Hashtable<String,String>();
+		final Hashtable<String,String> mergeParams=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
 		HTTPRequest mergeReq=new HTTPRequest()
 		{
 			public final Hashtable<String,String> params=mergeParams;
 			@Override public String getHost() { return httpReq.getHost(); }
 			@Override public String getUrlPath() { return httpReq.getUrlPath(); }
-			@Override public String getUrlParameter(String name) { return params.get(name.toUpperCase()); }
-			@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toUpperCase()); }
+			@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
+			@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
+			@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }
 			@Override public Set<String> getUrlParameters() { return params.keySet(); }
 			@Override public HTTPMethod getMethod() { return httpReq.getMethod(); }
 			@Override public String getHeader(String name) { return httpReq.getHeader(name); }
@@ -854,11 +855,9 @@ public class RoomData extends StdWebMacro
 			@Override public Map<String,Object> getRequestObjects() { return httpReq.getRequestObjects(); }
 			@Override public float getHttpVer() { return httpReq.getHttpVer(); }
 		};
-		for(String key : httpReq.getUrlParameters())
-			mergeReq.addFakeUrlParameter(key.trim(), httpReq.getUrlParameter(key));
 		for(String[] pair : STAT_CHECKS)
 			if(mergeReq.isUrlParameter(pair[1]) && (mergeReq.getUrlParameter(pair[1]).length()==0))
-				mergeReq.addFakeUrlParameter(pair[1], R.getStat(pair[0]));
+				mergeReq.addFakeUrlParameter(pair[1].toLowerCase(), R.getStat(pair[0]));
 		CMLib.map().resetRoom(R);
 		R=(Room)R.copyOf();
 		RoomStuff stuff=new RoomStuff(R);

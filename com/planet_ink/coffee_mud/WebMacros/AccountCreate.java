@@ -60,6 +60,7 @@ public class AccountCreate extends StdWebMacro
 			return " @break@";
 		
 		String name=httpReq.getUrlParameter("ACCOUNTNAME");
+		if(name==null) name=httpReq.getUrlParameter("LOGIN");
 		if((name==null)||(name.length()==0)) return AccountCreateErrors.NO_NAME.toString();
 		String password;
 		if(emailPassword)

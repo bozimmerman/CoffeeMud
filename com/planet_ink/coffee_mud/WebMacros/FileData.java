@@ -40,6 +40,17 @@ public class FileData extends StdWebMacro
 	public boolean isAWebPath(){return true;}
 	public boolean preferBinary(){return true;}
 	
+	public void setServletResponse(SimpleServletResponse response, final String filename)
+	{
+		String file=filename;
+		if(file==null) file="FileData";
+		int x=file.lastIndexOf('/');
+		if((x>=0)&&(x<file.length()-1))
+			file=file.substring(x+1);
+		super.setServletResponse(response, file);
+		response.setHeader("Content-Disposition", "attachment; filename="+file);
+	}
+	
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
 		String path=httpReq.getUrlParameter("PATH");

@@ -46,7 +46,7 @@ public class ServerInfoServlet implements SimpleServlet
 			if(Thread.currentThread() instanceof MWThread)
 			{
 				MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
-				response.getOutputStream().write("<table width=\"300\"><tr><td><b>Field</b></td><td>Value</td></tr>".getBytes());
+				response.getOutputStream().write("<table width=\"500\"><tr><td><b>Field</b></td><td>Value</td></tr>".getBytes());
 				response.getOutputStream().write(("<tr><td>Bind address</td><td>"+config.getBindAddress()+"</td></tr>").getBytes());
 				response.getOutputStream().write(("<tr><td>Debug flag</td><td>"+config.getDebugFlag()+"</td></tr>").getBytes());
 				response.getOutputStream().write(("<tr><td>Default page</td><td>"+config.getDefaultPage()+"</td></tr>").getBytes());

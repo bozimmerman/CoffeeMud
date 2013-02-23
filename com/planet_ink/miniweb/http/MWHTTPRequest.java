@@ -19,6 +19,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import com.planet_ink.coffee_mud.core.collections.XHashtable;
 import com.planet_ink.miniweb.interfaces.HTTPIOHandler;
 import com.planet_ink.miniweb.interfaces.HTTPRequest;
 import com.planet_ink.miniweb.util.MiniWebConfig;
@@ -127,6 +128,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * Get the address of the requestor
 	 * @return an inet address
 	 */
+	@Override
 	public InetAddress getClientAddress()
 	{
 		return address;
@@ -137,6 +139,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * Returns null if the request line has not yet been received
 	 * @return the portion of the request without urlparameters.
 	 */
+	@Override
 	public String getUrlPath()
 	{
 		return uriPage;
@@ -147,6 +150,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * a request line has not been received yet.
 	 * @return the http version
 	 */
+	@Override
 	public float getHttpVer()
 	{
 		return httpVer;
@@ -157,6 +161,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * line has not yet been received
 	 * @return the type of this request
 	 */
+	@Override
 	public HTTPMethod getMethod()
 	{
 		return requestType;
@@ -169,6 +174,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * lowercase, and the values decoded.
 	 * @return a set of url keys
 	 */
+	@Override
 	public Set<String> getUrlParameters()
 	{
 		if(urlParameters==null)
@@ -177,9 +183,24 @@ public class MWHTTPRequest implements HTTPRequest
 	}
 
 	/**
+	 * Gets the key fields from the url/form parms
+	 * and their values as a copied map
+	 * 
+	 * @return The parameter names and values
+	 */
+	@Override
+	public Map<String,String> getUrlParametersCopy()
+	{
+		if(urlParameters==null)
+			return new TreeMap<String,String>();
+		return new XHashtable<String,String>(urlParameters);
+	}
+	
+	/**
 	 * Returns the simple host as the requestor asked for it
 	 * @return simple host name: blah.com
 	 */
+	@Override
 	public String getHost()
 	{
 		return headers.get(HTTPHeader.HOST.toString().toLowerCase());
@@ -190,6 +211,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * 
 	 * @return The clients connected-to port
 	 */
+	@Override
 	public int getClientPort()
 	{
 		return requestPort;
@@ -200,6 +222,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * This is like https://blahblah.com:8080
 	 * @return full host info
 	 */
+	@Override
 	public String getFullHost()
 	{
 		StringBuilder host=new StringBuilder(isHttps?"https://":"http://");
@@ -217,6 +240,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * if the request is not yet finished.
 	 * @return an input stream for the request body, or null
 	 */
+	@Override
 	public InputStream getBody()
 	{
 		return bodyStream;
@@ -229,6 +253,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * being "from" and the second (if available) the "to".
 	 * @return a list of integer arrays for ranges requested
 	 */
+	@Override
 	public List<int[]> getRangeAZ()
 	{
 		return byteRanges;
@@ -292,6 +317,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * set of multi-parts found therein. Otherwise, this returns null.
 	 * @return either a list of multi-parts, or null
 	 */
+	@Override
 	public List<MultiPartData> getMultiParts()
 	{
 		if(parts==null)
@@ -316,6 +342,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 * @param type an encoding type, such as compress or gzip
 	 * @return the value of the coding that is acceptable
 	 */
+	@Override
 	public double getSpecialEncodingAcceptability(String type)
 	{
 		if(acceptEnc == null) return 0.0;
@@ -511,6 +538,8 @@ public class MWHTTPRequest implements HTTPRequest
 							final String headerKey=headerParts[0].toLowerCase().trim();
 							if(currentPart!=null)
 							{
+								if((headerParts[1].length()>0)&&(headerParts[1].charAt(0)==' '))
+									headerParts[1]=headerParts[1].substring(1);
 								if(headerKey.equals(HTTPHeader.CONTENT_TYPE.lowerCaseName()))
 									currentPart.setContentType(headerParts[1]);
 								else
@@ -565,8 +594,8 @@ public class MWHTTPRequest implements HTTPRequest
 					}
 					else
 					{
-						if (isDebugging) debugLogger.fine("Got "+currentPart.getContentType()+" "+currentPart.getDisposition()+" of "+currentPart.getData().length+" bytes");
 						currentPart.setData(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer));
+						if (isDebugging) debugLogger.fine("Got "+currentPart.getContentType()+" "+currentPart.getDisposition()+" of "+currentPart.getData().length+" bytes");
 					}
 					
 					if(simpleBoundry)
@@ -626,8 +655,9 @@ public class MWHTTPRequest implements HTTPRequest
 		&&(headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName()).startsWith("application/x-www-form-urlencoded")))
 		{
 			bodyStream = emptyInput;
-			if (isDebugging) debugLogger.fine("Got urlencoded data");
-			parseUrlEncodedKeypairs(new String(buffer.array()));
+			String byteStr=new String(buffer.array());
+			parseUrlEncodedKeypairs(byteStr);
+			if (isDebugging) debugLogger.fine("Urlencoded data: "+byteStr);
 			buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
 		}
 		else // if this is some sort of multi-part thing, then the entire body is forfeit and MultiPartDatas are generated
@@ -878,11 +908,11 @@ public class MWHTTPRequest implements HTTPRequest
 		return headers.get(name.toLowerCase());
 	}
 
-	@Override
 	/**
 	 * Return the value of a cookie sent to the server in this request.
 	 * @return the cookie value
 	 */
+	@Override
 	public String getCookie(String name)
 	{
 		return cookies.get(name);

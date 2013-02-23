@@ -83,7 +83,8 @@ public class StdCommand implements Command
 				boolean check=true; 
 				for(int i=0;i<ff.length;i++)
 				{
-					if(!ff[i].isAssignableFrom(args[i].getClass()))
+					if((args[i]!=null)
+					&&(!ff[i].isAssignableFrom(args[i].getClass())))
 					{
 						check=false;
 						break;
@@ -96,7 +97,10 @@ public class StdCommand implements Command
 		StringBuilder str=new StringBuilder("");
 		str.append("Illegal arguments. Sent: ");
 		for(Object o : args)
-			str.append(o.getClass().getSimpleName()).append(" ");
+			if(o==null)
+				str.append("null ");
+			else
+				str.append(o.getClass().getSimpleName()).append(" ");
 		str.append(". Correct: ");
 		for(int f=0;f<fmt.length;f++)
 			for(Class c : fmt[f])

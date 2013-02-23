@@ -39,7 +39,9 @@ public class Export extends StdCommand
 	private final String[] access={"EXPORT"};
 	public String[] getAccessWords(){return access;}
 
-	private final static Class[][] internalParameters=new Class[][]{{String.class,String.class,String.class,Integer.class,Session.class,Area.class,Room.class}};
+	private final static Class[][] internalParameters=new Class[][]{
+		{String.class,String.class,String.class,Integer.class,null,Area.class,Room.class}
+	};
 	
 	public static void reallyExport(MOB mob, Session S, String fileName, String xml)
 	{

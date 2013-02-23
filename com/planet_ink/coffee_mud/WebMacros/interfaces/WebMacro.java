@@ -62,12 +62,14 @@ public interface WebMacro extends CMObject
 	/**
 	 * Whether this macro returns an attachment instead of something
 	 * displayable.  If true, the content-disposition will reflect
-	 * the filename parameter.
+	 * the filename parameter, and any other header or other response
+	 * settings may be embedded here.
 	 * @see WebMacro#getFilename(HTTPRequest, String)
+	 * @param response the MiniWebServer servlet response object
 	 * @param filename the filename from getFilename
 	 * @return  this is an attachment macro, so send back header
 	 */
-	public String getSpecialContentHeader(String filename);
+	public void setServletResponse(SimpleServletResponse response, final String filename);
 	
 	/**
 	 * Whether this macro substitutes as an aspect of the web path instead

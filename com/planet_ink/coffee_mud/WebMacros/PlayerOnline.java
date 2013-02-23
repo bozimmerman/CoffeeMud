@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
+import com.planet_ink.miniweb.http.MultiPartData;
 import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -106,9 +107,18 @@ public class PlayerOnline extends StdWebMacro
 						if(canModify&&(parms.containsKey("NEWIMAGE")))
 						{
 							Resources.removeResource("CMPORTRAIT-"+M.Name());
-							String file=httpReq.getUrlParameter("FILE");
-							if(file==null) file="";
-							byte[] buf=(byte[])httpReq.getRequestObjects().get("FILE");
+							String file="";
+							byte[] buf=null;
+							for(MultiPartData data : httpReq.getMultiParts())
+							{
+								if(data.getVariables().containsKey("filename") 
+								&& (data.getContentType().startsWith("image")))
+								{
+									file=data.getVariables().get("filename");
+									if(file==null) file="";
+									buf=data.getData();
+								}
+							}
 							if(file.length()==0) return "File not uploaded -- no name!";
 							if(file.toUpperCase().endsWith(".GIF")
 							||file.toUpperCase().endsWith(".JPG")

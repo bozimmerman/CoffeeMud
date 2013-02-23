@@ -40,9 +40,11 @@ public class AreaXML extends StdWebMacro
 
 	public boolean isAWebPath(){return true;}
 	public boolean preferBinary(){return true;}
-	public String getSpecialContentHeader(String filename){
-		return "Content-Disposition: attachment; filename="+filename + "\r\n"
-			  +"Content-Type: application/cmare" + "\r\n";
+	
+	public void setServletResponse(SimpleServletResponse response, final String filename)
+	{
+		response.setHeader("Content-Disposition", "attachment; filename="+filename);
+		response.setHeader("Content-Type", "application/cmare");
 	}
 	
 	public String getFilename(HTTPRequest httpReq, String filename)

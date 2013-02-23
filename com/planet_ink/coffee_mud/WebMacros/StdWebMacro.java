@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.WebMacros;
 
 import com.planet_ink.miniweb.http.HTTPException;
 import com.planet_ink.miniweb.http.HTTPMethod;
+import com.planet_ink.miniweb.http.MIMEType;
 import com.planet_ink.miniweb.http.MultiPartData;
 import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.miniweb.util.MWThread;
@@ -55,7 +56,6 @@ public class StdWebMacro implements WebMacro
 	public CMObject newInstance(){return this;}
 	public void initializeClass(){}
 	public CMObject copyOf(){return this;}
-	public String getSpecialContentHeader(String filename){return null;}
 	
 	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
@@ -71,6 +71,11 @@ public class StdWebMacro implements WebMacro
 	public String getFilename(HTTPRequest httpReq, String filename)
 	{
 		return filename;
+	}
+	
+	public void setServletResponse(SimpleServletResponse response, final String filename)
+	{
+		response.setHeader("Content-Type", MIMEType.getMIMEType(filename).getType());
 	}
 	
 	protected StringBuffer colorwebifyOnly(StringBuffer s)
@@ -468,11 +473,12 @@ public class StdWebMacro implements WebMacro
 			MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
 			HTTPRequest newReq=new HTTPRequest()
 			{
-				public final Hashtable<String,String> params=new Hashtable<String,String>();
+				final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
 				@Override public String getHost() { return httpReq.getHost(); }
 				@Override public String getUrlPath() { return file; }
-				@Override public String getUrlParameter(String name) { return params.get(name.toUpperCase()); }
-				@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toUpperCase()); }
+				@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
+				@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
+				@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }
 				@Override public Set<String> getUrlParameters() { return params.keySet(); }
 				@Override public HTTPMethod getMethod() { return httpReq.getMethod(); }
 				@Override public String getHeader(String name) { return httpReq.getHeader(name); }
@@ -507,11 +513,12 @@ public class StdWebMacro implements WebMacro
 			MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
 			HTTPRequest newReq=new HTTPRequest()
 			{
-				public final Hashtable<String,String> params=new Hashtable<String,String>();
+				public final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
 				@Override public String getHost() { return httpReq.getHost(); }
 				@Override public String getUrlPath() { return file; }
 				@Override public String getUrlParameter(String name) { return params.get(name.toUpperCase()); }
 				@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toUpperCase()); }
+				@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
 				@Override public Set<String> getUrlParameters() { return params.keySet(); }
 				@Override public HTTPMethod getMethod() { return httpReq.getMethod(); }
 				@Override public String getHeader(String name) { return httpReq.getHeader(name); }

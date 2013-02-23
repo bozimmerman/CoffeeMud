@@ -22,10 +22,14 @@ import com.planet_ink.miniweb.http.HTTPMethod;
 import com.planet_ink.miniweb.http.HTTPStatus;
 import com.planet_ink.miniweb.http.MultiPartData;
 import com.planet_ink.miniweb.interfaces.HTTPRequest;
+import com.planet_ink.miniweb.interfaces.SimpleServlet;
+import com.planet_ink.miniweb.interfaces.SimpleServletRequest;
+import com.planet_ink.miniweb.interfaces.SimpleServletResponse;
 import com.planet_ink.miniweb.server.MiniWebServer;
 import com.planet_ink.miniweb.util.MWThread;
 import com.planet_ink.miniweb.util.MiniWebConfig;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -50,7 +54,7 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary
+public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, SimpleServlet
 {
 	public String ID(){return "WebMacroCreamer";}
 	
@@ -90,8 +94,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary
 			public final Hashtable<String,Object> objects=new Hashtable<String,Object>();
 			@Override public String getHost() { return "localhost"; }
 			@Override public String getUrlPath() { return "localhost/file"; }
-			@Override public String getUrlParameter(String name) { return params.get(name.toUpperCase()); }
-			@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toUpperCase()); }
+			@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
+			@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }
+			@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
 			@Override public Set<String> getUrlParameters() { return params.keySet(); }
 			@Override public HTTPMethod getMethod() { return HTTPMethod.GET; }
 			@Override public String getHeader(String name) { return null; }
@@ -586,6 +591,67 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary
 		public JScriptablePage(HTTPRequest requests){req=requests;}
 		public static String[] functions = { "request", "write", "toJavaString"};
 		public String toJavaString(Object O){return Context.toString(O);}
+	}
+
+	@Override
+	public void init() {}
+
+	@Override
+	public void doGet(SimpleServletRequest request, SimpleServletResponse response) 
+	{
+		String[] url=request.getUrlPath().split("/");
+		if(url.length>0)
+		{
+			String macroName=url[url.length-1];
+			int x=macroName.indexOf('?');
+			if(x>0)
+				macroName=macroName.substring(0,x);
+			WebMacro W=CMClass.getWebMacro(macroName.toUpperCase());
+			if(W==null)
+			{
+				Log.errOut("WebMacroCreamer","No web macro: '"+macroName+"'");
+			}
+			else
+			if(!W.isAWebPath())
+			{
+				Log.errOut("WebMacroCreamer","Macro "+macroName+" is not a web path.");
+			}
+			else
+			{
+				String filename=W.getFilename(request, "");
+				try
+				{
+					try
+					{
+						W.setServletResponse(response, filename);
+						byte[] responseData;
+						if(W.preferBinary())
+							responseData=W.runBinaryMacro(request, "");
+						else
+							responseData=W.runMacro(request, "").getBytes();
+						response.getOutputStream().write(responseData);
+					} 
+					catch (HTTPServerException e){
+						try
+						{
+							response.getOutputStream().write(HTTPException.standardException(HTTPStatus.S500_INTERNAL_ERROR).generateOutput(request).flushToBuffer().array());
+						} catch (HTTPException e1)	{ }
+					} 
+				}
+				catch (IOException e2)
+				{} 
+			}
+		}
+	}
+
+	@Override
+	public void doPost(SimpleServletRequest request, SimpleServletResponse response) { 
+		doGet(request,response);
+	}
+
+	@Override
+	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response) {
+		doGet(request,response);
 	}
 
 }

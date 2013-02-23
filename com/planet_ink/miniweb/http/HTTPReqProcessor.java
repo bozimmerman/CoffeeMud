@@ -515,12 +515,9 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	 */
 	public DataBuffers generateOutput(HTTPRequest request) throws HTTPException
 	{
-		// split the uri by slashes -- the first char is always /!!
-		String[] url = request.getUrlPath().split("/");
-		// first thing is to check for servlets
-		if(url.length > 1)
+		if(request.getUrlPath().length()>1)
 		{
-			Class<? extends SimpleServlet> servletClass = config.getServletMan().findServlet(url[1]);
+			Class<? extends SimpleServlet> servletClass = config.getServletMan().findServlet(request.getUrlPath().substring(1));
 			if(servletClass != null)
 			{
 				return executeServlet(request,servletClass);

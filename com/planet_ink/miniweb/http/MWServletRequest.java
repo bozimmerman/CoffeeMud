@@ -79,6 +79,12 @@ public class MWServletRequest implements SimpleServletRequest
 	}
 
 	@Override
+	public Map<String,String> getUrlParametersCopy()
+	{
+		return request.getUrlParametersCopy();
+	}
+	
+	@Override
 	public boolean isUrlParameter(String name)
 	{
 		return request.isUrlParameter(name);

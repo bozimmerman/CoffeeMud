@@ -9,8 +9,6 @@
 	<title>Player Access Login</title>
 	<script language=JavaScript>
 	<!--
-		var newloc='';
-		var errorCode='';
 		function Clicked(action)
 		{
 			document.ACCESS.action=action;
@@ -21,13 +19,6 @@
 			document.ACCESS.LASTPAGE.value='access.cmvp';
 			Clicked('register.cmvp');
 		}
-		var register='@RequestParameter?ACTION@';
-		@if?CheckReqParm?ACTION=REGISTER@
-			errorCode='@AccountCreate?CREATE&LOGIN@';
-			newloc='@RequestParameter?LASTPAGE@?AUTH=@RequestParameterEncoded?AUTH@';
-			Clicked(newloc);
-		@endif@
-		
 	//-->
 	</SCRIPT>
 </head>
@@ -43,49 +34,63 @@
 	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@RequestParameter?AUTH@">
 	<INPUT TYPE=HIDDEN NAME=ACTION VALUE="REGISTER">
 	@if?CheckReqParm?ACTION=REGISTER@
+	<FONT COLOR=RED SIZE=5><B>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
+		var errorCode='@AccountCreate?CREATE&LOGIN@';
 		if(errorCode=='')
 		{
-			alert('Account successfully created.');
+			var newloc='@RequestParameter?LASTPAGE@?AUTH=@RequestParameter?AUTH@';
+			document.write(newloc);
+			Clicked(newloc);
 		}
 		else
 		{
 			if(errorCode=='NO_NAME')
-				alert('You need to specify a valid account name.');
+				document.write('You need to specify a valid account name.');
 			else
 			if(errorCode=='NO_PASSWORD')
-				alert('You need to specify a password.');
+				document.write('You need to specify a password.');
 			else
 			if((errorCode=='NO_PASSWORDAGAIN')
 			||(errorCode=='BAD_PASSWORDMATCH'))
-				alert('Your password entries don\'t match. Please re-enter your password.');
+				document.write('Your password entries don\'t match. Please re-enter your password.');
 			else
 			if((errorCode=='NO_VERIFY')||(errorCode=='NO_VERIFYKEY')||(errorCode=='BAD_VERIFY'))
-				alert('You need to enter the characters in the image.  Case is not sensitive.');
+				document.write('You need to enter the characters in the image.  Case is not sensitive.');
 			else
 			if(errorCode=='BAD_EMAILADDRESS')
-				alert('The email address you entered is not valid.');
+				document.write('The email address you entered is not valid.');
 			else
 			if(errorCode=='BAD_USED_NAME')
-				alert('The account name you entered is invalid, or in use by someone else.  Please enter another (no spaces or special characters allowed!');
+				document.write('The account name you entered is invalid, or in use by someone else.  Please enter another (no spaces or special characters allowed!');
 			else
 			if((errorCode=='NO_NEW_PLAYERS')||(errorCode=='NO_NEW_LOGINS')||(errorCode=='CREATE_LIMIT_REACHED'))
 			{
-				alert('This system is not accepting new accounts at this time.  Please try again later.');
+				document.write('This system is not accepting new accounts at this time.  Please try again later.');
 				document.location.href=document.LOGIN.LASTPAGE.value;
 			}
 			else
-				alert(errorCode);
+				document.write(errorCode);
 		}
 	//-->
 	</SCRIPT>
-	@endif@ 
+	</FONT></B><P>
+	@else@
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+		function Back()
+		{
+			var newloc='@RequestParameter?LASTPAGE@';
+			Clicked(newloc);
+		}
+	</SCRIPT>
+	@endif@
 	Please create your new @MudInfo?NAME@ account here.<BR>
 	If you already have a player account, click the Back link above and enter your credentials.<P>
 	<TABLE WIDTH=400 BORDER=1>
 	<TR><TD WIDTH=400 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Create New Account</B></FONT></TD></TR>
-	<TR><TD WIDTH=100><FONT COLOR=BLACK>Account Name:</FONT></TD><TD><INPUT TYPE=TEXT SIZE=10 ID=ACCOUNTNAME NAME=ACCOUNTNAME VALUE="@RequestParameter?ACCOUNTNAME@"></TD></TR>
+	<TR><TD WIDTH=100><FONT COLOR=BLACK>Account Name:</FONT></TD><TD><INPUT TYPE=TEXT SIZE=10 ID=LOGIN NAME=LOGIN VALUE="@RequestParameter?LOGIN@"></TD></TR>
 	@if?AccountCreate?SHOWPASSWORD@
 		<TR><TD><FONT COLOR=BLACK>Password:</FONT></TD><TD><INPUT TYPE=PASSWORD SIZE=15 ID=PASSWORD NAME=PASSWORD VALUE="@RequestParameter?PASSWORD@"></TD></TR>
 		<TR><TD><FONT COLOR=BLACK>Password Again:</FONT></TD><TD><INPUT TYPE=PASSWORD SIZE=15 ID=PASSWORDAGAIN NAME=PASSWORDAGAIN></TD></TR>
@@ -98,6 +103,7 @@
 	</TR>
 	<TR><TD COLSPAN=2 ALIGN=CENTER>
 		<INPUT TYPE=SUBMIT NAME=LOGINBUTTON VALUE=Create>
+		<INPUT TYPE=BUTTON NAME=BACKBUTTON VALUE=Cancel ONCLICK="Back();">
 	</TD></TR>
 	</TABLE>
 	</CENTER>

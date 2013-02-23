@@ -67,7 +67,14 @@ public interface HTTPRequest
 	 * @return The parameter names
 	 */
 	public Set<String> getUrlParameters();
-	
+
+	/**
+	 * Gets the key fields from the url/form parms
+	 * and their values as a copied map
+	 * 
+	 * @return The parameter names and values
+	 */
+	public Map<String,String> getUrlParametersCopy();
 	
 	/**
 	 * The type of this request, or null if the request
