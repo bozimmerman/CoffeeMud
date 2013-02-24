@@ -1,1089 +1,997 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta name="generator" content="HTML Tidy, see www.w3.org" />
-
-    <title>The CoffeeMud Web Server</title>
-    <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-    <!-- Modified by Josh Mueller, 2006-05-05, fix validation errors, fix format of code sections, add index, and fix spelling errors -->
-  </head>
-
-  <body>
-    <center>
-      <table border="1" cellpadding="10" cellspacing="0" width="90%">
+<head>
+  <meta name="generator" content="HTML Tidy, see www.w3.org" />
+  <title>The CoffeeMud Web Server</title>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-05-05, fix validation errors, fix format of code sections, add index, and fix spelling errors -->
+</head>
+<body>
+<center>
+<table border="1" cellpadding="10" cellspacing="0" width="90%">
+  <tbody>
+    <tr>
+      <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
+      <h1>CoffeeMud Web Server</h1>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" width="20%">
+      <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#connect">How to Connect</a></li>
+        <li><a href="#limits">What it does and doesn't do</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#configuration">Configuration</a></li>
+        <li><a href="#virtualdir">Virtual Directories</a></li>
+        <li><a href="#virtualpages">CoffeeMud Virtual Pages</a></li>
+        <li><a href="#customize">Customizing the error pages</a></li>
+        <li><a href="#add">Adding new macros to CMVP</a></li>
+        <li><a href="#javascript">Using Javascript in your pages</a></li>
+      </ul>
+      </td>
+      <td align="left" valign="top">
+      <p><a name="introduction" id="introduction">&nbsp;</a> The
+CoffeeMud Web Server is a simple, extensible web server that runs as
+part of CoffeeMud; it uses HTTP 1.1 to communicate with a web browser.
+In addition to being able to serve standard HTML web pages, it also
+supports a simple server-processed form of HTML called <i>CMVP</i>
+(Coffee MUD Virtual Pages) - this allows the server to insert
+information into the page before sending it to the browser. This
+document assumes you have some familiarty with HTTP, mime types, and
+stuff like that.</p>
+      <h2><a name="connect">How to Connect</a></h2>
+      <p>By default, the public (pub) web site listens on ports 80 and
+27744 and the administrative (admin) web site on port 27777. To browse
+the default public web site, just open up the following URL in your
+browser:</p>
+      <p><a href="http://localhost:27744/">http://localhost:27744/</a></p>
+      <p>To connect to the administrative web site, use the following
+URL:</p>
+      <p><a href="http://localhost:27777/">http://localhost:27777/</a></p>
+      <h2><a name="limits">What it does and doesn't do</a></h2>
+      <p>It supports GET, urlencoded and multipart POST requests, and
+HEAD requests. &nbsp;It supports custom servlets, cookies, sessions,
+SSL, gzip and deflate encodings, pipelining, mapping mime types to java
+converter and filter classes, file caching, and more. &nbsp;It supports
+numerous coded web macros, as well as inline server-side Javascripts to
+create custom pages. &nbsp;It does not make coffee, but it does make
+CoffeeMud better. :)</p>
+      <h2><a name="security">Security</a></h2>
+      <p>The web server uses explicitly mounted directories to control
+access to your CoffeeMud filesystem (CMFS). &nbsp;You can mount more
+directories or remove existing ones by changing the MOUNT list in the
+configuration files (see below).&nbsp; &nbsp;The default installation
+runs one of the two web servers with an "ADMIN=true" flag in its
+configuration, allowing it to access the more powerful CoffeeMud
+macros. &nbsp;The web server also supports SSL (https). &nbsp;However,
+this is not turned on by default, since it requires access to a special
+(and pricey!) SSL web certificate from a respected certification
+agency, such as Verisign. &nbsp;To learn more about setting this up,
+see the SSLPORT entry and the information under SSL CONFIGURATION in
+the common.ini configuration file. &nbsp;Lastly, the configuration
+files have a BIND entry that can be used to restrict connections to
+your administration server, but is not set by default.<br />
+      </p>
+      <h2><a name="configuration">Configuration</a></h2>
+      <p>The default installation of CoffeeMud has two inbuilt web
+servers, named 'pub' and 'admin'. The web servers are enabled with the
+line 'RUNWEBSERVERS=pub,admin' in 'coffeemud.ini'; absence of this line
+will cause the web servers not to be loaded.</p>
+      <p>INI files for the web servers live in the 'web/' directory off
+the CoffeeMud root; by default, all pages to be served go in <i>web/(servername)/</i>,
+though this can be overridden. Options are placed in either
+'web/common.ini' or 'web/(servername).ini'; an option in the latter
+will override one in common. &nbsp;This means that some configuration
+options are in web/pub.ini for the "pub" server, web/admin.ini for the
+"admin" server, and web/common.ini for Both.</p>
+      <p>The configuration options are:</p>
+      <ul>
+        <li> <b>PORT</b>=xx : <b>[REQUIRED]</b> <i>(e.g. PORT=80)</i>
+          <i>(e.g. PORT=80,27744)</i><b><br />
+SSLPORT</b>=xx <i>(e.g. SSLPORT=443)</i> <br />
+          <p>Sets the port number the web server will listen for HTTP
+and HTTPS requests on; this cannot be the same port as the main MUD
+server or another web servers. This list may be comma delimited to
+start more than one instance on different ports. Normally this would go
+in <i></i>pub.ini and admin.ini.</p>
+        </li>
+        <li> <b>DEBUGFLAG</b>=xx : <i>(e.g. DEBUGFLAG=false)</i>
+          <p>An alternative way to turn on debugging messages in the
+web server. &nbsp;The more appropriate way is the DEBUG entry in
+coffeemud.ini.</p>
+        </li>
+        <li> <b>BIND</b>=addr : <i>(e.g. BIND=127.0.0.1)</i>
+          <p>Causes the server to be bound to a specific address; this
+is useful on multi-homed machines or if you wish to prevent public
+access to the pages. Identical to MUD server usage.</p>
+          <p class="bold">The Admin server should be bound to localhost
+(or 127.0.0.1) in admin.ini unless you really know what you're doing...</p>
+        </li>
+        <li> <b>DEFAULTPAGE</b>=filename : <b>[REQUIRED]</b> <i>(e.g.
+DEFAULTFILE=index.cmvp)</i>
+          <p>Sets the default filename to be appended if none is
+specified in the request. &nbsp;This is in common.ini.</p>
+        </li>
+        <li> <b>SSLKEYSTOREPATH=</b>path/to/keystore.jks <span
+ style="font-style: italic;">(e.g. SSLKEYSTOREPATH=keys/keystore.jks)</span><b><br />
+SSLKEYSTOREPASSWORD=</b>keystore file password <span
+ style="font-style: italic;">(e.g. SSLKEYSTOREPASSWORD=mypassphrase)</span><b><br />
+SSLKEYSTORETYPE=</b>JKS <span style="font-style: italic;">(are there
+other useful values for this?)</span><b><br />
+SSLKEYMANAGERENCODING=</b>SunX509 <span style="font-style: italic;">(are
+there other useful values for this?)</span><b><br />
+          <span style="font-style: italic;" /></b>
+          <p>Allows you to turn on support for SSLv3 via a java
+keystore file (SSLKEYSTOREPATH), but you can&nbsp;specify any key file
+format that java supports, so long as you also specify its type
+(SSLKEYSTORETYPE).&nbsp; If the keystore/file has a password, specify
+it also (SSLKEYSTOREPASSWORD). If any of this stuff is invalid, the web
+server will not attempt to listen on your SSL ports. &nbsp;These are
+normally in common.ini</p>
+        </li>
+        <li> <span style="font-weight: bold;">FILECACHEEXPIREMS=</span>milliseconds
+          <span style="font-style: italic;">(e.g.
+FILECACHEEXPIREMS=300000)</span><span style="font-weight: bold;"><br />
+FILECACHEMAXBYTES=</span>#bytes <span style="font-style: italic;">(e.g.
+FILECACHEMAXBYTES=65535)</span><span style="font-weight: bold;"><br />
+FILECACHEMAXFILEBYTES=</span>#bytes <span style="font-style: italic;">(e.g.
+FILECACHEMAXFILEBYTES=8192)</span><span style="font-weight: bold;"><br />
+FILECOMPMAXBYTES=</span><span style="font-weight: bold;" />#bytes <span
+ style="font-style: italic;">(e.g.&nbsp;FILECOMPMAXBYTES=16485760)</span>
+          <p>The data for your web site can be cached in memory for
+better performance. &nbsp;To tune this feature, you can specify the
+amount of time a cache entry lives in memory (FILECACHEEXPIREMS), how
+much TOTAL file data will be stored in the cache before it starts
+forcing entries out of the cache to make more room (FILECACHEMAXBYTES),
+and the maximum size of any one file stored in the cache
+(FILECACHEMAXFILEBYTES). The maximum size of any file that can be
+compressed is&nbsp; FILECOMPMAXBYTES. To turn any of these off
+entirely, specify a value of 0. &nbsp;If you have lots of allocated
+java memory, however, making those numbers larger will help
+performance. &nbsp;These are also in common.ini.</p>
+        </li>
+        <li><span style="font-weight: bold;">REQUESTMAXBODYBYTES</span>=#bytes
+          <span style="font-style: italic;">(e.g.
+REQUESTMAXBODYBYTES=2097152)</span><br />
+          <span style="font-weight: bold;">REQUESTMAXIDLEMS</span>=milliseconds
+          <span style="font-style: italic;">(e.g.
+REQUESTMAXIDLEMS=30000)</span><br />
+          <span style="font-weight: bold;">REQUESTLINEBUFBYTES</span>=#bytes
+          <span style="font-style: italic;">(e.g.
+REQUESTLINEBUFBYTES=65535)</span><br />
+          <span style="font-weight: bold;">REQUESTMAXALIVESECS</span>=seconds
+          <span style="font-style: italic;">(e.g.
+REQUESTMAXALIVESECS=15)</span><br />
+          <span style="font-weight: bold;">REQUESTMAXPERCONN</span>=#requests
+          <span style="font-style: italic;">(e.g. REQUESTMAXPERCONN=20)</span><br />
+          <br />
+This is some fine tuning regarding constraints on http requests.&nbsp;
+You can specify the maximum size of any request body
+(REQUESTMAXBODYBYTES), the number of milliseconds a connection can sit
+idle between requests (REQUESTMAXIDLEMS), The maximum size of any one
+line of request data, such individual headers, url length, etc
+(REQUESTLINEBUFBYTES), the longest amount of time a connection can hang
+around sending requests to the web server and receiving data
+(REQUESTMAXALIVESECS), and the maximum number of requests that can be
+made on a single connection (REQUESTMAXPERCONN).&nbsp; <br />
+          <br />
+All of these are normally defined in common.ini, except for
+REQUESTMAXALIVESECS, which is defined in pub.ini and admin.ini by
+default.<br />
+        </li>
+        <li><span style="font-weight: bold;">CORETHREADPOOLSIZE</span>=#threads
+          <span style="font-style: italic;">(e.g. CORETHREADPOOLSIZE=1)</span><br />
+          <span style="font-weight: bold;">MAXTHREADS</span>=#threads <span
+ style="font-style: italic;">(e.g. MAXTHREADS=10)</span><br />
+          <span style="font-weight: bold;">MAXTHREADIDLEMILLIS</span>=milliseconds
+          <span style="font-style: italic;">(e.g.
+MAXTHREADIDLEMILLIS=60000)</span><br />
+          <span style="font-weight: bold;">MAXTHREADQUEUESIZE</span>=#tasks
+          <span style="font-style: italic;">(e.g.
+MAXTHREADQUEUESIZE=500)</span><br />
+          <span style="font-weight: bold;">MAXTHREADTIMEOUTSECS</span>=seconds
+          <span style="font-style: italic;">(e.g.
+MAXTHREADTIMEOUTSECS=30)</span><br />
+          <br />
+Now for the really geeky stuff.&nbsp; The web server will try to
+process as many requests at the same time as it can by spawning threads
+when it needs to.&nbsp; You can tweek this process right here.&nbsp;
+You can specify the minimum number of threads to keep hanging around
+waiting<br />
+to process requests (CORETHREADPOOLSIZE), as well as the absolute
+maximum number (MAXTHREADS). You can also specify the amount of time a
+thread goes unused before it is shut down (MAXTHREADIDLEMILLIS), the
+maximum number of tasks that can be queued up waiting for thread time
+(MAXTHREADQUEUESIZE), and the absolute maximum amount of time a thread
+is allowed to<br />
+work on any one task (MAXTHREADTIMEOUTSECS).<br />
+          <br />
+All of these are normally defined in common.ini, except
+for&nbsp;MAXTHREADTIMEOUTSECS, which is defined in pub.ini and
+admin.ini by
+default.<br />
+        </li>
+        <li> <b>ADMIN</b>=true/false
+          <p>This allows admin macros to run on this server or not (see
+below). &nbsp;This is always in admin.ini, for obvious reasons.</p>
+        </li>
+        <li> <span style="font-weight: bold;">ERRORPAGE</span>=path/filename
+          <span style="font-style: italic;">(e.g.
+ERRORPAGE=/web/pub.templates/errorpage.mwhtml)</span>
+          <p>When an error or exception is generated, which page is
+displayed.&nbsp; This is a LOCAL PATH,&nbsp; either relative or
+absolute. &nbsp;This is normally defined in the pub.ini and admin.ini
+files.</p>
+        </li>
+      </ul>
+      <h2><a name="virtualdir">Virtual Directories</a></h2>
+      <p>To permit web access to the files in particular CoffeeMud
+directories, you can specify <b>MOUNT/virtualdir=physicaldir</b> in
+the pub.ini or admin.ini files; for example, <b>MOUNT/guides=guides</b>
+creates a virtual directory with access to the player guides. &nbsp;If
+you want, you can also tie particular web hostnames and ports to
+particular directories. &nbsp;For example <span
+ style="font-weight: bold;">MOUNT/mydomain.com:8080/files=/web/pub</span>
+would allow browser urls such as http://www.mydomain.com:8080/files to
+access the /web/pub folder.</p>
+      <h2><a name="virtualpages">CoffeeMud Virtual Pages</a></h2>
+      <p>Kind of misnamed (these pages in their original, very
+different incarnation didn't exist at all), this is typically a HTML or
+plaintext file that is preprocessed by the server before being
+dispatched to the browser. Preprocessing is a simple
+search-and-replace; NO ACCOUNT is taken of where the macro appears
+within the file (ie, macros within comments or quoted strings will be
+replaced).</p>
+      <p>Macros are always surrounded by the AT sign (@), and are thus
+delineated in the page. Any parameters required for a macro always
+follow the macro name and a Question Mark (?). Further parameters are
+separated by the Ampersand (&amp;) character. Each parameter may
+optionally be an equation, where the name is on the left of an equal
+sign, and its value on the right. An example of all this in action
+would be:</p>
+      <p>@MacroName?PARAMETER&amp;PARM2=VALUE&amp;PARM3@</p>
+      <p>Macros may be embedded in each other ONLY if the embedded
+macros are part of the parameters of the host macro, which means they
+must follow the Question Mark. Also, for each level of embedding, an
+extra At sign (@) character is used around the macro. To avoid
+confusion, the closing At signs (@) should be separated by spaces. Here
+is an example of embedded Macros (in this case, two macros are used for
+each of two parameters to a first macro (MacroOne):</p>
+      <p>@MacroOne?@@MacroTwo?PARM@@&amp;@@MacroThree?PARM@@ @</p>
+      <p>Notice the space before the final At sign (@). Now, here is an
+example of double-embedding, where MacroThree is embedded as the
+parameter to MacroTwo, which is embedded as the parameter to MacroOne:</p>
+      <p>@MacroOne?@@MacroTwo?@@@MacroThree?PARM@@@ @@ @</p>
+      <p>Here are the macros defined so far. Keep in mind the
+difference between a Macro parameter (things which follow the first
+Question mark in a macro), and a Request Parameter (data submitted from
+a &lt;FORM&gt; on a web page, or on the URL line of a GET request).
+Macro parms will be abbreviated to MacParm, while Request Parameters
+will be abbreviated to ReqParm.</p>
+      <table bgcolor="#afeeee" border="1" width="100%">
         <tbody>
           <tr>
-            <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
-              <h1>CoffeeMud Web Server</h1>
-            </td>
+            <td width="25%"><b>Macro</b> </td>
+            <td><b>Description</b> </td>
           </tr>
-
           <tr>
-            <td align="left" valign="top" width="20%">
-              <ul>
-                <li><a href="#introduction">Introduction</a></li>
-
-                <li><a href="#connect">How to Connect</a></li>
-
-                <li><a href="#limits">What it does and doesn't do</a></li>
-
-                <li><a href="#security">Security</a></li>
-
-                <li><a href="#configuration">Configuration</a></li>
-
-                <li><a href="#virtualdir">Virtual Directories</a></li>
-
-                <li><a href="#virtualpages">CoffeeMud Virtual Pages</a></li>
-
-                <li><a href="#customize">Customizing the error page</a></li>
-
-                <li><a href="#add">Adding new macros to CMVP</a></li>
-
-                <li><a href="#javascript">Using Javascript in your pages</a></li>
-              </ul>
-            </td>
-
-            <td align="left" valign="top">
-              <p><a name="introduction" id="introduction">&nbsp;</a> The CoffeeMud Web Server is a simple, extensible web server that runs as
-              part of CoffeeMud; it uses HTTP 1.0 to communicate with a web browser. In addition to being able to serve standard HTML web
-              pages, it allows mime-types to be specified for any file extension; it also supports a simple server-processed form of HTML
-              called <i>CMVP</i> (Coffee MUD Virtual Pages) - this allows the server to insert information into the page before sending it to
-              the browser. It is NOT intended to be a full-blown web server! This document assumes you have some familiarty with HTTP, mime
-              types, and stuff like that.</p>
-
-              <h2><a name="connect">How to Connect</a></h2>
-
-              <p>By default, the public web site listens on ports 80 and 27744 and the administrative web site on port 27777. To browse the
-              default public web site, just open up the following URL in your browser:</p>
-
-              <p><a href="http://localhost:27744/">http://localhost:27744/</a></p>
-
-              <p>To connect to the administrative web site, use the following URL:</p>
-
-              <p><a href="http://localhost:27777/">http://localhost:27777/</a></p>
-
-              <h2><a name="limits">What it does and doesn't do</a></h2>
-
-              <p>It supports GET, urlencoded and multipart POST requests, and HEAD requests (I think HEAD is HTTP 1.1, but it's supported
-              anyway). It supports numerous coded web macros, as well as inline server-side Javascripts to create custom pages. It does not
-              cache.</p>
-
-              <h2><a name="security">Security</a></h2>
-
-              <p>In the default CoffeeMud installation, the server named admin may be bound to 127.0.0.1 (localhost) - this means it will not
-              accept external connections (see below). The servers will not permit access to a directory or file outside their base directory
-              tree (which includes mounted virtual directories, see below); attempts will generate a log message and return a HTTP 401.</p>
-
-              <h2><a name="configuration">Configuration</a></h2>
-
-              <p>The default installation of CoffeeMud has two inbuilt web servers, named 'pub' and 'admin'. The web servers are enabled with
-              the line 'RUNWEBSERVERS=true' in 'coffeemud.ini'; any other value or the absence of this line will cause the web servers not to
-              be loaded.</p>
-
-              <p>INI files for the web servers live in the 'web/' directory off the CoffeeMud root; by default, all pages to be served go in
-              <i>web/(servername)/</i>, though this can be overridden. Options are placed in either 'web/common.ini' or 'web/(servername).ini';
-              an option in the latter will override one in common. The options are:</p>
-
-              <ul>
-                <li>
-                  <b>PORT</b>=xx : <b>[REQUIRED]</b> <i>(e.g. PORT=80)</i> <i>(e.g. PORT=80,27744)</i> 
-
-                  <p>Sets the port number the web server will listen for HTTP requests on; this cannot be the same port as the main MUD server
-                  or another web servers. This list may be comma delimited to start more than one instance on different ports. Normally this
-                  would go in <i>web/(servername).ini</i>.</p>
-                </li>
-
-                <li>
-                  <b>BACKLOG</b>=xx : <i>(e.g. BACKLOG=10)</i> 
-
-                  <p>Sets the number of requests that can be queued by the internal TCP/IP stack. Identical to MUD server usage.</p>
-                </li>
-
-                <li>
-                  <b>BIND</b>=addr : <i>(e.g. BIND=127.0.0.1)</i> 
-
-                  <p>Causes the server to be bound to a specific address; this is useful on multi-homed machines or if you wish to prevent
-                  public access to the pages. Identical to MUD server usage.</p>
-
-                  <p class="bold">The Admin server should be bound to localhost (or 127.0.0.1) unless you really know what you're doing...</p>
-                </li>
-
-                <li>
-                  <b>DEFAULTFILE</b>=filename : <b>[REQUIRED]</b> <i>(e.g. DEFAULTFILE=index.html)</i> 
-
-                  <p>Sets the default filename to be appended if none is specified in the request (or the request refers to a directory - in
-                  which case the browser will get a 401 Unauthorized rather than a 404 Not Found if this file doesn't exist).</p>
-                </li>
-
-                <li>
-                  <b>VIRTUALPAGEEXTENSION</b>=.xxxx : <b>[REQUIRED]</b> <i>(e.g. VIRTUALPAGEEXTENSION=CMVP)</i> 
-
-                  <p>Allows you to change the file extension for server-processed files to whatever takes your fancy. Note that the leading dot
-                  is required; you should set MIME.xxxx=text/html, unless you're being clever and serving server-processed plaintext or
-                  something. At the moment, the web server only supports one VIRTUALPAGEEXTENSION.</p>
-                </li>
-
-                <li>
-                  <b>MIME.xxxx</b>=.yyyy/zzzz : <b>[A GOOD IDEA TO SPECIFY!]</b> <i>(e.g. MIME.HTML=text/html, MIME.JPEG=image/jpg)</i> 
-
-                  <p>Allows you to specify a mime type for file extension xxxx; some useful mime types include <code>text/html</code>,
-                  <code>text/plain</code>, <code>image/gif</code> and <code>image/jpg</code>. If no mime type is specified for an extension, it
-                  defaults to <code>application/octet-stream</code> - which is to say, raw binary; for this reason, it's usually a good idea to
-                  specify at least <code>MIME.HTM=text/html</code> and <code>MIME.HTML=text/html</code> - it's also good manners to specify
-                  <code>MIME.CLASS=application/octet-stream</code> if you intend to be running java applets on the web pages. Normally these
-                  would be placed in <i>web/common.ini</i>.</p>
-                </li>
-
-                <li>
-                  <b>ADMIN</b>= true 
-
-                  <p>allows admin macros to run on this server (see below).</p>
-                </li>
-
-                <li>
-                  <b>BASEDIRECTORY</b>=path 
-
-                  <p>allows you to override the web-page directory that this server uses - default is <i>web/(servername)</i>. Servers can
-                  share base directories.</p>
-                </li>
-
-                <li>
-                  <b>TEMPLATEDIRECTORY</b>=path 
-
-                  <p>allows you to override the web-page template directory that this server uses - default is BASEDIRECTORY +
-                  <i>.templates</i>. The template directory is where pages such as <i>error.cmvp</i> are placed. Servers can share template
-                  directories.</p>
-                </li>
-              </ul>
-
-              <h2><a name="virtualdir">Virtual Directories</a></h2>
-
-              <p>This is a quick-and-dirty directory mounting method; using an operating-system specific method would be preferable.
-              Nevertheless, you can specify <b>MOUNT/virtualdir=physicaldir</b> in a server cfg file; for example, <b>MOUNT/guides=guides</b>
-              creates a virtual directory with access to the player guides. Now the limitation - URLs that do things like this:
-              <b>/guides/..</b> won't work; this means you can't link BACK from a virtual directory with a RELATIVE link, unless you rely on
-              the user's browser to preprocess the URL and remove redundancies; instead, specify a path from the root ('/') - e.g., instead of
-              ../index.cmvp specify /index.cmvp.</p>
-
-              <h2><a name="virtualpages">CoffeeMud Virtual Pages</a></h2>
-
-              <p>Kind of misnamed (these pages in their original, very different incarnation didn't exist at all), this is typically a HTML or
-              plaintext file that is preprocessed by the server before being dispatched to the browser. Preprocessing is a simple
-              search-and-replace; NO ACCOUNT is taken of where the macro appears within the file (ie, macros within comments or quoted strings
-              will be replaced).</p>
-
-              <p>Macros are always surrounded by the AT sign (@), and are thus delineated in the page. Any parameters required for a macro
-              always follow the macro name and a Question Mark (?). Further parameters are separated by the Ampersand (&amp;) character. Each
-              parameter may optionally be an equation, where the name is on the left of an equal sign, and its value on the right. An example
-              of all this in action would be:</p>
-
-              <p>@MacroName?PARAMETER&amp;PARM2=VALUE&amp;PARM3@</p>
-
-              <p>Macros may be embedded in each other ONLY if the embedded macros are part of the parameters of the host macro, which means
-              they must follow the Question Mark. Also, for each level of embedding, an extra At sign (@) character is used around the macro.
-              To avoid confusion, the closing At signs (@) should be separated by spaces. Here is an example of embedded Macros (in this case,
-              two macros are used for each of two parameters to a first macro (MacroOne):</p>
-
-              <p>@MacroOne?@@MacroTwo?PARM@@&amp;@@MacroThree?PARM@@ @</p>
-
-              <p>Notice the space before the final At sign (@). Now, here is an example of double-embedding, where MacroThree is embedded as
-              the parameter to MacroTwo, which is embedded as the parameter to MacroOne:</p>
-
-              <p>@MacroOne?@@MacroTwo?@@@MacroThree?PARM@@@ @@ @</p>
-
-              <p>Here are the macros defined so far. Keep in mind the difference between a Macro parameter (things which follow the first
-              Question mark in a macro), and a Request Parameter (data submitted from a &lt;FORM&gt; on a web page, or on the URL line of a GET
-              request). Macro parms will be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqParm.</p>
-
-              <table bgcolor="#afeeee" border="1" width="100%">
-                <tbody>
-                  <tr>
-                    <td width="25%"><b>Macro</b> </td>
-
-                    <td><b>Description</b> </td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityAffectNext</td>
-
-                    <td>Sets the ReqParam ABILITY to the next Ability which no class qualifies for. MacParms may include the types of Abilities
-                    to show. ABILITYTYPE ReqParm may also be set to an Ability type to show. A MacParm of NOT negates the list. Returns @break@
-                    when the list has been completed, or "" if MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityData</td>
-
-                    <td>Requires ReqParm ABILITY be set an an Ability ID. Returns information about the ability from the Macro parms. Valid
-                    MacParms include help, ranges, quality, target, alignment, domain, qualifyQ (if ReqParm CLASS is set to a valid character
-                    class), auto.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityDomainNext</td>
-
-                    <td>Sets the ReqParam DOMAIN to the next Spell Domain. Returns @break@ when the list has been completed, or "" if MacParm
-                    "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityID</td>
-
-                    <td>Requires ReqParm ABILITY be set an an Ability ID. Returns that ID.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityName</td>
-
-                    <td>Requires ReqParm ABILITY be set an an Ability ID. Returns the name of the Ability designated.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityPlayerNext</td>
-
-                    <td>This Macro is a mess -- it iterates through player abilities. The simplest way to use it is to set ReqParm PLAYER to a
-                    valid player name, call it with MacParm RESET to clear ABILITY ReqParm. Call it with MacParm NEXT to set ABILITY ReqParm to
-                    next ability the player has.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityBlessingNext</td>
-
-                    <td>This iterates through deity blessings. Set ReqParm DEITY to a valid deity name, call it with MacParm RESET to clear
-                    ABILITY ReqParm. Call it with MacParm NEXT to set ABILITY ReqParm to next blessing the deity has.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityCursesNext</td>
-
-                    <td>This iterates through deity curses. Set ReqParm DEITY to a valid deity name, call it with MacParm RESET to clear
-                    ABILITY ReqParm. Call it with MacParm NEXT to set ABILITY ReqParm to next curse the deity has.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityRaceNext</td>
-
-                    <td>This iterates through racial abilities. Set ReqParm RACE to a valid race name, call it with MacParm RESET to clear
-                    ABILITY ReqParm. Call it with MacParm NEXT to set ABILITY ReqParm to next ability the race has.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityPowersNext</td>
-
-                    <td>This iterates through deity curses. Set ReqParm DEITY to a valid deity name, call it with MacParm RESET to clear
-                    ABILITY ReqParm. Call it with MacParm NEXT to set ABILITY ReqParm to next power the deity might give.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AbilityTypeNext</td>
-
-                    <td>Sets the ReqParm ABILITYTYPE to the next Ability Type. Returns @break@ when the list has been completed, or "" if
-                    MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AddFile</td>
-
-                    <td>The parameters for this macro are a list of file names. Inserts the contents of the files into the current document. If
-                    the MacParm "WEBIFY" precedes a file name in the list, then the macro will reformat the text file for the web, translating
-                    any CoffeeMud color codes, spaces, line breaks, and other special characters not normally displayable on the web.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AddRandomFile</td>
-
-                    <td>The parameters for this macro are a list of file names. This macro inserts the contents of one of the files at random
-                    into the current document. If the parameter LINKONLY is included, this macro will instead insert the path and file name of
-                    the random file.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AddRandomFileFromDir</td>
-
-                    <td>The parameters for this macro are a list of directory names. This macro inserts the contents of one of the files at
-                    random from one of the directories into the current document. If the parameter LINKONLY is included, this macro will
-                    instead insert the path and file name of the random file.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AddRequestParameter</td>
-
-                    <td>The parameters for this macro are one or more ReqParm names and values. For example
-                    @AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@. This is usually used to provide literal data for other macros which may
-                    require certain Request parameter data.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AreaData</td>
-
-                    <td>Requires ReqParm AREA be set to a valid area name. Returns information about that area depending on the MacParms. Valid
-                    MacParms include: HELP, CLIMATES, TECHLEVEL, BEHAVIORS, AFFECTS, NAME, ARCHP, AUTHOR, CLASSES, SUBOPS, DESCRIPTION, SEASON,
-                    TODCODE, WEATHER, MOON, STATS</td>
-                  </tr>
-
-                  <tr>
-                    <td>AreaName</td>
-
-                    <td>Requires ReqParm AREA be set to a valid area name. Returns that name.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AreaNameEncoded</td>
-
-                    <td>Requires ReqParm AREA be set to a valid area name. Returns that name encoded for an HTTP GET request.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AreaNext</td>
-
-                    <td>Sets the ReqParm AREA to the next Area. Returns @break@ when the list has been completed, or "" if MacParm "EMPTYOK"
-                    found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>AreaTbl</td>
-
-                    <td>Returns a formatted HTML table containing all the areas currently installed in the game; as with @PLAYERLIST@, the
-                    enclosing &lt;TABLE&gt;..&lt;/TABLE&gt; must still be specified. Each &lt;TD&gt; element has style-sheet class
-                    <i>cmAreaTblEntry</i>. The area list may only be obtained while the mud server is running; otherwise a simple table
-                    containing a game-not-running message is returned.</td>
-                  </tr>
-
-                  <tr>
-                    <td>Authenticate</td>
-
-                    <td>Requires ReqParms LOGIN and PASSWORD to be unencrypted login data, or AUTH to be encrypted login data. If MacParm AUTH
-                    specified, will return the encrypted login data. Otherwise, returns "true" if login is valid, and "false" otherwise.</td>
-                  </tr>
-
-                  <tr>
-                    <td>back</td>
-
-                    <td>Denotes the looping point for a @loop@ block. See the @loop@ macro.</td>
-                  </tr>
-
-                  <tr>
-                    <td>BanListMgr</td>
-
-                    <td>Handles the banned user list. MacParm RESET will clear ReqParm BANNEDONE. MacParm NEXT will set BANNEDONE to the next
-                    banned user or ip. MacParm NEXT returns @break@ when the list has been completed, or "" if MacParm "EMPTYOK" also found.
-                    MacParm DELETE will delete banneded name/ip that ReqParm BANNEDONE is se to. MacParm ADD will create a new banned name/ip
-                    from ReqParm NEWBANNEDONE.</td>
-                  </tr>
-
-                  <tr>
-                    <td>BankAccountInfo</td>
-
-                    <td>Requires ReqParm&nbsp;BANKCHAIN and either PLAYER or CLAN be set to a valid name. Accepts MacParm HASACCT, BALANCE,
-                    DEBTAMT, DEBTRSN, DEBTDUE, DEBTINT, NUMITEMS, ITEMSWORTH, ITEMSLIST.</td>
-                  </tr>
-
-                  <tr>
-                    <td>BankChainName</td>
-
-                    <td>Returns the value of ReqParm BANKCHAIN.</td>
-                  </tr>
-
-                  <tr>
-                    <td>BankChainNext</td>
-
-                    <td>Sets the ReqParm&nbsp;BANKCHAIN to the next existing bank chain. If ReqParm PLAYER or CLAN is non-empty, will return
-                    only chains where the name given has an account with the chain. &nbsp;Returns @break@ when the list has been completed, or
-                    "" if MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>BaseCharClassName</td>
-
-                    <td>Requires ReqParm BASECLASS be set to a valid base character class id. Returns the name of that class.</td>
-                  </tr>
-
-                  <tr>
-                    <td>BaseCharClassNext</td>
-
-                    <td>Sets the ReqParm BASECLASS to the next base character class. Returns @break@ when the list has been completed, or "" if
-                    MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>BehaviorData</td>
-
-                    <td>Requires ReqParm BEHAVIOR be set to a valid behavior id. Accepts MacParm HELP.</td>
-                  </tr>
-
-                  <tr>
-                    <td>BehaviorID</td>
-
-                    <td>Requires ReqParm BEHAVIOR be set to a valid behavior id. Returns that ID.</td>
-                  </tr>
-
-                  <tr>
-                    <td>break</td>
-
-                    <td>Stops inserting text into a web page at the current point, skips ahead to the next @back@ macro found, and starts
-                    again. If no @back@ macro is found, the page will not continue to be evaluated. See the @loop@ macro. This macro is
-                    actually returned by many other macros as a means of creating breaks in loops.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ChannelBackLogNext</td>
-
-                    <td>Requires ReqParms LOGIN and PASSWORD to be unencrypted login data, or AUTH to be encrypted login data. Also requires
-                    CHANNEL to be the name of a valid channel. Returns the next available channel message, and sets ReqParm CHANNELBACKLOGNUM.
-                    Will not break out if MacParm EMPTYOK is given.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ChannelNext</td>
-
-                    <td>Requires ReqParms LOGIN and PASSWORD to be unencrypted login data, or AUTH to be encrypted login data. Returns the next
-                    available channel in ReqParm CHANNEL. Will clear out if MacParm RESET is given.</td>
-                  </tr>
-
-                  <tr>
-                    <td>CharClassData</td>
-
-                    <td>Requires ReqParm CLASS be set to a valid character class id. Returns data about this class depending on MacParms found.
-                    Valid MacParms include: help, playable, max stats, pracs, trains, hitpoints, mana, movement, attack, weapons, armor,
-                    limits, bonuses, prime, quals, startingeq.</td>
-                  </tr>
-
-                  <tr>
-                    <td>CharClassID</td>
-
-                    <td>Requires ReqParm CLASS be set to a valid character class id. Returns that ID.</td>
-                  </tr>
-
-                  <tr>
-                    <td>CharClassName</td>
-
-                    <td>Requires ReqParm CLASS be set to a valid character class id. Returns the name of that class.</td>
-                  </tr>
-
-                  <tr>
-                    <td>CharClassNext</td>
-
-                    <td>Sets the ReqParm CLASS to the next character class. List may be limited by ReqParm BASECLASS if found. Returns @break@
-                    when the list has been completed, or "" if MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>CheckReqParm</td>
-
-                    <td>Evaluates to the string "true" if the specified Request parameters is equal to the values for them given. For example,
-                    @CheckReqParm?PARM=VALUE@ would return "true" if the PARM request parameter is "VALUE", and "false" otherwise. See the
-                    @if?@ macro for more information on how this may be useful.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ChkReqParmBreak</td>
-
-                    <td>Evaulates to the string " @break@" (see the break macro) if the specified Request parameters are equal to the values
-                    given. It returns "" otherwise. For example, @ChkReqParmBreak?PARM=VALUE@ would return " @break@" if PARM is equal to
-                    VALUE, and "" otherwise. See the @loop@ macro for more information on how this might be useful.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ClanData</td>
-
-                    <td>Requires ReqParm CLAN be set to a valid clan id. Returns information about that clan depending on MacParms found. Valid
-                    MacParms include: PREMISE, RECALL, DONATION, TAX, EXP, CCLASS, AUTOPOSITION, STATUS, ACCEPTANCE, TYPE, POINTS,
-                    CLANIDRELATIONS (also requires ReqParm CLANID), MEMBERSTART (sets ReqParm CLANMEMBER; like ClanNext?RESET, but for clan
-                    members list), MEMBERNEXT (goes with MEMBERSTART), MEMBERNAME, MEMBERPOS (these last two require MEMBERSTART/MEMBERNEXT
-                    use)</td>
-                  </tr>
-
-                  <tr>
-                    <td>ClanID</td>
-
-                    <td>Requires ReqParm CLAN be set to a valid clan id. Returns the id.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ClanNext</td>
-
-                    <td>Sets the ReqParm CLAN to the next clan found. Returns @break@ when the list has been completed, or "" if MacParm
-                    "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ClassRaceNext</td>
-
-                    <td>Requires ReqParm CLASS be set to a valid character class id. Sets the ReqParm RACE to the next race qualified for the
-                    given class. Returns @break@ when the list has been completed, or "" if MacParm "EMPTYOK" found. Accepts MacParm of RESET
-                    to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>CrossClassAbilities</td>
-
-                    <td>Returns a full HTML table of classes and abilities.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ExpertiseData</td>
-
-                    <td>Requires ReqParm EXPERTISE be set to a valid expertise id. Returns information about that expertise depending on
-                    MacParms found. Valid MacParms include: NAME, HELP, COST, REQUIRES.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ExpertiseID</td>
-
-                    <td>Requires ReqParm EXPERTISE be set to a valid expertise id. Returns the id.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ExpertiseNext</td>
-
-                    <td>Sets the ReqParm EXPERTISE to the next expertise found. Returns @break@ when the list has been completed, or "" if
-                    MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>else</td>
-
-                    <td>Creates an exception to an @if?@ macro.</td>
-                  </tr>
-
-                  <tr>
-                    <td>endif</td>
-
-                    <td>Denotes the end of an @if?@ block. See the @if?@ macro.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ExitData</td>
-
-                    <td>MUDGrinder support macro for showing exit data on maps. Too complicated to describe.</td>
-                  </tr>
-
-                  <tr>
-                    <td>HelpTopics</td>
-
-                    <td>Handles the showing of help topics. MacParm RESET will clear ReqParm HELPTOPIC and HELPFIRSTLETTER. MacParm NEXT will
-                    set HELPTOPIC to the next help topic depending on other MacParms found (SHORT to not include abilities, ARCHON to show only
-                    Archon Help, BOTH to show Archon and Player Help, FIRSTLETTER=val to show only those with starting letter (ReqParm
-                    HELPFIRSTLETTER does the same). MacParm NEXT returns @break@ when the list has been completed, or "" if MacParm "EMPTYOK"
-                    also found. MacParm NEXTLETTER sets ReqParm HELPFIRSTLETTER to next letter in the alphabet, returning @break@ when done.
-                    MacParm DATA returns the help text denoted by ReqParm HELPTOPIC.</td>
-                  </tr>
-
-                  <tr>
-                    <td>HTTPclientIP</td>
-
-                    <td>Returns the client's IP address.</td>
-                  </tr>
-
-                  <tr>
-                    <td>HTTPstatus</td>
-
-                    <td>Returns the http return code; this is normally of no use ("200 OK") unless customising the error page.</td>
-                  </tr>
-
-                  <tr>
-                    <td>HTTPstatusInfo</td>
-
-                    <td>Returns additional http status information; this is normally of no use unless customising the error page.</td>
-                  </tr>
-
-                  <tr>
-                    <td>if</td>
-
-                    <td>The Single, Required parameter for this macro is another macro name which evaluates to the words "true" or something
-                    else (which is defined as false). That macro does not follow the embedding rules above. This macro requires an @endif@
-                    macro, and may optionally have an @else@ macro. The "!" character may follow the "?" to negate the value of the expression.
-                    For example: @if?CheckReqParm?PARM=VALUE@ @if?!CheckReqParm?PARM=VALUE@ would return true and false (or vis-versa)
-                    depending whether the request parameter PARM was equal to VALUE.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ItemData</td>
-
-                    <td>MUDGrinder macro for support of mob and room items. Too complicated to describe.</td>
-                  </tr>
-
-                  <tr>
-                    <td>JournalFunction</td>
-
-                    <td>Requires ReqParm JOURNAL be set to a valid journal name, and an authenticatable user found (see Authenticate). If
-                    MacParm NEWPOST found, along with ReqParms TO, SUBJECT, and NEWTEXT, a new post is added. If ReqParm JOURNALMESSAGE is set
-                    to a valid message number for this journal, then MacParm DELETE will delete the message. If MacParm REPLY and ReqParm
-                    NEWTEXT found, a reply added to the designated message.</td>
-                  </tr>
-
-                  <tr>
-                    <td>JournalInfo</td>
-
-                    <td>Requires ReqParm JOURNAL be set to a valid journal name. Returns information about the journal depending on MacParms
-                    found. Valid MacParms include: COUNT, to return messages found. If ReqParm JOURNALMESSAGE is set to a valid message number
-                    for this journal, and an authenticatable user is found (see Authenticate) additional MacParms may be used to get
-                    information about that message. These MacParms include: KEY, FROM, DATE, TO, SUBJECT, MESSAGE</td>
-                  </tr>
-
-                  <tr>
-                    <td>JournalMessageNext</td>
-
-                    <td>Requires ReqParm JOURNAL be set to a valid journal name, and an authenticatable user found (see Authenticate). Sets the
-                    ReqParm JOURNALMESSAGE to the next message found in the given journal. Returns @break@ when the list has been completed, or
-                    "" if MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>JournalName</td>
-
-                    <td>Requires ReqParm JOURNAL be set to a valid journal name. Returns that name.</td>
-                  </tr>
-
-                  <tr>
-                    <td>JournalNext</td>
-
-                    <td>Sets the ReqParm JOURNAL to the next journal found. Returns @break@ when the list has been completed, or "" if MacParm
-                    "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>LevelNext</td>
-
-                    <td>Sets the ReqParm LEVEL to the next number between 1 and 30. Returns @break@ when the list has been completed, or "" if
-                    MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>LevelNumber</td>
-
-                    <td>Requires ReaParm LEVEL be set to a number between 1 and 30. Returns that number.</td>
-                  </tr>
-
-                  <tr>
-                    <td>LogViewer</td>
-
-                    <td>Returns the CoffeeMud log file.</td>
-                  </tr>
-
-                  <tr>
-                    <td>loop</td>
-
-                    <td>Repeatedly inserts into the page the contents between this macro and the corresponding @back@ until a @break@ macro
-                    located inside the block is processed. This @break@ string is most often returned by a macro processed within the block,
-                    but may also be embedded in an @if?@ macro block as well.</td>
-                  </tr>
-
-                  <tr>
-                    <td>MobData</td>
-
-                    <td>MUDGrinder macro for viewing room mob data. Too complicated to describe.</td>
-                  </tr>
-
-                  <tr>
-                    <td>MUDGrinder</td>
-
-                    <td>The main processing macro for the MUDGrinder area-editing tool. This macro runs as an admin macro. See the MUDGrinder
-                    guide for more information. There are too many parameters and options here to mention.</td>
-                  </tr>
-
-                  <tr>
-                    <td>MudInfo</td>
-
-                    <td>Returns various mud information corresponding to the MacParm give. Valid MacParms include NAME, EMAILOK, MAILBOX, DOMAIN and PORT.</td>
-                  </tr>
-
-                  <tr>
-                    <td>MUDServerPort</td>
-
-                    <td>Returns the port number the mud server is running on.</td>
-                  </tr>
-
-                  <tr>
-                    <td>MUDServerStatus</td>
-
-                    <td>Returns a string showing the status of the mud server (note that there's no WEB equivalent - if it wasn't running, you
-                    wouldn't be able to see it!)</td>
-                  </tr>
-
-                  <tr>
-                    <td>MUDServerVersion</td>
-
-                    <td>Returns the name and version of the mud server.</td>
-                  </tr>
-
-                  <tr>
-                    <td>NumPlayers</td>
-
-                    <td>
-                    Returns the number of players online which can be seen (no Cloaked).  The ReqParm ALL can be given to return the number
-                    of cloaked and unclocked players online.  ReqParm TOTALCACHED will return the number of players who have logged in since
-                    boot.  ReqParm TOTAL will return the number of players in the database.  ReqParm ACCOUNTS will return the number of 
-                    accounts in the database. 
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>PlayerData</td>
-
-                    <td>Requires ReqParm PLAYER be set to a valid player name. Returns information about that player depending on MacParms
-                    found. Valid MacParms include: NAME, DESCRIPTION, LASTDATETIME, EMAIL, RACE, CHARCLASS, LEVEL, LEVELSTR, CLASSLEVEL,
-                    CLASSES, MAXCARRY, ATTACK, ARMOR, DAMAGE, HOURS, PRACTICES, EXPERIENCE, EXPERIENCELEVEL, TRAINS, MONEY, DEITY, LIEGE, CLAN,
-                    CLANROLE, ALIGNMENT, ALIGNMENTSTRING, WIMP, STARTROOM, LOCATION, STARTROOMID, LOCATIONID, INVENTORY, WEIGHT, ENCUMBRANCE,
-                    GENDER, LASTDATETIMEMILLIS, HITPOINTS, MANA, MOVEMENT, RIDING, HEIGHT, LASTIP, QUESTPOINTS, ONLINE, BASEHITPOINTS,
-                    BASEMANA, BASEMOVEMENT.</td>
-                  </tr>
-
-                  <tr>
-                    <td>PlayerDelete</td>
-
-                    <td>Requires ReqParm PLAYER be set to a valid player name, and an authenticated user (see Authenticate). Deletes the
-                    player.</td>
-                  </tr>
-
-                  <tr>
-                    <td>PlayerID</td>
-
-                    <td>Requires ReqParm PLAYER be set to a valid player name. Returns that name.</td>
-                  </tr>
-
-                  <tr>
-                    <td>PlayerList</td>
-
-                    <td>Returns a series of HTML &lt;LI&gt; elements; the enclosing list elements (&lt;UL&gt;..&lt;/UL&gt; or
-                    &lt;OL&gt;..&lt;/OL&gt;) are not part of this string and so must be defined in the surrounding page. Additionally, each
-                    element will have their style-sheet class set to either <i>cmPlayerListEntry</i> or, if applicable,
-                    <i>cmPlayerListEntryArchon</i>.</td>
-                  </tr>
-
-                  <tr>
-                    <td>PlayerNext</td>
-
-                    <td>Sets the ReqParm PLAYER to the next player found. Returns @break@ when the list has been completed, or "" if MacParm
-                    "EMPTYOK" found. Accepts MacParm of RESET to restart listing. Accepts MacParm SORTBY=COLNAME to sort the list.</td>
-                  </tr>
-
-                  <tr>
-                    <td>PlayerOnline</td>
-
-                    <td>Requires ReqParm PLAYER be set to a valid player name. Returns true if online, false otherwise. If MacParm BOOT found,
-                    will kick the player off. If MacParm BANBYIP found, will ban the ip address for the player. If MacParm BANBYNAME or
-                    BANBYEMAIL os found, it will also ban the player.</td>
-                  </tr>
-
-                  <tr>
-                    <td>QuestData</td>
-
-                    <td>Requires ReqParm QUEST be set to a valid quest name. Returns data about the Quest depending on MacParms found. Valid
-                    MacParms include: NAME, DURATION, WAIT, INTERVAL, RUNNING, WAITING, REMAINING, WAITLEFT, WINNERS, SCRIPT.</td>
-                  </tr>
-
-                  <tr>
-                    <td>QuestMgr</td>
-
-                    <td>If MacParm CREATE is given, along with ReqParm SCRIPT, will create a new Quest. Other functions require ReqParm QUEST
-                    be set to a valid quest name. Performs functions on the Quest depending on MacParms found. Valid MacParms include: MODIFY
-                    (with ReqParm SCRIPT), DELETE, START, STOP.</td>
-                  </tr>
-
-                  <tr>
-                    <td>QuestNext</td>
-
-                    <td>Sets the ReqParm QUEST to the next quest found. Returns @break@ when the list has been completed, or "" if MacParm
-                    "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RaceClassNext</td>
-
-                    <td>Requires ReqParm RACE be set to a valid race id. Sets the ReqParm CLASS to the next class qualified for by the given
-                    race. Returns @break@ when the list has been completed, or "" if MacParm "EMPTYOK" found. Accepts MacParm of RESET to
-                    restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>DeityData</td>
-
-                    <td>Requires ReqParm DEITY be set to a valid deity name. Returns information about that deity depending on MacParms found.
-                    Valid MacParms include: DESCRIPTION, WORSHIPREQ, CLERICREQ,
-                    WORSHIPTRIG,CLERICTRIP,WORSHIPSINTRIG,CLERICSINTRIG,POWERTRIG</td>
-                  </tr>
-
-                  <tr>
-                    <td>DeityID</td>
-
-                    <td>Requires ReqParm DEITY be set to a valid race name. Returns the id.</td>
-                  </tr>
-
-                  <tr>
-                    <td>DeityNext</td>
-
-                    <td>Sets the ReqParm DEITY to the next deity found. Returns @break@ when the list has been completed, or "" if MacParm
-                    "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RaceData</td>
-
-                    <td>Requires ReqParm RACE be set to a valid race id. Returns information about that race depending on MacParms found. Valid
-                    MacParms include: HELP, STATS, SENSES, TRAINS, PRACS, ABILITIES, HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS,
-                    EXPECTANCY, STARTINGEQ, CLASSES, LANGS</td>
-                  </tr>
-
-                  <tr>
-                    <td>RaceID</td>
-
-                    <td>Requires ReqParm RACE be set to a valid race id. Returns the id.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RaceName</td>
-
-                    <td>Requires ReqParm RACE be set to a valid race id. Returns the name.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RaceNext</td>
-
-                    <td>Sets the ReqParm RACE to the next race found. Returns @break@ when the list has been completed, or "" if MacParm
-                    "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RequestParameter</td>
-
-                    <td>Inserts the value of the Request Parameter(s) specified in the macro parameters.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RequestParameterEncoded</td>
-
-                    <td>Inserts the value of the Request Parameter(s) specified in the macro parameters, formatted for a valid GET
-                    request.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RequestParametersEncoded</td>
-
-                    <td>Inserts the names and values of all Request Parameters, formatted for a valid GET request.</td>
-                  </tr>
-
-                  <tr>
-                    <td>ResourceMgr</td>
-
-                    <td>Handles the resource cache. MacParm RESET will clear ReqParm RESOURCE. MacParm NEXT will set RESOURCE to the next
-                    resource. MacParm NEXT returns @break@ when the list has been completed, or "" if MacParm "EMPTYOK" also found. MacParm
-                    DELETE will delete resource that ReqParm RESOURCE is set to.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RoomData</td>
-
-                    <td>MUDGrinder macro for manipulating room data. Too complicated to describe.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RoomID</td>
-
-                    <td>Returns the ReqParm ROOM.</td>
-                  </tr>
-
-                  <tr>
-                    <td>RoomName</td>
-
-                    <td>Returns the display text for the room designated by ReqParm ROOM.</td>
-                  </tr>
-
-                  <tr>
-                    <td>StdWebMacro</td>
-
-                    <td>Base template for all other macros. Serves no useful purpose.</td>
-                  </tr>
-
-                  <tr>
-                    <td>SocialTbl</td>
-
-                    <td>Returns a formatted set of table rows and columns listing all the socials.</td>
-                  </tr>
-
-                  <tr>
-                    <td>SystemInfo</td>
-
-                    <td>Returns information about the CoffeeMud system. Too many valid MacParms to mention. See the sample MUDGrinder pages
-                    which use this macro.</td>
-                  </tr>
-
-                  <tr>
-                    <td>SystemFunction</td>
-
-                    <td>Performs a shutdown if the MacParm SHUTDOWN is found. Performs a system-wide Announce command is the MacParm ANNOUNCE
-                    is found, as well as the ReqParm TEXT.</td>
-                  </tr>
-
-                  <tr>
-                    <td>WebServerName</td>
-
-                    <td>Returns just the name of the web server.</td>
-                  </tr>
-
-                  <tr>
-                    <td>WebServerPort</td>
-
-                    <td>Returns the port number the web server is running on.</td>
-                  </tr>
-
-                  <tr>
-                    <td>WebServerVersion</td>
-
-                    <td>Returns the name and version of the web server.</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <h2><a name="customize">Customizing the error page</a></h2>
-
-              <p>Simply create a file <i>error.cmvp</i> (or whatever the v.p. extension is) in the template directory of the server; at some
-              point on the page you should use the @HTTPSTATUS@ and @HTTPSTATUSINFO@ macros. Note that the template directory is served as
-              though it were in the specified path - images and stylesheets should therefore go in the server's base directory.</p>
-
-              <h2><a name="add">Adding new macros to CMVP</a></h2>
-
-              <p>Create the new .java file in the <i>com/planet_ink/coffee_mud/WebMacros</i> directory; all classes in this directory are
-              loaded as macros by default. The new class should inherit from <code>StdWebMacro</code> in the
-              <code>com.planet_ink.coffee_mud.WebMacros</code> package.</p>
-
-              <p>The package of the new class should implement the interface
-              <code>com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro.</code></p>
-
-              <p>The <code>name()</code> member should return the name of your new macro (it will be capitalized and the @ symbols added by
-              StdWebMacro) - the name doesn't have to match the class name but it is recommended to avoid confusion.</p>
-
-              <p>Finally, the <code>runMacro()</code> function returns the String data you wish to insert into the processed output; it takes
-              as parameters a reference to the <i>ProcessWebRequest</i> that is calling the macro (you can use <code>.getWebServer()</code> on
-              this parameter to get a reference to the web server, and <code>.getWebServer().getMUD()</code> to get a reference to the main MUD
-              object), and a String representing the data after the first question mark? in the macro reference.</p>
-
-              <p>If <code>runMacro()</code> returns <i>null</i>, the string [Error] is used to replace the macro; also note that <b>macros may
-              not return other macros in the processed text unless properly embedded as discussed above.</b></p>
-
-              <p>Example: this is the complete code for the <b>@HTTPCLIENTIP@</b> macro (HTTPclientIP.java):</p>
-<pre>
-package com.planet_ink.coffee_mud.WebMacros;
-import com.planet_ink.coffee_mud.WebMacros.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-
-public class HTTPclientIP extends StdWebMacro
-{
- public String name() {return "HTTPclientIP";}
-
- public String runMacro(HTTPRequest httpReq, String parms)
- {
-  return httpReq.getHTTPclientIP();
- }
-}
-</pre>
-
-              <p>The <code>.getHTTPclientIP()</code> member of ProcessWebRequest essentially just does this:</p>
-<pre>
-return sock.getInetAddress().getHostAddress();
-</pre>
-
-              <p>(don't be confused by the name <code>.getHostAddress()</code> - this just returns the dotted quad notation form of the
-              address, whereas <code>.toString()</code> would attempt to do a reverse DNS(?) and return a meaningful name as well)</p>
-
-              <p>If your macro is intended to be for the admin server only, you can override the <code>.isAdminMacro()</code> member to return
-              <code>true.</code></p>
-
-              <h2><a name="javascript">Using Javascript in your pages</a></h2>
-
-              <p>The CoffeeMud web server allows you to use the Javascript language to generate the tags and data which make up your
-              <strong>cmvp</strong> web pages. The Javascript to do this is inserted directly into your web page at the point where you want
-              the script-generated content to appear using the embedded macros@jscript@ and @/jscript@. The script included between those two
-              tags will follow the rules for JavaScripting found in the <a href="Programming.html">Programmers Guide</a>. The web server makes
-              the <code>HTTPRequest request()</code> object available to the script, as well as the method <code>void write(String
-              s)</code> for writing text into the page.</p>
-
-              <p>Here is our first example:</p>
-<pre>
-&lt;HTML&gt;
-&lt;BODY&gt;
-@jscript@
-var x=request().ServerVersionString();
-write('&lt;P&gt;The version of this CoffeeMud server is &lt;B&gt;'+x+'&lt;/B&gt;.&lt;/P&gt;');
-@/jscript@
-&lt;/BODY&gt;
-&lt;/HTML&gt;
-</pre>
-
-              <p>Notice how we used the <code>write()</code> method to insert our HTML into the page. We also used the <code>request()</code>
-              object to fetch the version of the server. Now here is a more involved example:</p>
-<pre>
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;
-&lt;/HEAD&gt;
-&lt;BODY&gt;
-&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;
-
-@jscript@
-var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;
-// define a shortcut to the CoffeeMud libraries.
-
-var randomRoom=lib.map().getRandomRoom();
-var randomArea=lib.map().getRandomArea();
-// finding random rooms and areas is easy
-
-var randomMob=null;
-var randomItem=null;
-// assign our random mobs and items to null until they are found
-
-var attempts=1000;
-// finding random items and mobs is more difficult.  We will
-// select a random room, and attempt to pick out a random mob
-// and/or item from the room.  We will do this a maximum of 1000
-// times before giving up, until we find one of each.
-while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))
-{
-  var room=lib.map().getRandomRoom();
-  if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))
-  {
-    randomMob=room.fetchRandomInhabitant();
-  }
-  if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))
-  {
-    randomItem = room.getRandomItem();
-  }
-} //now we have all our random things. We could easily insert our HTML using
-  // the write() method as we did in example 1.  To be fancy, however, we'll use the
-  // the request() object to assign the names of our selections to HTTP Request
-  // strings.
-
-request().addRequestParameters("RANDOMROOM",randomRoom.roomTitle());
-request().addRequestParameters("RANDOMAREA",randomArea.name());
-if(randomMob!=null)
- request().addRequestParameters("RANDOMMOB",randomMob.name());
-if(randomItem!=null)
- request().addRequestParameters("RANDOMITEM",randomItem.name());
-// now we exit back and continue with our HTML, using standard CMVP web macros
-// to fetch the random names we saved.
-@/jscript@
-
-&lt;FONT FACE="Courier New"&gt;
-&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;
-&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;
-&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;
-&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;
-
-&lt;/FONT&gt;
-&lt;P&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
-</pre>
-            </td>
+            <td>AbilityAffectNext</td>
+            <td>Sets the ReqParam ABILITY to the next Ability which no
+class qualifies for. MacParms may include the types of Abilities to
+show. ABILITYTYPE ReqParm may also be set to an Ability type to show. A
+MacParm of NOT negates the list. Returns @break@ when the list has been
+completed, or "" if MacParm "EMPTYOK" found. Accepts MacParm of RESET
+to restart listing.</td>
+          </tr>
+          <tr>
+            <td>AbilityData</td>
+            <td>Requires ReqParm ABILITY be set an an Ability ID.
+Returns information about the ability from the Macro parms. Valid
+MacParms include help, ranges, quality, target, alignment, domain,
+qualifyQ (if ReqParm CLASS is set to a valid character class), auto.</td>
+          </tr>
+          <tr>
+            <td>AbilityDomainNext</td>
+            <td>Sets the ReqParam DOMAIN to the next Spell Domain.
+Returns @break@ when the list has been completed, or "" if MacParm
+"EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>AbilityID</td>
+            <td>Requires ReqParm ABILITY be set an an Ability ID.
+Returns that ID.</td>
+          </tr>
+          <tr>
+            <td>AbilityName</td>
+            <td>Requires ReqParm ABILITY be set an an Ability ID.
+Returns the name of the Ability designated.</td>
+          </tr>
+          <tr>
+            <td>AbilityPlayerNext</td>
+            <td>This Macro is a mess -- it iterates through player
+abilities. The simplest way to use it is to set ReqParm PLAYER to a
+valid player name, call it with MacParm RESET to clear ABILITY ReqParm.
+Call it with MacParm NEXT to set ABILITY ReqParm to next ability the
+player has.</td>
+          </tr>
+          <tr>
+            <td>AbilityBlessingNext</td>
+            <td>This iterates through deity blessings. Set ReqParm
+DEITY to a valid deity name, call it with MacParm RESET to clear
+ABILITY ReqParm. Call it with MacParm NEXT to set ABILITY ReqParm to
+next blessing the deity has.</td>
+          </tr>
+          <tr>
+            <td>AbilityCursesNext</td>
+            <td>This iterates through deity curses. Set ReqParm DEITY
+to a valid deity name, call it with MacParm RESET to clear ABILITY
+ReqParm. Call it with MacParm NEXT to set ABILITY ReqParm to next curse
+the deity has.</td>
+          </tr>
+          <tr>
+            <td>AbilityRaceNext</td>
+            <td>This iterates through racial abilities. Set ReqParm
+RACE to a valid race name, call it with MacParm RESET to clear ABILITY
+ReqParm. Call it with MacParm NEXT to set ABILITY ReqParm to next
+ability the race has.</td>
+          </tr>
+          <tr>
+            <td>AbilityPowersNext</td>
+            <td>This iterates through deity curses. Set ReqParm DEITY
+to a valid deity name, call it with MacParm RESET to clear ABILITY
+ReqParm. Call it with MacParm NEXT to set ABILITY ReqParm to next power
+the deity might give.</td>
+          </tr>
+          <tr>
+            <td>AbilityTypeNext</td>
+            <td>Sets the ReqParm ABILITYTYPE to the next Ability Type.
+Returns @break@ when the list has been completed, or "" if MacParm
+"EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>AddFile</td>
+            <td>The parameters for this macro are a list of file names.
+Inserts the contents of the files into the current document. If the
+MacParm "WEBIFY" precedes a file name in the list, then the macro will
+reformat the text file for the web, translating any CoffeeMud color
+codes, spaces, line breaks, and other special characters not normally
+displayable on the web.</td>
+          </tr>
+          <tr>
+            <td>AddRandomFile</td>
+            <td>The parameters for this macro are a list of file names.
+This macro inserts the contents of one of the files at random into the
+current document. If the parameter LINKONLY is included, this macro
+will instead insert the path and file name of the random file.</td>
+          </tr>
+          <tr>
+            <td>AddRandomFileFromDir</td>
+            <td>The parameters for this macro are a list of directory
+names. This macro inserts the contents of one of the files at random
+from one of the directories into the current document. If the parameter
+LINKONLY is included, this macro will instead insert the path and file
+name of the random file.</td>
+          </tr>
+          <tr>
+            <td>AddRequestParameter</td>
+            <td>The parameters for this macro are one or more ReqParm
+names and values. For example
+@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@. This is usually used
+to provide literal data for other macros which may require certain
+Request parameter data.</td>
+          </tr>
+          <tr>
+            <td>AreaData</td>
+            <td>Requires ReqParm AREA be set to a valid area name.
+Returns information about that area depending on the MacParms. Valid
+MacParms include: HELP, CLIMATES, TECHLEVEL, BEHAVIORS, AFFECTS, NAME,
+ARCHP, AUTHOR, CLASSES, SUBOPS, DESCRIPTION, SEASON, TODCODE, WEATHER,
+MOON, STATS</td>
+          </tr>
+          <tr>
+            <td>AreaName</td>
+            <td>Requires ReqParm AREA be set to a valid area name.
+Returns that name.</td>
+          </tr>
+          <tr>
+            <td>AreaNameEncoded</td>
+            <td>Requires ReqParm AREA be set to a valid area name.
+Returns that name encoded for an HTTP GET request.</td>
+          </tr>
+          <tr>
+            <td>AreaNext</td>
+            <td>Sets the ReqParm AREA to the next Area. Returns @break@
+when the list has been completed, or "" if MacParm "EMPTYOK" found.
+Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>AreaTbl</td>
+            <td>Returns a formatted HTML table containing all the areas
+currently installed in the game; as with @PLAYERLIST@, the enclosing
+&lt;TABLE&gt;..&lt;/TABLE&gt; must still be specified. Each &lt;TD&gt;
+element has style-sheet class <i>cmAreaTblEntry</i>. The area list may
+only be obtained while the mud server is running; otherwise a simple
+table containing a game-not-running message is returned.</td>
+          </tr>
+          <tr>
+            <td>Authenticate</td>
+            <td>Requires ReqParms LOGIN and PASSWORD to be unencrypted
+login data, or AUTH to be encrypted login data. If MacParm AUTH
+specified, will return the encrypted login data. Otherwise, returns
+"true" if login is valid, and "false" otherwise.</td>
+          </tr>
+          <tr>
+            <td>back</td>
+            <td>Denotes the looping point for a @loop@ block. See the
+@loop@ macro.</td>
+          </tr>
+          <tr>
+            <td>BanListMgr</td>
+            <td>Handles the banned user list. MacParm RESET will clear
+ReqParm BANNEDONE. MacParm NEXT will set BANNEDONE to the next banned
+user or ip. MacParm NEXT returns @break@ when the list has been
+completed, or "" if MacParm "EMPTYOK" also found. MacParm DELETE will
+delete banneded name/ip that ReqParm BANNEDONE is se to. MacParm ADD
+will create a new banned name/ip from ReqParm NEWBANNEDONE.</td>
+          </tr>
+          <tr>
+            <td>BankAccountInfo</td>
+            <td>Requires ReqParm&nbsp;BANKCHAIN and either PLAYER or
+CLAN be set to a valid name. Accepts MacParm HASACCT, BALANCE, DEBTAMT,
+DEBTRSN, DEBTDUE, DEBTINT, NUMITEMS, ITEMSWORTH, ITEMSLIST.</td>
+          </tr>
+          <tr>
+            <td>BankChainName</td>
+            <td>Returns the value of ReqParm BANKCHAIN.</td>
+          </tr>
+          <tr>
+            <td>BankChainNext</td>
+            <td>Sets the ReqParm&nbsp;BANKCHAIN to the next existing
+bank chain. If ReqParm PLAYER or CLAN is non-empty, will return only
+chains where the name given has an account with the chain.
+&nbsp;Returns @break@ when the list has been completed, or "" if
+MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>BaseCharClassName</td>
+            <td>Requires ReqParm BASECLASS be set to a valid base
+character class id. Returns the name of that class.</td>
+          </tr>
+          <tr>
+            <td>BaseCharClassNext</td>
+            <td>Sets the ReqParm BASECLASS to the next base character
+class. Returns @break@ when the list has been completed, or "" if
+MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>BehaviorData</td>
+            <td>Requires ReqParm BEHAVIOR be set to a valid behavior
+id. Accepts MacParm HELP.</td>
+          </tr>
+          <tr>
+            <td>BehaviorID</td>
+            <td>Requires ReqParm BEHAVIOR be set to a valid behavior
+id. Returns that ID.</td>
+          </tr>
+          <tr>
+            <td>break</td>
+            <td>Stops inserting text into a web page at the current
+point, skips ahead to the next @back@ macro found, and starts again. If
+no @back@ macro is found, the page will not continue to be evaluated.
+See the @loop@ macro. This macro is actually returned by many other
+macros as a means of creating breaks in loops.</td>
+          </tr>
+          <tr>
+            <td>ChannelBackLogNext</td>
+            <td>Requires ReqParms LOGIN and PASSWORD to be unencrypted
+login data, or AUTH to be encrypted login data. Also requires CHANNEL
+to be the name of a valid channel. Returns the next available channel
+message, and sets ReqParm CHANNELBACKLOGNUM. Will not break out if
+MacParm EMPTYOK is given.</td>
+          </tr>
+          <tr>
+            <td>ChannelNext</td>
+            <td>Requires ReqParms LOGIN and PASSWORD to be unencrypted
+login data, or AUTH to be encrypted login data. Returns the next
+available channel in ReqParm CHANNEL. Will clear out if MacParm RESET
+is given.</td>
+          </tr>
+          <tr>
+            <td>CharClassData</td>
+            <td>Requires ReqParm CLASS be set to a valid character
+class id. Returns data about this class depending on MacParms found.
+Valid MacParms include: help, playable, max stats, pracs, trains,
+hitpoints, mana, movement, attack, weapons, armor, limits, bonuses,
+prime, quals, startingeq.</td>
+          </tr>
+          <tr>
+            <td>CharClassID</td>
+            <td>Requires ReqParm CLASS be set to a valid character
+class id. Returns that ID.</td>
+          </tr>
+          <tr>
+            <td>CharClassName</td>
+            <td>Requires ReqParm CLASS be set to a valid character
+class id. Returns the name of that class.</td>
+          </tr>
+          <tr>
+            <td>CharClassNext</td>
+            <td>Sets the ReqParm CLASS to the next character class.
+List may be limited by ReqParm BASECLASS if found. Returns @break@ when
+the list has been completed, or "" if MacParm "EMPTYOK" found. Accepts
+MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>CheckReqParm</td>
+            <td>Evaluates to the string "true" if the specified Request
+parameters is equal to the values for them given. For example,
+@CheckReqParm?PARM=VALUE@ would return "true" if the PARM request
+parameter is "VALUE", and "false" otherwise. See the @if?@ macro for
+more information on how this may be useful.</td>
+          </tr>
+          <tr>
+            <td>ChkReqParmBreak</td>
+            <td>Evaulates to the string " @break@" (see the break
+macro) if the specified Request parameters are equal to the values
+given. It returns "" otherwise. For example,
+@ChkReqParmBreak?PARM=VALUE@ would return " @break@" if PARM is equal
+to VALUE, and "" otherwise. See the @loop@ macro for more information
+on how this might be useful.</td>
+          </tr>
+          <tr>
+            <td>ClanData</td>
+            <td>Requires ReqParm CLAN be set to a valid clan id.
+Returns information about that clan depending on MacParms found. Valid
+MacParms include: PREMISE, RECALL, DONATION, TAX, EXP, CCLASS,
+AUTOPOSITION, STATUS, ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS (also
+requires ReqParm CLANID), MEMBERSTART (sets ReqParm CLANMEMBER; like
+ClanNext?RESET, but for clan members list), MEMBERNEXT (goes with
+MEMBERSTART), MEMBERNAME, MEMBERPOS (these last two require
+MEMBERSTART/MEMBERNEXT use)</td>
+          </tr>
+          <tr>
+            <td>ClanID</td>
+            <td>Requires ReqParm CLAN be set to a valid clan id.
+Returns the id.</td>
+          </tr>
+          <tr>
+            <td>ClanNext</td>
+            <td>Sets the ReqParm CLAN to the next clan found. Returns
+@break@ when the list has been completed, or "" if MacParm "EMPTYOK"
+found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>ClassRaceNext</td>
+            <td>Requires ReqParm CLASS be set to a valid character
+class id. Sets the ReqParm RACE to the next race qualified for the
+given class. Returns @break@ when the list has been completed, or "" if
+MacParm "EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>CrossClassAbilities</td>
+            <td>Returns a full HTML table of classes and abilities.</td>
+          </tr>
+          <tr>
+            <td>ExpertiseData</td>
+            <td>Requires ReqParm EXPERTISE be set to a valid expertise
+id. Returns information about that expertise depending on MacParms
+found. Valid MacParms include: NAME, HELP, COST, REQUIRES.</td>
+          </tr>
+          <tr>
+            <td>ExpertiseID</td>
+            <td>Requires ReqParm EXPERTISE be set to a valid expertise
+id. Returns the id.</td>
+          </tr>
+          <tr>
+            <td>ExpertiseNext</td>
+            <td>Sets the ReqParm EXPERTISE to the next expertise found.
+Returns @break@ when the list has been completed, or "" if MacParm
+"EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>else</td>
+            <td>Creates an exception to an @if?@ macro.</td>
+          </tr>
+          <tr>
+            <td>endif</td>
+            <td>Denotes the end of an @if?@ block. See the @if?@ macro.</td>
+          </tr>
+          <tr>
+            <td>ExitData</td>
+            <td>MUDGrinder support macro for showing exit data on maps.
+Too complicated to describe.</td>
+          </tr>
+          <tr>
+            <td>HelpTopics</td>
+            <td>Handles the showing of help topics. MacParm RESET will
+clear ReqParm HELPTOPIC and HELPFIRSTLETTER. MacParm NEXT will set
+HELPTOPIC to the next help topic depending on other MacParms found
+(SHORT to not include abilities, ARCHON to show only Archon Help, BOTH
+to show Archon and Player Help, FIRSTLETTER=val to show only those with
+starting letter (ReqParm HELPFIRSTLETTER does the same). MacParm NEXT
+returns @break@ when the list has been completed, or "" if MacParm
+"EMPTYOK" also found. MacParm NEXTLETTER sets ReqParm HELPFIRSTLETTER
+to next letter in the alphabet, returning @break@ when done. MacParm
+DATA returns the help text denoted by ReqParm HELPTOPIC.</td>
+          </tr>
+          <tr>
+            <td>HTTPclientIP</td>
+            <td>Returns the client's IP address.</td>
+          </tr>
+          <tr>
+            <td>HTTPstatus</td>
+            <td>Returns the http return code; this is normally of no
+use ("200 OK") unless customising the error page.</td>
+          </tr>
+          <tr>
+            <td>HTTPstatusInfo</td>
+            <td>Returns additional http status information; this is
+normally of no use unless customising the error page.</td>
+          </tr>
+          <tr>
+            <td>if</td>
+            <td>The Single, Required parameter for this macro is
+another macro name which evaluates to the words "true" or something
+else (which is defined as false). That macro does not follow the
+embedding rules above. This macro requires an @endif@ macro, and may
+optionally have an @else@ macro. The "!" character may follow the "?"
+to negate the value of the expression. For example:
+@if?CheckReqParm?PARM=VALUE@ @if?!CheckReqParm?PARM=VALUE@ would return
+true and false (or vis-versa) depending whether the request parameter
+PARM was equal to VALUE.</td>
+          </tr>
+          <tr>
+            <td>ItemData</td>
+            <td>MUDGrinder macro for support of mob and room items. Too
+complicated to describe.</td>
+          </tr>
+          <tr>
+            <td>JournalFunction</td>
+            <td>Requires ReqParm JOURNAL be set to a valid journal
+name, and an authenticatable user found (see Authenticate). If MacParm
+NEWPOST found, along with ReqParms TO, SUBJECT, and NEWTEXT, a new post
+is added. If ReqParm JOURNALMESSAGE is set to a valid message number
+for this journal, then MacParm DELETE will delete the message. If
+MacParm REPLY and ReqParm NEWTEXT found, a reply added to the
+designated message.</td>
+          </tr>
+          <tr>
+            <td>JournalInfo</td>
+            <td>Requires ReqParm JOURNAL be set to a valid journal
+name. Returns information about the journal depending on MacParms
+found. Valid MacParms include: COUNT, to return messages found. If
+ReqParm JOURNALMESSAGE is set to a valid message number for this
+journal, and an authenticatable user is found (see Authenticate)
+additional MacParms may be used to get information about that message.
+These MacParms include: KEY, FROM, DATE, TO, SUBJECT, MESSAGE</td>
+          </tr>
+          <tr>
+            <td>JournalMessageNext</td>
+            <td>Requires ReqParm JOURNAL be set to a valid journal
+name, and an authenticatable user found (see Authenticate). Sets the
+ReqParm JOURNALMESSAGE to the next message found in the given journal.
+Returns @break@ when the list has been completed, or "" if MacParm
+"EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>JournalName</td>
+            <td>Requires ReqParm JOURNAL be set to a valid journal
+name. Returns that name.</td>
+          </tr>
+          <tr>
+            <td>JournalNext</td>
+            <td>Sets the ReqParm JOURNAL to the next journal found.
+Returns @break@ when the list has been completed, or "" if MacParm
+"EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>LevelNext</td>
+            <td>Sets the ReqParm LEVEL to the next number between 1 and
+30. Returns @break@ when the list has been completed, or "" if MacParm
+"EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>LevelNumber</td>
+            <td>Requires ReaParm LEVEL be set to a number between 1 and
+30. Returns that number.</td>
+          </tr>
+          <tr>
+            <td>LogViewer</td>
+            <td>Returns the CoffeeMud log file.</td>
+          </tr>
+          <tr>
+            <td>loop</td>
+            <td>Repeatedly inserts into the page the contents between
+this macro and the corresponding @back@ until a @break@ macro located
+inside the block is processed. This @break@ string is most often
+returned by a macro processed within the block, but may also be
+embedded in an @if?@ macro block as well.</td>
+          </tr>
+          <tr>
+            <td>MobData</td>
+            <td>MUDGrinder macro for viewing room mob data. Too
+complicated to describe.</td>
+          </tr>
+          <tr>
+            <td>MUDGrinder</td>
+            <td>The main processing macro for the MUDGrinder
+area-editing tool. This macro runs as an admin macro. See the
+MUDGrinder guide for more information. There are too many parameters
+and options here to mention.</td>
+          </tr>
+          <tr>
+            <td>MudInfo</td>
+            <td>Returns various mud information corresponding to the
+MacParm give. Valid MacParms include NAME, EMAILOK, MAILBOX, DOMAIN and
+PORT.</td>
+          </tr>
+          <tr>
+            <td>MUDServerPort</td>
+            <td>Returns the port number the mud server is running on.</td>
+          </tr>
+          <tr>
+            <td>MUDServerStatus</td>
+            <td>Returns a string showing the status of the mud server
+(note that there's no WEB equivalent - if it wasn't running, you
+wouldn't be able to see it!)</td>
+          </tr>
+          <tr>
+            <td>MUDServerVersion</td>
+            <td>Returns the name and version of the mud server.</td>
+          </tr>
+          <tr>
+            <td>NumPlayers</td>
+            <td> Returns the number of players online which can be seen
+(no Cloaked). The ReqParm ALL can be given to return the number of
+cloaked and unclocked players online. ReqParm TOTALCACHED will return
+the number of players who have logged in since boot. ReqParm TOTAL will
+return the number of players in the database. ReqParm ACCOUNTS will
+return the number of accounts in the database. </td>
+          </tr>
+          <tr>
+            <td>PlayerData</td>
+            <td>Requires ReqParm PLAYER be set to a valid player name.
+Returns information about that player depending on MacParms found.
+Valid MacParms include: NAME, DESCRIPTION, LASTDATETIME, EMAIL, RACE,
+CHARCLASS, LEVEL, LEVELSTR, CLASSLEVEL, CLASSES, MAXCARRY, ATTACK,
+ARMOR, DAMAGE, HOURS, PRACTICES, EXPERIENCE, EXPERIENCELEVEL, TRAINS,
+MONEY, DEITY, LIEGE, CLAN, CLANROLE, ALIGNMENT, ALIGNMENTSTRING, WIMP,
+STARTROOM, LOCATION, STARTROOMID, LOCATIONID, INVENTORY, WEIGHT,
+ENCUMBRANCE, GENDER, LASTDATETIMEMILLIS, HITPOINTS, MANA, MOVEMENT,
+RIDING, HEIGHT, LASTIP, QUESTPOINTS, ONLINE, BASEHITPOINTS, BASEMANA,
+BASEMOVEMENT.</td>
+          </tr>
+          <tr>
+            <td>PlayerDelete</td>
+            <td>Requires ReqParm PLAYER be set to a valid player name,
+and an authenticated user (see Authenticate). Deletes the player.</td>
+          </tr>
+          <tr>
+            <td>PlayerID</td>
+            <td>Requires ReqParm PLAYER be set to a valid player name.
+Returns that name.</td>
+          </tr>
+          <tr>
+            <td>PlayerList</td>
+            <td>Returns a series of HTML &lt;LI&gt; elements; the
+enclosing list elements (&lt;UL&gt;..&lt;/UL&gt; or
+&lt;OL&gt;..&lt;/OL&gt;) are not part of this string and so must be
+defined in the surrounding page. Additionally, each element will have
+their style-sheet class set to either <i>cmPlayerListEntry</i> or, if
+applicable, <i>cmPlayerListEntryArchon</i>.</td>
+          </tr>
+          <tr>
+            <td>PlayerNext</td>
+            <td>Sets the ReqParm PLAYER to the next player found.
+Returns @break@ when the list has been completed, or "" if MacParm
+"EMPTYOK" found. Accepts MacParm of RESET to restart listing. Accepts
+MacParm SORTBY=COLNAME to sort the list.</td>
+          </tr>
+          <tr>
+            <td>PlayerOnline</td>
+            <td>Requires ReqParm PLAYER be set to a valid player name.
+Returns true if online, false otherwise. If MacParm BOOT found, will
+kick the player off. If MacParm BANBYIP found, will ban the ip address
+for the player. If MacParm BANBYNAME or BANBYEMAIL os found, it will
+also ban the player.</td>
+          </tr>
+          <tr>
+            <td>QuestData</td>
+            <td>Requires ReqParm QUEST be set to a valid quest name.
+Returns data about the Quest depending on MacParms found. Valid
+MacParms include: NAME, DURATION, WAIT, INTERVAL, RUNNING, WAITING,
+REMAINING, WAITLEFT, WINNERS, SCRIPT.</td>
+          </tr>
+          <tr>
+            <td>QuestMgr</td>
+            <td>If MacParm CREATE is given, along with ReqParm SCRIPT,
+will create a new Quest. Other functions require ReqParm QUEST be set
+to a valid quest name. Performs functions on the Quest depending on
+MacParms found. Valid MacParms include: MODIFY (with ReqParm SCRIPT),
+DELETE, START, STOP.</td>
+          </tr>
+          <tr>
+            <td>QuestNext</td>
+            <td>Sets the ReqParm QUEST to the next quest found. Returns
+@break@ when the list has been completed, or "" if MacParm "EMPTYOK"
+found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>RaceClassNext</td>
+            <td>Requires ReqParm RACE be set to a valid race id. Sets
+the ReqParm CLASS to the next class qualified for by the given race.
+Returns @break@ when the list has been completed, or "" if MacParm
+"EMPTYOK" found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>DeityData</td>
+            <td>Requires ReqParm DEITY be set to a valid deity name.
+Returns information about that deity depending on MacParms found. Valid
+MacParms include: DESCRIPTION, WORSHIPREQ, CLERICREQ,
+WORSHIPTRIG,CLERICTRIP,WORSHIPSINTRIG,CLERICSINTRIG,POWERTRIG</td>
+          </tr>
+          <tr>
+            <td>DeityID</td>
+            <td>Requires ReqParm DEITY be set to a valid race name.
+Returns the id.</td>
+          </tr>
+          <tr>
+            <td>DeityNext</td>
+            <td>Sets the ReqParm DEITY to the next deity found. Returns
+@break@ when the list has been completed, or "" if MacParm "EMPTYOK"
+found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>RaceData</td>
+            <td>Requires ReqParm RACE be set to a valid race id.
+Returns information about that race depending on MacParms found. Valid
+MacParms include: HELP, STATS, SENSES, TRAINS, PRACS, ABILITIES,
+HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, EXPECTANCY,
+STARTINGEQ, CLASSES, LANGS</td>
+          </tr>
+          <tr>
+            <td>RaceID</td>
+            <td>Requires ReqParm RACE be set to a valid race id.
+Returns the id.</td>
+          </tr>
+          <tr>
+            <td>RaceName</td>
+            <td>Requires ReqParm RACE be set to a valid race id.
+Returns the name.</td>
+          </tr>
+          <tr>
+            <td>RaceNext</td>
+            <td>Sets the ReqParm RACE to the next race found. Returns
+@break@ when the list has been completed, or "" if MacParm "EMPTYOK"
+found. Accepts MacParm of RESET to restart listing.</td>
+          </tr>
+          <tr>
+            <td>RequestParameter</td>
+            <td>Inserts the value of the Request Parameter(s) specified
+in the macro parameters.</td>
+          </tr>
+          <tr>
+            <td>RequestParameterEncoded</td>
+            <td>Inserts the value of the Request Parameter(s) specified
+in the macro parameters, formatted for a valid GET request.</td>
+          </tr>
+          <tr>
+            <td>RequestParametersEncoded</td>
+            <td>Inserts the names and values of all Request Parameters,
+formatted for a valid GET request.</td>
+          </tr>
+          <tr>
+            <td>ResourceMgr</td>
+            <td>Handles the resource cache. MacParm RESET will clear
+ReqParm RESOURCE. MacParm NEXT will set RESOURCE to the next resource.
+MacParm NEXT returns @break@ when the list has been completed, or "" if
+MacParm "EMPTYOK" also found. MacParm DELETE will delete resource that
+ReqParm RESOURCE is set to.</td>
+          </tr>
+          <tr>
+            <td>RoomData</td>
+            <td>MUDGrinder macro for manipulating room data. Too
+complicated to describe.</td>
+          </tr>
+          <tr>
+            <td>RoomID</td>
+            <td>Returns the ReqParm ROOM.</td>
+          </tr>
+          <tr>
+            <td>RoomName</td>
+            <td>Returns the display text for the room designated by
+ReqParm ROOM.</td>
+          </tr>
+          <tr>
+            <td>StdWebMacro</td>
+            <td>Base template for all other macros. Serves no useful
+purpose.</td>
+          </tr>
+          <tr>
+            <td>SocialTbl</td>
+            <td>Returns a formatted set of table rows and columns
+listing all the socials.</td>
+          </tr>
+          <tr>
+            <td>SystemInfo</td>
+            <td>Returns information about the CoffeeMud system. Too
+many valid MacParms to mention. See the sample MUDGrinder pages which
+use this macro.</td>
+          </tr>
+          <tr>
+            <td>SystemFunction</td>
+            <td>Performs a shutdown if the MacParm SHUTDOWN is found.
+Performs a system-wide Announce command is the MacParm ANNOUNCE is
+found, as well as the ReqParm TEXT.</td>
+          </tr>
+          <tr>
+            <td>WebServerName</td>
+            <td>Returns just the name of the web server.</td>
+          </tr>
+          <tr>
+            <td>WebServerPort</td>
+            <td>Returns the port number the web server is running on.</td>
+          </tr>
+          <tr>
+            <td>WebServerVersion</td>
+            <td>Returns the name and version of the web server.</td>
           </tr>
         </tbody>
       </table>
-    </center>
-  </body>
+      <h2><a name="customize">Customizing the error page</a></h2>
+      <p>Simply create a file <i>errorpage.mwhtml</i> in the template
+directory of the server; at some point on the page you should use the
+@HTTPSTATUS@ and @HTTPSTATUSINFO@ macros. Note that the template
+directory is served as though it were in the specified path - images
+and stylesheets should therefore go in the server's base directory.</p>
+      <h2><a name="add">Adding new macros to CMVP</a></h2>
+      <p>Create the new .java file in the <i>com/planet_ink/coffee_mud/WebMacros</i>
+directory; all classes in this directory are loaded as macros by
+default. The new class should inherit from <code>StdWebMacro</code> in
+the <code>com.planet_ink.coffee_mud.WebMacros</code> package.</p>
+      <p>The package of the new class should implement the interface <code>com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro.</code></p>
+      <p>The <code>name()</code> member should return the name of your
+new macro (it will be capitalized and the @ symbols added by
+StdWebMacro) - the name doesn't have to match the class name but it is
+recommended to avoid confusion.</p>
+      <p>Finally, the <code>runMacro()</code> function returns the
+String data you wish to insert into the processed output; it takes as
+parameters a reference to the <i>HTPRequest</i> that is calling the
+macro, and a String representing the data after the first question
+mark? in the macro reference.</p>
+      <p>If <code>runMacro()</code> returns <i>null</i>, the string
+[Error] is used to replace the macro<span style="font-weight: bold;">.
+&nbsp;</span>If <code>runMacro()</code> returns <span
+ style="font-style: italic;">@break@</span><i></i>,&nbsp;<span
+ style="font-weight: bold;" />this will cause a @loop@-@back@ segment
+to terminate<span style="font-weight: bold;">.</span><b></b></p>
+      <p>Example: this is the complete code for the <b>@HTTPCLIENTIP@</b>
+macro (HTTPclientIP.java):</p>
+      <pre>package com.planet_ink.coffee_mud.WebMacros;<br /><br />import com.planet_ink.miniweb.interfaces.*;<br />import com.planet_ink.coffee_mud.core.interfaces.*;<br />import com.planet_ink.coffee_mud.core.*;<br />import com.planet_ink.coffee_mud.core.collections.*;<br />import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import java.util.*;<br /><br />/* <br />   Copyright 2000-2013 Bo Zimmerman<br /><br />   Licensed under the Apache License, Version 2.0 (the "License");<br />   you may not use this file except in compliance with the License.<br />   You may obtain a copy of the License at<br /><br />	   http://www.apache.org/licenses/LICENSE-2.0<br /><br />   Unless required by applicable law or agreed to in writing, software<br />   distributed under the License is distributed on an "AS IS" BASIS,<br />   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br />   See the License for the specific language governing permissions and<br />   limitations under the License.<br />*/<br />public class HTTPclientIP extends StdWebMacro<br />{<br />	public String name()	{return "HTTPclientIP";}<br /><br />	public String runMacro(HTTPRequest httpReq, String parm)<br />	{<br />		if(httpReq.getClientAddress()!=null)<br />			return httpReq.getClientAddress().getHostAddress();<br />		return "Unknown";<br />	}<br />}<br /></pre>
+      <p>If your macro is intended to be for the admin server only, you
+can override the <code>.isAdminMacro()</code> member to return <code>true.</code></p>
+      <h2><a name="javascript">Using Javascript in your pages</a></h2>
+      <p>The CoffeeMud web server allows you to use the Javascript
+language to generate the tags and data which make up your <strong>cmvp</strong>
+web pages. The Javascript to do this is inserted directly into your web
+page at the point where you want the script-generated content to appear
+using the embedded macros@jscript@ and @/jscript@. The script included
+between those two tags will follow the rules for JavaScripting found in
+the <a href="Programming.html">Programmers Guide</a>. The web server
+makes the <code>HTTPRequest request()</code> object available to the
+script, as well as the method <code>void write(String s)</code> for
+writing text into the page.</p>
+      <p>Here is our first example:</p>
+      <pre>&lt;HTML&gt;<br />&lt;BODY&gt;<br />@jscript@<br />var x=request().getClientAddress().getHostAddress();<br />write('&lt;P&gt;Your IP Address is &lt;B&gt;'+x+'&lt;/B&gt;.&lt;/P&gt;');<br />@/jscript@<br />&lt;/BODY&gt;<br />&lt;/HTML&gt;<br /></pre>
+      <p>Notice how we used the <code>write()</code> method to insert
+our HTML into the page. We also used the <code>request()</code> object
+to fetch the client ip address. Now here is a more involved example:</p>
+      <pre>&lt;HTML&gt;<br />&lt;HEAD&gt;<br />&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;<br />&lt;/HEAD&gt;<br />&lt;BODY&gt;<br />&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;<br /><br />@jscript@<br />var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;<br />// define a shortcut to the CoffeeMud libraries.<br /><br />var randomRoom=lib.map().getRandomRoom();<br />var randomArea=lib.map().getRandomArea();<br />// finding random rooms and areas is easy<br /><br />var randomMob=null;<br />var randomItem=null;<br />// assign our random mobs and items to null until they are found<br /><br />var attempts=1000;<br />// finding random items and mobs is more difficult.  We will<br />// select a random room, and attempt to pick out a random mob<br />// and/or item from the room.  We will do this a maximum of 1000<br />// times before giving up, until we find one of each.<br />while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))<br />{<br />  var room=lib.map().getRandomRoom();<br />  if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))<br />  {<br />    randomMob=room.fetchRandomInhabitant();<br />  }<br />  if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))<br />  {<br />    randomItem = room.getRandomItem();<br />  }<br />} //now we have all our random things. We could easily insert our HTML using<br />  // the write() method as we did in example 1.  To be fancy, however, we'll use the<br />  // the request() object to assign the names of our selections to HTTP Request<br />  // strings.<br /><br />request().addFakeUrlParameter("RANDOMROOM",randomRoom.roomTitle());<br />request().addFakeUrlParameter("RANDOMAREA",randomArea.name());<br />if(randomMob!=null)<br /> request().addFakeUrlParameter("RANDOMMOB",randomMob.name());<br />if(randomItem!=null)<br /> request().addFakeUrlParameter("RANDOMITEM",randomItem.name());<br />// now we exit back and continue with our HTML, using standard CMVP web macros<br />// to fetch the random names we saved.<br />@/jscript@<br /><br />&lt;FONT FACE="Courier New"&gt;<br />&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;<br />&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;<br />&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;<br />&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;<br /><br />&lt;/FONT&gt;<br />&lt;P&gt;<br />&lt;/BODY&gt;<br />&lt;/HTML&gt;<br /></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</center>
+</body>
 </html>
-
