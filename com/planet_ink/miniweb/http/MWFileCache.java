@@ -212,7 +212,10 @@ public class MWFileCache implements FileCacheManager
 			fileName = pageFile.getAbsolutePath();
 			FileCacheEntry entry = getFileData(fileName, null);
 			if((entry != null) && (entry.buf[type.ordinal()]!=null))
+			{
+				uncompressedData.close(); // we aren't going to need this.
 				return new MWDataBuffers(entry.buf[type.ordinal()],entry.modified);
+			}
 		}
 		else
 			fileName=Integer.toString(uncompressedData.hashCode());
@@ -221,7 +224,10 @@ public class MWFileCache implements FileCacheManager
 		{
 			FileCacheEntry entry = getFileData(fileName, null);
 			if((entry != null) && (entry.buf[type.ordinal()]!=null))
+			{
+				uncompressedData.close(); // we aren't going to need this.
 				return new MWDataBuffers(entry.buf[type.ordinal()],entry.modified);
+			}
 			OutputStream compressor=null;
 			ByteArrayOutputStream bufStream=new ByteArrayOutputStream();
 			try
@@ -260,7 +266,9 @@ public class MWFileCache implements FileCacheManager
 				entry.buf[type.ordinal()] = compressedBytes;
 				totalBytes.addAndGet(entry.bufsSize.addAndGet(compressedBytes.length));
 			}
-			return new MWDataBuffers(compressedBytes, uncompressedData.getLastModified().getTime());
+			final long lastModified=uncompressedData.getLastModified().getTime();
+			uncompressedData.close();
+			return new MWDataBuffers(compressedBytes, lastModified);
 		}
 	}
 	
