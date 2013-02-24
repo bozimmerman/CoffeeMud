@@ -251,6 +251,7 @@ public class MWFileCache implements FileCacheManager
 			}
 			catch(IOException ioe)
 			{
+				uncompressedData.close();
 				logger.throwing("", "", ioe);
 				return null;
 			}
