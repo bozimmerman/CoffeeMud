@@ -52,7 +52,8 @@ URL:</p>
       <h2><a name="limits">What it does and doesn't do</a></h2>
       <p>It supports GET, urlencoded and multipart POST requests, and
 HEAD requests. &nbsp;It supports custom servlets, cookies, sessions,
-SSL, gzip and deflate encodings, pipelining, mapping mime types to java
+SSL, gzip and deflate encodings, pipelining, etag support, ranged
+requests, async IO (fast!), mapping mime types to java
 converter and filter classes, file caching, and more. &nbsp;It supports
 numerous coded web macros, as well as inline server-side Javascripts to
 create custom pages. &nbsp;It does not make coffee, but it does make
@@ -94,7 +95,7 @@ SSLPORT</b>=xx <i>(e.g. SSLPORT=443)</i> <br />
 and HTTPS requests on; this cannot be the same port as the main MUD
 server or another web servers. This list may be comma delimited to
 start more than one instance on different ports. Normally this would go
-in <i></i>pub.ini and admin.ini.</p>
+in <i />pub.ini and admin.ini.</p>
         </li>
         <li> <b>DEBUGFLAG</b>=xx : <i>(e.g. DEBUGFLAG=false)</i>
           <p>An alternative way to turn on debugging messages in the
@@ -137,7 +138,7 @@ FILECACHEMAXBYTES=</span>#bytes <span style="font-style: italic;">(e.g.
 FILECACHEMAXBYTES=65535)</span><span style="font-weight: bold;"><br />
 FILECACHEMAXFILEBYTES=</span>#bytes <span style="font-style: italic;">(e.g.
 FILECACHEMAXFILEBYTES=8192)</span><span style="font-weight: bold;"><br />
-FILECOMPMAXBYTES=</span><span style="font-weight: bold;" />#bytes <span
+FILECOMPMAXBYTES=</span><span style="font-weight: bold;">#bytes <span
  style="font-style: italic;">(e.g.&nbsp;FILECOMPMAXBYTES=16485760)</span>
           <p>The data for your web site can be cached in memory for
 better performance. &nbsp;To tune this feature, you can specify the
@@ -150,7 +151,7 @@ compressed is&nbsp; FILECOMPMAXBYTES. To turn any of these off
 entirely, specify a value of 0. &nbsp;If you have lots of allocated
 java memory, however, making those numbers larger will help
 performance. &nbsp;These are also in common.ini.</p>
-        </li>
+          </span></li>
         <li><span style="font-weight: bold;">REQUESTMAXBODYBYTES</span>=#bytes
           <span style="font-style: italic;">(e.g.
 REQUESTMAXBODYBYTES=2097152)</span><br />
@@ -963,9 +964,9 @@ mark? in the macro reference.</p>
       <p>If <code>runMacro()</code> returns <i>null</i>, the string
 [Error] is used to replace the macro<span style="font-weight: bold;">.
 &nbsp;</span>If <code>runMacro()</code> returns <span
- style="font-style: italic;">@break@</span><i></i>,&nbsp;<span
- style="font-weight: bold;" />this will cause a @loop@-@back@ segment
-to terminate<span style="font-weight: bold;">.</span><b></b></p>
+ style="font-style: italic;">@break@</span><i />,&nbsp;<span
+ style="font-weight: bold;">this will cause a @loop@-@back@ segment
+to terminate<span style="font-weight: bold;">.</span><b /></span></p>
       <p>Example: this is the complete code for the <b>@HTTPCLIENTIP@</b>
 macro (HTTPclientIP.java):</p>
       <pre>package com.planet_ink.coffee_mud.WebMacros;<br /><br />import com.planet_ink.miniweb.interfaces.*;<br />import com.planet_ink.coffee_mud.core.interfaces.*;<br />import com.planet_ink.coffee_mud.core.*;<br />import com.planet_ink.coffee_mud.core.collections.*;<br />import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import java.util.*;<br /><br />/* <br />   Copyright 2000-2013 Bo Zimmerman<br /><br />   Licensed under the Apache License, Version 2.0 (the "License");<br />   you may not use this file except in compliance with the License.<br />   You may obtain a copy of the License at<br /><br />	   http://www.apache.org/licenses/LICENSE-2.0<br /><br />   Unless required by applicable law or agreed to in writing, software<br />   distributed under the License is distributed on an "AS IS" BASIS,<br />   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br />   See the License for the specific language governing permissions and<br />   limitations under the License.<br />*/<br />public class HTTPclientIP extends StdWebMacro<br />{<br />	public String name()	{return "HTTPclientIP";}<br /><br />	public String runMacro(HTTPRequest httpReq, String parm)<br />	{<br />		if(httpReq.getClientAddress()!=null)<br />			return httpReq.getClientAddress().getHostAddress();<br />		return "Unknown";<br />	}<br />}<br /></pre>
