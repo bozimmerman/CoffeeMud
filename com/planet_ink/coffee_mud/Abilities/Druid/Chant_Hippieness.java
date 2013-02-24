@@ -97,6 +97,11 @@ public class Chant_Hippieness extends Chant
 					CMLib.commands().postGet(mob,I.container(),I,false);
 			}
 
+			Ability A=mob.fetchEffect("Fighter_Bezerk");
+			if(A!=null) A.unInvoke();
+			A=mob.fetchEffect("Song_Rage");
+			if(A!=null) A.unInvoke();
+			
 			if(mob.numItems()>0)
 			{
 				Item I=mob.getRandomItem();
