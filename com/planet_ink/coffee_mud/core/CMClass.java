@@ -2247,8 +2247,11 @@ public class CMClass extends ClassLoader
 		{
 			synchronized(CMClass.MSGS_CACHE)
 			{
-				MSGS_CACHE.addLast(msg);
-				return true;
+				if(MSGS_CACHE.size()<MAX_MSGS)
+				{
+					MSGS_CACHE.addLast(msg);
+					return true;
+				}
 			}
 		}
 		return false;
