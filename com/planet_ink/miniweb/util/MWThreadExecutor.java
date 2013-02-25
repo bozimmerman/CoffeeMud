@@ -48,7 +48,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 							long keepAliveTime, TimeUnit unit, 
 							long timeoutSecs, int queueSize) 
 	{
-		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new LinkedBlockingQueue<Runnable>());
+		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new LinkedBlockingQueue<Runnable>(queueSize));
 		timeoutMillis=timeoutSecs * 1000L;
 		this.poolName=poolName;
 		threadFactory=new MWThreadFactory(poolName, config);
