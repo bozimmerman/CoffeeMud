@@ -1102,11 +1102,11 @@ public class CharClassData extends StdWebMacro
 		double[] variables={
 				(double)level,
 				(double)stat,
-				(double)18,
+				(double)stat+7,
 				(double)stat,
-				(double)18,
+				(double)stat+7,
 				(double)stat,
-				(double)18,
+				(double)stat+7,
 				(double)stat,
 				(double)stat
 			};
