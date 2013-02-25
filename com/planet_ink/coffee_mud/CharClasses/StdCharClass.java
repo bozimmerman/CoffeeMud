@@ -262,8 +262,15 @@ public class StdCharClass implements CharClass
 			formula=CMStrings.replaceAll(formula, "@x7", "Con");
 			formula=CMStrings.replaceAll(formula, "@x8", "Int");
 			formula=CMStrings.replaceAll(formula, "@x9", "Wis");
-			formula=CMStrings.replaceAll(formula, "*(1?", "d");
+			int x=formula.indexOf("*(1?");
+			if(x>0)
+			{
+				int y=formula.indexOf(')',x+1);
+				if(y>x)
+					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
+			}
 			formula=CMStrings.replaceAll(formula, "1?", "d");
+			formula=CMStrings.replaceAll(formula, "*", "X");
 			hitPointsDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" +"+formula;
 		}
 		return hitPointsDesc;
@@ -288,8 +295,15 @@ public class StdCharClass implements CharClass
 			formula=CMStrings.replaceAll(formula, "@x7", "Con");
 			formula=CMStrings.replaceAll(formula, "@x8", "Cha");
 			formula=CMStrings.replaceAll(formula, "@x9", "Dex");
-			formula=CMStrings.replaceAll(formula, "*(1?", "d");
+			int x=formula.indexOf("*(1?");
+			if(x>0)
+			{
+				int y=formula.indexOf(')',x+1);
+				if(y>x)
+					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
+			}
 			formula=CMStrings.replaceAll(formula, "1?", "d");
+			formula=CMStrings.replaceAll(formula, "*", "X");
 			manaDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" +"+formula;
 		}
 		return manaDesc;
@@ -314,8 +328,15 @@ public class StdCharClass implements CharClass
 			formula=CMStrings.replaceAll(formula, "@x7", "Con");
 			formula=CMStrings.replaceAll(formula, "@x8", "Int");
 			formula=CMStrings.replaceAll(formula, "@x9", "Wis");
-			formula=CMStrings.replaceAll(formula, "*(1?", "d");
+			int x=formula.indexOf("*(1?");
+			if(x>0)
+			{
+				int y=formula.indexOf(')',x+1);
+				if(y>x)
+					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
+			}
 			formula=CMStrings.replaceAll(formula, "1?", "d");
+			formula=CMStrings.replaceAll(formula, "*", "X");
 			movementDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" +"+formula;
 		}
 		return movementDesc;
