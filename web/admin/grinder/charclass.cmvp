@@ -120,6 +120,12 @@
             w=window.open("/"+file+"?HELPTOPIC="+named,
                         "Help",strFeatures, false);
         }
+		function openUp2(named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/ahelp.cmvp?HELPTOPIC="+named,
+			            "Help",strFeatures, false);
+		}
         function Clicked(action)
         {
             document.RESOURCES.action=action;
@@ -165,23 +171,25 @@
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Hit Points / Level: </FONT></TD>
-            <TD><FONT COLOR=WHITE>Roll&nbsp; 
-                <INPUT TYPE=TEXT SIZE=2 NAME=HPDICE VALUE="@CharClassData?HPDICE@">
-                d
-                <INPUT TYPE=TEXT SIZE=2 NAME=HPDIE VALUE="@CharClassData?HPDIE@">
-                &nbsp;&nbsp;+&nbsp;&nbsp;
-                (Constitution / <INPUT TYPE=TEXT SIZE=2 NAME=HPDIV VALUE="@CharClassData?HPDIV@">)
+            <TD><FONT COLOR=WHITE>
+                <INPUT TYPE=TEXT SIZE=60 NAME=HITPOINTSFORMULA VALUE="@CharClassData?HITPOINTSFORMULA@">
+                <A HREF="javascript:openUp2('MATH_FORMULA')">Formula help</a>
+                <BR>
+@x1: Players current class level, @x2: Players adjusted Strength, @x3: Players Max adjusted Strength, 
+@x4: Players adjusted Dexterity, @x5: Players Max adjusted Dexterity, @x6: Players adjusted Constitution, 
+@x7: Players Max adjusted Constitution, @x8: Players adjusted Wisdom, @x9: Players adjusted Intelligence
                 </FONT>
             </TD>
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Mana / Level: </FONT></TD>
-            <TD><FONT COLOR=WHITE>Roll&nbsp; 
-                <INPUT TYPE=TEXT SIZE=2 NAME=MANADICE VALUE="@CharClassData?MANADICE@">
-                d
-                <INPUT TYPE=TEXT SIZE=2 NAME=MANADIE VALUE="@CharClassData?MANADIE@">
-                &nbsp;&nbsp;+&nbsp;&nbsp;
-                (Intelligence / <INPUT TYPE=TEXT SIZE=2 NAME=MANADIV VALUE="@CharClassData?MANADIV@">)
+            <TD><FONT COLOR=WHITE>
+                <INPUT TYPE=TEXT SIZE=60 NAME=MANAFORMULA VALUE="@CharClassData?MANAFORMULA@">
+                <A HREF="javascript:openUp2('MATH_FORMULA')">Formula help</a>
+                <BR>
+@x1: Players current class level, @x2: Players adjusted Wisdom, @x3: Players Max adjusted Wisdom, 
+@x4: Players adjusted Intelligence, @x5: Players Max adjusted Intelligence, @x6: Players adjusted Attack Attr, 
+@x7: Players Max adjusted Attack Attr, @x8: Players adjusted Charisma, @x9: Players adjusted Constitution
                 </FONT>
             </TD>
         </TR>
@@ -211,7 +219,15 @@
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Movement / Level: </FONT></TD>
-            <TD><FONT COLOR=WHITE>Strength / 18 X <INPUT TYPE=TEXT SIZE=5 NAME=LVLMOVE VALUE="@CharClassData?LVLMOVE@"></FONT></TD>
+            <TD><FONT COLOR=WHITE>
+                <INPUT TYPE=TEXT SIZE=60 NAME=MOVEMENTFORMULA VALUE="@CharClassData?MOVEMENTFORMULA@">
+                <A HREF="javascript:openUp2('MATH_FORMULA')">Formula help</a>
+                <BR>
+@x1: Players current class level, @x2: Players adjusted Strength, @x3: Players Max adjusted Strength, 
+@x4: Players adjusted Dexterity, @x5: Players Max adjusted Dexterity, @x6: Players adjusted Constitution, 
+@x7: Players Max adjusted Constitution, @x8: Players adjusted Wisdom, @x9: Players adjusted Intelligence
+                </FONT>
+            </FONT></TD>
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Armor Limits: </FONT></TD>

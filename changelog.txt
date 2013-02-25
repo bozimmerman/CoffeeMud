@@ -2443,3 +2443,4 @@ ruthless programmer, and sentenced to a quick death.
 # Build 5.8.0 Release ?/?/2013
 1. CoffeeMud and MiniWebServer are now integrated -- this means a much faster and better web service all around.
 ^^^Check out the altered WebServer guide, and make sure you integrate the pub.ini, admin.ini, and common.ini if you customized them.
+2. Character Classes now use formulas for mana, movement, and hit point gains/losses.

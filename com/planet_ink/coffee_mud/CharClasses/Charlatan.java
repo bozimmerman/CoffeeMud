@@ -44,9 +44,7 @@ public class Charlatan extends StdCharClass
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 10;}
-	public int getHPDivisor(){return 3;}
-	public int getHPDice(){return 2;}
-	public int getHPDie(){return 6;}
+	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();

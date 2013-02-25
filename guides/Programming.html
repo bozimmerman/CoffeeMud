@@ -143,7 +143,8 @@ the several essential object types in CoffeeMud are presented.</p>
         <li>
           <p>Go to your coffeemud directory and edit the make.bat, the
 first line will be something like: <code>SET JAVACPATH=
-C:\Program Files\Java\jdk1.6.0_22\bin\javac</code> This might be different for you
+C:\Program Files\Java\jdk1.6.0_22\bin\javac</code> This might be
+different for you
 depending on where your java development package is installed.</p>
         </li>
         <li>
@@ -380,7 +381,8 @@ with an '`s'</td>
           </tr>
           <tr>
             <td><code>&lt;S-ACCOUNTNAME&gt;</code> </td>
-            <td>Outputs 'You' if Observer=Source, otherwise the Account Name.</td>
+            <td>Outputs 'You' if Observer=Source, otherwise the Account
+Name.</td>
           </tr>
         </tbody>
       </table>
@@ -623,8 +625,9 @@ system strings. For instance:</p>
       </table>
       <p>As you might have guessed, it is preferred that the system
 colors (the last codes) be used sparingly, in favor of the more
-customizable codes above. Also, be sure to always put foreground 
-color codes before background color codes.  Foreground color codes always "reset" the
+customizable codes above. Also, be sure to always put foreground color
+codes before background color codes. Foreground color codes always
+"reset" the
 default background color.</p>
       <img src="images/mozilla.jpg" alt="Mozilla Javascript" />
       <h2><a name="javascript" id="javascript">JavaScripting:</a></h2>
@@ -947,17 +950,20 @@ thief skills.</td>
           <tr>
             <td>2097152</td>
             <td>MASK_OPTIMIZE</td>
-            <td>Message implementation should be optimized for repetition.</td>
+            <td>Message implementation should be optimized for
+repetition.</td>
           </tr>
           <tr>
             <td>4194304</td>
             <td>MASK_CNTRLMSG</td>
-            <td>Message implementation is entirely internal system message.</td>
+            <td>Message implementation is entirely internal system
+message.</td>
           </tr>
           <tr>
             <td>8388608</td>
             <td>MASK_INTERMSG</td>
-            <td>Message denotes an action that is part of a final larger action.</td>
+            <td>Message denotes an action that is part of a final
+larger action.</td>
           </tr>
         </tbody>
       </table>
@@ -2025,7 +2031,8 @@ below may be accessed. Any further security would have to be
 implemented during execution of the command.</p>
       <p>In the above example, we call the <code>isAllowed()</code>
 method in CMSecurity with the mob reference, the room in which the mob
-is located, and the security code CMSecurity.SecFlag.IMMORT. This asks the Security
+is located, and the security code CMSecurity.SecFlag.IMMORT. This asks
+the Security
 module whether this mob, at this location, is authorized to perform
 functions designated by the "IMMORT" security code.</p>
       <pre>  public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)<br />    throws java.io.IOException;<br />  {<br />    if( secondsElapsed == 0 )<br />    {<br />      mob.tell( "You are preparing to do nothing." );<br />    }<br /><br />    if( secondsElapsed == 3 )<br />    {<br />      mob.tell( "You almost ready to do nothing." );<br />    }<br />  }<br /></pre>
@@ -2243,10 +2250,12 @@ we have made the sword glow! Now, what if we wanted a missile weapon?</p>
 and <code>setAmmunitionType()</code>.
 With the former, we specify that this is a ranged-only weapon, usable
 from range 1 (0=melee) to range 5. The ammunition type specifies that
-it uses arrows. We also added the method <code>recoverPhyStats()</code> in order to have the 
-attack and damage for the weapon always reflect the level of the item.
-<p>
-So those are weapons. Other classes, however, have different requirements
+it uses arrows. We also added the method <code>recoverPhyStats()</code>
+in order to have the attack and damage for the weapon always reflect
+the level of the item.
+      </p>
+      <p>So those are weapons. Other classes, however, have different
+requirements
 altogether. For instance, if class extends
 com.planet_ink.coffee_mud.Items.Armor.StdArmor:</p>
       <pre>  public MyNewArmor()<br />  {<br />    super();<br /><br />    setName( "a super bracer" );<br />    setDescription( "A super duper bracer" );<br />    setDisplayText( "Someone left their super bracer here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setBaseValue( 100 );<br />    basePhyStats.setWeight( 5 );<br />    basePhyStats.setArmor( 5 );<br />    setRawProperLocationBitmap( Wearable.WORN_LEFT_WRIST|Wearable.WORN_RIGHT_WRIST );<br />    setRawLogicalAnd( false );<br />    recoverPhyStats();<br />  }<br />
@@ -2529,10 +2538,16 @@ that this class may go by. As you can see from the above code, by
 default, the StdCharClass will nicely handle classes with just one
 name. However, the code above will need to be altered in your own
 character class if you choose to make one with multiple names.</p>
-      <pre>  public int getHPDivisor()<br />  {<br />    return 3;<br />  }<br /><br />  public int getHPDice()<br />  {<br />    return 1;<br />  }<br /><br />  public int getHPDie()<br />  {<br />    return 6;<br />  }<br /></pre>
+      <pre>  public String getHitPointsFormula()<br />  {<br />    return "((@x6&lt;@x7)/3)+(2*(1?6))";<br />  }</pre>
       <p>Next come the hit point ranges. When a player with this class
 gains a level,these values will determine hit points gained based on
-class and constitution.</p>
+class and stats.&nbsp;See the Archon help on Math Formulas (or just
+Formulas) for information on how to write formulas. &nbsp;The variables
+that can be included are: @x1: Players current class level, @x2:
+Players adjusted Strength, @x3: Players Max adjusted Strength, @x4:
+Players adjusted Dexterity, @x5: Players Max adjusted Dexterity, @x6:
+Players adjusted Constitution, @x7: Players Max adjusted Constitution,
+@x8: Players adjusted Wisdom, @x9: Players adjusted Intelligence</p>
       <pre>  public int getPracsFirstLevel()<br />  {<br />    return 3;<br />  }<br /><br />  public int getTrainsFirstLevel()<br />  {<br />    return 1;<br />  }<br /><br />  public int getBonusPracLevel()<br />  {<br />    return 0;<br />  }<br /></pre>
       <p>The next two methods define the starting Training and Practice
 points for this Character Class. The BonusPracLevel method tells us how
@@ -2546,18 +2561,29 @@ whenever the player gains a level. Usually this is Strength. The number
 of bonus attack points received by a player when a level is gained is
 determined by dividing the players score in this attribute by 6, and
 then adding the value returned by <code>getBonusAttackLevel()</code>.</p>
-      <pre>  public int getManaDivisor()<br />  {<br />    return 3;<br />  }<br /><br />  public int getManaDice()<br />  {<br />    return 1;<br />  }<br /><br />  public int getManaDie()<br />  {<br />    return 6;<br />  }<br /></pre>
-      <p>These methods determines how much mana a player receives when
-they gain a level in this class.</p>
+      <pre>  public String getManaFormula()<br />  {<br />    return "((@x4&lt;@x5)/3)+(1*(1?4))";<br />  }</pre>
+      <p>This method determines how much mana a player receives when
+they gain a level in this class. &nbsp;See the Archon help on Math
+Formulas (or just Formulas) for information on how to write formulas.
+&nbsp;The variables that can be included are: &nbsp;@x2: Players
+adjusted Wisdom, @x3: Players Max adjusted Wisdom, @x4: Players
+adjusted Intelligence, @x5: Players Max adjusted Intelligence, @x6:
+Players adjusted Attack Attr&nbsp; @x7: Players Max adjusted Attack Attr,
+@x8: Players adjusted Charisma, @x9: Players adjusted Constitution</p>
       <pre>  public int getLevelsPerBonusDamage()<br />  {<br />    return 25;<br />  }<br /></pre>
       <p>This score determines how many levels a player must make, in
 this class, before they will gain a bonus point of damage to all damage
 rolls.</p>
-      <pre>  public int getMovementMultiplier()<br />  {<br />    return 2;<br />  }<br /></pre>
+      <pre>  public String getMovementFormula()<br />  {<br />    return "10*((@x2&lt;@x3)/18)"; <br />  }</pre>
       <p>And lastly for our scores, this method will determine how many
-movement points a player receives when they gain a level. The formula
-is determined by dividing the player's strength score by 9, and
-multiplying the result by this value.</p>
+movement points a player receives when they gain a level.&nbsp;See the
+Archon help on Math Formulas (or just Formulas) for information
+on how to write formulas. &nbsp;The variables that can be included are:
+@x1: Players current class level, @x2: Players adjusted Strength, @x3:
+Players Max adjusted Strength, @x4: Players adjusted Dexterity, @x5:
+Players Max adjusted Dexterity, @x6: Players adjusted Constitution,
+@x7: Players Max adjusted Constitution, @x8: Players adjusted Wisdom,
+@x9: Players adjusted Intelligence</p>
       <pre>  public int allowedArmorLevel()<br />  {<br />    return CharClass.ARMOR_CLOTH;<br />  }<br /></pre>
       <p>The CharClass interface defines a method called "armorCheck"
 which returns true if the player is in compliance with armor
@@ -2597,9 +2623,11 @@ StdCharClass seen above, are totally derivative of the value you
 already put in <code>allowedWeaponLevel()</code>. In other words, so
 long as you include the <code>allowedWeaponLevel()</code> method, you
 should also include those next four methods, exactly as you see them.</p>
-<pre>  public int getLevelCap() {return -1;}<br /></pre>
-<p>Although not often used, you can set a level cap for the character class by returning some number above -1 from the getLevelCap method. The engine will take care of the rest.
-</p>
+      <pre>  public int getLevelCap() {return -1;}<br /></pre>
+      <p>Although not often used, you can set a level cap for the
+character class by returning some number above -1 from the getLevelCap
+method. The engine will take care of the rest.
+      </p>
       <pre>  public int availabilityCode()<br />  {<br />    return Area.THEME_FANTASY;<br />  }<br /></pre>
       <p>The method <code>availabilityCode()</code> defines how
 players
@@ -2825,7 +2853,6 @@ this would be the appropriate method in which to do so. This method is
 not called for Polymorph, Shape Shift, or similar changes in race, but
 only for those whose permanent race is this one.</p>
       <pre>  public Weapon myNaturalWeapon()<br />  {<br />    if( naturalWeapon == null )<br />    {<br />      naturalWeapon = CMClass.getWeapon( "StdWeapon" );<br />      naturalWeapon.setName( "huge claws" );<br />      naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);<br />      naturalWeapon.setUsesRemaining(1000);<br />      naturalWeapon.setWeaponType( Weapon.TYPE_PIERCING );<br />    }<br /><br />    return naturalWeapon;<br />  }<br /></pre>
-
       <p>This method allows you to create (see item creation above) a
 special weapon to serve the creature whenever they are not wielding
 something. Since our Grumbler cannot wield weapons anyway, it is

@@ -43,13 +43,9 @@ public class Thief extends StdCharClass
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 5;}
-	public int getMovementMultiplier(){return 10;}
-	public int getHPDivisor(){return 3;}
-	public int getHPDice(){return 1;}
-	public int getHPDie(){return 10;}
-	public int getManaDivisor(){return 6;}
-	public int getManaDice(){return 1;}
-	public int getManaDie(){return 3;}
+	public String getMovementFormula(){return "10*((@x2<@x3)/18)"; }
+	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(1*(1?10))"; }
+	public String getManaFormula(){return "((@x4<@x5)/6)+(1*(1?3))"; }
 	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();

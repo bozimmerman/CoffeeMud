@@ -40,18 +40,18 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getManaBonusNextLevel(MOB mob)
 	{
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
-		int man2Stat=mob.charStats().getStat(charClass.getAttackAttribute());
-		int maxMan2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())));
-		if(man2Stat>maxMan2Stat) man2Stat=maxMan2Stat;
-
-		int manStat=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE);
-		int maxManStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE)));
-		if(manStat>maxManStat) manStat=maxManStat;
-		int manaGain=(int)Math.floor(CMath.div(manStat,charClass.getManaDivisor())+CMLib.dice().roll(charClass.getManaDice(),charClass.getManaDie(),0));
-		if(man2Stat>17) manaGain=manaGain+((man2Stat-17)/2);
-		return manaGain;
+		double[] variables={
+				(double)mob.phyStats().level(),
+				(double)mob.charStats().getStat(CharStats.STAT_WISDOM),
+				(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM))),
+				(double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),
+				(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE))),
+				(double)mob.charStats().getStat(charClass.getAttackAttribute()),
+				(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute()))),
+				(double)mob.charStats().getStat(CharStats.STAT_CHARISMA),
+				(double)mob.charStats().getStat(CharStats.STAT_CONSTITUTION)
+			};
+		return (int)Math.round(CMath.parseMathExpression(charClass.getManaFormula(), variables));
 	}
 	
 	public int getLevelMana(MOB mob)
@@ -98,14 +98,18 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getMoveBonusNextLevel(MOB mob)
 	{
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
-		double lvlMul=1.0;//-CMath.div(mob.phyStats().level(),100.0);
-		if(lvlMul<0.1) lvlMul=.1;
-		int mvStat=mob.charStats().getStat(CharStats.STAT_STRENGTH);
-		int maxMvStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH)));
-		if(mvStat>maxMvStat) mvStat=maxMvStat;
-		int mvGain=(int)Math.round(lvlMul*CMath.mul(CMath.div(mvStat,18.0),charClass.getMovementMultiplier()));
-		return mvGain;
+		double[] variables={
+			(double)mob.phyStats().level(),
+			(double)mob.charStats().getStat(CharStats.STAT_STRENGTH),
+			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH))),
+			(double)mob.charStats().getStat(CharStats.STAT_DEXTERITY),
+			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY))),
+			(double)mob.charStats().getStat(CharStats.STAT_CONSTITUTION),
+			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION))),
+			(double)mob.charStats().getStat(CharStats.STAT_WISDOM),
+			(double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
+		};
+		return (int)Math.round(CMath.parseMathExpression(charClass.getMovementFormula(), variables));
 	}
 	
 	public int getLevelMove(MOB mob)
@@ -119,14 +123,21 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getPlayerHPBonusNextLevel(MOB mob)
 	{
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
-		int conStat=mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
-		int maxConStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION)));
-		if(conStat>maxConStat) conStat=maxConStat;
-		int newHitPointGain=(int)Math.floor(CMath.div(conStat,charClass.getHPDivisor())+CMLib.dice().roll(charClass.getHPDice(),charClass.getHPDie(),0));
+		double[] variables={
+			(double)mob.phyStats().level(),
+			(double)mob.charStats().getStat(CharStats.STAT_STRENGTH),
+			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH))),
+			(double)mob.charStats().getStat(CharStats.STAT_DEXTERITY),
+			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY))),
+			(double)mob.charStats().getStat(CharStats.STAT_CONSTITUTION),
+			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION))),
+			(double)mob.charStats().getStat(CharStats.STAT_WISDOM),
+			(double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
+		};
+		int newHitPointGain=(int)Math.round(CMath.parseMathExpression(charClass.getHitPointsFormula(), variables));
 		if(newHitPointGain<=0)
 		{
-			if(conStat>=1)
+			if(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>=1)
 				return 1;
 			return 0;
 		}

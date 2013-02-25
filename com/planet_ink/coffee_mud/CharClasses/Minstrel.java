@@ -43,12 +43,8 @@ public class Minstrel extends StdCharClass
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 10;}
-	public int getHPDivisor(){return 3;}
-	public int getHPDice(){return 2;}
-	public int getHPDie(){return 6;}
-	public int getManaDivisor(){return 6;}
-	public int getManaDice(){return 1;}
-	public int getManaDie(){return 2;}
+	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(2*(1?6))"; }
+	public String getManaFormula(){return "((@x4<@x5)/6)+(1*(1?2))"; }
 	protected String armorFailMessage(){return "<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}

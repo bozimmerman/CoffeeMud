@@ -45,12 +45,9 @@ public class GenCharClass extends StdCharClass
 	protected String ID="GenCharClass";
 	protected Integer[] nameLevels={Integer.valueOf(0)};
 	protected String baseClass="Commoner";
-	protected int hpDivisor=3;
-	protected int hpDice=1;
-	protected int hpDie=6;
-	protected int manaDivisor=6;
-	protected int manaDice=1;
-	protected int manaDie=3;
+	protected String hitPointsFormula="((@x6<@x7)/3)+(1*(1?6))";
+	protected String manaFormula="((@x4<@x5)/6)+(1*(1?3))";
+	protected String movementFormula="5*((@x2<@x3)/18)";
 	protected int levelCap=-1;
 	protected int bonusPracLevel=0;
 	protected int bonusAttackLevel=0;
@@ -58,7 +55,6 @@ public class GenCharClass extends StdCharClass
 	protected int pracsFirstLevel=5;
 	protected int trainsFirstLevel=3;
 	protected int levelsPerBonusDamage=10;
-	protected int movementMultiplier=5;
 	protected int allowedArmorLevel=CharClass.ARMOR_ANY;
 	protected String otherLimitations="";
 	protected String otherBonuses="";
@@ -66,12 +62,9 @@ public class GenCharClass extends StdCharClass
 	protected String[] xtraValues=null;
 	protected int selectability=0;
 	
-	public int getHPDivisor(){return hpDivisor;}
-	public int getHPDice(){return hpDice;}
-	public int getHPDie(){return hpDie;}
-	public int getManaDivisor(){return manaDivisor;}
-	public int getManaDice(){return manaDice;}
-	public int getManaDie(){return manaDie;}
+	public String getManaFormula(){return manaFormula; }
+	public String getHitPointsFormula(){return hitPointsFormula; }
+
 	public int getLevelCap() {return levelCap;}
 	
 	protected int maxNonCraftingSkills=CMProps.getIntVar(CMProps.SYSTEMI_MAXNONCRAFTINGSKILLS);
@@ -149,7 +142,7 @@ public class GenCharClass extends StdCharClass
 	public int getPracsFirstLevel(){return pracsFirstLevel;}
 	public int getTrainsFirstLevel(){return trainsFirstLevel;}
 	public int getLevelsPerBonusDamage(){ return levelsPerBonusDamage;}
-	public int getMovementMultiplier(){return movementMultiplier;}
+	public String getMovementFormula(){return movementFormula;}
 	public int allowedArmorLevel(){return allowedArmorLevel;}
 	public String getOtherLimitsDesc(){return otherLimitations;}
 	public String getOtherBonusDesc(){return otherBonuses;}
@@ -311,20 +304,16 @@ public class GenCharClass extends StdCharClass
 			str.append(CMLib.xml().convertXMLtoTag("NAMELEVEL"+i,nameLevels[i].intValue()));
 		}
 		str.append(CMLib.xml().convertXMLtoTag("BASE",baseClass()));
-		str.append(CMLib.xml().convertXMLtoTag("HPDIV",""+hpDivisor));
-		str.append(CMLib.xml().convertXMLtoTag("HPDICE",""+hpDice));
-		str.append(CMLib.xml().convertXMLtoTag("HPDIE",""+hpDie));
 		str.append(CMLib.xml().convertXMLtoTag("LVLPRAC",""+bonusPracLevel));
-		str.append(CMLib.xml().convertXMLtoTag("MANADIV",""+manaDivisor));
-		str.append(CMLib.xml().convertXMLtoTag("MANADICE",""+manaDice));
-		str.append(CMLib.xml().convertXMLtoTag("MANADIE",""+manaDie));
+		str.append(CMLib.xml().convertXMLtoTag("MANAFRM",""+manaFormula));
+		str.append(CMLib.xml().convertXMLtoTag("MVMTFRM",""+movementFormula));
+		str.append(CMLib.xml().convertXMLtoTag("HPFRM",""+hitPointsFormula));
 		str.append(CMLib.xml().convertXMLtoTag("LEVELCAP",""+levelCap));
 		str.append(CMLib.xml().convertXMLtoTag("LVLATT",""+bonusAttackLevel));
 		str.append(CMLib.xml().convertXMLtoTag("ATTATT",""+attackAttribute));
 		str.append(CMLib.xml().convertXMLtoTag("FSTPRAC",""+pracsFirstLevel));
 		str.append(CMLib.xml().convertXMLtoTag("FSTTRAN",""+trainsFirstLevel));
 		str.append(CMLib.xml().convertXMLtoTag("LVLDAM",""+levelsPerBonusDamage));
-		str.append(CMLib.xml().convertXMLtoTag("LVLMOVE",""+movementMultiplier));
 		str.append(CMLib.xml().convertXMLtoTag("ARMOR",""+allowedArmorLevel));
 		//str.append(CMLib.xml().convertXMLtoTag("STRWEAP",weaponLimitations));
 		//str.append(CMLib.xml().convertXMLtoTag("STRARM",armorLimitations));
@@ -483,22 +472,37 @@ public class GenCharClass extends StdCharClass
 		if((base==null)||(base.length()==0))
 			return;
 		baseClass=base;
-		hpDivisor=CMLib.xml().getIntFromPieces(classData,"HPDIV");
-		if(hpDivisor==0) hpDivisor=3;
-		hpDice=CMLib.xml().getIntFromPieces(classData,"HPDICE");
-		hpDie=CMLib.xml().getIntFromPieces(classData,"HPDIE");
+		hitPointsFormula=CMLib.xml().getValFromPieces(classData,"HPFRM");
+		if((hitPointsFormula==null)||(hitPointsFormula.length()==0))
+		{
+			int hpDivisor=CMLib.xml().getIntFromPieces(classData,"HPDIV");
+			if(hpDivisor==0) hpDivisor=3;
+			int hpDice=CMLib.xml().getIntFromPieces(classData,"HPDICE");
+			int hpDie=CMLib.xml().getIntFromPieces(classData,"HPDIE");
+			manaFormula="((@x6<@x7)/"+hpDivisor+")+("+hpDice+"(1?"+hpDie+"))";
+		}
 		bonusPracLevel=CMLib.xml().getIntFromPieces(classData,"LVLPRAC");
-		manaDivisor=CMLib.xml().getIntFromPieces(classData,"MANADIV");
-		if(manaDivisor==0) manaDivisor=3;
-		manaDice=CMLib.xml().getIntFromPieces(classData,"MANADICE");
-		manaDie=CMLib.xml().getIntFromPieces(classData,"MANADIE");
+		manaFormula=CMLib.xml().getValFromPieces(classData,"MANAFRM");
+		if((manaFormula==null)||(manaFormula.length()==0))
+		{
+			int manaDivisor=CMLib.xml().getIntFromPieces(classData,"MANADIV");
+			if(manaDivisor==0) manaDivisor=3;
+			int manaDice=CMLib.xml().getIntFromPieces(classData,"MANADICE");
+			int manaDie=CMLib.xml().getIntFromPieces(classData,"MANADIE");
+			manaFormula="((@x4<@x5)/"+manaDivisor+")+("+manaDice+"(1?"+manaDie+"))";
+		}
 		levelCap=CMLib.xml().getIntFromPieces(classData,"LEVELCAP");
 		bonusAttackLevel=CMLib.xml().getIntFromPieces(classData,"LVLATT");
 		attackAttribute=CMLib.xml().getIntFromPieces(classData,"ATTATT");
 		trainsFirstLevel=CMLib.xml().getIntFromPieces(classData,"FSTTRAN");
 		pracsFirstLevel=CMLib.xml().getIntFromPieces(classData,"FSTPRAC");
 		levelsPerBonusDamage=CMLib.xml().getIntFromPieces(classData,"LVLDAM");
-		movementMultiplier=CMLib.xml().getIntFromPieces(classData,"LVLMOVE");
+		movementFormula=CMLib.xml().getValFromPieces(classData,"MVMTFRM");
+		if((movementFormula==null)||(movementFormula.length()==0))
+		{
+			int movementMultiplier=CMLib.xml().getIntFromPieces(classData,"LVLMOVE");
+			movementFormula=movementMultiplier+"*((@x2<@x3)/18)";
+		}
 		allowedArmorLevel=CMLib.xml().getIntFromPieces(classData,"ARMOR");
 		//weaponLimitations=CMLib.xml().getValFromPieces(classData,"STRWEAP");
 		//armorLimitations=CMLib.xml().getValFromPieces(classData,"STRARM");
@@ -660,14 +664,14 @@ public class GenCharClass extends StdCharClass
 		return VA;
 	}
 
-	protected static String[] CODES={"ID","NAME","BASE","HPDIV","HPDICE",
-									 "LVLPRAC","MANADIV","LVLATT","ATTATT","FSTTRAN",
-									 "FSTPRAC","LVLDAM","LVLMOVE","ARMOR","STRWEAP",
+	protected static String[] CODES={"ID","NAME","BASE","HITPOINTSFORMULA","!!X!X!X!X!X!!!",
+									 "LVLPRAC","!!X!X!X!X!X!!!","LVLATT","ATTATT","FSTTRAN",
+									 "FSTPRAC","LVLDAM","MOVEMENTFORMULA","ARMOR","STRWEAP",
 									 "STRARM","STRLMT","STRBON","QUAL","PLAYER",
 									 "ESTATS","ASTATS","CSTATS","ASTATE","NUMCABLE",
 									 "GETCABLE","GETCABLELVL","GETCABLEPROF","GETCABLEGAIN","GETCABLESECR",
 									 "GETCABLEPARM","NUMWEP","GETWEP", "NUMOFT","GETOFTID",
-									 "GETOFTPARM","HPDIE","MANADICE","MANADIE","DISFLAGS",
+									 "GETOFTPARM","!!X!X!X!X!X!!!","MANAFORMULA","!!X!X!X!X!X!!!","DISFLAGS",
 									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
 									 "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
 									 "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP","LEVELCAP",
@@ -691,16 +695,16 @@ public class GenCharClass extends StdCharClass
 					return names[num];
 				break;
 		case 2: return baseClass;
-		case 3: return ""+hpDivisor;
-		case 4: return ""+hpDice;
+		case 3: return ""+hitPointsFormula;
+		case 4: return ""; //unused
 		case 5: return ""+bonusPracLevel;
-		case 6: return ""+manaDivisor;
+		case 6: return ""; // unused
 		case 7: return ""+bonusAttackLevel;
 		case 8: return ""+attackAttribute;
 		case 9: return ""+trainsFirstLevel;
 		case 10: return ""+pracsFirstLevel;
 		case 11: return ""+levelsPerBonusDamage;
-		case 12: return ""+movementMultiplier;
+		case 12: return ""+movementFormula;
 		case 13: return ""+allowedArmorLevel;
 		case 14: return "";//weaponLimitations;
 		case 15: return "";//armorLimitations;
@@ -724,9 +728,9 @@ public class GenCharClass extends StdCharClass
 		case 33: return ""+((outfit(null)!=null)?outfit(null).size():0);
 		case 34: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).ID():"");
 		case 35: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).text():"");
-		case 36: return ""+hpDie;
-		case 37: return ""+manaDice;
-		case 38: return ""+manaDie;
+		case 36: return ""; // unused
+		case 37: return ""+manaFormula;
+		case 38: return ""; // unused
 		case 39: return ""+disableFlags;
 		case 40: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
 		case 41: return ""+names.length;
@@ -777,16 +781,16 @@ public class GenCharClass extends StdCharClass
 					names[num]=val;
 				break;
 		case 2: baseClass=val; break;
-		case 3: hpDivisor=CMath.s_parseIntExpression(val); break;
-		case 4: hpDice=CMath.s_parseIntExpression(val); break;
+		case 3: hitPointsFormula=val; break;
+		case 4: break;
 		case 5: bonusPracLevel=CMath.s_parseIntExpression(val); break;
-		case 6: manaDivisor=CMath.s_parseIntExpression(val); break;
+		case 6: break;
 		case 7: bonusAttackLevel=CMath.s_parseIntExpression(val); break;
 		case 8: attackAttribute=CMath.s_parseListIntExpression(CharStats.CODES.NAMES(),val); break;
 		case 9: trainsFirstLevel=CMath.s_parseIntExpression(val); break;
 		case 10: pracsFirstLevel=CMath.s_parseIntExpression(val); break;
 		case 11: levelsPerBonusDamage=CMath.s_parseIntExpression(val); break;
-		case 12: movementMultiplier=CMath.s_parseIntExpression(val); break;
+		case 12: movementFormula=val; break;
 		case 13: allowedArmorLevel=CMath.s_parseListIntExpression(CharClass.ARMOR_DESCS,val); break;
 		case 14: break;//weaponLimitations=val;break;
 		case 15: break;//armorLimitations=val;break;
@@ -850,9 +854,9 @@ public class GenCharClass extends StdCharClass
 					 }
 					 break;
 				 }
-		case 36: hpDie=CMath.s_int(val); break;
-		case 37: manaDice=CMath.s_int(val); break;
-		case 38: manaDie=CMath.s_int(val); break;
+		case 36: break;
+		case 37: manaFormula=val; break;
+		case 38: break;
 		case 39: disableFlags=CMath.s_int(val); break;
 		case 40: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
 		case 41: num=CMath.s_int(val);

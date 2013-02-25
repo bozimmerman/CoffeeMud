@@ -404,50 +404,18 @@ public class CharClassData extends StdWebMacro
 					}
 					str.append(old+", ");
 				}
-				if(parms.containsKey("HPDIV"))
+				if(parms.containsKey("HITPOINTSFORMULA"))
 				{
-					String old=httpReq.getUrlParameter("HPDIV");
-					if(old==null) old=""+C.getHPDivisor();
+					String old=httpReq.getUrlParameter("HITPOINTSFORMULA");
+					if(old==null) old=""+C.getHitPointsFormula();
 					if(CMath.s_int(old)<=0)
 						old="1";
 					str.append(old+", ");
 				}
-				if(parms.containsKey("HPDICE"))
+				if(parms.containsKey("MANAFORMULA"))
 				{
-					String old=httpReq.getUrlParameter("HPDICE");
-					if(old==null) old=""+C.getHPDice();
-					if(CMath.s_int(old)<=0)
-						old="1";
-					str.append(old+", ");
-				}
-				if(parms.containsKey("HPDIE"))
-				{
-					String old=httpReq.getUrlParameter("HPDIE");
-					if(old==null) old=""+C.getHPDie();
-					if(CMath.s_int(old)<=0)
-						old="1";
-					str.append(old+", ");
-				}
-				if(parms.containsKey("MANADIV"))
-				{
-					String old=httpReq.getUrlParameter("MANADIV");
-					if(old==null) old=""+C.getManaDivisor();
-					if(CMath.s_int(old)<=0)
-						old="1";
-					str.append(old+", ");
-				}
-				if(parms.containsKey("MANADICE"))
-				{
-					String old=httpReq.getUrlParameter("MANADICE");
-					if(old==null) old=""+C.getManaDice();
-					if(CMath.s_int(old)<=0)
-						old="1";
-					str.append(old+", ");
-				}
-				if(parms.containsKey("MANADIE"))
-				{
-					String old=httpReq.getUrlParameter("MANADIE");
-					if(old==null) old=""+C.getManaDie();
+					String old=httpReq.getUrlParameter("MANAFORMULA");
+					if(old==null) old=""+C.getManaFormula();
 					if(CMath.s_int(old)<=0)
 						old="1";
 					str.append(old+", ");
@@ -531,10 +499,10 @@ public class CharClassData extends StdWebMacro
 					if(CMath.s_int(old)<0) old="-1";
 					str.append(old+", ");
 				}
-				if(parms.containsKey("LVLMOVE"))
-				{ // movement multiplier?
-					String old=httpReq.getUrlParameter("LVLMOVE");
-					if(old==null) old=""+C.getMovementMultiplier();
+				if(parms.containsKey("MOVEMENTFORMULA"))
+				{
+					String old=httpReq.getUrlParameter("MOVEMENTFORMULA");
+					if(old==null) old=""+C.getMovementFormula();
 					if(CMath.s_int(old)<=0) old="0";
 					str.append(old+", ");
 				}
@@ -923,25 +891,27 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("AVGHITPOINTS"))
 				{
 					int maxCon=18+C.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
-					str.append("("+avgMath2(10,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(10,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(10,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
-					str.append("("+avgMath2(50,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(50,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(50,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
-					str.append("("+avgMath2(90,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(90,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(90,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
+					String f=C.getHitPointsFormula();
+					str.append("("+avgMath(10,10,20,f)+"/"+avgMath(18,10,20,f)+"/"+avgMath(maxCon,10,20,f)+") ");
+					str.append("("+avgMath(10,50,20,f)+"/"+avgMath(18,50,20,f)+"/"+avgMath(maxCon,50,20,f)+") ");
+					str.append("("+avgMath(10,90,20,f)+"/"+avgMath(18,90,20,f)+"/"+avgMath(maxCon,90,20,f)+") ");
 				}
 
 				if(parms.containsKey("AVGMANA"))
 				{
 					int maxInt=18+C.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
-					str.append("("+avgMath2(10,100,10,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(10,100,18,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(10,100,maxInt,C.getManaDivisor(),C.getManaDice())+") ");
-					str.append("("+avgMath2(50,100,10,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(50,100,18,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(50,100,maxInt,C.getManaDivisor(),C.getManaDice())+") ");
-					str.append("("+avgMath2(90,100,10,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(90,100,18,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(90,100,maxInt,C.getManaDivisor(),C.getManaDice())+") ");
+					String f=C.getManaFormula();
+					str.append("("+avgMath(10,10,100,f)+"/"+avgMath(18,10,100,f)+"/"+avgMath(maxInt,10,100,f)+") ");
+					str.append("("+avgMath(10,50,100,f)+"/"+avgMath(18,50,100,f)+"/"+avgMath(maxInt,50,100,f)+") ");
+					str.append("("+avgMath(10,90,100,f)+"/"+avgMath(18,90,100,f)+"/"+avgMath(maxInt,90,100,f)+") ");
 				}
 				if(parms.containsKey("AVGMOVEMENT"))
 				{
-					int ah=C.getMovementMultiplier();
+					String f=C.getMovementFormula();
 					int maxStrength=18+C.maxStatAdjustments()[CharStats.STAT_STRENGTH];
-					str.append("("+avgMath(10,ah,10,100)+"/"+avgMath(18,ah,10,100)+"/"+avgMath(maxStrength,ah,10,100)+") ");
-					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(maxStrength,ah,50,100)+") ");
-					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(maxStrength,ah,90,100)+") ");
+					str.append("("+avgMath(10,10,100,f)+"/"+avgMath(18,10,100,f)+"/"+avgMath(maxStrength,10,100,f)+") ");
+					str.append("("+avgMath(10,50,100,f)+"/"+avgMath(18,50,100,f)+"/"+avgMath(maxStrength,50,100,f)+") ");
+					str.append("("+avgMath(10,90,100,f)+"/"+avgMath(18,90,100,f)+"/"+avgMath(maxStrength,90,100,f)+") ");
 				}
 
 				if(parms.containsKey("PRIME"))
@@ -1127,13 +1097,20 @@ public class CharClassData extends StdWebMacro
 		return str.toString();
 	}
 
-	public int avgMath2(int level, int add, int stat, int divisor, int hpdice )
+	public int avgMath(int stat, int level, int add, String formula)
 	{
-		return add+(level*((int)Math.round(CMath.div(stat,divisor)))+(hpdice*(hpdice+1)/2));
-	}
-	public int avgMath(int stat, int avg, int lvl, int add)
-	{
-		return add+(int)Math.round(CMath.mul(CMath.div(stat,18),avg)*lvl);
+		double[] variables={
+				(double)level,
+				(double)stat,
+				(double)18,
+				(double)stat,
+				(double)18,
+				(double)stat,
+				(double)18,
+				(double)stat,
+				(double)stat
+			};
+		return add+(level*(int)Math.round(CMath.parseMathExpression(formula, variables)));
 	}
 
 }

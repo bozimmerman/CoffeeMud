@@ -135,18 +135,12 @@ public class GrinderClasses
 		
 		old=httpReq.getUrlParameter("BASE");
 		C.setStat("BASE",(old==null)?"BASECLASS":old);
-		old=httpReq.getUrlParameter("HPDIV");
-		C.setStat("HPDIV",(old==null)?"1":old);
-		old=httpReq.getUrlParameter("HPDICE");
-		C.setStat("HPDICE",(old==null)?"1":old);
-		old=httpReq.getUrlParameter("HPDIE");
-		C.setStat("HPDIE",(old==null)?"6":old);
-		old=httpReq.getUrlParameter("MANADIV");
-		C.setStat("MANADIV",(old==null)?"1":old);
-		old=httpReq.getUrlParameter("MANADICE");
-		C.setStat("MANADICE",(old==null)?"1":old);
-		old=httpReq.getUrlParameter("MANADIE");
-		C.setStat("MANADIE",(old==null)?"6":old);
+		old=httpReq.getUrlParameter("HITPOINTSFORMULA");
+		C.setStat("HITPOINTSFORMULA",(old==null)?"1":old);
+		old=httpReq.getUrlParameter("MANAFORMULA");
+		C.setStat("MANAFORMULA",(old==null)?"1":old);
+		old=httpReq.getUrlParameter("MOVEMENTFORMULA");
+		C.setStat("MOVEMENTFORMULA",(old==null)?"1":old);
 		old=httpReq.getUrlParameter("LVLPRAC");
 		C.setStat("LVLPRAC",(old==null)?"0":old);
 		old=httpReq.getUrlParameter("LVLATT");
@@ -169,8 +163,6 @@ public class GrinderClasses
 		C.setStat("MAXLGS",(old==null)?"0":old);
 		old=httpReq.getUrlParameter("LEVELCAP");
 		C.setStat("LEVELCAP",(old==null)?"-1":old);
-		old=httpReq.getUrlParameter("LVLMOVE");
-		C.setStat("LVLMOVE",(old==null)?"1":old);
 		old=httpReq.getUrlParameter("ARMOR");
 		C.setStat("ARMOR",(old==null)?"0":old);
 		old=httpReq.getUrlParameter("STRLMT");

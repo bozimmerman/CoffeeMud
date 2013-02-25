@@ -299,59 +299,77 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the number of levels between damage gains
 	 */
 	public int getLevelsPerBonusDamage();
+	
 	/**
-	 * The number multiplied by this classes movement-related character stat
-	 * (Strength, Int, etc) in order to determine the BASE movement gained every
-	 * level.  This is applied after the stat score has been divided by 18.
-	 * @return a multiplier for a players movement related char stat score 
+	 * Returns the formula used every time a player of this class gains
+	 * a level as this class.  The total is added (or removed on unlevel)
+	 * from the players movement score.
+	 * Variables may be included in the formula, which are:
+	 * @x1: Players current class level
+	 * @x2: Players adjusted Strength     @x3: Players Max adjusted Strength
+	 * @x4: Players adjusted Dexterity    @x5: Players Max adjusted Dexterity
+	 * @x6: Players adjusted Constitution @x7: Players Max adjusted Constitution
+	 * @x8: Players adjusted Wisdom       @x9: Players adjusted Intelligence
+	 * @see CharClass#getMovementDesc()
+	 * @return the formula that causes a gain or loss in movement
 	 */
-	public int getMovementMultiplier();
+	public String getMovementFormula();
+	
 	/**
-	 * This number is used to generate the hit point bonus for mobs/players
-	 * when they gain levels by dividing their hit point stat (constitution)
-	 * by this number.
-	 * @see CharClass#getHPDice()
-	 * @see CharClass#getHPDie()
-	 * @return the hit point char stat divisor
+	 * Returns a text description of the movement bonuses
+	 * gained by members of this class.
+	 * @see CharClass#getMovementFormula()
+	 * @return a text description of the movement bonuses
 	 */
-	public int getHPDivisor();
+	public String getMovementDesc();
+	
 	/**
-	 * Hit points gained upon level is calculated by multiplying this stat by
-	 * getHPDie().
-	 * @see CharClass#getHPDie()
-	 * @return a hit point gain multiplier
+	 * Returns the formula used every time a player of this class gains
+	 * a level as this class.  The total is added (or removed on unlevel)
+	 * from the players hit points score.
+	 * Variables may be included in the formula, which are:
+	 * @x1: Players current class level
+	 * @x2: Players adjusted Strength     @x3: Players Max adjusted Strength
+	 * @x4: Players adjusted Dexterity    @x5: Players Max adjusted Dexterity
+	 * @x6: Players adjusted Constitution @x7: Players Max adjusted Constitution
+	 * @x8: Players adjusted Wisdom       @x9: Players adjusted Intelligence
+	 * @see CharClass#getHitPointDesc()
+	 * @return the formula that causes a gain or loss in hit points
 	 */
-	public int getHPDice();
+	public String getHitPointsFormula();
+	
 	/**
-	 * Hit points gained upon level is calculated by multiplying this stat by
-	 * getHPDice().
-	 * @see CharClass#getHPDice()
-	 * @return a hit point gain multiplier
+	 * Returns a text description of the hit point bonuses
+	 * gained by members of this class.
+	 * @see CharClass#getHitPointsFormula()
+	 * @return a text description of the hit point bonuses
 	 */
-	public int getHPDie();
+	public String getHitPointDesc();
+	
 	/**
-	 * This number is used to generate the mana bonus for mobs/players
-	 * when they gain levels by dividing their mana stat (intelligence)
-	 * by this number.
-	 * @see CharClass#getManaDice()
-	 * @see CharClass#getManaDie()
-	 * @return the mana char stat divisor
+	 * Returns the formula used every time a player of this class gains
+	 * a level as this class.  The total is added (or removed on unlevel)
+	 * from the players mana score.
+	 * Variables may be included in the formula, which are:
+	 * @x1: Players current class level
+	 * @x2: Players adjusted Wisdom       @x3: Players Max adjusted Wisdom
+	 * @x4: Players adjusted Intelligence @x5: Players Max adjusted Intelligence
+	 * @x6: Players adjusted Attack Attr  @x7: Players Max adjusted Attack Attr
+	 * @x8: Players adjusted Charisma     @x9: Players adjusted Constitution
+	 * @see CharClass#getManaDesc()
+	 * @see CharClass#getAttackAttribute()
+	 * @return the formula that causes a gain or loss in mana
 	 */
-	public int getManaDivisor();
+	public String getManaFormula();
+	
 	/**
-	 * mana gained upon level is calculated by multiplying this stat by
-	 * getManaDie().
-	 * @see CharClass#getManaDie()
-	 * @return a mana gain multiplier
+	 * Returns a text description of the mana bonuses
+	 * gained by members of this class.
+	 * @see CharClass#getManaFormula()
+	 * @return a text description of the mana bonuses
 	 */
-	public int getManaDice();
-	/**
-	 * mana gained upon level is calculated by multiplying this stat by
-	 * getManaDice().
-	 * @see CharClass#getManaDice()
-	 * @return a mana gain multiplier
-	 */
-	public int getManaDie();
+	public String getManaDesc();
+
 	/**
 	 * Returns a text description of any weapon restrictions
 	 * imposed by this class upon its members.
@@ -393,24 +411,6 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the prime statistic of this class
 	 */
 	public String getPrimeStatDesc();
-	/**
-	 * Returns a text description of the movement bonuses
-	 * gained by members of this class.
-	 * @return a text description of the movement bonuses
-	 */
-	public String getMovementDesc();
-	/**
-	 * Returns a text description of the mana bonuses
-	 * gained by members of this class.
-	 * @return a text description of the mana bonuses
-	 */
-	public String getManaDesc();
-	/**
-	 * Returns a text description of the hit point bonuses
-	 * gained by members of this class.
-	 * @return a text description of the hit point bonuses
-	 */
-	public String getHitPointDesc();
 	/**
 	 * Returns a text description of the damage bonuses
 	 * gained by members of this class.

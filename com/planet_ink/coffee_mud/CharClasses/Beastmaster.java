@@ -44,12 +44,8 @@ public class Beastmaster extends StdCharClass
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 15;}
-	public int getHPDivisor(){return 2;}
-	public int getHPDice(){return 2;}
-	public int getHPDie(){return 7;}
-	public int getManaDivisor(){return 4;}
-	public int getManaDice(){return 1;}
-	public int getManaDie(){return 4;}
+	public String getHitPointsFormula(){return "((@x6<@x7)/2)+(2*(1?7))"; }
+	public String getManaFormula(){return "((@x4<@x5)/4)+(1*(1?4))"; }
 	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}

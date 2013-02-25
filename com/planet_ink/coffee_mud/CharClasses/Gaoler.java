@@ -42,12 +42,8 @@ public class Gaoler extends StdCharClass
 	public int getBonusAttackLevel(){return -1;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 5;}
-	public int getHPDivisor(){return 6;}
-	public int getHPDice(){return 1;}
-	public int getHPDie(){return 5;}
-	public int getManaDivisor(){return 10;}
-	public int getManaDice(){return 1;}
-	public int getManaDie(){return 2;}
+	public String getHitPointsFormula(){return "((@x6<@x7)/6)+(1*(1?5))"; }
+	public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_FLAILONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();

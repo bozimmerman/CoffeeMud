@@ -50,13 +50,13 @@ public class StdCharClass implements CharClass
 	public int getPracsFirstLevel(){return 5;}
 	public int getTrainsFirstLevel(){return 3;}
 	public int getLevelsPerBonusDamage(){ return 1;}
-	public int getMovementMultiplier(){return 10;}
-	public int getHPDivisor(){return 3;}
-	public int getHPDice(){return 1;}
-	public int getHPDie(){return 6;}
-	public int getManaDivisor(){return 3;}
-	public int getManaDice(){return 1;}
-	public int getManaDie(){return 6;}
+	public String getMovementFormula(){return "10*((@x2<@x3)/18)"; }
+	public String movementDesc=null;
+	public String getHitPointsFormula(){return "((@x6<@x7)/3)+(1*(1?6))"; }
+	public String hitPointsDesc=null;
+	public String getManaFormula(){return "((@x4<@x5)/3)+(1*(1?6))"; }
+	public String manaDesc=null;
+	
 	protected int maxStatAdj[]=new int[CharStats.CODES.TOTAL()];
 	protected Vector outfitChoices=null;
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
@@ -242,18 +242,79 @@ public class StdCharClass implements CharClass
 	{
 		return "+1 damage per "+getLevelsPerBonusDamage()+" level(s)";
 	}
+
 	public String getHitPointDesc()
 	{
-		return CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" +(Con/"+getHPDivisor()+")+"+getHPDice()+"d"+getHPDie()+" per level";
+		if(hitPointsDesc==null)
+		{
+			String formula=CMStrings.replaceAll(getHitPointsFormula(), "@x1", "Lvl");
+			formula=CMStrings.replaceAll(formula, "(@x2<@x3)", "Str");
+			formula=CMStrings.replaceAll(formula, "@x2<@x3", "Str");
+			formula=CMStrings.replaceAll(formula, "(@x4<@x5)", "Dex");
+			formula=CMStrings.replaceAll(formula, "@x4<@x5", "Dex");
+			formula=CMStrings.replaceAll(formula, "(@x6<@x7)", "Con");
+			formula=CMStrings.replaceAll(formula, "@x6<@x7", "Con");
+			formula=CMStrings.replaceAll(formula, "@x2", "Str");
+			formula=CMStrings.replaceAll(formula, "@x3", "Str");
+			formula=CMStrings.replaceAll(formula, "@x4", "Dex");
+			formula=CMStrings.replaceAll(formula, "@x5", "Dex");
+			formula=CMStrings.replaceAll(formula, "@x6", "Con");
+			formula=CMStrings.replaceAll(formula, "@x7", "Con");
+			formula=CMStrings.replaceAll(formula, "@x8", "Int");
+			formula=CMStrings.replaceAll(formula, "@x9", "Wis");
+			hitPointsDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" +"+formula;
+		}
+		return hitPointsDesc;
 	}
+
 	public String getManaDesc()
 	{
-		return CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" +(Int/"+getManaDivisor()+")+"+getManaDice()+"d"+getManaDie()+" per level";
+		if(manaDesc==null)
+		{
+			String formula=CMStrings.replaceAll(getManaFormula(), "@x1", "Lvl");
+			formula=CMStrings.replaceAll(formula, "(@x2<@x3)", "Wis");
+			formula=CMStrings.replaceAll(formula, "@x2<@x3", "Wis");
+			formula=CMStrings.replaceAll(formula, "(@x4<@x5)", "Int");
+			formula=CMStrings.replaceAll(formula, "@x4<@x5", "Int");
+			formula=CMStrings.replaceAll(formula, "(@x6<@x7)", "Con");
+			formula=CMStrings.replaceAll(formula, "@x6<@x7", "Con");
+			formula=CMStrings.replaceAll(formula, "@x2", "Wis");
+			formula=CMStrings.replaceAll(formula, "@x3", "Wis");
+			formula=CMStrings.replaceAll(formula, "@x4", "Int");
+			formula=CMStrings.replaceAll(formula, "@x5", "Int");
+			formula=CMStrings.replaceAll(formula, "@x6", "Con");
+			formula=CMStrings.replaceAll(formula, "@x7", "Con");
+			formula=CMStrings.replaceAll(formula, "@x8", "Cha");
+			formula=CMStrings.replaceAll(formula, "@x9", "Dex");
+			manaDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" +"+formula;
+		}
+		return manaDesc;
 	}
+
 	public String getMovementDesc()
 	{
-		return CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" +(Str/18)X"+getMovementMultiplier()+" per level";
+		if(movementDesc==null)
+		{
+			String formula=CMStrings.replaceAll(getMovementFormula(), "@x1", "Lvl");
+			formula=CMStrings.replaceAll(formula, "(@x2<@x3)", "Str");
+			formula=CMStrings.replaceAll(formula, "@x2<@x3", "Str");
+			formula=CMStrings.replaceAll(formula, "(@x4<@x5)", "Dex");
+			formula=CMStrings.replaceAll(formula, "@x4<@x5", "Dex");
+			formula=CMStrings.replaceAll(formula, "(@x6<@x7)", "Con");
+			formula=CMStrings.replaceAll(formula, "@x6<@x7", "Con");
+			formula=CMStrings.replaceAll(formula, "@x2", "Str");
+			formula=CMStrings.replaceAll(formula, "@x3", "Str");
+			formula=CMStrings.replaceAll(formula, "@x4", "Dex");
+			formula=CMStrings.replaceAll(formula, "@x5", "Dex");
+			formula=CMStrings.replaceAll(formula, "@x6", "Con");
+			formula=CMStrings.replaceAll(formula, "@x7", "Con");
+			formula=CMStrings.replaceAll(formula, "@x8", "Int");
+			formula=CMStrings.replaceAll(formula, "@x9", "Wis");
+			movementDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" +"+formula;
+		}
+		return movementDesc;
 	}
+
 	public String getPrimeStatDesc()
 	{
 		return CMStrings.capitalizeAndLower(CharStats.CODES.DESC(getAttackAttribute()));
@@ -446,16 +507,15 @@ public class StdCharClass implements CharClass
 		CharClass CR=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
 		CR.setClassParms("<CCLASS><ID>"+ID()+"</ID><NAME>"+name()+"</NAME></CCLASS>");
 		CR.setStat("BASE",baseClass());
-		CR.setStat("HPDIV",""+getHPDivisor());
-		CR.setStat("HPDICE",""+getHPDice());
+		CR.setStat("HITPOINTSFORMULA",""+getHitPointsFormula());
+		CR.setStat("MANAFORMULA",""+getManaFormula());
 		CR.setStat("LVLPRAC",""+getBonusPracLevel());
-		CR.setStat("MANADIV",""+getManaDivisor());
+		CR.setStat("MOVEMENTFORMULA",""+getMovementFormula());
 		CR.setStat("LVLATT",""+getBonusAttackLevel());
 		CR.setStat("ATTATT",""+getAttackAttribute());
 		CR.setStat("FSTTRAN",""+getTrainsFirstLevel());
 		CR.setStat("FSTPRAC",""+getPracsFirstLevel());
 		CR.setStat("LVLDAM",""+getLevelsPerBonusDamage());
-		CR.setStat("LVLMOVE",""+getMovementMultiplier());
 		CR.setStat("ARMOR",""+allowedArmorLevel());
 		//CR.setStat("STRWEAP",""+this.allowedArmorLevel());
 		//CR.setStat("STRARM",""+this.allowedArmorLevel());
@@ -585,9 +645,9 @@ public class StdCharClass implements CharClass
 		for(int i=0;i<outfit.size();i++)
 			CR.setStat("GETOFTPARM"+i,((Item)outfit.get(i)).text());
 
-		CR.setStat("HPDIE",""+getHPDie());
-		CR.setStat("MANADICE",""+getManaDice());
-		CR.setStat("MANADIE",""+getManaDie());
+		CR.setStat("HITPOINTSFORMULA",""+getHitPointsFormula());
+		CR.setStat("MANAFORMULA",""+getManaFormula());
+		CR.setStat("MOVEMENTFORMULA",""+getMovementFormula());
 		CR.setStat("LEVELCAP",""+getLevelCap());
 		CR.setStat("DISFLAGS",""+((raceless()?CharClass.GENFLAG_NORACE:0)
 								|(leveless()?CharClass.GENFLAG_NOLEVELS:0)
