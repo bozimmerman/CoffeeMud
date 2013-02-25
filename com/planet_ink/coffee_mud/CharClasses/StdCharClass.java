@@ -262,6 +262,8 @@ public class StdCharClass implements CharClass
 			formula=CMStrings.replaceAll(formula, "@x7", "Con");
 			formula=CMStrings.replaceAll(formula, "@x8", "Int");
 			formula=CMStrings.replaceAll(formula, "@x9", "Wis");
+			formula=CMStrings.replaceAll(formula, "*(1?", "d");
+			formula=CMStrings.replaceAll(formula, "1?", "d");
 			hitPointsDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" +"+formula;
 		}
 		return hitPointsDesc;
@@ -286,6 +288,8 @@ public class StdCharClass implements CharClass
 			formula=CMStrings.replaceAll(formula, "@x7", "Con");
 			formula=CMStrings.replaceAll(formula, "@x8", "Cha");
 			formula=CMStrings.replaceAll(formula, "@x9", "Dex");
+			formula=CMStrings.replaceAll(formula, "*(1?", "d");
+			formula=CMStrings.replaceAll(formula, "1?", "d");
 			manaDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" +"+formula;
 		}
 		return manaDesc;
@@ -310,6 +314,8 @@ public class StdCharClass implements CharClass
 			formula=CMStrings.replaceAll(formula, "@x7", "Con");
 			formula=CMStrings.replaceAll(formula, "@x8", "Int");
 			formula=CMStrings.replaceAll(formula, "@x9", "Wis");
+			formula=CMStrings.replaceAll(formula, "*(1?", "d");
+			formula=CMStrings.replaceAll(formula, "1?", "d");
 			movementDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" +"+formula;
 		}
 		return movementDesc;

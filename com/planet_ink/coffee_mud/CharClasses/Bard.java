@@ -137,9 +137,9 @@ public class Bard extends StdCharClass
 				{
 					MOB mob2=(MOB)e.next();
 					if((mob2!=mob)
-					   &&(mob2!=victim)
-					   &&(mob2.location()!=null)
-					   &&(mob2.location()==mob.location()))
+					&&(mob2!=victim)
+					&&(mob2.location()!=null)
+					&&(mob2.location()==mob.location()))
 					{
 						if(!mob2.isMonster())
 							theAmount+=(origAmount/rate);
@@ -197,8 +197,6 @@ public class Bard extends StdCharClass
 								for(int v=V2.size()-1;v>=0;v--)
 									if((((Ability)V2.get(v)).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
 										V2.get(v);
-
-
 							}
 							if(O instanceof Drink)
 							{

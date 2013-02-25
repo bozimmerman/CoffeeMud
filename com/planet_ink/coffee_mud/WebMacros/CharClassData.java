@@ -408,16 +408,12 @@ public class CharClassData extends StdWebMacro
 				{
 					String old=httpReq.getUrlParameter("HITPOINTSFORMULA");
 					if(old==null) old=""+C.getHitPointsFormula();
-					if(CMath.s_int(old)<=0)
-						old="1";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("MANAFORMULA"))
 				{
 					String old=httpReq.getUrlParameter("MANAFORMULA");
 					if(old==null) old=""+C.getManaFormula();
-					if(CMath.s_int(old)<=0)
-						old="1";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("LVLPRAC"))
@@ -503,7 +499,6 @@ public class CharClassData extends StdWebMacro
 				{
 					String old=httpReq.getUrlParameter("MOVEMENTFORMULA");
 					if(old==null) old=""+C.getMovementFormula();
-					if(CMath.s_int(old)<=0) old="0";
 					str.append(old+", ");
 				}
 				if(parms.containsKey("GENHELP"))

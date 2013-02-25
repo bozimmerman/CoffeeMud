@@ -479,7 +479,7 @@ public class GenCharClass extends StdCharClass
 			if(hpDivisor==0) hpDivisor=3;
 			int hpDice=CMLib.xml().getIntFromPieces(classData,"HPDICE");
 			int hpDie=CMLib.xml().getIntFromPieces(classData,"HPDIE");
-			manaFormula="((@x6<@x7)/"+hpDivisor+")+("+hpDice+"(1?"+hpDie+"))";
+			hitPointsFormula="((@x6<@x7)/"+hpDivisor+")+("+hpDice+"(1?"+hpDie+"))";
 		}
 		bonusPracLevel=CMLib.xml().getIntFromPieces(classData,"LVLPRAC");
 		manaFormula=CMLib.xml().getValFromPieces(classData,"MANAFRM");
@@ -781,7 +781,7 @@ public class GenCharClass extends StdCharClass
 					names[num]=val;
 				break;
 		case 2: baseClass=val; break;
-		case 3: hitPointsFormula=val; break;
+		case 3: hitPointsFormula=val; super.hitPointsDesc=null; break;
 		case 4: break;
 		case 5: bonusPracLevel=CMath.s_parseIntExpression(val); break;
 		case 6: break;
@@ -790,7 +790,7 @@ public class GenCharClass extends StdCharClass
 		case 9: trainsFirstLevel=CMath.s_parseIntExpression(val); break;
 		case 10: pracsFirstLevel=CMath.s_parseIntExpression(val); break;
 		case 11: levelsPerBonusDamage=CMath.s_parseIntExpression(val); break;
-		case 12: movementFormula=val; break;
+		case 12: movementFormula=val; super.movementDesc=null; break;
 		case 13: allowedArmorLevel=CMath.s_parseListIntExpression(CharClass.ARMOR_DESCS,val); break;
 		case 14: break;//weaponLimitations=val;break;
 		case 15: break;//armorLimitations=val;break;
@@ -855,7 +855,7 @@ public class GenCharClass extends StdCharClass
 					 break;
 				 }
 		case 36: break;
-		case 37: manaFormula=val; break;
+		case 37: manaFormula=val; super.manaDesc=null; break;
 		case 38: break;
 		case 39: disableFlags=CMath.s_int(val); break;
 		case 40: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
@@ -883,29 +883,30 @@ public class GenCharClass extends StdCharClass
 		case 42: if(num<nameLevels.length)
 					nameLevels[num]=Integer.valueOf(CMath.s_int(val));
 				 break;
-		case 43:{  num=CMath.s_int(val);
-				   if(num<0) num=0;
-				   List<String>[] newGroups=new Vector[num];
-				   Integer[] newLevels=new Integer[num];
-				   for(int i=0;i<securityGroups.length;i++)
-					   if(i<num)
-					   {
-						   newGroups[i]=securityGroups[i];
-						   newLevels[i]=securityGroupLevels[i];
-					   }
-				   if(newGroups.length>securityGroups.length)
-				   for(int i=securityGroups.length;i<newGroups.length;i++)
-				   {
-					   newGroups[i]=new Vector();
-					   if(i==0)
-						   newLevels[0]=Integer.valueOf(0);
-					   else
-						   newLevels[i]=Integer.valueOf(newLevels[i-1].intValue()+1);
-				   }
-				   securityGroups=newGroups;
-				   securityGroupLevels=newLevels;
-				   securityGroupCache.clear();
-				   break;
+		case 43:{
+				num=CMath.s_int(val);
+				if(num<0) num=0;
+				List<String>[] newGroups=new Vector[num];
+				Integer[] newLevels=new Integer[num];
+				for(int i=0;i<securityGroups.length;i++)
+					if(i<num)
+					{
+						newGroups[i]=securityGroups[i];
+						newLevels[i]=securityGroupLevels[i];
+					}
+				if(newGroups.length>securityGroups.length)
+				for(int i=securityGroups.length;i<newGroups.length;i++)
+				{
+					newGroups[i]=new Vector();
+					if(i==0)
+						newLevels[0]=Integer.valueOf(0);
+					else
+						newLevels[i]=Integer.valueOf(newLevels[i-1].intValue()+1);
+				}
+				securityGroups=newGroups;
+				securityGroupLevels=newLevels;
+				securityGroupCache.clear();
+				break;
 				}
 		case 44: if(num<securityGroups.length)
 					securityGroups[num]=CMParms.parse(val.toUpperCase());
