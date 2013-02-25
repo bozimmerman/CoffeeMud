@@ -56,7 +56,7 @@ public class MiniWebServer extends Thread
 	public static 		double	  VERSION;
 	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(Exception e){ VERSION=0.0;} }
 	
-	private volatile boolean      shutdownRequested	= false; // notice of external shutdown request
+	private volatile boolean	  shutdownRequested	= false; // notice of external shutdown request
 	private Selector			  servSelector 		= null;  // server io selector
 	private MWThreadExecutor 	  executor;					 // request handler thread pool
 	private Thread				  timeoutThread		= null;  // thread to timeout connected but idle channels
@@ -265,7 +265,7 @@ public class MiniWebServer extends Thread
 		List<HTTPIOHandler> handlersToShutDown = null;
 		synchronized(handlers)
 		{
-		    // remove any stray handlers from time to time
+			// remove any stray handlers from time to time
 			for(Iterator<HTTPIOHandler> i = handlers.iterator(); i.hasNext(); )
 			{
 				HTTPIOHandler handler=i.next();
@@ -312,23 +312,23 @@ public class MiniWebServer extends Thread
 		{
 			try
 			{
-			    int n = servSelector.select();
-			    synchronized(registerOps)
-			    {
-			    	while(!registerOps.isEmpty())
-			    	{
-			    		Runnable registerOp=registerOps.removeFirst();
-			    		registerOp.run();
-			    	}
-			    }
-			    if (n == 0) 
-		    	{
-		    		continue;
-		    	}
-			   
-			    Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
-			    while (it.hasNext()) 
-			    {
+				int n = servSelector.select();
+				synchronized(registerOps)
+				{
+					while(!registerOps.isEmpty())
+					{
+						Runnable registerOp=registerOps.removeFirst();
+						registerOp.run();
+					}
+				}
+				if (n == 0) 
+				{
+					continue;
+				}
+
+				Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
+				while (it.hasNext()) 
+				{
 					SelectionKey key = it.next();
 					try
 					{
@@ -446,8 +446,11 @@ public class MiniWebServer extends Thread
 			this.registerOps.add(new Runnable(){
 				@Override
 				public void run() {
-					SelectionKey key = channel.keyFor(servSelector);
-					key.interestOps(newOp);
+					final SelectionKey key = channel.keyFor(servSelector);
+					if(key != null)
+					{
+						key.interestOps(newOp);
+					}
 				}
 			});
 			servSelector.wakeup();
