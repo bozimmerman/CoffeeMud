@@ -6173,15 +6173,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatInt(mob,me,"Use -1 to disable a class Level Cap",++showNumber,showFlag,"Level Cap (?)","LEVELCAP");
 			promptStatStr(mob,me,++showNumber,showFlag,"Base Class","BASE");
 			genClassAvailability(mob,me,++showNumber,showFlag);
-			promptStatInt(mob,me,++showNumber,showFlag,"HP/Level Formula","HITPOINTSFORMULA");
-			promptStatInt(mob,me,++showNumber,showFlag,"Mana/Level Formula","MANAFORMULA");
+			promptStatStr(mob,me,++showNumber,showFlag,"HP/Level Formula","HITPOINTSFORMULA");
+			promptStatStr(mob,me,++showNumber,showFlag,"Mana/Level Formula","MANAFORMULA");
 			promptStatInt(mob,me,++showNumber,showFlag,"Prac/Level","LVLPRAC");
 			promptStatInt(mob,me,++showNumber,showFlag,"Attack/Level","LVLATT");
 			genAttackAttribute(mob,me,++showNumber,showFlag,"Attack Attribute","ATTATT");
 			promptStatInt(mob,me,++showNumber,showFlag,"Practices/1stLvl","FSTPRAC");
 			promptStatInt(mob,me,++showNumber,showFlag,"Trains/1stLvl","FSTTRAN");
 			promptStatInt(mob,me,++showNumber,showFlag,"Levels/Dmg Pt","LVLDAM");
-			promptStatInt(mob,me,++showNumber,showFlag,"Move/Level Formula","MOVEMENTFORMULA");
+			promptStatStr(mob,me,++showNumber,showFlag,"Move/Level Formula","MOVEMENTFORMULA");
 			genArmorCode(mob,me,++showNumber,showFlag,"Armor Restr.","ARMOR");
 			
 			int armorMinorCode=CMath.s_int(me.getStat("ARMORMINOR"));

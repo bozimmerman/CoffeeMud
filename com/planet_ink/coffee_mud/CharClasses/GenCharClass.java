@@ -479,7 +479,7 @@ public class GenCharClass extends StdCharClass
 			if(hpDivisor==0) hpDivisor=3;
 			int hpDice=CMLib.xml().getIntFromPieces(classData,"HPDICE");
 			int hpDie=CMLib.xml().getIntFromPieces(classData,"HPDIE");
-			hitPointsFormula="((@x6<@x7)/"+hpDivisor+")+("+hpDice+"(1?"+hpDie+"))";
+			hitPointsFormula="((@x6<@x7)/"+hpDivisor+")+("+hpDice+"*(1?"+hpDie+"))";
 		}
 		bonusPracLevel=CMLib.xml().getIntFromPieces(classData,"LVLPRAC");
 		manaFormula=CMLib.xml().getValFromPieces(classData,"MANAFRM");
@@ -489,7 +489,7 @@ public class GenCharClass extends StdCharClass
 			if(manaDivisor==0) manaDivisor=3;
 			int manaDice=CMLib.xml().getIntFromPieces(classData,"MANADICE");
 			int manaDie=CMLib.xml().getIntFromPieces(classData,"MANADIE");
-			manaFormula="((@x4<@x5)/"+manaDivisor+")+("+manaDice+"(1?"+manaDie+"))";
+			manaFormula="((@x4<@x5)/"+manaDivisor+")+("+manaDice+"*(1?"+manaDie+"))";
 		}
 		levelCap=CMLib.xml().getIntFromPieces(classData,"LEVELCAP");
 		bonusAttackLevel=CMLib.xml().getIntFromPieces(classData,"LVLATT");

@@ -277,7 +277,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, hitPointDescReplacePairs);
-			hitPointsDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" +"+formula;
+			hitPointsDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" +"+formula+" per lvl";
 		}
 		return hitPointsDesc;
 	}
@@ -295,7 +295,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, manaDescReplacePairs);
-			manaDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" +"+formula;
+			manaDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" +"+formula+" per lvl";
 		}
 		return manaDesc;
 	}
@@ -313,7 +313,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, movementDescReplacePairs);
-			movementDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" +"+formula;
+			movementDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" +"+formula+" per lvl";
 		}
 		return movementDesc;
 	}
