@@ -776,6 +776,7 @@ public interface CharStats extends CMCommon, Modifiable
 		private String[] statAbbreviations=new String[0];
 		private String[] statDescriptions=new String[0];
 		private String[] statNames=new String[0];
+		private String[] shortNames=new String[0];
 		private String[] statAttributionDescriptions=new String[0];
 		private int[] statCMMsgMapping=new int[0];
 		
@@ -850,6 +851,10 @@ public interface CharStats extends CMCommon, Modifiable
 					statAbbreviations[oldStatCode]=abbr;
 					statDescriptions[oldStatCode]=desc;
 					statNames[oldStatCode]=stat;
+					if(stat.length()>3)
+						shortNames[oldStatCode]=CMStrings.capitalizeAndLower(stat).substring(0,3);
+					else
+						shortNames[oldStatCode]=CMStrings.capitalizeAndLower(stat);
 					statAttributionDescriptions[oldStatCode]=adj;
 					statCMMsgMapping[oldStatCode]=-1;
 				}
@@ -967,11 +972,23 @@ public interface CharStats extends CMCommon, Modifiable
 		 */
 		public static String NAME(int code) { return c().statNames[code];}
 		/**
+		 * Returns the short name of the stat code
+		 * @param code the stat code
+		 * @return the short name of the stat code
+		 */
+		public static String SHORTNAME(int code) { return c().shortNames[code];}
+		/**
 		 * Returns the name of the stat code
 		 * @param code the stat code
 		 * @return the name of the stat code
 		 */
 		public String name(int code) { return statNames[code];}
+		/**
+		 * Returns the name of the stat code
+		 * @param code the stat code
+		 * @return the name of the stat code
+		 */
+		public String shortName(int code) { return shortNames[code];}
 		/**
 		 * Returns the descriptions of the various stats
 		 * @return the descriptions of the various stats
@@ -1129,6 +1146,11 @@ public interface CharStats extends CMCommon, Modifiable
 			statDescriptions[allStatCodes.length-1]=desc.toUpperCase().trim();
 			statNames=Arrays.copyOf(statNames, allStatCodes.length);
 			statNames[allStatCodes.length-1]=name.toUpperCase().trim().replace(' ','_');
+			shortNames=Arrays.copyOf(shortNames, allStatCodes.length);
+			if(name.length()>3)
+				shortNames[allStatCodes.length-1]=CMStrings.capitalizeAndLower(name.trim().replace(' ','_')).substring(0, 3);
+			else
+				shortNames[allStatCodes.length-1]=CMStrings.capitalizeAndLower(name.trim().replace(' ','_'));
 			statAttributionDescriptions=Arrays.copyOf(statAttributionDescriptions, allStatCodes.length);
 			statAttributionDescriptions[allStatCodes.length-1]=attDesc.toUpperCase();
 			statCMMsgMapping=Arrays.copyOf(statCMMsgMapping, allStatCodes.length);

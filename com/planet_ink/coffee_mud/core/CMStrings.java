@@ -221,6 +221,33 @@ public class CMStrings
 		return str;
 	}
 	
+	public final static String replaceAlls(String str, final String pairs[][])
+	{
+		if((str==null)
+		||(pairs==null)
+		||(str.length()==0)
+		||(pairs.length==0))
+			return str;
+		StringBuilder newStr=new StringBuilder("");
+		boolean changed=false;
+		for(int i=0;i<str.length();i++)
+		{
+			changed=false;
+			for(int t=0;t<pairs.length;t++)
+				if((str.charAt(i)==pairs[t][0].charAt(0))
+				&&(str.substring(i).startsWith(pairs[t][0])))
+				{
+					newStr.append(pairs[t][1]);
+					changed=true;
+					i=i+pairs[t][0].length()-1;
+					break;
+				}
+			if(!changed)
+				newStr.append(str.charAt(i));
+		}
+		return newStr.toString();
+	}
+	
 	public final static String replaceWord(String str, final String thisStr, final String withThisStr)
 	{
 		if((str==null)

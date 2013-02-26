@@ -57,6 +57,8 @@ public class StdCharClass implements CharClass
 	public String getManaFormula(){return "((@x4<@x5)/3)+(1*(1?6))"; }
 	public String manaDesc=null;
 	
+	protected String[] names=null;
+	
 	protected int maxStatAdj[]=new int[CharStats.CODES.TOTAL()];
 	protected Vector outfitChoices=null;
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
@@ -76,7 +78,26 @@ public class StdCharClass implements CharClass
 	private static final CMSecurity.SecGroup empty=new CMSecurity.SecGroup(new CMSecurity.SecFlag[]{});
 	public CMSecurity.SecGroup getSecurityFlags(int classLevel){return empty;}
 	public CMObject newInstance(){return this;}
-	protected String[] names=null;
+
+	protected String getShortAttackAttribute() { return CharStats.CODES.SHORTNAME(getAttackAttribute()); }
+	
+	protected final static String[][] hitPointDescReplacePairs={
+		{"@x1","Lvl"},{"(@x2<@x3)","Str"},{"@x2<@x3","Str"},{"(@x4<@x5)","Dex"},{"@x4<@x5","Dex"},
+		{"(@x6<@x7)","Con"},{"@x6<@x7","Con"},{"@x2","Str"},{"@x3","Str"},{"@x4","Dex"},{"@x5","Dex"},
+		{"@x6", "Con"},{"@x7", "Con"},{"@x8", "Int"},{"@x9", "Wis"},{"1?", "d"},{"*", "X"}
+	};
+	protected final String[][] manaDescReplacePairs={
+		{"@x1","Lvl"},{"(@x2<@x3)","Wis"},{"@x2<@x3","Wis"},{"(@x4<@x5)","Int"},{"@x4<@x5","Int"},
+		{"(@x6<@x7)",getShortAttackAttribute()},{"@x6<@x7",getShortAttackAttribute()},{"@x2","Wis"},
+		{"@x3","Wis"},{"@x4","Int"},{"@x5","Int"},{"@x6", "Con"},{"@x7", "Con"},{"@x8", "Cha"},
+		{"@x9", "Dex"},{"1?", "d"},{"*", "X"}
+	};
+	protected final static String[][] movementDescReplacePairs={
+		{"@x1","Lvl"},{"(@x2<@x3)","Str"},{"@x2<@x3","Str"},{"(@x4<@x5)","Dex"},{"@x4<@x5","Dex"},
+		{"(@x6<@x7)","Con"},{"@x6<@x7","Con"},{"@x2","Str"},{"@x3","Str"},{"@x4","Dex"},{"@x5","Dex"},
+		{"@x6", "Con"},{"@x7", "Con"},{"@x8", "Int"},{"@x9", "Wis"},{"1?", "d"},{"*", "X"}
+	};
+	
 	public String[] nameSet()
 	{
 		if(names!=null) return names;
@@ -247,21 +268,7 @@ public class StdCharClass implements CharClass
 	{
 		if(hitPointsDesc==null)
 		{
-			String formula=CMStrings.replaceAll(getHitPointsFormula(), "@x1", "Lvl");
-			formula=CMStrings.replaceAll(formula, "(@x2<@x3)", "Str");
-			formula=CMStrings.replaceAll(formula, "@x2<@x3", "Str");
-			formula=CMStrings.replaceAll(formula, "(@x4<@x5)", "Dex");
-			formula=CMStrings.replaceAll(formula, "@x4<@x5", "Dex");
-			formula=CMStrings.replaceAll(formula, "(@x6<@x7)", "Con");
-			formula=CMStrings.replaceAll(formula, "@x6<@x7", "Con");
-			formula=CMStrings.replaceAll(formula, "@x2", "Str");
-			formula=CMStrings.replaceAll(formula, "@x3", "Str");
-			formula=CMStrings.replaceAll(formula, "@x4", "Dex");
-			formula=CMStrings.replaceAll(formula, "@x5", "Dex");
-			formula=CMStrings.replaceAll(formula, "@x6", "Con");
-			formula=CMStrings.replaceAll(formula, "@x7", "Con");
-			formula=CMStrings.replaceAll(formula, "@x8", "Int");
-			formula=CMStrings.replaceAll(formula, "@x9", "Wis");
+			String formula=getHitPointsFormula();
 			int x=formula.indexOf("*(1?");
 			if(x>0)
 			{
@@ -269,8 +276,7 @@ public class StdCharClass implements CharClass
 				if(y>x)
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
-			formula=CMStrings.replaceAll(formula, "1?", "d");
-			formula=CMStrings.replaceAll(formula, "*", "X");
+			formula=CMStrings.replaceAlls(formula, hitPointDescReplacePairs);
 			hitPointsDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" +"+formula;
 		}
 		return hitPointsDesc;
@@ -280,21 +286,7 @@ public class StdCharClass implements CharClass
 	{
 		if(manaDesc==null)
 		{
-			String formula=CMStrings.replaceAll(getManaFormula(), "@x1", "Lvl");
-			formula=CMStrings.replaceAll(formula, "(@x2<@x3)", "Wis");
-			formula=CMStrings.replaceAll(formula, "@x2<@x3", "Wis");
-			formula=CMStrings.replaceAll(formula, "(@x4<@x5)", "Int");
-			formula=CMStrings.replaceAll(formula, "@x4<@x5", "Int");
-			formula=CMStrings.replaceAll(formula, "(@x6<@x7)", "Con");
-			formula=CMStrings.replaceAll(formula, "@x6<@x7", "Con");
-			formula=CMStrings.replaceAll(formula, "@x2", "Wis");
-			formula=CMStrings.replaceAll(formula, "@x3", "Wis");
-			formula=CMStrings.replaceAll(formula, "@x4", "Int");
-			formula=CMStrings.replaceAll(formula, "@x5", "Int");
-			formula=CMStrings.replaceAll(formula, "@x6", "Con");
-			formula=CMStrings.replaceAll(formula, "@x7", "Con");
-			formula=CMStrings.replaceAll(formula, "@x8", "Cha");
-			formula=CMStrings.replaceAll(formula, "@x9", "Dex");
+			String formula=getManaFormula();
 			int x=formula.indexOf("*(1?");
 			if(x>0)
 			{
@@ -302,8 +294,7 @@ public class StdCharClass implements CharClass
 				if(y>x)
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
-			formula=CMStrings.replaceAll(formula, "1?", "d");
-			formula=CMStrings.replaceAll(formula, "*", "X");
+			formula=CMStrings.replaceAlls(formula, manaDescReplacePairs);
 			manaDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" +"+formula;
 		}
 		return manaDesc;
@@ -313,21 +304,7 @@ public class StdCharClass implements CharClass
 	{
 		if(movementDesc==null)
 		{
-			String formula=CMStrings.replaceAll(getMovementFormula(), "@x1", "Lvl");
-			formula=CMStrings.replaceAll(formula, "(@x2<@x3)", "Str");
-			formula=CMStrings.replaceAll(formula, "@x2<@x3", "Str");
-			formula=CMStrings.replaceAll(formula, "(@x4<@x5)", "Dex");
-			formula=CMStrings.replaceAll(formula, "@x4<@x5", "Dex");
-			formula=CMStrings.replaceAll(formula, "(@x6<@x7)", "Con");
-			formula=CMStrings.replaceAll(formula, "@x6<@x7", "Con");
-			formula=CMStrings.replaceAll(formula, "@x2", "Str");
-			formula=CMStrings.replaceAll(formula, "@x3", "Str");
-			formula=CMStrings.replaceAll(formula, "@x4", "Dex");
-			formula=CMStrings.replaceAll(formula, "@x5", "Dex");
-			formula=CMStrings.replaceAll(formula, "@x6", "Con");
-			formula=CMStrings.replaceAll(formula, "@x7", "Con");
-			formula=CMStrings.replaceAll(formula, "@x8", "Int");
-			formula=CMStrings.replaceAll(formula, "@x9", "Wis");
+			String formula=getMovementFormula();
 			int x=formula.indexOf("*(1?");
 			if(x>0)
 			{
@@ -335,8 +312,7 @@ public class StdCharClass implements CharClass
 				if(y>x)
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
-			formula=CMStrings.replaceAll(formula, "1?", "d");
-			formula=CMStrings.replaceAll(formula, "*", "X");
+			formula=CMStrings.replaceAlls(formula, movementDescReplacePairs);
 			movementDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" +"+formula;
 		}
 		return movementDesc;
