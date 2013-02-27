@@ -164,32 +164,13 @@ public class Shaman extends Cleric
 		return true;
 	}
 
-	public String getStatQualDesc(){return "Wisdom 9+ Constitution 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Shaman.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Constitution to become a Shaman.");
-			return false;
-		}
-		Race R=mob.baseCharStats().getMyRace();
-		if((R.ID().equals("Duergar"))
-		||(R.ID().equals("Drow"))
-		||(R.racialCategory().equals("Goblinoid")))
-		{
-			if(!quiet)
-				mob.tell("Your dark heart will not permit you to be a "+name()+".");
-			return false;
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
+		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public String getOtherBonusDesc(){return "Never fumbles neutral prayers, receives smallest prayer fumble chance, and receives 1pt/level of acid damage reduction.";}
 	public String getOtherLimitsDesc(){return "Using non-neutral prayers introduces small failure chance.  Vulnerable to electric attacks.";}

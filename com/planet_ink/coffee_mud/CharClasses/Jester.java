@@ -157,36 +157,18 @@ public class Jester extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String getStatQualDesc(){return "Charisma 9+, Dexterity 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Charisma to become a Jester.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Dexterity to become a Jester.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if((!(R.ID().equals("Human")))
-			&&(!(R.ID().equals("Gnome")))
-			&&(!(R.ID().equals("Halfling")))
-			&&(!(R.ID().equals("HalfElf"))))
-			{
-				if(!quiet)
-					mob.tell("You must be Human, Gnome, Halfling, or Half Elf to be a Jester");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	private final String[] raceRequiredList=new String[]{
+		"Human","Gnome","Halfling","HalfElf"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
+		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);

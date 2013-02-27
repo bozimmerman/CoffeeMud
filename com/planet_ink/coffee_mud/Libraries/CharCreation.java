@@ -1182,8 +1182,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if(qualClassesV.size()==0)
 		{
-			newClass=CMClass.getCharClass("Apprentice");
-			if(newClass==null) newClass=CMClass.getCharClass("StdCharClass");
+			for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+			{
+				CharClass C=c.nextElement();
+				if(C.getSubClassRule()==CharClass.SubClassRule.ANY)
+					newClass=C;
+			}
+			if(newClass==null)
+				newClass=CMClass.getCharClass("Apprentice");
+			if(newClass==null) 
+				newClass=CMClass.getCharClass("StdCharClass");
+			if(newClass==null)
+				Log.errOut("CharCreation", "No classes qualified for, but no Apprentice or StdCharClass is defined?!");
 		}
 		else
 		if(qualClassesV.size()==1)

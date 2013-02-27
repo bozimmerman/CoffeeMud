@@ -202,38 +202,16 @@ public class SkyWatcher extends StdCharClass
 		Druid.doAnimalFreeingCheck(this,host,msg);
 	}
 	
-	public String getStatQualDesc(){return "Constitution 9+, Intelligence 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Constitution to become a SkyWatcher.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Intelligence to become a SkyWatcher.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if(	  (!(R.racialCategory().equals("Human"))
-				&& !(R.racialCategory().equals("Humanoid"))
-				&& !(R.racialCategory().equals("Elf"))
-				&& !(R.racialCategory().equals("Dwarf"))
-				&& !(R.racialCategory().equals("Giant-kin")))
-			||(R.ID().equals("Duergar")))
-			{
-				if(!quiet)
-					mob.tell("You must be Human, Elf, Dwarf, Giant-kin, or Half Elf to be a SkyWatcher");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	private final String[] raceRequiredList=new String[]{
+		"Human","Humanoid","Elf","Dwarf","Giant-kin","Duergar"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Intelligence",Integer.valueOf(9)),
+		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String getOtherBonusDesc(){return "Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.  Can create a druidic connection with an area.  Benefits from freeing animals from cities.  Benefits from balancing the weather.";}

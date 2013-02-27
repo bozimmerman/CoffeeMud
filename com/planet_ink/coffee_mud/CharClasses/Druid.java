@@ -277,34 +277,18 @@ public class Druid extends StdCharClass
 					affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/2));
 			}
 	}
-	public String getStatQualDesc(){return "Constitution 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Constitution to become a Druid.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if(!(R.racialCategory().equals("Human"))
-			&& !(R.racialCategory().equals("Humanoid"))
-			&& !(R.racialCategory().equals("Elf"))
-			&& !(R.racialCategory().equals("Vegetation"))
-			&& !(R.racialCategory().equals("Dwarf"))
-			&& !(R.racialCategory().equals("Giant-kin"))
-			&& !(R.racialCategory().equals("Goblinoid"))
-			&& !(R.racialCategory().equals("HalfElf")))
-			{
-				if(!quiet)
-					mob.tell("You must be Human, Elf, Duergar, Dwarf, Golbinoid, Giant-kin, or Half Elf to be a Druid");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	
+	private final String[] raceRequiredList=new String[]{
+		"Human","Humanoid","Elf","Vegetation","Dwarf","Giant-kin",
+		"Goblinoid","HalfElf"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.  Benefits from balancing the weather.";}

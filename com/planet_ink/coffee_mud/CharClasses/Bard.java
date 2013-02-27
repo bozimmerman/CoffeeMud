@@ -280,33 +280,18 @@ public class Bard extends StdCharClass
 			return true;
 		return super.weaponCheck(mob,sourceCode,E);
 	}
-	public String getStatQualDesc(){return "Charisma 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			Race R=mob.baseCharStats().getMyRace();
-			if(   (!(R.racialCategory().equals("Human"))
-				&& !(R.racialCategory().equals("Humanoid"))
-				&& !(R.racialCategory().equals("Elf"))
-				&& !(R.racialCategory().equals("Dwarf"))
-				&& !(R.racialCategory().equals("Halfling"))
-				&& !(R.racialCategory().equals("Elf-kin")))
-			||(R.ID().equals("Duergar")))
-			{
-				if(!quiet)
-					mob.tell("You must be Human, Elf, Dwarf, Halfling, Elf-kin, or Half Elf to be a Bard");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Charisma to become a Bard.");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	
+	private final String[] raceRequiredList=new String[]{
+		"Human","Humanoid","Elf","Dwarf","Halfling","Elf-kin"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	
 	public String getOtherLimitsDesc(){return "";}
 	public String getOtherBonusDesc(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.  Receives exploration and pub-finding experience based on danger level.";}
 	public List<Item> outfit(MOB myChar)

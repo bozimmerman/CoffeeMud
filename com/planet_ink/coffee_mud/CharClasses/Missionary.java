@@ -147,32 +147,13 @@ public class Missionary extends Cleric
 					+(affectableStats.getClassLevel(this)));
 	}
 
-	public String getStatQualDesc(){return "Wisdom 9+ Dexterity 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Missionary.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Dexterity to become a Missionary.");
-			return false;
-		}
-		Race R=mob.baseCharStats().getMyRace();
-		if((R.ID().equals("Duergar"))
-		||(R.ID().equals("Drow"))
-		||(R.racialCategory().equals("Goblinoid")))
-		{
-			if(!quiet)
-				mob.tell("Your dark heart will not permit you to be a "+name()+".");
-			return false;
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
+		new Pair<String,Integer>("Dexterity",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public String getOtherBonusDesc(){return "Never fumbles neutral prayers, and receives 1pt/level luck bonus to all saving throws per level.  Receives 1pt/level electricity damage reduction.";}
 	public String getOtherLimitsDesc(){return "Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.";}

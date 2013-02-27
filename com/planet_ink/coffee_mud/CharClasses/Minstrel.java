@@ -193,26 +193,17 @@ public class Minstrel extends StdCharClass
 			return true;
 		return super.weaponCheck(mob,sourceCode,E);
 	}
-	public String getStatQualDesc(){return "Charisma 9+, Intelligence 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Charisma to become a Minstrel.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Intelligence to become a Minstrel.");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	
+	private final String[] raceRequiredList=new String[]{"All"};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
+		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);

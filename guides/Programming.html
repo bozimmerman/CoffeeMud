@@ -2252,8 +2252,7 @@ With the former, we specify that this is a ranged-only weapon, usable
 from range 1 (0=melee) to range 5. The ammunition type specifies that
 it uses arrows. We also added the method <code>recoverPhyStats()</code>
 in order to have the attack and damage for the weapon always reflect
-the level of the item.
-      </p>
+the level of the item. </p>
       <p>So those are weapons. Other classes, however, have different
 requirements
 altogether. For instance, if class extends
@@ -2568,7 +2567,8 @@ Formulas (or just Formulas) for information on how to write formulas.
 &nbsp;The variables that can be included are: &nbsp;@x2: Players
 adjusted Wisdom, @x3: Players Max adjusted Wisdom, @x4: Players
 adjusted Intelligence, @x5: Players Max adjusted Intelligence, @x6:
-Players adjusted Attack Attr&nbsp; @x7: Players Max adjusted Attack Attr,
+Players adjusted Attack Attr&nbsp; @x7: Players Max adjusted Attack
+Attr,
 @x8: Players adjusted Charisma, @x9: Players adjusted Constitution</p>
       <pre>  public int getLevelsPerBonusDamage()<br />  {<br />    return 25;<br />  }<br /></pre>
       <p>This score determines how many levels a player must make, in
@@ -2626,8 +2626,7 @@ should also include those next four methods, exactly as you see them.</p>
       <pre>  public int getLevelCap() {return -1;}<br /></pre>
       <p>Although not often used, you can set a level cap for the
 character class by returning some number above -1 from the getLevelCap
-method. The engine will take care of the rest.
-      </p>
+method. The engine will take care of the rest. </p>
       <pre>  public int availabilityCode()<br />  {<br />    return Area.THEME_FANTASY;<br />  }<br /></pre>
       <p>The method <code>availabilityCode()</code> defines how
 players
@@ -2680,16 +2679,25 @@ who gains 1001 levels in our NormalGuy Class will become immune to the
 CoffeeMud legal system (ABOVELAW flag) and gain access to the Archon
 LIST command (LISTADMIN flag). See the Archon's Guide for more
 information on the CoffeeMud security system.</p>
-      <pre>  public String statQualifications()<br />  {<br />    return "Warm body, breathe.";<br />  }<br /><br />  public boolean qualifiesForThisClass( MOB mob, boolean quiet )<br />  {<br />    if( !CMLib.flags().canBreathe( mob ) )<br />    {<br />      if( !quiet )<br />      {<br />        mob.tell( "You need to be breathing to be a normal guy." );<br />      }<br /><br />      return false;<br />    }<br /><br />    return super.qualifiesForThisClass( mob, quiet );<br />  }<br /></pre>
-      <p>The next method is a display string, for the benefit of some
-of the web macros, which describes in plain english any attribute, or
-other numeric qualifications to become this class. The <code>qualifiesForThisClass()</code>
+      <pre>  public boolean qualifiesForThisClass( MOB mob, boolean quiet )<br />  {<br />    if( !CMLib.flags().canBreathe( mob ) )<br />    {<br />      if( !quiet )<br />      {<br />        mob.tell( "You need to be breathing to be a normal guy." );<br />      }<br /><br />      return false;<br />    }<br /><br />    return super.qualifiesForThisClass( mob, quiet );<br />  }<br /></pre>
+      <p>The <code>qualifiesForThisClass()</code>
 method would actually check and enforce the qualifications described by
       <code>statQualifications()</code>.
-In our example above, there are no stat qualifications, only a check to
+In our example above, there is only a check to
 see if the idiot is still breathing. Also note that a quiet boolean
 exists to allow qualifications to be checked without sending any
 messages to the player in question.</p>
+      <pre>  private final String[] raceRequiredList=new String[]{<br />    "Human","Humanoid","Troll-kin","Elf"<br />  };<br />  public String[] getRequiredRaceList(){ return raceRequiredList; }<br /><br /></pre>
+      <p>The next method, like <span style="font-family: monospace;">qualifiesForThisClass</span><code>&nbsp;</code>method
+above is for checking qualifications. It contains an exhaustive list of
+all races, race IDs, or racial categories required to become this
+class. &nbsp;A list with the word "All" would let any race become the
+class.</p>
+      <pre>  private final Pair&lt;String,Integer&gt;[] minimumStatRequirements=new Pair[]{<br />    new Pair&lt;String,Integer&gt;("Strength",Integer.valueOf(9)),<br />    new Pair&lt;String,Integer&gt;("Intelligence",Integer.valueOf(9))<br />  };<br />  public Pair&lt;String,Integer&gt;[] getMinimumStatRequirements() { return minimumStatRequirements; }<br /></pre>
+      <p>The next method, like <span style="font-family: monospace;">qualifiesForThisClass</span><code>&nbsp;</code>method
+above is for checking qualifications. It contains an exhaustive list
+character stat names, and minimum values required to become this class.
+&nbsp;An empty list, of course, means no stat requirements.</p>
       <pre>  public String otherBonuses()<br />  {<br />    return "Receives a mortgage, but no home.";<br />  }<br /></pre>
       <p>The next method, like <code>statQualifications above()</code>,
 is for the benefit of the web macros. It describes any special bonuses

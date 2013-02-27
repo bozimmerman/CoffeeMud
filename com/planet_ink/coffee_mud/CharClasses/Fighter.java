@@ -142,21 +142,14 @@ public class Fighter extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String getStatQualDesc(){return "Strength 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Strength to become a Fighter.");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	private final String[] raceRequiredList=new String[]{"All"};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
 
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Strength",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{

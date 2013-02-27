@@ -371,6 +371,22 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public String getManaDesc();
 
 	/**
+	 * Returns an array of Strings containing either the
+	 * names of particular races, racial categories, or
+	 * the word "ANY" to mean any class is OK.  All others
+	 * are not permitted to be this class.
+	 * @return a list of races, racecats, or ANY
+	 */
+	public String[] getRequiredRaceList();
+
+	/**
+	 * Returns pairings of stat names and the minimum a player
+	 * must have in the state in order to learn this class. 
+	 * @return a pairs of stat names and minimum
+	 */
+	public Pair<String,Integer>[] getMinimumStatRequirements();
+	
+	/**
 	 * Returns a text description of any weapon restrictions
 	 * imposed by this class upon its members.
 	 * @return a text description of weapon retrictions
@@ -400,6 +416,12 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a txt description of stat qualifications
 	 */
 	public String getStatQualDesc();
+	/**
+	 * Returns a text description of the race requirements
+	 * required to become a member of this character class
+	 * @return a txt description of race requirements
+	 */
+	public String getRaceQualDesc();
 	/**
 	 * Returns a text description of the attack bonuses
 	 * gained by members of this class.
@@ -471,6 +493,15 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return whether players of this class can gain or lose experience points
 	 */
 	public boolean expless();
+	
+	/**
+	 * This defines how this class fits into the SUB subclassing class system.
+	 * A class may be one that can change to any class, or only another class
+	 * if it is the same base class, or many no class at all.
+	 * @return the rule to use in the subclassing system
+	 */
+	public SubClassRule getSubClassRule();
+
 	/**
 	 * Whether players of this class see qualifying skills only if they meet all prereqs.
 	 * @return whether players of this class see qualifying skills only if they meet all prereqs
@@ -522,6 +553,21 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return the encoded allowed weapon type
 	 */
 	public int allowedWeaponLevel();
+	
+	/**
+	 * This defines how this class fits into the SUB subclassing class system.
+	 * A class may be one that can change to any class, or only another class
+	 * if it is the same base class, or many no class at all.
+	 * @see CharClass#getSubClassRule()
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum SubClassRule
+	{
+		NONE, /* cannot train away from this class, ever */
+		ANY, /* can train away from this class to any other */
+		BASEONLY, /* can train away from this class, only if the same base class */
+	}
 	
 	/** constant returned by allowedArmorLevel() to designate any allowed armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_ANY=0;

@@ -191,40 +191,18 @@ public class Delver extends StdCharClass
 			return true;
 		return false;
 	}
-	public String getStatQualDesc(){return "Constitution 9+, Strength 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Constitution to become a Delver.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Strength to become a Delver.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if(!(R.racialCategory().equals("Human"))
-			&& !(R.racialCategory().equals("Humanoid"))
-			&& !(R.racialCategory().equals("Dwarf"))
-			&& !(R.racialCategory().equals("Gnome"))
-			&& !(R.racialCategory().equals("Goblinoids"))
-			&& !(R.racialCategory().equals("Troll-kin"))
-			&& !(R.racialCategory().equals("HalfElf"))
-			&& !(R.racialCategory().equals("Halfling")))
-			{
-				if(!quiet)
-					mob.tell("You must be Human, Halfling, Dwarf, Goblin, or Half Elf to be a Delver");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	private final String[] raceRequiredList=new String[]{
+		"Human","Humanoid","Dwarf","Gnome","Goblinoids","Troll-kin",
+		"HalfElf","Halfling"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
+		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String getOtherBonusDesc(){return "Can create a druidic connection with an area.  Benefits from freeing animals from cities.";}

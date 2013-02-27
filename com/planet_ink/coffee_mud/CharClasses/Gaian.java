@@ -181,39 +181,18 @@ public class Gaian extends StdCharClass
 			return true;
 		return false;
 	}
-	public String getStatQualDesc(){return "Constitution 9+, Wisdom 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Constitution to become a Gaian.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Wisdom to become a Gaian.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if(   (!(R.racialCategory().equals("Human"))
-				&& !(R.racialCategory().equals("Elf"))
-				&& !(R.racialCategory().equals("Vegetation"))
-				&& !(R.racialCategory().equals("Humanoid"))
-				&& !(R.racialCategory().equals("Halfling"))
-				&& !(R.racialCategory().equals("Dwarf")))
-			||(R.ID().equals("Duergar")))
-			{
-				if(!quiet)
-					mob.tell("You must be Human, Elf, Dwarf, Halfling, or Half Elf to be a Gaian");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	
+	private final String[] raceRequiredList=new String[]{
+		"Human","Elf","Vegetation","Humanoid","Halfling","Dwarf"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
+		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String getOtherBonusDesc(){return "Attains Greenskin (sunlight based bonuses/penalties) at level 5.  At level 30, becomes totally undetectable in wilderness settings while hidden.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}

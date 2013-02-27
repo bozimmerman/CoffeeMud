@@ -152,36 +152,17 @@ public class Prancer extends StdCharClass
 		Bard.visitationBonusMessage(host,msg);
 	}
 	
-	public String getStatQualDesc(){return "Charisma 9+, Strength 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Charisma to become a Dancer.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Strength to become a Dancer.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if((!(R.racialCategory().equals("Human")))
-			&&(!(R.racialCategory().equals("Humanoid")))
-			&&(!(R.racialCategory().equals("Elf")))
-			&&(!(R.racialCategory().equals("Halfling"))))
-			{
-				if(!quiet)
-					mob.tell("You must be Human, Elf, Halfling, or Half Elf to be a Dancer");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	private final String[] raceRequiredList=new String[]{
+		"Human","Humanoid","Elf","Halfling"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
+		new Pair<String,Integer>("Strength",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
 	public String getOtherLimitsDesc(){return "";}
 	public List<Item> outfit(MOB myChar)
 	{

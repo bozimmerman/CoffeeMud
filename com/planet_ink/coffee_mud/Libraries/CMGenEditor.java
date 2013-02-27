@@ -4795,6 +4795,63 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell("(no change)");
 	}
 
+	protected void genClassRaceQuals(MOB mob, CharClass E, int showNumber, int showFlag, String prompt, String flag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		boolean cont=true;
+		final List<String> newRaces=new XVector<String>(CMParms.parseCommas(E.getStat(flag), true));
+		while((!mob.session().isStopped()) && (cont))
+		{
+			mob.tell(showNumber+". "+prompt+": '"+CMParms.toStringList(newRaces)+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			String newName=mob.session().prompt("Enter a race to add or remove\n\r:","");
+			if(newName.length()>0)
+			{
+				int x=CMParms.indexOfIgnoreCase(newRaces, newName);
+				if(x>=0)
+				{
+					newRaces.remove(x);
+					mob.tell("Race/RaceCat "+newName+" removed.");
+				}
+				else
+				{
+					boolean found=newName.equalsIgnoreCase("All");
+					if(found)
+						newRaces.add("All");
+					else
+					{
+						Race R=CMClass.findRace(newName);
+						if(R!=null)
+						{
+							newRaces.add(R.ID());
+							found=true;
+						}
+						else
+						{
+							for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+							{
+								R=r.nextElement();
+								if(R.racialCategory().equalsIgnoreCase(newName))
+								{
+									newRaces.add(R.racialCategory());
+									found=true;
+									break;
+								}
+							}
+						}
+					}
+					if(found)
+						mob.tell("Race/RaceCat "+newName+" added.");
+					else
+						mob.tell("Could not find any race, racecat, or all.");
+				}
+			}
+			else
+				cont=false;
+		}
+		E.setStat(flag, CMParms.toStringList(newRaces));
+	}
 
 	protected void genBodyParts(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
@@ -5480,6 +5537,77 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						E.setStat("GETOFTID"+i,((Item)V.elementAt(i)).ID());
 					for(int i=0;i<V.size();i++)
 						E.setStat("GETOFTPARM"+i,((Item)V.elementAt(i)).text());
+				}
+			}
+			else
+			{
+				mob.tell("(no change)");
+				return;
+			}
+		}
+	}
+	
+	protected void genMinimumStatQualifications(MOB mob, CharClass E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(true))
+		{
+			StringBuffer parts=new StringBuffer("");
+			int numResources=CMath.s_int(E.getStat("NUMMINSTATS"));
+			Vector<Pair<String,Integer>> V=new Vector<Pair<String,Integer>>();
+			for(int v=0;v<numResources;v++)
+			{
+				Pair<String,Integer> p=new Pair<String,Integer>(E.getStat("GETMINSTAT"+v),Integer.valueOf(CMath.s_int(E.getStat("GETSTATMIN"+v))));
+				V.add(p);
+				parts.append(p.first+"("+p.second.toString()+"), ");
+			}
+			if(parts.toString().endsWith(", "))
+			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
+			mob.tell(showNumber+". Min. Stats: "+parts.toString()+".");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			String newName=mob.session().prompt("Enter a stat name to remove or add:","");
+			if(newName.length()>0)
+			{
+				int statNum=-1;
+				for(int stat : CharStats.CODES.BASE())
+				{
+					if(CharStats.CODES.NAME(stat).equalsIgnoreCase(newName))
+					{
+						statNum=stat;
+						newName=CMStrings.capitalizeAndLower(newName);
+						break;
+					}
+				}
+				boolean updateList=false;
+				if(statNum<0)
+				{
+					if(!newName.toLowerCase().startsWith("new "))
+						mob.tell("That is not a stat, like one of these: "+CMParms.toStringList(CharStats.CODES.BASENAMES()));
+					else
+					{
+						String newMin=mob.session().prompt("Enter a minimum stat value:","");
+						if((newMin.length()>0)&&(CMath.isInteger(newMin)))
+						{
+							V.add(new Pair<String,Integer>(newName,Integer.valueOf(CMath.s_int(newMin))));
+							mob.tell(newName+" added.");
+							updateList=true;
+						}
+					}
+				}
+				else
+				{
+					V.removeElementAt(statNum);
+					mob.tell(newName+" removed.");
+					updateList=true;
+				}
+				if(updateList)
+				{
+					E.setStat("NUMMINSTATS",""+V.size());
+					for(int i=0;i<V.size();i++)
+						E.setStat("GETMINSTAT"+i,((Pair<String,Integer>)V.get(i)).first);
+					for(int i=0;i<V.size();i++)
+						E.setStat("GETSTATMIN"+i,((Pair<String,Integer>)V.get(i)).second.toString());
 				}
 			}
 			else
@@ -6191,6 +6319,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,++showNumber,showFlag,"Limitations","STRLMT");
 			promptStatStr(mob,me,++showNumber,showFlag,"Bonuses","STRBON");
 			genQualifications(mob,me,++showNumber,showFlag,"Qualifications","QUAL");
+			genMinimumStatQualifications(mob, me,++showNumber,showFlag);
+			genClassRaceQuals(mob, me,++showNumber,showFlag,"Required Races", "RACQUAL");
 			genPStats(mob,me,++showNumber,showFlag);
 			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
@@ -6202,6 +6332,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genOutfit(mob,me,++showNumber,showFlag);
 			genClassBuddy(mob,me,++showNumber,showFlag,"Stat-Modifying Class","STATCLASS");
 			genClassBuddy(mob,me,++showNumber,showFlag,"Special Events Class","EVENTCLASS");
+			promptStatChoices(mob,me,null,++showNumber,showFlag,"Sub Class Switch Rule","SUBRUL", CMParms.toStringArray(CharClass.SubClassRule.values()));
 			promptStatInt(mob,me,++showNumber,showFlag,"Max Non-Crafting Skills","MAXNCS");
 			promptStatInt(mob,me,++showNumber,showFlag,"Max Crafting Skills","MAXCRS");
 			promptStatInt(mob,me,++showNumber,showFlag,"Max All-Common Skills","MAXCMS");

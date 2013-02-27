@@ -170,39 +170,20 @@ public class Ranger extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String getStatQualDesc(){return "Strength 9+, Intelligence 9+";}
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid chant failure chances.";}
 	public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest experience.  Benefits from animal followers leveling.";}
 	public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Strength to become a Ranger.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Intelligence to become a Ranger.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if(!(R.racialCategory().equals("Human"))
-			&& !(R.racialCategory().equals("Humanoid"))
-			&& !(R.racialCategory().equals("Troll-kin"))
-			&& !(R.racialCategory().equals("Elf")))
-			{
-				if(!quiet)
-					mob.tell("You need to be Human, Elf, or Half Elf to be a Ranger.");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	private final String[] raceRequiredList=new String[]{
+		"Human","Humanoid","Troll-kin","Elf"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Strength",Integer.valueOf(9)),
+		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

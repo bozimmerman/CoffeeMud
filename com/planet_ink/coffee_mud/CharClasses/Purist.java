@@ -155,32 +155,16 @@ public class Purist extends Cleric
 		return true;
 	}
 
-	public String getStatQualDesc(){return "Wisdom 9+ Charisma 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Purist.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Charisma to become a Purist.");
-			return false;
-		}
-		Race R=mob.baseCharStats().getMyRace();
-		if((R.ID().equals("Duergar"))
-		||(R.ID().equals("Drow"))
-		||(R.racialCategory().equals("Goblinoid")))
-		{
-			if(!quiet)
-				mob.tell("Your dark heart will not permit you to be a "+name()+".");
-			return false;
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	private final String[] raceRequiredList=new String[]{
+		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
+		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public String getOtherBonusDesc(){return "Receives 1pt/level cold damage reduction.";}
 	public String getOtherLimitsDesc(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below pure neutral.  Qualifies and receives good prayers, and bonus damage from good spells.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}

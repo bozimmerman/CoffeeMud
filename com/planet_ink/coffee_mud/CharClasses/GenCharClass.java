@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass.SubClassRule;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.DefaultTimeClock;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
@@ -60,10 +61,12 @@ public class GenCharClass extends StdCharClass
 	protected String otherBonuses="";
 	protected String qualifications="";
 	protected String[] xtraValues=null;
+	protected SubClassRule subClassRule=SubClassRule.BASEONLY;
 	protected int selectability=0;
 	
 	public String getManaFormula(){return manaFormula; }
 	public String getHitPointsFormula(){return hitPointsFormula; }
+	public SubClassRule getSubClassRule() { return subClassRule; }
 
 	public int getLevelCap() {return levelCap;}
 	
@@ -85,6 +88,12 @@ public class GenCharClass extends StdCharClass
 	
 	protected int requiredArmorSourceMinor=-1;
 	public int requiredArmorSourceMinor(){return requiredArmorSourceMinor;}
+
+	private String[] raceRequiredList=new String[0];
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private Pair<String,Integer>[] minimumStatRequirements=new Pair[0];
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 	
 	protected HashSet disallowedWeaponSet=null; // set of Integers for weapon classes
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
@@ -216,7 +225,13 @@ public class GenCharClass extends StdCharClass
 		}
 		return true;
 	}
-	public String getStatQualDesc(){return CMLib.masking().maskDesc(qualifications);}
+	public String getStatQualDesc()
+	{
+		final String superQual=super.getStatQualDesc();
+		if((qualifications!=null)&&(qualifications.length()>0))
+			return superQual+", "+CMLib.masking().maskDesc(qualifications);
+		return superQual;
+	}
 
 	protected String getCharClassLocatorID(CharClass C)
 	{
@@ -315,8 +330,6 @@ public class GenCharClass extends StdCharClass
 		str.append(CMLib.xml().convertXMLtoTag("FSTTRAN",""+trainsFirstLevel));
 		str.append(CMLib.xml().convertXMLtoTag("LVLDAM",""+levelsPerBonusDamage));
 		str.append(CMLib.xml().convertXMLtoTag("ARMOR",""+allowedArmorLevel));
-		//str.append(CMLib.xml().convertXMLtoTag("STRWEAP",weaponLimitations));
-		//str.append(CMLib.xml().convertXMLtoTag("STRARM",armorLimitations));
 		str.append(CMLib.xml().convertXMLtoTag("STRLMT",otherLimitations));
 		str.append(CMLib.xml().convertXMLtoTag("STRBON",otherBonuses));
 		str.append(CMLib.xml().convertXMLtoTag("QUAL",qualifications));
@@ -325,6 +338,17 @@ public class GenCharClass extends StdCharClass
 		str.append(CMLib.xml().convertXMLtoTag("MAXCRS",""+maxCraftingSkills));
 		str.append(CMLib.xml().convertXMLtoTag("MAXCMS",""+maxCommonSkills));
 		str.append(CMLib.xml().convertXMLtoTag("MAXLGS",""+maxLanguages));
+		str.append(CMLib.xml().convertXMLtoTag("SUBRUL",subClassRule.toString()));
+		str.append(CMLib.xml().convertXMLtoTag("RACQUAL",CMParms.toStringList(getRequiredRaceList())));
+		if(getMinimumStatRequirements().length==0)
+			str.append("<MINSTATS />");
+		else
+		{
+			str.append("<MINSTATS>");
+			for(Pair<String,Integer> stat : getMinimumStatRequirements())
+				str.append("<STAT NAME=\""+stat.first+"\" MIN="+stat.second.toString()+" />");
+			str.append("</MINSTATS>");
+		}
 		
 		str.append(CMLib.xml().convertXMLtoTag("HELP",CMLib.xml().parseOutAngleBrackets(helpEntry)));
 		if(adjPStats==null) str.append("<ESTATS/>");
@@ -513,7 +537,17 @@ public class GenCharClass extends StdCharClass
 		maxCraftingSkills=CMLib.xml().getIntFromPieces(classData,"MAXCRS");
 		maxCommonSkills=CMLib.xml().getIntFromPieces(classData,"MAXCMS");
 		maxLanguages=CMLib.xml().getIntFromPieces(classData,"MAXLGS");
+		subClassRule=(SubClassRule)CMath.s_valueOf(SubClassRule.class,CMLib.xml().getValFromPieces(classData,"SUBRUL"),SubClassRule.BASEONLY);
 		helpEntry=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(classData,"HELP"));
+		raceRequiredList=CMParms.parseCommas(CMLib.xml().getValFromPieces(classData,"RACQUAL"), true).toArray(new String[0]);
+		final List<Pair<String,Integer>> statQuals=new ArrayList<Pair<String,Integer>>();
+		List<XMLLibrary.XMLpiece> mV=CMLib.xml().getContentsFromPieces(classData,"MINSTATS");
+		if((mV!=null)&&(mV.size()>0))
+			for(XMLLibrary.XMLpiece p : mV)
+				if(p.tag.equalsIgnoreCase("STAT"))
+					statQuals.add(new Pair<String,Integer>(p.parms.get("NAME"),Integer.valueOf(CMath.s_int(p.parms.get("MIN")))));
+		minimumStatRequirements=statQuals.toArray(new Pair[0]);
+		
 		String s=CMLib.xml().getValFromPieces(classData,"PLAYER");
 		if(CMath.isNumber(s))
 			selectability=CMath.s_int(s);
@@ -664,18 +698,18 @@ public class GenCharClass extends StdCharClass
 		return VA;
 	}
 
-	protected static String[] CODES={"ID","NAME","BASE","HITPOINTSFORMULA","!!X!X!X!X!X!!!",
-									 "LVLPRAC","!!X!X!X!X!X!!!","LVLATT","ATTATT","FSTTRAN",
+	protected static String[] CODES={"ID","NAME","BASE","HITPOINTSFORMULA","SUBRUL",
+									 "LVLPRAC","RACQUAL","LVLATT","ATTATT","FSTTRAN",
 									 "FSTPRAC","LVLDAM","MOVEMENTFORMULA","ARMOR","STRWEAP",
 									 "STRARM","STRLMT","STRBON","QUAL","PLAYER",
 									 "ESTATS","ASTATS","CSTATS","ASTATE","NUMCABLE",
 									 "GETCABLE","GETCABLELVL","GETCABLEPROF","GETCABLEGAIN","GETCABLESECR",
 									 "GETCABLEPARM","NUMWEP","GETWEP", "NUMOFT","GETOFTID",
-									 "GETOFTPARM","!!X!X!X!X!X!!!","MANAFORMULA","!!X!X!X!X!X!!!","DISFLAGS",
+									 "GETOFTPARM","NUMMINSTATS","MANAFORMULA","GETMINSTAT","DISFLAGS",
 									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
 									 "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
 									 "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP","LEVELCAP",
-									 "GETCABLEMAXP","MAXNCS","MAXCRS","MAXCMS","MAXLGS"
+									 "GETCABLEMAXP","MAXNCS","MAXCRS","MAXCMS","MAXLGS","GETSTATMIN"
 									 }; 
 	
 	public String getStat(String code)
@@ -696,9 +730,9 @@ public class GenCharClass extends StdCharClass
 				break;
 		case 2: return baseClass;
 		case 3: return ""+hitPointsFormula;
-		case 4: return ""; //unused
+		case 4: return subClassRule.toString();
 		case 5: return ""+bonusPracLevel;
-		case 6: return ""; // unused
+		case 6: return CMParms.toStringList(getRequiredRaceList());
 		case 7: return ""+bonusAttackLevel;
 		case 8: return ""+attackAttribute;
 		case 9: return ""+trainsFirstLevel;
@@ -728,9 +762,9 @@ public class GenCharClass extends StdCharClass
 		case 33: return ""+((outfit(null)!=null)?outfit(null).size():0);
 		case 34: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).ID():"");
 		case 35: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).text():"");
-		case 36: return ""; // unused
+		case 36: return ""+getMinimumStatRequirements().length;
 		case 37: return ""+manaFormula;
-		case 38: return ""; // unused
+		case 38: return getMinimumStatRequirements()[num].first;
 		case 39: return ""+disableFlags;
 		case 40: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
 		case 41: return ""+names.length;
@@ -758,6 +792,7 @@ public class GenCharClass extends StdCharClass
 		case 57: return ""+maxCraftingSkills;
 		case 58: return ""+maxCommonSkills;
 		case 59: return ""+maxLanguages;
+		case 60: return getMinimumStatRequirements()[num].second.toString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -782,9 +817,9 @@ public class GenCharClass extends StdCharClass
 				break;
 		case 2: baseClass=val; break;
 		case 3: hitPointsFormula=val; super.hitPointsDesc=null; break;
-		case 4: break;
+		case 4: subClassRule=(SubClassRule)CMath.s_valueOf(SubClassRule.class,val.toUpperCase().trim(),SubClassRule.BASEONLY); break;
 		case 5: bonusPracLevel=CMath.s_parseIntExpression(val); break;
-		case 6: break;
+		case 6: raceRequiredList=CMParms.parseCommas(val,true).toArray(new String[0]); break;
 		case 7: bonusAttackLevel=CMath.s_parseIntExpression(val); break;
 		case 8: attackAttribute=CMath.s_parseListIntExpression(CharStats.CODES.NAMES(),val); break;
 		case 9: trainsFirstLevel=CMath.s_parseIntExpression(val); break;
@@ -854,9 +889,12 @@ public class GenCharClass extends StdCharClass
 					 }
 					 break;
 				 }
-		case 36: break;
+		case 36: {  minimumStatRequirements=new Pair[num];
+					for(int i=0;i<num;i++) minimumStatRequirements[i]=new Pair<String,Integer>("",Integer.valueOf(0));
+					break;
+				 }
 		case 37: manaFormula=val; super.manaDesc=null; break;
-		case 38: break;
+		case 38: minimumStatRequirements[num].first=val; break;
 		case 39: disableFlags=CMath.s_int(val); break;
 		case 40: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
 		case 41: num=CMath.s_int(val);
@@ -962,6 +1000,7 @@ public class GenCharClass extends StdCharClass
 		case 57: maxCraftingSkills=CMath.s_int(val); break;
 		case 58: maxCommonSkills=CMath.s_int(val); break;
 		case 59: maxLanguages=CMath.s_int(val); break;
+		case 60: minimumStatRequirements[num].second=Integer.valueOf(CMath.s_int(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

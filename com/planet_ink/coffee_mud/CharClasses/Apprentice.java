@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass.SubClassRule;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -46,6 +47,7 @@ public class Apprentice extends StdCharClass
 	public String getHitPointsFormula(){return "((@x6<@x7)/9)+(1*(1?4))"; }
 	public String getManaFormula(){return "((@x4<@x5)/10)+(1*(1?2))"; }
 	public int getLevelCap(){ return 1;}
+	public SubClassRule getSubClassRule() { return SubClassRule.ANY; }
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
@@ -87,26 +89,13 @@ public class Apprentice extends StdCharClass
 		return super.tick(ticking,tickID);
 	}
 	
-	public String getStatQualDesc(){return "Wisdom 5+, Intelligence 5+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=4)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 5 Wisdom to become a Apprentice.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=4)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 5 Intelligence to become a Apprentice.");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	private final String[] raceRequiredList=new String[]{"All"};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(5)),
+		new Pair<String,Integer>("Intelligence",Integer.valueOf(5))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public List<Item> outfit(MOB myChar)
 	{

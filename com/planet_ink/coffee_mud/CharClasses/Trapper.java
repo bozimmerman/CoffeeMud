@@ -205,21 +205,13 @@ public class Trapper extends Thief
 		return super.okMessage(myHost,msg);
 	}
 
-	public String getStatQualDesc(){return "Dexterity 9+, Constitution 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Dexterity to become a Trapper.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Constitution to become a Trapper.");
-			return false;
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+
+	@SuppressWarnings("unchecked")
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
+		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
 }

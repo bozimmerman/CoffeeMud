@@ -776,6 +776,7 @@ public interface CharStats extends CMCommon, Modifiable
 		private String[] statAbbreviations=new String[0];
 		private String[] statDescriptions=new String[0];
 		private String[] statNames=new String[0];
+		private String[] baseStatNames=new String[0];
 		private String[] shortNames=new String[0];
 		private String[] statAttributionDescriptions=new String[0];
 		private int[] statCMMsgMapping=new int[0];
@@ -879,6 +880,12 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @return an array of the numeric codes for all base stats
 		 */
 		public static int[] BASE() { return c().baseStatCodes;}
+		
+		/**
+		 * Returns the name of all base stats
+		 * @return names of all base stats
+		 */
+		public static String[] BASENAMES() { return c().baseStatNames;}
 		
 		/**
 		 * Returns an array of the numeric codes for all base stats
@@ -1089,6 +1096,8 @@ public interface CharStats extends CMCommon, Modifiable
 		{
 			baseStatCodes=Arrays.copyOf(baseStatCodes, baseStatCodes.length+1);
 			baseStatCodes[baseStatCodes.length-1]=allStatCodes.length;
+			baseStatNames=Arrays.copyOf(baseStatNames, baseStatNames.length+1);
+			baseStatNames[baseStatNames.length-1]=name;
 			addAllStat(abbr,desc,name,attDesc,cmmsgMap,true);
 		}
 		/**

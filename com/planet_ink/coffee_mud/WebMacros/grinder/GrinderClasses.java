@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.WebMacros.grinder;
 
 import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
+import com.planet_ink.coffee_mud.WebMacros.and;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -161,6 +162,8 @@ public class GrinderClasses
 		C.setStat("MAXCMS",(old==null)?"0":old);
 		old=httpReq.getUrlParameter("MAXLGS");
 		C.setStat("MAXLGS",(old==null)?"0":old);
+		old=httpReq.getUrlParameter("SUBRUL");
+		C.setStat("SUBRUL", (old==null)?"BASE":old);
 		old=httpReq.getUrlParameter("LEVELCAP");
 		C.setStat("LEVELCAP",(old==null)?"-1":old);
 		old=httpReq.getUrlParameter("ARMOR");
@@ -180,7 +183,10 @@ public class GrinderClasses
 		C.setStat("STARTASTATE",GrinderRaces.getCState('S',httpReq));
 		old=httpReq.getUrlParameter("GENHELP");
 		C.setStat("HELP", ((old==null)?"":old));
+		old=httpReq.getUrlParameter("RACQUAL");
+		C.setStat("RACQUAL",(old==null)?"All":old);
 		String id="";
+		and minstat
 		Vector V=new Vector();
 		for(int i=0;httpReq.isUrlParameter("NOWEAPS"+id);id=""+(++i))
 			V.addElement(httpReq.getUrlParameter("NOWEAPS"+id));

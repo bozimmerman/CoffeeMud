@@ -205,7 +205,7 @@ public class CMath
 	 * @return the enum or null
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-    public final static Enum<? extends Enum> s_valueOf(Class<? extends Enum> c, String s)
+	public final static Enum<? extends Enum> s_valueOf(Class<? extends Enum> c, String s)
 	{
 		if((c==null)||(s==null)) return null;
 		try
@@ -216,6 +216,22 @@ public class CMath
 		{
 			return null;
 		}
+	}
+	
+	/**
+	 * Returns the matching enum.  Case Sensitive!
+	 * @param c the enum class to look in
+	 * @param s the string to look
+	 * @param def the value to use when null
+	 * @return the enum
+	 */
+	@SuppressWarnings("rawtypes")
+	public final static Enum<? extends Enum> s_valueOf(Class<? extends Enum> c, String s, Enum<? extends Enum> def)
+	{
+		Enum<? extends Enum> obj = s_valueOf(c,s);
+		if(obj == null)
+			return def;
+		return obj;
 	}
 	
 	/**

@@ -30,28 +30,21 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Assassin extends Thief
 {
 	public String ID(){return "Assassin";}
 	public String name(){return "Assassin";}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-	public String getStatQualDesc(){return "Dexterity 9+ Wisdom 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Dexterity to become an Assassin.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become an Assassin.");
-			return false;
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Dexterity",Integer.valueOf(5)),
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(5))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	
 	public String getOtherBonusDesc()
 	{
 		return "Strong resistance to all poisons at 21st level.";

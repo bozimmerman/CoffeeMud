@@ -168,38 +168,17 @@ public class Beastmaster extends StdCharClass
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 
-	public String getStatQualDesc(){return "Constitution 9+, Dexterity 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Constitution to become a Beastmaster.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Dexterity to become a Beastmaster.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if(	  (!(R.racialCategory().equals("Human"))
-				&& !(R.racialCategory().equals("Humanoid"))
-				&& !(R.racialCategory().equals("Elf"))
-				&& !(R.racialCategory().equals("Dwarf"))
-				&& !(R.racialCategory().equals("Giant-kin")))
-			||(R.ID().equals("Duergar")))
-			{
-				if(!quiet)
-					mob.tell("You must be Human, Elf, Dwarf, Giant-kin, or Half Elf to be a Beastmaster");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	private final String[] raceRequiredList=new String[]{
+		"Human","Humanoid","Elf","Dwarf","Giant-kin"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
+		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

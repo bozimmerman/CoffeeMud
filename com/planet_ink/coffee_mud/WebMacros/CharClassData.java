@@ -501,6 +501,12 @@ public class CharClassData extends StdWebMacro
 					if(old==null) old=""+C.getMovementFormula();
 					str.append(old+", ");
 				}
+				if(parms.containsKey("RACQUAL"))
+				{
+					String old=httpReq.getUrlParameter("RACQUAL");
+					if(old==null) old=""+CMParms.toStringList(C.getRequiredRaceList());
+					str.append(old+", ");
+				}
 				if(parms.containsKey("GENHELP"))
 				{
 					String old=httpReq.getUrlParameter("GENHELP");
@@ -520,6 +526,17 @@ public class CharClassData extends StdWebMacro
 					if(CMath.s_int(old)<=0) old="0";
 					for(int i=0;i<CharClass.ARMOR_LONGDESC.length;i++)
 						str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CharClass.ARMOR_LONGDESC[i]));
+					str.append(", ");
+				}
+				if(parms.containsKey("SUBRUL"))
+				{
+					String old=httpReq.getUrlParameter("SUBRUL");
+					if(old==null) {
+						C=C.makeGenCharClass();
+						old=""+C.getStat("SUBRUL");
+					}
+					for(CharClass.SubClassRule rule : CharClass.SubClassRule.values())
+						str.append("<OPTION VALUE=\""+rule.toString()+"\""+((rule.toString().equalsIgnoreCase(old))?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(rule.toString()));
 					str.append(", ");
 				}
 				if(parms.containsKey("STRLMT"))
@@ -620,6 +637,7 @@ public class CharClassData extends StdWebMacro
 					}
 					str.append(", ");
 				}
+				and minstat
 				if(parms.containsKey("OUTFIT"))
 					str.append(RaceData.itemList(C.outfit(null),'O',httpReq,parms,0,false)+", ");
 				if(parms.containsKey("DISFLAGS"))

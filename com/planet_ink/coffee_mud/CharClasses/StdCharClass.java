@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass.SubClassRule;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -70,6 +71,7 @@ public class StdCharClass implements CharClass
 	public boolean raceless(){return false;}
 	public boolean leveless(){return false;}
 	public boolean expless(){return false;}
+	public SubClassRule getSubClassRule() { return SubClassRule.BASEONLY; }
 	public boolean showThinQualifyList(){return false;}
 	public int maxNonCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXNONCRAFTINGSKILLS); }
 	public int maxCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCRAFTINGSKILLS); }
@@ -77,6 +79,10 @@ public class StdCharClass implements CharClass
 	public int maxLanguages() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXLANGUAGES); }
 	private static final CMSecurity.SecGroup empty=new CMSecurity.SecGroup(new CMSecurity.SecFlag[]{});
 	public CMSecurity.SecGroup getSecurityFlags(int classLevel){return empty;}
+	private final String[] raceRequiredList=new String[0];
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[0];
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 	public CMObject newInstance(){return this;}
 
 	protected String getShortAttackAttribute() { return CharStats.CODES.SHORTNAME(getAttackAttribute()); }
@@ -153,11 +159,11 @@ public class StdCharClass implements CharClass
 			if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
 			||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB")))
 			{
-				if((baseClass().equals(ID()))||(ID().equals("Apprentice")))
-			 	   return true;
+				if((baseClass().equals(ID()))||(getSubClassRule()==SubClassRule.ANY))
+					return true;
 			}
 			else
-			   return true;
+				return true;
 			return false;
 		}
 		else
@@ -177,17 +183,24 @@ public class StdCharClass implements CharClass
 					return true;
 				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
 				&&((baseClass().equals(ID()))
-					||(ID().equals("Apprentice"))))
+					||(getSubClassRule()==SubClassRule.ANY)))
 						return true;
 				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))
-				&&(ID().equals("Apprentice")))
+				&&(getSubClassRule()==SubClassRule.ANY))
 					return true;
 				if(!quiet)
 					mob.tell("You can't train to be a "+name()+"!");
 				return false;
 			}
 			else
-			if(curClass.ID().equalsIgnoreCase("Apprentice"))
+			if(curClass.getSubClassRule()==SubClassRule.NONE)
+			{
+				if(!quiet)
+					mob.tell("You can't train to be a "+name()+"!");
+				return false;
+			}
+			else
+			if(curClass.getSubClassRule()==SubClassRule.ANY)
 			{
 				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
 				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
@@ -217,8 +230,19 @@ public class StdCharClass implements CharClass
 				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB") 
 				|| CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB")))
 				{
-					if(curClass.baseClass().equals(baseClass())
-					||curClass.baseClass().equals("Commoner"))
+					if(curClass.baseClass().equals(baseClass())||(curClass.getSubClassRule()==SubClassRule.ANY))
+						return true;
+					boolean doesBaseHaveAnAny=false;
+					for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+					{
+						CharClass C=c.nextElement();
+						if((C.baseClass().equals(curClass.baseClass()))&&(C.getSubClassRule()==SubClassRule.ANY))
+						{
+							doesBaseHaveAnAny=true;
+							break;
+						}
+					}
+					if(doesBaseHaveAnAny)
 						return true;
 					if(!quiet)
 						mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
@@ -226,7 +250,65 @@ public class StdCharClass implements CharClass
 			}
 			return false;
 		}
+		if(mob!=null)
+		{
+			for(Pair<String,Integer> minReq : getMinimumStatRequirements())
+			{
+				int statCode=CharStats.CODES.findWhole(minReq.first, true);
+				if(statCode >= 0)
+				{
+					if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
+					{
+						if(!quiet)
+							mob.tell("You need at least a "+minReq.second.toString()+" "+CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode))+" to become a "+name()+".");
+						return false;
+					}
+				}
+			}
+			final Race R=mob.baseCharStats().getMyRace();
+			final String[] raceList=getRequiredRaceList();
+			boolean foundOne=raceList.length==0;
+			for(String raceName : raceList)
+			{
+				if(raceName.equalsIgnoreCase("any") 
+				|| R.ID().equalsIgnoreCase(raceName)
+				|| R.name().equalsIgnoreCase(raceName)
+				|| R.racialCategory().equalsIgnoreCase(raceName))
+				{
+					foundOne=true;
+					break;
+				}
+			}
+			if(!foundOne)
+			{
+				if(!quiet)
+				{
+					final StringBuilder str=new StringBuilder("You need to be a ").append(getRaceList(raceList)).append("to be a "+name()+".");
+					mob.tell(str.toString());
+				}
+				return false;
+			}
+		}
 		return true;
+	}
+	
+	private StringBuilder getRaceList(String[] raceList)
+	{
+		StringBuilder str=new StringBuilder();
+		if(raceList.length==1)
+			str.append(CMStrings.capitalizeAndLower(raceList[0]));
+		else
+		if(raceList.length==2)
+			str.append(CMStrings.capitalizeAndLower(raceList[0])).append(" or ").append(CMStrings.capitalizeAndLower(raceList[1]));
+		else
+		for(int i=0;i<raceList.length;i++)
+		{
+			str.append(", ");
+			if(i==raceList.length-1)
+				str.append("or ");
+			str.append(CMStrings.capitalizeAndLower(raceList[i]));
+		}
+		return str;
 	}
 	public String getWeaponLimitDesc()
 	{ return WEAPONS_LONGDESC[allowedWeaponLevel()];}
@@ -234,7 +316,28 @@ public class StdCharClass implements CharClass
 	{ return ARMOR_LONGDESC[allowedArmorLevel()];}
 	public String getOtherLimitsDesc(){return "";}
 	public String getOtherBonusDesc(){return "";}
-	public String getStatQualDesc(){return "";}
+	public String getStatQualDesc()
+	{
+		Pair<String,Integer>[] reqs=getMinimumStatRequirements();
+		if(reqs.length==0)
+			return "";
+		StringBuilder str=new StringBuilder("");
+		for(int x=0;x<reqs.length;x++)
+		{
+			Pair<String,Integer> req=reqs[x];
+			if(x>0)
+				str.append(", ");
+			str.append(CMStrings.capitalizeAndLower(req.first)).append(" ").append(req.second.toString()).append("+");
+		}
+		return "";
+	}
+	
+	public String getRaceQualDesc()
+	{
+		final String[] raceList=getRequiredRaceList();
+		if(raceList.length==0) return "All";
+		return getRaceList(raceList).toString();
+	}
 	public String getMaxStatDesc()
 	{
 		StringBuilder str=new StringBuilder("");
@@ -514,6 +617,7 @@ public class StdCharClass implements CharClass
 		CR.setStat("MANAFORMULA",""+getManaFormula());
 		CR.setStat("LVLPRAC",""+getBonusPracLevel());
 		CR.setStat("MOVEMENTFORMULA",""+getMovementFormula());
+		CR.setStat("RACQUAL", CMParms.toStringList(getRequiredRaceList()));
 		CR.setStat("LVLATT",""+getBonusAttackLevel());
 		CR.setStat("ATTATT",""+getAttackAttribute());
 		CR.setStat("FSTTRAN",""+getTrainsFirstLevel());
@@ -529,7 +633,15 @@ public class StdCharClass implements CharClass
 		CR.setStat("MAXNCS",""+maxNonCraftingSkills());
 		CR.setStat("MAXCRS",""+maxCraftingSkills());
 		CR.setStat("MAXCMS",""+maxCommonSkills());
+		CR.setStat("SUBRUL", ""+getSubClassRule().toString());
 		CR.setStat("MAXLGS",""+maxLanguages());
+		CR.setStat("NUMMINSTATS", ""+getMinimumStatRequirements().length);
+		for(int p=0;p<getMinimumStatRequirements().length;p++)
+		{
+			Pair<String,Integer> P=getMinimumStatRequirements()[p];
+			CR.setStat("GETMINSTAT"+p,P.first);
+			CR.setStat("GETSTATMIN"+p,P.second.toString());
+		}
 
 		StringBuffer quals=new StringBuffer("");
 		String q=getStatQualDesc().toUpperCase();

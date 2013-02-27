@@ -142,24 +142,13 @@ public class Arcanist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_MagicItem",true);
 	}
 
-
-	public String getStatQualDesc(){return "Dexterity 9+, Intelligence 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Dexterity to become an Arcanist.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Intelligence to become an Arcanist.");
-			return false;
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
+		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	
 	public String getOtherBonusDesc()
 	{
 		return "Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft. Can see wand charges at level 30.";

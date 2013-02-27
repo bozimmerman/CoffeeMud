@@ -192,35 +192,15 @@ public class Paladin extends StdCharClass
 		}
 		return super.okMessage(myChar, msg);
 	}
+	private final String[] raceRequiredList=new String[]{"Human"};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
 
-	public String getStatQualDesc(){return "Strength 9+, Wisdom 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Strength to become a Paladin.");
-				return false;
-			}
-	
-			if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Wisdom to become a Paladin.");
-				return false;
-			}
-	
-			if(!(mob.baseCharStats().getMyRace().ID().equals("Human")))
-			{
-				if(!quiet)
-					mob.tell("You need to be Human to become a Paladin.");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
+		new Pair<String,Integer>("Strength",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
 
 	public List<Item> outfit(MOB myChar)
 	{

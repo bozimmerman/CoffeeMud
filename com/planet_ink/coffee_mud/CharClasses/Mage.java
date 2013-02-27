@@ -319,35 +319,18 @@ public class Mage extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String getStatQualDesc(){return "Intelligence 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Intelligence to become a Mage.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if(!(R.racialCategory().equals("Human"))
-			&& !(R.racialCategory().equals("Elf"))
-			&& !(R.racialCategory().equals("Gith"))
-			&& !(R.racialCategory().equals("Dragon"))
-			&& !(R.racialCategory().equals("Humanoid"))
-			&& !(R.racialCategory().equals("Illithid"))
-			&& !(R.racialCategory().equals("Gnome"))
-			&& !(R.racialCategory().equals("Fairy-kin"))
-			&& !(R.racialCategory().equals("HalfElf")))
-			{
-				if(!quiet)
-					mob.tell("You need to be Human, Elf, Gnome, or Half Elf to be a Mage.");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	private final String[] raceRequiredList=new String[]{
+		"Human","Elf","Gith","Dragon","Humanoid","Illithid",
+		"Gnome","Fairy-kin","HalfElf"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
+	};
+
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{

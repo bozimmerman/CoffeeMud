@@ -194,32 +194,16 @@ public class Healer extends Cleric
 		}
 	}
 	
-	public String getStatQualDesc(){return "Wisdom 9+ Charisma 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Healer.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Charisma to become a Healer.");
-			return false;
-		}
-		Race R=mob.baseCharStats().getMyRace();
-		if((R.ID().equals("Duergar"))
-		||(R.ID().equals("Drow"))
-		||(R.racialCategory().equals("Goblinoid")))
-		{
-			if(!quiet)
-				mob.tell("Your dark heart will not permit you to be a "+name()+".");
-			return false;
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	private final String[] raceRequiredList=new String[]{
+		"Humanoid","Dwarf","Elf","HalfElf","Elf-kin","Fairy-kin"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
+		new Pair<String,Integer>("Charisma",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 
 	public String getOtherBonusDesc(){return "All healing prayers give bonus healing.  Attains healing aura after 30th level.";}
 	public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}

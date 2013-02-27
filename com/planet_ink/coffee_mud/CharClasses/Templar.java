@@ -162,23 +162,14 @@ public class Templar extends Cleric
 		return super.tick(myChar,tickID);
 	}
 
-	public String getStatQualDesc(){return "Wisdom 9+ Strength 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Templar.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Strength to become a Templar.");
-			return false;
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	public String[] getRequiredRaceList(){ return super.getRequiredRaceList(); }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(9)),
+		new Pair<String,Integer>("Strength",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+
 
 	public String getOtherBonusDesc(){return "Receives Aura of Strife which increases in power.";}
 	public String getOtherLimitsDesc(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}

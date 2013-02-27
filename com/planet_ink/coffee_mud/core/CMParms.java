@@ -97,6 +97,16 @@ public class CMParms
 		return combined.toString().trim();
 	}
 
+	public final static String[] combine(final String[] strs1, final String[] strs2)
+	{
+		final int strs1Len = strs1.length;
+		final int strs2Len = strs2.length;
+		final String[] array= new String[strs1Len+strs2Len];
+		System.arraycopy(strs1, 0, array, 0, strs1Len);
+		System.arraycopy(strs2, 0, array, strs1Len, strs2Len);
+		return array;
+	}
+
 	public final static String quoteIfNecessary(final String str)
 	{
 		if(str==null) return str;

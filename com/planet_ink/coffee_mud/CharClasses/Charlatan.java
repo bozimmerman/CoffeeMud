@@ -144,35 +144,17 @@ public class Charlatan extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String getStatQualDesc(){return "Charisma 9+, Wisdom 9+";}
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		if(mob != null)
-		{
-			if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Charisma to become a Charlatan.");
-				return false;
-			}
-			if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM) <= 8)
-			{
-				if(!quiet)
-					mob.tell("You need at least a 9 Wisdom to become a Charlatan.");
-				return false;
-			}
-			Race R=mob.baseCharStats().getMyRace();
-			if((!(R.racialCategory().equals("Human")))
-			&&(!(R.racialCategory().equals("Humanoid")))
-			&&(!(R.ID().equals("HalfElf"))))
-			{
-				if(!quiet)
-					mob.tell("You must be Human, or Half Elf to be a Charlatan");
-				return false;
-			}
-		}
-		return super.qualifiesForThisClass(mob,quiet);
-	}
+	
+	private final String[] raceRequiredList=new String[]{
+		"Human","Humanoid","HalfElf"
+	};
+	public String[] getRequiredRaceList(){ return raceRequiredList; }
+
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
+		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
+	};
+	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
 	
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,6.0);}
 	
