@@ -1,8 +1,6 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
 
 import com.planet_ink.miniweb.interfaces.*;
-import com.planet_ink.coffee_mud.WebMacros.RoomData;
-import com.planet_ink.coffee_mud.WebMacros.and;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -186,11 +184,26 @@ public class GrinderClasses
 		old=httpReq.getUrlParameter("RACQUAL");
 		C.setStat("RACQUAL",(old==null)?"All":old);
 		String id="";
-		and minstat
 		Vector V=new Vector();
 		for(int i=0;httpReq.isUrlParameter("NOWEAPS"+id);id=""+(++i))
 			V.addElement(httpReq.getUrlParameter("NOWEAPS"+id));
 		C.setStat("GETWEP",CMParms.toStringList(V));
+		int x=0;
+		List<Pair<String,Integer>> minStats=new LinkedList<Pair<String,Integer>>();
+		while(httpReq.getUrlParameter("MINSTAT"+x)!=null)
+		{
+			String minStat=httpReq.getUrlParameter("MINSTAT"+x);
+			String statMin=httpReq.getUrlParameter("STATMIN"+x);
+			if((minStat!=null)&&(minStat.length()>0)&&(CMath.isInteger(statMin)))
+				minStats.add(new Pair<String,Integer>(minStat,Integer.valueOf(CMath.s_int(statMin))));
+			x++;
+		}
+		C.setStat("NUMMINSTATS", ""+minStats.size());
+		for(int m=0;m<minStats.size();m++)
+		{
+			C.setStat("GETMINSTAT"+m, minStats.get(m).first);
+			C.setStat("GETSTATMIN"+m, minStats.get(m).second.toString());
+		}
 		List<Item> Ivs=GrinderRaces.itemList(oldC.outfit(null),'O',httpReq,false);
 		C.setStat("NUMOFT",""+Ivs.size());
 		for(int l=0;l<Ivs.size();l++)

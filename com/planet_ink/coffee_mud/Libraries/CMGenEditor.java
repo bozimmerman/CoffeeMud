@@ -229,8 +229,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			newName=mob.session().prompt(promptStr,"");
-			if(newName.equals("?")&&(help!=null))
-				mob.tell(help);
+			if(newName.equals("?")&&((help!=null)||((choices!=null)&&(choices.length>0))))
+			{
+				if(help!=null)
+					mob.tell(help);
+				else
+					mob.tell("You choices are: "+CMParms.toStringList(choices));
+			}
 			else
 			{
 				boolean noEntry=(newName.trim().length()==0);
@@ -250,6 +255,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				catch(CMException e)
 				{
 					mob.tell(e.getMessage());
+					mob.tell("You choices are: "+CMParms.toStringList(choices));
 					newName="?";
 					continue;
 				}
@@ -5581,10 +5587,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				boolean updateList=false;
 				if(statNum<0)
+					mob.tell("That is not a stat, like one of these: "+CMParms.toStringList(CharStats.CODES.BASENAMES()));
+				else
 				{
-					if(!newName.toLowerCase().startsWith("new "))
-						mob.tell("That is not a stat, like one of these: "+CMParms.toStringList(CharStats.CODES.BASENAMES()));
-					else
+					int vNum=-1;
+					for(int v=0;v<V.size();v++)
+						if(newName.equalsIgnoreCase(V.get(v).first))
+							vNum=v;
+					if(vNum<0)
 					{
 						String newMin=mob.session().prompt("Enter a minimum stat value:","");
 						if((newMin.length()>0)&&(CMath.isInteger(newMin)))
@@ -5594,12 +5604,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							updateList=true;
 						}
 					}
-				}
-				else
-				{
-					V.removeElementAt(statNum);
-					mob.tell(newName+" removed.");
-					updateList=true;
+					else
+					{
+						V.removeElementAt(vNum);
+						mob.tell(newName+" removed.");
+						updateList=true;
+					}
 				}
 				if(updateList)
 				{

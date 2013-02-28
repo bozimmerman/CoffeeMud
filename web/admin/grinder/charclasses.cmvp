@@ -15,7 +15,7 @@
                 window.alert('No spaces are allowed in your ID!');
                 return;
             }
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=790,alwaysRaised=yes,dependent=yes";
             w=window.open("charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS="+charclassid+action,
             	"CharClass",strFeatures, false);
         }

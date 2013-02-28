@@ -331,6 +331,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				prepend.append("\n\r");
 				prepend.append(columnHelper("^HMax-Stats :^N",C.getMaxStatDesc(),wrap));
 				prepend.append(columnHelper("^HQualifiers:^N",C.getStatQualDesc(),wrap));
+				prepend.append(columnHelper("^HRaces     :^N",C.getRaceQualDesc(),wrap));
 				prepend.append("^H"+CMStrings.padRight("Prime Stat: ^N"+C.getPrimeStatDesc(),(wrap/2)));
 				prepend.append("^HAttack Pts: ^N"+C.getAttackDesc());
 				prepend.append("\n\r");

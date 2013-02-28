@@ -889,8 +889,9 @@ public class GenCharClass extends StdCharClass
 					 }
 					 break;
 				 }
-		case 36: {  minimumStatRequirements=new Pair[num];
-					for(int i=0;i<num;i++) minimumStatRequirements[i]=new Pair<String,Integer>("",Integer.valueOf(0));
+		case 36: {  minimumStatRequirements=new Pair[CMath.s_int(val)];
+					for(int i=0;i<CMath.s_int(val);i++) 
+						minimumStatRequirements[i]=new Pair<String,Integer>("",Integer.valueOf(0));
 					break;
 				 }
 		case 37: manaFormula=val; super.manaDesc=null; break;

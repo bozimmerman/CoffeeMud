@@ -637,7 +637,42 @@ public class CharClassData extends StdWebMacro
 					}
 					str.append(", ");
 				}
-				and minstat
+				if(parms.containsKey("MINSTAT"))
+				{
+					List<Pair<String,Integer>> minStats=new LinkedList<Pair<String,Integer>>();
+					String old=httpReq.getUrlParameter("MINSTAT0");
+					if(old==null)
+					{
+						for(Pair<String,Integer> P : C.getMinimumStatRequirements())
+							minStats.add(P);
+					}
+					else
+					{
+						int x=0;
+						while(httpReq.getUrlParameter("MINSTAT"+x)!=null)
+						{
+							String minStat=httpReq.getUrlParameter("MINSTAT"+x);
+							String statMin=httpReq.getUrlParameter("STATMIN"+x);
+							if((minStat!=null)&&(minStat.length()>0)&&(CMath.isInteger(statMin)))
+								minStats.add(new Pair<String,Integer>(minStat,Integer.valueOf(CMath.s_int(statMin))));
+							x++;
+						}
+					}
+					for(int p=0;p<minStats.size();p++)
+					{
+						Pair<String,Integer> P=minStats.get(p);
+						str.append("<SELECT NAME=MINSTAT").append(p).append(">");
+						str.append("<OPTION VALUE=\"\">Delete");
+						str.append("<OPTION SELECTED VALUE=\"").append(P.first).append("\">"+P.first);
+						str.append("</SELECT> Min Value: <INPUT NAME=STATMIN").append(p).append(" VALUE=").append(P.second.toString()).append(">");
+						str.append("<BR>");
+					}
+					str.append("<SELECT NAME=MINSTAT").append(minStats.size()).append(">");
+					for(String statName : CharStats.CODES.BASENAMES())
+						str.append("<OPTION VALUE=\"").append(CMStrings.capitalizeAndLower(statName)).append("\">").append(CMStrings.capitalizeAndLower(statName));
+					str.append("</SELECT> Min Value: <INPUT NAME=STATMIN").append(minStats.size()).append(" VALUE=\"\">");
+					str.append("<INPUT TYPE=BUTTON NAME=ADDSTATMIN VALUE=Add ONCLICK=\"ReShow();\">");
+				}
 				if(parms.containsKey("OUTFIT"))
 					str.append(RaceData.itemList(C.outfit(null),'O',httpReq,parms,0,false)+", ");
 				if(parms.containsKey("DISFLAGS"))

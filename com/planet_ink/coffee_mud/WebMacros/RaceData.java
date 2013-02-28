@@ -79,10 +79,13 @@ public class RaceData extends StdWebMacro
 			{
 				if(behav.length()>0)
 				{
-					String prof=httpReq.getUrlParameter(c+"ESTATSV"+num);
-					if(prof==null) prof="0";
-					prof=""+CMath.s_int(prof);
-					theclasses.addElement(behav,prof);
+					if(!behav.equalsIgnoreCase("REJUV"))
+					{
+						String prof=httpReq.getUrlParameter(c+"ESTATSV"+num);
+						if(prof==null) prof="0";
+						prof=""+CMath.s_int(prof);
+						theclasses.addElement(behav,prof);
+					}
 				}
 				num++;
 				behav=httpReq.getUrlParameter(c+"ESTATS"+num);

@@ -303,7 +303,7 @@ public class StdCharClass implements CharClass
 		else
 		for(int i=0;i<raceList.length;i++)
 		{
-			str.append(", ");
+			if(i>0) str.append(", ");
 			if(i==raceList.length-1)
 				str.append("or ");
 			str.append(CMStrings.capitalizeAndLower(raceList[i]));
@@ -320,7 +320,7 @@ public class StdCharClass implements CharClass
 	{
 		Pair<String,Integer>[] reqs=getMinimumStatRequirements();
 		if(reqs.length==0)
-			return "";
+			return "None";
 		StringBuilder str=new StringBuilder("");
 		for(int x=0;x<reqs.length;x++)
 		{
@@ -329,7 +329,7 @@ public class StdCharClass implements CharClass
 				str.append(", ");
 			str.append(CMStrings.capitalizeAndLower(req.first)).append(" ").append(req.second.toString()).append("+");
 		}
-		return "";
+		return str.toString();
 	}
 	
 	public String getRaceQualDesc()

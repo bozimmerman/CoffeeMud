@@ -131,6 +131,47 @@
             document.RESOURCES.action=action;
             document.RESOURCES.submit();
         }
+        function RaceQual(src,target)
+        {
+            if(src.selectedIndex<=0)
+                return;
+            var srcStr=src.options[src.selectedIndex].value;
+            var tgtStr=target.value;
+            src.selectedIndex=0;
+            if(srcStr.toLowerCase()==tgtStr.toLowerCase())
+            {
+                target.value='';
+                return;
+            }
+            var x=tgtStr.toLowerCase().indexOf(srcStr.toLowerCase()+", ");
+            if(x>=0)
+            {
+                if((x==0)||(tgtStr.substring(x-1,x)==","))
+                {
+                    target.value=tgtStr.substring(0,x)+tgtStr.substring(x+srcStr.length+2);
+                    return;
+                }
+            }
+            x=tgtStr.toLowerCase().indexOf(", "+srcStr.toLowerCase());
+            if(x>=0)
+            {
+                var y=x+2+srcStr.length;
+                if(y==tgtStr.length)
+                {
+                    target.value=tgtStr.substring(0,x);
+                    return;
+                }
+                if(tgtStr.substring(y,y+1)==",")
+                {
+                    target.value=tgtStr.substring(0,x)+tgtStr.substring(y);
+                    return;
+                }
+            }
+            if((target.value=='')||(target.value==' '))
+                target.value=srcStr;
+            else
+                target.value=tgtStr+", "+srcStr;
+        }
     //-->
     </script>
 </head>
@@ -168,6 +209,22 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Level Cap (-1 disables): </FONT></TD>
             <TD><INPUT TYPE=TEXT SIZE=5 NAME=LEVELCAP VALUE="@CharClassData?LEVELCAP@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Required Races: </FONT></TD>
+            <TD>
+                <SELECT NAME=RACQUALSEL ONCHANGE="RaceQual(this,document.RESOURCES.RACQUAL);">
+                    <OPTION SELECTED VALUE="">Pick a race/category
+                    <OPTION VALUE="All">All
+                    @RaceCatNext?RESET@ @loop@ @RaceCatNext?ALL@ <OPTION VALUE="@RequestParameter?RACECAT@">@RequestParameter?RACECAT@ @back@
+                    @RaceNext?RESET@ @loop@ @RaceNext?ALL@ <OPTION VALUE="@RaceID@">@RaceName@ @back@
+                </SELECT>
+                <INPUT TYPE=TEXT SIZE=50 NAME=RACQUAL VALUE="@CharClassData?RACQUAL@">
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Minimum Stat Reqs: </FONT></TD>
+            <TD>@CharClassData?MINSTAT@</TD>
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Hit Points / Level: </FONT></TD>
@@ -246,17 +303,17 @@
             <TD><INPUT TYPE=TEXT SIZE=80 NAME=STRBON VALUE="@CharClassData?STRBON@"></TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>Qualifications:<BR>
+            <TD><FONT COLOR=YELLOW>Qual Mask:<BR>
              <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
              </FONT></TD>
             <TD><INPUT TYPE=TEXT SIZE=60 NAME=QUAL VALUE="@CharClassData?QUAL@"></TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>PhysStat Adjustments: </FONT></TD>
+            <TD><FONT COLOR=YELLOW>PhysStat Adjusts: </FONT></TD>
             <TD>@CharClassData?ESTATS@</TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>CharStat Adjustments: </FONT></TD>
+            <TD><FONT COLOR=YELLOW>CharStat Adjusts: </FONT></TD>
             <TD>@CharClassData?ASTATS@</TD>
         </TR>
         <TR>
@@ -264,7 +321,7 @@
             <TD>@CharClassData?CSTATS@</TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>CharState Adjustments: </FONT></TD>
+            <TD><FONT COLOR=YELLOW>CharState Adjusts: </FONT></TD>
             <TD>@CharClassData?ASTATE@</TD>
         </TR>
         <TR>
