@@ -5098,6 +5098,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	protected void genPStats(MOB mob, CharClass R, int showNumber, int showFlag)
+			throws IOException
+	{
+		genPStats(mob,R,showNumber,showFlag,false);
+	}
+	protected void genPStats(MOB mob, CharClass R, int showNumber, int showFlag, boolean skipRejuv)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -5106,8 +5111,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		CMLib.coffeeMaker().setPhyStats(S,R.getStat("ESTATS"));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getStatCodes().length;i++)
-			if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
-				parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
+			if((i!=PhyStats.STAT_REJUV)||(!skipRejuv))
+				if(CMath.s_int(S.getStat(S.getStatCodes()[i]))!=0)
+					parts.append(CMStrings.capitalizeAndLower(S.getStatCodes()[i])+"("+S.getStat(S.getStatCodes()[i])+") ");
 		mob.tell(showNumber+". PhysStat Adjustments: "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean done=false;
@@ -5118,8 +5124,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				String partName=null;
 				for(int i=0;i<S.getStatCodes().length;i++)
-					if(newName.equalsIgnoreCase(S.getStatCodes()[i]))
-					{ partName=S.getStatCodes()[i]; break;}
+					if((i!=PhyStats.STAT_REJUV)||(!skipRejuv))
+						if(newName.equalsIgnoreCase(S.getStatCodes()[i]))
+						{ partName=S.getStatCodes()[i]; break;}
 				if(partName==null)
 				{
 					StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
@@ -6331,7 +6338,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genQualifications(mob,me,++showNumber,showFlag,"Qualifications","QUAL");
 			genMinimumStatQualifications(mob, me,++showNumber,showFlag);
 			genClassRaceQuals(mob, me,++showNumber,showFlag,"Required Races", "RACQUAL");
-			genPStats(mob,me,++showNumber,showFlag);
+			genPStats(mob,me,++showNumber,showFlag,true);
 			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
 			genAState(mob,me,"ASTATE","CharState Adjustments",++showNumber,showFlag);

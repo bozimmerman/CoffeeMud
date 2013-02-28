@@ -643,29 +643,7 @@ public class StdCharClass implements CharClass
 			CR.setStat("GETSTATMIN"+p,P.second.toString());
 		}
 
-		StringBuffer quals=new StringBuffer("");
-		String q=getStatQualDesc().toUpperCase();
-		if(q.length()>0)
-			for(int c : CharStats.CODES.BASE())
-				if(CharStats.CODES.DESC(c).length()>3)
-				{
-					int x=q.indexOf(CharStats.CODES.DESC(c)+" ");
-					if(x<0)
-						x=q.indexOf(CharStats.CODES.DESC(c).substring(0,3)+" ");
-					if(x>=0)
-					{
-						String qs=q.substring(q.indexOf(' ',x+1)).trim();
-						if(qs.length()>0)
-						{
-							int spot=0;
-							while(Character.isDigit(qs.charAt(spot)))
-								spot++;
-							if(spot>0)
-								quals.append("+"+CMStrings.limit(CharStats.CODES.DESC(c),3)+" "+qs.substring(0,spot)+" ");
-						}
-					}
-				}
-		CR.setStat("QUAL",quals.toString().trim());
+		CR.setStat("QUAL","");
 
 		MOB fakeMOB=CMClass.getFactoryMOB();
 		fakeMOB.baseCharStats().setMyClasses(ID());
