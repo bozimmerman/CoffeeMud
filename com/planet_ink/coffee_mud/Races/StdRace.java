@@ -504,15 +504,21 @@ public class StdRace implements Race
 		Hashtable<Item,Container> containerMap=new Hashtable<Item,Container>();
 		Hashtable<Item,Container> itemMap=new Hashtable<Item,Container>();
 		DVector lootPolicies=CMLib.utensils().parseLootPolicyFor(mob);
+		LinkedList<Item> itemsToGo=new LinkedList<Item>();
 		for(int i=0;i<mob.numItems();)
 		{
 			Item thisItem=mob.getItem(i);
+			if(thisItem != null)
+				itemsToGo.add(thisItem);
+		}
+		for(Item thisItem : itemsToGo)
+		{
 			if((thisItem!=null)&&(thisItem.isSavable()))
 			{
 				if(mob.isMonster())
 				{
 					Item newItem=CMLib.utensils().isRuinedLoot(lootPolicies,thisItem);
-					if(newItem==null){i++; continue;}
+					if(newItem==null) continue;
 					if(newItem==thisItem) newItem=(Item)thisItem.copyOf();
 					if(newItem instanceof Container)
 						itemMap.put(thisItem,(Container)newItem);
@@ -523,7 +529,6 @@ public class StdRace implements Race
 											   CMProps.getIntVar( CMProps.SYSTEMI_EXPIRE_MONSTER_EQ )* TimeManager.MILI_HOUR );
 					newItem.recoverPhyStats();
 					thisItem=newItem;
-					i++;
 				}
 				else
 					mob.delItem(thisItem);
@@ -537,9 +542,8 @@ public class StdRace implements Race
 			else
 			if(thisItem!=null)
 				mob.delItem(thisItem);
-			else
-				i++;
 		}
+		itemsToGo.clear();
 
 		Item dropItem=CMLib.catalog().getDropItem(mob,false);
 		if(dropItem!=null)
