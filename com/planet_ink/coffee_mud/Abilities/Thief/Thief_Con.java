@@ -112,7 +112,7 @@ public class Thief_Con extends ThiefSkill
 		}
 
 
-		if(((String)commands.get(0)).toUpperCase().startsWith("FOL"))
+		if(commands.get(0).toUpperCase().startsWith("FOL"))
 		{
 			mob.tell("You can't con someone into following you.");
 			return false;

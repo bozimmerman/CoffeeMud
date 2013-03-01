@@ -75,7 +75,7 @@ public class Copy extends StdCommand
 				{
 					Item I = mob.location().findItem(null, rest);
 					if(I instanceof Container)
-						srchContainer=(Container)I;
+						srchContainer=I;
 					else
 					{
 						mob.tell("MOB or Container '"+rest+"' not found.");

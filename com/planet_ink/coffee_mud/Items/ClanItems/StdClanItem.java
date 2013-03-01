@@ -389,9 +389,9 @@ public class StdClanItem extends StdItem implements ClanItem
 					for(int v=0;v<recipes.size();v++)
 					{
 						List<String> V=recipes.get(v);
-						if((V.size()>3)&&(CMath.s_int((String)V.get(3))==((ClanItem)myHost).ciType()))
+						if((V.size()>3)&&(CMath.s_int(V.get(3))==((ClanItem)myHost).ciType()))
 						{
-							int exp=CMath.s_int((String)V.get(6))/2;
+							int exp=CMath.s_int(V.get(6))/2;
 							if(exp>0)
 							{
 								C.setExp(C.getExp()+exp);

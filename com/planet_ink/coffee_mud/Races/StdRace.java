@@ -558,8 +558,8 @@ public class StdRace implements Race
 		for(Enumeration e=itemMap.keys();e.hasMoreElements();)
 		{
 			Item oldItem=(Item)e.nextElement();
-			Item newItem=(Item)itemMap.get(oldItem);
-			Item oldContainer=(Item)containerMap.get(oldItem);
+			Item newItem=itemMap.get(oldItem);
+			Item oldContainer=containerMap.get(oldItem);
 			if((oldContainer!=null)&&(newItem!=null))
 				newItem.setContainer(itemMap.get(oldContainer));
 		}
@@ -611,8 +611,7 @@ public class StdRace implements Race
 			{
 				public boolean isDeprecated()
 				{
-					if((mob==null)
-					||(mob.amDestroyed())
+					if((mob.amDestroyed())
 					||(mob.charStats().getMyRace() != myRace)
 					|| (racialEffectsList(mob) != oldReferenceListRef.get()))
 						return true;
@@ -620,7 +619,7 @@ public class StdRace implements Race
 				}
 				public void rebuild(final ChameleonList<Ability> me)
 				{
-					if((mob==null)||(mob.amDestroyed()))
+					if(mob.amDestroyed())
 						oldReferenceListRef=new WeakReference<List<Ability>>(empty);
 					else
 					{
@@ -797,9 +796,9 @@ public class StdRace implements Race
 		if(outfit==null) outfit=new Vector();
 		GR.setStat("NUMOFT",""+outfit.size());
 		for(int i=0;i<outfit.size();i++)
-			GR.setStat("GETOFTID"+i,((Item)outfit.get(i)).ID());
+			GR.setStat("GETOFTID"+i,outfit.get(i).ID());
 		for(int i=0;i<outfit.size();i++)
-			GR.setStat("GETOFTPARM"+i,((Item)outfit.get(i)).text());
+			GR.setStat("GETOFTPARM"+i,outfit.get(i).text());
 
 		GR.setStat("NUMRABLE","");
 		if(racialAbilityNames()!=null)
@@ -863,7 +862,7 @@ public class StdRace implements Race
 		GR.setStat("HEALTHRACE",otherRace.getStat("HEALTHRACE"));
 		GR.setStat("EVENTRACE",otherRace.getStat("EVENTRACE"));
 		GR.setStat("WEAPONRACE",otherRace.getStat("WEAPONRACE"));
-		int[] aging=(int[])race1.getAgingChart().clone();
+		int[] aging=race1.getAgingChart().clone();
 		for(int i=0;i<aging.length;i++)
 		{
 			if((aging[i]==Race.YEARS_AGE_LIVES_FOREVER)&&(race2.getAgingChart()[i]==Race.YEARS_AGE_LIVES_FOREVER))
@@ -1046,9 +1045,9 @@ public class StdRace implements Race
 		{
 			GR.setStat("NUMOFT",""+outfit.size());
 			for(int i=0;i<outfit.size();i++)
-				GR.setStat("GETOFTID"+i,((Item)outfit.get(i)).ID());
+				GR.setStat("GETOFTID"+i,outfit.get(i).ID());
 			for(int i=0;i<outfit.size();i++)
-				GR.setStat("GETOFTPARM"+i,((Item)outfit.get(i)).text());
+				GR.setStat("GETOFTPARM"+i,outfit.get(i).text());
 		}
 
 		race1.racialAbilities(null);
@@ -1067,17 +1066,17 @@ public class StdRace implements Race
 			GR.setStat("NUMRABLE","");
 		for(int i=0;i<dvata1.size();i++)
 		{
-			GR.setStat("GETRABLE"+i,(String)dvata1.get(i).abilityID);
-			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)dvata1.get(i).abilityID));
-			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)dvata1.get(i).abilityID)));
-			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)dvata1.get(i).abilityID));
+			GR.setStat("GETRABLE"+i,dvata1.get(i).abilityID);
+			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,dvata1.get(i).abilityID));
+			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,dvata1.get(i).abilityID)));
+			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,dvata1.get(i).abilityID));
 		}
 		for(int i=0;i<dvata2.size();i++)
 		{
-			GR.setStat("GETRABLE"+(i+dvata1.size()),(String)dvata2.get(i).abilityID);
-			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)dvata2.get(i).abilityID));
-			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)dvata2.get(i).abilityID)));
-			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)dvata2.get(i).abilityID));
+			GR.setStat("GETRABLE"+(i+dvata1.size()),dvata2.get(i).abilityID);
+			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,dvata2.get(i).abilityID));
+			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,dvata2.get(i).abilityID)));
+			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,dvata2.get(i).abilityID));
 		}
 
 		List<Ability> data=new Vector<Ability>();
@@ -1276,7 +1275,7 @@ public class StdRace implements Race
 			}
 			for(Iterator<Ability> e=ables.iterator();e.hasNext();)
 			{
-				A=(Ability)e.next();
+				A=e.next();
 				str = ((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)?lstr:astr;
 				if(A.proficiency()<=0)
 					str.append(A.name()+", ");

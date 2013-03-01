@@ -56,7 +56,7 @@ public class DefaultClanPosition implements ClanPosition
 	protected Clan.Authority[] functionChart;
 	
 	/** return a new instance of the object*/
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClanPosition();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClanPosition();}}
 	public void initializeClass(){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public CMObject copyOf()

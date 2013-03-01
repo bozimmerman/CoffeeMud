@@ -68,7 +68,7 @@ public class Restring extends StdCommand
 				{
 					Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
-						srchContainer=(Container)I;
+						srchContainer=I;
 					else
 					{
 						mob.tell("MOB or Container '"+rest+"' not found.");

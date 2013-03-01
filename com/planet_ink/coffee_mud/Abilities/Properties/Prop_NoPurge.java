@@ -60,7 +60,7 @@ public class Prop_NoPurge extends Property
 					((Container)affected).setExpirationDate(0);
 					List<Item> V=((Container)affected).getContents();
 					for(int v=0;v<V.size();v++)
-						((Item)V.get(v)).setExpirationDate(0);
+						V.get(v).setExpirationDate(0);
 				}
 			}
 			else

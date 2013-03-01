@@ -45,7 +45,7 @@ public class LogDumperServlet implements SimpleServlet
 		{
 			response.setMimeType(MIMEType.html.getType());
 			File pageFile=new File("web.log");
-			if((!pageFile.exists()) || (!pageFile.canRead()) || (pageFile.length() > (long)Integer.MAX_VALUE))
+			if((!pageFile.exists()) || (!pageFile.canRead()) || (pageFile.length() > Integer.MAX_VALUE))
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
 			byte[] fileBuf = new byte[(int)pageFile.length()];
 			BufferedInputStream bs = null;

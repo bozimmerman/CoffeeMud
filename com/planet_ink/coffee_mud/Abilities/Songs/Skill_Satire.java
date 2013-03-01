@@ -79,16 +79,15 @@ public class Skill_Satire extends BardSkill
 			return false;
 		}
 		Set<MOB> group = mob.getGroupMembers(new HashSet<MOB>());
-		if(B!=null)
-			for(MOB M : group)
+		for(MOB M : group)
+		{
+			if((M.location()==room)
+			&&(M!=mob)
+			&& B.hasWarrant(A2,M))
 			{
-				if((M.location()==room)
-				&&(M!=mob)
-				&& B.hasWarrant(A2,M))
-				{
-					forgivables.add(M);
-				}
+				forgivables.add(M);
 			}
+		}
 
 		if(!CMLib.flags().canBeHeardSpeakingBy(mob, target))
 		{

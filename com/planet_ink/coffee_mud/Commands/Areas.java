@@ -130,7 +130,7 @@ public class Areas extends StdCommand
 		final int colWidth=ListingLibrary.ColFixer.fixColWidth(22.0,mob);
 		for(;a.hasMoreElements();)
 		{
-			Area A=(Area)a.nextElement();
+			Area A=a.nextElement();
 			if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 			{
 				final String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");

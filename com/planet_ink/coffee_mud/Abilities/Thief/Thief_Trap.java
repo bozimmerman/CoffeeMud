@@ -65,7 +65,7 @@ public class Thief_Trap extends ThiefSkill
 		if(qualifyingClassLevel>maxLevel()) qualifyingClassLevel=maxLevel();
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			if((A instanceof Trap)
 			   &&(!((Trap)A).isABomb())
 			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))

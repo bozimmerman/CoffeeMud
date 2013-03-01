@@ -106,7 +106,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.get(v);
+			Ability A=V.get(v);
 			if((CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 			||(from==A.invoker())
 			||(target==from)
@@ -119,7 +119,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.get(v);
+			Ability A=V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 				A.unInvoke();
 		}
@@ -129,7 +129,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.get(v);
+			Ability A=V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=level)
 				A.unInvoke();
 		}

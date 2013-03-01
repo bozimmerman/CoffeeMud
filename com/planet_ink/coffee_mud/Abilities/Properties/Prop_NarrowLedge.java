@@ -65,7 +65,7 @@ public class Prop_NarrowLedge extends Property
 				mobsToKill.clear();
 				for(int v=0;v<V.size();v++)
 				{
-					MOB mob=(MOB)V.get(v);
+					MOB mob=V.get(v);
 					if(mob.location()!=null)
 					{
 						if((affected instanceof Room)&&(mob.location()!=affected))

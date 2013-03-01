@@ -62,7 +62,7 @@ public class GTell extends StdCommand
 				int num=CMath.s_int(CMParms.combine(commands,2));
 				if(num>V.size()) num=V.size();
 				for(int i=V.size()-num;i<V.size();i++)
-					mob.tell((String)V.get(i));
+					mob.tell(V.get(i));
 			}
 			return false;
 		}

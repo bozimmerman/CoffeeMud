@@ -151,7 +151,7 @@ public class Prayer_HuntEvil extends Prayer
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=(Room)r.next();
+			Room R=r.next();
 			if(gameHere(R)!=null)
 				rooms.addElement(R);
 		}
@@ -161,7 +161,7 @@ public class Prayer_HuntEvil extends Prayer
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
-			target=gameHere((Room)theTrail.get(0));
+			target=gameHere(theTrail.get(0));
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{

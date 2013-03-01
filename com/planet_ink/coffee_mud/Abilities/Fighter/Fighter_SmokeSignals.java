@@ -137,7 +137,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 				{
-					R=(Room)r.next();
+					R=r.next();
 					weather=R.getArea().getClimateObj().weatherType(R);
 					if((R!=mob.location())
 					&&((R.domainType()&Room.INDOORS)==0)

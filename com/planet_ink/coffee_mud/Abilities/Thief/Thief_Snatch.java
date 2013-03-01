@@ -128,9 +128,8 @@ public class Thief_Snatch extends ThiefSkill
 		boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
-		   &&(hisWeapon!=null)
-		   &&((hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)
-			  ||(hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
+		&&((hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)
+			||(hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
 		{
 			CMMsg msg=CMClass.getMsg(target,hisWeapon,null,CMMsg.MSG_DROP,null);
 			CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,null);

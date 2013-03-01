@@ -133,7 +133,7 @@ public class Fighter_FarShot extends FighterSkill
 			{
 				if((CMLib.dice().rollPercentage()<10)&&(mob.isInCombat()) && (mob.rangeToTarget() > 0))
 					helpProficiency(mob, 0);
-				if(!qualifiedWeapons.contains((Weapon)w))
+				if(!qualifiedWeapons.contains(w))
 				{
 					qualifiedWeapons.add((Weapon)w);
 					Ability A=(Ability)this.copyOf();
@@ -146,7 +146,7 @@ public class Fighter_FarShot extends FighterSkill
 			}
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
 			{
-				Item I=(Item)qualifiedWeapons.get(i);
+				Item I=qualifiedWeapons.get(i);
 				if((I.amWearingAt(Wearable.IN_INVENTORY))||(I.owner()!=affected))
 				{
 					qualifiedWeapons.remove(I);

@@ -22,9 +22,9 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	@SuppressWarnings({"unchecked", "rawtypes"})
     private int compareTo(T arg0, Object arg1)
 	{
-		if(arg0 instanceof Comparable)
+		if(arg0 != null)
 			return ((Comparable)arg0).compareTo(arg1);
-		return arg0.toString().compareTo(arg1.toString());
+		return -1;
 	}
 
     @Override

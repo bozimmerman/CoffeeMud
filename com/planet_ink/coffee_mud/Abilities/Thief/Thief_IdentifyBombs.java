@@ -77,7 +77,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 			Container C=(Container)P;
 			List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
-				if(trapCheck((Item)V.get(v)).length()>0)
+				if(trapCheck(V.get(v)).length()>0)
 				{
 					if(CMLib.dice().rollPercentage()==1)
 					{
@@ -129,7 +129,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 			{
 				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=(Environmental)i.next();
+					Environmental E2=i.next();
 					if(E2 instanceof Item)
 						if(trapCheck((Item)E2).length()>0)
 						{

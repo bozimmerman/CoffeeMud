@@ -52,7 +52,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 		
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.get(v);
+			Ability A=V.get(v);
 			Ability EA=target.fetchEffect(A.ID());
 			if((EA==null)&&(didHappen()))
 			{

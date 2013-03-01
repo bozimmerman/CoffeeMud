@@ -71,7 +71,7 @@ public class CrossRefTreeMap<T, K>
 	{
 		final Set<K> kSet=map1.get(t);
 		if(kSet == null)
-			return (Set<K>)empty;
+			return empty;
 		return kSet;
 	}
 	
@@ -80,7 +80,7 @@ public class CrossRefTreeMap<T, K>
 	{
 		final Set<T> tSet=map2.get(k);
 		if(tSet == null)
-			return (Set<T>)empty;
+			return empty;
 		return tSet;
 	}
 	

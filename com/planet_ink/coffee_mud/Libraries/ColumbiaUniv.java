@@ -129,7 +129,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		List<ExpertiseDefinition> V=new Vector<ExpertiseDefinition>();
 		for(Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
-			D=(ExpertiseDefinition)e.nextElement();
+			D=e.nextElement();
 			if(((D.compiledFinalMask()==null)||(CMLib.masking().maskCheck(D.compiledFinalMask(),mob,true)))
 			&&((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true))))
 				V.add(D);
@@ -142,7 +142,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		List<ExpertiseDefinition> V=new Vector<ExpertiseDefinition>();
 		for(Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
 		{
-			D=(ExpertiseDefinition)e.nextElement();
+			D=e.nextElement();
 			if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
 				V.add(D);
 		}
@@ -177,7 +177,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					List<String> codes=new LinkedList<String>();
 					for(Enumeration<String> e=completeEduMap.keys();e.hasMoreElements();)
 					{
-						key=(String)e.nextElement();
+						key=e.nextElement();
 						if(key.startsWith(baseExpertiseCode)
 						&&(CMath.isInteger(key.substring(baseExpertiseCode.length()))||CMath.isRomanNumeral(key.substring(baseExpertiseCode.length()))))
 							codes.add(key);
@@ -207,11 +207,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 	public String getApplicableExpertise(String ID, int code)
 	{
-		return (String)completeUsageMap[code].get(ID);
+		return completeUsageMap[code].get(ID);
 	}
 	public int getApplicableExpertiseLevel(String ID, int code, MOB mob)
 	{
-		Entry<String,Integer> e=mob.fetchExpertise((String)completeUsageMap[code].get(ID));
+		Entry<String,Integer> e=mob.fetchExpertise(completeUsageMap[code].get(ID));
 		if((e!=null)&&(e.getValue()!=null))
 			return e.getValue().intValue();
 		return 0;
@@ -321,30 +321,30 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		Vector<String> parts=CMParms.parseCommas(row,false);
 		if(parts.size()!=11)
 			return "Error: Expertise row malformed (Requires 11 entries/10 commas): "+ID+"="+row;
-		name=(String)parts.elementAt(0);
+		name=parts.elementAt(0);
 		if(name.length()==0)
 			return "Error: Expertise name ("+name+") malformed: "+ID+"="+row;
-		if(!CMath.isInteger((String)parts.elementAt(1)))
-			return "Error: Expertise num ("+((String)parts.elementAt(1))+") malformed: "+ID+"="+row;
-		levels=CMath.s_int((String)parts.elementAt(1));
+		if(!CMath.isInteger(parts.elementAt(1)))
+			return "Error: Expertise num ("+(parts.elementAt(1))+") malformed: "+ID+"="+row;
+		levels=CMath.s_int(parts.elementAt(1));
 		flags.clear();
-		flags.addAll(CMParms.parseAny(((String)parts.elementAt(2)).toUpperCase(),'|',true));
+		flags.addAll(CMParms.parseAny(parts.elementAt(2).toUpperCase(),'|',true));
 		
-		skillMask=(String)parts.elementAt(3);
+		skillMask=parts.elementAt(3);
 		if(skillMask.length()==0)
 			return "Error: Expertise skill mask ("+skillMask+") malformed: "+ID+"="+row;
 		skillsToRegister=CMLib.masking().getAbilityEduReqs(skillMask);
 		if(skillsToRegister.size()==0)
 			return "Error: Expertise no skills ("+skillMask+") found: "+ID+"="+row;
-		listMask=skillMask+" "+((String)parts.elementAt(4));
-		finalMask=(((String)parts.elementAt(5)));
+		listMask=skillMask+" "+(parts.elementAt(4));
+		finalMask=((parts.elementAt(5)));
 		for(int i=6;i<11;i++)
-			costs[i-6]=(String)parts.elementAt(i);
+			costs[i-6]=parts.elementAt(i);
 		didOne=false;
 		for(int u=0;u<completeUsageMap.length;u++)
 			didOne=didOne||flags.contains(ExpertiseLibrary.XFLAG_CODES[u]);
 		if(!didOne)
-			return "Error: No flags ("+((String)parts.elementAt(2)).toUpperCase()+") were set: "+ID+"="+row;
+			return "Error: No flags ("+parts.elementAt(2).toUpperCase()+") were set: "+ID+"="+row;
 		if(addIfPossible)
 		{
 			String baseName=CMStrings.replaceAll(CMStrings.replaceAll(ID,"@X2",""),"@X1","").toUpperCase();
@@ -378,7 +378,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		for(int u=0;u<completeUsageMap.length;u++)
 			if(flags.contains(ExpertiseLibrary.XFLAG_CODES[u]))
 				for(int k=0;k<skillsToRegister.size();k++)
-					completeUsageMap[u].put((String)skillsToRegister.get(k),ID);
+					completeUsageMap[u].put(skillsToRegister.get(k),ID);
 		return addIfPossible?ID:null;
 	}
 	
@@ -391,7 +391,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		String ID=null,WKID=null;
 		for(int v=0;v<V.size();v++)
 		{
-			String row=(String)V.get(v);
+			String row=V.get(v);
 			WKID=this.confirmExpertiseLine(row,ID,true);
 			if(WKID==null) continue;
 			if(WKID.startsWith("Error: "))

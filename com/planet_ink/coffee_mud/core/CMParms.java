@@ -185,10 +185,10 @@ public class CMParms
 		String s;
 		for(int i=0;i<commands.size();i++)
 		{
-			s=(String)commands.elementAt(i);
+			s=commands.elementAt(i);
 			if(s.startsWith("=")&&(s.length()>1)&&(i>0))
 			{
-				final String prev=(String)commands.elementAt(i-1);
+				final String prev=commands.elementAt(i-1);
 				commands.setElementAt(prev+s,i-1);
 				commands.removeElementAt(i);
 				i--;
@@ -196,15 +196,15 @@ public class CMParms
 			else
 			if(s.endsWith("=")&&(s.length()>1)&&(i<(commands.size()-1)))
 			{
-				final String next=(String)commands.elementAt(i+1);
+				final String next=commands.elementAt(i+1);
 				commands.setElementAt(s+next,i);
 				commands.removeElementAt(i+1);
 			}
 			else
 			if(s.equals("=")&&((i>0)&&(i<(commands.size()-1))))
 			{
-				final String prev=(String)commands.elementAt(i-1);
-				final String next=(String)commands.elementAt(i+1);
+				final String prev=commands.elementAt(i-1);
+				final String next=commands.elementAt(i+1);
 				commands.setElementAt(prev+"="+next,i-1);
 				commands.removeElementAt(i);
 				commands.removeElementAt(i+1);
@@ -1037,8 +1037,8 @@ public class CMParms
 						if(text.substring(0,x).indexOf('.')<0)
 						{
 							if(pm=='+')
-								return (double)CMath.s_int(text.substring(0,x));
-							return (double)(-CMath.s_int(text.substring(0,x)));
+								return CMath.s_int(text.substring(0,x));
+							return (-CMath.s_int(text.substring(0,x)));
 						}
 						if(pm=='+')
 							return CMath.s_double(text.substring(0,x));
@@ -1076,7 +1076,7 @@ public class CMParms
 						&&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
 							x++;
 						if(text.substring(0,x).indexOf('.')<0)
-							return (double)CMath.s_long(text.substring(0,x));
+							return CMath.s_long(text.substring(0,x));
 						return CMath.s_double(text.substring(0,x));
 					}
 				}
@@ -1220,7 +1220,7 @@ public class CMParms
 		Object o;
 		for(;bytes.hasMoreElements();)
 		{
-			o=(Object)bytes.nextElement();
+			o=bytes.nextElement();
 			str.append(o.toString()+(bytes.hasMoreElements()?";":""));
 		}
 		return str.toString();
@@ -1293,7 +1293,7 @@ public class CMParms
 		{
 			final byte[] bytes=new byte[V.size()];
 			for(int b=0;b<V.size();b++)
-				bytes[b]=Byte.parseByte((String)V.elementAt(b));
+				bytes[b]=Byte.parseByte(V.elementAt(b));
 			return bytes;
 		}
 		return new byte[0];
@@ -1366,7 +1366,7 @@ public class CMParms
 	public final static String toEnvironmentalStringList(final Enumeration<? extends Environmental> e)
 	{
 		if(!e.hasMoreElements()) return "";
-		Environmental o=(Environmental)e.nextElement();
+		Environmental o=e.nextElement();
 		final StringBuilder s=new StringBuilder(o.name());
 		for(;e.hasMoreElements();)
 			s.append(", "+e.nextElement().name());
@@ -1376,7 +1376,7 @@ public class CMParms
 	public final static String toCMObjectStringList(final Enumeration<? extends CMObject> e)
 	{
 		if(!e.hasMoreElements()) return "";
-		CMObject o=(CMObject)e.nextElement();
+		CMObject o=e.nextElement();
 		final StringBuilder s=new StringBuilder(o.ID());
 		for(;e.hasMoreElements();)
 			s.append(", "+e.nextElement().ID());
@@ -1386,7 +1386,7 @@ public class CMParms
 	public final static String toCMObjectStringList(final Iterator<? extends CMObject> e)
 	{
 		if(!e.hasNext()) return "";
-		CMObject o=(CMObject)e.next();
+		CMObject o=e.next();
 		final StringBuilder s=new StringBuilder(o.ID());
 		for(;e.hasNext();)
 			s.append(", "+e.next().ID());
@@ -1431,7 +1431,7 @@ public class CMParms
 		if((V==null)||(V.length==0)){
 			return "";
 		}
-		final StringBuilder s=new StringBuilder(Integer.toString((int)V[0]));
+		final StringBuilder s=new StringBuilder(Integer.toString(V[0]));
 		for(int v=1;v<V.length;v++)
 			s.append(", "+((int)V[v]));
 		return s.toString();

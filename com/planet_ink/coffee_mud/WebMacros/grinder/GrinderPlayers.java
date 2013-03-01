@@ -340,7 +340,7 @@ public class GrinderPlayers extends GrinderMobs
 					C.setStat(i,CMath.s_int(old));
 				else
 				if(old.length()>0)
-					C.setStat(i,(int)old.charAt(0));
+					C.setStat(i,old.charAt(0));
 			}
 		}
 		for(int i : CharStats.CODES.ALL())
@@ -355,7 +355,7 @@ public class GrinderPlayers extends GrinderMobs
 					C.setStat(i,CMath.s_int(old));
 				else
 				if(old.length()>0)
-					C.setStat(i,(int)old.charAt(0));
+					C.setStat(i,old.charAt(0));
 			}
 		}
 		GrinderPlayers.setBasics(httpReq,M);

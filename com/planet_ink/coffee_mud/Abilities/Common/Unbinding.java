@@ -58,7 +58,7 @@ public class Unbinding extends CommonSkill
 				   affects=CMLib.flags().flaggedAffects(found,Ability.FLAG_BINDING);
 				if((affects!=null)&&(affects.size()>0))
 				{
-					removing=(Ability)affects.get(0);
+					removing=affects.get(0);
 					displayText="You are removing "+removing.name()+" from "+found.name();
 					verb="removing "+removing.name()+" from "+found.name();
 				}
@@ -140,7 +140,7 @@ public class Unbinding extends CommonSkill
 			mob.tell(target.name()+" does not have any bindings you can remove.");
 			return false;
 		}
-		Ability A=(Ability)affects.get(0);
+		Ability A=affects.get(0);
 		
 		verb="unbinding";
 		found=null;

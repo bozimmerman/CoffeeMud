@@ -82,7 +82,7 @@ public class Spell_ShrinkMouth extends Spell
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		if((success)&&((target instanceof MOB)||(target instanceof Item)))
+		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> cast(s) a puckering spell on <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))

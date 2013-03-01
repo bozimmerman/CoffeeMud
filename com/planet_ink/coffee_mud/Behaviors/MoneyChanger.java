@@ -83,7 +83,7 @@ public class MoneyChanger extends StdBehavior
 							x++;
 						double val=CMath.s_double(newParm.substring(0,x));
 						if(newParm.substring(0,x).indexOf('.')<0)
-							val= (double)CMath.s_long(newParm.substring(0,x));
+							val= CMath.s_long(newParm.substring(0,x));
 						if(x<newParm.length())
 							newParm=newParm.substring(x+1);
 						else

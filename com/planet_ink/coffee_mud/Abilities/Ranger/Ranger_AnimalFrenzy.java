@@ -110,7 +110,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if((invoker!=null)&&(affected!=invoker)&&(invoker.isInCombat()))
 		{
-			float f=(float)super.getXLEVELLevel(invoker());
+			float f=super.getXLEVELLevel(invoker());
 			int invoAtt=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0-(f*5.0)),invoker.phyStats().attackAdjustment()));
 			int damBonus=(int)Math.round(CMath.mul(affectableStats.damage(),(CMath.div(proficiency(),100.0-(f*5.0))*4.0)));
 			affectableStats.setDamage(affectableStats.damage()+damBonus);

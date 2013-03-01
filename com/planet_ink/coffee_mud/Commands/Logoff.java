@@ -62,8 +62,7 @@ public class Logoff extends StdCommand
 					session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", System.currentTimeMillis()+30000){
 						@Override
 						public void showPrompt() {
-							if(session!=null)
-								session.print("\n\rLogout -- are you sure (y/N)?");
+							session.print("\n\rLogout -- are you sure (y/N)?");
 						}
 						@Override
 						public void timedOut() {}

@@ -106,7 +106,7 @@ public class InstantDeath extends ActiveTicker
 				if(E==null) return true;
 				Room room=getBehaversRoom(ticking);
 				if(room==null) return true;
-				if((E instanceof MOB)&&((mask==null)||(CMLib.masking().maskCheck(mask, (MOB)E, false))))
+				if((E instanceof MOB)&&((mask==null)||(CMLib.masking().maskCheck(mask, E, false))))
 					CMLib.combat().postDeath(null,(MOB)E,null);
 				else
 				if(E instanceof Room)

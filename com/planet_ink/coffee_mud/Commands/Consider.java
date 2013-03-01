@@ -47,8 +47,8 @@ public class Consider extends StdCommand
 		if((mob1==null)||(mob2==null)) return 0;
 		int mob2Armor=CMLib.combat().adjustedArmor(mob2);
 		int mob1Armor=CMLib.combat().adjustedArmor(mob1);
-		double mob1Attack=(double)CMLib.combat().adjustedAttackBonus(mob1,mob2);
-		double mob2Attack=(double)CMLib.combat().adjustedAttackBonus(mob2,mob1);
+		double mob1Attack=CMLib.combat().adjustedAttackBonus(mob1,mob2);
+		double mob2Attack=CMLib.combat().adjustedAttackBonus(mob2,mob1);
 		int mob2Dmg=mob2.phyStats().damage();
 		int mob1Dmg=mob1.phyStats().damage();
 		int mob2Hp=mob2.baseState().getHitPoints();

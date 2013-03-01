@@ -93,7 +93,7 @@ public class RandomItems extends ActiveTicker
 			Vector<String> V=CMParms.parse(extraParms);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=(String)V.elementAt(v);
+				String s=V.elementAt(v);
 				if(s.equalsIgnoreCase("MOBS"))
 					favorMobs=true;
 				else
@@ -310,7 +310,7 @@ public class RandomItems extends ActiveTicker
 				return false;
 			while((maintained.size()<avgItems)&&(((--attempts)>0)))
 			{
-				I=(Item)items.get(CMLib.dice().roll(1,items.size(),-1));
+				I=items.get(CMLib.dice().roll(1,items.size(),-1));
 				if(I!=null)
 				{
 					I=(Item)I.copyOf();

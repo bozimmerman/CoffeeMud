@@ -68,12 +68,12 @@ public class Prop_Trainer extends Prop_StatTrainer
 			String s=null;
 			for(int v=0;v<V.size();v++)
 			{
-				s=(String)V.elementAt(v);
+				s=V.elementAt(v);
 				if(s.equalsIgnoreCase("all")) continue;
 				C=CMClass.getCharClass(s);
 				if(C!=null)
 				{
-					if((v>0)&&(((String)V.elementAt(v-1)).equalsIgnoreCase("ALL")))
+					if((v>0)&&(V.elementAt(v-1).equalsIgnoreCase("ALL")))
 					{
 						String baseClass=C.baseClass();
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
@@ -98,7 +98,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 				allowedClasses.addElement(c.nextElement());
 			if(allowedExpertises.size()==0)
 			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
-				allowedExpertises.addElement((ExpertiseLibrary.ExpertiseDefinition)e.nextElement());
+				allowedExpertises.addElement(e.nextElement());
 			
 			
 			MOB mob=(MOB)affected;

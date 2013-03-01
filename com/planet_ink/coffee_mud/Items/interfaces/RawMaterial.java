@@ -1464,7 +1464,7 @@ public interface RawMaterial extends Item
 						}
 					}
 					PairSVector<Integer,Double> finalBucket=new PairSVector<Integer,Double>();
-					final double pieceSize=1.0 / (double)newBucket.size();
+					final double pieceSize=1.0 / newBucket.size();
 					double currValue = 0.0;
 					for(Iterator<Pair<Integer,Double>> i=newBucket.iterator();i.hasNext();)
 					{

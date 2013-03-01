@@ -142,7 +142,7 @@ public class Chant_PlantMaze extends Chant
 				Room newRoom=CMClass.getLocale("WoodsMaze");
 				((GridLocale)newRoom).setXGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
 				((GridLocale)newRoom).setYGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
-				String s=((String)CMParms.parse(thePlants.name()).lastElement()).toLowerCase();
+				String s=CMParms.parse(thePlants.name()).lastElement().toLowerCase();
 				if(!s.endsWith("s"))s=s+"s";
 				String nos=s.substring(0,s.length()-1).toLowerCase();
 				newRoom.setDisplayText(CMStrings.capitalizeAndLower(nos)+" Maze");

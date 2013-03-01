@@ -519,7 +519,7 @@ public class Spell_Wish extends Spell
 					{
 						List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, locationWish.trim(), true, 10);
 						if(rooms.size()>0)
-							newRoom=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+							newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 					}catch(NoSuchElementException nse){}
 				}
 				if(newRoom!=null)
@@ -675,9 +675,9 @@ public class Spell_Wish extends Spell
 					Vector<String> V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
-						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
+						if(V.elementAt(i2).equalsIgnoreCase("LEVELS"))
 						{
-							String s=(String)V.elementAt(i2-1);
+							String s=V.elementAt(i2-1);
 							if(CMath.isNumber(s)
 							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
@@ -694,9 +694,9 @@ public class Spell_Wish extends Spell
 					Vector<String> V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
-						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
+						if(V.elementAt(i2).equalsIgnoreCase("LEVELS"))
 						{
-							String s=(String)V.elementAt(i2);
+							String s=V.elementAt(i2);
 							if(CMath.isNumber(s)
 							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
@@ -711,9 +711,9 @@ public class Spell_Wish extends Spell
 					Vector<String> V=CMParms.parse(myWish);
 					for(int i2=0;i2<V.size()-1;i2++)
 					{
-						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVEL"))
+						if(V.elementAt(i2).equalsIgnoreCase("LEVEL"))
 						{
-							String s=(String)V.elementAt(i2+1);
+							String s=V.elementAt(i2+1);
 							if(CMath.isNumber(s)
 							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{

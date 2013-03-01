@@ -100,7 +100,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.get(a)).unInvoke();
+					offensiveAffects.get(a).unInvoke();
 				if((target instanceof Drink)&&(((Drink)target).liquidType()==RawMaterial.RESOURCE_POISON))
 				{
 					((Drink)target).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);

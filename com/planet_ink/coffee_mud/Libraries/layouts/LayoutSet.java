@@ -175,8 +175,8 @@ public class LayoutSet
 						&&(!p.links().containsValue(p2)))
 						{
 							Enumeration<LayoutNode> nodes=p.links().elements();
-							LayoutNode p_1=(LayoutNode)nodes.nextElement();
-							LayoutNode p_2=(LayoutNode)nodes.nextElement();
+							LayoutNode p_1=nodes.nextElement();
+							LayoutNode p_2=nodes.nextElement();
 							p.deLink();
 							p_1.crossLink(p_2);
 							unUse(p);
@@ -193,7 +193,7 @@ public class LayoutSet
 	{
 		for(Enumeration<LayoutNode> e=set().elements();e.hasMoreElements();)
 		{
-			LayoutNode n = (LayoutNode)e.nextElement();
+			LayoutNode n = e.nextElement();
 			int[] dirs=new int[n.links().size()];
 			int x=0;
 			for(Integer dirLink : n.links().keySet())
@@ -204,7 +204,7 @@ public class LayoutSet
 		}
 		for(Enumeration<LayoutNode> e=set().elements();e.hasMoreElements();)
 		{
-			LayoutNode n = (LayoutNode)e.nextElement();
+			LayoutNode n = e.nextElement();
 			if(n.links().size()==2)
 			{
 				LayoutFlags flag = null;

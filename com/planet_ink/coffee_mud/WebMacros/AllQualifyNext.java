@@ -58,7 +58,7 @@ public class AllQualifyNext extends StdWebMacro
 		String abilityID;
 		for(Iterator<String> i=map.keySet().iterator();i.hasNext();)
 		{
-			abilityID=(String)i.next();
+			abilityID=i.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!abilityID.equalsIgnoreCase(lastID))))
 			{
 				httpReq.addFakeUrlParameter("ALLQUALID",abilityID);

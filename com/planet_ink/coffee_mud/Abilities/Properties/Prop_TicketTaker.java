@@ -47,7 +47,7 @@ public class Prop_TicketTaker extends Property
 	protected double cost(){
 		int amount=CMath.s_int(text());
 		if(amount==0) amount=10;
-		return (double)amount;
+		return amount;
 	}
 
 	protected boolean isMine(Environmental host, Rideable R)

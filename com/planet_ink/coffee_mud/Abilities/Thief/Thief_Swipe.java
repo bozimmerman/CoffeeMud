@@ -78,7 +78,7 @@ public class Thief_Swipe extends ThiefSkill
 		{
 			if(!(target instanceof MOB))
 				return Ability.QUALITY_INDIFFERENT;
-			if((target==null)||((MOB)target).amDead()||(!CMLib.flags().canBeSeenBy(target,mob)))
+			if(((MOB)target).amDead()||(!CMLib.flags().canBeSeenBy(target,mob)))
 				return Ability.QUALITY_INDIFFERENT;
 			if((mob.isInCombat())&&(CMLib.flags().aliveAwakeMobile((MOB)target,true)||(mob.getVictim()!=target)))
 				return Ability.QUALITY_INDIFFERENT;
@@ -155,8 +155,8 @@ public class Thief_Swipe extends ThiefSkill
 			if(levelDiff>5) pct=0.10;
 			if(levelDiff>10) pct=0.05;
 			double goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)*pct*Math.random();
-			if(goldTaken<((double)CMLib.ableMapper().qualifyingClassLevel(mob,this)))
-				goldTaken=(double)CMLib.ableMapper().qualifyingClassLevel(mob,this);
+			if(goldTaken<(CMLib.ableMapper().qualifyingClassLevel(mob,this)))
+				goldTaken=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 			if(goldTaken>CMLib.beanCounter().getTotalAbsoluteNativeValue(target)) goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target);
 			String goldTakenStr=CMLib.beanCounter().nameCurrencyShort(target,goldTaken);
 

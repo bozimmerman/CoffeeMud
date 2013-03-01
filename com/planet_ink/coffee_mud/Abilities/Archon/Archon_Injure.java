@@ -80,9 +80,9 @@ public class Archon_Injure extends ArchonSkill
 			remainingLimbList.add("torso");
 		String gone=null;
 		for(int i=0;i<remainingLimbList.size();i++)
-			if((part==null)||((String)remainingLimbList.get(i)).toUpperCase().endsWith(part))
+			if((part==null)||remainingLimbList.get(i).toUpperCase().endsWith(part))
 			{
-				gone=(String)remainingLimbList.get(i);
+				gone=remainingLimbList.get(i);
 				break;
 			}
 		if((gone==null)||(part==null))

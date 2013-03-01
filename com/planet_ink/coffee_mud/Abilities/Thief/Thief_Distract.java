@@ -52,7 +52,7 @@ public class Thief_Distract extends ThiefSkill
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		float f=(float)0.05*(float)super.getXLEVELLevel(invoker());
+		float f=(float)0.05*super.getXLEVELLevel(invoker());
 		affectableStats.setArmor(affectableStats.armor()+super.getXLEVELLevel(invoker())+30+abilityCode());
 		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-(int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0-f)))-abilityCode());
 	}

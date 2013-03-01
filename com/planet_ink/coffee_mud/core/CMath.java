@@ -273,7 +273,7 @@ public class CMath
 	 */
 	public final static double div(final double a, final int b)
 	{
-		return a/((double)b);
+		return a/(b);
 	}
 	/**
 	 * Divide a by b, making sure both are cast to doubles
@@ -284,7 +284,7 @@ public class CMath
 	 */
 	public final static double div(final int a, final double b)
 	{
-		return ((double)a)/b;
+		return (a)/b;
 	}
 	/**
 	 * Divide a by b, making sure both are cast to doubles
@@ -295,7 +295,7 @@ public class CMath
 	 */
 	public final static double div(final double a, final long b)
 	{
-		return a/((double)b);
+		return a/(b);
 	}
 	/**
 	 * Divide a by b, making sure both are cast to doubles
@@ -306,7 +306,7 @@ public class CMath
 	 */
 	public final static double div(final long a, final double b)
 	{
-		return ((double)a)/b;
+		return (a)/b;
 	}
 	/**
 	 * Multiply a and b, making sure both are cast to doubles
@@ -328,7 +328,7 @@ public class CMath
 	 */
 	public final static double mul(final double a, final int b)
 	{
-		return a*((double)b);
+		return a*(b);
 	}
 	/**
 	 * Multiply a and b, making sure both are cast to doubles
@@ -339,7 +339,7 @@ public class CMath
 	 */
 	public final static double mul(final int a, final double b)
 	{
-		return ((double)a)*b;
+		return (a)*b;
 	}
 	/**
 	 * Multiply a and b, making sure both are cast to doubles
@@ -350,7 +350,7 @@ public class CMath
 	 */
 	public final static double mul(final double a, final long b)
 	{
-		return a*((double)b);
+		return a*(b);
 	}
 	/**
 	 * Multiply a and b, making sure both are cast to doubles
@@ -361,7 +361,7 @@ public class CMath
 	 */
 	public final static double mul(final long a, final double b)
 	{
-		return ((double)a)*b;
+		return (a)*b;
 	}
 	/**
 	 * Multiply a and b, making sure both are cast to doubles
@@ -416,7 +416,7 @@ public class CMath
 	 */
 	public final static long pow(final long x, final long y)
 	{
-		return Math.round(Math.pow(((double)x),((double)y)));
+		return Math.round(Math.pow((x),(y)));
 	}
 	/**
 	 * Returns x, squared, after being case to a double
@@ -425,7 +425,7 @@ public class CMath
 	 */
 	public final static int squared(final int x)
 	{
-		return (int)Math.round(Math.pow(((double)x),2.0));
+		return (int)Math.round(Math.pow((x),2.0));
 	}
 	/**
 	 * Returns true if the given number has the bits
@@ -992,7 +992,7 @@ public class CMath
 					continue;
 				}
 				default:
-					throw new ArithmeticException("'"+(char)c+"' ("+(int)c+") is an illegal expression.");
+					throw new ArithmeticException("'"+(char)c+"' ("+c+") is an illegal expression.");
 				}
 				switch(lastOperation)
 				{

@@ -62,8 +62,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		super.cloneFix(E);
 		if(E instanceof StdThinGrid)
 		{
-			descriptions=(String[])((StdThinGrid)E).descriptions.clone();
-			displayTexts=(String[])((StdThinGrid)E).displayTexts.clone();
+			descriptions=((StdThinGrid)E).descriptions.clone();
+			displayTexts=((StdThinGrid)E).displayTexts.clone();
 			gridexits=((StdThinGrid)E).gridexits.copyOf();
 		}
 	}
@@ -80,7 +80,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		Room R=null;
 		for(int i=rooms.size()-1;i>=0;i--)
 		{
-			R=(Room)rooms.elementAt(i).room;
+			R=rooms.elementAt(i).room;
 			if(R!=null) R.destroy();
 		}
 		rooms.clear();
@@ -177,7 +177,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				rooms.addElement(entry);
 				return;
 			}
-			long comptotal=((long)rooms.elementAt(pos).xy.x<<31)+(long)rooms.elementAt(pos).xy.y;
+			long comptotal=((long)rooms.elementAt(pos).xy.x<<31)+rooms.elementAt(pos).xy.y;
 			int comp=comptotal>total?1:(comptotal==total)?0:-1;
 			if(comp==0) return;
 			if(comp>0)
@@ -243,14 +243,14 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				if(displayTexts.length>0)
 				{
 					c=CMLib.dice().roll(1,displayTexts.length,-1);
-					R.setDisplayText((String)displayTexts[c]);
+					R.setDisplayText(displayTexts[c]);
 				}
 				if(descriptions!=null)
 				if(descriptions.length>0)
 				{
 					if((c<0)||(c>descriptions.length)||(descriptions.length!=displayTexts.length))
 						c=CMLib.dice().roll(1,descriptions.length,-1);
-					R.setDescription((String)descriptions[c]);
+					R.setDescription(descriptions[c]);
 				}
 	
 				for(int a=0;a<numEffects();a++)
@@ -388,7 +388,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 
 		for(int d=0;d<gridexits.size();d++)
 		{
-			WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
+			WorldMap.CrossExit EX=gridexits.elementAt(d);
 			try{
 				if((EX.out)&&(EX.x==x)&&(EX.y==y))
 					switch(EX.dir)
@@ -459,7 +459,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return R;
 	}
 
-	public Iterator<WorldMap.CrossExit> outerExits(){return (Iterator<WorldMap.CrossExit>)gridexits.iterator();}
+	public Iterator<WorldMap.CrossExit> outerExits(){return gridexits.iterator();}
 	public void delOuterExit(WorldMap.CrossExit x){gridexits.remove(x);}
 	public void addOuterExit(WorldMap.CrossExit x){gridexits.addElement(x);}
 
@@ -472,7 +472,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		String roomID=CMLib.map().getExtendedRoomID(loc);
 		for(int d=0;d<gridexits.size();d++)
 		{
-			WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
+			WorldMap.CrossExit EX=gridexits.elementAt(d);
 			if((!EX.out)
 			&&(EX.destRoomID.equalsIgnoreCase(roomID))
 			&&(EX.dir==direction)
@@ -573,7 +573,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(room.getGridParent()==this)
 		for(int d=0;d<gridexits.size();d++)
 		{
-			WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
+			WorldMap.CrossExit EX=gridexits.elementAt(d);
 			try{
 				if((EX.out)&&(EX.dir==dir)
 				&&(getGridRoomIfExists(EX.x,EX.y)==room))

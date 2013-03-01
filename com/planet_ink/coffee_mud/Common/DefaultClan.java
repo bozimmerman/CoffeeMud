@@ -78,7 +78,7 @@ public class DefaultClan implements Clan
 	protected final List<Pair<Clan,Integer>> channelSet = new XVector<Pair<Clan,Integer>>(1,true);
 
 	/** return a new instance of the object*/
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClan();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClan();}}
 	public void initializeClass(){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public CMObject copyOf()
@@ -123,10 +123,10 @@ public class DefaultClan implements Clan
 				lastClanKillRecord="";
 			else
 			{
-				lastClanKillRecord=((DatabaseEngine.PlayerData)V.get(0)).xml;
+				lastClanKillRecord=V.get(0).xml;
 				Vector<String> V2=CMParms.parseSemicolons(lastClanKillRecord,true);
 				for(int v=0;v<V2.size();v++)
-					clanKills.add(Long.valueOf(CMath.s_long((String)V2.elementAt(v))));
+					clanKills.add(Long.valueOf(CMath.s_long(V2.elementAt(v))));
 			}
 		}
 	}
@@ -137,7 +137,7 @@ public class DefaultClan implements Clan
 		StringBuffer str=new StringBuffer("");
 		for(int i=clanKills.size()-1;i>=0;i--)
 		{
-			date=(Long)clanKills.get(i);
+			date=clanKills.get(i);
 			if(date.longValue()<(System.currentTimeMillis()))
 				clanKills.remove(i);
 			else
@@ -155,7 +155,7 @@ public class DefaultClan implements Clan
 		StringBuffer str=new StringBuffer("");
 		for(Enumeration<ClanVote> e=votes();e.hasMoreElements();)
 		{
-			ClanVote CV=(ClanVote)e.nextElement();
+			ClanVote CV=e.nextElement();
 			str.append(CMLib.xml().convertXMLtoTag("BY",CV.voteStarter));
 			str.append(CMLib.xml().convertXMLtoTag("FUNC",CV.function));
 			str.append(CMLib.xml().convertXMLtoTag("ON",""+CV.voteStarted));
@@ -181,10 +181,10 @@ public class DefaultClan implements Clan
 	}
 	public void addVote(ClanVote CV)
 	{
-		if(!(CV instanceof ClanVote))
+		if(CV==null)
 			return;
 		votes();
-		voteList.add((ClanVote)CV);
+		voteList.add(CV);
 	}
 	public void delVote(ClanVote CV)
 	{
@@ -241,7 +241,7 @@ public class DefaultClan implements Clan
 		Vector<Area> done=new Vector<Area>();
 		for(Enumeration<Area> e=CMLib.map().sortedAreas();e.hasMoreElements();)
 		{
-			Area A=(Area)e.nextElement();
+			Area A=e.nextElement();
 			LegalBehavior B=CMLib.law().getLegalBehavior(A);
 			if(B!=null)
 			{
@@ -263,7 +263,7 @@ public class DefaultClan implements Clan
 			for(int v=0;v<V.size();v++)
 			{
 				ClanVote CV=new ClanVote();
-				String rawxml=((DatabaseEngine.PlayerData)V.get(v)).xml;
+				String rawxml=V.get(v).xml;
 				if(rawxml.trim().length()==0) return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
 				List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(rawxml);
 				if(xml==null)
@@ -284,7 +284,7 @@ public class DefaultClan implements Clan
 				{
 					for(int x=0;x<xV.size();x++)
 					{
-						XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
+						XMLLibrary.XMLpiece iblk=xV.get(x);
 						if((!iblk.tag.equalsIgnoreCase("VOTE"))||(iblk.contents==null))
 							continue;
 						String userID=CMLib.xml().getValFromPieces(iblk.contents,"BY");
@@ -322,7 +322,7 @@ public class DefaultClan implements Clan
 			if(oldxp < exp) // we gained
 			{
 				double nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
-				while((double)exp > nextLevelXP)
+				while(exp > nextLevelXP)
 				{
 					setClanLevel(getClanLevel()+1);
 					clanAnnounce(""+getGovernmentName()+" "+name()+" has attained clan level "+getClanLevel()+"!");
@@ -334,7 +334,7 @@ public class DefaultClan implements Clan
 			if((oldxp > exp) && (getClanLevel()>1))
 			{
 				double prevLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()-1}, 0.0);
-				while((double)exp < prevLevelXP)
+				while(exp < prevLevelXP)
 				{
 					setClanLevel(getClanLevel()-1);
 					clanAnnounce(""+getGovernmentName()+" "+name()+" has reverted to clan level "+getClanLevel()+"!");
@@ -358,14 +358,14 @@ public class DefaultClan implements Clan
 
 	public int getClanRelations(String id)
 	{
-		long i[]=(long[])relations.get(id.toUpperCase());
+		long i[]=relations.get(id.toUpperCase());
 		if(i!=null) return (int)i[0];
 		return  REL_NEUTRAL;
 	}
 
 	public long getLastRelationChange(String id)
 	{
-		long i[]=(long[])relations.get(id.toUpperCase());
+		long i[]=relations.get(id.toUpperCase());
 		if(i!=null) return i[1];
 		return 0;
 	}
@@ -501,7 +501,7 @@ public class DefaultClan implements Clan
 			}
 			for(int i=0;i<itemsToMove.size();i++)
 			{
-				I=(Item)itemsToMove.elementAt(i);
+				I=itemsToMove.elementAt(i);
 				Room R=null;
 				if((getDonation()!=null)
 				&&(getDonation().length()>0))
@@ -514,7 +514,7 @@ public class DefaultClan implements Clan
 				{
 					List<Item> V=((Container)I).getContents();
 					for(int v=0;v<V.size();v++)
-						((Item)V.get(v)).setContainer(null);
+						V.get(v).setContainer(null);
 				}
 				I.setContainer(null);
 				I.wearAt(Wearable.IN_INVENTORY);
@@ -630,7 +630,7 @@ public class DefaultClan implements Clan
 			msg.append("^x"+CMStrings.padRight("Clan Relations",16)+":^.^N \n\r");
 			for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 			{
-				Clan C=(Clan)e.nextElement();
+				Clan C=e.nextElement();
 				if((C!=this)&&(C.isRivalrous()))
 				{
 					msg.append("^x"+CMStrings.padRight(C.name(),16)+":^.^N ");
@@ -681,7 +681,7 @@ public class DefaultClan implements Clan
 					msg.append("\n\r");
 					col=1;
 				}
-				Area A=CMLib.map().getArea((String)control.elementAt(i));
+				Area A=CMLib.map().getArea(control.elementAt(i));
 				if(A!=null)
 				{
 					LegalBehavior B=CMLib.law().getLegalBehavior(A);
@@ -857,10 +857,10 @@ public class DefaultClan implements Clan
 			str.append("<RELATIONS>");
 			for(Enumeration<String> e=relations.keys();e.hasMoreElements();)
 			{
-				String key=(String)e.nextElement();
+				String key=e.nextElement();
 				str.append("<RELATION>");
 				str.append(CMLib.xml().convertXMLtoTag("CLAN",key));
-				long[] i=(long[])relations.get(key);
+				long[] i=relations.get(key);
 				str.append(CMLib.xml().convertXMLtoTag("STATUS",""+i[0]));
 				str.append("</RELATION>");
 			}
@@ -910,7 +910,7 @@ public class DefaultClan implements Clan
 		{
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
+				XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("RELATION"))||(iblk.contents==null))
 					continue;
 				String relClanID=CMLib.xml().getValFromPieces(iblk.contents,"CLAN");
@@ -1111,7 +1111,7 @@ public class DefaultClan implements Clan
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
 			for(int b=0;b<protectedOnes.size();b++)
 			{
-				String B=(String)protectedOnes.get(b);
+				String B=protectedOnes.get(b);
 				if(B.equalsIgnoreCase(clanID()))
 					return true;
 			}
@@ -1339,7 +1339,7 @@ public class DefaultClan implements Clan
 				duration=duration*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis();
 				for(Enumeration<ClanVote> e=votes();e.hasMoreElements();)
 				{
-					ClanVote CV=(ClanVote)e.nextElement();
+					ClanVote CV=e.nextElement();
 					int numVotes=getNumVoters(Function.values()[CV.function]);
 					int quorum=govt().getVoteQuorumPct();
 					quorum=(int)Math.round(CMath.mul(CMath.div(quorum,100.0),numVotes));
@@ -1439,7 +1439,7 @@ public class DefaultClan implements Clan
 		}
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel((String)channels.get(i),channelSet,msg,true);
+			CMLib.commands().postChannel(channels.get(i),channelSet,msg,true);
 	}
 
 	private static final SearchIDList<Ability> emptyAbles =new CMUniqSortSVec<Ability>(1);
@@ -1495,8 +1495,8 @@ public class DefaultClan implements Clan
 					Vector<String> V=CMParms.parse(awardStr);
 					if(V.size()>=2)
 					{
-						String type=((String)V.lastElement()).toUpperCase();
-						String amt=(String)V.firstElement();
+						String type=V.lastElement().toUpperCase();
+						String amt=V.firstElement();
 						if(amt.endsWith("%"))
 							pct=CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0);
 						else

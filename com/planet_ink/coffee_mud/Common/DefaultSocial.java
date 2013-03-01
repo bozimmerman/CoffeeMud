@@ -88,7 +88,7 @@ public class DefaultSocial implements Social
 				return name().endsWith(" <I-NAME>");
 			if(I.owner() instanceof MOB)
 			{
-				if(I.amWearingAt(Item.IN_INVENTORY))
+				if(I.amWearingAt(Wearable.IN_INVENTORY))
 					return name().endsWith(" <V-NAME>");
 				else
 					return name().endsWith(" <E-NAME>");

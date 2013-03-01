@@ -163,7 +163,7 @@ public class Thief_Footlocks extends ThiefSkill
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				maliciousAffect(mob,target,asLevel,20+(getXLEVELLevel(mob)*3),-1);
-				Ability A=(Thief_Footlocks)target.fetchEffect(ID());
+				Ability A=target.fetchEffect(ID());
 				if((A!=null)&&(msg.value()<=0))
 				{
 					target.addItem(foots);

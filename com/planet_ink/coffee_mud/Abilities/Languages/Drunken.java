@@ -83,7 +83,7 @@ public class Drunken extends StdLanguage
 		StringBuffer sbw=new StringBuffer(word);
 		Vector<Integer> V=getSChoices(sbw);
 		if(V.size()>0)
-			sbw.insert(((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue()+1,'h');
+			sbw.insert(V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue()+1,'h');
 		if(CMLib.dice().rollPercentage()<50)
 			return fixCase(word,sbw.toString());
 
@@ -93,21 +93,21 @@ public class Drunken extends StdLanguage
 		{
 		case 1:
 			{
-				int x=((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue();
+				int x=V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue();
 				for(int i=0;i<CMLib.dice().roll(1,5,0);i++)
 					sbw.insert(x+1,sbw.charAt(x));
 				break;
 			}
 		case 2:
 			{
-				int x=((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue();
+				int x=V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue();
 				for(int i=0;i<CMLib.dice().roll(1,5,0);i++)
 					sbw.insert(x+1,"-"+sbw.charAt(x));
 				break;
 			}
 		case 3:
 			{
-				int x=((Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).intValue();
+				int x=V.elementAt(CMLib.dice().roll(1,V.size(),-1)).intValue();
 				sbw.insert(x+1,"sh");
 				break;
 			}

@@ -77,7 +77,7 @@ public class Thief_Appraise extends ThiefSkill
 			if(target instanceof Coins)
 				realValue = ((Coins)target).getTotalValue();
 			else
-				realValue=(double)target.value();
+				realValue=target.value();
 			int materialCode=target.material();
 			int weight=target.basePhyStats().weight();
 			int height=target.basePhyStats().height();

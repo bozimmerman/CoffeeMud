@@ -146,7 +146,7 @@ public class RandomTraps extends ActiveTicker
 			Vector<String> V=CMParms.parse(oldParms);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=(String)V.elementAt(v);
+				String s=V.elementAt(v);
 				if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
 				{
 					if(restrictedLocales==null)
@@ -246,7 +246,7 @@ public class RandomTraps extends ActiveTicker
 			if(maintained.size()<avgTraps)
 				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
-					Ability A=(Ability)e.nextElement();
+					Ability A=e.nextElement();
 					if(A instanceof Trap)
 						allTraps.addElement(A);
 				}

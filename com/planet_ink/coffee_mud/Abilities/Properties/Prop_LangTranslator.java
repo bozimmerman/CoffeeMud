@@ -53,7 +53,7 @@ public class Prop_LangTranslator extends Property implements Language
 		int lastpct=100;
 		for(int v=0;v<V.size();v++)
 		{
-			String s=(String)V.elementAt(v);
+			String s=V.elementAt(v);
 			if(s.endsWith("%")) s=s.substring(0,s.length()-1);
 			if(CMath.isNumber(s))
 				lastpct=CMath.s_int(s);
@@ -117,7 +117,7 @@ public class Prop_LangTranslator extends Property implements Language
 					Environmental target=null;
 					String sourceName = affected.name();
 					if(msg.target() instanceof MOB)
-						target=(MOB)msg.target();
+						target=msg.target();
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_NOISE|CMMsg.MASK_ALWAYS,sourceName+" say(s) '"+msg.source().name()+" said \""+str+"\" in "+msg.tool().name()+"'"));
 					else

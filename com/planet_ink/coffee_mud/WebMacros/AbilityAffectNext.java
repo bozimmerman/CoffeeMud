@@ -50,7 +50,7 @@ public class AbilityAffectNext extends StdWebMacro
 			parms.put(ableType,ableType);
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			boolean okToShow=true;
 			int classType=A.classificationCode()&Ability.ALL_ACODES;
 			if(CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID())>=0)

@@ -135,7 +135,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 				 }
 				 ImageVerificationImage  img=new ImageVerificationImage(value,bout);
 				 if(key==null)
-					 key=Long.toHexString(Math.round(Math.abs(rand.nextDouble() * ((double)Long.MAX_VALUE/2.0))));
+					 key=Long.toHexString(Math.round(Math.abs(rand.nextDouble() * (Long.MAX_VALUE/2.0))));
 				 if(value==null)
 				 {
 					 ImgCacheEntry entry=new ImgCacheEntry();

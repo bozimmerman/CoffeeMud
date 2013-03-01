@@ -73,11 +73,11 @@ public class Prayer_SenseAllergies extends Prayer
 					Vector<String> V=CMParms.parse(A.text().toUpperCase().trim());
 					for(int i=0;i<V.size();i++)
 					{
-						if(CMParms.contains(RawMaterial.CODES.NAMES(), (String)V.elementAt(i)))
-							allergies.addElement(((String)V.elementAt(i)).toLowerCase());
+						if(CMParms.contains(RawMaterial.CODES.NAMES(), V.elementAt(i)))
+							allergies.addElement(V.elementAt(i).toLowerCase());
 						else
 						{
-							Race R=CMClass.getRace((String)V.elementAt(i));
+							Race R=CMClass.getRace(V.elementAt(i));
 							if(R!=null)
 								allergies.addElement(R.name());
 						}

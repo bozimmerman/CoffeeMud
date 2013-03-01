@@ -140,7 +140,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	protected Area getStartArea(){
 		Area A=CMLib.map().getStartArea(affected);
 		if(A==null) CMLib.map().areaLocation(affected);
-		if(A==null) A=(Area)CMLib.map().areas().nextElement();
+		if(A==null) A=CMLib.map().areas().nextElement();
 		return A;
 	}
 	public int finalInvResetRate(){
@@ -212,7 +212,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		staticMOB.setStartRoom(room);
 		staticMOB.setLocation(room);
-		if( CMLib.beanCounter().getTotalAbsoluteNativeValue( staticMOB ) < ((double) CMath.s_int( finalBudget() ) ) )
+		if( CMLib.beanCounter().getTotalAbsoluteNativeValue( staticMOB ) < (CMath.s_int( finalBudget() ) ) )
 			staticMOB.setMoney(CMath.s_int(finalBudget()));
 		return staticMOB;
 	}
@@ -392,7 +392,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 					List<Environmental> products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
 					if(products.size()==0) break;
-					Environmental product=(Environmental)products.get(0);
+					Environmental product=products.get(0);
 					if(product instanceof Item)
 					{
 						if(!CMLib.coffeeShops().purchaseItems((Item)product,products,merchantM,mobFor))
@@ -499,7 +499,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			String s=(String)commands.lastElement();
 			if(CMath.isInteger(s))
 			{
-				val=(double)CMath.s_int( s );
+				val=CMath.s_int( s );
 				if(val>0) commands.removeElement(s);
 			}
 			else

@@ -75,7 +75,7 @@ public class Trap_SpellBlast extends StdTrap
 		{
 			List<Ability> V=((SpellHolder)I).getSpells();
 			if(V.size()>0)
-				setMiscText(((Ability)V.get(0)).ID());
+				setMiscText(V.get(0).ID());
 			I.setUsesRemaining(I.usesRemaining()-1);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);

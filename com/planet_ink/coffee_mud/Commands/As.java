@@ -65,7 +65,7 @@ public class As extends StdCommand
 			{
 				List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, cmd, 50);
 				if(targets.size()>0) 
-					M=(MOB)targets.get(CMLib.dice().roll(1,targets.size(),-1));
+					M=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}
 			catch(NoSuchElementException e){}
 		}

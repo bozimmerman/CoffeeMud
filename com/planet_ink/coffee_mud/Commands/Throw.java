@@ -113,7 +113,7 @@ public class Throw extends StdCommand
 					{
 						List<Ability> V=((SpellHolder)item).getSpells();
 						for(int v=0;v<V.size();v++)
-							if(((Ability)V.get(v)).abstractQuality()==Ability.QUALITY_MALICIOUS)
+							if(V.get(v).abstractQuality()==Ability.QUALITY_MALICIOUS)
 							{ 
 								targetMsg=CMMsg.MSG_WEAPONATTACK; 
 								break;

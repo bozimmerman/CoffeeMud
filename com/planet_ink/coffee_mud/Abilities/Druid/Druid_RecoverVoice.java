@@ -76,7 +76,7 @@ public class Druid_RecoverVoice extends StdAbility
 		{
 			if(target instanceof MOB)
 			{
-				if(returnOffensiveAffects(mob,((MOB)target)).size()==0)
+				if(returnOffensiveAffects(mob,(target)).size()==0)
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -98,7 +98,7 @@ public class Druid_RecoverVoice extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.get(a)).unInvoke();
+					offensiveAffects.get(a).unInvoke();
 			}
 		}
 		return success;

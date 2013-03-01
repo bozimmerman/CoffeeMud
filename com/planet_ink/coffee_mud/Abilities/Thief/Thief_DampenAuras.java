@@ -126,7 +126,7 @@ public class Thief_DampenAuras extends ThiefSkill
 					}
 				}
 				if(items.length()>2)
-					((MOB)target).tell("You've dampened the auras on the following items: "+items.substring(2));
+					target.tell("You've dampened the auras on the following items: "+items.substring(2));
 				target.location().recoverRoomStats();
 			}
 		}

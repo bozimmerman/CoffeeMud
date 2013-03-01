@@ -131,7 +131,7 @@ public class Prop_Socials extends Property
 		&&((mask==null)||(CMLib.masking().maskCheck(mask, msg.source(), true)))
 		&&((!(affected instanceof Item))
 			||((msg.source()==((Item)affected).owner())
-			   &&((!wornOnly)||(!((Item)affected).amWearingAt(Item.IN_INVENTORY)))
+			   &&((!wornOnly)||(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
 			   )
 			)
 		)

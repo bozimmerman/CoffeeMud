@@ -97,7 +97,7 @@ public class StdLawBook extends StdItem
 
 				boolean allowedToModify=(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ABOVELAW));
 				if(A.getMetroMap().hasMoreElements())
-					allowedToModify=(CMSecurity.isAllowed(mob,((Room)A.getMetroMap().nextElement()),CMSecurity.SecFlag.ABOVELAW));
+					allowedToModify=(CMSecurity.isAllowed(mob,(A.getMetroMap().nextElement()),CMSecurity.SecFlag.ABOVELAW));
 				String rulingClan=B.rulingOrganization();
 				if((!allowedToModify)
 				&&(rulingClan.length()>0)
@@ -267,7 +267,7 @@ public class StdLawBook extends StdItem
 			String s=mob.session().choose("Enter a number to modify or RETURN: ","123456\n","\n");
 			int x=CMath.s_int(s);
 			if(x==0) return oldLaw;
-			oldLaw=(String[])oldLaw.clone(); 
+			oldLaw=oldLaw.clone(); 
 			switch(x)
 			{
 			case 1:
@@ -293,7 +293,7 @@ public class StdLawBook extends StdItem
 					DVector V2=new DVector(2);
 					for(int v=0;v<V.size();v++)
 					{
-						String t=(String)V.elementAt(v);
+						String t=V.elementAt(v);
 						boolean sent=false;
 						for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
 						{
@@ -541,7 +541,7 @@ public class StdLawBook extends StdItem
 			for(int x=0;x<theLaw.otherCrimes().size();x++)
 			{
 				String crime=CMParms.combineWithQuotes(theLaw.otherCrimes().get(x),0);
-				String[] set=(String[])theLaw.otherBits().get(x);
+				String[] set=theLaw.otherBits().get(x);
 				str.append(CMStrings.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
 			str.append("A. ADD A NEW ONE\n\r");
@@ -577,7 +577,7 @@ public class StdLawBook extends StdItem
 				int x=CMath.s_int(s);
 				if((x>0)&&(x<=theLaw.otherCrimes().size()))
 				{
-					String[] crimeSet=(String[])theLaw.otherBits().get(x-1);
+					String[] crimeSet=theLaw.otherBits().get(x-1);
 					String[] oldLaw=crimeSet;
 					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
@@ -593,7 +593,7 @@ public class StdLawBook extends StdItem
 						for(int c=0;c<theLaw.otherCrimes().size();c++)
 						{
 							String crimeWords=CMParms.combineWithQuotes(theLaw.otherCrimes().get(c),0);
-							String[] thisLaw=(String[])theLaw.otherBits().get(c);
+							String[] thisLaw=theLaw.otherBits().get(c);
 							StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<thisLaw.length;i++)
 							{
@@ -630,7 +630,7 @@ public class StdLawBook extends StdItem
 			for(int x=0;x<theLaw.bannedSubstances().size();x++)
 			{
 				String crime=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(x),0);
-				String[] set=(String[])theLaw.bannedBits().get(x);
+				String[] set=theLaw.bannedBits().get(x);
 				str.append(CMStrings.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
 			str.append("A. ADD A NEW ONE\n\r");
@@ -674,7 +674,7 @@ public class StdLawBook extends StdItem
 				int x=CMath.s_int(s);
 				if((x>0)&&(x<=theLaw.bannedSubstances().size()))
 				{
-					String[] crimeSet=(String[])theLaw.bannedBits().get(x-1);
+					String[] crimeSet=theLaw.bannedBits().get(x-1);
 					String[] oldLaw=crimeSet;
 					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
@@ -690,7 +690,7 @@ public class StdLawBook extends StdItem
 						for(int c=0;c<theLaw.bannedSubstances().size();c++)
 						{
 							String crimeWords=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(c),0);
-							String[] thisLaw=(String[])theLaw.bannedBits().get(c);
+							String[] thisLaw=theLaw.bannedBits().get(c);
 							StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<thisLaw.length;i++)
 							{
@@ -727,7 +727,7 @@ public class StdLawBook extends StdItem
 			Hashtable filteredTable=new Hashtable();
 			for(String key : theLaw.abilityCrimes().keySet())
 			{
-				String[] set=(String[])theLaw.abilityCrimes().get(key);
+				String[] set=theLaw.abilityCrimes().get(key);
 				if(key.startsWith("$")) continue;
 				Ability AB=CMClass.getAbility(key);
 				if(((AB==null)
@@ -949,7 +949,7 @@ public class StdLawBook extends StdItem
 			Hashtable filteredTable=new Hashtable();
 			for(String key : theLaw.abilityCrimes().keySet())
 			{
-				String[] set=(String[])theLaw.abilityCrimes().get(key);
+				String[] set=theLaw.abilityCrimes().get(key);
 				if(!key.startsWith("$")) continue;
 				Ability AB=CMClass.getAbility(key.substring(1));
 				if(((AB==null)
@@ -1061,12 +1061,12 @@ public class StdLawBook extends StdItem
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Law Name",20)+" "+shortLawHeader()+"\n\r");
-			str.append("1. ASSAULT           "+shortLawDesc((String[])theLaw.basicCrimes().get("ASSAULT"))+"\n\r");
-			str.append("2. MURDER            "+shortLawDesc((String[])theLaw.basicCrimes().get("MURDER"))+"\n\r");
-			str.append("3. NUDITY            "+shortLawDesc((String[])theLaw.basicCrimes().get("NUDITY"))+"\n\r");
-			str.append("4. ARMED             "+shortLawDesc((String[])theLaw.basicCrimes().get("ARMED"))+"\n\r");
-			str.append("5. RESISTING ARREST  "+shortLawDesc((String[])theLaw.basicCrimes().get("RESISTINGARREST"))+"\n\r");
-			str.append("6. ROBBING HOMES     "+shortLawDesc((String[])theLaw.basicCrimes().get("PROPERTYROB"))+"\n\r");
+			str.append("1. ASSAULT           "+shortLawDesc(theLaw.basicCrimes().get("ASSAULT"))+"\n\r");
+			str.append("2. MURDER            "+shortLawDesc(theLaw.basicCrimes().get("MURDER"))+"\n\r");
+			str.append("3. NUDITY            "+shortLawDesc(theLaw.basicCrimes().get("NUDITY"))+"\n\r");
+			str.append("4. ARMED             "+shortLawDesc(theLaw.basicCrimes().get("ARMED"))+"\n\r");
+			str.append("5. RESISTING ARREST  "+shortLawDesc(theLaw.basicCrimes().get("RESISTINGARREST"))+"\n\r");
+			str.append("6. ROBBING HOMES     "+shortLawDesc(theLaw.basicCrimes().get("PROPERTYROB"))+"\n\r");
 			str.append("\n\r");
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
@@ -1086,7 +1086,7 @@ public class StdLawBook extends StdItem
 				}
 			if(crimeName.length()>0)
 			{
-				String[] oldLaw=(String[])theLaw.basicCrimes().get(crimeName);
+				String[] oldLaw=theLaw.basicCrimes().get(crimeName);
 				String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
 				if(newValue!=oldLaw)
 				{
@@ -1126,7 +1126,7 @@ public class StdLawBook extends StdItem
 			int highest=4;
 			for(int v=0;v<V.size();v++)
 			{
-				String s=(String)V.get(v);
+				String s=V.get(v);
 				highest++;
 				Room R=CMLib.map().getRoom(s);
 				if(R!=null)
@@ -1183,7 +1183,7 @@ public class StdLawBook extends StdItem
 			{
 				StringBuffer s2=new StringBuffer("");
 				for(int v=0;v<V.size();v++)
-					s2.append(((String)V.get(v))+";");
+					s2.append((V.get(v))+";");
 				if(s2.length()==0)
 					s2.append("@");
 				else
@@ -1214,7 +1214,7 @@ public class StdLawBook extends StdItem
 			int highest=4;
 			for(int v=0;v<V.size();v++)
 			{
-				String s=(String)V.get(v);
+				String s=V.get(v);
 				highest++;
 				Room R=CMLib.map().getRoom(s);
 				if(R!=null)
@@ -1271,7 +1271,7 @@ public class StdLawBook extends StdItem
 			{
 				StringBuffer s2=new StringBuffer("");
 				for(int v=0;v<V.size();v++)
-					s2.append(((String)V.get(v))+";");
+					s2.append((V.get(v))+";");
 				if(s2.length()==0)
 					s2.append("@");
 				else
@@ -1291,7 +1291,7 @@ public class StdLawBook extends StdItem
 		while(true)
 		{
 			mob.tell("1. Trespassers : "+CMLib.masking().maskDesc(theLaw.getInternalStr("TRESPASSERS")));
-			mob.tell("2. Law         : "+shortLawDesc((String[])theLaw.basicCrimes().get("TRESPASSING")));
+			mob.tell("2. Law         : "+shortLawDesc(theLaw.basicCrimes().get("TRESPASSING")));
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
 				return;
 			String prompt=mob.session().choose("Enter one to change or RETURN: ","12\n","\n");
@@ -1317,7 +1317,7 @@ public class StdLawBook extends StdItem
 			else
 			if(x==2)
 			{
-				String[] oldLaw=(String[])theLaw.basicCrimes().get("TRESPASSING");
+				String[] oldLaw=theLaw.basicCrimes().get("TRESPASSING");
 				String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
 				if(newValue!=oldLaw)
 				{

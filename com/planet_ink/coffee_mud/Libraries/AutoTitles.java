@@ -110,7 +110,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 					for(int p=ptV.size()-1;p>=0;p--)
 					{
 						try {
-							String tit=CMStrings.removeColors((String)ptV.get(p)).replace('\'', '`');
+							String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
 							if(tit.equalsIgnoreCase(fixedTitle))
 							{ pdex=p; break;}
 						}catch(java.lang.IndexOutOfBoundsException ioe){}
@@ -157,7 +157,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 						for(int p=ptV.size()-1;p>=0;p--)
 						{
 							try {
-								String tit=CMStrings.removeColors((String)ptV.get(p)).replace('\'', '`');
+								String tit=CMStrings.removeColors(ptV.get(p)).replace('\'', '`');
 								if(tit.equalsIgnoreCase(fixedTitle))
 								{ pdex=p; break;}
 							}catch(java.lang.IndexOutOfBoundsException ioe){}
@@ -181,7 +181,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		String WKID=null;
 		for(int v=0;v<V.size();v++)
 		{
-			String row=(String)V.get(v);
+			String row=V.get(v);
 			WKID=evaluateAutoTitle(row,true);
 			if(WKID==null) continue;
 			if(WKID.startsWith("Error: "))
@@ -189,7 +189,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		}
 		for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
-			MOB M=(MOB)e.nextElement();
+			MOB M=e.nextElement();
 			if(M.playerStats()!=null)
 			{
 				if((evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))

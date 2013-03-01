@@ -62,8 +62,7 @@ public class AbilityData extends StdWebMacro
 		String newAbilityID=httpReq.getUrlParameter("NEWABILITY");
 		String newLanguageID=httpReq.getUrlParameter("NEWLANGUAGE");
 		String newCraftSkillID=httpReq.getUrlParameter("NEWCRAFTSKILL");
-		if(A==null)
-			A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
+		A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
 		if((A==null)
 		&&(newAbilityID!=null)
 		&&(newAbilityID.length()>0)
@@ -576,7 +575,7 @@ public class AbilityData extends StdWebMacro
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTAFFECT").toUpperCase(),true);
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A2=(Ability)e.nextElement();
+						Ability A2=e.nextElement();
 						if(((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
 							continue;
 						String AID=A2.ID();
@@ -599,7 +598,7 @@ public class AbilityData extends StdWebMacro
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTABILITY").toUpperCase(),true);
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A2=(Ability)e.nextElement();
+						Ability A2=e.nextElement();
 						if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
 							continue;
 						String AID=A2.ID();
@@ -632,7 +631,7 @@ public class AbilityData extends StdWebMacro
 					if(s==null)
 						s=CMLib.help().getHelpText(A.Name(),null,false);
 					int limit=80;
-					if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
+					if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit));
 				}
 				if(parms.containsKey("RANGES"))
@@ -705,7 +704,7 @@ public class AbilityData extends StdWebMacro
 					String rangeDesc=null;
 					for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 					{
-						Faction F=(Faction)e.nextElement();
+						Faction F=e.nextElement();
 						rangeDesc=F.usageFactorRangeDescription(A);
 						if(rangeDesc.length()>0)
 							str.append(rangeDesc+", ");

@@ -113,7 +113,7 @@ public class Farming extends GatheringSkill
 		if(R==null) return false;
 		if(R.resourceChoices()==null) return false;
 		for(int i=0;i<R.resourceChoices().size();i++)
-			if(((Integer)R.resourceChoices().get(i)).intValue()==code)
+			if(R.resourceChoices().get(i).intValue()==code)
 				return true;
 		return false;
 	}

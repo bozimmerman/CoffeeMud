@@ -181,7 +181,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 	{
 		Vector<String> REQ=CMParms.parse(req.toLowerCase().trim());
 		for(int v=0;v<REQ.size();v++)
-			REQ.setElementAt(cleanWord((String)REQ.elementAt(v)),v);
+			REQ.setElementAt(cleanWord(REQ.elementAt(v)),v);
 		List<Map<String,String>> poss=findMatch(me,REQ);
 		if(poss.size()==0)
 		{
@@ -219,13 +219,13 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			for(int i=0;i<poss.size();i++)
 			{
 				geasStep g=new geasStep(geasSteps);
-				Map<String,String> map=(Map<String,String>)poss.get(i);
-				Vector<String> all=CMParms.parseSemicolons((String)map.get("INSTR"),true);
+				Map<String,String> map=poss.get(i);
+				Vector<String> all=CMParms.parseSemicolons(map.get("INSTR"),true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 					Log.debugOut("GEAS",CMParms.toStringList(all));
 				g.que=new Vector<List<String>>();
 				for(int a=0;a<all.size();a++)
-					g.que.add(CMParms.parse((String)all.elementAt(a)));
+					g.que.add(CMParms.parse(all.elementAt(a)));
 				if(you!=null)   map.put("%c",you.name());
 				map.put("%n",me.name());
 				for(int q=0;q<g.que.size();q++)
@@ -233,9 +233,9 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					List<String> V=g.que.get(q);
 					for(int v=0;v<V.size();v++)
 					{
-						String s=(String)V.get(v);
+						String s=V.get(v);
 						if(s.startsWith("%"))
-							V.set(v,CMLib.english().cleanArticles((String)map.get(s.trim())));
+							V.set(v,CMLib.english().cleanArticles(map.get(s.trim())));
 					}
 				}
 				geasSteps.addElement(g);

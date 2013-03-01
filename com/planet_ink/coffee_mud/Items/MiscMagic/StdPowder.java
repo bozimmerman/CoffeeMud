@@ -60,7 +60,7 @@ public class StdPowder extends StdItem implements MagicDust {
 		if (spells.size() > 0)
 			for (int i = 0; i < spells.size(); i++) 
 			{
-				Ability thisOne = (Ability) ( (Ability) spells.get(i)).copyOf();
+				Ability thisOne = (Ability) spells.get(i).copyOf();
 				if(thisOne.canTarget(target))
 				{
 					if((malicious(this))||(!(target instanceof MOB)))

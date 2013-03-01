@@ -145,7 +145,7 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		List<Room> V=getAllTitledRooms();
 		if((V!=null)&&(V.size()>0))
-			return CMLib.law().getLandTitle((Room)V.get(0));
+			return CMLib.law().getLandTitle(V.get(0));
 		return null;
 	}
 
@@ -163,7 +163,7 @@ public class StdTitle extends StdItem implements LandTitle
 			||(CMLib.map().getArea(landPropertyID())!=null))
 				setName("the title to "+landPropertyID());
 			else
-				setName("the title to rooms around "+CMLib.map().getExtendedRoomID((Room)V.get(0)));
+				setName("the title to rooms around "+CMLib.map().getExtendedRoomID(V.get(0)));
 		}
 	}
 
@@ -178,7 +178,7 @@ public class StdTitle extends StdItem implements LandTitle
 		List<Room> V=getAllTitledRooms();
 		for(int v=0;v<V.size();v++)
 		{
-			Room R=(Room)V.get(v);
+			Room R=V.get(v);
 			LandTitle T=CMLib.law().getLandTitle(R);
 			if(T!=null) T.updateLot(optPlayerList);
 		}
@@ -292,7 +292,7 @@ public class StdTitle extends StdItem implements LandTitle
 						CMLib.commands().postSay((MOB)msg.target(),msg.source(),str,false,false);
 					else
 						((MOB)msg.target()).tell(str+" You might want to tell the customer.");
-					if(SK!=null) SK.getShop().removeStock(Name(),msg.source());
+					SK.getShop().removeStock(Name(),msg.source());
 					destroy();
 					return false;
 				}
@@ -408,7 +408,7 @@ public class StdTitle extends StdItem implements LandTitle
 				List<Room> allRooms=getAllTitledRooms();
 				if((allRooms!=null)&&(allRooms.size()>0))
 				{
-					Room R=(Room)allRooms.get(0);
+					Room R=allRooms.get(0);
 					LegalBehavior B=CMLib.law().getLegalBehavior(R);
 					if(B!=null)
 					{
@@ -503,7 +503,7 @@ public class StdTitle extends StdItem implements LandTitle
 						Vector choices=new Vector();
 						for(Enumeration<Room> e=spacePort.getArea().getProperMap();e.hasMoreElements();)
 						{
-							Room R=(Room)e.nextElement();
+							Room R=e.nextElement();
 							if(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 							{ choices.addElement(R);}
 						}

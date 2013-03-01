@@ -73,8 +73,8 @@ public class Skill_Joke extends BardSkill
 				String[] de=new String[5];
 				for (int cnt=1; cnt<4; cnt++)
 				{
-					ob[cnt] = (String)insulto.get(CMLib.dice().roll(1,insulto.size(),-1));
-					de[cnt] = (String)insultd.get(CMLib.dice().roll(1,insultd.size(),-1));
+					ob[cnt] = insulto.get(CMLib.dice().roll(1,insulto.size(),-1));
+					de[cnt] = insultd.get(CMLib.dice().roll(1,insultd.size(),-1));
 				}
 				String joke=null;
 				switch(CMLib.dice().roll(1,7,0))

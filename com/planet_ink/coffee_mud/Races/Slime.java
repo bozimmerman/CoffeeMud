@@ -162,7 +162,7 @@ public class Slime extends StdRace
 					CMLib.combat().postItemDamage(msg.source(), (Item)msg.tool(), null, 10, CMMsg.TYP_ACID,"<T-NAME> sizzle(s)!");
 				if(((((Weapon)msg.tool()).weaponType()==Weapon.TYPE_PIERCING)||(((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SHOOT))
 				&&(msg.value()>0))
-					msg.setValue((int)Math.round(((double)msg.value())*.85));
+					msg.setValue((int)Math.round((msg.value())*.85));
 			}
 		}
 	}

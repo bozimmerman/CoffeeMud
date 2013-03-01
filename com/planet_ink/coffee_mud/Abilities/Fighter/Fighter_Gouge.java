@@ -147,9 +147,9 @@ public class Fighter_Gouge extends MonkSkill
 				List<String> remainingLimbList=A.remainingLimbNameSet(target);
 				String gone=null;
 				for(int i=0;i<remainingLimbList.size();i++)
-					if(((String)remainingLimbList.get(i)).toUpperCase().endsWith("EYE"))
+					if(remainingLimbList.get(i).toUpperCase().endsWith("EYE"))
 					{
-						gone=(String)remainingLimbList.get(i);
+						gone=remainingLimbList.get(i);
 						break;
 					}
 				if(gone!=null)

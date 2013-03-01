@@ -67,7 +67,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 		{
 			if(target instanceof MOB)
 			{
-				if(supportsMending((MOB)target))
+				if(supportsMending(target))
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
 			}
 		}
@@ -96,7 +96,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.get(a)).unInvoke();
+					offensiveAffects.get(a).unInvoke();
 				if((target instanceof Drink)&&(((Drink)target).liquidType()==RawMaterial.RESOURCE_POISON))
 				{
 					((Drink)target).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);

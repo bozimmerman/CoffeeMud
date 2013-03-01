@@ -120,10 +120,11 @@ public class Affect extends StdCommand
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
+			if(A==null) continue;
 			String disp=A.displayText();
 			if(autosAlso && disp.length()==0)
 				disp=A.ID()+"+"+A.proficiency();
-			if((A!=null)&&(disp.length()>0))
+			if(disp.length()>0)
 			{
 				if(disp.startsWith("(")&&disp.endsWith(")"))
 				{
@@ -142,7 +143,7 @@ public class Affect extends StdCommand
 					Vector<String> V=CMParms.parseAny(s,'\n',true);
 					disps=new String[V.size()];
 					for(int d=0;d<V.size();d++)
-						disps[d]=(String)V.elementAt(d);
+						disps[d]=V.elementAt(d);
 					colnum=NUM_COLS;
 				}
 				for(int d=0;d<disps.length;d++) 

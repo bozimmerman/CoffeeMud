@@ -227,7 +227,7 @@ public class Cleric extends StdCharClass
 		// now only give one, for current level, respecting alignment!
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 			&&(A.appropriateToMyFactions(mob))

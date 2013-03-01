@@ -163,7 +163,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		else
 			levelDiff=0;
 		int adjustment = ( -levelDiff ) +
-						 ( -( (int)Math.round ( ( (double)(target.charStats().getStat( CharStats.STAT_STRENGTH) ) - 9.0 ) * 3.0 ) ) );
+						 ( -( (int)Math.round ( ( (target.charStats().getStat( CharStats.STAT_STRENGTH) ) - 9.0 ) * 3.0 ) ) );
 		boolean success=proficiencyCheck(mob,adjustment,auto);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)

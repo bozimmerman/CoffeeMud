@@ -78,7 +78,7 @@ public class Bomb_Spores extends StdBomb
 		if(P==null) return null;
 		List<Ability> V=returnOffensiveAffects(P);
 		if(V.size()>0)
-			setMiscText(((Ability)V.get(0)).ID());
+			setMiscText(V.get(0).ID());
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 

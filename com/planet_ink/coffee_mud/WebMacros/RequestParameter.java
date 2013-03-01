@@ -70,21 +70,21 @@ public class RequestParameter extends StdWebMacro
 				else
 				if(key.equals(MODIFIER.LEFT.name()))
 				{
-					num = CMath.s_int((String)parms.get(MODIFIER.LEFT.name()));
+					num = CMath.s_int(parms.get(MODIFIER.LEFT.name()));
 					if((num >0)&& (num < str.length()))
 						str=str.substring(0,num);
 				}
 				else
 				if(key.equals(MODIFIER.RIGHT.name()))
 				{
-					num = CMath.s_int((String)parms.get(MODIFIER.RIGHT.name()));
+					num = CMath.s_int(parms.get(MODIFIER.RIGHT.name()));
 					if((num >0)&& (num < str.length()))
 						str=str.substring(str.length()-num);
 				}
 				else
 				if(key.equals(MODIFIER.ELLIPSE.name()))
 				{
-					num = CMath.s_int((String)parms.get(MODIFIER.ELLIPSE.name()));
+					num = CMath.s_int(parms.get(MODIFIER.ELLIPSE.name()));
 					if((num >0)&& (num < str.length()))
 						str=str.substring(0,num)+"...";
 				}

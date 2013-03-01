@@ -153,18 +153,17 @@ public class Fighter_Behead extends FighterSkill
 				limb.setDisplayText("the bloody head of "+target.Name()+" is sitting here.");
 				limb.setSecretIdentity(target.name()+"`s bloody head.");
 				int material=RawMaterial.RESOURCE_MEAT;
-				if(R!=null)
-					for(int r=0;r<R.myResources().size();r++)
+				for(int r=0;r<R.myResources().size();r++)
+				{
+					Item I=R.myResources().get(r);
+					int mat=I.material()&RawMaterial.MATERIAL_MASK;
+					if(((mat==RawMaterial.MATERIAL_FLESH))
+					||(r==R.myResources().size()-1))
 					{
-						Item I=(Item)R.myResources().get(r);
-						int mat=I.material()&RawMaterial.MATERIAL_MASK;
-						if(((mat==RawMaterial.MATERIAL_FLESH))
-						||(r==R.myResources().size()-1))
-						{
-							material=I.material();
-							break;
-						}
+						material=I.material();
+						break;
 					}
+				}
 				limb.setMaterial(material);
 				limb.basePhyStats().setLevel(1);
 				limb.basePhyStats().setWeight(5);
@@ -172,7 +171,7 @@ public class Fighter_Behead extends FighterSkill
 				mob.location().addItem(limb,ItemPossessor.Expire.Player_Drop);
 				for(int i=0;i<warrants.size();i++)
 				{
-					LegalWarrant W=(LegalWarrant)warrants.get(i);
+					LegalWarrant W=warrants.get(i);
 					W.setCrime("pardoned");
 					W.setOffenses(0);
 				}

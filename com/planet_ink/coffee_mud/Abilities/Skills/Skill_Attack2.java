@@ -55,7 +55,7 @@ public class Skill_Attack2 extends StdSkill
 		if((affected instanceof MOB)&&(((MOB)affected).isInCombat()))
 			affectableStats.setSpeed(affectableStats.speed()+(numberOfFullAttacks()*(proficiency()/100.0)));
 		if((freeToNerf)&& (affectableStats.attackAdjustment()>0))
-			affectableStats.setAttackAdjustment((int)Math.round((double)affectableStats.attackAdjustment() * nerfAmount()));
+			affectableStats.setAttackAdjustment((int)Math.round(affectableStats.attackAdjustment() * nerfAmount()));
 	}
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

@@ -97,7 +97,7 @@ public class CombatAbilities extends StdBehavior
 		Vector classes=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
-			C=CMClass.findCharClass((String)V.elementAt(v));
+			C=CMClass.findCharClass(V.elementAt(v));
 			if((C!=null)&&(C.availabilityCode()!=0))
 				classes.addElement(C);
 		}
@@ -125,7 +125,7 @@ public class CombatAbilities extends StdBehavior
 		Vector<String> V=CMParms.parse(getParms());
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String s=((String)V.elementAt(v)).toUpperCase();
+			String s=V.elementAt(v).toUpperCase();
 			for(int i=0;i<names.length;i++)
 				if(names[i].startsWith(s))
 				{
@@ -360,7 +360,7 @@ public class CombatAbilities extends StdBehavior
 		Ability A=null;
 		for(int v=0;v<V.size();v++)
 		{
-			s=(String)V.elementAt(v);
+			s=V.elementAt(v);
 			if(s.equalsIgnoreCase("proficient"))
 				proficient=true;
 			else
@@ -416,7 +416,7 @@ public class CombatAbilities extends StdBehavior
 		while((tryA==null)&&((++tries)<100)&&(mob.numAllAbilities()>0))
 		{
 			if((combatMode==COMBAT_ONLYALWAYS)&&(this.skillsAlways!=null)&&(this.skillsAlways.size()>0))
-				A=mob.fetchAbility((String)skillsAlways.get(CMLib.dice().roll(1,skillsAlways.size(),-1)));
+				A=mob.fetchAbility(skillsAlways.get(CMLib.dice().roll(1,skillsAlways.size(),-1)));
 			else
 				A=mob.fetchRandomAbility();
 			
@@ -774,7 +774,7 @@ public class CombatAbilities extends StdBehavior
 						target=victim;
 					else
 					if(((mob!=leader)&&(leader!=null))&&(A.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS))
-						target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
+						target=((mob.location()!=leader.location()))?mob:leader;
 					else
 						target=null;
 					if(target!=null)

@@ -81,7 +81,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		boolean clearedYet=false;
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.get(v);
+			Ability A=V.get(v);
 			if(newMOB.fetchAbility(A.ID())==null)
 			{
 				String t=A.text();
@@ -118,7 +118,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		List<Ability> V=getMySpellsV();
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.get(v);
+			Ability A=V.get(v);
 			((MOB)P).delAbility(A);
 		}
 		if(P==lastMOB)

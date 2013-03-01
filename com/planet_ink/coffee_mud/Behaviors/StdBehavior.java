@@ -58,7 +58,7 @@ public class StdBehavior implements Behavior
 	{
 		try
 		{
-			return (Behavior)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{

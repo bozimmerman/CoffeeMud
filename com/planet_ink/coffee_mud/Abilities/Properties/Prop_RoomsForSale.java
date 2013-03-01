@@ -94,10 +94,10 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		int back=backTaxes();
 		String uniqueID="ROOMS_PROPERTY_"+this;
 		if(V.size()>0)
-			uniqueID="ROOMS_PROPERTY_"+CMLib.map().getExtendedRoomID((Room)V.get(0));
+			uniqueID="ROOMS_PROPERTY_"+CMLib.map().getExtendedRoomID(V.get(0));
 		for(int v=0;v<V.size();v++)
 		{
-			Room R=(Room)V.get(v);
+			Room R=V.get(v);
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
@@ -140,7 +140,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 				List<Room> V=getAllTitledRooms();
 				for(int v=0;v<V.size();v++)
 				{
-					Room R2=(Room)V.get(v);
+					Room R2=V.get(v);
 					Prop_RoomForSale PRFS=(Prop_RoomForSale)R2.fetchEffect(ID());
 					if(PRFS!=null)
 						PRFS.lastDayDone=R.getArea().getTimeObj().getDayOfMonth();

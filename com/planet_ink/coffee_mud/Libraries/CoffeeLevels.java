@@ -41,15 +41,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	{
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
 		double[] variables={
-				(double)mob.phyStats().level(),
-				(double)mob.charStats().getStat(CharStats.STAT_WISDOM),
-				(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM))),
-				(double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),
-				(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE))),
-				(double)mob.charStats().getStat(charClass.getAttackAttribute()),
-				(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute()))),
-				(double)mob.charStats().getStat(CharStats.STAT_CHARISMA),
-				(double)mob.charStats().getStat(CharStats.STAT_CONSTITUTION)
+				mob.phyStats().level(),
+				mob.charStats().getStat(CharStats.STAT_WISDOM),
+				CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)),
+				mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),
+				CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE)),
+				mob.charStats().getStat(charClass.getAttackAttribute()),
+				CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())),
+				mob.charStats().getStat(CharStats.STAT_CHARISMA),
+				mob.charStats().getStat(CharStats.STAT_CONSTITUTION)
 			};
 		return (int)Math.round(CMath.parseMathExpression(charClass.getManaFormula(), variables));
 	}
@@ -99,15 +99,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	{
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
 		double[] variables={
-			(double)mob.phyStats().level(),
-			(double)mob.charStats().getStat(CharStats.STAT_STRENGTH),
-			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH))),
-			(double)mob.charStats().getStat(CharStats.STAT_DEXTERITY),
-			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY))),
-			(double)mob.charStats().getStat(CharStats.STAT_CONSTITUTION),
-			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION))),
-			(double)mob.charStats().getStat(CharStats.STAT_WISDOM),
-			(double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
+			mob.phyStats().level(),
+			mob.charStats().getStat(CharStats.STAT_STRENGTH),
+			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH)),
+			mob.charStats().getStat(CharStats.STAT_DEXTERITY),
+			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY)),
+			mob.charStats().getStat(CharStats.STAT_CONSTITUTION),
+			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION)),
+			mob.charStats().getStat(CharStats.STAT_WISDOM),
+			mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
 		};
 		return (int)Math.round(CMath.parseMathExpression(charClass.getMovementFormula(), variables));
 	}
@@ -124,15 +124,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	{
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
 		double[] variables={
-			(double)mob.phyStats().level(),
-			(double)mob.charStats().getStat(CharStats.STAT_STRENGTH),
-			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH))),
-			(double)mob.charStats().getStat(CharStats.STAT_DEXTERITY),
-			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY))),
-			(double)mob.charStats().getStat(CharStats.STAT_CONSTITUTION),
-			(double)(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION))),
-			(double)mob.charStats().getStat(CharStats.STAT_WISDOM),
-			(double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
+			mob.phyStats().level(),
+			mob.charStats().getStat(CharStats.STAT_STRENGTH),
+			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH)),
+			mob.charStats().getStat(CharStats.STAT_DEXTERITY),
+			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY)),
+			mob.charStats().getStat(CharStats.STAT_CONSTITUTION),
+			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION)),
+			mob.charStats().getStat(CharStats.STAT_WISDOM),
+			mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
 		};
 		int newHitPointGain=(int)Math.round(CMath.parseMathExpression(charClass.getHitPointsFormula(), variables));
 		if(newHitPointGain<=0)
@@ -268,7 +268,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOSTLEVELS);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel((String)channels.get(i),mob.clans(),mob.Name()+" has just lost a level.",true);
+				CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just lost a level.",true);
 		}
 
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
@@ -302,7 +302,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 		for(int l=0;l<lose.size();l++)
 		{
-			A=(Ability)lose.elementAt(l);
+			A=lose.elementAt(l);
 			mob.delAbility(A);
 			mob.tell("^HYou have forgotten "+A.name()+".^N.\n\r");
 			A=mob.fetchEffect(A.ID());
@@ -446,10 +446,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel((String)channels.get(i),mob.clans(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(room)+".",true);
+				CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(room)+".",true);
 			if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels2.size();i++)
-				CMLib.commands().postChannel((String)channels2.get(i),mob.clans(),mob.Name()+" has just gained a level.",true);
+				CMLib.commands().postChannel(channels2.get(i),mob.clans(),mob.Name()+" has just gained a level.",true);
 			if(mob.soulMate()==null)
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
 		}
@@ -504,7 +504,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		for(int a=0;a<newAbilityIDs.size();a++)
 			if(!oldAbilities.contains(newAbilityIDs.get(a)))
 			{
-				Ability A=mob.fetchAbility((String)newAbilityIDs.get(a));
+				Ability A=mob.fetchAbility(newAbilityIDs.get(a));
 				if(A!=null)
 				{
 					String type=Ability.ACODE_DESCS[(A.classificationCode()&Ability.ALL_ACODES)].toLowerCase();
@@ -560,7 +560,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		
 		for(Iterator<MOB> i=group.iterator();i.hasNext();)
 		{
-			MOB allyMOB=(MOB)i.next();
+			MOB allyMOB=i.next();
 			charClass = allyMOB.charStats().getCurrentClass();
 			charRace = allyMOB.charStats().getMyRace();
 			if(charClass != null)
@@ -582,7 +582,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				double levelFactor=levelDiff / levelLimit;
 				if( levelFactor > levelLimit )
 					levelFactor = levelLimit;
-				amount+=(int)Math.round(levelFactor *  (double)amount);
+				amount+=(int)Math.round(levelFactor *  amount);
 			}
 		}
 

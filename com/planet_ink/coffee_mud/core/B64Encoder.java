@@ -211,15 +211,12 @@ public class B64Encoder
 		
 		try 
 		{
-			if(baos!=null)
-				return new String( baos.toByteArray(), PREFERRED_ENCODING );
+			return new String( baos.toByteArray(), PREFERRED_ENCODING );
 		}
 		catch (java.io.UnsupportedEncodingException uue)
 		{
-			if(baos!=null)
-				return new String( baos.toByteArray() );
+			return new String( baos.toByteArray() );
 		}
-		return "";
 	} 
 	
 	public static String B64encodeBytes( byte[] source )
@@ -272,15 +269,12 @@ public class B64Encoder
 			}
 			try
 			{
-				if(baos!=null)
-					return new String( baos.toByteArray(), PREFERRED_ENCODING );
+				return new String( baos.toByteArray(), PREFERRED_ENCODING );
 			}
 			catch (java.io.UnsupportedEncodingException uue)
 			{
-				if(baos!=null)
-					return new String( baos.toByteArray() );
+				return new String( baos.toByteArray() );
 			}
-			return "";
 		}
 		boolean breakLines = dontBreakLines == 0;
 		

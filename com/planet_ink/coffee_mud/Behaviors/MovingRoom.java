@@ -110,7 +110,7 @@ public class MovingRoom extends ActiveTicker
 		StringBuffer str=new StringBuffer("");
 		List<String> V=Resources.getFileLineVector(new CMFile("resources/movingroom.xml",null,true).text());
 		for(int v=0;v<V.size();v++)
-			str.append((String)V.get(v));
+			str.append(V.get(v));
 		String theString = str.toString();
 		return theString;
 	}

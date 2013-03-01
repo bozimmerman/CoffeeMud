@@ -207,7 +207,7 @@ public class Where extends StdCommand
 				{
 					for(;r.hasMoreElements();)
 					{
-						R=(Room)r.nextElement();
+						R=r.nextElement();
 						if((R!=null)&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))&&(CMLib.flags().canAccess(mob,R.getArea())))
 						{
 							if((!mobOnly)&&(!itemOnly)&&(!exitOnly))
@@ -349,7 +349,7 @@ public class Where extends StdCommand
 										if(SK!=null)
 										for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 										{
-											Environmental E=(Environmental)i.next();
+											Environmental E=i.next();
 											if((zapperMask)&&(E instanceof Item)&&(itemOnly))
 											{
 												if(CMLib.masking().maskCheck(compiledZapperMask,E,true))

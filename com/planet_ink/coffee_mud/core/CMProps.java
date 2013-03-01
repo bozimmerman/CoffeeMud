@@ -339,10 +339,10 @@ public class CMProps extends Properties
 	protected boolean   		loaded=false;
 	protected long  			TIME_TICK=4000;
 	protected long  			MILLIS_PER_MUDHOUR=600000;
-	protected long  			TICKS_PER_RLMIN=(int)Math.round(60000.0/(double)TIME_TICK);
+	protected long  			TICKS_PER_RLMIN=(int)Math.round(60000.0/TIME_TICK);
 	protected long  			TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
 	protected long  			TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
-	protected double			TIME_TICK_DOUBLE=(double)TIME_TICK;
+	protected double			TIME_TICK_DOUBLE=TIME_TICK;
 	protected final Map<String,Integer>		maxClanCatsMap				=new HashMap<String,Integer>();
 	protected final Set<String>				publicClanCats				=new HashSet<String>();
 	protected final Map<String,Double>		skillMaxManaExceptions		=new HashMap<String,Double>();
@@ -424,13 +424,9 @@ public class CMProps extends Properties
 
 	public static final CMProps loadPropPage(final String iniFile)
 	{
-		CMProps page=null;
-		if (page==null || !page.loaded)
-		{
-			page=new CMProps(iniFile);
-			if(!page.loaded)
-				return null;
-		}
+		CMProps page=new CMProps(iniFile);
+		if(!page.loaded)
+			return null;
 		return page;
 	}
 	
@@ -946,7 +942,7 @@ public class CMProps extends Properties
 		double endVal=0;
 		for(int v=0;v<V.size();v++)
 		{
-			s=(String)V.elementAt(v);
+			s=V.elementAt(v);
 			if(CMath.isNumber(s)){ endVal=CMath.s_double(s); continue;}
 			int x=s.indexOf(' ');
 			if(CMath.isDouble(s.substring(x+1).trim()))
@@ -962,6 +958,7 @@ public class CMProps extends Properties
 		{
 			synchronized("PARSED_LISTFILE".intern())
 			{
+				rawListData=(Properties)Resources.getResource("PARSED_LISTFILE");
 				if(rawListData==null)
 				{
 					rawListData=new Properties();
@@ -1001,7 +998,7 @@ public class CMProps extends Properties
 			final Vector<String> V=CMParms.parseCommas(getRawListFileEntry(SYSTEMLF_KEYS[var]), true);
 			final int[] set=new int[V.size()];
 			for(int v=0;v<V.size();v++)
-				set[v]=CMath.s_int((String)V.elementAt(v));
+				set[v]=CMath.s_int(V.elementAt(v));
 			p().sysLstFileLists[var]=set;
 		}
 		return ((int[])p().sysLstFileLists[var]);
@@ -1018,7 +1015,7 @@ public class CMProps extends Properties
 				if((baseArray[s]==null)||(baseArray[s].length()==0))
 					finalArray[s]=new Object[]{""};
 				else
-					finalArray[s]=CMParms.toStringArray(CMParms.parseAny((String)baseArray[s], '|', false));
+					finalArray[s]=CMParms.toStringArray(CMParms.parseAny(baseArray[s], '|', false));
 			p().sysLstFileLists[var]=finalArray;
 		}
 		return (Object[][])p().sysLstFileLists[var];
@@ -1032,7 +1029,7 @@ public class CMProps extends Properties
 			Vector<String> V=CMParms.parseSemicolons(getRawListFileEntry(SYSTEMLF_KEYS[var]),true);
 			Object[][] subSet=new Object[V.size()][];
 			for(int v=0;v<V.size();v++)
-				subSet[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),false));
+				subSet[v]=CMParms.toStringArray(CMParms.parseCommas(V.elementAt(v),false));
 			Object[][][] finalSet=new Object[subSet.length][][];
 			for(int s=0;s<subSet.length;s++)
 			{
@@ -1080,7 +1077,7 @@ public class CMProps extends Properties
 		
 		TIME_TICK=getLong("TICKTIME");
 		if(TIME_TICK<500) TIME_TICK=4000;
-		TIME_TICK_DOUBLE=(double)TIME_TICK;
+		TIME_TICK_DOUBLE=TIME_TICK;
 		TICKS_PER_RLMIN=(int)Math.round(60000.0/TIME_TICK_DOUBLE);
 		TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
 		TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
@@ -1215,7 +1212,7 @@ public class CMProps extends Properties
 		{
 			if(V.size()>0)
 			{
-				setIntVar(SYSTEMI_EXPIRE_MONSTER_EQ + i,(String)V.elementAt(0));
+				setIntVar(SYSTEMI_EXPIRE_MONSTER_EQ + i,V.elementAt(0));
 				V.removeElementAt(0);
 			}
 			else
@@ -1295,23 +1292,23 @@ public class CMProps extends Properties
 
 		V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 
-		if(V.size()>0) setIntVar(SYSTEMI_INJPCTCHANCE,CMath.s_int((String)V.elementAt(0)));
+		if(V.size()>0) setIntVar(SYSTEMI_INJPCTCHANCE,CMath.s_int(V.elementAt(0)));
 		else setIntVar(SYSTEMI_INJPCTCHANCE,100);
-		if(V.size()>1) setIntVar(SYSTEMI_INJPCTHP,CMath.s_int((String)V.elementAt(1)));
+		if(V.size()>1) setIntVar(SYSTEMI_INJPCTHP,CMath.s_int(V.elementAt(1)));
 		else setIntVar(SYSTEMI_INJPCTHP,40);
-		if(V.size()>2) setIntVar(SYSTEMI_INJPCTHPAMP,CMath.s_int((String)V.elementAt(2)));
+		if(V.size()>2) setIntVar(SYSTEMI_INJPCTHPAMP,CMath.s_int(V.elementAt(2)));
 		else setIntVar(SYSTEMI_INJPCTHPAMP,10);
-		if(V.size()>3) setIntVar(SYSTEMI_INJPCTCHANCEAMP,CMath.s_int((String)V.elementAt(3)));
+		if(V.size()>3) setIntVar(SYSTEMI_INJPCTCHANCEAMP,CMath.s_int(V.elementAt(3)));
 		else setIntVar(SYSTEMI_INJPCTCHANCEAMP,100);
-		if(V.size()>4) setIntVar(SYSTEMI_INJMULTIPLIER,CMath.s_int((String)V.elementAt(4)));
+		if(V.size()>4) setIntVar(SYSTEMI_INJMULTIPLIER,CMath.s_int(V.elementAt(4)));
 		else setIntVar(SYSTEMI_INJMULTIPLIER,4);
-		if(V.size()>5) setIntVar(SYSTEMI_INJMINLEVEL,CMath.s_int((String)V.elementAt(5)));
+		if(V.size()>5) setIntVar(SYSTEMI_INJMINLEVEL,CMath.s_int(V.elementAt(5)));
 		else setIntVar(SYSTEMI_INJMINLEVEL,10);
-		if(V.size()>6) setIntVar(SYSTEMI_INJBLEEDMINLEVEL,CMath.s_int((String)V.elementAt(6)));
+		if(V.size()>6) setIntVar(SYSTEMI_INJBLEEDMINLEVEL,CMath.s_int(V.elementAt(6)));
 		else setIntVar(SYSTEMI_INJBLEEDMINLEVEL,15);
-		if(V.size()>7) setIntVar(SYSTEMI_INJBLEEDPCTHP,CMath.s_int((String)V.elementAt(7)));
+		if(V.size()>7) setIntVar(SYSTEMI_INJBLEEDPCTHP,CMath.s_int(V.elementAt(7)));
 		else setIntVar(SYSTEMI_INJBLEEDPCTHP,20);
-		if(V.size()>8) setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,CMath.s_int((String)V.elementAt(8)));
+		if(V.size()>8) setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,CMath.s_int(V.elementAt(8)));
 		else setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,100);
 
 		String stateVar=getStr("STARTHP");
@@ -1526,7 +1523,7 @@ public class CMProps extends Properties
 	public static final String getHashedMXPImage(final Map<String, String> H, final String key)
 	{
 		if(H==null) return "";
-		final String s=(String)H.get(key);
+		final String s=H.get(key);
 		if(s==null) return null;
 		if(s.trim().length()==0) return null;
 		if(s.equalsIgnoreCase("NULL")) return "";
@@ -1550,7 +1547,7 @@ public class CMProps extends Properties
 				int x=0;
 				for(int v=0;v<V.size();v++)
 				{
-					s=((String)V.get(v)).trim();
+					s=V.get(v).trim();
 					if(s.startsWith("//")||s.startsWith(";"))
 						continue;
 					x=s.indexOf('=');
@@ -1576,7 +1573,7 @@ public class CMProps extends Properties
 			Race R=null;
 			for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 			{
-				R=(Race)e.nextElement();
+				R=e.nextElement();
 				if(raceName.equalsIgnoreCase(R.name()))
 					image=getDefaultMXPImage(R);
 			}
@@ -1680,7 +1677,7 @@ public class CMProps extends Properties
 		{
 			List<Ability> V=((MagicDust)O).getSpells();
 			if(V.size()>0)
-				image=getHashedMXPImage(H,"DUST_"+((Ability)V.get(0)).ID().toUpperCase());
+				image=getHashedMXPImage(H,"DUST_"+V.get(0).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"DUST_*");
 		}
 		else
@@ -1703,7 +1700,7 @@ public class CMProps extends Properties
 		{
 			List<Ability> V=((Pill)O).getSpells();
 			if(V.size()>0)
-				image=getHashedMXPImage(H,"PILL_"+((Ability)V.get(0)).ID().toUpperCase());
+				image=getHashedMXPImage(H,"PILL_"+V.get(0).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"PILL_*");
 		}
 		else
@@ -1711,7 +1708,7 @@ public class CMProps extends Properties
 		{
 			List<Ability> V=((Potion)O).getSpells();
 			if(V.size()>0)
-				image=getHashedMXPImage(H,"POTION_"+((Ability)V.get(0)).ID().toUpperCase());
+				image=getHashedMXPImage(H,"POTION_"+V.get(0).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"POTION_*");
 		}
 		else
@@ -1722,7 +1719,7 @@ public class CMProps extends Properties
 		{
 			List<Ability> V=((Scroll)O).getSpells();
 			if(V.size()>0)
-				image=getHashedMXPImage(H,"SCROLL_"+((Ability)V.get(0)).ID().toUpperCase());
+				image=getHashedMXPImage(H,"SCROLL_"+V.get(0).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"SCROLL_*");
 		}
 		else
@@ -1850,12 +1847,12 @@ public class CMProps extends Properties
 			image=getHashedMXPImage(H,"ITEM_ELECTRONICS");
 		else
 		if(O instanceof MiscMagic)
-			if(image==null) image=getHashedMXPImage(H,"ITEM_MISCMAGIC");
+			image=getHashedMXPImage(H,"ITEM_MISCMAGIC");
 		if((image==null)&&(O instanceof Item))
 		{
-			if(image==null) image=getHashedMXPImage(H,"ITEM_"+((Item)O).ID().toUpperCase());
-			image=getHashedMXPImage(H,"ITEM_"+RawMaterial.CODES.NAME(((Item)O).material()));
-			image=getHashedMXPImage(H,"ITEM_"+RawMaterial.MATERIAL_DESCS[(((Item)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+			image=getHashedMXPImage(H,"ITEM_"+((Item)O).ID().toUpperCase());
+			if(image==null) image=getHashedMXPImage(H,"ITEM_"+RawMaterial.CODES.NAME(((Item)O).material()));
+			if(image==null) image=getHashedMXPImage(H,"ITEM_"+RawMaterial.MATERIAL_DESCS[(((Item)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
 			if(image==null) image=getHashedMXPImage(H,"ITEM_*");
 		}
 		if(image==null) image=getHashedMXPImage(H,"*");
@@ -1908,11 +1905,11 @@ public class CMProps extends Properties
 		final List<String> page=Resources.getFileLineVector(str);
 		for(int p=0;p<(page.size()-1);p++)
 		{
-			String s=((String)page.get(p)).trim();
+			String s=page.get(p).trim();
 			if(s.startsWith("#")||s.startsWith("!")) continue;
 			if((s.endsWith("\\"))&&(!s.endsWith("\\\\")))
 			{
-				s=s.substring(0,s.length()-1)+((String)page.get(p+1)).trim();
+				s=s.substring(0,s.length()-1)+page.get(p+1).trim();
 				page.remove(p+1);
 				page.set(p,s);
 				p=p-1;
@@ -1956,7 +1953,7 @@ public class CMProps extends Properties
 		}
 		for(final Iterator<String> v=V.iterator();v.hasNext();)
 		{
-			myClassName = (String)v.next();
+			myClassName = v.next();
 			for(int i=0;i<statCodeExtensions.length;i++)
 				if(statCodeExtensions[i][0].equals(myClassName))
 					return CMParms.parseCommas(statCodeExtensions[i][1],true);
@@ -1995,7 +1992,7 @@ public class CMProps extends Properties
 		for(int x=0;x<baseStatCodes.length;x++)
 			newStatCodes[x] = baseStatCodes[x];
 		for(int x=0;x<addedStatCodesV.size();x++)
-			newStatCodes[x+baseStatCodes.length] = (String)addedStatCodesV.get(x);
+			newStatCodes[x+baseStatCodes.length] = addedStatCodesV.get(x);
 		return newStatCodes;
 	}
 }

@@ -114,7 +114,7 @@ public class QuestLoader
 		D=DB.DBFetchEmpty();
 		for(int m=0;m<quests.size();m++)
 		{
-			Quest Q=(Quest)quests.get(m);
+			Quest Q=quests.get(m);
 			if(Q.isCopy()) continue;
 			try{
 				D.rePrepare(

@@ -99,8 +99,8 @@ public class Chant_SacredEarth extends Chant
 				MOB victim=mob.getVictim();
 				if(victim!=null)
 				{
-					if(((((MOB)victim).charStats().getMyRace().racialCategory().equals("Vegetation"))
-					||(((MOB)victim).charStats().getMyRace().racialCategory().equals("Earth Elemental"))))
+					if(((victim.charStats().getMyRace().racialCategory().equals("Vegetation"))
+					||(victim.charStats().getMyRace().racialCategory().equals("Earth Elemental"))))
 						return Ability.QUALITY_INDIFFERENT;
 				}
 				if(((!mob.charStats().getMyRace().racialCategory().equals("Vegetation"))

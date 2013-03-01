@@ -92,7 +92,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 
 	public String makeRandomHashString(final String password)
 	{
-		int salt=(int)Math.round(CMath.random() * (double)Integer.MAX_VALUE);
+		int salt=(int)Math.round(CMath.random() * Integer.MAX_VALUE);
 		int passHash=(password+salt).toLowerCase().hashCode();
 		return "|"+B64Encoder.B64encodeBytes(ByteBuffer.allocate(4).putInt(salt).array())
 			  +"|"+B64Encoder.B64encodeBytes(ByteBuffer.allocate(4).putInt(passHash).array());

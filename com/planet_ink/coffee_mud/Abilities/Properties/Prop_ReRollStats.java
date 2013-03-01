@@ -62,7 +62,7 @@ public class Prop_ReRollStats extends Property
 		&&(msg.sourceMinor()==CMMsg.TYP_LOOK)
 		&&(msg.source()==affected))
 		{
-			final MOB M=(MOB)msg.source();
+			final MOB M=msg.source();
 			if((M.session()!=null)
 			&&(M.playerStats()!=null))
 			{

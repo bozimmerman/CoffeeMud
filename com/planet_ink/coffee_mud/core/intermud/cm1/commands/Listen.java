@@ -268,9 +268,9 @@ public class Listen extends CM1Command
 		case PLAYER:  return (crit.obj instanceof MOB)&&(CMLib.players().playerExists(crit.obj.Name()));
 		case ABILITY: return crit.obj instanceof Ability;
 		case ITEM:  return crit.obj instanceof Item;
-		case TARGET: return crit.obj instanceof Environmental;
+		case TARGET: return crit.obj != null;
 		case SOURCE:  return (crit.obj instanceof MOB)&&(!CMLib.players().playerExists(crit.obj.Name()));
-		case TOOL:  return crit.obj instanceof Environmental;
+		case TOOL:  return crit.obj != null;
 		default:
 			return true;
 		}

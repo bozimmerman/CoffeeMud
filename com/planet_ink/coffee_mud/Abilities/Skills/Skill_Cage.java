@@ -132,14 +132,14 @@ public class Skill_Cage extends StdSkill
 				if((cage!=null)&&(cage.owner()!=null))
 				{
 					if(cage.owner() instanceof MOB)
-						((MOB)cage.owner()).addItem((Item)caged);
+						((MOB)cage.owner()).addItem(caged);
 					else
 					if(cage.owner() instanceof Room)
-						((Room)cage.owner()).addItem((Item)caged);
+						((Room)cage.owner()).addItem(caged);
 				}
 				else
-					mob.addItem((Item)caged);
-				CMMsg putMsg=CMClass.getMsg(mob,cage,(Item)caged,CMMsg.MSG_PUT,"<S-NAME> cage(s) <O-NAME> in <T-NAME>.");
+					mob.addItem(caged);
+				CMMsg putMsg=CMClass.getMsg(mob,cage,caged,CMMsg.MSG_PUT,"<S-NAME> cage(s) <O-NAME> in <T-NAME>.");
 				if(mob.location().okMessage(mob,putMsg))
 				{
 					mob.location().send(mob,putMsg);

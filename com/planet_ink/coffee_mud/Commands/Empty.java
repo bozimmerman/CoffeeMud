@@ -182,7 +182,7 @@ public class Empty extends Drop
 				if(!skipMessage) R.send(mob,msg);
 				for(int v2=0;v2<V2.size();v2++)
 				{
-					Item I=(Item)V2.get(v2);
+					Item I=V2.get(v2);
 					if(I instanceof Coins) ((Coins)I).setContainer(null);
 					if(((I.container()==null)||(Get.get(mob,C,I,true,null,true)))
 					&&(I.container()==null))

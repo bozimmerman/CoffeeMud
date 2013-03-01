@@ -88,7 +88,7 @@ public class Trap_PoisonGas extends StdTrap
 		if(I!=null){
 			List<Ability> V=returnOffensiveAffects(I);
 			if(V.size()>0)
-				setMiscText(((Ability)V.get(0)).ID());
+				setMiscText(V.get(0).ID());
 			I.destroy();
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);

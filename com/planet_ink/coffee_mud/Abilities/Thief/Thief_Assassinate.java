@@ -302,7 +302,7 @@ public class Thief_Assassinate extends ThiefSkill
 			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50+(2*getXLEVELLevel(mob)));
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
-			tracking=((Room)theTrail.get(0)).fetchInhabitant(mobName);
+			tracking=theTrail.get(0).fetchInhabitant(mobName);
 
 		if((success)&&(theTrail!=null)&&(tracking!=null))
 		{

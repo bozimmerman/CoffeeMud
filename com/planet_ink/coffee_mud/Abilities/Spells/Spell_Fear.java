@@ -75,7 +75,7 @@ public class Spell_Fear extends Spell
 		if((affected instanceof MOB)&&(invoker!=null)&&(invoker!=affected)&&(((MOB)affected).getVictim()==invoker))
 		{
 			int xlvl=super.getXLEVELLevel(invoker());
-			float f=(float)0.05*(float)xlvl;
+			float f=(float)0.05*xlvl;
 			stats.setArmor(stats.armor()+30+(3*xlvl));
 			stats.setAttackAdjustment((int)Math.round(CMath.mul(stats.attackAdjustment(),0.90-f)));
 			stats.setDamage((int)Math.round(CMath.mul(stats.damage(),0.90-f)));

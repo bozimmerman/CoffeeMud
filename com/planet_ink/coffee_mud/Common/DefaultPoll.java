@@ -37,7 +37,7 @@ public class DefaultPoll implements Poll
 {
 	public String ID(){return "DefaultPoll";}
 	public String name() { return ID();}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPoll();}}
 	public void initializeClass(){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public CMObject copyOf()
@@ -99,7 +99,7 @@ public class DefaultPoll implements Poll
 		PollOption PO=null;
 		for(int i=0;i<options.size();i++)
 		{
-			PO=(PollOption)options.get(i);
+			PO=options.get(i);
 			str.append("<OPTION>");
 			str.append(CMLib.xml().convertXMLtoTag("TEXT",CMLib.xml().parseOutAngleBrackets(PO.text)));
 			str.append("</OPTION>");
@@ -115,7 +115,7 @@ public class DefaultPoll implements Poll
 		PollResult PR=null;
 		for(int i=0;i<results.size();i++)
 		{
-			PR=(PollResult)results.get(i);
+			PR=results.get(i);
 			str.append("<RESULT>");
 			str.append(CMLib.xml().convertXMLtoTag("USER",PR.user));
 			str.append(CMLib.xml().convertXMLtoTag("IP",PR.ip));
@@ -134,7 +134,7 @@ public class DefaultPoll implements Poll
 		Session S=mob.session();
 		for(int r=0;r<results.size();r++)
 		{
-			R=(PollResult)results.get(r);
+			R=results.get(r);
 			if((mob.Name().equals(R.user)))
 				return R;
 			if(R.ip.length()>0)

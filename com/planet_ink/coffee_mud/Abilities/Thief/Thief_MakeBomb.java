@@ -53,7 +53,7 @@ public class Thief_MakeBomb extends ThiefSkill
 		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob));
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			if((A instanceof Trap)
 			   &&(((Trap)A).isABomb())
 			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))

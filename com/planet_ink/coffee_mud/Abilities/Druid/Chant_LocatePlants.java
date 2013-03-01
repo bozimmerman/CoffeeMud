@@ -160,7 +160,7 @@ public class Chant_LocatePlants extends Chant
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=(Room)r.next();
+			Room R=r.next();
 			if(plantsHere(mob,R).length()>0)
 				rooms.addElement(R);
 		}

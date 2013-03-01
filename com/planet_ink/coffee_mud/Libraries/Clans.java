@@ -58,7 +58,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
-			Clan C=(Clan)e.nextElement();
+			Clan C=e.nextElement();
 			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
 		}
 		all.clear();
@@ -78,7 +78,7 @@ public class Clans extends StdLibrary implements ClanManager
 		   return i1==relation;
 		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
-			Clan C=(Clan)e.nextElement();
+			Clan C=e.nextElement();
 			if((C!=C1)&&(C!=C2))
 			{
 				if((i1!=Clan.REL_WAR)
@@ -261,7 +261,7 @@ public class Clans extends StdLibrary implements ClanManager
 		if(rel==Clan.REL_ALLY) return Clan.REL_ALLY;
 		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
-			Clan C=(Clan)e.nextElement();
+			Clan C=e.nextElement();
 			if((C!=C1)
 			&&(C!=C2)
 			&&(((C1.getClanRelations(C.clanID())==Clan.REL_ALLY)&&(C.getClanRelations(C2.clanID())==Clan.REL_WAR)))
@@ -298,11 +298,11 @@ public class Clans extends StdLibrary implements ClanManager
 	public Clan getClan(String id)
 	{
 		if(id.length()==0) return null;
-		Clan C=(Clan)all.get(id.toUpperCase());
+		Clan C=all.get(id.toUpperCase());
 		if(C!=null) return C;
 		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
-			C=(Clan)e.nextElement();
+			C=e.nextElement();
 			if(CMLib.english().containsString(CMStrings.removeColors(C.name()),id))
 				return C;
 		}
@@ -315,7 +315,7 @@ public class Clans extends StdLibrary implements ClanManager
 		if(C!=null) return C;
 		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
 		{
-			C=(Clan)e.nextElement();
+			C=e.nextElement();
 			if(CMLib.english().containsString(CMStrings.removeColors(C.name()),id))
 				return C;
 		}
@@ -390,7 +390,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
-			Clan C=(Clan)e.nextElement();
+			Clan C=e.nextElement();
 			C.tick(C,Tickable.TICKID_CLAN);
 		}
 	}
@@ -399,7 +399,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel((String)channels.get(i),clanRoles(),msg,true);
+			CMLib.commands().postChannel(channels.get(i),clanRoles(),msg,true);
 	}
 
 	public Enumeration<String> clansNames(){return all.keys();}
@@ -424,8 +424,8 @@ public class Clans extends StdLibrary implements ClanManager
 			Vector<String> V=CMParms.parse(prizeStr);
 			if(V.size()>=2)
 			{
-				String type=((String)V.lastElement()).toUpperCase();
-				String amt=(String)V.firstElement();
+				String type=V.lastElement().toUpperCase();
+				String amt=V.firstElement();
 				if("EXPERIENCE".startsWith(type))
 					return amt+" experience point bonus.";
 			}
@@ -465,7 +465,7 @@ public class Clans extends StdLibrary implements ClanManager
 		String matter=CMParms.combine(commands,0);
 		for(Enumeration<Clan.ClanVote> e=C.votes();e.hasMoreElements();)
 		{
-			Clan.ClanVote CV=(Clan.ClanVote)e.nextElement();
+			Clan.ClanVote CV=e.nextElement();
 			if((CV.voteStarter.equalsIgnoreCase(mob.Name()))
 			&&(CV.voteStatus==Clan.VSTAT_STARTED))
 			{
@@ -709,6 +709,7 @@ public class Clans extends StdLibrary implements ClanManager
 		{
 			synchronized(this)
 			{
+				gvts=(ClanGovernment[])Resources.getResource("parsed_clangovernments");
 				if(gvts==null)
 				{
 					StringBuffer str=Resources.getFileResource("clangovernments.xml", true);
@@ -1102,7 +1103,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel(mob,(String)channels.get(i),msg,true);
+			CMLib.commands().postChannel(mob,channels.get(i),msg,true);
 	}
 
 	protected int filterMedianLevel(List<FullMemberRecord> members)
@@ -1119,7 +1120,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 		{
-			Clan C=(Clan)e.nextElement();
+			Clan C=e.nextElement();
 			if(CMath.bset(C.getTrophies(),trophy.flagNum()))
 				return C;
 		}
@@ -1137,7 +1138,7 @@ public class Clans extends StdLibrary implements ClanManager
 				int winnerMembers=(winnerC==null)?0:winnerC.getSize();
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement(); if(C==winnerC) continue;
+					Clan C=e.nextElement(); if(C==winnerC) continue;
 					int numMembers=C.getSize();
 					if(numMembers>winnerMembers)
 					{
@@ -1154,7 +1155,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement();
+					Clan C=e.nextElement();
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Members.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Members.flagNum());
@@ -1170,7 +1171,7 @@ public class Clans extends StdLibrary implements ClanManager
 				int winnerLevel=(winnerC==null)?0:filterMedianLevel(winnerC.getFullMemberList());
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement(); if(C==winnerC) continue;
+					Clan C=e.nextElement(); if(C==winnerC) continue;
 					int highestLevel=filterMedianLevel(C.getFullMemberList());
 					if(highestLevel>winnerLevel)
 					{
@@ -1187,7 +1188,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement();
+					Clan C=e.nextElement();
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.MemberLevel.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.MemberLevel.flagNum());
@@ -1202,7 +1203,7 @@ public class Clans extends StdLibrary implements ClanManager
 				Clan winnerC=getTrophyWinner(Trophy.Experience);
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement(); if(C==winnerC) continue;
+					Clan C=e.nextElement(); if(C==winnerC) continue;
 					if((winnerC==null)||(C.getExp()>winnerC.getExp()))
 						winnerC=C;
 				}
@@ -1215,7 +1216,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement();
+					Clan C=e.nextElement();
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.Experience.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.Experience.flagNum());
@@ -1230,7 +1231,7 @@ public class Clans extends StdLibrary implements ClanManager
 				Clan winnerC=getTrophyWinner(Trophy.PlayerKills);
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement(); if(C==winnerC) continue;
+					Clan C=e.nextElement(); if(C==winnerC) continue;
 					if((winnerC==null)||(C.getCurrentClanKills()>winnerC.getCurrentClanKills()))
 						winnerC=C;
 				}
@@ -1245,7 +1246,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement();
+					Clan C=e.nextElement();
 					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerKills.flagNum())))
 					{
 						C.setTrophies(C.getTrophies()-Trophy.PlayerKills.flagNum());
@@ -1264,7 +1265,7 @@ public class Clans extends StdLibrary implements ClanManager
 				long mostControlPoints=(winnerMostControlPointsC==null)?-1:winnerMostControlPointsC.calculateMapPoints();
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement();
+					Clan C=e.nextElement();
 					if((C!=winnerMostClansControlledC)&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0))
 					{
 						int controlledAreas=C.getControlledAreas().size();
@@ -1300,7 +1301,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement();
+					Clan C=e.nextElement();
 					if((winnerMostClansControlledC!=C)
 					&&(CMath.bset(C.getTrophies(),Trophy.Areas.flagNum())))
 					{
@@ -1320,7 +1321,7 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					Clan C=(Clan)e.nextElement();
+					Clan C=e.nextElement();
 					if((winnerMostControlPointsC!=C)
 					&&(CMath.bset(C.getTrophies(),Trophy.Points.flagNum())))
 					{

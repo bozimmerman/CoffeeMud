@@ -39,14 +39,14 @@ public class DBUpgrade
 		if(field.startsWith("#"))
 		{
 			if(oldIndex>=0)
-				return (String)row.get(oldIndex);
+				return row.get(oldIndex);
 			else
 				return "0";
 		}
 		else
 		{
 			if(oldIndex>=0)
-				return "'"+((String)row.get(oldIndex))+"'";
+				return "'"+(row.get(oldIndex))+"'";
 			else
 				return "''";
 		}
@@ -69,7 +69,7 @@ public class DBUpgrade
 		else
 		{
 			if(oldIndex>=0)
-				return ((String)row.get(oldIndex));
+				return (row.get(oldIndex));
 			else
 				return "";
 		}
@@ -80,10 +80,10 @@ public class DBUpgrade
 		int[] matrix=new int[nfields.size()];
 		for(int i=0;i<nfields.size();i++)
 		{
-			String field=(String)nfields.get(i);
+			String field=nfields.get(i);
 			int oldIndex=-1;
 			for(int u=0;u<ofields.size();u++)
-				if(((String)ofields.get(u)).substring(1).equals(field.substring(1)))
+				if(ofields.get(u).substring(1).equals(field.substring(1)))
 				{ oldIndex=u; break;}
 			matrix[i]=oldIndex;
 		}
@@ -262,8 +262,8 @@ public class DBUpgrade
 		for(Enumeration e=oldTables.keys();e.hasMoreElements();)
 		{
 			String s=(String)e.nextElement();
-			List V1=(List)oldTables.get(s);
-			List V2=(List)newTables.get(s);
+			List V1=oldTables.get(s);
+			List V2=newTables.get(s);
 			if((V1==null)||(V2==null))
 			{ same=false; break;}
 			if((V1.size()!=V2.size()))
@@ -278,8 +278,8 @@ public class DBUpgrade
 		for(Enumeration e=newTables.keys();e.hasMoreElements();)
 		{
 			String s=(String)e.nextElement();
-			List V1=(List)oldTables.get(s);
-			List V2=(List)newTables.get(s);
+			List V1=oldTables.get(s);
+			List V2=newTables.get(s);
 			if((V1==null)||(V2==null))
 			{ same=false; break;}
 			if((V1.size()!=V2.size()))
@@ -415,7 +415,7 @@ public class DBUpgrade
 			{
 				Class.forName(sclass);
 				java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
-				java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
 				java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM CMROOM");
 				if(R!=null){
 					tested=true;
@@ -566,7 +566,7 @@ public class DBUpgrade
 						doThisTable=false;
 						boolean deleteAllData=false;
 						String table=(String)e.nextElement();
-						java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+						java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
 						java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
 						if(R!=null){
 							tested=true;
@@ -589,7 +589,7 @@ public class DBUpgrade
 						myStatement.close();
 						if(deleteAllData)
 						{
-							myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+							myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
 							myStatement.execute("DELETE FROM "+table);
 							myStatement.close();
 							doThisTable=true;
@@ -621,10 +621,10 @@ public class DBUpgrade
 			for(Enumeration e=oldTables.keys();e.hasMoreElements();)
 			{
 				String table=(String)e.nextElement();
-				List<String> fields=(List<String>)oldTables.get(table);
+				List<String> fields=oldTables.get(table);
 				Vector<List<String>> rows=new Vector<List<String>>();
 				data.put(table,rows);
-				java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
 				java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
 				while(R.next())
 				{
@@ -632,7 +632,7 @@ public class DBUpgrade
 					rows.addElement(row);
 					for(int s=0;s<fields.size();s++)
 					{
-						String S=R.getString(((String)fields.get(s)).substring(1));
+						String S=R.getString(fields.get(s).substring(1));
 						if(S==null) S="";
 						row.addElement(S);
 					}
@@ -653,8 +653,8 @@ public class DBUpgrade
 		// first, look for the CLAN conversion
 		if(newTables.containsKey("CMCHCL") && (!oldTables.containsKey("CMCHCL")))
 		{
-			List<List<String>> charRows=(List)data.get("CMCHAR");
-			List<List<String>> cmchclRows=(List)data.get("CMCHCL");
+			List<List<String>> charRows=data.get("CMCHAR");
+			List<List<String>> cmchclRows=data.get("CMCHCL");
 			if(cmchclRows==null)
 			{
 				cmchclRows=new Vector<List<String>>();
@@ -663,8 +663,8 @@ public class DBUpgrade
 			pl(" ");
 			pl(" ");
 			p("Making CMCHCL conversion: ");
-			List<String> ofields=(List)oldTables.get("CMCHAR");
-			List<String> nfields=(List)newTables.get("CMCHCL");
+			List<String> ofields=oldTables.get("CMCHAR");
+			List<String> nfields=newTables.get("CMCHCL");
 			int cmUserIDIndex=ofields.indexOf("$CMUSERID");
 			int cmClanIndex=ofields.indexOf("$CMCLAN");
 			int cmClRoIndex=ofields.indexOf("#CMCLRO");
@@ -673,7 +673,7 @@ public class DBUpgrade
 			int cm2ClRoIndex=nfields.indexOf("#CMCLRO");
 			for(int r=0;r<charRows.size();r++)
 			{
-				List<String> row=(List<String>)charRows.get(r);
+				List<String> row=charRows.get(r);
 				String userID=row.get(cmUserIDIndex);
 				String clanID=row.get(cmClanIndex);
 				String clanRo=row.get(cmClRoIndex);
@@ -700,9 +700,9 @@ public class DBUpgrade
 			for(Enumeration e=newTables.keys();e.hasMoreElements();)
 			{
 				String table=(String)e.nextElement();
-				List<String> ofields=(List<String>)oldTables.get(table);
-				List<String> nfields=(List)newTables.get(table);
-				List rows=(List)data.get(table);
+				List<String> ofields=oldTables.get(table);
+				List<String> nfields=newTables.get(table);
+				List rows=data.get(table);
 				p(table);
 				if((rows==null)||(rows.size()==0))
 				{
@@ -718,7 +718,7 @@ public class DBUpgrade
 					{
 						StringBuffer str=new StringBuffer("INSERT INTO "+table+" (");
 						for(int i=0;i<nfields.size();i++)
-							str.append(((String)nfields.get(i)).substring(1)+",");
+							str.append(nfields.get(i).substring(1)+",");
 						if(nfields.size()>0)
 							str.setCharAt(str.length()-1,' ');
 						str.append(") VALUES (");
@@ -731,7 +731,7 @@ public class DBUpgrade
 						java.sql.PreparedStatement myStatement=myConnection.prepareStatement(str.toString());
 						for(int i=0;i<nfields.size();i++)
 						{
-							String field=(String)nfields.get(i);
+							String field=nfields.get(i);
 							int oldIndex=matrix[i];
 							Object value=getFieldValue(field,oldIndex,row);
 							if(value instanceof String)
@@ -749,12 +749,12 @@ public class DBUpgrade
 						StringBuffer str=new StringBuffer("SELECT * FROM "+table+" WHERE ");
 						for(int i=0;i<2 && i<nfields.size();i++)
 						{
-							final String field=((String)nfields.get(i)).substring(1);
+							final String field=nfields.get(i).substring(1);
 							str.append((i>0)?" and ":"").append(field).append("=");
 							int oldIndex=matrix[i];
 							str.append(getStringFieldValue(field,oldIndex,row));
 						}
-						java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+						java.sql.Statement myStatement=myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
 						java.sql.ResultSet R=myStatement.executeQuery(str.toString());
 						final boolean found=((R!=null)&&(R.next()));
 						if(R!=null) R.close();

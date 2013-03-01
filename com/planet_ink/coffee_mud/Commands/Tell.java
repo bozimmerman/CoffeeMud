@@ -71,7 +71,7 @@ public class Tell extends StdCommand
 				try {
 					if(S!=null) S.snoopSuspension(1);
 					for(int i=V.size()-num;i<V.size();i++)
-						mob.tell((String)V.get(i));
+						mob.tell(V.get(i));
 				} finally {
 					if(S!=null) S.snoopSuspension(-1);
 				}

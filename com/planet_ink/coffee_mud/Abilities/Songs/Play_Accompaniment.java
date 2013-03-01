@@ -52,7 +52,7 @@ public class Play_Accompaniment extends Play
 	public void affectCharStats(MOB E, CharStats stats)
 	{
 		super.affectCharStats(E,stats);
-		if((E instanceof MOB)&&(E!=invoker())&&(stats.getCurrentClass().baseClass().equals("Bard")))
+		if((E != null)&&(E!=invoker())&&(stats.getCurrentClass().baseClass().equals("Bard")))
 		{
 			int lvl=adjustedLevel(invoker(),0)/10;
 			if(lvl<1) lvl=1;

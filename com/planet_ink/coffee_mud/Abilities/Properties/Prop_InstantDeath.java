@@ -134,7 +134,7 @@ public class Prop_InstantDeath extends Property
 				Room room=getTickersRoom(whoE);
 				if(room!=null)
 				{
-					if((E instanceof MOB)&&((mask==null)||(CMLib.masking().maskCheck(mask, (MOB)E, false))))
+					if((E instanceof MOB)&&((mask==null)||(CMLib.masking().maskCheck(mask, E, false))))
 						return new XHashSet<MOB>((MOB)E);
 					else
 					if(E instanceof Room)

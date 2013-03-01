@@ -54,14 +54,14 @@ public class GateGuard extends StdBehavior
 		Vector<String> V=CMParms.parse(parm);
 		for(int v=0;v<V.size();v++)
 		{
-			if(((String)V.elementAt(v)).equalsIgnoreCase("keeplocked"))
+			if(V.elementAt(v).equalsIgnoreCase("keeplocked"))
 			{
 				keepLocked=true;
 				V.removeElementAt(v);
 				break;
 			}
 			else
-			if(((String)V.elementAt(v)).equalsIgnoreCase("allnight"))
+			if(V.elementAt(v).equalsIgnoreCase("allnight"))
 			{
 				allnight=true;
 				V.removeElementAt(v);

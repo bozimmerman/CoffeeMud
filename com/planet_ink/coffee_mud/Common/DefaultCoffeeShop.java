@@ -79,7 +79,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public boolean isSold(int code){ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
 	protected Room startRoom() { return CMLib.map().getStartRoom(shopKeeper());}
 	
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCoffeeShop();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCoffeeShop();}}
 	public void initializeClass(){}
 	
 	public void cloneFix(DefaultCoffeeShop E)
@@ -97,10 +97,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 			}
 		for(int i=0;i<E.enumerableInventory.size();i++)
 		{
-			Environmental I2=(Environmental)E.enumerableInventory.elementAt(i);
+			Environmental I2=E.enumerableInventory.elementAt(i);
 			if(I2!=null)
 			{
-				Environmental I3=(Environmental)copyFix.get(I2);
+				Environmental I3=copyFix.get(I2);
 				if(I3==null) I3=(Environmental)I2.copyOf();
 				CMLib.threads().deleteTick(I3,-1);
 				enumerableInventory.addElement(I3);
@@ -130,7 +130,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		for(int x=0;x<enumerableInventory.size();x++)
 		{
-			Environmental E=(Environmental)enumerableInventory.elementAt(x);
+			Environmental E=enumerableInventory.elementAt(x);
 			if(shopCompare(E,thisThang)) return true;
 		}
 		return false;
@@ -207,7 +207,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			{
 				for(ShelfProduct SP : storeInventory)
 				{
-					copy=(Environmental)SP.product;
+					copy=SP.product;
 					if(copy.Name().equals(thisThang.Name()))
 					{
 						SP.number+=number;
@@ -251,7 +251,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		{
 			for(int v=enumerableInventory.size()-1;v>=0;v--)
 			{
-				Environmental E=(Environmental)enumerableInventory.elementAt(v);
+				Environmental E=enumerableInventory.elementAt(v);
 				if(shopCompare(E,thisThang))
 					enumerableInventory.removeElement(E);
 			}
@@ -488,7 +488,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 		for(int i=0;i<iV.size();i++)
 		{
-			XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.get(i);
+			XMLLibrary.XMLpiece iblk=iV.get(i);
 			if((!iblk.tag.equalsIgnoreCase("INV"))||(iblk.contents==null))
 			{
 				Log.errOut("DefaultCoffeeShop","Error parsing 'INVS' data.");
@@ -506,7 +506,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				return;
 			}
 			CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
-			PhysicalAgent P=(PhysicalAgent)newOne;
+			PhysicalAgent P=newOne;
 			P.recoverPhyStats();
 			V.addElement(P);
 			addStoreInventory(P,itemnum,val);

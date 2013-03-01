@@ -289,7 +289,7 @@ public class Emoter extends ActiveTicker
 					((PhysicalAgent)ticking).delBehavior(this);
 				return false;
 			}
-			EmoteObj emote=(EmoteObj)emotes.get(CMLib.dice().roll(1,emotes.size(),-1));
+			EmoteObj emote=emotes.get(CMLib.dice().roll(1,emotes.size(),-1));
 			MOB emoter=null;
 			if(ticking instanceof Area)
 			{

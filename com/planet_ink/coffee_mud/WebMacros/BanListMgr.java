@@ -53,7 +53,7 @@ public class BanListMgr extends StdWebMacro
 			List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			for(int i=0;i<banned.size();i++)
 			{
-				String key=(String)banned.get(i);
+				String key=banned.get(i);
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!key.equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("BANNEDONE",key);

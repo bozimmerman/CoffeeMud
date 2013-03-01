@@ -188,7 +188,7 @@ public class FileMgr extends StdWebMacro
 			{
 				if(!F.isDirectory())
 					return "Path not found! Search not completed.";
-				String s=(String)parms.get("STR");
+				String s=parms.get("STR");
 				if((s==null)||(s.length()==0)) 
 					return "Search not completed! No expression given!";
 				Vector compiledList=new Vector();
@@ -210,7 +210,7 @@ public class FileMgr extends StdWebMacro
 			{
 				if(!F.isDirectory())
 					return "Path not found! Search not completed.";
-				String s=(String)parms.get("STR");
+				String s=parms.get("STR");
 				if((s==null)||(s.length()==0)) 
 					return "Search not completed! No expression given!";
 				Vector fileList=new Vector();

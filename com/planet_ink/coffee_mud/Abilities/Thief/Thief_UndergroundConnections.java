@@ -63,7 +63,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			else
 			{
 				currRoom.showHappens(CMMsg.MSG_OK_ACTION,theNoun+" goes by.");
-				currRoom=currRoom.getRoomInDir(((Integer)pathOut.get(0)).intValue());
+				currRoom=currRoom.getRoomInDir(pathOut.get(0).intValue());
 				pathOut.remove(0);
 				if(currRoom!=null)
 				{
@@ -234,7 +234,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		Room R=null;
 		for(int c=0;c<trail.size();c++)
 		{
-			R=(Room)trail.get(c);
+			R=trail.get(c);
 			if((R.getArea()!=A)
 			&&(!CMath.bset(R.domainType(),Room.INDOORS))
 			&&(CMLib.flags().canAccess(target,R)))
@@ -258,7 +258,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			R=thisRoom;
 			for(int t=0;t<thisTrail.size();t++)
 			{
-				R=R.getRoomInDir(((Integer)thisTrail.get(t)).intValue());
+				R=R.getRoomInDir(thisTrail.get(t).intValue());
 				if((R==null)||(CMath.bset(R.domainType(),Room.INDOORS)))
 				{ allTrails.remove(a); break;}
 			}

@@ -303,7 +303,7 @@ public class PlayerData extends StdWebMacro
 			if(M.playerStats()!=null)
 				for(int b=0;b<M.playerStats().getTitles().size();b++)
 				{
-					String B=(String)M.playerStats().getTitles().get(b);
+					String B=M.playerStats().getTitles().get(b);
 					if(B!=null)	str.append(B+", ");
 				}
 				break;

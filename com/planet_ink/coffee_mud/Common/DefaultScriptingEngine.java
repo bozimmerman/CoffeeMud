@@ -159,14 +159,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
 		for(int v=0;v<V.size();v++)
 		{
-			XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)V.get(v);
+			XMLLibrary.XMLpiece piece=V.get(v);
 			if((piece.contents!=null)&&(piece.contents.size()>0))
 			{
 				String kkey="SCRIPTVAR-"+piece.tag;
 				Hashtable H=new Hashtable();
 				for(int c=0;c<piece.contents.size();c++)
 				{
-					XMLLibrary.XMLpiece piece2=(XMLLibrary.XMLpiece)piece.contents.get(c);
+					XMLLibrary.XMLpiece piece2=piece.contents.get(c);
 					H.put(piece2.tag,piece2.value);
 				}
 				resources._submitResource(kkey,H);
@@ -210,7 +210,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		try
 		{
-			return (ScriptingEngine)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -345,7 +345,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	 */
 	protected String[] parseBits(String[][] oldBits, int start, String instructions)
 	{
-		String[] tt=(String[])oldBits[0];
+		String[] tt=oldBits[0];
 		String parseMe=tt[start];
 		String[] parsed=parseBits(parseMe,instructions);
 		if(parsed.length==1)
@@ -369,7 +369,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			String[] tt=null;
 			for(int v=0;v<scripts.size();v++)
 			{
-				DVector script=(DVector)scripts.get(v);
+				DVector script=scripts.get(v);
 				if(script.size()>0)
 				{
 					trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
@@ -674,7 +674,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(debugBadScripts) Log.debugOut("ScriptingEngine","World room search called for: "+thisName);
 			rooms=CMLib.map().findWorldRoomsLiberally(null,thisName, "RIEPM",100,2000);
 		}
-		if(rooms.size()>0) return (Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+		if(rooms.size()>0) return rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 		return room;
 	}
 
@@ -699,7 +699,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									String cmdName)
 	{
 		int x=arg1.compareToIgnoreCase(arg2);
-		Integer SIGN=(Integer)signH.get(cmp);
+		Integer SIGN=signH.get(cmp);
 		if(SIGN==null)
 		{
 			logError(scripted,cmdName,"Syntax",arg1+" "+cmp+" "+arg2);
@@ -724,7 +724,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		long val1=CMath.s_long(arg1.trim());
 		long val2=CMath.s_long(arg2.trim());
-		Integer SIGN=(Integer)signH.get(cmp);
+		Integer SIGN=signH.get(cmp);
 		if(SIGN==null)
 		{
 			logError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
@@ -748,7 +748,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		double val1=CMath.s_parseMathExpression(arg1.trim());
 		double val2=CMath.s_parseMathExpression(arg2.trim());
-		Integer SIGN=(Integer)signH.get(cmp);
+		Integer SIGN=signH.get(cmp);
 		if(SIGN==null)
 		{
 			logError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
@@ -941,7 +941,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(thing!=null)
 			OBJS.add(thing);
 		if(OBJS.size()>0)
-			return (Environmental)OBJS.get(0);
+			return OBJS.get(0);
 		return null;
 	}
 
@@ -1448,7 +1448,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(rest)
 							middle=CMParms.combine(V,y);
 						else
-							middle=(String)V.elementAt(y);
+							middle=V.elementAt(y);
 					}
 				}
 			}
@@ -1556,7 +1556,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 			if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
 				found=true;
-				switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
+				switch(gstatH.get(arg2.toUpperCase()).intValue()) {
 				case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
 				case GSTATADD_CLAN: {
 					Clan C=CMLib.clans().findRivalrousClan(M);
@@ -1648,7 +1648,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 				if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
 					found=true;
-					switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
+					switch(gstatH.get(arg2.toUpperCase()).intValue()) {
 					case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
 					case GSTATADD_CLAN: {
 						Clan C=CMLib.clans().findRivalrousClan(M);
@@ -1954,7 +1954,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(evalC[c]==lastQuote)
 				{
 					if((V.size()>2)
-					&&(signH.containsKey((String)V.lastElement()))
+					&&(signH.containsKey(V.lastElement()))
 					&&(((String)V.elementAt(V.size()-2)).equals(")")))
 					{
 						String sign=(String)V.lastElement();
@@ -1986,7 +1986,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(s.length()>0)
 					{
 						if((V.size()>1)
-						&&(signH.containsKey((String)V.lastElement()))
+						&&(signH.containsKey(V.lastElement()))
 						&&(((String)V.elementAt(V.size()-2)).equals(")")))
 						{
 							String sign=(String)V.lastElement();
@@ -2087,7 +2087,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						String[][] eval,
 						int startEval)
 	{
-		String[] tt=(String[])eval[0];
+		String[] tt=eval[0];
 		if(tmp == null) tmp = newObjs();
 		Vector stack=new Vector();
 		for(int t=startEval;t<tt.length;t++)
@@ -2111,7 +2111,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		else
 		if(connH.containsKey(tt[t]))
 		{
-			Integer curr=(Integer)connH.get(tt[t]);
+			Integer curr=connH.get(tt[t]);
 			if((stack.size()>0)&&(stack.lastElement() instanceof Integer))
 			{
 				int old=((Integer)stack.lastElement()).intValue();
@@ -2123,7 +2123,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		else
 		if(funcH.containsKey(tt[t]))
 		{
-			Integer funcCode=(Integer)funcH.get(tt[t]);
+			Integer funcCode=funcH.get(tt[t]);
 			if((t==tt.length-1)
 			||(!tt[t+1].equals("(")))
 			{
@@ -2603,7 +2603,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String[] ttrigger=null;
 				for(int v=0;v<scripts.size();v++)
 				{
-					DVector script2=(DVector)scripts.get(v);
+					DVector script2=scripts.get(v);
 					if(script2.size()<1) continue;
 					trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
 					ttrigger=(String[])script2.elementAt(0,2);
@@ -2779,7 +2779,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				for(Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
-					Room R=(Room)e.nextElement();
+					Room R=e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
@@ -4490,7 +4490,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			int y=evaluable.indexOf('(');
 			int z=evaluable.indexOf(")");
 			String preFab=(y>=0)?uevaluable.substring(0,y).trim():"";
-			Integer funcCode=(Integer)funcH.get(preFab);
+			Integer funcCode=funcH.get(preFab);
 			if(funcCode==null) funcCode=Integer.valueOf(0);
 			if(y==0)
 			{
@@ -4803,7 +4803,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String[] ttrigger=null;
 				for(int v=0;v<scripts.size();v++)
 				{
-					DVector script2=(DVector)scripts.get(v);
+					DVector script2=scripts.get(v);
 					if(script2.size()<1) continue;
 					trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
 					ttrigger=(String[])script2.elementAt(0,2);
@@ -4871,7 +4871,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					List<Ability> V=CMLib.flags().flaggedAffects(E,Ability.FLAG_CHARMING);
 					for(int v=0;v<V.size();v++)
-						results.append((((Ability)V.get(v)).name())+" ");
+						results.append((V.get(v).name())+" ");
 				}
 				break;
 			}
@@ -5108,7 +5108,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				for(Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
-					Room R=(Room)e.nextElement();
+					Room R=e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
@@ -5907,7 +5907,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							List<Item> V=((Container)E).getContents();
 							for(int v=0;v<V.size();v++)
-								results.append("\""+((Item)V.get(v)).Name()+"\" ");
+								results.append("\""+V.get(v).Name()+"\" ");
 						}
 					}
 				}
@@ -6084,7 +6084,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				cmd=CMParms.getCleanBit(s,0).toUpperCase();
 			if(cmd.length()==0) continue;
 
-			Integer methCode=(Integer)methH.get(cmd);
+			Integer methCode=methH.get(cmd);
 			if((methCode==null)&&(cmd.startsWith("MP")))
 				for(int i=0;i<methods.length;i++)
 					if(methods[i].startsWith(cmd))
@@ -6759,7 +6759,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 						if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
 							found=true;
-							switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
+							switch(gstatH.get(arg2.toUpperCase()).intValue()) {
 							case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
 							case GSTATADD_CLAN: {
 								Pair<Clan,Integer> p=M.getClanRole(arg3);
@@ -6966,7 +6966,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									}
 							if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
 								found=true;
-								switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
+								switch(gstatH.get(arg2.toUpperCase()).intValue()) {
 								case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
 								case GSTATADD_CLAN: {
 									Pair<Clan,Integer> p=M.getClanRole(arg3);
@@ -7506,7 +7506,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					if(lastKnownLocation!=null)
 						for(Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
-							CMLib.threads().rejuv((Room)e.nextElement(),tickID);
+							CMLib.threads().rejuv(e.nextElement(),tickID);
 				}
 				else
 				if(next.equalsIgnoreCase("room"))
@@ -8045,7 +8045,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(e!=null)
 						for(;e.hasMoreElements();)
 						{
-							Faction.FRange FR2=(Faction.FRange)e.nextElement();
+							Faction.FRange FR2=e.nextElement();
 							if(FR2.name().equalsIgnoreCase(range))
 							{ FR=FR2; break;}
 						}
@@ -8142,11 +8142,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					Vector<String> V=CMParms.parse(tt[2]);
 					for(int i=0;i<V.size();i++)
 					{
-						if(CMath.isInteger(((String)V.elementAt(i)).trim()))
-							((MOB)newTarget).baseCharStats().setClassLevel(((MOB)newTarget).baseCharStats().getCurrentClass(),CMath.s_int(((String)V.elementAt(i)).trim()));
+						if(CMath.isInteger(V.elementAt(i).trim()))
+							((MOB)newTarget).baseCharStats().setClassLevel(((MOB)newTarget).baseCharStats().getCurrentClass(),CMath.s_int(V.elementAt(i).trim()));
 						else
 						{
-							CharClass C=CMClass.findCharClass((String)V.elementAt(i));
+							CharClass C=CMClass.findCharClass(V.elementAt(i));
 							if((C!=null)&&(C.availabilityCode()!=0))
 								((MOB)newTarget).baseCharStats().setCurrentClass(C);
 						}
@@ -8578,7 +8578,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((V!=null)&&(V.size()>0))
 					for(int v=0;v<V.size();v++)
 					{
-						DatabaseEngine.PlayerData VAR=(DatabaseEngine.PlayerData)V.get(v);
+						DatabaseEngine.PlayerData VAR=V.get(v);
 						String varName=VAR.key;
 						if(varName.startsWith(which.toUpperCase()+"_SCRIPTABLEVARS_"))
 							varName=varName.substring((which+"_SCRIPTABLEVARS_").length());
@@ -8609,7 +8609,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(arg2.length()>0) ((Item)caged).setName(arg2);
 						if(arg3.length()>0) ((Item)caged).setDisplayText(arg3);
-						lastKnownLocation.addItem((Item)caged,ItemPossessor.Expire.Player_Drop);
+						lastKnownLocation.addItem(caged,ItemPossessor.Expire.Player_Drop);
 						((MOB)E).killMeDead(false);
 					}
 				}
@@ -8917,7 +8917,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				List<DVector> scripts=getScripts();
 				for(int v=0;v<scripts.size();v++)
 				{
-					DVector script2=(DVector)scripts.get(v);
+					DVector script2=scripts.get(v);
 					if(script2.size()<1) continue;
 					String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
 					String[] ttrigger=(String[])script2.elementAt(0,2);
@@ -9232,7 +9232,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		for(int v=0;v<scripts.size();v++)
 		{
 			tryIt=false;
-			script=(DVector)scripts.get(v);
+			script=scripts.get(v);
 			if(script.size()<1) continue;
 
 			trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
@@ -9364,7 +9364,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		String[] t=null;
 		for(int v=0;v<scripts.size();v++)
 		{
-			script=(DVector)scripts.get(v);
+			script=scripts.get(v);
 			if(script.size()<1) continue;
 
 			trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
@@ -9750,7 +9750,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(CMath.isDouble(t[1]))
 						d=CMath.s_double(t[1]);
 					else
-						d=(double)CMath.s_int(t[1]);
+						d=CMath.s_int(t[1]);
 					if((((Coins)msg.tool()).getTotalValue()>=d)
 					||(t[1].equals("ALL"))
 					||(t[1].equals("ANY")))
@@ -9779,7 +9779,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
 						for(int q=0;q<V.size();q++)
 						{
-							SB=(ScriptableResponse)V.get(q);
+							SB=V.get(q);
 							if((SB.scr==script)&&(SB.s==msg.source()))
 							{
 								if(que.remove(SB))
@@ -9809,7 +9809,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
 						for(int q=0;q<V.size();q++)
 						{
-							SB=(ScriptableResponse)V.get(q);
+							SB=V.get(q);
 							if((SB.scr==script)&&(SB.s==msg.source()))
 							{
 								if(que.remove(SB))
@@ -10076,7 +10076,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						doIt=str.trim().equals(t[1].substring(1).trim());
 					else
 					{
-						Pattern P=(Pattern)patterns.get(t[1]);
+						Pattern P=patterns.get(t[1]);
 						if(P==null)
 						{
 							P=Pattern.compile(t[1], Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
@@ -10111,14 +10111,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		Integer I=null;
 		if((ttrigger!=null)&&(ttrigger.length>0))
-			I=(Integer)progH.get(ttrigger[0]);
+			I=progH.get(ttrigger[0]);
 		else
 		{
 			int x=trigger.indexOf(' ');
 			if(x<0)
-				I=(Integer)progH.get(trigger.toUpperCase().trim());
+				I=progH.get(trigger.toUpperCase().trim());
 			else
-				I=(Integer)progH.get(trigger.substring(0,x).toUpperCase().trim());
+				I=progH.get(trigger.substring(0,x).toUpperCase().trim());
 		}
 		if(I==null) return 0;
 		return I.intValue();
@@ -10172,7 +10172,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected boolean canTrigger(int triggerCode)
 	{
-		Long L=(Long)noTrigger.get(Integer.valueOf(triggerCode));
+		Long L=noTrigger.get(Integer.valueOf(triggerCode));
 		if(L==null) return true;
 		if(System.currentTimeMillis()<L.longValue())
 			return false;
@@ -10200,7 +10200,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		String[] t=null;
 		for(int thisScriptIndex=0;thisScriptIndex<scripts.size();thisScriptIndex++)
 		{
-			DVector script=(DVector)scripts.get(thisScriptIndex);
+			DVector script=scripts.get(thisScriptIndex);
 			if(script.size()<2) continue;
 			trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
 			t=(String[])script.elementAt(0,2);
@@ -10222,7 +10222,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					int targetTick=-1;
 					if(delayTargetTimes.containsKey(Integer.valueOf(thisScriptIndex)))
-						targetTick=((Integer)delayTargetTimes.get(Integer.valueOf(thisScriptIndex))).intValue();
+						targetTick=delayTargetTimes.get(Integer.valueOf(thisScriptIndex)).intValue();
 					else
 					{
 						if(t==null) t=parseBits(script,0,"CCR");
@@ -10234,7 +10234,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					int delayProgCounter=0;
 					if(delayProgCounters.containsKey(Integer.valueOf(thisScriptIndex)))
-						delayProgCounter=((Integer)delayProgCounters.get(Integer.valueOf(thisScriptIndex))).intValue();
+						delayProgCounter=delayProgCounters.get(Integer.valueOf(thisScriptIndex)).intValue();
 					else
 						delayProgCounters.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(0));
 					if(delayProgCounter==targetTick)
@@ -10312,7 +10312,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CT");
 					int lastTimeProgDone=-1;
 					if(lastTimeProgsDone.containsKey(Integer.valueOf(thisScriptIndex)))
-						lastTimeProgDone=((Integer)lastTimeProgsDone.get(Integer.valueOf(thisScriptIndex))).intValue();
+						lastTimeProgDone=lastTimeProgsDone.get(Integer.valueOf(thisScriptIndex)).intValue();
 					int time=mob.location().getArea().getTimeObj().getTimeOfDay();
 					if(lastTimeProgDone!=time)
 					{
@@ -10340,7 +10340,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t==null) t=parseBits(script,0,"CT");
 					int lastDayProgDone=-1;
 					if(lastDayProgsDone.containsKey(Integer.valueOf(thisScriptIndex)))
-						lastDayProgDone=((Integer)lastDayProgsDone.get(Integer.valueOf(thisScriptIndex))).intValue();
+						lastDayProgDone=lastDayProgsDone.get(Integer.valueOf(thisScriptIndex)).intValue();
 					int day=mob.location().getArea().getTimeObj().getDayOfMonth();
 					if(lastDayProgDone!=day)
 					{
@@ -10426,7 +10426,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			for(int q=que.size()-1;q>=0;q--)
 			{
 				ScriptableResponse SB=null;
-				try{SB=(ScriptableResponse)que.get(q);}catch(ArrayIndexOutOfBoundsException x){continue;}
+				try{SB=que.get(q);}catch(ArrayIndexOutOfBoundsException x){continue;}
 				if(SB.checkTimeToExecute())
 				{
 					execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());

@@ -171,7 +171,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
-						((Ability)offensiveAffects.get(a)).unInvoke();
+						offensiveAffects.get(a).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can smell again!");
 					target.recoverCharStats();
 					target.recoverPhyStats();
@@ -181,7 +181,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
-						((Ability)offensiveAffects.get(a)).unInvoke();
+						offensiveAffects.get(a).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can speak again!");
 					target.recoverCharStats();
 					target.recoverPhyStats();
@@ -191,7 +191,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
-						((Ability)offensiveAffects.get(a)).unInvoke();
+						offensiveAffects.get(a).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> poisonous afflication!");
 					target.recoverCharStats();
 					target.recoverPhyStats();
@@ -201,7 +201,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
-						((Ability)offensiveAffects.get(a)).unInvoke();
+						offensiveAffects.get(a).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can move again!");
 					target.recoverCharStats();
 					target.recoverPhyStats();
@@ -211,7 +211,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
-						((Ability)offensiveAffects.get(a)).unInvoke();
+						offensiveAffects.get(a).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> disease!");
 					target.recoverCharStats();
 					target.recoverPhyStats();
@@ -221,7 +221,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
-						((Ability)offensiveAffects.get(a)).unInvoke();
+						offensiveAffects.get(a).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can see again!");
 					target.recoverCharStats();
 					target.recoverPhyStats();
@@ -231,7 +231,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 				if(offensiveAffects.size()>0)
 				{
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
-						((Ability)offensiveAffects.get(a)).unInvoke();
+						offensiveAffects.get(a).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can hear again!");
 					target.recoverCharStats();
 					target.recoverPhyStats();

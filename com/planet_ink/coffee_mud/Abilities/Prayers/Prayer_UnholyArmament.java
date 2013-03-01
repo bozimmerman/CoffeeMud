@@ -102,8 +102,8 @@ public class Prayer_UnholyArmament extends Prayer
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
 				I.recoverPhyStats();
 				Map<String,String> H=CMLib.itemBuilder().timsItemAdjustments(I,mob.phyStats().level()+(2*super.getXLEVELLevel(mob)),I.material(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
-				I.basePhyStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));
-				I.basePhyStats().setAttackAdjustment(CMath.s_int((String)H.get("ATTACK")));
+				I.basePhyStats().setDamage(CMath.s_int(H.get("DAMAGE")));
+				I.basePhyStats().setAttackAdjustment(CMath.s_int(H.get("ATTACK")));
 				I.setBaseValue(0);
 			}
 			else
@@ -118,8 +118,8 @@ public class Prayer_UnholyArmament extends Prayer
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
 				I.recoverPhyStats();
 				Map<String,String> H=CMLib.itemBuilder().timsItemAdjustments(I,mob.phyStats().level()+(2*super.getXLEVELLevel(mob)),I.material(),1,0,0,I.rawProperLocationBitmap());
-				I.basePhyStats().setArmor(CMath.s_int((String)H.get("ARMOR")));
-				I.basePhyStats().setWeight(CMath.s_int((String)H.get("WEIGHT")));
+				I.basePhyStats().setArmor(CMath.s_int(H.get("ARMOR")));
+				I.basePhyStats().setWeight(CMath.s_int(H.get("WEIGHT")));
 				I.setBaseValue(0);
 			}
 			else
@@ -133,8 +133,8 @@ public class Prayer_UnholyArmament extends Prayer
 					I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
 				I.recoverPhyStats();
 				Map<String,String> H=CMLib.itemBuilder().timsItemAdjustments(I,mob.phyStats().level()+(2*super.getXLEVELLevel(mob)),I.material(),1,0,0,I.rawProperLocationBitmap());
-				I.basePhyStats().setArmor(CMath.s_int((String)H.get("ARMOR")));
-				I.basePhyStats().setWeight(CMath.s_int((String)H.get("WEIGHT")));
+				I.basePhyStats().setArmor(CMath.s_int(H.get("ARMOR")));
+				I.basePhyStats().setWeight(CMath.s_int(H.get("WEIGHT")));
 				I.setBaseValue(0);
 				if(pos==Wearable.WORN_TORSO)
 				{

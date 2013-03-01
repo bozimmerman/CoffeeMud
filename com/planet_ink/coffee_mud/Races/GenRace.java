@@ -99,7 +99,7 @@ public class GenRace extends StdRace
 	public int[] getAgingChart()
 	{
 		if(agingChart==null)
-			agingChart=(int[])super.getAgingChart().clone();
+			agingChart=super.getAgingChart().clone();
 		return agingChart;
 	}
 
@@ -121,7 +121,7 @@ public class GenRace extends StdRace
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 	
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new GenRace();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new GenRace();}}
 	public CMObject copyOf()
 	{
 		GenRace E=new GenRace();
@@ -440,7 +440,7 @@ public class GenRace extends StdRace
 			resourceChoices=new Vector();
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
+				XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("RSCITEM"))||(iblk.contents==null))
 					continue;
 				Item I=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"ICLASS"));
@@ -463,7 +463,7 @@ public class GenRace extends StdRace
 			outfitChoices=new Vector();
 			for(int x=0;x<oV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)oV.get(x);
+				XMLLibrary.XMLpiece iblk=oV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
 					continue;
 				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
@@ -504,7 +504,7 @@ public class GenRace extends StdRace
 			racialAbilityLevels=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
+				XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("RABILITY"))||(iblk.contents==null))
 					continue;
 				racialAbilityNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"RCLASS");
@@ -525,7 +525,7 @@ public class GenRace extends StdRace
 			racialEffectLevels=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
+				XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("REFFECT"))||(iblk.contents==null))
 					continue;
 				racialEffectNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"RFCLASS");
@@ -544,7 +544,7 @@ public class GenRace extends StdRace
 			culturalAbilityProficiencies=new int[xV.size()];
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
+				XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
 					continue;
 				culturalAbilityNames[x]=CMLib.xml().getValFromPieces(iblk.contents,"CCLASS");
@@ -618,8 +618,8 @@ public class GenRace extends StdRace
 		case 29: return (culturalAbilityNames==null)?"":(""+culturalAbilityNames[num]);
 		case 30: return (culturalAbilityProficiencies==null)?"0":(""+culturalAbilityProficiencies[num]);
 		case 31: return ""+((outfit(null)!=null)?outfit(null).size():0);
-		case 32: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).ID():"");
-		case 33: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).text():"");
+		case 32: return ""+((outfit(null)!=null)?outfit(null).get(num).ID():"");
+		case 33: return ""+((outfit(null)!=null)?outfit(null).get(num).text():"");
 		case 34: return ""+destroyBodyAfterUse();
 		case 35: return (racialEffectNames==null)?"0":(""+racialEffectNames.length);
 		case 36: return (racialEffectNames==null)?"":(""+racialEffectNames[num]);
@@ -731,7 +731,7 @@ public class GenRace extends StdRace
 		case 20: {
 					 if((resourceChoices!=null)&&(num<resourceChoices.size()))
 					 {
-						Item I=(Item)resourceChoices.elementAt(num);
+						Item I=resourceChoices.elementAt(num);
 						I.setMiscText(val);
 						I.recoverPhyStats();
 					 }

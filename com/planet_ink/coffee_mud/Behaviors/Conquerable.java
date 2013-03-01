@@ -289,7 +289,7 @@ public class Conquerable extends Arrest
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+".");
 				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel((String)channels.get(i),CMLib.clans().clanRoles(),holdingClan+" has lost control of "+myArea.name()+".",false);
+					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),holdingClan+" has lost control of "+myArea.name()+".",false);
 				if(journalName.length()>0)
 					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.");
 			}
@@ -424,7 +424,7 @@ public class Conquerable extends Arrest
 			List<PlayerData> itemSet=CMLib.database().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
-				String data=((DatabaseEngine.PlayerData)itemSet.get(0)).xml;
+				String data=itemSet.get(0).xml;
 				List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
 				if(xml!=null)
 				{
@@ -436,7 +436,7 @@ public class Conquerable extends Arrest
 					if(allData!=null)
 					for(int c=0;c<allData.size();c++)
 					{
-						XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)allData.get(c);
+						XMLLibrary.XMLpiece iblk=allData.get(c);
 						if((iblk.tag.equalsIgnoreCase("ACITEM"))&&(iblk.contents!=null))
 						{
 							List<XMLLibrary.XMLpiece> roomData=iblk.contents;
@@ -540,6 +540,7 @@ public class Conquerable extends Arrest
 					for(int i=clanItems.size()-1;i>=0;i--)
 					{
 						ClanItem I=(ClanItem)clanItems.elementAt(i);
+						if(I==null) continue;
 						Room R=CMLib.map().roomLocation(I);
 						if(R==null)
 							deRegisterClanItem(I);
@@ -553,7 +554,6 @@ public class Conquerable extends Arrest
 						if((I.ciType()==ClanItem.CI_FLAG)&&(!R.isContent(I)))
 							deRegisterClanItem(I);
 						else
-						if(I!=null)
 						{
 							I.setExpirationDate(0);
 							if((I.owner() instanceof Room)&&(I.container()!=null))
@@ -594,7 +594,7 @@ public class Conquerable extends Arrest
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST)) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
 							List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 							for(int i=0;i<channels.size();i++)
-								CMLib.commands().postChannel((String)channels.get(i),CMLib.clans().clanRoles(),"The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
+								CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),"The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
 							if(journalName.length()>0)
 								CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.");
 							if((prevHoldingClan.length()>0)
@@ -611,7 +611,7 @@ public class Conquerable extends Arrest
 							{
 								List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 								for(int i=0;i<channels.size();i++)
-									CMLib.commands().postChannel((String)channels.get(i),CMLib.clans().clanRoles(),"There are the rumblings of revolt in "+myArea.name()+".",false);
+									CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),"There are the rumblings of revolt in "+myArea.name()+".",false);
 							}
 						}
 					}
@@ -895,7 +895,7 @@ public class Conquerable extends Arrest
 			}
 			List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel((String)channels.get(i),CMLib.clans().clanRoles(),holdingClan+" gains control of "+myArea.name()+".",false);
+				CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),holdingClan+" gains control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
 				CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" gains control of "+myArea.name()+".","See the subject line.");
 			conquestDate=System.currentTimeMillis();
@@ -1152,7 +1152,7 @@ public class Conquerable extends Arrest
 							if(killerClan!=null)
 							{
 								int level=msg.source().phyStats().level();
-								if((killerClan!=null)&&(killerClan.isWorshipConquest())
+								if(killerClan.isWorshipConquest()
 								&&(killer.getWorshipCharID().equals(msg.source().getWorshipCharID())))
 									level=(level>1)?level/2:level;
 								if(debugging) Log.debugOut("Conquest",killerClan.getName()+" gain "+level+" points by killing "+msg.source().name());
@@ -1166,7 +1166,7 @@ public class Conquerable extends Arrest
 								{
 									Clan C=killerFollowerClan;
 									int level=msg.source().phyStats().level();
-									if((C!=null)&&(C.isWorshipConquest())
+									if(C.isWorshipConquest()
 									&&(killer.amFollowing().getWorshipCharID().equals(msg.source().getWorshipCharID())))
 										level=(level>1)?level/2:level;
 									if(debugging) Log.debugOut("Conquest",killerFollowerClan.getName()+" gain "+level+" points by killing "+msg.source().name());

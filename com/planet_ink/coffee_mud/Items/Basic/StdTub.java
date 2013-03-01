@@ -80,10 +80,9 @@ public class StdTub extends StdRideable implements Drink
 	{
 		List<Item> V=getContents();
 		for(int v=0;v<V.size();v++)
-			if((V.get(v) instanceof Item)
-			&&(V.get(v) instanceof Drink)
-			&&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
-				return ((Item)V.get(v)).material();
+			if((V.get(v) instanceof Drink)
+			&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+				return V.get(v).material();
 		return -1;
 	}
 	
@@ -294,7 +293,7 @@ public class StdTub extends StdRideable implements Drink
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					if(amountOfLiquidRemaining<=0)
 						setLiquidType(thePuddle.liquidType());
-					if( ( (long)amountOfLiquidRemaining + (long)amountToTake ) <= (long)Integer.MAX_VALUE )
+					if( ( (long)amountOfLiquidRemaining + (long)amountToTake ) <= Integer.MAX_VALUE )
 						amountOfLiquidRemaining+=amountToTake;
 					if(amountOfLiquidRemaining>amountOfLiquidHeld)
 						amountOfLiquidRemaining=amountOfLiquidHeld;

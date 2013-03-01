@@ -275,8 +275,7 @@ public class GrinderAreas
 		
 		// PRICEFACTORS
 		num=1;
-		if((A instanceof Economics)
-		&&(httpReq.isUrlParameter("IPRIC1")))
+		if(httpReq.isUrlParameter("IPRIC1"))
 		{
 			Vector prics=new Vector();
 			String DOUBLE=httpReq.getUrlParameter("IPRIC"+num);

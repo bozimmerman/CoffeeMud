@@ -45,7 +45,7 @@ public class Socials extends StdLibrary implements SocialsList
 	{
 		for(int v=0;v<lines.size();v++)
 		{
-			String getline=(String)lines.get(v);
+			String getline=lines.get(v);
 			int x=getline.indexOf("\t");
 			if(x>=0)
 			{
@@ -174,7 +174,7 @@ public class Socials extends StdLibrary implements SocialsList
 			H.put(name,V2);
 		}
 		for(int v=0;v<V2.size();v++)
-			if(((Social)V2.get(v)).Name().equalsIgnoreCase(S.Name()))
+			if(V2.get(v).Name().equalsIgnoreCase(S.Name()))
 			{
 				V2.remove(v);
 				break;
@@ -188,10 +188,10 @@ public class Socials extends StdLibrary implements SocialsList
 	public void remove(String name) 
 	{ 
 		String realName=realName(name);
-		List<Social> V2=(List<Social>)getSocialHash().get(realName);
+		List<Social> V2=getSocialHash().get(realName);
 		if(V2==null) return;
 		for(int v=0;v<V2.size();v++)
-			if(((Social)V2.get(v)).Name().equalsIgnoreCase(name))
+			if(V2.get(v).Name().equalsIgnoreCase(name))
 			{
 				V2.remove(v);
 				if(V2.size()==0)
@@ -341,9 +341,9 @@ public class Socials extends StdLibrary implements SocialsList
 			mob.tell("Which social?");
 			return false;
 		}
-		String name=((String)socialsParse.firstElement()).toUpperCase().trim();
+		String name=socialsParse.firstElement().toUpperCase().trim();
 		String rest=socialsParse.size()>1?CMParms.combine(socialsParse,1):"";
-		List<Social> socials=getSocialsSet((String)socialsParse.firstElement());
+		List<Social> socials=getSocialsSet(socialsParse.firstElement());
 		if((socials.size()==0)
 		&&((mob.session()==null)
 			||(!mob.session().confirm("The social '"+name+"' does not exist.  Create it (y/N)? ","N"))))
@@ -361,7 +361,7 @@ public class Socials extends StdLibrary implements SocialsList
 				int selection=-1;
 				for(int v=0;v<socials.size();v++)
 				{
-					Social S=(Social)socials.get(v);
+					Social S=socials.get(v);
 					int x=S.Name().indexOf(' ');
 					if(x<0)
 					{ 
@@ -411,7 +411,7 @@ public class Socials extends StdLibrary implements SocialsList
 				}
 				if((selection>0)&&(selection<=socials.size()))
 				{
-					soc=(Social)socials.get(selection-1);
+					soc=socials.get(selection-1);
 					break;
 				}
 				String newOne=rest;
@@ -462,7 +462,7 @@ public class Socials extends StdLibrary implements SocialsList
 					newOne=" "+newOne;
 				if(!pickNewSocial)
 				for(int i=0;i<socials.size();i++)
-					if(((Social)socials.get(i)).Name().equals(name+newOne))
+					if(socials.get(i).Name().equals(name+newOne))
 					{
 						mob.tell("This social already exists.  Pick it off the list above.");
 						pickNewSocial=true;
@@ -537,13 +537,13 @@ public class Socials extends StdLibrary implements SocialsList
 	public Social fetchSocial(List<Social> set, String name, boolean exactOnly) 
 	{
 		for(int s=0;s<set.size();s++)
-			if(((Social)set.get(s)).Name().equalsIgnoreCase(name))
-				return (Social)set.get(s);
+			if(set.get(s).Name().equalsIgnoreCase(name))
+				return set.get(s);
 		if(exactOnly) return null;
 		name=name.toUpperCase();
 		for(int s=0;s<set.size();s++)
-			if(((Social)set.get(s)).Name().toUpperCase().startsWith(name))
-				return (Social)set.get(s);
+			if(set.get(s).Name().toUpperCase().startsWith(name))
+				return set.get(s);
 		return null;
 	}
 	
@@ -560,7 +560,7 @@ public class Socials extends StdLibrary implements SocialsList
 		Item I=(Item)targetE;
 		if(I.owner() instanceof Room) return fetchSocial(soc,baseName+" <I-NAME>",exactOnly);
 		if(!(I.owner() instanceof MOB)) return null;
-		if(I.amWearingAt(Item.IN_INVENTORY))  return fetchSocial(soc,baseName+" <V-NAME>",exactOnly);
+		if(I.amWearingAt(Wearable.IN_INVENTORY))  return fetchSocial(soc,baseName+" <V-NAME>",exactOnly);
 		return fetchSocial(soc,baseName+" <E-NAME>",exactOnly);
 	}
 	
@@ -598,13 +598,13 @@ public class Socials extends StdLibrary implements SocialsList
 		if(C==null) return null;
 		if(C.size()==0) return null;
 
-		String socialName=(String)C.get(0);
+		String socialName=C.get(0);
 		String theRest="";
 		Social S=null;
 		boolean tryTargets=false;
 		if(C.size()>1)
 		{
-			String Target=((String)C.get(1)).toUpperCase();
+			String Target=C.get(1).toUpperCase();
 			S=fetchSocial(soc,socialName+" "+Target,true);
 			if((S==null)
 			&&((!Target.equals("SELF"))&&(!Target.equals("ALL"))))
@@ -649,7 +649,7 @@ public class Socials extends StdLibrary implements SocialsList
 			}
 			if(socialName==null)
 				if(backupSocialName == null)
-					socialName=(String)C.get(0);
+					socialName=C.get(0);
 				else
 					socialName=backupSocialName;
 			if(socialName!=null)
@@ -740,10 +740,10 @@ public class Socials extends StdLibrary implements SocialsList
 			List<Social> V1 = soc.get(key);
 			for(int v1=0;v1<V1.size();v1++)
 			{
-				Social S1=(Social)V1.get(v1);
+				Social S1=V1.get(v1);
 				for(int v2=0;v2<V2.size();v2++)
 				{
-					Social S2=(Social)V2.elementAt(v2);
+					Social S2=V2.elementAt(v2);
 					if(S1.equals(S2))
 					{
 						V2.insertElementAt(S1,v2);
@@ -757,11 +757,11 @@ public class Socials extends StdLibrary implements SocialsList
 		Vector<Social> sorted=new Vector<Social>();
 		while(V2.size()>0)
 		{
-			Social lowest=(Social)V2.firstElement();
+			Social lowest=V2.firstElement();
 			Social S=null;
 			for(int i=1;i<V2.size();i++)
 			{
-				S=(Social)V2.elementAt(i);
+				S=V2.elementAt(i);
 				if(S.name().compareToIgnoreCase(lowest.Name())<=0)
 					lowest=S;
 			}
@@ -771,7 +771,7 @@ public class Socials extends StdLibrary implements SocialsList
 		V2=sorted;
 		for(int v=0;v<V2.size();v++)
 		{
-			Social I=(Social)V2.elementAt(v);
+			Social I=V2.elementAt(v);
 
 			switch(I.sourceCode())
 			{
@@ -872,7 +872,7 @@ public class Socials extends StdLibrary implements SocialsList
 		othMOB.setName("someone");
 		for(int l=0;l<list.size();l++)
 		{
-			Social S=(Social)list.get(l);
+			Social S=list.get(l);
 			int x=S.Name().indexOf(' ');
 			String rest=(x>0)?S.Name().substring(x+1).trim().toUpperCase():"";
 			if(rest.length()==0)
@@ -950,7 +950,7 @@ public class Socials extends StdLibrary implements SocialsList
 		{
 			List<Social> V=CMLib.socials().enumSocialSet(s);
 			if((V==null)||(V.size()==0)) continue;
-			Social S=(Social)V.get(0);
+			Social S=V.get(0);
 			socialVec.add(realName(S.Name()));
 		}
 		Collections.sort(socialVec);
@@ -972,7 +972,7 @@ public class Socials extends StdLibrary implements SocialsList
 				socialsList.append("\n\r");
 				col=1;
 			}
-			socialsList.append(CMStrings.padRight((String)socialVec.get(i),19));
+			socialsList.append(CMStrings.padRight(socialVec.get(i),19));
 		}
 		Resources.submitResource("SOCIALS TABLE",socialsList);
 		return socialsList.toString();

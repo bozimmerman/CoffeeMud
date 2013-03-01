@@ -52,7 +52,7 @@ public class Thief_CarefulStep extends ThiefSkill
 		if(secondsElapsed==0)
 		{
 			String dir=CMParms.combine(commands,0);
-			if(commands.size()>0) dir=(String)commands.get(commands.size()-1);
+			if(commands.size()>0) dir=commands.get(commands.size()-1);
 			int dirCode=Directions.getGoodDirectionCode(dir);
 			if(dirCode<0)
 			{

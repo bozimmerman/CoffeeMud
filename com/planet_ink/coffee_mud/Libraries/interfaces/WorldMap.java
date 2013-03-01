@@ -182,7 +182,7 @@ public interface WorldMap extends CMLibrary, Runnable
 			if((roomIDEnumerator==null)||(!roomIDEnumerator.hasMoreElements()))
 				while(areaEnumerator.hasMoreElements())
 				{
-					Area A=(Area)areaEnumerator.nextElement();
+					Area A=areaEnumerator.nextElement();
 					roomIDEnumerator=A.getProperRoomnumbers().getRoomIDs();
 					if(roomIDEnumerator.hasMoreElements()) return true;
 				}

@@ -59,7 +59,7 @@ public class Skill_CollectBounty extends StdSkill
 			warrants=B.getWarrantsOf(legalA,target);
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
-				LegalWarrant W=(LegalWarrant)warrants.get(i);
+				LegalWarrant W=warrants.get(i);
 				if(W.crime().equalsIgnoreCase("pardoned"))
 					warrants.remove(i);
 			}
@@ -146,7 +146,7 @@ public class Skill_CollectBounty extends StdSkill
 		}
 		for(int w=0;w<warrants.size();w++)
 		{
-			LegalWarrant W=(LegalWarrant)warrants.get(w);
+			LegalWarrant W=warrants.get(w);
 			if(W.crime().equalsIgnoreCase("pardoned"))
 			{
 				mob.tell(target.name()+" has been pardoned, and is no longer a criminal.");
@@ -182,17 +182,17 @@ public class Skill_CollectBounty extends StdSkill
 					A.setInvoker(officer);
 					target.setFollowing(officer);
 				}
-				LegalWarrant W=(LegalWarrant)warrants.get(0);
+				LegalWarrant W=warrants.get(0);
 				W.setArrestingOfficer(legalA,officer);
 				W.setState(Law.STATE_REPORTING);
 				for(int i=0;i<warrants.size();i++)
 				{
-					W=(LegalWarrant)warrants.get(i);
+					W=warrants.get(i);
 					gold+=(W.punishment()*(5+getXLEVELLevel(mob)));
 				}
 				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> pay(s) <T-NAMESELF> the bounty of "+CMLib.beanCounter().nameCurrencyShort(judge,gold)+" on "+target.Name()+".");
 				String currency=CMLib.beanCounter().getCurrency(judge);
-				CMLib.beanCounter().giveSomeoneMoney(judge,mob,currency,(double)gold);
+				CMLib.beanCounter().giveSomeoneMoney(judge,mob,currency,gold);
 			}
 		}
 		else

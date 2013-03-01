@@ -93,7 +93,7 @@ public class Chant_SensePoison extends Chant
 					buf.append("weak impurities, ");
 				else
 				for(int i=0;i<offensiveAffects.size();i++)
-					buf.append(((Ability)offensiveAffects.get(i)).name()+", ");
+					buf.append(offensiveAffects.get(i).name()+", ");
 				mob.tell(buf.toString().substring(0,buf.length()-2));
 			}
 		}

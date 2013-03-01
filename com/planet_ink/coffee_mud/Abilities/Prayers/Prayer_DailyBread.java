@@ -85,7 +85,7 @@ public class Prayer_DailyBread extends Prayer
 			{
 				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=(Environmental)i.next();
+					Environmental E2=i.next();
 					if((E2!=null)&&(E2 instanceof Food))
 					{
 						Bread=(Item)E2.copyOf();

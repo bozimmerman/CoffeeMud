@@ -120,7 +120,7 @@ public class Thief_Racketeer extends ThiefSkill
 			return false;
 		}
 		MOB target=null;
-		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
 		else
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
@@ -161,7 +161,7 @@ public class Thief_Racketeer extends ThiefSkill
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel)) return false;
-		double amount=(double)CMLib.dice().roll(proficiency(),target.phyStats().level(),0);
+		double amount=CMLib.dice().roll(proficiency(),target.phyStats().level(),0);
 		boolean success=proficiencyCheck(mob,-(levelDiff),auto);
 		if(success)
 		{
@@ -173,10 +173,10 @@ public class Thief_Racketeer extends ThiefSkill
 				beneficialAffect( mob,
 								  target,
 								  asLevel,
-								  (int)((((long)CMProps.getMillisPerMudHour()) *
-										 ((long)mob.location().getArea().getTimeObj().getHoursInDay()) *
-										 ((long)mob.location().getArea().getTimeObj().getDaysInMonth()) ) /
-											 ((long)CMProps.getTickMillis()) ));
+								  (int)(((CMProps.getMillisPerMudHour()) *
+										 (mob.location().getArea().getTimeObj().getHoursInDay()) *
+										 (mob.location().getArea().getTimeObj().getDaysInMonth()) ) /
+											 (CMProps.getTickMillis()) ));
 				Coins C=CMLib.beanCounter().makeBestCurrency(mob,amount);
 				if(C!=null)
 				{

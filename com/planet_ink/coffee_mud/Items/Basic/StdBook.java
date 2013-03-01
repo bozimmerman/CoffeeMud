@@ -212,13 +212,13 @@ public class StdBook extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				reply.addElement(((JournalsLibrary.JournalEntry)journal.get(0)).from);
-				reply.addElement(((JournalsLibrary.JournalEntry)journal.get(0)).subj);
+				reply.addElement(journal.get(0).from);
+				reply.addElement(journal.get(0).subj);
 			}
 			Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
 			{
-				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(j);
+				JournalsLibrary.JournalEntry entry=journal.get(j);
 				String from=entry.from;
 				String to=entry.to;
 				String subject=entry.subj;
@@ -264,7 +264,7 @@ public class StdBook extends StdItem
 		}
 		else
 		{
-			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(which);
+			JournalsLibrary.JournalEntry entry=journal.get(which);
 			String from=entry.from;
 			String to=entry.to;
 			String subject=entry.subj;

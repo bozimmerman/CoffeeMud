@@ -206,7 +206,7 @@ public class CMSecurity
 		final Set<String> 	 newJFlags=new HashSet<String>();
 		for(int v=0;v<set.size();v++)
 		{
-			String s=((String)set.get(v)).trim().toUpperCase();
+			String s=set.get(v).trim().toUpperCase();
 			Object o=this.parseSecurityFlag(s);
 			if(o==null)
 				Log.errOut("CMSecurity","Unknown security flag: "+s+" in group "+name);
@@ -295,7 +295,7 @@ public class CMSecurity
 		String dir=null;
 		for(int d=0;d<DIRSV.size();d++)
 		{
-			dir=(String)DIRSV.get(d);
+			dir=DIRSV.get(d);
 			if(dir.startsWith("//"))
 			{
 				dir=dir.substring(2);
@@ -480,7 +480,7 @@ public class CMSecurity
 			return false;
 		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
-			final boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
+			final boolean subop=e.nextElement().amISubOp(mob.Name());
 			if(subop)
 			{
 				if(mob.playerStats().getSecurityFlags().containsAny(secGroup, subop))
@@ -523,7 +523,7 @@ public class CMSecurity
 		if(flag.areaAlias!=flag)
 			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
-				final boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
+				final boolean subop=e.nextElement().amISubOp(mob.Name());
 				if(subop)
 				{
 					if(mob.playerStats().getSecurityFlags().contains(flag, true))
@@ -572,7 +572,7 @@ public class CMSecurity
 			{
 				for(int i=0;i<jscripts.size();i++)
 				{
-					String s=(String)jscripts.get(i);
+					String s=jscripts.get(i);
 					int x=s.indexOf('=');
 					if(x>0)
 						approved.put(Long.valueOf(CMath.s_long(s.substring(0,x))),s.substring(x+1));
@@ -784,7 +784,7 @@ public class CMSecurity
 		if((banned!=null)&&(banned.size()>0))
 		for(int b=0;b<banned.size();b++)
 		{
-			String str=(String)banned.get(b);
+			String str=banned.get(b);
 			if(str.length()>0)
 			{
 				if(str.equals("*")||((str.indexOf('*')<0))&&(str.equals(uplogin))) return true;
@@ -810,7 +810,7 @@ public class CMSecurity
 		{
 			for(int b=0;b<banned.size();b++)
 			{
-				String B=(String)banned.get(b);
+				String B=banned.get(b);
 				if((!B.equals(unBanMe))&&(B.trim().length()>0))
 					newBanned.append(B+"\n");
 			}
@@ -826,7 +826,7 @@ public class CMSecurity
 		{
 			for(int b=0;b<banned.size();b++)
 			{
-				String B=(String)banned.get(b);
+				String B=banned.get(b);
 				if(((b+1)!=unBanMe)&&(B.trim().length()>0))
 					newBanned.append(B+"\n");
 			}
@@ -842,7 +842,7 @@ public class CMSecurity
 		if((banned!=null)&&(banned.size()>0))
 		for(int b=0;b<banned.size();b++)
 		{
-			String B=(String)banned.get(b);
+			String B=banned.get(b);
 			if(B.equals(banMe))
 				return b;
 		}

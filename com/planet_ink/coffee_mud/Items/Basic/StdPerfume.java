@@ -63,7 +63,7 @@ public class StdPerfume extends StdDrink implements Perfume
 	{
 		StringBuffer list=new StringBuffer("");
 		for(int i=0;i<smellList.size();i++)
-			list.append(((String)smellList.get(i))+";");
+			list.append((smellList.get(i))+";");
 		return list.toString();
 	}
 	public void setSmellList(String list)

@@ -152,7 +152,7 @@ public class Prop_Retainable extends Property
 								owner,
 								CMLib.utensils().getFormattedDate(mob)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(mob,payAmountPerPayPeriod)+": Payroll: "+Name(),
 								CMLib.beanCounter().getCurrency(mob),
-								(double)(-payAmountPerPayPeriod));
+								(-payAmountPerPayPeriod));
 						if(paid)
 							CMLib.commands().postSay(mob,null,"Payday!",false,false);
 						else
@@ -204,7 +204,7 @@ public class Prop_Retainable extends Property
 				{
 					tellSkills(mob,msg.source());
 					if(payPeriodLengthInMudDays>0)
-						CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+CMLib.beanCounter().abbreviatedPrice(mob,(double)payAmountPerPayPeriod)+" every "+payPeriodLengthInMudDays+" days.",false,false);
+						CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+CMLib.beanCounter().abbreviatedPrice(mob,payAmountPerPayPeriod)+" every "+payPeriodLengthInMudDays+" days.",false,false);
 					else
 						CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment.",false,false);
 					CMLib.commands().postSay(mob,msg.source(),"Please show me the way to my permanent post.",false,false);

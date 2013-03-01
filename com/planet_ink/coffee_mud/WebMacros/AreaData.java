@@ -179,7 +179,7 @@ public class AreaData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)a.nextElement();
+				Ability A=a.nextElement();
 				if(((!A.canAffect(P))||(alreadyHave.contains(A.ID().toLowerCase())))
 				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
 					continue;
@@ -229,7 +229,7 @@ public class AreaData extends StdWebMacro
 					StringBuilder s=CMLib.help().getHelpText("AREA_"+A.Name(),null,false);
 					if(s==null)    s=CMLib.help().getHelpText("AREAHELP_"+A.Name(),null,false);
 					int limit=70;
-					if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
+					if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit));
 				}
 				if(parms.containsKey("CLIMATES"))
@@ -318,7 +318,7 @@ public class AreaData extends StdWebMacro
 					str.append(">Default Currency");
 					for(int i=1;i<CMLib.beanCounter().getAllCurrencies().size();i++)
 					{
-						String s=(String)CMLib.beanCounter().getAllCurrencies().get(i);
+						String s=CMLib.beanCounter().getAllCurrencies().get(i);
 						if(s.length()>0)
 						{
 							str.append("<OPTION VALUE=\""+s+"\"");

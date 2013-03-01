@@ -95,7 +95,7 @@ public class ExpertiseNext extends StdWebMacro
 					for(QualifyingID qID : DV)
 					{
 						String xpertise=qID.ID;
-						E=(ExpertiseLibrary.ExpertiseDefinition)CMLib.expertises().getDefinition(xpertise);
+						E=CMLib.expertises().getDefinition(xpertise);
 						if(E!=null)
 						{
 							qualLevel=Integer.valueOf(qID.qualifyingLevel);

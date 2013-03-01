@@ -46,7 +46,7 @@ public class INIValue extends StdWebMacro
 		boolean startOver=false;
 		for(int p=0;p<page.size();p++)
 		{
-			String s=((String)page.get(p)).trim();
+			String s=page.get(p).trim();
 			if(s.trim().length()==0)
 				startOver=true;
 			else
@@ -96,12 +96,12 @@ public class INIValue extends StdWebMacro
 		{
 			if(!parms.containsKey("MASK")) 
 				return " @break@";
-			String mask=((String)parms.get("MASK")).toUpperCase().trim();
+			String mask=parms.get("MASK").toUpperCase().trim();
 			String lastID="";
 			List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 			for(int p=0;p<page.size();p++)
 			{
-				String s=((String)page.get(p)).trim();
+				String s=page.get(p).trim();
 				if(s.startsWith("#")||s.startsWith("!")) 
 					continue;
 				int x=s.indexOf('=');
@@ -135,7 +135,7 @@ public class INIValue extends StdWebMacro
 		}
 		if(!parms.containsKey("MASK")) 
 			return "'MASK' not found!";
-		String mask=((String)parms.get("MASK")).toUpperCase();
+		String mask=parms.get("MASK").toUpperCase();
 		CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 		if((page==null)||(!page.isLoaded())) return "";
 		if(mask.trim().endsWith("*"))

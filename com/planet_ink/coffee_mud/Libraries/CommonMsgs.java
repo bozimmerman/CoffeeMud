@@ -60,7 +60,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(R==null){ mob.tell(msgStr); return false;}
 		if(command.size()>0)
 		{
-			String word=CMLib.english().getAnEvokeWord(mob,(String)command.get(0));
+			String word=CMLib.english().getAnEvokeWord(mob,command.get(0));
 			if(word!=null)
 				msgStr=CMStrings.replaceAll(unknownInvoke(),"@x1",word.toLowerCase());
 		}
@@ -534,7 +534,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						int total=0;
 						for(int a1=0;a1<expenseAffects.size();a1++)
 						{
-							int lql=CMLib.ableMapper().lowestQualifyingLevel(((Ability)expenseAffects.elementAt(a1)).ID());
+							int lql=CMLib.ableMapper().lowestQualifyingLevel(expenseAffects.elementAt(a1).ID());
 							if(lql>0)
 								total+=lql;
 							else
@@ -555,7 +555,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> strength of will begins to crumble.");
 					//pick one and kill it
-					Ability A=(Ability)expenseAffects.elementAt(CMLib.dice().roll(1,expenseAffects.size(),-1));
+					Ability A=expenseAffects.elementAt(CMLib.dice().roll(1,expenseAffects.size(),-1));
 					A.unInvoke();
 					expenseAffects.remove(A);
 					reallyEat=basePrice*expenseAffects.size();
@@ -1053,7 +1053,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							keyWords=CMParms.parse(item.name().toUpperCase());
 							for(int k=0;k<keyWords.size();k++)
 							{
-								word=(String)keyWords.elementAt(k);
+								word=keyWords.elementAt(k);
 								x=roomDesc.toUpperCase().indexOf(word);
 								while(x>=0)
 								{
@@ -1351,7 +1351,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					}
 					for(int r=0;r<view.size();r++)
 					{
-						room=(Room)view.get(r);
+						room=view.get(r);
 						for(int i=0;i<room.numItems();i++)
 						{
 							Item E=room.getItem(i);
@@ -1633,7 +1633,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		if(!(msg.target() instanceof Item)) return;
 		Item item=(Item)msg.target();
-		long wearLocation = (long)((msg.value()<=0)?0:((long)(1<<msg.value())/2));
+		long wearLocation = (msg.value()<=0)?0:((long)(1<<msg.value())/2);
 		MOB mob=msg.source();
 		if(item.canWear(mob,wearLocation))
 		{

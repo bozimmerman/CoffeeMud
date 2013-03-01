@@ -78,7 +78,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 		String s=null;
 		for(int v=V.size()-1;v>=1;v--)
 		{
-			s=(String)V.elementAt(v);
+			s=V.elementAt(v);
 			if(s.startsWith("NOFOL"))
 			{
 				flags[0]=true;
@@ -94,7 +94,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 			if("+-".indexOf(s.charAt(0))<0)
 			{
 				V.removeElementAt(v);
-				V.setElementAt(((String)V.elementAt(v-1))+" "+s,v-1);
+				V.setElementAt((V.elementAt(v-1))+" "+s,v-1);
 			}
 		}
 		return V;

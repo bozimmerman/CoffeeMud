@@ -245,7 +245,7 @@ public class WeatherAffects extends PuddleMaker
 			else
 			for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 			{
-				Room R=(Room)e.nextElement();
+				Room R=e.nextElement();
 				if((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 				&&(CMLib.dice().rollPercentage()<freezeOverChance))
 				{
@@ -273,7 +273,7 @@ public class WeatherAffects extends PuddleMaker
 				Enumeration<Room> r=(ticking instanceof Room)?new SingleEnumeration<Room>((Room)ticking):A.getProperMap();
 				for(;r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					Room R=r.nextElement();
 					if(CMLib.map().hasASky(R))
 						for(int i=0;i<R.numInhabitants();i++)
 						{
@@ -529,7 +529,7 @@ public class WeatherAffects extends PuddleMaker
 						Enumeration<Room> e=(ticking instanceof Room)?new SingleEnumeration<Room>((Room)ticking):A.getProperMap();
 						for(;e.hasMoreElements();)
 						{
-							R2=(Room)e.nextElement();
+							R2=e.nextElement();
 							if((R2!=R)&&(R2.numInhabitants()>0))
 								if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
 								||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
@@ -593,7 +593,7 @@ public class WeatherAffects extends PuddleMaker
 						Enumeration<Room> e=(ticking instanceof Room)?new SingleEnumeration<Room>((Room)ticking):A.getProperMap();
 						for(;e.hasMoreElements();)
 						{
-							R2=(Room)e.nextElement();
+							R2=e.nextElement();
 							if((R2!=R)&&(R2.numInhabitants()>0))
 								if((A.getTimeObj().getTODCode()==TimeClock.TIME_DAY)
 								||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
@@ -775,6 +775,8 @@ public class WeatherAffects extends PuddleMaker
 
 				MOB M=S.mob();
 				Room R=M.location();
+				if(R==null)
+					continue;
 
 				switch(R.domainType())
 				{
@@ -807,7 +809,6 @@ public class WeatherAffects extends PuddleMaker
 						&&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)))
 						{   rustThese.clear();  break;  }
 					}
-					if(R!=null)
 					for(int i=0;i<rustThese.size();i++)
 					{
 						Item I=(Item)rustThese.elementAt(i);

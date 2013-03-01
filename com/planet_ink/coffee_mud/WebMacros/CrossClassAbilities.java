@@ -56,7 +56,7 @@ public class CrossClassAbilities extends StdWebMacro
 		}
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			StringBuffer buf=new StringBuffer("");
 			int numFound=0;
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)

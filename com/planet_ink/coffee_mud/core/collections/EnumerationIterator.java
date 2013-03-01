@@ -25,7 +25,7 @@ public class EnumerationIterator<K> implements Iterator<K>
 	public EnumerationIterator(Enumeration<K> e) 
 	{
 		if(e==null)
-			this.e=(Enumeration<K>)EmptyEnumeration.INSTANCE;
+			this.e=EmptyEnumeration.INSTANCE;
 		else
 			this.e=e;
 		hasNext();

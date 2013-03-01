@@ -88,7 +88,7 @@ public class Prayer_Gateway extends Prayer
 		{
 			List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName,true,10);
 			if(rooms.size()>0) 
-				newRoom=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+				newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 		}catch(NoSuchElementException e){}
 
 		if(newRoom==null)

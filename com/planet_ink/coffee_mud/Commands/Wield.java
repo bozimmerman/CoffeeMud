@@ -63,9 +63,9 @@ public class Wield extends StdCommand
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			if((items.size()==1)||(((Item)items.get(i)).canWear(mob,Wearable.WORN_WIELD)))
+			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_WIELD)))
 			{
-				Item item=(Item)items.get(i);
+				Item item=items.get(i);
 				CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAME>.");
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);

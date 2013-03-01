@@ -61,7 +61,7 @@ public class Paladin_Purity extends PaladinSkill
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().equalsIgnoreCase(CMLib.factions().AlignID())))
 		{
-			msg.source().location().show((MOB)msg.source(),null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> purity protects <S-HIM-HER> from the evil influence.");
+			msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> purity protects <S-HIM-HER> from the evil influence.");
 			return false;
 		}
 		return true;

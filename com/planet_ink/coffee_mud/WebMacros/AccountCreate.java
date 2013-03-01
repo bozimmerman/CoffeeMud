@@ -124,7 +124,7 @@ public class AccountCreate extends StdWebMacro
 		acct.setLastIP(httpReq.getClientAddress().getHostAddress());
 		acct.setLastDateTime(System.currentTimeMillis());
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
 		CMLib.database().DBCreateAccount(acct);
 		if(emailPassword)
 		{

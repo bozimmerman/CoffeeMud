@@ -655,7 +655,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			{
 				closeChannels();
 				currentState=ParseState.DONE; // a common case when client closes first
-				if((isDebugging)&&(e!=null))
+				if(isDebugging)
 					config.getLogger().fine("ERROR: "+e.getClass().getName()+": "+e.getMessage());
 			}
 			catch(Exception e)

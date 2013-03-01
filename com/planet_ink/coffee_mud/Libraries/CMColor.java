@@ -204,7 +204,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			Vector<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_COLORSCHEME),true);
 			for(int i=0;i<schemeSettings.size();i++)
 			{
-				String s=(String)schemeSettings.elementAt(i);
+				String s=schemeSettings.elementAt(i);
 				int x=s.indexOf('=');
 				if(x>0)
 				{
@@ -313,7 +313,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			Vector<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_COLORSCHEME),true);
 			for(int i=0;i<schemeSettings.size();i++)
 			{
-				String s=(String)schemeSettings.elementAt(i);
+				String s=schemeSettings.elementAt(i);
 				int x=s.indexOf('=');
 				if(x>0)
 				{

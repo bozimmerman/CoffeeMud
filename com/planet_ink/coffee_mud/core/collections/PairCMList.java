@@ -160,14 +160,14 @@ public final class PairCMList<T,K> extends CMList<Pair<T,K>> implements SPairLis
 	{
 		T[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (T) getFirst(x);
+			objs[x] = getFirst(x);
 		return objs;
 	}
 	public K[] toArraySecond(K[] a)
 	{
 		K[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (K) getSecond(x);
+			objs[x] = getSecond(x);
 		return objs;
 	}
 }

@@ -80,7 +80,7 @@ public class Spell_LimbRack extends Spell
 				if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
 				boolean success=true;
 				for(int i=0;i<limbsToRemove.size();i++)
-					success=success && (A.amputate(mob,A,(String)limbsToRemove.get(i))!=null);
+					success=success && (A.amputate(mob,A,limbsToRemove.get(i))!=null);
 				if(success)
 				{
 					if(mob.fetchEffect(A.ID())==null)
@@ -102,7 +102,7 @@ public class Spell_LimbRack extends Spell
 		List<String> remainingLimbList=A.remainingLimbNameSet(target);
 		for(int i=remainingLimbList.size()-1;i>=0;i--)
 		{
-			String gone=(String)remainingLimbList.get(i);
+			String gone=remainingLimbList.get(i);
 			if((!gone.toUpperCase().endsWith(" ARM"))
 			&&(!gone.toUpperCase().endsWith(" LEG")))
 				remainingLimbList.remove(i);

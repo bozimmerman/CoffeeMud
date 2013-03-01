@@ -47,7 +47,7 @@ public class StdFactoryMOB extends StdMOB
 	{
 		try
 		{
-			return (Environmental)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{

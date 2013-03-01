@@ -113,7 +113,7 @@ public class Prop_Doppleganger extends Property
 					total+=victim.phyStats().level();
 					num++;
 				}
-				MOB entrant=(MOB)msg.source();
+				MOB entrant=msg.source();
 				if(qualifies(entrant,R))
 				{
 					total+=entrant.phyStats().level();

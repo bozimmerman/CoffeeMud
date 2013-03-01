@@ -302,8 +302,7 @@ public class StdContainer extends StdItem implements Container
 							&&((DoorKey)item).getKey().equals(keyName())
 							&&((item.container()==null)
 							   ||((item.container().container()==null)
-								  &&(item.container() instanceof Container)
-								  &&((((Container)item.container()).containTypes()&Container.CONTAIN_KEYS)>0)))
+								  &&((item.container().containTypes()&Container.CONTAIN_KEYS)>0)))
 							&&(CMLib.flags().canBeSeenBy(item,mob)))
 								return true;
 						}
@@ -541,7 +540,7 @@ public class StdContainer extends StdItem implements Container
 				List<Item> V=getContents();
 				for(int v=0;v<V.size();v++)
 				{
-					I=(Item)V.get(v);
+					I=V.get(v);
 					I.setContainer(null);
 				}
 			}

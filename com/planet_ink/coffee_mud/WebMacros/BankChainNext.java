@@ -98,7 +98,7 @@ public class BankChainNext extends StdWebMacro
 				{
 					Banker bankerM=CMLib.map().getBank(bankChain,bankChain);
 					if((bankerM==null)
-					||((bankerM.isSold(Banker.DEAL_CLANBANKER))&&(playerM.getClanRole(playerM.Name())==null))
+					||((bankerM.isSold(ShopKeeper.DEAL_CLANBANKER))&&(playerM.getClanRole(playerM.Name())==null))
 					||(BankAccountInfo.getMakeAccountInfo(httpReq,bankerM,playerM).balance<=0.0))
 					{
 						lastID=bankChain;

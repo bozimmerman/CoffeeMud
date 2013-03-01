@@ -79,7 +79,7 @@ public class Disease_Leeches extends Disease
 			diseaseTick=DISEASE_DELAY();
 			List<Ability> offensiveEffects=returnOffensiveAffects(mob);
 			for(int a=offensiveEffects.size()-1;a>=0;a--)
-				((Ability)offensiveEffects.get(a)).unInvoke();
+				offensiveEffects.get(a).unInvoke();
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,DISEASE_AFFECT());
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;

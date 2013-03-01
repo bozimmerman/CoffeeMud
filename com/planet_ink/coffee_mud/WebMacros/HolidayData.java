@@ -57,7 +57,7 @@ public class HolidayData extends StdWebMacro
 					if(resp instanceof List)
 						steps=(List<String>)resp;
 					if(steps!=null)
-						encodedData=CMLib.quests().getEncodedHolidayData((String)steps.get(index));
+						encodedData=CMLib.quests().getEncodedHolidayData(steps.get(index));
 				}
 				else
 				{
@@ -478,7 +478,7 @@ public class HolidayData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)a.nextElement();
+				Ability A=a.nextElement();
 				String cnam=A.ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
@@ -542,16 +542,16 @@ public class HolidayData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-			String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+			String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
 			String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 			if(parms.containsKey("HEADERCOL1")||parms.containsKey("HEADERCOL2"))
 			{
 				str.append("<TR><TD WIDTH=25%>");
 				if(parms.containsKey("HEADERCOL1"))
-					str.append(sfont + ((String)parms.get("HEADERCOL1")) + efont);
+					str.append(sfont + (parms.get("HEADERCOL1")) + efont);
 				str.append("</TD><TD WIDTH=75%>");
 				if(parms.containsKey("HEADERCOL2"))
-					str.append(sfont + ((String)parms.get("HEADERCOL2")) + efont);
+					str.append(sfont + (parms.get("HEADERCOL2")) + efont);
 				str.append("</TD></TR>");
 			}
 			for(int i=0;i<theclasses.size();i++)
@@ -617,18 +617,18 @@ public class HolidayData extends StdWebMacro
 				mudchats=CMLib.quests().breakOutMudChatVs("MUDCHAT",behaviors);
 
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-			String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+			String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
 			String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 			if(parms.containsKey("HEADERCOL1"))
 			{
-				str.append("<TR><TD WIDTH=25% VALIGN=TOP>"+sfont+((String)parms.get("HEADERCOL1"))+efont+"</TD>");
+				str.append("<TR><TD WIDTH=25% VALIGN=TOP>"+sfont+(parms.get("HEADERCOL1"))+efont+"</TD>");
 				if(parms.containsKey("HEADERCOL2"))
 				{
 					str.append("<TD WIDTH=75%>");
 					str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
-					str.append("<TR><TD WIDTH=20% VALIGN=TOP>"+sfont+((String)parms.get("HEADERCOL2"))+efont+"</TD>");
+					str.append("<TR><TD WIDTH=20% VALIGN=TOP>"+sfont+(parms.get("HEADERCOL2"))+efont+"</TD>");
 					if(parms.containsKey("HEADERCOL3"))
-						str.append("<TD WIDTH=80%>"+sfont+((String)parms.get("HEADERCOL3"))+efont+"</TD>");
+						str.append("<TD WIDTH=80%>"+sfont+(parms.get("HEADERCOL3"))+efont+"</TD>");
 					else
 						str.append("<TD WIDTH=80%></TD>");
 					str.append("</TR></TABLE>");
@@ -641,8 +641,8 @@ public class HolidayData extends StdWebMacro
 
 			for(int i=0;i<mudchats.size();i++)
 			{
-				List<String> mudChat=(List<String>)mudchats.get(i);
-				String sayList=CMStrings.replaceAll(CMStrings.replaceAll((String)mudChat.get(0),"\"","&quot;"),"|",",");
+				List<String> mudChat=mudchats.get(i);
+				String sayList=CMStrings.replaceAll(CMStrings.replaceAll(mudChat.get(0),"\"","&quot;"),"|",",");
 				str.append("<TR><TD WIDTH=25% VALIGN=TOP>");
 				str.append("<INPUT TYPE=TEXT SIZE=15 NAME=MCWDS"+(i+1)+" VALUE=\""+sayList+"\">");
 				str.append("</TD><TD WIDTH=75%>");
@@ -650,7 +650,7 @@ public class HolidayData extends StdWebMacro
 				for(int ii=1;ii<mudChat.size();ii++)
 				{
 					str.append("<TR><TD WIDTH=20%>");
-					String say=(String)mudChat.get(ii);
+					String say=mudChat.get(ii);
 					int weight=CMath.s_int(""+say.charAt(0));
 					say=CMStrings.replaceAll(say.substring(1),"\"","&quot;");
 					str.append("<SELECT NAME=MCSAYW"+(i+1)+"_"+(ii)+" ONCHANGE=\"NoSay(this)\">");

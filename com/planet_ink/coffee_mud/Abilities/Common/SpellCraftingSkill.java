@@ -53,7 +53,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		{
 			List<List<String>> recipes=loadRecipes();
 			List<String> V=recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
-			spellName=(String)V.get(RCP_FINALNAME);
+			spellName=V.get(RCP_FINALNAME);
 		}
 		return spellName;
 	}
@@ -63,15 +63,15 @@ public class SpellCraftingSkill extends CraftingSkill
 		List<String> spellFound=null;
 		List<List<String>> recipes=loadRecipes();
 		for(List<String> V : recipes)
-			if(((String)V.get(RCP_FINALNAME)).equalsIgnoreCase(spellName))
+			if(V.get(RCP_FINALNAME).equalsIgnoreCase(spellName))
 			{ spellFound=V; break;}
 		if(spellFound==null)
 			for(List<String> V : recipes)
-				if(CMLib.english().containsString((String)V.get(RCP_FINALNAME),spellName))
+				if(CMLib.english().containsString(V.get(RCP_FINALNAME),spellName))
 				{ spellFound=V; break;}
 		if(spellFound==null)
 			for(List<String> V : recipes)
-				if(((String)V.get(RCP_FINALNAME)).toLowerCase().indexOf(spellName.toLowerCase())>=0)
+				if(V.get(RCP_FINALNAME).toLowerCase().indexOf(spellName.toLowerCase())>=0)
 				{ spellFound=V; break;}
 		return spellFound;
 	}
@@ -87,7 +87,7 @@ public class SpellCraftingSkill extends CraftingSkill
 			{
 				List<String> spellFound=getCraftableSpellRow(spellName);
 				if(spellFound!=null)
-					theSpell=CMClass.getAbility((String)spellFound.get(RCP_FINALNAME));
+					theSpell=CMClass.getAbility(spellFound.get(RCP_FINALNAME));
 			}
 		}
 		return theSpell;
@@ -101,7 +101,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		{
 			List<String> spellFound=getCraftableSpellRow(spellName);
 			if(spellFound!=null)
-				return CMath.s_int((String)spellFound.get(RCP_LEVEL));
+				return CMath.s_int(spellFound.get(RCP_LEVEL));
 			theSpell=CMClass.getAbility((String)commands.firstElement());
 			if(theSpell!=null)
 				return CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID());

@@ -147,7 +147,7 @@ public class Get extends StdCommand
 			Vector V=new Vector();
 			Container container=null;
 			if(containers.size()>0) 
-				container=(Container)containers.get(c++);
+				container=containers.get(c++);
 			int addendum=1;
 			String addendumStr="";
 			boolean doBugFix = true;
@@ -206,7 +206,7 @@ public class Get extends StdCommand
 		{
 			if(containers.size()>0)
 			{
-				Container container=(Container)containers.get(0);
+				Container container=containers.get(0);
 				if(container.isOpen())
 					mob.tell(mob,container,null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME>.");
 				else
@@ -222,7 +222,7 @@ public class Get extends StdCommand
 					mob.tell("You don't see '"+containerName+"' here.");
 				else
 				if(V.size()==1)
-					mob.tell(mob,(Item)V.get(0),null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME> here.");
+					mob.tell(mob,V.get(0),null,"You don't see '"+unmodifiedWhatToGet+"' in <T-NAME> here.");
 				else
 					mob.tell("You don't see '"+unmodifiedWhatToGet+"' in any '"+containerName+"'.");
 			}

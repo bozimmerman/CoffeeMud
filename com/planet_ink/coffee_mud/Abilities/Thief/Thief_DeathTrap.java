@@ -69,7 +69,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
 		P.addEffect(T);
-		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,(int)(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)+(2*getXLEVELLevel(mob))));
+		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)+(2*getXLEVELLevel(mob)));
 		return T;
 	}
 

@@ -89,7 +89,7 @@ public class Prayer_Demonshield extends Prayer
 						if(msg2.value()<=0)
 						{
 							int damage = CMLib.dice().roll( 1,
-															(int)Math.round( ( adjustedLevel( invoker(), 0 ) + ( 2.0 * ((double)super.getX1Level( invoker() )) ) ) / 5.0 ),
+															(int)Math.round( ( adjustedLevel( invoker(), 0 ) + ( 2.0 * (super.getX1Level( invoker() )) ) ) / 5.0 ),
 															1 );
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,msgStr);
 							if((!mob.isInCombat())&&(mob.isMonster())&&(mob!=invoker)&&(invoker!=null)&&(mob.location()==invoker.location())&&(mob.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,mob)))

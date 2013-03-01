@@ -49,7 +49,7 @@ public class BankAccountInfo extends StdWebMacro
 		BankAccountStuff info=(BankAccountStuff)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
 		if(info!=null) return info;
 		info=new BankAccountStuff();
-		if((B.isSold(Banker.DEAL_CLANBANKER))&&(playerM.getClanRole(playerM.Name())==null))
+		if((B.isSold(ShopKeeper.DEAL_CLANBANKER))&&(playerM.getClanRole(playerM.Name())==null))
 		{
 		}
 		else
@@ -81,7 +81,7 @@ public class BankAccountInfo extends StdWebMacro
 		if(B==null) return "BANKER not found?!";
 		if((player!=null)&&(player.length()>0))
 		{
-			if(((M==null)||(!M.Name().equalsIgnoreCase(player)))
+			if((!M.Name().equalsIgnoreCase(player))
 			&&(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS)))
 				return "";
 			Clan C=CMLib.clans().getClan(player);
@@ -107,8 +107,8 @@ public class BankAccountInfo extends StdWebMacro
 					destroyPlayer=true;
 				}
 			}
-			if(playerM!=null) playerA=CMLib.map().getStartArea(playerM);
-			if((playerM==null)||(playerA==null)) 
+			playerA=CMLib.map().getStartArea(playerM);
+			if(playerA==null) 
 				return "PLAYER not found!";
 		}
 		else

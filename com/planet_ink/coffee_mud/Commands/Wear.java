@@ -145,7 +145,7 @@ public class Wear extends StdCommand
 			Item I=null;
 			for(int i=items.size()-2;i>=0;i--)
 			{
-				I=(Item)items.get(i);
+				I=items.get(i);
 				if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 				{
 					items.remove(i);
@@ -154,7 +154,7 @@ public class Wear extends StdCommand
 			}
 			for(int i=0;i<items.size();i++)
 			{
-				I=(Item)items.get(i);
+				I=items.get(i);
 				if((items.size()==1)||(I.canWear(mob,0)))
 					wear(mob,I,wearLocationIndex,false);
 			}

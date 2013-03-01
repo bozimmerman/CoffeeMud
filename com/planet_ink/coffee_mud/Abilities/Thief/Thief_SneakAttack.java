@@ -51,9 +51,9 @@ public class Thief_SneakAttack extends ThiefSkill
 		super.affectPhyStats(affected,affectableStats);
 		if(activated)
 		{
-			final double prof=((double)proficiency())/100.0;
-			final double xlvl=(double)super.getXLEVELLevel(invoker());
-			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(((((double)affectableStats.damage())/4.0)+xlvl)*prof));
+			final double prof=(proficiency())/100.0;
+			final double xlvl=super.getXLEVELLevel(invoker());
+			affectableStats.setDamage(affectableStats.damage()+(int)Math.round((((affectableStats.damage())/4.0)+xlvl)*prof));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round((50.0+(10.0*xlvl))*prof));
 		}
 	}

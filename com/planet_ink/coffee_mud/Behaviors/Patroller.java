@@ -292,10 +292,10 @@ public class Patroller extends ActiveTicker
 						if(correction!=null)
 						{
 							for(int r=0;r<correction.size();r++)
-								if(((GridLocale)R).isMyGridChild((Room)correction.get(r)))
+								if(((GridLocale)R).isMyGridChild(correction.get(r)))
 								{
 									GridLocaleFixed=true;
-									R=(Room)correction.get(r);
+									R=correction.get(r);
 									break;
 								}
 						}
@@ -409,8 +409,8 @@ public class Patroller extends ActiveTicker
 							CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
 							try {
 								rideCheckCt++;
-								if((E!=null)&&(!E.okMessage(mob,enterMsg)))
-								{    
+								if(!E.okMessage(mob,enterMsg))
+								{
 									tickStatus=Tickable.STATUS_NOT;
 									return true;
 								}

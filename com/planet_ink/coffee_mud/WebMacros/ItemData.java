@@ -291,7 +291,7 @@ public class ItemData extends StdWebMacro
 			}
 			for(String key : vals.keySet())
 			{
-				String val=(String)vals.get(key);
+				String val=vals.get(key);
 				httpReq.addFakeUrlParameter(key,val);
 			}
 		}
@@ -622,7 +622,7 @@ public class ItemData extends StdWebMacro
 							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
 						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
-							String cnam=((Ability)a.nextElement()).ID();
+							String cnam=a.nextElement().ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
 							if(old.equals(cnam))
 								str.append(" SELECTED");
@@ -819,12 +819,12 @@ public class ItemData extends StdWebMacro
 					str.append(">Default currency");
 					for(int i=0;i<cs.size();i++)
 					{
-						if(((String)cs.get(i)).length()>0)
+						if(cs.get(i).length()>0)
 						{
-							str.append("<OPTION VALUE=\""+((String)cs.get(i))+"\"");
-							if(((String)cs.get(i)).equalsIgnoreCase(old))
+							str.append("<OPTION VALUE=\""+(cs.get(i))+"\"");
+							if(cs.get(i).equalsIgnoreCase(old))
 								str.append(" SELECTED");
-							str.append(">"+((String)cs.get(i)));
+							str.append(">"+(cs.get(i)));
 						}
 					}
 					break;
@@ -854,7 +854,7 @@ public class ItemData extends StdWebMacro
 						old=""+((Recipe)I).getCommonSkillID();
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-					 	A=(Ability)e.nextElement();
+					 	A=e.nextElement();
 					 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 					 	&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
 					 	{
@@ -954,7 +954,7 @@ public class ItemData extends StdWebMacro
 						if(data!=null)
 							old=data.getWhenLive()?"on":"";
 					}
-					str.append(((old!=null)&&(old.equalsIgnoreCase("on"))?"CHECKED":"")+", ");
+					str.append(((old.equalsIgnoreCase("on"))?"CHECKED":"")+", ");
 					break;
 				case 90: // catamask
 					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
@@ -986,10 +986,8 @@ public class ItemData extends StdWebMacro
 			str.append(ExitData.dispositions(I,firstTime,httpReq,parms));
 			str.append(AreaData.affects(I,httpReq,parms,1));
 			str.append(AreaData.behaves(I,httpReq,parms,1));
-			if(oldI!=null){
-				I.setContainer(oldI.container());
-				I.setRawWornCode(oldI.rawWornCode());
-			}
+			I.setContainer(oldI.container());
+			I.setRawWornCode(oldI.rawWornCode());
 
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
@@ -1061,7 +1059,7 @@ public class ItemData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)a.nextElement();
+				Ability A=a.nextElement();
 				if(((!A.canAffect(P))||(alreadyHave.contains(A.ID().toLowerCase())))
 				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
 					continue;

@@ -111,13 +111,13 @@ public interface Auctioneer extends ShopKeeper
 		{
 			Vector<String> ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
 			while(ratesV.size()<7)ratesV.addElement("0");
-			liveListPrice=CMath.s_double((String)ratesV.elementAt(0));
-			timeListPrice=CMath.s_double((String)ratesV.elementAt(1));
-			timeListPct=CMath.s_pct((String)ratesV.elementAt(2));
-			liveCutPct=CMath.s_pct((String)ratesV.elementAt(3));
-			timeCutPct=CMath.s_pct((String)ratesV.elementAt(4));
-			minDays=CMath.s_int((String)ratesV.elementAt(5));
-			maxDays=CMath.s_int((String)ratesV.elementAt(6));
+			liveListPrice=CMath.s_double(ratesV.elementAt(0));
+			timeListPrice=CMath.s_double(ratesV.elementAt(1));
+			timeListPct=CMath.s_pct(ratesV.elementAt(2));
+			liveCutPct=CMath.s_pct(ratesV.elementAt(3));
+			timeCutPct=CMath.s_pct(ratesV.elementAt(4));
+			minDays=CMath.s_int(ratesV.elementAt(5));
+			maxDays=CMath.s_int(ratesV.elementAt(6));
 			if(minDays>maxDays) minDays=maxDays; 
 		}
 		public AuctionRates(Auctioneer A)

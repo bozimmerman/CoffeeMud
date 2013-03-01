@@ -319,7 +319,7 @@ public class Pregnancy extends StdAbility
 							}
 							List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
 							for(int i=0;i<channels.size();i++)
-								CMLib.commands().postChannel(mob,(String)channels.get(i),mob.name()+" has just given birth to "+I.name()+"!",true);
+								CMLib.commands().postChannel(mob,channels.get(i),mob.name()+" has just given birth to "+I.name()+"!",true);
 							String parent=mob.Name();
 							if(mob.isMonster()&&(otherParentM!=null))
 								parent=otherParentM.Name();
@@ -387,7 +387,7 @@ public class Pregnancy extends StdAbility
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
 				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel((String)channels.get(i),mob.clans(),target.name()+" is now in a 'family way'.",true);
+					CMLib.commands().postChannel(channels.get(i),mob.clans(),target.name()+" is now in a 'family way'.",true);
 				target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}

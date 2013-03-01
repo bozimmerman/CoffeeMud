@@ -105,9 +105,9 @@ public class StatRejuvCharts extends StdWebMacro
 				mob.curState().setMovement(0);
 				mob.curState().setHitPoints(0);
 
-				double con=(double)mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
-				double man=(double)(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)+mob.charStats().getStat(CharStats.STAT_WISDOM));
-				double str=(double)mob.charStats().getStat(CharStats.STAT_STRENGTH);
+				double con=mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
+				double man=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)+mob.charStats().getStat(CharStats.STAT_WISDOM);
+				double str=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 				if(mob.curState().getHunger()<1)
 				{
 					con=con*0.85;
@@ -123,7 +123,7 @@ public class StatRejuvCharts extends StdWebMacro
 				if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
 					man=man*.5;
 
-				double lvl=(double)mob.phyStats().level();
+				double lvl=mob.phyStats().level();
 				double lvlby1p5=CMath.div(lvl,1.5);
 				//double lvlby2=CMath.div(lvl,2.0);
 				//double lvlby3=CMath.div(lvl,3.0);

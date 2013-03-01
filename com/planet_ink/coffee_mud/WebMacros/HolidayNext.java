@@ -62,7 +62,7 @@ public class HolidayNext extends StdWebMacro
 		List<String> V=null;
 		for(int s=1;s<steps.size();s++)
 		{
-			String step=(String)steps.get(s);
+			String step=steps.get(s);
 			V=Resources.getFileLineVector(new StringBuffer(step));
 			List<List<String>> cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
 			//Vector areaLine=null;
@@ -72,7 +72,7 @@ public class HolidayNext extends StdWebMacro
 				line=cmds.get(v);
 				if(line.size()>1)
 				{
-					var=((String)line.get(1)).toUpperCase();
+					var=line.get(1).toUpperCase();
 					//if(var.equals("AREAGROUP"))
 					//{ areaLine=line;}
 					if(var.equals("NAME"))

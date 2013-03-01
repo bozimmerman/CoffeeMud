@@ -95,7 +95,7 @@ public class Prayer_Fertilize extends Prayer
 								  asLevel,
 								  CMLib.ableMapper().qualifyingClassLevel( mob, this ) *
 									  (int)( ( CMProps.getMillisPerMudHour() *
-											  ((long)mob.location().getArea().getTimeObj().getHoursInDay()) ) /
+											  (mob.location().getArea().getTimeObj().getHoursInDay()) ) /
 											  CMProps.getTickMillis() ) );
 			}
 

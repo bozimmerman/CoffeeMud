@@ -58,8 +58,8 @@ public class Chant_Earthpocket extends Chant
 			List<Item> V=pocket.getContents();
 			for(int v=0;v<V.size();v++)
 			{
-				((Item)V.get(v)).setContainer(null);
-				mob.moveItemTo((Item)V.get(v));
+				V.get(v).setContainer(null);
+				mob.moveItemTo(V.get(v));
 			}
 			pocket.destroy();
 			pocket=null;

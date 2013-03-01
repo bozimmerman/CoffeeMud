@@ -124,7 +124,7 @@ public class Antidote extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.get(a)).unInvoke();
+					offensiveAffects.get(a).unInvoke();
 				if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) better now.");
 			}

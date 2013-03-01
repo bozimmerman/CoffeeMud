@@ -66,7 +66,7 @@ public class Qualifier extends StdCharClass
 			setLoaded(true);
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)a.nextElement();
+				Ability A=a.nextElement();
 				int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 				if((lvl>0)&&(!CMLib.ableMapper().classOnly("Archon",A.ID())))
 					CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,A.ID(),false);

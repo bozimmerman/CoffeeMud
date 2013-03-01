@@ -112,7 +112,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 						LookingFor = (String)limbsToRegrow.elementAt(i);
 						for(int j=0;j<missing.size();j++)
 						{
-							missLimb = (String)missing.get(j);
+							missLimb = missing.get(j);
 							if(missLimb.toUpperCase().indexOf(LookingFor)>=0)
 							{
 								found = true;

@@ -209,7 +209,7 @@ public class Backend
 	*/
    public void dupKeyCheck(final String tableName, final String[] doCols, final String[] sqlValues) throws java.sql.SQLException
    {
-		 final FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+		 final FakeTable fakeTable=fakeTables.get(tableName);
 		 if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
 		final List<Backend.FakeCondition> conditions=new ArrayList<Backend.FakeCondition>(2);
 		for(int i=0;i<doCols.length;i++)
@@ -329,7 +329,7 @@ public class Backend
 				   }
 			   }
 		   }
-		   return (Iterator<RecordInfo>) iter;
+		   return iter;
 	   }
    }
    
@@ -1077,7 +1077,7 @@ public class Backend
 	  final List<Backend.FakeCondition> conditions=stmt.conditions;
 	  final String[] orderVars=stmt.orderVars;
 	  final String[] orderModifiers=stmt.orderModifiers;	   
-	  final FakeTable table=(FakeTable)fakeTables.get(tableName);
+	  final FakeTable table=fakeTables.get(tableName);
 	  if (table==null) throw new java.sql.SQLException("unknown table "+tableName);
 	  int[] showCols;
 	  if((cols.size()==0)||(cols.contains("*")))
@@ -1268,7 +1268,7 @@ public class Backend
 	  final String[] columns=stmt.columns;
 	  final String[] sqlValues=stmt.sqlValues;
 	  
-	  final FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+	  final FakeTable fakeTable=fakeTables.get(tableName);
 	  if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
 	  
 
@@ -1303,10 +1303,7 @@ public class Backend
 		 if(values[id]==null)
 			 keys[index]=new ComparableValue(null);
 		 else
-		 if(values[id] instanceof Comparable)
-			 keys[index]=new ComparableValue((Comparable)values[id]);
-		 else
-			 keys[index]=new ComparableValue(values[id].toString());
+			 keys[index]=new ComparableValue(values[id]);
 	  }
 	  if (!fakeTable.insertRecord(null, keys,values))
 		 throw new java.sql.SQLException("unable to insert record");
@@ -1321,7 +1318,7 @@ public class Backend
 	*/
    protected void deleteRecord(final ImplDeleteStatement stmt) throws java.sql.SQLException
    {
-	  final FakeTable fakeTable=(FakeTable)fakeTables.get(stmt.tableName);
+	  final FakeTable fakeTable=fakeTables.get(stmt.tableName);
 	  if (fakeTable==null) 
 		  throw new java.sql.SQLException("unknown table "+stmt.tableName);
 
@@ -1344,7 +1341,7 @@ public class Backend
 	  final String[] varNames=stmt.columns;
 	  final String[] sqlValues=stmt.sqlValues;
 	  
-	  final FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+	  final FakeTable fakeTable=fakeTables.get(tableName);
 	  if (fakeTable==null) 
 		  throw new java.sql.SQLException("unknown table "+tableName);
 
@@ -1388,7 +1385,7 @@ public class Backend
 	*/
    public FakeCondition buildFakeCondition(String tableName, String columnName, String comparitor, String value, boolean unPrepared) throws java.sql.SQLException
    {
-	  final FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+	  final FakeTable fakeTable=fakeTables.get(tableName);
 	  if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
 	  final FakeCondition fake = new FakeCondition();
 	  fake.unPrepared = unPrepared;

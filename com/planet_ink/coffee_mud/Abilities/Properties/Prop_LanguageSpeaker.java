@@ -89,8 +89,7 @@ public class Prop_LanguageSpeaker extends Property
 	{
 		Room mobHomeRoom=mob.getStartRoom();
 		Area mobHomeArea=((mobHomeRoom==null)?null:mobHomeRoom.getArea());
-		if((mob!=null)
-		&&((lang!=null)||(langStr.length()>0))
+		if(((lang!=null)||(langStr.length()>0))
 		&&(doPlayers || mob.isMonster())
 		&&((!noMobs) || (!mob.isMonster()))
 		&&((!homeOnly) || (homeRoom==null) || (mobHomeRoom == homeRoom))

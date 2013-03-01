@@ -811,7 +811,7 @@ public class GrinderMobs
 							if(O==null)
 							for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 							{
-								Ability A2=(Ability)a.nextElement();
+								Ability A2=a.nextElement();
 								if(CMClass.classID(A2).equals(MATCHING))
 								{	O=(Ability)A2.copyOf(); break;	}
 							}

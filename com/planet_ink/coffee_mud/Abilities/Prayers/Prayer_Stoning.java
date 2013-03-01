@@ -150,7 +150,7 @@ public class Prayer_Stoning extends Prayer
 					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE);
 					for(int i=0;i<warrants.size();i++)
 					{
-						LegalWarrant W=(LegalWarrant)warrants.get(i);
+						LegalWarrant W=warrants.get(i);
 						W.setCrime("pardoned");
 						W.setOffenses(0);
 					}

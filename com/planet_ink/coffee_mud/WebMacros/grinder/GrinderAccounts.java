@@ -43,9 +43,9 @@ public class GrinderAccounts
 		if(last.length()>0)
 		{
 			PlayerAccount A=CMLib.players().getLoadAccount(last);
-			String newName=A.accountName();
 			if(A!=null)
 			{
+				String newName=A.accountName();
 				String str=null;
 				String err="";
 				str=httpReq.getUrlParameter("NAME");

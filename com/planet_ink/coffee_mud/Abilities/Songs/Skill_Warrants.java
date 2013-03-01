@@ -74,7 +74,7 @@ public class Skill_Warrants extends BardSkill
 				buf.append(CMStrings.padRight("Name",colWidth)+" "+CMStrings.padRight("Victim",colWidth)+" "+CMStrings.padRight("Witness",colWidth)+" Crime\n\r");
 				for(int v=0;v<V.size();v++)
 				{
-					LegalWarrant W=(LegalWarrant)V.get(v);
+					LegalWarrant W=V.get(v);
 					buf.append(CMStrings.padRight(W.criminal().Name(),colWidth)+" ");
 					buf.append(CMStrings.padRight(W.victim()!=null?W.victim().Name():"N/A",colWidth)+" ");
 					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():"N/A",colWidth)+" ");

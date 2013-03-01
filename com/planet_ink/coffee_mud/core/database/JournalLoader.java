@@ -405,7 +405,7 @@ public class JournalLoader
 		if(journal==null) return -1;
 		for(int i=0;i<journal.size();i++)
 		{
-			JournalsLibrary.JournalEntry E=(JournalsLibrary.JournalEntry)journal.get(i);
+			JournalsLibrary.JournalEntry E=journal.get(i);
 			if((from!=null)&&(!(E.from).equalsIgnoreCase(from)))
 				continue;
 			if((to!=null)&&(!(E.to).equalsIgnoreCase(to)))

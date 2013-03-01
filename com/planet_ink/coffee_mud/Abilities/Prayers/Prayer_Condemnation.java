@@ -70,7 +70,7 @@ public class Prayer_Condemnation extends Prayer
 				if(msg.value()<=0)
 				for(int i=0;i<warrants.size();i++)
 				{
-					LegalWarrant W=(LegalWarrant)warrants.get(i);
+					LegalWarrant W=warrants.get(i);
 					if(W.punishment()<Law.PUNISHMENT_HIGHEST)
 						W.setPunishment(W.punishment()+1);
 				}

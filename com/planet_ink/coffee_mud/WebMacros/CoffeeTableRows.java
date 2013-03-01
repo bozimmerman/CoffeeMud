@@ -43,9 +43,9 @@ public class CoffeeTableRows extends StdWebMacro
 		if(parm.length()==0) parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
 		java.util.Map<String,String> parms=parseParms(parm);
 		PairSVector<String,String> orderedParms=parseOrderedParms(parm);
-		String header=(String)parms.get("HEADER");
+		String header=parms.get("HEADER");
 		if(header==null) header="";
-		String footer=(String)parms.get("FOOTER");
+		String footer=parms.get("FOOTER");
 		if(footer==null) footer="";
 		int scale=CMath.s_int(httpReq.getUrlParameter("SCALE"));
 		if(scale<=0) scale=1;
@@ -81,7 +81,7 @@ public class CoffeeTableRows extends StdWebMacro
 			Vector allSkills=new Vector();
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
-				Ability A=(Ability)e.nextElement();
+				Ability A=e.nextElement();
 				if((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())>=0))
 					allSkills.addElement(A);
 			}
@@ -101,14 +101,14 @@ public class CoffeeTableRows extends StdWebMacro
 				Vector set=new Vector();
 				if(V.size()==1)
 				{
-					CoffeeTableRow T=(CoffeeTableRow)V.get(0);
+					CoffeeTableRow T=V.get(0);
 					set.addElement(T);
 					V.remove(0);
 				}
 				else
 				for(int v=V.size()-1;v>=0;v--)
 				{
-					CoffeeTableRow T=(CoffeeTableRow)V.get(v);
+					CoffeeTableRow T=V.get(v);
 					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 					{
 						set.addElement(T);
@@ -174,14 +174,14 @@ public class CoffeeTableRows extends StdWebMacro
 				Vector set=new Vector();
 				if(V.size()==1)
 				{
-					CoffeeTableRow T=(CoffeeTableRow)V.get(0);
+					CoffeeTableRow T=V.get(0);
 					set.addElement(T);
 					V.remove(0);
 				}
 				else
 				for(int v=V.size()-1;v>=0;v--)
 				{
-					CoffeeTableRow T=(CoffeeTableRow)V.get(v);
+					CoffeeTableRow T=V.get(v);
 					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 					{
 						set.addElement(T);
@@ -240,7 +240,7 @@ public class CoffeeTableRows extends StdWebMacro
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)
 			{
-				CoffeeTableRow T=(CoffeeTableRow)V.get(v);
+				CoffeeTableRow T=V.get(v);
 				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 				{
 					set.addElement(T);

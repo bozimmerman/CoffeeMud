@@ -59,7 +59,7 @@ public class Thief_TapRoom extends ThiefSkill
 			{
 				Vector p2=A.getParsedText();
 				if((p2.size()==myParsedTextV.size())
-				&&(((String)myParsedTextV.lastElement()).equals((String)p2.lastElement())))
+				&&(((String)myParsedTextV.lastElement()).equals(p2.lastElement())))
 					return true;
 			}
 		}

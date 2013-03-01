@@ -78,7 +78,7 @@ public class Chant_Reabsorb extends Chant
 		List<DeadBody> V=CMLib.utensils().getDeadBodies(target);
 		for(int v=0;v<V.size();v++)
 		{
-			DeadBody D=(DeadBody)V.get(v);
+			DeadBody D=V.get(v);
 			if((D!=null)
 			&&(D.playerCorpse())
 			&&(!D.mobName().equals(mob.Name())))

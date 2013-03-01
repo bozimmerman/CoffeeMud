@@ -69,7 +69,7 @@ public class StdPill extends StdFood implements Pill
 			MOB caster=CMLib.map().getFactoryMOB(mob.location());
 			for(int i=0;i<spells.size();i++)
 			{
-				Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
+				Ability thisOne=(Ability)spells.get(i).copyOf();
 				int level=phyStats().level();
 				int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
 				if(level<lowest)

@@ -119,7 +119,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		HashSet<String> doneClasses=new HashSet<String>();
 		for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			CharClass C=(CharClass)c.nextElement();
+			CharClass C=c.nextElement();
 			if(doneClasses.contains(C.ID())) continue;
 			C=CMClass.getCharClass(C.ID());
 			doneClasses.add(C.ID());
@@ -135,7 +135,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		HashSet<String> doneRaces=new HashSet<String>();
 		for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
-			Race R=(Race)r.nextElement();
+			Race R=r.nextElement();
 			if(doneRaces.contains(R.ID())) continue;
 			R=CMClass.getRace(R.ID());
 			doneRaces.add(R.ID());
@@ -159,24 +159,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		Vector<String> V=CMParms.parse(login);
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String str=(String)V.elementAt(v);
+			String str=V.elementAt(v);
 			if((" THE A AN ").indexOf(" "+str+" ")>=0)
 				V.removeElementAt(v);
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			String str=(String)V.elementAt(v);
+			String str=V.elementAt(v);
 			if(DEFAULT_BADNAMES.indexOf(" "+str+" ")>=0)
 				return false;
 		}
 		Vector<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_BADNAMES),true);
 		for(int v2=0;v2<V2.size();v2++)
 		{
-			String str2=(String)V2.elementAt(v2);
+			String str2=V2.elementAt(v2);
 			if(str2.length()>0)
 			for(int v=0;v<V.size();v++)
 			{
-				String str=(String)V.elementAt(v);
+				String str=V.elementAt(v);
 				if((str.length()>0)
 				&&(str.equalsIgnoreCase(str2)))
 					return false;
@@ -188,14 +188,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				return false;
 		for(Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
 		{
-			MOB D=(MOB)d.nextElement();
+			MOB D=d.nextElement();
 			if((CMLib.english().containsString(D.ID(),login))
 			||(CMLib.english().containsString(D.Name(),login)))
 				return false;
 		}
 		for(Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)
 		{
-			MOB M=(MOB)m.nextElement();
+			MOB M=m.nextElement();
 			if((CMLib.english().containsString(M.Name(),login))
 			||(CMLib.english().containsString(M.name(),login)))
 				return false;
@@ -203,7 +203,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 		{
-			Clan C=(Clan)e.nextElement();
+			Clan C=e.nextElement();
 			if((CMLib.english().containsString(C.clanID(),login))
 			||(CMLib.english().containsString(C.name(),login)))
 				return false;
@@ -291,7 +291,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(scripts==null) return;
 		for(int s=0;s<scripts.size();s++) 
 		{
-			String script=(String)scripts.get(s);
+			String script=scripts.get(s);
 			ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 			S.setSavable(false);
 			S.setVarScope("*");
@@ -312,7 +312,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final String[] VALID_SCRIPT_CODES={"PASSWORD","EMAIL","ANSI","THEME","RACE","GENDER","STATS","CLASS","FACTIONS","END"}; 				   
 		Vector<String> extras=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CHARCREATIONSCRIPTS),true);
 		for(int e=0;e<extras.size();e++) {
-			String s=(String)extras.elementAt(e);
+			String s=extras.elementAt(e);
 			int x=s.indexOf(':');
 			String code="END";
 			if(x>0) {
@@ -701,7 +701,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		acct.setLastIP(session.getAddress());
 		acct.setLastDateTime(System.currentTimeMillis());
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
 		
 		if(emailPassword)
 		{
@@ -1064,7 +1064,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(newRace==null)
 					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
-						Race R=(Race)r.nextElement();
+						Race R=r.nextElement();
 						if((R.name().equalsIgnoreCase(raceStr))
 						&&(CMProps.isTheme(R.availabilityCode()))
 						&&(CMath.bset(R.availabilityCode(),theme))
@@ -1077,7 +1077,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(newRace==null)
 					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
-						Race R=(Race)r.nextElement();
+						Race R=r.nextElement();
 						if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
 						&&(CMProps.isTheme(R.availabilityCode()))
 						&&(CMath.bset(R.availabilityCode(),theme))
@@ -1106,13 +1106,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		int defaultValue=0;
 		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
-			F=(Faction)e.nextElement();
+			F=e.nextElement();
 			mine=F.findChoices(mob);
 			defaultValue=F.findAutoDefault(mob);
 			if(defaultValue!=Integer.MAX_VALUE)
 				mob.addFaction(F.factionID(),defaultValue);
 			if(mine.size()==1)
-				mob.addFaction(F.factionID(),((Integer)mine.get(0)).intValue());
+				mob.addFaction(F.factionID(),mine.get(0).intValue());
 			else
 			if(mine.size()>1)
 			{
@@ -1126,14 +1126,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				Vector<String> namedChoices=new Vector<String>();
 				for(int m=0;m<mine.size();m++)
 				{
-					Faction.FRange FR=CMLib.factions().getRange(F.factionID(),((Integer)mine.get(m)).intValue());
+					Faction.FRange FR=CMLib.factions().getRange(F.factionID(),mine.get(m).intValue());
 					if(FR!=null)
 					{
 						namedChoices.addElement(FR.name().toUpperCase());
 						menu.append(FR.name()+", ");
 					}
 					else
-						namedChoices.addElement(""+((Integer)mine.get(m)).intValue());
+						namedChoices.addElement(""+mine.get(m).intValue());
 				}
 				if(mine.size()==namedChoices.size())
 				{
@@ -1144,18 +1144,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						alignment=session.prompt(menu.toString().substring(0,menu.length()-2)+".\n\r: ","").toUpperCase();
 						if(!namedChoices.contains(alignment))
 							for(int i=0;i<namedChoices.size();i++)
-								if(((String)namedChoices.elementAt(i)).startsWith(alignment.toUpperCase()))
-								{ alignment=(String)namedChoices.elementAt(i); break;}
+								if(namedChoices.elementAt(i).startsWith(alignment.toUpperCase()))
+								{ alignment=namedChoices.elementAt(i); break;}
 						if(!namedChoices.contains(alignment))
 							for(int i=0;i<namedChoices.size();i++)
-								if(((String)namedChoices.elementAt(i)).indexOf(alignment.toUpperCase())>=0)
-								{ alignment=(String)namedChoices.elementAt(i); break;}
+								if(namedChoices.elementAt(i).indexOf(alignment.toUpperCase())>=0)
+								{ alignment=namedChoices.elementAt(i); break;}
 					}
 					if(!session.isStopped())
 					{
 						int valueIndex=namedChoices.indexOf(alignment);
 						if(valueIndex>=0)
-							mob.addFaction(F.factionID(),((Integer)mine.get(valueIndex)).intValue());
+							mob.addFaction(F.factionID(),mine.get(valueIndex).intValue());
 					}
 				}
 			}
@@ -1171,7 +1171,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 				newClass=CMClass.getCharClass("PlayerClass");
 			if((newClass==null)&&(qualClassesV.size()>0))
-				newClass=(CharClass)qualClassesV.get(CMLib.dice().roll(1,qualClassesV.size(),-1));
+				newClass=qualClassesV.get(CMLib.dice().roll(1,qualClassesV.size(),-1));
 			if(newClass==null)
 				newClass=CMClass.getCharClass("PlayerClass");
 			if(newClass==null)
@@ -1197,10 +1197,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		if(qualClassesV.size()==1)
-			newClass=(CharClass)qualClassesV.get(0);
+			newClass=qualClassesV.get(0);
 		else
 		if((session == null)||(session.isStopped()))
-			newClass=(CharClass)qualClassesV.get(0);
+			newClass=qualClassesV.get(0);
 		else
 		{
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
@@ -1297,7 +1297,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		while((gender.length()==0)&&(!session.isStopped()))
 			gender=session.choose("\n\r^!What is your gender (M/F)?^N","MF","",300000);
 
-		if((gender==null)||(gender.length()==0))
+		if(gender.length()==0)
 			gender="M";
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
 
@@ -1449,7 +1449,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			executeScript(mob,extraScripts.get("GENDER"));
 			
 			if((CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null)&&(acct==null))
-				mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+				mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
 			
 			promptPlayerStats(theme, mob, session, 0);
 			executeScript(mob,extraScripts.get("STATS"));
@@ -1534,7 +1534,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				CMLib.database().DBUpdatePlayer(mob);
 				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel((String)channels.get(i),mob.clans(),mob.Name()+" has just been created.",true);
+					CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just been created.",true);
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
 			}
@@ -1648,7 +1648,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		
 		MudHost host = null;
 		if(CMLib.hosts().size()>0)
-			host = (MudHost)CMLib.hosts().get(0);
+			host = CMLib.hosts().get(0);
 		if(host != null)
 		{
 			rpt.append("\r\n"); rpt.append("UPTIME");
@@ -1722,7 +1722,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return LoginResult.NO_LOGIN;
 		if(loginObj==null)
 			loginObj=new LoginSession();
-		while((session!=null)&&(!session.isStopped()))
+		while(!session.isStopped())
 		{
 			switch(loginObj.state)
 			{
@@ -1975,8 +1975,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					loginObj.state=LoginState.START;
 					break;
 				}
-				if(session!=null)
-					session.println("\n\r");
+				session.println("\n\r");
 				return LoginResult.NORMAL_LOGIN;
 			}
 			case CONFIRM_EMAIL_PASSWORD:
@@ -2016,8 +2015,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				break;
 			}
 		}
-		if(loginObj!=null)
-			loginObj.state=LoginState.START;
+		loginObj.state=LoginState.START;
 		return LoginResult.NO_LOGIN;
 	}
 
@@ -2078,7 +2076,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		Vector<String> defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_DEFAULTPLAYERFLAGS).toUpperCase(),true);
 		for(int v=0;v<defaultFlagsV.size();v++)
 		{
-			int x=CMParms.indexOf(MOB.AUTODESC,(String)defaultFlagsV.elementAt(v));
+			int x=CMParms.indexOf(MOB.AUTODESC,defaultFlagsV.elementAt(v));
 			if(x>=0)
 				mob.setBitmap(mob.getBitmap()|(int)CMath.pow(2,x));
 		}
@@ -2169,9 +2167,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB follower=mob.fetchFollower(f);
+			if(follower==null) continue;
 			Room R=follower.location();
-			if((follower!=null)
-			&&(follower.isMonster())
+			if((follower.isMonster())
 			&&(!follower.isPossessing())
 			&&((R==null)||(!R.isInhabitant(follower))))
 			{
@@ -2204,7 +2202,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.stopSession(false,false,false);
 			return LoginResult.NO_LOGIN;
 		}
-		if((session!=null)&&(mob.playerStats()!=null))
+		if(mob.playerStats()!=null)
 			mob.playerStats().setLastIP(session.getAddress());
 		notifyFriends(mob,"^X"+mob.Name()+" has logged on.^.^?");
 		if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
@@ -2216,7 +2214,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
 		if(!CMLib.flags().isCloaked(mob))
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel((String)channels.get(i),mob.clans(),mob.Name()+" has logged on.",true);
+				CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has logged on.",true);
 		setGlobalBitmaps(mob);
 		return LoginResult.NORMAL_LOGIN;
 	}
@@ -2232,24 +2230,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=(String)startRooms.get(race);
+		String roomID=startRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)startRooms.get(realrace);
+			roomID=startRooms.get(realrace);
 		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)startRooms.get(align);
+			roomID=startRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)startRooms.get(charClass);
+			roomID=startRooms.get(charClass);
 		if(((roomID==null)||(roomID.length()==0)))
 		{
 			List<String> V=mob.fetchFactionRanges();
 			for(int v=0;v<V.size();v++)
-				if(startRooms.containsKey(((String)V.get(v)).toUpperCase()))
-				{ roomID=(String)startRooms.get(((String)V.get(v)).toUpperCase()); break;}
+				if(startRooms.containsKey(V.get(v).toUpperCase()))
+				{ roomID=startRooms.get(V.get(v).toUpperCase()); break;}
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
-			roomID=(String)startRooms.get(deity);
+			roomID=startRooms.get(deity);
 		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)startRooms.get("ALL");
+			roomID=startRooms.get("ALL");
 
 		Room room=null;
 		if((roomID!=null)&&(roomID.length()>0))
@@ -2257,7 +2255,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(room==null)
 			room=CMLib.map().getRoom("START");
 		if((room==null)&&(CMLib.map().numRooms()>0))
-			room=(Room)CMLib.map().rooms().nextElement();
+			room=CMLib.map().rooms().nextElement();
 		return room;
 	}
 
@@ -2270,34 +2268,34 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=(String)deathRooms.get(race);
+		String roomID=deathRooms.get(race);
 		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)deathRooms.get(align);
+			roomID=deathRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)deathRooms.get(charClass);
+			roomID=deathRooms.get(charClass);
 		if(((roomID==null)||(roomID.length()==0)))
 		{
 			List<String> V=mob.fetchFactionRanges();
 			for(int v=0;v<V.size();v++)
-				if(deathRooms.containsKey(((String)V.get(v)).toUpperCase()))
-				{ roomID=(String)deathRooms.get(((String)V.get(v)).toUpperCase()); break;}
+				if(deathRooms.containsKey(V.get(v).toUpperCase()))
+				{ roomID=deathRooms.get(V.get(v).toUpperCase()); break;}
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
-			roomID=(String)deathRooms.get(deity);
+			roomID=deathRooms.get(deity);
 		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)deathRooms.get("ALL");
+			roomID=deathRooms.get("ALL");
 
-		Room room=null;
 		if((roomID!=null)&&(roomID.equalsIgnoreCase("MORGUE")))
 			return getDefaultBodyRoom(mob);
-		if((room==null)&&(roomID!=null)&&(roomID.equalsIgnoreCase("START")))
+		Room room=null;
+		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
 			room=mob.getStartRoom();
 		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
 			room=CMLib.map().getRoom(roomID);
 		if(room==null)
 			room=mob.getStartRoom();
 		if((room==null)&&(CMLib.map().numRooms()>0))
-			room=(Room)CMLib.map().rooms().nextElement();
+			room=CMLib.map().rooms().nextElement();
 		return room;
 	}
 
@@ -2323,24 +2321,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=(String)bodyRooms.get(race);
+		String roomID=bodyRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)bodyRooms.get(realrace);
+			roomID=bodyRooms.get(realrace);
 		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)bodyRooms.get(align);
+			roomID=bodyRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)bodyRooms.get(charClass);
+			roomID=bodyRooms.get(charClass);
 		if(((roomID==null)||(roomID.length()==0)))
 		{
 			List<String> V=mob.fetchFactionRanges();
 			for(int v=0;v<V.size();v++)
-				if(bodyRooms.containsKey(((String)V.get(v)).toUpperCase()))
-				{ roomID=(String)bodyRooms.get(((String)V.get(v)).toUpperCase()); break;}
+				if(bodyRooms.containsKey(V.get(v).toUpperCase()))
+				{ roomID=bodyRooms.get(V.get(v).toUpperCase()); break;}
 		}
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
-			roomID=(String)bodyRooms.get(deity);
+			roomID=bodyRooms.get(deity);
 		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)bodyRooms.get("ALL");
+			roomID=bodyRooms.get("ALL");
 
 		Room room=null;
 		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
@@ -2350,7 +2348,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(room==null)
 			room=mob.location();
 		if((room==null)&&(CMLib.map().numRooms()>0))
-			room=(Room)CMLib.map().rooms().nextElement();
+			room=CMLib.map().rooms().nextElement();
 		return room;
 	}
 

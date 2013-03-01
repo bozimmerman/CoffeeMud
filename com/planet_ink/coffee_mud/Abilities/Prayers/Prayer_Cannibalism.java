@@ -90,7 +90,7 @@ public class Prayer_Cannibalism extends Prayer
 		{
 			for(int i2=0;i2<V.size();i2++)
 			{
-				Item I2=(Item)V.get(i2);
+				Item I2=V.get(i2);
 				if((I2.material()==RawMaterial.RESOURCE_BLOOD)
 				&&(I2 instanceof Drink))
 					return true;

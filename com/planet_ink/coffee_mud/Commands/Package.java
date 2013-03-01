@@ -103,7 +103,7 @@ public class Package extends StdCommand
 		Item getThis=null;
 		for(int i=0;i<V.size();i++)
 		{
-			getThis=(Item)V.elementAt(i);
+			getThis=V.elementAt(i);
 			if((!mob.isMine(getThis))&&(!Get.get(mob,null,getThis,true,"get",true)))
 				return false;
 		}
@@ -118,7 +118,7 @@ public class Package extends StdCommand
 			if(thePackage.packageMe(getThis,V.size()))
 			{
 				for(int i=0;i<V.size();i++)
-					((Item)V.elementAt(i)).destroy();
+					V.elementAt(i).destroy();
 				mob.location().addItem(thePackage,ItemPossessor.Expire.Player_Drop);
 				mob.location().recoverRoomStats();
 				mob.location().recoverRoomStats();

@@ -185,7 +185,7 @@ public class DefaultPlayerStats implements PlayerStats
 		return true;
 	}
 	
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
 	public void initializeClass(){}
 	public CMObject copyOf()
 	{
@@ -433,7 +433,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public String getActiveTitle()
 	{
 		if((titles==null)||(titles.size()==0)) return null;
-		String s=(String)titles.get(0);
+		String s=titles.get(0);
 		if((s.length()<2)||(s.charAt(0)!='{')||(s.charAt(s.length()-1)!='}'))
 			return s;
 		return s.substring(1,s.length()-1);
@@ -448,13 +448,13 @@ public class DefaultPlayerStats implements PlayerStats
 		if(titles.size()==0) return "";
 		for(int t=titles.size()-1;t>=0;t--)
 		{
-			String s=(String)titles.get(t);
+			String s=titles.get(t);
 			if(s.length()==0) titles.remove(t);
 		}
 		StringBuilder str=new StringBuilder("");
 		for(int t=0;t<titles.size();t++)
 		{
-			String s=(String)titles.get(t);
+			String s=titles.get(t);
 			str.append("<TITLE>"+CMLib.xml().parseOutAngleBrackets(CMLib.coffeeFilter().safetyFilter(s))+"</TITLE>");
 		}
 		return str.toString();
@@ -495,7 +495,7 @@ public class DefaultPlayerStats implements PlayerStats
 		if((h==null)||(h.size()==0)) return "";
 		StringBuffer list=new StringBuffer("");
 		for(Iterator<String> e=h.iterator();e.hasNext();)
-			list.append(((String)e.next())+";");
+			list.append((e.next())+";");
 		return list.toString();
 	}
 	public String getXML()
@@ -543,7 +543,7 @@ public class DefaultPlayerStats implements PlayerStats
 			Vector<String> V=CMParms.parseCommas(bday,true);
 			birthday=new int[4];
 			for(int v=0;(v<V.size()) && (v<birthday.length);v++)
-				birthday[v]=CMath.s_int((String)V.elementAt(v));
+				birthday[v]=CMath.s_int(V.elementAt(v));
 			if(V.size()<4)
 			{
 				TimeClock C=CMLib.time().globalClock();
@@ -710,15 +710,15 @@ public class DefaultPlayerStats implements PlayerStats
 			Vector<String> sets=CMParms.parseSemicolons(str,true);
 			for(int ss=0;ss<sets.size();ss++)
 			{
-				String sStr=(String)sets.elementAt(ss);
+				String sStr=sets.elementAt(ss);
 				Vector<String> twin=CMParms.parseCommas(sStr,true);
 				if((twin.size()!=2)&&(twin.size()!=3))  continue;
-				if(CMath.s_int((String)twin.firstElement())>=lastNum)
+				if(CMath.s_int(twin.firstElement())>=lastNum)
 				{
-					levelInfo.addElement(Integer.valueOf(CMath.s_int((String)twin.firstElement())),
-											  Long.valueOf(CMath.s_long((String)twin.elementAt(1))),
+					levelInfo.addElement(Integer.valueOf(CMath.s_int(twin.firstElement())),
+											  Long.valueOf(CMath.s_long(twin.elementAt(1))),
 											  (twin.size()>2)?(String)twin.elementAt(2):"");
-					lastNum=CMath.s_int((String)twin.firstElement());
+					lastNum=CMath.s_int(twin.firstElement());
 				}
 			}
 		}
@@ -845,7 +845,7 @@ public class DefaultPlayerStats implements PlayerStats
 			long totalVisits=0;
 			for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 			{
-				A=(Area)e.nextElement();
+				A=e.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
 				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				{

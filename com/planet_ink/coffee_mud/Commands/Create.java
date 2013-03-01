@@ -337,7 +337,7 @@ public class Create extends StdCommand
 		thisAcct.setAccountName(AcctName);
 		thisAcct.setAccountExpiration(0);
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-			thisAcct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+			thisAcct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
 		thisAcct.setLastDateTime(System.currentTimeMillis());
 		thisAcct.setLastUpdated(System.currentTimeMillis());
 		thisAcct.setPassword(password);
@@ -564,10 +564,10 @@ public class Create extends StdCommand
 			List<String> V=new Vector();
 			if(buf!=null) V=Resources.getFileLineVector(buf);
 			for(int v=0;v<V.size();v++)
-				if(((String)V.get(v)).startsWith("#"))
-					inst.append(((String)V.get(v)).substring(1)+"\n\r");
+				if(V.get(v).startsWith("#"))
+					inst.append(V.get(v).substring(1)+"\n\r");
 				else
-				if(((String)V.get(v)).length()>0) 
+				if(V.get(v).length()>0) 
 					break;
 			if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -613,10 +613,10 @@ public class Create extends StdCommand
 			List<String> V=new Vector();
 			if(buf!=null) V=Resources.getFileLineVector(buf);
 			for(int v=0;v<V.size();v++)
-				if(((String)V.get(v)).startsWith("#"))
-					inst.append(((String)V.get(v)).substring(1)+"\n\r");
+				if(V.get(v).startsWith("#"))
+					inst.append(V.get(v).substring(1)+"\n\r");
 				else
-				if(((String)V.get(v)).length()>0) 
+				if(V.get(v).length()>0) 
 					break;
 			if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");

@@ -223,7 +223,7 @@ public class Thief_TurfWar extends ThiefSkill
 			return false;
 		}
 
-		Room R=(Room)target;
+		Room R=target;
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> declare(s) a turf war!");

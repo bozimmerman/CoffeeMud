@@ -111,7 +111,7 @@ public class Save extends StdCommand
 				{
 					Area A=mob.location().getArea();
 					for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
-						clearSaveAndRestart((Room)e.nextElement(),1);
+						clearSaveAndRestart(e.nextElement(),1);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}
 				else

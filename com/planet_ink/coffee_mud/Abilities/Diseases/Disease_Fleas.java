@@ -48,7 +48,7 @@ public class Disease_Fleas extends Disease
 	protected String DISEASE_DONE(){return "Your problem with fleas clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> <S-HAS-HAVE> fleas!^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIM-HERSELF>.";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD|Disease.SPREAD_PROXIMITY;}
+	public int abilityCode(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD|DiseaseAffect.SPREAD_PROXIMITY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

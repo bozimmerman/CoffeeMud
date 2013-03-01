@@ -186,7 +186,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		if(numberOfCards()<52)
 		{
 			for(int i=0;i<cardsCache.size();i++)
-				((Item)cardsCache.get(i)).destroy();
+				cardsCache.get(i).destroy();
 			cardsCache.clear();
 			Vector allCards=makeAllCards();
 			for(int i=0;i<allCards.size();i++)

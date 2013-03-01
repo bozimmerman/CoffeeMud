@@ -46,7 +46,7 @@ public class DefaultPhyStats implements PhyStats
 	{
 		for(int i=0;i<NUM_STATS;i++)
 			stats[i]=def;
-		Speed=(double)def;
+		Speed=def;
 	}
 
 	public void reset()
@@ -116,7 +116,7 @@ public class DefaultPhyStats implements PhyStats
 			}
 	}
 
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPhyStats();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPhyStats();}}
 	public void initializeClass(){}
 	public void copyInto(PhyStats intoStats)
 	{
@@ -137,7 +137,7 @@ public class DefaultPhyStats implements PhyStats
 		try
 		{
 			DefaultPhyStats E=(DefaultPhyStats)this.clone();
-			E.stats=(int[])E.stats.clone();
+			E.stats=E.stats.clone();
 			return E;
 		}
 		catch(java.lang.CloneNotSupportedException e)

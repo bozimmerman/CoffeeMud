@@ -299,7 +299,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	{
 		if((mySession==null)||(invalid==null)) return;
 		for(int s=0;s<invalid.size();s++)
-			mySession.startBeingSnoopedBy((Session)invalid.get(s));
+			mySession.startBeingSnoopedBy(invalid.get(s));
 	}
 
 	public String parseOutFlags(String mask, Set<ChannelFlag> flags, String[] colorOverride)
@@ -307,7 +307,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		Vector<String> V=CMParms.parseSpaces(mask,true);
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String s=((String)V.elementAt(v)).toUpperCase();
+			String s=V.elementAt(v).toUpperCase();
 			if(CMParms.contains(CMParms.toStringArray(ChannelFlag.values()), s))
 			{
 				V.removeElementAt(v);

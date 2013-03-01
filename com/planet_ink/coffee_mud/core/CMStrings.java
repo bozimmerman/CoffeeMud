@@ -1198,7 +1198,7 @@ public class CMStrings
 
 	private static StringExpToken nextToken(final List<StringExpToken> tokens, final int[] index) {
 		if(index[0]>=tokens.size()) return null;
-		return (StringExpToken)tokens.get(index[0]++);
+		return tokens.get(index[0]++);
 	}
 	
 	private static final int	STRING_EXP_TOKEN_EVALUATOR    = 1;
@@ -1338,7 +1338,7 @@ public class CMStrings
 	 */
 	public final static String matchSimpleConst(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
-		final int[] i = (int[]) index.clone();
+		final int[] i = index.clone();
 		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
@@ -1351,7 +1351,7 @@ public class CMStrings
 
 	public final static Double matchSimpleNumber(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
-		final int[] i = (int[]) index.clone();
+		final int[] i = index.clone();
 		final StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
@@ -1364,7 +1364,7 @@ public class CMStrings
 	
 	public final static String matchCombinedString(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
-		int[] i = (int[]) index.clone();
+		int[] i = index.clone();
 		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
@@ -1380,11 +1380,11 @@ public class CMStrings
 				return testInside;
 			}
 		}
-		i = (int[]) index.clone();
+		i = index.clone();
 		final String leftValue = matchSimpleConst(tokens, i, variables);
 		if (leftValue == null)
 			return null;
-		final int[] i2 = (int[]) i.clone();
+		final int[] i2 = i.clone();
 		token = nextToken(tokens, i2);
 		if ((token == null) || (token.type != STRING_EXP_TOKEN_COMBINER))
 		{
@@ -1403,7 +1403,7 @@ public class CMStrings
 
 	public final static Double matchCombinedNum(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
-		int[] i = (int[]) index.clone();
+		int[] i = index.clone();
 		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
@@ -1419,11 +1419,11 @@ public class CMStrings
 				return testInside;
 			}
 		}
-		i = (int[]) index.clone();
+		i = index.clone();
 		final Double leftValue = matchSimpleNumber(tokens, i, variables);
 		if (leftValue == null)
 			return null;
-		final int[] i2 = (int[]) i.clone();
+		final int[] i2 = i.clone();
 		token = nextToken(tokens, i2);
 		if ((token == null) || (token.type != STRING_EXP_TOKEN_COMBINER))
 		{
@@ -1470,7 +1470,7 @@ public class CMStrings
 	
 	public final static Boolean matchStringEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
-		int[] i = (int[]) index.clone();
+		int[] i = index.clone();
 		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
@@ -1496,7 +1496,7 @@ public class CMStrings
 				return testInside;
 			}
 		}
-		i = (int[]) index.clone();
+		i = index.clone();
 		final String leftValue = matchCombinedString(tokens, i, variables);
 		if (leftValue == null)
 			return null;
@@ -1537,7 +1537,7 @@ public class CMStrings
 
 	public final static Boolean matchNumEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
-		int[] i = (int[]) index.clone();
+		int[] i = index.clone();
 		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
@@ -1563,7 +1563,7 @@ public class CMStrings
 				return testInside;
 			}
 		}
-		i = (int[]) index.clone();
+		i = index.clone();
 		final Double leftValue = matchCombinedNum(tokens, i, variables);
 		if (leftValue == null)
 			return null;
@@ -1603,7 +1603,7 @@ public class CMStrings
 	
 	public final static Boolean matchExpression(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
-		int[] i = (int[]) index.clone();
+		int[] i = index.clone();
 		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
@@ -1632,12 +1632,12 @@ public class CMStrings
 		}
 		if(leftExpression == null)
 		{
-			i = (int[]) index.clone();
+			i = index.clone();
 			leftExpression = matchStringEvaluation(tokens, i, variables);
 			if(leftExpression == null) leftExpression = matchNumEvaluation(tokens, i, variables);
 		}
 		if (leftExpression == null) return null;
-		final int[] i2 = (int[]) i.clone();
+		final int[] i2 = i.clone();
 		token = nextToken(tokens, i2);
 		if ((token == null) || (token.type != STRING_EXP_TOKEN_WORD))
 		{

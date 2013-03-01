@@ -67,12 +67,12 @@ public class Prayer_Rot extends Prayer
 			{
 				List<Item> V=((Container)host).getContents();
 				for(int f=0;f<V.size();f++)
-					if(V.get(f) instanceof Item)
+					if(V.get(f) != null)
 					{
 						if(V.get(f) instanceof Decayable)
 							((Decayable)V.get(f)).setDecayTime(0);
-						Ability A=((Item)V.get(f)).fetchEffect("Poison_Rotten");
-						if(A!=null) ((Item)V.get(f)).delEffect(A);
+						Ability A=V.get(f).fetchEffect("Poison_Rotten");
+						if(A!=null) V.get(f).delEffect(A);
 					}
 			}
 		}
@@ -191,8 +191,8 @@ public class Prayer_Rot extends Prayer
 			{
 				List<Item> V=((Container)host).getContents();
 				for(int v=0;v<V.size();v++)
-					if(V.get(v) instanceof Item)
-						setRot((Item)V.get(v));
+					if(V.get(v) != null)
+						setRot(V.get(v));
 			}
 		}
 		return super.okMessage(host,msg);

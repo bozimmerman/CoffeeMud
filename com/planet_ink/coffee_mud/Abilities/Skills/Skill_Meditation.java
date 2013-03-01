@@ -108,7 +108,7 @@ public class Skill_Meditation extends StdSkill
 		if((!mob.isInCombat())
 		&&(CMLib.flags().isSitting(mob)))
 		{
-			double man=(double)((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
+			double man=((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
 							+(2*getXLEVELLevel(mob))
 							+mob.charStats().getStat(CharStats.STAT_WISDOM)));
 			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * getXLEVELLevel( mob ) ) ) / 2.0 ) ),

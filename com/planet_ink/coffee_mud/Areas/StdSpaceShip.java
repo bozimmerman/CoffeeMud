@@ -208,7 +208,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		try
 		{
-			return (CMObject)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -528,7 +528,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		try
 		{
-			return (Ability)affects.elementAt(index);
+			return affects.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -562,7 +562,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		int backupDir=-1;
 		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
-			Room R2=(Room)e.nextElement();
+			Room R2=e.nextElement();
 			if(R2!=null)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
@@ -621,7 +621,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		}
 		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
-			Room R=(Room)e.nextElement();
+			Room R=e.nextElement();
 			if(R!=null)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
@@ -644,7 +644,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			Room R=null;
 			for(int p=myRooms.size()-1;p>=0;p--)
 			{
-				R=(Room)myRooms.elementAt(p);
+				R=myRooms.elementAt(p);
 				if(R.roomID().length()>0)
 					set.add(R.roomID());
 			}
@@ -730,7 +730,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		try
 		{
-			return (Behavior)behaviors.elementAt(index);
+			return behaviors.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -784,7 +784,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 	public int numScripts(){return (scripts==null)?0:scripts.size();}
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
@@ -814,7 +814,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 				Room R2=null;
 				for(int i=0;i<myRooms.size();i++)
 				{
-					R2=(Room)myRooms.elementAt(i);
+					R2=myRooms.elementAt(i);
 					if(R2.roomID().compareToIgnoreCase(R.roomID())>=0)
 					{
 						if(R2.ID().compareToIgnoreCase(R.roomID())==0)
@@ -867,9 +867,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			while(start<=end)
 			{
 				int mid=(end+start)/2;
-				int comp=((Room)myRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
+				int comp=myRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
 				if(comp==0)
-					return (Room)myRooms.elementAt(mid);
+					return myRooms.elementAt(mid);
 				else
 				if(comp>0)
 					end=mid-1;
@@ -894,7 +894,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		int num=0;
 		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
-			Room R=(Room)e.nextElement();
+			Room R=e.nextElement();
 			if(R.roomID().length()>0)
 				if(R instanceof GridLocale)
 					num+=((GridLocale)R).xGridSize()*((GridLocale)R).yGridSize();
@@ -909,7 +909,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		synchronized(myRooms)
 		{
 			if(properSize()==0) return null;
-			Room R=(Room)myRooms.elementAt(CMLib.dice().roll(1,properSize(),-1));
+			Room R=myRooms.elementAt(CMLib.dice().roll(1,properSize(),-1));
 			if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
 			return R;
 		}
@@ -992,7 +992,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		final LinkedList<Area> V=new LinkedList<Area>();
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			V.add(A);
 			V.addAll(A.getParentsRecurse());
 		}
@@ -1004,7 +1004,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		StringBuffer str=new StringBuffer("");
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			if(str.length()>0) str.append(";");
 			str.append(A.name());
 		}
@@ -1015,7 +1015,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			if((A.name().equalsIgnoreCase(named))
 			||(A.Name().equalsIgnoreCase(named)))
 			   return A;
@@ -1027,7 +1027,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			if(A == area)
 			   return true;
 		}
@@ -1038,7 +1038,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			if((A.name().equalsIgnoreCase(named))
 			||(A.Name().equalsIgnoreCase(named)))
 				return true;

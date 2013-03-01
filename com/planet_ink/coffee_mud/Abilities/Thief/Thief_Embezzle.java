@@ -55,8 +55,8 @@ public class Thief_Embezzle extends ThiefSkill
 		for(Iterator<Pair<MOB,Integer>> p=lastOnes.iterator();p.hasNext();)
 		{
 			Pair<MOB,Integer> P=p.next();
-			MOB M=(MOB)P.first;
-			Integer I=(Integer)P.second;
+			MOB M=P.first;
+			Integer I=P.second;
 			if(M==target)
 			{
 				times=I.intValue();
@@ -107,7 +107,7 @@ public class Thief_Embezzle extends ThiefSkill
 			return false;
 		}
 		MOB target=null;
-		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
 		else
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
@@ -164,7 +164,7 @@ public class Thief_Embezzle extends ThiefSkill
 		double hisAmount=0;
 		while((hisCoins==null)&&((++tries)<10))
 		{
-			String possVic=(String)accounts.get(CMLib.dice().roll(1,accounts.size(),-1));
+			String possVic=accounts.get(CMLib.dice().roll(1,accounts.size(),-1));
 			Item C=bank.findDepositInventory(possVic,"1");
 			if((C!=null)
 			&&(C instanceof Coins)
@@ -179,7 +179,7 @@ public class Thief_Embezzle extends ThiefSkill
 		int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		if((classLevel>0)
 		&&(Math.round(hisAmount)>(1000*(classLevel)+(2*getXLEVELLevel(mob)))))
-		   hisAmount=(double)(1000l*(classLevel+(2l*getXLEVELLevel(mob))));
+		   hisAmount=1000l*(classLevel+(2l*getXLEVELLevel(mob)));
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

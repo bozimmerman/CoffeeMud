@@ -50,7 +50,7 @@ public class Replay extends StdCommand
 			java.util.List<String> last=S.getLastMsgs();
 			if(num>last.size()) num=last.size();
 			for(int v=last.size()-num;v<last.size();v++)
-				S.onlyPrint(((String)last.get(v))+"\n\r",true);
+				S.onlyPrint((last.get(v))+"\n\r",true);
 		}
 		return false;
 	}

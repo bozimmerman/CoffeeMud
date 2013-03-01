@@ -119,8 +119,8 @@ public class Chant_SummonTree extends Chant_SummonPlants
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
-				if(((((Integer)V.get(v)).intValue()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
-				&&((((Integer)V.get(v)).intValue())!=RawMaterial.RESOURCE_WOOD))
+				if(((V.get(v).intValue()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+				&&((V.get(v).intValue())!=RawMaterial.RESOURCE_WOOD))
 					V2.addElement(V.get(v));
 			}
 			if(V2.size()>0)

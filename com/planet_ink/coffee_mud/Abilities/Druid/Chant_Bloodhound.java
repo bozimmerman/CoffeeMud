@@ -71,7 +71,7 @@ public class Chant_Bloodhound extends Chant
 			{
 				if(!CMLib.flags().canSmell((MOB)target))
 					return Ability.QUALITY_INDIFFERENT;
-				if(!CMLib.flags().isInDark((MOB)target))
+				if(!CMLib.flags().isInDark(target))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}

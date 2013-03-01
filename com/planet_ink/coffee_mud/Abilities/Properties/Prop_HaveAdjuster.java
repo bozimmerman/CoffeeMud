@@ -213,7 +213,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			if(changes[i] instanceof Character)
 			switch(((Character)changes[i]).charValue())
 			{
-			case 'G': charStats.setStat(CharStats.STAT_GENDER,(int)((Character)changes[i+1]).charValue()); break;
+			case 'G': charStats.setStat(CharStats.STAT_GENDER,((Character)changes[i+1]).charValue()); break;
 			case 'C': charStats.setCurrentClass((CharClass)changes[i+1]); break;
 			case 'R': charStats.setMyRace((Race)changes[i+1]); break;
 			}

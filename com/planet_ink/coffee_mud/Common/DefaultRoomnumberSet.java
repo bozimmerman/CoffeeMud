@@ -39,7 +39,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	public String name() { return ID();}
 	public STreeMap<String,CMIntegerGrouper> root=new STreeMap<String,CMIntegerGrouper>();
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultRoomnumberSet();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultRoomnumberSet();}}
 	public void initializeClass(){}
 	public CMObject copyOf()
 	{
@@ -60,7 +60,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		String arName=null;
 		for(Iterator<String> v=set.getAreaNames();v.hasNext();)
 		{
-			arName=(String)v.next();
+			arName=v.next();
 			his=set.getGrouper(arName);
 			mine=set.getGrouper(arName);
 			if(mine==null)
@@ -145,7 +145,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			areaName=areaName.substring(0,x).toUpperCase();
 		else
 			areaName=areaName.toUpperCase();
-		CMIntegerGrouper CMI=(CMIntegerGrouper)root.get(areaName);
+		CMIntegerGrouper CMI=root.get(areaName);
 		if(CMI!=null)
 			return CMI.roomCount();
 		return 0;
@@ -290,7 +290,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		if((xV!=null)&&(xV.size()>0))
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)xV.get(x);
+				XMLLibrary.XMLpiece ablk=xV.get(x);
 				if((ablk.tag.equalsIgnoreCase("AREA"))&&(ablk.contents!=null))
 				{
 					ID=CMLib.xml().getValFromPieces(ablk.contents,"ID").toUpperCase();

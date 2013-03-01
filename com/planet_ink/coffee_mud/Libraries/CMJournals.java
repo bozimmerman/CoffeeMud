@@ -70,12 +70,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		if(journal == null)
 			return null;
 		Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
-		JournalSummaryStats stats = (JournalSummaryStats)journalSummaryStats.get(journalName.toUpperCase().trim());
+		JournalSummaryStats stats = journalSummaryStats.get(journalName.toUpperCase().trim());
 		if(stats == null)
 		{
 			synchronized(journal.NAME().intern())
 			{
-				stats = (JournalSummaryStats)journalSummaryStats.get(journalName.toUpperCase().trim());
+				stats = journalSummaryStats.get(journalName.toUpperCase().trim());
 				if(stats == null)
 				{
 					stats = new JournalSummaryStats();
@@ -249,7 +249,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			H=new HashSet<String>();
 			for(Enumeration<Item> e=CMClass.basicItems();e.hasMoreElements();)
 			{
-				I=(Item)e.nextElement();
+				I=e.nextElement();
 				if((I instanceof ArchonOnly)
 				&&(!I.isGeneric()))
 					H.add(I.Name().toUpperCase().trim());
@@ -308,7 +308,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
 					{
-						JournalEntry entry=(JournalEntry)items.get(i);
+						JournalEntry entry=items.get(i);
 						long compdate=entry.update;
 						compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
 						if(System.currentTimeMillis()>compdate)
@@ -336,7 +336,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
 					{
-						JournalEntry entry=(JournalEntry)items.get(i);
+						JournalEntry entry=items.get(i);
 						if(!CMath.bset(entry.attributes, JournalEntry.ATTRIBUTE_PROTECTED))
 						{
 							long compdate=entry.update;
@@ -462,7 +462,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							if(str==null)
 								str=sess.prompt("Text to replace it with: ","");
 							for(int i=0;i<vbuf.size();i++)
-								vbuf.set(i,CMStrings.replaceAll((String)vbuf.get(i),line,str));
+								vbuf.set(i,CMStrings.replaceAll(vbuf.get(i),line,str));
 						}
 						else
 							mob.tell("(aborted)");
@@ -481,7 +481,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
 							int ln=CMath.s_int(line);
-							mob.tell("Current: \n\r"+CMStrings.padRight(""+ln,3)+") "+(String)vbuf.get(ln));
+							mob.tell("Current: \n\r"+CMStrings.padRight(""+ln,3)+") "+vbuf.get(ln));
 							String str=param2;
 							if(str==null)
 								str=sess.prompt("Rewrite: \n\r");
@@ -523,7 +523,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					StringBuffer list=new StringBuffer(messageTitle+"\n\r");
 					for(int v=0;v<vbuf.size();v++)
-						list.append(CMLib.coffeeFilter().colorOnlyFilter("^X"+CMStrings.padRight(""+v,3)+")^.^N ",sess)+(String)vbuf.get(v)+"\n\r");
+						list.append(CMLib.coffeeFilter().colorOnlyFilter("^X"+CMStrings.padRight(""+v,3)+")^.^N ",sess)+vbuf.get(v)+"\n\r");
 					sess.rawPrint(list.toString());
 					break;
 				}

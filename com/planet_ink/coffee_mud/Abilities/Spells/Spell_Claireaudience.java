@@ -112,7 +112,7 @@ public class Spell_Claireaudience extends Spell
 				if(targets.size()==0)
 					targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 10);
 				if(targets.size()>0) 
-					target=(MOB)targets.get(CMLib.dice().roll(1,targets.size(),-1));
+					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}catch(NoSuchElementException nse){}
 		}
 		if(target instanceof Deity) target=null;

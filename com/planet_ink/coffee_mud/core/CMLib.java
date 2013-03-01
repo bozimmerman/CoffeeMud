@@ -128,11 +128,11 @@ public class CMLib
 			return null;
 		else
 		if(port<=0)
-			return (MudHost)mudThreads.firstElement();
+			return mudThreads.firstElement();
 		else
 		for(int i=0;i<mudThreads.size();i++)
-			if(((MudHost)mudThreads.elementAt(i)).getPort()==port)
-				return (MudHost)mudThreads.elementAt(i);
+			if(mudThreads.elementAt(i).getPort()==port)
+				return mudThreads.elementAt(i);
 		return null;
 	}
 	public static final Resources resources(){return Resources.instance();}
@@ -251,6 +251,7 @@ public class CMLib
 		return -1;
 	}
 
+	@SuppressWarnings("unused")
 	public static final void registerLibrary(final CMLibrary O)
 	{
 		final int code=convertToLibraryCode(O);
@@ -359,7 +360,7 @@ public class CMLib
 	public static final void registerLibraries(final Enumeration<CMLibrary> e)
 	{
 		for(;e.hasMoreElements();)
-			registerLibrary((CMLibrary)e.nextElement());
+			registerLibrary(e.nextElement());
 	}
 	
 	public static final int countRegistered()

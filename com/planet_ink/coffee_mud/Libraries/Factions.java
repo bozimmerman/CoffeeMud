@@ -56,7 +56,7 @@ public class Factions extends StdLibrary implements FactionManager
 		Vector<String> preLoadFactions=CMParms.parseSemicolons(factionList,true);
 		clearFactions();
 		for(int i=0;i<preLoadFactions.size();i++)
-			getFaction((String)preLoadFactions.elementAt(i));
+			getFaction(preLoadFactions.elementAt(i));
 	}
 	
 	public java.util.Map<String,FRange> rangeCodeNames(){ return hashedFactionRanges; }
@@ -86,17 +86,17 @@ public class Factions extends StdLibrary implements FactionManager
 		Vector<FRange> relevantFactions=new Vector<FRange>();
 		for(Enumeration<FRange> e=F.ranges();e.hasMoreElements();)
 		{
-			Faction.FRange FR2=(Faction.FRange)e.nextElement();
+			Faction.FRange FR2=e.nextElement();
 			if(FR2.codeName().equalsIgnoreCase(FR.codeName()))
 				relevantFactions.addElement(FR2);
 		}
 		if(relevantFactions.size()==0) return "";
 		if(relevantFactions.size()==1)
-			return F.name()+" of "+((Faction.FRange)relevantFactions.firstElement()).name();
+			return F.name()+" of "+relevantFactions.firstElement().name();
 		StringBuffer buf=new StringBuffer(F.name()+" of ");
 		for(int i=0;i<relevantFactions.size()-1;i++)
-			buf.append(((Faction.FRange)relevantFactions.elementAt(i)).name()+", ");
-		buf.append(andOr+((Faction.FRange)relevantFactions.lastElement()).name());
+			buf.append(relevantFactions.elementAt(i).name()+", ");
+		buf.append(andOr+relevantFactions.lastElement().name());
 		return buf.toString();
 	}
 		
@@ -106,7 +106,7 @@ public class Factions extends StdLibrary implements FactionManager
 		F.initializeFaction(buf,factionID);
 		for(Enumeration<FRange> e=F.ranges();e.hasMoreElements();)
 		{
-			Faction.FRange FR=(Faction.FRange)e.nextElement();
+			Faction.FRange FR=e.nextElement();
 			String CodeName=(FR.codeName().length()>0)?FR.codeName().toUpperCase():FR.name().toUpperCase();
 			if(!hashedFactionRanges.containsKey(CodeName))
 				hashedFactionRanges.put(CodeName,FR);
@@ -129,7 +129,7 @@ public class Factions extends StdLibrary implements FactionManager
 	public Faction getFaction(String factionID) 
 	{
 		if(factionID==null) return null;
-		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
+		Faction F=factionSet.get(factionID.toUpperCase());
 		if(F!=null)
 		{
 			if(!F.amDestroyed())
@@ -171,7 +171,7 @@ public class Factions extends StdLibrary implements FactionManager
 		Faction F;
 		for(Enumeration<String> e=factionSet.keys();e.hasMoreElements();) 
 		{
-			F=(Faction)factionSet.get(e.nextElement());
+			F=factionSet.get(e.nextElement());
 			if(F.name().equalsIgnoreCase(factionNamed)) 
 			{
 				if(!F.amDestroyed())
@@ -408,7 +408,7 @@ public class Factions extends StdLibrary implements FactionManager
 			Faction F=null;
 			for(Enumeration<Faction> e=factions();e.hasMoreElements();)
 			{
-				F=(Faction)e.nextElement();
+				F=e.nextElement();
 				if(((F.getInternalFlags()&Faction.IFLAG_IGNOREAUTO)==0)
 				&&(!F.hasFaction(mob))
 				&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
@@ -466,7 +466,7 @@ public class Factions extends StdLibrary implements FactionManager
 			HashSet<Faction> factionsDone=new HashSet<Faction>();
 			for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();)
 			{
-				F=(Faction)e.nextElement();
+				F=e.nextElement();
 				if((F.getInternalFlags()&Faction.IFLAG_CUSTOMTICK)==0)
 				{
 					addOutsidersAndTimers(F, outSiders, timers);
@@ -491,13 +491,13 @@ public class Factions extends StdLibrary implements FactionManager
 							}
 					for(int o=0;o<outSiders.size();o++)
 					{
-						CE=(Faction.FactionChangeEvent)outSiders.elementAt(o);
+						CE=outSiders.elementAt(o);
 						if((CE.applies(mob,mob))&&(!CE.getFaction().hasFaction(mob)))
 							CE.getFaction().executeChange(mob,mob,CE);
 					}
 					for(int o=0;o<timers.size();o++)
 					{
-						CE=(Faction.FactionChangeEvent)timers.elementAt(o);
+						CE=timers.elementAt(o);
 						if((CE.applies(mob,mob))&&(CE.getFaction().hasFaction(mob)))
 							CE.getFaction().executeChange(mob,mob,CE);
 					}
@@ -516,7 +516,7 @@ public class Factions extends StdLibrary implements FactionManager
 		if(e!=null)
 		for(;e.hasMoreElements();) 
 		{
-			Faction.FRange R=(Faction.FRange)e.nextElement();
+			Faction.FRange R=e.nextElement();
 			if(R.alignEquiv()==AlignEq) 
 			{
 				if(R.low()<bottom) bottom=R.low();
@@ -545,7 +545,7 @@ public class Factions extends StdLibrary implements FactionManager
 		if(e==null) return 0;
 		for(;e.hasMoreElements();) 
 		{
-			Faction.FRange R=(Faction.FRange)e.nextElement();
+			Faction.FRange R=e.nextElement();
 			if(R.alignEquiv()==AlignEq) {
 				if(R.low()<bottom) bottom=R.low();
 				if(R.high()>top) top=R.high();
@@ -623,7 +623,7 @@ public class Factions extends StdLibrary implements FactionManager
 				list.append(CMStrings.padRight("   Code",16)+CMStrings.padRight("Name",21)+CMStrings.padRight("Min",11)+CMStrings.padRight("Max",11)+CMStrings.padRight("Align",6)+"\n\r");
 				for(Enumeration<FRange> e=me.ranges();e.hasMoreElements();)
 				{
-					Faction.FRange FR=(Faction.FRange)e.nextElement();
+					Faction.FRange FR=e.nextElement();
 					list.append(CMStrings.padRight("   "+FR.codeName(),15)+" ");
 					list.append(CMStrings.padRight(FR.name(),20)+" ");
 					list.append(CMStrings.padRight(""+FR.low(),10)+" ");
@@ -665,7 +665,7 @@ public class Factions extends StdLibrary implements FactionManager
 					else
 					for(Enumeration<FRange> e=me.ranges();e.hasMoreElements();)
 					{
-						Faction.FRange FR3=(Faction.FRange)e.nextElement();
+						Faction.FRange FR3=e.nextElement();
 						if(FR3.name().equalsIgnoreCase(FR.name())&&(FR3!=FR))
 						{ mob.tell("A range already exists with that name!"); error99=true; break;}
 					}
@@ -708,7 +708,7 @@ public class Factions extends StdLibrary implements FactionManager
 			boolean alreadyReporter=false;
 			for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 			{
-				Faction F2=(Faction)e.nextElement();
+				Faction F2=e.nextElement();
 				if(F2.showInSpecialReported()) alreadyReporter=true;
 			}
 			if(!alreadyReporter)
@@ -851,7 +851,7 @@ public class Factions extends StdLibrary implements FactionManager
 				list.append("    Faction"+CMStrings.padRight("",25)+"Percentage change\n\r");
 				for(Enumeration<String> e=me.relationFactions();e.hasMoreElements();)
 				{
-					String key=(String)e.nextElement();
+					String key=e.nextElement();
 					double value=me.getRelation(key);
 					Faction F=CMLib.factions().getFaction(key);
 					if(F!=null)
@@ -869,7 +869,7 @@ public class Factions extends StdLibrary implements FactionManager
 				Faction theF=null;
 				for(Enumeration<String> e=me.relationFactions();e.hasMoreElements();)
 				{
-					String key=(String)e.nextElement();
+					String key=e.nextElement();
 					Faction F=CMLib.factions().getFaction(key);
 					if((F!=null)&&(F.name().equalsIgnoreCase(which)))
 						theF=F;
@@ -920,7 +920,7 @@ public class Factions extends StdLibrary implements FactionManager
 				Hashtable<Character,Faction.FactionChangeEvent> choicesHashed=new Hashtable<Character,Faction.FactionChangeEvent>(); 
 				for(Enumeration<String> e=me.changeEventKeys();e.hasMoreElements();)
 				{
-					Faction.FactionChangeEvent[] CEs=me.getChangeEvents((String)e.nextElement());
+					Faction.FactionChangeEvent[] CEs=me.getChangeEvents(e.nextElement());
 					if(CEs!=null)
 					{
 						for(int e1=0;e1<CEs.length;e1++)
@@ -1045,7 +1045,7 @@ public class Factions extends StdLibrary implements FactionManager
 				StringBuffer choices=new StringBuffer("0\n\r");
 				for(Enumeration<Faction.FAbilityUsage> e=me.abilityUsages();e.hasMoreElements();)
 				{
-					Faction.FAbilityUsage CA=(Faction.FAbilityUsage)e.nextElement();
+					Faction.FAbilityUsage CA=e.nextElement();
 					if(CA!=null)
 					{
 						list.append("    "+((char)('A'+numUsages)+") "));
@@ -1069,7 +1069,7 @@ public class Factions extends StdLibrary implements FactionManager
 					int num=(which.charAt(0)-'A');
 					if((num<0)||(num>=numUsages))
 						break;
-					CA=(Faction.FAbilityUsage)me.getAbilityUsage(num);
+					CA=me.getAbilityUsage(num);
 					if(CA==null)
 					{
 						mob.tell("That allowance is invalid..");
@@ -1118,7 +1118,7 @@ public class Factions extends StdLibrary implements FactionManager
 								List<String> unknowns=CA.setAbilityFlag(newFlags);
 								if(unknowns.size()>0)
 									for(int i=unknowns.size()-1;i>=0;i--)
-										if(CMClass.getAbility((String)unknowns.get(i))!=null)
+										if(CMClass.getAbility(unknowns.get(i))!=null)
 											unknowns.remove(i);
 								if(unknowns.size()>0)
 								{
@@ -1160,7 +1160,7 @@ public class Factions extends StdLibrary implements FactionManager
 				String ID=null;
 				for(Enumeration<String> e=me.affectsBehavs();e.hasMoreElements();)
 				{
-					ID=(String)e.nextElement();
+					ID=e.nextElement();
 					String[] parms=me.getAffectBehav(ID);
 					list.append("    "+((char)('A'+numAffBehavs)+") "));
 					list.append(CMStrings.padRight(ID,25)+" ");
@@ -1182,7 +1182,7 @@ public class Factions extends StdLibrary implements FactionManager
 					int num=(which.charAt(0)-'A');
 					if((num<0)||(num>=IDs.size()))
 						break;
-					ID=(String)IDs.elementAt(num);
+					ID=IDs.elementAt(num);
 					String type=getWordAffOrBehav(ID);
 					if(mob.session().choose("Would you like to M)odify or D)elete this "+type+" (M/d): ","MD","M").toUpperCase().startsWith("D"))
 					{
@@ -1296,7 +1296,7 @@ public class Factions extends StdLibrary implements FactionManager
 				Faction.FReactionItem item=null;
 				for(Enumeration<Faction.FReactionItem> e=me.reactions();e.hasMoreElements();)
 				{
-					item=(Faction.FReactionItem)e.nextElement();
+					item=e.nextElement();
 					list.append("    "+((char)('A'+numReactions)+") "));
 					list.append(CMStrings.padRight(item.rangeName(),15)+" ");
 					list.append(CMStrings.padRight(item.presentMOBMask()+"",18)+" ");
@@ -1319,7 +1319,7 @@ public class Factions extends StdLibrary implements FactionManager
 					int num=(which.charAt(0)-'A');
 					if((num<0)||(num>=reactions.size()))
 						break;
-					item=(Faction.FReactionItem)reactions.elementAt(num);
+					item=reactions.elementAt(num);
 					String type=getWordAffOrBehav(item.reactionObjectID());
 					if(mob.session().choose("Would you like to M)odify or D)elete this "+type+" (M/d): ","MD","M").toUpperCase().startsWith("D"))
 					{
@@ -1352,7 +1352,7 @@ public class Factions extends StdLibrary implements FactionManager
 						StringBuffer str=new StringBuffer("");
 						for(Enumeration<Faction.FRange> e=me.ranges();e.hasMoreElements();)
 						{
-							Faction.FRange FR=(Faction.FRange)e.nextElement();
+							Faction.FRange FR=e.nextElement();
 							str.append(FR.codeName()+" ");
 						}
 						mob.tell(str.toString().trim()+"\n\r");
@@ -1363,7 +1363,7 @@ public class Factions extends StdLibrary implements FactionManager
 					{
 						cont=true;
 						for(Enumeration<Faction.FRange> e=me.ranges();e.hasMoreElements();)
-							if(((Faction.FRange)e.nextElement()).codeName().equalsIgnoreCase(rangeCode))
+							if(e.nextElement().codeName().equalsIgnoreCase(rangeCode))
 							{
 								newData[0]=rangeCode;
 								cont=false;
@@ -1475,7 +1475,7 @@ public class Factions extends StdLibrary implements FactionManager
 		for(int i=0;i<defined.length;i++) defined[i]=false;
 		for(int v=0;v<oldV.size();v++)
 		{
-			String s=(String)oldV.get(v);
+			String s=oldV.get(v);
 			if(!(s.trim().startsWith("#")||s.trim().length()==0||(s.indexOf('=')<0)))
 			{
 				String tag=s.substring(0,s.indexOf('=')).trim().toUpperCase();
@@ -1490,7 +1490,7 @@ public class Factions extends StdLibrary implements FactionManager
 		StringBuffer buf=new StringBuffer("");
 		for(int v=0;v<oldV.size();v++)
 		{
-			String s=(String)oldV.get(v);
+			String s=oldV.get(v);
 			if(s.trim().length()==0)
 			{
 				if((lastCommented>=0)&&(!done[lastCommented]))

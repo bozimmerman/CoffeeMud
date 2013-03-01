@@ -85,7 +85,7 @@ public class Spell_CombatPrecognition extends Spell
 				case CMMsg.TYP_JUSTICE:
 					if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 					&&(tool!=null))
-						msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"physical":tool)+" from <T-NAME>.");
+						msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+tool+" from <T-NAME>.");
 					break;
 				case CMMsg.TYP_GAS:
 					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"noxious fumes":tool)+" from <T-NAME>.");

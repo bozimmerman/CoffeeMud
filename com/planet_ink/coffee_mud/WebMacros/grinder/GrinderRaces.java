@@ -316,7 +316,7 @@ public class GrinderRaces
 		for(int i=0;i<Race.AGE_DESCS.length;i++)
 		{
 			int lastVal=val;
-			val=CMath.s_int((String)httpReq.getUrlParameter("AGE"+i));
+			val=CMath.s_int(httpReq.getUrlParameter("AGE"+i));
 			if(val<lastVal) val=lastVal;
 			if(i>0) commaList.append(",");
 			commaList.append(val);

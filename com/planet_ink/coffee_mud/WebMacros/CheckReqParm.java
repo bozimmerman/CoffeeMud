@@ -43,7 +43,7 @@ public class CheckReqParm extends StdWebMacro
 		for(String key : parms.keySet())
 		{
 			if(key.length()==0) continue;
-			String equals=(String)parms.get(key);
+			String equals=parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;
 			boolean startswith=false;

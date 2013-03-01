@@ -54,7 +54,7 @@ public class Spell_DistantVision extends Spell
 		{
 			List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
 			if(rooms.size()>0)
-				thisRoom=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+				thisRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 		}catch(NoSuchElementException nse){}
 
 		if(thisRoom==null)

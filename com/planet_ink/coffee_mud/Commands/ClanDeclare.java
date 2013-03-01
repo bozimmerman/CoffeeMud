@@ -97,7 +97,7 @@ public class ClanDeclare extends StdCommand
 		}
 
 		StringBuffer msg=new StringBuffer("");
-		if((C!=null)&&(C2!=null)&&(rel.length()>0))
+		if(rel.length()>0)
 		{
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,false))
 			{

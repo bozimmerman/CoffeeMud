@@ -76,7 +76,7 @@ public class DrinkCmd extends StdCommand
 			List<Item> V=((Container)thisThang).getContents();
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=(Item)V.get(v);
+				Item I=V.get(v);
 				if((I instanceof Drink)&&(I instanceof RawMaterial))
 				{
 					tool=thisThang;

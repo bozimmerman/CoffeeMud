@@ -47,7 +47,7 @@ public class Prop_EnlargeRoom extends Property
 	{
 		if(s.indexOf('.')>=0)
 			return CMath.s_double(s);
-		return (double)CMath.s_int(s);
+		return CMath.s_int(s);
 	}
 
 	protected int ival(String s)

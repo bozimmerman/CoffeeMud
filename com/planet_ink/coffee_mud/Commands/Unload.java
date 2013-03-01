@@ -171,7 +171,7 @@ public class Unload extends StdCommand
 				Vector users=new Vector();
 				if(which.equalsIgnoreCase("all"))
 					for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
-						users.addElement((MOB)e.nextElement());
+						users.addElement(e.nextElement());
 				else
 				{
 					MOB M=CMLib.players().getPlayer(which);

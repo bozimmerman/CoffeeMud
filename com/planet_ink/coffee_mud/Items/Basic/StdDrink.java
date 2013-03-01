@@ -80,9 +80,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 		int total = amountOfLiquidRemaining;
 		List<Item> V=getContents();
 		for(int v=0;v<V.size();v++)
-			if((V.get(v) instanceof Item)
-			&&(V.get(v) instanceof Drink)
-			&&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+			if((V.get(v) instanceof Drink)
+			&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 				total += ((Drink)V.get(v)).liquidRemaining();
 		return total;
 	}
@@ -99,9 +98,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 		{
 			List<Item> V=getContents();
 			for(int v=0;v<V.size();v++)
-				if((V.get(v) instanceof Item)
-				&&(V.get(v) instanceof Drink)
-				&&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+				if((V.get(v) instanceof Drink)
+				&&((V.get(v).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 					return true;
 			return false;
 		}
@@ -150,7 +148,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					Item I=null;
 					for(int i=0;i<V.size();i++)
 					{
-						I=(Item)V.get(i);
+						I=V.get(i);
 						if(I instanceof Drink)
 							break;
 					}
@@ -259,7 +257,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					}
 					if(amountToTake>0)
 					{
-						if( ( (long)amountOfLiquidRemaining + (long)amountToTake ) <= (long)Integer.MAX_VALUE )
+						if( ( (long)amountOfLiquidRemaining + (long)amountToTake ) <= Integer.MAX_VALUE )
 							amountOfLiquidRemaining+=amountToTake;
 						if(amountOfLiquidRemaining>amountOfLiquidHeld)
 							amountOfLiquidRemaining=amountOfLiquidHeld;

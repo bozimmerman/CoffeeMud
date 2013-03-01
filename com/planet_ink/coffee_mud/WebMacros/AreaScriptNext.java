@@ -85,7 +85,7 @@ public class AreaScriptNext extends StdWebMacro
 				List<String> files=B.externalFiles();
 				if(files!=null)
 				for(int f=0;f<files.size();f++)
-					addScript(list, prefix, SE.getScriptResourceKey(),B.ID(),((String)files.get(f)).toLowerCase(), (String)files.get(f));
+					addScript(list, prefix, SE.getScriptResourceKey(),B.ID(),files.get(f).toLowerCase(), files.get(f));
 				String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 				if((nonFiles!=null)&&(nonFiles.trim().length()>0))
 				{
@@ -101,7 +101,7 @@ public class AreaScriptNext extends StdWebMacro
 			if(!SE.isSavable()) continue;
 			List<String> files=SE.externalFiles();
 			for(int f=0;f<files.size();f++)
-				addScript(list, prefix, SE.getScriptResourceKey(),null,((String)files.get(f)).toLowerCase(), (String)files.get(f));
+				addScript(list, prefix, SE.getScriptResourceKey(),null,files.get(f).toLowerCase(), files.get(f));
 			String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 			if(nonFiles.trim().length()>0)
 			{
@@ -120,7 +120,7 @@ public class AreaScriptNext extends StdWebMacro
 		{
 			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 			{
-				Environmental E2=(Environmental)i.next();
+				Environmental E2=i.next();
 				ArrayList<String> newPrefix=(ArrayList<String>)prefix.clone();
 				newPrefix.add(E2.name());
 				if(E2 instanceof PhysicalAgent)

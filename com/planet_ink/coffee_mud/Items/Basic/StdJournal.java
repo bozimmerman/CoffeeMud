@@ -180,6 +180,8 @@ public class StdJournal extends StdItem
 										which++;
 										read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 										entry=read.derivedBuildMessage;
+										if(entry==null)
+											break;
 										if(entry.toString().trim().length()>0)
 										{
 											if(entry.charAt(0)=='#')
@@ -248,7 +250,7 @@ public class StdJournal extends StdItem
 										else
 										{
 											List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name());
-											JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.get(which-1);
+											JournalsLibrary.JournalEntry entry2=journal2.get(which-1);
 											CMLib.database().DBDeleteJournal(Name(),entry2.key);
 											CMLib.database().DBWriteJournal(realName,
 																			  entry2.from,
@@ -441,7 +443,7 @@ public class StdJournal extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(0);
+				JournalsLibrary.JournalEntry entry=journal.get(0);
 				fakeEntry.key=entry.key;
 				fakeEntry.from=entry.from;
 				fakeEntry.subj=entry.subj;
@@ -449,7 +451,7 @@ public class StdJournal extends StdItem
 			Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
 			{
-				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(j);
+				JournalsLibrary.JournalEntry entry=journal.get(j);
 				String from=entry.from;
 				long date=entry.date;
 				String to=entry.to;
@@ -508,7 +510,7 @@ public class StdJournal extends StdItem
 		}
 		else
 		{
-			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(which);
+			JournalsLibrary.JournalEntry entry=journal.get(which);
 			String from=entry.from;
 			long date=entry.date;
 			String to=entry.to;

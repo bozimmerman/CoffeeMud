@@ -82,8 +82,7 @@ public class Distilling extends Cooking
 		&&(building instanceof Drink))
 		{
 			((Drink)building).setLiquidType(RawMaterial.RESOURCE_LIQUOR);
-			if(building instanceof Item)
-				((Item)building).setMaterial(RawMaterial.RESOURCE_LIQUOR);
+			building.setMaterial(RawMaterial.RESOURCE_LIQUOR);
 		}
 		return true;
 	}

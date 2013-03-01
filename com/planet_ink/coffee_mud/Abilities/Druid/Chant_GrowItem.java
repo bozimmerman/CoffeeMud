@@ -63,7 +63,7 @@ public class Chant_GrowItem extends Chant
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
-				if((((Integer)V.get(v)).intValue()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+				if((V.get(v).intValue()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 					V2.addElement(V.get(v));
 			}
 			if(V2.size()>0)

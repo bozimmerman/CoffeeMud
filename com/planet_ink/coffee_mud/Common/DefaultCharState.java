@@ -45,7 +45,7 @@ public class DefaultCharState implements CharState
 	protected int annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
 
 	public DefaultCharState(){}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCharState();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCharState();}}
 	public void initializeClass(){}
 	public void setAllValues(int def)
 	{
@@ -208,9 +208,9 @@ public class DefaultCharState implements CharState
 
 		botherCycle=0;
 		CharStats charStats=mob.charStats();
-		double con=(double)charStats.getStat(CharStats.STAT_CONSTITUTION);
-		double man=(double)((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
-		double str=(double)charStats.getStat(CharStats.STAT_STRENGTH);
+		double con=charStats.getStat(CharStats.STAT_CONSTITUTION);
+		double man=((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
+		double str=charStats.getStat(CharStats.STAT_STRENGTH);
 		if(getHunger()<1)
 		{
 			con=con*.50;
@@ -226,7 +226,7 @@ public class DefaultCharState implements CharState
 		if(getFatigue()>FATIGUED_MILLIS)
 			man=man*.5;
 
-		double lvl=(double)mob.phyStats().level();
+		double lvl=mob.phyStats().level();
 		double lvlby1p5=CMath.div(lvl,1.5);
 		//double lvlby2=CMath.div(lvl,2.0);
 		//double lvlby3=CMath.div(lvl,3.0);
@@ -408,7 +408,7 @@ public class DefaultCharState implements CharState
 		try
 		{
 			DefaultCharState E=(DefaultCharState)this.clone();
-			E.states=(int[])E.states.clone();
+			E.states=E.states.clone();
 			return E;
 		}
 		catch(CloneNotSupportedException e)

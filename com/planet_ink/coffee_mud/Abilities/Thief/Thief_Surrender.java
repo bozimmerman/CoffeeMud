@@ -58,7 +58,7 @@ public class Thief_Surrender extends ThiefSkill
 				theList.addElement(vic);
 			}
 		}
-		double goldRequired=(double)gold;
+		double goldRequired=gold;
 		if((!mob.isInCombat())||(theList.size()==0))
 		{
 			mob.tell("There's no one to surrender to!");

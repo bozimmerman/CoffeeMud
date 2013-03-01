@@ -143,7 +143,7 @@ public class Merge extends StdCommand
 					if(noisy) mergedebugtell(mob,"fieldsToChange-"+CMParms.toStringList(fieldsToChange));
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
-						String field=(String)fieldsToChange.get(i);
+						String field=fieldsToChange.get(i);
 						if(noisy) mergedebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
 						if(!getStat(E,field).equals(getStat(E2,field)))
 						{
@@ -409,7 +409,7 @@ public class Merge extends StdCommand
 		{
 			Area A=(Area)a.nextElement();
 			if(A.getCompleteMap().hasMoreElements()
-			&&CMSecurity.isAllowed(mob,((Room)A.getCompleteMap().nextElement()),CMSecurity.SecFlag.MERGE))
+			&&CMSecurity.isAllowed(mob,(A.getCompleteMap().nextElement()),CMSecurity.SecFlag.MERGE))
 				placesToDo.addElement(A);
 		}
 		if(placesToDo.size()==0)
@@ -493,11 +493,11 @@ public class Merge extends StdCommand
 							{
 								for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 								{
-									Environmental E=(Environmental)i.next();
+									Environmental E=i.next();
 									if(E instanceof Item)
 									{
 										Item I=(Item)E;
-										if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
+										if(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy))
 											savemobs=true;
 									}
 								}

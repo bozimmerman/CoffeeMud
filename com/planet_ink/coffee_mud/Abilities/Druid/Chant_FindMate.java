@@ -194,7 +194,7 @@ public class Chant_FindMate extends Chant
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=(Room)r.next();
+			Room R=r.next();
 			if(R!=null)
 			for(int i=0;i<R.numInhabitants();i++)
 			{

@@ -96,7 +96,7 @@ public class Thief_Robbery extends ThiefSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(!(target instanceof MOB))
 				return Ability.QUALITY_INDIFFERENT;
-			if((target==null)||(((MOB)target).amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
+			if((((MOB)target).amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 				return Ability.QUALITY_INDIFFERENT;
 			if((!((MOB)target).mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
 				return Ability.QUALITY_INDIFFERENT;
@@ -120,7 +120,7 @@ public class Thief_Robbery extends ThiefSkill
 		String itemToSteal=(String)commands.elementAt(0);
 
 		MOB target=null;
-		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
 		else
 			target=mob.location().fetchInhabitant(CMParms.combine(commands,1));

@@ -51,7 +51,7 @@ public class ServiceEngine implements ThreadEngine
 	
 	public String ID(){return "ServiceEngine";}
 	public String name() { return ID();}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ServiceEngine();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new ServiceEngine();}}
 	
 	public void initializeClass() 
 	{
@@ -159,7 +159,7 @@ public class ServiceEngine implements ThreadEngine
 		{
 			final Iterator<TockClient> set=almostTock.getTickSet(E,tickID);
 			for(;set.hasNext();)
-				almostTock.delTicker((TockClient)set.next());
+				almostTock.delTicker(set.next());
 		}
 		return false;
 	}
@@ -188,7 +188,7 @@ public class ServiceEngine implements ThreadEngine
 			final Tick almostTock=e.next();
 			final Iterator<TockClient> set=almostTock.getTickSet(E,tickID);
 			for(;set.hasNext();)
-				((TockClient)set.next()).suspended=suspend;
+				set.next().suspended=suspend;
 		}
 		return false;
 	}
@@ -199,7 +199,7 @@ public class ServiceEngine implements ThreadEngine
 		{
 			final Tick almostTock=e.next();
 			final Iterator<TockClient> set=almostTock.getTickSet(E,tickID);
-			if(set.hasNext() && ((TockClient)set.next()).suspended)
+			if(set.hasNext() && set.next().suspended)
 				return true;
 		}
 		return false;
@@ -302,7 +302,7 @@ public class ServiceEngine implements ThreadEngine
 				int tick=0;
 				for(Iterator<TockClient> et=almostTock.tickers();et.hasNext();)
 				{
-					TockClient C=(TockClient)et.next();
+					TockClient C=et.next();
 					if(C.tickTotal==0) continue;
 					Long avg=Long.valueOf(C.milliTotal/C.tickTotal);
 					int i=0;
@@ -359,7 +359,7 @@ public class ServiceEngine implements ThreadEngine
 			{
 				for(Iterator<TockClient> et=almostTock.tickers();et.hasNext();)
 				{
-					TockClient C=(TockClient)et.next();
+					TockClient C=et.next();
 					if(C.milliTotal>topObjectMillis)
 					{
 						topObjectMillis=C.milliTotal;
@@ -447,7 +447,7 @@ public class ServiceEngine implements ThreadEngine
 			int curThreadNum=0;
 			for(Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)
 			{
-				CMLibrary lib=(CMLibrary)e.nextElement();
+				CMLibrary lib=e.nextElement();
 				CMSupportThread thread=lib.getSupportThread();
 				if(thread!=null) {
 					if(curThreadNum==threadNum) {
@@ -502,7 +502,7 @@ public class ServiceEngine implements ThreadEngine
 			{
 				for(Iterator<TockClient> i=almostTock.tickers();i.hasNext();)
 				{
-					C=(TockClient)i.next();
+					C=i.next();
 					E2=C.clientObject;
 					if((doItems)
 					&&(E2 instanceof ItemTicker)
@@ -594,7 +594,7 @@ public class ServiceEngine implements ThreadEngine
 			if((group>=0)&&(group<ticks.size()))
 			{
 				List<Tick> enumeratedTicks=new XVector<Tick>(ticks);
-				return ""+((Tick)enumeratedTicks.get(group)).numTickers();
+				return ""+enumeratedTicks.get(group).numTickers();
 			}
 			return "";
 		}
@@ -610,7 +610,7 @@ public class ServiceEngine implements ThreadEngine
 		if((group<0)||(client<0)||(group>=ticks.size())) return "";
 		List<Tick> enumeratedTicks=new XVector<Tick>(ticks);
 		if((group<0)||(client<0)||(group>=enumeratedTicks.size())) return "";
-		Tick almostTock=(Tick)enumeratedTicks.get(group);
+		Tick almostTock=enumeratedTicks.get(group);
 		
 		if(client>=almostTock.numTickers()) return "";
 		TockClient C=almostTock.fetchTickerByIndex(client);
@@ -695,13 +695,13 @@ public class ServiceEngine implements ThreadEngine
 		Vector<TimeClock> timeObjects=new Vector<TimeClock>();
 		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
-			Area A=((Area)e.nextElement());
+			Area A=(e.nextElement());
 			if(!timeObjects.contains(A.getTimeObj()))
 				timeObjects.addElement(A.getTimeObj());
 		}
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": saving time objects");
 		for(int t=0;t<timeObjects.size();t++)
-			((TimeClock)timeObjects.elementAt(t)).save();
+			timeObjects.elementAt(t).save();
 		for(CMThreadPoolExecutor pool : threadPools)
 			if(pool != null)
 				pool.shutdown();
@@ -723,7 +723,7 @@ public class ServiceEngine implements ThreadEngine
 			if(roomSet!=null)
 				for(;roomSet.hasNext();)
 				{
-					C=(TockClient)roomSet.next();
+					C=roomSet.next();
 					if(C.clientObject instanceof ItemTicker)
 					{
 						I=(ItemTicker)C.clientObject;
@@ -755,7 +755,7 @@ public class ServiceEngine implements ThreadEngine
 			almostTock=e.next();
 			for(Iterator<TockClient> i=almostTock.tickers();i.hasNext();)
 			{
-				C=(TockClient)i.next();
+				C=i.next();
 				if((C.clientObject!=null)
 				&&(C.clientObject.name().toUpperCase().indexOf(name)>=0)
 				&&(!V.contains(C.clientObject)))
@@ -973,7 +973,7 @@ public class ServiceEngine implements ThreadEngine
 				((ServiceEngine)CMLib.threads()).delTickGroup(almostTock);
 			for(int i=0;i<tockClients.size();i++)
 			{
-				TockClient c=(TockClient)tockClients.elementAt(i);
+				TockClient c=tockClients.elementAt(i);
 				CMLib.threads().startTickDown(c.clientObject,c.tickID,c.reTickDown);
 			}
 		}
@@ -981,7 +981,7 @@ public class ServiceEngine implements ThreadEngine
 		thread.setStatus("Checking mud threads");
 		for(int m=0;m<CMLib.hosts().size();m++)
 		{
-			List<Runnable> badThreads=((MudHost)CMLib.hosts().get(m)).getOverdueThreads();
+			List<Runnable> badThreads=CMLib.hosts().get(m).getOverdueThreads();
 			for(Runnable T : badThreads)
 				if(T instanceof Thread)
 				{

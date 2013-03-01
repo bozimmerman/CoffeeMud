@@ -65,7 +65,7 @@ public class Chant_TapGrapevine extends Chant
 			myChants=null;
 			for(int i=0;i<V.size();i++)
 			{
-				Ability A=(Ability)V.get(i);
+				Ability A=V.get(i);
 				if((A.affecting()!=null)
 				   &&(A.ID().equals(ID()))
 				   &&(A.affecting() instanceof Item))

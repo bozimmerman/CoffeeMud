@@ -72,7 +72,7 @@ public class RandomTeleporter extends ActiveTicker
 		Vector<String> V=CMParms.parse(newParms);
 		for(int v=0;v<V.size();v++)
 		{
-			String s=(String)V.elementAt(v);
+			String s=V.elementAt(v);
 			if(s.toUpperCase().startsWith("NOWANDER"))
 				nowander=true;
 			else

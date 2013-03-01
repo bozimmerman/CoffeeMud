@@ -46,7 +46,7 @@ public class IMudClient implements I3Interface
 {
 	public String ID(){return "IMudClient";}
 	public String name() { return ID();}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new IMudClient();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new IMudClient();}}
 	public void initializeClass(){}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

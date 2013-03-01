@@ -83,11 +83,11 @@ public class TaxCollector extends StdBehavior
 		{
 			for(int t=0;t<taxableProperties.size();t++)
 			{
-				LandTitle T=(LandTitle)taxableProperties.get(t);
+				LandTitle T=taxableProperties.get(t);
 				if((T.landOwner().equals(M.Name())
 					||(M.getClanRole(T.landOwner())!=null))
 				&&(T.backTaxes()>0))
-					owed[OWE_BACKTAXES]+=(double)T.backTaxes();
+					owed[OWE_BACKTAXES]+=T.backTaxes();
 			}
 		}
 		LegalBehavior B=CMLib.law().getLegalBehavior(M.location());
@@ -111,7 +111,7 @@ public class TaxCollector extends StdBehavior
 		else
 			owed[OWE_CITIZENTAX]=CMath.div(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(M,collector),10.0);
 		owed[OWE_TOTAL]=owed[OWE_CITIZENTAX]+owed[OWE_BACKTAXES]+owed[OWE_FINES];
-		owed[OWE_TOTAL]=(double)Math.round(owed[OWE_TOTAL]);
+		owed[OWE_TOTAL]=Math.round(owed[OWE_TOTAL]);
 		return owed;
 	}
 
@@ -175,7 +175,7 @@ public class TaxCollector extends StdBehavior
 				boolean paidBackTaxes=false;
 				for(int i=0;i<taxableProperties.size();i++)
 				{
-					LandTitle T=(LandTitle)taxableProperties.get(i);
+					LandTitle T=taxableProperties.get(i);
 					if(T.landOwner().equals(msg.source().Name())
 						||(msg.source().getClanRole(T.landOwner())!=null))
 					{
@@ -217,7 +217,7 @@ public class TaxCollector extends StdBehavior
 				if((paidAmount>0)&&(numProperties>0))
 				for(int i=0;i<taxableProperties.size();i++)
 				{
-					LandTitle T=(LandTitle)taxableProperties.get(i);
+					LandTitle T=taxableProperties.get(i);
 					if(((T.landOwner().equals(msg.source().Name())))
 					&&(paidAmount>0))
 					{
@@ -298,7 +298,7 @@ public class TaxCollector extends StdBehavior
 					taxableProperties=CMLib.law().getAllUniqueTitles(A2.getMetroMap(),"*",false);
 					for(int v=0;v<taxableProperties.size();v++)
 					{
-						T=(LandTitle)taxableProperties.get(v);
+						T=taxableProperties.get(v);
 						if((!peopleWhoOwe.contains(T.landOwner()))
 						&&(T.backTaxes()>0))
 							peopleWhoOwe.add(T.landOwner());

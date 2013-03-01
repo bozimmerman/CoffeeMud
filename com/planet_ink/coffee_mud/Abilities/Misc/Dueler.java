@@ -194,7 +194,7 @@ public class Dueler extends StdAbility
 		{
 			Item I=i.nextElement();
 			if(((I instanceof Weapon)||(I instanceof Armor))
-			&&(!I.amWearingAt(Item.IN_INVENTORY)))
+			&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 				oldEq.put(I,(Item)I.copyOf());
 		}
 	}
@@ -204,7 +204,7 @@ public class Dueler extends StdAbility
 		if(target==null) target=mob;
 		if(!(target instanceof MOB)) return false;
 		if(((MOB)target).location()==null) return false;
-		if(((MOB)target).location().show(mob,(MOB)target,this,CMMsg.MSG_OK_VISUAL,"^R<S-NAME> and <T-NAME> start(s) dueling!^?"))
+		if(((MOB)target).location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"^R<S-NAME> and <T-NAME> start(s) dueling!^?"))
 		{
 			MOB tmob = (MOB)target;
 			Dueler A;

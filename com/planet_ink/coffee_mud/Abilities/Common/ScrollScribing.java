@@ -175,7 +175,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.get(0);
+					String spell=V.get(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(spellLevel(mob,A)>=0)
@@ -231,7 +231,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.get(0);
+					String spell=V.get(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(xlevel(mob)>=spellLevel(mob,A))
@@ -239,7 +239,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					{
 						theSpell=A;
 						theSpellLevel=spellLevel(mob,A);
-						ingredient=(String)V.get(1);
+						ingredient=V.get(1);
 					}
 				}
 			}

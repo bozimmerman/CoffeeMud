@@ -216,7 +216,7 @@ public class Chant_FindPlant extends Chant
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=(Room)r.next();
+			Room R=r.next();
 			if(itsHere(target,R).length()>0)
 				rooms.addElement(R);
 		}

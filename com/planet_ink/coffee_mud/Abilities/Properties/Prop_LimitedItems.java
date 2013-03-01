@@ -75,7 +75,7 @@ public class Prop_LimitedItems extends Property
 						if(max==0) max++;
 						int num=0;
 						for(int i=myInstances.size()-1;i>=0;i--)
-							if(!((Item)myInstances.get(i)).amDestroyed())
+							if(!myInstances.get(i).amDestroyed())
 								num++;
 							else
 								myInstances.remove(i);

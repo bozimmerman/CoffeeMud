@@ -173,7 +173,7 @@ public class Stat  extends Skills
 				Vector set=new Vector();
 				for(int v=V.size()-1;v>=0;v--)
 				{
-					CoffeeTableRow T=(CoffeeTableRow)V.get(v);
+					CoffeeTableRow T=V.get(v);
 					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 					{
 						set.addElement(T);
@@ -236,7 +236,7 @@ public class Stat  extends Skills
 				Vector set=new Vector();
 				for(int v=V.size()-1;v>=0;v--)
 				{
-					CoffeeTableRow T=(CoffeeTableRow)V.get(v);
+					CoffeeTableRow T=V.get(v);
 					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 					{
 						set.addElement(T);
@@ -286,7 +286,7 @@ public class Stat  extends Skills
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)
 			{
-				CoffeeTableRow T=(CoffeeTableRow)V.get(v);
+				CoffeeTableRow T=V.get(v);
 				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 				{
 					set.addElement(T);
@@ -479,7 +479,7 @@ public class Stat  extends Skills
 			if(target.playerStats()!=null)
 				for(int t=0;t<target.playerStats().getTitles().size();t++)
 				{
-					String title = (String)target.playerStats().getTitles().get(t);
+					String title = target.playerStats().getTitles().get(t);
 					ttl.append(" "+title+",");
 				}
 			if(ttl.length()==0)

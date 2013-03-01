@@ -262,10 +262,10 @@ public class MWDataBuffers implements DataBuffers
 		while(hasNext() && (basePosition<to))
 		{
 			ByteBuffer buf=next();
-			if((basePosition+(long)buf.remaining())<=to)
+			if((basePosition+buf.remaining())<=to)
 			{
 				length-=buf.remaining();
-				basePosition+=(long)buf.remaining();
+				basePosition+=buf.remaining();
 				buf.position(buf.limit());
 			}
 			else

@@ -92,7 +92,7 @@ public class Equipment extends StdCommand
 				List<Item> set=null;
 				for(int i=0;i<wornHere.size();i++)
 				{
-					I=(Item)wornHere.get(i);
+					I=wornHere.get(i);
 					if(I.container()!=null) continue;
 					if(I instanceof Armor)
 					{
@@ -114,7 +114,7 @@ public class Equipment extends StdCommand
 						}
 						for(int s2=0;s2<set.size();s2++)
 						{
-							I2=(Item)set.get(s2);
+							I2=set.get(s2);
 							if(I2 instanceof Armor)
 							{
 								layer2=((Armor)I2).getClothingLayer();
@@ -166,7 +166,7 @@ public class Equipment extends StdCommand
 				}
 				for(int i=0;i<wornHere.size();i++)
 				{
-					thisItem=(Item)wornHere.get(i);
+					thisItem=wornHere.get(i);
 					if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
 					{
 						if(paragraphView)

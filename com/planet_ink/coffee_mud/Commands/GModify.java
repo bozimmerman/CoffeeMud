@@ -117,7 +117,7 @@ public class GModify extends StdCommand
 			int matchStart=-1;
 			int matchEnd=-1;
 			stat=getStat(E,field);
-			Integer EQ=(Integer)EQUATORS.get(equator);
+			Integer EQ=EQUATORS.get(equator);
 			if(EQ!=null)
 			switch(EQ.intValue())
 			{
@@ -554,7 +554,7 @@ public class GModify extends StdCommand
 		{
 			Area A=(Area)a.nextElement();
 			if(A.getCompleteMap().hasMoreElements()
-			&&CMSecurity.isAllowed(mob,((Room)A.getCompleteMap().nextElement()),CMSecurity.SecFlag.GMODIFY))
+			&&CMSecurity.isAllowed(mob,(A.getCompleteMap().nextElement()),CMSecurity.SecFlag.GMODIFY))
 				placesToDo.addElement(A);
 		}
 		if(placesToDo.size()==0)
@@ -646,11 +646,11 @@ public class GModify extends StdCommand
 						{
 							for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 							{
-								Environmental E2=(Environmental)i.next();
+								Environmental E2=i.next();
 								if(E2 instanceof Item)
 								{
 									Item I=(Item)E2;
-									if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
+									if(tryModfy(mob,R,I,changes,onfields,noisy))
 										savemobs=true;
 								}
 							}

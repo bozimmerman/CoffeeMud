@@ -62,7 +62,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 		{
 			try
 			{
-				active.put((Runnable)r,new MWRunWrap(r,t));
+				active.put(r,new MWRunWrap(r,t));
 			}
 			catch(Throwable e)
 			{

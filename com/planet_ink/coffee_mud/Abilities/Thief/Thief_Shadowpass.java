@@ -104,7 +104,7 @@ public class Thief_Shadowpass extends ThiefSkill
 				R=mob.location();
 				for(int i=0;i<trail.size();i++)
 				{
-					int dir=((Integer)trail.get(i)).intValue();
+					int dir=trail.get(i).intValue();
 					if(!kaplah)
 					{
 						if((!CMLib.tracking().walk(mob,dir,false,true,true))||(!CMLib.flags().isInDark(mob.location())))
@@ -127,7 +127,7 @@ public class Thief_Shadowpass extends ThiefSkill
 		else
 		for(int i=0;i<trail.size();i++)
 		{
-			int dir=((Integer)trail.get(i)).intValue();
+			int dir=trail.get(i).intValue();
 			if((!CMLib.tracking().walk(mob,dir,false,true,true))||(!CMLib.flags().isInDark(mob.location())))
 			{
 				CMLib.commands().postLook(mob,true);

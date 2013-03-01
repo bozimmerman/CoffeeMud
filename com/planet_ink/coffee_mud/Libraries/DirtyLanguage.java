@@ -149,8 +149,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		DVector wholeFile=new DVector(2);
 		for(int v=0;v<V.size();v++)
 		{
-			wholeFile.addElement(filename,(String)V.get(v));
-			s=((String)V.get(v)).trim();
+			wholeFile.addElement(filename,V.get(v));
+			s=V.get(v).trim();
 			if((s.startsWith("#"))||(s.trim().length()==0)) continue;
 			if(s.startsWith("["))
 			{
@@ -336,7 +336,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			parserSections=loadFileSections("resources/parser_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
 			Resources.submitResource(parserKey,parserSections);
 		}
-		return (DVector)parserSections.get(parser);
+		return parserSections.get(parser);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -349,7 +349,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			translationSections=loadFileSections("resources/translation_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
 			Resources.submitResource(translatorKey,translationSections);
 		}
-		return (DVector)translationSections.get(parser);
+		return translationSections.get(parser);
 	}
 	
 	
@@ -365,12 +365,12 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	{
 		Vector<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
 		MORE_CMDS.set(m,expansion.elementAt(0));
-		String expStr=(String)expansion.elementAt(0);
+		String expStr=expansion.elementAt(0);
 		if(expStr.length()<=strLen) nothingDone=false;
 		boolean insert=m<MORE_CMDS.size()-1;
 		for(int e=1;e<expansion.size();e++)
 		{
-			expStr=(String)expansion.elementAt(e);
+			expStr=expansion.elementAt(e);
 			if(expStr.length()<=strLen) nothingDone=false;
 			if(insert)
 				MORE_CMDS.add(m+e,expStr);
@@ -399,7 +399,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		HashSet<String> ignoreSet=null;
 		for(int p=0;p<parser.size();p++)
 		{
-			I=(Integer)HASHED_CMDS.get(parser.elementAt(p,1));
+			I=HASHED_CMDS.get(parser.elementAt(p,1));
 			if(I!=null)
 			switch(I.intValue())
 			{
@@ -412,7 +412,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 					nothingDone=true;
 					for(int m=0;m<MORE_CMDS.size();m++)
 					{
-						str=(String)MORE_CMDS.get(m);
+						str=MORE_CMDS.get(m);
 						strLen=str.length();
 						matcher=pattern.matcher(str);
 						if(matcher.find())
@@ -420,7 +420,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 							str=(String)parser.elementAt(p,3);
 							for(int i=0;i<=matcher.groupCount();i++)
 								str=CMStrings.replaceAll(str,"\\"+i,matcher.group(i));
-							if(!((String)MORE_CMDS.get(m)).equals(str))
+							if(!MORE_CMDS.get(m).equals(str))
 								nothingDone=insertExpansion(MORE_CMDS,str,m,strLen,nothingDone);
 						 }
 					}
@@ -429,7 +429,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case CMD_REPLACEWHOLE:
 			{
-				rep=(String)((Hashtable<String,String>)parser.elementAt(p,2)).get(combinedWithTabs.toLowerCase());
+				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(combinedWithTabs.toLowerCase());
 				if(rep!=null)
 				{
 					insertExpansion(MORE_CMDS,rep,0,combinedWithTabs.length(),true);
@@ -443,7 +443,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 				if(rep.length()==0) break;
 				for(int m=0;m<MORE_CMDS.size();m++)
 				{
-					str=(String)MORE_CMDS.get(m);
+					str=MORE_CMDS.get(m);
 					strLen=str.length();
 					int x=str.toLowerCase().indexOf(rep);
 					if(x>=0)
@@ -480,7 +480,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 		}
 		if((MORE_CMDS.size()==1)
-		&&(((String)MORE_CMDS.get(0)).equals(combinedWithTabs)))
+		&&(MORE_CMDS.get(0).equals(combinedWithTabs)))
 		{
 			if((autoIgnoreLen>0)&&(str!=null)&&(str.length()<=autoIgnoreLen))
 			{
@@ -497,7 +497,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		}
 		List<List<String>> FINAL_CMDS=new Vector<List<String>>();
 		for(int m=0;m<MORE_CMDS.size();m++)
-			FINAL_CMDS.add(CMParms.parseTabs((String)MORE_CMDS.get(m),false));
+			FINAL_CMDS.add(CMParms.parseTabs(MORE_CMDS.get(m),false));
 		return FINAL_CMDS;
 	}
 	
@@ -517,7 +517,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		String wit=null;
 		for(int p=0;p<parser.size();p++)
 		{
-			I=(Integer)HASHED_CMDS.get(parser.elementAt(p,1));
+			I=HASHED_CMDS.get(parser.elementAt(p,1));
 			if(I!=null)
 			switch(I.intValue())
 			{
@@ -532,7 +532,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 			}
 			case CMD_REPLACEWHOLE:
 			{
-				rep=(String)((Hashtable<String,String>)parser.elementAt(p,2)).get(str.toLowerCase());
+				rep=((Hashtable<String,String>)parser.elementAt(p,2)).get(str.toLowerCase());
 				if(rep!=null) return rep;
 				break;
 			}

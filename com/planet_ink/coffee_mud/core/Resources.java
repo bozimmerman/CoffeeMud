@@ -148,7 +148,7 @@ public class Resources
 			str.append(ml+"\r\n");
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
-				str.append(((String)V.get(v))+"\r\n");
+				str.append((V.get(v))+"\r\n");
 			str.append("\r\n");
 		}
 		String prefix="";
@@ -216,7 +216,7 @@ public class Resources
 			List<String> set=new Vector<String>();
 			for(int v=0;v<V.size();v++)
 			{
-				String s=(String)V.get(v);
+				String s=V.get(v);
 				if(s.trim().length()==0)
 					journal="";
 				else

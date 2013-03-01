@@ -46,7 +46,7 @@ public class GroundWired extends StdLibrary implements TechLibrary, Runnable
 	
 	public synchronized String registerElectrics(final Electronics E, final String oldKey)
 	{
-		final ItemPossessor possessor=E.owner();
+		final ItemPossessor possessor=(E==null)?null:E.owner();
 		if((E != null) && (possessor instanceof Room))
 		{
 			Room R=(Room)possessor;
@@ -222,7 +222,7 @@ public class GroundWired extends StdLibrary implements TechLibrary, Runnable
 					for(Electronics E : panels)
 					{
 						powerMsg.setTarget(E);
-						int amountToDistribute=(int)(remainingPowerToDistribute/(long)panelsLeft);
+						int amountToDistribute=(int)(remainingPowerToDistribute/panelsLeft);
 						powerMsg.setValue(amountToDistribute);
 						final Room R=CMLib.map().roomLocation(E);
 						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
@@ -234,7 +234,7 @@ public class GroundWired extends StdLibrary implements TechLibrary, Runnable
 					for(Electronics.PowerSource E : batteries)
 					{
 						powerMsg.setTarget(E);
-						int amountToDistribute=(int)(remainingPowerToDistribute/(long)batteriesLeft);
+						int amountToDistribute=(int)(remainingPowerToDistribute/batteriesLeft);
 						powerMsg.setValue(amountToDistribute);
 						final Room R=CMLib.map().roomLocation(E);
 						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
@@ -242,7 +242,7 @@ public class GroundWired extends StdLibrary implements TechLibrary, Runnable
 						panelsLeft--;
 						remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
 					}
-					int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/(long)generators.size());
+					int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/generators.size());
 					for(Electronics.PowerGenerator G : generators)
 						if(G.activated())
 							G.setPowerRemaining(amountLeftOver>G.powerCapacity()?G.powerCapacity():amountLeftOver);

@@ -58,10 +58,8 @@ public class FactionData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			Faction F=null;
 			String newFactionID=httpReq.getUrlParameter("NEWFACTION");
-			if(F==null)
-				F=(Faction)httpReq.getRequestObjects().get("FACTION-"+last);
+			Faction F=(Faction)httpReq.getRequestObjects().get("FACTION-"+last);
 			if((F==null)
 			&&(newFactionID!=null)
 			&&(newFactionID.length()>0)
@@ -374,7 +372,7 @@ public class FactionData extends StdWebMacro
 						str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A=(Ability)e.nextElement();
+						Ability A=e.nextElement();
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 					}
 					str.append("</SELECT>");
@@ -485,7 +483,7 @@ public class FactionData extends StdWebMacro
 					str.append("<OPTION VALUE=\"\">Select a faction");
 					for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 					{
-						Faction F2=(Faction)e.nextElement();
+						Faction F2=e.nextElement();
 						str.append("<OPTION VALUE=\""+F2.factionID()+"\">"+F2.name());
 					}
 					str.append("</SELECT></TD><TD>");
@@ -517,7 +515,7 @@ public class FactionData extends StdWebMacro
 						}
 					}
 					
-					String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+					String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
 					String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 					int num=0;
 					int showNum=-1;
@@ -596,7 +594,7 @@ public class FactionData extends StdWebMacro
 						str.append("<OPTION VALUE=\"!"+Ability.FLAG_DESCS[i]+"\">Not "+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A=(Ability)e.nextElement();
+						Ability A=e.nextElement();
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 					}
 					str.append("</SELECT>");
@@ -661,7 +659,7 @@ public class FactionData extends StdWebMacro
 					}
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A=(Ability)e.nextElement();
+						Ability A=e.nextElement();
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.name());
 					}
 					str.append("</SELECT>");
@@ -731,7 +729,7 @@ public class FactionData extends StdWebMacro
 							}
 							for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 							{
-								Ability A=(Ability)e.nextElement();
+								Ability A=e.nextElement();
 								str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.name(),20));
 							}
 							for(Enumeration e=CMClass.commands();e.hasMoreElements();)
@@ -770,7 +768,7 @@ public class FactionData extends StdWebMacro
 					}
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						Ability A=(Ability)e.nextElement();
+						Ability A=e.nextElement();
 						str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.name(),20));
 					}
 					for(Enumeration e=CMClass.commands();e.hasMoreElements();)

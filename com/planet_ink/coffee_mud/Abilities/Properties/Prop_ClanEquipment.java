@@ -128,10 +128,10 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		{
 			return;
 		}
-		type=(String)V.elementAt(0);
-		PowerLevel=Integer.valueOf((String)V.elementAt(1)).intValue();
-		clanName=(String)V.elementAt(2);
-		clanType=(String)V.elementAt(3);
+		type=V.elementAt(0);
+		PowerLevel=Integer.valueOf(V.elementAt(1)).intValue();
+		clanName=V.elementAt(2);
+		clanType=V.elementAt(3);
 		secretWord=getWandWord(text); // try to randomize the spell word a
 										// little
 		// Armor
@@ -344,7 +344,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 				&&(msg.target() instanceof MOB)&&(msg.tool() instanceof Weapon)&&(!(msg.tool() instanceof Wand))&&(TypeOfEffect<1000)
 				&&(!((MOB)msg.target()).amDead()))
 		{
-			double flameDamage=(double)CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
+			double flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
 			String str="^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?";
 			CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
 					CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,str);
@@ -368,7 +368,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 						int damage=CMLib.dice().roll(1,3*PowerLevel,1*PowerLevel);
 						CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
 								"^F^<FIGHT^>The magic of "+clanName+" around <S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
-						if((!source.isInCombat())&&(source.isMonster())&&(source!=mob)&&(mob!=null)&&(source.location()==mob.location())&&(source.location().isInhabitant(mob))&&(CMLib.flags().canBeSeenBy(mob,source)))
+						if((!source.isInCombat())&&(source.isMonster())&&(source!=mob)&&(source.location()==mob.location())&&(source.location().isInhabitant(mob))&&(CMLib.flags().canBeSeenBy(mob,source)))
 							CMLib.combat().postAttack(source,mob,source.fetchWieldedItem());
 					}
 				}

@@ -287,7 +287,7 @@ public class StdArea implements Area
 	{
 		for(int s=subOps.size()-1;s>=0;s--)
 		{
-			if(((String)subOps.elementAt(s)).equalsIgnoreCase(username))
+			if(subOps.elementAt(s).equalsIgnoreCase(username))
 				return true;
 		}
 		return false;
@@ -297,7 +297,7 @@ public class StdArea implements Area
 		StringBuffer list=new StringBuffer("");
 		for(int s=subOps.size()-1;s>=0;s--)
 		{
-			String str=(String)subOps.elementAt(s);
+			String str=subOps.elementAt(s);
 			list.append(str);
 			list.append(";");
 		}
@@ -313,7 +313,7 @@ public class StdArea implements Area
 	{
 		for(int s=subOps.size()-1;s>=0;s--)
 		{
-			if(((String)subOps.elementAt(s)).equalsIgnoreCase(username))
+			if(subOps.elementAt(s).equalsIgnoreCase(username))
 				subOps.removeElementAt(s);
 		}
 	}
@@ -864,7 +864,7 @@ public class StdArea implements Area
 	{
 		try
 		{
-			return (Ability)affects.elementAt(index);
+			return affects.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -893,7 +893,7 @@ public class StdArea implements Area
 	{
 		for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			Room R=r.nextElement();
 			R.clearSky();
 			if(R.roomID().length()>0)
 			{
@@ -903,7 +903,7 @@ public class StdArea implements Area
 		}
 		for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			Room R=r.nextElement();
 			R.giveASky(0);
 		}
 	}
@@ -954,7 +954,7 @@ public class StdArea implements Area
 			ScriptingEngine S2=null;
 			for(int s=0;s<scripts.size();s++)
 			{
-				S2=(ScriptingEngine)scripts.elementAt(s);
+				S2=scripts.elementAt(s);
 				if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
 					return;
 			}
@@ -967,7 +967,7 @@ public class StdArea implements Area
 	}
 	public int numScripts(){return scripts.size();}
 	public Enumeration<ScriptingEngine> scripts() { return scripts.elements();}
-	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
 	public void delAllScripts() { scripts.clear(); }
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
@@ -1000,7 +1000,7 @@ public class StdArea implements Area
 			Faction theFaction=null;
 			for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 			{
-				Faction F=(Faction)e.nextElement();
+				Faction F=e.nextElement();
 				if(F.showInSpecialReported())
 					theFaction=F;
 			}
@@ -1019,7 +1019,7 @@ public class StdArea implements Area
 			MOB mob=null;
 			for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 			{
-				R=(Room)r.nextElement();
+				R=r.nextElement();
 				if(R instanceof GridLocale)
 					statData[Area.Stats.VISITABLE_ROOMS.ordinal()]--;
 				if((R.domainType()&Room.INDOORS)>0)
@@ -1081,7 +1081,7 @@ public class StdArea implements Area
 		Faction theFaction=null;
 		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
-			Faction F=(Faction)e.nextElement();
+			Faction F=e.nextElement();
 			if(F.showInSpecialReported())
 				theFaction=F;
 		}
@@ -1137,7 +1137,7 @@ public class StdArea implements Area
 	{
 		try
 		{
-			return (Behavior)behaviors.elementAt(index);
+			return behaviors.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -1395,7 +1395,7 @@ public class StdArea implements Area
 		Room R2=null;
 		for(;r.hasMoreElements();)
 		{
-			R=(Room)r.nextElement();
+			R=r.nextElement();
 			if(!V.contains(R))
 				V.addElement(R);
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -1586,7 +1586,7 @@ public class StdArea implements Area
 		final LinkedList<Area> V=new LinkedList<Area>();
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			V.add(A);
 			V.addAll(A.getParentsRecurse());
 		}
@@ -1598,7 +1598,7 @@ public class StdArea implements Area
 		StringBuffer str=new StringBuffer("");
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			if(str.length()>0) str.append(";");
 			str.append(A.name());
 		}
@@ -1609,7 +1609,7 @@ public class StdArea implements Area
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			if((A.name().equalsIgnoreCase(named))
 			||(A.Name().equalsIgnoreCase(named)))
 			   return A;
@@ -1621,7 +1621,7 @@ public class StdArea implements Area
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			if(A == area)
 			   return true;
 		}
@@ -1632,7 +1632,7 @@ public class StdArea implements Area
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
-			final Area A=(Area)a.next();
+			final Area A=a.next();
 			if((A.name().equalsIgnoreCase(named))
 			||(A.Name().equalsIgnoreCase(named)))
 				return true;

@@ -389,7 +389,7 @@ public class ListCmd extends StdCommand
 		{
 			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 			{
-				Environmental E2=(Environmental)i.next();
+				Environmental E2=i.next();
 				if(E2 instanceof PhysicalAgent)
 					addScripts(DV,R,SK,M,I,(PhysicalAgent)E2);
 			}
@@ -548,7 +548,7 @@ public class ListCmd extends StdCommand
 		Faction useFaction=null;
 		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
-			Faction F=(Faction)e.nextElement();
+			Faction F=e.nextElement();
 			if(F.showInSpecialReported()) useFaction=F;
 		}
 		StringBuilder buf=new StringBuilder("Links: \n\r");
@@ -716,7 +716,7 @@ public class ListCmd extends StdCommand
 			if(V.size()<4)
 			{
 				for(int v=0;v<V.size();v++)
-					unlinkedGroups.append(((Area)V.get(0)).name()+"\t");
+					unlinkedGroups.append(V.get(0).name()+"\t");
 				unlinkedGroups.append("|\t");
 			}
 
@@ -748,7 +748,7 @@ public class ListCmd extends StdCommand
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
-				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)V.get(j);
+				JournalsLibrary.JournalEntry entry=V.get(j);
 				String from=entry.from;
 				String message=entry.msg;
 				buf.append(CMStrings.padRight((j+1)+"",COL_LEN1)+") "+CMStrings.padRight(from,COL_LEN2)+" "+message+"\n\r");
@@ -865,7 +865,7 @@ public class ListCmd extends StdCommand
 			if(oldSet==allUsers) allUsers=new Vector();
 			if((sortBy<3)||(sortBy>4))
 			{
-				PlayerLibrary.ThinPlayer selected=(PlayerLibrary.ThinPlayer)oldSet.get(0);
+				PlayerLibrary.ThinPlayer selected=oldSet.get(0);
 				for(int u=1;u<oldSet.size();u++)
 				{
 					PlayerLibrary.ThinPlayer U=oldSet.get(u);
@@ -966,16 +966,16 @@ public class ListCmd extends StdCommand
 			if((sortBy<3)||(sortBy>4))
 			{
 				PlayerAccount selected = oldSet.get(0);
-				PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
-				for(int u=1;u<oldSet.size();u++)
+				if(selected != null)
 				{
-					PlayerAccount acct = oldSet.get(u);
-					PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
-					if(lib.getThinSortValue(selectedU,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
-					   selected=acct;
-				}
-				if(selected!=null)
-				{
+					PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
+					for(int u=1;u<oldSet.size();u++)
+					{
+						PlayerAccount acct = oldSet.get(u);
+						PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
+						if(lib.getThinSortValue(selectedU,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
+						   selected=acct;
+					}
 					oldSet.remove(selected);
 					allAccounts.add(selected);
 				}
@@ -983,16 +983,16 @@ public class ListCmd extends StdCommand
 			else
 			{
 				PlayerAccount selected = oldSet.get(0);
-				PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
-				for(int u=1;u<oldSet.size();u++)
-				{
-					PlayerAccount acct = oldSet.get(u);
-					PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
-					if(CMath.s_long(lib.getThinSortValue(selectedU,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
-					   selected=acct;
-				}
 				if(selected!=null)
 				{
+					PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
+					for(int u=1;u<oldSet.size();u++)
+					{
+						PlayerAccount acct = oldSet.get(u);
+						PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
+						if(CMath.s_long(lib.getThinSortValue(selectedU,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
+						   selected=acct;
+					}
 					oldSet.remove(selected);
 					allAccounts.add(selected);
 				}
@@ -1178,7 +1178,7 @@ public class ListCmd extends StdCommand
 			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight("Name",COL_LEN2)+" Messages^.^N\n\r");
 			for(int i=0;i<journals.size();i++)
 			{
-				String journal=(String)journals.get(i);
+				String journal=journals.get(i);
 				int messages=CMLib.database().DBCountJournal(journal,null,null);
 				buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight(journal,COL_LEN2)+" "+messages);
 				buf.append("^N\n\r");
@@ -1413,7 +1413,7 @@ public class ListCmd extends StdCommand
 		Hashtable entries = new Hashtable();
 		for(int v=0;v<V.size();v++)
 		{
-			String s=(String)V.get(v);
+			String s=V.get(v);
 			if(s.indexOf(" Help  Help")==19)
 			{
 				int x=s.indexOf("wanted help on",19);
@@ -1458,7 +1458,7 @@ public class ListCmd extends StdCommand
 			str.append("Common Skills with editable recipes: ");
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
-				Ability A=(Ability)e.nextElement();
+				Ability A=e.nextElement();
 				if(A instanceof ItemCraftor)
 				{
 					ItemCraftor iA = (ItemCraftor)A;
@@ -1768,7 +1768,7 @@ public class ListCmd extends StdCommand
 			int v=1;
 			for(;i.hasNext();v++)
 			{
-				Poll P=(Poll)i.next();
+				Poll P=i.next();
 				str.append(CMStrings.padRight(""+v,2)+": "+P.getName());
 				if(!CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE))
 					str.append(" (inactive)");
@@ -2217,9 +2217,9 @@ public class ListCmd extends StdCommand
 			{
 				StringBuilder str=new StringBuilder("");
 				for(int v=0;v<V.size();v++)
-					if(((String)V.get(v)).length()>0)
+					if(V.get(v).length()>0)
 					{
-						str.append((String)V.get(v));
+						str.append(V.get(v));
 						if(v==(V.size()-2))
 							str.append(", or ");
 						else
@@ -2269,7 +2269,7 @@ public class ListCmd extends StdCommand
 			List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 			if((protectedOnes!=null)&&(protectedOnes.size()>0))
 			for(int b=0;b<protectedOnes.size();b++)
-				str.append((b+1)+") "+((String)protectedOnes.get(b))+"\n\r");
+				str.append((b+1)+") "+(protectedOnes.get(b))+"\n\r");
 			s.wraplessPrintln(str.toString());
 			break;
 		}
@@ -2279,7 +2279,7 @@ public class ListCmd extends StdCommand
 			List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			if((banned!=null)&&(banned.size()>0))
 			for(int b=0;b<banned.size();b++)
-				str.append((b+1)+") "+((String)banned.get(b))+"\n\r");
+				str.append((b+1)+") "+(banned.get(b))+"\n\r");
 			s.wraplessPrintln(str.toString());
 			break;
 		}
@@ -2358,7 +2358,7 @@ public class ListCmd extends StdCommand
 			if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
 				for(int v=0;v<V2.size();v++)
 					if(V2.get(v) instanceof Area)
-					{ shopkeeper=(Environmental)V2.get(v); break;}
+					{ shopkeeper=V2.get(v); break;}
 			if((shopkeeper!=null)
 			&&(CMLib.coffeeShops().getShopKeeper(shopkeeper)!=null)
 			&&(CMLib.flags().canBeSeenBy(shopkeeper,mob)))
@@ -2377,7 +2377,7 @@ public class ListCmd extends StdCommand
 		}
 		for(int i=0;i<V.size();i++)
 		{
-			Environmental shopkeeper=(Environmental)V.get(i);
+			Environmental shopkeeper=V.get(i);
 			ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 			String str="<S-NAME> review(s) <T-YOUPOSS> inventory";
 			if(SHOP instanceof Banker)

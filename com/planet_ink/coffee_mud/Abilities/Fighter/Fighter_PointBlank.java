@@ -145,7 +145,7 @@ public class Fighter_PointBlank extends FighterSkill
 			}
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
 			{
-				Item I=(Item)qualifiedWeapons.get(i);
+				Item I=qualifiedWeapons.get(i);
 				if((I.amWearingAt(Wearable.IN_INVENTORY))
 				||(I.owner()!=affected))
 				{

@@ -209,7 +209,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		for(Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
+			Room R=r.nextElement();
 			if((R!=null)&&(R.roomID().length()>0))
 			{
 				synchronized(("SYNC"+R.roomID()).intern())
@@ -265,7 +265,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					Room R=r.nextElement();
 					if((R!=null)&&(R!=deadLoc))
 					{
 						if(R.okMessage(deadMOB,msg))
@@ -286,7 +286,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			for(int b=0;b<protectedOnes.size();b++)
 			{
-				String B=(String)protectedOnes.get(b);
+				String B=protectedOnes.get(b);
 				if(!B.equalsIgnoreCase(deadMOB.name()))
 					newNoPurge.append(B+"\n");
 				else
@@ -316,7 +316,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			for(int b=0;b<protectedOnes.size();b++)
 			{
-				String B=(String)protectedOnes.get(b);
+				String B=protectedOnes.get(b);
 				if(!B.equalsIgnoreCase(deadAccount.accountName()))
 					newNoPurge.append(B+"\n");
 				else
@@ -535,7 +535,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		boolean protectedOne=false;
 		for(int p=0;p<protectedOnes.size();p++)
 		{
-			String P=(String)protectedOnes.get(p);
+			String P=protectedOnes.get(p);
 			if(P.equalsIgnoreCase(name))
 			{
 				protectedOne=true;
@@ -637,7 +637,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if((warnedOnes!=null)&&(warnedOnes.size()>0))
 					for(int b=0;b<warnedOnes.size();b++)
 					{
-						String B=((String)warnedOnes.get(b)).trim();
+						String B=warnedOnes.get(b).trim();
 						long warningDateTime=-1;
 						if(B.trim().length()>0)
 						{
@@ -686,9 +686,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if((PA.numPlayers() > 0)
 				||(isProtected(protectedOnes, PA.accountName())))
 					continue;
-				final long lastDateTimePurge = PA.lastDateTime() + (TimeManager.MILI_DAY * (long)CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
-				final long lastUpdatedPurge = PA.lastUpdated() + (TimeManager.MILI_DAY * (long)CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
-				final long accountExpPurge = PA.getAccountExpiration() + (TimeManager.MILI_DAY * (long)CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
+				final long lastDateTimePurge = PA.lastDateTime() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
+				final long lastUpdatedPurge = PA.lastUpdated() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
+				final long accountExpPurge = PA.getAccountExpiration() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
 				long lastTime = lastDateTimePurge;
 				if(lastUpdatedPurge > lastTime) lastTime=lastUpdatedPurge;
 				if(accountExpPurge > lastTime) lastTime=accountExpPurge;

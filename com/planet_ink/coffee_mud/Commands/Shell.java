@@ -113,7 +113,7 @@ public class Shell extends StdCommand
 						break;
 					}
 					else
-					if(((CMFile)dirs.elementAt(x)).getVFSPathAndName().length()<CF.getVFSPathAndName().length())
+					if(dirs.elementAt(x).getVFSPathAndName().length()<CF.getVFSPathAndName().length())
 						x++;
 					else
 					{
@@ -150,7 +150,7 @@ public class Shell extends StdCommand
 						break;
 					}
 					else
-					if(((CMFile)dirs.elementAt(x)).getVFSPathAndName().length()>CF.getVFSPathAndName().length())
+					if(dirs.elementAt(x).getVFSPathAndName().length()>CF.getVFSPathAndName().length())
 						x++;
 					else
 					{
@@ -404,7 +404,7 @@ public class Shell extends StdCommand
 			java.util.List<CMFile> ddirs=sortDirsDown(dirs);
 			for(int d=0;d<ddirs.size();d++)
 			{
-				CMFile CF=(CMFile)ddirs.get(d);
+				CMFile CF=ddirs.get(d);
 				if((CF==null)||(!CF.exists()))
 				{
 					mob.tell("^xError: "+desc(CF)+" does not exist!^N");
@@ -589,7 +589,7 @@ public class Shell extends StdCommand
 			{
 				StringBuffer text=new StringBuffer("");
 				for(int i=0;i<vbuf.size();i++)
-					text.append(((String)vbuf.get(i))+CR);
+					text.append((vbuf.get(i))+CR);
 				if(file.saveText(text))
 				{
 					for(final Iterator<String> i=Resources.findResourceKeys(file.getName());i.hasNext();)
@@ -637,7 +637,7 @@ public class Shell extends StdCommand
 			java.util.List<CMFile> dirsLater=new Vector<CMFile>();
 			for(int d=0;d<ddirs.size();d++)
 			{
-				CMFile SF=(CMFile)ddirs.get(d);
+				CMFile SF=ddirs.get(d);
 				if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
 				if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
 				if((SF.isDirectory())&&(!opts.preservePaths))
@@ -709,7 +709,7 @@ public class Shell extends StdCommand
 			dirsLater=sortDirsDown(dirsLater.toArray(new CMFile[0]));
 			for(int d=0;d<dirsLater.size();d++)
 			{
-				CMFile CF=(CMFile)dirsLater.get(d);
+				CMFile CF=dirsLater.get(d);
 				if((!CF.delete())&&(CF.exists()))
 				{
 					mob.tell("^xError: Unable to delete dir "+desc(CF));

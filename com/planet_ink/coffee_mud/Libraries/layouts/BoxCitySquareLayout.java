@@ -70,8 +70,8 @@ public class BoxCitySquareLayout extends BoxCityLayout
 					if(n.getLink(d)==n2) continue;
 					if(!n2.isStreetLike()) continue;
 					Enumeration<LayoutNode> nodes=n2.links().elements();
-					LayoutNode p_1=(LayoutNode)nodes.nextElement();
-					LayoutNode p_2=(LayoutNode)nodes.nextElement();
+					LayoutNode p_1=nodes.nextElement();
+					LayoutNode p_2=nodes.nextElement();
 					n2.deLink();
 					p_1.crossLink(p_2);
 					lSet.unUse(n2);

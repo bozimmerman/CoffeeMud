@@ -111,7 +111,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(text().indexOf('/')<0) return 0;
 		int x=text().indexOf("TAX",text().indexOf('/'));
 		if(x<0) return 0;
-		String s=(String)CMParms.parse(text().substring(x+3)).firstElement();
+		String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
 	}
 	public void setBackTaxes(int tax)
@@ -175,7 +175,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			List<Room> V=getAllTitledRooms();
 			for(int v=0;v<V.size();v++)
 			{
-				Room R=(Room)V.get(v);
+				Room R=V.get(v);
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=CMLib.map().getRoom(R);
@@ -221,7 +221,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			List<Room> V=getAllTitledRooms();
 			for(int v=0;v<V.size();v++)
 			{
-				Room R=(Room)V.get(v);
+				Room R=V.get(v);
 				lastCall=System.currentTimeMillis();
 				Integer lastItemNum=(Integer)lastItemNums.get(R);
 				lastItemNums.put(R,Integer.valueOf(Prop_RoomForSale.updateLotWithThisData(R,this,false,false,optPlayerList,(lastItemNum==null)?-1:lastItemNum.intValue())));

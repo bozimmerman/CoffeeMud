@@ -45,7 +45,7 @@ public class FakeSession implements Session
 	public boolean tick(Tickable ticking, int tickID){return false;}
 	public String ID(){return "FakeSession";}
 	public String name() { return ID();}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new FakeSession();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new FakeSession();}}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public long getTickStatus(){return 0;}
@@ -145,7 +145,7 @@ public class FakeSession implements Session
 	public String readlineContinue() {
 		synchronized(inputV) {
 			if(inputV.size()==0) return "";
-			String input = (String)inputV.firstElement();
+			String input = inputV.firstElement();
 			inputV.removeElementAt(0);
 			return input;
 		}

@@ -176,14 +176,14 @@ public class Fighter_CalledStrike extends FighterSkill
 			return false;
 		}
 		if(mob.isMonster())
-			gone=(String)remainingLimbList.get(CMLib.dice().roll(1,remainingLimbList.size(),-1));
+			gone=remainingLimbList.get(CMLib.dice().roll(1,remainingLimbList.size(),-1));
 		else
 		if(commands.size()<=0)
 		{
 			mob.tell("You must specify a body part to cut off.");
 			StringBuffer str=new StringBuffer("Parts include: ");
 			for(int i=0;i<remainingLimbList.size();i++)
-				str.append(((String)remainingLimbList.get(i))+", ");
+				str.append((remainingLimbList.get(i))+", ");
 			mob.tell(str.toString().substring(0,str.length()-2)+".");
 			return false;
 		}
@@ -198,9 +198,9 @@ public class Fighter_CalledStrike extends FighterSkill
 			}
 			else
 			for(int i=0;i<remainingLimbList.size();i++)
-				if(((String)remainingLimbList.get(i)).toUpperCase().startsWith(off.toUpperCase()))
+				if(remainingLimbList.get(i).toUpperCase().startsWith(off.toUpperCase()))
 				{
-					gone=(String)remainingLimbList.get(i);
+					gone=remainingLimbList.get(i);
 					break;
 				}
 			if(gone.length()==0)
@@ -208,7 +208,7 @@ public class Fighter_CalledStrike extends FighterSkill
 				mob.tell("'"+off+"' is not a valid body part.");
 				StringBuffer str=new StringBuffer("Parts include: ");
 				for(int i=0;i<remainingLimbList.size();i++)
-					str.append(((String)remainingLimbList.get(i))+", ");
+					str.append((remainingLimbList.get(i))+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 				return false;
 			}

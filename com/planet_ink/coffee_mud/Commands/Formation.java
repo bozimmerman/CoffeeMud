@@ -56,7 +56,7 @@ public class Formation extends StdCommand
 					else
 						str.append("^xrow +"+i+" - ^.^?");
 					for(int i2=0;i2<done[i].size();i2++)
-						str.append(((i2>0)?", ":"")+((MOB)done[i].get(i2)).name());
+						str.append(((i2>0)?", ":"")+done[i].get(i2).name());
 					str.append("\n\r");
 				}
 			mob.session().colorOnlyPrintln(str.toString());

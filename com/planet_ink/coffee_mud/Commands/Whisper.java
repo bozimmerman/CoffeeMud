@@ -103,7 +103,7 @@ public class Whisper extends StdCommand
 						Environmental E=e.nextElement();
 						if(E!=null)
 						{
-							if( (E instanceof MOB) && (riddenR != null) && riddenR.amRiding((MOB)E))
+							if( (E instanceof MOB) && riddenR.amRiding((MOB)E))
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+riddenR.name()+" '"+combinedCommands+"'.^?"+CMProps.msp("whisper.wav",40),
 												CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+riddenR.name()+" '"+combinedCommands+"'.^?"+CMProps.msp("whisper.wav",40),
 												CMMsg.NO_EFFECT,null);

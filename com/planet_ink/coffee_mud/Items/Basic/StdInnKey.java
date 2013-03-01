@@ -78,7 +78,7 @@ public class StdInnKey extends StdKey implements InnKey
 			int y=0;
 			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 			{
-				Environmental E=(Environmental)i.next();
+				Environmental E=i.next();
 				if(E instanceof InnKey)
 					y++;
 			}
@@ -127,7 +127,7 @@ public class StdInnKey extends StdKey implements InnKey
 		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
 		&&(owner()==msg.source())
-		&&(msg.source().location() instanceof Room)
+		&&(msg.source().location() != null)
 		&&(((Room)msg.target()).getArea()!=msg.source().location().getArea())
 		&&(super.miscText!=null))
 		{

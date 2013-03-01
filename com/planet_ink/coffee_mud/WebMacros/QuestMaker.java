@@ -62,9 +62,9 @@ public class QuestMaker extends StdWebMacro
 			httpReq.getRequestObjects().put("QM_FILE_PAGES",filePages);
 		}
 		List<DVector> qPages=(List<DVector>)filePages.elementAt(0,4);
-		if(pageNumber<=0) return (DVector)qPages.get(0);
-		if(pageNumber>=qPages.size()) return (DVector)qPages.get(qPages.size()-1);
-		return (DVector)qPages.get(pageNumber);
+		if(pageNumber<=0) return qPages.get(0);
+		if(pageNumber>=qPages.size()) return qPages.get(qPages.size()-1);
+		return qPages.get(pageNumber);
 	}
 
 	private String itemList(List<Item> itemList, Item oldItem, String oldValue)
@@ -156,7 +156,7 @@ public class QuestMaker extends StdWebMacro
 		
 		String qFileToGet=null;
 		if(parms.containsKey("QMFILETOGET"))
-			qFileToGet=(String)parms.get("QMFILETOGET");
+			qFileToGet=parms.get("QMFILETOGET");
 		
 		String qTemplate=httpReq.getUrlParameter("QMTEMPLATE");
 		if((qTemplate==null)||(qTemplate.length()==0)) qTemplate="";
@@ -185,14 +185,14 @@ public class QuestMaker extends StdWebMacro
 		{
 			DVector pageData=getPage(M,httpReq,qTemplate,qPageStr,qFileToGet);
 			if(pageData==null) return "[error - no page data?!]";
-			String labelColor=(String)parms.get("LABELCOLOR");
+			String labelColor=parms.get("LABELCOLOR");
 			if(labelColor==null) labelColor="<FONT COLOR=YELLOW><B>";
-			String descColor=(String)parms.get("DESCCOLOR");
+			String descColor=parms.get("DESCCOLOR");
 			if(descColor==null) descColor="<FONT COLOR=WHITE><I>";
 			StringBuffer list=new StringBuffer("");
 			if(qTemplate.length()==0)
 			{
-				String oldTemplate=(String)httpReq.getUrlParameter("QMOLDTEMPLATE");
+				String oldTemplate=httpReq.getUrlParameter("QMOLDTEMPLATE");
 				if((oldTemplate==null)||(oldTemplate.length()==0)) oldTemplate="";
 				for(int d=0;d<pageData.size();d++)
 				{
@@ -213,7 +213,7 @@ public class QuestMaker extends StdWebMacro
 			list.append("<TR><TD COLSPAN=2>");
 			for(int v=0;v<V.size();v++)
 			{
-				String key=(String)V.get(v);
+				String key=V.get(v);
 				if((!key.startsWith("AT_")))
 					continue;
 				boolean thisPage=false;
@@ -227,7 +227,7 @@ public class QuestMaker extends StdWebMacro
 					{ thisPage=true; break;}
 				}
 				if(thisPage) continue;
-				String oldVal=(String)httpReq.getUrlParameter(key);
+				String oldVal=httpReq.getUrlParameter(key);
 				if(oldVal==null) oldVal="";
 				list.append("<INPUT TYPE=HIDDEN NAME="+key+" VALUE=\""+htmlOutgoingFilter(oldVal)+"\">\n\r");
 			}
@@ -245,7 +245,7 @@ public class QuestMaker extends StdWebMacro
 				httpKeyName="AT_"+httpKeyName;
 				boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
 				int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
-				String oldValue=(String)httpReq.getUrlParameter(httpKeyName);
+				String oldValue=httpReq.getUrlParameter(httpKeyName);
 				switch(inputCode)
 				{
 				case QuestManager.QM_COMMAND_$TITLE: break;
@@ -308,7 +308,7 @@ public class QuestMaker extends StdWebMacro
 					Ability A=null;
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						A=(Ability)e.nextElement();
+						A=e.nextElement();
 						if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(M)))
 							continue;
 						list.append("<OPTION VALUE=\""+A.ID()+"\" ");
@@ -350,7 +350,7 @@ public class QuestMaker extends StdWebMacro
 					if(optionalEntry) options.insertElementAt("",0);
 					for(int o=0;o<options.size();o++)
 					{
-						String val=(String)options.elementAt(o);
+						String val=options.elementAt(o);
 						list.append("<OPTION VALUE=\""+val+"\" ");
 						if(val.equalsIgnoreCase(oldValue)) list.append("SELECTED");
 						list.append(">");
@@ -383,13 +383,13 @@ public class QuestMaker extends StdWebMacro
 					itemList=RoomData.contributeItems(itemList);
 					Vector oldValues=new Vector();
 					int which=1;
-					oldValue=(String)httpReq.getUrlParameter(httpKeyName+"_"+which);
+					oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 					while(oldValue!=null)
 					{
 						if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
 							oldValues.addElement(oldValue);
 						which++;
-						oldValue=(String)httpReq.getUrlParameter(httpKeyName+"_"+which);
+						oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 					}
 					oldValues.addElement("");
 					for(int i=0;i<oldValues.size();i++)
@@ -436,13 +436,13 @@ public class QuestMaker extends StdWebMacro
 					List<MOB>mobList=RoomData.contributeMOBs(new Vector<MOB>());
 					Vector oldValues=new Vector();
 					int which=1;
-					oldValue=(String)httpReq.getUrlParameter(httpKeyName+"_"+which);
+					oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 					while(oldValue!=null)
 					{
 						if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
 							oldValues.addElement(oldValue);
 						which++;
-						oldValue=(String)httpReq.getUrlParameter(httpKeyName+"_"+which);
+						oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 					}
 					oldValues.addElement("");
 					for(int i=0;i<oldValues.size();i++)
@@ -533,7 +533,7 @@ public class QuestMaker extends StdWebMacro
 				httpKeyName="AT_"+httpKeyName;
 				boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
 				int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
-				String oldValue=(String)httpReq.getUrlParameter(httpKeyName);
+				String oldValue=httpReq.getUrlParameter(httpKeyName);
 				GenericEditor.CMEval eval= QuestManager.QM_COMMAND_TESTS[inputCode];
 				try
 				{
@@ -550,13 +550,13 @@ public class QuestMaker extends StdWebMacro
 						rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
 						Vector oldValues=new Vector();
 						int which=1;
-						oldValue=(String)httpReq.getUrlParameter(httpKeyName+"_"+which);
+						oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 						while(oldValue!=null)
 						{
 							if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
 								oldValues.addElement(oldValue);
 							which++;
-							oldValue=(String)httpReq.getUrlParameter(httpKeyName+"_"+which);
+							oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 						}
 						if(oldValues.size()==0) oldValues.addElement("");
 						String newVal="";
@@ -627,13 +627,13 @@ public class QuestMaker extends StdWebMacro
 						rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
 						Vector oldValues=new Vector();
 						int which=1;
-						oldValue=(String)httpReq.getUrlParameter(httpKeyName+"_"+which);
+						oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 						while(oldValue!=null)
 						{
 							if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
 								oldValues.addElement(oldValue);
 							which++;
-							oldValue=(String)httpReq.getUrlParameter(httpKeyName+"_"+which);
+							oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
 						}
 						if(oldValues.size()==0) oldValues.addElement("");
 						String newVal="";
@@ -732,7 +732,7 @@ public class QuestMaker extends StdWebMacro
 				List<DVector> qPages=(List<DVector>)filePages.elementAt(0,4);
 				for(int page=0;page<qPages.size();page++)
 				{
-					DVector pageDV=(DVector)qPages.get(page);
+					DVector pageDV=qPages.get(page);
 					for(int v=0;v<pageDV.size();v++)
 					{
 						var=(String)pageDV.elementAt(v,2);
@@ -742,7 +742,7 @@ public class QuestMaker extends StdWebMacro
 						else
 							continue;
 						httpKeyName="AT_"+httpKeyName;
-						val=(String)httpReq.getUrlParameter(httpKeyName);
+						val=httpReq.getUrlParameter(httpKeyName);
 						if(val==null) val="";
 						switch(((Integer)pageDV.elementAt(v,1)).intValue()&QuestManager.QM_COMMAND_MASK)
 						{

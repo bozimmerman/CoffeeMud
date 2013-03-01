@@ -40,12 +40,12 @@ public class ChannelAdd extends Packet  {
 	public ChannelAdd()
 	{
 		super();
-		type = ChannelPacket.CHAN_ADD;
+		type = Packet.CHAN_ADD;
 	}
 	public ChannelAdd(Vector v) throws InvalidPacketException {
 		super(v);
 		try {
-			type = ChannelPacket.CHAN_ADD;
+			type = Packet.CHAN_ADD;
 			channel = (String)v.elementAt(6);
 		}
 		catch( ClassCastException e ) {

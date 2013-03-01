@@ -80,7 +80,7 @@ public class ForumJournalNext extends StdWebMacro
 		HashSet<String> H=CMLib.journals().getArchonJournalNames();
 		for(int j=0;j<journals.size();j++)
 		{
-			String B=(String)journals.get(j);
+			String B=journals.get(j);
 			if((H.contains(B.toUpperCase().trim()))&&((M==null)||(!CMSecurity.isASysOp(M))))
 				continue;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.equals(lastID))))

@@ -231,21 +231,21 @@ public final class TriadCMList<T,K,L> extends CMList<Triad<T,K,L>>
 	{
 		T[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (T) getFirst(x);
+			objs[x] = getFirst(x);
 		return objs;
 	}
 	public K[] toArraySecond(K[] a)
 	{
 		K[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (K) getSecond(x);
+			objs[x] = getSecond(x);
 		return objs;
 	}
 	public L[] toArrayThird(L[] a)
 	{
 		L[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (L) getThird(x);
+			objs[x] = getThird(x);
 		return objs;
 	}
 }

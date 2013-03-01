@@ -157,7 +157,6 @@ public class GrinderItems
 					parm=parm.substring(1);
 				}
 				if((!httpReq.isUrlParameter(parm))
-				&&(oldI!=null)
 				&&(newClassID==null)
 				&&(CMLib.flags().isCataloged(oldI))
 				&&(!parm.equalsIgnoreCase("CONTAINER"))
@@ -562,7 +561,7 @@ public class GrinderItems
 					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 					{
 						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
-						cataData.setWhenLive(((old!=null)&&(old.equalsIgnoreCase("on"))));
+						cataData.setWhenLive((old.equalsIgnoreCase("on")));
 					}
 					break;
 				case 86: // catamask

@@ -94,10 +94,10 @@ public class Spell_PolymorphSelf extends Spell
 			commands.clear();
 			XVector<Race> V=new XVector<Race>(CMClass.races());
 			for(int v=V.size()-1;v>=0;v--)
-				if(!CMath.bset(((Race)V.elementAt(v)).availabilityCode(),Area.THEME_FANTASY))
+				if(!CMath.bset(V.elementAt(v).availabilityCode(),Area.THEME_FANTASY))
 					V.removeElementAt(v);
 			if(V.size()>0)
-				commands.addElement(((Race)V.elementAt(CMLib.dice().roll(1,V.size(),-1))).name());
+				commands.addElement(V.elementAt(CMLib.dice().roll(1,V.size(),-1)).name());
 		}
 		if(commands.size()==0)
 		{

@@ -59,7 +59,7 @@ public class StdCage extends StdContainer
 				List<Item> mobContents=getContents();
 				for(Iterator<Item> e=mobContents.iterator();e.hasNext();)
 				{
-					Environmental E=(Environmental)e.next();
+					Environmental E=e.next();
 					if(E instanceof CagedAnimal)
 					{
 						MOB M=((CagedAnimal)E).unCageMe();

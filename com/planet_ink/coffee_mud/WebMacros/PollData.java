@@ -159,10 +159,8 @@ public class PollData extends StdWebMacro
 			if(last==null) return " @break@";
 			if(last.length()>0)
 			{
-				Poll P=null;
 				String newPollID=httpReq.getUrlParameter("NEWPOLL");
-				if(P==null)
-					P=(Poll)httpReq.getRequestObjects().get("POLL-"+last);
+				Poll P=(Poll)httpReq.getRequestObjects().get("POLL-"+last);
 				if((P==null)
 				&&(newPollID!=null)
 				&&(newPollID.length()>0)
@@ -222,48 +220,42 @@ public class PollData extends StdWebMacro
 						String old=httpReq.getUrlParameter("ISACTIVE");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE)?"on":"");
-						if(old!=null)
-							str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+						str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 					}
 					if(parms.containsKey("ISPREVIEWRESULTS"))
 					{
 						String old=httpReq.getUrlParameter("ISPREVIEWRESULTS");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_PREVIEWRESULTS)?"on":"");
-						if(old!=null)
-							str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+						str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 					}
 					if(parms.containsKey("ISABSTAIN"))
 					{
 						String old=httpReq.getUrlParameter("ISABSTAIN");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)?"on":"");
-						if(old!=null)
-							str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+						str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 					}
 					if(parms.containsKey("ISVOTEBYIP"))
 					{
 						String old=httpReq.getUrlParameter("ISVOTEBYIP");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP)?"on":"");
-						if(old!=null)
-							str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+						str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 					}
 					if(parms.containsKey("ISHIDERESULTS"))
 					{
 						String old=httpReq.getUrlParameter("ISHIDERESULTS");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_HIDERESULTS)?"on":"");
-						if(old!=null)
-							str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+						str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 					}
 					if(parms.containsKey("ISNOTATLOGIN"))
 					{
 						String old=httpReq.getUrlParameter("ISNOTATLOGIN");
 						if(old==null)
 							old=(CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN)?"on":"");
-						if(old!=null)
-							str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+						str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 					}
 					if(parms.containsKey("DOESEXPIRE"))
 					{
@@ -367,12 +359,12 @@ public class PollData extends StdWebMacro
 					{
 						int which=-1;
 						if(parms.containsKey("NUM"))
-							which=CMath.s_int((String)parms.get("NUM"));
+							which=CMath.s_int(parms.get("NUM"));
 						if(!httpReq.isUrlParameter("OPTION1"))
 						{
 							for(int v=0;v<P.getOptions().size();v++)
 							{
-								Poll.PollOption O=(Poll.PollOption)P.getOptions().get(v);
+								Poll.PollOption O=P.getOptions().get(v);
 								httpReq.addFakeUrlParameter("OPTION"+(v+1),O.text);
 							}
 						}
@@ -418,14 +410,14 @@ public class PollData extends StdWebMacro
 						List<PollResult> results=P.getResults();
 						int which=-1;
 						if(parms.containsKey("NUM"))
-							which=CMath.s_int((String)parms.get("NUM"));
+							which=CMath.s_int(parms.get("NUM"));
 						int[] votes=new int[options.size()+(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN)?1:0)];
 						PollResult R=null;
 						int choice=0;
 						int total=0;
 						for(int r=0;r<P.getResults().size();r++)
 						{
-							R=(PollResult)results.get(r);
+							R=results.get(r);
 							choice=CMath.s_int(R.answer);
 							if(((choice<=0)&&CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN))
 							||((choice>=0)&&(choice<=options.size())))

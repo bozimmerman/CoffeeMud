@@ -59,7 +59,7 @@ public class Hireling extends StdBehavior
 			if(CMath.isDouble(s))
 				price=CMath.s_double(s);
 			else
-				price=(double)CMath.s_long(s);
+				price=CMath.s_long(s);
 		}
 	}
 	
@@ -112,7 +112,7 @@ public class Hireling extends StdBehavior
 
 	protected double gamehours()
 	{
-		double d=CMath.div(((long)minutes() * 60L * 1000L),CMProps.getMillisPerMudHour());
+		double d=CMath.div((minutes() * 60L * 1000L),CMProps.getMillisPerMudHour());
 		long d2=Math.round(d*10.0);
 		return CMath.div(d2,10.0);
 	}

@@ -42,7 +42,7 @@ public class INIModify extends StdWebMacro
 	{
 		StringBuffer buf=new StringBuffer("");
 		for(int p=0;p<page.size();p++)
-			buf.append(((String)page.get(p))+"\r\n");
+			buf.append((page.get(p))+"\r\n");
 		new CMFile(CMProps.getVar(CMProps.SYSTEM_INIPATH),null,false,true).saveText(buf);
 	}
 
@@ -64,7 +64,7 @@ public class INIModify extends StdWebMacro
 		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 		if(parms.containsKey("ADDKEY"))
 		{
-			String key=(String)parms.get("KEY");
+			String key=parms.get("KEY");
 			if((key==null)||(key.trim().length()==0)) return "";
 			key=key.trim().toUpperCase();
 			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
@@ -74,11 +74,11 @@ public class INIModify extends StdWebMacro
 			if(parms.containsKey("NEAR"))
 			{
 				boolean found=false;
-				String near=(String)parms.get("NEAR");
+				String near=parms.get("NEAR");
 				if(near.endsWith("*")) near=near.substring(0,near.length()-1);
 				for(int p=0;p<page.size();p++)
 				{
-					String s=((String)page.get(p)).trim();
+					String s=page.get(p).trim();
 					int x=s.indexOf(near);
 					if(x==0) 
 						found=true;
@@ -100,12 +100,12 @@ public class INIModify extends StdWebMacro
 		else
 		if(parms.containsKey("DELKEY"))
 		{
-			String key=(String)parms.get("KEY");
+			String key=parms.get("KEY");
 			if((key==null)||(key.trim().length()==0)) return "";
 			key=key.trim().toUpperCase();
 			for(int p=0;p<page.size();p++)
 			{
-				String s=((String)page.get(p)).trim();
+				String s=page.get(p).trim();
 				if(s.startsWith("!")||s.startsWith("#")) continue;
 				int x=s.indexOf('=');
 				if(x<0) x=s.indexOf(':');
@@ -129,7 +129,7 @@ public class INIModify extends StdWebMacro
 			if((ipage==null)||(!ipage.isLoaded())) return "";
 			for(int p=0;p<page.size();p++)
 			{
-				String s=((String)page.get(p)).trim();
+				String s=page.get(p).trim();
 				if(s.startsWith("!")||s.startsWith("#")) continue;
 				int x=s.indexOf('=');
 				if(x<0) x=s.indexOf(':');

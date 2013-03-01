@@ -271,7 +271,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					final Double[] sortedLevels=levels.toArray(new Double[0]); 
 					final double lowestLevel=sortedLevels[0].doubleValue();
 					final double medianLevel=sortedLevels[(int)Math.round(Math.floor(sortedLevels.length/2))].doubleValue();
-					final double averageLevel=Math.round(10.0*totalLevels/((double)sortedLevels.length))/10.0;
+					final double averageLevel=Math.round(10.0*totalLevels/(sortedLevels.length))/10.0;
 					final double highestLevel=sortedLevels[sortedLevels.length-1].doubleValue();
 					final double groupSize=Double.valueOf(followers.size()).doubleValue();
 					final double values[]={msg.source().basePhyStats().level(),lowestLevel,medianLevel,averageLevel,highestLevel,totalLevels,groupSize};

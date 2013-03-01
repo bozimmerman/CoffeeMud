@@ -120,7 +120,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected Area getStartArea(){
 		Area A=CMLib.map().getStartArea(this);
 		if(A==null) CMLib.map().areaLocation(this);
-		if(A==null) A=(Area)CMLib.map().areas().nextElement();
+		if(A==null) A=CMLib.map().areas().nextElement();
 		return A;
 	}
 	public boolean tick(Tickable ticking, int tickID)
@@ -162,16 +162,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				Vector<String> V=CMParms.parse(s.trim().toUpperCase());
 				if(V.size()>0)
 				{
-					if(((String)V.firstElement()).equals("0"))
+					if(V.firstElement().equals("0"))
 						budgetRemaining=0;
 					else
 					{
-						budgetRemaining=CMath.s_long((String)V.firstElement());
+						budgetRemaining=CMath.s_long(V.firstElement());
 						if(budgetRemaining==0)
 							budgetRemaining=Long.MAX_VALUE/2;
 					}
 					s="DAY";
-					if(V.size()>1) s=((String)V.lastElement()).toUpperCase();
+					if(V.size()>1) s=V.lastElement().toUpperCase();
 					if(s.startsWith("DAY"))
 						budgetTickDown=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					else
@@ -315,7 +315,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						
 						List<Environmental> products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
 						if(products.size()==0) break;
-						Environmental product=(Environmental)products.get(0);
+						Environmental product=products.get(0);
 						
 						if(product instanceof Item)
 						{

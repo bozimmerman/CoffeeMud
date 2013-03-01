@@ -351,7 +351,7 @@ public class Mage extends StdCharClass
 			numSpells=1;
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==level)
 			&&((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=25)
 			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))

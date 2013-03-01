@@ -114,7 +114,7 @@ public class Chant_Reincarnation extends Chant
 
 	public boolean isGolem(Race R)
 	{
-		MOB M=(MOB)CMClass.getFactoryMOB();
+		MOB M=CMClass.getFactoryMOB();
 		R.affectPhyStats(M,M.phyStats());
 		boolean golem= CMLib.flags().isGolem(M);
 		M.destroy();

@@ -61,7 +61,7 @@ public class Dance_Tarantella extends Dance
 			List<Ability> offenders=CMLib.flags().flaggedAffects(mob,Ability.ACODE_POISON);
 			if(offenders!=null)
 				for(int a=0;a<offenders.size();a++)
-					((Ability)offenders.get(a)).unInvoke();
+					offenders.get(a).unInvoke();
 		}
 
 		return true;

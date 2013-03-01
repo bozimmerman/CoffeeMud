@@ -70,7 +70,7 @@ public class Remove extends StdCommand
 		else
 		for(int i=0;i<items.size();i++)
 		{
-			Item item=(Item)items.get(i);
+			Item item=items.get(i);
 			CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,"<S-NAME> remove(s) <T-NAME>.");
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);

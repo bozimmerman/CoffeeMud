@@ -161,13 +161,13 @@ public class Foraging extends GatheringSkill
 				Map<String,List<String>> H=Resources.getCachedMultiLists("skills/herbs.txt",false);
 				if(H!=null)
 				{
-					List<String> V=(List<String>)H.get(mob.location().ID());
+					List<String> V=H.get(mob.location().ID());
 					if((V!=null)&&(V.size()>0))
 					{
 						int total=0;
 						for(int i=0;i<V.size();i++)
 						{
-							String s=(String)V.get(i);
+							String s=V.get(i);
 							int x=s.indexOf(' ');
 							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
 								total+=CMath.s_int(s.substring(0,x).trim());
@@ -178,7 +178,7 @@ public class Foraging extends GatheringSkill
 						total=0;
 						for(int i=0;i<V.size();i++)
 						{
-							String s=(String)V.get(i);
+							String s=V.get(i);
 							int x=s.indexOf(' ');
 							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
 							{

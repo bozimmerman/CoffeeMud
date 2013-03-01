@@ -386,7 +386,7 @@ public class ProcessSMTPrequest implements Runnable
 									
 									for(int i=0;i<to.size();i++)
 									{
-										String journal=server.getAnEmailJournal((String)to.elementAt(i));
+										String journal=server.getAnEmailJournal(to.elementAt(i));
 										if(journal!=null)
 										{
 											String parentKey="";
@@ -446,13 +446,13 @@ public class ProcessSMTPrequest implements Runnable
 										}
 										else
 										{
-											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+(String)to.elementAt(i)+"/"+bodyType);
+											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+to.elementAt(i)+"/"+bodyType);
 											StringBuffer finalFinalData=new StringBuffer(finalData);
 											if(bodyType=='h')
 												cleanHtml(journal, finalFinalData);
 											CMLib.database().DBWriteJournal(server.mailboxName(),
 																			from,
-																			(String)to.elementAt(i),
+																			to.elementAt(i),
 																			CMLib.coffeeFilter().simpleInFilter(new StringBuffer(subject),false).toString(),
 																			CMLib.coffeeFilter().simpleInFilter(finalFinalData,false).toString());
 										}
@@ -916,15 +916,12 @@ public class ProcessSMTPrequest implements Runnable
 		}
 		catch (Exception e)
 		{
-			final String errorMessage=(e==null)?"Exception: Unknown (NULL-e)":e.getMessage();
+			final String errorMessage=e.getMessage();
 			final StringBuilder msg = new StringBuilder(errorMessage==null?"EMPTY e.getMessage()":errorMessage);
-			if(e!=null)
-			{
-				final StackTraceElement[] ts = e.getStackTrace();
-				if(ts != null)
-					for(StackTraceElement t : ts)
-						msg.append(" ").append(t.getFileName()).append("(").append(t.getLineNumber()).append(")");
-			}
+			final StackTraceElement[] ts = e.getStackTrace();
+			if(ts != null)
+				for(StackTraceElement t : ts)
+					msg.append(" ").append(t.getFileName()).append("(").append(t.getLineNumber()).append(")");
 			Log.errOut(runnableName,"Exception: " + msg.toString() );
 		}
 		

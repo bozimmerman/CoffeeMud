@@ -167,7 +167,7 @@ public class GenAbility extends StdAbility
 	{
 		try
 		{
-			GenAbility A=(GenAbility)this.getClass().newInstance();
+			GenAbility A=this.getClass().newInstance();
 			A.ID=ID;
 			getScripter();
 			A.scriptParmHash=scriptParmHash;
@@ -219,7 +219,7 @@ public class GenAbility extends StdAbility
 		{
 			target=mob;
 			if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-				target=(MOB)givenTarget;
+				target=givenTarget;
 			if(target.fetchEffect(this.ID())!=null)
 			{
 				mob.tell((MOB)target,null,null,"<S-NAME> <S-IS-ARE> already affected by "+name()+".");
@@ -241,7 +241,7 @@ public class GenAbility extends StdAbility
 			case Ability.CAN_ROOMS:
 				target=mob;
 				if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))
-					target=(Room)givenTarget;
+					target=givenTarget;
 				if(target.fetchEffect(this.ID())!=null)
 				{
 					mob.tell("This place is already affected by "+name()+".");

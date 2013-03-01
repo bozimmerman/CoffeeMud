@@ -909,7 +909,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			this.description=desc;
 			this.codeString=codeName;
 		}
-		public int flagNum(){return (int)Math.round(Math.pow(2.0, (double)ordinal())); }
+		public int flagNum(){return (int)Math.round(Math.pow(2.0, ordinal())); }
 	}
 
 	/**

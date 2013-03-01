@@ -39,7 +39,7 @@ public class DefaultLawSet implements Law
 {
 	public String ID(){return "DefaultLawSet";}
 	public String name() { return ID();}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultLawSet();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultLawSet();}}
 	public void initializeClass(){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public CMObject copyOf()
@@ -137,7 +137,7 @@ public class DefaultLawSet implements Law
 		if(warrants.contains(W))
 			for(int w=0;w<warrants.size();w++)
 			{
-				LegalWarrant W2=(LegalWarrant)warrants.elementAt(w);
+				LegalWarrant W2=warrants.elementAt(w);
 				if(W2.criminal()==W.criminal())
 					W2.setState(state);
 			}
@@ -155,7 +155,7 @@ public class DefaultLawSet implements Law
 			if(V.size()>0)
 			{
 				Room R=null;
-				String room=(String)V.firstElement();
+				String room=V.firstElement();
 				String item="";
 				if(V.size()>1) item=CMParms.combine(V,1);
 				if(!room.equalsIgnoreCase("*"))
@@ -172,7 +172,7 @@ public class DefaultLawSet implements Law
 				if(item.length()>0)
 				for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 				{
-					R=(Room)e.nextElement();
+					R=e.nextElement();
 					I=R.findItem(item);
 					if(I instanceof Container)
 					{
@@ -234,18 +234,18 @@ public class DefaultLawSet implements Law
 				for(int p=0;p<particulars.size();p++)
 				{
 					if(p>0) properties.append(", ");
-					T=((LandTitle)particulars.elementAt(p));
+					T=(particulars.elementAt(p));
 					propertyRooms=T.getAllTitledRooms();
 					if((propertyRooms.size()<2)
 					||(CMLib.map().getArea(T.landPropertyID())!=null))
 						properties.append(T.landPropertyID());
 					else
-						properties.append("around "+CMLib.map().getExtendedRoomID((Room)propertyRooms.get(0)));
-					totalValue+=(double)T.landPrice();
+						properties.append("around "+CMLib.map().getExtendedRoomID(propertyRooms.get(0)));
+					totalValue+=T.landPrice();
 					if(T.backTaxes()>0)
 					{
-						totalValue+=(double)T.backTaxes();
-						owed+=(double)T.backTaxes();
+						totalValue+=T.backTaxes();
+						owed+=T.backTaxes();
 					}
 				}
 				owed+=CMath.mul(totalValue,tax);
@@ -253,17 +253,17 @@ public class DefaultLawSet implements Law
 				if(owed>0)
 				for(int p=0;p<particulars.size();p++)
 				{
-					T=((LandTitle)particulars.elementAt(p));
+					T=(particulars.elementAt(p));
 					if(T.backTaxes()<0)
 					{
 						if((-T.backTaxes())>=owed)
 						{
 							paid+=owed;
-							T.setBackTaxes((int)Math.round(((double)T.backTaxes())+owed));
+							T.setBackTaxes((int)Math.round((T.backTaxes())+owed));
 							T.updateTitle();
 							break;
 						}
-						paid+=(double)(-T.backTaxes());
+						paid+=(-T.backTaxes());
 						T.setBackTaxes(0);
 						T.updateTitle();
 					}
@@ -280,12 +280,12 @@ public class DefaultLawSet implements Law
 						boolean owesButNotConfiscated=false;
 						for(int p=0;p<particulars.size();p++)
 						{
-							T=(LandTitle)particulars.elementAt(p);
+							T=particulars.elementAt(p);
 							double owedOnThisLand=CMath.mul(T.landPrice(),tax);
 							owedOnThisLand-=(paid/particulars.size());
 							if(owedOnThisLand>0)
 							{
-								T.setBackTaxes((int)Math.round(((double)T.backTaxes())+owedOnThisLand));
+								T.setBackTaxes((int)Math.round((T.backTaxes())+owedOnThisLand));
 								if((T.landPrice()/T.backTaxes())<4)
 								{
 									Clan clanC=CMLib.clans().getClan(T.landOwner());
@@ -295,7 +295,7 @@ public class DefaultLawSet implements Law
 										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
 										List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 										for(int i=0;i<channels.size();i++)
-											CMLib.commands().postChannel((String)channels.get(i),clanSet,T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
+											CMLib.commands().postChannel(channels.get(i),clanSet,T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
 									}
 									else
 									if(CMLib.players().getPlayer(T.landOwner())!=null)
@@ -328,7 +328,7 @@ public class DefaultLawSet implements Law
 					{
 						for(int p=0;p<particulars.size();p++)
 						{
-							T=(LandTitle)particulars.elementAt(p);
+							T=particulars.elementAt(p);
 							if(T.backTaxes()>0)
 							{
 								T.setBackTaxes(0);
@@ -341,7 +341,7 @@ public class DefaultLawSet implements Law
 							List<Coins> V=CMLib.beanCounter().makeAllCurrency(CMLib.beanCounter().getCurrency(A),owed+paid);
 							for(int v=0;v<V.size();v++)
 							{
-								Coins COIN=(Coins)V.get(v);
+								Coins COIN=V.get(v);
 								COIN.setContainer(container);
 								treasuryR.addItem(COIN);
 								COIN.putCoinsBack();
@@ -520,7 +520,7 @@ public class DefaultLawSet implements Law
 					Vector<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
 					for(int i=0;i<Law.BIT_NUMBITS;i++)
 						if(i<parsed.size())
-							bits[i]=(String)parsed.elementAt(i);
+							bits[i]=parsed.elementAt(i);
 						else
 							bits[i]="";
 					otherBits.add(bits);
@@ -533,7 +533,7 @@ public class DefaultLawSet implements Law
 					Vector<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
 					for(int i=0;i<Law.BIT_NUMBITS;i++)
 						if(i<parsed.size())
-							bits[i]=(String)parsed.elementAt(i);
+							bits[i]=parsed.elementAt(i);
 						else
 							bits[i]="";
 					bannedBits.add(bits);
@@ -568,7 +568,7 @@ public class DefaultLawSet implements Law
 		Vector<String> parsed=CMParms.parseSemicolons(bitStr,false);
 		for(int i=0;i<Law.BIT_NUMBITS;i++)
 			if(i<parsed.size())
-				bits[i]=(String)parsed.elementAt(i);
+				bits[i]=parsed.elementAt(i);
 			else
 				bits[i]="";
 		return bits;
@@ -582,7 +582,7 @@ public class DefaultLawSet implements Law
 		LegalWarrant W=null;
 		for(int i=0;i<warrants.size();i++)
 		{
-			LegalWarrant W2=(LegalWarrant)warrants.elementAt(i);
+			LegalWarrant W2=warrants.elementAt(i);
 			if((W2.criminal()==criminal)
 			&&(W2.crime().equals(crime))
 			&&(legalDetails.isStillACrime(W2,debugging)))
@@ -597,11 +597,11 @@ public class DefaultLawSet implements Law
 
 	public LegalWarrant getCopkiller(Area A, LegalBehavior behav, MOB mob)
 	{
-		String[] copKillerInfo=(String[])basicCrimes().get("MURDER");
+		String[] copKillerInfo=basicCrimes().get("MURDER");
 		if(copKillerInfo!=null)
 		for(int i=0;i<warrants.size();i++)
 		{
-			LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+			LegalWarrant W=warrants.elementAt(i);
 			if((W.criminal()==mob)
 			&&(W.crime().equals(copKillerInfo[Law.BIT_CRIMENAME]))
 			&&(W.victim()!=null)
@@ -615,11 +615,11 @@ public class DefaultLawSet implements Law
 
 	public LegalWarrant getLawResister(Area A, LegalBehavior behav, MOB mob)
 	{
-		String[] lawResistInfo=(String[])basicCrimes().get("RESISTINGARREST");
+		String[] lawResistInfo=basicCrimes().get("RESISTINGARREST");
 		if(lawResistInfo!=null)
 		for(int i=0;i<warrants.size();i++)
 		{
-			LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+			LegalWarrant W=warrants.elementAt(i);
 			if((W.criminal()==mob)
 			&&(W.crime().equals(lawResistInfo[Law.BIT_CRIMENAME]))
 			&&(W.victim()!=null)
@@ -636,7 +636,7 @@ public class DefaultLawSet implements Law
 		int one=0;
 		for(int i=0;i<warrants.size();i++)
 		{
-			LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+			LegalWarrant W=warrants.elementAt(i);
 			if(W.criminal()==mob)
 			{
 				if(which==one)
@@ -652,7 +652,7 @@ public class DefaultLawSet implements Law
 		LegalWarrant W=null;
 		for(int i=0;i<oldWarrants.size();i++)
 		{
-			LegalWarrant W2=(LegalWarrant)oldWarrants.elementAt(i);
+			LegalWarrant W2=oldWarrants.elementAt(i);
 			if((W2.criminal()==criminal)&&(W2.crime().equals(crime)))
 			{
 				W=W2;

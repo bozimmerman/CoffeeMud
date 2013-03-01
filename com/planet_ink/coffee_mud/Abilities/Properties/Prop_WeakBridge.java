@@ -161,7 +161,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 					}
 					for(int i=0;i<V.size();i++)
 					{
-						MOB mob=(MOB)V.get(i);
+						MOB mob=V.get(i);
 						if((mob.location()!=null)
 						&&(!CMLib.flags().isInFlight(mob)))
 						{

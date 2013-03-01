@@ -199,14 +199,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					int exp=CMath.s_int((String)V.get(RCP_EXP));
+					String item=replacePercent(V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int(V.get(RCP_LEVEL));
+					int exp=CMath.s_int(V.get(RCP_EXP));
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						String mat1=(String)V.get(RCP_MATERIAL1);
-						String mat2=(String)V.get(RCP_MATERIAL2);
+						String mat1=V.get(RCP_MATERIAL1);
+						String mat2=V.get(RCP_MATERIAL2);
 						String amt1="";
 						String amt2="";
 						int m1=mat1.indexOf('/');
@@ -247,7 +247,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			List<String> V=matches.get(r);
 			if(V.size()>0)
 			{
-				int level=CMath.s_int((String)V.get(RCP_LEVEL));
+				int level=CMath.s_int(V.get(RCP_LEVEL));
 				if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
@@ -263,8 +263,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
 		int amt1=0;
 		int amt2=0;
-		String mat1=(String)foundRecipe.get(RCP_MATERIAL1);
-		String mat2=(String)foundRecipe.get(RCP_MATERIAL2);
+		String mat1=foundRecipe.get(RCP_MATERIAL1);
+		String mat2=foundRecipe.get(RCP_MATERIAL2);
 		int m1=mat1.indexOf('/');
 		if(m1>=0)
 		{
@@ -280,7 +280,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			//amt2=adjustWoodRequired(amt2, mob);
 		}
 
-		expRequired=CMath.s_int((String)foundRecipe.get(RCP_EXP));
+		expRequired=CMath.s_int(foundRecipe.get(RCP_EXP));
 		expRequired=getXPCOSTAdjustment(mob,expRequired);
 		if((clanC!=null)&&(clanC.getExp()<expRequired))
 		{
@@ -291,7 +291,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(data==null) return false;
 		amt1=data[0][FOUND_AMT];
 		amt2=data[1][FOUND_AMT];
-		String reqskill=(String)foundRecipe.get(RCP_REQUIREDSKILL);
+		String reqskill=foundRecipe.get(RCP_REQUIREDSKILL);
 		if((autoGenerate<=0)&&(reqskill.trim().length()>0))
 		{
 			Ability A=CMClass.findAbility(reqskill.trim());
@@ -309,22 +309,22 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if((amt2>0)&&(autoGenerate<=0))
 			CMLib.materials().destroyResources(mob.location(),amt2,data[1][FOUND_CODE],0,null);
 
-		building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
+		building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(building==null)
 		{
 			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
 		
-		duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
-		String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
+		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
+		String misctype=foundRecipe.get(RCP_MISCTYPE);
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
 		{
-			if(((String)foundRecipe.get(RCP_FINALNAME)).trim().startsWith("%"))
-				itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),clanTypeName+" "+clanName);
+			if(foundRecipe.get(RCP_FINALNAME).trim().startsWith("%"))
+				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),clanTypeName+" "+clanName);
 			else
-				itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),"of "+clanTypeName+" "+clanName);
+				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),"of "+clanTypeName+" "+clanName);
 			if(misctype.length()>0)
 				building.setReadableText(misctype);
 		}
@@ -343,7 +343,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				return false;
 			}
 			
-			itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),"of "+A2.name()).toLowerCase();
+			itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),"of "+A2.name()).toLowerCase();
 			building.setReadableText(A2.name());
 		}
 		itemName=CMLib.english().startWithAorAn(itemName);
@@ -355,16 +355,16 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
 		building.basePhyStats().setWeight(amt1+amt2);
-		building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
+		building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
 		int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
-		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+(hardness*3));
+		building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
 		if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
-		int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-		long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
-		int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
+		int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
+		long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
+		int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 		building.setSecretIdentity(getBrand(mob));
-		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
+		String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		if(building instanceof ClanItem)
 		{
 			building.basePhyStats().setSensesMask(PhyStats.SENSE_UNLOCATABLE);
@@ -373,7 +373,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			else
 			if(CMLib.clans().numClans()>0)
 				((ClanItem)building).setClanID(CMLib.clans().clans().nextElement().clanID());
-			((ClanItem)building).setCIType(CMath.s_int((String)foundRecipe.get(RCP_CITYPE)));
+			((ClanItem)building).setCIType(CMath.s_int(foundRecipe.get(RCP_CITYPE)));
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
 			{
 				building.setMaterial(RawMaterial.RESOURCE_PAPER);

@@ -1,6 +1,7 @@
 package com.planet_ink.miniweb.servlets;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -45,9 +46,9 @@ public class SessionInfoServlet implements SimpleServlet
 			SimpleServletSession session = request.getSession();
 			response.getOutputStream().write("<html><body>".getBytes());
 			response.getOutputStream().write(("<h1>Hello Session#"+session.getSessionId()+"</h1>").getBytes());
-			String lastTouch = SimpleDateFormat.getDateTimeInstance().format(new Date(session.getSessionLastTouchTime()));
+			String lastTouch = DateFormat.getDateTimeInstance().format(new Date(session.getSessionLastTouchTime()));
 			response.getOutputStream().write(("Last request was at: "+lastTouch+"<br>").getBytes());
-			String firstTouch = SimpleDateFormat.getDateTimeInstance().format(session.getSessionStart());
+			String firstTouch = DateFormat.getDateTimeInstance().format(session.getSessionStart());
 			response.getOutputStream().write(("First request was at: "+firstTouch+"<br>").getBytes());
 			if(session.getUser().length()==0)
 				session.setUser("BOB the "+this.hashCode());

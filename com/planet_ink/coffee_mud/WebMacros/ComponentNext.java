@@ -50,7 +50,7 @@ public class ComponentNext extends StdWebMacro
 		String componentID;
 		for(Iterator<String> i=CMLib.ableMapper().getAbilityComponentMap().keySet().iterator();i.hasNext();)
 		{
-			componentID=(String)i.next();
+			componentID=i.next();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!componentID.equalsIgnoreCase(lastID))))
 			{
 				httpReq.addFakeUrlParameter("COMPONENT",componentID);

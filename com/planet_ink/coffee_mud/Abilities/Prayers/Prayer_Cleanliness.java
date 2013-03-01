@@ -71,7 +71,7 @@ public class Prayer_Cleanliness extends Prayer
 			{
 				mob.location().send(mob,msg);
 				if((target.playerStats()!=null)&&(target.playerStats().getHygiene()>0))
-					((MOB)target).playerStats().setHygiene(0);
+					target.playerStats().setHygiene(0);
 				target.tell("You feel clean!");
 			}
 		}

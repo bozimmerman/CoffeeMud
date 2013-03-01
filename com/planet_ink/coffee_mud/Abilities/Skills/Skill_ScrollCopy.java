@@ -76,7 +76,7 @@ public class Skill_ScrollCopy extends StdSkill
 		Ability thisSpell=null;
 		for(int a=0;a<theSpells.size();a++)
 		{
-			Ability A=(Ability)theSpells.get(a);
+			Ability A=theSpells.get(a);
 			if(CMLib.english().containsString(A.name(),((String)commands.elementAt(0))))
 			{
 				thisSpell=A;

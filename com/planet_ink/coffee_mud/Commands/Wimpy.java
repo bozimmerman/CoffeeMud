@@ -49,7 +49,7 @@ public class Wimpy extends StdCommand
 		String amt=CMParms.combine(commands,1);
 		int newWimp = mob.baseState().getHitPoints();
 		if(CMath.isPct(amt))
-			newWimp = (int)Math.round(CMath.s_pct(amt) * (double)newWimp);
+			newWimp = (int)Math.round(CMath.s_pct(amt) * newWimp);
 		else
 		if(CMath.isInteger(amt))
 			newWimp=CMath.s_int(amt);

@@ -107,17 +107,17 @@ public class Auction extends Channel implements Tickable
 					{
 						V.addElement(liveData.auctioningI.name()+" SOLD to "+winnerM.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 						auctioneerM.doCommand(V,Command.METAFLAG_FORCED);
-						if(liveData.auctioningI instanceof Item)
+						if(liveData.auctioningI != null)
 						{
-							((Item)liveData.auctioningI).unWear();
+							liveData.auctioningI.unWear();
 							Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
-							winnerM.location().moveItemTo((Item)liveData.auctioningI,ItemPossessor.Expire.Player_Drop);
+							winnerM.location().moveItemTo(liveData.auctioningI,ItemPossessor.Expire.Player_Drop);
 							double houseCut=Math.floor(liveData.bid*aRates.liveCutPct);
 							double finalAmount=liveData.bid-houseCut;
 							CMLib.coffeeShops().returnMoney(winnerM,liveData.currency,liveData.highBid-liveData.bid);
 							CMLib.coffeeShops().returnMoney(auctioneerM,liveData.currency,finalAmount);
 							auctioneerM.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,finalAmount)+" has been transferred to you as payment from "+winnerM.name()+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,houseCut)+".  The goods have also been transferred in exchange.");
-							if(CMLib.commands().postGet(winnerM,null,(Item)liveData.auctioningI,false)
+							if(CMLib.commands().postGet(winnerM,null,liveData.auctioningI,false)
 							||(winnerM.isMine(liveData.auctioningI)))
 							{
 								winnerM.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" has been transferred to "+auctioneerM.displayName(winnerM)+".  You should have received the auctioned goods.  This auction is complete.");
@@ -129,15 +129,15 @@ public class Auction extends Channel implements Tickable
 							}
 							else
 							{
-								auctioneerM.moveItemTo((Item)liveData.auctioningI);
+								auctioneerM.moveItemTo(liveData.auctioningI);
 								auctioneerM.tell("Your transaction could not be completed because "+winnerM.name()+" was unable to collect the item.  Please contact "+winnerM.name()+" about receipt of "+liveData.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 								winnerM.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+auctioneerM.displayName(winnerM)+" about receipt of "+liveData.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 							}
 						}
 					}
 					else
-					if(!auctioneerM.isMine((Item)liveData.auctioningI))
-						auctioneerM.moveItemTo((Item)liveData.auctioningI);
+					if(!auctioneerM.isMine(liveData.auctioningI))
+						auctioneerM.moveItemTo(liveData.auctioningI);
 					liveData.auctioningM=null;
 					liveData.auctioningI=null;
 					liveData.highBidderM=null;
@@ -191,7 +191,7 @@ public class Auction extends Channel implements Tickable
 			Object[] bidObjs=CMLib.english().parseMoneyStringSDL(mob,sb,liveData.currency);
 			String currency=(String)bidObjs[0];
 			double amt=CMath.mul(((Double)bidObjs[1]).doubleValue(),((Long)bidObjs[2]).doubleValue());
-			String[] resp=CMLib.coffeeShops().bid(mob,amt,currency,liveData,(Item)liveData.auctioningI,V);
+			String[] resp=CMLib.coffeeShops().bid(mob,amt,currency,liveData,liveData.auctioningI,V);
 			if(resp!=null)
 			{
 				if(resp[0]!=null) mob.tell(resp[0]);
@@ -355,8 +355,8 @@ public class Auction extends Channel implements Tickable
 			V.addElement("AUCTION");
 			V.addElement("The auction has been closed.");
 			CMLib.threads().deleteTick(this,Tickable.TICKID_LIVEAUCTION);
-			if(liveData.auctioningI instanceof Item)
-				liveData.auctioningM.moveItemTo((Item)liveData.auctioningI);
+			if(liveData.auctioningI != null)
+				liveData.auctioningM.moveItemTo(liveData.auctioningI);
 			if(liveData.highBid>0.0)
 				CMLib.coffeeShops().returnMoney(liveData.highBidderM,liveData.currency,liveData.highBid);
 			liveData.auctioningM=null;

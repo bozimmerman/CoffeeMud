@@ -278,8 +278,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					String item=replacePercent(V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5)
 					{
@@ -382,7 +382,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				List<String> V=matches.get(r);
 				if(V.size()>0)
 				{
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					if(level<=xlevel(mob))
 					{
 						foundRecipe=V;
@@ -396,7 +396,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				return false;
 			}
 			
-			final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -409,8 +409,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 					  RawMaterial.RESOURCE_VINE,
 					  RawMaterial.RESOURCE_WHEAT,
 					  RawMaterial.RESOURCE_SEAWEED};
-			String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
-			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
+			String misctype=foundRecipe.get(RCP_MISCTYPE);
+			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			bundling=spell.equalsIgnoreCase("BUNDLE")||misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"weavable material",pm,
@@ -426,14 +426,14 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
+			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
-			String itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -448,13 +448,13 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
+			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			building.setSecretIdentity(getBrand(mob));
-			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-			long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
-			int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
+			int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
+			long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
+			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			if(bundling)
 			{
 				building.setBaseValue(lostValue);

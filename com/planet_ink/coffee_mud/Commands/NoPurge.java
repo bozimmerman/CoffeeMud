@@ -57,7 +57,7 @@ public class NoPurge extends StdCommand
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
 		for(int b=0;b<protectedOnes.size();b++)
 		{
-			String B=(String)protectedOnes.get(b);
+			String B=protectedOnes.get(b);
 			if(B.equalsIgnoreCase(protectMe))
 			{
 				mob.tell("That player already protected.  Do LIST NOPURGE and check out #"+(b+1)+".");

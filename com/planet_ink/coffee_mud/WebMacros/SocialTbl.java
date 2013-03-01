@@ -70,7 +70,7 @@ public class SocialTbl extends StdWebMacro
 				msg.append(" width=\"" + percent + "%\"");
 
 			msg.append(">");
-			msg.append((String)socialVec.get(i));
+			msg.append(socialVec.get(i));
 			msg.append("</td>");
 			// finish the row
 			if((percent == 100) || (++col)> (AT_MAX_COL-1 ))

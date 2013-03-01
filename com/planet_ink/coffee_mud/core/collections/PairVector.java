@@ -195,14 +195,14 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	{
 		T[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (T) getFirst(x);
+			objs[x] = getFirst(x);
 		return objs;
 	}
 	public K[] toArraySecond(K[] a)
 	{
 		K[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (K) getSecond(x);
+			objs[x] = getSecond(x);
 		return objs;
 	}
 }

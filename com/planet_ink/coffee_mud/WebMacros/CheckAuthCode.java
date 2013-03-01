@@ -71,12 +71,12 @@ public class CheckAuthCode extends StdWebMacro
 				int maxLen=Integer.MAX_VALUE;
 				int maxOne=-1;
 				for(int v=0;v<dirs.size();v++)
-					if(((String)dirs.get(v)).length()<maxLen)
+					if(dirs.get(v).length()<maxLen)
 					{
-						maxLen=((String)dirs.get(v)).length();
+						maxLen=dirs.get(v).length();
 						maxOne=v;
 					}
-				String winner=(String)dirs.get(maxOne);
+				String winner=dirs.get(maxOne);
 				httpReq.addFakeUrlParameter("BESTFILEBROWSE",winner);
 			}
 			else
@@ -100,7 +100,7 @@ public class CheckAuthCode extends StdWebMacro
 		boolean sysop=((String)auths.get("SYSOP")).equalsIgnoreCase("true");
 		for(String key : parms.keySet())
 		{
-			String equals=(String)parms.get(key);
+			String equals=parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;
 			if(key.startsWith("||")) key=key.substring(2);

@@ -183,7 +183,7 @@ public class Charlatan extends StdCharClass
 			&&(myChar.isMine(msg.tool()))
 			&&(myChar.charStats().getClassLevel(this)>=30)
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())<1))
-				invokable=new WeakReference((Ability)msg.tool());
+				invokable=new WeakReference(msg.tool());
 		}
 		super.executeMsg(host,msg);
 		Bard.visitationBonusMessage(host,msg);
@@ -246,7 +246,7 @@ public class Charlatan extends StdCharClass
 			List<Ability> choices=new Vector<Ability>();
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)a.nextElement();
+				Ability A=a.nextElement();
 				int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)
 				&&(lql<25)
@@ -278,7 +278,7 @@ public class Charlatan extends StdCharClass
 			}
 			if(choices.size()==0) 
 				return;
-			Ability A=(Ability)choices.get(CMLib.dice().roll(1,choices.size(),-1));
+			Ability A=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			if(A!=null)	giveMobAbility(mob,A,0,"",isBorrowedClass);
 		}
 		else

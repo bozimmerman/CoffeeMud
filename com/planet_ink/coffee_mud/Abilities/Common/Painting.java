@@ -136,7 +136,7 @@ public class Painting extends CommonSkill
 			Vector<String> V=CMParms.parse(name.toUpperCase());
 			for(int v=0;v<V.size();v++)
 			{
-				String vstr=" "+((String)V.elementAt(v))+" ";
+				String vstr=" "+(V.elementAt(v))+" ";
 				for(int i=0;i<mob.location().numItems();i++)
 				{
 					I=mob.location().getItem(i);

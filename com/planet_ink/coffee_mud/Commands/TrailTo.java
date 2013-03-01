@@ -123,7 +123,7 @@ public class TrailTo extends StdCommand
 			{
 				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					Room R=r.nextElement();
 					if((R!=R1)&&(R.roomID().length()>0))
 					{
 						String trail = CMLib.tracking().getTrailToDescription(R1,set,R.roomID(),areaNames,confirm,radius,ignoreRooms,5);

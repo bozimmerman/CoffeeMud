@@ -461,11 +461,11 @@ public interface Wearable extends Environmental
 					Vector<String> subLocs = CMParms.parseAny(dependencyMaskStr, '|', true);
 					for(int s=0;s<subLocs.size();s++)
 					{
-						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, ((String)subLocs.elementAt(s)).toLowerCase());
+						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, subLocs.elementAt(s).toLowerCase());
 						if(idx>=0) 
 							dependencyMask|=DEFAULT_WORN_CODES[idx];
 						else
-							Log.errOut("Wearable","Bad dependency mask in coffeemud.ini file: "+((String)subLocs.elementAt(s)).toLowerCase());
+							Log.errOut("Wearable","Bad dependency mask in coffeemud.ini file: "+subLocs.elementAt(s).toLowerCase());
 					}
 					double armorStrength=CMath.s_double((String)V.elementAt(1));
 					int wornOrder=CMath.s_int((String)V.elementAt(2));

@@ -94,7 +94,7 @@ public class Possess extends StdCommand
 			Enumeration<Room> r=mob.location().getArea().getProperMap();
 			for(;r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				Room R=r.nextElement();
 				MOB mob2=R.fetchInhabitant(MOBname);
 				if((mob2!=null)&&(mob2.isMonster()))
 				{

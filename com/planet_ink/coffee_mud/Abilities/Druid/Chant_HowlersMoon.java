@@ -63,7 +63,7 @@ public class Chant_HowlersMoon extends Chant
 		if(mob.amFollowing()==null)
 			CMLib.tracking().wanderAway(mob,true,false);
 		super.unInvoke();
-		if((canBeUninvoked())&&(mob!=null)&&(mob.amFollowing()==null))
+		if((canBeUninvoked())&&(mob.amFollowing()==null))
 		{
 			mob.tell("You are no longer under the howlers moon.");
 			if(mob.amDead()) mob.setLocation(null);

@@ -172,13 +172,13 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					String type=(String)V.get(RCP_MATERIAL);
+					String item=replacePercent(V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int(V.get(RCP_LEVEL));
+					String type=V.get(RCP_MATERIAL);
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5) type="";
-					String race=((String)V.get(RCP_RACES)).trim();
-					String itype=CMStrings.capitalizeAndLower(((String)V.get(RCP_TYPE)).toLowerCase()).trim();
+					String race=V.get(RCP_RACES).trim();
+					String itype=CMStrings.capitalizeAndLower(V.get(RCP_TYPE).toLowerCase()).trim();
 					if((level<xlevel(mob))
 					&&((race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
@@ -209,8 +209,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			List<String> V=matches.get(r);
 			if(V.size()>0)
 			{
-				String race=((String)V.get(RCP_RACES)).trim();
-				int level=CMath.s_int((String)V.get(RCP_LEVEL));
+				String race=V.get(RCP_RACES).trim();
+				int level=CMath.s_int(V.get(RCP_LEVEL));
 				if(((autoGenerate>0)||(level<=xlevel(mob)))
 				&&((autoGenerate>0)||(race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 				{
@@ -225,15 +225,15 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		
-		final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
 		if(componentsFoundList==null) return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
 		
 		if(amount>woodRequired) woodRequired=amount;
-		String materialRequired=(String)foundRecipe.get(RCP_MATERIAL);
-		String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
+		String materialRequired=foundRecipe.get(RCP_MATERIAL);
+		String misctype=foundRecipe.get(RCP_MISCTYPE);
 		int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 		if(!materialRequired.toUpperCase().startsWith("METAL"))
 		{
@@ -254,14 +254,14 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		int lostValue=autoGenerate>0?0:
 			CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 			+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-		building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
+		building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(building==null)
 		{
 			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
-		String itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
+		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
@@ -274,11 +274,11 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
 		building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-		building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
+		building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
-		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
+		building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
-		String type=(String)foundRecipe.get(RCP_TYPE);
+		String type=foundRecipe.get(RCP_TYPE);
 		for(int i=0;i<MusicalInstrument.TYPE_DESC.length;i++)
 			if(type.equalsIgnoreCase(MusicalInstrument.TYPE_DESC[i]))
 				((MusicalInstrument)building).setInstrumentType(i);

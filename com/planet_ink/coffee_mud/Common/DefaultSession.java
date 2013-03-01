@@ -119,7 +119,7 @@ public class DefaultSession implements Session
 
 	public String ID(){return "DefaultSession";}
 	public String name() { return ID();}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
 	public void initializeClass(){}
 	public boolean isFake() { return false;}
 	public CMObject copyOf(){ try{ Object O=this.clone(); return (CMObject)O;}catch(Exception e){return newInstance();} }
@@ -181,7 +181,7 @@ public class DefaultSession implements Session
 			preliminaryRead(250);
 
 			Charset charSet=Charset.forName(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
-			inMaxBytesPerChar=(int)Math.round(Math.ceil((double)charSet.newEncoder().maxBytesPerChar()));
+			inMaxBytesPerChar=(int)Math.round(Math.ceil(charSet.newEncoder().maxBytesPerChar()));
 			charWriter=new SesInputStream(inMaxBytesPerChar);
 			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
@@ -533,7 +533,7 @@ public class DefaultSession implements Session
 			{
 				StringBuilder str=new StringBuilder("OUTPUT: '");
 				for(byte c : bytes)
-					str.append((int)c).append(" ");
+					str.append(c).append(" ");
 				Log.debugOut("Session", str.toString()+"'");
 			}
 			out.write(bytes);
@@ -892,7 +892,7 @@ public class DefaultSession implements Session
 			{
 				String changes=pstats.getColorStr();
 				lastColorStr=changes;
-				clookup=(String[])CMLib.color().standardColorLookups().clone();
+				clookup=CMLib.color().standardColorLookups().clone();
 				int x=changes.indexOf('#');
 				while(x>0)
 				{
@@ -1617,7 +1617,7 @@ public class DefaultSession implements Session
 		{
 			List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
 			for(int i=0;i<channels.size();i++)
-				CMLib.commands().postChannel((String)channels.get(i),M.clans(),name+" has logged out",true);
+				CMLib.commands().postChannel(channels.get(i),M.clans(),name+" has logged out",true);
 		}
 		CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
 			
@@ -1878,7 +1878,7 @@ public class DefaultSession implements Session
 		}
 		catch(Exception t)
 		{
-			if((t!=null)&&(!Log.isMaskedErrMsg(t.getMessage()))
+			if(!Log.isMaskedErrMsg(t.getMessage())
 			&&((!killFlag)
 					||(sock!=null&&sock.isConnected())))
 				errorOut(t);
@@ -1972,7 +1972,7 @@ public class DefaultSession implements Session
 				if((CMDS.size()>0)&&(mob!=null))
 				{
 					waiting=false;
-					String firstWord=(String)CMDS.get(0);
+					String firstWord=CMDS.get(0);
 					PlayerStats pstats=mob.playerStats();
 					String alias=(pstats!=null)?pstats.getAlias(firstWord):"";
 					Vector ALL_CMDS=new Vector();
@@ -2026,18 +2026,18 @@ public class DefaultSession implements Session
 				Vector<String> V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
 				if((V.size()>0)
 				&&(!CMSecurity.isAllowed(mob(),mob().location(),CMSecurity.SecFlag.IDLEOK))
-				&&(CMath.s_int((String)V.firstElement())>0))
+				&&(CMath.s_int(V.firstElement())>0))
 				{
 					int minsIdle=(int)(getIdleMillis()/60000);
-					if(minsIdle>=CMath.s_int((String)V.firstElement()))
+					if(minsIdle>=CMath.s_int(V.firstElement()))
 					{
 						println("\n\r^ZYou are being logged out!^?");
 						setKillFlag(true);
 					}
 					else
-					if(minsIdle>=CMath.s_int((String)V.lastElement()))
+					if(minsIdle>=CMath.s_int(V.lastElement()))
 					{
-						int remain=CMath.s_int((String)V.firstElement())-minsIdle;
+						int remain=CMath.s_int(V.firstElement())-minsIdle;
 						println(mob(),null,null,"\n\r^ZIf you don't do something, you will be logged out in "+remain+" minute(s)!^?");
 					}
 				}
@@ -2095,7 +2095,7 @@ public class DefaultSession implements Session
 		}
 		catch(Exception t)
 		{
-			if((t!=null)&&(!Log.isMaskedErrMsg(t.getMessage()))
+			if((!Log.isMaskedErrMsg(t.getMessage()))
 			&&((!killFlag)
 					||(sock!=null&&sock.isConnected())))
 				errorOut(t);
@@ -2116,7 +2116,7 @@ public class DefaultSession implements Session
 		public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
 		public boolean tick(Tickable ticking, int tickID){return false;}
 		public String ID(){return name();}
-		public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new LoginLogoutThread();}}
+		public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new LoginLogoutThread();}}
 		public void initializeClass(){}
 		public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 		public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

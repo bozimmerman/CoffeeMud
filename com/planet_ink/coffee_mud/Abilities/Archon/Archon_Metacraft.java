@@ -49,7 +49,7 @@ public class Archon_Metacraft extends ArchonSkill
 			Vector V=new Vector();
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
-				Ability A=(Ability)e.nextElement();
+				Ability A=e.nextElement();
 				if(A instanceof ItemCraftor)
 					V.addElement(A.copyOf());
 			}
@@ -228,7 +228,7 @@ public class Archon_Metacraft extends ArchonSkill
 				ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe);
 				if(pair!=null) items.addAll(pair.asList());
 			}
-			if((items==null)||(items.size()==0)) continue;
+			if(items.size()==0) continue;
 			success=true;
 			if(toWHERE.equals("SELF")||toWHERE.equals("HERE"))
 				for(Item building : items)

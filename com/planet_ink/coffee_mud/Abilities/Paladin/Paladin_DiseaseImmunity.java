@@ -56,7 +56,7 @@ public class Paladin_DiseaseImmunity extends PaladinSkill
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if((affected!=null)&&(CMLib.flags().isGood(affected))&&(affected instanceof MOB))
-			affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+50+proficiency()+(5*getXLEVELLevel((MOB)affected)));
+		if((affected!=null)&&(CMLib.flags().isGood(affected)))
+			affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+50+proficiency()+(5*getXLEVELLevel(affected)));
 	}
 }

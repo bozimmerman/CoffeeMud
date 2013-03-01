@@ -408,7 +408,7 @@ public class Destroy extends StdCommand
 				{
 					Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
-						srchContainer=(Container)I;
+						srchContainer=I;
 					else
 					{
 						mob.tell("MOB or Container '"+rest+"' not found.");
@@ -1108,7 +1108,7 @@ public class Destroy extends StdCommand
 				if((protectedOnes!=null)&&(protectedOnes.size()>0))
 					for(int b=0;b<protectedOnes.size();b++)
 					{
-						String B=(String)protectedOnes.get(b);
+						String B=protectedOnes.get(b);
 						if(((b+1)!=which)&&(B.trim().length()>0))
 							newNoPurge.append(B+"\n");
 					}
@@ -1154,11 +1154,11 @@ public class Destroy extends StdCommand
 			{
 				StringBuffer list=new StringBuffer("");
 				for(int v=0;v<V.size();v++)
-					list.append(((Tickable)V.get(v)).name()+", ");
+					list.append(V.get(v).name()+", ");
 				if((mob.session()!=null)&&(mob.session().confirm("Destroy the following ticking objects: "+list.substring(0,list.length()-2)+"  (y/N)? ","N")))
 				{
 					for(int v=0;v<V.size();v++)
-						CMLib.threads().deleteTick((Tickable)V.get(v),-1);
+						CMLib.threads().deleteTick(V.get(v),-1);
 					Log.sysOut("CreateEdit",mob.Name()+" destroyed ticks named '"+which+"'.");
 				}
 			}
@@ -1227,17 +1227,17 @@ public class Destroy extends StdCommand
 			String name=CMParms.combine(commands,2);
 			int which=-1;
 			for(int v=0;v<V.size();v++)
-				if(((String)V.get(v)).equalsIgnoreCase(name))
+				if(V.get(v).equalsIgnoreCase(name))
 				{
-					name=(String)V.get(v);
+					name=V.get(v);
 					which=v;
 					break;
 				}
 			if(which<0)
 			for(int v=0;v<V.size();v++)
-				if(((String)V.get(v)).startsWith(name))
+				if(V.get(v).startsWith(name))
 				{
-					name=(String)V.get(v);
+					name=V.get(v);
 					which=v;
 					break;
 				}

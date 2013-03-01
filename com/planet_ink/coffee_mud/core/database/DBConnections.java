@@ -767,7 +767,7 @@ public class DBConnections
 			int unsuccesses=0;
 			while(Queue.size()>0)
 			{
-				String queueLine=(String)Queue.elementAt(0);
+				String queueLine=Queue.elementAt(0);
 				Queue.removeElementAt(0);
 
 				int firstTab=queueLine.indexOf("\t!|!\t");
@@ -909,8 +909,8 @@ public class DBConnections
 	public void reportError()
 	{
 		consecutiveErrors++;
-		double size=(double)connections.size();
-		double down=(double)consecutiveErrors;
+		double size=connections.size();
+		double down=consecutiveErrors;
 		if((down/size)>.25)
 		{
 			disconnected=true;

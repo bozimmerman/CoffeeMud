@@ -118,7 +118,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null, auctionHouse());
 				for(int a=0;a<auctions.size();a++)
 				{
-					Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.get(a);
+					Auctioneer.AuctionData data=auctions.get(a);
 					if(thisTime>=data.tickDown)
 					{
 						if((lastTime==null)||(data.tickDown>lastTime.longValue()))
@@ -223,7 +223,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						return false;
 					}
 					double deposit=aRates.timeListPrice;
-					deposit+=(aRates.timeListPct*((double)CMath.mul(days,I.baseGoldValue())));
+					deposit+=(aRates.timeListPct*(CMath.mul(days,I.baseGoldValue())));
 					String depositAmt=CMLib.beanCounter().nameCurrencyLong(mob, deposit);
 					if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
 					{
@@ -448,7 +448,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						CMLib.commands().postChannel(this,"AUCTION","New "+thisData.daysRemaining(thisData.auctioningM,msg.source())+" day auction: "+thisData.auctioningI.name(),true);
 						AuctionRates aRates=new AuctionRates(this);
 						double deposit=aRates.timeListPrice;
-						deposit+=(aRates.timeListPct*((double)CMath.mul(thisData.daysRemaining(mob,this),thisData.auctioningI.baseGoldValue())));
+						deposit+=(aRates.timeListPct*(CMath.mul(thisData.daysRemaining(mob,this),thisData.auctioningI.baseGoldValue())));
 						CMLib.beanCounter().subtractMoney(mob,deposit);
 						thisData.auctioningI.destroy();
 						CMLib.commands().postSay(this,mob,"Your auction for "+thisData.auctioningI.name()+" is now open.  When it is done, you will receive either your winnings automatically, or the returned item automatically.",true,false);
@@ -616,7 +616,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	protected Area getStartArea(){
 		Area A=CMLib.map().getStartArea(this);
 		if(A==null) CMLib.map().areaLocation(this);
-		if(A==null) A=(Area)CMLib.map().areas().nextElement();
+		if(A==null) A=CMLib.map().areas().nextElement();
 		return A;
 	}
 

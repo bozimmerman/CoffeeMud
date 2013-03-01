@@ -94,7 +94,7 @@ public class Catalog extends StdCommand
 		if(exactOnly) return (Physical)data[0];
 		if((data[0]==null)&&((whatKind==0)||(whatKind==1)))
 		{
-			String[] names=(String[])CMLib.catalog().getCatalogMobNames().clone();
+			String[] names=CMLib.catalog().getCatalogMobNames().clone();
 			for(int x=0;x<names.length;x++)
 				if(CMLib.english().containsString(names[x], ID))
 				{	data[0]=CMLib.catalog().getCatalogMob(names[x]); data[1]=Integer.valueOf(1); break;}
@@ -113,7 +113,7 @@ public class Catalog extends StdCommand
 		}
 		if((data[0]==null)&&((whatKind==0)||(whatKind==2)))
 		{
-			String[] names=(String[])CMLib.catalog().getCatalogItemNames().clone();
+			String[] names=CMLib.catalog().getCatalogItemNames().clone();
 			for(int x=0;x<names.length;x++)
 				if(CMLib.english().containsString(names[x], ID))
 				{	data[0]=CMLib.catalog().getCatalogItem(names[x]); data[1]=Integer.valueOf(2); break;}
@@ -348,7 +348,7 @@ public class Catalog extends StdCommand
 						if((mob.session()!=null)
 						&&((del.length>10)||(mob.session().confirm(prefix+"This will permanently delete mob '"+((MOB)P).Name()+"' from the catalog.  Are you sure (y/N)?","N"))))
 						{
-							CMLib.catalog().delCatalog((MOB)P);
+							CMLib.catalog().delCatalog(P);
 							mob.tell("MOB '"+((MOB)P).Name()+" has been permanently removed from the catalog.");
 						}
 					}
@@ -361,7 +361,7 @@ public class Catalog extends StdCommand
 						if((mob.session()!=null)
 						&&((del.length>10)||(mob.session().confirm(prefix+"This will permanently delete item '"+((Item)P).Name()+"' from the catalog.  Are you sure (y/N)?","N"))))
 						{
-							CMLib.catalog().delCatalog((Item)P);
+							CMLib.catalog().delCatalog(P);
 							mob.tell("Item '"+P.Name()+" has been permanently removed from the catalog.");
 						}
 					}

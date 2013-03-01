@@ -122,7 +122,7 @@ public class Questwins extends StdCommand
 			Collections.sort(qVec);
 			StringBuffer msg=new StringBuffer("^HQuests you are listed as having accepted:^?^N\n\r");
 			for(int i=0;i<qVec.size();i++)
-				msg.append(((String)qVec.elementAt(i))+"^N\n\r");
+				msg.append((qVec.elementAt(i))+"^N\n\r");
 			if(!mob.isMonster())
 				mob.tell(msg.toString()+"\n\r^HEnter QUEST [QUEST NAME] for more information.^N^.");
 			
@@ -154,9 +154,7 @@ public class Questwins extends StdCommand
 			if(!Q.name().equals(name))
 				name+=" ("+Q.name()+")";
 			mob.tell("^HQuest Information: ^w"+name+"^N");
-			String instructions=null;
-			if((instructions==null)||(instructions.length()==0))
-				instructions=foundS.getVar("*","INSTRUCTIONS");
+			String instructions=foundS.getVar("*","INSTRUCTIONS");
 			if((instructions==null)||(instructions.length()==0))
 				instructions=Q.isStat("INSTRUCTIONS")?Q.getStat("INSTRUCTIONS"):null;
 			if((instructions==null)||(instructions.length()==0))

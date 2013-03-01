@@ -421,7 +421,7 @@ public class RaceData extends StdWebMacro
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			String cnam=A.ID();
 			if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
 				continue;
@@ -502,7 +502,7 @@ public class RaceData extends StdWebMacro
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			String cnam=((Ability)a.nextElement()).ID();
+			String cnam=a.nextElement().ID();
 			str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 		}
 		str.append("</SELECT>");
@@ -565,7 +565,7 @@ public class RaceData extends StdWebMacro
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			String cnam=((Ability)a.nextElement()).ID();
+			String cnam=a.nextElement().ID();
 			str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 		}
 		str.append("</SELECT>");
@@ -605,9 +605,7 @@ public class RaceData extends StdWebMacro
 			}
 
 			String newRaceID=httpReq.getUrlParameter("NEWRACE");
-			Race R = null;
-			if(R==null)
-				R=(Race)httpReq.getRequestObjects().get("RACE-"+last);
+			Race R = (Race)httpReq.getRequestObjects().get("RACE-"+last);
 			if((R==null)
 			&&(newRaceID!=null)
 			&&(newRaceID.length()>0)
@@ -636,7 +634,7 @@ public class RaceData extends StdWebMacro
 						if(s.toString().startsWith("<RACE>"))
 							s=new StringBuilder(s.toString().substring(6));
 						int limit=70;
-						if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
+						if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 						str.append(helpHelp(s,limit));
 					}
 				}
@@ -743,7 +741,7 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("BODY"))
 				{
 					str.append("<TABLE WIDTH=100% BORDER=0><TR>");
-					String font=(String)parms.get("FONT");
+					String font=parms.get("FONT");
 					if(font==null) font="";
 					int col=-1;
 					for(int i=0;i<Race.BODYPARTSTR.length;i++)
@@ -770,11 +768,11 @@ public class RaceData extends StdWebMacro
 							str.append(codes.name(b)+", ");
 				}
 				if(parms.containsKey("RABLE"))
-					str.append(dynAbilities(R.racialAbilities(null),R.ID(),R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
+					str.append(dynAbilities(R.racialAbilities(null),R.ID(),R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("REFFS"))
-					str.append(dynEffects(R.ID(),R.racialEffects(null),R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
+					str.append(dynEffects(R.ID(),R.racialEffects(null),R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("CABLE"))
-					str.append(cabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
+					str.append(cabilities(R,httpReq,parms,0,parms.get("FONT"))+", ");
 				if(parms.containsKey("WEARID"))
 				{
 					String old=httpReq.getUrlParameter("WEARID");
@@ -909,7 +907,7 @@ public class RaceData extends StdWebMacro
 					for(int i=0;i<Race.AGE_DESCS.length;i++)
 					{
 						int lastVal=val;
-						val=CMath.s_int((String)httpReq.getUrlParameter("AGE"+i));
+						val=CMath.s_int(httpReq.getUrlParameter("AGE"+i));
 						if(val<lastVal){ val=lastVal; httpReq.addFakeUrlParameter("AGE"+i,""+val);}
 						str.append("<INPUT TYPE=TEXT SIZE=4 NAME=AGE"+i+" VALUE="+val+">"+Race.AGE_DESCS[i]+"<BR>");
 					}
@@ -952,18 +950,15 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("CLASSES"))
 				{
-					if(mob==null)
-					{
-						mob=CMClass.getFactoryMOB();
-						mob.setSession((Session)CMClass.getCommon("DefaultSession"));
-						mob.baseCharStats().setMyRace(R);
-						R.startRacing(mob,false);
-						mob.recoverCharStats();
-						mob.recoverCharStats();
-						mob.recoverPhyStats();
-						mob.recoverMaxState();
-						mob.setSession(null);
-					}
+					mob=CMClass.getFactoryMOB();
+					mob.setSession((Session)CMClass.getCommon("DefaultSession"));
+					mob.baseCharStats().setMyRace(R);
+					R.startRacing(mob,false);
+					mob.recoverCharStats();
+					mob.recoverCharStats();
+					mob.recoverPhyStats();
+					mob.recoverMaxState();
+					mob.setSession(null);
 					for(int i: CharStats.CODES.BASE())
 						mob.baseCharStats().setStat(i,25);
 					mob.recoverCharStats();

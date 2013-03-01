@@ -919,7 +919,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							case 'O': regarding=tool; break;
 							}
 							String replacement=null;
-							Integer I=(Integer)getTagTable().get(cmd.substring(1));
+							Integer I=getTagTable().get(cmd.substring(1));
 							if(I==null)
 							{
 								if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))

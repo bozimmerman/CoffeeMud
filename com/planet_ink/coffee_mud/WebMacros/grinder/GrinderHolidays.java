@@ -78,7 +78,7 @@ public class GrinderHolidays {
 			return (String)resp;
 		if(steps!=null)
 			encodedData=CMLib.quests().getEncodedHolidayData(steps.get(index));
-		if(encodedData==null)
+		if((encodedData==null)||(steps==null))
 			return "Error reading holiday data (code: "+((resp instanceof List)?"T":"F")+":"+((steps==null)?"F":"T")+":"+((encodedData==null)?"F":"T")+")";
 		DVector settings=encodedData.settings;
 		DVector behaviors=encodedData.behaviors;
@@ -182,7 +182,7 @@ public class GrinderHolidays {
 		Vector priceFV=new Vector();
 		for(int i=1;httpReq.isUrlParameter("PRCFAC"+i);i++)
 			if(CMath.isPct(httpReq.getUrlParameter("PRCFAC"+i).trim()))
-				priceFV.add(((String)(CMath.s_pct(httpReq.getUrlParameter("PRCFAC"+i).trim())+" "+httpReq.getUrlParameter("PMASK"+i).trim())).trim());
+				priceFV.add((CMath.s_pct(httpReq.getUrlParameter("PRCFAC"+i).trim())+" "+httpReq.getUrlParameter("PMASK"+i).trim()).trim());
 		setText(stats,"PRICEMASKS",CMParms.toStringList(priceFV));
 
 		String err=CMLib.quests().alterHoliday(holidayName, encodedData);

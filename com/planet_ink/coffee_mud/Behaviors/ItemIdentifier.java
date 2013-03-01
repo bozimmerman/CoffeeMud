@@ -89,9 +89,9 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool() instanceof Item))
 		{
 			double cost=cost((Item)msg.tool());
-			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<((double)cost))
+			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<(cost))
 			{
-				String costStr=CMLib.beanCounter().nameCurrencyShort(observer,(double)cost);
+				String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
 				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to identify that.",true,false);
 				return false;
 			}
@@ -118,8 +118,8 @@ public class ItemIdentifier extends StdBehavior
 		{
 			Item I = (Item)msg.tool();
 			double cost=cost(I);
-			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
-			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
+			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),cost);
+			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
 			source.recoverPhyStats();
 			CMMsg newMsg=CMClass.getMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+costStr+" to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
@@ -139,7 +139,7 @@ public class ItemIdentifier extends StdBehavior
 				up.append("It is a "+Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()+" weapon.\n\r");
 				up.append("It does "+Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()+" damage.\n\r");
 			}
-			up.append(((Item)I).secretIdentity());
+			up.append(I.secretIdentity());
 			newMsg=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) '"+up.toString()+"'^?.");
 			msg.addTrailerMsg(newMsg);
 			newMsg=CMClass.getMsg(observer,source,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");

@@ -152,7 +152,7 @@ public class Thief_Safehouse extends ThiefSkill
 			int v=0;
 			for(;v<V.size();v++)
 			{
-				R=(Room)V.get(v);
+				R=V.get(v);
 				if((isGoodSafehouse(R))&&(!isLawHere(R)))
 					break;
 			}

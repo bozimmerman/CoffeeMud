@@ -157,7 +157,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		while(start<=end)
 		{
 			int mid=(end+start)/2;
-			int comp=compareTo(super.get(mid),(String)arg0);
+			int comp=compareTo(super.get(mid),arg0);
 			if(comp==0)
 				return super.get(mid);
 			else
@@ -178,7 +178,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		while(start<=end)
 		{
 			int mid=(end+start)/2;
-			int comp=compareTo(super.get(mid),(CMObject)arg0);
+			int comp=compareTo(super.get(mid),arg0);
 			if(comp==0)
 				return super.get(mid);
 			else

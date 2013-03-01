@@ -280,13 +280,13 @@ public class Import extends StdCommand
 		else
 		if(V.size()>1)
 		{
-			String lineAfter=(String)V.get(1);
+			String lineAfter=V.get(1);
 			if(lineAfter.indexOf('~')<0)
 				return "";
 			lineAfter=lineAfter.substring(0,lineAfter.length()-1);
 			if((lineAfter.indexOf(".are")>=0)&&(V.size()>2)&&(lineAfter.indexOf("@@")<0))
 			{
-				lineAfter=(String)V.get(2);
+				lineAfter=V.get(2);
 				if(lineAfter.indexOf('~')<0)
 					return "";
 				lineAfter=lineAfter.substring(0,lineAfter.length()-1).trim();
@@ -295,7 +295,7 @@ public class Import extends StdCommand
 				else
 				if(V.size()>3)
 				{
-					lineAfter=(String)V.get(3);
+					lineAfter=V.get(3);
 					if(lineAfter.indexOf('~')<0)
 						return "";
 					if(lineAfter.endsWith("~")) 
@@ -350,7 +350,7 @@ public class Import extends StdCommand
 			while(calledThis.startsWith("#0")&&(calledThis.length()>2))
 				calledThis="#"+calledThis.substring(2);
 			if(hashedRoomSet.containsKey(areaName+calledThis))
-				return (Room)hashedRoomSet.get(areaName+calledThis);
+				return hashedRoomSet.get(areaName+calledThis);
 			for(String key : hashedRoomSet.keySet())
 				if(key.endsWith(calledThis))
 					return hashedRoomSet.get(key);
@@ -361,12 +361,12 @@ public class Import extends StdCommand
 			while(calledThis.startsWith(areaName+"#0")&&(calledThis.length()>(areaName.length()+2)))
 				calledThis=areaName+"#"+calledThis.substring(areaName.length()+2);
 			if(hashedRoomSet.containsKey(calledThis))
-				return (Room)hashedRoomSet.get(calledThis);
+				return hashedRoomSet.get(calledThis);
 		}
 		while(calledThis.startsWith("0")&&(calledThis.length()>1))
 			calledThis=calledThis.substring(1);
 		if(hashedRoomSet.containsKey(calledThis))
-			return (Room)hashedRoomSet.get(calledThis);
+			return hashedRoomSet.get(calledThis);
 		for(String key : hashedRoomSet.keySet())
 			if(key.endsWith("#"+calledThis))
 				return hashedRoomSet.get(key);
@@ -471,7 +471,7 @@ public class Import extends StdCommand
 		V=new XVector<String>(V);
 		for(int v=0;v<V.size();v++)
 		{
-			String s=((String)V.get(v)).trim();
+			String s=V.get(v).trim();
 			if(s.toUpperCase().startsWith("#AUTHOR "))
 			{
 				s=s.substring(8).trim();
@@ -497,7 +497,7 @@ public class Import extends StdCommand
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
 				if(CMParms.parse(s).size()>0)
-					s=(String)CMParms.parse(s).lastElement();
+					s=CMParms.parse(s).lastElement();
 				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
 					continue;
 				return s;
@@ -517,7 +517,7 @@ public class Import extends StdCommand
 					if((x>1)
 					&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
 					&&(CMParms.parse(s).size()>0))
-						s=(String)CMParms.parse(s).lastElement();
+						s=CMParms.parse(s).lastElement();
 					else
 					if(x>1) 
 						s=s.substring(0,x).trim();
@@ -549,9 +549,9 @@ public class Import extends StdCommand
 				}
 				else
 				if((CMParms.parse(s).size()>2)
-				&&(CMath.isNumber((String)CMParms.parse(s).elementAt(0)))
-				&&(CMath.isNumber((String)CMParms.parse(s).elementAt(1))))
-					s=(String)CMParms.parse(s).elementAt(2);
+				&&(CMath.isNumber(CMParms.parse(s).elementAt(0)))
+				&&(CMath.isNumber(CMParms.parse(s).elementAt(1))))
+					s=CMParms.parse(s).elementAt(2);
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
 				int x=s.indexOf(' ');
@@ -571,7 +571,7 @@ public class Import extends StdCommand
 				if((x>1)
 				&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
 				&&(CMParms.parse(s).size()>0))
-					s=(String)CMParms.parse(s).lastElement();
+					s=CMParms.parse(s).lastElement();
 				else
 				if(x>1) 
 					s=s.substring(0,x).trim();
@@ -590,7 +590,7 @@ public class Import extends StdCommand
 				if((x>1)
 				&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
 				&&(CMParms.parse(s).size()>0))
-					s=(String)CMParms.parse(s).lastElement();
+					s=CMParms.parse(s).lastElement();
 				else
 				if(x>1) 
 					s=s.substring(0,x).trim();
@@ -713,12 +713,12 @@ public class Import extends StdCommand
 	protected static String nextLine(List<String> V)
 	{
 		if(V.size()==0) return "";
-		return (String)V.get(0);
+		return V.get(0);
 	}
 	protected static String eatLine(List<String> V)
 	{
 		if(V.size()==0) return "";
-		String s=(String)V.get(0);
+		String s=V.get(0);
 		V.remove(0);
 		return s;
 	}
@@ -1718,9 +1718,9 @@ public class Import extends StdCommand
 		List<String> useThisOne=null;
 		while(buf.size()>0)
 		{
-			String s=((String)buf.get(0)).toUpperCase().trim();
-			if(s.startsWith("#")&&((String)buf.get(0)).startsWith(" "))
-				s=((String)buf.get(0)).toUpperCase();
+			String s=buf.get(0).toUpperCase().trim();
+			if(s.startsWith("#")&&buf.get(0).startsWith(" "))
+				s=buf.get(0).toUpperCase();
 			
 			if((useThisOne==areaData)&&(s.length()==0))
 			{
@@ -1851,7 +1851,7 @@ public class Import extends StdCommand
 			if(useThisOne!=null)
 			{
 				if(okString)
-					useThisOne.add(CMLib.coffeeFilter().safetyFilter((String)buf.get(0)));
+					useThisOne.add(CMLib.coffeeFilter().safetyFilter(buf.get(0)));
 				buf.remove(0);
 			}
 			else
@@ -2352,7 +2352,7 @@ public class Import extends StdCommand
 			{
 				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
-					Ability A=(Ability)a.nextElement();
+					Ability A=a.nextElement();
 					if(A.ID().startsWith("Specialization"))
 						M.addNonUninvokableEffect((Ability)A.newInstance());
 				}
@@ -3823,7 +3823,7 @@ public class Import extends StdCommand
 					boolean squiggleFound=false;
 					for(int y=0;y<objV.size();y++)
 					{
-						String ts=(String)objV.get(y);
+						String ts=objV.get(y);
 						if(ts.indexOf('~')>=0)
 						{
 							squiggleFound=true;
@@ -4810,7 +4810,7 @@ public class Import extends StdCommand
 					CMLib.login().notifyFriends(M,"^X"+M.Name()+" has just been created.^.^?");
 					List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel((String)channels.get(i),M.clans(),M.Name()+" has just been created.",true);
+						CMLib.commands().postChannel(channels.get(i),M.clans(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
 						M.setStartRoom(CMLib.login().getDefaultStartRoom(M));
 					if(M.location()==null)
@@ -5160,8 +5160,8 @@ public class Import extends StdCommand
 				//	Log.debugOut("IMPORT","Found: "+plainRoomID+" ("+areaName+")");
 
 				if((roomV.size()>2)
-				&&(((String)roomV.get(0)).trim().equals("~"))
-				&&(((String)roomV.get(1)).trim().equals("~")))
+				&&(roomV.get(0).trim().equals("~"))
+				&&(roomV.get(1).trim().equals("~")))
 				{
 					eatLineSquiggle(roomV);
 					eatLineSquiggle(roomV);

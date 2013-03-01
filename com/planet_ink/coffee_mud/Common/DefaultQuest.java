@@ -94,7 +94,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public boolean suspended(){ return suspended;}
 	public void setSuspended(boolean truefalse){suspended=truefalse;}
 
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
 	public void initializeClass(){}
 
 	public Object getDesignatedObject(String named)
@@ -141,7 +141,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				}
 				if(foundKey)
 					for(int d=0;d<delThese.size();d++)
-						Resources.removeResource((String)delThese.elementAt(d));
+						Resources.removeResource(delThese.elementAt(d));
 			}
 			internalFiles.clear();
 			internalFiles=null;
@@ -219,10 +219,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		List<List<String>> setScripts=CMLib.quests().parseQuestCommandLines(script,"SET",startAtLine);
 		for(int v=0;v<setScripts.size();v++)
 		{
-			parsedLine=(List<String>)setScripts.get(v);
+			parsedLine=setScripts.get(v);
 			if(parsedLine.size()>1)
 			{
-				var=((String)parsedLine.get(1)).toUpperCase();
+				var=parsedLine.get(1).toUpperCase();
 				val=CMParms.combine(parsedLine,2);
 				if(isStat(var))
 					setStat(var,val);
@@ -443,7 +443,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			boolean isQuiet=q.beQuiet;
 			if(p.size()>0)
 			{
-				String cmd=((String)p.elementAt(0)).toUpperCase();
+				String cmd=p.elementAt(0).toUpperCase();
 				if(cmd.equals("<SCRIPT>"))
 				{
 					StringBuffer jscript=new StringBuffer("");
@@ -488,17 +488,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					}
 					isQuiet=true;
 					p.removeElementAt(0);
-					cmd=((String)p.elementAt(0)).toUpperCase();
+					cmd=p.elementAt(0).toUpperCase();
 				}
 				if(cmd.equals("STEP"))
 				{
-					if((p.size()>1)&&(((String)p.elementAt(1)).equalsIgnoreCase("BREAK")))
+					if((p.size()>1)&&(p.elementAt(1).equalsIgnoreCase("BREAK")))
 					{
 						q.lastLine=script.size();
 						q.done=true;
 					}
 					else
-					if((p.size()>1)&&(((String)p.elementAt(1)).equalsIgnoreCase("BACK")))
+					if((p.size()>1)&&(p.elementAt(1).equalsIgnoreCase("BACK")))
 					{
 						if(startLine>=0) q.lastLine=q.startLine;
 					}
@@ -514,7 +514,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if(q.roomGroup!=null)
 					{
 						for(int r=0;r<q.roomGroup.size();r++)
-							CMLib.map().resetRoom((Room)q.roomGroup.get(r), true);
+							CMLib.map().resetRoom(q.roomGroup.get(r), true);
 					}
 					else
 					if(q.area!=null)
@@ -533,7 +533,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						errorOccurred(q,isQuiet,"Quest '"+name()+"', unfound variable on set.");
 						break;
 					}
-					cmd=((String)p.elementAt(1)).toUpperCase();
+					cmd=p.elementAt(1).toUpperCase();
 					if(cmd.equals("AREA"))
 					{
 						if(p.size()<3){
@@ -547,7 +547,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						Vector names=new Vector();
 						Vector areas=new Vector();
-						if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
+						if((p.size()>3)&&(p.elementAt(2).equalsIgnoreCase("any")))
 							for(int ip=3;ip<p.size();ip++)
 								names.addElement(p.elementAt(ip));
 						else
@@ -599,7 +599,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							names.addElement(p.elementAt(ip));
 						for(int n=0;n<names.size();n++)
 						{
-							String areaName=(String)names.elementAt(n);
+							String areaName=names.elementAt(n);
 							int oldSize=areas.size();
 							if(areaName.equalsIgnoreCase("any"))
 								areas.addElement(CMLib.map().getRandomArea());
@@ -610,7 +610,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								{
 									for (Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements(); )
 									{
-										Area A2=(Area)e.nextElement();
+										Area A2=e.nextElement();
 										if(!areas.contains(A2))
 											areas.add(e.nextElement());
 									}
@@ -630,10 +630,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							Room R=null;
 							for(Enumeration<Area> e=areas.elements();e.hasMoreElements();)
 							{
-								A=(Area)e.nextElement();
+								A=e.nextElement();
 								for(Enumeration<Room> e2=A.getMetroMap();e2.hasMoreElements();)
 								{
-									R=(Room)e2.nextElement();
+									R=e2.nextElement();
 									if(!q.roomGroup.contains(R))
 										q.roomGroup.add(R);
 								}
@@ -650,7 +650,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if(cmd.equals("MOBTYPE"))
 					{
 						boolean reselect=false;
-						if((p.size()>2)&&(((String)p.elementAt(2)).equalsIgnoreCase("reselect")))
+						if((p.size()>2)&&(p.elementAt(2).equalsIgnoreCase("reselect")))
 						{
 							p.removeElementAt(2);
 							reselect=true;
@@ -667,7 +667,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							Vector<String> mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
 							for(int t=0;t<mobTypes.size();t++)
 							{
-								String mobType=(String)mobTypes.elementAt(t);
+								String mobType=mobTypes.elementAt(t);
 								if(mobType.startsWith("-")) continue;
 								if(q.mobGroup==null)
 								{
@@ -722,12 +722,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 							for(int t=0;t<mobTypes.size();t++)
 							{
-								String mobType=(String)mobTypes.elementAt(t);
+								String mobType=mobTypes.elementAt(t);
 								if(!mobType.startsWith("-")) continue;
 								mobType=mobType.substring(1);
 								for(int i=choices.size()-1;i>=0;i--)
 								{
-									MOB M2=(MOB)choices.get(i);
+									MOB M2=choices.get(i);
 									if((M2!=null)
 									&&(M2.isMonster())
 									&&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
@@ -746,13 +746,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								for(int c=choices.size()-1;c>=0;c--)
 									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse((Environmental)choices.get(c))!=null))
+									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
 										choices.remove(c);
 								if((choices.size()==0)&&(!isQuiet))
 									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 							}
 							if(choices.size()>0)
-								q.mob=(MOB)choices.get(CMLib.dice().roll(1,choices.size(),-1));
+								q.mob=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						}
 						if(q.mob==null)
 						{
@@ -782,7 +782,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					{
 						q.mobGroup=null;
 						boolean reselect=false;
-						if((p.size()>2)&&(((String)p.elementAt(2)).equalsIgnoreCase("reselect")))
+						if((p.size()>2)&&(p.elementAt(2).equalsIgnoreCase("reselect")))
 						{
 							p.removeElementAt(2);
 							reselect=true;
@@ -833,7 +833,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								for(int c=choices.size()-1;c>=0;c--)
 									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse((Environmental)choices.get(c))!=null))
+									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
 										choices.remove(c);
 								if((choices.size()==0)&&(!isQuiet))
 									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
@@ -856,7 +856,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					{
 						q.itemGroup=null;
 						boolean reselect=false;
-						if((p.size()>2)&&(((String)p.elementAt(2)).equalsIgnoreCase("reselect")))
+						if((p.size()>2)&&(p.elementAt(2).equalsIgnoreCase("reselect")))
 						{
 							p.removeElementAt(2);
 							reselect=true;
@@ -904,7 +904,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								for(int c=choices.size()-1;c>=0;c--)
 									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse((Environmental)choices.get(c))!=null))
+									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
 										choices.remove(c);
 								if((choices.size()==0)&&(!isQuiet))
 									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
@@ -926,7 +926,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if(cmd.equals("ITEMTYPE"))
 					{
 						boolean reselect=false;
-						if((p.size()>2)&&(((String)p.elementAt(2)).equalsIgnoreCase("reselect")))
+						if((p.size()>2)&&(p.elementAt(2).equalsIgnoreCase("reselect")))
 						{
 							p.removeElementAt(2);
 							reselect=true;
@@ -992,7 +992,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								itemType=itemType.substring(1);
 								for(int i=choices.size()-1;i>=0;i--)
 								{
-									Item I2=(Item)choices.get(i);
+									Item I2=choices.get(i);
 									if((CMClass.classID(I2).toUpperCase().indexOf(itemType)>=0)
 									||(I2.name().toUpperCase().indexOf(itemType)>=0)
 									||(I2.displayText().toUpperCase().indexOf(itemType)>=0))
@@ -1003,13 +1003,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								for(int c=choices.size()-1;c>=0;c--)
 									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse((Environmental)choices.get(c))!=null))
+									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
 										choices.remove(c);
 								if((choices.size()==0)&&(!isQuiet))
 									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 							}
 							if(choices.size()>0)
-								q.item=(Item)choices.get(CMLib.dice().roll(1,choices.size(),-1));
+								q.item=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						}
 						if(q.item==null)
 						{
@@ -1033,7 +1033,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					}
 					else
 					if(cmd.equals("PRESERVE"))
-						q.preserveState=CMath.parseIntExpression((String)p.elementAt(2));
+						q.preserveState=CMath.parseIntExpression(p.elementAt(2));
 					else
 					if(cmd.equals("LOCALE")||cmd.equals("LOCALEGROUP")||cmd.equals("LOCALEGROUPAROUND"))
 					{
@@ -1057,10 +1057,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							q.roomGroup=null;
 							if(p.size()<3) continue;
-							range=CMath.parseIntExpression((String)p.elementAt(2));
+							range=CMath.parseIntExpression(p.elementAt(2));
 							if(range<=0)
 							{
-								errorOccurred(q,isQuiet,"Quest '"+name()+"', !localegrouparound #'"+((String)p.elementAt(2)+"'."));
+								errorOccurred(q,isQuiet,"Quest '"+name()+"', !localegrouparound #'"+(p.elementAt(2)+"'."));
 								break;
 							}
 							p.removeElementAt(2);
@@ -1082,7 +1082,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						if(p.size()<3) continue;
 						Vector names=new Vector();
-						if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
+						if((p.size()>3)&&(p.elementAt(2).equalsIgnoreCase("any")))
 							for(int ip=3;ip<p.size();ip++)
 								names.addElement(p.elementAt(ip));
 						else
@@ -1107,7 +1107,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 												||localeName.equalsIgnoreCase("all"));
 								for(;e.hasNext();)
 								{
-									final Room R2=(Room)e.next();
+									final Room R2=e.next();
 									if(addAll||CMClass.classID(R2).toUpperCase().indexOf(localeName)>=0)
 										choices.add(R2);
 									else
@@ -1139,7 +1139,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						else
 						{
 							if(choices.size()>0)
-								q.room=(Room)choices.get(CMLib.dice().roll(1,choices.size(),-1));
+								q.room=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 							if(q.room==null)
 							{
 								errorOccurred(q,isQuiet,"Quest '"+name()+"', !locale '"+CMParms.combine(p,2)+"'.");
@@ -1172,10 +1172,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						{
 							q.roomGroup=null;
 							if(p.size()<3) continue;
-							range=CMath.s_parseIntExpression((String)p.elementAt(2));
+							range=CMath.s_parseIntExpression(p.elementAt(2));
 							if(range<=0)
 							{
-								errorOccurred(q,isQuiet,"Quest '"+name()+"' roomgrouparound #'"+((String)p.elementAt(2)+"'."));
+								errorOccurred(q,isQuiet,"Quest '"+name()+"' roomgrouparound #'"+(p.elementAt(2)+"'."));
 								break;
 							}
 							p.removeElementAt(2);
@@ -1204,7 +1204,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						Vector names=new Vector();
 						String maskStr=CMLib.quests().breakOutMaskString(s,p);
 						MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
-						if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
+						if((p.size()>3)&&(p.elementAt(2).equalsIgnoreCase("any")))
 							for(int ip=3;ip<p.size();ip++)
 								names.addElement(p.elementAt(ip));
 						else
@@ -1228,7 +1228,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 											 ||localeName.equalsIgnoreCase("all");
 								for(;e.hasNext();)
 								{
-									final Room R2=(Room)e.next();
+									final Room R2=e.next();
 									final String display=R2.displayText().toUpperCase();
 									final String desc=R2.description().toUpperCase();
 									if((mask!=null)&&(!CMLib.masking().maskCheck(mask,R2,true)))
@@ -1281,7 +1281,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						else
 						{
 							if((choices!=null)&&(choices.size()>0))
-								q.room=(Room)choices.get(CMLib.dice().roll(1,choices.size(),-1));
+								q.room=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 							if(q.room==null)
 							{
 								errorOccurred(q,isQuiet,"Quest '"+name()+"', !room '"+CMParms.combine(p,2)+"'.");
@@ -1295,7 +1295,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if(cmd.equals("MOB"))
 					{
 						boolean reselect=false;
-						if((p.size()>2)&&(((String)p.elementAt(2)).equalsIgnoreCase("reselect")))
+						if((p.size()>2)&&(p.elementAt(2).equalsIgnoreCase("reselect")))
 						{
 							p.removeElementAt(2);
 							reselect=true;
@@ -1359,13 +1359,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								for(int c=choices.size()-1;c>=0;c--)
 									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse((Environmental)choices.get(c))!=null))
+									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
 										choices.remove(c);
 								if((choices.size()==0)&&(!isQuiet))
 									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 							}
 							if((choices!=null)&&(choices.size()>0))
-								q.mob=(MOB)choices.get(CMLib.dice().roll(1,choices.size(),-1));
+								q.mob=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						}
 						if(q.mob==null)
 						{
@@ -1391,7 +1391,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if(cmd.equals("ITEM"))
 					{
 						boolean reselect=false;
-						if((p.size()>2)&&(((String)p.elementAt(2)).equalsIgnoreCase("reselect")))
+						if((p.size()>2)&&(p.elementAt(2).equalsIgnoreCase("reselect")))
 						{
 							p.removeElementAt(2);
 							reselect=true;
@@ -1450,13 +1450,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								for(int c=choices.size()-1;c>=0;c--)
 									if(((!reselect)||(!q.reselectable.contains(choices.get(c))))
-									&&(CMLib.quests().objectInUse((Environmental)choices.get(c))!=null))
+									&&(CMLib.quests().objectInUse(choices.get(c))!=null))
 										choices.remove(c);
 								if((choices.size()==0)&&(!isQuiet))
 									errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+p+"'.");
 							}
 							if((choices!=null)&&(choices.size()>0))
-								q.item=(Item)choices.get(CMLib.dice().roll(1,choices.size(),-1));
+								q.item=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						}
 						if(q.item==null)
 						{
@@ -1518,7 +1518,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								int curFaction=0;
 								for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();curFaction++)
 								{
-									F=(Faction)e.nextElement();
+									F=e.nextElement();
 									if(curFaction==whichFaction)
 										break;
 								}
@@ -1565,7 +1565,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									int curFaction=0;
 									for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();curFaction++)
 									{
-										F=(Faction)e.nextElement();
+										F=e.nextElement();
 										if(curFaction==whichFaction)
 											break;
 									}
@@ -1577,11 +1577,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							{
 								for(int pi=2;pi<p.size();pi++)
 								{
-									F=CMLib.factions().getFaction((String)p.elementAt(pi));
-									if(F==null) F=CMLib.factions().getFactionByName((String)p.elementAt(pi));
+									F=CMLib.factions().getFaction(p.elementAt(pi));
+									if(F==null) F=CMLib.factions().getFactionByName(p.elementAt(pi));
 									if(F==null)
 									{
-										errorOccurred(q,isQuiet,"Quest '"+name()+"', !factiongroup '"+(String)p.elementAt(pi)+"'.");
+										errorOccurred(q,isQuiet,"Quest '"+name()+"', !factiongroup '"+p.elementAt(pi)+"'.");
 										break;
 									}
 									if(!q.mysteryData.factionGroup.contains(F))
@@ -1593,7 +1593,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if((q.mysteryData.factionGroup!=null)
 						&&(q.mysteryData.factionGroup.size()>0)
 						&&(q.mysteryData.faction==null))
-							q.mysteryData.faction=(Faction)q.mysteryData.factionGroup.get(CMLib.dice().roll(1,q.mysteryData.factionGroup.size(),-1));
+							q.mysteryData.faction=q.mysteryData.factionGroup.get(CMLib.dice().roll(1,q.mysteryData.factionGroup.size(),-1));
 					}
 					else
 					if(cmd.equals("AGENTGROUP"))
@@ -1608,7 +1608,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							if((q.mysteryData.agentGroup!=null)
 							&&(q.mysteryData.agentGroup.size()>0)
 							&&(q.mysteryData.agent==null))
-								q.mysteryData.agent=(MOB)q.mysteryData.agentGroup.get(CMLib.dice().roll(1,q.mysteryData.agentGroup.size(),-1));
+								q.mysteryData.agent=q.mysteryData.agentGroup.get(CMLib.dice().roll(1,q.mysteryData.agentGroup.size(),-1));
 						}catch(CMException ex){
 							q.mysteryData.agentGroup=null;
 							String numStr=CMParms.combine(p,2).toUpperCase();
@@ -1712,7 +1712,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							Room O=V.get(dex);
 							V.remove(dex);
 							if(!V2.contains(O)) V2.add(O);
-							if(R==null) R=(Room)O;
+							if(R==null) R=O;
 						}
 						q.roomGroup=new Vector<Room>();
 						q.roomGroup.addAll(V2);
@@ -1768,7 +1768,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						for(int pi=2;pi<p.size();pi++)
 						{
-							String numStr=(String)p.elementAt(pi);
+							String numStr=p.elementAt(pi);
 							if(!CMath.isMathExpression(numStr))
 							{
 								errorOccurred(q,isQuiet,"Quest '"+name()+"', "+cmd.toLowerCase()+" !relative hour #: "+numStr+".");
@@ -1831,9 +1831,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if(q.mysteryData==null) q.mysteryData=new MysteryData();
 						List<String> V2=null;
 						int num=-1;
-						if((p.size()>2)&&(CMath.isMathExpression((String)p.elementAt(2))))
+						if((p.size()>2)&&(CMath.isMathExpression(p.elementAt(2))))
 						{
-							num=CMath.s_parseIntExpression((String)p.elementAt(2));
+							num=CMath.s_parseIntExpression(p.elementAt(2));
 							p.removeElementAt(2);
 						}
 						if(cmd.equals("MOTIVEGROUP"))
@@ -1843,7 +1843,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								sizeDownTo(q.mysteryData.motiveGroup,num);
 								V2=q.mysteryData.motiveGroup;
 								if((V2!=null)&&(V2.size()>0))
-									q.mysteryData.motive=(String)V2.get(CMLib.dice().roll(1,V2.size(),-1));
+									q.mysteryData.motive=V2.get(CMLib.dice().roll(1,V2.size(),-1));
 								continue;
 							}catch(CMException ex){
 								q.mysteryData.motiveGroup=null;
@@ -1856,7 +1856,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								sizeDownTo(q.mysteryData.actionGroup,num);
 								V2=q.mysteryData.actionGroup;
 								if((V2!=null)&&(V2.size()>0))
-									q.mysteryData.action=(String)V2.get(CMLib.dice().roll(1,V2.size(),-1));
+									q.mysteryData.action=V2.get(CMLib.dice().roll(1,V2.size(),-1));
 								continue;
 							}catch(CMException ex){
 								q.mysteryData.actionGroup=null;
@@ -1881,7 +1881,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								V2.add(p.elementAt(pi));
 						sizeDownTo(V2,num);
 						if((V2.size()>0)&&(Mstr==null))
-							Mstr=(String)V2.get(CMLib.dice().roll(1,V2.size(),-1));
+							Mstr=V2.get(CMLib.dice().roll(1,V2.size(),-1));
 						if(cmd.equals("MOTIVEGROUP"))
 							q.mysteryData.motive=Mstr;
 						else
@@ -2120,7 +2120,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						if((q.envObject instanceof List)
 						&&(((List)q.envObject).size()>0)
 						&&(((List)q.envObject).get(0) instanceof Environmental))
-							q.envObject=(Environmental)((List)q.envObject).get(CMLib.dice().roll(1,((List)q.envObject).size(),-1));
+							q.envObject=((List)q.envObject).get(CMLib.dice().roll(1,((List)q.envObject).size(),-1));
 						if(!(q.envObject instanceof Environmental))
 						{
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', "+cmd.toLowerCase()+" !object.");
@@ -2157,7 +2157,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						errorOccurred(q,isQuiet,"Quest '"+name()+"', no IMPORT type.");
 						break;
 					}
-					cmd=((String)p.elementAt(1)).toUpperCase();
+					cmd=p.elementAt(1).toUpperCase();
 					if(cmd.equals("MOBS"))
 					{
 						if(p.size()<3)
@@ -2244,7 +2244,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						errorOccurred(q,isQuiet,"Quest '"+name()+"', unfound type on load.");
 						break;
 					}
-					cmd=((String)p.elementAt(1)).toUpperCase();
+					cmd=p.elementAt(1).toUpperCase();
 					if(cmd.equals("MOB")||cmd.equals("MOBGROUP"))
 					{
 						if(q.loadedMobs.size()==0)
@@ -2253,9 +2253,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							break;
 						}
 						int maxToLoad=Integer.MAX_VALUE;
-						if((p.size()>2)&&(CMath.isMathExpression((String)p.elementAt(2))))
+						if((p.size()>2)&&(CMath.isMathExpression(p.elementAt(2))))
 						{
-							maxToLoad=CMath.parseIntExpression((String)p.elementAt(2));
+							maxToLoad=CMath.parseIntExpression(p.elementAt(2));
 							p.removeElementAt(2);
 						}
 						if(p.size()<3)
@@ -2273,7 +2273,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						List<MOB> choices=new Vector();
 						for(int i=0;i<q.loadedMobs.size();i++)
 						{
-							MOB M2=(MOB)q.loadedMobs.get(i);
+							MOB M2=q.loadedMobs.get(i);
 							if((CMLib.masking().maskCheck(mask,M2,true))
 							&&(addAll
 								||(CMLib.english().containsString(M2.name(),mobName))
@@ -2288,7 +2288,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						List<MOB> mobsToDo=new Vector<MOB>();
 						if(cmd.equalsIgnoreCase("MOB"))
-							mobsToDo.add((MOB)choices.get(CMLib.dice().roll(1,choices.size(),-1)));
+							mobsToDo.add(choices.get(CMLib.dice().roll(1,choices.size(),-1)));
 						else
 						{
 							mobsToDo.addAll(choices);
@@ -2297,16 +2297,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						while((mobsToDo.size()>maxToLoad)&&(maxToLoad>0))
 							mobsToDo.remove(CMLib.dice().roll(1,mobsToDo.size(),-1));
 						while((mobsToDo.size()<maxToLoad)&&(maxToLoad>0)&&(maxToLoad<Integer.MAX_VALUE))
-							mobsToDo.add((MOB)((MOB)mobsToDo.get(CMLib.dice().roll(1,mobsToDo.size(),-1))).copyOf());
+							mobsToDo.add((MOB)mobsToDo.get(CMLib.dice().roll(1,mobsToDo.size(),-1)).copyOf());
 						Room choiceRoom=q.room;
 						for(int m=0;m<mobsToDo.size();m++)
 						{
-							q.mob=(MOB)mobsToDo.get(m);
+							q.mob=mobsToDo.get(m);
 							q.room=choiceRoom;
 							if(q.room==null)
 							{
 								if(q.roomGroup!=null)
-									q.room=(Room)q.roomGroup.get(CMLib.dice().roll(1,q.roomGroup.size(),-1));
+									q.room=q.roomGroup.get(CMLib.dice().roll(1,q.roomGroup.size(),-1));
 								else
 								if(q.area!=null)
 									q.room=q.area.getRandomMetroRoom();
@@ -2345,9 +2345,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							break;
 						}
 						int maxToLoad=Integer.MAX_VALUE;
-						if((p.size()>2)&&(CMath.isMathExpression((String)p.elementAt(2))))
+						if((p.size()>2)&&(CMath.isMathExpression(p.elementAt(2))))
 						{
-							maxToLoad=CMath.parseIntExpression((String)p.elementAt(2));
+							maxToLoad=CMath.parseIntExpression(p.elementAt(2));
 							p.removeElementAt(2);
 						}
 						if(p.size()<3)
@@ -2359,7 +2359,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						List<Item> choices=new Vector();
 						for(int i=0;i<q.loadedItems.size();i++)
 						{
-							Item I2=(Item)q.loadedItems.get(i);
+							Item I2=q.loadedItems.get(i);
 							if((itemName.equalsIgnoreCase("any"))
 							||(CMLib.english().containsString(I2.name(),itemName))
 							||(CMLib.english().containsString(I2.displayText(),itemName))
@@ -2386,12 +2386,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						Room choiceRoom=q.room;
 						for(int m=0;m<itemsToDo.size();m++)
 						{
-							q.item=(Item)itemsToDo.get(m);
+							q.item=itemsToDo.get(m);
 							q.room=choiceRoom;
 							if(q.room==null)
 							{
 								if(q.roomGroup!=null)
-									q.room=(Room)q.roomGroup.get(CMLib.dice().roll(1,q.roomGroup.size(),-1));
+									q.room=q.roomGroup.get(CMLib.dice().roll(1,q.roomGroup.size(),-1));
 								else
 								if(q.area!=null)
 									q.room=q.area.getRandomMetroRoom();
@@ -2430,7 +2430,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						errorOccurred(q,isQuiet,"Quest '"+name()+"', unfound type on give.");
 						break;
 					}
-					cmd=((String)p.elementAt(1)).toUpperCase();
+					cmd=p.elementAt(1).toUpperCase();
 					if(cmd.equals("FOLLOWER"))
 					{
 						if(q.mob==null)
@@ -2464,7 +2464,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give follower, no mobs called '"+mobName+"' previously set in script.");
 							break;
 						}
-						MOB M2=(MOB)choices.get(CMLib.dice().roll(1,choices.size(),-1));
+						MOB M2=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						M2.setFollowing(q.mob);
 					}
 					else
@@ -2502,13 +2502,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							itemSet.addAll(q.loadedItems);
 						for(int i=0;i<toSet.size();i++)
 						{
-							MOB M2=(MOB)toSet.get(i);
+							MOB M2=toSet.get(i);
 							runtimeRegisterObject(M2);
 							if(cmd.equals("ITEMS"))
 							{
 								for(int i3=0;i3<itemSet.size();i3++)
 								{
-									Item I3=(Item)itemSet.get(i3);
+									Item I3=itemSet.get(i3);
 									if(q.item==I3)
 									{
 										M2.moveItemTo(I3);
@@ -2526,7 +2526,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							else
 							if(cmd.equals("ITEM"))
 							{
-								Item I3=(Item)itemSet.get(CMLib.dice().roll(1,itemSet.size(),-1));
+								Item I3=itemSet.get(CMLib.dice().roll(1,itemSet.size(),-1));
 								questifyScriptableBehavs(I3);
 								if(q.item==I3)
 								{
@@ -2556,10 +2556,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give ability, ability name not given.");
 							break;
 						}
-						Ability A3=CMClass.findAbility((String)p.elementAt(2));
+						Ability A3=CMClass.findAbility(p.elementAt(2));
 						if(A3==null)
 						{
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give ability, ability name unknown '"+((String)p.elementAt(2))+".");
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give ability, ability name unknown '"+(p.elementAt(2))+".");
 							break;
 						}
 						List<MOB> toSet=new Vector<MOB>();
@@ -2570,7 +2570,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							toSet.addAll(q.mobGroup);
 						for(int i=0;i<toSet.size();i++)
 						{
-							MOB M2=(MOB)toSet.get(i);
+							MOB M2=toSet.get(i);
 							runtimeRegisterAbility(M2,A3.ID(),CMParms.combineWithQuotes(p,3),true);
 						}
 					}
@@ -2587,10 +2587,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give behavior, behavior name not given.");
 							break;
 						}
-						Behavior B=CMClass.getBehavior((String)p.elementAt(2));
+						Behavior B=CMClass.getBehavior(p.elementAt(2));
 						if(B==null)
 						{
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give behavior, behavior name unknown '"+(p.elementAt(2))+".");
 							break;
 						}
 						List toSet=new Vector();
@@ -2619,7 +2619,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give stat, stat name not given.");
 							break;
 						}
-						String stat=(String)p.elementAt(2);
+						String stat=p.elementAt(2);
 						String val=CMParms.combineWithQuotes(p,3);
 						List toSet=new Vector();
 						if(q.envObject instanceof List)
@@ -2653,7 +2653,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						String scope=CMStrings.replaceAll(name()," ","_").toUpperCase().trim();
 						while(proceed&&(p.size()>2))
 						{
-							word=(String)p.elementAt(2);
+							word=p.elementAt(2);
 							proceed=false;
 							if(word.equalsIgnoreCase("SAVABLE"))
 							{
@@ -2718,10 +2718,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give Effect, ability name not given.");
 							break;
 						}
-						Ability A3=CMClass.findAbility((String)p.elementAt(2));
+						Ability A3=CMClass.findAbility(p.elementAt(2));
 						if(A3==null)
 						{
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give Effect, ability name unknown '"+((String)p.elementAt(2))+".");
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give Effect, ability name unknown '"+(p.elementAt(2))+".");
 							break;
 						}
 						List toSet=new Vector();
@@ -2748,7 +2748,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						errorOccurred(q,isQuiet,"Quest '"+name()+"', unfound type on take.");
 						break;
 					}
-					cmd=((String)p.elementAt(1)).toUpperCase();
+					cmd=p.elementAt(1).toUpperCase();
 					if(cmd.equals("ABILITY"))
 					{
 						if((q.mob==null)&&(q.mobGroup==null))
@@ -2761,10 +2761,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take ability, ability name not given.");
 							break;
 						}
-						Ability A3=CMClass.findAbility((String)p.elementAt(2));
+						Ability A3=CMClass.findAbility(p.elementAt(2));
 						if(A3==null)
 						{
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take ability, ability name unknown '"+((String)p.elementAt(2))+".");
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take ability, ability name unknown '"+(p.elementAt(2))+".");
 							break;
 						}
 						List<MOB> toSet=new Vector<MOB>();
@@ -2775,7 +2775,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							toSet.addAll(q.mobGroup);
 						for(int i=0;i<toSet.size();i++)
 						{
-							MOB M2=(MOB)toSet.get(i);
+							MOB M2=toSet.get(i);
 							runtimeRegisterAbility(M2,A3.ID(),CMParms.combineWithQuotes(p,3),false);
 						}
 					}
@@ -2792,10 +2792,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take behavior, behavior name not given.");
 							break;
 						}
-						Behavior B=CMClass.getBehavior((String)p.elementAt(2));
+						Behavior B=CMClass.getBehavior(p.elementAt(2));
 						if(B==null)
 						{
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take behavior, behavior name unknown '"+(p.elementAt(2))+".");
 							break;
 						}
 						List toSet=new Vector();
@@ -2824,10 +2824,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take Effect, ability name not given.");
 							break;
 						}
-						Ability A3=CMClass.findAbility((String)p.elementAt(2));
+						Ability A3=CMClass.findAbility(p.elementAt(2));
 						if(A3==null)
 						{
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take Effect, ability name unknown '"+((String)p.elementAt(2))+".");
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot take Effect, ability name unknown '"+(p.elementAt(2))+".");
 							break;
 						}
 						List toSet=new Vector();
@@ -2913,7 +2913,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			{
 				List<String> parsed=CMLib.quests().parseQuestSteps(baseScript,0,false);
 				for(int p=0;p<parsed.size();p++)
-					spawnQuest((String)parsed.get(p),baseScript,true);
+					spawnQuest(parsed.get(p),baseScript,true);
 			}
 			lastStartDateTime=System.currentTimeMillis();
 			enterDormantState();
@@ -3344,7 +3344,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				List<String> V=Q.getWinners();
 				for(int i=0;i<V.size();i++)
 				{
-					if(((String)V.get(i)).equalsIgnoreCase(name))
+					if(V.get(i).equalsIgnoreCase(name))
 					{
 						V.remove(i);
 						break;
@@ -3367,7 +3367,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		StringBuffer list=new StringBuffer("");
 		List<String> V=Q.getWinners();
 		for(int i=0;i<V.size();i++)
-			list.append(((String)V.get(i))+";");
+			list.append((V.get(i))+";");
 		return list.toString();
 	}
 
@@ -3408,7 +3408,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		List<String> V=Q.getWinners();
 		for(int i=0;i<V.size();i++)
 		{
-			if(((String)V.get(i)).equalsIgnoreCase(name))
+			if(V.get(i).equalsIgnoreCase(name))
 				return true;
 		}
 		return false;
@@ -3880,12 +3880,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			Vector<String> V=CMParms.parse(text.trim().substring(5).trim());
 			if(V.size()>0)
 			{
-				filename=(String)V.firstElement();
+				filename=V.firstElement();
 				Vector parms=null;
 				try{
 					for(int v=1;v<V.size();v++)
 					{
-						parms=CMParms.parse((String)V.elementAt(v));
+						parms=CMParms.parse(V.elementAt(v));
 						Object O=getObjectIfSpecified(parms,oldArgs,0,1);
 						args.add((O==null)?"":O);
 					}
@@ -3906,13 +3906,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				List<XMLLibrary.XMLpiece> topXMLV=CMLib.xml().parseAllXML(xml);
 				for(int t=0;t<topXMLV.size();t++)
 				{
-					XMLLibrary.XMLpiece filePiece=(XMLLibrary.XMLpiece)topXMLV.get(t);
+					XMLLibrary.XMLpiece filePiece=topXMLV.get(t);
 					String name=null;
 					String data=null;
 					if(filePiece.tag.equalsIgnoreCase("FILE")&&(filePiece.contents!=null))
 						for(int p=0;p<filePiece.contents.size();p++)
 						{
-							XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)filePiece.contents.get(p);
+							XMLLibrary.XMLpiece piece=filePiece.contents.get(p);
 							if(piece.tag.equalsIgnoreCase("NAME")) name=piece.value;
 							if(piece.tag.equalsIgnoreCase("DATA")) data=piece.value;
 						}
@@ -4015,9 +4015,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		throws CMException
 	{
 		if(parms.size()-startp==0) throw new CMException("Not specified");
-		StringBuffer allParms=new StringBuffer((String)parms.elementAt(startp));
+		StringBuffer allParms=new StringBuffer(parms.elementAt(startp));
 		for(int p=startp+1;p<parms.size();p++)
-			allParms.append((String)parms.elementAt(p));
+			allParms.append(parms.elementAt(p));
 		Object O=null;
 		XVector V=new XVector();
 		int lastI=0;

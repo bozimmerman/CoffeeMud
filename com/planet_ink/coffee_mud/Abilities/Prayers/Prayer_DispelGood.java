@@ -48,7 +48,7 @@ public class Prayer_DispelGood extends Prayer
 		{
 			if(target instanceof MOB)
 			{
-				if(!CMLib.flags().isGood((MOB)target))
+				if(!CMLib.flags().isGood(target))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}

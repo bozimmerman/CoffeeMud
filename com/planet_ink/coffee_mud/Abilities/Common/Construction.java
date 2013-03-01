@@ -681,7 +681,7 @@ public class Construction extends CraftingSkill
 				commonTell(mob,"You can not do that.");
 				return false;
 			}
-			helpingAbility=(CommonSkill)targetMOB.fetchEffect(ID());
+			helpingAbility=targetMOB.fetchEffect(ID());
 			if(helpingAbility==null)
 			{
 				commonTell(mob,targetMOB.Name()+" is not constructing anything.");

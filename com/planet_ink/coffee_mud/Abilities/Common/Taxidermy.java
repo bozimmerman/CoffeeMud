@@ -84,7 +84,7 @@ public class Taxidermy extends CraftingSkill
 			boolean header=true;
 			for(int v=0;v<strV.size();v++)
 			{
-				String s=(String)strV.get(v);
+				String s=strV.get(v);
 				if(header)
 				{
 					if((V2!=null)&&(V2.size()>0))
@@ -123,7 +123,7 @@ public class Taxidermy extends CraftingSkill
 			{
 				List<String> PP=POSES.get(p);
 				if(PP.size()>1) 
-					str.append(((String)PP.get(0))+"\n");
+					str.append((PP.get(0))+"\n");
 			}
 			mob.tell(str.toString());
 			return true;
@@ -134,10 +134,10 @@ public class Taxidermy extends CraftingSkill
 			for(int p=0;p<POSES.size();p++)
 			{
 				List<String> PP=POSES.get(p);
-				if((PP.size()>1)&&(((String)PP.get(0)).equalsIgnoreCase((String)commands.firstElement())))
+				if((PP.size()>1)&&(PP.get(0).equalsIgnoreCase((String)commands.firstElement())))
 				{
 					commands.removeElementAt(0);
-					pose=(String)PP.get(CMLib.dice().roll(1,PP.size()-1,0));
+					pose=PP.get(CMLib.dice().roll(1,PP.size()-1,0));
 					break;
 				}
 			}

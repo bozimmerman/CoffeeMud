@@ -250,44 +250,41 @@ public class StdCharClass implements CharClass
 			}
 			return false;
 		}
-		if(mob!=null)
+		for(Pair<String,Integer> minReq : getMinimumStatRequirements())
 		{
-			for(Pair<String,Integer> minReq : getMinimumStatRequirements())
+			int statCode=CharStats.CODES.findWhole(minReq.first, true);
+			if(statCode >= 0)
 			{
-				int statCode=CharStats.CODES.findWhole(minReq.first, true);
-				if(statCode >= 0)
+				if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
 				{
-					if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
-					{
-						if(!quiet)
-							mob.tell("You need at least a "+minReq.second.toString()+" "+CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode))+" to become a "+name()+".");
-						return false;
-					}
+					if(!quiet)
+						mob.tell("You need at least a "+minReq.second.toString()+" "+CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode))+" to become a "+name()+".");
+					return false;
 				}
 			}
-			final Race R=mob.baseCharStats().getMyRace();
-			final String[] raceList=getRequiredRaceList();
-			boolean foundOne=raceList.length==0;
-			for(String raceName : raceList)
+		}
+		final Race R=mob.baseCharStats().getMyRace();
+		final String[] raceList=getRequiredRaceList();
+		boolean foundOne=raceList.length==0;
+		for(String raceName : raceList)
+		{
+			if(raceName.equalsIgnoreCase("any") 
+			|| R.ID().equalsIgnoreCase(raceName)
+			|| R.name().equalsIgnoreCase(raceName)
+			|| R.racialCategory().equalsIgnoreCase(raceName))
 			{
-				if(raceName.equalsIgnoreCase("any") 
-				|| R.ID().equalsIgnoreCase(raceName)
-				|| R.name().equalsIgnoreCase(raceName)
-				|| R.racialCategory().equalsIgnoreCase(raceName))
-				{
-					foundOne=true;
-					break;
-				}
+				foundOne=true;
+				break;
 			}
-			if(!foundOne)
+		}
+		if(!foundOne)
+		{
+			if(!quiet)
 			{
-				if(!quiet)
-				{
-					final StringBuilder str=new StringBuilder("You need to be a ").append(getRaceList(raceList)).append("to be a "+name()+".");
-					mob.tell(str.toString());
-				}
-				return false;
+				final StringBuilder str=new StringBuilder("You need to be a ").append(getRaceList(raceList)).append("to be a "+name()+".");
+				mob.tell(str.toString());
 			}
+			return false;
 		}
 		return true;
 	}
@@ -576,7 +573,7 @@ public class StdCharClass implements CharClass
 			}
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)a.nextElement();
+				Ability A=a.nextElement();
 				int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 				if((lvl>=0)
 				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
@@ -593,7 +590,7 @@ public class StdCharClass implements CharClass
 			Vector onesToAdd=new Vector();
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)a.nextElement();
+				Ability A=a.nextElement();
 				if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
 				&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this))
 				&&(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
@@ -734,9 +731,9 @@ public class StdCharClass implements CharClass
 		if(outfit==null) outfit=new Vector<Item>();
 		CR.setStat("NUMOFT",""+outfit.size());
 		for(int i=0;i<outfit.size();i++)
-			CR.setStat("GETOFTID"+i,((Item)outfit.get(i)).ID());
+			CR.setStat("GETOFTID"+i,outfit.get(i).ID());
 		for(int i=0;i<outfit.size();i++)
-			CR.setStat("GETOFTPARM"+i,((Item)outfit.get(i)).text());
+			CR.setStat("GETOFTPARM"+i,outfit.get(i).text());
 
 		CR.setStat("HITPOINTSFORMULA",""+getHitPointsFormula());
 		CR.setStat("MANAFORMULA",""+getManaFormula());

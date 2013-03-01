@@ -92,7 +92,7 @@ public class Split extends StdCommand
 			MOB recipient=(MOB)e.next();
 			for(int v=0;v<V.size();v++)
 			{
-				Coins C=(Coins)V.get(v);
+				Coins C=V.get(v);
 				C=(Coins)C.copyOf();
 				mob.addItem(C);
 				CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");

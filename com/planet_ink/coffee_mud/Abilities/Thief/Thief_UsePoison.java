@@ -102,7 +102,7 @@ public class Thief_UsePoison extends ThiefSkill
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				Ability A=(Ability)V.get(0);
+				Ability A=V.get(0);
 				if(A!=null)
 				{
 					if(target instanceof Weapon)

@@ -120,11 +120,11 @@ public class MOBloader
 				for(Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
 					mob.delTattoo(e.nextElement());
 				for(int v=0;v<V9.size();v++)
-					mob.addTattoo(parseTattoo((String)V9.get(v)));
+					mob.addTattoo(parseTattoo(V9.get(v)));
 				V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 				mob.delAllExpertises();
 				for(int v=0;v<V9.size();v++)
-					mob.addExpertise((String)V9.get(v));
+					mob.addExpertise(V9.get(v));
 				if(pstats.getBirthday()==null)
 					stats.setStat(CharStats.STAT_AGE,
 						pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeMinutes(),60.0)),stats.getMyRace()));
@@ -218,7 +218,7 @@ public class MOBloader
 					String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)
 					{
-						Item container=(Item)itemNums.get(loc);
+						Item container=itemNums.get(loc);
 						if(container instanceof Container)
 							newItem.setContainer((Container)container);
 						else
@@ -238,9 +238,9 @@ public class MOBloader
 			}
 			for(Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
 			{
-				Item keyItem=(Item)e.nextElement();
-				String location=(String)itemLocs.get(keyItem);
-				Item container=(Item)itemNums.get(location);
+				Item keyItem=e.nextElement();
+				String location=itemLocs.get(keyItem);
+				Item container=itemNums.get(location);
 				if(container instanceof Container)
 				{
 					keyItem.setContainer((Container)container);
@@ -413,7 +413,7 @@ public class MOBloader
 			for(String lvl : lvls)
 				thisUser.level+=CMath.s_int(lvl);
 			thisUser.age=(int)DBConnections.getLongRes(R,"CMAGEH");
-			MOB M=CMLib.players().getPlayer((String)thisUser.name);
+			MOB M=CMLib.players().getPlayer(thisUser.name);
 			if((M!=null)&&(M.lastTickedDateTime()>0))
 				thisUser.last=M.lastTickedDateTime();
 			else
@@ -539,7 +539,7 @@ public class MOBloader
 			}
 			for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 			{
-				MOB M=(MOB)e.nextElement();
+				MOB M=e.nextElement();
 				if((M.getLiegeID().equals(liegeID))&&(!done.contains(M.Name())))
 				{
 					head.append("[");
@@ -645,7 +645,7 @@ public class MOBloader
 		if(location==null) location=mob.getStartRoom();
 		List<MOB> V=DBScanFollowers(mob);
 		for(int v=0;v<V.size();v++) {
-			MOB newMOB=(MOB)V.get(v);
+			MOB newMOB=V.get(v);
 			Room room=(location==null)?newMOB.getStartRoom():location;
 			newMOB.setStartRoom(room);
 			newMOB.setLocation(room);
@@ -945,7 +945,7 @@ public class MOBloader
 			Container C=(Container)P;
 			List<Item> contents=C.getContents();
 			for(int c=0;c<contents.size();c++)
-				addFollowerDependent((Item)contents.get(c),list,"@"+myCode+"C");
+				addFollowerDependent(contents.get(c),list,"@"+myCode+"C");
 		}
 
 	}
@@ -997,7 +997,7 @@ public class MOBloader
 		if(mob.Name().length()==0) return;
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
 		for(int i=0;i<channels.size();i++)
-			CMLib.commands().postChannel((String)channels.get(i),mob.clans(),mob.Name()+" has just been deleted.",true);
+			CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just been deleted.",true);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);
 		DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
 		DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"'");
@@ -1285,7 +1285,7 @@ public class MOBloader
 		String[] data=new String[2];
 		for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
-			MOB M=(MOB)e.nextElement();
+			MOB M=e.nextElement();
 			if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
 			{
 				data[0]=M.playerStats().getEmail();
@@ -1324,7 +1324,7 @@ public class MOBloader
 		DBConnection D=null;
 		for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 		{
-			MOB M=(MOB)e.nextElement();
+			MOB M=e.nextElement();
 			if((M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email))) return M.Name();
 		}
 		try

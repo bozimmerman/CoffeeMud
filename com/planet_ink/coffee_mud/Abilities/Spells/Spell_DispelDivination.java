@@ -77,7 +77,7 @@ public class Spell_DispelDivination extends Spell
 		boolean foundSomethingAtLeast=((allDivinations!=null)&&(allDivinations.size()>0));
 		List<Ability> affects=returnOffensiveAffects(mob,target);
 		if(affects.size()>0)
-			revokeThis=(Ability)affects.get(CMLib.dice().roll(1,affects.size(),-1));
+			revokeThis=affects.get(CMLib.dice().roll(1,affects.size(),-1));
 
 		if(revokeThis==null)
 		{

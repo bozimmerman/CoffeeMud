@@ -803,7 +803,7 @@ public class CMFile extends File
 			O=new StringBuffer((String)data);
 		else
 		if(data instanceof StringBuffer)
-			O=(StringBuffer)data;
+			O=data;
 		else
 		if(data instanceof byte[])
 		{
@@ -811,7 +811,7 @@ public class CMFile extends File
 			if(test!=null)
 				O=test;
 			else
-				O=(byte[])data;
+				O=data;
 		}
 		else
 			O=new StringBuffer(data.toString());
@@ -997,7 +997,7 @@ public class CMFile extends File
 		}
 		for(int p=parents.size()-1;p>=0;p--)
 		{
-			PF=(File)parents.elementAt(p);
+			PF=parents.elementAt(p);
 			if((PF.exists())&&(PF.isDirectory())) continue;
 			if((PF.exists()&&(!PF.isDirectory()))||(!PF.mkdir()))
 			{
@@ -1128,7 +1128,7 @@ public class CMFile extends File
 		}
 		final CMFile[] finalDir=new CMFile[dir.size()];
 		for(int f=0;f<dir.size();f++)
-			finalDir[f]=(CMFile)dir.elementAt(f);
+			finalDir[f]=dir.elementAt(f);
 		return finalDir;
 	}
 
@@ -1310,13 +1310,13 @@ public class CMFile extends File
 		}
 		if(set.size()==1)
 		{
-			dirTest=(CMFile)set.firstElement();
+			dirTest=set.firstElement();
 			if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead())&&(!recurse))
 			{ return expandDirs?dirTest.listFiles():new CMFile[]{dirTest};}
 		}
 		cset=new CMFile[set.size()];
 		for(int s=0;s<set.size();s++)
-			cset[s]=(CMFile)set.elementAt(s);
+			cset[s]=set.elementAt(s);
 		return cset;
 	}
 	
@@ -1327,7 +1327,6 @@ public class CMFile extends File
 		if(pathname instanceof CMFile)
 			return ((CMFile)pathname).getAbsolutePath().compareTo(getAbsolutePath());
 		else
-		if(pathname instanceof File)
 		{
 			if(this.localFile!=null)
 				return this.localFile.compareTo(pathname);

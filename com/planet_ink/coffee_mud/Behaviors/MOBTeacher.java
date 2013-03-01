@@ -90,7 +90,7 @@ public class MOBTeacher extends CombatAbilities
 		Ability A=null;
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			A=(Ability)a.nextElement();
+			A=a.nextElement();
 			if((((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))
 				||(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID()))))
 			&&((!noCommon)||((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL))
@@ -165,7 +165,7 @@ public class MOBTeacher extends CombatAbilities
 	{
 		if(CMLib.dice().rollPercentage()<=pct)
 		{
-			Ability A2=(Ability)myAbles.get(A.ID());
+			Ability A2=myAbles.get(A.ID());
 			if(A2==null)
 			{
 				A=(Ability)A.copyOf();

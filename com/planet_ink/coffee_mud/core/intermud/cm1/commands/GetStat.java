@@ -95,19 +95,19 @@ public class GetStat extends CM1Command
 		switch(x)
 		{
 		case 0: return ((MOB)P).session();
-		case 1: return (Modifiable)P;
+		case 1: return P;
 		case 2: return ((MOB)P).charStats();
 		case 3: return ((MOB)P).curState();
-		case 4: return ((Physical)P).phyStats();
+		case 4: return P.phyStats();
 		case 5: return ((MOB)P).baseCharStats();
 		case 6: return ((MOB)P).maxState();
 		case 7: return ((MOB)P).baseState();
-		case 8: return ((Physical)P).basePhyStats();
+		case 8: return P.basePhyStats();
 		case 9: return ((MOB)P).playerStats();
-		case 10:return (Modifiable)P;
-		case 11:return (Modifiable)P;
-		case 12:return (Modifiable)P;
-		case 13:return (Modifiable)P;
+		case 10:return P;
+		case 11:return P;
+		case 12:return P;
+		case 13:return P;
 		}
 		return null;
 	}

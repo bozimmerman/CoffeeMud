@@ -429,8 +429,8 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		{
 			try
 			{
-				final long sinceDate = Math.round(Math.floor(((double)HTTPIOHandler.DATE_FORMAT.parse(lastModifiedSince.trim()).getTime())/1000.0))*1000;
-				final long lastModDate = Math.round(Math.floor(((double)buffers.getLastModified().getTime())/1000.0))*1000;
+				final long sinceDate = Math.round(Math.floor((HTTPIOHandler.DATE_FORMAT.parse(lastModifiedSince.trim()).getTime())/1000.0))*1000;
+				final long lastModDate = Math.round(Math.floor((buffers.getLastModified().getTime())/1000.0))*1000;
 				if(sinceDate >= lastModDate)
 					throw HTTPException.standardException(HTTPStatus.S304_NOT_MODIFIED);
 			}
@@ -490,8 +490,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		}
 		catch(HTTPException e)
 		{
-			if(buffers!=null)
-				buffers.close();
+			buffers.close();
 			throw e;
 		}
 	}

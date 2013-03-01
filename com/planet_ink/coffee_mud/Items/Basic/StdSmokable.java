@@ -232,7 +232,7 @@ public class StdSmokable extends StdContainer implements Light
 						Item I=null;
 						for(int v=0;v<V.size();v++)
 						{
-							I=(Item)V.get(v);
+							I=V.get(v);
 							if(CMLib.dice().roll(1,100,0)==1)
 								getAddictedTo(msg.source(),I);
 							I.destroy();

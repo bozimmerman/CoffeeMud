@@ -904,7 +904,7 @@ public class MXP
 			else
 			for(int v=0;v<V.size();v++)
 			{
-				String request=((String)V.get(v)).trim().toUpperCase();
+				String request=V.get(v).trim().toUpperCase();
 				if(request.startsWith("\"")) request=request.substring(1).trim();
 				if(request.endsWith("\"")) request=request.substring(0,request.length()-1).trim();
 				if(request.startsWith("\'")) request=request.substring(1).trim();

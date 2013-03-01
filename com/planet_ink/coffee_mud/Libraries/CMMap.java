@@ -72,7 +72,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		while(start<=end)
 		{
 			int mid=(end+start)/2;
-			int comp=((Environmental)list.get(mid)).Name().compareToIgnoreCase(name);
+			int comp=list.get(mid).Name().compareToIgnoreCase(name);
 			if(comp==0)
 				return mid;
 			else
@@ -108,13 +108,13 @@ public class CMMap extends StdLibrary implements WorldMap
 			Area A=null;
 			for(Enumeration<Area> e=areas();e.hasMoreElements();)
 			{
-				A=(Area)e.nextElement();
+				A=e.nextElement();
 				String upperName=A.Name().toUpperCase();
 				for(int v=0;v<=V.size();v++)
 					if(v==V.size())
 					{ V.addElement(A); break;}
 					else
-					if(upperName.compareTo(((Area)V.elementAt(v)).Name().toUpperCase())<=0)
+					if(upperName.compareTo(V.elementAt(v).Name().toUpperCase())<=0)
 					{ V.insertElementAt(A,v); break;}
 			}
 			sortedAreas=V;
@@ -131,7 +131,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return A;
 		for(Enumeration<Area> a=areas();a.hasMoreElements();)
 		{
-			A=(Area)a.nextElement();
+			A=a.nextElement();
 			if(A.Name().equalsIgnoreCase(calledThis))
 			{
 				if(!disableCaching)
@@ -152,7 +152,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return A;
 		for(Enumeration<Area> a=areas();a.hasMoreElements();)
 		{
-			A=(Area)a.nextElement();
+			A=a.nextElement();
 			if(A.Name().toUpperCase().startsWith(calledThis))
 			{
 				if(!disableCaching)
@@ -174,7 +174,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return A;
 		for(Enumeration<Area> a=areas();a.hasMoreElements();)
 		{
-			A=(Area)a.nextElement();
+			A=a.nextElement();
 			if(CMLib.english().containsString(A.Name(),calledThis))
 			{
 				if(!disableCaching)
@@ -189,7 +189,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Area getFirstArea()
 	{
 		if (areas().hasMoreElements())
-			return (Area) areas().nextElement();
+			return areas().nextElement();
 		return null;
 	}
 	public Area getRandomArea()
@@ -198,7 +198,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		while((numAreas()>0)&&(A==null))
 		{
 			try{
-				A=(Area)areasList.get(CMLib.dice().roll(1,numAreas(),-1));
+				A=areasList.get(CMLib.dice().roll(1,numAreas(),-1));
 			}catch(ArrayIndexOutOfBoundsException e){}
 		}
 		return A;
@@ -243,7 +243,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public MOB deity() 
 	{
 		if(deities().hasMoreElements())
-			return (MOB)deities().nextElement();
+			return deities().nextElement();
 		if((deityStandIn==null)
 		||(deityStandIn.amDestroyed())
 		||(deityStandIn.amDead())
@@ -285,9 +285,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
 	{
 		double[] dir=new double[2];
-		double x=(double)(TO.coordinates()[0]-FROM.coordinates()[0]);
-		double y=(double)(TO.coordinates()[1]-FROM.coordinates()[1]);
-		double z=(double)(TO.coordinates()[2]-FROM.coordinates()[2]);
+		double x=TO.coordinates()[0]-FROM.coordinates()[0];
+		double y=TO.coordinates()[1]-FROM.coordinates()[1];
+		double z=TO.coordinates()[2]-FROM.coordinates()[2];
 		dir[0]=Math.toDegrees(Math.acos(x/Math.sqrt((x*x)+(y*y))));
 		dir[1]=Math.toDegrees(Math.acos(z/Math.sqrt((z*z)+(y*y))));
 		return dir;
@@ -305,9 +305,9 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public long getRelativeVelocity(SpaceObject O1, SpaceObject O2)
 	{
-		return Math.round(Math.sqrt((double)(((O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0])*(O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0]))
+		return Math.round(Math.sqrt(((O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0])*(O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0]))
 									+((O1.velocity()*O1.coordinates()[1])-(O2.velocity()*O2.coordinates()[1])*(O1.velocity()*O1.coordinates()[1])-(O2.velocity()*O2.coordinates()[1]))
-									+((O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2])*(O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2])))));
+									+((O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2])*(O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2]))));
 	}
 
 	public String createNewExit(Room from, Room room, int direction)
@@ -355,7 +355,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		int total=0;
 		for(Enumeration<Area> e=areas();e.hasMoreElements();)
-			total+=((Area)e.nextElement()).properSize();
+			total+=e.nextElement().properSize();
 		return total;
 	}
 
@@ -386,20 +386,19 @@ public class CMMap extends StdLibrary implements WorldMap
 							return false;
 					}
 					else
-					if(O instanceof MsgListener)
+					if(O!=null)
 					{
-						if(!((MsgListener)O).okMessage(host, msg))
+						if(!O.okMessage(host, msg))
 							return false;
 					}
 					else
-					if(O==null)
 						V.remove(W);
 				}
 				for(WeakReference<MsgListener> W : V)
 				{
 					O=W.get();
-					if(O instanceof MsgListener)
-						((MsgListener)O).executeMsg(host,msg);
+					if(O !=null)
+						O.executeMsg(host,msg);
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException xx){}
@@ -459,14 +458,14 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 				for(Enumeration<Area> e=areas();e.hasMoreElements();)
 				{
-					R = ((Area)e.nextElement()).getRoom(calledThis);
+					R = e.nextElement().getRoom(calledThis);
 					if(R!=null) return R;
 				}
 			}
 			else
 			for(Enumeration<Room> e=roomSet;e.hasMoreElements();)
 			{
-				R=(Room)e.nextElement();
+				R=e.nextElement();
 				if(R.roomID().equalsIgnoreCase(calledThis))
 					return R;
 			}
@@ -493,9 +492,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			addWorldRoomsLiberally(roomsV,getRoom(mob.location().getArea().Name()+srchStr));
 		else
 			addWorldRoomsLiberally(roomsV,getRoom(srchStr));
-		if(roomsV.size()>0) return (Room)roomsV.firstElement();
+		if(roomsV.size()>0) return roomsV.firstElement();
 		addWorldRoomsLiberally(roomsV,findRooms(rooms,mob,srchStr,displayOnly,true,timePct));
-		if(roomsV.size()>0) return (Room)roomsV.firstElement();
+		if(roomsV.size()>0) return roomsV.firstElement();
 		return null;
 	}
 	
@@ -545,7 +544,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			Room room;
 			for(;rooms.hasMoreElements();)
 			{
-				room=(Room)rooms.nextElement();
+				room=rooms.nextElement();
 				if((CMLib.english().containsString(CMStrings.removeColors(room.displayText()),srchStr))
 				&&((mob==null)||CMLib.flags().canAccess(mob,room)))
 					foundRooms.add(room);
@@ -564,7 +563,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			boolean useTimer=maxTime>1;
 			for(;rooms.hasMoreElements();)
 			{
-				Room room=(Room)rooms.nextElement();
+				Room room=rooms.nextElement();
 				if((CMLib.english().containsString(CMStrings.removeColors(room.description()),srchStr))
 				&&((mob==null)||CMLib.flags().canAccess(mob,room)))
 					foundRooms.add(room);
@@ -579,7 +578,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public MOB findFirstInhabitant(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
 	{ 
 		final List<MOB> found=findInhabitants(rooms,mob,srchStr,true,timePct);
-		if(found.size()>0) return (MOB)found.get(0);
+		if(found.size()>0) return found.get(0);
 		return null;
 	}
 	public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
@@ -593,7 +592,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		Room room;
 		for(;rooms.hasMoreElements();)
 		{
-			room=(Room)rooms.nextElement();
+			room=rooms.nextElement();
 			if((room != null) && (allRoomsAllowed || CMLib.flags().canAccess(mob,room)))
 			{
 				found.addAll(room.fetchInhabitants(srchStr));
@@ -610,7 +609,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Item findFirstInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
 	{ 
 		final List<Item> found=findInventory(rooms,mob,srchStr,true,timePct);
-		if(found.size()>0) return (Item)found.get(0);
+		if(found.size()>0) return found.get(0);
 		return null;
 	}
 	public List<Item> findInventory(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
@@ -626,7 +625,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 			{
-				M=(MOB)e.nextElement();
+				M=e.nextElement();
 				if(M!=null)
 					found.addAll(M.findItems(srchStr));
 				if((returnFirst)&&(found.size()>0)) return found;
@@ -635,7 +634,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		else
 		for(;rooms.hasMoreElements();)
 		{
-			room=(Room)rooms.nextElement();
+			room=rooms.nextElement();
 			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
 			{
 				for(int m=0;m<room.numInhabitants();m++)
@@ -656,7 +655,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Environmental findFirstShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
 	{ 
 		final List<Environmental> found=findShopStock(rooms,mob,srchStr,true,false,timePct);
-		if(found.size()>0) return (Environmental)found.get(0);
+		if(found.size()>0) return found.get(0);
 		return null;
 	}
 	public List<Environmental> findShopStockers(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
@@ -664,7 +663,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Environmental findFirstShopStocker(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
 	{ 
 		final List<Environmental> found=findShopStock(rooms,mob,srchStr,true,true,timePct);
-		if(found.size()>0) return (Environmental)found.get(0);
+		if(found.size()>0) return found.get(0);
 		return null;
 	}
 	public List<Environmental> findShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, boolean returnStockers, int timePct)
@@ -684,7 +683,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 			{
-				M=(MOB)e.nextElement();
+				M=e.nextElement();
 				if(M!=null)
 				{
 					SK=CMLib.coffeeShops().getShopKeeper(M);
@@ -731,7 +730,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		else
 		for(;rooms.hasMoreElements();)
 		{
-			Room room=(Room)rooms.nextElement();
+			Room room=rooms.nextElement();
 			if((room != null) && (allRoomsAllowed||CMLib.flags().canAccess(mob,room)))
 			{
 				if(!areas.contains(room.getArea()))
@@ -798,7 +797,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		for(Iterator<Area> i=areas.iterator();i.hasNext();)
 		{
-			Area A=(Area)i.next();
+			Area A=i.next();
 			SK=CMLib.coffeeShops().getShopKeeper(A);
 			if((SK!=null)&&(!stocks.contains(SK)))
 			{
@@ -823,7 +822,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Item findFirstRoomItem(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
 	{ 
 		List<Item> found=findRoomItems(rooms,mob,srchStr,anyItems,true,timePct);
-		if(found.size()>0) return (Item)found.get(0);
+		if(found.size()>0) return found.get(0);
 		return null;
 	}
 	public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, boolean returnFirst, int timePct)
@@ -837,7 +836,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		Room room;
 		for(;rooms.hasMoreElements();)
 		{
-			room=(Room)rooms.nextElement();
+			room=rooms.nextElement();
 			if((room != null) && (allRoomsAllowed||CMLib.flags().canAccess(mob,room)))
 			{
 				found.addAll(anyItems?room.findItems(srchStr):room.findItems(null,srchStr));
@@ -873,7 +872,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				int total=0;
 				for(Enumeration<Area> e=areas();e.hasMoreElements();)
 				{
-					Area A=(Area)e.nextElement();
+					Area A=e.nextElement();
 					if(which<(total+A.properSize()))
 					{ R=A.getRandomProperRoom(); break;}
 					total+=A.properSize();
@@ -1088,7 +1087,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		for(Enumeration<Room> e=rooms();e.hasMoreElements();)
 		{
-			R=(Room)e.nextElement();
+			R=e.nextElement();
 			if(R==room) continue;
 			for(int d1=Directions.NUM_DIRECTIONS()-1;d1>=0;d1--)
 				if(R.getRoomInDir(d1)==room)
@@ -1099,7 +1098,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 		}
 		if(otherChoices.size()>0)
-			return (Room)otherChoices.firstElement();
+			return otherChoices.firstElement();
 		return null;
 	}
 
@@ -1161,9 +1160,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				if(!curAreaEnumeration.hasMoreElements()) return false;
 				if(addSkys)
-					curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getFilledProperMap();
+					curRoomEnumeration=curAreaEnumeration.nextElement().getFilledProperMap();
 				else
-					curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
+					curRoomEnumeration=curAreaEnumeration.nextElement().getProperMap();
 			}
 			return curRoomEnumeration.hasMoreElements();
 		}
@@ -1174,11 +1173,11 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				if(!curAreaEnumeration.hasMoreElements()) return null;
 				if(addSkys)
-					curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getFilledProperMap();
+					curRoomEnumeration=curAreaEnumeration.nextElement().getFilledProperMap();
 				else
-					curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
+					curRoomEnumeration=curAreaEnumeration.nextElement().getProperMap();
 			}
-			return (Room)curRoomEnumeration.nextElement();
+			return curRoomEnumeration.nextElement();
 		}
 	}
 
@@ -1197,7 +1196,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			for(Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				Room R=r.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=getRoom(R);
@@ -1248,7 +1247,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		for(Enumeration<Room> e=area.getProperMap();e.hasMoreElements();)
 		{
-			Room R=(Room)e.nextElement();
+			Room R=e.nextElement();
 			emptyRoom(R,null);
 			R.destroy();
 		}
@@ -1336,7 +1335,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		for(int m=0;m<inhabs.size();m++)
 		{
-			M=(MOB)inhabs.get(m);
+			M=inhabs.get(m);
 			if(bringBackHere!=null)
 				bringBackHere.bringMobHere(M,false);
 			else
@@ -1362,7 +1361,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		for(int i=0;i<contents.size();i++)
 		{
-			I=(Item)contents.elementAt(i);
+			I=contents.elementAt(i);
 			if(bringBackHere!=null)
 				bringBackHere.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 			else
@@ -1387,14 +1386,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			for(int i=0;(i<100)&&e.hasMoreElements();i++)
 			{
-				R=(Room)e.nextElement();
+				R=e.nextElement();
 				if((R!=null)&&(R.roomID()!=null))
 					rooms.add(R);
 			}
 			if(rooms.size()==0) break;
 			for(Iterator<Room> e2=rooms.iterator();e2.hasNext();)
 			{
-				R=(Room)e2.next();
+				R=e2.next();
 				if((R!=null)&&(R.roomID().length()>0))
 					obliterateRoom(R);
 				e2.remove();
@@ -1443,7 +1442,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis)
 	{
 		List<Room> rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,true,timePct, maxMillis);
-		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.get(0);
+		if((rooms!=null)&&(rooms.size()!=0)) return rooms.get(0);
 		return null;
 	}
 	
@@ -1453,7 +1452,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Room findAreaRoomLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
 	{
 		List<Room> rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,true,timePct,120);
-		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.get(0);
+		if((rooms!=null)&&(rooms.size()!=0)) return rooms.get(0);
 		return null;
 	}
 	
@@ -1474,7 +1473,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			Room room=null;
 			int tries=0;
 			while(((room==null)||(room.roomID().length()==0))&&((++tries)<200))
-				room=roomLocation((Environmental)choicesV.get(CMLib.dice().roll(1,choicesV.size(),-1)));
+				room=roomLocation(choicesV.get(CMLib.dice().roll(1,choicesV.size(),-1)));
 			return room;
 		}
 	}
@@ -1507,7 +1506,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(rooms!=null) return rooms;
 		if(room==null) return new Vector<Room>(1);
-		return (List<Room>)new XVector<Room>(room);
+		return new XVector<Room>(room);
 	}
 	
 	protected boolean enforceTimeLimit(final long startTime,  final long maxMillis)
@@ -1842,7 +1841,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					Set<MOB> H=M.getGroupMembers(new HashSet<MOB>());
 					for(Iterator<MOB> i=H.iterator();i.hasNext();)
 					{
-						M2=(MOB)i.next();
+						M2=i.next();
 						if((M2!=M)&&(M2.location()==R))
 							playersHere.addElement(M2,getExtendedRoomID(R));
 					}
@@ -1865,7 +1864,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			R.delInhabitant(M);
 		}
 		for(Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
-			resetRoom((Room)r.nextElement());
+			resetRoom(r.nextElement());
 		area.fillInAreaRooms();
 		for(int p=0;p<playersHere.size();p++)
 		{
@@ -1972,7 +1971,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(final Enumeration<ScriptingEngine> e = host.scripts();e.hasMoreElements();)
 		{
 			final ScriptingEngine SE=e.nextElement();
-			if((SE!=null) && SE.isSavable() && (SE instanceof ScriptingEngine))
+			if((SE!=null) && SE.isSavable())
 				return true;
 		}
 		return false;
@@ -2068,10 +2067,10 @@ public class CMMap extends StdLibrary implements WorldMap
 		else
 		{
 			final SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name());
-			if(hosts==null) return (Enumeration<LocatedPair>)EmptyEnumeration.INSTANCE;
+			if(hosts==null) return EmptyEnumeration.INSTANCE;
 			V.add(hosts);
 		}
-		if(V.size()==0) return (Enumeration<LocatedPair>)EmptyEnumeration.INSTANCE;
+		if(V.size()==0) return EmptyEnumeration.INSTANCE;
 		final MultiListEnumeration<LocatedPair> me=new MultiListEnumeration<LocatedPair>(V,true);
 		return new Enumeration<LocatedPair>()
 		{
@@ -2127,7 +2126,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
 			for(Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
-				R=(Room)r.nextElement();
+				R=r.nextElement();
 				expireM.setLocation(R);
 				expireMsg.setTarget(R);
 				if((R.expirationDate()!=0)
@@ -2163,7 +2162,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					boolean success=true;
 					for(int s=0;s<stuffToGo.size();s++)
 					{
-						Environmental E=(Environmental)stuffToGo.elementAt(s);
+						Environmental E=stuffToGo.elementAt(s);
 						thread.setStatus("expiring "+E.Name());
 						expireMsg.setTarget(E);
 						if(R.okMessage(expireM,expireMsg))
@@ -2177,7 +2176,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			for(int r=0;r<roomsToGo.size();r++)
 			{
-				R=(Room)roomsToGo.elementAt(r);
+				R=roomsToGo.elementAt(r);
 				expireM.setLocation(R);
 				expireMsg.setTarget(R);
 				thread.setStatus("expirating room "+getExtendedRoomID(R));
@@ -2198,7 +2197,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			for(Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				Room R=r.nextElement();
 				LandTitle T=CMLib.law().getLandTitle(R);
 				if(T!=null)
 				{
@@ -2219,7 +2218,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			for(Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				Room R=r.nextElement();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB mob=R.fetchInhabitant(m);

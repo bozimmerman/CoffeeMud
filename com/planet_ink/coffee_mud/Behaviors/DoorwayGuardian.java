@@ -66,7 +66,7 @@ public class DoorwayGuardian extends StdBehavior
 		dirs.clear();
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String s=(String)V.elementAt(v);
+			String s=V.elementAt(v);
 			if(s.equalsIgnoreCase("NOSNEAK"))
 			{
 				nosneak=true;

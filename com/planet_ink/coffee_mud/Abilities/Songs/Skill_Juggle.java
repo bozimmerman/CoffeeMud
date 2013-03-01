@@ -76,11 +76,11 @@ public class Skill_Juggle extends BardSkill
 			SVector<Item> V=juggles.copyOf();
 			for(int i=0;i<V.size();i++)
 			{
-				Item I=(Item)V.elementAt(i);
+				Item I=V.elementAt(i);
 				boolean back=false;
 				for(int ii=0;ii<i;ii++)
 				{
-					Item I2=(Item)V.elementAt(ii);
+					Item I2=V.elementAt(ii);
 					if(I2.name().equals(I.name()))
 					{ back=true; break;}
 				}
@@ -88,7 +88,7 @@ public class Skill_Juggle extends BardSkill
 				boolean morethanone=false;
 				for(int ii=i+1;ii<V.size();ii++)
 				{
-					Item I2=(Item)V.elementAt(ii);
+					Item I2=V.elementAt(ii);
 					if(I2.name().equals(I.name()))
 					{ morethanone=true; break;}
 				}
@@ -153,7 +153,7 @@ public class Skill_Juggle extends BardSkill
 		for(int i=0;i<juggles.size();i++)
 		{
 			Item I=null;
-			try{I=(Item)juggles.elementAt(i);}catch(Exception e){}
+			try{I=juggles.elementAt(i);}catch(Exception e){}
 			if((I==null)
 			||(I.owner()==null)
 			||((I.owner() instanceof MOB)&&(I.owner()!=M))
@@ -168,7 +168,7 @@ public class Skill_Juggle extends BardSkill
 			SVector<Item> copy=juggles.copyOf();
 			for(int i=0;i<copy.size();i++)
 			{
-				Item I=(Item)copy.elementAt(i);
+				Item I=copy.elementAt(i);
 				if((I.owner()==null)
 				||((I.owner() instanceof MOB)&&(I.owner()!=M)))
 					unJuggle(I);
@@ -209,7 +209,7 @@ public class Skill_Juggle extends BardSkill
 		int jug=-1;
 		for(int i=0;i<copy.size();i++)
 		{
-			Item I=(Item)copy.elementAt(i);
+			Item I=copy.elementAt(i);
 			if(I.amWearingAt(Wearable.WORN_WIELD)||I.amWearingAt(Wearable.WORN_HELD))
 			{
 				I.setRawWornCode(Wearable.IN_INVENTORY);
@@ -221,7 +221,7 @@ public class Skill_Juggle extends BardSkill
 			jug=0;
 		for(int i=0;i<copy.size();i++)
 		{
-			Item I=(Item)copy.elementAt(i);
+			Item I=copy.elementAt(i);
 			if((i==jug)||(i==jug+1))
 			{
 				if(!M.isMine(I))
@@ -290,7 +290,7 @@ public class Skill_Juggle extends BardSkill
 						int maxAttacks=maxAttacks();
 						for(int i=0;((i<maxAttacks)&&(copy.size()>0));i++)
 						{
-							Item I=(Item)copy.elementAt(CMLib.dice().roll(1,copy.size(),-1));
+							Item I=copy.elementAt(CMLib.dice().roll(1,copy.size(),-1));
 							I.unWear();
 							mob.moveItemTo(I);
 							if((mob.isMine(I))&&(CMLib.commands().postDrop(mob,I,true,false)))
@@ -330,7 +330,7 @@ public class Skill_Juggle extends BardSkill
 			MOB M=(MOB)affected;
 			while(juggles.size()>0)
 			{
-				Item I=(Item)juggles.elementAt(0);
+				Item I=juggles.elementAt(0);
 				M.location().show(M,I,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) juggling <T-NAMESELF>.");
 				unJuggle(I);
 				I.unWear();

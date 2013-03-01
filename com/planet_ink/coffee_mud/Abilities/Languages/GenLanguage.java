@@ -98,7 +98,7 @@ public class GenLanguage extends StdLanguage
 	{
 		try
 		{
-			GenLanguage A=(GenLanguage)this.getClass().newInstance();
+			GenLanguage A=this.getClass().newInstance();
 			A.ID=ID;
 			return A;
 		}
@@ -189,7 +189,7 @@ public class GenLanguage extends StdLanguage
 		if(val.trim().length()>0)
 		{
 			V(ID,V_NAME); // force creation, if necc
-			Object[] O=(Object[])vars.get(ID);
+			Object[] O=vars.get(ID);
 			vars.remove(ID);
 			vars.put(val,O);
 			if(num!=9)

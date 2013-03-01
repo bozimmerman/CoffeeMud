@@ -47,9 +47,9 @@ public class AutoAffects extends StdCommand
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
+			if(A==null) continue;
 			String disp=A.name();
-			if((A!=null)
-			&&(A.displayText().length()==0)
+			if((A.displayText().length()==0)
 			&&((!(P instanceof MOB))||(((MOB)P).fetchAbility(A.ID())!=null))
 			&&(A.isAutoInvoked()))
 			{

@@ -58,8 +58,8 @@ public class BrotherHelper extends StdBehavior
 			num=0;
 			Vector<String> V=CMParms.parse(getParms());
 			for(int v=0;v<V.size();v++)
-				if(CMath.isInteger((String)V.elementAt(v)))
-					num=CMath.s_int((String)V.elementAt(v));
+				if(CMath.isInteger(V.elementAt(v)))
+					num=CMath.s_int(V.elementAt(v));
 			
 		}
 		return num;

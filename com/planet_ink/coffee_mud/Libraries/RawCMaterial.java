@@ -127,14 +127,14 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		int totalThirstRemain=0;
 		for(int i=0;i<found.size();i++)
 		{
-			I=(Item)found.elementAt(i);
+			I=found.elementAt(i);
 			int weight=I.basePhyStats().weight();
 			totalWeight+=weight;
 			totalValue+=I.baseGoldValue();
 			if(weight>maxFound)
 			{
 				maxFound=weight;
-				bundle=(Item)found.elementAt(i);
+				bundle=found.elementAt(i);
 			}
 			if((I instanceof Decayable)
 			&&(((Decayable)I).decayTime()>0)
@@ -155,7 +155,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		Ability A=null;
 		for(int i=0;i<found.size();i++)
 		{
-			I=(Item)found.elementAt(i);
+			I=found.elementAt(i);
 			for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 			{
 				A=a.nextElement();
@@ -179,7 +179,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			((Decayable)bundle).setDecayTime(lowestNonZeroFoodNumber);
 		for(Enumeration<String> e=foundAblesH.keys();e.hasMoreElements();)
 		{
-			A=(Ability)foundAblesH.get(e.nextElement());
+			A=foundAblesH.get(e.nextElement());
 			if(bundle.fetchEffect(A.ID())==null)
 				bundle.addNonUninvokableEffect((Ability)A.copyOf());
 		}
@@ -233,13 +233,13 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			List<Environmental> bundle=new XVector<Environmental>();
 			for(int p=0;p<parts.size();p+=bundleSize)
 			{
-				I=(Item)parts.get(p);
+				I=parts.get(p);
 				if(bundleSize>1)
 				{
 					PackagedItems thePackage=(PackagedItems)CMClass.getItem("GenPackagedItems");
 					thePackage.packageMe(I, bundleSize);
 					for(int pp=p;(pp<p+bundleSize) && (pp<parts.size());pp++)
-						((Item)parts.get(pp)).destroy();
+						parts.get(pp).destroy();
 					I=thePackage;
 				}
 				if(owner instanceof Room)
@@ -597,8 +597,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				((Drink)I).setLiquidType(myResource);
 			I.setBaseValue(RawMaterial.CODES.VALUE(myResource));
 			I.basePhyStats().setWeight(1);
-			if(I instanceof RawMaterial)
-				((RawMaterial)I).setDomainSource(localeCode);
+			I.setDomainSource(localeCode);
 			adjustResourceName(I);
 			I.setDescription("");
 			addEffectsToResource(I);
@@ -723,7 +722,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if((howMuch>0)||(otherMaterial>0))
 		for(int i=V.size()-1;i>=0;i--)
 		{
-			Item I=(Item)V.get(i);
+			Item I=V.get(i);
 			if(I==null) break;
 			if(I==never) continue;
 
@@ -800,7 +799,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	{
 		for(int i=0;i<V.size();i++)
 		{
-			Item I=(Item)V.get(i);
+			Item I=V.get(i);
 			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
@@ -830,7 +829,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		int foundWood=0;
 		for(int i=0;i<V.size();i++)
 		{
-			Item I=(Item)V.get(i);
+			Item I=V.get(i);
 			if((I instanceof RawMaterial)
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
@@ -850,7 +849,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		Item mostItem=null;
 		for(int i=0;i<V.size();i++)
 		{
-			Item I=(Item)V.get(i);
+			Item I=V.get(i);
 			if((I instanceof RawMaterial)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
 			&&(I.material()!=mostMaterial)

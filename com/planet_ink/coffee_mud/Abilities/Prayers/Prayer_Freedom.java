@@ -92,7 +92,7 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 		{
 			if(target instanceof MOB)
 			{
-				if(supportsMending((MOB)target))
+				if(supportsMending(target))
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
 			}
 		}
@@ -121,7 +121,7 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.get(a)).unInvoke();
+					offensiveAffects.get(a).unInvoke();
 				if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
 					target.tell("You feel less constricted!");
 			}

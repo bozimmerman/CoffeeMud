@@ -87,7 +87,7 @@ public class MOTD extends StdCommand
 				journal.addAll(CMLib.database().DBReadJournalMsgs("SYSTEM_NEWS"));
 				for(int which=0;which<journal.size();which++)
 				{
-					JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(which);
+					JournalsLibrary.JournalEntry entry=journal.get(which);
 					String from=entry.from;
 					long last=entry.date;
 					String to=entry.to;
@@ -129,8 +129,8 @@ public class MOTD extends StdCommand
 					Map<PostOffice,int[]> res=getPostalResults(V,mob.playerStats().lastDateTime());
 					for(Iterator<PostOffice> e=res.keySet().iterator();e.hasNext();)
 					{
-						P=(PostOffice)e.next();
-						int[] ct=(int[])res.get(P);
+						P=e.next();
+						int[] ct=res.get(P);
 						buf.append("\n\r"+report("You have",P,ct));
 					}
 					Map<PostOffice,int[]> res2=new Hashtable();
@@ -149,8 +149,8 @@ public class MOTD extends StdCommand
 							}
 							for(Iterator<PostOffice> e=res2.keySet().iterator();e.hasNext();)
 							{
-								P=(PostOffice)e.next();
-								int[] ct=(int[])res2.get(P);
+								P=e.next();
+								int[] ct=res2.get(P);
 								buf.append("\n\r"+report("Your "+C.getGovernmentName()+" "+C.getName()+" has",P,ct));
 							}
 						}
@@ -176,7 +176,7 @@ public class MOTD extends StdCommand
 					if(items!=null)
 					for(int i=0;i<items.size();i++)
 					{
-						JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)items.get(i);
+						JournalsLibrary.JournalEntry entry=items.get(i);
 						String from=entry.from;
 						String message=entry.msg;
 						long compdate=entry.update;
@@ -197,7 +197,7 @@ public class MOTD extends StdCommand
 					int mymsgs=0;
 					for(int num=0;num<msgs.size();num++)
 					{
-						JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)msgs.get(num);
+						JournalsLibrary.JournalEntry thismsg=msgs.get(num);
 						String to=thismsg.to;
 						if(to.equalsIgnoreCase("all")
 						||to.equalsIgnoreCase(mob.Name())
@@ -280,9 +280,9 @@ public class MOTD extends StdCommand
 		PostOffice P=null;
 		for(int i=0;i<mailData.size();i++)
 		{
-			DatabaseEngine.PlayerData letter=(DatabaseEngine.PlayerData)mailData.get(i);
-			String chain=(String)letter.section;
-			String branch=(String)letter.key;
+			DatabaseEngine.PlayerData letter=mailData.get(i);
+			String chain=letter.section;
+			String branch=letter.key;
 			int x=branch.indexOf(';');
 			if(x<0) continue;
 			branch=branch.substring(0,x);

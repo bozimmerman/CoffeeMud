@@ -125,7 +125,7 @@ public class Thief_KillLog extends ThiefSkill
 			if(V!=null)
 			for(int i=0;i<V.size();i++)
 			{
-				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.get(i);
+				XMLLibrary.XMLpiece ablk=V.get(i);
 				if(ablk.tag.equalsIgnoreCase("MOB"))
 				{
 					String[] one=new String[4];

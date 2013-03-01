@@ -210,8 +210,8 @@ public class Util
 						if(text.substring(0,x).indexOf('.')<0)
 						{
 							if(pm=='+')
-								return (double)Util.s_int(text.substring(0,x));
-							return (double)-Util.s_int(text.substring(0,x));
+								return Util.s_int(text.substring(0,x));
+							return -Util.s_int(text.substring(0,x));
 						}
 						if(pm=='+')
 							return Util.s_double(text.substring(0,x));
@@ -249,7 +249,7 @@ public class Util
 						&&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
 							x++;
 						if(text.substring(0,x).indexOf('.')<0)
-							return (double)Util.s_long(text.substring(0,x));
+							return Util.s_long(text.substring(0,x));
 						return Util.s_double(text.substring(0,x));
 					}
 				}
@@ -1413,19 +1413,19 @@ public class Util
 	}
 	public static double div(double a, int b)
 	{
-		return a/(double)b;
+		return a/b;
 	}
 	public static double div(int a, double b)
 	{
-		return ((double)a)/b;
+		return (a)/b;
 	}
 	public static double div(double a, long b)
 	{
-		return a/(double)b;
+		return a/b;
 	}
 	public static double div(long a, double b)
 	{
-		return ((double)a)/b;
+		return (a)/b;
 	}
 
 	public static double mul(double a, double b)
@@ -1434,19 +1434,19 @@ public class Util
 	}
 	public static double mul(double a, int b)
 	{
-		return a*((double)b);
+		return a*(b);
 	}
 	public static double mul(int a, double b)
 	{
-		return ((double)a)*b;
+		return (a)*b;
 	}
 	public static double mul(double a, long b)
 	{
-		return a*((double)b);
+		return a*(b);
 	}
 	public static double mul(long a, double b)
 	{
-		return ((double)a)*b;
+		return (a)*b;
 	}
 	public static long mul(long a, long b)
 	{
@@ -1466,11 +1466,11 @@ public class Util
 	}
 	public static int pow(int x, int y)
 	{
-		return (int)Math.round(Math.pow((double)x,(double)y));
+		return (int)Math.round(Math.pow(x,y));
 	}
 	public static int squared(int x)
 	{
-		return (int)Math.round(Math.pow((double)x,(double)x));
+		return (int)Math.round(Math.pow(x,x));
 	}
 	public static boolean bset(int num, int bitmask)
 	{

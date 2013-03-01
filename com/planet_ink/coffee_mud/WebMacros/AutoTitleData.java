@@ -40,7 +40,7 @@ public class AutoTitleData extends StdWebMacro
 	{
 		CMLib.titles().dispossesTitle(title);
 		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
-		if((F!=null) && (F.exists()))
+		if(F.exists())
 		{
 			boolean removed=Resources.findRemoveProperty(F, title);
 			if(removed)

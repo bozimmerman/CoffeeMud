@@ -63,8 +63,8 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		data.append("<STATS>");
 		for(Enumeration<String> e=stats.keys();e.hasMoreElements();)
 		{
-			String s=(String)e.nextElement();
-			long[] l=(long[])stats.get(s);
+			String s=e.nextElement();
+			long[] l=stats.get(s);
 			data.append(CMLib.xml().convertXMLtoTag(s,CMParms.toStringList(l)));
 		}
 		data.append("</STATS>");
@@ -77,7 +77,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		synchronized(stats)
 		{
 			if(stats.containsKey(s))
-				stat=(long[])stats.get(s);
+				stat=stats.get(s);
 			else
 			{
 				stat=new long[STAT_TOTAL];
@@ -92,11 +92,11 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		code=tagFix(code);
 		for(Enumeration<String> e=stats.keys();e.hasMoreElements();)
 		{
-			String s=(String)e.nextElement();
+			String s=e.nextElement();
 			if(s.startsWith(code)
 			||(s.startsWith("C")&&code.startsWith("*")))
 			{
-				long[] theseStats=(long[])stats.get(s);
+				long[] theseStats=stats.get(s);
 				for(int t=0;t<theseStats.length;t++)
 					tot[t]+=theseStats[t];
 			}
@@ -140,7 +140,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			bumpVal("J"+H.size(),type);
 			int pct=0;
 			for(Iterator<MOB> e=H.iterator();e.hasNext();)
-				if(!((MOB)e.next()).isMonster()) pct++;
+				if(!e.next().isMonster()) pct++;
 			if(pct==0)pct=1;
 			bumpVal("P"+pct,type);
 		}
@@ -169,7 +169,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			stats.clear();
 			for(int s=0;s<X.contents.size();s++)
 			{
-				XMLLibrary.XMLpiece S=(XMLLibrary.XMLpiece)X.contents.get(s);
+				XMLLibrary.XMLpiece S=X.contents.get(s);
 				long[] l=CMParms.toLongArray(CMParms.parseCommas(S.value,true));
 				if(l.length<STAT_TOTAL)
 				{
@@ -178,7 +178,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 						l2[i]=l[i];
 					l=l2;
 				}
-				long[] l2=(long[])stats.get(S.tag);
+				long[] l2=stats.get(S.tag);
 				if(l2!=null)
 				{
 					for(int i=0;i<l2.length;i++)
@@ -189,7 +189,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			}
 		}
 	}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCoffeeTableRow();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCoffeeTableRow();}}
 	public void initializeClass(){}
 	
 	public CMObject copyOf()

@@ -193,7 +193,7 @@ public class Reset extends StdCommand
 		String roomWarning=null; 
 		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 		{
-			R=(Room)e.nextElement();
+			R=e.nextElement();
 			roomWarning=resetWarning(mob,R);
 			if(roomWarning!=null)
 				warning.append(roomWarning);
@@ -221,7 +221,7 @@ public class Reset extends StdCommand
 			List<Room> rooms=((GridLocale)R).getAllRooms();
 			for(int r=0;r<rooms.size();r++)
 			{
-				String s=resetWarning(mob,(Room)rooms.get(r));
+				String s=resetWarning(mob,rooms.get(r));
 				if(s!=null) warning.append(s);
 			}
 		}
@@ -298,7 +298,7 @@ public class Reset extends StdCommand
 			{
 				Area A=mob.location().getArea();
 				for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
-					CMLib.threads().rejuv((Room)e.nextElement(),tickID);
+					CMLib.threads().rejuv(e.nextElement(),tickID);
 				mob.tell("Done.");
 			}
 			else
@@ -565,7 +565,7 @@ public class Reset extends StdCommand
 			List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
 			for(int v=0;v<V.size();v++)
 			{
-				JournalsLibrary.JournalEntry V2=(JournalsLibrary.JournalEntry)V.get(v);
+				JournalsLibrary.JournalEntry V2=V.get(v);
 				String name=V2.from;
 				String ID=V2.subj;
 				String classID=V2.to;
@@ -903,7 +903,7 @@ public class Reset extends StdCommand
 								{
 									for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 									{
-										Environmental E=(Environmental)i.next();
+										Environmental E=i.next();
 										if(E instanceof Item)
 										{
 											Item I=(Item)E;
@@ -1052,7 +1052,7 @@ public class Reset extends StdCommand
 						{
 							for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 							{
-								Environmental E=(Environmental)i.next();
+								Environmental E=i.next();
 								if(E instanceof Item)
 								{
 									Item I=(Item)E;
@@ -1250,7 +1250,7 @@ public class Reset extends StdCommand
 						{
 							for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 							{
-								Environmental E=(Environmental)i.next();
+								Environmental E=i.next();
 								if(E instanceof Item)
 								{
 									Item I=(Item)E;

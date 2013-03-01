@@ -278,7 +278,7 @@ public class DataLoader
 			D=DB.DBFetch();
 			StringBuffer orClause=new StringBuffer("");
 			for(int i=0;i<sections.size();i++)
-				orClause.append("CMSECT='"+((String)sections.get(i))+"' OR ");
+				orClause.append("CMSECT='"+(sections.get(i))+"' OR ");
 			String clause=orClause.toString().substring(0,orClause.length()-4);
 			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
 			while(R.next())
@@ -431,8 +431,8 @@ public class DataLoader
 		List<PlayerData> itemSet=CMLib.database().DBReadData("ARTIFACTS");
 		for(int i=0;i<itemSet.size();i++)
 		{
-			PlayerData item=(PlayerData)itemSet.get(i);
-			String itemID=(String)item.who;
+			PlayerData item=itemSet.get(i);
+			String itemID=item.who;
 			Ability A=CMClass.getAbility("Prop_Artifact");
 			if(A!=null)
 			{

@@ -71,7 +71,7 @@ public class Qualify  extends Skills
 		boolean checkUnMet=ableM.charStats().getCurrentClass().showThinQualifyList();
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
 			if((CMLib.ableMapper().qualifiesByLevel(ableM,A))
 			&&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
@@ -93,7 +93,7 @@ public class Qualify  extends Skills
 			StringBuffer thisLine=new StringBuffer("");
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)a.nextElement();
+				Ability A=a.nextElement();
 				if((CMLib.ableMapper().qualifiesByLevel(ableM,A))
 				   &&(CMLib.ableMapper().qualifyingLevel(ableM,A)==l)
 				   &&(!CMLib.ableMapper().getSecretSkill(ableM,A.ID()))
@@ -227,7 +227,7 @@ public class Qualify  extends Skills
 					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,mob);
 					for(int e=0;e<V.size();e++)
 					{
-						def=(ExpertiseLibrary.ExpertiseDefinition)V.get(e);
+						def=V.get(e);
 						if(def.name.length()>=COL_LEN)
 						{
 							if(col>=2)
@@ -259,7 +259,7 @@ public class Qualify  extends Skills
 					final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(30.0,mob);
 					for(int v=0;v<V.size();v++)
 					{
-						def=(ExpertiseLibrary.ExpertiseDefinition)V.get(v);
+						def=V.get(v);
 						req=CMLib.masking().maskDesc(def.finalRequirements(),true);
 						prefix="^<HELP^>"+def.name+"^</HELP^>";
 						if(req.length()<=46)

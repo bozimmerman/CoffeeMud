@@ -41,12 +41,12 @@ public class ChannelListen extends Packet  {
 	public ChannelListen()
 	{
 		super();
-		type = ChannelPacket.CHAN_LISTEN;
+		type = Packet.CHAN_LISTEN;
 	}
 	public ChannelListen(Vector v) throws InvalidPacketException {
 		super(v);
 		try {
-			type = ChannelPacket.CHAN_LISTEN;
+			type = Packet.CHAN_LISTEN;
 			channel = (String)v.elementAt(6);
 			onoff = (String)v.elementAt(7);
 		}

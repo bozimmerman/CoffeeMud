@@ -103,8 +103,7 @@ public class Apothecary extends Cooking
 		&&(building instanceof Drink))
 		{
 			((Drink)building).setLiquidType(RawMaterial.RESOURCE_POISON);
-			if(building instanceof Item)
-				((Item)building).setMaterial(RawMaterial.RESOURCE_POISON);
+			building.setMaterial(RawMaterial.RESOURCE_POISON);
 		}
 		return true;
 	}

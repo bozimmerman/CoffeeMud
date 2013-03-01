@@ -29,7 +29,7 @@ public class StdLibrary implements CMLibrary
 	{
 		try
 		{
-			return (CMObject)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{

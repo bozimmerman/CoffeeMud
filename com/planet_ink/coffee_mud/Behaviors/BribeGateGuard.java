@@ -57,7 +57,7 @@ public class BribeGateGuard extends StdBehavior
 	
 	protected double price()
 	{
-		return (double)getVal(getParms(), "price", 5);
+		return getVal(getParms(), "price", 5);
 	}
 
 	protected String gates()
@@ -136,7 +136,7 @@ public class BribeGateGuard extends StdBehavior
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
-				JournalsLibrary.JournalEntry V2 =(JournalsLibrary.JournalEntry)V.get(v);
+				JournalsLibrary.JournalEntry V2 =V.get(v);
 				if ( ( V2.from.equalsIgnoreCase(mob.Name())))
 				{
 					mine.addElement(V2);
@@ -207,7 +207,7 @@ public class BribeGateGuard extends StdBehavior
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
-				JournalsLibrary.JournalEntry V2 = (JournalsLibrary.JournalEntry)V.get(v);
+				JournalsLibrary.JournalEntry V2 = V.get(v);
 				if ( ( V2.from).equalsIgnoreCase(mob.Name())) {
 				  mine.addElement(V2);
 				}

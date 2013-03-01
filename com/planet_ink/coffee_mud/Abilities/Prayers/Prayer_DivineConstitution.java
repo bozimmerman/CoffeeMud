@@ -75,17 +75,19 @@ public class Prayer_DivineConstitution extends Prayer
 		&&(CMLib.dice().rollPercentage()<(50+(5*getX1Level(msg.source())))))
 		{
 			MOB M=(MOB)affected;
-			Room R=M.location();
-			int diff = (M.curState().getHitPoints() - M.maxState().getHitPoints()) + msg.value();
-			if((diff>0)
-			&&(msg.value()>diff)
-			&&(M!=null))
+			if(M!=null)
 			{
-				R.show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> gain(s) divine health!");
-				conPts++;
-				xtraHPs+=1+diff;
-				msg.source().recoverCharStats();
-				msg.source().recoverMaxState();
+				Room R=M.location();
+				int diff = (M.curState().getHitPoints() - M.maxState().getHitPoints()) + msg.value();
+				if((diff>0)
+				&&(msg.value()>diff))
+				{
+					R.show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> gain(s) divine health!");
+					conPts++;
+					xtraHPs+=1+diff;
+					msg.source().recoverCharStats();
+					msg.source().recoverMaxState();
+				}
 			}
 		}
 		return super.okMessage(host,msg);

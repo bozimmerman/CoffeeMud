@@ -63,7 +63,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 			return new AuctionCoffeeShop();
 		}
 	}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new AuctionCoffeeShop();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new AuctionCoffeeShop();}}
 	public void initializeClass(){}
 	
 	
@@ -116,7 +116,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 		Vector auctionItems=new Vector();
 		for(int a=0;a<auctions.size();a++)
 		{
-			Item I=((Auctioneer.AuctionData)auctions.get(a)).auctioningI;
+			Item I=auctions.get(a).auctioningI;
 			auctionItems.addElement(I);
 		}
 		for(int a=0;a<auctionItems.size();a++)

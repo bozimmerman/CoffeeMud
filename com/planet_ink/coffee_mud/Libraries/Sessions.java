@@ -169,7 +169,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	
 	public void run()
 	{
-		final double numThreads=(double)all.size();
+		final double numThreads=all.size();
 		if(numThreads>0.0)
 		{
 			final double milliSleep = 10.0 / numThreads;
@@ -208,10 +208,10 @@ public class Sessions extends StdLibrary implements SessionsList
 
 					if((S.previousCMD()!=null)
 					&&(S.previousCMD().size()>0)
-					&&(((String)S.previousCMD().get(0)).equalsIgnoreCase("IMPORT")
-					   ||((String)S.previousCMD().get(0)).equalsIgnoreCase("EXPORT")
-					   ||((String)S.previousCMD().get(0)).equalsIgnoreCase("CHARGEN")
-					   ||((String)S.previousCMD().get(0)).equalsIgnoreCase("MERGE")))
+					&&(S.previousCMD().get(0).equalsIgnoreCase("IMPORT")
+					   ||S.previousCMD().get(0).equalsIgnoreCase("EXPORT")
+					   ||S.previousCMD().get(0).equalsIgnoreCase("CHARGEN")
+					   ||S.previousCMD().get(0).equalsIgnoreCase("MERGE")))
 						check=check*600;
 					else
 					if((S.mob()!=null)&&(CMSecurity.isAllowed(S.mob(),S.mob().location(),CMSecurity.SecFlag.CMDROOMS)))

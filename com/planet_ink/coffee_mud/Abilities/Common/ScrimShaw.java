@@ -234,8 +234,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					String item=replacePercent(V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
@@ -292,7 +292,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				List<String> V=matches.get(r);
 				if(V.size()>0)
 				{
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
@@ -306,13 +306,13 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			}
 			
-			final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 			
-			String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
+			String misctype=foundRecipe.get(RCP_MISCTYPE);
 			int[] pm={RawMaterial.RESOURCE_BONE};
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
@@ -330,14 +330,14 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
+			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
-			String itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -349,12 +349,12 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			building.setSecretIdentity(getBrand(mob));
-			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
+			int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
+			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
 			key=null;

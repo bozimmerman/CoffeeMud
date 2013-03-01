@@ -119,7 +119,7 @@ public class Skill_Imitation extends BardSkill
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|(auto?CMMsg.MASK_ALWAYS:0),(String)immitations.get(found));
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|(auto?CMMsg.MASK_ALWAYS:0),immitations.get(found));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

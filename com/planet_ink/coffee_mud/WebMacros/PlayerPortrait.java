@@ -63,7 +63,7 @@ public class PlayerPortrait extends StdWebMacro
 				List<PlayerData> data=CMLib.database().DBReadData(last,"CMPORTRAIT");
 				if((data!=null)&&(data.size()>0))
 				{
-					String encoded=((DatabaseEngine.PlayerData)data.get(0)).xml;
+					String encoded=data.get(0).xml;
 					img=B64Encoder.B64decode(encoded);
 					if(img!=null)
 						Resources.submitResource("CMPORTRAIT-"+last,img);

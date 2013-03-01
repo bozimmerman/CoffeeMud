@@ -267,8 +267,8 @@ public class Test extends StdCommand
 								if((KP.item instanceof Armor)||(KP.item instanceof Weapon))
 								{
 									int newLevel=CMLib.itemBuilder().timsLevelCalculator(KP.item);
-									if((newLevel < Math.round((double)KP.item.basePhyStats().level() * .7))
-									||(newLevel > Math.round((double)KP.item.basePhyStats().level() * 1.3)))
+									if((newLevel < Math.round(KP.item.basePhyStats().level() * .7))
+									||(newLevel > Math.round(KP.item.basePhyStats().level() * 1.3)))
 										mob.tell(KP.item.name()+": "+KP.item.basePhyStats().level()+"!="+newLevel);
 								}
 							}
@@ -326,7 +326,7 @@ public class Test extends StdCommand
 				Object newStats=null;
 				long time=System.currentTimeMillis();
 				for(int i=0;i<times;i++)
-					newStats=(PhyStats)mob.basePhyStats().copyOf();
+					newStats=mob.basePhyStats().copyOf();
 				mob.tell("PhyStats CopyOf took :"+(System.currentTimeMillis()-time));
 				time=System.currentTimeMillis();
 				for(int i=0;i<times;i++)
@@ -335,7 +335,7 @@ public class Test extends StdCommand
 				
 				time=System.currentTimeMillis();
 				for(int i=0;i<times;i++)
-					newStats=(CharStats)mob.baseCharStats().copyOf();
+					newStats=mob.baseCharStats().copyOf();
 				mob.tell("CharStats CopyOf took :"+(System.currentTimeMillis()-time));
 				time=System.currentTimeMillis();
 				for(int i=0;i<times;i++)
@@ -344,7 +344,7 @@ public class Test extends StdCommand
 				
 				time=System.currentTimeMillis();
 				for(int i=0;i<times;i++)
-					newStats=(CharState)mob.maxState().copyOf();
+					newStats=mob.maxState().copyOf();
 				mob.tell("CharState CopyOf took :"+(System.currentTimeMillis()-time));
 				time=System.currentTimeMillis();
 				for(int i=0;i<times;i++)
@@ -367,7 +367,7 @@ public class Test extends StdCommand
 				boolean save = CMParms.combine(commands,2).equalsIgnoreCase("save");
 				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
-					Ability A=(Ability)e.nextElement();
+					Ability A=e.nextElement();
 					if(A instanceof ItemCraftor)
 					{
 						ItemCraftor iA=(ItemCraftor)A;
@@ -1365,8 +1365,6 @@ public class Test extends StdCommand
 				S2.initializeSession(null, "MEMORY");
 				mobs[0].setSession(S1);
 				mobs[1].setSession(S2);
-				Clan C1=null;
-				Clan C2=null;
 				try
 				{
 					S1.previousCMD().add("Y");
@@ -1380,8 +1378,6 @@ public class Test extends StdCommand
 					mobs[1].setSession(null);
 					mobs[0].setPlayerStats(null);
 					mobs[1].setPlayerStats(null);
-					if(C1!=null) C1.destroyClan();
-					if(C2!=null) C2.destroyClan();
 				}
 			}
 			reset(mobs,backups,R,IS,R2);

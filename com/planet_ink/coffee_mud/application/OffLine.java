@@ -117,7 +117,7 @@ public class OffLine extends Thread implements MudHost
 		}
 
 		for(int i=0;i<mudThreads.size();i++)
-			((OffLine)mudThreads.elementAt(i)).acceptConnections=true;
+			mudThreads.elementAt(i).acceptConnections=true;
 		System.out.println("Initialization complete.");
 		return true;
 	}
@@ -291,6 +291,7 @@ public class OffLine extends Thread implements MudHost
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	public void run()
 	{
 		int q_len = 6;
@@ -404,6 +405,7 @@ public class OffLine extends Thread implements MudHost
 		return port;
 	}
 
+	@SuppressWarnings("unused")
 	public static void main(String a[])
 	{
 		CMProps page=null;
@@ -419,7 +421,7 @@ public class OffLine extends Thread implements MudHost
 			Vector<String> V=CMParms.paramParse(nameID);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=(String)V.elementAt(v);
+				String s=V.elementAt(v);
 				if(s.toUpperCase().startsWith("BOOT=")&&(s.length()>5))
 				{
 					iniFile=s.substring(5);
@@ -475,13 +477,13 @@ public class OffLine extends Thread implements MudHost
 				StringBuffer str=new StringBuffer("");
 				for(int m=0;m<mudThreads.size();m++)
 				{
-					MudHost mud=(MudHost)mudThreads.elementAt(m);
+					MudHost mud=mudThreads.elementAt(m);
 					str.append(" "+mud.getPort());
 				}
 				ports=str.toString();
 
 				if(initHost(Thread.currentThread()))
-					((OffLine)mudThreads.firstElement()).join();
+					mudThreads.firstElement().join();
 
 				System.gc();
 				System.runFinalization();

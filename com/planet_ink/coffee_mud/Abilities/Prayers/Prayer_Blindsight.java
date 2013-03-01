@@ -73,7 +73,7 @@ public class Prayer_Blindsight extends Prayer
 		{
 			if(target instanceof MOB)
 			{
-				if((!CMLib.flags().isInDark((MOB)target))
+				if((!CMLib.flags().isInDark(target))
 				&&(CMLib.flags().canSee((MOB)target)))
 					return Ability.QUALITY_INDIFFERENT;
 			}

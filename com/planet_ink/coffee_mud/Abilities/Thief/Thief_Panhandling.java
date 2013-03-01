@@ -127,7 +127,7 @@ public class Thief_Panhandling extends ThiefSkill
 						double total=CMLib.beanCounter().getTotalAbsoluteNativeValue(mob2);
 						if(total>1.0)
 						{
-							total=total/(20.0-(float)getXLEVELLevel(mob));
+							total=total/(20.0-getXLEVELLevel(mob));
 							if(total<1.0) total=1.0;
 							Coins C=CMLib.beanCounter().makeBestCurrency(mob2,total);
 							if(C!=null)

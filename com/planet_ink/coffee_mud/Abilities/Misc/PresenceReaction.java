@@ -157,7 +157,7 @@ public class PresenceReaction extends StdAbility
 			{
 				if((O!=null)&&(O.ID().equals("Mood")))
 				{
-					if((previousMood!=null)&&(affected instanceof MOB))
+					if(previousMood!=null)
 					{
 						try
 						{

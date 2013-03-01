@@ -115,7 +115,7 @@ public class AbilityPlayerNext extends StdWebMacro
 			{
 				if(parms.containsKey("DOMAIN")&&(classType==Ability.ACODE_SPELL))
 				{
-					String domain=(String)parms.get("DOMAIN");
+					String domain=parms.get("DOMAIN");
 					if(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))
 					   okToShow=false;
 				}

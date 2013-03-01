@@ -73,7 +73,7 @@ public class Email extends StdCommand
 					for(int num=0;num<msgs.size();num++)
 					{
 						JournalsLibrary.JournalEntry thismsg=msgs.get(num);
-						String to=(String)thismsg.to;
+						String to=thismsg.to;
 						if(to.equalsIgnoreCase("ALL")
 						||to.equalsIgnoreCase(mob.Name())
 						||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))

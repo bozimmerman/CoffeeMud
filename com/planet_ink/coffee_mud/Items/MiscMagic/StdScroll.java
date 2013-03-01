@@ -100,7 +100,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		{
 			if(v==0)
 				add.append("A "+thang+" of ");
-			Ability A=(Ability)V.get(v);
+			Ability A=V.get(v);
 			if(V.size()==1)
 				add.append(A.name());
 			else
@@ -183,7 +183,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							Spells=me.getSpells();
 							for(int u=0;u<Spells.size();u++)
 							{
-								Ability A=(Ability)Spells.get(u);
+								Ability A=Spells.get(u);
 								theNews.append("Level "+CMStrings.padRight(""+CMLib.ableMapper().lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
 							}
 							mob.tell(theNews.toString());

@@ -156,9 +156,9 @@ public class Chant_AstralProjection extends Chant
 			MOB spirit=CMClass.getFactoryMOB();
 			spirit.setName("The Spirit of "+target.Name());
 			spirit.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
-			spirit.setPlayerStats(((MOB)target).playerStats());
-			spirit.setLocation(((MOB)target).location());
-			spirit.setBitmap(((MOB)target).getBitmap());
+			spirit.setPlayerStats(target.playerStats());
+			spirit.setLocation(target.location());
+			spirit.setBitmap(target.getBitmap());
 			mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");
 			CMLib.threads().startTickDown(spirit,Tickable.TICKID_MOB,1);
 			beneficialAffect(spirit,target,asLevel,0);

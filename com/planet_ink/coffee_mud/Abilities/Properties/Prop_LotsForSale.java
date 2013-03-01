@@ -75,7 +75,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			fillCluster(R,V);
 			String uniqueID="LOTS_PROPERTY_"+this;
 			if(V.size()>0)
-				uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID((Room)V.get(0));
+				uniqueID="LOTS_PROPERTY_"+CMLib.map().getExtendedRoomID(V.get(0));
 			for(Iterator<Room> r=V.iterator();r.hasNext();)
 			{
 				Ability A=null;

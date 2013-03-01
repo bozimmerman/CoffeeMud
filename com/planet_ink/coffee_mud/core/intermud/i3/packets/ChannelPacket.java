@@ -44,7 +44,7 @@ public class ChannelPacket extends Packet  {
 	public ChannelPacket()
 	{
 		super();
-		type = ChannelPacket.CHAN_MESSAGE;
+		type = Packet.CHAN_MESSAGE;
 	}
 	public ChannelPacket(Vector v) throws InvalidPacketException {
 		super(v);
@@ -55,14 +55,14 @@ public class ChannelPacket extends Packet  {
 			channel = Intermud.getLocalChannel(channel);
 			if( str.equals("channel-e") ) 
 			{
-				type = ChannelPacket.CHAN_EMOTE;
+				type = Packet.CHAN_EMOTE;
 				sender_visible_name = (String)v.elementAt(7);
 				message = (String)v.elementAt(8);
 			}
 			else
 			if( str.equals("channel-t") ) 
 			{
-				type = ChannelPacket.CHAN_TARGET;
+				type = Packet.CHAN_TARGET;
 				target_mud=(String)v.elementAt(7);
 				target_name=(String)v.elementAt(8);
 				message=(String)v.elementAt(9);
@@ -72,7 +72,7 @@ public class ChannelPacket extends Packet  {
 			}
 			else
 			{
-				type = ChannelPacket.CHAN_MESSAGE;
+				type = Packet.CHAN_MESSAGE;
 				sender_visible_name = (String)v.elementAt(7);
 				message = (String)v.elementAt(8);
 			}

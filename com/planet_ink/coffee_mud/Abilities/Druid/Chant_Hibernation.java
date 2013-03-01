@@ -112,17 +112,17 @@ public class Chant_Hibernation extends Chant
 		&&(CMLib.flags().isSleeping(mob)))
 		{
 			roundsHibernating++;
-			double man = (double)( ( mob.charStats().getStat( CharStats.STAT_INTELLIGENCE ) + mob.charStats().getStat( CharStats.STAT_WISDOM ) ) );
+			double man = ( ( mob.charStats().getStat( CharStats.STAT_INTELLIGENCE ) + mob.charStats().getStat( CharStats.STAT_WISDOM ) ) );
 			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
 									mob.maxState() );
 			mob.curState().setHunger(oldState.getHunger());
 			mob.curState().setThirst(oldState.getThirst());
-			double move = (double)mob.charStats().getStat( CharStats.STAT_STRENGTH );
+			double move = mob.charStats().getStat( CharStats.STAT_STRENGTH );
 			mob.curState().adjMovement( (int)Math.round( ( move * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
 										mob.maxState() );
 			if(!CMLib.flags().isGolem(mob))
 			{
-				double hp=(double)mob.charStats().getStat( CharStats.STAT_CONSTITUTION );
+				double hp=mob.charStats().getStat( CharStats.STAT_CONSTITUTION );
 				if(!CMLib.combat().postHealing( mob,
 												mob,
 												this,

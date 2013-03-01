@@ -65,7 +65,7 @@ public class Lacquerring extends CommonSkill
 		Vector<String> V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
 		{
-			String word=(String)V.elementAt(v);
+			String word=V.elementAt(v);
 			if((word.equalsIgnoreCase("an")) || (word.equalsIgnoreCase("a")))
 			{
 				String properPrefix=CMLib.english().properIndefiniteArticle(colorWord);

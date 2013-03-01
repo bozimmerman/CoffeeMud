@@ -114,9 +114,9 @@ public class ItemMender extends StdBehavior
 				CMLib.commands().postSay(observer,source,tool.name()+" doesn't require repair.",true,false);
 				return false;
 			}
-			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<((double)cost))
+			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<(cost))
 			{
-				String costStr=CMLib.beanCounter().nameCurrencyShort(observer,(double)cost);
+				String costStr=CMLib.beanCounter().nameCurrencyShort(observer,cost);
 				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to repair that.",true,false);
 				return false;
 			}
@@ -142,8 +142,8 @@ public class ItemMender extends StdBehavior
 		&&(msg.tool() instanceof Item))
 		{
 			double cost=cost((Item)msg.tool());
-			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
-			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
+			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),cost);
+			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,cost);
 			source.recoverPhyStats();
 			((Item)msg.tool()).setUsesRemaining(100);
 			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> "+costStr+".");

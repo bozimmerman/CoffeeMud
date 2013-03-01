@@ -107,7 +107,7 @@ public class GrinderFlatMap
 			Vector finalSet=new Vector();
 			for(;r.hasMoreElements();)
 			{
-				R=(Room)r.nextElement();
+				R=r.nextElement();
 				if(R.roomID().length()>0)
 				{
 					XYVector thisXY=((GridZones)area).getRoomXY(R.roomID());
@@ -145,7 +145,7 @@ public class GrinderFlatMap
 		// all thats left to hash are the APPROPRIATE fat rooms!
 		for(;r.hasMoreElements();)
 		{
-			R=(Room)r.nextElement();
+			R=r.nextElement();
 			if(R.roomID().length()>0)
 			{
 				GrinderRoom GR=new GrinderRoom(R);
@@ -249,9 +249,9 @@ public class GrinderFlatMap
 		{
 			boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
 			int[] midXY=new int[2];
-			midXY[0]=(int)Math.round(Math.floor(((double)finalCluster.size()+1.0)/2.0));
-			midXY[1]=(int)Math.round(Math.floor(((double)finalCluster.size()+1.0)/2.0));
-			finalCluster.get(0).xy=(int[])midXY.clone();
+			midXY[0]=(int)Math.round(Math.floor((finalCluster.size()+1.0)/2.0));
+			midXY[1]=(int)Math.round(Math.floor((finalCluster.size()+1.0)/2.0));
+			finalCluster.get(0).xy=midXY.clone();
 			miniGrid[midXY[0]][midXY[1]]=true;
 			for(int f=1;f<finalCluster.size();f++)
 			{
@@ -262,7 +262,7 @@ public class GrinderFlatMap
 						&&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
 							bestCoords=new int[]{x,y};
 				miniGrid[bestCoords[0]][bestCoords[1]]=true;
-				finalCluster.get(f).xy=(int[])bestCoords.clone();
+				finalCluster.get(f).xy=bestCoords.clone();
 			}
 			for(int f=0;f<finalCluster.size();f++)
 			{
@@ -310,9 +310,9 @@ public class GrinderFlatMap
 		{
 			boolean[][] miniGrid=new boolean[finalCluster.size()+1][finalCluster.size()+1];
 			int[] midXY=new int[2];
-			midXY[0]=(int)Math.round(Math.floor(((double)finalCluster.size()+1.0)/2.0));
-			midXY[1]=(int)Math.round(Math.floor(((double)finalCluster.size()+1.0)/2.0));
-			finalCluster.get(0).xy=(int[])midXY.clone();
+			midXY[0]=(int)Math.round(Math.floor((finalCluster.size()+1.0)/2.0));
+			midXY[1]=(int)Math.round(Math.floor((finalCluster.size()+1.0)/2.0));
+			finalCluster.get(0).xy=midXY.clone();
 			miniGrid[midXY[0]][midXY[1]]=true;
 			for(int f=1;f<finalCluster.size();f++)
 			{
@@ -323,7 +323,7 @@ public class GrinderFlatMap
 						&&(getDistanceFrom(bestCoords,midXY)>getDistanceFrom(new int[]{x,y},midXY)))
 							bestCoords=new int[]{x,y};
 				miniGrid[bestCoords[0]][bestCoords[1]]=true;
-				finalCluster.get(f).xy=(int[])bestCoords.clone();
+				finalCluster.get(f).xy=bestCoords.clone();
 			}
 			for(int f=0;f<finalCluster.size();f++)
 			{
@@ -344,12 +344,12 @@ public class GrinderFlatMap
 		for(int s=0;s<sets.size();s++)
 		{
 			List<GrinderRoom> set=sets.get(s);
-			R=((GrinderRoom)set.get(0));
+			R=(set.get(0));
 			int[] minXY=new int[]{R.xy[0],R.xy[1]};
 			int[] maxXY=new int[]{R.xy[0],R.xy[1]};
 			for(int r=1;r<set.size();r++)
 			{
-				R=((GrinderRoom)set.get(r));
+				R=(set.get(r));
 				if(R.xy[0]<minXY[0]) minXY[0]=R.xy[0];
 				if(R.xy[1]<minXY[1]) minXY[1]=R.xy[1];
 
@@ -361,7 +361,7 @@ public class GrinderFlatMap
 			widthHeightXY[1]=maxXY[1]-minXY[1];
 			for(int r=0;r<set.size();r++)
 			{
-				R=((GrinderRoom)set.get(r));
+				R=(set.get(r));
 				R.xy[0]-=minXY[0];
 				R.xy[1]-=minXY[1];
 			}
@@ -372,8 +372,8 @@ public class GrinderFlatMap
 		// yes, i know there must be a more efficient way...
 		List<GrinderRoom>[][] grid=new Vector[sets.size()+1][sets.size()+1];
 		int[] midXY=new int[2];
-		midXY[0]=(int)Math.round(Math.floor(((double)sets.size()+1.0)/2.0));
-		midXY[1]=(int)Math.round(Math.floor(((double)sets.size()+1.0)/2.0));
+		midXY[0]=(int)Math.round(Math.floor((sets.size()+1.0)/2.0));
+		midXY[1]=(int)Math.round(Math.floor((sets.size()+1.0)/2.0));
 		grid[midXY[0]][midXY[1]]=sets.get(0);
 		int mostLeft=midXY[0];
 		int mostTop=midXY[1];
@@ -456,7 +456,7 @@ public class GrinderFlatMap
 	public GrinderRoom getRoom(String ID)
 	{
 		if((hashRooms!=null)&&(hashRooms.containsKey(ID)))
-		   return (GrinderRoom)hashRooms.get(ID);
+		   return hashRooms.get(ID);
 
 		if(areaMap!=null)
 			for(int r=0;r<areaMap.size();r++)
@@ -505,7 +505,7 @@ public class GrinderFlatMap
 					&&(!roomsDone.contains(R.doors[d].room))
 					&&(!roomsDone.contains(R.doors[d].room)))
 					{
-						R2=(GrinderRoom)H.get(R.doors[d].room);
+						R2=H.get(R.doors[d].room);
 						if(R2==null) continue;
 						R2.xy=newXY(R.xy,d);
 						if(coordsDone.contains(R2.xy[0]+"/"+R2.xy[1]))
@@ -579,7 +579,7 @@ public class GrinderFlatMap
 		 			&&(!myRoomsDone.contains(R.doors[d].room))
 		 			&&(!roomsDone.contains(R.doors[d].room)))
 		 			{
-		 				GrinderRoom R2=(GrinderRoom)H.get(R.doors[d].room);
+		 				GrinderRoom R2=H.get(R.doors[d].room);
 		 				if(R2==null) continue;
 		 				int[] xy2=newXY(xy,d);
 		 				xys.put(R2.roomID,xy2);
@@ -828,7 +828,7 @@ public class GrinderFlatMap
 
 	public int[] newXY(int[] xy, int dir)
 	{
-		xy=(int[])xy.clone();
+		xy=xy.clone();
 		switch(dir)
 		{
 			case Directions.NORTH:

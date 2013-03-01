@@ -103,7 +103,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 			return false;
 		for(int i=0;i<V.size()*5;i++)
 		{
-			Item I=(Item)V.get(CMLib.dice().roll(1,V.size(),-1));
+			Item I=V.get(CMLib.dice().roll(1,V.size(),-1));
 			I.setContainer(this);
 			if(own instanceof MOB)
 			{

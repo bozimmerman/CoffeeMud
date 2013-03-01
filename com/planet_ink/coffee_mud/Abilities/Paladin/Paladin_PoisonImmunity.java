@@ -56,6 +56,6 @@ public class Paladin_PoisonImmunity extends PaladinSkill
 	{
 		super.affectCharStats(affected,affectableStats);
 		if((affected!=null)&&(CMLib.flags().isGood(affected)))
-			affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+50+proficiency()+(5*getXLEVELLevel((MOB)affected)));
+			affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+50+proficiency()+(5*getXLEVELLevel(affected)));
 	}
 }

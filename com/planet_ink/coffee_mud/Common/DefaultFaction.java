@@ -42,7 +42,7 @@ import java.lang.reflect.*;
 public class DefaultFaction implements Faction, MsgListener
 {
 	public String ID(){return "DefaultFaction";}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultFaction();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultFaction();}}
 	public void initializeClass(){}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -80,7 +80,7 @@ public class DefaultFaction implements Faction, MsgListener
 	public Enumeration<Faction.FReactionItem> reactions(){return reactions.elements();}
 	public Enumeration<Faction.FReactionItem> reactions(String rangeName)
 	{
-		SVector<Faction.FReactionItem> V=(SVector<Faction.FReactionItem>)reactionHash.get(rangeName.toUpperCase().trim());
+		SVector<Faction.FReactionItem> V=reactionHash.get(rangeName.toUpperCase().trim());
 		if(V!=null) return V.elements();
 		return new Vector<Faction.FReactionItem>().elements();
 	}
@@ -170,7 +170,7 @@ public class DefaultFaction implements Faction, MsgListener
 	public double getRelation(String factionID) 
 	{
 		if(relations.containsKey(factionID))
-			return ((Double)relations.get(factionID)).doubleValue();
+			return relations.get(factionID).doubleValue();
 		return 0.0;
 	}
 
@@ -246,18 +246,18 @@ public class DefaultFaction implements Faction, MsgListener
 			{
 				Vector<String> factor=CMParms.parseSemicolons(words,false);
 				if(factor.size()>2)
-					factors.add(new DefaultFactionZapFactor(CMath.s_double((String)factor.elementAt(0)),
-											 CMath.s_double((String)factor.elementAt(1)),
-											 (String)factor.elementAt(2)));
+					factors.add(new DefaultFactionZapFactor(CMath.s_double(factor.elementAt(0)),
+											 CMath.s_double(factor.elementAt(1)),
+											 factor.elementAt(2)));
 			}
 			if(key.startsWith("RELATION"))
 			{
 				Vector<String> V=CMParms.parse(words);
 				if(V.size()>=2)
 				{
-					String who=(String)V.elementAt(0);
+					String who=V.elementAt(0);
 					double factor;
-					String amt=((String)V.elementAt(1)).trim();
+					String amt=V.elementAt(1).trim();
 					if(amt.endsWith("%"))
 						factor=CMath.s_pct(amt);
 					else
@@ -280,7 +280,7 @@ public class DefaultFaction implements Faction, MsgListener
 		maximum=Integer.MIN_VALUE;
 		for(Enumeration<Faction.FRange> e=ranges();e.hasMoreElements();)
 		{
-			Faction.FRange FR=(Faction.FRange)e.nextElement();
+			Faction.FRange FR=e.nextElement();
 			if(FR.high()>maximum) maximum=FR.high();
 			if(FR.low()<minimum) minimum=FR.low();
 		}
@@ -327,7 +327,7 @@ public class DefaultFaction implements Faction, MsgListener
 			int x=0;
 			for(Enumeration<Faction.FRange> e=ranges();e.hasMoreElements();)
 			{
-				Faction.FRange FR=(Faction.FRange)e.nextElement();
+				Faction.FRange FR=e.nextElement();
 				if(x==numCall) return FR.toString();
 				x++;
 			}
@@ -357,7 +357,7 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			if((numCall<0)||(numCall>=abilityUsages.size()))
 				return ""+abilityUsages.size();
-			return ((FAbilityUsage)abilityUsages.elementAt(numCall)).toString();
+			return abilityUsages.elementAt(numCall).toString();
 		}
 		case TAG_FACTOR_:
 		{
@@ -372,8 +372,8 @@ public class DefaultFaction implements Faction, MsgListener
 			int i=0;
 			for(Enumeration<String> e=relations.keys();e.hasMoreElements();)
 			{
-				String factionName=(String)e.nextElement();
-				Double D=(Double)relations.get(factionName);
+				String factionName=e.nextElement();
+				Double D=relations.get(factionName);
 				if(i==numCall)
 					return factionName+" "+CMath.toPct(D.doubleValue());
 				i++;
@@ -387,8 +387,8 @@ public class DefaultFaction implements Faction, MsgListener
 			int i=0;
 			for(Enumeration<String> e=affBehavs.keys();e.hasMoreElements();)
 			{
-				String ID=(String)e.nextElement();
-				String[] data=(String[])affBehavs.get(ID);
+				String ID=e.nextElement();
+				String[] data=affBehavs.get(ID);
 				if(i==numCall)
 					return ID+";"+CMParms.toSafeSemicolonList(data);
 				i++;
@@ -399,7 +399,7 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			if((numCall<0)||(numCall>=reactions.size()))
 				return ""+reactions.size();
-			Faction.FReactionItem item = (Faction.FReactionItem)reactions.elementAt(numCall);
+			Faction.FReactionItem item = reactions.elementAt(numCall);
 			return item.toString();
 		}
 		case TAG_USELIGHTREACTIONS: return ""+useLightReactions;
@@ -437,7 +437,7 @@ public class DefaultFaction implements Faction, MsgListener
 		if(mob.isMonster())
 			for(Enumeration<String> e=affectsBehavs();e.hasMoreElements();)
 			{
-				ID=(String)e.nextElement();
+				ID=e.nextElement();
 				stuff=getAffectBehav(ID);
 				if(CMLib.masking().maskCheck(stuff[1],mob,true))
 				{
@@ -485,13 +485,13 @@ public class DefaultFaction implements Faction, MsgListener
 	
 	public String[] getAffectBehav(String ID) {
 		if(affBehavs.containsKey(ID.toUpperCase().trim()))
-			return CMParms.toStringArray(new XVector<String>((String[])affBehavs.get(ID.toUpperCase().trim())));
+			return CMParms.toStringArray(new XVector<String>(affBehavs.get(ID.toUpperCase().trim())));
 		return null;
 	}
 	
 	public boolean delReaction(Faction.FReactionItem item)
 	{
-		SVector<Faction.FReactionItem> V=(SVector<Faction.FReactionItem>)reactionHash.get(item.rangeName().toUpperCase().trim());
+		SVector<Faction.FReactionItem> V=reactionHash.get(item.rangeName().toUpperCase().trim());
 		if(V!=null)
 			V.remove(item);
 		boolean res = reactions.remove(item);
@@ -502,7 +502,7 @@ public class DefaultFaction implements Faction, MsgListener
 	
 	public boolean addReaction(String range, String mask, String abilityID, String parms)
 	{
-		SVector<Faction.FReactionItem> V=(SVector<Faction.FReactionItem>)reactionHash.get(range.toUpperCase().trim());
+		SVector<Faction.FReactionItem> V=reactionHash.get(range.toUpperCase().trim());
 		DefaultFactionReactionItem item = new DefaultFactionReactionItem();
 		item.setRangeName(range);
 		item.setPresentMOBMask(mask);
@@ -521,7 +521,7 @@ public class DefaultFaction implements Faction, MsgListener
 	
 	public FactionChangeEvent[] getChangeEvents(String key) 
 	{
-		return (FactionChangeEvent[])changes.get(key);
+		return changes.get(key);
 	}
 
 	public List<Integer> findChoices(MOB mob)
@@ -530,7 +530,7 @@ public class DefaultFaction implements Faction, MsgListener
 		String s;
 		for(Enumeration<String> e=choices.elements();e.hasMoreElements();)
 		{
-			s=(String)e.nextElement();
+			s=e.nextElement();
 			if(CMath.isInteger(s))
 				mine.addElement(Integer.valueOf(CMath.s_int(s)));
 			else
@@ -539,8 +539,8 @@ public class DefaultFaction implements Faction, MsgListener
 				Vector<String> V=CMParms.parse(s);
 				for(int j=0;j<V.size();j++)
 				{
-					if(CMath.isInteger((String)V.elementAt(j)))
-						mine.addElement(Integer.valueOf(CMath.s_int((String)V.elementAt(j))));
+					if(CMath.isInteger(V.elementAt(j)))
+						mine.addElement(Integer.valueOf(CMath.s_int(V.elementAt(j))));
 				}
 			}
 		}
@@ -584,14 +584,14 @@ public class DefaultFaction implements Faction, MsgListener
 
 	public Faction.FRange fetchRange(String codeName)
 	{
-		return (FRange)ranges.get(codeName.toUpperCase().trim());
+		return ranges.get(codeName.toUpperCase().trim());
 	}
 
 	public FRange fetchRange(int faction)
 	{
 		for (Enumeration<FRange> e=ranges.elements();e.hasMoreElements();)
 		{
-			FRange R = (FRange)e.nextElement();
+			FRange R = e.nextElement();
 			if ( (faction >= R.low()) && (faction <= R.high()))
 				return R;
 		}
@@ -601,7 +601,7 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		for (Enumeration<FRange> e=ranges.elements();e.hasMoreElements();)
 		{
-			FRange R = (FRange)e.nextElement();
+			FRange R = e.nextElement();
 			if ( (faction >= R.low()) && (faction <= R.high()))
 				return R.name();
 		}
@@ -631,7 +631,7 @@ public class DefaultFaction implements Faction, MsgListener
 		String s;
 		for(Enumeration<String> e=defaults.elements();e.hasMoreElements();)
 		{
-			s=(String)e.nextElement();
+			s=e.nextElement();
 			if(CMath.isNumber(s))
 				return CMath.s_int(s);
 			else
@@ -640,8 +640,8 @@ public class DefaultFaction implements Faction, MsgListener
 				Vector<String> V=CMParms.parse(s);
 				for(int j=0;j<V.size();j++)
 				{
-					if(CMath.isNumber((String)V.elementAt(j)))
-						return CMath.s_int((String)V.elementAt(j));
+					if(CMath.isNumber(V.elementAt(j)))
+						return CMath.s_int(V.elementAt(j));
 				}
 			}
 		}
@@ -653,7 +653,7 @@ public class DefaultFaction implements Faction, MsgListener
 		String s;
 		for(Enumeration<String> e=autoDefaults.elements();e.hasMoreElements();)
 		{
-			s=(String)e.nextElement();
+			s=e.nextElement();
 			if(CMath.isNumber(s))
 				return CMath.s_int(s);
 			else
@@ -662,8 +662,8 @@ public class DefaultFaction implements Faction, MsgListener
 				Vector<String> V=CMParms.parse(s);
 				for(int j=0;j<V.size();j++)
 				{
-					if(CMath.isNumber((String)V.elementAt(j)))
-						return CMath.s_int((String)V.elementAt(j));
+					if(CMath.isNumber(V.elementAt(j)))
+						return CMath.s_int(V.elementAt(j));
 				}
 			}
 		}
@@ -735,7 +735,7 @@ public class DefaultFaction implements Faction, MsgListener
 					CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
 					Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
 					for(Iterator<MOB> i=combatBeneficiaries.iterator();i.hasNext();)
-						executeChange((MOB)i.next(),killedM,eventC);
+						executeChange(i.next(),killedM,eventC);
 				}
 			}
 		}
@@ -943,21 +943,21 @@ public class DefaultFaction implements Faction, MsgListener
 			MOB vic=(MOB)msg.target();
 
 			if(experienceFlag.equals("HIGHER"))
-				msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(killer.fetchFaction(ID)-minimum),(maximum - minimum)))));
+				msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(killer.fetchFaction(ID)-minimum),(maximum - minimum)))));
 			else
 			if(experienceFlag.equals("LOWER"))
-				msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(maximum-killer.fetchFaction(ID)),(maximum - minimum)))));
+				msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(maximum-killer.fetchFaction(ID)),(maximum - minimum)))));
 			else
 			if(vic.fetchFaction(ID)!=Integer.MAX_VALUE)
 			{
 				if(experienceFlag.equals("EXTREME"))
-					msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(ID) - killer.fetchFaction(ID)),(maximum - minimum)))));
+					msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(ID) - killer.fetchFaction(ID)),(maximum - minimum)))));
 				else
 				if(experienceFlag.equals("FOLLOWHIGHER"))
-					msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(ID)-minimum),(maximum - minimum)))));
+					msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(vic.fetchFaction(ID)-minimum),(maximum - minimum)))));
 				else
 				if(experienceFlag.equals("FOLLOWLOWER"))
-					msg.setValue( (int)Math.round((((double)msg.value())*.75) +( (((double)msg.value())*.25) * CMath.div(Math.abs(maximum-vic.fetchFaction(ID)),(maximum - minimum)))));
+					msg.setValue( (int)Math.round(((msg.value())*.75) +( ((msg.value())*.25) * CMath.div(Math.abs(maximum-vic.fetchFaction(ID)),(maximum - minimum)))));
 				if(msg.value()<=0)
 					msg.setValue(0);
 			}
@@ -995,8 +995,8 @@ public class DefaultFaction implements Faction, MsgListener
 			if(levelLimit>0)
 			{
 				double levelFactor=CMath.div(levelDiff,levelLimit);
-				if(levelFactor> ((double)levelLimit))
-					levelFactor=((double)levelLimit);
+				if(levelFactor> (levelLimit))
+					levelFactor=(levelLimit);
 				baseChangeAmount=baseChangeAmount+CMath.mul(levelFactor,100);
 			}
 		}
@@ -1027,7 +1027,7 @@ public class DefaultFaction implements Faction, MsgListener
 				if((sourceFaction>middle)&&(targetFaction>middle)) changeDir=-1;
 				baseChangeAmount=CMath.div(baseChangeAmount,2.0)
 								+(int)Math.round(CMath.div(baseChangeAmount,2.0)
-										*Math.abs((double)(sourceFaction-targetFaction)
+										*Math.abs((sourceFaction-targetFaction)
 												/Math.abs((double)difference)));
 			}
 			else
@@ -1087,9 +1087,9 @@ public class DefaultFaction implements Faction, MsgListener
 					// that any changes from okMessage are incorporated
 					for(Enumeration<String> e=relations.keys();e.hasMoreElements();)
 					{
-						String relID=((String)e.nextElement());
+						String relID=(e.nextElement());
 						FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
-						FacMsg.setValue((int)Math.round(CMath.mul(factionAdj, ((Double)relations.get(relID)).doubleValue())));
+						FacMsg.setValue((int)Math.round(CMath.mul(factionAdj, relations.get(relID).doubleValue())));
 						if(R.okMessage(source,FacMsg))
 							R.send(source, FacMsg);
 					}
@@ -1117,7 +1117,7 @@ public class DefaultFaction implements Faction, MsgListener
 			 {
 				for(Enumeration<FRange> e=ranges();e.hasMoreElements();)
 				{
-					 FRange R=(FRange)e.nextElement();
+					 FRange R=e.nextElement();
 					 if((((R.high()<=usage.high())&&(R.high()>=usage.low()))
 						 ||((R.low()>=usage.low()))&&(R.low()<=usage.high()))
 					 &&(!namesAdded.contains(R.name())))
@@ -1450,13 +1450,13 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			myFaction=F;
 			Vector<String> v = CMParms.parseSemicolons(key,false);
-			Name = (String) v.elementAt(2);
-			low = CMath.s_int( (String) v.elementAt(0));
-			high = CMath.s_int( (String) v.elementAt(1));
+			Name = v.elementAt(2);
+			low = CMath.s_int( v.elementAt(0));
+			high = CMath.s_int( v.elementAt(1));
 			if(v.size()>3)
-				CodeName=(String)v.elementAt(3);
+				CodeName=v.elementAt(3);
 			if(v.size()>4)
-				AlignEquiv = CMLib.factions().getAlignEquiv((String)v.elementAt(4));
+				AlignEquiv = CMLib.factions().getAlignEquiv(v.elementAt(4));
 			else
 				AlignEquiv = Faction.ALIGN_INDIFF;
 		}
@@ -1552,7 +1552,7 @@ public class DefaultFaction implements Faction, MsgListener
 						currentReactionSets=new DVector(2);
 						for(Enumeration<Faction.FReactionItem> e=reactions();e.hasMoreElements();)
 						{
-							Faction.FReactionItem react = (Faction.FReactionItem)e.nextElement();
+							Faction.FReactionItem react = e.nextElement();
 							if(!react.rangeName().equalsIgnoreCase(currentRange.codeName()))
 								continue;
 							Faction.FReactionItem sampleReact = null;
@@ -1560,7 +1560,7 @@ public class DefaultFaction implements Faction, MsgListener
 							for(int r=0;r<currentReactionSets.size();r++)
 							{
 								reactSet=(Vector<Faction.FReactionItem>)currentReactionSets.elementAt(r,2);
-								sampleReact=(Faction.FReactionItem)reactSet.firstElement();
+								sampleReact=reactSet.firstElement();
 								if(react.presentMOBMask().trim().equalsIgnoreCase(sampleReact.presentMOBMask().trim()))
 								{
 									reactSet.addElement(react);
@@ -1853,9 +1853,9 @@ public class DefaultFaction implements Faction, MsgListener
 		public DefaultFactionAbilityUsage(String key)
 		{
 			Vector<String> v = CMParms.parseSemicolons(key,false);
-			setAbilityFlag((String)v.firstElement());
-			low = CMath.s_int( (String) v.elementAt(1));
-			high = CMath.s_int( (String) v.elementAt(2));
+			setAbilityFlag(v.firstElement());
+			low = CMath.s_int( v.elementAt(1));
+			high = CMath.s_int( v.elementAt(2));
 		}
 		public String toString()
 		{
@@ -1870,7 +1870,7 @@ public class DefaultFaction implements Faction, MsgListener
 			possibleAbilityID=false;
 			for(int f=0;f<flags.size();f++)
 			{
-				String strflag=(String)flags.elementAt(f);
+				String strflag=flags.elementAt(f);
 				boolean not=strflag.startsWith("!");
 				if(not) strflag=strflag.substring(1);
 				switch(CMLib.factions().getAbilityFlagType(strflag))

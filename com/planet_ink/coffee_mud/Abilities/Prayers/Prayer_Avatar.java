@@ -126,7 +126,7 @@ public class Prayer_Avatar extends Prayer
 					}
 					while(dirs.size()>0)
 					{
-						int d=((Integer)dirs.remove(CMLib.dice().roll(1, dirs.size(), -1))).intValue();
+						int d=dirs.remove(CMLib.dice().roll(1, dirs.size(), -1)).intValue();
 						Room R2=R.getRoomInDir(d);
 						if(R2!=null)
 						{

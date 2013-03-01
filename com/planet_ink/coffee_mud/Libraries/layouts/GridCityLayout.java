@@ -14,7 +14,7 @@ public class GridCityLayout extends AbstractLayout
 	public Vector<LayoutNode> generate(int num, int dir) 
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
-		int diameter = (int)Math.round(Math.sqrt((double)num));
+		int diameter = (int)Math.round(Math.sqrt(num));
 		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
 		
 		LayoutSet lSet = new LayoutSet(set,num);

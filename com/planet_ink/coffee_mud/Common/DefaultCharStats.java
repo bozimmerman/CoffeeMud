@@ -108,7 +108,7 @@ public class DefaultCharStats implements CharStats
 				for(int i=0;i<myClasses.length;i++)
 					((DefaultCharStats)intoStats).myClasses[i]=myClasses[i];
 			else
-				((DefaultCharStats)intoStats).myClasses=(CharClass[])myClasses.clone();
+				((DefaultCharStats)intoStats).myClasses=myClasses.clone();
 			if(myLevels==null)
 				((DefaultCharStats)intoStats).myLevels=null;
 			else
@@ -117,7 +117,7 @@ public class DefaultCharStats implements CharStats
 				for(int i=0;i<myLevels.length;i++)
 					((DefaultCharStats)intoStats).myLevels[i]=myLevels[i];
 			else
-				((DefaultCharStats)intoStats).myLevels=(Integer[])myLevels.clone();
+				((DefaultCharStats)intoStats).myLevels=myLevels.clone();
 			if(myRace!=null)
 				((DefaultCharStats)intoStats).myRace=myRace;
 			((DefaultCharStats)intoStats).raceName=raceName;
@@ -132,7 +132,7 @@ public class DefaultCharStats implements CharStats
 				for(int i=0;i<bodyAlterations.length;i++)
 					((DefaultCharStats)intoStats).bodyAlterations[i]=bodyAlterations[i];
 			else
-				((DefaultCharStats)intoStats).bodyAlterations=(short[])bodyAlterations.clone();
+				((DefaultCharStats)intoStats).bodyAlterations=bodyAlterations.clone();
 			for(int i=0;i<stats.length;i++)
 				((DefaultCharStats)intoStats).stats[i]=stats[i];
 			((DefaultCharStats)intoStats).unwearableBitmap=unwearableBitmap;
@@ -302,7 +302,7 @@ public class DefaultCharStats implements CharStats
 		for(int x : C.all())
 			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER)&&(V.size()>0))
 			{
-				final long val=CMath.s_long((String)V.remove(0));
+				final long val=CMath.s_long(V.remove(0));
 				if((val>Short.MAX_VALUE)||(val<Short.MIN_VALUE))
 					Log.errOut("Value out of range","Value out of range: "+val+" for "+x+" from "+str);
 				stats[x]=(short)val;
@@ -436,8 +436,8 @@ public class DefaultCharStats implements CharStats
 				return;
 			Integer oldI=Integer.valueOf(level);
 			boolean go=false;
-			CharClass[] myNewClasses=(CharClass[])myClasses.clone();
-			Integer[] myNewLevels=(Integer[])myLevels.clone();
+			CharClass[] myNewClasses=myClasses.clone();
+			Integer[] myNewLevels=myLevels.clone();
 			for(int i=0;i<myNewClasses.length-1;i++)
 			{
 				CharClass C=getMyClass(i);
@@ -501,7 +501,7 @@ public class DefaultCharStats implements CharStats
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
 		{
 			if(V.size()<=i) break;
-			int val=CMath.s_int((String)V.elementAt(i));
+			int val=CMath.s_int(V.elementAt(i));
 			int num=getMyRace().bodyMask()[i];
 			if(num!=val) alterBodypart(i,val-num);
 		}
@@ -591,14 +591,14 @@ public class DefaultCharStats implements CharStats
 	{
 		DefaultCharStats newOne=new DefaultCharStats();
 		if(myClasses!=null)
-			newOne.myClasses=(CharClass[])myClasses.clone();
+			newOne.myClasses=myClasses.clone();
 		if(myRace!=null)
 			newOne.myRace=myRace;
 		if(myLevels!=null)
-			newOne.myLevels=(Integer[])myLevels.clone();
+			newOne.myLevels=myLevels.clone();
 		if(bodyAlterations!=null)
-			newOne.bodyAlterations=(short[])bodyAlterations.clone();
-		newOne.stats=(short[])stats.clone();
+			newOne.bodyAlterations=bodyAlterations.clone();
+		newOne.stats=stats.clone();
 		return newOne;
 	}
 
@@ -733,7 +733,7 @@ public class DefaultCharStats implements CharStats
 			int currMax=getStat(CharStats.CODES.toMAXBASE(abilityCode))+baseMax;
 			if(currMax<=0) currMax=1;
 			int curStat=getStat(abilityCode);
-			int racialStat=Math.round(((float)curStat/(float)currMax)*(float)racialMax)+Math.round((((float)(currMax-VALUE_ALLSTATS_DEFAULT))/(float)currMax)*(float)racialMax);
+			int racialStat=Math.round(((float)curStat/(float)currMax)*racialMax)+Math.round((((float)(currMax-VALUE_ALLSTATS_DEFAULT))/(float)currMax)*racialMax);
 			setStat(abilityCode,((racialStat<1)&&(racialMax>0))?1:racialStat);
 			setStat(CharStats.CODES.toMAXBASE(abilityCode),racialMax-baseMax);
 		}

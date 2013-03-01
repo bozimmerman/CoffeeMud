@@ -156,7 +156,7 @@ public class GrinderMap extends GrinderFlatMap
 	public GrinderRoom getRoom(String ID)
 	{
 		if ( (hashRooms != null) && (hashRooms.containsKey(ID)))
-			return (GrinderRoom) hashRooms.get(ID);
+			return hashRooms.get(ID);
 
 		if (areaMap != null)
 		{

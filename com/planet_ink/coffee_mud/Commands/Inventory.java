@@ -75,7 +75,7 @@ public class Inventory extends StdCommand
 						lst.moneyItems.put(((Coins)thisItem).getCurrency(),coinsV);
 					}
 					for(insertAt=0;insertAt<coinsV.size();insertAt++)
-						if(((Coins)coinsV.elementAt(insertAt)).getDenomination()>((Coins)thisItem).getDenomination())
+						if(coinsV.elementAt(insertAt).getDenomination()>((Coins)thisItem).getDenomination())
 							break;
 					if(insertAt>=coinsV.size())
 						coinsV.addElement((Coins)thisItem);
@@ -101,7 +101,7 @@ public class Inventory extends StdCommand
 				double totalValue=0.0;
 				for(int v=0;v<V.size();v++)
 				{
-					I=(Item)V.elementAt(v);
+					I=V.elementAt(v);
 					if(v>0) msg.append(", ");
 					if(I instanceof Coins)
 						totalValue+=((Coins)I).getTotalValue();

@@ -72,7 +72,7 @@ public class Modify extends StdCommand
 				{
 					Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
-						srchContainer=(Container)I;
+						srchContainer=I;
 					else
 					{
 						mob.tell("MOB or Container '"+rest+"' not found.");
@@ -435,28 +435,25 @@ public class Modify extends StdCommand
 			CMLib.genEd().modifyAccount(mob,theAccount);
 			mob.location().recoverRoomStats();
 		}
-		if(theAccount != null)
+		Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.accountName()+".");
+		if(!oldName.equals(theAccount.accountName()))
 		{
-			Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.accountName()+".");
-			if(!oldName.equals(theAccount.accountName()))
+			Vector<MOB> V=new Vector<MOB>();
+			for(Enumeration<String> es=theAccount.getPlayers();es.hasMoreElements();)
 			{
-				Vector<MOB> V=new Vector<MOB>();
-				for(Enumeration<String> es=theAccount.getPlayers();es.hasMoreElements();)
-				{
-					String playerName=es.nextElement();
-					MOB playerM=CMLib.players().getLoadPlayer(playerName);
-					if((playerM!=null)&&(!CMLib.flags().isInTheGame(playerM,true)))
-						V.addElement(playerM);
-				}
-				PlayerAccount acc = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
-				acc.setAccountName(oldName);
-				CMLib.database().DBDeleteAccount(acc);
-				CMLib.database().DBCreateAccount(theAccount);
-				for(MOB playerM : V)
-					CMLib.database().DBUpdatePlayerPlayerStats(playerM);
+				String playerName=es.nextElement();
+				MOB playerM=CMLib.players().getLoadPlayer(playerName);
+				if((playerM!=null)&&(!CMLib.flags().isInTheGame(playerM,true)))
+					V.addElement(playerM);
 			}
-			CMLib.database().DBUpdateAccount(theAccount);
+			PlayerAccount acc = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+			acc.setAccountName(oldName);
+			CMLib.database().DBDeleteAccount(acc);
+			CMLib.database().DBCreateAccount(theAccount);
+			for(MOB playerM : V)
+				CMLib.database().DBUpdatePlayerPlayerStats(playerM);
 		}
+		CMLib.database().DBUpdateAccount(theAccount);
 	}
 
 	public void areas(MOB mob, Vector commands)
@@ -1232,7 +1229,7 @@ public class Modify extends StdCommand
 		List<Social> oldSocials = new Vector();
 		List<Social> allSocials = CMLib.socials().getSocialsSet(name);
 		for(int a = 0; a<allSocials.size();a++)
-			oldSocials.add((Social)((Social)allSocials.get(a)).copyOf());
+			oldSocials.add((Social)allSocials.get(a).copyOf());
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  "+S.name()+"s.");
 		CMLib.socials().modifySocialInterface(mob,(name+" "+oldStuff).trim());
 		allSocials = CMLib.socials().getSocialsSet(name);
@@ -1240,11 +1237,11 @@ public class Modify extends StdCommand
 		if(!changed)
 		for(int a=0;a<oldSocials.size();a++)
 		{
-			Social oldSocial = (Social)oldSocials.get(a);
+			Social oldSocial = oldSocials.get(a);
 			boolean found = false;
 			for(int a2=0;a2<allSocials.size();a2++)
 			{
-				Social newSocial = (Social)allSocials.get(a2);
+				Social newSocial = allSocials.get(a2);
 				if(oldSocial.name().equals(newSocial.name()))
 				{
 					found = true;
@@ -1882,7 +1879,7 @@ public class Modify extends StdCommand
 					{
 						Item I = srchRoom.findItem(null, rest);
 						if(I instanceof Container)
-							srchContainer=(Container)I;
+							srchContainer=I;
 						else
 						{
 							mob.tell("MOB or Container '"+rest+"' not found.");

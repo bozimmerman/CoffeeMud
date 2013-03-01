@@ -107,7 +107,7 @@ public class Snoop extends StdCommand
 				List<Session> V=snoopingOn((Session)snoop.elementAt(v));
 				for(int v2=0;v2<V.size();v2++)
 				{
-					Session S2=(Session)V.get(v2);
+					Session S2=V.get(v2);
 					if(!snoop.contains(S2))
 						snoop.addElement(S2);
 				}

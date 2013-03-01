@@ -41,7 +41,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	public String ID(){return "DefaultAbilityComponent";}
 	public String name() { return ID();}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultAbilityComponent();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultAbilityComponent();}}
 	public void initializeClass(){}
 	public CMObject copyOf()
 	{

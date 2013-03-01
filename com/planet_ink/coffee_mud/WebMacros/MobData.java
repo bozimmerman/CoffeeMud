@@ -158,7 +158,7 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				String cnam=((Ability)a.nextElement()).ID();
+				String cnam=a.nextElement().ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
@@ -343,7 +343,7 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Blessing");
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				String cnam=((Ability)a.nextElement()).ID();
+				String cnam=a.nextElement().ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
@@ -405,7 +405,7 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Curse");
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				String cnam=((Ability)a.nextElement()).ID();
+				String cnam=a.nextElement().ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
@@ -633,7 +633,7 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Granted Power");
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				String cnam=((Ability)a.nextElement()).ID();
+				String cnam=a.nextElement().ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
@@ -767,7 +767,7 @@ public class MobData extends StdWebMacro
 						if(O==null)
 						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
-							Ability A2=(Ability)a.nextElement();
+							Ability A2=a.nextElement();
 							if(CMClass.classID(A2).equals(MATCHING))
 							{	O=(Ability)A2.copyOf(); break;	}
 						}
@@ -790,7 +790,7 @@ public class MobData extends StdWebMacro
 				Vector mobClasses=new Vector();
 				for(Iterator<Environmental> i=E.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental O=(Environmental)i.next();
+					Environmental O=i.next();
 					if(O instanceof Item) itemClasses.addElement(O);
 					if(O instanceof MOB) mobClasses.addElement(O);
 					if(O instanceof Physical) CMLib.catalog().updateCatalogIntegrity((Physical)O);

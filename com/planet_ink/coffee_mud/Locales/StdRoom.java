@@ -80,7 +80,7 @@ public class StdRoom implements Room
 	{
 		try
 		{
-			return (Environmental)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -442,7 +442,7 @@ public class StdRoom implements Room
 				int totalChance=0;
 				for(int i=0;i<resourceChoices().size();i++)
 				{
-					int resource=((Integer)resourceChoices().get(i)).intValue();
+					int resource=resourceChoices().get(i).intValue();
 					totalChance+=RawMaterial.CODES.FREQUENCY(resource);
 				}
 				setResource(-1);
@@ -450,7 +450,7 @@ public class StdRoom implements Room
 				totalChance=0;
 				for(int i=0;i<resourceChoices().size();i++)
 				{
-					int resource=((Integer)resourceChoices().get(i)).intValue();
+					int resource=resourceChoices().get(i).intValue();
 					totalChance+=RawMaterial.CODES.FREQUENCY(resource);
 					if(theRoll<=totalChance)
 					{
@@ -777,7 +777,7 @@ public class StdRoom implements Room
 					{
 						eachItem(new EachApplicable<Item>(){ public final void apply(final Item I){
 							if(I instanceof DeadBody)
-								bodies.add((DeadBody)I);
+								bodies.add(I);
 						} });
 						for(int i=0;i<bodies.size();i++)
 							((Item)bodies.elementAt(i)).destroy();
@@ -1078,7 +1078,7 @@ public class StdRoom implements Room
 		addItem(item, expire);
 		for(int v=0;v<V.size();v++)
 		{
-			Item i2=(Item)V.get(v);
+			Item i2=V.get(v);
 			if(o instanceof MOB) ((MOB)o).delItem(i2);
 			if(o instanceof Room) ((Room)o).delItem(i2);
 			addItem(i2);
@@ -1517,7 +1517,7 @@ public class StdRoom implements Room
 	{
 		try
 		{
-			return (MOB)inhabitants.elementAt(i);
+			return inhabitants.elementAt(i);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -1647,7 +1647,7 @@ public class StdRoom implements Room
 	{
 		try
 		{
-			return (Item)contents.elementAt(i);
+			return contents.elementAt(i);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -1941,7 +1941,7 @@ public class StdRoom implements Room
 		if(affects==null) return null;
 		try
 		{
-			return (Ability)affects.elementAt(index);
+			return affects.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -2002,7 +2002,7 @@ public class StdRoom implements Room
 		if(behaviors==null) return null;
 		try
 		{
-			return (Behavior)behaviors.elementAt(index);
+			return behaviors.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -2069,7 +2069,7 @@ public class StdRoom implements Room
 	}
 	public int numScripts(){return (scripts==null)?0:scripts.size();}
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;

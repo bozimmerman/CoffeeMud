@@ -65,7 +65,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 			for(int v=0;v<V.size();v++)
 			{
 				mob.charStats().setStat(CharStats.STAT_STRENGTH,newStrength);
-				Ability A=(Ability)V.get(v);
+				Ability A=V.get(v);
 				if(A.okMessage(mob,msg)) A.executeMsg(mob,msg);
 			}
 			mob.recoverCharStats();

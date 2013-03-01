@@ -72,7 +72,7 @@ public class Prop_ClosedDayNight extends Property
 		shopMsg=null;
 		for(int v=0;v<V.size();v++)
 		{
-			String s=((String)V.elementAt(v)).toUpperCase();
+			String s=V.elementAt(v).toUpperCase();
 			if(s.equals("DAY"))
 				dayFlag=true;
 			else
@@ -97,10 +97,10 @@ public class Prop_ClosedDayNight extends Property
 			}
 			else
 			if(s.startsWith("HOME="))
-				Home=((String)V.elementAt(v)).substring(5);
+				Home=V.elementAt(v).substring(5);
 			else
 			if(s.startsWith("SHOPMSG="))
-				shopMsg=((String)V.elementAt(v)).substring(8);
+				shopMsg=V.elementAt(v).substring(8);
 		}
 	}
 
@@ -191,12 +191,12 @@ public class Prop_ClosedDayNight extends Property
 			{
 				List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, Home,false,10);
 				if(rooms.size()>0) 
-					R=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+					R=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 				else
 				{
 					List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, Home, 10);
 					if(inhabs.size()>0) 
-						R=CMLib.map().roomLocation((MOB)inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
+						R=CMLib.map().roomLocation(inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
 				}
 			}catch(NoSuchElementException e){}
 		}

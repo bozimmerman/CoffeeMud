@@ -138,7 +138,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		try
 		{
-			GenCraftSkill A=(GenCraftSkill)this.getClass().newInstance();
+			GenCraftSkill A=this.getClass().newInstance();
 			A.ID=ID;
 			return A;
 		}
@@ -231,7 +231,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		if(val.trim().length()>0)
 		{
 			V(ID,V_NAME); // force creation, if necc
-			Object[] O=(Object[])vars.get(ID);
+			Object[] O=vars.get(ID);
 			vars.remove(ID);
 			vars.put(val,O);
 			if(num!=9)
@@ -472,8 +472,8 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					String item=replacePercent(V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					String mats=getComponentDescription(mob,V,RCP_AMOUNTMATS);
 					if(mats.length()>5)
 					{
@@ -564,7 +564,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				List<String> V=matches.get(r);
 				if(V.size()>0)
 				{
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
@@ -578,14 +578,14 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			}
 			
-			final String requiredMats = (String)foundRecipe.get(RCP_AMOUNTMATS);
+			final String requiredMats = foundRecipe.get(RCP_AMOUNTMATS);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, requiredMats, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
 			if(componentsFoundList==null) return false;
 			int numRequired=CMath.isInteger(requiredMats)?CMath.s_int(requiredMats):0;
 			numRequired=adjustWoodRequired(numRequired,mob);
 			
 			if(amount>numRequired) numRequired=amount;
-			String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
+			String misctype=foundRecipe.get(RCP_MISCTYPE);
 			Integer[] ipm=super.supportedResourcesMap();
 			int[] pm=new int[ipm.length];
 			for(int i=0;i<ipm.length;i++) pm[i]=ipm[i].intValue();
@@ -604,14 +604,14 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),numRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
+			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
-			String itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			if(bundling)
 				itemName="a "+numRequired+"# "+itemName;
 			else
@@ -624,17 +624,17 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.basePhyStats().setWeight(getStandardWeight(numRequired, bundling));
-			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
+			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
-			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+(hardness));
+			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness));
 			if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
 			building.setSecretIdentity(getBrand(mob));
-			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-			long canContain=getContainerType((String)foundRecipe.get(RCP_CONTAINMASK));
-			int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
+			int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
+			long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
+			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			if(bundling) building.setBaseValue(lostValue);
-			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
+			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			addSpells(building,spell);
 			key=null;
 			if((building instanceof Container)
@@ -653,7 +653,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					((Container)building).setLidsNLocks(true,false,true,false);
 					((Container)building).setKeyName(Double.toString(Math.random()));
 					key=(DoorKey)CMClass.getItem("GenKey");
-					((DoorKey)key).setKey(((Container)building).keyName());
+					key.setKey(((Container)building).keyName());
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
 					key.setDescription("looks like a key to "+building.name());

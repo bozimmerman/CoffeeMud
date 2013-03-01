@@ -832,8 +832,8 @@ public interface CharStats extends CMCommon, Modifiable
 					}
 				}
 				String abbr=(String)V.elementAt(1);
-				String desc=(String)((String)V.elementAt(2)).toUpperCase();
-				String adj=(String)((String)V.elementAt(3)).toUpperCase();
+				String desc=((String)V.elementAt(2)).toUpperCase();
+				String adj=((String)V.elementAt(3)).toUpperCase();
 				if(type.equalsIgnoreCase("BASE"))
 				{
 					addBaseStat(abbr, desc, stat, adj, -1);

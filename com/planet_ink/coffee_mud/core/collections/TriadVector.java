@@ -272,21 +272,21 @@ public class TriadVector<T,K,L> extends Vector<Triad<T,K,L>> implements List<Tri
 	{
 		T[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (T) getFirst(x);
+			objs[x] = getFirst(x);
 		return objs;
 	}
 	public K[] toArraySecond(K[] a)
 	{
 		K[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (K) getSecond(x);
+			objs[x] = getSecond(x);
 		return objs;
 	}
 	public L[] toArrayThird(L[] a)
 	{
 		L[] objs= toArray(a);
 		for(int x=0;x<size();x++)
-			objs[x] = (L) getThird(x);
+			objs[x] = getThird(x);
 		return objs;
 	}
 }

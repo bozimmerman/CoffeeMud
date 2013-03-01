@@ -73,7 +73,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 				String className=(String)charClasses.elementAt(c);
 				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
-					Ability A=(Ability)a.nextElement();
+					Ability A=a.nextElement();
 					int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
 					if(level>=0)
 					{

@@ -57,7 +57,7 @@ public class Wizard extends Mage
 
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 			{

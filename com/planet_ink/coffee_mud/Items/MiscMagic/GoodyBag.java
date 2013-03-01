@@ -72,7 +72,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 				List<String> V=CMLib.beanCounter().getAllCurrencies();
 				for(int v=0;v<V.size();v++)
 				{
-					String currency=(String)V.get(v);
+					String currency=V.get(v);
 					MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
 					for(int v2=0;v2<DV.length;v2++)
 					{

@@ -53,9 +53,9 @@ public class Hold extends StdCommand
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			if((items.size()==1)||(((Item)items.get(i)).canWear(mob,Wearable.WORN_HELD)))
+			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_HELD)))
 			{
-				Item item=(Item)items.get(i);
+				Item item=items.get(i);
 				int msgType=CMMsg.MSG_HOLD;
 				String str="<S-NAME> hold(s) <T-NAME>.";
 				if((mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)>0)

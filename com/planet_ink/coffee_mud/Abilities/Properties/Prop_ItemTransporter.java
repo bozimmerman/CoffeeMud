@@ -60,7 +60,7 @@ public class Prop_ItemTransporter extends Property
 
 	private synchronized boolean setDestination()
 	{
-		List<PhysicalAgent> possibilities=(List<PhysicalAgent>)possiblePossibilities.get(text());
+		List<PhysicalAgent> possibilities=possiblePossibilities.get(text());
 		Integer lastLook=lastLooks.get(text());
 		if((possibilities==null)||(lastLook==null)||(lastLook.intValue()<0))
 		{
@@ -146,7 +146,7 @@ public class Prop_ItemTransporter extends Property
 			{
 				nextDestination=null;
 				Item I = (Item)P;
-				if((I!=null)&&(I.owner()!=null))
+				if(I.owner()!=null)
 				{
 					if(I.owner() instanceof Room)
 						roomDestination=(Room)I.owner();

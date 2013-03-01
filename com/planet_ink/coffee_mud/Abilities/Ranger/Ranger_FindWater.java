@@ -235,7 +235,7 @@ public class Ranger_FindWater extends StdAbility
 				StringBuffer msg2=new StringBuffer("");
 				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=(Environmental)i.next();
+					Environmental E2=i.next();
 					if(E2 instanceof Item)
 						waterCheck(mob,(Item)E2,container,msg2);
 					if(msg2.length()>0)

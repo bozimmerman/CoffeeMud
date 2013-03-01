@@ -194,7 +194,7 @@ public class Ranger_TrackAnimal extends StdAbility
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
-			target=animalHere((Room)theTrail.get(0));
+			target=animalHere(theTrail.get(0));
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{

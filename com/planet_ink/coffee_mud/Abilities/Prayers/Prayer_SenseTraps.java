@@ -102,7 +102,7 @@ public class Prayer_SenseTraps extends Prayer
 			Container C=(Container)P;
 			List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
-				if(trapCheck((Item)V.get(v)).length()>0)
+				if(trapCheck(V.get(v)).length()>0)
 					msg.append(C.name()+" contains something trapped.\n");
 		}
 		else
@@ -125,7 +125,7 @@ public class Prayer_SenseTraps extends Prayer
 			{
 				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=(Environmental)i.next();
+					Environmental E2=i.next();
 					if(E2 instanceof Item)
 						if(trapCheck((Item)E2).length()>0)
 							return P.name()+" has something trapped in stock.\n";

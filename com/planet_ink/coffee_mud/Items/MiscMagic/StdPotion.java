@@ -74,7 +74,7 @@ public class StdPotion extends StdDrink implements Potion
 			String list="";
 			List<Ability> theSpells=getSpells();
 			for(int v=0;v<theSpells.size();v++)
-				list+=((Ability)theSpells.get(v)).ID()+";";
+				list+=theSpells.get(v).ID()+";";
 			setSpellList(list);
 		}
 	}
@@ -89,7 +89,7 @@ public class StdPotion extends StdDrink implements Potion
 				MOB finalCaster=(owner!=drinkerTarget)?owner:caster;
 				for(int i=0;i<spells.size();i++)
 				{
-					Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
+					Ability thisOne=(Ability)spells.get(i).copyOf();
 					if((drinkerTarget instanceof Item)
 					&&((!thisOne.canTarget(drinkerTarget))&&(!thisOne.canAffect(drinkerTarget))))
 						continue;

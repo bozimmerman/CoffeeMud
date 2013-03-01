@@ -39,7 +39,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	public String name() { return ID();}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public void initializeClass(){}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCMIntegerGrouper();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultCMIntegerGrouper();}}
 	
 	public int[] xs=new int[0];
 	public long[] ys=new long[0];
@@ -51,8 +51,8 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 	public CMObject copyOf()
 	{
 		DefaultCMIntegerGrouper R=new DefaultCMIntegerGrouper();
-		R.xs=(int[])xs.clone();
-		R.ys=(long[])ys.clone();
+		R.xs=xs.clone();
+		R.ys=ys.clone();
 		return R;
 	}
 	
@@ -73,10 +73,10 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		Vector<String> YV=CMParms.parseCommas(Ystr,true);
 		xs=new int[XV.size()];
 		for(int v=0;v<XV.size();v++)
-			xs[v]=CMath.s_int((String)XV.elementAt(v));
+			xs[v]=CMath.s_int(XV.elementAt(v));
 		ys=new long[YV.size()];
 		for(int v=0;v<YV.size();v++)
-			ys[v]=CMath.s_long((String)YV.elementAt(v));
+			ys[v]=CMath.s_long(YV.elementAt(v));
 		return this;
 	}
 	

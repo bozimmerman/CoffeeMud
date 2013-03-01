@@ -25,7 +25,7 @@ public class IteratorEnumeration<K> implements Enumeration<K>
 	public IteratorEnumeration(Iterator<K> i) 
 	{
 		if(i==null)
-			this.i=(Iterator<K>)EmptyIterator.INSTANCE;
+			this.i=EmptyIterator.INSTANCE;
 		else
 			this.i=i;
 		hasMoreElements();

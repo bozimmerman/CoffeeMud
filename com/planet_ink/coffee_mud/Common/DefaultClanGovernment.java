@@ -111,7 +111,7 @@ public class DefaultClanGovernment implements ClanGovernment
 	protected boolean[] clanAbilityQuals		=null;
 	
 	/** return a new instance of the object*/
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClanGovernment();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClanGovernment();}}
 	public void initializeClass(){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public CMObject copyOf()
@@ -599,7 +599,7 @@ public class DefaultClanGovernment implements ClanGovernment
 				functionNames[f]=func.name();
 			}
 			int funcAvg = funcTotal / Clan.Function.values().length;
-			int funcMaxAvg = (int)CMath.round((double)funcAvg * 1.3);
+			int funcMaxAvg = (int)CMath.round(funcAvg * 1.3);
 			while((funcMaxLen > funcMaxAvg)&&((funcMaxAvg + posTotalLen)>78))
 				funcMaxLen--;
 			if(posses.length>0)
@@ -842,7 +842,7 @@ public class DefaultClanGovernment implements ClanGovernment
 				{
 					public boolean isDeprecated()
 					{
-						if((mob==null)||(mob.amDestroyed())||(clan==null)||(mob.getClanRole(clan.clanID())==null)) 
+						if((mob.amDestroyed())||(clan==null)||(mob.getClanRole(clan.clanID())==null)) 
 							return true;
 						if((clan.getGovernment() != myGovt)
 						|| (getClanLevelEffectsList(mob, Integer.valueOf(clan.getClanLevel())) != oldReferenceListRef.get()))
@@ -851,9 +851,8 @@ public class DefaultClanGovernment implements ClanGovernment
 					}
 					public void rebuild(final ChameleonList<Ability> me)
 					{
-						
-						final Clan C=(mob!=null)?clan:null;
-						if((mob==null)||(mob.amDestroyed())||(C==null))
+						final Clan C=clan;
+						if((mob.amDestroyed())||(C==null))
 							me.changeMeInto(getEmptyClanLevelEffects(mob,C));
 						else
 							me.changeMeInto(C.getGovernment().getClanLevelEffects(mob, clan, Integer.valueOf(C.getClanLevel())));

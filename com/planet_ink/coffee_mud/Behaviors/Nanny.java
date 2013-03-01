@@ -175,7 +175,7 @@ public class Nanny extends StdBehavior
 		int mounts=0;
 		for(int v=0;v<V.size();v++)
 		{
-			PhysicalAgent E=(PhysicalAgent)V.get(v);
+			PhysicalAgent E=V.get(v);
 			if(CMLib.flags().isBaby(E)||CMLib.flags().isChild(E))
 				babies++;
 			else
@@ -247,7 +247,7 @@ public class Nanny extends StdBehavior
 			Item I=null;
 			for(int v=0;v<V.size();v++)
 			{
-				I=(Item)V.get(v);
+				I=V.get(v);
 				P=getDroppedOffObjIfAny(I);
 				if(P!=null) return P;
 			}
@@ -541,7 +541,7 @@ public class Nanny extends StdBehavior
 			StringBuffer list=new StringBuffer("");
 			for(int m=0;m<myAssocs.size();m++)
 			{
-				list.append(((PhysicalAgent)myAssocs.get(m)).name());
+				list.append(myAssocs.get(m).name());
 				if((myAssocs.size()>1)&&(m==myAssocs.size()-2))
 					list.append(", and ");
 				else
@@ -604,7 +604,7 @@ public class Nanny extends StdBehavior
 				PhysicalAgent P=null;
 				for(int v=0;v<V.size();v++)
 				{
-					P=(PhysicalAgent)V.get(v);
+					P=V.get(v);
 					if(P instanceof MOB)
 					{
 						CMLib.commands().postFollow((MOB)P,msg.source(),false);
@@ -745,7 +745,7 @@ public class Nanny extends StdBehavior
 					if((V!=null)&&(R!=null))
 					for(int v=0;v<V.size();v++)
 					{
-						P=((XMLLibrary.XMLpiece)V.get(v));
+						P=(V.get(v));
 						if((P!=null)&&(P.contents!=null)&&(P.contents.size()==3)&&(P.tag.equalsIgnoreCase("DROP")))
 						{
 							eName=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(P.contents,"ENAM"));
@@ -854,7 +854,7 @@ public class Nanny extends StdBehavior
 				{
 					if((D.baby instanceof MOB)
 					&&(R.isInhabitant((MOB)D.baby))
-					&&(!mobsToSave.contains((MOB)D.baby)))
+					&&(!mobsToSave.contains(D.baby)))
 						mobsToSave.addElement((MOB)D.baby);
 				}
 				CMLib.database().DBUpdateTheseMOBs(R,mobsToSave);

@@ -54,7 +54,7 @@ public class Prayer_CureVampirism extends Prayer implements MendingSkill
 		{
 			if(target instanceof MOB)
 			{
-				if(supportsMending((MOB)target))
+				if(supportsMending(target))
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
 			}
 		}

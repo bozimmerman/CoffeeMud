@@ -59,7 +59,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		LegalBehavior B=null;
 		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
-			B=getLegalBehavior((Area)e.nextElement());
+			B=getLegalBehavior(e.nextElement());
 			if(B!=null) break;
 		}
 		return B;
@@ -80,7 +80,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		Area A3=null;
 		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
-			A2=(Area)e.nextElement();
+			A2=e.nextElement();
 			A3=getLegalObject(A2);
 			if(A3!=null) return A3;
 		}
@@ -100,7 +100,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		Room R=null;
 		for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 		{
-			R=(Room)e.nextElement();
+			R=e.nextElement();
 			if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
 			if(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 				streets++;
@@ -124,7 +124,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		Room R=null;
 		for(;e.hasMoreElements();)
 		{
-			R=(Room)e.nextElement();
+			R=e.nextElement();
 			LandTitle T=getLandTitle(R);
 			if((T!=null)
 			&&(!V.contains(T))
@@ -138,7 +138,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				boolean proceed=true;
 				for(int v=0;v<V2.size();v++)
 				{
-					Room R2=(Room)V2.get(v);
+					Room R2=V2.get(v);
 					if(!roomsDone.contains(R2))
 						roomsDone.add(R2);
 					else

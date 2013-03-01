@@ -155,7 +155,7 @@ public class Injury extends StdAbility
 					injuries=new Vector[Race.BODY_PARTS];
 				int bodyLoc=-1;
 				for(int i=0;i<Race.BODY_PARTS;i++)
-					if((" "+((String)remains.get(chosenOne)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
+					if((" "+remains.get(chosenOne).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
 					{ bodyLoc=i; break;}
 				if(bodyLoc>=0)
 				{
@@ -165,14 +165,14 @@ public class Injury extends StdAbility
 					for(int i=0;i<bodyVec.size();i++)
 					{
 						Object[] O=(Object[])bodyVec.elementAt(i);
-						if(((String)O[0]).equalsIgnoreCase((String)remains.get(chosenOne)))
+						if(((String)O[0]).equalsIgnoreCase(remains.get(chosenOne)))
 						{ whichInjury=i; break;}
 					}
 					Object[] O=null;
 					if(whichInjury<0)
 					{
 						O=new Object[2];
-						O[0]=((String)remains.get(chosenOne)).toLowerCase();
+						O[0]=remains.get(chosenOne).toLowerCase();
 						O[1]=Integer.valueOf(0);
 						bodyVec.addElement(O);
 						whichInjury=bodyVec.size()-1;
@@ -197,11 +197,11 @@ public class Injury extends StdAbility
 				Vector<String> V=CMParms.parseAny(set,':',false);
 				if(V.size()==3)
 				{
-					int part=CMath.s_int((String)V.firstElement());
+					int part=CMath.s_int(V.firstElement());
 					if((part>=0)&&(part<Race.BODY_PARTS))
 					{
-						String msg=(String)V.elementAt(1);
-						int hurt=CMath.s_int((String)V.lastElement());
+						String msg=V.elementAt(1);
+						int hurt=CMath.s_int(V.lastElement());
 						if(injuries[part]==null)
 							injuries[part] = new Vector();
 						injuries[part].addElement(new Object[]{msg,Integer.valueOf(hurt)});
@@ -336,7 +336,7 @@ public class Injury extends StdAbility
 					int bodyPart=-1;
 					for(int i=0;i<Race.BODY_PARTS;i++)
 					{
-						if((" "+((String)remains.get(x)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
+						if((" "+remains.get(x).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
 						{ bodyPart=i; break;}
 					}
 					if(bodyPart>=0)
@@ -378,33 +378,33 @@ public class Injury extends StdAbility
 					if(LimbPct<1) LimbPct=1;
 					int bodyLoc=-1;
 					for(int i=0;i<Race.BODY_PARTS;i++)
-						if((" "+((String)remains.get(chosenOne)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
+						if((" "+remains.get(chosenOne).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
 						{ bodyLoc=i; break;}
 					if(bodyLoc>=0)
 					{
 						lastMsg=msg;
-						lastLoc=(String)remains.get(chosenOne);
+						lastLoc=remains.get(chosenOne);
 						Vector bodyVec=injuries[bodyLoc];
 						if(bodyVec==null){ injuries[bodyLoc]=new Vector(); bodyVec=injuries[bodyLoc];}
 						int whichInjury=-1;
 						for(int i=0;i<bodyVec.size();i++)
 						{
 							Object[] O=(Object[])bodyVec.elementAt(i);
-							if(((String)O[0]).equalsIgnoreCase((String)remains.get(chosenOne)))
+							if(((String)O[0]).equalsIgnoreCase(remains.get(chosenOne)))
 							{ whichInjury=i; break;}
 						}
-						String newTarg=fixMessageString(msg.targetMessage(),((String)remains.get(chosenOne)).toLowerCase());
+						String newTarg=fixMessageString(msg.targetMessage(),remains.get(chosenOne).toLowerCase());
 						if(!newTarg.equalsIgnoreCase(msg.targetMessage()))
 						{
 							msg.modify(msg.source(),msg.target(),msg.tool(),
-									msg.sourceCode(),fixMessageString(msg.sourceMessage(),((String)remains.get(chosenOne)).toLowerCase()),
+									msg.sourceCode(),fixMessageString(msg.sourceMessage(),remains.get(chosenOne).toLowerCase()),
 									msg.targetCode(),newTarg,
-									msg.othersCode(),fixMessageString(msg.othersMessage(),((String)remains.get(chosenOne)).toLowerCase()));
+									msg.othersCode(),fixMessageString(msg.othersMessage(),remains.get(chosenOne).toLowerCase()));
 							Object[] O=null;
 							if(whichInjury<0)
 							{
 								O=new Object[2];
-								O[0]=((String)remains.get(chosenOne)).toLowerCase();
+								O[0]=remains.get(chosenOne).toLowerCase();
 								O[1]=Integer.valueOf(0);
 								bodyVec.addElement(O);
 								whichInjury=bodyVec.size()-1;

@@ -136,8 +136,7 @@ public class Hunting extends CommonSkill
 					found.recoverPhyStats();
 					Ability A=CMClass.getAbility("Prop_ModExperience");
 					A.setMiscText("=20%");
-					if(A!=null)
-						found.addNonUninvokableEffect(A);
+					found.addNonUninvokableEffect(A);
 					found.bringToLife(nearByRoom(),true);
 					CMLib.beanCounter().clearZeroMoney(found,null);
 				}

@@ -164,7 +164,7 @@ public class Chant_LocateAnimals extends Chant
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
-			target=animalHere((Room)theTrail.get(0));
+			target=animalHere(theTrail.get(0));
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{

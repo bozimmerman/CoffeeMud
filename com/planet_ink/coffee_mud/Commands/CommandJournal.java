@@ -115,11 +115,11 @@ public class CommandJournal extends StdCommand
 			return true;
 		}
 		List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
-		JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.get(count-1);
+		JournalsLibrary.JournalEntry entry2=journal2.get(count-1);
 		String from2=entry2.from;
-		String to=(String)entry2.to;
-		String subject=(String)entry2.subj;
-		String message=(String)entry2.msg;
+		String to=entry2.to;
+		String subject=entry2.subj;
+		String message=entry2.msg;
 		CMLib.database().DBDeleteJournal(journalID,entry2.key);
 		CMLib.database().DBWriteJournal(realName,
 										  from2,

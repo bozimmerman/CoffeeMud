@@ -116,7 +116,7 @@ public class Prayer_CreateIdol extends Prayer
 				if((V!=null)&&(V.size()>0))
 				for(int v=0;v<V.size()*10;v++)
 				{
-					int rsc=((Integer)V.get(CMLib.dice().roll(1,V.size(),-1))).intValue();
+					int rsc=V.get(CMLib.dice().roll(1,V.size(),-1)).intValue();
 					if(((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
 						||((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
 						||((rsc&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))

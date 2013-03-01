@@ -413,8 +413,6 @@ public class RoomLoader
 							if((otherA!=null)&&(otherA!=thisRoom.getArea()))
 								newRoom=otherA.getRoom(nextRoomID);
 						}
-						else
-							otherA=null;
 						if(newRoom!=null)
 						{ /* its all worked out now */}
 						else
@@ -447,14 +445,14 @@ public class RoomLoader
 						Vector<String> CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
 						for(int ces=0;ces<CEs.size();ces++)
 						{
-							Vector<String> SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
+							Vector<String> SCE=CMParms.parse(CEs.elementAt(ces).trim());
 							WorldMap.CrossExit CE=new WorldMap.CrossExit();
 							if(SCE.size()<3) continue;
-							CE.x=CMath.s_int((String)SCE.elementAt(0));
-							CE.y=CMath.s_int((String)SCE.elementAt(1));
-							int codeddir=CMath.s_int((String)SCE.elementAt(2));
+							CE.x=CMath.s_int(SCE.elementAt(0));
+							CE.y=CMath.s_int(SCE.elementAt(1));
+							int codeddir=CMath.s_int(SCE.elementAt(2));
 							if(SCE.size()>=4)
-								CE.destRoomID=newRoom.roomID()+(String)SCE.elementAt(3);
+								CE.destRoomID=newRoom.roomID()+SCE.elementAt(3);
 							else
 								CE.destRoomID=newRoom.roomID();
 							CE.out=(codeddir&256)==256;
@@ -506,7 +504,7 @@ public class RoomLoader
 			areas=DBReadAreaData(null,true);
 			if(areas==null) return;
 			for(int a=0;a<areas.size();a++)
-				CMLib.map().addArea((Area)areas.get(a));
+				CMLib.map().addArea(areas.get(a));
 			areas.clear();
 		}
 
@@ -545,7 +543,7 @@ public class RoomLoader
 
 		if(set==null)
 			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
-				((Area)a.nextElement()).getAreaStats();
+				a.nextElement().getAreaStats();
 	}
 	
 	public String DBReadRoomDesc(String roomID)
@@ -606,9 +604,9 @@ public class RoomLoader
 	{
 		for(Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
 		{
-			Item keyItem=(Item)e.nextElement();
-			String location=(String)itemLocs.get(keyItem);
-			Environmental container=(Environmental)itemNums.get(location);
+			Item keyItem=e.nextElement();
+			String location=itemLocs.get(keyItem);
+			Environmental container=itemNums.get(location);
 			if((container instanceof Container)&&(((Container)container).capacity()>0))
 				keyItem.setContainer((Container)container);
 			else
@@ -624,7 +622,7 @@ public class RoomLoader
 	{
 		for(MOB M : mobRides.keySet())
 		{
-			String ride=(String)mobRides.get(M);
+			String ride=mobRides.get(M);
 			if(ride!=null)
 			{
 				PhysicalAgent P=itemNums.get(ride);
@@ -648,7 +646,7 @@ public class RoomLoader
 		if(room != null)
 			for(Enumeration<PhysicalAgent> i=content.elements();i.hasMoreElements();)
 			{
-				PhysicalAgent P=(PhysicalAgent)i.nextElement();
+				PhysicalAgent P=i.nextElement();
 				if((debug)&&((lastName==null)||(!lastName.equals(P.Name()))))
 				{lastName=P.Name(); Log.debugOut("RoomLoader","Loading object(s): "+P.Name());}
 				if(P instanceof Item)
@@ -887,9 +885,9 @@ public class RoomLoader
 			fixContentContainers(itemNums,stuff,"CATALOG_ITEMS",null,debug,false);
 			for(Enumeration<String> e=itemNums.keys();e.hasMoreElements();)
 			{
-				itemNum=(String)e.nextElement();
+				itemNum=e.nextElement();
 				I=(Item)itemNums.get(itemNum);
-				data=(String)((cataData!=null)?cataData.get(itemNum):null);
+				data=(cataData!=null)?cataData.get(itemNum):null;
 				Item oldI=CMLib.catalog().getCatalogItem(I.Name());
 				if((oldI!=null)&&(I.databaseID().length()>0)&&(!oldI.databaseID().equals(I.databaseID())))
 					DBDeleteRoomItem("CATALOG_ITEMS", I);
@@ -917,9 +915,9 @@ public class RoomLoader
 			fixContentContainers(itemNums,stuff,"CATALOG_MOBS",null,debug,false);
 			for(Enumeration<String> e=itemNums.keys();e.hasMoreElements();)
 			{
-				itemNum=(String)e.nextElement();
+				itemNum=e.nextElement();
 				M=(MOB)itemNums.get(itemNum);
-				data=(String)((cataData!=null)?cataData.get(itemNum):null);
+				data=(cataData!=null)?cataData.get(itemNum):null;
 				MOB oldM=CMLib.catalog().getCatalogMob(M.Name());
 				if((oldM!=null)&&(M.databaseID().length()>0)&&(!oldM.databaseID().equals(M.databaseID())))
 					DBDeleteRoomMOB("CATALOG_MOBS", M);
@@ -1028,7 +1026,7 @@ public class RoomLoader
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'"));
 		for(int i=0;i<items.size();i++)
 		{
-			Item thisItem=(Item)items.get(i);
+			Item thisItem=items.get(i);
 			CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisItem);
 			statements.add(getDBCreateItemString(room.roomID(),thisItem));
 		}
@@ -1106,7 +1104,7 @@ public class RoomLoader
 					}
 					StringBuffer exitStr=new StringBuffer("");
 					for(Iterator<String> a=oldStrs.iterator();a.hasNext();)
-						exitStr.append((String)a.next());
+						exitStr.append(a.next());
 					statements.add(new DBPreparedBatchEntry(
 					"INSERT INTO CMROEX ("
 					+"CMROID, "
@@ -1190,7 +1188,7 @@ public class RoomLoader
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'"));
 		for(int m=0;m<mobs.size();m++)
 		{
-			MOB thisMOB=(MOB)mobs.get(m);
+			MOB thisMOB=mobs.get(m);
 			CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisMOB);
 			statements.add(getDBCreateMOBString(room.roomID(),thisMOB));
 		}

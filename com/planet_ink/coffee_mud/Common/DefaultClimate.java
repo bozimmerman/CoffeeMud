@@ -41,7 +41,7 @@ public class DefaultClimate implements Climate
 	protected int nextWeather=WEATHER_CLEAR;
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultClimate();}}
 	public void initializeClass(){}
 	public CMObject copyOf()
 	{
@@ -355,7 +355,7 @@ public class DefaultClimate implements Climate
 			{
 				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					Room R=r.nextElement();
 					if(CMLib.map().hasASky(R))
 						for(int i=0;i<R.numInhabitants();i++)
 						{

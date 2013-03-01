@@ -82,7 +82,7 @@ public class Chant_Dehydrate extends Chant
 							List<Item> V=((Container)target).getContents();
 							for(int i=0;i<V.size();i++)
 							{
-								Item I=(Item)V.get(i);
+								Item I=V.get(i);
 								if(I instanceof Drink)
 								{
 									if(((Drink)I).liquidRemaining()<10000)

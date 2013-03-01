@@ -64,7 +64,7 @@ public class Fighter_Stonebody extends FighterSkill
 		&&(mob.rangeToTarget()==0)
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-85+mob.charStats().getStat(CharStats.STAT_CONSTITUTION),false)))
 		{
-			float f=(float)getXLEVELLevel(mob);
+			float f=getXLEVELLevel(mob);
 			int regain=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),2.0+(0.15*f)));
 			msg.setValue(msg.value()-regain);
 		}

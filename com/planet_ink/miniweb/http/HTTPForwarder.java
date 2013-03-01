@@ -116,7 +116,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			catch(IOException e)
 			{
 				closeChannels();
-				if(isDebugging && (e!=null))
+				if(isDebugging)
 					config.getLogger().fine("ERROR: "+e.getClass().getName()+": "+e.getMessage());
 			}
 			catch(Exception e)

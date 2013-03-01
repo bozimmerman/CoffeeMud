@@ -49,7 +49,7 @@ public class Spell_DestroyObject extends Spell
 		List<DeadBody> DBs=CMLib.utensils().getDeadBodies(target);
 		for(int v=0;v<DBs.size();v++)
 		{
-			DeadBody DB=(DeadBody)DBs.get(v);
+			DeadBody DB=DBs.get(v);
 			if(DB.playerCorpse()
 			&&(!DB.mobName().equals(mob.Name())))
 			{

@@ -244,7 +244,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 			s=(String)V.elementAt(v);
 			Vector<String> V2=CMParms.parseAny(s,':',true);
 			if(V2.size()>=3)
-				name_servers.add(new NameServer((String)V2.firstElement(),CMath.s_int((String)V2.elementAt(1)), (String)V2.elementAt(2)));
+				name_servers.add(new NameServer(V2.firstElement(),CMath.s_int(V2.elementAt(1)), V2.elementAt(2)));
 		}
 		modified = Persistent.UNMODIFIED;
 		try {
@@ -300,7 +300,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 		if(thread.currentRouter!=null) return thread.currentRouter;
 		if(thread.name_servers==null) return null;
 		if(thread.name_servers.size()==0) return null;
-		return (NameServer)thread.name_servers.get(0);
+		return thread.name_servers.get(0);
 	}
 
 	private synchronized void connect() {
@@ -316,7 +316,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				Vector connectionStatuses=new Vector(name_servers.size());
 				for(int i=0;i<name_servers.size();i++)
 				{
-					currentRouter = (NameServer)name_servers.get(i);
+					currentRouter = name_servers.get(i);
 					try
 					{
 						connection = new Socket(currentRouter.ip, currentRouter.port);
@@ -355,7 +355,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 			}
 		}
 		catch( Exception e ) {
-			try { Thread.sleep(((long)attempts) * 100l); }
+			try { Thread.sleep((attempts) * 100l); }
 			catch( InterruptedException ignore )
 			{
 				if(shutdown)
@@ -803,7 +803,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 
 		if( router_list != null ) {
 			Vector router = (Vector)router_list.elementAt(0);
-			NameServer name_server = (NameServer)name_servers.get(0);
+			NameServer name_server = name_servers.get(0);
 
 			if( !name_server.name.equals(router.elementAt(0)) ) {
 				// create new name server and connect

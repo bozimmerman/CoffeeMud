@@ -102,7 +102,7 @@ public class Polls extends StdLibrary implements PollManager
     public List<Poll>[] getMyPollTypes(MOB mob, boolean login)
 	{
 		Iterator<Poll> i=getPollList();
-		List<Poll> list[]=(List<Poll>[])new List[3];
+		List<Poll> list[]=new List[3];
 		for(int l=0;l<3;l++)
 			list[l]=new Vector<Poll>();
 		for(;i.hasNext();)
@@ -160,7 +160,7 @@ public class Polls extends StdLibrary implements PollManager
 			Poll.PollOption PO=null;
 			for(int o=0;o<P.getOptions().size();o++)
 			{
-				PO=(Poll.PollOption)P.getOptions().get(o);
+				PO=P.getOptions().get(o);
 				present.append("^H"+CMStrings.padLeft(""+(o+1),2)+": ^N"+PO.text+"\n\r");
 			}
 			if(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN))
@@ -240,7 +240,7 @@ public class Polls extends StdLibrary implements PollManager
 			Vector<Poll.PollOption> del=new Vector<Poll.PollOption>();
 			for(int i=0;i<P.getOptions().size();i++)
 			{
-				Poll.PollOption PO=(Poll.PollOption)P.getOptions().get(i);
+				Poll.PollOption PO=P.getOptions().get(i);
 				PO.text=CMLib.genEd().prompt(mob,PO.text,++showNumber,showFlag,"Vote Option",true);
 				if(PO.text.length()==0) del.addElement(PO);
 			}
@@ -288,7 +288,7 @@ public class Polls extends StdLibrary implements PollManager
 		int choice=0;
 		for(int r=0;r<P.getResults().size();r++)
 		{
-			R=(Poll.PollResult)P.getResults().get(r);
+			R=P.getResults().get(r);
 			choice=CMath.s_int(R.answer);
 			if(((choice<=0)&&CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN))
 			||((choice>=0)&&(choice<=P.getOptions().size())))
@@ -303,7 +303,7 @@ public class Polls extends StdLibrary implements PollManager
 		Poll.PollOption O=null;
 		for(int o=0;o<P.getOptions().size();o++)
 		{
-			O=(Poll.PollOption)P.getOptions().get(o);
+			O=P.getOptions().get(o);
 			int pct=0;
 			if(total>0)
 				pct=(int)Math.round(CMath.div(votes[o],total)*100.0);
@@ -372,7 +372,7 @@ public class Polls extends StdLibrary implements PollManager
 		if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
 		for(int v2=0;v2<OXV.contents.size();v2++)
 		{
-			XMLLibrary.XMLpiece XP=(XMLLibrary.XMLpiece)OXV.contents.get(v2);
+			XMLLibrary.XMLpiece XP=OXV.contents.get(v2);
 			if(!XP.tag.equalsIgnoreCase("option"))
 				continue;
 			Poll.PollOption PO=new Poll.PollOption(
@@ -390,7 +390,7 @@ public class Polls extends StdLibrary implements PollManager
 		if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
 		for(int v2=0;v2<OXV.contents.size();v2++)
 		{
-			XMLLibrary.XMLpiece XP=(XMLLibrary.XMLpiece)OXV.contents.get(v2);
+			XMLLibrary.XMLpiece XP=OXV.contents.get(v2);
 			if(!XP.tag.equalsIgnoreCase("result"))
 				continue;
 			Poll.PollResult PR=new Poll.PollResult(

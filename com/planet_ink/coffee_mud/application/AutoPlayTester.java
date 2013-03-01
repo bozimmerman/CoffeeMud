@@ -213,7 +213,7 @@ public class AutoPlayTester
 		public void stdout(Object O) { try { System.out.println(toJavaString(O)); } catch(Exception e) { } }
 		public void sleep(Object O) { try { Thread.sleep(Long.valueOf(toJavaString(O)).longValue()); } catch(Exception e) { } }
 		public void stderr(Object O) { try { System.err.println(toJavaString(O)); } catch(Exception e) { } }
-		public int rand(int x){ int y=(int)Math.round(Math.floor(Math.random() * (((double)x)-0.001))); return (y>0)?y:-y;}
+		public int rand(int x){ int y=(int)Math.round(Math.floor(Math.random() * ((x)-0.001))); return (y>0)?y:-y;}
 		public Object waitFor(Object regexO)
 		{
 			try {

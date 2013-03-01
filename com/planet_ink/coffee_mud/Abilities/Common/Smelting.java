@@ -132,10 +132,10 @@ public class Smelting extends CraftingSkill
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					String metal1=((String)V.get(RCP_METALONE)).toLowerCase();
-					String metal2=((String)V.get(RCP_METALTWO)).toLowerCase();
+					String item=replacePercent(V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int(V.get(RCP_LEVEL));
+					String metal1=V.get(RCP_METALONE).toLowerCase();
+					String metal2=V.get(RCP_METALTWO).toLowerCase();
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(metal1,cols[2])+" "+metal2+"\n\r");
@@ -164,7 +164,7 @@ public class Smelting extends CraftingSkill
 			List<String> V=matches.get(r);
 			if(V.size()>0)
 			{
-				int level=CMath.s_int((String)V.get(RCP_LEVEL));
+				int level=CMath.s_int(V.get(RCP_LEVEL));
 				if(level<=xlevel(mob))
 				{
 					foundRecipe=V;
@@ -177,9 +177,9 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,"You don't know how to make '"+recipeName+"'.  Try \"smelt list\" for a list.");
 			return false;
 		}
-		String doneResourceDesc=(String)foundRecipe.get(RCP_FINALNAME);
-		String resourceDesc1=(String)foundRecipe.get(RCP_METALONE);
-		String resourceDesc2=(String)foundRecipe.get(RCP_METALTWO);
+		String doneResourceDesc=foundRecipe.get(RCP_FINALNAME);
+		String resourceDesc1=foundRecipe.get(RCP_METALONE);
+		String resourceDesc2=foundRecipe.get(RCP_METALTWO);
 		int resourceCode1=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc1);
 		int resourceCode2=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc2);
 		int doneResourceCode=RawMaterial.CODES.FIND_IgnoreCase(doneResourceDesc);
@@ -207,7 +207,7 @@ public class Smelting extends CraftingSkill
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
 		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode1),0,null);
 		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode2),0,null);
-		duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),6);
+		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
 		amountMaking+=amountMaking;
 		building=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";

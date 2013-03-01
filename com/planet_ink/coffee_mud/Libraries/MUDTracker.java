@@ -133,7 +133,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				int best=-1;
 				for(int i=index;i>=0;i--)
 				{
-					R=(Room)radiant.get(i);
+					R=radiant.get(i);
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						if((R.getRoomInDir(d)==thisTrail.get(thisTrail.size()-1))
@@ -144,7 +144,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 				if(best>=0)
 				{
-					R=(Room)radiant.get(best);
+					R=radiant.get(best);
 					thisTrail.add(R);
 					tried.add(R);
 					if(R==location) break;
@@ -190,7 +190,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		for(int i=0;(i<5)&&(destRooms.size()>0);i++)
 		{
 			pick=CMLib.dice().roll(1,destRooms.size(),-1);
-			destRoom=(Room)destRooms.get(pick);
+			destRoom=destRooms.get(pick);
 			destRooms.remove(pick);
 			List<Room> thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius,radiant);
 			if((thisTrail!=null)
@@ -200,7 +200,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(finalTrail==null)
 		for(int r=0;r<destRooms.size();r++)
 		{
-			destRoom=(Room)destRooms.get(r);
+			destRoom=destRooms.get(r);
 			List<Room> thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius);
 			if((thisTrail!=null)
 			&&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
@@ -312,7 +312,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			for(r=min;r<size;r++)
 			{
-				R1=(Room)rooms.get(r);
+				R1=rooms.get(r);
 				for(d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					R=R1.getRoomInDir(d);
@@ -1061,7 +1061,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Room to=null;
 		for(int t=0;t<tos.size();t++)
 		{
-			to=(Room)tos.get(t);
+			to=tos.get(t);
 			finalSets.addAll(findAllTrails(from,to,radiantTrail));
 		}
 		return finalSets;
@@ -1103,7 +1103,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					{
 						for(int i=0;i<set.size();i++)
 						{
-							Room R=(Room)set.get(i);
+							Room R=set.get(i);
 							if(R.getArea()==A)
 							{
 								R2=R;
@@ -1122,7 +1122,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{
-			Room R=(Room)set.get(i);
+			Room R=set.get(i);
 			if(R==R2){ foundAt=i; break;}
 		}
 		if(foundAt<0) return "You can't get to '"+R2.roomID()+"' from here.";
@@ -1140,7 +1140,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			didSomething=false;
 			for(int r=foundAt-1;r>=0;r--)
 			{
-				Room R=(Room)set.get(r);
+				Room R=set.get(r);
 				if(getRoomDirection(R,checkR,trailV)>=0)
 				{
 					trailV.add(R);
@@ -1169,7 +1169,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		int lastNum=0;
 		while(theDirTrail.size()>0)
 		{
-			String s=(String)theDirTrail.get(0);
+			String s=theDirTrail.get(0);
 			if(lastNum==0)
 			{
 				lastDir=s;
@@ -1199,14 +1199,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			for(int i=0;i<trailV.size();i++)
 			{
-				Room R=(Room)trailV.get(i);
+				Room R=trailV.get(i);
 				if(R.roomID().length()==0)
 				{
 					theTrail.append("*");
 					break;
 				}
 			}
-			Room R=(Room)trailV.get(1);
+			Room R=trailV.get(1);
 			theTrail.append("\n\r"+CMStrings.padRight("From",30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
 			theTrail.append("\n\r"+CMStrings.padRight("Room",30)+": "+R.displayText()+"/"+R.description());
 			theTrail.append("\n\r\n\r");

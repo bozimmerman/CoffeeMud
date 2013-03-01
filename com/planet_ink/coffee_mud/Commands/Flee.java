@@ -48,7 +48,7 @@ public class Flee extends Go
 		if(R==null) return false;
 		if((!mob.isMonster())||(mob.amFollowing()!=null))
 		{
-			if((R==null)||(!mob.isInCombat()))
+			if(!mob.isInCombat())
 			{
 				mob.tell("You can only flee while in combat.");
 				return false;

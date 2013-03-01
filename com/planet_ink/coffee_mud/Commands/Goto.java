@@ -65,7 +65,7 @@ public class Goto extends At
 				mob.tell("Your previous room stack is empty.");
 			else
 			{
-				room=CMLib.map().getRoom((String)stack.get(stack.size()-1));
+				room=CMLib.map().getRoom(stack.get(stack.size()-1));
 				stack.remove(stack.size()-1);
 			}
 		}

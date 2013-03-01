@@ -84,7 +84,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return;
 		for(int i=0;i<items.size();i++)
 		{
-			Item I=(Item)items.get(i);
+			Item I=items.get(i);
 			if(mob.findItem("$"+I.name()+"$")==null)
 			{
 				I=(Item)I.copyOf();
@@ -399,8 +399,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							List<Item> V=null;
 							for(int r=0;r<rivals.size();r++)
 							{
-								List<Item> V2=(List<Item>)rivals.get(r);
-								Item I2=(Item)V2.get(0);
+								List<Item> V2=rivals.get(r);
+								Item I2=V2.get(0);
 								if(I2.rawWornCode()==I.rawWornCode())
 								{ V=V2; break;}
 							}
@@ -411,11 +411,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					for(int i=0;i<rivals.size();i++)
 					{
 						List<Item> V=rivals.get(i);
-						if((V.size()==1)||(((Item)V.get(0)).rawWornCode()==0))
+						if((V.size()==1)||(V.get(0).rawWornCode()==0))
 						{
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=(Item)V.get(r);
+								Item I=V.get(r);
 								if(CMLib.dice().rollPercentage()<I.basePhyStats().rejuv())
 									mob.delItem(I);
 								else
@@ -430,7 +430,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							int totalChance=0;
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=(Item)V.get(r);
+								Item I=V.get(r);
 								totalChance+=I.basePhyStats().rejuv();
 							}
 							int chosenChance=CMLib.dice().roll(1,totalChance,0);
@@ -438,7 +438,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							Item chosenI=null;
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=(Item)V.get(r);
+								Item I=V.get(r);
 								if(chosenChance<=(totalChance+I.basePhyStats().rejuv()))
 								{
 									chosenI=I;
@@ -448,7 +448,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							}
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=(Item)V.get(r);
+								Item I=V.get(r);
 								if(chosenI!=I)
 									mob.delItem(I);
 								else
@@ -465,7 +465,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						CoffeeShop shop = ((ShopKeeper)mob).getShop();
 						for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 						{
-							Environmental E=(Environmental)i.next();
+							Environmental E=i.next();
 							if((E instanceof Item)
 							&&(((Item)E).basePhyStats().rejuv()>0)
 							&&(((Item)E).basePhyStats().rejuv()!=PhyStats.NO_REJUV))
@@ -642,7 +642,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			Vector<DeadBody> Bs=new Vector<DeadBody>();
 			List<Item> V=((Container)E).getContents();
 			for(int v=0;v<V.size();v++)
-				Bs.addAll(getDeadBodies((Environmental)V.get(v)));
+				Bs.addAll(getDeadBodies(V.get(v)));
 			return Bs;
 		}
 		return new Vector<DeadBody>();
@@ -660,25 +660,25 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
 			for(int p=0;p<lootPolicies.size();p++)
 			{
-				String s=((String)lootPolicies.elementAt(p)).toUpperCase().trim();
+				String s=lootPolicies.elementAt(p).toUpperCase().trim();
 				if(s.length()==0) continue;
 				MaskingLibrary.CompiledZapperMask compiledMask=null;
 				int maskDex=s.indexOf("MASK=");
 				if(maskDex>=0)
 				{
 					s=s.substring(0,maskDex).trim();
-					compiledMask=CMLib.masking().maskCompile(((String)lootPolicies.elementAt(p)).substring(maskDex+5).trim());
+					compiledMask=CMLib.masking().maskCompile(lootPolicies.elementAt(p).substring(maskDex+5).trim());
 				}
 				else
 					compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY();
 				Vector<String> parsed=CMParms.parse(s);
 				int pct=100;
 				for(int x=0;x<parsed.size();x++)
-					if(CMath.isInteger((String)parsed.elementAt(x)))
-						pct=CMath.s_int((String)parsed.elementAt(x));
+					if(CMath.isInteger(parsed.elementAt(x)))
+						pct=CMath.s_int(parsed.elementAt(x));
 					else
-					if(CMath.isPct((String)parsed.elementAt(x)))
-						pct=(int)Math.round(CMath.s_pct((String)parsed.elementAt(x))*100.0);
+					if(CMath.isPct(parsed.elementAt(x)))
+						pct=(int)Math.round(CMath.s_pct(parsed.elementAt(x))*100.0);
 				int flags=0;
 				if(parsed.contains("RUIN")) flags|=CMMiscUtils.LOOTFLAG_RUIN;
 				else
@@ -766,12 +766,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=parseLootPolicyFor(mob);
 		for(int d=0;d<policies.size();d++)
 		{
-			if((((MaskingLibrary.CompiledZapperMask)policies.get(d).third).entries.length>0)
-			&&(!CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)policies.get(d).third,I,true)))
+			if((policies.get(d).third.entries.length>0)
+			&&(!CMLib.masking().maskCheck(policies.get(d).third,I,true)))
 				continue;
-			if(CMLib.dice().rollPercentage()>((Integer)policies.get(d).first).intValue())
+			if(CMLib.dice().rollPercentage()>policies.get(d).first.intValue())
 				continue;
-			int flags=((Integer)policies.get(d).second).intValue();
+			int flags=policies.get(d).second.intValue();
 			if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_WORN)&&I.amWearingAt(Wearable.IN_INVENTORY))
 				continue;
 			else
@@ -832,7 +832,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		for(Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 		{
-			Room room=(Room)e.nextElement();
+			Room room=e.nextElement();
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
@@ -852,7 +852,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 			for(Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
 			{
-				MOB M=(MOB)e2.nextElement();
+				MOB M=e2.nextElement();
 				for(int c=0;c<M.baseCharStats().numClasses();c++)
 					if(M.baseCharStats().getMyClass(c)==oldC)
 					{
@@ -873,7 +873,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		for(Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 		{
-			Room room=(Room)e.nextElement();
+			Room room=e.nextElement();
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
@@ -885,7 +885,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 			for(Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
 			{
-				MOB M=(MOB)e2.nextElement();
+				MOB M=e2.nextElement();
 				if(M.baseCharStats().getMyRace()==oldR)
 					M.baseCharStats().setMyRace(newR);
 				if(M.charStats().getMyRace()==oldR)
@@ -896,7 +896,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	
 	public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel)
 	{
-		MOB rejuvedMOB=CMLib.players().getPlayer(((DeadBody)body).mobName());
+		MOB rejuvedMOB=CMLib.players().getPlayer(body.mobName());
 		
 		if(rejuvedMOB!=null) // doing this here is helpful -- it can trigger a socket error.
 			rejuvedMOB.tell("You are being resurrected.");
@@ -937,7 +937,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
 			for(int w=0;w<whatsToDo.size();w++)
 			{
-				String whatToDo=(String)whatsToDo.elementAt(w);
+				String whatToDo=whatsToDo.elementAt(w);
 				if(whatToDo.startsWith("UNL"))
 					CMLib.leveler().level(rejuvedMOB);
 				else
@@ -962,10 +962,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				else
 				if(XPLevel>=0)
 				{
-					double lvl=(double)body.phyStats().level();
+					double lvl=body.phyStats().level();
 					for(int l=body.phyStats().level();l<rejuvedMOB.phyStats().level();l++)
 						lvl=lvl/2.0;
-					int expRestored=(int)Math.round(((100.0+(2.0*((double)XPLevel)))*lvl)/2.0);
+					int expRestored=(int)Math.round(((100.0+(2.0*(XPLevel)))*lvl)/2.0);
 					rejuvedMOB.tell("^*You regain "+expRestored+" experience points.^?^.");
 					CMLib.leveler().postExperience(rejuvedMOB,null,null,expRestored,false);
 				}
@@ -988,7 +988,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			for(int i=0;i<numDigits;i++)
 				if(i+1<V.size())
 					vals[i]=CMath.s_long(V.elementAt(i+1));
-			cond=((String)V.firstElement()).trim();
+			cond=V.firstElement().trim();
 			int start=startOfRange;
 			int finish=endOfRange;
 			if(cond.startsWith("<="))

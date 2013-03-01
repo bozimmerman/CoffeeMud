@@ -244,7 +244,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(preReqSkillsList==null) return;
 		for(int v=0;v<preReqSkillsList.size();v++)
 		{
-			String s=(String)preReqSkillsList.get(v);
+			String s=preReqSkillsList.get(v);
 			int x=s.indexOf('(');
 			if((x>=0)&&(s.endsWith(")")))
 				s=s.substring(0,x);
@@ -267,7 +267,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			List<String> preReqsOf=CMLib.masking().getAbilityEduReqs(extraMask);
 			for(int v=0;v<preReqsOf.size();v++)
 			{
-				String s=(String)preReqsOf.get(v);
+				String s=preReqsOf.get(v);
 				if((s.indexOf('*')>=0)||(s.indexOf(',')>=0))
 				{
 					String ID2=ID;
@@ -299,7 +299,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			V=new STreeSet<Integer>();
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
-				A=(Ability)e.nextElement();
+				A=e.nextElement();
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
 				&&(!V.contains(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)))))
 					V.add(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)));
@@ -425,7 +425,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(preReqSkillsList!=null)
 			for(int v=0;v<preReqSkillsList.size();v++)
 			{
-				String s=(String)preReqSkillsList.get(v);
+				String s=preReqSkillsList.get(v);
 				int prof=0;
 				int x=s.indexOf('(');
 				if((x>=0)&&(s.endsWith(")")))
@@ -456,7 +456,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		int maxProficiency = able.maxProficiency;
 		
 		// set lowest level map
-		Integer lowLevel=(Integer)lowestQualifyingLevelMap.get(abilityID);
+		Integer lowLevel=lowestQualifyingLevelMap.get(abilityID);
 		if(qualLevel > 0)
 		{
 			if((lowLevel==null)
@@ -465,7 +465,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		
 		// and max proficiency maps
-		Integer maxProf=(Integer)maxProficiencyMap.get(abilityID);
+		Integer maxProf=maxProficiencyMap.get(abilityID);
 		if((maxProf==null)
 		||(maxProficiency>maxProf.intValue()))
 			maxProficiencyMap.put(abilityID,Integer.valueOf(maxProficiency));
@@ -549,7 +549,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 	public int lowestQualifyingLevel(String abilityID)
 	{
-		Integer lowLevel=(Integer)lowestQualifyingLevelMap.get(abilityID);
+		Integer lowLevel=lowestQualifyingLevelMap.get(abilityID);
 		if(lowLevel==null) return 0;
 		return lowLevel.intValue();
 	}
@@ -713,13 +713,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		List<String> preorset=CMParms.parseCommas(abilityID,true);
 		for(int p=0;p<preorset.size();p++)
 		{
-			abilityID=(String)preorset.get(p);
+			abilityID=preorset.get(p);
 			if(abilityID.startsWith("*"))
 			{
 				String a=abilityID.substring(1).toUpperCase();
 				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
-					preA=(Ability)e.nextElement();
+					preA=e.nextElement();
 					if(preA.ID().toUpperCase().endsWith(a))
 						orset.add(preA.ID());
 				}
@@ -730,7 +730,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				String a=abilityID.substring(0,abilityID.length()-1).toUpperCase();
 				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
-					preA=(Ability)e.nextElement();
+					preA=e.nextElement();
 					if(preA.ID().toUpperCase().startsWith(a))
 						orset.add(preA.ID());
 				}
@@ -740,7 +740,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		for(int o=orset.size()-1;o>=0;o--)
 		{
-			abilityID=(String)orset.get(o);
+			abilityID=orset.get(o);
 			preA=CMClass.getAbility(abilityID);
 			if(preA==null)
 			{
@@ -861,7 +861,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				List<String> orset=(List<String>)V.elementAt(v,1);
 				for(int o=orset.size()-1;o>=0;o--)
 				{
-					abilityID=(String)orset.get(o);
+					abilityID=orset.get(o);
 					A2=studentM.fetchAbility(abilityID);
 					if((A2!=null)&&(A2.proficiency()>=prof.intValue()))
 					{
@@ -1594,7 +1594,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public int getMaxProficiency(String abilityID)
 	{
 		if(maxProficiencyMap.containsKey(abilityID))
-			return ((Integer)maxProficiencyMap.get(abilityID)).intValue();
+			return maxProficiencyMap.get(abilityID).intValue();
 		return 100;
 	}
 
@@ -1737,7 +1737,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return passes;
 	}
 
-	public List<AbilityComponent> getAbilityComponentDVector(String AID){ return (List<AbilityComponent>)getAbilityComponentMap().get(AID.toUpperCase().trim());}
+	public List<AbilityComponent> getAbilityComponentDVector(String AID){ return getAbilityComponentMap().get(AID.toUpperCase().trim());}
 
 	public List<DVector> getAbilityComponentDecodedDVectors(String AID){ return getAbilityComponentDecodedDVectors(getAbilityComponentDVector(AID));}
 
@@ -1852,7 +1852,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		DVector curr=null;
 		for(int c=0;c<comps.size();c++)
 		{
-			curr=(DVector)comps.get(c);
+			curr=comps.get(c);
 			if(c>0) buf.append((String)curr.elementAt(0,2));
 			buf.append("(");
 			buf.append((String)curr.elementAt(1,2));
@@ -2074,7 +2074,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
-				s=((String)V.get(v)).trim();
+				s=V.get(v).trim();
 				if(s.startsWith("#")||(s.length()==0)||s.startsWith(";")||s.startsWith(":")) continue;
 				error=addAbilityComponent(s,H);
 				if(error!=null) Log.errOut("CMAble",error);

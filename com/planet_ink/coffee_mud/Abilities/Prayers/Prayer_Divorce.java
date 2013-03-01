@@ -81,7 +81,7 @@ public class Prayer_Divorce extends Prayer
 				}
 				List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel((String)channels.get(i),mob.clans(),maleName+" and "+femaleName+" are now divorced.",true);
+					CMLib.commands().postChannel(channels.get(i),mob.clans(),maleName+" and "+femaleName+" are now divorced.",true);
 				MOB M=CMLib.players().getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");
@@ -106,7 +106,7 @@ public class Prayer_Divorce extends Prayer
 								Item coins=B.findDepositInventory(femaleName,""+Integer.MAX_VALUE);
 								for(int v=0;v<V.size();v++)
 								{
-									Item I=(Item)V.get(v);
+									Item I=V.get(v);
 									if(I==null) break;
 									B.delDepositInventory(maleName,I);
 									if(I instanceof Coins)

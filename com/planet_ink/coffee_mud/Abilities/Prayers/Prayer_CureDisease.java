@@ -76,7 +76,7 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 		{
 			if(target instanceof MOB)
 			{
-				if(supportsMending((MOB)target))
+				if(supportsMending(target))
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
 			}
 		}
@@ -107,7 +107,7 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 				boolean badOnes=false;
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 				{
-					Ability A=((Ability)offensiveAffects.get(a));
+					Ability A=(offensiveAffects.get(a));
 					if(A instanceof DiseaseAffect)
 					{
 						if((A.invoker()!=mob)

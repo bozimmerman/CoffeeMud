@@ -118,7 +118,7 @@ public class StdRideable extends StdMOB implements Rideable
 	public boolean mobileRideBasis(){return true;}
 	public Rider fetchRider(int which)
 	{
-		try	{ return (Rider)riders.get(which);	}
+		try	{ return riders.get(which);	}
 		catch(java.lang.ArrayIndexOutOfBoundsException e){}
 		return null;
 	}

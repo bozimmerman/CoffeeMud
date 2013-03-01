@@ -60,7 +60,7 @@ public class WaterCurrents extends ActiveTicker
 		dirs="";
 		for(int v=0;v<V.size();v++)
 		{
-			int dir=Directions.getGoodDirectionCode((String)V.elementAt(v));
+			int dir=Directions.getGoodDirectionCode(V.elementAt(v));
 			if(dir>=0) dirs=dirs+Directions.getDirectionChar(dir);
 		}
 		if(dirs.length()==0)
@@ -183,7 +183,7 @@ public class WaterCurrents extends ActiveTicker
 				{
 					for(Iterator<Room> i=((GridLocale)below).getAllRooms().iterator(); i.hasNext();)
 					{
-						Room R2=(Room)i.next();
+						Room R2=i.next();
 						applyCurrents(R2,sweeps);
 					}
 				}
@@ -300,7 +300,7 @@ public class WaterCurrents extends ActiveTicker
 		{
 			try
 			{
-				return (CMObject)this.getClass().newInstance();
+				return this.getClass().newInstance();
 			}
 			catch(Exception e)
 			{

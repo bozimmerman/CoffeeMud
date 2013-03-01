@@ -70,10 +70,10 @@ public class AbilityNext extends StdWebMacro
 		boolean notFlag =parms.containsKey("NOT"); 
 		boolean allFlag =parms.containsKey("ALL");
 		boolean domainFlag=parms.containsKey("DOMAIN");
-		String domain=(String)parms.get("DOMAIN");
+		String domain=parms.get("DOMAIN");
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			boolean okToShow=true;
 			int classType=A.classificationCode()&Ability.ALL_ACODES;
 			if(genericOnly)

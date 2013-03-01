@@ -42,12 +42,12 @@ public class GConsider extends StdCommand
 	public int relativeLevelDiff(MOB mob1, Set<MOB> mobs)
 	{
 		if((mob1==null)||(mobs==null)) return 0;
-		MOB mob2=(MOB)mobs.iterator().next();
+		MOB mob2=mobs.iterator().next();
 		if(mob2.amFollowing()!=null) mob2=mob2.amUltimatelyFollowing();
 
 		int mob2Armor=CMLib.combat().adjustedArmor(mob2);
 		int mob1Armor=CMLib.combat().adjustedArmor(mob1);
-		double mob1Attack=(double)CMLib.combat().adjustedAttackBonus(mob1,mob2);
+		double mob1Attack=CMLib.combat().adjustedAttackBonus(mob1,mob2);
 		int mob1Dmg=mob1.phyStats().damage();
 		int mob2Hp=mob2.baseState().getHitPoints();
 		int mob1Hp=mob1.baseState().getHitPoints();
@@ -56,7 +56,7 @@ public class GConsider extends StdCommand
 		for(Iterator i=mobs.iterator();i.hasNext();)
 		{
 			MOB mob=(MOB)i.next();
-			double mob2Attack=(double)CMLib.combat().adjustedAttackBonus(mob,mob1);
+			double mob2Attack=CMLib.combat().adjustedAttackBonus(mob,mob1);
 			int mob2Dmg=mob.phyStats().damage();
 			mob2HitRound+=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*CMath.div(mob2Dmg,2.0))+1.0)*CMath.mul(mob.phyStats().speed(),1.0);
 		}

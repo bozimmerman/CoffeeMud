@@ -108,8 +108,7 @@ public class Prayer_Behemoth extends Prayer
 				mob.location().send(mob,msg);
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) to BEHEMOTH size!");
 				beneficialAffect(mob,target,asLevel,0);
-				if(target instanceof MOB)
-					CMLib.utensils().confirmWearability((MOB)target);
+				CMLib.utensils().confirmWearability(target);
 			}
 		}
 		else

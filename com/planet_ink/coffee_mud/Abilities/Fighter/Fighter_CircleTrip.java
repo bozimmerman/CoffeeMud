@@ -173,7 +173,7 @@ public class Fighter_CircleTrip extends FighterSkill
 				else
 					levelDiff=0;
 				int adjustment = ( -levelDiff ) +
-								 ( -( 35 + ((int)Math.round( ( ((double) target.charStats().getStat( CharStats.STAT_DEXTERITY ) ) - 9.0 ) * 3.0 ) ) ) );
+								 ( -( 35 + ((int)Math.round( ( (target.charStats().getStat( CharStats.STAT_DEXTERITY ) ) - 9.0 ) * 3.0 ) ) ) );
 				success=proficiencyCheck(mob,adjustment,auto);
 				success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 				if(success)

@@ -63,7 +63,7 @@ public class StdAbility implements Ability
 	{
 		try
 		{
-			return (CMObject)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -152,8 +152,8 @@ public class StdAbility implements Ability
 	{
 		long newTime=(getTicksBetweenCasts()*CMProps.getTickMillis());
 		double mul=1.0;
-		mul -= (0.05 * (double)getXLEVELLevel(caster));
-		mul -= (0.1 * (double)getXTIMELevel(caster));
+		mul -= (0.05 * getXLEVELLevel(caster));
+		mul -= (0.1 * getXTIMELevel(caster));
 		newTime=Math.round(CMath.mul(newTime,mul));
 		setTimeOfNextCast(System.currentTimeMillis() +newTime);
 	}
@@ -269,7 +269,7 @@ public class StdAbility implements Ability
 
 	public long expirationDate()
 	{
-		return ((long)tickDown) * CMProps.getTickMillis();
+		return (tickDown) * CMProps.getTickMillis();
 	}
 	public void setExpirationDate(long time){
 		if(time>System.currentTimeMillis())
@@ -515,8 +515,8 @@ public class StdAbility implements Ability
 		Room R=mob.location();
 		String targetName=CMParms.combine(commands,0);
 		Physical target=null;
-		if(givenTarget instanceof Physical)
-			target=(Physical)givenTarget;
+		if(givenTarget != null)
+			target=givenTarget;
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS))
 			target=mob.getVictim();
@@ -526,8 +526,7 @@ public class StdAbility implements Ability
 		else
 		if(R!=null)
 		{
-			if(target==null)
-				target=R.fetchFromRoomFavorMOBs(null,targetName);
+			target=R.fetchFromRoomFavorMOBs(null,targetName);
 			if(target==null)
 				target=R.fetchFromMOBRoomFavorsItems(mob,null,targetName,wornFilter);
 			if((target==null)
@@ -932,7 +931,7 @@ public class StdAbility implements Ability
 		if(A.proficiency()< maxProficiency)
 		{
 			final int currentProficiency=A.proficiency()+adjustment;
-			if(((int)Math.round(Math.sqrt(((double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=currentProficiency)
+			if(((int)Math.round(Math.sqrt((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=currentProficiency)
 			{
 				int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
 				if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*CMath.div(31-qualLevel,30+qualLevel))))

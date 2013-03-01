@@ -195,7 +195,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 						norecurse=true;
 						try
 						{
-							CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),affected,(int)Math.round(damage),
+							CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),affected,Math.round(damage),
 							CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponType,str);
 						}
 						finally
@@ -214,7 +214,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 			{
 				final int damage=getDamage(msg);
 				String str="^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?";
-				CMLib.combat().postDamage(mob,(MOB)msg.target(),this,(int)Math.round(damage),
+				CMLib.combat().postDamage(mob,(MOB)msg.target(),this,Math.round(damage),
 					  CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|typeOfEffect,weaponType,str);
 			}
 		}

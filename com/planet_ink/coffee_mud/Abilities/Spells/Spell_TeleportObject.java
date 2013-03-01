@@ -104,7 +104,7 @@ public class Spell_TeleportObject extends Spell
 		int tries=0;
 		while((tries<20)&&(newRoom==null))
 		{
-			newRoom=(Room)candidates.get(CMLib.dice().roll(1,candidates.size(),-1));
+			newRoom=candidates.get(CMLib.dice().roll(1,candidates.size(),-1));
 			if(((newRoom.roomID().length()==0)&&(CMLib.dice().rollPercentage()>50))
 			||((newRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)&&(CMLib.dice().rollPercentage()>10)))
 			{

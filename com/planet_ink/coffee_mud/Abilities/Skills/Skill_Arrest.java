@@ -56,7 +56,7 @@ public class Skill_Arrest extends StdSkill
 			warrants=B.getWarrantsOf(legalA,target);
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
-				LegalWarrant W=(LegalWarrant)warrants.get(i);
+				LegalWarrant W=warrants.get(i);
 				if(W.crime().equalsIgnoreCase("pardoned"))
 					warrants.remove(i);
 			}

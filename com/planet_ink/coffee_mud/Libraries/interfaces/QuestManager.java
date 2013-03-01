@@ -204,12 +204,12 @@ public interface QuestManager extends CMLibrary
 			String s=null;
 			for(int v=0;v<V.size();v++)
 			{
-				s=(String)(String)V.elementAt(v);
+				s=V.elementAt(v);
 				boolean found=false;
 				Room R=CMLib.map().getRoom(s);
 				if(R!=null) found=true;
 				if(!found) found=CMLib.map().findWorldRoomLiberally(null,s,"R",50,30000)!=null;
-				if(!found) throw new CMException("'"+((String)V.elementAt(v))+"' is not a valid room name, id, or description.");
+				if(!found) throw new CMException("'"+(V.elementAt(v))+"' is not a valid room name, id, or description.");
 			}
 			return str;
 		}},
@@ -228,8 +228,8 @@ public interface QuestManager extends CMLibrary
 			StringBuffer returnStr=new StringBuffer("");
 			for(int v=0;v<V.size();v++)
 			{
-				Area A=CMLib.map().findArea((String)V.elementAt(v));
-				if(A==null) throw new CMException("'"+((String)V.elementAt(v))+"' is not a valid area name.");
+				Area A=CMLib.map().findArea(V.elementAt(v));
+				if(A==null) throw new CMException("'"+(V.elementAt(v))+"' is not a valid area name.");
 				returnStr.append("\""+A.name()+"\" ");
 			}
 			return returnStr.toString().trim();
@@ -293,7 +293,7 @@ public interface QuestManager extends CMLibrary
 			if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
 			StringBuffer list=new StringBuffer("");
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-				list.append(((Ability)e.nextElement()).ID()+", ");
+				list.append(e.nextElement().ID()+", ");
 			if(((String)str).trim().length()==0){
 				if(emptyOK) return "";
 				throw new CMException("You must enter an ability ID, choose from the following: "+list.toString());

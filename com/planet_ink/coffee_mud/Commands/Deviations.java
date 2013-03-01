@@ -126,7 +126,7 @@ public class Deviations extends StdCommand
 					{
 						for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 						{
-							Environmental E2=(Environmental)i.next();
+							Environmental E2=i.next();
 							if(E2 instanceof Item)
 							{
 								Item I=(Item)E2;
@@ -145,7 +145,7 @@ public class Deviations extends StdCommand
 	{
 		if(!vals.containsKey(key))
 			return " - ";
-		int val2=CMath.s_int((String)vals.get(key));
+		int val2=CMath.s_int(vals.get(key));
 		return getDeviation(val,val2);
 	}
 	protected String getDeviation(int val, int val2)
@@ -162,23 +162,23 @@ public class Deviations extends StdCommand
 	{
 		Vector<String> V=CMParms.parse(rest);
 		if((V.size()==0)
-		||((!((String)V.firstElement()).equalsIgnoreCase("mobs"))
-		   &&(!((String)V.firstElement()).equalsIgnoreCase("items"))
-		   &&(!((String)V.firstElement()).equalsIgnoreCase("both"))))
+		||((!V.firstElement().equalsIgnoreCase("mobs"))
+		   &&(!V.firstElement().equalsIgnoreCase("items"))
+		   &&(!V.firstElement().equalsIgnoreCase("both"))))
 			return new StringBuffer("You must specify whether you want deviations on MOBS, ITEMS, or BOTH.");
 
-		String type=((String)V.firstElement()).toLowerCase();
+		String type=V.firstElement().toLowerCase();
 		if(V.size()==1)
 			return new StringBuffer("You must also specify a mob or item name, or the word room, or the word area.");
 
 		Faction useFaction=null;
 		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
-			Faction F=(Faction)e.nextElement();
+			Faction F=e.nextElement();
 			if(F.showInSpecialReported()) useFaction=F;
 				
 		}
-		String where=((String)V.elementAt(1)).toLowerCase();
+		String where=V.elementAt(1).toLowerCase();
 		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
 		Vector check=new Vector();
 		if(where.equalsIgnoreCase("room"))

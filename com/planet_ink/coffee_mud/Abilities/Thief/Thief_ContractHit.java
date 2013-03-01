@@ -206,7 +206,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}catch(NoSuchElementException nse){}
 		MOB target=null;
 		if(V.size()>0)
-			target=(MOB)V.get(CMLib.dice().roll(1,V.size(),-1));
+			target=V.get(CMLib.dice().roll(1,V.size(),-1));
 		if(target==null)
 		{
 			mob.tell("You've never heard of '"+CMParms.combine(commands,0)+"'.");

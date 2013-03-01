@@ -65,7 +65,7 @@ public class Prayer_Forgive extends Prayer
 		{
 			criminals=B.getCriminals(CMLib.law().getLegalObject(mob.location()),name);
 			if(criminals.size()>0)
-				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)criminals.get(0));
+				warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),criminals.get(0));
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -85,7 +85,7 @@ public class Prayer_Forgive extends Prayer
 					mob.location().send(mob,msg);
 					for(int i=0;i<warrants.size();i++)
 					{
-						LegalWarrant W=(LegalWarrant)warrants.get(i);
+						LegalWarrant W=warrants.get(i);
 						W.setCrime("pardoned");
 						W.setOffenses(0);
 					}

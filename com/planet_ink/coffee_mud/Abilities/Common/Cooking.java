@@ -99,9 +99,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if((cooking.hasALid())&&(!cooking.isOpen())) 
 			return true;
 		if((cooking.container()!=null)
-		&&(cooking.container() instanceof Container)
-		&&(((Container)cooking.container()).hasALid())
-		&&(!((Container)cooking.container()).isOpen()))
+		&&(cooking.container().hasALid())
+		&&(!cooking.container().isOpen()))
 		   return true;
 		return false;
 	}
@@ -154,7 +153,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				{
 					List<Item> V=cookingPot.getContents();
 					for(int v=0;v<V.size();v++)
-						((Item)V.get(v)).destroy();
+						V.get(v).destroy();
 					if((cookingPot instanceof Drink)&&(building instanceof Drink))
 						((Drink)cookingPot).setLiquidRemaining(0);
 					if(!aborted)
@@ -208,7 +207,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		List<Item> V=pot.getContents();
 		for(int v=0;v<V.size();v++)
 		{
-			Item I=(Item)V.get(v);
+			Item I=V.get(v);
 			String ing="Unknown";
 			if(I instanceof RawMaterial)
 			{
@@ -224,10 +223,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				||((I.material()&RawMaterial.MATERIAL_LIQUID)>0)
 				||((I.material()&RawMaterial.MATERIAL_FLESH)>0))
 				&&(CMParms.parse(I.name()).size()>0))
-					ing=((String)CMParms.parse(I.name()).lastElement()).toUpperCase();
+					ing=CMParms.parse(I.name()).lastElement().toUpperCase();
 			else
 				ing=I.name();
-			Integer INT=(Integer)h.get(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
+			Integer INT=h.get(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
 			if(INT==null) INT=Integer.valueOf(0);
 			INT=Integer.valueOf(INT.intValue()+1);
 			h.put(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
@@ -329,7 +328,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			else
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
-				String ingredient2=((String)Vr.get(vr)).toUpperCase();
+				String ingredient2=Vr.get(vr).toUpperCase();
 				int index=ingredient.toUpperCase().indexOf(ingredient2+"/");
 				if((ingredient2.length()>0)
 				&&(((!perfectOnly)&&((index==0)||((index>0)&&(!Character.isLetter(ingredient.charAt(index-1))))))
@@ -356,11 +355,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		boolean hasOptional=false;
 		for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 		{
-			String ingredient=(String)Vr.get(vr);
+			String ingredient=Vr.get(vr);
 			if(ingredient.length()>0)
 			{
 				int amount=1;
-				if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.get(vr+1));
+				if(vr<Vr.size()-1)amount=CMath.s_int(Vr.get(vr+1));
 				boolean found=false;
 				for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 				{
@@ -399,13 +398,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 
 	public Item buildItem(MOB mob, List<String> finalRecipe, List<Item> contents)
 	{
-		String replaceName=((String)finalRecipe.get(RCP_MAININGR));
+		String replaceName=(finalRecipe.get(RCP_MAININGR));
 		if(contents!=null)
 		for(int v=0;v<contents.size();v++)
 		{
-			Item I=(Item)contents.get(v);
+			Item I=contents.get(v);
 			if((I instanceof RawMaterial)
-			&&(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase((String)finalRecipe.get(RCP_MAININGR))))
+			&&(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(finalRecipe.get(RCP_MAININGR))))
 			{
 				if((((RawMaterial)I).domainSource()!=null)
 				&&(!CMath.isNumber(((RawMaterial)I).domainSource()))
@@ -428,9 +427,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				break;
 			}
 		}
-		finalDishName=replacePercent((String)finalRecipe.get(RCP_FINALFOOD),
+		finalDishName=replacePercent(finalRecipe.get(RCP_FINALFOOD),
 									CMStrings.capitalizeAndLower(replaceName));
-		String foodType=(String)finalRecipe.get(RCP_FOODDRINK);
+		String foodType=finalRecipe.get(RCP_FOODDRINK);
 		if(foodType.equalsIgnoreCase("FOOD"))
 		{
 			building=CMClass.getItem("GenFood");
@@ -445,7 +444,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(contents!=null)
 				for(int v=0;v<contents.size();v++)
 				{
-					Item I=(Item)contents.get(v);
+					Item I=contents.get(v);
 					if((I.material()==RawMaterial.RESOURCE_HERBS)&&(honorHerbs()))
 						timesTwo=true;
 					else
@@ -462,7 +461,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(contents!=null)
 				for(int v=0;v<contents.size();v++)
 				{
-					Item I=(Item)contents.get(v);
+					Item I=contents.get(v);
 					if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
 						food.basePhyStats().setWeight(food.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 					if(I instanceof Food)
@@ -476,7 +475,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				}
 			if(material<0)
 			{
-				String materialFoodName=replacePercent((String)finalRecipe.get(RCP_FINALFOOD),"").trim().toUpperCase();
+				String materialFoodName=replacePercent(finalRecipe.get(RCP_FINALFOOD),"").trim().toUpperCase();
 				for(int i=0;i<RawMaterial.CODES.TOTAL();i++)
 					if(materialFoodName.equals(RawMaterial.CODES.NAME(i)))
 					{
@@ -486,7 +485,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if((contents!=null)&&(material<0))
 					for(int v=0;v<contents.size();v++)
 					{
-						Item I=(Item)contents.get(v);
+						Item I=contents.get(v);
 						if(I instanceof Drink)
 						{
 							material=((Drink)I).liquidType();
@@ -497,7 +496,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			food.setMaterial(material<0?RawMaterial.RESOURCE_BEEF:material);
 			if(mob!=null)
 				food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
-			if(!messedUp) CMLib.materials().addEffectsToResource((Item)food);
+			if(!messedUp) CMLib.materials().addEffectsToResource(food);
 			food.basePhyStats().setWeight(food.basePhyStats().weight()/finalAmount);
 			playSound=defaultFoodSound;
 		}
@@ -515,7 +514,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(contents!=null)
 			for(int v=0;v<contents.size();v++)
 			{
-				Item I=(Item)contents.get(v);
+				Item I=contents.get(v);
 				drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 				if(I instanceof Food)
 					drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment());
@@ -557,7 +556,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(contents!=null)
 				for(int v=0;v<contents.size();v++)
 				{
-					Item I=(Item)contents.get(v);
+					Item I=contents.get(v);
 					drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 					drink.setLiquidRemaining(drink.liquidRemaining()+rem);
 					if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
@@ -575,7 +574,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				drink.setLiquidType(liquidType);
 			}
 			building.basePhyStats().setWeight(building.basePhyStats().weight()/finalAmount);
-			if(!messedUp) CMLib.materials().addEffectsToResource((Item)building);
+			if(!messedUp) CMLib.materials().addEffectsToResource(building);
 			playSound=defaultFoodSound;
 		}
 		else
@@ -600,7 +599,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			if(mob!=null)
 				building.setSecretIdentity("This was prepared by "+mob.Name()+".");
-			String spell=(String)finalRecipe.get(RCP_BONUSSPELL);
+			String spell=finalRecipe.get(RCP_BONUSSPELL);
 			if((spell!=null)&&(spell.length()>0))
 			{
 				if(building instanceof Perfume)
@@ -640,14 +639,14 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			{
 				List<List<String>> recipes=loadRecipes();
 				List<String> V = recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
-				recipeName=replacePercent((String)V.get(0),"");
+				recipeName=replacePercent(V.get(0),"");
 			}
 			for(int r=0;r<allRecipes.size();r++)
 			{
 				List<String> Vr=allRecipes.get(r);
 				if(Vr.size()>0)
 				{
-					String item=(String)Vr.get(RCP_FINALFOOD);
+					String item=Vr.get(RCP_FINALFOOD);
 					if(replacePercent(item,"").equalsIgnoreCase(recipeName))
 					{ finalRecipe=Vr; break;}
 				}
@@ -658,7 +657,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				List<String> Vr=allRecipes.get(r);
 				if(Vr.size()>0)
 				{
-					String item=(String)Vr.get(RCP_FINALFOOD);
+					String item=Vr.get(RCP_FINALFOOD);
 					if(replacePercent(item,"").toLowerCase().indexOf(recipeName.toLowerCase())>=0)
 					{ finalRecipe=Vr; break;}
 				}
@@ -682,9 +681,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				List<String> Vr=allRecipes.get(r);
 				if(Vr.size()>0)
 				{
-					String item=(String)Vr.get(RCP_FINALFOOD);
+					String item=Vr.get(RCP_FINALFOOD);
 					if(item.length()==0) continue;
-					int level=CMath.s_int((String)Vr.get(RCP_LEVEL));
+					int level=CMath.s_int(Vr.get(RCP_LEVEL));
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
@@ -692,11 +691,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						line.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),colWidth)+"^w ");
 						for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 						{
-							String ingredient=(String)Vr.get(vr);
+							String ingredient=Vr.get(vr);
 							if(ingredient.length()>0)
 							{
 								int amount=1;
-								if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.get(vr+1));
+								if(vr<Vr.size()-1)amount=CMath.s_int(Vr.get(vr+1));
 								if(amount==0) amount=1;
 								if(amount<0)
 								{
@@ -781,7 +780,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 			{
 				String ingredient2=((String)e.nextElement()).toUpperCase();
-				int index =ingredient2.indexOf(((String)Vr.get(RCP_MAININGR)).toUpperCase()+"/"); 
+				int index =ingredient2.indexOf(Vr.get(RCP_MAININGR).toUpperCase()+"/"); 
 				if((index==0)||((index>0)&&(!Character.isLetter(ingredient2.charAt(index-1)))))
 				{ found=true; break;}
 			}

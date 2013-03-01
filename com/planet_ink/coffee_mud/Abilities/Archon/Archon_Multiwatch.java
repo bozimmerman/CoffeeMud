@@ -88,7 +88,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		{
 			if(!DATA.containsKey(msg.source()))
 				DATA.put(msg.source(),new int[DATA_TOTAL]);
-			int[] data=(int[])DATA.get(msg.source());
+			int[] data=DATA.get(msg.source());
 
 			if(data==null) return;
 			if(msg.tool() instanceof Social)
@@ -142,7 +142,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		{
 			MOB mob=(MOB)affected;
 			if(!DATA.containsKey(mob))	DATA.put(mob,new int[DATA_TOTAL]);
-			int[] data=(int[])DATA.get(mob);
+			int[] data=DATA.get(mob);
 			if((mob.session()!=null)&&(mob.session().previousCMD()!=null))
 			{
 				if((lastCommand!=null)
@@ -156,7 +156,7 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(V!=null)
 					for(int v=0;v<V.size();v++)
 					{
-						MOB M=(MOB)V.get(v);
+						MOB M=V.get(v);
 						if(M==mob) continue;
 						if(M.session()==null) continue;
 						if(!CMLib.flags().isInTheGame(M,true)) continue;
@@ -188,7 +188,7 @@ public class Archon_Multiwatch extends ArchonSkill
 				if((S.getAddress().length()>0)
 				&&(S.mob()!=null))
 				{
-					List V=(List)ipes.get(S.getAddress());
+					List V=ipes.get(S.getAddress());
 					if(V==null){
 						V=new Vector();
 						ipes.put(S.getAddress(),V);
@@ -207,7 +207,7 @@ public class Archon_Multiwatch extends ArchonSkill
 					rpt.append("Watch #"+(IPS.size())+" added: ");
 					for(int n=0;n<names.size();n++)
 					{
-						MOB MN=(MOB)names.get(n);
+						MOB MN=names.get(n);
 						if(MN.fetchEffect(ID())==null)
 						{
 							Ability A=(Ability)copyOf();
@@ -242,7 +242,7 @@ public class Archon_Multiwatch extends ArchonSkill
 				List<MOB> V=e.nextElement();
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=(MOB)V.get(v);
+					MOB M=V.get(v);
 					Ability A=M.fetchEffect(ID());
 					if(A!=null) M.delEffect(A);
 				}
@@ -297,13 +297,13 @@ public class Archon_Multiwatch extends ArchonSkill
 			StringBuffer report=new StringBuffer("");
 			for(Enumeration<String> e=IPS.keys();e.hasMoreElements();)
 			{
-				String key=(String)e.nextElement();
+				String key=e.nextElement();
 				int sync=0;
 				List<MOB> V=IPS.get(key);
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=(MOB)V.get(v);
-					int data[]=(int[])DATA.get(M);
+					MOB M=V.get(v);
+					int data[]=DATA.get(M);
 					if(data!=null) sync+=data[DATA_SYNCHROFOUND];
 				}
 				report.append("^x"+key+"^?^., Syncs: "+sync+"\n\r");
@@ -315,8 +315,8 @@ public class Archon_Multiwatch extends ArchonSkill
 							  +"\n\r");
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=(MOB)V.get(v);
-					int data[]=(int[])DATA.get(M);
+					MOB M=V.get(v);
+					int data[]=DATA.get(M);
 					if(data==null) data=new int[DATA_TOTAL];
 					report.append(CMStrings.padRight(M.Name(),25));
 					report.append(CMStrings.padRight(data[DATA_GOODSPEECH]

@@ -126,7 +126,7 @@ public class Bard extends StdCharClass
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
 	public static int bardAdjustExperienceGain(MOB host, MOB mob, MOB victim, int amount, double rate)
 	{
-		double theAmount=(double)amount;
+		double theAmount=amount;
 		if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
 		{
 			if(host == mob)
@@ -190,12 +190,12 @@ public class Bard extends StdCharClass
 						List<Ability> V2=new Vector<Ability>();
 						for(Iterator<Environmental> i=((ShopKeeper)M).getShop().getStoreInventory();i.hasNext();)
 						{
-							Environmental O=(Environmental)i.next();
+							Environmental O=i.next();
 							if(O instanceof Potion)
 							{
 								V2.addAll(((Potion)O).getSpells());
 								for(int v=V2.size()-1;v>=0;v--)
-									if((((Ability)V2.get(v)).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
+									if((V2.get(v).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
 										V2.get(v);
 							}
 							if(O instanceof Drink)
@@ -210,7 +210,7 @@ public class Bard extends StdCharClass
 									pub=true;
 							}
 							for(int v=0;v<V2.size();v++)
-								pub=pub||CMath.bset(((Ability)V2.get(v)).flags(),Ability.FLAG_INTOXICATING);
+								pub=pub||CMath.bset(V2.get(v).flags(),Ability.FLAG_INTOXICATING);
 						}
 					}
 				}

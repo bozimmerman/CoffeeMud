@@ -234,10 +234,10 @@ public class SocialData extends StdWebMacro
 			}
 			if(OSV!=null)
 				for(int s=0;s<OSV.size();s++)
-					CMLib.socials().remove(((Social)OSV.get(s)).Name());
+					CMLib.socials().remove(OSV.get(s).Name());
 			
 			for(int s=0;s<SV.size();s++)
-				CMLib.socials().addSocial((Social)SV.get(s));
+				CMLib.socials().addSocial(SV.get(s));
 			
 			CMLib.socials().save(M);
 			if(create)
@@ -260,7 +260,7 @@ public class SocialData extends StdWebMacro
 				return "Unknown social!";
 			SV=new XVector<Social>(SV);
 			for(int s=0;s<SV.size();s++)
-				CMLib.socials().remove(((Social)SV.get(s)).Name());
+				CMLib.socials().remove(SV.get(s).Name());
 			CMLib.socials().save(M);
 			Log.sysOut(M.name()+" deleted social "+last);
 			return "Social deleted.";
@@ -270,10 +270,8 @@ public class SocialData extends StdWebMacro
 			if(last==null) return " @break@";
 			if(last.length()>0)
 			{
-				List<Social> SV=null;
 				String newSocialID=httpReq.getUrlParameter("NEWSOCIAL");
-				if(SV==null)
-					SV=(List<Social>)httpReq.getRequestObjects().get("SOCIAL-"+last);
+				List<Social> SV=(List<Social>)httpReq.getRequestObjects().get("SOCIAL-"+last);
 				if((SV==null)
 				&&(newSocialID!=null)
 				&&(newSocialID.length()>0)
@@ -297,8 +295,7 @@ public class SocialData extends StdWebMacro
 						old=httpReq.getUrlParameter("TITLE");
 						if(old==null) 
 							old=last;
-						if(old!=null)
-							str.append(old+", ");
+						str.append(old+", ");
 					}
 					Vector TYPES=new Vector();
 					Vector EXTNS=new Vector();
@@ -326,7 +323,7 @@ public class SocialData extends StdWebMacro
 					else
 					for(int s=0;s<SV.size();s++)
 					{
-						Social S=(Social)SV.get(s);
+						Social S=SV.get(s);
 						boolean found=false;
 						for(int b=0;b<BEXTNS.length;b++)
 							if(S.Name().equalsIgnoreCase(last+BEXTNS[b]))
@@ -361,8 +358,8 @@ public class SocialData extends StdWebMacro
 					if(parms.containsKey("NUMEXTRAS"))
 						str.append(""+numxtras+", ");
 					if(parms.containsKey("GETEXTRA")
-					&&(CMath.s_int((String)parms.get("GETEXTRA"))<numxtras))
-						str.append(TYPES.elementAt(BTYPES.length+CMath.s_int((String)parms.get("GETEXTRA")))+", ");
+					&&(CMath.s_int(parms.get("GETEXTRA"))<numxtras))
+						str.append(TYPES.elementAt(BTYPES.length+CMath.s_int(parms.get("GETEXTRA")))+", ");
 					
 					
 					for(int t=0;t<TYPES.size();t++)
@@ -371,9 +368,9 @@ public class SocialData extends StdWebMacro
 						String EXTN=(String)EXTNS.elementAt(t);
 						Social S=null;
 						for(int s=0;s<SV.size();s++)
-							if(((Social)SV.get(s)).Name().equalsIgnoreCase(last+EXTN))
+							if(SV.get(s).Name().equalsIgnoreCase(last+EXTN))
 							{
-								S=(Social)SV.get(s);
+								S=SV.get(s);
 								break;
 							}
 						if(parms.containsKey("IS"+TYPE))
@@ -414,9 +411,9 @@ public class SocialData extends StdWebMacro
 									switch(field.charAt(f)) {
 										case 'Y': old=(S==null)?null:""+S.sourceCode(); break;
 										case 'O': old=(S==null)?null:""+S.targetCode(); break;
-										case 'N': old=null; break;
-										case 'M': old=null; break;
-										case 'T': old=null; break;
+										case 'N': break;
+										case 'M': break;
+										case 'T': break;
 									}
 								}
 								if(old!=null)

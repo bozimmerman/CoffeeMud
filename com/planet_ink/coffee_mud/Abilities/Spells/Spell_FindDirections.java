@@ -87,7 +87,7 @@ public class Spell_FindDirections extends Spell
 			return false;
 		
 		boolean success=proficiencyCheck(mob,0,auto);
-		if(success && (targetR != null) )
+		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,targetR,this,somanticCastCode(mob,targetR,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around, pointing towards '"+A.name()+"'.^?");
 			if(mob.location().okMessage(mob,msg))

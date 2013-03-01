@@ -50,7 +50,7 @@ public class HelpTopics extends StdWebMacro
 		if(parms.containsKey("DATA"))
 		{
 			int limit=70;
-			if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
+			if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 			if((last!=null)&&(last.length()>0))
 			{
 				StringBuilder s=CMLib.help().getHelpText(last,null,parms.containsKey("AHELP"));
@@ -88,14 +88,14 @@ public class HelpTopics extends StdWebMacro
 				topics=CMLib.help().getTopics(false,true);
 
 			boolean noables=parms.containsKey("SHORT");
-			String fletter=(String)parms.get("FIRSTLETTER");
+			String fletter=parms.get("FIRSTLETTER");
 			if(fletter==null) fletter=httpReq.getUrlParameter("FIRSTLETTER");
 			if(fletter==null) fletter="";
 
 			String lastID="";
 			for(int h=0;h<topics.size();h++)
 			{
-				String topic=(String)topics.get(h);
+				String topic=topics.get(h);
 				if(noables&&CMLib.help().isPlayerSkill(topic))
 				   continue;
 				if(topic.startsWith(fletter)||(fletter.length()==0))

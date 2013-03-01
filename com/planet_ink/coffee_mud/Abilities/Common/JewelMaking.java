@@ -182,15 +182,15 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			else
 			if(I instanceof Armor)
 			{
-				if(I.fitsOn(Armor.WORN_EARS)
-				||I.fitsOn(Armor.WORN_EYES)
-				||I.fitsOn(Armor.WORN_HEAD)
-				||I.fitsOn(Armor.WORN_NECK)
-				||I.fitsOn(Armor.WORN_FEET)
-				||I.fitsOn(Armor.WORN_LEFT_FINGER)
-				||I.fitsOn(Armor.WORN_RIGHT_FINGER)
-				||I.fitsOn(Armor.WORN_LEFT_WRIST)
-				||I.fitsOn(Armor.WORN_RIGHT_WRIST))
+				if(I.fitsOn(Wearable.WORN_EARS)
+				||I.fitsOn(Wearable.WORN_EYES)
+				||I.fitsOn(Wearable.WORN_HEAD)
+				||I.fitsOn(Wearable.WORN_NECK)
+				||I.fitsOn(Wearable.WORN_FEET)
+				||I.fitsOn(Wearable.WORN_LEFT_FINGER)
+				||I.fitsOn(Wearable.WORN_RIGHT_FINGER)
+				||I.fitsOn(Wearable.WORN_LEFT_WRIST)
+				||I.fitsOn(Wearable.WORN_RIGHT_WRIST))
 					return true;
 				return (isANativeItem(I.Name()));
 			}
@@ -208,15 +208,15 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			&&(A.basePhyStats().armor()<3))
 				return true;
 			if((A.basePhyStats().armor()<2)
-			&&(I.fitsOn(Armor.WORN_EARS)
-				||I.fitsOn(Armor.WORN_EYES)
-				||I.fitsOn(Armor.WORN_HEAD)
-				||I.fitsOn(Armor.WORN_NECK)
-				||I.fitsOn(Armor.WORN_FEET)
-				||I.fitsOn(Armor.WORN_LEFT_FINGER)
-				||I.fitsOn(Armor.WORN_RIGHT_FINGER)
-				||I.fitsOn(Armor.WORN_LEFT_WRIST)
-				||I.fitsOn(Armor.WORN_RIGHT_WRIST)))
+			&&(I.fitsOn(Wearable.WORN_EARS)
+				||I.fitsOn(Wearable.WORN_EYES)
+				||I.fitsOn(Wearable.WORN_HEAD)
+				||I.fitsOn(Wearable.WORN_NECK)
+				||I.fitsOn(Wearable.WORN_FEET)
+				||I.fitsOn(Wearable.WORN_LEFT_FINGER)
+				||I.fitsOn(Wearable.WORN_RIGHT_FINGER)
+				||I.fitsOn(Wearable.WORN_LEFT_WRIST)
+				||I.fitsOn(Wearable.WORN_RIGHT_WRIST)))
 					return true;
 			return (isANativeItem(I.Name()));
 		}
@@ -296,8 +296,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					String item=replacePercent(V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5)
 					{
@@ -475,7 +475,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				List<String> V=matches.get(r);
 				if(V.size()>0)
 				{
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
@@ -488,7 +488,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"jewel list\" for a list.");
 				return false;
 			}
-			misctype=(String)foundRecipe.get(RCP_MISCTYPE);
+			misctype=foundRecipe.get(RCP_MISCTYPE);
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			if(!bundling)
 			{
@@ -498,14 +498,14 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			else
 				fireRequired=false;
 			
-			final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 			
 			if(amount>woodRequired) woodRequired=amount;
-			String otherRequired=(String)foundRecipe.get(RCP_EXTRAREQ);
+			String otherRequired=foundRecipe.get(RCP_EXTRAREQ);
 			int[] pm={RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_METAL};
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,
@@ -521,18 +521,18 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
+			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
+			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			String itemName=null;
-			if((otherRequired!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
-				itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME((data[1][FOUND_CODE]))).toLowerCase();
+			if((otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
+				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME((data[1][FOUND_CODE]))).toLowerCase();
 			else
-				itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -551,7 +551,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			else
 				building.setDescription(itemName+". ");
 			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			building.setSecretIdentity(getBrand(mob));
 			if(data[1][FOUND_CODE]==0)
 				building.setMaterial(data[0][FOUND_CODE]);
@@ -560,10 +560,10 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				building.setMaterial(data[1][FOUND_CODE]);
 				building.setBaseValue(building.baseGoldValue()+RawMaterial.CODES.VALUE(data[1][FOUND_CODE]));
 			}
-			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			//int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
-			int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
-			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
+			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
+			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			addSpells(building,spell);
 			if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
 			{

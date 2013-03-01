@@ -51,7 +51,7 @@ public class Thief_PowerGrab extends ThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item possibleContainer=possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
-		Item target=super.getTarget(mob, mob.location(), givenTarget, possibleContainer, commands, Item.FILTER_UNWORNONLY);
+		Item target=super.getTarget(mob, mob.location(), givenTarget, possibleContainer, commands, Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)

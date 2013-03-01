@@ -91,7 +91,7 @@ public class RandomMonsters extends ActiveTicker
 			Vector<String> V=CMParms.parse(extraParms);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=(String)V.elementAt(v);
+				String s=V.elementAt(v);
 				if((s.startsWith("+")||s.startsWith("-"))&&(s.length()>1))
 				{
 					if(restrictedLocales==null)
@@ -307,7 +307,7 @@ public class RandomMonsters extends ActiveTicker
 			tickStatus=Tickable.STATUS_MISC+2;
 			if(maintained.size()<avgMonsters)
 			{
-				MOB M=(MOB)monsters.get(CMLib.dice().roll(1,monsters.size(),-1));
+				MOB M=monsters.get(CMLib.dice().roll(1,monsters.size(),-1));
 				if(M!=null)
 				{
 					tickStatus=Tickable.STATUS_MISC+3;

@@ -181,7 +181,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	{
 		Hashtable<String, String> spellH=new Hashtable<String, String>();
 		for(int v=0;v<V.size();v++)
-			spellH.put(((Ability)V.get(v)).ID(),((Ability)V.get(v)).ID());
+			spellH.put(V.get(v).ID(),V.get(v).ID());
 		return spellH;
 	}
 
@@ -220,7 +220,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		List VTOO=new Vector();
 		for(int v=0;v<spellsV.size();v++)
 		{
-			Ability A=(Ability)spellsV.get(v);
+			Ability A=spellsV.get(v);
 			Ability EA=(target!=null)?target.fetchEffect(A.ID()):null;
 			if((EA==null)&&(didHappen()))
 			{
@@ -347,7 +347,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			{
 				for(int v=unrevocableSpells.size()-1;v>=0;v--)
 				{
-					thisAffect = (Ability)unrevocableSpells.get(v);
+					thisAffect = unrevocableSpells.get(v);
 					if(h.containsKey(thisAffect.ID()))
 						P.delEffect(thisAffect);
 				}
@@ -356,7 +356,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			for(x=0;x<eff.size();x++)
 			{
 				thisAffect=(Ability)eff.elementAt(x);
-				String ID=(String)h.get(thisAffect.ID());
+				String ID=h.get(thisAffect.ID());
 				if((ID!=null)
 				&&(thisAffect.invoker()==getInvokerMOB(P,P))) {
 					thisAffect.unInvoke();
@@ -393,7 +393,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 				removeMyAffectsFrom(lastMOB);
 
 			if((lastMOB==null)&&(host instanceof PhysicalAgent))
-				addMeIfNeccessary((PhysicalAgent)host,(Physical)host,true,0,maxTicks);
+				addMeIfNeccessary((PhysicalAgent)host,host,true,0,maxTicks);
 			processing=false;
 		}
 	}
@@ -404,7 +404,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		String id="";
 		for(int v=0;v<spellList.size();v++)
 		{
-			Ability A=(Ability)spellList.get(v);
+			Ability A=spellList.get(v);
 			if(spellList.size()==1)
 				id+=A.name();
 			else

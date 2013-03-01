@@ -102,7 +102,7 @@ public class Spell_Gate extends Spell
 		Room newRoom=null;
 		if(candidates.size()>0)
 		{
-			target=(MOB)candidates.get(CMLib.dice().roll(1,candidates.size(),-1));
+			target=candidates.get(CMLib.dice().roll(1,candidates.size(),-1));
 			newRoom=target.location();
 		}
 

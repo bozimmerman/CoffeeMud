@@ -758,6 +758,7 @@ public class MUDGrinder extends StdWebMacro
 			String last=httpReq.getUrlParameter("ABILITY");
 			if(last==null) return " @break@";
 			A=CMClass.getAbility(last);
+			oldA=A;
 			boolean create=false;
 			if((A!=null)&&(!A.isGeneric()))
 				return " @break@";
@@ -1092,19 +1093,19 @@ public class MUDGrinder extends StdWebMacro
 		}
 		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
-			R=(Room)r.nextElement();
+			R=r.nextElement();
 			if((R.roomID().length()>0)&&(R.roomID().toUpperCase().endsWith(find.toUpperCase())))
 				return R.roomID();
 		}
 		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
-			R=(Room)r.nextElement();
+			R=r.nextElement();
 			if((R.roomID().length()>0)&&(R.displayText().toUpperCase().indexOf(find.toUpperCase())>=0))
 				return R.roomID();
 		}
 		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
-			R=(Room)r.nextElement();
+			R=r.nextElement();
 			if((R.roomID().length()>0)&&(R.description().toUpperCase().indexOf(find.toUpperCase())>=0))
 				return R.roomID();
 		}

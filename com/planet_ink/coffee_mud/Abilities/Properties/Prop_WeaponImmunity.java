@@ -61,7 +61,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 		String s=null;
 		for(int v=0;v<V.size();v++)
 		{
-			s=(String)V.elementAt(v);
+			s=V.elementAt(v);
 			c=new Character(s.charAt(0));
 			if((s.charAt(0)=='-')||(s.charAt(0)=='+'))
 				s=s.substring(1);

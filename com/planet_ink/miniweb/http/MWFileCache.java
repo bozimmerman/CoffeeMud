@@ -305,7 +305,6 @@ public class MWFileCache implements FileCacheManager
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
 			}
 			boolean cacheActiveThisFile=cacheActive;
-			BufferedInputStream bs = null;
 			try
 			{
 				if((cacheMaxFileBytes==0)||(pageFile.length()<=cacheMaxFileBytes))
@@ -337,15 +336,6 @@ public class MWFileCache implements FileCacheManager
 				if(cacheActiveThisFile)
 					cache.put(fileName, new FileCacheEntry(null,0));
 				throw HTTPException.standardException(HTTPStatus.S404_NOT_FOUND);
-			}
-			finally
-			{
-				if(bs != null)
-				{
-					try{ 
-						bs.close(); 
-					} catch(Exception e) {} // java really needs an " i don't care " syntax for exception handling
-				}
 			}
 		}
 	}

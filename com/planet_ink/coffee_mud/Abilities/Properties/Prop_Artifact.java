@@ -221,7 +221,7 @@ public class Prop_Artifact extends Property
 					CMLib.threads().startTickDown(this, Tickable.TICKID_ITEM_BOUNCEBACK,4);
 			}
 			if((R!=null)
-			&&(!((Item)I).amDestroyed()))
+			&&(!I.amDestroyed()))
 			{
 				if(autoreset)
 				{
@@ -231,16 +231,16 @@ public class Prop_Artifact extends Property
 				}
 				StringBuffer data=new StringBuffer("");
 				data.append("<ARTITEM>");
-				if(((Item)I).owner() instanceof Room)
+				if(I.owner() instanceof Room)
 					data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
 				else
-				if(((Item)I).owner() instanceof MOB)
+				if(I.owner() instanceof MOB)
 				{
-					MOB M=(MOB)((Item)I).owner();
+					MOB M=(MOB)I.owner();
 					if(M.getStartRoom()!=null)
 					{
 						data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(M.getStartRoom())));
-						data.append(CMLib.xml().convertXMLtoTag("MOB",((MOB)((Item)I).owner()).Name()));
+						data.append(CMLib.xml().convertXMLtoTag("MOB",((MOB)I.owner()).Name()));
 					}
 					else
 						data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
@@ -249,12 +249,12 @@ public class Prop_Artifact extends Property
 					data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
 				data.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(I)));
 				data.append(CMLib.xml().convertXMLtoTag("IREJV",I.basePhyStats().rejuv()));
-				data.append(CMLib.xml().convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
+				data.append(CMLib.xml().convertXMLtoTag("IUSES",I.usesRemaining()));
 				data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.basePhyStats().level()));
 				data.append(CMLib.xml().convertXMLtoTag("IABLE",I.basePhyStats().ability()));
 				data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 				data.append("</ARTITEM>");
-				((Item)I).destroy();
+				I.destroy();
 				CMLib.database().DBReCreateData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
 			}
 		}
@@ -279,12 +279,12 @@ public class Prop_Artifact extends Property
 				{
 					// does it already exist?
 					if(registeredArtifacts.containsKey(getItemID())) registeredArtifacts.remove(getItemID());
-					String data=((DatabaseEngine.PlayerData)itemSet.get(0)).xml;
+					String data=itemSet.get(0).xml;
 					List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
 					if(xml!=null)
 						for(int c=0;c<xml.size();c++)
 						{
-							XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xml.get(c);
+							XMLLibrary.XMLpiece iblk=xml.get(c);
 							if((iblk.tag.equalsIgnoreCase("ARTITEM"))&&(iblk.contents!=null))
 							{
 								List<XMLLibrary.XMLpiece> roomData=iblk.contents;

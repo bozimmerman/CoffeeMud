@@ -50,7 +50,7 @@ public class SMTPserver extends Thread implements Tickable
 	
 	public String ID(){return "SMTPserver";}
 	public String name(){return "SMTPserver";}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new SMTPserver(mud);}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new SMTPserver(mud);}}
 	public void initializeClass(){}
 	public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -161,7 +161,7 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				for(int v=0;v<V.size();v++)
 				{
-					String s=((String)V.elementAt(v)).trim();
+					String s=V.elementAt(v).trim();
 					String parm="";
 					int x=s.indexOf('(');
 					if((x>0)&&(s.endsWith(")")))
@@ -176,7 +176,7 @@ public class SMTPserver extends Thread implements Tickable
 					boolean keepAll=false;
 					for(int pv=0;pv<PV.size();pv++)
 					{
-						String ps=(String)PV.elementAt(pv);
+						String ps=PV.elementAt(pv);
 						if(ps.equalsIgnoreCase("forward"))
 							forward=true;
 						else
@@ -486,7 +486,7 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				for(int i=0;i<mylist.size();i++)
 				{
-					String to2=(String)mylist.get(i);
+					String to2=mylist.get(i);
 					if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
 					{
 						CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from,to2,jrnlSubj,jrnlMessage);
@@ -522,7 +522,7 @@ public class SMTPserver extends Thread implements Tickable
 			}
 			boolean found=false;
 			for(int l=0;l<mylist.size();l++)
-				if(((String)mylist.get(l)).equalsIgnoreCase(msg.from))
+				if(mylist.get(l).equalsIgnoreCase(msg.from))
 					found=true;
 			if(!found)
 			{
@@ -554,7 +554,7 @@ public class SMTPserver extends Thread implements Tickable
 		List<String> mylist=lists.get(journalName);
 		if(mylist==null) return false;
 		for(int l=mylist.size()-1;l>=0;l--)
-			if(((String)mylist.get(l)).equalsIgnoreCase(msg.from))
+			if(mylist.get(l).equalsIgnoreCase(msg.from))
 			{
 				mylist.remove(l);
 				updatedMailingLists=true;

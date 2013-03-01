@@ -142,9 +142,9 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
-					String material=(String)V.get(RCP_WOODTYPE);
+					String item=replacePercent(V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int(V.get(RCP_LEVEL));
+					String material=V.get(RCP_WOODTYPE);
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5) material="";
 					if((level<=xlevel(mob))
@@ -167,11 +167,11 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			List<String> V=matches.get(r);
 			if(V.size()>0)
 			{
-				int level=CMath.s_int((String)V.get(RCP_LEVEL));
+				int level=CMath.s_int(V.get(RCP_LEVEL));
 				if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
-					materialDesc=(String)foundRecipe.get(RCP_WOODTYPE);
+					materialDesc=foundRecipe.get(RCP_WOODTYPE);
 					if(materialDesc.equalsIgnoreCase("WOOD"))
 						materialDesc="WOODEN";
 					break;
@@ -188,7 +188,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 
-		final String woodRequiredStr = (String)foundRecipe.get(RCP_WOOD);
+		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
 		if(componentsFoundList==null) return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -211,14 +211,14 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 			CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 		}
-		building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
+		building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(building==null)
 		{
 			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
-		String itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
+		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 		itemName=CMLib.english().startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) making "+building.name()+".";
@@ -228,9 +228,9 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
 		building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-		building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+		building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		building.setMaterial(data[0][FOUND_CODE]);
-		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
+		String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(building,spell);
 		building.setSecretIdentity(getBrand(mob));
 		if(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
@@ -238,7 +238,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			building.setMaterial(RawMaterial.RESOURCE_PAPER);
 		if(building instanceof Recipe)
 			((Recipe)building).setTotalRecipePages(CMath.s_int(woodRequiredStr));
-		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
+		building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		building.recoverPhyStats();
 		building.text();
 		building.recoverPhyStats();

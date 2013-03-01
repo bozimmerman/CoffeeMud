@@ -118,7 +118,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(dex<0) return 0;
 		final int x=text().indexOf("TAX",dex);
 		if(x<0) return 0;
-		String s=(String)CMParms.parse(text().substring(x+3)).firstElement();
+		String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
 	}
 	public void setBackTaxes(int tax)
@@ -516,9 +516,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			return false;
 		}
 		else
-		if(pDataV.get(0) instanceof DatabaseEngine.PlayerData)
+		if(pDataV.get(0) != null)
 		{
-			pData=(DatabaseEngine.PlayerData)pDataV.get(0);
+			pData=pDataV.get(0);
 			String parse=pData.xml;
 			int x=parse.indexOf("|~;|");
 			StringBuffer reparse=new StringBuffer("");
@@ -549,7 +549,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 										owner,
 										CMLib.utensils().getFormattedDate(A)+":Withdrawal of "+rent+": Rent for "+ID,
 										CMLib.beanCounter().getCurrency(A),
-										(double)(-rent)))
+										(-rent)))
 								{
 									lastMonth++;
 									if(lastMonth>A.getTimeObj().getMonthsInYear())

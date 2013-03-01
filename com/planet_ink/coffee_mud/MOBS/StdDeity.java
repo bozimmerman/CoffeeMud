@@ -160,7 +160,7 @@ public class StdDeity extends StdMOB implements Deity
 		StringBuffer buf=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
 		{
-			DeityTrigger DT=(DeityTrigger)V.get(v);
+			DeityTrigger DT=V.get(v);
 			if(v>0) buf.append(", "+((DT.previousConnect==CONNECT_AND)?"and ":"or "));
 			switch(DT.triggerCode)
 			{
@@ -615,7 +615,7 @@ public class StdDeity extends StdMOB implements Deity
 		for(int v=0;v<V.size();v++)
 		{
 			boolean yup=false;
-			DeityTrigger DT=(DeityTrigger)V.get(v);
+			DeityTrigger DT=V.get(v);
 			if((msg.sourceMinor()==TRIG_WATCH[DT.triggerCode])
 			||(TRIG_WATCH[DT.triggerCode]==-999))
 			{
@@ -639,7 +639,7 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					else
 					{
-						boolean[] checks=(boolean[])trigParts.get(msg.source().Name());
+						boolean[] checks=trigParts.get(msg.source().Name());
 						if((checks!=null)&&(checks[v-1])&&(!checks[v]))
 						{
 							yup=true;
@@ -657,7 +657,7 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					else
 					{
-						boolean[] checks=(boolean[])trigParts.get(msg.source().Name());
+						boolean[] checks=trigParts.get(msg.source().Name());
 						Room R=msg.source().location();
 						if((checks!=null)&&(checks[v-1])&&(!checks[v])&&(R!=null))
 						{
@@ -683,7 +683,7 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					else
 					{
-						boolean[] checks=(boolean[])trigParts.get(msg.source().Name());
+						boolean[] checks=trigParts.get(msg.source().Name());
 						Room R=msg.source().location();
 						if((checks!=null)&&(checks[v-1])&&(!checks[v])&&(R!=null))
 						{
@@ -710,7 +710,7 @@ public class StdDeity extends StdMOB implements Deity
 						yup=true;
 					else
 					{
-						boolean[] checks=(boolean[])trigParts.get(msg.source().Name());
+						boolean[] checks=trigParts.get(msg.source().Name());
 						if((checks!=null)&&(checks[v-1])&&(!checks[v])&&(trigTimes.get(msg.source().Name())!=null))
 						{
 							boolean proceed=true;
@@ -718,7 +718,7 @@ public class StdDeity extends StdMOB implements Deity
 								if(checks[t]) proceed=false;
 							if(proceed)
 							{
-								if(System.currentTimeMillis()>(((Long)trigTimes.get(msg.source().Name())).longValue()+(CMath.s_int(DT.parm1)*CMProps.getTickMillis())))
+								if(System.currentTimeMillis()>(trigTimes.get(msg.source().Name()).longValue()+(CMath.s_int(DT.parm1)*CMProps.getTickMillis())))
 								{
 								   yup=true;
 								   waitingFor.remove(msg.source());
@@ -827,7 +827,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if((yup)||(TRIG_WATCH[DT.triggerCode]==-999))
 			{
-				boolean[] checks=(boolean[])trigParts.get(msg.source().Name());
+				boolean[] checks=trigParts.get(msg.source().Name());
 				if(yup)
 				{
 					recheck=true;
@@ -892,13 +892,13 @@ public class StdDeity extends StdMOB implements Deity
 
 					if((recheck)&&(!norecurse)&&(!alreadyBlessed(msg.source())))
 					{
-						boolean[] checks=(boolean[])trigBlessingParts.get(msg.source().Name());
+						boolean[] checks=trigBlessingParts.get(msg.source().Name());
 						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=(DeityTrigger)V.get(v);
+								DeityTrigger DT=V.get(v);
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -920,13 +920,13 @@ public class StdDeity extends StdMOB implements Deity
 					boolean recheck=triggerCheck(msg,V,trigCurseParts,trigCurseTimes);
 					if((recheck)&&(!norecurse))
 					{
-						boolean[] checks=(boolean[])trigCurseParts.get(msg.source().Name());
+						boolean[] checks=trigCurseParts.get(msg.source().Name());
 						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=(DeityTrigger)V.get(v);
+								DeityTrigger DT=V.get(v);
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -949,13 +949,13 @@ public class StdDeity extends StdMOB implements Deity
 
 					if((recheck)&&(!norecurse)&&(!alreadyPowered(msg.source())))
 					{
-						boolean[] checks=(boolean[])trigPowerParts.get(msg.source().Name());
+						boolean[] checks=trigPowerParts.get(msg.source().Name());
 						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=(DeityTrigger)V.get(v);
+								DeityTrigger DT=V.get(v);
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -979,13 +979,13 @@ public class StdDeity extends StdMOB implements Deity
 
 					if((recheck)&&(!norecurse)&&(!alreadyServiced(msg.source(),msg.source().location())))
 					{
-						boolean[] checks=(boolean[])trigServiceParts.get(msg.source().Name());
+						boolean[] checks=trigServiceParts.get(msg.source().Name());
 						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=(DeityTrigger)V.get(v);
+								DeityTrigger DT=V.get(v);
 								if(rollingTruth) startServiceIfNecessary(msg.source(),msg.source().location());
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
@@ -1026,7 +1026,7 @@ public class StdDeity extends StdMOB implements Deity
 		List<Room> V=CMLib.tracking().getRadiantRooms(room,flags,5+(mob.phyStats().level()/5));
 		for(int v=0;v<V.size();v++)
 		{
-			R=(Room)V.get(v);
+			R=V.get(v);
 			if(CMLib.law().getClericInfused(R)!=this)
 			for(int m=0;m<R.numInhabitants();m++)
 			{
@@ -1057,7 +1057,7 @@ public class StdDeity extends StdMOB implements Deity
 		Ability A=null;
 		for(int m=V.size()-1;m>=0;m--)
 		{
-			M=(MOB)V.get(m);
+			M=V.get(m);
 			if(M==null) continue;
 			A=M.fetchEffect("Skill_Track");
 			if(A!=null) A.unInvoke();
@@ -1237,7 +1237,7 @@ public class StdDeity extends StdMOB implements Deity
 			Long L=null;
 			for(String key : trigBlessingTimes.keySet())
 			{
-				L=(Long)trigBlessingTimes.get(key);
+				L=trigBlessingTimes.get(key);
 				if((L!=null)&&(L.longValue()<curTime))
 				{
 					trigBlessingTimes.remove(key);
@@ -1246,7 +1246,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			for(String key : trigPowerTimes.keySet())
 			{
-				L=(Long)trigPowerTimes.get(key);
+				L=trigPowerTimes.get(key);
 				if((L!=null)&&(L.longValue()<curTime))
 				{
 					trigPowerTimes.remove(key);
@@ -1255,7 +1255,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			for(String key : trigCurseTimes.keySet())
 			{
-				L=(Long)trigCurseTimes.get(key);
+				L=trigCurseTimes.get(key);
 				if((L!=null)&&(L.longValue()<curTime))
 				{
 					trigCurseTimes.remove(key);
@@ -1264,7 +1264,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			for(String key : trigServiceTimes.keySet())
 			{
-				L=(Long)trigServiceTimes.get(key);
+				L=trigServiceTimes.get(key);
 				if((L!=null)&&(L.longValue()<curTime))
 				{
 					LinkedList<WorshipService> delThese = null; 
@@ -1390,7 +1390,7 @@ public class StdDeity extends StdMOB implements Deity
 				Vector<String> V=CMParms.parse(trig);
 				if(V.size()>1)
 				{
-					String cmd=(String)V.firstElement();
+					String cmd=V.firstElement();
 					DeityTrigger DT=new DeityTrigger();
 					DT.previousConnect=previousConnector;
 					if(cmd.equals("SAY"))
@@ -1438,7 +1438,7 @@ public class StdDeity extends StdMOB implements Deity
 							break;
 						}
 						DT.parm1=CMParms.combine(V,1,V.size()-2);
-						DT.parm2=(String)V.lastElement();
+						DT.parm2=V.lastElement();
 					}
 					else
 					if(cmd.equals("BURNTHING"))
@@ -1455,7 +1455,7 @@ public class StdDeity extends StdMOB implements Deity
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
-						DT.parm1=""+CMath.s_int((String)V.elementAt(1));
+						DT.parm1=""+CMath.s_int(V.elementAt(1));
 						DT.parm2=CMParms.combine(V,2);
 					}
 					else
@@ -1502,7 +1502,7 @@ public class StdDeity extends StdMOB implements Deity
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
-						DT.parm1=(String)V.elementAt(1);
+						DT.parm1=V.elementAt(1);
 						DT.parm2=CMParms.combine(V,2);
 						int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
 						boolean found=cd>=0;

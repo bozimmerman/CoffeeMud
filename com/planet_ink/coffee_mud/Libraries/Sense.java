@@ -254,7 +254,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			Faction.FRange FR=null;
 			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction((String)e.nextElement());
+				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
 				{
 					FR=CMLib.factions().getRange(F.factionID(),((MOB)P).fetchFaction(F.factionID()));
@@ -296,7 +296,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			Faction.FRange FR=null;
 			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction((String)e.nextElement());
+				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
 				{
 					FR=CMLib.factions().getRange(F.factionID(),((MOB)P).fetchFaction(F.factionID()));
@@ -387,7 +387,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			Faction.FRange FR=null;
 			for(Enumeration<String> e=((MOB)E).fetchFactions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction((String)e.nextElement());
+				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
 				{
 					FR=CMLib.factions().getRange(F.factionID(),((MOB)E).fetchFaction(F.factionID()));
@@ -415,7 +415,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			Faction.FRange FR=null;
 			for(Enumeration<String> e=((MOB)P).fetchFactions();e.hasMoreElements();)
 			{
-				F=CMLib.factions().getFaction((String)e.nextElement());
+				F=CMLib.factions().getFaction(e.nextElement());
 				if(F!=null)
 				{
 					FR=CMLib.factions().getRange(F.factionID(),((MOB)P).fetchFaction(F.factionID()));
@@ -482,7 +482,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return false;
 		if(heard==null)
 			return false;
-		if((!isSeen(heard))&&(isCloaked(heard)&&(hearer!=null)))
+		if((!isSeen(heard))&&(isCloaked(heard)))
 		{
 			if((!(heard instanceof MOB))
 			||(heard.phyStats().level()>hearer.phyStats().level())
@@ -614,7 +614,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				hideFactor+=((MOB)seen).charStats().getSave(CharStats.STAT_SAVE_DETECTION);
 				if(seen.phyStats().height()>=0)
-					hideFactor-=(int)Math.round(Math.sqrt((double)seen.phyStats().height()));
+					hideFactor-=(int)Math.round(Math.sqrt(seen.phyStats().height()));
 			}
 			else
 				hideFactor+=100;
@@ -633,7 +633,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			else // the 100 represents proff, and level represents time searching.
 				detectFactor+=seer.charStats().getSave(CharStats.STAT_SAVE_OVERLOOKING);
 			if(seer.phyStats().height()>=0)
-				detectFactor-=(int)Math.round(Math.sqrt((double)seer.phyStats().height()));
+				detectFactor-=(int)Math.round(Math.sqrt(seer.phyStats().height()));
 			return detectFactor;
 		}
 		return 0;
@@ -966,7 +966,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=(Item)V.get(v);
+				Item I=V.get(v);
 				totalWeight+=I.basePhyStats().weight();
 				totalFloatilla+=totalWeight*codes.bouancy(I.material());
 			}
@@ -1259,7 +1259,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean stillAffectedBy(Physical obj, List<Ability> oneOf, boolean anyTallF)
 	{
 		for(int a=oneOf.size()-1;a>=0;a--)
-			if(obj.fetchEffect(((Ability)oneOf.get(a)).ID())==null)
+			if(obj.fetchEffect(oneOf.get(a).ID())==null)
 			{
 				if(!anyTallF)
 					return false;
@@ -1374,7 +1374,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				return true;
 		Set<MOB> H = invoker.getGroupMembers(new HashSet<MOB>());
 		for(Iterator<MOB> i=H.iterator();i.hasNext();)
-			if(isAControlledFollower(invoker, (MOB)i.next(), A))
+			if(isAControlledFollower(invoker, i.next(), A))
 				return true;
 		return false;
 	}

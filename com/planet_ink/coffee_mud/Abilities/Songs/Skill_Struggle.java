@@ -60,7 +60,7 @@ public class Skill_Struggle extends BardSkill
 		{
 			if(target instanceof MOB)
 			{
-				if((CMLib.flags().isBound((MOB)target))&&(target==mob))
+				if((CMLib.flags().isBound(target))&&(target==mob))
 					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 			}
 		}

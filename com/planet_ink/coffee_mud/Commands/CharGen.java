@@ -815,26 +815,26 @@ public class CharGen extends StdCommand
 						allData[charClassDex][level-levelStart][3]=bestSingleHitPhys[0];
 						allData[charClassDex][level-levelStart][4]=losses[0];
 						if(medScore.size()>0)
-							allData[charClassDex][level-levelStart][5]=((Integer)medScore.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medScore.size()))))).intValue();
+							allData[charClassDex][level-levelStart][5]=medScore.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medScore.size())))).intValue();
 						if(medHitPct.size()>0)
-							allData[charClassDex][level-levelStart][6]=((Double)medHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medHitPct.size()))))).intValue();
+							allData[charClassDex][level-levelStart][6]=medHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medHitPct.size())))).intValue();
 						if(medLossIters.size()>0)
-							allData[charClassDex][level-levelStart][7]=((Integer)medLossIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.75,medLossIters.size()))))).intValue();
+							allData[charClassDex][level-levelStart][7]=medLossIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.75,medLossIters.size())))).intValue();
 						if(medWinIters.size()>0)
-							allData[charClassDex][level-levelStart][8]=((Integer)medWinIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.25,medWinIters.size()))))).intValue();
+							allData[charClassDex][level-levelStart][8]=medWinIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.25,medWinIters.size())))).intValue();
 						if(medPhysDone.size()>0)
-							allData[charClassDex][level-levelStart][9]=((Integer)medPhysDone.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysDone.size()))))).intValue();
+							allData[charClassDex][level-levelStart][9]=medPhysDone.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysDone.size())))).intValue();
 						if(medPhysTaken.size()>0)
-							allData[charClassDex][level-levelStart][10]=((Integer)medPhysTaken.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysTaken.size()))))).intValue();
+							allData[charClassDex][level-levelStart][10]=medPhysTaken.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysTaken.size())))).intValue();
 						if(medIsHitPct.size()>0)
-							allData[charClassDex][level-levelStart][11]=((Double)medIsHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medIsHitPct.size()))))).intValue();
+							allData[charClassDex][level-levelStart][11]=medIsHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medIsHitPct.size())))).intValue();
 						allData[charClassDex][level-levelStart][12]=losses[0];
 						allData[charClassDex][level-levelStart][13]=playerArmor;
 						allData[charClassDex][level-levelStart][14]=playerAttack;
 						if(medPlayerDamPct.size()>0)
-							allData[charClassDex][level-levelStart][15]=((Double)medPlayerDamPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerDamPct.size()))))).intValue();
+							allData[charClassDex][level-levelStart][15]=medPlayerDamPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerDamPct.size())))).intValue();
 						if(medPlayerManaPct.size()>0)
-							allData[charClassDex][level-levelStart][16]=((Double)medPlayerManaPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerManaPct.size()))))).intValue();
+							allData[charClassDex][level-levelStart][16]=medPlayerManaPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerManaPct.size())))).intValue();
 						
 						allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
 						allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];

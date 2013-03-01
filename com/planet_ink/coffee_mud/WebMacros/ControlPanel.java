@@ -82,12 +82,12 @@ public class ControlPanel extends StdWebMacro
 		}
 		
 		
-		String query=(String)parms.get("QUERY");
+		String query=parms.get("QUERY");
 		if((query==null)||(query.length()==0))
 			return "";
 		if(query.equalsIgnoreCase("DISABLE"))
 		{
-			String field=(String)parms.get("FIELD");
+			String field=parms.get("FIELD");
 			if((field==null)||(field.length()==0))
 				return "";
 			CMSecurity.DisFlag flag = (CMSecurity.DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), field.toUpperCase().trim());
@@ -98,17 +98,17 @@ public class ControlPanel extends StdWebMacro
 		else
 		if(query.equalsIgnoreCase("CHANGEDISABLE"))
 		{
-			String field=(String)parms.get("FIELD");
+			String field=parms.get("FIELD");
 			if((field==null)||(field.length()==0))
 				return "";
-			String value=(String)parms.get("VALUE");
+			String value=parms.get("VALUE");
 			CMSecurity.setDisableVar(field,((value!=null)&&(value.equalsIgnoreCase("on"))));
 			return "";
 		}
 		else
 		if(query.equalsIgnoreCase("QUERY"))
 		{
-			String field=(String)parms.get("FIELD");
+			String field=parms.get("FIELD");
 			if((field==null)||(field.length()==0))
 				return "";
 			if(field.equalsIgnoreCase("DATABASE"))
@@ -118,7 +118,7 @@ public class ControlPanel extends StdWebMacro
 		else
 		if(query.equalsIgnoreCase("RESET"))
 		{
-			String field=(String)parms.get("FIELD");
+			String field=parms.get("FIELD");
 			if((field==null)||(field.length()==0))
 				return "";
 			if(field.equalsIgnoreCase("DATABASE"))

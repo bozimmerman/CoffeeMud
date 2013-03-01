@@ -274,14 +274,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(columns.get(d) instanceof String)
 			{
 				String name = (String)columns.get( d );
-				AbilityParmEditor A = (AbilityParmEditor)editors.get(columns.get(d));
+				AbilityParmEditor A = editors.get(columns.get(d));
 				if((A==null)||(name.length()<3))
 				{
 					recipe.append("\t");
 					continue;
 				}
 				if(A.appliesToClass(I)<0)
-					A = (AbilityParmEditor)editors.get("N_A");
+					A = editors.get("N_A");
 				columns.set(d,A.ID());
 			}
 			else
@@ -291,7 +291,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				List<AbilityParmEditor> colV=(List<AbilityParmEditor>)columns.get(d);
 				for(int c=0;c<colV.size();c++)
 				{
-					AbilityParmEditor A = (AbilityParmEditor)editors.get(colV.get(c));
+					AbilityParmEditor A = editors.get(colV.get(c));
 					if(A==null) 
 						throw new CMException("Column name "+(colV.get(c))+" is not found.");
 					if((applicableA==null)
@@ -299,12 +299,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						applicableA = A;
 				}
 				if((applicableA == null)||(applicableA.appliesToClass(I)<0))
-					applicableA = (AbilityParmEditor)editors.get("N_A");
+					applicableA = editors.get("N_A");
 				columns.set(d,applicableA.ID());
 			}
 			else
 				throw new CMException("Col name "+(columns.get(d))+" is not a String or List.");
-			AbilityParmEditor A = (AbilityParmEditor)editors.get((String)columns.get(d));
+			AbilityParmEditor A = editors.get(columns.get(d));
 			if(A==null)
 				throw new CMException("Editor name "+(columns.get(d))+" is not defined.");
 			recipe.append(A.convertFromItem(C, I));
@@ -474,9 +474,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			List<String> colV=(List<String>)dataRow.elementAt(d,1);
 			if(colV.size()==1)
 			{
-				AbilityParmEditor A = (AbilityParmEditor)editors.get(colV.get(0));
+				AbilityParmEditor A = editors.get(colV.get(0));
 				if((A == null)||(A.appliesToClass(classModelI)<0))
-					A = (AbilityParmEditor)editors.get("N_A");
+					A = editors.get("N_A");
 				dataRow.setElementAt(d,1,A.ID());
 			}
 			else
@@ -484,7 +484,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				AbilityParmEditor applicableA = null;
 				for(int c=0;c<colV.size();c++)
 				{
-					AbilityParmEditor A = (AbilityParmEditor)editors.get(colV.get(c));
+					AbilityParmEditor A = editors.get(colV.get(c));
 					if(A==null) 
 						throw new CMException("Col name "+(colV.get(c))+" is not defined.");
 					if((applicableA==null)
@@ -492,10 +492,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						applicableA = A;
 				}
 				if((applicableA == null)||(applicableA.appliesToClass(classModelI)<0))
-					applicableA = (AbilityParmEditor)editors.get("N_A");
+					applicableA = editors.get("N_A");
 				dataRow.setElementAt(d,1,applicableA.ID());
 			}
-			AbilityParmEditor A = (AbilityParmEditor)editors.get((String)dataRow.elementAt(d,1));
+			AbilityParmEditor A = editors.get(dataRow.elementAt(d,1));
 			if(A==null)
 			{
 				Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has no editor for "+((String)dataRow.elementAt(d,1)));
@@ -513,7 +513,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		DVector dataRow = new DVector(2);
 		for(int r=0;r<rowsV.size();r++) 
 		{
-			dataRow=(DVector)rowsV.elementAt(r);
+			dataRow=rowsV.elementAt(r);
 			if(!fixDataColumn(dataRow,r))
 			{
 				rowsV.removeElementAt(r);
@@ -571,10 +571,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		fakeSession.setMob(mob);
 		for(int r=0;r<rowsV.size();r++)
 		{
-			editRow = (DVector)rowsV.elementAt(r);
+			editRow = rowsV.elementAt(r);
 			for(int a=0;a<editRow.size();a++)
 			{
-				AbilityParmEditor A = (AbilityParmEditor)editors.get((String)editRow.elementAt(a,1));
+				AbilityParmEditor A = editors.get(editRow.elementAt(a,1));
 				try
 				{ 
 					String oldVal = (String)editRow.elementAt(a,2);
@@ -596,10 +596,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		Map<String,AbilityParmEditor> editors = getEditors();
 		DVector dataRow = null;
 		for(int r=0;r<rowsV.size();r++) {
-			dataRow=(DVector)rowsV.elementAt(r);
+			dataRow=rowsV.elementAt(r);
 			for(int c=0;c<dataRow.size();c++)
 			{
-				AbilityParmEditor A = (AbilityParmEditor)editors.get((String)dataRow.elementAt(c,1));
+				AbilityParmEditor A = editors.get(dataRow.elementAt(c,1));
 				if(A==null)
 					Log.errOut("CMAbleParms","Inexplicable lack of a column: "+((String)dataRow.elementAt(c,1)));
 				else
@@ -668,7 +668,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		list.append("\n\r");
 		for(int r=0;r<recipe.dataRows().size();r++) 
 		{
-			dataRow=(DVector)recipe.dataRows().elementAt(r);
+			dataRow=recipe.dataRows().elementAt(r);
 			list.append(CMStrings.padRight(""+(r+1),3)+" ");
 			for(int c=0;c<dataRow.size();c++)
 				list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),recipe.columnLengths()[c]),recipe.columnLengths()[c])+" ");
@@ -700,7 +700,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				int keyIndex = getClassFieldIndex(editRow);
 				String classFieldData = null;
 				if(keyIndex>=0) {
-					AbilityParmEditor A = (AbilityParmEditor)editors.get(((List<String>)editRow.elementAt(keyIndex,1)).get(0));
+					AbilityParmEditor A = editors.get(((List<String>)editRow.elementAt(keyIndex,1)).get(0));
 					if(A!=null)
 					{
 						classFieldData = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
@@ -721,7 +721,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				int line = CMath.s_int(lineNum);
 				if((line<1)||(line>recipe.dataRows().size()))
 					continue;
-				editRow = (DVector)recipe.dataRows().elementAt(line-1);
+				editRow = recipe.dataRows().elementAt(line-1);
 			}
 			else
 				break;
@@ -738,7 +738,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					for(int a=0;a<editRow.size();a++)
 						if(a!=keyIndex)
 						{
-							AbilityParmEditor A = (AbilityParmEditor)editors.get((String)editRow.elementAt(a,1));
+							AbilityParmEditor A = editors.get(editRow.elementAt(a,1));
 							String newVal = A.commandLinePrompt(mob,(String)editRow.elementAt(a,2),showNumber,showFlag);
 							editRow.setElementAt(a,2,newVal);
 						}
@@ -772,12 +772,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		StringBuffer saveBuf = new StringBuffer("");
 		for(int r=0;r<rowsV.size();r++)
 		{
-			DVector dataRow = (DVector)rowsV.elementAt(r);
+			DVector dataRow = rowsV.elementAt(r);
 			int dataDex = 0;
 			for(int c=0;c<columnsV.size();c++)
 			{
-				if(columnsV.elementAt(c) instanceof String)
-					saveBuf.append((String)columnsV.elementAt(c));
+				if(columnsV.elementAt(c) !=null)
+					saveBuf.append(columnsV.elementAt(c));
 				else
 					saveBuf.append(dataRow.elementAt(dataDex++,2));
 			}
@@ -840,7 +840,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		final Integer I=Integer.valueOf(resourceCode);
 		for(Enumeration<Room> e=CMClass.locales();e.hasMoreElements();)
 		{
-			Room R=(Room)e.nextElement();
+			Room R=e.nextElement();
 			if(!(R instanceof GridLocale))
 				if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(I)))
 					return true;
@@ -889,16 +889,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	
 	protected static void addExtraAbilityMaterial(final Map<Integer,int[]> extraMatsM, final Item I, final Ability A)
 	{
-		double level = (double)CMLib.ableMapper().lowestQualifyingLevel( A.ID() );
+		double level = CMLib.ableMapper().lowestQualifyingLevel( A.ID() );
 		if( level <= 0.0 )
 		{
-			level = (double)I.basePhyStats().level();
+			level = I.basePhyStats().level();
 			if( level <= 0.0 ) level = 1.0;
 			addExtraMaterial(extraMatsM, I, A, CMath.div( level, CMProps.getIntVar( CMProps.SYSTEMI_LASTPLAYERLEVEL ) ));
 		}
 		else
 		{
-			double levelCap = (double)CMLib.ableMapper().getCalculatedMedianLowestQualifyingLevel();
+			double levelCap = CMLib.ableMapper().getCalculatedMedianLowestQualifyingLevel();
 			addExtraMaterial(extraMatsM, I, A, CMath.div(level , ( levelCap * 2.0)));
 		}
 	}
@@ -1332,7 +1332,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						Item I;
 						for(Enumeration<Item> e=V.elements();e.hasMoreElements();)
 						{
-							I=(Item)e.nextElement();
+							I=e.nextElement();
 							if(I.isGeneric())
 								V2.addElement(I);
 						}
@@ -1576,17 +1576,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						StringBuffer newVal = new StringBuffer("");
 						if(spells.size()==1)
-							newVal.append("*" + ((Ability)spells.get(0)).ID() + ";" + ((Ability)spells.get(0)).text());
+							newVal.append("*" + spells.get(0).ID() + ";" + spells.get(0).text());
 						else
 							if(spells.size()>1) {
 								for(int s=0;s<spells.size();s++)
 								{
-									String txt = ((Ability)spells.get(s)).text().trim();
+									String txt = spells.get(s).text().trim();
 									if((txt.indexOf(';')>=0)||(CMClass.getAbility(txt)!=null))
 										throw new CMException("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
-									newVal.append(((Ability)spells.get(s)).ID());
+									newVal.append(spells.get(s).ID());
 									if(txt.length()>0)
-										newVal.append(";" + ((Ability)spells.get(s)).text());
+										newVal.append(";" + spells.get(s).text());
 									if(s<(spells.size()-1))
 										newVal.append(";");
 								}
@@ -1599,9 +1599,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						Vector<String> V2 = new Vector<String>();
 						List<Ability> spells=CMLib.ableParms().getCodedSpells(oldVal);
 						for(int s=0;s<spells.size();s++) {
-							V.addElement(((Ability)spells.get(s)).ID());
-							V2.addElement(((Ability)spells.get(s)).ID());
-							V2.addElement(((Ability)spells.get(s)).text());
+							V.addElement(spells.get(s).ID());
+							V2.addElement(spells.get(s).ID());
+							V2.addElement(spells.get(s).text());
 						}
 						V.addAll(V2);
 						V.addElement("");
@@ -1644,7 +1644,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
 						for(int i=0;i<spells.size();i++)
 						{
-							Ability A=(Ability)spells.get(i);
+							Ability A=spells.get(i);
 							str.append("<TR><TD WIDTH=50%>");
 							str.append("\n\r<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+fieldName+"_AFFECT"+(i+1)+">");
 							str.append("<OPTION VALUE=\"\">Delete!");
@@ -1660,7 +1660,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
 						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
-							Ability A=(Ability)a.nextElement();
+							Ability A=a.nextElement();
 							if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
 								continue;
 							String cnam=A.ID();
@@ -1678,7 +1678,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						List<Ability> spells=CMLib.ableParms().getCodedSpells(oldVal);
 						StringBuffer rawCheck = new StringBuffer("");
 						for(int s=0;s<spells.size();s++)
-							rawCheck.append(((Ability)spells.get(s)).ID()).append(";").append(((Ability)spells.get(s)).text()).append(";");
+							rawCheck.append(spells.get(s).ID()).append(";").append(spells.get(s).text()).append(";");
 						boolean okToProceed = true;
 						++showNumber[0];
 						String newVal = null;
@@ -1687,7 +1687,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							CMLib.genEd().spells(mob,spells,showNumber[0],showFlag,true);
 							StringBuffer sameCheck = new StringBuffer("");
 							for(int s=0;s<spells.size();s++)
-								sameCheck.append(((Ability)spells.get(s)).ID()).append(';').append(((Ability)spells.get(s)).text()).append(';');
+								sameCheck.append(spells.get(s).ID()).append(';').append(spells.get(s).text()).append(';');
 							if(sameCheck.toString().equals(rawCheck.toString())) 
 								return oldVal;
 							try {
@@ -1870,7 +1870,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						Ability A = null;
 						for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 						{
-							A=(Ability)e.nextElement();
+							A=e.nextElement();
 							if((A.classificationCode() & Ability.ALL_ACODES) == Ability.ACODE_COMMON_SKILL)
 								V.addElement(A);
 						}
@@ -2004,7 +2004,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return new String[]{oldVal}; 
 					}
 					public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
-						AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
+						AbilityParmEditor A = CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
 						if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
 						String value = A.webValue(httpReq,parms,oldVal,fieldName);
 						int r=RawMaterial.CODES.FIND_IgnoreCase(value);
@@ -2012,7 +2012,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						return (value.trim().length()==0)?"":(value+"$");
 					}
 					public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
-						AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
+						AbilityParmEditor A = CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
 						return A.webField(httpReq,parms,oldVal,fieldName);
 					}
 					public String webTableField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal) {
@@ -2170,7 +2170,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return true;
 						Vector<String> parsedVals = CMParms.parse(oldVal.toUpperCase());
 						for(int v=0;v<parsedVals.size();v++)
-							if(CMClass.getRace((String)parsedVals.elementAt(v))==null)
+							if(CMClass.getRace(parsedVals.elementAt(v))==null)
 								return false;
 						return true;
 					}
@@ -2206,11 +2206,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							return new String[]{""};
 						Vector<String> races = new Vector<String>();
 						for(int p=0;p<parsedVals.size();p++) {
-							Race R=CMClass.getRace((String)parsedVals.elementAt(p));
+							Race R=CMClass.getRace(parsedVals.elementAt(p));
 							races.addElement(R.name());
 						}
 						for(int p=0;p<parsedVals.size();p++) {
-							Race R=CMClass.getRace((String)parsedVals.elementAt(p));
+							Race R=CMClass.getRace(parsedVals.elementAt(p));
 							races.addElement(R.name());
 						}
 						races.addElement("");
@@ -2424,7 +2424,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		});
 		DEFAULT_EDITORS = new Hashtable<String,AbilityParmEditor>();
 		for(int v=0;v<V.size();v++) {
-			AbilityParmEditor A = (AbilityParmEditor)V.elementAt(v);
+			AbilityParmEditor A = V.elementAt(v);
 			DEFAULT_EDITORS.put(A.ID(),A);
 		}
 		return DEFAULT_EDITORS;
@@ -2496,7 +2496,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			for(int i=0;i<editRow.size();i++)
 				if(i!=keyIndex)
 				{
-					AbilityParmEditor A = (AbilityParmEditor)getEditors().get((String)editRow.elementAt(i,1));
+					AbilityParmEditor A = getEditors().get(editRow.elementAt(i,1));
 					editRow.setElementAt(i,2,A.defaultValue());
 				}
 			return editRow;
@@ -2585,7 +2585,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(oldVal.trim().length()==0) return new String[]{"NULL"};
 				Vector<String> V = choices.getDimensionVector(1);
 				for(int v=0;v<V.size();v++)
-					if(oldVal.equalsIgnoreCase((String)V.elementAt(v)))
+					if(oldVal.equalsIgnoreCase(V.elementAt(v)))
 						return new String[]{(String)choices.elementAt(v,2)};
 				return new String[]{oldVal};
 			}
@@ -2593,9 +2593,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				if(oldVal.trim().length()==0) return new String[]{"NULL"};
 				if(!CMath.isInteger(oldVal))
 				{
-					Vector<String> V = (Vector<String>)choices.getDimensionVector(1);
+					Vector<String> V = choices.getDimensionVector(1);
 					for(int v=0;v<V.size();v++)
-						if(oldVal.equalsIgnoreCase((String)V.elementAt(v)))
+						if(oldVal.equalsIgnoreCase(V.elementAt(v)))
 							return new String[]{(String)choices.elementAt(v,2),""};
 				} else {
 					Vector<String> V = new Vector<String>();
@@ -2740,7 +2740,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					String option = ((String)choices.elementAt(i,1));
 					str.append("<OPTION VALUE=\""+option+"\" ");
 					for(int c=0;c<choiceValues.size();c++)
-						if(option.equalsIgnoreCase((String)choiceValues.elementAt(c)))
+						if(option.equalsIgnoreCase(choiceValues.elementAt(c)))
 							str.append("SELECTED");
 					str.append(">"+((String)choices.elementAt(i,2)));
 				}

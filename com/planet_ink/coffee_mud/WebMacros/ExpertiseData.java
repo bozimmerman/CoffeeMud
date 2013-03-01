@@ -55,7 +55,7 @@ public class ExpertiseData extends StdWebMacro
 					if(s==null)
 						s=CMLib.help().getHelpText(E.name,null,false);
 					int limit=70;
-					if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
+					if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit));
 				}
 				if(parms.containsKey("SHORTHELP"))

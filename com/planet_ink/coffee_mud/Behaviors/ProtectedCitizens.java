@@ -178,7 +178,7 @@ public class ProtectedCitizens extends ActiveTicker
 		}
 		for(int a=0;a<assMOBS.size();a++)
 		{
-			MOB M=(MOB)assMOBS.get(a);
+			MOB M=assMOBS.get(a);
 			if((M!=null)
 			&&(M.mayIFight(mob.getVictim()))
 			&&(M!=mob.getVictim())

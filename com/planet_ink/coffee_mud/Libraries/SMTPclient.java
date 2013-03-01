@@ -138,7 +138,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			addys.addElement(domain);
 		for(Enumeration<String> e=addys.elements();e.hasMoreElements();)
 		{
-			String hostid=(String)e.nextElement();
+			String hostid=e.nextElement();
 			int y=hostid.lastIndexOf(' ');
 			if(y>=0) hostid=hostid.substring(y+1).trim();
 			try
@@ -374,7 +374,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			while(rstr.startsWith("250"))
 				rstr = reply.readLine();
 			if(debug) Log.debugOut("SMTPclient",rstr);
-			if ((rstr==null)||(!rstr.startsWith("334"))) throw new ProtocolException(""+rstr);
+			if (!rstr.startsWith("334")) throw new ProtocolException(""+rstr);
 			if(auth.getAuthType().equalsIgnoreCase("plain"))
 				sendLine(debug,auth.getPlainLogin());
 			else
@@ -502,17 +502,17 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		{
 			Vector<String> info=CMParms.parseCommas(unparsedServerInfo,false);
 			if(info.size()==0) return;
-			host = (String)info.remove(0);
+			host = info.remove(0);
 			if((info.size()==0)||(host.length()==0)) return;
-			String s=(String)info.elementAt(0);
+			String s=info.elementAt(0);
 			if(s.equalsIgnoreCase("plain")||s.equalsIgnoreCase("login"))
-				authType=((String)info.remove(0)).toUpperCase().trim();
+				authType=info.remove(0).toUpperCase().trim();
 			else
 				authType="PLAIN";
 			if(info.size()==0){ authType=""; return;}
-			login=(String)info.remove(0);
+			login=info.remove(0);
 			if(info.size()==0) return;
-			password=(String)info.remove(0);
+			password=info.remove(0);
 		}
 		private String host="";
 		private String authType="";

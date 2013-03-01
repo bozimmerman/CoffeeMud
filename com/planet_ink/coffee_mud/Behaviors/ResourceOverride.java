@@ -57,7 +57,7 @@ public class ResourceOverride extends ActiveTicker
 		{
 			// first try for a real one
 			int code=-1;
-			String which=((String)V.elementAt(v)).toUpperCase().trim();
+			String which=V.elementAt(v).toUpperCase().trim();
 			if(CMath.isInteger(which))
 				code=CMath.s_int(which);
 			if(code<0) code = RawMaterial.CODES.FIND_IgnoreCase(which);
@@ -116,7 +116,7 @@ public class ResourceOverride extends ActiveTicker
 					Room R=null;
 					for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 					{
-						R=(Room)e.nextElement();
+						R=e.nextElement();
 						if(((roomTypes.size()==0)||(roomTypes.contains(Integer.valueOf(R.domainType()))))
 						&&(!rscs.contains(Integer.valueOf(R.myResource()))))
 							R.setResource(rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue());

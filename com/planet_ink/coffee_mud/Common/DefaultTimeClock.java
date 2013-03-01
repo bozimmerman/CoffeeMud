@@ -39,7 +39,7 @@ public class DefaultTimeClock implements TimeClock
 {
 	public String ID(){return "DefaultTimeClock";}
 	public String name(){return "Time Object";}
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultTimeClock();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultTimeClock();}}
 	public void initializeClass(){}
 	
 	protected long tickStatus=Tickable.STATUS_NOT;
@@ -319,11 +319,11 @@ public class DefaultTimeClock implements TimeClock
 		{
 			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				Area A=a.nextElement();
 				if(A.getTimeObj()==this)
 				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					Room R=r.nextElement();
 					if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
 					{
 						R.recoverPhyStats();
@@ -434,7 +434,7 @@ public class DefaultTimeClock implements TimeClock
 				if((bitV==null)||(bitV.size()==0))
 					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
 				else
-					timeRsc=((DatabaseEngine.PlayerData)bitV.get(0)).xml;
+					timeRsc=bitV.get(0).xml;
 				List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(timeRsc);
 				setTimeOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));

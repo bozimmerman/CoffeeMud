@@ -71,7 +71,7 @@ public interface SlaveryLibrary extends CMLibrary
 			if(!done)
 			for(int s=0;s<size();s++)
 			{
-				geasStep G=(geasStep)elementAt(s);
+				geasStep G=elementAt(s);
 				ss=G.step();
 				if(ss.equalsIgnoreCase("DONE"))
 				{
@@ -144,7 +144,7 @@ public interface SlaveryLibrary extends CMLibrary
 		{
 			for(int s=0;s<size();s++)
 			{
-				geasStep G=(geasStep)elementAt(s);
+				geasStep G=elementAt(s);
 				if(G.bothering!=null)
 					return G.sayResponse(speaker,target,response);
 			}
@@ -249,7 +249,7 @@ public interface SlaveryLibrary extends CMLibrary
 				que.remove(0);
 				return "HOLD";
 			}
-			String s=(String)cur.get(0);
+			String s=cur.get(0);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 				Log.debugOut("GEAS","STEP-"+s);
 			if(s.equalsIgnoreCase("itemfind"))
@@ -259,7 +259,7 @@ public interface SlaveryLibrary extends CMLibrary
 					Log.debugOut("GEAS","ITEMFIND: "+item);
 				if((CMath.isNumber(item)&&(CMath.s_int(item)>0)))
 				{
-					if(CMLib.beanCounter().getTotalAbsoluteNativeValue(me)>=((double)CMath.s_int(item)))
+					if(CMLib.beanCounter().getTotalAbsoluteNativeValue(me)>=(CMath.s_int(item)))
 					{
 						step=STEP_EVAL;
 						que.remove(0);
@@ -299,8 +299,7 @@ public interface SlaveryLibrary extends CMLibrary
 				// is it in a container?
 				I=R.findItem(item);
 				if((I!=null)&&(I.container()!=null)
-				   &&(I.container() instanceof Container)
-				   &&(((Container)I.container()).isOpen()))
+				   &&(I.container().isOpen()))
 				{
 					step=STEP_EVAL;
 					CMLib.commands().postGet(me,I.container(),I,false);
@@ -430,8 +429,8 @@ public interface SlaveryLibrary extends CMLibrary
 					if(name.equals("myself")) name=you.name();
 					if(name.equals("my")) name=you.name();
 				}
-				int dirCode=Directions.getGoodDirectionCode((String)CMParms.parse(name).firstElement());
-				if((dirCode>=0)&&(R!=null)&&(R.getRoomInDir(dirCode)!=null))
+				int dirCode=Directions.getGoodDirectionCode(CMParms.parse(name).firstElement());
+				if((dirCode>=0)&&(R.getRoomInDir(dirCode)!=null))
 				{
 					if(CMParms.parse(name).size()>1)
 						cur.set(1,CMParms.combine(CMParms.parse(name),1));

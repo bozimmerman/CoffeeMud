@@ -239,7 +239,7 @@ public class Generate extends StdCommand
 				CMLib.map().addArea(A);
 				CMLib.database().DBCreateArea(A);
 				Room R=A.getRoom(A.Name()+"#0");
-				if(R==null) R=(Room)A.getFilledProperMap().nextElement();
+				if(R==null) R=A.getFilledProperMap().nextElement();
 				createNewPlace(mob,mob.location(),R,direction);
 				mob.tell("Saving remaining rooms for area '"+A.name()+"'...");
 				for(Enumeration e=A.getFilledProperMap();e.hasMoreElements();)

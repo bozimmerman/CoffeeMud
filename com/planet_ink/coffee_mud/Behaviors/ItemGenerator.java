@@ -72,7 +72,7 @@ public class ItemGenerator extends ActiveTicker
 		Vector<String> V=CMParms.parse(parms);
 		for(int v=0;v<V.size();v++)
 		{
-			String s=(String)V.elementAt(v);
+			String s=V.elementAt(v);
 			if(s.equalsIgnoreCase("MOBS"))
 				favorMobs=true;
 			else
@@ -187,7 +187,7 @@ public class ItemGenerator extends ActiveTicker
 			List<ItemCraftor> skills=new Vector<ItemCraftor>();
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
-				Ability A=(Ability)e.nextElement();
+				Ability A=e.nextElement();
 				if(A instanceof ItemCraftor)
 					skills.add((ItemCraftor)A.copyOf());
 			}
@@ -232,7 +232,7 @@ public class ItemGenerator extends ActiveTicker
 			int maxValue=-1;
 			for(int a=0;a<allItems.size();a++)
 			{
-				I=(Item)allItems.get(a);
+				I=allItems.get(a);
 				if((CMLib.masking().maskCheck(compiled,I,true))
 				&&(!(I instanceof ClanItem)))
 				{
@@ -243,7 +243,7 @@ public class ItemGenerator extends ActiveTicker
 			}
 			for(int a=0;a<items.size();a++)
 			{
-				I=(Item)items.get(a);
+				I=items.get(a);
 				totalValue+=CMath.div(maxValue,I.value()+1);
 			}
 			if(items.size()>0)
@@ -293,7 +293,7 @@ public class ItemGenerator extends ActiveTicker
 				double value=-1;
 				for(int i=2;i<items.size();i++)
 				{
-					I=(Item)items.elementAt(i);
+					I=items.elementAt(i);
 					value=CMath.div(maxValue,I.value()+1.0);
 					if(pickedTotal<=value){ break;}
 					pickedTotal-=value;

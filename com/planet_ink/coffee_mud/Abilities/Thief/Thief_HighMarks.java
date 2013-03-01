@@ -56,7 +56,7 @@ public class Thief_HighMarks extends ThiefSkill
 		{
 			helpProficiency(mob, 0);
 			Ability A=mob.fetchAbility("Thief_Mark");
-			float f=(float)getXLEVELLevel(mob);
+			float f=getXLEVELLevel(mob);
 			int ableDiv=(int)Math.round(5.0-(f*0.2));
 			A.setAbilityCode(proficiency()/(ableDiv));
 		}

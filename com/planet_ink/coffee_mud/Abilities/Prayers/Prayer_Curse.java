@@ -102,7 +102,7 @@ public class Prayer_Curse extends Prayer
 		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.get(v);
+			Ability A=V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=level)
 				A.unInvoke();
 		}
@@ -117,7 +117,7 @@ public class Prayer_Curse extends Prayer
 		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.get(v);
+			Ability A=V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 				A.unInvoke();
 		}

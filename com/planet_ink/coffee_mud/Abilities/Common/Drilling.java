@@ -164,7 +164,7 @@ public class Drilling extends GatheringSkill
 		{
 			for(int v=0;v<V.size();v++)
 			{
-				Item I2=(Item)V.get(v);
+				Item I2=V.get(v);
 				if((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 				{
 					if(I2.material()!=resourceType)

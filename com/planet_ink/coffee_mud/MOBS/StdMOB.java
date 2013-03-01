@@ -312,7 +312,7 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			return (Environmental) this.getClass().newInstance();
+			return this.getClass().newInstance();
 		} 
 		catch (Exception e)
 		{
@@ -501,7 +501,7 @@ public class StdMOB implements MOB
 			&& (!isMine(I.container())))
 				for (final Enumeration<Item> e = M.items(); e.hasMoreElements();)
 				{
-					I2 = (Item) e.nextElement();
+					I2 = e.nextElement();
 					if ((I2 == I.container()) && (I2 instanceof Container))
 					{
 						I.setContainer((Container) I2);
@@ -637,8 +637,8 @@ public class StdMOB implements MOB
 	{
 		if (CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.CARRYALL))
 			return Integer.MAX_VALUE / 2;
-		final double str = (double) charStats().getStat(CharStats.STAT_STRENGTH);
-		final double bodyWeight = (double) baseWeight();
+		final double str = charStats().getStat(CharStats.STAT_STRENGTH);
+		final double bodyWeight = baseWeight();
 		return (int) Math.round(bodyWeight + ((str + 10.0) * str * bodyWeight / 150.0) + (str * 5.0));
 	}
 
@@ -1506,7 +1506,7 @@ public class StdMOB implements MOB
 					sendBack.append(", behind ");
 					for (int v = 0; v < whoseAhead.size(); v++)
 					{
-						final MOB ahead = (MOB) whoseAhead.get(v);
+						final MOB ahead = whoseAhead.get(v);
 						if (v > 0)
 						{
 							sendBack.append(", ");
@@ -2521,7 +2521,7 @@ public class StdMOB implements MOB
 					srcM.tell(name() + " is unable to accept that from you.");
 					return false;
 				}
-				if ((!CMLib.flags().canBeSeenBy((Item) msg.tool(), this))
+				if ((!CMLib.flags().canBeSeenBy(msg.tool(), this))
 						&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS)))
 				{
 					srcM.tell(name() + " can't see what you are giving.");
@@ -3227,7 +3227,7 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			return (Item) inventory.elementAt(index);
+			return inventory.elementAt(index);
 		} catch (java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
@@ -3575,10 +3575,10 @@ public class StdMOB implements MOB
 		try
 		{
 			if (index < abilitys.size())
-				return (Ability) abilitys.elementAt(index);
+				return abilitys.elementAt(index);
 			final List<Ability> racialAbilities = charStats().getMyRace().racialAbilities(this);
 			if (index < abilitys.size() + racialAbilities.size())
-				return (Ability) racialAbilities.get(index - abilitys.size());
+				return racialAbilities.get(index - abilitys.size());
 			index-=(abilitys.size() + racialAbilities.size());
 			for(Pair<Clan,Integer> p : clans())
 			{
@@ -3879,7 +3879,7 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			return (Behavior) behaviors.elementAt(index);
+			return behaviors.elementAt(index);
 		} catch (java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
@@ -4032,7 +4032,7 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			return (ScriptingEngine) scripts.elementAt(x);
+			return scripts.elementAt(x);
 		} catch (Exception e){}
 		return null;
 	}

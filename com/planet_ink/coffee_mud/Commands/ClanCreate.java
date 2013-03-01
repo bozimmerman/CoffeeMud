@@ -69,7 +69,7 @@ public class ClanCreate extends StdCommand
 			int cost=CMProps.getIntVar(CMProps.SYSTEMI_CLANCOST);
 			if(cost>0)
 			{
-				if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)<((double)cost))
+				if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)<(cost))
 				{
 					mob.tell("It costs "+CMLib.beanCounter().nameCurrencyShort(mob,cost)+" to create a clan.  You don't have it.");
 					return false;

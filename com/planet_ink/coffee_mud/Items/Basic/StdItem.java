@@ -146,7 +146,7 @@ public class StdItem implements Item
 	{
 		try
 		{
-			return (CMObject)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -874,7 +874,7 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
-			return canWearComplete(mob,(long)((msg.value()<=0)?0:((long)(1<<msg.value())/2)));
+			return canWearComplete(mob,(msg.value()<=0)?0:((long)(1<<msg.value())/2));
 		case CMMsg.TYP_WIELD:
 			if((!fitsOn(Wearable.WORN_WIELD))||(properWornBitmap==0))
 			{
@@ -1353,7 +1353,7 @@ public class StdItem implements Item
 		if(affects==null) return null;
 		try
 		{
-			return (Ability)affects.elementAt(index);
+			return affects.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -1414,7 +1414,7 @@ public class StdItem implements Item
 		if(behaviors==null) return null;
 		try
 		{
-			return (Behavior)behaviors.elementAt(index);
+			return behaviors.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -1451,7 +1451,7 @@ public class StdItem implements Item
 			ScriptingEngine S2=null;
 			for(int s=0;s<scripts.size();s++)
 			{
-				S2=(ScriptingEngine)scripts.elementAt(s);
+				S2=scripts.elementAt(s);
 				if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
 					return;
 			}
@@ -1483,7 +1483,7 @@ public class StdItem implements Item
 	}
 	public int numScripts(){return (scripts==null)?0:scripts.size();}
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;

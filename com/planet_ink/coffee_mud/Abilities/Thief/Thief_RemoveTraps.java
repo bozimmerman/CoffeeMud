@@ -151,11 +151,11 @@ public class Thief_RemoveTraps extends ThiefSkill
 					{
 						if(theTrap!=null) { 
 							theTrap.unInvoke(); 
-							((Physical)permSetV.elementAt(i)).delEffect(theTrap);
+							permSetV.elementAt(i).delEffect(theTrap);
 						}
 						if(opTrap!=null) { 
 							opTrap.unInvoke(); 
-							((Physical)permSetV.elementAt(i)).delEffect(opTrap);
+							permSetV.elementAt(i).delEffect(opTrap);
 						}
 					}
 					CMLib.database().DBUpdateRoom(R);

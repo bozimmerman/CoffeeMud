@@ -77,7 +77,7 @@ public class Chant_Dragonsight extends Chant
 			if(target instanceof MOB)
 			{
 				Room R=((MOB)target).location();
-				boolean found=CMLib.flags().isInDark((MOB)target);
+				boolean found=CMLib.flags().isInDark(target);
 				if(R!=null)
 					for(int r=0;r<R.numInhabitants();r++)
 					{

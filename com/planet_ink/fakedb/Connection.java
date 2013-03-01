@@ -155,7 +155,7 @@ public class Connection implements java.sql.Connection
    
    public int getHoldability()
    {  
-	   return ResultSet.HOLD_CURSORS_OVER_COMMIT;  
+	   return java.sql.ResultSet.HOLD_CURSORS_OVER_COMMIT;  
    }
    
    public java.sql.Savepoint setSavepoint()

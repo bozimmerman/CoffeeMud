@@ -110,7 +110,7 @@ public class Spell_Portal extends Spell
 			{
 				List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
 				if(rooms.size()>0)
-					newRoom=(Room)rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
+					newRoom=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 			}catch(NoSuchElementException nse){}
 		}
 

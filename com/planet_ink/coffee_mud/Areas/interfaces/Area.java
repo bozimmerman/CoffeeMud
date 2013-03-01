@@ -726,7 +726,7 @@ public interface Area extends Economics, PhysicalAgent
 		public boolean hasMoreElements(){return roomIDEnumerator.hasMoreElements();}
 		public Room nextElement()
 		{
-			String roomID=(String)roomIDEnumerator.nextElement();
+			String roomID=roomIDEnumerator.nextElement();
 			if(roomID==null) return null;
 			Room R=area.getRoom(roomID);
 			if(R==null) return nextElement();

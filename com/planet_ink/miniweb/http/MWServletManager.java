@@ -105,7 +105,7 @@ public class MWServletManager implements SimpleServletManager
 			SimpleServlet servlet;
 			try
 			{
-				servlet = (SimpleServlet)c.newInstance();
+				servlet = c.newInstance();
 				servlet.init();
 			}
 			catch (Exception e){}

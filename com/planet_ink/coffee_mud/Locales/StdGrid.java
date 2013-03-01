@@ -59,8 +59,8 @@ public class StdGrid extends StdRoom implements GridLocale
 		super.cloneFix(E);
 		if(E instanceof StdGrid)
 		{
-			descriptions=(String[])((StdGrid)E).descriptions.clone();
-			displayTexts=(String[])((StdGrid)E).displayTexts.clone();
+			descriptions=((StdGrid)E).descriptions.clone();
+			displayTexts=((StdGrid)E).displayTexts.clone();
 			gridexits=((StdGrid)E).gridexits.copyOf();
 		}
 	}
@@ -190,7 +190,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			if(grid!=null)
 				for(int d=0;d<gridexits.size();d++)
 				{
-					WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
+					WorldMap.CrossExit EX=gridexits.elementAt(d);
 					if((!EX.out)
 					&&(EX.destRoomID.equalsIgnoreCase(roomID))
 					&&(EX.dir==direction)
@@ -245,7 +245,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	protected Room[][] getBuiltGrid()
 	{
 		if(subMap==null) buildGrid();
-		if(subMap!=null) return (Room[][])subMap.clone();
+		if(subMap!=null) return subMap.clone();
 		return null;
 	}
 
@@ -253,7 +253,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		List<Room> V=getAllRooms();
 		if(V.size()==0) return null;
-		return (Room)V.get(CMLib.dice().roll(1,V.size(),-1));
+		return V.get(CMLib.dice().roll(1,V.size(),-1));
 	}
 	public List<Room> getAllRooms()
 	{
@@ -327,7 +327,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if((subMap!=null)&&(room.getGridParent()==this)&&(gridexits!=null))
 		for(int d=0;d<gridexits.size();d++)
 		{
-			WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
+			WorldMap.CrossExit EX=gridexits.elementAt(d);
 			try{
 				if((EX.out)&&(EX.dir==dir)
 				&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<xGridSize())&&(EX.y<yGridSize())
@@ -579,7 +579,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(subMap!=null)
 		for(int d=0;d<gridexits.size();d++)
 		{
-			WorldMap.CrossExit EX=(WorldMap.CrossExit)gridexits.elementAt(d);
+			WorldMap.CrossExit EX=gridexits.elementAt(d);
 			try{
 				if(EX.out)
 				switch(EX.dir)
@@ -814,14 +814,14 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(displayTexts.length>0)
 		{
 			c=CMLib.dice().roll(1,displayTexts.length,-1);
-			gc.setDisplayText((String)displayTexts[c]);
+			gc.setDisplayText(displayTexts[c]);
 		}
 		if(descriptions!=null)
 		if(descriptions.length>0)
 		{
 			if((c<0)||(c>descriptions.length)||(descriptions.length!=displayTexts.length))
 				c=CMLib.dice().roll(1,descriptions.length,-1);
-			gc.setDescription((String)descriptions[c]);
+			gc.setDescription(descriptions[c]);
 		}
 
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)

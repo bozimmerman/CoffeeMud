@@ -52,14 +52,11 @@ public class Duel extends StdCommand
 		}
 		
 		String whomToKill=CMParms.combine(commands,1);
-		if(target==null)
+		target=mob.location().fetchInhabitant(whomToKill);
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			target=mob.location().fetchInhabitant(whomToKill);
-			if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
-			{
-				mob.tell("I don't see '"+whomToKill+"' here.");
-				return false;
-			}
+			mob.tell("I don't see '"+whomToKill+"' here.");
+			return false;
 		}
 		
 		if(mob==target)
@@ -78,7 +75,7 @@ public class Duel extends StdCommand
 				int duelTicks=CMProps.getIntVar(CMProps.SYSTEMI_DUELTICKDOWN);
 				mob.addTattoo(new Tattoo("IDUEL",duelTicks));
 				target.addTattoo(new Tattoo("UDUEL",duelTicks));
-				long time = CMProps.getTickMillis() * (long)duelTicks;
+				long time = CMProps.getTickMillis() * duelTicks;
 				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, "^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> "+(time/1000)+" seconds to consider.^.^N");
 				target.tell("^NEnter ^HDUEL "+mob.name()+"^N to accept this challenge and begin fighting.");
 				return true;
@@ -124,7 +121,7 @@ public class Duel extends StdCommand
 			if((iuT!=null)||(iiT!=null))
 			{
 				int duelTicks=CMProps.getIntVar(CMProps.SYSTEMI_DUELTICKDOWN);
-				long time = CMProps.getTickMillis() * (long)duelTicks;
+				long time = CMProps.getTickMillis() * duelTicks;
 				mob.tell(mob,target,null,"Your previous challenge has not yet expired.  Please wait "+(time/1000)+" seconds longer and try again.");
 				return false;
 			}

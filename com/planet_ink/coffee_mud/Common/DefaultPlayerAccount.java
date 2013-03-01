@@ -120,7 +120,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return true;
 	}
 	
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPlayerStats();}}
 	public void initializeClass(){}
 	public CMObject copyOf()
 	{
@@ -204,7 +204,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		if((h==null)||(h.size()==0)) return "";
 		StringBuffer list=new StringBuffer("");
 		for(Iterator<String> e=h.iterator();e.hasNext();)
-			list.append(((String)e.next())+";");
+			list.append((e.next())+";");
 		return list.toString();
 	}
 	

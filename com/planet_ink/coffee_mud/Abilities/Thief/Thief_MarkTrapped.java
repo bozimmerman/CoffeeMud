@@ -61,7 +61,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 		{
 			if(lastMarked.size()>=5)
 			{
-				Physical P2=(Physical)lastMarked.removeFirst();
+				Physical P2=lastMarked.removeFirst();
 				Ability A=P2.fetchEffect(ID());
 				if((A!=null)&&(A.invoker()==invoker()))
 				{

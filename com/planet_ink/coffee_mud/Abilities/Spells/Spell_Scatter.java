@@ -145,7 +145,7 @@ public class Spell_Scatter extends Spell
 				{
 					for(int i=0;i<targets.size();i++)
 					{
-						target=(Item)targets.get(i);
+						target=targets.get(i);
 						msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 						Room room = null;
 						for(int x = 0; (x < 10) && (room == null); x++)

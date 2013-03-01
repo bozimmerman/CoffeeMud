@@ -186,7 +186,7 @@ public class Ranger_Track extends StdAbility
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
-			target=((Room)theTrail.get(0)).fetchInhabitant(mobName);
+			target=theTrail.get(0).fetchInhabitant(mobName);
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{

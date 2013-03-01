@@ -233,8 +233,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.get(RCP_FINALNAME);
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					String spell=V.get(RCP_FINALNAME);
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(level>=0)
@@ -243,7 +243,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 						buf.append(CMStrings.padRight(A.name(),cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" ");
 						for(int i=2;i<V.size();i++)
 						{
-							String s=((String)V.get(i)).toLowerCase();
+							String s=V.get(i).toLowerCase();
 							if(s.trim().length()==0) continue;
 							if(s.endsWith("$")) s=s.substring(0,s.length()-1);
 							if(fillUsage)
@@ -316,8 +316,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.get(RCP_FINALNAME);
-					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					String spell=V.get(RCP_FINALNAME);
+					int level=CMath.s_int(V.get(RCP_LEVEL));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(xlevel(mob)>=level)
@@ -345,13 +345,13 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			// first check for all the right stuff
 			for(int i=2;i<recipe.size();i++)
 			{
-				String ingredient=((String)recipe.get(i)).trim();
+				String ingredient=recipe.get(i).trim();
 				if(ingredient.length()>0)
 				{
 					boolean ok=false;
 					for(int v=0;v<V.size();v++)
 					{
-						Item I=(Item)V.get(v);
+						Item I=V.get(v);
 						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
@@ -366,11 +366,11 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			// now check for unnecessary stuff
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=(Item)V.get(v);
+				Item I=V.get(v);
 				boolean ok=false;
 				for(int i=2;i<recipe.size();i++)
 				{
-					String ingredient=((String)recipe.get(i)).trim();
+					String ingredient=recipe.get(i).trim();
 					if(ingredient.length()>0)
 						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))

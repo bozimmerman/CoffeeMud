@@ -87,7 +87,7 @@ public class TimsItemTable extends StdWebMacro
 						ShopKeeper SK=(ShopKeeper)M;
 						for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 						{
-							Environmental E=(Environmental)i.next();
+							Environmental E=i.next();
 							if((endTime>0)&&(System.currentTimeMillis()>endTime))
 								break;
 							if((E instanceof Item)
@@ -105,7 +105,7 @@ public class TimsItemTable extends StdWebMacro
 			List<ItemCraftor> allCraftingSkills=new SVector<ItemCraftor>();
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
-				Ability A=(Ability)e.nextElement();
+				Ability A=e.nextElement();
 				if(A instanceof ItemCraftor)
 					allCraftingSkills.add((ItemCraftor)A.copyOf());
 			}

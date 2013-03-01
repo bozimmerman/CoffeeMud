@@ -83,7 +83,7 @@ public class GenWallpaper implements Item
 	{
 		try
 		{
-			return (CMObject)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{

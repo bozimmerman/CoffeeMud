@@ -160,7 +160,7 @@ public class StdExit implements Exit
 	{
 		try
 		{
-			return (Environmental)this.getClass().newInstance();
+			return this.getClass().newInstance();
 		}
 		catch(Exception e)
 		{
@@ -445,8 +445,7 @@ public class StdExit implements Exit
 						&&((DoorKey)item).getKey().equals(keyName())
 						&&((item.container()==null)
 						   ||((item.container().container()==null)
-							  &&(item.container() instanceof Container)
-							  &&((((Container)item.container()).containTypes()&Container.CONTAIN_KEYS)>0)))
+							  &&((item.container().containTypes()&Container.CONTAIN_KEYS)>0)))
 						&&(CMLib.flags().canBeSeenBy(item,mob)))
 							return true;
 					}
@@ -704,7 +703,7 @@ public class StdExit implements Exit
 		if(affects==null) return null;
 		try
 		{
-			return (Ability)affects.elementAt(index);
+			return affects.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -765,7 +764,7 @@ public class StdExit implements Exit
 			return null;
 		try
 		{
-			return (Behavior)behaviors.elementAt(index);
+			return behaviors.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -801,7 +800,7 @@ public class StdExit implements Exit
 			ScriptingEngine S2=null;
 			for(int s=0;s<scripts.size();s++)
 			{
-				S2=(ScriptingEngine)scripts.elementAt(s);
+				S2=scripts.elementAt(s);
 				if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
 					return;
 			}
@@ -834,7 +833,7 @@ public class StdExit implements Exit
 	public int numScripts(){return (scripts==null)?0:scripts.size();}
 	@SuppressWarnings("unchecked")
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
-	public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;

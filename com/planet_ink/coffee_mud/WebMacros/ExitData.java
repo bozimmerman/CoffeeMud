@@ -239,7 +239,7 @@ public class ExitData extends StdWebMacro
 				str.append(old);
 				break;
 			case 25: // open ticks
-				if((firstTime)||(old==null)||(old.length()==0)) 
+				if((firstTime)||(old.length()==0)) 
 					old=Integer.toString(X.openDelayTicks());
 				str.append(old);
 				break;

@@ -96,15 +96,15 @@ public class StdLanguage extends StdAbility implements Language
 	public String translate(String language, String word)
 	{
 		if(translationHash(language).containsKey(word.toUpperCase()))
-			return fixCase(word,(String)translationHash(language).get(word.toUpperCase()));
+			return fixCase(word,translationHash(language).get(word.toUpperCase()));
 		MOB M=CMLib.players().getPlayer(word);
 		if(M!=null) return word;
 		List<String[]> translationVector=translationVector(language);
 		if(translationVector.size()>0)
 		{
 			String[] choices=null;
-			try{ choices=(String[])translationVector.get(word.length()-1);}catch(Exception e){}
-			if(choices==null) choices=(String[])translationVector.get(translationVector.size()-1);
+			try{ choices=translationVector.get(word.length()-1);}catch(Exception e){}
+			if(choices==null) choices=translationVector.get(translationVector.size()-1);
 			return choices[CMath.abs(word.toLowerCase().hashCode()) % choices.length];
 		}
 		return word;

@@ -141,7 +141,7 @@ public class CharClassData extends StdWebMacro
 		}
 		if(font==null) font="<FONT COLOR=WHITE><B>";
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
-		String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+		String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
 		String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 		if(parms.containsKey("HEADERCOL1")
 		||parms.containsKey("HEADERCOL2")
@@ -151,19 +151,19 @@ public class CharClassData extends StdWebMacro
 		{
 			str.append("<TR><TD WIDTH=40%>");
 			if(parms.containsKey("HEADERCOL1"))
-				str.append(sfont + ((String)parms.get("HEADERCOL1")) + efont);
+				str.append(sfont + (parms.get("HEADERCOL1")) + efont);
 			str.append("</TD><TD WIDTH=10%>");
 			if(parms.containsKey("HEADERCOL2"))
-				str.append(sfont + ((String)parms.get("HEADERCOL2")) + efont);
+				str.append(sfont + (parms.get("HEADERCOL2")) + efont);
 			str.append("</TD><TD WIDTH=10%>");
 			if(parms.containsKey("HEADERCOL3"))
-				str.append(sfont + ((String)parms.get("HEADERCOL3")) + efont);
+				str.append(sfont + (parms.get("HEADERCOL3")) + efont);
 			str.append("</TD><TD WIDTH=10%>");
 			if(parms.containsKey("HEADERCOL4"))
-				str.append(sfont + ((String)parms.get("HEADERCOL4")) + efont);
+				str.append(sfont + (parms.get("HEADERCOL4")) + efont);
 			str.append("</TD><TD WIDTH=30%>");
 			if(parms.containsKey("HEADERCOL5"))
-				str.append(sfont + ((String)parms.get("HEADERCOL5")) + efont);
+				str.append(sfont + (parms.get("HEADERCOL5")) + efont);
 			str.append("</TD></TR>");
 		}
 		HashSet used=new HashSet();
@@ -209,7 +209,7 @@ public class CharClassData extends StdWebMacro
 		str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)a.nextElement();
+			Ability A=a.nextElement();
 			if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
 				continue;
 			String ID=A.ID();
@@ -269,10 +269,8 @@ public class CharClassData extends StdWebMacro
 				return ""+((C2!=null)&&(C2.isGeneric()));
 			}
 
-			CharClass C=null;
 			String newClassID=httpReq.getUrlParameter("NEWCLASS");
-			if(C==null)
-				C=(CharClass)httpReq.getRequestObjects().get("CLASS-"+last);
+			CharClass C=(CharClass)httpReq.getRequestObjects().get("CLASS-"+last);
 			if((C==null)
 			&&(newClassID!=null)
 			&&(newClassID.length()>0)
@@ -361,16 +359,16 @@ public class CharClassData extends StdWebMacro
 						nameSet.setElementAt(0,1,Integer.valueOf(0));
 					int borderSize=1;
 					str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-					String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+					String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
 					String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 					if(parms.containsKey("HEADERCOL1")||parms.containsKey("HEADERCOL2"))
 					{
 						str.append("<TR><TD WIDTH=20%>");
 						if(parms.containsKey("HEADERCOL1"))
-							str.append(sfont + ((String)parms.get("HEADERCOL1")) + efont);
+							str.append(sfont + (parms.get("HEADERCOL1")) + efont);
 						str.append("</TD><TD WIDTH=80%>");
 						if(parms.containsKey("HEADERCOL2"))
-							str.append(sfont + ((String)parms.get("HEADERCOL2")) + efont);
+							str.append(sfont + (parms.get("HEADERCOL2")) + efont);
 						str.append("</TD></TR>");
 					}
 					for(int i=0;i<nameSet.size();i++)
@@ -754,16 +752,16 @@ public class CharClassData extends StdWebMacro
 					}
 					int borderSize=1;
 					str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-					String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+					String sfont=(parms.containsKey("FONT"))?("<FONT "+(parms.get("FONT"))+">"):"";
 					String efont=(parms.containsKey("FONT"))?"</FONT>":"";
 					if(parms.containsKey("HEADERCOL1")||parms.containsKey("HEADERCOL2"))
 					{
 						str.append("<TR><TD WIDTH=20%>");
 						if(parms.containsKey("HEADERCOL1"))
-							str.append(sfont + ((String)parms.get("HEADERCOL1")) + efont);
+							str.append(sfont + (parms.get("HEADERCOL1")) + efont);
 						str.append("</TD><TD WIDTH=80%>");
 						if(parms.containsKey("HEADERCOL2"))
-							str.append(sfont + ((String)parms.get("HEADERCOL2")) + efont);
+							str.append(sfont + (parms.get("HEADERCOL2")) + efont);
 						str.append("</TD></TR>");
 					}
 					for(int i=0;i<sSet.size();i++)
@@ -869,7 +867,7 @@ public class CharClassData extends StdWebMacro
 						if(s.toString().startsWith("<CHARCLASS>"))
 							s=new StringBuilder(s.toString().substring(11));
 						int limit=70;
-						if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
+						if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 						str.append(helpHelp(s,limit));
 					}
 				}
@@ -892,7 +890,7 @@ public class CharClassData extends StdWebMacro
 					String domain=null;
 					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
-						A=(Ability)e.nextElement();
+						A=e.nextElement();
 						if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>0)
 						{
 							if((A.classificationCode()&Ability.ALL_DOMAINS)==0)
@@ -1045,7 +1043,7 @@ public class CharClassData extends StdWebMacro
 			List<String> set=CMLib.ableMapper().getLevelListings(C.ID(),true,l);
 			for(int s=0;s<set.size();s++)
 			{
-				String able=(String)set.get(s);
+				String able=set.get(s);
 				if(able.equalsIgnoreCase("Skill_Recall")) continue;
 				if(able.equalsIgnoreCase("Skill_Write")) continue;
 				if(able.equalsIgnoreCase("Skill_Swim")) continue;
@@ -1148,15 +1146,15 @@ public class CharClassData extends StdWebMacro
 	public int avgMath(int stat, int level, int add, String formula)
 	{
 		double[] variables={
-				(double)level,
-				(double)stat,
+				level,
+				stat,
 				(double)stat+7,
-				(double)stat,
+				stat,
 				(double)stat+7,
-				(double)stat,
+				stat,
 				(double)stat+7,
-				(double)stat,
-				(double)stat
+				stat,
+				stat
 			};
 		return add+(level*(int)Math.round(CMath.parseMathExpression(formula, variables)));
 	}

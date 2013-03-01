@@ -73,7 +73,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		Environmental item2=null;
 		while(here<theRest.size())
 		{
-			item2=(Environmental)theRest.get(here);
+			item2=theRest.get(here);
 			str2=itemSeenString(viewerM,item2,useName,longLook,false);
 			if(str2.length()==0)
 				theRest.remove(item2);
@@ -211,7 +211,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					if(compress&&V.size()>0) say.append("{");
 					while(V.size()>0)
 					{
-						item2=(Item)V.get(0);
+						item2=V.get(0);
 						V.remove(0);
 						int reps2=getReps(viewerM,item2,V,useName,false);
 						if(CMLib.flags().canBeSeenBy(item2,viewerM)
@@ -441,7 +441,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				topicBuffer.append("\n\r");
 				col=1;
 			}
-			s=(String)reverseList.get(i);
+			s=reverseList.get(i);
 			if((tag!=null)&&(tag.length()>0))
 				s="^<"+tag+"^>"+s+"^</"+tag+"^>";
 			if(s.length()>colSize)

@@ -63,7 +63,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 			if((V!=null)&&(V.size()>0))
 			for(int v=0;v<V.size();v++)
 			{
-				DatabaseEngine.PlayerData dataP=(DatabaseEngine.PlayerData)V.get(v);
+				DatabaseEngine.PlayerData dataP=V.get(v);
 				String data=dataP.xml;
 				PhysicalAgent obj=parseHeavenlyData(data);
 				if(obj!=null)
@@ -124,7 +124,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 							List<PlayerData> V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
 							if((V!=null)&&(V.size()>0))
 							{
-								nonPlayerData=(DatabaseEngine.PlayerData)V.get(0);
+								nonPlayerData=V.get(0);
 								break;
 							}
 						}

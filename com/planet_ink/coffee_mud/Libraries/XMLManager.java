@@ -334,8 +334,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		if(V==null) return null;
 		for(int v=0;v<V.size();v++)
-			if(((XMLpiece)V.get(v)).tag.equalsIgnoreCase(tag))
-				return (XMLpiece)V.get(v);
+			if(V.get(v).tag.equalsIgnoreCase(tag))
+				return V.get(v);
 		return null;
 	}
 
@@ -344,8 +344,8 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		if(V==null) return null;
 		List<XMLpiece> pieces = new ArrayList<XMLpiece>();
 		for(int v=0;v<V.size();v++)
-			if(((XMLpiece)V.get(v)).tag.equalsIgnoreCase(tag))
-				pieces.add((XMLpiece)V.get(v));
+			if(V.get(v).tag.equalsIgnoreCase(tag))
+				pieces.add(V.get(v));
 		return pieces;
 	}
 
@@ -879,7 +879,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String getParmValue(Map<String, String> parmSet, String Tag)
 	{
 		if((parmSet != null)&&(Tag != null))
-			return (String)parmSet.get(Tag.toUpperCase().trim());
+			return parmSet.get(Tag.toUpperCase().trim());
 		return null;
 	}
 
@@ -903,7 +903,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		List<XMLLibrary.XMLpiece> xml=parseAllXML(numberedList);
 		Vector<String> V=new Vector<String>();
 		for(int v=0;v<xml.size();v++)
-			V.addElement(this.restoreAngleBrackets(((XMLLibrary.XMLpiece)xml.get(v)).value));
+			V.addElement(this.restoreAngleBrackets(xml.get(v).value));
 		return V;
 	}
 }

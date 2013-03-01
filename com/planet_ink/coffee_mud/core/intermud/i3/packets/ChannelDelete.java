@@ -40,12 +40,12 @@ public class ChannelDelete extends Packet  {
 	public ChannelDelete()
 	{
 		super();
-		type = ChannelPacket.CHAN_REMOVE;
+		type = Packet.CHAN_REMOVE;
 	}
 	public ChannelDelete(Vector v) throws InvalidPacketException {
 		super(v);
 		try {
-			type = ChannelPacket.CHAN_REMOVE;
+			type = Packet.CHAN_REMOVE;
 			channel = (String)v.elementAt(6);
 			channel = Intermud.getLocalChannel(channel);
 		}

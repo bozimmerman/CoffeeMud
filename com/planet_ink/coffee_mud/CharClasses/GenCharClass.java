@@ -196,7 +196,7 @@ public class GenCharClass extends StdCharClass
 	{
 	}
 
-	public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new GenCharClass();}}
+	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new GenCharClass();}}
 	public CMObject copyOf()
 	{
 		GenCharClass E=new GenCharClass();
@@ -575,7 +575,7 @@ public class GenCharClass extends StdCharClass
 		if((xV!=null)&&(xV.size()>0))
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
+				XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
 					continue;
 				// I hate backwards compatibility.
@@ -602,7 +602,7 @@ public class GenCharClass extends StdCharClass
 			disallowedWeaponSet=new HashSet();
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
+				XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("WCLASS"))||(iblk.contents==null))
 					continue;
 				disallowedWeaponSet.add(Integer.valueOf(CMath.s_int(iblk.value)));
@@ -617,7 +617,7 @@ public class GenCharClass extends StdCharClass
 			requiredWeaponMaterials=new HashSet();
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
+				XMLLibrary.XMLpiece iblk=xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("WMAT"))||(iblk.contents==null))
 					continue;
 				requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int(iblk.value)));
@@ -632,7 +632,7 @@ public class GenCharClass extends StdCharClass
 			outfitChoices=new Vector();
 			for(int x=0;x<oV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)oV.get(x);
+				XMLLibrary.XMLpiece iblk=oV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
 					continue;
 				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
@@ -663,8 +663,8 @@ public class GenCharClass extends StdCharClass
 		securityGroupLevels=new Integer[groupLevelSet.size()];
 		for(int i=0;i<groupSet.size();i++)
 		{
-			securityGroups[i]=(List<String>)groupSet.get(i);
-			securityGroupLevels[i]=(Integer)groupLevelSet.get(i);
+			securityGroups[i]=groupSet.get(i);
+			securityGroupLevels[i]=groupLevelSet.get(i);
 		}
 		securityGroupCache.clear();
 		
@@ -760,8 +760,8 @@ public class GenCharClass extends StdCharClass
 		case 31: return ""+((disallowedWeaponSet!=null)?disallowedWeaponSet.size():0);
 		case 32: return CMParms.toStringList(disallowedWeaponSet);
 		case 33: return ""+((outfit(null)!=null)?outfit(null).size():0);
-		case 34: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).ID():"");
-		case 35: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).text():"");
+		case 34: return ""+((outfit(null)!=null)?outfit(null).get(num).ID():"");
+		case 35: return ""+((outfit(null)!=null)?outfit(null).get(num).text():"");
 		case 36: return ""+getMinimumStatRequirements().length;
 		case 37: return ""+manaFormula;
 		case 38: return getMinimumStatRequirements()[num].first;

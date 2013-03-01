@@ -147,7 +147,7 @@ public class Log extends java.util.logging.Logger
 	 */
 	private final PrintWriter getWriter(final LogType type, int priority)
 	{
-		PrintWriter[] writers=(PrintWriter[])WRITERS.get(type);
+		PrintWriter[] writers=WRITERS.get(type);
 		if(priority<0) priority=0;
 		if(priority>9) priority=9;
 		if(writers!=null) return writers[priority];
@@ -213,7 +213,7 @@ public class Log extends java.util.logging.Logger
 	 */
 	private final String prop(LogType type)
 	{
-		String s=(String)FLAGS.get(type);
+		String s=FLAGS.get(type);
 		if(s==null)
 		{
 			s=System.getProperty("LOG."+LOGNAME+"_"+type.toString().toUpperCase().trim());

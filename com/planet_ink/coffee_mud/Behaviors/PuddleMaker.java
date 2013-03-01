@@ -162,7 +162,7 @@ public class PuddleMaker extends StdBehavior
 				&&(!dryWeather(A.getClimateObj().weatherType(null))))
 					for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 					{
-						Room R=(Room)e.nextElement();
+						Room R=e.nextElement();
 						if(((R.domainType()&Room.INDOORS)==0)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)

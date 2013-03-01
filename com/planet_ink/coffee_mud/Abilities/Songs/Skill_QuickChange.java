@@ -64,8 +64,8 @@ public class Skill_QuickChange extends BardSkill
 		for(Enumeration<Item> i= mob.items(); i.hasMoreElements();)
 		{
 			Item I=i.nextElement();
-			if((!I.amWearingAt(Item.IN_INVENTORY))
-			||(!I.ultimateContainer(null).amWearingAt(Item.IN_INVENTORY)))
+			if((!I.amWearingAt(Wearable.IN_INVENTORY))
+			||(!I.ultimateContainer(null).amWearingAt(Wearable.IN_INVENTORY)))
 				items.add(new PackedItem(I,I.container(),I.rawWornCode()));
 		}
 		return items;
@@ -93,7 +93,7 @@ public class Skill_QuickChange extends BardSkill
 						Item containerI=null; 
 						if(containerDex>=0)
 							containerI=itemList.get(containerDex);
-						items.add(new PackedItem((Item)itemList.get(i),containerI,wornLoc));
+						items.add(new PackedItem(itemList.get(i),containerI,wornLoc));
 					}
 				}
 			}
