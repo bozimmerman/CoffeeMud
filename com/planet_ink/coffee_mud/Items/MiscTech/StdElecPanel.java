@@ -34,10 +34,12 @@ import java.util.*;
 */
 public class StdElecPanel extends StdElecContainer implements Electronics.ElecPanel
 {
+	private volatile String circuitKey=null;
+	
 	protected ElecPanelType panelType=ElecPanelType.ANY;
 	public ElecPanelType panelType(){return panelType;}
 	public void setPanelType(ElecPanelType type){panelType=type;}
-	
+
 	public String displayText(){
 		if(isOpen())
 			return name()+" is opened here.";
@@ -80,5 +82,62 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		super.affectPhyStats(affected, affectableStats);
 		if(affected instanceof Room)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
+	}
+	
+	public void destroy()
+	{
+		if((!destroyed)&&(circuitKey!=null))
+		{
+			CMLib.tech().unregisterElectronics(this,circuitKey);
+			circuitKey=null;
+		}
+		super.destroy();
+	}
+	public void setOwner(ItemPossessor owner)
+	{
+		final ItemPossessor prevOwner=super.owner;
+		super.setOwner(owner);
+		if(prevOwner != owner)
+		{
+			if(owner instanceof Room)
+			{
+				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
+			}
+			else
+			{
+				CMLib.tech().unregisterElectronics(this,circuitKey);
+				circuitKey=null;
+			}
+		}
+	}
+	
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if(msg.amITarget(this))
+		{
+			if(msg.sourceMinor()==CMMsg.TYP_POWERCURRENT) // these double as ticks!
+			{
+				final Room R=CMLib.map().roomLocation(this);
+				int powerRemaining=msg.value();
+				final List<Item> contents=getContents();
+				final CMMsg powerMsg=CMClass.getMsg(msg.source(), CMMsg.MSG_POWERCURRENT, null);
+				for(int i=contents.size()-1;i>=0;i--)
+				{
+					Item I=contents.get(i);
+					if(I instanceof Electronics)
+					{
+						int powerToTake=powerRemaining/(i+1);
+						powerMsg.setValue(powerToTake);
+						powerMsg.setTarget(I);
+						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+							R.send(powerMsg.source(), powerMsg);
+						powerRemaining-=(powerMsg.value()<0)?powerToTake:(powerToTake-powerMsg.value());
+					}
+				}
+				CMClass.returnMsg(powerMsg);
+				msg.setValue(powerRemaining);
+			}
+		}
 	}
 }

@@ -17,7 +17,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.*;
 /* 
    Copyright 2000-2013 Bo Zimmerman
 
@@ -33,44 +36,96 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GroundWired extends StdLibrary implements TechLibrary
+public class GroundWired extends StdLibrary implements TechLibrary, Runnable
 {
 	public String ID(){return "GroundWired";}
 	
-	public String getGeneratorKey(Electronics E)
+	public final Map<String,List<Electronics>> sets=new Hashtable<String,List<Electronics>>();
+	
+	public final AtomicInteger nextKey = new AtomicInteger(0);
+	
+	public synchronized String registerElectrics(final Electronics E, final String oldKey)
 	{
-		if((E != null)&&(E.owner() instanceof Room))
+		final ItemPossessor possessor=E.owner();
+		if((E != null) && (possessor instanceof Room))
 		{
-			Room R=(Room)E.owner();
-			if(E.container() instanceof Electronics.ElecPanel)
+			Room R=(Room)possessor;
+			String newKey;
+			if(R.getArea() instanceof SpaceShip)
+				newKey=R.getArea().Name();
+			else
 			{
 				LandTitle title = CMLib.law().getLandTitle(R);
 				if(title != null)
-					return title.getUniqueLotID();
+					newKey=title.getUniqueLotID();
 				else
-					return "";
+					newKey=CMLib.map().getExtendedRoomID(R);
 			}
-			else
-			if(E.container() instanceof Electronics) // must be a gizmo that requires a battery or generator
+			if(oldKey!=null)
 			{
-				return E.container().toString();
+				if(newKey.equals(oldKey))
+					return oldKey;
+				final List<Electronics> oldSet=sets.get(oldKey);
+				if(oldSet!=null)
+				{
+					oldSet.remove(E);
+					if(oldSet.size()==0)
+						sets.remove(oldSet);
+				}
 			}
+			List<Electronics> set=sets.get(newKey);
+			if(set==null)
+			{
+				set=new ArrayList<Electronics>();
+				sets.put(newKey, set);
+			}
+			set.add(E);
+			return newKey;
 		}
-		return "";
+		return null;
 	}
 	
-	/*
+	public synchronized void unregisterElectronics(final Electronics E, final String oldKey)
+	{
+		if((oldKey!=null)&&(E!=null))
+		{
+			final List<Electronics> oldSet=sets.get(oldKey);
+			if(oldSet!=null)
+			{
+				oldSet.remove(E);
+				if(oldSet.size()==0)
+					sets.remove(oldSet);
+			}
+		}
+	}
+	
 	private CMSupportThread thread=null;
 	protected STreeMap<Electronics.PowerGenerator,Pair<List<Electronics.PowerSource>,List<Electronics>>> currents 
 													= new STreeMap<Electronics.PowerGenerator,Pair<List<Electronics.PowerSource>,List<Electronics>>>(); 
 	public CMSupportThread getSupportThread() { return thread;}
 	protected CMMsg powerMsg = null;
 	
+	protected CMMsg getPowerMsg(int powerAmt)
+	{
+		if(powerMsg==null)
+		{
+			MOB powerMOB=CMClass.getMOB("electricity");
+			powerMOB.baseCharStats().setMyRace(CMClass.getRace("ElectricalElemental"));
+			powerMOB.setSavable(false);
+			powerMOB.setLocation(CMLib.map().getRandomRoom());
+			powerMOB.recoverCharStats();
+			powerMsg=CMClass.getMsg(powerMOB, CMMsg.MSG_POWERCURRENT, null);
+		}
+		powerMsg.setValue(powerAmt);
+		return powerMsg;
+	}
+	
 	public boolean activate() 
 	{
 		if(thread==null)
 			thread=new CMSupportThread("THWired"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-					100, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), CMSecurity.DisFlag.ELECTRICTHREAD);
+					CMProps.getTickMillis(), this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), 
+					CMSecurity.DisFlag.ELECTRICTHREAD);
 		if(!thread.isStarted())
 		{
 			thread.setStatus("sleeping");
@@ -82,6 +137,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	
 	public boolean shutdown() 
 	{
+		sets.clear();
 		thread.shutdown();
 		return true;
 	}
@@ -91,101 +147,112 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.ELECTRICTHREAD))
 			return;
 		thread.setStatus("pushing electric currents");
-		HashSet<Electronics.PowerSource> doneBatteries = new HashSet<Electronics.PowerSource>();
-		for(Electronics.PowerGenerator currentGeneratorI : currents.keySet())
+
+		List<String> keys;
+		synchronized(this)
 		{
-			List<Electronics.PowerSource> batterySet = currents.get(currentGeneratorI).first;
-			List<Electronics> currentSet = currents.get(currentGeneratorI).second;
-			if(servicedItems == null)
+			keys=new XVector<String>(sets.keySet());
+		}
+		for(String key : keys)
+		{
+			try
 			{
-				List<Electronics> serviceableItems=new LinkedList<Electronics>();
-				Room R=(Room)owner();
-				Iterator<Room> r;
-				LandTitle title = CMLib.law().getLandTitle(R);
-				if(title != null)
-					r=title.getPropertyRooms().iterator();
-				else
-					r=new EnumerationIterator<Room>(R.getArea().getMetroMap());
-				for(;r.hasNext();)
+				LinkedList<Electronics.PowerGenerator> generators = new LinkedList<Electronics.PowerGenerator>();
+				LinkedList<Electronics.PowerSource> batteries = new LinkedList<Electronics.PowerSource>();
+				LinkedList<Electronics> panels = new LinkedList<Electronics>();
+				synchronized(this)
 				{
-					R=r.next();
-					for(int i=0;i<R.numItems();i++)
+					List<Electronics> rawSet=sets.get(key);
+					if(rawSet!=null)
 					{
-						Item I=R.getItem(i);
-						if(!(I instanceof Electronics.PowerSource))
-						{
-							if(I instanceof Electronics)
-								serviceableItems.add((Electronics)I);
-						}
+						for(Electronics E : rawSet)
+							if(E instanceof Electronics.PowerGenerator)
+								generators.add((Electronics.PowerGenerator)E);
+							else
+							if(E instanceof Electronics.PowerSource)
+								batteries.add((Electronics.PowerSource)E);
+							else
+								panels.add(E);
 					}
 				}
-				servicedItems = serviceableItems;
-			}
-			int currentSize = currentSet.size();
-			for(Iterator<Electronics> i=currentSet.iterator();i.hasNext();)
-			{
-				final Electronics E=i.next();
-				if(!E.activated())
-					currentSize--;
-			}
-			if(currentGeneratorI.activated())
-			{
-				if(powerMsg == null)
-					powerMsg = CMClass.getMsg(CMClass.sampleMOB(),null,currentGeneratorI,CMMsg.MSG_POWERCURRENT, null);
+				CMMsg powerMsg=getPowerMsg(0);
+				for(Electronics.PowerGenerator E : generators)
+				{
+					powerMsg.setTarget(E);
+					powerMsg.setValue(0);
+					final Room R=CMLib.map().roomLocation(E);
+					if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+						R.send(powerMsg.source(), powerMsg);
+				}
+				long remainingPowerToDistribute=0;
+				long availablePowerToDistribute=0;
+				for(Electronics.PowerGenerator G : generators)
+					if(G.activated())
+					{
+						availablePowerToDistribute+=G.powerRemaining();
+						G.setPowerRemaining(0);
+					}
+				for(Electronics.PowerSource B : batteries)
+					if(B.activated())
+						availablePowerToDistribute+=B.powerRemaining();
+				if(availablePowerToDistribute==0)
+				{
+					for(Electronics E : panels)
+					{
+						powerMsg.setTarget(E);
+						powerMsg.setValue(0);
+						final Room R=CMLib.map().roomLocation(E);
+						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+							R.send(powerMsg.source(), powerMsg);
+					}
+					for(Electronics.PowerSource E : batteries)
+					{
+						powerMsg.setTarget(E);
+						powerMsg.setValue(0);
+						final Room R=CMLib.map().roomLocation(E);
+						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+							R.send(powerMsg.source(), powerMsg);
+					}
+					continue;
+				}
 				else
-					powerMsg.setTool(currentGeneratorI);
-				powerMsg.setTarget(currentGeneratorI);
-				if(currentGeneratorI.okMessage(currentGeneratorI, powerMsg))
-					currentGeneratorI.executeMsg(currentGeneratorI, powerMsg);
-				if(currentSize>0)
 				{
-        			powerMsg.setValue((int)(currentGeneratorI.powerRemaining()/currentSize));
-        			for(Iterator<Electronics> i=currentSet.iterator();i.hasNext();)
-        			{
-        				Electronics E=i.next();
-        				powerMsg.setTarget(E);
-        				if(E.activated() && E.okMessage(E, powerMsg))
-            				E.executeMsg(E, powerMsg);
-        			}
+					remainingPowerToDistribute=availablePowerToDistribute;
+					int panelsLeft=panels.size();
+					for(Electronics E : panels)
+					{
+						powerMsg.setTarget(E);
+						int amountToDistribute=(int)(remainingPowerToDistribute/(long)panelsLeft);
+						powerMsg.setValue(amountToDistribute);
+						final Room R=CMLib.map().roomLocation(E);
+						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+							R.send(powerMsg.source(), powerMsg);
+						remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
+						panelsLeft--;
+					}
+					int batteriesLeft=batteries.size();
+					for(Electronics.PowerSource E : batteries)
+					{
+						powerMsg.setTarget(E);
+						int amountToDistribute=(int)(remainingPowerToDistribute/(long)batteriesLeft);
+						powerMsg.setValue(amountToDistribute);
+						final Room R=CMLib.map().roomLocation(E);
+						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+							R.send(powerMsg.source(), powerMsg);
+						panelsLeft--;
+						remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
+					}
+					int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/(long)generators.size());
+					for(Electronics.PowerGenerator G : generators)
+						if(G.activated())
+							G.setPowerRemaining(amountLeftOver>G.powerCapacity()?G.powerCapacity():amountLeftOver);
 				}
 			}
-			if(batterySet.size()>0)
+			catch(Exception e)
 			{
-				if(currentGeneratorI.activated())
-				{
-        			powerMsg.setValue((int)(currentGeneratorI.powerRemaining()/batterySet.size()));
-        			for(Iterator<Electronics.PowerSource> i=batterySet.iterator();i.hasNext();)
-        			{
-        				Electronics.PowerSource E=i.next();
-        				powerMsg.setTarget(E);
-        				if(E.okMessage(E, powerMsg)) // even unactivated batteries draw from the generators
-            				E.executeMsg(E, powerMsg);
-        			}
-				}
-				if(currentSize>0)
-				{
-        			for(Iterator<Electronics.PowerSource> b=batterySet.iterator();b.hasNext();)
-        			{
-        				Electronics.PowerSource batterE=b.next();
-            			if((batterE.activated())&&(!doneBatteries.contains(batterE)))
-            			{
-            				doneBatteries.add(batterE);
-            				powerMsg.setTool(batterE);
-        	    			powerMsg.setValue((int)(batterE.powerRemaining()/currentSize));
-        	    			for(Iterator<Electronics> i=currentSet.iterator();i.hasNext();)
-        	    			{
-        	    				Electronics E=i.next();
-        	    				powerMsg.setTarget(E);
-        	    				if(E.activated() && E.okMessage(E, powerMsg))
-        	        				E.executeMsg(E, powerMsg);
-        	    			}
-            			}
-        			}
-				}
+				Log.errOut("GroundWired",e);
 			}
-			
 		}
 		thread.setStatus("sleeping");
 	}
-	*/
 }

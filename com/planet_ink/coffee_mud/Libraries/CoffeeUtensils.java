@@ -38,6 +38,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
 	public String ID(){return "CoffeeUtensils";}
 	
+	private TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> lootPolicy = null;
+	private final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> noLootPolicy = new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
+	private int lastLootPolicyHash=0;
+	
 	public String niceCommaList(List<?> V, boolean andTOrF)
 	{
 		String id="";
@@ -645,43 +649,50 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 	
 	
-	public DVector parseLootPolicyFor(MOB mob)
+	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> parseLootPolicyFor(MOB mob)
 	{
-		if(mob==null) return new DVector(3);
-		Vector<String> lootPolicy=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_ITEMLOOTPOLICY),true);
-		DVector policies=new DVector(3);
-		for(int p=0;p<lootPolicy.size();p++)
+		if((mob==null)||(!mob.isMonster())) 
+			return noLootPolicy;
+		final String lootPolicyStr=CMProps.getVar(CMProps.SYSTEM_ITEMLOOTPOLICY);
+		if((lootPolicy==null)||(lastLootPolicyHash!=lootPolicyStr.hashCode()))
 		{
-			String s=((String)lootPolicy.elementAt(p)).toUpperCase().trim();
-			if(s.length()==0) continue;
-			MaskingLibrary.CompiledZapperMask compiledMask=null;
-			int maskDex=s.indexOf("MASK=");
-			if(maskDex>=0)
+			Vector<String> lootPolicies=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_ITEMLOOTPOLICY),true);
+			TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
+			for(int p=0;p<lootPolicies.size();p++)
 			{
-				s=s.substring(0,maskDex).trim();
-				compiledMask=CMLib.masking().maskCompile(((String)lootPolicy.elementAt(p)).substring(maskDex+5).trim());
-			}
-			else
-				compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY();
-			Vector<String> parsed=CMParms.parse(s);
-			int pct=100;
-			for(int x=0;x<parsed.size();x++)
-				if(CMath.isInteger((String)parsed.elementAt(x)))
-					pct=CMath.s_int((String)parsed.elementAt(x));
+				String s=((String)lootPolicies.elementAt(p)).toUpperCase().trim();
+				if(s.length()==0) continue;
+				MaskingLibrary.CompiledZapperMask compiledMask=null;
+				int maskDex=s.indexOf("MASK=");
+				if(maskDex>=0)
+				{
+					s=s.substring(0,maskDex).trim();
+					compiledMask=CMLib.masking().maskCompile(((String)lootPolicies.elementAt(p)).substring(maskDex+5).trim());
+				}
 				else
-				if(CMath.isPct((String)parsed.elementAt(x)))
-					pct=(int)Math.round(CMath.s_pct((String)parsed.elementAt(x))*100.0);
-			int flags=0;
-			if(parsed.contains("RUIN")) flags|=CMMiscUtils.LOOTFLAG_RUIN;
-			else
-			if(parsed.contains("LOSS")) flags|=CMMiscUtils.LOOTFLAG_LOSS;
-			if(flags==0) flags|=CMMiscUtils.LOOTFLAG_LOSS;
-			if(parsed.contains("WORN")) flags|=CMMiscUtils.LOOTFLAG_WORN;
-			else
-			if(parsed.contains("UNWORN")) flags|=CMMiscUtils.LOOTFLAG_UNWORN;
-			policies.addElement(Integer.valueOf(pct),Integer.valueOf(flags),compiledMask);
+					compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY();
+				Vector<String> parsed=CMParms.parse(s);
+				int pct=100;
+				for(int x=0;x<parsed.size();x++)
+					if(CMath.isInteger((String)parsed.elementAt(x)))
+						pct=CMath.s_int((String)parsed.elementAt(x));
+					else
+					if(CMath.isPct((String)parsed.elementAt(x)))
+						pct=(int)Math.round(CMath.s_pct((String)parsed.elementAt(x))*100.0);
+				int flags=0;
+				if(parsed.contains("RUIN")) flags|=CMMiscUtils.LOOTFLAG_RUIN;
+				else
+				if(parsed.contains("LOSS")) flags|=CMMiscUtils.LOOTFLAG_LOSS;
+				if(flags==0) flags|=CMMiscUtils.LOOTFLAG_LOSS;
+				if(parsed.contains("WORN")) flags|=CMMiscUtils.LOOTFLAG_WORN;
+				else
+				if(parsed.contains("UNWORN")) flags|=CMMiscUtils.LOOTFLAG_UNWORN;
+				policies.addElement(Integer.valueOf(pct),Integer.valueOf(flags),compiledMask);
+			}
+			lootPolicy=policies;
+			lastLootPolicyHash=lootPolicyStr.hashCode();
 		}
-		return policies;
+		return lootPolicy;
 	}
 	
 	public void confirmWearability(MOB mob)
@@ -735,7 +746,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			&&(item.okMessage(item,msg))
 			&&((mob.charStats().getWearableRestrictionsBitmap()&oldCode)==0)
 			&&(item.canWear(mob,oldCode)))
-			   item.wearAt(oldCode);
+				item.wearAt(oldCode);
 		}
 		// why wasn't that here before?
 		mob.recoverPhyStats();
@@ -743,7 +754,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		mob.recoverMaxState();
 	}
 
-	public Item isRuinedLoot(DVector policies, Item I)
+	public Item isRuinedLoot(MOB mob, Item I)
 	{
 		if(I==null) return null;
 		if((CMath.bset(I.phyStats().disposition(),PhyStats.IS_UNSAVABLE))
@@ -752,14 +763,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return I;
 		if(I.name().toLowerCase().indexOf("ruined ")>=0)
 			return I;
+		final TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=parseLootPolicyFor(mob);
 		for(int d=0;d<policies.size();d++)
 		{
-			if((((MaskingLibrary.CompiledZapperMask)policies.elementAt(d,3)).entries.length>0)
-			&&(!CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)policies.elementAt(d,3),I,true)))
+			if((((MaskingLibrary.CompiledZapperMask)policies.get(d).third).entries.length>0)
+			&&(!CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)policies.get(d).third,I,true)))
 				continue;
-			if(CMLib.dice().rollPercentage()>((Integer)policies.elementAt(d,1)).intValue())
+			if(CMLib.dice().rollPercentage()>((Integer)policies.get(d).first).intValue())
 				continue;
-			int flags=((Integer)policies.elementAt(d,2)).intValue();
+			int flags=((Integer)policies.get(d).second).intValue();
 			if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_WORN)&&I.amWearingAt(Wearable.IN_INVENTORY))
 				continue;
 			else

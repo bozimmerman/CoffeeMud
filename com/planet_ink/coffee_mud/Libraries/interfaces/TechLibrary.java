@@ -32,5 +32,22 @@ import java.util.*;
 */
 public interface TechLibrary extends CMLibrary
 {
-
+	/**
+	 * Unregisters an electronic component that belonged
+	 * in a complex circuitry, like a panel or a 
+	 * generator.
+	 * @param E the electronic component to unregister
+	 * @param key the last key registered to this device
+	 */
+	public void unregisterElectronics(Electronics E, String oldKey);
+	
+	/**
+	 * Registers an electronic component that belongs
+	 * in a complex circuitry, like a panel or a 
+	 * generator
+	 * @param E the electronic component to register
+	 * @param key the last key registered to this device
+	 * @return the new key assigned to this item (or old key)
+	 */
+	public String registerElectrics(Electronics E, String oldKey);
 }

@@ -52,7 +52,7 @@ limitations under the License.
 public class MiniWebServer extends Thread
 {
 	public static final	String	  NAME				= "MiniWebServer";
-	public static final String	  POMVERSION		= "1.9";
+	public static final String	  POMVERSION		= "2.0";
 	public static 		double	  VERSION;
 	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(Exception e){ VERSION=0.0;} }
 	

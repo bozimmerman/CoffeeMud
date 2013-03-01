@@ -50,6 +50,8 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 		recoverPhyStats();
 	}
 	
+	private volatile String circuitKey=null;
+	
 	protected int   generatedAmtPerTick = 1;
 	protected int[] generatedFuelTypes = new int[]{RawMaterial.RESOURCE_DEUTERIUM};
 	
@@ -83,32 +85,30 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 	
 	public void destroy()
 	{
-		CMLib.threads().deleteTick(this,Tickable.TICKID_ELEC_GENERATOR);
+		if((!destroyed)&&(circuitKey!=null))
+		{
+			CMLib.tech().unregisterElectronics(this,circuitKey);
+			circuitKey=null;
+		}
+		super.destroy();
 	}
 	
 	public void setOwner(ItemPossessor newOwner)
 	{
+		final ItemPossessor prevOwner=super.owner;
 		super.setOwner(newOwner);
-		if(newOwner instanceof Room)
+		if(prevOwner != newOwner)
 		{
-			if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELEC_GENERATOR))
-				CMLib.threads().startTickDown(this, Tickable.TICKID_ELEC_GENERATOR, 1);
+			if(newOwner instanceof Room)
+			{
+				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
+			}
+			else
+			{
+				CMLib.tech().unregisterElectronics(this,circuitKey);
+				circuitKey=null;
+			}
 		}
-		else
-		{
-			CMLib.threads().deleteTick(this,Tickable.TICKID_ELEC_GENERATOR);
-		}
-	}
-	
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking, tickID))
-			return false;
-		if(tickID==Tickable.TICKID_ELEC_GENERATOR)
-		{
-			
-		}
-		return true;
 	}
 	
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -116,13 +116,18 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 		super.executeMsg(myHost, msg);
 		if(msg.amITarget(this))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_POWERCURRENT)&&(msg.tool()==this))
+			if((msg.sourceMinor()==CMMsg.TYP_POWERCURRENT)&&(msg.value()==0))
 			{
-				if(((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
-				||(powerRemaining() < getGeneratedAmountPerTick()))
+				if(activated())
 				{
-					//TODO: decrease fuel, and potentially put into cold state!
-					setPowerRemaining(powerRemaining() + getGeneratedAmountPerTick());
+					if(((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
+					||(powerRemaining() < getGeneratedAmountPerTick()))
+					{
+						long newAmount=powerRemaining() + getGeneratedAmountPerTick();
+						if(newAmount > powerCapacity())
+							newAmount=powerCapacity();
+						setPowerRemaining(newAmount);
+					}
 				}
 			}
 		}

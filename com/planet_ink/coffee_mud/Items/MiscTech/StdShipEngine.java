@@ -66,4 +66,16 @@ public class StdShipEngine extends StdElecItem
 		if(affected instanceof Room)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
 	}
+	
+	
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if(msg.amITarget(this))
+		{
+			if(msg.sourceMinor()==CMMsg.TYP_POWERCURRENT) // these double as ticks!
+			{
+			}
+		}
+	}
 }

@@ -112,10 +112,8 @@ public interface Tickable extends CMObject
 	public final static int TICKID_TIMEAUCTION=19;
 	/** the tickid for a miscellaneous tickable service*/
 	public final static int TICKID_MISCELLANEOUS=20;
-	/** the tickid representing the tick of an electric generator*/
-	public final static int TICKID_ELEC_GENERATOR=21;
 	/** the tickid for a miscellaneous tickable service*/
-	public final static int TICKID_PROPERTY_SPECIAL=22;
+	public final static int TICKID_PROPERTY_SPECIAL=21;
 	/** modifies a tickID to designate a longer wait before declaring dead.*/
 	public final static int TICKID_LONGERMASK=256;
 

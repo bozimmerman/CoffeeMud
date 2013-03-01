@@ -34,6 +34,9 @@ import java.util.*;
 public class GenBattery extends GenElecItem implements Electronics.PowerSource
 {
 	public String ID(){	return "GenBattery";}
+
+	private volatile String circuitKey=null;
+
 	public GenBattery()
 	{
 		super();
@@ -52,5 +55,32 @@ public class GenBattery extends GenElecItem implements Electronics.PowerSource
 	{
 		if(!(E instanceof GenBattery)) return false;
 		return super.sameAs(E);
+	}
+	
+	public void destroy()
+	{
+		if((!destroyed)&&(circuitKey!=null))
+		{
+			CMLib.tech().unregisterElectronics(this,circuitKey);
+			circuitKey=null;
+		}
+		super.destroy();
+	}
+	public void setOwner(ItemPossessor owner)
+	{
+		final ItemPossessor prevOwner=super.owner;
+		super.setOwner(owner);
+		if(prevOwner != owner)
+		{
+			if(owner instanceof Room)
+			{
+				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
+			}
+			else
+			{
+				CMLib.tech().unregisterElectronics(this,circuitKey);
+				circuitKey=null;
+			}
+		}
 	}
 }

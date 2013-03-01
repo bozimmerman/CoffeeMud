@@ -159,8 +159,8 @@ public class MWDataBuffers implements DataBuffers
 	@Override
 	public void add(final ByteBuffer buf, final long lastModifiedTime)
 	{
-		list.add(new Pair<Object,Long>(buf,Long.valueOf(buf.limit())));
-		length += buf.limit();
+		list.add(new Pair<Object,Long>(buf,Long.valueOf(buf.limit()-buf.position())));
+		length += buf.limit() - buf.position();
 		if((lastModifiedTime != this.lastModifiedTime) && (lastModifiedTime > 0))
 			this.lastModifiedTime=lastModifiedTime;
 	}
@@ -183,8 +183,8 @@ public class MWDataBuffers implements DataBuffers
 	@Override
 	public void insertTop(final ByteBuffer buf, final long lastModifiedTime)
 	{
-		list.addFirst(new Pair<Object,Long>(buf,Long.valueOf(buf.limit())));
-		length += buf.limit();
+		list.addFirst(new Pair<Object,Long>(buf,Long.valueOf(buf.limit()-buf.position())));
+		length += buf.limit()-buf.position();
 		if((lastModifiedTime != this.lastModifiedTime) && (lastModifiedTime > 0))
 			this.lastModifiedTime=lastModifiedTime;
 	}
@@ -264,12 +264,14 @@ public class MWDataBuffers implements DataBuffers
 			ByteBuffer buf=next();
 			if((basePosition+(long)buf.remaining())<=to)
 			{
+				length-=buf.remaining();
 				basePosition+=(long)buf.remaining();
 				buf.position(buf.limit());
 			}
 			else
 			{
 				buf.position((int)(buf.position()+(to-basePosition)));
+				length-=(to-basePosition);
 				break;
 			}
 		}

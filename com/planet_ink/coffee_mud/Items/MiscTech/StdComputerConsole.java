@@ -52,6 +52,7 @@ public class StdComputerConsole extends StdRideable
 		material=RawMaterial.RESOURCE_STEEL;
 		recoverPhyStats();
 	}
+	private volatile String circuitKey=null;
 
 	public int fuelType(){return RawMaterial.RESOURCE_ENERGY;}
 	public void setFuelType(int resource){}
@@ -164,8 +165,40 @@ public class StdComputerConsole extends StdRideable
 					msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shut(s) up <T-NAME>.");
 				}
 				break;
+			case CMMsg.TYP_POWERCURRENT:
+				if(activated())
+				{
+				}
+				break;
 			}
 		}
 		super.executeMsg(host,msg);
+	}
+	
+	public void destroy()
+	{
+		if((!destroyed)&&(circuitKey!=null))
+		{
+			CMLib.tech().unregisterElectronics(this,circuitKey);
+			circuitKey=null;
+		}
+		super.destroy();
+	}
+	public void setOwner(ItemPossessor owner)
+	{
+		final ItemPossessor prevOwner=super.owner;
+		super.setOwner(owner);
+		if(prevOwner != owner)
+		{
+			if(owner instanceof Room)
+			{
+				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
+			}
+			else
+			{
+				CMLib.tech().unregisterElectronics(this,circuitKey);
+				circuitKey=null;
+			}
+		}
 	}
 }

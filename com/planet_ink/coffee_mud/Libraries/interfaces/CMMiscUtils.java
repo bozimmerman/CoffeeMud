@@ -67,8 +67,7 @@ public interface CMMiscUtils extends CMLibrary
 	public List<DeadBody> getDeadBodies(Environmental container);
 	public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel);
 	
-	public Item isRuinedLoot(DVector policies, Item I);
-	public DVector parseLootPolicyFor(MOB mob);
+	public Item isRuinedLoot(MOB mob, Item I);
 	
 	public void swapRaces(Race newR, Race oldR);
 	public void reloadCharClasses(CharClass oldC);
