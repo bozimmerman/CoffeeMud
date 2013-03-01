@@ -53,6 +53,8 @@ public interface Electronics extends Item, Technical
 		public void setConsumedFuelType(int[] resources);
 		public int getGeneratedAmountPerTick();
 		public void setGenerationAmountPerTick(int amt);
+		public int getTicksPerFuelConsume();
+		public void getTicksPerFuelConsume(int tick);
 	}
 	
 	public interface ElecPanel extends Electronics

@@ -706,15 +706,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	
 	
 	public int destroyResources(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never)
-	{ return destroyResources(getAllItems(E),E,howMuch,finalMaterial,otherMaterial,never);}
+	{ return destroyResources(getAllItems(E),howMuch,finalMaterial,otherMaterial,never,null);}
 	public int destroyResources(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never)
-	{ return destroyResources(getAllItems(E),E,howMuch,finalMaterial,otherMaterial,never);}
-	public int destroyResources(List<Item> V,
-								Environmental addTo,
-								int howMuch,
-								int finalMaterial,
-								int otherMaterial,
-								Item never)
+	{ return destroyResources(getAllItems(E),howMuch,finalMaterial,otherMaterial,never,null);}
+	public int destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
 	{
 		int lostValue=0;
 		if((V==null)||(V.size()==0)) return 0;
@@ -729,7 +724,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			if((otherMaterial>0)
 			&&(I instanceof RawMaterial)
 			&&(I.material()==otherMaterial)
-			&&(I.container()==null)
+			&&(I.container()==C)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().enchanted(I)))
 			{
@@ -752,7 +747,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			else
 			if((I instanceof RawMaterial)
 			&&(I.material()==finalMaterial)
-			&&(I.container()==null)
+			&&(I.container()==C)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().enchanted(I))
 			&&(howMuch>0))

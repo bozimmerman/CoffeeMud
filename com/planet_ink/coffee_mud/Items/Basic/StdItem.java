@@ -490,7 +490,7 @@ public class StdItem implements Item
 				return false;
 		}
 		else
-		if(tickID!=Tickable.TICKID_CLANITEM)
+		if((tickID!=Tickable.TICKID_CLANITEM)&&(tickID!=Tickable.TICKID_ELECTRONICS))
 		{
 			tickStatus=Tickable.STATUS_AFFECT;
 			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A){

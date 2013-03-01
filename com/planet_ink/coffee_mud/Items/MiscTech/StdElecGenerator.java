@@ -53,10 +53,14 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 	private volatile String circuitKey=null;
 	
 	protected int   generatedAmtPerTick = 1;
-	protected int[] generatedFuelTypes = new int[]{RawMaterial.RESOURCE_DEUTERIUM};
+	protected int[] generatedFuelTypes  = new int[]{RawMaterial.RESOURCE_DEUTERIUM};
+	protected int   ticksPerFuelConsume = 10;
+	protected volatile int fuelTickDown	= 0;
 	
-	protected SLinkedList<WeakReference<Room>> roomsToPower=new SLinkedList<WeakReference<Room>>();  
-	
+	@Override
+	public int getTicksPerFuelConsume() { return ticksPerFuelConsume; }
+	@Override
+	public void getTicksPerFuelConsume(int tick) { ticksPerFuelConsume=tick; }
 	@Override
 	public long containTypes(){return Container.CONTAIN_RAWMATERIALS;}
 	@Override
@@ -90,6 +94,7 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 			CMLib.tech().unregisterElectronics(this,circuitKey);
 			circuitKey=null;
 		}
+		CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
 		super.destroy();
 	}
 	
@@ -101,14 +106,72 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 		{
 			if(newOwner instanceof Room)
 			{
+				if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELECTRONICS))
+					CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
 				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
 			}
 			else
 			{
 				CMLib.tech().unregisterElectronics(this,circuitKey);
 				circuitKey=null;
+				CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
 			}
 		}
+	}
+	
+	protected void engineShutdown()
+	{
+		MOB deity=CMLib.map().deity();
+		CMMsg msg=CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_DEACTIVATE, "<T-NAME> sputters and shuts itself down.");
+		Room R=CMLib.map().roomLocation(this);
+		if((R!=null)&&(R.okMessage(deity, msg)))
+			R.send(deity, msg);
+	}
+
+	protected volatile List<Item> fuelCache=null;
+	protected synchronized List<Item> getFuel()
+	{
+		if(fuelCache==null)
+		{
+			fuelCache=getContents();
+		}
+		return fuelCache;
+	}
+	protected synchronized void clearFuelCache()
+	{
+		fuelCache=null;
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(tickID==Tickable.TICKID_ELECTRONICS)
+		{
+			if(activated())
+			{
+				if(fuelTickDown <= 0)
+				{
+					fuelTickDown=getTicksPerFuelConsume();
+					boolean consumedFuel=false;
+					List<Item> fuel=getFuel();
+					for(Item I : fuel)
+					{
+						if((I instanceof RawMaterial)
+						&&(!I.amDestroyed())
+						&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
+						{
+							CMLib.materials().destroyResources(fuel, 1, ((RawMaterial)I).material(), -1, null, this);
+							consumedFuel=true;
+							break;
+						}
+					}
+					if(!consumedFuel)
+						engineShutdown();
+				}
+			}
+		}
+		return true;
 	}
 	
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -116,9 +179,16 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 		super.executeMsg(myHost, msg);
 		if(msg.amITarget(this))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_POWERCURRENT)&&(msg.value()==0))
+			switch(msg.targetMinor())
 			{
-				if(activated())
+			case CMMsg.TYP_GET:
+				clearFuelCache();
+				break;
+			case CMMsg.TYP_PUT:
+				clearFuelCache();
+				break;
+			case CMMsg.TYP_POWERCURRENT:
+				if(msg.value()==0)
 				{
 					if(((powerCapacity() - powerRemaining()) >= getGeneratedAmountPerTick())
 					||(powerRemaining() < getGeneratedAmountPerTick()))
@@ -127,8 +197,10 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 						if(newAmount > powerCapacity())
 							newAmount=powerCapacity();
 						setPowerRemaining(newAmount);
+						fuelTickDown--;
 					}
 				}
+				break;
 			}
 		}
 	}

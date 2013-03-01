@@ -78,4 +78,42 @@ public class StdShipEngine extends StdElecItem
 			}
 		}
 	}
+	
+	public void destroy()
+	{
+		CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
+		super.destroy();
+	}
+	
+	public void setOwner(ItemPossessor newOwner)
+	{
+		final ItemPossessor prevOwner=super.owner;
+		super.setOwner(newOwner);
+		if(prevOwner != newOwner)
+		{
+			if(newOwner instanceof Room)
+			{
+				if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELECTRONICS))
+					CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
+			}
+			else
+			{
+				CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
+			}
+		}
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(tickID==Tickable.TICKID_ELECTRONICS)
+		{
+			if(activated())
+			{
+			}
+		}
+		return true;
+	}
+	
 }

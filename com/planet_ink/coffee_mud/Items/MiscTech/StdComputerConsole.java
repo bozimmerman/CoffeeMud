@@ -181,9 +181,11 @@ public class StdComputerConsole extends StdRideable
 		{
 			CMLib.tech().unregisterElectronics(this,circuitKey);
 			circuitKey=null;
+			CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
 		}
 		super.destroy();
 	}
+	
 	public void setOwner(ItemPossessor owner)
 	{
 		final ItemPossessor prevOwner=super.owner;
@@ -192,13 +194,29 @@ public class StdComputerConsole extends StdRideable
 		{
 			if(owner instanceof Room)
 			{
+				if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELECTRONICS))
+					CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
 				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
 			}
 			else
 			{
+				CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
 				CMLib.tech().unregisterElectronics(this,circuitKey);
 				circuitKey=null;
 			}
 		}
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(tickID==Tickable.TICKID_ELECTRONICS)
+		{
+			if(activated())
+			{
+			}
+		}
+		return true;
 	}
 }

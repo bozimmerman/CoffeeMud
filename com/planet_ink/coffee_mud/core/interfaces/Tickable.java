@@ -114,6 +114,8 @@ public interface Tickable extends CMObject
 	public final static int TICKID_MISCELLANEOUS=20;
 	/** the tickid for a miscellaneous tickable service*/
 	public final static int TICKID_PROPERTY_SPECIAL=21;
+	/** the tickid for an electrical proactive action service*/
+	public final static int TICKID_ELECTRONICS=22;
 	/** modifies a tickID to designate a longer wait before declaring dead.*/
 	public final static int TICKID_LONGERMASK=256;
 

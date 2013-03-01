@@ -50,6 +50,7 @@ public interface MaterialLibrary extends CMLibrary
 	public boolean quickDestroy(Item I);
 	public int destroyResources(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never);
 	public int destroyResources(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never);
+	public int destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
 	public Item fetchFoundOtherEncoded(Room E, String otherRequired);
 	public Item fetchFoundOtherEncoded(MOB E, String otherRequired);
 	public Item findMostOfMaterial(Room E, int material);
