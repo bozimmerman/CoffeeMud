@@ -130,7 +130,7 @@ public class GroundWired extends StdLibrary implements TechLibrary, Runnable
 		{
 			thread.setStatus("sleeping");
 			thread.disableDBCheck();
-			//thread.start();
+			thread.start();
 		}
 		return true;
 	}
