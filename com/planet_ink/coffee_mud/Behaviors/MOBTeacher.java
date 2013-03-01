@@ -112,6 +112,7 @@ public class MOBTeacher extends CombatAbilities
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBTEACHER))
 		&&((--tickDownToKnowledge)==0)
 		&&(ticking instanceof MOB))
 		{
@@ -310,7 +311,8 @@ public class MOBTeacher extends CombatAbilities
 		&&(!student.isMonster())
 		&&(msg.sourceMessage()!=null)
 		&&((msg.target()==null)||msg.amITarget(monster))
-		&&(msg.targetMinor()==CMMsg.TYP_SPEAK))
+		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBTEACHER)))
 		{
 			String sayMsg=CMStrings.getSayFromMessage(msg.sourceMessage());
 			if(sayMsg==null)

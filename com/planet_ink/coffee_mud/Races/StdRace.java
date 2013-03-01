@@ -504,7 +504,7 @@ public class StdRace implements Race
 		Hashtable<Item,Container> containerMap=new Hashtable<Item,Container>();
 		Hashtable<Item,Container> itemMap=new Hashtable<Item,Container>();
 		LinkedList<Item> itemsToGo=new LinkedList<Item>();
-		for(int i=0;i<mob.numItems();)
+		for(int i=0;i<mob.numItems();i++)
 		{
 			Item thisItem=mob.getItem(i);
 			if(thisItem != null)
