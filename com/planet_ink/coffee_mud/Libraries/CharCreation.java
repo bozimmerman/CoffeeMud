@@ -1293,11 +1293,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected void promptGender(int theme, MOB mob, Session session) throws IOException
 	{
-		String Gender="";
-		while(Gender.length()==0)
-			Gender=session.choose("\n\r^!What is your gender (M/F)?^N","MF","");
+		String gender="";
+		while(gender.length()==0)
+			gender=session.choose("\n\r^!What is your gender (M/F)?^N","MF","",300000);
 
-		mob.baseCharStats().setStat(CharStats.STAT_GENDER,Gender.toUpperCase().charAt(0));
+		if((gender==null)||(gender.length()==0))
+			gender="M";
+		mob.baseCharStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
 
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
 	}
