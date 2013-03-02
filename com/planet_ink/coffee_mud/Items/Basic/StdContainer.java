@@ -558,6 +558,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		if(I.container()==null) return false;
 		if(I.container()==this) return true;
+		if(I.container()==I) return false;
 		return isInside(I.container());
 	}
 	
