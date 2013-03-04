@@ -106,7 +106,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ 
 		if((P==null)||((P.phyStats().disposition()&PhyStats.IS_UNSAVABLE)==0))
 		{
-			if((P instanceof Item)&&(((Item)P).container()!=null))
+			if((P instanceof Item)&&(((Item)P).container()!=null)&&(((Item)P).container()!=P))
 				return isSavable(((Item)P).container());
 			return true;
 		}

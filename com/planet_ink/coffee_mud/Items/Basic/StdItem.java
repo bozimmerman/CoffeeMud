@@ -511,6 +511,9 @@ public class StdItem implements Item
 		if(C==stopAtC) 
 			return C;
 		else
+		if(C==this) 
+			return null;
+		else
 			return C.ultimateContainer(stopAtC);
 	}
 	public Container container()
