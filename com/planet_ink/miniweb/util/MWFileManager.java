@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 
 import com.planet_ink.miniweb.interfaces.FileManager;
 /*
@@ -46,6 +47,10 @@ public class MWFileManager implements FileManager
 	{
 		return new BufferedInputStream(new FileInputStream(file));
 	}
+	public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException
+	{
+		return new RandomAccessFile(file,"r");
+	}
 	@Override
 	public byte[] readFile(File file) throws IOException, FileNotFoundException 
 	{
@@ -62,6 +67,12 @@ public class MWFileManager implements FileManager
 				bs.close();
 		}
 		return fileBuf;
+	}
+
+	@Override
+	public boolean supportsRandomAccess(File file)
+	{
+		return true;
 	}
 
 }

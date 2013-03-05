@@ -1,6 +1,5 @@
 package com.planet_ink.miniweb.http;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -307,7 +306,7 @@ public class MWFileCache implements FileCacheManager
 			boolean cacheActiveThisFile=cacheActive;
 			try
 			{
-				if((cacheMaxFileBytes==0)||(pageFile.length()<=cacheMaxFileBytes))
+				if((cacheMaxFileBytes==0)||(pageFile.length()<=cacheMaxFileBytes)||(!fileManager.supportsRandomAccess(pageFile)))
 				{
 					byte[] fileBuf = fileManager.readFile(pageFile);
 					if(cacheActiveThisFile)
@@ -319,7 +318,7 @@ public class MWFileCache implements FileCacheManager
 				}
 				else
 				{
-					return new MWDataBuffers(fileManager.getFileStream(pageFile), (int)pageFile.length(), pageFile.lastModified());
+					return new MWDataBuffers(fileManager.getRandomAccessFile(pageFile), pageFile.lastModified());
 				}
 			}
 			catch(FileNotFoundException e)

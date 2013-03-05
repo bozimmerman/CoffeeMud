@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -157,35 +158,21 @@ public class HTTPReqProcessor implements HTTPFileGetter
 	 * If there is a range parsing error, an http exception is thrown
 	 * @param request the request being processed
 	 * @param buffers the fully formed output buffer
-	 * @return a new buffer if changed, or null if not changed
+	 * @return true if a range was set, false otherwise
 	 * @throws HTTPException
 	 */
-	private DataBuffers handleRangeRequests(HTTPRequest request, final DataBuffers buffers) throws HTTPException
+	private boolean setRangeRequests(HTTPRequest request, final DataBuffers buffers) throws HTTPException
 	{
 		final List<int[]> rangeXYSets = request.getRangeAZ();
 		if(rangeXYSets!=null)
 		{
-			if(rangeXYSets.size()==1)
-			{
-				int[] rangeAZ=checkRangeRequest(rangeXYSets.iterator().next(),buffers.getLength());
-				buffers.limit(rangeAZ[1]);
-				buffers.skip(rangeAZ[0]);
-				return buffers;
-			}
-			else
-			{
-				DataBuffers newBuf = new MWDataBuffers();
-				byte[] fullBuf=buffers.flushToBuffer().array();
-				final long lastModified=buffers.getLastModified().getTime();
-				for(int[] rangeAZ : rangeXYSets)
-				{
-					rangeAZ=checkRangeRequest(rangeAZ,fullBuf.length);
-					newBuf.add(ByteBuffer.wrap(fullBuf, rangeAZ[0], rangeAZ[1]-rangeAZ[0]), lastModified);
-				}
-				return newBuf;
-			}
+			List<int[]> ranges=new LinkedList<int[]>();
+			for(int[] range : rangeXYSets)
+				ranges.add(checkRangeRequest(range,buffers.getLength()));
+			buffers.setRanges(ranges);
+			return true;
 		}
-		return null;
+		return false;
 	}
 	
 	/**
@@ -437,7 +424,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 			catch(ParseException e) { }
 		}
 	}
-
+	
 	/**
 	 * Retreives a buffer set containing the possibly cached contents of the file. 
 	 * This can trigger file reads, servlet calls and other ways
@@ -573,12 +560,8 @@ public class HTTPReqProcessor implements HTTPFileGetter
 					checkIfModifiedSince(request,buffers);
 					buffers = handleEncodingRequest(request, pageFile, buffers, extraHeaders);
 				}
-				final DataBuffers rangedPageData = handleRangeRequests(request, buffers);
-				if(rangedPageData != null) // if they are diff, there must be a new range
-				{
-					buffers = rangedPageData;
+				if(setRangeRequests(request, buffers))
 					responseStatus = HTTPStatus.S206_PARTIAL_CONTENT;
-				}
 				break;
 			}
 			default:

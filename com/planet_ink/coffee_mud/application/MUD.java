@@ -40,6 +40,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.PrintWriter; // for writing to sockets
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.net.*;
 import java.util.*;
@@ -269,6 +270,14 @@ public class MUD extends Thread implements MudHost
 						}
 						@Override public InputStream getFileStream(File file) throws IOException, FileNotFoundException {
 							return ((CMFile)file).getRawStream();
+						}
+						@Override
+						public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException {
+							return new RandomAccessFile(new File(((CMFile)file).getLocalPathAndName()),"r");
+						}
+						@Override
+						public boolean supportsRandomAccess(File file) { 
+							return ((CMFile)file).isLocalFile();
 						}
 					});
 					MiniWebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
@@ -1194,7 +1203,6 @@ public class MUD extends Thread implements MudHost
 			}
 		}
 
-		@SuppressWarnings("unused")
 		public void run()
 		{
 			new CMLib(); // initialize the lib
@@ -1330,7 +1338,6 @@ public class MUD extends Thread implements MudHost
 		return V;
 	}
 
-	@SuppressWarnings("unused")
 	public static void main(String a[])
 	{
 		String nameID="";

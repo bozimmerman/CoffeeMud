@@ -3,6 +3,7 @@ package com.planet_ink.miniweb.interfaces;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 /*
 Copyright 2012-2013 Bo Zimmerman
 
@@ -58,4 +59,17 @@ public interface FileManager
 	 * @return an open input stream for reading.
 	 */
 	public InputStream getFileStream(File file) throws IOException, FileNotFoundException;
+	
+	/**
+	 * Returns whether the given file can be randomly accessed
+	 * @return true if it can, or false otherwise
+	 */
+	public boolean supportsRandomAccess(File file);
+
+	/**
+	 * Return a readable input stream of the given files data
+	 * @param file the file to read
+	 * @return an open input stream for reading.
+	 */
+	public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException;
 }

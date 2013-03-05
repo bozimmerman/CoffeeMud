@@ -1,9 +1,10 @@
 package com.planet_ink.miniweb.interfaces;
 
-import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /*
 Copyright 2012-2013 Bo Zimmerman
@@ -73,19 +74,25 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	public void add(final byte[] buf, final long lastModifiedTime);
 
 	/**
-	 * Add a new input stream to this set.
-	 * @param stream the input stream to add
-	 * @param length the input stream length
-	 * @param lastModifiedTime the last modified date of the data, or 0 to ignore
-	 */
-	public void add(final InputStream stream, final int length, final long lastModifiedTime);
-
-	/**
 	 * Add a new ByteBuffer to the top of this set.
 	 * @param buf the buffer to add
 	 * @param lastModifiedTime the last modified date of the data, or 0 to ignore
 	 */
 	public void insertTop(final ByteBuffer buf, final long lastModifiedTime);
+	
+	/**
+	 * Add a new random access file to this beginning of this set.
+	 * @param file the input stream to add
+	 * @param lastModifiedTime the last modified date of the data, or 0 to ignore
+	 */
+	public void insertTop(final RandomAccessFile file, final long lastModifiedTime);
+	
+	/**
+	 * Add a new random access file to this set.
+	 * @param file the input stream to add
+	 * @param lastModifiedTime the last modified date of the data, or 0 to ignore
+	 */
+	public void add(final RandomAccessFile file, final long lastModifiedTime);
 
 	/**
 	 * Add a new byte array to the top of this set.
@@ -93,24 +100,11 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * @param lastModifiedTime the last modified date of the data, or 0 to ignore
 	 */
 	public void insertTop(final byte[] buf, final long lastModifiedTime);
-
-	/**
-	 * Add a new input stream to the top of this set.
-	 * @param stream the input stream to add
-	 * @param length the input stream length
-	 * @param lastModifiedTime the last modified date of the data, or 0 to ignore
-	 */
-	public void insertTop(final InputStream stream, final int length, final long lastModifiedTime);
 	
 	/**
-	 * Skip ahead to the given position in these buffers.
-	 * @param to the position to skip ahead to
+	 * Reconfigure this databuffer to return the given ranges
+	 * Each range is 2 dimentional int array, startpos, endpos.
+	 * @param ranges the list of ranges
 	 */
-	public void skip(long to);
-	
-	/**
-	 * Trim, cut off, or prevent reading past the given position.
-	 * @param to the position to skip ahead to
-	 */
-	public void limit(long at);
+	public void setRanges(final List<int[]> ranges);
 }

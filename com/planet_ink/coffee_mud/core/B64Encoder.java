@@ -173,7 +173,7 @@ public class B64Encoder
 	
 	public static String B64encodeObject( java.io.Serializable serializableObject, int options )
 	{
-		java.io.ByteArrayOutputStream  baos  = null; 
+		java.io.ByteArrayOutputStream  baos  = new java.io.ByteArrayOutputStream(); 
 		java.io.OutputStream		   b64os = null; 
 		java.io.ObjectOutputStream     oos   = null; 
 		java.util.zip.GZIPOutputStream gzos  = null;
@@ -183,7 +183,6 @@ public class B64Encoder
 		
 		try
 		{
-			baos  = new java.io.ByteArrayOutputStream();
 			b64os = new B64OutputStream( baos, ENCODE | dontBreakLines );
 	
 			if( gzip == GZIP )
@@ -206,7 +205,7 @@ public class B64Encoder
 			try{ if(oos!=null)oos.close();   } catch( Exception e ){}
 			try{ if(gzos!=null)gzos.close();  } catch( Exception e ){}
 			try{ if(b64os!=null)b64os.close(); } catch( Exception e ){}
-			try{ if(baos!=null)baos.close();  } catch( Exception e ){}
+			try{ baos.close();  } catch( Exception e ){}
 		}
 		
 		try 
@@ -242,14 +241,13 @@ public class B64Encoder
 		
 		if( gzip == GZIP )
 		{
-			java.io.ByteArrayOutputStream  baos  = null;
+			java.io.ByteArrayOutputStream  baos  = new java.io.ByteArrayOutputStream();
 			java.util.zip.GZIPOutputStream gzos  = null;
 			B64OutputStream 		b64os = null;
 			
 	
 			try
 			{
-				baos = new java.io.ByteArrayOutputStream();
 				b64os = new B64OutputStream( baos, ENCODE | dontBreakLines );
 				gzos  = new java.util.zip.GZIPOutputStream( b64os ); 
 			
@@ -265,7 +263,7 @@ public class B64Encoder
 			{
 				try{ if(gzos!=null)gzos.close();  } catch( Exception e ){}
 				try{ if(b64os!=null)b64os.close(); } catch( Exception e ){}
-				try{ if(baos!=null)baos.close();  } catch( Exception e ){}
+				try{ baos.close();  } catch( Exception e ){}
 			}
 			try
 			{

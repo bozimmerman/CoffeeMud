@@ -291,7 +291,6 @@ public class OffLine extends Thread implements MudHost
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	public void run()
 	{
 		int q_len = 6;
@@ -405,7 +404,6 @@ public class OffLine extends Thread implements MudHost
 		return port;
 	}
 
-	@SuppressWarnings("unused")
 	public static void main(String a[])
 	{
 		CMProps page=null;
