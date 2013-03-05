@@ -464,9 +464,7 @@ public class ServiceEngine implements ThreadEngine
 							return CMLib.english().returnTime(thread.activeTimeMillis(),0);
 						if(instrCode.equalsIgnoreCase("MiliTotalTime"))
 							return CMLib.english().returnTime(thread.activeTimeMillis(),0);
-						if(instrCode.equalsIgnoreCase("MilliTotalTimePlusAverage"))
-							return CMLib.english().returnTime(thread.activeTimeMillis(),thread.getTotalTicks());
-						if(instrCode.equalsIgnoreCase("MiliTotalTimePlusAverage"))
+						if(instrCode.equalsIgnoreCase("MilliTotalTimePlusAverage")||instrCode.equalsIgnoreCase("MiliTotalTimePlusAverage"))
 							return CMLib.english().returnTime(thread.activeTimeMillis(),thread.getTotalTicks());
 						if(instrCode.equalsIgnoreCase("TickTotal"))
 							return ""+thread.getTotalTicks();

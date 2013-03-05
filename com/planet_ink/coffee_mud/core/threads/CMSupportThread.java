@@ -160,6 +160,7 @@ public class CMSupportThread extends Thread implements CMRunnable
 						}
 						else
 						{
+							lastStop=System.currentTimeMillis();
 							Thread.sleep(sleepTime);
 						}
 					}
@@ -195,7 +196,7 @@ public class CMSupportThread extends Thread implements CMRunnable
 		final long ls = lastStart;
 		final long le = lastStop;
 		final long mt = milliTotal;
-		if(le > ls)
+		if(le >= ls)
 			return mt;
 		return mt + (System.currentTimeMillis()-ls);
 	}
