@@ -36,7 +36,7 @@
 
 <body>
 <FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
-<script language="JavaScript" type="text/javascript" src="textedit/wysiwyg.js"></script>
+<script language="JavaScript" type="text/javascript" src="textedit/nicEdit.js"></script>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
@@ -91,11 +91,11 @@
 	</TD>
 	<TD>
 <textarea id="SHORTDESC" name="SHORTDESC" style="height: 40px; width: 500px;">@ForumInfo?SHORTDESC@</textarea>
-		<script language="javascript1.2">
-			wysiwygWidth = 500;
-			wysiwygHeight = 80;
-			generate_wysiwyg('SHORTDESC');
-		</script>
+        <script language="javascript">
+            //wysiwygWidth = 500;
+            //wysiwygHeight = 80;
+            WYSIWYG.attach('SHORTDESC');
+        </script>
 	</TD>
 </TR>
 <TR BGCOLOR=LIGHTBLUE>
@@ -107,7 +107,7 @@
 		<script language="javascript1.2">
 			wysiwygWidth = 500;
 			wysiwygHeight = 300;
-			generate_wysiwyg('LONGDESC');
+			WYSIWYG.attach('LONGDESC');
 		</script>
 	</TD>
 </TR>

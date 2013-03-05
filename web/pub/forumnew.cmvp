@@ -7,6 +7,19 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="forums.css">
+    <style type="text/css">
+        .nicEdit-selected {
+            border: 2px solid #0000ff !important;
+        }
+    
+        .nicEdit-panel {
+            background-color: #fff !important;
+        }
+        .nicEdit-main {
+            background-color: #fff !important;
+            border-right-color: #fff;
+        }
+    </style>
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
@@ -67,7 +80,7 @@
 </head>
 
 <body>
-<script language="JavaScript" type="text/javascript" src="textedit/wysiwyg.js"></script>
+<script language="JavaScript" type="text/javascript" src="textedit/nicEdit.js"></script>
 <FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forumnew.cmvp">
 @if?CheckReqParm?!JOURNALMESSAGE=@
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
@@ -158,9 +171,9 @@
 <TR BGCOLOR=LIGHTGREY VALIGN=TOP>
 	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>&nbsp;&nbsp;<FONT SIZE=6><B>Message:</B></FONT></TD>
 	<TD ALIGN=LEFT VALIGN=TOP>
-<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@<BR> @else@ @if?CheckReqParm?FUNCTION=EDITPOST@ @JournalInfo?MESSAGE@ @endif@ @endif@ @endif@</textarea>
-		<script language="javascript1.2">
-			generate_wysiwyg('NEWTEXT');
+<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px; background: white;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@<BR> @else@ @if?CheckReqParm?FUNCTION=EDITPOST@ @JournalInfo?MESSAGE@ @endif@ @endif@ @endif@</textarea>
+		<script language="javascript">
+            new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('NEWTEXT');
 		</script>
 	</TD>
 </TR>
