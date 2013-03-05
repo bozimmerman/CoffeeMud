@@ -17,12 +17,13 @@
         }
         .nicEdit-main {
             background-color: #fff !important;
-            border-right-color: #fff;
+            border: 1px solid #000000 !important;
         }
     </style>
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
+	    var forumEditors=[];
 		var abort=false;
 		function Cancel()
 		{
@@ -71,7 +72,9 @@
 				@endif@
 				document.FORUM.action='forummsg.cmvp';
 			@endif@
-			updateTextArea('NEWTEXT');
+			for(var i=0;i<forumEditors.length;i++)
+                for(var i2=0;i2<forumEditors[i].nicInstances.length;i2++)
+    			    forumEditors[i].nicInstances[i2].saveContent();
 			document.FORUM.submit();
 		}
 		
@@ -173,7 +176,7 @@
 	<TD ALIGN=LEFT VALIGN=TOP>
 <textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px; background: white;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@<BR> @else@ @if?CheckReqParm?FUNCTION=EDITPOST@ @JournalInfo?MESSAGE@ @endif@ @endif@ @endif@</textarea>
 		<script language="javascript">
-            new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('NEWTEXT');
+            forumEditors.push(new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('NEWTEXT'));
 		</script>
 	</TD>
 </TR>

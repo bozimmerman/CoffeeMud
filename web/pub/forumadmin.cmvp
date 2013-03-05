@@ -7,9 +7,23 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="forums.css">
+    <style type="text/css">
+        .nicEdit-selected {
+            border: 2px solid #0000ff !important;
+        }
+    
+        .nicEdit-panel {
+            background-color: #fff !important;
+        }
+        .nicEdit-main {
+            background-color: #fff !important;
+            border: 1px solid #000000 !important;
+        }
+    </style>
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
+        var forumEditors=[];
 		var abort=false;
 		function Cancel(which)
 		{
@@ -23,8 +37,9 @@
 			if(window.confirm('Confirm: Subject changes?'))
 			{
 				abort=true;
-				updateTextArea('SHORTDESC');
-				updateTextArea('LONGDESC');
+                for(var i=0;i<forumEditors.length;i++)
+                    for(var i2=0;i2<forumEditors[i].nicInstances.length;i2++)
+                        forumEditors[i].nicInstances[i2].saveContent();
 				document.FORUM.action="forum.cmvp";
 				document.FORUM.FUNCTION.value="ADMINSUBMIT";
 				document.FORUM.submit();
@@ -90,11 +105,9 @@
 	<FONT SIZE=6><B>Short Description</B>
 	</TD>
 	<TD>
-<textarea id="SHORTDESC" name="SHORTDESC" style="height: 40px; width: 500px;">@ForumInfo?SHORTDESC@</textarea>
+<textarea id="SHORTDESC" name="SHORTDESC" style="height: 80px; width: 500px;">@ForumInfo?SHORTDESC@</textarea>
         <script language="javascript">
-            //wysiwygWidth = 500;
-            //wysiwygHeight = 80;
-            WYSIWYG.attach('SHORTDESC');
+            forumEditors.push(new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('SHORTDESC'));
         </script>
 	</TD>
 </TR>
@@ -103,12 +116,10 @@
 	<FONT SIZE=6><B>Long Description</B>
 	</TD>
 	<TD>
-<textarea id="LONGDESC" name="LONGDESC" style="height: 170px; width: 500px;">@ForumInfo?LONGDESC@</textarea>
-		<script language="javascript1.2">
-			wysiwygWidth = 500;
-			wysiwygHeight = 300;
-			WYSIWYG.attach('LONGDESC');
-		</script>
+<textarea id="LONGDESC" name="LONGDESC" style="height: 300px; width: 500px;">@ForumInfo?LONGDESC@</textarea>
+        <script language="javascript">
+            forumEditors.push(new nicEditor({iconsPath : 'textedit/nicEditorIcons.gif', fullPanel: true}).panelInstance('LONGDESC'));
+        </script>
 	</TD>
 </TR>
 <TR BGCOLOR=LIGHTGREY>
