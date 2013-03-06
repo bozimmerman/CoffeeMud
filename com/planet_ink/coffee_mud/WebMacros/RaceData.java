@@ -633,7 +633,7 @@ public class RaceData extends StdWebMacro
 					{
 						if(s.toString().startsWith("<RACE>"))
 							s=new StringBuilder(s.toString().substring(6));
-						int limit=70;
+						int limit=78;
 						if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 						str.append(helpHelp(s,limit));
 					}

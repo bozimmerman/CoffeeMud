@@ -866,7 +866,7 @@ public class CharClassData extends StdWebMacro
 					{
 						if(s.toString().startsWith("<CHARCLASS>"))
 							s=new StringBuilder(s.toString().substring(11));
-						int limit=70;
+						int limit=78;
 						if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 						str.append(helpHelp(s,limit));
 					}

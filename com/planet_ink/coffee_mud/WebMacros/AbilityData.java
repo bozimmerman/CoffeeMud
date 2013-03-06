@@ -630,7 +630,7 @@ public class AbilityData extends StdWebMacro
 					StringBuilder s=CMLib.help().getHelpText(A.ID(),null,false);
 					if(s==null)
 						s=CMLib.help().getHelpText(A.Name(),null,false);
-					int limit=80;
+					int limit=78;
 					if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 					str.append(helpHelp(s,limit));
 				}
