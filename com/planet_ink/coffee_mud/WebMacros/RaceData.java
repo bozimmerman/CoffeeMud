@@ -817,7 +817,6 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("NATURALWEAPON"))
 					str.append(R.myNaturalWeapon().name()+", ");
 
-				MOB mob=null;
 				if(parms.containsKey("STATS"))
 					str.append(R.getStatAdjDesc()+", ");
 
@@ -950,31 +949,21 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("CLASSES"))
 				{
-					mob=CMClass.getFactoryMOB();
-					mob.setSession((Session)CMClass.getCommon("DefaultSession"));
-					mob.baseCharStats().setMyRace(R);
-					R.startRacing(mob,false);
-					mob.recoverCharStats();
-					mob.recoverCharStats();
-					mob.recoverPhyStats();
-					mob.recoverMaxState();
-					mob.setSession(null);
-					for(int i: CharStats.CODES.BASE())
-						mob.baseCharStats().setStat(i,25);
-					mob.recoverCharStats();
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=(CharClass)c.nextElement();
 						if((C!=null)
 						&&(CMProps.isTheme(C.availabilityCode()))
-						&&(C.qualifiesForThisClass(mob,true)))
-							str.append(C.name()+", ");
+						&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
+							||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
+							||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
+							||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory())))
+								str.append(C.name()+", ");
 					}
 				}
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))
 					strstr=strstr.substring(0,strstr.length()-2);
-				if(mob!=null) mob.destroy();
 				httpReq.getRequestObjects().put("RACE-"+last,R);
 				return clearWebMacros(strstr);
 			}

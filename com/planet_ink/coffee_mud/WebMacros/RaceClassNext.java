@@ -50,29 +50,23 @@ public class RaceClassNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		MOB mob=CMClass.getFactoryMOB();
-		for(int i: CharStats.CODES.BASE())
-			mob.baseCharStats().setStat(i,25);
-		mob.baseCharStats().setMyRace(R);
-		mob.recoverCharStats();
-		mob.recoverPhyStats();
-		mob.recoverMaxState();
 		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			CharClass C=(CharClass)c.nextElement();
 			if(((CMProps.isTheme(C.availabilityCode()))||(parms.containsKey("ALL")))
-			   &&(C.qualifiesForThisClass(mob,true)))
+				&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
+					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
+					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
+					||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory())))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("CLASS",C.ID());
-					mob.destroy();
 					return "";
 				}
 				lastID=C.ID();
 			}
 		}
-		mob.destroy();
 		httpReq.addFakeUrlParameter("CLASS","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";

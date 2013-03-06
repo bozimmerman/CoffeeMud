@@ -52,31 +52,24 @@ public class ClassRaceNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		MOB mob=CMClass.getFactoryMOB();
-		for(int i: CharStats.CODES.BASE())
-			mob.baseCharStats().setStat(i,25);
-		mob.recoverCharStats();
-		mob.recoverPhyStats();
-		mob.recoverMaxState();
 		for(Enumeration r=CMClass.races();r.hasMoreElements();)
 		{
 			Race R=(Race)r.nextElement();
-			mob.baseCharStats().setMyRace(R);
-			mob.recoverCharStats();
 			if(((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 				||(parms.containsKey("ALL")))
-			&&(C.qualifiesForThisClass(mob,true)))
+			&&(CMStrings.containsIgnoreCase(C.getRequiredRaceList(),"All")
+				||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.ID())
+				||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.name())
+				||CMStrings.containsIgnoreCase(C.getRequiredRaceList(),R.racialCategory())))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!R.ID().equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("RACE",R.ID());
-					mob.destroy();
 					return "";
 				}
 				lastID=R.ID();
 			}
 		}
-		mob.destroy();
 		httpReq.addFakeUrlParameter("RACE","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
