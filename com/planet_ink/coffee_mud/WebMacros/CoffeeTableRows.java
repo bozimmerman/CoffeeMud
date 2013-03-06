@@ -73,7 +73,7 @@ public class CoffeeTableRows extends StdWebMacro
 		long curTime=C.getTimeInMillis();
 		long lastCur=0;
 		String colspan="";
-		if(orderedParms.contains("SKILLUSE"))
+		if(parms.containsKey("SKILLUSE"))
 		{
 			CharClass CharC=null;
 			if(code.length()>1)
@@ -90,9 +90,8 @@ public class CoffeeTableRows extends StdWebMacro
 			{
 				lastCur=curTime;
 				Calendar C2=Calendar.getInstance();
-				C.setTimeInMillis(curTime);
+				C2.setTimeInMillis(curTime);
 				C2.add(Calendar.DATE,-(scale));
-				curTime=C2.getTimeInMillis();
 				C2.set(Calendar.HOUR_OF_DAY,23);
 				C2.set(Calendar.MINUTE,59);
 				C2.set(Calendar.SECOND,59);
@@ -156,16 +155,15 @@ public class CoffeeTableRows extends StdWebMacro
 			}
 		}
 		else
-		if(orderedParms.contains("QUESTNAME")||orderedParms.contains("QUESTRPT"))
+		if(parms.containsKey("QUESTNAME")||parms.containsKey("QUESTRPT"))
 		{
 			long[][] totals=new long[CMLib.quests().numQuests()][CoffeeTableRow.STAT_TOTAL];
 			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 			{
 				lastCur=curTime;
 				Calendar C2=Calendar.getInstance();
-				C.setTimeInMillis(curTime);
+				C2.setTimeInMillis(curTime);
 				C2.add(Calendar.DATE,-(scale));
-				curTime=C2.getTimeInMillis();
 				C2.set(Calendar.HOUR_OF_DAY,23);
 				C2.set(Calendar.MINUTE,59);
 				C2.set(Calendar.SECOND,59);
