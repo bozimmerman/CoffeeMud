@@ -54,6 +54,7 @@ public interface GenericBuilder extends CMLibrary
 	public void resetGenMOB(MOB mob, String newText);
 	public int envFlags(Environmental E);
 	public void setEnvFlags(Environmental E, int f);
+	public String getGenAbilityXML(Ability A);
 	public String getPropertiesStr(Environmental E, boolean fromTop);
 	public String getOrdPropertiesStr(Environmental E);
 	public String getGenMobAbilities(MOB M);

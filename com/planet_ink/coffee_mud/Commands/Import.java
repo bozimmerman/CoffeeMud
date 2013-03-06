@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -893,7 +894,7 @@ public class Import extends StdCommand
 		return false;
 	}
 
-	protected static void importCustomFiles(MOB mob, Hashtable files, HashSet customBother, boolean noPrompt, boolean noDelete)
+	protected static void importCustomFiles(MOB mob, Hashtable files, Set<String> customBother, boolean noPrompt, boolean noDelete)
 	throws IOException
 	{
 		if(files.size()==0) return;
@@ -925,16 +926,16 @@ public class Import extends StdCommand
 		}
 	}
 	
-	protected static void importCustomObjects(MOB mob, Vector custom, HashSet customBother, boolean noPrompt, boolean noDelete)
+	protected static void importCustomObjects(MOB mob, List<CMObject> custom, Set<String> customBother, boolean noPrompt, boolean noDelete)
 	throws IOException
 	{
 		if(custom.size()==0) return;
 		if((!noPrompt)&&((mob==null)||(mob.session()==null))) return;
 		for(int c=0;c<custom.size();c++)
 		{
-			if(custom.elementAt(c) instanceof Race)
+			if(custom.get(c) instanceof Race)
 			{
-				Race R=(Race)custom.elementAt(c);
+				Race R=(Race)custom.get(c);
 				if(customBother.contains(R.ID()))
 				   continue;
 	
@@ -961,9 +962,9 @@ public class Import extends StdCommand
 				}
 			}
 			else
-			if(custom.elementAt(c) instanceof CharClass)
+			if(custom.get(c) instanceof CharClass)
 			{
-				CharClass C=(CharClass)custom.elementAt(c);
+				CharClass C=(CharClass)custom.get(c);
 				if(customBother.contains(C.ID()))
 				   continue;
 	
@@ -987,6 +988,36 @@ public class Import extends StdCommand
 							continue;
 					CMClass.addCharClass(C);
 					CMLib.database().DBCreateClass(C.ID(),C.classParms());
+				}
+			}
+			else
+			if(custom.get(c) instanceof Ability)
+			{
+				Ability A=(Ability)custom.get(c);
+				if(customBother.contains(A.ID()))
+				   continue;
+	
+				Ability A2=CMClass.getAbility(A.ID());
+				if(A2==null)
+				{
+					if(!noPrompt)
+						if(!mob.session().confirm("Custom Ability '"+A.ID()+"' found, import (Y/n)?","Y"))
+							continue;
+					CMClass.addClass(CMObjectType.ABILITY, A);
+					CMLib.database().DBCreateAbility(A.ID(),CMClass.rawClassName(A),A.getStat("ALLXML"));
+				}
+				else
+				if(!A2.isGeneric())
+				{
+					if(noDelete)
+						continue;
+					else
+					if(!noPrompt)
+						if(!mob.session().confirm("Custom Ability '"+A.ID()+"' found which would override your standard Ability.  Import anyway (Y/n)?","Y"))
+							continue;
+					CMClass.delClass(CMObjectType.ABILITY, A2);
+					CMClass.addClass(CMObjectType.ABILITY, A);
+					CMLib.database().DBCreateAbility(A.ID(),CMClass.rawClassName(A),A.getStat("ALLXML"));
 				}
 			}
 		}
@@ -4344,9 +4375,9 @@ public class Import extends StdCommand
 		Vector nextResetData=new Vector();
 		Hashtable laterLinks=new Hashtable();
 		boolean multiArea=false;
-		Vector custom=new Vector();
+		List<CMObject> custom=new Vector<CMObject>();
 		Hashtable externalFiles=new Hashtable();
-		HashSet customBotherChecker=new HashSet();
+		Set<String> customBotherChecker=new HashSet();
 		boolean compileErrors=false;
 		String areaType=null;
 		commands.removeElementAt(0);

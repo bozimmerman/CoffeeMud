@@ -2446,3 +2446,4 @@ ruthless programmer, and sentenced to a quick death.
 2. Character Classes now use formulas for mana, movement, and hit point gains/losses.
 3. Character Class race/stat requirements can now be modified separately from qualifications mask.  Race qualifications shown in help now.
 4. Changed the wysiwyg forum editor to one that's also chrome compatible (nicEdit)
+5. Generic Abilities will not import/export when races that use them export

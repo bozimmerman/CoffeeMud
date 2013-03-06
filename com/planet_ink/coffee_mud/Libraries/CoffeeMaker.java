@@ -170,6 +170,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 	}
 
+	public String getGenAbilityXML(Ability A)
+	{
+		return new StringBuilder("<ABILITY ID=\"").append(A.ID()).append("\" TYPE=\"").append(CMClass.rawClassName(A)).append("\">")
+		   .append(A.getStat("ALLXML"))
+		   .append("</ABILITY>").toString();
+	}
+	
 	public String getPropertiesStr(Environmental E, boolean fromTop)
 	{
 		if(E==null)
@@ -914,6 +921,26 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 				}
 				else
+				if(ablk.tag.equalsIgnoreCase("ABILITY"))
+				{
+					String type=CMLib.xml().getParmValue(ablk.parms, "TYPE");
+					if(type!=null)
+					{
+						Ability A=CMClass.getAbility(type);
+						if(A!=null)
+						{
+							A=(Ability)A.copyOf();
+							A.setStat("CLASS",CMLib.xml().getParmValue(ablk.parms, "ID"));
+							A.setStat("ALLXML", ablk.value);
+							custom.add(A);
+						}
+						else
+							return unpackErr("Custom","?type?"+ablk.tag);
+					}
+					else
+						return unpackErr("Custom","?type?"+ablk.tag);
+				}
+				else
 					return unpackErr("Custom","??"+ablk.tag);
 			}
 		}
@@ -1262,15 +1289,39 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						continue;
 				}
 				buf.append(getMobXML(mob));
-				if((mob.baseCharStats().getMyRace().isGeneric())
-				&&(!custom.contains(mob.baseCharStats().getMyRace())))
-				   custom.add(mob.baseCharStats().getMyRace());
+				possiblyAddCustomRace(mob, custom);
+				possiblyAddCustomClass(mob, custom);
 				fillFileSet(mob,files);
 			}
 		}
 		return buf;
 	}
 
+	protected void possiblyAddCustomRace(final MOB mob, Set<CMObject> custom)
+	{
+		if(mob==null) return;
+		Race R=mob.baseCharStats().getMyRace();
+		if(R==null) return;
+		if((R.isGeneric()) &&(!custom.contains(R)))
+			custom.add(R);
+		for(Ability A : R.racialAbilities(null))
+			if(A.isGeneric() && !custom.contains(A))
+				custom.add(A);
+		for(Ability A : R.racialEffects(null))
+			if(A.isGeneric() && !custom.contains(A))
+				custom.add(A);
+	}
+	
+	protected void possiblyAddCustomClass(final MOB mob, Set<CMObject> custom)
+	{
+		for(int c=0;c<mob.baseCharStats().numClasses();c++)
+		{
+			CharClass C=mob.baseCharStats().getMyClass(c);
+			if((C.isGeneric())&&(!custom.contains(C)))
+				custom.add(C);
+		}
+	}
+	
 	public StringBuffer getRoomMobs(Room room,
 									Set<CMObject> custom,
 									Set<String> files,
@@ -1618,9 +1669,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					MOB mob=inhabs.get(i);
 					if((mob.isMonster())&&((mob.amFollowing()==null)||(mob.amFollowing().isMonster())))
 					{
-						if((mob.charStats().getMyRace().isGeneric())
-						&&(!custom.contains(mob.charStats().getMyRace())))
-						   custom.add(mob.charStats().getMyRace());
+						possiblyAddCustomRace(mob, custom);
+						possiblyAddCustomClass(mob, custom);
 
 						buf.append("<RMOB>");
 						buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
@@ -2719,15 +2769,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 		}
 		str.append(CMLib.xml().convertXMLtoTag("FOLLOWERS",fols.toString()));
-		if((mob.baseCharStats().getMyRace().isGeneric())
-		&&(!custom.contains(mob.baseCharStats().getMyRace())))
-		   custom.add(mob.baseCharStats().getMyRace());
-		for(int c=0;c<mob.baseCharStats().numClasses();c++)
-		{
-			CharClass C=mob.baseCharStats().getMyClass(c);
-			if((C.isGeneric())&&(!custom.contains(C)))
-				custom.add(C);
-		}
+
+		possiblyAddCustomRace(mob, custom);
+		possiblyAddCustomClass(mob, custom);
+		
 		fillFileSet(mob,files);
 		return str.toString();
 	}

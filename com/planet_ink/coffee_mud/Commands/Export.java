@@ -226,8 +226,8 @@ public class Export extends StdCommand
 		Area area = (Area)args[5];
 		Room room = (Room)args[6];
 		
-		HashSet custom=new HashSet();
-		HashSet files=new HashSet();
+		Set<CMObject> custom=new HashSet<CMObject>();
+		Set<String> files=new HashSet<String>();
 		
 		String xml="";
 		if(subType.equalsIgnoreCase("DATA"))
@@ -439,6 +439,9 @@ public class Export extends StdCommand
 				else
 				if(o instanceof CharClass)
 					str.append(((CharClass)o).classParms());
+				else
+				if(o instanceof Ability)
+					str.append(CMLib.coffeeMaker().getGenAbilityXML((Ability)o));
 			}
 			str.append("</CUSTOM>");
 			xml+=str.toString();
