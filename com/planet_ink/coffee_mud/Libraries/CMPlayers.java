@@ -599,7 +599,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			long userLastLoginDateTime=user.last;
 			long purgeDateTime;
 			long warnDateTime;
-			if(level>autoPurgeDaysLevels.length)
+			if(level>=autoPurgeDaysLevels.length)
 			{
 				if(autoPurgeDaysLevels[autoPurgeDaysLevels.length-1]==0)
 				{
