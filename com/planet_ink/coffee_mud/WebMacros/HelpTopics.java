@@ -49,7 +49,7 @@ public class HelpTopics extends StdWebMacro
 		else
 		if(parms.containsKey("DATA"))
 		{
-			int limit=70;
+			int limit=78;
 			if(parms.containsKey("LIMIT")) limit=CMath.s_int(parms.get("LIMIT"));
 			if((last!=null)&&(last.length()>0))
 			{

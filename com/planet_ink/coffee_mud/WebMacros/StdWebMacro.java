@@ -256,6 +256,7 @@ public class StdWebMacro implements WebMacro
 			int count=0;
 			x=0;
 			int lastSpace=0;
+			//TODO: limit should adjust or lastspace should -- something is wrong RIGHT HERE!
 			while((x>=0)&&(x<s.length()))
 			{
 				count++;
@@ -276,6 +277,7 @@ public class StdWebMacro implements WebMacro
 				   {
 					   s.setCharAt(x,'&');
 					   s.insert(x+1,"lt;");
+					   x+=3;
 				   }
 				   break;
 				case '-':
@@ -317,14 +319,17 @@ public class StdWebMacro implements WebMacro
 								x+=code.length()-1;
 							}
 						}
+						count--;
 					}
 					break;
 				}
 				if(count==limit)
 				{
-					s.replace(lastSpace,lastSpace+1,"<BR>");
+					//int brx=s.indexOf("<BR>",lastSpace);
+					//if((brx<0)||(brx>lastSpace+12))
+						s.replace(lastSpace,lastSpace+1,"<BR>");
 					lastSpace=lastSpace+4;
-					x=lastSpace+4;
+					x=lastSpace;
 					count=0;
 				}
 				else
