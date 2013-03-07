@@ -799,6 +799,7 @@ public class CMClass extends ClassLoader
 	 */
 	public static final boolean delClass(final CMObjectType type, final CMObject O)
 	{
+		if(O==null) return false;
 		if(classes.containsKey(O.getClass().getName()))
 			classes.remove(O.getClass().getName());
 		final Object set=getClassSet(type);

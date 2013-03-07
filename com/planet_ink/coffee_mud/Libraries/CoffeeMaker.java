@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -930,8 +931,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						if(A!=null)
 						{
 							A=(Ability)A.copyOf();
-							A.setStat("CLASS",CMLib.xml().getParmValue(ablk.parms, "ID"));
+							String ID=CMLib.xml().getParmValue(ablk.parms, "ID");
+							boolean exists=CMClass.getAbility(ID)!=null;
 							A.setStat("ALLXML", ablk.value);
+							if(!exists) 
+								CMClass.delClass(CMObjectType.ABILITY, CMClass.getAbility(ID));
 							custom.add(A);
 						}
 						else

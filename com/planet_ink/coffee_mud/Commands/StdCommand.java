@@ -84,6 +84,7 @@ public class StdCommand implements Command
 				for(int i=0;i<ff.length;i++)
 				{
 					if((args[i]!=null)
+					&&(ff[i]!=null)
 					&&(!ff[i].isAssignableFrom(args[i].getClass())))
 					{
 						check=false;
