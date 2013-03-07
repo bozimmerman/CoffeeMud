@@ -320,14 +320,14 @@ Required details: "id" "value"
 </STRING>
 
 <STRING id="_dungeon_hallways_street_name" define="_dungeon_hallways_street_name" select="any-1">
-<STRING>cavernous $_dungeon_tunnelword</STRING>
-<STRING>rocky $_dungeon_tunnelword</STRING>
-<STRING>$_dungeon_tunnelword</STRING>
-<STRING>dark cave $_dungeon_tunnelword</STRING>
-<STRING>cavernous $roomrun_desc $_dungeon_tunnelword</STRING>
-<STRING>rocky $roomrun_desc $_dungeon_tunnelword</STRING>
-<STRING>$roomrun_desc $_dungeon_tunnelword</STRING>
-<STRING>dark $roomrun_desc cave $_dungeon_tunnelword</STRING>
+    <STRING>cavernous $_dungeon_tunnelword</STRING>
+    <STRING>rocky $_dungeon_tunnelword</STRING>
+    <STRING>$_dungeon_tunnelword</STRING>
+    <STRING>dark cave $_dungeon_tunnelword</STRING>
+    <STRING>cavernous $roomrun_desc $_dungeon_tunnelword</STRING>
+    <STRING>rocky $roomrun_desc $_dungeon_tunnelword</STRING>
+    <STRING>$roomrun_desc $_dungeon_tunnelword</STRING>
+    <STRING>dark $roomrun_desc cave $_dungeon_tunnelword</STRING>
 </STRING>
 
 <STRING id="_dungeon_tunnelword" define="_dungeon_tunnelword" select="any-1">
@@ -339,9 +339,9 @@ Required details: "id" "value"
 </STRING>
 
 <STRING id="_dungeon_crawlways_street_name" define="_dungeon_crawlways_street_name" select="any-1">
-<STRING>small $_dungeon_hallways_street_name</STRING>
-<STRING>narrow $_dungeon_hallways_street_name</STRING>
-<STRING>short $_dungeon_hallways_street_name</STRING>
+    <STRING>small $_dungeon_hallways_street_name</STRING>
+    <STRING>narrow $_dungeon_hallways_street_name</STRING>
+    <STRING>short $_dungeon_hallways_street_name</STRING>
 </STRING>
 
 <STRING id="dungeon_crawlways_street_desc"  select="all">
