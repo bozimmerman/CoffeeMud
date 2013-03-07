@@ -227,7 +227,7 @@ public class MWFileCache implements FileCacheManager
 				uncompressedData.close(); // we aren't going to need this.
 				return new MWDataBuffers(entry.buf[type.ordinal()],entry.modified);
 			}
-			OutputStream compressor=null;
+			DeflaterOutputStream compressor=null;
 			ByteArrayOutputStream bufStream=new ByteArrayOutputStream();
 			try
 			{
@@ -244,9 +244,11 @@ public class MWFileCache implements FileCacheManager
 				while(uncompressedData.hasNext())
 				{
 					ByteBuffer buf=uncompressedData.next();
-					compressor.write(buf.array());
+					compressor.write(buf.array(),buf.position(),buf.remaining());
 					buf.position(buf.limit());
 				}
+				compressor.flush();
+				compressor.finish();
 			}
 			catch(IOException ioe)
 			{
