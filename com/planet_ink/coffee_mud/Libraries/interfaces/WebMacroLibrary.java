@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.HTTPOutputConverter;
+import com.planet_ink.miniweb.interfaces.HTTPRequest;
 
 import java.util.*;
 /* 
@@ -37,5 +38,5 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	public byte [] virtualPageFilter(byte [] data) throws HTTPRedirectException;
 	public String virtualPageFilter(String s) throws HTTPRedirectException;
 	public StringBuffer virtualPageFilter(StringBuffer s) throws HTTPRedirectException;
-	
+	public StringBuffer virtualPageFilter(HTTPRequest request, Map<String, Object> objects, long[] processStartTime, String[] lastFoundMacro, StringBuffer s) throws HTTPRedirectException;
 }

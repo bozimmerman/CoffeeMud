@@ -36,7 +36,8 @@ public class HelpTopics extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(HTTPRequest httpReq, String parm)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+    public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("HELPTOPIC");
@@ -80,12 +81,33 @@ public class HelpTopics extends StdWebMacro
 		{
 			List<String> topics=null;
 			if(parms.containsKey("ARCHON"))
-				topics=CMLib.help().getTopics(true,false);
+			{
+				topics=(List)httpReq.getRequestObjects().get("HELP_ARCHONTOPICS");
+				if(topics==null)
+				{
+					topics=CMLib.help().getTopics(true,false);
+					httpReq.getRequestObjects().put("HELP_ARCHONTOPICS", topics);
+				}
+			}
 			else
 			if(parms.containsKey("BOTH"))
-				topics=CMLib.help().getTopics(true,true);
+			{
+				topics=(List)httpReq.getRequestObjects().get("HELP_BOTHTOPICS");
+				if(topics==null)
+				{
+					topics=CMLib.help().getTopics(true,true);
+					httpReq.getRequestObjects().put("HELP_BOTHTOPICS", topics);
+				}
+			}
 			else
-				topics=CMLib.help().getTopics(false,true);
+			{
+				topics=(List)httpReq.getRequestObjects().get("HELP_HELPTOPICS");
+				if(topics==null)
+				{
+					topics=CMLib.help().getTopics(false,true);
+					httpReq.getRequestObjects().put("HELP_HELPTOPICS", topics);
+				}
+			}
 
 			boolean noables=parms.containsKey("SHORT");
 			String fletter=parms.get("FIRSTLETTER");

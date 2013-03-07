@@ -8,13 +8,21 @@
 	<body>
 		<center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr><td width=100% colspan=2 bgcolor=#DFDFDF align=left> 
 		<h1>Player Spells Reference</h1>
-		<h2> CoffeeMud 5.7 </h2>
-		</td></tr><tr><td width=20% valign=top align=left>
-		<a href="skills.cmvp"><B>Skills</B></a><BR>
-		<a href="skillsp.cmvp"><B>Prayers</B></a><BR>
-		<a href="skillsc.cmvp"><B>Chants</B></a><BR>
-		<a href="skillse.cmvp"><B>Expertises</B></a><BR>
-		<a href="skillsd.cmvp"><B>Songs/Dances/Plays</B></a><BR>
+		<h2> CoffeeMud 5.8 </h2>
+		</td></tr>
+		<tr><td width=100% colspan=2 BGCOLOR=LIGHTBLUE>
+			<table width=100% cellpadding=0 cellspacing=0>
+			<tr>
+				<td width=16%><a href="skillsp.cmvp"><B>Prayers</B></a></td>
+				<td width=16%><a href="skillsc.cmvp"><B>Chants</B></a></td>
+				<td width=16%><a href="skillsd.cmvp"><B>Songs/Dances/Plays</B></a></td>
+				<td width=16%><B>Spells</B></td>
+				<td width=16%><a href="skillse.cmvp"><B>Expertises</B></a></td>
+				<td width=16%><a href="skills.cmvp"><B>Skills</B></a></td>
+			</tr>
+			</table>
+		</td></tr>
+		<tr><td width=20% valign=top align=left>
 		<B>Spells</B><BR>
 		<ul>
 			@AbilityNext?RESET@

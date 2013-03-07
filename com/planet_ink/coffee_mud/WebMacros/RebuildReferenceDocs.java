@@ -51,6 +51,8 @@ public class RebuildReferenceDocs extends StdWebMacro
 		if((!sourcesF.canRead())||(!sourcesF.isDirectory())||(sourcesF.list().length==0))
 			return "[Unsourced]";
 		CMFile[] sourceFiles = sourcesF.listFiles();
+		long[] processStartTime=new long[]{System.currentTimeMillis()};
+		String[] lastFoundMacro=new String[]{""};
 		for(int s=0;s<sourceFiles.length;s++)
 		{
 			CMFile sf = sourceFiles[s];
@@ -60,7 +62,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 				CMFile df=new CMFile("/guides/refs/"+sf.getName().substring(0,sfLen-5)+".html",M,false);
 				if(!df.canWrite())
 					return "[Unwrittable: "+df.getName()+"]";
-				byte[] savable = CMLib.webMacroFilter().virtualPageFilter(sf.raw());
+				byte[] savable = CMLib.webMacroFilter().virtualPageFilter(httpReq, httpReq.getRequestObjects(), processStartTime, lastFoundMacro, new StringBuffer(new String(sf.raw()))).toString().getBytes();
 				for(int b=0;b<savable.length-5;b++)
 					if((savable[b]=='.') &&(savable[b+1]=='c') &&(savable[b+2]=='m') &&(savable[b+3]=='v') &&(savable[b+4]=='p'))
 					{ savable[b+1]='h'; savable[b+2]='t'; savable[b+3]='m'; savable[b+4]='l'; b+=4;}
