@@ -177,31 +177,41 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return new StringBuilder("");
 	}
 
-	public void postChannel(MOB mob,
-							String channelName,
-							String message,
-							boolean systemMsg)
+	public void postChannel(MOB mob, String channelName, String message, boolean systemMsg)
 	{
 		forceInternalCommand(mob,"Channel",Boolean.valueOf(systemMsg),channelName,message);
 	}
 
-	public void postChannel(String channelName,
-			 				Iterable<Pair<Clan,Integer>> clanList,
-							String message,
-							boolean systemMsg)
+	public MOB nonClanTalker = null;
+	
+	public void postChannel(String channelName, Iterable<Pair<Clan,Integer>> clanList, String message, boolean systemMsg)
 	{
-		MOB talker=CMClass.getFactoryMOB();
-		talker.setName("^</B^>");
-		talker.setLocation(CMLib.map().getRandomRoom());
-		talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
-		talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
+		MOB talker;
 		if(clanList != null)
 		{
+			talker=CMClass.getFactoryMOB();
+			talker.setName("^</B^>");
+			talker.setLocation(CMLib.map().getRandomRoom());
+			talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
+			talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
 			for(Pair<Clan,Integer> c : clanList)
 				talker.setClan(c.first.clanID(),c.second.intValue());
 		}
+		else
+		if(nonClanTalker!=null)
+		{
+			talker=nonClanTalker;
+		}
+		else
+		{
+			talker=CMClass.getFactoryMOB();
+			talker.setName("^</B^>");
+			talker.setLocation(CMLib.map().getRandomRoom());
+			talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
+			talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
+			nonClanTalker=talker;
+		}
 		postChannel(talker,channelName,message,systemMsg);
-		talker.destroy();
 	}
 
 	public boolean postDrop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized)

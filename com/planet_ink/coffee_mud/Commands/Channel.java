@@ -149,6 +149,7 @@ public class Channel extends StdCommand
 						Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+msg.ts);
 						elapsedTime=0;
 					}
+						
 					final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
 					if((modMsg.sourceMessage()!=null)&&(modMsg.sourceMessage().length()>0))
 						modMsg.setSourceMessage(modMsg.sourceMessage()+timeAgo);
