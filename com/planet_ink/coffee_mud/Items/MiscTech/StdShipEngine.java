@@ -73,7 +73,7 @@ public class StdShipEngine extends StdElecItem
 		super.executeMsg(myHost, msg);
 		if(msg.amITarget(this))
 		{
-			if(msg.sourceMinor()==CMMsg.TYP_POWERCURRENT) // these double as ticks!
+			if(msg.sourceMinor()==CMMsg.TYP_POWERCURRENT) 
 			{
 			}
 		}

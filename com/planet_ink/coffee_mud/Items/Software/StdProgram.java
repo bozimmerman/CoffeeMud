@@ -36,8 +36,6 @@ public class StdProgram extends StdItem implements Software
 {
 	public String ID(){	return "StdProgram";}
 	
-	public String parentMenu = "";
-	
 	public StdProgram()
 	{
 		super();
@@ -50,7 +48,7 @@ public class StdProgram extends StdItem implements Software
 		recoverPhyStats();
 	}
 	
-	public String getParentMenu() { return parentMenu; }
+	public String getParentMenu() { return ""; }
 	
 	public String getActivationString(){ return "";}
 	public String getActivationDescription() { return "";}

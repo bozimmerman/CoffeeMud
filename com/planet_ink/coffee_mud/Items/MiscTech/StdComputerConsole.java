@@ -68,7 +68,7 @@ public class StdComputerConsole extends StdRideable
 	public ElecPanelType panelType(){return panelType;}
 	public void setPanelType(ElecPanelType type){panelType=type;}
 	
-	protected long lastSoftwareCheck=0;
+	protected long nextSoftwareCheck=0;
 	protected List<Software> software=null;
 	
 	protected String currentMenu="";
@@ -85,6 +85,21 @@ public class StdComputerConsole extends StdRideable
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
 	}
 
+	protected List<Software> getSoftware()
+	{
+		if((software==null)||(nextSoftwareCheck==0)||(System.currentTimeMillis()>nextSoftwareCheck))
+		{
+			final List<Item> list=getContents();
+			final LinkedList<Software> softwareList=new LinkedList<Software>();
+			for(Item I : list)
+				if(I instanceof Software)
+					softwareList.add((Software)I);
+			nextSoftwareCheck=System.currentTimeMillis()+(60*1000);
+			software=softwareList;
+		}
+		return software;
+	}
+	
 	public String readableText()
 	{
 		final StringBuilder str=new StringBuilder(super.readableText());
@@ -93,16 +108,7 @@ public class StdComputerConsole extends StdRideable
 			str.append("The screen is blank.  Try ACTIVATEing it first.");
 		else
 		{
-			if((software==null)||(System.currentTimeMillis()-lastSoftwareCheck)>(60*1000))
-			{
-				final List<Item> list=getContents();
-				final LinkedList<Software> softwareList=new LinkedList<Software>();
-				for(Item I : list)
-					if(I instanceof Software)
-						softwareList.add((Software)I);
-				lastSoftwareCheck=System.currentTimeMillis();
-				software=softwareList;
-			}
+			final List<Software> software=getSoftware();
 			for(final Software S : software)
 				if(S.getInternalName().equals(currentMenu))
 					str.append(S.readableText());
@@ -149,12 +155,13 @@ public class StdComputerConsole extends StdRideable
 			{
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_PUT:
-				lastSoftwareCheck=0;
+				nextSoftwareCheck=0;
 				break;
 			case CMMsg.TYP_ACTIVATE:
 				if(!activated())
 				{
 					activate(true);
+					currentMenu="";
 					msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> boot(s) up <T-NAME>.");
 				}
 				break;
