@@ -691,7 +691,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last==null) return " @break@";
 			F=CMLib.factions().getFaction(last);
 			if(F==null) return " @break@";
-			CMFile F2=new CMFile(Resources.makeFileResourceName(F.factionID()),null,true);
+			CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null,true);
 			if(F2.exists()) F2.deleteAll();
 			Log.sysOut("Grinder",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
 			Resources.removeResource(F.factionID());
@@ -713,9 +713,9 @@ public class MUDGrinder extends StdWebMacro
 				StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,true).text();
 				if((template==null)||(template.length()==0))
 					return "The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.";
-				Resources.submitResource(last,template);
-				if(!Resources.saveFileResource("::"+last,mob,template))
-					return "Unable to save "+Resources.buildResourcePath("")+last;
+				//Resources.submitResource(last,template);
+				if(!Resources.saveFileResource("::"+CMLib.factions().makeFactionFilename(last),mob,template))
+					return "Unable to save "+Resources.buildResourcePath("")+CMLib.factions().makeFactionFilename(last);
 				F=(Faction)CMClass.getCommon("DefaultFaction");
 				if(F==null) return " @break@";
 				F.initializeFaction(template,last);

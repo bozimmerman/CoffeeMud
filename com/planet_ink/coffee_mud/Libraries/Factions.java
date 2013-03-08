@@ -125,6 +125,28 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		factionSet.put(factionID.toUpperCase().trim(),F);
 	}
+
+	public String makeFactionFilename(String factionID)
+	{
+		String filename;
+		filename="factions/"+factionID+".ini";
+		if(new CMFile(Resources.makeFileResourceName(filename),null,false).exists())
+			return filename;
+		filename="factions/"+factionID;
+		if(new CMFile(Resources.makeFileResourceName(filename),null,false).exists())
+			return filename;
+		filename=factionID+".ini";
+		if(new CMFile(Resources.makeFileResourceName(filename),null,false).exists())
+			return filename;
+		if(new CMFile(Resources.makeFileResourceName(factionID),null,false).exists())
+			return factionID;
+		filename=factionID;
+		if(filename.indexOf('/')<0)
+			filename="factions/"+factionID;
+		if(!filename.toLowerCase().endsWith(".ini"))
+			filename=filename+".ini";
+		return filename;
+	}
 	
 	public Faction getFaction(String factionID) 
 	{
@@ -138,9 +160,9 @@ public class Factions extends StdLibrary implements FactionManager
 			Resources.removeResource(F.factionID());
 			return null;
 		}
-		CMFile FILE=new CMFile(Resources.makeFileResourceName(factionID),null,true);
-		if(!FILE.exists()) return null;
-		StringBuffer buf=FILE.text();
+		CMFile f=new CMFile(Resources.makeFileResourceName(makeFactionFilename(factionID)),null,true);
+		if(!f.exists()) return null;
+		StringBuffer buf=f.text();
 		if((buf!=null)&&(buf.length()>0))
 		{
 			return buildFactionFromXML(buf, factionID);
@@ -307,7 +329,7 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		String codedName=Name.toUpperCase().trim().replace(' ','_');
 		String factionID=prefix+codedName;
-		Faction templateF=getFaction("factions/"+codedName.toLowerCase()+".ini");
+		Faction templateF=getFaction(this.makeFactionFilename(codedName.toLowerCase()));
 		if(templateF==null)
 			templateF=getFaction(baseTemplateFilename);
 		if(templateF==null)
@@ -1466,7 +1488,7 @@ public class Factions extends StdLibrary implements FactionManager
 
 	private StringBuffer rebuildFactionProperties(Faction F)
 	{
-		List<String> oldV=Resources.getFileLineVector(Resources.getFileResource(F.factionID(),true));
+		List<String> oldV=Resources.getFileLineVector(Resources.getFileResource(makeFactionFilename(F.factionID()),true));
 		if(oldV.size()<10)
 		{
 
@@ -1543,7 +1565,7 @@ public class Factions extends StdLibrary implements FactionManager
 			if(!CMath.bset(F.getInternalFlags(), Faction.IFLAG_NEVERSAVE))
 			{
 				StringBuffer buf = rebuildFactionProperties(F);
-				if(!Resources.updateFileResource(F.factionID(),buf))
+				if(!Resources.updateFileResource(makeFactionFilename(F.factionID()),buf))
 					return "Faction File '"+F.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.";
 			}
 		}

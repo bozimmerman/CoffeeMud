@@ -1057,8 +1057,8 @@ public class Create extends StdCommand
 						mob.tell("The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.");
 						return false;
 					}
-					Resources.submitResource(name,template);
-					Resources.saveFileResource("::"+name,null,template);
+					//Resources.submitResource(name,template);
+					Resources.saveFileResource("::"+CMLib.factions().makeFactionFilename(name),null,template);
 					F=(Faction)CMClass.getCommon("DefaultFaction");
 					F.initializeFaction(template,name);
 					CMLib.factions().modifyFaction(mob,F);

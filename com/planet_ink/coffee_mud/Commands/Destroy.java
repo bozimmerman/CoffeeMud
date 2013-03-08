@@ -1269,7 +1269,7 @@ public class Destroy extends StdCommand
 				{
 					try
 					{
-						CMFile F2=new CMFile(Resources.makeFileResourceName(F.factionID()),null,false);
+						CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null,false);
 						if(F2.exists()) 
 							F2.deleteAll();
 						else

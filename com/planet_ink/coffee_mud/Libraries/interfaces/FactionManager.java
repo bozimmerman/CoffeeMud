@@ -49,6 +49,7 @@ public interface FactionManager extends CMLibrary, Tickable
 	public Faction getFactionByRangeCodeName(String rangeCodeName);
 	public Faction.FRange getFactionRangeByCodeName(String rangeCodeName);
 	public Faction getFactionByName(String factionNamed);
+	public String makeFactionFilename(String factionID);
 	public boolean removeFaction(String factionID); 
 	public String listFactions(); 
 	public String getName(String factionID);
