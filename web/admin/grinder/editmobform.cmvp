@@ -225,7 +225,7 @@
 </TR>
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Clan (ID):</B></FONT></TD>
-    <TD WIDTH=450 COLSPAN=2>@MobData?CLANS@></TD>
+    <TD WIDTH=450 COLSPAN=2>@MobData?CLANS@</TD>
 </TR>
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Hit Points Mod.:</B></FONT></TD>
