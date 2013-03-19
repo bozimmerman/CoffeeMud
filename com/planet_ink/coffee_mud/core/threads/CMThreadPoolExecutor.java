@@ -78,7 +78,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 			super.execute(r);
 			if((rejectCount>0)&&(System.currentTimeMillis()-lastRejectTime)>5000)
 			{
-				Log.errOut(rejectCount+" Pool_"+poolName,"Threads rejected.");
+				Log.warnOut(rejectCount+" Pool_"+poolName,"Threads rejected.");
 				rejectCount=0;
 			}
 		}

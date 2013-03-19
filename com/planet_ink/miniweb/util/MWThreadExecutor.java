@@ -96,7 +96,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 			// by a spam-bot, the log fills up my hard drive.  this helps prevent that.
 			if((rejectCount>0)&&(System.currentTimeMillis()-lastRejectTime)>5000)
 			{
-				logger.severe(rejectCount+" Pool_"+poolName+": Threads rejected.");
+				logger.warning(rejectCount+" Pool_"+poolName+": Threads rejected.");
 				rejectCount=0;
 			}
 		}
