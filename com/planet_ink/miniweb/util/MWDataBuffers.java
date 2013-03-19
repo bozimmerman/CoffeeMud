@@ -170,11 +170,13 @@ public class MWDataBuffers implements DataBuffers
 	private final void created() { createdStackTrace=Thread.currentThread().getStackTrace(); }
 	private final void accessed() { lastStackTrace=Thread.currentThread().getStackTrace(); }
 	private final void finalized() { 
-		System.err.println("^^^^^^^^^^^^^^^^^^^^^^^\n\rMWDataBuffer Not Closed!\n\r"+this.length+" bytes stranded.\n\rFirst stack trace:");
-		if(createdStackTrace!=null) for(StackTraceElement f : createdStackTrace) System.err.println("  "+f.toString());
-		System.err.println("Last stack trace:"); 
-		if(lastStackTrace!=null) for(StackTraceElement f : lastStackTrace) System.err.println(f.toString());
-		System.err.println("VVVVVVVVVVVVVVVVVVVVVVV");
+		if(this.length>0) {
+			System.err.println("^^^^^^^^^^^^^^^^^^^^^^^\n\rMWDataBuffer Not Closed!\n\r"+this.length+" bytes stranded.\n\rFirst stack trace:");
+			if(createdStackTrace!=null) for(StackTraceElement f : createdStackTrace) System.err.println("  "+f.toString());
+			System.err.println("Last stack trace:"); 
+			if(lastStackTrace!=null) for(StackTraceElement f : lastStackTrace) System.err.println(f.toString());
+			System.err.println("VVVVVVVVVVVVVVVVVVVVVVV");
+		}
 	}
 	
 	public void finalize() throws Throwable
