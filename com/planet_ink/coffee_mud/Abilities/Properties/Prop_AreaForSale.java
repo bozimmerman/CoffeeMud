@@ -141,15 +141,22 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(affected instanceof Area)
 			CMLib.database().DBUpdateArea(((Area)affected).name(),(Area)affected);
 		else
+		if(affected instanceof Room)
+			Log.errOut("Prop_AreaForSale","Prop_AreaForSale goes on an Area, NOT "+CMLib.map().getExtendedRoomID((Room)affected));
+		else
 		{
 			Area A=CMLib.map().getArea(landPropertyID());
-			if(A!=null) CMLib.database().DBUpdateArea(A.Name(),A);
+			if(A!=null) 
+				CMLib.database().DBUpdateArea(A.Name(),A);
 		}
 	}
 
 	public String landPropertyID(){
 		if((affected!=null)&&(affected instanceof Area))
 			((Area)affected).Name();
+		else
+		if(affected instanceof Room)
+			return CMLib.map().getExtendedRoomID((Room)affected);
 		return "";
 	}
 
@@ -205,9 +212,15 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(affected instanceof Area)
 			A=(Area)affected;
 		else
+		if(affected instanceof Room)
+			V.add((Room)affected);
+		else
 			A=CMLib.map().getArea(landPropertyID());
-		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
-			V.addElement(e.nextElement());
+		if(A!=null)
+		{
+			for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+				V.addElement(e.nextElement());
+		}
 		return V;
 	}
 	public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
@@ -232,7 +245,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				A=(Area)affected;
 			else
 				A=CMLib.map().getArea(landPropertyID());
-			if(lastDayDone!=A.getTimeObj().getDayOfMonth())
+			if((A!=null)&&(lastDayDone!=A.getTimeObj().getDayOfMonth()))
 			{
 				lastDayDone=A.getTimeObj().getDayOfMonth();
 				if((landOwner().length()>0)&&rentalProperty())
