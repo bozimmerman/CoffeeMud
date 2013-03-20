@@ -458,6 +458,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		int channelInt=getChannelIndex(channelName);
 		if(channelInt<0) return;
 		
+		final PlayerStats pStats=mob.playerStats();
+		
 		message=CMProps.applyINIFilter(message,CMProps.SYSTEM_CHANNELFILTER);
 		CMChannel chan=getChannel(channelInt);
 		Set<ChannelFlag> flags=chan.flags;
@@ -500,6 +502,19 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		else
 			msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,channelColor+"^<CHANNEL \""+channelName+"\"^>You "+channelName+" '"+message+"'^</CHANNEL^>^N^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),channelColor+"^<CHANNEL \""+channelName+"\"^><S-NAME> "+channelName+"S '"+message+"'^</CHANNEL^>^N^.");
+		if((chan.flags.contains(ChannelsLibrary.ChannelFlag.ACCOUNTOOC))
+		&&(pStats!=null)
+		&&(pStats.getAccount()!=null)
+		&&(msg.source()==mob))
+		{
+			String accountName=pStats.getAccount().accountName();
+			if(msg.sourceMessage()!=null)
+				msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(), "<S-NAME>", accountName));
+			if(msg.targetMessage()!=null)
+				msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(), "<S-NAME>", accountName));
+			if(msg.othersMessage()!=null)
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<S-NAME>", accountName));
+		}
 		CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 		if((mob.location()!=null)
 		&&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
