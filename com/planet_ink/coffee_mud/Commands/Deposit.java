@@ -58,7 +58,7 @@ public class Deposit extends StdCommand
 		Item thisThang=CMLib.english().bestPossibleGold(mob,null,thisName);
 		if(thisThang==null)
 		{
-			thisThang=mob.fetchCarried(null,thisName);
+			thisThang=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thisName);
 			if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 			{
 				mob.tell("You don't seem to be carrying that.");

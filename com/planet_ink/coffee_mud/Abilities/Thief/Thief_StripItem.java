@@ -95,7 +95,7 @@ public class Thief_StripItem extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Item stolen=target.fetchWornItem(itemToSteal);
+		Item stolen=target.fetchItem(null,Wearable.FILTER_WORNONLY,itemToSteal);
 		if((stolen==null)||(!CMLib.flags().canBeSeenBy(stolen,mob)))
 		{
 			mob.tell(target.name()+" doesn't seem to be wearing '"+itemToSteal+"'.");

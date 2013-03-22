@@ -53,7 +53,7 @@ public class Skill_ScrollCopy extends StdSkill
 			mob.tell("Memorize what from what?");
 			return false;
 		}
-		Item target=mob.fetchCarried(null,CMParms.combine(commands,1));
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");

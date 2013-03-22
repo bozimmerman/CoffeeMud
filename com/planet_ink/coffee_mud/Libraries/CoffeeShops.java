@@ -1069,8 +1069,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			{
 				Item I=mobFor.fetchWieldedItem();
 				if(I==null) I=mobFor.fetchHeldItem();
-				if(I==null) I=mobFor.fetchWornItem("all");
-				if(I==null) I=mobFor.fetchCarried(null,"all");
+				if(I==null) I=mobFor.fetchItem(null,Wearable.FILTER_WORNONLY,"all");
+				if(I==null) I=mobFor.fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
 				if(I!=null)
 				{
 					V.addElement("$"+I.name()+"$");

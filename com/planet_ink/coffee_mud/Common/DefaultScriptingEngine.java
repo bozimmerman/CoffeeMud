@@ -2282,7 +2282,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					returnable=false;
 				else
 				if(E instanceof MOB)
-					returnable=(((MOB)E).fetchWornItem(arg2)!=null);
+					returnable=(((MOB)E).fetchItem(null,Wearable.FILTER_WORNONLY,arg2)!=null);
 				else
 				if(E instanceof Item)
 					returnable=(CMLib.english().containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Wearable.IN_INVENTORY)));

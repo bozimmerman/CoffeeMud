@@ -241,10 +241,10 @@ public class ThinRoom implements Room {
 	public List<Item> findItems(Item goodLocation, String itemID) { return new Vector(1);}
 
 	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName){return null;}
-	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
+	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter){return null;}
 	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName){return null;}
-	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
-	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
+	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter){return null;}
+	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter){return null;}
 
 	public void addEffect(Ability to){}
 	public void addNonUninvokableEffect(Ability to){}

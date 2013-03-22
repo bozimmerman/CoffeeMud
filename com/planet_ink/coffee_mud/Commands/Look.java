@@ -38,6 +38,7 @@ public class Look extends StdCommand
 
 	private final String[] access={"LOOK","LOO","LO","L"};
 	public String[] getAccessWords(){return access;}
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -72,6 +73,8 @@ public class Look extends StdCommand
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
 			
+			if(thisThang==null)
+				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID, noCoinFilter);
 			if(thisThang==null)
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
 			if((thisThang==null)
@@ -157,8 +160,6 @@ public class Look extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean canBeOrdered(){return true;}
 
-	
+	public boolean canBeOrdered(){return true;}
 }

@@ -131,7 +131,7 @@ public class Thief_Steal extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Item stolen=target.fetchCarried(null,itemToSteal);
+		Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
 		if(stolen instanceof Coins)
 		{
 			mob.tell("You'll need to try and SWIPE that.");

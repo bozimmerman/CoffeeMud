@@ -205,8 +205,8 @@ public interface Room extends PhysicalAgent, ItemPossessor
 	public String getContextName(Environmental E);
 
 	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName);
-	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter);
+	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter);
 	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName);
-	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter);
-	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, int wornFilter);
+	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter);
+	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter);
 }

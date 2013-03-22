@@ -85,12 +85,12 @@ public class Display extends StdCommand
 					return false;
 			}
 			else
-				giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
+				giveThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToGive+addendumStr);
 			if((giveThis==null)
 			&&(V.size()==0)
 			&&(addendumStr.length()==0)
 			&&(!allFlag))
-				giveThis=mob.fetchWornItem(thingToGive);
+				giveThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,thingToGive);
 			if(giveThis==null) break;
 			if(CMLib.flags().canBeSeenBy(giveThis,mob))
 				V.addElement(giveThis);

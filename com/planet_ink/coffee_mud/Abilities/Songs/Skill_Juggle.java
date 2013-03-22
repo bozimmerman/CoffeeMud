@@ -344,7 +344,7 @@ public class Skill_Juggle extends BardSkill
 	{
 		if(mob!=null)
 		{
-			if(mob.isInCombat()&&(mob.fetchCarried(null,"all")!=null))
+			if(mob.isInCombat()&&(mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,"all")!=null))
 				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 		}
 		return super.castingQuality(mob,target);

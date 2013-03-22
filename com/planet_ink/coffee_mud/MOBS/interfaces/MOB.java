@@ -162,9 +162,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	/** Manipulation of inventory, which includes held,
 	 * worn, wielded, and contained items */
 	public void flagVariableEq();
-	public Item fetchFromInventory(Item goodLocation, String itemName, int wornFilter, boolean allowCoins, boolean respectLocationAndWornCode);
-	public Item fetchCarried(Item goodLocation, String itemName);
-	public Item fetchWornItem(String itemName);
+	public Item fetchItem(Item goodLocation, Filterer<Environmental> filter, String itemName);
 	public List<Item> fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes);
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();

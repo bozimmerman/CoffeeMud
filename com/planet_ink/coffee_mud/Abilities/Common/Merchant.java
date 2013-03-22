@@ -529,7 +529,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		while(doBugFix || allFlag)
 		{
 			doBugFix=false;
-			Item I=mob.fetchCarried(null,itemName+addendumStr);
+			Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName+addendumStr);
 			if(I==null) break;
 			if(target==null)
 				target=I;

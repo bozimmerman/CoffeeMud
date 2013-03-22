@@ -133,7 +133,7 @@ public class Lacquerring extends CommonSkill
 			commonTell(mob,"You must specify what you want to lacquer, and the color to lacquer it in.");
 			return false;
 		}
-		Item target=mob.fetchCarried(null,(String)commands.firstElement());
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			target=mob.location().findItem(null, (String)commands.firstElement());

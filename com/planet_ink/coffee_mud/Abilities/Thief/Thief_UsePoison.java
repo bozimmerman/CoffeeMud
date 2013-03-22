@@ -64,7 +64,7 @@ public class Thief_UsePoison extends ThiefSkill
 			mob.tell("What would you like to poison, and which poison would you use?");
 			return false;
 		}
-		Item target=mob.fetchCarried(null,(String)commands.elementAt(0));
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
@@ -77,7 +77,7 @@ public class Thief_UsePoison extends ThiefSkill
 			mob.tell("You don't know how to poison "+target.name()+".");
 			return false;
 		}
-		Item poison=mob.fetchCarried(null,CMParms.combine(commands,1));
+		Item poison=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));
 		if((poison==null)||(!CMLib.flags().canBeSeenBy(poison,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");

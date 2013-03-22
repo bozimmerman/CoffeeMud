@@ -52,7 +52,7 @@ public class Pour extends StdCommand
 		commands.removeElementAt(0);
 		Environmental fillFromThis=null;
 		String thingToFillFrom=(String)commands.elementAt(0);
-		fillFromThis=mob.fetchCarried(null,thingToFillFrom);
+		fillFromThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToFillFrom);
 		if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 		{
 			mob.tell("You don't seem to have '"+thingToFillFrom+"'.");

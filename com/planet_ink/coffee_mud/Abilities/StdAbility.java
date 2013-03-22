@@ -492,25 +492,17 @@ public class StdAbility implements Ability
 	}
 
 
-	public Physical getAnyTarget(MOB mob,
-									  Vector commands,
-									  Physical givenTarget,
-									  int wornFilter)
-	{ return getAnyTarget(mob,commands,givenTarget,wornFilter,false,false);}
+	public Physical getAnyTarget(MOB mob, Vector commands, Physical givenTarget, Filterer<Environmental> filter)
+	{
+		return getAnyTarget(mob,commands,givenTarget,filter,false,false);
+	}
 
-	public Physical getAnyTarget(MOB mob,
-						  Vector commands,
-						  Physical givenTarget,
-						  int wornFilter,
-						  boolean checkOthersInventory)
-	{ return getAnyTarget(mob,commands,givenTarget,wornFilter,checkOthersInventory,false);}
+	public Physical getAnyTarget(MOB mob, Vector commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory)
+	{ 
+		return getAnyTarget(mob,commands,givenTarget,filter,checkOthersInventory,false);
+	}
 
-	public Physical getAnyTarget(MOB mob,
-								 Vector commands,
-								 Physical givenTarget,
-								 int wornFilter,
-								 boolean checkOthersInventory,
-								 boolean alreadyAffOk)
+	public Physical getAnyTarget(MOB mob, Vector commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory, boolean alreadyAffOk)
 	{
 		Room R=mob.location();
 		String targetName=CMParms.combine(commands,0);
@@ -528,7 +520,7 @@ public class StdAbility implements Ability
 		{
 			target=R.fetchFromRoomFavorMOBs(null,targetName);
 			if(target==null)
-				target=R.fetchFromMOBRoomFavorsItems(mob,null,targetName,wornFilter);
+				target=R.fetchFromMOBRoomFavorsItems(mob,null,targetName,filter);
 			if((target==null)
 			&&(targetName.equalsIgnoreCase("room")
 				||targetName.equalsIgnoreCase("here")
@@ -541,22 +533,9 @@ public class StdAbility implements Ability
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					MOB M=R.fetchInhabitant(i);
-					target=M.findItem(null,targetName);
+					target=M.fetchItem(null,filter,targetName);
 					if(target!=null)
-					{
-						switch(wornFilter)
-						{
-						case Wearable.FILTER_UNWORNONLY:
-							if(!((Item)target).amWearingAt(Wearable.IN_INVENTORY))
-								continue;
-							break;
-						case Wearable.FILTER_WORNONLY:
-							if(((Item)target).amWearingAt(Wearable.IN_INVENTORY))
-								continue;
-							break;
-						}
 						break;
-					}
 				}
 		}
 		if(target!=null) targetName=target.name();
@@ -589,13 +568,13 @@ public class StdAbility implements Ability
 		return target;
 	}
 
-	protected static Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornFilter)
+	protected static Item possibleContainer(MOB mob, Vector commands, boolean withStuff, Filterer<Environmental> filter)
 	{
 		if((commands==null)||(commands.size()<2))
 			return null;
 
 		String possibleContainerID=(String)commands.lastElement();
-		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornFilter);
+		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
 		&&(((Item)thisThang) instanceof Container)
@@ -607,9 +586,12 @@ public class StdAbility implements Ability
 		return null;
 	}
 
-	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Vector commands, int wornFilter)
-	{ return getTarget(mob,location,givenTarget,null,commands,wornFilter);}
-	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, Vector commands, int wornFilter)
+	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Vector commands, Filterer<Environmental> filter)
+	{
+		return getTarget(mob,location,givenTarget,null,commands,filter);
+	}
+
+	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, Vector commands, Filterer<Environmental> filter)
 	{
 		String targetName=CMParms.combine(commands,0);
 
@@ -622,20 +604,9 @@ public class StdAbility implements Ability
 		if((target==null)&&(targetName.length()>0))
 		{
 			if(location!=null)
-				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,wornFilter);
+				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,filter);
 			else
-			switch(wornFilter)
-			{
-			case Wearable.FILTER_ANY:
-				target=mob.findItem(container,targetName);
-				break;
-			case Wearable.FILTER_UNWORNONLY:
-				target=mob.fetchCarried(container,targetName);
-				break;
-			case Wearable.FILTER_WORNONLY:
-				target=mob.fetchWornItem(targetName);
-				break;
-			}
+				target=mob.fetchItem(container, filter, targetName);
 		}
 		if(target!=null) targetName=target.name();
 
@@ -662,6 +633,7 @@ public class StdAbility implements Ability
 	}
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
 	protected void cloneFix(Ability E)
 	{
 	}

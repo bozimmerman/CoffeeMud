@@ -17,4 +17,10 @@ limitations under the License.
 public interface Filterer<K> 
 {
 	public boolean passesFilter(K obj);
+	
+	@SuppressWarnings("rawtypes")
+	public static final Filterer ANYTHING=new Filterer()
+	{
+		public boolean passesFilter(Object obj) { return true; }
+	};
 }

@@ -148,7 +148,7 @@ public class Put extends StdCommand
 		while(doBugFix || ((allFlag)&&(addendum<=maxToPut)))
 		{
 			doBugFix=false;
-			putThis=mob.fetchCarried(null,thingToPut+addendumStr);
+			putThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToPut+addendumStr);
 			if((allFlag)&&(!onlyGoldFlag)&&(putThis instanceof Coins)&&(thingToPut.equalsIgnoreCase("ALL")))
 				putThis=null;
 			else

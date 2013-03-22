@@ -1696,21 +1696,26 @@ public class StdRoom implements Room
 		return "nothing";
 	}
 	
-	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter)
+	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, final Filterer<Environmental> filter)
 	{
 		PhysicalAgent found=null;
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
-		if((mob!=null)&&(wornFilter!=Wearable.FILTER_WORNONLY))
-			found=mob.fetchCarried(goodLocation, thingName);
+		if((mob!=null)&&((filter!=Wearable.FILTER_WORNONLY)))
+			found=mob.fetchItem(goodLocation, new Filterer<Environmental>() {
+				@Override
+				public boolean passesFilter(Environmental obj) {
+					return filter.passesFilter(obj) && Wearable.FILTER_UNWORNONLY.passesFilter(obj);
+				}
+			}, thingName);
 		if((found==null)&&(!mineOnly))
 		{
 			found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,true);
-			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornFilter,true);
+			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,filter,true);
 			if(found==null)	found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
-			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornFilter,false);
+			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,filter,false);
 			
 			if((found instanceof Item)  // the smurfy well/gate exception
 			&&(goodLocation==null)
@@ -1720,7 +1725,7 @@ public class StdRoom implements Room
 				PhysicalAgent visibleItem=null;
 				visibleItem=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
 				if(visibleItem==null)
-					visibleItem=fetchFromMOBRoomItemExit(null,null,thingName+".2",wornFilter);
+					visibleItem=fetchFromMOBRoomItemExit(null,null,thingName+".2",filter);
 				if(visibleItem!=null)
 					found=visibleItem;
 			}
@@ -1739,12 +1744,17 @@ public class StdRoom implements Room
 					found=null;
 			}
 		}
-		if((mob!=null)&&(found==null)&&(wornFilter!=Wearable.FILTER_UNWORNONLY))
-			found=mob.fetchWornItem(thingName);
+		if((mob!=null)&&(found==null)&&((filter!=Wearable.FILTER_UNWORNONLY)))
+			found=mob.fetchItem(null, new Filterer<Environmental>() {
+				@Override
+				public boolean passesFilter(Environmental obj) {
+					return filter.passesFilter(obj) && Wearable.FILTER_WORNONLY.passesFilter(obj);
+				}
+			}, thingName);
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromMOBRoomItemExit(mob,goodLocation,newThingName,wornFilter); 
+			if(newThingName!=null) return fetchFromMOBRoomItemExit(mob,goodLocation,newThingName,filter); 
 		}
 		return found;
 	}
@@ -1799,23 +1809,28 @@ public class StdRoom implements Room
 		return found;
 	}
 
-	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter)
+	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter)
 	{
-		return fetchFromMOBRoom(mob,goodLocation,thingName,wornFilter,true);
+		return fetchFromMOBRoom(mob,goodLocation,thingName,filter,true);
 	}
-	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, int wornFilter)
+	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter)
 	{
-		return fetchFromMOBRoom(mob,goodLocation,thingName,wornFilter,false);
+		return fetchFromMOBRoom(mob,goodLocation,thingName,filter,false);
 	}
-	private PhysicalAgent fetchFromMOBRoom(MOB mob, Item goodLocation, String thingName, int wornFilter, boolean favorItems)
+	private PhysicalAgent fetchFromMOBRoom(MOB mob, Item goodLocation, String thingName, final Filterer<Environmental> filter, boolean favorItems)
 	{
 		PhysicalAgent found=null;
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		final boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
-		if((mob!=null)&&(favorItems)&&(wornFilter!=Wearable.FILTER_WORNONLY))
-			found=mob.fetchCarried(goodLocation, thingName);
+		if((mob!=null)&&(favorItems)&&(filter!=Wearable.FILTER_WORNONLY))
+			found=mob.fetchItem(goodLocation, new Filterer<Environmental>() {
+				@Override
+				public boolean passesFilter(Environmental obj) {
+					return filter.passesFilter(obj) && Wearable.FILTER_UNWORNONLY.passesFilter(obj);
+				}
+			}, thingName);
 		if((found==null)&&(!mineOnly))
 		{
 			if(favorItems)
@@ -1839,10 +1854,22 @@ public class StdRoom implements Room
 					found=null;
 			}
 		}
-		if((mob!=null)&&(!favorItems)&&(wornFilter!=Wearable.FILTER_WORNONLY))
-			found=mob.fetchCarried(goodLocation, thingName);
-		if((mob!=null)&&(found==null)&&(wornFilter!=Wearable.FILTER_UNWORNONLY))
-			found=mob.fetchWornItem(thingName);
+		if((mob!=null)&&(!favorItems)&&(filter!=Wearable.FILTER_WORNONLY))
+			found=mob.fetchItem(goodLocation, new Filterer<Environmental>() {
+				@Override
+				public boolean passesFilter(Environmental obj) {
+					return filter.passesFilter(obj) && Wearable.FILTER_UNWORNONLY.passesFilter(obj);
+				}
+			}, thingName);
+		if((mob!=null)&&(found==null)&&(filter!=Wearable.FILTER_UNWORNONLY))
+			found=mob.fetchItem(null, new Filterer<Environmental>() {
+				@Override
+				public boolean passesFilter(Environmental obj) {
+					return filter.passesFilter(obj) && Wearable.FILTER_WORNONLY.passesFilter(obj);
+				}
+			}, thingName);
+		if((mob!=null)&&(found==null))
+			found=mob.fetchItem(goodLocation,filter,thingName);
 		if(found==null)
 		for(int d=0;d<exits.length;d++)
 			if((exits[d]!=null)&&(thingName.equalsIgnoreCase(Directions.getDirectionName(d))))
@@ -1850,7 +1877,7 @@ public class StdRoom implements Room
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromMOBRoom(mob,goodLocation,newThingName,wornFilter,favorItems); 
+			if(newThingName!=null) return fetchFromMOBRoom(mob,goodLocation,newThingName,filter,favorItems); 
 		}
 		return found;
 	}

@@ -57,8 +57,8 @@ public interface EnglishParsing extends CMLibrary
 	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
 	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
 	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
-	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
-	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
+	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
+	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
 	public int getContextNumber(Environmental[] list, Environmental E);
 	public int getContextNumber(Collection<? extends Environmental> list, Environmental E);
 	public int getContextNumber(ItemCollection cont, Environmental E);
@@ -71,9 +71,9 @@ public interface EnglishParsing extends CMLibrary
 	public String getContextSameName(Collection<? extends Environmental> list, Environmental E);
 	public String getContextSameName(Environmental[] list, Environmental E);
 	public String getContextSameName(ItemCollection cont, Environmental E);
-	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
+	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
 	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error);
-	public List<Item> fetchItemList(Environmental from, MOB mob, Item container, List<String> commands, int preferredLoc, boolean visionMatters);
+	public List<Item> fetchItemList(Environmental from, MOB mob, Item container, List<String> commands, Filterer<Environmental> filter, boolean visionMatters);
 	public long numPossibleGold(Environmental mine, String itemID);
 	public String numPossibleGoldCurrency(Environmental mine, String itemID);
 	public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID);
@@ -83,8 +83,8 @@ public interface EnglishParsing extends CMLibrary
 	public double matchAnyDenomination(String currency, String itemID);
 	public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID);
 	public Item bestPossibleGold(MOB mob, Container container, String itemID);
-	public List<Container> possibleContainers(MOB mob, List<String> commands, int wornFilter, boolean withContentOnly);
-	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, int wornFilter);
+	public List<Container> possibleContainers(MOB mob, List<String> commands, Filterer<Environmental> filter, boolean withContentOnly);
+	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, Filterer<Environmental> filter);
 	public String returnTime(long millis, long ticks);
 	public int calculateMaxToGive(MOB mob, List<String> commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);
 }

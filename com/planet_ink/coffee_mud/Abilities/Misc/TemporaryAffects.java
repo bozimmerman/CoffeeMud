@@ -279,7 +279,7 @@ public class TemporaryAffects extends StdAbility
 			return false;
 		}
 		Vector V=new XVector(commands.firstElement());
-		Physical target=getAnyTarget(mob,V,givenTarget, asLevel);
+		Physical target=getAnyTarget(mob,V,givenTarget, Wearable.FILTER_ANY);
 		if(target==null) return false;
 		commands.removeElementAt(0);
 		

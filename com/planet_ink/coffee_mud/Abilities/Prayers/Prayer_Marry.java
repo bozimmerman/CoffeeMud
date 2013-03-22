@@ -102,13 +102,13 @@ public class Prayer_Marry extends Prayer
 			return false;
 		}
 		CMLib.coffeeTables().bump(husband,CoffeeTableRow.STAT_BIRTHS);
-		Item I=husband.fetchWornItem("wedding band");
+		Item I=husband.fetchItem(null,Wearable.FILTER_WORNONLY,"wedding band");
 		if(I==null)
 		{
 			mob.tell(husband.name()+" isn't wearing a wedding band!");
 			return false;
 		}
-		I=wife.fetchWornItem("wedding band");
+		I=wife.fetchItem(null,Wearable.FILTER_WORNONLY,"wedding band");
 		if(I==null)
 		{
 			mob.tell(wife.name()+" isn't wearing a wedding band!");

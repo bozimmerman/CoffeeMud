@@ -104,7 +104,7 @@ public class Herbology extends CommonSkill
 			commonTell(mob,"You must specify what herb you want to identify.");
 			return false;
 		}
-		Item target=mob.fetchCarried(null,CMParms.combine(commands,0));
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");

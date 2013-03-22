@@ -117,7 +117,7 @@ public class Take extends StdCommand
 					allFlag=false;
 				}
 				else
-					giveThis=victim.fetchCarried(null,thingToGive+addendumStr);
+					giveThis=victim.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToGive+addendumStr);
 				if((giveThis==null)
 				&&(V.size()==0)
 				&&(addendumStr.length()==0)

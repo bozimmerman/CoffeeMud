@@ -152,7 +152,7 @@ public class Sheath extends StdCommand
 			while(doBugFix || allFlag)
 			{
 				doBugFix=false;
-				Item putThis=mob.fetchWornItem(thingToPut+addendumStr);
+				Item putThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,thingToPut+addendumStr);
 				if(putThis==null) break;
 				if(((putThis.amWearingAt(Wearable.WORN_WIELD))
 				   ||(putThis.amWearingAt(Wearable.WORN_HELD)))

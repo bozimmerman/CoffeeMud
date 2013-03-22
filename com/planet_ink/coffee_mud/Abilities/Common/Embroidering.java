@@ -83,7 +83,7 @@ public class Embroidering extends CommonSkill
 			commonTell(mob,"You must specify what you want to embroider onto, and what words to embroider on it.");
 			return false;
 		}
-		Item target=mob.fetchCarried(null,(String)commands.firstElement());
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");

@@ -54,7 +54,7 @@ public class Prayer_Divorce extends Prayer
 			mob.tell(target.name()+" is not married!");
 			return false;
 		}
-		if(target.fetchWornItem("wedding band")!=null)
+		if(target.fetchItem(null,Wearable.FILTER_WORNONLY,"wedding band")!=null)
 		{
 			mob.tell(target.name()+" must remove the wedding band first.");
 			return false;

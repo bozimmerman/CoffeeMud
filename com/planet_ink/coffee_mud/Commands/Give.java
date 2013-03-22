@@ -88,13 +88,13 @@ public class Give extends StdCommand
 		while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 		{
 			doBugFix=false;
-			giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
+			giveThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToGive+addendumStr);
 			if((giveThis==null)
 			&&(V.size()==0)
 			&&(addendumStr.length()==0)
 			&&(!allFlag))
 			{
-				giveThis=mob.fetchWornItem(thingToGive);
+				giveThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,thingToGive);
 				if(giveThis!=null)
 				{
 					if((!(giveThis).amWearingAt(Wearable.WORN_HELD))&&(!(giveThis).amWearingAt(Wearable.WORN_WIELD)))

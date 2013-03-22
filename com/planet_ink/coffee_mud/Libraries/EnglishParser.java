@@ -906,7 +906,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 									MOB mob,
 									Item container,
 									List<String> commands,
-									int preferredLoc,
+									Filterer<Environmental> filter,
 									boolean visionMatters)
 	{
 		int addendum=1;
@@ -926,33 +926,33 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(name.toUpperCase().startsWith("ALL.")){ allFlag=true; name="ALL "+name.substring(4);}
 		if(name.toUpperCase().endsWith(".ALL")){ allFlag=true; name="ALL "+name.substring(0,name.length()-4);}
 		boolean doBugFix = true;
+		boolean wornOnly = true;
+		boolean unwornOnly = true;
 		while(doBugFix || ((allFlag)&&(addendum<=maxToItem)))
 		{
 			doBugFix=false;
 			Environmental item=null;
 			if(from instanceof MOB)
-			{
-				if(preferredLoc==Wearable.FILTER_UNWORNONLY)
-					item=((MOB)from).fetchCarried(container,name+addendumStr);
-				else
-				if(preferredLoc==Wearable.FILTER_WORNONLY)
-					item=((MOB)from).fetchWornItem(name+addendumStr);
-				else
-					item=((MOB)from).findItem(null,name+addendumStr);
-			}
+				item=((MOB)from).fetchItem(container,filter,name+addendumStr);
 			else
 			if(from instanceof Room)
-				item=((Room)from).fetchFromMOBRoomFavorsItems(mob,container,name+addendumStr,preferredLoc);
+				item=((Room)from).fetchFromMOBRoomFavorsItems(mob,container,name+addendumStr,filter);
 			if((item!=null)
 			&&(item instanceof Item)
 			&&((!visionMatters)||(CMLib.flags().canBeSeenBy(item,mob))||(item instanceof Light))
 			&&(!V.contains(item)))
+			{
 				V.add((Item)item);
+				if(((Item)item).amWearingAt(Item.IN_INVENTORY))
+					wornOnly=false;
+				else
+					unwornOnly=false;
+			}
 			if(item==null) break;
 			addendumStr="."+(++addendum);
 		}
 		
-		if(preferredLoc==Wearable.FILTER_WORNONLY)
+		if(wornOnly && (V.size()>0))
 		{
 			Vector<Item> V2=new Vector<Item>();
 			short topLayer=0;
@@ -976,7 +976,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			V=V2;
 		}
 		else
-		if(preferredLoc==Wearable.FILTER_UNWORNONLY)
+		if(unwornOnly && (V.size()>0))
 		{
 			Vector<Item> V2=new Vector<Item>();
 			short topLayer=0;
@@ -1293,7 +1293,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-	public List<Container> possibleContainers(MOB mob, List<String> commands, int wornFilter, boolean withContentOnly)
+	public List<Container> possibleContainers(MOB mob, List<String> commands, Filterer<Environmental> filter, boolean withContentOnly)
 	{
 		Vector<Container> V=new Vector<Container>();
 		if(commands.size()==1)
@@ -1344,7 +1344,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		while(doBugFix || ((allFlag)&&(addendum<=maxContained)))
 		{
 			doBugFix=false;
-			Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,wornFilter);
+			Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,filter);
 			if((E!=null)
 			&&(E instanceof Item)
 			&&(((Item)E) instanceof Container)
@@ -1368,7 +1368,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return V;
 	}
 
-	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, int wornFilter)
+	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, Filterer<Environmental> filter)
 	{
 		if(commands.size()==1)
 			return null;
@@ -1380,7 +1380,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{ fromDex=i; containerDex=i+1;  break;}
 		String possibleContainerID=CMParms.combine(commands,containerDex);
 
-		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornFilter);
+		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
 		if((E!=null)
 		&&(E instanceof Item)
 		&&(((Item)E) instanceof Container)
@@ -1736,7 +1736,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		if(list.size()==0) return null;
 		FetchFlags flags=fetchFlags(srchStr);
@@ -1754,10 +1754,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					final Item I=i.next();
 					if(I==null) continue;
-					final boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
-
 					if((I.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					&&(filter.passesFilter(I))
 					&&(I.ID().equalsIgnoreCase(srchStr)
 					   ||(I.Name().equalsIgnoreCase(srchStr))
 					   ||(I.name().equalsIgnoreCase(srchStr))))
@@ -1775,11 +1773,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for(final Iterator<Item> i=list.iterator();i.hasNext();)
 				{
 					final Item I=i.next();
-					if(I==null) continue;
-					final boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
-
-					if((I.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					if((I!=null)
+					&&(I.container()==goodLocation)
+					&&(filter.passesFilter(I))
 					&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
 					   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
 						if((--myOccurrance)<=0)
@@ -1793,10 +1789,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for(final Iterator<Item> i=list.iterator();i.hasNext();)
 				{
 					final Item I=i.next();
-					if(I==null) continue;
-					final boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
-					if((I.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					if((I!=null)
+					&&(I.container()==goodLocation)
+					&&(filter.passesFilter(I))
 					&&(containsString(I.displayText(),srchStr)))
 						if((--myOccurrance)<=0)
 							return I;
@@ -1807,7 +1802,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		Vector<Item> matches=new Vector<Item>(1);
 		if(list.size()==0) return matches;
@@ -1826,9 +1821,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					final Item I=i.next();
 					if(I==null) continue;
-					final boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 					if((I.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					&&(filter.passesFilter(I))
 					&&(I.ID().equalsIgnoreCase(srchStr)
 					   ||(I.Name().equalsIgnoreCase(srchStr))
 					   ||(I.name().equalsIgnoreCase(srchStr))))
@@ -1843,9 +1837,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					final Item I=i.next();
 					if(I==null) continue;
-					final boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 					if((I.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					&&(filter.passesFilter(I))
 					&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
 					   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
 						if((--myOccurrance)<=0)
@@ -1858,9 +1851,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					{
 						final Item I=i.next();
 						if(I==null) continue;
-						final boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 						if((I.container()==goodLocation)
-						&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+						&&(filter.passesFilter(I))
 						&&(containsString(I.displayText(),srchStr)))
 							if((--myOccurrance)<=0)
 								matches.addElement(I);
@@ -1872,7 +1864,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return matches;
 	}
 
-	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly)
+	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly)
 	{
 		if(list.size()==0) return null;
 		FetchFlags flags=fetchFlags(srchStr);
@@ -1894,9 +1886,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(E instanceof Item)
 					{
 						I=(Item)E;
-						final boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 						if((I.container()==goodLocation)
-						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
+						&&(filter.passesFilter(I))
 						&&(I.ID().equalsIgnoreCase(srchStr)
 						   ||(I.Name().equalsIgnoreCase(srchStr))
 						   ||(I.name().equalsIgnoreCase(srchStr))))
@@ -1922,10 +1913,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(E instanceof Item)
 					{
 						I=(Item)E;
-						final boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
-
 						if((I.container()==goodLocation)
-						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
+						&&(filter.passesFilter(I))
 						&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
 						   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
 							if((--myOccurrance)<=0)
@@ -1946,9 +1935,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(E instanceof Item)
 					{
 						I=(Item)E;
-						final boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 						if((I.container()==goodLocation)
-						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
+						&&(filter.passesFilter(I))
 						&&(containsString(I.displayText(),srchStr)))
 							if((--myOccurrance)<=0)
 								return I;

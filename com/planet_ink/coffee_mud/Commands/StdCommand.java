@@ -141,5 +141,14 @@ public class StdCommand implements Command
 		}
 	}
 	
+	protected final static Filterer<Environmental> noCoinFilter=new Filterer<Environmental>()
+	{
+		@Override
+		public boolean passesFilter(Environmental obj) 
+		{
+			return !(obj instanceof Coins);
+		}
+	};
+	
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

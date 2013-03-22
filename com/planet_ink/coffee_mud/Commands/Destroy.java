@@ -868,13 +868,13 @@ public class Destroy extends StdCommand
 			while(doBugFix || ((allFlag)&&(addendum<=maxToDrop)))
 			{
 				doBugFix=false;
-				Item dropThis=mob.fetchCarried(null,whatToDrop+addendumStr);
+				Item dropThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatToDrop+addendumStr);
 				if((dropThis==null)
 				&&(V.size()==0)
 				&&(addendumStr.length()==0)
 				&&(!allFlag))
 				{
-					dropThis=mob.fetchWornItem(whatToDrop);
+					dropThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,whatToDrop);
 					if(dropThis!=null)
 					{
 						int matType=dropThis.material()&RawMaterial.MATERIAL_MASK;

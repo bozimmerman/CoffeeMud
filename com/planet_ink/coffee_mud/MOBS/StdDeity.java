@@ -383,8 +383,8 @@ public class StdDeity extends StdMOB implements Deity
 			{
 				Item I=mob.fetchWieldedItem();
 				if(I==null) I=mob.fetchHeldItem();
-				if(I==null) I=mob.fetchWornItem("all");
-				if(I==null) I=mob.fetchCarried(null,"all");
+				if(I==null) I=mob.fetchItem(null,Wearable.FILTER_WORNONLY,"all");
+				if(I==null) I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
 				if(I==null) return;
 				V.addElement("$"+I.name()+"$");
 				addItem(I);
@@ -434,8 +434,8 @@ public class StdDeity extends StdMOB implements Deity
 			{
 				Item I=mob.fetchWieldedItem();
 				if(I==null) I=mob.fetchHeldItem();
-				if(I==null) I=mob.fetchWornItem("all");
-				if(I==null) I=mob.fetchCarried(null,"all");
+				if(I==null) I=mob.fetchItem(null,Wearable.FILTER_WORNONLY,"all");
+				if(I==null) I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
 				if(I==null) return;
 				V.addElement("$"+I.name()+"$");
 				addItem(I);

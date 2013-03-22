@@ -5356,7 +5356,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						mob.tell("That is neither an existing resource name, or the word new followed by a valid item name.");
 					else
 					{
-						Item I=mob.fetchCarried(null,newName.substring(4).trim());
+						Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,newName.substring(4).trim());
 						if(I!=null)
 						{
 							I=(Item)I.copyOf();
@@ -5456,7 +5456,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						mob.tell("That is neither an existing item name, or the word new followed by a valid item name.");
 					else
 					{
-						Item I=mob.fetchCarried(null,newName.substring(4).trim());
+						Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,newName.substring(4).trim());
 						if(I!=null)
 						{
 							I=(Item)I.copyOf();
@@ -5528,7 +5528,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						mob.tell("That is neither an existing item name, or the word new followed by a valid item name.");
 					else
 					{
-						Item I=mob.fetchCarried(null,newName.substring(4).trim());
+						Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,newName.substring(4).trim());
 						if(I!=null)
 						{
 							I=(Item)I.copyOf();
@@ -5660,7 +5660,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 		if(newName.length()>0)
 		{
-			I=mob.fetchCarried(null,newName);
+			I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,newName);
 			if(I==null)
 			{
 				mob.tell("'"+newName+"' is not in your inventory.");

@@ -3254,24 +3254,17 @@ public class StdMOB implements MOB
 		return getItem(CMLib.dice().roll(1, numItems(), -1));
 	}
 
-	public Item fetchFromInventory(Item goodLocation, String itemName, int wornFilter, boolean allowCoins, boolean respectLocationAndWornCode) 
+	public Item fetchFromInventory(Item goodLocation, String itemName, Filterer<Environmental> filter, boolean respectLocationAndWornCode) 
 	{
 		if (inventory.size() == 0)
 			return null;
-		SVector inv = inventory;
-		if (!allowCoins)
-		{
-			inv = inv.copyOf();
-			for (int v = inv.size() - 1; v >= 0; v--)
-				if (inv.elementAt(v) instanceof Coins)
-					inv.removeElementAt(v);
-		}
+		final SVector inv = inventory;
 		Item item = null;
 		if (respectLocationAndWornCode)
 		{
-			item = CMLib.english().fetchAvailableItem(inv, itemName, goodLocation, wornFilter, true);
+			item = CMLib.english().fetchAvailableItem(inv, itemName, goodLocation, filter, true);
 			if (item == null)
-				item = CMLib.english().fetchAvailableItem(inv, itemName, goodLocation, wornFilter, false);
+				item = CMLib.english().fetchAvailableItem(inv, itemName, goodLocation, filter, false);
 		} 
 		else
 		{
@@ -3282,20 +3275,19 @@ public class StdMOB implements MOB
 		return item;
 	}
 
-	public Item findItem(String itemName) {
-		return fetchFromInventory(null, itemName, Wearable.FILTER_ANY, true, false);
+	public Item findItem(String itemName) 
+	{
+		return fetchFromInventory(null, itemName, Wearable.FILTER_ANY, false);
 	}
 
-	public Item findItem(Item goodLocation, String itemName) {
-		return fetchFromInventory(goodLocation, itemName, Wearable.FILTER_ANY, true, true);
+	public Item findItem(Item goodLocation, String itemName) 
+	{
+		return fetchFromInventory(goodLocation, itemName, Wearable.FILTER_ANY, true);
 	}
 
-	public Item fetchCarried(Item goodLocation, String itemName) {
-		return fetchFromInventory(goodLocation, itemName, Wearable.FILTER_UNWORNONLY, true, true);
-	}
-
-	public Item fetchWornItem(String itemName) {
-		return fetchFromInventory(null, itemName, Wearable.FILTER_WORNONLY, true, true);
+	public Item fetchItem(Item goodLocation, Filterer<Environmental> filter, String itemName) 
+	{
+		return fetchFromInventory(goodLocation, itemName, filter, true);
 	}
 
 	public List<Item> findItems(final String itemName) 

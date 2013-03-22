@@ -98,13 +98,13 @@ public class Empty extends Drop
 		while(doBugFix || ((allFlag)&&(addendum<=maxToDrop)))
 		{
 			doBugFix=false;
-			Item dropThis=mob.fetchCarried(null,whatToDrop+addendumStr);
+			Item dropThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatToDrop+addendumStr);
 			if((dropThis==null)
 			&&(V.size()==0)
 			&&(addendumStr.length()==0)
 			&&(!allFlag))
 			{
-				dropThis=mob.fetchWornItem(whatToDrop);
+				dropThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,whatToDrop);
 				if((dropThis!=null)&&(dropThis instanceof Container))
 				{
 					if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))

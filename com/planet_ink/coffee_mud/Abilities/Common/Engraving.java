@@ -85,7 +85,7 @@ public class Engraving extends CommonSkill
 			commonTell(mob,"You must specify what you want to engrave onto, and what words to engrave on it.");
 			return false;
 		}
-		Item target=mob.fetchCarried(null,(String)commands.firstElement());
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.firstElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			target=mob.location().findItem(null, (String)commands.firstElement());

@@ -52,7 +52,7 @@ public class Throw extends StdCommand
 		String str=(String)commands.lastElement();
 		commands.removeElement(str);
 		String what=CMParms.combine(commands,0);
-		Item item=mob.fetchWornItem(what);
+		Item item=mob.fetchItem(null,Wearable.FILTER_WORNONLY,what);
 		if(item==null) item=mob.findItem(null,what);
 		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 		{

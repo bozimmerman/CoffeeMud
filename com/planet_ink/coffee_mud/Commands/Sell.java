@@ -64,7 +64,7 @@ public class Sell extends StdCommand
 		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
 			doBugFix=false;
-			Item itemToDo=mob.fetchCarried(null,whatName+addendumStr);
+			Item itemToDo=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatName+addendumStr);
 			if(itemToDo==null) break;
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
 			&&(!V.contains(itemToDo)))

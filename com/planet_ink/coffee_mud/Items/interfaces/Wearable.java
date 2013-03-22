@@ -40,11 +40,26 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface Wearable extends Environmental 
 {
 	/** a constant used in the Locale item search classes to filter on only items being worn */
-	public static int FILTER_WORNONLY=0;
+	public static final Filterer<Environmental> FILTER_WORNONLY=new Filterer<Environmental>(){
+		@Override
+		public boolean passesFilter(Environmental obj) 
+		{
+			if(obj instanceof Item) return !((Item)obj).amWearingAt(IN_INVENTORY);
+			return false;
+		}
+	};
 	/** a constant used in the Locale item search classes to filter on only items NOT being worn */
-	public static int FILTER_UNWORNONLY=1;
+	public static final Filterer<Environmental> FILTER_UNWORNONLY=new Filterer<Environmental>(){
+		@Override
+		public boolean passesFilter(Environmental obj) 
+		{
+			if(obj instanceof Item) return ((Item)obj).amWearingAt(IN_INVENTORY);
+			return false;
+		}
+	};
 	/** a constant used in the Locale item search classes to filter on only items being worn OR not being worn */
-	public static int FILTER_ANY=2;
+	@SuppressWarnings("unchecked")
+	public static final Filterer<Environmental> FILTER_ANY=Filterer.ANYTHING;
 
 	/** 
 	 * Can test where, if anywhere, an item is being worn.  The value may be 0 to see if the item

@@ -56,7 +56,7 @@ public class Skill_Write extends StdSkill
 			mob.tell("What would you like to write on?");
 			return false;
 		}
-		Item target=mob.fetchCarried(null,(String)commands.elementAt(0));
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
 		if(target==null)
 		{
 			target=mob.location().findItem(null,(String)commands.elementAt(0));
