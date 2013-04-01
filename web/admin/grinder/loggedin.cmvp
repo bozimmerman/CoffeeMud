@@ -138,20 +138,21 @@
 	<br>
 	<br>
 	</TD></TR>
+	<!--
 	<TR BGCOLOR=WHITE><TD ALIGN=CENTER><FONT COLOR=BLACK><B>Random Templates</B></FONT></TD></TR>
 	<TR><TD ALIGN=CENTER>
 		<SELECT NAME=RANDOMTEMPLATES HEIGHT=10>
 		@MUDGrinder?AREALIST&NOINSTANCE@
 		</SELECT>
 		<SCRIPT LANGUAGE=JavaScript>
-		<!--
 			Sort(document.SELECTAREA.RANDOMTEMPLATES);
-		-->
 		</SCRIPT>
 		<br>
 		<INPUT TYPE=BUTTON NAME=NEWTEMPLATE VALUE="New" ONCLICK="Clicked('newrtemplate.cmvp');">
 		<INPUT TYPE=BUTTON NAME=MODTEMPLATE VALUE="Edit" ONCLICK="Clicked('possmodrtemplate.cmvp');">
 		<INPUT TYPE=BUTTON NAME=DELTEMPLATE VALUE="Del" ONCLICK="if(confirm('Are you sure you want to delete this random template?'))Clicked('rtemplategone.cmvp');">
+	</TD></TR>
+    -->
 	<BR>
 	@else@
 		<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
