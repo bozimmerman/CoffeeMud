@@ -66,7 +66,10 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return price;
 	}
 	
-	public String getUniqueLotID(){ return "AREA_PROPERTY_"+landPropertyID();}
+	public String getUniqueLotID()
+	{ 
+		return "AREA_PROPERTY_"+landPropertyID();
+	}
 	
 	public void setLandPrice(int price)
 	{   
@@ -151,7 +154,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		}
 	}
 
-	public String landPropertyID(){
+	public String landPropertyID()
+	{
 		if((affected!=null)&&(affected instanceof Area))
 			((Area)affected).Name();
 		else
