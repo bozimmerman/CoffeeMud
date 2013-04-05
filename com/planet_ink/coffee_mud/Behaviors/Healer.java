@@ -37,8 +37,8 @@ public class Healer extends ActiveTicker
 {
 	public String ID(){return "Healer";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	protected static Vector healingVector=new Vector();
-
+	protected static final List<Ability> healingVector=new Vector<Ability>();
+	
 	public Healer()
 	{
 		super();
@@ -46,12 +46,12 @@ public class Healer extends ActiveTicker
 		tickReset();
 		if(healingVector.size()==0)
 		{
-			healingVector.addElement(CMClass.getAbility("Prayer_CureBlindness"));
-			healingVector.addElement(CMClass.getAbility("Prayer_CureDisease"));
-			healingVector.addElement(CMClass.getAbility("Prayer_CureLight"));
-			healingVector.addElement(CMClass.getAbility("Prayer_RemoveCurse"));
-			healingVector.addElement(CMClass.getAbility("Prayer_Bless"));
-			healingVector.addElement(CMClass.getAbility("Prayer_Sanctuary"));
+			healingVector.add(CMClass.getAbility("Prayer_CureBlindness"));
+			healingVector.add(CMClass.getAbility("Prayer_CureDisease"));
+			healingVector.add(CMClass.getAbility("Prayer_CureLight"));
+			healingVector.add(CMClass.getAbility("Prayer_RemoveCurse"));
+			healingVector.add(CMClass.getAbility("Prayer_Bless"));
+			healingVector.add(CMClass.getAbility("Prayer_Sanctuary"));
 		}
 	}
 
@@ -73,24 +73,32 @@ public class Healer extends ActiveTicker
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return true;
 
-			MOB target=thisRoom.fetchRandomInhabitant();
-			int x=0;
-			while(((++x)<10)&&((target==null)||(target.getVictim()==mob)||(target==mob)||(target.isMonster())))
-				target=thisRoom.fetchRandomInhabitant();
-
-			Ability tryThisOne=(Ability)healingVector.elementAt(CMLib.dice().roll(1,healingVector.size(),-1));
-			Ability thisOne=mob.fetchAbility(tryThisOne.ID());
-			if(thisOne==null)
+			if(thisRoom.numPCInhabitants()>0)
 			{
-				thisOne=(Ability)tryThisOne.copyOf();
-				thisOne.setSavable(false);
-				mob.addAbility(thisOne);
+				final MOB target=thisRoom.fetchRandomInhabitant();
+				MOB followMOB=target;
+				if(target.amFollowing()!=null)
+					followMOB=target.amUltimatelyFollowing();
+				if((target!=null)
+				&&(target!=mob)
+				&&(followMOB.getVictim()!=mob)
+				&&(!followMOB.isMonster()))
+				{
+					Ability tryThisOne=(Ability)healingVector.get(CMLib.dice().roll(1,healingVector.size(),-1));
+					Ability thisOne=mob.fetchAbility(tryThisOne.ID());
+					if(thisOne==null)
+					{
+						thisOne=(Ability)tryThisOne.copyOf();
+						thisOne.setSavable(false);
+						mob.addAbility(thisOne);
+					}
+					thisOne.setProficiency(100);
+					Vector V=new Vector();
+					if((target!=null)&&(target!=mob)&&(!target.isMonster()))
+						V.addElement(target.name());
+					thisOne.invoke(mob,V,target,false,0);
+				}
 			}
-			thisOne.setProficiency(100);
-			Vector V=new Vector();
-			if((target!=null)&&(target!=mob)&&(!target.isMonster()))
-				V.addElement(target.name());
-			thisOne.invoke(mob,V,target,false,0);
 		}
 		return true;
 	}

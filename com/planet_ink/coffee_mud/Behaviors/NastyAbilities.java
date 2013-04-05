@@ -37,8 +37,11 @@ public class NastyAbilities extends ActiveTicker
 {
 	public String ID(){return "NastyAbilities";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	boolean fightok=false;
+	protected boolean fightok=false;
 
+	private List<Ability> mySkills=null;
+	private int numAllSkills=-1;
+	
 	public NastyAbilities()
 	{
 		super();
@@ -70,58 +73,67 @@ public class NastyAbilities extends ActiveTicker
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return true;
 
-			MOB target=thisRoom.fetchRandomInhabitant();
-			int x=0;
-			while(((target==null)||(target.getVictim()==mob)||(target==mob)||(target.isMonster()))&&((++x)<10))
-				target=thisRoom.fetchRandomInhabitant();
-
-			int tries=0;
-			Ability tryThisOne=null;
-			while((tryThisOne==null)&&(tries<100)&&((mob.numAllAbilities())>0))
+			if(thisRoom.numPCInhabitants()>0)
 			{
-				tryThisOne=mob.fetchRandomAbility();
-				if((tryThisOne!=null)
-				   &&(mob.fetchEffect(tryThisOne.ID())==null)
-				   &&(tryThisOne.castingQuality(mob,target)==Ability.QUALITY_MALICIOUS))
+				final MOB target=thisRoom.fetchRandomInhabitant();
+				MOB followMOB=target;
+				if(target.amFollowing()!=null)
+					followMOB=target.amUltimatelyFollowing();
+				if((target!=null)
+				&&(target!=mob)
+				&&(followMOB.getVictim()!=mob)
+				&&(!followMOB.isMonster()))
 				{
-					if((tryThisOne.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+					if((numAllSkills!=mob.numAllAbilities())||(mySkills==null))
 					{
-						if(!tryThisOne.appropriateToMyFactions(mob))
-							tryThisOne=null;
+						numAllSkills=mob.numAbilities();
+						mySkills=new ArrayList<Ability>();
+						for(Enumeration<Ability> e=mob.allAbilities(); e.hasMoreElements();)
+						{
+							Ability tryThisOne=e.nextElement();
+							if((tryThisOne!=null)
+							&&(tryThisOne.abstractQuality()==Ability.QUALITY_MALICIOUS)
+							&&(((tryThisOne.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PRAYER)
+								||tryThisOne.appropriateToMyFactions(mob)))
+							{
+								mySkills.add(tryThisOne);
+							}
+						}
 					}
-				}
-				else
-					tryThisOne=null;
-				tries++;
-			}
-			if(tryThisOne!=null)
-				if((target!=null)&&(target!=mob)&&(!target.isMonster()))
-				{
-					Hashtable H=new Hashtable();
-					for(int i=0;i<thisRoom.numInhabitants();i++)
+					if(mySkills.size()>0)
 					{
-						MOB M=thisRoom.fetchInhabitant(i);
-						if((M!=null)&&(M.getVictim()!=null))
-							H.put(M,M.getVictim());
-					}
-					tryThisOne.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,tryThisOne.ID()));
-					Vector V=new Vector();
-					V.addElement(target.name());
-					if((tryThisOne.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
-						tryThisOne.invoke(mob,new Vector(),null,false,0);
-					else
-						tryThisOne.invoke(mob,V,target,false,0);
+						Ability tryThisOne=mySkills.get(CMLib.dice().roll(1, mySkills.size(), -1));
+						if((mob.fetchEffect(tryThisOne.ID())==null)
+						&&(tryThisOne.castingQuality(mob,target)==Ability.QUALITY_MALICIOUS))
+						{
+							Map<MOB,MOB> H=new Hashtable<MOB,MOB>();
+							for(int i=0;i<thisRoom.numInhabitants();i++)
+							{
+								MOB M=thisRoom.fetchInhabitant(i);
+								if((M!=null)&&(M.getVictim()!=null))
+									H.put(M,M.getVictim());
+							}
+							tryThisOne.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,tryThisOne.ID()));
+							Vector V=new Vector();
+							V.addElement(target.name());
+							if((tryThisOne.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+								tryThisOne.invoke(mob,new Vector(),null,false,0);
+							else
+								tryThisOne.invoke(mob,V,target,false,0);
 
-					if(!fightok)
-					for(int i=0;i<thisRoom.numInhabitants();i++)
-					{
-						MOB M=thisRoom.fetchInhabitant(i);
-						if(H.containsKey(M))
-							M.setVictim((MOB)H.get(M));
-						else
-							M.setVictim(null);
+							if(!fightok)
+							for(int i=0;i<thisRoom.numInhabitants();i++)
+							{
+								MOB M=thisRoom.fetchInhabitant(i);
+								if(H.containsKey(M))
+									M.setVictim((MOB)H.get(M));
+								else
+									M.setVictim(null);
+							}
+						}
 					}
 				}
+			}
 		}
 		return true;
 	}

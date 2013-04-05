@@ -38,6 +38,9 @@ public class NiceAbilities extends ActiveTicker
 	public String ID(){return "NiceAbilities";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	
+	private List<Ability> mySkills=null;
+	private int numAllSkills=-1;
+	
 	public NiceAbilities()
 	{
 		super();
@@ -63,38 +66,47 @@ public class NiceAbilities extends ActiveTicker
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
 				return true;
 
-			MOB target=thisRoom.fetchRandomInhabitant();
-			int x=0;
-			while(((target==null)||(target.getVictim()==mob)||(target==mob)||(target.isMonster()))&&((++x)<10))
-				target=thisRoom.fetchRandomInhabitant();
-
-			int tries=0;
-			Ability tryThisOne=null;
-			while((tryThisOne==null)&&(tries<100)&&((mob.numAllAbilities())>0))
+			if(thisRoom.numPCInhabitants()>0)
 			{
-				tryThisOne=mob.fetchRandomAbility();
-				if((tryThisOne!=null)
-				   &&(mob.fetchEffect(tryThisOne.ID())==null)
-				   &&(tryThisOne.castingQuality(mob,target)==Ability.QUALITY_BENEFICIAL_OTHERS))
+				final MOB target=thisRoom.fetchRandomInhabitant();
+				MOB followMOB=target;
+				if(target.amFollowing()!=null)
+					followMOB=target.amUltimatelyFollowing();
+				if((target!=null)
+				&&(target!=mob)
+				&&(followMOB.getVictim()!=mob)
+				&&(!followMOB.isMonster()))
 				{
-					if((tryThisOne.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+					if((numAllSkills!=mob.numAllAbilities())||(mySkills==null))
 					{
-						if(!tryThisOne.appropriateToMyFactions(mob))
-							tryThisOne=null;
+						numAllSkills=mob.numAbilities();
+						mySkills=new ArrayList<Ability>();
+						for(Enumeration<Ability> e=mob.allAbilities(); e.hasMoreElements();)
+						{
+							Ability tryThisOne=e.nextElement();
+							if((tryThisOne!=null)
+							&&(tryThisOne.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
+							&&(((tryThisOne.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PRAYER)
+								||tryThisOne.appropriateToMyFactions(mob)))
+							{
+								mySkills.add(tryThisOne);
+							}
+						}
+					}
+					if(mySkills.size()>0)
+					{
+						Ability tryThisOne=mySkills.get(CMLib.dice().roll(1, mySkills.size(), -1));
+						if((mob.fetchEffect(tryThisOne.ID())==null)
+						&&(tryThisOne.castingQuality(mob,target)==Ability.QUALITY_BENEFICIAL_OTHERS))
+						{
+							tryThisOne.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,tryThisOne.ID()));
+							Vector V=new XVector("$"+target.Name()+"$");
+							V.addElement(target.name());
+							tryThisOne.invoke(mob,V,target,false,0);
+						}
 					}
 				}
-				else
-					tryThisOne=null;
-				tries++;
 			}
-			if(tryThisOne!=null)
-				if((target!=null)&&(target!=mob)&&(!target.isMonster()))
-				{
-					tryThisOne.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,tryThisOne.ID()));
-					Vector V=new Vector();
-					V.addElement(target.name());
-					tryThisOne.invoke(mob,V,target,false,0);
-				}
 		}
 		return true;
 	}
