@@ -2449,3 +2449,4 @@ ruthless programmer, and sentenced to a quick death.
 5. Generic Abilities will now import/export when races that use them export
 6. (Internal) New factions now default into /resources/factions -- legacy locations will work too though.
 7. New Channel flag (ACCOUNTOOC) to force account names instead of channel names into messages.
+8. (Internal) randomdata.xml now at /resources/randareas/example.xml -- update your random areas!
