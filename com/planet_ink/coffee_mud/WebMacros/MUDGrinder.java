@@ -124,7 +124,7 @@ public class MUDGrinder extends StdWebMacro
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			List<String> templateDirs=new LinkedList<String>();
-			templateDirs.add(Resources.buildResourcePath("templates"));
+			templateDirs.add(Resources.buildResourcePath("randareas"));
 			StringBuilder str=new StringBuilder("");
 			while(templateDirs.size()>0)
 			{
