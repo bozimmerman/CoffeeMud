@@ -255,31 +255,7 @@ public class MUD extends Thread implements MudHost
 					StringBuffer finalProps=new CMFile("web/"+serverName+".ini", null, true).text();
 					commonProps.append("\n").append(finalProps.toString());
 					MiniWebConfig config=new MiniWebConfig();
-					config.setFileManager(new FileManager(){
-						@Override public char getFileSeparator() { 
-							return '/';
-						}
-						@Override public File createFileFromPath(String localPath) {
-							return new CMFile(localPath,null,false);
-						}
-						@Override public File createFileFromPath(File parent, String localPath) {
-							return new CMFile(parent.getAbsolutePath()+'/'+localPath,null,false);
-						}
-						@Override public byte[] readFile(File file) throws IOException, FileNotFoundException {
-							return ((CMFile)file).raw();
-						}
-						@Override public InputStream getFileStream(File file) throws IOException, FileNotFoundException {
-							return ((CMFile)file).getRawStream();
-						}
-						@Override
-						public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException {
-							return new RandomAccessFile(new File(((CMFile)file).getLocalPathAndName()),"r");
-						}
-						@Override
-						public boolean supportsRandomAccess(File file) { 
-							return ((CMFile)file).isLocalFile();
-						}
-					});
+					config.setFileManager(new CMFile.CMFileManager());
 					MiniWebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
 					if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
 						config.setDebugFlag("BOTH");

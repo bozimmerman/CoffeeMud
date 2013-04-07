@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.miniweb.interfaces.FileManager;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -1533,4 +1534,35 @@ public class CMFile extends File
 //	          Returns the pathname string of this abstract pathname.
 	@Override
 	public String	toString() { return this.getAbsolutePath(); }
+	
+	/**
+	 * FileManager handler for CMFile, used by MiniWebServer
+	 * @author Bo Zimmerman
+	 */
+	public static class CMFileManager implements FileManager 
+	{
+		@Override public char getFileSeparator() { 
+			return '/';
+		}
+		@Override public File createFileFromPath(String localPath) {
+			return new CMFile(localPath,null,false);
+		}
+		@Override public File createFileFromPath(File parent, String localPath) {
+			return new CMFile(parent.getAbsolutePath()+'/'+localPath,null,false);
+		}
+		@Override public byte[] readFile(File file) throws IOException, FileNotFoundException {
+			return ((CMFile)file).raw();
+		}
+		@Override public InputStream getFileStream(File file) throws IOException, FileNotFoundException {
+			return ((CMFile)file).getRawStream();
+		}
+		@Override
+		public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException {
+			return new RandomAccessFile(new File(((CMFile)file).getLocalPathAndName()),"r");
+		}
+		@Override
+		public boolean supportsRandomAccess(File file) { 
+			return ((CMFile)file).isLocalFile();
+		}
+	}
 }
