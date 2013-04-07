@@ -47,7 +47,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	protected volatile int instanceCounter=0;
 	protected long childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
 	protected WeakReference<Area> parentArea = null;
-	protected String filePath = "examples/randomdata.xml";
+	protected String filePath = "templates/randomdata.xml";
 	protected Map<String, String> varMap = new Hashtable<String, String>(1);
 	
 	protected String getStrippedRoomID(String roomID)

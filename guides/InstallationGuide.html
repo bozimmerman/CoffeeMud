@@ -686,10 +686,6 @@ wizard when new factions are created. Do not modify this file!!<br />
             </td>
           </tr>
           <tr>
-            <td>randomdata.xml</td>
-            <td>A default area generation file for the GENERATE command.</td>
-          </tr>
-          <tr>
             <td valign="top">reputation.ini<br />
             </td>
             <td valign="top">Sample faction ini file, which you may add
@@ -828,6 +824,16 @@ sample quests. Each quest is in its own directory, along with any
 supporting Scriptable *.script files, and any supporting mob or item
 *.cmare files. The CREATE QUEST command is used to load each of these
 *.quest files. Quests may also be loaded via the MUDGrinder.</p>
+      <p>The <code>resources/templates</code> directory contains sample
+random area data templates, which all end with the *.xml extension.  The
+sample file "randomdata.xml" is in this directory, which contains
+instructions for making new template files by hand.  Random area templates
+can also be modified via the MUDGrinder.</p>
+          <tr>
+            <td>randomdata.xml</td>
+            <td>A default area generation file for the GENERATE command.</td>
+          </tr>
+
       <p>The <code>resources/skills</code> directory contains the
 database of recipes used by the Common skills in CoffeeMud. Each text
 file contains recipe for a single skill, and each is formatted in

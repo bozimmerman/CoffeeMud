@@ -85,7 +85,7 @@ public class Generate extends StdCommand
 			commands.removeElementAt(3);
 		}
 		else
-			file = new CMFile(Resources.buildResourcePath("examples/randomdata.xml"),mob,false);
+			file = new CMFile(Resources.buildResourcePath("templates/randomdata.xml"),mob,false);
 		if(!file.canRead())
 		{
 			mob.tell("Random data file '"+file.getCanonicalPath()+"' not found.  Aborting.");

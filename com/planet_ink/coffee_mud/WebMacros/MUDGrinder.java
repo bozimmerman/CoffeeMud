@@ -119,6 +119,28 @@ public class MUDGrinder extends StdWebMacro
 			return GrinderAreas.getAreaList(pickedA,mob,noInstances);
 		}
 		else
+		if(parms.containsKey("TEMPLATELIST"))
+		{
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null) return "@break@";
+			List<String> templateDirs=new LinkedList<String>();
+			templateDirs.add(Resources.buildResourcePath("templates"));
+			StringBuilder str=new StringBuilder("");
+			while(templateDirs.size()>0)
+			{
+				String templateDirPath=templateDirs.remove(0);
+				CMFile templateDir=new CMFile(templateDirPath,mob,false);
+				for(CMFile file : templateDir.listFiles())
+				{
+					if(file.isDirectory() && file.canRead())
+						templateDirs.add(templateDirPath+"/"+file.getName());
+					else
+						str.append("<OPTION VALUE=\""+templateDirPath+"/"+file.getName()+"\">"+templateDirPath+"/"+file.getName());
+				}
+			}
+			return str.toString();
+		}
+		else
 		if(parms.containsKey("DELAREA"))
 		{
 			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
