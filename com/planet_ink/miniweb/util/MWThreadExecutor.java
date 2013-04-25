@@ -90,6 +90,8 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 	{
 		try
 		{
+			if(this.getQueue().contains(r))
+				return;
 			super.execute(r);
 			
 			// an optomization for logging purposes.  When my smtp server gets hit

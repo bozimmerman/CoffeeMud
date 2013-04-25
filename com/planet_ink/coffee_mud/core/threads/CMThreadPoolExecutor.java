@@ -75,6 +75,8 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	{
 		try
 		{
+			if(this.getQueue().contains(r))
+				return;
 			super.execute(r);
 			if((rejectCount>0)&&(System.currentTimeMillis()-lastRejectTime)>5000)
 			{
