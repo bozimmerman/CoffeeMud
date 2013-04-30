@@ -267,7 +267,7 @@
 			@endif@
 		</TD>
 		@if?CheckAuthCode?ANYMODAREAS=true@
-			<TD ROWSPAN=3 VALIGN=TOP ALIGN=CENTER><BR><BR><BR><BR>@insert?AREAEDITOR@</TD>
+			<TD ROWSPAN=3 VALIGN=TOP ALIGN=CENTER><BR>@insert?AREAEDITOR@</TD>
 		@endif@
 	</TR>
 	</TABLE>
