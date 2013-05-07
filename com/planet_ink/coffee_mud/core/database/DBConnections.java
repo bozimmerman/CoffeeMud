@@ -144,8 +144,11 @@ public class DBConnections
 			reportError();
 			Log.errOut("DBConnections",""+e);
 		}
-		if(DBToUse!=null)
-			DBDone(DBToUse);
+		finally
+		{
+			if(DBToUse!=null)
+				DBDone(DBToUse);
+		}
 		return Result;
 	}
 
@@ -204,8 +207,11 @@ public class DBConnections
 			reportError();
 			Log.errOut("DBConnections",""+e);
 		}
-		if(DBToUse!=null)
-			DBDone(DBToUse);
+		finally
+		{
+			if(DBToUse!=null)
+				DBDone(DBToUse);
+		}
 		return Result;
 	}
 	
