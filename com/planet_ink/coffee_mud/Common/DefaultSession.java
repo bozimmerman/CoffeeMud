@@ -207,6 +207,7 @@ public class DefaultSession implements Session
 			}
 			else
 			{
+				if(out==null) return;
 				out.flush();
 				rawout.flush();
 				preliminaryRead(500);
@@ -214,6 +215,7 @@ public class DefaultSession implements Session
 			if(clientTelnetMode(Session.TELNET_MXP))
 			{
 				rawOut("\n\033[6z\n\033[6z<SUPPORT IMAGE IMAGE.URL>\n");
+				if(out==null) return;
 				out.flush();
 				rawout.flush();
 				preliminaryRead(1000);
