@@ -9,6 +9,8 @@ import java.nio.channels.*;
 
 import javax.net.ssl.SSLContext;
 
+import com.planet_ink.coffee_mud.core.Log;
+
 import com.planet_ink.miniweb.interfaces.HTTPIOHandler;
 import com.planet_ink.miniweb.http.HTTPHeader;
 import com.planet_ink.miniweb.http.HTTPReader;
@@ -18,7 +20,6 @@ import com.planet_ink.miniweb.http.MWFileCache;
 import com.planet_ink.miniweb.http.MWMimeConverterManager;
 import com.planet_ink.miniweb.http.MWServletManager;
 import com.planet_ink.miniweb.http.MWSessionManager;
-import com.planet_ink.miniweb.util.Log;
 import com.planet_ink.miniweb.util.MWRunWrap;
 import com.planet_ink.miniweb.util.MWThread;
 import com.planet_ink.miniweb.util.MWThreadExecutor;
@@ -521,7 +522,8 @@ public class MiniWebServer extends Thread
 	 */
 	public static void main(String[] args)
 	{
-		Log.instance().startLogFiles("miniweb", 2);
+		
+		Log.instance().startLogging("miniweb", 2);
 		String debug="OFF";
 		String iniFilename="mw.ini";
 		for(String arg : args)
@@ -552,7 +554,10 @@ public class MiniWebServer extends Thread
 				config.setDebugFlag(debug);
 			}
 		}
-		Log.instance().setLogOutput("BOTH", "BOTH", "BOTH", debug, "OFF", "OFF", "OFF");
+		Log.instance().configureLog(Log.Type.info, "BOTH");
+		Log.instance().configureLog(Log.Type.error, "BOTH");
+		Log.instance().configureLog(Log.Type.warning, "BOTH");
+		Log.instance().configureLog(Log.Type.debug, debug);
 		config.getLogger().info("Starting "+NAME+" "+VERSION);
 		
 		final MiniWebServer server = new MiniWebServer("miniweb", config);

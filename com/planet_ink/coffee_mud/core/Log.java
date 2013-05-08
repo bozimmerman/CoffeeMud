@@ -31,6 +31,7 @@ import java.util.logging.Logger;
  * plus optional numeric levels within those in case some kinds of info
  * are more important than others.  Also manages multiple log files if
  * necessary, up to a limit defined by the appl.
+ * Rewritten on 05/07/2013
  * @author Bo Zimmerman
  *
  */
@@ -40,24 +41,34 @@ public class Log extends java.util.logging.Logger
 	public static final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ss");
 	
 	/** SPACES for headers */
-	private static final String SPACES="                                                                                               ";
+	private static final String SPACES="                                                                                                ";
 	private static final String SPACES15=SPACES.substring(0,15);
 	
-	private PrintWriter fileOutWriter=null; /**	always to "log" */
-	private final PrintWriter systemOutWriter=new PrintWriter(System.out,true); /** always to systemout */
-	private String 	filePath = ""; /** The fully qualified file path */
-	private String 	logName = "application"; /** log name */
-	private String 	LOGNAME = "APPLICATION"; /** log name */
-	private final Map<LogType,String>		FLAGS=new Hashtable<LogType,String>();
-	private final Map<LogType,PrintWriter[]> WRITERS=new Hashtable<LogType,PrintWriter[]>();
-	private static final Log[] 				logs=new Log[256];
+	private PrintWriter 		fileOutWriter[]	= null; /**	always to "log" */
+	private int					numberOfFWLogs	= 1;
+	private final PrintWriter 	systemOutWriter	= new PrintWriter(System.out,true); /** always to systemout */
+	private String 				filePath 		= ""; /** The fully qualified file path */
+	private String 				logName 		= "application"; /** log name */
+	private String 				LOGNAME 		= "APPLICATION"; /** log name */
+	private static final Log[] 	logs			= new Log[256];
+	private final Map<Type,Conf>CONFS			= new Hashtable<Type,Conf>();
+	private final Map<PrintWriter,long[]> WRITTEN	= new Hashtable<PrintWriter,long[]>();
 	
-	public static enum LogType { error, help, debug, info, warning, kills, combat, access;
+	public static enum Target { ON, OFF, BOTH, FILE, OWNFILE };
+	
+	private static class Conf
+	{
+		public final Target target;
+		public int maxLevel, maxLogs, maxLines, maxBytes;
+		public final PrintWriter[][] writers = new PrintWriter[10][];
+		public Conf(Target target, int maxLevel, int maxLogs, int maxLines, int maxBytes) 
+		{ this.target=target; this.maxLevel=maxLevel; this.maxLogs=maxLogs; this.maxLines=maxLines; this.maxBytes=maxBytes;}
+	}
+	
+	public static enum Type { error, help, debug, info, warning, kills, combat, access;
 		final String sixChars;
-		private LogType() {
-			sixChars=(this.toString()+SPACES).substring(0,5)+" ";
-		}
-		public String getSixChars() { return sixChars; }
+		private Type() { sixChars=(this.toString()+SPACES).substring(0,5)+" "; }
+		public final String getSixChars() { return sixChars; }
 	}
 	
 	public Log()
@@ -126,23 +137,71 @@ public class Log extends java.util.logging.Logger
 	}
 
 
-	private final boolean isWriterOn(final LogType type)
+	private final boolean isWriterOn(final Type type)
 	{
-		final String flag=prop(type);
-		if(flag==null) return true;
-		if(flag.length()==0) return false;
-		if(flag.startsWith("OFF")) return false;
-		return true;
+		return getTarget(type) != Target.OFF;
 	}
 	
-	public final String getLogFilename(final LogType type)
+	public final String getLogFilename(final Type type)
 	{
-		final String flag=prop(type);
-		if(flag.startsWith("OWNFILE"))
+		switch(getTarget(type))
+		{
+		case OWNFILE:
 			return logName+"_"+type.toString().toLowerCase()+".log";
-		if((flag.startsWith("FILE"))||(flag.startsWith("BOTH")))
+		case FILE:
+		case BOTH:
 			return logName+".log";
-		return null;
+		default:
+			return null;
+		}
+	}
+	
+	private final PrintWriter rollLog(final PrintWriter writer) throws IOException
+	{
+		if(writer==this.fileOutWriter[0])
+		{
+			WRITTEN.remove(writer);
+			writer.close();
+			FileOutputStream fileOut=this.startLogFile(logName, this.numberOfFWLogs);
+			PrintWriter newPW=new PrintWriter(fileOut,true);
+			this.fileOutWriter[0]=newPW;
+			WRITTEN.put(newPW, new long[]{0,0});
+			return newPW;
+		}
+		else
+		for(final Type type : Type.values())
+		{
+			final Conf config=getConfig(type);
+			if((config.target==Target.OWNFILE)&&(config.writers[0][0]==writer))
+			{
+				WRITTEN.remove(writer);
+				writer.close();
+				FileOutputStream fileOut=this.startLogFile(getLogFilename(type), config.maxLogs);
+				PrintWriter newPW=new PrintWriter(fileOut,true);
+				config.writers[0][0]=newPW;
+				WRITTEN.put(newPW, new long[]{0,0});
+				return newPW;
+			}
+		}
+		return writer;
+	}
+	
+	private final PrintWriter writeBytes(final Type type, final Conf config, final PrintWriter writer, final String str)
+	{
+		try
+		{
+			writer.println(str);
+			final long[] counts=this.WRITTEN.get(writer);
+			counts[0]++;
+			counts[1]+=str.length()+1;
+			if(((config.maxLines>0)&&(counts[0]>=config.maxLines))
+			||((config.maxBytes>0)&&(counts[1]>=config.maxBytes)))
+				return rollLog(writer);
+		}
+		catch(IOException e)
+		{
+		}
+		return writer;
 	}
 	
 	/**
@@ -150,65 +209,134 @@ public class Log extends java.util.logging.Logger
  	 *
 	 * <br><br><b>Usage:</b> PrintWriter W=getWriter("BOTH");
 	 * @param type log type
+	 * @param config log config
 	 * @return PrintWriter the writer
 	 */
-	private final PrintWriter getWriter(final LogType type, int priority)
+	private final PrintWriter getWriter(final Type type, final Conf config, final int priority)
 	{
-		PrintWriter[] writers=WRITERS.get(type);
-		if(priority<0) priority=0;
-		if(priority>9) priority=9;
-		if(writers!=null) return writers[priority];
-		writers=new PrintWriter[10];
-		WRITERS.put(type,writers);
-		final String flag=prop(type);
-		if(flag==null)
+		final PrintWriter[][] writers=config.writers;
+		if(writers[0]!=null)
 		{
+			if(priority<0) return writers[0][0];
+			if(priority>9) return writers[9][0];
+			return writers[priority][0];
+		}
+		switch(config.target)
+		{
+		case OFF:
+			return null;
+		case ON:
 			for(int i=0;i<10;i++)
-				writers[i]=systemOutWriter;
-		}
-		else
-		if(flag.length()>0)
-		{
-			if(flag.startsWith("OFF")) return null;
-			if(flag.startsWith("ON"))
+				writers[i]=new PrintWriter[]{systemOutWriter};
+			break;
+		case FILE:
+		case BOTH:
+			for(int i=0;i<10;i++)
+				writers[i]=this.fileOutWriter;
+			break;
+		case OWNFILE:
 			{
-				for(int i=0;i<10;i++)
-					writers[i]=systemOutWriter;
-			}
-			else
-			if((flag.startsWith("FILE"))||(flag.startsWith("BOTH")))
-			{
-				for(int i=0;i<10;i++)
-					writers[i]=fileOutWriter;
-			}
-			else
-			if(flag.startsWith("OWNFILE"))
-			{
-				File fileOut=new File(logName+"_"+type.toString().toLowerCase()+".log");
-				try
+				try 
 				{
-					filePath = fileOut.getAbsolutePath();
-					final FileOutputStream fileStream=new FileOutputStream(fileOut,true);
-					final PrintWriter pw=new PrintWriter(fileStream,true);
+					FileOutputStream fileStream=this.startLogFile(logName+"_"+type.toString().toLowerCase(), config.maxLogs);
+					final PrintWriter[] writer=new PrintWriter[]{new PrintWriter(fileStream,true)};
 					for(int i=0;i<10;i++)
-						writers[i]=pw;
-					WRITERS.remove(type);
-					pw.close();
-				}
-				catch(IOException e)
+						writers[i]=writer;
+				} 
+				catch (IOException e) 
 				{
-					e.printStackTrace(System.err);
+					e.printStackTrace();
 				}
 			}
-			int x=flag.length();
-			while(Character.isDigit(flag.charAt(--x)))
-				{}
-			int max=s_int(flag.substring(x+1));
-			for(int i=max+1;i<10;i++)
-				writers[i]=null;
-			return writers[priority];
 		}
-		return null;
+		int max=config.maxLevel;
+		PrintWriter[] empty=new PrintWriter[]{null};
+		for(int i=max+1;i<10;i++)
+			writers[i]=empty;
+		for(PrintWriter[] writer : writers)
+			if((writer[0]!=null) && (!WRITTEN.containsKey(writer[0])))
+				WRITTEN.put(writer[0], new long[2]);
+		if(priority<0) return writers[0][0];
+		if(priority>9) return writers[9][0];
+		return writers[priority][0];
+	}
+
+	/**
+	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
+ 	 *
+	 * <br><br><b>Usage:</b> PrintWriter W=makeConfig("BOTH");
+	 * @param type LogType
+	 * @param code ON, OFF, BOTH, OWNFILE, FILE
+	 * @return Conf the config
+	 */
+	private final Conf makeConfig(final Type type, String code)
+	{
+		if((code==null)||(code.trim().length()==0))
+			return new Conf(Target.OFF,0,1,0,0);
+		int maxNumberOfLogs=1;
+		int maxNumberOfBytes=0;
+		int maxNumberOfEntries=0;
+		code=code.trim().toUpperCase();
+		int maxLevel=0;
+		int x=code.indexOf('<');
+		if(x>0)
+		{
+			String numStr=code.substring(x+1).trim();
+			code=code.substring(0,x).trim();
+			if(Character.isDigit(numStr.charAt(0)))
+			{
+				x=0;
+				while((x<numStr.length())&&(Character.isDigit(numStr.charAt(x)))) {x++;}
+				int num=s_int(numStr.substring(0,x));
+				numStr=numStr.substring(x).toLowerCase();
+				if(numStr.startsWith("b"))
+					maxNumberOfBytes=num;
+				else
+				if(numStr.startsWith("k"))
+					maxNumberOfBytes=num*1024;
+				else
+				if(numStr.startsWith("m"))
+					maxNumberOfBytes=num*1024*1024;
+				else
+				if(numStr.startsWith("g"))
+					maxNumberOfBytes=num*1024*1024*1024;
+				else
+					maxNumberOfEntries=num;
+				maxNumberOfLogs=this.numberOfFWLogs;
+			}
+		}
+		if(Character.isDigit(code.charAt(code.length()-1)))
+		{
+			x=code.length();
+			while(Character.isDigit(code.charAt(--x))) {}
+			maxLevel=s_int(code.substring(x+1));
+		}
+		Target t;
+		try {
+			t=Target.valueOf(code);
+		} catch (Exception e) {
+			t=Target.OFF;
+		}
+		if( t==null) t=Target.OFF;
+		return new Conf(t,maxLevel,maxNumberOfLogs,maxNumberOfEntries,maxNumberOfBytes);
+	}
+	
+	/**
+	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
+ 	 *
+	 * <br><br><b>Usage:</b> PrintWriter W=getWriter("BOTH");
+	 * @param type LogType
+	 * @return PrintWriter the writer
+	 */
+	private final Conf getConfig(final Type type)
+	{
+		Conf t=CONFS.get(type);
+		if(t==null)
+		{
+			t=makeConfig(type, System.getProperty("LOG."+LOGNAME+"_"+type.toString().toUpperCase().trim()));
+			CONFS.put(type,t);
+		}
+		return t;
 	}
 
 	/**
@@ -218,125 +346,116 @@ public class Log extends java.util.logging.Logger
 	 * @param type LogType
 	 * @return PrintWriter the writer
 	 */
-	private final String prop(LogType type)
+	private final Target getTarget(final Type type)
 	{
-		String s=FLAGS.get(type);
-		if(s==null)
-		{
-			s=System.getProperty("LOG."+LOGNAME+"_"+type.toString().toUpperCase().trim());
-			if(s==null) s="";
-			FLAGS.put(type,s);
-		}
-		return s;
+		return getConfig(type).target;
 	}
 
 	/**
 	* Reset all of the log files
 	* ON, OFF, FILE, BOTH
-	* <br><br><b>Usage:</b>  CMProps.Initialize("ON","OFF");
-	* @param newSYSMSGS code string to describe info msgs
-	* @param newERRMSGS code string to describe error msgs
-	* @param newWARNMSGS code string to describe warning msgs
-	* @param newDBGMSGS code string to describe debug msgs
-	* @param newHLPMSGS code string to describe help msgs
+	* <br><br><b>Usage:</b>  CMProps.initLog(Log.LogType.info,"ON");
+	* @param type the log to set the code for
+	* @param code the code
 	*/
-	public final void setLogOutput(final String newSYSMSGS,
-								   final String newERRMSGS,
-								   final String newWARNMSGS,
-								   final String newDBGMSGS,
-								   final String newHLPMSGS,
-								   final String newKILMSGS,
-								   final String newCBTMSGS)
+	public final void configureLog(final Type type, final String code)
 	{
-		System.setProperty("LOG."+LOGNAME+"_INFO",newSYSMSGS);
-		System.setProperty("LOG."+LOGNAME+"_ERROR",newERRMSGS);
-		System.setProperty("LOG."+LOGNAME+"_WARN",newWARNMSGS);
-		System.setProperty("LOG."+LOGNAME+"_DEBUG",newDBGMSGS);
-		System.setProperty("LOG."+LOGNAME+"_HELP",newHLPMSGS);
-		System.setProperty("LOG."+LOGNAME+"_KILLS",newKILMSGS);
-		System.setProperty("LOG."+LOGNAME+"_COMBAT",newCBTMSGS);
-		System.setProperty("LOG."+LOGNAME+"_ACCESS",newCBTMSGS);
-		FLAGS.clear();
-		WRITERS.clear();
+		System.setProperty("LOG."+LOGNAME+"_"+type.toString().toUpperCase(),code.toUpperCase().trim());
+		CONFS.put(type,makeConfig(type, code));
 	}
 
 	/**
 	* Start all of the log files in the info temp directory
 	*
-	* <br><br><b>Usage:</b>  startLogFiles(5);
+	* <br><br><b>Usage:</b>  startLogFiles("mud",5);
+	* @param newLogName maximum name of files
 	* @param numberOfLogs maximum number of files
 	*/
-	public final void startLogFiles(final String newLogName, final int numberOfLogs)
+	public final void startLogging(final String newLogName, final int numberOfLogs)
 	{
 		// ===== pass in a null to force the temp directory
-		startLogFiles(newLogName, "", numberOfLogs);
+		startLogging(newLogName, "", numberOfLogs);
 	}
 
+	private final FileOutputStream startLogFile(String logName, final int numberOfLogs) throws IOException
+	{
+		File directoryPath;
+
+		if ((filePath!=null)&&(filePath.length()!=0))
+		{
+			directoryPath = new File(filePath);
+		}
+		else
+		{
+			directoryPath = new File(".");
+		}
+		
+		try
+		{
+
+			if ((!directoryPath.isDirectory())||(!directoryPath.canWrite())||(!directoryPath.canRead()))
+			{
+				directoryPath = null;
+			}
+		}
+		catch(Exception t)
+		{
+			directoryPath=null;
+		}
+
+		if(logName.toLowerCase().endsWith(".log")||logName.toLowerCase().endsWith(".txt"))
+			logName=logName.substring(0,logName.length()-4);
+		
+		// initializes the logging objects
+		if(numberOfLogs>1)
+		{
+			try{
+				String name=logName+(numberOfLogs-1)+".log";
+				if(directoryPath!=null) name=directoryPath.getAbsolutePath()+File.separatorChar+name;
+				final File f=new File(name);
+				if(f.exists())
+					f.delete();
+			}catch(Exception e){}
+			for(int i=numberOfLogs-1;i>0;i--)
+			{
+				final String inum=(i>0)?(""+i):"";
+				final String inumm1=(i>1)?(""+(i-1)):"";
+				try{
+					final File f=new File(logName+inumm1+".log");
+					if(f.exists())
+						f.renameTo(new File(logName+inum+".log"));
+				}catch(Exception e){}
+			}
+		}
+		String name=logName+".log";
+		if(directoryPath!=null) name=directoryPath.getAbsolutePath()+File.separatorChar+name;
+		final File fileOut=new File(name);
+		filePath = fileOut.getAbsolutePath();
+		FileOutputStream fileStream=new FileOutputStream(fileOut);
+		if(logName.equalsIgnoreCase(this.logName))
+			System.setErr(new PrintStream(fileStream));
+		return fileStream;
+	}
+	
 	/**
 	* Start all of the log files in the specified directory
 	*
 	* <br><br><b>Usage:</b>  startLogFiles("mud","",10);
+	* @param newLogName the name to create the file
 	* @param dirPath the place to create the file
 	* @param numberOfLogs maximum number of files
 	*/
-	public final void startLogFiles(final String newLogName, final String dirPath, final int numberOfLogs)
+	public final void startLogging(final String newLogName, final String dirPath, final int numberOfLogs)
 	{
-		logName=newLogName;
-		LOGNAME=logName.toUpperCase().trim();
-		FLAGS.clear();
+		this.filePath=dirPath;
+		this.logName=newLogName;
+		this.LOGNAME=logName.toUpperCase().trim();
+		this.numberOfFWLogs=numberOfLogs;
 		try
 		{
-			File directoryPath = null;
-
-			if (dirPath!=null)
-			{
-				if (dirPath.length()!=0)
-				{
-					try
-					{
-						directoryPath = new File(dirPath);
-
-						if ((!directoryPath.isDirectory())||(!directoryPath.canWrite())||(!directoryPath.canRead()))
-						{
-							directoryPath = null;
-						}
-					}
-					catch(Exception t)
-					{
-						directoryPath=null;
-					}
-				}
-			}
-
-			// initializes the logging objects
-			if(numberOfLogs>1)
-			{
-				try{
-					String name=logName+(numberOfLogs-1)+".log";
-					if(directoryPath!=null) name=directoryPath.getAbsolutePath()+File.separatorChar+name;
-					final File f=new File(name);
-					if(f.exists())
-						f.delete();
-				}catch(Exception e){}
-				for(int i=numberOfLogs-1;i>0;i--)
-				{
-					final String inum=(i>0)?(""+i):"";
-					final String inumm1=(i>1)?(""+(i-1)):"";
-					try{
-						final File f=new File(logName+inumm1+".log");
-						if(f.exists())
-							f.renameTo(new File(logName+inum+".log"));
-					}catch(Exception e){}
-				}
-			}
-			String name=logName+".log";
-			if(directoryPath!=null) name=directoryPath.getAbsolutePath()+File.separatorChar+name;
-			final File fileOut=new File(name);
-			filePath = fileOut.getAbsolutePath();
-			final FileOutputStream fileStream=new FileOutputStream(fileOut);
-			fileOutWriter=new PrintWriter(fileStream,true);
+			final FileOutputStream fileStream=startLogFile(newLogName,numberOfLogs);
+			fileOutWriter=new PrintWriter[]{new PrintWriter(fileStream,true)};
 			System.setErr(new PrintStream(fileStream));
-			WRITERS.clear();
 		}
 		catch(IOException e)
 		{
@@ -368,7 +487,7 @@ public class Log extends java.util.logging.Logger
 		}
 		catch(Exception e)
 		{
-			standardOut(LogType.error,"Log",e.getMessage(),Integer.MIN_VALUE);
+			standardOut(Type.error,"Log",e.getMessage(),Integer.MIN_VALUE);
 		}
 		return num;
 	}
@@ -393,7 +512,7 @@ public class Log extends java.util.logging.Logger
 					}
 					catch(Exception e)
 					{
-						standardOut(LogType.error,"Log",e.getMessage(),Integer.MIN_VALUE);
+						standardOut(Type.error,"Log",e.getMessage(),Integer.MIN_VALUE);
 						return null;
 					}
 				}
@@ -434,7 +553,7 @@ public class Log extends java.util.logging.Logger
 		LogReader reader = getLogReader();
 		String line;
 		while((line = reader.nextLine()) != null)
-					buf.append(line+"\n\r");
+			buf.append(line+"\n\r");
 		return buf;
 	}
 	
@@ -448,22 +567,26 @@ public class Log extends java.util.logging.Logger
 	{
 		return filePath;
 	}
-
+	
+	
 	/**
 	* Will be used to create a standardized log header for file logs
  	*
 	* <br><br><b>Usage:</b> SysOutWriter.println(getLogHeader(S,LogType.info,Module, Message));
-	* @param type type of information
-	* @param module the module name
-	* @param message the message to print
+	 * @param type type of information
+	 * @param module the module name
+	 * @param message the message to print
 	* @return String the header and message, formatted
 	*/
-	private static final String getLogHeader(final LogType type, final String module, final String message)
+	private final String makeLogEntry(final Type type, final String module, final String message)
 	{
 		final StringBuilder header=new StringBuilder(dateFormat.format(Long.valueOf(System.currentTimeMillis()))).append(" ");
 		header.append(type.getSixChars());
-		header.append((module+SPACES15).substring(0,15));
-		header.append(message);
+		if(module.length()>=14)
+			header.append(module.substring(0,14));
+		else
+			header.append(module).append(SPACES15.substring(0,14-module.length()));
+		header.append(" ").append(message);
 		return header.toString();
 	}
 
@@ -477,18 +600,18 @@ public class Log extends java.util.logging.Logger
 	public static final void combatOut(final String Out) { combatOut(Thread.currentThread().getName(),Out); }
 	public static final void accessOut(final String Out) { accessOut(Thread.currentThread().getName(),Out); }
 	public static final void sysOut(final String Module, final String Message){ infoOut(Module,Message);}
-	public static final void infoOut(final String Module, final String Message){ l().standardOut(LogType.info,Module,Message,Integer.MIN_VALUE);}
-	public static final void errOut(final String Module, final String Message){ l().standardOut(LogType.error,Module,Message,Integer.MIN_VALUE);}
-	public static final void warnOut(final String Module, final String Message){ l().standardOut(LogType.warning,Module,Message,Integer.MIN_VALUE);}
-	public static final void debugOut(final String Module, final String Message){ l().standardOut(LogType.debug,Module,Message,Integer.MIN_VALUE);}
-	public static final void helpOut(final String Module, final String Message){ l().standardOut(LogType.help,Module,Message,Integer.MIN_VALUE);}
-	public static final void killsOut(final String Module, final String Message){ l().standardOut(LogType.kills,Module,Message,Integer.MIN_VALUE);}
-	public static final void combatOut(final String Module, final String Message){ l().standardOut(LogType.combat,Module,Message,Integer.MIN_VALUE);}
-	public static final void accessOut(final String Module, final String Message){ l().standardOut(LogType.access,Module,Message,Integer.MIN_VALUE);}
-	public static final void debugOut(final String Module, final Throwable e){ l().shortExOut(LogType.debug,Module,Integer.MIN_VALUE,e);}
-	public static final void errOut(final String Module, final Throwable e){ l().standardExOut(LogType.error,Module,Integer.MIN_VALUE,e);}
-	public static final void warnOut(final String Module, final Throwable e){ l().standardExOut(LogType.error,Module,Integer.MIN_VALUE,e);}
-	public static final void rawSysOut(final String Message){l().rawStandardOut(LogType.info,Message,Integer.MIN_VALUE);}
+	public static final void infoOut(final String Module, final String Message){ l().standardOut(Type.info,Module,Message,Integer.MIN_VALUE);}
+	public static final void errOut(final String Module, final String Message){ l().standardOut(Type.error,Module,Message,Integer.MIN_VALUE);}
+	public static final void warnOut(final String Module, final String Message){ l().standardOut(Type.warning,Module,Message,Integer.MIN_VALUE);}
+	public static final void debugOut(final String Module, final String Message){ l().standardOut(Type.debug,Module,Message,Integer.MIN_VALUE);}
+	public static final void helpOut(final String Module, final String Message){ l().standardOut(Type.help,Module,Message,Integer.MIN_VALUE);}
+	public static final void killsOut(final String Module, final String Message){ l().standardOut(Type.kills,Module,Message,Integer.MIN_VALUE);}
+	public static final void combatOut(final String Module, final String Message){ l().standardOut(Type.combat,Module,Message,Integer.MIN_VALUE);}
+	public static final void accessOut(final String Module, final String Message){ l().standardOut(Type.access,Module,Message,Integer.MIN_VALUE);}
+	public static final void debugOut(final String Module, final Throwable e){ l().shortExOut(Type.debug,Module,Integer.MIN_VALUE,e);}
+	public static final void errOut(final String Module, final Throwable e){ l().standardExOut(Type.error,Module,Integer.MIN_VALUE,e);}
+	public static final void warnOut(final String Module, final Throwable e){ l().standardExOut(Type.error,Module,Integer.MIN_VALUE,e);}
+	public static final void rawSysOut(final String Message){l().rawStandardOut(Type.info,Message,Integer.MIN_VALUE);}
 	public static final void infoOut(final String Out, final int priority) { infoOut(Thread.currentThread().getName(),Out,priority); }
 	public static final void sysOut(final String Out, final int priority){ infoOut(Out,priority); }
 	public static final void debugOut(final String Out, final int priority){ debugOut(Thread.currentThread().getName(),Out,priority); }
@@ -497,19 +620,19 @@ public class Log extends java.util.logging.Logger
 	public static final void helpOut(final String Out, final int priority) { helpOut(Thread.currentThread().getName(),Out,priority); }
 	public static final void killsOut(final String Out, final int priority) { killsOut(Thread.currentThread().getName(),Out,priority); }
 	public static final void combatOut(final String Out, final int priority) { combatOut(Thread.currentThread().getName(),Out,priority); }
-	public static final void infoOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.info,Module,Message,priority);}
+	public static final void infoOut(final String Module, final String Message, final int priority){ l().standardOut(Type.info,Module,Message,priority);}
 	public static final void sysOut(final String Out, final String Message, final int priority){ infoOut(Out,Message);}
-	public static final void errOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.error,Module,Message,priority);}
-	public static final void warnOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.warning,Module,Message,priority);}
-	public static final void debugOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.debug,Module,Message,priority);}
-	public static final void helpOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.help,Module,Message,priority);}
-	public static final void killsOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.kills,Module,Message,priority);}
-	public static final void combatOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.combat,Module,Message,priority);}
-	public static final void accessOut(final String Module, final String Message, final int priority){ l().standardOut(LogType.access,Module,Message,priority);}
-	public static final void debugOut(final String Module, final int priority, final Exception e){ l().shortExOut(LogType.debug,Module,priority,e);}
-	public static final void errOut(final String Module, final int priority, final Throwable e){ l().standardExOut(LogType.error,Module,priority,e);}
-	public static final void warnOut(final String Module, final int priority, final Throwable e){ l().standardExOut(LogType.error,Module,priority,e);}
-	public static final void rawSysOut(final String Message, final int priority){l().rawStandardOut(LogType.info,Message,priority);}
+	public static final void errOut(final String Module, final String Message, final int priority){ l().standardOut(Type.error,Module,Message,priority);}
+	public static final void warnOut(final String Module, final String Message, final int priority){ l().standardOut(Type.warning,Module,Message,priority);}
+	public static final void debugOut(final String Module, final String Message, final int priority){ l().standardOut(Type.debug,Module,Message,priority);}
+	public static final void helpOut(final String Module, final String Message, final int priority){ l().standardOut(Type.help,Module,Message,priority);}
+	public static final void killsOut(final String Module, final String Message, final int priority){ l().standardOut(Type.kills,Module,Message,priority);}
+	public static final void combatOut(final String Module, final String Message, final int priority){ l().standardOut(Type.combat,Module,Message,priority);}
+	public static final void accessOut(final String Module, final String Message, final int priority){ l().standardOut(Type.access,Module,Message,priority);}
+	public static final void debugOut(final String Module, final int priority, final Exception e){ l().shortExOut(Type.debug,Module,priority,e);}
+	public static final void errOut(final String Module, final int priority, final Throwable e){ l().standardExOut(Type.error,Module,priority,e);}
+	public static final void warnOut(final String Module, final int priority, final Throwable e){ l().standardExOut(Type.error,Module,priority,e);}
+	public static final void rawSysOut(final String Message, final int priority){l().rawStandardOut(Type.info,Message,priority);}
 
 	/**
 	* Handles long exception logging entries.  Sends them to System.out,
@@ -520,33 +643,25 @@ public class Log extends java.util.logging.Logger
 	* @param Module The module to print
 	* @param e	The exception whose string one wishes to print
 	*/
-	public final void standardExOut(final LogType type, final String Module, final int priority, final Throwable e)
+	public final void standardExOut(final Type type, final String Module, final int priority, final Throwable e)
 	{
-		final PrintWriter outWriter=getWriter(type,priority);
+		final Conf conf=getConfig(type);
+		PrintWriter outWriter=getWriter(type,conf,priority);
 		if(outWriter!=null)
 		{
 			synchronized(outWriter)
 			{
+				final String msg=(e!=null)?e.getMessage():"Null/Unknown error occurred.";
+				final String firstLine=makeLogEntry(type,Module,msg);
+				outWriter=writeBytes(type,conf,outWriter, firstLine);
+				if(conf.target==Target.BOTH)
+					System.out.println(firstLine);
 				if(e!=null)
 				{
-					outWriter.println(getLogHeader(type,Module, e.getMessage()));
 					e.printStackTrace(outWriter);
-					outWriter.flush();
-				}
-				else
-					outWriter.println(getLogHeader(type,Module,"Null/Unknown error occurred."));
-				if(prop(type).startsWith("BOTH"))
-				{
-					if(e!=null)
-					{
-						System.out.println(getLogHeader(type,Module, e.getMessage()));
+					if(conf.target==Target.BOTH)
 						e.printStackTrace(System.out);
-						System.out.flush();
-					}
-					else
-						System.out.println(getLogHeader(type,Module,"Null/Unknown error occurred."));
 				}
-				close(outWriter);
 			}
 		}
 	}
@@ -560,23 +675,23 @@ public class Log extends java.util.logging.Logger
 	* @param Module The message to print
 	* @param e	The exception whose string one wishes to print
 	*/
-	public final void shortExOut(final LogType type, final String Module, final int priority, final Throwable e)
+	public final void shortExOut(final Type type, final String Module, final int priority, final Throwable e)
 	{
-		final PrintWriter outWriter=getWriter(type,priority);
+		final Conf conf=getConfig(type);
+		final PrintWriter outWriter=getWriter(type,conf,priority);
 		if(outWriter!=null)
 		{
 			synchronized(outWriter)
 			{
-				outWriter.println(getLogHeader(type,Module, e.getMessage()));
+				final String line=makeLogEntry(type,Module,e.getMessage());
+				writeBytes(type, conf, outWriter, line);
 				e.printStackTrace(outWriter);
-				outWriter.flush();
-				if(prop(type).startsWith("BOTH"))
+				if(conf.target==Target.BOTH)
 				{
-					System.out.println(getLogHeader(type,Module, e.getMessage()));
+					System.out.println(line);
 					e.printStackTrace(System.out);
 					System.out.flush();
 				}
-				close(outWriter);
 			}
 		}
 	}
@@ -587,21 +702,20 @@ public class Log extends java.util.logging.Logger
  	*
 	* <br><br><b>Usage:</b> rawStandardOut(LogType.info,"REQ-OUT:"+REQ);
 	* @param type The type of message
-	* @param Message The message to print
+	* @param line The message to print
 	* @param priority The priority of the message, high is less priority, 0=always
 	*/
-	public final void rawStandardOut(final LogType type, final String Message, final int priority)
+	public final void rawStandardOut(final Type type, final String line, final int priority)
 	{
-		final PrintWriter outWriter=getWriter(type,priority);
+		final Conf conf=getConfig(type);
+		final PrintWriter outWriter=getWriter(type,conf,priority);
 		if(outWriter!=null)
 		{
 			synchronized(outWriter)
 			{
-				outWriter.println(Message);
-				outWriter.flush();
-				if(prop(type).startsWith("BOTH"))
-					System.out.println(Message);
-				close(outWriter);
+				writeBytes(type, conf, outWriter, line);
+				if(conf.target==Target.BOTH)
+					System.out.println(line);
 			}
 		}
 	}
@@ -612,22 +726,22 @@ public class Log extends java.util.logging.Logger
  	*
 	* <br><br><b>Usage:</b> standardOut(LogType.info,Thread.currentThread().getName(),Out);
 	* @param type The type of writer
-	* @param Module The file name
-	* @param Message The message to print
+	* @param module The file name
+	* @param msg The message to print
 	* @param priority The priority of the message, high is less priority, 0=always
 	*/
-	private final void standardOut(final LogType type, final String Module, final String Message, final int priority)
+	private final void standardOut(final Type type, final String module, final String msg, final int priority)
 	{
-		final PrintWriter outWriter=getWriter(type,priority);
+		final Conf conf=getConfig(type);
+		final PrintWriter outWriter=getWriter(type,conf,priority);
 		if(outWriter!=null)
 		{
 			synchronized(outWriter)
 			{
-				outWriter.println(getLogHeader(type,Module, Message));
-				outWriter.flush();
-				if(prop(type).startsWith("BOTH"))
-					System.out.println(getLogHeader(type,Module, Message));
-				close(outWriter);
+				final String line=makeLogEntry(type,module,msg);
+				writeBytes(type, conf, outWriter, line);
+				if(conf.target==Target.BOTH)
+					System.out.println(line);
 			}
 		}
 	}
@@ -638,38 +752,25 @@ public class Log extends java.util.logging.Logger
  	*
 	* <br><br><b>Usage:</b> timeOut(LogType.info,Thread.currentThread().getName(),Out);
 	* @param type Channel name
-	* @param Module The file name
-	* @param Message The message to print
+	* @param module The file name
+	* @param msg The message to print
 	* @param priority The priority of the message, high is less priority, 0=always
 	*/
-	public final void timeOut(final LogType type, final String Module, String Message, final int priority)
+	public final void timeOut(final Type type, final String module, final String msg, final int priority)
 	{
-		final PrintWriter outWriter=getWriter(type,priority);
+		final Conf conf=getConfig(type);
+		final PrintWriter outWriter=getWriter(type,conf,priority);
 		if(outWriter!=null)
 		{
 			synchronized(outWriter)
 			{
 				final Calendar C=Calendar.getInstance();
-				Message=C.get(Calendar.MINUTE)+":"+C.get(Calendar.SECOND)+":"+C.get(Calendar.MILLISECOND)+": "+Message;
-				outWriter.println(getLogHeader(type,Module, Message));
-				outWriter.flush();
-				if(prop(type).startsWith("BOTH"))
-					System.out.println(getLogHeader(type,Module, Message));
-				close(outWriter);
+				final String line=makeLogEntry(type,module,C.get(Calendar.MINUTE)+":"+C.get(Calendar.SECOND)+":"+C.get(Calendar.MILLISECOND)+": "+msg);
+				writeBytes(type, conf, outWriter, line);
+				if(getTarget(type)==Target.BOTH)
+					System.out.println(line);
 			}
 		}
-	}
-
-	/**
-	 * Close the given printwriter, if its an "ownfile".
-	 */
-	private final PrintWriter close(final PrintWriter pr)
-	{
-		if(pr==null) return null;
-		if((pr!=systemOutWriter)
-		&&(pr!=fileOutWriter))
-			pr.close();
-		return null;
 	}
 
 	/**
@@ -677,26 +778,26 @@ public class Log extends java.util.logging.Logger
 	 */
 	public final void close()
 	{
-		fileOutWriter.close();
+		fileOutWriter[0].close();
 		fileOutWriter=null;
 	}
 
-	public static final boolean errorChannelOn() { return l().isWriterOn(LogType.error);}
-	public static final boolean helpChannelOn() { return l().isWriterOn(LogType.help);}
-	public static final boolean debugChannelOn() { return l().isWriterOn(LogType.debug);}
-	public static final boolean infoChannelOn() { return l().isWriterOn(LogType.info);}
-	public static final boolean warnChannelOn() { return l().isWriterOn(LogType.warning);}
-	public static final boolean killsChannelOn() { return l().isWriterOn(LogType.kills);}
-	public static final boolean combatChannelOn() { return l().isWriterOn(LogType.combat);}
-	public static final boolean accessChannelOn() { return l().isWriterOn(LogType.access);}
-	public static final boolean errorChannelAt(int priority) { return l().getWriter(LogType.error,priority)!=null;}
-	public static final boolean helpChannelAt(int priority) { return l().getWriter(LogType.help,priority)!=null;}
-	public static final boolean debugChannelAt(int priority) { return l().getWriter(LogType.debug,priority)!=null;}
-	public static final boolean infoChannelAt(int priority) { return l().getWriter(LogType.info,priority)!=null;}
-	public static final boolean warnChannelAt(int priority) { return l().getWriter(LogType.warning,priority)!=null;}
-	public static final boolean killsChannelAt(int priority) { return l().getWriter(LogType.kills,priority)!=null;}
-	public static final boolean combatChannelAt(int priority) { return l().getWriter(LogType.combat,priority)!=null;}
-	public static final boolean accessChannelAt(int priority) { return l().getWriter(LogType.access,priority)!=null;}
+	public static final boolean errorChannelOn() { return l().isWriterOn(Type.error);}
+	public static final boolean helpChannelOn() { return l().isWriterOn(Type.help);}
+	public static final boolean debugChannelOn() { return l().isWriterOn(Type.debug);}
+	public static final boolean infoChannelOn() { return l().isWriterOn(Type.info);}
+	public static final boolean warnChannelOn() { return l().isWriterOn(Type.warning);}
+	public static final boolean killsChannelOn() { return l().isWriterOn(Type.kills);}
+	public static final boolean combatChannelOn() { return l().isWriterOn(Type.combat);}
+	public static final boolean accessChannelOn() { return l().isWriterOn(Type.access);}
+	public static final boolean errorChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.error,l.getConfig(Type.error),priority)!=null;}
+	public static final boolean helpChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.help,l.getConfig(Type.help),priority)!=null;}
+	public static final boolean debugChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.debug,l.getConfig(Type.debug),priority)!=null;}
+	public static final boolean infoChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.info,l.getConfig(Type.info),priority)!=null;}
+	public static final boolean warnChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.warning,l.getConfig(Type.warning),priority)!=null;}
+	public static final boolean killsChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.kills,l.getConfig(Type.kills),priority)!=null;}
+	public static final boolean combatChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.combat,l.getConfig(Type.combat),priority)!=null;}
+	public static final boolean accessChannelAt(int priority) { final Log l=l(); return l.getWriter(Type.access,l.getConfig(Type.access),priority)!=null;}
 	
 	/** totally optional, this is the list of maskable error message types.  Useful for internet apps */
 	private final static String[] maskErrMsgs={
@@ -734,249 +835,249 @@ public class Log extends java.util.logging.Logger
 	
 	@Override
 	public synchronized void addHandler(Handler handler){}
-    //Log a CONFIG message.
+	//Log a CONFIG message.
 	@Override
 	public void	config(String msg)
 	{
-		l().standardOut(LogType.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
+		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
-    //Log a method entry.
+	//Log a method entry.
 	@Override
 	public void	entering(String sourceClass, String sourceMethod) 
 	{
-		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
+		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
 	}
-    //Log a method entry, with one parameter.
+	//Log a method entry, with one parameter.
 	@Override
 	public void	entering(String sourceClass, String sourceMethod, Object param1) 
 	{
-		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod+": "+param1, Integer.MIN_VALUE);
+		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod+": "+param1, Integer.MIN_VALUE);
 	}
-    //Log a method entry, with an array of parameters.
+	//Log a method entry, with an array of parameters.
 	@Override
 	public void	entering(String sourceClass, String sourceMethod, Object[] params) 
 	{
-		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod+": "+toStringList(params), Integer.MIN_VALUE);
+		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod+": "+toStringList(params), Integer.MIN_VALUE);
 	}
-    //Log a method return.
+	//Log a method return.
 	@Override
 	public void	exiting(String sourceClass, String sourceMethod) 
 	{
-		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
+		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod, Integer.MIN_VALUE);
 	}
-    //Log a method return, with result object.
+	//Log a method return, with result object.
 	@Override
 	public void	exiting(String sourceClass, String sourceMethod, Object result) 
 	{
-		l().standardOut(LogType.debug, toModuleName(sourceClass), sourceMethod+": "+result, Integer.MIN_VALUE);
+		l().standardOut(Type.debug, toModuleName(sourceClass), sourceMethod+": "+result, Integer.MIN_VALUE);
 	}
-    //Log a FINE message.
+	//Log a FINE message.
 	@Override
 	public void	fine(String msg) 
 	{
-		l().standardOut(LogType.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
+		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
-    //Log a FINER message.
+	//Log a FINER message.
 	@Override
 	public void	finer(String msg) 
 	{
-		l().standardOut(LogType.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
+		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
-    //Log a FINEST message.
+	//Log a FINEST message.
 	@Override
 	public void	finest(String msg) 
 	{
-		l().standardOut(LogType.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
+		l().standardOut(Type.debug, Thread.currentThread().getName(), msg, Integer.MIN_VALUE);
 	}
-    //Get the current filter for this Logger.
+	//Get the current filter for this Logger.
 	@Override
 	public Filter	getFilter(){ return null;}
-    //Get the Handlers associated with this logger.
+	//Get the Handlers associated with this logger.
 	@Override
 	public synchronized Handler[]	getHandlers() { return new Handler[0];}
-    //Get the log Level that has been specified for this Logger.
+	//Get the log Level that has been specified for this Logger.
 	@Override
 	public Level	getLevel() 
 	{
 		Log log=l();
-		if(log.isWriterOn(LogType.debug)) return Level.FINE;
-		if(log.isWriterOn(LogType.info)) return Level.INFO;
-		if(log.isWriterOn(LogType.warning)) return Level.WARNING;
-		if(log.isWriterOn(LogType.error)) return Level.SEVERE;
+		if(log.isWriterOn(Type.debug)) return Level.FINE;
+		if(log.isWriterOn(Type.info)) return Level.INFO;
+		if(log.isWriterOn(Type.warning)) return Level.WARNING;
+		if(log.isWriterOn(Type.error)) return Level.SEVERE;
 		return Level.OFF;
 	}
-    //Get the name for this logger.
+	//Get the name for this logger.
 	@Override
 	public String	getName() 
 	{
 		return logName;
 	}
-    //Return the parent for this Logger.
+	//Return the parent for this Logger.
 	@Override
 	public Logger	getParent(){ return null; }
-    //Retrieve the localization resource bundle for this logger for the current default locale.
+	//Retrieve the localization resource bundle for this logger for the current default locale.
 	@Override
 	public ResourceBundle	getResourceBundle() { return null; }
-    //Retrieve the localization resource bundle name for this logger.
+	//Retrieve the localization resource bundle name for this logger.
 	@Override
 	public String	getResourceBundleName(){ return ""; }
-    //Discover whether or not this logger is sending its output to its parent logger.
+	//Discover whether or not this logger is sending its output to its parent logger.
 	@Override
 	public synchronized boolean	getUseParentHandlers(){ return false; }
-    //Log an INFO message.
+	//Log an INFO message.
 	@Override
 	public void	info(String msg) 
 	{
-		standardOut(LogType.info,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		standardOut(Type.info,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
-    //Check if a message of the given level would actually be logged by this logger.
+	//Check if a message of the given level would actually be logged by this logger.
 	@Override
 	public boolean	isLoggable(Level level) 
 	{
-		if(level==Level.INFO) return this.isWriterOn(LogType.info);
-		else if(level==Level.SEVERE)  return this.isWriterOn(LogType.error);
-		else if(level==Level.WARNING)  return this.isWriterOn(LogType.warning);
-		else  return this.isWriterOn(LogType.debug);
+		if(level==Level.INFO) return this.isWriterOn(Type.info);
+		else if(level==Level.SEVERE)  return this.isWriterOn(Type.error);
+		else if(level==Level.WARNING)  return this.isWriterOn(Type.warning);
+		else  return this.isWriterOn(Type.debug);
 	}
-    //Log a message, with no arguments.
+	//Log a message, with no arguments.
 	@Override
 	public void	log(Level level, String msg) 
 	{
-		if(level==Level.INFO) standardOut(LogType.info,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(Type.info,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(Type.error,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(Type.warning,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		else standardOut(Type.debug,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
-    //Log a message, with one object parameter.
+	//Log a message, with one object parameter.
 	@Override
 	public void	log(Level level, String msg, Object param1) 
 	{
 		String oStr=(param1==null)?"null":param1.toString();
-		if(level==Level.INFO) standardOut(LogType.info,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(Type.info,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(Type.error,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(Type.warning,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else standardOut(Type.debug,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
 	}
-    //Log a message, with an array of object arguments.
+	//Log a message, with an array of object arguments.
 	@Override
 	public void	log(Level level, String msg, Object[] params) 
 	{
 		String oStr=toStringList(params);
-		if(level==Level.INFO) standardOut(LogType.info,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(Type.info,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(Type.error,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(Type.warning,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
+		else standardOut(Type.debug,Thread.currentThread().getName(),msg+": "+oStr,Integer.MIN_VALUE);
 	}
-    //Log a message, with associated Throwable information.
+	//Log a message, with associated Throwable information.
 	@Override
 	public void	log(Level level, String msg, Throwable thrown) 
 	{
 		if(thrown==null) log(level,msg);
-		else if(level==Level.INFO) standardExOut(LogType.info,toModuleName(msg),Integer.MIN_VALUE,thrown);
-		else if(level==Level.SEVERE) standardExOut(LogType.error,toModuleName(msg),Integer.MIN_VALUE,thrown);
-		else if(level==Level.WARNING) standardExOut(LogType.warning,toModuleName(msg),Integer.MIN_VALUE,thrown);
-		else shortExOut(LogType.debug,toModuleName(msg),Integer.MIN_VALUE,thrown);
+		else if(level==Level.INFO) standardExOut(Type.info,toModuleName(msg),Integer.MIN_VALUE,thrown);
+		else if(level==Level.SEVERE) standardExOut(Type.error,toModuleName(msg),Integer.MIN_VALUE,thrown);
+		else if(level==Level.WARNING) standardExOut(Type.warning,toModuleName(msg),Integer.MIN_VALUE,thrown);
+		else shortExOut(Type.debug,toModuleName(msg),Integer.MIN_VALUE,thrown);
 	}
-    //Log a LogRecord.
+	//Log a LogRecord.
 	@Override
 	public void	log(LogRecord record) 
 	{
 		log(record.getLevel(), record.getMessage(), record.getThrown());
 	}
-    //Log a message, specifying source class and method, with no arguments.
+	//Log a message, specifying source class and method, with no arguments.
 	@Override
 	public void	logp(Level level, String sourceClass, String sourceMethod, String msg) 
 	{
-		if(level==Level.INFO) standardOut(LogType.info,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(Type.info,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(Type.error,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(Type.warning,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
+		else standardOut(Type.debug,toModuleName(sourceClass),sourceMethod+": "+msg,Integer.MIN_VALUE);
 	}
-    //Log a message, specifying source class and method, with a single object parameter to the log message.
+	//Log a message, specifying source class and method, with a single object parameter to the log message.
 	@Override
 	public void	logp(Level level, String sourceClass, String sourceMethod, String msg, Object param1) 
 	{
 		String oStr=(param1==null)?"null":param1.toString();
-		if(level==Level.INFO) standardOut(LogType.info,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(Type.info,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(Type.error,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(Type.warning,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else standardOut(Type.debug,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
 	}
-    //Log a message, specifying source class and method, with an array of object arguments.
+	//Log a message, specifying source class and method, with an array of object arguments.
 	@Override
 	public void	logp(Level level, String sourceClass, String sourceMethod, String msg, Object[] params) 
 	{
 		String oStr=toStringList(params);
-		if(level==Level.INFO) standardOut(LogType.info,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.SEVERE) standardOut(LogType.error,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else if(level==Level.WARNING) standardOut(LogType.warning,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
-		else standardOut(LogType.debug,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		if(level==Level.INFO) standardOut(Type.info,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.SEVERE) standardOut(Type.error,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else if(level==Level.WARNING) standardOut(Type.warning,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
+		else standardOut(Type.debug,toModuleName(sourceClass),sourceMethod+": "+msg+": "+oStr,Integer.MIN_VALUE);
 	}
-    //Log a message, specifying source class and method, with associated Throwable information.
+	//Log a message, specifying source class and method, with associated Throwable information.
 	@Override
 	public void	logp(Level level, String sourceClass, String sourceMethod, String msg, Throwable thrown) 
 	{
 		if(thrown==null) log(level,msg);
-		else if(level==Level.INFO) standardExOut(LogType.info,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
-		else if(level==Level.SEVERE) standardExOut(LogType.error,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
-		else if(level==Level.WARNING) standardExOut(LogType.warning,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
-		else shortExOut(LogType.debug,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
+		else if(level==Level.INFO) standardExOut(Type.info,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
+		else if(level==Level.SEVERE) standardExOut(Type.error,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
+		else if(level==Level.WARNING) standardExOut(Type.warning,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
+		else shortExOut(Type.debug,toModuleName(sourceClass),Integer.MIN_VALUE,thrown);
 	}
-    //Log a message, specifying source class, method, and resource bundle name with no arguments.
+	//Log a message, specifying source class, method, and resource bundle name with no arguments.
 	@Override
 	public void	logrb(Level level, String sourceClass, String sourceMethod, String bundleName, String msg) 
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg);
 	}
-    //Log a message, specifying source class, method, and resource bundle name, with a single object parameter to the log message.
+	//Log a message, specifying source class, method, and resource bundle name, with a single object parameter to the log message.
 	@Override
 	public void	logrb(Level level, String sourceClass, String sourceMethod, String bundleName, String msg, Object param1) 
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, param1);
 	}
-    //Log a message, specifying source class, method, and resource bundle name, with an array of object arguments.
+	//Log a message, specifying source class, method, and resource bundle name, with an array of object arguments.
 	@Override
 	public void	logrb(Level level, String sourceClass, String sourceMethod, String bundleName, String msg, Object[] params) 
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, params);
 	}
-    //Log a message, specifying source class, method, and resource bundle name, with associated Throwable information.
+	//Log a message, specifying source class, method, and resource bundle name, with associated Throwable information.
 	@Override
 	public void	logrb(Level level, String sourceClass, String sourceMethod, String bundleName, String msg, Throwable thrown) 
 	{
 		logp(level,sourceClass,sourceMethod+": "+bundleName, msg, thrown);
 	}
-    //Remove a log Handler.
+	//Remove a log Handler.
 	@Override
 	public synchronized void	removeHandler(Handler handler){}
-    //Set a filter to control output on this Logger.
+	//Set a filter to control output on this Logger.
 	@Override
 	public void	setFilter(Filter newFilter){}
-    //Set the log level specifying which message levels will be logged by this logger.
+	//Set the log level specifying which message levels will be logged by this logger.
 	@Override
 	public void	setLevel(Level newLevel){}
-    //Set the parent for this Logger.
+	//Set the parent for this Logger.
 	@Override
 	public void	setParent(Logger parent){}
-    //Specify whether or not this logger should send its output to it's parent Logger.
+	//Specify whether or not this logger should send its output to it's parent Logger.
 	@Override
 	public synchronized void	setUseParentHandlers(boolean useParentHandlers){} 
-    //Log a SEVERE message.
+	//Log a SEVERE message.
 	@Override
 	public void	severe(String msg) 
 	{
-		standardOut(LogType.error,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		standardOut(Type.error,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
-    //Log throwing an exception.
+	//Log throwing an exception.
 	@Override
 	public void	throwing(String sourceClass, String sourceMethod, Throwable thrown) 
 	{
-		standardExOut(LogType.error, toModuleName(sourceClass), Integer.MIN_VALUE, thrown);
+		standardExOut(Type.error, toModuleName(sourceClass), Integer.MIN_VALUE, thrown);
 	}
-    //Log a WARNING message.
+	//Log a WARNING message.
 	@Override
 	public void	warning(String msg) 
 	{
-		standardOut(LogType.warning,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
+		standardOut(Type.warning,Thread.currentThread().getName(),msg,Integer.MIN_VALUE);
 	}
 }

@@ -251,6 +251,7 @@ public class CMLib
 		return -1;
 	}
 
+	@SuppressWarnings("unused")
 	public static final void registerLibrary(final CMLibrary O)
 	{
 		final int code=convertToLibraryCode(O);

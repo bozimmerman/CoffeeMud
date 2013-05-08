@@ -1209,8 +1209,15 @@ public class MUD extends Thread implements MudHost
 				if(CMath.isInteger(page.getPrivateStr("NUMLOGS")))
 				{
 					Log.newInstance();
-					Log.instance().startLogFiles(logName,page.getInt("NUMLOGS"));
-					Log.instance().setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
+					Log.instance().startLogging(logName,page.getInt("NUMLOGS"));
+					Log.instance().configureLog(Log.Type.info, page.getStr("SYSMSGS"));
+					Log.instance().configureLog(Log.Type.error, page.getStr("ERRMSGS"));
+					Log.instance().configureLog(Log.Type.warning, page.getStr("WRNMSGS"));
+					Log.instance().configureLog(Log.Type.debug, page.getStr("DBGMSGS"));
+					Log.instance().configureLog(Log.Type.help, page.getStr("HLPMSGS"));
+					Log.instance().configureLog(Log.Type.kills, page.getStr("KILMSGS"));
+					Log.instance().configureLog(Log.Type.combat, page.getStr("CBTMSGS"));
+					Log.instance().configureLog(Log.Type.access, page.getStr("ACCMSGS"));
 				}
 				if(page.getRawPrivateStr("SYSOPMASK")!=null)
 					page.resetSecurityVars();
@@ -1373,8 +1380,15 @@ public class MUD extends Thread implements MudHost
 		CMProps page=CMProps.loadPropPage("//"+iniFile);
 		if ((page==null)||(!page.isLoaded()))
 		{
-			Log.instance().startLogFiles("mud",1);
-			Log.instance().setLogOutput("BOTH","BOTH","BOTH","BOTH","BOTH","BOTH","BOTH");
+			Log.instance().startLogging("mud",1);
+			Log.instance().configureLog(Log.Type.info, "BOTH");
+			Log.instance().configureLog(Log.Type.error, "BOTH");
+			Log.instance().configureLog(Log.Type.warning, "BOTH");
+			Log.instance().configureLog(Log.Type.debug, "BOTH");
+			Log.instance().configureLog(Log.Type.help, "BOTH");
+			Log.instance().configureLog(Log.Type.kills, "BOTH");
+			Log.instance().configureLog(Log.Type.combat, "BOTH");
+			Log.instance().configureLog(Log.Type.access, "BOTH");
 			Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
 			System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
@@ -1382,8 +1396,15 @@ public class MUD extends Thread implements MudHost
 			return;
 		}
 		Log.shareWith(MudHost.MAIN_HOST);
-		Log.instance().startLogFiles("mud",page.getInt("NUMLOGS"));
-		Log.instance().setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
+		Log.instance().startLogging("mud",page.getInt("NUMLOGS"));
+		Log.instance().configureLog(Log.Type.info, page.getStr("SYSMSGS"));
+		Log.instance().configureLog(Log.Type.error, page.getStr("ERRMSGS"));
+		Log.instance().configureLog(Log.Type.warning, page.getStr("WRNMSGS"));
+		Log.instance().configureLog(Log.Type.debug, page.getStr("DBGMSGS"));
+		Log.instance().configureLog(Log.Type.help, page.getStr("HLPMSGS"));
+		Log.instance().configureLog(Log.Type.kills, page.getStr("KILMSGS"));
+		Log.instance().configureLog(Log.Type.combat, page.getStr("CBTMSGS"));
+		Log.instance().configureLog(Log.Type.access, page.getStr("ACCMSGS"));
 		while(!bringDown)
 		{
 			System.out.println();

@@ -194,7 +194,7 @@ public class MWDataBuffers implements DataBuffers
 	public void close()
 	{
 		for(Closeable o : closers)
-			try{ ((Closeable)o).close(); } catch(Exception e){}
+			try{ o.close(); } catch(Exception e){}
 		for(Object o : list)
 			if(o instanceof Closeable)
 				try{ ((Closeable)o).close(); } catch(Exception e){}

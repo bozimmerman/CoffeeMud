@@ -1,5 +1,6 @@
 package com.planet_ink.miniweb.util;
 
+import com.planet_ink.coffee_mud.core.collections.Pair;
 /*
 Copyright 2012-2013 Bo Zimmerman
 

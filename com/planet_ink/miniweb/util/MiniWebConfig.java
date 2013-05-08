@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import com.planet_ink.coffee_mud.core.collections.Pair;
+import com.planet_ink.coffee_mud.core.collections.Triad;
 import com.planet_ink.miniweb.interfaces.FileCacheManager;
 import com.planet_ink.miniweb.interfaces.FileManager;
 import com.planet_ink.miniweb.interfaces.HTTPFileGetter;
