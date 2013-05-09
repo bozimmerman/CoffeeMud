@@ -54,7 +54,7 @@ public class Log extends java.util.logging.Logger
 	private final Map<Type,Conf>CONFS			= new Hashtable<Type,Conf>();
 	private final Map<PrintWriter,long[]> WRITTEN	= new Hashtable<PrintWriter,long[]>();
 	
-	public static enum Target { ON, OFF, BOTH, FILE, OWNFILE };
+	public static enum Target { ON, OFF, BOTH, FILE, OWNFILE }
 	
 	private static class Conf
 	{
