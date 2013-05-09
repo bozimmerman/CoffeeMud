@@ -1,6 +1,7 @@
 package com.planet_ink.miniweb.server;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -191,7 +192,7 @@ public class MiniWebServer extends Thread
 			{
 				try
 				{
-					config.getLogger().fine("Timeout Thread started");
+					config.getLogger().finer("Timeout Thread started");
 					while(!shutdownRequested)
 					{
 						Thread.sleep(1000);
@@ -240,7 +241,7 @@ public class MiniWebServer extends Thread
 		|| (((key.interestOps() & SelectionKey.OP_WRITE)==SelectionKey.OP_WRITE) && key.isWritable())) 
 		{
 			HTTPIOHandler handler = (HTTPIOHandler)key.attachment();
-			//config.getLogger().fine("Read/Write: "+handler.getName());
+			//config.getLogger().finer("Read/Write: "+handler.getName());
 			if(!handler.isCloseable())
 			{
 				key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
@@ -251,7 +252,7 @@ public class MiniWebServer extends Thread
 		if(key.attachment() instanceof HTTPIOHandler)
 		{
 			HTTPIOHandler handler = (HTTPIOHandler)key.attachment();
-			config.getLogger().fine("Rejected handler key for "+handler.getName());
+			config.getLogger().finer("Rejected handler key for "+handler.getName());
 		}
 	}
 	
@@ -558,6 +559,7 @@ public class MiniWebServer extends Thread
 		Log.instance().configureLog(Log.Type.error, "BOTH");
 		Log.instance().configureLog(Log.Type.warning, "BOTH");
 		Log.instance().configureLog(Log.Type.debug, debug);
+		Log.instance().configureLog(Log.Type.access, config.getAccessLogFlag());
 		config.getLogger().info("Starting "+NAME+" "+VERSION);
 		
 		final MiniWebServer server = new MiniWebServer("miniweb", config);

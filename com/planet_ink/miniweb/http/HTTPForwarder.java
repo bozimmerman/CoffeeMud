@@ -94,7 +94,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 				{
 					if(!announcedAlready)
 					{
-						config.getLogger().fine("Processing handler '"+name+"'");
+						config.getLogger().finer("Processing handler '"+name+"'");
 						announcedAlready=true;
 					}
 					responseBuffer.flip(); // turn the writeable buffer into a "readable" one
@@ -117,7 +117,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			{
 				closeChannels();
 				if(isDebugging)
-					config.getLogger().fine("ERROR: "+e.getClass().getName()+": "+e.getMessage());
+					config.getLogger().finer("ERROR: "+e.getClass().getName()+": "+e.getMessage());
 			}
 			catch(Exception e)
 			{
@@ -144,7 +144,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 				buf.close();
 			this.writeables.clear();
 			if((isDebugging)&&(webServerChannel.isOpen()))
-				config.getLogger().fine("Closed request handler '"+name+"'");
+				config.getLogger().finer("Closed request handler '"+name+"'");
 			try {
 				webServerChannel.close();
 			}catch(Exception e){}

@@ -71,6 +71,8 @@ public class MiniWebConfig implements Cloneable
 	
 	private static final String   DEFAULT_DEBUG_FLAG			= "OFF";
 
+	private static final String   DEFAULT_ACCESSLOG_FLAG		= "OFF";
+
 	private static final long     DEFAULT_SESSION_IDLE_MILLIS 	= 30 * 60 * 1000;		// maximum time a session can be idle (between requests)
 	private static final long     DEFAULT_SESSION_AGE_MILLIS  	= 24 *60 * 60 * 1000;	// maximum time a session can be in existence
 	
@@ -126,6 +128,8 @@ public class MiniWebConfig implements Cloneable
 	private String  debugFlag			 = DEFAULT_DEBUG_FLAG;
 	private boolean isDebugging			 = false;
 
+	private String  accessLogFlag		 = DEFAULT_ACCESSLOG_FLAG;
+
 	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		mounts	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<WebAddress>>>  fwds	= new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
 	
@@ -151,6 +155,22 @@ public class MiniWebConfig implements Cloneable
 	{
 		return isDebugging;
 	}
+	
+	/**
+	 * @return the accessLogFlag
+	 */
+	public final String getAccessLogFlag()
+	{
+		return accessLogFlag;
+	}
+	/**
+	 * @param accessLogFlag the accessLogFlag to set
+	 */
+	public final void setAccessLogFlag(String accessLogFlag)
+	{
+		this.accessLogFlag = accessLogFlag;
+	}
+	
 	/**
 	 * @return the defaultPage
 	 */
@@ -961,6 +981,7 @@ public class MiniWebConfig implements Cloneable
 		defaultPage=getString(props,"DEFAULTPAGE",defaultPage);
 		errorPage=getString(props,"ERRORPAGE",errorPage);
 		setDebugFlag(getString(props,"DEBUGFLAG",debugFlag));
+		setAccessLogFlag(getString(props,"ACCESSLOGS",accessLogFlag));
 		
 		Map<String,String> newServlets=getPrefixedPairs(props,"SERVLET",'/');
 		if(newServlets != null)

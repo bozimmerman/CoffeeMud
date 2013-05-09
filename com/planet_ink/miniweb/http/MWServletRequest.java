@@ -67,6 +67,12 @@ public class MWServletRequest implements SimpleServletRequest
 	}
 
 	@Override
+	public String getFullRequest()
+	{
+		return request.getFullRequest();
+	}
+
+	@Override
 	public String getUrlPath()
 	{
 		return request.getUrlPath();

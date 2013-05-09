@@ -6,6 +6,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.*;
 
@@ -133,7 +134,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				this.writeables.clear();
 			}
 			if((isDebugging)&&(chan.isOpen()))
-				config.getLogger().fine("Closed request handler '"+name);
+				config.getLogger().finer("Closed request handler '"+name);
 			try {
 				chan.close();
 			}catch(Exception e){}
@@ -241,7 +242,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					else
 						s.append(headerKey).append(": ").append(currentReq.getHeader(headerKey.toLowerCase().trim())).append(EOLN);
 				if(config.isDebugging())
-					config.getLogger().fine(forwarder.getName()+": "+address.getAddressStr()+": "+s.toString().replace('\n', ' ').replace('\r', ' '));
+					config.getLogger().finer(forwarder.getName()+": "+address.getAddressStr()+": "+s.toString().replace('\n', ' ').replace('\r', ' '));
 				server.registerNewHandler(forwarderChannel, forwarder);
 				this.forwarder=forwarder;
 				return s.toString();
@@ -612,20 +613,27 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			{
 				int bytesRead=0; // read bytes until we can't any more
 				boolean announcedAlready=!isDebugging;
+				final boolean accessLogging = config.getLogger().isLoggable(Level.FINE);
+				final StringBuilder accessLog = accessLogging ? new StringBuilder() : null;
 				try // begin of the http exception handling block
 				{
 					while (!closeMe && (( bytesRead = readBytesFromClient(currentReq.getBuffer())) > 0) )
 					{
 						if(!announcedAlready)
 						{
-							config.getLogger().fine("Processing handler '"+name+"'");
+							config.getLogger().finer("Processing handler '"+name+"'");
 							announcedAlready=true;
 						}
 						processBuffer(currentReq.getBuffer()); // process any data received
 						if(currentReq.isFinished()) // if the request was completed, generate output!
 						{
 							HTTPReqProcessor processor = new HTTPReqProcessor(config);
-							writeBytesToChannel(processor.generateOutput(currentReq));
+							final DataBuffers bufs = processor.generateOutput(currentReq);
+							if(accessLogging)
+								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
+									currentReq.getClientAddress().getHostAddress()+":"+currentReq.getClientPort()+" \""+
+									currentReq.getFullRequest()+"\" "+processor.getLastHttpStatusCode()+" "+bufs.getLength())).append("\n");
+							writeBytesToChannel(bufs);
 							// after output, prepare for a second request on this channel
 							currentReq=new MWHTTPRequest(currentReq);
 							currentState=ParseState.REQ_INLINE;
@@ -634,7 +642,12 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				}
 				catch(HTTPException me) // if an exception is generated, go ahead and send it out
 				{
-					writeBytesToChannel(me.generateOutput(currentReq));
+					final DataBuffers bufs=me.generateOutput(currentReq);
+					writeBytesToChannel(bufs);
+					if(accessLogging)
+						accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
+							currentReq.getClientAddress().getHostAddress()+":"+currentReq.getClientPort()+" \""+
+							currentReq.getFullRequest()+"\" "+me.getStatus().getStatusCode()+" "+bufs.getLength())).append("\n");
 					// have to assume any exception caused
 					// before a finish is malformed and needs a closed connection.
 					if(currentReq.isFinished())
@@ -644,6 +657,14 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					}
 					else
 						closeChannels();
+				}
+				finally
+				{
+					if(accessLogging && accessLog.length()>1)
+						if(config.getLogger().getClass().equals(Log.class))
+							((Log)config.getLogger()).rawStandardOut(Type.access,accessLog.substring(0,accessLog.length()-1),Integer.MIN_VALUE);
+						else
+							config.getLogger().fine(accessLog.substring(0,accessLog.length()-1));
 				}
 				handleWrites();
 				if((!closeMe) // if eof is reached, close this channel and mark it for deletion by the web server
@@ -658,7 +679,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				closeChannels();
 				currentState=ParseState.DONE; // a common case when client closes first
 				if(isDebugging)
-					config.getLogger().fine("ERROR: "+e.getClass().getName()+": "+e.getMessage());
+					config.getLogger().finer("ERROR: "+e.getClass().getName()+": "+e.getMessage());
 			}
 			catch(Exception e)
 			{

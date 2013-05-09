@@ -61,6 +61,11 @@ public class MWServletResponse implements SimpleServletResponse
 	{
 	}
 	
+	public int getStatusCode()
+	{
+		return statusCode;
+	}
+	
 	@Override
 	public void setStatusCode(int httpStatusCode)
 	{
@@ -123,7 +128,7 @@ public class MWServletResponse implements SimpleServletResponse
 				str.append(HTTPHeader.CONTENT_LENGTH.makeLine(bout.size()));
 		}
 		if((Thread.currentThread() instanceof MWThread) && ((MWThread)Thread.currentThread()).getConfig().isDebugging())
-			((MWThread)Thread.currentThread()).getConfig().getLogger().fine("Response Servlet: "+str.toString().replace('\r', ' ').replace('\n', ' '));
+			((MWThread)Thread.currentThread()).getConfig().getLogger().finer("Response Servlet: "+str.toString().replace('\r', ' ').replace('\n', ' '));
 		if(!normalizedHeaders.contains(HTTPHeader.SERVER.lowerCaseName()))
 			str.append(HTTPIOHandler.SERVER_HEADER);
 		if(!normalizedHeaders.contains(HTTPHeader.CONNECTION.lowerCaseName()))

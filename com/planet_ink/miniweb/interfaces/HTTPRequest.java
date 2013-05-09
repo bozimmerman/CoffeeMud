@@ -38,6 +38,13 @@ public interface HTTPRequest
 	 */
 	public String getHost();
 	
+	/** 
+	 * Get the entire request line, including method, path, etc
+	 * Returns null if the request line has not yet been received
+	 * @return the entire request line, including method, path, etc
+	 */
+	public String getFullRequest();
+	
 	/**
 	 * Gets the entire url path as supplied by the client, including request parameters
 	 * 

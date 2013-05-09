@@ -63,6 +63,7 @@ public class MWHTTPRequest implements HTTPRequest
 	private static final InputStream 	emptyInput			= new ByteArrayInputStream(new byte[0]); // quick, easy, empty input
 
 	private HTTPMethod 	 		 requestType  = null;		// request type defs to null so that method-not-allowed is generated 
+	private String 	 			 requestString= null;		// full request line, including method, path, etc..
 	private Map<String,String>   headers	  = new Hashtable<String,String>(); // all the base headers received for this request
 	private Map<String,String>   urlParameters= null;       // holds url parameters, urlencoded variables, and form-data variables
 	private ByteBuffer	 		 buffer;	  				// acts as both the line buffer and data buffer
@@ -142,6 +143,17 @@ public class MWHTTPRequest implements HTTPRequest
 	public String getUrlPath()
 	{
 		return uriPage;
+	}
+	
+	/**
+	 * Get the entire request line, including method, path, etc
+	 * Returns null if the request line has not yet been received
+	 * @return the entire request line, including method, path, etc
+	 */
+	@Override
+	public String getFullRequest()
+	{
+		return requestString;
 	}
 	
 	/**
@@ -748,7 +760,7 @@ public class MWHTTPRequest implements HTTPRequest
 			else
 			if(headerKey.equals(HTTPHeader.ACCEPT_ENCODING.lowerCaseName())) // special case!
 				acceptEnc=parseAcceptEncodingRequest(headerValue);
-			if (isDebugging) debugLogger.fine("Header received: "+headerLine);
+			if (isDebugging) debugLogger.finer("Header received: "+headerLine);
 			return null;
 		}
 		else
@@ -813,6 +825,7 @@ public class MWHTTPRequest implements HTTPRequest
 	 */
 	public void parseRequest(String requestLine) throws HTTPException
 	{
+		requestString=requestLine;
 		final String[] parts = requestLine.split(" ");
 		if(parts.length != 3)
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
@@ -863,7 +876,6 @@ public class MWHTTPRequest implements HTTPRequest
 			}
 			else
 				uriPage = URLDecoder.decode(url,"UTF-8");
-			if (isDebugging) debugLogger.fine("Got request: "+requestLine);
 		}
 		catch(UnsupportedEncodingException e)
 		{

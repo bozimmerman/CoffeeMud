@@ -109,7 +109,7 @@ public class HTTPSReader extends HTTPReader
 			||(config.getSslKeystoreType()==null)
 			||(config.getSslKeyManagerEncoding()==null))
 			{
-				config.getLogger().fine("SSL not configured.");
+				config.getLogger().finer("SSL not configured.");
 				return null;
 			}
 
@@ -197,7 +197,7 @@ public class HTTPSReader extends HTTPReader
 					break;
 				}
 			}
-			config.getLogger().fine(name+" completed ssl handshake");
+			config.getLogger().finer(name+" completed ssl handshake");
 			handshakeComplete=true;
 			return buffer.position();
 		}
