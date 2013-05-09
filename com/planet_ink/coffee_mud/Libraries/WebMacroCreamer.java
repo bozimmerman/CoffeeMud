@@ -94,6 +94,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			public final Hashtable<String,Object> objects=new Hashtable<String,Object>();
 			@Override public String getHost() { return "localhost"; }
 			@Override public String getUrlPath() { return "localhost/file"; }
+			@Override public String getFullRequest() { return "GET "+getUrlPath(); }
 			@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
 			@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }
 			@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }

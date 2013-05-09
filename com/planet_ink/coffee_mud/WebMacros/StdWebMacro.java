@@ -481,6 +481,7 @@ public class StdWebMacro implements WebMacro
 				final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
 				@Override public String getHost() { return httpReq.getHost(); }
 				@Override public String getUrlPath() { return file; }
+				@Override public String getFullRequest() { return httpReq.getMethod().name()+" "+getUrlPath(); }
 				@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
 				@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
 				@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }
@@ -521,6 +522,7 @@ public class StdWebMacro implements WebMacro
 				public final Hashtable<String,String> params=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
 				@Override public String getHost() { return httpReq.getHost(); }
 				@Override public String getUrlPath() { return file; }
+				@Override public String getFullRequest() { return httpReq.getMethod().name()+" "+getUrlPath(); }
 				@Override public String getUrlParameter(String name) { return params.get(name.toUpperCase()); }
 				@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toUpperCase()); }
 				@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }

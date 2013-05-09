@@ -835,6 +835,7 @@ public class RoomData extends StdWebMacro
 			public final Hashtable<String,String> params=mergeParams;
 			@Override public String getHost() { return httpReq.getHost(); }
 			@Override public String getUrlPath() { return httpReq.getUrlPath(); }
+			@Override public String getFullRequest() { return httpReq.getFullRequest(); }
 			@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
 			@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
 			@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }

@@ -662,7 +662,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				{
 					if(accessLogging && accessLog.length()>1)
 						if(config.getLogger().getClass().equals(Log.class))
-							((Log)config.getLogger()).rawStandardOut(Type.access,accessLog.substring(0,accessLog.length()-1),Integer.MIN_VALUE);
+							((Log)config.getLogger()).rawStandardOut(Log.Type.access,accessLog.substring(0,accessLog.length()-1),Integer.MIN_VALUE);
 						else
 							config.getLogger().fine(accessLog.substring(0,accessLog.length()-1));
 				}
