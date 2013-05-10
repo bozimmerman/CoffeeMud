@@ -663,7 +663,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				}
 				finally
 				{
-					if(accessLog.length()>1)
+					if((accessLog!=null)&&(accessLog.length()>1))
 					{
 						if(accessLogging)
 						{
