@@ -1209,7 +1209,7 @@ public class MUD extends Thread implements MudHost
 				if(CMath.isInteger(page.getPrivateStr("NUMLOGS")))
 				{
 					Log.newInstance();
-					Log.instance().startLogging(logName,page.getInt("NUMLOGS"));
+					Log.instance().configureLogFile(logName,page.getInt("NUMLOGS"));
 					Log.instance().configureLog(Log.Type.info, page.getStr("SYSMSGS"));
 					Log.instance().configureLog(Log.Type.error, page.getStr("ERRMSGS"));
 					Log.instance().configureLog(Log.Type.warning, page.getStr("WRNMSGS"));
@@ -1380,7 +1380,7 @@ public class MUD extends Thread implements MudHost
 		CMProps page=CMProps.loadPropPage("//"+iniFile);
 		if ((page==null)||(!page.isLoaded()))
 		{
-			Log.instance().startLogging("mud",1);
+			Log.instance().configureLogFile("mud",1);
 			Log.instance().configureLog(Log.Type.info, "BOTH");
 			Log.instance().configureLog(Log.Type.error, "BOTH");
 			Log.instance().configureLog(Log.Type.warning, "BOTH");
@@ -1396,7 +1396,7 @@ public class MUD extends Thread implements MudHost
 			return;
 		}
 		Log.shareWith(MudHost.MAIN_HOST);
-		Log.instance().startLogging("mud",page.getInt("NUMLOGS"));
+		Log.instance().configureLogFile("mud",page.getInt("NUMLOGS"));
 		Log.instance().configureLog(Log.Type.info, page.getStr("SYSMSGS"));
 		Log.instance().configureLog(Log.Type.error, page.getStr("ERRMSGS"));
 		Log.instance().configureLog(Log.Type.warning, page.getStr("WRNMSGS"));

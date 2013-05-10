@@ -47,7 +47,7 @@ public class Log extends java.util.logging.Logger
 	private PrintWriter 		fileOutWriter[]	= null; /**	always to "log" */
 	private int					numberOfFWLogs	= 1;
 	private final PrintWriter 	systemOutWriter	= new PrintWriter(System.out,true); /** always to systemout */
-	private String 				filePath 		= ""; /** The fully qualified file path */
+	private File 				logPath 		= new File("."); /** The fully qualified file path */
 	private String 				logName 		= "application"; /** log name */
 	private String 				LOGNAME 		= "APPLICATION"; /** log name */
 	private static final Log[] 	logs			= new Log[256];
@@ -175,7 +175,7 @@ public class Log extends java.util.logging.Logger
 		{
 			WRITTEN.remove(writer);
 			writer.close();
-			FileOutputStream fileOut=this.startLogFile(logName, this.numberOfFWLogs);
+			FileOutputStream fileOut=this.openLogFile(logName, false, this.numberOfFWLogs);
 			PrintWriter newPW=new PrintWriter(fileOut,true);
 			this.fileOutWriter[0]=newPW;
 			WRITTEN.put(newPW, new long[]{0,0});
@@ -189,7 +189,7 @@ public class Log extends java.util.logging.Logger
 			{
 				WRITTEN.remove(writer);
 				writer.close();
-				FileOutputStream fileOut=this.startLogFile(getLogFilename(type), config.maxLogs);
+				FileOutputStream fileOut=this.openLogFile(getLogFilename(type), false, config.maxLogs);
 				PrintWriter newPW=new PrintWriter(fileOut,true);
 				config.writers[0][0]=newPW;
 				WRITTEN.put(newPW, new long[]{0,0});
@@ -251,10 +251,12 @@ public class Log extends java.util.logging.Logger
 			{
 				try 
 				{
-					FileOutputStream fileStream=this.startLogFile(logName+"_"+type.toString().toLowerCase(), config.maxLogs);
+					FileOutputStream fileStream=this.openLogFile(logName+"_"+type.toString().toLowerCase(), false, config.maxLogs);
 					final PrintWriter[] writer=new PrintWriter[]{new PrintWriter(fileStream,true)};
 					for(int i=0;i<10;i++)
 						writers[i]=writer;
+					if(!WRITTEN.containsKey(writer))
+						WRITTEN.put(writer[0], new long[]{0,0});
 				} 
 				catch (IOException e) 
 				{
@@ -266,9 +268,8 @@ public class Log extends java.util.logging.Logger
 		PrintWriter[] empty=new PrintWriter[]{null};
 		for(int i=max+1;i<10;i++)
 			writers[i]=empty;
-		for(PrintWriter[] writer : writers)
-			if((writer[0]!=null) && (!WRITTEN.containsKey(writer[0])))
-				WRITTEN.put(writer[0], new long[2]);
+		if((this.fileOutWriter[0]!=null) && (!WRITTEN.containsKey(fileOutWriter[0])))
+			WRITTEN.put(fileOutWriter[0], new long[2]);
 		if(priority<0) return writers[0][0];
 		if(priority>9) return writers[9][0];
 		return writers[priority][0];
@@ -280,18 +281,27 @@ public class Log extends java.util.logging.Logger
 	 * <br><br><b>Usage:</b> PrintWriter W=makeConfig("BOTH");
 	 * @param type LogType
 	 * @param code ON, OFF, BOTH, OWNFILE, FILE
+	 * @param defaultNumberOfLogs default number of log files
 	 * @return Conf the config
 	 */
-	private final Conf makeConfig(final Type type, String code)
+	private final Conf makeConfig(final Type type, String code, int defaultNumberOfLogs)
 	{
 		if((code==null)||(code.trim().length()==0))
 			return new Conf(Target.OFF,0,1,0,0);
-		int maxNumberOfLogs=1;
+		int maxNumberOfLogs=defaultNumberOfLogs;
 		int maxNumberOfBytes=0;
 		int maxNumberOfEntries=0;
 		code=code.trim().toUpperCase();
+		int x;
+		if(Character.isDigit(code.charAt(0)))
+		{
+			x=0;
+			while((x<code.length())&&(Character.isDigit(code.charAt(x)))) {x++;}
+			maxNumberOfLogs=s_int(code.substring(0,x));
+			code=code.substring(x).trim();
+		}
 		int maxLevel=0;
-		int x=code.indexOf('<');
+		x=code.indexOf('<');
 		if(x>0)
 		{
 			String numStr=code.substring(x+1).trim();
@@ -301,7 +311,7 @@ public class Log extends java.util.logging.Logger
 				x=0;
 				while((x<numStr.length())&&(Character.isDigit(numStr.charAt(x)))) {x++;}
 				int num=s_int(numStr.substring(0,x));
-				numStr=numStr.substring(x).toLowerCase();
+				numStr=numStr.substring(x).trim().toLowerCase();
 				if(numStr.startsWith("b"))
 					maxNumberOfBytes=num;
 				else
@@ -315,7 +325,6 @@ public class Log extends java.util.logging.Logger
 					maxNumberOfBytes=num*1024*1024*1024;
 				else
 					maxNumberOfEntries=num;
-				maxNumberOfLogs=this.numberOfFWLogs;
 			}
 		}
 		if(Character.isDigit(code.charAt(code.length()-1)))
@@ -331,7 +340,10 @@ public class Log extends java.util.logging.Logger
 			t=Target.OFF;
 		}
 		if( t==null) t=Target.OFF;
-		return new Conf(t,maxLevel,maxNumberOfLogs,maxNumberOfEntries,maxNumberOfBytes);
+		if( t==Target.OWNFILE )
+			return new Conf(t,maxLevel,maxNumberOfLogs,maxNumberOfEntries,maxNumberOfBytes);
+		else
+			return new Conf(t,maxLevel,this.numberOfFWLogs,0,0);
 	}
 	
 	/**
@@ -346,7 +358,7 @@ public class Log extends java.util.logging.Logger
 		Conf t=CONFS.get(type);
 		if(t==null)
 		{
-			t=makeConfig(type, System.getProperty("LOG."+LOGNAME+"_"+type.toString().toUpperCase().trim()));
+			t=makeConfig(type, System.getProperty("LOG."+LOGNAME+"_"+type.toString().toUpperCase().trim()),1);
 			CONFS.put(type,t);
 		}
 		return t;
@@ -374,58 +386,34 @@ public class Log extends java.util.logging.Logger
 	public final void configureLog(final Type type, final String code)
 	{
 		System.setProperty("LOG."+LOGNAME+"_"+type.toString().toUpperCase(),code.toUpperCase().trim());
-		CONFS.put(type,makeConfig(type, code));
+		CONFS.put(type,makeConfig(type, code, 1));
 	}
 
 	/**
-	* Start all of the log files in the info temp directory
-	*
-	* <br><br><b>Usage:</b>  startLogFiles("mud",5);
-	* @param newLogName maximum name of files
-	* @param numberOfLogs maximum number of files
+	* Reset all of the log files
+	* ON, OFF, FILE, BOTH
+	* <br><br><b>Usage:</b>  CMProps.initLog(Log.LogType.info,"OWNFILE",20);
+	* @param type the log to set the code for
+	* @param code the code
+	* @param numberOfLogs if code = "OWNFILE", then how many back logs to keep
 	*/
-	public final void startLogging(final String newLogName, final int numberOfLogs)
+	public final void configureLog(final Type type, final String code, final int numberOfLogs)
 	{
-		// ===== pass in a null to force the temp directory
-		startLogging(newLogName, "", numberOfLogs);
+		System.setProperty("LOG."+LOGNAME+"_"+type.toString().toUpperCase(),code.toUpperCase().trim());
+		CONFS.put(type,makeConfig(type, code, numberOfLogs));
 	}
 
-	private final FileOutputStream startLogFile(String logName, final int numberOfLogs) throws IOException
+	private final FileOutputStream openLogFile(String logName, final boolean append, final int numberOfLogs) throws IOException
 	{
-		File directoryPath;
-
-		if ((filePath!=null)&&(filePath.length()!=0))
-		{
-			directoryPath = new File(filePath);
-		}
-		else
-		{
-			directoryPath = new File(".");
-		}
-		
-		try
-		{
-
-			if ((!directoryPath.isDirectory())||(!directoryPath.canWrite())||(!directoryPath.canRead()))
-			{
-				directoryPath = null;
-			}
-		}
-		catch(Exception t)
-		{
-			directoryPath=null;
-		}
-
 		if(logName.toLowerCase().endsWith(".log")||logName.toLowerCase().endsWith(".txt"))
 			logName=logName.substring(0,logName.length()-4);
 		
 		// initializes the logging objects
-		if(numberOfLogs>1)
+		if((numberOfLogs>1) && (!append))
 		{
 			try{
 				String name=logName+(numberOfLogs-1)+".log";
-				if(directoryPath!=null) name=directoryPath.getAbsolutePath()+File.separatorChar+name;
-				final File f=new File(name);
+				final File f=new File(logPath,name);
 				if(f.exists())
 					f.delete();
 			}catch(Exception e){}
@@ -434,39 +422,40 @@ public class Log extends java.util.logging.Logger
 				final String inum=(i>0)?(""+i):"";
 				final String inumm1=(i>1)?(""+(i-1)):"";
 				try{
-					final File f=new File(logName+inumm1+".log");
+					final File f=new File(logPath,logName+inumm1+".log");
 					if(f.exists())
-						f.renameTo(new File(logName+inum+".log"));
+						f.renameTo(new File(logPath,logName+inum+".log"));
 				}catch(Exception e){}
 			}
 		}
 		String name=logName+".log";
-		if(directoryPath!=null) name=directoryPath.getAbsolutePath()+File.separatorChar+name;
-		final File fileOut=new File(name);
-		filePath = fileOut.getAbsolutePath();
-		FileOutputStream fileStream=new FileOutputStream(fileOut);
+		final File fileOut=new File(logPath,name);
+		FileOutputStream fileStream=new FileOutputStream(fileOut, append);
 		if(logName.equalsIgnoreCase(this.logName))
 			System.setErr(new PrintStream(fileStream));
 		return fileStream;
 	}
 	
+
 	/**
-	* Start all of the log files in the specified directory
+	* Start all of the log files in the info temp directory
 	*
-	* <br><br><b>Usage:</b>  startLogFiles("mud","",10);
-	* @param newLogName the name to create the file
-	* @param dirPath the place to create the file
+	* <br><br><b>Usage:</b>  configureLogFile("mud",5);
+	* @param logFilePath maximum name of files
 	* @param numberOfLogs maximum number of files
 	*/
-	public final void startLogging(final String newLogName, final String dirPath, final int numberOfLogs)
+	public final void configureLogFile(final String logFilePath, final int numberOfLogs)
 	{
-		this.filePath=dirPath;
-		this.logName=newLogName;
+		File F=new File(logFilePath);
+		File parentFile=F.getParentFile();
+		if(parentFile!=null) 
+			this.logPath=parentFile;
+		this.logName=F.getName();
 		this.LOGNAME=logName.toUpperCase().trim();
 		this.numberOfFWLogs=numberOfLogs;
 		try
 		{
-			final FileOutputStream fileStream=startLogFile(newLogName,numberOfLogs);
+			final FileOutputStream fileStream=openLogFile(logName,false,numberOfLogs);
 			fileOutWriter=new PrintWriter[]{new PrintWriter(fileStream,true)};
 			System.setErr(new PrintStream(fileStream));
 		}
@@ -578,7 +567,7 @@ public class Log extends java.util.logging.Logger
 	*/
 	public final String getLogLocation()
 	{
-		return filePath;
+		return logPath.getAbsolutePath();
 	}
 	
 	
@@ -708,7 +697,7 @@ public class Log extends java.util.logging.Logger
 			}
 		}
 	}
-
+	
 	/**
 	* Handles raw info logging entries.  Sends them to System.out,
 	* the log file, or nowhere.

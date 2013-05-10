@@ -524,7 +524,7 @@ public class MiniWebServer extends Thread
 	public static void main(String[] args)
 	{
 		
-		Log.instance().startLogging("miniweb", 2);
+		Log.instance().configureLogFile("miniweb", 2);
 		String debug="OFF";
 		String iniFilename="mw.ini";
 		for(String arg : args)

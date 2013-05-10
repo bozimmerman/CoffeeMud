@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import java.io.*;
 
 import com.planet_ink.coffee_mud.core.Log;
+import com.planet_ink.coffee_mud.core.Log.Type;
 import com.planet_ink.coffee_mud.core.collections.Pair;
 import com.planet_ink.miniweb.interfaces.DataBuffers;
 import com.planet_ink.miniweb.interfaces.HTTPIOHandler;
@@ -614,7 +615,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				int bytesRead=0; // read bytes until we can't any more
 				boolean announcedAlready=!isDebugging;
 				final boolean accessLogging = config.getLogger().isLoggable(Level.FINE);
-				final StringBuilder accessLog = accessLogging ? new StringBuilder() : null;
+				final StringBuilder accessLog = ( accessLogging || isDebugging )? new StringBuilder() : null;
 				try // begin of the http exception handling block
 				{
 					while (!closeMe && (( bytesRead = readBytesFromClient(currentReq.getBuffer())) > 0) )
@@ -629,10 +630,11 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 						{
 							HTTPReqProcessor processor = new HTTPReqProcessor(config);
 							final DataBuffers bufs = processor.generateOutput(currentReq);
-							if(accessLogging)
+							if(accessLog != null)
 								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
-									currentReq.getClientAddress().getHostAddress()+":"+currentReq.getClientPort()+" \""+
-									currentReq.getFullRequest()+"\" "+processor.getLastHttpStatusCode()+" "+bufs.getLength())).append("\n");
+									currentReq.getClientAddress().getHostAddress()
+									+" "+currentReq.getHost()
+									+" \""+currentReq.getFullRequest()+"\" "+processor.getLastHttpStatusCode()+" "+bufs.getLength())).append("\n");
 							writeBytesToChannel(bufs);
 							// after output, prepare for a second request on this channel
 							currentReq=new MWHTTPRequest(currentReq);
@@ -644,10 +646,11 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				{
 					final DataBuffers bufs=me.generateOutput(currentReq);
 					writeBytesToChannel(bufs);
-					if(accessLogging)
+					if(accessLog != null)
 						accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
-							currentReq.getClientAddress().getHostAddress()+":"+currentReq.getClientPort()+" \""+
-							currentReq.getFullRequest()+"\" "+me.getStatus().getStatusCode()+" "+bufs.getLength())).append("\n");
+							currentReq.getClientAddress().getHostAddress()
+							+" "+currentReq.getHost()
+							+" \""+currentReq.getFullRequest()+"\" "+me.getStatus().getStatusCode()+" "+bufs.getLength())).append("\n");
 					// have to assume any exception caused
 					// before a finish is malformed and needs a closed connection.
 					if(currentReq.isFinished())
@@ -660,11 +663,18 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				}
 				finally
 				{
-					if(accessLogging && accessLog.length()>1)
-						if(config.getLogger().getClass().equals(Log.class))
-							((Log)config.getLogger()).rawStandardOut(Log.Type.access,accessLog.substring(0,accessLog.length()-1),Integer.MIN_VALUE);
+					if(accessLog.length()>1)
+					{
+						if(accessLogging)
+						{
+							if(config.getLogger().getClass().equals(Log.class))
+								((Log)config.getLogger()).rawStandardOut(Type.access,accessLog.substring(0,accessLog.length()-1),Integer.MIN_VALUE);
+							else
+								config.getLogger().fine(accessLog.substring(0,accessLog.length()-1));
+						}
 						else
-							config.getLogger().fine(accessLog.substring(0,accessLog.length()-1));
+							config.getLogger().finest(accessLog.substring(0,accessLog.length()-1));
+					}
 				}
 				handleWrites();
 				if((!closeMe) // if eof is reached, close this channel and mark it for deletion by the web server
