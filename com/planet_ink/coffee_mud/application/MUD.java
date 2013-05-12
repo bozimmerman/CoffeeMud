@@ -258,7 +258,9 @@ public class MUD extends Thread implements MudHost
 					config.setFileManager(new CMFile.CMFileManager());
 					MiniWebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
 					if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
-						config.setDebugFlag("BOTH");
+						config.setDebugFlag(page.getStr("DBGMSGS"));
+					if(CMSecurity.isDebugging(DbgFlag.HTTPACCESS))
+						config.setAccessLogFlag(page.getStr("ACCMSGS"));
 					MiniWebServer webServer=new MiniWebServer(serverName,config);
 					config.setMiniWebServer(webServer);
 					webServer.start();

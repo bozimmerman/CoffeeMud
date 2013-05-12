@@ -48,7 +48,6 @@ public class RandomAreaTemplates extends StdWebMacro
 		try
 		{
 			String last=httpReq.getUrlParameter("RTEMPLATE");
-			if(last==null) return " @break@";
 			if(parms.containsKey("NEXT"))
 			{
 				if(parms.containsKey("RESET"))
@@ -56,6 +55,7 @@ public class RandomAreaTemplates extends StdWebMacro
 					if(last!=null) httpReq.removeUrlParameter("RTEMPLATE");
 					return "";
 				}
+				if(last==null) return " @break@";
 				List<String> fileList=(List<String>)httpReq.getRequestObjects().get("RANDOMAREATEMPLATESLIST");
 				if(fileList==null)
 				{
