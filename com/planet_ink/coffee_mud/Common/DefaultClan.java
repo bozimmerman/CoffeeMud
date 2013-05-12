@@ -477,17 +477,28 @@ public class DefaultClan implements Clan
 		if(M.playerStats()!=null)
 		for(ClanPosition pos : govt().getPositions())
 		{
-			String title="*, "+pos.getName()+" of "+name();
+			String title="*, "+CMStrings.capitalizeAndLower(pos.getName())+" of "+name();
+			String existingTitle=null;
+			for(String titleCheck : M.playerStats().getTitles())
+				if(titleCheck.equalsIgnoreCase(title))
+					existingTitle=titleCheck;
 			if((p!=null)
 			&&(p.second.intValue()==pos.getRoleID())
 			&&(getAuthority(p.second.intValue(),Function.CLAN_TITLES)!=Clan.Authority.CAN_NOT_DO))
 			{
 				if(!M.playerStats().getTitles().contains(title))
+				{
+					if(existingTitle!=null)
+						M.playerStats().getTitles().remove(existingTitle);
 					M.playerStats().getTitles().add(title);
+				}
 			}
 			else
 			if(M.playerStats().getTitles().contains(title))
 				M.playerStats().getTitles().remove(title);
+			else
+			if(existingTitle!=null)
+				M.playerStats().getTitles().remove(existingTitle);
 		}
 		if(p==null)
 		{
