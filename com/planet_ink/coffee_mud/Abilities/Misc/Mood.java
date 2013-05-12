@@ -196,7 +196,6 @@ public class Mood extends StdAbility
 		if(msg==lastMsg)
 			return super.okMessage(myHost, msg);
 		lastMsg=msg;
-System.out.println(msg);
 		if(affected instanceof MOB)
 		{
 			if((msg.source()==affected)
