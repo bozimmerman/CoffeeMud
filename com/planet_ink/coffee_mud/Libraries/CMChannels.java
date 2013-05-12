@@ -434,18 +434,19 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	
 	public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender)
 	{
-		MOB M=ses.mob();
+		final MOB M=ses.mob();
+		final Room R=M.location();
 		boolean didIt=false;
 		if(mayReadThisChannel(sender,areareq,ses,channelInt)
-		&&(M.location()!=null)
-		&&(M.location().okMessage(ses.mob(),msg)))
+		&&(R!=null)
+		&&((sender.location()==R)||(R.okMessage(ses.mob(),msg))))
 		{
 			M.executeMsg(M,msg);
 			didIt=true;
 			if(msg.trailerMsgs()!=null)
 			{
 				for(CMMsg msg2 : msg.trailerMsgs())
-					if((msg!=msg2)&&(M.location()!=null)&&(M.location().okMessage(M,msg2)))
+					if((msg!=msg2)&&(R!=null)&&(R.okMessage(M,msg2)))
 						M.executeMsg(M,msg2);
 				msg.trailerMsgs().clear();
 			}
@@ -515,9 +516,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			if(msg.othersMessage()!=null)
 				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<S-NAME>", accountName));
 		}
-		CMLib.commands().monitorGlobalMessage(mob.location(), msg);
-		if((mob.location()!=null)
-		&&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
+		final Room R=mob.location();
+		CMLib.commands().monitorGlobalMessage(R, msg);
+		if((R!=null)
+		&&((!R.isInhabitant(mob))||(R.okMessage(mob,msg))))
 		{
 			boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 			channelQueUp(channelInt,msg);

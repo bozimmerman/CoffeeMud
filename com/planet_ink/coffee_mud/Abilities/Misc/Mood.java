@@ -49,6 +49,7 @@ public class Mood extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	protected int moodCode=-1;
 	protected Object lastOne=null;
+	protected CMMsg lastMsg=null;
 	public static final String[] BOAST_CHANNELS={"BOAST","GRATZ","ANNOUNCE","GOSSIP","OOC","CHAT"};
 	public static final String[][] MOODS={
 		/*0 */{"FORMAL","+ADJCHA 17","^Bformal","formally"},
@@ -192,6 +193,9 @@ public class Mood extends StdAbility
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if(msg==lastMsg)
+			return super.okMessage(myHost, msg);
+		lastMsg=msg;
 		if(affected instanceof MOB)
 		{
 			if((msg.source()==affected)

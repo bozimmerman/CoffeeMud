@@ -702,16 +702,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		int firstAlpha=-1;
 		int amperStop = -1;
 		
-		long loopDebugCtr=0;
-
 		while(buf.length()>loop)
 		{
-			if(++loopDebugCtr>(buf.length()*10L)) //BZ: delete when this is fixed.
-			{
-				Log.errOut("CoffeeFilter","DEBUG: "+loop+"/"+wrap+"/"+lastSpace+"/"+firstAlpha+"/"+amperStop+"/"+doSagain+"/"+firstSdone+"/"+buf.length()+"/"+loopDebugCtr);
-				Log.errOut("CoffeeFilter",buf.toString());
-				break;
-			}
 			int lastSp=-1;
 			while((loop<len)&&(buf.length()>loop))
 			{
@@ -1202,7 +1194,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					break;
 					case '\033': // skip escapes
 					{
-						int oldLoop=loop;
 						if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
 						{
 							loop++; // added 2013, see comment below
@@ -1216,8 +1207,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							//if(buf.charAt(loop)=='\033')
 							//	loop--; // force a retry of this char. 2013: why do this?  only possible if you didn't move, and this promises less moving!
 						}
-						if(loopDebugCtr>(buf.length()*9L)) //BZ: delete when this is fixed.
-							Log.errOut("CoffeeFilter","ESCAPEBUG: "+oldLoop+"/"+loop+"/"+(buf.charAt(loop+1)=='['));
 						break;
 					}
 					case '^':
