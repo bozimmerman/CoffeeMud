@@ -88,7 +88,7 @@ public class Quit extends StdCommand
 							Room R=mob.location();
 							if((R!=null)&&(R.okMessage(mob,msg))) 
 							{
-								CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
+								CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null));
 								session.stopSession(false,false, false);
 								CMLib.commands().monitorGlobalMessage(R, msg);
 							}

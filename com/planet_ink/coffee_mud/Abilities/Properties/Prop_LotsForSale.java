@@ -160,7 +160,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 							R.setRawExit(d,null);
 							updateExits=true;
 							CMLib.map().obliterateRoom(R2);
-        					didAnything=true;
+							didAnything=true;
 						}
 						else
 						if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
@@ -177,7 +177,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 									E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
 									CMLib.database().DBUpdateExits(R2);
 									R2.getArea().fillInAreaRoom(R2);
-			    					didAnything=true;
+									didAnything=true;
 								}
 							}
 						}
@@ -229,7 +229,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 								colorForSale(R2,newTitle.rentalProperty(),true);
 							R2.getArea().fillInAreaRoom(R2);
 							CMLib.database().DBUpdateExits(R2);
-        					didAnything=true;
+							didAnything=true;
 						}
 					}
 					if(updateExits)

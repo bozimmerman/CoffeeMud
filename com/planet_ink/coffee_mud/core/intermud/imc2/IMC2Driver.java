@@ -1085,7 +1085,7 @@ public final class IMC2Driver extends Thread {
 				
 		msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 
-		CMLib.channels().channelQueUp(channelInt,msg);
+		CMLib.channels().channelQueUp(channelInt,(CMMsg)msg.copyOf());
 		for(Session S : CMLib.sessions().localOnlineIterable())
 			if((CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
 			&&(S.mob().location()!=null)
