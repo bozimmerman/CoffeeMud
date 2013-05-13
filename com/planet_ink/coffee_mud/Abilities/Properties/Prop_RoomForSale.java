@@ -44,6 +44,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public final static String SALESTR=" This lot is for sale (look id).";
 	public final static String RENTSTR=" This lot (look id) is for rent on a monthly basis.";
+	public final static String INDOORSTR=" An empty room";
+	public final static String OUTDOORSTR=" An empty plot";
 	protected int lastItemNums=-1;
 	protected int lastDayDone=-1;
 	protected boolean scheduleReset=false;
@@ -292,14 +294,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				CMLib.database().DBUpdateRoom(R);
 				x=R.description().indexOf(otherStr);
 			}
-			if(R.description().indexOf(theStr.trim())<0)
+			if((R.description().indexOf(theStr.trim())<0)||(!R.displayText().equals(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR)))
 			{
 				if(reset)
 				{
-					if(CMath.bset(R.domainType(), Room.INDOORS))
-						R.setDisplayText("An empty room");
-					else
-						R.setDisplayText("An empty plot");
+					R.setDisplayText(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
 					R.setDescription("");
 				}
 				R.setDescription(R.description()+theStr);
