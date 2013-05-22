@@ -978,18 +978,22 @@ public class DefaultClan implements Clan
 		List<MemberRecord> subMembers=filterMemberList(CMLib.database().DBClanMembers(clanID()), -1);
 		for(MemberRecord member : subMembers)
 		{
-			MOB M=CMLib.players().getPlayer(member.name);
-			if(M!=null)
+			MOB M=null;
+			if(member!=null)
 			{
-				if(M.lastTickedDateTime()>0)
-					members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime()));
+				M=CMLib.players().getPlayer(member.name);
+				if(M!=null)
+				{
+					if(M.lastTickedDateTime()>0)
+						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime()));
+					else
+						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().lastDateTime()));
+				}
 				else
-					members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().lastDateTime()));
-			}
-			else
-			{
-				PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(member.name);
-				members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last));
+				{
+					PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(member.name);
+					members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last));
+				}
 			}
 		}
 		return members;
