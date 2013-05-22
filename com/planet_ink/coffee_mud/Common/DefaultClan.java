@@ -978,10 +978,9 @@ public class DefaultClan implements Clan
 		List<MemberRecord> subMembers=filterMemberList(CMLib.database().DBClanMembers(clanID()), -1);
 		for(MemberRecord member : subMembers)
 		{
-			MOB M=null;
 			if(member!=null)
 			{
-				M=CMLib.players().getPlayer(member.name);
+				final MOB M=CMLib.players().getPlayer(member.name);
 				if(M!=null)
 				{
 					if(M.lastTickedDateTime()>0)
