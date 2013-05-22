@@ -723,17 +723,24 @@ public class DefaultCharStats implements CharStats
 		return copyStats.getStat(statNum);
 	}
 
-	public void setRacialStat(int abilityCode, int racialMax)
+	public void setRacialStat(final int abilityCode, final int racialMax)
 	{
 		if((!CharStats.CODES.isBASE(abilityCode))||(getStat(abilityCode)==VALUE_ALLSTATS_DEFAULT)) 
 			setPermanentStat(abilityCode,racialMax);
 		else
 		{
-			int baseMax=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+			final int baseMax=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
 			int currMax=getStat(CharStats.CODES.toMAXBASE(abilityCode))+baseMax;
 			if(currMax<=0) currMax=1;
 			int curStat=getStat(abilityCode);
-			int racialStat=Math.round(((float)curStat/(float)currMax)*racialMax)+Math.round((((float)(currMax-VALUE_ALLSTATS_DEFAULT))/(float)currMax)*racialMax);
+			if(curStat > currMax*5)
+			{
+				Log.warnOut("Detected mob with "+curStat+"/"+currMax+" "+CharStats.CODES.ABBR(abilityCode));
+				curStat=currMax*5;
+			}
+			final int pctOfMax=Math.round(((float)curStat/(float)currMax)*racialMax);
+			final int stdMaxAdj=Math.round((((float)(currMax-VALUE_ALLSTATS_DEFAULT))/(float)currMax)*racialMax);
+			final int racialStat=pctOfMax+stdMaxAdj;
 			setStat(abilityCode,((racialStat<1)&&(racialMax>0))?1:racialStat);
 			setStat(CharStats.CODES.toMAXBASE(abilityCode),racialMax-baseMax);
 		}
