@@ -518,12 +518,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		final Room R=mob.location();
 		CMLib.commands().monitorGlobalMessage(R, msg);
-		final CMMsg globalMsg=(CMMsg)msg.copyOf();
 		if((R!=null)
 		&&((!R.isInhabitant(mob))||(R.okMessage(mob,msg))))
 		{
 			boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-			channelQueUp(channelInt,globalMsg);
+			channelQueUp(channelInt,msg);
 			for(Session S : CMLib.sessions().localOnlineIterable())
 				channelTo(S,areareq,channelInt,msg,mob);
 		}
