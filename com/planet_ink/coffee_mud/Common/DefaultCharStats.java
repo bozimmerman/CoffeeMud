@@ -733,10 +733,10 @@ public class DefaultCharStats implements CharStats
 			int currMax=getStat(CharStats.CODES.toMAXBASE(abilityCode))+baseMax;
 			if(currMax<=0) currMax=1;
 			int curStat=getStat(abilityCode);
-			if(curStat > currMax*5)
+			if(curStat > currMax*7)
 			{
 				Log.warnOut("Detected mob with "+curStat+"/"+currMax+" "+CharStats.CODES.ABBR(abilityCode));
-				curStat=currMax*5;
+				curStat=currMax*7;
 			}
 			final int pctOfMax=Math.round(((float)curStat/(float)currMax)*racialMax);
 			final int stdMaxAdj=Math.round((((float)(currMax-VALUE_ALLSTATS_DEFAULT))/(float)currMax)*racialMax);
