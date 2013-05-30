@@ -842,8 +842,16 @@ public class MWHTTPRequest implements HTTPRequest
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 		}
 		
-		// now parse the first part of the request for a valid method 
-		requestType = HTTPMethod.valueOf(parts[0]);
+		// now parse the first part of the request for a valid method
+		try
+		{
+			requestType = HTTPMethod.valueOf(parts[0]);
+		}
+		catch(java.lang.IllegalArgumentException ae)
+		{
+			// do nothing
+			requestType = null;
+		}
 		if(requestType == null)
 		{
 			final HTTPException exception = new HTTPException(HTTPStatus.S405_METHOD_NOT_ALLOWED);
