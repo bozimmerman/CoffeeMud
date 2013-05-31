@@ -64,50 +64,55 @@ public class Prayer_ChainStrike extends Prayer
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A thunderous crack of electricity erupts!":"^S<S-NAME> "+prayForWord(mob)+" to send down a thunderous crack of electricity.^?")+CMProps.msp("lightning.wav",40)))
 			{
 				while(damage>0)
-				for(int i=0;i<targets.size();i++)
 				{
-					MOB target=(MOB)targets.elementAt(i);
-					if(target.amDead()||(target.location()!=mob.location()))
+					int oldDamage=damage;
+					for(int i=0;i<targets.size();i++)
 					{
-						int count=0;
-						for(int i2=0;i2<targets.size();i2++)
+						MOB target=(MOB)targets.elementAt(i);
+						if(target.amDead()||(target.location()!=mob.location()))
 						{
-							MOB M2=(MOB)targets.elementAt(i2);
-							if((!M2.amDead())
-							   &&(mob.location()!=null)
-							   &&(mob.location().isInhabitant(M2))
-							   &&(M2.location()==mob.location()))
-								 count++;
+							int count=0;
+							for(int i2=0;i2<targets.size();i2++)
+							{
+								MOB M2=(MOB)targets.elementAt(i2);
+								if((!M2.amDead())
+								   &&(mob.location()!=null)
+								   &&(mob.location().isInhabitant(M2))
+								   &&(M2.location()==mob.location()))
+									 count++;
+							}
+							if(count<2)
+								return true;
+							continue;
 						}
-						if(count<2)
-							return true;
-						continue;
-					}
-
-					// it worked, so build a copy of this ability,
-					// and add it to the affects list of the
-					// affected MOB.  Then tell everyone else
-					// what happened.
-					boolean oldAuto=auto;
-					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-					CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
-					auto=oldAuto;
-					if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
-					{
-						mob.location().send(mob,msg);
-						mob.location().send(mob,msg2);
-						invoker=mob;
-
-						int dmg=damage;
-						if((msg.value()>0)||(msg2.value()>0))
-							dmg = (int)Math.round(CMath.div(dmg,2.0));
-						if(target.location()==mob.location())
+	
+						// it worked, so build a copy of this ability,
+						// and add it to the affects list of the
+						// affected MOB.  Then tell everyone else
+						// what happened.
+						boolean oldAuto=auto;
+						CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
+						CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
+						auto=oldAuto;
+						if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 						{
-							CMLib.combat().postDamage(mob,target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The strike <DAMAGE> <T-NAME>!");
-							damage = (int)Math.round(CMath.div(damage,2.0));
-							if(damage<2){ damage=0; break;}
+							mob.location().send(mob,msg);
+							mob.location().send(mob,msg2);
+							invoker=mob;
+	
+							int dmg=damage;
+							if((msg.value()>0)||(msg2.value()>0))
+								dmg = (int)Math.round(CMath.div(dmg,2.0));
+							if(target.location()==mob.location())
+							{
+								CMLib.combat().postDamage(mob,target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The strike <DAMAGE> <T-NAME>!");
+								damage = (int)Math.round(CMath.div(damage,2.0));
+								if(damage<2){ damage=0; break;}
+							}
 						}
 					}
+					if(oldDamage==damage)
+						break;
 				}
 			}
 		}
