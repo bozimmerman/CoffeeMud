@@ -124,7 +124,7 @@ public class Spell_ChainLightening extends Spell
 						}
 					}
 					if(oldDamage==damage)
-						damage--;
+						break;
 				}
 			}
 		}
