@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1352,6 +1353,14 @@ public class Test extends StdCommand
 			||(what.equalsIgnoreCase("Prop_ReqTattoo")))
 			{
 				
+			}
+			if((what.equalsIgnoreCase("all"))||(what.equalsIgnoreCase("escapefilterbug")))
+			{
+				String str=ColorLibrary.COLOR_GREY+ColorLibrary.COLOR_BGGREEN+"^<CHANNEL \"TEST\"^>You TEST 'message'^</CHANNEL^>^N^.";
+				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);
+				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);
+				str=CMLib.coffeeFilter().fullOutFilter(mob.session(), mob, mob, null, null, str, false);
+				mob.tell(str);
 			}
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("clans")))
