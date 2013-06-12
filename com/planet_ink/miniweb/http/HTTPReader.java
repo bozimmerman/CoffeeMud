@@ -53,6 +53,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	
 	private volatile boolean 	 		isRunning 		 = false; // the request is currently getting active thread/read time
 	private volatile boolean 	 		closeMe 		 = false; // the request is closed, along with its channel
+	private volatile boolean 	 		closeRequested 	 = false; // the request is closed, along with its channel
 
 	protected final SocketChannel  		chan;					  // the channel from which the request is read
 	protected final String				name;					  // the name of this handler -- to denote a request ID
@@ -61,7 +62,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	protected final MiniWebConfig		config;		  	  	 	  // mini web configuration variables
 	protected final MiniWebServer		server;		  	  	 	  // mini web server managing this request
 
-	private volatile long		 		idleTime 	 	 = 0;	  // the last time this handler went idle
+	private volatile long		 		idleTime 	 	 = System.currentTimeMillis();  // the last time this handler went idle
 	
 	private volatile MWHTTPRequest 		currentReq;			  	  // the parser and pojo of the current request
 	private volatile ParseState  		currentState	 = ParseState.REQ_INLINE;	// the current parse state of this request
@@ -615,7 +616,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 				int bytesRead=0; // read bytes until we can't any more
 				boolean announcedAlready=!isDebugging;
 				final boolean accessLogging = config.getLogger().isLoggable(Level.FINE);
-				final StringBuilder accessLog = ( accessLogging || isDebugging )? new StringBuilder() : null;
+				final StringBuilder accessLog = ( accessLogging )? new StringBuilder() : null;
 				try // begin of the http exception handling block
 				{
 					while (!closeMe && (( bytesRead = readBytesFromClient(currentReq.getBuffer())) > 0) )
@@ -634,11 +635,17 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 								accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
 									currentReq.getClientAddress().getHostAddress()
 									+" "+currentReq.getHost()
-									+" \""+currentReq.getFullRequest()+"\" "+processor.getLastHttpStatusCode()+" "+bufs.getLength())).append("\n");
+									+" \""+currentReq.getFullRequest()+" \" "+processor.getLastHttpStatusCode()+" "+bufs.getLength())).append("\n");
 							writeBytesToChannel(bufs);
 							// after output, prepare for a second request on this channel
-							currentReq=new MWHTTPRequest(currentReq);
-							currentState=ParseState.REQ_INLINE;
+							final String closeHeader = currentReq.getHeader(HTTPHeader.CONNECTION.lowerCaseName()); 
+							if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
+								closeRequested = true;
+							else
+							{
+								currentReq=new MWHTTPRequest(currentReq);
+								currentState=ParseState.REQ_INLINE;
+							}
 						}
 					}
 				}
@@ -655,34 +662,42 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					// before a finish is malformed and needs a closed connection.
 					if(currentReq.isFinished())
 					{
-						currentReq=new MWHTTPRequest(currentReq);
-						currentState=ParseState.REQ_INLINE;
+						final String closeHeader = currentReq.getHeader(HTTPHeader.CONNECTION.lowerCaseName()); 
+						if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
+							closeRequested = true;
+						else
+						{
+							currentReq=new MWHTTPRequest(currentReq);
+							currentState=ParseState.REQ_INLINE;
+						}
 					}
 					else
 						closeChannels();
 				}
 				finally
 				{
-					if((accessLog!=null)&&(accessLog.length()>1))
+					if((accessLogging)&&(accessLog!=null)&&(accessLog.length()>1))
 					{
-						if(accessLogging)
-						{
-							if(config.getLogger().getClass().equals(Log.class))
-								((Log)config.getLogger()).rawStandardOut(Type.access,accessLog.substring(0,accessLog.length()-1),Integer.MIN_VALUE);
-							else
-								config.getLogger().fine(accessLog.substring(0,accessLog.length()-1));
-						}
+						if(config.getLogger().getClass().equals(Log.class))
+							((Log)config.getLogger()).rawStandardOut(Type.access,accessLog.substring(0,accessLog.length()-1),Integer.MIN_VALUE);
 						else
-							config.getLogger().finest(accessLog.substring(0,accessLog.length()-1));
+							config.getLogger().fine(accessLog.substring(0,accessLog.length()-1));
 					}
 				}
 				handleWrites();
-				if((!closeMe) // if eof is reached, close this channel and mark it for deletion by the web server
-				&& ((bytesRead < 0) || (!chan.isConnected()) || (!chan.isOpen())))
+				 // if eof is reached, close this channel and mark it for deletion by the web server
+				if(!closeMe)
 				{
-					closeChannels();
-					currentState=ParseState.DONE;
+					if ((bytesRead < 0) 
+					|| (!chan.isConnected()) 
+					|| (!chan.isOpen())
+					|| (closeRequested && (writeables.size()==0)))
+					{
+						closeChannels();
+						currentState=ParseState.DONE;
+					}
 				}
+				
 			}
 			catch(IOException e)
 			{

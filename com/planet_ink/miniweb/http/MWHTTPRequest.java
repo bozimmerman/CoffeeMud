@@ -830,6 +830,9 @@ public class MWHTTPRequest implements HTTPRequest
 		if(parts.length != 3)
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 		
+		if(isDebugging)
+			debugLogger.finest("Request: "+requestString);
+		
 		// first, parse the http version number from the last part
 		if(!parts[2].startsWith(HTTP_VERSION_HEADER))
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
