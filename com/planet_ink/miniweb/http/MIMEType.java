@@ -29,6 +29,7 @@ public enum MIMEType
 	h323("323","text/h323"),
 	DEFAULT("*","application/octet-stream"),
 	acx("acx","application/internet-property-stream"),
+	adobeJson("json","application/vnd.adobe.dex+json"),
 	ai("ai","application/postscript"),
 	aif("aif","audio/x-aiff"),
 	aifc("aifc","audio/x-aiff"),

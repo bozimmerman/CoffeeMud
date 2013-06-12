@@ -70,7 +70,7 @@ public class MiniWebConfig implements Cloneable
 	private static final String   DEFAULT_SSL_KEYMANAGER_ENC	= "SunX509";
 	
 	private static final String   DEFAULT_DEBUG_FLAG			= "OFF";
-
+	
 	private static final String   DEFAULT_ACCESSLOG_FLAG		= "OFF";
 
 	private static final long     DEFAULT_SESSION_IDLE_MILLIS 	= 30 * 60 * 1000;		// maximum time a session can be idle (between requests)
