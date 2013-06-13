@@ -680,7 +680,6 @@ public class ProcessSMTPrequest implements Runnable
 						else
 						{
 							domain=parm;
-							replyData=("250 "+sock.getLocalAddress().getHostName()+" Hello "+sock.getInetAddress().getHostName()+" ["+sock.getInetAddress().getHostAddress()+"], pleased to meet you"+cr).getBytes();
 							if(cmd.equals("EHLO"))
 							{
 								replyData=("250-"+server.domainName()+" Ok."+cr
@@ -691,6 +690,8 @@ public class ProcessSMTPrequest implements Runnable
 										  +"250-PIPELINING"+cr
 										  +"250 DSN"+cr).getBytes();
 							}
+							else
+								replyData=("250 "+sock.getLocalAddress().getHostName()+" Hello "+sock.getInetAddress().getHostName()+" ["+sock.getInetAddress().getHostAddress()+"], pleased to meet you"+cr).getBytes();
 						}
 					}
 					else
