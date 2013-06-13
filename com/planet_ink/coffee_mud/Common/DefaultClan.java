@@ -991,7 +991,14 @@ public class DefaultClan implements Clan
 				else
 				{
 					PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(member.name);
-					members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last));
+					if(tP != null) 
+					{
+						members.add(new FullMemberRecord(member.name,tP.level,member.role,tP.last));
+					} 
+					else 
+					{
+						CMLib.database().DBUpdateClanMembership(member.name, clanID(), -1);
+					}
 				}
 			}
 		}
