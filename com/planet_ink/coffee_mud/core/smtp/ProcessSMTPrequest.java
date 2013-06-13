@@ -920,10 +920,7 @@ public class ProcessSMTPrequest implements Runnable
 					
 					if ((replyData != null))
 					{
-						sout.write(new String(replyData));
-						sout.flush();
-						//respQueue.add(replyData);
-						if(debug) Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(replyData),cr,"\\r\\n"));
+						respQueue.add(replyData);
 						replyData=null;
 						if((cmdQueue.size()==0)&&(respQueue.size()>0))
 						{
