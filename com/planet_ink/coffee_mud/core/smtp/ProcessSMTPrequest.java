@@ -924,7 +924,8 @@ public class ProcessSMTPrequest implements Runnable
 						sout.flush();
 						//respQueue.add(replyData);
 						replyData=null;
-						if(cmdQueue.size()==0)
+						if(debug) Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(replyData),cr,"\\r\\n"));
+						if((cmdQueue.size()==0)&&(respQueue.size()>0))
 						{
 							// we should be looping through these .. why does ZD act so wierd?!
 							byte [] resp=respQueue.getLast();
