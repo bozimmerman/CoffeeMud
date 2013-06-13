@@ -118,7 +118,10 @@ public class ProcessSMTPrequest implements Runnable
 			sock.setSoTimeout(100);
 			sout=new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream(),"US-ASCII")));
 			sin=new BufferedReader(new InputStreamReader(sock.getInputStream(),"US-ASCII"));
-			sout.write("220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+CMLib.time().date2String(System.currentTimeMillis())+cr);
+			CMLib.s_sleep(100);
+			final String initialMsg = "220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+CMLib.time().date2String(System.currentTimeMillis());
+			if(debug) Log.debugOut(runnableName,"Sent: "+initialMsg);
+			sout.write(initialMsg+cr);
 			sout.flush();
 			boolean quitFlag=false;
 			boolean dataMode=false;
@@ -139,13 +142,23 @@ public class ProcessSMTPrequest implements Runnable
 					}
 					catch(java.net.SocketTimeoutException ioe)
 					{
+						c=65535;
+					}
+					if(c==65535)
+					{
 						final long ellapsed = System.currentTimeMillis()-timeSinceLastChar; 
 						if(ellapsed > (10 * 1000))
-							throw ioe;
+							throw new IOException("socket/request timeout");
 						else
 							break;
 					}
-					if(c<0)    throw new IOException("reset by peer");
+					if(c<0) throw new IOException("reset by peer");
+					if(sock.isClosed()) 
+					{
+						if(debug) Log.debugOut(runnableName,"Internal: Noticed socket close.");
+						quitFlag=true;
+						break;
+					}
 					timeSinceLastChar=System.currentTimeMillis();
 					if((lastc==cr.charAt(0))&&(c==cr.charAt(1)))
 					{    
@@ -153,8 +166,7 @@ public class ProcessSMTPrequest implements Runnable
 						input.setLength(0);
 						continue;
 					}
-					if(c!=65535)
-						input.append(c);
+					input.append(c);
 					if(input.length()>server.getMaxMsgSize())
 					{
 						if(debug)
