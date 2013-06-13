@@ -204,7 +204,7 @@ public class Burning extends StdAbility
 		{
 			Item I=(Item)affected;
 			Environmental owner=I.owner();
-			if(owner instanceof MOB)
+			if((owner instanceof MOB)&&(((MOB)owner).location()!=null))
 			{
 				if(!ouch((MOB)owner))
 					CMLib.commands().postDrop((MOB)owner,I,false,false);

@@ -45,7 +45,8 @@ public class Drop extends StdCommand
 	
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
 	{
-		Room R=mob.location();
+		final Room R=mob.location();
+		if(R==null) return false;
 		CMMsg msg=CMClass.getMsg(mob,dropThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
 		if(R.okMessage(mob,msg))
 		{
