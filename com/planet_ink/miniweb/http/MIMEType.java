@@ -99,6 +99,7 @@ public enum MIMEType
 	jpeg("jpeg","image/jpeg"),
 	jpg("jpg","image/jpeg"),
 	js("js","application/x-javascript"),
+	json("json","application/json"),
 	latex("latex","application/x-latex"),
 	lha("lha","application/octet-stream"),
 	lsf("lsf","video/x-la-asf"),
