@@ -144,15 +144,22 @@ public class ProcessSMTPrequest implements Runnable
 					{
 						c=65535;
 					}
+					if(c<0)
+					{
+						if(debug) Log.debugOut(runnableName,"Internal: EOF observed.");
+						throw new IOException("reset by peer");
+					}
 					if(c==65535)
 					{
 						final long ellapsed = System.currentTimeMillis()-timeSinceLastChar; 
 						if(ellapsed > (10 * 1000))
+						{
+							if(debug) Log.debugOut(runnableName,"Internal: generated timeout.");
 							throw new IOException("socket/request timeout");
+						}
 						else
 							break;
 					}
-					if(c<0) throw new IOException("reset by peer");
 					if(sock.isClosed()) 
 					{
 						if(debug) Log.debugOut(runnableName,"Internal: Noticed socket close.");
