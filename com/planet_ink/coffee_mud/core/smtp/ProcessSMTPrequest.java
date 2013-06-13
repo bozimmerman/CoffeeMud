@@ -680,17 +680,16 @@ public class ProcessSMTPrequest implements Runnable
 						else
 						{
 							domain=parm;
-							//replyData=("250 "+sock.getLocalAddress().getHostName()+" Hello "+sock.getInetAddress().getHostName()+" ["+sock.getInetAddress().getHostAddress()+"], pleased to meet you"+cr).getBytes();
-							replyData=(S_250+cr).getBytes();
+							replyData=("250 "+sock.getLocalAddress().getHostName()+" Hello "+sock.getInetAddress().getHostName()+" ["+sock.getInetAddress().getHostAddress()+"], pleased to meet you"+cr).getBytes();
 							if(cmd.equals("EHLO"))
 							{
-								replyData=(new String(replyData)
+								replyData=("250-"+server.domainName()+" Ok."+cr
 										  +"250-8BITMIME"+cr
 										  +"250-SIZE "+server.getMaxMsgSize()+cr
-										  +"250-DSN"+cr
+										  +"250-HELP"+cr
 										  +"250-ONEX"+cr
 										  +"250-PIPELINING"+cr
-										  +"250 HELP"+cr).getBytes();
+										  +"250 DSN"+cr).getBytes();
 							}
 						}
 					}
