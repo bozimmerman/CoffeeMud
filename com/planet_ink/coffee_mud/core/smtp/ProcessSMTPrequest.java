@@ -680,7 +680,8 @@ public class ProcessSMTPrequest implements Runnable
 						else
 						{
 							domain=parm;
-							replyData=("250 "+sock.getLocalAddress().getHostName()+" Hello "+sock.getInetAddress().getHostName()+" ["+sock.getInetAddress().getHostAddress()+"], pleased to meet you"+cr).getBytes();
+							//replyData=("250 "+sock.getLocalAddress().getHostName()+" Hello "+sock.getInetAddress().getHostName()+" ["+sock.getInetAddress().getHostAddress()+"], pleased to meet you"+cr).getBytes();
+							replyData=(S_250+cr).getBytes();
 							if(cmd.equals("EHLO"))
 							{
 								replyData=(new String(replyData)
@@ -696,6 +697,7 @@ public class ProcessSMTPrequest implements Runnable
 					else
 					if(cmd.equals("MAIL"))
 					{
+						if(debug) Log.debugOut("Internal: Got mail command: "+parm);
 						int x=parm.indexOf(':');
 						if(x<0)
 							replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
