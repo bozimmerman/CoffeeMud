@@ -112,13 +112,13 @@ public class ProcessSMTPrequest implements Runnable
 
 		byte[] replyData = null;
 		byte[] lastReplyData = null;
+		int msgsSent = 0;
 
 		try
 		{
-			sock.setSoTimeout(100);
+			sock.setSoTimeout(9);
 			sout=new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream(),"US-ASCII")));
 			sin=new BufferedReader(new InputStreamReader(sock.getInputStream(),"US-ASCII"));
-			CMLib.s_sleep(100);
 			final String initialMsg = "220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+CMLib.time().date2String(System.currentTimeMillis());
 			if(debug) Log.debugOut(runnableName,"Sent: "+initialMsg);
 			sout.write(initialMsg+cr);
@@ -154,8 +154,16 @@ public class ProcessSMTPrequest implements Runnable
 						final long ellapsed = System.currentTimeMillis()-timeSinceLastChar; 
 						if(ellapsed > (10 * 1000))
 						{
-							if(debug) Log.debugOut(runnableName,"Internal: generated timeout.");
-							throw new IOException("socket/request timeout");
+							if(msgsSent>0)
+							{
+								quitFlag=true;
+								break;
+							}
+							else
+							{
+								if(debug) Log.debugOut(runnableName,"Internal: generated timeout.");
+								throw new IOException("socket/request timeout");
+							}
 						}
 						else
 							break;
@@ -214,6 +222,7 @@ public class ProcessSMTPrequest implements Runnable
 						else
 						{
 							replyData=("250 Message accepted for delivery."+cr).getBytes();
+							msgsSent++;
 							boolean startBuffering=false;
 							StringBuffer finalData=new StringBuffer("");
 							char bodyType='t'; // h=html, t=text
@@ -679,6 +688,7 @@ public class ProcessSMTPrequest implements Runnable
 										  +"250-SIZE "+server.getMaxMsgSize()+cr
 										  +"250-DSN"+cr
 										  +"250-ONEX"+cr
+										  +"250-PIPELINING"+cr
 										  +"250 HELP"+cr).getBytes();
 							}
 						}
