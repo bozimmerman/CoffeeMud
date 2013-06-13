@@ -153,7 +153,8 @@ public class ProcessSMTPrequest implements Runnable
 						input.setLength(0);
 						continue;
 					}
-					input.append(c);
+					if(c!=65535)
+						input.append(c);
 					if(input.length()>server.getMaxMsgSize())
 					{
 						if(debug)
