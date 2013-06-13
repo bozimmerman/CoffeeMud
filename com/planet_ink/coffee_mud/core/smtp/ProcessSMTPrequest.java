@@ -116,7 +116,7 @@ public class ProcessSMTPrequest implements Runnable
 
 		try
 		{
-			sock.setSoTimeout(9);
+			sock.setSoTimeout(100);
 			sout=new PrintWriter(new BufferedWriter(new OutputStreamWriter(sock.getOutputStream(),"US-ASCII")));
 			sin=new BufferedReader(new InputStreamReader(sock.getInputStream(),"US-ASCII"));
 			final String initialMsg = "220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+CMLib.time().date2String(System.currentTimeMillis());
