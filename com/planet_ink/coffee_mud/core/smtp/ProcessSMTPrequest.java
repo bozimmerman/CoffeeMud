@@ -156,7 +156,7 @@ public class ProcessSMTPrequest implements Runnable
 					input.append(c);
 					if(input.length()>server.getMaxMsgSize())
 					{
-						if(debug) Log.debugOut(runnableName,"Internal: 552 String exceeds size limit: "+input.toString());
+						if(debug) Log.debugOut(runnableName,"Internal: 552 String exceeds size limit ("+server.getMaxMsgSize()+"): "+input.toString());
 						//Log.errOut("SMTPR","Long request from "+sock.getInetAddress());
 						sout.write("552 String exceeds size limit. You are very bad!"+cr);
 						sout.flush();
