@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -48,6 +49,7 @@ public class ProcessSMTPrequest implements Runnable
 	private SMTPserver  	 server=null;
 	private StringBuffer	 data=null;
 	protected String		 from=null;
+	protected MOB			 fromM=null;
 	protected String		 domain=null;
 	protected String		 runnableName;
 	protected boolean   	 debug=false;
@@ -84,10 +86,40 @@ public class ProcessSMTPrequest implements Runnable
 		{
 			if(CMLib.players().playerExists(name))
 				return CMStrings.capitalizeAndLower(name);
+			if(CMLib.players().accountExists(name))
+				return CMStrings.capitalizeAndLower(name);
 		}
 		return null;
 	}
 
+	public MOB getAccountMob(String s)
+	{
+		MOB M=CMLib.players().getPlayer(s);
+		if(M!=null) return M;
+		if(CMLib.players().playerExists(s))
+			return CMLib.players().getLoadPlayer(s);
+		if(CMLib.players().accountExists(s))
+		{
+			PlayerAccount A=CMLib.players().getLoadAccount(s);
+			if(A.numPlayers()==0)
+				M=A.getAccountMob();
+			else
+			{
+				ThinPlayer tP=null;
+				for(Enumeration<ThinPlayer> e=A.getThinPlayers();e.hasMoreElements();)
+				{
+					ThinPlayer P=e.nextElement();
+					if((tP==null)||(P.level>tP.level))
+						tP=P;
+				}
+				if(tP!=null)
+					M=CMLib.players().getLoadPlayer(tP.name);
+			}
+			return M;
+		}
+		return null;
+	}
+	
 	public void cleanHtml(String journal, StringBuffer finalData)
 	{
 		if(journal!= null)
@@ -414,8 +446,7 @@ public class ProcessSMTPrequest implements Runnable
 									||subject.toUpperCase().startsWith("MOTM")
 									||subject.toUpperCase().startsWith("MOTY"))
 									{
-										MOB M=CMLib.players().getLoadPlayer(from);
-										if((M==null)||(!CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)))
+										if((fromM==null)||(!CMSecurity.isAllowedAnywhere(fromM,CMSecurity.SecFlag.JOURNALS)))
 											subject=subject.substring(4);
 									}
 									
@@ -435,8 +466,7 @@ public class ProcessSMTPrequest implements Runnable
 											{
 												if(server.isASubscribeOnlyJournal(journal))
 												{
-													MOB M=CMLib.players().getLoadPlayer(from);
-													if((M==null)||(!CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS)))
+													if((fromM==null)||(!CMSecurity.isAllowedAnywhere(fromM,CMSecurity.SecFlag.JOURNALS)))
 													{
 														replyData=("552 Mailbox '"+journal+"' only accepts subscribe/unsubscribe."+cr).getBytes();
 														break;
@@ -502,6 +532,7 @@ public class ProcessSMTPrequest implements Runnable
 						replyData=("250 Reset state"+cr).getBytes();
 						dataMode=false;
 						from=null;
+						fromM=null;
 						to=null;
 						data=null;
 					}
@@ -765,6 +796,7 @@ public class ProcessSMTPrequest implements Runnable
 									{
 										replyData=("250 OK "+name+cr).getBytes();
 										from=name;
+										fromM=getAccountMob(from);
 									}
 								}
 							}
@@ -881,9 +913,8 @@ public class ProcessSMTPrequest implements Runnable
 												}
 												else
 												{
-													MOB M=CMLib.players().getPlayer(from);
-													if((M==null)
-													||(!CMLib.masking().maskCheck(server.getJournalCriteria(name),M,false)))
+													if((fromM==null)
+													||(!CMLib.masking().maskCheck(server.getJournalCriteria(name),fromM,false)))
 													{
 														replyData=("552 User '"+from+"' may not send emails to '"+name+"'."+cr).getBytes();
 														jerror=true;
