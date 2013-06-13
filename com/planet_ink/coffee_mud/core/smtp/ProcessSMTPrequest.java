@@ -697,7 +697,6 @@ public class ProcessSMTPrequest implements Runnable
 					else
 					if(cmd.equals("MAIL"))
 					{
-						if(debug) Log.debugOut("Internal: Got mail command: "+parm);
 						int x=parm.indexOf(':');
 						if(x<0)
 							replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
@@ -921,7 +920,9 @@ public class ProcessSMTPrequest implements Runnable
 					
 					if ((replyData != null))
 					{
-						respQueue.add(replyData);
+						sout.write(new String(replyData));
+						sout.flush();
+						//respQueue.add(replyData);
 						replyData=null;
 						if(cmdQueue.size()==0)
 						{
