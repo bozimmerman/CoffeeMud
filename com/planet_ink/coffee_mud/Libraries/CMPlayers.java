@@ -93,6 +93,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		PlayerAccount A = getAccount(calledThis);
 		if(A!=null) return A;
+		if(allAccountsLoaded)
+			return null;
 		return CMLib.database().DBReadAccount(calledThis);
 	}
 	public synchronized void addAccount(PlayerAccount acct)

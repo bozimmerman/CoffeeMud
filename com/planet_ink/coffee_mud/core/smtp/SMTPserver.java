@@ -202,6 +202,7 @@ public class SMTPserver extends Thread implements Tickable
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.name : null;
 	}
+
 	@SuppressWarnings("unchecked")
 	public TreeMap<String, JournalsLibrary.SMTPJournal> getJournalSets()
 	{

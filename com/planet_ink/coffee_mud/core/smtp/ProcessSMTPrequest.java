@@ -76,7 +76,7 @@ public class ProcessSMTPrequest implements Runnable
 				{
 					name=CMLib.database().DBPlayerEmailSearch(s);
 					if(name!=null) return name;
-					if(!checkFROMcase) // accounts cannot receive emails
+					if(checkFROMcase) // accounts cannot receive emails
 					{
 						final PlayerAccount A=CMLib.players().getLoadAccountByEmail(s);
 						if(A!=null) return A.accountName();
@@ -91,7 +91,7 @@ public class ProcessSMTPrequest implements Runnable
 		{
 			if(CMLib.players().playerExists(name))
 				return CMStrings.capitalizeAndLower(name);
-			if(!checkFROMcase) // accounts cannot receive emails
+			if(checkFROMcase) // accounts cannot receive emails
 			{
 				if(CMLib.players().accountExists(name))
 					return CMStrings.capitalizeAndLower(name);

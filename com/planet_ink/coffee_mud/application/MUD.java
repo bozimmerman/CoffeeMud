@@ -774,6 +774,9 @@ public class MUD extends Thread implements MudHost
 		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_QUEST);e.hasMoreElements();)
 			e.nextElement().shutdown();
 
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Electronics");
+		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_TECH);e.hasMoreElements();)
+			e.nextElement().shutdown();
 
 		if(S!=null)S.println("Save thread stopped");
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Session Thread");
