@@ -448,7 +448,7 @@ public class ProcessSMTPrequest implements Runnable
 									}
 								}
 								
-								if((finalData.toString().trim().length()>0) && (subject!=null))
+								if(subject!=null)
 								{
 									if(subject.toUpperCase().startsWith("MOTD")
 									||subject.toUpperCase().startsWith("MOTM")
@@ -518,6 +518,7 @@ public class ProcessSMTPrequest implements Runnable
 													CMLib.coffeeFilter().simpleInFilter(finalData,false).toString());
 										}
 										else
+										if(finalData.toString().trim().length()>0)
 										{
 											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+to.elementAt(i)+"/"+bodyType);
 											StringBuffer finalFinalData=new StringBuffer(finalData);
