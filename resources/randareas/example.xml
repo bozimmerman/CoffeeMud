@@ -1893,7 +1893,7 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
                 <ABILITY condition="1?3=1" class="Skill_Trip" />
                 <ABILITY condition="1?3=1" class="Skill_Dirt" />
                 <ABILITY condition="1?3=1" class="Thief_Distract" />
-                <ABILITY condition="$mob_level>5 and 1?3=1" class="Thief_Caltrop" />
+                <ABILITY condition="$mob_level>5 and 1?3=1" class="Thief_Caltrops" />
                 <ABILITY condition="$mob_level>5 and 1?3=1" class="Thief_SlickCaltrops" />
             </ABILITY>
             <BEHAVIOR select="all">
@@ -2001,7 +2001,7 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
                 <ABILITY condition="1?3=1" class="Skill_Trip" />
                 <ABILITY condition="1?3=1" class="Skill_Dirt" />
                 <ABILITY condition="1?3=1" class="Thief_Distract" />
-                <ABILITY condition="$mob_level>5 and 1?3=1" class="Thief_Caltrop" />
+                <ABILITY condition="$mob_level>5 and 1?3=1" class="Thief_Caltrops" />
                 <ABILITY condition="$mob_level>5 and 1?3=1" class="Thief_SlickCaltrops" />
             </ABILITY>
             <BEHAVIOR select="all">
