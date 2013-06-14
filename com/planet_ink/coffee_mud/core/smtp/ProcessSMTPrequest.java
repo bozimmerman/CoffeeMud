@@ -62,7 +62,7 @@ public class ProcessSMTPrequest implements Runnable
 		sock = a_sock;
 	}
 	
-	public String validLocalAccount(String s)
+	public String validLocalAccount(String s, boolean checkFROMcase)
 	{
 		int x=s.indexOf('@');
 		String name=s;
@@ -74,8 +74,13 @@ public class ProcessSMTPrequest implements Runnable
 			{
 				if(server.mailboxName().length()>0)
 				{
-					name=CMLib.database().DBEmailSearch(s);
+					name=CMLib.database().DBPlayerEmailSearch(s);
 					if(name!=null) return name;
+					if(!checkFROMcase) // accounts cannot receive emails
+					{
+						final PlayerAccount A=CMLib.players().getLoadAccountByEmail(s);
+						if(A!=null) return A.accountName();
+					}
 				}
 				return null;
 			}
@@ -86,8 +91,11 @@ public class ProcessSMTPrequest implements Runnable
 		{
 			if(CMLib.players().playerExists(name))
 				return CMStrings.capitalizeAndLower(name);
-			if(CMLib.players().accountExists(name))
-				return CMStrings.capitalizeAndLower(name);
+			if(!checkFROMcase) // accounts cannot receive emails
+			{
+				if(CMLib.players().accountExists(name))
+					return CMStrings.capitalizeAndLower(name);
+			}
 		}
 		return null;
 	}
@@ -781,7 +789,7 @@ public class ProcessSMTPrequest implements Runnable
 								}
 								if(!error)
 								{
-									String name=validLocalAccount(parm);
+									String name=validLocalAccount(parm,true);
 									if(name==null)
 									{
 										if((++failures)==3)
@@ -888,7 +896,7 @@ public class ProcessSMTPrequest implements Runnable
 								else
 								if(!error)
 								{
-									String name=validLocalAccount(parm);
+									String name=validLocalAccount(parm,false);
 									if(name==null)
 									{
 										if((++failures)==3)

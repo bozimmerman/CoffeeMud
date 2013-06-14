@@ -1319,7 +1319,7 @@ public class MOBloader
 		return null;
 	}
 
-	public String DBEmailSearch(String email)
+	public String DBPlayerEmailSearch(String email)
 	{
 		DBConnection D=null;
 		for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
@@ -1330,16 +1330,24 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHAR");
-			if(R!=null) while(R.next())
-			{
-				String username=DB.getRes(R,"CMUSERID");
-				String temail=DB.getRes(R,"CMEMAL");
-				if(temail.equalsIgnoreCase(email))
+			email=DB.injectionClean(email.trim());
+			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMEMAL='"+email+"'");
+			if(((R==null)||(!R.next()))&&(!CMStrings.isLowerCase(email)))
+				R=D.query("SELECT * FROM CMCHAR WHERE CMEMAL='"+email.toLowerCase()+"'");
+			if((R==null)||(!R.next()))
+				R=D.query("SELECT * FROM CMCHAR WHERE CMEMAL LIKE '"+email+"'");
+			if((R==null)||(!R.next()))
+				R=D.query("SELECT * FROM CMCHAR");
+			if(R!=null) 
+				while(R.next())
 				{
-					return username;
+					String username=DB.getRes(R,"CMUSERID");
+					String temail=DB.getRes(R,"CMEMAL");
+					if(temail.equalsIgnoreCase(email))
+					{
+						return username;
+					}
 				}
-			}
 		}
 		catch(Exception sqle)
 		{

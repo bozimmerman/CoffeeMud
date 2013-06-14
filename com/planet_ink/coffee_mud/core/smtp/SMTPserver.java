@@ -511,7 +511,7 @@ public class SMTPserver extends Thread implements Tickable
 		CMLib.database().DBDeleteJournal(journalName,msg.key);
 		
 		boolean updatedMailingLists = false;
-		if(CMLib.players().playerExists(msg.from))
+		if(CMLib.players().playerExists(msg.from)||CMLib.players().accountExists(msg.from))
 		{
 			Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 			List<String> mylist=lists.get(journalName);

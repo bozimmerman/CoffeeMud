@@ -129,8 +129,8 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateEmail(MOB mob)
 	{ MOBloader.DBUpdateEmail(mob);}
 	
-	public String DBEmailSearch(String email)
-	{ return MOBloader.DBEmailSearch(email);}
+	public String DBPlayerEmailSearch(String email)
+	{ return MOBloader.DBPlayerEmailSearch(email);}
 	
 	public void DBUpdatePassword(String name, String password)
 	{ MOBloader.DBUpdatePassword(name, password);}

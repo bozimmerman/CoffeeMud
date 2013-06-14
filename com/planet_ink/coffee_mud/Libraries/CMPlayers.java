@@ -41,6 +41,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
 	protected SVector<MOB> 				playersList			= new SVector<MOB>();
 	protected SVector<PlayerAccount>	accountsList		= new SVector<PlayerAccount>();
+	protected boolean					allAccountsLoaded	= false;
 	protected CrossRefTreeMap<MOB,Room> playerLocations		= new CrossRefTreeMap<MOB,Room>(Integer.MAX_VALUE,1);
 	protected long[] 					autoPurgeDaysLevels	= new long[1];
 	protected long[] 					prePurgeLevels		= new long[1];
@@ -103,6 +104,24 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				return;
 		accountsList.add(acct);
 	}
+	
+	public PlayerAccount getLoadAccountByEmail(String email)
+	{
+		if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=1)
+			return null;
+		for(Enumeration<PlayerAccount> e=accounts();e.hasMoreElements();)
+		{
+			PlayerAccount P=e.nextElement();
+			if(P.getEmail().equalsIgnoreCase(email)) return P;
+		}
+		for(Enumeration<PlayerAccount> e=accounts("",null);e.hasMoreElements();)
+		{
+			PlayerAccount P=e.nextElement();
+			if(P.getEmail().equalsIgnoreCase(email)) return P;
+		}
+		return null;
+	}
+		
 	public PlayerAccount getAccount(String calledThis)
 	{
 		calledThis=CMStrings.capitalizeAndLower(calledThis);
@@ -423,6 +442,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
 	public int getAccountThinSortCode(String codeName, boolean loose) 
 	{
+		if((codeName == null)||(codeName.length()==0)) return -1;
 		int x=CMParms.indexOf(ACCOUNT_THIN_SORT_CODES,codeName);
 		if(!loose) return x;
 		if(x<0)
@@ -488,11 +508,19 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(V==null)
 		{
 			V=new Vector<PlayerAccount>();
-			V.addAll(CMLib.database().DBListAccounts(null));
+			if(!allAccountsLoaded)
+			{
+				List<PlayerAccount> rV=CMLib.database().DBListAccounts(null);
+				for(PlayerAccount A : rV)
+					addAccount(A);
+				allAccountsLoaded=true;
+			}
+			V.addAll(accountsList);
 			int code=getAccountThinSortCode(sort,false);
-			if((sort.length()>0)
-			&&(code>=0)
-			&&(V.size()>1))
+			if(code<0)
+				return V.elements();
+			else
+			if(V.size()>1)
 			{
 				Vector<PlayerAccount> unV=V;
 				V=new Vector<PlayerAccount>();

@@ -144,19 +144,39 @@ public class MassMailer implements Runnable
 			if(!rightTimeToSendEmail(date)) continue;
 	
 			// check for valid recipient
-			MOB toM=CMLib.players().getLoadPlayer(to);
-			if(toM==null)
+			final String toEmail;
+			final String toName;
+			if(CMLib.players().playerExists(to))
+			{
+				MOB toM=CMLib.players().getLoadPlayer(to);
+				// check to see if the sender is ignored
+				if((toM.playerStats()!=null)
+				&&(toM.playerStats().getIgnored().contains(from)))
+				{
+					// email is ignored
+					CMLib.database().DBDeleteJournal(journalName,key);
+					continue;
+				}
+				if(CMath.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
+					continue;
+				if((toM.playerStats()==null)
+				||(toM.playerStats().getEmail().length()==0)) // no email addy to forward TO
+					continue;
+				toName=toM.Name();
+				toEmail=toM.playerStats().getEmail();
+			}
+			else
+			if(CMLib.players().accountExists(to))
+			{
+				PlayerAccount P=CMLib.players().getLoadAccount(to);
+				if((P.getEmail().length()==0)) // no email addy to forward TO
+					continue;
+				toName=P.accountName();
+				toEmail=P.getEmail();
+			}
+			else
 			{
 				Log.errOut("SMTPServer","Invalid to address '"+to+"' in email: "+msg);
-				CMLib.database().DBDeleteJournal(journalName,key);
-				continue;
-			}
-	
-			// check to see if the sender is ignored
-			if((toM.playerStats()!=null)
-			&&(toM.playerStats().getIgnored().contains(from)))
-			{
-				// email is ignored
 				CMLib.database().DBDeleteJournal(journalName,key);
 				continue;
 			}
@@ -167,20 +187,13 @@ public class MassMailer implements Runnable
 			&&(deleteEmailIfOld(journalName, key, date, getEmailDays())))
 				continue;
 			
-			if(CMath.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
-				continue;
-	
-			if((toM.playerStats()==null)
-			||(toM.playerStats().getEmail().length()==0)) // no email addy to forward TO
-				continue;
-	
 			SMTPLibrary.SMTPClient SC=null;
 			try
 			{
 				if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
 					SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
 				else
-					SC=CMLib.smtp().getClient(toM.playerStats().getEmail());
+					SC=CMLib.smtp().getClient(toEmail);
 			}
 			catch(BadEmailAddressException be)
 			{
@@ -196,10 +209,10 @@ public class MassMailer implements Runnable
 			}
 			catch(java.io.IOException ioe)
 			{
-				if(!oldEmailComplaints.contains(toM.Name()))
+				if(!oldEmailComplaints.contains(toName))
 				{
-					oldEmailComplaints.add(toM.Name());
-					Log.errOut("SMTPServer","Unable to send '"+toM.playerStats().getEmail()+"' for '"+toM.name()+"': "+ioe.getMessage());
+					oldEmailComplaints.add(toName);
+					Log.errOut("SMTPServer","Unable to send '"+toEmail+"' for '"+toName+"': "+ioe.getMessage());
 				}
 				if(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
 					deleteEmailIfOld(journalName, key, date,getFailureDays());
@@ -211,8 +224,8 @@ public class MassMailer implements Runnable
 			{
 				SC.sendMessage(from+"@"+domainName(),
 							   replyTo+"@"+domainName(),
-							   toM.playerStats().getEmail(),
-							   usePrivateRules?toM.playerStats().getEmail():replyTo+"@"+domainName(),
+							   toEmail,
+							   usePrivateRules?toEmail:replyTo+"@"+domainName(),
 							   subj,
 							   CMLib.coffeeFilter().simpleOutFilter(msg));
 				//this email is HISTORY!
@@ -222,9 +235,9 @@ public class MassMailer implements Runnable
 			{
 				// it has FAILUREDAYS days to get better.
 				if(deleteEmailIfOld(journalName, key, date,getFailureDays()))
-					Log.errOut("SMTPServer","Permanently unable to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"': "+ioe.getMessage()+".");
+					Log.errOut("SMTPServer","Permanently unable to send to '"+toEmail+"' for user '"+toName+"': "+ioe.getMessage()+".");
 				else
-					Log.errOut("SMTPServer","Failure to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"'.");
+					Log.errOut("SMTPServer","Failure to send to '"+toEmail+"' for user '"+toName+"'.");
 			}
 		}
 	}

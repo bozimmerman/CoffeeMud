@@ -1184,7 +1184,7 @@ public class DefaultClan implements Clan
 						{
 							MOB player=CMLib.players().getLoadPlayer(name);
 							if(player!=null)
-								CMLib.smtp().emailIfPossible("AutoPurge",player,"AutoPurge: "+name(), 
+								CMLib.smtp().emailIfPossible("AutoPurge",player.Name(),"AutoPurge: "+name(), 
 										""+getGovernmentName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
 										+" members do not log on within 24 hours.");
 						}

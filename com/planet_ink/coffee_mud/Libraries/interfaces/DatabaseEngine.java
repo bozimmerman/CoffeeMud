@@ -100,7 +100,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBUpdatePassword(String name, String password);
 	public boolean isConnected();
 	public String[] DBFetchEmailData(String name);
-	public String DBEmailSearch(String email);
+	public String DBPlayerEmailSearch(String email);
 	public List<PlayerLibrary.ThinPlayer> getExtendedUserList();
 	public PlayerLibrary.ThinPlayer getThinUser(String name);
 	public List<String> getUserList();

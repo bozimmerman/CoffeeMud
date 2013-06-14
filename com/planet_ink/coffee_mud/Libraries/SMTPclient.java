@@ -167,21 +167,32 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if(!connected) throw new IOException("Unable to connect to '"+domain+"'.");
 	}
 	
-	public boolean emailIfPossible(String from, MOB mob, String subj, String msg)
+	public boolean emailIfPossible(String fromName, String toName, String subj, String msg)
 	{
 		try
 		{
 			SMTPLibrary.SMTPClient SC=null;
+			String toEmail;
+			if(CMLib.players().playerExists(toName))
+				toEmail=CMLib.players().getLoadPlayer(toName).playerStats().getEmail();
+			else
+			if(CMLib.players().accountExists(toName))
+				toEmail=CMLib.players().getLoadAccount(toName).getEmail();
+			else
+			{
+				Log.errOut("SMTPClient","User/Account not found: "+toName);
+				return false;
+			}
 			if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
 				SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
 			else
-				SC=CMLib.smtp().getClient(mob.playerStats().getEmail());
+				SC=CMLib.smtp().getClient(toEmail);
 	
 			String domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
-			SC.sendMessage(from+"@"+domain,
-						   from+"@"+domain,
-						   mob.playerStats().getEmail(),
-						   mob.playerStats().getEmail(),
+			SC.sendMessage(fromName+"@"+domain,
+						   fromName+"@"+domain,
+						   toEmail,
+						   toEmail,
 						   subj,
 						   CMLib.coffeeFilter().simpleOutFilter(msg));
 			return true;

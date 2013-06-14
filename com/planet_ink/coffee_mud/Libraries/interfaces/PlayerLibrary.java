@@ -37,9 +37,11 @@ public interface PlayerLibrary extends CMLibrary, Runnable
 	public MOB getPlayer(String calledThis);
 	public MOB getLoadPlayer(String last);
 	public PlayerAccount getLoadAccount(String calledThis);
+	public PlayerAccount getLoadAccountByEmail(String email);
 	public PlayerAccount getAccount(String calledThis);
 	public boolean accountExists(String name);
 	public Enumeration<MOB> players();
+	public Enumeration<PlayerAccount> accounts();
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
 	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet);
 	public void obliterateAccountOnly(PlayerAccount deadAccount);
