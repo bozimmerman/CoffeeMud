@@ -235,26 +235,28 @@ var soundPriorities=[];
 function PlaySound(key,playerName,url,repeats,volume,priority)
 {
 	var theplayer = sounders[playerName];  
-	if(!theplayer)
+	if(theplayer)
 	{
-		theplayer=document.createElement('audio');
-		if(!theplayer) return;
-		sounders[playerName]=theplayer;
-		soundDates[playerName]=new Date();
-		soundPriorities[playerName]=priority;
- 	}
- 	else
- 	{
- 		var now=new Date();
- 		var ellapsed=Math.abs(now.getTime() - soundDates[playerName].getTime());
- 		if((ellapsed < 1500) && (priority <= soundPriorities[playerName]))
-	 		return;
- 	}
- 	theplayer.pause();
-	theplayer.setAttribute('volume', volume);
-	theplayer.setAttribute('hidden', true);
+		var now=new Date();
+		var ellapsed=Math.abs(now.getTime() - soundDates[playerName].getTime());
+		if((ellapsed < 1500) && (priority <= soundPriorities[playerName]))
+			return;
+		if(theplayer.stop)
+			theplayer.stop();
+		document.childNodes[0].removeChild(theplayer);
+	}
+	theplayer=document.createElement('embed');
+	if(!theplayer) return;
+	sounders[playerName]=theplayer;
+	soundDates[playerName]=new Date();
+	soundPriorities[playerName]=priority;
+	document.childNodes[0].appendChild(theplayer);
 	theplayer.setAttribute('src', url+key);
-	theplayer.play();
+	theplayer.setAttribute('type','audio/wav');
+	theplayer.setAttribute('hidden','true');
+	theplayer.setAttribute('volume', volume);
+	if(theplayer.play)
+		theplayer.play();
 }
 
 function StopSound(key,playerName)
