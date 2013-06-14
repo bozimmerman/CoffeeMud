@@ -151,7 +151,8 @@ public class CMSupportThread extends Thread implements CMRunnable
 								forced=false;
 								Thread.sleep(sleepTime);
 							} catch(InterruptedException ioe) {
-								if(!forced) throw ioe;
+								if((!forced)||(shutDown)) 
+									throw ioe;
 							}
 							forced=false;
 							lastStart=System.currentTimeMillis();
