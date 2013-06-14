@@ -214,8 +214,8 @@ public class GenAbility extends StdAbility
 		}
 		// dont forget to allow super. calls to Spell.invoke, Chant.invoke, etc.. based on classification?
 		Physical target=givenTarget;
-		if((this.classificationCode()==Ability.QUALITY_BENEFICIAL_SELF)
-		||(this.classificationCode()==Ability.QUALITY_OK_SELF))
+		if((this.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF)
+		||(this.abstractQuality()==Ability.QUALITY_OK_SELF))
 		{
 			target=mob;
 			if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
