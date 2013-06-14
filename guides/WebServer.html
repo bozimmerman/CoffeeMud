@@ -962,11 +962,9 @@ parameters a reference to the <i>HTPRequest</i> that is calling the
 macro, and a String representing the data after the first question
 mark? in the macro reference.</p>
       <p>If <code>runMacro()</code> returns <i>null</i>, the string
-[Error] is used to replace the macro<span style="font-weight: bold;">.
-&nbsp;</span>If <code>runMacro()</code> returns <span
- style="font-style: italic;">@break@</span><i />,&nbsp;<span
- style="font-weight: bold;">this will cause a @loop@-@back@ segment
-to terminate<span style="font-weight: bold;">.</span><b /></span></p>
+[Error] is used to replace the macro.
+&nbsp;<b>If <code>runMacro()</code> returns <i>@break@</i>,&nbsp;this will cause a @loop@-@back@ segment
+to terminate</b>.</p>
       <p>Example: this is the complete code for the <b>@HTTPCLIENTIP@</b>
 macro (HTTPclientIP.java):</p>
       <pre>package com.planet_ink.coffee_mud.WebMacros;<br /><br />import com.planet_ink.miniweb.interfaces.*;<br />import com.planet_ink.coffee_mud.core.interfaces.*;<br />import com.planet_ink.coffee_mud.core.*;<br />import com.planet_ink.coffee_mud.core.collections.*;<br />import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import java.util.*;<br /><br />/* <br />   Copyright 2000-2013 Bo Zimmerman<br /><br />   Licensed under the Apache License, Version 2.0 (the "License");<br />   you may not use this file except in compliance with the License.<br />   You may obtain a copy of the License at<br /><br />	   http://www.apache.org/licenses/LICENSE-2.0<br /><br />   Unless required by applicable law or agreed to in writing, software<br />   distributed under the License is distributed on an "AS IS" BASIS,<br />   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br />   See the License for the specific language governing permissions and<br />   limitations under the License.<br />*/<br />public class HTTPclientIP extends StdWebMacro<br />{<br />	public String name()	{return "HTTPclientIP";}<br /><br />	public String runMacro(HTTPRequest httpReq, String parm)<br />	{<br />		if(httpReq.getClientAddress()!=null)<br />			return httpReq.getClientAddress().getHostAddress();<br />		return "Unknown";<br />	}<br />}<br /></pre>
