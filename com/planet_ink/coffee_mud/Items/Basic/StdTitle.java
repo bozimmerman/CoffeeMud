@@ -453,7 +453,7 @@ public class StdTitle extends StdItem implements LandTitle
 					try{
 						while(newName.trim().length()==0)
 						{
-							String n=msg.source().session().prompt("What would you like to name your ship? ","",60000).trim().toLowerCase();
+							String n=msg.source().session().prompt("What would you like to name your ship? ","").trim().toLowerCase();
 							if(n.indexOf(' ')>=0)
 							{
 								msg.source().tell("Spaces are not allowed in names! Please enter another one.");

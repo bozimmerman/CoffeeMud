@@ -47,7 +47,7 @@ public class Retire extends StdCommand
 		if(pstats==null) return false;
 
 		mob.tell("^HThis will delete your player from the system FOREVER!");
-		String pwd=session.prompt("If that's what you want, re-enter your password:","",30000);
+		String pwd=session.prompt("If that's what you want, re-enter your password:","");
 		if(pwd.length()==0) return false;
 		if(!pstats.matchesPassword(pwd))
 		{
