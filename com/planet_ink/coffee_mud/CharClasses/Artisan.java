@@ -161,7 +161,7 @@ public class Artisan extends StdCharClass
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
-			if(mob.charStats().getCurrentClass().ID().equals(ID())&&(CMLib.dice().rollPercentage()<25))
+			if(mob.charStats().getCurrentClass().ID().equals(ID())&&(CMLib.dice().rollPercentage()<20))
 			{
 				int exp=0;
 				for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
@@ -169,8 +169,8 @@ public class Artisan extends StdCharClass
 					final Ability A=a.nextElement();
 					if((A!=null)
 					&&(!A.isAutoInvoked())
-					&&(mob.isMine(A))
-					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+					&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+					&&(mob.isMine(A)))
 						exp++;
 				}
 				if(exp>0)
