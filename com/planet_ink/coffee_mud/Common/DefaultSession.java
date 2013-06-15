@@ -45,7 +45,7 @@ import java.nio.charset.Charset;
 public class DefaultSession implements Session
 {
 	protected static final int	   SOTIMEOUT		= 300;
-	protected static final int	   PINGTIMEOUT  	= 5000;
+	protected static final int	   PINGTIMEOUT  	= 30000;
 	protected static final char[]  PINGCHARS		= {'\0'};
 	private final HashSet		   telnetSupportSet = new HashSet();
 	private static final HashSet   mxpSupportSet	= new HashSet();
