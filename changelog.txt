@@ -2449,6 +2449,6 @@ ruthless programmer, and sentenced to a quick death.
 5. Generic Abilities will now import/export when races that use them export
 6. (Internal) New factions now default into /resources/factions -- legacy locations will work too though.
 7. New Channel flag (ACCOUNTOOC) to force account names instead of channel names into messages.
-8. (Internal) randomdata.xml now at /resources/randareas/example.xml -- update your random areas!
+8. (Internal) randomdata.xml now at /resources/randareas/example.xml -- update your random area files and random Areas!
 9. Logging to separate files now has more options, such as rolling logs based on entries or bytes, etc.
-
+10. Web Forum system now supports participation by empty Accounts (if using the account system), and web subscribe/unsubscribe

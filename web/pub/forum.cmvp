@@ -79,12 +79,22 @@
 		
 		function sayUnsubscribe()
 		{
-			alert('Send an email to @ForumInfo?SMTPADDRESS@ to post.  Unsubscribe with a subject of "unsubscribe".');
+			if(confirm('Would you like to unsubscribe from this forum?\n\nYou may also send an email to @ForumInfo?SMTPADDRESS@ with a subject of "unsubscribe" if you prefer.'))
+			{
+				document.FORUM.action="forum.cmvp";
+				document.FORUM.FUNCTION.value="UNSUBSCRIBE";
+				document.FORUM.submit();
+			}
 		}
 		
 		function saySubscribe()
 		{
-			alert('To subscribe, send an email to @ForumInfo?SMTPADDRESS@ with a subject of "subscribe".');
+			if(confirm('Would you like to subscribe to automatic emails from this forum?\n\nYou may also send an email to @ForumInfo?SMTPADDRESS@ with a subject of "subscribe" if you prefer.'))
+			{
+				document.FORUM.action="forum.cmvp";
+				document.FORUM.FUNCTION.value="SUBSCRIBE";
+				document.FORUM.submit();
+			}
 		}
 	//-->
 	</SCRIPT>
@@ -116,11 +126,18 @@
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
 		@if?ForumInfo?ISSMTPFORWARD@
-			<BR>@if?ForumInfo?ISSMTPSUBSCRIBER@
+			@if?CheckReqParm?FUNCTION=SUBSCRIBE@
+				<BR><FONT SIZE=-2 COLOR=RED><B>@JournalFunction?SUBSCRIBE@</B></FONT>
+			@endif@
+			@if?CheckReqParm?FUNCTION=UNSUBSCRIBE@
+				<BR><FONT SIZE=-2 COLOR=RED><B>@JournalFunction?UNSUBSCRIBE@</B></FONT>
+			@endif@
+			<BR>
+			@if?ForumInfo?ISSMTPSUBSCRIBER@
 				<a href="javascript:sayUnsubscribe();">(subscribed)</a>
 				@else@
 				<a href="javascript:saySubscribe();">(not subscribed)</a>
-				@endif@
+			@endif@
 		@endif@
 	@endif@
 	</TD>
