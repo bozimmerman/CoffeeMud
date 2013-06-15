@@ -115,7 +115,7 @@ public class Spell_SummonFlyer extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
+				MOB target = determineMonster(mob, mob.phyStats().level()+((getX1Level(mob)+getXLEVELLevel(mob))/2));
 				MOB squabble = checkPack(target, mob);
 				target.addNonUninvokableEffect( (Ability) copyOf());
 				if(squabble==null)

@@ -90,7 +90,7 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.setName(realName+" zombie");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("");
-				newMOB.basePhyStats().setLevel(body.phyStats().level()+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+				newMOB.basePhyStats().setLevel(body.phyStats().level()+((super.getX1Level(mob)+super.getXLEVELLevel(mob))/2));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());

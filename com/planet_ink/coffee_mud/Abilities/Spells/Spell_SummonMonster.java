@@ -82,7 +82,7 @@ public class Spell_SummonMonster extends Spell
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				MOB monster = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
+				MOB monster = determineMonster(mob, mob.phyStats().level()+((getX1Level(mob)+getXLEVELLevel(mob))/2));
 				if(monster!=null)
 					beneficialAffect(mob,monster,asLevel,0);
 			}
