@@ -140,8 +140,8 @@ public class SMTPserver extends Thread implements Tickable
 
 		CMProps.setBoolVar(CMProps.SYSTEMB_EMAILFORWARDING,CMath.s_bool(page.getStr("FORWARD")));
 
-		if((CMProps.getListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS)==null)
-		||(CMProps.getListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS).length==0))
+		if((CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS)==null)
+		||(CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS).length==0))
 		{
 			String[] msgs = new String[]{
 					page.getStr("SUBSCRIBEDTITLE"),
@@ -152,7 +152,7 @@ public class SMTPserver extends Thread implements Tickable
 			for(int i=0;i<msgs.length;i++)
 				if(msgs[i]==null) 
 					msgs[i]="";
-			CMProps.setListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS, msgs);
+			CMProps.setListVar(CMProps.StrList.SUBSCRIPTION_STRS, msgs);
 		}
 		
 		if (!displayedBlurb)

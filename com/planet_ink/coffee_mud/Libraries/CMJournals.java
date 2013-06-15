@@ -581,7 +581,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					String subscribeTitle="Subscribed";
 					String subscribedMsg="You are now subscribed to "+journalName+". To unsubscribe, send an email with a subject of unsubscribe.";
-					String[] msgs =CMProps.getListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS);
+					String[] msgs =CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS);
 					if((msgs!=null)&&(msgs.length>0))
 					{
 						if(msgs[0].length()>0)
@@ -618,7 +618,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					String unsubscribeTitle="Un-Subscribed";
 					String unsubscribedMsg="You are no longer subscribed to "+journalName+". To subscribe again, send an email with a subject of subscribe.";
-					String[] msgs =CMProps.getListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS);
+					String[] msgs =CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS);
 					if((msgs!=null)&&(msgs.length>2))
 					{
 						if(msgs[2].length()>0)

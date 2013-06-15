@@ -251,8 +251,17 @@ public class CMProps extends Properties
 	public static final int SYSTEMB_HASHPASSWORDS=14;
 	public static final int NUMB_SYSTEM=15;
 
-	public static final int SYSTEML_SUBSCRIPTION_STRS=0;
-	public static final int NUML_SYSTEM=1;
+	public enum StrList
+	{
+		SUBSCRIPTION_STRS("SUBSCRIPTION_STRS")
+		;
+		private final String str;
+		private StrList(String toStr)
+		{
+			str=toStr;
+		}
+		public String toString() { return str; }
+	}
 
 	public static final int SYSTEMLF_DAMAGE_WORDS_THRESHOLDS=0;
 	public static final int SYSTEMLF_DAMAGE_WORDS=1;
@@ -327,7 +336,7 @@ public class CMProps extends Properties
 	protected final String[]	sysVars=new String[NUM_SYSTEM];
 	protected final Integer[]   sysInts=new Integer[NUMI_SYSTEM];
 	protected final Boolean[]   sysBools=new Boolean[NUMB_SYSTEM];
-	protected final String[][]  sysLists=new String[NUML_SYSTEM][];
+	protected final String[][]  sysLists=new String[StrList.values().length][];
 	protected final Object[]	sysLstFileLists=new Object[NUMLF_SYSTEM];
 	protected final List<String>sayFilter=new Vector<String>();
 	protected final List<String>channelFilter=new Vector<String>();
@@ -660,9 +669,9 @@ public class CMProps extends Properties
 		catch(Exception t) { return -1; }
 	}
 
-	public static final String[] getListVar(final int varNum)
+	public static final String[] getListVar(final StrList varType)
 	{
-		try { return p().sysLists[varNum]; } 
+		try { return p().sysLists[varType.ordinal()]; } 
 		catch(Exception t) { return new String[0]; }
 	}
 
@@ -711,22 +720,22 @@ public class CMProps extends Properties
 		p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val.trim()));
 	}
 
-	public static final void setListVar(final int varNum, String[] var)
+	public static final void setListVar(final StrList varType, String[] var)
 	{
-		if((varNum<0)||(varNum>=NUML_SYSTEM)) return ;
+		if(varType==null) return ;
 		if(var==null) var=new String[0];
-		p().sysLists[varNum]=var;
+		p().sysLists[varType.ordinal()]=var;
 	}
 
-	public static final void addListVar(final int varNum, String var)
+	public static final void addListVar(final StrList varType, String var)
 	{
-		if((varNum<0)||(varNum>=NUML_SYSTEM)) return ;
+		if(varType==null) return ;
 		if(var==null) return;
 		CMProps prop=p();
-		if(prop.sysLists[varNum]==null)
-			setListVar(varNum, new String[0]);
-		String[] list=prop.sysLists[varNum];
-		prop.sysLists[varNum]=Arrays.copyOf(list, list.length+1);
+		if(prop.sysLists[varType.ordinal()]==null)
+			setListVar(varType, new String[0]);
+		String[] list=prop.sysLists[varType.ordinal()];
+		prop.sysLists[varType.ordinal()]=Arrays.copyOf(list, list.length+1);
 		list[list.length-1]=var;
 	}
 
@@ -1170,6 +1179,13 @@ public class CMProps extends Properties
 		setWhitelist(CMProps.SYSTEMWL_CONNS,getStr("WHITELISTIPSCONN"));
 		setWhitelist(CMProps.SYSTEMWL_LOGINS,getStr("WHITELISTLOGINS"));
 		setWhitelist(CMProps.SYSTEMWL_NEWPLAYERS,getStr("WHITELISTIPSNEWPLAYERS"));
+		
+		for(StrList strListVar : StrList.values())
+		{
+			final String list=getStr(strListVar.toString().toUpperCase().trim());
+			if((list!=null)&&(list.trim().length()>0))
+				setListVar(strListVar, CMParms.parseCommas(list,false).toArray(new String[0]));
+		}
 		
 		if(CMLib.color()!=null) CMLib.color().clearLookups();
 		if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
