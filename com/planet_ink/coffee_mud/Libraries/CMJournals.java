@@ -555,4 +555,84 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		return MsgMkrResolution.CANCELFILE;
 	}
+	
+	public boolean subscribeToJournal(String journalName, String userName, boolean saveMailingList)
+	{
+		boolean updateMailingLists=false;
+		if((CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0)
+		&&(CMLib.players().playerExists(userName)||CMLib.players().accountExists(userName)))
+		{
+			Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+			List<String> mylist=lists.get(journalName);
+			if(mylist==null)
+			{
+				mylist=new Vector<String>();
+				lists.put(journalName,mylist);
+			}
+			boolean found=false;
+			for(int l=0;l<mylist.size();l++)
+				if(mylist.get(l).equalsIgnoreCase(userName))
+					found=true;
+			if(!found)
+			{
+				mylist.add(userName);
+				updateMailingLists=true;
+				if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
+				{
+					String subscribeTitle="Subscribed";
+					String subscribedMsg="You are now subscribed to "+journalName+". To unsubscribe, send an email with a subject of unsubscribe.";
+					String[] msgs =CMProps.getListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS);
+					if((msgs!=null)&&(msgs.length>0))
+					{
+						if(msgs[0].length()>0)
+							subscribeTitle = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[0],"<NAME>",journalName),false);
+						if((msgs.length>0) && (msgs[1].length()>0))
+							subscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[1],"<NAME>",journalName),false);
+					}
+					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.SYSTEM_MAILBOX),journalName,journalName,userName,subscribeTitle,subscribedMsg);
+				}
+			}
+		}
+		if(updateMailingLists && saveMailingList)
+		{
+			Resources.updateCachedMultiLists("mailinglists.txt");
+		}
+		return updateMailingLists;
+	}
+	
+	public boolean unsubscribeFromJournal(String journalName, String userName, boolean saveMailingList)
+	{
+		boolean updateMailingLists = false;
+		if(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()==0)
+			return false;
+		
+		Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+		List<String> mylist=lists.get(journalName);
+		if(mylist==null) return false;
+		for(int l=mylist.size()-1;l>=0;l--)
+			if(mylist.get(l).equalsIgnoreCase(userName))
+			{
+				mylist.remove(l);
+				updateMailingLists=true;
+				if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
+				{
+					String unsubscribeTitle="Un-Subscribed";
+					String unsubscribedMsg="You are no longer subscribed to "+journalName+". To subscribe again, send an email with a subject of subscribe.";
+					String[] msgs =CMProps.getListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS);
+					if((msgs!=null)&&(msgs.length>2))
+					{
+						if(msgs[2].length()>0)
+							unsubscribeTitle = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[2],"<NAME>",journalName),false);
+						if((msgs.length>3) && (msgs[1].length()>0))
+							unsubscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[3],"<NAME>",journalName),false);
+					}
+					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.SYSTEM_MAILBOX),journalName,journalName,userName,unsubscribeTitle,unsubscribedMsg);
+				}
+			}
+		if(updateMailingLists && saveMailingList)
+		{
+			Resources.updateCachedMultiLists("mailinglists.txt");
+		}
+		return updateMailingLists;
+	}
 }

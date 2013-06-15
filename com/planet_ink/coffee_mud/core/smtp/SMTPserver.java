@@ -140,6 +140,21 @@ public class SMTPserver extends Thread implements Tickable
 
 		CMProps.setBoolVar(CMProps.SYSTEMB_EMAILFORWARDING,CMath.s_bool(page.getStr("FORWARD")));
 
+		if((CMProps.getListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS)==null)
+		||(CMProps.getListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS).length==0))
+		{
+			String[] msgs = new String[]{
+					page.getStr("SUBSCRIBEDTITLE"),
+					page.getStr("SUBSCRIBEDMSG"),
+					page.getStr("UNSUBSCRIBEDTITLE"),
+					page.getStr("UNSUBSCRIBEDMSG")
+				};
+			for(int i=0;i<msgs.length;i++)
+				if(msgs[i]==null) 
+					msgs[i]="";
+			CMProps.setListVar(CMProps.SYSTEML_SUBSCRIPTION_STRS, msgs);
+		}
+		
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
@@ -401,14 +416,16 @@ public class SMTPserver extends Thread implements Tickable
 							||(msgStr.equalsIgnoreCase("subscribe")))
 							{
 								// add to mailing list
-								updatedMailingLists= subscribeToJournal(journalName, msg) || updatedMailingLists;
+								CMLib.database().DBDeleteJournal(journalName,msg.key);
+								updatedMailingLists= CMLib.journals().subscribeToJournal(journalName, msg.from, false) || updatedMailingLists;
 							}
 							else
 							if((subj.equalsIgnoreCase("unsubscribe"))
 							||(msgStr.equalsIgnoreCase("unsubscribe")))
 							{
 								// remove from mailing list
-								updatedMailingLists= unSubscribeFromJournal(journalName, msg) || updatedMailingLists;
+								CMLib.database().DBDeleteJournal(journalName,msg.key);
+								updatedMailingLists= CMLib.journals().unsubscribeFromJournal(journalName, msg.from, false) || updatedMailingLists;
 							}
 							else
 							{
@@ -506,75 +523,6 @@ public class SMTPserver extends Thread implements Tickable
 				CMLib.database().DBDeleteJournal(journalName,msg.key);
 		}
 	}
-	
-	public boolean subscribeToJournal(final String journalName, final JournalsLibrary.JournalEntry msg)
-	{
-		CMLib.database().DBDeleteJournal(journalName,msg.key);
-		
-		boolean updatedMailingLists = false;
-		if(CMLib.players().playerExists(msg.from)||CMLib.players().accountExists(msg.from))
-		{
-			Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
-			List<String> mylist=lists.get(journalName);
-			if(mylist==null)
-			{
-				mylist=new Vector<String>();
-				lists.put(journalName,mylist);
-			}
-			boolean found=false;
-			for(int l=0;l<mylist.size();l++)
-				if(mylist.get(l).equalsIgnoreCase(msg.from))
-					found=true;
-			if(!found)
-			{
-				mylist.add(msg.from);
-				updatedMailingLists=true;
-				if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
-				{
-					String subscribeTitle=page.getStr("SUBSCRIBEDTITLE");
-					if((subscribeTitle==null)||(subscribeTitle.length()==0))
-						subscribeTitle="Subscribed";
-					String subscribedMsg=page.getStr("SUBSCRIBEDMSG");
-					if((subscribedMsg==null)||(subscribedMsg.length()==0))
-						subscribedMsg="You are now subscribed to "+journalName+". To unsubscribe, send an email with a subject of unsubscribe.";
-					subscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribeTitle,"<NAME>",journalName),false);
-					subscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribedMsg,"<NAME>",journalName),false);
-					CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,journalName,msg.from,subscribeTitle,subscribedMsg);
-				}
-			}
-		}
-		return updatedMailingLists;
-	}
-
-	public boolean unSubscribeFromJournal(final String journalName, final JournalsLibrary.JournalEntry msg)
-	{
-		CMLib.database().DBDeleteJournal(journalName,msg.key);
-		
-		boolean updatedMailingLists = false;
-		Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
-		List<String> mylist=lists.get(journalName);
-		if(mylist==null) return false;
-		for(int l=mylist.size()-1;l>=0;l--)
-			if(mylist.get(l).equalsIgnoreCase(msg.from))
-			{
-				mylist.remove(l);
-				updatedMailingLists=true;
-				if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
-				{
-					String unsubscribeTitle=page.getStr("UNSUBSCRIBEDTITLE");
-					if((unsubscribeTitle==null)||(unsubscribeTitle.length()==0))
-						unsubscribeTitle="Subscribed";
-					String unsubscribedMsg=page.getStr("UNSUBSCRIBEDMSG");
-					if((unsubscribedMsg==null)||(unsubscribedMsg.length()==0))
-						unsubscribedMsg="You are no longer subscribed to "+journalName+". To subscribe again, send an email with a subject of subscribe.";
-					unsubscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribeTitle,"<NAME>",journalName),false);
-					unsubscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribedMsg,"<NAME>",journalName),false);
-					CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,journalName,msg.from,unsubscribeTitle,unsubscribedMsg);
-				}
-			}
-		return updatedMailingLists;
-	}
-
 	
 	// interrupt does NOT interrupt the ServerSocket.accept() call...
 	//  override it so it does

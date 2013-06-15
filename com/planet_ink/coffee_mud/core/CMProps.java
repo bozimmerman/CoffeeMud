@@ -251,7 +251,8 @@ public class CMProps extends Properties
 	public static final int SYSTEMB_HASHPASSWORDS=14;
 	public static final int NUMB_SYSTEM=15;
 
-	public static final int NUML_SYSTEM=0;
+	public static final int SYSTEML_SUBSCRIPTION_STRS=0;
+	public static final int NUML_SYSTEM=1;
 
 	public static final int SYSTEMLF_DAMAGE_WORDS_THRESHOLDS=0;
 	public static final int SYSTEMLF_DAMAGE_WORDS=1;

@@ -61,12 +61,23 @@ public class JournalFunction extends StdWebMacro
 		}
 		if(parms.containsKey("SUBSCRIBE"))
 		{
-			if((forum==null)||(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
-				return "Subscription cancelled -- You are not authorized to delete this forum.";
-			if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.JOURNALS))
-				return "Destruction cancelled -- You are not authorized.";
-			CMLib.database().DBDeleteJournal(journalName, null);
-			return "Journal "+journalName+" deleted.";
+			if(forum==null)
+				return "Subscription cancelled -- no forum.";
+			if(CMLib.journals().subscribeToJournal(journalName, M.Name(), true))
+			{
+				return "Now subscribed to "+journalName+".";
+			}
+			return "New subscribtion to "+journalName+" failed.";
+		}
+		if(parms.containsKey("UNSUBSCRIBE"))
+		{
+			if(forum==null)
+				return "UnSubscription cancelled -- no forum.";
+			if(CMLib.journals().unsubscribeFromJournal(journalName, M.Name(), true))
+			{
+				return "Now unsubscribed from "+journalName+".";
+			}
+			return "Unsubscription from "+journalName+" failed -- were you ever subscribed?";
 		}
 		String from="Anonymous";
 		if(M!=null) from=M.Name();

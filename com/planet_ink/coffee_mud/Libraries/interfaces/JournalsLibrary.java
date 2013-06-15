@@ -48,6 +48,9 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 	public ForumJournal getForumJournal(String named);
 	public int getNumForumJournals();
 	
+	public boolean subscribeToJournal(String journalName, String userName, boolean saveMailingList);
+	public boolean unsubscribeFromJournal(String journalName, String userName, boolean saveMailingList);
+
 	public JournalSummaryStats getJournalStats(String journalName);
 	public void clearJournalSummaryStats(String journalName);
 	
