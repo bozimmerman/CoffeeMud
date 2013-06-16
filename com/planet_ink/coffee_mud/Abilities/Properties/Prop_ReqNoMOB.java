@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 {
 	public String ID() { return "Prop_ReqNoMOB"; }
@@ -52,9 +52,9 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 	{
 		noFollow=false;
 		noSneak=false;
-		Vector parms=CMParms.parse(txt.toUpperCase());
+		Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
-		for(Enumeration p=parms.elements();p.hasMoreElements();)
+		for(Enumeration<String> p=parms.elements();p.hasMoreElements();)
 		{
 			s=(String)p.nextElement();
 			if("NOFOLLOW".startsWith(s))
@@ -82,10 +82,10 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 		&&(msg.target()!=null)
 		&&(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 		   ||((msg.target() instanceof Rideable)&&(msg.targetMinor()==CMMsg.TYP_SIT)))
-		&&(!CMLib.flags().isFalling(msg.source()))
-		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
+		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area))
+		&&(!CMLib.flags().isFalling(msg.source())))
 		{
-			HashSet H=new HashSet();
+			HashSet<MOB> H=new HashSet<MOB>();
 			if(noFollow)
 				H.add(msg.source());
 			else

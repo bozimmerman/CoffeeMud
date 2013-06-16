@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Prop_NoTeleport extends Property
 {
 	public String ID() { return "Prop_NoTeleport"; }
-	public String name(){ return "Teleport INTO Spell Neutralizing";}
+	public String name(){ return "Teleport-INTO Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 
 	public long flags(){return Ability.FLAG_IMMUNER;}
