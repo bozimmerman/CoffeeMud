@@ -273,13 +273,16 @@ public class ListCmd extends StdCommand
 		{
 			if (tArray[i] != null)
 			{
-				if((tArray[i] instanceof TickableGroup)
-				&&(((TickableGroup)tArray[i]).lastTicked()!=null)
-				&&(((TickableGroup)tArray[i]).lastTicked().getTickStatus()==0))
-					continue;
-				if((tArray[i] instanceof Tickable)
-				&&(((Tickable)tArray[i]).getTickStatus()==0))
-					continue;
+				if(ignoreZeroTickThreads)
+				{
+					if((tArray[i] instanceof TickableGroup)
+					&&(((TickableGroup)tArray[i]).lastTicked()!=null)
+					&&(((TickableGroup)tArray[i]).lastTicked().getTickStatus()==0))
+						continue;
+					if((tArray[i] instanceof Tickable)
+					&&(((Tickable)tArray[i]).getTickStatus()==0))
+						continue;
+				}
 
 				lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
 				lines.append(CMStrings.padRight(tArray[i].getName(),20)+": ");
