@@ -43,7 +43,7 @@ public class MWThreadFactory implements ThreadFactory
 	}
 	public Thread newThread(Runnable r) 
 	{
-		final Thread t = new MWThread(config, r,serverName+"#"+counter.addAndGet(1));
+		final Thread t = new MWThread(config, r,"mweb-"+serverName+"#"+counter.addAndGet(1));
 		active.add(t);
 		return t;
 	}

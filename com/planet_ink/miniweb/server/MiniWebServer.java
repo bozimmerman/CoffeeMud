@@ -71,7 +71,7 @@ public class MiniWebServer extends Thread
 	
 	public MiniWebServer(String serverName, MiniWebConfig config)
 	{
-		super(serverName);
+		super("mweb-"+serverName);
 		this.config=config;
 		this.serverName=serverName;
 		
