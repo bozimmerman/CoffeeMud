@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class GenComputerConsole extends StdComputerConsole
 {
-	public String ID(){	return "GenSSConsole";}
+	public String ID(){	return "GenComputerConsole";}
 	protected String readableText="";
 	
 	public GenComputerConsole()
