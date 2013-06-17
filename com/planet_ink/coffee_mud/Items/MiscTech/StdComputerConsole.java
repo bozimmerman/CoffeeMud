@@ -47,7 +47,7 @@ public class StdComputerConsole extends StdRideable
 		containType=Container.CONTAIN_SSCOMPONENTS;
 		rideBasis=Rideable.RIDEABLE_TABLE;
 		riderCapacity=1;
-		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE);
+		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE|PhyStats.SENSE_ITEMNOTGET);
 		setLidsNLocks(true,true,false,false);
 		capacity=500;
 		material=RawMaterial.RESOURCE_STEEL;
