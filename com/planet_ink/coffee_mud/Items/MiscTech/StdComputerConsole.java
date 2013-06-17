@@ -40,6 +40,7 @@ public class StdComputerConsole extends StdRideable
 	{
 		super();
 		setName("a computer console");
+		setDisplayText("a computer console is here");
 		basePhyStats.setWeight(20);
 		setDescription("");
 		baseGoldValue=5;

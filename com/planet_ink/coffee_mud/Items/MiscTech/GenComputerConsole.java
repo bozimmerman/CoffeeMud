@@ -42,15 +42,6 @@ public class GenComputerConsole extends StdComputerConsole
 	public GenComputerConsole()
 	{
 		super();
-		setName("a computer console");
-		basePhyStats.setWeight(2);
-		setDescription("");
-		baseGoldValue=5;
-		containType=Container.CONTAIN_SSCOMPONENTS;
-		setLidsNLocks(true,true,false,false);
-		capacity=500;
-		setMaterial(RawMaterial.RESOURCE_STEEL);
-		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
