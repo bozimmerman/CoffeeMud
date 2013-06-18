@@ -42,6 +42,7 @@ public class ProcessSMTPrequest implements Runnable
 {
 	private final static String cr = "\r\n";
 	private final static String S_250 = "250 OK";
+	private final static long IDLE_TIMEOUT=10000;
 	private static volatile AtomicInteger instanceCnt = new AtomicInteger(0);
 	
 	
@@ -192,7 +193,7 @@ public class ProcessSMTPrequest implements Runnable
 					if(c==65535)
 					{
 						final long ellapsed = System.currentTimeMillis()-timeSinceLastChar; 
-						if(ellapsed > (10 * 1000))
+						if(ellapsed > IDLE_TIMEOUT)
 						{
 							quitFlag=true;
 							if(debug) Log.debugOut(runnableName,"Internal: generated timeout: "+msgsSent+" msgs sent");
