@@ -194,16 +194,9 @@ public class ProcessSMTPrequest implements Runnable
 						final long ellapsed = System.currentTimeMillis()-timeSinceLastChar; 
 						if(ellapsed > (10 * 1000))
 						{
-							if(msgsSent>0)
-							{
-								quitFlag=true;
-								break;
-							}
-							else
-							{
-								if(debug) Log.debugOut(runnableName,"Internal: generated timeout.");
-								throw new IOException("socket/request timeout");
-							}
+							quitFlag=true;
+							if(debug) Log.debugOut(runnableName,"Internal: generated timeout: "+msgsSent+" msgs sent");
+							break;
 						}
 						else
 							break;
