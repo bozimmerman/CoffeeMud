@@ -582,7 +582,7 @@ public class MWHTTPRequest implements HTTPRequest
 					if(currentPart.getContentType().startsWith("multipart/"))
 					{
 						// recursion, yea!
-						if (isDebugging) debugLogger.fine("Got multipart recursion");
+						if (isDebugging) debugLogger.finest("Got multipart recursion");
 						final List<MultiPartData> subParts=parseMultipartContent(currentPart.getContentType(), index);
 						currentPart.getSubParts().addAll(subParts);
 						i=index[0];
@@ -590,7 +590,7 @@ public class MWHTTPRequest implements HTTPRequest
 					else
 					if(currentPart.getContentType().startsWith("application/x-www-form-urlencoded"))
 					{
-						if (isDebugging) debugLogger.fine("Got multipart url data");
+						if (isDebugging) debugLogger.finest("Got multipart url data");
 						parseUrlEncodedKeypairs(new String(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer)));
 						allParts.remove(currentPart);
 					}
@@ -601,14 +601,14 @@ public class MWHTTPRequest implements HTTPRequest
 					)
 					{
 						String name=currentPart.getVariables().get("name").toLowerCase();
-						if (isDebugging) debugLogger.fine("Got multipart "+currentPart.getContentType()+" "+currentPart.getDisposition()+" named "+name);
+						if (isDebugging) debugLogger.finest("Got multipart "+currentPart.getContentType()+" "+currentPart.getDisposition()+" named "+name);
 						addUrlParameter(name, new String(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer)));
 						allParts.remove(currentPart);
 					}
 					else
 					{
 						currentPart.setData(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer));
-						if (isDebugging) debugLogger.fine("Got "+currentPart.getContentType()+" "+currentPart.getDisposition()+" of "+currentPart.getData().length+" bytes");
+						if (isDebugging) debugLogger.finest("Got "+currentPart.getContentType()+" "+currentPart.getDisposition()+" of "+currentPart.getData().length+" bytes");
 					}
 					
 					if(simpleBoundry)
@@ -619,7 +619,7 @@ public class MWHTTPRequest implements HTTPRequest
 					else
 					if(lastBoundry)
 					{
-						if (isDebugging) debugLogger.fine("Completed "+allParts.size()+" multiparts");
+						if (isDebugging) debugLogger.finest("Completed "+allParts.size()+" multiparts");
 						return allParts;
 					}
 				}
@@ -654,7 +654,7 @@ public class MWHTTPRequest implements HTTPRequest
 		// if this is a range request, get the byte ranges ready for the One Who Will Generate Output
 		if(headers.containsKey(HTTPHeader.RANGE.lowerCaseName()))
 		{
-			if (isDebugging) debugLogger.fine("Got range request!");
+			if (isDebugging) debugLogger.finest("Got range request!");
 			byteRanges=parseRangeRequest(headers.get(HTTPHeader.RANGE.lowerCaseName()));
 		}
 		
@@ -670,7 +670,7 @@ public class MWHTTPRequest implements HTTPRequest
 			bodyStream = emptyInput;
 			final String byteStr=new String(buffer.array());
 			parseUrlEncodedKeypairs(byteStr);
-			if (isDebugging) debugLogger.fine("Urlencoded data: "+byteStr);
+			if (isDebugging) debugLogger.finest("Urlencoded data: "+byteStr);
 			buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
 		}
 		else // if this is some sort of multi-part thing, then the entire body is forfeit and MultiPartDatas are generated
@@ -678,14 +678,14 @@ public class MWHTTPRequest implements HTTPRequest
 		&&(headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName()).startsWith("multipart/")))
 		{
 			bodyStream = emptyInput;
-			if (isDebugging) debugLogger.fine("Got multipart request");
+			if (isDebugging) debugLogger.finest("Got multipart request");
 			String boundaryDefStr=headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName());
 			parts = parseMultipartContent(boundaryDefStr, new int[]{0});
 			buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
 		}
 		else // otherwise, this is an unhandled or generic body of data.. prepare the input bodystream
 		{
-			if (isDebugging) debugLogger.fine("Got generic body");
+			if (isDebugging) debugLogger.finest("Got generic body");
 			buffer.position(0);
 			buffer.limit(buffer.capacity());
 			bodyStream = new ByteArrayInputStream(buffer.array());

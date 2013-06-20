@@ -562,7 +562,7 @@ public class MiniWebServer extends Thread
 		Log.instance().configureLog(Log.Type.access, config.getAccessLogFlag());
 		config.getLogger().info("Starting "+NAME+" "+VERSION);
 		
-		final MiniWebServer server = new MiniWebServer("miniweb", config);
+		final MiniWebServer server = new MiniWebServer("server", config);
 		config.setMiniWebServer(server);
 		final Thread t = new MWThread(config, server, NAME);
 		t.start();

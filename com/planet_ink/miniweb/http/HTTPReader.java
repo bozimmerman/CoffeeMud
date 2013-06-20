@@ -177,12 +177,18 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 		if(closeMe)
 			return true;
 		final long currentTime=System.currentTimeMillis();
-		if((idleTime!=0) && ((currentTime - idleTime) > config.getRequestMaxIdleMs()))
+		if((idleTime!=0) && ((currentTime - idleTime) > config.getRequestMaxIdleMs())) {
+			if (isDebugging) config.getLogger().finest("Idle Timed out: "+this.getName()+" "+(currentTime - idleTime) +">"+ config.getRequestMaxIdleMs());
 			return true;
-		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered()))
+		}
+		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered())) {
+			if (isDebugging) config.getLogger().finest("Disconnected: "+this.getName());
 			return true;
-		if((startTime!=0) && (currentTime - startTime) > (config.getRequestMaxAliveSecs() * 1000))
+		}
+		if((startTime!=0) && (currentTime - startTime) > (config.getRequestMaxAliveSecs() * 1000)) {
+			if (isDebugging) config.getLogger().finest("Over Timed Out: "+this.getName()+" "+(currentTime - startTime) +">"+ (config.getRequestMaxAliveSecs() * 1000));
 			return true;
+		}
 		if((forwarder!=null) && (forwarder.isCloseable()))
 			return true;
 		return false;
@@ -545,7 +551,9 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					{
 						int bytesWritten=chan.write(buffer);
 						if(bytesWritten>=0)
+						{
 							written+=bytesWritten;
+						}
 						if(buffer.remaining()>0)
 						{
 							try{Thread.sleep(1);}catch(Exception e){}
@@ -701,10 +709,9 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 			}
 			catch(IOException e)
 			{
+				if(isDebugging) config.getLogger().finer("Closing "+getName()+" due to: "+e.getClass().getName()+": "+e.getMessage());
 				closeChannels();
 				currentState=ParseState.DONE; // a common case when client closes first
-				if(isDebugging)
-					config.getLogger().finer("ERROR: "+e.getClass().getName()+": "+e.getMessage());
 			}
 			catch(Exception e)
 			{
