@@ -49,14 +49,15 @@ The system has been running for <FONT COLOR=#CCFFFF>@SystemInfo?TOTALTIME@</FONT
 The system has been running since <FONT COLOR=#CCFFFF>@SystemInfo?STARTTIME@</FONT>.<BR>
 The system is utilizing <FONT COLOR=#CCFFFF>@SystemInfo?FREEMEMORY@</FONT>kb out of <FONT COLOR=#CCFFFF>@SystemInfo?TOTALMEMORY@</FONT>kb.<BR>
 <BR>
-<FONT COLOR=#CCFFFF><B>Service Engine report:</B></FONT><BR>
-There are <FONT COLOR=#CCFFFF>@SystemInfo?totalTickers@</FONT> ticking objects in <FONT COLOR=#CCFFFF>@SystemInfo?tickGroupSize@</FONT> groups with <FONT COLOR=#CCFFFF>@SystemInfo?numThreads@</FONT> threads.<BR>
+<FONT COLOR=#CCFFFF><B>Tickables report:</B></FONT><BR>
+There are <FONT COLOR=#CCFFFF>@SystemInfo?totalTickers@</FONT> ticking objects in <FONT COLOR=#CCFFFF>@SystemInfo?tickGroupSize@</FONT> groups.<BR>
 The ticking objects have consumed: <FONT COLOR=#CCFFFF>@SystemInfo?totalMillisTimePlusAverage@</FONT>.<BR>
 The most active group, #<FONT COLOR=#CCFFFF>@SystemInfo?topGroupNumber@</FONT>, has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topGroupMillisTimePlusAverage@</FONT>.<BR>
 The most active object has been '<FONT COLOR=#CCFFFF>@SystemInfo?topObjectClient@</FONT>', from group #<FONT COLOR=#CCFFFF>@SystemInfo?topObjectGroup@</FONT>.<BR>
 That object has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topObjectMillisTimePlusAverage@</FONT>.<BR>
 <BR>
-<FONT COLOR=#CCFFFF><B>Threads report:</B></FONT><BR>
+<FONT COLOR=#CCFFFF><B>Services report:</B></FONT><BR>
+There are <FONT COLOR=#CCFFFF>@SystemInfo?numactivethreads@</FONT> active out of <FONT COLOR=#CCFFFF>@SystemInfo?numThreads@</FONT> live threads.<BR>
 @AddRequestParameter?THREADNUM=0@
 @loop@
 	@AddRequestParameter?THREADNAME=@@SystemInfo?thread@@@RequestParameter?THREADNUM@@@name@@ @

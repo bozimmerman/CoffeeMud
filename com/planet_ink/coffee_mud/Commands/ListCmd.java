@@ -775,7 +775,7 @@ public class ListCmd extends StdCommand
 		long free=Runtime.getRuntime().freeMemory()/1000;
 		long total=Runtime.getRuntime().totalMemory()/1000;
 		buf.append("The system is utilizing ^H"+(total-free)+"^?kb out of ^H"+total+"^?kb.\n\r");
-		buf.append("\n\r^xService Engine report:^.^N\n\r");
+		buf.append("\n\r^xTickables report:^.^N\n\r");
 		String totalTickers=CMLib.threads().systemReport("totalTickers");
 		String tickGroupSize=CMLib.threads().systemReport("TICKGROUPSIZE");
 		long totalMillis=CMath.s_long(CMLib.threads().systemReport("totalMillis"));
@@ -785,7 +785,7 @@ public class ListCmd extends StdCommand
 		long topGroupTicks=CMath.s_long(CMLib.threads().systemReport("topGroupTicks"));
 		long topObjectMillis=CMath.s_long(CMLib.threads().systemReport("topObjectMillis"));
 		long topObjectTicks=CMath.s_long(CMLib.threads().systemReport("topObjectTicks"));
-		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroupSize+"^? threads.\n\r");
+		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroupSize+"^? groups.\n\r");
 		buf.append("The ticking objects have consumed: ^H"+CMLib.english().returnTime(totalMillis,totalTicks)+"^?.\n\r");
 		buf.append("The most active group, #^H"+topGroupNumber+"^?, has consumed: ^H"+CMLib.english().returnTime(topGroupMillis,topGroupTicks)+"^?.\n\r");
 		String topObjectClient=CMLib.threads().systemReport("topObjectClient");
@@ -796,14 +796,15 @@ public class ListCmd extends StdCommand
 			buf.append("That object has consumed: ^H"+CMLib.english().returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
 		}
 		buf.append("\n\r");
-		buf.append("^xThread reports:^.^N\n\r");
+		buf.append("^xServices report:^.^N\n\r");
+		buf.append("There are ^H"+CMLib.threads().systemReport("numactivethreads")+"^? active out of ^H"+CMLib.threads().systemReport("numthreads")+"^? live worker threads.\n\r");
 		int threadNum=0;
 		String threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");
 		while(threadName.trim().length()>0)
 		{
 			long saveThreadMilliTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"MilliTotal"));
 			long saveThreadTickTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"TickTotal"));
-			buf.append("Thread '"+threadName+"' has consumed: ^H"+CMLib.english().returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("Thread"+threadNum+"Status")+")^?.");
+			buf.append("Service '"+threadName+"' has consumed: ^H"+CMLib.english().returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("Thread"+threadNum+"Status")+")^?.");
 			buf.append("\n\r");
 			threadNum++;
 			threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");

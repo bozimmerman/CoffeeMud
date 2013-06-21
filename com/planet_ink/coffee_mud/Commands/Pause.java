@@ -57,28 +57,28 @@ public class Pause extends StdCommand
 			if(!CMLib.threads().isAllSuspended())
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.PAUSE))
-					mob.tell("You are not allowed to pause all threads.");
+					mob.tell("You are not allowed to pause all objects.");
 				else
 				{
 					CMLib.threads().suspendAll();
-					mob.tell("All threads have been suspended. Enter PAUSE again to resume.");
+					mob.tell("All objects have been suspended. Enter PAUSE again to resume.");
 				}
 			}
 			else
 			{
 				CMLib.threads().resumeAll();
-				mob.tell("All threads have been resumed.");
+				mob.tell("All objects have been resumed.");
 			}
 		}
 		else
 		if(cmd.equalsIgnoreCase("RESUME"))
 		{
 			if(!CMLib.threads().isAllSuspended())
-				mob.tell("Threads are not currently suspended.");
+				mob.tell("Objects are not currently suspended.");
 			else
 			{
 				CMLib.threads().resumeAll();
-				mob.tell("All threads have been resumed.");
+				mob.tell("All objects have been resumed.");
 			}
 		}
 		else

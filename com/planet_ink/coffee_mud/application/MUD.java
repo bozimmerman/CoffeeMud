@@ -412,7 +412,7 @@ public class MUD extends Thread implements MudHost
 		try
 		{
 			CMLib.activateLibraries();
-			Log.sysOut(Thread.currentThread().getName(),"Utility threads started");
+			Log.sysOut(Thread.currentThread().getName(),"Services and utilities started");
 		}
 		catch (Throwable th)
 		{
@@ -878,7 +878,7 @@ public class MUD extends Thread implements MudHost
 			if(S!=null)S.println("SMTP Server stopped");
 		}
 
-		if(S!=null)S.print("Stopping all threads...");
+		if(S!=null)S.print("Stopping all services...");
 		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_STATS);e.hasMoreElements();)
 			e.nextElement().shutdown();
 		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_THREADS);e.hasMoreElements();)

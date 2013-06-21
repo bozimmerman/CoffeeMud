@@ -422,6 +422,9 @@ public class ServiceEngine implements ThreadEngine
 		if(itemCode.equalsIgnoreCase("numthreads"))
 			return ""+getPoolExecutor(null).getPoolSize();
 		else
+		if(itemCode.equalsIgnoreCase("numactivethreads"))
+			return ""+getPoolExecutor(null).getActiveCount();
+		else
 		if(itemCode.equalsIgnoreCase("topGroupNumber"))
 			return ""+topGroupNumber;
 		else
