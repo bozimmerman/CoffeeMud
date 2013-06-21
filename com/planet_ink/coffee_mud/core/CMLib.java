@@ -48,6 +48,7 @@ public class CMLib
 		if(libs[c]==null) libs[c]=this;
 	}
 	private static final CMLib l(){ return libs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+	public static final CMLib initialize(){ return new CMLib(); }
 	public static final CMLib l(final char c){return libs[c];}
 	public static final CMLib instance(){return l();}
 	
@@ -256,7 +257,7 @@ public class CMLib
 		final int code=convertToLibraryCode(O);
 		if(code>=0)
 		{
-			if(l()==null) new CMLib();
+			if(l()==null) CMLib.initialize();
 			final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
 			if((!privacyV.contains(LIBRARY_DESCS[code])
 			&&(libs[MudHost.MAIN_HOST]!=l())))

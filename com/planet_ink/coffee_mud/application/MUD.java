@@ -1188,8 +1188,8 @@ public class MUD extends Thread implements MudHost
 
 		public void run()
 		{
-			new CMLib(); // initialize the lib
-			new CMClass(); // initialize the classes
+			CMLib.initialize(); // initialize the lib
+			CMClass.initialize(); // initialize the classes
 			Log.shareWith(MudHost.MAIN_HOST);
 			
 			// wait for ini to be loaded, and for other matters
@@ -1350,7 +1350,7 @@ public class MUD extends Thread implements MudHost
 			}
 			nameID=CMParms.combine(V,0);
 		}
-		new CMLib(); // initialize this threads libs
+		CMLib.initialize(); // initialize this threads libs
 		
 		if(iniFiles.size()==0) iniFiles.addElement("coffeemud.ini");
 		if((nameID.length()==0)||(nameID.equalsIgnoreCase( "CoffeeMud" ))||nameID.equalsIgnoreCase("Your Muds Name"))

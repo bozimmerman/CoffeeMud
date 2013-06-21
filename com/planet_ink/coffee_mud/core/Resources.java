@@ -52,6 +52,7 @@ public class Resources
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(rscs[c]==null) rscs[c]=this;
 	}
+	public static final Resources initialize() { return new Resources(); }
 	public static final Resources instance()
 	{
 		final Resources r=r();

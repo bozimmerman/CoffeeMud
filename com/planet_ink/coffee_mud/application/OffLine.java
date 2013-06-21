@@ -295,8 +295,8 @@ public class OffLine extends Thread implements MudHost
 		int q_len = 6;
 		Socket sock=null;
 		serverIsRunning = false;
-		new CMLib(); // forces this thread to HAVE a library
-		new Resources();
+		CMLib.initialize(); // forces this thread to HAVE a library
+		Resources.initialize();
 		if (!isOK)
 		{
 			System.err.println("Cancelling MUD server on port "+port);
@@ -406,7 +406,7 @@ public class OffLine extends Thread implements MudHost
 	public static void main(String a[])
 	{
 		CMProps page=null;
-		new CMLib(); // forces this thread to HAVE a library
+		CMLib.initialize(); // forces this thread to HAVE a library
 
 		String nameID="";
 		String iniFile="coffeemud.ini";

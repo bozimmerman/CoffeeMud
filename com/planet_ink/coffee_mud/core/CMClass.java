@@ -66,6 +66,8 @@ public class CMClass extends ClassLoader
 		if(clss==null) clss=new CMClass[256];
 		if(clss[c]==null) clss[c]=this;
 	}
+	public static final CMClass initialize(){ return new CMClass(); }
+	
 	/**
 	 * Returns the CMClass instance tied to this particular thread group, or null if not yet created.
 	 * @return the CMClass instance tied to this particular thread group, or null if not yet created.
