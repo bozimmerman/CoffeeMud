@@ -5,7 +5,7 @@
 <html>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
-	<title>Thread Group #@RequestParameter?TICKGROUPCOUNTER@</title>
+	<title>Tick Group #@RequestParameter?TICKGROUPCOUNTER@</title>
 	<script language=JavaScript>
 	<!--
 		function ReOpen(which)
