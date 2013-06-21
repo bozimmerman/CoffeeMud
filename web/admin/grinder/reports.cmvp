@@ -50,7 +50,7 @@ The system has been running since <FONT COLOR=#CCFFFF>@SystemInfo?STARTTIME@</FO
 The system is utilizing <FONT COLOR=#CCFFFF>@SystemInfo?FREEMEMORY@</FONT>kb out of <FONT COLOR=#CCFFFF>@SystemInfo?TOTALMEMORY@</FONT>kb.<BR>
 <BR>
 <FONT COLOR=#CCFFFF><B>Service Engine report:</B></FONT><BR>
-There are <FONT COLOR=#CCFFFF>@SystemInfo?totalTickers@</FONT> ticking objects in <FONT COLOR=#CCFFFF>@SystemInfo?tickGroupSize@</FONT> threads.<BR>
+There are <FONT COLOR=#CCFFFF>@SystemInfo?totalTickers@</FONT> ticking objects in <FONT COLOR=#CCFFFF>@SystemInfo?tickGroupSize@</FONT> groups with <FONT COLOR=#CCFFFF>@SystemInfo?numThreads@</FONT> threads.<BR>
 The ticking objects have consumed: <FONT COLOR=#CCFFFF>@SystemInfo?totalMillisTimePlusAverage@</FONT>.<BR>
 The most active group, #<FONT COLOR=#CCFFFF>@SystemInfo?topGroupNumber@</FONT>, has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topGroupMillisTimePlusAverage@</FONT>.<BR>
 The most active object has been '<FONT COLOR=#CCFFFF>@SystemInfo?topObjectClient@</FONT>', from group #<FONT COLOR=#CCFFFF>@SystemInfo?topObjectGroup@</FONT>.<BR>

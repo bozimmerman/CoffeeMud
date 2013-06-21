@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.Tick;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -33,8 +32,8 @@ import java.util.*;
 public interface ThreadEngine extends CMLibrary, Runnable
 {
 	// tick related
-	public void startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks);
-	public void startTickDown(Tickable E, int tickID, int numTicks);
+	public TickClient startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks);
+	public TickClient startTickDown(Tickable E, int tickID, int numTicks);
 	public boolean deleteTick(Tickable E, int tickID);
 	public void suspendTicking(Tickable E, int tickID);
 	public void resumeTicking(Tickable E, int tickID);
@@ -48,9 +47,10 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public void rejuv(Room here, int tickID);
 	public String systemReport(String itemCode);
 	public boolean isTicking(Tickable E, int tickID);
-	public  Iterator<Tick> tickGroups();
+	public  Iterator<TickableGroup> tickGroups();
 	public String getTickStatusSummary(Tickable obj);
 	public String getServiceThreadSummary(Thread T);
 	public List<Tickable> getNamedTickingObjects(String name);
 	public void executeRunnable(Runnable R);
+	public void debugDumpStack(final String ID, Thread theThread);
 }

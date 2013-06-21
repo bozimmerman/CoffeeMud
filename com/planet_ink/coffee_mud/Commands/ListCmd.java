@@ -276,8 +276,9 @@ public class ListCmd extends StdCommand
 				if(ignoreZeroTickThreads)
 				{
 					if((tArray[i] instanceof TickableGroup)
-					&&(((TickableGroup)tArray[i]).lastTicked()!=null)
-					&&(((TickableGroup)tArray[i]).lastTicked().getTickStatus()==0))
+					&&(((TickableGroup)tArray[i]).getLastTicked()!=null)
+					&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject()!=null)
+					&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject().getTickStatus()==0))
 						continue;
 					if((tArray[i] instanceof Tickable)
 					&&(((Tickable)tArray[i]).getTickStatus()==0))
@@ -299,12 +300,12 @@ public class ListCmd extends StdCommand
 				}
 				else
 				if((tArray[i] instanceof TickableGroup)
-				&&(((TickableGroup)tArray[i]).lastTicked()!=null))
-					lines.append("Tick "+tArray[i].getName()+" "
-							+((TickableGroup)tArray[i]).lastTicked().ID()
-							+"-"+((TickableGroup)tArray[i]).lastTicked().name()
-							+"-"+((TickableGroup)tArray[i]).lastTicked().getTickStatus()
-							+" ("+CMLib.threads().getTickStatusSummary(((TickableGroup)tArray[i]).lastTicked())+")\n\r");
+				&&(((TickableGroup)tArray[i]).getLastTicked()!=null)
+				&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject()!=null))
+				{
+					final Tickable T=((TickableGroup)tArray[i]).getLastTicked().getClientObject();
+					lines.append("Tick "+tArray[i].getName()+" "+T.ID()+"-"+T.name()+"-"+T.getTickStatus()+" ("+CMLib.threads().getTickStatusSummary(T)+")\n\r");
+				}
 				else
 				if(tArray[i] instanceof CMSupportThread)
 				{
@@ -1203,7 +1204,7 @@ public class ListCmd extends StdCommand
 		if(x>0)
 		{
 			String lastWord=whichGroupStr.substring(x+1).trim().toLowerCase();
-			final String[] validCols={"tickername","tickerid","tickerstatus","tickercodeword","tickertickdown","tickerretickdown","tickermillitotal","tickermilliavg","tickerlaststartmillis","tickerlaststopmillis","tickerlaststartdate","tickerlaststopdate","tickerlastduration","tickersuspended"};
+			final String[] validCols={"tickername","tickerid","tickerstatus","tickerstatusstr","tickercodeword","tickertickdown","tickerretickdown","tickermillitotal","tickermilliavg","tickerlaststartmillis","tickerlaststopmillis","tickerlaststartdate","tickerlaststopdate","tickerlastduration","tickersuspended"};
 			int y=CMParms.indexOf(validCols,lastWord);
 			if(y>=0)
 				finalCol=lastWord;

@@ -41,6 +41,16 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 	protected volatile long 		 	 lastRejectTime = 0;
 	protected volatile int  		 	 rejectCount 	= 0;
 	protected final Logger				 logger;
+
+	protected static class CMLinkedBlockingQueue<E> extends ArrayBlockingQueue<E>{
+		private static final long serialVersionUID = -4357809818979881831L;
+		public MWThreadExecutor executor = null;
+		public CMLinkedBlockingQueue(int capacity) { super(capacity);}
+		@Override public boolean offer(E o) {
+			final int allWorkingThreads = executor.getActiveCount() + super.size();
+			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
+		}
+	};
 	
 	public MWThreadExecutor(String poolName,
 							MiniWebConfig config,
@@ -48,12 +58,18 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 							long keepAliveTime, TimeUnit unit, 
 							long timeoutSecs, int queueSize) 
 	{
-		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new LinkedBlockingQueue<Runnable>(queueSize));
+		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new CMLinkedBlockingQueue<Runnable>(queueSize));
+		((CMLinkedBlockingQueue<Runnable>)getQueue()).executor=this;
 		timeoutMillis=timeoutSecs * 1000L;
 		this.poolName=poolName;
 		threadFactory=new MWThreadFactory(poolName, config);
 		setThreadFactory(threadFactory);
 		this.logger=config.getLogger();
+		setRejectedExecutionHandler(new RejectedExecutionHandler(){
+			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+				try { executor.getQueue().put(r); } catch (InterruptedException e) { throw new RejectedExecutionException(e); }
+			}
+		});
 	}
 
 	protected void beforeExecute(Thread t, Runnable r) 
@@ -86,6 +102,11 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 		}
 	}
 
+	@Override
+	public int getActiveCount() {
+		return active.size();
+	} 
+	
 	public void execute(Runnable r)
 	{
 		try

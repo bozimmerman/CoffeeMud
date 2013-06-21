@@ -77,14 +77,14 @@ public class Healer extends ActiveTicker
 			{
 				final MOB target=thisRoom.fetchRandomInhabitant();
 				MOB followMOB=target;
-				if(target.amFollowing()!=null)
+				if((target != null)&&(target.amFollowing()!=null))
 					followMOB=target.amUltimatelyFollowing();
 				if((target!=null)
 				&&(target!=mob)
 				&&(followMOB.getVictim()!=mob)
 				&&(!followMOB.isMonster()))
 				{
-					Ability tryThisOne=(Ability)healingVector.get(CMLib.dice().roll(1,healingVector.size(),-1));
+					Ability tryThisOne=healingVector.get(CMLib.dice().roll(1,healingVector.size(),-1));
 					Ability thisOne=mob.fetchAbility(tryThisOne.ID());
 					if(thisOne==null)
 					{
@@ -94,7 +94,7 @@ public class Healer extends ActiveTicker
 					}
 					thisOne.setProficiency(100);
 					Vector V=new Vector();
-					if((target!=null)&&(target!=mob)&&(!target.isMonster()))
+					if(!target.isMonster())
 						V.addElement(target.name());
 					thisOne.invoke(mob,V,target,false,0);
 				}

@@ -228,8 +228,8 @@ public class CMProps extends Properties
 	public static final int SYSTEMI_RUNCOST=70;
 	public static final int SYSTEMI_ACCOUNTPURGEDAYS=71;
 	public static final int SYSTEMI_AWARERANGE=72;
-	public static final int SYSTEMI_MINSESSIONTHREADS=73;
-	public static final int SYSTEMI_MAXSESSIONTHREADS=74;
+	public static final int SYSTEMI_MINWORKERTHREADS=73;
+	public static final int SYSTEMI_MAXWORKERTHREADS=74;
 	public static final int SYSTEMI_DUELTICKDOWN=75;
 	public static final int SYSTEMI_BASEMINSTAT=76;
 	public static final int NUMI_SYSTEM=77;
@@ -1284,8 +1284,8 @@ public class CMProps extends Properties
 		setIntVar(SYSTEMI_WALKCOST,getStr("WALKCOST"),1);
 		setIntVar(SYSTEMI_RUNCOST,getStr("RUNCOST"),2);
 		setIntVar(SYSTEMI_AWARERANGE,getStr("AWARERANGE"),0);
-		setIntVar(SYSTEMI_MINSESSIONTHREADS,getStr("MINSESSIONTHREADS"),5);
-		setIntVar(SYSTEMI_MAXSESSIONTHREADS,getStr("MAXSESSIONTHREADS"),100);
+		setIntVar(SYSTEMI_MINWORKERTHREADS,getStr("MINWORKERTHREADS"),1);
+		setIntVar(SYSTEMI_MAXWORKERTHREADS,getStr("MAXWORKERTHREADS"),100);
 		setIntVar(SYSTEMI_DUELTICKDOWN,getStr("DUELTICKDOWN"),5);
 		V=CMParms.parseCommas(getStr("MAXCLANCATS"), true);
 		p().maxClanCatsMap.clear();

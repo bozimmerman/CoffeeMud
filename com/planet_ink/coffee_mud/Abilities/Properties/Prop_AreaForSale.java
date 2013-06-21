@@ -211,7 +211,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 
 	public List<Room> getAllTitledRooms()
 	{
-		Vector V=new Vector();
+		List<Room> V=new Vector();
 		Area A=null;
 		if(affected instanceof Area)
 			A=(Area)affected;
@@ -223,7 +223,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(A!=null)
 		{
 			for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
-				V.addElement(e.nextElement());
+				V.add(e.nextElement());
 		}
 		return V;
 	}

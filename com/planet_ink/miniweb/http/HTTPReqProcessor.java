@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.planet_ink.coffee_mud.core.collections.Pair;
 import com.planet_ink.miniweb.http.HTTPMethod;
 import com.planet_ink.miniweb.interfaces.DataBuffers;
 import com.planet_ink.miniweb.interfaces.FileCacheManager;
@@ -26,6 +25,7 @@ import com.planet_ink.miniweb.interfaces.SimpleServletSession;
 import com.planet_ink.miniweb.util.MWDataBuffers;
 import com.planet_ink.miniweb.util.MiniWebConfig;
 import com.planet_ink.miniweb.util.MWRequestStats;
+import com.planet_ink.coffee_mud.core.collections.Pair;
 
 /*
 Copyright 2012-2013 Bo Zimmerman

@@ -175,8 +175,9 @@ public class Destroy extends StdCommand
 			if (tArray[i] != null)
 			{
 				if((tArray[i] instanceof TickableGroup)
-				&&(((TickableGroup)tArray[i]).lastTicked()!=null)
-				&&(((TickableGroup)tArray[i]).lastTicked().getTickStatus()==0))
+				&&(((TickableGroup)tArray[i]).getLastTicked()!=null)
+				&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject()!=null)
+				&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject().getTickStatus()==0))
 					continue;
 				if((tArray[i] instanceof Tickable)
 				&&(((Tickable)tArray[i]).getTickStatus()==0))

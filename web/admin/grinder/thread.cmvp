@@ -66,7 +66,7 @@
 		<TD ALIGN=CENTER><FONT COLOR=WHITE>@SystemInfo?tickerID@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
 		<TD ALIGN=CENTER><FONT COLOR=WHITE>@SystemInfo?tickerTickDown@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
 		<TD ALIGN=CENTER><FONT COLOR=WHITE>@SystemInfo?tickerReTickDown@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
-		<TD><FONT SIZE=-2 COLOR=WHITE>@SystemInfo?tickercodeword@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @ (@SystemInfo?tickerstatus@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @)</FONT></TD>
+		<TD><FONT SIZE=-2 COLOR=WHITE>@SystemInfo?tickercodeword@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @ (@SystemInfo?tickerstatusstr@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @)</FONT></TD>
 		<TD><FONT COLOR=WHITE>@SystemInfo?tickerlaststartdate@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
 		<TD><FONT COLOR=WHITE>@SystemInfo?tickermilliavg@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
 		</TR>

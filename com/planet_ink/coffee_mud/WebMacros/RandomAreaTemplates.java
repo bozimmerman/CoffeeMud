@@ -79,8 +79,8 @@ public class RandomAreaTemplates extends StdWebMacro
 				String lastID="";
 				for(Iterator<String> r=fileList.iterator();r.hasNext();)
 				{
-					String RC=(String)r.next();
-					if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!RC.equals(lastID))))
+					String RC=r.next();
+					if((last.length()>0)&&(last.equals(lastID))&&(!RC.equals(lastID)))
 					{
 						httpReq.addFakeUrlParameter("RTEMPLATE",RC);
 						return "";

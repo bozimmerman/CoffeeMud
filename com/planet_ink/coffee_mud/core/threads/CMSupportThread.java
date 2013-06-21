@@ -90,16 +90,6 @@ public class CMSupportThread extends Thread implements CMRunnable
 		return true;
 	}
 	
-	public void debugDumpStack(final String ID, Thread theThread)
-	{
-		// I wish Java had compiler directives.  Would be great to un-comment this for 1.5 JVMs
-		java.lang.StackTraceElement[] s=theThread.getStackTrace();
-		StringBuffer dump = new StringBuffer("");
-		for(int i=0;i<s.length;i++)
-			dump.append("\n   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
-		Log.debugOut(ID,dump.toString());
-	}
-	
 	public void run()
 	{
 		try {

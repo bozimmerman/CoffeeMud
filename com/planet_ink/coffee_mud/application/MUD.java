@@ -22,7 +22,6 @@ import com.planet_ink.coffee_mud.core.database.DBConnection;
 import com.planet_ink.coffee_mud.core.database.DBInterface;
 import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
-import com.planet_ink.coffee_mud.core.threads.Tick;
 import com.planet_ink.coffee_mud.core.smtp.SMTPserver;
 import com.planet_ink.coffee_mud.core.intermud.IMudClient;
 import com.planet_ink.coffee_mud.core.intermud.cm1.CM1Server;
@@ -1144,10 +1143,13 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+T.ID()+"-"+T.name()+"-"+T.getTickStatus() + "\n\r");
 				}
 				else
-				if((tArray[i] instanceof Tick)
-				&&(((Tick)tArray[i]).lastClient!=null)
-				&&(((Tick)tArray[i]).lastClient.clientObject!=null))
-					Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+tArray[i].getName()+" "+((Tick)tArray[i]).lastClient.clientObject.ID()+"-"+((Tick)tArray[i]).lastClient.clientObject.name()+"-"+((Tick)tArray[i]).lastClient.clientObject.getTickStatus() + "\n\r");
+				if((tArray[i] instanceof TickableGroup)
+				&&(((TickableGroup)tArray[i]).getLastTicked()!=null)
+				&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject()!=null))
+				{
+					final Tickable C = ((TickableGroup)tArray[i]).getLastTicked().getClientObject();
+					Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+tArray[i].getName()+" "+C.ID()+"-"+C.name()+"-"+C.getTickStatus() + "\n\r");
+				}
 				else
 					Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+tArray[i].getName() + "\n\r");
 			}

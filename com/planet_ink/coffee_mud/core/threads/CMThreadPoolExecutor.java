@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.concurrent.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.core.CMLib;
@@ -33,28 +34,46 @@ limitations under the License.
 public class CMThreadPoolExecutor extends ThreadPoolExecutor 
 {
 	protected PairSVector<Thread,CMRunnable> active = new PairSVector<Thread,CMRunnable>();
-	protected long  				 timeoutMillis;
-	protected CMThreadFactory   	 threadFactory;
-	protected int   				 queueSize = 0;
-	protected String				 poolName = "Pool";
-	protected volatile long 		 lastRejectTime = 0;
-	protected volatile int  		 rejectCount = 0;
+	protected long  				timeoutMillis;
+	protected CMThreadFactory   	threadFactory;
+	protected int   				queueSize = 0;
+	protected String				poolName = "Pool";
+	protected volatile long 		lastRejectTime = 0;
+	protected volatile int  		rejectCount = 0;
+	private final AtomicInteger 	activeCount = new AtomicInteger();
+
+	protected static class CMArrayBlockingQueue<E> extends ArrayBlockingQueue<E>{
+		private static final long serialVersionUID = -4557809818979881831L;
+		public CMThreadPoolExecutor executor = null;
+		public CMArrayBlockingQueue(int capacity) { super(capacity);}
+		@Override public boolean offer(E o) {
+			final int allWorkingThreads = executor.getActiveCount() + super.size();
+			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
+		}
+	};
 	
 	public CMThreadPoolExecutor(String poolName,
 								int corePoolSize, int maximumPoolSize,
 								long keepAliveTime, TimeUnit unit, 
 								long timeoutMins, int queueSize) 
 	{
-		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new ArrayBlockingQueue<Runnable>(queueSize));
+		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new CMArrayBlockingQueue<Runnable>(queueSize));
+		((CMArrayBlockingQueue<Runnable>)this.getQueue()).executor=this;
 		timeoutMillis=timeoutMins * 60 * 1000;
 		this.poolName=poolName;
 		threadFactory=new CMThreadFactory(poolName);
 		setThreadFactory(threadFactory);
 		this.queueSize=queueSize;
+		setRejectedExecutionHandler(new RejectedExecutionHandler(){
+			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+				try { executor.getQueue().put(r); } catch (InterruptedException e) { throw new RejectedExecutionException(e); }
+			}
+		});
 	}
 
 	protected void beforeExecute(Thread t, Runnable r) 
 	{ 
+		activeCount.incrementAndGet();
 		synchronized(active)
 		{
 			if(r instanceof CMRunnable)
@@ -64,11 +83,25 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	
 	protected void afterExecute(Runnable r, Throwable t) 
 	{ 
+		activeCount.decrementAndGet();
 		synchronized(active)
 		{
 			if(r instanceof CMRunnable)
 				active.removeSecond((CMRunnable)r);
 		}
+	}
+
+	@Override
+	public int getActiveCount() { return activeCount.get(); }
+	
+	public boolean isActive(Runnable r)
+	{
+		return active.contains(r);
+	}
+
+	public boolean isActiveOrQueued(Runnable r)
+	{
+		return active.contains(r) || getQueue().contains(r);
 	}
 
 	public void execute(Runnable r)

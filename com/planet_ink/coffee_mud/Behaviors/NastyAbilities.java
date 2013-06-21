@@ -77,7 +77,7 @@ public class NastyAbilities extends ActiveTicker
 			{
 				final MOB target=thisRoom.fetchRandomInhabitant();
 				MOB followMOB=target;
-				if(target.amFollowing()!=null)
+				if((target!=null)&&(target.amFollowing()!=null))
 					followMOB=target.amUltimatelyFollowing();
 				if((target!=null)
 				&&(target!=mob)
@@ -126,7 +126,7 @@ public class NastyAbilities extends ActiveTicker
 							{
 								MOB M=thisRoom.fetchInhabitant(i);
 								if(H.containsKey(M))
-									M.setVictim((MOB)H.get(M));
+									M.setVictim(H.get(M));
 								else
 									M.setVictim(null);
 							}

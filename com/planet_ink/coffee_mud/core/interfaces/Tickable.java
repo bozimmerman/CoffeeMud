@@ -68,8 +68,11 @@ public interface Tickable extends CMObject
 	 */
 	public boolean tick(Tickable ticking, int tickID);
 
-	/** a mask for tickids */
-	public final static int TICKMASK_SOLITARY=65536;
+	/** modifies a tickID to designate a longer wait before declaring dead.*/
+	public final static int TICKID_LONGERMASK=256;
+	/** modifies a tickID to designate that this object should tick by itself.*/
+	public final static int TICKID_SOLITARYMASK=65536;
+
 	/** the most common tickid, representing the tick of a mob*/
 	public final static int TICKID_MOB=0;
 	/** the tickid representing the tick of a behavior on an item*/
@@ -103,7 +106,7 @@ public interface Tickable extends CMObject
 	/** the tickid representing the ticking of a clan item*/
 	public final static int TICKID_CLANITEM=15;
 	/** the tickid representing the ticking of the smtp server*/
-	public final static int TICKID_EMAIL=TICKMASK_SOLITARY|16;
+	public final static int TICKID_EMAIL=TICKID_SOLITARYMASK|16;
 	/** the tickid representing the impending stop of a service*/
 	public final static int TICKID_READYTOSTOP=17;
 	/** the tickid for a live auction tick*/
@@ -116,8 +119,6 @@ public interface Tickable extends CMObject
 	public final static int TICKID_PROPERTY_SPECIAL=21;
 	/** the tickid for an electrical proactive action service*/
 	public final static int TICKID_ELECTRONICS=22;
-	/** modifies a tickID to designate a longer wait before declaring dead.*/
-	public final static int TICKID_LONGERMASK=256;
 
 	/** a tick status constant representing  the state of waiting for tick access */
 	public static long STATUS_NOT=0;

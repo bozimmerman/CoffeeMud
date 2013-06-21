@@ -69,8 +69,8 @@ public class NiceAbilities extends ActiveTicker
 			if(thisRoom.numPCInhabitants()>0)
 			{
 				final MOB target=thisRoom.fetchRandomInhabitant();
-				MOB followMOB=target;
-				if(target.amFollowing()!=null)
+				MOB followMOB = target;
+				if((target!=null)&&(target.amFollowing()!=null))
 					followMOB=target.amUltimatelyFollowing();
 				if((target!=null)
 				&&(target!=mob)
