@@ -1336,11 +1336,8 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						tickStatus=Tickable.STATUS_ALIVE;
 						isDebugging=CMSecurity.isDebugging(DbgFlag.CLANS);
-						if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
-						{
-							setThreadStatus(thread,"clan trophy scan");
-							clanTrophyScan();
-						}
+						setThreadStatus(thread,"clan trophy scan");
+						clanTrophyScan();
 						setThreadStatus(thread,"sleeping");
 					}
 					tickStatus=Tickable.STATUS_NOT;

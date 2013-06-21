@@ -121,7 +121,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return powerMsg;
 	}
 	
-	public boolean activate() 
+	public boolean activate()
 	{
 		if(thread==null)
 			thread=CMLib.threads().startTickDown(new Tickable(){

@@ -1093,7 +1093,8 @@ public class ServiceEngine implements ThreadEngine
 		Log.sysOut("ServiceEngine","Scheduler stopped");
 	}
 	
-	public boolean activate() {
+	public boolean activate() 
+	{
 		supportClient=startTickDown(new Tickable(){
 			private long tickStatus = Tickable.STATUS_NOT;
 			@Override public String ID() { return "THThreads"; }
