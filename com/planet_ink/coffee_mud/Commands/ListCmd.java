@@ -1968,6 +1968,7 @@ public class ListCmd extends StdCommand
 		/*64*/new ListCmdEntry("ALLQUALIFYS",new SecFlag[]{SecFlag.CMDABILITIES,SecFlag.LISTADMIN}),
 		/*65*/new ListCmdEntry("NEWS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.JOURNALS,SecFlag.NEWS}),
 		/*66*/new ListCmdEntry("AREAS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		/*67*/new ListCmdEntry("SESSIONS",new SecFlag[]{SecFlag.SESSIONS}),
 	};
 
 	public boolean pause(Session sess) 
@@ -2322,6 +2323,7 @@ public class ListCmd extends StdCommand
 		case 64: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
 		case 65: listNews(mob,commands); break;
 		case 66: listAreas(mob, commands); break;
+		case 67: { CMLib.commands().forceStandardCommand(mob, "SESSIONS", new XVector("SESSIONS")); break; }
 		case 999: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");
