@@ -616,13 +616,23 @@ public class CMSecurity
 		return isDebugging(flag);
 	}
 	
-	public static final void setDebugVar(final DbgFlag var, final boolean delete)
+	public static final DbgFlag setDebugVar(final DbgFlag var, final boolean delete)
 	{
 		if((var!=null)&&(delete)&&(dbgVars.size()>0))
 			dbgVars.remove(var);
 		else
 		if((var!=null)&&(!delete))
 			dbgVars.add(var);
+		return var;
+	}
+	
+	public static final DbgFlag setDebugVar(final String anyFlag, final boolean delete)
+	{
+		String flag = anyFlag.toUpperCase().trim();
+		DbgFlag disFlag = (DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), flag);
+		if(disFlag!=null)
+			return setDebugVar(disFlag,delete);
+		return null;
 	}
 	
 	public static final void setDebugVars(final String vars)
@@ -1148,10 +1158,18 @@ public class CMSecurity
 	
 	public static enum DbgFlag
 	{
-		PROPERTY, ARREST, CONQUEST, MUDPERCOLATOR, GMODIFY, MERGE, BADSCRIPTS, TELNET, CLASSLOADER, DBROOMPOP, DBROOMS, CMROIT, CMROEX, CMROCH, CMAREA, 
-		CMSTAT, HTTPMACROS, I3, HTTPACCESS, IMC2, SMTPSERVER, UTILITHREAD, MISSINGKIDS, FLAGWATCHING, CATALOGTHREAD, JOURNALTHREAD, 
-		MAPTHREAD, VACUUM, AUTOPURGE, PLAYERTHREAD, OUTPUT, EXPORT, STATSTHREAD, GEAS, SMTPCLIENT, MESSAGES, EVERYTHING, CMROOM, HTTPREQ, CMJRNL, IMPORT,
-		PLAYERSTATS, CLANS, BINOUT, BININ;
+		PROPERTY("room ownership"), ARREST("law enforcement"), CONQUEST("area conquering"), MUDPERCOLATOR("random area generation"), GMODIFY("global modify command"), 
+		MERGE("global object merging"), BADSCRIPTS("bad mobprog practices"), TELNET("telnet code negotiation"), CLASSLOADER("java class loading"), DBROOMPOP("room loading"), 
+		DBROOMS("room db activity"), CMROIT("room item db activity"), CMROEX("room exit db activity"), CMROCH("room mob db activity"), CMAREA("area db activity"), 
+		CMSTAT("stats db activity"), HTTPMACROS("web macro scripts"), I3("intermud3 communication"), HTTPACCESS("web access logging"), IMC2("intermud chat2 communication"), 
+		SMTPSERVER("email reception"), UTILITHREAD("session and tech maint"), MISSINGKIDS("babies"), FLAGWATCHING("clan flags"), CATALOGTHREAD("global obj catalog"), 
+		JOURNALTHREAD("journal msg maint"), MAPTHREAD("room maint"), VACUUM("room/obj expiration"), AUTOPURGE("player/account purging"), PLAYERTHREAD("player maint"), 
+		OUTPUT("all raw session output"), EXPORT("area exporting"), STATSTHREAD("stats maint"), GEAS("geas/slavery parsing"), SMTPCLIENT("email sending"), 
+		MESSAGES("internal core msgs"), EVERYTHING("everything"), CMROOM("room db creation"), HTTPREQ("web requests"), CMJRNL("journal db activity"), IMPORT("area importing"),
+		PLAYERSTATS("player stat loading"), CLANS("clan maint"), BINOUT("binary telnet input"), BININ("binary telnet output");
+		private final String desc;
+		DbgFlag(final String description){this.desc=description;}
+		public String description() { return desc;}
 	}
 	
 	public static enum DisFlag

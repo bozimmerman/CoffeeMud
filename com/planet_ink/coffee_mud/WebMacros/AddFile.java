@@ -18,7 +18,6 @@ import com.planet_ink.miniweb.http.HTTPMethod;
 import com.planet_ink.miniweb.http.MultiPartData;
 import com.planet_ink.miniweb.interfaces.*;
 import com.planet_ink.miniweb.util.MWThread;
-import com.planet_ink.miniweb.util.MiniWebConfig;
 
 import java.io.InputStream;
 import java.net.InetAddress;

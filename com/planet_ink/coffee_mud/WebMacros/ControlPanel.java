@@ -1,8 +1,11 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
 import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.miniweb.util.MWThread;
+import com.planet_ink.miniweb.util.MiniWebConfig;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -82,6 +85,50 @@ public class ControlPanel extends StdWebMacro
 		}
 		
 		
+		String lastDebug=httpReq.getUrlParameter("DEBUGFLAG");
+		if(parms.containsKey("ISDEBUGGING"))
+		{
+			return Log.debugChannelOn()?"true":"false";
+		}
+		if(parms.containsKey("DEBUGRESET"))
+		{
+			if(lastDebug!=null) httpReq.removeUrlParameter("DEBUGFLAG");
+			return "";
+		}
+		if(parms.containsKey("DEBUGNEXT"))
+		{
+			String lastID="";
+			for(CMSecurity.DbgFlag flag : CMSecurity.DbgFlag.values())
+			{
+				if((lastDebug==null)||((lastDebug.length()>0)&&(lastDebug.equals(lastID))&&(!flag.toString().equals(lastID))))
+				{
+					httpReq.addFakeUrlParameter("DEBUGFLAG",flag.toString());
+					return "";
+				}
+				lastID=flag.toString();
+			}
+			httpReq.addFakeUrlParameter("DEBUGFLAG","");
+			if(parms.containsKey("EMPTYOK"))
+				return "<!--EMPTY-->";
+			return " @break@";
+			
+		}
+		if(parms.containsKey("DEBUGID"))
+		{
+			if(lastDebug==null)
+				return " @break@";
+			return lastDebug;
+		}
+		if(parms.containsKey("DEBUGDESC"))
+		{
+			if(lastDebug==null)
+				return " @break@";
+			CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), lastDebug);
+			if(flag==null)
+				return " @break@";
+			return flag.description();
+		}
+		
 		String query=parms.get("QUERY");
 		if((query==null)||(query.length()==0))
 			return "";
@@ -96,6 +143,17 @@ public class ControlPanel extends StdWebMacro
 			return "";
 		}
 		else
+		if(query.equalsIgnoreCase("DEBUG"))
+		{
+			String field=parms.get("FIELD");
+			if((field==null)||(field.length()==0))
+				return "";
+			CMSecurity.DbgFlag flag = (CMSecurity.DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), field.toUpperCase().trim());
+			if((flag!=null)&&(CMSecurity.isDebugging(flag)))
+				return " CHECKED ";
+			return "";
+		}
+		else
 		if(query.equalsIgnoreCase("CHANGEDISABLE"))
 		{
 			String field=parms.get("FIELD");
@@ -103,6 +161,25 @@ public class ControlPanel extends StdWebMacro
 				return "";
 			String value=parms.get("VALUE");
 			CMSecurity.setDisableVar(field,((value!=null)&&(value.equalsIgnoreCase("on"))));
+			return "";
+		}
+		else
+		if(query.equalsIgnoreCase("CHANGEDEBUG"))
+		{
+			String field=parms.get("FIELD");
+			if((field==null)||(field.length()==0))
+				return "";
+			String value=parms.get("VALUE");
+			DbgFlag flag = CMSecurity.setDebugVar(field,((value!=null)&&(value.equalsIgnoreCase("on"))));
+			if((Thread.currentThread() instanceof MWThread)
+			&&((flag==DbgFlag.HTTPACCESS)||(flag==DbgFlag.HTTPREQ)))
+			{
+				MiniWebConfig config=((MWThread)Thread.currentThread()).getConfig();
+				if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
+					config.setDebugFlag(CMProps.instance().getStr("DBGMSGS"));
+				if(CMSecurity.isDebugging(DbgFlag.HTTPACCESS))
+					config.setAccessLogFlag(CMProps.instance().getStr("ACCMSGS"));
+			}
 			return "";
 		}
 		else

@@ -10,8 +10,8 @@
 	<!--
 		function Clicked(action)
 		{
-			document.CONTROL.action=action;
-			document.CONTROL.submit();
+			document.INIFORM.action=action;
+			document.INIFORM.submit();
 		}
 		function ClickedINI(action)
 		{
@@ -20,36 +20,51 @@
 		}
 		function inipage(action)
 		{
-			document.INIFORM.action='/grinder/control.cmvp#INICHANGES';
+			document.INIFORM.action='/grinder/control.cmvp';
 			document.INIFORM.INIPAGE.value=action;
 			document.INIFORM.submit();
 		}
 		function Disable(checked,field)
 		{
-			document.CONTROL.action='/grinder/control.cmvp';
-			document.CONTROL.QUERY.value='CHANGEDISABLE';
-			document.CONTROL.FIELD.value=field;
+			document.INIFORM.action='/grinder/control.cmvp';
+            document.INIFORM.INIPAGE.value="SWITCHES";
+			document.INIFORM.QUERY.value='CHANGEDISABLE';
+			document.INIFORM.FIELD.value=field;
 			if(checked)	
-				document.CONTROL.VALUE.value='';
+				document.INIFORM.VALUE.value='';
 			else	
-				document.CONTROL.VALUE.value='on';
-			document.CONTROL.submit();
+				document.INIFORM.VALUE.value='on';
+			document.INIFORM.submit();
 		}
+        function Debug(checked,field)
+        {
+            document.INIFORM.action='/grinder/control.cmvp';
+            document.INIFORM.INIPAGE.value="SWITCHES";
+            document.INIFORM.QUERY.value='CHANGEDEBUG';
+            document.INIFORM.FIELD.value=field;
+            if(checked) 
+                document.INIFORM.VALUE.value='';
+            else    
+                document.INIFORM.VALUE.value='on';
+            document.INIFORM.submit();
+        }
 		function Reset(checked,field,value)
 		{
-			document.CONTROL.action='/grinder/control.cmvp';
-			document.CONTROL.QUERY.value='RESET';
-			document.CONTROL.FIELD.value=field;
-			document.CONTROL.VALUE.value=value;
-			document.CONTROL.submit();
+			document.INIFORM.action='/grinder/control.cmvp';
+            document.INIFORM.INIPAGE.value="SWITCHES";
+			document.INIFORM.QUERY.value='RESET';
+			document.INIFORM.FIELD.value=field;
+			document.INIFORM.VALUE.value=value;
+			document.INIFORM.submit();
 		}
 		function Query(checked,field,value)
 		{
-			document.CONTROL.action='/grinder/control.cmvp';
-			document.CONTROL.QUERY.value='QUERY';
-			document.CONTROL.FIELD.value=field;
-			document.CONTROL.VALUE.value=value;
-			document.CONTROL.submit();
+			document.INIFORM.action='/grinder/control.cmvp';
+            document.INIFORM.INIPAGE.value="SWITCHES";
+			document.INIFORM.QUERY.value='QUERY';
+			document.INIFORM.FIELD.value=field;
+			document.INIFORM.VALUE.value=value;
+			document.INIFORM.submit();
 		}
 		function AddRemove(prepend,key,near,action)
 		{
@@ -63,7 +78,7 @@
 				alert('You must enter a value.');
 				return;
 			}
-			document.INIFORM.action='/grinder/control.cmvp#INICHANGES';
+			document.INIFORM.action='/grinder/control.cmvp';
 			document.INIFORM.CONTROL.value=action;
 			document.INIFORM.KEY.value=prepend+key;
 			document.INIFORM.NEAR.value=near;
@@ -88,8 +103,6 @@
 			            "Behavior",strFeatures, false);
 		}
 	//-->
-	</SCRIPT>
-	//-->
 	</script>
 </head>
 <body BGCOLOR=BLACK>
@@ -112,7 +125,7 @@
 	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud Control Panel</H2></FONT></TD></TR>
 	</TABLE>
 	<BR>
-	<FORM NAME=INIFORM TARGET=_top METHOD=POST ACTION="control.cmvp">
+	<FORM NAME=INIFORM TARGET=_top METHOD=POST ACTION="/grinder/control.cmvp">
 	<a name="INICHANGES"><INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@"></a>
 	<INPUT TYPE=HIDDEN NAME=INIPAGE VALUE="@RequestParameter?INIPAGE@">
 	@if?CheckReqParm?CONTROL=ADD@ @INIModify?ADDKEY&KEY=@@RequestParameter?KEY@@&NEAR=@@RequestParameter?NEAR@@&BLAH@<FONT COLOR=RED>** Key Added ** </FONT>@endif@
@@ -123,8 +136,9 @@
 	<INPUT TYPE=HIDDEN NAME=CONTROL VALUE="">
 	<TABLE WIDTH=100% BORDER=1>
 	<TR>
-	<TR><TD WIDTH=100% COLSPAN=10 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>INI Settings</B></FONT></TD></TR>
+	<TR><TD WIDTH=100% COLSPAN=11 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>INI Settings</B></FONT></TD></TR>
 	<TR BGCOLOR=WHITE>
+    <TD WIDTH=9% @if?CheckReqParm?INIPAGE=SWITCHES@BGCOLOR=BLACK@endif@><a href="javascript:inipage('SWITCHES')"><FONT @if?CheckReqParm?INIPAGE=SWITCHES@COLOR=WHITE@else@COLOR=BLACK@endif@>Switches</FONT></a></TD>
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=SECURITY@BGCOLOR=BLACK@endif@><a href="javascript:inipage('SECURITY')"><FONT @if?CheckReqParm?INIPAGE=SECURITY@COLOR=WHITE@else@COLOR=BLACK@endif@>Security</FONT></a></TD>
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=ROOMS@BGCOLOR=BLACK@endif@><a href="javascript:inipage('ROOMS')"><FONT @if?CheckReqParm?INIPAGE=ROOMS@COLOR=WHITE@else@COLOR=BLACK@endif@>Default Rooms</FONT></a></TD>
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=CHANNELS@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CHANNELS')"><FONT @if?CheckReqParm?INIPAGE=CHANNELS@COLOR=WHITE@else@COLOR=BLACK@endif@>Channels</FONT></a></TD>
@@ -136,7 +150,7 @@
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=CALENDAR@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CALENDAR')"><FONT @if?CheckReqParm?INIPAGE=CALENDAR@COLOR=WHITE@else@COLOR=BLACK@endif@>Calendar</FONT></a></TD>
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=MISC@BGCOLOR=BLACK@endif@><a href="javascript:inipage('MISC')"><FONT @if?CheckReqParm?INIPAGE=MISC@COLOR=WHITE@else@COLOR=BLACK@endif@>Miscellanous</FONT></a></TD>
 	</TR>
-	<TR><TD WIDTH=100% COLSPAN=10 VALIGN=TOP>
+	<TR><TD WIDTH=100% COLSPAN=11 VALIGN=TOP>
 	@if?CheckReqParm?INIPAGE=@
 	<BR><BR>
 	<FONT COLOR=WHITE><B>Instructions: Select a tab above to view a new page.  
@@ -1244,39 +1258,57 @@
 		
 		</TABLE>
 	@endif@
-	<P><CENTER><INPUT TYPE=BUTTON NAME=INISUBMIT VALUE="Submit Changes" ONCLICK="AddRemove('',' ','','UPDATE');"></CENTER>
+    @if?!CheckReqParm?INIPAGE=SWITCHES@
+	   <P><CENTER><INPUT TYPE=BUTTON NAME=INISUBMIT VALUE="Submit Changes" ONCLICK="AddRemove('',' ','','UPDATE');"></CENTER>
+	@else@
+        <INPUT TYPE=HIDDEN NAME=QUERY VALUE="">
+        <INPUT TYPE=HIDDEN NAME=FIELD VALUE="">
+        <INPUT TYPE=HIDDEN NAME=VALUE VALUE="">
+        <TABLE WIDTH=100% BORDER=1>
+        <TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>Subsystem Disable Switches</B></FONT></TD></TR>
+        @ControlPanel?DISABLERESET@
+        @loop@
+        @ControlPanel?DISABLENEXT@
+        <TR>
+            <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DISABLEID@ @ControlPanel?QUERY=DISABLE&FIELD=@@ControlPanel?DISABLEID@@ @ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable @ControlPanel?DISABLEDESC@</FONT></TD>
+            @ControlPanel?DISABLENEXT&EMPTYOK@
+            <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DISABLEID@ @ControlPanel?QUERY=DISABLE&FIELD=@@ControlPanel?DISABLEID@@ @ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable @ControlPanel?DISABLEDESC@</FONT></TD>
+            @ControlPanel?DISABLENEXT&EMPTYOK@
+            <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DISABLEID@ @ControlPanel?QUERY=DISABLE&FIELD=@@ControlPanel?DISABLEID@@ @ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable @ControlPanel?DISABLEDESC@</FONT></TD>
+            @ControlPanel?DISABLENEXT&EMPTYOK@
+            <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DISABLEID@ @ControlPanel?QUERY=DISABLE&FIELD=@@ControlPanel?DISABLEID@@ @ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable @ControlPanel?DISABLEDESC@</FONT></TD>
+        </TR>
+        @back@
+        </TABLE>
+        @if?ControlPanel?ISDEBUGGING@
+            <BR>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>Debug Switches</B> <i><FONT SIZE=-1>(Requires DBGMSGS from INI file)</I></FONT></FONT></TD></TR>
+            @ControlPanel?DEBUGRESET@
+            @loop@
+            @ControlPanel?DEBUGNEXT@
+            <TR>
+                <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DEBUGID@ @ControlPanel?QUERY=DEBUG&FIELD=@@ControlPanel?DEBUGID@@ @ ONCLICK="Debug(this.checked,this.name);"><FONT COLOR=WHITE>Debug @ControlPanel?DEBUGDESC@</FONT></TD>
+                @ControlPanel?DEBUGNEXT&EMPTYOK@
+                <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DEBUGID@ @ControlPanel?QUERY=DEBUG&FIELD=@@ControlPanel?DEBUGID@@ @ ONCLICK="Debug(this.checked,this.name);"><FONT COLOR=WHITE>Debug @ControlPanel?DEBUGDESC@</FONT></TD>
+                @ControlPanel?DEBUGNEXT&EMPTYOK@
+                <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DEBUGID@ @ControlPanel?QUERY=DEBUG&FIELD=@@ControlPanel?DEBUGID@@ @ ONCLICK="Debug(this.checked,this.name);"><FONT COLOR=WHITE>Debug @ControlPanel?DEBUGDESC@</FONT></TD>
+                @ControlPanel?DEBUGNEXT&EMPTYOK@
+                <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DEBUGID@ @ControlPanel?QUERY=DEBUG&FIELD=@@ControlPanel?DEBUGID@@ @ ONCLICK="Debug(this.checked,this.name);"><FONT COLOR=WHITE>Debug @ControlPanel?DEBUGDESC@</FONT></TD>
+            </TR>
+            @back@
+            </TABLE>
+        @endif@
+        <BR>
+        <TABLE WIDTH=100% BORDER=1>
+        <TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>Database Control</B></FONT></TD></TR>
+        <TR>
+            <TD WIDTH=50% COLSPAN=2 ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=DATABASE2 ONCLICK="Query(this.checked,'DATABASE','');"><FONT COLOR=WHITE>Query Database Engine</FONT></TD>
+            <TD WIDTH=50% COLSPAN=2 ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=DATABASE1 ONCLICK="if(confirm('Reset your database connections?'))Reset(this.checked,'DATABASE','');"><FONT COLOR=WHITE>Reset Database Connections</FONT></TD>
+        </TR>
+        </TABLE>
+	@endif@
 	</TD></TR>
-	</TABLE>
-	</FORM>
-	<FORM NAME=CONTROL TARGET=_top METHOD=POST ACTION="control.cmvp">
-	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-	<INPUT TYPE=HIDDEN NAME=QUERY VALUE="">
-	<INPUT TYPE=HIDDEN NAME=FIELD VALUE="">
-	<INPUT TYPE=HIDDEN NAME=VALUE VALUE="">
-	<INPUT TYPE=HIDDEN NAME=INIPAGE VALUE="">
-	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>Toggle Switches</B></FONT></TD></TR>
-	@ControlPanel?DISABLERESET@
-	@loop@
-	@ControlPanel?DISABLENEXT@
-	<TR>
-		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DISABLEID@ @ControlPanel?QUERY=DISABLE&FIELD=@@ControlPanel?DISABLEID@@ @ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable @ControlPanel?DISABLEDESC@</FONT></TD>
-		@ControlPanel?DISABLENEXT&EMPTYOK@
-        <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DISABLEID@ @ControlPanel?QUERY=DISABLE&FIELD=@@ControlPanel?DISABLEID@@ @ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable @ControlPanel?DISABLEDESC@</FONT></TD>
-        @ControlPanel?DISABLENEXT&EMPTYOK@
-        <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DISABLEID@ @ControlPanel?QUERY=DISABLE&FIELD=@@ControlPanel?DISABLEID@@ @ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable @ControlPanel?DISABLEDESC@</FONT></TD>
-        @ControlPanel?DISABLENEXT&EMPTYOK@
-        <TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=@ControlPanel?DISABLEID@ @ControlPanel?QUERY=DISABLE&FIELD=@@ControlPanel?DISABLEID@@ @ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable @ControlPanel?DISABLEDESC@</FONT></TD>
-	</TR>
-	@back@
-	</TABLE>
-	<BR>
-	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>Database Control</B></FONT></TD></TR>
-	<TR>
-		<TD WIDTH=50% COLSPAN=2 ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=DATABASE2 ONCLICK="Query(this.checked,'DATABASE','');"><FONT COLOR=WHITE>Query Database Engine</FONT></TD>
-		<TD WIDTH=50% COLSPAN=2 ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=DATABASE1 ONCLICK="if(confirm('Reset your database connections?'))Reset(this.checked,'DATABASE','');"><FONT COLOR=WHITE>Reset Database Connections</FONT></TD>
-	</TR>
 	</TABLE>
 	</FORM>
 </BODY>
