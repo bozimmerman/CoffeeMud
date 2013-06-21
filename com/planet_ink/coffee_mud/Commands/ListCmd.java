@@ -307,12 +307,12 @@ public class ListCmd extends StdCommand
 					lines.append("Tick "+tArray[i].getName()+" "+T.ID()+"-"+T.name()+"-"+T.getTickStatus()+" ("+CMLib.threads().getTickStatusSummary(T)+")\n\r");
 				}
 				else
-				if(tArray[i] instanceof CMSupportThread)
+				if(tArray[i] instanceof TickClient)
 				{
-					CMSupportThread t = (CMSupportThread)tArray[i];
+					TickClient t = (TickClient)tArray[i];
 					lines.append("Thread "+t.getName()+" "
 							+"-"+t.getStatus()
-							+" ("+CMLib.time().date2EllapsedTime(t.activeTimeMillis(), TimeUnit.MILLISECONDS, true)+")\n\r");
+							+" ("+CMLib.time().date2EllapsedTime(t.getMilliTotal(), TimeUnit.MILLISECONDS, true)+")\n\r");
 				}
 				else
 				{

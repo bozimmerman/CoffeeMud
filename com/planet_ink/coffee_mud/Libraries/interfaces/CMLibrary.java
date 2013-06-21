@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 
 /* 
 Copyright 2000-2013 Bo Zimmerman
@@ -22,5 +21,5 @@ public interface CMLibrary extends CMObject
 	public boolean activate();
 	public boolean shutdown();
 	public void propertiesLoaded();
-	public CMSupportThread getSupportThread();
+	public TickClient getSupportThread();
 }

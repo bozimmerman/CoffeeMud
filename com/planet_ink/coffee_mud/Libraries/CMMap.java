@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -54,8 +54,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Map<String,SLinkedList<LocatedPair>>
 								scriptHostMap			= new STreeMap<String,SLinkedList<LocatedPair>>();
 
-	private CMSupportThread 	thread	 = null;
-	public CMSupportThread getSupportThread() { return thread;}
+	private TickClient 			thread	 = null;
+	public TickClient getSupportThread() { return thread;}
 	
 	private static final long EXPIRE_1MIN	= 1*60*1000;
 	private static final long EXPIRE_5MINS	= 5*60*1000;
@@ -2088,31 +2088,50 @@ public class CMMap extends StdLibrary implements WorldMap
 	public boolean activate() 
 	{
 		if(thread==null)
-			thread=new CMSupportThread("THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.MAPTHREAD), CMSecurity.DisFlag.MAPTHREAD);
-		if(!thread.isStarted())
-			thread.start();
+			thread=CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
+				@Override public String ID() { return "THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+				@Override public CMObject newInstance() { return this; }
+				@Override public CMObject copyOf() { return this; }
+				@Override public void initializeClass() { }
+				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+				@Override public String name() { return ID(); }
+				@Override public long getTickStatus() { return tickStatus; }
+				@Override public boolean tick(Tickable ticking, int tickID) {
+					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAPTHREAD)))
+					{
+						isDebugging=CMSecurity.isDebugging(DbgFlag.MAPTHREAD);
+						tickStatus=Tickable.STATUS_ALIVE;
+						roomMaintSweep();
+						setThreadStatus(thread,"sleeping");
+					}
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
 		return true;
 	}
 	
-	public boolean shutdown() {
+	public boolean shutdown() 
+	{
 		areasList.clear();
 		deitiesList.clear();
 		space.clear();
 		globalHandlers.clear();
-		thread.shutdown();
+		if((thread!=null)&&(thread.getClientObject()!=null))
+		{
+			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			thread=null;
+		}
 		return true;
 	}
 	
-	public void run()
+	public void roomMaintSweep()
 	{
-		if((CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
-		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MAPTHREAD)))
-			return;
-		
 		final boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
 		final boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
-		thread.setStatus("expiration sweep");
+		setThreadStatus(thread,"expiration sweep");
 		final long currentTime=System.currentTimeMillis();
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.VACUUM);
 		final MOB expireM=getFactoryMOB(null);
@@ -2163,7 +2182,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					for(int s=0;s<stuffToGo.size();s++)
 					{
 						Environmental E=stuffToGo.elementAt(s);
-						thread.setStatus("expiring "+E.Name());
+						setThreadStatus(thread,"expiring "+E.Name());
 						expireMsg.setTarget(E);
 						if(R.okMessage(expireM,expireMsg))
 							R.sendOthers(expireM,expireMsg);
@@ -2179,7 +2198,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				R=roomsToGo.elementAt(r);
 				expireM.setLocation(R);
 				expireMsg.setTarget(R);
-				thread.setStatus("expirating room "+getExtendedRoomID(R));
+				setThreadStatus(thread,"expirating room "+getExtendedRoomID(R));
 				if(debug)
 				{
 					String roomID=getExtendedRoomID(R);
@@ -2191,7 +2210,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			
 		}
 		catch(java.util.NoSuchElementException e){}
-		thread.setStatus("title sweeping");
+		setThreadStatus(thread,"title sweeping");
 		List<String> playerList=CMLib.database().getUserList();
 		try
 		{
@@ -2201,19 +2220,19 @@ public class CMMap extends StdLibrary implements WorldMap
 				LandTitle T=CMLib.law().getLandTitle(R);
 				if(T!=null)
 				{
-					thread.setStatus("checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
+					setThreadStatus(thread,"checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
 					T.updateLot(playerList);
-					thread.setStatus("title sweeping");
+					setThreadStatus(thread,"title sweeping");
 				}
 			}
 		}catch(NoSuchElementException nse){}
 		
-		thread.setStatus("cleaning scripts");
+		setThreadStatus(thread,"cleaning scripts");
 		for(String areaKey : scriptHostMap.keySet())
 			cleanScriptHosts(scriptHostMap.get(areaKey), null, true);
 		
 		long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
-		thread.setStatus("checking");
+		setThreadStatus(thread,"checking");
 		try
 		{
 			for(Enumeration<Room> r=rooms();r.hasMoreElements();)
@@ -2242,10 +2261,10 @@ public class CMMap extends StdLibrary implements WorldMap
 							}
 							else
 								Log.errOut(thread.getName(),"Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
-							thread.setStatus("destroying unticked mob "+mob.name());
+							setThreadStatus(thread,"destroying unticked mob "+mob.name());
 							if(CMLib.players().getPlayer(mob.Name())==null) mob.destroy();
 							R.delInhabitant(mob);
-							thread.setStatus("checking");
+							setThreadStatus(thread,"checking");
 						}
 					}
 				}

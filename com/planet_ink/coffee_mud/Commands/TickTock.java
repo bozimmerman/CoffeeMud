@@ -66,7 +66,7 @@ public class TickTock extends StdCommand
 						if(lib instanceof Runnable)
 							((Runnable)lib).run();
 						else
-							lib.getSupportThread().interrupt();
+							lib.getSupportThread().tickTicker(true);
 						mob.tell("Done.");
 						return false;
 					}

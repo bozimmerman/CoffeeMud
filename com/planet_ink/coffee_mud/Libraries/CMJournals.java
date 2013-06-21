@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -41,8 +41,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	protected SHashtable<String,CommandJournal> commandJournals=new SHashtable<String,CommandJournal>();
 	protected SHashtable<String,ForumJournal> 	forumJournals=new SHashtable<String,ForumJournal>();
 	
-	private CMSupportThread thread=null;
-	public CMSupportThread getSupportThread() { return thread;}
+	private TickClient thread=null;
+	public TickClient getSupportThread() { return thread;}
 	
 	@SuppressWarnings("unchecked")
     protected Hashtable<String,JournalSummaryStats> getSummaryStats()
@@ -294,7 +294,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	
 	public void expirationJournalSweep()
 	{
-		thread.setStatus("expiration journal sweeping");
+		setThreadStatus(thread,"expiration journal sweeping");
 		try
 		{
 			for(Enumeration<CommandJournal> e=commandJournals();e.hasMoreElements();)
@@ -303,7 +303,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				String num=CMJ.getFlag(CommandJournalFlags.EXPIRE);
 				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
-					thread.setStatus("updating journal "+CMJ.NAME());
+					setThreadStatus(thread,"updating journal "+CMJ.NAME());
 					List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
@@ -319,7 +319,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
 						}
 					}
-					thread.setStatus("command journal sweeping");
+					setThreadStatus(thread,"command journal sweeping");
 				}
 			}
 		}catch(NoSuchElementException nse){}
@@ -331,7 +331,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				String num=FMJ.getFlag(CommandJournalFlags.EXPIRE);
 				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
-					thread.setStatus("updating journal "+FMJ.NAME());
+					setThreadStatus(thread,"updating journal "+FMJ.NAME());
 					List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
 					if(items!=null)
 					for(int i=items.size()-1;i>=0;i--)
@@ -350,22 +350,42 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							}
 						}
 					}
-					thread.setStatus("forum journal sweeping");
+					setThreadStatus(thread,"forum journal sweeping");
 				}
 			}
 		}catch(NoSuchElementException nse){}
 	}
 	
-	public boolean activate() {
+	public boolean activate() 
+	{
 		if(thread==null)
-			thread=new CMSupportThread("THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.JOURNALTHREAD), CMSecurity.DisFlag.JOURNALTHREAD);
-		if(!thread.isStarted())
-			thread.start();
+			thread=CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
+				@Override public String ID() { return "THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+				@Override public CMObject newInstance() { return this; }
+				@Override public CMObject copyOf() { return this; }
+				@Override public void initializeClass() { }
+				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+				@Override public String name() { return ID(); }
+				@Override public long getTickStatus() { return tickStatus; }
+				@Override public boolean tick(Tickable ticking, int tickID) {
+					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.JOURNALTHREAD)))
+					{
+						isDebugging=CMSecurity.isDebugging(DbgFlag.JOURNALTHREAD);
+						tickStatus=Tickable.STATUS_ALIVE;
+						expirationJournalSweep();
+						setThreadStatus(thread,"sleeping");
+					}
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
 		return true;
 	}
 	
-	private void clearCommandJournals() {
+	private void clearCommandJournals() 
+	{
 		commandJournals=new SHashtable<String,CommandJournal>();
 	}
 	
@@ -375,27 +395,24 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	
 	public ForumJournal getForumJournal(String named) { return forumJournals.get(named.toUpperCase().trim());}
 	
-	private void clearForumJournals() {
+	private void clearForumJournals() 
+	{
 		forumJournals=new SHashtable<String,ForumJournal>();
 		Resources.removeResource("FORUM_JOURNAL_STATS");
 	}
 	
-	public boolean shutdown() {
+	public boolean shutdown() 
+	{
 		clearCommandJournals();
 		clearForumJournals();
-		thread.shutdown();
+		if((thread!=null)&&(thread.getClientObject()!=null))
+		{
+			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			thread=null;
+		}
 		return true;
 	}
 	
-	public void run()
-	{
-		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.JOURNALTHREAD)))
-		{
-			expirationJournalSweep();
-		}
-	}
-
 	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException
 	{
 		final Session sess=mob.session();

@@ -1,8 +1,8 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
@@ -47,9 +47,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	protected long[] 					prePurgeLevels		= new long[1];
 	protected int						autoPurgeHash		= 0;
 	
-	private CMSupportThread thread=null;
-	
-	public CMSupportThread getSupportThread() { return thread;}
+	private TickClient thread=null;
+	public TickClient getSupportThread() { return thread;}
 
 	public int numPlayers() { return playersList.size(); }
 	public synchronized void addPlayer(MOB newOne)
@@ -359,21 +358,21 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if(!mob.isMonster())
 			{
 				CMLib.factions().updatePlayerFactions(mob,mob.location());
-				thread.setStatus("just saving "+mob.Name());
+				setThreadStatus(thread,"just saving "+mob.Name());
 				CMLib.database().DBUpdatePlayerMOBOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
-				thread.setStatus("saving "+mob.Name()+", "+mob.numItems()+" items");
+				setThreadStatus(thread,"saving "+mob.Name()+", "+mob.numItems()+" items");
 				CMLib.database().DBUpdatePlayerItems(mob);
-				thread.setStatus("saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
+				setThreadStatus(thread,"saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
 				CMLib.database().DBUpdatePlayerAbilities(mob);
-				thread.setStatus("saving "+mob.numFollowers()+" followers of "+mob.Name());
+				setThreadStatus(thread,"saving "+mob.numFollowers()+" followers of "+mob.Name());
 				CMLib.database().DBUpdateFollowers(mob);
 				PlayerAccount account = mob.playerStats().getAccount();
 				mob.playerStats().setLastUpdated(System.currentTimeMillis());
 				if(account!=null)
 				{
-					thread.setStatus("saving account "+account.accountName()+" for "+mob.Name());
+					setThreadStatus(thread,"saving account "+account.accountName()+" for "+mob.Name());
 					CMLib.database().DBUpdateAccount(account);
 					account.setLastUpdated(System.currentTimeMillis());
 				}
@@ -384,13 +383,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			&&((mob.playerStats().lastUpdated()==0)
 			   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
 			{
-				thread.setStatus("just saving "+mob.Name());
+				setThreadStatus(thread,"just saving "+mob.Name());
 				CMLib.database().DBUpdatePlayerMOBOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
-				thread.setStatus("just saving "+mob.Name()+", "+mob.numItems()+" items");
+				setThreadStatus(thread,"just saving "+mob.Name()+", "+mob.numItems()+" items");
 				CMLib.database().DBUpdatePlayerItems(mob);
-				thread.setStatus("just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
+				setThreadStatus(thread,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
 				CMLib.database().DBUpdatePlayerAbilities(mob);
 				mob.playerStats().setLastUpdated(System.currentTimeMillis());
 				processed++;
@@ -617,7 +616,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			this.autoPurgeHash=mask.hashCode();
 		}
-		thread.setStatus("autopurge process");
+		setThreadStatus(thread,"autopurge process");
 		List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if(protectedOnes==null) protectedOnes=new Vector<String>();
@@ -795,46 +794,74 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 	}
 
-	public boolean activate() {
+	public boolean activate() 
+	{
 		if(thread==null)
-			thread=new CMSupportThread("THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERTHREAD), CMSecurity.DisFlag.PLAYERTHREAD);
-		if(!thread.isStarted())
-			thread.start();
+			thread=CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
+				@Override public String ID() { return "THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+				@Override public CMObject newInstance() { return this; }
+				@Override public CMObject copyOf() { return this; }
+				@Override public void initializeClass() { }
+				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+				@Override public String name() { return ID(); }
+				@Override public long getTickStatus() { return tickStatus; }
+				@Override public boolean tick(Tickable ticking, int tickID) {
+					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD))
+					{
+						tickStatus=Tickable.STATUS_ALIVE;
+						isDebugging=CMSecurity.isDebugging(DbgFlag.PLAYERTHREAD);
+						setThreadStatus(thread,"checking database health");
+						String ok=CMLib.database().errorStatus();
+						if((ok.length()!=0)&&(!ok.startsWith("OK")))
+						{
+							Log.errOut(thread.getName(),"DB: "+ok);
+							CMLib.s_sleep(100000);
+						}
+						else
+						{
+							setThreadStatus(thread,"pinging connections");
+							CMLib.database().pingAllConnections();
+							setThreadStatus(thread,"not saving players");
+							if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+							&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)))
+							{
+								setThreadStatus(thread,"checking player titles.");
+								for(MOB M : playersList)
+									if(M.playerStats()!=null)
+									{
+										if((CMLib.titles().evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
+											CMLib.database().DBUpdatePlayerMOBOnly(M);
+									}
+								autoPurge();
+								if(!CMSecurity.isSaveFlag("NOPLAYERS"))
+									savePlayers();
+								setThreadStatus(thread,"not saving players");
+							}
+						}
+						setThreadStatus(thread,"sleeping");
+					}
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
 		return true;
 	}
 	
-	public boolean shutdown() {
+	public boolean shutdown() 
+	{
 		playersList.clear();
 		playerLocations.clear();
-		thread.shutdown();
+		if((thread!=null)&&(thread.getClientObject()!=null))
+		{
+			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			thread=null;
+		}
 		return true;
 	}
 	
 	public void forceTick()
 	{
-		thread.forceTick();
-	}
-
-	public void run()
-	{
-		thread.setStatus("pinging connections");
-		CMLib.database().pingAllConnections();
-		thread.setStatus("not saving players");
-		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)))
-		{
-			thread.setStatus("checking player titles.");
-			for(MOB M : playersList)
-				if(M.playerStats()!=null)
-				{
-					if((CMLib.titles().evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
-						CMLib.database().DBUpdatePlayerMOBOnly(M);
-				}
-			autoPurge();
-			if(!CMSecurity.isSaveFlag("NOPLAYERS"))
-				savePlayers();
-			thread.setStatus("not saving players");
-		}
+		thread.tickTicker(false);
 	}
 }

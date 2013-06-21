@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -36,9 +36,9 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 {
 	public String ID(){return "CoffeeTables";}
 	public CoffeeTableRow todays=null;
-	private CMSupportThread thread=null;
 	
-	public CMSupportThread getSupportThread() { return thread;}
+	private TickClient thread=null;
+	public TickClient getSupportThread() { return thread;}
 	
 	public void update()
 	{
@@ -119,27 +119,52 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		todays.bumpVal(E,type);
 	}
 	
-	public boolean activate() {
-		if(thread==null)
-			thread=new CMSupportThread("THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.STATSTHREAD), CMSecurity.DisFlag.STATSTHREAD);
-		if(!thread.isStarted())
-			thread.start();
-		return true;
-	}
-	
-	public boolean shutdown() {
-		thread.shutdown();
-		return true;
-	}
-	
-	public void run()
+	public boolean activate() 
 	{
-		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.STATSTHREAD)))
+		if(thread==null)
+			thread=CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
+				@Override public String ID() { return "THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+				@Override public CMObject newInstance() { return this; }
+				@Override public CMObject copyOf() { return this; }
+				@Override public void initializeClass() { }
+				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+				@Override public String name() { return ID(); }
+				@Override public long getTickStatus() { return tickStatus; }
+				@Override public boolean tick(Tickable ticking, int tickID) {
+					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.STATSTHREAD)))
+					{
+						tickStatus=Tickable.STATUS_ALIVE;
+						isDebugging=CMSecurity.isDebugging(DbgFlag.STATSTHREAD);
+						setThreadStatus(thread,"checking database health");
+						String ok=CMLib.database().errorStatus();
+						if((ok.length()!=0)&&(!ok.startsWith("OK")))
+						{
+							Log.errOut(thread.getName(),"DB: "+ok);
+							CMLib.s_sleep(100000);
+						}
+						else
+						{
+							CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
+							CMLib.coffeeTables().update();
+						}
+						setThreadStatus(thread,"sleeping");
+					}
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+		return true;
+	}
+	
+	public boolean shutdown() 
+	{
+		if((thread!=null)&&(thread.getClientObject()!=null))
 		{
-			CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
-			CMLib.coffeeTables().update();
+			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			thread=null;
 		}
+		return true;
 	}
 }

@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -53,7 +52,7 @@ public class IMudClient implements I3Interface
 	public boolean activate(){ return true;}
 	public boolean shutdown(){ return true;}
 	public void propertiesLoaded(){}
-	public CMSupportThread getSupportThread() { return null;}
+	public TickClient getSupportThread() { return null;}
 	
 	public IMC2Driver imc2=null;
 	public void registerIMC2(Object O)

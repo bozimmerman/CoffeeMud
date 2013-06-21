@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public interface SessionsList extends CMLibrary, Runnable
+public interface SessionsList extends CMLibrary
 {
 	public void stopSessionAtAllCosts(Session S);
 	public Session findPlayerSessionOnline(String srchStr, boolean exactOnly);

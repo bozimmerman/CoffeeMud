@@ -51,6 +51,14 @@ public interface TickClient extends Comparable<TickClient>
 	public String getStatus();
 	
 	/**
+	 * Returns the name of this ticking client as a 
+	 * displayable String, usually just a translation
+	 * of the {@link Tickable#name()}
+	 * @return the TICKID_ constant assigned to this object
+	 */
+	public String getName();
+	
+	/**
 	 * Sets the status of this ticking client as a 
 	 * displayable String
 	 * @see TickClient#getStatus()

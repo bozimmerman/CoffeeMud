@@ -2,9 +2,9 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -48,24 +48,10 @@ public class Clans extends StdLibrary implements ClanManager
 	public List<Pair<Clan,Integer>>all2				  = new Vector<Pair<Clan,Integer>>();
 	public long	 		  		   lastGovernmentLoad = 0;
 
-	private CMSupportThread thread=null;
-	
-	public CMSupportThread getSupportThread() { return thread;}
+	private TickClient thread=null;
+	public TickClient getSupportThread() { return thread;}
 
 	public String ID(){return "Clans";}
-
-	public boolean shutdown()
-	{
-		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
-		{
-			Clan C=e.nextElement();
-			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
-		}
-		all.clear();
-		all2.clear();
-		thread.shutdown();
-		return true;
-	}
 
 	public boolean isCommonClanRelations(Clan C1, Clan C2, int relation)
 	{
@@ -1336,26 +1322,53 @@ public class Clans extends StdLibrary implements ClanManager
 	public boolean activate() 
 	{
 		if(thread==null)
-			thread=new CMSupportThread("THClans"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-					CMProps.getTickMillis()*CMProps.getTicksPerDay(), this, CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS), CMSecurity.DisFlag.CLANTICKS);
-		if(!thread.isStarted())
-			thread.start();
+			thread=CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
+				@Override public String ID() { return "THClans"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+				@Override public CMObject newInstance() { return this; }
+				@Override public CMObject copyOf() { return this; }
+				@Override public void initializeClass() { }
+				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+				@Override public String name() { return ID(); }
+				@Override public long getTickStatus() { return tickStatus; }
+				@Override public boolean tick(Tickable ticking, int tickID) {
+					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
+					{
+						tickStatus=Tickable.STATUS_ALIVE;
+						isDebugging=CMSecurity.isDebugging(DbgFlag.CLANS);
+						if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
+						{
+							setThreadStatus(thread,"clan trophy scan");
+							clanTrophyScan();
+						}
+						setThreadStatus(thread,"sleeping");
+					}
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis()*CMProps.getTicksPerDay(), 1);
 		return true;
 	}
 	
-	public void forceTick()
+	public boolean shutdown()
 	{
-		thread.forceTick();
+		for(Enumeration<Clan> e=all.elements();e.hasMoreElements();)
+		{
+			Clan C=e.nextElement();
+			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
+		}
+		all.clear();
+		all2.clear();
+		if((thread!=null)&&(thread.getClientObject()!=null))
+		{
+			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			thread=null;
+		}
+		return true;
 	}
 
-	public void run()
+	public void forceTick()
 	{
-		thread.setStatus("not doing clan trophy scan");
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
-		{
-			thread.setStatus("clan trophy scan");
-			clanTrophyScan();
-		}
-		thread.setStatus("not scanning trophies");
+		thread.tickTicker(false);
 	}
 }

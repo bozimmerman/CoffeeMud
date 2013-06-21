@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 
 /*
 Copyright 2008-2013 Bo Zimmerman
@@ -43,5 +42,15 @@ public class StdLibrary implements CMLibrary
 	public boolean activate(){ return true;}
 	public void propertiesLoaded(){ }
 	public boolean shutdown(){ return true;}
-	public CMSupportThread getSupportThread() { return null;}
+	public TickClient getSupportThread() { return null;}
+	protected boolean isDebugging = false;
+	public void setThreadStatus(TickClient C, String msg)
+	{
+		if(C!=null)
+		{
+			C.setStatus(msg);
+			if(isDebugging)
+				Log.debugOut(C.getName(),msg);
+		}
+	}
 }

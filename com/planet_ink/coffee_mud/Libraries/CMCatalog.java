@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
@@ -36,12 +36,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
+public class CMCatalog extends StdLibrary implements CatalogLibrary
 {
 	public String ID(){return "CMCatalog";}
-	private CMSupportThread thread=null;
 	
-	public CMSupportThread getSupportThread() { return thread;}
+	private TickClient thread=null;
+	public TickClient getSupportThread() { return thread;}
 	
 	public DVector icatalog=new DVector(2);
 	public DVector mcatalog=new DVector(2);
@@ -713,12 +713,42 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	
 	public CataData sampleCataData(String xml) {return new CataDataImpl(xml);}
 	
-	public boolean activate() {
+	public boolean activate() 
+	{
 		if(thread==null)
-			thread=new CMSupportThread("THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-					MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.CATALOGTHREAD), CMSecurity.DisFlag.CATALOGTHREAD);
-		if(!thread.isStarted())
-			thread.start();
+			thread=CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
+				@Override public String ID() { return "THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+				@Override public CMObject newInstance() { return this; }
+				@Override public CMObject copyOf() { return this; }
+				@Override public void initializeClass() { }
+				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+				@Override public String name() { return ID(); }
+				@Override public long getTickStatus() { return tickStatus; }
+				@Override public boolean tick(Tickable ticking, int tickID) {
+					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGTHREAD))
+					{
+						tickStatus=Tickable.STATUS_ALIVE;
+						isDebugging=CMSecurity.isDebugging(DbgFlag.CATALOGTHREAD);
+						setThreadStatus(thread,"checking catalog references.");
+						String[] names = getCatalogItemNames();
+						for(int n=0;n<names.length;n++)
+						{
+							CataData data=getCatalogItemData(names[n]);
+							data.cleanHouse();
+						}
+						names = getCatalogMobNames();
+						for(int n=0;n<names.length;n++)
+						{
+							CataData data=getCatalogMobData(names[n]);
+							data.cleanHouse();
+						}
+						setThreadStatus(thread,"sleeping");
+					}
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
 		return true;
 	}
 	
@@ -726,36 +756,19 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	{
 		icatalog=new DVector(2);
 		mcatalog=new DVector(2);
-		thread.shutdown();
+		if((thread!=null)&&(thread.getClientObject()!=null))
+		{
+			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			thread=null;
+		}
 		return true;
 	}
 	
 	public void forceTick()
 	{
-		thread.forceTick();
+		thread.tickTicker(true);
 	}
 
-	public void run()
-	{
-		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGTHREAD))
-		{
-			thread.setStatus("checking catalog references.");
-			String[] names = getCatalogItemNames();
-			for(int n=0;n<names.length;n++)
-			{
-				CataData data=getCatalogItemData(names[n]);
-				data.cleanHouse();
-			}
-			names = getCatalogMobNames();
-			for(int n=0;n<names.length;n++)
-			{
-				CataData data=getCatalogMobData(names[n]);
-				data.cleanHouse();
-			}
-			
-		}
-	}
-	
 	public static class RoomContentImpl implements RoomContent
 	{
 		private Physical 		obj=null;

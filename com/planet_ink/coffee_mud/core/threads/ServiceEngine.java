@@ -62,7 +62,11 @@ public class ServiceEngine implements ThreadEngine
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public void propertiesLoaded(){}
-	public CMSupportThread getSupportThread() { return null;}
+
+	public TickClient getSupportThread() 
+	{
+		return supportClient;
+	}
 	
 	public ServiceEngine() 
 	{ 
@@ -459,26 +463,26 @@ public class ServiceEngine implements ThreadEngine
 			for(Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)
 			{
 				CMLibrary lib=e.nextElement();
-				CMSupportThread thread=lib.getSupportThread();
+				TickClient thread=lib.getSupportThread();
 				if(thread!=null) {
 					if(curThreadNum==threadNum) {
 						String instrCode=itemCode.substring(xend);
-						if(instrCode.equalsIgnoreCase("miliTotal"))
-							return ""+thread.activeTimeMillis();
+						if(instrCode.equalsIgnoreCase("activeMiliTotal"))
+							return ""+thread.getMilliTotal();
 						if(instrCode.equalsIgnoreCase("milliTotal"))
-							return ""+thread.activeTimeMillis();
+							return ""+thread.getMilliTotal();
 						if(instrCode.equalsIgnoreCase("status"))
 							return ""+thread.getStatus();
 						if(instrCode.equalsIgnoreCase("name"))
 							return ""+thread.getName();
 						if(instrCode.equalsIgnoreCase("MilliTotalTime"))
-							return CMLib.english().returnTime(thread.activeTimeMillis(),0);
+							return CMLib.english().returnTime(thread.getMilliTotal(),0);
 						if(instrCode.equalsIgnoreCase("MiliTotalTime"))
-							return CMLib.english().returnTime(thread.activeTimeMillis(),0);
+							return CMLib.english().returnTime(thread.getMilliTotal(),0);
 						if(instrCode.equalsIgnoreCase("MilliTotalTimePlusAverage")||instrCode.equalsIgnoreCase("MiliTotalTimePlusAverage"))
-							return CMLib.english().returnTime(thread.activeTimeMillis(),thread.getTotalTicks());
+							return CMLib.english().returnTime(thread.getMilliTotal(),thread.getTickTotal());
 						if(instrCode.equalsIgnoreCase("TickTotal"))
-							return ""+thread.getTotalTicks();
+							return ""+thread.getTickTotal();
 						break;
 					}
 					curThreadNum++;
@@ -876,8 +880,8 @@ public class ServiceEngine implements ThreadEngine
 	}
 	public String getServiceThreadSummary(Thread T)
 	{
-		if(T instanceof CMSupportThread)
-			return " ("+((CMSupportThread)T).getStatus()+")";
+		if(T instanceof TickClient)
+			return " ("+((TickClient)T).getStatus()+")";
 		else
 		if(T instanceof MudHost)
 			return " ("+((MudHost)T).getStatus()+")";
@@ -942,7 +946,8 @@ public class ServiceEngine implements ThreadEngine
 			{
 				almostTock=e.next();
 				if((almostTock.isAwake())
-				&&(almostTock.getLastStopTime()<lastDateTime))
+				&&(almostTock.getLastStartTime()!=0)
+				&&(almostTock.getLastStartTime()<lastDateTime))
 				{
 					final TickClient tickClient=almostTock.getLastTicked();
 					final Tickable ticker=(tickClient!=null) ? tickClient.getClientObject() : null;
@@ -962,7 +967,7 @@ public class ServiceEngine implements ThreadEngine
 							if(ticker instanceof Environmental)
 								str=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+" ("+((Environmental)ticker).ID()+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", status("+code+" ("+codeWord+"), tickID "+tickClient.getTickID());
 							else
-								str=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+", status("+code+" ("+codeWord+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", tickID "+tickClient.getTickID());
+								str=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+", status ("+code+"/"+codeWord+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", tickID "+tickClient.getTickID());
 	
 							if((ticker instanceof MOB)&&(((MOB)ticker).location()!=null))
 								msg=str.toString()+" in "+((MOB)ticker).location().roomID();
@@ -981,7 +986,7 @@ public class ServiceEngine implements ThreadEngine
 						}
 					}
 					// no isDEBUGGING check -- just always let her rip.
-					debugDumpStack("ThreadHealth",almostTock.getCurrentThread());
+					debugDumpStack(Thread.currentThread().getName(),almostTock.getCurrentThread());
 				}
 			}
 		}
@@ -1088,7 +1093,7 @@ public class ServiceEngine implements ThreadEngine
 	public boolean activate() {
 		supportClient=startTickDown(new Tickable(){
 			private long tickStatus = Tickable.STATUS_NOT;
-			@Override public String ID() { return "ThreadMonitor"; }
+			@Override public String ID() { return "THThreads"; }
 			@Override public CMObject newInstance() { return this; }
 			@Override public CMObject copyOf() { return this; }
 			@Override public void initializeClass() {}

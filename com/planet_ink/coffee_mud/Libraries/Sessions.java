@@ -2,11 +2,12 @@ package com.planet_ink.coffee_mud.Libraries;
 import java.util.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -26,7 +27,7 @@ import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 public class Sessions extends StdLibrary implements SessionsList
 {
 	public String ID(){return "Sessions";}
-	private CMSupportThread thread=null;
+	private TickClient thread=null;
 	private volatile long lastSweepTime = System.currentTimeMillis(); 
 	
 	public SLinkedList<Session> all=new SLinkedList<Session>();
@@ -41,7 +42,7 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 	};
 	
-	public CMSupportThread getSupportThread() { return thread;}
+	public TickClient getSupportThread() { return thread;}
 	
 	public Iterator<Session> all(){return all.iterator();}
 	public Iterable<Session> allIterable(){return all;}
@@ -118,85 +119,10 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 	}
 	
-	public boolean activate() 
+	protected void sessionCheck()
 	{
-		if(thread==null)
-			thread=new CMSupportThread("THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-					100, this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), CMSecurity.DisFlag.SESSIONTHREAD);
-		if(!thread.isStarted())
-		{
-			thread.setStatus("sleeping");
-			thread.disableDBCheck();
-			thread.start();
-		}
-		return true;
-	}
-	
-	public boolean shutdown() 
-	{
-		thread.shutdown();
-		return true;
-	}
-	
-	public MOB findPlayerOnline(String srchStr, boolean exactOnly)
-	{
-		Session S=findPlayerSessionOnline(srchStr, exactOnly);
-		if(S==null) return null;
-		return S.mob();
-	}
-	
-	public Session findPlayerSessionOnline(String srchStr, boolean exactOnly)
-	{
-		// then look for players
-		for(Session S : localOnlineIterable())
-			if(S.mob().Name().equalsIgnoreCase(srchStr))
-				return S;
-		for(Session S : localOnlineIterable())
-			if(S.mob().name().equalsIgnoreCase(srchStr))
-				return S;
-		// keep looking for players
-		if(!exactOnly)
-		{
-			for(Session S : localOnlineIterable())
-				if(CMLib.english().containsString(S.mob().Name(),srchStr))
-					return S;
-			for(Session S : localOnlineIterable())
-				if(CMLib.english().containsString(S.mob().name(),srchStr))
-					return S;
-		}
-		return null;
-	}
-	
-	public void run()
-	{
-		final double numThreads=all.size();
-		if(numThreads>0.0)
-		{
-			final double milliSleep = 10.0 / numThreads;
-			final double floorMilliSleep = Math.floor(milliSleep);
-			final long millis=Math.round(floorMilliSleep);
-			final int nanos=(int)Math.round((milliSleep - floorMilliSleep) * 100000.0);
-			try
-			{
-				for(Session S : all)
-					if(!S.isRunning()) 
-					{
-						CMLib.threads().executeRunnable(S);
-						Thread.sleep(millis, nanos);
-					}
-			}
-			catch(InterruptedException ioe)
-			{
-				
-			}
-		}
-		
-		if(((System.currentTimeMillis() - lastSweepTime) < MudHost.TIME_UTILTHREAD_SLEEP)
-		||(CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
-		||(CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
-			return;
 		lastSweepTime = System.currentTimeMillis();
-		thread.setStatus("checking player sessions.");
+		setThreadStatus(thread,"checking player sessions.");
 		for(Session S : all)
 		{
 			long time=System.currentTimeMillis()-S.lastLoopTime();
@@ -232,9 +158,9 @@ public class Sessions extends StdLibrary implements SessionsList
 							if(S instanceof Thread)
 								CMLib.threads().debugDumpStack("Sessions",(Thread)S);
 						}
-						thread.setStatus("killing session ");
+						setThreadStatus(thread,"killing session ");
 						stopSessionAtAllCosts(S);
-						thread.setStatus("checking player sessions.");
+						setThreadStatus(thread,"checking player sessions.");
 					}
 					else
 					if(time>check)
@@ -274,12 +200,100 @@ public class Sessions extends StdLibrary implements SessionsList
 					}
 					if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
 						Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
-					thread.setStatus("killing session ");
+					setThreadStatus(thread,"killing session ");
 					stopSessionAtAllCosts(S);
-					thread.setStatus("checking player sessions");
+					setThreadStatus(thread,"checking player sessions");
 				}
 			}
 		}
-		
+	}
+	
+	public boolean activate() 
+	{
+		if(thread==null)
+			thread=CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
+				@Override public String ID() { return "THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+				@Override public CMObject newInstance() { return this; }
+				@Override public CMObject copyOf() { return this; }
+				@Override public void initializeClass() { }
+				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+				@Override public String name() { return ID(); }
+				@Override public long getTickStatus() { return tickStatus; }
+				@Override public boolean tick(Tickable ticking, int tickID) {
+					tickStatus=Tickable.STATUS_ALIVE;
+					final double numThreads=all.size();
+					if(numThreads>0.0)
+					{
+						final double milliSleep = 10.0 / numThreads;
+						final double floorMilliSleep = Math.floor(milliSleep);
+						final long millis=Math.round(floorMilliSleep);
+						final int nanos=(int)Math.round((milliSleep - floorMilliSleep) * 100000.0);
+						try
+						{
+							for(Session S : all)
+								if(!S.isRunning()) 
+								{
+									CMLib.threads().executeRunnable(S);
+									Thread.sleep(millis, nanos);
+								}
+						}
+						catch(InterruptedException ioe)
+						{
+							
+						}
+					}
+					if(((System.currentTimeMillis() - lastSweepTime) > MudHost.TIME_UTILTHREAD_SLEEP)
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
+					{
+						isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
+						sessionCheck();
+					}
+					tickStatus=Tickable.STATUS_NOT;
+					setThreadStatus(thread,"sleeping");
+					return true;
+				}
+			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, 100, 1);
+		return true;
+	}
+	
+	public boolean shutdown() 
+	{
+		if((thread!=null)&&(thread.getClientObject()!=null))
+		{
+			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			thread=null;
+		}
+		return true;
+	}
+	
+	public MOB findPlayerOnline(String srchStr, boolean exactOnly)
+	{
+		Session S=findPlayerSessionOnline(srchStr, exactOnly);
+		if(S==null) return null;
+		return S.mob();
+	}
+	
+	public Session findPlayerSessionOnline(String srchStr, boolean exactOnly)
+	{
+		// then look for players
+		for(Session S : localOnlineIterable())
+			if(S.mob().Name().equalsIgnoreCase(srchStr))
+				return S;
+		for(Session S : localOnlineIterable())
+			if(S.mob().name().equalsIgnoreCase(srchStr))
+				return S;
+		// keep looking for players
+		if(!exactOnly)
+		{
+			for(Session S : localOnlineIterable())
+				if(CMLib.english().containsString(S.mob().Name(),srchStr))
+					return S;
+			for(Session S : localOnlineIterable())
+				if(CMLib.english().containsString(S.mob().name(),srchStr))
+					return S;
+		}
+		return null;
 	}
 }

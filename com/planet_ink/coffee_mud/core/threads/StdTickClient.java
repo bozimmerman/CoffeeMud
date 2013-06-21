@@ -31,15 +31,23 @@ public class StdTickClient implements TickClient
 	public volatile long   tickTotal=0;
 	public volatile String status = null;
 
-	public StdTickClient(Tickable newClientObject,
-					  int newTickDown,
-					  int newTickID)
+	public StdTickClient(Tickable newClientObject, int newTickDown, int newTickID)
 	{
 		reTickDown=newTickDown;
 		tickDown=newTickDown;
 		clientObject=newClientObject;
 		tickID=newTickID;
 	}
+	
+	public String getName()
+	{
+		if(clientObject!=null)
+		{
+			return clientObject.name();
+		}
+		return "?";
+	}
+
 	
 	public final Tickable getClientObject() 
 	{

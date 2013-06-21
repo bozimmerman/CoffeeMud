@@ -50,7 +50,7 @@ public class MWThreadExecutor extends ThreadPoolExecutor
 			final int allWorkingThreads = executor.getActiveCount() + super.size();
 			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
 		}
-	};
+	}
 	
 	public MWThreadExecutor(String poolName,
 							MiniWebConfig config,

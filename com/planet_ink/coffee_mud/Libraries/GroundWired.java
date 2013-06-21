@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -36,7 +37,7 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GroundWired extends StdLibrary implements TechLibrary, Runnable
+public class GroundWired extends StdLibrary implements TechLibrary
 {
 	public String ID(){return "GroundWired";}
 	
@@ -99,10 +100,10 @@ public class GroundWired extends StdLibrary implements TechLibrary, Runnable
 		}
 	}
 	
-	private CMSupportThread thread=null;
+	private TickClient thread=null;
+	public TickClient getSupportThread() { return thread;}
 	protected STreeMap<Electronics.PowerGenerator,Pair<List<Electronics.PowerSource>,List<Electronics>>> currents 
 													= new STreeMap<Electronics.PowerGenerator,Pair<List<Electronics.PowerSource>,List<Electronics>>>(); 
-	public CMSupportThread getSupportThread() { return thread;}
 	protected CMMsg powerMsg = null;
 	
 	protected CMMsg getPowerMsg(int powerAmt)
@@ -123,30 +124,44 @@ public class GroundWired extends StdLibrary implements TechLibrary, Runnable
 	public boolean activate() 
 	{
 		if(thread==null)
-			thread=new CMSupportThread("THWired"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
-					CMProps.getTickMillis(), this, CMSecurity.isDebugging(CMSecurity.DbgFlag.UTILITHREAD), 
-					CMSecurity.DisFlag.ELECTRICTHREAD);
-		if(!thread.isStarted())
-		{
-			thread.setStatus("sleeping");
-			thread.disableDBCheck();
-			thread.start();
-		}
+			thread=CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
+				@Override public String ID() { return "THWired"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+				@Override public CMObject newInstance() { return this; }
+				@Override public CMObject copyOf() { return this; }
+				@Override public void initializeClass() { }
+				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+				@Override public String name() { return ID(); }
+				@Override public long getTickStatus() { return tickStatus; }
+				@Override public boolean tick(Tickable ticking, int tickID) {
+					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ELECTRICTHREAD))
+					{
+						isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
+						tickStatus=Tickable.STATUS_ALIVE;
+						runElectricCurrents();
+						setThreadStatus(thread,"sleeping");
+					}
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
+				}
+			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), 1);
 		return true;
 	}
 	
 	public boolean shutdown() 
 	{
 		sets.clear();
-		thread.shutdown();
+		if((thread!=null)&&(thread.getClientObject()!=null))
+		{
+			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			thread=null;
+		}
 		return true;
 	}
 	
-	public void run()
+	protected void runElectricCurrents()
 	{
-		if(CMSecurity.isDisabled(CMSecurity.DisFlag.ELECTRICTHREAD))
-			return;
-		thread.setStatus("pushing electric currents");
+		setThreadStatus(thread,"pushing electric currents");
 
 		List<String> keys;
 		synchronized(this)
@@ -253,6 +268,6 @@ public class GroundWired extends StdLibrary implements TechLibrary, Runnable
 				Log.errOut("GroundWired",e);
 			}
 		}
-		thread.setStatus("sleeping");
+		setThreadStatus(thread,"sleeping");
 	}
 }

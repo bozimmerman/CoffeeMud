@@ -50,7 +50,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 			final int allWorkingThreads = executor.getActiveCount() + super.size();
 			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
 		}
-	};
+	}
 	
 	public CMThreadPoolExecutor(String poolName,
 								int corePoolSize, int maximumPoolSize,

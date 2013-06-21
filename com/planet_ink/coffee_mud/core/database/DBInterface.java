@@ -1,7 +1,6 @@
 package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.CMSupportThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
@@ -93,7 +92,7 @@ public class DBInterface implements DatabaseEngine
 	public boolean activate(){ return true;}
 	public boolean shutdown(){ return true;}
 	public void propertiesLoaded(){}
-	public CMSupportThread getSupportThread() { return null;}
+	public TickClient getSupportThread() { return null;}
 	public MOB.Tattoo parseTattoo(String tattoo)
 	{return MOBloader.parseTattoo(tattoo);}
 	

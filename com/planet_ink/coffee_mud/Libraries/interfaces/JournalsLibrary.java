@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface JournalsLibrary extends CMLibrary, Runnable
+public interface JournalsLibrary extends CMLibrary
 {
 	public HashSet<String> getArchonJournalNames();
 	public boolean isArchonJournalName(String journal);

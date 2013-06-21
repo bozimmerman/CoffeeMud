@@ -119,6 +119,8 @@ public interface Tickable extends CMObject
 	public final static int TICKID_PROPERTY_SPECIAL=21;
 	/** the tickid for an electrical proactive action service*/
 	public final static int TICKID_ELECTRONICS=22;
+	/** the tickid for a system support task*/
+	public final static int TICKID_SUPPORT=23;
 
 	/** a tick status constant representing  the state of waiting for tick access */
 	public static long STATUS_NOT=0;

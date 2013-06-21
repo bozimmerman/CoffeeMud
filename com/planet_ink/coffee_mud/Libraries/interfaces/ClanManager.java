@@ -36,7 +36,7 @@ import java.util.*;
  * administer their most basic functions.
  * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
  */
-public interface ClanManager extends CMLibrary, Runnable
+public interface ClanManager extends CMLibrary
 {
 	/**
 	 * Returns a list of all available clans names in the game,
