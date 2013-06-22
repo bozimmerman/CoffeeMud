@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.CommandJournal;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -33,42 +34,43 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ChannelNext extends StdWebMacro
+public class CommandJournalNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
-		String last=httpReq.getUrlParameter("CHANNEL");
+		String last=httpReq.getUrlParameter("COMMANDJOURNAL");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.removeUrlParameter("CHANNEL");
+			if(last!=null) httpReq.removeUrlParameter("COMMANDJOURNAL");
 			return "";
 		}
 		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-		boolean allChannels=false;
+		String lastID="";
+		boolean allJournals=false;
 		if((Thread.currentThread() instanceof MWThread)
 		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
-		&&parms.containsKey("ALLCHANNELS"))
-			allChannels=true;
-		String lastID="";
-		for(int i=0;i<CMLib.channels().getNumChannels();i++)
+		&&parms.containsKey("ALLCOMMANDJOURNALS"))
+			allJournals=true;
+		for(Enumeration<JournalsLibrary.CommandJournal> i=CMLib.journals().commandJournals();i.hasMoreElements();)
 		{
-			String name=CMLib.channels().getChannel(i).name;
+			JournalsLibrary.CommandJournal J=i.nextElement();
+			String name=J.NAME();
 			if((last==null)
 			||((last.length()>0)&&(last.equals(lastID))&&(!name.equals(lastID))))
 			{
-				if(allChannels||((mob!=null)&&(CMLib.channels().mayReadThisChannel(mob,i,true))))
+				if(allJournals||((mob!=null)&&(J.mask().length()>0)&&(!CMLib.masking().maskCheck(J.mask(),mob,true))))
 				{
-					httpReq.addFakeUrlParameter("CHANNEL",name);
+					httpReq.addFakeUrlParameter("COMMANDJOURNAL",name);
 					return "";
 				}
 				last=name;
 			}
 			lastID=name;
 		}
-		httpReq.addFakeUrlParameter("CHANNEL","");
+		httpReq.addFakeUrlParameter("COMMANDJOURNAL","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";

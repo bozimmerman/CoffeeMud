@@ -2454,3 +2454,4 @@ ruthless programmer, and sentenced to a quick death.
 10.Web Forum system now supports participation by empty Accounts (if using the account system), and web subscribe/unsubscribe
 11.Consolidated Session and Tick threads: check new coffeemud.ini file for new MAXWORKERTHREADS and MINWORKERTHREADS. Major drop in thread usage!
 12.Control Panel now supports debug flags, and the whole flag business has been put into its own "Tab"
+13.Web Server now supports @for?@ @next@ loops! See the web server guide for usage, or checkout an example in control.cmvp

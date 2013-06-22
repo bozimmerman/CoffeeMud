@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
 import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.miniweb.util.MWThread;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -43,9 +44,14 @@ public class ForumInfo extends StdWebMacro
 		String last=httpReq.getUrlParameter("JOURNAL");
 		if(last==null) 
 			return " @break@";
+		boolean securityOverride=false;
+		if((Thread.currentThread() instanceof MWThread)
+		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
+		&&parms.containsKey("ALLOW"))
+			securityOverride=true;
 		
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		if((CMLib.journals().isArchonJournalName(last))&&((M==null)||(!CMSecurity.isASysOp(M))))
+		if((!securityOverride)&&(CMLib.journals().isArchonJournalName(last))&&((M==null)||(!CMSecurity.isASysOp(M))))
 			return " @break@";
 		JournalsLibrary.ForumJournal journal = CMLib.journals().getForumJournal(last);
 		if(journal == null) 

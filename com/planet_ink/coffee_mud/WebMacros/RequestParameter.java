@@ -36,7 +36,7 @@ import java.net.URLEncoder;
 public class RequestParameter extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	private static enum MODIFIER {UPPERCASE,LOWERCASE,LEFT,RIGHT,ELLIPSE,TRIM}
+	private static enum MODIFIER {UPPERCASE,LOWERCASE,LEFT,RIGHT,ELLIPSE,TRIM,AFTER,CAPITALCASE}
 	private static HashSet<String> modifiers=new HashSet<String>();
 	static
 	{
@@ -65,6 +65,9 @@ public class RequestParameter extends StdWebMacro
 				if(key.equals(MODIFIER.LOWERCASE.name()))
 					str=str.toLowerCase();
 				else
+				if(key.equals(MODIFIER.CAPITALCASE.name()))
+					str=CMStrings.capitalizeAndLower(str);
+				else
 				if(key.equals(MODIFIER.TRIM.name()))
 					str=str.trim();
 				else
@@ -73,6 +76,13 @@ public class RequestParameter extends StdWebMacro
 					num = CMath.s_int(parms.get(MODIFIER.LEFT.name()));
 					if((num >0)&& (num < str.length()))
 						str=str.substring(0,num);
+				}
+				else
+				if(key.equals(MODIFIER.AFTER.name()))
+				{
+					num = CMath.s_int(parms.get(MODIFIER.AFTER.name()));
+					if((num >0)&& (num < str.length()))
+						str=str.substring(num);
 				}
 				else
 				if(key.equals(MODIFIER.RIGHT.name()))

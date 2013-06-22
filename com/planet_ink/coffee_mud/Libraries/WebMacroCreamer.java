@@ -143,7 +143,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					if((foundMacro!=null)&&(foundMacro.length()>0))
 					{
 						if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found macro: "+foundMacro);
-						if(foundMacro.startsWith("if?"))
+						if(foundMacro.startsWith("if?")||foundMacro.startsWith("IF?"))
 						{
 							int l=foundMacro.length()+2;
 							int v=myEndif(s,i+l,lastFoundMacro);
@@ -236,7 +236,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							continue;
 						}
 						else
-						if(foundMacro.startsWith("block?"))
+						if(foundMacro.startsWith("block?")||foundMacro.startsWith("BLOCK?"))
 						{
 							int l=foundMacro.length()+2;
 							int v=myEndBlock(s,i+l,lastFoundMacro);
@@ -251,7 +251,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							continue;
 						}
 						else
-						if(foundMacro.startsWith("insert?"))
+						if(foundMacro.startsWith("insert?")||foundMacro.startsWith("INSERT?"))
 						{
 							int l=foundMacro.length()+2;
 							String name=foundMacro.substring(7).trim().toUpperCase();
@@ -312,6 +312,58 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							continue;
 						}
 						else
+						if(foundMacro.startsWith("for?")||foundMacro.startsWith("FOR?"))
+						{
+							String forCond=foundMacro.substring(4);
+							int fc=forCond.indexOf('=');
+							int v=myNext(s,i+foundMacro.length()+2,lastFoundMacro);
+							if(fc<0)
+								s.replace(i,i+foundMacro.length()+2, "[for without variabledef=]" );
+							else
+							if(v<0)
+								s.replace(i,i+foundMacro.length()+2, "[for without next]" );
+							else
+							{
+								String s2=s.substring(i+foundMacro.length()+2,v);
+								s.replace(i,v+6,"");
+								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found FOR macro: "+foundMacro);
+								String varName=forCond.substring(0,fc).trim().toUpperCase();
+								String q=runMacro(request,forCond.substring(fc+1).trim(),lastFoundMacro,isAdminServer);
+								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran FOR macro: "+foundMacro+"="+q);
+								int ldex=i;
+								String s3=" ";
+								List<String> set;
+								if((q==null)||(q.trim().length()==0)||(q.toLowerCase().indexOf("@break@")>=0))
+									set=new XVector<String>();
+								else
+									set=CMParms.parseCommas(q, false);
+								for(String qq : set)
+								{
+									try
+									{
+										request.addFakeUrlParameter(varName, qq);
+										s3=new String(virtualPageFilter( request, objects, processStartTime, lastFoundMacro, new StringBuffer(s2)));
+									}
+									catch (HTTPRedirectException e)
+									{
+										s3 = " ";
+										redirectTo = e.getMessage();
+									}
+
+									s.insert(ldex,s3);
+									ldex+=s3.length();
+								}
+								if((!isAdminServer)
+								&&(processStartTime[0]>0)
+								&&(System.currentTimeMillis()-processStartTime[0])>(120*1000))
+								{
+									if(debugMacros) Log.infoOut(Thread.currentThread().getName(),"Encountered TIMEOUT!");
+									return new StringBuffer("");
+								}
+							}
+							continue;
+						}
+						else
 						if(foundMacro.equalsIgnoreCase("break"))
 						{
 							if(debugMacros) Log.infoOut(Thread.currentThread().getName(),"Encountered BREAK! at "+i);
@@ -321,6 +373,36 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if(foundMacro.equalsIgnoreCase("back"))
 						{
 							s.replace(i,i+6, "[back without loop]" );
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("if"))
+						{
+							s.replace(i,i+6, "[naked if condition]" );
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("block"))
+						{
+							s.replace(i,i+6, "[unnamed block]" );
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("insert"))
+						{
+							s.replace(i,i+6, "[naked block insert]" );
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("for"))
+						{
+							s.replace(i,i+6, "[naked for iterator]" );
+							continue;
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("next"))
+						{
+							s.replace(i,i+6, "[next without for]" );
 							continue;
 						}
 
@@ -513,6 +595,31 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					{
 						backsToFind--;
 						if(backsToFind<=0)
+							return i;
+					}
+				}
+			}
+		}
+		return -1;
+	}
+
+	protected int myNext(StringBuffer s, int i, String[] lastFoundMacro)
+	{
+		int nextsToFind=1;
+		for(;i<s.length();i++)
+		{
+			if(s.charAt(i)=='@')
+			{
+				String foundMacro=parseFoundMacro(s,i,lastFoundMacro,true);
+				if((foundMacro!=null)&&(foundMacro.length()>0))
+				{
+					if(foundMacro.equalsIgnoreCase("for"))
+					   nextsToFind++;
+					else
+					if(foundMacro.equalsIgnoreCase("next"))
+					{
+						nextsToFind--;
+						if(nextsToFind<=0)
 							return i;
 					}
 				}

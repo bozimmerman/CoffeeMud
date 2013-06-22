@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 
 import com.planet_ink.miniweb.interfaces.*;
+import com.planet_ink.miniweb.util.MWThread;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -78,10 +79,16 @@ public class ForumJournalNext extends StdWebMacro
 		}
 		String lastID="";
 		HashSet<String> H=CMLib.journals().getArchonJournalNames();
+		boolean allForumJournals=false;
+		if((Thread.currentThread() instanceof MWThread)
+		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
+		&&parms.containsKey("ALLFORUMJOURNALS"))
+			allForumJournals=true;
+		
 		for(int j=0;j<journals.size();j++)
 		{
 			String B=journals.get(j);
-			if((H.contains(B.toUpperCase().trim()))&&((M==null)||(!CMSecurity.isASysOp(M))))
+			if((!allForumJournals)&&(H.contains(B.toUpperCase().trim()))&&((M==null)||(!CMSecurity.isASysOp(M))))
 				continue;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.equals(lastID))))
 			{
