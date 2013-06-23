@@ -46,6 +46,7 @@ public class Burning extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+		final Physical affected=this.affected;
 		if((affected instanceof Item)&&(((Item)affected).owner() instanceof Room))
 		{
 			int unInvokeChance=0;
@@ -124,6 +125,7 @@ public class Burning extends StdAbility
 					case RawMaterial.MATERIAL_UNKNOWN:
 						break;
 					default:
+					{
 						if(CMLib.flags().isABonusItems(affected))
 						{
 							if(invoker==null)
@@ -159,13 +161,14 @@ public class Burning extends StdAbility
 								affected.recoverPhyStats();
 								this.tickDown = CMLib.flags().burnStatus(affected);
 								CMLib.materials().adjustResourceName((Item)affected);
-								((Room)E).recoverRoomStats();
+								room.recoverRoomStats();
 								return super.tick(ticking,tickID);
 							}
-							((Room)E).showHappens(CMMsg.MSG_OK_VISUAL, affected.name()+" is no longer burning.");
+							room.showHappens(CMMsg.MSG_OK_VISUAL, affected.name()+" is no longer burning.");
 							((Item)affected).destroy();
 						}
 						break;
+					}
 					}
 					((Room)E).recoverRoomStats();
 				}
