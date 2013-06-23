@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
@@ -517,7 +518,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		MOB mob=msg.source();
+		final MOB mob=msg.source();
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
@@ -528,69 +529,84 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				{
 					if(msg.tool() instanceof Container)
 						((Container)msg.tool()).emptyPlease(true);
-					Session S=msg.source().session();
+					final Session S=msg.source().session();
 					if((!msg.source().isMonster())&&(S!=null)&&(msg.tool() instanceof Item))
 					{
 						autoGive(msg.source(),this,(Item)msg.tool());
 						if(isMine(msg.tool()))
 						{
-							try
-							{
-								String toWhom=S.prompt("Address this to whom? ","");
-								if((toWhom!=null)&&(toWhom.length()>0)
-								&&((CMLib.players().getLoadPlayer(toWhom)!=null)||(CMLib.clans().findClan(toWhom)!=null)))
+							final StdPostman me=this;
+							S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+								@Override public void showPrompt() { S.print("Address this to whom? ");}
+								@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
+								@Override public void callBack() 
 								{
-									String fromWhom=getSenderName(msg.source(),Clan.Function.DEPOSIT,false);
-									if(CMLib.players().getLoadPlayer(toWhom)!=null)
-										toWhom=CMLib.players().getLoadPlayer(toWhom).Name();
-									else
-										toWhom=CMLib.clans().findClan(toWhom).name();
-									double amt=getSimplePostage(getChargeableWeight((Item)msg.tool()));
-									double COD=0.0;
-									boolean deliver=true;
-									String choice=S.choose("Postage on this will be "+CMLib.beanCounter().nameCurrencyShort(this,amt)+".\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?","CP\n","P").trim().toUpperCase();
-									if(choice.startsWith("C"))
+									if((this.input!=null)&&(this.input.length()>0)
+									&&((CMLib.players().getLoadPlayer(this.input)!=null)||(CMLib.clans().findClan(this.input)!=null)))
 									{
-										String CODstr=S.prompt("Enter COD amount ("+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(this),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(this)))+"): ");
-										if((CODstr.length()==0)||(!CMath.isNumber(CODstr))||(CMath.s_double(CODstr)<=0.0))
-										{
-											CMLib.commands().postSay(this,mob,"That is not a valid amount.",true,false);
-											autoGive(this,msg.source(),(Item)msg.tool());
-											deliver=false;
-										}
+										final String fromWhom=getSenderName(msg.source(),Clan.Function.DEPOSIT,false);
+										final String toWhom;
+										if(CMLib.players().getLoadPlayer(this.input)!=null)
+											toWhom=CMLib.players().getLoadPlayer(this.input).Name();
 										else
+											toWhom=CMLib.clans().findClan(this.input).name();
+										final double amt=getSimplePostage(getChargeableWeight((Item)msg.tool()));
+										S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"CP\n","P",0)
 										{
-											Coins currency=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(this),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(this))*CMath.s_double(CODstr));
-											COD=currency.getTotalValue();
-											amt=0.0;
-										}
+											@Override public void showPrompt() { S.print("Postage on this will be "+CMLib.beanCounter().nameCurrencyShort(me,amt)+".\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?");}
+											@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
+											@Override public void callBack() 
+											{
+												String choice=this.input.trim().toUpperCase();
+												if(choice.startsWith("C"))
+												{
+													S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+														@Override public void showPrompt() { S.print("Enter COD amount ("+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me)))+"): ");}
+														@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
+														@Override public void callBack() 
+														{
+															String CODstr=this.input;
+															if((CODstr.length()==0)||(!CMath.isNumber(CODstr))||(CMath.s_double(CODstr)<=0.0))
+															{
+																CMLib.commands().postSay(me,mob,"That is not a valid amount.",true,false);
+																autoGive(me,msg.source(),(Item)msg.tool());
+															}
+															else
+															{
+																Coins currency=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me))*(CMath.s_double(CODstr)));
+																double COD=currency.getTotalValue();
+																addToBox(postalChain(),(Item)msg.tool(),fromWhom,toWhom,System.currentTimeMillis(),COD);
+																CMLib.commands().postSay(me,mob,"I'll deliver that for ya right away!",true,false);
+																((Item)msg.tool()).destroy();
+															}
+														}
+													});
+												}
+												else
+												if((amt>0.0)&&(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),me)<amt))
+												{
+													CMLib.commands().postSay(me,mob,"You can't afford postage.",true,false);
+													autoGive(me,msg.source(),(Item)msg.tool());
+												}
+												else
+												{
+													CMLib.beanCounter().subtractMoney(mob,CMLib.beanCounter().getCurrency(me),amt);
+													addToBox(postalChain(),(Item)msg.tool(),fromWhom,toWhom,System.currentTimeMillis(),0.0);
+													CMLib.commands().postSay(me,mob,"I'll deliver that for ya right away!",true,false);
+													((Item)msg.tool()).destroy();
+												}
+											}
+										});
+										
 									}
 									else
-									if((amt>0.0)&&(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),this)<amt))
 									{
-										CMLib.commands().postSay(this,mob,"You can't afford postage.",true,false);
-										autoGive(this,msg.source(),(Item)msg.tool());
-										deliver=false;
-									}
-									else
-										CMLib.beanCounter().subtractMoney(mob,CMLib.beanCounter().getCurrency(this),amt);
-									if(deliver)
-									{
-										addToBox(postalChain(),(Item)msg.tool(),fromWhom,toWhom,System.currentTimeMillis(),COD);
-										CMLib.commands().postSay(this,mob,"I'll deliver that for ya right away!",true,false);
-										((Item)msg.tool()).destroy();
+										CMLib.commands().postSay(me,mob,"That is not a valid player or clan name.",true,false);
+										autoGive(me,msg.source(),(Item)msg.tool());
 									}
 								}
-								else
-								{
-									CMLib.commands().postSay(this,mob,"That is not a valid player or clan name.",true,false);
-									autoGive(this,msg.source(),(Item)msg.tool());
-								}
-							}
-							catch(Exception e)
-							{
-								CMLib.commands().postDrop(mob,msg.tool(),false,false);
-							}
+							});
+							return;
 						}
 						else
 							CMLib.commands().postSay(this,mob,"I can't seem to deliver "+msg.tool().name()+".",true,false);
