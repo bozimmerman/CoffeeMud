@@ -1059,9 +1059,12 @@ public class ServiceEngine implements ThreadEngine
 					Thread.sleep(2000);
 				final long now=System.currentTimeMillis();
 				long nextWake=System.currentTimeMillis() + 3600000;
-				synchronized(allTicks) {
-					for(final TickableGroup T : allTicks) {
-						if(!getPoolExecutor(T.getThreadGroupName()).isActiveOrQueued(T)) {
+				synchronized(allTicks) 
+				{
+					for(final TickableGroup T : allTicks) 
+					{
+						if(!getPoolExecutor(T.getThreadGroupName()).isActiveOrQueued(T)) 
+						{
 							if (T.getNextTickTime() <= now) {
 								if(now + T.getTickInterval() < nextWake)
 									nextWake = now + T.getTickInterval();

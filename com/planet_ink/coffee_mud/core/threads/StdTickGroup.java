@@ -242,7 +242,9 @@ public class StdTickGroup implements TickableGroup, Cloneable
 
 	public void run()
 	{
+		
 		nextTickTime=System.currentTimeMillis() + tickTime;
+		//final String oldThreadName=Thread.currentThread().getName();
 		try
 		{
 			currentThread=Thread.currentThread();
@@ -256,6 +258,7 @@ public class StdTickGroup implements TickableGroup, Cloneable
 				{
 					final TickClient client=i.next();
 					lastClient=client;
+					//if(client.getCurrentTickDown()<=1) currentThread.setName(oldThreadName+":"+getName()+":"+client.getName());
 					if(client.tickTicker(false))
 					{
 						delTicker(client); // cant do i.remove, its an streeset
@@ -269,11 +272,20 @@ public class StdTickGroup implements TickableGroup, Cloneable
 			milliTotal+=(lastStop-lastStart);
 			tickTotal++;
 			currentThread=null;
+			//Thread.currentThread().setName(oldThreadName);
 		}
 		if(tickers.size()==0)
 		{
 			if(CMLib.threads() instanceof ServiceEngine)
 				((ServiceEngine)CMLib.threads()).delTickGroup(this);
 		}
+	}
+
+	@Override
+	public long activeTimeMillis() 
+	{
+		if(this.isAwake())
+			return System.currentTimeMillis()-this.lastStart;
+		return 0;
 	}
 }

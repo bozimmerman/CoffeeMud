@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.interfaces;
 import java.util.Iterator;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -39,7 +40,7 @@ limitations under the License.
  * @author Bo Zimmerman
  *
  */
-public interface TickableGroup extends Runnable
+public interface TickableGroup extends CMRunnable
 {
 	/**
 	 * Returns the current or last TickClient object which this thread made a tick(Tickable,int) method

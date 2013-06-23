@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -212,7 +213,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	private int 				modified;
 	private DataOutputStream	output;
 	private PersistentPeer  	peer;
-	private SaveThread  		save_thread;
+	private Tickable	  		save_thread;
 	public boolean				shutdown=false;
 	public DataInputStream 		input;
 	public int  			   	attempts;
@@ -256,9 +257,27 @@ public class Intermud implements Runnable, Persistent, Serializable
 		}
 		channels = new ChannelList(-1);
 		muds = new MudList(-1);
-		save_thread = new SaveThread(this);
-		save_thread.setDaemon(true);
-		save_thread.start();
+		if((save_thread==null)||(!CMLib.threads().isTicking(save_thread, Tickable.TICKID_SUPPORT)))
+		{
+			save_thread=CMLib.threads().startTickDown(new Tickable(){
+				private long tickStatus=Tickable.STATUS_NOT;
+				@Override public String ID() { return "I3SaveTick"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+				@Override public CMObject newInstance() { return this; }
+				@Override public CMObject copyOf() { return this; }
+				@Override public void initializeClass() { }
+				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+				@Override public String name() { return ID(); }
+				@Override public long getTickStatus() { return tickStatus; }
+				@Override public boolean tick(Tickable ticking, int tickID) {
+					try {
+						save();
+					}
+					catch( PersistenceException e ) {
+					}
+					return true;
+				}
+			}, Tickable.TICKID_SUPPORT, 30).getClientObject();
+		}
 		connect();
 	}
 
@@ -827,10 +846,9 @@ public class Intermud implements Runnable, Persistent, Serializable
 		try { if(connection!=null) connection.close();}catch(Exception e){}
 		if(save_thread!=null)
 		{
-			try { save_thread.close();}catch(Exception e){}
-			try { CMLib.killThread(save_thread,100,1);}catch(Exception e){}
+			CMLib.threads().deleteTick(save_thread, -1);
+			save_thread=null;
 		}
-		save_thread=null;
 		try { save(); }
 		catch( PersistenceException e ) { }
 		try { if(input_thread!=null) CMLib.killThread(input_thread,100,1); }catch(Exception e){}
@@ -969,36 +987,5 @@ public class Intermud implements Runnable, Persistent, Serializable
 			thread.stop();
 		thread=null;
 	}
-
 }
 
-class SaveThread extends Thread {
-	private Intermud intermud;
-	protected boolean closed=false;
-
-	public SaveThread(Intermud imud) {
-		super("I3SaveThread");
-		setDaemon(true);
-		intermud = imud;
-	}
-
-	public void close()
-	{ closed=true; }
-
-	public void run() {
-		while( !closed ) {
-			try {
-				Thread.sleep(120000);
-				if(!closed) intermud.save();
-			}
-			catch (InterruptedException e)
-			{
-				Log.sysOut("Intermud","Save Thread Shutdown!");
-				return;
-			}
-			catch( PersistenceException e ) {
-
-			}
-		}
-	}
-}

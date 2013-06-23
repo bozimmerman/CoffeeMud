@@ -38,7 +38,7 @@ public class ItemGenerator extends ActiveTicker
 {
 	public String ID(){return "ItemGenerator";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;}
-	protected static boolean building=false;
+	protected static volatile Tickable[] builerTick=new Tickable[1];
 
 	protected Vector maintained=new Vector();
 	protected int minItems=1;
@@ -183,7 +183,10 @@ public class ItemGenerator extends ActiveTicker
 		public long getTickStatus(){return tickStatus;}
 		public boolean tick(Tickable host, int tickID)
 		{
-			List<Item> allItems=new Vector<Item>();
+			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
+			if(allItems!=null) return false;
+			allItems=new Vector<Item>(); 
+
 			List<ItemCraftor> skills=new Vector<ItemCraftor>();
 			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
@@ -200,7 +203,6 @@ public class ItemGenerator extends ActiveTicker
 					allItems.add(materialSet.item);
 			}
 			Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
-			ItemGenerator.building=false;
 			return false;
 		}
 	}
@@ -212,17 +214,21 @@ public class ItemGenerator extends ActiveTicker
 		GeneratedItemSet items=(GeneratedItemSet)Resources.getResource("ITEMGENERATOR-"+mask.toUpperCase().trim());
 		if(items==null)
 		{
-			List<Item> allItems=null;
-			synchronized(ID().intern())
+			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
+			if(allItems==null)
 			{
-				if(ItemGenerator.building) return null;
-				allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
-				if(allItems==null)
+				synchronized(builerTick)
 				{
-					ItemGenerator.building=true;
-					ItemGenerationTicker ourTicker=new ItemGenerationTicker();
-					CMLib.threads().startTickDown(ourTicker,Tickable.TICKID_ITEM_BEHAVIOR|Tickable.TICKID_LONGERMASK,1234,1);
-					return null;
+					allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
+					if(allItems==null)
+					{
+						if(builerTick[0]==null)
+						{
+							builerTick[0]=new ItemGenerationTicker();
+							CMLib.threads().startTickDown(builerTick[0],Tickable.TICKID_ITEM_BEHAVIOR|Tickable.TICKID_LONGERMASK,1234,1);
+						}
+						return null;
+					}
 				}
 			}
 			items=new GeneratedItemSet();

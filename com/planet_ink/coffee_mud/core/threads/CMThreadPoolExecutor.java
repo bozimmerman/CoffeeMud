@@ -94,14 +94,14 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	@Override
 	public int getActiveCount() { return activeCount.get(); }
 	
-	public boolean isActive(Runnable r)
+	public boolean isActive(CMRunnable r)
 	{
-		return active.contains(r);
+		return active.containsSecond(r);
 	}
 
-	public boolean isActiveOrQueued(Runnable r)
+	public boolean isActiveOrQueued(CMRunnable r)
 	{
-		return active.contains(r) || getQueue().contains(r);
+		return active.containsSecond(r) || getQueue().contains(r);
 	}
 
 	public void execute(Runnable r)
