@@ -46,7 +46,7 @@ public class Burning extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		final Physical affected=this.affected;
+		Physical affected=this.affected;
 		if((affected instanceof Item)&&(((Item)affected).owner() instanceof Room))
 		{
 			int unInvokeChance=0;
@@ -200,6 +200,7 @@ public class Burning extends StdAbility
 		if(tickID!=Tickable.TICKID_MOB)
 			return true;
 
+		affected=this.affected;
 		if(affected==null)
 			return false;
 
