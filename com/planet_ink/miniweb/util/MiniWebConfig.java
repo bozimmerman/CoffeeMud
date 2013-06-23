@@ -129,9 +129,13 @@ public class MiniWebConfig implements Cloneable
 	private boolean isDebugging			 = false;
 
 	private String  accessLogFlag		 = DEFAULT_ACCESSLOG_FLAG;
-
+	
 	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		mounts	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<WebAddress>>>  fwds	= new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
+	
+	public enum DupPolicy { ENUMERATE, OVERWRITE }
+	
+	private DupPolicy dupPolicy = DupPolicy.OVERWRITE;
 	
 	/**
 	 * @return the debugFlag
@@ -154,6 +158,35 @@ public class MiniWebConfig implements Cloneable
 	public final boolean isDebugging()
 	{
 		return isDebugging;
+	}
+	
+	/**
+	 * @return the dupPolicy
+	 */
+	public final DupPolicy getDupPolicy()
+	{
+		return dupPolicy;
+	}
+	/**
+	 * @param dupPolicy the dupPolicy to set
+	 */
+	public final void setDupPolicy(DupPolicy dupPolicy)
+	{
+		this.dupPolicy = dupPolicy;
+	}
+	/**
+	 * @param dupPolicy the dupPolicy to set
+	 */
+	public final void setDupPolicy(String dupPolicy)
+	{
+		try
+		{
+			this.dupPolicy=DupPolicy.valueOf(dupPolicy.toUpperCase().trim());
+		}
+		catch(Exception e)
+		{
+			this.dupPolicy = DupPolicy.OVERWRITE;
+		}
 	}
 	
 	/**
@@ -981,6 +1014,7 @@ public class MiniWebConfig implements Cloneable
 		defaultPage=getString(props,"DEFAULTPAGE",defaultPage);
 		errorPage=getString(props,"ERRORPAGE",errorPage);
 		setDebugFlag(getString(props,"DEBUGFLAG",debugFlag));
+		setDupPolicy(getString(props,"DUPPOLICY",dupPolicy.toString()));
 		setAccessLogFlag(getString(props,"ACCESSLOGS",accessLogFlag));
 		
 		Map<String,String> newServlets=getPrefixedPairs(props,"SERVLET",'/');

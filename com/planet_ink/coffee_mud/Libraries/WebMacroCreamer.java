@@ -329,6 +329,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Found FOR macro: "+foundMacro);
 								String varName=forCond.substring(0,fc).trim().toUpperCase();
 								String q=runMacro(request,forCond.substring(fc+1).trim(),lastFoundMacro,isAdminServer);
+								if(q==null) q=forCond.substring(fc+1).trim();
 								if(debugMacros) Log.debugOut("ProcessHTTPRequest", "Ran FOR macro: "+foundMacro+"="+q);
 								int ldex=i;
 								String s3=" ";

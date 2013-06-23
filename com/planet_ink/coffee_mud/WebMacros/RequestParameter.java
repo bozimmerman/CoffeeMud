@@ -54,6 +54,7 @@ public class RequestParameter extends StdWebMacro
 				if(httpReq.isUrlParameter(key))
 					str+=httpReq.getUrlParameter(key);
 		}
+		boolean capCase=false;
 		for(String key : parms.keySet())
 		{
 			if(modifiers.contains(key))
@@ -66,7 +67,7 @@ public class RequestParameter extends StdWebMacro
 					str=str.toLowerCase();
 				else
 				if(key.equals(MODIFIER.CAPITALCASE.name()))
-					str=CMStrings.capitalizeAndLower(str);
+					capCase=true;
 				else
 				if(key.equals(MODIFIER.TRIM.name()))
 					str=str.trim();
@@ -100,6 +101,8 @@ public class RequestParameter extends StdWebMacro
 				}
 			}
 		}
+		if(capCase)
+			str=CMStrings.capitalizeAndLower(str);
 		str=clearWebMacros(str);
 		return str;
 	}

@@ -42,12 +42,19 @@ public class CommandJournalInfo extends StdWebMacro
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("COMMANDJOURNAL");
-		if(last==null) return " @break@";
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("ALLFLAGS"))
+		{
+			for(JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
+				str.append("FLAG_"+flag.name()).append(", ");
+		}
+		else
+		if(last==null) 
+			return " @break@";
 		if(last.length()>0)
 		{
 			final JournalsLibrary.CommandJournal C=CMLib.journals().getCommandJournal(last);
 			if(C==null) return " @break@";
-			StringBuffer str=new StringBuffer("");
 			if(parms.containsKey("ID"))
 				str.append(C.NAME()).append(", ");
 			if(parms.containsKey("NAME"))
@@ -58,18 +65,14 @@ public class CommandJournalInfo extends StdWebMacro
 				str.append(C.mask()).append(", ");
 			if(parms.containsKey("FLAGSET"))
 				for(JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
-					httpReq.addFakeUrlParameter("FLAG_"+flag.name(), C.getFlag(flag)!=null?C.getFlag(flag):"");
-			if(parms.containsKey("ALLFLAGS"))
-				for(JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
-					str.append("FLAG_"+flag.name()).append(", ");
+					httpReq.addFakeUrlParameter("FLAG_"+flag.name(), C.getFlag(flag)!=null?((C.getFlag(flag).length()==0)?"on":C.getFlag(flag)):"");
 			for(JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
 				if(parms.containsKey("FLAG_"+flag.name().toUpperCase().trim()))
-					str.append(C.getFlag(flag)!=null?C.getFlag(flag):"").append(", ");
-			String strstr=str.toString();
-			if(strstr.endsWith(", "))
-				strstr=strstr.substring(0,strstr.length()-2);
-			return clearWebMacros(strstr);
+					str.append(C.getFlag(flag)!=null?((C.getFlag(flag).length()==0)?"on":C.getFlag(flag)):"").append(", ");
 		}
-		return "";
+		String strstr=str.toString();
+		if(strstr.endsWith(", "))
+			strstr=strstr.substring(0,strstr.length()-2);
+		return clearWebMacros(strstr);
 	}
 }

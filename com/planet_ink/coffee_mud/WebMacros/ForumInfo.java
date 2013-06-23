@@ -47,7 +47,7 @@ public class ForumInfo extends StdWebMacro
 		boolean securityOverride=false;
 		if((Thread.currentThread() instanceof MWThread)
 		&&CMath.s_bool(((MWThread)Thread.currentThread()).getConfig().getMiscProp("ADMIN"))
-		&&parms.containsKey("ALLOW"))
+		&&parms.containsKey("ALLFORUMJOURNALS"))
 			securityOverride=true;
 		
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
@@ -57,20 +57,21 @@ public class ForumInfo extends StdWebMacro
 		if(journal == null) 
 			return " @break@";
 		
+		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ISSMTPFORWARD"))
 		{
 			@SuppressWarnings("unchecked")
 			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
 			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
 			final String email=((M!=null) &&(M.playerStats()!=null) && (M.playerStats().getEmail()!=null)) ? M.playerStats().getEmail() : "";
-			return ((entry!=null) && (email.length()>0)) ? Boolean.toString(entry.forward) : "false";
+			str.append( ((entry!=null) && (email.length()>0)) ? Boolean.toString(entry.forward) : "false").append(", ");
 		}
 		
 		if(parms.containsKey("ISSMTPSUBSCRIBER"))
 		{
 			final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 			final List<String> mylist=lists.get(last);
-			return (mylist!=null) ? Boolean.toString(mylist.contains(M.Name())) : "false";
+			str.append( ((mylist!=null)&&(M!=null)) ? Boolean.toString(mylist.contains(M.Name())) : "false").append(", ");
 		}
 		
 		if(parms.containsKey("SMTPADDRESS"))
@@ -80,58 +81,71 @@ public class ForumInfo extends StdWebMacro
 			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
 			if((entry!=null)&&(entry.forward))
 			{
-				return entry.name.replace(' ','_')+"@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN);
+				str.append( entry.name.replace(' ','_')+"@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)).append(", ");
 			}
 		}
 		
 		if(parms.containsKey("CANADMIN")||parms.containsKey("ISADMIN"))
-			return ""+journal.authorizationCheck(M, ForumJournalFlags.ADMIN);
+			str.append( ""+journal.authorizationCheck(M, ForumJournalFlags.ADMIN)).append(", ");
 		
 		if(parms.containsKey("CANPOST"))
-			return ""+journal.authorizationCheck(M, ForumJournalFlags.POST);
+			str.append( ""+journal.authorizationCheck(M, ForumJournalFlags.POST)).append(", ");
 		
 		if(parms.containsKey("CANREAD"))
-			return ""+journal.authorizationCheck(M, ForumJournalFlags.READ);
+			str.append( ""+journal.authorizationCheck(M, ForumJournalFlags.READ)).append(", ");
 		
 		if(parms.containsKey("CANREPLY"))
-			return ""+journal.authorizationCheck(M, ForumJournalFlags.REPLY);
+			str.append( ""+journal.authorizationCheck(M, ForumJournalFlags.REPLY)).append(", ");
 		
 		if(parms.containsKey("ADMINMASK"))
-			return ""+journal.adminMask();
+			str.append( ""+journal.adminMask()).append(", ");
 		
 		if(parms.containsKey("READMASK"))
-			return ""+journal.readMask();
+			str.append( ""+journal.readMask()).append(", ");
 		
 		if(parms.containsKey("POSTMASK"))
-			return ""+journal.postMask();
+			str.append( ""+journal.postMask()).append(", ");
 		
 		if(parms.containsKey("REPLYMASK"))
-			return ""+journal.replyMask();
+			str.append( ""+journal.replyMask()).append(", ");
+		
+		if(parms.containsKey("ID"))
+			str.append( ""+journal.NAME()).append(", ");
+		
+		if(parms.containsKey("NAME"))
+			str.append( ""+journal.NAME()).append(", ");
+		
+		if(parms.containsKey("EXPIRE"))
+			str.append( "").append(", ");
 		
 		JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(last);
 		if(stats == null) 
 			return " @break@";
 		
 		if(parms.containsKey("POSTS"))
-			return ""+stats.posts;
+			str.append( ""+stats.posts).append(", ");
 		
 		if(parms.containsKey("THREADS"))
-			return ""+stats.threads;
+			str.append( ""+stats.threads).append(", ");
 		
 		if(parms.containsKey("SHORTDESC"))
-			return ""+stats.shortIntro;
+			str.append( ""+stats.shortIntro).append(", ");
 		
 		if(parms.containsKey("LONGDESC"))
-			return ""+stats.longIntro;
+			str.append( ""+stats.longIntro).append(", ");
 		
 		if(parms.containsKey("IMAGEPATH"))
 		{
 			if((stats.imagePath==null)
 			||(stats.imagePath.trim().length()==0))
-				return "images/lilcm.jpg";
-			return ""+stats.threads;
+				str.append( "images/lilcm.jpg").append(", ");
+			else
+				str.append( ""+stats.threads).append(", ");
 		}
 		
-		return "";
+		String strstr=str.toString();
+		if(strstr.endsWith(", "))
+			strstr=strstr.substring(0,strstr.length()-2);
+		return clearWebMacros(strstr);
 	}
 }

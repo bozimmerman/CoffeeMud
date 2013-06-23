@@ -38,6 +38,7 @@ public class CMStrings
 	
 	public final static boolean isUpperCase(final String str) 
 	{
+		if(str==null) return false;
 		for(int c=0;c<str.length();c++)
 			if(!Character.isUpperCase(str.charAt(c)))
 				return false;
@@ -46,10 +47,23 @@ public class CMStrings
 	
 	public final static boolean isLowerCase(final String str) 
 	{
+		if(str==null) return false;
 		for(int c=0;c<str.length();c++)
 			if(!Character.isLowerCase(str.charAt(c)))
 				return false;
 		return true;
+	}
+	
+	public final static String s_uppercase(final String str)
+	{
+		if(str==null) return "";
+		return str.toUpperCase();
+	}
+	
+	public final static String s_lowercase(final String str)
+	{
+		if(str==null) return "";
+		return str.toLowerCase();
 	}
 	
 	public final static String endWithAPeriod(final String str)

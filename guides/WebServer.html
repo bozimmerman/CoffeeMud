@@ -612,7 +612,9 @@ embedding rules above. This macro requires an @next@ macro, and will assign
 a request parameter of the same name as the variable name equal to an entry
 in the string returned by the macro in each iteration. For example:
 @for?EXITFLAG=ExitData?ISGENERIC&NAME@ would iterate twice, with
-reqparm EXITFLAG = true (or false) the first time, and a NAME the second time. 
+reqparm EXITFLAG = true (or false) the first time, and a NAME the second time.
+@for?COUNTER=1,2,3,4@ would iterate 4 times, with reqparm COUNTER = 1 on
+the first iteration, then 2, 3 and finally 4. 
           </td>
           </tr>
           <tr>

@@ -81,6 +81,7 @@ public class MWHTTPRequest implements HTTPRequest
 	private ByteBuffer	 		 overFlowBuf  = null;		// generated when a request buffer overflows to next (pipelining)
 	private Map<String,Double>	 acceptEnc	  = null;
 	private final boolean		 isHttps;
+	private final boolean		 overwriteDups;
 	private final int			 requestPort;
 	private final long			 requestLineSize;
 	private List<String>		 headerRefs  = new LinkedList<String>();
@@ -92,11 +93,12 @@ public class MWHTTPRequest implements HTTPRequest
 	 * @param address the address of the sender of the request
 	 * @param isHttps whether this is an https request or not
 	 * @param requestPort the port that was connected to for this request
+	 * @param overwriteDups true to overwrite dup url parameters, false to add #
 	 * @param requestLineSize number of bytes in a new request line
 	 * @param debugLogger null, or a logger object to send debug messages to
 	 * @param buffer a buffer to use instead of creating a new one
 	 */
-	public MWHTTPRequest(InetAddress address, boolean isHttps, int requestPort, long requestLineSize, Logger debugLogger, ByteBuffer buffer)
+	public MWHTTPRequest(InetAddress address, boolean isHttps, int requestPort, boolean overwriteDups, long requestLineSize, Logger debugLogger, ByteBuffer buffer)
 	{
 		this.address=address;
 		this.requestLineSize=requestLineSize;
@@ -108,6 +110,7 @@ public class MWHTTPRequest implements HTTPRequest
 		this.debugLogger=debugLogger;
 		this.requestPort=requestPort;
 		this.isHttps=isHttps;
+		this.overwriteDups=overwriteDups;
 	}
 	
 	/**
@@ -119,6 +122,7 @@ public class MWHTTPRequest implements HTTPRequest
 		this(previousRequest.getClientAddress(), 
 				previousRequest.isHttps, 
 				previousRequest.getClientPort(),
+				previousRequest.overwriteDups,
 				previousRequest.requestLineSize,
 				previousRequest.debugLogger,
 				previousRequest.overFlowBuf);
@@ -498,6 +502,7 @@ public class MWHTTPRequest implements HTTPRequest
 	{
 		final byte[] buf=buffer.array();
 		final String[] parts=boundaryDefStr.split(";");
+		final Map<String,String> urlParmsFound=new HashMap<String,String>();
 		String boundary = null;
 		for(String part : parts)
 		{
@@ -600,9 +605,20 @@ public class MWHTTPRequest implements HTTPRequest
 					&& !currentPart.getVariables().containsKey("filename")
 					)
 					{
-						String name=currentPart.getVariables().get("name").toLowerCase();
-						if (isDebugging) debugLogger.finest("Got multipart "+currentPart.getContentType()+" "+currentPart.getDisposition()+" named "+name);
-						addUrlParameter(name, new String(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer)));
+						final String key=currentPart.getVariables().get("name").toLowerCase();
+						if (isDebugging) debugLogger.finest("Got multipart "+currentPart.getContentType()+" "+currentPart.getDisposition()+" named "+key);
+						final String value=new String(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer));
+						if(urlParmsFound.containsKey(key) && !overwriteDups)
+						{
+							int x=1;
+							while(urlParmsFound.containsKey(key+x))
+								x++;
+							urlParmsFound.put(key+x, value);
+						}
+						else
+						{
+							urlParmsFound.put(key, value);
+						}
 						allParts.remove(currentPart);
 					}
 					else
@@ -620,6 +636,8 @@ public class MWHTTPRequest implements HTTPRequest
 					if(lastBoundry)
 					{
 						if (isDebugging) debugLogger.finest("Completed "+allParts.size()+" multiparts");
+						for(String key : urlParmsFound.keySet())
+							addUrlParameter(key,urlParmsFound.get(key));
 						return allParts;
 					}
 				}
@@ -629,6 +647,8 @@ public class MWHTTPRequest implements HTTPRequest
 			i++;
 		}
 		index[0]=i;
+		for(String key : urlParmsFound.keySet())
+			addUrlParameter(key,urlParmsFound.get(key));
 		return allParts;
 	}
 	
@@ -800,15 +820,36 @@ public class MWHTTPRequest implements HTTPRequest
 		try
 		{
 			String[] urlParmArray = parts.split("&");
+			final Map<String,String> urlParmsFound=new HashMap<String,String>();
 			for(String urlParm : urlParmArray)
 			{
-				int equalDex = urlParm.indexOf('=');
+				final int equalDex = urlParm.indexOf('=');
+				final String key;
+				final String value;
 				if(equalDex < 0)
-					addUrlParameter(URLDecoder.decode(urlParm,"UTF-8"), "");
+				{
+					key=URLDecoder.decode(urlParm,"UTF-8");
+					value="";
+				}
 				else
-					addUrlParameter(URLDecoder.decode(urlParm.substring(0,equalDex),"UTF-8"), 
-									URLDecoder.decode(urlParm.substring(equalDex+1),"UTF-8"));
+				{
+					key=URLDecoder.decode(urlParm.substring(0,equalDex),"UTF-8");
+					value=URLDecoder.decode(urlParm.substring(equalDex+1),"UTF-8");
+				}
+				if(urlParmsFound.containsKey(key) && !overwriteDups)
+				{
+					int x=1;
+					while(urlParmsFound.containsKey(key+x))
+						x++;
+					urlParmsFound.put(key+x, value);
+				}
+				else
+				{
+					urlParmsFound.put(key, value);
+				}
 			}
+			for(String key : urlParmsFound.keySet())
+				addUrlParameter(key,urlParmsFound.get(key));
 		}
 		catch(UnsupportedEncodingException ex)
 		{

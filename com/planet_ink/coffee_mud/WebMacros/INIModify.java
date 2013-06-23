@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class INIModify extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -46,19 +45,22 @@ public class INIModify extends StdWebMacro
 		new CMFile(CMProps.getVar(CMProps.SYSTEM_INIPATH),null,false,true).saveText(buf);
 	}
 
-	public boolean modified(HashSet H, String s)
+	public boolean modified(Set<String> H, String s)
 	{
 		if(s.endsWith("*"))
-			for(Iterator i=H.iterator();i.hasNext();)
+			for(Iterator<String> i=H.iterator();i.hasNext();)
 			{
-				if(((String)i.next()).startsWith(s.substring(0,s.length()-1)))
-				   return true;
+				if(i.next().startsWith(s.substring(0,s.length()-1)))
+					return true;
 			}
 		return H.contains(s);
 	}
 	
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
+		MOB authM=Authenticate.getAuthenticatedMob(httpReq);
+		if((authM==null)||(!CMSecurity.isASysOp(authM)))
+			return " @break@ ";
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms==null) return "";
 		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
@@ -124,7 +126,20 @@ public class INIModify extends StdWebMacro
 		else
 		if(parms.containsKey("UPDATE"))
 		{
-			HashSet modified=new HashSet();
+			Set<String> modified=new HashSet<String>();
+			List<String> iniBuildVars=CMParms.parseCommas(CMStrings.s_uppercase(httpReq.getUrlParameter("INIBUILDVARS")), true);
+			if(iniBuildVars.contains("CHANNELS"))
+				httpReq.addFakeUrlParameter("CHANNELS", buildChannelsVar(httpReq));
+			if(iniBuildVars.contains("COMMANDJOURNALS"))
+				httpReq.addFakeUrlParameter("COMMANDJOURNALS", buildCommandJournalsVar(httpReq));
+			if(iniBuildVars.contains("FORUMJOURNALS"))
+				httpReq.addFakeUrlParameter("FORUMJOURNALS", buildForumJournalsVar(httpReq));
+			if(iniBuildVars.contains("ICHANNELS"))
+				httpReq.addFakeUrlParameter("ICHANNELS", buildIChannelsVar(httpReq));
+			if(iniBuildVars.contains("IMC2CHANNELS"))
+				httpReq.addFakeUrlParameter("IMC2CHANNELS", buildIMC2ChannelsVar(httpReq));
+			
+			
 			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 			if((ipage==null)||(!ipage.isLoaded())) return "";
 			for(int p=0;p<page.size();p++)
@@ -181,4 +196,166 @@ public class INIModify extends StdWebMacro
 		}
 		return "";
 	}
+	
+	protected String getChannelsValue(final HTTPRequest httpReq, final String index)
+	{
+		final String name=httpReq.getUrlParameter("CHANNEL_"+index+"_NAME");
+		final String mask=httpReq.getUrlParameter("CHANNEL_"+index+"_MASK");
+		final String colors=httpReq.getUrlParameter("CHANNEL_"+index+"_COLORS");
+		if((name!=null)&&(name.trim().length()>0)
+		&&(!name.trim().equalsIgnoreCase("auction")))
+		{
+			final StringBuilder str=new StringBuilder("");
+			str.append(name.trim().replace(',',' ').toUpperCase()).append(" ");
+			if(colors.trim().length()>0)
+				str.append(colors.trim().replace(',',' ').toUpperCase()).append(" ");
+			String flagid="";
+			for(int i=0;httpReq.isUrlParameter("CHANNEL_"+index+"_FLAG_"+flagid);flagid=""+(++i))
+			{
+				String flagName=httpReq.getUrlParameter("CHANNEL_"+index+"_FLAG_"+flagid);
+				ChannelsLibrary.ChannelFlag flag=(ChannelsLibrary.ChannelFlag)CMath.s_valueOf(ChannelsLibrary.ChannelFlag.values(), flagName);
+				if(flag != null)
+					str.append(flag.name()).append(" ");
+			}
+			if(mask.trim().length()>0)
+				str.append(mask.trim().replace(',',' ')).append(" ");
+			str.setLength(str.length()-1);
+			return str.toString();
+		}
+		return null;
+	}
+	
+	protected void addChannelsVar(final HTTPRequest httpReq, final String index, final StringBuilder str)
+	{
+		final String firstPart=getChannelsValue(httpReq,index);
+		if(firstPart!=null)
+		{
+			final String i3Name=httpReq.getUrlParameter("CHANNEL_"+index+"_I3NAME");
+			final String imc2Name=httpReq.getUrlParameter("CHANNEL_"+index+"_IMC2NAME");
+			if(((i3Name!=null)&&(i3Name.trim().length()>0))
+			||((imc2Name!=null)&&(imc2Name.trim().length()>0)))
+				return;
+			if(str.length()>0)
+				str.append(", ");
+			str.append(firstPart);
+		}
+	}
+	
+	protected String buildChannelsVar(final HTTPRequest httpReq)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
+			addChannelsVar(httpReq,Integer.toString(index),str);
+		addChannelsVar(httpReq,"",str);
+		return str.toString();
+	}
+	
+	protected void addIChannelsVar(final HTTPRequest httpReq, final String index, final StringBuilder str)
+	{
+		final String firstPart=getChannelsValue(httpReq,index);
+		if(firstPart!=null)
+		{
+			final String i3Name=httpReq.getUrlParameter("CHANNEL_"+index+"_I3NAME");
+			if((i3Name!=null)&&(i3Name.trim().length()>0))
+			{
+				if(str.length()>0)
+					str.append(", ");
+				str.append(firstPart).append(" ").append(i3Name);
+			}
+		}
+	}
+	
+	protected String buildIChannelsVar(HTTPRequest httpReq)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
+			addIChannelsVar(httpReq,Integer.toString(index),str);
+		addIChannelsVar(httpReq,"",str);
+		return str.toString();
+	}
+	
+	protected void addIMC2ChannelsVar(final HTTPRequest httpReq, final String index, final StringBuilder str)
+	{
+		final String firstPart=getChannelsValue(httpReq,index);
+		if(firstPart!=null)
+		{
+			final String imc2Name=httpReq.getUrlParameter("CHANNEL_"+index+"_IMC2NAME");
+			if((imc2Name!=null)&&(imc2Name.trim().length()>0))
+			{
+				if(str.length()>0)
+					str.append(", ");
+				str.append(firstPart).append(" ").append(imc2Name);
+			}
+		}
+	}
+	
+	protected String buildIMC2ChannelsVar(HTTPRequest httpReq)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
+			addIMC2ChannelsVar(httpReq,Integer.toString(index),str);
+		addIMC2ChannelsVar(httpReq,"",str);
+		return str.toString();
+	}
+	
+	protected void addCommandJournalsVar(final HTTPRequest httpReq, final String index, final StringBuilder str)
+	{
+		final String name=httpReq.getUrlParameter("COMMANDJOURNAL_"+index+"_NAME");
+		final String mask=httpReq.getUrlParameter("COMMANDJOURNAL_"+index+"_MASK");
+		if((name!=null)&&(name.trim().length()>0)
+		&&(!name.trim().equalsIgnoreCase("auction")))
+		{
+			if(str.length()>0)
+				str.append(", ");
+			str.append(name.trim().replace(',',' ').toUpperCase()).append(" ");
+			for(JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
+			{
+				String val=httpReq.getUrlParameter("COMMANDJOURNAL_"+index+"_FLAG_"+flag.name());
+				if((val!=null)&&(val.trim().length()>0))
+					str.append(flag.name()).append("=").append(val.replace(',', ' ')).append(" ");
+			}
+			if(mask.trim().length()>0)
+				str.append(mask.trim().replace(',',' ')).append(" ");
+			str.setLength(str.length()-1);
+		}
+	}
+	
+	protected String buildCommandJournalsVar(HTTPRequest httpReq)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(int index=0;httpReq.isUrlParameter("COMMANDJOURNAL_"+index+"_NAME");index++)
+			addCommandJournalsVar(httpReq,Integer.toString(index),str);
+		addCommandJournalsVar(httpReq,"",str);
+		return str.toString();
+	}
+	
+	protected void addForumJournalsVar(final HTTPRequest httpReq, final String index, final StringBuilder str)
+	{
+		final String name=httpReq.getUrlParameter("FORUMJOURNAL_"+index+"_NAME");
+		if((name!=null)&&(name.trim().length()>0)
+		&&(!name.trim().equalsIgnoreCase("auction")))
+		{
+			if(str.length()>0)
+				str.append(", ");
+			str.append(name.trim().replace(',',' ')).append(" ");
+			
+			for(JournalsLibrary.ForumJournalFlags flag : JournalsLibrary.ForumJournalFlags.values())
+			{
+				String val=httpReq.getUrlParameter("FORUMJOURNAL_"+index+"_"+flag.name());
+				if((val!=null)&&(val.trim().length()>0))
+					str.append(flag.name()).append("=").append(val.trim().replace(',',' ')).append(" ");
+			}
+			str.setLength(str.length()-1);
+		}
+	}
+	
+	protected String buildForumJournalsVar(HTTPRequest httpReq)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(int index=0;httpReq.isUrlParameter("FORUMJOURNAL_"+index+"_NAME");index++)
+			addForumJournalsVar(httpReq,Integer.toString(index),str);
+		addForumJournalsVar(httpReq,"",str);
+		return str.toString();
+	}
+	
 }

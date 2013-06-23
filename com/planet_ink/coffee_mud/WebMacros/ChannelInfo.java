@@ -42,14 +42,21 @@ public class ChannelInfo extends StdWebMacro
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("CHANNEL");
-		if(last==null) return " @break@";
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("ALLFLAGS"))
+		{
+			for(ChannelsLibrary.ChannelFlag flag : ChannelsLibrary.ChannelFlag.values())
+				str.append("FLAG_"+flag.name()).append(", ");
+		}
+		else
+		if(last==null) 
+			return " @break@";
 		if(last.length()>0)
 		{
 			int code=CMLib.channels().getChannelIndex(last);
 			if(code>=0)
 			{
 				final ChannelsLibrary.CMChannel C=CMLib.channels().getChannel(code);
-				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
 					StringBuilder s=CMLib.help().getHelpText("CHANNEL_"+last,null,false);
@@ -73,18 +80,14 @@ public class ChannelInfo extends StdWebMacro
 				if(parms.containsKey("FLAGSET"))
 					for(ChannelsLibrary.ChannelFlag flag : ChannelsLibrary.ChannelFlag.values())
 						httpReq.addFakeUrlParameter("FLAG_"+flag.name(), C.flags.contains(flag)?(parms.containsKey("SELECTED")?"selected":parms.containsKey("CHECKED")?"checked":"on"):"");
-				if(parms.containsKey("ALLFLAGS"))
-					for(ChannelsLibrary.ChannelFlag flag : ChannelsLibrary.ChannelFlag.values())
-						str.append("FLAG_"+flag.name()).append(", ");
 				for(ChannelsLibrary.ChannelFlag flag : ChannelsLibrary.ChannelFlag.values())
 					if(parms.containsKey("FLAG_"+flag.name().toUpperCase().trim()))
 						str.append(C.flags.contains(flag)?(parms.containsKey("SELECTED")?"selected":parms.containsKey("CHECKED")?"checked":"on"):"").append(", ");
-				String strstr=str.toString();
-				if(strstr.endsWith(", "))
-					strstr=strstr.substring(0,strstr.length()-2);
-				return clearWebMacros(strstr);
 			}
 		}
-		return "";
+		String strstr=str.toString();
+		if(strstr.endsWith(", "))
+			strstr=strstr.substring(0,strstr.length()-2);
+		return clearWebMacros(strstr);
 	}
 }
