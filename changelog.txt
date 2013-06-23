@@ -2455,3 +2455,4 @@ ruthless programmer, and sentenced to a quick death.
 11.Consolidated Session and Tick threads: check new coffeemud.ini file for new MAXWORKERTHREADS and MINWORKERTHREADS. Major drop in thread usage!
 12.Control Panel now supports debug flags, and the whole flag business has been put into its own "Tab"
 13.Web Server now supports @for?@ @next@ loops! See the web server guide for usage, or checkout an example in control.cmvp
+14.Control Panel "Channels" editor is now much friendlier and easy to use.
