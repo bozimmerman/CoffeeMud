@@ -52,9 +52,14 @@ public class Email extends StdCommand
 
 		if((commands!=null)
 		&&(commands.size()>1)
-		&&(commands.elementAt(1) instanceof String)
-		&&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
+		&&(commands.elementAt(1) instanceof String))
 		{
+
+			if(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()==0)
+			{
+				mob.tell("A mailbox has not been defined by this muds administrators.");
+				return false;
+			}
 			String name=CMParms.combine(commands,1);
 			if(name.equalsIgnoreCase("BOX"))
 			{
