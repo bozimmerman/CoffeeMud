@@ -227,28 +227,13 @@ public class Sessions extends StdLibrary implements SessionsList
 					final double numThreads=all.size();
 					if(numThreads>0.0)
 					{
-						/*
-						final double milliSleep = 10.0 / numThreads;
-						final double floorMilliSleep = Math.floor(milliSleep);
-						final long millis=Math.round(floorMilliSleep);
-						final int nanos=(int)Math.round((milliSleep - floorMilliSleep) * 100000.0);
-						try
+						for(final Session S : all)
 						{
-						*/
-							for(final Session S : all)
+							if(!S.isRunning()) 
 							{
-								if(!S.isRunning()) 
-								{
-									CMLib.threads().executeRunnable(S);
-									//Thread.sleep(millis, nanos);
-								}
+								CMLib.threads().executeRunnable(S);
 							}
-						/*
 						}
-						catch(InterruptedException ioe)
-						{
-						}
-						*/
 					}
 					if(((System.currentTimeMillis() - lastSweepTime) > MudHost.TIME_UTILTHREAD_SLEEP)
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
