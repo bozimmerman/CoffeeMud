@@ -48,34 +48,42 @@ import java.util.Hashtable;
  * during the course of program execution.  This thread loops
  * until the Server class tells it to shut down.  The loop is
  * executed in the thread's run() method.
- * @author George Reese (borg@imaginary.com)
- * @version 1.0
+ * @author George Reese (borg@imaginary.com), Bo Zimmerman
+ * @version 1.1
  * @see com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server
+ * 
+ * Modified in 2013 to cut down on thread use
  */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class ServerThread extends Thread 
+public class ServerThread implements Tickable
 {
-	private java.util.Date  	boot_time=null;
-	private int 				count  = 1;
-	private Hashtable   		interactives;
-	private String  			mud_name;
-	private Hashtable   		objects;
-	private int 				port;
-	private boolean 			running;
-	private ImudServices		intermuds;
-	private ListenThread listen_thread=null;
+	private java.util.Date  boot_time=null;
+	private int 			count  = 1;
+	private Hashtable   	interactives;
+	private String  		mud_name;
+	private Hashtable   	objects;
+	private int 			port;
+	private boolean 		running;
+	private ImudServices	intermuds;
+	private ListenThread 	listen_thread=null;
+	private volatile long 	tickStatus=Tickable.STATUS_NOT;
 
 	protected ServerThread(String mname, 
 						   int mport,
 						   ImudServices imud) {
-		super("I3UserThread");
-		setPriority(Thread.NORM_PRIORITY + 1);
-		setDaemon(true);
 		mud_name = mname;
 		port = mport;
 		intermuds=imud;
 	}
 
+	@Override public String ID() { return "I3ServerThread"; }
+	@Override public CMObject newInstance() { return this; }
+	@Override public CMObject copyOf() { return this; }
+	@Override public void initializeClass() { }
+	@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
+	@Override public String name() { return "I3UserThread"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
+	@Override public long getTickStatus() { return tickStatus; }
+	
 	protected synchronized ServerObject copyObject(String str) throws ObjectLoadException {
 		ServerObject ob;
 
@@ -139,7 +147,7 @@ public class ServerThread extends Thread
 	 *  	interactive object for each.
 	 * </ul>
 	 */
-	public void run() 
+	public void start() 
 	{
 		if( boot_time != null ) {
 			Log.errOut("I3Server","Illegal attempt to invoke run().");
@@ -173,87 +181,88 @@ public class ServerThread extends Thread
 		}
 		
 		running = true;
-		while( running ) {
-			ServerObject[] things;
-			ServerUser[] users;
-			
-			try{
-				Thread.sleep(100);
-			}catch(Exception e){running=false;}
+		CMLib.threads().deleteTick(this, Tickable.TICKID_SUPPORT);
+		CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT, 250, 1);
+	}
 
-			synchronized( this ) {
-				things = getObjects();
-				users = getInteractives();
+	@Override public boolean tick(Tickable ticking, int tickID) {
+		tickStatus=Tickable.STATUS_ALIVE;
+		ServerObject[] things;
+		ServerUser[] users;
+		synchronized( this ) {
+			things = getObjects();
+			users = getInteractives();
+		}
+		{// Process all input
+			int i;
+
+			for(i=0; i<users.length; i++) {
+				ServerUser interactive = users[i];
+
+
+				if( interactive.getDestructed() ) {
+					continue;
+				}
+				try {
+					interactive.processInput();
+				}
+				catch( Exception e ) {
+					Log.errOut("IMServerThread",e);
+				}
 			}
-			{// Process all input
-				int i;
+		}
+		{// Check for pending object events
+			int i;
 
-				for(i=0; i<users.length; i++) {
-					ServerUser interactive = users[i];
+			for(i=0; i<things.length; i++) {
+				ServerObject thing = things[i];
 
-
-					if( interactive.getDestructed() ) {
-						continue;
-					}
+				if( !thing.getDestructed() ) {
 					try {
-						interactive.processInput();
+						thing.processEvent();
 					}
 					catch( Exception e ) {
 						Log.errOut("IMServerThread",e);
 					}
 				}
 			}
-			{// Check for pending object events
-				int i;
+		}
+		{// Get new connections
+			int i;
 
-				for(i=0; i<things.length; i++) {
-					ServerObject thing = things[i];
+			for(i=0; i<5; i++) {
+				java.net.Socket s;
+				ServerUser new_user;
 
-					if( !thing.getDestructed() ) {
-						try {
-							thing.processEvent();
-						}
-						catch( Exception e ) {
-							Log.errOut("IMServerThread",e);
-						}
+				if(listen_thread!=null)
+					s = listen_thread.nextSocket();
+				else
+					s=null;
+				if( s == null ) {
+					break;
+				}
+				try {
+					new_user = (ServerUser)copyObject("com.planet_ink.coffee_mud.core.intermud.i3.IMudUser");
+				}
+				catch( ObjectLoadException e ) {
+					continue;
+				}
+				try {
+					new_user.setSocket(s);
+					synchronized( this ) {
+						interactives.put(new_user.getObjectId(), new_user);
+						new_user.connect();
 					}
 				}
-			}
-			{// Get new connections
-				int i;
-
-				for(i=0; i<5; i++) {
-					java.net.Socket s;
-					ServerUser new_user;
-
-					if(listen_thread!=null)
-						s = listen_thread.nextSocket();
-					else
-						s=null;
-					if( s == null ) {
-						break;
-					}
-					try {
-						new_user = (ServerUser)copyObject("com.planet_ink.coffee_mud.core.intermud.i3.IMudUser");
-					}
-					catch( ObjectLoadException e ) {
-						continue;
-					}
-					try {
-						new_user.setSocket(s);
-						synchronized( this ) {
-							interactives.put(new_user.getObjectId(), new_user);
-							new_user.connect();
-						}
-					}
-					catch( java.io.IOException e ) {
-						new_user.destruct();
-					}
+				catch( java.io.IOException e ) {
+					new_user.destruct();
 				}
 			}
 		}
+		tickStatus=Tickable.STATUS_NOT;
+		return running;
 	}
-
+	
 	protected Date getBootTime() {
 		return boot_time;
 	}
@@ -288,7 +297,7 @@ public class ServerThread extends Thread
 			listen_thread=null;
 		}
 		boot_time = null;
-		try{ Thread.sleep(100);}catch(Exception e){}
+		CMLib.threads().deleteTick(this, Tickable.TICKID_SUPPORT);
 	}
 	
 	protected synchronized ServerObject[] getObjects() {

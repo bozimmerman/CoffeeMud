@@ -43,7 +43,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @version 1.0
  */
 public class I3Server {
-	static private ServerThread thread = null;
+	static private ServerThread serverClient = null;
 	static private boolean started = false;
 
 	/**
@@ -65,14 +65,13 @@ public class I3Server {
 				throw new ServerSecurityException("Illegal attempt to start Server.");
 			}
 			started = true;
-			thread = new ServerThread(mud, port, imud);
-			thread.setDaemon(true);
+			serverClient = new ServerThread(mud, port, imud);
 			Log.sysOut("I3Server", "InterMud3 Core (c)1996 George Reese");
-			thread.start();
+			serverClient.start();
 		}
 		catch(Exception e)
 		{
-			thread=null;
+			serverClient=null;
 			Log.errOut("I3Server",e);
 		}
 	}
@@ -83,23 +82,23 @@ public class I3Server {
 	 * @param file the name of the class being loaded
 	 */
 	static public ServerObject copyObject(String file) throws ObjectLoadException {
-		return thread.copyObject(file);
+		return serverClient.copyObject(file);
 	}
 
 	static public ServerObject findObject(String file) throws ObjectLoadException {
-		return thread.findObject(file);
+		return serverClient.findObject(file);
 	}
 
 	static public ServerUser[] getInteractives() {
-		return thread.getInteractives();
+		return serverClient.getInteractives();
 	}
 
 	static public String getMudName() {
-		return thread.getMudName();
+		return serverClient.getMudName();
 	}
 
 	static public int getPort() {
-		return thread.getPort();
+		return serverClient.getPort();
 	}
 
 	static public void shutdown()
@@ -110,9 +109,8 @@ public class I3Server {
 				ShutdownPacket shutdown=new ShutdownPacket();
 				shutdown.send();
 			}catch(Exception e){}
-		thread.shutdown();
+		serverClient.shutdown();
 		started=false;
-		CMLib.killThread(thread,500,1);
 		}catch(Exception e){}
 	}
 	
@@ -120,6 +118,6 @@ public class I3Server {
 		if( !ob.getDestructed() ) {
 			return;
 		}
-		thread.removeObject(ob);
+		serverClient.removeObject(ob);
 	}
 }
