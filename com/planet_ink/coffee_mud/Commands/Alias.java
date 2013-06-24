@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -36,91 +37,126 @@ public class Alias extends StdCommand
 {
 	private final String[] access={"ALIAS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if((mob.playerStats()==null)||(mob.session()==null))
+		final PlayerStats pStats=mob.playerStats();
+		final Session session=mob.session();
+		if((pStats==null)||(session==null))
 			return false;
-		PlayerStats ps=mob.playerStats();
-		while((mob.session()!=null)&&(!mob.session().isStopped()))
-		{
-			StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
-			String[] aliasNames=ps.getAliasNames();
-			for(int i=0;i<aliasNames.length;i++)
-				menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+ps.getAlias(aliasNames[i])+"\n\r");
-			menu.append((aliasNames.length+1)+". Add a new alias\n\r");
-			mob.tell(menu.toString());
-			String which=mob.session().prompt("Enter a selection: ","");
-			if(which.length()==0)
-				break;
-			int num=CMath.s_int(which);
-			String selection=null;
-			if((num>0)&&(num<=(aliasNames.length)))
-			{
-				selection=aliasNames[num-1];
-				if(mob.session().choose("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ","MD","M").equals("D"))
-				{
-					ps.delAliasName(selection);
-					mob.tell("Alias deleted.");
-					selection=null;
-				}
+		final InputCallback IC[]=new InputCallback[1];
+		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0){
+			@Override public void showPrompt() { 
+				StringBuffer menu=new StringBuffer("^xAlias definitions:^.^?\n\r");
+				String[] aliasNames=pStats.getAliasNames();
+				for(int i=0;i<aliasNames.length;i++)
+					menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+pStats.getAlias(aliasNames[i])+"\n\r");
+				menu.append((aliasNames.length+1)+". Add a new alias\n\r");
+				mob.tell(menu.toString());
+				session.print("Enter a selection: ");
 			}
-			else
-			if(num<=0)
-				break;
-			else
+			@Override public void timedOut() { }
+			@Override public void callBack() 
 			{
-				selection=mob.session().prompt("Enter a new alias string consisting of letters and numbers only.\n\r: ","").trim().toUpperCase();
-				if(selection.length()==0)
-					selection=null;
-				else
-				if(ps.getAlias(selection).length()>0)
+				if(this.input.length()==0)
+					return;
+				int num=CMath.s_int(this.input);
+				if(num<=0)
+					return;
+				if(num<=(pStats.getAliasNames().length))
 				{
-					selection=null;
-					mob.tell("That alias already exists.  Select it from the menu to delete or modify.");
-				}
-				else
-				if(CMParms.contains(access,selection.toUpperCase()))
-				{
-					selection=null;
-					mob.tell("You may not alias alias.");
-				}
-				else
-				{
-					for(int i=0;i<selection.length();i++)
-						if(!Character.isLetterOrDigit(selection.charAt(i)))
+					final String selection=pStats.getAliasNames()[num-1];
+					session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"","MD\n",0){
+						@Override public void showPrompt() { session.print("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ");}
+						@Override public void timedOut() { }
+						@Override public void callBack() 
 						{
-							selection=null;
-							break;
+							String check=this.input;
+							if(check.trim().length()==0)
+							{
+								session.prompt(IC[0].reset());
+								return;
+							}
+							if(check.equals("D"))
+							{
+								pStats.delAliasName(selection);
+								mob.tell("Alias deleted.");
+								session.prompt(IC[0].reset());
+								return;
+							}
+							modifyAlias(mob,session,pStats,selection,IC);
 						}
-					if(selection==null)
-						mob.tell("Your alias name may only contain letters and numbers without spaces. ");
-					else
-						ps.addAliasName(selection);
+					});
+				}
+				else
+				{
+					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+						@Override public void showPrompt() { session.print("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: ");}
+						@Override public void timedOut() { }
+						@Override public void callBack() 
+						{
+							if(this.input.trim().length()==0)
+							{
+								session.prompt(IC[0].reset());
+								return;
+							}
+							final String commandStr=this.input.toUpperCase().trim();
+							if(pStats.getAlias(commandStr).length()>0)
+							{
+								mob.tell("That alias already exists.  Select it from the menu to delete or modify.");
+								session.prompt(IC[0].reset());
+								return;
+							}
+							if(CMParms.contains(access,commandStr))
+							{
+								mob.tell("You may not alias alias.");
+								session.prompt(IC[0].reset());
+								return;
+							}
+							for(int i=0;i<commandStr.length();i++)
+								if(!Character.isLetterOrDigit(commandStr.charAt(i)))
+								{
+									mob.tell("Your alias name may only contain letters and numbers without spaces. ");
+									session.prompt(IC[0].reset());
+									return;
+								}
+							pStats.addAliasName(commandStr);
+							modifyAlias(mob,session,pStats,commandStr,IC);
+						}
+					});
 				}
 			}
-			if(selection!=null)
+		};
+		session.prompt(IC[0]);
+		return true;
+	}
+
+	public void modifyAlias(final MOB mob, final Session session, final PlayerStats pStats, final String aliasName, final InputCallback[] IC)
+	{
+		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+			@Override public void showPrompt() { session.rawPrintln("\n\rEnter a value for alias '"+aliasName+"'.  Use ~ to separate commands."); session.print(": "); }
+			@Override public void timedOut() { }
+			@Override public void callBack() 
 			{
-				mob.session().rawPrintln("Enter a value for alias '"+selection+"'.  Use ~ to separate commands.");
-				String value=mob.session().prompt(": ","").trim();
+				String value=this.input;
 				value=CMStrings.replaceAll(value,"<","");
 				value=CMStrings.replaceAll(value,"&","");
-				if((value.length()==0)&&(ps.getAlias(selection).length()>0))
+				if((value.length()==0)&&(pStats.getAlias(aliasName).length()>0))
 					mob.tell("(No change)");
 				else
 				if(value.length()==0)
 				{
 					mob.tell("Aborted.");
-					ps.delAliasName(selection);
+					pStats.delAliasName(aliasName);
 				}
 				else
 				{
-					ps.setAlias(selection,value);
+					pStats.setAlias(aliasName,value);
 					mob.tell("The alias was successfully changed.");
 				}
+				session.prompt(IC[0].reset());
 			}
-		}
-		return true;
+		});
 	}
 	
 	public boolean canBeOrdered(){return true;}

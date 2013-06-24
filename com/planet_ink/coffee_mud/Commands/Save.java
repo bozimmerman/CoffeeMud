@@ -194,6 +194,11 @@ public class Save extends StdCommand
 		if(firstCommand.equals("USER"))
 		{
 			MOB M=CMLib.players().getPlayer(lastCommand);
+			if(M==null)
+			{
+				mob.tell("No user named "+lastCommand);
+				return false;
+			}
 			CMLib.database().DBUpdatePlayer(M);
 			if(CMLib.flags().isInTheGame(M,true))
 				CMLib.database().DBUpdateFollowers(M);

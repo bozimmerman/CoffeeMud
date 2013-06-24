@@ -613,15 +613,15 @@ public class DefaultPlayerStats implements PlayerStats
 		
 	}
 	
-	public void setXML(String str)
+	public void setXML(String xmlStr)
 	{
 		account = null;
-		if(str==null) 
+		if(xmlStr==null) 
 			return;
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.PLAYERSTATS);
-		if(debug) Log.debugOut("XML="+str);
-		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
-		str=CMLib.xml().getValFromPieces(xml,"FRIENDS");
+		if(debug) Log.debugOut("XML="+xmlStr);
+		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(xmlStr);
+		String str=CMLib.xml().getValFromPieces(xml,"FRIENDS");
 		if(debug) Log.debugOut("FRIENDS="+str);
 		friends=getHashFrom(str);
 		str=CMLib.xml().getValFromPieces(xml,"IGNORED");

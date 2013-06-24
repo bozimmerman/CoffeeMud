@@ -122,7 +122,11 @@ public class Say extends StdCommand
 					target=null;
 			}
 		}
-		String combinedCommands=CMParms.combineWithQuotes(commands,1);
+		String combinedCommands;
+		if(commands.size()==2)
+			combinedCommands=(String)commands.get(1);
+		else
+			combinedCommands=CMParms.combineWithQuotes(commands,1);
 		if(combinedCommands.equals(""))
 		{
 			mob.tell(theWord+"  what?");

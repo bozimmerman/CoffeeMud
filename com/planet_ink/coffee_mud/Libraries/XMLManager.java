@@ -732,7 +732,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		if(piece!=null)
 		{
 			String parmName=buf.substring(beginDex[State.INATTRIB.ordinal()], endDex[State.INATTRIB.ordinal()]).toUpperCase().trim();
-			String value=buf.substring(beginDex[state.ordinal()],endOfValue).toUpperCase().trim();
+			String value=buf.substring(beginDex[state.ordinal()],endOfValue).trim();
 			if((parmName.length()>15)||(parmName.length()==0))
 				Log.warnOut("XMLManager","Suspicious attribute '"+parmName+"' for tag "+piece.tag);
 			piece.parms.put(parmName, value);
