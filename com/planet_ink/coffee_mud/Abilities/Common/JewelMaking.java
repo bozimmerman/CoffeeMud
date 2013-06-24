@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
@@ -242,8 +243,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
 			return true;
 		int autoGenerate=0;
@@ -461,6 +463,15 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			activity = CraftingActivity.CRAFTING;
 			aborted=false;
 			messedUp=false;
+			String statue=null;
+			if((commands.size()>1)&&((String)commands.lastElement()).startsWith("STATUE="))
+			{
+				statue=(((String)commands.lastElement()).substring(7)).trim();
+				if(statue.length()==0)
+					statue=null;
+				else
+					commands.removeElementAt(commands.size()-1);
+			}
 			int amount=-1;
 			if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 			{
@@ -572,25 +583,34 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 					((Armor)building).basePhyStats().setArmor(armordmg);
 				setWearLocation(building,misctype,0);
 			}
-			if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
+			final Session session=mob.session();
+			if((misctype.equalsIgnoreCase("statue"))
+			&&((session!=null)||((statue!=null)&&(statue.trim().length()>0))))
 			{
-				String of="";
-				try
+				if((statue==null)||(statue.trim().length()==0))
 				{
-					of=mob.session().prompt("What is this item a representation of?","");
-					if((of.trim().length()==0)||(of.indexOf('<')>=0))
-						return false;
-				}
-				catch(java.io.IOException x)
-				{
+					final Ability me=this;
+					final Physical target=givenTarget;
+					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+						@Override public void showPrompt() {session.print("What is this item a representation of?\n\r: ");}
+						@Override public void timedOut() {}
+						@Override public void callBack() {
+							String of=this.input;
+							if((of.trim().length()==0)||(of.indexOf('<')>=0))
+								return;
+							Vector newCommands=(Vector)originalCommands.clone();
+							newCommands.add("STATUE="+of);
+							me.invoke(mob, newCommands, target, auto, asLevel);
+						}
+					});
 					return false;
 				}
-				of=of.trim();
-				if(of.startsWith("of "))
-					of=of.substring(3).trim();
-				building.setName(itemName+" of "+of);
-				building.setDisplayText(itemName+" of "+of+" is here");
-				building.setDescription(itemName+" of "+of+". ");
+				else
+				{
+					building.setName(itemName+" of "+statue.trim());
+					building.setDisplayText(itemName+" of "+statue.trim()+" is here");
+					building.setDescription(itemName+" of "+statue.trim()+". ");
+				}
 			}
 			if(bundling) building.setBaseValue(lostValue);
 			building.recoverPhyStats();

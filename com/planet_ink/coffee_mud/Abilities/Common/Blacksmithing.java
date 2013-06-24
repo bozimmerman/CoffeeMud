@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
@@ -173,8 +174,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
 			return true;
 		int autoGenerate=0;
@@ -240,6 +242,15 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		activity = CraftingActivity.CRAFTING;
 		building=null;
 		messedUp=false;
+		String statue=null;
+		if((commands.size()>1)&&((String)commands.lastElement()).startsWith("STATUE="))
+		{
+			statue=(((String)commands.lastElement()).substring(7)).trim();
+			if(statue.length()==0)
+				statue=null;
+			else
+				commands.removeElementAt(commands.size()-1);
+		}
 		int amount=-1;
 		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 		{
@@ -295,6 +306,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		else
 			fireRequired=false;
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		int lostValue=autoGenerate>0?0:
@@ -327,20 +339,33 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(building,spell);
-		if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
+		final Session session=mob.session();
+		if((misctype.equalsIgnoreCase("statue"))
+		&&((session!=null)||((statue!=null)&&(statue.trim().length()>0))))
 		{
-			try
+			if((statue==null)||(statue.trim().length()==0))
 			{
-				String of=mob.session().prompt("What is this a statue of?","");
-				if((of.trim().length()==0)||(of.indexOf('<')>=0))
-					return false;
-				building.setName(itemName+" of "+of.trim());
-				building.setDisplayText(itemName+" of "+of.trim()+" is here");
-				building.setDescription(itemName+" of "+of.trim()+". ");
-			}
-			catch(java.io.IOException x)
-			{
+				final Ability me=this;
+				final Physical target=givenTarget;
+				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+					@Override public void showPrompt() {session.print("What is this a statue of?\n\r: ");}
+					@Override public void timedOut() {}
+					@Override public void callBack() {
+						String of=this.input;
+						if((of.trim().length()==0)||(of.indexOf('<')>=0))
+							return;
+						Vector newCommands=(Vector)originalCommands.clone();
+						newCommands.add("STATUE="+of);
+						me.invoke(mob, newCommands, target, auto, asLevel);
+					}
+				});
 				return false;
+			}
+			else
+			{
+				building.setName(itemName+" of "+statue.trim());
+				building.setDisplayText(itemName+" of "+statue.trim()+" is here");
+				building.setDescription(itemName+" of "+statue.trim()+". ");
 			}
 		}
 		else
