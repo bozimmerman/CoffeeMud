@@ -550,7 +550,8 @@ public abstract class Interactive implements ServerUser {
  * @see com.planet_ink.coffee_mud.core.intermud.i3.net.Interactive
  */
 @SuppressWarnings({"unchecked","rawtypes"})
-class InputThread implements Runnable {
+class InputThread implements Runnable 
+{
 	private Vector  				input_buffer;
 	private BufferedReader 			stream;
 	private boolean 				destructed;
@@ -610,8 +611,8 @@ class InputThread implements Runnable {
 	 * any reason.
 	 */
 	public void stop() {
-		CMLib.killThread(thread,500,1);
 		destructed = true;
+		CMLib.killThread(thread,500,1);
 	}
 
 	protected synchronized String nextMessage() {
