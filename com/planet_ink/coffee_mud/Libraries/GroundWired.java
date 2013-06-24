@@ -100,8 +100,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 	
-	private TickClient thread=null;
-	public TickClient getSupportThread() { return thread;}
+	private TickClient serviceClient=null;
+	public TickClient getServiceClient() { return serviceClient;}
 	protected STreeMap<Electronics.PowerGenerator,Pair<List<Electronics.PowerSource>,List<Electronics>>> currents 
 													= new STreeMap<Electronics.PowerGenerator,Pair<List<Electronics.PowerSource>,List<Electronics>>>(); 
 	protected CMMsg powerMsg = null;
@@ -123,8 +123,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	
 	public boolean activate()
 	{
-		if(thread==null)
-			thread=CMLib.threads().startTickDown(new Tickable(){
+		if(serviceClient==null)
+			serviceClient=CMLib.threads().startTickDown(new Tickable(){
 				private long tickStatus=Tickable.STATUS_NOT;
 				@Override public String ID() { return "THWired"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 				@Override public CMObject newInstance() { return this; }
@@ -139,7 +139,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
 						tickStatus=Tickable.STATUS_ALIVE;
 						runElectricCurrents();
-						setThreadStatus(thread,"sleeping");
+						setThreadStatus(serviceClient,"sleeping");
 					}
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
@@ -151,17 +151,17 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public boolean shutdown() 
 	{
 		sets.clear();
-		if((thread!=null)&&(thread.getClientObject()!=null))
+		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
 		{
-			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
-			thread=null;
+			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
 		}
 		return true;
 	}
 	
 	protected void runElectricCurrents()
 	{
-		setThreadStatus(thread,"pushing electric currents");
+		setThreadStatus(serviceClient,"pushing electric currents");
 
 		List<String> keys;
 		synchronized(this)
@@ -268,6 +268,6 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				Log.errOut("GroundWired",e);
 			}
 		}
-		setThreadStatus(thread,"sleeping");
+		setThreadStatus(serviceClient,"sleeping");
 	}
 }

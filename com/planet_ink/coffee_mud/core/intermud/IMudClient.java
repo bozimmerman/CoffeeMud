@@ -52,7 +52,7 @@ public class IMudClient implements I3Interface
 	public boolean activate(){ return true;}
 	public boolean shutdown(){ return true;}
 	public void propertiesLoaded(){}
-	public TickClient getSupportThread() { return null;}
+	public TickClient getServiceClient() { return null;}
 	
 	public IMC2Driver imc2=null;
 	public void registerIMC2(Object O)

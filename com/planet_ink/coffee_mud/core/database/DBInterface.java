@@ -92,7 +92,7 @@ public class DBInterface implements DatabaseEngine
 	public boolean activate(){ return true;}
 	public boolean shutdown(){ return true;}
 	public void propertiesLoaded(){}
-	public TickClient getSupportThread() { return null;}
+	public TickClient getServiceClient() { return null;}
 	public MOB.Tattoo parseTattoo(String tattoo)
 	{return MOBloader.parseTattoo(tattoo);}
 	

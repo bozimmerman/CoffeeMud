@@ -1131,27 +1131,7 @@ public class MUD extends Thread implements MudHost
 		{
 			if (tArray[i] != null && tArray[i].isAlive())
 			{
-				if(tArray[i] instanceof Session)
-				{
-					Session S=(Session)tArray[i];
-					Log.sysOut(Thread.currentThread().getName(), "-->Thread: Session status "+S.getStatus()+"-"+CMParms.combine(S.previousCMD(),0) + "\n\r");
-				}
-				else
-				if(tArray[i] instanceof Tickable)
-				{
-					Tickable T=(Tickable)tArray[i];
-					Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+T.ID()+"-"+T.name()+"-"+T.getTickStatus() + "\n\r");
-				}
-				else
-				if((tArray[i] instanceof TickableGroup)
-				&&(((TickableGroup)tArray[i]).getLastTicked()!=null)
-				&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject()!=null))
-				{
-					final Tickable C = ((TickableGroup)tArray[i]).getLastTicked().getClientObject();
-					Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+tArray[i].getName()+" "+C.ID()+"-"+C.name()+"-"+C.getTickStatus() + "\n\r");
-				}
-				else
-					Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+tArray[i].getName() + "\n\r");
+				Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+tArray[i].getName() + "\n\r");
 			}
 		}
 	}

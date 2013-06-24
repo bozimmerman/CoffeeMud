@@ -40,8 +40,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 {
 	public String ID(){return "CMCatalog";}
 	
-	private TickClient thread=null;
-	public TickClient getSupportThread() { return thread;}
+	private TickClient serviceClient=null;
+	public TickClient getServiceClient() { return serviceClient;}
 	
 	public DVector icatalog=new DVector(2);
 	public DVector mcatalog=new DVector(2);
@@ -715,8 +715,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	
 	public boolean activate() 
 	{
-		if(thread==null)
-			thread=CMLib.threads().startTickDown(new Tickable(){
+		if(serviceClient==null)
+			serviceClient=CMLib.threads().startTickDown(new Tickable(){
 				private long tickStatus=Tickable.STATUS_NOT;
 				@Override public String ID() { return "THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 				@Override public CMObject newInstance() { return this; }
@@ -730,7 +730,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					{
 						tickStatus=Tickable.STATUS_ALIVE;
 						isDebugging=CMSecurity.isDebugging(DbgFlag.CATALOGTHREAD);
-						setThreadStatus(thread,"checking catalog references.");
+						setThreadStatus(serviceClient,"checking catalog references.");
 						String[] names = getCatalogItemNames();
 						for(int n=0;n<names.length;n++)
 						{
@@ -743,7 +743,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 							CataData data=getCatalogMobData(names[n]);
 							data.cleanHouse();
 						}
-						setThreadStatus(thread,"sleeping");
+						setThreadStatus(serviceClient,"sleeping");
 					}
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
@@ -756,17 +756,17 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		icatalog=new DVector(2);
 		mcatalog=new DVector(2);
-		if((thread!=null)&&(thread.getClientObject()!=null))
+		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
 		{
-			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
-			thread=null;
+			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
 		}
 		return true;
 	}
 	
 	public void forceTick()
 	{
-		thread.tickTicker(true);
+		serviceClient.tickTicker(true);
 	}
 
 	public static class RoomContentImpl implements RoomContent

@@ -53,7 +53,8 @@ import java.util.Hashtable;
  * @see com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server
  */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class ServerThread extends Thread {
+public class ServerThread extends Thread 
+{
 	private java.util.Date  	boot_time=null;
 	private int 				count  = 1;
 	private Hashtable   		interactives;

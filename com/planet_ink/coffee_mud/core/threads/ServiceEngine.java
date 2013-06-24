@@ -63,7 +63,7 @@ public class ServiceEngine implements ThreadEngine
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public void propertiesLoaded(){}
 
-	public TickClient getSupportThread() 
+	public TickClient getServiceClient() 
 	{
 		return supportClient;
 	}
@@ -466,26 +466,26 @@ public class ServiceEngine implements ThreadEngine
 			for(Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)
 			{
 				CMLibrary lib=e.nextElement();
-				TickClient thread=lib.getSupportThread();
-				if(thread!=null) {
+				TickClient serviceClient=lib.getServiceClient();
+				if(serviceClient!=null) {
 					if(curThreadNum==threadNum) {
 						String instrCode=itemCode.substring(xend);
 						if(instrCode.equalsIgnoreCase("activeMiliTotal"))
-							return ""+thread.getMilliTotal();
+							return ""+serviceClient.getMilliTotal();
 						if(instrCode.equalsIgnoreCase("milliTotal"))
-							return ""+thread.getMilliTotal();
+							return ""+serviceClient.getMilliTotal();
 						if(instrCode.equalsIgnoreCase("status"))
-							return ""+thread.getStatus();
+							return ""+serviceClient.getStatus();
 						if(instrCode.equalsIgnoreCase("name"))
-							return ""+thread.getName();
+							return ""+serviceClient.getName();
 						if(instrCode.equalsIgnoreCase("MilliTotalTime"))
-							return CMLib.english().returnTime(thread.getMilliTotal(),0);
+							return CMLib.english().returnTime(serviceClient.getMilliTotal(),0);
 						if(instrCode.equalsIgnoreCase("MiliTotalTime"))
-							return CMLib.english().returnTime(thread.getMilliTotal(),0);
+							return CMLib.english().returnTime(serviceClient.getMilliTotal(),0);
 						if(instrCode.equalsIgnoreCase("MilliTotalTimePlusAverage")||instrCode.equalsIgnoreCase("MiliTotalTimePlusAverage"))
-							return CMLib.english().returnTime(thread.getMilliTotal(),thread.getTickTotal());
+							return CMLib.english().returnTime(serviceClient.getMilliTotal(),serviceClient.getTickTotal());
 						if(instrCode.equalsIgnoreCase("TickTotal"))
-							return ""+thread.getTickTotal();
+							return ""+serviceClient.getTickTotal();
 						break;
 					}
 					curThreadNum++;
@@ -881,20 +881,6 @@ public class ServiceEngine implements ThreadEngine
 		}
 		return codeWord;
 	}
-	public String getServiceThreadSummary(Thread T)
-	{
-		if(T instanceof TickClient)
-			return " ("+((TickClient)T).getStatus()+")";
-		else
-		if(T instanceof MudHost)
-			return " ("+((MudHost)T).getStatus()+")";
-		else
-		if(T instanceof HTTPRequest)
-			return " ("+((HTTPRequest)T).getUrlPath();
-		return "";
-		
-	}
-	
 	public void insertOrderDeathInOrder(DVector DV, long lastStart, String msg, TickableGroup tock)
 	{
 		if(DV.size()>0)

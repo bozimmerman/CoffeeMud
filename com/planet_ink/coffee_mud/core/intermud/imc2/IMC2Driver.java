@@ -1557,8 +1557,7 @@ public final class IMC2Driver extends Thread {
 		}
 	}
 
-	final class call_in
-		extends Thread {
+	final class call_in extends Thread {
 
 		IMC2Driver imc_client;
 		boolean shutdown=false;

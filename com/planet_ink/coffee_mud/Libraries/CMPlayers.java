@@ -47,8 +47,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	protected long[] 					prePurgeLevels		= new long[1];
 	protected int						autoPurgeHash		= 0;
 	
-	private TickClient thread=null;
-	public TickClient getSupportThread() { return thread;}
+	private TickClient serviceClient=null;
+	public TickClient getServiceClient() { return serviceClient;}
 
 	public int numPlayers() { return playersList.size(); }
 	public synchronized void addPlayer(MOB newOne)
@@ -358,21 +358,21 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if(!mob.isMonster())
 			{
 				CMLib.factions().updatePlayerFactions(mob,mob.location());
-				setThreadStatus(thread,"just saving "+mob.Name());
+				setThreadStatus(serviceClient,"just saving "+mob.Name());
 				CMLib.database().DBUpdatePlayerMOBOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
-				setThreadStatus(thread,"saving "+mob.Name()+", "+mob.numItems()+" items");
+				setThreadStatus(serviceClient,"saving "+mob.Name()+", "+mob.numItems()+" items");
 				CMLib.database().DBUpdatePlayerItems(mob);
-				setThreadStatus(thread,"saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
+				setThreadStatus(serviceClient,"saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
 				CMLib.database().DBUpdatePlayerAbilities(mob);
-				setThreadStatus(thread,"saving "+mob.numFollowers()+" followers of "+mob.Name());
+				setThreadStatus(serviceClient,"saving "+mob.numFollowers()+" followers of "+mob.Name());
 				CMLib.database().DBUpdateFollowers(mob);
 				PlayerAccount account = mob.playerStats().getAccount();
 				mob.playerStats().setLastUpdated(System.currentTimeMillis());
 				if(account!=null)
 				{
-					setThreadStatus(thread,"saving account "+account.accountName()+" for "+mob.Name());
+					setThreadStatus(serviceClient,"saving account "+account.accountName()+" for "+mob.Name());
 					CMLib.database().DBUpdateAccount(account);
 					account.setLastUpdated(System.currentTimeMillis());
 				}
@@ -383,13 +383,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			&&((mob.playerStats().lastUpdated()==0)
 			   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
 			{
-				setThreadStatus(thread,"just saving "+mob.Name());
+				setThreadStatus(serviceClient,"just saving "+mob.Name());
 				CMLib.database().DBUpdatePlayerMOBOnly(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
-				setThreadStatus(thread,"just saving "+mob.Name()+", "+mob.numItems()+" items");
+				setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numItems()+" items");
 				CMLib.database().DBUpdatePlayerItems(mob);
-				setThreadStatus(thread,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
+				setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
 				CMLib.database().DBUpdatePlayerAbilities(mob);
 				mob.playerStats().setLastUpdated(System.currentTimeMillis());
 				processed++;
@@ -574,7 +574,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(protectedOne)
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-				Log.debugOut(thread.getName(),name+" is protected from purging.");
+				Log.debugOut(serviceClient.getName(),name+" is protected from purging.");
 			return true;
 		}
 		return false;
@@ -616,7 +616,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			this.autoPurgeHash=mask.hashCode();
 		}
-		setThreadStatus(thread,"autopurge process");
+		setThreadStatus(serviceClient,"autopurge process");
 		List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if(protectedOnes==null) protectedOnes=new Vector<String>();
@@ -633,7 +633,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if(autoPurgeDaysLevels[autoPurgeDaysLevels.length-1]==0)
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-						Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
+						Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
 					continue;
 				}
 				purgeDateTime=userLastLoginDateTime + autoPurgeDaysLevels[autoPurgeDaysLevels.length-1];
@@ -645,7 +645,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if(autoPurgeDaysLevels[level]==0)
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-						Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
+						Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
 					continue;
 				}
 				purgeDateTime=userLastLoginDateTime + autoPurgeDaysLevels[level];
@@ -654,7 +654,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			else
 				continue;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-				Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" will be warned on "+CMLib.time().date2String(warnDateTime)+" and purged on "+CMLib.time().date2String(purgeDateTime));
+				Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" will be warned on "+CMLib.time().date2String(warnDateTime)+" and purged on "+CMLib.time().date2String(purgeDateTime));
 			if((System.currentTimeMillis()>purgeDateTime)||(System.currentTimeMillis()>warnDateTime))
 			{
 				if(isProtected(protectedOnes, name))
@@ -687,7 +687,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
 						Resources.updateFileResource("::warnedplayers.ini",warnStr);
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-							Log.debugOut(thread.getName(),name+" is now warned.");
+							Log.debugOut(serviceClient.getName(),name+" is now warned.");
 						warnPrePurge(M,purgeDateTime-System.currentTimeMillis());
 					}
 				}
@@ -701,7 +701,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					{
 						obliteratePlayer(M,true, true);
 						M.destroy();
-						Log.sysOut(thread.getName(),"AutoPurged user "+name+". Last logged in "+(CMLib.time().date2String(userLastLoginDateTime))+".");
+						Log.sysOut(serviceClient.getName(),"AutoPurged user "+name+". Last logged in "+(CMLib.time().date2String(userLastLoginDateTime))+".");
 					}
 				}
 			}
@@ -723,7 +723,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if(accountExpPurge > lastTime) lastTime=accountExpPurge;
 				if(System.currentTimeMillis()>lastTime)
 				{
-					Log.sysOut(thread.getName(),"AutoPurged account "+PA.accountName()+".");
+					Log.sysOut(serviceClient.getName(),"AutoPurged account "+PA.accountName()+".");
 					CMLib.players().obliterateAccountOnly(PA);
 				}
 			}
@@ -769,7 +769,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		catch(BadEmailAddressException be)
 		{
-			Log.errOut(thread.getName(),"Unable to notify "+to+" of impending autopurge.  Invalid email address.");
+			Log.errOut(serviceClient.getName(),"Unable to notify "+to+" of impending autopurge.  Invalid email address.");
 			return;
 		}
 		catch(java.io.IOException ioe)
@@ -790,14 +790,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		catch(java.io.IOException ioe)
 		{
-			Log.errOut(thread.getName(),"Unable to notify "+to+" of impending autopurge.");
+			Log.errOut(serviceClient.getName(),"Unable to notify "+to+" of impending autopurge.");
 		}
 	}
 
 	public boolean activate() 
 	{
-		if(thread==null)
-			thread=CMLib.threads().startTickDown(new Tickable(){
+		if(serviceClient==null)
+			serviceClient=CMLib.threads().startTickDown(new Tickable(){
 				private long tickStatus=Tickable.STATUS_NOT;
 				@Override public String ID() { return "THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 				@Override public CMObject newInstance() { return this; }
@@ -811,22 +811,22 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					{
 						tickStatus=Tickable.STATUS_ALIVE;
 						isDebugging=CMSecurity.isDebugging(DbgFlag.PLAYERTHREAD);
-						setThreadStatus(thread,"checking database health");
+						setThreadStatus(serviceClient,"checking database health");
 						String ok=CMLib.database().errorStatus();
 						if((ok.length()!=0)&&(!ok.startsWith("OK")))
 						{
-							Log.errOut(thread.getName(),"DB: "+ok);
+							Log.errOut(serviceClient.getName(),"DB: "+ok);
 							CMLib.s_sleep(100000);
 						}
 						else
 						{
-							setThreadStatus(thread,"pinging connections");
+							setThreadStatus(serviceClient,"pinging connections");
 							CMLib.database().pingAllConnections();
-							setThreadStatus(thread,"not saving players");
+							setThreadStatus(serviceClient,"not saving players");
 							if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
 							&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)))
 							{
-								setThreadStatus(thread,"checking player titles.");
+								setThreadStatus(serviceClient,"checking player titles.");
 								for(MOB M : playersList)
 									if(M.playerStats()!=null)
 									{
@@ -836,10 +836,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 								autoPurge();
 								if(!CMSecurity.isSaveFlag("NOPLAYERS"))
 									savePlayers();
-								setThreadStatus(thread,"not saving players");
+								setThreadStatus(serviceClient,"not saving players");
 							}
 						}
-						setThreadStatus(thread,"sleeping");
+						setThreadStatus(serviceClient,"sleeping");
 					}
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
@@ -852,16 +852,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		playersList.clear();
 		playerLocations.clear();
-		if((thread!=null)&&(thread.getClientObject()!=null))
+		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
 		{
-			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
-			thread=null;
+			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
 		}
 		return true;
 	}
 	
 	public void forceTick()
 	{
-		thread.tickTicker(false);
+		serviceClient.tickTicker(false);
 	}
 }

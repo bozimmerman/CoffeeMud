@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
+import com.planet_ink.miniweb.interfaces.HTTPRequest;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -268,57 +269,30 @@ public class ListCmd extends StdCommand
 		tGroup.enumerate(tgArray,false);
 
 		lines.append(" ^HTGRP^?  ^H" + tGroup.getName() + "^?\n\r");
-
 		for (int i = 0; i<ac; ++i)
 		{
 			if (tArray[i] != null)
 			{
-				if(ignoreZeroTickThreads)
-				{
-					if((tArray[i] instanceof TickableGroup)
-					&&(((TickableGroup)tArray[i]).getLastTicked()!=null)
-					&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject()!=null)
-					&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject().getTickStatus()==0))
-						continue;
-					if((tArray[i] instanceof Tickable)
-					&&(((Tickable)tArray[i]).getTickStatus()==0))
-						continue;
-				}
-
+				if((ignoreZeroTickThreads)&&(!tArray[i].isAlive()))
+					continue;
 				lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
 				lines.append(CMStrings.padRight(tArray[i].getName(),20)+": ");
+				/*
 				if(tArray[i] instanceof Session)
-				{
-					Session S=(Session)tArray[i];
 					lines.append("Session status "+S.getStatus()+"-"+CMParms.combine(S.previousCMD(),0) + "\n\r");
-				}
-				else
 				if(tArray[i] instanceof Tickable)
-				{
-					Tickable T=(Tickable)tArray[i];
 					lines.append("Tickable "+T.ID()+"-"+T.name()+"-"+T.getTickStatus() + "\n\r");
-				}
-				else
 				if((tArray[i] instanceof TickableGroup)
-				&&(((TickableGroup)tArray[i]).getLastTicked()!=null)
-				&&(((TickableGroup)tArray[i]).getLastTicked().getClientObject()!=null))
-				{
-					final Tickable T=((TickableGroup)tArray[i]).getLastTicked().getClientObject();
 					lines.append("Tick "+tArray[i].getName()+" "+T.ID()+"-"+T.name()+"-"+T.getTickStatus()+" ("+CMLib.threads().getTickStatusSummary(T)+")\n\r");
-				}
-				else
 				if(tArray[i] instanceof TickClient)
-				{
-					TickClient t = (TickClient)tArray[i];
-					lines.append("Thread "+t.getName()+" "
-							+"-"+t.getStatus()
-							+" ("+CMLib.time().date2EllapsedTime(t.getMilliTotal(), TimeUnit.MILLISECONDS, true)+")\n\r");
-				}
+					lines.append("Thread "+t.getName()+" "+"-"+t.getStatus()+" ("+CMLib.time().date2EllapsedTime(t.getMilliTotal(), TimeUnit.MILLISECONDS, true)+")\n\r");
+				*/
+				final String summary;
+				if(tArray[i] instanceof MudHost)
+					summary=" ("+((MudHost)tArray[i]).getStatus()+")";
 				else
-				{
-					String status=CMLib.threads().getServiceThreadSummary(tArray[i]);
-					lines.append("Thread "+tArray[i].getName() + status+"\n\r");
-				}
+					summary="";
+				lines.append("Thread "+tArray[i].getName()+summary+"\n\r");
 			}
 		}
 

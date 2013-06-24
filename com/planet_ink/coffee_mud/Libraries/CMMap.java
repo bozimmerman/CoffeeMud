@@ -55,7 +55,7 @@ public class CMMap extends StdLibrary implements WorldMap
 								scriptHostMap			= new STreeMap<String,SLinkedList<LocatedPair>>();
 
 	private TickClient 			thread	 = null;
-	public TickClient getSupportThread() { return thread;}
+	public TickClient getServiceClient() { return thread;}
 	
 	private static final long EXPIRE_1MIN	= 1*60*1000;
 	private static final long EXPIRE_5MINS	= 5*60*1000;

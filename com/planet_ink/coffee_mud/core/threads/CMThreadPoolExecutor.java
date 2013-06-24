@@ -2,7 +2,10 @@ package com.planet_ink.coffee_mud.core.threads;
 
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,6 +19,7 @@ import com.planet_ink.coffee_mud.core.collections.SLinkedList;
 import com.planet_ink.coffee_mud.core.collections.STreeMap;
 import com.planet_ink.coffee_mud.core.collections.STreeSet;
 import com.planet_ink.coffee_mud.core.collections.UniqueEntryBlockingQueue;
+import com.planet_ink.coffee_mud.core.interfaces.TickableGroup;
 /* 
 Copyright 2000-2013 Bo Zimmerman
 
@@ -33,14 +37,13 @@ limitations under the License.
 */
 public class CMThreadPoolExecutor extends ThreadPoolExecutor 
 {
-	protected PairSVector<Thread,CMRunnable> active = new PairSVector<Thread,CMRunnable>();
+	protected Map<Runnable,Thread>	active = new HashMap<Runnable,Thread>();
 	protected long  				timeoutMillis;
-	protected CMThreadFactory   	threadFactory;
+	protected CMThreadFactory		threadFactory;
 	protected int   				queueSize = 0;
 	protected String				poolName = "Pool";
 	protected volatile long 		lastRejectTime = 0;
 	protected volatile int  		rejectCount = 0;
-	private final AtomicInteger 	activeCount = new AtomicInteger();
 
 	protected static class CMArrayBlockingQueue<E> extends ArrayBlockingQueue<E>{
 		private static final long serialVersionUID = -4557809818979881831L;
@@ -73,35 +76,31 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 
 	protected void beforeExecute(Thread t, Runnable r) 
 	{ 
-		activeCount.incrementAndGet();
 		synchronized(active)
 		{
-			if(r instanceof CMRunnable)
-				active.add(t, (CMRunnable)r);
+			active.put(r,t);
 		}
 	}
 	
 	protected void afterExecute(Runnable r, Throwable t) 
 	{ 
-		activeCount.decrementAndGet();
 		synchronized(active)
 		{
-			if(r instanceof CMRunnable)
-				active.removeSecond((CMRunnable)r);
+			active.remove(r);
 		}
 	}
 
 	@Override
-	public int getActiveCount() { return activeCount.get(); }
+	public int getActiveCount() { return active.size(); }
 	
-	public boolean isActive(CMRunnable r)
+	public boolean isActive(Runnable r)
 	{
-		return active.containsSecond(r);
+		return active.containsKey(r);
 	}
 
-	public boolean isActiveOrQueued(CMRunnable r)
+	public boolean isActiveOrQueued(Runnable r)
 	{
-		return active.containsSecond(r) || getQueue().contains(r);
+		return active.containsKey(r) || getQueue().contains(r);
 	}
 
 	public void execute(Runnable r)
@@ -121,23 +120,29 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		{
 			if(r instanceof CMRunnable)
 			{
-				Collection<CMRunnable> runsKilled = getTimeoutOutRuns(1);
+				final Collection<CMRunnable> runsKilled = getTimeoutOutRuns(1);
 				for(CMRunnable runnable : runsKilled)
 				{
 					if(runnable instanceof Session)
 					{
-						Session S=(Session)runnable;
-						StringBuilder sessionInfo=new StringBuilder("");
+						final Session S=(Session)runnable;
+						final StringBuilder sessionInfo=new StringBuilder("");
 						sessionInfo.append("status="+S.getStatus()+" ");
 						sessionInfo.append("active="+S.activeTimeMillis()+" ");
 						sessionInfo.append("online="+S.getMillisOnline()+" ");
 						sessionInfo.append("lastloop="+(System.currentTimeMillis()-S.lastLoopTime())+" ");
 						sessionInfo.append("addr="+S.getAddress()+" ");
 						sessionInfo.append("mob="+((S.mob()==null)?"null":S.mob().Name()));
-						Log.errOut("Pool_"+poolName,"Old(er) Runnable killed: "+sessionInfo.toString());
+						Log.errOut("Pool_"+poolName,"Timed-Out Runnable: "+sessionInfo.toString());
 					}
 					else
-						Log.errOut("Pool_"+poolName,"Old(er) Runnable killed: "+runnable.toString());
+					if(runnable instanceof TickableGroup)
+					{
+						TickableGroup G=(TickableGroup)runnable;
+						Log.errOut("Pool_"+poolName,"Timed-Out Runnable: "+G.getName()+"-"+G.getStatus()+"\n\r");
+					}
+					else
+						Log.errOut("Pool_"+poolName,"Timed-Out Runnable: "+runnable.toString());
 				}
 			}
 			lastRejectTime=System.currentTimeMillis();
@@ -147,37 +152,42 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	
 	public Collection<CMRunnable> getTimeoutOutRuns(int maxToKill)
 	{
-		LinkedList<CMRunnable> timedOut=new LinkedList<CMRunnable>();
+		final LinkedList<CMRunnable> timedOut=new LinkedList<CMRunnable>();
 		if(timeoutMillis<=0) return timedOut;
-		LinkedList<Thread> killedOut=new LinkedList<Thread>();
+		final LinkedList<Thread> killedOut=new LinkedList<Thread>();
 		synchronized(active)
 		{
 			try
 			{
-				for(Enumeration<Pair<Thread,CMRunnable>> e = active.elements();e.hasMoreElements();)
+				for(Iterator<Runnable> e = active.keySet().iterator();e.hasNext();)
 				{
-					Pair<Thread,CMRunnable> p=e.nextElement();
-					if(p.second.activeTimeMillis() > timeoutMillis)
+					final Runnable runnable=e.next();
+					if(runnable instanceof CMRunnable)
 					{
-						if(timedOut.size() >= maxToKill)
+						final CMRunnable cmRunnable=(CMRunnable)runnable;
+						final Thread thread=active.get(runnable);
+						if(cmRunnable.activeTimeMillis() > timeoutMillis)
 						{
-							CMRunnable leastWorstOffender=null;
-							for(CMRunnable r : timedOut)
+							if(timedOut.size() >= maxToKill)
 							{
-								if((leastWorstOffender != null)
-								&&(r.activeTimeMillis() < leastWorstOffender.activeTimeMillis()))
-									leastWorstOffender=r;
+								CMRunnable leastWorstOffender=null;
+								for(CMRunnable r : timedOut)
+								{
+									if((leastWorstOffender != null)
+									&&(r.activeTimeMillis() < leastWorstOffender.activeTimeMillis()))
+										leastWorstOffender=r;
+								}
+								if(leastWorstOffender!=null)
+								{
+									if(cmRunnable.activeTimeMillis() < leastWorstOffender.activeTimeMillis())
+										continue;
+									else
+										timedOut.remove(leastWorstOffender);
+								}
 							}
-							if(leastWorstOffender!=null)
-							{
-								if(p.second.activeTimeMillis() < leastWorstOffender.activeTimeMillis())
-									continue;
-								else
-									timedOut.remove(leastWorstOffender);
-							}
+							timedOut.add(cmRunnable);
+							killedOut.add(thread);
 						}
-						timedOut.add(p.second);
-						killedOut.add(p.first);
 					}
 				}
 			}

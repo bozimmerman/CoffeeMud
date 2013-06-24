@@ -42,7 +42,7 @@ public class StdLibrary implements CMLibrary
 	public boolean activate(){ return true;}
 	public void propertiesLoaded(){ }
 	public boolean shutdown(){ return true;}
-	public TickClient getSupportThread() { return null;}
+	public TickClient getServiceClient() { return null;}
 	protected boolean isDebugging = false;
 	public void setThreadStatus(TickClient C, String msg)
 	{

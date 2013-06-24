@@ -48,8 +48,8 @@ public class Clans extends StdLibrary implements ClanManager
 	public List<Pair<Clan,Integer>>all2				  = new Vector<Pair<Clan,Integer>>();
 	public long	 		  		   lastGovernmentLoad = 0;
 
-	private TickClient thread=null;
-	public TickClient getSupportThread() { return thread;}
+	private TickClient serviceClient=null;
+	public TickClient getServiceClient() { return serviceClient;}
 
 	public String ID(){return "Clans";}
 
@@ -1321,8 +1321,8 @@ public class Clans extends StdLibrary implements ClanManager
 	
 	public boolean activate() 
 	{
-		if(thread==null)
-			thread=CMLib.threads().startTickDown(new Tickable(){
+		if(serviceClient==null)
+			serviceClient=CMLib.threads().startTickDown(new Tickable(){
 				private long tickStatus=Tickable.STATUS_NOT;
 				@Override public String ID() { return "THClans"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 				@Override public CMObject newInstance() { return this; }
@@ -1336,9 +1336,9 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						tickStatus=Tickable.STATUS_ALIVE;
 						isDebugging=CMSecurity.isDebugging(DbgFlag.CLANS);
-						setThreadStatus(thread,"clan trophy scan");
+						setThreadStatus(serviceClient,"clan trophy scan");
 						clanTrophyScan();
-						setThreadStatus(thread,"sleeping");
+						setThreadStatus(serviceClient,"sleeping");
 					}
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
@@ -1356,16 +1356,16 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 		all.clear();
 		all2.clear();
-		if((thread!=null)&&(thread.getClientObject()!=null))
+		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
 		{
-			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
-			thread=null;
+			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
 		}
 		return true;
 	}
 
 	public void forceTick()
 	{
-		thread.tickTicker(false);
+		serviceClient.tickTicker(false);
 	}
 }

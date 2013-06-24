@@ -37,8 +37,8 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 	public String ID(){return "CoffeeTables";}
 	public CoffeeTableRow todays=null;
 	
-	private TickClient thread=null;
-	public TickClient getSupportThread() { return thread;}
+	private TickClient serviceClient=null;
+	public TickClient getServiceClient() { return serviceClient;}
 	
 	public void update()
 	{
@@ -121,8 +121,8 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 	
 	public boolean activate() 
 	{
-		if(thread==null)
-			thread=CMLib.threads().startTickDown(new Tickable(){
+		if(serviceClient==null)
+			serviceClient=CMLib.threads().startTickDown(new Tickable(){
 				private long tickStatus=Tickable.STATUS_NOT;
 				@Override public String ID() { return "THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 				@Override public CMObject newInstance() { return this; }
@@ -137,11 +137,11 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 					{
 						tickStatus=Tickable.STATUS_ALIVE;
 						isDebugging=CMSecurity.isDebugging(DbgFlag.STATSTHREAD);
-						setThreadStatus(thread,"checking database health");
+						setThreadStatus(serviceClient,"checking database health");
 						String ok=CMLib.database().errorStatus();
 						if((ok.length()!=0)&&(!ok.startsWith("OK")))
 						{
-							Log.errOut(thread.getName(),"DB: "+ok);
+							Log.errOut(serviceClient.getName(),"DB: "+ok);
 							CMLib.s_sleep(100000);
 						}
 						else
@@ -149,7 +149,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 							CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
 							CMLib.coffeeTables().update();
 						}
-						setThreadStatus(thread,"sleeping");
+						setThreadStatus(serviceClient,"sleeping");
 					}
 					tickStatus=Tickable.STATUS_NOT;
 					return true;
@@ -160,10 +160,10 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 	
 	public boolean shutdown() 
 	{
-		if((thread!=null)&&(thread.getClientObject()!=null))
+		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
 		{
-			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
-			thread=null;
+			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
 		}
 		return true;
 	}

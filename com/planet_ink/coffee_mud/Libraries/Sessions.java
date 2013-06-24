@@ -27,10 +27,12 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 public class Sessions extends StdLibrary implements SessionsList
 {
 	public String ID(){return "Sessions";}
-	private TickClient thread=null;
+	
+	private TickClient serviceClient=null;
+	public final SLinkedList<Session> all=new SLinkedList<Session>();
+
 	private volatile long lastSweepTime = System.currentTimeMillis(); 
 	
-	public SLinkedList<Session> all=new SLinkedList<Session>();
 	private final static Filterer<Session> localOnlineFilter=new Filterer<Session>(){
 		public boolean passesFilter(Session obj) { 
 			if((obj!=null) && (!obj.isStopped()) && (obj.getStatus()==Session.STATUS_OK))
@@ -42,7 +44,7 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 	};
 	
-	public TickClient getSupportThread() { return thread;}
+	public TickClient getServiceClient() { return serviceClient;}
 	
 	public Iterator<Session> all(){return all.iterator();}
 	public Iterable<Session> allIterable(){return all;}
@@ -122,7 +124,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	protected void sessionCheck()
 	{
 		lastSweepTime = System.currentTimeMillis();
-		setThreadStatus(thread,"checking player sessions.");
+		setThreadStatus(serviceClient,"checking player sessions.");
 		for(Session S : all)
 		{
 			long time=System.currentTimeMillis()-S.lastLoopTime();
@@ -150,17 +152,17 @@ public class Sessions extends StdLibrary implements SessionsList
 					{
 						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 						if((S.previousCMD()==null)||(S.previousCMD().size()==0)||(S.getStatus()==Session.STATUS_LOGIN)||(S.getStatus()==Session.STATUS_ACCOUNTMENU))
-							Log.sysOut(thread.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
+							Log.sysOut(serviceClient.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
 						else
 						{
-							Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
-							Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+							Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+							Log.errOut(serviceClient.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 							if(S instanceof Thread)
 								CMLib.threads().debugDumpStack("Sessions",(Thread)S);
 						}
-						setThreadStatus(thread,"killing session ");
+						setThreadStatus(serviceClient,"killing session ");
 						stopSessionAtAllCosts(S);
-						setThreadStatus(thread,"checking player sessions.");
+						setThreadStatus(serviceClient,"checking player sessions.");
 					}
 					else
 					if(time>check)
@@ -174,15 +176,15 @@ public class Sessions extends StdLibrary implements SessionsList
 							if((S.isLockedUpWriting())
 							&&(CMLib.flags().isInTheGame(S.mob(),true)))
 							{
-								Log.errOut(thread.getName(),"LOGGED OFF Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time+": "+S.isLockedUpWriting());
+								Log.errOut(serviceClient.getName(),"LOGGED OFF Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time+": "+S.isLockedUpWriting());
 								stopSessionAtAllCosts(S);
 							}
 							else
-								Log.errOut(thread.getName(),"Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+								Log.errOut(serviceClient.getName(),"Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
 							if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
-								Log.errOut(thread.getName(),"STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+								Log.errOut(serviceClient.getName(),"STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 							else
-								Log.errOut(thread.getName(),"STATUS  is :"+S.getStatus()+", no last command available.");
+								Log.errOut(serviceClient.getName(),"STATUS  is :"+S.getStatus()+", no last command available.");
 						}
 					}
 				}
@@ -191,18 +193,18 @@ public class Sessions extends StdLibrary implements SessionsList
 				{
 					String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 					if(S.getStatus()==Session.STATUS_LOGIN)
-						Log.sysOut(thread.getName(),"Kicking out login session after "+time+" millis.");
+						Log.sysOut(serviceClient.getName(),"Kicking out login session after "+time+" millis.");
 					else
 					{
-						Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+						Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
 						if(S instanceof Thread)
 							CMLib.threads().debugDumpStack("Sessions",(Thread)S);
 					}
 					if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
-						Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
-					setThreadStatus(thread,"killing session ");
+						Log.errOut(serviceClient.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+					setThreadStatus(serviceClient,"killing session ");
 					stopSessionAtAllCosts(S);
-					setThreadStatus(thread,"checking player sessions");
+					setThreadStatus(serviceClient,"checking player sessions");
 				}
 			}
 		}
@@ -210,8 +212,8 @@ public class Sessions extends StdLibrary implements SessionsList
 	
 	public boolean activate() 
 	{
-		if(thread==null)
-			thread=CMLib.threads().startTickDown(new Tickable(){
+		if(serviceClient==null)
+			serviceClient=CMLib.threads().startTickDown(new Tickable(){
 				private long tickStatus=Tickable.STATUS_NOT;
 				@Override public String ID() { return "THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 				@Override public CMObject newInstance() { return this; }
@@ -251,7 +253,7 @@ public class Sessions extends StdLibrary implements SessionsList
 						sessionCheck();
 					}
 					tickStatus=Tickable.STATUS_NOT;
-					setThreadStatus(thread,"sleeping");
+					setThreadStatus(serviceClient,"sleeping");
 					return true;
 				}
 			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, 100, 1);
@@ -260,10 +262,10 @@ public class Sessions extends StdLibrary implements SessionsList
 	
 	public boolean shutdown() 
 	{
-		if((thread!=null)&&(thread.getClientObject()!=null))
+		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
 		{
-			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
-			thread=null;
+			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
 		}
 		return true;
 	}

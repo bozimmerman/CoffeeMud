@@ -61,12 +61,12 @@ public class TickTock extends StdCommand
 				for(Enumeration e=CMLib.libraries();e.hasMoreElements();)
 				{
 					CMLibrary lib=(CMLibrary)e.nextElement();
-					if((lib.getSupportThread()!=null)&&(s.equalsIgnoreCase(lib.getSupportThread().getName())))
+					if((lib.getServiceClient()!=null)&&(s.equalsIgnoreCase(lib.getServiceClient().getName())))
 					{
 						if(lib instanceof Runnable)
 							((Runnable)lib).run();
 						else
-							lib.getSupportThread().tickTicker(true);
+							lib.getServiceClient().tickTicker(true);
 						mob.tell("Done.");
 						return false;
 					}
