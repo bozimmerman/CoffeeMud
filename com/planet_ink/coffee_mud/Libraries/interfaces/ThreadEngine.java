@@ -50,6 +50,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public  Iterator<TickableGroup> tickGroups();
 	public String getTickStatusSummary(Tickable obj);
 	public List<Tickable> getNamedTickingObjects(String name);
+	public Runnable findRunnableByThread(final Thread thread);
 	public void executeRunnable(Runnable R);
 	public void debugDumpStack(final String ID, Thread theThread);
 }

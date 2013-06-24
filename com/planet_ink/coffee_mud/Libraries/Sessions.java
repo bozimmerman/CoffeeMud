@@ -29,9 +29,9 @@ public class Sessions extends StdLibrary implements SessionsList
 	public String ID(){return "Sessions";}
 	
 	private TickClient serviceClient=null;
-	public final SLinkedList<Session> all=new SLinkedList<Session>();
-
 	private volatile long lastSweepTime = System.currentTimeMillis(); 
+	
+	public final SLinkedList<Session> all=new SLinkedList<Session>();
 	
 	private final static Filterer<Session> localOnlineFilter=new Filterer<Session>(){
 		public boolean passesFilter(Session obj) { 
@@ -214,7 +214,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	{
 		if(serviceClient==null)
 			serviceClient=CMLib.threads().startTickDown(new Tickable(){
-				private long tickStatus=Tickable.STATUS_NOT;
+				private volatile long tickStatus=Tickable.STATUS_NOT;
 				@Override public String ID() { return "THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
 				@Override public CMObject newInstance() { return this; }
 				@Override public CMObject copyOf() { return this; }
@@ -227,23 +227,28 @@ public class Sessions extends StdLibrary implements SessionsList
 					final double numThreads=all.size();
 					if(numThreads>0.0)
 					{
+						/*
 						final double milliSleep = 10.0 / numThreads;
 						final double floorMilliSleep = Math.floor(milliSleep);
 						final long millis=Math.round(floorMilliSleep);
 						final int nanos=(int)Math.round((milliSleep - floorMilliSleep) * 100000.0);
 						try
 						{
-							for(Session S : all)
+						*/
+							for(final Session S : all)
+							{
 								if(!S.isRunning()) 
 								{
 									CMLib.threads().executeRunnable(S);
-									Thread.sleep(millis, nanos);
+									//Thread.sleep(millis, nanos);
 								}
+							}
+						/*
 						}
 						catch(InterruptedException ioe)
 						{
-							
 						}
+						*/
 					}
 					if(((System.currentTimeMillis() - lastSweepTime) > MudHost.TIME_UTILTHREAD_SLEEP)
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))

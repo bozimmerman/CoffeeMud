@@ -176,6 +176,15 @@ public class Destroy extends StdCommand
 			{
 				if(tArray[i].getName().equalsIgnoreCase(threadName))
 					return tArray[i];
+				final Runnable R=CMLib.threads().findRunnableByThread(tArray[i]);
+				if(R instanceof TickableGroup)
+				{
+					if(((TickableGroup)R).getName().equalsIgnoreCase(threadName))
+						return tArray[i];
+					final TickClient T=((TickableGroup)R).getLastTicked();
+					if((T!=null)&&(T.getName().equalsIgnoreCase(threadName)))
+						return tArray[i];
+				}
 			}
 		}
 

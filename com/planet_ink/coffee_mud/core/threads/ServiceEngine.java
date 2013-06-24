@@ -41,7 +41,7 @@ import com.planet_ink.miniweb.interfaces.HTTPRequest;
 */
 public class ServiceEngine implements ThreadEngine
 {
-	public static final long STATUS_ALLMISCTICKS=Tickable.STATUS_MISC|Tickable.STATUS_MISC2|Tickable.STATUS_MISC3|Tickable.STATUS_MISC4|Tickable.STATUS_MISC5|Tickable.STATUS_MISC6;
+	public static final  long STATUS_ALLMISCTICKS=Tickable.STATUS_MISC|Tickable.STATUS_MISC2|Tickable.STATUS_MISC3|Tickable.STATUS_MISC4|Tickable.STATUS_MISC5|Tickable.STATUS_MISC6;
 	private static final long SHORT_TICK_TIMEOUT = (5*TimeManager.MILI_MINUTE);
 	private static final long LONG_TICK_TIMEOUT  = (120*TimeManager.MILI_MINUTE);
 	
@@ -92,6 +92,29 @@ public class ServiceEngine implements ThreadEngine
 	public Iterator<TickableGroup> tickGroups()
 	{
 		return allTicks.iterator();
+	}
+	
+	public Runnable findRunnableByThread(final Thread thread)
+	{
+		if((thread==null)||(threadPools==null))
+			return null;
+		for(int i=0;i<threadPools.length;i++)
+		{
+			final CMThreadPoolExecutor executor=threadPools[i];
+			if(executor==null)
+				continue;
+			if((executor.getThreadFactory() instanceof CMThreadFactory)
+			&&(!((CMThreadFactory)executor.getThreadFactory()).getThreads().contains(thread)))
+				continue;
+			if(!executor.active.containsValue(thread))
+				continue;
+			for(Runnable r : executor.active.keySet())
+			{
+				if(executor.active.get(r)==thread)
+					return r;
+			}
+		}
+		return null;
 	}
 	
 	public void executeRunnable(Runnable R)
@@ -157,7 +180,7 @@ public class ServiceEngine implements ThreadEngine
 		boolean isSolitary = ((tickID&Tickable.TICKID_SOLITARYMASK)==Tickable.TICKID_SOLITARYMASK); 
 		if((tock==null)||isSolitary)
 		{
-			tock=new StdTickGroup(TICK_TIME, Thread.currentThread().getThreadGroup().getName(), isSolitary);
+			tock=new StdTickGroup(this,TICK_TIME, Thread.currentThread().getThreadGroup().getName(), isSolitary);
 			addTickGroup(tock);
 		}
 

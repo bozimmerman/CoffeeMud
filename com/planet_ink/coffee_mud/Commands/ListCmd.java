@@ -277,22 +277,32 @@ public class ListCmd extends StdCommand
 					continue;
 				lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
 				lines.append(CMStrings.padRight(tArray[i].getName(),20)+": ");
-				/*
-				if(tArray[i] instanceof Session)
-					lines.append("Session status "+S.getStatus()+"-"+CMParms.combine(S.previousCMD(),0) + "\n\r");
-				if(tArray[i] instanceof Tickable)
-					lines.append("Tickable "+T.ID()+"-"+T.name()+"-"+T.getTickStatus() + "\n\r");
-				if((tArray[i] instanceof TickableGroup)
-					lines.append("Tick "+tArray[i].getName()+" "+T.ID()+"-"+T.name()+"-"+T.getTickStatus()+" ("+CMLib.threads().getTickStatusSummary(T)+")\n\r");
-				if(tArray[i] instanceof TickClient)
-					lines.append("Thread "+t.getName()+" "+"-"+t.getStatus()+" ("+CMLib.time().date2EllapsedTime(t.getMilliTotal(), TimeUnit.MILLISECONDS, true)+")\n\r");
-				*/
 				final String summary;
 				if(tArray[i] instanceof MudHost)
-					summary=" ("+((MudHost)tArray[i]).getStatus()+")";
+					summary=CMClass.classID(tArray[i])+": "+((MudHost)tArray[i]).getStatus();
 				else
-					summary="";
-				lines.append("Thread "+tArray[i].getName()+summary+"\n\r");
+				{
+					final Runnable R=CMLib.threads().findRunnableByThread(tArray[i]);
+					if(R instanceof TickableGroup)
+						summary=((TickableGroup)R).getName()+": "+((TickableGroup)R).getStatus();
+					else
+					if(R instanceof Session)
+					{
+						final Session S=(Session)R;
+						final MOB mob=S.mob();
+						final String mobName=(mob==null)?"null":mob.Name();
+						summary="session "+mobName+": "+Session.STATUS_STR[S.getStatus()]+": "+CMParms.combineWithQuotes(S.previousCMD(),0);
+					}
+					else
+					if(R instanceof CMRunnable)
+						summary=CMClass.classID(R)+": active for "+((CMRunnable)R).activeTimeMillis()+"ms";
+					else
+					if(CMClass.classID(R).length()>0)
+						summary=CMClass.classID(R);
+					else
+						summary="";
+				}
+				lines.append(summary+"\n\r");
 			}
 		}
 

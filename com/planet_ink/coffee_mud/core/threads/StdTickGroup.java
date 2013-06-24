@@ -225,12 +225,12 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	public String getStatus() 
 	{
 		final TickClient lastTicked = getLastTicked();
-		if((lastTicked==null)||(myEngine==null)||(lastTicked.getClientObject()==null))
-			return "Asleep or Shutdown";
 		if(!isAwake())
 			return "Sleeping";
+		if((lastTicked==null)||(lastTicked.getClientObject()==null))
+			return "Shutdown";
 		final Tickable ticker = lastTicked.getClientObject();
-		return "Ticking: "+ticker.ID()+": "+ticker.name()+": "+((myEngine!=null)?myEngine.getTickStatusSummary(ticker):"null");
+		return ticker.ID()+": "+ticker.name()+": "+((myEngine!=null)?myEngine.getTickStatusSummary(ticker):"null");
 	}
 	
 	public void shutdown()

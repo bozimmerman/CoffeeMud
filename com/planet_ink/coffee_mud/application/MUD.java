@@ -1131,7 +1131,32 @@ public class MUD extends Thread implements MudHost
 		{
 			if (tArray[i] != null && tArray[i].isAlive())
 			{
-				Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+tArray[i].getName() + "\n\r");
+				String summary;
+				if(tArray[i] instanceof MudHost)
+					summary=": "+CMClass.classID(tArray[i])+": "+((MudHost)tArray[i]).getStatus();
+				else
+				{
+					final Runnable R=CMLib.threads().findRunnableByThread(tArray[i]);
+					if(R instanceof TickableGroup)
+						summary=": "+((TickableGroup)R).getName()+": "+((TickableGroup)R).getStatus();
+					else
+					if(R instanceof Session)
+					{
+						final Session S=(Session)R;
+						final MOB mob=S.mob();
+						final String mobName=(mob==null)?"null":mob.Name();
+						summary=": session "+mobName+": "+Session.STATUS_STR[S.getStatus()]+": "+CMParms.combineWithQuotes(S.previousCMD(),0);
+					}
+					else
+					if(R instanceof CMRunnable)
+						summary=": "+CMClass.classID(R)+": active for "+((CMRunnable)R).activeTimeMillis()+"ms";
+					else
+					if(CMClass.classID(R).length()>0)
+						summary=": "+CMClass.classID(R);
+					else
+						summary="";
+				}
+				Log.sysOut(Thread.currentThread().getName(), "-->Thread: "+tArray[i].getName() + summary+"\n\r");
 			}
 		}
 	}
