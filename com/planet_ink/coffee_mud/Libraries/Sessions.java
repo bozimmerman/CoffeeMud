@@ -29,7 +29,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	public String ID(){return "Sessions";}
 	
 	private TickClient serviceClient=null;
-	private volatile long lastSweepTime = System.currentTimeMillis(); 
+	private volatile long nextSweepTime = System.currentTimeMillis(); 
 	
 	public final SLinkedList<Session> all=new SLinkedList<Session>();
 	
@@ -123,7 +123,6 @@ public class Sessions extends StdLibrary implements SessionsList
 	
 	protected void sessionCheck()
 	{
-		lastSweepTime = System.currentTimeMillis();
 		setThreadStatus(serviceClient,"checking player sessions.");
 		for(Session S : all)
 		{
@@ -212,6 +211,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	
 	public boolean activate() 
 	{
+		nextSweepTime = System.currentTimeMillis()+MudHost.TIME_UTILTHREAD_SLEEP;
 		if(serviceClient==null)
 			serviceClient=CMLib.threads().startTickDown(new Tickable(){
 				private volatile long tickStatus=Tickable.STATUS_NOT;
@@ -235,12 +235,15 @@ public class Sessions extends StdLibrary implements SessionsList
 							}
 						}
 					}
-					if(((System.currentTimeMillis() - lastSweepTime) > MudHost.TIME_UTILTHREAD_SLEEP)
-					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
-					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
+					if(System.currentTimeMillis() >= nextSweepTime)
 					{
-						isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
-						sessionCheck();
+						nextSweepTime = System.currentTimeMillis()+MudHost.TIME_UTILTHREAD_SLEEP;
+						if((!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
+						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
+						{
+							isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
+							sessionCheck();
+						}
 					}
 					tickStatus=Tickable.STATUS_NOT;
 					setThreadStatus(serviceClient,"sleeping");
