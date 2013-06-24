@@ -62,7 +62,7 @@ public class PlayerList extends StdWebMacro
 				if (m.charStats().getMyRace()!= null && m.charStats().raceName()!=null
 					&& m.charStats().raceName().length() > 0
 					&& !m.charStats().raceName().equals("MOB")
-					&& (S.getStatus()==Session.STATUS_OK))
+					&& ((S.getStatus()==Session.STATUS_OK)||(S.getStatus()==Session.STATUS_IDLE)))
 				{
 					s.append("(");
 					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))

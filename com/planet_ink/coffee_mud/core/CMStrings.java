@@ -1090,6 +1090,17 @@ public class CMStrings
 			return removeColors(thisStr).substring(0,thisMuch);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
 	}
+	public final static String padLeftWith(final String thisStr, final char c, final int thisMuch)
+	{
+		final int lenMinusColors=lengthMinusColors(thisStr);
+		if(lenMinusColors>thisMuch)
+			return removeColors(thisStr).substring(0,thisMuch);
+		StringBuilder str=new StringBuilder("");
+		for(int i=0;i<thisMuch-lenMinusColors;i++)
+			str.append(c);
+		str.append(thisStr);
+		return str.toString();
+	}
 	public final static String padLeft(final String thisStr, final String colorPrefix, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);
@@ -1113,6 +1124,18 @@ public class CMStrings
 		if(thisMuch-lenMinusColors >= SPACES.length())
 			return thisStr+SPACES;
 		return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
+	}
+	public final static String padRightWith(final String thisStr, final char c, final int thisMuch)
+	{
+		final int lenMinusColors=lengthMinusColors(thisStr);
+		if(lenMinusColors==thisMuch)
+			return thisStr;
+		if(lenMinusColors>thisMuch)
+			return removeColors(thisStr).substring(0,thisMuch);
+		StringBuilder str=new StringBuilder(thisStr);
+		for(int i=0;i<thisMuch-lenMinusColors;i++)
+			str.append(c);
+		return str.toString();
 	}
 	public final static String limit(final String thisStr, final int thisMuch)
 	{

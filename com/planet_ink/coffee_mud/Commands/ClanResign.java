@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -40,56 +41,53 @@ public class ClanResign extends StdCommand
 	private final String[] access={"CLANRESIGN"};
 	public String[] getAccessWords(){return access;}
 	
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
 		
-		Clan C=null;
+		Clan chkC=null;
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName)))
-			{	C=c.first; break; }
+			{	chkC=c.first; break; }
 		
-		StringBuffer msg=new StringBuffer("");
+		final Session S=mob.session();
+		final Clan C=chkC;
 		if(C==null)
 		{
-			msg.append("You can't resign from "+((clanName.length()==0)?"anything":clanName)+".");
+			mob.tell("You can't resign from "+((clanName.length()==0)?"anything":clanName)+".");
 		}
 		else
-		if(!mob.isMonster())
+		if(S!=null)
 		{
-			try
-			{
-				String check=mob.session().prompt("Resign from "+C.getName()+".  Are you absolutely SURE (y/N)?","N");
-				if(check.equalsIgnoreCase("Y"))
+			S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"N","YN",0){
+				@Override public void showPrompt() { S.print("Resign from "+C.getName()+".  Are you absolutely SURE (y/N)?");}
+				@Override public void timedOut() { }
+				@Override public void callBack() 
 				{
-					if(C.getGovernment().getExitScript().trim().length()>0)
+					String check=this.input;
+					if(check.equalsIgnoreCase("Y"))
 					{
-						Pair<Clan,Integer> curClanRole=mob.getClanRole(C.clanID());
-						if(curClanRole!=null)
-							mob.setClan(C.clanID(), curClanRole.second.intValue());
-						ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-						S.setSavable(false);
-						S.setVarScope("*");
-						S.setScript(C.getGovernment().getExitScript());
-						CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
-						S.executeMsg(mob, msg2);
-						S.dequeResponses();
-						S.tick(mob,Tickable.TICKID_MOB);
+						if(C.getGovernment().getExitScript().trim().length()>0)
+						{
+							Pair<Clan,Integer> curClanRole=mob.getClanRole(C.clanID());
+							if(curClanRole!=null)
+								mob.setClan(C.clanID(), curClanRole.second.intValue());
+							ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+							S.setSavable(false);
+							S.setVarScope("*");
+							S.setScript(C.getGovernment().getExitScript());
+							CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CLANEXIT");
+							S.executeMsg(mob, msg2);
+							S.dequeResponses();
+							S.tick(mob,Tickable.TICKID_MOB);
+						}
+						CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.getGovernmentName()+" "+C.name()+": "+mob.Name());
+						C.delMember(mob);
 					}
-					CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.getGovernmentName()+" "+C.name()+": "+mob.Name());
-					C.delMember(mob);
 				}
-				else
-				{
-					return false;
-				}
-			}
-			catch(java.io.IOException e)
-			{
-			}
+			});
 		}
-		mob.tell(msg.toString());
 		return false;
 	}
 	

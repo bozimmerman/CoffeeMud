@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -32,7 +33,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class AutoInvoke extends StdCommand
 {
 	public AutoInvoke(){}
@@ -40,10 +41,10 @@ public class AutoInvoke extends StdCommand
 	private final String[] access={"AUTOINVOKE"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector abilities=new Vector();
+		final Vector<String> abilities=new Vector<String>();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
@@ -54,7 +55,7 @@ public class AutoInvoke extends StdCommand
 				abilities.addElement(A.ID());
 		}
 
-		Vector effects=new Vector();
+		final Vector<String> effects=new Vector<String>();
 		for(int a=0;a<mob.numEffects();a++)
 		{
 			Ability A=mob.fetchEffect(a);
@@ -65,62 +66,80 @@ public class AutoInvoke extends StdCommand
 		}
 
 		StringBuffer str=new StringBuffer("^xAuto-invoking abilities:^?^.\n\r^N");
+		int col=0;
 		for(int a=0;a<abilities.size();a++)
 		{
 			Ability A=mob.fetchAbility((String)abilities.elementAt(a));
 			if(A!=null)
 			{
 				if(effects.contains(A.ID()))
-					str.append(CMStrings.padRight(A.Name(),20)+"^xAuto-invoking abilities:^?^.\n\r^N");
+					str.append(CMStrings.padRightWith(A.Name(),'.',30)+".^xACTIVE^?^.^N ");
 				else
-					str.append(CMStrings.padRight(A.Name(),20)+"^xAuto-invoking abilities:^?^.\n\r^N");
+					str.append(CMStrings.padRightWith(A.Name(),'.',30)+"^xINACTIVE^?^.^N");
+				if(++col==2)
+				{
+					col=0;
+					str.append("\n\r");
+				}
+				else
+					str.append("  ");
 			}
 		}
+		if(col==1)
+			str.append("\n\r");
 
 		mob.tell(str.toString());
-		if(mob.session()!=null)
+		final Session session=mob.session();
+		if(session!=null)
 		{
-			String s=mob.session().prompt("Enter one to toggle or RETURN: ","");
-			Ability foundA=null;
-			if(s.length()>0)
-			{
-				for(int a=0;a<abilities.size();a++)
+			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+				@Override public void showPrompt() { session.print("Enter one to toggle or RETURN: ");}
+				@Override public void timedOut() { }
+				@Override public void callBack() 
 				{
-					Ability A=mob.fetchAbility((String)abilities.elementAt(a));
-					if((A!=null)&&(A.name().equalsIgnoreCase(s)))
-					{ foundA=A; break;}
-				}
-				if(foundA==null)
-				for(int a=0;a<abilities.size();a++)
-				{
-					Ability A=mob.fetchAbility((String)abilities.elementAt(a));
-					if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
-					{ foundA=A; break;}
-				}
-				if(foundA==null)
-					mob.tell("'"+s+"' is invalid.");
-				else
-				if(effects.contains(foundA.ID()))
-				{
-					foundA=mob.fetchEffect(foundA.ID());
-					if(foundA!=null)
+					String s=this.input;
+					Ability foundA=null;
+					if(s.length()>0)
 					{
-						mob.delEffect(foundA);
-						if(mob.fetchEffect(foundA.ID())!=null)
-							mob.tell(foundA.name()+" failed to successfully deactivate.");
+						for(int a=0;a<abilities.size();a++)
+						{
+							Ability A=mob.fetchAbility((String)abilities.elementAt(a));
+							if((A!=null)&&(A.name().equalsIgnoreCase(s)))
+							{ foundA=A; break;}
+						}
+						if(foundA==null)
+						for(int a=0;a<abilities.size();a++)
+						{
+							Ability A=mob.fetchAbility((String)abilities.elementAt(a));
+							if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
+							{ foundA=A; break;}
+						}
+						if(foundA==null)
+							mob.tell("'"+s+"' is invalid.");
 						else
-							mob.tell(foundA.name()+" successfully deactivated.");
+						if(effects.contains(foundA.ID()))
+						{
+							foundA=mob.fetchEffect(foundA.ID());
+							if(foundA!=null)
+							{
+								mob.delEffect(foundA);
+								if(mob.fetchEffect(foundA.ID())!=null)
+									mob.tell(foundA.name()+" failed to successfully deactivate.");
+								else
+									mob.tell(foundA.name()+" successfully deactivated.");
+							}
+						}
+						else
+						{
+							foundA.autoInvocation(mob);
+							if(mob.fetchEffect(foundA.ID())!=null)
+								mob.tell(foundA.name()+" successfully invoked.");
+							else
+								mob.tell(foundA.name()+" failed to successfully invoke.");
+						}
 					}
 				}
-				else
-				{
-					foundA.autoInvocation(mob);
-					if(mob.fetchEffect(foundA.ID())!=null)
-						mob.tell(foundA.name()+" successfully invoked.");
-					else
-						mob.tell(foundA.name()+" failed to successfully invoke.");
-				}
-			}
+			});
 		}
 		return false;
 	}

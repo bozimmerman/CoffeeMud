@@ -35,7 +35,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	
 	private final static Filterer<Session> localOnlineFilter=new Filterer<Session>(){
 		public boolean passesFilter(Session obj) { 
-			if((obj!=null) && (!obj.isStopped()) && (obj.getStatus()==Session.STATUS_OK))
+			if((obj!=null) && (!obj.isStopped()) && ((obj.getStatus()==Session.STATUS_OK)||(obj.getStatus()==Session.STATUS_IDLE)))
 			{
 				MOB M=obj.mob();
 				return ((M!=null)&&M.amActive()&&(CMLib.flags().isInTheGame(M,true)));

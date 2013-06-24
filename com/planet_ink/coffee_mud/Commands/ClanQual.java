@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -39,79 +40,98 @@ public class ClanQual extends StdCommand
 
 	private final String[] access={"CLANQUAL"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
 
-		Clan C=null;
-		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
-		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
+		Clan chkC=null;
+		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		if(skipChecks) chkC=mob.getClanRole(mob.Name()).first;
 			
-		if(C==null)
+		if(chkC==null)
 		for(Pair<Clan,Integer> c : mob.clans())
 			if((clanName.length()==0)||(CMLib.english().containsString(c.first.getName(), clanName))
 			&&(c.first.getAuthority(c.second.intValue(), Clan.Function.PREMISE)!=Authority.CAN_NOT_DO))
-			{	C=c.first; break; }
+			{	chkC=c.first; break; }
 		
 		commands.setElementAt(getAccessWords()[0],0);
 
+		final Clan C=chkC;
 		if(C==null)
 		{
 			mob.tell("You aren't allowed to set qualifications for "+((clanName.length()==0)?"anything":clanName)+".");
 			return false;
 		}
 
-		StringBuffer msg=new StringBuffer("");
 		if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,false)))
 		{
-			msg.append("You aren't in the right position to set the qualifications to your "+C.getGovernmentName()+".");
+			mob.tell("You aren't in the right position to set the qualifications to your "+C.getGovernmentName()+".");
+			return false;
 		}
-		else
+		
+		if((skipChecks)&&(commands.size()>1))
 		{
-			try
-			{
-				String premise="?";
-				while(premise.equals("?"))
-				{
-					if((skipChecks)&&(commands.size()>1))
-						premise=CMParms.combine(commands,1);
-					else
-					if(mob.session()!=null)
-						premise=mob.session().prompt("Describe your "+C.getGovernmentName()+"'s Qualification Code (?)\n\r: ","");
-
-					if(premise.equals("?"))
-						mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
-					else
-					if(premise.length()>0)
-					{
-						mob.tell("Your qualifications will be as follows: "+CMLib.masking().maskDesc(premise)+"\n\r");
-						if((mob.session()!=null)&&(mob.session().confirm("Is this correct (Y/n)?","Y")))
-						{
-							commands.clear();
-							commands.addElement(getAccessWords()[0]);
-							commands.addElement(premise);
-							if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.PREMISE,true))
-							{
-								C.setAcceptanceSettings(premise);
-								C.update();
-								CMLib.clans().clanAnnounce(mob,"The qualifications of "+C.getGovernmentName()+" "+C.clanID()+" have been changed.");
-								return false;
-							}
-						}
-						else
-							premise="?";
-					}
-					else
-						return false;
-				}
-			}
-			catch(java.io.IOException e)
-			{
-			}
+			setClanQualMask(mob,C,CMParms.combine(commands,1));
+			return false;
 		}
-		mob.tell(msg.toString());
+		final Session session=mob.session();
+		if(session==null)
+		{
+			return false;
+		}
+		final InputCallback[] IC=new InputCallback[1];
+		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
+		{
+			@Override public void showPrompt() { session.print("Describe your "+C.getGovernmentName()+"'s Qualification Code (?)\n\r: ");}
+			@Override public void timedOut() { }
+			@Override public void callBack() 
+			{
+				final String qualMask=this.input;
+				if(qualMask.length()==0)
+				{
+					return;
+				}
+				if(qualMask.equals("?"))
+				{
+					mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
+					session.prompt(IC[0].reset());
+					return;
+				}
+				session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"Y","YN\n",0){
+					@Override public void showPrompt() 
+					{ 
+						session.println("Your qualifications will be as follows: "+CMLib.masking().maskDesc(qualMask)+"\n\r");
+						session.print("Is this correct (Y/n)?");
+					}
+					@Override public void timedOut() { }
+					@Override public void callBack() 
+					{
+						if(!this.input.equalsIgnoreCase("Y"))
+						{
+							session.prompt(IC[0].reset());
+							return;
+						}
+						Vector cmds=new Vector();
+						cmds.addElement(getAccessWords()[0]);
+						cmds.addElement(qualMask);
+						if(skipChecks||CMLib.clans().goForward(mob,C,cmds,Clan.Function.PREMISE,true))
+						{
+							setClanQualMask(mob,C,qualMask);
+						}
+					}
+				});
+			}
+		};
+		session.prompt(IC[0]);
 		return false;
+	}
+	
+	public void setClanQualMask(MOB mob, Clan C, String qualMask)
+	{
+		C.setAcceptanceSettings(qualMask);
+		C.update();
+		CMLib.clans().clanAnnounce(mob,"The qualifications of "+C.getGovernmentName()+" "+C.clanID()+" have been changed.");
 	}
 	
 	public boolean canBeOrdered(){return false;}

@@ -70,34 +70,34 @@ public class Alias extends StdCommand
 				break;
 			else
 			{
-			   selection=mob.session().prompt("Enter a new alias string consisting of letters and numbers only.\n\r: ","").trim().toUpperCase();
-			   if(selection.length()==0)
-				   selection=null;
-			   else
-			   if(ps.getAlias(selection).length()>0)
-			   {
-				   selection=null;
-				   mob.tell("That alias already exists.  Select it from the menu to delete or modify.");
-			   }
-			   else
-			   if(CMParms.contains(access,selection.toUpperCase()))
-			   {
-				   selection=null;
-				   mob.tell("You may not alias alias.");
-			   }
-			   else
-			   {
-				   for(int i=0;i<selection.length();i++)
-					   if(!Character.isLetterOrDigit(selection.charAt(i)))
-					   {
-						   selection=null;
-						   break;
-					   }
-				   if(selection==null)
-					   mob.tell("Your alias name may only contain letters and numbers without spaces. ");
-				   else
-					   ps.addAliasName(selection);
-			   }
+				selection=mob.session().prompt("Enter a new alias string consisting of letters and numbers only.\n\r: ","").trim().toUpperCase();
+				if(selection.length()==0)
+					selection=null;
+				else
+				if(ps.getAlias(selection).length()>0)
+				{
+					selection=null;
+					mob.tell("That alias already exists.  Select it from the menu to delete or modify.");
+				}
+				else
+				if(CMParms.contains(access,selection.toUpperCase()))
+				{
+					selection=null;
+					mob.tell("You may not alias alias.");
+				}
+				else
+				{
+					for(int i=0;i<selection.length();i++)
+						if(!Character.isLetterOrDigit(selection.charAt(i)))
+						{
+							selection=null;
+							break;
+						}
+					if(selection==null)
+						mob.tell("Your alias name may only contain letters and numbers without spaces. ");
+					else
+						ps.addAliasName(selection);
+				}
 			}
 			if(selection!=null)
 			{
