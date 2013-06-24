@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -76,16 +77,42 @@ public class Painting extends CommonSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
 			return true;
-		try{
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Paint on what? Enter \"paint [canvas name]\" or paint \"wall\".");
 			return false;
 		}
+		String paintingKeyWords=null;
+		String paintingDesc=null;
+		while((commands.size()>1)&&(commands.lastElement() instanceof String))
+		{
+			String last=((String)commands.lastElement());
+			if(last.startsWith("PAINTINGKEYWORDS="))
+			{
+				paintingKeyWords=last.substring(17).trim();
+				if(paintingKeyWords.length()>0)
+					commands.remove(commands.size()-1);
+				else
+					paintingKeyWords=null;
+			}
+			else
+			if(last.startsWith("PAINTINGDESC="))
+			{
+				paintingDesc=last.substring(13).trim();
+				if(paintingDesc.length()>0)
+					commands.remove(commands.size()-1);
+				else
+					paintingDesc=null;
+			}
+			else
+				break;
+		}
+		
 		String str=CMParms.combine(commands,0);
 		building=null;
 		messedUp=false;
@@ -98,7 +125,7 @@ public class Painting extends CommonSkill
 			return false;
 		}
 
-		Item I=null;
+		Item canvasI=null;
 		if(str.equalsIgnoreCase("wall"))
 		{
 			if(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
@@ -109,77 +136,151 @@ public class Painting extends CommonSkill
 		}
 		else
 		{
-			I=mob.location().findItem(null,str);
-			if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
+			canvasI=mob.location().findItem(null,str);
+			if((canvasI==null)||(!CMLib.flags().canBeSeenBy(canvasI,mob)))
 			{
 				commonTell(mob,"You don't see any canvases called '"+str+"' sitting here.");
 				return false;
 			}
-			if((I.material()!=RawMaterial.RESOURCE_COTTON)
-			&&(I.material()!=RawMaterial.RESOURCE_SILK)
-			&&(!I.Name().toUpperCase().endsWith("CANVAS"))
-			&&(!I.Name().toUpperCase().endsWith("SILKSCREEN")))
+			if((canvasI.material()!=RawMaterial.RESOURCE_COTTON)
+			&&(canvasI.material()!=RawMaterial.RESOURCE_SILK)
+			&&(!canvasI.Name().toUpperCase().endsWith("CANVAS"))
+			&&(!canvasI.Name().toUpperCase().endsWith("SILKSCREEN")))
 			{
 				commonTell(mob,"You cannot paint on '"+str+"'.");
 				return false;
 			}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
 		int duration=25;
+		final Session session=mob.session();
+		final Ability me=this;
+		final Physical target=givenTarget;
 		if(str.equalsIgnoreCase("wall"))
 		{
-			String name=S.prompt("Enter the key words (not the description) for this work.\n\r:","");
-			if(name.trim().length()==0) return false;
-			Vector<String> V=CMParms.parse(name.toUpperCase());
-			for(int v=0;v<V.size();v++)
+			if((paintingKeyWords!=null)&&(paintingDesc!=null))
 			{
-				String vstr=" "+(V.elementAt(v))+" ";
-				for(int i=0;i<mob.location().numItems();i++)
-				{
-					I=mob.location().getItem(i);
-					if((I!=null)
-					&&(I.displayText().length()==0)
-					&&(!CMLib.flags().isGettable(I))
-					&&((" "+I.name().toUpperCase()+" ").indexOf(vstr)>=0))
-					{
-						if(S.confirm("'"+I.name()+"' already shares one of these key words ('"+vstr.trim().toLowerCase()+"').  Would you like to destroy it (y/N)? ","N"))
-						{
-							I.destroy();
-							return true;
-						}
-					}
-				}
+				building=CMClass.getItem("GenWallpaper");
+				building.setName(paintingKeyWords);
+				building.setDescription(paintingDesc);
+				building.setSecretIdentity(getBrand(mob));
 			}
-			String desc=S.prompt("Enter a description for this.\n\r:");
-			if(desc.trim().length()==0) return false;
-			if(!S.confirm("Wall art key words: '"+name+"', description: '"+desc+"'.  Correct (Y/n)?","Y"))
-				return false;
-			building=CMClass.getItem("GenWallpaper");
-			building.setName(name);
-			building.setDescription(desc);
-			building.setSecretIdentity(getBrand(mob));
+			else
+			{
+				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+					@Override public void showPrompt() {session.print("Enter the key words (not the description) for this work.\n\r: ");}
+					@Override public void timedOut() {}
+					@Override public void callBack() {
+						final String name=input.trim();
+						if(name.length()==0) return;
+						Vector<String> V=CMParms.parse(name.toUpperCase());
+						for(int v=0;v<V.size();v++)
+						{
+							String vstr=" "+(V.elementAt(v))+" ";
+							for(int i=0;i<mob.location().numItems();i++)
+							{
+								Item I=mob.location().getItem(i);
+								if((I!=null)
+								&&(I.displayText().length()==0)
+								&&(!CMLib.flags().isGettable(I))
+								&&((" "+I.name().toUpperCase()+" ").indexOf(vstr)>=0))
+								{
+									final Item dupI=I;
+									final String dupWord=vstr.trim().toLowerCase();
+									session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0){
+										@Override public void showPrompt() {session.print("\n\r'"+dupI.name()+"' already shares one of these key words ('"+dupWord+"').  Would you like to destroy it (y/N)? ");}
+										@Override public void timedOut() {}
+										@Override public void callBack() {
+											if(this.input.equals("Y"))
+											{
+												dupI.destroy();
+											}
+										}
+									});
+									return;
+								}
+							}
+						}
+						session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+							@Override public void showPrompt() {session.print("\n\rEnter a description for this.\n\r:");}
+							@Override public void timedOut() {}
+							@Override public void callBack() {
+								final String desc=this.input.trim();
+								if(desc.length()==0)
+									return;
+								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0){
+									@Override public void showPrompt() {session.print("Wall art key words: '"+name+"', description: '"+desc+"'.  Correct (Y/n)? ");}
+									@Override public void timedOut() {}
+									@Override public void callBack() {
+										if(this.input.equals("Y"))
+										{
+											@SuppressWarnings("unchecked")
+											Vector<String> newCommands=(Vector<String>)originalCommands.clone();
+											newCommands.add("PAINTINGKEYWORDS="+name);
+											newCommands.add("PAINTINGDESC="+desc);
+											me.invoke(mob, newCommands, target, auto, asLevel);
+										}
+									}
+								});
+							}
+						});
+					}
+				});
+				return true;
+			}
 		}
 		else
-		if(I!=null)
+		if(canvasI!=null)
 		{
-			String name=S.prompt("In brief, what is this a painting of?\n\r:");
-			if(name.trim().length()==0) return false;
-			String desc=S.prompt("Please describe this painting.\n\r:");
-			if(desc.trim().length()==0) return false;
-			building=CMClass.getItem("GenItem");
-			building.setName("a painting of "+name);
-			building.setDisplayText("a painting of "+name+" is here.");
-			building.setDescription(desc);
-			building.basePhyStats().setWeight(I.basePhyStats().weight());
-			building.setBaseValue(I.baseGoldValue()*(CMLib.dice().roll(1,5,0)));
-			building.setMaterial(I.material());
-			building.basePhyStats().setLevel(I.basePhyStats().level());
-			building.setSecretIdentity(getBrand(mob));
-			I.destroy();
+			if((paintingKeyWords!=null)&&(paintingDesc!=null))
+			{
+				building=CMClass.getItem("GenItem");
+				building.setName("a painting of "+paintingKeyWords);
+				building.setDisplayText("a painting of "+paintingKeyWords+" is here.");
+				building.setDescription(paintingDesc);
+				building.basePhyStats().setWeight(canvasI.basePhyStats().weight());
+				building.setBaseValue(canvasI.baseGoldValue()*(CMLib.dice().roll(1,5,0)));
+				building.setMaterial(canvasI.material());
+				building.basePhyStats().setLevel(canvasI.basePhyStats().level());
+				building.setSecretIdentity(getBrand(mob));
+				canvasI.destroy();
+			}
+			else
+			{
+				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+					@Override public void showPrompt() {session.print("\n\rIn brief, what is this a painting of?\n\r: ");}
+					@Override public void timedOut() {}
+					@Override public void callBack() {
+						final String name=this.input.trim();
+						if(name.length()==0)
+							return;
+						session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+							@Override public void showPrompt() {session.print("\n\rPlease describe this painting.\n\r: ");}
+							@Override public void timedOut() {}
+							@Override public void callBack() {
+								final String desc=this.input.trim();
+								if(desc.length()==0)
+									return;
+								@SuppressWarnings("unchecked")
+								Vector<String> newCommands=(Vector<String>)originalCommands.clone();
+								newCommands.add("PAINTINGKEYWORDS="+name);
+								newCommands.add("PAINTINGDESC="+desc);
+								me.invoke(mob, newCommands, target, auto, asLevel);
+							}
+						});
+					}
+				});
+				return true;
+			}
 		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		{
+			building.destroy();
+			building=null;
+			return false;
+		}
+		
 		String startStr="<S-NAME> start(s) painting "+building.name()+".";
 		displayText="You are painting "+building.name();
 		verb="painting "+building.name();
@@ -197,7 +298,6 @@ public class Painting extends CommonSkill
 			building=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
-		}catch(java.io.IOException e){return false;}
 		return true;
 	}
 }
