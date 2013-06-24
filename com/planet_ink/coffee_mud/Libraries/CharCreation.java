@@ -96,23 +96,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return false;
 	}
 
-	public boolean getRetireReason(final String mobName, final Session session)
-	{
-		try
-		{
-			if((session!=null)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.RETIREREASON)))
-			{
-				String reason=session.prompt("OK.  Please leave us a short message as to why you are deleting this"
-												  +" character.  Your answers will be kept confidential, "
-												  +"and are for administrative purposes only.\n\r: ","",120000);
-				Log.sysOut("Retire","Retired: "+mobName+": "+reason);
-				return true;
-			}
-		}
-		catch(IOException ioe){}
-		return false;
-	}
-	
 	public List<CharClass> classQualifies(MOB mob, int theme)
 	{
 		Vector<CharClass> them=new Vector<CharClass>();
@@ -408,7 +391,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					s="IMPORT "+acct.accountName();
 			}
 			else
-				s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", CMProps.getMillisPerMudHour());
+				s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", "");
 			if(s==null) return LoginResult.NO_LOGIN;
 			if(s.trim().length()==0) continue;
 			if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP"))||s.equalsIgnoreCase("H"))

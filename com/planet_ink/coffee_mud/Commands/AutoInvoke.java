@@ -69,7 +69,7 @@ public class AutoInvoke extends StdCommand
 		int col=0;
 		for(int a=0;a<abilities.size();a++)
 		{
-			Ability A=mob.fetchAbility((String)abilities.elementAt(a));
+			Ability A=mob.fetchAbility(abilities.elementAt(a));
 			if(A!=null)
 			{
 				if(effects.contains(A.ID()))
@@ -103,14 +103,14 @@ public class AutoInvoke extends StdCommand
 					{
 						for(int a=0;a<abilities.size();a++)
 						{
-							Ability A=mob.fetchAbility((String)abilities.elementAt(a));
+							Ability A=mob.fetchAbility(abilities.elementAt(a));
 							if((A!=null)&&(A.name().equalsIgnoreCase(s)))
 							{ foundA=A; break;}
 						}
 						if(foundA==null)
 						for(int a=0;a<abilities.size();a++)
 						{
-							Ability A=mob.fetchAbility((String)abilities.elementAt(a));
+							Ability A=mob.fetchAbility(abilities.elementAt(a));
 							if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
 							{ foundA=A; break;}
 						}

@@ -45,7 +45,6 @@ public interface CharCreationLibrary extends CMLibrary
 	public boolean isOkName(String login);
 	public void reloadTerminal(MOB mob);
 	public void showTheNews(MOB mob);
-	public boolean getRetireReason(final String mobName, final Session session);
 	public void notifyFriends(MOB mob, String message);
 	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
 	public LoginResult loginSystem(Session session, LoginSession loginObj) throws java.io.IOException;

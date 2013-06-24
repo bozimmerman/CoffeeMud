@@ -210,7 +210,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					AuctionRates aRates=new AuctionRates(this);
 					CMLib.commands().postSay(this,mob,"Ok, so how many local days will your auction run for ("+aRates.minDays+"-"+aRates.maxDays+")?",true,false);
 					int days=0;
-					try{days=CMath.s_int(mob.session().prompt(":","",10000));}catch(Exception e){return false;}
+					try{days=CMath.s_int(mob.session().prompt(":",""));}catch(Exception e){return false;}
 					if(days==0) return false;
 					if(days<aRates.minDays)
 					{

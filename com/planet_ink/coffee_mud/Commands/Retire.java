@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /* 
@@ -62,8 +63,26 @@ public class Retire extends StdCommand
 					mob.tell("Password incorrect.");
 				else
 				{
-					CMLib.login().getRetireReason(mob.Name(),session);
-					CMLib.players().obliteratePlayer(mob,true,false);
+					if(CMSecurity.isDisabled(CMSecurity.DisFlag.RETIREREASON))
+					{
+						Log.sysOut("Retire","Retired: "+mob.Name());
+						CMLib.players().obliteratePlayer(mob,true,false);
+					}
+					else
+					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"") {
+						@Override public void showPrompt() 
+						{
+							session.print("OK.  Please leave us a short message as to why you are deleting this"
+										+" character.  Your answers will be kept confidential, "
+										+"and are for administrative purposes only.\n\r: ");
+						}
+						@Override public void timedOut() {}
+						@Override public void callBack() 
+						{
+							Log.sysOut("Retire","Retired: "+mob.Name()+": "+this.input);
+							CMLib.players().obliteratePlayer(mob,true,false);
+						}
+					});
 				}
 			}
 		});
