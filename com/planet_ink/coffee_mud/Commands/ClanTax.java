@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -39,7 +40,7 @@ public class ClanTax extends StdCommand
 
 	private final String[] access={"CLANTAX"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String taxStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
@@ -53,7 +54,7 @@ public class ClanTax extends StdCommand
 			clanName=(commands.size()>2)?CMParms.combine(commands,1,commands.size()-1):"";
 		
 		Clan C=null;
-		boolean skipChecks=mob.getClanRole(mob.Name())!=null;
+		final boolean skipChecks=mob.getClanRole(mob.Name())!=null;
 		if(skipChecks) C=mob.getClanRole(mob.Name()).first;
 			
 		if(C==null)
@@ -64,7 +65,6 @@ public class ClanTax extends StdCommand
 
 		commands.setElementAt(getAccessWords()[0],0);
 
-		StringBuffer msg=new StringBuffer("");
 		if(C==null)
 		{
 			mob.tell("You aren't allowed to tax anyone from "+((clanName.length()==0)?"anything":clanName)+".");
@@ -72,49 +72,61 @@ public class ClanTax extends StdCommand
 		}
 		if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.Function.TAX,false)))
 		{
-			msg.append("You aren't in the right position to set the experience tax rate for your "+C.getGovernmentName()+".");
+			mob.tell("You aren't in the right position to set the experience tax rate for your "+C.getGovernmentName()+".");
+			return false;
 		}
 		else
 		{
-			try
+			final Session S=mob.session();
+			if((skipChecks)&&(commands.size()>1))
+				setClanTaxRate(mob,C,skipChecks,commands,CMath.div(CMath.s_int(CMParms.combine(commands,1)),100));
+			else
+			if(S!=null)
 			{
-				double newRate=0.0;
-				if((skipChecks)&&(commands.size()>1))
-					newRate=CMath.div(CMath.s_int(CMParms.combine(commands,1)),100);
+				if((taxStr.length()==0)||(!CMath.isNumber(taxStr)))
+				{
+					final Clan clanC=C;
+					S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+						@Override public void showPrompt() { S.print("Enter your "+clanC.getGovernmentName()+"'s new tax rate (0-25)\n\r: ");}
+						@Override public void timedOut() { }
+						@Override public void callBack() 
+						{
+							possiblySetClanTaxRate(mob,clanC,skipChecks,this.input);
+						}
+					});
+				}
 				else
-				if(mob.session()!=null)
-				{
-					String t=null;
-					if((taxStr.length()==0)||(!CMath.isNumber(taxStr)))
-						t=mob.session().prompt("Enter your "+C.getGovernmentName()+"'s new tax rate (0-25)\n\r: ","");
-					else
-						t=taxStr;
-					if(t.length()==0) return false;
-					int intt=CMath.s_int(t);
-					if((intt<0)||(intt>25)) 
-					{
-						mob.session().println("'"+t+"' is not a valid value.  Try 0-25.");
-						return false;
-					}
-					commands.clear();
-					commands.addElement(getAccessWords()[0]);
-					commands.addElement(t);
-					newRate=CMath.div(CMath.s_int(t),100);
-				}
-				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.TAX,true))
-				{
-					C.setTaxes(newRate);
-					C.update();
-					CMLib.clans().clanAnnounce(mob,"The experience tax rate of "+C.getGovernmentName()+" "+C.clanID()+" has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
-					return false;
-				}
-			}
-			catch(java.io.IOException e)
-			{
+					possiblySetClanTaxRate(mob,C,skipChecks,taxStr);
 			}
 		}
-		mob.tell(msg.toString());
 		return false;
+	}
+
+	public void possiblySetClanTaxRate(MOB mob, Clan C, boolean skipChecks, String t)
+	{
+		if(t.length()==0) 
+			return;
+		int intt=CMath.s_int(t);
+		if((intt<0)||(intt>25)) 
+		{
+			if(mob.session()!=null)
+				mob.session().println("'"+t+"' is not a valid value.  Try 0-25.");
+			return;
+		}
+		Vector commands=new Vector();
+		commands.addElement(getAccessWords()[0]);
+		commands.addElement(t);
+		setClanTaxRate(mob, C, skipChecks,commands,CMath.div(CMath.s_int(t),100));
+	}
+	
+	public void setClanTaxRate(MOB mob, Clan C, boolean skipChecks, Vector commands, double newRate)
+	{
+		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.TAX,true))
+		{
+			C.setTaxes(newRate);
+			C.update();
+			CMLib.clans().clanAnnounce(mob,"The experience tax rate of "+C.getGovernmentName()+" "+C.clanID()+" has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
+		}
 	}
 	
 	public boolean canBeOrdered(){return false;}

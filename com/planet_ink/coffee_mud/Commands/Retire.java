@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -38,24 +39,34 @@ public class Retire extends StdCommand
 
 	private final String[] access={"RETIRE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Session session=mob.session();
-		if(mob.isMonster()) return false;
-		PlayerStats pstats=mob.playerStats();
+		final Session session=mob.session();
+		if(session==null) return false;
+		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
 
 		mob.tell("^HThis will delete your player from the system FOREVER!");
-		String pwd=session.prompt("If that's what you want, re-enter your password:","");
-		if(pwd.length()==0) return false;
-		if(!pstats.matchesPassword(pwd))
-		{
-			mob.tell("Password incorrect.");
-			return false;
-		}
-		CMLib.login().getRetireReason(mob.Name(),mob.session());
-		CMLib.players().obliteratePlayer(mob,true,false);
+		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"") {
+			@Override public void showPrompt() 
+			{
+				session.print("If that's what you want, re-enter your password: ");
+			}
+			@Override public void timedOut() {}
+			@Override public void callBack() 
+			{
+				if(input.trim().length()==0) 
+					return;
+				if(!pstats.matchesPassword(input.trim()))
+					mob.tell("Password incorrect.");
+				else
+				{
+					CMLib.login().getRetireReason(mob.Name(),session);
+					CMLib.players().obliteratePlayer(mob,true,false);
+				}
+			}
+		});
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

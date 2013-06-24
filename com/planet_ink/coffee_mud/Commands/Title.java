@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -36,7 +37,7 @@ public class Title extends StdCommand
 {
 	private final String[] access={"TITLE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((mob.playerStats()==null)||(mob.playerStats().getTitles().size()==0))
@@ -50,10 +51,11 @@ public class Title extends StdCommand
 			mob.tell("You can not change your current title.");
 			return false;
 		}
-		PlayerStats ps=mob.playerStats();
-		StringBuffer menu=new StringBuffer("^xTitles:^.^?\n\r");
+		final PlayerStats ps=mob.playerStats();
+		final StringBuffer menu=new StringBuffer("^xTitles:^.^?\n\r");
 		CMLib.titles().evaluateAutoTitles(mob);
-		if(!ps.getTitles().contains("*")) ps.getTitles().add("*");
+		if(!ps.getTitles().contains("*")) 
+			ps.getTitles().add("*");
 		for(int i=0;i<ps.getTitles().size();i++)
 		{
 			String title=ps.getTitles().get(i);
@@ -63,34 +65,34 @@ public class Title extends StdCommand
 			else
 				menu.append(CMStrings.padRight(""+(i+1),2)+": "+CMStrings.replaceAll(title,"*",mob.Name())+"\n\r");
 		}
-		int selection=1;
-		while((mob.session()!=null)&&(!mob.session().isStopped()))
-		{
-			mob.tell(menu.toString());
-			String which=mob.session().prompt("Enter a selection: ",""+selection);
-			if(which.length()==0)
-				break;
-			int num=CMath.s_int(which);
-			if((num>0)&&(num<=ps.getTitles().size()))
+		final InputCallback[] IC=new InputCallback[1];
+		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"") {
+			@Override public void showPrompt() 
 			{
-				selection=num;
-				break;
+				mob.tell(menu.toString());
+				if(mob.session()!=null)
+					mob.session().print("Enter a selection: ");
 			}
-		}
-		if(selection==1)
-			mob.tell("No change");
-		else
-		{
-			String which=ps.getTitles().get(selection-1);
-			ps.getTitles().remove(selection-1);
-			ps.getTitles().add(0,which);
-			mob.tell("Title changed accepted.");
-		}
+			@Override public void timedOut() {}
+			@Override public void callBack() 
+			{
+				int num=CMath.s_int(this.input);
+				if((num>0)&&(num<=ps.getTitles().size()))
+				{
+					String which=ps.getTitles().get(num-1);
+					ps.getTitles().remove(num-1);
+					ps.getTitles().add(0,which);
+					mob.tell("Title changed accepted.");
+				}
+				else
+					mob.tell("No change");
+			}
+		};
+		if(mob.session()!=null)
+			mob.session().prompt(IC[0]);
 		return false;
 	}
 	
 	public boolean canBeOrdered(){return true;}
-
-	
 }
 

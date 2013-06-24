@@ -910,9 +910,10 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		public static enum Type { CONFIRM, PROMPT, CHOOSE }
 		
 		private final Type			type;
-		private final long			timeout;
 		private final String		defaultInput;
 		private final String		choicesStr;
+		private final long			timeoutMs;
+		protected volatile long		timeout;
 		protected volatile String	input		= "";
 		protected volatile boolean	confirmed	= false;
 		protected volatile boolean	waiting		= true;
@@ -929,7 +930,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			case CHOOSE: this.choicesStr="YN"; break;
 			default: this.choicesStr="";
 			}
-			this.timeout=timeoutMs;
+			this.timeoutMs=timeoutMs;
+			if(this.timeoutMs<=0)
+				this.timeout=0;
+			else
+				this.timeout=System.currentTimeMillis()+timeoutMs;
 			this.waiting=true;
 			this.defaultInput=defaultInput;
 		}
@@ -947,6 +952,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		public InputCallback(Type type)
 		{
 			this(type, 0);
+		}
+		
+		public InputCallback(Type type, String defaultInput)
+		{
+			this(type, "", 0);
 		}
 		
 		public boolean isTimedOut()
@@ -980,7 +990,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			case CHOOSE:
 					this.input=input.toUpperCase().trim();
 				if(this.input.length()==0)
-					this.input=defaultInput;
+					this.input=defaultInput.toUpperCase();
 				if(this.input.length()>0)
 				{
 					this.input=this.input.substring(0,1);
@@ -1004,6 +1014,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		public boolean waitForInput()
 		{
 			return waiting;
+		}
+		
+		public InputCallback reset()
+		{
+			input="";
+			if(timeoutMs>0)
+				timeout=System.currentTimeMillis()+timeoutMs;
+			waiting=true;
+			confirmed=false;
+			return this;
 		}
 		
 		public abstract void showPrompt();

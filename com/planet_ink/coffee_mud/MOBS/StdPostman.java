@@ -536,7 +536,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						if(isMine(msg.tool()))
 						{
 							final StdPostman me=this;
-							S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+							S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+							{
 								@Override public void showPrompt() { S.print("Address this to whom? ");}
 								@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
 								@Override public void callBack() 
@@ -551,9 +552,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 										else
 											toWhom=CMLib.clans().findClan(this.input).name();
 										final double amt=getSimplePostage(getChargeableWeight((Item)msg.tool()));
-										S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"CP\n","P",0)
+										S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"P","CP\n",0)
 										{
-											@Override public void showPrompt() { S.print("Postage on this will be "+CMLib.beanCounter().nameCurrencyShort(me,amt)+".\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?");}
+											@Override public void showPrompt() { 
+												S.print("Postage on this will be "+CMLib.beanCounter().nameCurrencyShort(me,amt)+".\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?");
+											}
 											@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
 											@Override public void callBack() 
 											{
@@ -606,7 +609,6 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 									}
 								}
 							});
-							return;
 						}
 						else
 							CMLib.commands().postSay(this,mob,"I can't seem to deliver "+msg.tool().name()+".",true,false);
