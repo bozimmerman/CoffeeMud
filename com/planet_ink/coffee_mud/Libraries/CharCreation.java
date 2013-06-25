@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -336,6 +337,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		}
+		/*
+		final InputCallback IC[]=new InputCallback[1];
+		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"") {
+			@Override
+			public void showPrompt() { 
+			}
+			@Override public void timedOut() { }
+			@Override public void callBack() {
+			}
+		};
+		*/
 		while((!session.isStopped())&&(!charSelected))
 		{
 			StringBuffer buf = new StringBuffer("");
@@ -394,19 +406,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", "");
 			if(s==null) return LoginResult.NO_LOGIN;
 			if(s.trim().length()==0) continue;
-			if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP"))||s.equalsIgnoreCase("H"))
+			s=s.trim();
+			int spDex=s.indexOf(' ');
+			String cmd=((spDex>0)?s.substring(0,spDex):s).toUpperCase();
+			String parms=(spDex>0)?s.substring(spDex+1).trim():"";
+			if(cmd.equalsIgnoreCase("?")||(("HELP").startsWith(cmd)))
 			{
 				StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
 				try { accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp);}catch(Exception ex){}
 				session.println(null,null,null,"\n\r\n\r"+accountHelp.toString());
 				continue;
 			}
-			if(s.equalsIgnoreCase("LIST")||s.equalsIgnoreCase("L"))
+			if(("LIST").startsWith(cmd))
 			{
 				showList = true;
 				continue;
 			}
-			if(s.equalsIgnoreCase("QUIT")||s.equalsIgnoreCase("Q"))
+			if(("QUIT").startsWith(cmd))
 			{
 				if(session.confirm("Quit -- are you sure (y/N)?", "N"))
 				{
@@ -415,24 +431,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
 				continue;
 			}
-			if(s.toUpperCase().startsWith("NEW ")||s.equalsIgnoreCase("NEW")||s.equalsIgnoreCase("N"))
+			if(("NEW ").startsWith(cmd))
 			{
-				if(s.length()>=3)
-					s=s.substring(3).trim();
-				else
-					s=s.substring(1).trim();
-				if(s.length()==0)
+				String name=parms;
+				if(name.length()==0)
 				{
-					s=session.prompt("\n\rPlease enter a name for your character: ","");
-					if(s.length()==0)
+					name=session.prompt("\n\rPlease enter a name for your character: ","");
+					if(name.length()==0)
 					{
 						autoCharCreate = false;
 						continue;
 					}
 				}
-				if((!isOkName(s))
-				||(CMLib.players().playerExists(s))
-				||(CMLib.players().accountExists(s)&&(!s.equalsIgnoreCase(acct.accountName()))))
+				if((!isOkName(name))
+				||(CMLib.players().playerExists(name))
+				||(CMLib.players().accountExists(name)&&(!name.equalsIgnoreCase(acct.accountName()))))
 				{
 					session.println("\n\rThat name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
 					continue;
@@ -444,9 +457,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					continue;
 				}
 				autoCharCreate = false;
-				if(newCharactersAllowed(s,session,true))
+				if(newCharactersAllowed(name,session,true))
 				{
-					String login=CMStrings.capitalizeAndLower(s);
+					String login=CMStrings.capitalizeAndLower(name);
 					if(session.confirm("Create a new character called '"+login+"' (y/N)?", "N"))
 					{
 						if(!session.isStopped())
@@ -457,7 +470,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
 				continue;
 			}
-			if(s.equalsIgnoreCase("MENU")||s.equalsIgnoreCase("M"))
+			if(("MENU").startsWith(cmd))
 			{
 				if(acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF)&&(session.confirm("Turn menus back on (y/N)?", "N")))
 					acct.setFlag(PlayerAccount.FLAG_ACCOUNTMENUSOFF, false);
@@ -466,27 +479,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					acct.setFlag(PlayerAccount.FLAG_ACCOUNTMENUSOFF, true);
 				continue;
 			}
-			if(s.toUpperCase().startsWith("RETIRE ")||s.toUpperCase().startsWith("DELETE ")||s.equalsIgnoreCase("D"))
+			if(("RETIRE").startsWith(cmd)||("DELETE ").startsWith(cmd))
 			{
-				if(s.length()>=7)
-					s=s.substring(7).trim();
-				else
-					s=s.substring(1).trim();
-				if(s.length()==0)
+				String name=parms;
+				if(name.length()==0)
 				{
-					s=session.prompt("\n\rPlease enter the name of the character: ","");
-					if(s.length()==0) continue;
+					name=session.prompt("\n\rPlease enter the name of the character: ","");
+					if(name.length()==0) continue;
 				}
 				PlayerLibrary.ThinPlayer delMe = null;
 				for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
 				{
 					PlayerLibrary.ThinPlayer player = p.nextElement();
-					if(player.name.equalsIgnoreCase(s))
+					if(player.name.equalsIgnoreCase(name))
 						delMe=player;
 				}
 				if(delMe==null)
 				{
-					session.println("The character '"+s+"' is unknown.");
+					session.println("The character '"+CMStrings.capitalizeAndLower(name)+"' is unknown.");
 					continue;
 				}
 				if(session.confirm("Are you sure you want to retire and delete '"+delMe.name+"' (y/N)?", "N"))
@@ -500,27 +510,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
 				continue;
 			}
-			if((s.toUpperCase().startsWith("EXPORT "))&&(acct.isSet(PlayerAccount.FLAG_CANEXPORT))||s.equalsIgnoreCase("E"))
+			if(("EXPORT ").startsWith(cmd)&&(acct.isSet(PlayerAccount.FLAG_CANEXPORT)))
 			{
-				if(s.length()>=7)
-					s=s.substring(7).trim();
-				else
-					s=s.substring(1).trim();
-				if(s.length()==0)
+				String name=parms;
+				if(name.length()==0)
 				{
-					s=session.prompt("\n\rPlease enter the name of the character: ","");
-					if(s.length()==0) continue;
+					name=session.prompt("\n\rPlease enter the name of the character: ","");
+					if(name.length()==0) continue;
 				}
 				PlayerLibrary.ThinPlayer delMe = null;
 				for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
 				{
 					PlayerLibrary.ThinPlayer player = p.nextElement();
-					if(player.name.equalsIgnoreCase(s))
+					if(player.name.equalsIgnoreCase(name))
 						delMe=player;
 				}
 				if(delMe==null)
 				{
-					session.println("The character '"+s+"' is unknown.");
+					session.println("The character '"+CMStrings.capitalizeAndLower(name)+"' is unknown.");
 					continue;
 				}
 				if(session.confirm("Are you sure you want to remove character  '"+delMe.name+"' from your account (y/N)?", "N"))
@@ -547,16 +554,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
 				continue;
 			}
-			if(s.toUpperCase().startsWith("IMPORT ")||s.equalsIgnoreCase("I"))
+			if(("IMPORT ").startsWith(cmd))
 			{
-				if(s.length()>=7)
-					s=s.substring(7).trim();
-				else
-					s=s.substring(1).trim();
-				if(s.length()==0)
+				String name=parms;
+				if(name.length()==0)
 				{
-					s=session.prompt("\n\rPlease enter the name of the character: ","");
-					if(s.length()==0) continue;
+					name=session.prompt("\n\rPlease enter the name of the character: ","");
+					if(name.length()==0) continue;
 				}
 				if((CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=acct.numPlayers())
 				&&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
@@ -564,7 +568,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)+" characters.  Please delete one to create another.");
 					continue;
 				}
-				PlayerLibrary.ThinnerPlayer newCharT = CMLib.database().DBUserSearch(s); 
+				name=CMStrings.capitalizeAndLower(name);
+				PlayerLibrary.ThinnerPlayer newCharT = CMLib.database().DBUserSearch(name); 
 				String password;
 				password = session.prompt("Enter the existing password for this character: ");
 				if((password==null)||(password.trim().length()==0))
@@ -592,24 +597,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				autoCharCreate=false;
 				continue;
 			}
-			boolean wizi=s.trim().endsWith(" !");
-			if(wizi) s=s.substring(0,s.length()-2).trim();
+			boolean wizi=parms.equalsIgnoreCase("!");
 			PlayerLibrary.ThinnerPlayer playMe = null;
-			final String playerName=acct.findPlayer(s);
+			String name=CMStrings.capitalizeAndLower(cmd);
+			final String playerName=acct.findPlayer(name);
 			if(playerName!=null)
 			{
-				s=playerName;
-				playMe = CMLib.database().DBUserSearch(s);
+				name=playerName;
+				playMe = CMLib.database().DBUserSearch(name);
 			}
 			if(playMe == null)
 			{
-				session.println("'"+s+"' is an unknown character or command.  Use ? for help.");
+				session.println("'"+name+"' is an unknown character or command.  Use ? for help.");
 				continue;
 			}
 			MOB realMOB=CMLib.players().getLoadPlayer(playMe.name);
 			if(realMOB==null)
 			{
-				session.println("Error loading character '"+s+"'.  Please contact the management.");
+				session.println("Error loading character '"+name+"'.  Please contact the management.");
 				continue;
 			}
 			int numAccountOnline=0;
