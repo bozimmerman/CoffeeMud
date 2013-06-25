@@ -6632,7 +6632,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&((((MOB)newTarget).session()!=null)))
 				{
 					try {
-						String value=((MOB)newTarget).session().prompt(promptStr);
+						String value=((MOB)newTarget).session().prompt(promptStr,60000);
 						setVar(newTarget.Name(),var,value);
 					} catch(Exception e) { return "";}
 				}
@@ -6651,7 +6651,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&((((MOB)newTarget).session()!=null)))
 				{
 					try {
-						String value=((MOB)newTarget).session().confirm(promptStr,defaultVal)?"Y":"N";
+						String value=((MOB)newTarget).session().confirm(promptStr,defaultVal,60000)?"Y":"N";
 						setVar(newTarget.Name(),var,value);
 					} catch(Exception e) { return "";}
 				}
@@ -6671,7 +6671,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget!=null)&&(newTarget instanceof MOB)&&((((MOB)newTarget).session()!=null)))
 				{
 					try {
-						String value=((MOB)newTarget).session().choose(promptStr,choices,defaultVal);
+						String value=((MOB)newTarget).session().choose(promptStr,choices,defaultVal,60000);
 						setVar(newTarget.Name(),var,value);
 					} catch(Exception e) { return "";}
 				}
