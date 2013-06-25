@@ -409,7 +409,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public boolean confirm(final String Message, final String Default, long maxTime)
 		throws IOException;
-	
+
 	/**
 	 * Prompts the user to enter one character responses from a set of
 	 * valid choices.  Repeats the prompt if the user does not enter
@@ -905,8 +905,21 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"SB","","","ANSI","","" 			 //250-255
 	};
 	
+	/**
+	 * The internal class to managing asynchronous user input.
+	 * This class supports three types of input: open text (PROMPT),
+	 * one-letter options (CHOOSE), and Y/N (CONFIRM).
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static abstract class InputCallback
 	{
+		/**
+		 * The threa different types of user input processing
+		 * supported by the abstract InputCallback class
+		 * @author Bo Zimmerman
+		 *
+		 */
 		public static enum Type { CONFIRM, PROMPT, CHOOSE }
 		
 		private final Type			type;
@@ -918,6 +931,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		protected volatile boolean	confirmed	= false;
 		protected volatile boolean	waiting		= true;
 		
+		/**
+		 * Full constructor.  Receives the Type of processing, a default input for
+		 * when the user just hits ENTER, a list of one-character choices (if CHOOSE Type
+		 * is used) and an amount of time, in ms, for the user to be given before timeout
+		 * and the timedOut() method is called.
+		 * @param type the type of processing
+		 * @param defaultInput default input value
+		 * @param choicesStr list of one-character options (if CHOOSE Type)
+		 * @param timeoutMs time, in ms, before the user is kicked
+		 */
 		public InputCallback(Type type, String defaultInput, String choicesStr, long timeoutMs)
 		{
 			this.type=type;
@@ -959,6 +982,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			this(type, "", 0);
 		}
 		
+		/**
+		 * Returns true if a timeout was given, and this class has been
+		 * active longer than that amount of time.
+		 * @return true if timed out, false otherwise.
+		 */
 		public boolean isTimedOut()
 		{
 			boolean isTimedOut=(timeout > 0) && (System.currentTimeMillis() > timeout);
@@ -967,6 +995,14 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			return isTimedOut;
 		}
 		
+		/**
+		 * Forces user-input into this class, potentially changing its user
+		 * input waiting state.  If the input is invalid for CONFIRM or CHOOSE,
+		 * then this will call ShowPrompt and go back to waiting. Otherwise,
+		 * waiting is set to false and it becomes very likely that callBack()
+		 * will be called.
+		 * @param input the user input to force
+		 */
 		public void setInput(String input)
 		{
 			this.input=input;
@@ -1011,11 +1047,22 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			waiting=false;
 		}
 		
+		/**
+		 * Returns true if this class is currently waiting
+		 * for user input.
+		 * @return true if waiting, false if waiting is over.
+		 */
 		public boolean waitForInput()
 		{
 			return waiting;
 		}
 		
+		/**
+		 * This method allows reuse of a given InputCallback.  
+		 * It will re-start the timeout period, and flag
+		 * the callback for requiring more input.
+		 * @return this
+		 */
 		public InputCallback reset()
 		{
 			input="";
@@ -1025,9 +1072,29 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			confirmed=false;
 			return this;
 		}
-		
+	
+		/**
+		 * This method is called by InputCallback before user
+		 * input is requested.  If a CHOOSE or CONFIRM type is
+		 * used, and the user enters something unrecognized, then
+		 * this method is called again before more input.
+		 */
 		public abstract void showPrompt();
+		/**
+		 * This method is call by InputCallback if a timeout
+		 * value > 0 is given and that amount of time has
+		 * been exceeded.
+		 */
 		public abstract void timedOut();
+		/**
+		 * This method is called if the user hits ENTER, and
+		 * their input data is valid (one of the choices for
+		 * CHOOSE or CONFIRM), or anything else for PROMPT.
+		 * If the user has entered nothing, and a default
+		 * value has been given, the default value is returned.
+		 * The user entry is available to this method in
+		 * this.input variable.
+		 */
 		public abstract void callBack();
 	}
 
