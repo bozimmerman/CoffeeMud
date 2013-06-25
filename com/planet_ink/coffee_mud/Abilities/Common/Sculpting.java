@@ -358,6 +358,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				{
 					final Ability me=this;
 					final Physical target=givenTarget;
+					if(session!=null)
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
 						@Override public void showPrompt() {session.print("What is this a statue of?\n\r: ");}
 						@Override public void timedOut() {}
