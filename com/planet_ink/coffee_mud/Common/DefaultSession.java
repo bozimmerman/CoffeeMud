@@ -850,7 +850,7 @@ public class DefaultSession implements Session
 		if(callBack!=null)
 			callBack.showPrompt();
 		this.inputCallback=callBack;
-		this.status=STATUS_IDLE;
+		this.status=this.status|STATUSMASK_WAITING_FOR_INPUT;
 	}
 
 	public String prompt(String Message, long maxTime) 
@@ -1673,7 +1673,7 @@ public class DefaultSession implements Session
 	
 	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj)
 	{
-		switch(status)
+		switch(status&STATUSMASK_ALL)
 		{
 			case Session.STATUS_LOGIN:
 			case Session.STATUS_ACCOUNTMENU:
@@ -1711,9 +1711,8 @@ public class DefaultSession implements Session
 		{
 			if(killFlag) 
 				status=Session.STATUS_LOGOUT;
-			switch(status)
+			if((status&STATUSMASK_WAITING_FOR_INPUT)==STATUSMASK_WAITING_FOR_INPUT)
 			{
-			case Session.STATUS_IDLE:
 				if(this.inputCallback!=null)
 				{
 					try
@@ -1724,7 +1723,10 @@ public class DefaultSession implements Session
 							this.inputCallback.setInput(input);
 							if(!this.inputCallback.waitForInput())
 							{
-								this.inputCallback.callBack();
+								final InputCallback callBack=this.inputCallback;
+								CMLib.threads().executeRunnable(new Runnable(){
+									public void run(){  callBack.callBack(); }
+								});
 							}
 						}
 						else
@@ -1741,10 +1743,15 @@ public class DefaultSession implements Session
 				if((this.inputCallback==null)||(!this.inputCallback.waitForInput()))
 				{
 					this.inputCallback=null;
-					status=Session.STATUS_OK;
+					status=status&Session.STATUSMASK_ALL;
 				}
+			}
+			else
+			switch(status&STATUSMASK_ALL)
+			{
+			case Session.STATUS_IDLE:
 				break;
-			case Session.STATUS_OK:
+			case Session.STATUS_MAINLOOP:
 				mainLoop();
 				break;
 			case Session.STATUS_LOGIN:
@@ -1853,7 +1860,7 @@ public class DefaultSession implements Session
 					needPrompt=true;
 					if((!killFlag)&&(mob!=null))
 					{
-						status=Session.STATUS_OK;
+						status=Session.STATUS_MAINLOOP;
 						return;
 					}
 				}

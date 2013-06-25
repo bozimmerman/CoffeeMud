@@ -1139,7 +1139,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/** Some sort of TELNET protocol constant related to LINEMODE -- I've no idea what it does */
 	public static final int TELNET_LINEMODE_SLC_EOR=6;
 	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_OK=0;
+	public static final int STATUS_MAINLOOP=0;
 	/** Status value constant possibly returned by getStatus method */
 	public static final int STATUS_LOGIN=1;
 	/** Status value constant possibly returned by getStatus method */
@@ -1178,6 +1178,12 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int STATUS_LOGOUTFINAL=18;
 	/** Status value constant possibly returned by getStatus method */
 	public static final int STATUS_IDLE=19;
+	
+	/** Status mask for getting main status codes from getStatus method */
+	public static final int STATUSMASK_ALL=255;
+	/** Status mask for checking for waiting-for-input state */
+	public static final int STATUSMASK_WAITING_FOR_INPUT=256;
+	
 	/** Status strings indexed by the various STATUS_ constants.  Descriptive strings */
 	public static final String[] STATUS_STR={"OPEN","LOGIN-S","ACCOUNTMENU","LOGIN-1","LOGIN-2",
 											 "LOGOUT-S","LOGOUT-1","LOGOUT-2","LOGOUT-3",

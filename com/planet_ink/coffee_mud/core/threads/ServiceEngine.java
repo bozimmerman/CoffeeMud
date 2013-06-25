@@ -45,12 +45,13 @@ public class ServiceEngine implements ThreadEngine
 	private static final long SHORT_TICK_TIMEOUT = (5*TimeManager.MILI_MINUTE);
 	private static final long LONG_TICK_TIMEOUT  = (120*TimeManager.MILI_MINUTE);
 	
-	private Thread  					drivingThread=null;
-	private TickClient 					supportClient=null;
-	protected SLinkedList<TickableGroup>allTicks=new SLinkedList<TickableGroup>();
-	private boolean 					isSuspended=false;
-	private int 						max_objects_per_thread=0;
-	private CMThreadPoolExecutor[]		threadPools=new CMThreadPoolExecutor[256];
+	
+	private Thread  					 drivingThread=null;
+	private TickClient 					 supportClient=null;
+	protected SLinkedList<TickableGroup> allTicks=new SLinkedList<TickableGroup>();
+	private boolean 					 isSuspended=false;
+	private int 						 max_objects_per_thread=0;
+	private CMThreadPoolExecutor[]		 threadPools=new CMThreadPoolExecutor[256];
 	
 	public String ID(){return "ServiceEngine";}
 	public String name() { return ID();}

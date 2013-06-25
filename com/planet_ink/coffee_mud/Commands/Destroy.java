@@ -1212,7 +1212,7 @@ public class Destroy extends StdCommand
 				if(S.getStatus()==Session.STATUS_LOGOUTFINAL)
 					mob.tell("Ok.");
 				else
-					mob.tell("Failed to gracefully shutdown: "+Session.STATUS_STR[S.getStatus()]+", but a forcable stop was issued.");
+					mob.tell("Failed to gracefully shutdown: "+Session.STATUS_STR[S.getStatus()&Session.STATUSMASK_ALL]+", but a forcable stop was issued.");
 			}
 		}
 		else

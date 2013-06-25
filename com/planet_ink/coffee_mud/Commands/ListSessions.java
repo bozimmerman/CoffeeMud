@@ -58,7 +58,7 @@ public class ListSessions extends StdCommand
 		{
 			String[] set=new String[6];
 			set[0]=CMStrings.padRight(""+broken.size(),3)+"| ";
-			set[1]=(S.isStopped()?"^H":"")+CMStrings.padRight(Session.STATUS_STR[S.getStatus()],9)+(S.isStopped()?"^?":"")+"| ";
+			set[1]=(S.isStopped()?"^H":"")+CMStrings.padRight(Session.STATUS_STR[S.getStatus()&Session.STATUSMASK_ALL],9)+(S.isStopped()?"^?":"")+"| ";
 			if (S.mob() != null)
 			{
 				set[2]=CMStrings.padRight(((S.mob().session()==S)?"Yes":"^HNO!^?"),5)+"| ";

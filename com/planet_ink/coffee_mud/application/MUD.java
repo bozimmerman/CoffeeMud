@@ -88,6 +88,7 @@ public class MUD extends Thread implements MudHost
 	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
 	private static List<Triad<String,Long,Integer>>
 										accessed			= new LinkedList<Triad<String,Long,Integer>>();
+	private static final ServiceEngine	serviceEngine		= new ServiceEngine();
 
 	public MUD(String name)
 	{
@@ -276,7 +277,7 @@ public class MUD extends Thread implements MudHost
 		{
 			smtpServerThread = new SMTPserver(CMLib.mud(0));
 			smtpServerThread.start();
-			CMLib.threads().startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,(int)CMProps.getTicksPerMinute() * 5);
+			serviceEngine.startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,(int)CMProps.getTicksPerMinute() * 5);
 		}
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading base classes");
@@ -329,7 +330,7 @@ public class MUD extends Thread implements MudHost
 		}
 
 		if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
-			CMLib.threads().startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
+			serviceEngine.startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting CM1");
 		startCM1();
@@ -434,7 +435,7 @@ public class MUD extends Thread implements MudHost
 	@Override
 	public void acceptConnection(Socket sock) throws SocketException, IOException 
 	{
-		CMLib.threads().executeRunnable(new ConnectionAcceptor(sock));
+		serviceEngine.executeRunnable(new ConnectionAcceptor(sock));
 	}
 	
 	private class ConnectionAcceptor implements CMRunnable
@@ -695,7 +696,7 @@ public class MUD extends Thread implements MudHost
 	{
 		CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
 		CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,true);
-		CMLib.threads().suspendAll();
+		serviceEngine.suspendAll();
 		if(S!=null)S.print("Closing MUD listeners to new connections...");
 		for(int i=0;i<CMLib.hosts().size();i++)
 			CMLib.hosts().get(i).setAcceptConnections(false);
@@ -788,7 +789,7 @@ public class MUD extends Thread implements MudHost
 		{
 			if(S!=null)S.print("Saving room data...");
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Rejuving the dead");
-			CMLib.threads().tickAllTickers(null);
+			serviceEngine.tickAllTickers(null);
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update");
 			for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
 			{
@@ -942,7 +943,7 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud shutdown complete.");
 		if(S!=null)S.println("CoffeeMud shutdown complete.");
 		bringDown=keepItDown;
-		CMLib.threads().resumeAll();
+		serviceEngine.resumeAll();
 		if(!keepItDown)
 			if(S!=null)S.println("Restarting...");
 		if(S!=null)S.stopSession(true,true,false);
@@ -1136,7 +1137,7 @@ public class MUD extends Thread implements MudHost
 					summary=": "+CMClass.classID(tArray[i])+": "+((MudHost)tArray[i]).getStatus();
 				else
 				{
-					final Runnable R=CMLib.threads().findRunnableByThread(tArray[i]);
+					final Runnable R=serviceEngine.findRunnableByThread(tArray[i]);
 					if(R instanceof TickableGroup)
 						summary=": "+((TickableGroup)R).getName()+": "+((TickableGroup)R).getStatus();
 					else
@@ -1145,7 +1146,7 @@ public class MUD extends Thread implements MudHost
 						final Session S=(Session)R;
 						final MOB mob=S.mob();
 						final String mobName=(mob==null)?"null":mob.Name();
-						summary=": session "+mobName+": "+Session.STATUS_STR[S.getStatus()]+": "+CMParms.combineWithQuotes(S.previousCMD(),0);
+						summary=": session "+mobName+": "+Session.STATUS_STR[S.getStatus()&Session.STATUSMASK_ALL]+": "+CMParms.combineWithQuotes(S.previousCMD(),0);
 					}
 					else
 					if(R instanceof CMRunnable)
@@ -1172,11 +1173,11 @@ public class MUD extends Thread implements MudHost
 
 	private static class HostGroup extends Thread
 	{
-		private static int	 grpid=0;
-		private String  	   name=null;
-		private String  	   iniFile=null;
-		private String  	   logName=null;
-		private char		 threadCode=MAIN_HOST;
+		private static int	grpid=0;
+		private String  	name=null;
+		private String  	iniFile=null;
+		private String  	logName=null;
+		private char		threadCode=MAIN_HOST;
 		
 		public HostGroup(ThreadGroup G, String mudName, String iniFileName)
 		{
@@ -1252,7 +1253,7 @@ public class MUD extends Thread implements MudHost
 			
 			// an arbitrary dividing line. After threadCode 0 
 			if(threadCode==MAIN_HOST) {
-				CMLib.registerLibrary(new ServiceEngine());
+				CMLib.registerLibrary(serviceEngine);
 				CMLib.registerLibrary(new IMudClient());
 			} else {
 				CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.LIBRARY_THREADS));

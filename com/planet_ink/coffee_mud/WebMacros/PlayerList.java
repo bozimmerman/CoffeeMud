@@ -51,7 +51,7 @@ public class PlayerList extends StdWebMacro
 
 			if ( (m!=null) && (m.name() != null)
 				&& (m.name().length() > 0) 
-				&& (S.getStatus()<Session.STATUS_LOGOUT))
+				&& ((S.getStatus()&Session.STATUSMASK_ALL)<Session.STATUS_LOGOUT))
 			{
 				// jef: nb - only shows full sysops, not subops
 				if ( CMSecurity.isASysOp(m) )
@@ -62,7 +62,7 @@ public class PlayerList extends StdWebMacro
 				if (m.charStats().getMyRace()!= null && m.charStats().raceName()!=null
 					&& m.charStats().raceName().length() > 0
 					&& !m.charStats().raceName().equals("MOB")
-					&& ((S.getStatus()==Session.STATUS_OK)||(S.getStatus()==Session.STATUS_IDLE)))
+					&& ((S.getStatus()&Session.STATUSMASK_ALL)==Session.STATUS_MAINLOOP))
 				{
 					s.append("(");
 					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
