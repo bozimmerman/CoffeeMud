@@ -37,8 +37,7 @@ import java.util.*;
 */
 public class YahooGroups extends StdWebMacro
 {
-	private final String id=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	public String name(){return id;}
+	public String name(){return "YahooGroups";}
 	public boolean isAdminMacro()	{return true;}
 
 	
@@ -47,32 +46,65 @@ public class YahooGroups extends StdWebMacro
 		java.util.Map<String,String> parms=parseParms(parm);
 		String command=parms.get("COMMAND");
 		if(command==null)
-			return "@break@";
+			return " @break@";
 		if(command.equalsIgnoreCase("LOGIN"))
 		{
 			HttpClient H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
 			String user=parms.get("USER");
 			if(user==null)
-				return "@break@";
+				return " @break@";
 			String password=parms.get("PASSWORD");
 			if(password==null)
-				return "@break@";
+				return " @break@";
 			try {
-				byte[] b = H.getRawUrl("http://login.yahoo.com/config/login?login="+URLEncoder.encode(user,"UTF8")+"&passwd="+URLEncoder.encode(user,"UTF8"), 0, 10000);
-				if(b==null)
+				Map<String,List<String>> M = H.getHeaders("http://login.yahoo.com/config/login?login="+URLEncoder.encode(user,"UTF8")+"&passwd="+URLEncoder.encode(password,"UTF8"));
+				if(M==null)
 					return "Fail: Http error";
-				return new String(b);
+				StringBuilder cookieSet=new StringBuilder("");
+				List<String> cookies=M.get("Set-Cookie");
+				for(String val : cookies)
+				{
+					if(cookieSet.length()>0)
+						cookieSet.append(" ; ");
+					int x=val.indexOf(';');
+					cookieSet.append((x>=0)?val.substring(0,x).trim():val.trim());
+				}
+				return cookieSet.toString().replace('&','#');
 			} catch (UnsupportedEncodingException e) {
 				Log.errOut(Thread.currentThread().getName(),e);
 			}
-			return "@break@";
+			return " @break@";
 		}
 		String url=parms.get("URL");
 		if(url==null)
-			return "@break@";
+			return " @break@";
 		if(command.equalsIgnoreCase("NUMMSGS"))
 		{
-			
+			String token=parms.get("TOKEN");
+			if(token==null)
+				return " @break@";
+			HttpClient H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
+			byte[] b=H.getRawUrl(url,token.replace('#','&'));
+			if(b==null)
+				return "Failed: Bad login token?";
+			StringBuffer s=new StringBuffer(new String(b));
+			CMStrings.convertHtmlToText(s);
+			String txt=s.toString();
+			int x=txt.indexOf(" of ");
+			int num=-1;
+			while((num<0)&&(x>=0))
+			{
+				if(Character.isDigit(txt.charAt(x+4)))
+				{
+					int y=4;
+					while(Character.isDigit(txt.charAt(x+y)))
+						y++;
+					return Integer.toString(CMath.s_int(txt.substring(x+4,x+y)));
+				}
+				else
+					x=txt.indexOf(" of ",x+1);
+			}
+			return "Fail: no numbers found";
 		}
 		return "";
 	}

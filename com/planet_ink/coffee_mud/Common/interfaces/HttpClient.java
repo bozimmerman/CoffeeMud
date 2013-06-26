@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
+import java.util.Map;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -46,4 +47,40 @@ public interface HttpClient extends Tickable, CMCommon
 	 * @return null or a completed byte array of the returned content
 	 */
 	public byte[] getRawUrl(final String urlStr, final int maxLength, final int readTimeout);
+	/**
+	 * Reads the simple raw return content from a given url and returns it as a 
+	 * byte array.  Good for getting files or web pages! Returns null if any
+	 * error occurs, including a 404, timeouts, or read failures.
+	 * @param urlStr the url to fetch
+	 * @param cookieStr cookies to send, or "", or null for none
+	 * @return null or a completed byte array of the returned content
+	 */
+	public byte[] getRawUrl(final String urlStr, String cookieStr);
+	/**
+	 * Reads the simple raw return content from a given url and returns it as a 
+	 * byte array.  Good for getting files or web pages! Returns null if any
+	 * error occurs, including a 404, timeouts, or read failures.
+	 * @param urlStr the url to fetch
+	 * @return null or a completed byte array of the returned content
+	 */
+	public byte[] getRawUrl(final String urlStr);
+	/**
+	 * Reads the simple raw return content from a given url and returns it as a 
+	 * byte array.  Good for getting files or web pages! Returns null if any
+	 * error occurs, including a 404, timeouts, or read failures.
+	 * @param urlStr the url to fetch
+	 * @param cookieStr cookies to send, or "", or null for none
+	 * @param maxLength the maximum size of the content, or 0 for any size
+	 * @param readTimeout the maximum time, in ms, to wait for connects, and reads
+	 * @return null or a completed byte array of the returned content
+	 */
+	public byte[] getRawUrl(final String urlStr, String cookieStr, final int maxLength, final int readTimeout);
+	
+	/**
+	 * Calls GET on the given url, waiting no more than a few seconds for connection,
+	 * and returns the headers from the response.
+	 * @param urlStr the url to GET
+	 * @return the map of headers
+	 */
+	public Map<String,List<String>> getHeaders(final String urlStr);
 }

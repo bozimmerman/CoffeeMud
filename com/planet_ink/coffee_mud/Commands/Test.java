@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -14,8 +15,15 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
+import com.planet_ink.miniweb.http.HTTPMethod;
+import com.planet_ink.miniweb.http.MultiPartData;
+import com.planet_ink.miniweb.interfaces.HTTPRequest;
 
 
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 /*
@@ -218,6 +226,7 @@ public class Test extends StdCommand
 		if(commands.size()>1)
 		{
 			String what=((String)commands.elementAt(1)).toUpperCase().trim();
+			String rest=CMParms.combine(commands,2);
 			if(what.equalsIgnoreCase("levelxptest"))
 			{
 				for(int i=0;i<100;i++)
@@ -1353,6 +1362,40 @@ public class Test extends StdCommand
 			||(what.equalsIgnoreCase("Prop_ReqTattoo")))
 			{
 				
+			}
+			if(what.equalsIgnoreCase("yahoo")&&(mob.session()!=null))
+			{
+				WebMacro M=CMClass.getWebMacro("YAHOOGROUPS");
+				try {
+					mob.tell(M.runMacro(new HTTPRequest(){
+						public final Hashtable<String,String> params=new Hashtable<String,String>();
+						public final Hashtable<String,Object> objects=new Hashtable<String,Object>();
+						@Override public String getHost() { return "localhost"; }
+						@Override public String getUrlPath() { return "localhost/file"; }
+						@Override public String getFullRequest() { return "GET "+getUrlPath(); }
+						@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
+						@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }
+						@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
+						@Override public Set<String> getUrlParameters() { return params.keySet(); }
+						@Override public HTTPMethod getMethod() { return HTTPMethod.GET; }
+						@Override public String getHeader(String name) { return null; }
+						@Override public InetAddress getClientAddress() { try { return InetAddress.getLocalHost(); } catch (UnknownHostException e) { return null; } }
+						@Override public int getClientPort() { return 0; }
+						@Override public InputStream getBody() { return null; }
+						@Override public String getCookie(String name) { return null; }
+						@Override public Set<String> getCookieNames() { return objects.keySet(); }
+						@Override public List<MultiPartData> getMultiParts() { return new XVector<MultiPartData>(); }
+						@Override public double getSpecialEncodingAcceptability(String type) { return 0; }
+						@Override public String getFullHost() { return "localhost"; }
+						@Override public List<int[]> getRangeAZ() { return null; }
+						@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toUpperCase(), value); }
+						@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
+						@Override public Map<String,Object> getRequestObjects() { return objects; }
+						@Override public float getHttpVer() { return (float)1.1; }
+					}, rest));
+				} catch (HTTPServerException e) {
+					mob.tell(e.getMessage());
+				}
 			}
 			if((what.equalsIgnoreCase("all"))||(what.equalsIgnoreCase("escapefilterbug")))
 			{

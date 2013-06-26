@@ -55,7 +55,20 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	}
 	public void initializeClass(){}
 
+	public byte[] getRawUrl(final String urlStr, String cookieStr)
+	{
+		return getRawUrl(urlStr, cookieStr, 1024*1024*10, 10000);
+	}
+	public byte[] getRawUrl(final String urlStr)
+	{
+		return getRawUrl(urlStr, null, 1024*1024*10, 10000);
+	}
 	public byte[] getRawUrl(final String urlStr, final int maxLength, final int readTimeout)
+	{
+		return getRawUrl(urlStr, null, maxLength, readTimeout);
+	}
+	
+	public byte[] getRawUrl(final String urlStr, String cookieStr, final int maxLength, final int readTimeout)
 	{
 		HttpURLConnection connection=null;
 		try {
@@ -65,6 +78,33 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			connection.setInstanceFollowRedirects(true);
 			connection.setConnectTimeout(readTimeout);
 			connection.setRequestMethod("GET");
+			if((cookieStr!=null)&&(cookieStr.length()>0))
+				connection.setRequestProperty("Cookie", cookieStr);
+			connection.connect();
+			if (connection.getResponseCode() == 302) {
+				for(String key : connection.getHeaderFields().keySet())
+				{
+					System.out.println(key+"="+connection.getHeaderField(key));
+				}
+				InputStream in=connection.getInputStream();
+				int len=connection.getContentLength();
+				if((len > 0)&&((maxLength==0)||(len<=maxLength)))
+				{
+					byte[] buf=new byte[len];
+					int read=in.read(buf);
+					int readTotal=read;
+					while(readTotal < len)
+					{
+						if(read<0)
+							return null;
+						read=in.read(buf, readTotal, len-readTotal);
+						if(read>0)
+							readTotal+=read;
+					}
+					return buf;
+				}
+			}
+				
 			if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				InputStream in=connection.getInputStream();
 				int len=connection.getContentLength();
@@ -93,6 +133,30 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				connection.disconnect();
 		}
 		return null;
+	}
+
+	public Map<String,List<String>> getHeaders(final String urlStr)
+	{
+		HttpURLConnection connection=null;
+		try {
+			URL url = new URL(urlStr);
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setReadTimeout(3000);
+			connection.setInstanceFollowRedirects(true);
+			connection.setConnectTimeout(3000);
+			connection.setRequestMethod("GET");
+			//connection.setDoInput(false);
+			//connection.setDoOutput(false);
+			connection.connect();
+			return connection.getHeaderFields();
+		} catch (Exception e) {
+			Log.errOut("HttpClient",e);
+			return null;
+		}
+		finally {
+			if(connection!=null)
+				connection.disconnect();
+		}
 	}
 
 	@Override
