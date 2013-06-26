@@ -57,6 +57,7 @@ public class DefaultSession implements Session
 	private volatile Thread	 writeThread 		 = null;
 	protected volatile int   status 			 = 0;
 	protected int   		 snoopSuspensionStack= 0;
+	protected final Object	 sockSync			 = new Object();
 	protected Socket		 sock;
 	protected SesInputStream charWriter;
 	protected int			 inMaxBytesPerChar	 = 1;
@@ -1543,46 +1544,53 @@ public class DefaultSession implements Session
 		print("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
 	}
 
-	protected void closeSocks()
+	protected void closeSocks(String finalMsg)
 	{
-		try
+		if(sock!=null)
 		{
-			if(sock!=null)
+			synchronized(sockSync)
 			{
-				status=Session.STATUS_LOGOUT7;
-				if(sock!=null) 
-					sock.shutdownInput();
-				status=Session.STATUS_LOGOUT8;
-				if(out!=null)
+				if(sock!=null)
 				{
-					try{
-						if(!out.checkError())
+					try
+					{
+						Log.sysOut("Session","Disconnect: "+finalMsg+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
+						status=Session.STATUS_LOGOUT7;
+						if(sock!=null) 
+							sock.shutdownInput();
+						status=Session.STATUS_LOGOUT8;
+						if(out!=null)
 						{
-							rawCharsOut(out,PINGCHARS);
-							out.checkError();
+							try{
+								if(!out.checkError())
+								{
+									rawCharsOut(out,PINGCHARS);
+									out.checkError();
+								}
+							} catch(Exception t){}
+							if(out!=null)
+								out.close();
 						}
-					} catch(Exception t){}
-					if(out!=null)
-						out.close();
+						status=Session.STATUS_LOGOUT9;
+						if(sock!=null)
+							sock.shutdownOutput();
+						status=Session.STATUS_LOGOUT10;
+						if(sock!=null)
+							sock.close();
+						status=Session.STATUS_LOGOUT11;
+					}
+					catch(IOException e)
+					{
+					}
+					finally
+					{
+						rawin=null;
+						in=null;
+						out=null;
+						sock=null;
+					}
 				}
-				status=Session.STATUS_LOGOUT9;
-				if(sock!=null)
-					sock.shutdownOutput();
-				status=Session.STATUS_LOGOUT10;
-				if(sock!=null)
-					sock.close();
-				status=Session.STATUS_LOGOUT11;
 			}
-		}
-		catch(IOException e)
-		{
-		}
-		finally
-		{
-			rawin=null;
-			in=null;
-			out=null;
-			sock=null;
 		}
 	}
 
@@ -1900,8 +1908,14 @@ public class DefaultSession implements Session
 	public void logoutFinal()
 	{
 		final MOB M=mob();
+		final String finalMsg;
 		if(M!=null)
-			Log.sysOut("Session","Disconnect: "+M.Name());
+		{
+			finalMsg=": "+M.Name();
+			Log.sysOut("Session","End Session: "+M.Name());
+		}
+		else
+			finalMsg="";
 		previousCmd.clear(); // will let system know you are back in login menu
 		if(M!=null)
 		{
@@ -1928,19 +1942,7 @@ public class DefaultSession implements Session
 		acct=null;
 		snoops.clear();
 		
-		final Socket sockSync=sock;
-		if(sockSync !=null)
-		{
-			synchronized(sockSync)
-			{
-				if(sock!=null)
-				{
-					Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
-					closeSocks();
-				}
-			}
-		}
-
+		closeSocks(finalMsg);
 
 		status=Session.STATUS_LOGOUT5;
 		CMLib.sessions().remove(this);
