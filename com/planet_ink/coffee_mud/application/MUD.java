@@ -268,7 +268,7 @@ public class MUD extends Thread implements MudHost
 				}
 				catch(Exception e)
 				{
-					Log.errOut("MUD","HTTP server "+serverName+"NOT started: "+e.getMessage());
+					Log.errOut("HTTP server "+serverName+"NOT started: "+e.getMessage());
 				}
 			}
 		}
@@ -725,7 +725,7 @@ public class MUD extends Thread implements MudHost
 									A.unInvoke();
 								if((A!=null)&&(!A.isSavable()))
 									M.delEffect(A);
-							} catch(Exception ex) {Log.errOut("MUD",ex);}
+							} catch(Exception ex) {Log.errOut(ex);}
 						}
 					}
 				}
@@ -1071,7 +1071,7 @@ public class MUD extends Thread implements MudHost
 		}
 		catch(Exception e)
 		{
-			Log.errOut("IMC2",e.getMessage());
+			Log.errOut(e);
 		}
 	}
 	

@@ -613,6 +613,9 @@ public class Log extends java.util.logging.Logger
 	public static final void debugOut(final String Module, final Throwable e){ l().shortExOut(Type.debug,Module,Integer.MIN_VALUE,e);}
 	public static final void errOut(final String Module, final Throwable e){ l().standardExOut(Type.error,Module,Integer.MIN_VALUE,e);}
 	public static final void warnOut(final String Module, final Throwable e){ l().standardExOut(Type.error,Module,Integer.MIN_VALUE,e);}
+	public static final void debugOut(final Throwable e){ l().shortExOut(Type.debug,Thread.currentThread().getName(),Integer.MIN_VALUE,e);}
+	public static final void errOut(final Throwable e){ l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,e);}
+	public static final void warnOut(final Throwable e){ l().standardExOut(Type.error,Thread.currentThread().getName(),Integer.MIN_VALUE,e);}
 	public static final void rawSysOut(final String Message){l().rawStandardOut(Type.info,Message,Integer.MIN_VALUE);}
 	public static final void infoOut(final String Out, final int priority) { infoOut(Thread.currentThread().getName(),Out,priority); }
 	public static final void sysOut(final String Out, final int priority){ infoOut(Out,priority); }

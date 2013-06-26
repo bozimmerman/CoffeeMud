@@ -638,7 +638,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public LoginResult createAccount(PlayerAccount acct, String login, Session session)
 		throws java.io.IOException
 	{
-		Log.sysOut("FrontDoor","Creating account: "+acct.accountName());
+		Log.sysOut("Creating account: "+acct.accountName());
 		login=CMStrings.capitalizeAndLower(login.trim());
 		if(session.confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
 			acct.setFlag(PlayerAccount.FLAG_ANSI, true);
@@ -695,7 +695,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println("Your account has been created.  You will receive an email with your password shortly.");
 			try{Thread.sleep(2000);}catch(Exception e){}
 			session.stopSession(false,false,false);
-			Log.sysOut("FrontDoor","Created account: "+acct.accountName());
+			Log.sysOut("Created account: "+acct.accountName());
 			session.setAccount(null);
 			return LoginResult.NO_LOGIN;
 		}
@@ -707,7 +707,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println(null,null,null,"\n\r\n\r"+doneText.toString());
 		}
 		session.setAccount(acct);
-		Log.sysOut("FrontDoor","Created account: "+acct.accountName());
+		Log.sysOut("Created account: "+acct.accountName());
 		return LoginResult.ACCOUNT_CREATED;
 	}
 
@@ -1340,7 +1340,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				throw new Exception("");
 			}
 			mob.playerStats().setAccount(acct);
-			Log.sysOut("FrontDoor","Creating user: "+mob.Name());
+			Log.sysOut("Creating user: "+mob.Name());
 			executeScript(mob,extraScripts.get("EMAIL"));
 	
 			if(acct!=null)
@@ -1499,7 +1499,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				executeScript(mob,extraScripts.get("END"));
 				
 				mob.playerStats().setLastIP(session.getAddress());
-				Log.sysOut("FrontDoor","Created user: "+mob.Name());
+				Log.sysOut("Created user: "+mob.Name());
 				CMProps.addNewUserByIP(session.getAddress());
 				notifyFriends(mob,"^X"+mob.Name()+" has just been created.^.^?");
 				if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
@@ -1578,7 +1578,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				M.setSession(session);
 				S.setMob(null);
 				S.stopSession(false,false,false);
-				Log.sysOut("FrontDoor","Session swap for "+session.mob().Name()+".");
+				Log.sysOut("Session swap for "+session.mob().Name()+".");
 				reloadTerminal(session.mob());
 				session.mob().bringToLife(oldRoom,false);
 				return LoginResult.SESSION_SWAP;
@@ -1934,7 +1934,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
 				else
 				{
-					Log.sysOut("FrontDoor","Failed login: "+loginObj.player.name);
+					Log.sysOut("Failed login: "+loginObj.player.name);
 					session.println("\n\rInvalid password.\n\r");
 					if((!session.isStopped())
 					&&(loginObj.player.email.length()>0)

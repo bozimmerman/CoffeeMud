@@ -294,7 +294,7 @@ public class CMLib
 					StringBuffer dump = new StringBuffer("Unable to kill thread "+t.getName()+".  It is still running.\n\r");
 					for(int i=0;i<s.length;i++)
 						dump.append("\n   "+s[i].getClassName()+": "+s[i].getMethodName()+"("+s[i].getFileName()+": "+s[i].getLineNumber()+")");
-					Log.errOut("CMLib",dump.toString());
+					Log.errOut(dump.toString());
 				} 
 			} catch(java.lang.ThreadDeath td) {}
 		}
@@ -331,12 +331,12 @@ public class CMLib
 		for(int l=0;l<lib.libraries.length;l++)
 			if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{
-				Log.debugOut("CMLib","HOST"+Thread.currentThread().getThreadGroup().getName().charAt(0)+" sharing library "+CMLib.LIBRARY_DESCS[l]);
+				Log.debugOut("HOST"+Thread.currentThread().getThreadGroup().getName().charAt(0)+" sharing library "+CMLib.LIBRARY_DESCS[l]);
 				lib.libraries[l]=libs[MudHost.MAIN_HOST].libraries[l];
 			}
 			else
 			if(lib.libraries[l]==null)
-				Log.errOut("CMLib","Unable to find library "+CMLib.LIBRARY_DESCS[l]);
+				Log.errOut("Unable to find library "+CMLib.LIBRARY_DESCS[l]);
 			else
 				lib.libraries[l].activate();
 	}

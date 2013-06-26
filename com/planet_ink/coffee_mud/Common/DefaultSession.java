@@ -151,7 +151,7 @@ public class DefaultSession implements Session
 					@Override public boolean tick(Tickable ticking, int tickID) {
 						if(debugInputBuf.length()>0)
 						{
-							Log.sysOut("Session","INPUT: '"+debugInputBuf.toString()+"'");
+							Log.sysOut("INPUT: '"+debugInputBuf.toString()+"'");
 							debugInputBuf.setLength(0);
 						}
 						return !killFlag;
@@ -254,9 +254,9 @@ public class DefaultSession implements Session
 		catch(Exception e)
 		{
 			if(e.getMessage()==null)
-				Log.errOut("Session",e);
+				Log.errOut(e);
 			else
-				Log.errOut("Session",e.getMessage());
+				Log.errOut(e.getMessage());
 		}
 		if(preliminaryInput.length()>0)
 			fakeInput=preliminaryInput;
@@ -280,7 +280,7 @@ public class DefaultSession implements Session
 	throws IOException
 	{
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-			Log.debugOut("Session","Sent sub-option: "+Session.TELNET_DESCS[optionCode]);
+			Log.debugOut("Sent sub-option: "+Session.TELNET_DESCS[optionCode]);
 		if(optionCode==TELNET_TERMTYPE)
 		{
 			byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)1,(byte)TELNET_IAC,(byte)TELNET_SE};
@@ -325,7 +325,7 @@ public class DefaultSession implements Session
 		byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
 		rawBytesOut(out, command);
 		out.flush();
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 	// this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
@@ -339,7 +339,7 @@ public class DefaultSession implements Session
 			rawout.flush();
 		}
 		catch(Exception e){}
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 	public void changeTelnetModeBackwards(int telnetCode, boolean onOff) throws IOException
@@ -348,7 +348,7 @@ public class DefaultSession implements Session
 		out.flush();
 		rawBytesOut(rawout, command);
 		rawout.flush();
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 	public void changeTelnetModeBackwards(OutputStream out, int telnetCode, boolean onOff) throws IOException
@@ -356,7 +356,7 @@ public class DefaultSession implements Session
 		byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
 		rawBytesOut(out, command);
 		out.flush();
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
 	public void negotiateTelnetMode(int telnetCode)
@@ -377,7 +377,7 @@ public class DefaultSession implements Session
 			rawout.flush();
 		}
 		catch(Exception e){}
-		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
 	}
 
 	public void initTelnetMode(int mobbitmap)
@@ -516,7 +516,7 @@ public class DefaultSession implements Session
 
 	protected void errorOut(Exception t)
 	{
-		Log.errOut("Session",t);
+		Log.errOut(t);
 		CMLib.sessions().remove(this);
 		setKillFlag(true);
 	}
@@ -537,7 +537,7 @@ public class DefaultSession implements Session
 				StringBuilder str=new StringBuilder("OUTPUT: '");
 				for(byte c : bytes)
 					str.append(c).append(" ");
-				Log.debugOut("Session", str.toString()+"'");
+				Log.debugOut( str.toString()+"'");
 			}
 			out.write(bytes);
 		}
@@ -569,7 +569,7 @@ public class DefaultSession implements Session
 						StringBuilder str=new StringBuilder("OUTPUT: '");
 						for(char c : chars)
 							str.append(c);
-						Log.debugOut("Session", str.toString()+"'");
+						Log.debugOut( str.toString()+"'");
 					}
 					out.write(chars);
 					if(out.checkError())
@@ -924,7 +924,7 @@ public class DefaultSession implements Session
 			if(dataSize >= 1)
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-					Log.debugOut("Session","For suboption "+Session.TELNET_DESCS[optionCode]+", got code "+((int)suboptionData[0])+": "+new String(suboptionData, 1, dataSize - 1));
+					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got code "+((int)suboptionData[0])+": "+new String(suboptionData, 1, dataSize - 1));
 				if(suboptionData[0] == 0)
 				{
 					terminalType = new String(suboptionData, 1, dataSize - 1);
@@ -954,7 +954,7 @@ public class DefaultSession implements Session
 				terminalWidth = ((suboptionData[0] << 8) | suboptionData[1])-2;
 				terminalHeight = (suboptionData[2] << 8) | suboptionData[3];
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-					Log.debugOut("Session","For suboption "+Session.TELNET_DESCS[optionCode]+", got: "+terminalWidth+"x"+terminalHeight);
+					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got: "+terminalWidth+"x"+terminalHeight);
 			}
 			break;
 		default:
@@ -1009,7 +1009,7 @@ public class DefaultSession implements Session
 			l=l.substring(tagEnd+1).trim();
 			// now we have a tag, and its parameters (space delimited)
 			Vector parts=CMParms.parseSpaces(tag,true);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got secure MXP tag: "+tag);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got secure MXP tag: "+tag);
 			if(parts.size()>1)
 			{
 				tag=(String)parts.firstElement();
@@ -1076,7 +1076,7 @@ public class DefaultSession implements Session
 			int subOptionCode = readByte();
 			int numBytes = 0;
 			int last = 0;
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Reading sub-option "+subOptionCode);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Reading sub-option "+subOptionCode);
 			while(((last = readByte()) != -1)
 			&&(numBytes<subOptionData.length)
 			&&(!killFlag))
@@ -1102,7 +1102,7 @@ public class DefaultSession implements Session
 			setClientTelnetMode(last,true);
 			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
 				setClientTelnetMode(Session.TELNET_ECHO,false);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got DO "+Session.TELNET_DESCS[last]);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got DO "+Session.TELNET_DESCS[last]);
 			if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
 			{
 				setClientTelnetMode(last,true);
@@ -1129,7 +1129,7 @@ public class DefaultSession implements Session
 		case TELNET_DONT:
 		{
 			int last=readByte();
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got DONT "+Session.TELNET_DESCS[last]);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got DONT "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,false);
 			if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
 			{
@@ -1143,7 +1143,7 @@ public class DefaultSession implements Session
 		case TELNET_WILL:
 		{
 			int last=readByte();
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got WILL "+Session.TELNET_DESCS[last]);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got WILL "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,true);
 			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
 				setClientTelnetMode(Session.TELNET_ECHO,false);
@@ -1159,7 +1159,7 @@ public class DefaultSession implements Session
 		case TELNET_WONT:
 		{
 			int last=readByte();
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Session","Got WONT "+Session.TELNET_DESCS[last]);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got WONT "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,false);
 			if((mightSupportTelnetMode(last))&&(serverTelnetMode(last)))
 				changeTelnetModeBackwards(last,false);
@@ -1554,7 +1554,7 @@ public class DefaultSession implements Session
 				{
 					try
 					{
-						Log.sysOut("Session","Disconnect: "+finalMsg+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
+						Log.sysOut("Disconnect: "+finalMsg+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
 						status=Session.STATUS_LOGOUT7;
 						if(sock!=null) 
 							sock.shutdownInput();
@@ -1635,7 +1635,7 @@ public class DefaultSession implements Session
 		CMLib.threads().executeRunnable(new LoginLogoutThread(M,CMMsg.MSG_QUIT));
 		if(M.playerStats()!=null)
 			M.playerStats().setLastDateTime(System.currentTimeMillis());
-		Log.sysOut("Session","Logout: "+name+" ("+CMLib.time().date2SmartEllapsedTime(System.currentTimeMillis()-userLoginTime,true)+")");
+		Log.sysOut("Logout: "+name+" ("+CMLib.time().date2SmartEllapsedTime(System.currentTimeMillis()-userLoginTime,true)+")");
 		if(inTheGame)
 			CMLib.database().DBUpdateFollowers(M);
 	}
@@ -1799,7 +1799,7 @@ public class DefaultSession implements Session
 			activeMillis=0;
 		}
 	}
-
+	
 	public void loginSystem()
 	{
 		try
@@ -1831,6 +1831,14 @@ public class DefaultSession implements Session
 				{
 					try
 					{
+						if(acct!=null)
+						{
+							StringBuilder loginMsg=new StringBuilder("");
+							loginMsg.append(getAddress()).append(" "+terminalType)
+							.append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+							.append(", account login: "+acct.accountName());
+							Log.sysOut(loginMsg.toString());
+						}
 						status=Session.STATUS_ACCOUNTMENU;
 						loginResult=CMLib.login().doAccountMenu(acct,this,(loginResult==LoginResult.ACCOUNT_CREATED));
 					}
@@ -1845,17 +1853,16 @@ public class DefaultSession implements Session
 					loginSession=null;
 					if((mob!=null)&&(mob.playerStats()!=null))
 						acct=mob.playerStats().getAccount();
-					if((!killFlag)&&(mob!=null))
+					if((!killFlag)&&((mob!=null)))
 					{
 						userLoginTime=System.currentTimeMillis();
-						StringBuffer loginMsg=new StringBuffer("");
-						loginMsg.append(getAddress())
-								.append(" "+terminalType)
-								.append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&clientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
-								.append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-								.append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&clientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
-								.append(", login: "+mob.Name());
-						Log.sysOut("Session",loginMsg.toString());
+						StringBuilder loginMsg=new StringBuilder("");
+						loginMsg.append(getAddress()).append(" "+terminalType)
+						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&clientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+						.append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&clientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
+						.append(", character login: "+mob.Name());
+						Log.sysOut(loginMsg.toString());
 						if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
 						{
 							CMMsg msg = CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null);
@@ -1907,50 +1914,61 @@ public class DefaultSession implements Session
 
 	public void logoutFinal()
 	{
-		final MOB M=mob();
-		final String finalMsg;
-		if(M!=null)
+		try
 		{
-			finalMsg=": "+M.Name();
-			Log.sysOut("Session","End Session: "+M.Name());
-		}
-		else
-			finalMsg="";
-		previousCmd.clear(); // will let system know you are back in login menu
-		if(M!=null)
-		{
-			if(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
-			{
-				M.setSession(null);
-				CMLib.commands().postSleep(M);
-				M.setSession(this);
-				M.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
-				M.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
-			}
+			final MOB M=mob();
+			final String finalMsg;
+			if(M!=null)
+				finalMsg=M.Name()+": ";
 			else
+			if(acct!=null)
+				finalMsg=acct.accountName()+": ";
+			else
+				finalMsg="";
+			previousCmd.clear(); // will let system know you are back in login menu
+			if(M!=null)
 			{
-				M.removeFromGame(true,true);
-				M.setSession(null);
-				mob=null;
+				try
+				{
+					if(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
+					{
+						M.setSession(null);
+						CMLib.commands().postSleep(M);
+						M.setSession(this);
+						M.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
+						M.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
+					}
+					else
+					{
+						M.removeFromGame(true,true);
+						M.setSession(null);
+						mob=null;
+					}
+				}
+				catch(Exception e)
+				{
+					Log.errOut(e);
+				}
+				finally
+				{
+				}
 			}
+			
+			status=Session.STATUS_LOGOUT4;
+			setKillFlag(true);
+			waiting=false;
+			needPrompt=false;
+			acct=null;
+			snoops.clear();
+			
+			closeSocks(finalMsg);
+			status=Session.STATUS_LOGOUT5;
 		}
-		
-		status=Session.STATUS_LOGOUT4;
-		setKillFlag(true);
-		waiting=false;
-		needPrompt=false;
-		acct=null;
-		snoops.clear();
-		
-		closeSocks(finalMsg);
-
-		status=Session.STATUS_LOGOUT5;
-		CMLib.sessions().remove(this);
-
-		//finally
-		//{
-		//}
-		status=Session.STATUS_LOGOUTFINAL;
+		finally
+		{
+			CMLib.sessions().remove(this);
+			status=Session.STATUS_LOGOUTFINAL;
+		}
 	}
 	
 	public void mainLoop()

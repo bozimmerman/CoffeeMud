@@ -319,7 +319,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		CMLib.database().DBDeletePlayer(deadMOB, deleteAssets);
 		if(deadMOB.session()!=null)
 			deadMOB.session().stopSession(false,false,false);
-		Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
+		Log.sysOut(deadMOB.name()+" has been deleted.");
 		deadMOB.destroy();
 	}
 	
@@ -347,7 +347,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 
 		CMLib.database().DBDeleteAccount(deadAccount);
-		Log.sysOut("Scoring",deadAccount.accountName()+" has been deleted.");
+		Log.sysOut(deadAccount.accountName()+" has been deleted.");
 	}
 	
 	public int savePlayers()
