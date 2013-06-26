@@ -337,17 +337,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		}
-		/*
-		final InputCallback IC[]=new InputCallback[1];
-		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"") {
-			@Override
-			public void showPrompt() { 
-			}
-			@Override public void timedOut() { }
-			@Override public void callBack() {
-			}
-		};
-		*/
 		while((!session.isStopped())&&(!charSelected))
 		{
 			StringBuffer buf = new StringBuffer("");
