@@ -144,7 +144,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			connection.setReadTimeout(3000);
 			connection.setInstanceFollowRedirects(true);
 			connection.setConnectTimeout(3000);
-			connection.setRequestMethod("GET");
+			connection.setRequestMethod("HEAD");
 			//connection.setDoInput(false);
 			//connection.setDoOutput(false);
 			connection.connect();
