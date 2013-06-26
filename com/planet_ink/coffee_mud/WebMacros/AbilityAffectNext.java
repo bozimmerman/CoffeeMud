@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class AbilityAffectNext extends StdWebMacro
 {
-	public String name(){return getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "AbilityAffectNext"; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

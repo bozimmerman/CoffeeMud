@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class DeityData extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "DeityData"; }
 
 	// valid parms include description, worshipreq, clericreq,
 	// worshiptrig, clerictrig, worshipsintrig,clericsintrig,powertrig

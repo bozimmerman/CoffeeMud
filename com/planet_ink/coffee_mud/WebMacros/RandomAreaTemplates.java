@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("unchecked")
 public class RandomAreaTemplates extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "RandomAreaTemplates"; }
 	public boolean isAdminMacro()	{return true;}
 
 	public String runMacro(HTTPRequest httpReq, String parm)

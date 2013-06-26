@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class GrinderComponent
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "GrinderComponent"; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

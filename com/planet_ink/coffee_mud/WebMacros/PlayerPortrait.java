@@ -37,7 +37,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class PlayerPortrait extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "PlayerPortrait"; }
 
 	public boolean isAWebPath(){return true;}
 	public boolean preferBinary(){return true;}

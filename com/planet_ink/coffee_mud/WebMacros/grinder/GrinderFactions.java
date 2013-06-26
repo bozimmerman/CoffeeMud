@@ -37,7 +37,7 @@ import java.util.*;
 */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderFactions {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "GrinderFactions"; }
 
 	
 	public static String modifyFaction(HTTPRequest httpReq, java.util.Map<String,String> parms, Faction F)

@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class AreaScriptNext extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "AreaScriptNext"; }
 	public boolean isAdminMacro()	{return true;}
 	
 	protected class AreaScriptInstance

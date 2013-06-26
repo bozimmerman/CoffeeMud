@@ -47,7 +47,7 @@ import com.planet_ink.siplet.applet.*;
 */
 public class SipletInterface extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "SipletInterface"; }
 
 	public boolean isAWebPath(){return true;}
 	

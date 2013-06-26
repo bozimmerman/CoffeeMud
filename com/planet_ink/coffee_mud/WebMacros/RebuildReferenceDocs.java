@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class RebuildReferenceDocs extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "RebuildReferenceDocs"; }
 
 	public boolean isAWebPath(){return true;}
 	public boolean isAdminMacro() { return true;}

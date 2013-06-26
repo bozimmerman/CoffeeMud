@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class RoomData extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "RoomData"; }
 	static final String[][] STAT_CHECKS={{"DISPLAY","NAME"},{"CLASS","CLASSES"},{"DESCRIPTION","DESCRIPTION"},{"XSIZE","XGRID"},{"YSIZE","XGRID"},{"IMAGE","IMAGE"}};
 	
 	public static List<MOB> getMOBCache()

@@ -36,7 +36,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderClans
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "GrinderClans"; }
 
 	public static String membersList(Clan C, HTTPRequest httpReq)
 	{

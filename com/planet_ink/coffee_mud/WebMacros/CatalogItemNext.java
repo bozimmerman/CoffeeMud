@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CatalogItemNext extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "CatalogItemNext"; }
 	public boolean isAdminMacro()   {return true;}
 	static final String[] DATA={
 								"CATALOG_ITEM_NAME",

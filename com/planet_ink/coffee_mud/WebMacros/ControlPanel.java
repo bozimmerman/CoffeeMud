@@ -37,7 +37,7 @@ import java.util.*;
 */
 public class ControlPanel extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "ControlPanel"; }
 	public boolean isAdminMacro()    {return true;}
 
 	public String runMacro(HTTPRequest httpReq, String parm)

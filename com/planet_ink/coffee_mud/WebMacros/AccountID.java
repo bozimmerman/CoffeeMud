@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class AccountID extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "AccountID"; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class INIModify extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "INIModify"; }
 	public boolean isAdminMacro()	{return true;}
 	
 	public void updateINIFile(List<String> page)

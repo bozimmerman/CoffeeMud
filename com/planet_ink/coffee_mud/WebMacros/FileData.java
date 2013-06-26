@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 */
 public class FileData extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "FileData"; }
 
 	public boolean isAWebPath(){return true;}
 	public boolean preferBinary(){return true;}

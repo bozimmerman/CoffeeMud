@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class AbilityData extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "AbilityData"; }
 
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto

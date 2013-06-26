@@ -41,7 +41,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AddFile extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "AddFile"; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

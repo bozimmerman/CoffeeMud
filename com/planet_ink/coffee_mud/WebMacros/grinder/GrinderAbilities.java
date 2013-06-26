@@ -36,7 +36,7 @@ import java.util.*;
 */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderAbilities {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "GrinderAbilities"; }
 
 	public static String modifyAbility(HTTPRequest httpReq, java.util.Map<String,String> parms, Ability oldA, Ability A)
 	{

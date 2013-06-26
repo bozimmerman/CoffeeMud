@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class AccountData extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "AccountData"; }
 	public boolean isAdminMacro()	{return true;}
 
 	public String runMacro(HTTPRequest httpReq, String parm)

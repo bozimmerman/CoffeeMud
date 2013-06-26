@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class BankAccountInfo extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "BankAccountInfo"; }
 
 	public static class BankAccountStuff
 	{

@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class FileMgr extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "FileMgr"; }
 	public boolean isAdminMacro()	{return true;}
 
 	

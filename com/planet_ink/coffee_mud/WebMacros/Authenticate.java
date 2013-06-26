@@ -36,7 +36,7 @@ import java.net.*;
 */
 public class Authenticate extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "Authenticate"; }
 	public boolean isAdminMacro()    {return false;}
 	private static final long ONE_REAL_DAY=(long)1000*60*60*24;
 

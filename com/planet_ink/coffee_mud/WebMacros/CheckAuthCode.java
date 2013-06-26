@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CheckAuthCode extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "CheckAuthCode"; }
 
 	public Hashtable getAuths(HTTPRequest httpReq)
 	{

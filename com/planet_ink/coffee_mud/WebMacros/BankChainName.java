@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class BankChainName extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "BankChainName"; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

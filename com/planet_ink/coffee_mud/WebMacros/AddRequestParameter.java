@@ -35,7 +35,7 @@ import java.net.URLEncoder;
 */
 public class AddRequestParameter extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "AddRequestParameter"; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

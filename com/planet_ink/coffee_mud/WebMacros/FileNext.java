@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class FileNext extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "FileNext"; }
 	public boolean isAdminMacro()	{return true;}
 
 	public String runMacro(HTTPRequest httpReq, String parm)

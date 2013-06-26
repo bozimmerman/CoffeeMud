@@ -36,7 +36,7 @@ import java.util.*;
 */
 public class CommandJournalNext extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "CommandJournalNext"; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

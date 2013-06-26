@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ExitData extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "ExitData"; }
 
 	private static final String[] okparms={
 		"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",

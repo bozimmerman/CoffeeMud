@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class AbilityRaceNext extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "AbilityRaceNext"; }
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{

@@ -37,7 +37,7 @@ import java.util.Map.Entry;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class PlayerData extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "PlayerData"; }
 
 	public final static String[] BASICS={
 		"NAME",

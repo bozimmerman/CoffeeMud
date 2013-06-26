@@ -15,6 +15,9 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 /* 
@@ -34,7 +37,8 @@ import java.util.*;
 */
 public class YahooGroups extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	private final String id=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+	public String name(){return id;}
 	public boolean isAdminMacro()	{return true;}
 
 	
@@ -44,6 +48,25 @@ public class YahooGroups extends StdWebMacro
 		String command=parms.get("COMMAND");
 		if(command==null)
 			return "@break@";
+		if(command.equalsIgnoreCase("LOGIN"))
+		{
+			HttpClient H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
+			String user=parms.get("USER");
+			if(user==null)
+				return "@break@";
+			String password=parms.get("PASSWORD");
+			if(password==null)
+				return "@break@";
+			try {
+				byte[] b = H.getRawUrl("http://login.yahoo.com/config/login?login="+URLEncoder.encode(user,"UTF8")+"&passwd="+URLEncoder.encode(user,"UTF8"), 0, 10000);
+				if(b==null)
+					return "Fail: Http error";
+				return new String(b);
+			} catch (UnsupportedEncodingException e) {
+				Log.errOut(Thread.currentThread().getName(),e);
+			}
+			return "@break@";
+		}
 		String url=parms.get("URL");
 		if(url==null)
 			return "@break@";

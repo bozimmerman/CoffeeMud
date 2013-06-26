@@ -36,6 +36,7 @@ import java.util.*;
 */
 public class AreaScriptData extends AreaScriptNext 
 {
+	public String name() { return "AreaScriptData"; }
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);

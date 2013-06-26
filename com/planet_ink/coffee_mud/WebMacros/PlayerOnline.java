@@ -35,7 +35,7 @@ import java.util.*;
 */
 public class PlayerOnline extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() { return "PlayerOnline"; }
 
 	public static final int MAX_IMAGE_SIZE=50*1024;
 	
