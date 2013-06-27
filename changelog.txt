@@ -2458,5 +2458,5 @@ ruthless programmer, and sentenced to a quick death.
 14.Control Panel "Channels" editor is now much friendlier and easy to use.
 15.CoffeeMud now supports MSDP as specified at the tintin sourceforge web site!
 16.Siplet now also supports MSDP, in an undocumented, testable sorta way.  Usage /MSDP (JSON OBJECT).  Example: /MSDP {"LIST":"LISTS"}
-17.(Internal) Threading greatly optimized.
+17.(Internal) Threading greatly optimized, you'll be shocked at how few threads CM runs on now.  Also, many more async User Inputs added.
 *** Add Async Prompting guide to the programmer's guide
