@@ -1735,13 +1735,10 @@ public class DefaultSession implements Session
 		}
 		
 		activeMillis=System.currentTimeMillis();
-		if(activeMillis>=nextMsdpPing)
+		if(clientTelnetMode(TELNET_MSDP)&&(activeMillis>=nextMsdpPing))
 		{
 			nextMsdpPing=activeMillis+MSDPPINGINTERVAL;
-			if(clientTelnetMode(TELNET_MSDP)&&(!killFlag))
-				CMLib.utensils().pingMsdp(this, msdpReportables);
-			else
-				nextMsdpPing=Long.MAX_VALUE;
+			CMLib.utensils().pingMsdp(this, msdpReportables);
 		}
 		
 		try
