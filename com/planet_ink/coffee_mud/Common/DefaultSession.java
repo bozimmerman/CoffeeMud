@@ -1738,7 +1738,11 @@ public class DefaultSession implements Session
 			nextMsdpPing=activeMillis+MSDPPINGINTERVAL;
 			byte[] msdpPingBuf=CMLib.utensils().pingMsdp(this, msdpReportables);
 			if(msdpPingBuf!=null)
+			{
 				try { rawBytesOut(rawout, msdpPingBuf);}catch(IOException e){}
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+					Log.debugOut("MSDP Reported: "+msdpPingBuf.length+" bytes");
+			}
 		}
 		
 		try
