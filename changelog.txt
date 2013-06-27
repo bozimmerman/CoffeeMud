@@ -2457,3 +2457,4 @@ ruthless programmer, and sentenced to a quick death.
 13.Web Server now supports @for?@ @next@ loops! See the web server guide for usage, or checkout an example in control.cmvp
 14.Control Panel "Channels" editor is now much friendlier and easy to use.
 *** Add Async Prompting guide to the programmer's guide
+15.CoffeeMud now supports MSDP as specified at the tintin sourceforge web site!

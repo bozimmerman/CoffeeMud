@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /* 
@@ -1238,6 +1239,434 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			else
 				buf.append(prompt.charAt(c++));
 		return buf.toString();
+	}
+	
+	@SuppressWarnings("rawtypes")
+	protected Object msdpStringify(Object o)
+	{
+		if(o instanceof StringBuilder)
+			return ((StringBuilder)o).toString();
+		else
+		if(o instanceof Map)
+		{
+			Map<String,Object> newO=new HashMap<String,Object>();
+			for(Object key : ((Map)o).keySet())
+				if(key instanceof StringBuilder)
+					newO.put(((StringBuilder)key).toString().toUpperCase(), msdpStringify(((Map)o).get(key)));
+			return newO;
+		}
+		else
+		if(o instanceof List)
+		{
+			List<Object> newO=new LinkedList<Object>();
+			for(Object subO : (List)o)
+				newO.add(msdpStringify(subO));
+			return newO;
+		}
+		else
+			return o;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected Map<String,Object> buildMsdpMap(char[] data, int dataSize)
+	{
+		Stack<Object> stack=new Stack<Object>();
+		stack.push(new HashMap<StringBuilder,Object>());
+		StringBuilder str=null;
+		StringBuilder var=null;
+		StringBuilder prevVar=null;
+		int x=-1;
+		while(++x<dataSize)
+		{
+			switch(data[x])
+			{
+			case Session.MSDP_VAR: // start a string
+				str=new StringBuilder("");
+				var=str;
+				if(stack.peek() instanceof Map)
+					((Map)stack.peek()).put(str, "");
+				else if(stack.peek() instanceof List)
+					((List)stack.peek()).add(str);
+				break;
+			case Session.MSDP_VAL: // get a value? can client do that?
+			{
+				str=new StringBuilder("");
+				if(stack.peek() instanceof Map)
+				{
+					if(var!=null)
+						((Map)stack.peek()).put(var, str);
+					else
+					if(prevVar != null)
+					{
+						Object o=((Map)stack.peek()).get(prevVar);
+						if(o instanceof List)
+						{
+							stack.push(o);
+							((List)o).add(str);
+						}
+						else
+						if(o instanceof String)
+						{
+							List<Object> M=new LinkedList<Object>();
+							stack.push(M);
+							M.add(o);
+							M.add(str);
+							((Map)stack.peek()).put(prevVar,M);
+						}
+					}
+				}
+				else if(stack.peek() instanceof List)
+					((List)stack.peek()).add(str);
+				prevVar=var;
+				var=null;
+				break;
+			}
+			case Session.MSDP_TABLE_OPEN: // open a table
+			{
+				Map<StringBuilder,Object> M=new HashMap<StringBuilder,Object>();
+				if((stack.peek() instanceof Map)&&(var!=null))
+					((Map)stack.peek()).put(var, M);
+				else if(stack.peek() instanceof List)
+					((List)stack.peek()).add(M);
+				prevVar=var;
+				var=null;
+				stack.push(M);
+				break;
+			}
+			case Session.MSDP_TABLE_CLOSE: // done with table
+				if((stack.size()>1)&&(stack.peek() instanceof Map))
+					stack.pop();
+				break;
+			case Session.MSDP_ARRAY_OPEN: // open an array
+			{
+				List<Object> M=new LinkedList<Object>();
+				if((stack.peek() instanceof Map)&&(var!=null))
+					((Map)stack.peek()).put(var, M);
+				else if(stack.peek() instanceof List)
+					((List)stack.peek()).add(M);
+				prevVar=var;
+				var=null;
+				stack.push(M);
+				break;
+			}
+			case Session.MSDP_ARRAY_CLOSE: // close an array
+				if((stack.size()>1)&&(stack.peek() instanceof List))
+					stack.pop();
+				break;
+			default:
+				if(str!=null)
+					str.append(data[x]);
+				break;
+			}
+		}
+		return (Map<String,Object>)msdpStringify(stack.firstElement());
+	}
+	
+	protected enum MSDPListable {
+		COMMANDS,LISTS,CONFIGURABLE_VARIABLES,REPORTABLE_VARIABLES,REPORTED_VARIABLES,SENDABLE_VARIABLES
+	}
+	
+	protected enum MSDPCommand {
+		LIST,SEND,REPORT,RESET,UNREPORT
+	}
+	
+	protected enum MSDPVariable {
+		ACCOUNT_NAME,CHARACTER_NAME,SERVER_ID,SERVER_TIME,SPECIFICATION,
+		AFFECTS,ALIGNMENT,EXPERIENCE,EXPERIENCE_MAX,EXPERIENCE_TNL,EXPERIENCE_TNL_MAX,
+		HEALTH,HEALTH_MAX,LEVEL,MANA,MANA_MAX,MONEY,MOVEMENT,MOVEMENT_MAX,
+		OPPONENT_LEVEL,OPPONENT_HEALTH,OPPONENT_HEALTH_MAX,OPPONENT_NAME,OPPONENT_STRENGTH,
+		WORLD_TIME,ROOM,LOCATION
+	}
+	
+	protected enum MSDPConfigurableVar {
+	}
+	
+	protected String processMsdpSend(final Session session, final String var)
+	{
+		final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, var.toUpperCase().trim());
+		if(type == null)
+			return ""+Session.MSDP_VAR+var.toUpperCase().trim()+Session.MSDP_VAL;
+		StringBuilder response=new StringBuilder("");
+		response.append(Session.MSDP_VAR).append(type.toString()).append(Session.MSDP_VAL);
+		final MOB M=session.mob();
+		switch(type)
+		{
+		case ACCOUNT_NAME:
+			if((M!=null)&&(M.playerStats()!=null)) 
+			{
+				if(M.playerStats().getAccount()!=null)
+					response.append(M.playerStats().getAccount().accountName());
+				else
+					response.append(M.Name());
+			}
+			break;
+		case AFFECTS:
+			if(M!=null)
+			{
+				List<String> affects=new Vector<String>();
+				for(int a=0;a<M.numAllEffects();a++)
+				{
+					Ability A=M.fetchEffect(a);
+					if(A!=null)
+						affects.add(A.name());
+				}
+				response=new StringBuilder("");
+				response.append(Session.MSDP_VAR).append(type.toString());
+				response.append(msdpListToMsdpArray(affects.toArray(new String[0])));
+			}
+			break;
+		case ALIGNMENT:
+			if(M!=null)
+				response.append(CMStrings.capitalizeAndLower(CMLib.flags().getAlignmentName(M)).toLowerCase());
+			break;
+		case CHARACTER_NAME:
+			if(M!=null)
+				response.append(M.name());
+			break;
+		case EXPERIENCE:
+			if(M!=null)
+				response.append(M.getExperience());
+			break;
+		case EXPERIENCE_MAX:
+			if(M!=null)
+				response.append(M.getExpNextLevel());
+			break;
+		case EXPERIENCE_TNL:
+			if(M!=null)
+				response.append(M.getExpNeededLevel());
+			break;
+		case EXPERIENCE_TNL_MAX:
+			if(M!=null)
+				response.append(M.getExpNeededLevel());
+			break;
+		case HEALTH:
+			if(M!=null)
+				response.append(M.curState().getHitPoints());
+			break;
+		case HEALTH_MAX:
+			if(M!=null)
+				response.append(M.maxState().getHitPoints());
+			break;
+		case LEVEL:
+			if(M!=null) response.append(M.phyStats().level());
+			break;
+		case MANA:
+			if(M!=null)
+				response.append(M.curState().getMana());
+			break;
+		case MANA_MAX:
+			if(M!=null)
+				response.append(M.maxState().getMana());
+			break;
+		case MONEY:
+			if(M!=null)
+				response.append(CMLib.beanCounter().getTotalAbsoluteNativeValue(M));
+			break;
+		case MOVEMENT:
+			if(M!=null)
+				response.append(M.curState().getMovement());
+			break;
+		case MOVEMENT_MAX:
+			if(M!=null)
+				response.append(M.maxState().getMovement());
+			break;
+		case OPPONENT_HEALTH:
+			if((M!=null)&&(M.getVictim()!=null))
+				response.append(M.getVictim().curState().getHitPoints());
+			break;
+		case OPPONENT_HEALTH_MAX:
+			if((M!=null)&&(M.getVictim()!=null))
+				response.append(M.getVictim().maxState().getHitPoints());
+			break;
+		case OPPONENT_LEVEL:
+			if((M!=null)&&(M.getVictim()!=null))
+				response.append(M.phyStats().level());
+			break;
+		case OPPONENT_NAME:
+			if((M!=null)&&(M.getVictim()!=null))
+				response.append(M.name());
+			break;
+		case OPPONENT_STRENGTH:
+			if((M!=null)&&(M.getVictim()!=null))
+			{
+				Command C=CMClass.getCommand("CONSIDER");
+				if(C==null) C=CMClass.getCommand("Consider");
+				try {
+					response.append(C.executeInternal(M, 0, M.getVictim()).toString());
+				} catch (IOException e) {
+					response.append(M.getVictim().phyStats().level());
+				}
+			}
+			break;
+		case LOCATION:
+		case ROOM:
+			if((M!=null)&&(M.location()!=null))
+			{
+				final Room R=M.location();
+				final String domType;
+				if((R.domainType()&Room.INDOORS)==0)
+					domType=Room.outdoorDomainDescs[R.domainType()];
+				else
+					domType=Room.indoorDomainDescs[CMath.unsetb(R.domainType(),Room.INDOORS)];
+				response=new StringBuilder("");
+				response.append(Session.MSDP_VAR).append(type.toString());
+				response.append(Session.MSDP_TABLE_OPEN);
+				response.append(Session.MSDP_VAR).append("VNUM").append(R.roomID().hashCode());
+				response.append(Session.MSDP_VAR).append("NAME").append(R.displayText());
+				response.append(Session.MSDP_VAR).append("AREA").append(R.getArea().Name());
+				response.append(Session.MSDP_VAR).append("TERRAIN").append(domType);
+				response.append(Session.MSDP_VAR).append("EXITS").append(Session.MSDP_TABLE_OPEN);
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				{
+					Room R2=R.getRoomInDir(d);
+					if(R2!=null)
+						response.append(Session.MSDP_VAR).append(Directions.getDirectionChar(d)).append(R2.roomID().hashCode());
+				}
+				response.append(Session.MSDP_TABLE_CLOSE);
+				response.append(Session.MSDP_TABLE_CLOSE);
+			}
+			break;
+		case SERVER_ID:
+			response.append(CMProps.getVar(CMProps.SYSTEM_MUDNAME));
+			break;
+		case SERVER_TIME:
+			response.append(CMLib.time().date2APTimeString(System.currentTimeMillis()));
+			break;
+		case SPECIFICATION:
+			response.append("http://tintin.sourceforge.net/msdp/");
+			break;
+		case WORLD_TIME:
+			response.append(CMLib.time().globalClock().getShortestTimeDescription());
+			break;
+		default:
+			break;
+		}
+		return "";
+	}
+
+	protected String msdpListToMsdpArray(final Object[] stuff)
+	{
+		StringBuilder str=new StringBuilder("");
+		str.append(Session.MSDP_ARRAY_OPEN);
+		for(Object s : stuff)
+			str.append(Session.MSDP_VAL).append(s.toString());
+		str.append(Session.MSDP_ARRAY_CLOSE);
+		return str.toString();
+	}
+	
+	protected String processMsdpList(final Session session, final String var)
+	{
+		final MSDPListable type=(MSDPListable)CMath.s_valueOf(MSDPListable.class, var.toUpperCase().trim());
+		if(type == null)
+			return ""+Session.MSDP_VAR+var.toUpperCase().trim()+Session.MSDP_VAL;
+		StringBuilder response=new StringBuilder("");
+		response.append(Session.MSDP_VAR).append(type.toString());
+		switch(type)
+		{
+		case COMMANDS: return response.append(msdpListToMsdpArray(MSDPCommand.values())).toString();
+		case LISTS: return response.append(msdpListToMsdpArray(MSDPListable.values())).toString();
+		case CONFIGURABLE_VARIABLES: return response.append(msdpListToMsdpArray(MSDPConfigurableVar.values())).toString();
+		case REPORTABLE_VARIABLES: return response.append(msdpListToMsdpArray(MSDPVariable.values())).toString();
+		case REPORTED_VARIABLES:  return response.append(msdpListToMsdpArray(session.getMSDPReportedVars().toArray(new Object[0]))).toString();
+		case SENDABLE_VARIABLES: return response.append(msdpListToMsdpArray(MSDPVariable.values())).toString();
+		default: return "?";
+		}
+	}
+	
+	protected void resetMsdpConfigurable(final Session session, final String var)
+	{
+		final MSDPConfigurableVar type=(MSDPConfigurableVar)CMath.s_valueOf(MSDPConfigurableVar.class, var.toUpperCase().trim());
+		if(type == null)
+			return;
+		//TODO:
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public byte[] processMsdp(final Session session, final char[] data, final int dataSize)
+	{
+		Map<String,Object> cmds=this.buildMsdpMap(data, dataSize);
+		StringBuilder response=new StringBuilder("");
+		if(cmds.containsKey(MSDPCommand.REPORT.toString()))
+		{
+			Object o=cmds.get(MSDPCommand.REPORT.toString());
+			if(o instanceof String)
+			{
+				final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
+				if(type != null)
+					session.getMSDPReportedVars().add(type.toString());
+				response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o));
+			}
+			else
+			if(o instanceof List)
+				for(Object o2 : ((List)o))
+					if(o2 instanceof String)
+					{
+						final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
+						if(type != null)
+							session.getMSDPReportedVars().add(type.toString());
+						response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o2));
+					}
+		}
+		if(cmds.containsKey(MSDPCommand.SEND.toString()))
+		{
+			Object o=cmds.get(MSDPCommand.SEND.toString());
+			if(o instanceof String)
+				response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o));
+			else
+			if(o instanceof List)
+				for(Object o2 : ((List)o))
+					if(o2 instanceof String)
+						response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o2));
+		}
+		if(cmds.containsKey(MSDPCommand.LIST.toString()))
+		{
+			Object o=cmds.get(MSDPCommand.LIST.toString());
+			if(o instanceof String)
+				response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpList(session,(String)o));
+			else
+			if(o instanceof List)
+				for(Object o2 : ((List)o))
+					if(o2 instanceof String)
+						response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpList(session,(String)o2));
+		}
+		if(cmds.containsKey(MSDPCommand.UNREPORT.toString()))
+		{
+			Object o=cmds.get(MSDPCommand.UNREPORT.toString());
+			if(o instanceof String)
+			{
+				final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
+				if(type != null)
+					session.getMSDPReportedVars().remove(type.toString());
+			}
+			else
+			if(o instanceof List)
+				for(Object o2 : ((List)o))
+					if(o2 instanceof String)
+					{
+						final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
+						if(type != null)
+							session.getMSDPReportedVars().remove(type.toString());
+					}
+		}
+		if(cmds.containsKey(MSDPCommand.RESET.toString()))
+		{
+			Object o=cmds.get(MSDPCommand.RESET.toString());
+			if(o instanceof String)
+			{
+				resetMsdpConfigurable(session, (String)o);
+			}
+			else
+			if(o instanceof List)
+				for(Object o2 : ((List)o))
+					if(o2 instanceof String)
+						resetMsdpConfigurable(session, (String)o2);
+		}
+		if(response.length()==0)
+			return null;
+		StringBuilder finalResponse=new StringBuilder("");
+		finalResponse.append((char)Session.TELNET_IAC).append((char)Session.TELNET_SB).append((char)Session.TELNET_MSDP)
+		.append(response.toString()).append((char)Session.TELNET_IAC).append((char)Session.TELNET_SE);
+		return finalResponse.toString().getBytes(Charset.forName("US-ASCII"));
 	}
 }
 

@@ -96,6 +96,7 @@ public class DefaultSession implements Session
 	protected boolean   	 connectionComplete	 = false;
 	protected ReentrantLock  writeLock 			 = new ReentrantLock(true);
 	protected CharCreationLibrary.LoginSession loginSession = null;
+	protected final Set<String> msdpReportables = new TreeSet<String>(); // EnumSet
 
 	protected ColorState	 currentColor		 = ColorLibrary.COLORSTATE_NORMAL;
 	protected ColorState	 lastColor			 = ColorLibrary.COLORSTATE_NORMAL;
@@ -172,6 +173,8 @@ public class DefaultSession implements Session
 				changeTelnetMode(rawout,TELNET_MXP,true);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))
 				changeTelnetMode(rawout,TELNET_MSP,true);
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSDP))
+				changeTelnetMode(rawout,TELNET_MSDP,true);
 			//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
 			changeTelnetMode(rawout,TELNET_NAWS,true);
 			//changeTelnetMode(rawout,TELNET_BINARY,true);
@@ -300,6 +303,7 @@ public class DefaultSession implements Session
 		{
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MXP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSP));
+			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSDP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_TERMTYPE));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_BINARY));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_ECHO));
@@ -391,6 +395,8 @@ public class DefaultSession implements Session
 		boolean mspSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))&&CMath.bset(mobbitmap,MOB.ATT_SOUND);
 		if(mspSet!=clientTelnetMode(TELNET_MSP))
 		{ changeTelnetMode(TELNET_MSP,!clientTelnetMode(TELNET_MSP)); changedSomething=true;}
+		if(mspSet!=clientTelnetMode(TELNET_MSDP))
+		{ changeTelnetMode(TELNET_MSDP,!clientTelnetMode(TELNET_MSDP)); changedSomething=true;}
 		try{if(changedSomething) blockingIn(500);}catch(Exception e){}
 	}
 
@@ -955,6 +961,15 @@ public class DefaultSession implements Session
 				terminalHeight = (suboptionData[2] << 8) | suboptionData[3];
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got: "+terminalWidth+"x"+terminalHeight);
+			}
+			break;
+		case TELNET_MSDP:
+			{
+				byte[] resp=CMLib.utensils().processMsdp(this, suboptionData, dataSize);
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got "+dataSize+" bytes, sent "+((resp==null)?0:resp.length));
+				if(resp!=null)
+					rawBytesOut(rawout, resp);
 			}
 			break;
 		default:
@@ -1836,6 +1851,7 @@ public class DefaultSession implements Session
 							StringBuilder loginMsg=new StringBuilder("");
 							loginMsg.append(getAddress()).append(" "+terminalType)
 							.append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+							.append(clientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
 							.append(", account login: "+acct.accountName());
 							Log.sysOut(loginMsg.toString());
 						}
@@ -1859,6 +1875,7 @@ public class DefaultSession implements Session
 						StringBuilder loginMsg=new StringBuilder("");
 						loginMsg.append(getAddress()).append(" "+terminalType)
 						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&clientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+						.append(clientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
 						.append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
 						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&clientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
 						.append(", character login: "+mob.Name());
@@ -2297,4 +2314,7 @@ public class DefaultSession implements Session
 				end++;
 		}
 	}
+
+	@Override
+	public Set<String> getMSDPReportedVars() { return msdpReportables; }
 }

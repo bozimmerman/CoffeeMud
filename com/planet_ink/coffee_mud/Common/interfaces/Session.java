@@ -650,6 +650,14 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public int getStatus();
 	
 	/**
+	 * If MSDP is turned on, and being used, this will return this users
+	 * set of MSDP variables being reported upon.
+	 * 
+	 * @return the list of variable names
+	 */
+	public Set<String> getMSDPReportedVars();
+	
+	/**
 	 * Gets the total milliseconds consumed by this session objects thread.
 	 * 
 	 * @return the total milliseconds consumed
@@ -845,6 +853,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/** TELNET CODE: Linemode*/
 	public static final int TELNET_LINEMODE=34;
 	/** TELNET CODE: MSSP Server Status protocol*/
+	public static final int TELNET_MSDP=69;
+	/** TELNET CODE: MSSP Server Status protocol*/
 	public static final int TELNET_MSSP=70;
 	/** TELNET CODE: text compression, protocol 1*/
 	public static final int TELNET_COMPRESS=85;
@@ -883,7 +893,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"30","NAWS","32","FLOWCONTROL","LINEMODE","35","36","37","38","39", //30-39
 		"40","41","42","43","44","45","46","47","48","49", //40-49
 		"50","51","52","53","54","55","56","57","58","59", //50-59
-		"60","61","62","63","64","65","66","67","68","69", //60-69
+		"60","61","62","63","64","65","66","67","68","MSDP", //60-69
 		"MSSP","71","72","73","74","75","76","77","78","79", //70-79
 		"","","","","","COMPRESS","COMPRESS2","","","", //80-89
 		"MSP","MXP","","","","","","","","", //90-99
@@ -1138,6 +1148,20 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_LINEMODE_SLC_AYT=5;
 	/** Some sort of TELNET protocol constant related to LINEMODE -- I've no idea what it does */
 	public static final int TELNET_LINEMODE_SLC_EOR=6;
+	
+	/** For MSDP protocol, denotes variable start*/
+	public static final char MSDP_VAR			= 1;
+	/** For MSDP protocol, denotes value start*/
+	public static final char MSDP_VAL			= 2;
+	/** For MSDP protocol, denotes table open*/
+	public static final char MSDP_TABLE_OPEN	= 3;
+	/** For MSDP protocol, denotes table done*/
+	public static final char MSDP_TABLE_CLOSE	= 4;
+	/** For MSDP protocol, denotes array start*/
+	public static final char MSDP_ARRAY_OPEN	= 5;
+	/** For MSDP protocol, denotes array done*/
+	public static final char MSDP_ARRAY_CLOSE	= 6;
+	
 	/** Status value constant possibly returned by getStatus method */
 	public static final int STATUS_MAINLOOP=0;
 	/** Status value constant possibly returned by getStatus method */

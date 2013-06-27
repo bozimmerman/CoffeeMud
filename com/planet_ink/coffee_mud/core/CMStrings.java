@@ -156,7 +156,19 @@ public class CMStrings
 		return s;
 	}
 	
-
+	public final static int finalDigits(String s)
+	{
+		if((s==null)||(s.length()==0)) return -1;
+		int x=s.length();
+		while((x>0)&&(Character.isDigit(s.charAt(x-1))))
+			x--;
+		if(x>=s.length())
+			return -1;
+		if(x==0)
+			return Integer.parseInt(s);
+		else
+			return Integer.parseInt(s.substring(x));
+	}
 
 	public final static boolean containsWordIgnoreCase(final String thisStr, final String word)
 	{

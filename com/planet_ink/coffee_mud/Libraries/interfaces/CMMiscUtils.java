@@ -43,6 +43,8 @@ public interface CMMiscUtils extends CMLibrary
 	
 	public String builtPrompt(MOB mob);
 	
+	public byte[] processMsdp(final Session session, final char[] data, final int dataSize);
+
 	public String getFormattedDate(Environmental E);
 	public double memoryUse ( Environmental E, int number );
 	public String niceCommaList(List<?> V, boolean andTOrF);

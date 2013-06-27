@@ -4701,7 +4701,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String arg1=CMParms.cleanBit(funcParms);
 				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB)))
-					results.append(CMStrings.capitalizeAndLower(CMLib.flags().getAlignmentName(E)).toLowerCase());
+					results.append(CMLib.flags().getAlignmentName(E).toLowerCase());
 				break;
 			}
 			case 9: // isneutral

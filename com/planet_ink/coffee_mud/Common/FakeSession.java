@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount;
@@ -206,4 +208,5 @@ public class FakeSession implements Session
 	public boolean isStat(String code) { return false;}
 	public void setStat(String code, String val){}
 	public long activeTimeMillis() { return 0;}
+	public Set<String> getMSDPReportedVars() { return new TreeSet<String>(); }
 }
