@@ -209,24 +209,26 @@ public class Siplet
 		{
 			String s=Telnet.getEnquedResponses();
 			if(s.length()>0)  sendData(s);
+			StringBuilder data=new StringBuilder("");
+			if(Telnet.MSDPsupport())
+				data.append(Telnet.getMsdpHtml());
 			int endAt=Telnet.HTMLFilter(buf);
-			String data=null;
-			if(buf.length()==0) return "";
+			if(buf.length()==0) return data.toString();
 			if(endAt<0) endAt=buf.length();
-			if(endAt==0) return "";
-			if(Telnet.isUIonHold()) return "";
+			if(endAt==0) return data.toString();
+			if(Telnet.isUIonHold()) return data.toString();
 			if(endAt<buf.length())
 			{
-				data=buf.substring(0,endAt);
+				data.append(buf.substring(0,endAt));
 				buf.delete(0,endAt);
 			}
 			else
 			{
-				data=buf.toString();
+				data.append(buf.toString());
 				buf.setLength(0);
 			}
-			if(debugDataOut) if(data.length()>0) System.out.println("/DATA="+data);
-			return data;
+			if(debugDataOut) if(data.length()>0) System.out.println("/DATA="+data.toString());
+			return data.toString();
 		}
 	}
 

@@ -103,7 +103,10 @@ public class TelnetFilter
 	
 	public static String getSipletVersion(){ return Siplet.VERSION_MAJOR+"."+Siplet.VERSION_MINOR;}
 	
-	public String getEnquedResponses(){return MXPsupport()?mxpModule.getAnyResponses():"";}
+	public String getEnquedResponses()
+	{
+		return (MXPsupport()?mxpModule.getAnyResponses():"");
+	}
 	public String getEnquedJScript()
 	{
 		return ((mxpModule!=null)?mxpModule.getAnyJScript():"")
@@ -830,15 +833,6 @@ public class TelnetFilter
 					buf.setCharAt(i,'<');
 					buf.insert(i+1,"BR>");
 					i+=3;
-				}
-				if(MSDPsupport())
-				{
-					String msdp=getMsdpHtml();
-					if(msdp.length()>0)
-					{
-						buf.insert(i, msdp);
-						i+=msdp.length();
-					}
 				}
 				break;
 			}
