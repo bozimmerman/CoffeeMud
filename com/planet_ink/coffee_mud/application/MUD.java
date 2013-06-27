@@ -1125,6 +1125,8 @@ public class MUD extends Thread implements MudHost
 
 	private static void threadList(ThreadGroup tGroup)
 	{
+		if(tGroup==null)
+			return;
 		int ac = tGroup.activeCount();
 		Thread tArray[] = new Thread [ac+1];
 		tGroup.enumerate(tArray);
