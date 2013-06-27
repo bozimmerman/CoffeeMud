@@ -907,6 +907,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"SB","","","ANSI","","" 			 //250-255
 	};
 	
+	/* The charset recognized by MSDP is unknown, so assume std ascii */
+	public final static String MSDP_CHARSET = "US-ASCII"; 
+	
 	/**
 	 * The internal class to managing asynchronous user input.
 	 * This class supports three types of input: open text (PROMPT),

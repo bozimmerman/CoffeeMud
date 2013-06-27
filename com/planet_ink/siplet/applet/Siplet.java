@@ -183,8 +183,13 @@ public class Siplet
 					disconnectFromURL();
 				else
 				{
-					out.writeBytes(data+"\n\r");
-					out.flush();
+					byte[] bytes=Telnet.peruseInput(data);
+					if(bytes!=null)
+					{
+						out.write(bytes);
+						out.writeBytes("\n\r");
+						out.flush();
+					}
 				}
 			}
 			catch(IOException e)

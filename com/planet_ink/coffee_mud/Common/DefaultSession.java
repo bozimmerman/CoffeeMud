@@ -399,8 +399,6 @@ public class DefaultSession implements Session
 		boolean mspSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))&&CMath.bset(mobbitmap,MOB.ATT_SOUND);
 		if(mspSet!=clientTelnetMode(TELNET_MSP))
 		{ changeTelnetMode(TELNET_MSP,!clientTelnetMode(TELNET_MSP)); changedSomething=true;}
-		if(mspSet!=clientTelnetMode(TELNET_MSDP))
-		{ changeTelnetMode(TELNET_MSDP,!clientTelnetMode(TELNET_MSDP)); changedSomething=true;}
 		try{if(changedSomething) blockingIn(500);}catch(Exception e){}
 	}
 
@@ -1738,7 +1736,9 @@ public class DefaultSession implements Session
 		if(clientTelnetMode(TELNET_MSDP)&&(activeMillis>=nextMsdpPing))
 		{
 			nextMsdpPing=activeMillis+MSDPPINGINTERVAL;
-			CMLib.utensils().pingMsdp(this, msdpReportables);
+			byte[] msdpPingBuf=CMLib.utensils().pingMsdp(this, msdpReportables);
+			if(msdpPingBuf!=null)
+				try { rawBytesOut(rawout, msdpPingBuf);}catch(IOException e){}
 		}
 		
 		try

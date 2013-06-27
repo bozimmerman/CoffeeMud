@@ -16,7 +16,9 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.Map.Entry;
@@ -1275,7 +1277,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		stack.push(new HashMap<StringBuilder,Object>());
 		StringBuilder str=null;
 		StringBuilder var=null;
-		StringBuilder prevVar=null;
+		StringBuilder valVar=null;
 		int x=-1;
 		while(++x<dataSize)
 		{
@@ -1289,48 +1291,21 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				else if(stack.peek() instanceof List)
 					((List)stack.peek()).add(str);
 				break;
-			case Session.MSDP_VAL: // get a value? can client do that?
+			case Session.MSDP_VAL:
 			{
-				str=new StringBuilder("");
-				if(stack.peek() instanceof Map)
-				{
-					if(var!=null)
-						((Map)stack.peek()).put(var, str);
-					else
-					if(prevVar != null)
-					{
-						Object o=((Map)stack.peek()).get(prevVar);
-						if(o instanceof List)
-						{
-							stack.push(o);
-							((List)o).add(str);
-						}
-						else
-						if(o instanceof String)
-						{
-							List<Object> M=new LinkedList<Object>();
-							stack.push(M);
-							M.add(o);
-							M.add(str);
-							((Map)stack.peek()).put(prevVar,M);
-						}
-					}
-				}
-				else if(stack.peek() instanceof List)
-					((List)stack.peek()).add(str);
-				prevVar=var;
+				valVar=var;
 				var=null;
+				str=new StringBuilder("");
 				break;
 			}
 			case Session.MSDP_TABLE_OPEN: // open a table
 			{
 				Map<StringBuilder,Object> M=new HashMap<StringBuilder,Object>();
-				if((stack.peek() instanceof Map)&&(var!=null))
-					((Map)stack.peek()).put(var, M);
+				if((stack.peek() instanceof Map)&&(valVar!=null))
+					((Map)stack.peek()).put(valVar, M);
 				else if(stack.peek() instanceof List)
 					((List)stack.peek()).add(M);
-				prevVar=var;
-				var=null;
+				valVar=null;
 				stack.push(M);
 				break;
 			}
@@ -1341,12 +1316,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			case Session.MSDP_ARRAY_OPEN: // open an array
 			{
 				List<Object> M=new LinkedList<Object>();
-				if((stack.peek() instanceof Map)&&(var!=null))
-					((Map)stack.peek()).put(var, M);
+				if((stack.peek() instanceof Map)&&(valVar!=null))
+					((Map)stack.peek()).put(valVar, M);
 				else if(stack.peek() instanceof List)
 					((List)stack.peek()).add(M);
-				prevVar=var;
-				var=null;
+				valVar=null;
 				stack.push(M);
 				break;
 			}
@@ -1355,6 +1329,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					stack.pop();
 				break;
 			default:
+				if((stack.peek() instanceof Map)&&(valVar!=null))
+					((Map)stack.peek()).put(valVar, str);
+				else if((stack.peek() instanceof List)&&(!((List)stack.peek()).contains(str)))
+					((List)stack.peek()).add(str);
+				valVar=null;
 				if(str!=null)
 					str.append(data[x]);
 				break;
@@ -1497,13 +1476,20 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return "";
 	}
 	
-	protected String processMsdpSend(final Session session, final String var)
+	protected byte[] processMsdpSend(final Session session, final String var) throws UnsupportedEncodingException, IOException
 	{
 		final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, var.toUpperCase().trim());
+		ByteArrayOutputStream buf=new ByteArrayOutputStream();
 		if(type == null)
-			return ""+Session.MSDP_VAR+var.toUpperCase().trim()+Session.MSDP_VAL;
-		StringBuilder response=new StringBuilder("");
-		response.append(Session.MSDP_VAR).append(type.toString()).append(Session.MSDP_VAL);
+		{
+			buf.write(Session.MSDP_VAR);
+			buf.write(var.toUpperCase().trim().getBytes(Session.MSDP_CHARSET));
+			buf.write(Session.MSDP_VAL);
+			return buf.toByteArray();
+		}
+		buf.write(Session.MSDP_VAR);
+		buf.write(type.toString().getBytes(Session.MSDP_CHARSET));
+		buf.write(Session.MSDP_VAL);
 		final MOB M=session.mob();
 		switch(type)
 		{
@@ -1511,9 +1497,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if((M!=null)&&(M.playerStats()!=null)) 
 			{
 				if(M.playerStats().getAccount()!=null)
-					response.append(M.playerStats().getAccount().accountName());
+					buf.write(M.playerStats().getAccount().accountName().getBytes(Session.MSDP_CHARSET));
 				else
-					response.append(M.Name());
+					buf.write(M.Name().getBytes(Session.MSDP_CHARSET));
 			}
 			break;
 		case AFFECTS:
@@ -1526,9 +1512,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if(A!=null)
 						affects.add(A.name());
 				}
-				response=new StringBuilder("");
-				response.append(Session.MSDP_VAR).append(type.toString());
-				response.append(msdpListToMsdpArray(affects.toArray(new String[0])));
+				buf=new ByteArrayOutputStream();
+				buf.write(Session.MSDP_VAR);buf.write(type.toString().getBytes(Session.MSDP_CHARSET));
+				buf.write(msdpListToMsdpArray(affects.toArray(new String[0])));
 			}
 			break;
 		case ALIGNMENT:
@@ -1536,75 +1522,75 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			{
 				Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
 				if(FR!=null)
-					response.append(FR.name().toLowerCase());
+					buf.write(FR.name().toLowerCase().getBytes(Session.MSDP_CHARSET));
 			}
 			break;
 		case CHARACTER_NAME:
 			if(M!=null)
-				response.append(M.name());
+				buf.write(M.name().getBytes(Session.MSDP_CHARSET));
 			break;
 		case EXPERIENCE:
 			if(M!=null)
-				response.append(M.getExperience());
+				buf.write(Integer.toString(M.getExperience()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case EXPERIENCE_MAX:
 			if(M!=null)
-				response.append(M.getExpNextLevel());
+				buf.write(Integer.toString(M.getExpNextLevel()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case EXPERIENCE_TNL:
 			if(M!=null)
-				response.append(M.getExpNeededLevel());
+				buf.write(Integer.toString(M.getExpNeededLevel()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case EXPERIENCE_TNL_MAX:
 			if(M!=null)
-				response.append(M.getExpNeededLevel());
+				buf.write(Integer.toString(M.getExpNeededLevel()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case HEALTH:
 			if(M!=null)
-				response.append(M.curState().getHitPoints());
+				buf.write(Integer.toString(M.curState().getHitPoints()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case HEALTH_MAX:
 			if(M!=null)
-				response.append(M.maxState().getHitPoints());
+				buf.write(Integer.toString(M.maxState().getHitPoints()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case LEVEL:
-			if(M!=null) response.append(M.phyStats().level());
+			if(M!=null) buf.write(Integer.toString(M.phyStats().level()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case MANA:
 			if(M!=null)
-				response.append(M.curState().getMana());
+				buf.write(Integer.toString(M.curState().getMana()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case MANA_MAX:
 			if(M!=null)
-				response.append(M.maxState().getMana());
+				buf.write(Integer.toString(M.maxState().getMana()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case MONEY:
 			if(M!=null)
-				response.append(CMLib.beanCounter().getTotalAbsoluteNativeValue(M));
+				buf.write(Double.toString(CMLib.beanCounter().getTotalAbsoluteNativeValue(M)).getBytes(Session.MSDP_CHARSET));
 			break;
 		case MOVEMENT:
 			if(M!=null)
-				response.append(M.curState().getMovement());
+				buf.write(Integer.toString(M.curState().getMovement()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case MOVEMENT_MAX:
 			if(M!=null)
-				response.append(M.maxState().getMovement());
+				buf.write(Integer.toString(M.maxState().getMovement()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case OPPONENT_HEALTH:
 			if((M!=null)&&(M.getVictim()!=null))
-				response.append(M.getVictim().curState().getHitPoints());
+				buf.write(Integer.toString(M.getVictim().curState().getHitPoints()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case OPPONENT_HEALTH_MAX:
 			if((M!=null)&&(M.getVictim()!=null))
-				response.append(M.getVictim().maxState().getHitPoints());
+				buf.write(Integer.toString(M.getVictim().maxState().getHitPoints()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case OPPONENT_LEVEL:
 			if((M!=null)&&(M.getVictim()!=null))
-				response.append(M.phyStats().level());
+				buf.write(Integer.toString(M.phyStats().level()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case OPPONENT_NAME:
 			if((M!=null)&&(M.getVictim()!=null))
-				response.append(M.name());
+				buf.write(M.name().getBytes(Session.MSDP_CHARSET));
 			break;
 		case OPPONENT_STRENGTH:
 			if((M!=null)&&(M.getVictim()!=null))
@@ -1612,9 +1598,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				Command C=CMClass.getCommand("CONSIDER");
 				if(C==null) C=CMClass.getCommand("Consider");
 				try {
-					response.append(C.executeInternal(M, 0, M.getVictim()).toString());
+					buf.write(C.executeInternal(M, 0, M.getVictim()).toString().getBytes(Session.MSDP_CHARSET));
 				} catch (IOException e) {
-					response.append(M.getVictim().phyStats().level());
+					buf.write(Integer.toString(M.getVictim().phyStats().level()).getBytes(Session.MSDP_CHARSET));
 				}
 			}
 			break;
@@ -1628,35 +1614,50 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					domType=Room.outdoorDomainDescs[R.domainType()];
 				else
 					domType=Room.indoorDomainDescs[CMath.unsetb(R.domainType(),Room.INDOORS)];
-				response=new StringBuilder("");
-				response.append(Session.MSDP_VAR).append(type.toString());
-				response.append(Session.MSDP_TABLE_OPEN);
-				response.append(Session.MSDP_VAR).append("VNUM").append(R.roomID().hashCode());
-				response.append(Session.MSDP_VAR).append("NAME").append(R.displayText());
-				response.append(Session.MSDP_VAR).append("AREA").append(R.getArea().Name());
-				response.append(Session.MSDP_VAR).append("TERRAIN").append(domType);
-				response.append(Session.MSDP_VAR).append("EXITS").append(Session.MSDP_TABLE_OPEN);
+				buf=new ByteArrayOutputStream();
+				buf.write(Session.MSDP_VAR);buf.write(type.toString().getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAL);
+				buf.write(Session.MSDP_TABLE_OPEN);
+				buf.write(Session.MSDP_VAR);buf.write("VNUM".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAL);
+				buf.write(Integer.toString(R.roomID().hashCode()).getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);buf.write("NAME".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAL);
+				buf.write(R.displayText().getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);buf.write("AREA".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAL);
+				buf.write(R.getArea().Name().getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);buf.write("TERRAIN".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAL);
+				buf.write(domType.getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);buf.write("EXITS".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAL);
+				buf.write(Session.MSDP_TABLE_OPEN);
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
-					Room R2=R.getRoomInDir(d);
+					final Room R2=R.getRoomInDir(d);
 					if(R2!=null)
-						response.append(Session.MSDP_VAR).append(Directions.getDirectionChar(d)).append(R2.roomID().hashCode());
+					{
+						buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+						buf.write(Session.MSDP_VAL);
+						buf.write(Integer.toString(R2.roomID().hashCode()).getBytes(Session.MSDP_CHARSET));
+					}
 				}
-				response.append(Session.MSDP_TABLE_CLOSE);
-				response.append(Session.MSDP_TABLE_CLOSE);
+				buf.write(Session.MSDP_TABLE_CLOSE);
+				buf.write(Session.MSDP_TABLE_CLOSE);
 			}
 			break;
 		case ROOM_NAME: 
 			if((M!=null)&&(M.location()!=null))
-				response.append(M.location().displayText());
+				buf.write(M.location().displayText().getBytes(Session.MSDP_CHARSET));
 			break;
 		case ROOM_VNUM: 
 			if((M!=null)&&(M.location()!=null))
-				response.append(M.location().roomID().hashCode());
+				buf.write(Integer.toString(M.location().roomID().hashCode()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case ROOM_AREA: 
 			if((M!=null)&&(M.location()!=null))
-				response.append(M.location().getArea().Name());
+				buf.write(M.location().getArea().Name().getBytes(Session.MSDP_CHARSET));
 			break;
 		case ROOM_TERRAIN: 
 			if((M!=null)&&(M.location()!=null))
@@ -1667,75 +1668,85 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					domType=Room.outdoorDomainDescs[R.domainType()];
 				else
 					domType=Room.indoorDomainDescs[CMath.unsetb(R.domainType(),Room.INDOORS)];
-				response.append(domType);
+				buf.write(domType.getBytes(Session.MSDP_CHARSET));
 			}
 			break;
 		case ROOM_EXITS:
 			if((M!=null)&&(M.location()!=null))
 			{
 				final Room R=M.location();
-				response=new StringBuilder("");
-				response.append(Session.MSDP_VAR).append("EXITS").append(Session.MSDP_TABLE_OPEN);
+				buf=new ByteArrayOutputStream();
+				buf.write(Session.MSDP_VAR);buf.write("EXITS".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAL);
+				buf.write(Session.MSDP_TABLE_OPEN);
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
 					Room R2=R.getRoomInDir(d);
 					if(R2!=null)
-						response.append(Session.MSDP_VAR).append(Directions.getDirectionChar(d)).append(R2.roomID().hashCode());
+					{
+						buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+						buf.write(Session.MSDP_VAL);
+						buf.write(Integer.toString(R2.roomID().hashCode()).getBytes(Session.MSDP_CHARSET));
+					}
 				}
-				response.append(Session.MSDP_TABLE_CLOSE);
+				buf.write(Session.MSDP_TABLE_CLOSE);
 			}
 			break;
 		case SERVER_ID:
-			response.append(CMProps.getVar(CMProps.SYSTEM_MUDNAME));
+			buf.write(CMProps.getVar(CMProps.SYSTEM_MUDNAME).getBytes(Session.MSDP_CHARSET));
 			break;
 		case SERVER_TIME:
-			response.append(CMLib.time().date2APTimeString(System.currentTimeMillis()));
+			buf.write(CMLib.time().date2APTimeString(System.currentTimeMillis()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case SPECIFICATION:
-			response.append("http://tintin.sourceforge.net/msdp/");
+			buf.write("http://tintin.sourceforge.net/msdp/".getBytes(Session.MSDP_CHARSET));
 			break;
 		case WORLD_TIME:
-			response.append(CMLib.time().globalClock().getShortestTimeDescription());
+			buf.write(CMLib.time().globalClock().getShortestTimeDescription().getBytes(Session.MSDP_CHARSET));
 			break;
 		default:
 			break;
 		}
-		return "";
+		return buf.toByteArray();
 	}
 
-	protected String msdpListToMsdpArray(final Object[] stuff)
+	protected byte[] msdpListToMsdpArray(final Object[] stuff) throws UnsupportedEncodingException, IOException
 	{
-		StringBuilder str=new StringBuilder("");
-		str.append(Session.MSDP_ARRAY_OPEN);
+		ByteArrayOutputStream buf=new ByteArrayOutputStream();
+		buf.write(Session.MSDP_ARRAY_OPEN);
 		for(Object s : stuff)
-			str.append(Session.MSDP_VAL).append(s.toString());
-		str.append(Session.MSDP_ARRAY_CLOSE);
-		return str.toString();
+		{
+			buf.write(Session.MSDP_VAL);
+			buf.write(s.toString().getBytes(Session.MSDP_CHARSET));
+		}
+		buf.write(Session.MSDP_ARRAY_CLOSE);
+		return buf.toByteArray();
 	}
 	
-	protected String processMsdpList(final Session session, final String var, final Map<Object,Object> reportables)
+	protected byte[] processMsdpList(final Session session, final String var, final Map<Object,Object> reportables) throws UnsupportedEncodingException, IOException
 	{
+		ByteArrayOutputStream buf=new ByteArrayOutputStream();
 		final MSDPListable type=(MSDPListable)CMath.s_valueOf(MSDPListable.class, var.toUpperCase().trim());
 		if(type == null)
-			return ""+Session.MSDP_VAR+var.toUpperCase().trim()+Session.MSDP_VAL;
-		StringBuilder response=new StringBuilder("");
-		response.append(Session.MSDP_VAR).append(type.toString());
+			return buf.toByteArray();
 		switch(type)
 		{
-		case COMMANDS: return response.append(msdpListToMsdpArray(MSDPCommand.values())).toString();
-		case LISTS: return response.append(msdpListToMsdpArray(MSDPListable.values())).toString();
-		case CONFIGURABLE_VARIABLES: return response.append(msdpListToMsdpArray(MSDPConfigurableVar.values())).toString();
-		case REPORTABLE_VARIABLES: return response.append(msdpListToMsdpArray(MSDPVariable.values())).toString();
+		case COMMANDS: buf.write(msdpListToMsdpArray(MSDPCommand.values())); break; 
+		case LISTS: buf.write(msdpListToMsdpArray(MSDPListable.values())); break;
+		case CONFIGURABLE_VARIABLES: buf.write(msdpListToMsdpArray(MSDPConfigurableVar.values())); break;
+		case REPORTABLE_VARIABLES: buf.write(msdpListToMsdpArray(MSDPVariable.values())); break;
 		case REPORTED_VARIABLES:
 		{
 			List<String> set=new Vector<String>(reportables.size());
 			for(Object o : reportables.keySet())
 				set.add(o.toString());
-			return response.append(msdpListToMsdpArray(set.toArray(new Object[0]))).toString();
+			buf.write(msdpListToMsdpArray(set.toArray(new Object[0])));
+			break;
 		}
-		case SENDABLE_VARIABLES: return response.append(msdpListToMsdpArray(MSDPVariable.values())).toString();
-		default: return "?";
+		case SENDABLE_VARIABLES: buf.write(msdpListToMsdpArray(MSDPVariable.values())); break;
+		default: buf.write((byte)'?'); break;
 		}
+		return buf.toByteArray();
 	}
 	
 	protected void resetMsdpConfigurable(final Session session, final String var)
@@ -1748,116 +1759,147 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	
 	public byte[] pingMsdp(final Session session, final Map<Object,Object> reportables)
 	{
-		List<Object> broken=null;
-		synchronized(reportables)
+		try
 		{
-			for(Entry<Object,Object> e : reportables.entrySet())
-				if(!e.getValue().equals(getMsdpComparable(session, (MSDPVariable)e.getKey())))
+			if(reportables.size()==0)
+				return null;
+			List<Object> broken=null;
+			synchronized(reportables)
+			{
+				Object newValue;
+				for(Entry<Object,Object> e : reportables.entrySet())
 				{
-					if(broken==null)
-						broken=new LinkedList<Object>();
-					broken.add(e.getKey());
+					newValue=getMsdpComparable(session, (MSDPVariable)e.getKey());
+					if(!e.getValue().equals(newValue))
+					{
+						reportables.put(e.getKey(),newValue);
+						if(broken==null)
+							broken=new LinkedList<Object>();
+						broken.add(e.getKey());
+					}
 				}
+			}
+			if(broken==null)
+				return null;
+			ByteArrayOutputStream buf=new ByteArrayOutputStream();
+			buf.write(Session.TELNET_IAC);buf.write(Session.TELNET_SB);buf.write(Session.TELNET_MSDP);
+			for(Object var : broken)
+			{
+				buf.write(processMsdpSend(session,var.toString()));
+			}
+			buf.write((char)Session.TELNET_IAC);buf.write((char)Session.TELNET_SE);
+			return buf.toByteArray();
 		}
-		if(broken==null)
+		catch(IOException e)
+		{
 			return null;
-		StringBuilder response=new StringBuilder("");
-		response.append((char)Session.TELNET_IAC).append((char)Session.TELNET_SB).append((char)Session.TELNET_MSDP);
-		for(Object var : broken)
-			response.append(Session.MSDP_VAR).append(var.toString()).append(Session.MSDP_VAL).append(processMsdpSend(session,var.toString()));
-		response.append((char)Session.TELNET_IAC).append((char)Session.TELNET_SE);
-		return response.toString().getBytes(Charset.forName("US-ASCII"));
+		}
 	}
 	
 	@SuppressWarnings("rawtypes")
 	public byte[] processMsdp(final Session session, final char[] data, final int dataSize, final Map<Object,Object> reportables)
 	{
-		Map<String,Object> cmds=this.buildMsdpMap(data, dataSize);
-		StringBuilder response=new StringBuilder("");
-		if(cmds.containsKey(MSDPCommand.REPORT.toString()))
+		try
 		{
-			synchronized(reportables)
+			Map<String,Object> cmds=this.buildMsdpMap(data, dataSize);
+			ByteArrayOutputStream buf=new ByteArrayOutputStream();
+			if(cmds.containsKey(MSDPCommand.REPORT.toString()))
 			{
-				Object o=cmds.get(MSDPCommand.REPORT.toString());
+				synchronized(reportables)
+				{
+					Object o=cmds.get(MSDPCommand.REPORT.toString());
+					if(o instanceof String)
+					{
+						final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
+						if(type != null)
+							reportables.put(type, getMsdpComparable(session, type));
+						buf.write(processMsdpSend(session,(String)o));
+					}
+					else
+					if(o instanceof List)
+						for(Object o2 : ((List)o))
+							if(o2 instanceof String)
+							{
+								final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o2).toUpperCase().trim());
+								if(type != null)
+									reportables.put(type, getMsdpComparable(session, type));
+								buf.write(processMsdpSend(session,(String)o2));
+							}
+				}
+			}
+			if(cmds.containsKey(MSDPCommand.SEND.toString()))
+			{
+				Object o=cmds.get(MSDPCommand.SEND.toString());
 				if(o instanceof String)
 				{
-					final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
-					if(type != null)
-						reportables.put(type, getMsdpComparable(session, type));
-					response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o));
+					buf.write(processMsdpSend(session,(String)o));
 				}
 				else
 				if(o instanceof List)
 					for(Object o2 : ((List)o))
 						if(o2 instanceof String)
 						{
-							final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
-							if(type != null)
-								reportables.put(type, getMsdpComparable(session, type));
-							response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o2));
+							buf.write(processMsdpSend(session,(String)o2));
 						}
 			}
-		}
-		if(cmds.containsKey(MSDPCommand.SEND.toString()))
-		{
-			Object o=cmds.get(MSDPCommand.SEND.toString());
-			if(o instanceof String)
-				response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o));
-			else
-			if(o instanceof List)
-				for(Object o2 : ((List)o))
-					if(o2 instanceof String)
-						response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o2));
-		}
-		if(cmds.containsKey(MSDPCommand.LIST.toString()))
-		{
-			Object o=cmds.get(MSDPCommand.LIST.toString());
-			if(o instanceof String)
-				response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpList(session,(String)o,reportables));
-			else
-			if(o instanceof List)
-				for(Object o2 : ((List)o))
-					if(o2 instanceof String)
-						response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpList(session,(String)o2,reportables));
-		}
-		if(cmds.containsKey(MSDPCommand.UNREPORT.toString()))
-		{
-			Object o=cmds.get(MSDPCommand.UNREPORT.toString());
-			if(o instanceof String)
+			if(cmds.containsKey(MSDPCommand.LIST.toString()))
 			{
-				final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
-				if(type != null)
-					reportables.remove(type);
+				Object o=cmds.get(MSDPCommand.LIST.toString());
+				if(o instanceof String)
+				{
+					buf.write(Session.MSDP_VAR);buf.write(((String)o).getBytes(Session.MSDP_CHARSET));buf.write(Session.MSDP_VAL);buf.write(processMsdpList(session,(String)o,reportables));
+				}
+				else
+				if(o instanceof List)
+					for(Object o2 : ((List)o))
+						if(o2 instanceof String)
+						{
+							buf.write(Session.MSDP_VAR);buf.write(((String)o2).getBytes(Session.MSDP_CHARSET));buf.write(Session.MSDP_VAL);buf.write(processMsdpList(session,(String)o2,reportables));
+						}
 			}
-			else
-			if(o instanceof List)
-				for(Object o2 : ((List)o))
-					if(o2 instanceof String)
-					{
-						final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
-						if(type != null)
-							reportables.remove(type);
-					}
-		}
-		if(cmds.containsKey(MSDPCommand.RESET.toString()))
-		{
-			Object o=cmds.get(MSDPCommand.RESET.toString());
-			if(o instanceof String)
+			if(cmds.containsKey(MSDPCommand.UNREPORT.toString()))
 			{
-				resetMsdpConfigurable(session, (String)o);
+				Object o=cmds.get(MSDPCommand.UNREPORT.toString());
+				if(o instanceof String)
+				{
+					final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
+					if(type != null)
+						reportables.remove(type);
+				}
+				else
+				if(o instanceof List)
+					for(Object o2 : ((List)o))
+						if(o2 instanceof String)
+						{
+							final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o2).toUpperCase().trim());
+							if(type != null)
+								reportables.remove(type);
+						}
 			}
-			else
-			if(o instanceof List)
-				for(Object o2 : ((List)o))
-					if(o2 instanceof String)
-						resetMsdpConfigurable(session, (String)o2);
+			if(cmds.containsKey(MSDPCommand.RESET.toString()))
+			{
+				Object o=cmds.get(MSDPCommand.RESET.toString());
+				if(o instanceof String)
+				{
+					resetMsdpConfigurable(session, (String)o);
+				}
+				else
+				if(o instanceof List)
+					for(Object o2 : ((List)o))
+						if(o2 instanceof String)
+							resetMsdpConfigurable(session, (String)o2);
+			}
+			if(buf.size()==0)
+				return null;
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			bout.write(Session.TELNET_IAC); bout.write(Session.TELNET_SB); bout.write(Session.TELNET_MSDP);
+			bout.write(buf.toByteArray()); bout.write(Session.TELNET_IAC); bout.write(Session.TELNET_SE);
+			return bout.toByteArray();
 		}
-		if(response.length()==0)
+		catch(IOException e)
+		{
 			return null;
-		StringBuilder finalResponse=new StringBuilder("");
-		finalResponse.append((char)Session.TELNET_IAC).append((char)Session.TELNET_SB).append((char)Session.TELNET_MSDP)
-		.append(response.toString()).append((char)Session.TELNET_IAC).append((char)Session.TELNET_SE);
-		return finalResponse.toString().getBytes(Charset.forName("US-ASCII"));
+		}
 	}
 }
 

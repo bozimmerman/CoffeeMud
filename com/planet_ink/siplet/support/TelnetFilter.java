@@ -4,6 +4,8 @@ import java.util.*;
 import com.jcraft.jzlib.*;
 import com.planet_ink.siplet.applet.Siplet;
 import com.planet_ink.siplet.applet.Siplet.MSPStatus;
+import com.planet_ink.siplet.support.MiniJSON.JSONObject;
+import com.planet_ink.siplet.support.MiniJSON.MJSONException;
 
 /* 
 Copyright 2000-2013 Bo Zimmerman
@@ -24,7 +26,7 @@ limitations under the License.
 public class TelnetFilter
 {
 	public final static boolean debugChars=false;
-	public final static boolean debugTelnetCodes=false;
+	public final static boolean debugTelnetCodes=true;
 	
 	protected static final char IAC_SE=240;
 	protected static final char IAC_ = 255;
@@ -33,6 +35,7 @@ public class TelnetFilter
 	protected static final char IAC_WILL = 251;
 	protected static final char IAC_WONT = 252;
 	protected static final char IAC_DONT = 254;
+	protected static final char IAC_MSDP = 69;
 	protected static final char IAC_MSP = 90;
 	protected static final char IAC_MXP = 91;
 	protected static final char TELOPT_BINARY=0;
@@ -79,12 +82,16 @@ public class TelnetFilter
 
 	protected MSPStatus neverSupportMSP=MSPStatus.Internal;
 	protected boolean   neverSupportMXP=false;
+	protected boolean   neverSupportMSDP=false;
 	protected boolean   neverSupportMCCP=false;
 	protected boolean   MSPsupport=false;
+	protected boolean   MSDPsupport=false;
 	protected boolean   MXPsupport=false;
 	protected boolean   MCCPsupport=false;
+	private StringBuilder msdpInforms=new StringBuilder("");
 	
 	private MSP mspModule=new MSP();
+	private MSDP msdpModule=new MSDP();
 	private MXP mxpModule=new MXP();
 	
 	private TelnetFilter(){}
@@ -108,10 +115,13 @@ public class TelnetFilter
 	public void setMXPSupport(boolean truefalse){MXPsupport=truefalse;}
 	public boolean MCCPsupport(){return MCCPsupport;}
 	public void setMCCPSupport(boolean truefalse){MCCPsupport=truefalse;}
+	public boolean MSDPsupport(){return MSDPsupport;}
+	public void setMSDPSupport(boolean truefalse){MSDPsupport=truefalse;}
 	public void setNeverMXPSupport(boolean truefalse){neverSupportMXP=truefalse;}
 	public void setNeverMSPSupport(MSPStatus status){neverSupportMSP=status;}
 	public void setNeverMCCPSupport(boolean truefalse){neverSupportMCCP=truefalse;}
-	
+	public void setNeverMSDPSupport(boolean truefalse){neverSupportMSDP=truefalse;}
+
 	public boolean isUIonHold(){return MXPsupport()&&mxpModule.isUIonHold();}
 	private String blinkOff(){ if(blinkOn){blinkOn=false; return "</BLINK>";}return ""; }
 	private String underlineOff(){ if(underlineOn){underlineOn=false; return "</U>";}return ""; }
@@ -135,6 +145,18 @@ public class TelnetFilter
 		off.append(fontOff());
 		off.append(italicsOff());
 		return off.toString();
+	}
+	
+	public String getMsdpHtml()
+	{
+		synchronized(msdpInforms)
+		{
+			if(msdpInforms.length()==0)
+				return "";
+			String bah=msdpInforms.toString();
+			msdpInforms.setLength(0);
+			return "<BR><PRE>"+bah+"</PRE><BR>";
+		}
 	}
 	
 	public static int getColorCodeIndex(String word)
@@ -357,26 +379,24 @@ public class TelnetFilter
 					{
 					case IAC_SB:
 					{
-						char[] subOptionData = new char[1024];
+						ByteArrayOutputStream subOptionData = new ByteArrayOutputStream();
 						int subOptionCode = buf.charAt(++i);
 						if(debugTelnetCodes) System.out.println("Got sub-option "+subOptionCode);
-						int numBytes = 0;
 						int last = 0;
 						while((i<(buf.length()-1))
-						&&((last = buf.charAt(++i)) != -1)
-						&&(numBytes<subOptionData.length))
+						&&((last = buf.charAt(++i)) != -1))
 						{
 							if((last == IAC_)&&(i<(buf.length()-1)))
 							{
 								last = buf.charAt(++i);
 								if(last == IAC_)
-									subOptionData[numBytes++] = IAC_;
+									subOptionData.write(IAC_); // this is iac iac -- escape, dup type thing?
 								else 
 								if(last == IAC_SE)
 									break;
 							}
 							else
-								subOptionData[numBytes++] = (char)last;
+								subOptionData.write((char)last);
 						}
 						end=i+1;
 						if(debugTelnetCodes) System.out.println("Got SB "+subOptionCode);
@@ -411,6 +431,16 @@ public class TelnetFilter
 						if(subOptionCode==MCCP_COMPRESS2)
 						{
 							// probably need to handle this earlier
+						}
+						else
+						if(subOptionCode==IAC_MSDP)
+						{
+							String received=this.msdpModule.msdpReceive(subOptionData.toByteArray());
+							synchronized(msdpInforms)
+							{
+								msdpInforms.append(received);
+							}
+							if(debugTelnetCodes) System.out.println("Got MSDP: "+received);
 						}
 						break;
 					}
@@ -448,6 +478,29 @@ public class TelnetFilter
 								response.writeBytes(""+IAC_+IAC_DO+IAC_MSP);
 								response.flush();
 								setMSPSupport(true);
+							}
+						}
+						else
+						if(buf.charAt(i)==IAC_MSDP)
+						{
+							if(debugTelnetCodes) System.out.println("Got WILL MSDP!");
+							if(neverSupportMSDP)
+							{
+								if(MSDPsupport())
+								{
+									if(debugTelnetCodes) System.out.println("Sent DONT MSDP!");
+									response.writeBytes(""+IAC_+IAC_DONT+IAC_MSDP);
+									response.flush();
+									setMSDPSupport(false);
+								}
+							}
+							else
+							if(!MSDPsupport())
+							{
+								if(debugTelnetCodes) System.out.println("Sent DO MSDP!");
+								response.writeBytes(""+IAC_+IAC_DO+IAC_MSDP);
+								response.flush();
+								setMSDPSupport(true);
 							}
 						}
 						else
@@ -523,6 +576,18 @@ public class TelnetFilter
 							}
 						}
 						else
+						if(buf.charAt(i)==IAC_MSDP)
+						{
+							if(debugTelnetCodes) System.out.println("Got WONT MSDP!");
+							if(MSDPsupport())
+							{
+								if(debugTelnetCodes) System.out.println("Sent DONT MSDP!");
+								response.writeBytes(""+IAC_+IAC_DONT+IAC_MSDP);
+								response.flush();
+								setMSDPSupport(false);
+							}
+						}
+						else
 						if(buf.charAt(i)==IAC_MXP)
 						{
 							if(debugTelnetCodes) System.out.println("Got WONT MXP!");
@@ -558,6 +623,29 @@ public class TelnetFilter
 								response.writeBytes(""+IAC_+IAC_WILL+IAC_MSP);
 								response.flush();
 								setMSPSupport(true);
+							}
+						}
+						else
+						if(buf.charAt(i)==IAC_MSDP)
+						{
+							if(debugTelnetCodes) System.out.println("Got DO MSDP!");
+							if(neverSupportMSDP)
+							{
+								if(MSDPsupport())
+								{
+									if(debugTelnetCodes) System.out.println("Sent WONT MSDP!");
+									response.writeBytes(""+IAC_+IAC_WONT+IAC_MSDP);
+									response.flush();
+									setMSDPSupport(false);
+								}
+							}
+							else
+							if(!MSDPsupport())
+							{
+								if(debugTelnetCodes) System.out.println("Sent WILL MSDP!");
+								response.writeBytes(""+IAC_+IAC_WILL+IAC_MSDP);
+								response.flush();
+								setMSDPSupport(true);
 							}
 						}
 						else
@@ -743,6 +831,15 @@ public class TelnetFilter
 					buf.insert(i+1,"BR>");
 					i+=3;
 				}
+				if(MSDPsupport())
+				{
+					String msdp=getMsdpHtml();
+					if(msdp.length()>0)
+					{
+						buf.insert(i, msdp);
+						i+=msdp.length();
+					}
+				}
 				break;
 			}
 			case '\r':
@@ -792,5 +889,39 @@ public class TelnetFilter
 			i++;
 		}
 		return buf.length();
+	}
+
+	public final byte[] peruseInput(final String data)
+	{
+		try
+		{
+			if((data!=null)&&(data.startsWith("\\")))
+			{
+				int x=data.indexOf(' ');
+				if(x<0)
+					return data.getBytes("UTF-8");
+				final String cmd=data.substring(1,x).toUpperCase().trim();
+				String rest=data.substring(x+1).trim();
+				if(cmd.equalsIgnoreCase("MSDP"))
+				{
+					try {
+						byte[] newOutput=this.msdpModule.convertStringToMsdp(rest);
+						if(newOutput!=null)
+							return newOutput;
+					} catch (MJSONException e) {
+						if(debugTelnetCodes)
+							System.out.println("JSON Parse Error: "+e.getMessage());
+					}
+					return null;
+				}
+				else
+					return data.getBytes("UTF-8");
+			}
+			return data.getBytes("UTF-8");
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			return data.getBytes();
+		}
 	}
 }
