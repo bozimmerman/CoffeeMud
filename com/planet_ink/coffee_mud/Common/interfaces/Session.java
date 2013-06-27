@@ -650,14 +650,6 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public int getStatus();
 	
 	/**
-	 * If MSDP is turned on, and being used, this will return this users
-	 * set of MSDP variables being reported upon.
-	 * 
-	 * @return the list of variable names
-	 */
-	public Set<String> getMSDPReportedVars();
-	
-	/**
 	 * Gets the total milliseconds consumed by this session objects thread.
 	 * 
 	 * @return the total milliseconds consumed

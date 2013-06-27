@@ -208,5 +208,4 @@ public class FakeSession implements Session
 	public boolean isStat(String code) { return false;}
 	public void setStat(String code, String val){}
 	public long activeTimeMillis() { return 0;}
-	public Set<String> getMSDPReportedVars() { return new TreeSet<String>(); }
 }

@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.Map.Entry;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -1375,10 +1376,125 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		AFFECTS,ALIGNMENT,EXPERIENCE,EXPERIENCE_MAX,EXPERIENCE_TNL,EXPERIENCE_TNL_MAX,
 		HEALTH,HEALTH_MAX,LEVEL,MANA,MANA_MAX,MONEY,MOVEMENT,MOVEMENT_MAX,
 		OPPONENT_LEVEL,OPPONENT_HEALTH,OPPONENT_HEALTH_MAX,OPPONENT_NAME,OPPONENT_STRENGTH,
-		WORLD_TIME,ROOM,LOCATION
+		WORLD_TIME,ROOM,LOCATION,ROOM_NAME,ROOM_VNUM,ROOM_AREA,ROOM_TERRAIN,ROOM_EXITS
 	}
 	
 	protected enum MSDPConfigurableVar {
+	}
+	
+	protected Object getMsdpComparable(final Session session, final MSDPVariable var)
+	{
+		final MOB M=session.mob();
+		switch(var)
+		{
+		case ACCOUNT_NAME:
+			if(M!=null)
+				return M;
+			break;
+		case AFFECTS:
+			if(M!=null)
+				return Integer.valueOf(M.numAllEffects());
+			break;
+		case ALIGNMENT:
+			if(M!=null)
+			{
+				Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+				if(FR!=null)
+					return FR.name();
+			}
+			break;
+		case CHARACTER_NAME:
+			if(M!=null)
+				return M.Name();
+			break;
+		case EXPERIENCE:
+			if(M!=null)
+				return Integer.valueOf(M.getExperience());
+			break;
+		case EXPERIENCE_MAX:
+			if(M!=null)
+				return Integer.valueOf(M.getExpNextLevel());
+			break;
+		case EXPERIENCE_TNL:
+			if(M!=null)
+				return Integer.valueOf(M.getExpNeededLevel());
+			break;
+		case EXPERIENCE_TNL_MAX:
+			if(M!=null)
+				return Integer.valueOf(M.getExpNeededLevel());
+			break;
+		case HEALTH:
+			if(M!=null)
+				return Integer.valueOf(M.curState().getHitPoints());
+			break;
+		case HEALTH_MAX:
+			if(M!=null)
+				return Integer.valueOf(M.maxState().getHitPoints());
+			break;
+		case LEVEL:
+			if(M!=null)
+				return Integer.valueOf(M.phyStats().level());
+			break;
+		case MANA:
+			if(M!=null)
+				return Integer.valueOf(M.curState().getMana());
+			break;
+		case MANA_MAX:
+			if(M!=null)
+				return Integer.valueOf(M.maxState().getMana());
+			break;
+		case MONEY:
+			if(M!=null)
+				return Double.valueOf(CMLib.beanCounter().getTotalAbsoluteNativeValue(M));
+			break;
+		case MOVEMENT:
+			if(M!=null)
+				return Integer.valueOf(M.curState().getMovement());
+			break;
+		case MOVEMENT_MAX:
+			if(M!=null)
+				return Integer.valueOf(M.maxState().getMovement());
+			break;
+		case OPPONENT_HEALTH:
+			if((M!=null)&&(M.getVictim()!=null))
+				return Integer.valueOf(M.getVictim().curState().getHitPoints());
+			break;
+		case OPPONENT_HEALTH_MAX:
+			if((M!=null)&&(M.getVictim()!=null))
+				return Integer.valueOf(M.getVictim().maxState().getHitPoints());
+			break;
+		case OPPONENT_LEVEL:
+			if((M!=null)&&(M.getVictim()!=null))
+				return Integer.valueOf(M.phyStats().level());
+			break;
+		case OPPONENT_NAME:
+			if((M!=null)&&(M.getVictim()!=null))
+				return M.name();
+			break;
+		case OPPONENT_STRENGTH:
+			if(M!=null)
+				return (M.getVictim()!=null)?M.getVictim():M;
+			break;
+		case LOCATION:
+		case ROOM:
+		case ROOM_NAME: 
+		case ROOM_VNUM: 
+		case ROOM_AREA: 
+		case ROOM_TERRAIN: 
+		case ROOM_EXITS:
+			if((M!=null)&&(M.location()!=null))
+				return M.location();
+			break;
+		case SERVER_ID:
+		case SERVER_TIME:
+		case SPECIFICATION:
+			return this;
+		case WORLD_TIME:
+			return CMLib.time().globalClock().getShortestTimeDescription();
+		default:
+			break;
+		}
+		return "";
 	}
 	
 	protected String processMsdpSend(final Session session, final String var)
@@ -1417,7 +1533,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			break;
 		case ALIGNMENT:
 			if(M!=null)
-				response.append(CMStrings.capitalizeAndLower(CMLib.flags().getAlignmentName(M)).toLowerCase());
+			{
+				Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+				if(FR!=null)
+					response.append(FR.name().toLowerCase());
+			}
 			break;
 		case CHARACTER_NAME:
 			if(M!=null)
@@ -1526,6 +1646,45 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				response.append(Session.MSDP_TABLE_CLOSE);
 			}
 			break;
+		case ROOM_NAME: 
+			if((M!=null)&&(M.location()!=null))
+				response.append(M.location().displayText());
+			break;
+		case ROOM_VNUM: 
+			if((M!=null)&&(M.location()!=null))
+				response.append(M.location().roomID().hashCode());
+			break;
+		case ROOM_AREA: 
+			if((M!=null)&&(M.location()!=null))
+				response.append(M.location().getArea().Name());
+			break;
+		case ROOM_TERRAIN: 
+			if((M!=null)&&(M.location()!=null))
+			{
+				final Room R=M.location();
+				final String domType;
+				if((R.domainType()&Room.INDOORS)==0)
+					domType=Room.outdoorDomainDescs[R.domainType()];
+				else
+					domType=Room.indoorDomainDescs[CMath.unsetb(R.domainType(),Room.INDOORS)];
+				response.append(domType);
+			}
+			break;
+		case ROOM_EXITS:
+			if((M!=null)&&(M.location()!=null))
+			{
+				final Room R=M.location();
+				response=new StringBuilder("");
+				response.append(Session.MSDP_VAR).append("EXITS").append(Session.MSDP_TABLE_OPEN);
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				{
+					Room R2=R.getRoomInDir(d);
+					if(R2!=null)
+						response.append(Session.MSDP_VAR).append(Directions.getDirectionChar(d)).append(R2.roomID().hashCode());
+				}
+				response.append(Session.MSDP_TABLE_CLOSE);
+			}
+			break;
 		case SERVER_ID:
 			response.append(CMProps.getVar(CMProps.SYSTEM_MUDNAME));
 			break;
@@ -1554,7 +1713,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return str.toString();
 	}
 	
-	protected String processMsdpList(final Session session, final String var)
+	protected String processMsdpList(final Session session, final String var, final Map<Object,Object> reportables)
 	{
 		final MSDPListable type=(MSDPListable)CMath.s_valueOf(MSDPListable.class, var.toUpperCase().trim());
 		if(type == null)
@@ -1567,7 +1726,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		case LISTS: return response.append(msdpListToMsdpArray(MSDPListable.values())).toString();
 		case CONFIGURABLE_VARIABLES: return response.append(msdpListToMsdpArray(MSDPConfigurableVar.values())).toString();
 		case REPORTABLE_VARIABLES: return response.append(msdpListToMsdpArray(MSDPVariable.values())).toString();
-		case REPORTED_VARIABLES:  return response.append(msdpListToMsdpArray(session.getMSDPReportedVars().toArray(new Object[0]))).toString();
+		case REPORTED_VARIABLES:
+		{
+			List<String> set=new Vector<String>(reportables.size());
+			for(Object o : reportables.keySet())
+				set.add(o.toString());
+			return response.append(msdpListToMsdpArray(set.toArray(new Object[0]))).toString();
+		}
 		case SENDABLE_VARIABLES: return response.append(msdpListToMsdpArray(MSDPVariable.values())).toString();
 		default: return "?";
 		}
@@ -1581,31 +1746,57 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		//TODO:
 	}
 	
+	public byte[] pingMsdp(final Session session, final Map<Object,Object> reportables)
+	{
+		List<Object> broken=null;
+		synchronized(reportables)
+		{
+			for(Entry<Object,Object> e : reportables.entrySet())
+				if(!e.getValue().equals(getMsdpComparable(session, (MSDPVariable)e.getKey())))
+				{
+					if(broken==null)
+						broken=new LinkedList<Object>();
+					broken.add(e.getKey());
+				}
+		}
+		if(broken==null)
+			return null;
+		StringBuilder response=new StringBuilder("");
+		response.append((char)Session.TELNET_IAC).append((char)Session.TELNET_SB).append((char)Session.TELNET_MSDP);
+		for(Object var : broken)
+			response.append(Session.MSDP_VAR).append(var.toString()).append(Session.MSDP_VAL).append(processMsdpSend(session,var.toString()));
+		response.append((char)Session.TELNET_IAC).append((char)Session.TELNET_SE);
+		return response.toString().getBytes(Charset.forName("US-ASCII"));
+	}
+	
 	@SuppressWarnings("rawtypes")
-	public byte[] processMsdp(final Session session, final char[] data, final int dataSize)
+	public byte[] processMsdp(final Session session, final char[] data, final int dataSize, final Map<Object,Object> reportables)
 	{
 		Map<String,Object> cmds=this.buildMsdpMap(data, dataSize);
 		StringBuilder response=new StringBuilder("");
 		if(cmds.containsKey(MSDPCommand.REPORT.toString()))
 		{
-			Object o=cmds.get(MSDPCommand.REPORT.toString());
-			if(o instanceof String)
+			synchronized(reportables)
 			{
-				final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
-				if(type != null)
-					session.getMSDPReportedVars().add(type.toString());
-				response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o));
+				Object o=cmds.get(MSDPCommand.REPORT.toString());
+				if(o instanceof String)
+				{
+					final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
+					if(type != null)
+						reportables.put(type, getMsdpComparable(session, type));
+					response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o));
+				}
+				else
+				if(o instanceof List)
+					for(Object o2 : ((List)o))
+						if(o2 instanceof String)
+						{
+							final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
+							if(type != null)
+								reportables.put(type, getMsdpComparable(session, type));
+							response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o2));
+						}
 			}
-			else
-			if(o instanceof List)
-				for(Object o2 : ((List)o))
-					if(o2 instanceof String)
-					{
-						final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
-						if(type != null)
-							session.getMSDPReportedVars().add(type.toString());
-						response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpSend(session,(String)o2));
-					}
 		}
 		if(cmds.containsKey(MSDPCommand.SEND.toString()))
 		{
@@ -1622,12 +1813,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		{
 			Object o=cmds.get(MSDPCommand.LIST.toString());
 			if(o instanceof String)
-				response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpList(session,(String)o));
+				response.append(Session.MSDP_VAR).append((String)o).append(Session.MSDP_VAL).append(processMsdpList(session,(String)o,reportables));
 			else
 			if(o instanceof List)
 				for(Object o2 : ((List)o))
 					if(o2 instanceof String)
-						response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpList(session,(String)o2));
+						response.append(Session.MSDP_VAR).append((String)o2).append(Session.MSDP_VAL).append(processMsdpList(session,(String)o2,reportables));
 		}
 		if(cmds.containsKey(MSDPCommand.UNREPORT.toString()))
 		{
@@ -1636,7 +1827,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			{
 				final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
 				if(type != null)
-					session.getMSDPReportedVars().remove(type.toString());
+					reportables.remove(type);
 			}
 			else
 			if(o instanceof List)
@@ -1645,7 +1836,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					{
 						final MSDPVariable type=(MSDPVariable)CMath.s_valueOf(MSDPVariable.class, ((String)o).toUpperCase().trim());
 						if(type != null)
-							session.getMSDPReportedVars().remove(type.toString());
+							reportables.remove(type);
 					}
 		}
 		if(cmds.containsKey(MSDPCommand.RESET.toString()))

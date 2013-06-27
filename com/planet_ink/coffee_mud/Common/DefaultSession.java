@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginResult;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -46,6 +47,7 @@ public class DefaultSession implements Session
 {
 	protected static final int	   SOTIMEOUT		= 300;
 	protected static final int	   PINGTIMEOUT  	= 30000;
+	protected static final int	   MSDPPINGINTERVAL	= 1000;
 	protected static final char[]  PINGCHARS		= {'\0'};
 	private final HashSet		   telnetSupportSet = new HashSet();
 	private static final HashSet   mxpSupportSet	= new HashSet();
@@ -95,14 +97,16 @@ public class DefaultSession implements Session
 	protected boolean   	 bNextByteIs255		 = false;
 	protected boolean   	 connectionComplete	 = false;
 	protected ReentrantLock  writeLock 			 = new ReentrantLock(true);
-	protected CharCreationLibrary.LoginSession loginSession = null;
-	protected final Set<String> msdpReportables = new TreeSet<String>(); // EnumSet
+	protected LoginSession	 loginSession 		 = null;
+	
+	protected final Map<Object, Object> msdpReportables = new TreeMap<Object,Object>();
 
 	protected ColorState	 currentColor		 = ColorLibrary.COLORSTATE_NORMAL;
 	protected ColorState	 lastColor			 = ColorLibrary.COLORSTATE_NORMAL;
 	protected long			 lastStart			 = System.currentTimeMillis();
 	protected long			 lastStop			 = System.currentTimeMillis();
 	protected long			 lastLoopTop		 = System.currentTimeMillis();
+	protected long			 nextMsdpPing		 = System.currentTimeMillis();
 	protected long			 userLoginTime		 = System.currentTimeMillis();
 	protected long			 onlineTime			 = System.currentTimeMillis();
 	protected long			 activeMillis		 = 0;
@@ -965,7 +969,7 @@ public class DefaultSession implements Session
 			break;
 		case TELNET_MSDP:
 			{
-				byte[] resp=CMLib.utensils().processMsdp(this, suboptionData, dataSize);
+				byte[] resp=CMLib.utensils().processMsdp(this, suboptionData, dataSize, this.msdpReportables);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got "+dataSize+" bytes, sent "+((resp==null)?0:resp.length));
 				if(resp!=null)
@@ -1729,7 +1733,17 @@ public class DefaultSession implements Session
 			}
 			runThread=Thread.currentThread();
 		}
+		
 		activeMillis=System.currentTimeMillis();
+		if(activeMillis>=nextMsdpPing)
+		{
+			nextMsdpPing=activeMillis+MSDPPINGINTERVAL;
+			if(clientTelnetMode(TELNET_MSDP)&&(!killFlag))
+				CMLib.utensils().pingMsdp(this, msdpReportables);
+			else
+				nextMsdpPing=Long.MAX_VALUE;
+		}
+		
 		try
 		{
 			if(killFlag) 
@@ -2314,7 +2328,4 @@ public class DefaultSession implements Session
 				end++;
 		}
 	}
-
-	@Override
-	public Set<String> getMSDPReportedVars() { return msdpReportables; }
 }
