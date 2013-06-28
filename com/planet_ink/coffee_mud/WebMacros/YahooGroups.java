@@ -63,13 +63,14 @@ public class YahooGroups extends StdWebMacro
 					return "Fail: Http error";
 				StringBuilder cookieSet=new StringBuilder("");
 				List<String> cookies=M.get("Set-Cookie");
-				for(String val : cookies)
-				{
-					if(cookieSet.length()>0)
-						cookieSet.append(" ; ");
-					int x=val.indexOf(';');
-					cookieSet.append((x>=0)?val.substring(0,x).trim():val.trim());
-				}
+				if(cookies!=null)
+					for(String val : cookies)
+					{
+						if(cookieSet.length()>0)
+							cookieSet.append(" ; ");
+						int x=val.indexOf(';');
+						cookieSet.append((x>=0)?val.substring(0,x).trim():val.trim());
+					}
 				return cookieSet.toString().replace('&','#');
 			} catch (UnsupportedEncodingException e) {
 				Log.errOut(Thread.currentThread().getName(),e);

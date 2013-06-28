@@ -142,9 +142,10 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			URL url = new URL(urlStr);
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setReadTimeout(3000);
-			connection.setInstanceFollowRedirects(true);
+			//connection.setInstanceFollowRedirects(true);
 			connection.setConnectTimeout(3000);
-			connection.setRequestMethod("HEAD");
+			connection.setRequestMethod("GET");
+			connection.addRequestProperty("Host", url.getHost());
 			//connection.setDoInput(false);
 			//connection.setDoOutput(false);
 			connection.connect();
