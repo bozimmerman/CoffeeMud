@@ -57,7 +57,8 @@ public class YahooGroups extends StdWebMacro
 			if(password==null)
 				return " @break@";
 			try {
-				Map<String,List<String>> M = H.getHeaders("http://login.yahoo.com/?login="+URLEncoder.encode(user,"UTF8")+"&passwd="+URLEncoder.encode(password,"UTF8"));
+				final String url="http://login.yahoo.com?login="+URLEncoder.encode(user,"UTF8")+"&passwd="+URLEncoder.encode(password,"UTF8");
+				Map<String,List<String>> M = H.getHeaders(url);
 				if(M==null)
 					return "Fail: Http error";
 				StringBuilder cookieSet=new StringBuilder("");
