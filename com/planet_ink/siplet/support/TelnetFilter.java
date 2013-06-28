@@ -887,9 +887,11 @@ public class TelnetFilter
 
 	public final byte[] peruseInput(final String data)
 	{
+		if(data==null)
+			return null;
 		try
 		{
-			if((data!=null)&&(data.startsWith("\\")))
+			if(data.startsWith("\\"))
 			{
 				int x=data.indexOf(' ');
 				if(x<0)

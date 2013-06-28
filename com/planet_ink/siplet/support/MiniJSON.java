@@ -8,9 +8,9 @@ import java.util.TreeMap;
 
 public class MiniJSON
 {
-	private enum ObjectParseState { INITIAL, NEEDKEY, GOTKEY, NEEDOBJECT, GOTOBJECT };
-	private enum NumberParseState { INITIAL, NEEDN0DIGIT, HAVEDIGIT , NEEDDOT, NEEDDOTDIGIT, HAVEDOTDIGIT, HAVEE, HAVEEDIGIT };
-	private enum ArrayParseState { INITIAL, EXPECTOBJECT, NEEDOBJECT, GOTOBJECT };
+	private enum ObjectParseState { INITIAL, NEEDKEY, GOTKEY, NEEDOBJECT, GOTOBJECT }
+	private enum NumberParseState { INITIAL, NEEDN0DIGIT, HAVEDIGIT , NEEDDOT, NEEDDOTDIGIT, HAVEDOTDIGIT, HAVEE, HAVEEDIGIT }
+	private enum ArrayParseState { INITIAL, EXPECTOBJECT, NEEDOBJECT, GOTOBJECT }
 	
 	public static final Object NULL = new Object();
 	
