@@ -546,7 +546,9 @@ public class DefaultSession implements Session
 					str.append(c).append(" ");
 				Log.debugOut( str.toString()+"'");
 			}
-			out.write(bytes);
+			synchronized(out){
+				out.write(bytes);
+			}
 		}
 		finally
 		{
@@ -578,7 +580,9 @@ public class DefaultSession implements Session
 							str.append(c);
 						Log.debugOut( str.toString()+"'");
 					}
-					out.write(chars);
+					synchronized(out){
+						out.write(chars);
+					}
 					if(out.checkError())
 						stopSession(true,true,true);
 				}
@@ -1925,18 +1929,22 @@ public class DefaultSession implements Session
 		}
 		catch(SocketException e)
 		{
-			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
-				errorOut(e);
+			synchronized(sock) {
+				if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
+					errorOut(e);
+			}
 			status=Session.STATUS_LOGOUT;
 			preLogout(mob);
 			status=Session.STATUS_LOGOUT1;
 		}
 		catch(Exception t)
 		{
-			if(!Log.isMaskedErrMsg(t.getMessage())
-			&&((!killFlag)
-				||(sock[0]!=null&&sock[0].isConnected())))
-				errorOut(t);
+			synchronized(sock) {
+				if(!Log.isMaskedErrMsg(t.getMessage())
+				&&((!killFlag)
+					||(sock[0]!=null&&sock[0].isConnected())))
+					errorOut(t);
+			}
 			status=Session.STATUS_LOGOUT;
 			preLogout(mob);
 			status=Session.STATUS_LOGOUT1;
@@ -2147,18 +2155,22 @@ public class DefaultSession implements Session
 		}
 		catch(SocketException e)
 		{
-			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
-				errorOut(e);
+			synchronized(sock) {
+				if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
+					errorOut(e);
+			}
 			status=Session.STATUS_LOGOUT;
 			preLogout(mob);
 			status=Session.STATUS_LOGOUT1;
 		}
 		catch(Exception t)
 		{
-			if((!Log.isMaskedErrMsg(t.getMessage()))
-			&&((!killFlag)
-				||(sock[0]!=null&&sock[0].isConnected())))
-				errorOut(t);
+			synchronized(sock) {
+				if((!Log.isMaskedErrMsg(t.getMessage()))
+				&&((!killFlag)
+					||(sock[0]!=null&&sock[0].isConnected())))
+					errorOut(t);
+			}
 			status=Session.STATUS_LOGOUT;
 			preLogout(mob);
 			status=Session.STATUS_LOGOUT1;
