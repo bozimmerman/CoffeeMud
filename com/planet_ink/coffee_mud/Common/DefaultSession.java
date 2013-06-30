@@ -1586,7 +1586,7 @@ public class DefaultSession implements Session
 							try{
 								if(!out.checkError())
 								{
-									rawCharsOut(out,PINGCHARS);
+									out.write(PINGCHARS);
 									out.checkError();
 								}
 							} catch(Exception t){}
