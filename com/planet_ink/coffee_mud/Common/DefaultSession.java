@@ -59,8 +59,7 @@ public class DefaultSession implements Session
 	private volatile Thread	 writeThread 		 = null;
 	protected volatile int   status 			 = 0;
 	protected int   		 snoopSuspensionStack= 0;
-	protected final Object	 sockSync			 = new Object();
-	protected Socket		 sock;
+	protected final Socket[] sock				 = new Socket[1];
 	protected SesInputStream charWriter;
 	protected int			 inMaxBytesPerChar	 = 1;
 	protected BufferedReader in;
@@ -139,7 +138,7 @@ public class DefaultSession implements Session
 
 	public void initializeSession(Socket s, String introTextStr)
 	{
-		sock=s;
+		sock[0]=s;
 		try
 		{
 			debugOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
@@ -162,9 +161,9 @@ public class DefaultSession implements Session
 						return !killFlag;
 					} }, 0, 100, 1);
 
-			sock.setSoTimeout(SOTIMEOUT);
-			rawout=sock.getOutputStream();
-			rawin=sock.getInputStream();
+			sock[0].setSoTimeout(SOTIMEOUT);
+			rawout=sock[0].getOutputStream();
+			rawin=sock[0].getInputStream();
 			
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
@@ -1006,14 +1005,14 @@ public class DefaultSession implements Session
 		int escNum=CMath.s_int(esc);
 		// only LINE-based mxp escape sequences are respected
 		if(escNum>3) return;
-		sock.setSoTimeout(30000);
+		sock[0].setSoTimeout(30000);
 		StringBuffer line=new StringBuffer("");
 		while(((c=readByte())!=-1)&&(!killFlag))
 		{
 			if(c=='\n') break;
 			line.append((char)c);
 		}
-		sock.setSoTimeout(SOTIMEOUT);
+		sock[0].setSoTimeout(SOTIMEOUT);
 		String l=line.toString().toUpperCase().trim();
 		// now we have the line, so parse out tags -- only tags matter!
 		while(l.length()>0)
@@ -1427,10 +1426,13 @@ public class DefaultSession implements Session
 		int code=-1;
 		while(!killFlag)
 		{
-			if(sock.isClosed() || (!sock.isConnected()))
+			synchronized(sock)
 			{
-				setKillFlag(true);
-				return null;
+				if(sock[0].isClosed() || (!sock[0].isConnected()))
+				{
+					setKillFlag(true);
+					return null;
+				}
 			}
 			code=nonBlockingIn(true);
 			if(code==1)
@@ -1563,18 +1565,17 @@ public class DefaultSession implements Session
 
 	protected void closeSocks(String finalMsg)
 	{
-		if(sock!=null)
+		if(sock[0]!=null)
 		{
-			synchronized(sockSync)
+			synchronized(sock)
 			{
-				if(sock!=null)
+				if(sock[0]!=null)
 				{
 					try
 					{
 						Log.sysOut("Disconnect: "+finalMsg+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
 						status=Session.STATUS_LOGOUT7;
-						if(sock!=null) 
-							sock.shutdownInput();
+						sock[0].shutdownInput();
 						status=Session.STATUS_LOGOUT8;
 						if(out!=null)
 						{
@@ -1589,11 +1590,9 @@ public class DefaultSession implements Session
 								out.close();
 						}
 						status=Session.STATUS_LOGOUT9;
-						if(sock!=null)
-							sock.shutdownOutput();
+						sock[0].shutdownOutput();
 						status=Session.STATUS_LOGOUT10;
-						if(sock!=null)
-							sock.close();
+						sock[0].close();
 						status=Session.STATUS_LOGOUT11;
 					}
 					catch(IOException e)
@@ -1604,7 +1603,7 @@ public class DefaultSession implements Session
 						rawin=null;
 						in=null;
 						out=null;
-						sock=null;
+						sock[0]=null;
 					}
 				}
 			}
@@ -1615,7 +1614,7 @@ public class DefaultSession implements Session
 	{
 		try
 		{
-			return sock.getInetAddress().getHostAddress();
+			return sock[0].getInetAddress().getHostAddress();
 		}
 		catch (Exception e)
 		{
@@ -1926,7 +1925,7 @@ public class DefaultSession implements Session
 		}
 		catch(SocketException e)
 		{
-			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock!=null)&&sock.isConnected())))
+			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
 				errorOut(e);
 			status=Session.STATUS_LOGOUT;
 			preLogout(mob);
@@ -1936,7 +1935,7 @@ public class DefaultSession implements Session
 		{
 			if(!Log.isMaskedErrMsg(t.getMessage())
 			&&((!killFlag)
-					||(sock!=null&&sock.isConnected())))
+				||(sock[0]!=null&&sock[0].isConnected())))
 				errorOut(t);
 			status=Session.STATUS_LOGOUT;
 			preLogout(mob);
@@ -2148,7 +2147,7 @@ public class DefaultSession implements Session
 		}
 		catch(SocketException e)
 		{
-			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock!=null)&&sock.isConnected())))
+			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
 				errorOut(e);
 			status=Session.STATUS_LOGOUT;
 			preLogout(mob);
@@ -2158,7 +2157,7 @@ public class DefaultSession implements Session
 		{
 			if((!Log.isMaskedErrMsg(t.getMessage()))
 			&&((!killFlag)
-					||(sock!=null&&sock.isConnected())))
+				||(sock[0]!=null&&sock[0].isConnected())))
 				errorOut(t);
 			status=Session.STATUS_LOGOUT;
 			preLogout(mob);
