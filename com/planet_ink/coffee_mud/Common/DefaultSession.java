@@ -546,9 +546,7 @@ public class DefaultSession implements Session
 					str.append(c).append(" ");
 				Log.debugOut( str.toString()+"'");
 			}
-			synchronized(out){
-				out.write(bytes);
-			}
+			out.write(bytes);
 		}
 		finally
 		{
@@ -580,9 +578,7 @@ public class DefaultSession implements Session
 							str.append(c);
 						Log.debugOut( str.toString()+"'");
 					}
-					synchronized(out){
-						out.write(chars);
-					}
+					out.write(chars);
 					if(out.checkError())
 						stopSession(true,true,true);
 				}
