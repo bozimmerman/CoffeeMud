@@ -1586,8 +1586,7 @@ public class DefaultSession implements Session
 									out.checkError();
 								}
 							} catch(Exception t){}
-							if(out!=null)
-								out.close();
+							out.close();
 						}
 						status=Session.STATUS_LOGOUT9;
 						sock[0].shutdownOutput();
