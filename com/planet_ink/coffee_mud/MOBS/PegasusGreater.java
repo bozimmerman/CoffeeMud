@@ -44,7 +44,7 @@ public class PegasusGreater extends StdRideable
 		username="a Greater Pegasus";
 		setDescription("a beautiful, white stallion with wings.");
 		setDisplayText("A regal Pegasus flaps its wings.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

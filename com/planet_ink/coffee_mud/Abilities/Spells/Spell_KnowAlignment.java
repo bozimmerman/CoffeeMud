@@ -63,7 +63,7 @@ public class Spell_KnowAlignment extends Spell
 				mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CMLib.flags().getAlignmentName(target).toLowerCase()+".");
 			else
 			{
-				mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+Faction.ALIGN_NAMES[CMLib.dice().roll(1,Faction.ALIGN_NAMES.length-1,0)].toLowerCase()+".");
+				mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+Faction.Align.values()[CMLib.dice().roll(1,Faction.Align.values().length-1,0)].toString().toLowerCase()+".");
 			}
 		}
 

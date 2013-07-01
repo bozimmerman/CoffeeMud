@@ -128,7 +128,7 @@ public class FactionData extends StdWebMacro
 							httpReq.addFakeUrlParameter("RANGELOW"+v,""+FR.low());
 							httpReq.addFakeUrlParameter("RANGEHIGH"+v,""+FR.high());
 							httpReq.addFakeUrlParameter("RANGECODE"+v,""+FR.codeName());
-							httpReq.addFakeUrlParameter("RANGEFLAG"+v,""+Faction.ALIGN_NAMES[FR.alignEquiv()]);
+							httpReq.addFakeUrlParameter("RANGEFLAG"+v,""+FR.alignEquiv().toString());
 							v++;
 						}
 					}
@@ -156,12 +156,12 @@ public class FactionData extends StdWebMacro
 							str.append("<INPUT TYPE=TEXT NAME=RANGECODE"+showNum+" SIZE=10 VALUE=\""+code+"\">");
 							str.append("</TD><TD>");
 							str.append("<SELECT NAME=RANGEFLAG"+showNum+">");
-							for(int i=0;i<Faction.ALIGN_NAMES.length;i++)
+							for(Faction.Align i : Faction.Align.values())
 							{
-								str.append("<OPTION VALUE=\""+Faction.ALIGN_NAMES[i]+"\"");
-								if(Faction.ALIGN_NAMES[i].equalsIgnoreCase(align))
+								str.append("<OPTION VALUE=\""+i.toString()+"\"");
+								if(i.toString().equalsIgnoreCase(align))
 									str.append(" SELECTED");
-								str.append(">"+CMStrings.capitalizeAndLower(Faction.ALIGN_NAMES[i]));
+								str.append(">"+CMStrings.capitalizeAndLower(i.toString()));
 								
 							}
 							str.append("</SELECT>");
@@ -180,8 +180,8 @@ public class FactionData extends StdWebMacro
 					str.append("<INPUT TYPE=TEXT NAME=RANGECODE"+showNum+" SIZE=10 VALUE=\"\">");
 					str.append("</TD><TD>");
 					str.append("<SELECT NAME=RANGEFLAG"+showNum+">");
-					for(int i=0;i<Faction.ALIGN_NAMES.length;i++)
-						str.append("<OPTION VALUE=\""+Faction.ALIGN_NAMES[i]+"\">"+CMStrings.capitalizeAndLower(Faction.ALIGN_NAMES[i]));
+					for(Faction.Align i : Faction.Align.values())
+						str.append("<OPTION VALUE=\""+i.toString()+"\">"+CMStrings.capitalizeAndLower(i.toString()));
 					str.append("</SELECT>");
 					str.append("</TD></TR>");
 				}

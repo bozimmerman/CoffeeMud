@@ -42,7 +42,7 @@ public class StoneGiant extends StdMOB
 		username="a Stone Giant";
 		setDescription("A tall humanoid standing about 18 feet tall with gray, hairless flesh.");
 		setDisplayText("A Stone Giant glares at you.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
+		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
 		setMoney(0);
 		basePhyStats.setWeight(8000 + Math.abs(randomizer.nextInt() % 1001));
 

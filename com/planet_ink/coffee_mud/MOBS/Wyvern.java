@@ -44,7 +44,7 @@ public class Wyvern extends StdMOB
 		username="a wyvern";
 		setDescription("A distant cousin to the dragon, a wyvern is 35-foot-long dark brown to gray body of the wyvern is half tail. Its leathery batlike wings are over 50 feet from tip to tip..");
 		setDisplayText("A mean looking wyvern is here.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 

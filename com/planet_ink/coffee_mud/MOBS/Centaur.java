@@ -42,7 +42,7 @@ public class Centaur extends StdMOB
 		username="a centaur";
 		setDescription("A creature whose upper body is that of a man, and lower body that of a horse.");
 		setDisplayText("A centaur gallops around...");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(this,Faction.Align.GOOD);
 		setMoney(200);
 		basePhyStats.setWeight(600 + Math.abs(randomizer.nextInt() % 101));
 

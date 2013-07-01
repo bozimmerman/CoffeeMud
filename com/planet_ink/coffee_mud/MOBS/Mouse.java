@@ -40,7 +40,7 @@ public class Mouse extends StdMOB
 		username="a mouse";
 		setDescription("The little mouse is a small white rodent.");
 		setDisplayText("A little mouse tries to scurry out of your way.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 

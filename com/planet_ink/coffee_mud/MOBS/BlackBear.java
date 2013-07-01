@@ -42,7 +42,7 @@ public class BlackBear extends StdMOB
 		username="a Black Bear";
 		setDescription("A bear, husky with black fur.");
 		setDisplayText("A black bear ambles around.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 45));
 		setWimpHitPoint(2);

@@ -154,17 +154,17 @@ public class Dragon extends StdMOB
 		// ===== set the mod based on the color
 		switch (DragonColor())
 		{
-			case WHITE:		PointMod = 1;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case BLACK:		PointMod = 2;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case BLUE:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case GREEN:		PointMod = 4;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case RED:		PointMod = 5;	CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);	break;
-			case BRASS:		PointMod = 1;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
-			case COPPER:	PointMod = 2;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
-			case BRONZE:	PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
-			case SILVER:	PointMod = 4;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
-			case GOLD:		PointMod = 5;	CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);	break;
-			default:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);	break;
+			case WHITE:		PointMod = 1;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
+			case BLACK:		PointMod = 2;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
+			case BLUE:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
+			case GREEN:		PointMod = 4;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
+			case RED:		PointMod = 5;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
+			case BRASS:		PointMod = 1;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
+			case COPPER:	PointMod = 2;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
+			case BRONZE:	PointMod = 3;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
+			case SILVER:	PointMod = 4;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
+			case GOLD:		PointMod = 5;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
+			default:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);	break;
 		}
 
 		CMLib.leveler().fillOutMOB(this,basePhyStats().level());

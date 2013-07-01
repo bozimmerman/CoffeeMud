@@ -40,7 +40,7 @@ public class Rat extends StdMOB
 		username="a rat";
 		setDescription("A small furry rodent with a long, leathery tail.");
 		setDisplayText("A rat is here nibbling on something.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 

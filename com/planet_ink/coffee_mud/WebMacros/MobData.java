@@ -1252,12 +1252,15 @@ public class MobData extends StdWebMacro
 				if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
 				{
 					if(firstTime) old=""+M.fetchFaction(CMLib.factions().AlignID());
-					for(int v=1;v<Faction.ALIGN_NAMES.length;v++)
+					for(Faction.Align v : Faction.Align.values())
 					{
-						str.append("<OPTION VALUE="+Faction.ALIGN_NAMES[v]);
-						if(old.equalsIgnoreCase(Faction.ALIGN_NAMES[v]))
-							str.append(" SELECTED");
-						str.append(">"+CMStrings.capitalizeAndLower(Faction.ALIGN_NAMES[v].toLowerCase()));
+						if(v!=Faction.Align.INDIFF)
+						{
+							str.append("<OPTION VALUE="+v.toString());
+							if(old.equalsIgnoreCase(v.toString()))
+								str.append(" SELECTED");
+							str.append(">"+CMStrings.capitalizeAndLower(v.toString().toLowerCase()));
+						}
 					}
 				}
 				break;

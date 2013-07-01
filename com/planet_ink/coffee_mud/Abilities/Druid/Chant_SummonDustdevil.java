@@ -237,7 +237,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" whirls around here");
 		newMOB.setDescription("");
-		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.basePhyStats().setAbility(25);
 		newMOB.basePhyStats().setWeight(caster.phyStats().level()*(caster.phyStats().level()+(2*super.getXLEVELLevel(caster))));
 		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,caster.phyStats().level()+(2*super.getXLEVELLevel(caster)));

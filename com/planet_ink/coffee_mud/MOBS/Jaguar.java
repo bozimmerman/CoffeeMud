@@ -42,7 +42,7 @@ public class Jaguar extends StdMOB
 		username="a jaguar";
 		setDescription("A powerful cat with a deep chest and muscular limbs.  It\\`s covered in light yellow fur with black spots.");
 		setDisplayText("A jaguar prowls quietly.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 45));
 		setWimpHitPoint(2);

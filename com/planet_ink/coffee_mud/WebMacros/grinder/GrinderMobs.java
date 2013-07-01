@@ -473,8 +473,8 @@ public class GrinderMobs
 					M.basePhyStats().setArmor(CMath.s_int(old));
 					break;
 				case 16: // alignment
-					for(int v=0;v<Faction.ALIGN_NAMES.length;v++)
-						if(old.equalsIgnoreCase(Faction.ALIGN_NAMES[v]))
+					for(Faction.Align v : Faction.Align.values())
+						if(old.equalsIgnoreCase(v.toString()))
 							CMLib.factions().setAlignment(M,v);
 					break;
 				case 17: // money

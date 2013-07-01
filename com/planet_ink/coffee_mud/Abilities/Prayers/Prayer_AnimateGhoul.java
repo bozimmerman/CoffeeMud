@@ -111,7 +111,7 @@ public class Prayer_AnimateGhoul extends Prayer
 				newMOB.recoverCharStats();
 				newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
+				CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);
 				newMOB.baseState().setHitPoints(25*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));

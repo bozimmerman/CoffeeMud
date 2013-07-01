@@ -40,7 +40,7 @@ public class Teacher extends StdMOB
 		username="Cornelius, Knower of All Things";
 		setDescription("He looks wise beyond his years.");
 		setDisplayText("Cornelius is standing here contemplating your ignorance.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(this,Faction.Align.GOOD);
 		setMoney(100);
 		basePhyStats.setWeight(150);
 		setWimpHitPoint(200);

@@ -41,7 +41,7 @@ public class Citizen extends StdMOB
 		setDescription("");
 		baseCharStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'M':'F');
 		setDisplayText("A citizen goes about "+baseCharStats().hisher()+" business.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(this,Faction.Align.GOOD);
 		setMoney(10);
 		basePhyStats.setWeight(150);
 		setWimpHitPoint(0);

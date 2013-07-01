@@ -48,7 +48,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		username="a banker";
 		setDescription("He\\`s pleased to be of assistance.");
 		setDisplayText("A banker is waiting to serve you.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(this,Faction.Align.GOOD);
 		setMoney(0);
 		whatIsSoldMask=ShopKeeper.DEAL_BANKER;
 		basePhyStats.setWeight(150);

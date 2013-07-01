@@ -112,7 +112,7 @@ public class Prayer_AnimateSpectre extends Prayer
 				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 				newMOB.basePhyStats().setDisposition(PhyStats.IS_FLYING);
 				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK);
-				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
+				CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);
 				newMOB.baseState().setHitPoints(15*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));

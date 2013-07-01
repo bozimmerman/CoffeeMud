@@ -74,7 +74,7 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.basePhyStats().setDisposition(PhyStats.IS_FLYING|((mob==null)?PhyStats.IS_INVISIBLE:0));
 		newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INVISIBLE);
 		newMOB.basePhyStats().setDamage(4);
-		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
+		CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);
 		newMOB.baseState().setHitPoints(10*newMOB.basePhyStats().level());
 		newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
 		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));

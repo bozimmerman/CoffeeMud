@@ -42,7 +42,7 @@ public class Lion extends StdMOB
 		username="a lion";
 		setDescription("Lions have reddish-orange fur and great furry manes.");
 		setDisplayText("A lion watches you.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(300 + Math.abs(randomizer.nextInt() % 55));
 

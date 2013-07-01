@@ -421,19 +421,19 @@ public class Where extends StdCommand
 				String s=(String)commands.elementAt(i);
 				if(s.equalsIgnoreCase("good"))
 				{
-					alignment=CMLib.factions().getAlignThingie(Faction.ALIGN_GOOD);
+					alignment=CMLib.factions().getAlignMedianFacValue(Faction.Align.GOOD);
 					commands.removeElementAt(i);
 				}
 				else
 				if(s.equalsIgnoreCase("neutral"))
 				{
-					alignment=CMLib.factions().getAlignThingie(Faction.ALIGN_NEUTRAL);
+					alignment=CMLib.factions().getAlignMedianFacValue(Faction.Align.NEUTRAL);
 					commands.removeElementAt(i);
 				}
 				else
 				if(s.equalsIgnoreCase("evil"))
 				{
-					alignment=CMLib.factions().getAlignThingie(Faction.ALIGN_EVIL);
+					alignment=CMLib.factions().getAlignMedianFacValue(Faction.Align.EVIL);
 					commands.removeElementAt(i);
 				}
 			}

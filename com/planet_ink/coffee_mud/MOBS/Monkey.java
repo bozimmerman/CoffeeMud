@@ -40,7 +40,7 @@ public class Monkey extends StdMOB
 		username="a monkey";
 		setDescription("The monkey is brown with a big pink butt.");
 		setDisplayText("A silly monkey lops around here.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(2);
 

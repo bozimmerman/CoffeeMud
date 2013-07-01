@@ -160,7 +160,7 @@ public class Spell_SummonMonster extends Spell
 			newMOB.setName("a wierd extra-planar monster");
 			newMOB.setDisplayText("a wierd extra-planar monster stands here");
 			newMOB.setDescription("It's too difficult to describe what this thing looks like, but he/she/it is definitely angry!");
-			CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+			CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 			newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 			newMOB.baseState().setHitPoints(CMLib.dice().rollHP(level, 20));
 			newMOB.recoverMaxState();

@@ -1219,28 +1219,20 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * Returns a constant reflecting whether this range of faction value is 
 		 * equivalent to one of the legacy alignment constant values.
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_NAMES
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_INDIFF
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_EVIL
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_GOOD
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_NEUTRAL
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#Align
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange#setAlignEquiv(int)
 		 * @return an alignment constant
 		 */
-		public int alignEquiv();
+		public Align alignEquiv();
 
 		/**
 		 * Sets a constant reflecting whether this range of faction value is 
 		 * equivalent to one of the legacy alignment constant values.
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_NAMES
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_INDIFF
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_EVIL
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_GOOD
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALIGN_NEUTRAL
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#Align
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange#setAlignEquiv(int)
 		 * @param newVal a new alignment constant
 		 */
-		public void setAlignEquiv(int newVal);
+		public void setAlignEquiv(Align newVal);
 
 		/**
 		 * Returns a semicolon-delimited representation of this faction range, which
@@ -1602,17 +1594,11 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	/** internal flag masks meaning to skip normal ticking, retrieved by {@link Faction#getInternalFlags()} */
 	public static final long IFLAG_CUSTOMTICK=4;
 	
-	/** legacy constant for {@link FRange#alignEquiv()} denoting that the range does not reflect alignment */
-	public final static int ALIGN_INDIFF=0;
-	/** legacy constant for {@link FRange#alignEquiv()} denoting that the range reflects evil alignment */
-	public final static int ALIGN_EVIL=1;
-	/** legacy constant for {@link FRange#alignEquiv()} denoting that the range reflects neutral alignment */
-	public final static int ALIGN_NEUTRAL=2;
-	/** legacy constant for {@link FRange#alignEquiv()} denoting that the range reflects good alignment */
-	public final static int ALIGN_GOOD=3;
-	
-	/** String list for the {@link Faction#ALIGN_EVIL} constants */
-	public final static String[] ALIGN_NAMES={"","EVIL","NEUTRAL","GOOD"};
+	/** legacy enumerator constant for {@link FRange#alignEquiv()} denoting that the range does not reflect alignment */
+	public enum Align {
+		INDIFF, EVIL, NEUTRAL, GOOD
+	}
+	//TODO: public final static int ALIGN_GOOD=3;
 	
 	/** String list for the valid {@link Faction#experienceFlag()} constants */
 	public final static String[] EXPAFFECT_NAMES={"NONE","EXTREME","HIGHER","LOWER","FOLLOWHIGHER","FOLLOWLOWER"};

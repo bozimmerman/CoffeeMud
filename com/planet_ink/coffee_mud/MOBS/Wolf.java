@@ -42,7 +42,7 @@ public class Wolf extends StdMOB
 		username="a wolf";
 		setDescription("A powerful wolf with grey fur and amber eyes.");
 		setDisplayText("A wolf growls and stares at you.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

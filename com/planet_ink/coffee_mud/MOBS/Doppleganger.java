@@ -52,7 +52,7 @@ public class Doppleganger extends StdMOB
 		setBasePhyStats((PhyStats)CMClass.getCommon("DefaultPhyStats"));
 		setBaseCharStats((CharStats)CMClass.getCommon("DefaultCharStats"));
 		setBaseState((CharState)CMClass.getCommon("DefaultCharState"));
-		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
+		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
 		setMoney(250);
 		basePhyStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
 

@@ -42,7 +42,7 @@ public class Panther extends StdMOB
 		username="a panther";
 		setDescription("A powerful cat with a deep chest and muscular limbs, covered in midnight black fur.");
 		setDisplayText("A panther slowly stalks prey.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 45));
 		setWimpHitPoint(2);

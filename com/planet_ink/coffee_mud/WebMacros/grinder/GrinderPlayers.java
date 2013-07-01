@@ -166,8 +166,23 @@ public class GrinderPlayers extends GrinderMobs
 			case 21: if(CMLib.players().getPlayer(old)!=null) M.setLiegeID(old); break;
 			case 22: break; //if(CMLib.clans().getClan(old)!=null) M.setClan(old); break;
 			case 23: break; //M.setClanRole(CMath.s_int(old)); break;
-			case 24: CMLib.factions().setAlignment(M,CMath.s_int(old));break;
-			case 25: CMLib.factions().setAlignment(M,CMath.s_int(old));break;
+			case 24: // fall through
+			case 25: 
+			{
+				if(CMath.isInteger(old))
+				{
+					int a=CMath.s_int(old);
+					if((a>=0)&&(a<Faction.Align.values().length))
+						CMLib.factions().setAlignment(M,Faction.Align.values()[a]);
+				}
+				else
+				{
+					Faction.Align A=(Faction.Align)CMath.s_valueOf(Faction.Align.class,old.toUpperCase().trim());
+					if(A!=null)
+						CMLib.factions().setAlignment(M,A);
+				}
+				break;
+			}
 			case 26: M.setWimpHitPoint(CMath.s_int(old)); break;
 			case 27: if(CMLib.map().getRoom(old)!=null) M.setStartRoom(CMLib.map().getRoom(old)); break;
 			case 28: if(CMLib.map().getRoom(old)!=null) M.setLocation(CMLib.map().getRoom(old)); break;
@@ -376,8 +391,8 @@ public class GrinderPlayers extends GrinderMobs
 			String old=httpReq.getUrlParameter("ALIGNMENT");
 			Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
 			if((F!=null)&&(old!=null)&&(old.length()>0))
-				for(int v=1;v<Faction.ALIGN_NAMES.length;v++)
-					if(Faction.ALIGN_NAMES[v].equalsIgnoreCase(old))
+				for(Faction.Align v : Faction.Align.values())
+					if((v!=Faction.Align.INDIFF)&&(v.toString().equalsIgnoreCase(old)))
 						CMLib.factions().setAlignment(M,v);
 		}
 		String error=GrinderExits.dispositions(M,httpReq,parms);

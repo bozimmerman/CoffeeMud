@@ -42,7 +42,7 @@ public class Horse extends StdRideable
 		username="a horse";
 		setDescription("It\\`s a beautiful brown steed.");
 		setDisplayText("A horse stands here.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(700 + Math.abs(randomizer.nextInt() % 200));
 		setWimpHitPoint(2);

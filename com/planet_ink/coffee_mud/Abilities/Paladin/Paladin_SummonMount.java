@@ -174,7 +174,7 @@ public class Paladin_SummonMount extends StdAbility
 		newMOB.basePhyStats().setAbility(11);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
-		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(newMOB,Faction.Align.GOOD);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');

@@ -196,7 +196,7 @@ public class Chant_SummonSapling extends Chant
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" looks enraged!");
 		newMOB.setDescription("");
-		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		Ability A=CMClass.getAbility("Fighter_Rescue");
 		A.setProficiency(100);
 		newMOB.addAbility(A);

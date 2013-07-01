@@ -123,7 +123,7 @@ public class Spell_Delude extends Spell
 								for(;e.hasMoreElements();) 
 								{
 									Faction.FRange R=(Faction.FRange)e.nextElement();
-									if(R.alignEquiv()==Faction.ALIGN_GOOD) 
+									if(R.alignEquiv()==Faction.Align.GOOD) 
 									{
 										newAlign = R.random();
 										break;
@@ -140,7 +140,7 @@ public class Spell_Delude extends Spell
 								for(;e.hasMoreElements();) 
 								{
 									Faction.FRange R=(Faction.FRange)e.nextElement();
-									if(R.alignEquiv()==Faction.ALIGN_EVIL) 
+									if(R.alignEquiv()==Faction.Align.EVIL) 
 									{
 										newAlign = R.random();
 										break;

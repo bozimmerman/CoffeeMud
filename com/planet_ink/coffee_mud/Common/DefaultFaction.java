@@ -1431,20 +1431,20 @@ public class DefaultFaction implements Faction, MsgListener
 		public int high;
 		public String Name="";
 		public String CodeName="";
-		public int AlignEquiv;
+		public Faction.Align AlignEquiv;
 		public Faction myFaction=null;
 
 		public int low(){return low;}
 		public int high(){return high;}
 		public String name(){return Name;}
 		public String codeName(){return CodeName;}
-		public int alignEquiv(){return AlignEquiv;}
+		public Align alignEquiv(){return AlignEquiv;}
 		public Faction getFaction(){return myFaction;}
 
 		public void setLow(int newVal){low=newVal;}
 		public void setHigh(int newVal){high=newVal;}
 		public void setName(String newVal){Name=newVal;}
-		public void setAlignEquiv(int newVal){AlignEquiv=newVal;}
+		public void setAlignEquiv(Faction.Align newVal){AlignEquiv=newVal;}
 
 		public DefaultFactionRange(Faction F, String key)
 		{
@@ -1456,14 +1456,14 @@ public class DefaultFaction implements Faction, MsgListener
 			if(v.size()>3)
 				CodeName=v.elementAt(3);
 			if(v.size()>4)
-				AlignEquiv = CMLib.factions().getAlignEquiv(v.elementAt(4));
+				AlignEquiv = CMLib.factions().getAlignEnum(v.elementAt(4));
 			else
-				AlignEquiv = Faction.ALIGN_INDIFF;
+				AlignEquiv = Faction.Align.INDIFF;
 		}
 
 		public String toString()
 		{
-			return low +";"+high+";"+Name+";"+CodeName+";"+ALIGN_NAMES[AlignEquiv];
+			return low +";"+high+";"+Name+";"+CodeName+";"+AlignEquiv.toString();
 		}
 		public int random()
 		{

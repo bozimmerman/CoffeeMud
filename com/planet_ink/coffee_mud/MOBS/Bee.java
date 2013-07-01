@@ -41,7 +41,7 @@ public class Bee extends StdMOB
 		username="a bee";
 		setDescription("It\\`s a small buzzing insect with a nasty stinger on its butt.");
 		setDisplayText("A bee buzzes around here.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(1);
 		setWimpHitPoint(2);

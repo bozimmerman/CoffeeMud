@@ -42,7 +42,7 @@ public class Fox extends StdMOB
 		username="a fox";
 		setDescription("It`s got a red coat and a tail.  Never has there been a more majestic animal.");
 		setDisplayText("A fox growls.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);

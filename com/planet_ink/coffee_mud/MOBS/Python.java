@@ -40,7 +40,7 @@ public class Python extends StdMOB
 		username="a python";
 		setDescription("A humungous snake that is known for squeezing you to DEATH.");
 		setDisplayText("A python wants to give you a hug.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 
 		basePhyStats().setDamage(7);

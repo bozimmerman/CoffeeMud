@@ -40,7 +40,7 @@ public class Deer extends StdMOB
 		username="a deer";
 		setDescription("A nervous, but beautifully graceful creation.");
 		setDisplayText("A deer looks up as you happen along.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

@@ -167,7 +167,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
-		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);

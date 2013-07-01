@@ -42,7 +42,7 @@ public class GiantBat extends StdMOB
 		username="a giant bat";
 		setDescription("It is a giant version of your common bat.");
 		setDisplayText("A giant bat flies nearby.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

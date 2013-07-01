@@ -54,7 +54,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		username="a postman";
 		setDescription("He\\`s making a speedy delivery!");
 		setDisplayText("The local postman is waiting to serve you.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
+		CMLib.factions().setAlignment(this,Faction.Align.GOOD);
 		setMoney(0);
 		whatIsSoldMask=ShopKeeper.DEAL_POSTMAN;
 		basePhyStats.setWeight(150);

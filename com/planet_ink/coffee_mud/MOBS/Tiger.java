@@ -42,7 +42,7 @@ public class Tiger extends StdMOB
 		username="a tiger";
 		setDescription("Tigers have reddish-orange fur and dark vertical stripes.");
 		setDisplayText("A tiger prowls here.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(300 + Math.abs(randomizer.nextInt() % 55));
 

@@ -699,12 +699,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 3: // -Alignment
 					{
 						buf.append(skipFirstWord?"Only ":"Allows only ");
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
-							buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toLowerCase()+", ");
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
-							buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toLowerCase()+", ");
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
-							buf.append(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toLowerCase()+", ");
+						if(fromHereStartsWith(V,'+',v+1,Faction.Align.EVIL.toString().substring(0,3)))
+							buf.append(Faction.Align.EVIL.toString().toLowerCase()+", ");
+						if(fromHereStartsWith(V,'+',v+1,Faction.Align.GOOD.toString().substring(0,3)))
+							buf.append(Faction.Align.GOOD.toString().toLowerCase()+", ");
+						if(fromHereStartsWith(V,'+',v+1,Faction.Align.NEUTRAL.toString().substring(0,3)))
+							buf.append(Faction.Align.NEUTRAL.toString().toLowerCase()+", ");
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuilder(buf.substring(0,buf.length()-2));
 						buf.append(".  ");
@@ -2073,12 +2073,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append("Disallows "+R.racialCategory+".  ");
 					}
 				}
-				if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
-					buf.append("Disallows "+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toLowerCase()+".  ");
-				if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
-					buf.append("Disallows "+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toLowerCase()+".  ");
-				if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
-					buf.append("Disallows "+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toLowerCase()+".  ");
+				if(str.startsWith("-"+Faction.Align.EVIL.toString().substring(0,3)))
+					buf.append("Disallows "+Faction.Align.EVIL.toString().toLowerCase()+".  ");
+				if(str.startsWith("-"+Faction.Align.GOOD.toString().substring(0,3)))
+					buf.append("Disallows "+Faction.Align.GOOD.toString().toLowerCase()+".  ");
+				if(str.startsWith("-"+Faction.Align.NEUTRAL.toString().substring(0,3)))
+					buf.append("Disallows "+Faction.Align.NEUTRAL.toString().toLowerCase()+".  ");
 				if(str.startsWith("-MALE"))
 					buf.append("Disallows Males.  ");
 				if(str.startsWith("-FEMALE"))
@@ -2120,11 +2120,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				if(str.startsWith(R.minusCatNameStart))
 					return true;
 			}
-			if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
+			if(str.startsWith("-"+Faction.Align.EVIL.toString().substring(0,3)))
 				return true;
-			if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
+			if(str.startsWith("-"+Faction.Align.GOOD.toString().substring(0,3)))
 				return true;
-			if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
+			if(str.startsWith("-"+Faction.Align.NEUTRAL.toString().substring(0,3)))
 				return true;
 			if(str.startsWith("-MALE"))
 				return true;
@@ -2442,12 +2442,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 3: // -Alignment
 					{
 						final Vector<Object> parms=new Vector<Object>();
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
-							parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
-							parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
-						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
-							parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+						if(fromHereStartsWith(V,'+',v+1,Faction.Align.EVIL.toString().substring(0,3)))
+							parms.addElement(Faction.Align.EVIL.toString());
+						if(fromHereStartsWith(V,'+',v+1,Faction.Align.GOOD.toString().substring(0,3)))
+							parms.addElement(Faction.Align.GOOD.toString());
+						if(fromHereStartsWith(V,'+',v+1,Faction.Align.NEUTRAL.toString().substring(0,3)))
+							parms.addElement(Faction.Align.NEUTRAL.toString());
 						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
@@ -3077,29 +3077,29 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 				}
 				if((!found)
-				&&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toUpperCase())))
+				&&(str.equals("-"+Faction.Align.EVIL.toString())))
 				{
 					final Vector<Object> parms=new Vector<Object>();
 					entryType=zapCodes.get("+ALIGNMENT");
-					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
+					parms.addElement(Faction.Align.EVIL.toString());
 					found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
 				if((!found)
-				&&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toUpperCase())))
+				&&(str.equals("-"+Faction.Align.GOOD.toString())))
 				{
 					final Vector<Object> parms=new Vector<Object>();
 					entryType=zapCodes.get("+ALIGNMENT");
-					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
+					parms.addElement(Faction.Align.GOOD.toString());
 					found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
 				if((!found)
-				&&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toUpperCase())))
+				&&(str.equals("-"+Faction.Align.NEUTRAL.toString())))
 				{
 					final Vector<Object> parms=new Vector<Object>();
 					entryType=zapCodes.get("+ALIGNMENT");
-					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+					parms.addElement(Faction.Align.NEUTRAL.toString());
 					found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
@@ -3175,29 +3175,29 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 				}
 				if((!found)
-				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3))))
+				&&(str.startsWith("-"+Faction.Align.EVIL.toString().substring(0,3))))
 				{
 					final Vector<Object> parms=new Vector<Object>();
 					entryType=zapCodes.get("+ALIGNMENT");
-					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
+					parms.addElement(Faction.Align.EVIL.toString());
 					found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
 				if((!found)
-				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3))))
+				&&(str.startsWith("-"+Faction.Align.GOOD.toString().substring(0,3))))
 				{
 					final Vector<Object> parms=new Vector<Object>();
 					entryType=zapCodes.get("+ALIGNMENT");
-					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
+					parms.addElement(Faction.Align.GOOD.toString());
 					found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
 				if((!found)
-				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3))))
+				&&(str.startsWith("-"+Faction.Align.NEUTRAL.toString().substring(0,3))))
 				{
 					final Vector<Object> parms=new Vector<Object>();
 					entryType=zapCodes.get("+ALIGNMENT");
-					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+					parms.addElement(Faction.Align.NEUTRAL.toString());
 					found=true;
 					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}

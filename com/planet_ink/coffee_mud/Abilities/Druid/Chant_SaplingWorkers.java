@@ -229,7 +229,7 @@ public class Chant_SaplingWorkers extends Chant
 			newMOB.addAbility(A);
 		}
 		newMOB.setDescription("");
-		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
 		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));

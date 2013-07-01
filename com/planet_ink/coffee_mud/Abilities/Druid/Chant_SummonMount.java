@@ -166,7 +166,7 @@ public class Chant_SummonMount extends Chant
 		newMOB.basePhyStats().setAbility(11);
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
-		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');

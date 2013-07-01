@@ -40,7 +40,7 @@ public class StoneGolem extends StdMOB
 		username="a stone golem";
 		setDescription("Looke like an abomination of arcane magic.");
 		setDisplayText("A stone golem stares at you coldly");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 
 		basePhyStats().setDamage(4);

@@ -260,7 +260,7 @@ public class Chant_HowlersMoon extends Chant
 		MOB newMOB=CMClass.getMOB("GenMob");
 		newMOB.basePhyStats().setAbility(0);
 		newMOB.basePhyStats().setLevel(level);
-		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.basePhyStats().setWeight(350);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Wolf"));

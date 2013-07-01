@@ -60,7 +60,7 @@ public class CharGen extends StdCommand
 				switch(C.allowedWeaponLevel())
 				{
 				case CharClass.WEAPONS_EVILCLERIC:
-					CMLib.factions().setAlignment(M,Faction.ALIGN_EVIL);
+					CMLib.factions().setAlignment(M,Faction.Align.EVIL);
 				//$FALL-THROUGH$
 				case CharClass.WEAPONS_THIEFLIKE:
 				case CharClass.WEAPONS_BURGLAR:
@@ -78,7 +78,7 @@ public class CharGen extends StdCommand
 					W.setMaterial(RawMaterial.RESOURCE_STONE);
 					break;
 				case CharClass.WEAPONS_GOODCLERIC:
-					CMLib.factions().setAlignment(M,Faction.ALIGN_GOOD);
+					CMLib.factions().setAlignment(M,Faction.Align.GOOD);
 				//$FALL-THROUGH$
 				case CharClass.WEAPONS_MAGELIKE:
 					W.setMaterial(RawMaterial.RESOURCE_OAK);
@@ -143,7 +143,7 @@ public class CharGen extends StdCommand
 	protected MOB levelMOBup(int level, CharClass C, boolean player)
 	{
 		MOB mob=CMClass.getFactoryMOB();
-		CMLib.factions().setAlignment(mob,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(mob,Faction.Align.NEUTRAL);
 		mob.setName("Average Joe");
 		if(player) mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));

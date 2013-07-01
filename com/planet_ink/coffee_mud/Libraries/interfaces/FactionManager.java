@@ -64,12 +64,12 @@ public interface FactionManager extends CMLibrary, Tickable
 	public int getRandom(String factionID);
 	public void updatePlayerFactions(MOB mob, Room R);
 	public String AlignID();
-	public void setAlignment(MOB mob, int newAlignment);
+	public void setAlignment(MOB mob, Faction.Align newAlignment);
 	public void setAlignmentOldRange(MOB mob, int oldRange);
-	public int getAlignPurity(int faction, int AlignEq);
-	public int getAlignThingie(int AlignEq);
+	public int getAlignPurity(int faction, Faction.Align eq);
+	public int getAlignMedianFacValue(Faction.Align eq);
 	public int isFactionTag(String tag);
-	public int getAlignEquiv(String str);
+	public Faction.Align getAlignEnum(String str);
 	public void modifyFaction(MOB mob, Faction me) throws IOException;
 	public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet);
 	public boolean postFactionChange(MOB mob, Environmental tool,String factionID, int amount);

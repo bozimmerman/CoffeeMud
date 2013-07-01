@@ -40,7 +40,7 @@ public class Buffalo extends StdMOB
 		username="a buffalo";
 		setDescription("A large lumbering beast that looks too slow to get out of your way.");
 		setDisplayText("A huge buffalo grazes here.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

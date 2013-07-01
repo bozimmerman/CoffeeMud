@@ -42,7 +42,7 @@ public class Raven extends StdMOB
 		username="a raven";
 		setDescription("It\\`s a small black bird with a long yellow beak.");
 		setDisplayText("A raven flutters nearby.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 5));
 		setWimpHitPoint(2);

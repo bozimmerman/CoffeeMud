@@ -40,7 +40,7 @@ public class Parakeet extends StdMOB
 		username="a parakeet";
 		setDescription("a small colorful bird.");
 		setDisplayText("A parakeet flies nearby.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

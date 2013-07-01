@@ -111,7 +111,7 @@ public class Prayer_AnimateMummy extends Prayer
 				newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INVISIBLE|PhyStats.CAN_SEE_SNEAKERS);
-				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
+				CMLib.factions().setAlignment(newMOB,Faction.Align.EVIL);
 				newMOB.baseState().setHitPoints(30*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
 				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));

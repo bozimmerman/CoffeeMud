@@ -42,7 +42,7 @@ public class Cheetah extends StdMOB
 		username="a cheetah";
 		setDescription("A medium-sized, lightly built cat with sand covered fur and black spot.");
 		setDisplayText("A cheetah stalks its prey.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 45));
 		setWimpHitPoint(2);

@@ -42,7 +42,7 @@ public class BrownBear extends StdMOB
 		username="a Brown Bear";
 		setDescription("A bear, large and husky with brown fur.");
 		setDisplayText("A brown bear hunts here.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 45));
 		setWimpHitPoint(2);

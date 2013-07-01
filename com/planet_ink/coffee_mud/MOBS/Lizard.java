@@ -40,7 +40,7 @@ public class Lizard extends StdMOB
 		username="a lizard";
 		setDescription("A small unobtrusize reptile with rough green skin.");
 		setDisplayText("A lizard scurries by.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 
 		basePhyStats().setDamage(1);

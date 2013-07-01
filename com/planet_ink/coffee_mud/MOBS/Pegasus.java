@@ -43,7 +43,7 @@ public class Pegasus extends StdRideable
 		username="a Pegasus";
 		setDescription("a beautiful, white stallion with wings.");
 		setDisplayText("A Pegasus flaps its wings.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 		rideBasis=Rideable.RIDEABLE_AIR;

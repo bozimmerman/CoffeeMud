@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.Align;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -258,7 +259,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if(F!=null)
 				{
 					FR=CMLib.factions().getRange(F.factionID(),((MOB)P).fetchFaction(F.factionID()));
-					if((FR!=null)&&(FR.alignEquiv()==Faction.ALIGN_EVIL))
+					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.EVIL))
 						return true;
 				}
 			}
@@ -300,7 +301,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if(F!=null)
 				{
 					FR=CMLib.factions().getRange(F.factionID(),((MOB)P).fetchFaction(F.factionID()));
-					if((FR!=null)&&(FR.alignEquiv()==Faction.ALIGN_GOOD))
+					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.GOOD))
 						return true;
 				}
 			}
@@ -377,9 +378,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(E instanceof Physical)
 		{
 			if((((Physical)E).phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
-				return Faction.ALIGN_NAMES[Faction.ALIGN_GOOD];
+				return Faction.Align.GOOD.toString();
 			if((((Physical)E).phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
-				return Faction.ALIGN_NAMES[Faction.ALIGN_EVIL];
+				return Faction.Align.EVIL.toString();
 		}
 		if(E instanceof MOB)
 		{
@@ -391,16 +392,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if(F!=null)
 				{
 					FR=CMLib.factions().getRange(F.factionID(),((MOB)E).fetchFaction(F.factionID()));
-					if(FR!=null)
-					switch(FR.alignEquiv())
-					{
-					case Faction.ALIGN_EVIL: return Faction.ALIGN_NAMES[Faction.ALIGN_EVIL];
-					case Faction.ALIGN_GOOD: return Faction.ALIGN_NAMES[Faction.ALIGN_GOOD];
-					}
+					if((FR!=null)&&((FR.alignEquiv()==Align.GOOD)||(FR.alignEquiv()==Align.EVIL)))
+						return FR.alignEquiv().toString();
 				}
 			}
 		}
-		return Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL];
+		return Faction.Align.NEUTRAL.toString();
 	}
 
 	public boolean isNeutral(Physical P)
@@ -422,9 +419,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					if(FR!=null)
 					switch(FR.alignEquiv())
 					{
-					case Faction.ALIGN_NEUTRAL: return true;
-					case Faction.ALIGN_EVIL: return false;
-					case Faction.ALIGN_GOOD: return false;
+					case NEUTRAL: return true;
+					case EVIL: return false;
+					case GOOD: return false;
+					default: continue;
 					}
 				}
 			}

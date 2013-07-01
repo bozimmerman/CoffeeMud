@@ -40,7 +40,7 @@ public class Bull extends StdMOB
 		username="a bull";
 		setDescription("A large lumbering beast that looks too slow to get out of your way.");
 		setDisplayText("An old bull doesn`t look happy to see you.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

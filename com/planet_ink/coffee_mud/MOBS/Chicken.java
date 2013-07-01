@@ -40,7 +40,7 @@ public class Chicken extends StdMOB
 		username="a chicken";
 		setDescription("a fat, short winged bird");
 		setDisplayText("A chicken is here, not flying.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

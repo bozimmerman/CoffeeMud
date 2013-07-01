@@ -1258,13 +1258,13 @@ public class Test extends StdCommand
 				reqA.setMiscText("NOFOL -EVIL");
 				R2.addNonUninvokableEffect(reqA);
 				
-				CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_EVIL);
+				CMLib.factions().setAlignment(mobs[0],Faction.Align.EVIL);
 				
 				CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
 				if(mobs[0].location() == R2)
 				{ mob.tell("Error23-1"); return false;}
 				
-				CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_NEUTRAL);
+				CMLib.factions().setAlignment(mobs[0],Faction.Align.NEUTRAL);
 				CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
 				if(mobs[0].location() != R2)
 				{ mob.tell("Error23-2"); return false;}
@@ -1272,13 +1272,13 @@ public class Test extends StdCommand
 				R.bringMobHere(mobs[0],false);
 				
 				reqA.setMiscText("NOFOL -ALL +EVIL");
-				CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_NEUTRAL);
+				CMLib.factions().setAlignment(mobs[0],Faction.Align.NEUTRAL);
 				
 				CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
 				if(mobs[0].location() == R2)
 				{ mob.tell("Error23-3"); return false;}
 				
-				CMLib.factions().setAlignment(mobs[0],Faction.ALIGN_EVIL);
+				CMLib.factions().setAlignment(mobs[0],Faction.Align.EVIL);
 				
 				CMLib.tracking().walk(mobs[0],Directions.UP,false,false);
 				if(mobs[0].location() != R2)

@@ -271,10 +271,10 @@ public class Factions extends StdLibrary implements FactionManager
 	public int getRandom(String factionID) {  Faction f=getFaction(factionID); if(f!=null) return f.randomFaction(); return 0; }
 	
 	public String AlignID() { return "alignment.ini"; }
-	public void setAlignment(MOB mob, int newAlignment)
+	public void setAlignment(MOB mob, Faction.Align newAlignment)
 	{
 		if(getFaction(AlignID())!=null) 
-			mob.addFaction(AlignID(),getAlignThingie(newAlignment));
+			mob.addFaction(AlignID(),getAlignMedianFacValue(newAlignment));
 	}
 	
 	public void setAlignmentOldRange(MOB mob, int oldRange)
@@ -282,13 +282,13 @@ public class Factions extends StdLibrary implements FactionManager
 		if(getFaction(AlignID())!=null)
 		{
 			if(oldRange>=650)
-				setAlignment(mob,Faction.ALIGN_GOOD);
+				setAlignment(mob,Faction.Align.GOOD);
 			else
 			if(oldRange>=350) 
-				setAlignment(mob,Faction.ALIGN_NEUTRAL);
+				setAlignment(mob,Faction.Align.NEUTRAL);
 			else
 			if(oldRange>=0) 
-				setAlignment(mob,Faction.ALIGN_EVIL);
+				setAlignment(mob,Faction.Align.EVIL);
 			else{ /* a -1 value is the new norm */}
 		}
 	}
@@ -529,7 +529,7 @@ public class Factions extends StdLibrary implements FactionManager
 		return true;
 	}
 	
-	public int getAlignPurity(int faction, int AlignEq) 
+	public int getAlignPurity(int faction, Faction.Align eq) 
 	{
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
@@ -539,19 +539,19 @@ public class Factions extends StdLibrary implements FactionManager
 		for(;e.hasMoreElements();) 
 		{
 			Faction.FRange R=e.nextElement();
-			if(R.alignEquiv()==AlignEq) 
+			if(R.alignEquiv()==eq) 
 			{
 				if(R.low()<bottom) bottom=R.low();
 				if(R.high()>top) top=R.high();
 			}
 		}
-		switch(AlignEq) 
+		switch(eq) 
 		{
-			case Faction.ALIGN_GOOD:
+			case GOOD:
 				return Math.abs(pct - getPercent(AlignID(),top));
-			case Faction.ALIGN_EVIL:
+			case EVIL:
 				return Math.abs(getPercent(AlignID(),bottom) - pct);
-			case Faction.ALIGN_NEUTRAL:
+			case NEUTRAL:
 				return Math.abs(getPercent(AlignID(),(int)Math.round(CMath.div((top+bottom),2))) - pct);
 			default:
 				return 0;
@@ -559,7 +559,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 	
 	// Please don't mock the name, I couldn't think of a better one.  Sadly.
-	public int getAlignThingie(int AlignEq) 
+	public int getAlignMedianFacValue(Faction.Align eq) 
 	{
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
@@ -568,18 +568,18 @@ public class Factions extends StdLibrary implements FactionManager
 		for(;e.hasMoreElements();) 
 		{
 			Faction.FRange R=e.nextElement();
-			if(R.alignEquiv()==AlignEq) {
+			if(R.alignEquiv()==eq) {
 				if(R.low()<bottom) bottom=R.low();
 				if(R.high()>top) top=R.high();
 			}
 		}
-		switch(AlignEq) 
+		switch(eq) 
 		{
-			case Faction.ALIGN_GOOD:
+			case GOOD:
 				return top;
-			case Faction.ALIGN_EVIL:
+			case EVIL:
 				return bottom;
-			case Faction.ALIGN_NEUTRAL:
+			case NEUTRAL:
 				return (int)Math.round(CMath.div((top+bottom),2));
 			default:
 				return 0;
@@ -595,18 +595,12 @@ public class Factions extends StdLibrary implements FactionManager
 				return i;
 		return -1;
 	}
-	public int getAlignEquiv(String str)
+	public Faction.Align getAlignEnum(String str)
 	{
-		if(str.equalsIgnoreCase(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD])) 
-			return Faction.ALIGN_GOOD;
-		else 
-		if(str.equalsIgnoreCase(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL])) 
-			return Faction.ALIGN_NEUTRAL;
-		else 
-		if(str.equalsIgnoreCase(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL])) 
-			return  Faction.ALIGN_EVIL;
-		else 
-			return  Faction.ALIGN_INDIFF;
+		Faction.Align A=(Faction.Align)CMath.s_valueOf(Faction.Align.class, str.toUpperCase().trim());
+		if(A!=null)
+			return A;
+		return  Faction.Align.INDIFF;
 	}
 	
 	private String getWordAffOrBehav(String ID)
@@ -650,7 +644,7 @@ public class Factions extends StdLibrary implements FactionManager
 					list.append(CMStrings.padRight(FR.name(),20)+" ");
 					list.append(CMStrings.padRight(""+FR.low(),10)+" ");
 					list.append(CMStrings.padRight(""+FR.high(),10)+" ");
-					list.append(CMStrings.padRight(Faction.ALIGN_NAMES[FR.alignEquiv()],5)+"\n\r");
+					list.append(CMStrings.padRight(FR.alignEquiv().toString(),5)+"\n\r");
 				}
 				mob.tell(list.toString());
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
@@ -707,15 +701,15 @@ public class Factions extends StdLibrary implements FactionManager
 						FR.setHigh(CMath.s_int(newName));
 					StringBuffer prompt=new StringBuffer("Select the 'virtue' (if any) of this range:\n\r");
 					StringBuffer choices=new StringBuffer("");
-					for(int r=0;r<Faction.ALIGN_NAMES.length;r++)
+					for(Faction.Align i : Faction.Align.values())
 					{
-						choices.append(""+r);
-						if(r==Faction.ALIGN_INDIFF)
-							prompt.append(r+") Not applicable\n\r");
+						choices.append(""+i.ordinal());
+						if(i==Faction.Align.INDIFF)
+							prompt.append(i.ordinal()+") Not applicable\n\r");
 						else
-							prompt.append(r+") "+Faction.ALIGN_NAMES[r].toLowerCase()+"\n\r");
+							prompt.append(i.ordinal()+") "+i.toString().toLowerCase()+"\n\r");
 					}
-					FR.setAlignEquiv(CMath.s_int(mob.session().choose(prompt.toString()+"Enter alignment equivalency or 0: ",choices.toString(),""+FR.alignEquiv())));
+					FR.setAlignEquiv(Faction.Align.values()[CMath.s_int(mob.session().choose(prompt.toString()+"Enter alignment equivalency or 0: ",choices.toString(),""+FR.alignEquiv().ordinal()))]);
 				}
 			}
 

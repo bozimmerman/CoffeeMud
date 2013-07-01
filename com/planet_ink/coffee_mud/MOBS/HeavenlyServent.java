@@ -43,7 +43,7 @@ public class HeavenlyServent extends StdMOB
 		username="an archon servant";
 		setDescription("An angelic form in gowns of white, with golden hair, and an ever present smile.");
 		setDisplayText("A servant of the Archons is running errands.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);

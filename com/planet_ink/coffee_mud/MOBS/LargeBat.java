@@ -42,7 +42,7 @@ public class LargeBat extends StdMOB
 		username="a large bat";
 		setDescription("It looks like a bat, just larger.");
 		setDisplayText("A large bat flies nearby.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 

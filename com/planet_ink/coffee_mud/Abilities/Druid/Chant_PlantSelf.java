@@ -104,9 +104,9 @@ public class Chant_PlantSelf extends Chant
 			int myAlignment=mob.fetchFaction(CMLib.factions().AlignID());
 			int total=CMLib.factions().getTotal(CMLib.factions().AlignID());
 			int oneHalfPct=(int)Math.round(CMath.mul(total,.015));
-			if(CMLib.factions().getAlignPurity(myAlignment,Faction.ALIGN_INDIFF)<99)
+			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.INDIFF)<99)
 			{
-				if(CMLib.factions().getAlignPurity(myAlignment,Faction.ALIGN_EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.ALIGN_GOOD))
+				if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.Align.GOOD))
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), oneHalfPct);
 				else
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -oneHalfPct);

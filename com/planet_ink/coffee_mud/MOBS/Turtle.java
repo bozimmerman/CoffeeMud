@@ -42,7 +42,7 @@ public class Turtle extends StdMOB
 		username="a turtle";
 		setDescription("It\\`s a slow moving turtle with a big green shell.");
 		setDisplayText("A turtle seems to be moving here.");
-		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
