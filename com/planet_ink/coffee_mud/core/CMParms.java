@@ -1331,6 +1331,17 @@ public class CMParms
 		return s;
 	}
 
+	@SuppressWarnings("rawtypes")
+	public final static String toString(final Object o)
+	{
+		if(o==null) return "null";
+		if(o instanceof String) return (String)o;
+		if(o instanceof List) return toStringList((List)o);
+		if(o instanceof String[]) return toStringList((String[])o);
+		if(o instanceof Enumeration) return toStringList((Enumeration)o);
+		return o.toString();
+	}
+	
 	public final static String toStringList(final String[] V)
 	{
 		if((V==null)||(V.length==0)){
