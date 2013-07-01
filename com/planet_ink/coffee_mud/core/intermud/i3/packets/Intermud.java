@@ -588,7 +588,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 			try {
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.I3))
 					Log.sysOut("Intermud","Receiving: "+str);
-				data = (Vector)LPCData.getLPCData(str);
+				final Object o=LPCData.getLPCData(str);
+				if(o instanceof Vector)
+					data=(Vector)o;
+				else
+				{
+					Log.errOut("InterMud","390-"+o);
+					continue;
+				}
 			}
 			catch( I3Exception e ) {
 				String errMsg=e.getMessage()==null?e.toString():e.getMessage();
