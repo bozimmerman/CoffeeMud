@@ -306,13 +306,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				if(x<0)
 					R.setDescription(R.description()+theStr);
 				else
-					R.setDescription(R.description().substring(x+theStr.length()));
+					R.setDescription(R.description().substring(x+theStr.trim().length()));
 				if(!R.description().equals(oldDescription))
 					CMLib.database().DBUpdateRoom(R);
 			} 
 			else 
 			{
-				R.setDescription(R.description().substring(x+theStr.length()));
+				R.setDescription(R.description().substring(x+theStr.trim().length()));
 				if(!R.description().equals(oldDescription))
 					CMLib.database().DBUpdateRoom(R);
 			}
