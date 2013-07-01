@@ -1598,7 +1598,6 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public enum Align {
 		INDIFF, EVIL, NEUTRAL, GOOD
 	}
-	//TODO: public final static int ALIGN_GOOD=3;
 	
 	/** String list for the valid {@link Faction#experienceFlag()} constants */
 	public final static String[] EXPAFFECT_NAMES={"NONE","EXTREME","HIGHER","LOWER","FOLLOWHIGHER","FOLLOWLOWER"};
