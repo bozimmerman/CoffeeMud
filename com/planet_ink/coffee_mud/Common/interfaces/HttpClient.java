@@ -14,6 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -83,4 +85,40 @@ public interface HttpClient extends Tickable, CMCommon
 	 * @return the map of headers
 	 */
 	public Map<String,List<String>> getHeaders(final String urlStr);
+	
+	/**
+	 * An http request builder method that sets the maximum number of
+	 * bytes that can be read by the request processor.
+	 * @param bytes max bytes to read, or 0 for no limit
+	 * @return this
+	 */
+	public HttpClient maxReadBytes(int bytes);
+	/**
+	 * An http request builder method that sets the maximum number of
+	 * milliseconds that the reader will remain idle waiting for 
+	 * a byte of data.
+	 * @param ms the maximum number of ms to wait, or 0 for unlimited
+	 * @return this
+	 */
+	public HttpClient readTimeout(int ms);
+	public HttpClient connectTimeout(int ms);
+	public HttpClient reset();
+	public HttpClient body(String body);
+	public HttpClient body(byte[] body);
+	public HttpClient header(String key, String value);
+	public HttpClient method(Method meth);
+	public HttpClient doGet(String url) throws IOException;
+	public HttpClient doHead(String url) throws IOException;
+	public HttpClient doRequest(String url) throws IOException;
+	public Map<String,List<String>> getResponseHeaders();
+	public int getResponseCode();
+	public InputStream getResponseBody();
+	public int getResponseContentLength();
+	public void finished();
+	
+	/**
+	 * HTTP Methods that are acceptable
+	 * @author BZ
+	 */
+	public enum Method { GET, POST, HEAD }
 }

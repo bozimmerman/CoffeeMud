@@ -1260,6 +1260,21 @@ public class CMath
 		try{ return Integer.parseInt(INT); }
 		catch(Exception e){ return 0;}
 	}
+
+	/**
+	 * Returns the integer value of a string without crashing
+	 *
+	 * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
+	 * @param INT Integer value of string
+	 * @param def default value if the given string is not an int
+	 * @return int Integer value of the string
+	 */
+	public final static int s_int(final String INT, final int def)
+	{
+		try{ return Integer.parseInt(INT); }
+		catch(Exception e){ return def;}
+	}
+	
 	/**
 	 * Returns the short value of a string without crashing
 	 *
