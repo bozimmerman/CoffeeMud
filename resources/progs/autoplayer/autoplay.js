@@ -112,7 +112,7 @@ function finishCreateCharacter()
 	if(startsWith(achoice,"or "))
 		achoice=achoice.substr(3);
 	writeLine(achoice);
-	waitFor(".*Press >>ENTER<< to Begin!.*");
+	waitFor(".*Enter Anything to begin:.*");
 	writeLine("");
 	waitForPrompt();
 }
