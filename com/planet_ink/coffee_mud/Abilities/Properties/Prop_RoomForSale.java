@@ -294,15 +294,21 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				CMLib.database().DBUpdateRoom(R);
 				x=R.description().indexOf(otherStr);
 			}
-			if((R.description().indexOf(theStr.trim())<0)||(!R.displayText().equals(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR)))
+			if((R.description().indexOf(theStr.trim())<0)||(reset&&(!R.displayText().equals(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR))))
 			{
+				String oldDescription=R.description();
 				if(reset)
 				{
-					R.setDisplayText(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
 					R.setDescription("");
+					R.setDisplayText(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
 				}
-				R.setDescription(R.description()+theStr);
-				CMLib.database().DBUpdateRoom(R);
+				x=R.description().indexOf(theStr.trim());
+				if(x<0)
+					R.setDescription(R.description()+theStr);
+				else
+					R.setDescription(R.description().substring(x+theStr.length()));
+				if(!R.description().equals(oldDescription))
+					CMLib.database().DBUpdateRoom(R);
 			}
 			Item I=R.findItem(null,"$id$");
 			if((I==null)||(!I.ID().equals("GenWallpaper")))
