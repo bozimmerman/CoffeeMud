@@ -62,7 +62,7 @@ public class Kill extends StdCommand
 				return false;
 			}
 			else
-			if(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
+			if(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)
 				return false;
 			else
 				target=mob.getVictim();
@@ -107,7 +107,7 @@ public class Kill extends StdCommand
 		{
 			MOB oldVictim=mob.getVictim();
 			if(((oldVictim!=null)&&(oldVictim==target)
-			&&(CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)))
+			&&(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM)==CombatLibrary.COMBAT_DEFAULT)))
 			{
 				mob.tell("^f^<FIGHT^>You are already fighting "+mob.getVictim().name()+".^</FIGHT^>^?");
 				return false;

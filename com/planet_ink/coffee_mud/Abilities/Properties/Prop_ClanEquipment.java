@@ -86,7 +86,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	protected String clanType="";
 	String lastMessage=null;
 	protected CharStats EQadjCharStats=null;
-	protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);
+	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	public int triggerMask() 
 	{ 
@@ -237,7 +237,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		{
 			hash=hash*-1;
 		}
-		return CMProps.getListFileValueByHash(CMProps.SYSTEMLF_MAGIC_WORDS,hash);
+		return CMProps.getListFileValueByHash(CMProps.ListFile.MAGIC_WORDS,hash);
 	}
 
 	/*

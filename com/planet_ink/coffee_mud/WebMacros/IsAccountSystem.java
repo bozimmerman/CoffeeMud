@@ -38,6 +38,6 @@ public class IsAccountSystem extends StdWebMacro
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		return ""+(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1);
+		return ""+(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1);
 	}
 }

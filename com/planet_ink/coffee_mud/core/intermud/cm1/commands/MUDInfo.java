@@ -50,19 +50,19 @@ public class MUDInfo extends CM1Command
 		try
 		{
 			if((parameters.length()==0)||(parameters.equalsIgnoreCase("STATUS")))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDSTATUS)+"]");
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDSTATUS)+"]");
 			else
 			if(parameters.equalsIgnoreCase("PORTS"))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+"]");
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDPORTS)+"]");
 			else
 			if(parameters.equalsIgnoreCase("VERSION"))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDVER)+"]");
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDVER)+"]");
 			else
 			if(parameters.equalsIgnoreCase("DOMAIN"))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+"]");
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+"]");
 			else
 			if(parameters.equalsIgnoreCase("NAME"))
-				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+"]");
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.Str.MUDNAME)+"]");
 			else
 				req.sendMsg("[FAIL "+getHelp(req.getUser(), null, null)+"]");
 		}

@@ -158,7 +158,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		Environmental item=null;
 		boolean sysmsgs=(viewerM!=null)?CMath.bset(viewerM.getBitmap(),MOB.ATT_SYSOPMSGS):false;
 		int numShown=0;
-		int maxToShow=CMProps.getIntVar(CMProps.SYSTEMI_MAXITEMSHOWN);
+		int maxToShow=CMProps.getIntVar(CMProps.Int.MAXITEMSHOWN);
 		while(items.size()>0)
 		{
 			if((maxToShow>0)&&(!longLook)&&(!sysmsgs)&&(!useName)&&(numShown>=maxToShow))

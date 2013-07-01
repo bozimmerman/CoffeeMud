@@ -43,8 +43,8 @@ public class Disease_Chlamydia extends Disease
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 5;}
 
-	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*10;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);}
+	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;}
+	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
 	protected String DISEASE_DONE(){return "Your chlamydia clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}

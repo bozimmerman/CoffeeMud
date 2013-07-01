@@ -517,7 +517,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		case '5': case '6': case '7': case '8': case '9': 
 			if((S==null)||(S.clientTelnetMode(Session.TELNET_MSP)))
 			{
-				final String escapeSequence=CMProps.getVar(CMProps.SYSTEM_ESC0 + (c - ('0')));
+				final int escOrd=CMProps.Str.ESC0.ordinal() + (c - ('0'));
+				final CMProps.Str escEnum=CMProps.Str.values()[escOrd];
+				final String escapeSequence=CMProps.getVar(escEnum);
 				str.insert(index+2, escapeSequence);
 				str.delete(index, index+2);
 				return index+escapeSequence.length()-1;

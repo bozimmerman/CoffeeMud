@@ -576,7 +576,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	public boolean subscribeToJournal(String journalName, String userName, boolean saveMailingList)
 	{
 		boolean updateMailingLists=false;
-		if((CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0)
+		if((CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
 		&&(CMLib.players().playerExists(userName)||CMLib.players().accountExists(userName)))
 		{
 			Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
@@ -594,7 +594,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			{
 				mylist.add(userName);
 				updateMailingLists=true;
-				if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
+				if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 				{
 					String subscribeTitle="Subscribed";
 					String subscribedMsg="You are now subscribed to "+journalName+". To unsubscribe, send an email with a subject of unsubscribe.";
@@ -606,7 +606,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						if((msgs.length>0) && (msgs[1].length()>0))
 							subscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[1],"<NAME>",journalName),false);
 					}
-					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.SYSTEM_MAILBOX),journalName,journalName,userName,subscribeTitle,subscribedMsg);
+					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.Str.MAILBOX),journalName,journalName,userName,subscribeTitle,subscribedMsg);
 				}
 			}
 		}
@@ -620,7 +620,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	public boolean unsubscribeFromJournal(String journalName, String userName, boolean saveMailingList)
 	{
 		boolean updateMailingLists = false;
-		if(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()==0)
+		if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			return false;
 		
 		Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
@@ -631,7 +631,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			{
 				mylist.remove(l);
 				updateMailingLists=true;
-				if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
+				if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 				{
 					String unsubscribeTitle="Un-Subscribed";
 					String unsubscribedMsg="You are no longer subscribed to "+journalName+". To subscribe again, send an email with a subject of subscribe.";
@@ -643,7 +643,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						if((msgs.length>3) && (msgs[1].length()>0))
 							unsubscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[3],"<NAME>",journalName),false);
 					}
-					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.SYSTEM_MAILBOX),journalName,journalName,userName,unsubscribeTitle,unsubscribedMsg);
+					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.Str.MAILBOX),journalName,journalName,userName,unsubscribeTitle,unsubscribedMsg);
 				}
 			}
 		if(updateMailingLists && saveMailingList)

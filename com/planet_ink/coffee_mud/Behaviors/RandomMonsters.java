@@ -274,7 +274,7 @@ public class RandomMonsters extends ActiveTicker
 	{
 		tickStatus=Tickable.STATUS_START;
 		super.tick(ticking,tickID);
-		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if((!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMMONSTERS)))
 		{
 			tickStatus=Tickable.STATUS_NOT;

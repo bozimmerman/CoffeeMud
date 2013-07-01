@@ -42,7 +42,7 @@ public class Disease_Malaria extends Disease
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);}
+	protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
 	protected int DISEASE_DELAY(){return 5;}
 	protected String DISEASE_DONE(){return "Your malaria clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with malaria.^?";}
@@ -62,7 +62,7 @@ public class Disease_Malaria extends Disease
 		MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
-		if((!mob.amDead())&&((++tickUp)==CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+		if((!mob.amDead())&&((++tickUp)==CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))
 		{
 			tickUp=0;
 			conDown++;

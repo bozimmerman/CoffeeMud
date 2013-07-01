@@ -72,7 +72,7 @@ public class Duel extends StdCommand
 			Tattoo iuT=mob.findTattoo("UDUEL");
 			if((uiT==null)&&(iiT==null)&&(uuT==null)&&(iuT==null))
 			{
-				int duelTicks=CMProps.getIntVar(CMProps.SYSTEMI_DUELTICKDOWN);
+				int duelTicks=CMProps.getIntVar(CMProps.Int.DUELTICKDOWN);
 				mob.addTattoo(new Tattoo("IDUEL",duelTicks));
 				target.addTattoo(new Tattoo("UDUEL",duelTicks));
 				long time = CMProps.getTickMillis() * duelTicks;
@@ -120,7 +120,7 @@ public class Duel extends StdCommand
 			else
 			if((iuT!=null)||(iiT!=null))
 			{
-				int duelTicks=CMProps.getIntVar(CMProps.SYSTEMI_DUELTICKDOWN);
+				int duelTicks=CMProps.getIntVar(CMProps.Int.DUELTICKDOWN);
 				long time = CMProps.getTickMillis() * duelTicks;
 				mob.tell(mob,target,null,"Your previous challenge has not yet expired.  Please wait "+(time/1000)+" seconds longer and try again.");
 				return false;

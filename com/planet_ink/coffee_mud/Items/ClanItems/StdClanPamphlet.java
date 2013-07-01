@@ -114,7 +114,7 @@ public class StdClanPamphlet extends StdClanItem
 					}
 				}
 				if(tradeTime<=0)
-					tradeTime=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+					tradeTime=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 			}
 		}
 		return true;

@@ -39,8 +39,8 @@ public class Thief_CarefulStep extends ThiefSkill
 	public String name(){ return "Careful Step";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),50.0));}
-	public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),50.0));}
+	public double castingTime(final MOB mob, final List<String> cmds){return CMProps.getActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME),50.0));}
+	public double combatCastingTime(final MOB mob, final List<String> cmds){return CMProps.getCombatActionSkillCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME),50.0));}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"CARESTEP","CAREFULSTEP"};
 	public String[] triggerStrings(){return triggerStrings;}

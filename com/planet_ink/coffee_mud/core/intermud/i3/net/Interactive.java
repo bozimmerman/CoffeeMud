@@ -295,8 +295,8 @@ public abstract class Interactive implements ServerUser {
 	 * @return the host name for this user's current site
 	 */
 	public final String getAddressName() {
-		if(CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).length()>0)
-			return CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
+		if(CMProps.getVar(CMProps.Str.MUDDOMAIN).length()>0)
+			return CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 		return socket.getInetAddress().getHostName();
 	}
 

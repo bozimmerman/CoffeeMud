@@ -62,7 +62,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String		 savedPose		= "";
 	protected String		 notes			= "";
 	protected int   		 wrap			= 78;
-	protected int   		 pageBreak		= CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
+	protected int   		 pageBreak		= CMProps.getIntVar(CMProps.Int.PAGEBREAK);
 	protected int[] 		 birthday		= null;
 	protected MOB   		 replyTo		= null;
 	protected int   		 replyType		= 0;
@@ -263,7 +263,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 	public void setPassword(String newPassword)
 	{
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_HASHPASSWORDS)
+		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
 		&&(!CMLib.encoder().isARandomHashString(newPassword)))
 			password=CMLib.encoder().makeRandomHashString(newPassword);
 		else
@@ -307,7 +307,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if((prompt==null)||(prompt.length()==0))
 		{
-			prompt=CMProps.getVar(CMProps.SYSTEM_DEFAULTPROMPT);
+			prompt=CMProps.getVar(CMProps.Str.DEFAULTPROMPT);
 			if((prompt==null)||(prompt.length()==0))
 				return "^N%E<^h%hhp ^m%mm ^v%vmv^N>";
 		}
@@ -641,7 +641,7 @@ public class DefaultPlayerStats implements PlayerStats
 		else
 		{
 			Calendar C=Calendar.getInstance();
-			C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
+			C.add(Calendar.DATE,CMProps.getIntVar(CMProps.Int.TRIALDAYS));
 			setAccountExpiration(C.getTimeInMillis());
 		}
 		str=CMLib.xml().getValFromPieces(xml,"WRAP");
@@ -653,7 +653,7 @@ public class DefaultPlayerStats implements PlayerStats
 		if(CMath.isInteger(str)) 
 			pageBreak=CMath.s_int(str);
 		else
-			pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
+			pageBreak=CMProps.getIntVar(CMProps.Int.PAGEBREAK);
 		str=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"SECGRPS"));
 		if(debug) Log.debugOut("SECGRPS="+str);
 		getSetSecurityFlags(str);
@@ -740,7 +740,7 @@ public class DefaultPlayerStats implements PlayerStats
 		
 		str = CMLib.xml().getValFromPieces(xml,"ACCOUNT");
 		if(debug) Log.debugOut("ACCOUNT="+str);
-		if((str != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+		if((str != null)&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
 			account = CMLib.players().getLoadAccount(str);
 	}
 

@@ -60,12 +60,12 @@ public class Export extends StdCommand
 		else
 		if(fileName.equalsIgnoreCase("EMAIL"))
 		{
-			if(!CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
+			if(!CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 			{
 				if(S!=null) mob.tell("Mail forwarding is not enabled on this mud.");
 				return;
 			}
-			if(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()==0)
+			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			{
 				if(S!=null) mob.tell("No email box has been defined.");
 				return;
@@ -78,7 +78,7 @@ public class Export extends StdCommand
 			xml=xml.replace('\n',' ');
 			xml=xml.replace('\r',' ');
 			CMLib.database().DBWriteJournal(
-					CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+					CMProps.getVar(CMProps.Str.MAILBOX),
 					mob.Name(),
 					mob.Name(),
 					"Exported XML",

@@ -142,7 +142,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				{
 					if(!safetyCheck(mob,message.toUpperCase())) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
-					int destLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
+					int destLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 					if(destLevel==0) destLevel=30;
 					if(destLevel<=target.basePhyStats().level())
 						destLevel=100;

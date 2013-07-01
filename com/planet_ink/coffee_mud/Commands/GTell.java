@@ -47,7 +47,7 @@ public class GTell extends StdCommand
 			mob.tell("Tell the group what?");
 			return false;
 		}
-		text=CMProps.applyINIFilter(text,CMProps.SYSTEM_SAYFILTER);
+		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
 		
 		if((commands.size()>2)
 		&&((((String)commands.elementAt(1)).equalsIgnoreCase("last"))

@@ -38,7 +38,7 @@ public class MUDServerStatus extends StdWebMacro
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
+		return CMProps.getVar(CMProps.Str.MUDSTATUS);
 	}
 
 }

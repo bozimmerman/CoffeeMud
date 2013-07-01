@@ -94,7 +94,7 @@ public class JournalFunction extends StdWebMacro
 				to=CMStrings.capitalizeAndLower(to);
 			}
 			else
-			if(journalName.equalsIgnoreCase(CMProps.getVar(CMProps.SYSTEM_MAILBOX))
+			if(journalName.equalsIgnoreCase(CMProps.getVar(CMProps.Str.MAILBOX))
 			&&(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.JOURNALS)))
 				return "Post not submitted -- You are not authorized to send email to ALL.";
 			String subject=httpReq.getUrlParameter("SUBJECT");
@@ -117,12 +117,12 @@ public class JournalFunction extends StdWebMacro
 			String text=httpReq.getUrlParameter("NEWTEXT");
 			if((text==null)||(text.length()==0))
 				return "Post not submitted -- No text!";
-			if(journalName.equalsIgnoreCase(CMProps.getVar(CMProps.SYSTEM_MAILBOX))
-			&&(CMProps.getIntVar(CMProps.SYSTEMI_MAXMAILBOX)>0)
+			if(journalName.equalsIgnoreCase(CMProps.getVar(CMProps.Str.MAILBOX))
+			&&(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
 			&&(!to.equalsIgnoreCase("ALL")))
 			{
 				int count=CMLib.database().DBCountJournal(journalName,null,to);
-				if(count>=CMProps.getIntVar(CMProps.SYSTEMI_MAXMAILBOX))
+				if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
 					return "Post not submitted -- Mailbox is full!";
 			}
 			JournalsLibrary.JournalEntry msg = new JournalsLibrary.JournalEntry();
@@ -276,7 +276,7 @@ public class JournalFunction extends StdWebMacro
 							messages.append("Player '"+toName+"' does not exist, or has no email address.<BR>");
 						else
 						{
-							CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+							CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 															  M.Name(),
 															  toM.Name(),
 															  "RE: "+entry.subj,

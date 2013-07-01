@@ -108,7 +108,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
 	public PlayerAccount getLoadAccountByEmail(String email)
 	{
-		if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=1)
+		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=1)
 			return null;
 		for(Enumeration<PlayerAccount> e=accounts();e.hasMoreElements();)
 		{
@@ -151,7 +151,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	public MOB getLoadPlayer(String last)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return null;
 		MOB M=getPlayer(last);
 		if(M!=null) return M;
@@ -584,10 +584,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOPURGE))
 			return true;
-		String mask=CMProps.getVar(CMProps.SYSTEM_AUTOPURGE);
+		String mask=CMProps.getVar(CMProps.Str.AUTOPURGE);
 		if(mask.hashCode() != this.autoPurgeHash)
 		{
-			int lastLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)+100;
+			int lastLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+100;
 			long[][] presorted=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(mask.trim(),true), 2, 0, lastLevel);
 			autoPurgeDaysLevels=new long[lastLevel+1];
 			prePurgeLevels=new long[lastLevel+1];
@@ -708,16 +708,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		
 		// accounts!
-		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.PURGEACCOUNTS))&&(CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS)>0))
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.PURGEACCOUNTS))&&(CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS)>0))
 			for(final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",null); pe.hasMoreElements();)
 			{
 				PlayerAccount PA=pe.nextElement();
 				if((PA.numPlayers() > 0)
 				||(isProtected(protectedOnes, PA.accountName())))
 					continue;
-				final long lastDateTimePurge = PA.lastDateTime() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
-				final long lastUpdatedPurge = PA.lastUpdated() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
-				final long accountExpPurge = PA.getAccountExpiration() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.SYSTEMI_ACCOUNTPURGEDAYS));
+				final long lastDateTimePurge = PA.lastDateTime() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
+				final long lastUpdatedPurge = PA.lastUpdated() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
+				final long accountExpPurge = PA.getAccountExpiration() + (TimeManager.MILI_DAY * CMProps.getIntVar(CMProps.Int.ACCOUNTPURGEDAYS));
 				long lastTime = lastDateTimePurge;
 				if(lastUpdatedPurge > lastTime) lastTime=lastUpdatedPurge;
 				if(accountExpPurge > lastTime) lastTime=accountExpPurge;
@@ -742,7 +742,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		//  timeLeft is in millis
 		String from="AutoPurgeWarning";
 		String to=mob.Name();
-		String subj=CMProps.SYSTEM_MUDNAME+" Autopurge Warning: "+to;
+		String subj=CMProps.Str.MUDNAME+" Autopurge Warning: "+to;
 		String textTimeLeft="";
 		if(timeLeft<0)
 			timeLeft = 1000*60*60*24;
@@ -762,8 +762,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		SMTPLibrary.SMTPClient SC=null;
 		try
 		{
-			if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
-				SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
+			if(CMProps.getVar(CMProps.Str.SMTPSERVERNAME).length()>0)
+				SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
 			else
 				SC=CMLib.smtp().getClient(mob.playerStats().getEmail());
 		}
@@ -778,7 +778,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 
 		String replyTo="AutoPurge";
-		String domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
+		String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 		try
 		{
 			SC.sendMessage(from+"@"+domain,

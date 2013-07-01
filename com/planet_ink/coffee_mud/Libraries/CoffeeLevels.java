@@ -43,11 +43,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		double[] variables={
 				mob.phyStats().level(),
 				mob.charStats().getStat(CharStats.STAT_WISDOM),
-				CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)),
+				CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)),
 				mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),
-				CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE)),
+				CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE)),
 				mob.charStats().getStat(charClass.getAttackAttribute()),
-				CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())),
+				CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())),
 				mob.charStats().getStat(CharStats.STAT_CHARISMA),
 				mob.charStats().getStat(CharStats.STAT_CONSTITUTION)
 			};
@@ -56,7 +56,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	
 	public int getLevelMana(MOB mob)
 	{
-		return CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+
+		return CMProps.getIntVar(CMProps.Int.STARTMANA)+
 			((mob.basePhyStats().level()-1)*getManaBonusNextLevel(mob));
 	}
 
@@ -65,7 +65,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
 		int rawAttStat = mob.charStats().getStat(charClass.getAttackAttribute()); 
 		int attStat= rawAttStat;
-		int maxAttStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+		int maxAttStat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())));
 		if(attStat>=maxAttStat) attStat=maxAttStat;
 		int attGain=(int)Math.floor(CMath.div(attStat,18.0))+charClass.getBonusAttackLevel();
@@ -101,11 +101,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		double[] variables={
 			mob.phyStats().level(),
 			mob.charStats().getStat(CharStats.STAT_STRENGTH),
-			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH)),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH)),
 			mob.charStats().getStat(CharStats.STAT_DEXTERITY),
-			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY)),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY)),
 			mob.charStats().getStat(CharStats.STAT_CONSTITUTION),
-			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION)),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION)),
 			mob.charStats().getStat(CharStats.STAT_WISDOM),
 			mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
 		};
@@ -114,7 +114,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	
 	public int getLevelMove(MOB mob)
 	{
-		int move=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE);
+		int move=CMProps.getIntVar(CMProps.Int.STARTMOVE);
 		if(mob.basePhyStats().level()>1)
 			move+=(mob.basePhyStats().level()-1) * getMoveBonusNextLevel(mob);
 		return move;
@@ -126,11 +126,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		double[] variables={
 			mob.phyStats().level(),
 			mob.charStats().getStat(CharStats.STAT_STRENGTH),
-			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH)),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH)),
 			mob.charStats().getStat(CharStats.STAT_DEXTERITY),
-			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY)),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_DEXTERITY)),
 			mob.charStats().getStat(CharStats.STAT_CONSTITUTION),
-			CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION)),
+			CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION)),
 			mob.charStats().getStat(CharStats.STAT_WISDOM),
 			mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
 		};
@@ -146,7 +146,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	
 	public int getPlayerHitPoints(MOB mob)
 	{
-		int hp=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP);
+		int hp=CMProps.getIntVar(CMProps.Int.STARTHP);
 		return hp+((mob.phyStats().level()-1)*getPlayerHPBonusNextLevel(mob));
 	}
 
@@ -275,7 +275,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int oldClassLevel=mob.baseCharStats().getClassLevel(curClass);
 		baseLevelAdjuster(mob,-1);
 		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
-		int maxPrac2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+		int maxPrac2Stat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
 		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
@@ -391,7 +391,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getLevelExperience(int level)
 	{
 		if(level<0) return 0;
-		int[] levelingChart = CMProps.getListFileIntList(CMProps.SYSTEMLF_EXP_CHART);
+		int[] levelingChart = CMProps.getListFileIntList(CMProps.ListFile.EXP_CHART);
 		if(level<levelingChart.length)
 			return levelingChart[level];
 		int lastDiff=levelingChart[levelingChart.length-1] - levelingChart[levelingChart.length-2];
@@ -401,7 +401,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getLevelExperienceJustThisLevel(int level)
 	{
 		if(level<0) return 0;
-		int[] levelingChart = CMProps.getListFileIntList(CMProps.SYSTEMLF_EXP_CHART);
+		int[] levelingChart = CMProps.getListFileIntList(CMProps.ListFile.EXP_CHART);
 		if(level==0)
 			return levelingChart[0];
 		else
@@ -455,7 +455,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
-		int maxPrac2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+		int maxPrac2Stat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
 		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
@@ -571,7 +571,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		if(victim!=null)
 		{
-			double levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
+			double levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 			double levelDiff=victim.phyStats().level()-mob.phyStats().level();
 
 			if(levelDiff<(-levelLimit) )
@@ -604,7 +604,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		amount=adjustedExperience(mob,victim,amount);
 
-		if(mob.phyStats().level()>=CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL))
+		if(mob.phyStats().level()>=CMProps.getIntVar(CMProps.Int.MINCLANLEVEL))
 		{
 			for(Pair<Clan,Integer> p : mob.clans())
 				if(amount>2)

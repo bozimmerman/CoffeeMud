@@ -99,7 +99,7 @@ public class CMStrings
 			return "";
 		try
 		{
-			return new String(b,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+			return new String(b,CMProps.getVar(CMProps.Str.CHARSETINPUT));
 		}
 		catch(Exception e)
 		{
@@ -111,7 +111,7 @@ public class CMStrings
 	{ 
 		try
 		{ 
-			return str.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+			return str.getBytes(CMProps.getVar(CMProps.Str.CHARSETINPUT));
 		}
 		catch(Exception e)
 		{

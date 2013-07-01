@@ -51,9 +51,9 @@ public class WizList extends StdCommand
 		if(isArchonLooker)
 			head.append(CMStrings.padRight("Last",18)+" ");
 		head.append("] Character Name^.^?\n\r");
-		mob.tell("^x["+CMStrings.centerPreserve("The Administrators of "+CMProps.getVar(CMProps.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
+		mob.tell("^x["+CMStrings.centerPreserve("The Administrators of "+CMProps.getVar(CMProps.Str.MUDNAME),head.length()-10)+"]^.^?");
 		java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
-		String mask=CMProps.getVar(CMProps.SYSTEM_WIZLISTMASK);
+		String mask=CMProps.getVar(CMProps.Str.WIZLISTMASK);
 		if(mask.length()==0) mask="-ANYCLASS +Archon";
 		MaskingLibrary.CompiledZapperMask compiledMask=CMLib.masking().maskCompile(mask);
 		for(PlayerLibrary.ThinPlayer U : allUsers)

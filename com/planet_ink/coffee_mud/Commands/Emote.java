@@ -47,7 +47,7 @@ public class Emote extends StdCommand
 			return false;
 		}
 		String combinedCommands=CMParms.combine(commands,1);
-		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.SYSTEM_EMOTEFILTER);
+		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.EMOTEFILTER);
 		if(combinedCommands.trim().startsWith("'")||combinedCommands.trim().startsWith("`"))
 			combinedCommands=combinedCommands.trim();
 		else

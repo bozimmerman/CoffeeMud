@@ -38,7 +38,7 @@ public class MUDServerPort extends StdWebMacro
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		return CMProps.getVar(CMProps.SYSTEM_MUDPORTS);
+		return CMProps.getVar(CMProps.Str.MUDPORTS);
 	}
 
 }

@@ -44,7 +44,7 @@ public class Disease_Gangrene extends Disease
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 4;}
 
-	protected int DISEASE_TICKS(){return 100*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);}
+	protected int DISEASE_TICKS(){return 100*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
 	protected int DISEASE_DELAY(){return 5;}
 	protected int lastHP=Integer.MAX_VALUE;
 	protected String DISEASE_DONE(){return "Your gangrous wounds feel better.";}
@@ -61,7 +61,7 @@ public class Disease_Gangrene extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 		tickUpToDay++;
-		if(tickUpToDay==CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY))
+		if(tickUpToDay==CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY))
 		{
 			daysSick++;
 			tickUpToDay=0;

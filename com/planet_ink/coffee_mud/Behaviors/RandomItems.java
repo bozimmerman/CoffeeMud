@@ -284,7 +284,7 @@ public class RandomItems extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if((!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 		||(!(ticking instanceof Environmental))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMITEMS)))
 			return true;

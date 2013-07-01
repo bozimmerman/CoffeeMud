@@ -525,7 +525,7 @@ public class StdRace implements Race
 						containerMap.put(thisItem,thisItem.container());
 					newItem.setContainer(null);
 					newItem.setExpirationDate( System.currentTimeMillis() +
-											   CMProps.getIntVar( CMProps.SYSTEMI_EXPIRE_MONSTER_EQ )* TimeManager.MILI_HOUR );
+											   CMProps.getIntVar( CMProps.Int.EXPIRE_MONSTER_EQ )* TimeManager.MILI_HOUR );
 					newItem.recoverPhyStats();
 					thisItem=newItem;
 				}
@@ -689,7 +689,7 @@ public class StdRace implements Race
 		GR.setStat("WEAR",""+forbiddenWornBits());
 		GR.setStat("AVAIL",""+availabilityCode());
 		GR.setStat("VHEIGHT",""+heightVariance());
-		GR.setStat("PLAYER",""+CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME));
+		GR.setStat("PLAYER",""+CMProps.getIntVar(CMProps.Int.MUDTHEME));
 		GR.setStat("LEAVE",leaveStr());
 		GR.setStat("ARRIVE",arriveStr());
 		GR.setStat("HEALTHRACE",CMClass.classID(this));
@@ -856,7 +856,7 @@ public class StdRace implements Race
 		GR.setStat("MHEIGHT",""+((race1.shortestMale()+race2.shortestMale())/2));
 		GR.setStat("FHEIGHT",""+((race1.shortestFemale()+race2.shortestFemale())/2));
 		GR.setStat("VHEIGHT",""+((race1.heightVariance()+race2.heightVariance())/2));
-		GR.setStat("PLAYER",""+CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME));
+		GR.setStat("PLAYER",""+CMProps.getIntVar(CMProps.Int.MUDTHEME));
 		GR.setStat("LEAVE",nonHuman.leaveStr());
 		GR.setStat("ARRIVE",nonHuman.arriveStr());
 		GR.setStat("HEALTHRACE",otherRace.getStat("HEALTHRACE"));

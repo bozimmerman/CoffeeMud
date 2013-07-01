@@ -986,7 +986,7 @@ public class DefaultFaction implements Faction, MsgListener
 		double baseChangeAmount=100.0;
 		if((source!=target)&&(!event.just100()))
 		{
-			int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
+			int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 			int levelDiff=target.phyStats().level()-source.phyStats().level();
 
 			if(levelDiff<(-levelLimit) )

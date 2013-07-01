@@ -110,7 +110,7 @@ public class Fighter_Whomp extends FighterSkill
 		{
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
-			if(mob.charStats().getStat(CharStats.STAT_STRENGTH)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))
+			if(mob.charStats().getStat(CharStats.STAT_STRENGTH)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))
 				return Ability.QUALITY_INDIFFERENT;
 			if((target instanceof MOB)&&(mob.baseWeight()<(((MOB)target).baseWeight()-250)))
 				return Ability.QUALITY_INDIFFERENT;
@@ -131,9 +131,9 @@ public class Fighter_Whomp extends FighterSkill
 			mob.tell("You are too far away from your target to whomp!");
 			return false;
 		}
-		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)))
+		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)))
 		{
-			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+" strength to do that.");
+			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+" strength to do that.");
 			return false;
 		}
 

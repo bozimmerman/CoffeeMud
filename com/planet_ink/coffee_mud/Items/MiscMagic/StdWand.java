@@ -37,7 +37,7 @@ import java.util.*;
 public class StdWand extends StdItem implements Wand
 {
 	public String ID(){    return "StdWand";}
-	protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);
+	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	public StdWand()
 	{
@@ -93,7 +93,7 @@ public class StdWand extends StdItem implements Wand
 	{
 		int hash=from.hashCode();
 		if(hash<0) hash=hash*-1;
-		return CMProps.getListFileValueByHash(CMProps.SYSTEMLF_MAGIC_WORDS,hash);
+		return CMProps.getListFileValueByHash(CMProps.ListFile.MAGIC_WORDS,hash);
 	}
 
 	public void setSpell(Ability theSpell)

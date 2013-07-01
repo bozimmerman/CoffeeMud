@@ -316,8 +316,8 @@ public class Injury extends StdAbility
 		&&(msg.targetMessage()!=null)
 		&&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
 		&&(super.miscText.startsWith(msg.source().Name()+"/")
-		   ||((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(((MOB)msg.target()).curState().getHitPoints(),((MOB)msg.target()).maxState().getHitPoints())*100.0))
-			&&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTCHANCE)))))
+		   ||((CMProps.getIntVar(CMProps.Int.INJPCTHP)>=(int)Math.round(CMath.div(((MOB)msg.target()).curState().getHitPoints(),((MOB)msg.target()).maxState().getHitPoints())*100.0))
+			&&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.Int.INJPCTCHANCE)))))
 		{
 			MOB mob=(MOB)msg.target();
 			Amputation A=(Amputation)mob.fetchEffect("Amputation");
@@ -374,7 +374,7 @@ public class Injury extends StdAbility
 						}
 					}
 					int BodyPct=(int)Math.round(CMath.div(msg.value(),mob.maxState().getHitPoints())*100.0);
-					int LimbPct=BodyPct*CMProps.getIntVar(CMProps.SYSTEMI_INJMULTIPLIER);
+					int LimbPct=BodyPct*CMProps.getIntVar(CMProps.Int.INJMULTIPLIER);
 					if(LimbPct<1) LimbPct=1;
 					int bodyLoc=-1;
 					for(int i=0;i<Race.BODY_PARTS;i++)
@@ -415,10 +415,10 @@ public class Injury extends StdAbility
 								O[1]=Integer.valueOf(100);
 							if((((Integer)O[1]).intValue()>=100)
 							||((BodyPct>5)
-								&&((msg.tool() instanceof Electronics)||(BodyPct>=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHPAMP)))))
+								&&((msg.tool() instanceof Electronics)||(BodyPct>=CMProps.getIntVar(CMProps.Int.INJPCTHPAMP)))))
 							{
-								boolean proceed=(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTCHANCEAMP))
-												&&(mob.phyStats().level()>=CMProps.getIntVar(CMProps.SYSTEMI_INJMINLEVEL));
+								boolean proceed=(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.Int.INJPCTCHANCEAMP))
+												&&(mob.phyStats().level()>=CMProps.getIntVar(CMProps.Int.INJMINLEVEL));
 								if(msg.tool() instanceof Weapon)
 								{
 									switch(((Weapon)msg.tool()).weaponType())

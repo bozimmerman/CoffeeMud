@@ -151,7 +151,7 @@ public class PlayerClass extends StdCharClass
 			for(CharClass C : charClassesOrder)
 			{
 				LinkedList<List<String>> prevSets=new LinkedList<List<String>>();
-				for(int lvl=1;lvl<CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);lvl++)
+				for(int lvl=1;lvl<CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);lvl++)
 				{
 					List<String> curSet=CMLib.ableMapper().getLevelListings(C.ID(), false, lvl);
 					for(String ID : curSet)

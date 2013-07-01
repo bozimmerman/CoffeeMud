@@ -858,11 +858,11 @@ public class StdAbility implements Ability
 			if(!ignoreClassOverride)
 				costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 			consumed=CMProps.getMaxManaException(ID());
-			if(consumed==Short.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
+			if(consumed==Short.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.Int.MANACOST);
 			if(consumed<0) consumed=(50+lowest);
 			minimum=CMProps.getMinManaException(ID());
 			if(minimum==Short.MIN_VALUE)
-				minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
+				minimum=CMProps.getIntVar(CMProps.Int.MANAMINCOST);
 			if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
 			if(diff>0) consumed=(consumed - (consumed /10 * diff));
 			if(consumed<minimum)
@@ -1073,9 +1073,9 @@ public class StdAbility implements Ability
 			if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
 				tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.phyStats().level(),target.phyStats().level())));
 
-			if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+			if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))
 			||(mob instanceof Deity))
-				tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+				tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
 
 			if(tickAdjustmentFromStandard<2)
 				tickAdjustmentFromStandard=2;
@@ -1162,9 +1162,9 @@ public class StdAbility implements Ability
 		if(tickAdjustmentFromStandard<=0)
 		{
 			tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*5)+60;
-			if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
+			if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)))
 			||(mob instanceof Deity))
-				tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+				tickAdjustmentFromStandard=(CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
 			if(tickAdjustmentFromStandard<5)
 				tickAdjustmentFromStandard=5;
 		}

@@ -39,8 +39,8 @@ public class AccountOnline extends StdWebMacro
 	
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		String last=httpReq.getUrlParameter("ACCOUNT");
 		if(last==null) return " @break@";

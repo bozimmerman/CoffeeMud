@@ -728,7 +728,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			if(editRow != null) 
 			{
 				int showFlag=-1;
-				if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+				if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 					showFlag=-999;
 				boolean ok=false;
 				while(!ok)
@@ -894,7 +894,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		{
 			level = I.basePhyStats().level();
 			if( level <= 0.0 ) level = 1.0;
-			addExtraMaterial(extraMatsM, I, A, CMath.div( level, CMProps.getIntVar( CMProps.SYSTEMI_LASTPLAYERLEVEL ) ));
+			addExtraMaterial(extraMatsM, I, A, CMath.div( level, CMProps.getIntVar( CMProps.Int.LASTPLAYERLEVEL ) ));
 		}
 		else
 		{
@@ -955,7 +955,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			Behavior B=b.nextElement();
 			if(B.isSavable())
 			{
-				addExtraMaterial(extraMatsM, I, B, CMath.div( CMProps.getIntVar( CMProps.SYSTEMI_LASTPLAYERLEVEL ), I.basePhyStats().level() ));
+				addExtraMaterial(extraMatsM, I, B, CMath.div( CMProps.getIntVar( CMProps.Int.LASTPLAYERLEVEL ), I.basePhyStats().level() ));
 			}
 		}
 		return extraMatsM;
@@ -1056,7 +1056,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						if((I instanceof Weapon)||(I instanceof Armor))
 						{
 							int timsLevel = CMLib.itemBuilder().timsLevelCalculator(I);
-							if((timsLevel > I.basePhyStats().level() ) && (timsLevel < CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
+							if((timsLevel > I.basePhyStats().level() ) && (timsLevel < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)))
 								return ""+timsLevel;
 						}
 						return ""+I.basePhyStats().level();

@@ -158,7 +158,7 @@ public class StdJournal extends StdItem
 									prompt+="^<MENU^>R^</MENU^>)eply ";
 									cmds+="R";
 								}
-								if((CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0)
+								if((CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
 								&&(from.length()>0))
 									prompt+="^<MENU^>E^</MENU^>)mail "; cmds+="E";
 								if(msg.value()>0){ prompt+="S)top "; cmds+="S";}
@@ -207,7 +207,7 @@ public class StdJournal extends StdItem
 										String replyMsg=mob.session().prompt("Enter your email response\n\r: ");
 										if((replyMsg.trim().length()>0) && (read != null))
 										{
-											CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+											CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 																			  mob.Name(),
 																			  M.Name(),
 																			  "RE: "+read.subj,
@@ -485,7 +485,7 @@ public class StdJournal extends StdItem
 					selections.addElement(selection);
 				}
 			}
-			int numToAdd=CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
+			int numToAdd=CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 			if((numToAdd==0)||(all)) numToAdd=Integer.MAX_VALUE;
 			for(int v=selections.size()-1;v>=0;v--)
 			{

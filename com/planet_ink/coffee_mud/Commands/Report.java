@@ -74,7 +74,7 @@ public class Report extends Skills
 			if("STATS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
 			{
 				StringBuffer stats=new StringBuffer("");
-				int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+				int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 				CharStats CT=mob.charStats();
 				for(int i : CharStats.CODES.BASE())
 					stats.append("^c" + CMStrings.capitalizeAndLower(CMStrings.limit(CharStats.CODES.NAME(i),3))+": ^w"

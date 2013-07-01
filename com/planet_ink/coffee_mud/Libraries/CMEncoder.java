@@ -49,7 +49,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 			synchronized (encodeBuffer)
 			{
 				int len = decompresser.inflate(encodeBuffer);
-				return new String(encodeBuffer, 0, len, CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+				return new String(encodeBuffer, 0, len, CMProps.getVar(CMProps.Str.CHARSETINPUT));
 			}
 		}
 		catch (Exception ex)
@@ -67,7 +67,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		try
 		{
 			compresser.reset();
-			compresser.setInput(s.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
+			compresser.setInput(s.getBytes(CMProps.getVar(CMProps.Str.CHARSETINPUT)));
 			compresser.finish();
 			
 			synchronized (encodeBuffer)

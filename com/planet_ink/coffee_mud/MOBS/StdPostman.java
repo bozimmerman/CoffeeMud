@@ -420,7 +420,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)) return true;
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)) return true;
 
 		if((tickID==Tickable.TICKID_MOB)&&(getStartRoom()!=null))
 		{

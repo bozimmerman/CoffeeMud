@@ -42,7 +42,7 @@ public class INIModify extends StdWebMacro
 		StringBuffer buf=new StringBuffer("");
 		for(int p=0;p<page.size();p++)
 			buf.append((page.get(p))+"\r\n");
-		new CMFile(CMProps.getVar(CMProps.SYSTEM_INIPATH),null,false,true).saveText(buf);
+		new CMFile(CMProps.getVar(CMProps.Str.INIPATH),null,false,true).saveText(buf);
 	}
 
 	public boolean modified(Set<String> H, String s)
@@ -63,13 +63,13 @@ public class INIModify extends StdWebMacro
 			return " @break@ ";
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms==null) return "";
-		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 		if(parms.containsKey("ADDKEY"))
 		{
 			String key=parms.get("KEY");
 			if((key==null)||(key.trim().length()==0)) return "";
 			key=key.trim().toUpperCase();
-			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 			if((ipage==null)||(!ipage.isLoaded())) return "";
 			if(ipage.containsKey(key)) return "";
 			int where=0;
@@ -140,7 +140,7 @@ public class INIModify extends StdWebMacro
 				httpReq.addFakeUrlParameter("IMC2CHANNELS", buildIMC2ChannelsVar(httpReq));
 			
 			
-			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+			CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 			if((ipage==null)||(!ipage.isLoaded())) return "";
 			for(int p=0;p<page.size();p++)
 			{
@@ -165,7 +165,7 @@ public class INIModify extends StdWebMacro
 			{
 				if(modified.contains("JSCRIPTS")) return ""; // never modified through this
 				updateINIFile(page);
-				ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+				ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 				if((ipage==null)||(!ipage.isLoaded())) return "";
 				ipage.resetSystemVars();
 				if(modified(modified,"SYSOPMASK"))
@@ -179,7 +179,7 @@ public class INIModify extends StdWebMacro
 				if(modified(modified,"MORGUE")||(modified(modified,"MORGUE_*")))
 					CMLib.login().initBodyRooms(ipage);
 				if(modified(modified,"FACTIONS"))
-					CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
+					CMLib.factions().reloadFactions(CMProps.getVar(CMProps.Str.PREFACTIONS));
 				if(modified(modified,"CHANNELS")
 				||(modified(modified,"ICHANNELS"))
 				||(modified(modified,"COMMANDJOURNALS"))

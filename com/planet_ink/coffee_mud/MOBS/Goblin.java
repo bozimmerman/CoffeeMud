@@ -67,7 +67,7 @@ public class Goblin extends StdMOB
 
 	public void setMOBSpecifics(int goblinType)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
 		
 		if (goblinType < 0)

@@ -581,7 +581,7 @@ public class CMFile extends File
 		BufferedReader reader = null;
 		try
 		{
-			String charSet=CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT);
+			String charSet=CMProps.getVar(CMProps.Str.CHARSETINPUT);
 			if((charSet==null)||(charSet.length()==0))
 				charSet=inCharSet;
 			reader=new BufferedReader(
@@ -661,7 +661,7 @@ public class CMFile extends File
 		Reader F = null;
 		try
 		{
-			String charSet=CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT);
+			String charSet=CMProps.getVar(CMProps.Str.CHARSETINPUT);
 			if((charSet==null)||(charSet.length()==0))
 				charSet=inCharSet;
 			F=new InputStreamReader(
@@ -910,7 +910,7 @@ public class CMFile extends File
 		Writer FW = null;
 		try
 		{
-			String charSet=CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT);
+			String charSet=CMProps.getVar(CMProps.Str.CHARSETOUTPUT);
 			if((charSet==null)||(charSet.length()==0))
 				charSet=outCharSet;
 			File F=new File(getIOReadableLocalPathAndName());
@@ -1132,7 +1132,7 @@ public class CMFile extends File
 				vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
 			else
 			{
-				Vector<String> privateV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+				Vector<String> privateV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true);
 				if(privateV.contains("DBVFS"))
 					vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
 				else

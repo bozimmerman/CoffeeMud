@@ -67,7 +67,7 @@ public class StdBoffWeapon extends StdWeapon
 		case 5: word= "smoosh(es)"; break;
 		case 6: word= "kabloom(s)"; break;
 		}
-		boolean showDamn=CMProps.getVar(CMProps.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES");
+		boolean showDamn=CMProps.getVar(CMProps.Str.SHOWDAMAGE).equalsIgnoreCase("YES");
 		switch(weaponClassification())
 		{
 		case Weapon.CLASS_RANGED:

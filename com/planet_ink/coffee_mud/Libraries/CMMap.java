@@ -124,7 +124,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public Area getArea(String calledThis)
 	{
-		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
+		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
 		final Map<String,Area> finder=getAreaFinder();
 		Area A=finder.get(calledThis.toLowerCase());
 		if((A!=null)&&(!A.amDestroyed()))
@@ -143,7 +143,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 	public Area findAreaStartsWith(String calledThis)
 	{
-		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
+		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
 		Area A=getArea(calledThis);
 		if(A!=null) return A;
 		final Map<String,Area> finder=getAreaFinder();
@@ -165,7 +165,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public Area findArea(String calledThis)
 	{
-		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
+		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
 		Area A=findAreaStartsWith(calledThis);
 		if(A!=null) return A;
 		final Map<String,Area> finder=getAreaFinder();
@@ -1632,7 +1632,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		// far too much of the world is dynamic, and far too many searches
 		// are looking for dynamic things.  the cached results would be useless
 		// as soon as they are put away -- that's why the limited caches time them out!
-		final boolean disableCaching=CMProps.getBoolVar(CMProps.SYSTEMB_MAPFINDSNOCACHE);
+		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
 		
 		final Vector<Room> rooms=(returnFirst)?null:new Vector<Room>();
 		

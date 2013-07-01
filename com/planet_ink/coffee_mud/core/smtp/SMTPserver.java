@@ -95,7 +95,7 @@ public class SMTPserver extends Thread implements Tickable
 	public long getTickStatus(){return tickStatus;}
 	public MudHost getMUD()	{return mud;}
 	public String domainName(){return domain;}
-	public String mailboxName(){return CMProps.getVar(CMProps.SYSTEM_MAILBOX);}
+	public String mailboxName(){return CMProps.getVar(CMProps.Str.MAILBOX);}
 
 	public Properties getCommonPropPage()
 	{
@@ -116,7 +116,7 @@ public class SMTPserver extends Thread implements Tickable
 			return false;
 		}
 
-		if (CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase().length()==0)
+		if (CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase().length()==0)
 		{
 			Log.errOut(getName(),"Set your coffeemud.ini parameter: DOMAIN");
 			return false;
@@ -132,13 +132,13 @@ public class SMTPserver extends Thread implements Tickable
 		if(CMath.isNumber(page.getStr("MAXTHREADS")))
 			maxThreads=CMath.s_int(page.getStr("MAXTHREADS"));
 
-		domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
+		domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 		String mailbox=page.getStr("MAILBOX");
 		if(mailbox==null) mailbox="";
-		CMProps.setVar(CMProps.SYSTEM_MAILBOX,mailbox.trim());
-		CMProps.setIntVar(CMProps.SYSTEMI_MAXMAILBOX,getMaxMsgs());
+		CMProps.setVar(CMProps.Str.MAILBOX,mailbox.trim());
+		CMProps.setIntVar(CMProps.Int.MAXMAILBOX,getMaxMsgs());
 
-		CMProps.setBoolVar(CMProps.SYSTEMB_EMAILFORWARDING,CMath.s_bool(page.getStr("FORWARD")));
+		CMProps.setBoolVar(CMProps.Bool.EMAILFORWARDING,CMath.s_bool(page.getStr("FORWARD")));
 
 		if((CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS)==null)
 		||(CMProps.getListVar(CMProps.StrList.SUBSCRIPTION_STRS).length==0))
@@ -325,7 +325,7 @@ public class SMTPserver extends Thread implements Tickable
 					Thread.sleep(1000);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER))
 					Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
-				if(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+				if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 					threadPool.execute(new ProcessSMTPrequest(sock,this));
 				else
 				{
@@ -438,7 +438,7 @@ public class SMTPserver extends Thread implements Tickable
 
 			// here is where the mail is actually sent
 			if((tickID==Tickable.TICKID_EMAIL)
-			&&(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING)))
+			&&(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING)))
 			{
 				if((mailboxName()!=null)&&(mailboxName().length()>0))
 				{
@@ -505,7 +505,7 @@ public class SMTPserver extends Thread implements Tickable
 				for(int i=0;i<mylist.size();i++)
 				{
 					String to2=mylist.get(i);
-					if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
+					if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 					{
 						CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from,to2,jrnlSubj,jrnlMessage);
 					}

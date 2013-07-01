@@ -244,9 +244,9 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 				if(channelColor.length()==0)
 					channelColor="^Q";
-				ck.message=fixColors(CMProps.applyINIFilter(ck.message,CMProps.SYSTEM_CHANNELFILTER));
+				ck.message=fixColors(CMProps.applyINIFilter(ck.message,CMProps.Str.CHANNELFILTER));
 				if(ck.message_target!=null)
-					ck.message_target=fixColors(CMProps.applyINIFilter(ck.message_target,CMProps.SYSTEM_CHANNELFILTER));
+					ck.message_target=fixColors(CMProps.applyINIFilter(ck.message_target,CMProps.Str.CHANNELFILTER));
 				MOB mob=CMClass.getFactoryMOB();
 				mob.setName(ck.sender_name+"@"+ck.sender_mud);
 				mob.setLocation(CMClass.getLocale("StdRoom"));
@@ -264,9 +264,9 @@ public class IMudInterface implements ImudServices, Serializable
 						targetMOB.setLocation(CMClass.getLocale("StdRoom"));
 					}
 					String msgs=socialFixIn(ck.message);
-					msgs=CMProps.applyINIFilter(msgs,CMProps.SYSTEM_EMOTEFILTER);
+					msgs=CMProps.applyINIFilter(msgs,CMProps.Str.EMOTEFILTER);
 					String targmsgs=socialFixIn(ck.message_target);
-					targmsgs=CMProps.applyINIFilter(targmsgs,CMProps.SYSTEM_EMOTEFILTER);
+					targmsgs=CMProps.applyINIFilter(targmsgs,CMProps.Str.EMOTEFILTER);
 					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
 					String str2=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,targetMOB,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str2,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
@@ -275,7 +275,7 @@ public class IMudInterface implements ImudServices, Serializable
 				if(ck.type==Packet.CHAN_EMOTE)
 				{
 					String msgs=socialFixIn(ck.message);
-					msgs=CMProps.applyINIFilter(msgs,CMProps.SYSTEM_EMOTEFILTER);
+					msgs=CMProps.applyINIFilter(msgs,CMProps.Str.EMOTEFILTER);
 					String str=channelColor+"^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelCode),str);
 				}
@@ -548,7 +548,7 @@ public class IMudInterface implements ImudServices, Serializable
 				MOB smob=findSessMob(tk.target_name);
 				if(smob!=null)
 				{
-					tk.message=fixColors(CMProps.applyINIFilter(tk.message,CMProps.SYSTEM_SAYFILTER));
+					tk.message=fixColors(CMProps.applyINIFilter(tk.message,CMProps.Str.SAYFILTER));
 					CMLib.commands().postSay(mob,smob,tk.message,true,true);
 				}
 				destroymob(mob);

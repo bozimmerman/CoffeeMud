@@ -49,7 +49,7 @@ public class Thief_TurfWar extends ThiefSkill
 	protected MOB defender=null;
 	protected long defenderPKILLMask=0;
 	protected long timeToNextCast = 0;
-	public int getTicksBetweenCasts() { return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH);}
+	public int getTicksBetweenCasts() { return CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH);}
 	public long getTimeOfNextCast(){ return timeToNextCast; }
 	public void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
 
@@ -235,7 +235,7 @@ public class Thief_TurfWar extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)));
+			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)));
 			if(target.fetchEffect(ID())!=null)
 			{
 				for(Session S : CMLib.sessions().localOnlineIterable())

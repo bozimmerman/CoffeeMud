@@ -397,12 +397,12 @@ public class Clans extends StdLibrary implements ClanManager
 		String prizeStr="";
 		switch(trophy)
 		{
-			case Areas: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA); break;
-			case Points: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPCP); break;
-			case Experience: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP); break;
-			case PlayerKills: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPPK); break;
-			case Members: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPMB); break;
-			case MemberLevel: prizeStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPLVL); break;
+			case Areas: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPAREA); break;
+			case Points: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPCP); break;
+			case Experience: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPEXP); break;
+			case PlayerKills: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPPK); break;
+			case Members: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPMB); break;
+			case MemberLevel: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPLVL); break;
 		}
 		if(prizeStr.length()==0) return "None";
 		if(prizeStr.length()>0)
@@ -421,12 +421,12 @@ public class Clans extends StdLibrary implements ClanManager
 
 	public boolean trophySystemActive()
 	{
-		return (CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
-			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0)
-			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP).length()>0)
-			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPMB).length()>0)
-			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPLVL).length()>0)
-			|| (CMProps.getVar(CMProps.SYSTEM_CLANTROPPK).length()>0);
+		return (CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0)
+			|| (CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0)
+			|| (CMProps.getVar(CMProps.Str.CLANTROPEXP).length()>0)
+			|| (CMProps.getVar(CMProps.Str.CLANTROPMB).length()>0)
+			|| (CMProps.getVar(CMProps.Str.CLANTROPLVL).length()>0)
+			|| (CMProps.getVar(CMProps.Str.CLANTROPPK).length()>0);
 		
 	}
 
@@ -1118,7 +1118,7 @@ public class Clans extends StdLibrary implements ClanManager
 		if(trophySystemActive())
 		{
 			// calculate winner of the members count contest
-			if(CMProps.getVar(CMProps.SYSTEM_CLANTROPMB).length()>0)
+			if(CMProps.getVar(CMProps.Str.CLANTROPMB).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.Members);
 				int winnerMembers=(winnerC==null)?0:winnerC.getSize();
@@ -1151,7 +1151,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 
 			// calculate winner of the member level contest
-			if(CMProps.getVar(CMProps.SYSTEM_CLANTROPLVL).length()>0)
+			if(CMProps.getVar(CMProps.Str.CLANTROPLVL).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.MemberLevel);
 				int winnerLevel=(winnerC==null)?0:filterMedianLevel(winnerC.getFullMemberList());
@@ -1184,7 +1184,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 			
 			// calculate winner of the exp contest
-			if(CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP).length()>0)
+			if(CMProps.getVar(CMProps.Str.CLANTROPEXP).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.Experience);
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
@@ -1212,7 +1212,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 
 			// calculate winner of the pk contest
-			if(CMProps.getVar(CMProps.SYSTEM_CLANTROPPK).length()>0)
+			if(CMProps.getVar(CMProps.Str.CLANTROPPK).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.PlayerKills);
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
@@ -1242,8 +1242,8 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 
 			// calculate winner of the conquest contests
-			if((CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
-			||(CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0))
+			if((CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0)
+			||(CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0))
 			{
 				Clan winnerMostClansControlledC=getTrophyWinner(Trophy.Areas);
 				long mostClansControlled=(winnerMostClansControlledC==null)?-1:winnerMostClansControlledC.getControlledAreas().size();
@@ -1252,7 +1252,7 @@ public class Clans extends StdLibrary implements ClanManager
 				for(Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					Clan C=e.nextElement();
-					if((C!=winnerMostClansControlledC)&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0))
+					if((C!=winnerMostClansControlledC)&&(CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0))
 					{
 						int controlledAreas=C.getControlledAreas().size();
 						if(controlledAreas>mostClansControlled)
@@ -1261,7 +1261,7 @@ public class Clans extends StdLibrary implements ClanManager
 							mostClansControlled=controlledAreas;
 						}
 					}
-					if((C!=winnerMostControlPointsC)&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0))
+					if((C!=winnerMostControlPointsC)&&(CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0))
 					{
 						long mapPoints=C.calculateMapPoints();
 						if(mapPoints>mostControlPoints)
@@ -1276,7 +1276,7 @@ public class Clans extends StdLibrary implements ClanManager
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
 					Log.debugOut("DefaultClan","CPTrophy: "+((winnerMostControlPointsC==null)?"Noone":winnerMostControlPointsC.clanID())+" won with "+mostControlPoints);
 				if((winnerMostClansControlledC!=null)
-				&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
+				&&(CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0)
 				&&(mostClansControlled>0))
 				{
 					if(!CMath.bset(winnerMostClansControlledC.getTrophies(),Trophy.Areas.flagNum()))
@@ -1296,7 +1296,7 @@ public class Clans extends StdLibrary implements ClanManager
 					}
 				}
 				if((winnerMostControlPointsC!=null)
-				&&(CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0)
+				&&(CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0)
 				&&(mostControlPoints>0))
 				{
 					if(!CMath.bset(winnerMostControlPointsC.getTrophies(),Trophy.Points.flagNum()))

@@ -137,7 +137,7 @@ public class Say extends StdCommand
 			mob.tell("you don't see "+whom+" here to speak to.");
 			return false;
 		}
-		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.SYSTEM_SAYFILTER);
+		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
 
 		CMMsg msg=null;
 		if((!theWord.equalsIgnoreCase("ASK"))&&(target!=null))

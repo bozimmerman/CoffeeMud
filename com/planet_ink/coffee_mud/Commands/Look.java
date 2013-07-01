@@ -62,9 +62,9 @@ public class Look extends StdCommand
 			   commands.removeElementAt(1);
 			String ID=CMParms.combine(commands,1);
 			
-			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2))&&(CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)!=1))
+			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 			{
-				if((CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
 					CMLib.commands().lookAtExitsShort(R,mob);
 				else
 					CMLib.commands().lookAtExits(R,mob);
@@ -125,9 +125,9 @@ public class Look extends StdCommand
 				CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
 				if(R.okMessage(mob,msg))
 					R.send(mob,msg);
-				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)!=1))
+				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 				{
-					if((CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
+					if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
 						CMLib.commands().lookAtExitsShort(R,mob);
 					else
 						CMLib.commands().lookAtExits((Room)thisThang,mob);
@@ -150,9 +150,9 @@ public class Look extends StdCommand
 				R.send(mob,msg);
 			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
 			&&(CMLib.flags().canBeSeenBy(R,mob))
-			&&(CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)!=1))
+			&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 			{
-				if((CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
 					CMLib.commands().lookAtExitsShort(R,mob);
 				else
 					CMLib.commands().lookAtExits(R,mob);

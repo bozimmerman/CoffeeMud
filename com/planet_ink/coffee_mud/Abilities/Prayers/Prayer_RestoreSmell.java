@@ -45,8 +45,8 @@ public class Prayer_RestoreSmell extends Prayer implements MendingSkill
 	{ 
 		if(!(item instanceof MOB)) return false;
 		MOB caster=CMClass.getFactoryMOB();
-		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
-		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
+		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 		boolean canMend=returnOffensiveAffects(caster,item).size()>0;
 		caster.destroy();
 		return canMend;

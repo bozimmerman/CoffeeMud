@@ -251,8 +251,8 @@ public class Train extends StdCommand
 			if((!canTeach)
 			&&(teacher.charStats().getClassLevel(theClass)<1))
 			{
-				if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
-				&&(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
+				if((!CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("MULTI"))
+				&&(!CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-MULTI")))
 				{
 					CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
 					String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();

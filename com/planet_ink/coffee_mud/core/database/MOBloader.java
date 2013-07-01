@@ -1265,7 +1265,7 @@ public class MOBloader
 			thinPlayer.accountName = CMLib.xml().returnXMLValue(buf,"ACCOUNT");
 			if((thinPlayer.accountName!=null)&&(thinPlayer.accountName.length()>0))
 				acct = CMLib.players().getLoadAccount(thinPlayer.accountName);
-			if((acct != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+			if((acct != null)&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
 				thinPlayer.expiration=acct.getAccountExpiration();
 			else
 			if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
@@ -1273,7 +1273,7 @@ public class MOBloader
 			else
 			{
 				Calendar C=Calendar.getInstance();
-				C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
+				C.add(Calendar.DATE,CMProps.getIntVar(CMProps.Int.TRIALDAYS));
 				thinPlayer.expiration=C.getTimeInMillis();
 			}
 		}

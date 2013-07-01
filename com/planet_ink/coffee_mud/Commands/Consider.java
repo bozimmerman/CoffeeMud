@@ -91,16 +91,16 @@ public class Consider extends StdCommand
 			if(lvlDiff==0)
 				levelMsg=targetMOB.charStats().HeShe()+" is your equal";
 			else
-			if(lvlDiff<-CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE))
+			if(lvlDiff<-CMProps.getIntVar(CMProps.Int.EXPRATE))
 				levelMsg=targetMOB.charStats().HeShe()+" is vastly inferior to you";
 			else
-			if(lvlDiff>CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE))
+			if(lvlDiff>CMProps.getIntVar(CMProps.Int.EXPRATE))
 				levelMsg=targetMOB.charStats().HeShe()+" is far superior to you";
 			else
-			if(CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)!=0)
+			if(CMProps.getIntVar(CMProps.Int.EXPRATE)!=0)
 			{
 				int relLvlDiff=(lvlDiff<0)?-lvlDiff:lvlDiff;
-				double pct=CMath.div(relLvlDiff,CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE));
+				double pct=CMath.div(relLvlDiff,CMProps.getIntVar(CMProps.Int.EXPRATE));
 				if((lvlDiff<0)&&(pct<0.5))
 					levelMsg=targetMOB.charStats().HeShe()+" is almost your equal";
 				else

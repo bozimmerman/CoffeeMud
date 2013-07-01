@@ -46,7 +46,7 @@ public class Disease_FrostBite extends Disease
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 1;}
 	public int[] limbsAffectable={Race.BODY_EAR,Race.BODY_ANTENEA,Race.BODY_FOOT,Race.BODY_HAND,Race.BODY_NOSE};
-	protected int DISEASE_TICKS(){return (CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) / 2);}
+	protected int DISEASE_TICKS(){return (CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY ) / 2);}
 	protected int DISEASE_DELAY(){return 50;}
 	protected String DISEASE_DONE()
 	{

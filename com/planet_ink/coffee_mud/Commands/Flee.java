@@ -113,7 +113,7 @@ public class Flee extends Go
 			mob.makePeace();
 			if(XPloss&&(fighting!=null))
 			{
-				String whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERFLEE);
+				String whatToDo=CMProps.getVar(CMProps.Str.PLAYERFLEE);
 				if(whatToDo==null) return false;
 				int[] expLost={10+((mob.phyStats().level()-fighting.phyStats().level()))*5};
 				if(expLost[0]<10) expLost[0]=10;

@@ -42,8 +42,8 @@ public class Disease_Lyme extends Disease
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);}
+	protected int DISEASE_TICKS(){return 9*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
+	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
 	protected String DISEASE_DONE(){return "Your lyme disease goes away.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) lyme disease!^?";}
 	protected String DISEASE_AFFECT(){return "";}

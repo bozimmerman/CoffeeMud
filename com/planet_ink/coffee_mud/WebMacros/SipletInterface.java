@@ -112,7 +112,7 @@ public class SipletInterface extends StdWebMacro
 	
 	public String runMacro(HTTPRequest httpReq, String parm) throws HTTPServerException
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return "false;";
 		if(!initialized)
 		{

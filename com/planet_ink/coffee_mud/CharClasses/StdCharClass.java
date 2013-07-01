@@ -73,10 +73,10 @@ public class StdCharClass implements CharClass
 	public boolean expless(){return false;}
 	public SubClassRule getSubClassRule() { return SubClassRule.BASEONLY; }
 	public boolean showThinQualifyList(){return false;}
-	public int maxNonCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXNONCRAFTINGSKILLS); }
-	public int maxCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCRAFTINGSKILLS); }
-	public int maxCommonSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCOMMONSKILLS); }
-	public int maxLanguages() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXLANGUAGES); }
+	public int maxNonCraftingSkills() { return CMProps.getIntVar(CMProps.Int.MAXNONCRAFTINGSKILLS); }
+	public int maxCraftingSkills() { return CMProps.getIntVar(CMProps.Int.MAXCRAFTINGSKILLS); }
+	public int maxCommonSkills() { return CMProps.getIntVar(CMProps.Int.MAXCOMMONSKILLS); }
+	public int maxLanguages() { return CMProps.getIntVar(CMProps.Int.MAXLANGUAGES); }
 	private static final CMSecurity.SecGroup empty=new CMSecurity.SecGroup(new CMSecurity.SecFlag[]{});
 	public CMSecurity.SecGroup getSecurityFlags(int classLevel){return empty;}
 	private final String[] raceRequiredList=new String[0];
@@ -156,8 +156,8 @@ public class StdCharClass implements CharClass
 			return false;
 		if(mob == null)
 		{
-			if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
-			||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB")))
+			if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("SUB"))
+			||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-SUB")))
 			{
 				if((baseClass().equals(ID()))||(getSubClassRule()==SubClassRule.ANY))
 					return true;
@@ -178,14 +178,14 @@ public class StdCharClass implements CharClass
 			}
 			if(curClass.ID().equalsIgnoreCase("StdCharClass"))
 			{
-				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI")))
+				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("NO"))
+				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("MULTI")))
 					return true;
-				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
+				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("SUB"))
 				&&((baseClass().equals(ID()))
 					||(getSubClassRule()==SubClassRule.ANY)))
 						return true;
-				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))
+				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-"))
 				&&(getSubClassRule()==SubClassRule.ANY))
 					return true;
 				if(!quiet)
@@ -202,13 +202,13 @@ public class StdCharClass implements CharClass
 			else
 			if(curClass.getSubClassRule()==SubClassRule.ANY)
 			{
-				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
-				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
-				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
+				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("NO"))
+				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-NO"))
+				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("MULTI"))
+				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-MULTI")))
 					return true;
-				if(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB")
-				||CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB"))
+				if(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("SUB")
+				||CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-SUB"))
 				{
 					if((baseClass().equals(ID()))||(baseClass().equals(curClass.baseClass())))
 						return true;
@@ -219,16 +219,16 @@ public class StdCharClass implements CharClass
 			}
 			else
 			{
-				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
-				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
+				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("MULTI"))
+				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-MULTI")))
 					return true;
 				else
-				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO")))
+				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("NO"))
+				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-NO")))
 					mob.tell("You should be happy to be a "+curClass.name()+".");
 				else
-				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB") 
-				|| CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB")))
+				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("SUB") 
+				|| CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-SUB")))
 				{
 					if(curClass.baseClass().equals(baseClass())||(curClass.getSubClassRule()==SubClassRule.ANY))
 						return true;
@@ -340,8 +340,8 @@ public class StdCharClass implements CharClass
 		StringBuilder str=new StringBuilder("");
 		for(int i : CharStats.CODES.BASE())
 			if(maxStatAdjustments()[i]!=0)
-				str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+maxStatAdjustments()[i])+"), ");
-		str.append("Others ("+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+")");
+				str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+maxStatAdjustments()[i])+"), ");
+		str.append("Others ("+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+")");
 		return str.toString();
 	}
 	public String getPracticeDesc()
@@ -377,7 +377,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, hitPointDescReplacePairs);
-			hitPointsDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" +"+formula+" per lvl";
+			hitPointsDesc=CMProps.getIntVar(CMProps.Int.STARTHP)+" +"+formula+" per lvl";
 		}
 		return hitPointsDesc;
 	}
@@ -395,7 +395,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, manaDescReplacePairs);
-			manaDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" +"+formula+" per lvl";
+			manaDesc=CMProps.getIntVar(CMProps.Int.STARTMANA)+" +"+formula+" per lvl";
 		}
 		return manaDesc;
 	}
@@ -413,7 +413,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, movementDescReplacePairs);
-			movementDesc=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" +"+formula+" per lvl";
+			movementDesc=CMProps.getIntVar(CMProps.Int.STARTMOVE)+" +"+formula+" per lvl";
 		}
 		return movementDesc;
 	}
@@ -891,7 +891,7 @@ public class StdCharClass implements CharClass
 			{
 				if(!CMLib.utensils().armorCheck(msg.source(),(Item)msg.target(),allowedArmorLevel()))
 				{
-					final String choice=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_ARMOR_MISFITS);
+					final String choice=CMProps.getAnyListFileValue(CMProps.ListFile.ARMOR_MISFITS);
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,choice,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
 				break;

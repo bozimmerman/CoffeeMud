@@ -527,7 +527,7 @@ public class Quests extends StdLibrary implements QuestManager
 		String oldName=(String)settings.elementAt(oldNameIndex,2);
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		try{
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))

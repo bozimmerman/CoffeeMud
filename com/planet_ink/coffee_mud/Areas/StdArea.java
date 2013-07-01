@@ -448,7 +448,7 @@ public class StdArea implements Area
 	{
 		String s=finalPrejudiceFactors(this);
 		if(s.length()>0) return s;
-		return CMProps.getVar(CMProps.SYSTEM_IGNOREMASK);
+		return CMProps.getVar(CMProps.Str.IGNOREMASK);
 	}
 	protected String finalPrejudiceFactors(Area A)
 	{
@@ -469,7 +469,7 @@ public class StdArea implements Area
 	{
 		final String[] s=finalItemPricingAdjustments(this);
 		if(s.length>0) return s;
-		return CMParms.toStringArray(CMParms.parseSemicolons(CMProps.getVar(CMProps.SYSTEM_PRICEFACTORS).trim(),true));
+		return CMParms.toStringArray(CMParms.parseSemicolons(CMProps.getVar(CMProps.Str.PRICEFACTORS).trim(),true));
 	}
 	
 	protected String[] finalItemPricingAdjustments(Area A)
@@ -491,7 +491,7 @@ public class StdArea implements Area
 	{
 		String s=finalIgnoreMask(this);
 		if(s.length()>0) return s;
-		return CMProps.getVar(CMProps.SYSTEM_IGNOREMASK);
+		return CMProps.getVar(CMProps.Str.IGNOREMASK);
 	}
 	protected String finalIgnoreMask(Area A)
 	{
@@ -511,7 +511,7 @@ public class StdArea implements Area
 	{
 		final String s=finalBudget(this);
 		if(s.length()>0) return s;
-		return CMProps.getVar(CMProps.SYSTEM_BUDGET);
+		return CMProps.getVar(CMProps.Str.BUDGET);
 	}
 	protected String finalBudget(Area A)
 	{
@@ -531,7 +531,7 @@ public class StdArea implements Area
 	{
 		final String s=finalDevalueRate(this);
 		if(s.length()>0) return s;
-		return CMProps.getVar(CMProps.SYSTEM_DEVALUERATE);
+		return CMProps.getVar(CMProps.Str.DEVALUERATE);
 	}
 	protected String finalDevalueRate(Area A)
 	{
@@ -554,7 +554,7 @@ public class StdArea implements Area
 	{
 		int x=finalInvResetRate(this);
 		if(x!=0) return x;
-		return CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
+		return CMath.s_int(CMProps.getVar(CMProps.Str.INVRESETRATE));
 	}
 	
 	protected int finalInvResetRate(Area A)
@@ -987,7 +987,7 @@ public class StdArea implements Area
 
 	public int[] getAreaIStats()
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return new int[Area.Stats.values().length];
 		int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
 		if(statData!=null) 
@@ -1068,7 +1068,7 @@ public class StdArea implements Area
 	}
 	public synchronized StringBuffer getAreaStats()
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return new StringBuffer("");
 		StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+Name().toUpperCase());
 		if(s!=null) return s;

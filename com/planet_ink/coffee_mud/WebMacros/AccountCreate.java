@@ -47,9 +47,9 @@ public class AccountCreate extends StdWebMacro
 	
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
-				 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
-		boolean emailDisabled=CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("DISABLE");
+		boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
+				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
+		boolean emailDisabled=CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE");
 		
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("SHOWPASSWORD"))
@@ -85,7 +85,7 @@ public class AccountCreate extends StdWebMacro
 		String emailAddress="";
 		if(!emailDisabled)
 		{
-			boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
+			boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
 			emailAddress=httpReq.getUrlParameter("EMAILADDRESS");
 			if(emailReq)
 			{
@@ -123,16 +123,16 @@ public class AccountCreate extends StdWebMacro
 		acct.setEmail(emailAddress);
 		acct.setLastIP(httpReq.getClientAddress().getHostAddress());
 		acct.setLastDateTime(System.currentTimeMillis());
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
+			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.Int.TRIALDAYS))));
 		CMLib.database().DBCreateAccount(acct);
 		if(emailPassword)
 		{
-			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 					acct.accountName(),
 					acct.accountName(),
 					"Password for "+acct.accountName(),
-					"Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+					"Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
 		}
 		if(parms.containsKey("LOGIN"))
 		{

@@ -38,6 +38,6 @@ public class IsExpirationSystem extends StdWebMacro
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		return ""+CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION);
+		return ""+CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION);
 	}
 }

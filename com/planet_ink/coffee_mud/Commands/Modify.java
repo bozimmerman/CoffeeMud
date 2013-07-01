@@ -700,7 +700,7 @@ public class Modify extends StdCommand
 			{
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+Q.name()+".");
 				int showFlag=-1;
-				if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+				if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 					showFlag=-999;
 				boolean ok=false;
 				while(!ok)
@@ -1482,7 +1482,7 @@ public class Modify extends StdCommand
 			rooms(mob,commands);
 		}
 		else
-		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
 			accounts(mob,commands);
@@ -1634,7 +1634,7 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS)) 
 				return errorOut(mob);
-			if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)!=1)
+			if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)!=1)
 			{
 				mob.tell("This command is only used when your Scriptable Javascripts require approval as specified in your coffeemud.ini file.");
 				return true;

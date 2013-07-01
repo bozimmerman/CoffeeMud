@@ -190,8 +190,8 @@ public class MassMailer implements Runnable
 			SMTPLibrary.SMTPClient SC=null;
 			try
 			{
-				if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
-					SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
+				if(CMProps.getVar(CMProps.Str.SMTPSERVERNAME).length()>0)
+					SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
 				else
 					SC=CMLib.smtp().getClient(toEmail);
 			}

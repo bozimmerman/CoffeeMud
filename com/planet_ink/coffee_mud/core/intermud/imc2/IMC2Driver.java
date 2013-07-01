@@ -343,11 +343,11 @@ public final class IMC2Driver extends Thread {
 		imc_name=loginName;
 		imc_log_on=1; // logging?
 		this_imcmud.autoconnect=true; 
-		imc_siteinfo.name=CMProps.getVar(CMProps.SYSTEM_MUDNAME);
+		imc_siteinfo.name=CMProps.getVar(CMProps.Str.MUDNAME);
 		imc_siteinfo.host=host;
-		imc_siteinfo.port=CMath.s_int(CMParms.parse(CMProps.getVar(CMProps.SYSTEM_MUDPORTS)).elementAt(0));
+		imc_siteinfo.port=CMath.s_int(CMParms.parse(CMProps.getVar(CMProps.Str.MUDPORTS)).elementAt(0));
 		imc_siteinfo.email=email;
-		imc_siteinfo.base="CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER);
+		imc_siteinfo.base="CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER);
 		imc_siteinfo.details="Custom Java-based Mud";
 		imc_siteinfo.www=web;
 		this_imcmud.hubname=hub;
@@ -466,7 +466,7 @@ public final class IMC2Driver extends Thread {
 	}
 	final public String do_imcinfo()
 	{
-		String host=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
+		String host=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 		return "IMC Statistics:\\n\\r\\n"+
 			"Site Name           :"+imc_siteinfo.name+"\\n\\r"+
 			"Site Host           :"+((host.length()>0)?host:sa.getLocalAddress().getHostName())+"\\n\\r"+
@@ -934,7 +934,7 @@ public final class IMC2Driver extends Thread {
 
 	final String update_wholist()
 	{
-		StringBuffer str=new StringBuffer("Players on "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+":\\n\\r");
+		StringBuffer str=new StringBuffer("Players on "+CMProps.getVar(CMProps.Str.MUDNAME)+":\\n\\r");
 		Command C=CMClass.getCommand("Who");
 		if(C!=null)
 		{

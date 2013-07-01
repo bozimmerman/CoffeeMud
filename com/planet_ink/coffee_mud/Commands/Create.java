@@ -336,8 +336,8 @@ public class Create extends StdCommand
 		thisAcct=(PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
 		thisAcct.setAccountName(AcctName);
 		thisAcct.setAccountExpiration(0);
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-			thisAcct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
+			thisAcct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.Int.TRIALDAYS))));
 		thisAcct.setLastDateTime(System.currentTimeMillis());
 		thisAcct.setLastUpdated(System.currentTimeMillis());
 		thisAcct.setPassword(password);
@@ -949,7 +949,7 @@ public class Create extends StdCommand
 			rooms(mob,commands);
 		}
 		else
-		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");

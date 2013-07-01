@@ -140,7 +140,7 @@ public class Thief_TagTurf extends ThiefSkill
 				setMiscText(C.clanID());
 			else
 				setMiscText(mob.Name());
-			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)));
+			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)));
 		}
 		return success;
 	}

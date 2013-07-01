@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class Staff extends StdWeapon implements Wand
 {
 	public String ID(){    return "Staff";}
-	protected String secretWord=CMProps.getAnyListFileValue(CMProps.SYSTEMLF_MAGIC_WORDS);
+	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 
 	public Staff()
 	{

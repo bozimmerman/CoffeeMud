@@ -156,7 +156,7 @@ public class CommonSkill extends StdAbility
 	{
 		int ticks=baseTicks;
 		int level=mob.phyStats().level() - itemLevel;
-		double pct=CMath.div(level,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))*.5;
+		double pct=CMath.div(level,CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))*.5;
 		ticks-=(int)Math.round(CMath.mul(ticks, pct));
 		
 		double quickPct = getXTIMELevel(mob) * 0.05; 

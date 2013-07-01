@@ -66,7 +66,7 @@ public class Pose extends StdCommand
 			return false;
 		}
 		String combinedCommands=CMParms.combine(commands,1);
-		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.SYSTEM_POSEFILTER);
+		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.POSEFILTER);
 		if(combinedCommands.trim().startsWith("'")||combinedCommands.trim().startsWith("`"))
 			combinedCommands=combinedCommands.trim();
 		else

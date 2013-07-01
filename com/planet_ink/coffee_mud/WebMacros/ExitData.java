@@ -79,8 +79,8 @@ public class ExitData extends StdWebMacro
 			httpReq.getRequestObjects().put(last,R);
 		}
 
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		String linkdir=httpReq.getUrlParameter("LINK");
 		if(linkdir==null) return "@break@";

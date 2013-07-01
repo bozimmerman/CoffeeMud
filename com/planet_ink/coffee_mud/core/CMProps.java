@@ -40,6 +40,7 @@ import java.io.InputStreamReader;
 */
 public class CMProps extends Properties
 {
+	private static final long serialVersionUID = -6592429720705457521L;
 	private static final CMProps[] props=new CMProps[256];
 	public CMProps()
 	{
@@ -56,200 +57,202 @@ public class CMProps extends Properties
 	public static final CMProps instance(char c){ return props[c];}
 	private static final CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 
-	public static final long serialVersionUID=0;
-	public static final int SYSTEM_PKILL=0;
-	public static final int SYSTEM_MULTICLASS=1;
-	public static final int SYSTEM_PLAYERDEATH=2;
-	public static final int SYSTEM_PLAYERFLEE=3;
-	public static final int SYSTEM_SHOWDAMAGE=4;
-	public static final int SYSTEM_EMAILREQ=5;
-	public static final int SYSTEM_ESC0=6;
-	public static final int SYSTEM_ESC1=7;
-	public static final int SYSTEM_ESC2=8;
-	public static final int SYSTEM_ESC3=9;
-	public static final int SYSTEM_ESC4=10;
-	public static final int SYSTEM_ESC5=11;
-	public static final int SYSTEM_ESC6=12;
-	public static final int SYSTEM_ESC7=13;
-	public static final int SYSTEM_ESC8=14;
-	public static final int SYSTEM_ESC9=15;
-	public static final int SYSTEM_MSPPATH=16;
-	public static final int SYSTEM_BADNAMES=17;
-	public static final int SYSTEM_SKILLCOST=18;
-	public static final int SYSTEM_COMMONCOST=19;
-	public static final int SYSTEM_LANGCOST=20;
-	public static final int SYSTEM_AUTOPURGE=21;
-	public static final int SYSTEM_MUDNAME=22;
-	public static final int SYSTEM_MUDVER=23;
-	public static final int SYSTEM_MUDSTATUS=24;
-	public static final int SYSTEM_MUDPORTS=25;
-	public static final int SYSTEM_CORPSEGUARD=26;
-	public static final int SYSTEM_INIPATH=27;
-	public static final int SYSTEM_MUDBINDADDRESS=28;
-	public static final int SYSTEM_MUDDOMAIN=29;
-	public static final int SYSTEM_ADMINEMAIL=30;
-	public static final int SYSTEM_PREJUDICE=31;
-	public static final int SYSTEM_BUDGET=32;
-	public static final int SYSTEM_DEVALUERATE=33;
-	public static final int SYSTEM_INVRESETRATE=34;
-	public static final int SYSTEM_EMOTEFILTER=35;
-	public static final int SYSTEM_SAYFILTER=36;
-	public static final int SYSTEM_CHANNELFILTER=37;
-	public static final int SYSTEM_CLANTROPPK=38;
-	public static final int SYSTEM_MAILBOX=39;
-	public static final int SYSTEM_CLANTROPCP=40;
-	public static final int SYSTEM_CLANTROPEXP=41;
-	public static final int SYSTEM_CLANTROPAREA=42;
-	public static final int SYSTEM_COLORSCHEME=43;
-	public static final int SYSTEM_SMTPSERVERNAME=44;
-	public static final int SYSTEM_EXPCONTACTLINE=45;
-	public static final int SYSTEM_AUTOWEATHERPARMS=46;
-	public static final int SYSTEM_MXPIMAGEPATH=47;
-	public static final int SYSTEM_IGNOREMASK=48;
-	public static final int SYSTEM_SIPLET=49;
-	public static final int SYSTEM_PREFACTIONS=50;
-	public static final int SYSTEM_AUTOAREAPROPS=51;
-	public static final int SYSTEM_MOBDEATH=52;
-	public static final int SYSTEM_I3ROUTERS=53;
-	public static final int SYSTEM_IDLETIMERS=54;
-	public static final int SYSTEM_PRICEFACTORS=55;
-	public static final int SYSTEM_ITEMLOOTPOLICY=56;
-	public static final int SYSTEM_AUCTIONRATES=57;
-	public static final int SYSTEM_DEFAULTPROMPT=58;
-	public static final int SYSTEM_PRIVATERESOURCES=59;
-	public static final int SYSTEM_CHARCREATIONSCRIPTS=60;
-	public static final int SYSTEM_CHARSETINPUT=61;
-	public static final int SYSTEM_CHARSETOUTPUT=62;
-	public static final int SYSTEM_DEFAULTPLAYERFLAGS=63;
-	public static final int SYSTEM_FORMULA_ATTACKADJUSTMENT=64;
-	public static final int SYSTEM_FORMULA_ARMORADJUSTMENT=65;
-	public static final int SYSTEM_FORMULA_ATTACKFUDGEBONUS=66;
-	public static final int SYSTEM_FORMULA_CHANCESPELLCRIT=67;
-	public static final int SYSTEM_FORMULA_DAMAGESPELLCRIT=68;
-	public static final int SYSTEM_FORMULA_DAMAGERANGEDTARGETED=69;
-	public static final int SYSTEM_FORMULA_DAMAGERANGEDSTATIC=70;
-	public static final int SYSTEM_FORMULA_DAMAGEMELEETARGETED=71;
-	public static final int SYSTEM_FORMULA_DAMAGEMELEESTATIC=72;
-	public static final int SYSTEM_FORMULA_CHANCEWEAPONCRIT=73;
-	public static final int SYSTEM_FORMULA_DAMAGEWEAPONCRIT=74;
-	public static final int SYSTEM_FORMULA_NPCHITPOINTS=75;
-	public static final int SYSTEM_FORMULA_DAMAGESPELLFUDGE=76;
-	public static final int SYSTEM_FORMULA_DAMAGEMELEEFUDGE=77;
-	public static final int SYSTEM_FORMULA_DAMAGERANGEDFUDGE=78;
-	public static final int SYSTEM_WIZLISTMASK=79;
-	public static final int SYSTEM_AUTOREACTION=80;
-	public static final int SYSTEM_POSEFILTER=81;
-	public static final int SYSTEM_STARTINGITEMS=82;
-	public static final int SYSTEM_STATCOSTS=83;
-	public static final int SYSTEM_CLANTROPMB=84;
-	public static final int SYSTEM_CLANTROPLVL=85;
-	public static final int SYSTEM_FORMULA_PVPATTACKFUDGEBONUS=86;
-	public static final int SYSTEM_FORMULA_PVPCHANCESPELLCRIT=87;
-	public static final int SYSTEM_FORMULA_PVPDAMAGESPELLCRIT=88;
-	public static final int SYSTEM_FORMULA_PVPDAMAGERANGEDTARGETED=89;
-	public static final int SYSTEM_FORMULA_PVPDAMAGEMELEETARGETED=90;
-	public static final int SYSTEM_FORMULA_PVPCHANCEWEAPONCRIT=91;
-	public static final int SYSTEM_FORMULA_PVPDAMAGEWEAPONCRIT=92;
-	public static final int SYSTEM_FORMULA_PVPDAMAGESPELLFUDGE=93;
-	public static final int SYSTEM_FORMULA_PVPDAMAGEMELEEFUDGE=94;
-	public static final int SYSTEM_FORMULA_PVPDAMAGERANGEDFUDGE=95;
-	public static final int NUM_SYSTEM=96;
+	public static enum Str {
+		PKILL,
+		MULTICLASS,
+		PLAYERDEATH,
+		PLAYERFLEE,
+		SHOWDAMAGE,
+		EMAILREQ,
+		ESC0,
+		ESC1,
+		ESC2,
+		ESC3,
+		ESC4,
+		ESC5,
+		ESC6,
+		ESC7,
+		ESC8,
+		ESC9,
+		MSPPATH,
+		BADNAMES,
+		SKILLCOST,
+		COMMONCOST,
+		LANGCOST,
+		AUTOPURGE,
+		MUDNAME,
+		MUDVER,
+		MUDSTATUS,
+		MUDPORTS,
+		CORPSEGUARD,
+		INIPATH,
+		MUDBINDADDRESS,
+		MUDDOMAIN,
+		ADMINEMAIL,
+		PREJUDICE,
+		BUDGET,
+		DEVALUERATE,
+		INVRESETRATE,
+		EMOTEFILTER,
+		SAYFILTER,
+		CHANNELFILTER,
+		CLANTROPPK,
+		MAILBOX,
+		CLANTROPCP,
+		CLANTROPEXP,
+		CLANTROPAREA,
+		COLORSCHEME,
+		SMTPSERVERNAME,
+		EXPCONTACTLINE,
+		AUTOWEATHERPARMS,
+		MXPIMAGEPATH,
+		IGNOREMASK,
+		SIPLET,
+		PREFACTIONS,
+		AUTOAREAPROPS,
+		MOBDEATH,
+		I3ROUTERS,
+		IDLETIMERS,
+		PRICEFACTORS,
+		ITEMLOOTPOLICY,
+		AUCTIONRATES,
+		DEFAULTPROMPT,
+		PRIVATERESOURCES,
+		CHARCREATIONSCRIPTS,
+		CHARSETINPUT,
+		CHARSETOUTPUT,
+		DEFAULTPLAYERFLAGS,
+		FORMULA_ATTACKADJUSTMENT,
+		FORMULA_ARMORADJUSTMENT,
+		FORMULA_ATTACKFUDGEBONUS,
+		FORMULA_CHANCESPELLCRIT,
+		FORMULA_DAMAGESPELLCRIT,
+		FORMULA_DAMAGERANGEDTARGETED,
+		FORMULA_DAMAGERANGEDSTATIC,
+		FORMULA_DAMAGEMELEETARGETED,
+		FORMULA_DAMAGEMELEESTATIC,
+		FORMULA_CHANCEWEAPONCRIT,
+		FORMULA_DAMAGEWEAPONCRIT,
+		FORMULA_NPCHITPOINTS,
+		FORMULA_DAMAGESPELLFUDGE,
+		FORMULA_DAMAGEMELEEFUDGE,
+		FORMULA_DAMAGERANGEDFUDGE,
+		WIZLISTMASK,
+		AUTOREACTION,
+		POSEFILTER,
+		STARTINGITEMS,
+		STATCOSTS,
+		CLANTROPMB,
+		CLANTROPLVL,
+		FORMULA_PVPATTACKFUDGEBONUS,
+		FORMULA_PVPCHANCESPELLCRIT,
+		FORMULA_PVPDAMAGESPELLCRIT,
+		FORMULA_PVPDAMAGERANGEDTARGETED,
+		FORMULA_PVPDAMAGEMELEETARGETED,
+		FORMULA_PVPCHANCEWEAPONCRIT,
+		FORMULA_PVPDAMAGEWEAPONCRIT,
+		FORMULA_PVPDAMAGESPELLFUDGE,
+		FORMULA_PVPDAMAGEMELEEFUDGE,
+		FORMULA_PVPDAMAGERANGEDFUDGE
+	}
 
-	public static final int SYSTEMI_EXPRATE=0;
-	public static final int SYSTEMI_SKYSIZE=1;
-	public static final int SYSTEMI_MAXSTAT=2;
-	public static final int SYSTEMI_EDITORTYPE=3;
-	public static final int SYSTEMI_MINCLANMEMBERS=4;
-	public static final int SYSTEMI_DAYSCLANDEATH=5;
-	public static final int SYSTEMI_MINCLANLEVEL=6;
-	public static final int SYSTEMI_MANACOST=7;
-	//public static final int SYSTEMI_DBPINGINTMINS=8;
-	//public static final int SYSTEMI_LANGTRAINCOST=9;
-	//public static final int SYSTEMI_SKILLTRAINCOST=10;
-	//public static final int SYSTEMI_COMMONPRACCOST=11;
-	//public static final int SYSTEMI_LANGPRACCOST=12;
-	//public static final int SYSTEMI_SKILLPRACCOST=13;
-	public static final int SYSTEMI_CLANCOST=14;
-	public static final int SYSTEMI_PAGEBREAK=15;
-	public static final int SYSTEMI_FOLLOWLEVELDIFF=16;
-	public static final int SYSTEMI_LASTPLAYERLEVEL=17;
-	public static final int SYSTEMI_CLANENCHCOST=18;
-	public static final int SYSTEMI_BASEMAXSTAT=19;
-	public static final int SYSTEMI_MANAMINCOST=20;
-	public static final int SYSTEMI_MAXCLANMEMBERS=21;
-	public static final int SYSTEMI_MANACONSUMETIME=22;
-	public static final int SYSTEMI_MANACONSUMEAMT=23;
-	public static final int SYSTEMI_MUDBACKLOG=24;
-	public static final int SYSTEMI_TICKSPERMUDDAY=25;
-	public static final int SYSTEMI_COMBATSYSTEM=26;
-	public static final int SYSTEMI_JOURNALLIMIT=27;
-	public static final int SYSTEMI_TICKSPERMUDMONTH=28;
-	public static final int SYSTEMI_MUDTHEME=29;
-	public static final int SYSTEMI_INJPCTCHANCE=30;
-	public static final int SYSTEMI_INJPCTHP=31;
-	public static final int SYSTEMI_INJPCTHPAMP=32;
-	public static final int SYSTEMI_INJPCTCHANCEAMP=33;
-	public static final int SYSTEMI_INJMULTIPLIER=34;
-	public static final int SYSTEMI_STARTHP=35;
-	public static final int SYSTEMI_STARTMANA=36;
-	public static final int SYSTEMI_STARTMOVE=37;
-	public static final int SYSTEMI_TRIALDAYS=38;
-	public static final int SYSTEMI_EQVIEW=39;
-	public static final int SYSTEMI_MAXCONNSPERIP=40;
-	public static final int SYSTEMI_MAXNEWPERIP=41;
-	public static final int SYSTEMI_MAXMAILBOX=42;
-	public static final int SYSTEMI_JSCRIPTS=43;
-	public static final int SYSTEMI_INJMINLEVEL=44;
-	public static final int SYSTEMI_DEFCMDTIME=45;
-	public static final int SYSTEMI_DEFCOMCMDTIME=46;
-	public static final int SYSTEMI_DEFABLETIME=47;
-	public static final int SYSTEMI_DEFCOMABLETIME=48;
-	public static final int SYSTEMI_INJBLEEDMINLEVEL=49;
-	public static final int SYSTEMI_INJBLEEDPCTHP=50;
-	public static final int SYSTEMI_INJBLEEDPCTCHANCE=51;
-	public static final int SYSTEMI_EXPIRE_MONSTER_EQ=52;
-	public static final int SYSTEMI_EXPIRE_PLAYER_DROP=53;
-	public static final int SYSTEMI_EXPIRE_RESOURCE=54;
-	public static final int SYSTEMI_EXPIRE_MONSTER_BODY=55;
-	public static final int SYSTEMI_EXPIRE_PLAYER_BODY=56;
-	public static final int SYSTEMI_MAXITEMSHOWN=57;
-	public static final int SYSTEMI_STARTSTAT=58;
-	public static final int SYSTEMI_RECOVERRATE=59;
-	public static final int SYSTEMI_COMMONACCOUNTSYSTEM=60;
-	public static final int SYSTEMI_MAXCONNSPERACCOUNT=61;
-	public static final int SYSTEMI_EXVIEW=62;
-	public static final int SYSTEMI_MUDSTATE=63;
-	public static final int SYSTEMI_OBJSPERTHREAD=64;
-	public static final int SYSTEMI_MAXCOMMONSKILLS=65;
-	public static final int SYSTEMI_MAXCRAFTINGSKILLS=66;
-	public static final int SYSTEMI_MAXNONCRAFTINGSKILLS=67;
-	public static final int SYSTEMI_MAXLANGUAGES=68;
-	public static final int SYSTEMI_WALKCOST=69;
-	public static final int SYSTEMI_RUNCOST=70;
-	public static final int SYSTEMI_ACCOUNTPURGEDAYS=71;
-	public static final int SYSTEMI_AWARERANGE=72;
-	public static final int SYSTEMI_MINWORKERTHREADS=73;
-	public static final int SYSTEMI_MAXWORKERTHREADS=74;
-	public static final int SYSTEMI_DUELTICKDOWN=75;
-	public static final int SYSTEMI_BASEMINSTAT=76;
-	public static final int NUMI_SYSTEM=77;
+	public static enum Int {
+		EXPRATE,
+		SKYSIZE,
+		MAXSTAT,
+		EDITORTYPE,
+		MINCLANMEMBERS,
+		DAYSCLANDEATH,
+		MINCLANLEVEL,
+		MANACOST,
+		//DBPINGINTMINS,
+		//LANGTRAINCOST,
+		//SKILLTRAINCOST,
+		//COMMONPRACCOST,
+		//LANGPRACCOST,
+		//SKILLPRACCOST,
+		CLANCOST,
+		PAGEBREAK,
+		FOLLOWLEVELDIFF,
+		LASTPLAYERLEVEL,
+		CLANENCHCOST,
+		BASEMAXSTAT,
+		MANAMINCOST,
+		MAXCLANMEMBERS,
+		MANACONSUMETIME,
+		MANACONSUMEAMT,
+		MUDBACKLOG,
+		TICKSPERMUDDAY,
+		COMBATSYSTEM,
+		JOURNALLIMIT,
+		TICKSPERMUDMONTH,
+		MUDTHEME,
+		INJPCTCHANCE,
+		INJPCTHP,
+		INJPCTHPAMP,
+		INJPCTCHANCEAMP,
+		INJMULTIPLIER,
+		STARTHP,
+		STARTMANA,
+		STARTMOVE,
+		TRIALDAYS,
+		EQVIEW,
+		MAXCONNSPERIP,
+		MAXNEWPERIP,
+		MAXMAILBOX,
+		JSCRIPTS,
+		INJMINLEVEL,
+		DEFCMDTIME,
+		DEFCOMCMDTIME,
+		DEFABLETIME,
+		DEFCOMABLETIME,
+		INJBLEEDMINLEVEL,
+		INJBLEEDPCTHP,
+		INJBLEEDPCTCHANCE,
+		EXPIRE_MONSTER_EQ,
+		EXPIRE_PLAYER_DROP,
+		EXPIRE_RESOURCE,
+		EXPIRE_MONSTER_BODY,
+		EXPIRE_PLAYER_BODY,
+		MAXITEMSHOWN,
+		STARTSTAT,
+		RECOVERRATE,
+		COMMONACCOUNTSYSTEM,
+		MAXCONNSPERACCOUNT,
+		EXVIEW,
+		MUDSTATE,
+		OBJSPERTHREAD,
+		MAXCOMMONSKILLS,
+		MAXCRAFTINGSKILLS,
+		MAXNONCRAFTINGSKILLS,
+		MAXLANGUAGES,
+		WALKCOST,
+		RUNCOST,
+		ACCOUNTPURGEDAYS,
+		AWARERANGE,
+		MINWORKERTHREADS,
+		MAXWORKERTHREADS,
+		DUELTICKDOWN,
+		BASEMINSTAT,
+	}
 
-	public static final int SYSTEMB_MOBCOMPRESS=0;
-	public static final int SYSTEMB_ITEMDCOMPRESS=1;
-	public static final int SYSTEMB_ROOMDCOMPRESS=2;
-	public static final int SYSTEMB_MOBDCOMPRESS=3;
-	public static final int SYSTEMB_MUDSTARTED=4;
-	public static final int SYSTEMB_EMAILFORWARDING=5;
-	public static final int SYSTEMB_MOBNOCACHE=6;
-	public static final int SYSTEMB_ROOMDNOCACHE=7;
-	public static final int SYSTEMB_MUDSHUTTINGDOWN=8;
-	public static final int SYSTEMB_ACCOUNTEXPIRATION=9;
-	public static final int SYSTEMB_INTRODUCTIONSYSTEM=10;
-	public static final int SYSTEMB_FILERESOURCENOCACHE=11;
-	public static final int SYSTEMB_CATALOGNOCACHE=12;
-	public static final int SYSTEMB_MAPFINDSNOCACHE=13;
-	public static final int SYSTEMB_HASHPASSWORDS=14;
-	public static final int NUMB_SYSTEM=15;
+	public static enum Bool {
+		MOBCOMPRESS,
+		ITEMDCOMPRESS,
+		ROOMDCOMPRESS,
+		MOBDCOMPRESS,
+		MUDSTARTED,
+		EMAILFORWARDING,
+		MOBNOCACHE,
+		ROOMDNOCACHE,
+		MUDSHUTTINGDOWN,
+		ACCOUNTEXPIRATION,
+		INTRODUCTIONSYSTEM,
+		FILERESOURCENOCACHE,
+		CATALOGNOCACHE,
+		MAPFINDSNOCACHE,
+		HASHPASSWORDS
+	}
 
 	public enum StrList
 	{
@@ -263,81 +266,60 @@ public class CMProps extends Properties
 		public String toString() { return str; }
 	}
 
-	public static final int SYSTEMLF_DAMAGE_WORDS_THRESHOLDS=0;
-	public static final int SYSTEMLF_DAMAGE_WORDS=1;
-	public static final int SYSTEMLF_HEALTH_CHART=2;
-	public static final int SYSTEMLF_MISS_DESCS=3;
-	public static final int SYSTEMLF_WEAPON_MISS_DESCS=4;
-	public static final int SYSTEMLF_PROWESS_DESCS_CEILING=5;
-	public static final int SYSTEMLF_PROWESS_DESCS=6;
-	public static final int SYSTEMLF_ARMOR_DESCS_CEILING=7;
-	public static final int SYSTEMLF_ARMOR_DESCS=8;
-	public static final int SYSTEMLF_EXP_CHART=9;
-	public static final int SYSTEMLF_ARMOR_MISFITS=10;
-	public static final int SYSTEMLF_MAGIC_WORDS=11;
-	public static final int SYSTEMLF_TODCHANGE_OUTSIDE=12;
-	public static final int SYSTEMLF_TODCHANGE_INSIDE=13;
-	public static final int SYSTEMLF_WEATHER_ENDS=14;
-	public static final int SYSTEMLF_WEAPON_HIT_DESCS=15;
-	public static final int SYSTEMLF_WEATHER_CLEAR=16; // try to always and forever keep these at the end...
-	public static final int SYSTEMLF_WEATHER_CLOUDY=17;
-	public static final int SYSTEMLF_WEATHER_WINDY=18;
-	public static final int SYSTEMLF_WEATHER_RAIN=19;
-	public static final int SYSTEMLF_WEATHER_THUNDERSTORM=20;
-	public static final int SYSTEMLF_WEATHER_SNOW=21;
-	public static final int SYSTEMLF_WEATHER_HAIL=22;
-	public static final int SYSTEMLF_WEATHER_HEAT=23;
-	public static final int SYSTEMLF_WEATHER_SLEET=24;
-	public static final int SYSTEMLF_WEATHER_BLIZZARD=25;
-	public static final int SYSTEMLF_WEATHER_DUST=26;
-	public static final int SYSTEMLF_WEATHER_DROUGHT=27;
-	public static final int SYSTEMLF_WEATHER_COLD=28;
-	public static final int SYSTEMLF_WEATHER_NONE=29;
-
-	public static final String[] SYSTEMLF_KEYS={
-									"DAMAGE_WORDS_THRESHOLDS",
-									"DAMAGE_WORDS",
-									"HEALTH_CHART",
-									"MISS_DESCS",
-									"WEAPON_MISS_DESCS",
-									"PROWESS_DESCS_CEILING",
-									"PROWESS_DESCS",
-									"ARMOR_DESCS_CEILING",
-									"ARMOR_DESCS",
-									"EXP_CHART",
-									"ARMOR_MISFITS",
-									"MAGIC_WORDS",
-									"TOD_CHANGE_OUTSIDE",
-									"TOD_CHANGE_INSIDE",
-									"WEATHER_ENDS",
-									"WEAPON_HIT_DESCS",
-									"WEATHER_CLEAR",
-									"WEATHER_CLOUDY",
-									"WEATHER_WINDY",
-									"WEATHER_RAIN",
-									"WEATHER_THUNDERSTORM",
-									"WEATHER_SNOW",
-									"WEATHER_HAIL",
-									"WEATHER_HEAT_WAVE",
-									"WEATHER_SLEET",
-									"WEATHER_BLIZZARD",
-									"WEATHER_DUSTSTORM",
-									"WEATHER_DROUGHT",
-									"WEATHER_WINTER_COLD",
-									"WEATHER_NONE"
-	};
-	public static final int NUMLF_SYSTEM=SYSTEMLF_KEYS.length;
+	public static enum ListFile {
+		DAMAGE_WORDS_THRESHOLDS,
+		DAMAGE_WORDS,
+		HEALTH_CHART,
+		MISS_DESCS,
+		WEAPON_MISS_DESCS,
+		PROWESS_DESCS_CEILING,
+		PROWESS_DESCS,
+		ARMOR_DESCS_CEILING,
+		ARMOR_DESCS,
+		EXP_CHART,
+		ARMOR_MISFITS,
+		MAGIC_WORDS,
+		TODCHANGE_OUTSIDE,
+		TODCHANGE_INSIDE,
+		WEATHER_ENDS,
+		WEAPON_HIT_DESCS,
+		WEATHER_CLEAR, // try to always and forever keep these at the end...
+		WEATHER_CLOUDY, // try to always and forever keep these at the end...
+		WEATHER_WINDY, // try to always and forever keep these at the end...
+		WEATHER_RAIN, // try to always and forever keep these at the end...
+		WEATHER_THUNDERSTORM, // try to always and forever keep these at the end...
+		WEATHER_SNOW, // try to always and forever keep these at the end...
+		WEATHER_HAIL, // try to always and forever keep these at the end...
+		WEATHER_HEAT, // try to always and forever keep these at the end...
+		WEATHER_SLEET, // try to always and forever keep these at the end...
+		WEATHER_BLIZZARD, // try to always and forever keep these at the end...
+		WEATHER_DUST, // try to always and forever keep these at the end...
+		WEATHER_DROUGHT, // try to always and forever keep these at the end...
+		WEATHER_COLD, // try to always and forever keep these at the end...
+		WEATHER_NONE // try to always and forever keep these at the end...
+		;
+		private String key;
+		private ListFile(String key)
+		{
+			this.key=key;
+		}
+		private ListFile()
+		{
+			this.key=this.toString();
+		}
+		public String getKey() { return key; }
+	}
 
 	public static final int SYSTEMWL_CONNS=0;
 	public static final int SYSTEMWL_LOGINS=1;
 	public static final int SYSTEMWL_NEWPLAYERS=2;
 	public static final int NUMWL_SYSTEM=3;
 	
-	protected final String[]	sysVars=new String[NUM_SYSTEM];
-	protected final Integer[]   sysInts=new Integer[NUMI_SYSTEM];
-	protected final Boolean[]   sysBools=new Boolean[NUMB_SYSTEM];
+	protected final String[]	sysVars=new String[Str.values().length];
+	protected final Integer[]   sysInts=new Integer[Int.values().length];
+	protected final Boolean[]   sysBools=new Boolean[Bool.values().length];
 	protected final String[][]  sysLists=new String[StrList.values().length][];
-	protected final Object[]	sysLstFileLists=new Object[NUMLF_SYSTEM];
+	protected final Object[]	sysLstFileLists=new Object[ListFile.values().length];
 	protected final List<String>sayFilter=new Vector<String>();
 	protected final List<String>channelFilter=new Vector<String>();
 	protected final List<String>emoteFilter=new Vector<String>();
@@ -353,14 +335,14 @@ public class CMProps extends Properties
 	protected long  			TICKS_PER_RLHOUR=TICKS_PER_RLMIN * 60;
 	protected long  			TICKS_PER_RLDAY=TICKS_PER_RLHOUR * 24;
 	protected double			TIME_TICK_DOUBLE=TIME_TICK;
-	protected final Map<String,Integer>		maxClanCatsMap				=new HashMap<String,Integer>();
-	protected final Set<String>				publicClanCats				=new HashSet<String>();
-	protected final Map<String,Double>		skillMaxManaExceptions		=new HashMap<String,Double>();
-	protected final Map<String,Double>		skillMinManaExceptions		=new HashMap<String,Double>();
-	protected final Map<String,Double>		skillActionCostExceptions	=new HashMap<String,Double>();
-	protected final Map<String,Double>		skillComActionCostExceptions=new HashMap<String,Double>();
-	protected final Map<String,Double>		cmdActionCostExceptions		=new HashMap<String,Double>();
-	protected final Map<String,Double>		cmdComActionCostExceptions	=new HashMap<String,Double>();
+	protected final Map<String,Integer>	maxClanCatsMap				=new HashMap<String,Integer>();
+	protected final Set<String>			publicClanCats				=new HashSet<String>();
+	protected final Map<String,Double>	skillMaxManaExceptions		=new HashMap<String,Double>();
+	protected final Map<String,Double>	skillMinManaExceptions		=new HashMap<String,Double>();
+	protected final Map<String,Double>	skillActionCostExceptions	=new HashMap<String,Double>();
+	protected final Map<String,Double>	skillComActionCostExceptions=new HashMap<String,Double>();
+	protected final Map<String,Double>	cmdActionCostExceptions		=new HashMap<String,Double>();
+	protected final Map<String,Double>	cmdComActionCostExceptions	=new HashMap<String,Double>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> commonCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
@@ -619,12 +601,12 @@ public class CMProps extends Properties
 
 	public static final double getActionCost(final String ID)
 	{
-		return getActionCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0));
+		return getActionCost(ID,CMath.div(getIntVar(Int.DEFCMDTIME),100.0));
 	}
 
 	public static final double getCombatActionCost(final String ID)
 	{
-		return getCombatActionCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0));
+		return getCombatActionCost(ID,CMath.div(getIntVar(Int.DEFCOMCMDTIME),100.0));
 	}
 
 	public static final double getActionSkillCost(final String ID, final double defaultValue)
@@ -647,25 +629,25 @@ public class CMProps extends Properties
 
 	public static final double getActionSkillCost(final String ID)
 	{
-		return getActionSkillCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0));
+		return getActionSkillCost(ID,CMath.div(getIntVar(Int.DEFABLETIME),100.0));
 	}
 
 	public static final double getCombatActionSkillCost(final String ID)
 	{
-		return getCombatActionSkillCost(ID,CMath.div(getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0));
+		return getCombatActionSkillCost(ID,CMath.div(getIntVar(Int.DEFCOMABLETIME),100.0));
 	}
 
 	public static final int getPKillLevelDiff(){return p().pkillLevelDiff;}
 
-	public static final String getVar(final int varNum)
+	public static final String getVar(final Str varNum)
 	{
-		try { return p().sysVars[varNum];} 
+		try { return p().sysVars[varNum.ordinal()];} 
 		catch(Exception t) { return ""; }
 	}
 
-	public static final int getIntVar(final int varNum)
+	public static final int getIntVar(final Int varNum)
 	{
-		try { return p().sysInts[varNum].intValue(); } 
+		try { return p().sysInts[varNum.ordinal()].intValue(); } 
 		catch(Exception t) { return -1; }
 	}
 
@@ -675,49 +657,49 @@ public class CMProps extends Properties
 		catch(Exception t) { return new String[0]; }
 	}
 
-	public static final boolean getBoolVar0(final int varNum)
+	public static final boolean getBoolVar0(final Bool varNum)
 	{
-		if((varNum<0)||(varNum>=NUMB_SYSTEM)) return false;
-		if(instance(MudHost.MAIN_HOST).sysBools[varNum]==null) return false;
-		return instance(MudHost.MAIN_HOST).sysBools[varNum].booleanValue();
+		if(varNum==null) return false;
+		if(instance(MudHost.MAIN_HOST).sysBools[varNum.ordinal()]==null) return false;
+		return instance(MudHost.MAIN_HOST).sysBools[varNum.ordinal()].booleanValue();
 	}
 
-	public static final boolean getBoolVar(final int varNum)
+	public static final boolean getBoolVar(final Bool varNum)
 	{
-		try { return p().sysBools[varNum].booleanValue(); } 
+		try { return p().sysBools[varNum.ordinal()].booleanValue(); } 
 		catch(Exception t) { return false; }
 	}
 
-	public static final void setBoolVar(final int varNum, final boolean val)
+	public static final void setBoolVar(final Bool varNum, final boolean val)
 	{
-		if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
-		p().sysBools[varNum]=Boolean.valueOf(val);
+		if(varNum==null) return;
+		p().sysBools[varNum.ordinal()]=Boolean.valueOf(val);
 	}
 
-	public static final void setBoolVar0(final int varNum, final boolean val)
+	public static final void setBoolVar0(final Bool varNum, final boolean val)
 	{
-		if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
-		instance(MudHost.MAIN_HOST).sysBools[varNum]=Boolean.valueOf(val);
+		if(varNum==null) return;
+		instance(MudHost.MAIN_HOST).sysBools[varNum.ordinal()]=Boolean.valueOf(val);
 	}
 
-	public static final void setIntVar(final int varNum, final int val)
+	public static final void setIntVar(final Int varNum, final int val)
 	{
-		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
-		p().sysInts[varNum]=Integer.valueOf(val);
+		if(varNum==null) return ;
+		p().sysInts[varNum.ordinal()]=Integer.valueOf(val);
 	}
 
-	public static final void setIntVar(final int varNum, String val)
+	public static final void setIntVar(final Int varNum, String val)
 	{
-		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
+		if(varNum==null) return ;
 		if(val==null) val="0";
-		p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val.trim()));
+		p().sysInts[varNum.ordinal()]=Integer.valueOf(CMath.s_int(val.trim()));
 	}
 
-	public static final void setIntVar(final int varNum, String val, final int defaultValue)
+	public static final void setIntVar(final Int varNum, String val, final int defaultValue)
 	{
-		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
+		if(varNum==null) return ;
 		if((val==null)||(val.length()==0)) val=""+defaultValue;
-		p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val.trim()));
+		p().sysInts[varNum.ordinal()]=Integer.valueOf(CMath.s_int(val.trim()));
 	}
 
 	public static final void setListVar(final StrList varType, String[] var)
@@ -739,41 +721,37 @@ public class CMProps extends Properties
 		list[list.length-1]=var;
 	}
 
-	public static final void setVar(final int varNum, String val, final boolean upperFy)
+	public static final void setVar(final Str varNum, String val, final boolean upperFy)
 	{
 		if(val==null) val="";
 		setUpLowVar(varNum,upperFy?val.toUpperCase():val);
 	}
 
-	public static final void setVar(final int varNum, String val)
+	public static final void setVar(final Str varNum, String val)
 	{
 		if(val==null) val="";
 		setUpLowVar(varNum,val.toUpperCase());
 	}
 	
-	private static final void setUpLowVar(final CMProps props, final int varNum, String val)
+	private static final void setUpLowVar(final CMProps props, final Str varNum, String val)
 	{
-		if((varNum<0)||(varNum>=NUM_SYSTEM)) return ;
+		if(varNum==null) return ;
 		if(val==null) val="";
-		props.sysVars[varNum]=val;
-		switch(varNum)
+		props.sysVars[varNum.ordinal()]=val;
+		if(varNum==Str.PKILL)
 		{
-		case SYSTEM_PKILL:
-			{
-				final int x=val.indexOf('-');
-				if(x>0)
-					props.pkillLevelDiff=CMath.s_int(val.substring(x+1));
-			}
-			break;
+			final int x=val.indexOf('-');
+			if(x>0)
+				props.pkillLevelDiff=CMath.s_int(val.substring(x+1));
 		}
 	}
 	
-	public static final void setUpLowVar(final int varNum, final String val)
+	public static final void setUpLowVar(final Str varNum, final String val)
 	{ 
 		setUpLowVar(p(),varNum,val); 
 	}
 	
-	public static final void setUpAllLowVar(final int varNum, final String val)
+	public static final void setUpAllLowVar(final Str varNum, final String val)
 	{ 
 		for(int p=0;p<props.length;p++)
 			if(props[p]!=null)
@@ -977,7 +955,7 @@ public class CMProps extends Properties
 					if(F.exists())
 					{
 						try{
-							rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
+							rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(Str.CHARSETINPUT)));
 						} catch(IOException e){}
 					}
 					Resources.submitResource("PARSED_LISTFILE", rawListData);
@@ -992,51 +970,51 @@ public class CMProps extends Properties
 		return val;
 	}
 
-	public static final int getListFileFirstInt(final int var)
+	public static final int getListFileFirstInt(final ListFile var)
 	{
-		if((var<0)||(var>=NUMLF_SYSTEM)) return -1;
-		if(p().sysLstFileLists[var]==null)
-			p().sysLstFileLists[var]=new int[]{(CMath.s_int(getRawListFileEntry(SYSTEMLF_KEYS[var])))};
-		return ((int[])p().sysLstFileLists[var])[0];
+		if(var==null) return -1;
+		if(p().sysLstFileLists[var.ordinal()]==null)
+			p().sysLstFileLists[var.ordinal()]=new int[]{(CMath.s_int(getRawListFileEntry(var.getKey())))};
+		return ((int[])p().sysLstFileLists[var.ordinal()])[0];
 	}
 
-	public static final int[] getListFileIntList(final int var)
+	public static final int[] getListFileIntList(final ListFile var)
 	{
-		if((var<0)||(var>=NUMLF_SYSTEM)) return new int[0];
-		if(p().sysLstFileLists[var]==null)
+		if(var==null) return new int[0];
+		if(p().sysLstFileLists[var.ordinal()]==null)
 		{
-			final Vector<String> V=CMParms.parseCommas(getRawListFileEntry(SYSTEMLF_KEYS[var]), true);
+			final Vector<String> V=CMParms.parseCommas(getRawListFileEntry(var.getKey()), true);
 			final int[] set=new int[V.size()];
 			for(int v=0;v<V.size();v++)
 				set[v]=CMath.s_int(V.elementAt(v));
-			p().sysLstFileLists[var]=set;
+			p().sysLstFileLists[var.ordinal()]=set;
 		}
-		return ((int[])p().sysLstFileLists[var]);
+		return ((int[])p().sysLstFileLists[var.ordinal()]);
 	}
 
-	private static final Object[][] getSLstFileVar(final int var)
+	private static final Object[][] getSLstFileVar(final ListFile var)
 	{
-		if((var<0)||(var>=NUMLF_SYSTEM)) return new Object[0][];
-		if(p().sysLstFileLists[var]==null)
+		if(var==null) return new Object[0][];
+		if(p().sysLstFileLists[var.ordinal()]==null)
 		{
-			final String[] baseArray = CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(SYSTEMLF_KEYS[var]),false));
+			final String[] baseArray = CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),false));
 			final Object[][] finalArray=new Object[baseArray.length][];
 			for(int s=0;s<finalArray.length;s++)
 				if((baseArray[s]==null)||(baseArray[s].length()==0))
 					finalArray[s]=new Object[]{""};
 				else
 					finalArray[s]=CMParms.toStringArray(CMParms.parseAny(baseArray[s], '|', false));
-			p().sysLstFileLists[var]=finalArray;
+			p().sysLstFileLists[var.ordinal()]=finalArray;
 		}
-		return (Object[][])p().sysLstFileLists[var];
+		return (Object[][])p().sysLstFileLists[var.ordinal()];
 	}
 
-	public static final Object[][][] getListFileGrid(final int var)
+	public static final Object[][][] getListFileGrid(final ListFile var)
 	{
-		if((var<0)||(var>=NUMLF_SYSTEM)) return new String[0][0][];
-		if(p().sysLstFileLists[var]==null)
+		if(var==null) return new String[0][0][];
+		if(p().sysLstFileLists[var.ordinal()]==null)
 		{
-			Vector<String> V=CMParms.parseSemicolons(getRawListFileEntry(SYSTEMLF_KEYS[var]),true);
+			Vector<String> V=CMParms.parseSemicolons(getRawListFileEntry(var.getKey()),true);
 			Object[][] subSet=new Object[V.size()][];
 			for(int v=0;v<V.size();v++)
 				subSet[v]=CMParms.toStringArray(CMParms.parseCommas(V.elementAt(v),false));
@@ -1050,19 +1028,19 @@ public class CMProps extends Properties
 					else
 						finalSet[s][s1]=CMParms.toStringArray(CMParms.parseAny((String)subSet[s][s1], '|', false));
 			}
-			p().sysLstFileLists[var]=finalSet;
+			p().sysLstFileLists[var.ordinal()]=finalSet;
 		}
-		return (Object[][][])p().sysLstFileLists[var];
+		return (Object[][][])p().sysLstFileLists[var.ordinal()];
 	}
 
-	public static final String getListFileValue(final int varCode, final int listIndex)
+	public static final String getListFileValue(final ListFile varCode, final int listIndex)
 	{
 		final Object[] set = getSLstFileVar(varCode)[listIndex];
 		if(set.length==1) return (String)set[0];
 		return (String)CMLib.dice().pick(set);
 	}
 	
-	public static final String getListFileValueByHash(final int varCode, final int hash)
+	public static final String getListFileValueByHash(final ListFile varCode, final int hash)
 	{
 		final Object[][] allVars = getSLstFileVar(varCode);
 		final Object[] set = allVars[hash % allVars.length];
@@ -1070,12 +1048,12 @@ public class CMProps extends Properties
 		return (String)CMLib.dice().pick(set);
 	}
 	
-	public static final int getListFileSize(final int varCode)
+	public static final int getListFileSize(final ListFile varCode)
 	{
 		return getSLstFileVar(varCode).length;
 	}
 	
-	public static final String getAnyListFileValue(final int varCode)
+	public static final String getAnyListFileValue(final ListFile varCode)
 	{
 		return (String)CMLib.dice().doublePick(getSLstFileVar(varCode));
 	}
@@ -1095,83 +1073,83 @@ public class CMProps extends Properties
 		if(MILLIS_PER_MUDHOUR < TIME_TICK)
 			MILLIS_PER_MUDHOUR = 600000;
 		
-		setVar(SYSTEM_PRIVATERESOURCES,getStr("PRIVATERESOURCES"));
-		setVar(SYSTEM_BADNAMES,getStr("BADNAMES"));
-		setVar(SYSTEM_MULTICLASS,getStr("CLASSSYSTEM"));
-		setVar(SYSTEM_PKILL,getStr("PLAYERKILL"));
-		setVar(SYSTEM_PLAYERDEATH,getStr("PLAYERDEATH"));
-		setVar(SYSTEM_ITEMLOOTPOLICY,getStr("ITEMLOOTPOLICY"));
-		setVar(SYSTEM_MOBDEATH,getStr("MOBDEATH"));
-		setVar(SYSTEM_PLAYERFLEE,getStr("FLEE"));
-		setVar(SYSTEM_SHOWDAMAGE,getStr("SHOWDAMAGE"));
-		setVar(SYSTEM_EMAILREQ,getStr("EMAILREQ"));
-		setVar(SYSTEM_ESC0,getStr("ESCAPE0"));
-		setVar(SYSTEM_ESC1,getStr("ESCAPE1"));
-		setVar(SYSTEM_ESC2,getStr("ESCAPE2"));
-		setVar(SYSTEM_ESC3,getStr("ESCAPE3"));
-		setVar(SYSTEM_ESC4,getStr("ESCAPE4"));
-		setVar(SYSTEM_ESC5,getStr("ESCAPE5"));
-		setVar(SYSTEM_ESC6,getStr("ESCAPE6"));
-		setVar(SYSTEM_ESC7,getStr("ESCAPE7"));
-		setVar(SYSTEM_ESC8,getStr("ESCAPE8"));
-		setVar(SYSTEM_ESC9,getStr("ESCAPE9"));
-		setVar(SYSTEM_MSPPATH,getStr("SOUNDPATH"),false);
-		setVar(SYSTEM_AUTOPURGE,getStr("AUTOPURGE"));
-		setIntVar(SYSTEMI_ACCOUNTPURGEDAYS,getStr("ACCOUNTPURGE"),14);
-		setVar(SYSTEM_IDLETIMERS,getStr("IDLETIMERS"));
-		setVar(SYSTEM_CORPSEGUARD,getStr("CORPSEGUARD"));
-		setUpLowVar(SYSTEM_MUDDOMAIN,getStr("DOMAIN"));
+		setVar(Str.PRIVATERESOURCES,getStr("PRIVATERESOURCES"));
+		setVar(Str.BADNAMES,getStr("BADNAMES"));
+		setVar(Str.MULTICLASS,getStr("CLASSSYSTEM"));
+		setVar(Str.PKILL,getStr("PLAYERKILL"));
+		setVar(Str.PLAYERDEATH,getStr("PLAYERDEATH"));
+		setVar(Str.ITEMLOOTPOLICY,getStr("ITEMLOOTPOLICY"));
+		setVar(Str.MOBDEATH,getStr("MOBDEATH"));
+		setVar(Str.PLAYERFLEE,getStr("FLEE"));
+		setVar(Str.SHOWDAMAGE,getStr("SHOWDAMAGE"));
+		setVar(Str.EMAILREQ,getStr("EMAILREQ"));
+		setVar(Str.ESC0,getStr("ESCAPE0"));
+		setVar(Str.ESC1,getStr("ESCAPE1"));
+		setVar(Str.ESC2,getStr("ESCAPE2"));
+		setVar(Str.ESC3,getStr("ESCAPE3"));
+		setVar(Str.ESC4,getStr("ESCAPE4"));
+		setVar(Str.ESC5,getStr("ESCAPE5"));
+		setVar(Str.ESC6,getStr("ESCAPE6"));
+		setVar(Str.ESC7,getStr("ESCAPE7"));
+		setVar(Str.ESC8,getStr("ESCAPE8"));
+		setVar(Str.ESC9,getStr("ESCAPE9"));
+		setVar(Str.MSPPATH,getStr("SOUNDPATH"),false);
+		setVar(Str.AUTOPURGE,getStr("AUTOPURGE"));
+		setIntVar(Int.ACCOUNTPURGEDAYS,getStr("ACCOUNTPURGE"),14);
+		setVar(Str.IDLETIMERS,getStr("IDLETIMERS"));
+		setVar(Str.CORPSEGUARD,getStr("CORPSEGUARD"));
+		setUpLowVar(Str.MUDDOMAIN,getStr("DOMAIN"));
 		String adminEmail = getStr("ADMINEMAIL");
 		if((adminEmail==null)||(adminEmail.trim().length()==0))
 			adminEmail = getStr("I3EMAIL");
-		setVar(SYSTEM_ADMINEMAIL,adminEmail);
-		setUpLowVar(SYSTEM_I3ROUTERS,getStr("I3ROUTERS"));
-		setVar(SYSTEM_AUTOREACTION,getStr("AUTOREACTION"));
-		setVar(SYSTEM_WIZLISTMASK,getStr("WIZLISTMASK"));
-		setUpLowVar(SYSTEM_STARTINGITEMS,getStr("STARTINGITEMS","1 Waterskin, 1 Ration, 1 Torch"));
-		setVar(SYSTEM_PREJUDICE,getStr("PREJUDICE"));
-		setUpLowVar(SYSTEM_PRICEFACTORS,getStr("PRICEFACTORS"));
-		setVar(SYSTEM_IGNOREMASK,getStr("IGNOREMASK"));
-		setVar(SYSTEM_BUDGET,getStr("BUDGET"));
-		setVar(SYSTEM_DEVALUERATE,getStr("DEVALUERATE"));
-		setVar(SYSTEM_INVRESETRATE,getStr("INVRESETRATE"));
-		setVar(SYSTEM_AUCTIONRATES,getStr("AUCTIONRATES","0,10,0.1%,10%,5%,1,168"));
-		setUpLowVar(SYSTEM_DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
-		for(int i=0;i<NUMLF_SYSTEM;i++)
-			sysLstFileLists[i]=null;
-		setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
+		setVar(Str.ADMINEMAIL,adminEmail);
+		setUpLowVar(Str.I3ROUTERS,getStr("I3ROUTERS"));
+		setVar(Str.AUTOREACTION,getStr("AUTOREACTION"));
+		setVar(Str.WIZLISTMASK,getStr("WIZLISTMASK"));
+		setUpLowVar(Str.STARTINGITEMS,getStr("STARTINGITEMS","1 Waterskin, 1 Ration, 1 Torch"));
+		setVar(Str.PREJUDICE,getStr("PREJUDICE"));
+		setUpLowVar(Str.PRICEFACTORS,getStr("PRICEFACTORS"));
+		setVar(Str.IGNOREMASK,getStr("IGNOREMASK"));
+		setVar(Str.BUDGET,getStr("BUDGET"));
+		setVar(Str.DEVALUERATE,getStr("DEVALUERATE"));
+		setVar(Str.INVRESETRATE,getStr("INVRESETRATE"));
+		setVar(Str.AUCTIONRATES,getStr("AUCTIONRATES","0,10,0.1%,10%,5%,1,168"));
+		setUpLowVar(Str.DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
+		for(ListFile lfVar : ListFile.values())
+			sysLstFileLists[lfVar.ordinal()]=null;
+		setVar(Str.EMOTEFILTER,getStr("EMOTEFILTER"));
 		p().emoteFilter.clear();
 		p().emoteFilter.addAll(CMParms.parse((getStr("EMOTEFILTER")).toUpperCase()));
-		setVar(SYSTEM_POSEFILTER,getStr("POSEFILTER"));
-		setVar(SYSTEM_STATCOSTS,getStr("STATCOSTS","<18 1, <22 2, <25 3, <99 5"));
+		setVar(Str.POSEFILTER,getStr("POSEFILTER"));
+		setVar(Str.STATCOSTS,getStr("STATCOSTS","<18 1, <22 2, <25 3, <99 5"));
 		p().poseFilter.clear();
 		p().poseFilter.addAll(CMParms.parse((getStr("POSEFILTER")).toUpperCase()));
-		setVar(SYSTEM_SAYFILTER,getStr("SAYFILTER"));
+		setVar(Str.SAYFILTER,getStr("SAYFILTER"));
 		p().sayFilter.clear();
 		p().sayFilter.addAll(CMParms.parse((getStr("SAYFILTER")).toUpperCase()));
-		setVar(SYSTEM_CHANNELFILTER,getStr("CHANNELFILTER"));
+		setVar(Str.CHANNELFILTER,getStr("CHANNELFILTER"));
 		p().channelFilter.clear();
 		p().channelFilter.addAll(CMParms.parse((getStr("CHANNELFILTER")).toUpperCase()));
-		setVar(SYSTEM_CLANTROPAREA,getStr("CLANTROPAREA"));
-		setVar(SYSTEM_CLANTROPCP,getStr("CLANTROPCP"));
-		setVar(SYSTEM_CLANTROPEXP,getStr("CLANTROPEXP"));
-		setVar(SYSTEM_CLANTROPPK,getStr("CLANTROPPK"));
-		setVar(SYSTEM_CLANTROPMB,getStr("CLANTROPMB"));
-		setVar(SYSTEM_CLANTROPLVL,getStr("CLANTROPLVL"));
-		setVar(SYSTEM_COLORSCHEME,getStr("COLORSCHEME"));
-		setUpLowVar(SYSTEM_SMTPSERVERNAME,getStr("SMTPSERVERNAME"));
-		setVar(SYSTEM_EXPCONTACTLINE,getStr("EXPCONTACTLINE"));
-		setVar(SYSTEM_AUTOWEATHERPARMS,getStr("AUTOWEATHERPARMS"));
-		setVar(SYSTEM_DEFAULTPLAYERFLAGS,getStr("DEFAULTPLAYERFLAGS"));
-		setUpLowVar(SYSTEM_AUTOAREAPROPS,getStr("AUTOAREAPROPS"));
-		setUpLowVar(SYSTEM_MXPIMAGEPATH,getStr("MXPIMAGEPATH"));
-		setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
-		setBoolVar(SYSTEMB_INTRODUCTIONSYSTEM,getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
-		setBoolVar(SYSTEMB_HASHPASSWORDS,getStr("HASHPASSWORDS").equalsIgnoreCase("YES")?true:false);
-		setUpLowVar(SYSTEM_PREFACTIONS,getStr("FACTIONS"));
-		setUpLowVar(SYSTEM_CHARCREATIONSCRIPTS,getStr("CHARCREATIONSCRIPTS"));
-		setUpLowVar(SYSTEM_CHARSETINPUT,getStr("CHARSETINPUT","iso-8859-1"));
-		setUpLowVar(SYSTEM_CHARSETOUTPUT,getStr("CHARSETOUTPUT","iso-8859-1"));
+		setVar(Str.CLANTROPAREA,getStr("CLANTROPAREA"));
+		setVar(Str.CLANTROPCP,getStr("CLANTROPCP"));
+		setVar(Str.CLANTROPEXP,getStr("CLANTROPEXP"));
+		setVar(Str.CLANTROPPK,getStr("CLANTROPPK"));
+		setVar(Str.CLANTROPMB,getStr("CLANTROPMB"));
+		setVar(Str.CLANTROPLVL,getStr("CLANTROPLVL"));
+		setVar(Str.COLORSCHEME,getStr("COLORSCHEME"));
+		setUpLowVar(Str.SMTPSERVERNAME,getStr("SMTPSERVERNAME"));
+		setVar(Str.EXPCONTACTLINE,getStr("EXPCONTACTLINE"));
+		setVar(Str.AUTOWEATHERPARMS,getStr("AUTOWEATHERPARMS"));
+		setVar(Str.DEFAULTPLAYERFLAGS,getStr("DEFAULTPLAYERFLAGS"));
+		setUpLowVar(Str.AUTOAREAPROPS,getStr("AUTOAREAPROPS"));
+		setUpLowVar(Str.MXPIMAGEPATH,getStr("MXPIMAGEPATH"));
+		setBoolVar(Bool.ACCOUNTEXPIRATION,getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
+		setBoolVar(Bool.INTRODUCTIONSYSTEM,getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
+		setBoolVar(Bool.HASHPASSWORDS,getStr("HASHPASSWORDS").equalsIgnoreCase("YES")?true:false);
+		setUpLowVar(Str.PREFACTIONS,getStr("FACTIONS"));
+		setUpLowVar(Str.CHARCREATIONSCRIPTS,getStr("CHARCREATIONSCRIPTS"));
+		setUpLowVar(Str.CHARSETINPUT,getStr("CHARSETINPUT","iso-8859-1"));
+		setUpLowVar(Str.CHARSETOUTPUT,getStr("CHARSETOUTPUT","iso-8859-1"));
 		setUpCosts("COMMONCOST",commonCost,CMParms.parseCommas(getStr("COMMONCOST","1 TRAIN"),true));
 		setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
 		setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
@@ -1189,104 +1167,107 @@ public class CMProps extends Properties
 		
 		if(CMLib.color()!=null) CMLib.color().clearLookups();
 		if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
-			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
+			setIntVar(Int.MANACONSUMEAMT,-100);
 		else
 		if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("SPELLLEVEL"))
-			setIntVar(SYSTEMI_MANACONSUMEAMT,-200);
+			setIntVar(Int.MANACONSUMEAMT,-200);
 		else
-			setIntVar(SYSTEMI_MANACONSUMEAMT,CMath.s_int(getStr("MANACONSUMEAMT").trim()));
+			setIntVar(Int.MANACONSUMEAMT,CMath.s_int(getStr("MANACONSUMEAMT").trim()));
 		String s=getStr("COMBATSYSTEM");
 		if("queue".equalsIgnoreCase(s))
-			setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_QUEUE);
+			setIntVar(Int.COMBATSYSTEM,CombatLibrary.COMBAT_QUEUE);
 		else
 		if("manual".equalsIgnoreCase(s))
-			setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_MANUAL);
+			setIntVar(Int.COMBATSYSTEM,CombatLibrary.COMBAT_MANUAL);
 		else
-			setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_DEFAULT);
+			setIntVar(Int.COMBATSYSTEM,CombatLibrary.COMBAT_DEFAULT);
 		s=getStr("EQVIEW");
 		if("paragraph".equalsIgnoreCase(s))
-			setIntVar(SYSTEMI_EQVIEW,2);
+			setIntVar(Int.EQVIEW,2);
 		else
 		if("mixed".equalsIgnoreCase(s))
-			setIntVar(SYSTEMI_EQVIEW,1);
+			setIntVar(Int.EQVIEW,1);
 		else
-			setIntVar(SYSTEMI_EQVIEW,0);
+			setIntVar(Int.EQVIEW,0);
 		s=getStr("EXVIEW");
 		if("brief".equalsIgnoreCase(s))
-			setIntVar(SYSTEMI_EXVIEW,3);
+			setIntVar(Int.EXVIEW,3);
 		else
 		if("paragraph".equalsIgnoreCase(s))
-			setIntVar(SYSTEMI_EXVIEW,1);
+			setIntVar(Int.EXVIEW,1);
 		else
 		if("mixed".equalsIgnoreCase(s))
-			setIntVar(SYSTEMI_EXVIEW,2);
+			setIntVar(Int.EXVIEW,2);
 		else
-			setIntVar(SYSTEMI_EXVIEW,0);
+			setIntVar(Int.EXVIEW,0);
 
 		s=getStr("EXPIRATIONS");
 		Vector<String> V=CMParms.parseCommas(s,false);
 		for(int i=0;i<5;i++)
 		{
+			final int ordNum =Int.EXPIRE_MONSTER_EQ.ordinal()+i;
+			final Int expEnum=Int.values()[ordNum];
 			if(V.size()>0)
 			{
-				setIntVar(SYSTEMI_EXPIRE_MONSTER_EQ + i,V.elementAt(0));
+				setIntVar(expEnum,V.elementAt(0));
 				V.removeElementAt(0);
 			}
 			else
-			switch(SYSTEMI_EXPIRE_MONSTER_EQ + i)
+			switch(expEnum)
 			{
-			case SYSTEMI_EXPIRE_MONSTER_EQ: setIntVar(SYSTEMI_EXPIRE_MONSTER_EQ,"30"); break;
-			case SYSTEMI_EXPIRE_PLAYER_DROP: setIntVar(SYSTEMI_EXPIRE_PLAYER_DROP,"1200"); break;
-			case SYSTEMI_EXPIRE_RESOURCE: setIntVar(SYSTEMI_EXPIRE_RESOURCE,"60"); break;
-			case SYSTEMI_EXPIRE_MONSTER_BODY: setIntVar(SYSTEMI_EXPIRE_MONSTER_BODY,"30"); break;
-			case SYSTEMI_EXPIRE_PLAYER_BODY: setIntVar(SYSTEMI_EXPIRE_PLAYER_BODY,"1330"); break;
+			case EXPIRE_MONSTER_EQ: setIntVar(Int.EXPIRE_MONSTER_EQ,"30"); break;
+			case EXPIRE_PLAYER_DROP: setIntVar(Int.EXPIRE_PLAYER_DROP,"1200"); break;
+			case EXPIRE_RESOURCE: setIntVar(Int.EXPIRE_RESOURCE,"60"); break;
+			case EXPIRE_MONSTER_BODY: setIntVar(Int.EXPIRE_MONSTER_BODY,"30"); break;
+			case EXPIRE_PLAYER_BODY: setIntVar(Int.EXPIRE_PLAYER_BODY,"1330"); break;
+			default: break;
 			}
 		}
 
-		setIntVar(SYSTEMI_MANACONSUMETIME,getStr("MANACONSUMETIME"));
-		setIntVar(SYSTEMI_PAGEBREAK,getStr("PAGEBREAK"));
-		setIntVar(SYSTEMI_CLANENCHCOST,getStr("CLANENCHCOST"));
-		setIntVar(SYSTEMI_FOLLOWLEVELDIFF,getStr("FOLLOWLEVELDIFF"));
-		setIntVar(SYSTEMI_EXPRATE,getStr("EXPRATE"));
-		setIntVar(SYSTEMI_SKYSIZE,getStr("SKYSIZE"));
-		setIntVar(SYSTEMI_MAXSTAT,getStr("MAXSTATS"));
-		setIntVar(SYSTEMI_BASEMAXSTAT,getStr("BASEMAXSTAT","18"));
-		setIntVar(SYSTEMI_BASEMINSTAT,getStr("BASEMINSTAT","3"));
-		setIntVar(SYSTEMI_STARTSTAT,getStr("STARTSTAT"));
-		setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCMDTIME"),p().cmdActionCostExceptions)*100.0));
-		setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMCMDTIME"),p().cmdComActionCostExceptions)*100.0));
-		setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFABLETIME"),p().skillActionCostExceptions)*100.0));
-		setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMABLETIME"),p().skillComActionCostExceptions)*100.0));
-		setIntVar(SYSTEMI_MANACOST,(int)CMProps.setExceptionCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
-		setIntVar(SYSTEMI_MANAMINCOST,(int)CMProps.setExceptionCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
-		setIntVar(SYSTEMI_EDITORTYPE,0);
-		if(getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) setIntVar(SYSTEMI_EDITORTYPE,1);
-		setIntVar(SYSTEMI_MINCLANMEMBERS,getStr("MINCLANMEMBERS"));
-		setIntVar(SYSTEMI_MAXCLANMEMBERS,getStr("MAXCLANMEMBERS"));
-		setIntVar(SYSTEMI_CLANCOST,getStr("CLANCOST"));
-		setIntVar(SYSTEMI_DAYSCLANDEATH,getStr("DAYSCLANDEATH"));
-		setIntVar(SYSTEMI_MINCLANLEVEL,getStr("MINCLANLEVEL"));
-		setIntVar(SYSTEMI_LASTPLAYERLEVEL,getStr("LASTPLAYERLEVEL"));
-		setIntVar(SYSTEMI_JOURNALLIMIT,getStr("JOURNALLIMIT"));
-		setIntVar(SYSTEMI_MUDTHEME,getStr("MUDTHEME"));
-		setIntVar(SYSTEMI_TRIALDAYS,getStr("TRIALDAYS"));
-		setIntVar(SYSTEMI_MAXCONNSPERIP,getStr("MAXCONNSPERIP"));
-		setIntVar(SYSTEMI_MAXCONNSPERACCOUNT,getStr("MAXCONNSPERACCOUNT"));
-		setIntVar(SYSTEMI_MAXNEWPERIP,getStr("MAXNEWPERIP"));
-		setIntVar(SYSTEMI_JSCRIPTS,getStr("JSCRIPTS"));
-		setIntVar(SYSTEMI_RECOVERRATE,getStr("RECOVERRATE"),1);
-		setIntVar(SYSTEMI_COMMONACCOUNTSYSTEM,getStr("COMMONACCOUNTSYSTEM"),1);
-		setIntVar(SYSTEMI_OBJSPERTHREAD,getStr("OBJSPERTHREAD"));
-		setIntVar(SYSTEMI_MAXCOMMONSKILLS,getStr("MAXCOMMONSKILLS"),0);
-		setIntVar(SYSTEMI_MAXCRAFTINGSKILLS,getStr("MAXCRAFTINGSKILLS"),2);
-		setIntVar(SYSTEMI_MAXNONCRAFTINGSKILLS,getStr("MAXNONCRAFTINGSKILLS"),5);
-		setIntVar(SYSTEMI_MAXLANGUAGES,getStr("MAXLANGUAGES"),3);
-		setIntVar(SYSTEMI_WALKCOST,getStr("WALKCOST"),1);
-		setIntVar(SYSTEMI_RUNCOST,getStr("RUNCOST"),2);
-		setIntVar(SYSTEMI_AWARERANGE,getStr("AWARERANGE"),0);
-		setIntVar(SYSTEMI_MINWORKERTHREADS,getStr("MINWORKERTHREADS"),1);
-		setIntVar(SYSTEMI_MAXWORKERTHREADS,getStr("MAXWORKERTHREADS"),100);
-		setIntVar(SYSTEMI_DUELTICKDOWN,getStr("DUELTICKDOWN"),5);
+		setIntVar(Int.MANACONSUMETIME,getStr("MANACONSUMETIME"));
+		setIntVar(Int.PAGEBREAK,getStr("PAGEBREAK"));
+		setIntVar(Int.CLANENCHCOST,getStr("CLANENCHCOST"));
+		setIntVar(Int.FOLLOWLEVELDIFF,getStr("FOLLOWLEVELDIFF"));
+		setIntVar(Int.EXPRATE,getStr("EXPRATE"));
+		setIntVar(Int.SKYSIZE,getStr("SKYSIZE"));
+		setIntVar(Int.MAXSTAT,getStr("MAXSTATS"));
+		setIntVar(Int.BASEMAXSTAT,getStr("BASEMAXSTAT","18"));
+		setIntVar(Int.BASEMINSTAT,getStr("BASEMINSTAT","3"));
+		setIntVar(Int.STARTSTAT,getStr("STARTSTAT"));
+		setIntVar(Int.DEFCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCMDTIME"),p().cmdActionCostExceptions)*100.0));
+		setIntVar(Int.DEFCOMCMDTIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMCMDTIME"),p().cmdComActionCostExceptions)*100.0));
+		setIntVar(Int.DEFABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFABLETIME"),p().skillActionCostExceptions)*100.0));
+		setIntVar(Int.DEFCOMABLETIME,(int)Math.round(CMProps.setExceptionCosts(getStr("DEFCOMABLETIME"),p().skillComActionCostExceptions)*100.0));
+		setIntVar(Int.MANACOST,(int)CMProps.setExceptionCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
+		setIntVar(Int.MANAMINCOST,(int)CMProps.setExceptionCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
+		setIntVar(Int.EDITORTYPE,0);
+		if(getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) setIntVar(Int.EDITORTYPE,1);
+		setIntVar(Int.MINCLANMEMBERS,getStr("MINCLANMEMBERS"));
+		setIntVar(Int.MAXCLANMEMBERS,getStr("MAXCLANMEMBERS"));
+		setIntVar(Int.CLANCOST,getStr("CLANCOST"));
+		setIntVar(Int.DAYSCLANDEATH,getStr("DAYSCLANDEATH"));
+		setIntVar(Int.MINCLANLEVEL,getStr("MINCLANLEVEL"));
+		setIntVar(Int.LASTPLAYERLEVEL,getStr("LASTPLAYERLEVEL"));
+		setIntVar(Int.JOURNALLIMIT,getStr("JOURNALLIMIT"));
+		setIntVar(Int.MUDTHEME,getStr("MUDTHEME"));
+		setIntVar(Int.TRIALDAYS,getStr("TRIALDAYS"));
+		setIntVar(Int.MAXCONNSPERIP,getStr("MAXCONNSPERIP"));
+		setIntVar(Int.MAXCONNSPERACCOUNT,getStr("MAXCONNSPERACCOUNT"));
+		setIntVar(Int.MAXNEWPERIP,getStr("MAXNEWPERIP"));
+		setIntVar(Int.JSCRIPTS,getStr("JSCRIPTS"));
+		setIntVar(Int.RECOVERRATE,getStr("RECOVERRATE"),1);
+		setIntVar(Int.COMMONACCOUNTSYSTEM,getStr("COMMONACCOUNTSYSTEM"),1);
+		setIntVar(Int.OBJSPERTHREAD,getStr("OBJSPERTHREAD"));
+		setIntVar(Int.MAXCOMMONSKILLS,getStr("MAXCOMMONSKILLS"),0);
+		setIntVar(Int.MAXCRAFTINGSKILLS,getStr("MAXCRAFTINGSKILLS"),2);
+		setIntVar(Int.MAXNONCRAFTINGSKILLS,getStr("MAXNONCRAFTINGSKILLS"),5);
+		setIntVar(Int.MAXLANGUAGES,getStr("MAXLANGUAGES"),3);
+		setIntVar(Int.WALKCOST,getStr("WALKCOST"),1);
+		setIntVar(Int.RUNCOST,getStr("RUNCOST"),2);
+		setIntVar(Int.AWARERANGE,getStr("AWARERANGE"),0);
+		setIntVar(Int.MINWORKERTHREADS,getStr("MINWORKERTHREADS"),1);
+		setIntVar(Int.MAXWORKERTHREADS,getStr("MAXWORKERTHREADS"),100);
+		setIntVar(Int.DUELTICKDOWN,getStr("DUELTICKDOWN"),5);
 		V=CMParms.parseCommas(getStr("MAXCLANCATS"), true);
 		p().maxClanCatsMap.clear();
 		for(String cat : V)
@@ -1309,63 +1290,63 @@ public class CMProps extends Properties
 
 		V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 
-		if(V.size()>0) setIntVar(SYSTEMI_INJPCTCHANCE,CMath.s_int(V.elementAt(0)));
-		else setIntVar(SYSTEMI_INJPCTCHANCE,100);
-		if(V.size()>1) setIntVar(SYSTEMI_INJPCTHP,CMath.s_int(V.elementAt(1)));
-		else setIntVar(SYSTEMI_INJPCTHP,40);
-		if(V.size()>2) setIntVar(SYSTEMI_INJPCTHPAMP,CMath.s_int(V.elementAt(2)));
-		else setIntVar(SYSTEMI_INJPCTHPAMP,10);
-		if(V.size()>3) setIntVar(SYSTEMI_INJPCTCHANCEAMP,CMath.s_int(V.elementAt(3)));
-		else setIntVar(SYSTEMI_INJPCTCHANCEAMP,100);
-		if(V.size()>4) setIntVar(SYSTEMI_INJMULTIPLIER,CMath.s_int(V.elementAt(4)));
-		else setIntVar(SYSTEMI_INJMULTIPLIER,4);
-		if(V.size()>5) setIntVar(SYSTEMI_INJMINLEVEL,CMath.s_int(V.elementAt(5)));
-		else setIntVar(SYSTEMI_INJMINLEVEL,10);
-		if(V.size()>6) setIntVar(SYSTEMI_INJBLEEDMINLEVEL,CMath.s_int(V.elementAt(6)));
-		else setIntVar(SYSTEMI_INJBLEEDMINLEVEL,15);
-		if(V.size()>7) setIntVar(SYSTEMI_INJBLEEDPCTHP,CMath.s_int(V.elementAt(7)));
-		else setIntVar(SYSTEMI_INJBLEEDPCTHP,20);
-		if(V.size()>8) setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,CMath.s_int(V.elementAt(8)));
-		else setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,100);
+		if(V.size()>0) setIntVar(Int.INJPCTCHANCE,CMath.s_int(V.elementAt(0)));
+		else setIntVar(Int.INJPCTCHANCE,100);
+		if(V.size()>1) setIntVar(Int.INJPCTHP,CMath.s_int(V.elementAt(1)));
+		else setIntVar(Int.INJPCTHP,40);
+		if(V.size()>2) setIntVar(Int.INJPCTHPAMP,CMath.s_int(V.elementAt(2)));
+		else setIntVar(Int.INJPCTHPAMP,10);
+		if(V.size()>3) setIntVar(Int.INJPCTCHANCEAMP,CMath.s_int(V.elementAt(3)));
+		else setIntVar(Int.INJPCTCHANCEAMP,100);
+		if(V.size()>4) setIntVar(Int.INJMULTIPLIER,CMath.s_int(V.elementAt(4)));
+		else setIntVar(Int.INJMULTIPLIER,4);
+		if(V.size()>5) setIntVar(Int.INJMINLEVEL,CMath.s_int(V.elementAt(5)));
+		else setIntVar(Int.INJMINLEVEL,10);
+		if(V.size()>6) setIntVar(Int.INJBLEEDMINLEVEL,CMath.s_int(V.elementAt(6)));
+		else setIntVar(Int.INJBLEEDMINLEVEL,15);
+		if(V.size()>7) setIntVar(Int.INJBLEEDPCTHP,CMath.s_int(V.elementAt(7)));
+		else setIntVar(Int.INJBLEEDPCTHP,20);
+		if(V.size()>8) setIntVar(Int.INJBLEEDPCTCHANCE,CMath.s_int(V.elementAt(8)));
+		else setIntVar(Int.INJBLEEDPCTCHANCE,100);
 
 		String stateVar=getStr("STARTHP");
 		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
-			setIntVar(SYSTEMI_STARTHP,CMath.s_int(stateVar));
+			setIntVar(Int.STARTHP,CMath.s_int(stateVar));
 		stateVar=getStr("STARTMANA");
 		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
-			setIntVar(SYSTEMI_STARTMANA,CMath.s_int(stateVar));
+			setIntVar(Int.STARTMANA,CMath.s_int(stateVar));
 		stateVar=getStr("STARTMOVE");
 		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
-			setIntVar(SYSTEMI_STARTMOVE,CMath.s_int(stateVar));
+			setIntVar(Int.STARTMOVE,CMath.s_int(stateVar));
 
-		setIntVar(SYSTEMI_MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
-		setIntVar(SYSTEMI_MUDSTATE,getStr("MUDSTATE"));
+		setIntVar(Int.MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
+		setIntVar(Int.MUDSTATE,getStr("MUDSTATE"));
 		
-		setUpLowVar(SYSTEM_FORMULA_ATTACKADJUSTMENT, getStr("FORMULA_ATTACKADJUSTMENT","(50+@x1+(((@x2-9)/5)*((@x3-9)/5)*((@x3-9)/5))+@x4)-(0.15*@xx*@x5)-(0.15*@xx*@x6)-(0.3*@xx*@x7)"));
-		setUpLowVar(SYSTEM_FORMULA_ARMORADJUSTMENT, getStr("FORMULA_ARMORADJUSTMENT","(@x1-( (((@x2-9)/5)*((@x3-9)/5)*((@x3-9)/5*@x8)) +(@x4*@x8)-(0.15*@xx>0*@x5)-(0.15*@xx>0*@x6)-(0.3*@xx>0*@x7)*@x9))-100"));
-		setUpLowVar(SYSTEM_FORMULA_ATTACKFUDGEBONUS, getStr("FORMULA_ATTACKFUDGEBONUS","@x3 * (@x1 - @x2)* (@x1 - @x2)"));
-		setUpLowVar(SYSTEM_FORMULA_PVPATTACKFUDGEBONUS, getStr("FORMULA_PVPATTACKFUDGEBONUS",getVar(SYSTEM_FORMULA_ATTACKFUDGEBONUS)));
-		setUpLowVar(SYSTEM_FORMULA_CHANCESPELLCRIT, getStr("FORMULA_CHANCESPELLCRIT","(( ((@x2-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5) ))"));
-		setUpLowVar(SYSTEM_FORMULA_PVPCHANCESPELLCRIT, getStr("FORMULA_PVPCHANCESPELLCRIT",getVar(SYSTEM_FORMULA_CHANCESPELLCRIT)));
-		setUpLowVar(SYSTEM_FORMULA_DAMAGESPELLCRIT, getStr("FORMULA_DAMAGESPELLCRIT","(@x1*( ((@x2-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5) )/100.0)+(@x4/2)"));
-		setUpLowVar(SYSTEM_FORMULA_PVPDAMAGESPELLCRIT, getStr("FORMULA_PVPDAMAGESPELLCRIT",getVar(SYSTEM_FORMULA_DAMAGESPELLCRIT)));
-		setUpLowVar(SYSTEM_FORMULA_DAMAGESPELLFUDGE, getStr("FORMULA_DAMAGESPELLFUDGE","(@x1 - ( ((@x9-@x8)>0<1.0) * @x1 * (((@x9-@x8)<12.0)*((@x9-@x8)<12.0))/120.0))>0"));
-		setUpLowVar(SYSTEM_FORMULA_PVPDAMAGESPELLFUDGE, getStr("FORMULA_PVPDAMAGESPELLFUDGE",getVar(SYSTEM_FORMULA_DAMAGESPELLFUDGE)));
-		setUpLowVar(SYSTEM_FORMULA_DAMAGEMELEEFUDGE, getStr("FORMULA_DAMAGEMELEEFUDGE","(@x1 - ( ((@x9-@x8)>0<1.0) * @x1 * (((@x9-@x8)<12.0)*((@x9-@x8)<12.0))/120.0))>0"));
-		setUpLowVar(SYSTEM_FORMULA_PVPDAMAGEMELEEFUDGE, getStr("FORMULA_PVPDAMAGEMELEEFUDGE",getVar(SYSTEM_FORMULA_DAMAGEMELEEFUDGE)));
-		setUpLowVar(SYSTEM_FORMULA_DAMAGERANGEDFUDGE, getStr("FORMULA_DAMAGERANGEDFUDGE","(@x1 - ( ((@x9-@x8)>0<1.0) * @x1 * (((@x9-@x8)<12.0)*((@x9-@x8)<12.0))/120.0))>0"));
-		setUpLowVar(SYSTEM_FORMULA_PVPDAMAGERANGEDFUDGE, getStr("FORMULA_PVPDAMAGERANGEDFUDGE",getVar(SYSTEM_FORMULA_DAMAGERANGEDFUDGE)));
-		setUpLowVar(SYSTEM_FORMULA_DAMAGERANGEDTARGETED, getStr("FORMULA_DAMAGERANGEDTARGETED","((1?@x1)+((@x3-@x4)/2.5)-(0.5*@xx*@x8)+(0.5*@xx*@x9)+(0.2*@xx*@x10)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
-		setUpLowVar(SYSTEM_FORMULA_PVPDAMAGERANGEDTARGETED, getStr("FORMULA_PVPDAMAGERANGEDTARGETED",getVar(SYSTEM_FORMULA_DAMAGERANGEDTARGETED)));
-		setUpLowVar(SYSTEM_FORMULA_DAMAGERANGEDSTATIC, getStr("FORMULA_DAMAGERANGEDSTATIC","((1?@x1)+((@x3-@x4)/2.5)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
-		setUpLowVar(SYSTEM_FORMULA_DAMAGEMELEETARGETED, getStr("FORMULA_DAMAGEMELEETARGETED","((1?@x1)+((@x2-10+@x3-@x4)/5)-(0.5*@xx*@x8)+(0.5*@xx*@x9)+(0.2*@xx*@x10)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
-		setUpLowVar(SYSTEM_FORMULA_PVPDAMAGEMELEETARGETED, getStr("FORMULA_PVPDAMAGEMELEETARGETED",getVar(SYSTEM_FORMULA_DAMAGEMELEETARGETED)));
-		setUpLowVar(SYSTEM_FORMULA_DAMAGEMELEESTATIC, getStr("FORMULA_DAMAGEMELEESTATIC","((1?@x1)+((@x2-10+@x3-@x4)/5)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
-		setUpLowVar(SYSTEM_FORMULA_CHANCEWEAPONCRIT, getStr("FORMULA_CHANCEWEAPONCRIT","((((@x2-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)))"));
-		setUpLowVar(SYSTEM_FORMULA_PVPCHANCEWEAPONCRIT, getStr("FORMULA_PVPCHANCEWEAPONCRIT",getVar(SYSTEM_FORMULA_CHANCEWEAPONCRIT)));
-		setUpLowVar(SYSTEM_FORMULA_DAMAGEWEAPONCRIT, getStr("FORMULA_DAMAGEWEAPONCRIT","(@x1 * (((@x2-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5))/50.0)+(@x4/2)"));
-		setUpLowVar(SYSTEM_FORMULA_PVPDAMAGEWEAPONCRIT, getStr("FORMULA_PVPDAMAGEWEAPONCRIT",getVar(SYSTEM_FORMULA_DAMAGEWEAPONCRIT)));
-		setUpLowVar(SYSTEM_FORMULA_NPCHITPOINTS, getStr("FORMULA_NPCHITPOINTS","3 + @x1 + (@x1 * @x2)"));
+		setUpLowVar(Str.FORMULA_ATTACKADJUSTMENT, getStr("FORMULA_ATTACKADJUSTMENT","(50+@x1+(((@x2-9)/5)*((@x3-9)/5)*((@x3-9)/5))+@x4)-(0.15*@xx*@x5)-(0.15*@xx*@x6)-(0.3*@xx*@x7)"));
+		setUpLowVar(Str.FORMULA_ARMORADJUSTMENT, getStr("FORMULA_ARMORADJUSTMENT","(@x1-( (((@x2-9)/5)*((@x3-9)/5)*((@x3-9)/5*@x8)) +(@x4*@x8)-(0.15*@xx>0*@x5)-(0.15*@xx>0*@x6)-(0.3*@xx>0*@x7)*@x9))-100"));
+		setUpLowVar(Str.FORMULA_ATTACKFUDGEBONUS, getStr("FORMULA_ATTACKFUDGEBONUS","@x3 * (@x1 - @x2)* (@x1 - @x2)"));
+		setUpLowVar(Str.FORMULA_PVPATTACKFUDGEBONUS, getStr("FORMULA_PVPATTACKFUDGEBONUS",getVar(Str.FORMULA_ATTACKFUDGEBONUS)));
+		setUpLowVar(Str.FORMULA_CHANCESPELLCRIT, getStr("FORMULA_CHANCESPELLCRIT","(( ((@x2-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5) ))"));
+		setUpLowVar(Str.FORMULA_PVPCHANCESPELLCRIT, getStr("FORMULA_PVPCHANCESPELLCRIT",getVar(Str.FORMULA_CHANCESPELLCRIT)));
+		setUpLowVar(Str.FORMULA_DAMAGESPELLCRIT, getStr("FORMULA_DAMAGESPELLCRIT","(@x1*( ((@x2-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5) )/100.0)+(@x4/2)"));
+		setUpLowVar(Str.FORMULA_PVPDAMAGESPELLCRIT, getStr("FORMULA_PVPDAMAGESPELLCRIT",getVar(Str.FORMULA_DAMAGESPELLCRIT)));
+		setUpLowVar(Str.FORMULA_DAMAGESPELLFUDGE, getStr("FORMULA_DAMAGESPELLFUDGE","(@x1 - ( ((@x9-@x8)>0<1.0) * @x1 * (((@x9-@x8)<12.0)*((@x9-@x8)<12.0))/120.0))>0"));
+		setUpLowVar(Str.FORMULA_PVPDAMAGESPELLFUDGE, getStr("FORMULA_PVPDAMAGESPELLFUDGE",getVar(Str.FORMULA_DAMAGESPELLFUDGE)));
+		setUpLowVar(Str.FORMULA_DAMAGEMELEEFUDGE, getStr("FORMULA_DAMAGEMELEEFUDGE","(@x1 - ( ((@x9-@x8)>0<1.0) * @x1 * (((@x9-@x8)<12.0)*((@x9-@x8)<12.0))/120.0))>0"));
+		setUpLowVar(Str.FORMULA_PVPDAMAGEMELEEFUDGE, getStr("FORMULA_PVPDAMAGEMELEEFUDGE",getVar(Str.FORMULA_DAMAGEMELEEFUDGE)));
+		setUpLowVar(Str.FORMULA_DAMAGERANGEDFUDGE, getStr("FORMULA_DAMAGERANGEDFUDGE","(@x1 - ( ((@x9-@x8)>0<1.0) * @x1 * (((@x9-@x8)<12.0)*((@x9-@x8)<12.0))/120.0))>0"));
+		setUpLowVar(Str.FORMULA_PVPDAMAGERANGEDFUDGE, getStr("FORMULA_PVPDAMAGERANGEDFUDGE",getVar(Str.FORMULA_DAMAGERANGEDFUDGE)));
+		setUpLowVar(Str.FORMULA_DAMAGERANGEDTARGETED, getStr("FORMULA_DAMAGERANGEDTARGETED","((1?@x1)+((@x3-@x4)/2.5)-(0.5*@xx*@x8)+(0.5*@xx*@x9)+(0.2*@xx*@x10)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
+		setUpLowVar(Str.FORMULA_PVPDAMAGERANGEDTARGETED, getStr("FORMULA_PVPDAMAGERANGEDTARGETED",getVar(Str.FORMULA_DAMAGERANGEDTARGETED)));
+		setUpLowVar(Str.FORMULA_DAMAGERANGEDSTATIC, getStr("FORMULA_DAMAGERANGEDSTATIC","((1?@x1)+((@x3-@x4)/2.5)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
+		setUpLowVar(Str.FORMULA_DAMAGEMELEETARGETED, getStr("FORMULA_DAMAGEMELEETARGETED","((1?@x1)+((@x2-10+@x3-@x4)/5)-(0.5*@xx*@x8)+(0.5*@xx*@x9)+(0.2*@xx*@x10)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
+		setUpLowVar(Str.FORMULA_PVPDAMAGEMELEETARGETED, getStr("FORMULA_PVPDAMAGEMELEETARGETED",getVar(Str.FORMULA_DAMAGEMELEETARGETED)));
+		setUpLowVar(Str.FORMULA_DAMAGEMELEESTATIC, getStr("FORMULA_DAMAGEMELEESTATIC","((1?@x1)+((@x2-10+@x3-@x4)/5)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
+		setUpLowVar(Str.FORMULA_CHANCEWEAPONCRIT, getStr("FORMULA_CHANCEWEAPONCRIT","((((@x2-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)))"));
+		setUpLowVar(Str.FORMULA_PVPCHANCEWEAPONCRIT, getStr("FORMULA_PVPCHANCEWEAPONCRIT",getVar(Str.FORMULA_CHANCEWEAPONCRIT)));
+		setUpLowVar(Str.FORMULA_DAMAGEWEAPONCRIT, getStr("FORMULA_DAMAGEWEAPONCRIT","(@x1 * (((@x2-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5))/50.0)+(@x4/2)"));
+		setUpLowVar(Str.FORMULA_PVPDAMAGEWEAPONCRIT, getStr("FORMULA_PVPDAMAGEWEAPONCRIT",getVar(Str.FORMULA_DAMAGEWEAPONCRIT)));
+		setUpLowVar(Str.FORMULA_NPCHITPOINTS, getStr("FORMULA_NPCHITPOINTS","3 + @x1 + (@x1 * @x2)"));
 
 		Directions.instance().reInitialize(getInt("DIRECTIONS"));
 		
@@ -1373,11 +1354,11 @@ public class CMProps extends Properties
 		statCodeExtensions = getStrsStarting("EXTVAR_");
 
 		// initialized elsewhere
-		if(getVar(CMProps.SYSTEM_MAILBOX)==null)
+		if(getVar(Str.MAILBOX)==null)
 		{
-			setVar(SYSTEM_MAILBOX, "");
-			setIntVar(SYSTEMI_MAXMAILBOX,0);
-			setBoolVar(SYSTEMB_EMAILFORWARDING,false);
+			setVar(Str.MAILBOX, "");
+			setIntVar(Int.MAXMAILBOX,0);
+			setBoolVar(Bool.EMAILFORWARDING,false);
 		}
 
 		CMLib.propertiesLoaded();
@@ -1386,22 +1367,24 @@ public class CMProps extends Properties
 	public final void resetSecurityVars() 
 	{
 		String disable=getStr("DISABLE");
-		if(getVar(SYSTEM_MULTICLASS).equalsIgnoreCase("DISABLED"))
+		if(getVar(Str.MULTICLASS).equalsIgnoreCase("DISABLED"))
 			disable+=", CLASSES";
 		CMSecurity.setDisableVars(disable);
 		CMSecurity.setDebugVars(getStr("DEBUG"));
 		CMSecurity.setSaveFlags(getStr("SAVE"));
 	}
 
-	public static String applyINIFilter(String msg, int whichFilter)
+	public static String applyINIFilter(String msg, Str whichFilter)
 	{
 		List<String> filter=null;
 		switch(whichFilter)
 		{
-		case SYSTEM_EMOTEFILTER: filter=p().emoteFilter; break;
-		case SYSTEM_POSEFILTER: filter=p().poseFilter; break;
-		case SYSTEM_SAYFILTER: filter=p().sayFilter; break;
-		case SYSTEM_CHANNELFILTER: filter=p().channelFilter; break;
+		case EMOTEFILTER: filter=p().emoteFilter; break;
+		case POSEFILTER: filter=p().poseFilter; break;
+		case SAYFILTER: filter=p().sayFilter; break;
+		case CHANNELFILTER: filter=p().channelFilter; break;
+		default:
+			return msg;
 		}
 		if((filter==null)||(filter.size()==0))
 			return msg;
@@ -1457,8 +1440,8 @@ public class CMProps extends Properties
 	public static final String msp(final String soundName, final int volume, final int priority)
 	{
 		if((soundName==null)||(soundName.length()==0)||CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)) return "";
-		if(getVar(SYSTEM_MSPPATH).length()>0)
-			return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+getVar(SYSTEM_MSPPATH)+") ";
+		if(getVar(Str.MSPPATH).length()>0)
+			return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+getVar(Str.MSPPATH)+") ";
 		return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
 	}
 
@@ -1466,7 +1449,7 @@ public class CMProps extends Properties
 	{
 		if((fileName==null)||(fileName.trim().length()==0))
 			return new String[]{"",""};
-		if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+		if((getVar(Str.MXPIMAGEPATH).length()==0)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 			return new String[]{"",""};
 		int x=fileName.lastIndexOf('=');
@@ -1482,14 +1465,14 @@ public class CMProps extends Properties
 			preFilename+=fileName.substring(0,x+1);
 			fileName=fileName.substring(x+1);
 		}
-		if(getVar(SYSTEM_MXPIMAGEPATH).endsWith("/"))
-			return new String[]{getVar(SYSTEM_MXPIMAGEPATH)+preFilename,fileName};
-		return new String[]{getVar(SYSTEM_MXPIMAGEPATH)+"/"+preFilename,fileName};
+		if(getVar(Str.MXPIMAGEPATH).endsWith("/"))
+			return new String[]{getVar(Str.MXPIMAGEPATH)+preFilename,fileName};
+		return new String[]{getVar(Str.MXPIMAGEPATH)+"/"+preFilename,fileName};
 	}
 
 	public static final String mxpImage(final Environmental E, final String parms)
 	{
-		if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+		if((getVar(Str.MXPIMAGEPATH).length()==0)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 			return "";
 		final String image=E.image();
@@ -1501,7 +1484,7 @@ public class CMProps extends Properties
 
 	public static final String mxpImage(final Environmental E, final String parms, final String pre, final String post)
 	{
-		if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+		if((getVar(Str.MXPIMAGEPATH).length()==0)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 			return "";
 		final String image=E.image();
@@ -1550,7 +1533,7 @@ public class CMProps extends Properties
 	@SuppressWarnings({"unchecked","rawtypes"})
 	public static final String getDefaultMXPImage(final Object O)
 	{
-		if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
+		if((getVar(Str.MXPIMAGEPATH).length()==0)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 			return "";
 		Map<String,String> H=(Map)Resources.getResource("PARSED: mxp_images.ini");
@@ -1912,7 +1895,7 @@ public class CMProps extends Properties
 
 	public static final boolean isTheme(final int i)
 	{
-		return (getIntVar(SYSTEMI_MUDTHEME)&i)>0;
+		return (getIntVar(Int.MUDTHEME)&i)>0;
 	}
 
 	public static final List<String> loadEnumerablePage(final String iniFile)

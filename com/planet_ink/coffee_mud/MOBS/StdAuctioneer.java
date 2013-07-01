@@ -105,7 +105,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)) return true;
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)) return true;
 		if(CMLib.flags().isInTheGame(this,true))
 		synchronized(("AUCTION_HOUSE_"+auctionHouse().toUpperCase().trim()).intern())
 		{

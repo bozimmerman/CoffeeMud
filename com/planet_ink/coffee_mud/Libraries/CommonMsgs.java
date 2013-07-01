@@ -310,7 +310,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						boolean tellFlag)
 	{
 		Room location=mob.location();
-		text=CMProps.applyINIFilter(text,CMProps.SYSTEM_SAYFILTER);
+		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
 		if(target!=null)
 			location=target.location();
 		if(location==null) return;
@@ -508,12 +508,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 	public int tickManaConsumption(MOB mob, int manaConsumeCounter)
 	{
-		if((CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME)>0)
-		&&(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT)>0)
+		if((CMProps.getIntVar(CMProps.Int.MANACONSUMETIME)>0)
+		&&(CMProps.getIntVar(CMProps.Int.MANACONSUMEAMT)>0)
 		&&((--manaConsumeCounter)<=0))
 		{
 			Vector<Ability> expenseAffects=new Vector<Ability>();
-			manaConsumeCounter=CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME);
+			manaConsumeCounter=CMProps.getIntVar(CMProps.Int.MANACONSUMETIME);
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
@@ -536,7 +536,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(expenseAffects.size()>0)
 			{
 				int basePrice=1;
-				switch(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT))
+				switch(CMProps.getIntVar(CMProps.Int.MANACONSUMEAMT))
 				{
 				case -100: basePrice=basePrice*mob.phyStats().level(); break;
 				case -200:
@@ -554,7 +554,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					}
 					break;
 				default:
-					basePrice=basePrice*CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT);
+					basePrice=basePrice*CMProps.getIntVar(CMProps.Int.MANACONSUMEAMT);
 					break;
 				}
 
@@ -644,7 +644,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				else
 				if(CMLib.dice().rollPercentage()<10)
 				{
-					int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+					int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 					for(int i: CharStats.CODES.MAX())
 						if((max+mob.charStats().getStat(i))<=0)
 						{
@@ -1094,7 +1094,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						}
 					}
 				}
-				if((CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)==1)||(CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)==2))
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)==1)||(CMProps.getIntVar(CMProps.Int.EXVIEW)==2))
 					roomDesc += getRoomExitsParagraph(mob,room);
 				Say.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
 				
@@ -1167,7 +1167,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			if(compress) Say.append("\n\r");
 			mob.tell(Say.toString());
-			if((CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)>0)
+			if((CMProps.getIntVar(CMProps.Int.AWARERANGE)>0)
 			&&(!CMath.bset(mob.getBitmap(), MOB.ATT_AUTOMAP)))
 			{
 				if(awarenessA==null)
@@ -1176,7 +1176,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				{
 					sess.colorOnlyPrintln("", true);
 					final Vector<Object> list=new Vector<Object>();
-					awarenessA.invoke(mob, list, mob.location(), true, CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE));
+					awarenessA.invoke(mob, list, mob.location(), true, CMProps.getIntVar(CMProps.Int.AWARERANGE));
 					for(Object o : list)
 						sess.colorOnlyPrintln((String)o, true);
 					sess.colorOnlyPrintln("\n\r", true);
@@ -1465,8 +1465,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			StringBuilder eq=CMLib.commands().getEquipment(viewermob,viewedmob);
 			if(eq.length() > 0)
 			{
-				if((CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>1)
-				||((viewermob!=viewedmob)&&(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>0)))
+				if((CMProps.getIntVar(CMProps.Int.EQVIEW)>1)
+				||((viewermob!=viewedmob)&&(CMProps.getIntVar(CMProps.Int.EQVIEW)>0)))
 					myDescription.append(viewedmob.charStats().HeShe()+" is wearing "+eq.toString());
 				else
 					myDescription.append(viewedmob.charStats().HeShe()+" is wearing:\n\r"+eq.toString());

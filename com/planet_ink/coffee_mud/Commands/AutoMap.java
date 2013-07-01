@@ -56,7 +56,7 @@ public class AutoMap extends StdCommand
 	}
 	
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)>0;}
+	public boolean securityCheck(MOB mob){return CMProps.getIntVar(CMProps.Int.AWARERANGE)>0;}
 
 	
 }

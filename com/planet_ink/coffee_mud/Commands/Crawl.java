@@ -76,11 +76,11 @@ public class Crawl extends Go
 	}
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		return CMProps.getActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),50.0),1.0));
+		return CMProps.getActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),50.0),1.0));
 	}
 	public double combatActionsCost(MOB mob, List<String> cmds)
 	{
-		return CMProps.getCombatActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),50.0),2.0));
+		return CMProps.getCombatActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),50.0),2.0));
 	}
 	public boolean canBeOrdered(){return true;}
 

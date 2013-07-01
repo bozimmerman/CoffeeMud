@@ -129,7 +129,7 @@ public class Prayer_Haunted extends Prayer
 					CMLib.database().DBUpdateRoom(target);
 				}
 				else
-					beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)));
+					beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)));
 			}
 		}
 		else

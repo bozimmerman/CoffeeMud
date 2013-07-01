@@ -171,7 +171,7 @@ public class Corpse extends GenContainer implements DeadBody
 					&&(!msg.tool().ID().equalsIgnoreCase("Prayer_Resurrect"))
 					&&(!msg.tool().ID().equalsIgnoreCase("Prayer_PreserveBody"))
 					&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
-			&&(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).length()>0)
+			&&(CMProps.getVar(CMProps.Str.CORPSEGUARD).length()>0)
 			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
 			{
 				if(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDITEMS))
@@ -181,18 +181,18 @@ public class Corpse extends GenContainer implements DeadBody
 				if((msg.source().isMonster())
 				&&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
 					return true;
-				if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
+				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("ANY"))
 					return true;
 				if (mobName().equalsIgnoreCase(msg.source().Name()))
 					return true;
 				else
-				if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
+				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
 				{
 					msg.source().tell("You may not loot another players corpse.");
 					return false;
 				}
 				else
-				if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PKONLY"))
+				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("PKONLY"))
 				{
 					if(!(CMath.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
 					{

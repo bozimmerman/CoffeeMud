@@ -81,8 +81,8 @@ public class ServiceEngine implements ThreadEngine
 		final char threadGroupNum=threadGroupName.charAt(0);
 		final CMThreadPoolExecutor pool = threadPools[threadGroupNum];
 		if(pool != null) return pool;
-		final int minThreads = CMProps.getIntVar(CMProps.SYSTEMI_MINWORKERTHREADS);
-		int maxThreads = CMProps.getIntVar(CMProps.SYSTEMI_MAXWORKERTHREADS);
+		final int minThreads = CMProps.getIntVar(CMProps.Int.MINWORKERTHREADS);
+		int maxThreads = CMProps.getIntVar(CMProps.Int.MAXWORKERTHREADS);
 		if(maxThreads<=0) maxThreads=Integer.MAX_VALUE;
 		final String sessionThreadGroupName="Worker"+threadGroupNum;
 		threadPools[threadGroupNum] = new CMThreadPoolExecutor(sessionThreadGroupName,minThreads, maxThreads, 5, TimeUnit.MINUTES, (LONG_TICK_TIMEOUT/60000), 1024);
@@ -134,7 +134,7 @@ public class ServiceEngine implements ThreadEngine
 	public int getMaxObjectsPerThread()
 	{
 		if(max_objects_per_thread>0) return max_objects_per_thread;
-		max_objects_per_thread = CMProps.getIntVar(CMProps.SYSTEMI_OBJSPERTHREAD);
+		max_objects_per_thread = CMProps.getIntVar(CMProps.Int.OBJSPERTHREAD);
 		if(max_objects_per_thread>0) return max_objects_per_thread; 
 		max_objects_per_thread=0;
 		return 128;
@@ -724,13 +724,13 @@ public class ServiceEngine implements ThreadEngine
 			TickableGroup tock=allTicks.getFirst();
 			if(tock!=null)
 			{
-				CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: killing "+tock.getName()+": "+tock.getStatus());
+				CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...shutting down Service Engine: killing "+tock.getName()+": "+tock.getStatus());
 				tock.shutdown();
 				allTicks.remove(tock);
 			}
 			try{Thread.sleep(100);}catch(Exception e){}
 		}
-		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": thread shutdown");
+		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": thread shutdown");
 		CMLib.killThread(drivingThread,100,10);
 		// force final time tick!
 		Vector<TimeClock> timeObjects=new Vector<TimeClock>();
@@ -740,7 +740,7 @@ public class ServiceEngine implements ThreadEngine
 			if(!timeObjects.contains(A.getTimeObj()))
 				timeObjects.addElement(A.getTimeObj());
 		}
-		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": saving time objects");
+		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": saving time objects");
 		for(int t=0;t<timeObjects.size();t++)
 			timeObjects.elementAt(t).save();
 		for(CMThreadPoolExecutor pool : threadPools)
@@ -1060,12 +1060,12 @@ public class ServiceEngine implements ThreadEngine
 
 	public void run()
 	{
-		while(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		while(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			try{Thread.sleep(1000);}catch(Exception e){}
-		while(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)) {
+		while(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)) {
 			try
 			{
-				while(isAllSuspended() && (!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
+				while(isAllSuspended() && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 					Thread.sleep(2000);
 				final long now=System.currentTimeMillis();
 				long nextWake=System.currentTimeMillis() + 3600000;

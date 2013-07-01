@@ -632,7 +632,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				Physical cataE=getCatalogObj(P);
 				if((cataE==null)||(data==null))
 				{
-					if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)) 
+					if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)) 
 						return null; // if catalog isn't fully loaded, this can be a false correction
 					if(data!=null)
 						data.delReference(P);
@@ -792,7 +792,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		public volatile int deathPickup=0;
 		public SVector<WeakReference<Physical>> 
 							refs=new SVector<WeakReference<Physical>>(1);
-		public boolean noRefs = CMProps.getBoolVar(CMProps.SYSTEMB_CATALOGNOCACHE) 
+		public boolean noRefs = CMProps.getBoolVar(CMProps.Bool.CATALOGNOCACHE) 
 								|| CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGCACHE);
 		public MaskingLibrary.CompiledZapperMask 		lmaskV=null;
 		

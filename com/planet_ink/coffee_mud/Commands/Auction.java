@@ -212,9 +212,9 @@ public class Auction extends Channel implements Tickable
 		else
 		if(M.playerStats()!=null)
 		{
-			CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
-											"auction@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-											"noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+			CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),
+											"auction@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
+											"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
 											M.playerStats().getEmail(),
 											"Auction Update for item: "+regardingItem,
 											resp);

@@ -110,7 +110,7 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell("You need to use at least 1 enchantment point.");
 			return false;
 		}
-		long exp=points*CMProps.getIntVar(CMProps.SYSTEMI_CLANENCHCOST);
+		long exp=points*CMProps.getIntVar(CMProps.Int.CLANENCHCOST);
 		if((C.getExp()<exp)||(exp<0))
 		{
 			mob.tell("You need "+exp+" to do that, but your "+C.getGovernmentName()+" has only "+C.getExp()+" experience points.");

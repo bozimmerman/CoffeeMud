@@ -148,7 +148,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	public String getPasswordStr(){return password;}
 	public void setPassword(String newPassword)
 	{
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_HASHPASSWORDS)
+		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
 		&&(!CMLib.encoder().isARandomHashString(newPassword)))
 			password=CMLib.encoder().makeRandomHashString(newPassword);
 		else

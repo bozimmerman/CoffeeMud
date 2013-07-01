@@ -171,7 +171,7 @@ public class Prayer_UndeniableFaith extends Prayer
 					if(mob!=target)
 						CMLib.leveler().postExperience(mob,target,null,25,false);
 					godName=mob.getWorshipCharID();
-					beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH));
+					beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH));
 					convertStack.addElement(target,Long.valueOf(System.currentTimeMillis()));
 				}
 			}

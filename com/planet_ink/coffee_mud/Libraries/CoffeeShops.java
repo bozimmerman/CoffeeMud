@@ -296,7 +296,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		factors=factors.toUpperCase();
 		if(factors.length()==0)
 		{
-			factors=CMProps.getVar(CMProps.SYSTEM_PREJUDICE).trim();
+			factors=CMProps.getVar(CMProps.Str.PREJUDICE).trim();
 			if(factors.length()==0)
 				return 1.0;
 		}
@@ -652,16 +652,16 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					CMLib.commands().postSay(seller,buyer,"You can't accept any more followers.",true,false);
 					return false;
 				}
-				if((CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)>0)
+				if((CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)>0)
 				&&(!CMSecurity.isAllowed(seller,seller.location(),CMSecurity.SecFlag.ORDER))
 				&&(!CMSecurity.isAllowed(buyer,buyer.location(),CMSecurity.SecFlag.ORDER)))
 				{
-					if(seller.phyStats().level() > (buyer.phyStats().level() + CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
+					if(seller.phyStats().level() > (buyer.phyStats().level() + CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
 						buyer.tell(product.name() + " is too advanced for you.");
 						return false;
 					}
-					if(seller.phyStats().level() < (buyer.phyStats().level() - CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
+					if(seller.phyStats().level() < (buyer.phyStats().level() - CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
 						buyer.tell(product.name() + " is too inexperienced for you.");
 						return false;
@@ -1659,9 +1659,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			else
 			if(M.playerStats()!=null)
 			{
-				CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
-												"auction@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-												"noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+				CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),
+												"auction@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
+												"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
 												M.playerStats().getEmail(),
 												"Auction Update for item: "+regardingItem,
 												resp);

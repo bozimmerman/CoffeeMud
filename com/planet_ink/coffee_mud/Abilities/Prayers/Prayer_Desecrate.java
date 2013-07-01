@@ -84,7 +84,7 @@ public class Prayer_Desecrate extends Prayer
 				if(CMLib.flags().isEvil(mob))
 				{
 					double exp=5.0;
-					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
+					int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 					int levelDiff=(mob.phyStats().level())-target.phyStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
 					if(exp>0.0)

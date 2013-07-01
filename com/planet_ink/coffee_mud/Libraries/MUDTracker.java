@@ -851,8 +851,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(!mob.isMonster())
 			{
 				final int expense = running
-										? CMProps.getIntVar(CMProps.SYSTEMI_RUNCOST)
-										: CMProps.getIntVar(CMProps.SYSTEMI_WALKCOST);
+										? CMProps.getIntVar(CMProps.Int.RUNCOST)
+										: CMProps.getIntVar(CMProps.Int.WALKCOST);
 				for(int i=0;i<expense;i++)
 					mob.curState().expendEnergy(mob,mob.maxState(),true);
 			}

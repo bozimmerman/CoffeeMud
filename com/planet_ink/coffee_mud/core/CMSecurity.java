@@ -544,7 +544,7 @@ public class CMSecurity
 	
 	public static final void approveJScript(final String approver, final long hashCode)
 	{
-		if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)!=1)
+		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)!=1)
 			return;
 		final Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
 		if(approved.containsKey(Long.valueOf(hashCode)))
@@ -584,9 +584,9 @@ public class CMSecurity
 	
 	public static final boolean isApprovedJScript(final StringBuffer script)
 	{
-		if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)==2)
+		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==2)
 			return true;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)==0)
+		if(CMProps.getIntVar(CMProps.Int.JSCRIPTS)==0)
 			return false;
 		Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
 		final Long hashCode=Long.valueOf(script.toString().hashCode());

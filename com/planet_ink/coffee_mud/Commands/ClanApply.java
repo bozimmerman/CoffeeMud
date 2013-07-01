@@ -84,10 +84,10 @@ public class ClanApply extends StdCommand
 				if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))
 				{
 					List<Clan.MemberRecord> members=C.getMemberList();
-					if((CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob,true))
+					if((CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.Int.MINCLANLEVEL),mob,true))
 					||(CMLib.clans().isFamilyOfMembership(mob,members)))
 					{
-						int maxMembers=CMProps.getIntVar(CMProps.SYSTEMI_MAXCLANMEMBERS);
+						int maxMembers=CMProps.getIntVar(CMProps.Int.MAXCLANMEMBERS);
 						int numMembers=members.size();
 						if((maxMembers<=0)||(numMembers<maxMembers))
 						{
@@ -124,7 +124,7 @@ public class ClanApply extends StdCommand
 					}
 					else
 					{
-						msg.append("You must be at least level "+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL)+" to join a clan.");
+						msg.append("You must be at least level "+CMProps.getIntVar(CMProps.Int.MINCLANLEVEL)+" to join a clan.");
 					}
 				}
 				else

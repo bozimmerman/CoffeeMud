@@ -187,11 +187,11 @@ public class DefaultSession implements Session
 			rawout.flush();
 			preliminaryRead(250);
 
-			Charset charSet=Charset.forName(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+			Charset charSet=Charset.forName(CMProps.getVar(CMProps.Str.CHARSETINPUT));
 			inMaxBytesPerChar=(int)Math.round(Math.ceil(charSet.newEncoder().maxBytesPerChar()));
 			charWriter=new SesInputStream(inMaxBytesPerChar);
 			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
-			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
+			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 
 			preliminaryRead(250);
 			if(clientTelnetMode(TELNET_COMPRESS2))
@@ -209,7 +209,7 @@ public class DefaultSession implements Session
 				ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 				rawout=zOut;
 				zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-				out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
+				out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 				try{Thread.sleep(50);}catch(Exception e){}
 			}
 			else
@@ -1128,7 +1128,7 @@ public class DefaultSession implements Session
 					out.flush();
 					ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 					zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-					out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
+					out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 					try{Thread.sleep(250);}catch(Exception e){}
 				}
 			}
@@ -1150,7 +1150,7 @@ public class DefaultSession implements Session
 			if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
 			{
 				setClientTelnetMode(last,false);
-				out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
+				out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 			}
 			if((mightSupportTelnetMode(last)&&(serverTelnetMode(last))))
 				changeTelnetMode(last,false);
@@ -2086,7 +2086,7 @@ public class DefaultSession implements Session
 			&&(mob()!=null))
 			{
 				lastBlahCheck=System.currentTimeMillis();
-				Vector<String> V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
+				Vector<String> V=CMParms.parse(CMProps.getVar(CMProps.Str.IDLETIMERS));
 				if((V.size()>0)
 				&&(!CMSecurity.isAllowed(mob(),mob().location(),CMSecurity.SecFlag.IDLEOK))
 				&&(CMath.s_int(V.firstElement())>0))
@@ -2209,8 +2209,8 @@ public class DefaultSession implements Session
 				if((M.location()!=null)&&(!skipRooms.contains(M.location())))
 					skipRooms.add(M.location());
 			}
-			if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
-			&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+			if((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+			&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 			{
 				CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
 				Room R=theMOB.location();
@@ -2232,8 +2232,8 @@ public class DefaultSession implements Session
 		public void run()
 		{
 			activeMillis=System.currentTimeMillis();
-			if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
-			&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+			if((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+			&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 			{
 				CMMsg msg=CMClass.getMsg(theMOB,null,msgCode,null);
 				Room R=null;

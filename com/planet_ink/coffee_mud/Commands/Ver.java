@@ -41,7 +41,7 @@ public class Ver extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		mob.tell("CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER));
+		mob.tell("CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER));
 		mob.tell("(C) 2000-2013 Bo Zimmerman");
 		mob.tell("^<A HREF=\"mailto:bo@zimmers.net\"^>bo@zimmers.net^</A^>");
 		mob.tell("^<A HREF=\"http://www.coffeemud.org\"^>http://www.coffeemud.org^</A^>");

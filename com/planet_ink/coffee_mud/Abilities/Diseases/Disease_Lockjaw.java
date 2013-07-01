@@ -44,7 +44,7 @@ public class Disease_Lockjaw extends Disease
 	public int difficultyLevel(){return 2;}
 
 	protected int DISEASE_TICKS(){return 9999999;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY );}
+	protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
 	protected String DISEASE_DONE(){return "Your lockjaw is cured.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) lockjaw!^?";}
 	protected String DISEASE_AFFECT(){return "";}

@@ -233,7 +233,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	public void updateLot(List optPlayerList)
 	{
 		if(((System.currentTimeMillis()-lastCall)>360000)
-		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
 			List<Room> V=getAllTitledRooms();
 			for(int v=0;v<V.size();v++)

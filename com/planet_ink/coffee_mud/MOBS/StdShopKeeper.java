@@ -140,7 +140,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(miscText!=null)
 					{
 						String shoptext;
-						if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS) && (miscText instanceof byte[]))
+						if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS) && (miscText instanceof byte[]))
 							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString((byte[])miscText));
 						else
 							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMStrings.bytesToStr(miscText));
@@ -173,21 +173,21 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					s="DAY";
 					if(V.size()>1) s=V.lastElement().toUpperCase();
 					if(s.startsWith("DAY"))
-						budgetTickDown=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+						budgetTickDown=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 					else
 					if(location()!=null)
 					{
 						if(s.startsWith("HOUR"))
-							budgetTickDown=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)/location().getArea().getTimeObj().getHoursInDay();
+							budgetTickDown=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)/location().getArea().getTimeObj().getHoursInDay();
 						else
 						if(s.startsWith("WEEK"))
-							budgetTickDown=location().getArea().getTimeObj().getDaysInWeek()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+							budgetTickDown=location().getArea().getTimeObj().getDaysInWeek()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 						else
 						if(s.startsWith("MONTH"))
-							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 						else
 						if(s.startsWith("YEAR"))
-							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*location().getArea().getTimeObj().getMonthsInYear()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+							budgetTickDown=location().getArea().getTimeObj().getDaysInMonth()*location().getArea().getTimeObj().getMonthsInYear()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 					}
 				}
 				budgetMax=budgetRemaining;

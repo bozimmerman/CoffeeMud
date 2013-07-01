@@ -44,7 +44,7 @@ public class Autoforward extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
+		if(!CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 		{
 			mob.tell("This feature is not activated.");
 			return false;

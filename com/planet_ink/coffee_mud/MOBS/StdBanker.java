@@ -233,7 +233,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)) return true;
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)) return true;
 		try{
 		if(tickID==Tickable.TICKID_MOB)
 		{

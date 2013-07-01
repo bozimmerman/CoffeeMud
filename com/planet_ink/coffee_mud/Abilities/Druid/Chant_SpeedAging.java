@@ -151,7 +151,7 @@ public class Chant_SpeedAging extends Chant
 				{
 					long start=CMath.s_long(A.text());
 					long age=System.currentTimeMillis()-start;
-					long millisPerMudday=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis();
+					long millisPerMudday=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 					if(age<millisPerMudday)
 						age=millisPerMudday;
 					long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;

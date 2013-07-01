@@ -110,7 +110,7 @@ public class Fighter_LightningStrike extends MonkSkill
 		{
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
-			if(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))
+			if(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))
 				return Ability.QUALITY_INDIFFERENT;
 			if(anyWeapons(mob))
 				return Ability.QUALITY_INDIFFERENT;
@@ -130,9 +130,9 @@ public class Fighter_LightningStrike extends MonkSkill
 			mob.tell("You are too far away from your target to strike!");
 			return false;
 		}
-		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)))
+		if((!auto)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)))
 		{
-			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+" dexterity to do that.");
+			mob.tell("You need at least an "+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+" dexterity to do that.");
 			return false;
 		}
 

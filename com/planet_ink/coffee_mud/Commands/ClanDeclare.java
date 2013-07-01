@@ -122,9 +122,9 @@ public class ClanDeclare extends StdCommand
 
 				}
 				long last=C.getLastRelationChange(C2.clanID());
-				if(last>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*CMProps.getTickMillis()))
+				if(last>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)*CMProps.getTickMillis()))
 				{
-					last=last+(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)*CMProps.getTickMillis());
+					last=last+(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)*CMProps.getTickMillis());
 					if(System.currentTimeMillis()<last)
 					{
 						mob.tell("You must wait at least 1 mud month between relation changes.");

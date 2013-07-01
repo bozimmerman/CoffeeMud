@@ -890,8 +890,8 @@ public class RoomData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()==0) return "";
 
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 		boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");

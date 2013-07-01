@@ -320,8 +320,8 @@ public class GrinderPlayers extends GrinderMobs
 	
 	public static String editPlayer(MOB whom, HTTPRequest httpReq, java.util.Map<String,String> parms, MOB M)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		Vector allitems=new Vector();
 		while(M.numItems()>0)

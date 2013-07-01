@@ -991,15 +991,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if((newArea!=null)
 		&&(newArea.ID().equals("StdArea")))
 		{
-			if(!CMProps.getVar(CMProps.SYSTEM_AUTOWEATHERPARMS).equalsIgnoreCase("no"))
+			if(!CMProps.getVar(CMProps.Str.AUTOWEATHERPARMS).equalsIgnoreCase("no"))
 			{
 				Behavior B=newArea.fetchBehavior("WeatherAffects");
 				if(B==null){ B=CMClass.getBehavior("WeatherAffects"); B.setSavable(false); newArea.addBehavior(B);}
-				B.setParms(CMProps.getVar(CMProps.SYSTEM_AUTOWEATHERPARMS));
+				B.setParms(CMProps.getVar(CMProps.Str.AUTOWEATHERPARMS));
 			}
-			if(CMProps.getVar(CMProps.SYSTEM_AUTOAREAPROPS).trim().length()>0)
+			if(CMProps.getVar(CMProps.Str.AUTOAREAPROPS).trim().length()>0)
 			{
-				String props=CMProps.getVar(CMProps.SYSTEM_AUTOAREAPROPS).trim();
+				String props=CMProps.getVar(CMProps.Str.AUTOAREAPROPS).trim();
 				Vector<String> allProps=CMParms.parseSemicolons(props,true);
 				String prop=null;
 				String parms=null;

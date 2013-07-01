@@ -502,7 +502,7 @@ public class CombatAbilities extends StdBehavior
 				||(mob.curState().getMana() < tryA.usageCost(mob,false)[0]))
 				{
 				   if((CMLib.dice().rollPercentage()>30)
-				   ||(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME)<=0)
+				   ||(CMProps.getIntVar(CMProps.Int.MANACONSUMETIME)<=0)
 				   ||((mob.amFollowing()!=null)&&(!mob.amFollowing().isMonster())))
 					   throw new CMException("Not enough mana");
 				   mob.curState().adjMana(tryA.usageCost(mob,false)[0],mob.maxState());

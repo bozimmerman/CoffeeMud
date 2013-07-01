@@ -6287,7 +6287,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -6399,7 +6399,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -6481,7 +6481,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -6540,7 +6540,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -6595,7 +6595,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -6663,7 +6663,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -6786,7 +6786,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(mob.isMonster()) return true;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		String choices="Your choices are: ";
 		String allComponents=CMParms.toStringList(RawMaterial.MATERIAL_DESCS)+","+CMParms.toStringList(RawMaterial.CODES.NAMES());
@@ -6819,7 +6819,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		List<AbilityComponent> codedDV=CMLib.ableMapper().getAbilityComponentDVector(componentID);
 		if(codedDV!=null)
@@ -6877,7 +6877,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -6927,7 +6927,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7002,7 +7002,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7086,7 +7086,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7137,7 +7137,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7170,7 +7170,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7214,7 +7214,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7291,7 +7291,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7356,7 +7356,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7418,7 +7418,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7464,7 +7464,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7536,7 +7536,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		possibleCatalogSwap(mob,me);
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -7624,7 +7624,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		String oldName=me.Name();
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
@@ -7646,7 +7646,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			me.setName(newName);
 			
-			if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 			{
 				String oldAccountName = ((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().accountName():"";
 				String accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,++showNumber,showFlag,"Account",true,false,null));
@@ -7668,11 +7668,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						CMLib.database().DBUpdateAccount(oldAccount);
 					}
 				}
-				if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
+				if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 					genAccountExpiration(mob,me.playerStats().getAccount(),++showNumber,showFlag);
 			}
 			else
-			if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
+			if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 				genAccountExpiration(mob,me.playerStats(),++showNumber,showFlag);
 			genPassword(mob,me,++showNumber,showFlag);
 
@@ -7952,7 +7952,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		String oldName=C.ID();
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
@@ -8004,7 +8004,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		possibleCatalogSwap(mob,M);
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
@@ -8113,7 +8113,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public Room modifyRoom(MOB mob, Room R) throws IOException
 	{
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		boolean ok=false;
 		while(!ok)
@@ -8159,7 +8159,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void modifyAccount(MOB mob, PlayerAccount A) throws IOException
 	{
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		boolean ok=false;
 		while(!ok)
@@ -8175,7 +8175,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			A.setAccountName(acctName);
 			genEmail(mob, A, ++showNumber, showFlag);
-			if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
+			if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 				genAccountExpiration(mob,A,++showNumber,showFlag);
 			promptStatStr(mob,A,CMParms.toStringList(PlayerAccount.FLAG_DESCS),++showNumber,showFlag,"Flags (?)","FLAGS",true);
 			promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
@@ -8195,7 +8195,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void modifyStdMob(MOB mob, MOB thang) throws IOException
 	{
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		boolean ok=false;
 		while(!ok)
@@ -8219,7 +8219,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void modifyStdItem(MOB mob, Item thang) throws IOException
 	{
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		boolean ok=false;
 		while(!ok)
@@ -8244,7 +8244,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void modifyGenArea(MOB mob, Area myArea) throws IOException
 	{
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		boolean ok=false;
 		while(!ok)
@@ -8301,7 +8301,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public AbilityMapper.AbilityMapping modifyAllQualifyEntry(MOB mob, String eachOrAll, Ability me) throws IOException 
 	{
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		Map<String,Map<String,AbilityMapper.AbilityMapping>> map=CMLib.ableMapper().getAllQualifiesMap(null);
 		Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());

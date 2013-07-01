@@ -53,7 +53,7 @@ public class GenRideable extends StdRideable
 
 	public String text()
 	{
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
+		if(CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
 			miscText=CMLib.encoder().compressString(CMLib.coffeeMaker().getPropertiesStr(this,false));
 		else
 			miscText=CMLib.coffeeMaker().getPropertiesStr(this,false);

@@ -54,7 +54,7 @@ public class Shutdown extends StdCommand implements Tickable
 		else
 			tm=" in "+tm;
 		for(Session S : CMLib.sessions().allIterable())
-		  S.colorOnlyPrintln("\n\r\n\r^Z"+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" will be "+(keepItDown?"shutting down":"restarting")+tm+"^.^?\n\r");
+		  S.colorOnlyPrintln("\n\r\n\r^Z"+CMProps.getVar(CMProps.Str.MUDNAME)+" will be "+(keepItDown?"shutting down":"restarting")+tm+"^.^?\n\r");
 	}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
@@ -98,7 +98,7 @@ public class Shutdown extends StdCommand implements Tickable
 				   mob.tell("I don't know how to shutdown within the next "+wait+" "+multiplier+"; try `5 minutes` or something similar.");
 				   return false;
 				}
-				if((!mob.session().confirm("Shutdown "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" in "+wait+" "+multiplier.toLowerCase()+" (y/N)?","N")))
+				if((!mob.session().confirm("Shutdown "+CMProps.getVar(CMProps.Str.MUDNAME)+" in "+wait+" "+multiplier.toLowerCase()+" (y/N)?","N")))
 				   return false;
 				shuttingDownCompletes=System.currentTimeMillis()+(wait * timeMultiplier)-1;
 				shuttingDownNextAnnounce=System.currentTimeMillis() + ((wait * timeMultiplier)/2)-100;
@@ -112,7 +112,7 @@ public class Shutdown extends StdCommand implements Tickable
 			externalCommand=CMParms.combine(commands,1);
 
 		if((!noPrompt)
-		&&(!mob.session().confirm("Shutdown "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" (y/N)?","N")))
+		&&(!mob.session().confirm("Shutdown "+CMProps.getVar(CMProps.Str.MUDNAME)+" (y/N)?","N")))
 			return false;
 		shuttingDownMob=null;
 		this.externalCommand=externalCommand;
@@ -131,7 +131,7 @@ public class Shutdown extends StdCommand implements Tickable
 			public void run()
 			{
 				for(Session S : CMLib.sessions().allIterable())
-					S.colorOnlyPrintln("\n\r\n\r^Z"+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" is now "+(keepItDown?"shutting down":"restarting")+"!^.^?\n\r");
+					S.colorOnlyPrintln("\n\r\n\r^Z"+CMProps.getVar(CMProps.Str.MUDNAME)+" is now "+(keepItDown?"shutting down":"restarting")+"!^.^?\n\r");
 				if(keepItDown)
 					Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");
 				else

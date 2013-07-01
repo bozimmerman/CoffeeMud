@@ -71,30 +71,30 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	public boolean activate()
 	{
-		attackAdjustmentFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_ATTACKADJUSTMENT));
-		armorAdjustmentFormula= CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_ARMORADJUSTMENT));
-		attackerFudgeBonusFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_ATTACKFUDGEBONUS));
-		pvpAttackerFudgeBonusFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPATTACKFUDGEBONUS));
-		spellCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_CHANCESPELLCRIT));
-		pvpSpellCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPCHANCESPELLCRIT));
-		spellCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGESPELLCRIT));
-		pvpSpellCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGESPELLCRIT));
-		targetedRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGERANGEDTARGETED));
-		pvpTargetedRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGERANGEDTARGETED));
-		targetedMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEETARGETED));
-		pvpTargetedMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGEMELEETARGETED));
-		staticRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGERANGEDSTATIC));
-		staticMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEESTATIC));
-		weaponCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_CHANCEWEAPONCRIT));
-		pvpWeaponCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPCHANCEWEAPONCRIT));
-		weaponCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEWEAPONCRIT));
-		pvpWeaponCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGEWEAPONCRIT));
-		spellFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGESPELLFUDGE));
-		pvpSpellFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGESPELLFUDGE));
-		meleeFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEEFUDGE));
-		pvpMeleeFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGEMELEEFUDGE));
-		rangedFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGERANGEDFUDGE));
-		pvpRangedFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_PVPDAMAGERANGEDFUDGE));
+		attackAdjustmentFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ATTACKADJUSTMENT));
+		armorAdjustmentFormula= CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ARMORADJUSTMENT));
+		attackerFudgeBonusFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_ATTACKFUDGEBONUS));
+		pvpAttackerFudgeBonusFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPATTACKFUDGEBONUS));
+		spellCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_CHANCESPELLCRIT));
+		pvpSpellCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPCHANCESPELLCRIT));
+		spellCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGESPELLCRIT));
+		pvpSpellCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPDAMAGESPELLCRIT));
+		targetedRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGERANGEDTARGETED));
+		pvpTargetedRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPDAMAGERANGEDTARGETED));
+		targetedMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGEMELEETARGETED));
+		pvpTargetedMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPDAMAGEMELEETARGETED));
+		staticRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGERANGEDSTATIC));
+		staticMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGEMELEESTATIC));
+		weaponCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_CHANCEWEAPONCRIT));
+		pvpWeaponCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPCHANCEWEAPONCRIT));
+		weaponCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGEWEAPONCRIT));
+		pvpWeaponCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPDAMAGEWEAPONCRIT));
+		spellFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGESPELLFUDGE));
+		pvpSpellFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPDAMAGESPELLFUDGE));
+		meleeFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGEMELEEFUDGE));
+		pvpMeleeFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPDAMAGEMELEEFUDGE));
+		rangedFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_DAMAGERANGEDFUDGE));
+		pvpRangedFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_PVPDAMAGERANGEDFUDGE));
 		return true; 
 	}
 	
@@ -409,7 +409,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(str.length() < replace+9)
 			return str;
 		final boolean damages = (str.charAt(replace+7)=='S') && (str.charAt(replace+8)=='>');
-		final String showDamage = CMProps.getVar(CMProps.SYSTEM_SHOWDAMAGE);
+		final String showDamage = CMProps.getVar(CMProps.Str.SHOWDAMAGE);
 		final boolean showNumbers = showDamage.equalsIgnoreCase("YES")
 								||((sourceTargetSTO=='S')&&showDamage.equalsIgnoreCase("SOURCE"))
 								||((sourceTargetSTO=='T')&&showDamage.equalsIgnoreCase("TARGET"));
@@ -893,9 +893,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(expLost[0]<100) expLost[0]=100;
 		String[] cmds=null;
 		if((target.isMonster())||(target.soulMate()!=null))
-			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_MOBDEATH),true));
+			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.Str.MOBDEATH),true));
 		else
-			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH),true));
+			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.Str.PLAYERDEATH),true));
 		
 		DeadBody body=null; //must be done before consequences because consequences could be purging
 		if((!CMParms.containsIgnoreCase(cmds,"RECALL"))
@@ -1009,12 +1009,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if((type<0)||(type>=Weapon.TYPE_DESCS.length))
 			type=Weapon.TYPE_BURSTING;
-		final int[] thresholds=CMProps.getListFileIntList(CMProps.SYSTEMLF_DAMAGE_WORDS_THRESHOLDS);
+		final int[] thresholds=CMProps.getListFileIntList(CMProps.ListFile.DAMAGE_WORDS_THRESHOLDS);
 		int damnCode=thresholds.length-2;
 		for(int i=0;i<thresholds.length;i++)
 			if(damage<=thresholds[i]){ damnCode=i; break;}
 		damnCode++; // always add 1 because index into hitwords is type=0, annoy=1;
-		final Object[][][] hitWords = CMProps.getListFileGrid(CMProps.SYSTEMLF_DAMAGE_WORDS);
+		final Object[][][] hitWords = CMProps.getListFileGrid(CMProps.ListFile.DAMAGE_WORDS);
 		if(hitWords != hitWordsChanged)
 		{
 			hitWordsChanged=hitWords;
@@ -1052,30 +1052,30 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public String armorStr(MOB mob)
 	{
 		final int armor = -adjustedArmor(mob);
-		int ARMOR_CEILING=CMProps.getListFileFirstInt(CMProps.SYSTEMLF_ARMOR_DESCS_CEILING);
-		final int numArmorDescs = CMProps.getListFileSize(CMProps.SYSTEMLF_ARMOR_DESCS);
-		return (armor<0)?CMProps.getListFileValue(CMProps.SYSTEMLF_ARMOR_DESCS,0):(
+		int ARMOR_CEILING=CMProps.getListFileFirstInt(CMProps.ListFile.ARMOR_DESCS_CEILING);
+		final int numArmorDescs = CMProps.getListFileSize(CMProps.ListFile.ARMOR_DESCS);
+		return (armor<0)?CMProps.getListFileValue(CMProps.ListFile.ARMOR_DESCS,0):(
 			   (armor>=ARMOR_CEILING)?
-					   CMProps.getListFileValue(CMProps.SYSTEMLF_ARMOR_DESCS,numArmorDescs-1)
+					   CMProps.getListFileValue(CMProps.ListFile.ARMOR_DESCS,numArmorDescs-1)
 					   +(CMStrings.repeat("!",(armor-ARMOR_CEILING)/100))
 					   +"^. ("+armor+")"
 										:
-					   (CMProps.getListFileValue(CMProps.SYSTEMLF_ARMOR_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),numArmorDescs))))
+					   (CMProps.getListFileValue(CMProps.ListFile.ARMOR_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),numArmorDescs))))
 					   +"^. ("+armor+")"));
 	}
 	
 	public String fightingProwessStr(MOB mob)
 	{
 		final int prowess = adjustedAttackBonus(mob,null) - ATTACK_ADJUSTMENT;
-		final int PROWESS_CEILING=CMProps.getListFileFirstInt(CMProps.SYSTEMLF_PROWESS_DESCS_CEILING);
-		final int numProwessDescs = CMProps.getListFileSize(CMProps.SYSTEMLF_PROWESS_DESCS);
-		return (prowess<0)?CMProps.getListFileValue(CMProps.SYSTEMLF_PROWESS_DESCS,0):(
+		final int PROWESS_CEILING=CMProps.getListFileFirstInt(CMProps.ListFile.PROWESS_DESCS_CEILING);
+		final int numProwessDescs = CMProps.getListFileSize(CMProps.ListFile.PROWESS_DESCS);
+		return (prowess<0)?CMProps.getListFileValue(CMProps.ListFile.PROWESS_DESCS,0):(
 			   (prowess>=PROWESS_CEILING)
 										 ?
-								 CMProps.getListFileValue(CMProps.SYSTEMLF_PROWESS_DESCS,numProwessDescs-1)
+								 CMProps.getListFileValue(CMProps.ListFile.PROWESS_DESCS,numProwessDescs-1)
 								 +(CMStrings.repeat("!",(prowess-PROWESS_CEILING)/100))+"^. ("+prowess+")"
 										 :
-								 (CMProps.getListFileValue(CMProps.SYSTEMLF_PROWESS_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),numProwessDescs))))
+								 (CMProps.getListFileValue(CMProps.ListFile.PROWESS_DESCS,(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),numProwessDescs))))
 								 +"^. ("+prowess+")"));
 	}
 
@@ -1104,8 +1104,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public String standardMissString(final int weaponType, final int weaponClassification, final String weaponName, final boolean useExtendedMissString)
 	{
 		final int listIndex = getWeaponAttackIndex(weaponType, weaponClassification);
-		if(!useExtendedMissString) return CMProps.getListFileValue(CMProps.SYSTEMLF_MISS_DESCS,listIndex);
-		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.SYSTEMLF_WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMProps.msp("missed.wav",20);
+		if(!useExtendedMissString) return CMProps.getListFileValue(CMProps.ListFile.MISS_DESCS,listIndex);
+		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMProps.msp("missed.wav",20);
 	}
 
 
@@ -1116,7 +1116,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			listIndex = getWeaponAttackIndex(weaponType, Weapon.CLASS_NATURAL);
 		else
 			listIndex = getWeaponAttackIndex(weaponType, weaponClass);
-		final StringBuilder str=new StringBuilder(CMStrings.replaceAll(CMProps.getListFileValue(CMProps.SYSTEMLF_WEAPON_HIT_DESCS,listIndex),"<TOOLNAME>",weaponName));
+		final StringBuilder str=new StringBuilder(CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.WEAPON_HIT_DESCS,listIndex),"<TOOLNAME>",weaponName));
 		switch(weaponClass)
 		{
 		case Weapon.CLASS_RANGED:
@@ -1132,9 +1132,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		int pct=(int)Math.round(Math.floor((CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10));
 		if(pct<0) pct=0;
-		final int numHealthDescs=CMProps.getListFileSize(CMProps.SYSTEMLF_HEALTH_CHART);
+		final int numHealthDescs=CMProps.getListFileSize(CMProps.ListFile.HEALTH_CHART);
 		if(pct>=numHealthDescs) pct=numHealthDescs-1;
-		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.SYSTEMLF_HEALTH_CHART,pct),"<MOB>",mob.displayName(viewer));
+		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.HEALTH_CHART,pct),"<MOB>",mob.displayName(viewer));
 	}
 
 	public void resistanceMsgs(CMMsg msg, MOB source, MOB target)
@@ -1241,7 +1241,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					postDeath(attacker,target,msg);
 				else
 				{
-					if((Math.round(CMath.div(dmg,target.maxState().getHitPoints())*100.0)>=CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDPCTHP))
+					if((Math.round(CMath.div(dmg,target.maxState().getHitPoints())*100.0)>=CMProps.getIntVar(CMProps.Int.INJBLEEDPCTHP))
 					&&bleedableWeapon(msg.tool()))
 					{
 						Ability A2=CMClass.getAbility("Bleeding");
@@ -1252,7 +1252,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					&&(target.isInCombat()))
 						postPanic(target,msg);
 					else
-					if((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(target.curState().getHitPoints(),target.maxState().getHitPoints())*100.0))
+					if((CMProps.getIntVar(CMProps.Int.INJPCTHP)>=(int)Math.round(CMath.div(target.curState().getHitPoints(),target.maxState().getHitPoints())*100.0))
 					&&(!CMLib.flags().isGolem(target))
 					&&(target.fetchEffect("Injury")==null))
 					{
@@ -1617,7 +1617,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		// combat que system eats up standard commands
 		// before using any attacks
-		while((CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM)==CombatLibrary.COMBAT_QUEUE)
+		while((CMProps.getIntVar(CMProps.Int.COMBATSYSTEM)==CombatLibrary.COMBAT_QUEUE)
 		&&(!fighter.amDead())
 		&&(fighter.dequeCommand()))
 			{}
@@ -1686,7 +1686,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 
 		subtickBeforeAttack(fighter);
-		int combatSystem=CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM);
+		int combatSystem=CMProps.getIntVar(CMProps.Int.COMBATSYSTEM);
 		int saveAction=(combatSystem!=CombatLibrary.COMBAT_DEFAULT)?0:1;
 
 		int folrange=(CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)
@@ -1730,9 +1730,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		String whatToDo=null;
 		if(((mob.isMonster())||(mob.soulMate()!=null)))
-			whatToDo=CMProps.getVar(CMProps.SYSTEM_MOBDEATH).toUpperCase();
+			whatToDo=CMProps.getVar(CMProps.Str.MOBDEATH).toUpperCase();
 		else
-			whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH).toUpperCase();
+			whatToDo=CMProps.getVar(CMProps.Str.PLAYERDEATH).toUpperCase();
 		Vector<String> whatsToDo=CMParms.parseCommas(whatToDo,true);
 		double[] fakeVarVals={1.0,1.0,1.0};
 		for(int w=0;w<whatsToDo.size();w++)

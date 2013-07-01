@@ -49,10 +49,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected int getTotalStatPoints()
 	{
-		final int basemax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-		final int basemin = CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT);
+		final int basemax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+		final int basemin = CMProps.getIntVar(CMProps.Int.BASEMINSTAT);
 
-		int points = CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT);
+		int points = CMProps.getIntVar(CMProps.Int.MAXSTAT);
 		// Make sure there are enough points
 		if (points < ((basemin + 1) * CharStats.CODES.BASE().length))
 			points = (basemin + 1) * CharStats.CODES.BASE().length;
@@ -67,7 +67,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	public void reRollStats(MOB mob, CharStats C, int pointsLeft)
 	{
-		final int basemax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+		final int basemax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 		
 		int[] stats=new int[CharStats.CODES.BASE().length];
 		for(int i=0;i<stats.length;i++)
@@ -153,7 +153,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(DEFAULT_BADNAMES.indexOf(" "+str+" ")>=0)
 				return false;
 		}
-		Vector<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_BADNAMES),true);
+		Vector<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.Str.BADNAMES),true);
 		for(int v2=0;v2<V2.size();v2++)
 		{
 			String str2=V2.elementAt(v2);
@@ -254,7 +254,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public boolean isExpired(PlayerAccount acct, Session session, long expiration)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)) 
+		if(!CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)) 
 			return false;
 		if((acct!=null)&&(acct.isSet(PlayerAccount.FLAG_NOEXPIRE)))
 			return false;
@@ -263,7 +263,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return false;
 		if(expiration<=System.currentTimeMillis())
 		{
-			session.println("\n\r"+CMProps.getVar(CMProps.SYSTEM_EXPCONTACTLINE)+"\n\r\n\r");
+			session.println("\n\r"+CMProps.getVar(CMProps.Str.EXPCONTACTLINE)+"\n\r\n\r");
 			session.stopSession(false,false,false);
 			return true;
 		}
@@ -294,7 +294,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		Hashtable<String,List<String>> extraScripts=new Hashtable<String,List<String>>();
 		final String[] VALID_SCRIPT_CODES={"PASSWORD","EMAIL","ANSI","THEME","RACE","GENDER","STATS","CLASS","FACTIONS","END"}; 				   
-		Vector<String> extras=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CHARCREATIONSCRIPTS),true);
+		Vector<String> extras=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CHARCREATIONSCRIPTS),true);
 		for(int e=0;e<extras.size();e++) {
 			String s=extras.elementAt(e);
 			int x=s.indexOf(':');
@@ -439,10 +439,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					session.println("\n\rThat name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
 					continue;
 				}
-				if((CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=acct.numPlayers())
+				if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
 				&&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
 				{
-					session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)+" characters.  Please retire one to create another.");
+					session.println("You may only have "+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)+" characters.  Please retire one to create another.");
 					continue;
 				}
 				autoCharCreate = false;
@@ -551,10 +551,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					name=session.prompt("\n\rPlease enter the name of the character: ","");
 					if(name.length()==0) continue;
 				}
-				if((CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=acct.numPlayers())
+				if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
 				&&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
 				{
-					session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)+" characters.  Please delete one to create another.");
+					session.println("You may only have "+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)+" characters.  Please delete one to create another.");
 					continue;
 				}
 				name=CMStrings.capitalizeAndLower(name);
@@ -612,15 +612,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				&&(S.mob().playerStats()!=null)
 				&&(S.mob().playerStats().getAccount()==acct))
 					numAccountOnline++;
-			if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)>0)
-			&&(numAccountOnline>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT))
+			if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)>0)
+			&&(numAccountOnline>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT))
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
 			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_CONNS, session.getAddress()))
 			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, playMe.accountName))
 			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, playMe.name))
 			&&(!acct.isSet(PlayerAccount.FLAG_MAXCONNSOVERRIDE)))
 			{
-				session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)+" of your characters on at one time.");
+				session.println("You may only have "+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)+" of your characters on at one time.");
 				continue;
 			}
 			playMe.loadedMOB=realMOB;
@@ -653,8 +653,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		
-		boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
-				 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
+		boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
+				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
 		String password = "";
 		if(!emailPassword)
 			while((password.length()==0)&&(!session.isStopped()))
@@ -677,8 +677,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		acct.setEmail(emailAddy);
 		acct.setLastIP(session.getAddress());
 		acct.setLastDateTime(System.currentTimeMillis());
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
+			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.Int.TRIALDAYS))));
 		
 		if(emailPassword)
 		{
@@ -687,11 +687,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				password+=(char)('a'+CMLib.dice().roll(1,26,-1));
 			acct.setPassword(password);
 			CMLib.database().DBCreateAccount(acct);
-			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 					  acct.accountName(),
 					  acct.accountName(),
 					  "Password for "+acct.accountName(),
-					  "Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+					  "Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
 			session.println("Your account has been created.  You will receive an email with your password shortly.");
 			try{Thread.sleep(2000);}catch(Exception e){}
 			session.stopSession(false,false,false);
@@ -713,14 +713,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected String promptEmailAddress(Session session, boolean[] emailConfirmation) throws java.io.IOException
 	{
-		if(CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("DISABLE"))
+		if(CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
 		{
 			return "";
 		}
-		boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
-				 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
+		boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
+				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
 
-		boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
+		boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
 		StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text();
 		try { emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);}catch(Exception ex){}
 		session.println(null,null,null,emailIntro.toString());
@@ -775,9 +775,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public void promptPlayerStats(int theme, MOB mob, Session session, int bonusPoints) throws IOException
 	{
-		if(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)>0)
+		if(CMProps.getIntVar(CMProps.Int.STARTSTAT)>0)
 		{
-			mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT));
+			mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.Int.STARTSTAT));
 			for(int i=0;i<bonusPoints;i++)
 			{
 				int randStat=CMLib.dice().roll(1, CharStats.CODES.BASE().length, -1);
@@ -791,10 +791,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 	
-			final boolean randomRoll = CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT) == 0;
+			final boolean randomRoll = CMProps.getIntVar(CMProps.Int.STARTSTAT) == 0;
 			int pointsLeft = getTotalStatPoints() + bonusPoints;
 			for(int i=0;i<CharStats.CODES.BASE().length;i++)
-				mob.baseCharStats().setStat(i,CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT));
+				mob.baseCharStats().setStat(i,CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
 			mob.recoverCharStats();
 			CharStats unmodifiedCT = (CharStats)mob.charStats().copyOf();
 			List<String> validStats = new ArrayList<String>(CharStats.CODES.BASE().length);
@@ -814,7 +814,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					
 				if(!randomRoll || (qualifyingClassListV.size()>0)||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 				{
-					int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+					int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 					StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
 					CharStats CT=mob.baseCharStats();
 					int total=0;
@@ -824,12 +824,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						statstr.append(CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
 								+": "+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
 					}
-					statstr.append(CMStrings.padRight("STATS TOTAL",15)+": "+total+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
+					statstr.append(CMStrings.padRight("STATS TOTAL",15)+": "+total+"/"+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*6));
 					session.println(statstr.toString());
 					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 					&&(!mob.baseCharStats().getMyRace().classless())
 					&&(randomRoll || qualifyingClassListV.size()>0)
-					&&((qualifyingClassListV.size()!=1)||(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))))
+					&&((qualifyingClassListV.size()!=1)||(!CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-"))))
 						session.println("\n\rThis would qualify you for ^H"+buildQualifyingClassList(qualifyingClassListV,"and")+"^N.");
 
 					if(randomRoll)
@@ -926,7 +926,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 							{
 								continue;
 							}
-							final String list = CMProps.getVar(CMProps.SYSTEM_STATCOSTS);
+							final String list = CMProps.getVar(CMProps.Str.STATCOSTS);
 							long[][] costs=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(list.trim(),true), 1, 0, 101);
 							int pointsCost=0;
 							int curStatValue=CT.getStat(statCode);
@@ -1232,7 +1232,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected void getUniversalStartingItems(int theme, MOB mob)
 	{
-		List<String> newItemPartsV = CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_STARTINGITEMS), true);
+		List<String> newItemPartsV = CMParms.parseCommas(CMProps.getVar(CMProps.Str.STARTINGITEMS), true);
 		for(String item : newItemPartsV)
 		{
 			item=item.trim();
@@ -1291,8 +1291,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText); }catch(Exception ex){}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
-		boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
-							 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
+		boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
+							 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
 
 		String password=(acct!=null)?acct.getPasswordStr():"";
 		if((!emailPassword)&&(password.length()==0))
@@ -1372,7 +1372,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 			executeScript(mob,extraScripts.get("ANSI"));
 			
-			int themeCode=CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME);
+			int themeCode=CMProps.getIntVar(CMProps.Int.MUDTHEME);
 			int theme=Area.THEME_FANTASY;
 			switch(themeCode)
 			{
@@ -1416,17 +1416,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			Race newRace=promptPlayerRace(theme, mob, session);
 			mob.baseCharStats().setMyRace(newRace);
 
-			mob.baseState().setHitPoints(CMProps.getIntVar(CMProps.SYSTEMI_STARTHP));
-			mob.baseState().setMovement(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE));
-			mob.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
+			mob.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
+			mob.baseState().setMovement(CMProps.getIntVar(CMProps.Int.STARTMOVE));
+			mob.baseState().setMana(CMProps.getIntVar(CMProps.Int.STARTMANA));
 	
 			executeScript(mob,extraScripts.get("RACE"));
 			
 			promptGender(theme, mob, session);
 			executeScript(mob,extraScripts.get("GENDER"));
 			
-			if((CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null)&&(acct==null))
-				mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+			if((CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))&&(mob.playerStats()!=null)&&(acct==null))
+				mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.Int.TRIALDAYS))));
 			
 			promptPlayerStats(theme, mob, session, 0);
 			executeScript(mob,extraScripts.get("STATS"));
@@ -1475,11 +1475,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					password=CMLib.encoder().generateRandomPassword();
 					mob.playerStats().setPassword(password);
 					CMLib.database().DBUpdatePassword(mob.Name(),mob.playerStats().getPasswordStr());
-					CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+					CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 							  mob.Name(),
 							  mob.Name(),
 							  "Password for "+mob.Name(),
-							  "Your password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
+							  "Your password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
 					session.println("Your character has been created.  You will receive an email with your password shortly.");
 					try{Thread.sleep(2000);}catch(Exception e){}
 					if(mob==session.mob())
@@ -1502,10 +1502,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				Log.sysOut("Created user: "+mob.Name());
 				CMProps.addNewUserByIP(session.getAddress());
 				notifyFriends(mob,"^X"+mob.Name()+" has just been created.^.^?");
-				if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
+				if((CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
 				&&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
-				if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
+				if((CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
 				&&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 					mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 				CMLib.database().DBUpdatePlayer(mob);
@@ -1614,7 +1614,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		rpt.append("\t"); rpt.append(Integer.toString(CMLib.sessions().getCountLocalOnline()));
 		rpt.append("\r\n"); rpt.append("STATUS");
 		rpt.append("\t");
-		switch(CMProps.getIntVar(CMProps.SYSTEMI_MUDSTATE))
+		switch(CMProps.getIntVar(CMProps.Int.MUDSTATE))
 		{
 		case 0: rpt.append("Alpha"); break; 
 		case 1: rpt.append("Closed Beta"); break; 
@@ -1656,9 +1656,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		rpt.append("\r\n"); rpt.append("FAMILY");
 		rpt.append("\t"); rpt.append("CoffeeMUD");
 		rpt.append("\r\n"); rpt.append("EMAIL");
-		rpt.append("\t"); rpt.append(CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL));
+		rpt.append("\t"); rpt.append(CMProps.getVar(CMProps.Str.ADMINEMAIL));
 		rpt.append("\r\n"); rpt.append("CODEBASE");
-		rpt.append("\t"); rpt.append(("CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER)));
+		rpt.append("\t"); rpt.append(("CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER)));
 		rpt.append("\r\n"); rpt.append("AREAS");
 		rpt.append("\t"); rpt.append(Integer.toString(CMLib.map().numAreas()));
 		rpt.append("\r\n"); rpt.append("HELPFILES");
@@ -1672,12 +1672,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		rpt.append("\r\n"); rpt.append("CLASSES");
 		int numClasses = 0;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
-			numClasses=CMLib.login().classQualifies(null, CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)&0x07).size();
+			numClasses=CMLib.login().classQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
 		rpt.append("\t"); rpt.append(Long.toString(numClasses));
 		rpt.append("\r\n"); rpt.append("RACES");
 		int numRaces = 0;
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
-			numRaces=CMLib.login().raceQualifies(null, CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)&0x07).size();
+			numRaces=CMLib.login().raceQualifies(null, CMProps.getIntVar(CMProps.Int.MUDTHEME)&0x07).size();
 		rpt.append("\t"); rpt.append(Long.toString(numRaces));
 		rpt.append("\r\n"); rpt.append("SKILLS");
 		rpt.append("\t"); rpt.append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
@@ -1714,7 +1714,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					loginObj.state=LoginState.START;
 					return LoginResult.NO_LOGIN;
 				}
-				if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 					session.print("\n\raccount name: ");
 				else
 					session.print("\n\rname: ");
@@ -1749,7 +1749,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					loginObj.wizi=true;
 				}
 				loginObj.login = CMStrings.capitalizeAndLower(loginObj.login);
-				if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				{
 					loginObj.acct = CMLib.players().getLoadAccount(loginObj.login);
 					if(loginObj.acct!=null)
@@ -1834,9 +1834,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				if(loginObj.player==null)
 				{
-					if(newCharactersAllowed(loginObj.login,session,!(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)))
+					if(newCharactersAllowed(loginObj.login,session,!(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)))
 					{
-						if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+						if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 						{
 							session.print("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?");
 							loginObj.state=LoginState.CREATE_ACCOUNT_CONFIRM;
@@ -1940,9 +1940,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					&&(loginObj.player.email.length()>0)
 					&&(loginObj.player.email.indexOf('@')>0)
 					&&(loginObj.attempt>2)
-					&&(CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).length()>0))
+					&&(CMProps.getVar(CMProps.Str.MUDDOMAIN).length()>0))
 					{
-						if(CMProps.getBoolVar(CMProps.SYSTEMB_HASHPASSWORDS))
+						if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
 							session.print("Would you like you have a new password generated and e-mailed to you (y/N)? ");
 						else
 							session.print("Would you like your password e-mailed to you (y/N)? ");
@@ -1960,7 +1960,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(loginObj.lastInput.toUpperCase().startsWith("Y"))
 				{
 					String password=loginObj.player.password;
-					if(CMProps.getBoolVar(CMProps.SYSTEMB_HASHPASSWORDS))
+					if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
 					{
 						MOB playerM=CMLib.players().getLoadPlayer(loginObj.player.name);
 						if((playerM!=null)&&(playerM.playerStats()!=null))
@@ -1971,12 +1971,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 							CMLib.database().DBUpdatePassword(loginObj.player.name, loginObj.player.password);
 						}
 					}
-					if(CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),
-						"passwords@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
-						"noreply@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase(),
+					if(CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),
+						"passwords@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
+						"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
 						loginObj.player.email,
 						"Password for "+loginObj.player.name,
-						"Your password for "+loginObj.player.name+" at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" is: '"+password+"'."))
+						"Your password for "+loginObj.player.name+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'."))
 						session.println("Email sent.\n\r");
 					else
 						session.println("Error sending email.\n\r");
@@ -2008,14 +2008,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		|| (!checkPlayerName && CMLib.players().accountExists(login)))
 			return NewCharNameCheckResult.BAD_USED_NAME;
 		else
-		if((CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)==0)
+		if((CMProps.getIntVar(CMProps.Int.MUDTHEME)==0)
 		||((CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS))
 			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, login))
 			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, ipAddress))))
 				return NewCharNameCheckResult.NO_NEW_LOGINS;
 		else
-		if((CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP)>0)
-		&&(CMProps.getCountNewUserByIP(ipAddress)>=CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP))
+		if((CMProps.getIntVar(CMProps.Int.MAXNEWPERIP)>0)
+		&&(CMProps.getCountNewUserByIP(ipAddress)>=CMProps.getIntVar(CMProps.Int.MAXNEWPERIP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXNEWPERIP))
 		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, login))
 		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, ipAddress)))
@@ -2050,7 +2050,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public void setGlobalBitmaps(MOB mob)
 	{
 		if(mob==null) return;
-		Vector<String> defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_DEFAULTPLAYERFLAGS).toUpperCase(),true);
+		Vector<String> defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.DEFAULTPLAYERFLAGS).toUpperCase(),true);
 		for(int v=0;v<defaultFlagsV.size();v++)
 		{
 			int x=CMParms.indexOf(MOB.AUTODESC,defaultFlagsV.elementAt(v));
@@ -2069,8 +2069,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					numAtAddress++;
 		}catch(Exception e){}
 
-		if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP)>0)
-		&&(numAtAddress>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP))
+		if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP)>0)
+		&&(numAtAddress>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERIP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERIP))
 		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_CONNS, session.getAddress()))
 		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, login)))
@@ -2160,7 +2160,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		PlayerStats pstats = mob.playerStats();
 		if(((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
-		&&(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION")))
+		&&(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION")))
 		{
 			Command C=CMClass.getCommand("Email");
 			if(C!=null)
@@ -2182,10 +2182,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(mob.playerStats()!=null)
 			mob.playerStats().setLastIP(session.getAddress());
 		notifyFriends(mob,"^X"+mob.Name()+" has logged on.^.^?");
-		if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
+		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
 		&&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 			mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
-		if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
+		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
 		&&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 			mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
@@ -2332,8 +2332,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public int getTrainingCost(MOB mob, int abilityCode, boolean quiet)
 	{
 		int curStat=mob.baseCharStats().getRacialStat(mob, abilityCode);
-		final String list = CMProps.getVar(CMProps.SYSTEM_STATCOSTS);
-		final int maxStat = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(abilityCode));
+		final String list = CMProps.getVar(CMProps.Str.STATCOSTS);
+		final int maxStat = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)+mob.charStats().getStat(CharStats.CODES.toMAXBASE(abilityCode));
 		long[][] costs=CMLib.utensils().compileConditionalRange(CMParms.parseCommas(list.trim(),true), 1, 0, maxStat+10);
 		int curStatIndex=curStat;
 		while((curStatIndex>0)

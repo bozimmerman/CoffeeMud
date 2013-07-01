@@ -147,7 +147,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 					I.setRawLogicalAnd(true);
 					I.addNonUninvokableEffect((Ability)this.copyOf());
 					Behavior B=CMClass.getBehavior("Decay");
-					long thetime=(long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*3;
+					long thetime=(long)CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*3;
 					B.setParms("notrigger=1 answer=dissolves! min="+thetime+" max="+thetime+" chance=100");
 					I.addBehavior(B);
 				}

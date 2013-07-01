@@ -239,7 +239,7 @@ public class StdBook extends StdItem
 					selections.addElement(selection);
 				}
 			}
-			int numToAdd=CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
+			int numToAdd=CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 			if((numToAdd==0)||(all)) numToAdd=Integer.MAX_VALUE;
 			for(int v=selections.size()-1;v>=0;v--)
 			{

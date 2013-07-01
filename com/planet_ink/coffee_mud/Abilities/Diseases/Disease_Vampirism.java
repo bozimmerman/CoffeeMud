@@ -42,8 +42,8 @@ public class Disease_Vampirism extends Disease
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*6;}
-	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);}
+	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*6;}
+	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);}
 	protected String DISEASE_DONE(){return "Your vampirism lifts.";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) pale and cold.^?";}
 	protected String DISEASE_AFFECT(){return "";}

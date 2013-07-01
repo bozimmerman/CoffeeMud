@@ -258,7 +258,7 @@ public class CMLib
 		if(code>=0)
 		{
 			if(l()==null) CMLib.initialize();
-			final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+			final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(), true);
 			if((!privacyV.contains(LIBRARY_DESCS[code])
 			&&(libs[MudHost.MAIN_HOST]!=l())))
 			{
@@ -310,7 +310,7 @@ public class CMLib
 	public static final void propertiesLoaded() 
 	{
 		final CMLib lib=l();
-		final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+		final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(), true);
 		for(int l=0;l<lib.libraries.length;l++)
 			if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{}
@@ -327,7 +327,7 @@ public class CMLib
 	public static final void activateLibraries() 
 	{
 		final CMLib lib=l();
-		final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+		final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(), true);
 		for(int l=0;l<lib.libraries.length;l++)
 			if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{

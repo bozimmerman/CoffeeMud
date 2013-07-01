@@ -1419,7 +1419,7 @@ public class CMClass extends ClassLoader
 	public final void intializeClasses()
 	{
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		final Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+		final Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true);
 		for(CMObjectType o : CMObjectType.values())
 			if((tCode==MudHost.MAIN_HOST)||(privacyV.contains(o.toString())))
 			{
@@ -1870,7 +1870,7 @@ public class CMClass extends ClassLoader
 		while((tCode!=MudHost.MAIN_HOST)&&(!classLoaderSync[0]))
 		{try{Thread.sleep(500);}catch(Exception e){ break;}}
 
-		final Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+		final Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true);
 
 		try
 		{
@@ -2056,7 +2056,7 @@ public class CMClass extends ClassLoader
 
 					c.abilities.sort();
 
-					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading generic abilities");
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: reading generic abilities");
 					final List<DatabaseEngine.AckRecord> genAbilities=CMLib.database().DBReadAbilities();
 					if(genAbilities.size()>0)
 					{
@@ -2181,7 +2181,7 @@ public class CMClass extends ClassLoader
 				Race R=c.races.elementAt(r);
 				R.copyOf();
 			}
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genRaces");
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: reading genRaces");
 			final List<DatabaseEngine.AckRecord> genRaces=CMLib.database().DBReadRaces();
 			if(genRaces.size()>0)
 			{
@@ -2202,7 +2202,7 @@ public class CMClass extends ClassLoader
 		}
 		if((tCode==MudHost.MAIN_HOST)||(privacyV.contains("CHARCLASS")))
 		{
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genClasses");
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: reading genClasses");
 			final List<DatabaseEngine.AckRecord> genClasses=CMLib.database().DBReadClasses();
 			if(genClasses.size()>0)
 			{
@@ -2221,7 +2221,7 @@ public class CMClass extends ClassLoader
 					Log.sysOut(Thread.currentThread().getName(),"GenClasses loaded : "+loaded);
 			}
 		}
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: initializing classes");
+		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: initializing classes");
 		c.intializeClasses();
 		if((tCode==MudHost.MAIN_HOST)||(privacyV.contains("EXPERTISES")))
 		{

@@ -82,7 +82,7 @@ public class DBInterface implements DatabaseEngine
 	}
 	public CMObject newInstance()
 	{
-		return new DBInterface(DB, CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true));
+		return new DBInterface(DB, CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true));
 	}
 	public void initializeClass(){}
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}

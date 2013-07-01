@@ -166,7 +166,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return false;
 		return engine().tick(ticking, tickID);
 	}

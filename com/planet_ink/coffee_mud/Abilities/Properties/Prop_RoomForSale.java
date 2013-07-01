@@ -376,7 +376,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						if(I.expirationDate()==0)
 						{
 							long now=System.currentTimeMillis();
-							now+=(TimeManager.MILI_MINUTE*CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+							now+=(TimeManager.MILI_MINUTE*CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_DROP));
 							I.setExpirationDate(now);
 						}
 						if((I.phyStats().rejuv()!=PhyStats.NO_REJUV)
@@ -502,7 +502,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public static boolean doRentalProperty(Area A, String ID, String owner, int rent)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return false;
 		int month=A.getTimeObj().getMonth();
 		int day=A.getTimeObj().getDayOfMonth();
@@ -616,7 +616,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				R=CMLib.map().getRoom(R);
 				lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums);
 				if((lastDayDone!=R.getArea().getTimeObj().getDayOfMonth())
-				&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
+				&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 				{
 					lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
 					if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))

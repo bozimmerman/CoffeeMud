@@ -99,7 +99,7 @@ public class Score extends Affect
 			msg.append(classList.toString()+".\n\r");
 		}
 
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
+		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
 			msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
 
 		String genderName="neuter";
@@ -173,8 +173,8 @@ public class Score extends Affect
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
 			{
-				if(((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
-					&&(mob.basePhyStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
+				if(((CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)>0)
+					&&(mob.basePhyStats().level()>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)))
 				||(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 				||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass())))
 					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, ^!"+(mob.getExpNeededDelevel())+"^? over your last level.\n\r");

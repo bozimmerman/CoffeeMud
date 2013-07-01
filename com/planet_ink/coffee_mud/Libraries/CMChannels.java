@@ -461,7 +461,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		
 		final PlayerStats pStats=mob.playerStats();
 		
-		message=CMProps.applyINIFilter(message,CMProps.SYSTEM_CHANNELFILTER);
+		message=CMProps.applyINIFilter(message,CMProps.Str.CHANNELFILTER);
 		CMChannel chan=getChannel(channelInt);
 		Set<ChannelFlag> flags=chan.flags;
 		channelName=chan.name;
@@ -491,7 +491,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				msg=S.makeChannelMsg(mob,channelInt,channelName,V,false);
 			else
 			{
-				msgstr=CMProps.applyINIFilter(msgstr,CMProps.SYSTEM_EMOTEFILTER);
+				msgstr=CMProps.applyINIFilter(msgstr,CMProps.Str.EMOTEFILTER);
 				if(msgstr.trim().startsWith("'")||msgstr.trim().startsWith("`"))
 					msgstr=msgstr.trim();
 				else

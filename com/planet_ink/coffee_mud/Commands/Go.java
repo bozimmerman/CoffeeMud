@@ -175,7 +175,7 @@ public class Go extends StdCommand
 	}
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
-		double cost=CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);
+		double cost=CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),100.0);
 		if((mob!=null)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN)))
 			cost /= 4.0;
 		return CMProps.getActionCost(ID(), cost);

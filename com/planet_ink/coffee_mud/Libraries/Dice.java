@@ -46,13 +46,13 @@ public class Dice extends StdLibrary implements DiceLibrary
 	public Dice()
 	{
 		super();
-		baseNpcHitpointsFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));
+		baseNpcHitpointsFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_NPCHITPOINTS));
 		randomizer = new Random(System.currentTimeMillis());
 	}
 	
 	public boolean activate()
 	{
-		baseNpcHitpointsFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));
+		baseNpcHitpointsFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_NPCHITPOINTS));
 		return super.activate();
 	}
 	

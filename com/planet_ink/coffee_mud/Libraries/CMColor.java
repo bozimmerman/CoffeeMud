@@ -201,7 +201,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			htlookup[COLORCODE_MOVES]=HTTAG_LIGHTCYAN;
 			htlookup[COLORCODE_UNEXPDIRECTION]=mixHTMLCodes(HTTAG_CYAN,HTTAG_BGBLUE);
 			htlookup[COLORCODE_UNEXPDOORDESC]=HTTAG_LIGHTBLUE;
-			Vector<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_COLORSCHEME),true);
+			Vector<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.Str.COLORSCHEME),true);
 			for(int i=0;i<schemeSettings.size();i++)
 			{
 				String s=schemeSettings.elementAt(i);
@@ -310,7 +310,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			clookup[COLORCODE_MOVES]=COLOR_LIGHTCYAN;
 			clookup[COLORCODE_UNEXPDIRECTION]=mixColorCodes(COLOR_CYAN,COLOR_BGBLUE);
 			clookup[COLORCODE_UNEXPDOORDESC]=COLOR_LIGHTBLUE;
-			Vector<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_COLORSCHEME),true);
+			Vector<String> schemeSettings=CMParms.parseCommas(CMProps.getVar(CMProps.Str.COLORSCHEME),true);
 			for(int i=0;i<schemeSettings.size();i++)
 			{
 				String s=schemeSettings.elementAt(i);

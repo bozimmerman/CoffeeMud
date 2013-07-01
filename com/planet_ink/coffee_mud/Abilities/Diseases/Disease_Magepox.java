@@ -42,7 +42,7 @@ public class Disease_Magepox extends Disease
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY );}
+	protected int DISEASE_TICKS(){return CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );}
 	protected int DISEASE_DELAY(){return 15;}
 	protected String DISEASE_DONE(){return "Your magepox clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with the Magepox.^?";}

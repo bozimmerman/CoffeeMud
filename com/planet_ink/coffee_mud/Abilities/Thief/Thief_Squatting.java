@@ -192,7 +192,7 @@ public class Thief_Squatting extends ThiefSkill
 			failed=false;
 			room=mob.location();
 			title=T;
-			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH)));
+			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)));
 			if(warnMOB!=null)
 				warnMOB.tell("You've heard a rumor that someone is squatting on "+T.landOwner()+"'s property.");
 		}

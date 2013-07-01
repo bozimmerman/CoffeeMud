@@ -104,7 +104,7 @@ public class Dragon extends StdMOB
 	{
 		// ===== set the parameter stuff		DragonAge() = ageValue;
 
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
 		if((DragonAge()==birthAge)&&(DragonColor()==birthColor))
 			return;

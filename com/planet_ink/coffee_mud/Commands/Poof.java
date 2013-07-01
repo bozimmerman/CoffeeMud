@@ -51,7 +51,7 @@ public class Poof extends StdCommand
 		throws java.io.IOException
 	{
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		boolean ok=false;
 		while((!ok)&&(mob.playerStats()!=null))

@@ -44,7 +44,7 @@ public class Expire extends StdCommand
 		MOB M=null;
 		commands.removeElementAt(0);
 		if(commands.size()<1) {
-			if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				mob.tell("You must use the format EXPIRE [ACCOUNT NAME] or EXPIRE [ACCOUNT NAME] [NUMBER OF DAYS]");
 			else
 				mob.tell("You must use the format EXPIRE [PLAYER NAME] or EXPIRE [PLAYER NAME] [NUMBER OF DAYS]");
@@ -54,7 +54,7 @@ public class Expire extends StdCommand
 		if(commands.size()==1)
 		{
 			String playerName=CMStrings.capitalizeAndLower((String)commands.elementAt(0));
-			if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				stats = CMLib.players().getLoadAccount(playerName);
 			else
 			if(CMLib.players().playerExists(playerName))
@@ -76,7 +76,7 @@ public class Expire extends StdCommand
 		{
 			long days=CMath.s_long((String)commands.elementAt(1))*1000*60*60*24;
 			String playerName=CMStrings.capitalizeAndLower((String)commands.elementAt(0));
-			if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				stats = CMLib.players().getLoadAccount(playerName);
 			else
 			if(CMLib.players().playerExists(playerName))

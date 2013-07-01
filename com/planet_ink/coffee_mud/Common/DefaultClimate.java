@@ -149,7 +149,7 @@ public class DefaultClimate implements Climate
 	public String weatherDescription(Room room)
 	{
 		if(!CMLib.map().hasASky(room))
-			return CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_NONE, 0);
+			return CMProps.getListFileValue(CMProps.ListFile.WEATHER_NONE, 0);
 		return getWeatherDescription(room.getArea());
 	}
 	public boolean canSeeTheMoon(Room room, Ability butNotA)
@@ -209,7 +209,7 @@ public class DefaultClimate implements Climate
 	protected String getWeatherStop(int weatherCode)
 	{
 		if((weatherCode>=0)&&(weatherCode<Climate.NUM_WEATHER))
-			return CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_ENDS, weatherCode);
+			return CMProps.getListFileValue(CMProps.ListFile.WEATHER_ENDS, weatherCode);
 		return "";
 	}
 
@@ -386,26 +386,28 @@ public class DefaultClimate implements Climate
 		StringBuffer desc=new StringBuffer("");
 		if((weather<0)||(weather>=Climate.NUM_WEATHER))
 			return "";
+		final int listFileOrd = CMProps.ListFile.WEATHER_CLEAR.ordinal() + weather;
+		final CMProps.ListFile listFileEnum = CMProps.ListFile.values()[listFileOrd];
 		final String prefix;
 		//#    NORMAL, WET, COLD (WINTER), HOT (SUMMER), DRY
 		if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
-			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR + weather, 2);
+			prefix=CMProps.getListFileValue(listFileEnum, 2);
 		else
 		if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
-			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 3);
+			prefix=CMProps.getListFileValue(listFileEnum, 3);
 		else
 		if((A.climateType()&Area.CLIMASK_WET)>0)
-			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 1);
+			prefix=CMProps.getListFileValue(listFileEnum, 1);
 		else
 		if((A.climateType()&Area.CLIMASK_DRY)>0)
-			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 4);
+			prefix=CMProps.getListFileValue(listFileEnum, 4);
 		else
-			prefix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 0);
+			prefix=CMProps.getListFileValue(listFileEnum, 0);
 		final String suffix;
 		if((A.climateType()&Area.CLIMATE_WINDY)>0)
-			suffix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 5);
+			suffix=CMProps.getListFileValue(listFileEnum, 5);
 		else
-			suffix=CMProps.getListFileValue(CMProps.SYSTEMLF_WEATHER_CLEAR +weather, 6);
+			suffix=CMProps.getListFileValue(listFileEnum, 6);
 		desc.append((suffix.trim().length()>0) ? prefix + " " + suffix : prefix);
 		switch(weather)
 		{

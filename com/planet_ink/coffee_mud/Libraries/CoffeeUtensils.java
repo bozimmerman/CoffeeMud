@@ -657,10 +657,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		if((mob==null)||(!mob.isMonster())) 
 			return noLootPolicy;
-		final String lootPolicyStr=CMProps.getVar(CMProps.SYSTEM_ITEMLOOTPOLICY);
+		final String lootPolicyStr=CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY);
 		if((lootPolicy==null)||(lastLootPolicyHash!=lootPolicyStr.hashCode()))
 		{
-			Vector<String> lootPolicies=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_ITEMLOOTPOLICY),true);
+			Vector<String> lootPolicies=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY),true);
 			TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
 			for(int p=0;p<lootPolicies.size();p++)
 			{
@@ -938,7 +938,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING));
 			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 			corpseRoom.recoverRoomStats();
-			Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
+			Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.Str.PLAYERDEATH));
 			for(int w=0;w<whatsToDo.size();w++)
 			{
 				String whatToDo=whatsToDo.elementAt(w);
@@ -1693,7 +1693,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 			break;
 		case SERVER_ID:
-			buf.write(CMProps.getVar(CMProps.SYSTEM_MUDNAME).getBytes(Session.MSDP_CHARSET));
+			buf.write(CMProps.getVar(CMProps.Str.MUDNAME).getBytes(Session.MSDP_CHARSET));
 			break;
 		case SERVER_TIME:
 			buf.write(CMLib.time().date2APTimeString(System.currentTimeMillis()).getBytes(Session.MSDP_CHARSET));

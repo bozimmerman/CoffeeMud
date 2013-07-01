@@ -67,7 +67,7 @@ public class ClanCreate extends StdCommand
 		final Session session=mob.session();
 		if(session!=null)
 		{
-			final int cost=CMProps.getIntVar(CMProps.SYSTEMI_CLANCOST);
+			final int cost=CMProps.getIntVar(CMProps.Int.CLANCOST);
 			if(cost>0)
 			{
 				if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)<(cost))

@@ -92,7 +92,7 @@ public class Prayer_Rot extends Prayer
 						newTime=
 						System.currentTimeMillis()+(
 						   CMProps.getTickMillis()
-							*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
+							*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)
 						  );
 				break;
 				}
@@ -101,7 +101,7 @@ public class Prayer_Rot extends Prayer
 						newTime=
 						System.currentTimeMillis()+(
 						CMProps.getTickMillis()
-						*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
+						*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)
 						*5);
 				break;
 				}
@@ -114,13 +114,13 @@ public class Prayer_Rot extends Prayer
 					newTime=
 						System.currentTimeMillis()+(
 						CMProps.getTickMillis()
-						*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+						*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
 					break;
 				case RawMaterial.RESOURCE_MILK:
 					newTime=
 						System.currentTimeMillis()+(
 						CMProps.getTickMillis()
-						*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
+						*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)
 						*5);
 					break;
 				}
@@ -131,13 +131,13 @@ public class Prayer_Rot extends Prayer
 				newTime=
 					System.currentTimeMillis()+(
 					CMProps.getTickMillis()
-					*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+					*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
 				break;
 			case RawMaterial.RESOURCE_MILK:
 				newTime=
 					System.currentTimeMillis()+(
 					CMProps.getTickMillis()
-					*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
+					*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)
 					*5);
 				break;
 			case RawMaterial.RESOURCE_HERBS:

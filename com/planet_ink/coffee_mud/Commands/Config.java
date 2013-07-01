@@ -46,7 +46,7 @@ public class Config extends StdCommand
 		{
 			if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
 				continue;
-			if((MOB.AUTODESC[i].equalsIgnoreCase("AUTOMAP"))&&(CMProps.getIntVar(CMProps.SYSTEMI_AWARERANGE)<=0))
+			if((MOB.AUTODESC[i].equalsIgnoreCase("AUTOMAP"))&&(CMProps.getIntVar(CMProps.Int.AWARERANGE)<=0))
 				continue;
 			
 			msg.append(CMStrings.padRight(MOB.AUTODESC[i],15)+": ");

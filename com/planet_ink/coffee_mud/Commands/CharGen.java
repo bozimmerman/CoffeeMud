@@ -167,7 +167,7 @@ public class CharGen extends StdCommand
 		mob.recoverMaxState();
 		mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 
-		int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+		int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 		for(int lvl=1;lvl<level;lvl++)
 		{
 			if((lvl % 3)==0)
@@ -1002,7 +1002,7 @@ public class CharGen extends StdCommand
 		{
 			try
 			{
-				level=CMath.s_int(mob.session().prompt("Enter a level (1-"+CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)+"): "));
+				level=CMath.s_int(mob.session().prompt("Enter a level (1-"+CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+"): "));
 			}
 			catch(Exception e){return false;}
 			if(level<=0)

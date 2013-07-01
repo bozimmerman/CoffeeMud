@@ -161,7 +161,7 @@ public class Prayer_HolyDay extends Prayer
 						godName="the gods";
 					R.showHappens(CMMsg.MSG_OK_VISUAL,"A holy day of "+godName+" has begun!");
 				}
-				beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+				beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
 			}
 		}
 		else

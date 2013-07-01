@@ -575,7 +575,7 @@ public class Merge extends StdCommand
 		
 		String[] statCodes = dbM.getStatCodes();
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		boolean ok=false;
 		boolean didSomething=false;

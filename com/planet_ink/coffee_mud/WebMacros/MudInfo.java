@@ -41,18 +41,18 @@ public class MudInfo extends StdWebMacro
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("DOMAIN"))
-			return CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN);
+			return CMProps.getVar(CMProps.Str.MUDDOMAIN);
 		if(parms.containsKey("EMAILOK"))
-			return ""+(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0);
+			return ""+(CMProps.getVar(CMProps.Str.MAILBOX).length()>0);
 		if(parms.containsKey("MAILBOX"))
-			return CMProps.getVar(CMProps.SYSTEM_MAILBOX);
+			return CMProps.getVar(CMProps.Str.MAILBOX);
 		if(parms.containsKey("NAME"))
-			return CMProps.getVar(CMProps.SYSTEM_MUDNAME);
+			return CMProps.getVar(CMProps.Str.MUDNAME);
 		if(parms.containsKey("CHARSET"))
-			return CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT);
+			return CMProps.getVar(CMProps.Str.CHARSETOUTPUT);
 		if(parms.containsKey("PORT"))
 		{
-			String ports=CMProps.getVar(CMProps.SYSTEM_MUDPORTS).trim();
+			String ports=CMProps.getVar(CMProps.Str.MUDPORTS).trim();
 			int x=ports.indexOf(' ');
 			if(x<0)
 				return clearWebMacros(ports);

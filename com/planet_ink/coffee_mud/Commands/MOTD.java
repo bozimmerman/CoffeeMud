@@ -191,9 +191,9 @@ public class MOTD extends StdCommand
 					buf.append("\n\r--------------------------------------\n\r");
 				
 				if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
-				&&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
+				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
-					List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
+					List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.Str.MAILBOX));
 					int mymsgs=0;
 					for(int num=0;num<msgs.size();num++)
 					{

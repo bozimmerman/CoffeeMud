@@ -705,12 +705,12 @@ public class DefaultCharStats implements CharStats
 	{
 		setStat(abilityCode,value);
 		if(CharStats.CODES.isBASE(abilityCode))
-			setStat(CharStats.CODES.toMAXBASE(abilityCode),value-CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT));
+			setStat(CharStats.CODES.toMAXBASE(abilityCode),value-CMProps.getIntVar(CMProps.Int.BASEMAXSTAT));
 	}
 	
 	public int getMaxStat(int abilityCode)
 	{
-		int baseMax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+		int baseMax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 		return baseMax + getStat(CharStats.CODES.toMAXBASE(abilityCode));
 	}
 	
@@ -729,7 +729,7 @@ public class DefaultCharStats implements CharStats
 			setPermanentStat(abilityCode,racialMax);
 		else
 		{
-			final int baseMax=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+			final int baseMax=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 			int currMax=getStat(CharStats.CODES.toMAXBASE(abilityCode))+baseMax;
 			if(currMax<=0) currMax=1;
 			int curStat=getStat(abilityCode);

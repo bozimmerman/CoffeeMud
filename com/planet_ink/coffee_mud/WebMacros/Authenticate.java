@@ -57,7 +57,7 @@ public class Authenticate extends StdWebMacro
 		String login=getLogin(httpReq);
 		if((parms!=null)&&(parms.containsKey("SETPLAYER")))
 			httpReq.addFakeUrlParameter("PLAYER",login);
-		if((parms!=null)&&(parms.containsKey("SETACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0))
+		if((parms!=null)&&(parms.containsKey("SETACCOUNT"))&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0))
 		{
 			MOB mob=getAuthenticatedMob(httpReq);
 			if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
@@ -80,15 +80,15 @@ public class Authenticate extends StdWebMacro
 			{
 				for(int i=0;i<256;i++)
 					FILTER[i]=filterc[i % filterc.length];
-				String domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN);
+				String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN);
 				if(domain.length()>0)
 					for(int i=0;i<256;i++)
 						FILTER[i]^=domain.charAt(i % domain.length());
-				String name=CMProps.getVar(CMProps.SYSTEM_MUDNAME);
+				String name=CMProps.getVar(CMProps.Str.MUDNAME);
 				if(name.length()>0)
 					for(int i=0;i<256;i++)
 						FILTER[i]^=name.charAt(i % name.length());
-				String email=CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL);
+				String email=CMProps.getVar(CMProps.Str.ADMINEMAIL);
 				if(email.length()>0)
 					for(int i=0;i<256;i++)
 						FILTER[i]^=email.charAt(i % email.length());
@@ -166,7 +166,7 @@ public class Authenticate extends StdWebMacro
 				mob.playerStats().setLastDateTime(System.currentTimeMillis());
 			return true;
 		}
-		if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0)
+		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0)
 		{
 			final PlayerAccount acct=CMLib.players().getLoadAccount(login);
 			if((acct!=null)
@@ -198,7 +198,7 @@ public class Authenticate extends StdWebMacro
 			mob=CMLib.players().getLoadPlayer(login);
 			if((mob==null)||(mob.playerStats()==null))
 			{
-				if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0)
+				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0)
 				{
 					PlayerAccount acct=CMLib.players().getLoadAccount(login);
 					if((acct!=null)
@@ -230,7 +230,7 @@ public class Authenticate extends StdWebMacro
 		String login=httpReq.getUrlParameter("LOGIN");
 		if((login!=null)&&(login.length()>0))
 		{
-			if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0)
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0)
 			{
 				PlayerAccount acct = CMLib.players().getLoadAccount(login);
 				if(acct != null)

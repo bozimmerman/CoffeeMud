@@ -88,7 +88,7 @@ public class JournalInfo extends StdWebMacro
 			{
 				JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
 				long pageDate = CMath.s_long(page);
-				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
+				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
 				msgs = new Vector<JournalsLibrary.JournalEntry>();
 				if((pageDate <= 0) 
@@ -168,7 +168,7 @@ public class JournalInfo extends StdWebMacro
 			return ""+System.currentTimeMillis();
 		
 		if(parms.containsKey("JOURNALLIMIT"))
-			return ""+CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
+			return ""+CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 		
 		if(parms.containsKey("UNPAGEDCOUNT"))
 		{
@@ -369,7 +369,7 @@ public class JournalInfo extends StdWebMacro
 			}
 			if(parms.containsKey("EMAILALLOWED"))
 				return ""+((entry.from.length()>0)
-						&&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
+						&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
 		}
 		return "";
 	}

@@ -391,7 +391,7 @@ public class DefaultClan implements Clan
 			return overrideMinClanMembers.intValue();
 		if(govt().getOverrideMinMembers()!=null)
 			return govt().getOverrideMinMembers().intValue();
-		return CMProps.getIntVar(CMProps.SYSTEMI_MINCLANMEMBERS);
+		return CMProps.getIntVar(CMProps.Int.MINCLANMEMBERS);
 	}
 	public void setMinClanMembers(int amt)
 	{
@@ -404,7 +404,7 @@ public class DefaultClan implements Clan
 		}
 		else
 		{
-			if(CMProps.getIntVar(CMProps.SYSTEMI_MINCLANMEMBERS)==amt)
+			if(CMProps.getIntVar(CMProps.Int.MINCLANMEMBERS)==amt)
 				return;
 			overrideMinClanMembers=Integer.valueOf(amt);
 		}
@@ -1148,7 +1148,7 @@ public class DefaultClan implements Clan
 		try{
 			List<FullMemberRecord> members=getFullMemberList();
 			int activeMembers=0;
-			long deathMilis=CMProps.getIntVar(CMProps.SYSTEMI_DAYSCLANDEATH)*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis();
+			long deathMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANDEATH)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 			for(FullMemberRecord member : members)
 			{
 				long lastLogin=member.timestamp;
@@ -1357,7 +1357,7 @@ public class DefaultClan implements Clan
 				Vector<ClanVote> votesToRemove=new Vector<ClanVote>();
 				long duration=govt().getMaxVoteDays();
 				if(duration<=0) duration=54;
-				duration=duration*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis();
+				duration=duration*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 				for(Enumeration<ClanVote> e=votes();e.hasMoreElements();)
 				{
 					ClanVote CV=e.nextElement();
@@ -1502,12 +1502,12 @@ public class DefaultClan implements Clan
 				String awardStr=null;
 				switch(t)
 				{
-				case Areas: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA); break;
-				case Points: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPCP); break;
-				case Experience: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP); break;
-				case PlayerKills: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPPK); break;
-				case Members: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPMB); break;
-				case MemberLevel: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPLVL); break;
+				case Areas: awardStr=CMProps.getVar(CMProps.Str.CLANTROPAREA); break;
+				case Points: awardStr=CMProps.getVar(CMProps.Str.CLANTROPCP); break;
+				case Experience: awardStr=CMProps.getVar(CMProps.Str.CLANTROPEXP); break;
+				case PlayerKills: awardStr=CMProps.getVar(CMProps.Str.CLANTROPPK); break;
+				case Members: awardStr=CMProps.getVar(CMProps.Str.CLANTROPMB); break;
+				case MemberLevel: awardStr=CMProps.getVar(CMProps.Str.CLANTROPLVL); break;
 				}
 				if(awardStr!=null)
 				{

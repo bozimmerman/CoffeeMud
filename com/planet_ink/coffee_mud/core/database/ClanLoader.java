@@ -45,7 +45,7 @@ public class ClanLoader
 
 	public void updateBootStatus(String loading)
 	{
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
+		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
 	}
 
 	public void DBRead()

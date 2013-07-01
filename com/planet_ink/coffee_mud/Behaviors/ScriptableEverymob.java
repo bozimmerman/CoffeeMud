@@ -85,7 +85,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	
 	private void giveEveryoneTheScript(Environmental forMe)
 	{
-		if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if((CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 		&&(!started))
 		{
 			started = true;

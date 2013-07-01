@@ -191,8 +191,8 @@ public class StdMOB implements MOB
 
 	public int getExpNeededLevel() 
 	{
-		if ((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL) > 0)
-		&& (CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL) <= basePhyStats().level()))
+		if ((CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL) > 0)
+		&& (CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL) <= basePhyStats().level()))
 			return Integer.MAX_VALUE;
 		if ((CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE)) 
 		|| (charStats().getCurrentClass().expless())
@@ -925,7 +925,7 @@ public class StdMOB implements MOB
 		if ((location != null) && (location.isInhabitant(this)))
 		{
 			location().delInhabitant(this);
-			if ((session() != null) && (!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
+			if ((session() != null) && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 				location().show(this, null, CMMsg.MSG_OK_ACTION, "<S-NAME> vanish(es) in a puff of smoke.");
 		}
 		if(playerStats!=null)
@@ -990,7 +990,7 @@ public class StdMOB implements MOB
 		amDead = false;
 		if ((miscText != null) && (resetStats) && (isGeneric()))
 		{
-			if (CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS) && (miscText instanceof byte[]))
+			if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS) && (miscText instanceof byte[]))
 				CMLib.coffeeMaker().resetGenMOB(this,
 						CMLib.coffeeMaker().getGenMOBTextUnpacked(this,
 								CMLib.encoder().decompressString((byte[]) miscText)));
@@ -1153,9 +1153,9 @@ public class StdMOB implements MOB
 			return true;
 		if (mob == this)
 			return true;
-		if (CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
+		if (CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
 			return true;
-		if (CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
+		if (CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
 			return false;
 		if (CMLib.clans().isAtClanWar(this, mob))
 			return true;
@@ -1408,7 +1408,7 @@ public class StdMOB implements MOB
 
 	public String displayName(MOB viewer) 
 	{
-		if (CMProps.getBoolVar(CMProps.SYSTEMB_INTRODUCTIONSYSTEM) && (playerStats() != null) && (viewer != null)
+		if (CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM) && (playerStats() != null) && (viewer != null)
 		&& (viewer.playerStats() != null) && (!viewer.playerStats().isIntroducedTo(Name())))
 			return CMLib.english().startWithAorAn(genericName()).toLowerCase();
 		return name();
@@ -1547,7 +1547,7 @@ public class StdMOB implements MOB
 			final byte[] descriptionBytes = (byte[]) description;
 			if (descriptionBytes.length == 0)
 				return "";
-			if (CMProps.getBoolVar(CMProps.SYSTEMB_MOBDCOMPRESS))
+			if (CMProps.getBoolVar(CMProps.Bool.MOBDCOMPRESS))
 				return CMLib.encoder().decompressString(descriptionBytes);
 			else
 				return CMStrings.bytesToStr(descriptionBytes);
@@ -1561,7 +1561,7 @@ public class StdMOB implements MOB
 		if (newDescription.length() == 0)
 			description = null;
 		else 
-		if (CMProps.getBoolVar(CMProps.SYSTEMB_MOBDCOMPRESS))
+		if (CMProps.getBoolVar(CMProps.Bool.MOBDCOMPRESS))
 			description = CMLib.encoder().compressString(newDescription);
 		else
 			description = newDescription;
@@ -1572,7 +1572,7 @@ public class StdMOB implements MOB
 		if (newText.length() == 0)
 			miscText = null;
 		else 
-		if (CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
+		if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
 			miscText = CMLib.encoder().compressString(newText);
 		else
 			miscText = newText;
@@ -1588,7 +1588,7 @@ public class StdMOB implements MOB
 			final byte[] miscTextBytes = (byte[]) miscText;
 			if (miscTextBytes.length == 0)
 				return "";
-			if (CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
+			if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS))
 				return CMLib.encoder().decompressString(miscTextBytes);
 			else
 				return CMStrings.bytesToStr(miscTextBytes);
@@ -2551,18 +2551,18 @@ public class StdMOB implements MOB
 					srcM.tell(name() + " can't accept any more followers.");
 					return false;
 				}
-				if ((CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF) > 0) 
+				if ((CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF) > 0) 
 				&& (!isMonster()) 
 				&& (!srcM.isMonster())
 				&& (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.ORDER))
 				&& (!CMSecurity.isAllowed(srcM, srcM.location(), CMSecurity.SecFlag.ORDER)))
 				{
-					if (phyStats.level() > (srcM.phyStats().level() + CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
+					if (phyStats.level() > (srcM.phyStats().level() + CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
 						srcM.tell(name() + " is too advanced for you.");
 						return false;
 					}
-					if (phyStats.level() < (srcM.phyStats().level() - CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
+					if (phyStats.level() < (srcM.phyStats().level() - CMProps.getIntVar(CMProps.Int.FOLLOWLEVELDIFF)))
 					{
 						srcM.tell(name() + " is too inexperienced for you.");
 						return false;
@@ -2773,7 +2773,7 @@ public class StdMOB implements MOB
 					setLiegeID("");
 				break;
 			case CMMsg.TYP_SPEAK:
-				if ((CMProps.getBoolVar(CMProps.SYSTEMB_INTRODUCTIONSYSTEM)) && (!asleep) && (canhearsrc))
+				if ((CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM)) && (!asleep) && (canhearsrc))
 					CMLib.commands().handleIntroductions(srcM, this, msg.targetMessage());
 				break;
 			default:
@@ -2852,7 +2852,7 @@ public class StdMOB implements MOB
 			else 
 			if ((CMath.bset(othersMajor, CMMsg.MASK_SOUND)) && (!asleep) && (canhearsrc))
 			{
-				if ((CMProps.getBoolVar(CMProps.SYSTEMB_INTRODUCTIONSYSTEM)) 
+				if ((CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM)) 
 				&& (msg.othersMinor() == CMMsg.TYP_SPEAK))
 					CMLib.commands().handleIntroductions(srcM, this, msg.othersMessage());
 				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
@@ -2925,7 +2925,7 @@ public class StdMOB implements MOB
 					if ((phyStats().rejuv() != PhyStats.NO_REJUV) && (basePhyStats().rejuv() > 0))
 					{
 						phyStats().setRejuv(phyStats().rejuv() - 1);
-						if ((phyStats().rejuv() < 0) || (CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
+						if ((phyStats().rejuv() < 0) || (CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 						{
 							tickStatus = Tickable.STATUS_REBIRTH;
 							cloneFix(CMClass.getMOBPrototype(ID()));
@@ -2975,7 +2975,7 @@ public class StdMOB implements MOB
 				if ((--recoverTickCter) <= 0)
 				{
 					curState().recoverTick(this, maxState);
-					recoverTickCter = CMProps.getIntVar(CMProps.SYSTEMI_RECOVERRATE);
+					recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE);
 				}
 				if (!isMonster)
 					curState().expendEnergy(this, maxState, false);
@@ -2994,7 +2994,7 @@ public class StdMOB implements MOB
 
 				if (isInCombat())
 				{
-					if (CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM) == CombatLibrary.COMBAT_DEFAULT)
+					if (CMProps.getIntVar(CMProps.Int.COMBATSYSTEM) == CombatLibrary.COMBAT_DEFAULT)
 						setActions(actions() + 1.0); // bonus action is employed in default system
 					tickStatus = Tickable.STATUS_FIGHT;
 					peaceTime = 0;

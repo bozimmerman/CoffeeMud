@@ -41,8 +41,8 @@ public class PlayerKill extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS")
-			||CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
+		if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS")
+			||CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
 		{
 			mob.tell("This option has been disabled.");
 			return false;
@@ -55,7 +55,7 @@ public class PlayerKill extends StdCommand
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
 		{
-			if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ONEWAY"))
+			if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))
 			{
 				mob.tell("Once turned on, this flag may not be turned off again.");
 				return false;
@@ -76,7 +76,7 @@ public class PlayerKill extends StdCommand
 		if(!mob.isMonster())
 		{
 			mob.tell("Turning on this flag will allow you to kill and be killed by other players.");
-			if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ONEWAY"))
+			if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))
 				mob.tell("Once turned on, this flag may not be turned off again.");
 			if(mob.session().confirm("Are you absolutely sure (y/N)?","N"))
 			{
@@ -85,7 +85,7 @@ public class PlayerKill extends StdCommand
 			}
 			else
 				mob.tell("Your playerkill flag remains OFF.");
-			if(!CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ONEWAY"))
+			if(!CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))
 				mob.tell("Both players must have their playerkill flag turned on for sparring.");
 		}
 		return false;

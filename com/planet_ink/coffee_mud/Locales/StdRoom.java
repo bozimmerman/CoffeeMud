@@ -260,7 +260,7 @@ public class StdRoom implements Room
 	{
 		if(description == null)
 		{
-			if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE)&&(roomID().trim().length()>0))
+			if(CMProps.getBoolVar(CMProps.Bool.ROOMDNOCACHE)&&(roomID().trim().length()>0))
 			{
 				String txt=CMLib.database().DBReadRoomDesc(roomID());
 				if(txt==null)
@@ -276,7 +276,7 @@ public class StdRoom implements Room
 		if(description instanceof byte[])
 		{
 			final byte[] descriptionBytes=(byte[])description;
-			if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS))
+			if(CMProps.getBoolVar(CMProps.Bool.ROOMDCOMPRESS))
 				return CMLib.encoder().decompressString(descriptionBytes);
 			return CMStrings.bytesToStr(descriptionBytes);
 		}
@@ -288,7 +288,7 @@ public class StdRoom implements Room
 		if(newDescription.length()==0)
 			description=null;
 		else
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS))
+		if(CMProps.getBoolVar(CMProps.Bool.ROOMDCOMPRESS))
 			description=CMLib.encoder().compressString(newDescription);
 		else
 			description=newDescription;
@@ -352,11 +352,11 @@ public class StdRoom implements Room
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-		&&(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)!=0))
+		&&(CMProps.getIntVar(CMProps.Int.SKYSIZE)!=0))
 		{
 			Exit upE=null;
 			Exit dnE=CMClass.getExit("StdOpenDoorway");
-			if(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)>0)
+			if(CMProps.getIntVar(CMProps.Int.SKYSIZE)>0)
 				upE=dnE;
 			else
 				upE=CMClass.getExit("UnseenWalkway");
@@ -787,7 +787,7 @@ public class StdRoom implements Room
 				final Area A=getArea();
 				final String roomID=roomID();
 				setGridParent(null);
-				if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
+				if(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
 				{
 					CMLib.map().emptyRoom(this,null);
 					destroy();
@@ -1593,11 +1593,11 @@ public class StdRoom implements Room
 		int numMins = 0;
 		switch(expire)
 		{
-		case Monster_EQ: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ); break;
-		case Monster_Body: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_BODY); break;
-		case Player_Body: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_BODY); break;
-		case Player_Drop: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP); break;
-		case Resource: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE); break;
+		case Monster_EQ: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_MONSTER_EQ); break;
+		case Monster_Body: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_MONSTER_BODY); break;
+		case Player_Body: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_BODY); break;
+		case Player_Drop: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_DROP); break;
+		case Resource: numMins = CMProps.getIntVar(CMProps.Int.EXPIRE_RESOURCE); break;
 		case Never: break;
 		}
 		if(numMins==0)

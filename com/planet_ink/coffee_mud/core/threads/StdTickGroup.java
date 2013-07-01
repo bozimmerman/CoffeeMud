@@ -251,7 +251,7 @@ public class StdTickGroup implements TickableGroup, Cloneable
 			lastStart=System.currentTimeMillis();
 			lastClient=null;
 			final boolean allSuspended=CMLib.threads().isAllSuspended();
-			if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+			if((CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			&&(!allSuspended))
 			{
 				for(Iterator<TickClient> i=tickers();i.hasNext();)

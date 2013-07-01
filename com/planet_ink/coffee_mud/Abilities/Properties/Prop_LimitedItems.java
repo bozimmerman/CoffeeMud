@@ -96,7 +96,7 @@ public class Prop_LimitedItems extends Property
 	{
 		super.executeMsg(host,msg);
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 		&&(affected instanceof Item)
 		&&((!(((Item)affected).owner() instanceof MOB))
 		   ||((MOB)((Item)affected).owner()).playerStats()==null))
@@ -110,7 +110,7 @@ public class Prop_LimitedItems extends Property
 		if((!(E instanceof Item))||(((Item)E).owner()==null))
 			return;
 		
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
 		
 		if(norecurse) return;

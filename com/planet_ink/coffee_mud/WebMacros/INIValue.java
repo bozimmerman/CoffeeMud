@@ -42,7 +42,7 @@ public class INIValue extends StdWebMacro
 	public String getHelpFor(String tag, String mask)
 	{
 		Vector help=new Vector();
-		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 		boolean startOver=false;
 		for(int p=0;p<page.size();p++)
 		{
@@ -83,7 +83,7 @@ public class INIValue extends StdWebMacro
 		String last=httpReq.getUrlParameter("INI");
 		if((parms.size()==0)&&(last!=null)&&(last.length()>0))
 		{
-			CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+			CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 			if((page==null)||(!page.isLoaded())) return "";
 			return page.getStr(last);
 		}
@@ -98,7 +98,7 @@ public class INIValue extends StdWebMacro
 				return " @break@";
 			String mask=parms.get("MASK").toUpperCase().trim();
 			String lastID="";
-			List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+			List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
 			for(int p=0;p<page.size();p++)
 			{
 				String s=page.get(p).trim();
@@ -121,7 +121,7 @@ public class INIValue extends StdWebMacro
 					httpReq.addFakeUrlParameter("INI",id);
 					if(parms.containsKey("VALUE"))
 					{
-						CMProps realPage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+						CMProps realPage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 						if(realPage!=null) return realPage.getStr(id);
 					}
 					return "";
@@ -136,7 +136,7 @@ public class INIValue extends StdWebMacro
 		if(!parms.containsKey("MASK")) 
 			return "'MASK' not found!";
 		String mask=parms.get("MASK").toUpperCase();
-		CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+		CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
 		if((page==null)||(!page.isLoaded())) return "";
 		if(mask.trim().endsWith("*"))
 			for(Enumeration e=page.keys();e.hasMoreElements();)

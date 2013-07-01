@@ -720,7 +720,7 @@ public class Nanny extends StdBehavior
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if((!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 		||((!(ticking instanceof Environmental))))
 			return true;
 		if(dropOffs==null)

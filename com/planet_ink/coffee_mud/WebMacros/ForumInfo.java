@@ -81,7 +81,7 @@ public class ForumInfo extends StdWebMacro
 			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
 			if((entry!=null)&&(entry.forward))
 			{
-				str.append( entry.name.replace(' ','_')+"@"+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)).append(", ");
+				str.append( entry.name.replace(' ','_')+"@"+CMProps.getVar(CMProps.Str.MUDDOMAIN)).append(", ");
 			}
 		}
 		

@@ -133,7 +133,7 @@ public class WillQualify  extends Skills
 	{
 		StringBuffer msg=new StringBuffer("");
 		String willQualErr = "Specify level, class, and or skill-type:  WILLQUALIFY ([LEVEL]) ([CLASS NAME]) ([SKILL TYPE]).";
-		int level=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
+		int level=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 		CharClass C=mob.charStats().getCurrentClass();
 		HashSet<Object> types=new HashSet<Object>();
 		if(commands.size()>0) commands.removeElementAt(0);

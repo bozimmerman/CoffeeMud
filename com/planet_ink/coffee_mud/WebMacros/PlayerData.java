@@ -319,7 +319,7 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 62: str.append(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)?"true":"false"); break;
+		case 62: str.append(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)?"true":"false"); break;
 		case 63: if(M.playerStats()!=null)str.append(CMLib.time().date2String(M.playerStats().getAccountExpiration()));
 					break;
 		case 64: {
@@ -340,8 +340,8 @@ public class PlayerData extends StdWebMacro
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("PLAYER");

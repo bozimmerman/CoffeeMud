@@ -52,7 +52,7 @@ public class Pregnancy extends StdAbility
 			int y=text().indexOf('/',x+1);
 			if(y<0) return "";
 			long start=CMath.s_long(text().substring(0,x));
-			long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+			long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 			long days=(System.currentTimeMillis()-start)/divisor; // down to days;
 			long months=days/CMLib.time().globalClock().getDaysInMonth();
 			if(days<1)
@@ -182,7 +182,7 @@ public class Pregnancy extends StdAbility
 				{
 					int z=text().indexOf('/',y+1);
 					long end=CMath.s_long(text().substring(x+1,y));
-					long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+					long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
 					monthsRemaining=daysRemaining/CMLib.time().globalClock().getDaysInMonth(); // down to months
 					if(CMLib.dice().roll(1,200,0)==1)
@@ -367,7 +367,7 @@ public class Pregnancy extends StdAbility
 		boolean success=proficiencyCheck(mob,0,auto);
 		long start=System.currentTimeMillis();
 		Race R=target.charStats().getMyRace();
-		long tickspermudmonth=CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+		long tickspermudmonth=CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 		tickspermudmonth=tickspermudmonth*CMLib.time().globalClock().getDaysInMonth();
 		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMLib.time().globalClock().getMonthsInYear(),0.75));
 		if(birthmonths<=0) birthmonths=5;

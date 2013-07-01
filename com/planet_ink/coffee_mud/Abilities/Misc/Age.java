@@ -51,7 +51,7 @@ public class Age extends StdAbility
 	{
 		long start=CMath.s_long(text());
 		if(start<Short.MAX_VALUE) return "";
-		long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY); // down to days;
+		long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY); // down to days;
 		long months=days/CMLib.time().globalClock().getDaysInMonth();
 		long years=months/CMLib.time().globalClock().getMonthsInYear();
 		if(days<1)
@@ -158,7 +158,7 @@ public class Age extends StdAbility
 		if(divisor==0.0)
 			divisor = CMLib.time().globalClock().getMonthsInYear() *
 								   CMLib.time().globalClock().getDaysInMonth() *
-								   CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY );
+								   CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );
 
 		int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal)&&(!(affected instanceof DeadBody)))
@@ -388,14 +388,14 @@ public class Age extends StdAbility
 						newMan.baseCharStats().setStat(CharStats.STAT_AGE,newAge);
 					}
 					newMan.baseCharStats().setStat(CharStats.STAT_AGE,ellapsed);
-					newMan.baseState().setHitPoints(CMProps.getIntVar(CMProps.SYSTEMI_STARTHP));
-					newMan.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
-					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE));
+					newMan.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
+					newMan.baseState().setMana(CMProps.getIntVar(CMProps.Int.STARTMANA));
+					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.Int.STARTMOVE));
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
-					int baseStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMINSTAT)+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))/2;
+					int baseStat=(CMProps.getIntVar(CMProps.Int.BASEMINSTAT)+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))/2;
 					for(int i=0;i<CharStats.CODES.BASE().length;i++)
 						newMan.baseCharStats().setStat(i,baseStat);
-					if(highestParentLevel>=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))
+					if(highestParentLevel>=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
 						for(int i=0;i<highestLegacyLevel+1;i++)
 							newMan.playerStats().addLegacyLevel(highestBaseClass);
 					int bonusPoints=newMan.playerStats().getTotalLegacyLevels()+1;
@@ -418,7 +418,7 @@ public class Age extends StdAbility
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
 					for(int i : CharStats.CODES.BASE())
 					{
-						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))
+						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))
 							newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+bonusPoints);
 						newMan.baseCharStats().setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,bonusPoints);
 					}
@@ -510,7 +510,7 @@ public class Age extends StdAbility
 					if(divisor==0.0)
 						divisor = CMLib.time().globalClock().getMonthsInYear() *
 											CMLib.time().globalClock().getDaysInMonth() *
-											CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY );
+											CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );
 					long l=CMath.s_long(text());
 					if((l>0)&&(l<Long.MAX_VALUE))
 					{
@@ -579,7 +579,7 @@ public class Age extends StdAbility
 						if(divisor==0.0)
 							divisor = CMLib.time().globalClock().getMonthsInYear() *
 												CMLib.time().globalClock().getDaysInMonth() *
-												CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY );
+												CMProps.getIntVar( CMProps.Int.TICKSPERMUDDAY );
 						long l=CMath.s_long(text());
 						if((l>0)&&(l<Long.MAX_VALUE))
 						{
@@ -626,7 +626,7 @@ public class Age extends StdAbility
 			if(divisor==0.0)
 				divisor = CMLib.time().globalClock().getMonthsInYear() *
 									CMLib.time().globalClock().getDaysInMonth() *
-									CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY );
+									CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY );
 			int age=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
 			if((age>=Short.MAX_VALUE)||(age<0))
 				Log.errOut("Age","Recorded, on "+affected.name()+", age of "+age+", from tick values (("+System.currentTimeMillis()+"-"+l+")/4000)/"+divisor);

@@ -122,7 +122,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(myShopkeeper!=null)
 		&&(msg.tool()==myShopkeeper)
 		&&(msg.target()==this))
-			CMLib.threads().startTickDown(this,Tickable.TICKID_ITEM_BOUNCEBACK,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
+			CMLib.threads().startTickDown(this,Tickable.TICKID_ITEM_BOUNCEBACK,CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY));
 		else
 		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)

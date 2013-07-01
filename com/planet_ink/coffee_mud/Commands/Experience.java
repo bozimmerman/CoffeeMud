@@ -36,7 +36,7 @@ public class Experience extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("^N");
 
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
+		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
 			msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
 
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
@@ -48,8 +48,8 @@ public class Experience extends StdCommand
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
 			{
-				if((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
-				&&(mob.basePhyStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
+				if((CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)>0)
+				&&(mob.basePhyStats().level()>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)))
 					msg.append("You will not gain further levels through experience.\n\r");
 				else
 				if(mob.getExpNeededLevel()==Integer.MAX_VALUE)

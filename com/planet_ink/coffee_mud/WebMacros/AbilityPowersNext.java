@@ -37,7 +37,7 @@ public class AbilityPowersNext extends StdWebMacro
 
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return " @break@";
 
 		java.util.Map<String,String> parms=parseParms(parm);

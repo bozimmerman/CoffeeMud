@@ -358,7 +358,7 @@ public class Factions extends StdLibrary implements FactionManager
 		if((mob==null)||(R==null))
 			return null;
 		Faction F=null;
-		String SPECIALTYPE=CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).toUpperCase().trim();
+		String SPECIALTYPE=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
 		if((SPECIALTYPE==null)||(SPECIALTYPE.length()==0))
 			return null;
 		if(SPECIALTYPE.equals("AREA"))
@@ -621,7 +621,7 @@ public class Factions extends StdLibrary implements FactionManager
 			return;
 		boolean ok=false;
 		int showFlag=-1;
-		if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{

@@ -557,7 +557,7 @@ public class StdItem implements Item
 			final byte[] descriptionBytes=(byte[])description;
 			if(descriptionBytes.length==0)
 				return "";
-			if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
+			if(CMProps.getBoolVar(CMProps.Bool.ITEMDCOMPRESS))
 				return CMLib.encoder().decompressString(descriptionBytes);
 			else
 				return CMStrings.bytesToStr(descriptionBytes);
@@ -571,7 +571,7 @@ public class StdItem implements Item
 		if(newDescription.length()==0)
 			description=null;
 		else
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS))
+		if(CMProps.getBoolVar(CMProps.Bool.ITEMDCOMPRESS))
 			description=CMLib.encoder().compressString(newDescription);
 		else
 			description=newDescription;

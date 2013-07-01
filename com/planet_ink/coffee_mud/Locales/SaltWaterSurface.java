@@ -60,11 +60,11 @@ public class SaltWaterSurface extends WaterSurface
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-		&&(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)!=0))
+		&&(CMProps.getIntVar(CMProps.Int.SKYSIZE)!=0))
 		{
 			Exit dnE=null;
 			Exit upE=CMClass.getExit("StdOpenDoorway");
-			if(CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE)>0)
+			if(CMProps.getIntVar(CMProps.Int.SKYSIZE)>0)
 				dnE=upE;
 			else
 				dnE=CMClass.getExit("UnseenWalkway");

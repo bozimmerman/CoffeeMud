@@ -321,14 +321,14 @@ public class Resources
 		if(rsc != null)
 			return _toStringBuffer(rsc);
 		StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors).text();
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_FILERESOURCENOCACHE))
+		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
 			_submitResource(filename,buf);
 		return buf;
 	}
 
 	public final boolean _updateFileResource(final String filename, final Object obj)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_FILERESOURCENOCACHE))
+		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
 			_updateResource(CMFile.vfsifyFilename(filename), obj);
 		return _saveFileResource(filename,null,_toStringBuffer(obj));
 	}

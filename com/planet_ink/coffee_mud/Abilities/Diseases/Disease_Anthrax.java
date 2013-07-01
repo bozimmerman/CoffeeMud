@@ -42,7 +42,7 @@ public class Disease_Anthrax extends Disease
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 2;}
 
-	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*10;}
+	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*10;}
 	protected int DISEASE_DELAY(){return 15;}
 	protected int lastHP=Integer.MAX_VALUE;
 	protected String DISEASE_DONE(){return "Your anthrax wounds clear up.";}

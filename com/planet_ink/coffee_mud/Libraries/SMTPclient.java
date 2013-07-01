@@ -183,12 +183,12 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 				Log.errOut("SMTPClient","User/Account not found: "+toName);
 				return false;
 			}
-			if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
-				SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
+			if(CMProps.getVar(CMProps.Str.SMTPSERVERNAME).length()>0)
+				SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
 			else
 				SC=CMLib.smtp().getClient(toEmail);
 	
-			String domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
+			String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
 			SC.sendMessage(fromName+"@"+domain,
 						   fromName+"@"+domain,
 						   toEmail,

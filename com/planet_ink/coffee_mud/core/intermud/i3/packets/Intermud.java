@@ -238,7 +238,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 		muds = new MudList(-1);
 		banned = new Hashtable();
 		name_servers = new Vector();
-		String s=CMProps.getVar(CMProps.SYSTEM_I3ROUTERS);
+		String s=CMProps.getVar(CMProps.Str.I3ROUTERS);
 		Vector V=CMParms.parseCommas(s,true);
 		for(int v=0;v<V.size();v++)
 		{
@@ -330,7 +330,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				Log.sysOut("Intermud3","No I3 routers defined in coffeemud.ini file.");
 			else
 			{
-				if(CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL).indexOf('@')<0)
+				if(CMProps.getVar(CMProps.Str.ADMINEMAIL).indexOf('@')<0)
 					Log.errOut("Intermud","Please set ADMINEMAIL in your coffeemud.ini file.");
 				Vector connectionStatuses=new Vector(name_servers.size());
 				for(int i=0;i<name_servers.size();i++)
@@ -344,7 +344,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 							 currentRouter.name + "\",0," + password +
 							 "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
 							 ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
-							 "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL).toLowerCase()+"\",([" +
+							 "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.Str.ADMINEMAIL).toLowerCase()+"\",([" +
 							 "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,\"auth\":1,]),([]),})");
 					}
 					catch(java.io.IOException e)

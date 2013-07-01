@@ -102,7 +102,7 @@ public class Play_Dirge extends Play
 						MOB follower=(MOB)f.next();
 	
 						double exp=10.0;
-						int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
+						int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 						int levelDiff=follower.phyStats().level()-target.phyStats().level();
 						if(levelDiff>levelLimit) exp=0.0;
 						int expGained=(int)Math.round(exp);
