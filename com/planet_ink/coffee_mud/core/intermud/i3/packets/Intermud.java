@@ -501,7 +501,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				{
 					PingPacket.lastPingResponse=System.currentTimeMillis();
 					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-PingPacket.lastPingResponse, TimeUnit.SECONDS, false));
-					new Thread(new Runnable() {
+					CMLib.threads().executeRunnable(new Runnable() {
 						public void run() {
 							try
 							{
@@ -510,7 +510,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 							}
 							catch(Exception e){}
 						}
-					}).start();
+					});
 				}
 			}
 			
