@@ -302,10 +302,12 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				{
 					R.setDescription("");
 					R.setDisplayText(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
+					x=-1;
 				}
 				if(x<0)
 					R.setDescription(R.description()+theStr);
 				else
+				if(!reset)
 					R.setDescription(R.description().substring(x+theStr.trim().length()));
 				if(!R.description().equals(oldDescription))
 					CMLib.database().DBUpdateRoom(R);
