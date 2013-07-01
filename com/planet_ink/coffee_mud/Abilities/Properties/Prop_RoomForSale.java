@@ -294,19 +294,25 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				CMLib.database().DBUpdateRoom(R);
 				x=R.description().indexOf(otherStr);
 			}
-			if((R.description().indexOf(theStr.trim())<0)||(reset&&(!R.displayText().equals(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR))))
+			String oldDescription=R.description();
+			x=R.description().indexOf(theStr.trim());
+			if((x<0)||(reset&&(!R.displayText().equals(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR))))
 			{
-				String oldDescription=R.description();
 				if(reset)
 				{
 					R.setDescription("");
 					R.setDisplayText(CMath.bset(R.domainType(), Room.INDOORS)?INDOORSTR:OUTDOORSTR);
 				}
-				x=R.description().indexOf(theStr.trim());
 				if(x<0)
 					R.setDescription(R.description()+theStr);
 				else
 					R.setDescription(R.description().substring(x+theStr.length()));
+				if(!R.description().equals(oldDescription))
+					CMLib.database().DBUpdateRoom(R);
+			} 
+			else 
+			{
+				R.setDescription(R.description().substring(x+theStr.length()));
 				if(!R.description().equals(oldDescription))
 					CMLib.database().DBUpdateRoom(R);
 			}
