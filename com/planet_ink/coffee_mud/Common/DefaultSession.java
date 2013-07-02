@@ -1536,10 +1536,10 @@ public class DefaultSession implements Session
 			}
 		}
 		if(killThisThread!=null)
-			CMLib.killThread(killThisThread,1000,1);
+			killThisThread.interrupt();
 		killThisThread=writeThread;
-		if((killThisThread!=null)&&(killThisThread!=Thread.currentThread()))
-			CMLib.killThread(killThisThread,1000,1);
+		if(killThisThread!=null)
+			killThisThread.interrupt();
 	}
 
 	public void showPrompt()
