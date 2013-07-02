@@ -337,13 +337,13 @@ public class DefaultTimeClock implements TimeClock
 								&&(!CMLib.flags().isSleeping(mob))
 								&&(CMLib.flags().canSee(mob)))
 								{
-									final String message = CMProps.getListFileValue(CMProps.ListFile.TODCHANGE_OUTSIDE, getTODCode());
+									final String message = CMProps.getListFileValue(CMProps.ListFile.TOD_CHANGE_OUTSIDE, getTODCode());
 									if(message.trim().length()>0)
 										mob.tell(message);
 								}
 								else
 								{
-									final String message = CMProps.getListFileValue(CMProps.ListFile.TODCHANGE_INSIDE, getTODCode());
+									final String message = CMProps.getListFileValue(CMProps.ListFile.TOD_CHANGE_INSIDE, getTODCode());
 									if(message.trim().length()>0)
 										mob.tell(message);
 								}

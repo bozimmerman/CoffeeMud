@@ -704,16 +704,26 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		int firstAlpha=-1;
 		int amperStop = -1;
 		
-		long loopDebugCtr=0;
+		int loopDebugCtr=0;
+		int lastLoop=-1;
 
 		while(buf.length()>loop)
 		{
-			if(++loopDebugCtr>(buf.length()*10L)) //BZ: delete when this is fixed.
+			if(loop==lastLoop)
 			{
-				Log.errOut("CoffeeFilter","DEBUG: "+loop+"/"+wrap+"/"+lastSpace+"/"+firstAlpha+"/"+amperStop+"/"+doSagain+"/"+firstSdone+"/"+buf.length()+"/"+loopDebugCtr);
-				Log.errOut("CoffeeFilter",buf.toString());
-				break;
+				if(++loopDebugCtr>5) //BZ: delete when this is fixed.
+				{
+					Log.debugOut("CoffeeFilter","LOOP: "+loop+"/"+wrap+"/!"+(buf.charAt(loop)=='\033')+"!/"+lastSpace+"/"+firstAlpha+"/"+amperStop+"/"+doSagain+"/"+firstSdone+"/"+buf.length()+"/"+loopDebugCtr);
+					Log.debugOut("CoffeeFilter",buf.toString());
+					break;
+				}
 			}
+			else
+			{
+				lastLoop=loop;
+				loopDebugCtr=0;
+			}
+			
 			int lastSp=-1;
 			while((loop<len)&&(buf.length()>loop))
 			{
