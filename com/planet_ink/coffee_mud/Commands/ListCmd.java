@@ -764,13 +764,14 @@ public class ListCmd extends StdCommand
 		String tickGroupSize=CMLib.threads().systemReport("TICKGROUPSIZE");
 		long totalMillis=CMath.s_long(CMLib.threads().systemReport("totalMillis"));
 		long totalTicks=CMath.s_long(CMLib.threads().systemReport("totalTicks"));
+		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroupSize+"^? groups.\n\r");
+		buf.append("The ticking objects have consumed: ^H"+CMLib.english().returnTime(totalMillis,totalTicks)+"^?.\n\r");
+		/*
 		String topGroupNumber=CMLib.threads().systemReport("topGroupNumber");
 		long topGroupMillis=CMath.s_long(CMLib.threads().systemReport("topGroupMillis"));
 		long topGroupTicks=CMath.s_long(CMLib.threads().systemReport("topGroupTicks"));
 		long topObjectMillis=CMath.s_long(CMLib.threads().systemReport("topObjectMillis"));
 		long topObjectTicks=CMath.s_long(CMLib.threads().systemReport("topObjectTicks"));
-		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroupSize+"^? groups.\n\r");
-		buf.append("The ticking objects have consumed: ^H"+CMLib.english().returnTime(totalMillis,totalTicks)+"^?.\n\r");
 		buf.append("The most active group, #^H"+topGroupNumber+"^?, has consumed: ^H"+CMLib.english().returnTime(topGroupMillis,topGroupTicks)+"^?.\n\r");
 		String topObjectClient=CMLib.threads().systemReport("topObjectClient");
 		String topObjectGroup=CMLib.threads().systemReport("topObjectGroup");
@@ -779,6 +780,7 @@ public class ListCmd extends StdCommand
 			buf.append("The most active object has been '^H"+topObjectClient+"^?', from group #^H"+topObjectGroup+"^?.\n\r");
 			buf.append("That object has consumed: ^H"+CMLib.english().returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
 		}
+		*/
 		buf.append("\n\r");
 		buf.append("^xServices report:^.^N\n\r");
 		buf.append("There are ^H"+CMLib.threads().systemReport("numactivethreads")+"^? active out of ^H"+CMLib.threads().systemReport("numthreads")+"^? live worker threads.\n\r");
@@ -799,6 +801,7 @@ public class ListCmd extends StdCommand
 		long totalMOBTicks=CMath.s_long(CMLib.threads().systemReport("totalMOBTicks"));
 		buf.append("There are ^H"+CMLib.sessions().getCountLocalOnline()+"^? ticking players logged on.\n\r");
 		buf.append("The ticking players have consumed: ^H"+CMLib.english().returnTime(totalMOBMillis,totalMOBTicks)+"^?.\n\r");
+		/*
 		long topMOBMillis=CMath.s_long(CMLib.threads().systemReport("topMOBMillis"));
 		long topMOBTicks=CMath.s_long(CMLib.threads().systemReport("topMOBTicks"));
 		String topMOBClient=CMLib.threads().systemReport("topMOBClient");
@@ -807,6 +810,7 @@ public class ListCmd extends StdCommand
 			buf.append("The most active mob has been '^H"+topMOBClient+"^?'\n\r");
 			buf.append("That mob has consumed: ^H"+CMLib.english().returnTime(topMOBMillis,topMOBTicks)+"^?.\n\r");
 		}
+		*/
 		return buf;
 	}
 	
