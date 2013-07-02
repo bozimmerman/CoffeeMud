@@ -40,6 +40,9 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 {
 	public String ID(){return "DefaultHttpClient";}
 	public String name() { return ID();}
+	
+	private static enum HState { PREHEAD, INHEAD, INBODY, PRECHUNK, INCHUNK, POSTCHUNK }
+	
 	private volatile long tickStatus=Tickable.STATUS_NOT;
 	protected Map<String,String> reqHeaders=new CaselessTreeMap<String>();
 	protected Map<String,List<String>> respHeaders=new CaselessTreeMap<List<String>>();
@@ -106,15 +109,18 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		return this;
 	}
 	
-	public HttpClient connectTimeout(int ms) {
+	public HttpClient connectTimeout(int ms) 
+	{
 		this.connectTimeout=ms;
 		return this;
 	}
-	public HttpClient readTimeout(int ms) {
+	public HttpClient readTimeout(int ms) 
+	{
 		this.readTimeout=ms;
 		return this;
 	}
-	public HttpClient maxReadBytes(int bytes) {
+	public HttpClient maxReadBytes(int bytes) 
+	{
 		this.maxReadBytes=bytes;
 		return this;
 	}
@@ -183,10 +189,16 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			out=sock.getOutputStream();
 		}
 		final IOException cleanException=new IOException("Connection closed by remote host");
-		try { 
+		try 
+		{ 
 			while(in.read()!=-1); /* clear the stream */
 			throw cleanException;
-		} catch(IOException e) { if(e==cleanException) throw e; }
+		} 
+		catch(IOException e) 
+		{ 
+			if(e==cleanException) 
+				throw e; 
+		}
 		out.write((meth.toString()+" "+rest+" HTTP/1.1\n").getBytes());
 		for(String key : reqHeaders.keySet())
 			out.write((key+": "+reqHeaders.get(key)+"\n").getBytes());
@@ -197,10 +209,10 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			out.write(outBody);
 		long nextReadTimeout=(this.readTimeout>0)?(System.currentTimeMillis()+this.readTimeout):Long.MAX_VALUE;
 		int lastC=-1;
-		boolean postHeader=false;
-		boolean firstLineReceived=false;
-		StringBuilder lineBuilder=new StringBuilder("");
+		
+		HState state=HState.PREHEAD;
 		ByteArrayOutputStream bodyBuilder=new ByteArrayOutputStream();
+		StringBuilder headBuilder=new StringBuilder();
 		int c=0;
 		int maxBytes=this.maxReadBytes;
 		while(c!=-1)
@@ -223,67 +235,158 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				else 
 					throw e;
 			}
-			if(postHeader)
+			switch(state)
 			{
-				bodyBuilder.write(c);
-				if((maxBytes==0)||(bodyBuilder.size()>=maxBytes))
-					break;
-			}
-			else
-			if((c=='\n')&&(lastC=='\n'))
-			{
-				postHeader=true;
-				if(maxBytes==0)
-					break;
-			}
-			else
-			if(c=='\n')
-			{
-				String s=lineBuilder.toString();
-				lineBuilder.setLength(0);
-				if(!firstLineReceived)
+			case PREHEAD: {
+				if((c=='\n')&&(lastC=='\r'))
 				{
-					firstLineReceived=true;
+					state=HState.INHEAD;
+					String s=headBuilder.toString();
+					headBuilder.setLength(0);
 					String[] parts=s.split(" ", 3);
 					if(CMath.isInteger(parts[1]))
-						respStatus=Integer.valueOf(CMath.s_int(s.trim()));
+						respStatus=Integer.valueOf(CMath.s_int(parts[1]));
 					else
 						respStatus=Integer.valueOf(-1);
 				}
 				else
+				if((c!='\n')&&(c!='\r'))
+					headBuilder.append((char)c);
+				break;
+				}
+			case INHEAD: {
+				if((c=='\n')&&(lastC=='\r'))
 				{
-					x=s.indexOf(':');
-					if(x>0)
+					if(headBuilder.length()==0)
 					{
-						String key=s.substring(0,x).trim();
-						String value=s.substring(x+1).trim();
-						if((key.equalsIgnoreCase("Content-Length"))
-						&&(CMath.isInteger(value)))
+						if(respHeaders.containsKey("Transfer-Encoding")
+						&&(respHeaders.get("Transfer-Encoding").contains("chunked")
+							||respHeaders.get("Transfer-Encoding").contains("Chunked")
+							||respHeaders.get("Transfer-Encoding").contains("CHUNKED")))
 						{
-							int possMax=CMath.s_int(value);
-							if((maxBytes==0)||(possMax<maxBytes))
-								maxBytes=possMax;
+							maxBytes=Integer.MAX_VALUE;
+							state=HState.PRECHUNK;
 						}
-						if((key.equalsIgnoreCase("Transer-Encoding"))
-						&&(value.equalsIgnoreCase("chunked")))
+						else
+						if(respHeaders.containsKey("Content-Length"))
 						{
-							if(!respHeaders.containsKey("Content-Length"))
-								maxBytes=Integer.MAX_VALUE;
+							List<String> l=respHeaders.get("Content-Length");
+							for(String s : l)
+								if(CMath.isInteger(s))
+								{
+									int possMax=CMath.s_int(s);
+									if((maxBytes==0)||(possMax<maxBytes))
+										maxBytes=possMax;
+								}
+							state=HState.INBODY;
 						}
-						List<String> list;
-						if(respHeaders.containsKey(key))
-							list=respHeaders.get(key);
 						else
 						{
-							list=new ArrayList<String>();
-							respHeaders.put(key, list);
+							c=-1;
+							break;
 						}
-						list.add(value);
 					}
+					else
+					{
+						String s=headBuilder.toString();
+						x=s.indexOf(':');
+						if(x>0)
+						{
+							String key=s.substring(0,x).trim();
+							String value=s.substring(x+1).trim();
+							List<String> list;
+							if(respHeaders.containsKey(key))
+								list=respHeaders.get(key);
+							else
+							{
+								list=new ArrayList<String>();
+								respHeaders.put(key, list);
+							}
+							list.add(value);
+						}
+					}
+					headBuilder.setLength(0);
 				}
+				else
+				if((c!='\r')&&(c!='\n'))
+					headBuilder.append((char)c);
+				break;
+				}
+			case INBODY: {
+					bodyBuilder.write(c);
+					if((maxBytes==0)||(bodyBuilder.size()>=maxBytes))
+						c=-1;
+					break;
+				}
+			case PRECHUNK: {
+					if((c=='\n')&&(lastC=='\r')) 
+					{
+						state=HState.INCHUNK;
+						String szStr=headBuilder.toString().trim();
+						x=szStr.indexOf(';');
+						if(x>=0)
+							szStr=szStr.substring(0,x).trim();
+						x=0;
+						while((x<szStr.length())&&(szStr.charAt(x)=='0'))
+							x++;
+						if(x<szStr.length())
+						{
+							maxBytes = Integer.parseInt(szStr.substring(x).trim(),16);
+							headBuilder.setLength(0);
+						}
+						else
+						{
+							state=HState.POSTCHUNK;
+							
+						}
+					} 
+					else if((c!='\r')&&(c!='\n')) 
+					{
+						headBuilder.append((char)c);
+					}
+					break;
+				}
+			case INCHUNK: {
+				bodyBuilder.write(c);
+				if(bodyBuilder.size()==maxBytes)
+				{
+					state=HState.PRECHUNK;
+				} // else keep going
+				break;
 			}
-			else
-				lineBuilder.append((char)c);
+			case POSTCHUNK: {
+				if((c=='\n')&&(lastC=='\r'))
+				{
+					if(headBuilder.length()==0)
+						c=-1;
+					else
+					{
+						String s=headBuilder.toString();
+						x=s.indexOf(':');
+						if(x>0)
+						{
+							String key=s.substring(0,x).trim();
+							String value=s.substring(x+1).trim();
+							List<String> list;
+							if(respHeaders.containsKey(key))
+								list=respHeaders.get(key);
+							else
+							{
+								list=new ArrayList<String>();
+								respHeaders.put(key, list);
+							}
+							list.add(value);
+						}
+					}
+					headBuilder.setLength(0);
+				}
+				else
+				if((c!='\r')&&(c!='\n'))
+					headBuilder.append((char)c);
+				break;
+			}
+			}
+		
 		}
 		this.outBody=bodyBuilder.toByteArray();
 		return this;
@@ -336,7 +439,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			if((cookieStr!=null)&&(cookieStr.length()>0))
 				h=h.header("Cookie", cookieStr);
 			h.doRequest(urlStr);
-			if (h.getResponseCode() == 302) {
+			if (h.getResponseCode() == 302) 
+			{
 				for(String key : h.getResponseHeaders().keySet())
 				{
 					System.out.println(key+"="+h.getResponseHeaders().get(key));
@@ -360,7 +464,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				}
 			}
 				
-			if (h.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			if (h.getResponseCode() == 200) 
+			{
 				InputStream in=h.getResponseBody();
 				int len=h.getResponseContentLength();
 				if((len > 0)&&((maxLength==0)||(len<=maxLength)))
@@ -379,7 +484,9 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 					return buf;
 				}
 			}
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			Log.errOut("HttpClient",e);
 			return null;
 		}
@@ -414,11 +521,14 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	public Map<String,List<String>> getHeaders(final String urlStr)
 	{
 		HttpClient h=null;
-		try {
+		try 
+		{
 			h=this.readTimeout(3000).connectTimeout(3000).method(Method.GET);
 			h.doRequest(urlStr);
 			return h.getResponseHeaders();
-		} catch (Exception e) {
+		}
+		catch (Exception e) 
+		{
 			Log.errOut("HttpClient",e);
 			return null;
 		}
@@ -432,7 +542,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
     public long getTickStatus() { return tickStatus; }
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID) {
+	public boolean tick(Tickable ticking, int tickID) 
+	{
 		return false;
 	}
 
