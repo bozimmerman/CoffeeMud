@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMFactoryThread;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -279,16 +280,34 @@ public class CMLib
 		if(t==Thread.currentThread())
 			throw new java.lang.ThreadDeath();
 		try{
-			t.interrupt();
-			try{Thread.sleep(sleepTime);}catch(Exception e){}
-			int att=0;
-			while((att++<attempts)&&t.isAlive())
+			
+			boolean stillAlive=false;
+			if(t instanceof CMFactoryThread)
 			{
-				try { Thread.sleep(sleepTime); }catch(Exception e){}
-				try { t.interrupt(); }catch(Exception e){}
+				Runnable r=CMLib.threads().findRunnableByThread(t);
+				t.interrupt();
+				for(int i=0;i<sleepTime;i++)
+				{
+					Thread.sleep(1);
+					if(CMLib.threads().findRunnableByThread(t)!=r)
+						return;
+				}
+				stillAlive=(CMLib.threads().findRunnableByThread(t)==r);
+			}
+			else
+			{
+				t.interrupt();
+				try{Thread.sleep(sleepTime);}catch(Exception e){}
+				int att=0;
+				while((att++<attempts)&&t.isAlive())
+				{
+					try { Thread.sleep(sleepTime); }catch(Exception e){}
+					try { t.interrupt(); }catch(Exception e){}
+				}
+				stillAlive=t.isAlive();
 			}
 			try {
-				if(t.isAlive()) 
+				if(stillAlive) 
 				{ 
 					java.lang.StackTraceElement[] s=t.getStackTrace();
 					StringBuffer dump = new StringBuffer("Unable to kill thread "+t.getName()+".  It is still running.\n\r");
