@@ -78,6 +78,8 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	{ 
 		synchronized(active)
 		{
+			if(t instanceof CMFactoryThread)
+				((CMFactoryThread)t).setRunnable(r);
 			active.put(r,t);
 		}
 	}
@@ -86,6 +88,9 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	{ 
 		synchronized(active)
 		{
+			Thread th=active.get(r);
+			if(th instanceof CMFactoryThread)
+				((CMFactoryThread)th).setRunnable(null);
 			active.remove(r);
 		}
 	}

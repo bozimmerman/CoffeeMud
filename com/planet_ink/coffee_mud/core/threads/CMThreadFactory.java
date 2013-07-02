@@ -40,7 +40,7 @@ public class CMThreadFactory implements ThreadFactory
 	}
 	public Thread newThread(Runnable r) 
 	{
-		final Thread t = new Thread(r,serverName+"#"+counter.addAndGet(1));
+		final Thread t = new CMFactoryThread(r,serverName+"#"+counter.addAndGet(1));
 		active.add(t);
 		return t;
 	}
