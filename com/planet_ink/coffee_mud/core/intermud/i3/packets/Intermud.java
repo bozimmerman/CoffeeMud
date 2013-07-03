@@ -276,7 +276,6 @@ public class Intermud implements Runnable, Persistent, Serializable
 							Log.errOut("Intermud","No I3 Ping sent in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-lastPingTime, TimeUnit.MILLISECONDS, false));
 							CMLib.threads().executeRunnable(new Runnable() {
 								public void run() {
-									try {} catch(Exception e){ CMLib.intermud().shutdown(); }
 									try {
 										CMLib.hosts().get(0).executeCommand("START I3");
 										Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
