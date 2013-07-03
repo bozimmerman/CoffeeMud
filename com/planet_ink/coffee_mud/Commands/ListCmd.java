@@ -1065,6 +1065,35 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
+	public StringBuilder listCharClasses(Session viewerS, Enumeration these, boolean shortList)
+	{
+		StringBuilder lines=new StringBuilder("");
+		if(!these.hasMoreElements()) return lines;
+		int column=0;
+		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
+		if(shortList)
+		{
+			Vector classNames=new Vector();
+			for(Enumeration e=these;e.hasMoreElements();)
+				classNames.addElement(((CharClass)e.nextElement()).ID());
+			lines.append(CMParms.toStringList(classNames));
+		}
+		else
+		for(Enumeration e=these;e.hasMoreElements();)
+		{
+			CharClass thisThang=(CharClass)e.nextElement();
+			if(++column>2)
+			{
+				lines.append("\n\r");
+				column=1;
+			}
+			lines.append(CMStrings.padRight(thisThang.ID()
+										+(thisThang.isGeneric()?"*":"")
+										+" ("+thisThang.baseClass()+")",COL_LEN));
+		}
+		lines.append("\n\r");
+		return lines;
+	}
 	public StringBuilder listRaceCats(Session viewerS, Enumeration these, boolean shortList)
 	{
 		StringBuilder lines=new StringBuilder("");
@@ -2184,6 +2213,86 @@ public class ListCmd extends StdCommand
 			s.colorOnlyPrint(str.toString(), true);
 	}
 	
+	public void listSessions(MOB mob, Vector commands)
+	{
+		String sort="";
+		if((commands!=null)&&(commands.size()>1))
+			sort=CMParms.combine(commands,1).trim().toUpperCase();
+		StringBuffer lines=new StringBuffer("\n\r^x");
+		lines.append(CMStrings.padRight("#",3)+"| ");
+		lines.append(CMStrings.padRight("Status",9)+"| ");
+		lines.append(CMStrings.padRight("Valid",5)+"| ");
+		lines.append(CMStrings.padRight("Name",17)+"| ");
+		lines.append(CMStrings.padRight("IP",17)+"| ");
+		lines.append(CMStrings.padRight("Idle",17)+"^.^N\n\r");
+		Vector broken=new Vector();
+		for(Session S : CMLib.sessions().allIterable())
+		{
+			String[] set=new String[6];
+			set[0]=CMStrings.padRight(""+broken.size(),3)+"| ";
+			set[1]=(S.isStopped()?"^H":"")+CMStrings.padRight(Session.STATUS_STR[S.getStatus()&Session.STATUSMASK_ALL],9)+(S.isStopped()?"^?":"")+"| ";
+			if (S.mob() != null)
+			{
+				set[2]=CMStrings.padRight(((S.mob().session()==S)?"Yes":"^HNO!^?"),5)+"| ";
+				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+S.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
+			}
+			else
+			{
+				set[2]=CMStrings.padRight("N/A",5)+"| ";
+				set[3]=CMStrings.padRight("NAMELESS",17)+"| ";
+			}
+			set[4]=CMStrings.padRight(S.getAddress(),17)+"| ";
+			set[5]=CMStrings.padRight(CMLib.english().returnTime(S.getIdleMillis(),0)+"",17);
+			broken.addElement(set);
+		}
+		Vector sorted=null;
+		int sortNum=-1;
+		if(sort.length()>0)
+		{
+			if("STATUS".startsWith(sort))
+				sortNum=1;
+			else
+			if("VALID".startsWith(sort))
+				sortNum=2;
+			else
+			if(("NAME".startsWith(sort))||("PLAYER".startsWith(sort)))
+				sortNum=3;
+			else
+			if(("IP".startsWith(sort))||("ADDRESS".startsWith(sort)))
+				sortNum=4;
+			else
+			if(("IDLE".startsWith(sort))||("MILLISECONDS".startsWith(sort)))
+				sortNum=5;
+		}
+		if(sortNum<0)
+			sorted=broken;
+		else
+		{
+			sorted=new Vector();
+			while(broken.size()>0)
+			{
+				int selected=0;
+				for(int s=1;s<broken.size();s++)
+				{
+					String[] S=(String[])broken.elementAt(s);
+					if(S[sortNum].compareToIgnoreCase(((String[])broken.elementAt(selected))[sortNum])<0)
+					   selected=s;
+				}
+				sorted.addElement(broken.elementAt(selected));
+				broken.removeElementAt(selected);
+			}
+		}
+		for(int s=0;s<sorted.size();s++)
+		{
+			String[] S=(String[])sorted.elementAt(s);
+			for(int i=0;i<S.length;i++)
+				lines.append(S[i]);
+			lines.append("\n\r");
+		}
+		if(!mob.isMonster())
+			mob.session().colorOnlyPrintln(lines.toString());
+	}
+	
 	public void archonlist(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -2238,7 +2347,7 @@ public class ListCmd extends StdCommand
 		case 9: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.behaviors()).toString()); break;
 		case 10: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.exits()).toString()); break;
 		case 11: s.wraplessPrintln(listRaces(s,CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
-		case 12: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.charClasses()).toString()); break;
+		case 12: s.wraplessPrintln(listCharClasses(s,CMClass.charClasses(),rest.equalsIgnoreCase("SHORT")).toString()); break;
 		case 13: s.wraplessPrintln(listSubOps(mob.session()).toString()); break;
 		case 14: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SPELL).toString()); break;
 		case 15: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SONG).toString()); break;
@@ -2311,7 +2420,7 @@ public class ListCmd extends StdCommand
 		case 64: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
 		case 65: listNews(mob,commands); break;
 		case 66: listAreas(mob, commands); break;
-		case 67: { CMLib.commands().forceStandardCommand(mob, "SESSIONS", new XVector("SESSIONS")); break; }
+		case 67: { listSessions(mob,commands); break; }
 		case 999: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");

@@ -6,8 +6,8 @@ ban boot beacon chargen cloak
 copy create destroy deviations dress dumpfile 
 expire export generate gmodify goto i3 imc2 
 import jrun kill link list load merge modify 
-nopurge order pause poof possess purge reset restring
-save sessions shell shutdown snoop stat
+nopurge order pause poof possess purge reset
+restring save shell shutdown snoop stat 
 sysmsgs take ticktock trailto transfer
 unlink unload visible where wizemote wizinv
 

@@ -51,6 +51,7 @@ public class Prop_StatTrainer extends Property
 	{
 		if((!noteach)&&(CMath.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH)))
 			affectedMOB.setBitmap(CMath.unsetb(affectedMOB.getBitmap(),MOB.ATT_NOTEACH));
+		
 		for(int i: CharStats.CODES.BASE())
 			affectableStats.setStat(i,stats[i]);
 	}
