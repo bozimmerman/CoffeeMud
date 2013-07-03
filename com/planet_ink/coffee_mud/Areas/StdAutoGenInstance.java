@@ -80,6 +80,27 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return parentA;
 	}
 	
+	@Override public int[] getAreaIStats()
+	{
+		Area parentArea=getParentArea();
+		if(parentArea != null)
+			return parentArea.getAreaIStats();
+		// how about this: if its a child, allow build to happen,
+		// if it's not, call super and undo its good deeds
+		//TODO: fix the below
+		return super.getAreaIStats();
+		
+	}
+	
+	@Override public synchronized StringBuffer getAreaStats()
+	{
+		Area parentArea=getParentArea();
+		if(parentArea != null)
+			return parentArea.getAreaStats();
+		//TODO: fix the below
+		return super.getAreaStats();
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
