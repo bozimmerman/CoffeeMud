@@ -206,6 +206,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 		return (m.state == -1);
 	}
 
+	private volatile long		lastPingTime;
 	private boolean 			connected;
 	private Socket  			connection;
 	private Thread  			input_thread;
@@ -270,6 +271,19 @@ public class Intermud implements Runnable, Persistent, Serializable
 				@Override public long getTickStatus() { return tickStatus; }
 				@Override public boolean tick(Tickable ticking, int tickID) {
 					try {
+						if((System.currentTimeMillis()-lastPingTime)>(60  * 60 * 1000)) // one hour
+						{
+							Log.errOut("Intermud","No I3 Ping sent in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-lastPingTime, TimeUnit.MILLISECONDS, false));
+							CMLib.threads().executeRunnable(new Runnable() {
+								public void run() {
+									try {} catch(Exception e){ CMLib.intermud().shutdown(); }
+									try {
+										CMLib.hosts().get(0).executeCommand("START I3");
+										Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
+									} catch(Exception e){}
+								}
+							});
+						}
 						save();
 					}
 					catch( PersistenceException e ) {
@@ -475,7 +489,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 			input = null;
 			connected = false;
 		}
-		long lastPingTime = System.currentTimeMillis();
+		lastPingTime = System.currentTimeMillis();
 		
 		while( connected && (!shutdown)) {
 			Vector data;
@@ -513,7 +527,6 @@ public class Intermud implements Runnable, Persistent, Serializable
 					});
 				}
 			}
-			
 			
 			String str;
 
