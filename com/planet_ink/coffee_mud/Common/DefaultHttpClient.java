@@ -191,7 +191,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		final IOException cleanException=new IOException("Connection closed by remote host");
 		try 
 		{ 
-			while(in.read()!=-1); /* clear the stream */
+			while(in.read()!=-1){} /* clear the stream */
 			throw cleanException;
 		} 
 		catch(IOException e) 
