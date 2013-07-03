@@ -99,18 +99,19 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			if(parentArea==null)
 			{
 				Enumeration<AreaInstanceChild> childE=instanceChildren.elements();
-				if(!childE.hasMoreElements())
-					return emptyStats;
-				statData=new int[Area.Stats.values().length];
 				int ct=0;
-				for(;childE.hasMoreElements();)
+				if(childE.hasMoreElements())
 				{
-					int[] theseStats=childE.nextElement().A.getAreaIStats();
-					if(theseStats != emptyStats)
+					statData=new int[Area.Stats.values().length];
+					for(;childE.hasMoreElements();)
 					{
-						ct++;
-						for(int i=0;i<theseStats.length;i++)
-							statData[i]+=theseStats[i];
+						int[] theseStats=childE.nextElement().A.getAreaIStats();
+						if(theseStats != emptyStats)
+						{
+							ct++;
+							for(int i=0;i<theseStats.length;i++)
+								statData[i]+=theseStats[i];
+						}
 					}
 				}
 				if(ct==0)
