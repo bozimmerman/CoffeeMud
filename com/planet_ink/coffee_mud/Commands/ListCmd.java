@@ -1436,7 +1436,7 @@ public class ListCmd extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			String s=V.get(v);
-			if(s.indexOf(" Help  Help")==19)
+			if(s.indexOf(" help  Help")>0)
 			{
 				int x=s.indexOf("wanted help on",19);
 				String helpEntry=s.substring(x+14).trim().toLowerCase();
@@ -2097,7 +2097,7 @@ public class ListCmd extends StdCommand
 				{
 					commands.remove(0);
 					colNames=new Vector<String>();
-					addTos=sortBys;
+					addTos=colNames;
 				}
 				else
 				if(addTos!=null)
