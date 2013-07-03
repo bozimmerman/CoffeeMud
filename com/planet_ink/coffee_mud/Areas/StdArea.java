@@ -75,6 +75,8 @@ public class StdArea implements Area
 	protected SVector<ScriptingEngine>scripts   	 =new SVector<ScriptingEngine>(1);
 	protected final Area 			  me			 =this;
 
+	protected final static int[]	  emptyStats	 =new int[Area.Stats.values().length];
+	
 	public void initializeClass(){}
 	public long flags(){return 0;}
 	public void setAuthorID(String authorID){author=authorID;}
@@ -1048,8 +1050,8 @@ public class StdArea implements Area
 		{
 			Collections.sort(levelRanges);
 			Collections.sort(alignRanges);
-			statData[Area.Stats.MED_LEVEL.ordinal()]=((Integer)levelRanges.get((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0))))).intValue();
-			statData[Area.Stats.MED_ALIGNMENT.ordinal()]=((Integer)alignRanges.get((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0))))).intValue();
+			statData[Area.Stats.MED_LEVEL.ordinal()]=levelRanges.get((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0)))).intValue();
+			statData[Area.Stats.MED_ALIGNMENT.ordinal()]=alignRanges.get((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0)))).intValue();
 			statData[Area.Stats.AVG_LEVEL.ordinal()]=(int)Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()],statData[Area.Stats.POPULATION.ordinal()]));
 			statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=(int)Math.round(((double)totalAlignments)/((double)statData[Area.Stats.POPULATION.ordinal()]));
 		}
@@ -1059,7 +1061,7 @@ public class StdArea implements Area
 	public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-			return new int[Area.Stats.values().length];
+			return emptyStats;
 		int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
 		if(statData!=null) 
 			return statData;
@@ -1072,13 +1074,23 @@ public class StdArea implements Area
 		return statData;
 	}
 	
+	public int getPercentRoomsCached() 
+	{ 
+		return 100; 
+	}
+	
 	protected StringBuffer buildAreaStats(int[] statData)
 	{
-		StringBuffer s=new StringBuffer("");
+		StringBuffer s=new StringBuffer("^N");
 		s.append(description()+"\n\r");
 		if(author.length()>0)
-			s.append("Author         : "+author+"\n\r");
-		s.append("Number of rooms: "+statData[Area.Stats.VISITABLE_ROOMS.ordinal()]+"\n\r");
+			s.append("Author         : ^H"+author+"^N\n\r");
+		if(statData == emptyStats)
+		{
+			s.append("\n\r^HFurther information about this area is not available at this time.^N\n\r");
+			return s;
+		}
+		s.append("Number of rooms: ^H"+statData[Area.Stats.VISITABLE_ROOMS.ordinal()]+"^N\n\r");
 		Faction theFaction=null;
 		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
@@ -1089,16 +1101,16 @@ public class StdArea implements Area
 		if(statData[Area.Stats.POPULATION.ordinal()]==0)
 		{
 			if(getProperRoomnumbers().roomCountAllAreas()/2<properRooms.size())
-				s.append("Population     : 0\n\r");
+				s.append("Population     : ^H0^N\n\r");
 		}
 		else
 		{
-			s.append("Population     : "+statData[Area.Stats.POPULATION.ordinal()]+"\n\r");
+			s.append("Population     : ^H"+statData[Area.Stats.POPULATION.ordinal()]+"^N\n\r");
 			String currName=CMLib.beanCounter().getCurrency(this);
 			if(currName.length()>0)
-				s.append("Currency       : "+CMStrings.capitalizeAndLower(currName)+"\n\r");
+				s.append("Currency       : ^H"+CMStrings.capitalizeAndLower(currName)+"^N\n\r");
 			else
-				s.append("Currency       : Gold coins (default)\n\r");
+				s.append("Currency       : ^HGold coins (default)^N\n\r");
 			LegalBehavior B=CMLib.law().getLegalBehavior(this);
 			if(B!=null)
 			{
@@ -1107,14 +1119,14 @@ public class StdArea implements Area
 				{
 					Clan C=CMLib.clans().getClan(ruler);
 					if(C!=null)
-						s.append("Controlled by  : "+C.getGovernmentName()+" "+C.name()+"\n\r");
+						s.append("Controlled by  : ^H"+C.getGovernmentName()+" "+C.name()+"^N\n\r");
 				}
 			}
-			s.append("Level range    : "+statData[Area.Stats.MIN_LEVEL.ordinal()]+" to "+statData[Area.Stats.MAX_LEVEL.ordinal()]+"\n\r");
-			s.append("Average level  : "+statData[Area.Stats.AVG_LEVEL.ordinal()]+"\n\r");
-			s.append("Median level   : "+statData[Area.Stats.MED_LEVEL.ordinal()]+"\n\r");
-			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"\n\r");
-			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()])+"\n\r");
+			s.append("Level range    : ^H"+statData[Area.Stats.MIN_LEVEL.ordinal()]+"^N to ^H"+statData[Area.Stats.MAX_LEVEL.ordinal()]+"^N\n\r");
+			s.append("Average level  : ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
+			s.append("Median level   : ^H"+statData[Area.Stats.MED_LEVEL.ordinal()]+"^N\n\r");
+			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"^N\n\r");
+			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()])+"^N\n\r");
 			try{
 				boolean blurbed=false;
 				String flag=null;

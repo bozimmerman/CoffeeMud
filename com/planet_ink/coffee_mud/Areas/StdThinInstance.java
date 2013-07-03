@@ -274,6 +274,53 @@ public class StdThinInstance extends StdThinArea
 		}
 	}
 
+	@Override public int[] getAreaIStats()
+	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return emptyStats;
+		Area parentArea=getParentArea();
+		final String areaName = (parentArea==null)?Name():parentArea.Name();
+		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
+		if(statData!=null) 
+			return statData;
+		synchronized(("STATS_"+areaName).intern())
+		{
+			if(parentArea==null)
+			{
+				statData=super.getAreaIStats();
+				if(statData==emptyStats)
+				{
+					Enumeration<AreaInstanceChild> childE=instanceChildren.elements();
+					if(!childE.hasMoreElements())
+						return emptyStats;
+					statData=new int[Area.Stats.values().length];
+					int ct=0;
+					for(;childE.hasMoreElements();)
+					{
+						int[] theseStats=childE.nextElement().A.getAreaIStats();
+						if(theseStats != emptyStats)
+						{
+							ct++;
+							for(int i=0;i<theseStats.length;i++)
+								statData[i]+=theseStats[i];
+						}
+					}
+					if(ct==0)
+						return emptyStats;
+					for(int i=0;i<statData.length;i++)
+						statData[i]=statData[i]/ct;
+				}
+				Resources.removeResource("HELP_"+areaName.toUpperCase());
+				Resources.submitResource("STATS_"+areaName.toUpperCase(),statData);
+			}
+			else
+			{
+				return super.getAreaIStats();
+			}
+		}
+		return statData;
+	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))

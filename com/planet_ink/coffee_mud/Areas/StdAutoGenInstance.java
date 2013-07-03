@@ -80,25 +80,52 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return parentA;
 	}
 	
-	@Override public int[] getAreaIStats()
-	{
-		Area parentArea=getParentArea();
-		if(parentArea != null)
-			return parentArea.getAreaIStats();
-		// how about this: if its a child, allow build to happen,
-		// if it's not, call super and undo its good deeds
-		//TODO: fix the below
-		return super.getAreaIStats();
-		
+	@Override public int getPercentRoomsCached() 
+	{ 
+		return (getParentArea()==null)?0:100; 
 	}
 	
-	@Override public synchronized StringBuffer getAreaStats()
+	@Override public int[] getAreaIStats()
 	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return emptyStats;
 		Area parentArea=getParentArea();
-		if(parentArea != null)
-			return parentArea.getAreaStats();
-		//TODO: fix the below
-		return super.getAreaStats();
+		final String areaName = (parentArea==null)?Name():parentArea.Name();
+		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
+		if(statData!=null) 
+			return statData;
+		synchronized(("STATS_"+areaName).intern())
+		{
+			if(parentArea==null)
+			{
+				Enumeration<AreaInstanceChild> childE=instanceChildren.elements();
+				if(!childE.hasMoreElements())
+					return emptyStats;
+				statData=new int[Area.Stats.values().length];
+				int ct=0;
+				for(;childE.hasMoreElements();)
+				{
+					int[] theseStats=childE.nextElement().A.getAreaIStats();
+					if(theseStats != emptyStats)
+					{
+						ct++;
+						for(int i=0;i<theseStats.length;i++)
+							statData[i]+=theseStats[i];
+					}
+				}
+				if(ct==0)
+					return emptyStats;
+				for(int i=0;i<statData.length;i++)
+					statData[i]=statData[i]/ct;
+				Resources.removeResource("HELP_"+areaName.toUpperCase());
+				Resources.submitResource("STATS_"+areaName.toUpperCase(),statData);
+			}
+			else
+			{
+				statData=buildAreaIStats();
+			}
+		}
+		return statData;
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
@@ -352,6 +379,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					newMobList.add(new WeakReference<MOB>(msg.source()));
 					final AreaInstanceChild child = new AreaInstanceChild(redirectA,newMobList); 
 					instanceChildren.add(child);
+					
+					getAreaIStats(); // if this is the first child ever, this will force stat making
 					
 					Room R=redirectA.getRoom(redirectA.Name()+"#0");
 					if(R!=null) 

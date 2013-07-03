@@ -65,6 +65,31 @@ public class StdThinGridArea extends StdGridArea
 		}
 		return R;
 	}
+	
+	@Override public int getPercentRoomsCached() 
+	{ 
+		final double totalRooms=getProperRoomnumbers().roomCountAllAreas();
+		if(totalRooms==0.0)
+			return 100;
+		final double currentRooms=getCachedRoomnumbers().roomCountAllAreas();
+		return (int)Math.round((currentRooms/totalRooms)*100.0);
+	}
+	
+	@Override protected int[] buildAreaIStats()
+	{
+		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+			return emptyStats;
+		final int totalRooms=getProperRoomnumbers().roomCountAllAreas();
+		final int percent=getPercentRoomsCached();
+		if((totalRooms>15)&&(percent<90))
+			return emptyStats;
+		if((totalRooms>5)&&(percent<50))
+			return emptyStats;
+		if(percent<10)
+			return emptyStats;
+		return super.buildAreaIStats();
+	}
+	
 	public boolean isRoom(String roomID)
 	{
 		return getProperRoomnumbers().contains(roomID);
