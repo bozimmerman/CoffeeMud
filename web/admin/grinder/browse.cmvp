@@ -82,7 +82,7 @@
 	</script>
 </head>
 <body BGCOLOR=BLACK>
-<FORM NAME=BROWSE TARGET=_top METHOD=POST ACTION="browse.cmvp">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=BROWSE TARGET=_top METHOD=POST ACTION="browse.cmvp">
 @if?CheckReqParm?FUNCTION=DELDIR@<FONT COLOR=RED>@FileMgr?DELETEDIR@</FONT><BR>@endif@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
@@ -137,7 +137,7 @@
 <a href="javascript:NewFile('@RequestParametersEncoded@');"><IMG BORDER=0 SRC=images/document_new.gif alt="Create New File" title="Create New File"><FONT COLOR=AQUA>*new file*</FONT></a><BR>
 </FORM>
 <HR>
-<FORM NAME=UPLOADNAMESEARCH TARGET=_top ENCTYPE="multipart/form-data" ACTION=/grinder/browse.cmvp METHOD=POST>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=UPLOADNAMESEARCH TARGET=_top ENCTYPE="multipart/form-data" ACTION=/grinder/browse.cmvp METHOD=POST>
 <FONT COLOR=CYAN>*search for filenames (reg. exp.)*</FONT>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
@@ -146,7 +146,7 @@
 <INPUT TYPE=SUBMIT NAME=SUBMIT VALUE=SUBMIT>
 </FORM>
 <HR>
-<FORM NAME=UPLOADSEARCH TARGET=_top ENCTYPE="multipart/form-data" ACTION=/grinder/browse.cmvp METHOD=POST>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=UPLOADSEARCH TARGET=_top ENCTYPE="multipart/form-data" ACTION=/grinder/browse.cmvp METHOD=POST>
 <FONT COLOR=CYAN>*search inside files (reg. exp.)*</FONT>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
@@ -155,7 +155,7 @@
 <INPUT TYPE=SUBMIT NAME=SUBMIT VALUE=SUBMIT>
 </FORM>
 <HR>
-<FORM NAME=UPLOADUPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=/grinder/browse.cmvp METHOD=POST>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=UPLOADUPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=/grinder/browse.cmvp METHOD=POST>
 <FONT COLOR=CYAN>*upload a file*</FONT>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">

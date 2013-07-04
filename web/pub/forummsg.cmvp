@@ -110,7 +110,7 @@
 </head>
 
 <body>
-<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forummsg.cmvp">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forummsg.cmvp">
 @if?CheckReqParm?FUNCTION=DELETEREPLY@ 
 	@AddRequestParameter?DELMSG=@@JournalFunction?DELETEREPLY@@ @
 @endif@

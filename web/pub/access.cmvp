@@ -30,7 +30,7 @@
 		<br>
 		<a href="/"><FONT COLOR=BLUE>Back to public pages</FONT></A><br>
 		<br><INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
-		<FORM NAME=ACCESS METHOD=POST ACTION=access.cmvp TARGET=_top>
+		<FORM  ACCEPT-CHARSET="UTF-8" NAME=ACCESS METHOD=POST ACTION=access.cmvp TARGET=_top>
 		@if?IsAccountSystem@
 			Please enter one of your CoffeeMud characters and your Account password to gain access.<BR>
 			If you do not have an account or any characters, click the Back link above and select Play NOW!<P>
@@ -53,7 +53,7 @@
 		</CENTER>
 		</FORM>
 	@else@
-		<FORM NAME=ACCESS METHOD=POST ACTION=access.cmvp TARGET=_top>
+		<FORM  ACCEPT-CHARSET="UTF-8" NAME=ACCESS METHOD=POST ACTION=access.cmvp TARGET=_top>
 		<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 		<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
 		<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">

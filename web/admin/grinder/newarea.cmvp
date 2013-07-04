@@ -17,7 +17,7 @@
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <h3>MUDGrinder -- Create a New Area</H3>
 <br>
-<FORM NAME=NEWAREA METHOD=POST ACTION="/grinder/newarea2.cmvp" TARGET=_top>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=NEWAREA METHOD=POST ACTION="/grinder/newarea2.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <TABLE WIDTH=330 BORDER=1>
 <TR><TD ALIGN=RIGHT><FONT COLOR=WHITE><B>Select an area class:</B></FONT></TD>
@@ -31,7 +31,7 @@
 </FORM>
 @if?CheckAuthCode?AUTH_IMPORTROOMS=true@
 	<P>
-	<FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=importarea.cmvp METHOD=POST>
+	<FORM  ACCEPT-CHARSET="UTF-8" NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=importarea.cmvp METHOD=POST>
 	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 	<CENTER><FONT COLOR=WHITE><I>or</I></FONT></CENTER>
 	<P>

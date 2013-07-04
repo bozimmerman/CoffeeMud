@@ -84,7 +84,7 @@
 
 <body>
 <script language="JavaScript" type="text/javascript" src="textedit/nicEdit.js"></script>
-<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forumnew.cmvp">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forumnew.cmvp">
 @if?CheckReqParm?!JOURNALMESSAGE=@
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPARENT VALUE="@RequestParameter?JOURNALPARENT@">

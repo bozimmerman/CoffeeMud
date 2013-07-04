@@ -76,7 +76,7 @@
 	</TR>
 	</TABLE>
 	
-		<FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="questmaker.cmvp">
+		<FORM  ACCEPT-CHARSET="UTF-8" NAME=QUESTS TARGET=_top METHOD=POST ACTION="questmaker.cmvp">
 		@QuestMaker?@@RequestParameter?FUNCTION@@ @ <!-- this will update qmpage?-->
 		@if?CheckReqParm?FUNCTION=FINISH@
 		@if?CheckReqParm?QMPAGEERRORS=@

@@ -50,7 +50,7 @@
 <body BGCOLOR=BLACK>
 <CENTER>
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
-<FORM NAME=JOURNAL TARGET=_top METHOD=POST ACTION="sfideas.cmvp">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=JOURNAL TARGET=_top METHOD=POST ACTION="sfideas.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
@@ -101,7 +101,7 @@
 				@if?!CheckReqParm?JOURNAL=@
 					@if?!CheckReqParm?JOURNALMESSAGE=@
 						<FONT COLOR=YELLOW>Message: #@RequestParameter?JOURNALMESSAGE@ <b>For Project:</b> CoffeeMud<BR>
-						<form NAME="SOURCEFORGE" ID="SOURCEFORGE" method="POST" enctype="multipart/form-data" ACTION="http://sourceforge.net/tracker/">
+						<form ACCEPT-CHARSET="UTF-8" NAME="SOURCEFORGE" ID="SOURCEFORGE" method="POST" enctype="multipart/form-data" ACTION="http://sourceforge.net/tracker/">
 						<input type="hidden" name="group_id" value="110299">
 						<input type="hidden" name="atid" value="655944">
 						<input type="hidden" NAME="func" value="postadd">

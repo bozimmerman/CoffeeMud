@@ -97,7 +97,7 @@
 <BR>
 @if?CheckReqParm?PLAYER=@
 	@if?CheckReqParm?ROOM=ANY@
-		<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editnewitemdone.cmvp">
+		<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editnewitemdone.cmvp">
 		<INPUT TYPE=HIDDEN NAME=ROOM VALUE="ANY">
 		<INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
 		<SCRIPT LANGUAGE=JavaScript>
@@ -106,7 +106,7 @@
 		//-->
 		</SCRIPT>
 	@else@
-		<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/@if?!CheckReqParm?MOB=@editmobitemdone.cmvp@else@editroomitemdone.cmvp@endif@">
+		<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/@if?!CheckReqParm?MOB=@editmobitemdone.cmvp@else@editroomitemdone.cmvp@endif@">
 		<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
 		<INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
 		<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
@@ -114,7 +114,7 @@
 		<INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
 	@endif@
 @else@
-	<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editplayeritemdone.cmvp">
+	<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editplayeritemdone.cmvp">
 	<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerID@">
 @endif@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">

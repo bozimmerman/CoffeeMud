@@ -24,7 +24,7 @@
 	</TD>
 	</TR>
 	</TABLE>
-	<FORM NAME=RTEMPL TARGET=_top METHOD=POST ACTION="rtemplateedit.cmvp">
+	<FORM  ACCEPT-CHARSET="UTF-8" NAME=RTEMPL TARGET=_top METHOD=POST ACTION="rtemplateedit.cmvp">
 	
 	</FORM>
 </HTML>

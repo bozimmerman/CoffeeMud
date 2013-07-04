@@ -24,7 +24,7 @@
 	</script>
 </head>
 <body BGCOLOR=WHITE>
-<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="picture.cmvp">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="picture.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 @if?CheckReqParm?PLAYER=@
@@ -62,7 +62,7 @@
 <BR CLEAR=LEFT>
 <FONT COLOR=BLACK><B>All images are automatically sized to 70x70 or 10x10.</B><BR>
 <FONT COLOR=BLACK><B>Images may be in JPEG, GIF, or BMP format, but no images over 50 kilobytes will be accepted.</B><BR>
-<FORM NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=picture.cmvp METHOD=POST>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=UPLOAD TARGET=_top ENCTYPE="multipart/form-data" ACTION=picture.cmvp METHOD=POST>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
 <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">

@@ -17,7 +17,7 @@
 
 <body>
 <h3>Stat Recovery Rates/4 Ticks</h3><P>
-<FORM NAME=POOPY TARGET=_top METHOD=POST ACTION="recovery.cmvp">
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=POOPY TARGET=_top METHOD=POST ACTION="recovery.cmvp">
 <SELECT NAME=WHICH ONCHANGE="reload();">
 <OPTION VALUE=HP @if?CheckReqParm?WHICH=HP@SELECTED@endif@>Hit Points
 <OPTION VALUE=MN @if?CheckReqParm?WHICH=MN@SELECTED@endif@>Mana
