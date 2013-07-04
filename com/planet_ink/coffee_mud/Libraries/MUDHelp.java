@@ -656,7 +656,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB)
-	{ return getHelpText(helpStr,rHelpFile,forMOB,false);}
+	{
+		return getHelpText(helpStr,rHelpFile,forMOB,false);
+	}
+	
 	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB, boolean noFix)
 	{
 		helpStr=helpStr.toUpperCase().trim();

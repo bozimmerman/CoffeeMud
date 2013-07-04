@@ -114,7 +114,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						}
 					}
 				}
-				if(ct==0)
+				if((ct==0)||(statData==null))
 					return emptyStats;
 				for(int i=0;i<statData.length;i++)
 					statData[i]=statData[i]/ct;
