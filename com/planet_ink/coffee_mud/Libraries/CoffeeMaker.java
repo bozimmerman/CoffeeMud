@@ -2359,7 +2359,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(item instanceof Weapon)
 				((Weapon)item).setAmmoCapacity(CMLib.xml().getIntFromPieces(buf,"CAPA"));
 			item.setRawLogicalAnd(CMLib.xml().getBoolFromPieces(buf,"WORNL"));
-			item.setRawProperLocationBitmap(CMLib.xml().getIntFromPieces(buf,"WORNB"));
+			item.setRawProperLocationBitmap(CMLib.xml().getLongFromPieces(buf,"WORNB"));
 			item.setReadableText(CMLib.xml().getValFromPieces(buf,"READ"));
 
 		}
