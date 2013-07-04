@@ -4,6 +4,8 @@ import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
@@ -72,6 +74,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 	private final LinkedList<DataBuffers>writeables		 = new LinkedList<DataBuffers>();
 	
 	private final static String			EOLN			 = HTTPIOHandler.EOLN;
+	private static final Charset		utf8			 = Charset.forName("UTF-8");
 	
 	private enum ParseState { REQ_INLINE, REQ_EOLN, HDR_INLINE, HDR_EOLN, BODY, FORWARD, DONE } // state enum for high level parsing
 	
@@ -332,7 +335,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					{
 						if (c=='\n')
 						{
-							String requestLine = new String(buffer.array(), lastEOLIndex, buffer.position()-lastEOLIndex-2);
+							String requestLine = new String(Arrays.copyOfRange(buffer.array(), lastEOLIndex, buffer.position()-2),utf8);
 							lastEOLIndex=buffer.position();
 							state=ParseState.HDR_INLINE;
 							if (requestLine.length()>0)
@@ -359,7 +362,7 @@ public class HTTPReader implements HTTPIOHandler, Runnable
 					{
 						if (c=='\n')
 						{
-							final String headerLine = new String(buffer.array(), lastEOLIndex, buffer.position()-lastEOLIndex-2);
+							final String headerLine = new String(Arrays.copyOfRange(buffer.array(), lastEOLIndex, buffer.position()-2),utf8);
 							lastEOLIndex=buffer.position();
 							if(headerLine.length()>0) 
 							{

@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -61,6 +62,7 @@ public class MWHTTPRequest implements HTTPRequest
 	private static final String 		EOLN				= HTTPIOHandler.EOLN; // a copy of the official end of line
 	private static final String 		BOUNDARY_KEY_DEF	= "boundary="; // prefix for boundary var markers for multi-part forms
 	private static final InputStream 	emptyInput			= new ByteArrayInputStream(new byte[0]); // quick, easy, empty input
+	private static final Charset		utf8				= Charset.forName("UTF-8");
 
 	private HTTPMethod 	 		 requestType  = null;		// request type defs to null so that method-not-allowed is generated 
 	private String 	 			 requestString= null;		// full request line, including method, path, etc..
@@ -540,7 +542,7 @@ public class MWHTTPRequest implements HTTPRequest
 			case HEADER:
 				if(startsWith(buf,i,eolnBytes))
 				{
-					final String headerLine=new String(buf,stateIndex,i-stateIndex);
+					final String headerLine=new String(Arrays.copyOfRange(buf,stateIndex,i),utf8);
 					i+=eolnBytes.length-1;
 					stateIndex=i+1;
 					state=BoundaryState.HEADER;
@@ -596,7 +598,7 @@ public class MWHTTPRequest implements HTTPRequest
 					if(currentPart.getContentType().startsWith("application/x-www-form-urlencoded"))
 					{
 						if (isDebugging) debugLogger.finest("Got multipart url data");
-						parseUrlEncodedKeypairs(new String(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer)));
+						parseUrlEncodedKeypairs(new String(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer),utf8));
 						allParts.remove(currentPart);
 					}
 					else
@@ -607,7 +609,7 @@ public class MWHTTPRequest implements HTTPRequest
 					{
 						final String key=currentPart.getVariables().get("name").toLowerCase();
 						if (isDebugging) debugLogger.finest("Got multipart "+currentPart.getContentType()+" "+currentPart.getDisposition()+" named "+key);
-						final String value=new String(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer));
+						final String value=new String(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer),utf8);
 						if(urlParmsFound.containsKey(key) && !overwriteDups)
 						{
 							int x=1;
@@ -688,7 +690,7 @@ public class MWHTTPRequest implements HTTPRequest
 		&&(headers.get(HTTPHeader.CONTENT_TYPE.lowerCaseName()).startsWith("application/x-www-form-urlencoded")))
 		{
 			bodyStream = emptyInput;
-			final String byteStr=new String(buffer.array());
+			final String byteStr=new String(buffer.array(),utf8);
 			parseUrlEncodedKeypairs(byteStr);
 			if (isDebugging) debugLogger.finest("Urlencoded data: "+byteStr);
 			buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
