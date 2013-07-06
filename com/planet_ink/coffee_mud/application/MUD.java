@@ -1091,7 +1091,7 @@ public class MUD extends Thread implements MudHost
 		super.interrupt();
 	}
 
-	public static int activeThreadCount(ThreadGroup tGroup)
+	public static int activeThreadCount(ThreadGroup tGroup, boolean nonDaemonsOnly)
 	{
 		int realAC=0;
 		int ac = tGroup.activeCount();
@@ -1099,13 +1099,13 @@ public class MUD extends Thread implements MudHost
 		tGroup.enumerate(tArray);
 		for (int i = 0; i<ac; ++i)
 		{
-			if (tArray[i] != null && tArray[i].isAlive())
+			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != Thread.currentThread()) && ((!nonDaemonsOnly)||(!tArray[i].isDaemon())))
 				realAC++;
 		}
 		return realAC;
 	}
 
-	private static int killCount(ThreadGroup tGroup, Thread thisOne)
+	private static int killCount(ThreadGroup tGroup, boolean nonDaemonsOnly)
 	{
 		int killed=0;
 
@@ -1114,7 +1114,7 @@ public class MUD extends Thread implements MudHost
 		tGroup.enumerate(tArray);
 		for (int i = 0; i<ac; ++i)
 		{
-			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != thisOne))
+			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != Thread.currentThread()) && ((!nonDaemonsOnly)||(!tArray[i].isDaemon())))
 			{
 				CMLib.killThread(tArray[i],500,10);
 				killed++;
@@ -1123,7 +1123,7 @@ public class MUD extends Thread implements MudHost
 		return killed;
 	}
 
-	private static void threadList(ThreadGroup tGroup)
+	private static void threadList(ThreadGroup tGroup, boolean nonDaemonsOnly)
 	{
 		if(tGroup==null)
 			return;
@@ -1132,7 +1132,7 @@ public class MUD extends Thread implements MudHost
 		tGroup.enumerate(tArray);
 		for (int i = 0; i<ac; ++i)
 		{
-			if (tArray[i] != null && tArray[i].isAlive())
+			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != Thread.currentThread()) && ((!nonDaemonsOnly)||(!tArray[i].isDaemon())))
 			{
 				String summary;
 				if(tArray[i] instanceof MudHost)
@@ -1443,15 +1443,17 @@ public class MUD extends Thread implements MudHost
 			System.runFinalization();
 			try{Thread.sleep(1000);}catch(Exception e){}
 
-			if(activeThreadCount(Thread.currentThread().getThreadGroup())>1)
+			if(activeThreadCount(Thread.currentThread().getThreadGroup(),true)>1)
 			{
 				try{ Thread.sleep(1000);}catch(Exception e){}
-				killCount(Thread.currentThread().getThreadGroup(),Thread.currentThread());
+				killCount(Thread.currentThread().getThreadGroup(),true);
 				try{ Thread.sleep(1000);}catch(Exception e){}
-				if(activeThreadCount(Thread.currentThread().getThreadGroup())>1)
+				if(activeThreadCount(Thread.currentThread().getThreadGroup(),true)>1)
 				{
-					Log.sysOut(Thread.currentThread().getName(),"WARNING: " + activeThreadCount(Thread.currentThread().getThreadGroup()) +" other thread(s) are still active!");
-					threadList(Thread.currentThread().getThreadGroup());
+					Log.sysOut(Thread.currentThread().getName(),"WARNING: " 
+						+ activeThreadCount(Thread.currentThread().getThreadGroup(),true) 
+						+" other thread(s) are still active!");
+					threadList(Thread.currentThread().getThreadGroup(),true);
 				}
 			}
 			if(!bringDown)

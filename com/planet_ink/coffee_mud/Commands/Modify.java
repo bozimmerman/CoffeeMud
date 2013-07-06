@@ -885,6 +885,7 @@ public class Modify extends StdCommand
 		if(thisExit.isGeneric() && (commands.size()<5))
 		{
 			CMLib.genEd().modifyGenExit(mob,thisExit);
+			updateChangedExit(mob,mob.location(),thisExit,copyExit);
 			return;
 		}
 		
