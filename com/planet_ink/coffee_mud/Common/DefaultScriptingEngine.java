@@ -4483,45 +4483,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							  Object[] tmp,
 							  String evaluable)
 	{
-		String uevaluable=evaluable.toUpperCase().trim();
+		if(evaluable.length()==0) return "";
 		StringBuffer results = new StringBuffer("");
-		while(evaluable.length()>0)
+		int y=evaluable.indexOf('(');
+		int z=evaluable.indexOf(')',y);
+		String preFab=(y>=0)?evaluable.substring(0,y).toUpperCase().trim():"";
+		Integer funcCode=funcH.get(preFab);
+		if(funcCode==null) funcCode=Integer.valueOf(0);
+		if((y<0)||(z<y))
 		{
-			int y=evaluable.indexOf('(');
-			int z=evaluable.indexOf(")");
-			String preFab=(y>=0)?uevaluable.substring(0,y).trim():"";
-			Integer funcCode=funcH.get(preFab);
-			if(funcCode==null) funcCode=Integer.valueOf(0);
-			if(y==0)
-			{
-				int depth=0;
-				int i=0;
-				while((++i)<evaluable.length())
-				{
-					char c=evaluable.charAt(i);
-					if((c==')')&&(depth==0))
-					{
-						String expr=evaluable.substring(1,i);
-						evaluable=evaluable.substring(i+1);
-						uevaluable=uevaluable.substring(i+1);
-						results.append(functify(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,expr));
-						break;
-					}
-					else
-					if(c=='(') depth++;
-					else
-					if(c==')') depth--;
-				}
-				z=evaluable.indexOf(")");
-			}
-			else
-			if((y<0)||(z<y))
-			{
-				logError(scripted,"()","Syntax",evaluable);
-				break;
-			}
-			else
-			{
+			logError(scripted,"()","Syntax",evaluable);
+			return "";
+		}
+		else
+		{
 			tickStatus=Tickable.STATUS_MISC2+funcCode.intValue();
 			String funcParms=evaluable.substring(y+1,z).trim();
 			switch(funcCode.intValue())
@@ -5996,12 +5971,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			default:
 				logError(scripted,"Unknown Val",preFab,evaluable);
 				return results.toString();
-			}
-			}
-			if((z>=0)&&(z<=evaluable.length()))
-			{
-				evaluable=evaluable.substring(z+1).trim();
-				uevaluable=uevaluable.substring(z+1).trim();
 			}
 		}
 		return results.toString();
