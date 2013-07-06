@@ -1,6 +1,10 @@
 GREET_PROG 100
     yell HERESY! YOU MAY NOT ENTER THIS TEMPLE!!!
 	<SCRIPT>
+		if(ISPC("$n"))
+		{
+	    	MPECHO("The ground beneath "+INAREA$()+" shakes!");
+    	}
 	    var CMLib=Packages.com.planet_ink.coffee_mud.core.CMLib;
 	    var crime=toJavaString("heresy against the gods");
 	    var desc=toJavaString("Angering the gods will bring doom upon us all!");

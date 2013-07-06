@@ -6117,7 +6117,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					Context cx = Context.enter();
 					try
 					{
-						JScriptEvent scope = new JScriptEvent(this,scripted,source,target,monster,primaryItem,secondaryItem,msg);
+						JScriptEvent scope = new JScriptEvent(this,scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp);
 						cx.initStandardObjects(scope);
 						String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar", "toJavaString"};
 						scope.defineFunctionProperties(names, JScriptEvent.class,
@@ -10440,15 +10440,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		public String getClassName(){ return "JScriptEvent";}
 		static final long serialVersionUID=43;
-		Environmental h=null;
-		MOB s=null;
-		Environmental t=null;
-		MOB m=null;
-		Item pi=null;
-		Item si=null;
+		final PhysicalAgent h;
+		final MOB s;
+		final Environmental t;
+		final MOB m;
+		final Item pi;
+		final Item si;
+		final Object[] objs;
 		Vector scr;
-		String message=null;
-		DefaultScriptingEngine c=null;
+		final String message;
+		final DefaultScriptingEngine c;
 		public Environmental host(){return h;}
 		public MOB source(){return s;}
 		public Environmental target(){return t;}
@@ -10464,14 +10465,86 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{ return c.getVar(host,var);}
 		public String toJavaString(Object O){return Context.toString(O);}
 
+		@Override
+		public Object get(final String name, Scriptable start) {
+			if (super.has(name, start))
+				return super.get(name, start);
+			if (methH.containsKey(name) || funcH.containsKey(name) 
+			|| (name.endsWith("$")&&(funcH.containsKey(name.substring(0,name.length()-1)))))
+			{
+				return new Function() {
+					@Override
+					public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args) {
+						if(methH.containsKey(name))
+						{
+							StringBuilder strb=new StringBuilder(name);
+							if(args.length==1)
+								strb.append(" ").append(String.valueOf(args[0]));
+							else
+							for(int i=0;i<args.length;i++)
+								if(i==args.length-1)
+									strb.append(" ").append(String.valueOf(args[i]));
+								else
+									strb.append(" ").append("'"+String.valueOf(args[i])+"'");
+							final DVector DV=new DVector(2);
+							DV.addElement("JS_PROG",null);
+							DV.addElement(strb.toString(),null);
+							return c.execute(h,s,t,m,pi,si,DV,message,objs);
+						}
+						if(name.endsWith("$"))
+						{
+							StringBuilder strb=new StringBuilder(name.substring(0,name.length()-1)).append("(");
+							if(args.length==1)
+								strb.append(" ").append(String.valueOf(args[0]));
+							else
+							for(int i=0;i<args.length;i++)
+								if(i==args.length-1)
+									strb.append(" ").append(String.valueOf(args[i]));
+								else
+									strb.append(" ").append("'"+String.valueOf(args[i])+"'");
+							strb.append(" ) ");
+							return c.functify(h,s,t,m,pi,si,message,objs,strb.toString());
+						}
+						final String[] sargs=new String[args.length+3];
+						sargs[0]=name;
+						sargs[1]="(";
+						for(int i=0;i<args.length;i++)
+							sargs[i+2]=String.valueOf(args[i]);
+						sargs[sargs.length-1]=")";
+						final String[][] EVAL={sargs};
+						return Boolean.valueOf(c.eval(h,s,t,m,pi,si,message,objs,EVAL,0));
+					}
+					@Override public void delete(String arg0) { }
+					@Override public void delete(int arg0) { }
+					@Override public Object get(String arg0, Scriptable arg1) { return null; }
+					@Override public Object get(int arg0, Scriptable arg1) { return null; }
+					@Override public String getClassName() { return null; }
+					@Override public Object getDefaultValue(Class<?> arg0) { return null; }
+					@Override public Object[] getIds() { return null; }
+					@Override public Scriptable getParentScope() { return null; }
+					@Override public Scriptable getPrototype() { return null; }
+					@Override public boolean has(String arg0, Scriptable arg1) { return false; }
+					@Override public boolean has(int arg0, Scriptable arg1) { return false; }
+					@Override public boolean hasInstance(Scriptable arg0) { return false; }
+					@Override public void put(String arg0, Scriptable arg1, Object arg2) { }
+					@Override public void put(int arg0, Scriptable arg1, Object arg2) { }
+					@Override public void setParentScope(Scriptable arg0) { }
+					@Override public void setPrototype(Scriptable arg0) { }
+					@Override public Scriptable construct(Context arg0, Scriptable arg1, Object[] arg2) { return null; }
+				};
+			}
+			return super.get(name, start);
+		}
+		
 		public JScriptEvent(DefaultScriptingEngine scrpt,
-							Environmental host,
+							PhysicalAgent host,
 							MOB source,
 							Environmental target,
 							MOB monster,
 							Item primaryItem,
 							Item secondaryItem,
-							String msg)
+							String msg,
+							Object[] tmp)
 		{
 			c=scrpt;
 			h=host;
@@ -10481,6 +10554,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			pi=primaryItem;
 			si=secondaryItem;
 			message=msg;
+			objs=tmp;
 		}
 	}
 }

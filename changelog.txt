@@ -2459,3 +2459,4 @@ ruthless programmer, and sentenced to a quick death.
 15.CoffeeMud now supports MSDP as specified at the tintin sourceforge web site
 16.Siplet now also supports MSDP, in an undocumented, testable sorta way.  Usage /MSDP (JSON OBJECT).  Example: /MSDP {"LIST":"LISTS"}
 17.The "sessions" archon command has been replaced with "list sessions".  On the bright side, all of the LIST [X] parms now have their own help entries.
+18.JavaScript embedded in Scriptable scripts can now access all the Scriptable commands and functions from within JavaScript.  See the Scriptable Guide.
