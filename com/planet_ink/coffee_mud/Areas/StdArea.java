@@ -992,7 +992,7 @@ public class StdArea implements Area
 		List<Integer> levelRanges=new Vector<Integer>();
 		List<Integer> alignRanges=new Vector<Integer>();
 		Faction theFaction=CMLib.factions().getFaction(CMLib.factions().AlignID());
-		if(theFaction==null)
+		if((theFaction==null)||(!theFaction.showInSpecialReported()))
 		{
 			for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 			{
