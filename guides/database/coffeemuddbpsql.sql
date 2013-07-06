@@ -120,7 +120,7 @@ CREATE TABLE CMCHIT (
 	CMITID varchar(50) NULL ,
 	CMITTX text NULL ,
 	CMITLO varchar(100) NULL ,
-	CMITWO int NULL ,
+	CMITWO bigint NULL ,
 	CMITUR int NULL ,
 	CMITLV int NULL ,
 	CMITAB int NULL ,
