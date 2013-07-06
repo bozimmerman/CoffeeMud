@@ -49,7 +49,7 @@ public class Retire extends StdCommand
 		if(pstats==null) return false;
 
 		mob.tell("^HThis will delete your player from the system FOREVER!");
-		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"") {
+		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000) {
 			@Override public void showPrompt() 
 			{
 				session.print("If that's what you want, re-enter your password: ");
