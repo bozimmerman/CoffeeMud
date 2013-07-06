@@ -531,7 +531,7 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
-	public StringBuilder listLinkages(Session viewerS, MOB mob)
+	public StringBuilder listLinkages(Session viewerS, MOB mob, String rest)
 	{
 		Faction useFaction=null;
 		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
@@ -541,7 +541,12 @@ public class ListCmd extends StdCommand
 		}
 		StringBuilder buf=new StringBuilder("Links: \n\r");
 		List<List<Area>> areaLinkGroups=new Vector<List<Area>>();
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		Enumeration<Area> a;
+		if(rest.equalsIgnoreCase("world"))
+			a=CMLib.map().sortedAreas();
+		else
+			a=new XVector<Area>(mob.location().getArea()).elements();
+		for(;a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			buf.append(A.name()+"\t"+A.numberOfProperIDedRooms()+" rooms\t");
@@ -2389,7 +2394,7 @@ public class ListCmd extends StdCommand
 		case 33: s.wraplessPrintln(listRaceCats(s,CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
 		case 34: listLog(mob,commands); break;
 		case 35: listUsers(mob.session(),mob,commands); break;
-		case 36: s.println(listLinkages(mob.session(),mob).toString()); break;
+		case 36: s.println(listLinkages(mob.session(),mob,rest).toString()); break;
 		case 37: s.println(listReports(mob.session(),mob).toString()); break;
 		case 38: s.println(listThreads(mob.session(),mob,CMParms.combine(commands,1).equalsIgnoreCase("SHORT")).toString()); break;
 		case 39: s.println(listResources(mob,CMParms.combine(commands,1))); break;
