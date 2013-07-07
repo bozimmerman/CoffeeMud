@@ -1095,16 +1095,23 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_WRITE:
-			if((isReadable())&&(!(this instanceof Scroll)))
+			if(((isReadable())&&(!(this instanceof Scroll)))
+			||(this instanceof Electronics.ElecPanel))
 			{
 				if(msg.targetMessage().trim().length()==0)
 				{
-					mob.tell("Write what on "+name()+"?");
+					if(this instanceof Electronics)
+						mob.tell("Enter what into "+name()+"?");
+					else
+						mob.tell("Write what on "+name()+"?");
 					return false;
 				}
 				return true;
 			}
-			mob.tell("You can't write on "+name()+".");
+			if(this instanceof Electronics)
+				mob.tell("You can't enter commands into "+name()+".");
+			else
+				mob.tell("You can't write on "+name()+".");
 			return false;
 		default:
 			break;
