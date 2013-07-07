@@ -15,30 +15,47 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class Timeout
+public class TimeMs
 {
-	private final long interval;
-	private long nextTimeout;
+	private long time;
 	
-	public Timeout(long interval)
+	public TimeMs(long t)
 	{
-		super();
-		this.interval=interval;
-		reset();
+		this.time=t;
 	}
 	
-	public synchronized void reset()
+	public TimeMs()
 	{
-		this.nextTimeout=System.currentTimeMillis()+interval;
+		this.time=System.currentTimeMillis();
 	}
 	
-	public synchronized void forceTimeout()
+	public synchronized void setToNow()
 	{
-		this.nextTimeout=Long.MIN_VALUE;
+		this.time=System.currentTimeMillis();
 	}
 	
-	public synchronized boolean isTimedOut()
+	public synchronized void setToLater(long amount)
 	{
-		return System.currentTimeMillis() > this.nextTimeout;
+		this.time=System.currentTimeMillis()+amount;
+	}
+	
+	public synchronized void set(long t)
+	{
+		this.time=t;
+	}
+	
+	public synchronized long get()
+	{
+		return this.time;
+	}
+	
+	public synchronized boolean isNowLaterThan()
+	{
+		return System.currentTimeMillis() > this.time;
+	}
+	
+	public synchronized boolean isNowEarlierThan()
+	{
+		return System.currentTimeMillis() < this.time;
 	}
 }

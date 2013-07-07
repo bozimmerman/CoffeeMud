@@ -77,19 +77,19 @@ public class StdElecItem extends StdItem implements Electronics
 	}
 	
 
-	protected static final boolean isAllWiringConnected(Electronics.ElecPanel E)
+	protected static final boolean isThisPanelActivated(Electronics.ElecPanel E)
 	{
 		if(!((Electronics.ElecPanel)E).activated())
 			return false;
 		if(E.container() instanceof Electronics.ElecPanel)
-			return isAllWiringConnected((Electronics.ElecPanel)E.container());
+			return isThisPanelActivated((Electronics.ElecPanel)E.container());
 		return true;
 	}
 	
 	public static final boolean isAllWiringConnected(Electronics E)
 	{
 		if(E.container() instanceof Electronics.ElecPanel)
-			return isAllWiringConnected((Electronics.ElecPanel)E.container());
+			return isThisPanelActivated((Electronics.ElecPanel)E.container());
 		return true;
 	}
 	

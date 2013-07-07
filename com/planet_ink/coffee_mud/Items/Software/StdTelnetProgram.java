@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Items.Software;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.Timeout;
+import com.planet_ink.coffee_mud.core.threads.TimeMs;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -42,7 +42,7 @@ public class StdTelnetProgram extends StdProgram
 	protected Socket sock = null;
 	protected BufferedInputStream reader=null;
 	protected BufferedWriter writer=null;
-	protected final Timeout nextPowerCycleTmr = new Timeout(8*1000);
+	protected final TimeMs nextPowerCycleTmr = new TimeMs(System.currentTimeMillis()+(8*1000));
 	
 	public StdTelnetProgram()
 	{
@@ -151,17 +151,17 @@ public class StdTelnetProgram extends StdProgram
 				shutdown();
 				break;
 			case CMMsg.TYP_WRITE:
-				if(sock==null)
+				synchronized(this)
 				{
-					msg.source().tell("Software failure.");
-					super.forceUpMenu();
-					super.forceNewMenuRead();
+					if(sock!=null)
+						return true;
 				}
-				else
-					return true;
-				break;
+				msg.source().tell("Software failure.");
+				super.forceUpMenu();
+				super.forceNewMenuRead();
+				return false;
 			case CMMsg.TYP_POWERCURRENT:
-				nextPowerCycleTmr.reset();
+				nextPowerCycleTmr.setToLater(8*1000);
 				return true;
 			}
 		}
@@ -247,7 +247,7 @@ public class StdTelnetProgram extends StdProgram
 					this.shutdown();
 				}
 				else
-				if(nextPowerCycleTmr.isTimedOut())
+				if(nextPowerCycleTmr.isNowLaterThan())
 				{
 					this.shutdown();
 				}

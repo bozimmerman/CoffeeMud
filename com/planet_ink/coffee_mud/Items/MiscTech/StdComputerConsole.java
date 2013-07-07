@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Items.MiscTech;
 import com.planet_ink.coffee_mud.Items.Basic.StdRideable;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.Timeout;
+import com.planet_ink.coffee_mud.core.threads.TimeMs;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -38,14 +38,14 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public String ID(){	return "StdComputerConsole";}
 
 	protected volatile String circuitKey		= null;
-	protected final Timeout   nextPowerCycleTmr = new Timeout(8*1000);
+	protected final TimeMs    nextPowerCycleTmr = new TimeMs(System.currentTimeMillis()+(8*1000));
 	protected short 		  powerRemaining	= 0;
 	protected MOB 			  lastReader		= null;
 	protected ElecPanelType   panelType		 	= Electronics.ElecPanel.ElecPanelType.COMPUTER;
-	protected final Timeout   nextSoftwareCheck = new Timeout(10*1000);
+	protected final TimeMs    nextSoftwareCheck = new TimeMs(System.currentTimeMillis()+(10*1000));
 	protected List<Software>  software		 	= null;
 	protected boolean 		  activated		 	= false;
-	protected String 		  currentMenu		 = "";
+	protected String 		  currentMenu		= "";
 	
 	public StdComputerConsole()
 	{
@@ -93,14 +93,14 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 
 	public List<Software> getSoftware()
 	{
-		if((software==null)||(nextSoftwareCheck.isTimedOut()))
+		if((software==null)||(nextSoftwareCheck.isNowLaterThan()))
 		{
 			final List<Item> list=getContents();
 			final LinkedList<Software> softwareList=new LinkedList<Software>();
 			for(Item I : list)
 				if(I instanceof Software)
 					softwareList.add((Software)I);
-			nextSoftwareCheck.reset();
+			nextSoftwareCheck.setToLater(10*1000);
 			software=softwareList;
 		}
 		return software;
@@ -289,7 +289,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			}
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_PUT:
-				nextSoftwareCheck.forceTimeout();
+				nextSoftwareCheck.set(0);
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
@@ -321,7 +321,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					{
 						if(powerRemaining()==0)
 							setPowerRemaining(1);
-						nextPowerCycleTmr.reset();
+						nextPowerCycleTmr.setToLater(8*1000);
 					}
 					if(activated())
 					{
@@ -333,7 +333,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 							{
 								msg2.setTarget(sw);
 								msg2.setValue(((powerToGive>0)?1:0)+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
-								sw.executeMsg(host, msg2);
+								if(sw.okMessage(host, msg2))
+									sw.executeMsg(host, msg2);
 							}
 						}
 					}
@@ -421,7 +422,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			{
 			}
 			else
-			if(nextPowerCycleTmr.isTimedOut())
+			if(nextPowerCycleTmr.isNowLaterThan())
 			{
 				deactivateSystem();
 			}
@@ -441,7 +442,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				for(Software sw : software)
 				{
 					msg2.setTarget(sw);
-					sw.executeMsg(msg2.source(), msg2);
+					if(sw.okMessage(msg2.source(), msg2))
+						sw.executeMsg(msg2.source(), msg2);
 				}
 			}
 			setPowerRemaining(0);

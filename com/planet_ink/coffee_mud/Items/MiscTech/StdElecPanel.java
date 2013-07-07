@@ -123,7 +123,6 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.executeMsg(myHost, msg);
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
@@ -179,6 +178,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				break;
 			}
 			}
+			super.executeMsg(myHost, msg);
 		}
 	}
 }
