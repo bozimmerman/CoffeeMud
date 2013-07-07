@@ -1098,7 +1098,7 @@ is really light, but here it is. ..
   12. An enormous cloud of millions of swarming bugs dissipated with
   the swirling winds of correction.
 # Build 4.7.3 - Released Jul 04, 2005
-   1.  Secret temporary reset called "autoweather" (RESET AUTOWEATHER) to turn all your players autoweather flags on. This is a temporary feature to enable your players to better enjoy the new weather messages and bring them into line with the new defaults. New Muds do not have to use it.
+   1. Secret temporary reset called "autoweather" (RESET AUTOWEATHER) to turn all your players autoweather flags on. This is a temporary feature to enable your players to better enjoy the new weather messages and bring them into line with the new defaults. New Muds do not have to use it.
    2. All weather strikes are now rendered mundane, so spell/magic immunity will not apply (sort of a bug fix, sort of a feature).
    3. New Clan Item: Donation List
    4. Wording changed for Portals so that you enter and leave them instead of "there".
@@ -1112,7 +1112,7 @@ is really light, but here it is. ..
   12. WeatherAffects a little lesh harsh on players now.
   13. Drippling globs of bugs siphoned from the code.
 # Build 4.7.2 - Released Jun 16, 2005
-   1.  CONNSPAMBLOCK is now disableable from the INI file. This willmake the TestBang app easier to run.
+   1. CONNSPAMBLOCK is now disableable from the INI file. This willmake the TestBang app easier to run.
    2. Players are now restricted on number of items they can carry, in addition to normal weight restrictions. CARRYALL security flag overrides. New Prompt flags support it as well.
    3. Bundling syntax is now uniform across all pertinant common skills.
    4. Scriptable variables now includes sir/madam in $y/$Y. Also, internally, <S-SIR-MADAM> will do the same.
@@ -1128,7 +1128,7 @@ is really light, but here it is. ..
   14. Several creepy little bugs turned to jelly beneath my thumb.
 # Build 4.7.1 - Released Jun 05, 2005
 # Build 4.7.0 - Released Jun 05, 2005
-   1.  Clans can now be referenced by partial names in commands now.
+   1. Clans can now be referenced by partial names in commands now.
    2. "here" is now a valid parm for WIZEMOTE
    3. Scriptable trigger changes: LOGIN_PROG, LOGOFF_PROG triggers.
    4. Scriptable functions: IPADDRESS([CODE] == [ADDRESS]), RAND0NUM([NUM]). Also, functions and variables can now be used in "." string parsing syntax.
@@ -1168,13 +1168,13 @@ to use either one.
   18. Thieves Cant language filled out. Thanks to Xalan of Sancara.
   19. More bug fixes than digits in pi.
 # Build 4.6.16 - Released Mar 04, 2005
-   1.  You can now BOOT by ip address.
+   1. You can now BOOT by ip address.
    2. New Scriptable command: mpplayerclass
    3. New player configuration command: linewrap
    4. Followers now reappear, if possible, where they last were instead of always reappearing with their master.
    5. And, as always, a ton of fixed bugs.
 # Build 4.6.15 - Released Feb 21, 2005
-   1.  EXPORT area data will now include any external resource files, such as scripts, cmare data files, and other external file data in the CMARE file generated. IMPORT will then recreate those files.
+   1. EXPORT area data will now include any external resource files, such as scripts, cmare data files, and other external file data in the CMARE file generated. IMPORT will then recreate those files.
    2. New Item type: GenRecipe -- allows you to add to the recipe lists for common skills by giving players items which act at recipes/schematics of the item.
    3. New INI entry -- SMTPSERVERNAME. You can leave it blank unless, like me, you are suddently FORCED to use a relay server in order to send mail with CoffeeMuds SMTP subsystem.
    4. Getting your password incorrect more than 3 times will prompt the user to have their password emailed to them. This requires the SMTP feature, obviously.
@@ -1190,7 +1190,7 @@ to use either one.
   14. Inter-grid exits are now included in export/cmare files.
   15. A heaping sloppy glob of bugs fixed.
 # Build 4.6.14 - Released Feb 06, 2005
-   1.  Players are "warned" of possible weapon fumbling when they wield the weapon.
+   1. Players are "warned" of possible weapon fumbling when they wield the weapon.
    2. Mageness, Druidness, Bardness, etc can be used to make multi-class mobs now.
    3. New RULES command and text file in the resources/text area.
    4. New Prayer: Aura of Fear
@@ -1210,7 +1210,7 @@ to use either one.
 # Build 4.6.13 - Released Jan 09, 2005
 Fixed are bugs related to the Player Purging system, and bugs that caused all food resources to go "bad" almost immediately.
 # Build 4.6.12 - Released Jan 07, 2005
-   1.  Age is now relevant to fertility.
+   1. Age is now relevant to fertility.
    2. Uncooked foods now rot over time -- meat becomes poisonous, vegies unnutricious and yucky.
    3. Potions, Pills, etc now forbidden to hold Archon-only skills.
    4. New Spells: DayDream, Flagportaion, Enchant Arrows, Repairing Aura, Spider Climb, Mystic Shine, Wizards Chest
@@ -1233,7 +1233,7 @@ Fixed are bugs related to the Player Purging system, and bugs that caused all fo
   21. Clan members now get titles for free.
   22. As always, several bugs were fixes. And hopefully not many new ones added. :/
 # Build 4.6.11 - Released Dec 19, 2004
-   1.  CLANMORGUESET implemented.
+   1. CLANMORGUESET implemented.
    2. CLAN Trophy system implemented -- new INI entries available.
    3. Formations are now displayed in room view.
    4. New disease: obesity
@@ -1270,7 +1270,7 @@ Just a couple of bug fixes that popped up.
 # Build 4.6.7 - 
 Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 with one fix and one oversight in StdLawBook Support. Release Date Unkown. - JDVyska JDVyska (as per discussion with Bo)
 # Build 4.6.6 - Released Nov 12, 2004
-   1.  Body Piercing has been significantly changed to make it BETTER!
+   1. Body Piercing has been significantly changed to make it BETTER!
    2. The command line now has a calendar editor for TimeZone/Planet type areas in the MODIFY AREA.
    3. The calendar for the default clock is no longer saved in the db, but always subject to the INI file (as it should be).
    4. 3 new common skills (thanks ThrinnTU): Costuming, MasterCostuming, MasterLeatherworking
@@ -1284,7 +1284,7 @@ Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 
   12. New Disease: Leeches
   13. Rerolling method rewritten to eliminate lockup chances for any max values (which I rewrote again, but the idea came from Ashera).
 # Build 4.6.5 - Released Oct 22, 2004
-   1.  Properties Have/Wear/Ride Zappers now have a MESSAGE parm.
+   1. Properties Have/Wear/Ride Zappers now have a MESSAGE parm.
    2. Emoter now has an inroom parameter.
    3. Default clock and calendar has been drastically modified to make mud-years only about 11 real-life days long. Please example the default coffeemud.ini changes for guidelines on adapting your own INI files.
    4. Races now have an aging chart to show how they progress through stages of life. Each stage can affect max-stats.
@@ -1306,7 +1306,7 @@ Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 
   20. New temporary undocumented reset "genraceagingcharts" for correcting the aging charts of legacy genraces produced from pregnancy.
   21. Players can now have titles/suffixes granted by archons or scriptable. See the help on MPTITLE in the scriptable guide for more information on this feature. The new command TITLE lets the player select which title to use. Polymorphs and disguised can override titles.
 # Build 4.6.4 - Released Oct 09, 2004
-   1.  Scriptable changes: new flags $w, $W. functions: deity, clan, clanrank
+   1. Scriptable changes: new flags $w, $W. functions: deity, clan, clanrank
    2. Arrest-related skills now work fine when used on parent areas over several children areas.
    3. Prop_RoomForSale, Prop_RoomsForSale, Prop_LotsForSale, Prop_AreaForSale now support rental property automatically withdrawn from bank accounts with a RENTAL flag in the parameters.
    4. Arrest now includes a crime of robbing property, defined as taking something from private property when the owner is not present.
@@ -1318,7 +1318,7 @@ Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 
   10. Size of the list of entries in a journal can be controlled with JOURNALLIMIT ini entry. New features of journals include ability to filter on new msgs when listing, to read the next message, and to list old messages with an OLD parameter.
   11. Enough bug fixes and java optomizations to frighten small children.
 # Build 4.6.2 - Released Sep 17, 2004
-   1.  New Archon command: AS. If used properly, can provide the means for maintaining player inventories, as well as player bank accounts.
+   1. New Archon command: AS. If used properly, can provide the means for maintaining player inventories, as well as player bank accounts.
    2. Special damage message for attacks which do no/negative damage.
    3. THROWing a non-weapon item at another mob provokes circumstantially, but does no damage.
    4. New Misc Magic item types: StdPowder, GenPowder. A magic item which emparts its affects only when thrown on a target.
@@ -1339,7 +1339,7 @@ Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 
   19. New Items: StdLimb, GenLimb -- for now, only supports the creation of false limbs (glass eyes, wooden legs) by the common skills for those with amputated parts. Will eventually do more.
   20. And, as always, LOTS and LOTS of bugs fixed!
 # Build 4.6.1 - Released Aug 27, 2004
-   1.  SESSIONS command now has a sorting parameter.
+   1. SESSIONS command now has a sorting parameter.
    2. Three new INI file entries: SAYFILTER, EMOTEFILTER, CHANNELFILTER. Also available from the Control Panel.
    3. Numerous player security holes plugged (thanks William -- wherever you are!)
    4. New INI entry: WIZINFONAMES, for adding exceptions to the sysop only rule for seeing the WIZINFO channel.
@@ -1351,7 +1351,7 @@ Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 
   10. Restoration prayer can now abort death from an Atemi Strike.
   11. As always, lots and lots and lots of bug fixes.
 # Build 4.6.0 - Released Aug 22, 2004
-   1.  RESET MOBSTATS is back.
+   1. RESET MOBSTATS is back.
    2. Journals will now notify their owners, or those who enter the room (if ungettable) if there are new messages.
    3. New Behavior: TargetPlayer (thanks Tulath!)
    4. Area-affecting behaviors placed on parent areas will now also affect children areas: Conquerable, Emoters, Arrest, etc included among these.
@@ -1368,7 +1368,7 @@ Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 
 # Build 4.5.6 - Released Aug 05, 2004
 All the silly bugs discovered on its first day out, and a few of the new interesting bugs reported today: fixed.
 # Build 4.5.5 - Released Aug 03, 2004
-   1.  TELL and GTELL now have TELL LAST x syntax to view a log of past conversations.
+   1. TELL and GTELL now have TELL LAST x syntax to view a log of past conversations.
    2. Internal: All Common Skills are now qualified for in a single method in StdCharClass.java.
    3. Updates from Tulath of the following: FieryRoom, Spell_DemonGate, CorpseEater, Compare (sorry, no details)
    4. New FIGHT/DAMAGE triggers in the Sounder Behavior.
@@ -1386,7 +1386,7 @@ All the silly bugs discovered on its first day out, and a few of the new interes
   16. New Property: Prop_ClosedSeasons
   17. Lots of bugs fixed. :)
 # Build 4.5.4 - Released Jul 04, 2004
-   1.  A few new tech item classes that do nothing as of yet.
+   1. A few new tech item classes that do nothing as of yet.
    2. Prop_RideAdjuster now works for rideable mobs. Yes, that seems like a bug fix, but it really isn't as it required lots of new code.
    3. Several races enhanced with racial abilities (thanks ThrinnTU)
    4. Containers with capacity==0 no longer show contents message (unless there actually IS content)
@@ -1398,7 +1398,7 @@ All the silly bugs discovered on its first day out, and a few of the new interes
   10. Go can be used as a synonym for Enter when targeting a rideable or portal.
   11. Lots and lots of bugs fixed. Get this build! You need it!
 # Build 4.5.3 - Released Jun 17, 2004
-   1.  DOMAIN name is now stored in the main coffeemud.ini file for SMTP, IMC2, and I3. Please update your ini files!!
+   1. DOMAIN name is now stored in the main coffeemud.ini file for SMTP, IMC2, and I3. Please update your ini files!!
    2. Two new misc affects: Antidote and DiseaseCure, for making specific cures to specific poisons or diseases.
    3. Amputation, Pregnancy now show when LOOKed at.
    4. Construction and Masonry now accept help from other players/mobs.
@@ -1420,7 +1420,7 @@ All the silly bugs discovered on its first day out, and a few of the new interes
   20. New INI entry: COMBATSYSTEM. If set to QUEUE, will allow any commands (including KILL) to occupy a players speed/actions during combat.
   21. As always, lots and lots and lots of bugs fixed.
 # Build 4.5.2 - Released Jun 08, 2004
-   1.  Certain additions to Sounder behavior.
+   1. Certain additions to Sounder behavior.
    2. Diff reactions to being arrested for mobs (based on int and align).
    3. Summon is now protected for players.
    4. New Props: Prop_NoTelling, Enhanced prop: Prop_NoChannel
@@ -1430,7 +1430,7 @@ All the silly bugs discovered on its first day out, and a few of the new interes
 # Build 4.5.1 - Released May 24, 2004
 Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow quest points to be taken. The most significant part of this build is that it's going out as a public release.
 # Build 4.5.0 - Released May 21, 2004
-   1.  Tweek made to hp/mana/move gain formula to better differentiate the classes. Bring up localhost:27744/crossclass.cmvp for a chart.
+   1. Tweek made to hp/mana/move gain formula to better differentiate the classes. Bring up localhost:27744/crossclass.cmvp for a chart.
    2. Scriptable.html guide almost done! Only the IF-Functions to go!
    3. Internal: Lots of new fields on the DeadBody interface.
    4. Sacrifice, Desececrate, Disintegrate, etc no longer affect player corpses.
@@ -1451,7 +1451,7 @@ Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow q
   19. Gate/Teleport spells now hit random room when they fail. Gate/Portal now take all mana to cast. Resurrect now only heals half exp.
   20. Calendar settings all moved to the INI file (and internally, into the timeclock objects).
 # Build 4.3.0 - Released May 07, 2004
-   1.  Diseases should not cause fights any more, ever! (Unless you invoke one purposefully)
+   1. Diseases should not cause fights any more, ever! (Unless you invoke one purposefully)
    2. Commands and Topics commands now have pauses, whether you want them or not.
    3. Can no longer use movement based skills if bound or held (unless the skill is escape bonds)
    4. Two new web macros: AddRandomFile and AddRandomFileFromDir
@@ -1485,7 +1485,7 @@ Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow q
   32. Decay bug (which was really a zapper bug) fixed. Anything that used the -RACE or +RACENAME in zapper probably had not been working til now.
   33. New Programmer's Guide entries: Languages, Poisons, and Diseases!
 # Build 4.2.8 - Released Apr 23, 2004
-   1.  ISMOON added to scripable
+   1. ISMOON added to scripable
    2. SMTP Server fully functional. See guides/SMTPServer.html for more info. AUTOFORWARD command added.
    3. lots of bug fixes, esp to pregnancy related stuff
    4. tattoos now stored in user tables and mob xml. Prop_Tattoo now deprecated.
@@ -1495,7 +1495,7 @@ Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow q
    8. shopkeeper/banker LIST interface changed.
    9. Did I mention lots of bugs fixed. :)
 # Build 4.2.6 - Released Apr 10, 2004
-   1.  Minor changes to some Clerics & the Beastmaster, a new Prayer ortwo.
+   1. Minor changes to some Clerics & the Beastmaster, a new Prayer ortwo.
    2. New Common Skill: Master Tailoring
    3. New Druid SubClass: Delver, with DOZENS of new chants.
    4. New Resources: trees, berries, fishes, stones, distributed among the locales.
@@ -1509,7 +1509,7 @@ Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow q
   12. SMTP Server started. Still not quite there, but very very close -- next release for sure.
   13. Numerous, dozens, and otherwise LOTS of bugs fixed.
 # Build 4.2.5 - Released Mar 26, 2004
-   1.  Statistics keeping system/reporting implemented. To view the statistics system, you can make use of the commandline STAT command, or use the Statistics page from the MUDGrinder.
+   1. Statistics keeping system/reporting implemented. To view the statistics system, you can make use of the commandline STAT command, or use the Statistics page from the MUDGrinder.
    2. Boring Internal Change to save some memory: Numerous Hashtable usages changed to HashSets
    3. Dozens of new Thief and Fighter skills.
    4. Fighter & Thief subclasses rebalanced with new skills.
@@ -1520,7 +1520,7 @@ Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow q
    9. Prop_ScrapExplode added.
   10. A few assorted bugs fixed.
 # Build 4.2.4 - Released Mar 13, 2004
-   1.  ClanWho command created.
+   1. ClanWho command created.
    2. The end of children is now players (following birth and aging, 3 rl months?).
    3. Train gives a little more hit points/mana/movement every time.
    4. Score Items button in Grinder now takes any adjuster properties into account.
@@ -1543,7 +1543,7 @@ Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow q
 # Build 4.2.3 - Released Mar 01, 2004
 Shameful to be building again so soon, but there are about 10 bugs fixed in this, 2-3 of which were pretty important. Part of the risks of downloading beta builds, of course, but I still like to upload stuff that works. :)
 # Build 4.2.2 - Released Feb 28, 2004
-   1.  Quests will be aware of the objects used by other quests so as to prevent duplicates.
+   1. Quests will be aware of the objects used by other quests so as to prevent duplicates.
    2. Masterwork items added to common skills, and some damage adjustments made. Most likely we are heading to just plain Master crafting skills soon, however.
    3. DISABLE and DEBUG flags added to INI file. They should both normally be blank, so modifying your INI is not REALLY necessary.
    4. WizInv now disabled when a subop leaves their area, ditto sysmsgs.
@@ -1567,7 +1567,7 @@ Shameful to be building again so soon, but there are about 10 bugs fixed in this
 # Build 4.2.1 - Released Feb 15, 2004
 All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you were among the brave who downloaded 4.2.0.
 # Build 4.2.0 - Released Feb 13, 2004
-   1.  Mages have been toned down quite a bit. Wish is more painful, permanency more permanent (but also more painful), and armor restrictions follow mages around should they wish themselves out of their class.
+   1. Mages have been toned down quite a bit. Wish is more painful, permanency more permanent (but also more painful), and armor restrictions follow mages around should they wish themselves out of their class.
    2. FieryRoom integrated (thanks Tulath!)
    3. Zapper now includes area names zapper -AREA +AREA, etc..
    4. Abilities and Commands now have casting/execution times. 0=instant, 1=instant in peace/1 tick in combat, 2 or more=delay
@@ -1583,7 +1583,7 @@ All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you we
   14. Conquest behavior added.
   15. Ability to set up "area" channels created.
 # Build 4.1.3 - Released Jan 21, 2004
-   1.  Scriptable MPECHO command no longer has a syntax for "private" echoing. This brings it into conformity with standards for this command.
+   1. Scriptable MPECHO command no longer has a syntax for "private" echoing. This brings it into conformity with standards for this command.
    2. Catching a disease no longer automatically drops followers under most circumstances.
    3. ShopKeepers now have ability to charge quest points, exp, or money for items. See the Archons guide for more info on this.
    4. Bug: modify mob <mob name> where <mob name> is a player was not presenting the player editor, but was presenting the mob editor.
@@ -1679,14 +1679,14 @@ All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you we
   94. New Prayer: Heal Undead
   95. Lots and lots and lots of new help entries to fill in some gaps noticed by players.
 # Build 4.1.2 - Released Dec 21, 2003
-   1.  Negative numbers may be used as prices in GenShopKeepers to allow experience points or quest points to be spent.
+   1. Negative numbers may be used as prices in GenShopKeepers to allow experience points or quest points to be spent.
    2. Some tweaks to Arrest in preperation for Conquest -- note that areas which use the same laws file will now also share warrants!
    3. ShopKeepers can now place limits on their listed inventory.
    4. Areas can now have parents and children. Complete Behavior/property compatibility is still unclear.
    5. Some tweaks and additions to a few common skills and behaviors.
    6. More bug fixes than you can shake a stick at.
 # Build 4.1.1 - Released Dec 03, 2003
-   1.  (Might have also made the last build) Area SubOps now restricted from modifying/deleting players.
+   1. (Might have also made the last build) Area SubOps now restricted from modifying/deleting players.
    2. Completed Clan system (do HELP CLANS) for more info. Important note! Old Clans will have found that their old Bosses are now degraded to Leaders due to the insertion of the Clan Enchanter position.
    3. New Clan Commands to support the new system include: CLANVOTE, CLANQUAL, CLANDECLARE, CLANTAX, and perhaps one or two more.
    4. New Clan coffeemud.ini entries: CLANVOTEO, CLANVOTED, CLANVOTER, CLANENCHCOST
@@ -1704,7 +1704,7 @@ All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you we
   16. New Scriptable triggers: GET_PROG, PUT_PROG, WEAR_PROG, REMOVE_PROG, DROP_PROG -- obviously to support items, but they will work for Scriptable mobs as well.
   17. Lots of bug fixes, of course, though they tended to be more minor fixes, which is why I'm sticking with 4.1 as the official build for awhile.
 # Build 4.1.0 - Released Nov 20, 2003
-   1.  Some new Races
+   1. Some new Races
    2. StdSmokeable (GenPipe, GenCigar) created -- we can now smoke!
    3. SmokeRings common skill created to improve the smoking experience.
    4. Weak/No Swimmers and items will now SINK from water surfaces.
@@ -1745,7 +1745,7 @@ All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you we
   39. New Archon List parm: ENVRESOURCE
   40. And, of course, lots and lots and lots of bug fixes.
 # Build 4.0.11 - Released Nov 04, 2003
-   1.  Jeremy's MAPLEVEL fix was integrated.
+   1. Jeremy's MAPLEVEL fix was integrated.
    2. New Races: Centaur, Aarakocran, Gnoll
    3. New Resources: ENERGY, DUST, PLASTIC, NUTS, FLOWERS, RUBBER, EBONY, IVORY, WAX, BREAD, CRACKER, YEW, PIPEWEED
    4. DEITIES command now shows short list by default.
@@ -1769,11 +1769,11 @@ All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you we
   22. List Deviations archon command created.
   23. Lots and lots and lots of bug fixes, including MovingRoom
 # Build 4.0.10 - Released Oct 17, 2003
-   1.  by default, all mobs will have their NOTEACH flag on. To get a mob to teach, you must give the mob either MOBTeacher behavior, or Prop_StatsTrainer property.
+   1. by default, all mobs will have their NOTEACH flag on. To get a mob to teach, you must give the mob either MOBTeacher behavior, or Prop_StatsTrainer property.
    2. The Z-level mapping in the MUDGrinder is now optional.
    3. Oh, and a silly MOBTeacher bug was fixed...
 # Build 4.0.9 - Released Oct 16, 2003
-   1.  Much more flexible character class editor part of the player editor from the command line. (modify playername)
+   1. Much more flexible character class editor part of the player editor from the command line. (modify playername)
    2. New Scriptable trigger: BRIBE_PROG
    3. New Scriptable command: BREAK
    4. More very important enhancements/bug fixes to the import *.are feature (the feature that lets us import rom/madrom/icey/circle/smaug/etc.. areas.
@@ -1798,7 +1798,7 @@ All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you we
   23. New Common Skill: Lacquerring
   24. Numerous old damage-based spells rebalanced for level.
 # Build 4.0.7 - Released Oct 08, 2003
-   1.  Player bodies are now protected when using the morgue feature.
+   1. Player bodies are now protected when using the morgue feature.
    2. BrotherHelper now accepts a parm to limit the fray.
    3. AT command added for Archons and area subops.
    4. LOTS and LOTS of new support for area importing added!!
@@ -1810,7 +1810,7 @@ All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you we
 # Build 4.0.6 - Released Oct 02, 2003
 Yep -- more bug fixes, numerous new races added for madrom are file import support, as well as tinkerings here and there to make the system a happier one.
 # Build 4.0.5 - Released Sep 15, 2003
-   1.  Spell Siphon added at Enchantment/17
+   1. Spell Siphon added at Enchantment/17
    2. Archons will now find everything with Locate Object -- even unlocatable things.
    3. QUIET flag added to quest scripts to stifle certain log messages. It's undocumented I think.
    4. Area SubOps can now use export command, targeting the screen.
@@ -1844,7 +1844,7 @@ color thingy.
     
     * The fix to the genmob was well worth tossing out another build, as this bug has been around for a few weeks now and was wreaking havoc.
 # Build 3.8.8.8 - Released Aug 29, 2003
-   1.  Titles are now READABLE.
+   1. Titles are now READABLE.
    2. WIZLIST created
    3. New Sculptibles (yea, that's minor -- but were really scrapping the bottom for new stuff to list...)
    4. New Scriptable commands/funcs: MPDAMAGE, MPTRACKTO, MPBEHAVE, MPUNBEHAVE, MPAFFECT, NUMITEMSMOB, MOBITEM, NUMITEMSROOM, NUMMOBSROOM, ROOMITEM
@@ -1865,7 +1865,7 @@ color thingy.
   19. Prop_Transportable now supports rideables.
   20. and LOTS and LOTS and LOTS and LOTS of bug fixes. :)
 # Build 3.8.8.7 - Released Aug 22, 2003
-   1.  Geas spell is done.
+   1. Geas spell is done.
    2. The .cmare format for inter-area links changed ever so slightly. If you want to reimport the stock area files, you'll need to download them again.
    3. New Scriptable commands (forget their names -- have to do with iterating)
    4. *** Socials.java and Social.java have been moved to the common folder. This means you must blow away your old "com" directory when installing this new build.
@@ -1877,7 +1877,7 @@ color thingy.
   10. RandomMonsters has a new LOCALE TYPE parameter (optional)
   11. LOTS and LOTS and LOTS and LOTS of bug fixes.
 # Build 3.8.8.5 - Released Aug 15, 2003
-   1.  Memory optomizations: new INI entry COMPRESS. MOB interface changed.
+   1. Memory optomizations: new INI entry COMPRESS. MOB interface changed.
    2. Friends/Ignore list moved from journal to cmchar database, so old friends/ignore won't work.
    3. Ability interface changed again (internal)
    4. Programming Guide has had some new sections added..
@@ -1894,7 +1894,7 @@ color thingy.
   15. Saving throws now saved in the database
   16. Scriptable can now include multiple load= statements.
 # Build 3.8.8.4 - Released Aug 08, 2003
-   1.  SCAN parameter added to many common skills.
+   1. SCAN parameter added to many common skills.
    2. Behavior ItemIdentifier now does much much more.
    3. Scriptable: FUNCTION_PROG, MPBEACON, MPCALLFUNC, and MPALARM added.
    4. TRANSFER Archon command added.
@@ -1919,7 +1919,7 @@ color thingy.
   23. ReScore button added to item editor in MUDGrinder area editor.
   24. FRIENDS, IGNORE, and AUTONOTIFY commands added.
 # Build 3.8.8.1 - Released Aug 01, 2003
-   1.  GenMobs now have their Hit Point modifier default to 11 instead of 0 -- very important!
+   1. GenMobs now have their Hit Point modifier default to 11 instead of 0 -- very important!
    2. Corpses are now Generic Items, meaning all relevant info about them will be saved.
    3. Spell_Mirage can now accept a roomID parameter
    4. Most Admin Web macros no longer active before the MUD completes booting.
@@ -1946,7 +1946,7 @@ color thingy.
   25. StdBanker's now default to CHARGE interest for holding money instead of paying it -- this is only a default. Your old GenBankers will be unaffected, and you can still change it to a positive interest rate.
   26. And, as always, numerous bugs fixed.
 # Build 3.8.7.9 - Released Jul 25, 2003
-   1.  Redefinable ESCAPE codes created. See the new INI file.
+   1. Redefinable ESCAPE codes created. See the new INI file.
    2. Items held and wielded may now be dropped or given, if specified by name (not included in ALL, etc)
    3. MSP Sound support, including SOUNDS/NOSOUNDS commands to turn them on/off.
    4. New Jester skills created. Jester class complete.
@@ -1972,7 +1972,7 @@ color thingy.
   24. Builder's FAQ just rolled into the Archon's Guide
   25. And last, but not least: Numerous and assorted bugs, all reported by this group, were fixed.
 # Build 3.8.7.8 - Released Jul 18, 2003
-   1.  Web server now supports post, thanks to Jeremy.
+   1. Web server now supports post, thanks to Jeremy.
    2. StdMaps (and GenMaps, and thus, Map Making) all support "sections" in the maps.
    3. MAJOR internal change to Environmental interface. Name() counterpart to name() created to reflect an unmodified name(). New methods support Disguise and other preexisting skills.
    4. Charlatan bard subclass created, along with Disguise, False Arrest, and lots of other fun skills.
@@ -2010,7 +2010,7 @@ color thingy.
   11. GoldLooter and CorpseLooter behaviors added
   12. Prop_OpenPassword property created (but not tested yet) :/
 # Build 3.8.7.5 - Released Jun 21, 2003
-   1.  Herbs resource added, and made beneficial to Cooking skill
+   1. Herbs resource added, and made beneficial to Cooking skill
    2. Couple bugs fixed involving the contraction of a cold.
    3. Other assorted bug fixes as always...
    4. New Common Skills: Herbology, Herbalism, Plant Lore
@@ -2035,7 +2035,7 @@ color thingy.
   23. Email address for players now saved
   24. Channels, TELL, REPLY, and GTELL commands now all subject to effects of language, and spells which affect language (Song of Babble, and spells of comprehension)
 # Build 3.8.7.4 - Released Jun 06, 2003
-   1.  LIST USERS sorting ability now smarter for level/age
+   1. LIST USERS sorting ability now smarter for level/age
    2. Social bug fixed
    3. ;; bug fixed
    4. Traps help entries added
@@ -2049,7 +2049,7 @@ color thingy.
   12. ActiveTicker bug fixed (thanks Jeremy)
   13. Base Druid class tinkered with a bit in preparation for new stuff coming next week.
 # Build 3.8.7.3 - Released May 30, 2003
-   1.  Upgrade to the Emoter behavior
+   1. Upgrade to the Emoter behavior
    2. Journal text fixed so that SQL statements won't be offended.
    3. Code (ys) joins (s) and (es) as "smart" suffixes to english words. (ys) will turn Study into either Study or Studies.
    4. Chance of catching several diseases lowered.
@@ -2116,7 +2116,7 @@ color thingy.
   13. BaseCharClass* web macros added
   14. PUT OUT (lightsource) will now work
 # Build 3.8.7.1 - Released May 14, 2003
-   1.  Diseases (certain ones, at least) can now spread through infected meat or blood from butchered bodies. Dead bodies can also spread certain diseases.
+   1. Diseases (certain ones, at least) can now spread through infected meat or blood from butchered bodies. Dead bodies can also spread certain diseases.
    2. Numerous new Poisons. Making a poison is now easier! Just create something drinkable, and add the poison class as an affect. Look in coffee_mud/abilities/poisons (or LIST POISONS) for more info.
    3. Couple new alcohols as well (they are listed under poisons).
    4. Emoter features added.
@@ -2130,7 +2130,7 @@ color thingy.
   12. Climb now requires standing
   13. Dozens of new traps.
 # Build 3.8.7.0 - Released Apr 27, 2003
-   1.  You can no longer order a follower to attack a non-pkill player.
+   1. You can no longer order a follower to attack a non-pkill player.
    2. Changes to the Gap exit, and weak bridge and ledge properties. They work much better now.
    3. New Property: Prop_UseSpellCast2 -- similar to Prop_UseSpellCast, but triggers differently. See help.
    4. Prop_MagicFreedom selects the room to echo errors into differently now.
@@ -2156,7 +2156,7 @@ color thingy.
   24. New Locale types: Road, RoadGrid, MountainsGrid, MountainSurfaceGrid
   25. Emoter behavior fixed.
 # Build 3.8.6.8 - Released Apr 19, 2003
-   1.  Bugs fixed in the new Grid sizing stuff
+   1. Bugs fixed in the new Grid sizing stuff
    2. New Behavior: RaceHelper -- does exactly what ClanHelper USED to do (allow mobs to assist others of the same race)
    3. Changed Behavior: ClanHelper -- will no longer assist based on race, but on Clan allegance now. Can also be used to make mobs member of Clans.
    4. Tattoos now a part of the zapperCheck
@@ -2191,7 +2191,7 @@ color thingy.
   33. Prop_NarrowLedge created for exits/rooms
   34. Archon Staff and Wand of the Archons now alleviates hunger/thirst
 # Build 3.8.6.7 - Released Apr 12, 2003
-   1.  Some tinkerings with intelligence requirements for gaining skills.
+   1. Some tinkerings with intelligence requirements for gaining skills.
    2. Some tinkerings with the adjustedLevel of spells/prayers. Both of these benefit players.
    3. New DRESS command for putting clothing on followers
    4. New UNDRESS command for taking clothes off followers
@@ -2213,7 +2213,7 @@ color thingy.
   20. Certain races can now be designated as illegal in your Arrest areas (trespassers). See the default laws.ini for more info.
   21. ResetWhole behavior created -- allows you to make an Area or Room reset entirely on certain intervals, instead of on a mob-by-mob basis.
 # Build 3.8.6.6 - Released Apr 07, 2003
-   1.  A dozen or so new Prayers
+   1. A dozen or so new Prayers
    2. Cleric subclasses are DONE: Templar, Doomsayer, Shaman, Oracle, Necromancer, Missionary, Purist, and Healer
    3. New ShopKeeper type: CLAND_SELLER -- only sells to clans (not to individuals)
    4. You now sit AT a table, not ON one (duh...)
@@ -2228,7 +2228,7 @@ color thingy.
   13. StdJournal and GenJournals can now have READ and WRITE requirements specified instead of using the level of the item alone. See the Archon's Guide for more info on how to do this.
   14. New property Prop_RoomsForSale allows you to sell a set of adjacent rooms as a group instead of individually.
 # Build 3.8.6.5 - Released Mar 31, 2003
-   1.  DEITIES command to list all known deities, along with their requirements, blessings, and rituals.
+   1. DEITIES command to list all known deities, along with their requirements, blessings, and rituals.
    2. CLANACCEPT, CLANAPPLY, CLANDETAILS, CLANEXILE, CLANHOMESET
    3. CLANLIST, CLANREJECT, CLANRESIGN
    4. I3 SILENCE implemented, a fix put in I3 ADD (still does nothing!)
@@ -2241,7 +2241,7 @@ color thingy.
   11. Dozens of new prayers, and some renamed to take advantage of a new schema. Please clear out your olde COM path before applying the new version!
   12. SaveThread now watches TelnetSessions for inactivity! How did I miss that?!
 # Build 3.8.6.3 - Released Mar 25, 2003
-   1.  Fixed some bugs in the new LADDER Rideable type.
+   1. Fixed some bugs in the new LADDER Rideable type.
    2. New THROW command to get ladder-types (ropes, etc) into pits to help comrads. The THROW command can also be used with THROWN weapons, as well as grenades at some point in the future.
    3. Ability to AUTODRAW the second weapon if you have Two Weapon Fighting
    4. Created MAXSTAT INI entry to allow more easily changing the starting state distribution for players.
@@ -2262,7 +2262,7 @@ color thingy.
   19. LOTS more done on the Scriptable Behavior. Still havn't had a chance to test/debug it, but presumably it is done now (or, at least hacked).
   20. MUDGrinder's ability to properly identify mobs and items being edited has been greatly enhanced, thereby also enhancing it's general reliability.
 # Build 3.8.6.2 - Released Mar 19, 2003
-   1.   *LOTS OF NEW DATABASE CHANGES!!! BEWARE*  IP address, clan name, and clan role to players, ride entry for mobs
+   1. *LOTS OF NEW DATABASE CHANGES!!! BEWARE*  IP address, clan name, and clan role to players, ride entry for mobs
    2. Big additions to DoorwayGuardian, HaveZapper, WearZapper, and all Aggressive behaviors: classes, races, gender, levels, and lots more can now be masked.
    3. MOBTeacher expanded to allow teaching of multi-class skills
    4. Prop_ReqEntry property replaces Prop_ReqClasses, Prop_ReqAlign, Prop_ReqRaces, Prop_ReqLevels, etc..
@@ -2289,10 +2289,10 @@ color thingy.
   25. Tents, Sleeping bags added to Tailor
   26. New Rideable type (LADDER) added to assist those with these items in going up climable surfaces.
 # Build 3.8.6.1 - Released Mar 17, 2003
-   1.  There are around 50 new spells, most of which are specialist mage spells. The most amusing of these are Breadcrumbs, Big Mouth, Illusory Disease, and Add Limb.
+   1. There are around 50 new spells, most of which are specialist mage spells. The most amusing of these are Breadcrumbs, Big Mouth, Illusory Disease, and Add Limb.
    2. In addition there are dozens and dozens of bug fixes!
 # Build 3.8.5.9 - Released Mar 13, 2003
-   1.  Create [new] form of the create command is gone. Replaced with the Copy command. Create still works in its other forms, however.
+   1. Create [new] form of the create command is gone. Replaced with the Copy command. Create still works in its other forms, however.
    2. Copy command allows creation of multiples!
    3. Fixed bugs in the new START room parameters!
    4. The new Cogniportive spell for making title's into transport wands.
@@ -2312,13 +2312,13 @@ color thingy.
   18. Bugs in I3 fixed.
   19. New I3 command replaces MUDLIST and I3CHANNELS, and adds others.
 # Build 3.8.5.8 - Released Mar 10, 2003
-   1.  StdShopKeepers (in their misc text field) and GenShopKeepers (in a special prejudice field) will be able to modify the prices, up or down, of the goods they offer based on racial category or alignment, or just for everybody if you don't like the stock formula.
+   1. StdShopKeepers (in their misc text field) and GenShopKeepers (in a special prejudice field) will be able to modify the prices, up or down, of the goods they offer based on racial category or alignment, or just for everybody if you don't like the stock formula.
    2. Seperate start and death rooms will be specified in the INI file based on alignment or racial category.
    3. GateGuard and DoorwayGuardian can now modify their behavior based on the same criteria as the Prop_HaveZapper property (based on racial category, class, base class, or alignment). You'll be able to use these seperately or in combination to make gate guards more friendly, or outright mean.
    4. A new Behavior FasterRoom will be able to increase the number of rejuvinating ticks for mobs in the room or area affected by it. In addition, you can also set it up to increase the number of times the mobs in the rooms tick, which will affect spell effects, combat, and everything else that ticks. Either one or both of these can be set using the FasterRoom behavior.
    5. And lastly (I think), the mud will support listening on any number of specified ports.
 # Build 3.8.5.7 - Released Mar 07, 2003
-   1.  New bubbleAffects boolean on the Ability interface to make Affects passed on by Items much more elegant.
+   1. New bubbleAffects boolean on the Ability interface to make Affects passed on by Items much more elegant.
    2. MASK_HURT bug fixed and improved to allow damage up to 1023.
    3. MudChat updated to allow includes (Thanks Jeremy!)
    4. Racial categories added to Race interface to allow Racial Enemy abilities for Rangers.
@@ -2351,7 +2351,7 @@ color thingy.
 # Build 3.8.5.4 - Released Mar 03, 2003
 The only new features are the addition of the Amputation Ability, a few new Cleric Prayers (one of which restores Amuputated limbs), and the updated Programming Guide.
 # Build 3.8.5.0 - Released Feb 24, 2003
-   1.  Added I3STATE INI file entry to get a more accurate display of your muds status on the I3 mud list.
+   1. Added I3STATE INI file entry to get a more accurate display of your muds status on the I3 mud list.
    2. Added VIEW command for shopkeepers.
    3. ShopKeepers, Money Changers, and Bankers will give change as change bags. They will now consolodate their change bags with any you already have in your inventory. ShopKeepers will now also accept money directly from change bags for purchases!!!
    4. Changed the ^^ color code (stop reverse) to ^.
