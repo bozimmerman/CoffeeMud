@@ -118,7 +118,7 @@
    8. New Jester skills: Satire, Quick Change, Center of Attention
    9. New Oracle Prayers: Divine Guidance, Prophecy, Seekers Prayer, Soul Peering, Lower Law, Omnipresence, Above the Law
   10. New Diviner Spells: Solve Maze, Group Status, Detect Weaknesses, Prying Eye, Telepathy, Natural Communion, Arms Length
-   Spying Stone, Hear Thoughts, Know Fate, Divining Eye, Spotters Orders, Find Directions, Death Warning
+      Spying Stone, Hear Thoughts, Know Fate, Divining Eye, Spotters Orders, Find Directions, Death Warning
   11. Players can now use COMMANDS CLEAR to clear out their personal command queue.
   12. Siplet should be back to 100%, or as close as the new tech will allow.
   13. New Archon skill: Injure -- for creating instant injuries (useful for testing, or a nasty punishment).
@@ -247,12 +247,12 @@
    2. New DISABLE flags: AUTODISEASE, WEATHER, WEATHERNOTIFIES, WEATHERCHANGES
    3. RESET MOBSTATS and RESET ITEMSTATS have been documented for normalizing combat stats
    3. Character classes, and mob stats have been rebalanced along pre-3.0 lines. This makes hl PVP possible. 
-   Thieves and Fighters are most altered classes.  
-   Mobs are an average of players now.
-   Combat Fudge Factors are more strict, effective, and rational.
-   Bonuses from stats are capped by the players current Max Stat value.  Period.
-   Use RESET MOBSTATS WORLD command to pull your mobs into compliance.  
-     This will, as a side affect, reset all area content to db baseline. 
+      Thieves and Fighters are most altered classes.  
+      Mobs are an average of players now.
+      Combat Fudge Factors are more strict, effective, and rational.
+      Bonuses from stats are capped by the players current Max Stat value.  Period.
+      Use RESET MOBSTATS WORLD command to pull your mobs into compliance.  
+      This will, as a side affect, reset all area content to db baseline. 
    4. CoffeeMud now supports critical hits for spells and physical damage: high int supports former, and high dex the later.
    5. New Zappermasks: +BASECLASS, -MOOD, +MOOD
    6. New DEBUG flag: HTTPACCESS, SMTPCLIENT
@@ -290,7 +290,7 @@
   12. Catalog System has lots of new features -- faster, usage counters, & auto updating your map
   13. Catalog command has new parameters: scan, dbscan, overlook, dboverlook
   14. New player command: PAGEBREAK.   Also, pagebreak and linewrap added to CONFIG command.
-    -- You can also enter x, quit, or exit at the pagebreak prompt to stop output.
+      -- You can also enter x, quit, or exit at the pagebreak prompt to stop output.
   15. LIST LOG now streams its data for extreme speed.
   16. Players more than 10X fatigued will have a 1% chance/tick to fall under the sleep spell.
   17. New Spells: Dispel Divination, Teleport Object
@@ -328,8 +328,8 @@
   45. Random object generator done.  See HELP GENERATE, and play around with it.  Let me know if this is interesting in any way.
   46. EXPORT command now supports single players by name.
   47. * I changed the name of a few of the library interfaces, so make sure you follow the 
-  	part of the upgrade instructions regarding deleting your old "com" directory before 
-  	running the new build.
+      part of the upgrade instructions regarding deleting your old "com" directory before 
+      running the new build.
   48. CoffeeMud-bug values dropped 700 points in overnight debugging.
 # Build 5.5.1 Released November 13, 2008 
    1. couple of bug fixes in the new features
@@ -567,7 +567,6 @@
   24. More stuff added to mudgrinder control panel.
   25. Bugs detonated underground, mysteriously.  Wild claims about bug strength forthcoming.
 # Build 5.2.1 - Released Sep 09, 2006
-
    1. New scriptable function: Math
    2. INI entried PLAYERDEATH and FLEE have a new option "OUT" for making
    folks go unconscious. You can also include your own math fomulas for
@@ -581,15 +580,12 @@
    7. A few bugs dutifully informed of their transgression, judged by a
    ruthless programmer, and sentenced to a quick death.
 # Build 5.2.0 - Released Sep 04, 2006
-Well, here it is, in all its splendor.
-
-Expect another build in a week -- I'm gonna let this one shake down and then send it to all the secondary download areas also.
-
-Not that I'm expecting any bugs, but with new stuff, you never ever know.
-
+  Well, here it is, in all its splendor.
+  Expect another build in a week -- I'm gonna let this one shake down and then send it to all the secondary download areas also.
+  Not that I'm expecting any bugs, but with new stuff, you never ever know.
    1. New example mystery called "murdermystery" for Midgaard. Easy to adapt it for any other area, of course.
    2. Clerics can now convert mobs, create churches, and hold "services"
-   defined by their deities.
+      defined by their deities.
    3. New clan type: THEOCRACY -- has strict membership and hierchy rules, but allows areas to be conquered with conversions, and restricts church building to the clans deity. Also, item control points dont matter for theocracy.
    4. CombatAbilities behavior now allows specific skills to be allowed or disallowed specifically for combat.
    5. New behavior: Concierge, will tell players how to get to places, optionally for a price.
@@ -599,7 +595,7 @@ Not that I'm expecting any bugs, but with new stuff, you never ever know.
    9. Scriptable changes: MPEXP now allows a % of exp tnl to be given, and scriptable scripts can now be dynamically added to from quest scripts
   10. Scriptable changes: MPOLOAD can now use INTO syntax to load containers, MPQSET,QVAR command for changing/accessing quest objects
   11. Quest Manager has been extended QUITE a bit to support mysteries..
-  lost of new settings, and some subtle differences in the way it works.
+      lost of new settings, and some subtle differences in the way it works.
   12. New Bard skill: BEFRIEND, for making groups.
   13. New command: QUESTWINS -- show which quests the player is listed as having won/completed.
   14. REPORT command now lets you report your statistics.
@@ -625,15 +621,12 @@ Not that I'm expecting any bugs, but with new stuff, you never ever know.
   34. Containers and portals now auto-close and auto-lock like exits.
   35. All the bugs thats fit to squish!
 # Build 5.1.5 - Released Jul 26, 2006
-MCCP is now disabled in the coffeemud. ini file by default. What I thought was a really frisky bug in CoffeeMud turned out to be a problem in the zlib.jar file we are using. The bug causes player output lockup about once per day on my mud. I recommend you disable it until I can replace the library.
-
-Also, I did get primary hacking on the Mystery Engine completed, but will have to wait for the next build to see the debugged version with lots of example mystery quests.
-
-As always, this build is in the "stable" directory.
-
+  MCCP is now disabled in the coffeemud. ini file by default. What I thought was a really frisky bug in CoffeeMud turned out to be a problem in the zlib.jar file we are using. The bug causes player output lockup about once per day on my mud. I recommend you disable it until I can replace the library.
+  Also, I did get primary hacking on the Mystery Engine completed, but will have to wait for the next build to see the debugged version with lots of example mystery quests.
+  As always, this build is in the "stable" directory.
    1. HELP changes: VISIBLE command is better documented in relavant spells/skills, RANGE entry added.
    2. A players HIDE score is now shown in SCORE when hidden.
-   Observation score (see hidden) is also shown when avail.
+      Observation score (see hidden) is also shown when avail.
    3. Behaviors Aggressive, MobileAggressive, WimpyAggressive, VeryAggressive now have MISBEHAVE flag.
    4. Scriptable changes: $0..$9 are now valid temporary variables for holding all possible strings -- they are local to a single trigger.
    5. Scriptable changes: We now have FOR loops!! (use the temporary variables described above)
@@ -678,8 +671,7 @@ As always, this build is in the "stable" directory.
   27. New Database flag in coffeemud.ini file: DBREUSE, for those having trouble with MySQL in Windows XP.
   28. New Channels INFO flag for the ini file: WARRANTS
   29. Dadgummit! I laid down for core for a player/clan debt system and never used it anywhere. Ugh...
-  30. For convenience, several references added to the Guides section:
-  Reference. html
+  30. For convenience, several references added to the Guides section: Reference. html
   31. New DEBUG flag: DBROOMPOP
   32. Guides were mostly cosmetically redone. Thanks for this donation!
   33. So many bugs were fixed, it would hurt us both to list them.
@@ -694,20 +686,18 @@ As always, this build is in the "stable" directory.
    8. Better support for Oracle is on the way -- partially there this release, but not all the way there. Thanks Aristotle!
    9. Spell_MagicItem now has protections for layered clothing (to prevent abuse)
   10. Not new, but in better shape: educations for using common skills to create enhanced items
-  -- mobteachers especially are more helpful. :)
+     -- mobteachers especially are more helpful. :)
   11. Evil clerics now OUTFIT with swords instead of maces
   12. New resource: cheese. :/
   13. TELL now respects invisibility
   14. New Zapper masks: ADJSTR, ADJDEX, ADJCON, etc.. for adjusted/current stat checking
   15. A tall helping of bugs gobbled up.
 # Build 5.1.2 - Released Apr 04, 2006
-Hello all,
-A release of numerous important bug fixes, as a few remaining problems with thin areas are shaken out. Even if you don't use thin areas, you'll need the fixes, since they also resolved issues with Grids.
-The only real new feature is the implementation of Educations. In this case, for the common skills.
-And, of course, assorted other fixes.
-- Bo
+  numerous important bug fixes, as a few remaining problems with thin areas are shaken out. Even if you don't use thin areas, you'll need the fixes, since they also resolved issues with Grids.
+  The only real new feature is the implementation of Educations. In this case, for the common skills.
+  And, of course, assorted other fixes.
 # Build 5.1.0 - Released Mar 23, 2006
-Here it is, and every bit as late as I promised. Hopefully something in there yall will like. As always, there are INI changes to watch out for, and another library JAR file has been added which needs to be included in your startup script (mud.bat or whatever).
+  Here it is, and every bit as late as I promised. Hopefully something in there yall will like. As always, there are INI changes to watch out for, and another library JAR file has been added which needs to be included in your startup script (mud.bat or whatever).
    1. New Area types. These include grid type areas, uncached (thin) areas, and combinations of both. (see Archons Guide) 2. MUDGrinder support for "grid" area types -- supports "painting"
    huge swabs of rooms at once.
    3. Languages being spoken can now cause problems for ORDERing, and Shopkeeper/Banker/Postman interactions.
@@ -728,25 +718,23 @@ Here it is, and every bit as late as I promised. Hopefully something in there ya
   20. Quests can also have minimum players online, which can be narrowly defined using a player zappermask if you like.
   21. CoffeeMud now supports MCCP (text compression), and it supports it reliably and well. There is another jar file in the LIB directory to make sure is in the classpath, however.
   22. DEFAULT PROMPT now includes the combat opponents health text.
-  It was removed from its previous place. Old players will have to update their prompts.
+     It was removed from its previous place. Old players will have to update their prompts.
   23. Due to the mudmagic.com coding context, CoffeeMud now has a configurable and expandable Extended English Parsing system. You can enter all kinds of complex things like: get the third axe ; get the axe and the sword ; get the sword and wield it ; get sword, axe, and helmet and put all in the bag 24. Zapper mask now includes SKILLS (including optional proficiency checks), EDUCATIONS, SECURITY flags (but only if they are defined in your ini file) 25. (Internal) CoffeeMud is now FAR stingier with threads, and has been drastically optimized for speed without costing another byte in memory (heck, perhaps using even less in the process).
   26. If your muds been up long enough, you can actually start reviewing your players leveling-dates from the MUDGrinder Player List.
   27. Siplet also supports MCCP now, and has had a few Firefox/Browser related issues addressed.
   28. The MUDGrinder main menu has been shuffled a tiny bit. A minor change to the Threads listing makes it a bit more useful.
   29. A whole circus of bugs tamed, and hopefully as few new ones introduced as possible.
 # Build 5.0.1 - Released Jan 18, 2006
-A few bug fixes as 5. 0 is preped for public announcement.
+   A few bug fixes as 5. 0 is preped for public announcement.
 # Build 5.0.0 - Released Jan 14, 2006
-
-	
-This is mostly just from memory. ..
+   This is mostly just from memory. ..
    1. Packages have been moved around, fakedb files are now in a different place, and there have been INI file changes -- follow the Installation Guide upgrade instructions closely!
    2. Some speed and memory usage enhancements.
    3. Smoking can give you cancer now.
    4. New CoffeeMud file system, with new command SHELL and new MUDGrinder File Browser to support it. Remember that "." is a shortcut for the SHELL command. Also remember that all your files must be in the coffeemud installed directory now! Also, new security flags, VFS: and FS: implemented to allow you to give file level or directory level access to builders. Do Help CMFS for more info.
    5. Better builder reporting in the log.
    6. CoffeeMud classloader will now load JavaScript ".js" classes also.
-   See the Programmer's Guide for more information.
+      See the Programmer's Guide for more information.
    7. Many, but not all, interfaces have been commented. Generating javadocs might actually be useful!
    8. New Behaviors: ItemGenerator, and RandomItems
    9. Metacraft has some more parameters to extend its usefulness
@@ -758,93 +746,90 @@ This is mostly just from memory. ..
   14. Lots of other stuff I can't remember, and with a 15megabyte change file, I may never know about.
   15. Somewhere, there are fixed bugs.
 # Build 4.7.13 - Release Dec 1, 2005
-Somewhat early build as I figure out what's next.
-
-**VERY IMPORTANT** No DB changes, but launching the mud now requires
-that you include lib/js. jar in your classpath. All of the sample
-batch files have been adjusted accordingly. There are also a INI
-entries to watch out for if you upgrade.
-
+  Somewhat early build as I figure out what's next.
+  **VERY IMPORTANT** No DB changes, but launching the mud now requires
+  that you include lib/js. jar in your classpath. All of the sample
+  batch files have been adjusted accordingly. There are also a INI
+  entries to watch out for if you upgrade.
    1. New global color code: ^J for weather messages.
    2. Siplet now detects browser java installation and gives a message
-   for those without.
+      for those without.
    3. Scriptable changes: NUMMOBSROOM accepts a name parameter, new
-   MPRESET command, new <SCRIPT> command (see 7)
+      MPRESET command, new <SCRIPT> command (see 7)
    4. More interesting information about death is recorded in DeadBody
-   objects now, with GenEditor support.
+      objects now, with GenEditor support.
    5. New memory management tool: LIST OBJCOUNTERS
    6. Relationship between Hide and See Hidden altered. Success at
-   either is now modified by level, skill, 2 new saving throws (save vs
-   detection, save vs overlooking), height, dexterity, wisdom.
+      either is now modified by level, skill, 2 new saving throws (save vs
+      detection, save vs overlooking), height, dexterity, wisdom.
    7. Scriptable behavior, Quest engine, web pages all support
-   Javascripting. New INI entry controls security for Scriptable
-   behavior.
+      Javascripting. New INI entry controls security for Scriptable
+      behavior.
    8. New command: JRUN, for executing external-file javascript, for
-   batch or other purposes.
+      batch or other purposes.
    9. Skill Usage report added to the Statistics tables in the MUDGrinder
   10. Lots of default MXP images are included in this build.. almost
-  all races, but some resources as well. Almost all were collected by
-  the wonderous Jordana.
+      all races, but some resources as well. Almost all were collected by
+      the wonderous Jordana.
   11. The formula used to determine hits and misses in combat has been
-  altered to correct some imbalances and improve gameplay.
+      altered to correct some imbalances and improve gameplay.
   12. Two weapon fighting altered to make it desirable for players,
-  while (hopefully) maintaining balance.
+      while (hopefully) maintaining balance.
   13. Injury system now includes a minimum level to lose a body part,
-  specifyable in the INI file.
+      specifyable in the INI file.
   14. Internal: Most shopkeeper code from Merchant and StdShopKeeper
-  consolodated into CoffeeShop object and CoffeeShops library
+      consolodated into CoffeeShop object and CoffeeShops library
   15. Merchant common skill can now be used as a property also. See
-  AHELP MERCHANT for more info, but basically you can make anything
-  from an item, to a room, to a whole area into a shop.
+      AHELP MERCHANT for more info, but basically you can make anything
+      from an item, to a room, to a whole area into a shop.
   16. FLEE command can now be used to end combat when all your foes are
-  bound, sleeping, or held.
+      bound, sleeping, or held.
   17. Scriptable: Previously mentioned changes to speech_prog and
-  regmask_prog. See yahoo support group.
+      regmask_prog. See yahoo support group.
   18. New command: GMODIFY, which allows searches and replaces in
-  objects by stat fields.
+      objects by stat fields.
   19. Locksmith skill now supports DELOCK parameter.
   20. 1/2 cup of debug labor sprikled within 1 foot radius of entire
-  bug mound. Approx 1 qt of water per cup of debugging.
+      bug mound. Approx 1 qt of water per cup of debugging.
 # Build 4.7.12 - Release Nov 12, 2005
-Not a long list, but a fun one. I've spent almost the entire last
-three weeks working on Siplet -- the built in java applet-based
-client. It's now very close to where I want it... at least close
-enough that I managed to put SOME time in on the engine. :)
-
+  Not a long list, but a fun one. I've spent almost the entire last
+  three weeks working on Siplet -- the built in java applet-based
+  client. It's now very close to where I want it... at least close
+  enough that I managed to put SOME time in on the engine. :)
    1. ALLSKILLS Security flag added as an alternative means of giving
    admins all skills short of making Archons or new classes.
    2. CoffeeMud SMTP server will now react more favorably to HTML-
    formatted emails, provided they also include a text part.
    3. Emoter behavior now supports socials proper.
    4. New text file: mxp_images.ini which, because I don't have sample
-   images yet, doesn't do much. It's an empty template for all the
-   default MXP compliant images that can be used in-game whenever an
-   object-specific image isn't provided by builders.
+      images yet, doesn't do much. It's an empty template for all the
+      default MXP compliant images that can be used in-game whenever an
+      object-specific image isn't provided by builders.
    5. LIST RACECATS command added, along with LIST MATERIALS.
    6. CoffeeMud now does a bit more TELNET-code negotiation, and does it
-   in a nicer fashion. Special thanks to Alan Wood for providing the
-   code that inspired it. The only functional bonus, per se, is that
-   people using straight TELNET will get character echo so they can see
-   what they type.
+      in a nicer fashion. Special thanks to Alan Wood for providing the
+      code that inspired it. The only functional bonus, per se, is that
+      people using straight TELNET will get character echo so they can see
+      what they type.
    7. New player command: VISIBLE, which also works for Archons WIZI
-   purposes.
+      purposes.
    8. Siplet client now supports as much of the MXP protocol as
-   CoffeeMud dishes out. :)
+      CoffeeMud dishes out. :)
    9. New property: Prop_RoomUnmappable
   10. *Modified* Scriptable commands: MPECHOAT, NUMMOBROOM -- now both
-  much more powerful
+      much more powerful
   11. FakeDB now supports a WHERE clause with other comparisons aside
-  from just =: >, <, <=, >=, and <>
+      from just =: >, <, <=, >=, and <>
   12. New spells: Word of Recall, Mana Shield, Minor Mana Shield, and
-  Major Mana Shield
+      Major Mana Shield
   13. <internal> Shutdown app now works using an escape sequence, so
-  the new Shutdown app is NOT backwards compat with old servers.
+      the new Shutdown app is NOT backwards compat with old servers.
   14. Quests can now have static start dates, both real-life dates, and
-  mud-dates.
+      mud-dates.
   15. StdThinGridVacuum has been reactivated. I think I finally got
-  its problems licked.
+      its problems licked.
   16. New intro screen for MXP client users -- they will see intro.jpg
-  in addition to intro. txt
+      in addition to intro. txt
   17. A growth of malignant bugs was eradiated.
 # Build 4.7.11 - Released Oct 28, 2005
    1. Date/Time records for each level a player gains, including their creation data/time, are now kept.
@@ -876,227 +861,219 @@ enough that I managed to put SOME time in on the engine. :)
   27. CoffeeMud now has an official web-based client available to Internet Explorer users via your internal web servers public pages. No MXP support yet, but it does have MSP sound support, ANSI support, and "up arrow" command memory.
   28. A horde of marauding bugs beaten back with the ingenious use of banana peels and cat droppings.
 # Build 4.7.10 - Release Oct 11, 2005
-Bug fixes to StdShopkeeper and BaseGenerics.
+  Bug fixes to StdShopkeeper and BaseGenerics.
 # Build 4.7.9 - Released Oct 10, 2005
-here were a few really nasty bugs discovered soon after the release of
-   4. 7.8. This build corrects them.
+  here were a few really nasty bugs discovered soon after the release of
+  4. 7.8. This build corrects them.
 # Build 4.7.8 - Released Oct 07, 2005
    1. Built in channels WIZINFO and CLANTALK are *GONE*. They have been
-   replaced with new CHANNELS flags in the INI file. Please see the INI
-   file for more information on this new feature.
+      replaced with new CHANNELS flags in the INI file. Please see the INI
+      file for more information on this new feature.
    2. Channels can now be made read only, and can display lots of new
-   information they couldn't before.
+      information they couldn't before.
    3. Those with CLOAKING ability can now auto-cloak at login by putting
-   their login name followed by a space and a '!' character during login.
+      their login name followed by a space and a '!' character during login.
    4. Unless disabled, the system will now keep track of every room a
-   player has visited. It will color exits accordingly (see INI file),
-   and will report the % of the current area and world visited in the
-   WHERE command.
+      player has visited. It will color exits accordingly (see INI file),
+      and will report the % of the current area and world visited in the
+      WHERE command.
    5. Many properties Prop_*SpellCast, Prop_*Adjuster, Prop_*Enabler,
-   Prop_*Resister, etc. . may now include an optional zapper mask to
-   determine if the described bonuses will apply to the current
-   user/wearer/rider/owner/whatever. This is great for making armor
-   that only works when all pieces are worn, or axes with bonuses only
-   for dwarves, etc.
+      Prop_*Resister, etc. . may now include an optional zapper mask to
+      determine if the described bonuses will apply to the current
+      user/wearer/rider/owner/whatever. This is great for making armor
+      that only works when all pieces are worn, or axes with bonuses only
+      for dwarves, etc.
    6. Readable items may now be written/read in different languages.
-   SPEAK command will choose what language will be WRITTEN in.
+      SPEAK command will choose what language will be WRITTEN in.
    7. New unlisted command: Test -- written just for automatiting the
-   testing of all the property changes mentioned in #5.
+      testing of all the property changes mentioned in #5.
    8. Light sources can now be handled in limited ways, even in the dark.
-   
    9. Looking at a rideable will now list the people riding it.
   10. WillQualify command will now report which skills are
-  automatically gained.
+      automatically gained.
   11. A name mask can now be given to the IMPORT command when importing
-  player lists.
+      player lists.
   12. genCharClass command line editor FINALLY supports the
-  availability flag properly. This was really a bug fix, but well
-  worth mentioning.
+      availability flag properly. This was really a bug fix, but well
+      worth mentioning.
   13. Journal-type items can now have an administrator listed in their
-  parameters along with REPLY, READ, and WRITE requirements.
+      parameters along with REPLY, READ, and WRITE requirements.
   14. ANNOUNCE command changes: announce alone defaults to ALL.
-  ANNOUNCETO syntax required to direct an announcement. ANNOUNCEMSG
-  allows admins to customize the string outputted when they use the
-  command.
+      ANNOUNCETO syntax required to direct an announcement. ANNOUNCEMSG
+      allows admins to customize the string outputted when they use the
+      command.
   15. Color of fight text now differs for strings reflecting your own
-  attacks versus those of others. ColorSet expanded accordingly.
+      attacks versus those of others. ColorSet expanded accordingly.
   16. AFK command now has an optional parameter for when people try to
-  do TELLs to you.
+      do TELLs to you.
   17. Highly dangerous new Archon command: PAUSE. Can be directed to
-  stop thread/ticking of individual objects, OR THE ENTIRE MUD!!!!!
+      stop thread/ticking of individual objects, OR THE ENTIRE MUD!!!!!
   18. Internal: Gianluca managed to scriptify the BaseGenerics.java
-  file -- all the command line editors basically. What a feat....
+      file -- all the command line editors basically. What a feat....
   19. Internal: New string tag: <S-NAMENOART> <T-NAMENOART> <O-
-  NAMENOART> to automatically remove any prefix english articles from
-  names before displaying them.
+      NAMENOART> to automatically remove any prefix english articles from
+      names before displaying them.
   20. New command: PACKAGE. Just read the help -- it's purpose and use
-  will be apparant.
+      will be apparant.
   21. New Scriptable command: MPSTOP, to hault mob fighting and common
-  skill using.
+      skill using.
   22. New autoconfig flag for players: COMPRESS. A complement to or
-  alternative to BRIEF.
+      alternative to BRIEF.
   23. "$" character can now be used by players to anchor both the
-  beginning AND end of strings. example: $exact name match only$ 24. Journal replies are now date/time stamped.
+      beginning AND end of strings. example: $exact name match only$ 24. Journal replies are now date/time stamped.
   25. Password command now requires your old password.
   26. Maximum rate of skill improvement slowed from 1/minute to 1/5
-  minutes.
+      minutes.
   27. LOTS of new MXP tags added, especially to SCORE, archon WHERE
   28. new INI entries: MAXCONNSPERIP, MAXNEWPERIP to control
-  multiplaying and new-player spamming
+      multiplaying and new-player spamming
   29. File Browser in MUDGrinder now has filename search, and file
-  search features
+      search features
   30. Archons can now see the mundane WHERE text by doing WHERE !
   31. sumbugzfixt
 # Build 4.7.7 - Released Sep 24, 2005
-Mostly a bug-fix build, though I did find a little time for some
-tinkering. Several class files were dropped, so make sure you follow
-the upgrade rules regarding deleting your com path.
-
+  Mostly a bug-fix build, though I did find a little time for some
+  tinkering. Several class files were dropped, so make sure you follow
+  the upgrade rules regarding deleting your com path.
    1. Better reporting of map load errors.
    2. Optimization of XML parser -- might be a little speed bump in
-   there somewhere.
+      there somewhere.
    3. The commands IDEA, BUG, TYPO, TASK, and ASSIST are ALL
-   DEPRECATED. They are GONE!
+      DEPRECATED. They are GONE!
    4. New INI entry: COMMANDJOURNALS, replaced all the above commands.
    5. New and Updated Items: PlayingCard, HandOfCards, DeckOfCards. New
-   Behavior to demonstrate them: PokerDealer
+      Behavior to demonstrate them: PokerDealer
    6. PKILL rule change: *BOTH* clans must be at war with each other,
-   directly or indirectly, to override PKILL flag.
+      directly or indirectly, to override PKILL flag.
    7. Minor additions to Quest Manager selection abilities, esp with set
-   locale, set room, and set area.
+      locale, set room, and set area.
    8. EXAMINE can now be used to glean new information on mobs and
-   players.
+      players.
    9. MUDZapper now supports ITEMS. This was HUGE! Several new zapper
-   fields added to support this.
+      fields added to support this.
   10. Admin WHERE command can now include zapper masks in your searches. 11. New application: Shutdown, allows you to shutdown coffeemud
-  gracefully from the command line. See Installation Guide for more
-  info.
+      gracefully from the command line. See Installation Guide for more
+      info.
   12. New non-qualified Prayer (for deities perhaps): Refresh
   13. Internal: ServiceEngine now supports a startTickDown method with
-  VARIABLE tick rate.
+      VARIABLE tick rate.
   14. Character Classes can now have several class-level dependent
-  names. GenCharClass support added.
+      names. GenCharClass support added.
   15. Character Classes can now grant users class-level dependent
-  Security codes and Groups. GenCharClass support added.
+      Security codes and Groups. GenCharClass support added.
   16. A snow-capped goat playground MOUNTAIN of bugs fixed.
 # Build 4.7.6 - Released Aug 26, 2005
-    *  A New Table was added to the Database ** If you intend to use
-    
-    the new polling feature, make SURE you review the Installation Guide
-    instructions regarding upgrading a database-change version before
-    downloading and installing build 4. 7.6
-    
-    I'd like to give KUDOs to Gianluca of Italy. He's been working with
-    me on "scriptizing" CoffeeMud to support other languages. That means
-    you'll find several more entries in the EN_TX scripts area of the
-    system.
-    
-    This is a fun build I think -- been pretty busy the last few weeks.
-    
+  *  A New Table was added to the Database ** If you intend to use
+  the new polling feature, make SURE you review the Installation Guide
+  instructions regarding upgrading a database-change version before
+  downloading and installing build 4. 7.6
+  I'd like to give KUDOs to Gianluca of Italy. He's been working with
+  me on "scriptizing" CoffeeMud to support other languages. That means
+  you'll find several more entries in the EN_TX scripts area of the
+  system.
+  This is a fun build I think -- been pretty busy the last few weeks.
    1. AHELP command and MUDGrinder Archon Help topics now actually
-   favors the archon help files.
+      favors the archon help files.
    2. New Scriptable trigger: LEVEL_PROG. Also, LOGIN_PROG triggers
-   optomized to run almost instantaneously now.
+      optomized to run almost instantaneously now.
    3. The MATE SELF social now may make the player go blind.
    4. A summary of the total value of each currency is now listed in the
-   money section of inventory.
+      money section of inventory.
    5. Items and MOBs in room listings are now always capitalized -- ok,
-   pretty trivial, but I'm padding the list anyway.
+      pretty trivial, but I'm padding the list anyway.
    6. New Prayer: Divine Favor -- not qualified for by any cleric --
-   intended as a deity blessing.
+      intended as a deity blessing.
    7. The Chicken Race now lays eggs instead of just the Chicken MOB
    8. Reply now has its own zapper mask in StdJournal/GenJournal
    9. DoorwayGuardian behavior now has NOSNEAK parm, and ability to
-   specify the displayed text.
+      specify the displayed text.
   10. New Scriptable command: MPNOTRIGGER
   11. New Scriptable functions: VALUE, CURRENCY
   12. New QuestScript command: RESET (for rooms or areas)
   13. Fighter GOUGE skill will now damage an eye, called strike
-  improved, internal improvements to Injury prop.
+      improved, internal improvements to Injury prop.
   14. New misc property: addictions. very infrequent random affliction
-  from (currently) drinking or smoking.
+      from (currently) drinking or smoking.
   15. Newly on the market rooms in a Prop_LotsForSale/Prop_RoomsForSale
-  situation will now remove door locks.
+      situation will now remove door locks.
   16. Prop_NoChannel now has lots and lots of options it didn't have
-  before.
+      before.
   17. New command: EXAMINE. Takes a tick to execute, but gives lots of
-  new info based on players int.
+      new info based on players int.
   18. New application: OffLine -- run this if your mud is down for DB
-  or other maint. Uses text/down.txt
+      or other maint. Uses text/down.txt
   19. EMAILREQ ini entry now has new possible value: PASSWORD
   20. New feature: Player POLLING. Use CREATE POLL. Also new security
-  string POLLS, and new command: POLL.
+      string POLLS, and new command: POLL.
   21. New INI optionmization to go with the above: DISABLE=POLLCACHE
-  (for low memory systems w/ lots of polls and users)
+      (for low memory systems w/ lots of polls and users)
   22. Poison and Alchoholic nature transferred with the FILL/POUR
-  command. How did that get missed?
+      command. How did that get missed?
   23. Can now fill a drink glass from a container that contains liquid
-  items (like iron pot after distilling).
+      items (like iron pot after distilling).
   24. A few assorted bugs were crushed up against the windshield of
-  circumstance.
+      circumstance.
 # Build 4.7.5 - Released Aug 15, 2005
-Here ya go-- Some fun tweeks in there for your power players and
-builders. Enjoy!
-
+  Here ya go-- Some fun tweeks in there for your power players and
+  builders. Enjoy!
    1. Spells shrink and grow now counteract each other.
    2. Cost of common skills brought back up to previous 1 train level in
-   default ini settings.
+      default ini settings.
    3. New builder-journal-idea/bug/typo type thing: TASKS. Requires
-   TASKS security flag.
+      TASKS security flag.
    4. Prop_ReqCapacity has some new parameters to extend its usefulness.
-   (Players, and Mobs)
+      (Players, and Mobs)
    5. Clanresign will now force the players to lose any clan items they
-   had to donation or oblivion.
+      had to donation or oblivion.
    6. Clans must now give conquered mobs clan items to maintain
-   control. Creates a new cold-war dynamic among clans.
+      control. Creates a new cold-war dynamic among clans.
    7. New clan item: membership card, is proof against pamphlets.
    8. New Scriptable prog type: REGMASK_PROG for regular expression
-   matches.
+      matches.
    9. New Scriptable command: MPFACTION for changing faction
   10. New Scriptable functions: FACTION for reading faction, HASNUM for
-  counting items, ISSERVANT
+     counting items, ISSERVANT
   11. Several spells/chants/etc that do ongoing damage will make
-  themselves hostile to the caster.
+     themselves hostile to the caster.
   12. New legal penalty enhancements: fines, trial skipping, detaining,
-  crime separation, and no-release from prison/detention.
+     crime separation, and no-release from prison/detention.
   13. Skill class/categories/domains can now be made into blanket
-  crimes of influence or skill use.
+     crimes of influence or skill use.
   14. Tax Collector enhanced to handle criminal fines.
   15. Mobile MOBs with clan-crafted "gathering items" will now
-  assist "crafting item" mobs by taking needed resources to them.
+     assist "crafting item" mobs by taking needed resources to them.
   16. HelpList now includes description search.
   17. Lots of dead bugs, including the QUEEN!
 # Build 4.7.4 - Released Jul 17, 2005
-Probably one of the smallest builds released. Normally one I would
-hold for another week or two, but for some of the bug fixes. The
-change file only had 3000 lines totally 136k on disk. The new stuff
-is really light, but here it is. ..
-
+  Probably one of the smallest builds released. Normally one I would
+  hold for another week or two, but for some of the bug fixes. The
+  change file only had 3000 lines totally 136k on disk. The new stuff
+  is really light, but here it is. ..
    1. Thief Tag Turf skill now lets them tag for their clan, and remove
-   tags.
+      tags.
    2. Several of the home-protecting prayers and spells now have a clan
-   component.
+      component.
    3. Several of the ongoing damage spells/prayers/chants will keep the
-   mob aggr to the caster so long as he/she is under its affect.
+      mob aggr to the caster so long as he/she is under its affect.
    4. (Internal) CMMap now has a registry system to receive special
-   registered CMMsgs. Inspired by the Snippets code, though the imp I
-   went with is more CM Compatible.
+      registered CMMsgs. Inspired by the Snippets code, though the imp I
+      went with is more CM Compatible.
    5. ASSIST command and list added, based on snippets code (I forget
-   whose -- someone should bow).
+      whose -- someone should bow).
    6. Assassins Eye added as a clancraft item.
    7. Lots of new prayers: Cure Fatigue, Cure Exhaustion, Invigorate,
-   Cause Fatigue, Cause Exhaustion, Enervate, Minor Infusion, Moderate
-   Infusion, Major Infusion
+      Cause Fatigue, Cause Exhaustion, Enervate, Minor Infusion, Moderate
+      Infusion, Major Infusion
    8. New Behavior: Evil Executioner. Also, both Good and Evil
-   executioner now have player parm.
+      executioner now have player parm.
    9. New INI entry: EQVIEW, based on snippets code (I forget whose --
-   someone else should bow)
+      someone else should bow)
   10. Doppleganger property now has MIN/MAX parms.
   11. New StdAbility protected method minCastWaitTime(), defaulting to
-  0, now helps prevent spell spamming. Implementations include Healing
-  Hands, and the several Cure prayers.
+     0, now helps prevent spell spamming. Implementations include Healing
+     Hands, and the several Cure prayers.
   12. An enormous cloud of millions of swarming bugs dissipated with
-  the swirling winds of correction.
+     the swirling winds of correction.
 # Build 4.7.3 - Released Jul 04, 2005
    1. Secret temporary reset called "autoweather" (RESET AUTOWEATHER) to turn all your players autoweather flags on. This is a temporary feature to enable your players to better enjoy the new weather messages and bring them into line with the new defaults. New Muds do not have to use it.
    2. All weather strikes are now rendered mundane, so spell/magic immunity will not apply (sort of a bug fix, sort of a feature).
@@ -1139,15 +1116,13 @@ is really light, but here it is. ..
    9. Journal Browser includes EMAIL and TRANSFER buttons now.
   10. A huge hot steaming smelly pile of bugs carted away.
 # Build 4.6.17 - Released May 06, 2005
-The Database Schema has changed Please see the Installation
-Guide for information on upgrading a database when the schema has
-changed.
-
-The INI file has new entries They are FACTIONS,
-ACCOUNTEXPIRATION, EXPCONTACTLINE, TRIALDAYS, and SOFTWARE. Please
-add them to your existing coffeemud. ini files, even if you don't mean
-to use either one.
-
+  The Database Schema has changed Please see the Installation
+  Guide for information on upgrading a database when the schema has
+  changed.
+  The INI file has new entries They are FACTIONS,
+  ACCOUNTEXPIRATION, EXPCONTACTLINE, TRIALDAYS, and SOFTWARE. Please
+  add them to your existing coffeemud. ini files, even if you don't mean
+  to use either one.
    1. Babys now "soil" themselves.
    2. New Scriptable Commands: MPWALKTO (optomized version of MPTRACKTO), ISBEHAVE, and MPPLAYERCLASS.
    3. Internal: the spell specification in the crafting skill "text" files has changed slightly. An * now precedes a spell/parameter combo.
@@ -1208,7 +1183,7 @@ to use either one.
   16. Archons can now T)ransfer journal entries between journals.
   17. More bugs fixed, introduced, fixed again, reintroduced and made worse, and finally fixed than could possibly be imagined.
 # Build 4.6.13 - Released Jan 09, 2005
-Fixed are bugs related to the Player Purging system, and bugs that caused all food resources to go "bad" almost immediately.
+  Fixed are bugs related to the Player Purging system, and bugs that caused all food resources to go "bad" almost immediately.
 # Build 4.6.12 - Released Jan 07, 2005
    1. Age is now relevant to fertility.
    2. Uncooked foods now rot over time -- meat becomes poisonous, vegies unnutricious and yucky.
@@ -1242,10 +1217,8 @@ Fixed are bugs related to the Player Purging system, and bugs that caused all fo
    7. Clan Equipment is no longer permanently disabled when held by non-clan members. Instead, it just goes inactive.
    8. A few minor bugs fixed in some of last builds features. :)
 # Build 4.6.10 - Released Dec 12, 2004
-There is a new INI entry "MUDTHEME" which everyone MUST include in their on INI files and set to "1". Other than that, it serves no purpose as of yet... it's just a placeholder for features that exist merely as pipe-dreams.
-
-Those features which are not pipe-dreams are listed below:
-
+  There is a new INI entry "MUDTHEME" which everyone MUST include in their on INI files and set to "1". Other than that, it serves no purpose as of yet... it's just a placeholder for features that exist merely as pipe-dreams.
+  Those features which are not pipe-dreams are listed below:
    1. Improved docs for the new databases, thanks Mathew
    2. New StdItems DeckOfCards, PlayingCard -- just say "shuffle" to it
    3. MXP additions: Better exit, clanlist, channels, quest support, room and user list support
@@ -1262,13 +1235,13 @@ Those features which are not pipe-dreams are listed below:
   14. Public web page: Channel backlogs feature implemented. Two supporting WebMacros came with it.
   15. Diseases now come with difficulty levels which require higher level clerics to remove.
 # Build 4.6.9 - Released Nov 28, 2004
-Just a couple of bug fixes that popped up.
+  Just a couple of bug fixes that popped up.
 # Build 4.6.8 - Released Nov 27, 2004
-    *  This version only has MXP support implemented. The configuration file for it is located in resources/text/mxp.txt
-    * The image download feature in ZMUD failed horribly for me, so I only inserted one image-ready tag (ScoreImg) in the codebase, and then commented out its implementation in mxp. txt so as not to crash ZMUD for other people as well. I notified ZMUD of the bug. Lord only knows if they care. :)
-    * If there are any other bug fixes or changes, they weren't really worth mentioning. MXP was my only focus.
+  *  This version only has MXP support implemented. The configuration file for it is located in resources/text/mxp.txt
+  * The image download feature in ZMUD failed horribly for me, so I only inserted one image-ready tag (ScoreImg) in the codebase, and then commented out its implementation in mxp. txt so as not to crash ZMUD for other people as well. I notified ZMUD of the bug. Lord only knows if they care. :)
+  * If there are any other bug fixes or changes, they weren't really worth mentioning. MXP was my only focus.
 # Build 4.6.7 - 
-Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 with one fix and one oversight in StdLawBook Support. Release Date Unkown. - JDVyska JDVyska (as per discussion with Bo)
+  Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 with one fix and one oversight in StdLawBook Support. Release Date Unkown. - JDVyska JDVyska (as per discussion with Bo)
 # Build 4.6.6 - Released Nov 12, 2004
    1. Body Piercing has been significantly changed to make it BETTER!
    2. The command line now has a calendar editor for TimeZone/Planet type areas in the MODIFY AREA.
@@ -1366,7 +1339,7 @@ Often referred to as the "Ghost Version", this was a minor re-release of 4. 6.6 
   13. New Economy controls implemented -- see the new INI entries, as well as the new ShopKeeper fields for more info.
   14. As always, lots, and lots, and lots, and lots of bugs fixed!!
 # Build 4.5.6 - Released Aug 05, 2004
-All the silly bugs discovered on its first day out, and a few of the new interesting bugs reported today: fixed.
+  All the silly bugs discovered on its first day out, and a few of the new interesting bugs reported today: fixed.
 # Build 4.5.5 - Released Aug 03, 2004
    1. TELL and GTELL now have TELL LAST x syntax to view a log of past conversations.
    2. Internal: All Common Skills are now qualified for in a single method in StdCharClass.java.
@@ -1428,7 +1401,7 @@ All the silly bugs discovered on its first day out, and a few of the new interes
    6. IMC2 Network interface implemented. Instructions for joining are in the INI file.
    7. As always, several bugs fixed and holes filled.
 # Build 4.5.1 - Released May 24, 2004
-Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow quest points to be taken. The most significant part of this build is that it's going out as a public release.
+  Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow quest points to be taken. The most significant part of this build is that it's going out as a public release.
 # Build 4.5.0 - Released May 21, 2004
    1. Tweek made to hp/mana/move gain formula to better differentiate the classes. Bring up localhost:27744/crossclass.cmvp for a chart.
    2. Scriptable.html guide almost done! Only the IF-Functions to go!
@@ -1541,7 +1514,7 @@ Well, the docs are done, a few bugs were fixed, and TAKE was expanded to allow q
   19. New MUDGrinder Control Panel
   20. Half/Mixed races now created with pregnancy.
 # Build 4.2.3 - Released Mar 01, 2004
-Shameful to be building again so soon, but there are about 10 bugs fixed in this, 2-3 of which were pretty important. Part of the risks of downloading beta builds, of course, but I still like to upload stuff that works. :)
+  Shameful to be building again so soon, but there are about 10 bugs fixed in this, 2-3 of which were pretty important. Part of the risks of downloading beta builds, of course, but I still like to upload stuff that works. :)
 # Build 4.2.2 - Released Feb 28, 2004
    1. Quests will be aware of the objects used by other quests so as to prevent duplicates.
    2. Masterwork items added to common skills, and some damage adjustments made. Most likely we are heading to just plain Master crafting skills soon, however.
@@ -1565,7 +1538,7 @@ Shameful to be building again so soon, but there are about 10 bugs fixed in this
   20. GenCharClasses created. Although I personally did not expect much use from it, one of my builders suggested that these could be a great tool not only for CM customizers, but for builders who want to create skill templates for their mobs. Anyway, just thought I'd pass that thought on.
   21. And, as always, lots and lots and lots of bugs fixed.
 # Build 4.2.1 - Released Feb 15, 2004
-All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you were among the brave who downloaded 4.2.0.
+  All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you were among the brave who downloaded 4.2.0.
 # Build 4.2.0 - Released Feb 13, 2004
    1. Mages have been toned down quite a bit. Wish is more painful, permanency more permanent (but also more painful), and armor restrictions follow mages around should they wish themselves out of their class.
    2. FieryRoom integrated (thanks Tulath!)
@@ -1808,7 +1781,7 @@ All this has are 5-6 bug fixes over 4. 2.0, but they are worth getting if you we
    8. Fixes in MOBEater and CombatAbilities (specifically with wand use) make those behaviors much more useful.
    9. Minor changes in rejuv rates for hp/mana/mov weigh more heavily now on stats than on level. Not changing this when coffeemud went from a 25 level system to a 100+ system was an oversight.
 # Build 4.0.6 - Released Oct 02, 2003
-Yep -- more bug fixes, numerous new races added for madrom are file import support, as well as tinkerings here and there to make the system a happier one.
+  Yep -- more bug fixes, numerous new races added for madrom are file import support, as well as tinkerings here and there to make the system a happier one.
 # Build 4.0.5 - Released Sep 15, 2003
    1. Spell Siphon added at Enchantment/17
    2. Archons will now find everything with Locate Object -- even unlocatable things.
@@ -1830,19 +1803,17 @@ Yep -- more bug fixes, numerous new races added for madrom are file import suppo
   18. BOOT=mycoffeemud.ini command-line parameter now accepted. See installation guide for info on it.
   19. Several various bug fixes in various areas.
 # Build 4.0.4 - Released Sep 19, 2003
-    *  Like every version thus far, this one is a hodgepodge of various bug fixes we are finding as we play test. Nothing real serious.
-    
-    * The changes to Decay and RandomMonsters discussed in the group were worked in tho.
+  *  Like every version thus far, this one is a hodgepodge of various bug fixes we are finding as we play test. Nothing real serious.
+  * The changes to Decay and RandomMonsters discussed in the group were worked in tho.
 # Build 4.0.3 - Released Sep 15, 2003
-No need to wait . . there it is. Bug fixes, some playtest balancing stuff done to the druids (including adding a few more chants 
-to bring two of them up to speed), the new hp calculation mentioned previously (without comment), and yes, the channel 
-color thingy.
+  No need to wait . . there it is. Bug fixes, some playtest balancing stuff done to the druids (including adding a few more chants 
+  to bring two of them up to speed), the new hp calculation mentioned previously (without comment), and yes, the channel 
+  color thingy.
 # Build 4.0.1 - Released Sep 10, 2003
 # Build 4.0.0 - Released Sep 05, 2003
 # Build 3.8.8.9 - Released Aug 29, 2003
-    *  Only changes are the aforementioned genmob bug, and stretching the weather-bother from 90 secs to 6 mins (was annoying me).
-    
-    * The fix to the genmob was well worth tossing out another build, as this bug has been around for a few weeks now and was wreaking havoc.
+  *  Only changes are the aforementioned genmob bug, and stretching the weather-bother from 90 secs to 6 mins (was annoying me).
+  * The fix to the genmob was well worth tossing out another build, as this bug has been around for a few weeks now and was wreaking havoc.
 # Build 3.8.8.8 - Released Aug 29, 2003
    1. Titles are now READABLE.
    2. WIZLIST created
@@ -1996,7 +1967,6 @@ color thingy.
   22. Exp base award raised from 60 to 100. ANY COMMENTS on this??? Should it be in the INI file?
   23. Jester bard subclass started (about 95% there), with numerous new skills: joke, slapstick, pupeteer, lay minor traps, and many others...
 # Build 3.8.7.7 - Released Jul 05, 2003
-
    1. Various bugs fixed.
    2. Fish caught with fishing will be gettable from a boat.
    3. EMAILREQ ini file entry added
@@ -2349,7 +2319,7 @@ color thingy.
   29. Programmer's Guide has a section on Character Classes now!
   30. Journal date bug fixed?
 # Build 3.8.5.4 - Released Mar 03, 2003
-The only new features are the addition of the Amputation Ability, a few new Cleric Prayers (one of which restores Amuputated limbs), and the updated Programming Guide.
+  The only new features are the addition of the Amputation Ability, a few new Cleric Prayers (one of which restores Amuputated limbs), and the updated Programming Guide.
 # Build 3.8.5.0 - Released Feb 24, 2003
    1. Added I3STATE INI file entry to get a more accurate display of your muds status on the I3 mud list.
    2. Added VIEW command for shopkeepers.
