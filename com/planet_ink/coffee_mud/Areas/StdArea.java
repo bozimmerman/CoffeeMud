@@ -664,45 +664,45 @@ public class StdArea implements Area
 		else
 		if((getTechLevel()>0)&&(!CMath.bset(getTechLevel(),Area.THEME_TECHNOLOGY)))
 		{
-			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Electronics))
+			switch(msg.sourceMinor())
 			{
-				switch(msg.sourceMinor())
+			case CMMsg.TYP_BUY:
+			case CMMsg.TYP_BID:
+			case CMMsg.TYP_CLOSE:
+			case CMMsg.TYP_DEPOSIT:
+			case CMMsg.TYP_DROP:
+			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
+			case CMMsg.TYP_GET:
+			case CMMsg.TYP_GIVE:
+			case CMMsg.TYP_OPEN:
+			case CMMsg.TYP_PUT:
+			case CMMsg.TYP_SELL:
+			case CMMsg.TYP_VALUE:
+			case CMMsg.TYP_REMOVE:
+			case CMMsg.TYP_VIEW:
+			case CMMsg.TYP_WITHDRAW:
+			case CMMsg.TYP_BORROW:
+				break;
+			case CMMsg.TYP_POWERCURRENT:
+				return false;
+			default:
+				if(msg.tool() instanceof Electronics)
 				{
-				case CMMsg.TYP_BUY:
-				case CMMsg.TYP_BID:
-				case CMMsg.TYP_CLOSE:
-				case CMMsg.TYP_DEPOSIT:
-				case CMMsg.TYP_DROP:
-				case CMMsg.TYP_LOOK:
-				case CMMsg.TYP_EXAMINE:
-				case CMMsg.TYP_GET:
-				case CMMsg.TYP_GIVE:
-				case CMMsg.TYP_OPEN:
-				case CMMsg.TYP_PUT:
-				case CMMsg.TYP_SELL:
-				case CMMsg.TYP_VALUE:
-				case CMMsg.TYP_REMOVE:
-				case CMMsg.TYP_VIEW:
-				case CMMsg.TYP_WITHDRAW:
-				case CMMsg.TYP_BORROW:
-					break;
-				default:
-					{
-						Room room=null;
-						if((msg.target()!=null)
-						&&(msg.target() instanceof MOB)
-						&&(((MOB)msg.target()).location()!=null))
-							room=((MOB)msg.target()).location();
-						else
-						if((msg.source()!=null)
-						&&(msg.source().location()!=null))
-							room=msg.source().location();
-						if(room!=null)
-							room.showHappens(CMMsg.MSG_OK_VISUAL,"Technology doesn't seem to work here.");
-						return false;
-					}
+					Room room=null;
+					if((msg.target()!=null)
+					&&(msg.target() instanceof MOB)
+					&&(((MOB)msg.target()).location()!=null))
+						room=((MOB)msg.target()).location();
+					else
+					if((msg.source()!=null)
+					&&(msg.source().location()!=null))
+						room=msg.source().location();
+					if(room!=null)
+						room.showHappens(CMMsg.MSG_OK_VISUAL,"Technology doesn't seem to work here.");
+					return false;
 				}
+				break;
 			}
 		}
 		return true;
