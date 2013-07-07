@@ -39,7 +39,7 @@ public class StdTelnetProgram extends StdProgram
 	public String ID(){	return "StdTelnetProgram";}
 	
 	protected Socket sock = null;
-	protected BufferedReader reader=null;
+	protected BufferedInputStream reader=null;
 	protected BufferedWriter writer=null;
 	
 	public StdTelnetProgram()
@@ -132,7 +132,7 @@ public class StdTelnetProgram extends StdProgram
 					{
 						sock=new Socket(parsed.get(1),CMath.s_int(parsed.get(2)));
 						sock.setSoTimeout(1);
-						reader=new BufferedReader(new InputStreamReader(sock.getInputStream()));
+						reader=new BufferedInputStream(sock.getInputStream());
 						writer=new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 					}
 					currentScreen="Connected to "+parsed.get(1)+" at port "+parsed.get(2);
@@ -173,12 +173,17 @@ public class StdTelnetProgram extends StdProgram
 			{
 				if(reader!=null)
 				{
-					String msg=reader.readLine();
-					while(msg!=null)
+					ByteArrayOutputStream bout=new ByteArrayOutputStream();
+					while(reader.available()>0)
 					{
-						super.addScreenMessage(msg);
-						msg=reader.readLine().replace('\n', '\0').replace('\r', '\0');
+						int c=reader.read();
+						if(c==-1)
+							throw new IOException("Received EOF");
+						bout.write(c);
 					}
+					if(bout.size()>0)
+						super.addScreenMessage(new String(bout.toByteArray(),"UTF-8"));
+					
 				}
 			}
 		}

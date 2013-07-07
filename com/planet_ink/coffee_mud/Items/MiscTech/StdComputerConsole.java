@@ -37,7 +37,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public String ID(){	return "StdComputerConsole";}
 
 	protected volatile String 	circuitKey		 = null;
-	protected volatile long 	lastPowerCycle	 = 0;
+	protected long 				nextPowerCycleTm = 0;
 	protected short 			powerRemaining	 = 0;
 	protected MOB 				lastReader		 = null;
 	protected ElecPanelType 	panelType		 = Electronics.ElecPanel.ElecPanelType.COMPUTER;
@@ -171,6 +171,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			case CMMsg.TYP_POWERCURRENT:
 				return true;
 			case CMMsg.TYP_READ:
+			case CMMsg.TYP_WRITE:
 				if(!activated())
 				{
 					msg.source().tell(name()+" is not activated/booted up.");
@@ -297,12 +298,11 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			case CMMsg.TYP_POWERCURRENT:
 				{
 					final int powerToGive=msg.value();
-System.out.println("Power: "+powerToGive);
 					if(powerToGive>0)
 					{
 						if(powerRemaining()==0)
 							setPowerRemaining(1);
-						lastPowerCycle=System.currentTimeMillis();
+						nextPowerCycleTm=System.currentTimeMillis()+(8*1000);
 					}
 					if(activated())
 					{
@@ -402,9 +402,8 @@ System.out.println("Power: "+powerToGive);
 			{
 			}
 			else
-			if((System.currentTimeMillis()-lastPowerCycle)>(CMProps.getTickMillis()*2))
+			if(System.currentTimeMillis()>nextPowerCycleTm)
 			{
-System.out.println("ERROR:"+((System.currentTimeMillis()-lastPowerCycle)+">"+(CMProps.getTickMillis()*2)));
 				deactivateSystem();
 			}
 		}
