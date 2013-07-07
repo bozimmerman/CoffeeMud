@@ -42,7 +42,7 @@ public class StdTelnetProgram extends StdProgram
 	protected Socket sock = null;
 	protected BufferedInputStream reader=null;
 	protected BufferedWriter writer=null;
-	protected final TimeMs nextPowerCycleTmr = new TimeMs(System.currentTimeMillis()+(8*1000));
+	protected volatile long nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
 	
 	public StdTelnetProgram()
 	{
@@ -161,7 +161,7 @@ public class StdTelnetProgram extends StdProgram
 				super.forceNewMenuRead();
 				return false;
 			case CMMsg.TYP_POWERCURRENT:
-				nextPowerCycleTmr.setToLater(8*1000);
+				nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
 				return true;
 			}
 		}
@@ -247,7 +247,7 @@ public class StdTelnetProgram extends StdProgram
 					this.shutdown();
 				}
 				else
-				if(nextPowerCycleTmr.isNowLaterThan())
+				if(System.currentTimeMillis()>nextPowerCycleTmr)
 				{
 					this.shutdown();
 				}
