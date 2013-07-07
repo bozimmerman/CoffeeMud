@@ -37,28 +37,34 @@ public class Deactivate extends StdCommand
 {
 	public Deactivate(){}
 
-	private final String[] access={"DEACTIVATE","DEACT","DEA","<"};
+	private final String[] access={"DEACTIVATE","DEACT","DEA"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(commands.size()<2)
+		final Room R=mob.location();
+		if((commands.size()<2)||(R==null))
 		{
 			mob.tell("Deactivate what?");
 			return false;
 		}
-		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		String what=(String)commands.lastElement();
 		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
+		if(E==null)
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.getItem(i);
+				if((I instanceof Electronics.ElecPanel)
+				&&(((Electronics.ElecPanel)I).isOpen()))
+				{
+					E=R.fetchFromRoomFavorItems(I, what);
+					if(E!=null)
+						break;
+				}
+			}
 		Item item=null;
-		if(mob.riding() instanceof Electronics)
-		{
-			if((E==null)||(cmd.equalsIgnoreCase("<")))
-				item=(Item)mob.riding();
-		}
-		else
-			commands.removeElementAt(commands.size()-1);
+		commands.removeElementAt(commands.size()-1);
 		if((item==null)&&(E instanceof Electronics))
 			item=(Item)E;
 		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))

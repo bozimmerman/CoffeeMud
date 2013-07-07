@@ -37,28 +37,34 @@ public class Activate extends StdCommand
 {
 	public Activate(){}
 
-	private final String[] access={"ACTIVATE","ACT","A",">"};
+	private final String[] access={"ACTIVATE","ACT","A"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(commands.size()<2)
+		Room R=mob.location();
+		if((commands.size()<2)||(R==null))
 		{
 			mob.tell("Activate what?");
 			return false;
 		}
-		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		String what=(String)commands.lastElement();
-		PhysicalAgent P=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
+		PhysicalAgent P=R.fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
+		if(P==null)
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.getItem(i);
+				if((I instanceof Electronics.ElecPanel)
+				&&(((Electronics.ElecPanel)I).isOpen()))
+				{
+					P=R.fetchFromRoomFavorItems(I, what);
+					if(P!=null)
+						break;
+				}
+			}
 		Item item=null;
-		if(mob.riding() instanceof Electronics)
-		{
-			if((P==null)||(cmd.equalsIgnoreCase(">")))
-				item=(Item)mob.riding();
-		}
-		else
-			commands.removeElementAt(commands.size()-1);
+		commands.removeElementAt(commands.size()-1);
 		if((item==null)&&(P instanceof Electronics))
 			item=(Item)P;
 		if((P==null)||(!CMLib.flags().canBeSeenBy(P,mob)))
@@ -69,8 +75,8 @@ public class Activate extends StdCommand
 
 		String rest=CMParms.combine(commands,0);
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,rest,CMMsg.MSG_ACTIVATE,null);
-		if(mob.location().okMessage(mob,newMsg))
-			mob.location().send(mob,newMsg);
+		if(R.okMessage(mob,newMsg))
+			R.send(mob,newMsg);
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

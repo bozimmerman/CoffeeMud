@@ -34,13 +34,24 @@ import java.util.*;
 */
 public class StdElecPanel extends StdElecContainer implements Electronics.ElecPanel
 {
+	public String ID(){	return "StdElecPanel";}
 	private volatile String circuitKey=null;
+	
+	public StdElecPanel()
+	{
+		super();
+		setName("an engineering panel");
+		setDisplayText("");
+		setDescription("Usually seemless with the wall, these panels can be opened to install new equipment.");
+		super.setLidsNLocks(true, true, false, false);
+	}
 	
 	protected ElecPanelType panelType=ElecPanelType.ANY;
 	public ElecPanelType panelType(){return panelType;}
 	public void setPanelType(ElecPanelType type){panelType=type;}
 
-	public String displayText(){
+	public String displayText()
+	{
 		if(isOpen())
 			return name()+" is opened here.";
 		return "";
@@ -75,8 +86,6 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		return true;
 	}
 
-	public boolean isGeneric(){return true;}
-	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
@@ -125,7 +134,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				for(int i=contents.size()-1;i>=0;i--)
 				{
 					Item I=contents.get(i);
-					if(I instanceof Electronics)
+					if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
 					{
 						int powerToTake=powerRemaining/(i+1);
 						powerMsg.setValue(powerToTake);

@@ -1094,6 +1094,11 @@ public class StdItem implements Item
 			if(this instanceof Drink)
 				return true;
 			break;
+		case CMMsg.TYP_ACTIVATE:
+		case CMMsg.TYP_DEACTIVATE:
+			if(this instanceof Electronics)
+				return true;
+			break;
 		case CMMsg.TYP_WRITE:
 			if(((isReadable())&&(!(this instanceof Scroll)))
 			||(this instanceof Electronics.ElecPanel))
@@ -1175,7 +1180,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_REMOVE: CMLib.commands().handleBeingRemoved(msg);  break;
 		case CMMsg.TYP_DROP: CMLib.commands().handleBeingDropped(msg); break;
 		case CMMsg.TYP_WRITE:
-			if(isReadable())
+			if(isReadable() && (!(this instanceof Electronics)))
 				setReadableText((readableText()+" "+msg.targetMessage()).trim());
 			break;
 		case CMMsg.TYP_EXPIRE:

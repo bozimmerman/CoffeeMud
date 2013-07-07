@@ -35,6 +35,12 @@ import java.util.*;
 public class StdElecContainer extends StdContainer implements Electronics
 {
 	public String ID(){	return "StdElecContainer";}
+
+	protected long powerCapacity=100;
+	protected long power=100;
+	protected boolean activated=false;
+	protected int fuelType=RawMaterial.RESOURCE_ENERGY;
+
 	public StdElecContainer()
 	{
 		super();
@@ -46,17 +52,25 @@ public class StdElecContainer extends StdContainer implements Electronics
 		baseGoldValue=0;
 		recoverPhyStats();
 	}
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_POWERCURRENT:
+				return true;
+			}
+		}
+		return super.okMessage(host, msg);
+	}
 
-	protected int fuelType=RawMaterial.RESOURCE_ENERGY;
 	public int fuelType(){return fuelType;}
 	public void setFuelType(int resource){fuelType=resource;}
-	protected long powerCapacity=100;
 	public long powerCapacity(){return powerCapacity;}
 	public void setPowerCapacity(long capacity){powerCapacity=capacity;}
-	protected long power=100;
 	public long powerRemaining(){return power;}
 	public void setPowerRemaining(long remaining){power=remaining;}
-	protected boolean activated=false;
 	public boolean activated(){return activated;}
 	public void activate(boolean truefalse){activated=truefalse;}
 }

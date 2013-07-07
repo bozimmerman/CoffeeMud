@@ -51,6 +51,7 @@ public interface CommonCommands extends CMLibrary
 	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet);
 	public boolean postRemove(MOB mob, Item item, boolean quiet);
 	public void postLook(MOB mob, boolean quiet);
+	public void postRead(MOB mob, Physical target, String readOff, boolean quiet);
 	public void postFlee(MOB mob, String whereTo);
 	public void postSheath(MOB mob, boolean ifPossible);
 	public void postDraw(MOB mob, boolean doHold, boolean ifNecessary);

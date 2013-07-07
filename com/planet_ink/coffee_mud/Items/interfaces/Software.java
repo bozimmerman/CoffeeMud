@@ -33,7 +33,9 @@ public interface Software extends Item, Technical
 {
 	public String getParentMenu();
 	public String getInternalName();
-	public String getActivationString();
-	public String getActivationDescription();
+	public boolean isActivationString(String word, boolean activeState);
+	public String getActivationMenu();
+	public String getScreenMessage();
+	public String getCurrentScreenDisplay();
 }
 

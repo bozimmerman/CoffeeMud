@@ -238,7 +238,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						powerMsg.setTarget(E);
 						int amountToDistribute=(int)(remainingPowerToDistribute/panelsLeft);
-						powerMsg.setValue(amountToDistribute);
+						powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
 						final Room R=CMLib.map().roomLocation(E);
 						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
 							R.send(powerMsg.source(), powerMsg);
@@ -250,17 +250,20 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						powerMsg.setTarget(E);
 						int amountToDistribute=(int)(remainingPowerToDistribute/batteriesLeft);
-						powerMsg.setValue(amountToDistribute);
+						powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
 						final Room R=CMLib.map().roomLocation(E);
 						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
 							R.send(powerMsg.source(), powerMsg);
-						panelsLeft--;
+						batteriesLeft--;
 						remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
 					}
-					int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/generators.size());
-					for(Electronics.PowerGenerator G : generators)
-						if(G.activated())
-							G.setPowerRemaining(amountLeftOver>G.powerCapacity()?G.powerCapacity():amountLeftOver);
+					if(generators.size()>0)
+					{
+						int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/generators.size());
+						for(Electronics.PowerGenerator G : generators)
+							if(G.activated())
+								G.setPowerRemaining(amountLeftOver>G.powerCapacity()?G.powerCapacity():amountLeftOver);
+					}
 				}
 			}
 			catch(Exception e)

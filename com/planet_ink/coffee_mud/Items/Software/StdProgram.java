@@ -36,6 +36,9 @@ public class StdProgram extends StdItem implements Software
 {
 	public String ID(){	return "StdProgram";}
 	
+	protected StringBuilder nextMsg = new StringBuilder("");
+	protected String currentScreen="";
+
 	public StdProgram()
 	{
 		super();
@@ -50,7 +53,50 @@ public class StdProgram extends StdItem implements Software
 	
 	public String getParentMenu() { return ""; }
 	
-	public String getActivationString(){ return "";}
-	public String getActivationDescription() { return "";}
 	public String getInternalName() { return "";}
+	
+	public boolean isActivationString(String word, boolean activeState) { return false; }
+
+	public String getActivationMenu() { return ""; }
+	
+	public String getCurrentScreenDisplay()
+	{
+		return currentScreen;
+	}
+
+	public String getScreenMessage() 
+	{
+		synchronized(nextMsg)
+		{
+			final String msg=nextMsg.toString();
+			nextMsg.setLength(0);
+			return msg; 
+		}
+	}
+	
+	public void addScreenMessage(String msg)
+	{
+		synchronized(nextMsg)
+		{
+			nextMsg.append(msg).append("\n\r");
+		}
+	}
+	
+	protected void forceUpMenu()
+	{
+		if((container() instanceof Electronics.Computer)&&(((Electronics.Computer)container()).getActiveMenu().equals(getInternalName())))
+			((Electronics.Computer)container()).setActiveMenu(getParentMenu());
+	}
+	
+	protected void forceNewMessageScan()
+	{
+		if(container() instanceof Electronics.Computer)
+			((Electronics.Computer)container()).forceReadersSeeNew();
+	}
+	
+	protected void forceNewMenuRead()
+	{
+		if(container() instanceof Electronics.Computer)
+			((Electronics.Computer)container()).forceReadersMenu();
+	}
 }

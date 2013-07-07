@@ -32,10 +32,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdComputerConsole extends StdRideable 
-	implements Electronics, ShipComponent, Electronics.ElecPanel
+public class StdComputerConsole extends StdRideable implements ShipComponent, Electronics.Computer
 {
-	public String ID(){	return "StdShipConsole";}
+	public String ID(){	return "StdComputerConsole";}
+
+	protected volatile String 	circuitKey		 = null;
+	protected volatile long 	lastPowerCycle	 = 0;
+	protected short 			powerRemaining	 = 0;
+	protected MOB 				lastReader		 = null;
+	protected ElecPanelType 	panelType		 = Electronics.ElecPanel.ElecPanelType.COMPUTER;
+	protected long 				nextSoftwareCheck= 0;
+	protected List<Software> 	software		 = null;
+	protected boolean 			activated		 = false;
+	protected String 			currentMenu		 = "";
+	
 	public StdComputerConsole()
 	{
 		super();
@@ -48,31 +58,25 @@ public class StdComputerConsole extends StdRideable
 		rideBasis=Rideable.RIDEABLE_TABLE;
 		riderCapacity=1;
 		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE|PhyStats.SENSE_ITEMNOTGET);
-		setLidsNLocks(true,true,false,false);
+		setLidsNLocks(false,true,false,false);
 		capacity=500;
 		material=RawMaterial.RESOURCE_STEEL;
 		recoverPhyStats();
 	}
-	private volatile String circuitKey=null;
 
 	public int fuelType(){return RawMaterial.RESOURCE_ENERGY;}
 	public void setFuelType(int resource){}
 	public long powerCapacity(){return 1;}
 	public void setPowerCapacity(long capacity){}
-	public long powerRemaining(){return 1;}
-	public void setPowerRemaining(long remaining){}
-	protected boolean activated=false;
+	public long powerRemaining(){return powerRemaining;}
+	public void setPowerRemaining(long remaining){ powerRemaining=(remaining>0)?(short)1:(short)0; }
 	public boolean activated(){return activated;}
 	public void activate(boolean truefalse){activated=truefalse;}
+	public void setActiveMenu(String internalName) { currentMenu=internalName; }
+	public String getActiveMenu() { return currentMenu; }
 	
-	protected ElecPanelType panelType=Electronics.ElecPanel.ElecPanelType.COMPUTER;
 	public ElecPanelType panelType(){return panelType;}
 	public void setPanelType(ElecPanelType type){panelType=type;}
-	
-	protected long nextSoftwareCheck=0;
-	protected List<Software> software=null;
-	
-	protected String currentMenu="";
 	
 	public boolean canContain(Environmental E)
 	{
@@ -86,7 +90,7 @@ public class StdComputerConsole extends StdRideable
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
 	}
 
-	protected List<Software> getSoftware()
+	public List<Software> getSoftware()
 	{
 		if((software==null)||(nextSoftwareCheck==0)||(System.currentTimeMillis()>nextSoftwareCheck))
 		{
@@ -104,21 +108,58 @@ public class StdComputerConsole extends StdRideable
 	public String readableText()
 	{
 		final StringBuilder str=new StringBuilder(super.readableText());
-		if(str.length()>0) str.append("\n\r");
+		str.append("\n\r");
 		if(!activated())
 			str.append("The screen is blank.  Try ACTIVATEing it first.");
 		else
 		{
 			final List<Software> software=getSoftware();
-			for(final Software S : software)
-				if(S.getInternalName().equals(currentMenu))
-					str.append(S.readableText());
+			synchronized(software)
+			{
+				boolean isInternal=false;
+				for(final Software S : software)
+				{
+					if(S.getInternalName().equals(currentMenu))
+					{
+						str.append(S.getCurrentScreenDisplay());
+						isInternal=true;
+					}
+					else
+					if(S.getParentMenu().equals(currentMenu))
+					{
+						str.append(S.getActivationMenu()).append("\n\r");
+					}
+				}
+				if(isInternal)
+				{
+					str.append("\n\rEnter \"<\" to return to the previous menu.");
+				}
 				else
-				if(S.getParentMenu().equals(currentMenu))
-					str.append(S.getActivationString()).append(": ").append(S.getActivationDescription()).append("\n\r");
+				if(software.size()>0)
+				{
+					str.append("\n\rEnter a command:");
+				}
+				else
+				{
+					str.append("\n\rThis system is ready to receive software.");
+				}
+			}
 		}
 		
 		return str.toString();
+	}
+	
+	public List<MOB> getCurrentReaders()
+	{
+		List<MOB> readers=new LinkedList<MOB>();
+		final MOB lastReader=this.lastReader;
+		if((lastReader!=null)
+		&&((lastReader==owner())||(lastReader.location()==owner())))
+			readers.add(lastReader);
+		for(Rider R : riders)
+			if(R instanceof MOB)
+				readers.add((MOB)R);
+		return readers;
 	}
 	
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -127,12 +168,25 @@ public class StdComputerConsole extends StdRideable
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_POWERCURRENT:
+				return true;
 			case CMMsg.TYP_READ:
+				if(!activated())
+				{
+					msg.source().tell(name()+" is not activated/booted up.");
+					return false;
+				}
 				return true;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.targetMessage()==null)&&(activated()))
 				{
 					msg.source().tell(name()+" is already booted up.");
+					return false;
+				}
+				else
+				if(powerRemaining()<=0)
+				{
+					msg.source().tell(name()+" won't seem to power up. Perhaps it needs power?");
 					return false;
 				}
 				break;
@@ -154,15 +208,81 @@ public class StdComputerConsole extends StdRideable
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_READ:
+				if(msg.source().riding()!=this)
+					lastReader=msg.source();
+				break;
+			case CMMsg.TYP_WRITE:
+			{
+				if(msg.targetMessage()!=null)
+				{
+					final List<Software> software=getSoftware();
+					List<CMMsg> msgs=new LinkedList<CMMsg>();
+					synchronized(software)
+					{
+						for(final Software S : software)
+						{
+							if(S.getInternalName().equals(currentMenu))
+							{
+								if(msg.targetMessage().trim().equals("<"))
+								{
+									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,CMMsg.NO_EFFECT,null));
+								}
+								else
+								if(S.isActivationString(msg.targetMessage(), true))
+								{
+									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WRITE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+								}
+							}
+							else
+							if((S.getParentMenu().equals(currentMenu))
+							&&(S.isActivationString(msg.targetMessage(), false)))
+							{
+								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+							}
+						}
+					}
+					boolean readFlag=false;
+					for(CMMsg msg2 : msgs)
+					{
+						if(msg2.target().okMessage(msg.source(), msg2))
+						{
+							msg2.target().executeMsg(msg.source(), msg2);
+							if(msg2.target() instanceof Software)
+							{
+								Software sw=(Software)msg2.target();
+								if(msg2.targetMinor()==CMMsg.TYP_ACTIVATE)
+								{
+									setActiveMenu(sw.getInternalName());
+								}
+								else
+								if(msg2.targetMinor()==CMMsg.TYP_DEACTIVATE)
+								{
+									setActiveMenu(sw.getParentMenu());
+								}
+								readFlag=true;
+							}
+						}
+					}
+					if(readFlag)
+						forceReadersSeeNew();
+				}
+				break;
+			}
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_PUT:
 				nextSoftwareCheck=0;
 				break;
+			case CMMsg.TYP_LOOK:
+				super.executeMsg(host, msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+					msg.source().tell(name()+" is currently "+(activated()?"booted up and the screen ready to be read.\n\r":"deactivated.\n\r"));
+				return;
 			case CMMsg.TYP_ACTIVATE:
 				if(!activated())
 				{
 					activate(true);
-					currentMenu="";
+					setActiveMenu("");
 					msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> boot(s) up <T-NAME>.");
 				}
 				break;
@@ -170,19 +290,76 @@ public class StdComputerConsole extends StdRideable
 				if(activated())
 				{
 					activate(false);
-					msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shut(s) up <T-NAME>.");
+					msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shut(s) down <T-NAME>.");
+					deactivateSystem();
 				}
 				break;
 			case CMMsg.TYP_POWERCURRENT:
-				if(activated())
 				{
+					final int powerToGive=msg.value();
+System.out.println("Power: "+powerToGive);
+					if(powerToGive>0)
+					{
+						if(powerRemaining()==0)
+							setPowerRemaining(1);
+						lastPowerCycle=System.currentTimeMillis();
+					}
+					if(activated())
+					{
+						final List<Software> software=getSoftware();
+						CMMsg msg2=CMClass.getMsg(msg.source(), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
+						synchronized(software)
+						{
+							for(Software sw : software)
+							{
+								msg2.setTarget(sw);
+								msg2.setValue(((powerToGive>0)?1:0)+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
+								sw.executeMsg(host, msg2);
+							}
+						}
+					}
+					forceReadersSeeNew();
 				}
 				break;
 			}
 		}
+		else
+		if((msg.source()==this.lastReader)&&(msg.target() instanceof Electronics.ElecPanel)&&(msg.targetMinor()==CMMsg.TYP_READ))
+			this.lastReader=null;
 		super.executeMsg(host,msg);
 	}
 	
+	public void forceReadersSeeNew()
+	{
+		if(activated())
+		{
+			final List<Software> software=getSoftware();
+			synchronized(software)
+			{
+				final StringBuilder newMsgs=new StringBuilder();
+				for(Software sw : software)
+					newMsgs.append(sw.getScreenMessage());
+				if(newMsgs.length()>0)
+				{
+					List<MOB> readers=getCurrentReaders();
+					for(MOB M : readers)
+						if(CMLib.flags().canBeSeenBy(this, M))
+							M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\r"+newMsgs.toString()+"\n\r^.^N'");
+				}
+			}
+		}
+	}
+	
+	public void forceReadersMenu()
+	{
+		if(activated())
+		{
+			List<MOB> readers=getCurrentReaders();
+			for(MOB M : readers)
+				CMLib.commands().postRead(M, this, "", true);
+		}
+	}
+
 	public void destroy()
 	{
 		if((!destroyed)&&(circuitKey!=null))
@@ -214,17 +391,46 @@ public class StdComputerConsole extends StdRideable
 			}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
 		if(tickID==Tickable.TICKID_ELECTRONICS)
 		{
-			if(activated())
+			if(!activated())
 			{
+			}
+			else
+			if((System.currentTimeMillis()-lastPowerCycle)>(CMProps.getTickMillis()*2))
+			{
+System.out.println("ERROR:"+((System.currentTimeMillis()-lastPowerCycle)+">"+(CMProps.getTickMillis()*2)));
+				deactivateSystem();
 			}
 		}
 		return true;
+	}
+	
+	public void deactivateSystem()
+	{
+		if(activated())
+		{
+			final List<Software> software=getSoftware();
+			CMMsg msg2=CMClass.getMsg(CMClass.getFactoryMOB(), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.NO_EFFECT,null);
+			synchronized(software)
+			{
+				for(Software sw : software)
+				{
+					msg2.setTarget(sw);
+					sw.executeMsg(msg2.source(), msg2);
+				}
+			}
+			setPowerRemaining(0);
+			activate(false);
+			List<MOB> readers=getCurrentReaders();
+			for(MOB M : readers)
+				if(CMLib.flags().canBeSeenBy(this, M))
+					M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "The screen on <T-NAME> goes blank.");
+		}
 	}
 }

@@ -51,6 +51,18 @@ public class StdElecItem extends StdItem implements Electronics
 	 *  1 ROOM=500, THRUSTER,POWERPLANT=100.  COMM=20.  LIFESUPP=50,
 	 *  FUEL=2730, CONSOLE=1,  JOHNGLEN=130, MAX ACC=5.5G
 	 */
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_POWERCURRENT:
+				return true;
+			}
+		}
+		return super.okMessage(host, msg);
+	}
 
 	protected int fuelType=RawMaterial.RESOURCE_ENERGY;
 	public int fuelType(){return fuelType;}

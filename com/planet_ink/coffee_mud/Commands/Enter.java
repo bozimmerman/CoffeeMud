@@ -41,8 +41,7 @@ public class Enter extends Go
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean consoleMode=((mob.riding() instanceof Electronics.ElecPanel)
-				&&(((Electronics.ElecPanel)mob.riding()).panelType()==Electronics.ElecPanel.ElecPanelType.COMPUTER));
+		boolean consoleMode=(mob.riding() instanceof Electronics.Computer);
 		if(commands.size()<=1)
 		{
 			if(consoleMode)
@@ -56,7 +55,7 @@ public class Enter extends Go
 		{
 			String enterWhere=(String)commands.lastElement();
 			Environmental tryThis=mob.location().fetchFromRoomFavorItems(null,enterWhere);
-			if((tryThis instanceof Electronics.ElecPanel)&&(((Electronics.ElecPanel)tryThis).panelType()==Electronics.ElecPanel.ElecPanelType.COMPUTER))
+			if(tryThis instanceof Electronics.Computer)
 			{
 				enterThis=tryThis;
 				commands.removeElementAt(commands.size()-1);

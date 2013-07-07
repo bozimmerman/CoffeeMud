@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
+import java.util.List;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -57,7 +59,7 @@ public interface Electronics extends Item, Technical
 		public void getTicksPerFuelConsume(int tick);
 	}
 	
-	public interface ElecPanel extends Electronics
+	public interface ElecPanel extends Electronics, Container
 	{
 		public static enum ElecPanelType
 		{
@@ -66,6 +68,16 @@ public interface Electronics extends Item, Technical
 		
 		public ElecPanelType panelType();
 		public void setPanelType(ElecPanelType type);
+	}
+	
+	public interface Computer extends Electronics.ElecPanel
+	{
+		public List<Software> getSoftware();
+		public List<MOB> getCurrentReaders();
+		public void forceReadersMenu();
+		public void forceReadersSeeNew();
+		public void setActiveMenu(String internalName);
+		public String getActiveMenu();
 	}
 	
 }

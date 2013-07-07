@@ -244,6 +244,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			forceStandardCommand(mob,"Look",new XVector<Object>("LOOK"));
 	}
 
+	public void postRead(MOB mob, Physical target, String readOff, boolean quiet)
+	{
+		forceInternalCommand(mob,"Read",target,readOff,Boolean.valueOf(quiet));
+	}
+
 	public void postFlee(MOB mob, String whereTo)
 	{
 		forceStandardCommand(mob,"Flee",new XVector<Object>("FLEE",whereTo));

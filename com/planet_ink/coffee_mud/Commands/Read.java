@@ -39,12 +39,14 @@ public class Read extends StdCommand
 	private final String[] access={"READ"};
 	public String[] getAccessWords(){return access;}
 
-	public void read(MOB mob, Environmental thisThang, String theRest)
+	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,String.class,Boolean.class}};
+	
+	public boolean read(MOB mob, Environmental thisThang, String theRest, boolean quiet)
 	{
 		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
 			mob.tell("You don't seem to have that.");
-			return;
+			return false;
 		}
 		if(thisThang instanceof Item)
 		{
@@ -52,17 +54,20 @@ public class Read extends StdCommand
 			if((CMLib.flags().isGettable(thisItem))&&(!mob.isMine(thisItem)))
 			{
 				mob.tell("You don't seem to be carrying that.");
-				return;
+				return false;
 			}
 		}
 		String srcMsg="<S-NAME> read(s) <T-NAMESELF>.";
 		String soMsg=(mob.isMine(thisThang)?srcMsg:null);
 		String tMsg=theRest;
 		if((tMsg==null)||(tMsg.trim().length()==0)||(thisThang instanceof MOB)) tMsg=soMsg;
-		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_READ,srcMsg,CMMsg.MSG_READ,tMsg,CMMsg.MSG_READ,soMsg);
+		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_READ,quiet?srcMsg:null,CMMsg.MSG_READ,tMsg,CMMsg.MSG_READ,quiet?null:soMsg);
 		if(mob.location().okMessage(mob,newMsg))
+		{
 			mob.location().send(mob,newMsg);
-
+			return true;
+		}
+		return false;
 	}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
@@ -76,7 +81,7 @@ public class Read extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.firstElement() instanceof Environmental)
 		{
-			read(mob,(Environmental)commands.firstElement(),CMParms.combine(commands,1));
+			read(mob,(Environmental)commands.firstElement(),CMParms.combine(commands,1), false);
 			return false;
 		}
 
@@ -94,12 +99,17 @@ public class Read extends StdCommand
 			commands.removeElementAt(commands.size()-1);
 			theRest=CMParms.combine(commands,0);
 		}
-		read(mob,thisThang, theRest);
+		read(mob,thisThang, theRest, false);
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
 	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
 
-	
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		return Boolean.valueOf(read(mob,(Environmental)args[0],(String)args[1],((Boolean)args[1]).booleanValue()));
+	}
 }
