@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.Software;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.Timeout;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -41,6 +42,7 @@ public class StdTelnetProgram extends StdProgram
 	protected Socket sock = null;
 	protected BufferedInputStream reader=null;
 	protected BufferedWriter writer=null;
+	protected final Timeout nextPowerCycleTmr = new Timeout(8*1000);
 	
 	public StdTelnetProgram()
 	{
@@ -159,6 +161,7 @@ public class StdTelnetProgram extends StdProgram
 					return true;
 				break;
 			case CMMsg.TYP_POWERCURRENT:
+				nextPowerCycleTmr.reset();
 				return true;
 			}
 		}
@@ -179,7 +182,8 @@ public class StdTelnetProgram extends StdProgram
 						int c=reader.read();
 						if(c==-1)
 							throw new IOException("Received EOF");
-						bout.write(c);
+						if(c!=0)
+							bout.write(c);
 					}
 					if(bout.size()>0)
 						super.addScreenMessage(new String(bout.toByteArray(),"UTF-8"));
@@ -237,6 +241,16 @@ public class StdTelnetProgram extends StdProgram
 			case CMMsg.TYP_POWERCURRENT:
 				if(msg.value()>0)
 					fillWithData();
+				if((owner() instanceof Electronics.Computer)
+				&&(((Electronics.Computer)owner()).getCurrentReaders().size()==0))
+				{
+					this.shutdown();
+				}
+				else
+				if(nextPowerCycleTmr.isTimedOut())
+				{
+					this.shutdown();
+				}
 				break;
 			}
 		}

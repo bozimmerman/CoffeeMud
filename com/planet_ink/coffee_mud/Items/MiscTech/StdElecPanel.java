@@ -44,6 +44,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		setDisplayText("");
 		setDescription("Usually seemless with the wall, these panels can be opened to install new equipment.");
 		super.setLidsNLocks(true, true, false, false);
+		this.activated=true;
 	}
 	
 	protected ElecPanelType panelType=ElecPanelType.ANY;
@@ -125,7 +126,36 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		super.executeMsg(myHost, msg);
 		if(msg.amITarget(this))
 		{
-			if(msg.sourceMinor()==CMMsg.TYP_POWERCURRENT) // these double as ticks!
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_ACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> connect(s) <T-NAME>.");
+				this.activate(true);
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+			{
+				final Room locR=CMLib.map().roomLocation(this);
+				final MOB M=CMLib.map().getFactoryMOB(locR);
+				CMMsg deactivateMsg = CMClass.getMsg(M, null, null, CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG|CMMsg.MSG_DEACTIVATE,null);
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> disconnect(s) <T-NAME>.");
+				this.activate(false);
+				for(Item I : this.getContents())
+					if(I instanceof Electronics)
+					{
+						deactivateMsg.setTarget(I);
+						if(locR.okMessage(M, deactivateMsg))
+							locR.send(M, deactivateMsg);
+					}
+				break;
+			}
+			case CMMsg.TYP_LOOK:
+				super.executeMsg(myHost, msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+					msg.source().tell(name()+" is currently "+(activated()?"connected.\n\r":"deactivated/disconnected.\n\r"));
+				return;
+			case CMMsg.TYP_POWERCURRENT:
 			{
 				final Room R=CMLib.map().roomLocation(this);
 				int powerRemaining=msg.value();
@@ -146,6 +176,8 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				}
 				CMClass.returnMsg(powerMsg);
 				msg.setValue(powerRemaining);
+				break;
+			}
 			}
 		}
 	}

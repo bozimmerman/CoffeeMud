@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerGenerator;
+import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerSource;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -41,7 +43,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 {
 	public String ID(){return "GroundWired";}
 	
-	public final Map<String,List<Electronics>> sets=new Hashtable<String,List<Electronics>>();
+	public final Map<String,LinkedList<Electronics>> sets=new Hashtable<String,LinkedList<Electronics>>();
+	
+	public final static List<PowerGenerator> emptyGeneratorList=new ArrayList<PowerGenerator>();
 	
 	public final AtomicInteger nextKey = new AtomicInteger(0);
 	
@@ -74,10 +78,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						sets.remove(oldSet);
 				}
 			}
-			List<Electronics> set=sets.get(newKey);
+			LinkedList<Electronics> set=sets.get(newKey);
 			if(set==null)
 			{
-				set=new ArrayList<Electronics>();
+				set=new LinkedList<Electronics>();
 				sets.put(newKey, set);
 			}
 			set.add(E);
@@ -102,8 +106,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	
 	private TickClient serviceClient=null;
 	public TickClient getServiceClient() { return serviceClient;}
-	protected STreeMap<Electronics.PowerGenerator,Pair<List<Electronics.PowerSource>,List<Electronics>>> currents 
-													= new STreeMap<Electronics.PowerGenerator,Pair<List<Electronics.PowerSource>,List<Electronics>>>(); 
+	protected STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents 
+													= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>(); 
 	protected CMMsg powerMsg = null;
 	
 	protected CMMsg getPowerMsg(int powerAmt)
@@ -158,6 +162,175 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		return true;
 	}
+
+	protected void processElectricCurrents(final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<Electronics> panels) throws Exception
+	{
+		CMMsg powerMsg=getPowerMsg(0);
+		for(PowerGenerator E : generators)
+		{
+			powerMsg.setTarget(E);
+			powerMsg.setValue(0);
+			final Room R=CMLib.map().roomLocation(E);
+			if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+				R.send(powerMsg.source(), powerMsg);
+		}
+		long remainingPowerToDistribute=0;
+		long availablePowerToDistribute=0;
+		for(PowerGenerator G : generators)
+			if(G.activated())
+			{
+				availablePowerToDistribute+=G.powerRemaining();
+				G.setPowerRemaining(0);
+			}
+		for(PowerSource B : batteries)
+			if(B.activated())
+				availablePowerToDistribute+=B.powerRemaining();
+		if(availablePowerToDistribute==0)
+		{
+			for(Electronics E : panels)
+			{
+				powerMsg.setTarget(E);
+				powerMsg.setValue(0);
+				final Room R=CMLib.map().roomLocation(E);
+				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+					R.send(powerMsg.source(), powerMsg);
+			}
+			for(PowerSource E : batteries)
+			{
+				powerMsg.setTarget(E);
+				powerMsg.setValue(0);
+				final Room R=CMLib.map().roomLocation(E);
+				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+					R.send(powerMsg.source(), powerMsg);
+			}
+		}
+		else
+		{
+			remainingPowerToDistribute=availablePowerToDistribute;
+			int panelsLeft=panels.size();
+			for(Electronics E : panels)
+			{
+				powerMsg.setTarget(E);
+				int amountToDistribute=(int)(remainingPowerToDistribute/panelsLeft);
+				powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
+				final Room R=CMLib.map().roomLocation(E);
+				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+					R.send(powerMsg.source(), powerMsg);
+				remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
+				panelsLeft--;
+			}
+			int batteriesLeft=batteries.size();
+			for(PowerSource E : batteries)
+			{
+				powerMsg.setTarget(E);
+				int amountToDistribute=(int)(remainingPowerToDistribute/batteriesLeft);
+				powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
+				final Room R=CMLib.map().roomLocation(E);
+				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+					R.send(powerMsg.source(), powerMsg);
+				batteriesLeft--;
+				remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
+			}
+			if(generators.size()>0)
+			{
+				int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/generators.size());
+				for(PowerGenerator G : generators)
+					if(G.activated())
+						G.setPowerRemaining(amountLeftOver>G.powerCapacity()?G.powerCapacity():amountLeftOver);
+			}
+		}
+	}
+
+	protected void fillElectronicLists(final String key, final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<Electronics> panels)
+	{
+		synchronized(this)
+		{
+			List<Electronics> rawSet=sets.get(key);
+			if(rawSet!=null)
+			{
+				for(Electronics E : rawSet)
+					if(E instanceof PowerGenerator)
+						generators.add((PowerGenerator)E);
+					else
+					if(E instanceof PowerSource)
+						batteries.add((PowerSource)E);
+					else
+						panels.add(E);
+			}
+		}
+	}
+	
+	protected void runElectricCurrent(final String key)
+	{
+		try
+		{
+			final List<PowerGenerator> generators = new LinkedList<PowerGenerator>();
+			final List<PowerSource> batteries = new LinkedList<PowerSource>();
+			final List<Electronics> panels = new LinkedList<Electronics>();
+			fillElectronicLists(key,generators,batteries,panels);
+			processElectricCurrents(generators, batteries, panels);
+		}
+		catch(Exception e)
+		{
+			Log.errOut("GroundWired",e);
+		}
+	}
+
+	public boolean seekBatteryPower(final Electronics E, final String key)
+	{
+		final List<PowerGenerator> generators = new LinkedList<PowerGenerator>();
+		final List<PowerSource> batteries = new LinkedList<PowerSource>();
+		final List<Electronics> panels = new LinkedList<Electronics>();
+		fillElectronicLists(key,generators,batteries,panels);
+		
+		PowerSource battery = null;
+		final Room locR=CMLib.map().roomLocation(E);
+		for(final PowerSource S : batteries)
+		{
+			if((!S.activated())&&(S.powerRemaining()>0))
+			{
+				final MOB M=CMLib.map().getFactoryMOB(locR);
+				final CMMsg activateMsg = CMClass.getMsg(M, S, null, CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG|CMMsg.MSG_ACTIVATE,null);
+				if(locR.okMessage(M, activateMsg))
+				{
+					locR.send(M, activateMsg);
+					if(S.activated())
+					{
+						battery=S;
+						break;
+					}
+					else
+					{
+						synchronized(this)
+						{
+							LinkedList<Electronics> rawSet=sets.get(key);
+							if((rawSet!=null) && (rawSet.size()>0) && (rawSet.getLast() != battery))
+							{
+								rawSet.remove(battery);
+								rawSet.addLast(battery);
+							}
+						}
+					}
+				}
+			}
+		}
+		if(battery==null)
+		{
+			return false;
+		}
+		try
+		{
+			final List<Electronics> finalPanel=new XVector<Electronics>(E);
+			final List<PowerSource> finalBatteries=new XVector<PowerSource>(battery);
+			processElectricCurrents(emptyGeneratorList, finalBatteries, finalPanel);
+			return true;
+		}
+		catch(Exception e)
+		{
+			Log.errOut("GroundWired",e);
+			return false;
+		}
+	}
 	
 	protected void runElectricCurrents()
 	{
@@ -170,106 +343,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		for(String key : keys)
 		{
-			try
-			{
-				LinkedList<Electronics.PowerGenerator> generators = new LinkedList<Electronics.PowerGenerator>();
-				LinkedList<Electronics.PowerSource> batteries = new LinkedList<Electronics.PowerSource>();
-				LinkedList<Electronics> panels = new LinkedList<Electronics>();
-				synchronized(this)
-				{
-					List<Electronics> rawSet=sets.get(key);
-					if(rawSet!=null)
-					{
-						for(Electronics E : rawSet)
-							if(E instanceof Electronics.PowerGenerator)
-								generators.add((Electronics.PowerGenerator)E);
-							else
-							if(E instanceof Electronics.PowerSource)
-								batteries.add((Electronics.PowerSource)E);
-							else
-								panels.add(E);
-					}
-				}
-				CMMsg powerMsg=getPowerMsg(0);
-				for(Electronics.PowerGenerator E : generators)
-				{
-					powerMsg.setTarget(E);
-					powerMsg.setValue(0);
-					final Room R=CMLib.map().roomLocation(E);
-					if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
-						R.send(powerMsg.source(), powerMsg);
-				}
-				long remainingPowerToDistribute=0;
-				long availablePowerToDistribute=0;
-				for(Electronics.PowerGenerator G : generators)
-					if(G.activated())
-					{
-						availablePowerToDistribute+=G.powerRemaining();
-						G.setPowerRemaining(0);
-					}
-				for(Electronics.PowerSource B : batteries)
-					if(B.activated())
-						availablePowerToDistribute+=B.powerRemaining();
-				if(availablePowerToDistribute==0)
-				{
-					for(Electronics E : panels)
-					{
-						powerMsg.setTarget(E);
-						powerMsg.setValue(0);
-						final Room R=CMLib.map().roomLocation(E);
-						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
-							R.send(powerMsg.source(), powerMsg);
-					}
-					for(Electronics.PowerSource E : batteries)
-					{
-						powerMsg.setTarget(E);
-						powerMsg.setValue(0);
-						final Room R=CMLib.map().roomLocation(E);
-						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
-							R.send(powerMsg.source(), powerMsg);
-					}
-					continue;
-				}
-				else
-				{
-					remainingPowerToDistribute=availablePowerToDistribute;
-					int panelsLeft=panels.size();
-					for(Electronics E : panels)
-					{
-						powerMsg.setTarget(E);
-						int amountToDistribute=(int)(remainingPowerToDistribute/panelsLeft);
-						powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
-						final Room R=CMLib.map().roomLocation(E);
-						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
-							R.send(powerMsg.source(), powerMsg);
-						remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
-						panelsLeft--;
-					}
-					int batteriesLeft=batteries.size();
-					for(Electronics.PowerSource E : batteries)
-					{
-						powerMsg.setTarget(E);
-						int amountToDistribute=(int)(remainingPowerToDistribute/batteriesLeft);
-						powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
-						final Room R=CMLib.map().roomLocation(E);
-						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
-							R.send(powerMsg.source(), powerMsg);
-						batteriesLeft--;
-						remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
-					}
-					if(generators.size()>0)
-					{
-						int amountLeftOver=(int)((availablePowerToDistribute-remainingPowerToDistribute)/generators.size());
-						for(Electronics.PowerGenerator G : generators)
-							if(G.activated())
-								G.setPowerRemaining(amountLeftOver>G.powerCapacity()?G.powerCapacity():amountLeftOver);
-					}
-				}
-			}
-			catch(Exception e)
-			{
-				Log.errOut("GroundWired",e);
-			}
+			runElectricCurrent(key);
 		}
 		setThreadStatus(serviceClient,"sleeping");
 	}

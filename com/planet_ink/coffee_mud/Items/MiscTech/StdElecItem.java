@@ -57,13 +57,42 @@ public class StdElecItem extends StdItem implements Electronics
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_ACTIVATE:
+				if(!StdElecItem.isAllWiringConnected(this))
+				{
+					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
+					return false;
+				}
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				break;
+			case CMMsg.TYP_LOOK:
+				break;
 			case CMMsg.TYP_POWERCURRENT:
 				return true;
 			}
 		}
 		return super.okMessage(host, msg);
 	}
+	
 
+	protected static final boolean isAllWiringConnected(Electronics.ElecPanel E)
+	{
+		if(!((Electronics.ElecPanel)E).activated())
+			return false;
+		if(E.container() instanceof Electronics.ElecPanel)
+			return isAllWiringConnected((Electronics.ElecPanel)E.container());
+		return true;
+	}
+	
+	public static final boolean isAllWiringConnected(Electronics E)
+	{
+		if(E.container() instanceof Electronics.ElecPanel)
+			return isAllWiringConnected((Electronics.ElecPanel)E.container());
+		return true;
+	}
+	
 	protected int fuelType=RawMaterial.RESOURCE_ENERGY;
 	public int fuelType(){return fuelType;}
 	public void setFuelType(int resource){fuelType=resource;}

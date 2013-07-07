@@ -187,6 +187,21 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 			case CMMsg.TYP_PUT:
 				clearFuelCache();
 				break;
+			case CMMsg.TYP_ACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> power(s) up <T-NAME>.");
+				this.activate(true);
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> shut(s) down <T-NAME>.");
+				this.activate(false);
+				break;
+			case CMMsg.TYP_LOOK:
+				super.executeMsg(myHost, msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/shut down.\n\r"));
+				return;
 			case CMMsg.TYP_POWERCURRENT:
 				if(msg.value()==0)
 				{

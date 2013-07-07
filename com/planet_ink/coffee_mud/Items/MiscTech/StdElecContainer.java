@@ -58,12 +58,25 @@ public class StdElecContainer extends StdContainer implements Electronics
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_ACTIVATE:
+				if(!StdElecItem.isAllWiringConnected(this))
+				{
+					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
+					return false;
+				}
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				break;
+			case CMMsg.TYP_LOOK:
+				break;
 			case CMMsg.TYP_POWERCURRENT:
 				return true;
 			}
 		}
 		return super.okMessage(host, msg);
 	}
+	
 
 	public int fuelType(){return fuelType;}
 	public void setFuelType(int resource){fuelType=resource;}

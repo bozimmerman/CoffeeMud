@@ -50,4 +50,14 @@ public interface TechLibrary extends CMLibrary
 	 * @return the new key assigned to this item (or old key)
 	 */
 	public String registerElectrics(Electronics E, String oldKey);
+	
+	/**
+	 * Certain Key Systems may automatically force batteries in their circuit
+	 * to activate in order to provide that system with power. This will make
+	 * that attempt.
+	 * @param E the key device to seek power
+	 * @param key this devices key
+	 * @return true if an attempt to give power was made, false otherwise.
+	 */
+	public boolean seekBatteryPower(final Electronics E, final String key);
 }

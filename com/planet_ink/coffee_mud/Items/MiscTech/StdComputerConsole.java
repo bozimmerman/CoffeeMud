@@ -111,7 +111,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		final StringBuilder str=new StringBuilder(super.readableText());
 		str.append("\n\r");
 		if(!activated())
-			str.append("The screen is blank.  Try ACTIVATEing it first.");
+			str.append("The screen is blank.  Try activating/booting it first.");
 		else
 		{
 			final List<Software> software=getSoftware();
@@ -154,9 +154,14 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	{
 		List<MOB> readers=new LinkedList<MOB>();
 		final MOB lastReader=this.lastReader;
-		if((lastReader!=null)
-		&&((lastReader==owner())||(lastReader.location()==owner())))
-			readers.add(lastReader);
+		if(lastReader!=null)
+		{
+			if(((lastReader==owner())||(lastReader.location()==owner()))
+			&&(CMLib.flags().isInTheGame(lastReader, true)))
+				readers.add(lastReader);
+			else
+				this.lastReader=null;
+		}
 		for(Rider R : riders)
 			if(R instanceof MOB)
 				readers.add((MOB)R);
@@ -186,10 +191,21 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					return false;
 				}
 				else
+				if(!StdElecItem.isAllWiringConnected(this))
+				{
+					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
+					return false;
+				}
+				else
 				if(powerRemaining()<=0)
 				{
-					msg.source().tell(name()+" won't seem to power up. Perhaps it needs power?");
-					return false;
+					if((!CMLib.tech().seekBatteryPower(this, this.circuitKey))
+					||(powerRemaining()<=0))
+					{
+						msg.source().tell(name()+" won't seem to power up. Perhaps it needs power?");
+						return false;
+					}
 				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
@@ -285,14 +301,16 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				{
 					activate(true);
 					setActiveMenu("");
-					msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> boot(s) up <T-NAME>.");
+					if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+						msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> boot(s) up <T-NAME>.");
 				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				if(activated())
 				{
 					activate(false);
-					msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shut(s) down <T-NAME>.");
+					if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+						msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shut(s) down <T-NAME>.");
 					deactivateSystem();
 				}
 				break;
@@ -416,7 +434,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		if(activated())
 		{
 			final List<Software> software=getSoftware();
-			CMMsg msg2=CMClass.getMsg(CMClass.getFactoryMOB(), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.NO_EFFECT,null);
+			final Room locR=CMLib.map().roomLocation(this);
+			CMMsg msg2=CMClass.getMsg(CMLib.map().getFactoryMOB(locR), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.NO_EFFECT,null);
 			synchronized(software)
 			{
 				for(Software sw : software)
