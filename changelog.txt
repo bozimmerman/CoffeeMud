@@ -18,7 +18,7 @@
   16. Siplet now also supports MSDP, in an undocumented, testable sorta way.  Usage /MSDP (JSON OBJECT).  Example: /MSDP {"LIST":"LISTS"}
   17. The "sessions" archon command has been replaced with "list sessions".  On the bright side, all of the LIST [X] parms now have their own help entries.
   18. JavaScript embedded in Scriptable scripts can now access all the Scriptable commands and functions from within JavaScript.  See the Scriptable Guide.
-  19. Although mostly academic at this point, CoffeeMud now has a working computer console, working power source for the computer, and working example software.
+  19. CoffeeMud now has a working computer console, working power source for the computer, and working example software.  New command: TYPE for interacting.
 # Build 5.7.10 Release 2/17/2013 (* DB CHANGE!) (** Thanks to TGMUD for publishing their changelogs!!!)
    0. Database Schema Updated! Run DBUpgrade, OR create table CMCHCL (see appropriate schema file), then:
    INSERT INTO CMCHCL VALUES (SELECT USERID, CMCLAN, CMCLRO from CMCHAR where CMCLAN != ''); // lastly:
