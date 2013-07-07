@@ -1523,11 +1523,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						if((buf!=null)&&(buf.length()>0))
 							mob.tell("It says '"+buf.toString()+"'.");
 						else
+						if(msg.target() instanceof Electronics)
+							mob.tell("There is nothing on "+msg.target().name()+".");
+						else
 							mob.tell("There is nothing written on "+msg.target().name()+".");
 					}
 					else
 						mob.tell("It says '"+text+"'.");
 				}
+				else
+				if(msg.target() instanceof Electronics)
+					mob.tell("There is nothing on "+msg.target().name()+".");
 				else
 					mob.tell("There is nothing written on "+msg.target().name()+".");
 			}
