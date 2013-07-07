@@ -110,6 +110,6 @@ public class Read extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		return Boolean.valueOf(read(mob,(Environmental)args[0],(String)args[1],((Boolean)args[1]).booleanValue()));
+		return Boolean.valueOf(read(mob,(Environmental)args[0],(String)args[1],((Boolean)args[2]).booleanValue()));
 	}
 }

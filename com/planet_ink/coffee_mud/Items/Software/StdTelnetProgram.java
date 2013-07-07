@@ -220,6 +220,7 @@ public class StdTelnetProgram extends StdProgram
 						try 
 						{
 							writer.write(msg.targetMessage()+"\n\r");
+							writer.flush();
 						} 
 						catch (IOException e)
 						{
