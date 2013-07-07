@@ -149,7 +149,7 @@ public class StdTelnetProgram extends StdProgram
 			}
 			case CMMsg.TYP_DEACTIVATE:
 				shutdown();
-				break;
+				return true;
 			case CMMsg.TYP_WRITE:
 				synchronized(this)
 				{

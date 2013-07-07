@@ -38,11 +38,11 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public String ID(){	return "StdComputerConsole";}
 
 	protected volatile String circuitKey		= null;
-	protected final TimeMs    nextPowerCycleTmr = new TimeMs(System.currentTimeMillis()+(8*1000));
+	protected volatile long   nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
 	protected short 		  powerRemaining	= 0;
 	protected MOB 			  lastReader		= null;
 	protected ElecPanelType   panelType		 	= Electronics.ElecPanel.ElecPanelType.COMPUTER;
-	protected final TimeMs    nextSoftwareCheck = new TimeMs(System.currentTimeMillis()+(10*1000));
+	protected volatile long   nextSoftwareCheck = System.currentTimeMillis()+(10*1000);
 	protected List<Software>  software		 	= null;
 	protected boolean 		  activated		 	= false;
 	protected String 		  currentMenu		= "";
@@ -93,14 +93,14 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 
 	public List<Software> getSoftware()
 	{
-		if((software==null)||(nextSoftwareCheck.isNowLaterThan()))
+		if((software==null)||(System.currentTimeMillis()>nextSoftwareCheck))
 		{
 			final List<Item> list=getContents();
 			final LinkedList<Software> softwareList=new LinkedList<Software>();
 			for(Item I : list)
 				if(I instanceof Software)
 					softwareList.add((Software)I);
-			nextSoftwareCheck.setToLater(10*1000);
+			nextSoftwareCheck=System.currentTimeMillis()+(10*1000);
 			software=softwareList;
 		}
 		return software;
@@ -261,6 +261,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 						}
 					}
 					boolean readFlag=false;
+					boolean menuRead=false;
 					for(CMMsg msg2 : msgs)
 					{
 						if(msg2.target().okMessage(msg.source(), msg2))
@@ -272,24 +273,31 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 								if(msg2.targetMinor()==CMMsg.TYP_ACTIVATE)
 								{
 									setActiveMenu(sw.getInternalName());
+									readFlag=true;
 								}
 								else
 								if(msg2.targetMinor()==CMMsg.TYP_DEACTIVATE)
 								{
 									setActiveMenu(sw.getParentMenu());
+									menuRead=true;
 								}
-								readFlag=true;
+								else
+								{
+									readFlag=true;
+								}
 							}
 						}
 					}
 					if(readFlag)
 						forceReadersSeeNew();
+					if(menuRead)
+						forceReadersMenu();
 				}
 				break;
 			}
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_PUT:
-				nextSoftwareCheck.set(0);
+				nextSoftwareCheck=0;
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
@@ -321,7 +329,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					{
 						if(powerRemaining()==0)
 							setPowerRemaining(1);
-						nextPowerCycleTmr.setToLater(8*1000);
+						nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
 					}
 					if(activated())
 					{
@@ -422,7 +430,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			{
 			}
 			else
-			if(nextPowerCycleTmr.isNowLaterThan())
+			if(System.currentTimeMillis()>nextPowerCycleTmr)
 			{
 				deactivateSystem();
 			}
