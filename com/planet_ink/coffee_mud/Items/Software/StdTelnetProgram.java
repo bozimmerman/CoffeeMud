@@ -75,7 +75,7 @@ public class StdTelnetProgram extends StdProgram
 
 	public String getActivationMenu()
 	{
-		return "TELNET <HOST> <PORT>: Telnet Network Software";
+		return "TELNET [HOST] [PORT]: Telnet Network Software";
 	}
 
 	protected void shutdown()
@@ -124,7 +124,7 @@ public class StdTelnetProgram extends StdProgram
 				List<String> parsed=CMParms.parse(msg.targetMessage());
 				if(parsed.size()!=3)
 				{
-					msg.source().tell("Incorrect usage, try: TELNET <HOSTNAME> <PORT>");
+					msg.source().tell("Incorrect usage, try: TELNET [HOST] [PORT]");
 					return false;
 				}
 				try
