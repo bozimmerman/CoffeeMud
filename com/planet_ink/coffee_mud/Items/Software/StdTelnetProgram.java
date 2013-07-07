@@ -241,8 +241,8 @@ public class StdTelnetProgram extends StdProgram
 			case CMMsg.TYP_POWERCURRENT:
 				if(msg.value()>0)
 					fillWithData();
-				if((owner() instanceof Electronics.Computer)
-				&&(((Electronics.Computer)owner()).getCurrentReaders().size()==0))
+				if((container() instanceof Electronics.Computer)
+				&&(((Electronics.Computer)container()).getCurrentReaders().size()==0))
 				{
 					this.shutdown();
 				}

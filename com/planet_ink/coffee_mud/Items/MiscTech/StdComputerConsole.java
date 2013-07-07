@@ -153,6 +153,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public List<MOB> getCurrentReaders()
 	{
 		List<MOB> readers=new LinkedList<MOB>();
+		if(amDestroyed())
+			return readers;
 		final MOB lastReader=this.lastReader;
 		if(lastReader!=null)
 		{
@@ -310,7 +312,10 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					activate(true);
 					setActiveMenu("");
 					if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					{
 						msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> boot(s) up <T-NAME>.");
+						forceReadersMenu();
+					}
 				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:

@@ -32,56 +32,74 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Enter extends Go
+public class TypeCmd extends Go
 {
-	public Enter(){}
+	public TypeCmd(){}
 
-	private final String[] access={"ENTER","EN"};
+	private final String[] access={"TYPE","="};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(commands.size()<=1)
+		final Room R=mob.location();
+		boolean consoleMode=(mob.riding() instanceof Electronics.Computer);
+		if((commands.size()<=1)||(R==null))
 		{
-			mob.tell("Enter what or where? Try LOOK or EXITS.");
+			if(consoleMode)
+				mob.tell("Type what into this console?  Have you read the screen?");
+			else
+				mob.tell("Type what into what?");
 			return false;
 		}
-		Environmental enterThis=null;
-		String enterWhat=CMParms.combine(commands,1);
-		int dir=Directions.getGoodDirectionCode(enterWhat.toUpperCase());
-		if(dir<0)
+		Environmental typeIntoThis=(consoleMode)?mob.riding():null;
+		if(typeIntoThis==null)
 		{
-			enterThis=mob.location().fetchFromRoomFavorItems(null,enterWhat.toUpperCase());
-			if(enterThis!=null)
+			int x=1;
+			while((x<commands.size())&&(!commands.get(x).toString().equalsIgnoreCase("into")))
+				x++;
+			if(x<commands.size()-1)
 			{
-				if(enterThis instanceof Rideable)
+				String typeWhere=CMParms.combine(commands,x+1);
+				typeIntoThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,typeWhere,Wearable.FILTER_ANY);
+				if(typeIntoThis==null)
+					for(int i=0;i<R.numItems();i++)
+					{
+						Item I=R.getItem(i);
+						if((I instanceof Electronics.ElecPanel)
+						&&(((Electronics.ElecPanel)I).isOpen()))
+						{
+							typeIntoThis=R.fetchFromRoomFavorItems(I, typeWhere);
+							if(typeIntoThis!=null)
+								break;
+						}
+					}
+				if(typeIntoThis!=null)
 				{
-					Command C=CMClass.getCommand("Sit");
-					if(C!=null) return C.execute(mob,commands,metaFlags);
+					while(commands.size()>=x)
+						commands.remove(commands.size()-1);
 				}
 				else
-				if((enterThis instanceof DeadBody)
-				&&(mob.phyStats().height()<=0)
-				&&(mob.phyStats().weight()<=0))
 				{
-					String enterStr="<S-NAME> enter(s) <T-NAME>.";
-					CMMsg msg=CMClass.getMsg(mob,enterThis,null,CMMsg.MSG_SIT,enterStr);
-					if(mob.location().okMessage(mob,msg))
-						mob.location().send(mob,msg);
-					return true;
+					mob.tell("You don't see '"+typeWhere.toLowerCase()+"' here.");
 				}
 			}
-			dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
-			if(dir<0)
-			{
-				mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
-				return false;
-			}
 		}
-		CMLib.tracking().walk(mob,dir,false,false,false);
+		
+		String enterWhat=CMParms.combine(commands,1);
+		if(typeIntoThis!=null)
+		{
+			String enterStr="^W<S-NAME> enter(s) '"+enterWhat+"' into <T-NAME>.^?";
+			CMMsg msg=CMClass.getMsg(mob,typeIntoThis,null,CMMsg.MSG_WRITE,enterStr,CMMsg.MSG_WRITE,enterWhat,CMMsg.MSG_WRITE,null);
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			return true;
+		}
+		else
+		{
+			mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
+		}
 		return false;
 	}
 	public boolean canBeOrdered(){return true;}
 
-	
 }
