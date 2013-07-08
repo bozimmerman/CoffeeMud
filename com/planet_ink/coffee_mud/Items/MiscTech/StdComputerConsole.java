@@ -273,11 +273,15 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					}
 					boolean readFlag=false;
 					boolean menuRead=false;
+					final MOB M=msg.source();
+					if(msgs.size()==0)
+						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown command. Please read the screen for a menu.\n\r^.^N'");
+					else
 					for(CMMsg msg2 : msgs)
 					{
-						if(msg2.target().okMessage(msg.source(), msg2))
+						if(msg2.target().okMessage(M, msg2))
 						{
-							msg2.target().executeMsg(msg.source(), msg2);
+							msg2.target().executeMsg(M, msg2);
 							if(msg2.target() instanceof Software)
 							{
 								Software sw=(Software)msg2.target();
