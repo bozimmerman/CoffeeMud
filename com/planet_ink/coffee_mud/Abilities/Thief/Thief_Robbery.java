@@ -45,8 +45,8 @@ public class Thief_Robbery extends ThiefSkill
 	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 	private static final String[] triggerStrings = {"ROBBERY","ROB"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Vector mobs=new Vector();
-	private DVector lastOnes=new DVector(2);
+	public List<MOB> mobs=new Vector<MOB>();
+	private PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	
 	protected int timesPicked(MOB target)
@@ -54,12 +54,12 @@ public class Thief_Robbery extends ThiefSkill
 		int times=0;
 		for(int x=0;x<lastOnes.size();x++)
 		{
-			MOB M=(MOB)lastOnes.elementAt(x,1);
-			Integer I=(Integer)lastOnes.elementAt(x,2);
+			MOB M=lastOnes.getFirst(x);
+			Integer I=lastOnes.getSecond(x);
 			if(M==target)
 			{
 				times=I.intValue();
-				lastOnes.removeElement(M);
+				lastOnes.removeElementFirst(M);
 				break;
 			}
 		}
@@ -184,11 +184,11 @@ public class Thief_Robbery extends ThiefSkill
 				if(A==null)
 				{
 					mobs.clear();
-					mobs.addElement(mob);
+					mobs.add(mob);
 					beneficialAffect(mob,target,asLevel,0);
 				}
 				else
-					A.mobs.addElement(mob);
+					A.mobs.add(mob);
 			}
 			else
 				mob.tell(mob,target,null,auto?"":"You fumble the attempt to rob <T-NAME>.");
@@ -226,7 +226,7 @@ public class Thief_Robbery extends ThiefSkill
 				if(A==null)	beneficialAffect(mob,target,asLevel,0);
 				A=(Thief_Robbery)target.fetchEffect(ID());
 				if(A!=null)
-					A.mobs.addElement(mob);
+					A.mobs.add(mob);
 				
 				if((!target.isMonster())&&(mob.isMonster())&&(!alreadyFighting))
 				{

@@ -771,7 +771,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		 * row is a vote, with dimension 1 being the member name
 		 * and dimension 2 being a Boolean representing their choice.
 		 */
-		public DVector votes=null;
+		public PairVector<String,Boolean> votes=null;
 	}
 	
 	/**

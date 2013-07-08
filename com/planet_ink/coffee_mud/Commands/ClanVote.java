@@ -90,7 +90,7 @@ public class ClanVote extends StdCommand
 					for(int v=0;v<votesForYou.size();v++)
 					{
 						Clan.ClanVote CV=(Clan.ClanVote)votesForYou.elementAt(v);
-						boolean ivoted=((CV.votes!=null)&&(CV.votes.contains(mob.Name())));
+						boolean ivoted=((CV.votes!=null)&&(CV.votes.containsFirst(mob.Name())));
 						int votesCast=(CV.votes!=null)?CV.votes.size():0;
 						msg.append((ivoted?"*":" ")
 								  +CMStrings.padRight(""+(v+1),3)
@@ -116,9 +116,9 @@ public class ClanVote extends StdCommand
 					if(CV.votes!=null)
 						for(int vs=0;vs<CV.votes.size();vs++)
 						{
-							if(((String)CV.votes.elementAt(vs,1)).equals(mob.Name()))
-							   myVote=(Boolean)CV.votes.elementAt(vs,2);
-							if(((Boolean)CV.votes.elementAt(vs,2)).booleanValue())
+							if(CV.votes.getFirst(vs).equals(mob.Name()))
+							   myVote=CV.votes.getSecond(vs);
+							if(CV.votes.getSecond(vs).booleanValue())
 								yeas++;
 							else
 								nays++;
@@ -151,7 +151,7 @@ public class ClanVote extends StdCommand
 						msg=new StringBuffer("");
 						StringBuffer prompt=new StringBuffer("");
 						String choices="";
-						if(CV.votes==null) CV.votes=new DVector(2);
+						if(CV.votes==null) CV.votes=new PairVector<String,Boolean>();
 						prompt.append("Y)EA N)AY ");
 						choices="YN";
 						if(CV.voteStarter.equals(mob.Name()))

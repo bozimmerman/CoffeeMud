@@ -378,15 +378,15 @@ public class RaceData extends StdWebMacro
 		}
 		else
 		{
-			DVector cables;
+			PairVector<String,Integer> cables;
 			if(obj instanceof Race)
 				cables=((Race)obj).culturalAbilities();
 			else
-				cables=new DVector(3);
+				cables=new PairVector<String,Integer>();
 			for(final Iterator<Ability> a=ables.iterator();a.hasNext();)
 			{
 				final Ability A=a.next();
-				if((A!=null)&&(!cables.contains(A.ID())))
+				if((A!=null)&&(!cables.containsFirst(A.ID())))
 				{
 					boolean defaultGain = CMLib.ableMapper().getDefaultGain(ID, false, A.ID());
 					int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(ID, false,A.ID()) ;
@@ -540,9 +540,9 @@ public class RaceData extends StdWebMacro
 		}
 		else
 		{
-			DVector ables=E.culturalAbilities();
+			PairVector<String,Integer> ables=E.culturalAbilities();
 			for(int i=0;i<ables.size();i++)
-				theclasses.addElement(ables.elementAt(i,1),ables.elementAt(i,2).toString());
+				theclasses.addElement(ables.getFirst(i),ables.getSecond(i).toString());
 		}
 		if(font==null) font="<FONT COLOR=WHITE><B>";
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");

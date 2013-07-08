@@ -43,7 +43,7 @@ public class Skill_Convert extends StdSkill
 	private static final String[] triggerStrings = {"CONVERT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_EVANGELISM;}
-	protected static DVector convertStack=new DVector(2);
+	protected static PairVector<MOB,Long> convertStack=new PairVector<MOB,Long>();
 	public int overrideMana(){return 50;}
 	public String displayText(){return "";}
 	protected String priorFaith="";
@@ -120,13 +120,13 @@ public class Skill_Convert extends StdSkill
 		}
 		if(!auto)
 		{
-			if(convertStack.contains(target))
+			if(convertStack.containsFirst(target))
 			{
-				Long L=(Long)convertStack.elementAt(convertStack.indexOf(target),2);
+				Long L=convertStack.getSecond(convertStack.indexOfFirst(target));
 				if((System.currentTimeMillis()-L.longValue())>CMProps.getMillisPerMudHour()*5)
-					convertStack.removeElement(target);
+					convertStack.removeElementFirst(target);
 			}
-			if(convertStack.contains(target))
+			if(convertStack.containsFirst(target))
 			{
 				mob.tell(target.name()+" must wait to be converted again.");
 				if(mob.isMonster())

@@ -476,7 +476,7 @@ public class Clans extends StdLibrary implements ClanManager
 				CV.voteStarter=mob.Name();
 				CV.function=function.ordinal();
 				CV.voteStarted=System.currentTimeMillis();
-				CV.votes=new DVector(2);
+				CV.votes=new PairVector<String,Boolean>();
 				CV.voteStatus=Clan.VSTAT_STARTED;
 				C.addVote(CV);
 				C.updateVotes();

@@ -346,10 +346,10 @@ public class StdLanguage extends StdAbility implements Language
 		int numLanguages=0;
 		if(student==null) return Integer.MAX_VALUE;
 		CharClass C=student.charStats().getCurrentClass();
-		DVector culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
+		PairVector<String,Integer> culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
 		HashSet culturalAbilities=new HashSet();
 		for(int i=0;i<culturalAbilitiesDV.size();i++)
-			culturalAbilities.add(culturalAbilitiesDV.elementAt(i, 1).toString().toLowerCase());
+			culturalAbilities.add(culturalAbilitiesDV.getFirst(i).toLowerCase());
 		for(int a=0;a<student.numAbilities();a++)
 		{
 			Ability A=student.fetchAbility(a);

@@ -270,9 +270,9 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * Return a vector of skills, spells, and other ability ids granted to the given
 	 * mob when they are created as this race.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-	 * @return a dvector of the Ability names, and profficiencies
+	 * @return a pairvector of the Ability names, and profficiencies
 	 */
-	public DVector culturalAbilities();
+	public PairVector<String,Integer> culturalAbilities();
 	/**
 	 * Return a vector of skills, spells, and other abilities granted to the given
 	 * mob of the given mobs level.

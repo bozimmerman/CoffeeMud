@@ -50,18 +50,18 @@ public class Thief_Steal extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	protected DVector lastOnes=new DVector(2);
+	protected PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
 	protected int timesPicked(MOB target)
 	{
 		int times=0;
 		for(int x=0;x<lastOnes.size();x++)
 		{
-			MOB M=(MOB)lastOnes.elementAt(x,1);
-			Integer I=(Integer)lastOnes.elementAt(x,2);
+			MOB M=lastOnes.getFirst(x);
+			Integer I=lastOnes.getSecond(x);
 			if(M==target)
 			{
 				times=I.intValue();
-				lastOnes.removeElement(M);
+				lastOnes.removeElementFirst(M);
 				break;
 			}
 		}

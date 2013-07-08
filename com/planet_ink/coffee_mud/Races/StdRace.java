@@ -1106,9 +1106,9 @@ public class StdRace implements Race
 		return GR;
 	}
 
-	public DVector culturalAbilities()
+	public PairVector<String,Integer> culturalAbilities()
 	{
-		DVector ables=new DVector(2);
+		PairVector<String,Integer> ables=new PairVector<String,Integer>();
 		if((culturalAbilityNames()!=null)
 		&&(culturalAbilityProficiencies()!=null))
 			for(int i=0;i<culturalAbilityNames().length;i++)
@@ -1259,16 +1259,16 @@ public class StdRace implements Race
 			List<Ability> ables=new Vector<Ability>();
 			ables.addAll(racialAbilities(null));
 			
-			DVector cables=culturalAbilities();
+			PairVector<String,Integer> cables=culturalAbilities();
 			Ability A=null;
 			if(cables!=null)
 			{
 				for(int c=0;c<cables.size();c++)
 				{
-					A=CMClass.getAbility((String)cables.elementAt(c,1));
+					A=CMClass.getAbility(cables.getFirst(c));
 					if(A!=null)
 					{
-						A.setProficiency(((Integer)cables.elementAt(c,2)).intValue());
+						A.setProficiency(cables.getSecond(c).intValue());
 						ables.add(A);
 					}
 				}

@@ -167,8 +167,8 @@ public class DefaultClan implements Clan
 				for(int v=0;v<CV.votes.size();v++)
 				{
 					str.append("<VOTE>");
-					str.append(CMLib.xml().convertXMLtoTag("BY",(String)CV.votes.elementAt(v,1)));
-					str.append(CMLib.xml().convertXMLtoTag("YN",""+((Boolean)CV.votes.elementAt(v,2)).booleanValue()));
+					str.append(CMLib.xml().convertXMLtoTag("BY",CV.votes.getFirst(v)));
+					str.append(CMLib.xml().convertXMLtoTag("YN",CV.votes.getSecond(v).toString()));
 					str.append("</VOTE>");
 				}
 				str.append("</VOTES>");
@@ -278,7 +278,7 @@ public class DefaultClan implements Clan
 				CV.function=CMLib.xml().getIntFromPieces(voteData,"FUNC");
 				CV.voteStatus=CMLib.xml().getIntFromPieces(voteData,"STATUS");
 				CV.matter=CMLib.xml().getValFromPieces(voteData,"CMD");
-				CV.votes=new DVector(2);
+				CV.votes=new PairVector<String,Boolean>();
 				List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(voteData,"VOTES");
 				if((xV!=null)&&(xV.size()>0))
 				{
@@ -1369,7 +1369,7 @@ public class DefaultClan implements Clan
 					long endsOn=CV.voteStarted+duration;
 					if(CV.voteStatus==VSTAT_STARTED)
 					{
-						if(CV.votes==null) CV.votes=new DVector(2);
+						if(CV.votes==null) CV.votes=new PairVector<String,Boolean>();
 						boolean voteIsOver=false;
 						if(System.currentTimeMillis()>endsOn)
 							voteIsOver=true;
@@ -1387,7 +1387,7 @@ public class DefaultClan implements Clan
 								int yeas=0;
 								int nays=0;
 								for(int i=0;i<CV.votes.size();i++)
-									if(((Boolean)CV.votes.elementAt(i,2)).booleanValue())
+									if(CV.votes.getSecond(i).booleanValue())
 										yeas++;
 									else
 										nays++;
