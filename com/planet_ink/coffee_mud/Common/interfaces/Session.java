@@ -193,11 +193,21 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes.
-	 * Does not manage the prompt.
+	 * Does not manage the prompt, and should NOT be used for prompts.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#promptPrint(String)
 	 * @param msg the string to send to the user
 	 */
 	public void print(String msg);
+	
+	/**
+	 * Medium-level text output method.  Does full
+	 * filtering of special characters and codes.
+	 * Does not manage the prompt. Should be used for prompts!
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
+	 * @param msg the string to send to the user
+	 */
+	public void promptPrint(String msg);
 	
 	/**
 	 * Medium-level text output method.  Does full
@@ -907,7 +917,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"","","","","","","","","","", //210-219
 		"","","","","","","","","","", //220-229
 		"","","","","","","","","","", //230-239
-		"SE","NOOP","","","","","AYT","EC","","GA", //240-249
+		"SE","NOP","","","","","AYT","EC","","GA", //240-249
 		"SB","","","ANSI","","" 			 //250-255
 	};
 	

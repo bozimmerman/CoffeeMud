@@ -168,7 +168,7 @@ public class Painting extends CommonSkill
 			else
 			{
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-					@Override public void showPrompt() {session.print("Enter the key words (not the description) for this work.\n\r: ");}
+					@Override public void showPrompt() {session.promptPrint("Enter the key words (not the description) for this work.\n\r: ");}
 					@Override public void timedOut() {}
 					@Override public void callBack() {
 						final String name=input.trim();
@@ -188,7 +188,7 @@ public class Painting extends CommonSkill
 									final Item dupI=I;
 									final String dupWord=vstr.trim().toLowerCase();
 									session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0){
-										@Override public void showPrompt() {session.print("\n\r'"+dupI.name()+"' already shares one of these key words ('"+dupWord+"').  Would you like to destroy it (y/N)? ");}
+										@Override public void showPrompt() {session.promptPrint("\n\r'"+dupI.name()+"' already shares one of these key words ('"+dupWord+"').  Would you like to destroy it (y/N)? ");}
 										@Override public void timedOut() {}
 										@Override public void callBack() {
 											if(this.input.equals("Y"))
@@ -202,14 +202,14 @@ public class Painting extends CommonSkill
 							}
 						}
 						session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-							@Override public void showPrompt() {session.print("\n\rEnter a description for this.\n\r:");}
+							@Override public void showPrompt() {session.promptPrint("\n\rEnter a description for this.\n\r:");}
 							@Override public void timedOut() {}
 							@Override public void callBack() {
 								final String desc=this.input.trim();
 								if(desc.length()==0)
 									return;
 								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0){
-									@Override public void showPrompt() {session.print("Wall art key words: '"+name+"', description: '"+desc+"'.  Correct (Y/n)? ");}
+									@Override public void showPrompt() {session.promptPrint("Wall art key words: '"+name+"', description: '"+desc+"'.  Correct (Y/n)? ");}
 									@Override public void timedOut() {}
 									@Override public void callBack() {
 										if(this.input.equals("Y"))
@@ -248,14 +248,14 @@ public class Painting extends CommonSkill
 			else
 			{
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-					@Override public void showPrompt() {session.print("\n\rIn brief, what is this a painting of?\n\r: ");}
+					@Override public void showPrompt() {session.promptPrint("\n\rIn brief, what is this a painting of?\n\r: ");}
 					@Override public void timedOut() {}
 					@Override public void callBack() {
 						final String name=this.input.trim();
 						if(name.length()==0)
 							return;
 						session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-							@Override public void showPrompt() {session.print("\n\rPlease describe this painting.\n\r: ");}
+							@Override public void showPrompt() {session.promptPrint("\n\rPlease describe this painting.\n\r: ");}
 							@Override public void timedOut() {}
 							@Override public void callBack() {
 								final String desc=this.input.trim();

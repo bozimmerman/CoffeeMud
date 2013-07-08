@@ -21,6 +21,7 @@
   19. CoffeeMud now has a working computer console, working power source for the computer, and working example software.  New command: TYPE for interacting.
   20. Bards songs/dances/plays now show an ambiance during performances.
   21. MUDGrinder Factions Manager now allows pre-loaded faction toggling.
+  22. The Session "ping" has been changed to a telnet GO-AHEAD instead of 0, which should make That Client(TM) somewhat happier.
   
 # Build 5.7.10 Release 2/17/2013 (* DB CHANGE!) (** Thanks to TGMUD for publishing their changelogs!!!)
    0. Database Schema Updated! Run DBUpgrade, OR create table CMCHCL (see appropriate schema file), then:

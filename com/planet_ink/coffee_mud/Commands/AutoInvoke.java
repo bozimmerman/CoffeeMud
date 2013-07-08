@@ -93,7 +93,7 @@ public class AutoInvoke extends StdCommand
 		if(session!=null)
 		{
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-				@Override public void showPrompt() { session.print("Enter one to toggle or RETURN: ");}
+				@Override public void showPrompt() { session.promptPrint("Enter one to toggle or RETURN: ");}
 				@Override public void timedOut() { }
 				@Override public void callBack() 
 				{

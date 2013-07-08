@@ -1026,7 +1026,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		listOfRaces.append("]");
 		while(newRace==null)
 		{
-			session.print("\n\r^!Please choose from the following races (?):^N\n\r");
+			session.println("\n\r^!Please choose from the following races (?):^N");
 			session.print(listOfRaces.toString());
 			String raceStr=session.prompt("\n\r: ","");
 			if(raceStr.trim().equalsIgnoreCase("?"))
@@ -1187,7 +1187,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			String listOfClasses = buildQualifyingClassList(qualClassesV, "or");
 			while(newClass==null)
 			{
-				session.print("\n\r^!Please choose from the following Classes:\n\r");
+				session.println("\n\r^!Please choose from the following Classes:");
 				session.print("^H[" + listOfClasses + "]^N");
 				String ClassStr=session.prompt("\n\r: ","");
 				if(ClassStr.trim().equalsIgnoreCase("?"))
@@ -1398,7 +1398,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						introText=new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,true).text();
 						try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 						session.println(null,null,null,introText.toString());
-						session.print("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r");
+						session.println("\n\r^!Please select from the following:^N "+selections.substring(1));
 						String themeStr=session.choose(": ",choices,"");
 						if(themeStr.toUpperCase().startsWith("F"))
 							theme=Area.THEME_FANTASY;
@@ -1715,9 +1715,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					return LoginResult.NO_LOGIN;
 				}
 				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
-					session.print("\n\raccount name: ");
+					session.promptPrint("\n\raccount name: ");
 				else
-					session.print("\n\rname: ");
+					session.promptPrint("\n\rname: ");
 				loginObj.state=LoginState.LOGIN_NAME;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -1768,7 +1768,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						&&((loginObj.player.accountName==null)
 							||(loginObj.player.accountName.trim().length()==0)))
 						{
-							session.print("password for "+loginObj.player.name+": ");
+							session.promptPrint("password for "+loginObj.player.name+": ");
 							loginObj.state=LoginState.ACCT_CHAR_PWORD;
 							return LoginResult.INPUT_REQUIRED;
 						}
@@ -1807,7 +1807,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				{
 					session.println("\n\rThis mud is now using an account system.  "
 							+"Please create a new account and use the IMPORT command to add your character(s) to your account.");
-					session.print("Would you like to create your new master account and call it '"+loginObj.player.name+"' (y/N)? ");
+					session.promptPrint("Would you like to create your new master account and call it '"+loginObj.player.name+"' (y/N)? ");
 					loginObj.state=LoginState.ACCT_CONVERT_CONFIRM;
 					return LoginResult.INPUT_REQUIRED;
 				}
@@ -1838,13 +1838,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					{
 						if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 						{
-							session.print("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?");
+							session.promptPrint("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?");
 							loginObj.state=LoginState.CREATE_ACCOUNT_CONFIRM;
 							return LoginResult.INPUT_REQUIRED;
 						}
 						else
 						{
-							session.print("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?");
+							session.promptPrint("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?");
 							loginObj.state=LoginState.CREATE_CHAR_CONFIRM;
 							return LoginResult.INPUT_REQUIRED;
 						}
@@ -1862,7 +1862,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 							loginObj.state=LoginState.START;
 							return LoginResult.NO_LOGIN;
 						}
-					session.print("password: ");
+					session.promptPrint("password: ");
 					loginObj.state=LoginState.PLAYER_PASS_RECEIVED;
 					return LoginResult.INPUT_REQUIRED;
 				}
@@ -1943,9 +1943,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					&&(CMProps.getVar(CMProps.Str.MUDDOMAIN).length()>0))
 					{
 						if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
-							session.print("Would you like you have a new password generated and e-mailed to you (y/N)? ");
+							session.promptPrint("Would you like you have a new password generated and e-mailed to you (y/N)? ");
 						else
-							session.print("Would you like your password e-mailed to you (y/N)? ");
+							session.promptPrint("Would you like your password e-mailed to you (y/N)? ");
 						loginObj.state=LoginState.CONFIRM_EMAIL_PASSWORD;
 						return LoginResult.INPUT_REQUIRED;
 					}
@@ -2028,19 +2028,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		switch(newCharNameCheck(login,session.getAddress(),checkPlayerName))
 		{
 		case NO_NEW_PLAYERS:
-			session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\r");
+			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.");
 			return false;
 		case BAD_USED_NAME:
 			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\rThat name is also not available for new players.\n\r  Choose another name (no spaces allowed)!\n\r");
 			return false;
 		case NO_NEW_LOGINS:
-			session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
+			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r");
 			return false;
 		case CREATE_LIMIT_REACHED:
 			session.println("\n\rThat name is unrecognized.\n\rAlso, the maximum daily new player limit has already been reached for your location.");
 			return false;
 		default:
-			session.print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\r");
+			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.");
 			return false;
 		case OK:
 			return true;

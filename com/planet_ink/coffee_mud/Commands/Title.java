@@ -71,7 +71,7 @@ public class Title extends StdCommand
 			{
 				mob.tell(menu.toString());
 				if(mob.session()!=null)
-					mob.session().print("Enter a selection: ");
+					mob.session().promptPrint("Enter a selection: ");
 			}
 			@Override public void timedOut() {}
 			@Override public void callBack() 

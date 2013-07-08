@@ -76,7 +76,7 @@ public class Quit extends StdCommand
 				session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000){
 					@Override
 					public void showPrompt() {
-						session.print("\n\rQuit -- are you sure (y/N)?");
+						session.promptPrint("\n\rQuit -- are you sure (y/N)?");
 					}
 					@Override
 					public void timedOut() {}

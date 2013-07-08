@@ -52,7 +52,7 @@ public class Retire extends StdCommand
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000) {
 			@Override public void showPrompt() 
 			{
-				session.print("If that's what you want, re-enter your password: ");
+				session.promptPrint("If that's what you want, re-enter your password: ");
 			}
 			@Override public void timedOut() {}
 			@Override public void callBack() 
@@ -72,7 +72,7 @@ public class Retire extends StdCommand
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"") {
 						@Override public void showPrompt() 
 						{
-							session.print("OK.  Please leave us a short message as to why you are deleting this"
+							session.promptPrint("OK.  Please leave us a short message as to why you are deleting this"
 										+" character.  Your answers will be kept confidential, "
 										+"and are for administrative purposes only.\n\r: ");
 						}

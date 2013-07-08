@@ -85,7 +85,7 @@ public class ClanTax extends StdCommand
 			if((taxStr.length()==0)||(!CMath.isNumber(taxStr)))
 			{
 				S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-					@Override public void showPrompt() { S.print("Enter your "+C.getGovernmentName()+"'s new tax rate (0-25)\n\r: ");}
+					@Override public void showPrompt() { S.promptPrint("Enter your "+C.getGovernmentName()+"'s new tax rate (0-25)\n\r: ");}
 					@Override public void timedOut() { }
 					@Override public void callBack() 
 					{

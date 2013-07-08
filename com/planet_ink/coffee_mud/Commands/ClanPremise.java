@@ -80,7 +80,7 @@ public class ClanPremise extends StdCommand
 			return false;
 		}
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0) {
-			@Override public void showPrompt() { session.print("Describe your "+C.getGovernmentName()+"'s Premise\n\r: ");}
+			@Override public void showPrompt() { session.promptPrint("Describe your "+C.getGovernmentName()+"'s Premise\n\r: ");}
 			@Override public void timedOut() { }
 			@Override public void callBack() 
 			{

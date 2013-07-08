@@ -53,7 +53,7 @@ public class Alias extends StdCommand
 					menu.append(CMStrings.padRight((i+1)+". "+aliasNames[i],15)+": "+pStats.getAlias(aliasNames[i])+"\n\r");
 				menu.append((aliasNames.length+1)+". Add a new alias\n\r");
 				mob.tell(menu.toString());
-				session.print("Enter a selection: ");
+				session.promptPrint("Enter a selection: ");
 			}
 			@Override public void timedOut() { }
 			@Override public void callBack() 
@@ -67,7 +67,7 @@ public class Alias extends StdCommand
 				{
 					final String selection=pStats.getAliasNames()[num-1];
 					session.prompt(new InputCallback(InputCallback.Type.CHOOSE,"","MD\n",0){
-						@Override public void showPrompt() { session.print("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ");}
+						@Override public void showPrompt() { session.promptPrint("\n\rAlias selected '"+selection+"'.\n\rWould you like to D)elete or M)odify this alias (d/M)? ");}
 						@Override public void timedOut() { }
 						@Override public void callBack() 
 						{
@@ -91,7 +91,7 @@ public class Alias extends StdCommand
 				else
 				{
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-						@Override public void showPrompt() { session.print("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: ");}
+						@Override public void showPrompt() { session.promptPrint("\n\rEnter a new alias string consisting of letters and numbers only.\n\r: ");}
 						@Override public void timedOut() { }
 						@Override public void callBack() 
 						{
@@ -134,7 +134,7 @@ public class Alias extends StdCommand
 	public void modifyAlias(final MOB mob, final Session session, final PlayerStats pStats, final String aliasName, final InputCallback[] IC)
 	{
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-			@Override public void showPrompt() { session.rawPrintln("\n\rEnter a value for alias '"+aliasName+"'.  Use ~ to separate commands."); session.print(": "); }
+			@Override public void showPrompt() { session.rawPrintln("\n\rEnter a value for alias '"+aliasName+"'.  Use ~ to separate commands."); session.promptPrint(": "); }
 			@Override public void timedOut() { }
 			@Override public void callBack() 
 			{

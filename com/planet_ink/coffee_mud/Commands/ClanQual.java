@@ -83,7 +83,7 @@ public class ClanQual extends StdCommand
 		final InputCallback[] IC=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{
-			@Override public void showPrompt() { session.print("Describe your "+C.getGovernmentName()+"'s Qualification Code (?)\n\r: ");}
+			@Override public void showPrompt() { session.promptPrint("Describe your "+C.getGovernmentName()+"'s Qualification Code (?)\n\r: ");}
 			@Override public void timedOut() { }
 			@Override public void callBack() 
 			{
@@ -102,7 +102,7 @@ public class ClanQual extends StdCommand
 					@Override public void showPrompt() 
 					{ 
 						session.println("Your qualifications will be as follows: "+CMLib.masking().maskDesc(qualMask)+"\n\r");
-						session.print("Is this correct (Y/n)?");
+						session.promptPrint("Is this correct (Y/n)?");
 					}
 					@Override public void timedOut() { }
 					@Override public void callBack() 

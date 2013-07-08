@@ -538,7 +538,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 							final StdPostman me=this;
 							S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 							{
-								@Override public void showPrompt() { S.print("Address this to whom? ");}
+								@Override public void showPrompt() { S.promptPrint("Address this to whom? ");}
 								@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
 								@Override public void callBack() 
 								{
@@ -555,7 +555,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 										S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"P","CP\n",0)
 										{
 											@Override public void showPrompt() { 
-												S.print("Postage on this will be "+CMLib.beanCounter().nameCurrencyShort(me,amt)+".\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?");
+												S.promptPrint("Postage on this will be "+CMLib.beanCounter().nameCurrencyShort(me,amt)+".\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?");
 											}
 											@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
 											@Override public void callBack() 
@@ -564,7 +564,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 												if(choice.startsWith("C"))
 												{
 													S.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-														@Override public void showPrompt() { S.print("Enter COD amount ("+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me)))+"): ");}
+														@Override public void showPrompt() { S.promptPrint("Enter COD amount ("+CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(me),CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(me)))+"): ");}
 														@Override public void timedOut() { autoGive(me,msg.source(),(Item)msg.tool()); }
 														@Override public void callBack() 
 														{

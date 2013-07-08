@@ -49,8 +49,7 @@ public class DefaultSession implements Session
 	protected static final int	   PINGTIMEOUT  	= 30000;
 	protected static final int	   MSDPPINGINTERVAL	= 1000;
 	protected static final byte[]  TELNETGABYTES	= {(byte)TELNET_IAC,(byte)TELNET_GA};
-	protected static final char[]  TELNETGA			= {TELNET_IAC,TELNET_GA};
-	protected static final char[]  PINGCHARS		= TELNETGA;
+	protected static final char[]  PINGCHARS		= {TELNET_IAC,TELNET_NOP};
 	private final HashSet		   telnetSupportSet = new HashSet();
 	private static final HashSet   mxpSupportSet	= new HashSet();
 	private static final Hashtable mxpVersionInfo   = new Hashtable();
@@ -748,7 +747,14 @@ public class DefaultSession implements Session
 
 	public void print(String msg)
 	{
-		onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false),false); 
+		onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false),false);
+	}
+	
+	public void promptPrint(String msg)
+	{
+		print(msg);
+		if((!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag))
+			try { rawBytesOut(rawout, TELNETGABYTES); } catch(Exception e){}
 	}
 
 	public void rawPrintln(String msg)
@@ -872,9 +878,7 @@ public class DefaultSession implements Session
 	public String prompt(String Message, long maxTime) 
 			throws IOException
 	{
-		print(Message);
-		if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD))
-			rawBytesOut(rawout, TELNETGABYTES);
+		promptPrint(Message);
 		String input=blockingIn(maxTime);
 		if(input==null) return "";
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
@@ -885,9 +889,7 @@ public class DefaultSession implements Session
 	public String prompt(String Message)
 		throws IOException
 	{
-		print(Message);
-		if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD))
-			rawBytesOut(rawout, TELNETGABYTES);
+		promptPrint(Message);
 		String input=blockingIn(-1);
 		if(input==null) return "";
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
@@ -1502,9 +1504,7 @@ public class DefaultSession implements Session
 		String rest=null;
 		while((YN.equals(""))||(Choices.indexOf(YN)<0)&&(!killFlag))
 		{
-			print(Message);
-			if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD))
-				rawBytesOut(rawout, TELNETGABYTES);
+			promptPrint(Message);
 			YN=blockingIn(maxTime);
 			if(YN==null){ return Default.toUpperCase(); }
 			YN=YN.trim();
@@ -1574,11 +1574,7 @@ public class DefaultSession implements Session
 					  +"'^>^<!EN ExpNeed '"+mob().getExpNeededLevel()
 					  +"'^>^\n\r\n\r");
 		buf.append(CMLib.utensils().builtPrompt(mob));
-		print("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
-		try {	
-			if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) 
-				rawBytesOut(rawout, TELNETGABYTES); 
-		} catch (IOException e) { }
+		promptPrint("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
 	}
 
 	protected void closeSocks(String finalMsg)
