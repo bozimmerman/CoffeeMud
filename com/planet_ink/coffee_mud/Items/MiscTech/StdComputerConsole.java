@@ -84,6 +84,15 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		return E instanceof Software;
 	}
 
+	public String putString(Rider R)
+	{
+		return "in";
+	}
+	
+	public String stateStringSubject(Rider R)
+	{
+		return "being used by";
+	}
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
