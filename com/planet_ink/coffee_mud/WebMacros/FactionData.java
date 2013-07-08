@@ -694,7 +694,7 @@ public class FactionData extends StdWebMacro
 						}
 					}
 					
-					DVector rangeCodes = getRangeCodesNames(F,httpReq);
+					PairVector<String,String> rangeCodes = getRangeCodesNames(F,httpReq);
 					
 					int num=0;
 					int showNum=-1;
@@ -708,9 +708,9 @@ public class FactionData extends StdWebMacro
 							str.append("<TR><TD>");
 							str.append("<SELECT NAME=REACTIONRANGE"+showNum+" ONCHANGE=\"DelItem(this);\">");
 							str.append("<OPTION VALUE=\"\">Delete This Row");
-							int x=rangeCodes.indexOf(val);
+							int x=rangeCodes.indexOfFirst(val);
 							String name="Unknown!";
-							if(x>=0) name=(String)rangeCodes.elementAt(x, 2);
+							if(x>=0) name=(String)rangeCodes.getSecond(x);
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
 							str.append("</SELECT>");
 							str.append("</TD><TD VALIGN=TOP>");
@@ -754,7 +754,7 @@ public class FactionData extends StdWebMacro
 					str.append("<SELECT NAME=REACTIONRANGE"+showNum+" ONCHANGE=\"AddItem(this);\">");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an range");
 					for(int i=0;i<rangeCodes.size();i++)
-						str.append("<OPTION VALUE=\""+((String)rangeCodes.elementAt(i, 1))+"\">"+((String)rangeCodes.elementAt(i, 2)));
+						str.append("<OPTION VALUE=\""+((String)rangeCodes.getFirst(i)+"\">"+((String)rangeCodes.getSecond(i))));
 					str.append("</SELECT>");
 					str.append("</TD><TD VALIGN=TOP>");
 					str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=20 VALUE=\"\">");
@@ -850,11 +850,11 @@ public class FactionData extends StdWebMacro
 		return C.ID();
 	}
 	
-	public DVector getRangeCodesNames(Faction F, HTTPRequest httpReq)
+	public PairVector<String,String> getRangeCodesNames(Faction F, HTTPRequest httpReq)
 	{
 		String oldName=httpReq.getUrlParameter("RANGENAME0");
 		String code=null;
-		DVector codes=new DVector(2);
+		PairVector<String,String> codes=new PairVector<String,String>();
 		int num=0;
 		if(oldName==null)
 			for(Enumeration e=F.ranges();e.hasMoreElements();)
