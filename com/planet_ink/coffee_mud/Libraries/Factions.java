@@ -1314,7 +1314,7 @@ public class Factions extends StdLibrary implements FactionManager
 				{
 					item=e.nextElement();
 					list.append("    "+((char)('A'+numReactions)+") "));
-					list.append(CMStrings.padRight(item.rangeName(),15)+" ");
+					list.append(CMStrings.padRight(item.rangeCodeName(),15)+" ");
 					list.append(CMStrings.padRight(item.presentMOBMask()+"",18)+" ");
 					list.append(CMStrings.padRight(item.reactionObjectID()+"",15)+" ");
 					list.append(CMStrings.padRight(item.parameters()+"",18)+" ");
@@ -1350,7 +1350,7 @@ public class Factions extends StdLibrary implements FactionManager
 				if(item != null)
 				{
 					type=getWordAffOrBehav(item.reactionObjectID());
-					oldData=new String[]{item.rangeName(),item.presentMOBMask(),item.reactionObjectID(),item.parameters()};
+					oldData=new String[]{item.rangeCodeName(),item.presentMOBMask(),item.reactionObjectID(),item.parameters()};
 				}
 				
 				String[] newData=new String[4];

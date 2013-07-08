@@ -687,7 +687,7 @@ public class FactionData extends StdWebMacro
 						for(Enumeration e=F.reactions();e.hasMoreElements();v++)
 						{
 							Faction.FReactionItem item=(Faction.FReactionItem)e.nextElement();
-							httpReq.addFakeUrlParameter("REACTIONRANGE"+v,item.rangeName());
+							httpReq.addFakeUrlParameter("REACTIONRANGE"+v,item.rangeCodeName());
 							httpReq.addFakeUrlParameter("REACTIONABC"+v,item.reactionObjectID());
 							httpReq.addFakeUrlParameter("REACTIONPARM"+v,item.parameters());
 							httpReq.addFakeUrlParameter("REACTIONMASK"+v,item.presentMOBMask());

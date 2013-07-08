@@ -270,7 +270,7 @@ public class DefaultFaction implements Faction, MsgListener
 			if(key.startsWith("REACTION"))
 			{
 				DefaultFactionReactionItem item = new DefaultFactionReactionItem(words);
-				addReaction(item.rangeName(), item.presentMOBMask(), item.reactionObjectID(), item.parameters());
+				addReaction(item.rangeCodeName(), item.presentMOBMask(), item.reactionObjectID(), item.parameters());
 			}
 		}
 	}
@@ -491,7 +491,7 @@ public class DefaultFaction implements Faction, MsgListener
 	
 	public boolean delReaction(Faction.FReactionItem item)
 	{
-		SVector<Faction.FReactionItem> V=reactionHash.get(item.rangeName().toUpperCase().trim());
+		SVector<Faction.FReactionItem> V=reactionHash.get(item.rangeCodeName().toUpperCase().trim());
 		if(V!=null)
 			V.remove(item);
 		boolean res = reactions.remove(item);
@@ -1553,7 +1553,7 @@ public class DefaultFaction implements Faction, MsgListener
 						for(Enumeration<Faction.FReactionItem> e=reactions();e.hasMoreElements();)
 						{
 							Faction.FReactionItem react = e.nextElement();
-							if(!react.rangeName().equalsIgnoreCase(currentRange.codeName()))
+							if(!react.rangeCodeName().equalsIgnoreCase(currentRange.codeName()))
 								continue;
 							Faction.FReactionItem sampleReact = null;
 							Vector<Faction.FReactionItem> reactSet=null;
@@ -1798,7 +1798,7 @@ public class DefaultFaction implements Faction, MsgListener
 				compiledMobMask=CMLib.masking().maskCompile(str);
 		}
 		public MaskingLibrary.CompiledZapperMask compiledPresentMOBMask(){ return compiledMobMask;}
-		public String rangeName(){return rangeName;}
+		public String rangeCodeName(){return rangeName;}
 		public void setRangeName(String str){rangeName=str.toUpperCase().trim();}
 		public String parameters(){return parms;}
 		public String parameters(String name){ return CMStrings.replaceAll(parms,"<TARGET>", name);}

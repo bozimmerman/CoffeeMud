@@ -1552,15 +1552,15 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public void setPresentMOBMask(String str);
 		
 		/**
-		 * The name of the range which determines which folks with this faction get a reaction
+		 * The code name of the range which determines which folks with this faction get a reaction
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#setRangeName(String)
 		 * @return the range which determines which folks with this faction get a reaction
 		 */
-		public String rangeName();
+		public String rangeCodeName();
 		
 		/**
-		 * Set the name of the range which determines which folks with this faction get a reaction
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#rangeName()
+		 * Set the code name of the range which determines which folks with this faction get a reaction
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#rangeCodeName()
 		 * @param str the range which determines which folks with this faction get a reaction
 		 */
 		public void setRangeName(String str);
@@ -1573,7 +1573,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public String parameters();
 		/**
 		 * Set the parameters for the ability/behavior/command above.
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#rangeName()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#rangeCodeName()
 		 * @param str the parameters for the ability/behavior/command above
 		 */
 		public void setParameters(String str);
