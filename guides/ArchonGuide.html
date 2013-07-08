@@ -159,7 +159,8 @@ players (see DESTROY below). "list threads" will show you how many Java
 threads are active. "list ticks" will show you all the objects making
 use of those threads! "list reports" will show you your resource usage.
 "list staff" will show you a list of your areas and any Area staff
-defined for them. You may also list things like locales, items,
+defined for them, and "list sessions" will show you everyone who is
+online or may soon be. You may also list things like locales, items,
 weapons, armor, mobs, and other things discussed further down in the
 sections on world building.</p>
 <p align="left"><em>LOAD<br>
@@ -210,9 +211,6 @@ you use "save user", the system will update the players data. "save
 room" can make aspects of a room permanent by saving it to the
 database. Saving rooms is discussed further below in the section on
 building.</p>
-<p align="left"><em>SESSIONS<br>
-</em> This command will list all of the players online, and perhaps a
-few who are on their way to being online.</p>
 <p align="left"><em>SHELL<br>
 </em> This command will allow you to view the files in your
 coffeemud folder, copy and delete files, and even put them in your
@@ -1034,8 +1032,8 @@ in uppercase. Valid codes include: SUMMER, SPRING, WINTER, FALL, DAY,
 NIGHT, DUSK, DAWN, RAIN, SLEET, SNOW, CLEAR, HEATWAVE, THUNDERSTORM,
 BLIZZARD, WINDY, DROUGHT, DUSTSTORM, COLD, HAIL, CLOUDY,&nbsp;
 SWIMMING, FLYING, CRAWLING, SITTING, CLIMBING, FALLING, INVISIBLE,
-HIDDEN, VISITED. &nbsp;You can also use &lt;ELSE&gt; to catch exceptions 
-to your last VARIES tag.</p>
+HIDDEN, VISITED. &nbsp;You can also use &lt;ELSE&gt; to catch
+exceptions to your last VARIES tag.</p>
 <p>Rooms of the Grid and Maze sort present unique challenges to the
 molder of universes. In the first place, if you have SYSMSGS turned on,
 you will notice that the room ID displayed is a little different. In
@@ -1443,8 +1441,10 @@ of the random rooms, a &nbsp;<span style="font-style: italic;">level_range
  style="font-style: italic;">aggrochance </span>formula to determine
 the percentage chance the random mobs are aggressive, and an areasize
 formula to determine the number of rooms in the new area. &nbsp;You may
-insert the string @x1 through @x7 into your math formulas to substitute the current
-players level, lowest, median, average, highest, total levels, and group size respectively,
+insert the string @x1 through @x7 into your math formulas to substitute
+the current
+players level, lowest, median, average, highest, total levels, and
+group size respectively,
 allowing you to have the formula values scale with user
 level. You can also take advantage of the CoffeeMud scripting engine
 to insert Scriptable-style variables into your variable values.</p>
@@ -2182,7 +2182,8 @@ people can write on them even if they can't pick them up.</p>
 <p>One special kind of journal is called "SYSTEM_NEWS". It is usually
 accessed through the LIST NEWS and MODIFY NEWS commands, but under the
 covers, it is just another journal.</p>
-<p>Archons can also create special "persistant" entries. These entries remain
+<p>Archons can also create special "persistant" entries. These entries
+remain
 "new" longer than normal ones. These are created by starting off an
 entry subject with the letters MOTD (for message of the day), MOTM, or
 MOTY. If a subject starts with those letters, in uppercase, the entry
