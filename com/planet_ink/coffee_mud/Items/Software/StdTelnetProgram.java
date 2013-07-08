@@ -48,7 +48,7 @@ public class StdTelnetProgram extends StdProgram
 	{
 		super();
 		setName("a telnet disk");
-		setDisplayText("a small computer disk with sits here.");
+		setDisplayText("a small computer disk sits here.");
 		setDescription("It appears to be a telnet computer program.");
 
 		material=RawMaterial.RESOURCE_STEEL;
@@ -113,59 +113,58 @@ public class StdTelnetProgram extends StdProgram
 		}
 	}
 	
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean checkActivate(MOB mob, String message)
 	{
-		if(msg.amITarget(this))
+		List<String> parsed=CMParms.parse(message);
+		if(parsed.size()!=3)
 		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_ACTIVATE:
-			{
-				List<String> parsed=CMParms.parse(msg.targetMessage());
-				if(parsed.size()!=3)
-				{
-					msg.source().tell("Incorrect usage, try: TELNET [HOST] [PORT]");
-					return false;
-				}
-				try
-				{
-					shutdown();
-					synchronized(this)
-					{
-						sock=new Socket(parsed.get(1),CMath.s_int(parsed.get(2)));
-						sock.setSoTimeout(1);
-						reader=new BufferedInputStream(sock.getInputStream());
-						writer=new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-					}
-					currentScreen="Connected to "+parsed.get(1)+" at port "+parsed.get(2);
-					fillWithData();
-					return true;
-				}
-				catch(Exception e)
-				{
-					msg.source().tell("Telnet software failure: "+e.getMessage());
-					return false;
-				}
-			}
-			case CMMsg.TYP_DEACTIVATE:
-				shutdown();
-				return true;
-			case CMMsg.TYP_WRITE:
-				synchronized(this)
-				{
-					if(sock!=null)
-						return true;
-				}
-				msg.source().tell("Software failure.");
-				super.forceUpMenu();
-				super.forceNewMenuRead();
-				return false;
-			case CMMsg.TYP_POWERCURRENT:
-				nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
-				return true;
-			}
+			mob.tell("Incorrect usage, try: TELNET [HOST] [PORT]");
+			return false;
 		}
-		return super.okMessage(host,msg);
+		try
+		{
+			shutdown();
+			synchronized(this)
+			{
+				sock=new Socket(parsed.get(1),CMath.s_int(parsed.get(2)));
+				sock.setSoTimeout(1);
+				reader=new BufferedInputStream(sock.getInputStream());
+				writer=new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+			}
+			currentScreen="Connected to "+parsed.get(1)+" at port "+parsed.get(2);
+			fillWithData();
+			return true;
+		}
+		catch(Exception e)
+		{
+			mob.tell("Telnet software failure: "+e.getMessage());
+			return false;
+		}
+	}
+	
+	public boolean checkDeactivate(MOB mob, String message)
+	{
+		shutdown();
+		return true;
+	}
+	
+	public boolean checkTyping(MOB mob, String message)
+	{
+		synchronized(this)
+		{
+			if(sock!=null)
+				return true;
+		}
+		mob.tell("Software failure.");
+		super.forceUpMenu();
+		super.forceNewMenuRead();
+		return true;
+	}
+	
+	public boolean checkPowerCurrent(int value)
+	{
+		nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
+		return true;
 	}
 	
 	public void fillWithData()
@@ -205,55 +204,42 @@ public class StdTelnetProgram extends StdProgram
 		}
 	}
 	
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void onTyping(MOB mob, String message)
 	{
-		if(msg.amITarget(this))
+		synchronized(this)
 		{
-			switch(msg.targetMinor())
+			if(writer!=null)
 			{
-			case CMMsg.TYP_ACTIVATE:
-				break;
-			case CMMsg.TYP_DEACTIVATE:
-				break;
-			case CMMsg.TYP_WRITE:
-			{
-				synchronized(this)
+				try 
 				{
-					if(writer!=null)
-					{
-						try 
-						{
-							writer.write(msg.targetMessage()+"\n\r");
-							writer.flush();
-						} 
-						catch (IOException e)
-						{
-							super.addScreenMessage("*** Telnet disconnected: "+e.getMessage()+" ***");
-							super.forceNewMessageScan();
-							shutdown();
-							super.forceUpMenu();
-							super.forceNewMenuRead();
-						}
-					}
-				}
-				break;
-			}
-			case CMMsg.TYP_POWERCURRENT:
-				if(msg.value()>0)
-					fillWithData();
-				if((container() instanceof Electronics.Computer)
-				&&(((Electronics.Computer)container()).getCurrentReaders().size()==0))
+					writer.write(message+"\n\r");
+					writer.flush();
+				} 
+				catch (IOException e)
 				{
-					this.shutdown();
+					super.addScreenMessage("*** Telnet disconnected: "+e.getMessage()+" ***");
+					super.forceNewMessageScan();
+					shutdown();
+					super.forceUpMenu();
+					super.forceNewMenuRead();
 				}
-				else
-				if(System.currentTimeMillis()>nextPowerCycleTmr)
-				{
-					this.shutdown();
-				}
-				break;
 			}
 		}
-		super.executeMsg(host, msg);
+	}
+	
+	public void onPowerCurrent(int value)
+	{
+		if(value>0)
+			fillWithData();
+		if((container() instanceof Electronics.Computer)
+		&&(((Electronics.Computer)container()).getCurrentReaders().size()==0))
+		{
+			this.shutdown();
+		}
+		else
+		if(System.currentTimeMillis()>nextPowerCycleTmr)
+		{
+			this.shutdown();
+		}
 	}
 }

@@ -15,6 +15,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.*;
 
 /* 
@@ -64,6 +69,11 @@ public class StdProgram extends StdItem implements Software
 		return currentScreen;
 	}
 
+	public void setCurrentScreenDisplay(String msg)
+	{
+		this.currentScreen=msg;
+	}
+	
 	public String getScreenMessage() 
 	{
 		synchronized(nextMsg)
@@ -98,5 +108,87 @@ public class StdProgram extends StdItem implements Software
 	{
 		if(container() instanceof Electronics.Computer)
 			((Electronics.Computer)container()).forceReadersMenu();
+	}
+	
+	public boolean checkActivate(MOB mob, String message)
+	{
+		return true;
+	}
+	
+	public boolean checkDeactivate(MOB mob, String message)
+	{
+		return true;
+	}
+	
+	public boolean checkTyping(MOB mob, String message)
+	{
+		return true;
+	}
+	
+	public boolean checkPowerCurrent(int value)
+	{
+		return true;
+	}
+	
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_ACTIVATE:
+				return checkActivate(msg.source(),msg.targetMessage());
+			case CMMsg.TYP_DEACTIVATE:
+				return checkDeactivate(msg.source(),msg.targetMessage());
+			case CMMsg.TYP_WRITE:
+				return checkTyping(msg.source(),msg.targetMessage());
+			case CMMsg.TYP_POWERCURRENT:
+				return checkPowerCurrent(msg.value());
+			}
+		}
+		return super.okMessage(host,msg);
+	}
+
+	public void onActivate(MOB mob, String message)
+	{
+		
+	}
+	
+	public void onDeactivate(MOB mob, String message)
+	{
+		
+	}
+	
+	public void onTyping(MOB mob, String message)
+	{
+		
+	}
+	
+	public void onPowerCurrent(int value)
+	{
+		
+	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_ACTIVATE:
+				onActivate(msg.source(),msg.targetMessage());
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				onDeactivate(msg.source(),msg.targetMessage());
+				break;
+			case CMMsg.TYP_WRITE:
+				onTyping(msg.source(),msg.targetMessage());
+				break;
+			case CMMsg.TYP_POWERCURRENT:
+				onPowerCurrent(msg.value());
+				break;
+			}
+		}
+		super.executeMsg(host, msg);
 	}
 }
