@@ -73,6 +73,39 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	{
 		add(new Pair<T,K>(t,k));
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override public boolean contains(Object o)
+	{
+		if(o instanceof Pair)
+			return super.contains(o);
+		if(containsFirst((T)o))
+			return true;
+		return containsSecond((K)o);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override public int indexOf(Object o)
+	{
+		if(o instanceof Pair)
+			return super.indexOf(o);
+		int x=indexOfFirst((T)o);
+		if(x>=0)
+			return x;
+		return indexOfSecond((K)o);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override public int indexOf(Object o, int index)
+	{
+		if(o instanceof Pair)
+			return super.indexOf(o, index);
+		int x=indexOfFirst((T)o, index);
+		if(x>=0)
+			return x;
+		return indexOfSecond((K)o, index);
+	}
+	
 	public boolean containsFirst(T t)
 	{
 		for(Iterator<Pair<T,K>> i=iterator();i.hasNext();)

@@ -931,7 +931,7 @@ public class StdMOB implements MOB
 		if(playerStats!=null)
 			CMLib.players().changePlayersLocation(this,null);
 		setFollowing(null);
-		final DVector oldFollowers = new DVector(2);
+		final PairVector<MOB,Integer> oldFollowers = new PairVector<MOB,Integer>();
 		while (numFollowers() > 0)
 		{
 			MOB follower = fetchFollower(0);
@@ -948,14 +948,14 @@ public class StdMOB implements MOB
 		{
 			for (int f = 0; f < oldFollowers.size(); f++)
 			{
-				MOB follower = (MOB) oldFollowers.elementAt(f, 1);
+				MOB follower = oldFollowers.getFirst(f);
 				if (follower.location() != null)
 				{
 					MOB newFol = (MOB) follower.copyOf();
 					newFol.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 					newFol.text();
 					follower.killMeDead(false);
-					addFollower(newFol, ((Integer) oldFollowers.elementAt(f, 2)).intValue());
+					addFollower(newFol, oldFollowers.getSecond(f).intValue());
 				}
 			}
 			if (killSession && (session() != null))
