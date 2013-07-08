@@ -48,7 +48,9 @@ public class DefaultSession implements Session
 	protected static final int	   SOTIMEOUT		= 300;
 	protected static final int	   PINGTIMEOUT  	= 30000;
 	protected static final int	   MSDPPINGINTERVAL	= 1000;
-	protected static final char[]  PINGCHARS		= {'\0'};
+	protected static final byte[]  TELNETGABYTES	= {(byte)TELNET_IAC,(byte)TELNET_GA};
+	protected static final char[]  TELNETGA			= {TELNET_IAC,TELNET_GA};
+	protected static final char[]  PINGCHARS		= TELNETGA;
 	private final HashSet		   telnetSupportSet = new HashSet();
 	private static final HashSet   mxpSupportSet	= new HashSet();
 	private static final Hashtable mxpVersionInfo   = new Hashtable();
@@ -856,7 +858,13 @@ public class DefaultSession implements Session
 	public void prompt(InputCallback callBack)
 	{
 		if(callBack!=null)
+		{
 			callBack.showPrompt();
+			try {	
+				if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) 
+					rawBytesOut(rawout, TELNETGABYTES); 
+			} catch (IOException e) { }
+		}
 		this.inputCallback=callBack;
 		this.status=this.status|STATUSMASK_WAITING_FOR_INPUT;
 	}
@@ -865,6 +873,8 @@ public class DefaultSession implements Session
 			throws IOException
 	{
 		print(Message);
+		if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD))
+			rawBytesOut(rawout, TELNETGABYTES);
 		String input=blockingIn(maxTime);
 		if(input==null) return "";
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
@@ -876,6 +886,8 @@ public class DefaultSession implements Session
 		throws IOException
 	{
 		print(Message);
+		if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD))
+			rawBytesOut(rawout, TELNETGABYTES);
 		String input=blockingIn(-1);
 		if(input==null) return "";
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
@@ -1491,6 +1503,8 @@ public class DefaultSession implements Session
 		while((YN.equals(""))||(Choices.indexOf(YN)<0)&&(!killFlag))
 		{
 			print(Message);
+			if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD))
+				rawBytesOut(rawout, TELNETGABYTES);
 			YN=blockingIn(maxTime);
 			if(YN==null){ return Default.toUpperCase(); }
 			YN=YN.trim();
@@ -1561,6 +1575,10 @@ public class DefaultSession implements Session
 					  +"'^>^\n\r\n\r");
 		buf.append(CMLib.utensils().builtPrompt(mob));
 		print("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
+		try {	
+			if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) 
+				rawBytesOut(rawout, TELNETGABYTES); 
+		} catch (IOException e) { }
 	}
 
 	protected void closeSocks(String finalMsg)

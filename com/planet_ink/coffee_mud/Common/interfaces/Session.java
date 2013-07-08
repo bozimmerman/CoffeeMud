@@ -874,6 +874,10 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_ANSI=253;
 	/** TELNET CODE: Indicates the demand that the other party stop performing, or confirmation that you are no longer expecting the other party to perform, the indicated option.*/
 	public static final int TELNET_DONT=254;
+	/** TELNET CODE: Indicates that the other party can go ahead and transmit -- I'm done.*/
+	public static final int TELNET_GA=249;
+	/** TELNET CODE: Indicates that there is nothing to do?*/
+	public static final int TELNET_NOP=241;
 	/** TELNET CODE: IAC*/
 	public static final int TELNET_IAC=255;
 	/** Array String-friendly descriptions of the various telnet codes.  Indexed by code id 0-255*/
@@ -903,7 +907,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"","","","","","","","","","", //210-219
 		"","","","","","","","","","", //220-229
 		"","","","","","","","","","", //230-239
-		"SE","","","","","","AYT","EC","","", //240-249
+		"SE","NOOP","","","","","AYT","EC","","GA", //240-249
 		"SB","","","ANSI","","" 			 //250-255
 	};
 	
