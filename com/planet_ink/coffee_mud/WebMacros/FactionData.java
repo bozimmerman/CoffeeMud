@@ -99,6 +99,12 @@ public class FactionData extends StdWebMacro
 					if(old==null) old=F.showInFactionsCommand()?"on":"";
 					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
 				}
+				if(parms.containsKey("ISPRELOAD"))
+				{
+					String old=httpReq.getUrlParameter("PRELOAD"+F.factionID());
+					if(old==null) old=(F.isSavable() && F.isPreLoaded())?"on":"";
+					str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+				}
 				if(parms.containsKey("SHOWINEDITOR"))
 				{
 					String old=httpReq.getUrlParameter("SHOWINEDITOR");
@@ -710,7 +716,7 @@ public class FactionData extends StdWebMacro
 							str.append("<OPTION VALUE=\"\">Delete This Row");
 							int x=rangeCodes.indexOfFirst(val);
 							String name="Unknown!";
-							if(x>=0) name=(String)rangeCodes.getSecond(x);
+							if(x>=0) name=rangeCodes.getSecond(x);
 							str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
 							str.append("</SELECT>");
 							str.append("</TD><TD VALIGN=TOP>");
@@ -754,7 +760,7 @@ public class FactionData extends StdWebMacro
 					str.append("<SELECT NAME=REACTIONRANGE"+showNum+" ONCHANGE=\"AddItem(this);\">");
 					str.append("<OPTION VALUE=\"\" SELECTED>Select an range");
 					for(int i=0;i<rangeCodes.size();i++)
-						str.append("<OPTION VALUE=\""+((String)rangeCodes.getFirst(i)+"\">"+((String)rangeCodes.getSecond(i))));
+						str.append("<OPTION VALUE=\""+(rangeCodes.getFirst(i)+"\">"+rangeCodes.getSecond(i)));
 					str.append("</SELECT>");
 					str.append("</TD><TD VALIGN=TOP>");
 					str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=20 VALUE=\"\">");

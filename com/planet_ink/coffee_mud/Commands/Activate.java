@@ -63,15 +63,19 @@ public class Activate extends StdCommand
 						break;
 				}
 			}
-		Item item=null;
+		Item item=(P instanceof Electronics)?(Item)P:null;;
 		commands.removeElementAt(commands.size()-1);
-		if((item==null)&&(P instanceof Electronics))
-			item=(Item)P;
-		if((P==null)||(!CMLib.flags().canBeSeenBy(P,mob)))
+		if(P==null)
+		{
 			mob.tell("You don't see anything called "+what+" here that you can activate.");
+			return false;
+		}
 		else
 		if(item==null)
+		{
 			mob.tell("You can't activate "+P.name()+"'.");
+			return false;
+		}
 
 		String rest=CMParms.combine(commands,0);
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,rest,CMMsg.MSG_ACTIVATE,null);

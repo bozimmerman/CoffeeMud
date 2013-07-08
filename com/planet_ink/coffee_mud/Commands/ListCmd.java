@@ -548,7 +548,7 @@ public class ListCmd extends StdCommand
 			a=new XVector<Area>(mob.location().getArea()).elements();
 		for(;a.hasMoreElements();)
 		{
-			Area A=(Area)a.nextElement();
+			Area A=a.nextElement();
 			buf.append(A.name()+"\t"+A.numberOfProperIDedRooms()+" rooms\t");
 			if(!A.getProperMap().hasMoreElements())
 			{

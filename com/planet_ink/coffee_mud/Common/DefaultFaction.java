@@ -128,6 +128,11 @@ public class DefaultFaction implements Faction, MsgListener
 	public void setAutoDefaults(List<String> v){autoDefaults=new SVector<String>(v);}
 	public void setDefaults(List<String> v){defaults=new SVector<String>(v);}
 	public void setRateModifier(double d){rateModifier=d;}
+
+	public boolean isPreLoaded()
+	{
+		return CMParms.parseSemicolons(CMProps.getVar(CMProps.Str.PREFACTIONS).toUpperCase(),true).contains(factionID().toUpperCase());
+	}
 	
 	public Faction.FAbilityUsage getAbilityUsage(int x)
 	{

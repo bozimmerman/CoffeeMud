@@ -125,6 +125,14 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public int asPercent(int faction);
 
 	/**
+	 * Returns true if this faction is presently specified in the coffeemud ini
+	 * file entry "FACTIONS", thereby designating that this faction is loaded at
+	 * boot-time, as opposed to run-time.
+	 * @return true if its pre-loaded, false otherwise.
+	 */
+	public boolean isPreLoaded();
+	
+	/**
 	 * Returns the given value faction value, as a percent from average of the
 	 * range values of this faction.
 	 * @param faction the faction value to convert to a percent

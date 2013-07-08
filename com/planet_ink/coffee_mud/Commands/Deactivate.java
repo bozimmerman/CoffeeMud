@@ -63,15 +63,18 @@ public class Deactivate extends StdCommand
 						break;
 				}
 			}
-		Item item=null;
+		Item item=(E instanceof Electronics)?(Item)E:null;
 		commands.removeElementAt(commands.size()-1);
-		if((item==null)&&(E instanceof Electronics))
-			item=(Item)E;
-		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
+		if(E==null)
+		{
 			mob.tell("You don't see anything called '"+what+"' here that you can deactivate.");
+			return false;
+		}
 		else
 		if(item==null)
+		{
 			mob.tell("You can't deactivate '"+E.name()+"'.");
+		}
 		
 		String rest=CMParms.combine(commands,0);
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,rest,CMMsg.MSG_DEACTIVATE,null);

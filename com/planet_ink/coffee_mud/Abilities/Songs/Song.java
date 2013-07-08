@@ -67,6 +67,13 @@ public class Song extends StdAbility
 		return level;
 	}
 
+	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	{
+		if(this.invoker()==affectedEnv)
+			affectableStats.addAmbiance("singing of "+songOf().toLowerCase());
+		super.affectPhyStats(affectedEnv, affectableStats);
+	}
+	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);

@@ -59,6 +59,14 @@ public class Dance extends StdAbility
 
 	protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
 	
+	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	{
+		if(this.invoker()==affectedEnv)
+			affectableStats.addAmbiance("performing the "+danceOf().toLowerCase());
+		super.affectPhyStats(affectedEnv, affectableStats);
+	}
+	
+	
 	public int adjustedLevel(MOB mob, int asLevel)
 	{
 		int level=super.adjustedLevel(mob,asLevel);

@@ -171,6 +171,13 @@ public class Play extends StdAbility
 		return super.castingQuality(mob,target);
 	}
 
+	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	{
+		if((this.invoker()==affectedEnv)&&(instrument!=null))
+			affectableStats.addAmbiance("playing "+songOf().toLowerCase()+" on "+instrument.name());
+		super.affectPhyStats(affectedEnv, affectableStats);
+	}
+	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);

@@ -43,6 +43,13 @@
             document.RESOURCES.action='factions.cmvp';
             document.RESOURCES.submit();
         }
+        function ChangePreload(which)
+        {
+            document.RESOURCES.action='factions.cmvp';
+            document.RESOURCES.COMMAND.value='TOGGLEPRELOAD';
+            document.RESOURCES.FACTION.value=which;
+            document.RESOURCES.submit();
+        }
     //-->
     </script>
 </head>
@@ -62,14 +69,20 @@
     </TABLE>
 <CENTER>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="factions.cmvp">
-<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+    <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+    <INPUT TYPE=HIDDEN NAME=COMMAND VALUE="">
+    <INPUT TYPE=HIDDEN NAME=FACTION VALUE="">
+    @if?CheckReqParm?COMMAND=TOGGLEPRELOAD@
+        @INIModify?UPDATEFACTIONPRELOAD&FACTION=@@RequestParameter?FACTION@@ @
+    @endif@
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Faction Manager</H2></FONT></TD></TR>
     <TR>
     <TD WIDTH=30%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
     <TD WIDTH=30%><B><FONT COLOR=YELLOW>Name(s)</FONT></b></TD>
     <TD WIDTH=10%><B><FONT COLOR=YELLOW>Min Value</FONT></b></TD>
-    <TD WIDTH=30%><B><FONT COLOR=YELLOW>Max Value</FONT></b></TD>
+    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Max Value</FONT></b></TD>
+    <TD WIDTH=20%><B><FONT COLOR=YELLOW>PreLoad</FONT></b></TD>
     </TR>
     @FactionNext?RESET@
     @loop@
@@ -79,10 +92,11 @@
         <TD><FONT COLOR=WHITE><B>@FactionName@</B></FONT></a></TD>
         <TD><FONT COLOR=WHITE><B>@FactionData?MINRANGE@</B></FONT></a></TD>
         <TD><FONT COLOR=WHITE><B>@FactionData?MAXRANGE@</B></FONT></a></TD>
+        <TD><INPUT TYPE=CHECKBOX NAME="PRELOAD_@FactionID@" @FactionData?ISPRELOAD@ ONCLICK="ChangePreload('@FactionID@');"></TD>
         </TR>
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWFACTION.value!='')NewFaction(document.RESOURCES.NEWFACTION.value,'&NEWFACTION='+document.RESOURCES.NEWFACTION.value)"><FONT COLOR=WHITE><B>Load/Create New Faction ini file:</a> <INPUT TYPE=TEXT NAME=NEWFACTION SIZE=70></B></FONT></TD>
+    <TD COLSPAN=5><a href="javascript:if(document.RESOURCES.NEWFACTION.value!='')NewFaction(document.RESOURCES.NEWFACTION.value,'&NEWFACTION='+document.RESOURCES.NEWFACTION.value)"><FONT COLOR=WHITE><B>Load/Create New Faction ini file:</a> <INPUT TYPE=TEXT NAME=NEWFACTION SIZE=70></B></FONT></TD>
     </TR>
     </TABLE>
     <P>

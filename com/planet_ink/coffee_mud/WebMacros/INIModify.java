@@ -124,6 +124,60 @@ public class INIModify extends StdWebMacro
 			return "";
 		}
 		else
+		if(parms.containsKey("UPDATEFACTIONPRELOAD"))
+		{
+			String factionID=parms.get("FACTION");
+			if((factionID!=null)&&(factionID.length()>0))
+			{
+				CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.Str.INIPATH));
+				if((ipage==null)||(!ipage.isLoaded())) return "";
+				for(int p=0;p<page.size();p++)
+				{
+					String s=page.get(p).trim();
+					if(s.startsWith("!")||s.startsWith("#")) continue;
+					int x=s.indexOf('=');
+					if(x<0) x=s.indexOf(':');
+					if(x<0) continue;
+					String thisKey=s.substring(0,x).trim().toUpperCase();
+					if(thisKey.equals("FACTIONS"))
+					{
+						StringBuilder newVal=new StringBuilder("");
+						final String oldVal=CMProps.getVar(CMProps.Str.PREFACTIONS);
+						List<String> oldList=CMParms.parseSemicolons(oldVal,true);
+						boolean done=false;
+						for(String facID : oldList)
+						{
+							if(facID.equalsIgnoreCase(factionID))
+							{
+								done=true;
+							}
+							else
+							{
+								if(newVal.length()>0)
+									newVal.append("; ");
+								newVal.append(facID);
+							}
+						}
+						if(!done)
+						{
+							if(newVal.length()>0)
+								newVal.append("; ");
+							newVal.append(factionID);
+						}
+						if(!oldVal.equals(newVal.toString()))
+						{
+							Log.sysOut("INIModify","Key '"+thisKey+"' modified.");
+							page.set(p,thisKey+"="+newVal.toString());
+							CMProps.setVar(CMProps.Str.PREFACTIONS, newVal.toString());
+							updateINIFile(page);
+						}
+						break;
+					}
+				}
+			}
+			return "";
+		}
+		else
 		if(parms.containsKey("UPDATE"))
 		{
 			Set<String> modified=new HashSet<String>();

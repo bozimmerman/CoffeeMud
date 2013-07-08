@@ -44,7 +44,6 @@ public interface Contingent extends CMObject
 	 * @return whether the object is destroy()ed.
 	 */
 	public boolean amDestroyed();
-
 	/**
 	 * Sets whether this behavior can be saved as a permanent aspect of
 	 * its host.
