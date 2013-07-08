@@ -35,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdTelnetProgram extends StdProgram
+public class StdTelnetProgram extends StdProgram implements ArchonOnly
 {
 	public String ID(){	return "StdTelnetProgram";}
 	

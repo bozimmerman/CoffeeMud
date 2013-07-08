@@ -1,4 +1,5 @@
 //extends com.planet_ink.coffee_mud.Items.Software.StdProgram
+//implements com.planet_ink.coffee_mud.Items.interfaces.ArchonOnly
 
 function ID(){	return "StdDiagProgram";}
 
@@ -36,8 +37,8 @@ function getActivationMenu()
 
 function onActivate(mob, message)
 {
-	this.addScreenMessage("Diagnostics Computer Terminal Activated.");
-	this.setCurrentScreenDisplay("Diagnostics Computer Terminal Activated");
+	this.addScreenMessage("Diagnostics Computer Terminal Activated");
+	this.setCurrentScreenDisplay("Diagnostics Computer Terminal Activated\n\rEnter a JavaScript command to use.");
 }
 
 function onTyping(mob, message)
