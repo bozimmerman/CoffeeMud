@@ -50,9 +50,9 @@ public class DefaultSession implements Session
 	protected static final int		MSDPPINGINTERVAL= 1000;
 	protected static final byte[]	TELNETGABYTES	= {(byte)TELNET_IAC,(byte)TELNET_GA};
 	protected static final char[]	PINGCHARS		= {TELNET_IAC,TELNET_NOP};
-	private final Set				telnetSupportSet= new HashSet();
-	private final Set<String>		mxpSupportSet	= new HashSet();
-	private final Map<String,String>mxpVersionInfo  = new Hashtable();
+	private final Set<Integer>		telnetSupportSet= new HashSet<Integer>();
+	private final Set<String>		mxpSupportSet	= new HashSet<String>();
+	private final Map<String,String>mxpVersionInfo  = new Hashtable<String,String>();
 	private static final String		TIMEOUT_MSG		= "Timed Out.";
 	
 	
@@ -318,6 +318,7 @@ public class DefaultSession implements Session
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_LOGOUT));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_TERMTYPE));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_NAWS));
+			telnetSupportSet.add(Integer.valueOf(Session.TELNET_SUPRESS_GO_AHEAD));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_COMPRESS2));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_LINEMODE));
 		}
@@ -877,13 +878,7 @@ public class DefaultSession implements Session
 	public void prompt(InputCallback callBack)
 	{
 		if(callBack!=null)
-		{
 			callBack.showPrompt();
-			try {	
-				if(!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) 
-					rawBytesOut(rawout, TELNETGABYTES); 
-			} catch (IOException e) { }
-		}
 		this.inputCallback=callBack;
 		this.status=this.status|STATUSMASK_WAITING_FOR_INPUT;
 	}
@@ -973,6 +968,16 @@ public class DefaultSession implements Session
 					else
 					if(terminalType.equalsIgnoreCase("ANSI"))
 						changeTelnetMode(rawout,TELNET_ECHO,true);
+					else
+					if(terminalType.startsWith("WINTIN.NET")) 
+					{
+						rawOut("\n\r\n\r**** Your MUD Client is Broken! Please use another!!****\n\r\n\r");
+						rawout.flush();
+						if(mightSupportTelnetMode(TELNET_COMPRESS2))
+							telnetSupportSet.remove(Integer.valueOf(TELNET_COMPRESS2));
+						changeTelnetMode(rawout,TELNET_COMPRESS2,false);
+						rawout.close();
+					}
 					else
 					if(terminalType.toLowerCase().startsWith("mushclient")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 						negotiateTelnetMode(rawout,TELNET_MXP);
@@ -1157,9 +1162,9 @@ public class DefaultSession implements Session
 		{
 			int last=readByte();
 			setClientTelnetMode(last,true);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got DO "+Session.TELNET_DESCS[last]);
 			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
 				setClientTelnetMode(Session.TELNET_ECHO,false);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got DO "+Session.TELNET_DESCS[last]);
 			if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
 			{
 				setClientTelnetMode(last,true);
