@@ -66,6 +66,7 @@ public class FakeSession implements Session
 	public void logout(boolean b1){}
 	public String getTerminalType(){ return "Fake";}
 	public void negotiateTelnetMode(int code){}
+	public boolean allowMxp(String tag) { return false; }
 	public boolean isFake() { return true;}
 	
 	public String[] clookup(){return new String[255];}

@@ -63,7 +63,7 @@ public class Activate extends StdCommand
 						break;
 				}
 			}
-		Item item=(P instanceof Electronics)?(Item)P:null;;
+		Item item=(P instanceof Electronics)?(Item)P:null;
 		commands.removeElementAt(commands.size()-1);
 		if(P==null)
 		{

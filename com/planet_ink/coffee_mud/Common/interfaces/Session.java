@@ -838,6 +838,13 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public void initTelnetMode(int mobbitmap);
 	
+	/**
+	 * Returns true if the given max tag will be accepted by the client.
+	 * @param tag the tag to check
+	 * @return true if allowed, false otherwise
+	 */
+	public boolean allowMxp(String tag);
+	
 	/** TELNET CODE: transmit binary */
 	public static final int TELNET_BINARY=0;
 	/** TELNET CODE: echo */

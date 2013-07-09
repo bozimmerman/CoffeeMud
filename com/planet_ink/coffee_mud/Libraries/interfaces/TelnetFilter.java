@@ -59,14 +59,9 @@ public interface TelnetFilter extends CMLibrary
 	public String colorOnlyFilter(String msg, Session S);
 	public String[] wrapOnlyFilter(String msg, int wrap);
 	public String getLastWord(StringBuffer buf, int lastSp, int lastSpace);
-	public String fullOutFilter(Session S,
-								MOB mob,
-								Physical source,
-								Environmental target,
-								Environmental tool,
-								String msg,
-								boolean wrapOnly);
-	public StringBuffer simpleInFilter(StringBuffer input, boolean allowMXP);
-	public String fullInFilter(String input, boolean allowMXP);
+	public String fullOutFilter(Session S, MOB mob, Physical source, Environmental target, Environmental tool, String msg, boolean wrapOnly);
+	public String simpleInFilter(StringBuilder input, boolean permitMXPTags);
+	public String simpleInFilter(StringBuilder input);
+	public String fullInFilter(String input);
 	public String safetyFilter(String s);
 }

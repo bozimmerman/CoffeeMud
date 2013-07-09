@@ -758,7 +758,7 @@ public class CMStrings
 		return size;
 	}
 	
-	public static void convertHtmlToText(final StringBuffer finalData)
+	public static void convertHtmlToText(final StringBuilder finalData)
 	{
 		final class TagStacker 
 		{
@@ -987,7 +987,7 @@ public class CMStrings
 		}
 	}
 	
-	public static void stripHeadHtmlTags(final StringBuffer finalData)
+	public static void stripHeadHtmlTags(final StringBuilder finalData)
 	{
 		int start=-1;
 		int state=0;

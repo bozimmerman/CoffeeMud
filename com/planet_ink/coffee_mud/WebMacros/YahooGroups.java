@@ -89,7 +89,7 @@ public class YahooGroups extends StdWebMacro
 			byte[] b=H.getRawUrl(url,token.replace('#','&'));
 			if(b==null)
 				return "Failed: Bad login token?";
-			StringBuffer s=new StringBuffer(new String(b));
+			StringBuilder s=new StringBuilder(new String(b));
 			CMStrings.convertHtmlToText(s);
 			String txt=s.toString();
 			int x=txt.indexOf(" of ");

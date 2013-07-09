@@ -602,9 +602,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					if((msgs!=null)&&(msgs.length>0))
 					{
 						if(msgs[0].length()>0)
-							subscribeTitle = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[0],"<NAME>",journalName),false);
+							subscribeTitle = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[0],"<NAME>",journalName));
 						if((msgs.length>0) && (msgs[1].length()>0))
-							subscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[1],"<NAME>",journalName),false);
+							subscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[1],"<NAME>",journalName));
 					}
 					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.Str.MAILBOX),journalName,journalName,userName,subscribeTitle,subscribedMsg);
 				}
@@ -639,9 +639,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					if((msgs!=null)&&(msgs.length>2))
 					{
 						if(msgs[2].length()>0)
-							unsubscribeTitle = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[2],"<NAME>",journalName),false);
+							unsubscribeTitle = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[2],"<NAME>",journalName));
 						if((msgs.length>3) && (msgs[1].length()>0))
-							unsubscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[3],"<NAME>",journalName),false);
+							unsubscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[3],"<NAME>",journalName));
 					}
 					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.Str.MAILBOX),journalName,journalName,userName,unsubscribeTitle,unsubscribedMsg);
 				}

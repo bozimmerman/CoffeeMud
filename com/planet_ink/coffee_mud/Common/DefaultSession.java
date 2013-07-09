@@ -45,15 +45,15 @@ import java.nio.charset.Charset;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultSession implements Session
 {
-	protected static final int	   SOTIMEOUT		= 300;
-	protected static final int	   PINGTIMEOUT  	= 30000;
-	protected static final int	   MSDPPINGINTERVAL	= 1000;
-	protected static final byte[]  TELNETGABYTES	= {(byte)TELNET_IAC,(byte)TELNET_GA};
-	protected static final char[]  PINGCHARS		= {TELNET_IAC,TELNET_NOP};
-	private final HashSet		   telnetSupportSet = new HashSet();
-	private static final HashSet   mxpSupportSet	= new HashSet();
-	private static final Hashtable mxpVersionInfo   = new Hashtable();
-	private static final String	   TIMEOUT_MSG		= "Timed Out.";
+	protected static final int		SOTIMEOUT		= 300;
+	protected static final int		PINGTIMEOUT  	= 30000;
+	protected static final int		MSDPPINGINTERVAL= 1000;
+	protected static final byte[]	TELNETGABYTES	= {(byte)TELNET_IAC,(byte)TELNET_GA};
+	protected static final char[]	PINGCHARS		= {TELNET_IAC,TELNET_NOP};
+	private final Set				telnetSupportSet= new HashSet();
+	private final Set<String>		mxpSupportSet	= new HashSet();
+	private final Map<String,String>mxpVersionInfo  = new Hashtable();
+	private static final String		TIMEOUT_MSG		= "Timed Out.";
 	
 	
 	private volatile Thread  runThread 			 = null;
@@ -227,6 +227,10 @@ public class DefaultSession implements Session
 				out.flush();
 				rawout.flush();
 				preliminaryRead(1000);
+				rawOut("\n\033[6z\n\033[6z<SUPPORT>\n");
+				if(out==null) return;
+				out.flush();
+				rawout.flush();
 			}
 			preliminaryRead(500);
 			if(introTextStr!=null)
@@ -336,6 +340,15 @@ public class DefaultSession implements Session
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
 		setServerTelnetMode(telnetCode,onOff);
 	}
+	
+	public boolean allowMxp(final String tagString)
+	{
+		if((!clientTelnetMode(TELNET_MXP))||(mxpSupportSet.size()==0))
+			return false;
+		// someday this may get more complicated -- someday
+		return true;
+	}
+	
 	// this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
 	public void changeTelnetMode(int telnetCode, boolean onOff)
 	{
@@ -1038,16 +1051,16 @@ public class DefaultSession implements Session
 			String tag=l.substring(tagStart+1,tagEnd).trim();
 			l=l.substring(tagEnd+1).trim();
 			// now we have a tag, and its parameters (space delimited)
-			Vector parts=CMParms.parseSpaces(tag,true);
+			List<String> parts=CMParms.parseSpaces(tag,true);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got secure MXP tag: "+tag);
 			if(parts.size()>1)
 			{
-				tag=(String)parts.firstElement();
+				tag=parts.get(0);
 				if(tag.equals("VERSION"))
 				{
 					for(int p=1;p<parts.size();p++)
 					{
-						String pp=(String)parts.elementAt(p);
+						String pp=parts.get(p);
 						int x=pp.indexOf('=');
 						if(x<0) continue;
 						mxpVersionInfo.remove(pp.substring(0,x).trim());
@@ -1056,17 +1069,31 @@ public class DefaultSession implements Session
 				}
 				else
 				if(tag.equals("SUPPORTS"))
+				{
 					for(int p=1;p<parts.size();p++)
-						mxpSupportSet.add(parts.elementAt(p));
+					{
+						String s=parts.get(p).toUpperCase();
+						final int x=s.indexOf('.');
+						if(s.startsWith("+"))
+						{
+							mxpSupportSet.add(s);
+							if(x>0)
+								mxpSupportSet.add(s.substring(0, x));
+						}
+						else
+						if(s.startsWith("-"))
+							mxpSupportSet.remove(s);
+					}
+				}
 				else
 				if(tag.equals("SHUTDOWN"))
 				{
-					MOB M=CMLib.players().getLoadPlayer((String)parts.elementAt(1));
+					MOB M=CMLib.players().getLoadPlayer(parts.get(1));
 					if((M!=null)
-					&&(M.playerStats().matchesPassword((String)parts.elementAt(2)))
+					&&(M.playerStats().matchesPassword(parts.get(2)))
 					&&(CMSecurity.isASysOp(M)))
 					{
-						boolean keepDown=parts.size()>3?CMath.s_bool((String)parts.elementAt(3)):true;
+						boolean keepDown=parts.size()>3?CMath.s_bool(parts.get(3)):true;
 						String externalCmd=(parts.size()>4)?CMParms.combine(parts,4):null;
 						Vector cmd=new XVector("SHUTDOWN","NOPROMPT");
 						if(!keepDown)
@@ -1382,7 +1409,7 @@ public class DefaultSession implements Session
 		throws IOException
 	{
 		if((in==null)||(out==null)) return "";
-		input=new StringBuffer("");
+		this.input.setLength(0);
 		final long start=System.currentTimeMillis();
 		final long timeoutTime= (maxTime<=0) ? Long.MAX_VALUE : (start + maxTime);
 		long nextPingAtTime=start + PINGTIMEOUT;
@@ -1411,11 +1438,11 @@ public class DefaultSession implements Session
 			if(System.currentTimeMillis()>=timeoutTime)
 				throw new java.io.InterruptedIOException(TIMEOUT_MSG);
 
-			StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
-			input=new StringBuffer("");
-			if(inStr==null) 
+			StringBuilder inStr=new StringBuilder(input);
+			this.input.setLength(0);
+			String str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
+			if(str==null) 
 				return null;
-			final String str=inStr.toString();
 			snoopSupportPrint(str+"\n\r",true);
 			return str;
 		}
@@ -1457,11 +1484,11 @@ public class DefaultSession implements Session
 				return null;
 		}
 
-		StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
-		input=new StringBuffer("");
-		if(inStr==null) 
+		StringBuilder inStr=new StringBuilder(input);
+		input.setLength(0);
+		String str=CMLib.coffeeFilter().simpleInFilter(inStr,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,CMSecurity.SecFlag.MXPTAGS));
+		if(str==null) 
 			return null;
-		final String str=inStr.toString();
 		snoopSupportPrint(str+"\n\r",true);
 		return str;
 	}

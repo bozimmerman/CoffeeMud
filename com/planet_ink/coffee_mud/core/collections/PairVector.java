@@ -96,7 +96,7 @@ public class PairVector<T,K> extends Vector<Pair<T,K>> implements List<Pair<T,K>
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override public int indexOf(Object o, int index)
+	@Override public synchronized int indexOf(Object o, int index)
 	{
 		if(o instanceof Pair)
 			return super.indexOf(o, index);

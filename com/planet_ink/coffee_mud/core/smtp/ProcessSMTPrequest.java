@@ -129,7 +129,7 @@ public class ProcessSMTPrequest implements Runnable
 		return null;
 	}
 	
-	public void cleanHtml(String journal, StringBuffer finalData)
+	public void cleanHtml(String journal, StringBuilder finalData)
 	{
 		if(journal!= null)
 		{
@@ -258,11 +258,11 @@ public class ProcessSMTPrequest implements Runnable
 							replyData=("250 Message accepted for delivery."+cr).getBytes();
 							msgsSent++;
 							boolean startBuffering=false;
-							StringBuffer finalData=new StringBuffer("");
+							StringBuilder finalData=new StringBuilder("");
 							char bodyType='t'; // h=html, t=text
 							String subject=null;
 							String boundry=null;
-							Map<Character,StringBuffer> dataBlocks=new Hashtable<Character,StringBuffer>();
+							Map<Character,StringBuilder> dataBlocks=new Hashtable<Character,StringBuilder>();
 							
 							// -1=waitForHeaderDone, 
 							// 0=waitForFirstHeaderDone, 
@@ -284,7 +284,7 @@ public class ProcessSMTPrequest implements Runnable
 										if(debug) Log.debugOut(runnableName,"Multipart boundary "+boundry+" completed.");
 										if(finalData.length()>0)
 											dataBlocks.put(Character.valueOf(bodyType), finalData);
-										finalData=new StringBuffer("");
+										finalData=new StringBuilder("");
 										boundryState=-1;
 										startBuffering=false;
 										continue;
@@ -423,7 +423,7 @@ public class ProcessSMTPrequest implements Runnable
 							{
 								if((finalData.length()==0)&&(!startBuffering))
 								{
-									finalData=new StringBuffer(data.toString());
+									finalData=new StringBuilder(data.toString());
 									if(subject==null) subject="";
 								}
 								
@@ -504,25 +504,25 @@ public class ProcessSMTPrequest implements Runnable
 											}
 											   
 											if(debug) Log.debugOut(runnableName,"Written: "+journal+"/"+from+"/ALL/"+bodyType);
-											StringBuffer finalFinalData=new StringBuffer(finalData);
+											StringBuilder finalFinalData=new StringBuilder(finalData);
 											if(bodyType=='h')
 												cleanHtml(journal, finalFinalData);
 											CMLib.database().DBWriteJournalChild(journal, "",from, "ALL", parentKey, 
-													CMLib.coffeeFilter().simpleInFilter(new StringBuffer(subject),false).toString(), 
-													CMLib.coffeeFilter().simpleInFilter(finalData,false).toString());
+													CMLib.coffeeFilter().simpleInFilter(new StringBuilder(subject)).toString(), 
+													CMLib.coffeeFilter().simpleInFilter(finalData).toString());
 										}
 										else
 										if(finalData.toString().trim().length()>0)
 										{
 											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+to.elementAt(i)+"/"+bodyType);
-											StringBuffer finalFinalData=new StringBuffer(finalData);
+											StringBuilder finalFinalData=new StringBuilder(finalData);
 											if(bodyType=='h')
 												cleanHtml(journal, finalFinalData);
 											CMLib.database().DBWriteJournal(server.mailboxName(),
 																			from,
 																			to.elementAt(i),
-																			CMLib.coffeeFilter().simpleInFilter(new StringBuffer(subject),false).toString(),
-																			CMLib.coffeeFilter().simpleInFilter(finalFinalData,false).toString());
+																			CMLib.coffeeFilter().simpleInFilter(new StringBuilder(subject)).toString(),
+																			CMLib.coffeeFilter().simpleInFilter(finalFinalData).toString());
 										}
 									}
 								}

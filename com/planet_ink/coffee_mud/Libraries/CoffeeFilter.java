@@ -465,13 +465,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			return index;
 		case '<':
 		{
-			final boolean noMXP=((S==null)||(!S.clientTelnetMode(Session.TELNET_MXP)));
 			while(enDex<(str.length()-1))
 			{
 				if((str.charAt(enDex)!='^')||(str.charAt(enDex+1)!='>'))
 					enDex++;
 				else
-				if(noMXP)
+				if((S==null)||(!S.allowMxp(str.substring(index,enDex+2))))
 				{
 					str.delete(index,enDex+2);
 					enDex=index-1;
@@ -489,13 +488,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 		case '&':
 		{
-			  final boolean noMXP=((S==null)||(!S.clientTelnetMode(Session.TELNET_MXP)));
 			while(enDex<(str.length()-1))
 			{
 				if(str.charAt(enDex)!=';')
 					enDex++;
 				else
-				if(noMXP)
+				if((S==null)||(!S.allowMxp(str.substring(index,enDex+1))))
 				{
 					str.delete(index,enDex+1);
 					enDex=index-1;
@@ -587,7 +585,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			switch(buf.charAt(loop))
 			{
 			case '>':
-				if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
+				if((S!=null)&&(S.allowMxp(buf.substring(loop,loop+1))))
 				{
 					buf.delete(loop,loop+1);
 					buf.insert(loop,"&gt;".toCharArray());
@@ -595,7 +593,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				}
 				break;
 			case '"':
-				if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
+				if((S!=null)&&(S.allowMxp(buf.substring(loop,loop+1))))
 				{
 					buf.delete(loop,loop+1);
 					buf.insert(loop,"&quot;".toCharArray());
@@ -603,7 +601,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				}
 				break;
 			case '&':
-				if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
+				if((S!=null)&&(S.allowMxp(buf.substring(loop,loop+3))))
 				{
 					if((!buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
 					&&(buf.substring(loop,loop+3).equalsIgnoreCase("gt;")))
@@ -624,7 +622,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				}
 				break;
 				case '<':
-					if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
+					if((S!=null)&&(S.allowMxp(buf.substring(loop,loop+1))))
 					{
 						buf.delete(loop,loop+1);
 						buf.insert(loop,"&lt;".toCharArray());
@@ -783,7 +781,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					}
 					break;
 				case '>':
-					if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
+					if((S!=null)&&(S.allowMxp(buf.substring(loop,loop+1))))
 					{
 						buf.delete(loop,loop+1);
 						buf.insert(loop,"&gt;".toCharArray());
@@ -791,7 +789,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					}
 					break;
 				case '"':
-					if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
+					if((S!=null)&&(S.allowMxp(buf.substring(loop,loop+1))))
 					{
 						buf.delete(loop,loop+1);
 						buf.insert(loop,"&quot;".toCharArray());
@@ -802,7 +800,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					if(loop < amperStop)
 						break;
 					else
-					if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
+					if((S!=null)&&(S.allowMxp(buf.substring(loop,loop+3))))
 					{
 						if((!buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
 						&&(!buf.substring(loop,loop+3).equalsIgnoreCase("gt;")))
@@ -942,7 +940,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							Integer I=getTagTable().get(cmd.substring(1));
 							if(I==null)
 							{
-								if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
+								if((S!=null)&&(S.allowMxp(buf.substring(loop,loop+1))))
 								{
 									buf.delete(loop,loop+1);
 									buf.insert(loop,"&lt;".toCharArray());
@@ -1204,7 +1202,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							}
 						}
 						else
-						if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
+						if((S!=null)&&(S.allowMxp(buf.substring(loop,loop+1))))
 						{
 							buf.delete(loop,loop+1);
 							buf.insert(loop,"&lt;".toCharArray());
@@ -1318,7 +1316,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 
-	public StringBuffer simpleInFilter(StringBuffer input, boolean allowMXP)
+	public String simpleInFilter(StringBuilder input)
+	{
+		return simpleInFilter(input, false);
+	}
+	
+	public String simpleInFilter(StringBuilder input, boolean permitMXPTags)
 	{
 		if(input==null) return null;
 
@@ -1329,7 +1332,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			if(c=='\'')
 				input.setCharAt(x,'`');
 			else
-			if((c=='^')&&(x<(input.length()-1))&&(!allowMXP))
+			if((c=='^')&&(x<(input.length()-1))&&(!permitMXPTags))
 			{
 				switch(input.charAt(x+1))
 				{
@@ -1345,23 +1348,23 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			{
 				String newStr=input.toString();
 				if(x==0)
-					input=new StringBuffer(newStr.substring(x+1));
+					input=new StringBuilder(newStr.substring(x+1));
 				else
 				{
-					input=new StringBuffer(newStr.substring(0,x-1)+newStr.substring(x+1));
+					input=new StringBuilder(newStr.substring(0,x-1)+newStr.substring(x+1));
 					x--;
 				}
 				x--;
 			}
 			x++;
 		}
-		return new StringBuffer(input.toString());
+		return input.toString();
 	}
 
-	public String fullInFilter(String input, boolean allowMXP)
+	public String fullInFilter(String input)
 	{
 		if(input==null) return null;
-		StringBuffer buf=new StringBuffer(input);
+		StringBuilder buf=new StringBuilder(input);
 		for(int i=0;i<buf.length();i++)
 		{
 			switch(buf.charAt(i))
@@ -1376,7 +1379,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				break;
 			}
 		}
-		return simpleInFilter(buf,allowMXP).toString();
+		return simpleInFilter(buf,false).toString();
 	}
 	
 	public String safetyFilter(String s)
