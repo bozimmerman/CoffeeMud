@@ -381,10 +381,10 @@ public class StdMOB implements MOB
 			if ((rawImageName != null) && (rawImageName.length() > 0))
 				cachedImageName = rawImageName;
 			else
-				cachedImageName = CMProps.getDefaultMXPImage(this);
+				cachedImageName = CMLib.protocol().getDefaultMXPImage(this);
 		}
 		if (!baseCharStats().getMyRace().name().equalsIgnoreCase(charStats().raceName()))
-			return CMProps.getDefaultMXPImage(this);
+			return CMLib.protocol().getDefaultMXPImage(this);
 		if (cachedImageName == null)
 			return "";
 		return cachedImageName;
@@ -2982,7 +2982,7 @@ public class StdMOB implements MOB
 
 				if ((!CMLib.flags().canBreathe(this)) && (!CMLib.flags().isGolem(this)))
 				{
-					location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> can't breathe!^.^?") + CMProps.msp("choke.wav", 10));
+					location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
 					CMLib.combat().postDamage(this, this, null,
 							(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 							CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);

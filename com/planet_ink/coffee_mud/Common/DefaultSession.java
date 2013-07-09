@@ -50,9 +50,14 @@ public class DefaultSession implements Session
 	protected static final int		MSDPPINGINTERVAL= 1000;
 	protected static final byte[]	TELNETGABYTES	= {(byte)TELNET_IAC,(byte)TELNET_GA};
 	protected static final char[]	PINGCHARS		= {TELNET_IAC,TELNET_NOP};
-	private final Set<Integer>		telnetSupportSet= new HashSet<Integer>();
-	private final Set<String>		mxpSupportSet	= new HashSet<String>();
-	private final Map<String,String>mxpVersionInfo  = new Hashtable<String,String>();
+	
+	protected final Set<Integer>		telnetSupportSet= new HashSet<Integer>();
+	protected final Set<String>			mxpSupportSet	= new HashSet<String>();
+	protected final Map<String,String>	mxpVersionInfo  = new Hashtable<String,String>();
+	protected final Map<Object, Object> msdpReportables = new TreeMap<Object,Object>();
+	protected final Map<String, Double> gmcpSupports	= new TreeMap<String,Double>();
+	protected final Map<String, Long> 	gmcpPings		= new TreeMap<String,Long>();
+
 	private static final String		TIMEOUT_MSG		= "Timed Out.";
 	
 	
@@ -99,8 +104,6 @@ public class DefaultSession implements Session
 	protected ReentrantLock  writeLock 			 = new ReentrantLock(true);
 	protected LoginSession	 loginSession 		 = null;
 	
-	protected final Map<Object, Object> msdpReportables = new TreeMap<Object,Object>();
-
 	protected ColorState	 currentColor		 = ColorLibrary.COLORSTATE_NORMAL;
 	protected ColorState	 lastColor			 = ColorLibrary.COLORSTATE_NORMAL;
 	protected long			 lastStart			 = System.currentTimeMillis();
@@ -175,6 +178,8 @@ public class DefaultSession implements Session
 
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))
 				changeTelnetMode(rawout,TELNET_MXP,true);
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.GMCP))
+				changeTelnetMode(rawout,TELNET_GMCP,true);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))
 				changeTelnetMode(rawout,TELNET_MSP,true);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSDP))
@@ -240,7 +245,7 @@ public class DefaultSession implements Session
 				||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
 			{
 				// also the intro page
-				String[] paths=CMProps.mxpImagePath("intro.jpg");
+				String[] paths=CMLib.protocol().mxpImagePath("intro.jpg");
 				if(paths[0].length()>0)
 				{
 					CMFile introDir=new CMFile("/web/pub/images/mxp",null,false,true);
@@ -312,6 +317,7 @@ public class DefaultSession implements Session
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MXP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSDP));
+			telnetSupportSet.add(Integer.valueOf(Session.TELNET_GMCP));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_TERMTYPE));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_BINARY));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_ECHO));
@@ -996,13 +1002,23 @@ public class DefaultSession implements Session
 			break;
 		case TELNET_MSDP:
 			{
-				byte[] resp=CMLib.utensils().processMsdp(this, suboptionData, dataSize, this.msdpReportables);
+				byte[] resp=CMLib.protocol().processMsdp(this, suboptionData, dataSize, this.msdpReportables);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got "+dataSize+" bytes, sent "+((resp==null)?0:resp.length));
 				if(resp!=null)
 					rawBytesOut(rawout, resp);
 			}
 			break;
+		case TELNET_GMCP:
+			{
+				byte[] resp=CMLib.protocol().processGmcp(this, suboptionData, dataSize, this.gmcpSupports);
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+				{
+					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got "+dataSize+" bytes, sent "+((resp==null)?0:resp.length));
+					Log.debugOut(new String(suboptionData));
+				}
+			}
+		break;
 		default:
 			// Ignore it.
 			break;
@@ -1567,10 +1583,10 @@ public class DefaultSession implements Session
 			preLogout(mob);
 			logoutFinal();
 		}
-		Thread killThisThread=null;
-		synchronized(this)
+		if(killThread)
 		{
-			if(killThread)
+			Thread killThisThread=null;
+			synchronized(this)
 			{
 				if(runThread==Thread.currentThread())
 					setKillFlag(true);
@@ -1578,12 +1594,12 @@ public class DefaultSession implements Session
 				if(runThread!=null)
 					killThisThread=runThread;
 			}
+			if(killThisThread!=null)
+				killThisThread.interrupt();
+			killThisThread=writeThread;
+			if(killThisThread!=null)
+				killThisThread.interrupt();
 		}
-		if(killThisThread!=null)
-			killThisThread.interrupt();
-		killThisThread=writeThread;
-		if(killThisThread!=null)
-			killThisThread.interrupt();
 	}
 
 	public void showPrompt()
@@ -1775,15 +1791,28 @@ public class DefaultSession implements Session
 		}
 		
 		activeMillis=System.currentTimeMillis();
-		if(clientTelnetMode(TELNET_MSDP)&&(activeMillis>=nextMsdpPing))
+		if(activeMillis>=nextMsdpPing)
 		{
 			nextMsdpPing=activeMillis+MSDPPINGINTERVAL;
-			byte[] msdpPingBuf=CMLib.utensils().pingMsdp(this, msdpReportables);
-			if(msdpPingBuf!=null)
+			if(clientTelnetMode(TELNET_MSDP))
 			{
-				try { rawBytesOut(rawout, msdpPingBuf);}catch(IOException e){}
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-					Log.debugOut("MSDP Reported: "+msdpPingBuf.length+" bytes");
+				byte[] msdpPingBuf=CMLib.protocol().pingMsdp(this, msdpReportables);
+				if(msdpPingBuf!=null)
+				{
+					try { rawBytesOut(rawout, msdpPingBuf);}catch(IOException e){}
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+						Log.debugOut("MSDP Reported: "+msdpPingBuf.length+" bytes");
+				}
+			}
+			if(clientTelnetMode(TELNET_GMCP))
+			{
+				byte[] gmcpPingBuf=CMLib.protocol().pingGmcp(this, gmcpPings, gmcpSupports);
+				if(gmcpPingBuf!=null)
+				{
+					try { rawBytesOut(rawout, gmcpPingBuf);}catch(IOException e){}
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
+						Log.debugOut("GMCP Reported: "+gmcpPingBuf.length+" bytes");
+				}
 			}
 		}
 		
@@ -2297,6 +2326,12 @@ public class DefaultSession implements Session
 		}
 	}
 
+	public void resetIdleTimers()
+	{
+		lastKeystroke=System.currentTimeMillis();
+		lastWriteTime=System.currentTimeMillis();
+	}
+	
 	private static enum SESS_STAT_CODES {PREVCMD,ISAFK,AFKMESSAGE,ADDRESS,IDLETIME,
 										 LASTMSG,LASTNPCFIGHT,LASTPKFIGHT,TERMTYPE,
 										 TOTALMILLIS,TOTALTICKS,WRAP,LASTLOOPTIME}

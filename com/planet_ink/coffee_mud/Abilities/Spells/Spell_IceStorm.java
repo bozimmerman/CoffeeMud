@@ -63,7 +63,7 @@ public class Spell_IceStorm extends Spell
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?")+CMProps.msp("spelldam2.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?")+CMLib.protocol().msp("spelldam2.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -86,7 +86,7 @@ public class Spell_IceStorm extends Spell
 						damage = (int)Math.round(CMath.div(damage,2.0));
 					damage = (int)Math.round(CMath.div(damage,2.0));
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The freezing blast <DAMAGE> <T-NAME>!");
-					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The lumps of hail <DAMAGE> <T-NAME>!"+CMProps.msp("hail.wav",40));
+					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The lumps of hail <DAMAGE> <T-NAME>!"+CMLib.protocol().msp("hail.wav",40));
 				}
 			}
 		}

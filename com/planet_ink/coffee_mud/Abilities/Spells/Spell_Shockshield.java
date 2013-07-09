@@ -121,7 +121,7 @@ public class Spell_Shockshield extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMProps.msp("lightning.wav",10));
+			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),((auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of sparks erupt(s) around <T-NAME>!^?")+CMLib.protocol().msp("lightning.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

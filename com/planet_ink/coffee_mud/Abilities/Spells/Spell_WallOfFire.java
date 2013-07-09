@@ -138,7 +138,7 @@ public class Spell_WallOfFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),(auto?"A blazing wall of fire appears!":"^S<S-NAME> conjur(s) up a blazing wall of fire!^?")+CMProps.msp("fireball.wav",10));
+			CMMsg msg = CMClass.getMsg(mob, target, this,verbalCastCode(mob,target,auto),(auto?"A blazing wall of fire appears!":"^S<S-NAME> conjur(s) up a blazing wall of fire!^?")+CMLib.protocol().msp("fireball.wav",10));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -676,9 +676,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/**
 	 * Gets the number of milliseconds since a user entry was registered by this session
 	 * 
+	 * @see Session#resetIdleTimers()
 	 * @return the idle milliseconds passed
 	 */
 	public long getIdleMillis();
+	
+	/**
+	 * Resets the internal idle timers.
+	 * @see Session#getIdleMillis()
+	 */
+	public void resetIdleTimers();
 	
 	/**
 	 * Gets the milliseconds elapsed since this user came online.
@@ -861,7 +868,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_TOGGLE_FLOW_CONTROL=33;
 	/** TELNET CODE: Linemode*/
 	public static final int TELNET_LINEMODE=34;
-	/** TELNET CODE: MSSP Server Status protocol*/
+	/** TELNET CODE: MSDP protocol*/
 	public static final int TELNET_MSDP=69;
 	/** TELNET CODE: MSSP Server Status protocol*/
 	public static final int TELNET_MSSP=70;
@@ -873,12 +880,18 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_MSP=90;
 	/** TELNET CODE: MXP Extended protocol*/
 	public static final int TELNET_MXP=91;
+	/** TELNET CODE: AARD protocol*/
+	public static final int TELNET_AARD=102;
 	/** TELNET CODE: End of subnegotiation parameters*/
 	public static final int TELNET_SE=240;
 	/** TELNET CODE: Are You There*/
 	public static final int TELNET_AYT=246;
 	/** TELNET CODE: Erase character*/
 	public static final int TELNET_EC=247;
+	/** TELNET CODE: ATCP protocol*/
+	public static final int TELNET_ATCP=200;
+	/** TELNET CODE: GMCP protocol*/
+	public static final int TELNET_GMCP=201;
 	/** TELNET CODE: Indicates that what follows is subnegotiation of the indicated option*/
 	public static final int TELNET_SB=250;
 	/** TELNET CODE: Indicates the desire to begin performing, or confirmation that you are now performing, the indicated option*/
@@ -910,7 +923,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"MSSP","71","72","73","74","75","76","77","78","79", //70-79
 		"","","","","","COMPRESS","COMPRESS2","","","", //80-89
 		"MSP","MXP","","","","","","","","", //90-99
-		"","","","","","","","","","", //100-109
+		"","","AARD","","","","","","","", //100-109
 		"","","","","","","","","","", //110-119
 		"","","","","","","","","","", //120-129
 		"","","","","","","","","","", //130-139
@@ -920,7 +933,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		"","","","","","","","","","", //170-179
 		"","","","","","","","","","", //180-189
 		"","","","","","","","","","", //190-199
-		"","","","","","","","","","", //200-209
+		"ATCP","GMCP","","","","","","","","", //200-209
 		"","","","","","","","","","", //210-219
 		"","","","","","","","","","", //220-229
 		"","","","","","","","","","", //230-239

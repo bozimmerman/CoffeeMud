@@ -73,7 +73,7 @@ public class Prayer_Godstrike extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			Prayer_Godstrike newOne=(Prayer_Godstrike)this.copyOf();
-			CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,(auto?"<T-NAME> is filled with holy fury!":"^S<S-NAME> "+prayWord(mob)+" for power against the evil inside <T-NAMESELF>!^?")+CMProps.msp("spelldam1.wav",40));
+			CMMsg msg=CMClass.getMsg(mob,target,newOne,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,(auto?"<T-NAME> is filled with holy fury!":"^S<S-NAME> "+prayWord(mob)+" for power against the evil inside <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))

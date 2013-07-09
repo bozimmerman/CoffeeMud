@@ -106,7 +106,7 @@ public class Poison extends StdAbility
 		{
 			poisonTick=POISON_DELAY();
 			if(POISON_AFFECT().length()>0)
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CMProps.msp("poisoned.wav",10));
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,POISON_AFFECT()+CMLib.protocol().msp("poisoned.wav",10));
 			if(invoker==null) invoker=mob;
 			if(POISON_DAMAGE()!=0)
 			{

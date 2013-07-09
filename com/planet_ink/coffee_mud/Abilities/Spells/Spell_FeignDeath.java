@@ -154,7 +154,7 @@ public class Spell_FeignDeath extends Spell
 				if(follower!=null)
 					follower.setFollowing(null);
 			}
-			String msp=CMProps.msp("death"+CMLib.dice().roll(1,4,0)+".wav",50);
+			String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,4,0)+".wav",50);
 			msg=CMClass.getMsg(target,null,null,
 					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
 					CMMsg.MSG_OK_VISUAL,null,

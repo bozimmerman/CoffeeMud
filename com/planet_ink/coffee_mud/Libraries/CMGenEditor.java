@@ -944,7 +944,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				R.setRawExit(d,oldR);
 			R.setDisplayText(oldR.displayText());
 			R.setDescription(oldR.description());
-			if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR))) R.setImage(null);
+			if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(oldR))) R.setImage(null);
 			if((R instanceof GridLocale)&&(oldR instanceof GridLocale))
 			{
 				((GridLocale)R).setXGridSize(((GridLocale)oldR).xGridSize());

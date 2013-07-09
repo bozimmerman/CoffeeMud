@@ -94,7 +94,7 @@ public class Skill_FireBreathing extends BardSkill
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),(auto?"Suddenly flames come up and attack <T-HIM-HER>!^?":((fireSource!=null)?"^S<S-NAME> hold(s) "+fireSource.name()+" up and puff(s) fire at <T-NAMESELF>!^?":"<S-NAME> breath(es) fire at <T-NAMESELF>!^?"))+CMProps.msp("fireball.wav",40));
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),(auto?"Suddenly flames come up and attack <T-HIM-HER>!^?":((fireSource!=null)?"^S<S-NAME> hold(s) "+fireSource.name()+" up and puff(s) fire at <T-NAMESELF>!^?":"<S-NAME> breath(es) fire at <T-NAMESELF>!^?"))+CMLib.protocol().msp("fireball.wav",40));
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_FIRE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
 			{

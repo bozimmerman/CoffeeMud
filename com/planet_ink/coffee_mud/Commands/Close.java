@@ -60,7 +60,7 @@ public class Close extends StdCommand
 			return false;
 		}
 		final String closeWord=(!(closeThis instanceof Exit))?"close":((Exit)closeThis).closeWord();
-		final String closeMsg="<S-NAME> "+closeWord+"(s) <T-NAMESELF>."+CMProps.msp("dooropen.wav",10);
+		final String closeMsg="<S-NAME> "+closeWord+"(s) <T-NAMESELF>."+CMLib.protocol().msp("dooropen.wav",10);
 		CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,closeMsg,whatToClose,closeMsg);
 		if(closeThis instanceof Exit)
 		{

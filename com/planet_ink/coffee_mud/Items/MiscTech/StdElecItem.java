@@ -35,6 +35,12 @@ import java.util.*;
 public class StdElecItem extends StdItem implements Electronics
 {
 	public String ID(){	return "StdElecItem";}
+	
+	protected int fuelType=RawMaterial.RESOURCE_ENERGY;
+	protected long powerCapacity=100;
+	protected long power=100;
+	protected boolean activated=false;
+	
 	public StdElecItem()
 	{
 		super();
@@ -79,7 +85,7 @@ public class StdElecItem extends StdItem implements Electronics
 
 	protected static final boolean isThisPanelActivated(Electronics.ElecPanel E)
 	{
-		if(!((Electronics.ElecPanel)E).activated())
+		if(!E.activated())
 			return false;
 		if(E.container() instanceof Electronics.ElecPanel)
 			return isThisPanelActivated((Electronics.ElecPanel)E.container());
@@ -93,16 +99,12 @@ public class StdElecItem extends StdItem implements Electronics
 		return true;
 	}
 	
-	protected int fuelType=RawMaterial.RESOURCE_ENERGY;
 	public int fuelType(){return fuelType;}
 	public void setFuelType(int resource){fuelType=resource;}
-	protected long powerCapacity=100;
 	public long powerCapacity(){return powerCapacity;}
 	public void setPowerCapacity(long capacity){powerCapacity=capacity;}
-	protected long power=100;
 	public long powerRemaining(){return power;}
 	public void setPowerRemaining(long remaining){power=remaining;}
-	protected boolean activated=false;
 	public boolean activated(){return activated;}
 	public void activate(boolean truefalse){activated=truefalse;}
 }

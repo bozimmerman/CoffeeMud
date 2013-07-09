@@ -94,7 +94,7 @@ public class StdItem implements Item
 			if((rawImageName!=null)&&(rawImageName.length()>0))
 				cachedImageName=rawImageName;
 			else
-				cachedImageName=CMProps.getDefaultMXPImage(this);
+				cachedImageName=CMLib.protocol().getDefaultMXPImage(this);
 		}
 		return cachedImageName;
 	}

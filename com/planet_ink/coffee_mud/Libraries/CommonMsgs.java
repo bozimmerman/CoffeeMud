@@ -742,7 +742,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(M.phyStats().height()>0)
 					response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is "+M.phyStats().height()+" inches tall and weighs "+weight+" pounds.\n\r");
 				if((mob==null)||(!mob.isMonster()))
-					response.append(CMProps.mxpImage(M," ALIGN=RIGHT H=70 W=70"));
+					response.append(CMLib.protocol().mxpImage(M," ALIGN=RIGHT H=70 W=70"));
 				response.append(M.healthText(mob)+"\n\r\n\r");
 				if(!M.description().equalsIgnoreCase(item.description()))
 					response.append(M.description()+"\n\r\n\r");
@@ -915,7 +915,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				buf.append(item.name()+" is closed.");
 		}
 		if(!msg.source().isMonster())
-			buf.append(CMProps.mxpImage(item," ALIGN=RIGHT H=70 W=70"));
+			buf.append(CMLib.protocol().mxpImage(item," ALIGN=RIGHT H=70 W=70"));
 		mob.tell(buf.toString());
 	}
 
@@ -1104,7 +1104,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				Say.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
 				
 				if((!mob.isMonster())&&(sess.clientTelnetMode(Session.TELNET_MXP)))
-					Say.append(CMProps.mxpImage(room," ALIGN=RIGHT H=70 W=70"));
+					Say.append(CMLib.protocol().mxpImage(room," ALIGN=RIGHT H=70 W=70"));
 				if(compress)
 					Say.append("^N  ");
 				else
@@ -1144,7 +1144,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					if(CMLib.flags().canBeSeenBy(mob2,mob))
 					{
 						if((!compress)&&(!mob.isMonster())&&(sess.clientTelnetMode(Session.TELNET_MXP)))
-							Say.append(CMProps.mxpImage(mob2," H=10 W=10",""," "));
+							Say.append(CMLib.protocol().mxpImage(mob2," H=10 W=10",""," "));
 						Say.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
 						if(compress) Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");
 						if(displayText.length()>0)
@@ -1390,7 +1390,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				mob.tell("Type  : "+exit.ID());
 				mob.tell("Misc   : "+exit.text());
 			}
-			String image=CMProps.mxpImage(exit," ALIGN=RIGHT H=70 W=70");
+			String image=CMLib.protocol().mxpImage(exit," ALIGN=RIGHT H=70 W=70");
 			if((image!=null)&&(image.length()>0)) mob.tell(image);
 		}
 		else
@@ -1463,7 +1463,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				testMOB.destroy();
 			}
 			if(!viewermob.isMonster())
-				myDescription.append(CMProps.mxpImage(viewedmob," ALIGN=RIGHT H=70 W=70"));
+				myDescription.append(CMLib.protocol().mxpImage(viewedmob," ALIGN=RIGHT H=70 W=70"));
 			myDescription.append(viewedmob.healthText(viewermob)+"\n\r\n\r");
 			myDescription.append(viewedmob.description()+"\n\r\n\r");
 

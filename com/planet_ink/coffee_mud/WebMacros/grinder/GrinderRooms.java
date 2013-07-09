@@ -99,7 +99,7 @@ public class GrinderRooms
 						R.setRawExit(d,(Exit)E.copyOf());
 				}
 				redoAllMyDamnRooms=true;
-				if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR)))
+				if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(oldR)))
 				{
 					R.setImage(null);
 					skipImage=true;

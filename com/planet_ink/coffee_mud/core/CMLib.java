@@ -105,7 +105,8 @@ public class CMLib
 	public static final int LIBRARY_GENEDITOR=46;
 	public static final int LIBRARY_AREAGEN=47;
 	public static final int LIBRARY_TECH=48;
-	public static final int LIBRARY_TOTAL=49;
+	public static final int LIBRARY_PROTOCOL=49;
+	public static final int LIBRARY_TOTAL=50;
 	public static final String[] LIBRARY_DESCS={
 		"DATABASE","THREADS","INTERMUD","HTTP","LISTER","MONEY","SHOPS","COMBAT",
 		"HELP","TRACKING","MASKING","CHANNELS","COMMANDS","ENGLISH","SLAVERY","JOURNALS",
@@ -113,7 +114,7 @@ public class CMLib
 		"MAP","QUEST","ABLEMAP","ENCODER","SMTP","DICE","FACTIONS","CLANS","POLLS",
 		"TIME","COLOR","LOGIN","TIMS","LEVELS","EXPERTISES","MATERIALS","LEGAL",
 		"LANGUAGE","CATALOG","PLAYERS","TITLES","ABLEPARMS","GENEDITOR","AREAGEN",
-		"TECH"};
+		"TECH","PROTOCOL"};
 
 	public static final CMath math(){return CMath.instance();}
 	public static final CMParms parms(){return CMParms.instance();}
@@ -198,6 +199,7 @@ public class CMLib
 	public static final AbilityParameters ableParms(){return (AbilityParameters)l().libraries[LIBRARY_ABLEPARMS];}
 	public static final GenericEditor genEd(){return (GenericEditor)l().libraries[LIBRARY_GENEDITOR];}
 	public static final TechLibrary tech(){ return (TechLibrary)l().libraries[LIBRARY_TECH]; }
+	public static final ProtocolLibrary protocol() { return (ProtocolLibrary)l().libraries[LIBRARY_PROTOCOL]; }
 
 	public static final int convertToLibraryCode(final Object O)
 	{
@@ -250,6 +252,7 @@ public class CMLib
 		if(O instanceof GenericEditor) return LIBRARY_GENEDITOR;
 		if(O instanceof AreaGenerationLibrary) return LIBRARY_AREAGEN;
 		if(O instanceof TechLibrary) return LIBRARY_TECH;
+		if(O instanceof ProtocolLibrary) return LIBRARY_PROTOCOL;
 		return -1;
 	}
 

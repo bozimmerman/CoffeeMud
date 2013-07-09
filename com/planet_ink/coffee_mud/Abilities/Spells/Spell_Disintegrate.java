@@ -80,7 +80,7 @@ public class Spell_Disintegrate extends Spell
 		if(success)
 		{
 			Room R=mob.location();
-			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?")+CMProps.msp("spelldam2.wav",40));
+			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?")+CMLib.protocol().msp("spelldam2.wav",40));
 			if((R!=null)&&(R.okMessage(mob,msg)))
 			{
 				R.send(mob,msg);

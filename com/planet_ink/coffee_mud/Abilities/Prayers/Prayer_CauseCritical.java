@@ -72,7 +72,7 @@ public class Prayer_CauseCritical extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),(auto?"A critically painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a critical burst of pain at <T-NAMESELF>!^?")+CMProps.msp("spelldam1.wav",40));
+			CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),(auto?"A critically painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a critical burst of pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
 			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))

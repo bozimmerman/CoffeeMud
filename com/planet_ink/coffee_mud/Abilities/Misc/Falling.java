@@ -98,7 +98,7 @@ public class Falling extends StdAbility
 			if(!hitTheCeiling)
 			{
 				hitTheCeiling=true;
-				if(R!=null) R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ceiling."+CMProps.msp("splat.wav",50));
+				if(R!=null) R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ceiling."+CMLib.protocol().msp("splat.wav",50));
 				CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 			}
 			return true;
@@ -108,12 +108,12 @@ public class Falling extends StdAbility
 		if(R!=null)
 		{
 			if(isAirRoom(R))
-				R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) falling."+CMProps.msp("splat.wav",50));
+				R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) falling."+CMLib.protocol().msp("splat.wav",50));
 			else
 			if(isWaterSurface(R)||isUnderWater(R))
-				R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CMProps.msp("splat.wav",50));
+				R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CMLib.protocol().msp("splat.wav",50));
 			else
-				R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CMProps.msp("splat.wav",50));
+				R.show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CMLib.protocol().msp("splat.wav",50));
 			CMLib.combat().postDamage(mob,mob,this,damageToTake,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 		}
 		mob.delEffect(this);

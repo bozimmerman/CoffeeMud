@@ -89,7 +89,7 @@ public class Trap_Spark extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off an sparking trap!"))
 			{
 				super.spring(target);
-				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),8,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The sparks <DAMAGE> <T-NAME>!"+CMProps.msp("shock.wav",30));
+				CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(trapLevel()+abilityCode(),8,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The sparks <DAMAGE> <T-NAME>!"+CMLib.protocol().msp("shock.wav",30));
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

@@ -145,7 +145,7 @@ public class Fighter_Behead extends FighterSkill
 				target.curState().setHitPoints(1);
 				Ability A2=target.fetchEffect("Injury");
 				if(A2!=null) A2.setMiscText(mob.Name()+"/head");
-				CMLib.combat().postDamage(mob,target,ww,Integer.MAX_VALUE/2,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and behead(s) <T-NAME>!^</FIGHT^>^?"+CMProps.msp("decap.wav",30));
+				CMLib.combat().postDamage(mob,target,ww,Integer.MAX_VALUE/2,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and behead(s) <T-NAME>!^</FIGHT^>^?"+CMLib.protocol().msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 				Item limb=CMClass.getItem("GenLimb");
 				limb.setName(target.Name()+"`s head");

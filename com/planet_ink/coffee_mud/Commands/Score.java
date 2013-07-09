@@ -141,7 +141,7 @@ public class Score extends Affect
 			msg.append("\n\r");
 		}
 		msg.append("\n\r^NYour stats are: ");
-		msg.append(CMProps.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
+		msg.append(CMLib.protocol().mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
 		msg.append("\n\r");
 		CharStats CT=mob.charStats();
 		if(parm.equalsIgnoreCase("BASE")) CT=mob.baseCharStats();

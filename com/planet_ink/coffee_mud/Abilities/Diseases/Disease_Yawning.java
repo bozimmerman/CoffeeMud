@@ -81,7 +81,7 @@ public class Disease_Yawning extends Disease
 		&&(!CMLib.flags().isSleeping(mob)))
 		{
 			diseaseTick=DISEASE_DELAY();
-			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,DISEASE_AFFECT()+CMProps.msp("yawn.wav",40));
+			CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISE,DISEASE_AFFECT()+CMLib.protocol().msp("yawn.wav",40));
 			if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))
 				mob.location().send(mob,msg);
 			catchIt(mob);

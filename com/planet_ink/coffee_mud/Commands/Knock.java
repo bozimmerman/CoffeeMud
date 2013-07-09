@@ -57,7 +57,7 @@ public class Knock extends StdCommand
 				mob.tell("You don't see '"+knockWhat.toLowerCase()+"' here.");
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,"<S-NAME> knock(s) on <T-NAMESELF>."+CMProps.msp("knock.wav",50));
+			CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,"<S-NAME> knock(s) on <T-NAMESELF>."+CMLib.protocol().msp("knock.wav",50));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 
@@ -75,14 +75,14 @@ public class Knock extends StdCommand
 				mob.tell("You can't knock on "+E.name()+"!");
 				return false;
 			}
-			CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,"<S-NAME> knock(s) on <T-NAMESELF>."+CMProps.msp("knock.wav",50));
+			CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,"<S-NAME> knock(s) on <T-NAMESELF>."+CMLib.protocol().msp("knock.wav",50));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				E=mob.location().getPairedExit(dir);
 				Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)&&(E!=null)&&(E.hasADoor())
-				&&(R.showOthers(mob,E,null,CMMsg.MSG_KNOCK,"You hear a knock on <T-NAMESELF>."+CMProps.msp("knock.wav",50)))
+				&&(R.showOthers(mob,E,null,CMMsg.MSG_KNOCK,"You hear a knock on <T-NAMESELF>."+CMLib.protocol().msp("knock.wav",50)))
 				&&((R.domainType()&Room.INDOORS)==Room.INDOORS))
 				{
 					Vector V=new Vector();
@@ -100,7 +100,7 @@ public class Knock extends StdCommand
 						{
 							Room R3=R2.getRoomInDir(dir2);
 							if(((R3!=null)&&(R3.domainType()&Room.INDOORS)==Room.INDOORS))
-								R2.showHappens(CMMsg.MASK_SOUND|CMMsg.TYP_KNOCK,"You hear a knock "+Directions.getInDirectionName(dir2)+"."+CMProps.msp("knock.wav",50));
+								R2.showHappens(CMMsg.MASK_SOUND|CMMsg.TYP_KNOCK,"You hear a knock "+Directions.getInDirectionName(dir2)+"."+CMLib.protocol().msp("knock.wav",50));
 						}
 					}
 				}

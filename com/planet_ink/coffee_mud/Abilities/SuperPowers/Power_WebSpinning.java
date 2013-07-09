@@ -140,7 +140,7 @@ public class Power_WebSpinning extends SuperPower
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"^S<S-NAME> shoot(s) and spin(s) a web at <T-NAMESELF>!^?")+CMProps.msp("web.wav",40));
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"^S<S-NAME> shoot(s) and spin(s) a web at <T-NAMESELF>!^?")+CMLib.protocol().msp("web.wav",40));
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

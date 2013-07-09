@@ -122,7 +122,7 @@ public class DefaultSocial implements Social
 			}
 		}
 
-		String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMProps.msp(MSPfile,10):"";
+		String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMLib.protocol().msp(MSPfile,10):"";
 		
 		String You_see=You_see();
 		if((You_see!=null)&&(You_see.trim().length()==0)) 
@@ -243,7 +243,7 @@ public class DefaultSocial implements Social
 				target=null;
 		}
 
-		String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMProps.msp(MSPfile,10):"";
+		String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMLib.protocol().msp(MSPfile,10):"";
 		if(end.length()==0) mspFile="";
 		
 		int targetCode=fullCode;

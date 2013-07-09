@@ -411,19 +411,19 @@ public class DefaultClimate implements Climate
 		desc.append((suffix.trim().length()>0) ? prefix + " " + suffix : prefix);
 		switch(weather)
 		{
-		case Climate.WEATHER_HAIL: desc.append(CMProps.msp("hail.wav",10)); break;
+		case Climate.WEATHER_HAIL: desc.append(CMLib.protocol().msp("hail.wav",10)); break;
 		case Climate.WEATHER_HEAT_WAVE: break;
 		case Climate.WEATHER_WINTER_COLD: break;
 		case Climate.WEATHER_DROUGHT: break;
 		case Climate.WEATHER_CLOUDY: break;
 		case Climate.WEATHER_THUNDERSTORM: break;
-		case Climate.WEATHER_DUSTSTORM: desc.append(CMProps.msp("windy.wav",10)); break;
-		case Climate.WEATHER_BLIZZARD: desc.append(CMProps.msp("blizzard.wav",10)); break;
+		case Climate.WEATHER_DUSTSTORM: desc.append(CMLib.protocol().msp("windy.wav",10)); break;
+		case Climate.WEATHER_BLIZZARD: desc.append(CMLib.protocol().msp("blizzard.wav",10)); break;
 		case Climate.WEATHER_CLEAR: break;
-		case Climate.WEATHER_RAIN: desc.append(CMProps.msp("rainlong.wav",10)); break;
+		case Climate.WEATHER_RAIN: desc.append(CMLib.protocol().msp("rainlong.wav",10)); break;
 		case Climate.WEATHER_SNOW: break;
-		case Climate.WEATHER_SLEET: desc.append(CMProps.msp("rain.wav",10)); break;
-		case Climate.WEATHER_WINDY: desc.append(CMProps.msp("wind.wav",10)); break;
+		case Climate.WEATHER_SLEET: desc.append(CMLib.protocol().msp("rain.wav",10)); break;
+		case Climate.WEATHER_WINDY: desc.append(CMLib.protocol().msp("wind.wav",10)); break;
 		}
 		return "^J"+desc.toString()+"^?";
 	}

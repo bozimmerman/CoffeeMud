@@ -150,7 +150,7 @@ public class Spell_Flagportation extends Spell
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB follower=(MOB)f.next();
-				CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMProps.msp("appear.wav",10));
+				CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke."+CMLib.protocol().msp("appear.wav",10));
 				CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
 				if(thisRoom.okMessage(follower,leaveMsg)&&(newRoom!=null)&&newRoom.okMessage(follower,enterMsg))
 				{

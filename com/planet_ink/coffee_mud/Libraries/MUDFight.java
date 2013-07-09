@@ -330,7 +330,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))
 					return;
 
-		String msp=CMProps.msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
+		String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 		CMMsg msg=null;
 		if(isKnockedOutUponDeath(deadM,killerM))
 			msg=CMClass.getMsg(deadM,null,killerM,
@@ -1105,7 +1105,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		final int listIndex = getWeaponAttackIndex(weaponType, weaponClassification);
 		if(!useExtendedMissString) return CMProps.getListFileValue(CMProps.ListFile.MISS_DESCS,listIndex);
-		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMProps.msp("missed.wav",20);
+		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.WEAPON_MISS_DESCS,listIndex),"<TOOLNAME>",weaponName)+CMLib.protocol().msp("missed.wav",20);
 	}
 
 
@@ -1120,11 +1120,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		switch(weaponClass)
 		{
 		case Weapon.CLASS_RANGED:
-			return str.append(CMProps.msp("arrow.wav",20)).toString();
+			return str.append(CMLib.protocol().msp("arrow.wav",20)).toString();
 		case Weapon.CLASS_THROWN:
-			return str.append(CMProps.msp("arrow.wav",20)).toString();
+			return str.append(CMLib.protocol().msp("arrow.wav",20)).toString();
 		default:
-			return str.append(CMProps.msp("punch"+CMLib.dice().roll(1,7,0)+".wav",20)).toString();
+			return str.append(CMLib.protocol().msp("punch"+CMLib.dice().roll(1,7,0)+".wav",20)).toString();
 		}
 	}
 

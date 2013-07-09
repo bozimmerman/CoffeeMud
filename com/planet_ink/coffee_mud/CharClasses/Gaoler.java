@@ -184,7 +184,7 @@ public class Gaoler extends StdCharClass
 		&&(CMLib.map().getStartArea(host)!=null)
 		&&(((MOB)host).charStats().getClassLevel(this)>0))
 		{
-			CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,"<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!"+CMProps.msp("scream.wav",40));
+			CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,"<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!"+CMLib.protocol().msp("scream.wav",40));
 			if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
 			{
 				int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));

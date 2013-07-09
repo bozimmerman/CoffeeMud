@@ -128,7 +128,7 @@ public class Dragonbreath extends StdAbility
 				puffPhrase="<S-NAME> spark(s) a little from <S-HIS-HER> mouth.";
 				autoPhrase="A blast of lightning bursts erupt!";
 				stuffWord="bolt";
-				castPhrase="<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!"+CMProps.msp("lightning.wav",40);
+				castPhrase="<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!"+CMLib.protocol().msp("lightning.wav",40);
 				WeaponType=Weapon.TYPE_STRIKING;
 				strikeType=CMMsg.TYP_ELECTRIC;
 				break;
@@ -136,7 +136,7 @@ public class Dragonbreath extends StdAbility
 				puffPhrase="<S-NAME> puff(s) cold air from <S-HIS-HER> mouth.";
 				autoPhrase="A blast of frozen air erupts!";
 				stuffWord="cold";
-				castPhrase="<S-NAME> blast(s) a frozen cone of frost from <S-HIS-HER> mouth!"+CMProps.msp("spelldam1.wav",40);
+				castPhrase="<S-NAME> blast(s) a frozen cone of frost from <S-HIS-HER> mouth!"+CMLib.protocol().msp("spelldam1.wav",40);
 				WeaponType=Weapon.TYPE_FROSTING;
 				strikeType=CMMsg.TYP_COLD;
 				break;
@@ -144,7 +144,7 @@ public class Dragonbreath extends StdAbility
 				puffPhrase="<S-NAME> dribble(s) acid harmlessly from <S-HIS-HER> mouth.";
 				autoPhrase="A spray of acid erupts!";
 				stuffWord="acid";
-				castPhrase="<S-NAME> spray(s) acid from <S-HIS-HER> mouth!"+CMProps.msp("water.wav",40);
+				castPhrase="<S-NAME> spray(s) acid from <S-HIS-HER> mouth!"+CMLib.protocol().msp("water.wav",40);
 				WeaponType=Weapon.TYPE_MELTING;
 				strikeType=CMMsg.TYP_ACID;
 				break;

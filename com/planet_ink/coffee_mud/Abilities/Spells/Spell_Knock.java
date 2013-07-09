@@ -107,7 +107,7 @@ public class Spell_Knock extends Spell
 			beneficialWordsFizzle(mob,openThis,auto?"Nothing happens to "+openThis.name()+".":"<S-NAME> point(s) at "+openThis.name()+" and shout(s) incoherently, but nothing happens.");
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,openThis,this,verbalCastCode(mob,openThis,auto),(auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at <T-NAMESELF>.^?")+CMProps.msp("knock.wav",10));
+			CMMsg msg=CMClass.getMsg(mob,openThis,this,verbalCastCode(mob,openThis,auto),(auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at <T-NAMESELF>.^?")+CMLib.protocol().msp("knock.wav",10));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

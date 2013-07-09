@@ -62,7 +62,7 @@ public class Eat extends StdCommand
 			mob.tell("You don't seem to have '"+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
-		String eatSound=CMProps.msp("gulp.wav",10);
+		String eatSound=CMLib.protocol().msp("gulp.wav",10);
 		String eatMsg="<S-NAME> eat(s) <T-NAMESELF>."+eatSound;
 		CMMsg newMsg=CMClass.getMsg(mob,thisThang,null,hasHands?CMMsg.MSG_EAT:CMMsg.MSG_EAT_GROUND,eatMsg);
 		if(mob.location().okMessage(mob,newMsg)) 

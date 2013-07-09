@@ -8358,7 +8358,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								MOB follower=(MOB)V.elementAt(v);
 								Room thisRoom=follower.location();
 								// scripting guide calls for NO text -- empty is probably req tho
-								CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER," "+CMProps.msp("appear.wav",10));
+								CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER," "+CMLib.protocol().msp("appear.wav",10));
 								CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE," ");
 								if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 								{

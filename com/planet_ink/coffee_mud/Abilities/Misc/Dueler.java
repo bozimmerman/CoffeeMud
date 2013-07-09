@@ -127,7 +127,7 @@ public class Dueler extends StdAbility
 		{
 			MOB target=msg.source();
 			Room deathRoom=target.location();
-			String msp=CMProps.msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
+			String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 			CMMsg msg2=CMClass.getMsg(target,null,otherDuelPartner,
 					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
 					CMMsg.MSG_OK_VISUAL,null,

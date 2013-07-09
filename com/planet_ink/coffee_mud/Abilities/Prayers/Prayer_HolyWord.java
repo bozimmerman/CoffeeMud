@@ -97,7 +97,7 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CMProps.msp("bless.wav",10);
+		String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CMLib.protocol().msp("bless.wav",10);
 		String missStr="<S-NAME> speak(s) the holy word"+ofDiety(mob)+", but nothing happens.";
 		Room room=mob.location();
 		if(room!=null)

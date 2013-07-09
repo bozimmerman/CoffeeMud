@@ -70,7 +70,7 @@ public class Spell_Dragonfire extends Spell
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CMProps.msp("fireball.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CMLib.protocol().msp("fireball.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();

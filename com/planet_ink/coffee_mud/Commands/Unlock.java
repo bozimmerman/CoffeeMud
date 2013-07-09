@@ -59,7 +59,7 @@ public class Unlock extends StdCommand
 			mob.tell("You don't see '"+whatTounlock+"' here.");
 			return false;
 		}
-		final String unlockMsg="<S-NAME> unlock(s) <T-NAMESELF>."+CMProps.msp("doorunlock.wav",10);
+		final String unlockMsg="<S-NAME> unlock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorunlock.wav",10);
 		CMMsg msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_UNLOCK,unlockMsg,whatTounlock,unlockMsg);
 		if(unlockThis instanceof Exit)
 		{

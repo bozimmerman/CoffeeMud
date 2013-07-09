@@ -59,7 +59,7 @@ public class Lock extends StdCommand
 			mob.tell("You don't see '"+whatTolock+"' here.");
 			return false;
 		}
-		final String lockMsg="<S-NAME> lock(s) <T-NAMESELF>."+CMProps.msp("doorlock.wav",10);
+		final String lockMsg="<S-NAME> lock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorlock.wav",10);
 		CMMsg msg=CMClass.getMsg(mob,lockThis,null,CMMsg.MSG_LOCK,lockMsg,whatTolock,lockMsg);
 		if(lockThis instanceof Exit)
 		{

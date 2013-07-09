@@ -112,7 +112,7 @@ public class Chant_WindGust extends Chant
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"^JA horrendous wind gust blows through here.^?":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?")+CMProps.msp("wind.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"^JA horrendous wind gust blows through here.^?":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?")+CMLib.protocol().msp("wind.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();

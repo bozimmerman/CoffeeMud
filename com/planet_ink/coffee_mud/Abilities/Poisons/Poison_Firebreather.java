@@ -57,7 +57,7 @@ public class Poison_Firebreather extends Poison_Liquor
 		{
 			if(CMLib.dice().rollPercentage()<40)
 			{
-				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!"+CMProps.msp("fireball.wav",20));
+				room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!"+CMLib.protocol().msp("fireball.wav",20));
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB target=room.fetchInhabitant(i);

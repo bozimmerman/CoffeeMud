@@ -1764,16 +1764,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					else
 					{
 						loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
-						if((loginObj.player != null)
-						&&((loginObj.player.accountName==null)
-							||(loginObj.player.accountName.trim().length()==0)))
+						if(loginObj.player != null)
 						{
 							session.promptPrint("password for "+loginObj.player.name+": ");
 							loginObj.state=LoginState.ACCT_CHAR_PWORD;
 							return LoginResult.INPUT_REQUIRED;
 						}
 						else
-						if(loginObj.player!=null)
 						{
 							session.println("\n\rAccount '"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.");
 							loginObj.player=null;
@@ -1805,11 +1802,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.password=loginObj.lastInput;
 				if(loginObj.player.matchesPassword(loginObj.password))
 				{
-					session.println("\n\rThis mud is now using an account system.  "
-							+"Please create a new account and use the IMPORT command to add your character(s) to your account.");
-					session.promptPrint("Would you like to create your new master account and call it '"+loginObj.player.name+"' (y/N)? ");
-					loginObj.state=LoginState.ACCT_CONVERT_CONFIRM;
-					return LoginResult.INPUT_REQUIRED;
+					if((loginObj.player.accountName==null)||(loginObj.player.accountName.trim().length()==0))
+					{
+						session.println("\n\rThis mud is now using an account system.  "
+								+"Please create a new account and use the IMPORT command to add your character(s) to your account.");
+						session.promptPrint("Would you like to create your new master account and call it '"+loginObj.player.name+"' (y/N)? ");
+						loginObj.state=LoginState.ACCT_CONVERT_CONFIRM;
+						return LoginResult.INPUT_REQUIRED;
+					}
+					else
+					{
+						session.println("\n\rThis mud uses an account system.  Your account name is `^H"+loginObj.player.accountName+"^N`.\n\r"
+								+"Please use this account name when logging in.");
+					}
 				}
 				loginObj.state=LoginState.START;
 				break;

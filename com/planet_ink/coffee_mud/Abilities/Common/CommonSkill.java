@@ -106,7 +106,7 @@ public class CommonSkill extends StdAbility
 				unInvoke(); 
 				return false;
 			}
-			String sound=(playSound!=null)?CMProps.msp(playSound,10):"";
+			String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
 			if(tickDown==4)
 				mob.location().show(mob,null,getActivityMessageType(),"<S-NAME> <S-IS-ARE> almost done "+verb+"."+sound);
 			else

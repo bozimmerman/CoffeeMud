@@ -262,7 +262,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		||(mob.charStats().getCurrentClass().leveless())
 		||(mob.charStats().getMyRace().leveless()))
 			return;
-		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CMProps.msp("doh.wav",60));
+		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CMLib.protocol().msp("doh.wav",60));
 		if(!mob.isMonster())
 		{
 			List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOSTLEVELS);
@@ -436,7 +436,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				if(C!=null) C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
 			}catch(Exception e){}
 		}
-		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMProps.msp("level_gain.wav",60));
+		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("level_gain.wav",60));
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
 		theNews.append(baseLevelAdjuster(mob,1));
 		if(mob.playerStats()!=null)

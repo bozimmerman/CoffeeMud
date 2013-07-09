@@ -280,7 +280,7 @@ public class Construction extends CraftingSkill
 							R.setRoomID(room.roomID());
 							R.setDisplayText(room.displayText());
 							R.setDescription(room.description());
-							if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(room))) R.setImage(null);
+							if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(room))) R.setImage(null);
 							
 							Area area=room.getArea();
 							if(area!=null) area.delProperRoom(room);

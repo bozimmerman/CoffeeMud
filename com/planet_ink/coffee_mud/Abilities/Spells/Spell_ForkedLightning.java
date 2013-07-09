@@ -62,7 +62,7 @@ public class Spell_ForkedLightning extends Spell
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of forked lightning.^?")+CMProps.msp("lightning.wav",40)))
+			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of forked lightning.^?")+CMLib.protocol().msp("lightning.wav",40)))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
