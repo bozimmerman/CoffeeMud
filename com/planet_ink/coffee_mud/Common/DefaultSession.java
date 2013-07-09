@@ -973,9 +973,7 @@ public class DefaultSession implements Session
 					{
 						rawOut("\n\r\n\r**** Your MUD Client is Broken! Please use another!!****\n\r\n\r");
 						rawout.flush();
-						if(mightSupportTelnetMode(TELNET_COMPRESS2))
-							telnetSupportSet.remove(Integer.valueOf(TELNET_COMPRESS2));
-						changeTelnetMode(rawout,TELNET_COMPRESS2,false);
+						CMLib.s_sleep(1000);
 						rawout.close();
 					}
 					else
