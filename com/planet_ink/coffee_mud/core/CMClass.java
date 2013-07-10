@@ -1383,14 +1383,14 @@ public class CMClass extends ClassLoader
 	 * @param ID the ID to search for
 	 * @return the CMObject that the ID belongs to, straight from the map.
 	 */
-	public static final CMObject getGlobal(final Map<String,? extends CMObject> fromThese, final String calledThis)
+	public static final CMObject getGlobal(final Map<String,? extends CMObject> list, final String calledThis)
 	{
-		CMObject o=fromThese.get(calledThis);
+		CMObject o=list.get(calledThis);
 		if(o==null)
 		{
-			for(String s : fromThese.keySet())
+			for(String s : list.keySet())
 			{
-				o=fromThese.get(s);
+				o=list.get(s);
 				if(classID(o).equalsIgnoreCase(calledThis))
 					return o;
 			}

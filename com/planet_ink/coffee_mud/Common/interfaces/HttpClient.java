@@ -144,21 +144,21 @@ public interface HttpClient extends Tickable, CMCommon
 	/**
 	 * An http request builder method that causes this request
 	 * to occur as a GET
-	 * @param the url to use
+	 * @param url the url to use
 	 * @return this
 	 */
 	public HttpClient doGet(String url) throws IOException;
 	/**
 	 * An http request builder method that causes this request
 	 * to occur as a HEAD
-	 * @param the url to use
+	 * @param url the url to use
 	 * @return this
 	 */
 	public HttpClient doHead(String url) throws IOException;
 	/**
 	 * An http request builder method that causes this request
 	 * to occur.
-	 * @param the url to use
+	 * @param url the url to use
 	 * @return this
 	 */
 	public HttpClient doRequest(String url) throws IOException;
