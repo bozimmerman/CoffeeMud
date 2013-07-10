@@ -29,6 +29,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+/**
+ * Currently unused.  Move along.
+ * @author Bo Zimmerman
+ *
+ */
 public interface EventHandlers extends MsgListener, StatsAffecting
 {
 	public boolean approveGetItem(MOB mob, Item item);

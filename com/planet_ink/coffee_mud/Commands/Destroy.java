@@ -714,7 +714,7 @@ public class Destroy extends StdCommand
 		Object O=CMClass.getObjectOrPrototype(A.ID());
 		if(!(O instanceof Ability))
 		{
-			mob.tell("'"+classID+"' can not be deleted, because it is also an "+CMClass.rawClassName(O)+".");
+			mob.tell("'"+classID+"' can not be deleted, because it is also an "+CMClass.getSimpleClassName(O)+".");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}

@@ -281,7 +281,7 @@ public class MUD extends Thread implements MudHost
 		}
 
 		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading base classes");
-		if(!CMClass.loadClasses(page))
+		if(!CMClass.loadAllCoffeeMudClasses(page))
 		{
 			fatalStartupError(t,0);
 			return false;

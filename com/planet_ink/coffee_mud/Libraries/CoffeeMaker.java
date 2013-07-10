@@ -173,7 +173,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	public String getGenAbilityXML(Ability A)
 	{
-		return new StringBuilder("<ABILITY ID=\"").append(A.ID()).append("\" TYPE=\"").append(CMClass.rawClassName(A)).append("\">")
+		return new StringBuilder("<ABILITY ID=\"").append(A.ID()).append("\" TYPE=\"").append(CMClass.getSimpleClassName(A)).append("\">")
 		   .append(A.getStat("ALLXML"))
 		   .append("</ABILITY>").toString();
 	}

@@ -1004,7 +1004,7 @@ public class Import extends StdCommand
 						if(!mob.session().confirm("Custom Ability '"+A.ID()+"' found, import (Y/n)?","Y"))
 							continue;
 					CMClass.addClass(CMObjectType.ABILITY, A);
-					CMLib.database().DBCreateAbility(A.ID(),CMClass.rawClassName(A),A.getStat("ALLXML"));
+					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
 				}
 				else
 				if(!A2.isGeneric())
@@ -1017,7 +1017,7 @@ public class Import extends StdCommand
 							continue;
 					CMClass.delClass(CMObjectType.ABILITY, A2);
 					CMClass.addClass(CMObjectType.ABILITY, A);
-					CMLib.database().DBCreateAbility(A.ID(),CMClass.rawClassName(A),A.getStat("ALLXML"));
+					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
 				}
 			}
 		}
