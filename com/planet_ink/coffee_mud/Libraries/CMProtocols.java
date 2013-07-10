@@ -1160,7 +1160,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		char_worth,
 		group,
 		room_info,
-		comm_channel
+		comm_channel,
+		ire_composer_setbuffer
 	}
 	
 	protected String processGmcpStr(final Session session, final char[] data, final int dataSize, final Map<String,Double> supportables)
@@ -1253,6 +1254,28 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case core_goodbye:
 				{
 					session.stopSession(false,false,false);
+					break;
+				}
+				case ire_composer_setbuffer:
+				{
+					String buf = null;
+					if(json!=null)
+						buf=json.getCheckedString("root");
+					if(buf != null)
+					{
+						if(buf.indexOf('\n')>0)
+						{
+							buf=CMStrings.replaceAll(buf, "\n", "\\n");
+							buf=CMStrings.replaceAll(buf, "\r", "");
+						}
+						else
+						if(buf.indexOf('\r')>0)
+						{
+							buf=CMStrings.replaceAll(buf, "\r", "\\n");
+							buf=CMStrings.replaceAll(buf, "\n", "");
+						}
+						session.setFakeInput(buf);
+					}
 					break;
 				}
 				case char_vitals:

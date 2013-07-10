@@ -860,6 +860,12 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public void sendGMCPEvent(final String eventName, final String json);
 	
+	/**
+	 * Send this session fake input as if the user had typed it in.
+	 * @param input text to send.
+	 */
+	public void setFakeInput(String input);
+	
 	/** TELNET CODE: transmit binary */
 	public static final int TELNET_BINARY=0;
 	/** TELNET CODE: echo */
@@ -1033,7 +1039,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		{
 			this(type, "", 0);
 		}
-		
+
 		/**
 		 * Returns true if a timeout was given, and this class has been
 		 * active longer than that amount of time.

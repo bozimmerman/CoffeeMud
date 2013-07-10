@@ -418,6 +418,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		final Session sess=mob.session();
 		if((sess == null )||(sess.isStopped())) 
 			return MsgMkrResolution.CANCELFILE;
+		final boolean canExtEdit=((mob!=null)&&(mob.session()!=null)&&(mob.session().clientTelnetMode(Session.TELNET_GMCP)));
 		final String help=
 			"^HCoffeeMud Message Maker Options:^N\n\r"+
 			"^XA)^.^Wdd new lines (go into ADD mode)\n\r"+
@@ -427,7 +428,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			"^XE)^.^Wdit a line\n\r"+
 			"^XR)^.^Weplace text in the file\n\r"+
 			"^XS)^.^Wave the file\n\r"+
+			(canExtEdit?"^XW)^.^Write over using GMCP\n\r":"")+
 			"^XQ)^.^Wuit without saving";
+		
 		final String addModeMessage="^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N";
 		mob.tell("^HCoffeeMud Message Maker^N");
 		boolean menuMode=!autoAdd;
@@ -446,7 +449,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			else
 			{
 				LinkedList<String> paramsOut=new LinkedList<String>();
-				String option=sess.choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q)^H: ^N","ADLIERSQ?","?",-1,paramsOut);
+				String option=sess.choose("^HMenu ^N(?/A/D/L/I/E/R/S/Q"+(canExtEdit?"/W":"")+")^H: ^N","ADLIERSQ?"+(canExtEdit?"W":""),"?",-1,paramsOut);
 				String paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
 				String param1=(paramsOut.size()>0)?paramsOut.getFirst():null;
 				String param2=(paramsOut.size()>1)?CMParms.combine(paramsOut,1):null;
@@ -536,6 +539,29 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				case 'A': mob.tell(addModeMessage); 
 						  menuMode=false;
 						  break;
+				case 'W':
+				{
+					if(mob.session()!=null)
+					{
+						StringBuilder oldDoc=new StringBuilder();
+						for(String s : vbuf)
+							oldDoc.append(s).append("\n");
+						vbuf.clear();
+						mob.session().sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
+						oldDoc=null;
+						String newText=mob.session().prompt("Re-Enter the whole doc using your GMCP editor.\n\r" +
+								"If the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\r" +
+								"Proceed: ");
+						String[] newDoc=newText.split("\\\\n");
+						for(String s : newDoc)
+							vbuf.add(s);
+						if(newDoc.length>1)
+						{
+							mob.tell("\n\r^HNew text successfully imported.^N");
+						}
+					}
+					break;
+				}
 				case 'L':
 				{
 					StringBuffer list=new StringBuffer(messageTitle+"\n\r");

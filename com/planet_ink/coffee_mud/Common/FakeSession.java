@@ -70,6 +70,7 @@ public class FakeSession implements Session
 	public boolean isFake() { return true;}
 	public void resetIdleTimers(){}
 	public void sendGMCPEvent(final String eventName, final String json){}
+	public void setFakeInput(String input){ inputV.add(input); }
 	
 	public String[] clookup(){return new String[255];}
 	

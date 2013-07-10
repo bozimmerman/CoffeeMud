@@ -23,7 +23,7 @@
   21. MUDGrinder Factions Manager now allows pre-loaded faction toggling.
   22. The Session "ping" has been changed to a telnet NOP instead of 0, which should make That Client(TM) somewhat happier.
   23. The changelog.txt has been reformatted, and is slightly easier to read now!
-  24. CoffeeMud now supports GMCP according to CMUD and Aardwolf specs
+  24. CoffeeMud now supports GMCP according to CMUD and Aardwolf specs. SHELL .edit command supports GMCP editor -- I'll look for other places for it later.
 # Build 5.7.10 Release 2/17/2013 (* DB CHANGE!) (** Thanks to TGMUD for publishing their changelogs!!!)
    0. Database Schema Updated! Run DBUpgrade, OR create table CMCHCL (see appropriate schema file), then:
    INSERT INTO CMCHCL VALUES (SELECT USERID, CMCLAN, CMCLRO from CMCHAR where CMCLAN != ''); // lastly:

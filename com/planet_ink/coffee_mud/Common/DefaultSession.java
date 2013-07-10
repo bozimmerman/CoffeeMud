@@ -292,6 +292,15 @@ public class DefaultSession implements Session
 			}
 		}catch(Exception e){}
 	}
+	
+	public void setFakeInput(String input)
+	{
+		if(fakeInput!=null)
+			fakeInput.append(input);
+		else
+			fakeInput=new StringBuffer(input);
+	}
+
 
 	private void negotiateTelnetMode(OutputStream out, int optionCode)
 	throws IOException
@@ -364,7 +373,7 @@ public class DefaultSession implements Session
 		try
 		{
 			final String lowerEventName=eventName.toLowerCase().trim();
-			final int x=lowerEventName.indexOf('.');
+			final int x=lowerEventName.lastIndexOf('.');
 			if((x<0)&&(!gmcpSupports.containsKey(lowerEventName)))
 				return;
 			if((!gmcpSupports.containsKey(lowerEventName)) && (!gmcpSupports.containsKey(lowerEventName.substring(0, x))))
@@ -1173,28 +1182,34 @@ public class DefaultSession implements Session
 			break;
 		case TELNET_SB:
 		{
-			char[] subOptionData = new char[1024];
+			CharArrayWriter subOptionStream=new CharArrayWriter();
 			int subOptionCode = readByte();
-			int numBytes = 0;
 			int last = 0;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Reading sub-option "+subOptionCode);
 			while(((last = readByte()) != -1)
-			&&(numBytes<subOptionData.length)
 			&&(!killFlag))
 			{
+				if(subOptionStream.size()>1024*1024*5)
+				{
+					killFlag=true;
+					return;
+				}
+				else
 				if (last == TELNET_IAC)
 				{
 					last = readByte();
 					if (last == TELNET_IAC)
-						subOptionData[numBytes++] = TELNET_IAC;
+						subOptionStream.write(TELNET_IAC);
 					else
 					if (last == TELNET_SE)
 						break;
 				}
 				else
-					subOptionData[numBytes++] = (char)last;
+					subOptionStream.write((char)last);
 			}
-			handleSubOption(subOptionCode, subOptionData, numBytes);
+			char[] subOptionData=subOptionStream.toCharArray();
+			subOptionStream=null;
+			handleSubOption(subOptionCode, subOptionData, subOptionData.length);
 			break;
 		}
 		case TELNET_DO:
