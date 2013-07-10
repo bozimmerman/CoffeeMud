@@ -578,8 +578,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				try
 				{ 
 					String oldVal = (String)editRow.elementAt(a,2);
-					fakeSession.previousCMD().clear();
-					fakeSession.previousCMD().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
+					fakeSession.getPreviousCMD().clear();
+					fakeSession.getPreviousCMD().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
 					String newVal = A.commandLinePrompt(mob,oldVal,showNumber,showFlag);
 					editRow.setElementAt(a,2,newVal);
 				} catch(Exception e) {}

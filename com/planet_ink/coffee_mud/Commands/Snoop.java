@@ -43,7 +43,7 @@ public class Snoop extends StdCommand
 	{
 		List<Session> V=new Vector();
 		for(Session S2 : CMLib.sessions().allIterable())
-			if(S2.amBeingSnoopedBy(S))
+			if(S2.isBeingSnoopedBy(S))
 				V.add(S2);
 		return V;
 	}
@@ -56,14 +56,14 @@ public class Snoop extends StdCommand
 		if(mob.session()==null) return false;
 		boolean doneSomething=false;
 		for(Session S : CMLib.sessions().allIterable())
-			if(S.amBeingSnoopedBy(mob.session()))
+			if(S.isBeingSnoopedBy(mob.session()))
 			{
 				if(S.mob()!=null)
 					mob.tell("You stop snooping on "+S.mob().name()+".");
 				else
 					mob.tell("You stop snooping on someone.");
 				doneSomething=true;
-				S.stopBeingSnoopedBy(mob.session());
+				S.setBeingSnoopedBy(mob.session(),false);
 			}
 		if(commands.size()==0)
 		{
@@ -113,7 +113,7 @@ public class Snoop extends StdCommand
 				}
 			}
 			mob.tell("You start snooping on "+SnoopOn.mob().name()+".");
-			SnoopOn.startBeingSnoopedBy(mob.session());
+			SnoopOn.setBeingSnoopedBy(mob.session(), true);
 		}
 		return false;
 	}

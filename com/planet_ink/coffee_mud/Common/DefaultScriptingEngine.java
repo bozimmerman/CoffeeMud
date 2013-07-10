@@ -9232,8 +9232,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(chk)
 					{
 						str="";
-						if((msg.source().session()!=null)&&(msg.source().session().previousCMD()!=null))
-							str=" "+CMParms.combine(msg.source().session().previousCMD(),0).toUpperCase()+" ";
+						if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
+							str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
 						if((t[2].length()==0)||(t[2].equals("ALL")))
 							tryIt=true;
 						else
@@ -9475,8 +9475,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(chk)
 					{
 						String str="";
-						if((msg.source().session()!=null)&&(msg.source().session().previousCMD()!=null))
-							str=" "+CMParms.combine(msg.source().session().previousCMD(),0).toUpperCase()+" ";
+						if((msg.source().session()!=null)&&(msg.source().session().getPreviousCMD()!=null))
+							str=" "+CMParms.combine(msg.source().session().getPreviousCMD(),0).toUpperCase()+" ";
 						boolean doIt=false;
 						if((t[2].length()==0)||(t[2].equals("ALL")))
 							doIt=true;

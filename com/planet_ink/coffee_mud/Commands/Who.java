@@ -98,7 +98,7 @@ public class Who extends StdCommand
 			name="("+(who.Name().equals(who.name())?who.titledName():who.name())+")";
 		else
 			name=(who.Name().equals(who.name())?who.titledName():who.name());
-		if((who.session()!=null)&&(who.session().afkFlag()))
+		if((who.session()!=null)&&(who.session().isAfk()))
 		{
 			long t=(who.session().getIdleMillis()/1000);
 			String s=t+"s";

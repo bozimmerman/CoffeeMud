@@ -77,8 +77,8 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 				int x=msg.targetMessage().toUpperCase().indexOf("LEVEL UP");
 				if((!mob.isMonster())
 				&&(x>=0)
-				&&(mob.session().previousCMD()!=null)
-				&&(CMParms.combine(mob.session().previousCMD(),0).toUpperCase().indexOf("LEVEL UP")<0))
+				&&(mob.session().getPreviousCMD()!=null)
+				&&(CMParms.combine(mob.session().getPreviousCMD(),0).toUpperCase().indexOf("LEVEL UP")<0))
 					mob.tell("The wand fizzles in an irritating way.");
 				else
 				if(x>=0)

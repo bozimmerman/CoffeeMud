@@ -135,7 +135,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 						sessionInfo.append("status="+S.getStatus()+" ");
 						sessionInfo.append("active="+S.activeTimeMillis()+" ");
 						sessionInfo.append("online="+S.getMillisOnline()+" ");
-						sessionInfo.append("lastloop="+(System.currentTimeMillis()-S.lastLoopTime())+" ");
+						sessionInfo.append("lastloop="+(System.currentTimeMillis()-S.getInputLoopTime())+" ");
 						sessionInfo.append("addr="+S.getAddress()+" ");
 						sessionInfo.append("mob="+((S.mob()==null)?"null":S.mob().Name()));
 						Log.errOut("Pool_"+poolName,"Timed-Out Runnable: "+sessionInfo.toString());

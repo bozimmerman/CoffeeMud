@@ -207,7 +207,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 		{
-			if(S.clientTelnetMode(Session.TELNET_MXP))
+			if(S.getClientTelnetMode(Session.TELNET_MXP))
 			{
 				StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);
 				if(mxpText!=null)
@@ -217,7 +217,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				mob.tell("MXP codes have been disabled for this session.");
 		}
 		else
-		if(S.clientTelnetMode(Session.TELNET_MXP))
+		if(S.getClientTelnetMode(Session.TELNET_MXP))
 		{
 			S.changeTelnetMode(Session.TELNET_MXP,false);
 			S.setClientTelnetMode(Session.TELNET_MXP,false);
@@ -226,11 +226,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)))
 		{
-			if(!S.clientTelnetMode(Session.TELNET_MSP))
+			if(!S.getClientTelnetMode(Session.TELNET_MSP))
 				mob.tell("MSP sounds have been disabled for this session.");
 		}
 		else
-		if(S.clientTelnetMode(Session.TELNET_MSP))
+		if(S.getClientTelnetMode(Session.TELNET_MSP))
 		{
 			S.changeTelnetMode(Session.TELNET_MSP,false);
 			S.setClientTelnetMode(Session.TELNET_MSP,false);
@@ -382,7 +382,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				buf.setLength(0);
 			}
 			if(!session.isStopped())
-				session.updateLoopTime();
+				session.setInputLoopTime();
 			String s;
 			if(autoCharCreate)
 			{
@@ -452,7 +452,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					if(session.confirm("Create a new character called '"+login+"' (y/N)?", "N"))
 					{
 						if(!session.isStopped())
-							session.updateLoopTime();
+							session.setInputLoopTime();
 						if(createCharacter(acct, login, session) == LoginResult.CCREATION_EXIT)
 							return LoginResult.CCREATION_EXIT;
 					}
@@ -1363,10 +1363,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				session.setServerTelnetMode(Session.TELNET_ANSI,false);
 				session.setClientTelnetMode(Session.TELNET_ANSI,false);
 			}
-			if((session.clientTelnetMode(Session.TELNET_MSP))
+			if((session.getClientTelnetMode(Session.TELNET_MSP))
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)))
 				mob.setBitmap(mob.getBitmap()|MOB.ATT_SOUND);
-			if((session.clientTelnetMode(Session.TELNET_MXP))
+			if((session.getClientTelnetMode(Session.TELNET_MXP))
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 				mob.setBitmap(mob.getBitmap()|MOB.ATT_MXP);
 	

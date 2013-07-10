@@ -1244,7 +1244,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				case core_keepalive:
 				{
-					session.resetIdleTimers();
+					session.setIdleTimers();
 					break;
 				}
 				case core_ping:
@@ -1373,7 +1373,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(align!=Integer.MAX_VALUE)
 							doc.append("\"align\":").append(align).append(",");
 						int state=3;
-						if(session.afkFlag())
+						if(session.isAfk())
 							state=4;
 						else
 						if(CMLib.flags().isSleeping(mob))

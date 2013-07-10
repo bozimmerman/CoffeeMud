@@ -1419,9 +1419,9 @@ public class Test extends StdCommand
 				mobs[1].setSession(S2);
 				try
 				{
-					S1.previousCMD().add("Y");
-					S1.previousCMD().add("TESTCLAN");
-					S1.previousCMD().add("Y");
+					S1.getPreviousCMD().add("Y");
+					S1.getPreviousCMD().add("TESTCLAN");
+					S1.getPreviousCMD().add("Y");
 					
 				}
 				finally

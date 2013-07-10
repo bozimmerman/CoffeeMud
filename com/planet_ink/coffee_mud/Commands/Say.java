@@ -62,7 +62,7 @@ public class Say extends StdCommand
 
 	protected void gmcpSaySend(String sayName, MOB mob, Environmental target, CMMsg msg)
 	{
-		if((mob.session()!=null)&&(mob.session().clientTelnetMode(Session.TELNET_GMCP)))
+		if((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
 			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 					MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null, CMStrings.removeColors(msg.sourceMessage()), false))
@@ -73,7 +73,7 @@ public class Say extends StdCommand
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB M=R.fetchInhabitant(i);
-			if((M!=null)&&(M!=msg.source())&&(M.session()!=null)&&(M.session().clientTelnetMode(Session.TELNET_GMCP)))
+			if((M!=null)&&(M!=msg.source())&&(M.session()!=null)&&(M.session().getClientTelnetMode(Session.TELNET_GMCP)))
 			{
 				M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null, CMStrings.removeColors(msg.othersMessage()), false))

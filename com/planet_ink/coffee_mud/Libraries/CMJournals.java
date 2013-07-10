@@ -418,7 +418,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		final Session sess=mob.session();
 		if((sess == null )||(sess.isStopped())) 
 			return MsgMkrResolution.CANCELFILE;
-		final boolean canExtEdit=((mob!=null)&&(mob.session()!=null)&&(mob.session().clientTelnetMode(Session.TELNET_GMCP)));
+		final boolean canExtEdit=((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)));
 		final String help=
 			"^HCoffeeMud Message Maker Options:^N\n\r"+
 			"^XA)^.^Wdd new lines (go into ADD mode)\n\r"+

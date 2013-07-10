@@ -58,7 +58,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * or read from player records for a customized list.
 	 * @return telnet coded color strings.
 	 */
-	public String[] clookup();
+	public String[] getColorCodes();
 	
 	/**
 	 * Low level text output method.
@@ -471,43 +471,30 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/**
 	 * Notifies this session that the given session is snooping it.  
 	 * This session will manage said snooping.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#startBeingSnoopedBy(Session)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#stopBeingSnoopedBy(Session)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#amBeingSnoopedBy(Session)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setBeingSnoopedBy(Session, boolean)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isBeingSnoopedBy(Session)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#snoopSuspension(int)
-	 * @param S the session to snoop on me.
+	 * @param session the session to snoop on me.
+	 * @param onOff TODO
 	 */
-	public void startBeingSnoopedBy(Session S);
-	
-	/**
-	 * Notifies this session that the given session is no longer snooping it.
-	 * This session will remove said snooping.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#startBeingSnoopedBy(Session)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#stopBeingSnoopedBy(Session)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#amBeingSnoopedBy(Session)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#snoopSuspension(int)
-	 * @param S the session to stop snooping on me.
-	 */
-	public void stopBeingSnoopedBy(Session S);
+	public void setBeingSnoopedBy(Session session, boolean onOff);
 	
 	/**
 	 * Checks to see if the given session is snooping on this one.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#startBeingSnoopedBy(Session)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#stopBeingSnoopedBy(Session)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#amBeingSnoopedBy(Session)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setBeingSnoopedBy(Session, boolean)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isBeingSnoopedBy(Session)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#snoopSuspension(int)
 	 * @param S the session to check for a snoop on me.
 	 * @return true if the given session is snooping on me, false otherwise
 	 */
-	public boolean amBeingSnoopedBy(Session S);
+	public boolean isBeingSnoopedBy(Session S);
 	
 	/**
 	 * Increments or decrements the snoop suspension counter
 	 * by the given amount.  Only when the counter is 0 does
 	 * snooping of this session actually occur.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#startBeingSnoopedBy(Session)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#stopBeingSnoopedBy(Session)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#amBeingSnoopedBy(Session)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setBeingSnoopedBy(Session, boolean)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isBeingSnoopedBy(Session)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#snoopSuspension(int)
 	 * @param change the amount to change the snoop suspension counter by
 	 * @return the current value of the snoop suspension counter after the change
@@ -544,12 +531,12 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAFKMessage(String)
 	 * @return true if they are AFK, false otherwise
 	 */
-	public boolean afkFlag();
+	public boolean isAfk();
 	
 	/**
 	 * Sets whether this mob/session is currently Away From Keyboard
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#afkFlag()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#afkMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#isAfk()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getAfkMessage()
 	 * @param truefalse true if they are AFK, false otherwise
 	 */
 	public void setAfkFlag(boolean truefalse);
@@ -560,12 +547,12 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAFKMessage(String)
 	 * @return  the reason given by the user that they are AFK.
 	 */
-	public String afkMessage();
+	public String getAfkMessage();
 	
 	/**
 	 * Returns the reason given by the user that they are AFK.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAfkFlag(boolean)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#afkMessage()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getAfkMessage()
 	 * @param str the reason given by the user that they are AFK.
 	 */
 	public void setAFKMessage(String str);
@@ -595,7 +582,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * through this session.
 	 * @return a vector of strings
 	 */
-	public List<String> previousCMD();
+	public List<String> getPreviousCMD();
 	
 	/**
 	 * Returns the player MOB attached to this session object.
@@ -676,7 +663,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/**
 	 * Gets the number of milliseconds since a user entry was registered by this session
 	 * 
-	 * @see Session#resetIdleTimers()
+	 * @see Session#setIdleTimers()
 	 * @return the idle milliseconds passed
 	 */
 	public long getIdleMillis();
@@ -685,7 +672,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * Resets the internal idle timers.
 	 * @see Session#getIdleMillis()
 	 */
-	public void resetIdleTimers();
+	public void setIdleTimers();
 	
 	/**
 	 * Gets the milliseconds elapsed since this user came online.
@@ -732,19 +719,19 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * Returns the last time in milliseconds that this session began its input loop.
 	 * Is typically only held up by executing a user command, so it is an accurate
 	 * gauge of a locked up user command.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#updateLoopTime()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setInputLoopTime()
 	 * 
 	 * @return the last time in milliseconds that this session began its input loop
 	 */
-	public long lastLoopTime();
+	public long getInputLoopTime();
 	
 	/**
 	 * Sets the last time in milliseconds that this session began its input loop.
 	 * Is typically only held up by executing a user command, so it is an accurate
 	 * gauge of a locked up user command.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastLoopTime()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getInputLoopTime()
 	 */
-	public void updateLoopTime();
+	public void setInputLoopTime();
 	
 	/**
 	 * Whether this session is currently actively interacting with the user in 
@@ -771,7 +758,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * Sets a server telnet mode flag.
 	 * 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#serverTelnetMode(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getServerTelnetMode(int)
 	 * @param telnetCode the telnet code
 	 * @param onOff true to turn on, false to turn off the flag
 	 */
@@ -786,13 +773,13 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * 
 	 * @return true, if server telnet mode is on, false otherwise
 	 */
-	public boolean serverTelnetMode(int telnetCode);
+	public boolean getServerTelnetMode(int telnetCode);
 	
 	/**
 	 * Sets a client telnet mode flag.
 	 * 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#clientTelnetMode(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getClientTelnetMode(int)
 	 * 
 	 * @param telnetCode the telnet code
 	 * @param onOff true to turn on, false to turn off the flag
@@ -809,7 +796,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * 
 	 * @return true, if client telnet mode is on, false otherwise
 	 */
-	public boolean clientTelnetMode(int telnetCode);
+	public boolean getClientTelnetMode(int telnetCode);
 	
 	/**
 	 * Change telnet mode by sending the appropriate command to the clients client.
@@ -850,7 +837,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @param tag the tag to check
 	 * @return true if allowed, false otherwise
 	 */
-	public boolean allowMxp(String tag);
+	public boolean isAllowedMxp(String tag);
 	
 	/**
 	 * Potentially sends the GMCP event of the given name with the given json

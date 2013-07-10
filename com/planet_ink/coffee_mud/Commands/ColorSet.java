@@ -101,7 +101,7 @@ public class ColorSet extends StdCommand
 				newChanges+=c+CMLib.color().translateANSItoCMCode(clookup[0][c])+"#";
 		}
 		pstats.setColorStr(newChanges);
-		clookup[0]=session.clookup().clone();
+		clookup[0]=session.getColorCodes().clone();
 	}
 	
 	public boolean execute(final MOB mob, Vector commands, int metaFlags)
@@ -113,7 +113,7 @@ public class ColorSet extends StdCommand
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) 
 			return false;
-		final String[][] clookup=new String[][]{session.clookup().clone()};
+		final String[][] clookup=new String[][]{session.getColorCodes().clone()};
 		if((commands.size()>1)
 		&&("DEFAULT".startsWith(CMParms.combine(commands,1).toUpperCase())))
 		{

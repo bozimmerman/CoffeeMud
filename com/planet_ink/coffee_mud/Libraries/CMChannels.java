@@ -280,12 +280,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			{
 				if((S!=mySession)
 				&&(S.mob()!=null)
-				&&(mySession.amBeingSnoopedBy(S))
+				&&(mySession.isBeingSnoopedBy(S))
 				&&(!mayReadThisChannel(S.mob(),channelCode,false)))
 				{
 					if(invalid==null) invalid=new Vector<Session>();
 					invalid.add(S);
-					mySession.stopBeingSnoopedBy(S);
+					mySession.setBeingSnoopedBy(S,false);
 				}
 			}
 		}
@@ -296,7 +296,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	{
 		if((mySession==null)||(invalid==null)) return;
 		for(int s=0;s<invalid.size();s++)
-			mySession.startBeingSnoopedBy(invalid.get(s));
+			mySession.setBeingSnoopedBy(invalid.get(s), true);
 	}
 
 	public String parseOutFlags(String mask, Set<ChannelFlag> flags, String[] colorOverride)
@@ -438,7 +438,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		&&(R!=null)
 		&&((sender.location()==R)||(R.okMessage(ses.mob(),msg))))
 		{
-			if(ses.clientTelnetMode(Session.TELNET_GMCP))
+			if(ses.getClientTelnetMode(Session.TELNET_GMCP))
 			{
 				ses.sendGMCPEvent("comm.channel", "{\"chan\":\""+getChannel(channelInt).name+"\",\"msg\":\""+
 						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(), CMStrings.removeColors((M==msg.source())?msg.sourceMessage():msg.othersMessage()), false))

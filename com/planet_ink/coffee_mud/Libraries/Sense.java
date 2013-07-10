@@ -455,7 +455,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isFalling(Physical P)
 	{ return (P!=null)&&((P.phyStats().disposition()&PhyStats.IS_FALLING)==PhyStats.IS_FALLING); }
 	public boolean isBusy(Physical P)
-	{ return (P instanceof MOB)&&(((MOB)P).session()!=null)&&((System.currentTimeMillis()-((MOB)P).session().lastLoopTime())>30000);}
+	{ return (P instanceof MOB)&&(((MOB)P).session()!=null)&&((System.currentTimeMillis()-((MOB)P).session().getInputLoopTime())>30000);}
 
 	public boolean isSwimmingInWater(Physical P)
 	{

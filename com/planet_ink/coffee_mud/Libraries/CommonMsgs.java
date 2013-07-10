@@ -346,7 +346,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					if((mob.location().okMessage(mob,msg))
 					&&((ignore)||(target.okMessage(target,msg))))
 					{
-						if((mob.session()!=null)&&(mob.session().clientTelnetMode(Session.TELNET_GMCP)))
+						if((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 						{
 							mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\"tell\",\"msg\":\""+
 									MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null, CMStrings.removeColors(msg.sourceMessage()), false))
@@ -355,7 +355,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						mob.executeMsg(mob,msg);
 						if((mob!=target)&&(!ignore))
 						{
-							if((target.session()!=null)&&(target.session().clientTelnetMode(Session.TELNET_GMCP)))
+							if((target.session()!=null)&&(target.session().getClientTelnetMode(Session.TELNET_GMCP)))
 							{
 								target.session().sendGMCPEvent("comm.channel", "{\"chan\":\"tell\",\"msg\":\""+
 										MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, target, mob, target, null, CMStrings.removeColors(msg.targetMessage()), false))
@@ -412,7 +412,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
 	protected void gmcpSaySend(String sayName, MOB mob, MOB target, CMMsg msg)
 	{
-		if((mob.session()!=null)&&(mob.session().clientTelnetMode(Session.TELNET_GMCP)))
+		if((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
 			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 					MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null, CMStrings.removeColors(msg.sourceMessage()), false))
@@ -423,7 +423,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB M=R.fetchInhabitant(i);
-			if((M!=null)&&(M!=msg.source())&&(M.session()!=null)&&(M.session().clientTelnetMode(Session.TELNET_GMCP)))
+			if((M!=null)&&(M!=msg.source())&&(M.session()!=null)&&(M.session().getClientTelnetMode(Session.TELNET_GMCP)))
 			{
 				M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null, CMStrings.removeColors(msg.othersMessage()), false))
@@ -1141,7 +1141,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					roomDesc += getRoomExitsParagraph(mob,room);
 				Say.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
 				
-				if((!mob.isMonster())&&(sess.clientTelnetMode(Session.TELNET_MXP)))
+				if((!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
 					Say.append(CMLib.protocol().mxpImage(room," ALIGN=RIGHT H=70 W=70"));
 				if(compress)
 					Say.append("^N  ");
@@ -1181,7 +1181,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				{
 					if(CMLib.flags().canBeSeenBy(mob2,mob))
 					{
-						if((!compress)&&(!mob.isMonster())&&(sess.clientTelnetMode(Session.TELNET_MXP)))
+						if((!compress)&&(!mob.isMonster())&&(sess.getClientTelnetMode(Session.TELNET_MXP)))
 							Say.append(CMLib.protocol().mxpImage(mob2," H=10 W=10",""," "));
 						Say.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
 						if(compress) Say.append(CMLib.flags().colorCodes(mob2,mob)+"^M ");

@@ -68,7 +68,7 @@ public class Spell_Daydream extends Spell
 							MOB inhab=R.fetchInhabitant(i);
 							if((inhab!=null)
 							&&(!inhab.isMonster())
-							&&(inhab.session().afkFlag())
+							&&(inhab.session().isAfk())
 							&&(!CMLib.flags().isSleeping(inhab)))
 							{
 								msg=CMClass.getMsg(mob,inhab,this,verbalCastCode(mob,inhab,auto),null);

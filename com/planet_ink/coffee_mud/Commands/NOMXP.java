@@ -45,9 +45,9 @@ public class NOMXP extends StdCommand
 		if(!mob.isMonster())
 		{
 			if((CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
-			||(mob.session().clientTelnetMode(Session.TELNET_MXP)))
+			||(mob.session().getClientTelnetMode(Session.TELNET_MXP)))
 			{
-				if(mob.session().clientTelnetMode(Session.TELNET_MXP))
+				if(mob.session().getClientTelnetMode(Session.TELNET_MXP))
 					mob.session().rawOut("\033[3z \033[7z");
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_MXP));
 				mob.session().changeTelnetMode(Session.TELNET_MXP,false);

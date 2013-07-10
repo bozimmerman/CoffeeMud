@@ -66,7 +66,7 @@ public class Archon_Record extends ArchonSkill
 				mob.setSession(null);
 			else
 			if(sess!=null)
-				mob.session().stopBeingSnoopedBy(sess);
+				mob.session().setBeingSnoopedBy(sess,false);
 			sess=null;
 		}
 	}
@@ -77,8 +77,8 @@ public class Archon_Record extends ArchonSkill
 		if(sess==null) return false;
 		if((affected instanceof MOB)
 		&&(((MOB)affected).session()!=null)
-		&&(!(((MOB)affected).session().amBeingSnoopedBy(sess))))
-			((MOB)affected).session().startBeingSnoopedBy(sess);
+		&&(!(((MOB)affected).session().isBeingSnoopedBy(sess))))
+			((MOB)affected).session().setBeingSnoopedBy(sess, true);
 		return true;
 	}
 	

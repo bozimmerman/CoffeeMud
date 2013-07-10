@@ -189,7 +189,7 @@ public class DefaultSession implements Session
 			changeTelnetMode(rawout,TELNET_NAWS,true);
 			//changeTelnetMode(rawout,TELNET_BINARY,true);
 			preliminaryRead(250);
-			if((!terminalType.equalsIgnoreCase("ANSI"))&&(clientTelnetMode(TELNET_ECHO)))
+			if((!terminalType.equalsIgnoreCase("ANSI"))&&(getClientTelnetMode(TELNET_ECHO)))
 				changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
 			rawout.flush();
 			preliminaryRead(250);
@@ -201,7 +201,7 @@ public class DefaultSession implements Session
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 
 			preliminaryRead(250);
-			if(clientTelnetMode(TELNET_COMPRESS2))
+			if(getClientTelnetMode(TELNET_COMPRESS2))
 			{
 				out.flush();
 				rawout.flush();
@@ -226,7 +226,7 @@ public class DefaultSession implements Session
 				rawout.flush();
 				preliminaryRead(500);
 			}
-			if(clientTelnetMode(Session.TELNET_MXP))
+			if(getClientTelnetMode(Session.TELNET_MXP))
 			{
 				rawOut("\n\033[6z\n\033[6z<SUPPORT IMAGE IMAGE.URL>\n");
 				if(out==null) return;
@@ -241,7 +241,7 @@ public class DefaultSession implements Session
 			preliminaryRead(500);
 			if(introTextStr!=null)
 				print(introTextStr);
-			if((clientTelnetMode(Session.TELNET_MXP))
+			if((getClientTelnetMode(Session.TELNET_MXP))
 			&&((mxpSupportSet.contains("+IMAGE.URL"))
 				||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
 			{
@@ -343,11 +343,11 @@ public class DefaultSession implements Session
 
 	public void setServerTelnetMode(int telnetCode, boolean onOff)
 	{ serverTelnetCodes[telnetCode]=onOff; }
-	public boolean serverTelnetMode(int telnetCode)
+	public boolean getServerTelnetMode(int telnetCode)
 	{ return serverTelnetCodes[telnetCode]; }
 	public void setClientTelnetMode(int telnetCode, boolean onOff)
 	{ clientTelnetCodes[telnetCode]=onOff; }
-	public boolean clientTelnetMode(int telnetCode)
+	public boolean getClientTelnetMode(int telnetCode)
 	{ return clientTelnetCodes[telnetCode]; }
 	private void changeTelnetMode(OutputStream out, int telnetCode, boolean onOff) throws IOException
 	{
@@ -358,9 +358,9 @@ public class DefaultSession implements Session
 		setServerTelnetMode(telnetCode,onOff);
 	}
 	
-	public boolean allowMxp(final String tagString)
+	public boolean isAllowedMxp(final String tagString)
 	{
-		if((!clientTelnetMode(TELNET_MXP))||(mxpSupportSet.size()==0))
+		if((!getClientTelnetMode(TELNET_MXP))||(mxpSupportSet.size()==0))
 			return false;
 		// someday this may get more complicated -- someday
 		return true;
@@ -368,7 +368,7 @@ public class DefaultSession implements Session
 	
 	public void sendGMCPEvent(final String eventName, final String json)
 	{
-		if((!clientTelnetMode(TELNET_GMCP))||(gmcpSupports.size()==0))
+		if((!getClientTelnetMode(TELNET_GMCP))||(gmcpSupports.size()==0))
 			return;
 		try
 		{
@@ -448,11 +448,11 @@ public class DefaultSession implements Session
 		setClientTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
 		boolean changedSomething=false;
 		boolean mxpSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))&&CMath.bset(mobbitmap,MOB.ATT_MXP);
-		if(mxpSet!=clientTelnetMode(TELNET_MXP))
-		{ changeTelnetMode(TELNET_MXP,!clientTelnetMode(TELNET_MXP)); changedSomething=true;}
+		if(mxpSet!=getClientTelnetMode(TELNET_MXP))
+		{ changeTelnetMode(TELNET_MXP,!getClientTelnetMode(TELNET_MXP)); changedSomething=true;}
 		boolean mspSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP))&&CMath.bset(mobbitmap,MOB.ATT_SOUND);
-		if(mspSet!=clientTelnetMode(TELNET_MSP))
-		{ changeTelnetMode(TELNET_MSP,!clientTelnetMode(TELNET_MSP)); changedSomething=true;}
+		if(mspSet!=getClientTelnetMode(TELNET_MSP))
+		{ changeTelnetMode(TELNET_MSP,!getClientTelnetMode(TELNET_MSP)); changedSomething=true;}
 		try{if(changedSomething) blockingIn(500);}catch(Exception e){}
 	}
 
@@ -474,8 +474,8 @@ public class DefaultSession implements Session
 	public long getTotalTicks(){ return tickTotal;}
 	public long getMillisOnline(){ return System.currentTimeMillis()-onlineTime;}
 
-	public long lastLoopTime(){ return lastLoopTop;}
-	public void updateLoopTime(){ lastLoopTop=System.currentTimeMillis();}
+	public long getInputLoopTime(){ return lastLoopTop;}
+	public void setInputLoopTime(){ lastLoopTop=System.currentTimeMillis();}
 	public long getLastPKFight(){return lastPKFight;}
 	public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
 	public long getLastNPCFight(){return lastNPCFight;}
@@ -516,18 +516,22 @@ public class DefaultSession implements Session
 	{ 
 		killFlag=truefalse;
 	}
-	public List<String> previousCMD(){return previousCmd;}
-	public void startBeingSnoopedBy(Session S)
+	public List<String> getPreviousCMD(){return previousCmd;}
+	public void setBeingSnoopedBy(Session session, boolean onOff)
 	{
-		if(!snoops.contains(S))
-			snoops.add(S);
+		if(onOff)
+		{
+			if(!snoops.contains(session))
+				snoops.add(session);
+		}
+		else
+		{
+			while(snoops.contains(session))
+				snoops.remove(session);
+		}
 	}
-	public void stopBeingSnoopedBy(Session S)
-	{
-		while(snoops.contains(S))
-			snoops.remove(S);
-	}
-	public boolean amBeingSnoopedBy(Session S)
+	
+	public boolean isBeingSnoopedBy(Session S)
 	{
 		if(S==null) return snoops.size()==0;
 		return(snoops.contains(S));
@@ -554,7 +558,7 @@ public class DefaultSession implements Session
 			previousCmd.add(((String)cmds.get(i)));
 	}
 
-	public boolean afkFlag(){return afkFlag;}
+	public boolean isAfk(){return afkFlag;}
 	public void setAfkFlag(boolean truefalse)
 	{
 		if(afkFlag==truefalse) return;
@@ -567,7 +571,7 @@ public class DefaultSession implements Session
 			println("\n\rYou are no longer AFK.");
 		}
 	}
-	public String afkMessage()
+	public String getAfkMessage()
 	{
 		if(mob==null) return "";
 		if((afkMessage==null)||(CMStrings.removeColors(afkMessage).trim().length()==0))
@@ -807,7 +811,7 @@ public class DefaultSession implements Session
 	public void promptPrint(String msg)
 	{
 		print(msg);
-		if((!clientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag))
+		if((!getClientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag))
 			try { rawBytesOut(rawout, TELNETGABYTES); } catch(Exception e){}
 	}
 
@@ -945,7 +949,7 @@ public class DefaultSession implements Session
 		return input;
 	}
 
-	public String[] clookup()
+	public String[] getColorCodes()
 	{
 		if(clookup==null)
 			clookup=CMLib.color().standardColorLookups();
@@ -1219,7 +1223,7 @@ public class DefaultSession implements Session
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got DO "+Session.TELNET_DESCS[last]);
 			if((terminalType.equalsIgnoreCase("zmud")||terminalType.equalsIgnoreCase("cmud"))&&(last==Session.TELNET_ECHO))
 				setClientTelnetMode(Session.TELNET_ECHO,false);
-			if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
+			if((last==TELNET_COMPRESS2)&&(getServerTelnetMode(last)))
 			{
 				setClientTelnetMode(last,true);
 				if(connectionComplete)
@@ -1236,7 +1240,7 @@ public class DefaultSession implements Session
 			if(!mightSupportTelnetMode(last))
 				changeTelnetMode(last,false);
 			else
-			if(!serverTelnetMode(last))
+			if(!getServerTelnetMode(last))
 				changeTelnetMode(last,true);
 			if(serverTelnetCodes[TELNET_LOGOUT])
 				setKillFlag(true);
@@ -1247,12 +1251,12 @@ public class DefaultSession implements Session
 			int last=readByte();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got DONT "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,false);
-			if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
+			if((last==TELNET_COMPRESS2)&&(getServerTelnetMode(last)))
 			{
 				setClientTelnetMode(last,false);
 				out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 			}
-			if((mightSupportTelnetMode(last)&&(serverTelnetMode(last))))
+			if((mightSupportTelnetMode(last)&&(getServerTelnetMode(last))))
 				changeTelnetMode(last,false);
 			break;
 		}
@@ -1266,7 +1270,7 @@ public class DefaultSession implements Session
 			if(!mightSupportTelnetMode(last))
 				changeTelnetModeBackwards(last,false);
 			else
-			if(!serverTelnetMode(last))
+			if(!getServerTelnetMode(last))
 				changeTelnetModeBackwards(last,true);
 			if(serverTelnetCodes[TELNET_LOGOUT])
 				setKillFlag(true);
@@ -1277,7 +1281,7 @@ public class DefaultSession implements Session
 			int last=readByte();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET)) Log.debugOut("Got WONT "+Session.TELNET_DESCS[last]);
 			setClientTelnetMode(last,false);
-			if((mightSupportTelnetMode(last))&&(serverTelnetMode(last)))
+			if((mightSupportTelnetMode(last))&&(getServerTelnetMode(last)))
 				changeTelnetModeBackwards(last,false);
 			break;
 		}
@@ -1409,7 +1413,7 @@ public class DefaultSession implements Session
 						else
 							lastWasLF = false;
 						lastWasCR = false;
-						if (clientTelnetMode(TELNET_ECHO))
+						if (getClientTelnetMode(TELNET_ECHO))
 							rawCharsOut(""+(char)13+(char)10);  // CR
 						break;
 					}
@@ -1424,7 +1428,7 @@ public class DefaultSession implements Session
 						else
 							lastWasCR = false;
 						lastWasLF = false;
-						if (clientTelnetMode(TELNET_ECHO))
+						if (getClientTelnetMode(TELNET_ECHO))
 							rawCharsOut(""+(char)13+(char)10);  // CR
 						break;
 					}
@@ -1450,7 +1454,7 @@ public class DefaultSession implements Session
 				{
 					lastKeystroke=System.currentTimeMillis();
 					if(appendInputFlag) input.append((char)c);
-					if (clientTelnetMode(TELNET_ECHO))
+					if (getClientTelnetMode(TELNET_ECHO))
 						rawCharsOut((char)c);
 					if(!appendInputFlag) return c;
 				}
@@ -1649,7 +1653,7 @@ public class DefaultSession implements Session
 		if(mob==null) return;
 		if(mob.playerStats()==null) return;
 		StringBuffer buf=new StringBuffer("");
-		if(clientTelnetMode(Session.TELNET_MXP))
+		if(getClientTelnetMode(Session.TELNET_MXP))
 			buf.append("^<!EN Hp '"+mob().curState().getHitPoints()
 					  +"'^>^<!EN MaxHp '"+mob().maxState().getHitPoints()
 					  +"'^>^<!EN Mana '"+mob().curState().getMana()
@@ -1834,7 +1838,7 @@ public class DefaultSession implements Session
 		if(activeMillis>=nextMsdpPing)
 		{
 			nextMsdpPing=activeMillis+MSDPPINGINTERVAL;
-			if(clientTelnetMode(TELNET_MSDP))
+			if(getClientTelnetMode(TELNET_MSDP))
 			{
 				byte[] msdpPingBuf=CMLib.protocol().pingMsdp(this, msdpReportables);
 				if(msdpPingBuf!=null)
@@ -1844,7 +1848,7 @@ public class DefaultSession implements Session
 						Log.debugOut("MSDP Reported: "+msdpPingBuf.length+" bytes");
 				}
 			}
-			if(clientTelnetMode(TELNET_GMCP))
+			if(getClientTelnetMode(TELNET_GMCP))
 			{
 				byte[] gmcpPingBuf=CMLib.protocol().pingGmcp(this, gmcpPings, gmcpSupports);
 				if(gmcpPingBuf!=null)
@@ -1974,8 +1978,8 @@ public class DefaultSession implements Session
 						{
 							StringBuilder loginMsg=new StringBuilder("");
 							loginMsg.append(getAddress()).append(" "+terminalType)
-							.append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-							.append(clientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
+							.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+							.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
 							.append(", account login: "+acct.accountName());
 							Log.sysOut(loginMsg.toString());
 						}
@@ -1998,10 +2002,10 @@ public class DefaultSession implements Session
 						userLoginTime=System.currentTimeMillis();
 						StringBuilder loginMsg=new StringBuilder("");
 						loginMsg.append(getAddress()).append(" "+terminalType)
-						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&clientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
-						.append(clientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
-						.append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&clientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
+						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+						.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
+						.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
 						.append(", character login: "+mob.Name());
 						Log.sysOut(loginMsg.toString());
 						if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
@@ -2216,7 +2220,7 @@ public class DefaultSession implements Session
 					}
 				}
 	
-				if(!afkFlag())
+				if(!isAfk())
 				{
 					if(getIdleMillis()>=600000)
 						setAfkFlag(true);
@@ -2364,7 +2368,7 @@ public class DefaultSession implements Session
 		}
 	}
 
-	public void resetIdleTimers()
+	public void setIdleTimers()
 	{
 		lastKeystroke=System.currentTimeMillis();
 		lastWriteTime=System.currentTimeMillis();
@@ -2383,9 +2387,9 @@ public class DefaultSession implements Session
 		if(stat==null){ return "";}
 		switch(stat)
 		{
-		case PREVCMD: return CMParms.combineWithQuotes(previousCMD(),0);
-		case ISAFK: return ""+afkFlag();
-		case AFKMESSAGE: return afkMessage();
+		case PREVCMD: return CMParms.combineWithQuotes(getPreviousCMD(),0);
+		case ISAFK: return ""+isAfk();
+		case AFKMESSAGE: return getAfkMessage();
 		case ADDRESS: return getAddress();
 		case IDLETIME: return CMLib.time().date2String(System.currentTimeMillis()-getIdleMillis());
 		case LASTMSG: return CMParms.combineWithQuotes(getLastMsgs(),0);
@@ -2395,7 +2399,7 @@ public class DefaultSession implements Session
 		case TOTALMILLIS: return CMLib.time().date2String(System.currentTimeMillis()-getTotalMillis());
 		case TOTALTICKS: return ""+getTotalTicks();
 		case WRAP: return ""+getWrap();
-		case LASTLOOPTIME: return CMLib.time().date2String(lastLoopTime());
+		case LASTLOOPTIME: return CMLib.time().date2String(getInputLoopTime());
 		default: Log.errOut("Session","getStat:Unhandled:"+stat.toString()); break;
 		}
 		return null;

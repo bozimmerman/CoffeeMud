@@ -46,16 +46,16 @@ public class MXP extends StdCommand
 		if(!mob.isMonster())
 		{
 			if((!CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
-			||(!mob.session().clientTelnetMode(Session.TELNET_MXP)))
+			||(!mob.session().getClientTelnetMode(Session.TELNET_MXP)))
 			{
 				mob.session().changeTelnetMode(Session.TELNET_MXP,true);
 				if(mob.session().getTerminalType().toLowerCase().startsWith("mushclient"))
 					mob.session().negotiateTelnetMode(Session.TELNET_MXP);
-				for(int i=0;((i<5)&&(!mob.session().clientTelnetMode(Session.TELNET_MXP)));i++)
+				for(int i=0;((i<5)&&(!mob.session().getClientTelnetMode(Session.TELNET_MXP)));i++)
 				{
 					try{mob.session().prompt("",250);}catch(Exception e){}
 				}
-				if(mob.session().clientTelnetMode(Session.TELNET_MXP))
+				if(mob.session().getClientTelnetMode(Session.TELNET_MXP))
 				{
 					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_MXP));
 					StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);

@@ -52,14 +52,14 @@ public class Sounds extends StdCommand
 						force=true;
 			Session session=mob.session();
 			if((!CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
-			||(!session.clientTelnetMode(Session.TELNET_MSP)))
+			||(!session.getClientTelnetMode(Session.TELNET_MSP)))
 			{
 				session.changeTelnetMode(Session.TELNET_MSP,true);
-				for(int i=0;((i<5)&&(!session.clientTelnetMode(Session.TELNET_MSP)));i++)
+				for(int i=0;((i<5)&&(!session.getClientTelnetMode(Session.TELNET_MSP)));i++)
 				{
 					try{mob.session().prompt("",500);}catch(Exception e){}
 				}
-				if(session.clientTelnetMode(Session.TELNET_MSP))
+				if(session.getClientTelnetMode(Session.TELNET_MSP))
 				{
 					mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_SOUND));
 					mob.tell("MSP Sound/Music enabled.\n\r");

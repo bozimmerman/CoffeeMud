@@ -347,7 +347,7 @@ public class IMudInterface implements ImudServices, Serializable
 					pkt=fpkt;
 					fpkt.e_mail="0";
 					Session sess=M.session();
-					if((sess==null)||(!sess.afkFlag()))
+					if((sess==null)||(!sess.isAfk()))
 						fpkt.idle_time="-1";
 					else
 						fpkt.idle_time=Long.toString(sess.getIdleMillis()/1000);

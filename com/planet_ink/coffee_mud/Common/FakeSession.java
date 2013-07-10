@@ -66,13 +66,13 @@ public class FakeSession implements Session
 	public void logout(boolean b1){}
 	public String getTerminalType(){ return "Fake";}
 	public void negotiateTelnetMode(int code){}
-	public boolean allowMxp(String tag) { return false; }
+	public boolean isAllowedMxp(String tag) { return false; }
 	public boolean isFake() { return true;}
-	public void resetIdleTimers(){}
+	public void setIdleTimers(){}
 	public void sendGMCPEvent(final String eventName, final String json){}
 	public void setFakeInput(String input){ inputV.add(input); }
 	
-	public String[] clookup(){return new String[255];}
+	public String[] getColorCodes(){return new String[255];}
 	
 	public void onlyPrint(String msg, boolean noCache){
 		if(theFile != null) {
@@ -158,9 +158,8 @@ public class FakeSession implements Session
 		}
 	}
 	
-	public void startBeingSnoopedBy(Session S){}
-	public void stopBeingSnoopedBy(Session S){}
-	public boolean amBeingSnoopedBy(Session S){return S==this;}
+	public void setBeingSnoopedBy(Session session, boolean onOff){}
+	public boolean isBeingSnoopedBy(Session S){return S==this;}
 	public int snoopSuspension(int x){return 0;}
 	
 	@SuppressWarnings("rawtypes")
@@ -168,16 +167,16 @@ public class FakeSession implements Session
 	public void stopSession(boolean t1, boolean t2, boolean t3){}
 	public boolean isStopped(){return false;}
 	
-	public boolean afkFlag(){return false;}
+	public boolean isAfk(){return false;}
 	public void setAfkFlag(boolean truefalse){}
-	public String afkMessage(){
+	public String getAfkMessage(){
 		if(bout!=null)
 			return new String(bout.toByteArray());
 		return "";
 	}
 	public void setAFKMessage(String str){}
 	
-	public List<String> previousCMD() { return inputV;}
+	public List<String> getPreviousCMD() { return inputV;}
 	public MOB mob() { return mob;}
 	public void setMob(MOB newmob){ mob=newmob;}
 	public void setAccount(PlayerAccount account){}
@@ -197,14 +196,14 @@ public class FakeSession implements Session
 	public void setLastPKFight(){}
 	public long getLastNPCFight(){return 0;}
 	public void setLastNPCFight(){}
-	public long lastLoopTime(){return 0;}
-	public void updateLoopTime(){}
+	public long getInputLoopTime(){return 0;}
+	public void setInputLoopTime(){}
 	public List<String> getLastMsgs(){return new Vector<String>();}
 	
 	public void setServerTelnetMode(int telnetCode, boolean onOff){}
-	public boolean serverTelnetMode(int telnetCode){return false;}
+	public boolean getServerTelnetMode(int telnetCode){return false;}
 	public void setClientTelnetMode(int telnetCode, boolean onOff){}
-	public boolean clientTelnetMode(int telnetCode){return false;}
+	public boolean getClientTelnetMode(int telnetCode){return false;}
 	public void changeTelnetMode(int telnetCode, boolean onOff){}
 	public void initTelnetMode(int mobbitmap){}
 	public int getSaveStatIndex() { return 0;}

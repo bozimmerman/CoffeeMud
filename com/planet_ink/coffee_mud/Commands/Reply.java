@@ -95,8 +95,8 @@ public class Reply extends StdCommand
 			}
 		}
 		if((pstats.replyTo().session()!=null)
-		&&(pstats.replyTo().session().afkFlag()))
-			mob.tell(pstats.replyTo().session().afkMessage());
+		&&(pstats.replyTo().session().isAfk()))
+			mob.tell(pstats.replyTo().session().getAfkMessage());
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

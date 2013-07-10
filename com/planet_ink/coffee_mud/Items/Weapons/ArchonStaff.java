@@ -83,8 +83,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	{
 		if((!mob.isMonster())
 		&&(message.length()>0)
-		&&(mob.session().previousCMD()!=null)
-		&&(CMParms.combine(mob.session().previousCMD(),0).toUpperCase().indexOf(message.toUpperCase())<0))
+		&&(mob.session().getPreviousCMD()!=null)
+		&&(CMParms.combine(mob.session().getPreviousCMD(),0).toUpperCase().indexOf(message.toUpperCase())<0))
 		{
 			mob.tell("The wand fizzles in an irritating way.");
 			return false;

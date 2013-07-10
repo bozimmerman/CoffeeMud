@@ -127,9 +127,9 @@ public class Tell extends StdCommand
 			if(ts!=null) ts.snoopSuspension(-1);
 		}
 		
-		if((targetM.session()!=null)&&(targetM.session().afkFlag()))
+		if((targetM.session()!=null)&&(targetM.session().isAfk()))
 		{
-			mob.tell(targetM.session().afkMessage());
+			mob.tell(targetM.session().getAfkMessage());
 		}
 		return false;
 	}

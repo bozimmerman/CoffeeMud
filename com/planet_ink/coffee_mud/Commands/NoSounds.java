@@ -45,7 +45,7 @@ public class NoSounds extends StdCommand
 		if(!mob.isMonster())
 		{
 			if((CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
-			||(mob.session().clientTelnetMode(Session.TELNET_MSP)))
+			||(mob.session().getClientTelnetMode(Session.TELNET_MSP)))
 			{
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
 				mob.session().changeTelnetMode(Session.TELNET_MSP,false);

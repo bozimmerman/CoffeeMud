@@ -42,7 +42,7 @@ public class AFK extends StdCommand
 		throws java.io.IOException
 	{
 		if(mob.session()==null) return false;
-		if(mob.session().afkFlag())
+		if(mob.session().isAfk())
 			mob.session().setAfkFlag(false);
 		else
 		{
