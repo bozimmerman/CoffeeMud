@@ -34,26 +34,29 @@ public class DefaultPhyStats implements PhyStats
 {
 	public String ID(){return "DefaultPhyStats";}
 	public String name() { return ID();}
-	protected int[] DEFAULT_STATS={0,0,100,0,0,0,0,0,0,0};
-	protected int[] stats=DEFAULT_STATS.clone();
-	protected double Speed=1.0;			// should be positive
-	protected String replacementName=null;
-	protected String[] ambiances=null;
-	private final static String[] empty=new String[0];
+	
+	private final static String[]	empty			= new String[0];
+	private final static int[]		DEFAULT_STATS	= {0,0,100,0,0,0,0,0,0,0};
+	
+	protected int[]		stats			= DEFAULT_STATS.clone();
+	protected double	speed			= 1.0;			// should be positive
+	protected String	replacementName	= null;
+	protected String[]	ambiances		= null;
 
 	public DefaultPhyStats(){}
+
 	public void setAllValues(int def)
 	{
 		for(int i=0;i<NUM_STATS;i++)
 			stats[i]=def;
-		Speed=def;
+		speed=def;
 	}
 
 	public void reset()
 	{
 		for(int i=0;i<DEFAULT_STATS.length;i++)
 			stats[i]=DEFAULT_STATS[i];
-		Speed=1.0;
+		speed=1.0;
 		replacementName=null;
 		ambiances=null;
 	}
@@ -67,7 +70,7 @@ public class DefaultPhyStats implements PhyStats
 	public int height(){return stats[STAT_HEIGHT];}
 	public int armor(){return stats[STAT_ARMOR];}
 	public int damage(){return stats[STAT_DAMAGE];}
-	public double speed(){return Speed;}
+	public double speed(){return speed;}
 	public int attackAdjustment(){return stats[STAT_ATTACK];}
 	public String newName(){ return replacementName;}
 	public String[] ambiances(){ return (ambiances==null)?empty:ambiances;}
@@ -77,7 +80,7 @@ public class DefaultPhyStats implements PhyStats
 	public void setArmor(int newArmor){stats[STAT_ARMOR]=newArmor;}
 	public void setDamage(int newDamage){stats[STAT_DAMAGE]=newDamage;}
 	public void setWeight(int newWeight){stats[STAT_WEIGHT]=newWeight;}
-	public void setSpeed(double newSpeed){Speed=newSpeed;}
+	public void setSpeed(double newSpeed){speed=newSpeed;}
 	public void setAttackAdjustment(int newAdjustment){stats[STAT_ATTACK]=newAdjustment;}
 	public void setAbility(int newAdjustment){stats[STAT_ABILITY]=newAdjustment;}
 	public void setDisposition(int newDisposition){stats[STAT_DISPOSITION]=newDisposition;}
@@ -124,7 +127,7 @@ public class DefaultPhyStats implements PhyStats
 		{
 			for(int i=0;i<NUM_STATS;i++)
 				((DefaultPhyStats)intoStats).stats[i]=stats[i];
-			((DefaultPhyStats)intoStats).Speed=Speed;
+			((DefaultPhyStats)intoStats).speed=speed;
 			((DefaultPhyStats)intoStats).ambiances=ambiances;
 			((DefaultPhyStats)intoStats).replacementName=replacementName;
 		}

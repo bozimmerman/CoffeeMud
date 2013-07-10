@@ -102,10 +102,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return false;
 	}
 
-	public boolean mayReadThisChannel(MOB sender,
-									  boolean areaReq,
-									  Session ses, 
-									  int i)
+	public boolean mayReadThisChannel(MOB sender, boolean areaReq, Session ses, int i)
 	{
 		if(ses==null) 
 			return false;
@@ -441,6 +438,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		&&(R!=null)
 		&&((sender.location()==R)||(R.okMessage(ses.mob(),msg))))
 		{
+			if(ses.clientTelnetMode(Session.TELNET_GMCP))
+			{
+				ses.sendGMCPEvent("comm.channel", "{\"chan\":\""+getChannel(channelInt).name+"\",\"msg\":\""+
+						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(), CMStrings.removeColors((M==msg.source())?msg.sourceMessage():msg.othersMessage()), false))
+						+"\",\"player\":\""+msg.source().name()+"\"}");
+			}
 			M.executeMsg(M,msg);
 			didIt=true;
 			if(msg.trailerMsgs()!=null)

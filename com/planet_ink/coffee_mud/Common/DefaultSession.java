@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -354,6 +355,30 @@ public class DefaultSession implements Session
 			return false;
 		// someday this may get more complicated -- someday
 		return true;
+	}
+	
+	public void sendGMCPEvent(final String eventName, final String json)
+	{
+		if((!clientTelnetMode(TELNET_GMCP))||(gmcpSupports.size()==0))
+			return;
+		try
+		{
+			final String lowerEventName=eventName.toLowerCase().trim();
+			final int x=lowerEventName.indexOf('.');
+			if((x<0)&&(!gmcpSupports.containsKey(lowerEventName)))
+				return;
+			if((!gmcpSupports.containsKey(lowerEventName)) && (!gmcpSupports.containsKey(lowerEventName.substring(0, x))))
+				return;
+			if(CMSecurity.isDebugging(DbgFlag.TELNET))
+				Log.debugOut("GMCP Sent: "+(lowerEventName+" "+json));
+			rawBytesOut(rawout,TELNETBYTES_GMCP_HEAD);
+			rawBytesOut(rawout,(lowerEventName+" "+json).getBytes());
+			rawBytesOut(rawout,TELNETBYTES_END_SB);
+		}
+		catch(IOException e)
+		{
+			killFlag=true;
+		}
 	}
 	
 	// this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
@@ -1810,8 +1835,6 @@ public class DefaultSession implements Session
 				if(gmcpPingBuf!=null)
 				{
 					try { rawBytesOut(rawout, gmcpPingBuf);}catch(IOException e){}
-					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
-						Log.debugOut("GMCP Reported: "+gmcpPingBuf.length+" bytes");
 				}
 			}
 		}

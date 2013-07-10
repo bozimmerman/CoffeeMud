@@ -128,7 +128,9 @@ public class Tell extends StdCommand
 		}
 		
 		if((targetM.session()!=null)&&(targetM.session().afkFlag()))
+		{
 			mob.tell(targetM.session().afkMessage());
+		}
 		return false;
 	}
 	// the reason this is not 0ed is because of combat -- we want the players to use SAY, and pay for it when coordinating.

@@ -306,13 +306,15 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 	}
 
-	public void postSay(MOB mob, MOB target,String text){ postSay(mob,target,text,false,false);}
-	public void postSay(MOB mob, String text){ postSay(mob,null,text,false,false);}
-	public void postSay(MOB mob,
-						MOB target,
-						String text,
-						boolean isPrivate,
-						boolean tellFlag)
+	public void postSay(MOB mob, MOB target,String text)
+	{ 
+		postSay(mob,target,text,false,false);
+	}
+	public void postSay(MOB mob, String text)
+	{ 
+		postSay(mob,null,text,false,false);
+	}
+	public void postSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
 	{
 		Room location=mob.location();
 		text=CMProps.applyINIFilter(text,CMProps.Str.SAYFILTER);
@@ -344,9 +346,21 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					if((mob.location().okMessage(mob,msg))
 					&&((ignore)||(target.okMessage(target,msg))))
 					{
+						if((mob.session()!=null)&&(mob.session().clientTelnetMode(Session.TELNET_GMCP)))
+						{
+							mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\"tell\",\"msg\":\""+
+									MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null, CMStrings.removeColors(msg.sourceMessage()), false))
+									+"\",\"player\":\""+mob.name()+"\"}");
+						}
 						mob.executeMsg(mob,msg);
 						if((mob!=target)&&(!ignore))
 						{
+							if((target.session()!=null)&&(target.session().clientTelnetMode(Session.TELNET_GMCP)))
+							{
+								target.session().sendGMCPEvent("comm.channel", "{\"chan\":\"tell\",\"msg\":\""+
+										MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, target, mob, target, null, CMStrings.removeColors(msg.targetMessage()), false))
+										+"\",\"player\":\""+mob.name()+"\"}");
+							}
 							target.executeMsg(target,msg);
 							if(msg.trailerMsgs()!=null)
 							{
@@ -380,6 +394,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			else
 			{
 				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(target.name())+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?",CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?",CMMsg.NO_EFFECT,null);
+				gmcpSaySend("say",mob, target, msg);
 				if(location.okMessage(mob,msg))
 					location.send(mob,msg);
 			}
@@ -389,11 +404,34 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			String str="<S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?");
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors((target==null)?mob.name():target.name())+"\"^>"+str,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^>"+str,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^>"+str);
+			gmcpSaySend("say",mob, target, msg);
 			if(location.okMessage(mob,msg))
 				location.send(mob,msg);
 		}
 	}
 
+	protected void gmcpSaySend(String sayName, MOB mob, MOB target, CMMsg msg)
+	{
+		if((mob.session()!=null)&&(mob.session().clientTelnetMode(Session.TELNET_GMCP)))
+		{
+			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
+					MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null, CMStrings.removeColors(msg.sourceMessage()), false))
+					+"\",\"player\":\""+mob.name()+"\"}");
+		}
+		final Room R=mob.location();
+		if(R!=null)
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if((M!=null)&&(M!=msg.source())&&(M.session()!=null)&&(M.session().clientTelnetMode(Session.TELNET_GMCP)))
+			{
+				M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
+						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null, CMStrings.removeColors(msg.othersMessage()), false))
+						+"\",\"player\":\""+mob.name()+"\"}");
+			}
+		}
+	}
+	
 	public void handleBeingSniffed(CMMsg msg)
 	{
 		if(msg.target() instanceof Room)

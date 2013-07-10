@@ -852,6 +852,14 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 */
 	public boolean allowMxp(String tag);
 	
+	/**
+	 * Potentially sends the GMCP event of the given name with the given json
+	 * doc.
+	 * @param eventName the event name, like comm.channel
+	 * @param json the json doc, like {"blah":"BLAH"}
+	 */
+	public void sendGMCPEvent(final String eventName, final String json);
+	
 	/** TELNET CODE: transmit binary */
 	public static final int TELNET_BINARY=0;
 	/** TELNET CODE: echo */
@@ -943,6 +951,11 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	
 	/* The charset recognized by MSDP is unknown, so assume std ascii */
 	public final static String MSDP_CHARSET = "US-ASCII"; 
+	
+	/** How to start a GMCP subnegotiation */
+	public final static byte[] TELNETBYTES_GMCP_HEAD=new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SB,(byte)Session.TELNET_GMCP};
+	/** How to end a telnet subnegotiation */
+	public final static byte[] TELNETBYTES_END_SB=new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SE};
 	
 	/**
 	 * The internal class to managing asynchronous user input.

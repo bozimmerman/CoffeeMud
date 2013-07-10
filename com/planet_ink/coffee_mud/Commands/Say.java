@@ -60,6 +60,28 @@ public class Say extends StdCommand
 		"BEEN"
 	};
 
+	protected void gmcpSaySend(String sayName, MOB mob, Environmental target, CMMsg msg)
+	{
+		if((mob.session()!=null)&&(mob.session().clientTelnetMode(Session.TELNET_GMCP)))
+		{
+			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
+					MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null, CMStrings.removeColors(msg.sourceMessage()), false))
+					+"\",\"player\":\""+mob.name()+"\"}");
+		}
+		final Room R=mob.location();
+		if(R!=null)
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if((M!=null)&&(M!=msg.source())&&(M.session()!=null)&&(M.session().clientTelnetMode(Session.TELNET_GMCP)))
+			{
+				M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
+						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null, CMStrings.removeColors(msg.othersMessage()), false))
+						+"\",\"player\":\""+mob.name()+"\"}");
+			}
+		}
+	}
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -150,8 +172,8 @@ public class Say extends StdCommand
 			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
-		
-		
+	
+		gmcpSaySend("say", mob, target, msg);
 		
 		if(R.okMessage(mob,msg))
 		{

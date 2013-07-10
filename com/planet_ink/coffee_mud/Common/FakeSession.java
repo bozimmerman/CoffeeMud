@@ -68,7 +68,8 @@ public class FakeSession implements Session
 	public void negotiateTelnetMode(int code){}
 	public boolean allowMxp(String tag) { return false; }
 	public boolean isFake() { return true;}
-	public void resetIdleTimers(){};
+	public void resetIdleTimers(){}
+	public void sendGMCPEvent(final String eventName, final String json){}
 	
 	public String[] clookup(){return new String[255];}
 	

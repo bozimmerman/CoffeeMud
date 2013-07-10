@@ -28,6 +28,29 @@ public class MiniJSON
 		}
 	}
 	
+	public static String toJSONString(final String str)
+	{
+		StringBuilder strBldr=new StringBuilder("");
+		for(char c : str.toCharArray())
+		{
+			switch(c)
+			{
+			case '\"':
+			case '\\':
+			case '/':
+				strBldr.append('\\').append(c);
+				break;
+			case '\b': strBldr.append('\\').append('b'); break;
+			case '\f': strBldr.append('\\').append('f'); break;
+			case '\n': strBldr.append('\\').append('n'); break;
+			case '\r': strBldr.append('\\').append('r'); break;
+			case '\t': strBldr.append('\\').append('t'); break;
+			default: strBldr.append(c); break;
+			}
+		}
+		return strBldr.toString();
+	}
+
 	public static class JSONObject extends TreeMap<String,Object>
 	{
 		private static final long serialVersionUID = 8390676973120915175L;
@@ -103,29 +126,6 @@ public class MiniJSON
 			return o == NULL;
 		}
 		
-		private String toJSONString(final String str)
-		{
-			StringBuilder strBldr=new StringBuilder("");
-			for(char c : str.toCharArray())
-			{
-				switch(c)
-				{
-				case '\"':
-				case '\\':
-				case '/':
-					strBldr.append('\\').append(c);
-					break;
-				case '\b': strBldr.append('\\').append('b'); break;
-				case '\f': strBldr.append('\\').append('f'); break;
-				case '\n': strBldr.append('\\').append('n'); break;
-				case '\r': strBldr.append('\\').append('r'); break;
-				case '\t': strBldr.append('\\').append('t'); break;
-				default: strBldr.append(c); break;
-				}
-			}
-			return strBldr.toString();
-		}
-
 		public void appendJSONString(final StringBuilder str, Object obj)
 		{
 			if(obj instanceof String)

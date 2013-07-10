@@ -46,7 +46,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 {
 	public String ID(){return "CMProtocols";}
 	
-	
 	// this is the sound support method.
 	// it builds a valid MSP sound code from built-in web server
 	// info, and the info provided.
@@ -841,7 +840,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				buf.write(Session.MSDP_TABLE_OPEN);
 				buf.write(Session.MSDP_VAR);buf.write("VNUM".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
-				buf.write(Integer.toString(R.roomID().hashCode()).getBytes(Session.MSDP_CHARSET));
+				buf.write(Integer.toString(CMLib.map().getExtendedRoomID(R).hashCode()).getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAR);buf.write("NAME".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
 				buf.write(R.displayText().getBytes(Session.MSDP_CHARSET));
@@ -857,11 +856,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
 					final Room R2=R.getRoomInDir(d);
-					if(R2!=null)
+					if((R2!=null)&&(R.getExitInDir(d)!=null))
 					{
-						buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
-						buf.write(Session.MSDP_VAL);
-						buf.write(Integer.toString(R2.roomID().hashCode()).getBytes(Session.MSDP_CHARSET));
+						final String roomID=CMLib.map().getExtendedRoomID(R2);
+						if(roomID.length()>0)
+						{
+							buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+							buf.write(Session.MSDP_VAL);
+							buf.write(Integer.toString(roomID.hashCode()).getBytes(Session.MSDP_CHARSET));
+						}
 					}
 				}
 				buf.write(Session.MSDP_TABLE_CLOSE);
@@ -874,7 +877,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			break;
 		case ROOM_VNUM: 
 			if((M!=null)&&(M.location()!=null))
-				buf.write(Integer.toString(M.location().roomID().hashCode()).getBytes(Session.MSDP_CHARSET));
+				buf.write(Integer.toString(CMLib.map().getExtendedRoomID(M.location()).hashCode()).getBytes(Session.MSDP_CHARSET));
 			break;
 		case ROOM_AREA: 
 			if((M!=null)&&(M.location()!=null))
@@ -902,12 +905,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				buf.write(Session.MSDP_TABLE_OPEN);
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
-					Room R2=R.getRoomInDir(d);
-					if(R2!=null)
+					final Room R2=R.getRoomInDir(d);
+					if((R2!=null)&&(R.getExitInDir(d)!=null))
 					{
-						buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
-						buf.write(Session.MSDP_VAL);
-						buf.write(Integer.toString(R2.roomID().hashCode()).getBytes(Session.MSDP_CHARSET));
+						final String roomID=CMLib.map().getExtendedRoomID(R2);
+						if(roomID.length()>0)
+						{
+							buf.write(Session.MSDP_VAR);buf.write(Directions.getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
+							buf.write(Session.MSDP_VAL);
+							buf.write(Integer.toString(roomID.hashCode()).getBytes(Session.MSDP_CHARSET));
+						}
 					}
 				}
 				buf.write(Session.MSDP_TABLE_CLOSE);
@@ -1123,17 +1130,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 	}
 	
-	public final static byte[] GMCP_HEADER_BYTES=new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SB,(byte)Session.TELNET_GMCP};
-	public final static byte[] GMCP_RESP_BYTES=new byte[]{(byte)Session.TELNET_IAC,(byte)Session.TELNET_SE};
-	
-	public byte[] buildGmcpResponse(String json)
+	public byte[] buildGmcpResponse(final String json)
 	{
-		ByteArrayOutputStream bout=new ByteArrayOutputStream();
+		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 		try 
 		{
-			bout.write(GMCP_HEADER_BYTES);
+			bout.write(Session.TELNETBYTES_GMCP_HEAD);
 			bout.write(json.getBytes(Session.MSDP_CHARSET));
-			bout.write(GMCP_RESP_BYTES);
+			bout.write(Session.TELNETBYTES_END_SB);
 		} 
 		catch (IOException e) {}
 		return bout.toByteArray();
@@ -1148,7 +1152,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		core_keepalive,
 		core_ping,
 		core_goodbye,
-		char_login,
 		char_vitals,
 		char_statusvars,
 		char_status,
@@ -1160,7 +1163,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		comm_channel
 	}
 	
-	public byte[] processGmcp(final Session session, final char[] data, final int dataSize, final Map<String,Double> supportables)
+	protected String processGmcpStr(final Session session, final char[] data, final int dataSize, final Map<String,Double> supportables)
 	{
 		MiniJSON jsonParser=new MiniJSON();
 		try 
@@ -1184,13 +1187,12 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			try
 			{
 				cmd=gmcpCommand.valueOf(pkg.toLowerCase().replace('.','_'));
-				if(CMSecurity.isDebugging(DbgFlag.TELNET))
-					Log.debugOut("Processed GMCP "+pkg);
 				switch(cmd)
 				{
 				case core_hello:
 				{
-					json=json.getCheckedJSONObject("root");
+					if(json!=null)
+						json=json.getCheckedJSONObject("root");
 					if(json != null)
 					{
 						String client=json.getCheckedString("client");
@@ -1203,7 +1205,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				case core_supports_add:
 				case core_supports_set:
 				{
-					Object[] list = json.getCheckedArray("root");
+					Object[] list = null;
+					if(json!=null)
+						list=json.getCheckedArray("root");
 					if(list != null)
 					{
 						for(Object o : list)
@@ -1224,7 +1228,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				case core_supports_remove:
 				{
-					Object[] list = json.getCheckedArray("root");
+					Object[] list = null;
+					if(json!=null)
+						list=json.getCheckedArray("root");
 					if(list != null)
 					{
 						for(Object o : list)
@@ -1242,51 +1248,41 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 				case core_ping:
 				{
-					return buildGmcpResponse("Core.Ping");
+					return pkg;
 				}
 				case core_goodbye:
 				{
 					session.stopSession(false,false,false);
 					break;
 				}
-				case char_login:
-				{
-					json=json.getCheckedJSONObject("root");
-					if((json != null)&&(session.mob()==null))
-					{
-						String user=json.getCheckedString("name");
-						String password=json.getCheckedString("password");
-						//TODO: how the hell do you log them in from here?
-					}
-					break;
-				}
 				case char_vitals:
 				{
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("Char.Vitals {");
-						doc.append("\"hp\": ").append(mob.curState().getHitPoints()).append(",");
-						doc.append("\"mana\": ").append(mob.curState().getMana()).append(",");
-						doc.append("\"moves\": ").append(mob.curState().getMovement());
-						return this.buildGmcpResponse(doc.toString());
+						StringBuilder doc=new StringBuilder("char.vitals {");
+						doc.append("\"hp\":").append(mob.curState().getHitPoints()).append(",");
+						doc.append("\"mana\":").append(mob.curState().getMana()).append(",");
+						doc.append("\"moves\":").append(mob.curState().getMovement());
+						doc.append("}");
+						return doc.toString();
 					}
 					break;
 				}
 				case char_statusvars:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("Char.StatusVars {");
-						doc.append("\"level\": \"").append(mob.phyStats().level()).append("\",");
-						doc.append("\"race\": \"").append(mob.charStats().raceName()).append("\"");
+						StringBuilder doc=new StringBuilder("char.statusvars {");
+						doc.append("\"level\":\"").append(mob.phyStats().level()).append("\",");
+						doc.append("\"race\":\"").append(MiniJSON.toJSONString(mob.charStats().raceName())).append("\"");
 						final List<String> clans=new LinkedList<String>();
 						for(Pair<Clan,Integer> p : mob.clans())
-							clans.add(p.first.name());
+							clans.add(MiniJSON.toJSONString(p.first.name()));
 						if(clans.size()==1)
-							doc.append(",\"guild\": \"").append(clans.get(0)).append("\"");
+							doc.append(",\"guild\":\"").append(clans.get(0)).append("\"");
 						else
 						if(clans.size()>1)
 						{
-							doc.append(",\"guild\": [");
+							doc.append(",\"guild\":[");
 							for(int i=0;i<clans.size();i++)
 							{
 								if(i>0) doc.append(",");
@@ -1295,30 +1291,30 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							doc.append("]");
 						}
 						doc.append("}");
-						return this.buildGmcpResponse(doc.toString());
+						return doc.toString();
 					}
 					break;
 				case char_base:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("Char.Base {");
-						doc.append("\"name\": \"").append(mob.name()).append("\"").append(",");
-						doc.append("\"class\": \"").append(mob.charStats().getCurrentClass().baseClass()).append("\"").append(",");
-						doc.append("\"subclass\": \"").append(mob.charStats().displayClassName()).append("\"").append(",");
-						doc.append("\"race\": \"").append(mob.charStats().raceName()).append("\"").append(",");
-						doc.append("\"perlevel\": ").append(mob.getExpNextLevel());
+						StringBuilder doc=new StringBuilder("char.base {");
+						doc.append("\"name\":\"").append(mob.name()).append("\"").append(",");
+						doc.append("\"class\":\"").append(mob.charStats().getCurrentClass().baseClass()).append("\"").append(",");
+						doc.append("\"subclass\":\"").append(MiniJSON.toJSONString(mob.charStats().displayClassName())).append("\"").append(",");
+						doc.append("\"race\":\"").append(MiniJSON.toJSONString(mob.charStats().raceName())).append("\"").append(",");
+						doc.append("\"perlevel\":").append(mob.getExpNextLevel());
 						String title = (mob.playerStats()!=null)?mob.playerStats().getActiveTitle():null;
 						if(title!=null)
-							doc.append(",\"pretitle\": \"").append(mob.charStats().raceName()).append("\"");
+							doc.append(",\"pretitle\":\"").append(MiniJSON.toJSONString(title)).append("\"");
 						final List<String> clans=new LinkedList<String>();
 						for(Pair<Clan,Integer> p : mob.clans())
-							clans.add(p.first.name());
+							clans.add(MiniJSON.toJSONString(p.first.name()));
 						if(clans.size()==1)
-							doc.append(",\"clan\": \"").append(clans.get(0)).append("\"");
+							doc.append(",\"clan\":\"").append(clans.get(0)).append("\"");
 						else
 						if(clans.size()>1)
 						{
-							doc.append(",\"clan\": [");
+							doc.append(",\"clan\":[");
 							for(int i=0;i<clans.size();i++)
 							{
 								if(i>0) doc.append(",");
@@ -1326,31 +1322,33 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							}
 							doc.append("]");
 						}
-						return this.buildGmcpResponse(doc.toString());
+						doc.append("}");
+						return doc.toString();
 					}
 					break;
 				case char_maxstats:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("Char.MaxStats {");
-						doc.append("\"maxhp\": ").append(mob.maxState().getHitPoints()).append(",");
-						doc.append("\"maxmana\": ").append(mob.maxState().getMana()).append(",");
-						doc.append("\"maxmoves\": ").append(mob.maxState().getMovement());
-						return this.buildGmcpResponse(doc.toString());
+						StringBuilder doc=new StringBuilder("char.maxstats {");
+						doc.append("\"maxhp\":").append(mob.maxState().getHitPoints()).append(",");
+						doc.append("\"maxmana\":").append(mob.maxState().getMana()).append(",");
+						doc.append("\"maxmoves\":").append(mob.maxState().getMovement());
+						doc.append("}");
+						return doc.toString();
 					}
 					break;
 				case char_status:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("Char.Status {");
-						doc.append("\"level\": ").append(mob.phyStats().level()).append(",");
-						doc.append("\"tnl\": ").append(mob.getExpNeededLevel()).append(",");
-						doc.append("\"hunger\": ").append(mob.curState().getHunger()).append(",");
-						doc.append("\"thirst\": ").append(mob.curState().getThirst()).append(",");
-						doc.append("\"fatigue\": ").append(mob.curState().getFatigue()).append(",");
+						StringBuilder doc=new StringBuilder("char.status {");
+						doc.append("\"level\":").append(mob.phyStats().level()).append(",");
+						doc.append("\"tnl\":").append(mob.getExpNeededLevel()).append(",");
+						doc.append("\"hunger\":").append(mob.curState().getHunger()).append(",");
+						doc.append("\"thirst\":").append(mob.curState().getThirst()).append(",");
+						doc.append("\"fatigue\":").append(mob.curState().getFatigue()).append(",");
 						int align=mob.fetchFaction(CMLib.factions().AlignID());
 						if(align!=Integer.MAX_VALUE)
-							doc.append("\"align\": ").append(align).append(",");
+							doc.append("\"align\":").append(align).append(",");
 						int state=3;
 						if(session.afkFlag())
 							state=4;
@@ -1361,16 +1359,16 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(CMLib.flags().isSitting(mob))
 							state=11;
 						else
-						if(CMath.bset(mob.getBitmap(), MOB.ATT_SYSOPMSGS))
-							state=6;
-						else
 						if(mob.getVictim()!=null)
 							state=8;
 						else
+						if(CMath.bset(mob.getBitmap(), MOB.ATT_SYSOPMSGS))
+							state=6;
+						else
 						if(CMath.bset(mob.getBitmap(), MOB.ATT_AUTORUN))
 							state=12;
-						doc.append("\"state\": ").append(state).append(",");
-						doc.append("\"pos\": \"").append(
+						doc.append("\"state\":").append(state).append(",");
+						doc.append("\"pos\":\"").append(
 								CMLib.flags().isSleeping(mob)?"Sleeping":
 								CMLib.flags().isSitting(mob)?"Sitting":
 								"Standing"
@@ -1379,39 +1377,108 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(vicM!=null)
 						{
 							doc.append(",");
-							doc.append("\"enemy\": ").append(vicM.name()).append(",");
-							doc.append("\"enemypct\": ").append(Math.round((double)vicM.maxState().getHitPoints()/(double)vicM.curState().getHitPoints()*100.0)).append(",");
+							doc.append("\"enemy\":").append(vicM.name()).append(",");
+							doc.append("\"enemypct\":").append(Math.round((double)vicM.maxState().getHitPoints()/(double)vicM.curState().getHitPoints()*100.0)).append(",");
 						}
 						doc.append("}");
-						return this.buildGmcpResponse(doc.toString());
+						return doc.toString();
 					}
 					else
 					{
-						StringBuilder doc=new StringBuilder("Char.Status {");
-						doc.append("\"state\": ").append(1);
+						StringBuilder doc=new StringBuilder("char.status {");
+						doc.append("\"state\":").append(1);
 						doc.append("}");
-						return this.buildGmcpResponse(doc.toString());
+						return doc.toString();
 					}
 				case char_worth:
 					if(mob != null)
 					{
-						StringBuilder doc=new StringBuilder("Char.Worth {");
-						doc.append("\"gold\": ").append(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)).append(",");
-						doc.append("\"qp\": ").append(mob.getQuestPoint()).append(",");
-						//doc.append("\"tp\": ").append(mob.getTrains()).append(",");
-						doc.append("\"trains\": ").append(mob.getTrains()).append(",");
-						doc.append("\"pracs\": ").append(mob.getPractices());
-						return this.buildGmcpResponse(doc.toString());
+						StringBuilder doc=new StringBuilder("char.worth {");
+						doc.append("\"gold\":").append(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)).append(",");
+						doc.append("\"qp\":").append(mob.getQuestPoint()).append(",");
+						//doc.append("\"tp\":").append(mob.getTrains()).append(",");
+						doc.append("\"trains\":").append(mob.getTrains()).append(",");
+						doc.append("\"pracs\":").append(mob.getPractices());
+						doc.append("}");
+						return doc.toString();
 					}
 					break;
 				case room_info:
-					//TODO:
+					if(mob!=null)
+					{
+						final Room room=mob.location();
+						if(room != null)
+						{
+							StringBuilder doc=new StringBuilder("room.info {");
+							final String roomID=CMLib.map().getExtendedRoomID(room);
+							final String domType;
+							if((room.domainType()&Room.INDOORS)==0)
+								domType=Room.outdoorDomainDescs[room.domainType()];
+							else
+								domType=Room.indoorDomainDescs[CMath.unsetb(room.domainType(),Room.INDOORS)];
+							doc.append("\"num\":").append(roomID.hashCode()).append(",")
+								.append("\"id\":\"").append(roomID).append("\",")
+								.append("\"name\":\"").append(MiniJSON.toJSONString(room.displayText())).append("\",")
+								.append("\"zone\":\"").append(MiniJSON.toJSONString(room.getArea().name())).append("\",")
+								.append("\"terrain\":\"").append(domType.toLowerCase()).append("\",")
+								.append("\"details\":\"").append("\",")
+								.append("\"exits\":{");
+							boolean comma=false;
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room R2=room.getRoomInDir(d);
+								if((R2!=null)&&(room.getExitInDir(d)!=null))
+								{
+									final String room2ID=CMLib.map().getExtendedRoomID(R2);
+									if(room2ID.length()>0)
+									{
+										if(comma) doc.append(","); comma=true;
+										doc.append("\""+Directions.getDirectionChar(d)+"\":").append(room2ID.hashCode());
+									}
+								}
+							}
+							doc.append("},\"coord\":{\"id\":0,\"x\":-1,\"y\":-1,\"cont\":0}");
+							doc.append("}");
+							return doc.toString();
+						}
+					}
 					break;
 				case group:
-					//TODO:
+					if(mob!=null)
+					{
+						StringBuilder doc=new StringBuilder("group {");
+						final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
+						final MOB leaderM=(mob.amFollowing()==null)?mob:mob.amUltimatelyFollowing();
+						doc.append("\"groupname\":\"").append(leaderM.Name()).append("s group").append("\",")
+							.append("\"leader\":\"").append(leaderM.name()).append("\",")
+							.append("\"status\":\"").append("Private").append("\",")
+							.append("\"count\":").append(group.size()).append(",")
+							.append("\"members\":[");
+						boolean comma=false;
+						for(MOB M : group) {
+							if(comma) doc.append(",");
+							comma=true;
+							doc.append("{\"name\":\"").append(M.name()).append("\",")
+								.append("{\"info\":{")
+								.append("\"hp\":").append(M.curState().getHitPoints()).append(",")
+								.append("\"mhp\":").append(M.maxState().getHitPoints()).append(",")
+								.append("\"mn\":").append(M.curState().getMana()).append(",")
+								.append("\"mmn\":").append(M.maxState().getMana()).append(",")
+								.append("\"mv\":").append(M.curState().getMovement()).append(",")
+								.append("\"mmv\":").append(M.maxState().getMovement()).append(",")
+								.append("\"lvl\":").append(M.phyStats().level()).append(",");
+							int align=mob.fetchFaction(CMLib.factions().AlignID());
+							if(align!=Integer.MAX_VALUE)
+								doc.append("\"align\":").append(align).append(",");
+							doc.append("\"tnl\":").append(M.getExpNeededLevel());
+							doc.append("}");
+						}
+						doc.append("]");
+						doc.append("}");
+						return doc.toString();
+					}
 					break;
 				case comm_channel:
-					//TODO:
 					break;
 				}
 				return null;
@@ -1428,26 +1495,125 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			return null;
 		}
 	}
+
+	public byte[] processGmcp(final Session session, final char[] data, final int dataSize, final Map<String,Double> supportables)
+	{
+		final String doc=processGmcpStr(session, data, dataSize, supportables);
+		if(doc != null)
+		{
+			if(CMSecurity.isDebugging(DbgFlag.TELNET))
+				Log.debugOut("GMCP Sent: "+doc);
+			return buildGmcpResponse(doc);
+		}
+		return null;
+	}
+	
+	protected byte[] possiblePingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables, final String command)
+	{
+		final char[] cmd=command.toCharArray();
+		final String chunkStr=processGmcpStr(session, cmd, cmd.length, supportables);
+		if(chunkStr!=null)
+		{
+			final Long oldHash=reporteds.get(command);
+			final long newHash=chunkStr.hashCode();
+			if((oldHash==null)||(oldHash.longValue()!=newHash))
+			{
+				reporteds.put(command, Long.valueOf(newHash));
+				if(CMSecurity.isDebugging(DbgFlag.TELNET))
+					Log.debugOut("GMCP Sent: "+chunkStr);
+				return buildGmcpResponse(chunkStr);
+			}
+		}
+		return null;
+	}
 	
 	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables)
 	{
 		try
 		{
-			ByteArrayOutputStream bout=new ByteArrayOutputStream();
-			if(supportables.containsKey("char.vitals")||supportables.containsKey("char"))
+			final Long nextMedReport=reporteds.get("system.nextMedReport");
+			final Long nextLongReport=reporteds.get("system.nextLongReport");
+			final Long nextTruePingReport=reporteds.get("system.nextTruePing");
+			final long now=System.currentTimeMillis();
+			final boolean charSupported=supportables.containsKey("char");
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			final MOB mob=session.mob();
+			byte[] buf;
+			if(charSupported||supportables.containsKey("char.vitals"))
 			{
-				final String command="Char.Vitals";
-				final char[] cmd=command.toCharArray();
-				byte[] chunk=this.processGmcp(session, cmd, cmd.length, supportables);
-				if(chunk!=null)
+				buf=possiblePingGmcp(session, reporteds, supportables, "char.vitals");
+				if(buf!=null) bout.write(buf);
+			}
+			if((nextTruePingReport==null)||(now>nextTruePingReport.longValue()))
+			{
+				final long tickMillis=CharState.ADJUST_FACTOR*CMProps.getTickMillis();
+				reporteds.put("system.nextTruePing", new Long((nextTruePingReport==null)?(now+tickMillis):(nextTruePingReport.longValue()+tickMillis)));
+				if(supportables.containsKey("comm.tick")||supportables.containsKey("comm"))
 				{
-					Long oldHash=reporteds.get(command);
-					long newHash=Arrays.hashCode(chunk);
-					if((oldHash==null)||(oldHash.longValue()!=newHash))
+					if(CMSecurity.isDebugging(DbgFlag.TELNET))
+						Log.debugOut("GMCP Sent: comm.tick { }");
+					bout.write(Session.TELNETBYTES_GMCP_HEAD);
+					bout.write("comm.tick { }".getBytes());
+					bout.write(Session.TELNETBYTES_END_SB);
+				}
+			}
+			if((nextMedReport==null)||(now>nextMedReport.longValue()))
+			{
+				reporteds.put("system.nextMedReport", new Long(now+3999));
+				if(charSupported||supportables.containsKey("char.status"))
+				{
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.status");
+					if(buf!=null) bout.write(buf);
+				}
+				if((mob!=null)&&((mob.amFollowing()!=null)||(mob.numFollowers()>0)))
+				{
+					if(supportables.containsKey("group"))
 					{
-						reporteds.put(command, Long.valueOf(newHash));
-						bout.write(chunk);
-						
+						buf=possiblePingGmcp(session, reporteds, supportables, "group");
+						if(buf!=null) bout.write(buf);
+					}
+				}
+			}
+			if((nextLongReport==null)||(now>nextLongReport.longValue()))
+			{
+				reporteds.put("system.nextLongReport", new Long(now+15996));
+				if(charSupported||supportables.containsKey("char.worth"))
+				{
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.worth");
+					if(buf!=null) bout.write(buf);
+				}
+				if(charSupported||supportables.containsKey("char.maxstats"))
+				{
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.maxstats");
+					if(buf!=null) bout.write(buf);
+				}
+				if(charSupported||supportables.containsKey("char.base"))
+				{
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.base");
+					if(buf!=null) bout.write(buf);
+				}
+				if(charSupported||supportables.containsKey("char.statusvars"))
+				{
+					buf=possiblePingGmcp(session, reporteds, supportables, "char.statusvars");
+					if(buf!=null) bout.write(buf);
+				}
+			}
+			if(supportables.containsKey("room.info")||supportables.containsKey("room"))
+			{
+				if(mob!=null)
+				{
+					final Room room=mob.location();
+					if(room!=null)
+					{
+						final Long oldRoomHash=reporteds.get("system.currentRoom");
+						if((oldRoomHash==null)||(room.hashCode()!=oldRoomHash.longValue()))
+						{
+							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
+							final String command="room.info";
+							final char[] cmd=command.toCharArray();
+							buf=processGmcp(session, cmd, cmd.length, supportables);
+							if(buf!=null) bout.write(buf);
+						}
 					}
 				}
 			}
@@ -1457,6 +1623,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			if(CMSecurity.isDebugging(DbgFlag.TELNET))
 				Log.errOut(ioe);
+		}
+		catch(Throwable t)
+		{
+			Log.errOut(t);
 		}
 		return null;
 	}
