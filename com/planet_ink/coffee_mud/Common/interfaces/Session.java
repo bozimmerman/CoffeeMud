@@ -1013,21 +1013,45 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 			this.defaultInput=defaultInput;
 		}
 		
+		/**
+		 * Constructor.  Receives the Type of processing, a default input for
+		 * when the user just hits ENTER,  and an amount of time, in ms, for 
+		 * the user to be given before timeout and the timedOut() method is called.
+		 * @param type the type of processing
+		 * @param defaultInput default input value
+		 * @param timeoutMs time, in ms, before the user is kicked
+		 */
 		public InputCallback(Type type, String defaultInput, long timeoutMs)
 		{
 			this(type, defaultInput, "", timeoutMs);
 		}
 		
+		/**
+		 * Constructor.  Receives the Type of processing, and an amount of time, in ms, 
+		 * for the user to be given before timeout and the timedOut() method is called.
+		 * @param type the type of processing
+		 * @param timeoutMs time, in ms, before the user is kicked
+		 */
 		public InputCallback(Type type, long timeoutMs)
 		{
 			this(type, "", timeoutMs);
 		}
 		
+		/**
+		 * Constructor.  Receives the Type of processing.
+		 * @param type the type of processing
+		 */
 		public InputCallback(Type type)
 		{
 			this(type, 0);
 		}
 		
+		/**
+		 * Constructor.  Receives the Type of processing, a default input for
+		 * when the user just hits ENTER.
+		 * @param type the type of processing
+		 * @param defaultInput default input value
+		 */
 		public InputCallback(Type type, String defaultInput)
 		{
 			this(type, "", 0);
