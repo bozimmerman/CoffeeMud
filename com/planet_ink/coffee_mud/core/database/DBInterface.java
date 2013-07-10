@@ -64,7 +64,7 @@ public class DBInterface implements DatabaseEngine
 	{
 		this.DB=DB;
 		DBConnector oldBaseDB=DB;
-		DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.LIBRARY_DATABASE);
+		DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.Library.DATABASE);
 		if((privacyV!=null)&&(baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
 			oldBaseDB=baseEngine.getConnector();
 		this.GAbilityLoader=new GAbilityLoader((privacyV==null)||privacyV.contains("ABILITY")?DB:oldBaseDB);
