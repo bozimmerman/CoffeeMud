@@ -683,8 +683,8 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	
 	/**
 	 * Returns the total legacy levels for this player, all categories
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addLegacyLevel(int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getLegacyLevel(category)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addLegacyLevel(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getLegacyLevel(String)
 	 * @return the total legacy levels for this player
 	 */
 	public int getTotalLegacyLevels();
@@ -692,14 +692,14 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	/**
 	 * Adds a new legacy level in the given category.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTotalLegacyLevels()
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getLegacyLevel(category)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getLegacyLevel(String)
 	 * @param category the category to add a legacy level for
 	 */
 	public void addLegacyLevel(String category);
 	
 	/**
 	 * Returns the legacy levels for this player, in the given categories
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addLegacyLevel(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addLegacyLevel(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTotalLegacyLevels()
 	 * @param category the category to add a legacy level for
 	 * @return the legacy levels for this player this category

@@ -456,19 +456,19 @@ public class DefaultSession implements Session
 		try{if(changedSomething) blockingIn(500);}catch(Exception e){}
 	}
 
-	public ColorState currentColor(final ColorState newColor)
+	public ColorState getCurrentColor() { return currentColor; }
+	public void setCurrentColor(final ColorState newColor)
 	{
 		if(newColor!=null)
 			currentColor=newColor;
-		return currentColor;
 	}
-	
-	public ColorState lastColor(final ColorState newColor)
+	public ColorState getLastColor() { return lastColor; }
+	public void setLastColor(final ColorState newColor)
 	{
 		if(newColor!=null)
 			lastColor=newColor;
-		return lastColor;
 	}
+	
 	public long getTotalMillis(){ return milliTotal;}
 	public long getIdleMillis(){ return System.currentTimeMillis()-lastKeystroke;}
 	public long getTotalTicks(){ return tickTotal;}

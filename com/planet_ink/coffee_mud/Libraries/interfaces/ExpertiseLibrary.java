@@ -256,7 +256,6 @@ public interface ExpertiseLibrary extends CMLibrary
 		/**
 		 * Expends the given cost upon the given student
 		 * @param student the student to check
-		 * @return true if it meets, false otherwise
 		 */
 		public void spendSkillCost(final MOB student)
 		{

@@ -226,7 +226,7 @@ public abstract class Interactive implements ServerUser {
 	 * waiting command.  Otherwise it simply returns.
 	 * @see #input
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerUser#processInput
-	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerThread#run
+	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerThread#tick(com.planet_ink.coffee_mud.core.interfaces.Tickable, int)
 	 */
 	public synchronized final void processInput() {
 		if( input_thread != null ) {

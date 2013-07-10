@@ -926,7 +926,7 @@ public class CMath
 	
 	/**
 	 * Pre-compiles an expression for faster evaluation later on.
-	 * @see CMath#parseMathExpression(LinkedList, double[])
+	 * @see CMath#parseMathExpression(String, double[])
 	 * @param st the tokenized expression
 	 * @param inParen whether or not you are in parenthesis mode 
 	 * @return the pre-compiled expression

@@ -67,7 +67,6 @@ public interface WebMacro extends CMObject
 	 * @see WebMacro#getFilename(HTTPRequest, String)
 	 * @param response the MiniWebServer servlet response object
 	 * @param filename the filename from getFilename
-	 * @return  this is an attachment macro, so send back header
 	 */
 	public void setServletResponse(SimpleServletResponse response, final String filename);
 	
@@ -85,7 +84,7 @@ public interface WebMacro extends CMObject
 	 * filename to use as a page for returning to the caller.  It may simply
 	 * return what is given to it.
 	 * @see WebMacro#isAWebPath()
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.HTTPRequest
+	 * @see com.planet_ink.miniweb.interfaces.HTTPRequest
 	 * @param httpReq the requests object
 	 * @param filename the default filename
 	 * @return usually the default filename again
@@ -96,7 +95,7 @@ public interface WebMacro extends CMObject
 	 * This method is executed only if this macro returns true for preferBinary().
 	 * It will execute the macro and return its results as a binary byte array.
 	 * @see WebMacro#preferBinary()
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.HTTPRequest
+	 * @see com.planet_ink.miniweb.interfaces.HTTPRequest
 	 * @param httpReq the external requests object
 	 * @param parm any parameter strigs given to the macro
 	 * @return the binary stream result of running this macro
@@ -108,7 +107,7 @@ public interface WebMacro extends CMObject
 	 * It will execute the macro and return its results as a string, which is then
 	 * substituted for the macro reference in the web page where the macro was found.
 	 * @see WebMacro#preferBinary()
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.HTTPRequest
+	 * @see com.planet_ink.miniweb.interfaces.HTTPRequest
 	 * @param httpReq the external requests object
 	 * @param parm any parameter strigs given to the macro
 	 * @return the string result of running this macro

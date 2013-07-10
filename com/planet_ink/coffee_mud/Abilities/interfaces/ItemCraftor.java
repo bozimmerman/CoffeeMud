@@ -107,7 +107,7 @@ public interface ItemCraftor extends Ability
 	 * material type which this class can produce.
 	 * Returns a vector containing the finished Item.  A second element is
 	 * rare, but will occur when a key is required and also generated.
-	 * @param recipe the name of the item to make
+	 * @param recipeName the name of the item to make
 	 * @return a vector of Item(s)
 	 */
 	public ItemKeyPair craftItem(String recipeName);
@@ -117,7 +117,7 @@ public interface ItemCraftor extends Ability
 	 * material type which this class can produce.
 	 * Returns a vector containing the finished Item.  A second element is
 	 * rare, but will occur when a key is required and also generated.
-	 * @param recipe the name of the item to make
+	 * @param recipeName the name of the item to make
 	 * @param material the rawmaterial code to make the item out of
 	 * @return a vector of Item(s)
 	 */

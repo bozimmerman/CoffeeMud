@@ -62,7 +62,6 @@ public interface TickClient extends Comparable<TickClient>
 	 * Sets the status of this ticking client as a 
 	 * displayable String
 	 * @see TickClient#getStatus()
-	 * @return the TICKID_ constant assigned to this object
 	 */
 	public void setStatus(String status);
 	

@@ -305,11 +305,11 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * a level as this class.  The total is added (or removed on unlevel)
 	 * from the players movement score.
 	 * Variables may be included in the formula, which are:
-	 * @x1: Players current class level
-	 * @x2: Players adjusted Strength     @x3: Players Max adjusted Strength
-	 * @x4: Players adjusted Dexterity    @x5: Players Max adjusted Dexterity
-	 * @x6: Players adjusted Constitution @x7: Players Max adjusted Constitution
-	 * @x8: Players adjusted Wisdom       @x9: Players adjusted Intelligence
+	 * {@literal @}x1: Players current class level
+	 * {@literal @}x2: Players adjusted Strength     {@literal @}x3: Players Max adjusted Strength
+	 * {@literal @}x4: Players adjusted Dexterity    {@literal @}x5: Players Max adjusted Dexterity
+	 * {@literal @}x6: Players adjusted Constitution {@literal @}x7: Players Max adjusted Constitution
+	 * {@literal @}x8: Players adjusted Wisdom       {@literal @}x9: Players adjusted Intelligence
 	 * @see CharClass#getMovementDesc()
 	 * @return the formula that causes a gain or loss in movement
 	 */
@@ -328,11 +328,11 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * a level as this class.  The total is added (or removed on unlevel)
 	 * from the players hit points score.
 	 * Variables may be included in the formula, which are:
-	 * @x1: Players current class level
-	 * @x2: Players adjusted Strength     @x3: Players Max adjusted Strength
-	 * @x4: Players adjusted Dexterity    @x5: Players Max adjusted Dexterity
-	 * @x6: Players adjusted Constitution @x7: Players Max adjusted Constitution
-	 * @x8: Players adjusted Wisdom       @x9: Players adjusted Intelligence
+	 * \{@literal @}x1: Players current class level
+	 * \{@literal @}x2: Players adjusted Strength     {@literal @}x3: Players Max adjusted Strength
+	 * \{@literal @}x4: Players adjusted Dexterity    {@literal @}x5: Players Max adjusted Dexterity
+	 * {@literal @}x6: Players adjusted Constitution {@literal @}x7: Players Max adjusted Constitution
+	 * {@literal @}x8: Players adjusted Wisdom       {@literal @}x9: Players adjusted Intelligence
 	 * @see CharClass#getHitPointDesc()
 	 * @return the formula that causes a gain or loss in hit points
 	 */
@@ -351,11 +351,11 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * a level as this class.  The total is added (or removed on unlevel)
 	 * from the players mana score.
 	 * Variables may be included in the formula, which are:
-	 * @x1: Players current class level
-	 * @x2: Players adjusted Wisdom       @x3: Players Max adjusted Wisdom
-	 * @x4: Players adjusted Intelligence @x5: Players Max adjusted Intelligence
-	 * @x6: Players adjusted Attack Attr  @x7: Players Max adjusted Attack Attr
-	 * @x8: Players adjusted Charisma     @x9: Players adjusted Constitution
+	 * {@literal @}x1: Players current class level
+	 * {@literal @}x2: Players adjusted Wisdom       {@literal @}x3: Players Max adjusted Wisdom
+	 * {@literal @}x4: Players adjusted Intelligence {@literal @}x5: Players Max adjusted Intelligence
+	 * {@literal @}x6: Players adjusted Attack Attr  {@literal @}x7: Players Max adjusted Attack Attr
+	 * {@literal @}x8: Players adjusted Charisma     {@literal @}x9: Players adjusted Constitution
 	 * @see CharClass#getManaDesc()
 	 * @see CharClass#getAttackAttribute()
 	 * @return the formula that causes a gain or loss in mana

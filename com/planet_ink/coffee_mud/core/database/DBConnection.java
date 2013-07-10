@@ -372,7 +372,7 @@ public class DBConnection
 	/**
 	 * Return the time, in millis, when this connection
 	 * was last returned.
-	 * @return
+	 * @return the last time a query was made on this conn
 	 */
 	public long getLastQueryTime()
 	{

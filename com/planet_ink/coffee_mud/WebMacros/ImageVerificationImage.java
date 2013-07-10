@@ -53,7 +53,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
   * (dummy!).
   *
   * @author Jeff Haynie
-  * @copyright Copyright (c) by Jeff Haynie. All Rights Reserved.
+  * Copyright (c) by Jeff Haynie. All Rights Reserved.
   */
  public class ImageVerificationImage extends StdWebMacro
  {
@@ -241,7 +241,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 	  * form of the webpage since the whole point of this exercise is to ensure that
 	  * only humans and not machines are entering the data.
 	  *
-	  * @return
+	  * @return the value to enter
 	  */
 	 public String getVerificationValue ()
 	 {

@@ -343,7 +343,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * given callback will be made when the ENTER key has been hit, and
 	 * the session will go back into a prompt state.
 	 * This is basically for non-blocking input.
-	 * @see #InputCallback
+	 * @see InputCallback
 	 * @param callBack the callback to modify and make when done
 	 */
 	public void prompt(InputCallback callBack);
@@ -607,21 +607,27 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	
 	/**
 	 * Returns the current color code.
-	 * @param newcolor the color to change it to
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#convertEscape(StringBuffer, int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastColor(ColorState)
 	 * @return the current color code.
 	 */
-	public ColorState currentColor(final ColorState newcolor);
+	public ColorState getCurrentColor();
+	
+	/**
+	 * Sets the current color code.
+	 * @param newcolor the color to change it to
+	 */
+	public void setCurrentColor(final ColorState newcolor);
+	
+	/**
+	 * Returns the previous current color code.
+	 * @return the previous current color code.
+	 */
+	public ColorState getLastColor();
 	
 	/**
 	 * Returns the previous current color code.
 	 * @param newColor the color to change it to
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#currentColor(ColorState)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#convertEscape(StringBuffer, int)
-	 * @return the previous current color code.
 	 */
-	public ColorState lastColor(final ColorState newColor);
+	public void setLastColor(final ColorState newColor);
 	
 	/**
 	 * Gets the column number for engine word-wrapping. 

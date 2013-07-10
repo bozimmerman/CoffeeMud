@@ -182,8 +182,10 @@ public class FakeSession implements Session
 	public void setAccount(PlayerAccount account){}
 	
 	public int convertEscape(final StringBuffer str, final int index) { return index+1;}
-	public ColorState currentColor(ColorState newcolor){return ColorLibrary.COLORSTATE_NORMAL;}
-	public ColorState lastColor(ColorState newColor){return ColorLibrary.COLORSTATE_NORMAL;}
+	public void setCurrentColor(ColorState newcolor){}
+	public void setLastColor(ColorState newColor){}
+	public ColorState getCurrentColor(){return ColorLibrary.COLORSTATE_NORMAL;}
+	public ColorState getLastColor(){return ColorLibrary.COLORSTATE_NORMAL;}
 	public int getWrap(){return 80;}
 	
 	public String getAddress(){return "";}

@@ -375,7 +375,7 @@ public interface Area extends Economics, PhysicalAgent
 	 * Area Flags, unlike flags, is a PURELY run-time set that changes depending
 	 * upon how the engine is operating on this area or its content.
 	 * This method changes the state.
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#STATE_ACTIVE
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area.State
 	 * @param newState
 	 */
 	public void setAreaState(State newState);
@@ -383,7 +383,7 @@ public interface Area extends Economics, PhysicalAgent
 	 * Area Flags, unlike flags, is a PURELY run-time set that changes depending
 	 * upon how the engine is operating on this area or its content.
 	 * This method returns the state.
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#STATE_ACTIVE
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area.State
 	 * @return a numeric state for this area
 	 */
 	public State getAreaState();
@@ -452,7 +452,7 @@ public interface Area extends Economics, PhysicalAgent
 	 * the cached for future calls, but can be unloaded from resources
 	 * using the UNLOAD command, to force a re-generation.
 	 * The array is dereferenced using AREASTAT_ constants.
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#AREASTAT_AVGALIGN
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area.Stats
 	 * @return an array of integer statistics
 	 */
 	public int[] getAreaIStats();
@@ -694,8 +694,7 @@ public interface Area extends Economics, PhysicalAgent
 	
 	/**	
 	 * State flag for areas.    
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() 
-	 * 
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaState()
 	 */
 	public static enum State
 	{

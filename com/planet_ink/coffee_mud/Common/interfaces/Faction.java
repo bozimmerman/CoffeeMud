@@ -1227,8 +1227,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * Returns a constant reflecting whether this range of faction value is 
 		 * equivalent to one of the legacy alignment constant values.
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#Align
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange#setAlignEquiv(int)
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.Align
 		 * @return an alignment constant
 		 */
 		public Align alignEquiv();
@@ -1236,8 +1235,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * Sets a constant reflecting whether this range of faction value is 
 		 * equivalent to one of the legacy alignment constant values.
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#Align
-		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange#setAlignEquiv(int)
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.Align
 		 * @param newVal a new alignment constant
 		 */
 		public void setAlignEquiv(Align newVal);

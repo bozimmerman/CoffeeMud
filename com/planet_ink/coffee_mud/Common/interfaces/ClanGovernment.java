@@ -316,13 +316,14 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Sets the xp calculation formula.
 	 *
-	 * @param xpCalculationFormula the new xp calculation formula
+	 * @param xpCalculationFormulaStr the new xp calculation formula
 	 */
 	public void setXpCalculationFormulaStr(String xpCalculationFormulaStr);
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the compiled xp calculation formula
+	 *  
+	 * @return the compiled xp calculation formula
 	 */
 	public LinkedList<CMath.CompiledOperation> getXPCalculationFormula();
 	

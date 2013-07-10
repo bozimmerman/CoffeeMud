@@ -309,8 +309,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		{
 			if((S!=null)&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
 			{
-				ColorState lastColor=S.lastColor(null);
-				ColorState currColor=S.currentColor(null);
+				ColorState lastColor=S.getLastColor();
+				ColorState currColor=S.getCurrentColor();
 				if((lastColor.foregroundCode==currColor.foregroundCode)
 				&&(lastColor.backgroundCode==currColor.backgroundCode))
 					lastColor=ColorLibrary.COLORSTATE_NORMAL;
@@ -338,8 +338,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						bgEscapeSequence="\033[48;5;"+(lastColor.backgroundCode & 0xff)+"m";
 					escapeSequence+=bgEscapeSequence;
 				}
-				S.lastColor(S.currentColor(null));
-				S.currentColor(lastColor);
+				S.setLastColor(S.getCurrentColor());
+				S.setCurrentColor(lastColor);
 				str.insert(index+2, escapeSequence);
 				str.delete(index, index+2);
 				return index+escapeSequence.length()-1;
@@ -388,7 +388,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				if(isFg)
 				{
 					escapeSequence="\033[38;5;"+finalNum+"m";
-					if((S!=null)&&(S.currentColor(null).backgroundCode!='.'))
+					if((S!=null)&&(S.getCurrentColor().backgroundCode!='.'))
 						escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
 				}
 				else
@@ -399,12 +399,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				{
 					if(isFg)
 					{
-						S.lastColor(S.currentColor(null));
-						S.currentColor(ColorState.valueOf((char)(256 | finalNum), '.'));
+						S.setLastColor(S.getCurrentColor());
+						S.setCurrentColor(ColorState.valueOf((char)(256 | finalNum), '.'));
 					}
 					else
 					{
-						S.currentColor(ColorState.valueOf(S.currentColor(null).foregroundCode, (char)(256 | finalNum)));
+						S.setCurrentColor(ColorState.valueOf(S.getCurrentColor().foregroundCode, (char)(256 | finalNum)));
 					}
 				}
 				return index+escapeSequence.length()-1;
@@ -430,8 +430,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				str.delete(index, index+3);
 				if(S!=null)
 				{
-					final ColorState curColor=S.currentColor(null);
-					S.currentColor(ColorState.valueOf(curColor.foregroundCode, bc));
+					final ColorState curColor=S.getCurrentColor();
+					S.setCurrentColor(ColorState.valueOf(curColor.foregroundCode, bc));
 				}
 				return index+bgEscapeSequence.length()-1;
 			}
@@ -550,11 +550,11 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				if(escapeSequence==null) escapeSequence="";
 				if((S!=null)&&(escapeSequence.length()>0)&&(escapeSequence.charAt(0)=='\033'))
 				{
-					final ColorState state=S.currentColor(null);
+					final ColorState state=S.getCurrentColor();
 					if(state.backgroundCode!='.')
 						escapeSequence=ColorLibrary.COLOR_NONE+escapeSequence;
-					S.lastColor(state);
-					S.currentColor(ColorState.valueOf(c,'.'));
+					S.setLastColor(state);
+					S.setCurrentColor(ColorState.valueOf(c,'.'));
 				}
 				str.insert(index+2, escapeSequence);
 				str.delete(index, index+2);
@@ -641,12 +641,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		}
 
 		if ((S!=null)
-		&&(!ColorLibrary.COLORSTATE_NORMAL.equals(S.currentColor(null)))
+		&&(!ColorLibrary.COLORSTATE_NORMAL.equals(S.getCurrentColor()))
 		&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
 		{
 			buf.append(S.getColorCodes()['N']);
-			S.lastColor(S.currentColor(null));
-			S.currentColor(ColorLibrary.COLORSTATE_NORMAL);
+			S.setLastColor(S.getCurrentColor());
+			S.setCurrentColor(ColorLibrary.COLORSTATE_NORMAL);
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.OUTPUT))
 			Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
@@ -1273,12 +1273,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		if(firstAlpha<buf.length())
 			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
 		if((S!=null)
-		&&(!ColorLibrary.COLORSTATE_NORMAL.equals(S.currentColor(null)))
+		&&(!ColorLibrary.COLORSTATE_NORMAL.equals(S.getCurrentColor()))
 		&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
 		{
 			buf.append(S.getColorCodes()['N']);
-			S.lastColor(S.currentColor(null));
-			S.currentColor(ColorLibrary.COLORSTATE_NORMAL);
+			S.setLastColor(S.getCurrentColor());
+			S.setCurrentColor(ColorLibrary.COLORSTATE_NORMAL);
 		}
 
 		/* fabulous debug code

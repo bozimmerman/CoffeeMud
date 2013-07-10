@@ -497,7 +497,7 @@ public class Log extends java.util.logging.Logger
 	/**
 	 * Returns an internally managed log reader class to make
 	 * reading lines from the log slightly easier
-	 * @return
+	 * @return reader for the log file
 	 */
 	public final LogReader getLogReader()
 	{

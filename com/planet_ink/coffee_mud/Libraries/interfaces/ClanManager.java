@@ -165,11 +165,11 @@ public interface ClanManager extends CMLibrary
 	public List<Pair<Clan,Integer>> findRivalrousClans(MOB clanSourceMob, MOB filterMob);
 	
 	/**
-	 * Searches for all clansthat can be rivalrous with other clans that are
-	 * commonly shared between two mobs.
+	 * Searches for all clans that can be rivalrous with other clans that are
+	 * commonly shared between two mobs, along with their two roles
 	 * @param mob1 the first mob to check the clans of
 	 * @param mob2 the second mob to check the clans of
-	 * @return
+	 * @return potentially rivalrous clans and the mobs roles in them
 	 */
 	public List<Triad<Clan,Integer,Integer>> findCommonRivalrousClans(MOB mob1, MOB mob2);
 	
@@ -254,7 +254,7 @@ public interface ClanManager extends CMLibrary
 	
 	/**
 	 * Returns a descriptive name for the given trophy code number.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#TROPHY_DESCS
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy
 	 * @param trophy the trophy code number
 	 * @return the descriptive name
 	 */

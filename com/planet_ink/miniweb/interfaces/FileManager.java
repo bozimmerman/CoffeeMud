@@ -49,7 +49,7 @@ public interface FileManager
 	/**
 	 * Read the data out out of the given file
 	 * @param file the file to read
-	 * @return
+	 * @return all the byte data from the file
 	 */
 	public byte[] readFile(File file) throws IOException, FileNotFoundException;
 	

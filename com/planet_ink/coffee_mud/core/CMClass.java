@@ -890,7 +890,7 @@ public class CMClass extends ClassLoader
 	 * Searches for a match to the given object type name, 
 	 * preferring exact, but accepting prefixes. Returns 
 	 * the ancestor java class type
-	 * @param name the object type name to search for
+	 * @param code the object type name to search for
 	 * @return the matching object type interface/ancestor or NULL
 	 */
 	public final static String findTypeAncestor(final String code)

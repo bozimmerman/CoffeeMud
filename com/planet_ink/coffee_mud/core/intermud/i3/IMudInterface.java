@@ -573,7 +573,7 @@ public class IMudInterface implements ImudServices, Serializable
 
 	/**
 	 * Register a fake channel
-	 * @param c the remote channel name
+	 * @param chan the remote channel name
 	 * @return the local channel name for the specified new local channel name
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.packets.ImudServices#getLocalChannel
 	 */

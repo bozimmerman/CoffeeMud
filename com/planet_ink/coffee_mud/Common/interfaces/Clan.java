@@ -158,7 +158,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * can only belong to N clans of a given category.  See also MAXCLANS
 	 * in coffeemud.ini.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getCategory()
-	 * @param newName the new name of this clan
+	 * @param newCategory the new cata of this clan
 	 */
 	public void setCategory(String newCategory);
 	
@@ -626,7 +626,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * Returns the object representing the government
 	 * of this 
-	 * @see Government
+	 * @see ClanGovernment
 	 * @see Clan#getGovernmentID()
 	 * @see Clan#setGovernmentID(int)
 	 * @return the if constant
@@ -676,7 +676,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Returns the roleid constant representing the highest rank
 	 * in this clan type that can perform the given function
 	 * or null.
-	 * @see Position
+	 * @see ClanPosition
 	 * @see Function
 	 * @param func the function (or null) they must be able to do
 	 * @param mob the mob to check for a top rank
@@ -687,7 +687,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * Returns the roleid(s) constant representing the highest rank
 	 * roleid(s) in this clan type that can perform the given function.
-	 * @see Position
+	 * @see ClanPosition
 	 * @see Function
 	 * @param func the function to perform, or null just to return privileged rank
 	 * @return the top roleid
