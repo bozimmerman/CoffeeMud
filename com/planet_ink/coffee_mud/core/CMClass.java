@@ -1383,15 +1383,15 @@ public class CMClass extends ClassLoader
 	 * @param ID the ID to search for
 	 * @return the CMObject that the ID belongs to, straight from the map.
 	 */
-	public static final CMObject getGlobal(final Map<String,? extends CMObject> list, final String calledThis)
+	public static final CMObject getGlobal(final Map<String,? extends CMObject> list, final String ID)
 	{
-		CMObject o=list.get(calledThis);
+		CMObject o=list.get(ID);
 		if(o==null)
 		{
 			for(String s : list.keySet())
 			{
 				o=list.get(s);
-				if(classID(o).equalsIgnoreCase(calledThis))
+				if(classID(o).equalsIgnoreCase(ID))
 					return o;
 			}
 			return null;
@@ -1541,13 +1541,13 @@ public class CMClass extends ClassLoader
 	/**
 	 * Given the "stock" default path to a set of coffeemud classes, and a potential set of requested paths, this
 	 * method will follow requested paths (observing the default if default is listed in the request paths), and
-	 * load all the coffeemud classes therein, making sure they respect the given interface/ancester name.
+	 * load all the coffeemud classes therein, making sure they respect the given interface/ancestor name.
 	 * @param defaultPath the path to use when default is a requested path
 	 * @param requestedPathList the ; separated list of paths to look for classes in
-	 * @param ancester the full class name of an acester/interface
+	 * @param ancestor the full class name of an acester/interface
 	 * @return a hashtable mapping the IDs of the classes with a prototype instance of the classes
 	 */
-	public static Hashtable loadHashListToObj(final String defaultPath, String requestedPathList, final String ancester)
+	public static Hashtable loadHashListToObj(final String defaultPath, String requestedPathList, final String ancestor)
 	{
 		final Hashtable<String,Object> h=new Hashtable<String,Object>();
 		int x=requestedPathList.indexOf(';');
@@ -1556,23 +1556,23 @@ public class CMClass extends ClassLoader
 		{
 			path=requestedPathList.substring(0,x).trim();
 			requestedPathList=requestedPathList.substring(x+1).trim();
-			loadObjectListToObj(h,defaultPath,path,ancester);
+			loadObjectListToObj(h,defaultPath,path,ancestor);
 			x=requestedPathList.indexOf(';');
 		}
-		loadObjectListToObj(h,defaultPath,requestedPathList,ancester);
+		loadObjectListToObj(h,defaultPath,requestedPathList,ancestor);
 		return h;
 	}
 
 	/**
 	 * Given the "stock" default path to a set of coffeemud classes, and a potential set of requested paths, this
 	 * method will follow requested paths (observing the default if default is listed in the request paths), and
-	 * load all the coffeemud classes therein, making sure they respect the given interface/ancester name.
+	 * load all the coffeemud classes therein, making sure they respect the given interface/ancestor name.
 	 * @param defaultPath the path to use when default is a requested path
 	 * @param requestedPathList the ; separated list of paths to look for classes in
-	 * @param ancester the full class name of an acester/interface
+	 * @param ancestor the full class name of an acester/interface
 	 * @return a vector of all the  prototype instance of the classes
 	 */
-	public static final XVector loadVectorListToObj(final String defaultPath, String requestedPathList, final String ancester)
+	public static final XVector loadVectorListToObj(final String defaultPath, String requestedPathList, final String ancestor)
 	{
 		final Vector v=new Vector();
 		int x=requestedPathList.indexOf(';');
@@ -1581,17 +1581,17 @@ public class CMClass extends ClassLoader
 		{
 			path=requestedPathList.substring(0,x).trim();
 			requestedPathList=requestedPathList.substring(x+1).trim();
-			loadObjectListToObj(v,defaultPath,path,ancester);
+			loadObjectListToObj(v,defaultPath,path,ancestor);
 			x=requestedPathList.indexOf(';');
 		}
-		loadObjectListToObj(v,defaultPath,requestedPathList,ancester);
+		loadObjectListToObj(v,defaultPath,requestedPathList,ancestor);
 		return new XVector(new TreeSet(v));
 	}
 
 	/**
 	 * Given the "stock" default path to a set of coffeemud classes, and a potential set of requested paths, this
 	 * method will follow requested paths (observing the default if default is listed in the request paths), and
-	 * load all the coffeemud classes therein, making sure they respect the given interface/ancester class.
+	 * load all the coffeemud classes therein, making sure they respect the given interface/ancestor class.
 	 * @param defaultPath the path to use when default is a requested path
 	 * @param requestedPathList the ; separated list of paths to look for classes in
 	 * @param ancestorC1 the full class of an acester/interface
@@ -1629,18 +1629,18 @@ public class CMClass extends ClassLoader
 	 * @param collection the collection type to use (map, list, set, etc, etc)
 	 * @param defaultPath the path to use if the given path requests the default path
 	 * @param path the requested path to use
-	 * @param ancester the full java class name of an interface ancestor to force classes to respect
+	 * @param ancestor the full java class name of an interface ancestor to force classes to respect
 	 * @return true if classes were loaded without errors, false otherwise
 	 */
-	public static final boolean loadObjectListToObj(final Object collection, final String defaultPath, final String path, final String ancester)
+	public static final boolean loadObjectListToObj(final Object collection, final String defaultPath, final String path, final String ancestor)
 	{
 		if(path.length()>0)
 		{
 			final boolean success;
 			if(path.equalsIgnoreCase("%default%"))
-				success=loadListToObj(collection,defaultPath, ancester, false);
+				success=loadListToObj(collection,defaultPath, ancestor, false);
 			else
-				success=loadListToObj(collection,path,ancester, false);
+				success=loadListToObj(collection,path,ancestor, false);
 			return success;
 		}
 		return false;
@@ -1652,7 +1652,7 @@ public class CMClass extends ClassLoader
 	 * in the appropriate path into the given collection.
 	 * @param collection the collection type to use (map, list, set, etc, etc)
 	 * @param filePath the path to look for classes in
-	 * @param ancester the full java class name of an interface ancestor to force classes to respect
+	 * @param ancestor the full java class name of an interface ancestor to force classes to respect
 	 * @param quiet true to not report errors, false otherwise
 	 * @return true if classes were loaded successfully, false otherwise
 	 */
