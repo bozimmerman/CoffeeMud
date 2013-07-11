@@ -253,9 +253,9 @@ public class AreaData extends StdWebMacro
 						str.append(">"+climstr);
 					}
 				}
-				if(parms.containsKey("TECHLEVEL"))
+				if(parms.containsKey("THEME"))
 				{
-					String level=httpReq.getUrlParameter("TECHLEVEL");
+					String level=httpReq.getUrlParameter("THEME");
 					if((level==null)||(level.length()==0))
 						level=""+A.getTheme();
 					for(int i=1;i<Area.THEME_PHRASE.length;i++)

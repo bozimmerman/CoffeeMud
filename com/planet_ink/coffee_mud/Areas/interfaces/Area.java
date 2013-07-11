@@ -607,13 +607,13 @@ public interface Area extends Economics, PhysicalAgent
 	}
 	
 	public final static String[] THEME_DESCS={"FANTASY","TECH","HEROIC","SKILLONLY"};
-	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTechLevel() */
+	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_FANTASY=1;
-	/**	Bitmap flag meaning that the object supports technology.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTechLevel() */
+	/**	Bitmap flag meaning that the object supports technology.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_TECHNOLOGY=2;
-	/**	Bitmap flag meaning that the object supports super powers.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTechLevel() */
+	/**	Bitmap flag meaning that the object supports super powers.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_HEROIC=4;
-	/**	Bitmap flag meaning that the object only supports usage of above in Skills.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTechLevel() */
+	/**	Bitmap flag meaning that the object only supports usage of above in Skills.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_SKILLONLYMASK=8;
 	/**	Indexed description of the THEME_ bitmap constants in all possible combinations.  
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY 

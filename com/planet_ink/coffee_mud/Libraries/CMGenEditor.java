@@ -2630,7 +2630,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genTechLevel(MOB mob, Area A, int showNumber, int showFlag)
+	protected void getTheme(MOB mob, Area A, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -8254,7 +8254,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genName(mob,myArea,++showNumber,showFlag);
 			genDescription(mob,myArea,++showNumber,showFlag);
 			genAuthor(mob,myArea,++showNumber,showFlag);
-			genTechLevel(mob,myArea,++showNumber,showFlag);
+			getTheme(mob,myArea,++showNumber,showFlag);
 			genClimateType(mob,myArea,++showNumber,showFlag);
 			genTimeClock(mob,myArea,++showNumber,showFlag);
 			genArchivePath(mob,myArea,++showNumber,showFlag);

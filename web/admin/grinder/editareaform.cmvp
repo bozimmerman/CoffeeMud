@@ -201,8 +201,8 @@
 <TR>
 	<TD><FONT COLOR="#66FFFF"><B>Tech Level:</B></FONT></TD>
     <TD COLSPAN=2>
-	<SELECT NAME=TECHLEVEL>
-	@AreaData?TECHLEVEL@
+	<SELECT NAME=THEME>
+	@AreaData?THEME@
 	</SELECT>
 	</TD>
 </TR>

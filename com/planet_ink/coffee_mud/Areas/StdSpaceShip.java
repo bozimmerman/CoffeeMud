@@ -1094,7 +1094,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public String finalDevalueRate(){ return "";}
    
 	public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL","BLURBS"};
+	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS"};
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){

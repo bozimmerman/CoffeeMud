@@ -43,7 +43,7 @@ public class StdArea implements Area
 	protected String	miscText		="";
 	protected String	archPath		="";
 	protected String	imageName   	="";
-	protected int   	techLevel   	=0;
+	protected int   	theme			=0;
 	protected int   	climateID   	=Area.CLIMASK_NORMAL;
 	protected long  	tickStatus  	=Tickable.STATUS_NOT;
 	protected long  	expirationDate  =0;
@@ -262,8 +262,8 @@ public class StdArea implements Area
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
-	public int getTheme(){return techLevel;}
-	public void setTheme(int level){techLevel=level;}
+	public int getTheme(){return theme;}
+	public void setTheme(int level){theme=level;}
 
 	public String getArchivePath(){return archPath;}
 	public void setArchivePath(String pathFile){archPath=pathFile;}
@@ -1704,7 +1704,7 @@ public class StdArea implements Area
 												  "CLIMATE",
 												  "DESCRIPTION",
 												  "TEXT",
-												  "TECHLEVEL",
+												  "THEME",
 												  "BLURBS",
 												  "PREJUDICE",
 												  "BUDGET",

@@ -176,8 +176,8 @@ public class GrinderAreas
 			A.setClimateType(0);
 
 		// tech level
-		if(httpReq.isUrlParameter("TECHLEVEL"))
-			A.setTheme(CMath.s_int(httpReq.getUrlParameter("TECHLEVEL")));
+		if(httpReq.isUrlParameter("THEME"))
+			A.setTheme(CMath.s_int(httpReq.getUrlParameter("THEME")));
 
 		// modify subop list
 		for(Enumeration<String> s=A.subOps();s.hasMoreElements();)

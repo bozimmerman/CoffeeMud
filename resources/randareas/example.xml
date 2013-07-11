@@ -152,7 +152,7 @@ Optional objects: (See below for details on these object tag types and their det
 "AFFECT", "BEHAVIOR", "ROOM"
 
 Optional details: (See Archon's Guide)
-"CLIMATE", "DESCRIPTION", "TECHLEVEL", "BLURBS", "PREJUDICE", "BUDGET", "DEVALRATE",
+"CLIMATE", "DESCRIPTION", "THEME", "BLURBS", "PREJUDICE", "BUDGET", "DEVALRATE",
 "INVRESETRATE", "IGNOREMASK", "PRICEMASKS"  
 
 
