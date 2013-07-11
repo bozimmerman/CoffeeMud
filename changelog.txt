@@ -24,6 +24,8 @@
   22. The changelog.txt has been reformatted, and is slightly easier to read now!
   23. CoffeeMud now supports GMCP according to CMUD and Aardwolf specs. SHELL .edit command supports GMCP editor -- I'll look for other places for it later.
   24. Scriptable now has an "arrive_prog" to handle situations with mobile mobs.
+  *TODO: bug with ladders/ropes and pits
+  
 # Build 5.7.10 Release 2/17/2013 (* DB CHANGE!) (** Thanks to TGMUD for publishing their changelogs!!!)
    0. Database Schema Updated! Run DBUpgrade, OR create table CMCHCL (see appropriate schema file), then:
    INSERT INTO CMCHCL VALUES (SELECT USERID, CMCLAN, CMCLRO from CMCHAR where CMCLAN != ''); // lastly:
