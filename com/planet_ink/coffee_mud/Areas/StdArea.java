@@ -262,8 +262,8 @@ public class StdArea implements Area
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
-	public int getTechLevel(){return techLevel;}
-	public void setTechLevel(int level){techLevel=level;}
+	public int getTheme(){return techLevel;}
+	public void setTheme(int level){techLevel=level;}
 
 	public String getArchivePath(){return archPath;}
 	public void setArchivePath(String pathFile){archPath=pathFile;}
@@ -635,7 +635,7 @@ public class StdArea implements Area
 				if(!a.next().okMessage(myHost,msg))
 					return false;
 
-		if((getTechLevel()>0)&&(!CMath.bset(getTechLevel(),Area.THEME_FANTASY)))
+		if((getTheme()>0)&&(!CMath.bset(getTheme(),Area.THEME_FANTASY)))
 		{
 			if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC))
 			||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
@@ -662,7 +662,7 @@ public class StdArea implements Area
 			}
 		}
 		else
-		if((getTechLevel()>0)&&(!CMath.bset(getTechLevel(),Area.THEME_TECHNOLOGY)))
+		if((getTheme()>0)&&(!CMath.bset(getTheme(),Area.THEME_TECHNOLOGY)))
 		{
 			switch(msg.sourceMinor())
 			{
@@ -1728,7 +1728,7 @@ public class StdArea implements Area
 		case 1: return ""+climateType();
 		case 2: return description();
 		case 3: return text();
-		case 4: return ""+getTechLevel();
+		case 4: return ""+getTheme();
 		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
 		case 6: return prejudiceFactors();
 		case 7: return budget();
@@ -1747,7 +1747,7 @@ public class StdArea implements Area
 		case 1: setClimateType(CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
-		case 4: setTechLevel(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
+		case 4: setTheme(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
 		case 5:
 		{
 			if(val.startsWith("+"))

@@ -1054,7 +1054,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		newArea.setDescription(CMLib.coffeeFilter().safetyFilter(CMLib.xml().getValFromPieces(aV,"ADESC")));
 		newArea.setClimateType(CMLib.xml().getIntFromPieces(aV,"ACLIM"));
-		newArea.setTechLevel(CMLib.xml().getIntFromPieces(aV,"ATECH"));
+		newArea.setTheme(CMLib.xml().getIntFromPieces(aV,"ATECH"));
 		newArea.setSubOpList(CMLib.xml().getValFromPieces(aV,"ASUBS"));
 		newArea.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(aV,"ADATA")));
 		CMLib.database().DBUpdateArea(newArea.Name(),newArea);
@@ -1099,7 +1099,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		buf.append(CMLib.xml().convertXMLtoTag("ADESC",area.description()));
 		buf.append(CMLib.xml().convertXMLtoTag("ACLIM",area.climateType()));
 		buf.append(CMLib.xml().convertXMLtoTag("ASUBS",area.getSubOpList()));
-		buf.append(CMLib.xml().convertXMLtoTag("ATECH",area.getTechLevel()));
+		buf.append(CMLib.xml().convertXMLtoTag("ATECH",area.getTheme()));
 		buf.append(CMLib.xml().convertXMLtoTag("ADATA",area.text()));
 		if(andRooms)
 		{

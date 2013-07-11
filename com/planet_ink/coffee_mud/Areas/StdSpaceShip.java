@@ -47,9 +47,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected TimeClock 	localClock  	=(TimeClock)CMClass.getCommon("DefaultTimeClock");
 	protected String		currency		="";
 	private long			expirationDate  =0;
-	protected SpaceObject   spaceTarget 	=null;
-	protected SpaceObject   spaceSource 	=null;
-	protected SpaceObject   orbiting		=null;
+	protected SpaceObject	spaceTarget 	=null;
+	protected SpaceObject	spaceSource 	=null;
+	protected SpaceObject	orbiting		=null;
 	protected boolean   	amDestroyed 	=false;
 	protected String		name			="a space ship";
 	protected Room  		savedDock   	=null;
@@ -182,8 +182,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 	public void setNextWeatherType(int weatherCode){}
 	public void setCurrentWeatherType(int weatherCode){}
-	public int getTechLevel(){return Area.THEME_TECHNOLOGY;}
-	public void setTechLevel(int level){}
+	public int getTheme(){return Area.THEME_TECHNOLOGY;}
+	public void setTheme(int level){}
 
 	public String image(){return imageName;}
 	public String rawImage(){return imageName;}
@@ -1109,7 +1109,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		case 1: return ""+climateType();
 		case 2: return description();
 		case 3: return text();
-		case 4: return ""+getTechLevel();
+		case 4: return ""+getTheme();
 		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
 		}
 		return "";
@@ -1122,7 +1122,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		case 1: setClimateType(CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
-		case 4: setTechLevel(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
+		case 4: setTheme(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
 		case 5:
 		{
 			if(val.startsWith("+"))

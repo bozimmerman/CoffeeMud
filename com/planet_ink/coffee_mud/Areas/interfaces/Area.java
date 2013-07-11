@@ -54,14 +54,14 @@ public interface Area extends Economics, PhysicalAgent
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 * @return a bitmap of the themes supported by this area.
 	 */
-	public int getTechLevel();
+	public int getTheme();
 	/**
 	 * Sets the technology level supported by this area.  Activities within
 	 * rooms within this area will be affected by the results of this flag.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 * @param level the bitmap representing the tech level
 	 */
-	public void setTechLevel(int level);
+	public void setTheme(int level);
 	/**
 	 * Returns the coffeemud .cmare filename that will be used when the EXPORT command
 	 * is used in such a way as to auto-generate filenames. 

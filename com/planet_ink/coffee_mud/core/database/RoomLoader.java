@@ -71,7 +71,7 @@ public class RoomLoader
 		A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
 		A.setDescription(DBConnections.getRes(R,"CMDESC"));
 		A.setMiscText(DBConnections.getRes(R,"CMROTX"));
-		A.setTechLevel((int)DBConnections.getLongRes(R,"CMTECH"));
+		A.setTheme((int)DBConnections.getLongRes(R,"CMTECH"));
 		return A;
 	}
 	
@@ -1230,7 +1230,7 @@ public class RoomLoader
 		"UPDATE CMROOM SET "
 		+"CMLOID='"+CMClass.classID(room)+"',"
 		+"CMAREA='"+room.getArea().Name()+"',"
-		+"CMDESC1='"+room.displayText()+" ',"
+		+"CMDESC1='"+room.displayText().replace('\'', '`')+" ',"
 		+"CMDESC2=?,"
 		+"CMROTX=? "
 		+"WHERE CMROID='"+room.roomID()+"'",
@@ -1317,7 +1317,7 @@ public class RoomLoader
 		+"'"+A.getSubOpList()+"',"
 		+"?,"
 		+"?,"
-		+A.getTechLevel()+")",
+		+A.getTheme()+")",
 		new String[][]{{A.description()+" ",A.text()+" "}});
 		A.setAreaState(Area.State.ACTIVE);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
@@ -1339,7 +1339,7 @@ public class RoomLoader
 		+"CMSUBS='"+A.getSubOpList()+"',"
 		+"CMDESC=?,"
 		+"CMROTX=?,"
-		+"CMTECH="+A.getTechLevel()+" "
+		+"CMTECH="+A.getTheme()+" "
 		+"WHERE CMAREA='"+keyName+"'",
 		new String[]{A.description()+" ",A.text()+" "});
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
