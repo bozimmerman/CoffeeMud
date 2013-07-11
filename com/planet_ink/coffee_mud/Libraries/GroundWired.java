@@ -207,17 +207,27 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		else
 		{
 			remainingPowerToDistribute=availablePowerToDistribute;
-			int panelsLeft=panels.size();
+			double totalPowerNeeded=0.0;
 			for(Electronics E : panels)
+				totalPowerNeeded+=((E.powerNeeds()<=0)?1.0:E.powerNeeds());
+			if(totalPowerNeeded>0.0)
 			{
-				powerMsg.setTarget(E);
-				int amountToDistribute=(int)(remainingPowerToDistribute/panelsLeft);
-				powerMsg.setValue(amountToDistribute<0?0:amountToDistribute);
-				final Room R=CMLib.map().roomLocation(E);
-				if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
-					R.send(powerMsg.source(), powerMsg);
-				remainingPowerToDistribute-=(powerMsg.value()<0)?amountToDistribute:(amountToDistribute-powerMsg.value());
-				panelsLeft--;
+				for(Electronics E : panels)
+				{
+					powerMsg.setTarget(E);
+					int powerToTake=0;
+					if(remainingPowerToDistribute>0)
+					{
+						double pctToTake=CMath.div(((E.powerNeeds()<=0)?1:E.powerNeeds()),totalPowerNeeded);
+						powerToTake=(int)Math.round(pctToTake * (double)remainingPowerToDistribute);
+						if(powerToTake<1)
+							powerToTake=1;
+					}
+					final Room R=CMLib.map().roomLocation(E);
+					if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+						R.send(powerMsg.source(), powerMsg);
+					remainingPowerToDistribute-=(powerMsg.value()<0)?powerToTake:(powerToTake-powerMsg.value());
+				}
 			}
 			int batteriesLeft=batteries.size();
 			for(PowerSource E : batteries)

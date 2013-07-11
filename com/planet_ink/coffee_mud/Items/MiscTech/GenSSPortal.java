@@ -69,6 +69,8 @@ public class GenSSPortal extends StdPortal implements Electronics
 	public long powerCapacity(){return 0;}
 	public void setPowerCapacity(long capacity){}
 	public long powerRemaining(){return 0;}
+	public void setPowerNeeds(int amt){}
+	public int powerNeeds(){return 0;}
 	public void setPowerRemaining(long remaining){}
 	public void activate(boolean truefalse){}
 	public boolean activated(){return true;}

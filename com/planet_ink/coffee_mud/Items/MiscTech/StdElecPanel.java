@@ -160,19 +160,37 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				int powerRemaining=msg.value();
 				final List<Item> contents=getContents();
 				final CMMsg powerMsg=CMClass.getMsg(msg.source(), CMMsg.MSG_POWERCURRENT, null);
+				double totalPowerReq=0.0;
 				for(int i=contents.size()-1;i>=0;i--)
 				{
 					Item I=contents.get(i);
 					if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
+						totalPowerReq+=((((Electronics)I).powerNeeds()<=0)?1.0:((Electronics)I).powerNeeds());
+				}
+				if(totalPowerReq>0.0)
+				{
+					for(int i=contents.size()-1;i>=0;i--)
 					{
-						int powerToTake=powerRemaining/(i+1);
-						powerMsg.setValue(powerToTake);
-						powerMsg.setTarget(I);
-						if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
-							R.send(powerMsg.source(), powerMsg);
-						powerRemaining-=(powerMsg.value()<0)?powerToTake:(powerToTake-powerMsg.value());
+						Item I=contents.get(i);
+						if((I instanceof Electronics)&&(!(I instanceof Electronics.PowerSource))&&(!(I instanceof Electronics.PowerGenerator)))
+						{
+							int powerToTake=0;
+							if(powerRemaining>0)
+							{
+    							double pctToTake=CMath.div(((((Electronics)I).powerNeeds()<=0)?1:((Electronics)I).powerNeeds()),totalPowerReq);
+    							powerToTake=(int)Math.round(pctToTake * (double)powerRemaining);
+    							if(powerToTake<1)
+    								powerToTake=1;
+							}
+							powerMsg.setValue(powerToTake);
+							powerMsg.setTarget(I);
+							if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
+								R.send(powerMsg.source(), powerMsg);
+							powerRemaining-=(powerMsg.value()<0)?powerToTake:(powerToTake-powerMsg.value());
+						}
 					}
 				}
+				setPowerNeeds((int)Math.round(totalPowerReq));
 				CMClass.returnMsg(powerMsg);
 				msg.setValue(powerRemaining);
 				break;

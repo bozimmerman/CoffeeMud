@@ -69,6 +69,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public void setFuelType(int resource){}
 	public long powerCapacity(){return 1;}
 	public void setPowerCapacity(long capacity){}
+	public void setPowerNeeds(int amt){}
+	public int powerNeeds(){return 1;}
 	public long powerRemaining(){return powerRemaining;}
 	public void setPowerRemaining(long remaining){ powerRemaining=(remaining>0)?(short)1:(short)0; }
 	public boolean activated(){return activated;}

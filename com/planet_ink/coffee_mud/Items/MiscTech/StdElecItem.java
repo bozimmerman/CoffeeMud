@@ -40,6 +40,7 @@ public class StdElecItem extends StdItem implements Electronics
 	protected long powerCapacity=100;
 	protected long power=100;
 	protected boolean activated=false;
+	protected int powerNeeds=1;
 	
 	public StdElecItem()
 	{
@@ -107,4 +108,6 @@ public class StdElecItem extends StdItem implements Electronics
 	public void setPowerRemaining(long remaining){power=remaining;}
 	public boolean activated(){return activated;}
 	public void activate(boolean truefalse){activated=truefalse;}
+	public void setPowerNeeds(int amt){ powerNeeds=amt;}
+	public int powerNeeds(){return powerNeeds;}
 }
