@@ -48,6 +48,7 @@ public class StdBattery extends StdElecItem implements Electronics.PowerSource
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		super.activate(true);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
 	}

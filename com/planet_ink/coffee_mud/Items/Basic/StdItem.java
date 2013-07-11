@@ -1095,13 +1095,15 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_ACTIVATE:
+		case CMMsg.TYP_POWERCURRENT:
 		case CMMsg.TYP_DEACTIVATE:
-			if(this instanceof Electronics)
+			if((this instanceof Electronics)||(this instanceof Software))
 				return true;
 			break;
 		case CMMsg.TYP_WRITE:
 			if(((isReadable())&&(!(this instanceof Scroll)))
-			||(this instanceof Electronics.ElecPanel))
+			||(this instanceof Electronics.ElecPanel)
+			||(this instanceof Software))
 			{
 				if(msg.targetMessage().trim().length()==0)
 				{

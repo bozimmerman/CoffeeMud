@@ -36,11 +36,13 @@ public class StdElecItem extends StdItem implements Electronics
 {
 	public String ID(){	return "StdElecItem";}
 	
-	protected int fuelType=RawMaterial.RESOURCE_ENERGY;
-	protected long powerCapacity=100;
-	protected long power=100;
-	protected boolean activated=false;
-	protected int powerNeeds=1;
+	protected long 			powerCapacity	= 100;
+	protected long 			power			= 100;
+	protected int 			powerNeeds		= 1;
+	protected boolean 		activated		= false;
+	protected int 			fuelType		= RawMaterial.RESOURCE_ENERGY;
+	protected int			techLevel		= -1;
+	protected Manufacturer 	manufacturer	= CMLib.tech().getDefaultManufacturer();
 	
 	public StdElecItem()
 	{
@@ -77,7 +79,7 @@ public class StdElecItem extends StdItem implements Electronics
 			case CMMsg.TYP_LOOK:
 				break;
 			case CMMsg.TYP_POWERCURRENT:
-				return true;
+				break;
 			}
 		}
 		return super.okMessage(host, msg);
@@ -106,8 +108,12 @@ public class StdElecItem extends StdItem implements Electronics
 	public void setPowerCapacity(long capacity){powerCapacity=capacity;}
 	public long powerRemaining(){return power;}
 	public void setPowerRemaining(long remaining){power=remaining;}
-	public boolean activated(){return activated;}
+	public boolean activated(){ return activated; }
 	public void activate(boolean truefalse){activated=truefalse;}
 	public void setPowerNeeds(int amt){ powerNeeds=amt;}
 	public int powerNeeds(){return powerNeeds;}
+	public int techLevel() { return techLevel;}
+	public void setTechLevel(int lvl) { techLevel=lvl; }
+	public void setManufacturer(Manufacturer manufacturer) { if(manufacturer!=null) this.manufacturer=manufacturer; }
+	public Manufacturer manufacturer() { return this.manufacturer; }
 }

@@ -60,4 +60,42 @@ public interface TechLibrary extends CMLibrary
 	 * @return true if an attempt to give power was made, false otherwise.
 	 */
 	public boolean seekBatteryPower(final Electronics E, final String key);
+
+	/**
+	 * Retreives the default manufacturer for new products
+	 * @return the default manufacturer for new products
+	 */
+	public Manufacturer getDefaultManufacturer();
+	
+	/**
+	 * Adds and saves a new manufacturer to the list.
+	 * @param manufacturer the one to add
+	 */
+	public void addManufacturer(Manufacturer manufacturer);
+	
+	/**
+	 * Removes a new manufacturer from the list.
+	 * @param manufacturer the one to remove
+	 */
+	public void delManufacturer(Manufacturer manufacturer);
+	
+	/**
+	 * Updates a new manufacturer in the list.
+	 * @param manufacturer the one to update
+	 */
+	public void updateManufacturer(Manufacturer manufacturer);
+	
+	/**
+	 * Retrieves the manufacturer of the given name, or null
+	 * if it is not found.
+	 * @param name the manufacturer to fetch
+	 * @return the manufacturer found, or null
+	 */
+	public Manufacturer getManufacturer(String name);
+	
+	/**
+	 * Returns an iterator of manufacturers
+	 * @return the set to return
+	 */
+	public Iterator<Manufacturer> manufacterers();
 }

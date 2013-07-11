@@ -42,6 +42,10 @@ import java.util.concurrent.atomic.*;
 public class GroundWired extends StdLibrary implements TechLibrary
 {
 	public String ID(){return "GroundWired";}
+
+	public Manufacturer defaultManufacturer=null;
+	
+	public final Map<String,Manufacturer> manufacturers = new SHashtable<String,Manufacturer>();
 	
 	public final Map<String,LinkedList<Electronics>> sets=new Hashtable<String,LinkedList<Electronics>>();
 	
@@ -223,6 +227,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						if(powerToTake<1)
 							powerToTake=1;
 					}
+					powerMsg.setValue(powerToTake);
 					final Room R=CMLib.map().roomLocation(E);
 					if((R!=null)&&(R.okMessage(powerMsg.source(), powerMsg)))
 						R.send(powerMsg.source(), powerMsg);
@@ -356,5 +361,44 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			runElectricCurrent(key);
 		}
 		setThreadStatus(serviceClient,"sleeping");
+	}
+	
+	public Manufacturer getDefaultManufacturer()
+	{
+		if(defaultManufacturer==null)
+			defaultManufacturer=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
+		return defaultManufacturer;
+	}
+	
+	public void addManufacturer(Manufacturer manufacturer)
+	{
+		if(manufacturer==null) return;
+		manufacturers.put(manufacturer.name().toUpperCase().trim(), manufacturer);
+		//TODO: save!
+	}
+	
+	public void delManufacturer(Manufacturer manufacturer)
+	{
+		if(manufacturer==null) return;
+		Manufacturer found=getManufacturer(manufacturer.name());
+		if(found==manufacturer)
+			manufacturers.remove(manufacturer.name().toUpperCase().trim());
+		//TODO: save!
+	}
+	
+	public void updateManufacturer(Manufacturer manufacturer)
+	{
+		//TODO: save!
+	}
+	
+	public Manufacturer getManufacturer(String name)
+	{
+		if(name==null) return null;
+		return manufacturers.get(name.toUpperCase().trim());
+	}
+	
+	public Iterator<Manufacturer> manufacterers() 
+	{ 
+		return new ReadOnlyIterator<Manufacturer>(manufacturers.values().iterator());
 	}
 }

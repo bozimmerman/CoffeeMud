@@ -137,13 +137,21 @@ public class StdProgram extends StdItem implements Software
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_ACTIVATE:
-				return checkActivate(msg.source(),msg.targetMessage());
+				if(!checkActivate(msg.source(),msg.targetMessage()))
+					return false;
+				break;
 			case CMMsg.TYP_DEACTIVATE:
-				return checkDeactivate(msg.source(),msg.targetMessage());
+				if(!checkDeactivate(msg.source(),msg.targetMessage()))
+					return false;
+				break;
 			case CMMsg.TYP_WRITE:
-				return checkTyping(msg.source(),msg.targetMessage());
+				if(!checkTyping(msg.source(),msg.targetMessage()))
+					return false;
+				break;
 			case CMMsg.TYP_POWERCURRENT:
-				return checkPowerCurrent(msg.value());
+				if(!checkPowerCurrent(msg.value()))
+					return false;
+				break;
 			}
 		}
 		return super.okMessage(host,msg);

@@ -50,7 +50,7 @@ public class DefaultSession implements Session
 	protected static final int		PINGTIMEOUT  	= 30000;
 	protected static final int		MSDPPINGINTERVAL= 1000;
 	protected static final byte[]	TELNETGABYTES	= {(byte)TELNET_IAC,(byte)TELNET_GA};
-	protected static final char[]	PINGCHARS		= {TELNET_IAC,TELNET_NOP};
+	protected static final char[]	PINGCHARS		= {0};
 	
 	protected final Set<Integer>		telnetSupportSet= new HashSet<Integer>();
 	protected final Set<String>			mxpSupportSet	= new HashSet<String>();

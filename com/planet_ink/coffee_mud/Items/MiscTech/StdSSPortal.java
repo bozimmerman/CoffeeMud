@@ -34,11 +34,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSSPortal extends StdPortal implements Electronics
+public class StdSSPortal extends StdPortal implements Electronics
 {
-	public String ID(){	return "GenSSPortal";}
+	public String ID(){	return "StdSSPortal";}
 	protected String readableText="";
-	public GenSSPortal()
+
+	public StdSSPortal()
 	{
 		super();
 		setName("a space ship portal");
@@ -48,7 +49,7 @@ public class GenSSPortal extends StdPortal implements Electronics
 		recoverPhyStats();
 	}
 
-	public boolean isGeneric(){return true;}
+	public boolean isGeneric(){return false;}
 
 	public String text()
 	{
@@ -74,6 +75,10 @@ public class GenSSPortal extends StdPortal implements Electronics
 	public void setPowerRemaining(long remaining){}
 	public void activate(boolean truefalse){}
 	public boolean activated(){return true;}
+	public int techLevel() { return -1;}
+	public void setTechLevel(int lvl) { }
+	public void setManufacturer(Manufacturer manufacturer) { }
+	public Manufacturer manufacturer() { return CMLib.tech().getDefaultManufacturer(); }
 	
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
@@ -134,7 +139,7 @@ public class GenSSPortal extends StdPortal implements Electronics
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenSSPortal.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(StdSSPortal.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -146,7 +151,7 @@ public class GenSSPortal extends StdPortal implements Electronics
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenSSPortal)) return false;
+		if(!(E instanceof StdSSPortal)) return false;
 		String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))

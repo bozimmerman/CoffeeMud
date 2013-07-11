@@ -390,6 +390,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("POWC",""+((Electronics)E).powerCapacity()));
 			text.append(CMLib.xml().convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
 			text.append(CMLib.xml().convertXMLtoTag("EACT", ""+((Electronics)E).activated()));
+			text.append(CMLib.xml().convertXMLtoTag("TECHLVL", ""+((Electronics)E).techLevel()));
+			text.append(CMLib.xml().convertXMLtoTag("MANUFACT", ((Electronics)E).manufacturer().name()));
+
 		}
 		if(E instanceof Electronics.ElecPanel)
 		{
@@ -2375,6 +2378,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((Electronics)E).setPowerCapacity(CMLib.xml().getIntFromPieces(buf,"POWC"));
 			((Electronics)E).setPowerRemaining(CMLib.xml().getIntFromPieces(buf,"POWR"));
 			((Electronics)E).activate(CMLib.xml().getBoolFromPieces(buf, "EACT"));
+			((Electronics)E).setTechLevel(CMLib.xml().getIntFromPieces(buf, "TECHLVL"));
+			((Electronics)E).setManufacturer(CMLib.tech().getManufacturer(CMLib.xml().getValFromPieces(buf, "MANUFACT")));
 		}
 		if(E instanceof Electronics.ElecPanel)
 		{

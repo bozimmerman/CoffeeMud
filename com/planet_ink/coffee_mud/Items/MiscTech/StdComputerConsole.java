@@ -46,6 +46,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	protected List<Software>  software		 	= null;
 	protected boolean 		  activated		 	= false;
 	protected String 		  currentMenu		= "";
+	protected int			  techLevel			= -1;
+	protected Manufacturer	  manufacturer 		= CMLib.tech().getDefaultManufacturer();
 	
 	public StdComputerConsole()
 	{
@@ -62,6 +64,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		setLidsNLocks(false,true,false,false);
 		capacity=500;
 		material=RawMaterial.RESOURCE_STEEL;
+		activate(true);
 		recoverPhyStats();
 	}
 
@@ -74,9 +77,13 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public long powerRemaining(){return powerRemaining;}
 	public void setPowerRemaining(long remaining){ powerRemaining=(remaining>0)?(short)1:(short)0; }
 	public boolean activated(){return activated;}
-	public void activate(boolean truefalse){activated=truefalse;}
+	public void activate(boolean truefalse){ activated=truefalse; }
 	public void setActiveMenu(String internalName) { currentMenu=internalName; }
 	public String getActiveMenu() { return currentMenu; }
+	public int techLevel() { return techLevel;}
+	public void setTechLevel(int lvl) { techLevel=lvl; }
+	public void setManufacturer(Manufacturer manufacturer) { if(manufacturer!=null) this.manufacturer=manufacturer; }
+	public Manufacturer manufacturer() { return this.manufacturer; }
 	
 	public ElecPanelType panelType(){return panelType;}
 	public void setPanelType(ElecPanelType type){panelType=type;}
@@ -149,7 +156,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				else
 				if(software.size()>0)
 				{
-					str.append("\n\rEnter a command:");
+					str.append("\n\rType in a command:");
 				}
 				else
 				{
@@ -188,7 +195,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_POWERCURRENT:
-				return true;
+				break;
 			case CMMsg.TYP_READ:
 			case CMMsg.TYP_WRITE:
 				if(!activated())
@@ -446,6 +453,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			return false;
 		if(tickID==Tickable.TICKID_ELECTRONICS)
 		{
+			if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+				nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
 			if(!activated())
 			{
 			}

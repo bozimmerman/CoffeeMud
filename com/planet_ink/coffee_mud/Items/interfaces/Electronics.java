@@ -48,6 +48,12 @@ public interface Electronics extends Item, Technical
 	public boolean activated();
 	public void activate(boolean truefalse);
 	
+	public int techLevel();
+	public void setTechLevel(int level);
+	
+	public Manufacturer manufacturer();
+	public void setManufacturer(Manufacturer manufacturer);
+	
 	public interface PowerSource extends Electronics
 	{
 	}
