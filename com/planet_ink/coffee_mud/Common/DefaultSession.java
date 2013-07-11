@@ -202,23 +202,7 @@ public class DefaultSession implements Session
 
 			preliminaryRead(250);
 			if(getClientTelnetMode(TELNET_COMPRESS2))
-			{
-				out.flush();
-				rawout.flush();
-				preliminaryRead(250);
-				out.flush();
-				rawout.flush();
-				preliminaryRead(250);
-				negotiateTelnetMode(rawout,TELNET_COMPRESS2);
-				out.flush();
-				rawout.flush();
-				preliminaryRead(250);
-				ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
-				rawout=zOut;
-				zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-				out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-				try{Thread.sleep(50);}catch(Exception e){}
-			}
+				compress2On();
 			else
 			{
 				if(out==null) return;
@@ -275,11 +259,46 @@ public class DefaultSession implements Session
 			else
 				Log.errOut(e.getMessage());
 		}
+		preliminaryRead(2000);
 		if(preliminaryInput.length()>0)
 			fakeInput=preliminaryInput;
 		preliminaryInput=null;
 	}
 
+	private void compress2On() throws IOException
+	{
+		out.flush();
+		rawout.flush();
+		preliminaryRead(250);
+		out.flush();
+		rawout.flush();
+		preliminaryRead(250);
+		negotiateTelnetMode(rawout,TELNET_COMPRESS2);
+		out.flush();
+		rawout.flush();
+		preliminaryRead(250);
+		ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
+		rawout=zOut;
+		zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
+		out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
+		try{Thread.sleep(50);}catch(Exception e){}
+	}
+	
+	private void compress2Off() throws IOException
+	{
+		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
+		out.flush();
+		rawout.flush();
+		preliminaryRead(250);
+		out.flush();
+		rawout.flush();
+		preliminaryRead(250);
+		rawout=sock[0].getOutputStream();
+		out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
+		try{Thread.sleep(50);}catch(Exception e){}
+		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
+	}
+	
 	private void preliminaryRead(long timeToWait)
 	{
 		try{
