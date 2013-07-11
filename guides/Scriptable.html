@@ -24,6 +24,7 @@
           <ul>
             <li><a href="#all_greet_prog">all_greet_prog</a></li>
             <li><a href="#act_prog">act_prog</a></li>
+            <li><a href="#arrive_prog">arrive_prog</a></li>
             <li><a href="#mask_prog">mask_prog</a></li>
             <li><a href="#bribe_prog">bribe_prog</a></li>
             <li><a href="#buy_prog">buy_prog</a></li>
@@ -368,7 +369,8 @@ checks in all_greet_progs, specifically in the difference between mobs
 and player characters. Note that all_greet_progs will trigger even if a
 person is sneaking, though the mob must have detect invisibility to see
 invisible people, infravision to see people in the dark, sense sneaking
-to see sneakers, and will not see people if blinded.</p>
+to see sneakers, and will not see people if blinded. Also, be sure to 
+check out arrive_prog, which is a nice counterpart to greet_prog.</p>
       <h3><a name="act_prog">act_prog</a></h3>
       <h3><a name="mask_prog">mask_prog</a></h3>
       <p>Usage:</p>
@@ -420,6 +422,25 @@ colors on objects don't seem to work well
 with act_progs, so avoid using ANSI colors in anything that may be part
 of your act_prog trigger. Variables and Codes are not used in
 act_progs, so do not try to use them; it won't work.</p>
+      <h3><a name="arrive_prog">arrive_prog</a></h3>
+      <p>Usage:</p>
+      <pre>arrive_prog [integer percentage]<br /></pre>
+      <p>This type of mobprog
+checks a percentage chance every time
+the scripted mob or item enters a new room, or when it enters the game. If the random
+number generated between 1 and 100 is equal to or below the percentage
+of the greet_prog, the prog is triggered. This type of mobprog has all sorts
+of uses, ranging from giving in-zone quest information to people
+the mob stumbles upon, creating aggressive progs, etc.</p>
+      <p>EXAMPLES:</p>
+      <pre>arrive_prog 25<br /></pre>
+      <p>This prog will be
+triggered 25% of the time when the mob enters a room.</p>
+      <pre>arrive_prog 100<br /></pre>
+      <p>This prog will be
+triggered 100% of the time when the mob enters a room. This means every time.</p>
+      <p>SPECIAL NOTES: You'll
+probably want to make sure you understand the difference between the arrive_prog and greet_prog/all_greet_prog.</p>
       <h3><a name="bribe_prog">bribe_prog</a></h3>
       <p>Usage:</p>
       <pre>bribe_prog [money value]<br /></pre>
@@ -996,7 +1017,8 @@ checks in greet_progs, specifically in the difference between mobs and
 player characters. Note that greet_progs will trigger except if a
 person is sneaking. Also, the mob must have detect invisibility to see
 invisible people, infravision to see people in the dark, and will not
-see people if blinded.</p>
+see people if blinded.  Lastly, make sure you check out arrive_prog, which
+is a useful counterpart to greet_prog</p>
       <h3><a name="hitprcnt_prog">hitprcnt_prog</a></h3>
       <p>Usage:</p>
       <pre>hitprcnt_prog [integer percentage]<br /></pre>

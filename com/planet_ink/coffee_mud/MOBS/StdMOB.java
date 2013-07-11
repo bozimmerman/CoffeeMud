@@ -110,9 +110,9 @@ public class StdMOB implements MOB
 	protected boolean			amDestroyed		= false;
 	protected boolean			kickFlag		= false;
 	protected boolean			imMobile		= false;
+	protected MOB				me 				= this;
 
 	protected long				tickStatus		= Tickable.STATUS_NOT;
-	protected final MOB			me				= this;
 
 	/* containers of items and attributes */
 	protected 		   SVector<Item>		 	 inventory		= new SVector<Item>(1);
@@ -426,6 +426,7 @@ public class StdMOB implements MOB
 	{
 		if (M == null)
 			return;
+		me=this;
 		if (!isGeneric())
 		{
 			PhyStats oldBase=(PhyStats)basePhyStats.copyOf();
@@ -1078,7 +1079,7 @@ public class StdMOB implements MOB
 		}
 
 		CMLib.map().registerWorldObjectLoaded(null, getStartRoom(), this);
-		location().showOthers(this, null, CMMsg.MSG_BRINGTOLIFE, null);
+		location().show(this, null, CMMsg.MSG_BRINGTOLIFE, null);
 		if (CMLib.flags().isSleeping(this))
 			tell("(You are asleep)");
 		else

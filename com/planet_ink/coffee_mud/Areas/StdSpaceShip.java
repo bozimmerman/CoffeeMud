@@ -62,7 +62,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected PhyStats  	phyStats		=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  	basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected boolean   	initializedArea =false;
-	protected final Area 	me			 	=this;
+	protected Area 			me			 	=this;
 	
 	protected SVector<Ability>  		affects=new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors=new SVector<Behavior>(1);
@@ -219,6 +219,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(StdSpaceShip ship)
 	{
+		me=this;
 		basePhyStats=(PhyStats)ship.basePhyStats().copyOf();
 		phyStats=(PhyStats)ship.phyStats().copyOf();
 

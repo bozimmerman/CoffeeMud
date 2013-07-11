@@ -58,7 +58,7 @@ public class StdRoom implements Room
 	protected SVector<ScriptingEngine>  scripts=null;
 	protected SVector<MOB> 				inhabitants=new SVector(1);
 	protected SVector<Item>				contents=new SVector(1);
-	protected final Room 	  			me=this;
+	protected Room 			  			me=this;
 
 	// base move points and thirst points per round
 	protected int myResource=-1;
@@ -132,6 +132,7 @@ public class StdRoom implements Room
 	
 	protected void cloneFix(Room R)
 	{
+		me=this;
 		basePhyStats=(PhyStats)R.basePhyStats().copyOf();
 		phyStats=(PhyStats)R.phyStats().copyOf();
 

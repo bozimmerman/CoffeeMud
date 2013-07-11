@@ -73,7 +73,7 @@ public class StdArea implements Area
 	protected SVector<Behavior> 	  behaviors 	 =new SVector<Behavior>(1);
 	protected SVector<String>   	  subOps		 =new SVector<String>(1);
 	protected SVector<ScriptingEngine>scripts   	 =new SVector<ScriptingEngine>(1);
-	protected final Area 			  me			 =this;
+	protected Area 					  me			 =this;
 
 	protected final static int[]	  emptyStats	 =new int[Area.Stats.values().length];
 	
@@ -387,6 +387,7 @@ public class StdArea implements Area
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(StdArea areaA)
 	{
+		me=this;
 		basePhyStats=(PhyStats)areaA.basePhyStats().copyOf();
 		phyStats=(PhyStats)areaA.phyStats().copyOf();
 		properRooms    =new STreeMap<String, Room>(new RoomIDComparator());

@@ -9359,6 +9359,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				break;
+			case 45: // arrive_prog
+				if(((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LIFE))
+				&&(msg.amISource(eventMob))
+				&&(isFreeToBeTriggered(monster)||(!(affecting instanceof MOB)))
+				&&canTrigger(45))
+				{
+					if(t==null) t=parseBits(script,0,"CR");
+					int prcnt=CMath.s_int(t[1]);
+					if(CMLib.dice().rollPercentage()<prcnt)
+					{
+						enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+						return;
+					}
+				}
+				break;
 			case 2: // all_greet_prog
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)&&canTrigger(2)
 				&&(msg.amITarget(lastKnownLocation))

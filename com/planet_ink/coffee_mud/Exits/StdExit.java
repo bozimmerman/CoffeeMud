@@ -49,7 +49,7 @@ public class StdExit implements Exit
 	protected SVector<Ability>  		affects=null;
 	protected SVector<Behavior> 		behaviors=null;
 	protected SVector<ScriptingEngine>  scripts=null;
-	protected final Exit 				me=this;
+	protected Exit 						me=this;
 	
 	public StdExit()
 	{
@@ -171,6 +171,7 @@ public class StdExit implements Exit
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(Exit X)
 	{
+		me=this;
 		basePhyStats=(PhyStats)X.basePhyStats().copyOf();
 		phyStats=(PhyStats)X.phyStats().copyOf();
 

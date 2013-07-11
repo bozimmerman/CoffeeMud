@@ -55,6 +55,8 @@ public class StdItem implements Item
 	protected long  		dispossessionTime=0;
 	protected long  		tickStatus=Tickable.STATUS_NOT;
 	protected String		databaseID="";
+	protected boolean 		destroyed=false;
+	protected Item 			me=this;
 	
 	protected volatile Container	   myContainer=null;
 	protected volatile ItemPossessor   owner=null;
@@ -64,9 +66,6 @@ public class StdItem implements Item
 
 	protected PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-
-	protected boolean destroyed=false;
-	protected final Item me=this;
 
 	public StdItem()
 	{
@@ -158,6 +157,7 @@ public class StdItem implements Item
 	protected void cloneFix(Item I)
 	{
 		destroyed=false;
+		me=this;
 		basePhyStats=(PhyStats)I.basePhyStats().copyOf();
 		phyStats=(PhyStats)I.phyStats().copyOf();
 
