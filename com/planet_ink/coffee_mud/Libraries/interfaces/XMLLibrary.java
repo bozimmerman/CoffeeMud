@@ -145,6 +145,17 @@ public interface XMLLibrary extends CMLibrary
 	public int getIntFromPieces(List<XMLpiece> V, String tag);
 	
 	/**
+	 * Return where the value is within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+	 * <br><br><b>Usage:</b> boolean ThisColHead=isTagInPieces(ThisRow,"TD");
+	 * @param V Pieces to search
+	 * @param tag Tag to search for
+	 * @return boolean Information from XML block
+	 */
+	public boolean isTagInPieces(List<XMLpiece> V, String tag);
+	
+	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
 	 * 

@@ -338,6 +338,15 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				return V.get(v);
 		return null;
 	}
+	
+	public boolean isTagInPieces(List<XMLpiece> V, String tag)
+	{
+		if(V!=null) 
+		for(int v=0;v<V.size();v++)
+			if(V.get(v).tag.equalsIgnoreCase(tag))
+				return true;
+		return false;
+	}
 
 	public List<XMLpiece> getPiecesFromPieces(List<XMLpiece> V, String tag)
 	{
@@ -358,6 +367,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			return true;
 		return false;
 	}
+
 
 	public int getIntFromPieces(List<XMLpiece> V, String tag)
 	{

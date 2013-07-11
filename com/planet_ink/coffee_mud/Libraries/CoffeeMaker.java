@@ -2352,7 +2352,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			item.setSecretIdentity(CMLib.xml().getValFromPieces(buf,"IDENT"));
 			item.setBaseValue(CMLib.xml().getIntFromPieces(buf,"VALUE"));
 			item.setMaterial(CMLib.xml().getIntFromPieces(buf,"MTRAL"));
-			//item.setUsesRemaining(CMath.s_int(CMLib.xml().returnXMLValue(buf,"USES")));
+			//item.setUsesRemaining(CMath.s_int(CMLib.xml().returnXMLValue(buf,"USES"))); // handled 'from top' & in db
 			if(item instanceof Container)
 			{
 				((Container)item).setCapacity(CMLib.xml().getIntFromPieces(buf,"CAPA"));

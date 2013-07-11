@@ -52,7 +52,7 @@ public class GrinderMobs
 	  "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
 	  "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
 	  "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
-	  "MINDAYS","ISAUCTION","DEITYID"};
+	  "MINDAYS","ISAUCTION","DEITYID","VARMONEY"};
 	public static String senses(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setSensesMask(0);
@@ -67,7 +67,7 @@ public class GrinderMobs
 
 	public static void happilyAddItem(Item I, MOB M)
 	{
-		if(I.subjectToWearAndTear())
+		if(I.subjectToWearAndTear() && ((I.usesRemaining()<1)||(I.usesRemaining()>100)))
 			I.setUsesRemaining(100);
 		I.recoverPhyStats();
 		M.addItem(I);

@@ -381,7 +381,8 @@ public class GrinderItems
 					if((I instanceof Weapon)&&(!(I instanceof Wand)))
 					{
 						((Weapon)I).setAmmoCapacity(CMath.s_int(old));
-						((Weapon)I).setAmmoRemaining(CMath.s_int(old));
+						if((((Weapon)I).requiresAmmunition())||(((Weapon)I).ammunitionCapacity()>0))
+							((Weapon)I).setAmmoRemaining(CMath.s_int(old));
 					}
 					break;
 				case 48: // readable spell
