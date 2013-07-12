@@ -1438,8 +1438,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 							{
 								session.println("\n\rAccount '"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.");
 								loginObj.player=null;
-								loginObj.state=LoginState.START;
-								break;
 							}
 						}
 					}
@@ -1588,7 +1586,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 						break;
 					}
 					session.println("\n\rThat email address combination was invalid.\n\r");
-					loginObj.state=LoginState.START;
+					loginObj.state=LoginState.ACCTCREATE_EMAILPROMPT;
 					break;
 				}
 				case ACCTCREATE_PASSWORDED:
@@ -1922,7 +1920,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 							loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 							return LoginResult.INPUT_REQUIRED;
 						}
-						if(newCharactersAllowed(parms[1],session,acct,parms[1].equalsIgnoreCase(acct.name())))
+						if(newCharactersAllowed(parms[1],session,acct,parms[1].equalsIgnoreCase(acct.accountName())))
 						{
 							final String login=CMStrings.capitalizeAndLower(parms[1]);
 							if((parms.length>2)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
