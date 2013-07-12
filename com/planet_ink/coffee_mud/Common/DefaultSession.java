@@ -265,7 +265,7 @@ public class DefaultSession implements Session
 		preliminaryInput=null;
 	}
 
-	private void compress2On() throws IOException
+	protected void compress2On() throws IOException
 	{
 		out.flush();
 		rawout.flush();
@@ -276,15 +276,15 @@ public class DefaultSession implements Session
 		negotiateTelnetMode(rawout,TELNET_COMPRESS2);
 		out.flush();
 		rawout.flush();
-		preliminaryRead(250);
+		preliminaryRead(500);
 		ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 		rawout=zOut;
 		zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
 		out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-		try{Thread.sleep(50);}catch(Exception e){}
+		preliminaryRead(50);
 	}
 	
-	private void compress2Off() throws IOException
+	protected void compress2Off() throws IOException
 	{
 		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
 		out.flush();
@@ -1246,14 +1246,7 @@ public class DefaultSession implements Session
 			{
 				setClientTelnetMode(last,true);
 				if(connectionComplete)
-				{
-					negotiateTelnetMode(rawout,TELNET_COMPRESS2);
-					out.flush();
-					ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
-					zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-					out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-					try{Thread.sleep(250);}catch(Exception e){}
-				}
+					compress2On();
 			}
 			else
 			if(!mightSupportTelnetMode(last))
