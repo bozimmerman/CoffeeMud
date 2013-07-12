@@ -48,7 +48,6 @@ public interface CharCreationLibrary extends CMLibrary
 	public void notifyFriends(MOB mob, String message);
 	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
 	public LoginResult loginSystem(Session session, LoginSession loginObj) throws java.io.IOException;
-	public LoginResult doAccountMenu(PlayerAccount acct, Session session, boolean create) throws java.io.IOException;
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName);
 	public void pageRooms(CMProps page, Map<String, String> table, String start);
 	public void initStartRooms(CMProps page);
@@ -59,7 +58,8 @@ public interface CharCreationLibrary extends CMLibrary
 	public Room getDefaultBodyRoom(MOB mob);
 	
 	public enum LoginState { START, LOGIN_NAME, ACCT_CHAR_PWORD, PLAYER_PASS_START, CREATE_ACCOUNT_CONFIRM, CREATE_CHAR_CONFIRM, 
-							 PLAYER_PASS_RECEIVED, CONFIRM_EMAIL_PASSWORD, ACCT_CONVERT_CONFIRM}
+							 PLAYER_PASS_RECEIVED, CONFIRM_EMAIL_PASSWORD, ACCT_CONVERT_CONFIRM,
+							 ACCTMENU_COMMAND, ACCTMENU_PROMPT, ACCTMENU_SHOWMENU, ACCTMENU_SHOWCHARS, ACCTMENU_START}
 	
 	public static class LoginSession
 	{
@@ -75,10 +75,10 @@ public interface CharCreationLibrary extends CMLibrary
 	
 	public enum NewCharNameCheckResult { OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED }
 	
-	public final static String DEFAULT_BADNAMES = " LIST DELETE QUIT NEW HERE YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST NOBODY SOMEBODY MESSIAH ADMIN SYSOP ";
+	public final static String DEFAULT_BADNAMES = " LIST DELETE QUIT NEW HERE YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE NIGGER ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST NOBODY SOMEBODY MESSIAH ADMIN SYSOP ";
 	
 	public enum LoginResult
 	{
-		NO_LOGIN, NORMAL_LOGIN, ACCOUNT_LOGIN, SESSION_SWAP, CCREATION_EXIT, ACCOUNT_CREATED, INPUT_REQUIRED
+		NO_LOGIN, NORMAL_LOGIN, SESSION_SWAP, CCREATION_EXIT, INPUT_REQUIRED
 	}
 }

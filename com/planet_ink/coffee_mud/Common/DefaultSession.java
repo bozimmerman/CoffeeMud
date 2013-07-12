@@ -2063,36 +2063,11 @@ public class DefaultSession implements Session
 			{
 				setStatus(SessionStatus.LOGIN);
 				mob=null;
-				CharCreationLibrary.LoginResult loginResult=null;
-				if(acct==null)
+				CharCreationLibrary.LoginResult loginResult=CMLib.login().loginSystem(this,loginSession);
+				if(loginResult==CharCreationLibrary.LoginResult.INPUT_REQUIRED)
 				{
-					loginResult=CMLib.login().loginSystem(this,loginSession);
-					if(loginResult==CharCreationLibrary.LoginResult.INPUT_REQUIRED)
-					{
-						setStatus(SessionStatus.LOGIN);
-						return;
-					}
-				}
-				if((acct!=null)||(loginResult==LoginResult.ACCOUNT_LOGIN)||(loginResult==LoginResult.ACCOUNT_CREATED))
-				{
-					try
-					{
-						if(acct!=null)
-						{
-							StringBuilder loginMsg=new StringBuilder("");
-							loginMsg.append(getAddress()).append(" "+terminalType)
-							.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-							.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
-							.append(", account login: "+acct.accountName());
-							Log.sysOut(loginMsg.toString());
-						}
-						setStatus(SessionStatus.ACCOUNTMENU);
-						loginResult=CMLib.login().doAccountMenu(acct,this,(loginResult==LoginResult.ACCOUNT_CREATED));
-					}
-					finally
-					{
-						setStatus(SessionStatus.LOGIN);
-					}
+					setStatus(SessionStatus.LOGIN);
+					return;
 				}
 				if(loginResult != LoginResult.NO_LOGIN)
 				{
