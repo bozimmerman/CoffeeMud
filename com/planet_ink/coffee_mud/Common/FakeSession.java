@@ -189,7 +189,8 @@ public class FakeSession implements Session
 	public int getWrap(){return 80;}
 	
 	public String getAddress(){return "";}
-	public int getStatus(){return 0;}
+	public SessionStatus getStatus(){return SessionStatus.MAINLOOP;}
+	public boolean isWaitingForInput() { return false; }
 	public long getTotalMillis(){return 0;}
 	public long getTotalTicks(){return 0;}
 	public long getIdleMillis(){return 0;}

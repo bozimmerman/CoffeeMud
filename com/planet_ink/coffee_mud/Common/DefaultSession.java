@@ -51,7 +51,7 @@ public class DefaultSession implements Session
 	protected static final int		MSDPPINGINTERVAL= 1000;
 	protected static final byte[]	TELNETGABYTES	= {(byte)TELNET_IAC,(byte)TELNET_GA};
 	protected static final char[]	PINGCHARS		= {0};
-	
+
 	protected final Set<Integer>		telnetSupportSet= new HashSet<Integer>();
 	protected final Set<String>			mxpSupportSet	= new HashSet<String>();
 	protected final Map<String,String>	mxpVersionInfo  = new Hashtable<String,String>();
@@ -64,7 +64,8 @@ public class DefaultSession implements Session
 	
 	private volatile Thread  runThread 			 = null;
 	private volatile Thread	 writeThread 		 = null;
-	protected volatile int   status 			 = 0;
+	protected SessionStatus  status 			 = SessionStatus.HANDSHAKE_OPEN;
+	protected long 			 lastStateChangeMs	 = System.currentTimeMillis();
 	protected int   		 snoopSuspensionStack= 0;
 	protected final Socket[] sock				 = new Socket[1];
 	protected SesInputStream charWriter;
@@ -80,7 +81,6 @@ public class DefaultSession implements Session
 	protected boolean   	 afkFlag			 = false;
 	protected String		 afkMessage			 = null;
 	protected StringBuffer   input				 = new StringBuffer("");
-	protected StringBuffer   preliminaryInput	 = new StringBuffer("");
 	protected StringBuffer   fakeInput			 = null;
 	protected boolean   	 waiting			 = false;
 	protected List<String>   previousCmd		 = new Vector<String>();
@@ -120,12 +120,14 @@ public class DefaultSession implements Session
 	protected long			 milliTotal			 = 0;
 	protected long			 tickTotal			 = 0;
 	protected long			 lastKeystroke		 = 0;
+	protected long			 lastIACIn		 	 = System.currentTimeMillis();
 	protected long			 promptLastShown	 = 0;
 	protected volatile long  lastWriteTime		 = System.currentTimeMillis();
 	protected boolean   	 debugOutput		 = false;
 	protected boolean   	 debugInput			 = false;
 	protected StringBuffer   debugInputBuf		 = new StringBuffer("");
-	protected volatile InputCallback inputCallback=null;
+	
+	protected volatile InputCallback inputCallback  = null;
 
 	public String ID(){return "DefaultSession";}
 	public String name() { return ID();}
@@ -141,11 +143,24 @@ public class DefaultSession implements Session
 		threadGroupChar=Thread.currentThread().getThreadGroup().getName().charAt(0);
 	}
 
-	public void initializeSession(Socket s, String introTextStr)
+	protected void setStatus(SessionStatus newStatus)
+	{
+		synchronized(status)
+		{
+			if(status!=newStatus)
+			{
+				status=newStatus;
+				lastStateChangeMs=System.currentTimeMillis();
+			}
+		}
+	}
+	
+	public void initializeSession(final Socket s, final String introTextStr)
 	{
 		sock[0]=s;
 		try
 		{
+			setStatus(SessionStatus.HANDSHAKE_OPEN);
 			debugOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
 			debugInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BININ);
 			if(debugInput)
@@ -169,6 +184,8 @@ public class DefaultSession implements Session
 			sock[0].setSoTimeout(SOTIMEOUT);
 			rawout=sock[0].getOutputStream();
 			rawin=sock[0].getInputStream();
+			rawBytesOut(rawout,("\n\rConnecting to "+CMProps.getVar(CMProps.Str.MUDNAME)+"...\n\r").getBytes("US-ASCII"));
+			rawout.flush();
 			
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
@@ -188,11 +205,8 @@ public class DefaultSession implements Session
 			//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
 			changeTelnetMode(rawout,TELNET_NAWS,true);
 			//changeTelnetMode(rawout,TELNET_BINARY,true);
-			preliminaryRead(250);
-			if((!terminalType.equalsIgnoreCase("ANSI"))&&(getClientTelnetMode(TELNET_ECHO)))
-				changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
+			rawBytesOut(rawout,TELNETGABYTES);
 			rawout.flush();
-			preliminaryRead(250);
 
 			Charset charSet=Charset.forName(CMProps.getVar(CMProps.Str.CHARSETINPUT));
 			inMaxBytesPerChar=(int)Math.round(Math.ceil(charSet.newEncoder().maxBytesPerChar()));
@@ -200,57 +214,120 @@ public class DefaultSession implements Session
 			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 
-			preliminaryRead(250);
-			if(getClientTelnetMode(TELNET_COMPRESS2))
-				compress2On();
-			else
-			{
-				if(out==null) return;
-				out.flush();
-				rawout.flush();
-				preliminaryRead(500);
-			}
-			if(getClientTelnetMode(Session.TELNET_MXP))
-			{
-				rawOut("\n\033[6z\n\033[6z<SUPPORT IMAGE IMAGE.URL>\n");
-				if(out==null) return;
-				out.flush();
-				rawout.flush();
-				preliminaryRead(1000);
-				rawOut("\n\033[6z\n\033[6z<SUPPORT>\n");
-				if(out==null) return;
-				out.flush();
-				rawout.flush();
-			}
-			preliminaryRead(500);
-			if(introTextStr!=null)
-				print(introTextStr);
-			if((getClientTelnetMode(Session.TELNET_MXP))
-			&&((mxpSupportSet.contains("+IMAGE.URL"))
-				||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
-			{
-				// also the intro page
-				String[] paths=CMLib.protocol().mxpImagePath("intro.jpg");
-				if(paths[0].length()>0)
-				{
-					CMFile introDir=new CMFile("/web/pub/images/mxp",null,false,true);
-					String introFilename=paths[1];
-					if(introDir.isDirectory())
+			prompt(new TickingCallback(250){
+				private final long firstIACIn=lastIACIn;
+				@Override public boolean tick(int counter) {
+					try
 					{
-						CMFile[] files=introDir.listFiles();
-						Vector choices=new Vector();
-						for(int f=0;f<files.length;f++)
-							if(files[f].getName().toLowerCase().startsWith("intro")
-							&&files[f].getName().toLowerCase().endsWith(".jpg"))
-								choices.addElement(files[f].getName());
-						if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+						if(out!=null)
+						{
+							out.flush();
+							rawout.flush();
+						}
+						switch(status) 
+						{
+						case HANDSHAKE_OPEN:
+						{
+							if((!terminalType.equalsIgnoreCase("ANSI"))&&(getClientTelnetMode(TELNET_ECHO)))
+								changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
+							rawout.flush();
+							setStatus(SessionStatus.HANDSHAKE_MCCP);
+							break;
+						}
+						case HANDSHAKE_MCCP:
+						{
+							if(((lastIACIn>firstIACIn)&&((System.currentTimeMillis()-lastIACIn)>500))
+							||((System.currentTimeMillis()-lastIACIn)>5000))
+							{
+								if(getClientTelnetMode(TELNET_COMPRESS2)) {
+									negotiateTelnetMode(rawout,TELNET_COMPRESS2);
+									rawout.flush();
+									if(getClientTelnetMode(TELNET_COMPRESS2)) {
+										ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
+										rawout=zOut;
+										zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
+										out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
+									}
+								}
+								setStatus(SessionStatus.HANDSHAKE_MXP);
+							}
+							break;
+						}
+						case HANDSHAKE_MXP:
+						{
+							if(!getClientTelnetMode(Session.TELNET_MXP))
+								setStatus(SessionStatus.HANDSHAKE_DONE);
+							else
+							{
+								rawOut("\n\033[6z\n\033[6z<SUPPORT IMAGE IMAGE.URL>\n");
+								rawout.flush();
+								rawOut("\n\033[6z\n\033[6z<SUPPORT>\n");
+								rawout.flush();
+								setStatus(SessionStatus.HANDSHAKE_MXPPAUSE);
+							}
+							break;
+						}
+						case HANDSHAKE_MXPPAUSE:
+						{
+							if(((System.currentTimeMillis()-lastStateChangeMs)>2000)
+							||(mxpSupportSet.contains("+IMAGE.URL")||mxpSupportSet.contains("+IMAGE")||mxpSupportSet.contains("-IMAGE.URL")))
+								setStatus(SessionStatus.HANDSHAKE_DONE);
+							break;
+						}
+						case HANDSHAKE_DONE:
+						{
+							if(introTextStr!=null)
+								print(introTextStr);
+							out.flush();
+							rawout.flush();
+							if((getClientTelnetMode(Session.TELNET_MXP))
+							&&((mxpSupportSet.contains("+IMAGE.URL"))
+								||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
+							{
+								// also the intro page
+								String[] paths=CMLib.protocol().mxpImagePath("intro.jpg");
+								if(paths[0].length()>0)
+								{
+									CMFile introDir=new CMFile("/web/pub/images/mxp",null,false,true);
+									String introFilename=paths[1];
+									if(introDir.isDirectory())
+									{
+										CMFile[] files=introDir.listFiles();
+										Vector choices=new Vector();
+										for(int f=0;f<files.length;f++)
+											if(files[f].getName().toLowerCase().startsWith("intro")
+											&&files[f].getName().toLowerCase().endsWith(".jpg"))
+												choices.addElement(files[f].getName());
+										if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+									}
+									println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
+									out.flush();
+									rawout.flush();
+								}
+							}
+						}
+							//$FALL-THROUGH$
+						default:
+							connectionComplete=true;
+							status=SessionStatus.LOGIN;
+							if(collectedInput.length()>0)
+								fakeInput=new StringBuffer(collectedInput.toString());
+							return false;
+						}
+						return (out!=null);
 					}
-					println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
+					catch(Exception e)
+					{
+						if(e.getMessage()==null)
+							Log.errOut(e);
+						else
+							Log.errOut(e.getMessage());
+					}
+					connectionComplete=true;
+					status=SessionStatus.LOGIN;
+					return false;
 				}
-			}
-			preliminaryRead(100);
-			connectionComplete=true;
-			status=Session.STATUS_LOGIN;
+			});
 		}
 		catch(Exception e)
 		{
@@ -259,57 +336,17 @@ public class DefaultSession implements Session
 			else
 				Log.errOut(e.getMessage());
 		}
-		preliminaryRead(2000);
-		if(preliminaryInput.length()>0)
-			fakeInput=preliminaryInput;
-		preliminaryInput=null;
 	}
 
-	protected void compress2On() throws IOException
-	{
-		out.flush();
-		rawout.flush();
-		preliminaryRead(250);
-		out.flush();
-		rawout.flush();
-		preliminaryRead(250);
-		negotiateTelnetMode(rawout,TELNET_COMPRESS2);
-		out.flush();
-		rawout.flush();
-		preliminaryRead(500);
-		ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
-		rawout=zOut;
-		zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-		out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-		preliminaryRead(50);
-	}
-	
 	protected void compress2Off() throws IOException
 	{
 		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
 		out.flush();
 		rawout.flush();
-		preliminaryRead(250);
-		out.flush();
-		rawout.flush();
-		preliminaryRead(250);
 		rawout=sock[0].getOutputStream();
 		out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 		try{Thread.sleep(50);}catch(Exception e){}
 		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
-	}
-	
-	private void preliminaryRead(long timeToWait)
-	{
-		try{
-			long time=System.currentTimeMillis();
-			while((System.currentTimeMillis()-time)<timeToWait)
-			{
-				String s=blockingIn(timeToWait);
-				if((s!=null)&&(s.length()>0))
-					preliminaryInput.append(s+"\n");
-			}
-		}catch(Exception e){}
 	}
 	
 	public void setFakeInput(String input)
@@ -942,8 +979,9 @@ public class DefaultSession implements Session
 	{
 		if(callBack!=null)
 			callBack.showPrompt();
+		if(this.inputCallback!=null)
+			this.inputCallback.timedOut();
 		this.inputCallback=callBack;
-		this.status=this.status|STATUSMASK_WAITING_FOR_INPUT;
 	}
 
 	public String prompt(String Message, long maxTime) 
@@ -1195,6 +1233,7 @@ public class DefaultSession implements Session
 	{
 		if((in==null)||(out==null))
 			return;
+		lastIACIn=System.currentTimeMillis();
 		int c=readByte();
 		if(c>255)c=c&0xff;
 
@@ -1246,7 +1285,47 @@ public class DefaultSession implements Session
 			{
 				setClientTelnetMode(last,true);
 				if(connectionComplete)
-					compress2On();
+				{
+					prompt(new TickingCallback(250){
+						@Override public boolean tick(int counter) 
+						{
+							try
+							{
+								if((out==null)||(killFlag))
+									return false;
+								out.flush();
+								rawout.flush();
+								switch(counter)
+								{
+								case 3:
+								{
+									if(getClientTelnetMode(TELNET_COMPRESS2)) {
+										negotiateTelnetMode(rawout,TELNET_COMPRESS2);
+										rawout.flush();
+										ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
+										rawout=zOut;
+										zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
+										out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
+									}
+									break;
+								}
+								case 10: return false;
+								default: break;
+								}
+								return true;
+							}
+							catch(IOException e)
+							{
+								if(e.getMessage()==null)
+									Log.errOut(e);
+								else
+									Log.errOut(e.getMessage());
+							}
+							return false;
+						}
+						
+					});
+				}
 			}
 			else
 			if(!mightSupportTelnetMode(last))
@@ -1629,7 +1708,7 @@ public class DefaultSession implements Session
 	public void stopSession(boolean removeMOB, boolean dropSession, boolean killThread)
 	{
 		setKillFlag(true);
-		status=Session.STATUS_LOGOUT5;
+		setStatus(SessionStatus.LOGOUT5);
 		if(removeMOB)
 		{
 			removeMOBFromGame(false);
@@ -1690,9 +1769,9 @@ public class DefaultSession implements Session
 					try
 					{
 						Log.sysOut("Disconnect: "+finalMsg+getAddress()+" ("+CMLib.time().date2SmartEllapsedTime(getMillisOnline(),true)+")");
-						status=Session.STATUS_LOGOUT7;
+						setStatus(SessionStatus.LOGOUT7);
 						sock[0].shutdownInput();
-						status=Session.STATUS_LOGOUT8;
+						setStatus(SessionStatus.LOGOUT8);
 						if(out!=null)
 						{
 							try{
@@ -1704,11 +1783,11 @@ public class DefaultSession implements Session
 							} catch(Exception t){}
 							out.close();
 						}
-						status=Session.STATUS_LOGOUT9;
+						setStatus(SessionStatus.LOGOUT9);
 						sock[0].shutdownOutput();
-						status=Session.STATUS_LOGOUT10;
+						setStatus(SessionStatus.LOGOUT10);
 						sock[0].close();
-						status=Session.STATUS_LOGOUT11;
+						setStatus(SessionStatus.LOGOUT11);
 					}
 					catch(IOException e)
 					{
@@ -1787,9 +1866,13 @@ public class DefaultSession implements Session
 				M.removeFromGame(true,killSession);
 		}
 	}
-	public int getStatus()
+	public SessionStatus getStatus()
 	{
 		return status;
+	}
+	public boolean isWaitingForInput()
+	{
+		return (inputCallback!=null);
 	}
 	public void logout(boolean removeMOB)
 	{
@@ -1812,12 +1895,16 @@ public class DefaultSession implements Session
 	
 	public boolean isPendingLogin(final CharCreationLibrary.LoginSession loginObj)
 	{
-		switch(status&STATUSMASK_ALL)
+		switch(status)
 		{
-			case Session.STATUS_LOGIN:
-			case Session.STATUS_ACCOUNTMENU:
-			case Session.STATUS_LOGIN1:
-			case Session.STATUS_LOGIN2:
+			case LOGIN:
+			case ACCOUNTMENU:
+			case LOGIN2:
+			case HANDSHAKE_OPEN:
+			case HANDSHAKE_MCCP:
+			case HANDSHAKE_MXP:
+			case HANDSHAKE_MXPPAUSE:
+			case HANDSHAKE_DONE:
 				break;
 			default:
 				return false;
@@ -1847,7 +1934,7 @@ public class DefaultSession implements Session
 		}
 		
 		activeMillis=System.currentTimeMillis();
-		if(activeMillis>=nextMsdpPing)
+		if((activeMillis>=nextMsdpPing)&&(connectionComplete))
 		{
 			nextMsdpPing=activeMillis+MSDPPINGINTERVAL;
 			if(getClientTelnetMode(TELNET_MSDP))
@@ -1873,72 +1960,76 @@ public class DefaultSession implements Session
 		try
 		{
 			if(killFlag) 
-				status=Session.STATUS_LOGOUT;
-			if((status&STATUSMASK_WAITING_FOR_INPUT)==STATUSMASK_WAITING_FOR_INPUT)
+				setStatus(SessionStatus.LOGOUT);
+			final InputCallback callBack=this.inputCallback;
+			if(callBack!=null)
 			{
-				if(this.inputCallback!=null)
+				try
 				{
-					try
+					String input=readlineContinue();
+					if(input != null)
 					{
-						String input=readlineContinue();
-						if(input != null)
+						callBack.setInput(input);
+						if(!callBack.waitForInput())
 						{
-							this.inputCallback.setInput(input);
-							if(!this.inputCallback.waitForInput())
-							{
-								final InputCallback callBack=this.inputCallback;
-								CMLib.threads().executeRunnable(new Runnable(){
-									public void run(){  callBack.callBack(); }
-								});
-							}
-						}
-						else
-						if(this.inputCallback.isTimedOut())
-						{
-							this.inputCallback.timedOut();
+							CMLib.threads().executeRunnable(new Runnable(){
+								public void run(){
+									try {
+										callBack.callBack();
+									} catch(Throwable t) {
+										Log.errOut(t);
+									}
+								}
+							});
 						}
 					}
-					catch(Exception e)
+					else
+					if(callBack.isTimedOut())
 					{
-						
+						callBack.timedOut();
 					}
 				}
-				if((this.inputCallback==null)||(!this.inputCallback.waitForInput()))
+				catch(Exception e)
 				{
-					this.inputCallback=null;
-					status=status&Session.STATUSMASK_ALL;
+					
 				}
+				if(!callBack.waitForInput())
+					inputCallback=null;
 			}
 			else
-			switch(status&STATUSMASK_ALL)
+			switch(status)
 			{
-			case Session.STATUS_IDLE:
+			case IDLE:
+			case HANDSHAKE_OPEN:
+			case HANDSHAKE_MCCP:
+			case HANDSHAKE_MXP:
+			case HANDSHAKE_MXPPAUSE:
+			case HANDSHAKE_DONE:
 				break;
-			case Session.STATUS_MAINLOOP:
+			case MAINLOOP:
 				mainLoop();
 				break;
-			case Session.STATUS_LOGIN:
-			case Session.STATUS_ACCOUNTMENU:
-			case Session.STATUS_LOGIN1:
-			case Session.STATUS_LOGIN2:
+			case LOGIN:
+			case ACCOUNTMENU:
+			case LOGIN2:
 				loginSystem();
 				break;
-			case Session.STATUS_LOGOUT:
-			case Session.STATUS_LOGOUT1:
-			case Session.STATUS_LOGOUT2:
-			case Session.STATUS_LOGOUT3:
-			case Session.STATUS_LOGOUT4:
-			case Session.STATUS_LOGOUT5:
-			case Session.STATUS_LOGOUT6:
-			case Session.STATUS_LOGOUT7:
-			case Session.STATUS_LOGOUT8:
-			case Session.STATUS_LOGOUT9:
-			case Session.STATUS_LOGOUT10:
-			case Session.STATUS_LOGOUT11:
-			case Session.STATUS_LOGOUT12:
-			case Session.STATUS_LOGOUTFINAL:
+			case LOGOUT:
+			case LOGOUT1:
+			case LOGOUT2:
+			case LOGOUT3:
+			case LOGOUT4:
+			case LOGOUT5:
+			case LOGOUT6:
+			case LOGOUT7:
+			case LOGOUT8:
+			case LOGOUT9:
+			case LOGOUT10:
+			case LOGOUT11:
+			case LOGOUT12:
+			case LOGOUTFINAL:
 			{
-				this.inputCallback=null;
+				inputCallback=null;
 				preLogout(mob);
 				logoutFinal();
 				break;
@@ -1970,7 +2061,7 @@ public class DefaultSession implements Session
 			}
 			if(!killFlag)
 			{
-				status=Session.STATUS_LOGIN;
+				setStatus(SessionStatus.LOGIN);
 				mob=null;
 				CharCreationLibrary.LoginResult loginResult=null;
 				if(acct==null)
@@ -1978,7 +2069,7 @@ public class DefaultSession implements Session
 					loginResult=CMLib.login().loginSystem(this,loginSession);
 					if(loginResult==CharCreationLibrary.LoginResult.INPUT_REQUIRED)
 					{
-						status=Session.STATUS_LOGIN;
+						setStatus(SessionStatus.LOGIN);
 						return;
 					}
 				}
@@ -1995,17 +2086,17 @@ public class DefaultSession implements Session
 							.append(", account login: "+acct.accountName());
 							Log.sysOut(loginMsg.toString());
 						}
-						status=Session.STATUS_ACCOUNTMENU;
+						setStatus(SessionStatus.ACCOUNTMENU);
 						loginResult=CMLib.login().doAccountMenu(acct,this,(loginResult==LoginResult.ACCOUNT_CREATED));
 					}
 					finally
 					{
-						status=Session.STATUS_LOGIN;
+						setStatus(SessionStatus.LOGIN);
 					}
 				}
 				if(loginResult != LoginResult.NO_LOGIN)
 				{
-					status=Session.STATUS_LOGIN2;
+					setStatus(SessionStatus.LOGIN2);
 					loginSession=null;
 					if((mob!=null)&&(mob.playerStats()!=null))
 						acct=mob.playerStats().getAccount();
@@ -2032,7 +2123,7 @@ public class DefaultSession implements Session
 					needPrompt=true;
 					if((!killFlag)&&(mob!=null))
 					{
-						status=Session.STATUS_MAINLOOP;
+						setStatus(SessionStatus.MAINLOOP);
 						return;
 					}
 				}
@@ -2040,14 +2131,14 @@ public class DefaultSession implements Session
 				{
 					mob=null;
 				}
-				status=Session.STATUS_LOGIN;
+				setStatus(SessionStatus.LOGIN);
 				return;
 			}
 			else
 			{
 				loginSession=null;
 			}
-			status=Session.STATUS_LOGOUT;
+			setStatus(SessionStatus.LOGOUT);
 		}
 		catch(SocketException e)
 		{
@@ -2055,9 +2146,9 @@ public class DefaultSession implements Session
 				if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
 					errorOut(e);
 			}
-			status=Session.STATUS_LOGOUT;
+			setStatus(SessionStatus.LOGOUT);
 			preLogout(mob);
-			status=Session.STATUS_LOGOUT1;
+			setStatus(SessionStatus.LOGOUT1);
 		}
 		catch(Exception t)
 		{
@@ -2067,9 +2158,9 @@ public class DefaultSession implements Session
 					||(sock[0]!=null&&sock[0].isConnected())))
 					errorOut(t);
 			}
-			status=Session.STATUS_LOGOUT;
+			setStatus(SessionStatus.LOGOUT);
 			preLogout(mob);
-			status=Session.STATUS_LOGOUT1;
+			setStatus(SessionStatus.LOGOUT1);
 		}
 	}
 
@@ -2115,7 +2206,7 @@ public class DefaultSession implements Session
 				}
 			}
 			
-			status=Session.STATUS_LOGOUT4;
+			setStatus(SessionStatus.LOGOUT4);
 			setKillFlag(true);
 			waiting=false;
 			needPrompt=false;
@@ -2123,12 +2214,12 @@ public class DefaultSession implements Session
 			snoops.clear();
 			
 			closeSocks(finalMsg);
-			status=Session.STATUS_LOGOUT5;
+			setStatus(SessionStatus.LOGOUT5);
 		}
 		finally
 		{
 			CMLib.sessions().remove(this);
-			status=Session.STATUS_LOGOUTFINAL;
+			setStatus(SessionStatus.LOGOUTFINAL);
 		}
 	}
 	
@@ -2201,9 +2292,9 @@ public class DefaultSession implements Session
 			}
 			if(mob==null)
 			{
-				status=Session.STATUS_LOGOUT;
+				setStatus(SessionStatus.LOGOUT);
 				preLogout(mob);
-				status=Session.STATUS_ACCOUNTMENU;
+				setStatus(SessionStatus.ACCOUNTMENU);
 				return;
 			}
 			while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()))
@@ -2281,9 +2372,9 @@ public class DefaultSession implements Session
 				if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock[0]!=null)&&sock[0].isConnected())))
 					errorOut(e);
 			}
-			status=Session.STATUS_LOGOUT;
+			setStatus(SessionStatus.LOGOUT);
 			preLogout(mob);
-			status=Session.STATUS_LOGOUT1;
+			setStatus(SessionStatus.LOGOUT1);
 		}
 		catch(Exception t)
 		{
@@ -2293,9 +2384,9 @@ public class DefaultSession implements Session
 					||(sock[0]!=null&&sock[0].isConnected())))
 					errorOut(t);
 			}
-			status=Session.STATUS_LOGOUT;
+			setStatus(SessionStatus.LOGOUT);
 			preLogout(mob);
-			status=Session.STATUS_LOGOUT1;
+			setStatus(SessionStatus.LOGOUT1);
 		}
 	}
 	

@@ -647,10 +647,17 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/**
 	 * Gets the tick/thread status of this session object.
 	 * 
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#STATUS_LOGIN
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus
 	 * @return the tick status
 	 */
-	public int getStatus();
+	public SessionStatus getStatus();
+	
+	/**
+	 * Returns whether this session is waiting for input
+	 * 
+	 * @return true if it is, false otherwise
+	 */
+	public boolean isWaitingForInput();
 	
 	/**
 	 * Gets the total milliseconds consumed by this session objects thread.
@@ -976,7 +983,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		private final Type			type;
 		private final String		defaultInput;
 		private final String		choicesStr;
-		private final long			timeoutMs;
+		protected final long		timeoutMs;
 		protected volatile long		timeout;
 		protected volatile String	input		= "";
 		protected volatile boolean	confirmed	= false;
@@ -1172,6 +1179,49 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 */
 		public abstract void callBack();
 	}
+	
+	public abstract class TickingCallback extends InputCallback
+	{
+		protected volatile int counter=0;
+		protected final StringBuilder collectedInput=new StringBuilder("");
+		/**
+		 * Only constructor is the one to tell out often to call back.
+		 * @param tickerMs the time is ms between timeouts
+		 */
+		public TickingCallback(long tickerMs) {
+			super(Type.PROMPT,tickerMs);
+		}
+		/**
+		 * TimeOutCallback has no prompt
+		 */
+		public void showPrompt() {}
+		public void callBack() {}
+		public void setInput(String input)
+		{
+			super.setInput(input);
+			collectedInput.append(this.input).append("\n\r");
+			input="";
+			waiting=true;
+		}
+		public void timedOut()
+		{
+			timeout=System.currentTimeMillis()+timeoutMs;
+			waiting=true;
+			if(!tick(counter++)) 
+			{
+				timeout=System.currentTimeMillis()-1;
+				waiting=false;
+			}
+		}
+		
+		/**
+		 * This method id called every ticker ms with an incremented
+		 * counter.  This is also where you control the process.
+		 * @param counter the counter, higher than the last time
+		 * @return true to keep ticking, false to finally stop.
+		 */
+		public abstract boolean tick(int counter);
+	}
 
 	/** for REPLY command, constant for maximum number of saved strings */
 	public static final int MAX_PREVMSGS=100;
@@ -1227,56 +1277,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	/** For MSDP protocol, denotes array done*/
 	public static final char MSDP_ARRAY_CLOSE	= 6;
 	
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_MAINLOOP=0;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGIN=1;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_ACCOUNTMENU=2;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGIN1=3;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGIN2=4;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT=5;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT1=6;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT2=7;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT3=8;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT4=9;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT5=10;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT6=11;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT7=12;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT8=13;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT9=14;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT10=15;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT11=16;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT12=17;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUTFINAL=18;
-	/** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_IDLE=19;
-	
-	/** Status mask for getting main status codes from getStatus method */
-	public static final int STATUSMASK_ALL=255;
-	/** Status mask for checking for waiting-for-input state */
-	public static final int STATUSMASK_WAITING_FOR_INPUT=256;
-	
-	/** Status strings indexed by the various STATUS_ constants.  Descriptive strings */
-	public static final String[] STATUS_STR={"OPEN","LOGIN-S","ACCOUNTMENU","LOGIN-1","LOGIN-2",
-											 "LOGOUT-S","LOGOUT-1","LOGOUT-2","LOGOUT-3",
-											 "LOGOUT-4","LOGOUT-5","LOGOUT-6","LOGOUT-7",
-											 "LOGOUT-8","LOGOUT-9","LOGOUT-10","LOGOUT-11",
-											 "LOGOUT-12","CLOSED","IDLE"};
+
+	/** 
+	 * The status of the session, from opening handshake, to final goodbyes
+	 * @author BZ
+	 */
+	public static enum SessionStatus
+	{
+		HANDSHAKE_OPEN, HANDSHAKE_MCCP, HANDSHAKE_MXP, HANDSHAKE_MXPPAUSE, HANDSHAKE_DONE,
+		LOGIN, LOGIN2, ACCOUNTMENU, IDLE, MAINLOOP,
+		LOGOUT, LOGOUT1, LOGOUT2, LOGOUT3, LOGOUT4, LOGOUT5, LOGOUT6, LOGOUT7, LOGOUT8,
+		LOGOUT9, LOGOUT10, LOGOUT11, LOGOUT12, LOGOUTFINAL
+	}
 }

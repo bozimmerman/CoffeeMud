@@ -291,7 +291,7 @@ public class ListCmd extends StdCommand
 						final Session S=(Session)R;
 						final MOB mob=S.mob();
 						final String mobName=(mob==null)?"null":mob.Name();
-						summary="session "+mobName+": "+Session.STATUS_STR[S.getStatus()&Session.STATUSMASK_ALL]+": "+CMParms.combineWithQuotes(S.getPreviousCMD(),0);
+						summary="session "+mobName+": "+S.getStatus().toString()+": "+CMParms.combineWithQuotes(S.getPreviousCMD(),0);
 					}
 					else
 					if(R instanceof CMRunnable)
@@ -2235,7 +2235,7 @@ public class ListCmd extends StdCommand
 		{
 			String[] set=new String[6];
 			set[0]=CMStrings.padRight(""+broken.size(),3)+"| ";
-			set[1]=(S.isStopped()?"^H":"")+CMStrings.padRight(Session.STATUS_STR[S.getStatus()&Session.STATUSMASK_ALL],9)+(S.isStopped()?"^?":"")+"| ";
+			set[1]=(S.isStopped()?"^H":"")+CMStrings.padRight(S.getStatus().toString(),9)+(S.isStopped()?"^?":"")+"| ";
 			if (S.mob() != null)
 			{
 				set[2]=CMStrings.padRight(((S.mob().session()==S)?"Yes":"^HNO!^?"),5)+"| ";

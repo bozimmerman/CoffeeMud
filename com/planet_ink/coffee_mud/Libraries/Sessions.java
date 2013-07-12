@@ -35,7 +35,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	
 	private final static Filterer<Session> localOnlineFilter=new Filterer<Session>(){
 		public boolean passesFilter(Session obj) { 
-			if((obj!=null) && (!obj.isStopped()) && (((obj.getStatus()&Session.STATUSMASK_ALL)==Session.STATUS_MAINLOOP)))
+			if((obj!=null) && (!obj.isStopped()) && (((obj.getStatus())==Session.SessionStatus.MAINLOOP)))
 			{
 				MOB M=obj.mob();
 				return ((M!=null)&&M.amActive()&&(CMLib.flags().isInTheGame(M,true)));
@@ -129,7 +129,7 @@ public class Sessions extends StdLibrary implements SessionsList
 			long time=System.currentTimeMillis()-S.getInputLoopTime();
 			if(time>0)
 			{
-				if((S.mob()!=null)||((S.getStatus()&Session.STATUSMASK_ALL)==Session.STATUS_ACCOUNTMENU))
+				if((S.mob()!=null)||((S.getStatus())==Session.SessionStatus.ACCOUNTMENU))
 				{
 					long check=60000;
 
@@ -144,15 +144,15 @@ public class Sessions extends StdLibrary implements SessionsList
 					if((S.mob()!=null)&&(CMSecurity.isAllowed(S.mob(),S.mob().location(),CMSecurity.SecFlag.CMDROOMS)))
 						check=check*15;
 					else
-					if((S.getStatus()&Session.STATUSMASK_ALL)==Session.STATUS_LOGIN)
+					if((S.getStatus())==Session.SessionStatus.LOGIN)
 						check=check*5;
 
 					if(time>(check*10))
 					{
 						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 						if((S.getPreviousCMD()==null)||(S.getPreviousCMD().size()==0)
-						||((S.getStatus()&Session.STATUSMASK_ALL)==Session.STATUS_LOGIN)
-						||((S.getStatus()&Session.STATUSMASK_ALL)==Session.STATUS_ACCOUNTMENU))
+						||((S.getStatus())==Session.SessionStatus.LOGIN)
+						||((S.getStatus())==Session.SessionStatus.ACCOUNTMENU))
 							Log.sysOut(serviceClient.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
 						else
 						{
@@ -182,7 +182,7 @@ public class Sessions extends StdLibrary implements SessionsList
 							}
 							else
 								Log.errOut(serviceClient.getName(),"Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
-							if(((S.getStatus()&Session.STATUSMASK_ALL)!=Session.STATUS_LOGIN)
+							if(((S.getStatus())!=Session.SessionStatus.LOGIN)
 							||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
 								Log.errOut(serviceClient.getName(),"STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
 							else
@@ -194,7 +194,7 @@ public class Sessions extends StdLibrary implements SessionsList
 				if(time>(60000))
 				{
 					String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
-					if((S.getStatus()&Session.STATUSMASK_ALL)==Session.STATUS_LOGIN)
+					if((S.getStatus())==Session.SessionStatus.LOGIN)
 						Log.sysOut(serviceClient.getName(),"Kicking out login session after "+time+" millis.");
 					else
 					{
@@ -202,7 +202,7 @@ public class Sessions extends StdLibrary implements SessionsList
 						if(S instanceof Thread)
 							CMLib.threads().debugDumpStack("Sessions",(Thread)S);
 					}
-					if(((S.getStatus()&Session.STATUSMASK_ALL)!=Session.STATUS_LOGIN)
+					if(((S.getStatus())!=Session.SessionStatus.LOGIN)
 					||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
 						Log.errOut(serviceClient.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
 					setThreadStatus(serviceClient,"killing session ");
