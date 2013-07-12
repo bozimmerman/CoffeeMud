@@ -763,14 +763,28 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						if((x>=0)&&(y>=x))
 						{
 							if((S!=null)
-							&&(S.getClientTelnetMode(Session.TELNET_MSP))
+							&&(S.getClientTelnetMode(Session.TELNET_MSP)||S.getClientTelnetMode(Session.TELNET_MXP))
 							&&((source==null)
 							   ||(source==mob)
 							   ||(CMLib.flags().canBeHeardSpeakingBy(source,mob))))
 							{
-								if(wrap>0)
-									len=len+(y-loop)+1;
-								loop=y;
+								if(S.getClientTelnetMode(Session.TELNET_MXP))
+								{
+									buf.setCharAt(loop+1, '<');
+									buf.setCharAt(x, ' ');
+									buf.setCharAt(y, '>');
+									buf.deleteCharAt(loop);
+									if(wrap>0)
+										len=len+(y-loop);
+									loop=y-1;
+								}
+								else
+								if(S.getClientTelnetMode(Session.TELNET_MSP))
+								{
+									if(wrap>0)
+										len=len+(y-loop)+1;
+									loop=y;
+								}
 							}
 							else
 							{

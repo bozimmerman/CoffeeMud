@@ -124,7 +124,10 @@ public class MXPElement implements Cloneable
 	public String getAttributeValue(String tag)
 	{
 		getParsedAttributes();
-		return (String)attributeValues.get(tag.toUpperCase().trim());
+		tag=tag.toUpperCase().trim();
+		if(attributeValues.containsKey(tag))
+			return attributeValues.get(tag).toString();
+		return null;
 	}
 	public void setAttributeValue(String tag, String value)
 	{

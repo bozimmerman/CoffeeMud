@@ -26,7 +26,7 @@
   24. Scriptable now has an "arrive_prog" to handle situations with mobile mobs.
   * TODO: bug with ladders/ropes and pits
   * Account menu should be async!
-  * if no MSP, but MXP, convert MSP sound codes to MXP
+  * Siplet IAC is broken now?! Can't go into MSP.  Also, make sure it can handle MXP SOUND tags
 # Build 5.7.10 Release 2/17/2013 (* DB CHANGE!) (** Thanks to TGMUD for publishing their changelogs!!!)
    0. Database Schema Updated! Run DBUpgrade, OR create table CMCHCL (see appropriate schema file), then:
    INSERT INTO CMCHCL VALUES (SELECT USERID, CMCLAN, CMCLRO from CMCHAR where CMCLAN != ''); // lastly:
