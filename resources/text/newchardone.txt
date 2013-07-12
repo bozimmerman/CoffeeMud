@@ -11,4 +11,4 @@ additional clues.
 ^H3.^N Exploitation of any system problems is forbidden! If you find a bug, or a loophole in the gameplay, report it with the BUG command!
 ^H4.^N Bot-Killing other players is not allowed.
 
-Enter Anything to begin:
+Press Enter to begin:

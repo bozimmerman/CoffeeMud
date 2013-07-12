@@ -129,7 +129,7 @@ public class Sessions extends StdLibrary implements SessionsList
 			long time=System.currentTimeMillis()-S.getInputLoopTime();
 			if(time>0)
 			{
-				if((S.mob()!=null)||((S.getStatus())==Session.SessionStatus.ACCOUNTMENU))
+				if((S.mob()!=null)||((S.getStatus())==Session.SessionStatus.ACCOUNT_MENU)||((S.getStatus())==Session.SessionStatus.CHARCREATE))
 				{
 					long check=60000;
 
@@ -152,7 +152,8 @@ public class Sessions extends StdLibrary implements SessionsList
 						String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 						if((S.getPreviousCMD()==null)||(S.getPreviousCMD().size()==0)
 						||((S.getStatus())==Session.SessionStatus.LOGIN)
-						||((S.getStatus())==Session.SessionStatus.ACCOUNTMENU))
+						||((S.getStatus())==Session.SessionStatus.ACCOUNT_MENU)
+						||((S.getStatus())==Session.SessionStatus.CHARCREATE))
 							Log.sysOut(serviceClient.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
 						else
 						{

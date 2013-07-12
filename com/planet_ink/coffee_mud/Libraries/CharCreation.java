@@ -323,76 +323,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return extraScripts;
 	}
 
-	public LoginResult createAccount(final LoginSession loginObj, final PlayerAccount acct, final String login, final Session session)
-		throws java.io.IOException
-	{
-		Log.sysOut("Creating account: "+acct.accountName());
-		session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"Y"){
-			@Override public void showPrompt() { session.promptPrint("\n\rDo you want ANSI colors (Y/n)?"); }
-			@Override public void timedOut() { }
-			@Override public void callBack() {
-				if(this.confirmed)
-					acct.setFlag(PlayerAccount.FLAG_ANSI, true);
-				else
-				{
-					acct.setFlag(PlayerAccount.FLAG_ANSI, false);
-					session.setServerTelnetMode(Session.TELNET_ANSI,false);
-					session.setClientTelnetMode(Session.TELNET_ANSI,false);
-				}
-				StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newacct.txt",null,true).text();
-				try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
-				session.println(null,null,null,"\n\r\n\r"+introText.toString());
-				
-				boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
-						 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
-				if(!emailPassword)
-				{
-					session.prompt(new InputCallback(InputCallback.Type.PROMPT){
-						@Override public void showPrompt() { session.promptPrint("\n\rEnter an account password\n\r: "); }
-						@Override public void timedOut() { }
-						@Override public void callBack() {
-							String password=this.input;
-							if(password.length()==0)
-							{
-								session.println("\n\rAborting account creation.");
-								loginObj.state=LoginState.START;
-							}
-							else
-							{
-								try
-								{
-									String emailAddy = promptEmailAddress(session, null);
-									if(emailAddy == null)
-									{
-										session.println("\n\rAborting account creation.");
-										loginObj.state=LoginState.START;
-										return;
-									}
-									finishCreateAccount(loginObj, acct, login, password.trim(), emailAddy, session);
-								}
-								catch(IOException ioe) { loginObj.state=LoginState.START; }
-							}
-						}
-					});
-				}
-				try
-				{
-					String emailAddy = promptEmailAddress(session, null);
-					if(emailAddy == null)
-					{
-						session.println("\n\rAborting account creation.");
-						loginObj.state=LoginState.START;
-						return;
-					}
-					finishCreateAccount(loginObj, acct, login, null, emailAddy, session);
-				}
-				catch(IOException ioe) { loginObj.state=LoginState.START; }
-			}
-		});
-		
-		return null;
-	}
-	
 	protected void finishCreateAccount(final LoginSession loginObj, final PlayerAccount acct, final String login, final String pw, final String emailAddy, final Session session)
 	{
 		acct.setAccountName(CMStrings.capitalizeAndLower(login.trim()));
@@ -403,7 +333,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 			acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.Int.TRIALDAYS))));
 		
-		if(pw==null)
+		if(((pw==null)||(pw.length()==0))&&(!CMProps.getVar(CMProps.Str.EMAILREQ).startsWith("DISABLE")))
 		{
 			String password="";
 			for(int i=0;i<6;i++)
@@ -420,7 +350,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.stopSession(false,false,false);
 			Log.sysOut("Created account: "+acct.accountName());
 			session.setAccount(null);
-			loginObj.state=LoginState.ACCTMENU_START;
+			loginObj.state=LoginState.START;
+			loginObj.reset=true;
 			return;
 		}
 		else
@@ -432,7 +363,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		session.setAccount(acct);
 		Log.sysOut("Created account: "+acct.accountName());
-		loginObj.state=LoginState.ACCTMENU_START;
+		if(CMLib.players().playerExists(acct.accountName()))
+		{
+			loginObj.lastInput="IMPORT "+acct.accountName();
+			loginObj.state=LoginState.ACCTMENU_COMMAND;
+		}
+		else
+			loginObj.state=LoginState.ACCTMENU_START;
 	}
 
 	protected String promptEmailAddress(Session session, boolean[] emailConfirmation) throws java.io.IOException
@@ -992,21 +929,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 	}
 	
-	protected void promptGender(int theme, MOB mob, Session session) throws IOException
-	{
-		String gender="";
-		while((gender.length()==0)&&(!session.isStopped()))
-			gender=session.choose("\n\r^!What is your gender (M/F)?^N","MF","",300000);
-
-		if(gender.length()==0)
-			gender="M";
-		mob.baseCharStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
-
-		mob.baseCharStats().getMyRace().startRacing(mob,false);
-	}
-	
 	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException
 	{
+		session.setStatus(Session.SessionStatus.CHARCREATE);
+		
 		Map<String,List<String>> extraScripts = getLoginScripts();
 		
 		login=CMStrings.capitalizeAndLower(login.trim());
@@ -1146,7 +1072,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 			executeScript(mob,extraScripts.get("RACE"));
 			
-			promptGender(theme, mob, session);
+			String gender="";
+			while((gender.length()==0)&&(!session.isStopped()))
+				gender=session.choose("\n\r^!What is your gender (M/F)?^N","MF","",300000);
+
+			if(gender.length()==0)
+				gender="M";
+			mob.baseCharStats().setStat(CharStats.STAT_GENDER,gender.toUpperCase().charAt(0));
+
+			mob.baseCharStats().getMyRace().startRacing(mob,false);
+			
 			executeScript(mob,extraScripts.get("GENDER"));
 			
 			if((CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))&&(mob.playerStats()!=null)&&(acct==null))
@@ -1423,712 +1358,846 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return LoginResult.NO_LOGIN;
 		if(loginObj==null)
 			loginObj=new LoginSession();
-		while(!session.isStopped())
+		try
 		{
-			switch(loginObj.state)
+			while(!session.isStopped())
 			{
-			case START:
-			{
-				loginObj.wizi=false;
-				session.setAccount(null);
-				loginObj.attempt++;
-				if(loginObj.attempt>=4)
+				switch(loginObj.state)
 				{
-					session.stopSession(false,false,false);
-					loginObj.state=LoginState.START;
-					return LoginResult.NO_LOGIN;
-				}
-				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
-					session.promptPrint("\n\raccount name: ");
-				else
-					session.promptPrint("\n\rname: ");
-				loginObj.state=LoginState.LOGIN_NAME;
-				return LoginResult.INPUT_REQUIRED;
-			}
-			case LOGIN_NAME:
-			{
-				loginObj.login=loginObj.lastInput;
-				if(loginObj.login==null)
+				case START:
 				{
-					loginObj.state=LoginState.START;
-					break;
-				}
-				loginObj.login=loginObj.login.trim();
-				if(loginObj.login.length()==0)
-				{
-					loginObj.state=LoginState.START;
-					break;
-				}
-				if(loginObj.login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
-				{
-					session.rawOut(getMSSPPacket());
-					session.stopSession(false,false,false);
-					loginObj.state=LoginState.START;
-					return LoginResult.NO_LOGIN;
-				}
-				if(loginObj.login.endsWith(" !"))
-				{
-					loginObj.login=loginObj.login.substring(0,loginObj.login.length()-2);
-					loginObj.login=loginObj.login.trim();
-					loginObj.wizi=true;
-				}
-				loginObj.login = CMStrings.capitalizeAndLower(loginObj.login);
-				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
-				{
-					loginObj.acct = CMLib.players().getLoadAccount(loginObj.login);
-					if(loginObj.acct!=null)
+					loginObj.wizi=false;
+					session.setAccount(null);
+					loginObj.attempt++;
+					if(loginObj.attempt>=4)
 					{
-						loginObj.player=new PlayerLibrary.ThinnerPlayer();
-						loginObj.player.name=loginObj.acct.accountName();
-						loginObj.player.accountName=loginObj.acct.accountName();
-						loginObj.player.email=loginObj.acct.getEmail();
-						loginObj.player.expiration=loginObj.acct.getAccountExpiration();
-						loginObj.player.password=loginObj.acct.getPasswordStr();
+						session.stopSession(false,false,false);
+						loginObj.reset=true;
+						loginObj.state=LoginState.START;
+						return LoginResult.NO_LOGIN;
 					}
+					if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+						session.promptPrint("\n\raccount name: ");
 					else
-					{
-						loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
-						if(loginObj.player != null)
-						{
-							session.promptPrint("password for "+loginObj.player.name+": ");
-							loginObj.state=LoginState.ACCT_CHAR_PWORD;
-							return LoginResult.INPUT_REQUIRED;
-						}
-						else
-						{
-							session.println("\n\rAccount '"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.");
-							loginObj.player=null;
-							loginObj.state=LoginState.START;
-							break;
-						}
-					}
-				}
-				else
-				{
-					MOB mob=CMLib.players().getPlayer(loginObj.login);
-					if((mob!=null)&&(mob.playerStats()!=null))
-					{
-						loginObj.player=new PlayerLibrary.ThinnerPlayer();
-						loginObj.player.name=mob.Name();
-						loginObj.player.email=mob.playerStats().getEmail();
-						loginObj.player.expiration=mob.playerStats().getAccountExpiration();
-						loginObj.player.password=mob.playerStats().getPasswordStr();
-						loginObj.player.loadedMOB=mob;
-					}
-					else
-						loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
-				}
-				loginObj.state=LoginState.PLAYER_PASS_START;
-				break;
-			}
-			case ACCT_CHAR_PWORD:
-			{
-				loginObj.password=loginObj.lastInput;
-				if(loginObj.player.matchesPassword(loginObj.password))
-				{
-					if((loginObj.player.accountName==null)||(loginObj.player.accountName.trim().length()==0))
-					{
-						session.println("\n\rThis mud is now using an account system.  "
-								+"Please create a new account and use the IMPORT command to add your character(s) to your account.");
-						session.promptPrint("Would you like to create your new master account and call it '"+loginObj.player.name+"' (y/N)? ");
-						loginObj.state=LoginState.ACCT_CONVERT_CONFIRM;
-						return LoginResult.INPUT_REQUIRED;
-					}
-					else
-					{
-						session.println("\n\rThis mud uses an account system.  Your account name is `^H"+loginObj.player.accountName+"^N`.\n\r"
-								+"Please use this account name when logging in.");
-					}
-				}
-				loginObj.state=LoginState.START;
-				break;
-			}
-			case ACCT_CONVERT_CONFIRM:
-			{
-				LoginResult result=LoginResult.NO_LOGIN;
-				if(loginObj.lastInput.toUpperCase().startsWith("Y"))
-				{
-					loginObj.acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
-					//loginObj.state=LoginState.CREATE_ACCOUNT_START;
-					result = createAccount(loginObj, loginObj.acct,loginObj.login,session);
-				}
-				loginObj.state=LoginState.START;
-				if(result != null)
-					return result;
-				break;
-			}
-			case PLAYER_PASS_START:
-			{
-				if(loginObj.player==null)
-				{
-					if(newCharactersAllowed(loginObj.login,session,!(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)))
-					{
-						if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
-						{
-							session.promptPrint("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?");
-							loginObj.state=LoginState.CREATE_ACCOUNT_CONFIRM;
-							return LoginResult.INPUT_REQUIRED;
-						}
-						else
-						{
-							session.promptPrint("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?");
-							loginObj.state=LoginState.CREATE_CHAR_CONFIRM;
-							return LoginResult.INPUT_REQUIRED;
-						}
-					}
-					loginObj.state=LoginState.START;
-					break;
-				}
-				else
-				{
-					for(Session otherSess : CMLib.sessions().allIterable())
-						if((otherSess!=session)&&(otherSess.isPendingLogin(loginObj)))
-						{
-							session.println("A previous login is still pending.  Please be patient.");
-							session.stopSession(false, false, false);
-							loginObj.state=LoginState.START;
-							return LoginResult.NO_LOGIN;
-						}
-					session.promptPrint("password: ");
-					loginObj.state=LoginState.PLAYER_PASS_RECEIVED;
+						session.promptPrint("\n\rname: ");
+					loginObj.state=LoginState.LOGIN_NAME;
+					session.setStatus(Session.SessionStatus.LOGIN);
 					return LoginResult.INPUT_REQUIRED;
 				}
-			}
-			case CREATE_ACCOUNT_CONFIRM:
-			{
-				LoginResult result=LoginResult.NO_LOGIN;
-				if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+				case LOGIN_NAME:
 				{
-					loginObj.acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
-					//loginObj.state=LoginState.CREATE_ACCOUNT_START;
-					result=createAccount(loginObj, loginObj.acct,loginObj.login,session);
-				}
-				if(result==LoginResult.NO_LOGIN)
-				{
-					loginObj.state=LoginState.START;
-					break;
-				}
-				return result;
-			}
-			case CREATE_CHAR_CONFIRM:
-			{
-				LoginResult result=LoginResult.NO_LOGIN;
-				if(loginObj.lastInput.toUpperCase().startsWith("Y"))
-				{
-					//loginObj.state=LoginState.CREATE_CHAR_START;
-					if(createCharacter(loginObj.acct,loginObj.login,session)==LoginResult.CCREATION_EXIT)
-						result = LoginResult.NORMAL_LOGIN;
-				}
-				if(result==LoginResult.NO_LOGIN)
-				{
-					loginObj.state=LoginState.START;
-					break;
-				}
-				return result;
-			}
-			case PLAYER_PASS_RECEIVED:
-			{
-				loginObj.password=loginObj.lastInput;
-				if(loginObj.player.matchesPassword(loginObj.password))
-				{
-					LoginResult prelimResults = prelimChecks(session,loginObj.login,loginObj.player);
-					if(prelimResults!=null)
+					loginObj.login=loginObj.lastInput;
+					if(loginObj.login==null)
 					{
-						if(prelimResults==LoginResult.NO_LOGIN)
-						{
-							loginObj.state=LoginState.START;
-							break;
-						}
-						return prelimResults;
+						loginObj.state=LoginState.START;
+						break;
 					}
-					
-					if(loginObj.acct!=null)
+					loginObj.login=loginObj.login.trim();
+					if(loginObj.login.length()==0)
 					{
-						if(isExpired(loginObj.acct,session,loginObj.player.expiration)) 
-							return LoginResult.NO_LOGIN;
-						session.setAccount(loginObj.acct);
-						StringBuilder loginMsg=new StringBuilder("");
-						loginMsg.append(session.getAddress()).append(" "+session.getTerminalType())
-						.append((session.getClientTelnetMode(Session.TELNET_COMPRESS)||session.getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-						.append(session.getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
-						.append(", account login: "+loginObj.acct.accountName());
-						Log.sysOut(loginMsg.toString());
-						//session.setStatus(SessionStatus.ACCOUNTMENU);
-						loginObj.state=LoginState.ACCTMENU_START;
+						loginObj.state=LoginState.START;
+						break;
+					}
+					if(loginObj.login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
+					{
+						session.rawOut(getMSSPPacket());
+						session.stopSession(false,false,false);
+						loginObj.reset=true;
+						loginObj.state=LoginState.START;
+						return LoginResult.NO_LOGIN;
+					}
+					if(loginObj.login.endsWith(" !"))
+					{
+						loginObj.login=loginObj.login.substring(0,loginObj.login.length()-2);
+						loginObj.login=loginObj.login.trim();
+						loginObj.wizi=true;
+					}
+					loginObj.login = CMStrings.capitalizeAndLower(loginObj.login);
+					if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+					{
+						loginObj.acct = CMLib.players().getLoadAccount(loginObj.login);
+						if(loginObj.acct!=null)
+						{
+							loginObj.player=new PlayerLibrary.ThinnerPlayer();
+							loginObj.player.name=loginObj.acct.accountName();
+							loginObj.player.accountName=loginObj.acct.accountName();
+							loginObj.player.email=loginObj.acct.getEmail();
+							loginObj.player.expiration=loginObj.acct.getAccountExpiration();
+							loginObj.player.password=loginObj.acct.getPasswordStr();
+						}
+						else
+						{
+							loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
+							if(loginObj.player != null)
+							{
+								session.promptPrint("password for "+loginObj.player.name+": ");
+								loginObj.state=LoginState.ACCT_CHAR_PWORD;
+								return LoginResult.INPUT_REQUIRED;
+							}
+							else
+							{
+								session.println("\n\rAccount '"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.");
+								loginObj.player=null;
+								loginObj.state=LoginState.START;
+								break;
+							}
+						}
+					}
+					else
+					{
+						MOB mob=CMLib.players().getPlayer(loginObj.login);
+						if((mob!=null)&&(mob.playerStats()!=null))
+						{
+							loginObj.player=new PlayerLibrary.ThinnerPlayer();
+							loginObj.player.name=mob.Name();
+							loginObj.player.email=mob.playerStats().getEmail();
+							loginObj.player.expiration=mob.playerStats().getAccountExpiration();
+							loginObj.player.password=mob.playerStats().getPasswordStr();
+							loginObj.player.loadedMOB=mob;
+						}
+						else
+							loginObj.player=CMLib.database().DBUserSearch(loginObj.login);
+					}
+					loginObj.state=LoginState.PLAYER_PASS_START;
+					break;
+				}
+				case ACCT_CHAR_PWORD:
+				{
+					loginObj.password=loginObj.lastInput;
+					if(loginObj.player.matchesPassword(loginObj.password))
+					{
+						if((loginObj.player.accountName==null)||(loginObj.player.accountName.trim().length()==0))
+						{
+							session.println("\n\rThis mud is now using an account system.  "
+									+"Please create a new account and use the IMPORT command to add your character(s) to your account.");
+							session.promptPrint("Would you like to create your new master account and call it '"+loginObj.player.name+"' (y/N)? ");
+							loginObj.state=LoginState.ACCT_CONVERT_CONFIRM;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						else
+						{
+							session.println("\n\rThis mud uses an account system.  Your account name is `^H"+loginObj.player.accountName+"^N`.\n\r"
+									+"Please use this account name when logging in.");
+						}
+					}
+					loginObj.state=LoginState.START;
+					break;
+				}
+				case ACCT_CONVERT_CONFIRM:
+				{
+					if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+					{
+						loginObj.acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+						loginObj.state=LoginState.ACCTCREATE_START;
+						break;
+					}
+					loginObj.state=LoginState.START;
+					loginObj.reset=true;
+					return LoginResult.NO_LOGIN;
+				}
+				case ACCTCREATE_START:
+				{
+					Log.sysOut("Creating account: "+loginObj.login);
+					loginObj.state=LoginState.ACCTCREATE_ANSICONFIRM;
+					session.promptPrint("\n\rDo you want ANSI colors (Y/n)?");
+					return LoginResult.INPUT_REQUIRED;
+				}
+				case ACCTCREATE_ANSICONFIRM:
+				{
+					PlayerAccount acct=loginObj.acct;
+					if(loginObj.lastInput.toUpperCase().startsWith("N"))
+					{
+						acct.setFlag(PlayerAccount.FLAG_ANSI, false);
+						session.setServerTelnetMode(Session.TELNET_ANSI,false);
+						session.setClientTelnetMode(Session.TELNET_ANSI,false);
+					}
+					else
+					{
+						acct.setFlag(PlayerAccount.FLAG_ANSI, true);
+					}
+					StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newacct.txt",null,true).text();
+					try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
+					session.println(null,null,null,"\n\r\n\r"+introText.toString());
+					final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
+							 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
+					if(!emailPassword)
+					{
+						session.promptPrint("\n\rEnter an account password\n\r: ");
+						loginObj.state=LoginState.ACCTCREATE_PASSWORDED;
+						return LoginResult.INPUT_REQUIRED;
+					}
+					loginObj.password=null;
+					loginObj.state=LoginState.ACCTCREATE_EMAILSTART;
+					break;
+				}
+				case ACCTCREATE_EMAILSTART:
+				{
+					if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
+					{
+						finishCreateAccount(loginObj, loginObj.acct, loginObj.login, loginObj.password, "", session);
+						break;
+					}
+					StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text();
+					try { emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);}catch(Exception ex){}
+					session.println(null,null,null,emailIntro.toString());
+					loginObj.state=LoginState.ACCTCREATE_EMAILPROMPT;
+					break;
+				}
+				case ACCTCREATE_EMAILPROMPT:
+				{
+					session.promptPrint("\n\rEnter your e-mail address: ");
+					loginObj.state=LoginState.ACCTCREATE_EMAILENTERED;
+					return LoginResult.INPUT_REQUIRED;
+				}
+				case ACCTCREATE_EMAILENTERED:
+				{
+					boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
+							 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
+					boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
+					String newEmail=loginObj.lastInput;
+					if((emailReq||emailPassword) 
+					&& ((newEmail==null)||(newEmail.trim().length()==0)||(!CMLib.smtp().isValidEmailAddress(newEmail))))
+					{
+						session.println("\n\rA valid email address is required.\n\r");
+						loginObj.state=LoginState.ACCTCREATE_EMAILPROMPT;
+						break;
+					}
+					loginObj.acct.setEmail(newEmail);
+					loginObj.lastInput=newEmail;
+					if(emailPassword) session.println("This email address will be used to send you a password.");
+					if(emailReq||emailPassword)
+					{
+						session.promptPrint("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter: ");
+						loginObj.state=LoginState.ACCTCREATE_EMAILCONFIRMED;
+						return LoginResult.INPUT_REQUIRED;
+					}
+					loginObj.state=LoginState.ACCTCREATE_EMAILCONFIRMED;
+					break;
+				}
+				case ACCTCREATE_EMAILCONFIRMED:
+				{
+					boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
+					String newEmail=loginObj.acct.getEmail();
+					boolean emailConfirmed=false;
+					if((newEmail.length()>0)&&(newEmail.equalsIgnoreCase(loginObj.lastInput)))
+						emailConfirmed=CMLib.smtp().isValidEmailAddress(newEmail);
+					loginObj.acct.setEmail("");
+					if(emailConfirmed||((!emailReq)&&(newEmail.trim().length()==0)))
+					{
+						finishCreateAccount(loginObj, loginObj.acct, loginObj.login, loginObj.password, newEmail, session);
+						break;
+					}
+					session.println("\n\rThat email address combination was invalid.\n\r");
+					loginObj.state=LoginState.START;
+					break;
+				}
+				case ACCTCREATE_PASSWORDED:
+				{
+					String password=loginObj.lastInput;
+					if(password.length()==0)
+					{
+						session.println("\n\rAborting account creation.");
+						loginObj.state=LoginState.START;
+					}
+					else
+					{
+						loginObj.password=loginObj.lastInput;
+						loginObj.state=LoginState.ACCTCREATE_EMAILSTART;
+					}
+					break;
+				}
+				case PLAYER_PASS_START:
+				{
+					if(loginObj.player==null)
+					{
+						if(newCharactersAllowed(loginObj.login,session,loginObj.acct,CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=0))
+						{
+							if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+							{
+								session.promptPrint("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?");
+								loginObj.state=LoginState.CREATE_ACCOUNT_CONFIRM;
+								return LoginResult.INPUT_REQUIRED;
+							}
+							else
+							{
+								session.promptPrint("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?");
+								loginObj.state=LoginState.CREATE_CHAR_CONFIRM;
+								return LoginResult.INPUT_REQUIRED;
+							}
+						}
+						loginObj.state=LoginState.START;
 						break;
 					}
 					else
 					{
-						LoginResult completeResult=completeCharacterLogin(session,loginObj.login, loginObj.wizi);
-						if(completeResult == LoginResult.NO_LOGIN)
-						{
-							loginObj.state=LoginState.START;
-							break;
-						}
+						for(Session otherSess : CMLib.sessions().allIterable())
+							if((otherSess!=session)&&(otherSess.isPendingLogin(loginObj)))
+							{
+								session.println("A previous login is still pending.  Please be patient.");
+								session.stopSession(false, false, false);
+								loginObj.reset=true;
+								loginObj.state=LoginState.START;
+								return LoginResult.NO_LOGIN;
+							}
+						session.promptPrint("password: ");
+						loginObj.state=LoginState.PLAYER_PASS_RECEIVED;
+						return LoginResult.INPUT_REQUIRED;
 					}
 				}
-				else
+				case CREATE_ACCOUNT_CONFIRM:
 				{
-					Log.sysOut("Failed login: "+loginObj.player.name);
-					session.println("\n\rInvalid password.\n\r");
-					if((!session.isStopped())
-					&&(loginObj.player.email.length()>0)
-					&&(loginObj.player.email.indexOf('@')>0)
-					&&(loginObj.attempt>2)
-					&&(CMProps.getVar(CMProps.Str.MUDDOMAIN).length()>0))
+					LoginResult result=LoginResult.NO_LOGIN;
+					if(loginObj.lastInput.toUpperCase().startsWith("Y"))
 					{
-						if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
-							session.promptPrint("Would you like you have a new password generated and e-mailed to you (y/N)? ");
+						loginObj.acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+						loginObj.state=LoginState.ACCTCREATE_START;
+						break;
+					}
+					if(result==LoginResult.NO_LOGIN)
+					{
+						loginObj.state=LoginState.START;
+						break;
+					}
+					return result;
+				}
+				case CREATE_CHAR_CONFIRM:
+				{
+					LoginResult result=LoginResult.NO_LOGIN;
+					if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+					{
+						//loginObj.state=LoginState.CREATE_CHAR_START;
+						if(createCharacter(loginObj.acct,loginObj.login,session)==LoginResult.CCREATION_EXIT)
+							result = LoginResult.NORMAL_LOGIN;
+					}
+					if(result==LoginResult.NO_LOGIN)
+					{
+						loginObj.state=LoginState.START;
+						break;
+					}
+					return result;
+				}
+				case PLAYER_PASS_RECEIVED:
+				{
+					loginObj.password=loginObj.lastInput;
+					if(loginObj.player.matchesPassword(loginObj.password))
+					{
+						LoginResult prelimResults = prelimChecks(session,loginObj.login,loginObj.player);
+						if(prelimResults!=null)
+						{
+							if(prelimResults==LoginResult.NO_LOGIN)
+							{
+								loginObj.state=LoginState.START;
+								break;
+							}
+							return prelimResults;
+						}
+						
+						if(loginObj.acct!=null)
+						{
+							if(isExpired(loginObj.acct,session,loginObj.player.expiration)) 
+								return LoginResult.NO_LOGIN;
+							session.setAccount(loginObj.acct);
+							StringBuilder loginMsg=new StringBuilder("");
+							loginMsg.append(session.getAddress()).append(" "+session.getTerminalType())
+							.append((session.getClientTelnetMode(Session.TELNET_COMPRESS)||session.getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+							.append(session.getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
+							.append(", account login: "+loginObj.acct.accountName());
+							Log.sysOut(loginMsg.toString());
+							//session.setStatus(SessionStatus.ACCOUNTMENU);
+							loginObj.state=LoginState.ACCTMENU_START;
+							break;
+						}
 						else
-							session.promptPrint("Would you like your password e-mailed to you (y/N)? ");
-						loginObj.state=LoginState.CONFIRM_EMAIL_PASSWORD;
-						return LoginResult.INPUT_REQUIRED;
+						{
+							LoginResult completeResult=completeCharacterLogin(session,loginObj.login, loginObj.wizi);
+							if(completeResult == LoginResult.NO_LOGIN)
+							{
+								loginObj.state=LoginState.START;
+								break;
+							}
+						}
+					}
+					else
+					{
+						Log.sysOut("Failed login: "+loginObj.player.name);
+						session.println("\n\rInvalid password.\n\r");
+						if((!session.isStopped())
+						&&(loginObj.player.email.length()>0)
+						&&(loginObj.player.email.indexOf('@')>0)
+						&&(loginObj.attempt>2)
+						&&(CMProps.getVar(CMProps.Str.MUDDOMAIN).length()>0))
+						{
+							if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
+								session.promptPrint("Would you like you have a new password generated and e-mailed to you (y/N)? ");
+							else
+								session.promptPrint("Would you like your password e-mailed to you (y/N)? ");
+							loginObj.state=LoginState.CONFIRM_EMAIL_PASSWORD;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						loginObj.state=LoginState.START;
+						break;
+					}
+					session.println("\n\r");
+					return LoginResult.NORMAL_LOGIN;
+				}
+				case CONFIRM_EMAIL_PASSWORD:
+				{
+					if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+					{
+						String password=loginObj.player.password;
+						if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
+						{
+							MOB playerM=CMLib.players().getLoadPlayer(loginObj.player.name);
+							if((playerM!=null)&&(playerM.playerStats()!=null))
+							{
+								password=CMLib.encoder().generateRandomPassword();
+								playerM.playerStats().setPassword(password);
+								loginObj.player.password=playerM.playerStats().getPasswordStr();
+								CMLib.database().DBUpdatePassword(loginObj.player.name, loginObj.player.password);
+							}
+						}
+						if(CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),
+							"passwords@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
+							"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
+							loginObj.player.email,
+							"Password for "+loginObj.player.name,
+							"Your password for "+loginObj.player.name+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'."))
+							session.println("Email sent.\n\r");
+						else
+							session.println("Error sending email.\n\r");
+						session.stopSession(false,false,false);
+						loginObj.reset=true;
+						loginObj.state=LoginState.START;
+						return LoginResult.NO_LOGIN;
 					}
 					loginObj.state=LoginState.START;
 					break;
 				}
-				session.println("\n\r");
-				return LoginResult.NORMAL_LOGIN;
-			}
-			case CONFIRM_EMAIL_PASSWORD:
-			{
-				if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+				case ACCTMENU_START:
 				{
-					String password=loginObj.player.password;
-					if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
+					final PlayerAccount acct=loginObj.acct;
+					session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
+					session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
+					// if its not a new account, do this?
+					StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,true).text();
+					try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
+					session.println(null,null,null,"\n\r\n\r"+introText.toString());
+					if(acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
 					{
-						MOB playerM=CMLib.players().getLoadPlayer(loginObj.player.name);
-						if((playerM!=null)&&(playerM.playerStats()!=null))
-						{
-							password=CMLib.encoder().generateRandomPassword();
-							playerM.playerStats().setPassword(password);
-							loginObj.player.password=playerM.playerStats().getPasswordStr();
-							CMLib.database().DBUpdatePassword(loginObj.player.name, loginObj.player.password);
-						}
+						loginObj.state=LoginState.ACCTMENU_SHOWCHARS;
 					}
-					if(CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),
-						"passwords@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
-						"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
-						loginObj.player.email,
-						"Password for "+loginObj.player.name,
-						"Your password for "+loginObj.player.name+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'."))
-						session.println("Email sent.\n\r");
 					else
-						session.println("Error sending email.\n\r");
-					session.stopSession(false,false,false);
-					loginObj.state=LoginState.START;
-					return LoginResult.NO_LOGIN;
-				}
-				loginObj.state=LoginState.START;
-				break;
-			}
-			case ACCTMENU_START:
-			{
-				final PlayerAccount acct=loginObj.acct;
-				session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
-				session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
-				// if its not a new account, do this?
-				StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,true).text();
-				try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
-				session.println(null,null,null,"\n\r\n\r"+introText.toString());
-				if(acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
-				{
-					loginObj.state=LoginState.ACCTMENU_SHOWCHARS;
-				}
-				else
-				{
-					loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-				}
-				
-				break;
-			}
-			case ACCTMENU_SHOWCHARS:
-			{
-				final PlayerAccount acct=loginObj.acct;
-				StringBuffer buf = new StringBuffer("");
-				buf.append("^X");
-				buf.append(CMStrings.padRight("Character",20));
-				buf.append(" " + CMStrings.padRight("Race",10));
-				buf.append(" " + CMStrings.padRight("Level",5));
-				buf.append(" " + CMStrings.padRight("Class",15));
-				buf.append("^.^N\n\r");
-				for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
-				{
-					PlayerLibrary.ThinPlayer player = p.nextElement();
-					buf.append("^H");
-					buf.append(CMStrings.padRight(player.name,20));
-					buf.append("^.^N");
-					buf.append(" " + CMStrings.padRight(player.race,10));
-					buf.append(" " + CMStrings.padRight(""+player.level,5));
-					buf.append(" " + CMStrings.padRight(player.charClass,15));
-					buf.append("^.^N\n\r");
-				}
-				session.println(buf.toString());
-				buf.setLength(0);
-				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-				break;
-			}
-			case ACCTMENU_SHOWMENU:
-			{
-				final PlayerAccount acct=loginObj.acct;
-				StringBuffer buf = new StringBuffer("");
-				if(!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
-				{
-					buf.append(" ^XAccount Menu^.^N\n\r");
-					buf.append(" ^XL^.^w)^Hist characters\n\r");
-					buf.append(" ^XN^.^w)^Hew character\n\r");
-					if(acct.isSet(PlayerAccount.FLAG_CANEXPORT))
 					{
-						buf.append(" ^XI^.^w)^Hmport character\n\r");
-						buf.append(" ^XE^.^w)^Hxport character\n\r");
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 					}
-					buf.append(" ^XD^.^w)^Helete/Retire character\n\r");
-					buf.append(" ^XH^.^w)^Help\n\r");
-					buf.append(" ^XM^.^w)^Henu OFF\n\r");
-					buf.append(" ^XQ^.^w)^Huit (logout)\n\r");
-					buf.append("\n\r^H ^w(^HEnter your character name to login^w)^H");
+					
+					break;
+				}
+				case ACCTMENU_SHOWCHARS:
+				{
+					final PlayerAccount acct=loginObj.acct;
+					StringBuffer buf = new StringBuffer("");
+					buf.append("^X");
+					buf.append(CMStrings.padRight("Character",20));
+					buf.append(" " + CMStrings.padRight("Race",10));
+					buf.append(" " + CMStrings.padRight("Level",5));
+					buf.append(" " + CMStrings.padRight("Class",15));
+					buf.append("^.^N\n\r");
+					for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
+					{
+						PlayerLibrary.ThinPlayer player = p.nextElement();
+						buf.append("^H");
+						buf.append(CMStrings.padRight(player.name,20));
+						buf.append("^.^N");
+						buf.append(" " + CMStrings.padRight(player.race,10));
+						buf.append(" " + CMStrings.padRight(""+player.level,5));
+						buf.append(" " + CMStrings.padRight(player.charClass,15));
+						buf.append("^.^N\n\r");
+					}
 					session.println(buf.toString());
 					buf.setLength(0);
+					loginObj.state=LoginState.ACCTMENU_PROMPT;
+					break;
 				}
-				loginObj.state=LoginState.ACCTMENU_PROMPT;
-				break;
-			}
-			case ACCTMENU_PROMPT:
-			{
-				if(!session.isStopped())
-					session.setInputLoopTime();
-				session.promptPrint("\n\r^wCommand or Name ^H(?)^w: ^N");
-				loginObj.state=LoginState.ACCTMENU_COMMAND;
-				return LoginResult.INPUT_REQUIRED;
-			}
-			case ACCTMENU_COMMAND:
-			{
-				LoginResult result = processAccountCommand(session, loginObj, loginObj.lastInput);
-				if(result != null)
-					return result;
-				break;
-			}
-			default:
-				loginObj.state=LoginState.START;
-				break;
+				case ACCTMENU_SHOWMENU:
+				{
+					final PlayerAccount acct=loginObj.acct;
+					StringBuffer buf = new StringBuffer("");
+					if(!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
+					{
+						buf.append(" ^XAccount Menu^.^N\n\r");
+						buf.append(" ^XL^.^w)^Hist characters\n\r");
+						buf.append(" ^XN^.^w)^Hew character\n\r");
+						if(acct.isSet(PlayerAccount.FLAG_CANEXPORT))
+						{
+							buf.append(" ^XI^.^w)^Hmport character\n\r");
+							buf.append(" ^XE^.^w)^Hxport character\n\r");
+						}
+						buf.append(" ^XD^.^w)^Helete/Retire character\n\r");
+						buf.append(" ^XH^.^w)^Help\n\r");
+						buf.append(" ^XM^.^w)^Henu OFF\n\r");
+						buf.append(" ^XQ^.^w)^Huit (logout)\n\r");
+						buf.append("\n\r^H ^w(^HEnter your character name to login^w)^H");
+						session.println(buf.toString());
+						buf.setLength(0);
+					}
+					loginObj.state=LoginState.ACCTMENU_PROMPT;
+					break;
+				}
+				case ACCTMENU_PROMPT:
+				{
+					if(!session.isStopped())
+						session.setInputLoopTime();
+					session.setStatus(Session.SessionStatus.ACCOUNT_MENU);
+					session.promptPrint("\n\r^wCommand or Name ^H(?)^w: ^N");
+					loginObj.state=LoginState.ACCTMENU_COMMAND;
+					loginObj.acctCmd=null;
+					return LoginResult.INPUT_REQUIRED;
+				}
+				case ACCTMENU_CONFIRMCOMMAND:
+				{
+					if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+					{
+						loginObj.lastInput=loginObj.acctCmd+" <CONFIRMED>";
+						loginObj.state=LoginState.ACCTMENU_COMMAND;
+					}
+					else
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+					break;
+				}
+				case ACCTMENU_ADDTOCOMMAND:
+				{
+					if(loginObj.lastInput.length()>0)
+					{
+						loginObj.lastInput=loginObj.acctCmd+" "+loginObj.lastInput;
+						loginObj.state=LoginState.ACCTMENU_COMMAND;
+					}
+					else
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+					break;
+				}
+				case ACCTMENU_COMMAND:
+				{
+					final PlayerAccount acct=loginObj.acct;
+					final String s=loginObj.lastInput.trim();
+					if(s==null) return LoginResult.NO_LOGIN;
+					if(s.length()==0)
+					{
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						break;
+					}
+					loginObj.acctCmd=s;
+					final String[] parms=CMParms.parse(s).toArray(new String[0]);
+					final String cmd=parms[0].toUpperCase().trim();
+					if(cmd.equalsIgnoreCase("?")||(("HELP").startsWith(cmd)))
+					{
+						StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
+						try { accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp);}catch(Exception ex){}
+						session.println(null,null,null,"\n\r\n\r"+accountHelp.toString());
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						break;
+					}
+					if(("LIST").startsWith(cmd))
+					{
+						loginObj.state=LoginState.ACCTMENU_SHOWCHARS;
+						break;
+					}
+					if(("QUIT").startsWith(cmd))
+					{
+						if((parms.length>1)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
+						{
+							session.println("Bye Bye!");
+							session.stopSession(false,false,false);
+							return LoginResult.NO_LOGIN;
+						}
+						session.promptPrint("Quit -- are you sure (y/N)?");
+						loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
+						return LoginResult.INPUT_REQUIRED;
+					}
+					if(("NEW ").startsWith(cmd))
+					{
+						if((parms.length<2)||(parms[1].length()==0))
+						{
+							session.promptPrint("\n\rPlease enter a name for your character: ");
+							loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						if(newCharactersAllowed(parms[1],session,acct,parms[1].equalsIgnoreCase(acct.name())))
+						{
+							final String login=CMStrings.capitalizeAndLower(parms[1]);
+							if((parms.length>2)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
+							{
+								if(!session.isStopped())
+									session.setInputLoopTime();
+								if(createCharacter(acct, login, session) == LoginResult.CCREATION_EXIT)
+									return LoginResult.CCREATION_EXIT;
+								loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+								break;
+							}
+							session.promptPrint("Create a new character called '"+login+"' (y/N)?");
+							loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						break;
+					}
+					if(("MENU").startsWith(cmd))
+					{
+						if((parms.length>1)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
+						{
+							if(acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
+							{
+								session.println("Menus are back on.");
+								acct.setFlag(PlayerAccount.FLAG_ACCOUNTMENUSOFF, false);
+							}
+							else
+							if(!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
+							{
+								session.println("Menus are now off.");
+								acct.setFlag(PlayerAccount.FLAG_ACCOUNTMENUSOFF, true);
+							}
+							loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+							
+						}
+						else
+						{
+							final String promptStr=acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF)?"Turn menus back on (y/N)?":"Turn menus off (y/N)?";
+							session.promptPrint(promptStr);
+							loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						break;
+					}
+					if(("RETIRE").startsWith(cmd)||("DELETE ").startsWith(cmd))
+					{
+						if((parms.length<2)||(parms[1].length()==0))
+						{
+							session.promptPrint("\n\rPlease the name of the character: ");
+							loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						PlayerLibrary.ThinPlayer delMeChk = null;
+						for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
+						{
+							PlayerLibrary.ThinPlayer player = p.nextElement();
+							if(player.name.equalsIgnoreCase(parms[1]))
+								delMeChk=player;
+						}
+						if(delMeChk==null)
+						{
+							session.println("The character '"+CMStrings.capitalizeAndLower(parms[1])+"' is unknown.");
+							loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+							break;
+						}
+						final PlayerLibrary.ThinPlayer delMe = delMeChk;
+						if((parms.length>2)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
+						{
+							MOB M=CMLib.players().getLoadPlayer(delMe.name);
+							if(M!=null)
+							{
+								CMLib.players().obliteratePlayer(M, true, false);
+							}
+							session.println(delMe.name+" has been deleted.");
+						}
+						else
+						{
+							session.promptPrint("Are you sure you want to retire and delete '"+delMe.name+"' (y/N)?");
+							loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						break;
+					}
+					if(("EXPORT ").startsWith(cmd)&&(acct.isSet(PlayerAccount.FLAG_CANEXPORT)))
+					{
+						if((parms.length<2)||(parms[1].length()==0))
+						{
+							session.promptPrint("\n\rPlease the name of the character: ");
+							loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						PlayerLibrary.ThinPlayer delMe = null;
+						for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
+						{
+							PlayerLibrary.ThinPlayer player = p.nextElement();
+							if(player.name.equalsIgnoreCase(parms[1]))
+								delMe=player;
+						}
+						if(delMe==null)
+						{
+							session.println("The character '"+CMStrings.capitalizeAndLower(parms[1])+"' is unknown.");
+							loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+							break;
+						}
+						if((parms.length<3)||(parms[2].length()==0))
+						{
+							session.promptPrint("\n\rEnter a new password for this character: ");
+							loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						String password=parms[2];
+						if((password==null)||(password.trim().length()==0))
+						{
+							session.println("Aborted.");
+							loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+							break;
+						}
+						if((parms.length>3)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
+						{
+							MOB M=CMLib.players().getLoadPlayer(delMe.name);
+							if(M!=null)
+							{
+								acct.delPlayer(M);
+								M.playerStats().setAccount(null);
+								CMLib.database().DBUpdateAccount(acct);
+								M.playerStats().setLastDateTime(System.currentTimeMillis());
+								M.playerStats().setLastUpdated(System.currentTimeMillis());
+								M.playerStats().setPassword(password);
+								CMLib.database().DBUpdatePlayer(M);
+								session.println(delMe.name+" has been exported from your account.");
+							}
+						}
+						else
+						{
+							session.promptPrint("Are you sure you want to remove character  '"+delMe.name+"' from your account (y/N)?");
+							loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						break;
+					}
+					if(("IMPORT ").startsWith(cmd))
+					{
+						if((parms.length<2)||(parms[1].length()==0))
+						{
+							session.promptPrint("\n\rPlease the name of the character: ");
+							loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
+						&&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
+						{
+							session.println("You may only have "+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)+" characters.  Please delete one to create another.");
+							loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+							break;
+						}
+						String name=CMStrings.capitalizeAndLower(parms[1]);
+						final PlayerLibrary.ThinnerPlayer newCharT = CMLib.database().DBUserSearch(name);
+						if((parms.length<3)||(parms[2].length()==0))
+						{
+							session.promptPrint("\n\rEnter the existing password for your character '"+name+"': ");
+							loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						String password=parms[2];
+						if((password==null)||(password.trim().length()==0))
+						{
+							session.println("Aborted.");
+							loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+							break;
+						}
+						if((newCharT==null)
+						||(!newCharT.matchesPassword(password))
+						||((newCharT.accountName!=null)
+							&&(newCharT.accountName.length()>0)
+							&&(!newCharT.accountName.equalsIgnoreCase(acct.accountName()))))
+						{
+							session.println("Character name or password is incorrect.");
+							loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+							break;
+						}
+						if((parms.length>3)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
+						{
+							MOB M=CMLib.players().getLoadPlayer(newCharT.name);
+							if(M!=null)
+							{
+								acct.addNewPlayer(M);
+								M.playerStats().setAccount(acct);
+								CMLib.database().DBUpdateAccount(acct);
+								CMLib.database().DBUpdatePlayer(M);
+								session.println(M.name()+" has been imported into your account.");
+							}
+							loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						}
+						else
+						{
+							session.promptPrint("Are you sure you want to import character  '"+newCharT.name+"' into your account (y/N)?");
+							loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
+							return LoginResult.INPUT_REQUIRED;
+						}
+						break;
+					}
+					boolean wizi=(parms.length>1)&&(parms[parms.length-1]).equalsIgnoreCase("!");
+					PlayerLibrary.ThinnerPlayer playMe = null;
+					String name=CMStrings.capitalizeAndLower(cmd);
+					final String playerName=acct.findPlayer(name);
+					if(playerName!=null)
+					{
+						name=playerName;
+						playMe = CMLib.database().DBUserSearch(name);
+					}
+					if(playMe == null)
+					{
+						session.println("'"+name+"' is an unknown character or command.  Use ? for help.");
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						break;
+					}
+					MOB realMOB=CMLib.players().getLoadPlayer(playMe.name);
+					if(realMOB==null)
+					{
+						session.println("Error loading character '"+name+"'.  Please contact the management.");
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						break;
+					}
+					int numAccountOnline=0;
+					for(Session S : CMLib.sessions().allIterable())
+						if((S.mob()!=null)
+						&&(S.mob().playerStats()!=null)
+						&&(S.mob().playerStats().getAccount()==acct))
+							numAccountOnline++;
+					if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)>0)
+					&&(numAccountOnline>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT))
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
+					&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_CONNS, session.getAddress()))
+					&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, playMe.accountName))
+					&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, playMe.name))
+					&&(!acct.isSet(PlayerAccount.FLAG_MAXCONNSOVERRIDE)))
+					{
+						session.println("You may only have "+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)+" of your characters on at one time.");
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						break;
+					}
+					playMe.loadedMOB=realMOB;
+					LoginResult prelimResults = prelimChecks(session,playMe.name,playMe);
+					if(prelimResults!=null)
+						return prelimResults;
+					LoginResult completeResult=completeCharacterLogin(session,playMe.name, wizi);
+					if(completeResult == LoginResult.NO_LOGIN)
+					{
+						loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+						break;
+					}
+					return LoginResult.NORMAL_LOGIN;
+				}
+				default:
+					loginObj.state=LoginState.START;
+					break;
+				}
 			}
 		}
+		catch(Exception e)
+		{
+			if(e instanceof IOException)
+				throw e;
+			session.println("\n\r\n\rI'm sorry, but something bad happened. You'll need to re-log.\n\r\n\r");
+			Log.errOut(e);
+		}
+		loginObj.reset=true;
 		loginObj.state=LoginState.START;
 		return LoginResult.NO_LOGIN;
 	}
 
-	protected LoginResult processAccountCommand(final Session session, LoginSession loginObj, String s) throws IOException
-	{
-		final PlayerAccount acct=loginObj.acct;
-		if(s==null) return LoginResult.NO_LOGIN;
-		if(s.trim().length()==0)
-		{
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		s=s.trim();
-		int spDex=s.indexOf(' ');
-		String cmd=((spDex>0)?s.substring(0,spDex):s).toUpperCase();
-		String parms=(spDex>0)?s.substring(spDex+1).trim():"";
-		if(cmd.equalsIgnoreCase("?")||(("HELP").startsWith(cmd)))
-		{
-			StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
-			try { accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp);}catch(Exception ex){}
-			session.println(null,null,null,"\n\r\n\r"+accountHelp.toString());
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		if(("LIST").startsWith(cmd))
-		{
-			loginObj.state=LoginState.ACCTMENU_SHOWCHARS;
-			return null;
-		}
-		if(("QUIT").startsWith(cmd))
-		{
-			session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N") {
-				@Override public void showPrompt() { session.promptPrint("Quit -- are you sure (y/N)?"); }
-				@Override public void timedOut() { }
-				@Override public void callBack() {
-					if(this.confirmed)
-						session.stopSession(false,false,false);
-				}
-			});
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		if(("NEW ").startsWith(cmd))
-		{
-			String name=parms;
-			if(name.length()==0)
-			{
-				name=session.prompt("\n\rPlease enter a name for your character: ","");
-				if(name.length()==0)
-				{
-					loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-					return null;
-				}
-			}
-			if((!isOkName(name))
-			||(CMLib.players().playerExists(name))
-			||(CMLib.players().accountExists(name)&&(!name.equalsIgnoreCase(acct.accountName()))))
-			{
-				session.println("\n\rThat name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
-				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-				return null;
-			}
-			if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
-			&&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
-			{
-				session.println("You may only have "+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)+" characters.  Please retire one to create another.");
-				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-				return null;
-			}
-			if(newCharactersAllowed(name,session,true))
-			{
-				String login=CMStrings.capitalizeAndLower(name);
-				if(session.confirm("Create a new character called '"+login+"' (y/N)?", "N"))
-				{
-					if(!session.isStopped())
-						session.setInputLoopTime();
-					if(createCharacter(acct, login, session) == LoginResult.CCREATION_EXIT)
-						return LoginResult.CCREATION_EXIT;
-				}
-			}
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		if(("MENU").startsWith(cmd))
-		{
-			if(acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF)&&(session.confirm("Turn menus back on (y/N)?", "N")))
-				acct.setFlag(PlayerAccount.FLAG_ACCOUNTMENUSOFF, false);
-			else
-			if(!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF)&&(session.confirm("Turn menus off (y/N)?", "N")))
-				acct.setFlag(PlayerAccount.FLAG_ACCOUNTMENUSOFF, true);
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		if(("RETIRE").startsWith(cmd)||("DELETE ").startsWith(cmd))
-		{
-			String name=parms;
-			if(name.length()==0)
-			{
-				name=session.prompt("\n\rPlease enter the name of the character: ","");
-				if(name.length()==0)
-				{
-					loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-					return null;
-				}
-			}
-			PlayerLibrary.ThinPlayer delMeChk = null;
-			for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
-			{
-				PlayerLibrary.ThinPlayer player = p.nextElement();
-				if(player.name.equalsIgnoreCase(name))
-					delMeChk=player;
-			}
-			if(delMeChk==null)
-			{
-				session.println("The character '"+CMStrings.capitalizeAndLower(name)+"' is unknown.");
-				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-				return null;
-			}
-			final PlayerLibrary.ThinPlayer delMe = delMeChk;
-			session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N"){
-				@Override public void showPrompt() { session.promptPrint("Are you sure you want to retire and delete '"+delMe.name+"' (y/N)?"); }
-				@Override public void timedOut() { }
-				@Override public void callBack() {
-					if(this.confirmed)
-					{
-						MOB M=CMLib.players().getLoadPlayer(delMe.name);
-						if(M!=null)
-						{
-							CMLib.players().obliteratePlayer(M, true, false);
-						}
-						session.println(delMe.name+" has been deleted.");
-					}
-				}
-			});
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		if(("EXPORT ").startsWith(cmd)&&(acct.isSet(PlayerAccount.FLAG_CANEXPORT)))
-		{
-			String name=parms;
-			if(name.length()==0)
-			{
-				name=session.prompt("\n\rPlease enter the name of the character: ","");
-				if(name.length()==0)
-				{
-					loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-					return null;
-				}
-			}
-			PlayerLibrary.ThinPlayer delMeChk = null;
-			for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
-			{
-				PlayerLibrary.ThinPlayer player = p.nextElement();
-				if(player.name.equalsIgnoreCase(name))
-					delMeChk=player;
-			}
-			if(delMeChk==null)
-			{
-				session.println("The character '"+CMStrings.capitalizeAndLower(name)+"' is unknown.");
-				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-				return null;
-			}
-			final PlayerLibrary.ThinPlayer delMe = delMeChk;
-			session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N"){
-				@Override public void showPrompt() { session.promptPrint("Are you sure you want to remove character  '"+delMe.name+"' from your account (y/N)?"); }
-				@Override public void timedOut() { }
-				@Override public void callBack() {
-					if(this.confirmed)
-					{
-						session.prompt(new InputCallback(InputCallback.Type.PROMPT){
-							@Override public void showPrompt() { session.promptPrint("Enter a final password for this character: "); }
-							@Override public void timedOut() { }
-							@Override public void callBack() {
-								String password=this.input;
-								if((password==null)||(password.trim().length()==0))
-									session.println("Aborted.");
-								else
-								{
-									MOB M=CMLib.players().getLoadPlayer(delMe.name);
-									if(M!=null)
-									{
-										acct.delPlayer(M);
-										M.playerStats().setAccount(null);
-										CMLib.database().DBUpdateAccount(acct);
-										M.playerStats().setLastDateTime(System.currentTimeMillis());
-										M.playerStats().setLastUpdated(System.currentTimeMillis());
-										M.playerStats().setPassword(password);
-										CMLib.database().DBUpdatePlayer(M);
-										session.println(delMe.name+" has been exported from your account.");
-									}
-								}
-							}
-						});
-					}
-				}
-			});
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		if(("IMPORT ").startsWith(cmd))
-		{
-			String name=parms;
-			if(name.length()==0)
-			{
-				name=session.prompt("\n\rPlease enter the name of the character: ","");
-				if(name.length()==0)
-				{
-					loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-					return null;
-				}
-			}
-			if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
-			&&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
-			{
-				session.println("You may only have "+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)+" characters.  Please delete one to create another.");
-				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-				return null;
-			}
-			name=CMStrings.capitalizeAndLower(name);
-			final PlayerLibrary.ThinnerPlayer newCharT = CMLib.database().DBUserSearch(name);
-			session.prompt(new InputCallback(InputCallback.Type.PROMPT){
-				@Override public void showPrompt() { session.promptPrint("Enter the existing password for this character: "); }
-				@Override public void timedOut() { }
-				@Override public void callBack() {
-					String password=this.input;
-					if((password==null)||(password.trim().length()==0))
-						session.println("Aborted.");
-					else
-					if((newCharT==null)
-					||(!newCharT.matchesPassword(password))
-					||((newCharT.accountName!=null)
-						&&(newCharT.accountName.length()>0)
-						&&(!newCharT.accountName.equalsIgnoreCase(acct.accountName()))))
-					{
-						session.println("Character name or password is incorrect.");
-					}
-					else
-					session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N"){
-						@Override public void showPrompt() { session.promptPrint("Are you sure you want to import character  '"+newCharT.name+"' into your account (y/N)?"); }
-						@Override public void timedOut() { }
-						@Override public void callBack() {
-							if(this.confirmed)
-							{
-								MOB M=CMLib.players().getLoadPlayer(newCharT.name);
-								if(M!=null)
-								{
-									acct.addNewPlayer(M);
-									M.playerStats().setAccount(acct);
-									CMLib.database().DBUpdateAccount(acct);
-									CMLib.database().DBUpdatePlayer(M);
-									session.println(M.name()+" has been imported into your account.");
-								}
-							}
-						}
-					});
-				}
-			});
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		boolean wizi=parms.equalsIgnoreCase("!");
-		PlayerLibrary.ThinnerPlayer playMe = null;
-		String name=CMStrings.capitalizeAndLower(cmd);
-		final String playerName=acct.findPlayer(name);
-		if(playerName!=null)
-		{
-			name=playerName;
-			playMe = CMLib.database().DBUserSearch(name);
-		}
-		if(playMe == null)
-		{
-			session.println("'"+name+"' is an unknown character or command.  Use ? for help.");
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		MOB realMOB=CMLib.players().getLoadPlayer(playMe.name);
-		if(realMOB==null)
-		{
-			session.println("Error loading character '"+name+"'.  Please contact the management.");
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		int numAccountOnline=0;
-		for(Session S : CMLib.sessions().allIterable())
-			if((S.mob()!=null)
-			&&(S.mob().playerStats()!=null)
-			&&(S.mob().playerStats().getAccount()==acct))
-				numAccountOnline++;
-		if((CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)>0)
-		&&(numAccountOnline>=CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT))
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAXCONNSPERACCOUNT))
-		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_CONNS, session.getAddress()))
-		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, playMe.accountName))
-		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, playMe.name))
-		&&(!acct.isSet(PlayerAccount.FLAG_MAXCONNSOVERRIDE)))
-		{
-			session.println("You may only have "+CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT)+" of your characters on at one time.");
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		playMe.loadedMOB=realMOB;
-		LoginResult prelimResults = prelimChecks(session,playMe.name,playMe);
-		if(prelimResults!=null)
-			return prelimResults;
-		LoginResult completeResult=completeCharacterLogin(session,playMe.name, wizi);
-		if(completeResult == LoginResult.NO_LOGIN)
-		{
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		return LoginResult.NORMAL_LOGIN;
-	}
-	
-	
-	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName)
+	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean skipAccountNameCheck)
 	{
 		if((CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS))
 		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, login))
@@ -2136,8 +2205,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return NewCharNameCheckResult.NO_NEW_PLAYERS;
 		else
 		if((!isOkName(login))
-		|| (checkPlayerName && CMLib.players().playerExists(login))
-		|| (!checkPlayerName && CMLib.players().accountExists(login)))
+		|| (CMLib.players().playerExists(login))
+		|| (!skipAccountNameCheck && CMLib.players().accountExists(login)))
 			return NewCharNameCheckResult.BAD_USED_NAME;
 		else
 		if((CMProps.getIntVar(CMProps.Int.MUDTHEME)==0)
@@ -2155,9 +2224,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return NewCharNameCheckResult.OK;
 	}
 	
-	public boolean newCharactersAllowed(String login, Session session, boolean checkPlayerName)
+	public boolean newCharactersAllowed(String login, Session session, PlayerAccount acct, boolean skipAccountNameCheck)
 	{
-		switch(newCharNameCheck(login,session.getAddress(),checkPlayerName))
+		switch(newCharNameCheck(login,session.getAddress(),skipAccountNameCheck))
 		{
 		case NO_NEW_PLAYERS:
 			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.");
@@ -2175,6 +2244,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.");
 			return false;
 		case OK:
+			if((acct!=null)
+			&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
+			&&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
+			{
+				session.println("You may only have "+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)+" characters.  Please retire one to create another.");
+				return false;
+			}
 			return true;
 		}
 	}

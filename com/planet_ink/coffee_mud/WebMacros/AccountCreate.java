@@ -95,22 +95,22 @@ public class AccountCreate extends StdWebMacro
 		}
 		synchronized(ImageVerificationImage.sync)
 		{
-		   	SLinkedList<ImageVerificationImage.ImgCacheEntry> cache = ImageVerificationImage.getVerifyCache();
-		   	boolean found=false;
-	   		final String hisIp=httpReq.getClientAddress().getHostAddress();
-		   	for(Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
-		   	{
-		   		ImageVerificationImage.ImgCacheEntry entry=p.next();
-		   		if((entry.key.equalsIgnoreCase(verifykey))
-		   		&&(entry.ip.equals(hisIp)))
-		   		{
-		   			found=true;
-		   			if(!entry.value.equalsIgnoreCase(verify))
-		   				return AccountCreateErrors.BAD_VERIFY.toString();
-		   		}
-		   	}
-		   	if(!found)
-		   		return AccountCreateErrors.NO_VERIFYKEY.toString();
+			SLinkedList<ImageVerificationImage.ImgCacheEntry> cache = ImageVerificationImage.getVerifyCache();
+			boolean found=false;
+			final String hisIp=httpReq.getClientAddress().getHostAddress();
+			for(Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
+			{
+				ImageVerificationImage.ImgCacheEntry entry=p.next();
+				if((entry.key.equalsIgnoreCase(verifykey))
+				&&(entry.ip.equals(hisIp)))
+				{
+					found=true;
+					if(!entry.value.equalsIgnoreCase(verify))
+						return AccountCreateErrors.BAD_VERIFY.toString();
+				}
+			}
+			if(!found)
+				return AccountCreateErrors.NO_VERIFYKEY.toString();
 		}
 		name = CMStrings.capitalizeAndLower(name);
 		CharCreationLibrary.NewCharNameCheckResult checkResult=CMLib.login().newCharNameCheck(name, httpReq.getClientAddress().getHostAddress(), false);

@@ -11,6 +11,7 @@ import java.util.Vector;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
@@ -190,6 +191,7 @@ public class FakeSession implements Session
 	
 	public String getAddress(){return "";}
 	public SessionStatus getStatus(){return SessionStatus.MAINLOOP;}
+	public void setStatus(SessionStatus newStatus){}
 	public boolean isWaitingForInput() { return false; }
 	public long getTotalMillis(){return 0;}
 	public long getTotalTicks(){return 0;}

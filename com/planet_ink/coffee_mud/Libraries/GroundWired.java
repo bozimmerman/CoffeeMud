@@ -223,7 +223,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					if(remainingPowerToDistribute>0)
 					{
 						double pctToTake=CMath.div(((E.powerNeeds()<=0)?1:E.powerNeeds()),totalPowerNeeded);
-						powerToTake=(int)Math.round(pctToTake * (double)remainingPowerToDistribute);
+						powerToTake=(int)Math.round(pctToTake * remainingPowerToDistribute);
 						if(powerToTake<1)
 							powerToTake=1;
 					}

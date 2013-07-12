@@ -143,7 +143,7 @@ public class DefaultSession implements Session
 		threadGroupChar=Thread.currentThread().getThreadGroup().getName().charAt(0);
 	}
 
-	protected void setStatus(SessionStatus newStatus)
+	public void setStatus(SessionStatus newStatus)
 	{
 		synchronized(status)
 		{
@@ -1898,7 +1898,6 @@ public class DefaultSession implements Session
 		switch(status)
 		{
 			case LOGIN:
-			case ACCOUNTMENU:
 			case LOGIN2:
 			case HANDSHAKE_OPEN:
 			case HANDSHAKE_MCCP:
@@ -2010,7 +2009,8 @@ public class DefaultSession implements Session
 				mainLoop();
 				break;
 			case LOGIN:
-			case ACCOUNTMENU:
+			case ACCOUNT_MENU:
+			case CHARCREATE:
 			case LOGIN2:
 				loginSystem();
 				break;
@@ -2050,29 +2050,30 @@ public class DefaultSession implements Session
 	{
 		try
 		{
-			if(loginSession==null)
+			if((loginSession==null)||(loginSession.reset))
+			{
 				loginSession=new CharCreationLibrary.LoginSession();
+				loginSession.reset=false;
+				setStatus(SessionStatus.LOGIN);
+			}
+			else
+			if(loginSession.skipInput)
+				loginSession.skipInput=false;
 			else
 			{
-				
 				loginSession.lastInput=readlineContinue();
 				if(loginSession.lastInput==null)
 					return;
 			}
 			if(!killFlag)
 			{
-				setStatus(SessionStatus.LOGIN);
 				mob=null;
 				CharCreationLibrary.LoginResult loginResult=CMLib.login().loginSystem(this,loginSession);
 				if(loginResult==CharCreationLibrary.LoginResult.INPUT_REQUIRED)
-				{
-					setStatus(SessionStatus.LOGIN);
 					return;
-				}
 				if(loginResult != LoginResult.NO_LOGIN)
 				{
 					setStatus(SessionStatus.LOGIN2);
-					loginSession=null;
 					if((mob!=null)&&(mob.playerStats()!=null))
 						acct=mob.playerStats().getAccount();
 					if((!killFlag)&&((mob!=null)))
@@ -2267,9 +2268,12 @@ public class DefaultSession implements Session
 			}
 			if(mob==null)
 			{
-				setStatus(SessionStatus.LOGOUT);
-				preLogout(mob);
-				setStatus(SessionStatus.ACCOUNTMENU);
+				if((loginSession!=null)&&(loginSession.acct!=null))
+				{
+					loginSession.state=CharCreationLibrary.LoginState.ACCTMENU_START;
+					loginSession.skipInput=true;
+				}
+				setStatus(SessionStatus.LOGIN);
 				return;
 			}
 			while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()))

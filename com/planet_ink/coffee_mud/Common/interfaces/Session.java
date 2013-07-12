@@ -653,6 +653,14 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public SessionStatus getStatus();
 	
 	/**
+	 * Sets the tick/thread status of this session object.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus
+	 * @return the tick status
+	 */
+	public void setStatus(SessionStatus newStatus);
+	
+	/**
 	 * Returns whether this session is waiting for input
 	 * 
 	 * @return true if it is, false otherwise
@@ -1285,7 +1293,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static enum SessionStatus
 	{
 		HANDSHAKE_OPEN, HANDSHAKE_MCCP, HANDSHAKE_MXP, HANDSHAKE_MXPPAUSE, HANDSHAKE_DONE,
-		LOGIN, LOGIN2, ACCOUNTMENU, IDLE, MAINLOOP,
+		LOGIN, LOGIN2, ACCOUNT_MENU, CHARCREATE, IDLE, MAINLOOP,
 		LOGOUT, LOGOUT1, LOGOUT2, LOGOUT3, LOGOUT4, LOGOUT5, LOGOUT6, LOGOUT7, LOGOUT8,
 		LOGOUT9, LOGOUT10, LOGOUT11, LOGOUT12, LOGOUTFINAL
 	}

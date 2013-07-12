@@ -178,7 +178,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 							if(powerRemaining>0)
 							{
     							double pctToTake=CMath.div(((((Electronics)I).powerNeeds()<=0)?1:((Electronics)I).powerNeeds()),totalPowerReq);
-    							powerToTake=(int)Math.round(pctToTake * (double)powerRemaining);
+    							powerToTake=(int)Math.round(pctToTake * powerRemaining);
     							if(powerToTake<1)
     								powerToTake=1;
 							}

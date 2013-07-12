@@ -59,15 +59,22 @@ public interface CharCreationLibrary extends CMLibrary
 	
 	public enum LoginState { START, LOGIN_NAME, ACCT_CHAR_PWORD, PLAYER_PASS_START, CREATE_ACCOUNT_CONFIRM, CREATE_CHAR_CONFIRM, 
 							 PLAYER_PASS_RECEIVED, CONFIRM_EMAIL_PASSWORD, ACCT_CONVERT_CONFIRM,
-							 ACCTMENU_COMMAND, ACCTMENU_PROMPT, ACCTMENU_SHOWMENU, ACCTMENU_SHOWCHARS, ACCTMENU_START}
+							 ACCTMENU_COMMAND, ACCTMENU_PROMPT, ACCTMENU_CONFIRMCOMMAND, ACCTMENU_ADDTOCOMMAND,
+							 ACCTMENU_SHOWMENU, ACCTMENU_SHOWCHARS, ACCTMENU_START,
+							 ACCTCREATE_START, ACCTCREATE_ANSICONFIRM, ACCTCREATE_PASSWORDED,
+							 ACCTCREATE_EMAILSTART, ACCTCREATE_EMAILPROMPT, ACCTCREATE_EMAILENTERED, ACCTCREATE_EMAILCONFIRMED
+							 }
 	
 	public static class LoginSession
 	{
 		public boolean 		 wizi	   =false;
+		public boolean		 reset	   =false;
+		public boolean		 skipInput =false;
 		public LoginState 	 state	   =LoginState.START;
 		public String 		 login	   =null;
 		public PlayerAccount acct 	   =null;
 		public String 		 lastInput =null;
+		public String		 acctCmd   =null;
 		public String 		 password  =null;
 		public int			 attempt   =0;
 		public PlayerLibrary.ThinnerPlayer player = null;
