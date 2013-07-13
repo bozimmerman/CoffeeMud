@@ -1608,7 +1608,7 @@ public class ListCmd extends StdCommand
 		for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			JournalsLibrary.CommandJournal CMJ=e.nextElement();
-			if((CMJ.NAME()+"S").startsWith(s)
+			if(((CMJ.NAME()+"S").startsWith(s)||CMJ.NAME().equals(s)||CMJ.NAME().replace('_', ' ').equals(s))
 			&&((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
 				||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)))
 					return 29;

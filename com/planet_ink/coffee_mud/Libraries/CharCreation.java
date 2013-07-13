@@ -328,7 +328,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected void finishCreateAccount(final LoginSession loginObj, final PlayerAccount acct, final String login, final String pw, final String emailAddy, final Session session)
 	{
 		acct.setAccountName(CMStrings.capitalizeAndLower(login.trim()));
-		acct.setPassword(pw);
 		acct.setEmail(emailAddy);
 		acct.setLastIP(session.getAddress());
 		acct.setLastDateTime(System.currentTimeMillis());
@@ -337,9 +336,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		
 		if(((pw==null)||(pw.length()==0))&&(!CMProps.getVar(CMProps.Str.EMAILREQ).startsWith("DISABLE")))
 		{
-			String password="";
-			for(int i=0;i<6;i++)
-				password+=(char)('a'+CMLib.dice().roll(1,26,-1));
+			String password=CMLib.encoder().generateRandomPassword();
 			acct.setPassword(password);
 			CMLib.database().DBCreateAccount(acct);
 			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
@@ -358,6 +355,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		{
+			acct.setPassword(pw);
 			CMLib.database().DBCreateAccount(acct);
 			StringBuffer doneText=new CMFile(Resources.buildResourcePath("text")+"doneacct.txt",null,true).text();
 			try { doneText = CMLib.webMacroFilter().virtualPageFilter(doneText);}catch(Exception ex){}
@@ -886,7 +884,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult acctcreateEmailStart(final LoginSession loginObj, final Session session)
 	{
-		if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
+		if(CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
 		{
 			finishCreateAccount(loginObj, loginObj.acct, loginObj.login, loginObj.password, "", session);
 			return null;
@@ -1123,13 +1121,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			String password=loginObj.player.password;
 			if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
 			{
-				MOB playerM=CMLib.players().getLoadPlayer(loginObj.player.name);
-				if((playerM!=null)&&(playerM.playerStats()!=null))
+				if(loginObj.acct!=null)
 				{
 					password=CMLib.encoder().generateRandomPassword();
-					playerM.playerStats().setPassword(password);
-					loginObj.player.password=playerM.playerStats().getPasswordStr();
-					CMLib.database().DBUpdatePassword(loginObj.player.name, loginObj.player.password);
+					loginObj.acct.setPassword(password);
+					loginObj.player.password=loginObj.acct.getPasswordStr();
+					CMLib.database().DBUpdateAccount(loginObj.acct);
+				}
+				else
+				{
+					MOB playerM=CMLib.players().getLoadPlayer(loginObj.player.name);
+					if((playerM!=null)&&(playerM.playerStats()!=null))
+					{
+						password=CMLib.encoder().generateRandomPassword();
+						playerM.playerStats().setPassword(password);
+						loginObj.player.password=playerM.playerStats().getPasswordStr();
+						CMLib.database().DBUpdatePassword(loginObj.player.name, loginObj.player.password);
+					}
 				}
 			}
 			if(CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),
@@ -1220,6 +1228,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			buf.append(" ^XD^.^w)^Helete/Retire character\n\r");
 			buf.append(" ^XH^.^w)^Help\n\r");
 			buf.append(" ^XM^.^w)^Henu OFF\n\r");
+			buf.append(" ^XP^.^w)^Hassword change\n\r");
+			if(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE"))
+				buf.append(" ^XE^.^w)^Hmail change\n\r");
 			buf.append(" ^XQ^.^w)^Huit (logout)\n\r");
 			buf.append("\n\r^H ^w(^HEnter your character name to login^w)^H");
 			session.println(buf.toString());
@@ -1267,7 +1278,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.ACCTMENU_COMMAND;
 		}
 		else
+		{
+			session.println("Aborted.");
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+		}
 		return null;
 	}
 	
@@ -1311,11 +1325,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(("NEW ").startsWith(cmd))
 		{
-			if((parms.length<2)||(parms[1].length()==0))
+			if(parms.length<2)
 			{
 				session.promptPrint("\n\rPlease enter a name for your character: ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
+			}
+			if(parms[1].length()==0)
+			{
+				session.println("Aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
 			}
 			if(newCharactersAllowed(parms[1],session,acct,parms[1].equalsIgnoreCase(acct.accountName())))
 			{
@@ -1362,13 +1382,110 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			return null;
 		}
+		if("PASSWORD".startsWith(cmd))
+		{
+			if(parms.length<2)
+			{
+				session.promptPrint("\n\rPlease a new password: ");
+				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+				return LoginResult.INPUT_REQUIRED;
+			}
+			if(parms[1].length()==0)
+			{
+				session.println("Aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			if(parms.length<3)
+			{
+				session.promptPrint("\n\rEnter the password again: ");
+				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+				return LoginResult.INPUT_REQUIRED;
+			}
+			if(parms[2].length()==0)
+			{
+				session.println("Aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			if(!parms[1].equals(parms[2]))
+			{
+				session.println("\n\rPasswords don't match.  Change cancelled.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			acct.setPassword(parms[1]);
+			CMLib.database().DBUpdateAccount(acct);
+			session.println("\n\rPassword changed!");
+		}
+		if("EMAIL".startsWith(cmd) && (!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE")))
+		{
+			if(parms.length<2)
+			{
+				if(CMProps.getVar(CMProps.Str.EMAILREQ).equalsIgnoreCase("PASSWORD"))
+					session.println("\n\r** Changing your email address will cause a new password to be generated and emailed.");
+				session.promptPrint("\n\rPlease a new email address: ");
+				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+				return LoginResult.INPUT_REQUIRED;
+			}
+			if((parms[1].length()==0)||(parms[1].indexOf('@')<0)||(parms[1].length()<6))
+			{
+				session.println("Aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			if(parms.length<3)
+			{
+				session.promptPrint("\n\rEnter the email address again: ");
+				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+				return LoginResult.INPUT_REQUIRED;
+			}
+			if(parms[2].length()==0)
+			{
+				session.println("Aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			if(!parms[1].equals(parms[2]))
+			{
+				session.println("\n\rEmail addresses don't match.  Change aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			acct.setEmail(parms[1]);
+			if(CMProps.getVar(CMProps.Str.EMAILREQ).equalsIgnoreCase("PASSWORD"))
+			{
+				String password=CMLib.encoder().generateRandomPassword();
+				acct.setPassword(password);
+				CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
+						  acct.accountName(),
+						  acct.accountName(),
+						  "Password for "+acct.accountName(),
+						  "Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+				session.println("Your account email address has been updated.  You will receive an email with your new password shortly.");
+				session.stopSession(false,false,false);
+				try{Thread.sleep(1000);}catch(Exception e){}
+				CMLib.database().DBUpdateAccount(acct);
+				return LoginResult.NO_LOGIN;
+			}
+			CMLib.database().DBUpdateAccount(acct);
+			session.println("Email address changed.");
+			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+			return null;
+		}
 		if(("RETIRE").startsWith(cmd)||("DELETE ").startsWith(cmd))
 		{
-			if((parms.length<2)||(parms[1].length()==0))
+			if(parms.length<2)
 			{
 				session.promptPrint("\n\rPlease the name of the character: ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
+			}
+			if(parms[1].length()==0)
+			{
+				session.println("Aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
 			}
 			PlayerLibrary.ThinPlayer delMeChk = null;
 			for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
@@ -1404,11 +1521,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(("EXPORT ").startsWith(cmd)&&(acct.isSet(PlayerAccount.FLAG_CANEXPORT)))
 		{
-			if((parms.length<2)||(parms[1].length()==0))
+			if(parms.length<2)
 			{
 				session.promptPrint("\n\rPlease the name of the character: ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
+			}
+			if(parms[1].length()==0)
+			{
+				session.println("Aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
 			}
 			PlayerLibrary.ThinPlayer delMe = null;
 			for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
@@ -1423,7 +1546,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			if((parms.length<3)||(parms[2].length()==0))
+			if(parms.length<3)
 			{
 				session.promptPrint("\n\rEnter a new password for this character: ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
@@ -1462,11 +1585,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(("IMPORT ").startsWith(cmd))
 		{
-			if((parms.length<2)||(parms[1].length()==0))
+			if(parms.length<2)
 			{
 				session.promptPrint("\n\rPlease the name of the character: ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
+			}
+			if(parms[1].length()==0)
+			{
+				session.println("Aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
 			}
 			if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
 			&&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
@@ -1477,7 +1606,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			String name=CMStrings.capitalizeAndLower(parms[1]);
 			final PlayerLibrary.ThinnerPlayer newCharT = CMLib.database().DBUserSearch(name);
-			if((parms.length<3)||(parms[2].length()==0))
+			if(parms.length<3)
 			{
 				session.promptPrint("\n\rEnter the existing password for your character '"+name+"': ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
