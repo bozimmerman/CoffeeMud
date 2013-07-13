@@ -51,6 +51,16 @@ public class Factions extends StdLibrary implements FactionManager
 		factionSet.clear();
 		hashedFactionRanges.clear();
 	}
+	
+	public Faction getFactionByNumber(int index)
+	{
+		final Enumeration<Faction> fe=factions();
+		Faction F=null;
+		for(int facIndex=0; (facIndex<=index) && fe.hasMoreElements(); facIndex++)
+			F=fe.nextElement();
+		return F;
+	}
+	
 	public void reloadFactions(String factionList)
 	{
 		Vector<String> preLoadFactions=CMParms.parseSemicolons(factionList,true);

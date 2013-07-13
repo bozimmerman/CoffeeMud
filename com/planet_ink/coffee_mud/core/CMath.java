@@ -1260,6 +1260,22 @@ public class CMath
 		try{ return Integer.parseInt(INT); }
 		catch(Exception e){ return 0;}
 	}
+	
+	/**
+	 * Converts the given object into an iteger, if it can
+	 * @param O the object to try and convert
+	 * @return the int, if possible
+	 */
+	public final static int s_intOf(final Object O)
+	{
+		if(O instanceof Integer)
+			return ((Integer)O).intValue();
+		if(O instanceof Long)
+			return ((Long)O).intValue();
+		if(O instanceof Double)
+			return ((Double)O).intValue();
+		return s_int(String.valueOf(O));
+	}
 
 	/**
 	 * Returns the integer value of a string without crashing
