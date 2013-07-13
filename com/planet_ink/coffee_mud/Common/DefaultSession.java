@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginResult;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginSession;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginState;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -2067,11 +2068,18 @@ public class DefaultSession implements Session
 			}
 			if(!killFlag)
 			{
-				mob=null;
 				CharCreationLibrary.LoginResult loginResult=CMLib.login().loginSystem(this,loginSession);
-				if(loginResult==CharCreationLibrary.LoginResult.INPUT_REQUIRED)
+				switch(loginResult)
+				{
+				case INPUT_REQUIRED:
 					return;
-				if(loginResult != LoginResult.NO_LOGIN)
+				case NO_LOGIN:
+				{
+					mob=null;
+					setStatus(SessionStatus.LOGIN);
+					return;
+				}
+				case NORMAL_LOGIN:
 				{
 					setStatus(SessionStatus.LOGIN2);
 					if((mob!=null)&&(mob.playerStats()!=null))
@@ -2083,6 +2091,8 @@ public class DefaultSession implements Session
 						loginMsg.append(getAddress()).append(" "+terminalType)
 						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
 						.append(getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
+						.append(getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
+						.append(getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
 						.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
 						.append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
 						.append(", character login: "+mob.Name());
@@ -2103,9 +2113,6 @@ public class DefaultSession implements Session
 						return;
 					}
 				}
-				else
-				{
-					mob=null;
 				}
 				setStatus(SessionStatus.LOGIN);
 				return;

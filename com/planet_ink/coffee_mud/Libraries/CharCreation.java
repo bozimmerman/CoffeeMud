@@ -48,6 +48,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public Hashtable<String,String> deathRooms=new Hashtable<String,String>();
 	public Hashtable<String,String> bodyRooms=new Hashtable<String,String>();
 
+	protected final String RECONFIRMSTR="\n\r^WTry entering ^HY^W or ^HN^W: ";
+	
 	protected int getTotalStatPoints()
 	{
 		final int basemax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
@@ -485,7 +487,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				Log.sysOut("Session swap for "+session.mob().Name()+".");
 				reloadTerminal(session.mob());
 				session.mob().bringToLife(oldRoom,false);
-				return LoginResult.SESSION_SWAP;
+				return LoginResult.NORMAL_LOGIN;
 			}
 		}
 		return null;
@@ -609,333 +611,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				switch(loginObj.state)
 				{
-				case LOGIN_START:
-				{
-					final LoginResult res=loginStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case LOGIN_NAME:
-				{
-					final LoginResult res=loginName(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case LOGIN_ACCTCHAR_PWORD:
-				{
-					final LoginResult res=loginAcctcharPword(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case LOGIN_ACCTCONV_CONFIRM:
-				{
-					final LoginResult res=loginAcctconvConfirm(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTCREATE_START:
-				{
-					final LoginResult res=acctcreateStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTCREATE_ANSICONFIRM:
-				{
-					final LoginResult res=acctcreateANSIConfirm(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTCREATE_EMAILSTART:
-				{
-					final LoginResult res=acctcreateEmailStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTCREATE_EMAILPROMPT:
-				{
-					final LoginResult res=acctcreateEmailPrompt(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTCREATE_EMAILENTERED:
-				{
-					final LoginResult res=acctcreateEmailEntered(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTCREATE_EMAILCONFIRMED:
-				{
-					final LoginResult res=acctcreateEmailConfirmed(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTCREATE_PASSWORDED:
-				{
-					final LoginResult res=acctcreatePassworded(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case LOGIN_PASS_START:
-				{
-					final LoginResult res=loginPassStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case LOGIN_NEWACCOUNT_CONFIRM:
-				{
-					final LoginResult res=loginNewaccountConfirm(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case LOGIN_NEWCHAR_CONFIRM:
-				{
-					final LoginResult res=loginNewcharConfirm(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case LOGIN_PASS_RECEIVED:
-				{
-					final LoginResult res=loginPassReceived(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case LOGIN_EMAIL_PASSWORD:
-				{
-					final LoginResult res=loginEmailPassword(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTMENU_START:
-				{
-					final LoginResult res=acctmenuStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTMENU_SHOWCHARS:
-				{
-					final LoginResult res=acctmenuShowChars(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
+				case LOGIN_START: 
+				case LOGIN_NAME: 
 				case ACCTMENU_SHOWMENU:
-				{
-					final LoginResult res=acctmenuShowMenu(loginObj, session);
-					if(res!=null) return res;
+					session.setMob(null);
 					break;
-				}
-				case ACCTMENU_PROMPT:
-				{
-					final LoginResult res=acctmenuPrompt(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTMENU_CONFIRMCOMMAND:
-				{
-					final LoginResult res=acctmenuConfirmCommand(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTMENU_ADDTOCOMMAND:
-				{
-					final LoginResult res=acctmenuAddToCommand(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case ACCTMENU_COMMAND:
-				{
-					final LoginResult res=acctmenuCommand(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_START:
-				{
-					final LoginResult res=charcrStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_PASSWORDDONE:
-				{
-					final LoginResult res=charcrPasswordDone(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_EMAILSTART:
-				{
-					final LoginResult res=charcrEmailStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_EMAILPROMPT:
-				{
-					final LoginResult res=charcrEmailPrompt(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_EMAILENTERED:
-				{
-					final LoginResult res=charcrEmailEntered(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_EMAILCONFIRMED:
-				{
-					final LoginResult res=charcrEmailConfirmed(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_EMAILDONE:
-				{
-					final LoginResult res=charcrEmailDone(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_ANSICONFIRMED:
-				{
-					final LoginResult res=charcrANSIConfirmed(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_ANSIDONE:
-				{
-					final LoginResult res=charcrANSIDone(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_THEMESTART:
-				{
-					final LoginResult res=charcrThemeStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_THEMEPICKED:
-				{
-					final LoginResult res=charcrThemePicked(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_THEMEDONE:
-				{
-					final LoginResult res=charcrThemeDone(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_RACESTART:
-				{
-					final LoginResult res=charcrRaceStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_RACEENTERED:
-				{
-					final LoginResult res=charcrRaceReEntered(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_RACECONFIRMED:
-				{
-					final LoginResult res=charcrRaceConfirmed(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_RACEDONE:
-				{
-					final LoginResult res=charcrRaceDone(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_GENDERSTART:
-				{
-					final LoginResult res=charcrGenderStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_GENDERDONE:
-				{
-					final LoginResult res=charcrGenderDone(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_STATSTART:
-				{
-					final LoginResult res=charcrStatStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_STATCONFIRM:
-				{
-					final LoginResult res=charcrStatConfirm(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_STATPICKADD:
-				{
-					final LoginResult res=charcrStatPickAdd(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_STATPICK:
-				{
-					final LoginResult res=charcrStatPick(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_STATDONE:
-				{
-					final LoginResult res=charcrStatDone(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_CLASSSTART:
-				{
-					final LoginResult res=charcrClassStart(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_CLASSPICKED:
-				{
-					final LoginResult res=charcrClassPicked(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_CLASSCONFIRM:
-				{
-					final LoginResult res=charcrClassConfirm(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_CLASSDONE:
-				{
-					final LoginResult res=charcrClassDone(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_FACTIONNEXT:
-				{
-					final LoginResult res=charcrFactionNext(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_FACTIONPICK: 
-				{
-					final LoginResult res=charcrFactionPick(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_FACTIONDONE: 
-				{
-					final LoginResult res=charcrFactionDone(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
-				case CHARCR_FINISH: 
-				{
-					final LoginResult res=charcrFinish(loginObj, session);
-					if(res!=null) return res;
-					break;
-				}
 				default:
-					loginObj.state=LoginState.LOGIN_START;
 					break;
+				}
+				final LoginResult res = loginSubsystem(loginObj, session);
+				if(res != null)
+				{
+					return res;
 				}
 			}
 		}
@@ -949,6 +636,70 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return LoginResult.NO_LOGIN;
 	}
 
+	protected LoginResult loginSubsystem(final LoginSession loginObj, final Session session) throws IOException
+	{
+		switch(loginObj.state)
+		{
+		case LOGIN_START: return loginStart(loginObj, session);
+		case LOGIN_NAME: return loginName(loginObj, session);
+		case LOGIN_ACCTCHAR_PWORD: return loginAcctcharPword(loginObj, session);
+		case LOGIN_ACCTCONV_CONFIRM: return loginAcctconvConfirm(loginObj, session);
+		case ACCTCREATE_START: return acctcreateStart(loginObj, session);
+		case ACCTCREATE_ANSICONFIRM: return acctcreateANSIConfirm(loginObj, session);
+		case ACCTCREATE_EMAILSTART: return acctcreateEmailStart(loginObj, session);
+		case ACCTCREATE_EMAILPROMPT: return acctcreateEmailPrompt(loginObj, session);
+		case ACCTCREATE_EMAILENTERED: return acctcreateEmailEntered(loginObj, session);
+		case ACCTCREATE_EMAILCONFIRMED: return acctcreateEmailConfirmed(loginObj, session);
+		case ACCTCREATE_PASSWORDED: return acctcreatePassworded(loginObj, session);
+		case LOGIN_PASS_START: return loginPassStart(loginObj, session);
+		case LOGIN_NEWACCOUNT_CONFIRM: return loginNewaccountConfirm(loginObj, session);
+		case LOGIN_NEWCHAR_CONFIRM: return loginNewcharConfirm(loginObj, session);
+		case LOGIN_PASS_RECEIVED: return loginPassReceived(loginObj, session);
+		case LOGIN_EMAIL_PASSWORD: return loginEmailPassword(loginObj, session);
+		case ACCTMENU_START: return acctmenuStart(loginObj, session);
+		case ACCTMENU_SHOWCHARS: return acctmenuShowChars(loginObj, session);
+		case ACCTMENU_SHOWMENU: return acctmenuShowMenu(loginObj, session);
+		case ACCTMENU_PROMPT: return acctmenuPrompt(loginObj, session);
+		case ACCTMENU_CONFIRMCOMMAND: return acctmenuConfirmCommand(loginObj, session);
+		case ACCTMENU_ADDTOCOMMAND: return acctmenuAddToCommand(loginObj, session);
+		case ACCTMENU_COMMAND: return acctmenuCommand(loginObj, session);
+		case CHARCR_START: return charcrStart(loginObj, session);
+		case CHARCR_PASSWORDDONE: return charcrPasswordDone(loginObj, session);
+		case CHARCR_EMAILSTART: return charcrEmailStart(loginObj, session);
+		case CHARCR_EMAILPROMPT: return charcrEmailPrompt(loginObj, session);
+		case CHARCR_EMAILENTERED: return charcrEmailEntered(loginObj, session);
+		case CHARCR_EMAILCONFIRMED: return charcrEmailConfirmed(loginObj, session);
+		case CHARCR_EMAILDONE: return charcrEmailDone(loginObj, session);
+		case CHARCR_ANSICONFIRMED: return charcrANSIConfirmed(loginObj, session);
+		case CHARCR_ANSIDONE: return charcrANSIDone(loginObj, session);
+		case CHARCR_THEMESTART: return charcrThemeStart(loginObj, session);
+		case CHARCR_THEMEPICKED: return charcrThemePicked(loginObj, session);
+		case CHARCR_THEMEDONE: return charcrThemeDone(loginObj, session);
+		case CHARCR_RACESTART: return charcrRaceStart(loginObj, session);
+		case CHARCR_RACEENTERED: return charcrRaceReEntered(loginObj, session);
+		case CHARCR_RACECONFIRMED: return charcrRaceConfirmed(loginObj, session);
+		case CHARCR_RACEDONE: return charcrRaceDone(loginObj, session);
+		case CHARCR_GENDERSTART: return charcrGenderStart(loginObj, session);
+		case CHARCR_GENDERDONE: return charcrGenderDone(loginObj, session);
+		case CHARCR_STATSTART: return charcrStatStart(loginObj, session);
+		case CHARCR_STATCONFIRM: return charcrStatConfirm(loginObj, session);
+		case CHARCR_STATPICKADD: return charcrStatPickAdd(loginObj, session);
+		case CHARCR_STATPICK: return charcrStatPick(loginObj, session);
+		case CHARCR_STATDONE: return charcrStatDone(loginObj, session);
+		case CHARCR_CLASSSTART: return charcrClassStart(loginObj, session);
+		case CHARCR_CLASSPICKED: return charcrClassPicked(loginObj, session);
+		case CHARCR_CLASSCONFIRM: return charcrClassConfirm(loginObj, session);
+		case CHARCR_CLASSDONE: return charcrClassDone(loginObj, session);
+		case CHARCR_FACTIONNEXT: return charcrFactionNext(loginObj, session);
+		case CHARCR_FACTIONPICK: return charcrFactionPick(loginObj, session);
+		case CHARCR_FACTIONDONE: return charcrFactionDone(loginObj, session);
+		case CHARCR_FINISH: return charcrFinish(loginObj, session);
+		default:
+			loginObj.state=LoginState.LOGIN_START;
+			return null;
+		}
+	}
+	
 	protected LoginResult loginStart(final LoginSession loginObj, final Session session)
 	{
 		loginObj.wizi=false;
@@ -1071,11 +822,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult loginAcctconvConfirm(final LoginSession loginObj, final Session session)
 	{
-		if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+		final String input=loginObj.lastInput.toUpperCase().trim();
+		if(input.startsWith("Y"))
 		{
 			loginObj.acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
 			loginObj.state=LoginState.ACCTCREATE_START;
 			return null;
+		}
+		else
+		if((input.length()>0)&&(!input.startsWith("N")))
+		{
+			session.promptPrint(RECONFIRMSTR);
+			return LoginResult.INPUT_REQUIRED;
 		}
 		loginObj.state=LoginState.LOGIN_START;
 		loginObj.reset=true;
@@ -1093,11 +851,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult acctcreateANSIConfirm(final LoginSession loginObj, final Session session)
 	{
 		PlayerAccount acct=loginObj.acct;
-		if(loginObj.lastInput.toUpperCase().startsWith("N"))
+		final String input=loginObj.lastInput.toUpperCase().trim();
+		if(input.startsWith("N"))
 		{
 			acct.setFlag(PlayerAccount.FLAG_ANSI, false);
 			session.setServerTelnetMode(Session.TELNET_ANSI,false);
 			session.setClientTelnetMode(Session.TELNET_ANSI,false);
+		}
+		else
+		if((input.length()>0)&&(!input.startsWith("Y")))
+		{
+			session.promptPrint(RECONFIRMSTR);
+			return LoginResult.INPUT_REQUIRED;
 		}
 		else
 		{
@@ -1153,8 +918,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.ACCTCREATE_EMAILPROMPT;
 			return null;
 		}
-		loginObj.acct.setEmail(newEmail);
-		loginObj.lastInput=newEmail;
+		loginObj.savedInput=newEmail;
 		if(emailPassword) session.println("This email address will be used to send you a password.");
 		if(emailReq||emailPassword)
 		{
@@ -1169,7 +933,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult acctcreateEmailConfirmed(final LoginSession loginObj, final Session session)
 	{
 		boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
-		String newEmail=loginObj.acct.getEmail();
+		String newEmail=loginObj.savedInput;
 		boolean emailConfirmed=false;
 		if((newEmail.length()>0)&&(newEmail.equalsIgnoreCase(loginObj.lastInput)))
 			emailConfirmed=CMLib.smtp().isValidEmailAddress(newEmail);
@@ -1242,10 +1006,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult loginNewcharConfirm(final LoginSession loginObj, final Session session)
 	{
 		LoginResult result=LoginResult.NO_LOGIN;
-		if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+		final String input=loginObj.lastInput.trim().toUpperCase();
+		if(input.startsWith("Y"))
 		{
 			loginObj.state=LoginState.CHARCR_START;
 			return null;
+		}
+		else
+		if((input.length()>0)&&(!input.startsWith("N")))
+		{
+			session.promptPrint(RECONFIRMSTR);
+			return LoginResult.INPUT_REQUIRED;
 		}
 		if(result==LoginResult.NO_LOGIN)
 		{
@@ -1258,11 +1029,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult loginNewaccountConfirm(final LoginSession loginObj, final Session session)
 	{
 		LoginResult result=LoginResult.NO_LOGIN;
-		if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+		final String input=loginObj.lastInput.trim().toUpperCase();
+		if(input.startsWith("Y"))
 		{
 			loginObj.acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
 			loginObj.state=LoginState.ACCTCREATE_START;
 			return null;
+		}
+		else
+		if((input.length()>0)&&(!input.startsWith("N")))
+		{
+			session.promptPrint(RECONFIRMSTR);
+			return LoginResult.INPUT_REQUIRED;
 		}
 		if(result==LoginResult.NO_LOGIN)
 		{
@@ -1339,7 +1117,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult loginEmailPassword(final LoginSession loginObj, final Session session) throws IOException
 	{
-		if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+		final String input=loginObj.lastInput.toUpperCase().trim();
+		if(input.startsWith("Y"))
 		{
 			String password=loginObj.player.password;
 			if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
@@ -1366,6 +1145,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.reset=true;
 			loginObj.state=LoginState.LOGIN_START;
 			return LoginResult.NO_LOGIN;
+		}
+		else
+		if((input.length()>0)&&(!input.startsWith("N")))
+		{
+			session.promptPrint(RECONFIRMSTR);
+			return LoginResult.INPUT_REQUIRED;
 		}
 		loginObj.state=LoginState.LOGIN_START;
 		return null;
@@ -1457,10 +1242,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult acctmenuConfirmCommand(final LoginSession loginObj, final Session session)
 	{
-		if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+		final String input=loginObj.lastInput.trim().toUpperCase();
+		if(input.startsWith("Y"))
 		{
 			loginObj.lastInput=String.valueOf(loginObj.savedInput)+" <CONFIRMED>";
 			loginObj.state=LoginState.ACCTMENU_COMMAND;
+		}
+		else
+		if((input.length()>0)&&(!input.startsWith("N")))
+		{
+			session.promptPrint(RECONFIRMSTR);
+			return LoginResult.INPUT_REQUIRED;
 		}
 		else
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
@@ -1888,8 +1680,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.CHARCR_EMAILPROMPT;
 			return null;
 		}
-		loginObj.acct.setEmail(newEmail);
-		loginObj.lastInput=newEmail;
+		
+		loginObj.savedInput=newEmail;
 		if(emailPassword) session.println("This email address will be used to send you a password.");
 		if(emailReq||emailPassword)
 		{
@@ -1905,7 +1697,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		final MOB mob=loginObj.mob;
 		boolean emailReq=(!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("OPTION"));
-		String newEmail=loginObj.acct.getEmail();
+		String newEmail=loginObj.savedInput;
 		boolean emailConfirmed=false;
 		if((newEmail.length()>0)&&(newEmail.equalsIgnoreCase(loginObj.lastInput)))
 			emailConfirmed=CMLib.smtp().isValidEmailAddress(newEmail);
@@ -1925,6 +1717,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrEmailDone(final LoginSession loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
 		final PlayerAccount acct=loginObj.acct;
 		if((mob.playerStats().getEmail()!=null)&&CMSecurity.isBanned(mob.playerStats().getEmail()))
 		{
@@ -1960,21 +1753,30 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrANSIConfirmed(final LoginSession loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
-		loginObj.state=LoginState.CHARCR_ANSIDONE;
-		if(loginObj.lastInput.toUpperCase().startsWith("N"))
+		session.setMob(loginObj.mob);
+		final String input=loginObj.lastInput.trim().toUpperCase();
+		if(input.startsWith("N"))
 		{
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
 			session.setServerTelnetMode(Session.TELNET_ANSI,false);
 			session.setClientTelnetMode(Session.TELNET_ANSI,false);
 		}
 		else
+		if((input.length()>0)&&(!input.startsWith("Y")))
+		{
+			session.promptPrint(RECONFIRMSTR);
+			return LoginResult.INPUT_REQUIRED;
+		}
+		else
 			mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
+		loginObj.state=LoginState.CHARCR_ANSIDONE;
 		return null;
 	}
 	
 	protected LoginResult charcrANSIDone(final LoginSession loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
 		if((session.getClientTelnetMode(Session.TELNET_MSP))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSP)))
 			mob.setBitmap(mob.getBitmap()|MOB.ATT_SOUND);
@@ -2002,6 +1804,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult charcrThemeStart(final LoginSession loginObj, final Session session)
 	{
+		session.setMob(loginObj.mob);
 		int themeCode=CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		loginObj.theme=-1;
 		String selections="";
@@ -2020,6 +1823,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult charcrThemePicked(final LoginSession loginObj, final Session session)
 	{
+		session.setMob(loginObj.mob);
 		int themeCode=CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		String themeStr=loginObj.lastInput;
 		if(themeStr.toUpperCase().startsWith("F") && CMath.bset(themeCode,Area.THEME_FANTASY))
@@ -2041,6 +1845,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrThemeDone(final LoginSession loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
 		executeScript(mob,getLoginScripts().get("THEME"));
 		loginObj.state=LoginState.CHARCR_RACESTART;
 		return null;
@@ -2049,6 +1854,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrRaceStart(final LoginSession loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
+		session.setMob(loginObj.mob);
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			Race newRace=CMClass.getRace("PlayerRace");
@@ -2092,10 +1898,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult charcrRaceReEntered(final LoginSession loginObj, final Session session)
 	{
-		String raceStr=loginObj.lastInput;
+		String raceStr=loginObj.lastInput.trim();
 		final MOB mob=loginObj.mob;
 
-		if(raceStr.trim().equalsIgnoreCase("?"))
+		if(raceStr.trim().equalsIgnoreCase("?")||(raceStr.length()==0))
 			session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text().toString());
 		else
 		{
@@ -2146,8 +1952,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected LoginResult charcrRaceConfirmed(final LoginSession loginObj, final Session session)
 	{
-		if(loginObj.lastInput.toUpperCase().startsWith("N"))
+		final String input=loginObj.lastInput.trim().toUpperCase();
+		if(input.startsWith("N"))
 			loginObj.state=LoginState.CHARCR_RACESTART;
+		else
+		if((input.length()>0)&&(!input.startsWith("Y")))
+		{
+			session.promptPrint(RECONFIRMSTR);
+			return LoginResult.INPUT_REQUIRED;
+		}
 		else
 			loginObj.state=LoginState.CHARCR_RACEDONE;
 		return null;
@@ -2216,13 +2029,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATSTART;
 		}
+		loginObj.baseStats = (CharStats)mob.baseCharStats().copyOf();
 		return null;
 	}
 	
 	protected LoginResult charcrStatStart(final LoginSession loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
-		CharStats unmodifiedCT = (CharStats)mob.charStats().copyOf();
+		if(loginObj.baseStats==null)
+			loginObj.baseStats = (CharStats)mob.baseCharStats().copyOf();
 		List<String> validStats = new ArrayList<String>(CharStats.CODES.BASE().length);
 		for(int i : CharStats.CODES.BASE())
 			validStats.add(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i)));
@@ -2230,7 +2045,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final boolean randomRoll = CMProps.getIntVar(CMProps.Int.STARTSTAT) == 0;
 		if(randomRoll)
 		{
-			unmodifiedCT.copyInto(mob.baseCharStats());
+			loginObj.baseStats.copyInto(mob.baseCharStats());
 			reRollStats(mob,mob.baseCharStats(),loginObj.statPoints);
 		}
 
@@ -2287,8 +2102,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	protected LoginResult charcrStatConfirm(final LoginSession loginObj, final Session session)
 	{
-		if(loginObj.lastInput.toUpperCase().startsWith("Y"))
+		final String input=loginObj.lastInput.toUpperCase().trim();
+		if(input.startsWith("Y"))
 			loginObj.state=LoginState.CHARCR_STATSTART;
+		else
+		if((input.length()>0)&&(!input.startsWith("N")))
+		{
+			session.promptPrint(RECONFIRMSTR);
+			return LoginResult.INPUT_REQUIRED;
+		}
 		else
 			loginObj.state=LoginState.CHARCR_STATDONE;
 		return null;
@@ -2304,8 +2126,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrStatPick(final LoginSession loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
+		if(loginObj.baseStats==null)
+			loginObj.baseStats = (CharStats)mob.baseCharStats().copyOf();
 		CharStats CT=mob.baseCharStats();
-		CharStats unmodifiedCT=(CharStats)mob.charStats().copyOf();
 		String prompt=loginObj.lastInput.trim();
 		List<CharClass> qualifyingClassListV=classQualifies(mob,loginObj.theme);
 		if((loginObj.statPoints == 0)&&(prompt.trim().length()==0))
@@ -2322,7 +2145,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(prompt.toLowerCase().startsWith("r"))
 		{
-			unmodifiedCT.copyInto(mob.baseCharStats());
+			loginObj.baseStats.copyInto(mob.baseCharStats());
 			reRollStats(mob,mob.baseCharStats(),getTotalStatPoints());
 			loginObj.statPoints=0;
 			loginObj.state=LoginState.CHARCR_STATSTART;
@@ -2415,14 +2238,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				String friendlyName = CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode));
 				if(remove)
 				{
-					if(CT.getStat(statCode) <= unmodifiedCT.getStat(statCode))
+					if(CT.getStat(statCode) <= loginObj.baseStats.getStat(statCode))
 					{
 						session.println("^rYou can not lower '"+friendlyName+" any further.^N");
 						loginObj.state=LoginState.CHARCR_STATSTART;
 						return null;
 					}
 					else
-					if(CT.getStat(statCode)-statPointsChange < unmodifiedCT.getStat(statCode))
+					if(CT.getStat(statCode)-statPointsChange < loginObj.baseStats.getStat(statCode))
 					{
 						session.println("^rYou can not lower '"+friendlyName+" any further.^N");
 						loginObj.state=LoginState.CHARCR_STATSTART;
@@ -2789,6 +2612,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			CMLib.commands().postChannel(channels.get(i),mob.clans(),mob.Name()+" has just been created.",true);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
+		mob.setSession(session);
+		session.setMob(mob);
 		return LoginResult.NORMAL_LOGIN;
 	}
 	
@@ -3220,14 +3045,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if(res==LoginResult.INPUT_REQUIRED)
 				loginObj.lastInput=session.blockingIn(90000);
-			switch(loginObj.state)
-			{
-			case CHARCR_STATSTART: res=charcrStatStart(loginObj, session); break;
-			case CHARCR_STATCONFIRM: res=charcrStatConfirm(loginObj, session); break;
-			case CHARCR_STATPICKADD: res=charcrStatPickAdd(loginObj, session); break;
-			case CHARCR_STATPICK: res=charcrStatPick(loginObj, session); break;
-			default: return;
-			}
+			if(loginObj.state==LoginState.CHARCR_STATDONE)
+				return;
+			if(loginObj.state.toString().startsWith("CHARCR_STAT"))
+				res=loginSubsystem(loginObj, session);
+			else
+				return;
 		}
 	}
 
@@ -3244,13 +3067,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if(res==LoginResult.INPUT_REQUIRED)
 				loginObj.lastInput=session.blockingIn(90000);
-			switch(loginObj.state)
-			{
-			case CHARCR_CLASSSTART: res=charcrClassStart(loginObj, session); break;
-			case CHARCR_CLASSPICKED: res=charcrClassPicked(loginObj, session); break;
-			case CHARCR_CLASSCONFIRM: res=charcrClassConfirm(loginObj, session); break;
-			default: return mob.baseCharStats().getCurrentClass();
-			}
+			if(loginObj.state==LoginState.CHARCR_CLASSDONE)
+				return mob.baseCharStats().getCurrentClass();
+			if(loginObj.state.toString().startsWith("CHARCR_CLASS"))
+				res=loginSubsystem(loginObj, session);
+			else
+				return mob.baseCharStats().getCurrentClass();
 		}
 		return mob.baseCharStats().getCurrentClass();
 	}
@@ -3258,7 +3080,38 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws IOException 
 	{
-		//TODO:
-		return null;
+		SessionStatus status=session.getStatus();
+		final LoginSession loginObj=new LoginSession();
+		loginObj.acct=acct;
+		loginObj.login=login;
+		loginObj.mob=null;
+		MOB prevMOB=session.mob();
+		LoginResult res=charcrStart(loginObj, session);
+		try
+		{
+			while(!session.isStopped())
+			{
+				if(res==LoginResult.INPUT_REQUIRED)
+					loginObj.lastInput=session.blockingIn(90000);
+				if((res==LoginResult.NORMAL_LOGIN)||(res==LoginResult.NO_LOGIN))
+					return res;
+				if(loginObj.state.toString().startsWith("CHARCR_"))
+					res=loginSubsystem(loginObj, session);
+				else
+					return res;
+			}
+			return LoginResult.NO_LOGIN;
+		}
+		finally
+		{
+			if(prevMOB!=null)
+			{
+				if((session.mob()!=null) && (session.mob()!=prevMOB))
+					session.mob().setSession(null);
+				session.setMob(prevMOB);
+				prevMOB.setSession(session);
+			}
+			session.setStatus(status);
+		}
 	}
 }

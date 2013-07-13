@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
@@ -154,10 +156,10 @@ public class Sessions extends StdLibrary implements SessionsList
 						||((S.getStatus())==Session.SessionStatus.LOGIN)
 						||((S.getStatus())==Session.SessionStatus.ACCOUNT_MENU)
 						||((S.getStatus())==Session.SessionStatus.CHARCREATE))
-							Log.sysOut(serviceClient.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
+							Log.sysOut(serviceClient.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+" out-game.");
 						else
 						{
-							Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+							Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
 							Log.errOut(serviceClient.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
 							if(S instanceof Thread)
 								CMLib.threads().debugDumpStack("Sessions",(Thread)S);
@@ -178,11 +180,11 @@ public class Sessions extends StdLibrary implements SessionsList
 							if((S.isLockedUpWriting())
 							&&(CMLib.flags().isInTheGame(S.mob(),true)))
 							{
-								Log.errOut(serviceClient.getName(),"LOGGED OFF Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time+": "+S.isLockedUpWriting());
+								Log.errOut(serviceClient.getName(),"LOGGED OFF Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+": "+S.isLockedUpWriting());
 								stopSessionAtAllCosts(S);
 							}
 							else
-								Log.errOut(serviceClient.getName(),"Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+								Log.errOut(serviceClient.getName(),"Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
 							if(((S.getStatus())!=Session.SessionStatus.LOGIN)
 							||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
 								Log.errOut(serviceClient.getName(),"STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
@@ -196,10 +198,10 @@ public class Sessions extends StdLibrary implements SessionsList
 				{
 					String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 					if((S.getStatus())==Session.SessionStatus.LOGIN)
-						Log.sysOut(serviceClient.getName(),"Kicking out login session after "+time+" millis.");
+						Log.sysOut(serviceClient.getName(),"Kicking out login session after "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+".");
 					else
 					{
-						Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+						Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
 						if(S instanceof Thread)
 							CMLib.threads().debugDumpStack("Sessions",(Thread)S);
 					}

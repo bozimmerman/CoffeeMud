@@ -75,20 +75,21 @@ public interface CharCreationLibrary extends CMLibrary
 	
 	public static class LoginSession
 	{
-		public boolean 		 wizi	   =false;
-		public boolean		 reset	   =false;
-		public boolean		 skipInput =false;
-		public LoginState 	 state	   =LoginState.LOGIN_START;
-		public String 		 login	   =null;
-		public PlayerAccount acct 	   =null;
-		public String 		 lastInput =null;
-		public String		 savedInput=null;
-		public String 		 password  =null;
-		public int			 attempt   =0;
-		public MOB			 mob	   =null;
-		public int			 theme	   =-1;
-		public int			 statPoints=0;
-		public int			 index	   =0;
+		public boolean 		 wizi	   = false;
+		public boolean		 reset	   = false;
+		public boolean		 skipInput = false;
+		public LoginState 	 state	   = LoginState.LOGIN_START;
+		public String 		 login	   = null;
+		public PlayerAccount acct 	   = null;
+		public String 		 lastInput = null;
+		public String		 savedInput= null;
+		public String 		 password  = null;
+		public int			 attempt   = 0;
+		public MOB			 mob	   = null;
+		public int			 theme	   = -1;
+		public int			 statPoints= 0;
+		public CharStats	 baseStats = null;
+		public int			 index	   = 0;
 		public PlayerLibrary.ThinnerPlayer player = null;
 	}
 	
@@ -98,6 +99,6 @@ public interface CharCreationLibrary extends CMLibrary
 	
 	public enum LoginResult
 	{
-		NO_LOGIN, NORMAL_LOGIN, SESSION_SWAP, INPUT_REQUIRED
+		NO_LOGIN, NORMAL_LOGIN, INPUT_REQUIRED
 	}
 }

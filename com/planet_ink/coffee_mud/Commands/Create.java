@@ -241,14 +241,11 @@ public class Create extends StdCommand
 		}
 		mobID=CMStrings.capitalizeAndLower(mobID);
 		CMLib.login().createCharacter(null,mobID,mob.session());
-		mob.session().mob().setSession(null);
-		mob.session().setMob(mob);
 		M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{
 			if(CMLib.flags().isInTheGame(M,true))
 				M.removeFromGame(false,true);
-			CMLib.genEd().modifyPlayer(mob,M);
 			Log.sysOut("Mobs",mob.Name()+" created player "+M.Name()+".");
 		}
 	}
