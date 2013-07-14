@@ -102,6 +102,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public List<CharClass> classQualifies(MOB mob, int theme)
 	{
+		mob.recoverCharStats();
 		Vector<CharClass> them=new Vector<CharClass>();
 		HashSet<String> doneClasses=new HashSet<String>();
 		for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
@@ -2139,7 +2140,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		
 		if((CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))&&(mob.playerStats()!=null)&&(acct==null))
 			mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.Int.TRIALDAYS))));
-		
 		return charcrStatInit(loginObj, session, 0);
 	}
 
@@ -2598,7 +2598,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		executeScript(mob,getLoginScripts().get("CLASS"));
 		
-		loginObj.index=0;
+		loginObj.index=-1;
 		loginObj.state=LoginState.CHARCR_FACTIONNEXT;
 		return null;
 	}
@@ -2606,6 +2606,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrFactionNext(final LoginSession loginObj, final Session session)
 	{
 		final MOB mob=loginObj.mob;
+		loginObj.index++;
 		if(loginObj.index>=CMLib.factions().numFactions())
 		{
 			loginObj.state=LoginState.CHARCR_FACTIONDONE;
@@ -2618,14 +2619,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.state=LoginState.CHARCR_FACTIONDONE;
 			return null;
 		}
-		loginObj.index++;
 		List<Integer> mine=F.findChoices(mob);
 		int defaultValue=F.findAutoDefault(mob);
 		if(defaultValue!=Integer.MAX_VALUE)
-		{
 			mob.addFaction(F.factionID(),defaultValue);
-			return null;
-		}
 		if(mine.size()==1)
 		{
 			mob.addFaction(F.factionID(),mine.get(0).intValue());
@@ -2681,7 +2678,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return null;
 		}
 		for(String menuChoice : namedChoices)
-			menu.append(menuChoice+", ");
+			menu.append(menuChoice.toLowerCase()+", ");
 		loginObj.lastInput="";
 		session.promptPrint(menu.toString().substring(0,menu.length()-2)+".\n\r: ");
 		return LoginResult.INPUT_REQUIRED;

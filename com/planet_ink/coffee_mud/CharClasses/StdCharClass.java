@@ -166,7 +166,43 @@ public class StdCharClass implements CharClass
 				return true;
 			return false;
 		}
-		else
+		for(Pair<String,Integer> minReq : getMinimumStatRequirements())
+		{
+			int statCode=CharStats.CODES.findWhole(minReq.first, true);
+			if(statCode >= 0)
+			{
+				if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
+				{
+					if(!quiet)
+						mob.tell("You need at least a "+minReq.second.toString()+" "+CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode))+" to become a "+name()+".");
+					return false;
+				}
+			}
+		}
+		final Race R=mob.baseCharStats().getMyRace();
+		final String[] raceList=getRequiredRaceList();
+		boolean foundOne=raceList.length==0;
+		for(String raceName : raceList)
+		{
+			if(raceName.equalsIgnoreCase("any")
+			|| raceName.equalsIgnoreCase("all")
+			|| R.ID().equalsIgnoreCase(raceName)
+			|| R.name().equalsIgnoreCase(raceName)
+			|| R.racialCategory().equalsIgnoreCase(raceName))
+			{
+				foundOne=true;
+				break;
+			}
+		}
+		if(!foundOne)
+		{
+			if(!quiet)
+			{
+				final StringBuilder str=new StringBuilder("You need to be a ").append(getRaceList(raceList)).append("to be a "+name()+".");
+				mob.tell(str.toString());
+			}
+			return false;
+		}
 		if((!mob.isMonster())&&(mob.basePhyStats().level()>0))
 		{
 			CharClass curClass = mob.baseCharStats().getCurrentClass();
@@ -247,42 +283,6 @@ public class StdCharClass implements CharClass
 					if(!quiet)
 						mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
 				}
-			}
-			return false;
-		}
-		for(Pair<String,Integer> minReq : getMinimumStatRequirements())
-		{
-			int statCode=CharStats.CODES.findWhole(minReq.first, true);
-			if(statCode >= 0)
-			{
-				if(mob.baseCharStats().getStat(statCode) < minReq.second.intValue())
-				{
-					if(!quiet)
-						mob.tell("You need at least a "+minReq.second.toString()+" "+CMStrings.capitalizeAndLower(CharStats.CODES.NAME(statCode))+" to become a "+name()+".");
-					return false;
-				}
-			}
-		}
-		final Race R=mob.baseCharStats().getMyRace();
-		final String[] raceList=getRequiredRaceList();
-		boolean foundOne=raceList.length==0;
-		for(String raceName : raceList)
-		{
-			if(raceName.equalsIgnoreCase("any") 
-			|| R.ID().equalsIgnoreCase(raceName)
-			|| R.name().equalsIgnoreCase(raceName)
-			|| R.racialCategory().equalsIgnoreCase(raceName))
-			{
-				foundOne=true;
-				break;
-			}
-		}
-		if(!foundOne)
-		{
-			if(!quiet)
-			{
-				final StringBuilder str=new StringBuilder("You need to be a ").append(getRaceList(raceList)).append("to be a "+name()+".");
-				mob.tell(str.toString());
 			}
 			return false;
 		}

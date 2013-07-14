@@ -330,7 +330,9 @@ public class Mage extends StdCharClass
 		new Pair<String,Integer>("Intelligence",Integer.valueOf(9))
 	};
 
-	public Pair<String,Integer>[] getMinimumStatRequirements() { return minimumStatRequirements; }
+	public Pair<String,Integer>[] getMinimumStatRequirements() { 
+		return minimumStatRequirements; 
+	}
 	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
