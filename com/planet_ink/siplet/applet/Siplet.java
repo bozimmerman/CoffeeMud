@@ -187,7 +187,8 @@ public class Siplet
 					if(bytes!=null)
 					{
 						out.write(bytes);
-						out.writeBytes("\n\r");
+						if((bytes.length==0)||((bytes[bytes.length-1]!=13)&&(bytes[bytes.length-1]!=10)))
+							out.writeBytes("\n");
 						out.flush();
 					}
 				}
