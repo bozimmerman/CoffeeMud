@@ -22,5 +22,3 @@
                         `"""----"""`
 
 Welcome to @MudInfo?NAME@
-Enter a name to get started.
-
