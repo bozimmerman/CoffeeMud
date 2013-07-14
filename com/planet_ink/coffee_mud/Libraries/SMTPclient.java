@@ -172,13 +172,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		try
 		{
 			SMTPLibrary.SMTPClient SC=null;
-			String toEmail;
-			if(CMLib.players().playerExists(toName))
-				toEmail=CMLib.players().getLoadPlayer(toName).playerStats().getEmail();
-			else
-			if(CMLib.players().accountExists(toName))
-				toEmail=CMLib.players().getLoadAccount(toName).getEmail();
-			else
+			String toEmail=makeValidEmailAddress(toName);
+			if(!isValidEmailAddress(toEmail))
 			{
 				Log.errOut("SMTPClient","User/Account not found: "+toName);
 				return false;
@@ -232,6 +227,14 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		return false;
 	}
 	
+	public void emailOrJournal(String SMTPServerInfo, String from, String replyTo, String to, String subject, String message)
+	{
+		String fromEmail=makeValidEmailAddress(from);
+		String toEmail=makeValidEmailAddress(to);
+		String replyToEmail=makeValidEmailAddress(replyTo);
+		if(!this.emailIfPossible(SMTPServerInfo, fromEmail, replyToEmail, toEmail, subject, message))
+			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), from, to, subject, message);
+	}
 	
 	/** private constants for chars that are valid in email addy names */
 	private final static String EMAIL_VALID_LOCAL_CHARS="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&'*+-/=?^_`{|}~.";
@@ -281,6 +284,19 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if(network.startsWith(".")) return x+1;
 		if(network.length()>255) return addy.length();
 		return -1;
+	}
+	
+	public String makeValidEmailAddress(String name)
+	{
+		if(!isValidEmailAddress(name))
+		{
+			if(CMLib.players().playerExists(name))
+				name=CMLib.players().getLoadPlayer(name).playerStats().getEmail();
+			else
+			if(CMLib.players().accountExists(name))
+				name=CMLib.players().getLoadAccount(name).getEmail();
+		}
+		return name;
 	}
 
 	public void sendLine(boolean debug, String sstr)

@@ -339,11 +339,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			String password=CMLib.encoder().generateRandomPassword();
 			acct.setPassword(password);
 			CMLib.database().DBCreateAccount(acct);
-			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
-					  acct.accountName(),
-					  acct.accountName(),
-					  "Password for "+acct.accountName(),
-					  "Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), acct.accountName(), "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), acct.accountName(),
+				"Password for "+acct.accountName(),
+				"Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
 			session.println("Your account has been created.  You will receive an email with your password shortly.");
 			try{Thread.sleep(2000);}catch(Exception e){}
 			session.stopSession(false,false,false);
@@ -1003,7 +1001,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult loginNewcharConfirm(final LoginSession loginObj, final Session session)
 	{
-		LoginResult result=LoginResult.NO_LOGIN;
 		final String input=loginObj.lastInput.trim().toUpperCase();
 		if(input.startsWith("Y"))
 		{
@@ -1016,12 +1013,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.promptPrint(RECONFIRMSTR);
 			return LoginResult.INPUT_REQUIRED;
 		}
-		if(result==LoginResult.NO_LOGIN)
-		{
-			loginObj.state=LoginState.LOGIN_START;
-			return null;
-		}
-		return result;
+		loginObj.state=LoginState.LOGIN_START;
+		return null;
 	}
 
 	protected LoginResult loginNewaccountConfirm(final LoginSession loginObj, final Session session)
@@ -1140,15 +1133,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					}
 				}
 			}
-			if(CMLib.smtp().emailIfPossible(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),
-				"passwords@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
-				"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(),
-				loginObj.player.email,
+			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), loginObj.player.name, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), loginObj.player.name,
 				"Password for "+loginObj.player.name,
-				"Your password for "+loginObj.player.name+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'."))
-				session.println("Email sent.\n\r");
-			else
-				session.println("Error sending email.\n\r");
+				"Your password for "+loginObj.player.name+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'.");
 			session.stopSession(false,false,false);
 			loginObj.reset=true;
 			loginObj.state=LoginState.LOGIN_START;
@@ -1386,7 +1373,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if(parms.length<2)
 			{
-				session.promptPrint("\n\rPlease a new password: ");
+				session.promptPrint("\n\rPlease enter your existing password: ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -1398,7 +1385,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			if(parms.length<3)
 			{
-				session.promptPrint("\n\rEnter the password again: ");
+				session.promptPrint("\n\rPlease a new password: ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -1408,15 +1395,35 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			if(!parms[1].equals(parms[2]))
+			if(parms.length<4)
+			{
+				session.promptPrint("\n\rEnter the password again: ");
+				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
+				return LoginResult.INPUT_REQUIRED;
+			}
+			if(parms[3].length()==0)
+			{
+				session.println("Aborted.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			if(!parms[2].equals(parms[3]))
 			{
 				session.println("\n\rPasswords don't match.  Change cancelled.");
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
 			}
-			acct.setPassword(parms[1]);
+			if(!acct.matchesPassword(parms[1]))
+			{
+				session.println("\n\rThat's not your old password.  Change cancelled.");
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			acct.setPassword(parms[2]);
 			CMLib.database().DBUpdateAccount(acct);
 			session.println("\n\rPassword changed!");
+			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+			return null;
 		}
 		if("EMAIL".startsWith(cmd) && (!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("DISABLE")))
 		{
@@ -1424,7 +1431,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				if(CMProps.getVar(CMProps.Str.EMAILREQ).equalsIgnoreCase("PASSWORD"))
 					session.println("\n\r** Changing your email address will cause a new password to be generated and emailed.");
-				session.promptPrint("\n\rPlease a new email address: ");
+				session.promptPrint("\n\rPlease enter a new email address: ");
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -1457,11 +1464,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				String password=CMLib.encoder().generateRandomPassword();
 				acct.setPassword(password);
-				CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
-						  acct.accountName(),
-						  acct.accountName(),
-						  "Password for "+acct.accountName(),
-						  "Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+				CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), acct.accountName(), "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), acct.accountName(),
+					"Password for "+acct.accountName(),
+					"Your password for "+acct.accountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
 				session.println("Your account email address has been updated.  You will receive an email with your new password shortly.");
 				session.stopSession(false,false,false);
 				try{Thread.sleep(1000);}catch(Exception e){}
@@ -1875,6 +1880,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			session.promptPrint("\n\rDo you want ANSI colors (Y/n)?");
 			loginObj.state=LoginState.CHARCR_ANSICONFIRMED;
+			return LoginResult.INPUT_REQUIRED;
 		}
 		return null;
 	}
@@ -1947,7 +1953,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		session.println(null,null,null,introText.toString());
 		session.promptPrint("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r: ");
 		loginObj.state=LoginState.CHARCR_THEMEPICKED;
-		return null;
+		return LoginResult.INPUT_REQUIRED;
 	}
 	
 	protected LoginResult charcrThemePicked(final LoginSession loginObj, final Session session)
@@ -2134,15 +2140,20 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))&&(mob.playerStats()!=null)&&(acct==null))
 			mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*(CMProps.getIntVar(CMProps.Int.TRIALDAYS))));
 		
-		return charcrStatInit(loginObj, session);
+		return charcrStatInit(loginObj, session, 0);
 	}
 
-	protected LoginResult charcrStatInit(final LoginSession loginObj, final Session session)
+	protected LoginResult charcrStatInit(final LoginSession loginObj, final Session session, final int bonusPoints)
 	{
 		final MOB mob=loginObj.mob;
 		if(CMProps.getIntVar(CMProps.Int.STARTSTAT)>0)
 		{
 			mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.Int.STARTSTAT));
+			for(int i=0;i<bonusPoints;i++)
+			{
+				int randStat=CMLib.dice().roll(1, CharStats.CODES.BASE().length, -1);
+				mob.baseCharStats().setStat(randStat, mob.baseCharStats().getStat(randStat)+1);
+			}
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATDONE;
 		}
@@ -2152,7 +2163,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
-			loginObj.statPoints = getTotalStatPoints();
+			loginObj.statPoints = getTotalStatPoints()+bonusPoints;
 			for(int i=0;i<CharStats.CODES.BASE().length;i++)
 				mob.baseCharStats().setStat(i,CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
 			mob.recoverCharStats();
@@ -2204,6 +2215,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				session.promptPrint("^!Would you like to re-roll (y/N)?^N");
 				loginObj.state=LoginState.CHARCR_STATCONFIRM;
+				return LoginResult.INPUT_REQUIRED;
 			}
 			else
 			{
@@ -2702,11 +2714,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			String password=CMLib.encoder().generateRandomPassword();
 			mob.playerStats().setPassword(password);
 			CMLib.database().DBUpdatePassword(mob.Name(),mob.playerStats().getPasswordStr());
-			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
-					  mob.Name(),
-					  mob.Name(),
-					  "Password for "+mob.Name(),
-					  "Your password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
+			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), mob.Name(), "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), mob.Name(),
+				"Password for "+mob.Name(),
+				"Your password for "+mob.Name()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
 			session.println("Your character has been created.  You will receive an email with your password shortly.");
 			try{Thread.sleep(1000);}catch(Exception e){}
 			if(mob==session.mob())
@@ -3169,7 +3179,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			loginObj.acct=mob.playerStats().getAccount();
 		loginObj.login=mob.Name();
 		loginObj.mob=mob;
-		LoginResult res=charcrStatInit(loginObj, session);
+		LoginResult res=charcrStatInit(loginObj, session, bonusPoints);
 		while(!session.isStopped())
 		{
 			if(res==LoginResult.INPUT_REQUIRED)

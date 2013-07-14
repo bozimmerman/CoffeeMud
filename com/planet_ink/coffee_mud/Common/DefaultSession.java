@@ -2275,10 +2275,14 @@ public class DefaultSession implements Session
 			}
 			if(mob==null)
 			{
-				if((loginSession!=null)&&(loginSession.acct!=null))
+				if(loginSession!=null)
 				{
-					loginSession.state=CharCreationLibrary.LoginState.ACCTMENU_START;
+					if(loginSession.acct!=null)
+						loginSession.state=CharCreationLibrary.LoginState.ACCTMENU_START;
+					else
+						loginSession.state=CharCreationLibrary.LoginState.LOGIN_START;
 					loginSession.skipInput=true;
+					loginSession.attempt=0;
 				}
 				setStatus(SessionStatus.LOGIN);
 				return;
