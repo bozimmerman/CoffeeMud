@@ -119,8 +119,25 @@ public class Thief_Trap extends ThiefSkill
 				mob.tell("Trap what, with what kind of trap? Use "+cmdWord+" list for a list.");
 				return false;
 			}
-			String name=(String)commands.lastElement();
-			commands.removeElementAt(commands.size()-1);
+			String name;
+			if(commands.get(0).toString().equalsIgnoreCase("room")||commands.get(0).toString().equalsIgnoreCase("here"))
+			{
+				name=CMParms.combine(commands,1);
+				while(commands.size()>1)
+					commands.removeElementAt(commands.size()-1);
+			}
+			else
+			{
+				name=(String)commands.lastElement();
+				commands.removeElementAt(commands.size()-1);
+			}
+			for(int r=0;r<traps.size();r++)
+			{
+				Trap T=(Trap)traps.elementAt(r);
+				if(T.name().equalsIgnoreCase(name))
+					theTrap=T;
+			}
+			if(theTrap==null)
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);

@@ -91,21 +91,21 @@ public class Transfer extends At
 		else
 		if(itemFlag)
 		{
-				if(!allFlag)
+			if(!allFlag)
+			{
+				Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Wearable.FILTER_UNWORNONLY);
+				if(E instanceof Item) V.addElement(E);
+			}
+			else
+			if(mobname.length()>0)
+			{
+				for(int i=0;i<curRoom.numItems();i++)
 				{
-					Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Wearable.FILTER_UNWORNONLY);
-					if(E instanceof Item) V.addElement(E);
+					Item I=curRoom.getItem(i);
+					if((I!=null)&&(CMLib.english().containsString(I.name(),mobname)))
+						V.addElement(I);
 				}
-				else
-				if(mobname.length()>0)
-				{
-					for(int i=0;i<curRoom.numItems();i++)
-					{
-						Item I=curRoom.getItem(i);
-						if((I!=null)&&(CMLib.english().containsString(I.name(),mobname)))
-							V.addElement(I);
-					}
-				}
+			}
 		}
 		else
 		{
@@ -162,6 +162,9 @@ public class Transfer extends At
 		StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
 		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
 			room=mob.location();
+		else
+		if(Directions.getDirectionCode(cmd.toString())>=0)
+			room=mob.location().getRoomInDir(Directions.getDirectionCode(cmd.toString()));
 		else
 			room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPME",100,120000);
 

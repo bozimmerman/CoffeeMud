@@ -1058,13 +1058,17 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public int getExitDir(Room from, Exit to)
 	{
-		if((from==null)||(to==null)) return -1;
+		if((from==null)||(to==null)) 
+			return -1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
 			if(from.getExitInDir(d)==to)
 				return d;
-			else
 			if(from.getRawExit(d)==to)
 				return d;
+			if(from.getReverseExit(d)==to)
+				return d;
+		}
 		return -1;
 	}
 

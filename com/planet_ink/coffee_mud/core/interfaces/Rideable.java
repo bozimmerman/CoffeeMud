@@ -58,7 +58,7 @@ public interface Rideable extends PhysicalAgent
 	public final static int RIDEABLE_LADDER=7;
 	/** constant for the  rideType() method.  Means it is pulled by others*/
 	public final static int RIDEABLE_WAGON=8;
-	/** list of strings describing the RIDEABLE_* constants in their numeric value order */
+	/** constant for the  rideType() method.  Means it is climbed and travels with player*/
 	public final static String[] RIDEABLE_DESCS=
 	{
 		"LAND-BASED","WATER-BASED","AIR-FLYING","FURNITURE-SIT","FURNITURE-SLEEP","FURNITURE-TABLE",

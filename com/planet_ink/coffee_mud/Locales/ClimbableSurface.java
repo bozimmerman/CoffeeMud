@@ -81,6 +81,7 @@ public class ClimbableSurface extends StdRoom
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
+
 		if(CMLib.flags().isSleeping(this))
 			return true;
 

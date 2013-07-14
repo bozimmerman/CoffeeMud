@@ -126,21 +126,24 @@ public class Trap_RoomPit extends StdTrap
 			Vector V=new Vector();
 			Room myPitUp=CMClass.getLocale("ClimbableSurface");
 			myPitUp.setRoomID("");
+			myPitUp.setSavable(false);
 			myPitUp.setArea(target.location().getArea());
 			myPitUp.basePhyStats().setDisposition(myPitUp.basePhyStats().disposition()|PhyStats.IS_DARK);
 			myPitUp.setDisplayText("Inside a dark pit");
-			myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
+			myPitUp.setDescription("The walls here are slick and tall.  The trap door is just above you.");
 			myPitUp.recoverPhyStats();
 
+			Exit exit=CMClass.getExit("StdOpenDoorway");
 			Room myPit=CMClass.getLocale("StdRoom");
+			myPit.setSavable(false);
 			myPit.setRoomID("");
 			myPit.setArea(target.location().getArea());
 			myPit.basePhyStats().setDisposition(myPit.basePhyStats().disposition()|PhyStats.IS_DARK);
 			myPit.setDisplayText("Inside a dark pit");
-			myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");
-			myPit.setRawExit(Directions.UP,CMClass.getExit("StdOpenDoorway"));
+			myPit.setDescription("The walls here are slick and tall.  You can barely see the trap door well above you.");
+			myPit.setRawExit(Directions.UP,exit);
 			myPit.rawDoors()[Directions.UP]=myPitUp;
-			myPitUp.setRawExit(Directions.DOWN,CMClass.getExit("StdOpenDoorway"));
+			myPitUp.setRawExit(Directions.DOWN,exit);
 			myPitUp.rawDoors()[Directions.DOWN]=myPit;
 			myPitUp.recoverPhyStats();
 			V.addElement(myPit);
@@ -199,14 +202,19 @@ public class Trap_RoomPit extends StdTrap
 			{
 				super.spring(target);
 				makePit(target);
-				((Room)pit.lastElement()).setRawExit(Directions.UP,CMClass.getExit("StdClosedDoorway"));
+				Exit door=CMClass.getExit("StdClosedDoorway");
+				door.setSavable(false);
+				door.setOpenDelayTicks(10);
+				((Room)pit.lastElement()).setRawExit(Directions.UP,door);
 				((Room)pit.lastElement()).rawDoors()[Directions.UP]=target.location();
 				if((target.location().getRoomInDir(Directions.DOWN)==null)
 				&&(target.location().getExitInDir(Directions.DOWN)==null))
 				{
-					target.location().setRawExit(Directions.DOWN,CMClass.getExit("StdClosedDoorway"));
+					target.location().setRawExit(Directions.DOWN,door);
 					target.location().rawDoors()[Directions.DOWN]=((Room)pit.lastElement());
 				}
+				if((!door.isOpen())&&(affected instanceof Room))
+					door.executeMsg(target, CMClass.getMsg(target,door,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_OPEN,null));
 				((Room)pit.firstElement()).bringMobHere(target,false);
 				finishSpringing(target);
 			}

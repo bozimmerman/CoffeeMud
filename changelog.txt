@@ -25,7 +25,7 @@
   23. CoffeeMud now supports GMCP according to CMUD and Aardwolf specs. SHELL .edit command supports GMCP editor -- I'll look for other places for it later.
   24. Scriptable now has an "arrive_prog" to handle situations with mobile mobs.
   25. (Internal) the entire login, char creation/account creation process is now asynchronous
-  * TODO: bug with ladders/ropes and pits
+  26. Thiefs have new "small" pit traps that, unlike normal pit traps, only trigger when you move through a room instead of when you enter.
 # Build 5.7.10 Release 2/17/2013 (* DB CHANGE!) (** Thanks to TGMUD for publishing their changelogs!!!)
    0. Database Schema Updated! Run DBUpgrade, OR create table CMCHCL (see appropriate schema file), then:
    INSERT INTO CMCHCL VALUES (SELECT USERID, CMCLAN, CMCLRO from CMCHAR where CMCLAN != ''); // lastly:

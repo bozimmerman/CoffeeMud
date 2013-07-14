@@ -221,29 +221,33 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				myPitUp=CMClass.getLocale("ClimbableSurface");
 				myPitUp.setRoomID("");
+				myPitUp.setSavable(false);
 				myPitUp.setArea(mob.location().getArea());
 				myPitUp.basePhyStats().setDisposition(myPitUp.basePhyStats().disposition()|PhyStats.IS_DARK);
 				myPitUp.setDisplayText("Inside a dark pit");
-				myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
+				myPitUp.setDescription("The walls here are slick and tall.  The trap door is just above you.");
 				myPitUp.recoverPhyStats();
 
 				myPit=CMClass.getLocale("StdRoom");
+				myPit.setSavable(false);
 				myPit.setRoomID("");
 				myPit.setArea(mob.location().getArea());
 				myPit.basePhyStats().setDisposition(myPit.basePhyStats().disposition()|PhyStats.IS_DARK);
 				myPit.setDisplayText("Inside a dark pit");
-				myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");
+				myPit.setDescription("The walls here are slick and tall.  You can barely see the trap door well above you.");
 				myPit.setRawExit(Directions.UP,CMClass.getExit("StdOpenDoorway"));
 				myPit.rawDoors()[Directions.UP]=myPitUp;
 				myPitUp.recoverPhyStats();
 
 			}
-			myPitUp.setRawExit(Directions.UP,CMClass.getExit("StdClosedDoorway"));
+			Exit exit=CMClass.getExit("StdClosedDoorway");
+			exit.setSavable(false);
+			myPitUp.setRawExit(Directions.UP,exit);
 			myPitUp.rawDoors()[Directions.UP]=mob.location();
 			if((mob.location().getRoomInDir(Directions.DOWN)==null)
 			&&(mob.location().getExitInDir(Directions.DOWN)==null))
 			{
-				mob.location().setRawExit(Directions.DOWN,CMClass.getExit("StdClosedDoorway"));
+				mob.location().setRawExit(Directions.DOWN,exit);
 				mob.location().rawDoors()[Directions.DOWN]=myPitUp;
 			}
 			myPit.bringMobHere(mob,false);

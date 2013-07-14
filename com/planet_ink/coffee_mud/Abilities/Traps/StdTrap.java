@@ -36,18 +36,32 @@ public class StdTrap extends StdAbility implements Trap
 {
 	public String ID() { return "StdTrap"; }
 	public String name(){ return "standard trap";}
+	
+	protected boolean sprung=false;
+	protected int reset=60; // 5 minute reset is standard
+	protected int ableCode=0;
+	protected boolean disabled=false;
+
+	public StdTrap()
+	{
+		super();
+	}
+	
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	protected int ableCode=0;
 	protected int trapLevel(){return -1;}
 	public void setAbilityCode(int code){ableCode=code;}
 	public int abilityCode(){return ableCode;}
 	
 	public boolean isABomb(){return false;}
+
 	public String requiresToSet(){return "";}
+
 	private String invokerName=null;
+
+	public PairVector<MOB,Integer> safeDirs=null;
 
 	public int baseRejuvTime(int level)
 	{
@@ -61,12 +75,10 @@ public class StdTrap extends StdAbility implements Trap
 		return level*30;
 	}
 
-	protected boolean sprung=false;
-	protected int reset=60; // 5 minute reset is standard
-
-	protected boolean disabled=false;
-
-	public boolean disabled(){
+	public boolean getTravelThroughFlag() { return false; }
+	
+	public boolean disabled()
+	{
 		return (sprung&&disabled)
 			   ||(affected==null)
 			   ||(affected.fetchEffect(ID())==null);
@@ -102,7 +114,8 @@ public class StdTrap extends StdAbility implements Trap
 		return false;
 	}
 	
-	public void disable(){
+	public void disable()
+	{
 		disabled=true;
 		sprung=true;
 		if(!canBeUninvoked())
@@ -113,13 +126,10 @@ public class StdTrap extends StdAbility implements Trap
 		else
 			unInvoke();
 	}
+	
 	public void setReset(int Reset){reset=Reset;}
 	public int getReset(){return reset;}
 
-	public StdTrap()
-	{
-		super();
-	}
 	public MOB invoker()
 	{
 		if(invoker==null)
@@ -144,7 +154,8 @@ public class StdTrap extends StdAbility implements Trap
 		return Ability.ACODE_TRAP;
 	}
 
-	public void setMiscText(String text){
+	public void setMiscText(String text)
+	{
 		if(text.startsWith("`"))
 		{
 			int x=text.indexOf("` ",1);
@@ -166,8 +177,23 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		super.setMiscText(text);
 	}
-	public String text(){
+	public String text()
+	{
 		return "`"+invokerName+"` :"+abilityCode()+":"+super.text();
+	}
+	
+	public synchronized PairVector<MOB,Integer> getSafeDirs()
+	{
+		if(safeDirs == null)
+			safeDirs=new PairVector<MOB,Integer>();
+		return safeDirs;
+	}
+	
+	public CMObject copyOf()
+	{
+		StdTrap obj=(StdTrap)super.copyOf();
+		obj.safeDirs=null;
+		return obj;
 	}
 	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -183,6 +209,38 @@ public class StdTrap extends StdAbility implements Trap
 			{
 				msg.source().tell((MOB)msg.target(),msg.tool(),null,"<S-NAME> can't accept <T-NAME>.");
 				return false;
+			}
+		}
+		if((!sprung)
+		&& CMath.bset(canAffectCode(),Ability.CAN_ROOMS)
+		&& getTravelThroughFlag()
+		&& msg.amITarget(affected) 
+		&& (affected instanceof Room) 
+		&& (msg.tool() instanceof Exit))
+		{
+			final Room room=(Room)affected;
+			if ((msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.targetMinor()==CMMsg.TYP_FLEE))
+			{
+				final int movingInDir=CMLib.map().getExitDir(room, (Exit)msg.tool());
+				if((movingInDir!=Directions.DOWN)&&(movingInDir!=Directions.UP))
+				{
+					final PairVector<MOB,Integer> safeDirs=getSafeDirs();
+					synchronized(safeDirs)
+					{
+						for(Iterator<Pair<MOB,Integer>> i=safeDirs.iterator();i.hasNext();)
+						{
+							Pair<MOB,Integer> p=i.next();
+							if(p.first == msg.source())
+							{
+								i.remove();
+								if(movingInDir==p.second.intValue())
+									return true;
+								spring(msg.source());
+								return !sprung();
+							}
+						}
+					}
+				}
 			}
 		}
 		return super.okMessage(myHost,msg);
@@ -252,17 +310,39 @@ public class StdTrap extends StdAbility implements Trap
 			}
 		}
 		else
-		if(CMath.bset(canAffectCode(),Ability.CAN_ROOMS))
+		if(CMath.bset(canAffectCode(), Ability.CAN_ROOMS)
+		&& msg.amITarget(affected)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 		{
-			if(msg.amITarget(affected))
+			if(getTravelThroughFlag())
 			{
-				if((msg.targetMinor()==CMMsg.TYP_ENTER)
-				&&(!msg.source().isMine(affected)))
-					spring(msg.source());
+				if ((affected instanceof Room) 
+				&& (msg.tool() instanceof Exit))
+				{
+					Room room=(Room)affected;
+					final int movingInDir=CMLib.map().getExitDir(room, (Exit)msg.tool());
+					if((movingInDir!=Directions.DOWN)&&(movingInDir!=Directions.UP))
+					{
+						final PairVector<MOB,Integer> safeDirs=getSafeDirs();
+						synchronized(safeDirs)
+						{
+							int dex=safeDirs.indexOf(msg.source());
+							if(dex>=0)
+								safeDirs.remove(dex);
+							while(safeDirs.size()>room.numInhabitants()+1)
+								safeDirs.remove(0);
+							safeDirs.add(new Pair<MOB,Integer>(msg.source(),Integer.valueOf(movingInDir)));
+						}
+					}
+				}
 			}
+			else
+			if(!msg.source().isMine(affected))
+				spring(msg.source());
 		}
 		super.executeMsg(myHost,msg);
 	}
+	
 	public boolean maySetTrap(MOB mob, int asLevel)
 	{
 		if(mob==null) return false;
@@ -271,6 +351,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(asLevel>=trapLevel()) return true;
 		return false;
 	}
+
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(mob!=null)
@@ -431,5 +512,4 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		return CMLib.materials().findNumberOfResource(room, resource);
 	}
-
 }

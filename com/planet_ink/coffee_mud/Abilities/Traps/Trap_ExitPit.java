@@ -32,41 +32,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Trap_Exit extends Trap_Trap
+public class Trap_ExitPit extends Trap_ExitRoom
 {
-	public String ID() { return "Trap_Exit"; }
-	public String name(){ return "Exit Trap";}
+	public String ID() { return "Trap_EnterPit"; }
+	public String name(){ return "Entry Pit Trap";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(sprung) return super.okMessage(myHost,msg);
-		if(!super.okMessage(myHost,msg))
-			return false;
-
-		if(msg.amITarget(affected) 
-		&& (affected instanceof Room)
-		&& ((msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.targetMinor()==CMMsg.TYP_FLEE)))
-		{
-			
-			spring(msg.source());
-			return false;
-		}
-		return true;
-	}
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		super.executeMsg(myHost,msg);
-		if(sprung)
-			return;
-
-		if((msg.amITarget(affected))||((msg.tool()!=null)&&(msg.tool()==affected)))
-		{
-			if(msg.targetMinor()==CMMsg.TYP_LEAVE)
-			{
-				spring(msg.source());
-			}
-		}
-	}
+	protected int trapType(){return TRAP_PIT_BLADE;}
 }
