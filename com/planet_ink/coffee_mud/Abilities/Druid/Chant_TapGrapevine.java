@@ -42,7 +42,7 @@ public class Chant_TapGrapevine extends Chant
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	List<Ability> myChants=new Vector();
+	protected List<Ability> myChants=new Vector();
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -57,6 +57,14 @@ public class Chant_TapGrapevine extends Chant
 			invoker.executeMsg(invoker,msg);
 	}
 
+	public CMObject copyOf()
+	{
+		Chant_TapGrapevine obj=(Chant_TapGrapevine)super.copyOf();
+		obj.myChants=new Vector<Ability>();
+		obj.myChants.addAll(myChants);
+		return obj;
+	}
+	
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(myChants!=null))

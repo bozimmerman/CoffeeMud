@@ -38,9 +38,9 @@ public class BribeGateGuard extends StdBehavior
 {
 	protected Exit e;
 	protected int dir = -1;
-	int tickTock = 0;
-	Vector paidPlayers = new Vector();
-	Hashtable toldAlready = new Hashtable();
+	protected int tickTock = 0;
+	protected Vector<MOB> paidPlayers = new Vector<MOB>();
+	protected Hashtable<String,Boolean> toldAlready = new Hashtable();
 	protected static boolean debug = false; // debuggin
 	protected static boolean surviveReboot=false; // survive reboot
 	protected static Hashtable notTheJournal=new Hashtable();
@@ -50,6 +50,16 @@ public class BribeGateGuard extends StdBehavior
 		return "BribeGateGuard";
 	}
 
+	public CMObject copyOf()
+	{
+		BribeGateGuard obj=(BribeGateGuard)super.copyOf();
+		obj.paidPlayers=new Vector<MOB>();
+		obj.paidPlayers.addAll(paidPlayers);
+		obj.toldAlready=new Hashtable<String,Boolean>();
+		obj.toldAlready.putAll(toldAlready);
+		return obj;
+	}
+	
 	public String accountForYourself()
 	{ 
 		return "corruptable gate guarding";

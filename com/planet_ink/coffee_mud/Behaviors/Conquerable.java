@@ -79,6 +79,16 @@ public class Conquerable extends Arrest
 		return holdingClan;
 	}
 	
+	public CMObject copyOf()
+	{
+		Conquerable obj=(Conquerable)super.copyOf();
+		obj.clanItems=(Vector)clanItems.clone();
+		obj.clanControlPoints=clanControlPoints.copyOf();
+		obj.assaults=assaults.copyOf();
+		obj.noMultiFollows=(Vector)noMultiFollows.clone();
+		return obj;
+	}
+	
 	public String conquestInfo(Area myArea)
 	{
 		StringBuffer str=new StringBuffer("");

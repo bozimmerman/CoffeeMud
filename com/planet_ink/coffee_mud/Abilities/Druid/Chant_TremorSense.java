@@ -43,8 +43,16 @@ public class Chant_TremorSense extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	protected Vector rooms=new Vector();
+	protected Vector<Room> rooms=new Vector();
 
+	public CMObject copyOf()
+	{
+		Chant_TremorSense obj=(Chant_TremorSense)super.copyOf();
+		obj.rooms=new Vector<Room>();
+		obj.rooms.addAll(rooms);
+		return obj;
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

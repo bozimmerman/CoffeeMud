@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Druid.Chant_TremorSense;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -32,16 +33,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Beggar extends StdBehavior
 {
 	public String ID(){return "Beggar";}
-	Vector mobsHitUp=new Vector();
+	Vector<MOB> mobsHitUp=new Vector<MOB>();
 	int tickTock=0;
 
 	public String accountForYourself()
 	{ 
 		return "vagrant-like begging";
+	}
+	
+	public CMObject copyOf()
+	{
+		Beggar obj=(Beggar)super.copyOf();
+		obj.mobsHitUp=new Vector<MOB>();
+		obj.mobsHitUp.addAll(mobsHitUp);
+		return obj;
 	}
 	
 	public void executeMsg(Environmental oking, CMMsg msg)

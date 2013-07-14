@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Thief_KillLog extends ThiefSkill
 {
 	public String ID() { return "Thief_KillLog"; }
@@ -49,7 +49,7 @@ public class Thief_KillLog extends ThiefSkill
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;}
-	protected Hashtable theList=new Hashtable();
+	protected Map<String,String[]> theList=new Hashtable<String,String[]>();
 	protected Thief_Mark lastMarker=null;
 	public MOB mark=null;
 
@@ -71,9 +71,8 @@ public class Thief_KillLog extends ThiefSkill
 	public String text()
 	{
 		StringBuffer str=new StringBuffer("<MOBS>");
-		for(Enumeration e=theList.elements();e.hasMoreElements();)
+		for(String[] one : theList.values())
 		{
-			String[] one=(String[])e.nextElement();
 			str.append("<MOB>");
 			str.append(CMLib.xml().convertXMLtoTag("NAME",one[0]));
 			str.append(CMLib.xml().convertXMLtoTag("LEVEL",one[1]));
@@ -84,6 +83,14 @@ public class Thief_KillLog extends ThiefSkill
 		str.append("</MOBS>");
 		return str.toString();
 	}
+	
+	public CMObject copyOf()
+	{
+		Thief_KillLog obj=(Thief_KillLog)super.copyOf();
+		obj.theList=new Hashtable<String,String[]>();
+		obj.theList.putAll(theList);
+		return obj;
+	}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -91,7 +98,7 @@ public class Thief_KillLog extends ThiefSkill
 		&&msg.amISource(mark)
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
-			String[] set=(String[])theList.get(mark.Name());
+			String[] set=theList.get(mark.Name());
 			if(set==null)
 			{
 				set=new String[4];
@@ -150,7 +157,7 @@ public class Thief_KillLog extends ThiefSkill
 			mark=m;
 			if(mark!=null)
 			{
-				String[] set=(String[])theList.get(mark.Name());
+				String[] set=theList.get(mark.Name());
 				if(set==null)
 				{
 					set=new String[4];
@@ -183,16 +190,15 @@ public class Thief_KillLog extends ThiefSkill
 					ListingLibrary.ColFixer.fixColWidth(6,mob.session())
 				};
 			str.append(CMStrings.padRight("Name",cols[0])+CMStrings.padRight("Level",cols[1])+"Kill Pct.\n\r");
-			Vector order=new Vector();
+			Vector<String[]> order=new Vector<String[]>();
 			int lowLevel=Integer.MIN_VALUE;
 			String[] addOne=null;
 			while(theList.size()>order.size())
 			{
 				addOne=null;
 				lowLevel=Integer.MIN_VALUE;
-				for(Enumeration e=theList.elements();e.hasMoreElements();)
+				for(String[] one : theList.values())
 				{
-					String[] one=(String[])e.nextElement();
 					if((CMath.s_int(one[1])>=lowLevel)
 					&&(!order.contains(one)))
 					{
@@ -206,7 +212,7 @@ public class Thief_KillLog extends ThiefSkill
 			}
 			for(int i=0;i<order.size();i++)
 			{
-				String[] one=(String[])order.elementAt(i);
+				String[] one=order.elementAt(i);
 				int pct=0;
 				int total=CMath.s_int(one[2]);
 				int kills=CMath.s_int(one[3]);

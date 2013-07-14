@@ -46,12 +46,20 @@ public class Chant_ChargeMetal extends Chant
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	private WeakReference<CMMsg> lastMsg=null;
 	
-	protected Vector affectedItems=new Vector();
+	protected List<Item> affectedItems=new Vector<Item>();
 
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		affectedItems=new Vector();
+		affectedItems=new Vector<Item>();
+	}
+	
+	public CMObject copyOf()
+	{
+		Chant_ChargeMetal obj=(Chant_ChargeMetal)super.copyOf();
+		obj.affectedItems=new Vector<Item>();
+		obj.affectedItems.addAll(affectedItems);
+		return obj;
 	}
 	
 	public Item wieldingMetal(MOB mob)
@@ -119,7 +127,7 @@ public class Chant_ChargeMetal extends Chant
 		{
 			for(int i=0;i<affectedItems.size();i++)
 			{
-				Item I=(Item)affectedItems.elementAt(i);
+				Item I=affectedItems.get(i);
 				Ability A=I.fetchEffect(this.ID());
 				while(A!=null)
 				{
