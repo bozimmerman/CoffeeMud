@@ -38,6 +38,10 @@ public class TelnetFilter
 	protected static final char IAC_MSDP = 69;
 	protected static final char IAC_MSP = 90;
 	protected static final char IAC_MXP = 91;
+	protected static final char IAC_GA = 249;
+	protected static final char IAC_NOP = 241;
+	protected static final char TELNET_ATCP = 200;
+	protected static final char TELNET_GMCP = 201;
 	protected static final char TELOPT_BINARY=0;
 	protected static final char TELOPT_EOR = 25;
 	protected static final char TELOPT_ECHO = 1;
@@ -712,6 +716,10 @@ public class TelnetFilter
 								if(mxpModule!=null) mxpModule.shutdownMXP();
 							}
 						}
+						break;
+					case IAC_GA:
+					case IAC_NOP:
+						end=oldI+2;
 						break;
 					}
 					buf.delete(oldI,end);
