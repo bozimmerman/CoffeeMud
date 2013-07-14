@@ -26,8 +26,8 @@ public class Siplet
 	public final static boolean debugDataOut=false;
 	
 	public final static long serialVersionUID=7;
-	public static final float VERSION_MAJOR=(float)2.0;
-	public static final long  VERSION_MINOR=10;
+	public static final float VERSION_MAJOR=(float)2.1;
+	public static final long  VERSION_MINOR=0;
 	protected StringBuffer buf=new StringBuffer("");
 	protected String lastURL="coffeemud.net";
 	protected int lastPort=23;
@@ -213,6 +213,8 @@ public class Siplet
 			StringBuilder data=new StringBuilder("");
 			if(Telnet.MSDPsupport())
 				data.append(Telnet.getMsdpHtml());
+			if(Telnet.GMCPsupport())
+				data.append(Telnet.getGmcpHtml());
 			int endAt=Telnet.HTMLFilter(buf);
 			if(buf.length()==0) return data.toString();
 			if(endAt<0) endAt=buf.length();

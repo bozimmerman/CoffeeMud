@@ -1113,6 +1113,8 @@ public class DefaultSession implements Session
 					Log.debugOut("For suboption "+Session.TELNET_DESCS[optionCode]+", got "+dataSize+" bytes, sent "+((resp==null)?0:resp.length));
 					Log.debugOut(new String(suboptionData));
 				}
+				if(resp!=null)
+					rawBytesOut(rawout, resp);
 			}
 		break;
 		default:

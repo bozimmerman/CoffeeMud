@@ -1222,7 +1222,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									ver=CMath.s_double(s.substring(x+1).trim());
 								s=s.substring(0,x).trim();
 							}
-							supportables.put(s.substring(0,x), Double.valueOf(ver));
+							supportables.put(s, Double.valueOf(ver));
 						}
 					}
 					break;
