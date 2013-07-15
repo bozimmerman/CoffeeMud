@@ -729,6 +729,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		loginObj.login=loginObj.login.trim();
 		if(loginObj.login.length()==0)
 		{
+			session.println("^w ^N");
+			session.println("^w* Enter an existing name to log in.^N");
+			session.println("^w* Enter a new name to create "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"an account":" a character")+".^N");
 			loginObj.state=LoginState.LOGIN_START;
 			return null;
 		}
