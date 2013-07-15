@@ -1230,8 +1230,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult acctmenuPrompt(final LoginSession loginObj, final Session session)
 	{
-		if(!session.isStopped())
-			session.setInputLoopTime();
 		session.setStatus(Session.SessionStatus.ACCOUNT_MENU);
 		session.promptPrint("\n\r^wCommand or Name ^H(?)^w: ^N");
 		loginObj.state=LoginState.ACCTMENU_COMMAND;
@@ -1330,8 +1328,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				final String login=CMStrings.capitalizeAndLower(parms[1]);
 				if((parms.length>2)&&(parms[parms.length-1].equalsIgnoreCase("<CONFIRMED>")))
 				{
-					if(!session.isStopped())
-						session.setInputLoopTime();
 					loginObj.login=login;
 					loginObj.state=LoginState.CHARCR_START;
 					return null;

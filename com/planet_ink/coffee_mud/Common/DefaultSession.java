@@ -2072,6 +2072,8 @@ public class DefaultSession implements Session
 				loginSession.lastInput=readlineContinue();
 				if(loginSession.lastInput==null)
 					return;
+				if(!killFlag)
+					setInputLoopTime();
 			}
 			if(!killFlag)
 			{
@@ -2217,7 +2219,7 @@ public class DefaultSession implements Session
 	{
 		try
 		{
-			lastLoopTop=System.currentTimeMillis();
+			setInputLoopTime();
 			waiting=true;
 			String input;
 			if(suspendCommandLine)
