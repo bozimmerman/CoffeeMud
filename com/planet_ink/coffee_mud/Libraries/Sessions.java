@@ -194,7 +194,7 @@ public class Sessions extends StdLibrary implements SessionsList
 					}
 				}
 				else
-				if(time>(60000))
+				if(time>(300000))
 				{
 					String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
 					if((S.getStatus())==Session.SessionStatus.LOGIN)
