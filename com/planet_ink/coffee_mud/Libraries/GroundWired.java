@@ -43,7 +43,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 {
 	public String ID(){return "GroundWired";}
 
-	public Manufacturer defaultManufacturer=null;
+	public Manufacturer defaultManufacturer=null; // must always be DefaultManufacturer, w/o changes.
 	
 	public final Map<String,Manufacturer> manufacturers = new SHashtable<String,Manufacturer>();
 	
@@ -52,6 +52,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public final static List<PowerGenerator> emptyGeneratorList=new ArrayList<PowerGenerator>();
 	
 	public final AtomicInteger nextKey = new AtomicInteger(0);
+	
+	public void initializeClass()
+	{
+		super.initializeClass();
+		loadAllManufacturers();
+	}
 	
 	public synchronized String registerElectrics(final Electronics E, final String oldKey)
 	{
@@ -374,7 +380,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		if(manufacturer==null) return;
 		manufacturers.put(manufacturer.name().toUpperCase().trim(), manufacturer);
-		//TODO: save!
+		saveAllManufacturers();
 	}
 	
 	public void delManufacturer(Manufacturer manufacturer)
@@ -383,12 +389,24 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		Manufacturer found=getManufacturer(manufacturer.name());
 		if(found==manufacturer)
 			manufacturers.remove(manufacturer.name().toUpperCase().trim());
-		//TODO: save!
+		saveAllManufacturers();
 	}
 	
 	public void updateManufacturer(Manufacturer manufacturer)
 	{
-		//TODO: save!
+		if(manufacturer==null) return;
+		Manufacturer found=getManufacturer(manufacturer.name());
+		if((found==null)||(found!=manufacturer))
+		{
+			for(String manName : manufacturers.keySet())
+				if(manufacturers.get(manName)==manufacturer)
+				{
+					manufacturers.remove(manName);
+					break;
+				}
+			addManufacturer(manufacturer);
+		}
+		saveAllManufacturers();
 	}
 	
 	public Manufacturer getManufacturer(String name)
@@ -400,5 +418,48 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public Iterator<Manufacturer> manufacterers() 
 	{ 
 		return new ReadOnlyIterator<Manufacturer>(manufacturers.values().iterator());
+	}
+
+	protected String getManufacturersFilename()
+	{
+		return "/resources/tech/manufacturers.xml";
+	}
+	
+	protected synchronized void saveAllManufacturers()
+	{
+		final String filename=getManufacturersFilename();
+		CMFile xmlFile=new CMFile(filename, null, false, true);
+		if(!xmlFile.exists())
+			xmlFile=new CMFile("::"+filename, null, false, true);
+		final StringBuilder xmlStr=new StringBuilder("<MANUFACTURERS>");
+		for(Manufacturer man : manufacturers.values())
+			if(man != defaultManufacturer)
+				xmlStr.append("<MANUFACTURER>").append(man.getXml()).append("</MANUFACTURER>");
+		xmlStr.append("</MANUFACTURERS>");
+		xmlFile.saveText(xmlStr.toString());
+	}
+
+	protected void loadAllManufacturers()
+	{
+		final String filename=getManufacturersFilename();
+		CMFile xmlFile=new CMFile(filename, null, false, true);
+		if(xmlFile.exists() && xmlFile.canRead())
+		{
+			List<XMLLibrary.XMLpiece> xDoc=CMLib.xml().parseAllXML(xmlFile.text());
+			List<XMLLibrary.XMLpiece> xMans=new SLinkedList<XMLLibrary.XMLpiece>();
+			for(XMLLibrary.XMLpiece x : xDoc)
+				if(x.tag.equalsIgnoreCase("MANUFACTURER"))
+					xMans.add(x);
+				else
+				if(x.tag.equalsIgnoreCase("MANUFACTURERS"))
+					xMans.addAll(x.contents);
+			manufacturers.clear();
+			for(XMLLibrary.XMLpiece x : xMans)
+			{
+				Manufacturer man =(Manufacturer)CMClass.getCommon("DefaultManufacturer");
+				man.setXml(x.value);
+				addManufacturer(man);
+			}
+		}
 	}
 }
