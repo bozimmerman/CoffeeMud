@@ -859,6 +859,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	{
 		if(item.expirationDate()==0)
 			return "N/A";
+		if(item.expirationDate() > System.currentTimeMillis())
+			return "*IMMINENT*";
 		return ""+(item.expirationDate()-System.currentTimeMillis());
 	}
 
