@@ -49,6 +49,7 @@ public class OilFlask extends StdDrink
 		setDescription("A small glass flask containing lamp oil, with a lid.");
 		baseGoldValue=5;
 		amountOfLiquidHeld=5;
+		disappearsAfterDrinking=true;
 		amountOfLiquidRemaining=5;
 		liquidType=RawMaterial.RESOURCE_LAMPOIL;
 		recoverPhyStats();
