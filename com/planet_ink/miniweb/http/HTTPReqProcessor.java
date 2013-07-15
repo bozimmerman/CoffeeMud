@@ -437,6 +437,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 					throw HTTPException.standardException(HTTPStatus.S304_NOT_MODIFIED);
 			}
 			catch(ParseException e) { }
+			catch(NumberFormatException e) { }
 		}
 	}
 	

@@ -13,7 +13,7 @@
 	<!--
 		function Browse(named)
 		{
-			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=300,alwaysRaised=yes,dependent=yes";
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=yes,height=500,width=400,alwaysRaised=yes,dependent=yes";
 			var w2=window.open("/grinder/browse.cmvp?AUTH=@Authenticate?AUTH@&PATH="+named,"Browse",strFeatures,false);
 		}
 		function Clicked(action)

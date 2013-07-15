@@ -107,7 +107,7 @@
 @loop@
 @FileNext@
 	@if?FileInfo?ISDIRECTORY@
-		<TR><TD COLSPAN=6>
+		<TR bgcolor="#@RequestParameter?BGCOL@"><TD COLSPAN=6>
 		<a href="javascript:NewDir('@RequestParameter?FILE@')"  style="text-decoration:none">
 		@if?FileInfo?ISBOTH@<B>@else@ @if?!FileInfo?ISLOCAL@<I>@endif@ @endif@
 		<FONT COLOR=YELLOW>@RequestParameter?FILE@</FONT>
@@ -117,10 +117,12 @@
 	@endif@
 @back@
 @FileNext?RESET@
+@AddRequestParameter?BGCOL=000000@
 @loop@
 @FileNext@
 	@if?!FileInfo?ISDIRECTORY@ @if?FileInfo?ISFILE@
-		<TR><TD COLSPAN=2>
+		@if?CheckReqParm?BGCOL=404040@ @AddRequestParameter?BGCOL=000000@ @else@ @AddRequestParameter?BGCOL=404040@ @endif@
+		<TR bgcolor="#@RequestParameter?BGCOL@"><TD COLSPAN=2>
 		@if?FileInfo?ISVFS@<I>@endif@ 	@if?FileInfo?ISBOTH@<B>@endif@
 		<FONT COLOR=WHITE>@RequestParameter?FILE@</FONT>
 		@if?FileInfo?ISVFS@</I>@endif@ 	@if?FileInfo?ISBOTH@</B>@endif@
