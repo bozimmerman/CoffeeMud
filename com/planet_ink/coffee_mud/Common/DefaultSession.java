@@ -1353,6 +1353,7 @@ public class DefaultSession implements Session
 			if((last==TELNET_COMPRESS2)&&(getServerTelnetMode(last)))
 			{
 				setClientTelnetMode(last,false);
+				rawout=sock[0].getOutputStream();
 				out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
 			}
 			if((mightSupportTelnetMode(last)&&(getServerTelnetMode(last))))
