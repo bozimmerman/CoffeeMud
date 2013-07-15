@@ -284,6 +284,11 @@ public class DefaultSession implements Session
 						{
 							if(introTextStr!=null)
 								print(introTextStr);
+							if(out==null)
+							{
+								killFlag=true;
+								return false;
+							}
 							out.flush();
 							rawout.flush();
 							if((getClientTelnetMode(Session.TELNET_MXP))
