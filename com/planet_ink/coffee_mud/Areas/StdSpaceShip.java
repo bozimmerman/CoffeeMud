@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class StdSpaceShip implements Area, SpaceObject, SpaceShip
+public class StdSpaceShip implements Area, SpaceShip
 {
 	protected static Climate climateObj=null;
 	
