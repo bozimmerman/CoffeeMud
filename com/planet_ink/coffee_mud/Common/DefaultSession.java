@@ -2078,7 +2078,10 @@ public class DefaultSession implements Session
 			{
 				loginSession.lastInput=readlineContinue();
 				if(loginSession.lastInput==null)
-					return;
+				{
+					if((System.currentTimeMillis()-lastWriteTime)>PINGTIMEOUT)
+						rawCharsOut(PINGCHARS);
+				}
 				if(!killFlag)
 					setInputLoopTime();
 			}
