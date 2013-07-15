@@ -433,12 +433,6 @@ public interface Area extends Economics, PhysicalAgent
 	 */
 	public Enumeration<String> subOps();
 	/**
-	 * Initialize Area Links is called after an area is loaded from disk
-	 * to resolve any hard, children or parent links, or perform other
-	 * related area initialization.
-	 */
-	public void initializeAreaLink(); 
-	/**
 	 * Returns a descriptive list of statistics about this area based on a
 	 * snapshot from getAreaIStats(), which is cached after being generated.
 	 * This stringbuffer returned is user-readable.
@@ -457,33 +451,12 @@ public interface Area extends Economics, PhysicalAgent
 	 */
 	public int[] getAreaIStats();
 	/**
-	 * Designates that the area named by the given String will be a Child Area
-	 * of this area.
-	 * A Child Area inherets certain behaviors and property effects from its Parents
-	 * @param str the name of an Area
-	 */
-	public void addChildToLoad(String str);
-	/**
-	 * Designates that the area named by the given String will be a Parent Area
-	 * of this area.
-	 * A Child Area inherets certain behaviors and property effects from its Parents
-	 * @param str the name of an Area
-	 */
-	public void addParentToLoad(String str);
-	/**
 	 * An enumerator list of Area objects representing the Children Areas of this
 	 * Area.
 	 * A Child Area inherets certain behaviors and property effects from its parents
 	 * @return an enumerator of Area objects
 	 */
 	public Enumeration<Area> getChildren();
-	/**
-	 * Returns a semicolon delimited list of Area names representing the Children Areas of this
-	 * Area.
-	 * A Child Area inherets certain behaviors and property effects from its Parents
-	 * @return a string of semicolon-delimited names
-	 */
-	public String getChildrenList();
 	/**
 	 * Returns the named Child Area object for this Area
 	 * A Child Area inherets certain behaviors and property effects from its Parents
@@ -531,13 +504,6 @@ public interface Area extends Economics, PhysicalAgent
 	 * @return an enumerator of Area objects
 	 */
 	public Enumeration<Area> getParents();
-	/**
-	 * Returns a semicolon delimited list of Area names representing the Parent Areas of this
-	 * Area.
-	 * A Parent Area passes down certain behaviors and property effects to its children
-	 * @return a string of semicolon-delimited names
-	 */
-	public String getParentsList();
 	/**
 	 * Returns the named Parent Area object for this Area
 	 * A Parent Area passes down certain behaviors and property effects to its children

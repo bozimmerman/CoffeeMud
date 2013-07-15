@@ -556,7 +556,7 @@ public class BribeGateGuard extends StdBehavior
 			if(M.playerStats()!=null)
 			{
 				if ( (paidPlayers.contains(M)) && (toldAlready.containsKey(M.Name()))) {
-				  Boolean B = (Boolean) toldAlready.get(M.Name());
+				  Boolean B = toldAlready.get(M.Name());
 				  if (!B.booleanValue())
 				  {
 					  String currency=CMLib.beanCounter().getCurrency(mob);

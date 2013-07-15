@@ -59,16 +59,13 @@ public class StdArea implements Area
 	protected boolean   amDestroyed 	=false;
 	protected PhyStats  phyStats		=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected boolean   initializedArea = false;
 	
 	protected STreeMap<String,String> blurbFlags	 =new STreeMap<String,String>();
 	protected STreeMap<String, Room>  properRooms    =new STreeMap<String, Room>(new RoomIDComparator());
 	protected RoomnumberSet 		  properRoomIDSet=null;
 	protected RoomnumberSet 		  metroRoomIDSet =null;
-	protected SLinkedList<Area> 	  children  	 =null;
-	protected SLinkedList<Area> 	  parents   	 =null;
-	protected SLinkedList<String>     childrenToLoad =new SLinkedList<String>();
-	protected SLinkedList<String>     parentsToLoad  =new SLinkedList<String>();
+	protected SLinkedList<Area> 	  children  	 =new SLinkedList<Area>();
+	protected SLinkedList<Area> 	  parents   	 =new SLinkedList<Area>();
 	protected SVector<Ability>  	  affects   	 =new SVector<Ability>(1);
 	protected SVector<Behavior> 	  behaviors 	 =new SVector<Behavior>(1);
 	protected SVector<String>   	  subOps		 =new SVector<String>(1);
@@ -189,11 +186,8 @@ public class StdArea implements Area
 		scripts=new SVector<ScriptingEngine>(1);
 		author=null;
 		currency=null;
-		children=null;
-		parents=null;
-		initializedArea=true;
-		childrenToLoad=new SLinkedList<String>();
-		parentsToLoad=new SLinkedList<String>();
+		children=new SLinkedList<Area>();
+		parents=new SLinkedList<Area>();
 		blurbFlags=new STreeMap<String,String>();
 		subOps=new SVector<String>(1);
 		properRooms=new STreeMap();
@@ -394,15 +388,8 @@ public class StdArea implements Area
 		properRoomIDSet=null;
 		metroRoomIDSet =null;
 
-		if(areaA.parents==null)
-			parents=null;
-		else
-			parents=areaA.parents.copyOf();
-		if(areaA.children==null)
-			children=null;
-		else
-			children=areaA.children.copyOf();
-		initializedArea=areaA.initializedArea;
+		parents=areaA.parents.copyOf();
+		children=areaA.children.copyOf();
 		if(areaA.blurbFlags!=null)
 			blurbFlags=areaA.blurbFlags.copyOf();
 		affects=new SVector<Ability>(1);
@@ -1453,9 +1440,6 @@ public class StdArea implements Area
 		return subOps.elements();
 	}
 
-	public void addChildToLoad(String str) { childrenToLoad.add(str);}
-	public void addParentToLoad(String str) { parentsToLoad.add(str); }
-	
 	public SLinkedList<Area> loadAreas(Collection<String> loadableSet) 
 	{
 		final SLinkedList<Area> finalSet = new SLinkedList<Area>();
@@ -1469,48 +1453,23 @@ public class StdArea implements Area
 		return finalSet;
 	}
 	
-	public synchronized void initializeAreaLink() 
-	{
-		if(initializedArea)
-			return;
-		SLinkedList<Area> futureParents=loadAreas(parentsToLoad);
-		parents=new SLinkedList<Area>();
-		children=new SLinkedList<Area>();
-		for(Area parentA : futureParents)
-			if(canParent(parentA))
-				parents.add(parentA);
-			else
-				Log.errOut("StdArea","Can not make '"+parentA.name()+"' parent of '"+name+"'");
-		SLinkedList<Area> futureChildren=loadAreas(childrenToLoad);
-		for(Area childA : futureChildren)
-			if(canChild(childA))
-				children.add(childA);
-			else
-				Log.errOut("StdArea","Can not make '"+childA.name()+"' child of '"+name+"'");
-		initializedArea=true;
-	}
-	
 	protected final Iterator<Area> getParentsIterator()
 	{
-		if(!initializedArea) initializeAreaLink();
 		return parents.iterator();
 	}
 	
 	protected final Iterator<Area> getParentsReverseIterator()
 	{
-		if(!initializedArea) initializeAreaLink();
 		return parents.descendingIterator();
 	}
 	
 	protected final Iterator<Area> getChildrenIterator()
 	{
-		if(!initializedArea) initializeAreaLink();
 		return children.iterator();
 	}
 	
 	protected final Iterator<Area> getChildrenReverseIterator()
 	{
-		if(!initializedArea) initializeAreaLink();
 		return children.descendingIterator();
 	}
 	
@@ -1519,17 +1478,6 @@ public class StdArea implements Area
 		return new IteratorEnumeration<Area>(getChildrenIterator()); 
 	}
 	
-	public String getChildrenList() 
-	{
-		final StringBuffer str=new StringBuffer("");
-		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();) 
-		{
-			if(str.length()>0) str.append(";");
-			str.append(i.next().name());
-		}
-		return str.toString();
-	}
-
 	public Area getChild(String named) 
 	{
 		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();) 
@@ -1576,6 +1524,8 @@ public class StdArea implements Area
 			}
 		}
 		children.add(area);
+		if(getTimeObj()!=CMLib.time().globalClock())
+			area.setTimeObj(getTimeObj());
 	}
 	
 	public void removeChild(Area area) 
@@ -1615,18 +1565,6 @@ public class StdArea implements Area
 			V.addAll(A.getParentsRecurse());
 		}
 		return V;
-	}
-
-	public String getParentsList() 
-	{
-		StringBuffer str=new StringBuffer("");
-		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
-		{
-			final Area A=a.next();
-			if(str.length()>0) str.append(";");
-			str.append(A.name());
-		}
-		return str.toString();
 	}
 
 	public Area getParent(String named) 

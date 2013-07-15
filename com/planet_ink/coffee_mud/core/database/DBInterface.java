@@ -164,9 +164,6 @@ public class DBInterface implements DatabaseEngine
 	public Area DBReadArea(Area A)
 	{ return RoomLoader.DBReadArea(A); }
 
-	public List<Area> DBReadAreaData(String areaID, boolean reportStatus)
-	{return RoomLoader.DBReadAreaData(areaID,reportStatus);}
-	
 	public Map<String, Room> DBReadRoomData(String roomID, boolean reportStatus)
 	{return RoomLoader.DBReadRoomData(roomID,reportStatus);}
 	

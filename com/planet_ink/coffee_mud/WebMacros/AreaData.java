@@ -512,7 +512,7 @@ public class AreaData extends StdWebMacro
 					int num=1;
 					if(!httpReq.isUrlParameter("PARENT"+num))
 					{
-						List<String> subV=CMParms.parseSemicolons(A.getParentsList(),true);
+						List<String> subV=CMParms.toNameVector(A.getParents());
 						for(String areaName : subV)
 						{
 							Area findA=CMLib.map().getArea(areaName);
@@ -560,7 +560,7 @@ public class AreaData extends StdWebMacro
 					int num=1;
 					if(!httpReq.isUrlParameter("CHILDREN"+num))
 					{
-						List<String> subV=CMParms.parseSemicolons(A.getChildrenList(),true);
+						List<String> subV=CMParms.toNameVector(A.getChildren());
 						for(String areaName : subV)
 						{
 							Area findA=CMLib.map().getArea(areaName);

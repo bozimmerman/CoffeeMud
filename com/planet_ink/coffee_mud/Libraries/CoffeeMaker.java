@@ -207,12 +207,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			StringBuffer parentstr = new StringBuffer();
 			StringBuffer childrenstr = new StringBuffer();
 			str.append(CMLib.xml().convertXMLtoTag("ARCHP",myArea.getArchivePath()));
+			Area defaultParentArea=null;
+			String defaultParentAreaName=CMProps.getVar(CMProps.Str.DEFAULTPARENTAREA);
+			if((defaultParentAreaName!=null)&&(defaultParentAreaName.trim().length()>0))
+				defaultParentArea=CMLib.map().getArea(defaultParentAreaName.trim());
 			for(Enumeration<Area> e=myArea.getParents(); e.hasMoreElements();)
 			{
 				Area A=e.nextElement();
-				parentstr.append("<PARENT>");
-				parentstr.append(CMLib.xml().convertXMLtoTag("PARENTNAMED", A.name()));
-				parentstr.append("</PARENT>");
+				if((A!=defaultParentArea)||(A.getTimeObj()!=CMLib.time().globalClock()))
+				{
+					parentstr.append("<PARENT>");
+					parentstr.append(CMLib.xml().convertXMLtoTag("PARENTNAMED", A.name()));
+					parentstr.append("</PARENT>");
+				}
 			}
 			str.append(CMLib.xml().convertXMLtoTag("PARENTS",parentstr.toString()));
 			for(Enumeration<Area> e=myArea.getChildren(); e.hasMoreElements();)
@@ -1039,6 +1046,28 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				}
 			}
 		}
+		if((newArea!=null)&&(!newArea.getParents().hasMoreElements()))
+		{
+			Area defaultParentArea=null;
+			String defaultParentAreaName=CMProps.getVar(CMProps.Str.DEFAULTPARENTAREA);
+			if((defaultParentAreaName!=null)&&(defaultParentAreaName.trim().length()>0))
+			{
+				defaultParentArea=CMLib.map().getArea(defaultParentAreaName.trim());
+				if(defaultParentArea==null)
+					Log.errOut("RoomLoader","Default parent area from coffeemud.ini '"+defaultParentAreaName.trim()+"' is unknown.");
+			}
+			if(defaultParentArea!=null)
+			{
+				if((newArea!=defaultParentArea)&&(newArea.getTimeObj()==CMLib.time().globalClock()))
+				{
+					if(defaultParentArea.canChild(newArea) && (newArea.canParent(defaultParentArea)))
+					{
+						defaultParentArea.addChild(newArea);
+						newArea.addParent(defaultParentArea);
+					}
+				}
+			}
+		}
 	}
 
 	public String unpackAreaFromXML(List<XMLpiece> aV, Session S, String overrideAreaType, boolean andRooms)
@@ -1812,7 +1841,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						Log.errOut("CoffeeMaker","Error parsing 'PARENT' of "+identifier(E,null)+".  Load aborted");
 						return;
 					}
-					((Area)E).addParentToLoad(CMLib.xml().getValFromPieces(ablk.contents,"PARENTNAMED"));
+					String aName=CMLib.xml().getValFromPieces(ablk.contents,"PARENTNAMED");
+					Area A=CMLib.map().getArea(aName);
+					if(A==null)
+						Log.errOut("CoffeeMaker","Unknown 'PARENT' area "+identifier(E,null)+": "+aName);
+					else
+					{
+						((Area)E).addParent(A);
+						A.addChild((Area)E);
+					}
 				}
 			}
 			List<XMLLibrary.XMLpiece> VC=CMLib.xml().getContentsFromPieces(V,"CHILDREN");
@@ -1826,7 +1863,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						Log.errOut("CoffeeMaker","Error parsing 'CHILD' of "+identifier(E,null)+".  Load aborted");
 						return;
 					}
-					((Area)E).addChildToLoad(CMLib.xml().getValFromPieces(ablk.contents,"CHILDNAMED"));
+					String aName=CMLib.xml().getValFromPieces(ablk.contents,"CHILDNAMED");
+					Area A=CMLib.map().getArea(aName);
+					if(A==null)
+						Log.errOut("CoffeeMaker","Unknown 'CHILD' area "+identifier(E,null)+": "+aName);
+					else
+					{
+						((Area)E).addChild(A);
+						A.addParent((Area)E);
+					}
 				}
 			}
 			for(Enumeration<String> f=((Area)E).areaBlurbFlags();f.hasMoreElements();)

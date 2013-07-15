@@ -56,14 +56,11 @@ public class StdTimeZone extends StdArea
 		myClock.setLoadName(newName);
 	}
 
-	public void addChild(Area area) {
+	public void addChild(Area area) 
+	{
 		super.addChild(area);
 		area.setTimeObj(getTimeObj());
-	}
-	public synchronized void initializeAreaLink() 
-	{
-		super.initializeAreaLink();
-		for(final Iterator<Area> a=getChildrenIterator();a.hasNext();)
-			a.next().setTimeObj(getTimeObj());
+		for(Enumeration<Area> cA=area.getChildren();cA.hasMoreElements();)
+			cA.nextElement().setTimeObj(getTimeObj());
 	}
 }

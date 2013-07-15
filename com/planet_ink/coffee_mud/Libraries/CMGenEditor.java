@@ -1247,9 +1247,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String newArea="Q";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newArea.length()>0))
 		{
-			mob.tell(showNumber+". Parent Areas: "+A.getParentsList());
+			StringBuilder str=new StringBuilder("");
+			for(Enumeration<Area> a = A.getParents(); a.hasMoreElements(); )
+				str.append(a.nextElement().Name()).append(";");
+			mob.tell(showNumber+". Parent Areas: "+str.toString());
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			newArea=mob.session().prompt("Enter an area name to add or remove\n\r:","");
+			if(newArea.equalsIgnoreCase("*clear*")) 
+			{
+				List<Area> allParents=new LinkedList<Area>();
+				for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
+					allParents.add(e.nextElement());
+				for(Area a : allParents)
+					A.removeParent(a);
+			}
+			else
 			if(newArea.length()>0)
 			{
 				Area lookedUp=CMLib.map().getArea(newArea);
@@ -1290,9 +1302,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		String newArea="Q";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newArea.length()>0))
 		{
-			mob.tell(showNumber+". Area Children: "+A.getChildrenList());
+			StringBuilder str=new StringBuilder("");
+			for(Enumeration<Area> a = A.getChildren(); a.hasMoreElements(); )
+				str.append(a.nextElement().Name()).append(";");
+			mob.tell(showNumber+". Area Children: "+str.toString());
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			newArea=mob.session().prompt("Enter an area name to add or remove\n\r:","");
+			if(newArea.equalsIgnoreCase("*clear*")) 
+			{
+				List<Area> allChildren=new LinkedList<Area>();
+				for(Enumeration<Area> e=A.getChildren();e.hasMoreElements();)
+					allChildren.add(e.nextElement());
+				for(Area a : allChildren)
+					A.removeChild(a);
+			}
+			else
 			if(newArea.length()>0)
 			{
 				Area lookedUp=CMLib.map().getArea(newArea);

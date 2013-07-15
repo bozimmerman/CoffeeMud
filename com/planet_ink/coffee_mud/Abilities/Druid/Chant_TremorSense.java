@@ -70,7 +70,7 @@ public class Chant_TremorSense extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> tremor sense fades.");
 		for(int r=0;r<rooms.size();r++)
 		{
-			Room R=(Room)rooms.elementAt(r);
+			Room R=rooms.elementAt(r);
 			Ability A=R.fetchEffect(ID());
 			if((A!=null)&&(A.invoker()==mob))
 				A.unInvoke();
@@ -165,7 +165,7 @@ public class Chant_TremorSense extends Chant
 				CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,5,null);
 				for(int r=0;r<rooms.size();r++)
 				{
-					Room R=(Room)rooms.elementAt(r);
+					Room R=rooms.elementAt(r);
 					if((R!=mob.location())
 					&&(R.domainType()!=Room.DOMAIN_INDOORS_AIR)
 					&&(R.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)

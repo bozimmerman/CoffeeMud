@@ -61,14 +61,12 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected String		author  		=""; // will be used for owner, I guess.
 	protected PhyStats  	phyStats		=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  	basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected boolean   	initializedArea =false;
 	protected Area 			me			 	=this;
 	
 	protected SVector<Ability>  		affects=new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors=new SVector<Behavior>(1);
 	protected SVector<ScriptingEngine>  scripts=new SVector<ScriptingEngine>(1);
 	protected SLinkedList<Area> 		parents=new SLinkedList<Area>();
-	protected List<String>  			parentsToLoad=new SLinkedList<String>();
 	protected STreeMap<String,String>   blurbFlags=new STreeMap<String,String>();
 
 	public void initializeClass(){}
@@ -126,9 +124,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		scripts=null;
 		author=null;
 		currency=null;
-		parents=null;
-		initializedArea=true;
-		parentsToLoad=null;
+		parents=new SLinkedList<Area>();
 		climateObj=null;
 		amDestroyed=true;
 	}
@@ -226,11 +222,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		affects=new SVector<Ability>(1);
 		behaviors=new SVector<Behavior>(1);
 		scripts=new SVector<ScriptingEngine>(1);
-		if(ship.parents==null)
-			parents=null;
-		else
-			parents=new SLinkedList(ship.parents);
-		initializedArea=ship.initializedArea;
+		parents=new SLinkedList(ship.parents);
 		for(Enumeration<Behavior> e=ship.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
@@ -933,12 +925,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	public Enumeration<Room> getFilledProperMap() { return getProperMap();}
 	public Enumeration<String> subOps(){ return EmptyEnumeration.INSTANCE;}
 
-	public void addChildToLoad(String str){}
-	public void addParentToLoad(String str) { parentsToLoad.add(str);}
-
 	// Children
 	public Enumeration<Area> getChildren() {return EmptyEnumeration.INSTANCE; }
-	public String getChildrenList() { return "";}
 	public Area getChild(String named) { return null;}
 	public boolean isChild(Area named) { return false;}
 	public boolean isChild(String named) { return false;}
@@ -959,30 +947,13 @@ public class StdSpaceShip implements Area, SpaceShip
 		return finalSet;
 	}
 	
-	public synchronized void initializeAreaLink() 
-	{
-		if(initializedArea)
-			return;
-		SLinkedList<Area> futureParents=loadAreas(parentsToLoad);
-		parents=new SLinkedList<Area>();
-		for(Area parentA : futureParents)
-			if(canParent(parentA))
-				parents.add(parentA);
-			else
-				Log.errOut("StdSpaceShip","Can not make '"+parentA.name()+"' parent of '"+name+"'");
-		initializedArea=true;
-	}
-		
-	
 	protected final Iterator<Area> getParentsIterator()
 	{
-		if(!initializedArea) initializeAreaLink();
 		return parents.iterator();
 	}
 	
 	protected final Iterator<Area> getParentsReverseIterator()
 	{
-		if(!initializedArea) initializeAreaLink();
 		return parents.descendingIterator();
 	}
 	
@@ -998,18 +969,6 @@ public class StdSpaceShip implements Area, SpaceShip
 			V.addAll(A.getParentsRecurse());
 		}
 		return V;
-	}
-
-	public String getParentsList() 
-	{
-		StringBuffer str=new StringBuffer("");
-		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
-		{
-			final Area A=a.next();
-			if(str.length()>0) str.append(";");
-			str.append(A.name());
-		}
-		return str.toString();
 	}
 
 	public Area getParent(String named) 
