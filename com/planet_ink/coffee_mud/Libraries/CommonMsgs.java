@@ -861,7 +861,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return "N/A";
 		if(item.expirationDate() > System.currentTimeMillis())
 			return "*IMMINENT*";
-		return ""+(item.expirationDate()-System.currentTimeMillis());
+		return ""+CMLib.time().date2EllapsedTime((item.expirationDate()-System.currentTimeMillis()), TimeUnit.MINUTES, false);
 	}
 
 
@@ -878,16 +878,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		StringBuilder buf=new StringBuilder("");
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
-			String dispTime=dispossessionTimeLeftString(item);
-			if(CMath.isInteger(dispTime))
-				dispTime=CMLib.time().date2EllapsedTime(CMath.s_long(dispTime), TimeUnit.MINUTES, false);
 			buf.append(item.ID()+"\n\rRejuv : "+item.basePhyStats().rejuv()
 							+"\n\rType  : "+item.ID()
 							+"\n\rUses  : "+item.usesRemaining()
 							+"\n\rHeight: "+item.basePhyStats().height()
 							+"\n\rAbilty: "+item.basePhyStats().ability()
 							+"\n\rLevel : "+item.basePhyStats().level()
-							+"\n\rTime  : "+dispTime
+							+"\n\rExpire: "+dispossessionTimeLeftString(item)
 							+((item instanceof Container)?("\n\rCapac.: "+((Container)item).capacity()):"")
 							+"\n\rMisc  : "+item.text().length()+"\n\r"+item.text());
 		}
