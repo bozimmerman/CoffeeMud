@@ -1065,8 +1065,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				session.setAccount(loginObj.acct);
 				StringBuilder loginMsg=new StringBuilder("");
 				loginMsg.append(session.getAddress()).append(" "+session.getTerminalType())
-				.append((session.getClientTelnetMode(Session.TELNET_COMPRESS)||session.getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+				.append(session.getClientTelnetMode(Session.TELNET_MXP)?" MXP":"")
 				.append(session.getClientTelnetMode(Session.TELNET_MSDP)?" MSDP":"")
+				.append(session.getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
+				.append(session.getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
+				.append((session.getClientTelnetMode(Session.TELNET_COMPRESS)||session.getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+				.append(session.getClientTelnetMode(Session.TELNET_ANSI)?" ANSI":"")
 				.append(", account login: "+loginObj.acct.accountName());
 				Log.sysOut(loginMsg.toString());
 				//session.setStatus(SessionStatus.ACCOUNTMENU);
