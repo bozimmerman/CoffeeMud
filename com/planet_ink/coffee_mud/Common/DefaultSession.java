@@ -309,8 +309,11 @@ public class DefaultSession implements Session
 											if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 										}
 										println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
-										out.flush();
-										rawout.flush();
+										if(out!=null)
+										{
+											out.flush();
+											rawout.flush();
+										}
 									}
 								}
 							}
