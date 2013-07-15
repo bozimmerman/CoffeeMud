@@ -97,33 +97,20 @@ public class DefaultManufacturer implements Manufacturer
 
 	public String getXml()
 	{
-		StringBuilder xml=new StringBuilder("<MANUFACTURER ");
-		xml.append("NAME=\""+CMLib.xml().parseOutAngleBracketsAndQuotes(name)+"\" ");
-		xml.append("TECHDIFF="+maxTechLevelDiff+" ");
-		xml.append("EFFICIENCY="+efficiency+" ");
-		xml.append("RELIABILITY="+reliability+" ");
-		xml.append("/>");
+		StringBuilder xml=new StringBuilder("");
+		xml.append("<NAME>"+CMLib.xml().parseOutAngleBrackets(name)+"</NAME>");
+		xml.append("<TECHDIFF>"+maxTechLevelDiff+"</TECHDIFF>");
+		xml.append("<EFFICIENCY>"+efficiency+"</EFFICIENCY>");
+		xml.append("<RELIABILITY>"+reliability+"</RELIABILITY>");
 		return xml.toString();
 	}
 	
-	/**
-	 * Sets an Xml document representing this manufacturer.
-	 * This will "build out" the manufacturer object.
-	 * @param xml Xml document representing this manufacturer.
-	 */
 	public void setXml(String xml)
 	{
 		List<XMLpiece> xpc = CMLib.xml().parseAllXML(xml);
-		for(XMLpiece highPiece : xpc)
-		{
-			if(highPiece.tag.equalsIgnoreCase("MANUFACTURER"))
-			{
-				setName(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(highPiece.parms,"NAME")));
-				setMaxTechLevelDiff((byte)CMath.s_short(CMLib.xml().getParmValue(highPiece.parms,"TECHDIFF")));
-				setEfficiencyPct(CMath.s_double(CMLib.xml().getParmValue(highPiece.parms,"EFFICIENCY")));
-				setReliabilityPct(CMath.s_double(CMLib.xml().getParmValue(highPiece.parms,"RELIABILITY")));
-				break;
-			}
-		}
+		setName(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xpc,"NAME")));
+		setMaxTechLevelDiff((byte)CMath.s_short(CMLib.xml().getValFromPieces(xpc,"TECHDIFF")));
+		setEfficiencyPct(CMLib.xml().getDoubleFromPieces(xpc,"EFFICIENCY"));
+		setReliabilityPct(CMLib.xml().getDoubleFromPieces(xpc,"RELIABILITY"));
 	}
 }
