@@ -443,6 +443,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		final String filename=getManufacturersFilename();
 		CMFile xmlFile=new CMFile(filename, null, false, true);
+		manufacturers.clear();
 		if(xmlFile.exists() && xmlFile.canRead())
 		{
 			List<XMLLibrary.XMLpiece> xDoc=CMLib.xml().parseAllXML(xmlFile.text());
@@ -453,7 +454,6 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				else
 				if(x.tag.equalsIgnoreCase("MANUFACTURERS"))
 					xMans.addAll(x.contents);
-			manufacturers.clear();
 			for(XMLLibrary.XMLpiece x : xMans)
 			{
 				Manufacturer man =(Manufacturer)CMClass.getCommon("DefaultManufacturer");
