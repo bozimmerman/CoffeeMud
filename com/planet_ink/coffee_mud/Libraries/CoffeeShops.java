@@ -1109,8 +1109,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					Area A=a.nextElement();
-					if((A instanceof SpaceShip)
-					&&(CMLib.flags().isHidden(A)))
+					if(A instanceof SpaceShip)
 					{
 						boolean related=myArea.isChild(A)||A.isParent(myArea);
 						if(!related)

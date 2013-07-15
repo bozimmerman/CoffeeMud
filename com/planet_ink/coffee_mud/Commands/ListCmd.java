@@ -44,6 +44,43 @@ public class ListCmd extends StdCommand
 	private final String[] access={"LIST"};
 	public String[] getAccessWords(){return access;}
 
+	protected static class WorldFilter implements Filterer<Area>
+	{
+		private final TimeClock to;
+		public WorldFilter(Room R)
+		{
+			if((R!=null)&&(R.getArea()!=null))
+				to=R.getArea().getTimeObj();
+			else
+				to=CMLib.time().globalClock();
+		}
+		@Override
+		public boolean passesFilter(Area obj) {
+			return (obj.getTimeObj()==to);
+		}
+	}
+	
+	protected Filterer<Area> planetsFilter=new Filterer<Area>() {
+		@Override
+		public boolean passesFilter(Area obj) {
+			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip));
+		}
+	};
+	
+	protected Filterer<Area> areaFilter=new Filterer<Area>() {
+		@Override
+		public boolean passesFilter(Area obj) {
+			return !(obj instanceof SpaceObject);
+		}
+	};
+	
+	protected Filterer<Area> shipFilter=new Filterer<Area>() {
+		@Override
+		public boolean passesFilter(Area obj) {
+			return (obj instanceof SpaceShip);
+		}
+	};
+	
 	public StringBuilder listAllQualifies(Session viewerS, Vector cmds)
 	{
 		StringBuilder str=new StringBuilder("");
@@ -1991,6 +2028,9 @@ public class ListCmd extends StdCommand
 		/*65*/new ListCmdEntry("NEWS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.JOURNALS,SecFlag.NEWS}),
 		/*66*/new ListCmdEntry("AREAS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		/*67*/new ListCmdEntry("SESSIONS",new SecFlag[]{SecFlag.SESSIONS}),
+		/*68*/new ListCmdEntry("SPACESHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		/*69*/new ListCmdEntry("WORLD",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		/*70*/new ListCmdEntry("PLANETS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 	};
 
 	public boolean pause(Session sess) 
@@ -2080,7 +2120,7 @@ public class ListCmd extends StdCommand
 			return null;
 	}
 	
-	public void listAreas(MOB mob, Vector commands)
+	public void listAreas(MOB mob, Vector commands, Filterer<Area> filter)
 	{
 		if(mob==null) return;
 		commands.remove(0);
@@ -2175,6 +2215,8 @@ public class ListCmd extends StdCommand
 			for(Enumeration<Area> as=CMLib.map().areas();as.hasMoreElements();)
 			{
 				Area A=as.nextElement();
+				if((filter!=null)&&(!filter.passesFilter(A)))
+					continue;
 				sorted.put(A.name(), A);
 			}
 			for(int si=sortBys.size()-1; si>=0;si--)
@@ -2203,6 +2245,8 @@ public class ListCmd extends StdCommand
 		for(;a.hasMoreElements();)
 		{
 			Area A=a.nextElement();
+			if((filter!=null)&&(!filter.passesFilter(A)))
+				continue;
 			for(Triad<String,String,Integer> head : columns)
 			{
 				Object val =getAreaStatFromSomewhere(A,head.second);
@@ -2424,8 +2468,11 @@ public class ListCmd extends StdCommand
 		case 63: s.println("\n\r^xDisable Settings: ^?^.^N\n\r"+CMParms.toStringList(new XVector<CMSecurity.DisFlag>(CMSecurity.getDisablesEnum()))+"\n\r"); break;
 		case 64: s.wraplessPrintln(listAllQualifies(mob.session(),commands).toString()); break;
 		case 65: listNews(mob,commands); break;
-		case 66: listAreas(mob, commands); break;
+		case 66: listAreas(mob, commands, areaFilter); break;
 		case 67: { listSessions(mob,commands); break; }
+		case 68: listAreas(mob, commands, shipFilter); break;
+		case 69: listAreas(mob, commands, new WorldFilter(mob.location())); break;
+		case 70: listAreas(mob, commands, planetsFilter); break;
 		case 999: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");
