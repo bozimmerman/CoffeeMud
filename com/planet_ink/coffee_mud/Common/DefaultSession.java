@@ -284,36 +284,34 @@ public class DefaultSession implements Session
 						{
 							if(introTextStr!=null)
 								print(introTextStr);
-							if(out==null)
+							if(out!=null)
 							{
-								killFlag=true;
-								return false;
-							}
-							out.flush();
-							rawout.flush();
-							if((getClientTelnetMode(Session.TELNET_MXP))
-							&&((mxpSupportSet.contains("+IMAGE.URL"))
-								||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
-							{
-								// also the intro page
-								String[] paths=CMLib.protocol().mxpImagePath("intro.jpg");
-								if(paths[0].length()>0)
+								out.flush();
+								rawout.flush();
+								if((getClientTelnetMode(Session.TELNET_MXP))
+								&&((mxpSupportSet.contains("+IMAGE.URL"))
+									||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
 								{
-									CMFile introDir=new CMFile("/web/pub/images/mxp",null,false,true);
-									String introFilename=paths[1];
-									if(introDir.isDirectory())
+									// also the intro page
+									String[] paths=CMLib.protocol().mxpImagePath("intro.jpg");
+									if(paths[0].length()>0)
 									{
-										CMFile[] files=introDir.listFiles();
-										Vector choices=new Vector();
-										for(int f=0;f<files.length;f++)
-											if(files[f].getName().toLowerCase().startsWith("intro")
-											&&files[f].getName().toLowerCase().endsWith(".jpg"))
-												choices.addElement(files[f].getName());
-										if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+										CMFile introDir=new CMFile("/web/pub/images/mxp",null,false,true);
+										String introFilename=paths[1];
+										if(introDir.isDirectory())
+										{
+											CMFile[] files=introDir.listFiles();
+											Vector choices=new Vector();
+											for(int f=0;f<files.length;f++)
+												if(files[f].getName().toLowerCase().startsWith("intro")
+												&&files[f].getName().toLowerCase().endsWith(".jpg"))
+													choices.addElement(files[f].getName());
+											if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+										}
+										println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
+										out.flush();
+										rawout.flush();
 									}
-									println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
-									out.flush();
-									rawout.flush();
 								}
 							}
 						}
