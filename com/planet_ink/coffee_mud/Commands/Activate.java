@@ -37,7 +37,7 @@ public class Activate extends StdCommand
 {
 	public Activate(){}
 
-	private final String[] access={"ACTIVATE","ACT","A"};
+	private final String[] access={"ACTIVATE","ACT","A",">"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -50,35 +50,71 @@ public class Activate extends StdCommand
 		}
 		commands.removeElementAt(0);
 		String what=(String)commands.lastElement();
-		PhysicalAgent P=R.fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
-		if(P==null)
+		String whole=CMParms.combine(commands,0);
+		Item item=null;
+		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whole,Wearable.FILTER_ANY);
+		if((!(E instanceof Electronics))||(E instanceof Software))
+			E=null;
+		if(E==null)
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.getItem(i);
 				if((I instanceof Electronics.ElecPanel)
 				&&(((Electronics.ElecPanel)I).isOpen()))
 				{
-					P=R.fetchFromRoomFavorItems(I, what);
-					if(P!=null)
+					E=R.fetchFromRoomFavorItems(I, whole);
+					if((E instanceof Electronics)&&(!(E instanceof Software)))
 						break;
 				}
 			}
-		Item item=(P instanceof Electronics)?(Item)P:null;
-		commands.removeElementAt(commands.size()-1);
-		if(P==null)
+		if((!(E instanceof Electronics))||(E instanceof Software))
+			E=null;
+		else
 		{
-			mob.tell("You don't see anything called "+what+" here that you can activate.");
+			item=(Item)E;
+			commands.clear();
+		}
+		if(E==null)
+		{
+			E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
+			if((!(E instanceof Electronics))||(E instanceof Software))
+				E=null;
+			if(E==null)
+				for(int i=0;i<R.numItems();i++)
+				{
+					Item I=R.getItem(i);
+					if((I instanceof Electronics.ElecPanel)
+					&&(((Electronics.ElecPanel)I).isOpen()))
+					{
+						E=R.fetchFromRoomFavorItems(I, what);
+						if((E instanceof Electronics)&&(!(E instanceof Software)))
+							break;
+					}
+				}
+			if((!(E instanceof Electronics))||(E instanceof Software))
+				E=null;
+			if((E==null)&&(mob.riding() instanceof Electronics.Computer))
+			{
+				E=mob.riding();
+				item=(Item)E;
+			}
+			else
+				commands.removeElementAt(commands.size()-1);
+		}
+		if(E==null)
+		{
+			mob.tell("You don't see anything called '"+what+"' or '"+whole+"' here that you can activate.");
 			return false;
 		}
 		else
 		if(item==null)
 		{
-			mob.tell("You can't activate "+P.name()+"'.");
+			mob.tell("You can't activate "+E.name()+"'.");
 			return false;
 		}
 
 		String rest=CMParms.combine(commands,0);
-		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,rest,CMMsg.MSG_ACTIVATE,null);
+		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,(rest.length()==0)?null:rest,CMMsg.MSG_ACTIVATE,null);
 		if(R.okMessage(mob,newMsg))
 			R.send(mob,newMsg);
 		return false;

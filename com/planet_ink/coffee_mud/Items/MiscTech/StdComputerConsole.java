@@ -267,14 +267,14 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,CMMsg.NO_EFFECT,null));
 								}
 								else
-								if(S.isActivationString(msg.targetMessage(), true))
+								if(S.isCommandString(msg.targetMessage(), true))
 								{
 									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WRITE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
 								}
 							}
 							else
 							if((S.getParentMenu().equals(currentMenu))
-							&&(S.isActivationString(msg.targetMessage(), false)))
+							&&(S.isCommandString(msg.targetMessage(), false)))
 							{
 								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
 							}
@@ -339,8 +339,59 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 						forceReadersMenu();
 					}
 				}
+				if((msg.targetMessage()!=null)&&(activated()))
+				{
+					final List<Software> software=getSoftware();
+					List<CMMsg> msgs=new LinkedList<CMMsg>();
+					synchronized(software)
+					{
+						for(final Software S : software)
+						{
+							if(S.isActivationString(msg.targetMessage()))
+							{
+								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+							}
+						}
+					}
+					boolean readFlag=false;
+					final MOB M=msg.source();
+					if(msgs.size()==0)
+						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown activation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'");
+					else
+					for(CMMsg msg2 : msgs)
+						if(msg2.target().okMessage(M, msg2))
+							msg2.target().executeMsg(M, msg2);
+					if(readFlag)
+						forceReadersSeeNew();
+				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
+				if((msg.targetMessage()!=null)&&(activated()))
+				{
+					final List<Software> software=getSoftware();
+					List<CMMsg> msgs=new LinkedList<CMMsg>();
+					synchronized(software)
+					{
+						for(final Software S : software)
+						{
+							if(S.isActivationString(msg.targetMessage()))
+							{
+								msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
+							}
+						}
+					}
+					boolean readFlag=false;
+					final MOB M=msg.source();
+					if(msgs.size()==0)
+						M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> says '^N\n\rUnknown deactivation command. Please read the screen for a menu of TYPEable commands.\n\r^.^N'");
+					else
+					for(CMMsg msg2 : msgs)
+						if(msg2.target().okMessage(M, msg2))
+							msg2.target().executeMsg(M, msg2);
+					if(readFlag)
+						forceReadersSeeNew();
+				}
+				else
 				if(activated())
 				{
 					activate(false);

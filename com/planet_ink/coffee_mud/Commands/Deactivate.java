@@ -37,7 +37,7 @@ public class Deactivate extends StdCommand
 {
 	public Deactivate(){}
 
-	private final String[] access={"DEACTIVATE","DEACT","DEA"};
+	private final String[] access={"DEACTIVATE","DEACT","DEA","<"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -50,7 +50,11 @@ public class Deactivate extends StdCommand
 		}
 		commands.removeElementAt(0);
 		String what=(String)commands.lastElement();
-		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
+		String whole=CMParms.combine(commands,0);
+		Item item=null;
+		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whole,Wearable.FILTER_ANY);
+		if((!(E instanceof Electronics))||(E instanceof Software))
+			E=null;
 		if(E==null)
 			for(int i=0;i<R.numItems();i++)
 			{
@@ -58,16 +62,48 @@ public class Deactivate extends StdCommand
 				if((I instanceof Electronics.ElecPanel)
 				&&(((Electronics.ElecPanel)I).isOpen()))
 				{
-					E=R.fetchFromRoomFavorItems(I, what);
-					if(E!=null)
+					E=R.fetchFromRoomFavorItems(I, whole);
+					if((E instanceof Electronics)&&(!(E instanceof Software)))
 						break;
 				}
 			}
-		Item item=(E instanceof Electronics)?(Item)E:null;
-		commands.removeElementAt(commands.size()-1);
+		if((!(E instanceof Electronics))||(E instanceof Software))
+			E=null;
+		else
+		{
+			item=(Item)E;
+			commands.clear();
+		}
 		if(E==null)
 		{
-			mob.tell("You don't see anything called '"+what+"' here that you can deactivate.");
+			E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
+			if((!(E instanceof Electronics))||(E instanceof Software))
+				E=null;
+			if(E==null)
+				for(int i=0;i<R.numItems();i++)
+				{
+					Item I=R.getItem(i);
+					if((I instanceof Electronics.ElecPanel)
+					&&(((Electronics.ElecPanel)I).isOpen()))
+					{
+						E=R.fetchFromRoomFavorItems(I, what);
+						if((E instanceof Electronics)&&(!(E instanceof Software)))
+							break;
+					}
+				}
+			if((!(E instanceof Electronics))||(E instanceof Software))
+				E=null;
+			if((E==null)&&(mob.riding() instanceof Electronics.Computer))
+			{
+				E=mob.riding();
+				item=(Item)E;
+			}
+			else
+				commands.removeElementAt(commands.size()-1);
+		}
+		if(E==null)
+		{
+			mob.tell("You don't see anything called '"+what+"' or '"+whole+"' here that you can deactivate.");
 			return false;
 		}
 		else
@@ -77,7 +113,7 @@ public class Deactivate extends StdCommand
 		}
 		
 		String rest=CMParms.combine(commands,0);
-		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,rest,CMMsg.MSG_DEACTIVATE,null);
+		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,(rest.length()==0)?null:rest,CMMsg.MSG_DEACTIVATE,null);
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 		return false;

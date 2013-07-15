@@ -18,9 +18,20 @@ function getParentMenu() { return ""; }
 
 function getInternalName() { return "SCRIPTDIAG";}
 
-function isActivationString(word, activeState)
+
+function isActivationString(word)
 {
-	if(!activeState)
+	return this.isCommandString(word, false);
+}
+
+function isDeActivationString(word)
+{
+	return this.isCommandString(word, false);
+}
+
+function isCommandString(word, isActive)
+{
+	if(!isActive)
 	{
 		return word.toUpperCase() == "DIAGTERM";
 	}

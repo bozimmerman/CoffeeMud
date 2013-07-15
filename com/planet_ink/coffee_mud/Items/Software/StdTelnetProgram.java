@@ -60,9 +60,25 @@ public class StdTelnetProgram extends StdProgram implements ArchonOnly
 	
 	public String getInternalName() { return "TELNET";}
 	
-	public boolean isActivationString(String word, boolean activeState)
+	public boolean isActivationString(String word) 
+	{ 
+		return isCommandString(word,false); 
+	}
+	
+	public boolean isDeActivationString(String word) 
+	{ 
+		return isCommandString(word,false); 
+	}
+	
+	public void onDeactivate(MOB mob, String message)
 	{
-		if(!activeState)
+		shutdown();
+		super.addScreenMessage("Telnet connection closed.");
+	}
+
+	public boolean isCommandString(String word, boolean isActive)
+	{
+		if(!isActive)
 		{
 			word=word.toUpperCase();
 			return (word.startsWith("TELNET ")||word.equals("TELNET"));

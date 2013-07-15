@@ -60,7 +60,9 @@ public class StdProgram extends StdItem implements Software
 	
 	public String getInternalName() { return "";}
 	
-	public boolean isActivationString(String word, boolean activeState) { return false; }
+	public boolean isActivationString(String word) { return false; }
+	public boolean isDeActivationString(String word) { return false; }
+	public boolean isCommandString(String word, boolean isActive) { return false; }
 
 	public String getActivationMenu() { return ""; }
 	
