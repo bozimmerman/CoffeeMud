@@ -733,6 +733,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.println("^w* Enter an existing name to log in.^N");
 			session.println("^w* Enter a new name to create "+((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)?"an account":" a character")+".^N");
 			loginObj.state=LoginState.LOGIN_START;
+			if((Math.random()>0.5)&&(loginObj.attempt>0))
+				loginObj.attempt--;
 			return null;
 		}
 		if(loginObj.login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MSSP)))
