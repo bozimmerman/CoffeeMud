@@ -32,5 +32,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface SpaceShip extends SpaceObject
 {
 	public void dockHere(Room R);
+
 	public void unDock(boolean toSpace);
 }

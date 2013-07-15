@@ -507,7 +507,10 @@ public class StdTitle extends StdItem implements LandTitle
 							if(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 							{ choices.addElement(R);}
 						}
-						if(choices.size()>0) spacePort=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+						if(choices.size()>0)
+						{
+							spacePort=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+						}
 						((SpaceShip)AREA).dockHere(spacePort);
 						msg.source().tell("Your ship is located at "+spacePort.displayText()+".");
 					}

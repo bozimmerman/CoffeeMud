@@ -225,6 +225,11 @@ public class DefaultSession implements Session
 							out.flush();
 							rawout.flush();
 						}
+						else
+						{
+							killFlag=true;
+							return false;
+						}
 						switch(status) 
 						{
 						case HANDSHAKE_OPEN:
