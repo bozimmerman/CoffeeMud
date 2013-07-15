@@ -192,6 +192,13 @@ public class CMMap extends StdLibrary implements WorldMap
 			return areas().nextElement();
 		return null;
 	}
+	public Area getDefaultParentArea()
+	{
+		String defaultParentAreaName=CMProps.getVar(CMProps.Str.DEFAULTPARENTAREA);
+		if((defaultParentAreaName!=null)&&(defaultParentAreaName.trim().length()>0))
+			return getArea(defaultParentAreaName.trim());
+		return null;
+	}
 	public Area getRandomArea()
 	{
 		Area A=null;

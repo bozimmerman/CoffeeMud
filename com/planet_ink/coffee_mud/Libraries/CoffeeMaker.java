@@ -207,10 +207,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			StringBuffer parentstr = new StringBuffer();
 			StringBuffer childrenstr = new StringBuffer();
 			str.append(CMLib.xml().convertXMLtoTag("ARCHP",myArea.getArchivePath()));
-			Area defaultParentArea=null;
-			String defaultParentAreaName=CMProps.getVar(CMProps.Str.DEFAULTPARENTAREA);
-			if((defaultParentAreaName!=null)&&(defaultParentAreaName.trim().length()>0))
-				defaultParentArea=CMLib.map().getArea(defaultParentAreaName.trim());
+			Area defaultParentArea=CMLib.map().getDefaultParentArea();
 			for(Enumeration<Area> e=myArea.getParents(); e.hasMoreElements();)
 			{
 				Area A=e.nextElement();

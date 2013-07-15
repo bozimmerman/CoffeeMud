@@ -1300,12 +1300,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String newArea="Q";
+		Area defaultParentArea=CMLib.map().getDefaultParentArea();
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(newArea.length()>0))
 		{
 			StringBuilder str=new StringBuilder("");
+			if(defaultParentArea!=A)
 			for(Enumeration<Area> a = A.getChildren(); a.hasMoreElements(); )
 				str.append(a.nextElement().Name()).append(";");
-			mob.tell(showNumber+". Area Children: "+str.toString());
+			mob.tell(showNumber+". Children areas: "+str.toString());
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			newArea=mob.session().prompt("Enter an area name to add or remove\n\r:","");
 			if(newArea.equalsIgnoreCase("*clear*")) 
