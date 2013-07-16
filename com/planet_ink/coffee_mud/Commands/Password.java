@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -38,30 +39,48 @@ public class Password extends StdCommand
 
 	private final String[] access={"PASSWORD"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		PlayerStats pstats=mob.playerStats();
+		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
 		if(mob.isMonster()) return false;
-		String old=mob.session().prompt("Enter your old password : ");
-		String nep=mob.session().prompt("Enter a new password    : ");
-		String ne2=mob.session().prompt("Enter new password again: ");
-		if(!pstats.matchesPassword(old))
-		{
-			mob.tell("Your old password was not entered correctly.");
-			return false;
-		}
-		if(!nep.equals(ne2))
-		{
-			mob.tell("Your new password was not entered the same way twice!");
-			return false;
-		}
-		pstats.setPassword(nep);
-		mob.tell("Your password has been changed.");
-		if(pstats.getAccount()!=null)
-			CMLib.database().DBUpdateAccount(pstats.getAccount());
-		CMLib.database().DBUpdatePassword(mob.Name(),pstats.getPasswordStr());
+		final Session sess=mob.session();
+		if(sess!=null)
+		sess.prompt(new InputCallback(InputCallback.Type.PROMPT) {
+			@Override public void showPrompt() { sess.promptPrint("Enter your old password : "); }
+			@Override public void timedOut() { }
+			@Override public void callBack() {
+				final String old=this.input;
+				sess.prompt(new InputCallback(InputCallback.Type.PROMPT) {
+					@Override public void showPrompt() { sess.promptPrint("Enter a new password    : "); }
+					@Override public void timedOut() { }
+					@Override public void callBack() {
+						final String nep=this.input;
+						sess.prompt(new InputCallback(InputCallback.Type.PROMPT) {
+							@Override public void showPrompt() { sess.promptPrint("Enter new password again: "); }
+							@Override public void timedOut() { }
+							@Override public void callBack() {
+								final String ne2=this.input;
+								if(!pstats.matchesPassword(old))
+									mob.tell("Your old password was not entered correctly.");
+								else
+								if(!nep.equals(ne2))
+									mob.tell("Your new password was not entered the same way twice!");
+								else
+								{
+									pstats.setPassword(nep);
+									mob.tell("Your password has been changed.");
+									if(pstats.getAccount()!=null)
+										CMLib.database().DBUpdateAccount(pstats.getAccount());
+									CMLib.database().DBUpdatePassword(mob.Name(),pstats.getPasswordStr());
+								}
+							}
+						});
+					}
+				});
+			}
+		});
 		return false;
 	}
 	
