@@ -231,6 +231,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			str.append(getGenScripts((Area)E,false));
 			str.append(CMLib.xml().convertXMLtoTag("AUTHOR",myArea.getAuthorID()));
 			str.append(CMLib.xml().convertXMLtoTag("CURRENCY",myArea.getCurrency()));
+			if(myArea instanceof SpaceShip)
+				str.append(CMLib.xml().convertXMLtoTag("DISP",CMLib.xml().parseOutAngleBrackets(myArea.displayText())));
 			Vector<String> V=new Vector<String>();
 			String flag=null;
 			for(Enumeration<String> f=myArea.areaBlurbFlags();f.hasMoreElements();)
@@ -1825,6 +1827,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Area)
 		{
 			((Area)E).setArchivePath(CMLib.xml().getValFromPieces(V,"ARCHP"));
+			if(E instanceof SpaceShip)
+				((Area)E).setDisplayText(CMLib.xml().getValFromPieces(V,"DISP"));
 			((Area)E).setAuthorID(CMLib.xml().getValFromPieces(V,"AUTHOR"));
 			((Area)E).setCurrency(CMLib.xml().getValFromPieces(V,"CURRENCY"));
 			List<XMLLibrary.XMLpiece> VP=CMLib.xml().getContentsFromPieces(V,"PARENTS");

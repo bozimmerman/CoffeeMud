@@ -8278,6 +8278,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			mob.tell("*. Class: "+myArea.ID());
 			genName(mob,myArea,++showNumber,showFlag);
+			if(myArea instanceof SpaceShip)
+				genDisplayText(mob,myArea,++showNumber,showFlag);
 			genDescription(mob,myArea,++showNumber,showFlag);
 			genAuthor(mob,myArea,++showNumber,showFlag);
 			getTheme(mob,myArea,++showNumber,showFlag);

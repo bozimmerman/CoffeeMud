@@ -53,6 +53,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected boolean   	amDestroyed 	=false;
 	protected String		name			="a space ship";
 	protected Room  		savedDock   	=null;
+	protected String		displayText 	="";
 	protected String		description 	="";
 	protected String		miscText		="";
 	protected SVector<Room> myRooms 		=new SVector();
@@ -260,8 +261,8 @@ public class StdSpaceShip implements Area, SpaceShip
 			return this.newInstance();
 		}
 	}
-	public String displayText(){return "";}
-	public void setDisplayText(String newDisplayText){}
+	public String displayText(){return displayText;}
+	public void setDisplayText(String newDisplayText){ displayText=newDisplayText; }
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 

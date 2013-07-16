@@ -1122,7 +1122,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						if(related)
 						{
 							LandTitle LT=CMLib.law().getLandTitle(A);
-							if(LT!=null) titles.put(A,LT);
+							if(LT!=null)
+							{
+								titles.put(A,LT);
+							}
 						}
 					}
 				}
