@@ -645,6 +645,12 @@ public class StdRoom implements Room
 				}
 				break;
 			}
+			case CMMsg.TYP_LOOK_EXITS:
+				if(msg.value()==CMMsg.MASK_OPTIMIZE)
+					CMLib.commands().lookAtExitsShort(this, msg.source());
+				else
+					CMLib.commands().lookAtExits(this, msg.source());
+				break;
 			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
 				CMLib.commands().handleBeingLookedAt(msg);

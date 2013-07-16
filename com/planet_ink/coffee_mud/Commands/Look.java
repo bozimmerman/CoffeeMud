@@ -64,10 +64,11 @@ public class Look extends StdCommand
 			
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 			{
+				CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
 				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
-					CMLib.commands().lookAtExitsShort(R,mob);
-				else
-					CMLib.commands().lookAtExits(R,mob);
+					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
+				if(R.okMessage(mob, exitMsg))
+					R.send(mob, exitMsg);
 				return false;
 			}
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
@@ -123,15 +124,15 @@ public class Look extends StdCommand
 						name=Directions.getDirectionName(dirCode);
 				}
 				CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
-				if(R.okMessage(mob,msg))
-					R.send(mob,msg);
 				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
 				{
+					CMMsg exitMsg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK_EXITS,null);
 					if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
-						CMLib.commands().lookAtExitsShort(R,mob);
-					else
-						CMLib.commands().lookAtExits((Room)thisThang,mob);
+						exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
+					msg.addTrailerMsg(exitMsg);
 				}
+				if(R.okMessage(mob,msg))
+					R.send(mob,msg);
 			}
 			else
 				mob.tell("You don't see that here!");
@@ -146,17 +147,15 @@ public class Look extends StdCommand
 				}
 
 			CMMsg msg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"at you."),CMMsg.MSG_LOOK,(quiet?null:textMsg+"around."));
+			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1)&&(CMLib.flags().canBeSeenBy(R,mob)))
+			{
+				CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
+					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
+				msg.addTrailerMsg(exitMsg);
+			}
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
-			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
-			&&(CMLib.flags().canBeSeenBy(R,mob))
-			&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))
-			{
-				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
-					CMLib.commands().lookAtExitsShort(R,mob);
-				else
-					CMLib.commands().lookAtExits(R,mob);
-			}
 		}
 		return false;
 	}

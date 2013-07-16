@@ -41,11 +41,15 @@ public class Exits extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(mob.location()!=null)
+		final Room R=mob.location();
+		if(R!=null)
+		{
+			CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
 			if((commands!=null)&&(commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("SHORT")))
-				CMLib.commands().lookAtExitsShort(mob.location(),mob);
-			else
-				CMLib.commands().lookAtExits(mob.location(),mob);
+				exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
+			if(R.okMessage(mob, exitMsg))
+				R.send(mob, exitMsg);
+		}
 		return false;
 	}
 	

@@ -59,7 +59,11 @@ public class Examine extends StdCommand
 			else
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
-				CMLib.commands().lookAtExits(mob.location(),mob);
+				CMMsg exitMsg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null);
+				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=2)!=CMath.bset(mob.getBitmap(), MOB.ATT_BRIEF))
+					exitMsg.setValue(CMMsg.MASK_OPTIMIZE);
+				if(mob.location().okMessage(mob, exitMsg))
+					mob.location().send(mob, exitMsg);
 				return false;
 			}
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
@@ -98,8 +102,8 @@ public class Examine extends StdCommand
 				CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,textMsg+name+" closely.");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
-				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
-					CMLib.commands().lookAtExits((Room)thisThang,mob);
+				if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(thisThang instanceof Room))
+					msg.addTrailerMsg(CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null));
 			}
 			else
 				mob.tell("You don't see that here!");
@@ -107,11 +111,10 @@ public class Examine extends StdCommand
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINE,(quiet?null:textMsg+"around carefully."));
+			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
+				msg.addTrailerMsg(CMClass.getMsg(mob,mob.location(),null,CMMsg.MSG_LOOK_EXITS,null));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
-			if((CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
-			&&(CMLib.flags().canBeSeenBy(mob.location(),mob)))
-				CMLib.commands().lookAtExits(mob.location(),mob);
 		}
 		return false;
 	}
