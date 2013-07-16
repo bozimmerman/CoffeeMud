@@ -3673,11 +3673,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 	}
 
-	public Area copyArea(Area A, String newName)
+	public Area copyArea(Area A, String newName, boolean savable)
 	{
 		Area newArea=(Area)A.copyOf();
 		newArea.setName(newName);
-		CMLib.database().DBCreateArea(newArea);
+		if(savable)
+			CMLib.database().DBCreateArea(newArea);
+		else
+			CMLib.flags().setSavable(newArea, false);
 		CMLib.map().addArea(newArea);
 		Map<String,String> altIDs=new Hashtable<String,String>();
 		for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
@@ -3694,12 +3697,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					newRoom.rawDoors()[d]=null;
 				newRoom.setRoomID(newArea.getNewRoomID(room,-1));
 				newRoom.setArea(newArea);
-				CMLib.database().DBCreateRoom(newRoom);
+				if(savable)
+					CMLib.database().DBCreateRoom(newRoom);
+				else
+					CMLib.flags().setSavable(newRoom, false);
 				altIDs.put(room.roomID(),newRoom.roomID());
-				if(newRoom.numInhabitants()>0)
-					CMLib.database().DBUpdateMOBs(newRoom);
-				if(newRoom.numItems()>0)
-					CMLib.database().DBUpdateItems(newRoom);
+				if(savable)
+				{
+					if(newRoom.numInhabitants()>0)
+						CMLib.database().DBUpdateMOBs(newRoom);
+					if(newRoom.numItems()>0)
+						CMLib.database().DBUpdateItems(newRoom);
+				}
 			}
 		}
 		for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
@@ -3721,10 +3730,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(myRID!=null) myR=CMLib.map().getRoom(myRID);
 					newRoom.rawDoors()[d]=myR;
 				}
-				CMLib.database().DBUpdateExits(newRoom);
+				if(savable)
+					CMLib.database().DBUpdateExits(newRoom);
 				newRoom.getArea().fillInAreaRoom(newRoom);
 			}
 		}
+		if(!savable)
+			CMLib.map().delArea(newArea);
 		return newArea;
 	}
 

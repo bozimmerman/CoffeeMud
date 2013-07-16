@@ -494,7 +494,7 @@ public class StdTitle extends StdItem implements LandTitle
 							return;
 						}
 					}
-					AREA=CMLib.coffeeMaker().copyArea(AREA,newName);
+					AREA=CMLib.coffeeMaker().copyArea(AREA,newName,true);
 					if(AREA==null)
 					{
 						msg.source().tell("Purchase failed.");

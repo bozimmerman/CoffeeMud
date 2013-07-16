@@ -124,7 +124,7 @@ public interface GenericBuilder extends CMLibrary
 	public int getGenMobCodeNum(String code);
 	public String getGenMobStat(MOB M, String code);
 	public void setGenMobStat(MOB M, String code, String val);
-	public Area copyArea(Area A, String newName);
+	public Area copyArea(Area A, String newName, boolean setSavable);
 	public String getFactionXML(MOB mob);
 	public void setFactionFromXML(MOB mob, List<XMLpiece> xml);
 }
