@@ -474,7 +474,11 @@ public class Modify extends StdCommand
 			CMLib.genEd().modifyGenArea(mob,myArea);
 		else
 		if((commands.size()==3)&&(CMLib.map().getArea((String)commands.elementAt(2))!=null))
-			CMLib.genEd().modifyGenArea(mob,CMLib.map().getArea((String)commands.elementAt(2)));
+		{
+			myArea=CMLib.map().getArea((String)commands.elementAt(2));
+			oldName=myArea.Name();
+			CMLib.genEd().modifyGenArea(mob,myArea);
+		}
 		else
 		{
 			if(commands.size()<3) { flunkAreaCmd(mob); return;}

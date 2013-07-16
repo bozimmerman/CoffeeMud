@@ -446,41 +446,53 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 			if(A.landOwner().length()==0)
 			{
-				Area AREA=CMLib.map().getArea(landPropertyID());
-				if((AREA!=null)&&(AREA.Name().indexOf("UNNAMED")>=0))
+				String newOwnerName=msg.source().Name();
+				if(((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CLANDSELLER)||((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CSHIPSELLER))
 				{
-					String newName="";
-					try{
-						while(newName.trim().length()==0)
-						{
-							String n=msg.source().session().prompt("What would you like to name your ship? ","").trim().toLowerCase();
-							if(n.indexOf(' ')>=0)
+					Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(msg.source(), Clan.Function.PROPERTY_OWNER);
+					if(clanPair!=null)
+						newOwnerName=clanPair.first.clanID();
+				}
+				
+				Area AREA=CMLib.map().getArea(landPropertyID());
+				String newName=newOwnerName+"`s "+AREA.Name();
+				if(AREA instanceof SpaceShip) // or its a boat
+				{
+					if(AREA.Name().indexOf("UNNAMED")>=0)
+					{
+						newName="";
+						try{
+							while(newName.trim().length()==0)
 							{
-								msg.source().tell("Spaces are not allowed in names! Please enter another one.");
-								newName="";
-							}
-							else
-							if(n.length()!=0)
-							{
-								String nn=CMStrings.replaceAll(AREA.Name(),"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
-								if(CMLib.players().playerExists(nn))
-									msg.source().tell("That name is already taken.  Please enter a different one.");
-								else
-								if(msg.source().session().confirm("If the name '"+nn+"' correct (y/N)?","N",60000))
+								String n=msg.source().session().prompt("What would you like to name your ship? ","",30000).trim().toLowerCase();
+								if(n.indexOf(' ')>=0)
 								{
-									name=CMStrings.replaceAll(name,"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
-									displayText=CMStrings.replaceAll(displayText,"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
-									setDescription(CMStrings.replaceAll(description(),"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase())));
-									newName=nn;
+									msg.source().tell("Spaces are not allowed in names! Please enter another one.");
+									newName="";
 								}
 								else
-									newName="";
+								if(n.length()!=0)
+								{
+									String nn=CMStrings.replaceAll(AREA.Name(),"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
+									if(CMLib.players().playerExists(nn))
+										msg.source().tell("That name is already taken.  Please enter a different one.");
+									else
+									if(msg.source().session().confirm("If the name '"+nn+"' correct (y/N)?","N",30000))
+									{
+										name=CMStrings.replaceAll(name,"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
+										displayText=CMStrings.replaceAll(displayText,"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
+										setDescription(CMStrings.replaceAll(description(),"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase())));
+										newName=nn;
+									}
+									else
+										newName="";
+								}
 							}
 						}
-					}
-					catch(Exception t)
-					{
-						return;
+						catch(Exception t)
+						{
+							return;
+						}
 					}
 					AREA=CMLib.coffeeMaker().copyArea(AREA,newName);
 					if(AREA==null)
@@ -515,15 +527,7 @@ public class StdTitle extends StdItem implements LandTitle
 						msg.source().tell("Your ship is located at "+spacePort.displayText()+".");
 					}
 				}
-				
-				if(((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CLANDSELLER)||((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CSHIPSELLER))
-				{
-					Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(msg.source(), Clan.Function.PROPERTY_OWNER);
-					if(clanPair!=null)
-						A.setLandOwner(clanPair.first.clanID());
-				}
-				else
-					A.setLandOwner(msg.source().Name());
+				A.setLandOwner(newOwnerName);
 				if(A.landOwner().length()>0)
 				{
 					setBackTaxes(0);

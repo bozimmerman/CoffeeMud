@@ -223,7 +223,8 @@ public class StdSpaceShip implements Area, SpaceShip
 		affects=new SVector<Ability>(1);
 		behaviors=new SVector<Behavior>(1);
 		scripts=new SVector<ScriptingEngine>(1);
-		parents=new SLinkedList(ship.parents);
+		parents=new SLinkedList<Area>();
+		parents.addAll(ship.parents);
 		for(Enumeration<Behavior> e=ship.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
@@ -958,7 +959,10 @@ public class StdSpaceShip implements Area, SpaceShip
 		return parents.descendingIterator();
 	}
 	
-	public Enumeration<Area> getParents() { return new IteratorEnumeration<Area>(parents.iterator()); }
+	public Enumeration<Area> getParents() 
+	{ 
+		return new IteratorEnumeration<Area>(parents.iterator()); 
+	}
 	
 	public List<Area> getParentsRecurse()
 	{
