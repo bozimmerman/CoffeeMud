@@ -254,7 +254,7 @@ public class StdLawBook extends StdItem
 				return oldLaw;
 		}
 
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			StringBuffer str=new StringBuffer("Modify Law: "+oldLaw[Law.BIT_CRIMENAME]+"\n\r\n\r");
 			str.append("1. Name          : "+oldLaw[Law.BIT_CRIMENAME]+"\n\r");
@@ -527,6 +527,7 @@ public class StdLawBook extends StdItem
 				}
 			}
 		}
+		return oldLaw;
 	}
 
 	public void doIllegalEmotation(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
@@ -534,7 +535,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P10"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Words",20)+" "+shortLawHeader()+"\n\r");
@@ -623,7 +624,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P10"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Items",20)+" "+shortLawHeader()+"\n\r");
@@ -720,7 +721,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P9"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Ability",20)+" "+shortLawHeader()+"\n\r");
@@ -836,7 +837,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P11"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append("1. PROPERTY TAX   : "+(CMath.s_double(theLaw.getInternalStr("PROPERTYTAX")))+"%\n\r");
@@ -942,7 +943,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P8"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Effect",20)+" "+shortLawHeader()+"\n\r");
@@ -1057,7 +1058,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P6"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append(CMStrings.padRight("#  Law Name",20)+" "+shortLawHeader()+"\n\r");
@@ -1112,7 +1113,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P5"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append("1. LEVEL 1 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE1TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
@@ -1200,7 +1201,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P4"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append("1. LEVEL 1 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL1TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
@@ -1288,7 +1289,7 @@ public class StdLawBook extends StdItem
 	{
 		if(mob.session()==null) return;
 		mob.tell(getFromTOC("P7"+(theLaw.hasModifiableLaws()?"MOD":"")));
-		while(true)
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
 		{
 			mob.tell("1. Trespassers : "+CMLib.masking().maskDesc(theLaw.getInternalStr("TRESPASSERS")));
 			mob.tell("2. Law         : "+shortLawDesc(theLaw.basicCrimes().get("TRESPASSING")));

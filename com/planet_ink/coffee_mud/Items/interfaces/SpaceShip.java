@@ -34,4 +34,8 @@ public interface SpaceShip extends SpaceObject
 	public void dockHere(Room R);
 
 	public void unDock(boolean toSpace);
+	
+	public Manufacturer getManufacturer();
+	
+	public void setManufacturer(Manufacturer it);
 }

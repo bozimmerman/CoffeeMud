@@ -56,6 +56,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected String		displayText 	="";
 	protected String		description 	="";
 	protected String		miscText		="";
+	protected Manufacturer	manufacturer	=CMLib.tech().getDefaultManufacturer();
 	protected SVector<Room> myRooms 		=new SVector();
 	protected State   		flag			=State.ACTIVE;
 	protected long  		tickStatus  	=Tickable.STATUS_NOT;
@@ -107,6 +108,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void setVelocity(long v){velocity=v;}
 	public long accelleration(){return accelleration;}
 	public void setAccelleration(long v){accelleration=v;}
+	public Manufacturer getManufacturer() { return manufacturer; }
+	public void setManufacturer(Manufacturer it) { this.manufacturer=it; }
 	
 	public void destroy()
 	{

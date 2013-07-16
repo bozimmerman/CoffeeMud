@@ -144,7 +144,7 @@ public class StdJournal extends StdItem
 						||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 					{
 						boolean repeat=true;
-						while(repeat)
+						while((repeat)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 						{
 							repeat=false;
 							try
@@ -226,7 +226,14 @@ public class StdJournal extends StdItem
 								else
 								if(s.equalsIgnoreCase("T"))
 								{
-									String journal=mob.session().prompt("Enter the journal to transfer this msg to: ","");
+									String journal;
+									try { 
+										journal=mob.session().prompt("Enter the journal to transfer this msg to: ","",30000); 
+									} catch(IOException e) {
+										mob.tell("Timed out.");
+										repeat=true;
+										continue;
+									}
 									journal=journal.trim();
 									if(journal.length()>0)
 									{
