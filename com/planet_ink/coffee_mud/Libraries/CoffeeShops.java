@@ -807,9 +807,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
 			{
+				final String dirName=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
+						Directions.getShipDirectionName(d):Directions.getDirectionName(d);
 				if(addThis.length()>0)
-					return addThis+" and to the "+(Directions.getDirectionName(d).toLowerCase());
-				return "to the "+(Directions.getDirectionName(d).toLowerCase());
+					return addThis+" and to the "+dirName.toLowerCase();
+				return "to the "+dirName.toLowerCase();
 			}
 		}
 		return null;

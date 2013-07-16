@@ -884,7 +884,9 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around to the "+Directions.getInDirectionName(direction)+".");
+		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
+		final String inDirName=useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction);
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around to the "+inDirName+".");
 		Exit copyExit=(Exit)thisExit.copyOf();
 		if(thisExit.isGeneric() && (commands.size()<5))
 		{

@@ -86,7 +86,11 @@ public class Unlock extends StdCommand
 					if((opE!=null)
 					&&(!opE.isLocked())
 					&&(!((Exit)unlockThis).isLocked()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+Directions.getInDirectionName(opCode)+" is unlocked from the other side.");
+					{
+						final boolean useShipDirs=(opR instanceof SpaceShip)||(opR.getArea() instanceof SpaceShip);
+						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
+						opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+inDirName+" is unlocked from the other side.");
+					}
 				}
 			}
 		}

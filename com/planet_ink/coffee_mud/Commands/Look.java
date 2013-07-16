@@ -121,7 +121,8 @@ public class Look extends StdCommand
 						name="around";
 					else
 					if(dirCode>=0)
-						name=Directions.getDirectionName(dirCode);
+						name=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
+								Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
 				}
 				CMMsg msg=CMClass.getMsg(mob,thisThang,lookingTool,CMMsg.MSG_LOOK,textMsg+name+".");
 				if((thisThang instanceof Room)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=1))

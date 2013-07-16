@@ -338,8 +338,11 @@ public class Destroy extends StdCommand
 				CMLib.database().DBUpdateExits(GL);
 			}
 			mob.location().getArea().fillInAreaRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
-			Log.sysOut("Rooms",mob.Name()+" unlinked direction "+Directions.getDirectionName(direction)+" from room "+mob.location().roomID()+".");
+			final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
+			final String inDirName=useShipDirs?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A wall of inhibition falls "+inDirName+".");
+			final String dirName=useShipDirs?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
+			Log.sysOut("Rooms",mob.Name()+" unlinked direction "+dirName+" from room "+mob.location().roomID()+".");
 		}
 	}
 
@@ -377,7 +380,8 @@ public class Destroy extends StdCommand
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
+		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A wall of inhibition falls "+(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))+".");
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
 

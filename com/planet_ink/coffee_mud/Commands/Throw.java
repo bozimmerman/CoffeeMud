@@ -127,8 +127,12 @@ public class Throw extends StdCommand
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
-			CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<O-NAME> fl(ys) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
+			final boolean useShipDirs=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip));
+			final int opDir=Directions.getOpDirectionCode(dir);
+			final String inDir=useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir);
+			final String fromDir=useShipDirs?Directions.getShipFromDirectionName(opDir):Directions.getFromDirectionName(opDir);
+			CMMsg msg=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> "+inDir.toLowerCase()+".");
+			CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,"<O-NAME> fl(ys) in from "+fromDir.toLowerCase()+".");
 			if(mob.location().okMessage(mob,msg)&&((Room)target).okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);

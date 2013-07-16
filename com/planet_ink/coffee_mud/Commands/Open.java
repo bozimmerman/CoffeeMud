@@ -69,7 +69,11 @@ public class Open extends StdCommand
 					}
 					int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)&&(opE.isOpen())&&(((Exit)openThis).isOpen()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+Directions.getInDirectionName(opCode)+" opens.");
+					{
+						final boolean useShipDirs=(opR instanceof SpaceShip)||(opR.getArea() instanceof SpaceShip);
+						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
+						opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+inDirName+" opens.");
+					}
 					return true;
 				}
 			}

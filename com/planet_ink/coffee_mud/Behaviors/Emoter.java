@@ -355,7 +355,10 @@ public class Emoter extends ActiveTicker
 					Exit E=room.getExitInDir(d);
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
-						emoter.setName("something "+Directions.getInDirectionName(Directions.getOpDirectionCode(d)));
+						final String inDir=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
+								Directions.getShipInDirectionName(Directions.getOpDirectionCode(d)):
+									Directions.getInDirectionName(Directions.getOpDirectionCode(d));
+						emoter.setName("something "+inDir);
 						emoteHere(R,emoter,emote,null,true);
 					}
 				}

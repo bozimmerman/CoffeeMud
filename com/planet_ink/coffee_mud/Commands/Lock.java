@@ -86,7 +86,11 @@ public class Lock extends StdCommand
 					if((opE!=null)
 					&&(opE.isLocked())
 					&&(((Exit)lockThis).isLocked()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+Directions.getInDirectionName(opCode)+" is locked from the other side.");
+					{
+						final boolean useShipDirs=(opR instanceof SpaceShip)||(opR.getArea() instanceof SpaceShip);
+						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode);
+						opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+inDirName+" is locked from the other side.");
+					}
 				}
 			}
 		}

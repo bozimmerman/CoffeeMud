@@ -59,6 +59,7 @@ public class Close extends StdCommand
 			mob.tell("You don't see '"+whatToClose+"' here.");
 			return false;
 		}
+		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
 		final String closeWord=(!(closeThis instanceof Exit))?"close":((Exit)closeThis).closeWord();
 		final String closeMsg="<S-NAME> "+closeWord+"(s) <T-NAMESELF>."+CMLib.protocol().msp("dooropen.wav",10);
 		CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,closeMsg,whatToClose,closeMsg);
@@ -87,7 +88,7 @@ public class Close extends StdCommand
 					if((opE!=null)
 					&&(!opE.isOpen())
 					&&(!((Exit)closeThis).isOpen()))
-					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+Directions.getInDirectionName(opCode)+" closes.");
+					   opR.showHappens(CMMsg.MSG_OK_ACTION,opE.name()+" "+(useShipDirs?Directions.getShipInDirectionName(opCode):Directions.getInDirectionName(opCode))+" closes.");
 				}
 			}
 		}

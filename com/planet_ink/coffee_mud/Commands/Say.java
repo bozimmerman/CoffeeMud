@@ -175,6 +175,7 @@ public class Say extends StdCommand
 	
 		gmcpSaySend("say", mob, target, msg);
 		
+		final boolean useShipDirs=(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
@@ -186,7 +187,9 @@ public class Say extends StdCommand
 					if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
 					{
 						Environmental tool=msg.tool();
-						msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
+						final int opDirCode=Directions.getOpDirectionCode(d);
+						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opDirCode):Directions.getInDirectionName(opDirCode);
+						msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+inDirName+"^?");
 						if((R2.okMessage(mob,msg))
 						&&((tool==null)||(tool.okMessage(mob,msg))))
 						{

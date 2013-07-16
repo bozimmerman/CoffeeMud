@@ -97,7 +97,8 @@ public class Examine extends StdCommand
 						name="around";
 					else
 					if(dirCode>=0)
-						name=Directions.getDirectionName(dirCode);
+						name=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
+							Directions.getShipDirectionName(dirCode):Directions.getDirectionName(dirCode);
 				}
 				CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_EXAMINE,textMsg+name+" closely.");
 				if(mob.location().okMessage(mob,msg))

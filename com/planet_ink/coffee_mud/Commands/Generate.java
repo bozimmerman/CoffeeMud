@@ -51,7 +51,8 @@ public class Generate extends StdCommand
 	private final String[] access={"GENERATE"};
 	public String[] getAccessWords(){return access;}
 
-	public void createNewPlace(MOB mob, Room oldR, Room R, int direction) {
+	public void createNewPlace(MOB mob, Room oldR, Room R, int direction) 
+	{
 		Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
 		if(E==null) E = CMClass.getExit("Open");
 		oldR.setRawExit(direction, E);
@@ -65,7 +66,9 @@ public class Generate extends StdCommand
 			R.rawDoors()[opDir]=oldR;
 		}
 		CMLib.database().DBUpdateExits(oldR);
-		oldR.showHappens(CMMsg.MSG_OK_VISUAL,"A new place materializes to the "+Directions.getDirectionName(direction));
+		String dirName=((R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip))?
+				Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
+		oldR.showHappens(CMMsg.MSG_OK_VISUAL,"A new place materializes to the "+dirName);
 	}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
@@ -127,7 +130,9 @@ public class Generate extends StdCommand
 			}
 			if(mob.location().getRoomInDir(direction)!=null) 
 			{
-				mob.tell("A room already exists in direction "+Directions.getDirectionName(direction)+". Action aborted.");
+				String dirName=((mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip))?
+						Directions.getShipDirectionName(direction):Directions.getDirectionName(direction);
+				mob.tell("A room already exists in direction "+dirName+". Action aborted.");
 				return false;
 			}
 		}

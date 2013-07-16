@@ -238,7 +238,8 @@ public class Copy extends StdCommand
 				}
 				if(room.getRoomInDir(dirCode)!=null)
 				{
-					mob.tell("A room already exists "+Directions.getInDirectionName(dirCode)+"!");
+					final boolean useShipDirs=(room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip);
+					mob.tell("A room already exists "+(useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode))+"!");
 					return false;
 				}
 				synchronized(("SYNC"+room.roomID()).intern())
@@ -273,16 +274,18 @@ public class Copy extends StdCommand
 					if(newRoom.numItems()>0)
 						CMLib.database().DBUpdateItems(newRoom);
 					newRoom.getArea().fillInAreaRoom(newRoom);
+					final boolean useShipDirs=(room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip);
+					final String inDirName=useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode);
 					if(i==0)
 					{
 						if(number>1)
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newRoom.roomTitle(mob)+"s fall "+Directions.getInDirectionName(dirCode)+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newRoom.roomTitle(mob)+"s fall "+inDirName+".");
 						else
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle(mob)+" falls "+Directions.getInDirectionName(dirCode)+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle(mob)+" falls "+inDirName+".");
 						Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+newRoom.roomID()+".");
 					}
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle(mob)+" falls "+Directions.getInDirectionName(dirCode)+".");
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle(mob)+" falls "+inDirName+".");
 					room=newRoom;
 				}
 			}
@@ -313,7 +316,9 @@ public class Copy extends StdCommand
 						editRoom.setRawExit(dirCode, E);
 						CMLib.database().DBUpdateExits(editRoom);
 					}
-					room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+E.name()+" falls "+Directions.getInDirectionName(dirCode)+".");
+					final boolean useShipDirs=(editRoom instanceof SpaceShip)||(editRoom.getArea() instanceof SpaceShip);
+					final String inDirName=useShipDirs?Directions.getShipInDirectionName(dirCode):Directions.getInDirectionName(dirCode);
+					room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+E.name()+" falls "+inDirName+".");
 				}
 			}
 			else

@@ -1,5 +1,8 @@
 package com.planet_ink.coffee_mud.core;
 
+import com.planet_ink.coffee_mud.Items.interfaces.SpaceShip;
+import com.planet_ink.coffee_mud.Locales.interfaces.Room;
+
 /* 
    Copyright 2000-2013 Bo Zimmerman
 
@@ -62,27 +65,39 @@ public class Directions
 	public static final int SOUTHWEST=10;
 	
 	public static final String[] DIRECTION_CHARS={"N","S","E","W","U","D","V","NE","NW","SE","SW"};
-	public static final String[][] DIRECTIONS_FULL_CHART={
-		{"UP",""+UP},
-		{"ABOVE",""+UP},
-		{"NORTH",""+NORTH},
-		{"EAST",""+EAST},
-		{"WEST",""+WEST},
-		{"SOUTH",""+SOUTH},
-		{"NORTHEAST",""+NORTHEAST},
-		{"NORTHWEST",""+NORTHWEST},
-		{"SOUTHWEST",""+SOUTHWEST},
-		{"SOUTHEAST",""+SOUTHEAST},
-		{"NW",""+NORTHWEST},
-		{"NE",""+NORTHEAST},
-		{"SW",""+SOUTHWEST},
-		{"SE",""+SOUTHEAST},
-		{"DOWN",""+DOWN},
-		{"BELOW",""+DOWN},
-		{"NOWHERE",""+GATE},
-		{"HERE",""+GATE},
-		{"THERE",""+GATE},
-		{"VORTEX",""+GATE}
+	public static final Object[][] DIRECTIONS_FULL_CHART={
+		{"UP",Integer.valueOf(UP)},
+		{"ABOVE",Integer.valueOf(UP)},
+		{"NORTH",Integer.valueOf(NORTH)},
+		{"FORE",Integer.valueOf(NORTH)},
+		{"EAST",Integer.valueOf(EAST)},
+		{"STARBOARD",Integer.valueOf(EAST)},
+		{"WEST",Integer.valueOf(WEST)},
+		{"PORT",Integer.valueOf(WEST)},
+		{"SOUTH",Integer.valueOf(SOUTH)},
+		{"AFT",Integer.valueOf(SOUTH)},
+		{"NORTHEAST",Integer.valueOf(NORTHEAST)},
+		{"FORESTARBOARD",Integer.valueOf(NORTHEAST)},
+		{"NORTHWEST",Integer.valueOf(NORTHWEST)},
+		{"FOREPORT",Integer.valueOf(NORTHWEST)},
+		{"SOUTHWEST",Integer.valueOf(SOUTHWEST)},
+		{"AFTPORT",Integer.valueOf(SOUTHWEST)},
+		{"SOUTHEAST",Integer.valueOf(SOUTHEAST)},
+		{"AFTSTARBOARD",Integer.valueOf(SOUTHEAST)},
+		{"NW",Integer.valueOf(NORTHWEST)},
+		{"NE",Integer.valueOf(NORTHEAST)},
+		{"SW",Integer.valueOf(SOUTHWEST)},
+		{"SE",Integer.valueOf(SOUTHEAST)},
+		{"FP",Integer.valueOf(NORTHWEST)},
+		{"FS",Integer.valueOf(NORTHEAST)},
+		{"AP",Integer.valueOf(SOUTHWEST)},
+		{"AS",Integer.valueOf(SOUTHEAST)},
+		{"DOWN",Integer.valueOf(DOWN)},
+		{"BELOW",Integer.valueOf(DOWN)},
+		{"NOWHERE",Integer.valueOf(GATE)},
+		{"HERE",Integer.valueOf(GATE)},
+		{"THERE",Integer.valueOf(GATE)},
+		{"VORTEX",Integer.valueOf(GATE)}
 	};
 											   
 	public static final String getDirectionName(final String theDir)
@@ -147,6 +162,36 @@ public class Directions
 		return "";
 	}
 
+	public static final String getShipDirectionName(final int code)
+	{
+		switch(code)
+		{
+			case NORTH:
+				return "Fore";
+			case SOUTH:
+				return "Aft";
+			case EAST:
+				return "Starboard";
+			case WEST:
+				return "Port";
+			case UP:
+				return "Above";
+			case DOWN:
+				return "Below";
+			case GATE:
+				return "There";
+			case NORTHEAST:
+				return "Fore-Starboard";
+			case NORTHWEST:
+				return "Fore-Port";
+			case SOUTHEAST:
+				return "Aft-Starboard";
+			case SOUTHWEST:
+				return "Aft-Port";
+		}
+		return "";
+	}
+
 	public static final String getDirectionChar(final int code)
 	{
 		if(code<NUM_DIRECTIONS())
@@ -172,9 +217,9 @@ public class Directions
 		if(theDir.length()==0) return -1;
 		final String upDir=theDir.toUpperCase();
 		for(int i=0;i<DIRECTIONS_FULL_CHART.length;i++)
-			if((DIRECTIONS_FULL_CHART[i][0].startsWith(upDir))
-			&&(CMath.s_int(DIRECTIONS_FULL_CHART[i][1])<NUM_DIRECTIONS()))
-				return CMath.s_int(DIRECTIONS_FULL_CHART[i][1]); 
+			if((DIRECTIONS_FULL_CHART[i][0].toString().startsWith(upDir))
+			&&(((Integer)DIRECTIONS_FULL_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)DIRECTIONS_FULL_CHART[i][1]).intValue(); 
 		return -1;
 	}
 	
@@ -198,12 +243,6 @@ public class Directions
 	}
 	
 
-	public static final String getFromDirectionName(final String theDir)
-	{
-		final int code=getDirectionCode(theDir);
-		return getFromDirectionName(code);
-	}
-	
 	public static final String getFromDirectionName(final int code)
 	{
 		switch(code)
@@ -234,6 +273,36 @@ public class Directions
 		return "";
 	}
 	
+	public static final String getShipFromDirectionName(final int code)
+	{
+		switch(code)
+		{
+		case NORTH:
+			return "forward";
+		case SOUTH:
+			return "aft";
+		case EAST:
+			return "starboard";
+		case WEST:
+			return "portside";
+		case UP:
+			return "above";
+		case DOWN:
+			return "below";
+		case GATE:
+			return "out of nowhere";
+		case NORTHEAST:
+			return "forward starboard";
+		case NORTHWEST:
+			return "forward portside";
+		case SOUTHEAST:
+			return "aft starboard";
+		case SOUTHWEST:
+			return "aft portside";
+		}
+		return "";
+	}
+	
 	public static final String getInDirectionName(final int code)
 	{
 		switch(code)
@@ -254,6 +323,36 @@ public class Directions
 			return "to the southeast";
 		case SOUTHWEST:
 			return "to the southwest";
+		case UP:
+			return "above you";
+		case DOWN:
+			return "below";
+		case GATE:
+			return "there";
+		}
+		return "";
+	}
+	
+	public static final String getShipInDirectionName(final int code)
+	{
+		switch(code)
+		{
+		case NORTH:
+			return "to foreward";
+		case SOUTH:
+			return "to aft";
+		case EAST:
+			return "to starboard";
+		case WEST:
+			return "to port";
+		case NORTHEAST:
+			return "to forward starboard";
+		case NORTHWEST:
+			return "to forward port";
+		case SOUTHEAST:
+			return "to aft starboard";
+		case SOUTHWEST:
+			return "to aft port";
 		case UP:
 			return "above you";
 		case DOWN:

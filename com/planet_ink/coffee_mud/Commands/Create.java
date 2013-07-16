@@ -91,10 +91,11 @@ public class Create extends StdCommand
 		}
 
 
+		final boolean useShipDirs=(mob.location() instanceof SpaceShip)||(mob.location().getArea() instanceof SpaceShip);
 		mob.location().setRawExit(direction,thisExit);
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a portal opens up "+Directions.getInDirectionName(direction)+".\n\r");
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a portal opens up "+(useShipDirs?Directions.getShipInDirectionName(direction):Directions.getInDirectionName(direction))+".\n\r");
 		CMLib.database().DBUpdateExits(mob.location());
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{

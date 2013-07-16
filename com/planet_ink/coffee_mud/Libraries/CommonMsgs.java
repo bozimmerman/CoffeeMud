@@ -1242,6 +1242,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		Vector<Integer> exitDirs=new Vector<Integer>();
 		Room R;
 		Exit E;
+		final boolean useShipNames=((room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip));
 		for(int dir : Directions.DIRECTIONS_BASE())
 		{
 			E = room.getExitInDir(dir);
@@ -1263,12 +1264,23 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			str.append("  ^L"+CMStrings.capitalizeFirstLetter(room.roomTitle(mob)).trim()+" continues ");
 			if(continues.size()==1)
-				str.append(Directions.getInDirectionName(continues.firstElement().intValue())+".");
+			{
+				if(useShipNames)
+					str.append(Directions.getShipInDirectionName(continues.firstElement().intValue())+".");
+				else
+					str.append(Directions.getInDirectionName(continues.firstElement().intValue())+".");
+			}
 			else
 			{
 				for(int i=0;i<continues.size()-1;i++)
-					str.append(Directions.getDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
-				str.append("and "+Directions.getInDirectionName(continues.lastElement().intValue()).trim()+".");
+					if(useShipNames)
+						str.append(Directions.getShipDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
+					else
+						str.append(Directions.getDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
+				if(useShipNames)
+					str.append("and "+Directions.getShipInDirectionName(continues.lastElement().intValue()).trim()+".");
+				else
+					str.append("and "+Directions.getInDirectionName(continues.lastElement().intValue()).trim()+".");
 			}
 		}
 		boolean style=CMLib.dice().rollPercentage()>50;
@@ -1292,12 +1304,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(room==null) return "";
 		Exit exit = room.getExitInDir(dir);
 		if(exit == null) return "";
+		final boolean useShipDirs=(room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip);
+		final String inDirName=useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir);
 		if(style)
-			return Directions.getInDirectionName(dir)
-				   + " is " +exit.viewableText(mob, room.getRoomInDir(dir));
+			return inDirName   + " is " +exit.viewableText(mob, room.getRoomInDir(dir));
 		else
-			return exit.viewableText(mob, room.getRoomInDir(dir)).toString().trim()
-				   +" is " + Directions.getInDirectionName(dir);
+			return exit.viewableText(mob, room.getRoomInDir(dir)).toString().trim()   +" is " + inDirName;
 	}
 		
 	public boolean isHygenicMessage(final CMMsg msg, final int minHygeine, final long adjHygiene)
@@ -1742,6 +1754,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return;
 		}
 
+		final boolean useShipNames=((room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip));
 		StringBuilder buf=new StringBuilder("^DObvious exits:^.^N\n\r");
 		String Dir=null;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -1756,7 +1769,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				Say.append(room2.roomID()+" via NULL");
 			if(Say.length()>0)
 			{
-				Dir=CMStrings.padRightPreserve(Directions.getDirectionName(d),5);
+				Dir=CMStrings.padRightPreserve(useShipNames?Directions.getShipDirectionName(d):Directions.getDirectionName(d),5);
 				if((mob.playerStats()!=null)
 				&&(room2!=null)
 				&&(!mob.playerStats().hasVisited(room2)))
@@ -1790,12 +1803,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if((mob==null)||(room==null)||(mob.isMonster())) return;
 		if(!CMLib.flags().canSee(mob)) return;
 
+		final boolean useShipNames=((room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip));
 		StringBuilder buf=new StringBuilder("^D[Exits: ");
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Exit exit=room.getExitInDir(d);
 			if((exit!=null)&&(exit.viewableText(mob, room.getRoomInDir(d)).length()>0))
-				buf.append("^<EX^>"+Directions.getDirectionName(d)+"^</EX^> ");
+				buf.append("^<EX^>"+(useShipNames?Directions.getShipDirectionName(d):Directions.getDirectionName(d))+"^</EX^> ");
 		}
 		Item I=null;
 		for(int i=0;i<room.numItems();i++)

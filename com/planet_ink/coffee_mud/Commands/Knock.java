@@ -100,7 +100,11 @@ public class Knock extends StdCommand
 						{
 							Room R3=R2.getRoomInDir(dir2);
 							if(((R3!=null)&&(R3.domainType()&Room.INDOORS)==Room.INDOORS))
-								R2.showHappens(CMMsg.MASK_SOUND|CMMsg.TYP_KNOCK,"You hear a knock "+Directions.getInDirectionName(dir2)+"."+CMLib.protocol().msp("knock.wav",50));
+							{
+								final boolean useShipDirs=(R2 instanceof SpaceShip)||(R2.getArea() instanceof SpaceShip);
+								final String inDirName=useShipDirs?Directions.getShipInDirectionName(dir2):Directions.getInDirectionName(dir2);
+								R2.showHappens(CMMsg.MASK_SOUND|CMMsg.TYP_KNOCK,"You hear a knock "+inDirName+"."+CMLib.protocol().msp("knock.wav",50));
+							}
 						}
 					}
 				}

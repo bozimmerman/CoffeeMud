@@ -1682,7 +1682,10 @@ public class StdRoom implements Room
 		{
 			for(int e=0;e<exits.length;e++)
 				if(exits[e]==E)
-					return Directions.getDirectionName(e);
+					if((this instanceof SpaceShip)||(this.getArea() instanceof SpaceShip))
+						return Directions.getShipDirectionName(e);
+					else
+						return Directions.getDirectionName(e);
 			return E.Name();
 		}
 		else
@@ -1878,9 +1881,13 @@ public class StdRoom implements Room
 		if((mob!=null)&&(found==null))
 			found=mob.fetchItem(goodLocation,filter,thingName);
 		if(found==null)
-		for(int d=0;d<exits.length;d++)
-			if((exits[d]!=null)&&(thingName.equalsIgnoreCase(Directions.getDirectionName(d))))
-				return getExitInDir(d);
+		{
+			boolean inShip=(this instanceof SpaceShip)||(this.getArea() instanceof SpaceShip);
+			for(int d=0;d<exits.length;d++)
+				if((exits[d]!=null)
+				&&(thingName.equalsIgnoreCase(inShip?Directions.getShipDirectionName(d):Directions.getDirectionName(d))))
+					return getExitInDir(d);
+		}
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
