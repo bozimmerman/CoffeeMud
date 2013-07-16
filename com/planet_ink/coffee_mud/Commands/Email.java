@@ -57,7 +57,7 @@ public class Email extends StdCommand
 
 			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			{
-				mob.tell("A mailbox has not been defined by this muds administrators.");
+				mob.tell("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received.");
 				return false;
 			}
 			String name=CMParms.combine(commands,1);
