@@ -109,7 +109,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public long accelleration(){return accelleration;}
 	public void setAccelleration(long v){accelleration=v;}
 	public Manufacturer getManufacturer() { return manufacturer; }
-	public void setManufacturer(Manufacturer it) { this.manufacturer=it; }
+	public void setManufacturer(Manufacturer it) { if(it != null) this.manufacturer=it; }
 	
 	public void destroy()
 	{
@@ -1062,7 +1062,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public String finalDevalueRate(){ return "";}
    
 	public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS"};
+	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS","MANUFACTURER"};
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
@@ -1079,6 +1079,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		case 3: return text();
 		case 4: return ""+getTheme();
 		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
+		case 6: return getManufacturer().name();
 		}
 		return "";
 	}
@@ -1113,6 +1114,7 @@ public class StdSpaceShip implements Area, SpaceShip
 			}
 			break;
 		}
+		case 6: setManufacturer(CMLib.tech().getManufacturer(val)); break;
 		}
 	}
 	public boolean sameAs(Environmental E)
