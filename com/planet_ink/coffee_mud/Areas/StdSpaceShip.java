@@ -71,6 +71,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected SLinkedList<Area> 		parents=new SLinkedList<Area>();
 	protected STreeMap<String,String>   blurbFlags=new STreeMap<String,String>();
 
+	public String ID(){    return "StdSpaceShip";}
+	
 	public void initializeClass(){}
 	public long[] coordinates(){return coordinates;}
 	public double[] direction(){return direction;}
@@ -140,7 +142,6 @@ public class StdSpaceShip implements Area, SpaceShip
 				&& (CMLib.flags().isSavable(this)));
 	}
 	public void setSavable(boolean truefalse){CMLib.flags().setSavable(this, truefalse);}
-	public String ID(){    return "StdSpaceShip";}
 	public int climateType(){return Area.CLIMASK_NORMAL;}
 	public void setClimateType(int newClimateType){}
 
