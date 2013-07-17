@@ -294,7 +294,8 @@ public class Create extends StdCommand
 		}
 		thisRoom.setDisplayText(CMClass.classID(thisRoom)+"-"+thisRoom.roomID());
 		thisRoom.setDescription("");
-		CMLib.database().DBCreateRoom(thisRoom);
+		if(CMLib.flags().isSavable(thisRoom))
+			CMLib.database().DBCreateRoom(thisRoom);
 
 		CMLib.map().createNewExit(mob.location(),thisRoom,direction);
 
