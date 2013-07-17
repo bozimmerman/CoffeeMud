@@ -69,11 +69,11 @@ public class Directions
 		{"UP",Integer.valueOf(UP)},
 		{"ABOVE",Integer.valueOf(UP)},
 		{"NORTH",Integer.valueOf(NORTH)},
-		{"FORE",Integer.valueOf(NORTH)},
+		{"FOREWARD",Integer.valueOf(NORTH)},
 		{"EAST",Integer.valueOf(EAST)},
 		{"STARBOARD",Integer.valueOf(EAST)},
 		{"WEST",Integer.valueOf(WEST)},
-		{"PORT",Integer.valueOf(WEST)},
+		{"PORTSIDE",Integer.valueOf(WEST)},
 		{"SOUTH",Integer.valueOf(SOUTH)},
 		{"AFT",Integer.valueOf(SOUTH)},
 		{"NORTHEAST",Integer.valueOf(NORTHEAST)},
@@ -167,13 +167,13 @@ public class Directions
 		switch(code)
 		{
 			case NORTH:
-				return "Fore";
+				return "Foreward";
 			case SOUTH:
 				return "Aft";
 			case EAST:
 				return "Starboard";
 			case WEST:
-				return "Port";
+				return "Portside";
 			case UP:
 				return "Above";
 			case DOWN:
@@ -278,7 +278,7 @@ public class Directions
 		switch(code)
 		{
 		case NORTH:
-			return "forward";
+			return "foreward";
 		case SOUTH:
 			return "aft";
 		case EAST:
@@ -344,7 +344,7 @@ public class Directions
 		case EAST:
 			return "to starboard";
 		case WEST:
-			return "to port";
+			return "to portside";
 		case NORTHEAST:
 			return "to forward starboard";
 		case NORTHWEST:
@@ -352,7 +352,7 @@ public class Directions
 		case SOUTHEAST:
 			return "to aft starboard";
 		case SOUTHWEST:
-			return "to aft port";
+			return "to aft portside";
 		case UP:
 			return "above you";
 		case DOWN:
