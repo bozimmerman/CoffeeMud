@@ -823,7 +823,19 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					Say.append(" (^gbusy^?)");
 				for(int i=0;i<ambiances.length;i++)
 					if(!ambiances[i].startsWith("-"))
-						Say.append(" ("+ambiances[i]+"^?)");
+					{
+						if(ambiances[i].startsWith("(?)"))
+						{
+							int x=ambiances[i].indexOf(':');
+							if(canBeHeardSpeakingBy(seen, seer))
+								Say.append(" ("+ambiances[i].substring(3,(x>3)?x:ambiances[i].length())+"^?)");
+							else
+							if(x>3)
+								Say.append(" ("+ambiances[i].substring(x+1)+"^?)");
+						}
+						else
+							Say.append(" ("+ambiances[i]+"^?)");
+					}
 			}
 			if(isBound(seen)&&(!CMStrings.contains(ambiances,"-BOUND")))
 				Say.append(" (^Wbound^?)");

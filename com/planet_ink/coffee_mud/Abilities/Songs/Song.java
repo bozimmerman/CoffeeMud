@@ -70,7 +70,7 @@ public class Song extends StdAbility
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		if(this.invoker()==affectedEnv)
-			affectableStats.addAmbiance("singing of "+songOf().toLowerCase());
+			affectableStats.addAmbiance("(?)singing of "+songOf().toLowerCase());
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 	

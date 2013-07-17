@@ -174,7 +174,7 @@ public class Play extends StdAbility
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
 		if((this.invoker()==affectedEnv)&&(instrument!=null))
-			affectableStats.addAmbiance("playing "+songOf().toLowerCase()+" on "+instrument.name());
+			affectableStats.addAmbiance("(?)playing "+songOf().toLowerCase()+" on "+instrument.name()+":playing "+instrument.name());
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 	
