@@ -32,15 +32,25 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Southwest extends Go
+public class Aft extends Go
 {
-	public Southwest(){}
+	public Aft(){}
 
-	private final String[] access={"SOUTHWEST","SW"};
+	private final String[] access={"AFT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		int direction=Directions.SOUTH;
+		if((commands!=null)&&(commands.size()>1))
+		{
+			int nextDir=Directions.getDirectionCode((String)commands.get(2));
+			if(nextDir == Directions.EAST)
+				direction=Directions.SOUTHEAST;
+			else
+			if(nextDir == Directions.WEST)
+				direction=Directions.SOUTHWEST;
+		}
 		standIfNecessary(mob,metaFlags);
 		if((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
 		{
@@ -48,18 +58,16 @@ public class Southwest extends Go
 			return false;
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))
-			CMLib.tracking().run(mob, Directions.SOUTHWEST, false,false,false);
+			CMLib.tracking().run(mob, direction, false,false,false);
 		else
-			CMLib.tracking().walk(mob, Directions.SOUTHWEST, false,false,false);
+			CMLib.tracking().walk(mob, direction, false,false,false);
 		return false;
 	}
 	public boolean canBeOrdered(){return true;}
 
 	public boolean securityCheck(MOB mob)
 	{
-		if(Directions.NUM_DIRECTIONS()<=6)
-			return false;
 		return (mob==null) || (mob.isMonster()) || (mob.location()==null) 
-				|| ((!(mob.location() instanceof SpaceShip)) && (!(mob.location().getArea() instanceof SpaceShip)));
+			|| (mob.location() instanceof SpaceShip) || (mob.location().getArea() instanceof SpaceShip);
 	}
 }

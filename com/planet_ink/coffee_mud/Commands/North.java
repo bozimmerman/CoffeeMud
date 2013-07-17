@@ -53,7 +53,14 @@ public class North extends Go
 			CMLib.tracking().walk(mob, Directions.NORTH, false,false,false);
 		return false;
 	}
-	public boolean canBeOrdered(){return true;}
-
+	public boolean canBeOrdered()
+	{
+		return true;
+	}
 	
+	public boolean securityCheck(MOB mob)
+	{
+		return (mob==null) || (mob.isMonster()) || (mob.location()==null) 
+				|| ((!(mob.location() instanceof SpaceShip)) && (!(mob.location().getArea() instanceof SpaceShip)));
+	}
 }

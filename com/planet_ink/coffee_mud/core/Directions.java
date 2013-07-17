@@ -181,13 +181,13 @@ public class Directions
 			case GATE:
 				return "There";
 			case NORTHEAST:
-				return "Fore-Starboard";
+				return "Fore Starboard";
 			case NORTHWEST:
-				return "Fore-Port";
+				return "Fore Portside";
 			case SOUTHEAST:
-				return "Aft-Starboard";
+				return "Aft Starboard";
 			case SOUTHWEST:
-				return "Aft-Port";
+				return "Aft Portside";
 		}
 		return "";
 	}
