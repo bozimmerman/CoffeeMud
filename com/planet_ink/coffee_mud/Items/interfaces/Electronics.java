@@ -51,7 +51,7 @@ public interface Electronics extends Item, Technical
 	public int techLevel();
 	public void setTechLevel(int level);
 	
-	public Manufacturer manufacturer();
+	public Manufacturer getManufacturer();
 	public void setManufacturer(Manufacturer manufacturer);
 	
 	public interface PowerSource extends Electronics

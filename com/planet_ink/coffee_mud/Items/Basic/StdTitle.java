@@ -447,86 +447,13 @@ public class StdTitle extends StdItem implements LandTitle
 			if(A.landOwner().length()==0)
 			{
 				String newOwnerName=msg.source().Name();
-				if(((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CLANDSELLER)||((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CSHIPSELLER))
+				if(((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CLANDSELLER))
 				{
 					Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(msg.source(), Clan.Function.PROPERTY_OWNER);
 					if(clanPair!=null)
 						newOwnerName=clanPair.first.clanID();
 				}
 				
-				Area AREA=CMLib.map().getArea(landPropertyID());
-				String newName=newOwnerName+"`s "+AREA.Name();
-				if(AREA instanceof SpaceShip) // or its a boat
-				{
-					if(AREA.Name().indexOf("UNNAMED")>=0)
-					{
-						newName="";
-						try{
-							while(newName.trim().length()==0)
-							{
-								String n=msg.source().session().prompt("What would you like to name your ship? ","",30000).trim().toLowerCase();
-								if(n.indexOf(' ')>=0)
-								{
-									msg.source().tell("Spaces are not allowed in names! Please enter another one.");
-									newName="";
-								}
-								else
-								if(n.length()!=0)
-								{
-									String nn=CMStrings.replaceAll(AREA.Name(),"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
-									if(CMLib.players().playerExists(nn))
-										msg.source().tell("That name is already taken.  Please enter a different one.");
-									else
-									if(msg.source().session().confirm("If the name '"+nn+"' correct (y/N)?","N",30000))
-									{
-										name=CMStrings.replaceAll(name,"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
-										displayText=CMStrings.replaceAll(displayText,"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
-										setDescription(CMStrings.replaceAll(description(),"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase())));
-										newName=nn;
-									}
-									else
-										newName="";
-								}
-							}
-						}
-						catch(Exception t)
-						{
-							return;
-						}
-					}
-					AREA=CMLib.coffeeMaker().copyArea(AREA,newName,true);
-					if(AREA==null)
-					{
-						msg.source().tell("Purchase failed.");
-						return;
-					}
-					setLandPropertyID(AREA.Name());
-					A=fetchALandTitle();
-					if(A==null)
-					{
-						Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
-						destroy();
-						return;
-					}
-					A.setLandPropertyID(AREA.Name());
-					if(AREA instanceof SpaceShip)
-					{
-						Room spacePort=msg.source().location();
-						Vector choices=new Vector();
-						for(Enumeration<Room> e=spacePort.getArea().getProperMap();e.hasMoreElements();)
-						{
-							Room R=e.nextElement();
-							if(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-							{ choices.addElement(R);}
-						}
-						if(choices.size()>0)
-						{
-							spacePort=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-						}
-						((SpaceShip)AREA).dockHere(spacePort);
-						msg.source().tell("Your ship is located at "+spacePort.displayText()+".");
-					}
-				}
 				A.setLandOwner(newOwnerName);
 				if(A.landOwner().length()>0)
 				{

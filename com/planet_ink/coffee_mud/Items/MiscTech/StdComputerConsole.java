@@ -83,7 +83,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public int techLevel() { return techLevel;}
 	public void setTechLevel(int lvl) { techLevel=lvl; }
 	public void setManufacturer(Manufacturer manufacturer) { if(manufacturer!=null) this.manufacturer=manufacturer; }
-	public Manufacturer manufacturer() { return this.manufacturer; }
+	public Manufacturer getManufacturer() { return this.manufacturer; }
 	
 	public ElecPanelType panelType(){return panelType;}
 	public void setPanelType(ElecPanelType type){panelType=type;}

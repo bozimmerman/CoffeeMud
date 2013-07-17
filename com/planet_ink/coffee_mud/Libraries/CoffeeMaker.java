@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -397,7 +398,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
 			text.append(CMLib.xml().convertXMLtoTag("EACT", ""+((Electronics)E).activated()));
 			text.append(CMLib.xml().convertXMLtoTag("TECHLVL", ""+((Electronics)E).techLevel()));
-			text.append(CMLib.xml().convertXMLtoTag("MANUFACT", ((Electronics)E).manufacturer().name()));
+			text.append(CMLib.xml().convertXMLtoTag("MANUFACT", ((Electronics)E).getManufacturer().name()));
 
 		}
 		if(E instanceof Electronics.ElecPanel)
@@ -647,16 +648,27 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	public String unpackRoomFromXML(List<XMLpiece> xml, boolean andContent)
 	{
-		Area myArea=CMLib.map().getArea(CMLib.xml().getValFromPieces(xml,"RAREA"));
+		return unpackRoomFromXML(null, xml, andContent, true);
+	}
+	
+	protected String unpackRoomFromXML(Area forceArea, List<XMLpiece> xml, boolean andContent, boolean andSave)
+	{
+		Area myArea;
+		if(forceArea!=null)
+			myArea=forceArea;
+		else
+			myArea=CMLib.map().getArea(CMLib.xml().getValFromPieces(xml,"RAREA"));
 		if(myArea==null) return unpackErr("Room","null 'myArea'");
 		String roomClass=CMLib.xml().getValFromPieces(xml,"RCLAS");
 		Room newRoom=CMClass.getLocale(roomClass);
 		if(newRoom==null) return unpackErr("Room","null 'newRoom'");
 		newRoom.setRoomID(CMLib.xml().getValFromPieces(xml,"ROOMID"));
 		if(newRoom.roomID().equals("NEW")) newRoom.setRoomID(myArea.getNewRoomID(newRoom,-1));
-		if(CMLib.map().getRoom(newRoom.roomID())!=null) return "Room Exists: "+newRoom.roomID();
+		if((forceArea==null) && CMLib.map().getRoom(newRoom.roomID())!=null)
+			return "Room Exists: "+newRoom.roomID();
 		newRoom.setArea(myArea);
-		CMLib.database().DBCreateRoom(newRoom);
+		if(andSave)
+			CMLib.database().DBCreateRoom(newRoom);
 		newRoom.setDisplayText(CMLib.xml().getValFromPieces(xml,"RDISP"));
 		newRoom.setDescription(CMLib.xml().getValFromPieces(xml,"RDESC"));
 		newRoom.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"RTEXT")));
@@ -695,12 +707,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						CE.out=(codeddir&256)==256;
 						CE.dir=codeddir&255;
 						((GridLocale)newRoom).addOuterExit(CE);
-						Room link=CMLib.map().getRoom(doorID);
-						if((!CE.out)&&(link!=null)&&(!(link instanceof GridLocale)))
+						Room linkRoom=null;
+						if(forceArea!=null)
+							linkRoom=forceArea.getRoom(doorID);
+						if(linkRoom==null)
+							linkRoom=CMLib.map().getRoom(doorID);
+						if((!CE.out)&&(linkRoom!=null)&&(!(linkRoom instanceof GridLocale)))
 						{
-							link.rawDoors()[CE.dir]=newRoom;
-							link.setRawExit(CE.dir,CMClass.getExit("Open"));
-							CMLib.database().DBUpdateExits(link);
+							linkRoom.rawDoors()[CE.dir]=newRoom;
+							linkRoom.setRawExit(CE.dir,CMClass.getExit("Open"));
+							if(andSave)
+								CMLib.database().DBUpdateExits(linkRoom);
 						}
 					}
 				}
@@ -724,9 +741,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				exit.recoverPhyStats();
 				if(doorID.length()>0)
 				{
-					Room link=CMLib.map().getRoom(doorID);
-					if(link!=null)
-						newRoom.rawDoors()[dir]=link;
+					Room linkRoom=null;
+					if(forceArea!=null)
+						linkRoom=forceArea.getRoom(doorID);
+					if(linkRoom==null)
+						linkRoom=CMLib.map().getRoom(doorID);
+					if(linkRoom!=null)
+						newRoom.rawDoors()[dir]=linkRoom;
 					else
 					{
 						newRoom.setRawExit(dir,exit); // get will get the fake one too!
@@ -739,35 +760,41 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		// find any mis-linked exits and fix them!
 		try
 		{
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			if(forceArea == null)
 			{
-				Room R=r.nextElement();
-				synchronized(("SYNC"+R.roomID()).intern())
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					R=CMLib.map().getRoom(R);
-					boolean changed=false;
-					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					Room R=r.nextElement();
+					synchronized(("SYNC"+R.roomID()).intern())
 					{
-						Exit exit=R.getRawExit(d);
-						if((exit!=null)&&(exit.temporaryDoorLink().equalsIgnoreCase(newRoom.roomID())))
+						R=CMLib.map().getRoom(R);
+						boolean changed=false;
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							exit.setTemporaryDoorLink("");
-							R.rawDoors()[d]=newRoom;
-							changed=true;
+							Exit exit=R.getRawExit(d);
+							if((exit!=null)&&(exit.temporaryDoorLink().equalsIgnoreCase(newRoom.roomID())))
+							{
+								exit.setTemporaryDoorLink("");
+								R.rawDoors()[d]=newRoom;
+								changed=true;
+							}
+							else
+							if((R.rawDoors()[d]!=null)&&(R.rawDoors()[d].roomID().equals(newRoom.roomID())))
+							{
+								R.rawDoors()[d]=newRoom;
+								changed=true;
+							}
 						}
-						else
-						if((R.rawDoors()[d]!=null)&&(R.rawDoors()[d].roomID().equals(newRoom.roomID())))
-						{
-							R.rawDoors()[d]=newRoom;
-							changed=true;
-						}
+						if(changed && andSave) CMLib.database().DBUpdateExits(R);
 					}
-					if(changed) CMLib.database().DBUpdateExits(R);
 				}
 			}
 		}catch(NoSuchElementException e){}
-		CMLib.database().DBUpdateRoom(newRoom);
-		CMLib.database().DBUpdateExits(newRoom);
+		if(andSave)
+		{
+			CMLib.database().DBUpdateRoom(newRoom);
+			CMLib.database().DBUpdateExits(newRoom);
+		}
 		if(andContent)
 		{
 			Map<String,Physical> identTable=new Hashtable<String,Physical>();
@@ -866,16 +893,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		// equivalent to clear debriandrestart
 		CMLib.threads().clearDebri(newRoom,0);
-		CMLib.database().DBUpdateItems(newRoom);
+		if(andSave) CMLib.database().DBUpdateItems(newRoom);
 		newRoom.startItemRejuv();
-		CMLib.database().DBUpdateMOBs(newRoom);
+		if(andSave) CMLib.database().DBUpdateMOBs(newRoom);
 		return "";
 	}
 
-	public String fillAreaAndCustomVectorFromXML(String buf,
-												 List<XMLpiece> area,
-												 List<CMObject> custom,
-												 Map<String,String> externalFiles)
+	public String fillAreaAndCustomVectorFromXML(String buf, List<XMLpiece> area, List<CMObject> custom, Map<String,String> externalFiles)
 	{
 		List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf);
 		if(xml==null) return unpackErr("Fill","null 'xml'");
@@ -888,18 +912,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return "";
 	}
 
-	public String fillCustomVectorFromXML(String xml,
-										  List<CMObject> custom,
-										  Map<String,String> externalFiles)
+	public String fillCustomVectorFromXML(String xml, List<CMObject> custom, Map<String,String> externalFiles)
 	{
 		List<XMLLibrary.XMLpiece> xmlv=CMLib.xml().parseAllXML(xml);
 		if(xmlv==null) return unpackErr("Custom","null 'xmlv'");
 		return fillCustomVectorFromXML(xmlv,custom,externalFiles);
 	}
 
-	public String fillCustomVectorFromXML(List<XMLpiece> xml,
-										  List<CMObject> custom,
-										  Map<String,String> externalFiles)
+	public String fillCustomVectorFromXML(List<XMLpiece> xml, List<CMObject> custom, Map<String,String> externalFiles)
 	{
 		List<XMLLibrary.XMLpiece> aV=CMLib.xml().getContentsFromPieces(xml,"CUSTOM");
 		if(aV!=null)
@@ -975,10 +995,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return "";
 	}
 
-	public String fillAreasVectorFromXML(String buf,
-										 List<List<XMLpiece>> areas,
-										 List<CMObject> custom,
-										 Map<String,String> externalFiles)
+	public String fillAreasVectorFromXML(String buf, List<List<XMLpiece>> areas, List<CMObject> custom, Map<String,String> externalFiles)
 	{
 		List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf);
 		if(xml==null) return unpackErr("Areas","null 'xml'");
@@ -1088,6 +1105,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		newArea.setTheme(CMLib.xml().getIntFromPieces(aV,"ATECH"));
 		newArea.setSubOpList(CMLib.xml().getValFromPieces(aV,"ASUBS"));
 		newArea.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(aV,"ADATA")));
+		if(CMLib.flags().isSavable(newArea))
 		CMLib.database().DBUpdateArea(newArea.Name(),newArea);
 		if(andRooms)
 		{
@@ -1114,11 +1132,50 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return unpackAreaFromXML(aV,S,overrideAreaType,andRooms);
 	}
 
-	public StringBuffer getAreaXML(Area area,
-								   Session S,
-								   Set<CMObject> custom,
-								   Set<String> files,
-								   boolean andRooms)
+	public Area unpackAreaObjectFromXML(String xml) throws CMException
+	{
+		List<XMLLibrary.XMLpiece> aV=CMLib.xml().parseAllXML(xml);
+		if(aV==null) throw new CMException(unpackErr("Area","null 'xml'"));
+		aV=CMLib.xml().getContentsFromPieces(aV,"AREA");
+		if(aV==null) throw new CMException(unpackErr("Area","null 'aV'"));
+		
+		String areaClass=CMLib.xml().getValFromPieces(aV,"ACLAS");
+		String areaName=CMLib.xml().getValFromPieces(aV,"ANAME");
+
+		Area newArea=CMClass.getAreaType(areaClass);
+		if(newArea==null) throw new CMException(unpackErr("Area","No class: "+areaClass));
+		newArea.setName(areaName);
+
+		newArea.setDescription(CMLib.coffeeFilter().safetyFilter(CMLib.xml().getValFromPieces(aV,"ADESC")));
+		newArea.setClimateType(CMLib.xml().getIntFromPieces(aV,"ACLIM"));
+		newArea.setTheme(CMLib.xml().getIntFromPieces(aV,"ATECH"));
+		newArea.setSubOpList(CMLib.xml().getValFromPieces(aV,"ASUBS"));
+		newArea.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(aV,"ADATA")));
+		List<XMLLibrary.XMLpiece> rV=CMLib.xml().getContentsFromPieces(aV,"AROOMS");
+		if(rV==null)  throw new CMException(unpackErr("Area","null 'rV'"));
+		for(int r=0;r<rV.size();r++)
+		{
+			XMLLibrary.XMLpiece ablk=rV.get(r);
+			if((!ablk.tag.equalsIgnoreCase("AROOM"))||(ablk.contents==null))
+				throw new CMException(unpackErr("Area","??"+ablk.tag));
+			//if(S!=null) S.rawPrint(".");
+			String err=unpackRoomFromXML(newArea, ablk.contents,true,false);
+			if(err.length()>0) throw new CMException(err);
+		}
+		return newArea;
+	}
+	
+	public StringBuffer getAreaXML(Area area, Session S, Set<CMObject> custom, Set<String> files, boolean andRooms)
+	{
+		return getAreaXML(area, S, custom, files, andRooms, true);
+	}
+	
+	public StringBuffer getAreaObjectXML(Area area, Session S, Set<CMObject> custom, Set<String> files, boolean andRooms)
+	{
+		return getAreaXML(area, S, custom, files, andRooms, false);
+	}
+	
+	protected StringBuffer getAreaXML(Area area, Session S, Set<CMObject> custom, Set<String> files, boolean andRooms, boolean isInDB)
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(area==null) return buf;
@@ -1149,7 +1206,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						R=CMLib.map().getRoom(R);
 						//if(S!=null) S.rawPrint(".");
 						if((R!=null)&&(R.roomID()!=null)&&(R.roomID().length()>0))
-							buf.append(getRoomXML(R,custom,files,true)+"\n\r");
+							buf.append(getRoomXML(R,custom,files,true,isInDB)+"\n\r");
 					}
 				}
 				buf.append("</AROOMS>");
@@ -1602,16 +1659,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return buf;
 	}
 
-	public StringBuffer getRoomXML(Room room,
-								   Set<CMObject> custom,
-								   Set<String> files,
-								   boolean andContent)
+	public StringBuffer getRoomXML(Room room, Set<CMObject> custom, Set<String> files, boolean andContent)
+	{
+		return getRoomXML(room, custom, files, andContent, true);
+	}
+	
+	protected StringBuffer getRoomXML(Room room, Set<CMObject> custom, Set<String> files, boolean andContent, boolean andIsInDB)
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(room==null) return buf;
 		// do this quick before a tick messes it up!
 		List<MOB> inhabs=new Vector<MOB>();
-		Room croom=makeNewRoomContent(room,false);
+		Room croom=andIsInDB?makeNewRoomContent(room,false):room;
 		if(andContent)
 		for(int i=0;i<croom.numInhabitants();i++)
 			inhabs.add(croom.fetchInhabitant(i));
@@ -1761,7 +1820,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			buf.append("</ROOMCONTENT>");
 		}
 		buf.append("</AROOM>");
-		croom.destroy();
+		if(croom != room)
+			croom.destroy();
 		return buf;
 	}
 

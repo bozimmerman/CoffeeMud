@@ -94,5 +94,5 @@ public class StdElecContainer extends StdContainer implements Electronics
 	public int techLevel() { return techLevel;}
 	public void setTechLevel(int lvl) { techLevel=lvl; }
 	public void setManufacturer(Manufacturer manufacturer) { if(manufacturer!=null) this.manufacturer=manufacturer; }
-	public Manufacturer manufacturer() { return this.manufacturer; }
+	public Manufacturer getManufacturer() { return this.manufacturer; }
 }

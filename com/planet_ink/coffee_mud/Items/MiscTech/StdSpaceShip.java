@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Items.Basic.StdPortal;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -34,16 +35,18 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdSSPortal extends StdPortal implements Electronics
+public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip
 {
-	public String ID(){	return "StdSSPortal";}
+	public String ID(){	return "StdSpaceShip";}
 	protected String readableText="";
+	protected Manufacturer manufacturer = CMLib.tech().getDefaultManufacturer();
+	protected Area area=null;
 
-	public StdSSPortal()
+	public StdSpaceShip()
 	{
 		super();
-		setName("a space ship portal");
-		setDisplayText("a space ship portal is here.");
+		setName("a space ship");
+		setDisplayText("a space ship is here.");
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setDescription("");
 		recoverPhyStats();
@@ -53,7 +56,10 @@ public class StdSSPortal extends StdPortal implements Electronics
 
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+		if(area==null)
+			return CMLib.coffeeMaker().getPropertiesStr(this,false);
+		else
+			return CMLib.coffeeMaker().getPropertiesStr(this,false)+"~|~"+CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true);
 	}
 
 	public String readableText(){return readableText;}
@@ -61,7 +67,18 @@ public class StdSSPortal extends StdPortal implements Electronics
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		int x=newText.indexOf("~|~<AREA");
+		if(x>0)
+		{
+			CMLib.coffeeMaker().setPropertiesStr(this,newText.substring(0,x),false);
+			try {
+				area=CMLib.coffeeMaker().unpackAreaObjectFromXML(newText.substring(x+3));
+			} catch (CMException e) {
+				Log.warnOut("Unable to parse space ship xml for some reason.");
+			}
+		}
+		else
+			CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
 	
@@ -77,12 +94,13 @@ public class StdSSPortal extends StdPortal implements Electronics
 	public boolean activated(){return true;}
 	public int techLevel() { return -1;}
 	public void setTechLevel(int lvl) { }
-	public void setManufacturer(Manufacturer manufacturer) { }
-	public Manufacturer manufacturer() { return CMLib.tech().getDefaultManufacturer(); }
+	public void setManufacturer(Manufacturer manufacturer) { if(manufacturer!=null) this.manufacturer=manufacturer; }
+	public Manufacturer getManufacturer() { return manufacturer; }
 	
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
-							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM"};
+							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM",
+							  "MANUFACTURER"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -99,6 +117,7 @@ public class StdSSPortal extends StdPortal implements Electronics
 		case 7: return ""+powerCapacity();
 		case 8: return ""+activated();
 		case 9: return ""+powerRemaining();
+		case 10: return getManufacturer().name();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -125,6 +144,7 @@ public class StdSSPortal extends StdPortal implements Electronics
 		case 7: setPowerCapacity(CMath.s_parseIntExpression(val)); break;
 		case 8: activate(CMath.s_bool(val)); break;
 		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 10: setManufacturer(CMLib.tech().getManufacturer(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -139,7 +159,7 @@ public class StdSSPortal extends StdPortal implements Electronics
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(StdSSPortal.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(StdSpaceShip.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -151,11 +171,115 @@ public class StdSSPortal extends StdPortal implements Electronics
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdSSPortal)) return false;
+		if(!(E instanceof StdSpaceShip)) return false;
 		String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		return true;
+	}
+
+	@Override
+	public long[] coordinates() 
+	{
+		return (area instanceof SpaceObject)?((SpaceObject)area).coordinates():new long[3];
+	}
+
+	@Override
+	public void setCoords(long[] coords) 
+	{
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setCoords(coords);
+	}
+
+	@Override
+	public double[] direction() 
+	{
+		return (area instanceof SpaceObject)?((SpaceObject)area).direction():new double[2];
+	}
+
+	@Override
+	public void setDirection(double[] dir) 
+	{
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setDirection(dir);
+	}
+
+	@Override
+	public long velocity() 
+	{
+		return (area instanceof SpaceObject)?((SpaceObject)area).velocity():0;
+	}
+
+	@Override
+	public void setVelocity(long v) 
+	{
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setVelocity(v);
+	}
+
+	@Override
+	public long accelleration() 
+	{
+		return (area instanceof SpaceObject)?((SpaceObject)area).accelleration():0;
+	}
+
+	@Override
+	public void setAccelleration(long v) 
+	{
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setAccelleration(v);
+	}
+
+	@Override
+	public SpaceObject knownTarget() 
+	{
+		return (area instanceof SpaceObject)?((SpaceObject)area).knownTarget():null;
+	}
+
+	@Override
+	public void setKnownTarget(SpaceObject O) 
+	{
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setKnownTarget(O);
+	}
+
+	@Override
+	public SpaceObject knownSource() 
+	{
+		return (area instanceof SpaceObject)?((SpaceObject)area).knownSource():null;
+	}
+
+	@Override
+	public void setKnownSource(SpaceObject O) 
+	{
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setKnownSource(O);
+	}
+
+	@Override
+	public SpaceObject orbiting() 
+	{
+		return (area instanceof SpaceObject)?((SpaceObject)area).orbiting():null;
+	}
+
+	@Override
+	public void setOrbiting(SpaceObject O) 
+	{
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setOrbiting(O);
+	}
+
+	@Override
+	public void dockHere(Room R) {
+		if (area instanceof SpaceShip)
+			((SpaceShip)area).dockHere(R);
+	}
+
+	@Override
+	public void unDock(boolean toSpace) 
+	{
+		if (area instanceof SpaceShip)
+			((SpaceShip)area).unDock(toSpace);
 	}
 }

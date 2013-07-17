@@ -1098,41 +1098,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		Area myArea=myRoom.getArea();
 		String name=buyer.Name();
 		Pair<Clan,Integer> buyerClanPair=null;
-		if((shop.isSold(ShopKeeper.DEAL_CLANDSELLER)||shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))
+		if(shop.isSold(ShopKeeper.DEAL_CLANDSELLER)
 		&&((buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER))!=null))
 			name=buyerClanPair.first.clanID();
-		if(((shop.isSold(ShopKeeper.DEAL_LANDSELLER))||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))||(buyerClanPair!=null))
+		if((shop.isSold(ShopKeeper.DEAL_LANDSELLER)||(buyerClanPair!=null))
 		&&(myArea!=null))
 		{
 			HashSet<Environmental> roomsHandling=new HashSet<Environmental>();
 			Map<Environmental,LandTitle> titles=new Hashtable<Environmental,LandTitle>();
-			if((shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER)))
-			{
-				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
-				{
-					Area A=a.nextElement();
-					if(A instanceof SpaceShip)
-					{
-						boolean related=myArea.isChild(A)||A.isParent(myArea);
-						if(!related)
-							for(Enumeration<Area> p=A.getParents();p.hasMoreElements();)
-							{
-								Area P=p.nextElement();
-								if((P!=null)&&(P!=myArea)&&((P==A)||(A.isParent(P))||(P.isChild(A))))
-								{ related=true; break;}
-							}
-						if(related)
-						{
-							LandTitle LT=CMLib.law().getLandTitle(A);
-							if(LT!=null)
-							{
-								titles.put(A,LT);
-							}
-						}
-					}
-				}
-			}
-			else
 			for(Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements();)
 			{
 				Room R=r.nextElement();
