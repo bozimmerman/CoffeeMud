@@ -324,6 +324,27 @@ public class StdArea implements Area
 			String roomID=null;
 			int newnum=0;
 			String name=Name().toUpperCase();
+			if(!CMLib.flags().isSavable(this))
+			{
+				for(Enumeration<String> i=getProperRoomnumbers().getRoomIDs();i.hasMoreElements();)
+				{
+					roomID=(String)i.nextElement();
+					if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
+					{
+						roomID=roomID.substring(name.length()+1);
+						if(CMath.isInteger(roomID))
+						{
+							newnum=CMath.s_int(roomID);
+							if(newnum>=0)
+							{
+								if(newnum>=highest)    highest=newnum;
+								if(newnum<=lowest) lowest=newnum;
+								set.addx(newnum);
+							}
+						}
+					}
+				}
+			}
 			for(Enumeration i=CMLib.map().roomIDs();i.hasMoreElements();)
 			{
 				roomID=(String)i.nextElement();
@@ -344,12 +365,34 @@ public class StdArea implements Area
 			}
 		}catch(NoSuchElementException e){}
 		if(highest<0)
+		{
+			if(!CMLib.flags().isSavable(this))
+			{
+				for(int i=0;i<Integer.MAX_VALUE;i++)
+				{
+					if((getRoom(Name()+"#"+i))==null)
+						return Name()+"#"+i;
+				}
+			}
 			for(int i=0;i<Integer.MAX_VALUE;i++)
 			{
 				if((CMLib.map().getRoom(Name()+"#"+i))==null)
 					return Name()+"#"+i;
 			}
-		if(lowest>highest) lowest=highest+1;
+		}
+		if(lowest>highest)
+		{
+			lowest=highest+1;
+		}
+		if(!CMLib.flags().isSavable(this))
+		{
+			for(int i=lowest;i<=highest+1000;i++)
+			{
+				if((!set.contains(i))
+				&&(getRoom(Name()+"#"+i)==null))
+					return Name()+"#"+i;
+			}
+		}
 		for(int i=lowest;i<=highest+1000;i++)
 		{
 			if((!set.contains(i))
