@@ -661,32 +661,88 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		int highest=Integer.MIN_VALUE;
 		int lowest=Integer.MAX_VALUE;
-		Hashtable allNums=new Hashtable();
+		CMIntegerGrouper set=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			String roomID=null;
+			int newnum=0;
+			String name=Name().toUpperCase();
+			if(!CMLib.flags().isSavable(this))
 			{
-				Room R=(Room)r.nextElement();
-				if((R.getArea().Name().equals(Name()))
-				&&(R.roomID().startsWith(Name()+"#")))
+				for(Enumeration<String> i=getProperRoomnumbers().getRoomIDs();i.hasMoreElements();)
 				{
-					int newnum=CMath.s_int(R.roomID().substring(Name().length()+1));
-					if(newnum>=highest)    highest=newnum;
-					if(newnum<=lowest) lowest=newnum;
-					allNums.put(Integer.valueOf(newnum),R);
+					roomID=(String)i.nextElement();
+					if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
+					{
+						roomID=roomID.substring(name.length()+1);
+						if(CMath.isInteger(roomID))
+						{
+							newnum=CMath.s_int(roomID);
+							if(newnum>=0)
+							{
+								if(newnum>=highest)    highest=newnum;
+								if(newnum<=lowest) lowest=newnum;
+								set.addx(newnum);
+							}
+						}
+					}
+				}
+			}
+			for(Enumeration i=CMLib.map().roomIDs();i.hasMoreElements();)
+			{
+				roomID=(String)i.nextElement();
+				if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
+				{
+					roomID=roomID.substring(name.length()+1);
+					if(CMath.isInteger(roomID))
+					{
+						newnum=CMath.s_int(roomID);
+						if(newnum>=0)
+						{
+							if(newnum>=highest)    highest=newnum;
+							if(newnum<=lowest) lowest=newnum;
+							set.addx(newnum);
+						}
+					}
 				}
 			}
 		}catch(NoSuchElementException e){}
-		if((highest<0)&&(CMLib.map().getRoom(Name()+"#0"))==null)
-			return Name()+"#0";
-		if(lowest>highest) lowest=highest+1;
+		if(highest<0)
+		{
+			if(!CMLib.flags().isSavable(this))
+			{
+				for(int i=0;i<Integer.MAX_VALUE;i++)
+				{
+					if((getRoom(Name()+"#"+i))==null)
+						return Name()+"#"+i;
+				}
+			}
+			for(int i=0;i<Integer.MAX_VALUE;i++)
+			{
+				if((CMLib.map().getRoom(Name()+"#"+i))==null)
+					return Name()+"#"+i;
+			}
+		}
+		if(lowest>highest)
+		{
+			lowest=highest+1;
+		}
+		if(!CMLib.flags().isSavable(this))
+		{
+			for(int i=lowest;i<=highest+1000;i++)
+			{
+				if((!set.contains(i))
+				&&(getRoom(Name()+"#"+i)==null))
+					return Name()+"#"+i;
+			}
+		}
 		for(int i=lowest;i<=highest+1000;i++)
 		{
-			if((!allNums.containsKey(Integer.valueOf(i)))
+			if((!set.contains(i))
 			&&(CMLib.map().getRoom(Name()+"#"+i)==null))
 				return Name()+"#"+i;
 		}
-		return Name()+"#"+Math.random();
+		return Name()+"#"+(int)Math.round(Math.random()*Integer.MAX_VALUE);
 	}
 	
 	/** Manipulation of Behavior objects, which includes

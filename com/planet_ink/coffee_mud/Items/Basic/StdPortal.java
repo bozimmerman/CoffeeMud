@@ -93,8 +93,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			{
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
-					Vector V=CMParms.parseSemicolons(readableText(),true);
-					if(V.size()==0)
+					if(getDestinationRoom()==null)
 					{
 						msg.source().tell("This portal is broken.. nowhere to go!");
 						return false;

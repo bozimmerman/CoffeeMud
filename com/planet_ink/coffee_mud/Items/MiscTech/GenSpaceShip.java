@@ -36,16 +36,16 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip, PrivateProperty
+public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, PrivateProperty
 {
-	public String ID(){	return "StdSpaceShip";}
+	public String ID(){	return "GenSpaceShip";}
 	protected String readableText="";
 	protected String owner = "";
 	protected int price = 1000;
 	protected Manufacturer manufacturer = CMLib.tech().getDefaultManufacturer();
 	protected Area area=null;
 
-	public StdSpaceShip()
+	public GenSpaceShip()
 	{
 		super();
 		setName("a space ship");
@@ -57,7 +57,7 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		CMLib.flags().setSavable(this, false);
 	}
 
-	public boolean isGeneric(){return false;}
+	public boolean isGeneric(){return true;}
 
 	protected void makeNewAea()
 	{
@@ -87,6 +87,14 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return CMLib.coffeeMaker().getPropertiesStr(this,false)+"~|~"+CMLib.coffeeMaker().getAreaObjectXML(getArea(), null, null, null, true);
 	}
 
+	public String keyName()
+	{
+		return readableText;
+	}
+	public void setKeyName(String newKeyName)
+	{
+		readableText=newKeyName;
+	}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
 	public void setMiscText(String newText)
@@ -121,7 +129,7 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	
 	public CMObject copyOf()
 	{
-		StdSpaceShip s=(StdSpaceShip)super.copyOf();
+		GenSpaceShip s=(GenSpaceShip)super.copyOf();
 		s.setMiscText(text());
 		return s;
 	}
@@ -129,7 +137,8 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	protected Room getDestinationRoom()
 	{
-		
+		if(area==null)
+			this.makeNewAea();
 		Room R=null;
 		List<String> V=CMParms.parseSemicolons(readableText(),true);
 		if(V.size()>0)
@@ -404,7 +413,7 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(StdSpaceShip.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenSpaceShip.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -416,7 +425,7 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdSpaceShip)) return false;
+		if(!(E instanceof GenSpaceShip)) return false;
 		String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
