@@ -722,7 +722,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public int minRange(){return Integer.MIN_VALUE;}
 
 	public int[] getAreaIStats(){return new int[Area.Stats.values().length];}
-	public StringBuffer getAreaStats(){    return new StringBuffer("This is a space ship");}
+	public StringBuffer getAreaStats(){    return new StringBuffer(description());}
 
 	public Behavior fetchBehavior(int index)
 	{
