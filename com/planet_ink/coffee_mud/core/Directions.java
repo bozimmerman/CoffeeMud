@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 
+import java.util.Arrays;
+
 import com.planet_ink.coffee_mud.Items.interfaces.SpaceShip;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 
@@ -65,41 +67,58 @@ public class Directions
 	private int NUM_DIRECTIONS=7;
 
 	public static final String[] DIRECTION_CHARS={"N","S","E","W","U","D","V","NE","NW","SE","SW"};
-	public static final Object[][] DIRECTIONS_FULL_CHART={
+	
+	public static final Object[][] DIRECTIONS_COMPASS_CHART={
 		{"UP",Integer.valueOf(UP)},
 		{"ABOVE",Integer.valueOf(UP)},
 		{"NORTH",Integer.valueOf(NORTH)},
-		{"FOREWARD",Integer.valueOf(NORTH)},
-		{"EAST",Integer.valueOf(EAST)},
-		{"STARBOARD",Integer.valueOf(EAST)},
-		{"WEST",Integer.valueOf(WEST)},
-		{"PORTSIDE",Integer.valueOf(WEST)},
 		{"SOUTH",Integer.valueOf(SOUTH)},
-		{"AFT",Integer.valueOf(SOUTH)},
+		{"EAST",Integer.valueOf(EAST)},
+		{"WEST",Integer.valueOf(WEST)},
 		{"NORTHEAST",Integer.valueOf(NORTHEAST)},
-		{"FORESTARBOARD",Integer.valueOf(NORTHEAST)},
 		{"NORTHWEST",Integer.valueOf(NORTHWEST)},
-		{"FOREPORT",Integer.valueOf(NORTHWEST)},
 		{"SOUTHWEST",Integer.valueOf(SOUTHWEST)},
-		{"AFTPORT",Integer.valueOf(SOUTHWEST)},
 		{"SOUTHEAST",Integer.valueOf(SOUTHEAST)},
-		{"AFTSTARBOARD",Integer.valueOf(SOUTHEAST)},
 		{"NW",Integer.valueOf(NORTHWEST)},
 		{"NE",Integer.valueOf(NORTHEAST)},
 		{"SW",Integer.valueOf(SOUTHWEST)},
 		{"SE",Integer.valueOf(SOUTHEAST)},
+		{"DOWN",Integer.valueOf(DOWN)},
+		{"BELOW",Integer.valueOf(DOWN)},
+		{"NOWHERE",Integer.valueOf(GATE)},
+		{"HERE",Integer.valueOf(GATE)},
+		{"THERE",Integer.valueOf(GATE)},
+		{"VORTEX",Integer.valueOf(GATE)},
+	};
+	public static final Object[][] DIRECTIONS_SHIP_CHART={
+		{"ABOVE",Integer.valueOf(UP)},
+		{"FOREWARD",Integer.valueOf(NORTH)},
+		{"STARBOARD",Integer.valueOf(EAST)},
+		{"PORTSIDE",Integer.valueOf(WEST)},
+		{"AFT",Integer.valueOf(SOUTH)},
+		{"FORESTARBOARD",Integer.valueOf(NORTHEAST)},
+		{"FOREPORT",Integer.valueOf(NORTHWEST)},
+		{"AFTPORT",Integer.valueOf(SOUTHWEST)},
+		{"AFTSTARBOARD",Integer.valueOf(SOUTHEAST)},
 		{"FP",Integer.valueOf(NORTHWEST)},
 		{"FS",Integer.valueOf(NORTHEAST)},
 		{"AP",Integer.valueOf(SOUTHWEST)},
 		{"AS",Integer.valueOf(SOUTHEAST)},
-		{"DOWN",Integer.valueOf(DOWN)},
 		{"BELOW",Integer.valueOf(DOWN)},
 		{"NOWHERE",Integer.valueOf(GATE)},
 		{"HERE",Integer.valueOf(GATE)},
 		{"THERE",Integer.valueOf(GATE)},
 		{"VORTEX",Integer.valueOf(GATE)}
 	};
-											   
+	
+	private static <T> T[] concat(T[] first, T[] second) {
+		T[] result = Arrays.copyOf(first, first.length + second.length);
+		System.arraycopy(second, 0, result, first.length, second.length);
+		return result;
+	}
+	
+	public static final Object[][] DIRECTIONS_FULL_CHART=concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART);
+
 	public static final int NUM_DIRECTIONS(){
 		return d().NUM_DIRECTIONS;
 	}
@@ -224,6 +243,24 @@ public class Directions
 		return code;
 	}
 	
+	public static final int getShipDirectionCode(final String theDir)
+	{
+		return getGoodShipDirectionCode(theDir);
+	}
+	
+	public static final int getCompassDirectionCode(final String theDir)
+	{
+		final int code=getGoodCompassDirectionCode(theDir);
+		if(code<0)
+		{
+			final String upDir=theDir.toUpperCase();
+			for(int i=0;i<NUM_DIRECTIONS();i++)
+				if(upDir.startsWith(DIRECTION_CHARS[i]))
+					return i;
+		}
+		return code;
+	}
+	
 	public static final int getGoodDirectionCode(final String theDir)
 	{
 		if(theDir.length()==0) return -1;
@@ -232,6 +269,28 @@ public class Directions
 			if((DIRECTIONS_FULL_CHART[i][0].toString().startsWith(upDir))
 			&&(((Integer)DIRECTIONS_FULL_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
 				return ((Integer)DIRECTIONS_FULL_CHART[i][1]).intValue(); 
+		return -1;
+	}
+	
+	public static final int getGoodCompassDirectionCode(final String theDir)
+	{
+		if(theDir.length()==0) return -1;
+		final String upDir=theDir.toUpperCase();
+		for(int i=0;i<DIRECTIONS_COMPASS_CHART.length;i++)
+			if((DIRECTIONS_COMPASS_CHART[i][0].toString().startsWith(upDir))
+			&&(((Integer)DIRECTIONS_COMPASS_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)DIRECTIONS_COMPASS_CHART[i][1]).intValue(); 
+		return -1;
+	}
+	
+	public static final int getGoodShipDirectionCode(final String theDir)
+	{
+		if(theDir.length()==0) return -1;
+		final String upDir=theDir.toUpperCase();
+		for(int i=0;i<DIRECTIONS_SHIP_CHART.length;i++)
+			if((DIRECTIONS_SHIP_CHART[i][0].toString().startsWith(upDir))
+			&&(((Integer)DIRECTIONS_SHIP_CHART[i][1]).intValue()<NUM_DIRECTIONS()))
+				return ((Integer)DIRECTIONS_SHIP_CHART[i][1]).intValue(); 
 		return -1;
 	}
 	

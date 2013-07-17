@@ -75,7 +75,7 @@ public class Go extends StdCommand
 		Room R=mob.location();
 		if(R==null) return false;
 
-		boolean inAShip = (R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
+		boolean inAShip =(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
 		final String validDirs = inAShip?Directions.SHIP_NAMES_LIST() : Directions.NAMES_LIST();
 		
 		int direction=-1;
@@ -88,6 +88,7 @@ public class Go extends StdCommand
 			}
 			
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
 				if((R.getExitInDir(d)!=null)
 				&&(R.getRoomInDir(d)!=null)
 				&&(!CMath.bset(R.getRoomInDir(d).domainType(),Room.INDOORS)))
@@ -99,6 +100,7 @@ public class Go extends StdCommand
 					}
 					direction=d;
 				}
+			}
 			if(direction<0)
 			{
 				mob.tell("There is no direct way out of this place.  Try a direction.");
@@ -106,7 +108,9 @@ public class Go extends StdCommand
 			}
 		}
 		if(direction<0)
-			direction=Directions.getGoodDirectionCode(whereStr);
+		{
+			direction=(inAShip && (!mob.isMonster()))?Directions.getGoodShipDirectionCode(whereStr):Directions.getGoodCompassDirectionCode(whereStr);
+		}
 		if(direction<0)
 		{
 			Environmental E=R.fetchFromRoomFavorItems(null,whereStr);
@@ -128,56 +132,56 @@ public class Go extends StdCommand
 		else
 		{
 			boolean doneAnything=false;
-			if(commands.size()>2)
+			for(int v=1;v<commands.size();v++)
 			{
-				for(int v=1;v<commands.size();v++)
+				int num=1;
+				String s=(String)commands.elementAt(v);
+				if(CMath.s_int(s)>0)
 				{
-					int num=1;
-					String s=(String)commands.elementAt(v);
-					if(CMath.s_int(s)>0)
-					{
-						num=CMath.s_int(s);
-						v++;
-						if(v<commands.size())
-							s=(String)commands.elementAt(v);
-					}
-					else
-					if(("NSEWUDnsewud".indexOf(s.charAt(s.length()-1))>=0)
-					&&(CMath.s_int(s.substring(0,s.length()-1))>0))
-					{
-						num=CMath.s_int(s.substring(0,s.length()-1));
-						s=s.substring(s.length()-1);
-					}
+					num=CMath.s_int(s);
+					v++;
+					if(v<commands.size())
+						s=(String)commands.elementAt(v);
+				}
+				else
+				if((s.length()>0) && (Character.isDigit(s.charAt(0))))
+				{
+					int x=1;
+					while((x<s.length()-1)&&(Character.isDigit(s.charAt(x))))
+						x++;
+					num=CMath.s_int(s.substring(0,x));
+					s=s.substring(x);
+				}
 
-					direction=Directions.getGoodDirectionCode(s);
-					if(direction>=0)
+				direction=(inAShip && (!mob.isMonster()))?Directions.getGoodShipDirectionCode(s):Directions.getGoodCompassDirectionCode(s);
+				if(direction>=0)
+				{
+					doneAnything=true;
+					for(int i=0;i<num;i++)
 					{
-						doneAnything=true;
-						for(int i=0;i<num;i++)
+						if(mob.isMonster())
 						{
-							if(mob.isMonster())
-							{
-								if(!CMLib.tracking().walk(mob,direction,false,false,false,false))
-									return false;
-							}
-							else
-							{
-								Vector V=new Vector();
-								V.addElement(doing);
-								V.addElement(Directions.getDirectionName(direction));
-								mob.enqueCommand(V,metaFlags,0);
-							}
+							if(!CMLib.tracking().walk(mob,direction,false,false,false,false))
+								return false;
+						}
+						else
+						{
+							Vector V=new Vector();
+							V.addElement(doing);
+							V.addElement(inAShip?Directions.getShipDirectionName(direction):Directions.getDirectionName(direction));
+							mob.enqueCommand(V,metaFlags,0);
 						}
 					}
-					else
-						break;
 				}
+				else
+					break;
 			}
 			if(!doneAnything)
 				mob.tell(CMStrings.capitalizeAndLower(doing)+" which direction?\n\rTry "+validDirs.toLowerCase()+".");
 		}
 		return false;
 	}
+
 	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		double cost=CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),100.0);
@@ -185,5 +189,6 @@ public class Go extends StdCommand
 			cost /= 4.0;
 		return CMProps.getActionCost(ID(), cost);
 	}
+
 	public boolean canBeOrdered(){return true;}
 }
