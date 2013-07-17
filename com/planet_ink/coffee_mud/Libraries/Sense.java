@@ -789,38 +789,38 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		String[] ambiances=seen.phyStats().ambiances();
 		if(!CMStrings.containsIgnoreCase(ambiances,"-ALL"))
 		{
-			StringBuffer Say=new StringBuffer("^N");
+			final StringBuffer say=new StringBuffer("^N");
 			if(!CMStrings.containsIgnoreCase(ambiances,"-MOST"))
 			{
 				if((isEvil(seen))&&(canSeeEvil(seer))&&(!CMStrings.contains(ambiances,"-EVIL")))
-					Say.append(" (glowing ^rred^?)");
+					say.append(" (glowing ^rred^?)");
 				if((isGood(seen))&&(canSeeGood(seer))&&(!CMStrings.contains(ambiances,"-GOOD")))
-					Say.append(" (glowing ^bblue^?)");
+					say.append(" (glowing ^bblue^?)");
 				if((isInvisible(seen))&&(canSeeInvisible(seer))&&(!CMStrings.contains(ambiances,"-INVISIBLE")))
-					Say.append(" (^yinvisible^?)");
+					say.append(" (^yinvisible^?)");
 				if((isSneaking(seen))&&(canSeeSneakers(seer))&&(!CMStrings.contains(ambiances,"-SNEAKING")))
-					Say.append(" (^ysneaking^?)");
+					say.append(" (^ysneaking^?)");
 				if((isHidden(seen))&&(canSeeHidden(seer))&&(!CMStrings.contains(ambiances,"-HIDDEN")))
-					Say.append(" (^yhidden^?)");
+					say.append(" (^yhidden^?)");
 				if((!isGolem(seen))
 				&&(canSeeInfrared(seer))
 				&&(seen instanceof MOB)
 				&&(isInDark(seer.location()))
 				&&(!CMStrings.contains(ambiances,"-HEAT")))
-					Say.append(" (^rheat aura^?)");
+					say.append(" (^rheat aura^?)");
 				if((isABonusItems(seen))&&(canSeeBonusItems(seer))&&(!CMStrings.contains(ambiances,"-MAGIC")))
-					Say.append(" (^wmagical aura^?)");
+					say.append(" (^wmagical aura^?)");
 				if((canSeeMetal(seer))&&(seen instanceof Item)&&(!CMStrings.contains(ambiances,"-METAL")))
 					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-						Say.append(" (^wmetallic aura^?)");
+						say.append(" (^wmetallic aura^?)");
 					else
 					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
-						Say.append(" (^wmithril aura^?)");
+						say.append(" (^wmithril aura^?)");
 
 				if((isGlowing(seen))&&(!(seen instanceof Room))&&(!CMStrings.contains(ambiances,"-GLOWING")))
-					Say.append(" (^gglowing^?)");
+					say.append(" (^gglowing^?)");
 				if(isBusy(seen)&&(!CMStrings.contains(ambiances,"-BUSY")))
-					Say.append(" (^gbusy^?)");
+					say.append(" (^gbusy^?)");
 				for(int i=0;i<ambiances.length;i++)
 					if(!ambiances[i].startsWith("-"))
 					{
@@ -828,30 +828,30 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 						{
 							int x=ambiances[i].indexOf(':');
 							if(canBeHeardSpeakingBy(seen, seer))
-								Say.append(" ("+ambiances[i].substring(3,(x>3)?x:ambiances[i].length())+"^?)");
+								say.append(" ("+ambiances[i].substring(3,(x>3)?x:ambiances[i].length())+")");
 							else
 							if(x>3)
-								Say.append(" ("+ambiances[i].substring(x+1)+"^?)");
+								say.append(" ("+ambiances[i].substring(x+1)+")");
 						}
 						else
-							Say.append(" ("+ambiances[i]+"^?)");
+							say.append(" ("+ambiances[i]+")");
 					}
 			}
 			if(isBound(seen)&&(!CMStrings.contains(ambiances,"-BOUND")))
-				Say.append(" (^Wbound^?)");
+				say.append(" (^Wbound^?)");
 			if(isFlying(seen)&&(!(seen instanceof Exit))&&(!CMStrings.contains(ambiances,"-FLYING")))
-				Say.append(" (^pflying^?)");
+				say.append(" (^pflying^?)");
 			if((isFalling(seen))
 			&&(!CMStrings.contains(ambiances,"-FALLING"))
 			&&((!(seen instanceof MOB))
-			   ||(((MOB)seen).location()==null)
-			   ||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-				  &&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
-				Say.append(" (^pfalling^?)");
-			if(Say.length()>1)
+				||(((MOB)seen).location()==null)
+				||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+					&&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
+				say.append(" (^pfalling^?)");
+			if(say.length()>1)
 			{
-				Say.append(" ");
-				return Say;
+				say.append(" ");
+				return say;
 			}
 		}
 		return new StringBuffer("");
