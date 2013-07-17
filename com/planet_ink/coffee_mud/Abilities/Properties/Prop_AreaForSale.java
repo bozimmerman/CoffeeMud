@@ -48,7 +48,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 
 	public boolean allowsExpansionConstruction(){ return false;}
 
-	public int landPrice()
+	public int getPrice()
 	{
 		if(text().length()==0)
 			return 100000;
@@ -71,15 +71,15 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return "AREA_PROPERTY_"+landPropertyID();
 	}
 	
-	public void setLandPrice(int price)
+	public void setPrice(int price)
 	{   
-		setMiscText(landOwner()+"/"
+		setMiscText(getOwnerName()+"/"
 			+(rentalProperty()?"RENTAL ":"")
 			+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 			+price);
 	}
 	
-	public String landOwner()
+	public String getOwnerName()
 	{
 		if(text().indexOf('/')<0) return "";
 		return text().substring(0,text().indexOf('/'));
@@ -92,21 +92,21 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return "";
 	}
 
-	public CMObject landOwnerObject()
+	public CMObject getOwnerObject()
 	{
-		String owner=landOwner();
+		String owner=getOwnerName();
 		if(owner.length()==0) return null;
 		Clan C=CMLib.clans().getClan(owner);
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
 	
-	public void setLandOwner(String owner)
+	public void setOwnerName(String owner)
 	{   
 		setMiscText(owner+"/"
 				+(rentalProperty()?"RENTAL ":"")
 				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-				+landPrice());
+				+getPrice());
 	}
 
 	public int backTaxes()
@@ -119,10 +119,10 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 	public void setBackTaxes(int tax)
 	{	
-		setMiscText(landOwner()+"/"
+		setMiscText(getOwnerName()+"/"
 				+(rentalProperty()?"RENTAL ":"")
 				+((tax!=0)?"TAX"+tax+"X ":"")
-				+landPrice());
+				+getPrice());
 	}
 	
 	public boolean rentalProperty()
@@ -132,10 +132,10 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 	public void setRentalProperty(boolean truefalse)
 	{	
-		setMiscText(landOwner()+"/"
+		setMiscText(getOwnerName()+"/"
 				+(truefalse?"RENTAL ":"")
 				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-				+landPrice());
+				+getPrice());
 	}
 	
 	// update title, since it may affect clusters, worries about ALL involved
@@ -252,10 +252,10 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			if((A!=null)&&(lastDayDone!=A.getTimeObj().getDayOfMonth()))
 			{
 				lastDayDone=A.getTimeObj().getDayOfMonth();
-				if((landOwner().length()>0)&&rentalProperty())
-					if(Prop_RoomForSale.doRentalProperty(A,A.Name(),landOwner(),landPrice()))
+				if((getOwnerName().length()>0)&&rentalProperty())
+					if(Prop_RoomForSale.doRentalProperty(A,A.Name(),getOwnerName(),getPrice()))
 					{
-						setLandOwner("");
+						setOwnerName("");
 						CMLib.database().DBUpdateArea(A.Name(),A);
 					}
 			}

@@ -125,9 +125,9 @@ public class Prop_Retainable extends Property
 						{
 							owner=mob.amFollowing().Name();
 							if((t!=null)
-							&&(t.landOwner().length()>0)
-							&&(!t.landOwner().equalsIgnoreCase(mob.amFollowing().Name()))
-							&&(mob.amFollowing().getClanRole(t.landOwner())==null))
+							&&(t.getOwnerName().length()>0)
+							&&(!t.getOwnerName().equalsIgnoreCase(mob.amFollowing().Name()))
+							&&(mob.amFollowing().getClanRole(t.getOwnerName())==null))
 							{
 								CMLib.commands().postSay(mob,null,"Hey, I'm not a crook!",false,false);
 								mob.setFollowing(null);
@@ -137,8 +137,8 @@ public class Prop_Retainable extends Property
 							}
 						}
 						else
-						if((t!=null)&&(t.landOwner().length()>0))
-							owner=t.landOwner();
+						if((t!=null)&&(t.getOwnerName().length()>0))
+							owner=t.getOwnerName();
 
 						if(owner.length()==0)
 						{

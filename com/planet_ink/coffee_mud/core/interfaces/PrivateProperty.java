@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.interfaces;
+package com.planet_ink.coffee_mud.core.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.List;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -30,11 +32,43 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 /**
- * This is the base class for all tech items
+ * Interface for objects which represents property purchasable by players.  May
+ * be found implemented by Abilities which are placed as effects on the room  objects
+ * for sale, or implemented as Items representing the sellable title.
+ * @author Bo Zimmerman
  */
-public interface Technical
+public interface PrivateProperty extends Environmental
 {
-	public int techLevel();
-	public void setTechLevel(int level);
+	/**
+	 * The value of the property in base currency values
+	 * @return the price of the property
+	 */
+	public int getPrice();
+	/**
+	 * set the value of the property in base currency values
+	 * @param price the price of the property
+	 */
+	public void setPrice(int price);
+	/**
+	 * Get the owner of the property, usually a clan name or a player name.
+	 * @return the name of the owner of the property
+	 */
+	public String getOwnerName();
+	/**
+	 * Set the owner of the property, usually a clan name or a player name.
+	 * @param owner the name of the owner of the property
+	 */
+	public void setOwnerName(String owner);
 	
+	/**
+	 * Get the actual clan or mob owner of the property, or null if it can not.
+	 * @return the owner of the property
+	 */
+	public CMObject getOwnerObject();
+	
+	/**
+	 * Returns a unique id for this particular title and the rooms is represents, even if the contents change.
+	 * @return a unique id
+	 */
+	public String getTitleID();
 }

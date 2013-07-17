@@ -200,11 +200,11 @@ public class DefaultLawSet implements Law
 			Hashtable<String,Vector<LandTitle>> owners=new Hashtable<String,Vector<LandTitle>>();
 			for(LandTitle T : titles)
 			{
-				Vector<LandTitle> D=owners.get(T.landOwner());
+				Vector<LandTitle> D=owners.get(T.getOwnerName());
 				if(D==null)
 				{
 					D=new Vector<LandTitle>();
-					owners.put(T.landOwner(),D);
+					owners.put(T.getOwnerName(),D);
 				}
 				D.addElement(T);
 			}
@@ -241,7 +241,7 @@ public class DefaultLawSet implements Law
 						properties.append(T.landPropertyID());
 					else
 						properties.append("around "+CMLib.map().getExtendedRoomID(propertyRooms.get(0)));
-					totalValue+=T.landPrice();
+					totalValue+=T.getPrice();
 					if(T.backTaxes()>0)
 					{
 						totalValue+=T.backTaxes();
@@ -281,26 +281,26 @@ public class DefaultLawSet implements Law
 						for(int p=0;p<particulars.size();p++)
 						{
 							T=particulars.elementAt(p);
-							double owedOnThisLand=CMath.mul(T.landPrice(),tax);
+							double owedOnThisLand=CMath.mul(T.getPrice(),tax);
 							owedOnThisLand-=(paid/particulars.size());
 							if(owedOnThisLand>0)
 							{
 								T.setBackTaxes((int)Math.round((T.backTaxes())+owedOnThisLand));
-								if((T.landPrice()/T.backTaxes())<4)
+								if((T.getPrice()/T.backTaxes())<4)
 								{
-									Clan clanC=CMLib.clans().getClan(T.landOwner());
+									Clan clanC=CMLib.clans().getClan(T.getOwnerName());
 									if(clanC!=null)
 									{
 										List<Pair<Clan,Integer>> clanSet=new Vector<Pair<Clan,Integer>>();
 										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
 										List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 										for(int i=0;i<channels.size();i++)
-											CMLib.commands().postChannel(channels.get(i),clanSet,T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
+											CMLib.commands().postChannel(channels.get(i),clanSet,T.getOwnerName()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
 									}
 									else
-									if(CMLib.players().getPlayer(T.landOwner())!=null)
-										CMLib.players().getPlayer(T.landOwner()).tell("You have lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.");
-									T.setLandOwner("");
+									if(CMLib.players().getPlayer(T.getOwnerName())!=null)
+										CMLib.players().getPlayer(T.getOwnerName()).tell("You have lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.");
+									T.setOwnerName("");
 									T.updateTitle();
 								}
 								else

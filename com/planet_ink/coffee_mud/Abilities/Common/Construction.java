@@ -122,7 +122,7 @@ public class Construction extends CraftingSkill
 				break;
 			}
 			LandTitle adjacentTitle=CMLib.law().getLandTitle(R);
-			if((adjacentTitle==null)||(adjacentTitle.landOwner().length()>0))
+			if((adjacentTitle==null)||(adjacentTitle.getOwnerName().length()>0))
 				backupToRoom1=R;
 			else
 			if(R.roomID().length()>0)
@@ -145,7 +145,7 @@ public class Construction extends CraftingSkill
             	theRoomToReturnTo.addItem(a,Expire.Player_Drop);
             }
 		});
-		title.setLandOwner("");
+		title.setOwnerName("");
 		title.updateLot(null); // this is neat -- this will obliterate leaf rooms around this one.
 		if((theRoomToReturnTo!=null)
 		&&(theRoomToReturnTo.rawDoors()[Directions.UP]==room)
@@ -392,7 +392,7 @@ public class Construction extends CraftingSkill
 							{
 								newTitle=(LandTitle)((Ability)newTitle).copyOf();
 								newTitle.setLandPropertyID(upRoom.roomID());
-								newTitle.setLandOwner("");
+								newTitle.setOwnerName("");
 								newTitle.setBackTaxes(0);
 								upRoom.addNonUninvokableEffect((Ability)newTitle);
 							}
@@ -617,7 +617,7 @@ public class Construction extends CraftingSkill
 	{
 		LandTitle title = ifHomePeerLandTitle(R);
 		if(title == null) return false;
-		return title.landOwner().length()>0;
+		return title.getOwnerName().length()>0;
 	}
 	
 	public LandTitle ifHomePeerLandTitle(Room R)
@@ -750,7 +750,7 @@ public class Construction extends CraftingSkill
 			LandTitle title=CMLib.law().getLandTitle(mob.location());
 			if((!CMLib.law().doesOwnThisProperty(mob, mob.location()))
 			&&(title!=null)
-			&&(title.landOwner().length()>0))
+			&&(title.getOwnerName().length()>0))
 			{
 				commonTell(mob,"You can't demolish property you don't own.");
 				return false;

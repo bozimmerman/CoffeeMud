@@ -477,7 +477,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(dooropen)
 		{
 			final LandTitle landTitle=CMLib.law().getLandTitle(nextRoom);
-			if((landTitle!=null)&&(landTitle.landOwner().length()>0))
+			if((landTitle!=null)&&(landTitle.getOwnerName().length()>0))
 				dooropen=false;
 		}
 

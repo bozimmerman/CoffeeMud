@@ -467,6 +467,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		if(E instanceof LandTitle)
 			text.append(CMLib.xml().convertXMLtoTag("LANDID",((LandTitle)E).landPropertyID()));
+		else
+		if(E instanceof PrivateProperty)
+		{
+			text.append(CMLib.xml().convertXMLtoTag("OWNERID",((PrivateProperty)E).getOwnerName()));
+			text.append(CMLib.xml().convertXMLtoTag("PRICE",((PrivateProperty)E).getPrice()));
+		}
 
 		if(E instanceof Perfume)
 			text.append(CMLib.xml().convertXMLtoTag("SMELLLST",((Perfume)E).getSmellList()));
@@ -2539,6 +2545,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		if(E instanceof LandTitle)
 			((LandTitle)E).setLandPropertyID(CMLib.xml().getValFromPieces(buf,"LANDID"));
+		else
+		if(E instanceof PrivateProperty)
+		{
+			((PrivateProperty)E).setOwnerName(CMLib.xml().getValFromPieces(buf,"OWNERID"));
+			((PrivateProperty)E).setPrice(CMLib.xml().getIntFromPieces(buf,"PRICE"));
+		}
 
 		if(E instanceof Perfume)
 			((Perfume)E).setSmellList(CMLib.xml().getValFromPieces(buf,"SMELLLST"));

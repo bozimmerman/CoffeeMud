@@ -60,7 +60,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		super.setMiscText(newMiscText);
 	}
 
-	public int landPrice()
+	public int getPrice()
 	{
 		if(text().length()==0)
 			return 100000;
@@ -80,38 +80,38 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public List<Room> getConnectedPropertyRooms() { return getAllTitledRooms();}
 
-	public void setLandPrice(int price)
+	public void setPrice(int price)
 	{
-		setMiscText(landOwner()+"/"
+		setMiscText(getOwnerName()+"/"
 			+(rentalProperty()?"RENTAL ":"")
 			+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 			+price);
 	}
 
-	public String landOwner()
+	public String getOwnerName()
 	{
 		final int dex=text().indexOf('/');
 		if(dex<0) return "";
 		return text().substring(0,dex);
 	}
 
-	public CMObject landOwnerObject()
+	public CMObject getOwnerObject()
 	{
-		String owner=landOwner();
+		String owner=getOwnerName();
 		if(owner.length()==0) return null;
 		Clan C=CMLib.clans().getClan(owner);
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
 	
-	public void setLandOwner(String owner)
+	public void setOwnerName(String owner)
 	{
-		if((owner.length()==0)&&(landOwner().length()>0))
+		if((owner.length()==0)&&(getOwnerName().length()>0))
 			scheduleReset=true;
 		setMiscText(owner+"/"
 				+(rentalProperty()?"RENTAL ":"")
 				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-				+landPrice());
+				+getPrice());
 	}
 
 	public int backTaxes()
@@ -125,10 +125,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 	public void setBackTaxes(int tax)
 	{
-		setMiscText(landOwner()+"/"
+		setMiscText(getOwnerName()+"/"
 				+(rentalProperty()?"RENTAL ":"")
 				+((tax!=0)?"TAX"+tax+"X ":"")
-				+landPrice());
+				+getPrice());
 	}
 
 	public boolean rentalProperty()
@@ -141,10 +141,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public void setRentalProperty(boolean truefalse)
 	{
-		setMiscText(landOwner()+"/"
+		setMiscText(getOwnerName()+"/"
 				+(truefalse?"RENTAL ":"")
 				+((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
-				+landPrice());
+				+getPrice());
 	}
 
 	// update title, since it may affect clusters, worries about ALL involved
@@ -206,7 +206,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			&&(((Item)msg.target()).owner() ==msg.source().location())
 			&&((!(msg.tool() instanceof Item))||(msg.source().isMine(msg.tool())))
 			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
-			&&(A.landOwner().length()>0)
+			&&(A.getOwnerName().length()>0)
 			&&(msg.source().location()!=null)
 			&&(msg.othersMessage()!=null)
 			&&(msg.othersMessage().length()>0)
@@ -224,11 +224,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 							return true;
 					}
 					MOB D=null;
-					Clan C=CMLib.clans().getClan(A.landOwner());
+					Clan C=CMLib.clans().getClan(A.getOwnerName());
 					if(C!=null)
 						D=C.getResponsibleMember();
 					else
-						D=CMLib.players().getLoadPlayer(A.landOwner());
+						D=CMLib.players().getLoadPlayer(A.getOwnerName());
 					if(D==null) return true;
 					B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
 				}
@@ -358,7 +358,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			if(T.landOwner().length()==0)
+			if(T.getOwnerName().length()==0)
 			{
 				Item I=null;
 				for(int i=R.numItems()-1;i>=0;i--)
@@ -438,16 +438,16 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PROPERTYOWNERCHECKS))
 			&&(optPlayerList!=null))
 			{
-				boolean playerExists=(CMLib.players().getPlayer(T.landOwner())!=null);
-				if(!playerExists) playerExists=(CMLib.clans().getClan(T.landOwner())!=null);
-				if(!playerExists) playerExists=optPlayerList.contains(T.landOwner());
+				boolean playerExists=(CMLib.players().getPlayer(T.getOwnerName())!=null);
+				if(!playerExists) playerExists=(CMLib.clans().getClan(T.getOwnerName())!=null);
+				if(!playerExists) playerExists=optPlayerList.contains(T.getOwnerName());
 				if(!playerExists)
 				for(int i=0;i<optPlayerList.size();i++)
-					if(((String)optPlayerList.get(i)).equalsIgnoreCase(T.landOwner()))
+					if(((String)optPlayerList.get(i)).equalsIgnoreCase(T.getOwnerName()))
 					{ playerExists=true; break;}
 				if(!playerExists)
 				{
-					T.setLandOwner("");
+					T.setOwnerName("");
 					T.updateLot(null);
 					return -1;
 				}
@@ -619,10 +619,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 				{
 					lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
-					if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
-						if(doRentalProperty(R.getArea(),R.roomID(),landOwner(),landPrice()))
+					if((getOwnerName().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+						if(doRentalProperty(R.getArea(),R.roomID(),getOwnerName(),getPrice()))
 						{
-							setLandOwner("");
+							setOwnerName("");
 							CMLib.database().DBUpdateRoom(R);
 							lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums);
 						}

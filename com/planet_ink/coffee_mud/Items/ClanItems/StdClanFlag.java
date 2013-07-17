@@ -195,9 +195,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 						T=CMLib.law().getLandTitle(R);
 					}
 					if((T==null)
-					||((!T.landOwner().equals(clanID()))
-					   &&((!T.landOwner().equals(msg.source().getLiegeID()))||(!msg.source().isMarriedToLiege()))
-					   &&(!T.landOwner().equals(msg.source().Name()))))
+					||((!T.getOwnerName().equals(clanID()))
+					   &&((!T.getOwnerName().equals(msg.source().getLiegeID()))||(!msg.source().isMarriedToLiege()))
+					   &&(!T.getOwnerName().equals(msg.source().Name()))))
 					{
 						boolean ok=false;
 						if(A!=null) 

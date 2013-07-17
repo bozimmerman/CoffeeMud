@@ -131,8 +131,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			&&(includeRentals||(!T.rentalProperty()))
 			&&((owner==null)
 				||(owner.length()==0)
-				||(owner.equals("*")&&(T.landOwner().length()>0))
-				||(T.landOwner().equals(owner))))
+				||(owner.equals("*")&&(T.getOwnerName().length()>0))
+				||(T.getOwnerName().equals(owner))))
 			{
 				List<Room> V2=T.getAllTitledRooms();
 				boolean proceed=true;
@@ -216,19 +216,19 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		LandTitle ptitle = ifLandTitle(R);
 		if(ptitle ==null) return false;
-		if(ptitle.landOwner().length()==0)
+		if(ptitle.getOwnerName().length()==0)
 		{
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
 				Room sideRoom=R.getRoomInDir(d);
 				LandTitle psTitle=ifLandTitle(sideRoom);
-				if(psTitle.landOwner().equals(title.landOwner()))
+				if(psTitle.getOwnerName().equals(title.getOwnerName()))
 					return true;
 			}
 			return false;
 		}
 		else
-			return ptitle.landOwner().equals(title.landOwner());
+			return ptitle.getOwnerName().equals(title.getOwnerName());
 	}
 	
 	public Set<Room> getHomePeersOnThisFloor(Room room, Set<Room> doneRooms)
@@ -274,12 +274,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		LandTitle title=getLandTitle(room);
 		if(title==null) return false;
-		if(title.landOwner()==null) return false;
-		if(title.landOwner().length()==0) return false;
-		if(title.landOwner().equals(mob.Name())) return true;
-		if((title.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+		if(title.getOwnerName()==null) return false;
+		if(title.getOwnerName().length()==0) return false;
+		if(title.getOwnerName().equals(mob.Name())) return true;
+		if((title.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		Pair<Clan,Integer> clanRole=mob.getClanRole(title.landOwner());
+		Pair<Clan,Integer> clanRole=mob.getClanRole(title.getOwnerName());
 		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
 			return true;
 		if(mob.amFollowing()!=null) 
@@ -318,17 +318,17 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		LandTitle title=getLandTitle(room);
 		if(title==null) return "";
-		if(title.landOwner()==null) return "";
-		return title.landOwner();
+		if(title.getOwnerName()==null) return "";
+		return title.getOwnerName();
 	}
 	
 	public boolean doesOwnThisProperty(String name, Room room)
 	{
 		LandTitle title=getLandTitle(room);
 		if(title==null) return false;
-		if(title.landOwner()==null) return false;
-		if(title.landOwner().length()==0) return false;
-		if(title.landOwner().equals(name)) return true;
+		if(title.getOwnerName()==null) return false;
+		if(title.getOwnerName().length()==0) return false;
+		if(title.getOwnerName().equals(name)) return true;
 		return false;
 	}
 	
@@ -354,12 +354,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		LandTitle title=getLandTitle(room);
 		if(title==null) return false;
-		if(title.landOwner()==null) return false;
-		if(title.landOwner().length()==0) return false;
-		if(title.landOwner().equals(mob.Name())) return true;
-		if((title.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+		if(title.getOwnerName()==null) return false;
+		if(title.getOwnerName().length()==0) return false;
+		if(title.getOwnerName().equals(mob.Name())) return true;
+		if((title.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		Pair<Clan,Integer> clanRole=mob.getClanRole(title.landOwner());
+		Pair<Clan,Integer> clanRole=mob.getClanRole(title.getOwnerName());
 		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(),Clan.Function.PROPERTY_OWNER)!=Clan.Authority.CAN_NOT_DO))
 			return true;
 		if(mob.amFollowing()!=null) 

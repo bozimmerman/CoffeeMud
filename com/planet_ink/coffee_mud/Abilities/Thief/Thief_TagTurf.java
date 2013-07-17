@@ -118,7 +118,7 @@ public class Thief_TagTurf extends ThiefSkill
 		}
 		if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
 		&&(CMLib.law().getLandTitle(mob.location())!=null)
-		&&(CMLib.law().getLandTitle(mob.location()).landOwner().length()>0))
+		&&(CMLib.law().getLandTitle(mob.location()).getOwnerName().length()>0))
 		{
 			mob.tell("You can't tag anothers property!");
 			return false;

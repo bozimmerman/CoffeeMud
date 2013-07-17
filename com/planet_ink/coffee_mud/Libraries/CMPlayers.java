@@ -226,7 +226,15 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				CMLib.database().DBUpdateAccount(account);
 				account.setLastUpdated(System.currentTimeMillis());
 			}
+			for(Enumeration<Item> e=pstats.getExtItems().items(); e.hasMoreElements();)
+			{
+				Item I=e.nextElement();
+				if(I instanceof PrivateProperty)
+					if(((PrivateProperty)I).getOwnerName().equalsIgnoreCase(oldName))
+						((PrivateProperty)I).setOwnerName(newName);
+			}
 		}
+		
 		for(Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
 		{
 			Room R=r.nextElement();
@@ -242,9 +250,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						if(A==null) continue;
 						if(A instanceof LandTitle)
 						{
-							if(((LandTitle)A).landOwner().equals(oldName))
+							if(((LandTitle)A).getOwnerName().equals(oldName))
 							{
-								((LandTitle)A).setLandOwner(newName);
+								((LandTitle)A).setOwnerName(newName);
 								changed=true;
 							}
 						}

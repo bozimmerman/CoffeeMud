@@ -43,6 +43,7 @@ public class StdProgram extends StdItem implements Software
 	
 	protected StringBuilder nextMsg = new StringBuilder("");
 	protected String currentScreen="";
+	protected int techLevel=-1;
 
 	public StdProgram()
 	{
@@ -201,4 +202,9 @@ public class StdProgram extends StdItem implements Software
 		}
 		super.executeMsg(host, msg);
 	}
+
+	@Override
+    public int techLevel() { return techLevel; }
+	@Override
+    public void setTechLevel(int level) { techLevel=level; }
 }

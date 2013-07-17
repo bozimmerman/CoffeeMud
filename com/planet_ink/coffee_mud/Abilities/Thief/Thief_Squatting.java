@@ -92,18 +92,18 @@ public class Thief_Squatting extends ThiefSkill
 			if((failed)||(!CMLib.flags().isSitting(mob))||(room==null)||(title==null)||(mob.location()!=room))
 				mob.tell("You are no longer squatting.");
 			else
-			if(title.landOwner().length()>0)
+			if(title.getOwnerName().length()>0)
 			{
-				mob.tell("Your squat has succeeded.  This property no longer belongs to "+title.landOwner()+".");
-				title.setLandOwner("");
+				mob.tell("Your squat has succeeded.  This property no longer belongs to "+title.getOwnerName()+".");
+				title.setOwnerName("");
 				title.updateTitle();
 				title.updateLot(null);
 			}
 			else
-			if(title.landOwner().length()>0)
+			if(title.getOwnerName().length()>0)
 			{
 				mob.tell("Your squat has succeeded.  This property now belongs to you.");
-				title.setLandOwner(mob.Name());
+				title.setOwnerName(mob.Name());
 				title.updateTitle();
 				title.updateLot(new XVector(mob.name()));
 			}
@@ -144,12 +144,12 @@ public class Thief_Squatting extends ThiefSkill
 			return false;
 		}
 		MOB warnMOB=null;
-		if(T.landOwner().length()>0)
+		if(T.getOwnerName().length()>0)
 		{
-			Clan C=CMLib.clans().getClan(T.landOwner());
+			Clan C=CMLib.clans().getClan(T.getOwnerName());
 			if(C==null)
 			{
-				MOB M=CMLib.players().getLoadPlayer(T.landOwner());
+				MOB M=CMLib.players().getLoadPlayer(T.getOwnerName());
 				if(M!=null)
 					warnMOB=M;
 			}
@@ -194,7 +194,7 @@ public class Thief_Squatting extends ThiefSkill
 			title=T;
 			beneficialAffect(mob,target,asLevel,(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)));
 			if(warnMOB!=null)
-				warnMOB.tell("You've heard a rumor that someone is squatting on "+T.landOwner()+"'s property.");
+				warnMOB.tell("You've heard a rumor that someone is squatting on "+T.getOwnerName()+"'s property.");
 		}
 		return success;
 	}

@@ -84,8 +84,8 @@ public class TaxCollector extends StdBehavior
 			for(int t=0;t<taxableProperties.size();t++)
 			{
 				LandTitle T=taxableProperties.get(t);
-				if((T.landOwner().equals(M.Name())
-					||(M.getClanRole(T.landOwner())!=null))
+				if((T.getOwnerName().equals(M.Name())
+					||(M.getClanRole(T.getOwnerName())!=null))
 				&&(T.backTaxes()>0))
 					owed[OWE_BACKTAXES]+=T.backTaxes();
 			}
@@ -176,8 +176,8 @@ public class TaxCollector extends StdBehavior
 				for(int i=0;i<taxableProperties.size();i++)
 				{
 					LandTitle T=taxableProperties.get(i);
-					if(T.landOwner().equals(msg.source().Name())
-						||(msg.source().getClanRole(T.landOwner())!=null))
+					if(T.getOwnerName().equals(msg.source().Name())
+						||(msg.source().getClanRole(T.getOwnerName())!=null))
 					{
 						numProperties++;
 						if(T.backTaxes()>0)
@@ -218,7 +218,7 @@ public class TaxCollector extends StdBehavior
 				for(int i=0;i<taxableProperties.size();i++)
 				{
 					LandTitle T=taxableProperties.get(i);
-					if(((T.landOwner().equals(msg.source().Name())))
+					if(((T.getOwnerName().equals(msg.source().Name())))
 					&&(paidAmount>0))
 					{
 						T.setBackTaxes(T.backTaxes()-(int)Math.round(CMath.div(paidAmount,numProperties)));
@@ -299,9 +299,9 @@ public class TaxCollector extends StdBehavior
 					for(int v=0;v<taxableProperties.size();v++)
 					{
 						T=taxableProperties.get(v);
-						if((!peopleWhoOwe.contains(T.landOwner()))
+						if((!peopleWhoOwe.contains(T.getOwnerName()))
 						&&(T.backTaxes()>0))
-							peopleWhoOwe.add(T.landOwner());
+							peopleWhoOwe.add(T.getOwnerName());
 					}
 				}
 				else

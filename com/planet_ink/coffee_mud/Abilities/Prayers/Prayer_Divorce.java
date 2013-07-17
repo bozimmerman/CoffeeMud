@@ -91,9 +91,9 @@ public class Prayer_Divorce extends Prayer
 					{
 						Room R=(Room)e.nextElement();
 						LandTitle T=CMLib.law().getLandTitle(R);
-						if((T!=null)&&(T.landOwner().equals(maleName)))
+						if((T!=null)&&(T.getOwnerName().equals(maleName)))
 						{
-							T.setLandOwner(femaleName);
+							T.setOwnerName(femaleName);
 							CMLib.database().DBUpdateRoom(R);
 						}
 						for(int i=0;i<R.numInhabitants();i++)

@@ -38,34 +38,8 @@ import java.util.List;
  * @author Bo Zimmerman
  */
 @SuppressWarnings("rawtypes")
-public interface LandTitle extends Environmental
+public interface LandTitle extends PrivateProperty
 {
-	/**
-	 * The value of the property in base currency values
-	 * @return the price of the property
-	 */
-	public int landPrice();
-	/**
-	 * set the value of the property in base currency values
-	 * @param price the price of the property
-	 */
-	public void setLandPrice(int price);
-	/**
-	 * Get the owner of the property, usually a clan name or a player name.
-	 * @return the name of the owner of the property
-	 */
-	public String landOwner();
-	/**
-	 * Set the owner of the property, usually a clan name or a player name.
-	 * @param owner the name of the owner of the property
-	 */
-	public void setLandOwner(String owner);
-	
-	/**
-	 * Get the actual clan or mob owner of the property, or null if it can not.
-	 * @return the owner of the property
-	 */
-	public CMObject landOwnerObject();
 	/**
 	 * Get the roomID or the Area name of the property for sale
 	 * @return the roomID or the Area  name of the property for sale
@@ -134,12 +108,6 @@ public interface LandTitle extends Environmental
 	 * @return amount the back  taxes owed
 	 */
 	public int backTaxes();
-	
-	/**
-	 * Returns a unique id for this particular title and the rooms is represents, even if the rooms change.
-	 * @return a unique id
-	 */
-	public String getTitleID();
 	
 	/**
 	 * Returns whether this title allows property to be expanded through masonry or construction.

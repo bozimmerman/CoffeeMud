@@ -96,7 +96,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 		if((theRoom.roomID().length()>0)
 		&&((CMLib.law().getLandTitle(theRoom)==null)
-			||(CMLib.law().getLandTitle(theRoom).landOwner().length()>0)))
+			||(CMLib.law().getLandTitle(theRoom).getOwnerName().length()>0)))
 			return false;
 
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -105,7 +105,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			if((R!=null)
 			   &&(R!=fromRoom)
 			   &&(R.roomID().length()>0)
-			   &&((CMLib.law().getLandTitle(R)==null)||(CMLib.law().getLandTitle(R).landOwner().length()>0)))
+			   &&((CMLib.law().getLandTitle(R)==null)||(CMLib.law().getLandTitle(R).getOwnerName().length()>0)))
 				return false;
 		}
 		return true;
@@ -143,7 +143,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				R=CMLib.map().getRoom(R);
 				lastItemNums=updateLotWithThisData(R,this,true,scheduleReset,optPlayerList,lastItemNums);
 		
-				if(landOwner().length()==0)
+				if(getOwnerName().length()==0)
 				{
 					boolean updateExits=false;
 					boolean foundOne=false;
@@ -213,7 +213,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 							if((newTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
 							{
 								newTitle=(LandTitle)((Ability)newTitle).copyOf();
-								newTitle.setLandOwner("");
+								newTitle.setOwnerName("");
 								newTitle.setBackTaxes(0);
 								R2.addNonUninvokableEffect((Ability)newTitle);
 							}

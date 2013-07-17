@@ -277,6 +277,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(O instanceof LandTitle)
 			image=getHashedMXPImage(H,"ITEM_LANDTITLE");
 		else
+		if(O instanceof SpaceShip)
+			image=getHashedMXPImage(H,"ITEM_SPACESHIP");
+		else
 		if(O instanceof MagicDust)
 		{
 			List<Ability> V=((MagicDust)O).getSpells();

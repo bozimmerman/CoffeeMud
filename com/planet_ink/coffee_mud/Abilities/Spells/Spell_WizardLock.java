@@ -202,7 +202,7 @@ public class Spell_WizardLock extends Spell
 							{
 								final Ability A=a.nextElement();
 								if((A instanceof LandTitle)
-								   &&(((LandTitle)A).landOwner().length()>0))
+								   &&(((LandTitle)A).getOwnerName().length()>0))
 									lock.setMiscText(lock.text()+" MALICIOUS");
 							}
 					}

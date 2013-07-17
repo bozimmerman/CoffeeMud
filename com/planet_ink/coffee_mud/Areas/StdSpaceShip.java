@@ -804,6 +804,8 @@ public class StdSpaceShip implements Area, SpaceShip
 			R.setArea(this);
 			return;
 		}
+		if(!CMLib.flags().isSavable(this))
+			CMLib.flags().setSavable(R,false);
 		synchronized(myRooms)
 		{
 			if(!myRooms.contains(R))

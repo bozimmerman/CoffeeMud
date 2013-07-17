@@ -88,8 +88,8 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	public void updateTitle()
 	{
 		List<Room> V=getAllTitledRooms();
-		String owner=landOwner();
-		int price=landPrice();
+		String owner=getOwnerName();
+		int price=getPrice();
 		boolean rental=rentalProperty();
 		int back=backTaxes();
 		String uniqueID="ROOMS_PROPERTY_"+this;
@@ -103,13 +103,13 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 				R=CMLib.map().getRoom(R);
 				LandTitle A=(LandTitle)R.fetchEffect(ID());
 				if((A!=null)
-				&&((!A.landOwner().equals(owner))
-				   ||(A.landPrice()!=price)
+				&&((!A.getOwnerName().equals(owner))
+				   ||(A.getPrice()!=price)
 				   ||(A.backTaxes()!=back)
 				   ||(A.rentalProperty()!=rental)))
 				{
-					A.setLandOwner(owner);
-					A.setLandPrice(price);
+					A.setOwnerName(owner);
+					A.setPrice(price);
 					A.setBackTaxes(back);
 					A.setRentalProperty(rental);
 					CMLib.database().DBUpdateRoom(R);
@@ -145,10 +145,10 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 					if(PRFS!=null)
 						PRFS.lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
 				}
-				if((landOwner().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
-					if(doRentalProperty(R.getArea(),R.roomID(),landOwner(),landPrice()))
+				if((getOwnerName().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+					if(doRentalProperty(R.getArea(),R.roomID(),getOwnerName(),getPrice()))
 					{
-						setLandOwner("");
+						setOwnerName("");
 						updateTitle();
 						lastItemNums=updateLotWithThisData((Room)affected,this,false,scheduleReset,optPlayerList,lastItemNums);
 					}

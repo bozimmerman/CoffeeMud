@@ -428,10 +428,10 @@ public class Reset extends StdCommand
 					R=CMLib.map().getRoom(R);
 					T=CMLib.law().getLandTitle(R);
 					if((T!=null)
-					&&(T.landOwner().length()==0))
+					&&(T.getOwnerName().length()==0))
 					{
-						T.setLandOwner(mob.Name());
-						T.setLandOwner("");
+						T.setOwnerName(mob.Name());
+						T.setOwnerName("");
 						T.updateLot(new XVector(mob.name()));
 					}
 				}

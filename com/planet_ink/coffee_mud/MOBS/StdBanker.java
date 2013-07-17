@@ -332,9 +332,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 							for(int v=0;v<items.size();v++)
 							{
 								Item I=items.get(v);
-								if((I instanceof LandTitle)&&(((LandTitle)I).landOwner().length()>0))
+								if((I instanceof LandTitle)&&(((LandTitle)I).getOwnerName().length()>0))
 								{
-									((LandTitle)I).setLandOwner("");
+									((LandTitle)I).setOwnerName("");
 									((LandTitle)I).updateTitle();
 									((LandTitle)I).updateLot(null);
 								}
@@ -619,7 +619,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(V.get(v) instanceof LandTitle)
 						{
 							LandTitle L=(LandTitle)V.get(v);
-							if(L.landOwnerObject()==null)
+							if(L.getOwnerObject()==null)
 							{
 								delDepositInventory(listerName,(Item)L);
 								V.remove(L);

@@ -941,10 +941,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(seller.isMonster())
 			{
 				LandTitle T=CMLib.law().getLandTitle(seller.getStartRoom());
-				if((T!=null)&&(T.landOwner().length()>0))
+				if((T!=null)&&(T.getOwnerName().length()>0))
 				{
 					CMLib.beanCounter().modifyLocalBankGold(seller.getStartRoom().getArea(),
-													T.landOwner(),
+													T.getOwnerName(),
 													CMLib.utensils().getFormattedDate(buyer)+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(seller,totalFunds)+": Purchase: "+product.Name()+" from "+seller.Name(),
 													CMLib.beanCounter().getCurrency(seller),
 													totalFunds);
@@ -958,10 +958,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		buyer.recoverPhyStats();
 	}
 
-	public boolean purchaseItems(Item baseProduct,
-								 List<Environmental> products,
-								 MOB seller,
-								 MOB mobFor)
+	public boolean purchaseItems(Item baseProduct, List<Environmental> products, MOB seller, MOB mobFor)
 	{
 		if((seller==null)||(seller.location()==null)||(mobFor==null))
 			return false;
@@ -986,10 +983,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return false;
 	}
 
-	public boolean purchaseMOB(MOB product,
-							   MOB seller,
-							   ShopKeeper shop,
-							   MOB mobFor)
+	public boolean purchaseMOB(MOB product, MOB seller, ShopKeeper shop, MOB mobFor)
 	{
 		if((seller==null)||(seller.location()==null)||(product==null)||(shop==null)||(mobFor==null))
 			return false;
@@ -1126,9 +1120,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						List<Room> V2=A.getAllTitledRooms();
 						roomsHandling.addAll(V2);
 					}
-					if((A.landOwner().length()>0)
-					&&(!A.landOwner().equals(name))
-					&&((!A.landOwner().equals(buyer.getLiegeID()))||(!buyer.isMarriedToLiege())))
+					if((A.getOwnerName().length()>0)
+					&&(!A.getOwnerName().equals(name))
+					&&((!A.getOwnerName().equals(buyer.getLiegeID()))||(!buyer.isMarriedToLiege())))
 						continue;
 					boolean skipThisOne=false;
 					if(R instanceof Room)
@@ -1144,10 +1138,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 							}
 							else
 								continue;
-							if((L2.landOwner().equals(name))
-							||(L2.landOwner().equals(buyer.getLiegeID())&&(buyer.isMarriedToLiege())))
+							if((L2.getOwnerName().equals(name))
+							||(L2.getOwnerName().equals(buyer.getLiegeID())&&(buyer.isMarriedToLiege())))
 							{ skipThisOne=false; break;}
-							if(L2.landOwner().length()>0)
+							if(L2.getOwnerName().length()>0)
 								skipThisOne=true;
 						}
 					if(skipThisOne)
@@ -1157,12 +1151,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						((LandTitle)I).setLandPropertyID(CMLib.map().getExtendedRoomID((Room)R));
 					else
 						((LandTitle)I).setLandPropertyID(R.Name());
-					if((((LandTitle)I).landOwner().length()>0)
+					if((((LandTitle)I).getOwnerName().length()>0)
 					&&(!I.Name().endsWith(" (Copy)")))
 						I.setName(I.Name()+" (Copy)");
 					I.text();
 					I.recoverPhyStats();
-					if((A.landOwner().length()==0)
+					if((A.getOwnerName().length()==0)
 					&&(I.Name().endsWith(" (Copy)")))
 						I.setName(I.Name().substring(0,I.Name().length()-7));
 					V.add(I);
@@ -1316,6 +1310,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					&&(!(E instanceof Ammunition))
 					&&(!(E instanceof MOB))
 					&&(!(E instanceof LandTitle))
+					&&(!(E instanceof SpaceShip))
 					&&(!(E instanceof RawMaterial))
 					&&(!(E instanceof Ability)));
 		case ShopKeeper.DEAL_LEATHER:
@@ -1345,9 +1340,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return (E instanceof Potion);
 		case ShopKeeper.DEAL_LANDSELLER:
 		case ShopKeeper.DEAL_CLANDSELLER:
+			return (E instanceof LandTitle);
 		case ShopKeeper.DEAL_SHIPSELLER:
 		case ShopKeeper.DEAL_CSHIPSELLER:
-			return (E instanceof LandTitle);
+			return (E instanceof SpaceShip);
 		case ShopKeeper.DEAL_ANYTECHNOLOGY:
 			return (E instanceof Electronics);
 		case ShopKeeper.DEAL_BUTCHER:

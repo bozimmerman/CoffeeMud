@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
@@ -35,10 +36,12 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip
+public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip, PrivateProperty
 {
 	public String ID(){	return "StdSpaceShip";}
 	protected String readableText="";
+	protected String owner = "";
+	protected int price = 1000;
 	protected Manufacturer manufacturer = CMLib.tech().getDefaultManufacturer();
 	protected Area area=null;
 
@@ -50,16 +53,38 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setDescription("");
 		recoverPhyStats();
+		CMLib.flags().setGettable(this, false);
+		CMLib.flags().setSavable(this, false);
 	}
 
 	public boolean isGeneric(){return false;}
 
-	public String text()
+	protected void makeNewAea()
+	{
+		area=CMClass.getAreaType("StdSpaceShip");
+		String num=Double.toString(Math.random());
+		area.setName("UNNAMED_"+num.substring(num.indexOf('.')+1));
+		area.setSavable(false);
+		area.setTheme(Area.THEME_TECHNOLOGY);
+		Room R=CMClass.getLocale("MetalRoom");
+		R.setRoomID(area.Name()+"#0");
+		R.setSavable(false);
+		area.addProperRoom(R);
+		if(getDestinationRoom()==null)
+			readableText=R.roomID();
+	}
+
+	public synchronized Area getArea()
 	{
 		if(area==null)
-			return CMLib.coffeeMaker().getPropertiesStr(this,false);
-		else
-			return CMLib.coffeeMaker().getPropertiesStr(this,false)+"~|~"+CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true);
+			makeNewAea();
+		return area;
+	}
+	
+	
+	public String text()
+	{
+		return CMLib.coffeeMaker().getPropertiesStr(this,false)+"~|~"+CMLib.coffeeMaker().getAreaObjectXML(getArea(), null, null, null, true);
 	}
 
 	public String readableText(){return readableText;}
@@ -73,13 +98,43 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip
 			CMLib.coffeeMaker().setPropertiesStr(this,newText.substring(0,x),false);
 			try {
 				area=CMLib.coffeeMaker().unpackAreaObjectFromXML(newText.substring(x+3));
+				if(area!=null)
+				{
+					area.setSavable(false);
+					for(Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
+						CMLib.flags().setSavable(r.nextElement(), false);
+				}
+				else
+					makeNewAea();
 			} catch (CMException e) {
 				Log.warnOut("Unable to parse space ship xml for some reason.");
 			}
 		}
 		else
+		{
 			CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+			if(area==null)
+				makeNewAea();
+		}
 		recoverPhyStats();
+	}
+	
+	public CMObject copyOf()
+	{
+		StdSpaceShip s=(StdSpaceShip)super.copyOf();
+		s.setMiscText(text());
+		return s;
+	}
+	
+	@Override
+	protected Room getDestinationRoom()
+	{
+		
+		Room R=null;
+		List<String> V=CMParms.parseSemicolons(readableText(),true);
+		if(V.size()>0)
+			R=getArea().getRoom((String)V.get(CMLib.dice().roll(1,V.size(),-1)));
+		return R;
 	}
 	
 	public int fuelType(){return -1;}
@@ -97,88 +152,6 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip
 	public void setManufacturer(Manufacturer manufacturer) { if(manufacturer!=null) this.manufacturer=manufacturer; }
 	public Manufacturer getManufacturer() { return manufacturer; }
 	
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
-							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM",
-							  "MANUFACTURER"};
-	public String getStat(String code)
-	{
-		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		switch(getCodeNum(code))
-		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasALid();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+rideBasis();
-		case 5: return ""+riderCapacity();
-		case 6: return ""+fuelType();
-		case 7: return ""+powerCapacity();
-		case 8: return ""+activated();
-		case 9: return ""+powerRemaining();
-		case 10: return getManufacturer().name();
-		default:
-			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-		}
-	}
-	public void setStat(String code, String val)
-	{
-		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
-			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		else
-		switch(getCodeNum(code))
-		{
-		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
-		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: break;
-		case 5: break;
-		case 6:{
-			int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
-			x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
-			setFuelType(x); 
-			break;
-		   } 
-		case 7: setPowerCapacity(CMath.s_parseIntExpression(val)); break;
-		case 8: activate(CMath.s_bool(val)); break;
-		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 10: setManufacturer(CMLib.tech().getManufacturer(val)); break;
-		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-			break;
-		}
-	}
-	protected int getCodeNum(String code){
-		for(int i=0;i<MYCODES.length;i++)
-			if(code.equalsIgnoreCase(MYCODES[i])) return i;
-		return -1;
-	}
-	private static String[] codes=null;
-	public String[] getStatCodes()
-	{
-		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(StdSpaceShip.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
-		codes=new String[superCodes.length+MYCODES.length];
-		int i=0;
-		for(;i<superCodes.length;i++)
-			codes[i]=superCodes[i];
-		for(int x=0;x<MYCODES.length;i++,x++)
-			codes[i]=MYCODES[x];
-		return codes;
-	}
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof StdSpaceShip)) return false;
-		String[] codes=getStatCodes();
-		for(int i=0;i<codes.length;i++)
-			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
-				return false;
-		return true;
-	}
-
 	@Override
 	public long[] coordinates() 
 	{
@@ -281,5 +254,173 @@ public class StdSpaceShip extends StdPortal implements Electronics, SpaceShip
 	{
 		if (area instanceof SpaceShip)
 			((SpaceShip)area).unDock(toSpace);
+	}
+	
+	@Override public int getPrice() { return price; }
+	@Override public void setPrice(int price) { this.price=price; }
+	@Override public String getOwnerName() { return owner; }
+	@Override public void setOwnerName(String owner) { this.owner=owner; }
+	@Override
+	public CMObject getOwnerObject()
+	{
+		String owner=getOwnerName();
+		if(owner.length()==0) return null;
+		Clan C=CMLib.clans().getClan(owner);
+		if(C!=null) return C;
+		return CMLib.players().getLoadPlayer(owner);
+	}
+	@Override
+	public String getTitleID() { return this.toString(); }
+	
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((msg.targetMinor()==CMMsg.TYP_GET)
+		&&(msg.amITarget(this))
+		&&(msg.tool() instanceof ShopKeeper))
+		{
+			if(getOwnerName().length()==0)
+			{
+				Area AREA=getArea();
+				if((AREA.Name().startsWith("UNNAMED_"))&&(msg.source().isMonster()))
+					return false;
+				String newOwnerName=msg.source().Name();
+				if(((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CSHIPSELLER))
+				{
+					Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(msg.source(), Clan.Function.PROPERTY_OWNER);
+					if(clanPair!=null)
+						newOwnerName=clanPair.first.clanID();
+				}
+				
+				setOwnerName(newOwnerName);
+				if(getOwnerName().length()>0)
+				{
+					msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
+				}
+			}
+		}
+		return super.okMessage(myHost,msg);
+	}
+
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+
+		if((msg.targetMinor()==CMMsg.TYP_SELL)
+		&&(msg.tool()==this)
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof ShopKeeper))
+		{
+			setOwnerName("");
+			recoverPhyStats();
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_GIVE)
+		&&(msg.tool()==this)
+		&&(msg.source()!=null)
+		&&(getOwnerName().length()>0)
+		&&((msg.source().Name().equals(getOwnerName()))
+			||(msg.source().getLiegeID().equals(getOwnerName())&&msg.source().isMarriedToLiege())
+			||(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER)))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
+		&&(!(msg.target() instanceof Banker))
+		&&(!(msg.target() instanceof Auctioneer))
+		&&(!(msg.target() instanceof PostOffice)))
+		{
+			if(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER))
+			{
+				Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan((MOB)msg.target(), Clan.Function.PROPERTY_OWNER);
+				if(targetClan!=null)
+					setOwnerName(targetClan.first.clanID());
+				else
+					setOwnerName(msg.target().Name());
+			}
+			else
+				setOwnerName(msg.target().Name());
+			recoverPhyStats();
+			msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
+		}
+	}
+	
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
+							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
+							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM",
+							  "MANUFACTURER"};
+	public String getStat(String code)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		switch(getCodeNum(code))
+		{
+		case 0: return ""+hasALock();
+		case 1: return ""+hasALid();
+		case 2: return ""+capacity();
+		case 3: return ""+containTypes();
+		case 4: return ""+rideBasis();
+		case 5: return ""+riderCapacity();
+		case 6: return ""+fuelType();
+		case 7: return ""+powerCapacity();
+		case 8: return ""+activated();
+		case 9: return ""+powerRemaining();
+		case 10: return getManufacturer().name();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+	}
+	public void setStat(String code, String val)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
+		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
+		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
+		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
+		case 4: break;
+		case 5: break;
+		case 6:{
+			int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
+			x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+			setFuelType(x); 
+			break;
+		   } 
+		case 7: setPowerCapacity(CMath.s_parseIntExpression(val)); break;
+		case 8: activate(CMath.s_bool(val)); break;
+		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 10: setManufacturer(CMLib.tech().getManufacturer(val)); break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+	}
+	protected int getCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes!=null) return codes;
+		String[] MYCODES=CMProps.getStatCodesList(StdSpaceShip.MYCODES,this);
+		String[] superCodes=GenericBuilder.GENITEMCODES;
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdSpaceShip)) return false;
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		return true;
 	}
 }

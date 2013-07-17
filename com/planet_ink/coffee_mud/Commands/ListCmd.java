@@ -204,8 +204,8 @@ public class ListCmd extends StdCommand
 			if(t!=null)
 			{
 				thisOne=thisThang.roomID();
-				if((thisOne.length()>0)&&((owner==null)||(t.landOwner().equalsIgnoreCase(owner))))
-					lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),23)+CMStrings.limit(" ("+t.landOwner()+", $"+t.landPrice()+")",20)+"\n\r");
+				if((thisOne.length()>0)&&((owner==null)||(t.getOwnerName().equalsIgnoreCase(owner))))
+					lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),23)+CMStrings.limit(" ("+t.getOwnerName()+", $"+t.getPrice()+")",20)+"\n\r");
 			}
 		}
 		lines.append("\n\r");
