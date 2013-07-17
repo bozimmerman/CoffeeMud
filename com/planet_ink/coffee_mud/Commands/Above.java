@@ -32,11 +32,11 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Up extends Go
+public class Above extends Go
 {
-	public Up(){}
+	public Above(){}
 
-	private final String[] access={"UP","U"};
+	private final String[] access={"ABOVE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -58,6 +58,6 @@ public class Up extends Go
 	public boolean securityCheck(MOB mob)
 	{
 		return (mob==null) || (mob.isMonster()) || (mob.location()==null) 
-				|| ((!(mob.location() instanceof SpaceShip)) && (!(mob.location().getArea() instanceof SpaceShip)));
+				|| (mob.location() instanceof SpaceShip) || (mob.location().getArea() instanceof SpaceShip);
 	}
 }

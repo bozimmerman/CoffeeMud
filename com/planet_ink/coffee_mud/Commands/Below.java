@@ -32,11 +32,11 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Up extends Go
+public class Below extends Go
 {
-	public Up(){}
+	public Below(){}
 
-	private final String[] access={"UP","U"};
+	private final String[] access={"BELOW"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -48,9 +48,9 @@ public class Up extends Go
 			return false;
 		}
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN))
-			CMLib.tracking().run(mob, Directions.UP, false,false,false);
+			CMLib.tracking().run(mob, Directions.DOWN, false,false,false);
 		else
-			CMLib.tracking().walk(mob, Directions.UP, false,false,false);
+			CMLib.tracking().walk(mob, Directions.DOWN, false,false,false);
 		return false;
 	}
 	public boolean canBeOrdered(){return true;}
@@ -58,6 +58,6 @@ public class Up extends Go
 	public boolean securityCheck(MOB mob)
 	{
 		return (mob==null) || (mob.isMonster()) || (mob.location()==null) 
-				|| ((!(mob.location() instanceof SpaceShip)) && (!(mob.location().getArea() instanceof SpaceShip)));
+				|| (mob.location() instanceof SpaceShip) || (mob.location().getArea() instanceof SpaceShip);
 	}
 }

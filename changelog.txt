@@ -29,7 +29,7 @@
   27. Thiefs have new "small" pit traps that, unlike normal pit traps, only trigger when you move through a room instead of when you enter.
   28. New INI entry 'DEFAULTPARENTAREA' for automatically setting new areas (or existing ones) that use the global clock to share a parent area.
   29. CoffeeMud will now convert MSP tags to MXP SOUND tags if the session supports both, allowing us to hear sounds in CMUD/ZMUD once again.
-  30. New commands for moving in space ships: foreward, portside, aft, and starboard. Compass versions included of course.
+  30. New commands for moving in space ships: foreward, portside, aft, above, below, and starboard. Compass versions included of course.
 # Build 5.7.10 Release 2/17/2013 (* DB CHANGE!) (** Thanks to TGMUD for publishing their changelogs!!!)
    0. Database Schema Updated! Run DBUpgrade, OR create table CMCHCL (see appropriate schema file), then:
    INSERT INTO CMCHCL VALUES (SELECT USERID, CMCLAN, CMCLRO from CMCHAR where CMCLAN != ''); // lastly:
