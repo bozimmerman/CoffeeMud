@@ -109,7 +109,10 @@ public class Go extends StdCommand
 		}
 		if(direction<0)
 		{
-			direction=(inAShip && (!mob.isMonster()))?Directions.getGoodShipDirectionCode(whereStr):Directions.getGoodCompassDirectionCode(whereStr);
+			if(mob.isMonster())
+				direction=Directions.getGoodDirectionCode(whereStr);
+			else
+				direction=(inAShip)?Directions.getGoodShipDirectionCode(whereStr):Directions.getGoodCompassDirectionCode(whereStr);
 		}
 		if(direction<0)
 		{
@@ -153,7 +156,10 @@ public class Go extends StdCommand
 					s=s.substring(x);
 				}
 
-				direction=(inAShip && (!mob.isMonster()))?Directions.getGoodShipDirectionCode(s):Directions.getGoodCompassDirectionCode(s);
+				if(mob.isMonster())
+					direction=Directions.getGoodDirectionCode(s);
+				else
+					direction=(inAShip)?Directions.getGoodShipDirectionCode(s):Directions.getGoodCompassDirectionCode(s);
 				if(direction>=0)
 				{
 					doneAnything=true;
