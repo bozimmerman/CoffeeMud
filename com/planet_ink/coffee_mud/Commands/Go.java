@@ -73,6 +73,11 @@ public class Go extends StdCommand
 		}
 		String whereStr=CMParms.combine(commands,1);
 		Room R=mob.location();
+		if(R==null) return false;
+
+		boolean inAShip = (R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
+		final String validDirs = inAShip?Directions.SHIP_NAMES_LIST() : Directions.NAMES_LIST();
+		
 		int direction=-1;
 		if(whereStr.equalsIgnoreCase("OUT"))
 		{
@@ -89,7 +94,7 @@ public class Go extends StdCommand
 				{
 					if(direction>=0)
 					{
-						mob.tell("Which way out?  Try North, South, East, etc..");
+						mob.tell("Which way out?  Try "+validDirs+".");
 						return false;
 					}
 					direction=d;
@@ -104,15 +109,13 @@ public class Go extends StdCommand
 			direction=Directions.getGoodDirectionCode(whereStr);
 		if(direction<0)
 		{
-			Environmental E=null;
-			if(R!=null)
-				E=R.fetchFromRoomFavorItems(null,whereStr);
+			Environmental E=R.fetchFromRoomFavorItems(null,whereStr);
 			if(E instanceof Rideable)
 			{
 				Command C=CMClass.getCommand("Enter");
 				return C.execute(mob,commands,metaFlags);
 			}
-			if((E instanceof Exit)&&(R!=null))
+			if(E instanceof Exit)
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					if(R.getExitInDir(d)==E)
@@ -126,6 +129,7 @@ public class Go extends StdCommand
 		{
 			boolean doneAnything=false;
 			if(commands.size()>2)
+			{
 				for(int v=1;v<commands.size();v++)
 				{
 					int num=1;
@@ -168,8 +172,9 @@ public class Go extends StdCommand
 					else
 						break;
 				}
+			}
 			if(!doneAnything)
-				mob.tell(CMStrings.capitalizeAndLower(doing)+" which direction?\n\rTry north, south, east, west, up, or down.");
+				mob.tell(CMStrings.capitalizeAndLower(doing)+" which direction?\n\rTry "+validDirs.toLowerCase()+".");
 		}
 		return false;
 	}

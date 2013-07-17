@@ -142,7 +142,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		Room R=null;
 		List<String> V=CMParms.parseSemicolons(readableText(),true);
 		if(V.size()>0)
-			R=getArea().getRoom((String)V.get(CMLib.dice().roll(1,V.size(),-1)));
+			R=getArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
 	}
 	

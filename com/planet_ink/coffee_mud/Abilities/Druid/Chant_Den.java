@@ -96,10 +96,10 @@ public class Chant_Den extends Chant
 			return false;
 		}
 		Vector dirChoices=new Vector();
-		for(int d=0;d<Directions.DIRECTIONS_BASE().length;d++)
+		for(int dir : Directions.CODES())
 		{
-			if(mob.location().getRoomInDir(Directions.DIRECTIONS_BASE()[d])==null)
-				dirChoices.addElement(Integer.valueOf(Directions.DIRECTIONS_BASE()[d]));
+			if(mob.location().getRoomInDir(dir)==null)
+				dirChoices.addElement(Integer.valueOf(dir));
 		}
 		if(dirChoices.size()==0)
 		{

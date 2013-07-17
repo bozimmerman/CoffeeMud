@@ -82,10 +82,10 @@ public class Archon_Banish extends ArchonSkill
 			if(A2!=null) A2.setMiscText("Spell_Hungerless;Spell_Thirstless");
 			if(A2!=null) prisonRoom.addNonUninvokableEffect(A2);
 		}
-		for(int d=0;d<Directions.DIRECTIONS_BASE().length;d++)
+		for(int dir : Directions.CODES())
 		{
-			prisonRoom.setRawExit(Directions.DIRECTIONS_BASE()[d],CMClass.getExit("Open"));
-			prisonRoom.rawDoors()[Directions.DIRECTIONS_BASE()[d]]=prisonRoom;
+			prisonRoom.setRawExit(dir,CMClass.getExit("Open"));
+			prisonRoom.rawDoors()[dir]=prisonRoom;
 		}
 		return prisonRoom;
 	}

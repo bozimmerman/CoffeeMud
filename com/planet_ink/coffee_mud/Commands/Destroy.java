@@ -252,9 +252,9 @@ public class Destroy extends StdCommand
 		if((deadRoom==null)&&(direction<0))
 		{
 			if(thecmd.equalsIgnoreCase("UNLINK"))
-				mob.tell("You have failed to specify a direction.  Try ("+Directions.DIRECTIONS_DESC()+").\n\r");
+				mob.tell("You have failed to specify a direction.  Try ("+Directions.LETTERS()+").\n\r");
 			else
-				mob.tell("You have failed to specify a direction.  Try a VALID ROOM ID, or ("+Directions.DIRECTIONS_DESC()+").\n\r");
+				mob.tell("You have failed to specify a direction.  Try a VALID ROOM ID, or ("+Directions.LETTERS()+").\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -364,7 +364,7 @@ public class Destroy extends StdCommand
 		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
-			mob.tell("You have failed to specify a direction.  Try "+Directions.DIRECTIONS_DESC()+".\n\r");
+			mob.tell("You have failed to specify a direction.  Try "+Directions.LETTERS()+".\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}

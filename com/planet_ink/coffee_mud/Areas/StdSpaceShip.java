@@ -671,7 +671,7 @@ public class StdSpaceShip implements Area, SpaceShip
 			{
 				for(Enumeration<String> i=getProperRoomnumbers().getRoomIDs();i.hasMoreElements();)
 				{
-					roomID=(String)i.nextElement();
+					roomID=i.nextElement();
 					if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
 					{
 						roomID=roomID.substring(name.length()+1);

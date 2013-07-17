@@ -1243,7 +1243,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		Room R;
 		Exit E;
 		final boolean useShipNames=((room instanceof SpaceShip)||(room.getArea() instanceof SpaceShip));
-		for(int dir : Directions.DIRECTIONS_BASE())
+		for(int dir : Directions.CODES())
 		{
 			E = room.getExitInDir(dir);
 			R = room.getRoomInDir(dir);

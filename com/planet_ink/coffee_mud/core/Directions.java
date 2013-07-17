@@ -34,22 +34,6 @@ public class Directions
 	}
 	private static final Directions[] dirs=new Directions[256];
 	
-	private int[] DIRECTIONS_BASE={NORTH,SOUTH,EAST,WEST};
-	private String DIRECTIONS_DESC="N, S, E, W, U, D, or V";
-	private int NUM_DIRECTIONS=7;
-
-	public static final int NUM_DIRECTIONS(){
-		return d().NUM_DIRECTIONS;
-	}
-
-	public static final int[] DIRECTIONS_BASE(){
-		return d().DIRECTIONS_BASE;
-	}
-	
-	public static final String DIRECTIONS_DESC(){
-		return d().DIRECTIONS_DESC;
-	}
-	
 	public static final int NORTH=0;
 	public static final int SOUTH=1;
 	public static final int EAST=2;
@@ -63,7 +47,23 @@ public class Directions
 	public static final int NORTHWEST=8;
 	public static final int SOUTHEAST=9;
 	public static final int SOUTHWEST=10;
+
+	private final static int[] DIRECTIONS_7_BASE={NORTH,SOUTH,EAST,WEST};
+	private final static int[] DIRECTIONS_11_BASE={NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST};
+	private final static String DIRECTION_7_LETTERS="N, S, E, W, U, D, or V";
+	private final static String DIRECTION_11_LETTERS="N, S, E, W, NE, NW, SE, SW, U, D, or V";
+	private final static String DIRECTION_7_NAMES="North, South, East, West, Up, or Down";
+	private final static String DIRECTION_11_NAMES="North, South, East, West, Northeast, Northwest, Southeast, Southwest, Up, or Down";
+	private final static String DIRECTION_7_SHIPNAMES="Foreward, Aft, Starboard, Port, Above, or Below";
+	private final static String DIRECTION_11_SHIPNAMES="Foreward, Aft, Starboard, Port, Foreward Starboard, Foreward Port, Aft Starboard, Aft Port, Above, or Below";
+
+	private int[] DIRECTIONS_CODES={NORTH,SOUTH,EAST,WEST};
+	private String DIRECTION_LETTERS=DIRECTION_7_LETTERS;
+	private String DIRECTION_NAMES=DIRECTION_7_NAMES;
+	private String DIRECTION_SHIPNAMES=DIRECTION_7_SHIPNAMES;
 	
+	private int NUM_DIRECTIONS=7;
+
 	public static final String[] DIRECTION_CHARS={"N","S","E","W","U","D","V","NE","NW","SE","SW"};
 	public static final Object[][] DIRECTIONS_FULL_CHART={
 		{"UP",Integer.valueOf(UP)},
@@ -100,6 +100,26 @@ public class Directions
 		{"VORTEX",Integer.valueOf(GATE)}
 	};
 											   
+	public static final int NUM_DIRECTIONS(){
+		return d().NUM_DIRECTIONS;
+	}
+
+	public static final int[] CODES(){
+		return d().DIRECTIONS_CODES;
+	}
+	
+	public static final String LETTERS(){
+		return d().DIRECTION_LETTERS;
+	}
+	
+	public static final String NAMES_LIST(){
+		return d().DIRECTION_NAMES;
+	}
+	
+	public static final String SHIP_NAMES_LIST(){
+		return d().DIRECTION_SHIPNAMES;
+	}
+	
 	public static final String getDirectionName(final String theDir)
 	{
 		return getDirectionName(getDirectionCode(theDir));
@@ -110,25 +130,17 @@ public class Directions
 		NUM_DIRECTIONS=dirs;
 		if(dirs<11)
 		{
-			DIRECTIONS_BASE=new int[4];
-			DIRECTIONS_BASE[0]=NORTH;
-			DIRECTIONS_BASE[1]=SOUTH;
-			DIRECTIONS_BASE[2]=EAST;
-			DIRECTIONS_BASE[3]=WEST;
-			DIRECTIONS_DESC="N, S, E, W, U, D, or V";
+			DIRECTIONS_CODES=DIRECTIONS_7_BASE;
+			DIRECTION_LETTERS=DIRECTION_7_LETTERS;
+			DIRECTION_NAMES=DIRECTION_7_NAMES;
+			DIRECTION_SHIPNAMES=DIRECTION_7_SHIPNAMES;
 		}
 		else
 		{
-			DIRECTIONS_BASE=new int[8];
-			DIRECTIONS_BASE[0]=NORTH;
-			DIRECTIONS_BASE[1]=SOUTH;
-			DIRECTIONS_BASE[2]=EAST;
-			DIRECTIONS_BASE[3]=WEST;
-			DIRECTIONS_BASE[4]=NORTHEAST;
-			DIRECTIONS_BASE[5]=NORTHWEST;
-			DIRECTIONS_BASE[6]=SOUTHEAST;
-			DIRECTIONS_BASE[7]=SOUTHWEST;
-			DIRECTIONS_DESC="N, S, E, W, NE, NW, SE, SW, U, D, or V";
+			DIRECTIONS_CODES=DIRECTIONS_11_BASE;
+			DIRECTION_LETTERS=DIRECTION_11_LETTERS;
+			DIRECTION_NAMES=DIRECTION_11_NAMES;
+			DIRECTION_SHIPNAMES=DIRECTION_11_SHIPNAMES;
 		}
 	}
 	
