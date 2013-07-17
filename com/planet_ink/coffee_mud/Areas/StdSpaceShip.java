@@ -139,7 +139,7 @@ public class StdSpaceShip implements Area, SpaceShip
 				&& (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 				&& (CMLib.flags().isSavable(this)));
 	}
-	public void setSavable(boolean truefalse){}
+	public void setSavable(boolean truefalse){CMLib.flags().setSavable(this, truefalse);}
 	public String ID(){    return "StdSpaceShip";}
 	public int climateType(){return Area.CLIMASK_NORMAL;}
 	public void setClimateType(int newClimateType){}
