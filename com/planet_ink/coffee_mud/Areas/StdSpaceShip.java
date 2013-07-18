@@ -175,8 +175,13 @@ public class StdSpaceShip implements Area, SpaceShip
 		basePhyStats.copyInto(phyStats);
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A!=null) A.affectPhyStats(me,phyStats);
-        }});
+		}});
 	}
+	
+	
+	public Area getShipArea() { return this; }
+	public void setShipArea(String xml) {}
+	
 	public void setBasePhyStats(PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();

@@ -384,6 +384,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 			if(E instanceof Weapon)
 				text.append(CMLib.xml().convertXMLtoTag("CAPA",((Weapon)item).ammunitionCapacity()));
+			
+			if(E instanceof SpaceShip)
+				text.append(CMLib.xml().convertXMLtoTag("SSAREA",CMLib.xml().parseOutAngleBrackets(getAreaObjectXML(((SpaceShip)item).getShipArea(), null, null, null, true).toString())));
 		}
 
 		if(E instanceof Coins)
@@ -774,24 +777,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
 						R=CMLib.map().getRoom(R);
-						boolean changed=false;
-						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-						{
-							Exit exit=R.getRawExit(d);
-							if((exit!=null)&&(exit.temporaryDoorLink().equalsIgnoreCase(newRoom.roomID())))
-							{
-								exit.setTemporaryDoorLink("");
-								R.rawDoors()[d]=newRoom;
-								changed=true;
-							}
-							else
-							if((R.rawDoors()[d]!=null)&&(R.rawDoors()[d].roomID().equals(newRoom.roomID())))
-							{
-								R.rawDoors()[d]=newRoom;
-								changed=true;
-							}
-						}
-						if(changed && andSave) CMLib.database().DBUpdateExits(R);
+						fixFillingRoomUnlinkedExits(newRoom, R, andSave);
+					}
+				}
+			}
+			else
+			{
+				for(Enumeration<Room> r=forceArea.getProperMap();r.hasMoreElements();)
+				{
+					Room R=r.nextElement();
+					synchronized(("SYNC"+R.roomID()).intern())
+					{
+						R=CMLib.map().getRoom(R);
+						fixFillingRoomUnlinkedExits(newRoom, R, andSave);
 					}
 				}
 			}
@@ -905,6 +903,28 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return "";
 	}
 
+	protected void fixFillingRoomUnlinkedExits(Room newRoom, Room R, boolean andSave)
+	{
+		boolean changed=false;
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
+			Exit exit=R.getRawExit(d);
+			if((exit!=null)&&(exit.temporaryDoorLink().equalsIgnoreCase(newRoom.roomID())))
+			{
+				exit.setTemporaryDoorLink("");
+				R.rawDoors()[d]=newRoom;
+				changed=true;
+			}
+			else
+			if((R.rawDoors()[d]!=null)&&(R.rawDoors()[d].roomID().equals(newRoom.roomID())))
+			{
+				R.rawDoors()[d]=newRoom;
+				changed=true;
+			}
+		}
+		if(changed && andSave) CMLib.database().DBUpdateExits(R);
+	}
+	
 	public String fillAreaAndCustomVectorFromXML(String buf, List<XMLpiece> area, List<CMObject> custom, Map<String,String> externalFiles)
 	{
 		List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(buf);
@@ -2476,7 +2496,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			item.setRawLogicalAnd(CMLib.xml().getBoolFromPieces(buf,"WORNL"));
 			item.setRawProperLocationBitmap(CMLib.xml().getLongFromPieces(buf,"WORNB"));
 			item.setReadableText(CMLib.xml().getValFromPieces(buf,"READ"));
-
+			if(item instanceof SpaceShip)
+				((SpaceShip)item).setShipArea(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(buf,"SSAREA")));
 		}
 
 		if(E instanceof Rideable)

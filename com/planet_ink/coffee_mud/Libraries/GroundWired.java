@@ -67,7 +67,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			Room R=(Room)possessor;
 			String newKey;
 			if(R.getArea() instanceof SpaceShip)
-				newKey=R.getArea().Name();
+				newKey=""+R.getArea();
 			else
 			{
 				LandTitle title = CMLib.law().getLandTitle(R);
@@ -80,13 +80,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			{
 				if(newKey.equals(oldKey))
 					return oldKey;
-				final List<Electronics> oldSet=sets.get(oldKey);
-				if(oldSet!=null)
-				{
-					oldSet.remove(E);
-					if(oldSet.size()==0)
-						sets.remove(oldSet);
-				}
+				unregisterElectronics(E,oldKey);
 			}
 			LinkedList<Electronics> set=sets.get(newKey);
 			if(set==null)

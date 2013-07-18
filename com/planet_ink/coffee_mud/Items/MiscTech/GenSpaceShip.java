@@ -60,7 +60,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 
 	public boolean isGeneric(){return true;}
 
-	public synchronized Area getArea()
+	public Area getShipArea()
 	{
 		if(destroyed)
 			return null; 
@@ -81,53 +81,37 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return area;
 	}
 	
-	
-	public String text()
+	public void setShipArea(String xml)
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,false)+"~|~"+CMLib.coffeeMaker().getAreaObjectXML(getArea(), null, null, null, true);
+		try {
+			area=CMLib.coffeeMaker().unpackAreaObjectFromXML(xml);
+			if(area!=null)
+			{
+				area.setSavable(false);
+				for(Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
+					CMLib.flags().setSavable(r.nextElement(), false);
+			}
+			else
+			{
+				Log.warnOut("Failed to unpack an area for the space ship");
+				getShipArea();
+			}
+		} catch (CMException e) {
+			Log.warnOut("Unable to parse space ship xml for some reason.");
+		}
 	}
-
+	
 	public String keyName() { return readableText;}
-	public void setKeyName(String newKeyName) { readableText=newKeyName; }
+	public void setKeyName(String newKeyName) { readableText=newKeyName;}
+	
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
-	public void setMiscText(String newText)
-	{
-		miscText="";
-		int x=newText.indexOf("~|~<AREA");
-		if(x>0)
-		{
-			CMLib.coffeeMaker().setPropertiesStr(this,newText.substring(0,x),false);
-			try {
-				area=CMLib.coffeeMaker().unpackAreaObjectFromXML(newText.substring(x+3));
-				if(area!=null)
-				{
-					area.setSavable(false);
-					for(Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
-						CMLib.flags().setSavable(r.nextElement(), false);
-				}
-				else
-				{
-					Log.warnOut("Failed to unpack an area for the space ship");
-					getArea();
-				}
-			} catch (CMException e) {
-				Log.warnOut("Unable to parse space ship xml for some reason.");
-			}
-		}
-		else
-		{
-			Log.warnOut("No space ship set at all!");
-			CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-			getArea();
-		}
-		recoverPhyStats();
-	}
 	
 	public CMObject copyOf()
 	{
 		GenSpaceShip s=(GenSpaceShip)super.copyOf();
-		s.setMiscText(text());
+		String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
+		s.setShipArea(xml);
 		return s;
 	}
 	
@@ -142,11 +126,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	protected Room getDestinationRoom()
 	{
-		getArea();
+		getShipArea();
 		Room R=null;
 		List<String> V=CMParms.parseSemicolons(readableText(),true);
 		if(V.size()>0)
-			R=getArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
+			R=getShipArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
 	}
 	
@@ -300,7 +284,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		{
 			if(getOwnerName().length()==0)
 			{
-				Area AREA=getArea();
+				Area AREA=getShipArea();
 				if((AREA.Name().startsWith("UNNAMED_"))&&(msg.source().isMonster()))
 					return false;
 				String newOwnerName=msg.source().Name();

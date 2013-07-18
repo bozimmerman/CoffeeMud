@@ -38,4 +38,8 @@ public interface SpaceShip extends SpaceObject
 	public Manufacturer getManufacturer();
 	
 	public void setManufacturer(Manufacturer it);
+	
+	public Area getShipArea();
+	
+	public void setShipArea(String xml);
 }
