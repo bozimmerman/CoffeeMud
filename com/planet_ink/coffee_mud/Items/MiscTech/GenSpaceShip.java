@@ -327,6 +327,23 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			setDisplayText(newName+" is here.");
 	}
 	
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if(msg.amITarget(this) 
+		&& ((msg.targetMinor()==CMMsg.TYP_OPEN)||(msg.targetMinor()==CMMsg.TYP_CLOSE)||(msg.targetMinor()==CMMsg.TYP_LOCK)||(msg.targetMinor()==CMMsg.TYP_UNLOCK)))
+		{
+			msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
+			msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
+			msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
+			msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
+			msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
+			msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
+		}
+		return true;
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -399,15 +416,19 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 									.plus(TrackingLibrary.TrackingFlag.NOWATER);
 							List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
 							for(Room R2 : rooms)
-								if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+								if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)&&(R.getArea().inMyMetroArea(R2.getArea())))
 									docks.add(R2);
 							if(docks.size()==0)
-							for(Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
-							{
-								Room R2=r.nextElement();
-								if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-									docks.add(R2);
-							}
+								for(Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
+								{
+									Room R2=r.nextElement();
+									if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+										docks.add(R2);
+								}
+							if(docks.size()==0)
+								for(Room R2 : rooms)
+									if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+										docks.add(R2);
 						}
 						if(docks.size()==0)
 							docks.add(R);
