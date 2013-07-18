@@ -106,6 +106,9 @@ public interface TrackingLibrary extends CMLibrary
 		OPENONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
 			return !E.isOpen();
 		}}),
+		UNLOCKEDONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
+			return !E.hasALock();
+		}}),
 		AREAONLY(new RFilter(){ public boolean isFilteredOut(final Room R, final Exit E, final int dir){ 
 			return CMLib.law().getLandTitle(R)!=null; 
 		}}),

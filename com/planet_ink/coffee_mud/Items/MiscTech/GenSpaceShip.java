@@ -389,12 +389,26 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
 						List<Room> docks=new XVector<Room>();
 						if(R!=null)
+						{
+							TrackingLibrary.TrackingFlags flags;
+							flags = new TrackingLibrary.TrackingFlags()
+									.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+									.plus(TrackingLibrary.TrackingFlag.NOAIR)
+									.plus(TrackingLibrary.TrackingFlag.NOHOMES)
+									.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY)
+									.plus(TrackingLibrary.TrackingFlag.NOWATER);
+							List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
+							for(Room R2 : rooms)
+								if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+									docks.add(R2);
+							if(docks.size()==0)
 							for(Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
 							{
 								Room R2=r.nextElement();
 								if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 									docks.add(R2);
 							}
+						}
 						if(docks.size()==0)
 							docks.add(R);
 						Room finalR=docks.get(CMLib.dice().roll(1, docks.size(), -1));
