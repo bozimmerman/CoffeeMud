@@ -13,6 +13,9 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Vector;
 
 /*
@@ -37,6 +40,9 @@ public class DefaultPhyStats implements PhyStats
 	
 	private final static String[]	empty			= new String[0];
 	private final static int[]		DEFAULT_STATS	= {0,0,100,0,0,0,0,0,0,0};
+	private final static Comparator<String> ambiComp= new Comparator<String>() {
+		@Override public int compare(String o1, String o2) { return o1.compareToIgnoreCase(o2); }
+	};
 	
 	protected int[]		stats			= DEFAULT_STATS.clone();
 	protected double	speed			= 1.0;			// should be positive
@@ -90,33 +96,37 @@ public class DefaultPhyStats implements PhyStats
 	public String getCombatStats(){return "L"+stats[STAT_LEVEL]+":A"+stats[STAT_ARMOR]+":K"+stats[STAT_ATTACK]+":D"+stats[STAT_DAMAGE];}
 	public void addAmbiance(String ambiance)
 	{
+		if(ambiance==null)
+			return;
 		ambiance=ambiance.trim();
-		String[] ambis=ambiances();
-		for(int i=0;i<ambis.length;i++)
-			if(ambis[i].equalsIgnoreCase(ambiance))
-				return;
-		ambiances=CMParms.toStringArray(CMParms.parseCommas(CMParms.toStringList(ambis)+","+ambiance,true));
+		if((ambiances!=null)&&(Arrays.binarySearch(ambiances, ambiance, ambiComp)>=0))
+			return;
+		ambiances=Arrays.copyOf(ambiances, ambiances==null?1:ambiances.length+1);
+		ambiances[ambiances.length-1]=ambiance;
+		Arrays.sort(ambiances, ambiComp);
 	}
 	public void delAmbiance(String ambiance)
 	{
-		ambiance=ambiance.trim();
-		int i=0;
-		String[] ambis=ambiances();
-		Vector<String> V=null;
-		for(i=0;i<ambis.length;i++)
-			if(ambis[i].equalsIgnoreCase(ambiance))
-			{
-				if(ambis.length==1)
-					ambiances=null;
-				else
-				{
-					V=CMParms.parseCommas(CMParms.toStringList(ambis),true);
-					if(V.size()==ambis.length)
-						V.removeElementAt(i);
-					ambiances=CMParms.toStringArray(V);
-				}
-				return;
-			}
+		if((ambiances==null)||(ambiance==null))
+			return;
+		int dex=Arrays.binarySearch(ambiances, ambiance.trim(), ambiComp);
+		if(dex<0) 
+			return;
+		if(ambiances.length==1)
+		{
+			ambiances=null;
+			return;
+		}
+		final String[] oldAmbiances=ambiances;
+		ambiances=Arrays.copyOf(ambiances, ambiances.length-1);
+		for(;dex<ambiances.length;dex++)
+			ambiances[dex]=oldAmbiances[dex+1];
+	}
+	public boolean isAmbiance(String ambiance)
+	{
+		if((ambiances==null)||(ambiance==null))
+			return false;
+		return Arrays.binarySearch(ambiances, ambiance.trim(), ambiComp) >=0;
 	}
 
 	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new DefaultPhyStats();}}

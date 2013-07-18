@@ -236,15 +236,27 @@ public interface PhyStats extends CMCommon, Modifiable
 	 * onto the display text of this Physical. 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
 	 * @return a list of ambiances
 	 */
 	public String[] ambiances(); // everything
+	
+	/**
+	 * Check to see if the given ambiance exists in the list.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
+	 * @param ambiance the ambiance to look for
+	 * @return true if its in there, false otherwise
+	 */
+	public boolean isAmbiance(String ambiance);
 	
 	/**
 	 * Adds an ambiance (extra word, visible field) to the list that are tacked
 	 * onto the display text of this Physical. 
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
 	 * @param ambiance a new ambiance string
 	 */
 	public void addAmbiance(String ambiance);
@@ -252,6 +264,9 @@ public interface PhyStats extends CMCommon, Modifiable
 	/**
 	 * Removes an ambiance (extra word, visible field) from the list that are tacked
 	 * onto the display text of this Physical. 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#isAmbiance(String)
 	 * @param ambiance the old ambiance string
 	 */
 	public void delAmbiance(String ambiance);

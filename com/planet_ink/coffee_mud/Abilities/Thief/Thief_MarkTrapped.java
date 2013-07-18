@@ -52,7 +52,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
-		stats.addAmbiance("^Wtrapped");
+		stats.addAmbiance("^Wtrapped^?");
 	}
 
 	public void marked(Physical P)

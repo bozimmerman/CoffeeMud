@@ -84,7 +84,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		if((affected instanceof Item)&&(armorBonus>0)&&(((Item)affected).owner() instanceof MOB))
 		{
 			stats.setArmor(stats.armor()+armorBonus);
-			stats.addAmbiance("^w*^N");
+			stats.addAmbiance("^w*^?");
 		}
 	}
 	
