@@ -253,7 +253,6 @@ public class ServiceEngine implements ThreadEngine
 		return false;
 	}
 	
-
 	public boolean isHere(Tickable E2, Room here)
 	{
 		if(E2==null)
@@ -285,6 +284,24 @@ public class ServiceEngine implements ThreadEngine
 		return false;
 	}
 
+	public boolean isHere(Tickable E2, Area here)
+	{
+		if(E2==null)
+			return false;
+		else
+		if(E2==here)
+			return true;
+		else
+		if(E2 instanceof Room)
+			return ((Room)E2).getArea()==here;
+		else
+		if(E2 instanceof MOB)
+			return isHere(((MOB)E2).location(),here);
+		else
+		if(E2 instanceof Item)
+			return isHere(((Item)E2).owner(),here);
+		return false;
+	}
 
 	public String systemReport(final String itemCode)
 	{
@@ -625,6 +642,86 @@ public class ServiceEngine implements ThreadEngine
 		}
 	}
 
+	public void deleteAllTicks(Tickable ticker)
+	{
+		if(ticker==null)
+			return;
+		deleteTick(ticker, -1);
+		if(ticker instanceof Room)
+		{
+			TickableGroup almostTock=null;
+			TickClient C=null;
+			Tickable E2=null;
+			for(Iterator<TickableGroup> e=tickGroups();e.hasNext();)
+			{
+				almostTock=e.next();
+				try
+				{
+					for(Iterator<TickClient> i=almostTock.tickers();i.hasNext();)
+					{
+						C=i.next();
+						E2=C.getClientObject();
+						if(isHere(E2,(Room)ticker))
+							almostTock.delTicker(C);
+						else
+						if((E2 instanceof Ability)
+						&&(isHere(((Ability)E2).affecting(),(Room)ticker)))
+							almostTock.delTicker(C);
+						else
+							continue;
+						
+						try
+						{
+							if(almostTock.numTickers()==0)
+								allTicks.remove(almostTock);
+						}
+						catch(Exception e2) {}
+					}
+				}
+				catch(NoSuchElementException ex)
+				{
+				}
+			}
+		}
+		else
+		if(ticker instanceof Area)
+		{
+			TickableGroup almostTock=null;
+			TickClient C=null;
+			Tickable E2=null;
+			for(Iterator<TickableGroup> e=tickGroups();e.hasNext();)
+			{
+				almostTock=e.next();
+				try
+				{
+					for(Iterator<TickClient> i=almostTock.tickers();i.hasNext();)
+					{
+						C=i.next();
+						E2=C.getClientObject();
+						if(isHere(E2,(Area)ticker))
+							almostTock.delTicker(C);
+						else
+						if((E2 instanceof Ability)
+						&&(isHere(((Ability)E2).affecting(),(Area)ticker)))
+							almostTock.delTicker(C);
+						else
+							continue;
+						
+						try
+						{
+							if(almostTock.numTickers()==0)
+								allTicks.remove(almostTock);
+						}
+						catch(Exception e2) {}
+					}
+				}
+				catch(NoSuchElementException ex)
+				{
+				}
+			}
+		}
+	}
+	
 	public String tickInfo(String which)
 	{
 		int grpstart=-1;
