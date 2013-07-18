@@ -278,7 +278,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				 CMLib.xml().convertXMLtoTag("MLEVL",""+M.basePhyStats().level())
 				+CMLib.xml().convertXMLtoTag("MABLE",""+M.basePhyStats().ability())
 				+CMLib.xml().convertXMLtoTag("MREJV",""+M.basePhyStats().rejuv())
-				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+M.text())));
+				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("MTEXT",""+M.text())));
 			return xml;
 		}
 		return "";
