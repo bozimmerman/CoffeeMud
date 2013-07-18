@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -36,11 +37,11 @@ import java.util.*;
 public class CMLister extends StdLibrary implements ListingLibrary
 {
 	public String ID(){return "CMLister";}
-	public String itemSeenString(MOB viewerM, 
-								 Environmental item, 
-								 boolean useName, 
-								 boolean longLook,
-								 boolean sysmsgs)
+	protected static final ListStringer stringer=new ListStringer();
+	@SuppressWarnings("unchecked")
+	protected static final Filterer<Object>[] NO_FILTER=new Filterer[0];
+
+	public String itemSeenString(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysmsgs)
 	{
 		if(useName)
 			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
@@ -239,40 +240,53 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return say;
 	}
 	
+	@SuppressWarnings("unchecked")
+	protected Filterer<Object>[] buildOfTypeFilter(int ofType)
+	{
+		return new Filterer[]{new AbilityTypeFilter(ofType)};
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Filterer<Object>[] buildLikeRoomFilter(Room R)
+	{
+		return new Filterer[]{new LikeRoomFilter(R)};
+	}
+	
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType)
 	{
-		return reallyList(viewerM,these,ofType,null);
+		return reallyList(viewerM,these,buildOfTypeFilter(ofType),stringer);
 	}
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these)
 	{
-		return reallyList(viewerM,these,-1,null);
+		return reallyList(viewerM,these,NO_FILTER,stringer);
 	}
 	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Room likeRoom)
 	{
-		return reallyList(viewerM,these,-1,likeRoom);
+		return reallyList(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
 	}
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, int ofType)
 	{
-		return reallyList(viewerM,these.elements(),ofType,null);
+		return reallyList(viewerM,these.elements(),buildOfTypeFilter(ofType),stringer);
 	}
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, int ofType)
 	{
-		return reallyList(viewerM,these,ofType,null);
+		return reallyList(viewerM,these,buildOfTypeFilter(ofType),stringer);
 	}
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these)
 	{
-		return reallyList(viewerM,these.elements(),-1,null);
+		return reallyList(viewerM,these.elements(),NO_FILTER,stringer);
 	}
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these)
 	{
-		return reallyList(viewerM,these,-1,null);
+		return reallyList(viewerM,these,NO_FILTER,stringer);
 	}
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, Room likeRoom)
 	{
-		return reallyList(viewerM,these.elements(),-1,likeRoom);
+		return reallyList(viewerM,these.elements(),buildLikeRoomFilter(likeRoom),stringer);
 	}
-	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType, Room likeRoom)
+	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
+		if(stringer==null) stringer=CMLister.stringer;
 		StringBuilder lines=new StringBuilder("");
 		if(these.size()==0) return lines;
 		int column=0;
@@ -280,33 +294,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		for(String key : these.keySet())
 		{
 			Object thisThang=these.get(key);
-			String list=null;
-			if(thisThang instanceof String)
-				list=(String)thisThang;
-			else
-			if(thisThang instanceof Ability)
-				list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
-			else
-			if(thisThang instanceof CharClass)
-				list=((CharClass)thisThang).ID()+(((CharClass)thisThang).isGeneric()?"*":"");
-			else
-			if(thisThang instanceof Race)
-				list=((Race)thisThang).ID()+(((Race)thisThang).isGeneric()?"*":"");
-			else
-				list=CMClass.classID(thisThang);
-			if(ofType>=0)
-			{
-				if((thisThang!=null)&&(thisThang instanceof Ability))
-				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
+			String list=stringer.stringify(thisThang);
+			if(filters!=null)
+				for(Filterer<Object> F : filters)
+					if(!F.passesFilter(thisThang))
 						list=null;
-				}
-			}
-			if((likeRoom!=null)&&(thisThang instanceof Room))
-			{
-				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
-				   list=null;
-			}
 			if(list!=null)
 			{
 				if(++column>3)
@@ -321,12 +313,17 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return lines;
 	}
 
-	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, int ofType, Room likeRoom)
-	{ return reallyList(viewerM,these.elements(),ofType,likeRoom);}
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
+	{ 
+		return reallyList(viewerM,these.elements(),filters,stringer);
+	}
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Room likeRoom)
-	{ return reallyList(viewerM,these,-1,likeRoom);}
-	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, int ofType, Room likeRoom)
+	{ 
+		return reallyList(viewerM,these,buildLikeRoomFilter(likeRoom),stringer);
+	}
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
 	{
+		if(stringer==null) stringer=CMLister.stringer;
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
@@ -334,33 +331,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		for(Enumeration<? extends Object> e=these;e.hasMoreElements();)
 		{
 			Object thisThang=e.nextElement();
-			String list=null;
-			if(thisThang instanceof String)
-				list=(String)thisThang;
-			else
-			if(thisThang instanceof Ability)
-				list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
-			else
-			if(thisThang instanceof CharClass)
-				list=((CharClass)thisThang).ID()+(((CharClass)thisThang).isGeneric()?"*":"");
-			else
-			if(thisThang instanceof Race)
-				list=((Race)thisThang).ID()+(((Race)thisThang).isGeneric()?"*":"");
-			else
-				list=CMClass.classID(thisThang);
-			if(ofType>=0)
-			{
-				if((thisThang!=null)&&(thisThang instanceof Ability))
-				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
+			String list=stringer.stringify(thisThang);
+			if(filters!=null)
+				for(Filterer<Object> F : filters)
+					if(!F.passesFilter(thisThang))
 						list=null;
-				}
-			}
-			if((likeRoom!=null)&&(thisThang instanceof Room))
-			{
-				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
-				   list=null;
-			}
 			if(list!=null)
 			{
 				if(++column>3)
@@ -374,8 +349,15 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		lines.append("\n\r");
 		return lines;
 	}
-	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, int ofType, Room likeRoom)
+	
+	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these)
 	{
+		return reallyList2Cols(viewerM, these, NO_FILTER, stringer);
+	}
+	
+	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer)
+	{
+		if(stringer==null) stringer=CMLister.stringer;
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
@@ -383,33 +365,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		for(Enumeration<? extends Object> e=these;e.hasMoreElements();)
 		{
 			Object thisThang=e.nextElement();
-			String list=null;
-			if(thisThang instanceof String)
-				list=(String)thisThang;
-			else
-			if(thisThang instanceof Ability)
-				list=((Ability)thisThang).ID()+(((Ability)thisThang).isGeneric()?"*":"");
-			else
-			if(thisThang instanceof CharClass)
-				list=((CharClass)thisThang).ID()+(((CharClass)thisThang).isGeneric()?"*":"");
-			else
-			if(thisThang instanceof Race)
-				list=((Race)thisThang).ID()+(((Race)thisThang).isGeneric()?"*":"");
-			else
-				list=CMClass.classID(thisThang);
-			if(ofType>=0)
-			{
-				if((thisThang!=null)&&(thisThang instanceof Ability))
-				{
-					if((((Ability)thisThang).classificationCode()&Ability.ALL_ACODES)!=ofType)
+			String list=stringer.stringify(thisThang);
+			if(filters!=null)
+				for(Filterer<Object> F : filters)
+					if(!F.passesFilter(thisThang))
 						list=null;
-				}
-			}
-			if((likeRoom!=null)&&(thisThang instanceof Room))
-			{
-				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
-				   list=null;
-			}
 			if(list!=null)
 			{
 				if(++column>2)

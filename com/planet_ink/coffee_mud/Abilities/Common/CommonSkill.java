@@ -114,7 +114,7 @@ public class CommonSkill extends StdAbility
 			{
 				int total=tickUp+tickDown;
 				int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
-				mob.location().show(mob,null,null,getActivityMessageType(),"<S-NAME> continue(s) "+verb+" ("+pct+"% completed)."+sound,null,"<S-NAME> continue(s) "+verb+"."+sound);
+				mob.location().show(mob,null,this,getActivityMessageType(),"<S-NAME> continue(s) "+verb+" ("+pct+"% completed)."+sound,null,"<S-NAME> continue(s) "+verb+"."+sound);
 			}
 			if((helping)
 			&&(helpingAbility!=null)

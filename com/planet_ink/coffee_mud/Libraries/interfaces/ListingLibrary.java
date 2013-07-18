@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -44,14 +45,74 @@ public interface ListingLibrary extends CMLibrary
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these);
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these);
 	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, Room likeRoom);
-	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, int ofType, Room likeRoom);
-	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, int ofType, Room likeRoom);
+	public StringBuilder reallyList(MOB viewerM, Map<String,? extends Object> these, Filterer<Object>[] filters, ListStringer stringer);
+	public StringBuilder reallyList(MOB viewerM, Vector<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer);
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Room likeRoom);
-	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, int ofType, Room likeRoom);
-	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, int ofType, Room likeRoom);
+	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer);
+	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these);
+	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer);
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList);
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag);
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols);
+	
+	public static class ListStringer
+	{
+		public String stringify(Object o)
+		{
+			if(o instanceof String)
+				return (String)o;
+			else
+			if(o instanceof Ability)
+				return ((Ability)o).ID()+(((Ability)o).isGeneric()?"*":"");
+			else
+			if(o instanceof CharClass)
+				return ((CharClass)o).ID()+(((CharClass)o).isGeneric()?"*":"");
+			else
+			if(o instanceof Race)
+				return ((Race)o).ID()+(((Race)o).isGeneric()?"*":"");
+			else
+				return CMClass.classID(o);
+		}
+	}
+	
+	public static class LikeRoomFilter implements Filterer<Object>
+	{
+		private Room likeRoom;
+		public LikeRoomFilter(Room R)
+		{
+			likeRoom=R;
+		}
+		@Override
+		public boolean passesFilter(Object obj) {
+			if((likeRoom!=null)&&(obj instanceof Room))
+			{
+				if((((Room)obj).roomID().length()>0)&&(!((Room)obj).getArea().Name().equals(likeRoom.getArea().Name())))
+					return false;
+			}
+			return true;
+		}
+	}
+
+	public static class AbilityTypeFilter implements Filterer<Object>
+	{
+		private int ofType;
+		public AbilityTypeFilter(int typ)
+		{
+			ofType=typ;
+		}
+		@Override
+		public boolean passesFilter(Object obj) {
+			if(ofType>=0)
+			{
+				if(obj instanceof Ability)
+				{
+					if((((Ability)obj).classificationCode()&Ability.ALL_ACODES)!=ofType)
+						return false;
+				}
+			}
+			return true;
+		}
+	}
 	
 	public static class ColFixer
 	{

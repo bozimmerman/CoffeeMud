@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1070,7 +1071,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			newName=mob.session().prompt("Enter a new one (?)\n\r:","");
 			if(newName.trim().equals("?"))
 			{
-				mob.tell(CMLib.lister().reallyList2Cols(mob,CMClass.locales(),-1,null).toString()+"\n\r");
+				mob.tell(CMLib.lister().reallyList2Cols(mob,CMClass.locales()).toString()+"\n\r");
 				newName="";
 			}
 			else
@@ -3314,7 +3315,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	public void genBehaviors(MOB mob, PhysicalAgent P, int showNumber, int showFlag)
+	public void genBehaviors(MOB mob, final PhysicalAgent P, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3342,7 +3343,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.behaviors(),-1).toString());
+				{
+					ListingLibrary.ListStringer stringer=new ListingLibrary.ListStringer()
+					{
+						public String stringify(Object o)
+						{
+							String s=super.stringify(o);
+							if((s!=null)&&(s.length()>0)&&(o instanceof Behavior) && (((Behavior)o).canImprove(P)))
+								s="^w"+s+"^n";
+							return s;
+						}
+					};
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.behaviors(),null,stringer).toString());
+				}
 				else
 				{
 					Behavior chosenOne=null;
@@ -3400,7 +3413,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	public void genAffects(MOB mob, Physical P, int showNumber, int showFlag)
+	public void genAffects(MOB mob, final Physical P, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3430,7 +3443,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(behave.equalsIgnoreCase("?"))
 				{
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+					ListingLibrary.ListStringer stringer=new ListingLibrary.ListStringer()
+					{
+						public String stringify(Object o)
+						{
+							String s=super.stringify(o);
+							if((s!=null)&&(s.length()>0)&&(o instanceof Ability) && (((Ability)o).canAffect(P)))
+								s="^X"+s+"^N";
+							return s;
+						}
+					};
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),null,stringer).toString());
 				}
 				else
 				{

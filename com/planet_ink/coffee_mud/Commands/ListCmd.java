@@ -1462,7 +1462,7 @@ public class ListCmd extends StdCommand
 			return str.toString();
 		}
 		Enumeration<String> keys=new IteratorEnumeration<String>(Resources.findResourceKeys(parm));
-		return CMLib.lister().reallyList2Cols(mob,keys,-1,null).toString();
+		return CMLib.lister().reallyList2Cols(mob,keys).toString();
 	}
 
 	public String listHelpFileRequests(MOB mob, String rest)
