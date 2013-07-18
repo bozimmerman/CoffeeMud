@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.Items.MiscTech;
 import com.planet_ink.coffee_mud.Items.Basic.StdPortal;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
@@ -10,6 +12,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -248,7 +251,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	@Override
-	public void dockHere(Room R) {
+	public void dockHere(Room R) 
+	{
+		if(!R.isContent(me))
+			R.moveItemTo(me, Expire.Never, Move.Followers);
+		CMLib.map().delObjectInSpace(this);
 		if (area instanceof SpaceShip)
 			((SpaceShip)area).dockHere(R);
 	}
@@ -256,6 +263,10 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	public void unDock(boolean toSpace) 
 	{
+		Room R=CMLib.map().roomLocation(this);
+		R.delItem(this);
+		if(toSpace)
+			CMLib.map().addObjectToSpace(this);
 		if (area instanceof SpaceShip)
 			((SpaceShip)area).unDock(toSpace);
 	}
@@ -263,7 +274,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public int getPrice() { return price; }
 	@Override public void setPrice(int price) { this.price=price; }
 	@Override public String getOwnerName() { return owner; }
-	@Override public void setOwnerName(String owner) { this.owner=owner; }
+	@Override public void setOwnerName(String owner) { this.owner=owner;}
 	@Override
 	public CMObject getOwnerObject()
 	{
@@ -275,36 +286,32 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 	@Override
 	public String getTitleID() { return this.toString(); }
-	
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	public void renameSpaceShip(String newName)
 	{
-		if((msg.targetMinor()==CMMsg.TYP_GET)
-		&&(msg.amITarget(this))
-		&&(msg.tool() instanceof ShopKeeper))
+		Area area=this.area;
+		if(area instanceof SpaceShip)
 		{
-			if(getOwnerName().length()==0)
-			{
-				Area AREA=getShipArea();
-				if((AREA.Name().startsWith("UNNAMED_"))&&(msg.source().isMonster()))
-					return false;
-				String newOwnerName=msg.source().Name();
-				if(((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CSHIPSELLER))
-				{
-					Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(msg.source(), Clan.Function.PROPERTY_OWNER);
-					if(clanPair!=null)
-						newOwnerName=clanPair.first.clanID();
-				}
-				
-				setOwnerName(newOwnerName);
-				if(getOwnerName().length()>0)
-				{
-					msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
-				}
-			}
+			final Room oldEntry=getDestinationRoom();
+			String oldName=area.Name();
+			String registryNum=area.getBlurbFlag("REGISTRY");
+			if(registryNum==null) registryNum="";
+			((SpaceShip)area).renameSpaceShip(newName);
+			CMLib.tech().unregisterElectronics(null, oldName+registryNum);
+			registryNum=Double.toString(Math.random());
+			area.addBlurbFlag("REGISTRY Registry#"+registryNum.substring(registryNum.indexOf('.')+1));
+			setReadableText(oldEntry.roomID());
+			setShipArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
 		}
-		return super.okMessage(myHost,msg);
+		if(Name().indexOf("[NAME]")>=0)
+			setName(CMStrings.replaceAll(displayText(), "[NAME]", newName));
+		else
+			setName(newName);
+		if(displayText().indexOf("[NAME]")>=0)
+			setDisplayText(CMStrings.replaceAll(displayText(), "[NAME]", newName));
+		else
+			setDisplayText(newName+" is here.");
 	}
-
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -342,7 +349,51 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			else
 				setOwnerName(msg.target().Name());
 			recoverPhyStats();
-			msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
+			String registryNum=Double.toString(Math.random());
+			String randNum=CMStrings.limit(registryNum.substring(registryNum.indexOf('.')+1), 4);
+			renameSpaceShip("SS "+msg.source().Name()+", Reg "+randNum);
+			final Session session=msg.source().session();
+			final Room R=CMLib.map().roomLocation(this);
+			if(session!=null)
+			{
+				final GenSpaceShip me=this;
+				final InputCallback[] namer=new InputCallback[1];
+				namer[0]=new InputCallback(InputCallback.Type.PROMPT) {
+					@Override public void showPrompt() { session.println("\n\rEnter a new name for your ship: "); }
+					@Override public void timedOut() { }
+					@Override public void callBack() {
+						if((this.input.trim().length()==0)
+						||(!CMLib.login().isOkName(this.input.trim()))
+						||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
+						{
+							session.println("^XThat is not a permitted name.^N");
+							session.prompt(namer[0]);
+							return;
+						}
+						me.renameSpaceShip(this.input.trim());
+						msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
+						List<Room> docks=new XVector<Room>();
+						if(R!=null)
+							for(Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
+							{
+								Room R2=r.nextElement();
+								if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+									docks.add(R2);
+							}
+						if(docks.size()==0)
+							docks.add(R);
+						Room finalR=docks.get(CMLib.dice().roll(1, docks.size(), -1));
+						me.dockHere(finalR);
+						msg.source().tell("You'll find your ship docked at '"+finalR.roomTitle(msg.source())+"'.");
+					}
+				};
+				session.prompt(namer[0]);
+			}
+			else
+			{
+				msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
+				dockHere(R);
+			}
 		}
 	}
 	

@@ -2211,6 +2211,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			&&(((Physical)newOne).basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 				variableEq=true;
 			shopmob.getShop().addStoreInventory(newOne,numStock,stockPrice);
+			newOne.destroy();
 		}
 		for(Iterator<Environmental> i=shopmob.getShop().getStoreInventory();i.hasNext();)
 		{

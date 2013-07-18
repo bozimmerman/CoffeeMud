@@ -2031,6 +2031,7 @@ public class ListCmd extends StdCommand
 		/*68*/new ListCmdEntry("SPACESHIPS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		/*69*/new ListCmdEntry("WORLD",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		/*70*/new ListCmdEntry("PLANETS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
+		/*71*/new ListCmdEntry("CURRENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS,SecFlag.CMDMOBS}),
 	};
 
 	public boolean pause(Session sess) 
@@ -2119,7 +2120,29 @@ public class ListCmd extends StdCommand
 		else
 			return null;
 	}
-	
+
+	public void listCurrents(MOB mob, Vector commands)
+	{
+		StringBuffer str=new StringBuffer("");
+		for(String key : CMLib.tech().getMakeRegisteredKeys())
+		{
+			str.append("Registered key: "+key+"\n\r");
+			str.append(CMStrings.padRight("Name", 30)).append(" ");
+			str.append(CMStrings.padRight("Room", 30)).append(" ");
+			str.append("\n\r");
+			str.append(CMStrings.repeat("-", 75)).append("\n\r");
+			for(Electronics e : CMLib.tech().getMakeRegisteredElectronics(key))
+			{
+				str.append(CMStrings.padRight(e.Name(), 30)).append(" ");
+				str.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(e)), 30)).append(" ");
+				str.append("\n\r");
+			}
+			str.append("\n\r");
+		}
+		if(mob.session()!=null)
+			mob.session().rawPrint(str.toString());
+	}
+
 	public void listAreas(MOB mob, Vector commands, Filterer<Area> filter)
 	{
 		if(mob==null) return;
@@ -2473,6 +2496,7 @@ public class ListCmd extends StdCommand
 		case 68: listAreas(mob, commands, shipFilter); break;
 		case 69: listAreas(mob, commands, new WorldFilter(mob.location())); break;
 		case 70: listAreas(mob, commands, planetsFilter); break;
+		case 71: listCurrents(mob, commands); break;
 		case 999: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");

@@ -42,4 +42,6 @@ public interface SpaceShip extends SpaceObject
 	public Area getShipArea();
 	
 	public void setShipArea(String xml);
+	
+	public void renameSpaceShip(String newName);
 }

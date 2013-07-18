@@ -52,6 +52,21 @@ public interface TechLibrary extends CMLibrary
 	public String registerElectrics(Electronics E, String oldKey);
 	
 	/**
+	 * Returns a new exclusive list of all the registered electronics
+	 * keys being processed.
+	 * @return the list of keys
+	 */
+	public List<String> getMakeRegisteredKeys();
+	
+	/**
+	 * For the given key, return an eclusive list of all the electronics
+	 * that belong to that key.
+	 * @param key the key to return electronics for
+	 * @return
+	 */
+	public List<Electronics> getMakeRegisteredElectronics(String key);
+	
+	/**
 	 * Certain Key Systems may automatically force batteries in their circuit
 	 * to activate in order to provide that system with power. This will make
 	 * that attempt.

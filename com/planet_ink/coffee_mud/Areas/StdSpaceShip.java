@@ -157,11 +157,20 @@ public class StdSpaceShip implements Area, SpaceShip
 		if(phyStats().newName()!=null) return phyStats().newName();
 		return name;
 	}
-	public void setName(String newName){
+	public void setName(String newName)
+	{
 		name=newName;
 		localClock.setLoadName(newName);
 	}
 	public String Name(){return name;}
+	public void renameSpaceShip(String newName)
+	{
+		String oldName=Name();
+		setName(newName);
+		if(myRooms.size()>0)
+			CMLib.map().renameRooms(this, oldName, this.myRooms);
+	}
+	
 	public PhyStats phyStats()
 	{
 		return phyStats;

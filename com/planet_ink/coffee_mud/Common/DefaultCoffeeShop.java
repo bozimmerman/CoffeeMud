@@ -70,7 +70,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 		}
 	}
 	
-	public CoffeeShop build(ShopKeeper SK) {
+	public CoffeeShop build(ShopKeeper SK) 
+	{
 		shopKeeper=new WeakReference<ShopKeeper>(SK);
 		return this;
 	}
@@ -106,6 +107,16 @@ public class DefaultCoffeeShop implements CoffeeShop
 				enumerableInventory.addElement(I3);
 			}
 		}
+	}
+	
+	public void destroyStoreInventory()
+	{
+		for(Environmental E : enumerableInventory)
+			E.destroy();
+		for(ShelfProduct SP : storeInventory)
+			SP.product.destroy();
+		enumerableInventory.clear();
+		storeInventory.clear();
 	}
 
 	protected boolean shopCompare(Environmental thang1, Environmental thang2)
@@ -169,9 +180,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		return enumerableInventory.iterator();
 	}
 
-	public Environmental addStoreInventory(Environmental thisThang, 
-										   int number, 
-										   int price)
+	public Environmental addStoreInventory(Environmental thisThang, int number, int price)
 	{
 		if(number<0) number=1;
 		if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inEnumerableInventory(thisThang)))
@@ -253,12 +262,18 @@ public class DefaultCoffeeShop implements CoffeeShop
 			{
 				Environmental E=enumerableInventory.elementAt(v);
 				if(shopCompare(E,thisThang))
+				{
 					enumerableInventory.removeElement(E);
+					E.destroy();
+				}
 			}
 		}
 		for(ShelfProduct SP : storeInventory)
 			if(shopCompare(SP.product,thisThang))
+			{
 				storeInventory.remove(SP);
+				SP.product.destroy();
+			}
 	}
 	
 	public boolean doIHaveThisInStock(String name, MOB mob)
@@ -359,6 +374,8 @@ public class DefaultCoffeeShop implements CoffeeShop
 					(Environmental)addBacks.elementAt(a,1),
 					((Integer)addBacks.elementAt(a,2)).intValue(),
 					((Integer)addBacks.elementAt(a,3)).intValue());
+		for(Environmental shopItem : shopItems)
+			shopItem.destroy();
 	}
 	
 	public void emptyAllShelves()
@@ -429,6 +446,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public void buildShopFromXML(String text)
 	{
 		Vector<Environmental> V=new Vector<Environmental>();
+		destroyStoreInventory();
 		storeInventory=new SVector<ShelfProduct>();
 		enumerableInventory=new SVector<Environmental>();
 		
@@ -510,6 +528,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			P.recoverPhyStats();
 			V.addElement(P);
 			addStoreInventory(P,itemnum,val);
+			P.destroy();
 		}
 	}
 }

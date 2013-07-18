@@ -44,15 +44,19 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public String ID(){return "GroundWired";}
 
 	public Manufacturer defaultManufacturer=null; // must always be DefaultManufacturer, w/o changes.
-	
+
 	public final Map<String,Manufacturer> manufacturers = new SHashtable<String,Manufacturer>();
-	
+
 	public final Map<String,LinkedList<Electronics>> sets=new Hashtable<String,LinkedList<Electronics>>();
-	
+
 	public final static List<PowerGenerator> emptyGeneratorList=new ArrayList<PowerGenerator>();
-	
+
 	public final AtomicInteger nextKey = new AtomicInteger(0);
-	
+
+	private TickClient serviceClient=null;
+
+	protected CMMsg powerMsg = null;
+
 	public void initializeClass()
 	{
 		super.initializeClass();
@@ -67,7 +71,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			Room R=(Room)possessor;
 			String newKey;
 			if(R.getArea() instanceof SpaceShip)
+			{
 				newKey=R.getArea().Name();
+				String registryNum=R.getArea().getBlurbFlag("REGISTRY");
+				if(registryNum!=null) 
+					newKey+=registryNum;
+			}
 			else
 			{
 				LandTitle title = CMLib.law().getLandTitle(R);
@@ -93,6 +102,22 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		return null;
 	}
+
+	@SuppressWarnings("unchecked")
+	public synchronized List<Electronics> getMakeRegisteredElectronics(String key)
+	{
+		LinkedList<Electronics> set=sets.get(key);
+		if(set==null)
+			return new XVector<Electronics>();
+		return (LinkedList<Electronics>)set.clone();
+	}
+	
+	public synchronized List<String> getMakeRegisteredKeys()
+	{
+		List<String> keys=new Vector<String>(sets.size());
+		keys.addAll(sets.keySet());
+		return keys;
+	}
 	
 	public synchronized void unregisterElectronics(final Electronics E, final String oldKey)
 	{
@@ -108,11 +133,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 	
-	private TickClient serviceClient=null;
 	public TickClient getServiceClient() { return serviceClient;}
 	protected STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents 
 													= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>(); 
-	protected CMMsg powerMsg = null;
 	
 	protected CMMsg getPowerMsg(int powerAmt)
 	{
@@ -159,6 +182,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public boolean shutdown() 
 	{
 		sets.clear();
+		manufacturers.clear();
 		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
 		{
 			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);

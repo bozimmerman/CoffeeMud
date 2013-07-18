@@ -90,6 +90,11 @@ public interface CoffeeShop extends CMCommon
 	public int totalStockSize();
 	
 	/**
+	 * Destroys all the items in this shop.
+	 */
+	public void destroyStoreInventory();
+	
+	/**
 	 * Returns a Vector of all the Environmental objects this shop has for sale.
 	 * Will only return one of each item, even if multiple are available.
 	 * @return a Vector of objects for sale.

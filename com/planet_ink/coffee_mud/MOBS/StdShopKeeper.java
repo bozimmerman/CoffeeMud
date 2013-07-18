@@ -116,6 +116,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	
 	public CoffeeShop getShop(){return shop;}
 	
+	public void destroy() 
+	{
+		super.destroy();
+		getShop().destroyStoreInventory();
+	}
 	public String storeKeeperString(){ return CMLib.coffeeShops().storeKeeperString(getShop()); }
 	public boolean doISellThis(Environmental thisThang){ return CMLib.coffeeShops().doISellThis(thisThang,this); }
 	protected Area getStartArea()
