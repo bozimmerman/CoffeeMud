@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.core.threads.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.atomic.*;
 /* 
@@ -47,7 +48,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	public final Map<String,Manufacturer> manufacturers = new SHashtable<String,Manufacturer>();
 
-	public final Map<String,LinkedList<Electronics>> sets=new Hashtable<String,LinkedList<Electronics>>();
+	public final Map<String,LinkedList<WeakReference<Electronics>>> sets=new Hashtable<String,LinkedList<WeakReference<Electronics>>>();
 
 	public final static List<PowerGenerator> emptyGeneratorList=new ArrayList<PowerGenerator>();
 
@@ -91,25 +92,28 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					return oldKey;
 				unregisterElectronics(E,oldKey);
 			}
-			LinkedList<Electronics> set=sets.get(newKey);
+			LinkedList<WeakReference<Electronics>> set=sets.get(newKey);
 			if(set==null)
 			{
-				set=new LinkedList<Electronics>();
+				set=new LinkedList<WeakReference<Electronics>>();
 				sets.put(newKey, set);
 			}
-			set.add(E);
+			set.add(new WeakReference<Electronics>(E));
 			return newKey;
 		}
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public synchronized List<Electronics> getMakeRegisteredElectronics(String key)
 	{
-		LinkedList<Electronics> set=sets.get(key);
+		LinkedList<WeakReference<Electronics>> set=sets.get(key);
+		LinkedList<Electronics> list=new LinkedList<Electronics>();
 		if(set==null)
-			return new XVector<Electronics>();
-		return (LinkedList<Electronics>)set.clone();
+			return list;
+		for(WeakReference<Electronics> e : set)
+			if(e.get()!=null)
+				list.add(e.get());
+		return list;
 	}
 	
 	public synchronized List<String> getMakeRegisteredKeys()
@@ -123,12 +127,20 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		if((oldKey!=null)&&(E!=null))
 		{
-			final List<Electronics> oldSet=sets.get(oldKey);
+			LinkedList<WeakReference<Electronics>> oldSet=sets.get(oldKey);
 			if(oldSet!=null)
 			{
-				oldSet.remove(E);
-				if(oldSet.size()==0)
-					sets.remove(oldSet);
+				for(Iterator<WeakReference<Electronics>> e=oldSet.iterator();e.hasNext();)
+				{
+					WeakReference<Electronics> w=e.next();
+					if(w.get()==E)
+					{
+						e.remove();
+						if(oldSet.size()==0)
+							sets.remove(oldSet);
+						return;
+					}
+				}
 			}
 		}
 	}
@@ -284,17 +296,24 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		synchronized(this)
 		{
-			List<Electronics> rawSet=sets.get(key);
+			LinkedList<WeakReference<Electronics>> rawSet=sets.get(key);
 			if(rawSet!=null)
 			{
-				for(Electronics E : rawSet)
+				for(Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+				{
+					WeakReference<Electronics> W=w.next();
+					Electronics E=W.get();
 					if(E instanceof PowerGenerator)
 						generators.add((PowerGenerator)E);
 					else
 					if(E instanceof PowerSource)
 						batteries.add((PowerSource)E);
 					else
+					if(E!=null)
 						panels.add(E);
+					else
+						w.remove();
+				}
 			}
 		}
 	}
@@ -342,11 +361,19 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						synchronized(this)
 						{
-							LinkedList<Electronics> rawSet=sets.get(key);
-							if((rawSet!=null) && (rawSet.size()>0) && (rawSet.getLast() != battery))
+							LinkedList<WeakReference<Electronics>> rawSet=sets.get(key);
+							if((rawSet!=null) && (rawSet.size()>0) && (rawSet.getLast().get() != battery))
 							{
-								rawSet.remove(battery);
-								rawSet.addLast(battery);
+								for(Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+								{
+									WeakReference<Electronics> W=w.next();
+									if(W.get()==battery)
+									{
+										w.remove();
+										break;
+									}
+								}
+								rawSet.addLast(new WeakReference<Electronics>(battery));
 							}
 						}
 					}
