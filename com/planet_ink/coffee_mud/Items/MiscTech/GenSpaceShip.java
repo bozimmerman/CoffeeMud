@@ -110,6 +110,18 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
 	
+	public String text()
+	{
+		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+	}
+
+	public void setMiscText(String newText)
+	{
+		miscText="";
+		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		recoverPhyStats();
+	}
+
 	public CMObject copyOf()
 	{
 		GenSpaceShip s=(GenSpaceShip)super.copyOf();
