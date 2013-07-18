@@ -51,7 +51,7 @@ public interface WorldMap extends CMLibrary
 	public Enumeration<Area> sortedAreas();
 	public Area getFirstArea();
 	public Area getRandomArea();
-	public void obliterateArea(String areaName);
+	public void obliterateArea(Area theOne);
 	
 	/************************************************************************/
 	/**							 ROOMS										*/

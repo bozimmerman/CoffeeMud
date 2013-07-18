@@ -125,7 +125,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			Area A=getLoggedArea(httpReq,mob);
 			if(A==null) return "@break@";
-			CMLib.map().obliterateArea(A.Name());
+			CMLib.map().obliterateArea(A);
 			Log.sysOut("Grinder",mob.Name()+" obliterated area "+A.Name());
 			return "The area "+A.Name()+" has been successfully deleted.";
 		}

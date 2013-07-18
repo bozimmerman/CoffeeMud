@@ -60,25 +60,24 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 
 	public boolean isGeneric(){return true;}
 
-	protected void makeNewAea()
-	{
-		area=CMClass.getAreaType("StdSpaceShip");
-		String num=Double.toString(Math.random());
-		area.setName("UNNAMED_"+num.substring(num.indexOf('.')+1));
-		area.setSavable(false);
-		area.setTheme(Area.THEME_TECHNOLOGY);
-		Room R=CMClass.getLocale("MetalRoom");
-		R.setRoomID(area.Name()+"#0");
-		R.setSavable(false);
-		area.addProperRoom(R);
-		if(getDestinationRoom()==null)
-			readableText=R.roomID();
-	}
-
 	public synchronized Area getArea()
 	{
+		if(destroyed)
+			return null; 
+		else
 		if(area==null)
-			makeNewAea();
+		{
+			area=CMClass.getAreaType("StdSpaceShip");
+			String num=Double.toString(Math.random());
+			area.setName("UNNAMED_"+num.substring(num.indexOf('.')+1));
+			area.setSavable(false);
+			area.setTheme(Area.THEME_TECHNOLOGY);
+			Room R=CMClass.getLocale("MetalRoom");
+			R.setRoomID(area.Name()+"#0");
+			R.setSavable(false);
+			area.addProperRoom(R);
+			readableText=R.roomID();
+		}
 		return area;
 	}
 	
@@ -88,14 +87,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return CMLib.coffeeMaker().getPropertiesStr(this,false)+"~|~"+CMLib.coffeeMaker().getAreaObjectXML(getArea(), null, null, null, true);
 	}
 
-	public String keyName()
-	{
-		return readableText;
-	}
-	public void setKeyName(String newKeyName)
-	{
-		readableText=newKeyName;
-	}
+	public String keyName() { return readableText;}
+	public void setKeyName(String newKeyName) { readableText=newKeyName; }
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
 	public void setMiscText(String newText)
@@ -114,16 +107,19 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						CMLib.flags().setSavable(r.nextElement(), false);
 				}
 				else
-					makeNewAea();
+				{
+					Log.warnOut("Failed to unpack an area for the space ship");
+					getArea();
+				}
 			} catch (CMException e) {
 				Log.warnOut("Unable to parse space ship xml for some reason.");
 			}
 		}
 		else
 		{
+			Log.warnOut("No space ship set at all!");
 			CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-			if(area==null)
-				makeNewAea();
+			getArea();
 		}
 		recoverPhyStats();
 	}
@@ -135,16 +131,30 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return s;
 	}
 	
+	public void stopTicking()
+	{
+		if(area!=null)
+			CMLib.threads().deleteAllTicks(area);
+		super.stopTicking();
+	}
+
+	
 	@Override
 	protected Room getDestinationRoom()
 	{
-		if(area==null)
-			this.makeNewAea();
+		getArea();
 		Room R=null;
 		List<String> V=CMParms.parseSemicolons(readableText(),true);
 		if(V.size()>0)
 			R=getArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
+	}
+	
+	public void destroy()
+	{
+		if(area!=null)
+			CMLib.map().obliterateArea(area);
+		super.destroy();
 	}
 	
 	public int fuelType(){return -1;}

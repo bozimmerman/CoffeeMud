@@ -539,7 +539,7 @@ public class Destroy extends StdCommand
 			{
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
 				Log.sysOut("Rooms",mob.Name()+" destroyed area "+areaName+".");
-				CMLib.map().obliterateArea(areaName);
+				CMLib.map().obliterateArea(A);
 			}
 		}
 	}

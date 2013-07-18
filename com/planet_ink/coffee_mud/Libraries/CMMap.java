@@ -1386,9 +1386,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 
-	public void obliterateArea(String areaName)
+	public void obliterateArea(Area A)
 	{
-		Area A=getArea(areaName);
 		if(A==null) return;
 		LinkedList<Room> rooms=new LinkedList<Room>();
 		Room R=null;

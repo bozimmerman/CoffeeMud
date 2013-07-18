@@ -1199,7 +1199,11 @@ public class StdItem implements Item
 		return phyStats().weight();
 	}
 	
-	public void stopTicking(){destroyed=true;CMLib.threads().deleteTick(this,-1);}
+	public void stopTicking()
+	{
+		destroyed=true; // WHY?!?!?
+		CMLib.threads().deleteTick(this,-1);
+	}
 	public void destroy()
 	{
 		if((phyStats().sensesMask()&PhyStats.SENSE_UNDESTROYABLE)>0)
