@@ -116,6 +116,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		s.destroyed=false;
 		String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
+		if(s.getShipArea().Name().startsWith("UNNAMED_"))
+		{
+			String num=Double.toString(Math.random());
+			s.renameSpaceShip("UNNAMED_"+num.substring(num.indexOf('.')+1));
+		}
 		return s;
 	}
 	
@@ -295,6 +300,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 	@Override
 	public String getTitleID() { return this.toString(); }
+
 	public void renameSpaceShip(String newName)
 	{
 		Area area=this.area;
@@ -394,6 +400,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						Room finalR=docks.get(CMLib.dice().roll(1, docks.size(), -1));
 						me.dockHere(finalR);
 						msg.source().tell("You'll find your ship docked at '"+finalR.roomTitle(msg.source())+"'.");
+						if ((msg.source().playerStats() != null) && (!msg.source().playerStats().getExtItems().isContent(me)))
+							msg.source().playerStats().getExtItems().addItem(me);
 					}
 				};
 				session.prompt(namer[0]);
@@ -401,6 +409,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			else
 			{
 				msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
+				if ((msg.source().playerStats() != null) && (!msg.source().playerStats().getExtItems().isContent(this)))
+					msg.source().playerStats().getExtItems().addItem(this);
 				dockHere(R);
 			}
 		}
