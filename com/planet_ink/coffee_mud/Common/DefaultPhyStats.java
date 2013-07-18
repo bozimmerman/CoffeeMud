@@ -101,7 +101,10 @@ public class DefaultPhyStats implements PhyStats
 		ambiance=ambiance.trim();
 		if((ambiances!=null)&&(Arrays.binarySearch(ambiances, ambiance, ambiComp)>=0))
 			return;
-		ambiances=Arrays.copyOf(ambiances, ambiances==null?1:ambiances.length+1);
+		if(ambiances==null)
+			ambiances=new String[1];
+		else
+			ambiances=Arrays.copyOf(ambiances, ambiances.length+1);
 		ambiances[ambiances.length-1]=ambiance;
 		Arrays.sort(ambiances, ambiComp);
 	}
