@@ -2154,7 +2154,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(showNumber+". Can contain : "+makeContainerTypes(E)
 					+"\n\r   Has a lid   : "+E.hasALid()
 					+"\n\r   Has a lock  : "+E.hasALock()
-					+((E instanceof Exit)?("\n\r   Key name    : "+E.keyName()):"")); // portals use keys as roomids
+					+"\n\r   Key name    : "+E.keyName()); // portals use keys as roomids, showing is OK
 			return;
 		}
 		String change="NO";
