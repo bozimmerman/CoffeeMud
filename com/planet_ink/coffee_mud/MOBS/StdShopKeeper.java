@@ -71,7 +71,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		recoverCharStats();
 	}
 
-	public boolean isSold(int mask){
+	public boolean isSold(int mask)
+	{
 		if(mask==0) return whatIsSoldMask==0;
 		if((whatIsSoldMask&255)==mask)
 			return true;
@@ -115,9 +116,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	
 	public CoffeeShop getShop(){return shop;}
 	
-	public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
-	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
-	protected Area getStartArea(){
+	public String storeKeeperString(){ return CMLib.coffeeShops().storeKeeperString(getShop()); }
+	public boolean doISellThis(Environmental thisThang){ return CMLib.coffeeShops().doISellThis(thisThang,this); }
+	protected Area getStartArea()
+	{
 		Area A=CMLib.map().getStartArea(this);
 		if(A==null) CMLib.map().areaLocation(this);
 		if(A==null) A=CMLib.map().areas().nextElement();
@@ -367,21 +369,24 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			super.executeMsg(myHost,msg);
 	}
 
-	public String finalPrejudiceFactors(){ 
+	public String finalPrejudiceFactors()
+	{ 
 		if(prejudiceFactors().length()>0) return prejudiceFactors();
 		return getStartArea().finalPrejudiceFactors();
 	}
 	public String prejudiceFactors(){return CMStrings.bytesToStr(miscText);}
 	public void setPrejudiceFactors(String factors){miscText=factors;}
 	
-	public String finalIgnoreMask(){ 
+	public String finalIgnoreMask()
+	{ 
 		if(ignoreMask().length()>0) return ignoreMask();
 		return getStartArea().finalIgnoreMask();
 	}
 	public String ignoreMask(){return "";}
 	public void setIgnoreMask(String factors){}
 
-	public String[] finalItemPricingAdjustments(){ 
+	public String[] finalItemPricingAdjustments()
+	{ 
 		if((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
 			return itemPricingAdjustments();
 		return getStartArea().finalItemPricingAdjustments();
@@ -389,21 +394,24 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	public String[] itemPricingAdjustments(){ return pricingAdjustments;}
 	public void setItemPricingAdjustments(String[] factors){pricingAdjustments=factors;}
 	
-	public String finalBudget(){ 
+	public String finalBudget()
+	{ 
 		if(budget().length()>0) return budget();
 		return getStartArea().finalBudget();
 	}
 	public String budget(){return budget;}
 	public void setBudget(String factors){budget=factors; budgetTickDown=0;}
 	
-	public String finalDevalueRate(){
+	public String finalDevalueRate()
+	{
 		if(devalueRate().length()>0) return devalueRate();
 		return getStartArea().finalDevalueRate();
 	}
 	public String devalueRate(){return devalueRate;}
 	public void setDevalueRate(String factors){devalueRate=factors;}
 	
-	public int finalInvResetRate(){
+	public int finalInvResetRate()
+	{
 		if(invResetRate()!=0) return invResetRate();
 		return getStartArea().finalInvResetRate();
 	}
