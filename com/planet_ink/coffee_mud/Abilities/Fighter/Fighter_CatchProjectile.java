@@ -75,7 +75,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 			{
 				if(!w.amWearingAt(Wearable.IN_INVENTORY))
 					CMLib.commands().postRemove(msg.source(),w,true);
-				CMLib.commands().postDrop(msg.source(),w,true,false);
+				CMLib.commands().postDrop(msg.source(),w,true,false,false);
 			}
 			else
 			if(((Weapon)w).requiresAmmunition())

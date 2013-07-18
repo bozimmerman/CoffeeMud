@@ -134,7 +134,7 @@ public class Spell_TeleportObject extends Spell
 			oldRoom.send(mob,msg);
 			newRoom.bringMobHere(mob,false);
 			target.unWear();
-			success=CMLib.commands().postDrop(mob,target,true,false) && (!mob.isMine(target));
+			success=CMLib.commands().postDrop(mob,target,true,false,false) && (!mob.isMine(target));
 			oldRoom.bringMobHere(mob,false);
 			if(success)
 			{

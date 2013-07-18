@@ -87,7 +87,7 @@ public class Spell_HeatMetal extends Spell
 				CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 				if(CMLib.dice().rollPercentage()<mob.charStats().getStat(CharStats.STAT_STRENGTH))
 				{
-					CMLib.commands().postDrop(mob,item,false,false);
+					CMLib.commands().postDrop(mob,item,false,false,false);
 					if(!mob.isMine(item))
 					{
 						item.addEffect((Ability)this.copyOf());

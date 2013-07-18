@@ -3429,7 +3429,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
+				{
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+				}
 				else
 				{
 					Ability chosenOne=null;

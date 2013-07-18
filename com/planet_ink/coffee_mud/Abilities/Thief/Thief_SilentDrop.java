@@ -69,13 +69,13 @@ public class Thief_SilentDrop extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				CMLib.commands().postDrop(mob, item, true, false);
+				CMLib.commands().postDrop(mob, item, true, false,false);
 			}
 		}
 		else
 		{
 			beneficialVisualFizzle(mob,item,"<S-NAME> attempt(s) to drop <T-NAME> quietly, but fail(s).");
-			CMLib.commands().postDrop(mob, item, false, false);
+			CMLib.commands().postDrop(mob, item, false, false,false);
 		}
 		return success;
 	}

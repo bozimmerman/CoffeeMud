@@ -179,7 +179,7 @@ public class FieryRoom
 					int damage = CMLib.dice().roll(1, 6, 1);
 					CMLib.combat().postDamage(M, mob, null, damage, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, target.name() + " <DAMAGE> <T-NAME>!");
 					if (CMLib.dice().rollPercentage() < mob.charStats().getStat(CharStats.STAT_STRENGTH)) {
-						CMLib.commands().postDrop(mob, target, false, false);
+						CMLib.commands().postDrop(mob, target, false, false, false);
 					}
 					break;
 				}

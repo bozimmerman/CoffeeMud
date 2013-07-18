@@ -41,13 +41,14 @@ public class Drop extends StdCommand
 	private final String[] access={"DROP","DRO"};
 	public String[] getAccessWords(){return access;}
 
-	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class,Boolean.class}};
+	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class,Boolean.class,Boolean.class}};
 	
-	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
+	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize, boolean intermediate)
 	{
 		final Room R=mob.location();
 		if(R==null) return false;
-		CMMsg msg=CMClass.getMsg(mob,dropThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
+		final int msgCode=(optimize?CMMsg.MASK_OPTIMIZE:0)|(intermediate?CMMsg.MASK_INTERMSG:0)|CMMsg.MSG_DROP;
+		CMMsg msg=CMClass.getMsg(mob,dropThis,null,msgCode,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
 		if(R.okMessage(mob,msg))
 		{
 			R.send(mob,msg);
@@ -91,6 +92,7 @@ public class Drop extends StdCommand
 		Item container=null;
 		Vector V=new Vector();
 
+		//this is probably unnecessary and can be removed
 		if((commands.size()>=3)
 		&&(commands.firstElement() instanceof Item)
 		&&(commands.elementAt(1) instanceof Boolean)
@@ -98,7 +100,8 @@ public class Drop extends StdCommand
 		{
 			return drop(mob,(Item)commands.firstElement(),
 						((Boolean)commands.elementAt(1)).booleanValue(),
-						((Boolean)commands.elementAt(2)).booleanValue());
+						((Boolean)commands.elementAt(2)).booleanValue(),
+						false);
 		}
 
 		if(commands.size()<2)
@@ -174,7 +177,7 @@ public class Drop extends StdCommand
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<V.size();i++)
-			drop(mob,(Item)V.elementAt(i),false,true);
+			drop(mob,(Item)V.elementAt(i),false,true,false);
 		mob.location().recoverRoomStats();
 		mob.location().recoverRoomStats();
 		return false;
@@ -187,7 +190,7 @@ public class Drop extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		return Boolean.valueOf(drop(mob,(Environmental)args[0],((Boolean)args[1]).booleanValue(),((Boolean)args[2]).booleanValue()));
+		return Boolean.valueOf(drop(mob,(Environmental)args[0],((Boolean)args[1]).booleanValue(),((Boolean)args[2]).booleanValue(),((Boolean)args[3]).booleanValue()));
 	}
 	
 }

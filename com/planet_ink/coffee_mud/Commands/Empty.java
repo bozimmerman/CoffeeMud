@@ -188,7 +188,7 @@ public class Empty extends Drop
 					&&(I.container()==null))
 					{
 						if(target instanceof Room)
-							drop(mob,I,true,true);
+							drop(mob,I,true,true,false);
 						else
 						if(target instanceof Container)
 						{

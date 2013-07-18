@@ -63,7 +63,7 @@ public class Thief_Kamikaze extends ThiefSkill
 					{
 						if(!I.amWearingAt(Wearable.IN_INVENTORY))
 							CMLib.commands().postRemove(mob,I,true);
-						CMLib.commands().postDrop(mob,I,false,false);
+						CMLib.commands().postDrop(mob,I,false,false,false);
 						if(I.owner() instanceof Room)
 						{
 							Room R=(Room)I.owner();

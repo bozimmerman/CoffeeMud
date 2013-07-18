@@ -115,7 +115,7 @@ public class Dress extends StdCommand
 				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
 				if(mob.location().okMessage(mob,msg))
 				{
-					if(CMLib.commands().postDrop(mob,item,true,false))
+					if(CMLib.commands().postDrop(mob,item,true,false,false))
 					{
 						msg=CMClass.getMsg(target,item,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_GET,null);
 						if(mob.location().okMessage(mob,msg))

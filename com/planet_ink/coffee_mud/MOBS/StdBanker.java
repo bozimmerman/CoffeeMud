@@ -502,7 +502,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							((Coins)old).putCoinsBack();
 						}
 						else
-							CMLib.commands().postDrop(this,old,true,false);
+							CMLib.commands().postDrop(this,old,true,false,false);
 						double interestRate=getLoanInterest();
 						int months=2;
 						while((months<(location().getArea().getTimeObj().getMonthsInYear()*10))
@@ -552,7 +552,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 								((Coins)old).putCoinsBack();
 							}
 							else
-								CMLib.commands().postDrop(this,old,true,false);
+								CMLib.commands().postDrop(this,old,true,false,false);
 							if((coins==null)||(coins.getNumberOfCoins()<=0))
 							{
 								if(isSold(ShopKeeper.DEAL_CLANBANKER))

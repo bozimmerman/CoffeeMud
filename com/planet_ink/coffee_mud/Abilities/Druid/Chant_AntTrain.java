@@ -69,7 +69,7 @@ public class Chant_AntTrain extends Chant
 				item.unWear();
 			}
 			if(wasntMine)
-				CMLib.commands().postDrop(mob,item,true,false);
+				CMLib.commands().postDrop(mob,item,true,false,false);
 			wasntMine=false;
 
 			item.recoverPhyStats();

@@ -697,7 +697,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				C.putCoinsBack();
 			}
 			else
-				CMLib.commands().postDrop(banker,C,true,false);
+				CMLib.commands().postDrop(banker,C,true,false,false);
 		}
 		banker.recoverPhyStats();
 		customer.recoverPhyStats();

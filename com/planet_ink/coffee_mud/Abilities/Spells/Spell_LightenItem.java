@@ -65,7 +65,7 @@ public class Spell_LightenItem extends Spell
 					if(!item.amWearingAt(Wearable.IN_INVENTORY))
 						CMLib.commands().postRemove(mob,item,false);
 					if(item.amWearingAt(Wearable.IN_INVENTORY))
-						CMLib.commands().postDrop(mob,item,false,false);
+						CMLib.commands().postDrop(mob,item,false,false,false);
 				}
 			}
 		}

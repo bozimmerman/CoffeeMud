@@ -94,7 +94,7 @@ public class Spell_ClanDonate extends Spell
 				if(!proceed){
 					Room prevRoom=mob.location();
 					clanDonateRoom.bringMobHere(mob,false);
-					proceed=CMLib.commands().postDrop(mob,target,true,false);
+					proceed=CMLib.commands().postDrop(mob,target,true,false,false);
 					prevRoom.bringMobHere(mob,false);
 				}
 				if(proceed)

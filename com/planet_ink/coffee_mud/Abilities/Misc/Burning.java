@@ -211,7 +211,7 @@ public class Burning extends StdAbility
 			if((owner instanceof MOB)&&(((MOB)owner).location()!=null))
 			{
 				if(!ouch((MOB)owner))
-					CMLib.commands().postDrop((MOB)owner,I,false,false);
+					CMLib.commands().postDrop((MOB)owner,I,false,false,false);
 			}
 			if((I.subjectToWearAndTear())
 			&&(I.usesRemaining()>1))

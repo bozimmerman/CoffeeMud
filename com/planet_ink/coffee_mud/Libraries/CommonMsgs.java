@@ -214,9 +214,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		postChannel(talker,channelName,message,systemMsg);
 	}
 
-	public boolean postDrop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized)
+	public boolean postDrop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized, boolean intermediate)
 	{
-		return ((Boolean)forceInternalCommand(mob,"Drop",dropThis,Boolean.valueOf(quiet),Boolean.valueOf(optimized))).booleanValue();
+		return ((Boolean)forceInternalCommand(mob,"Drop",dropThis,Boolean.valueOf(quiet),Boolean.valueOf(optimized),Boolean.valueOf(intermediate))).booleanValue();
 	}
 	public boolean postOpen(MOB mob, Environmental openThis, boolean quiet)
 	{

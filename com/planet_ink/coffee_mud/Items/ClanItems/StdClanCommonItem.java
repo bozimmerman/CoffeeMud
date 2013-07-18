@@ -293,7 +293,7 @@ public class StdClanCommonItem extends StdClanItem
 									if(rsc.size()>0)
 									{
 										for(int r=0;r<rsc.size();r++)
-											CMLib.commands().postDrop(M,(Environmental)rsc.get(r),false,true);
+											CMLib.commands().postDrop(M,(Environmental)rsc.get(r),false,true,false);
 										return true;
 									}
 								}

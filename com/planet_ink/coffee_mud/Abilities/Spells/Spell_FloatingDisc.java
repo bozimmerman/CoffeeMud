@@ -65,7 +65,7 @@ public class Spell_FloatingDisc extends Spell
 				item.unWear();
 			}
 			if(wasntMine)
-				CMLib.commands().postDrop(mob,item,true,false);
+				CMLib.commands().postDrop(mob,item,true,false,false);
 			wasntMine=false;
 
 			item.recoverPhyStats();

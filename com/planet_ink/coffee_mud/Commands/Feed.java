@@ -89,7 +89,7 @@ public class Feed extends StdCommand
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((CMLib.commands().postDrop(mob,item,true,false))
+				if((CMLib.commands().postDrop(mob,item,true,false,false))
 				   &&(mob.location().isContent(item)))
 				{
 					msg=CMClass.getMsg(target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null);

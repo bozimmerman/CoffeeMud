@@ -116,11 +116,17 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		s.destroyed=false;
 		String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
+		/*
 		if(s.getShipArea().Name().startsWith("UNNAMED_"))
 		{
 			String num=Double.toString(Math.random());
+			String oldName=s.Name();
+			String oldDisplay=s.displayText();
 			s.renameSpaceShip("UNNAMED_"+num.substring(num.indexOf('.')+1));
+			s.setName(oldName);
+			s.setDisplayText(oldDisplay);
 		}
+		*/
 		return s;
 	}
 	
@@ -343,7 +349,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 		return true;
 	}
-	
+
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -369,88 +375,99 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		&&(!(msg.target() instanceof Banker))
 		&&(!(msg.target() instanceof Auctioneer))
 		&&(!(msg.target() instanceof PostOffice)))
+			transferOwnership((MOB)msg.target());
+		else
+		if((msg.targetMinor()==CMMsg.TYP_GET)
+		&&(msg.target()==this)
+		&&(msg.tool() instanceof ShopKeeper))
 		{
-			if(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER))
-			{
-				Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan((MOB)msg.target(), Clan.Function.PROPERTY_OWNER);
-				if(targetClan!=null)
-					setOwnerName(targetClan.first.clanID());
-				else
-					setOwnerName(msg.target().Name());
-			}
-			else
-				setOwnerName(msg.target().Name());
-			recoverPhyStats();
-			String registryNum=Double.toString(Math.random());
-			String randNum=CMStrings.limit(registryNum.substring(registryNum.indexOf('.')+1), 4);
-			renameSpaceShip("SS "+msg.source().Name()+", Reg "+randNum);
-			final Session session=msg.source().session();
-			final Room R=CMLib.map().roomLocation(this);
-			if(session!=null)
-			{
-				final GenSpaceShip me=this;
-				final InputCallback[] namer=new InputCallback[1];
-				namer[0]=new InputCallback(InputCallback.Type.PROMPT) {
-					@Override public void showPrompt() { session.println("\n\rEnter a new name for your ship: "); }
-					@Override public void timedOut() { }
-					@Override public void callBack() {
-						if((this.input.trim().length()==0)
-						||(!CMLib.login().isOkName(this.input.trim()))
-						||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
-						{
-							session.println("^XThat is not a permitted name.^N");
-							session.prompt(namer[0]);
-							return;
-						}
-						me.renameSpaceShip(this.input.trim());
-						msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
-						List<Room> docks=new XVector<Room>();
-						if(R!=null)
-						{
-							TrackingLibrary.TrackingFlags flags;
-							flags = new TrackingLibrary.TrackingFlags()
-									.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-									.plus(TrackingLibrary.TrackingFlag.NOAIR)
-									.plus(TrackingLibrary.TrackingFlag.NOHOMES)
-									.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY)
-									.plus(TrackingLibrary.TrackingFlag.NOWATER);
-							List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
-							for(Room R2 : rooms)
-								if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)&&(R.getArea().inMyMetroArea(R2.getArea())))
-									docks.add(R2);
-							if(docks.size()==0)
-								for(Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
-								{
-									Room R2=r.nextElement();
-									if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-										docks.add(R2);
-								}
-							if(docks.size()==0)
-								for(Room R2 : rooms)
-									if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-										docks.add(R2);
-						}
-						if(docks.size()==0)
-							docks.add(R);
-						Room finalR=docks.get(CMLib.dice().roll(1, docks.size(), -1));
-						me.dockHere(finalR);
-						msg.source().tell("You'll find your ship docked at '"+finalR.roomTitle(msg.source())+"'.");
-						if ((msg.source().playerStats() != null) && (!msg.source().playerStats().getExtItems().isContent(me)))
-							msg.source().playerStats().getExtItems().addItem(me);
-					}
-				};
-				session.prompt(namer[0]);
-			}
-			else
-			{
-				msg.source().tell(name()+" is now signed over to "+getOwnerName()+".");
-				if ((msg.source().playerStats() != null) && (!msg.source().playerStats().getExtItems().isContent(this)))
-					msg.source().playerStats().getExtItems().addItem(this);
-				dockHere(R);
-			}
+			transferOwnership(msg.source());
 		}
 	}
-	
+
+	protected void transferOwnership(final MOB buyer)
+	{
+		if(CMLib.clans().checkClanPrivilege(buyer, getOwnerName(), Clan.Function.PROPERTY_OWNER))
+		{
+			Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
+			if(targetClan!=null)
+				setOwnerName(targetClan.first.clanID());
+			else
+				setOwnerName(buyer.Name());
+		}
+		else
+			setOwnerName(buyer.Name());
+		recoverPhyStats();
+		String registryNum=Double.toString(Math.random());
+		String randNum=CMStrings.limit(registryNum.substring(registryNum.indexOf('.')+1), 4);
+		renameSpaceShip("SS "+buyer.Name()+", Reg "+randNum);
+		final Session session=buyer.session();
+		final Room R=CMLib.map().roomLocation(this);
+		if(session!=null)
+		{
+			final GenSpaceShip me=this;
+			final InputCallback[] namer=new InputCallback[1];
+			namer[0]=new InputCallback(InputCallback.Type.PROMPT) {
+				@Override public void showPrompt() { session.println("\n\rEnter a new name for your ship: "); }
+				@Override public void timedOut() { }
+				@Override public void callBack() {
+					if((this.input.trim().length()==0)
+					||(!CMLib.login().isOkName(this.input.trim()))
+					||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
+					{
+						session.println("^ZThat is not a permitted name.^N");
+						session.prompt(namer[0].reset());
+						return;
+					}
+					me.renameSpaceShip(this.input.trim());
+					buyer.tell(name()+" is now signed over to "+getOwnerName()+".");
+					List<Room> docks=new XVector<Room>();
+					if(R!=null)
+					{
+						TrackingLibrary.TrackingFlags flags;
+						flags = new TrackingLibrary.TrackingFlags()
+								.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+								.plus(TrackingLibrary.TrackingFlag.NOAIR)
+								.plus(TrackingLibrary.TrackingFlag.NOHOMES)
+								.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY)
+								.plus(TrackingLibrary.TrackingFlag.NOWATER);
+						List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
+						for(Room R2 : rooms)
+							if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)&&(R.getArea().inMyMetroArea(R2.getArea())))
+								docks.add(R2);
+						if(docks.size()==0)
+							for(Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
+							{
+								Room R2=r.nextElement();
+								if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+									docks.add(R2);
+							}
+						if(docks.size()==0)
+							for(Room R2 : rooms)
+								if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+									docks.add(R2);
+					}
+					if(docks.size()==0)
+						docks.add(R);
+					Room finalR=docks.get(CMLib.dice().roll(1, docks.size(), -1));
+					me.dockHere(finalR);
+					buyer.tell("You'll find your ship docked at '"+finalR.roomTitle(buyer)+"'.");
+					if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(me)))
+						buyer.playerStats().getExtItems().addItem(me);
+				}
+			};
+			session.prompt(namer[0]);
+		}
+		else
+		{
+			buyer.tell(name()+" is now signed over to "+getOwnerName()+".");
+			if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(this)))
+				buyer.playerStats().getExtItems().addItem(this);
+			dockHere(R);
+		}
+	}
+
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
 							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM",

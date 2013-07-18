@@ -44,6 +44,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	public int itemCap=Integer.MAX_VALUE;
 	public int maxWeight=Integer.MAX_VALUE;
 	public boolean indoorOnly=false;
+	public boolean containersOk=false;
 
 	
 	public long flags(){return Ability.FLAG_ZAPPER;}
@@ -84,6 +85,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			itemCap=CMParms.getParmInt(txt,"items",itemCap);
 			maxWeight=CMParms.getParmInt(txt,"weight",maxWeight);
 			indoorOnly=CMParms.getParmBool(txt,"indoor",indoorOnly);
+			containersOk=CMParms.getParmBool(txt,"droponly",containersOk)||CMParms.getParmBool(txt,"containersok",containersOk);
 		}
 	}
 	
@@ -120,7 +122,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			if((msg.target() instanceof Item)
 			&&(msg.source()!=null)
 			&&(msg.source().location()!=null)
-			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
+			&&((!msg.targetMajor(CMMsg.MASK_INTERMSG))||(!containersOk))) // intermsgs are PUTs on the ground
 			{
 				Item targetI=(Item)msg.target();
 				Room R=null;
