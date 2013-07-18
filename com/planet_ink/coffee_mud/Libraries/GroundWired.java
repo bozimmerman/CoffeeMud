@@ -67,7 +67,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			Room R=(Room)possessor;
 			String newKey;
 			if(R.getArea() instanceof SpaceShip)
-				newKey=""+R.getArea();
+				newKey=R.getArea().Name();
 			else
 			{
 				LandTitle title = CMLib.law().getLandTitle(R);
