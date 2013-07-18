@@ -786,40 +786,36 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	public StringBuffer colorCodes(Physical seen , MOB seer)
 	{
-		String[] ambiances=seen.phyStats().ambiances();
-		if(!CMStrings.containsIgnoreCase(ambiances,"-ALL"))
+		final PhyStats pStats=seen.phyStats();
+		final String[] ambiances=pStats.ambiances();
+		if(!pStats.isAmbiance("-ALL"))
 		{
 			final StringBuffer say=new StringBuffer("^N");
-			if(!CMStrings.containsIgnoreCase(ambiances,"-MOST"))
+			if(!pStats.isAmbiance("-MOST"))
 			{
-				if((isEvil(seen))&&(canSeeEvil(seer))&&(!CMStrings.contains(ambiances,"-EVIL")))
+				if((isEvil(seen))&&(canSeeEvil(seer))&&(!pStats.isAmbiance("-EVIL")))
 					say.append(" (glowing ^rred^?)");
-				if((isGood(seen))&&(canSeeGood(seer))&&(!CMStrings.contains(ambiances,"-GOOD")))
+				if((isGood(seen))&&(canSeeGood(seer))&&(!pStats.isAmbiance("-GOOD")))
 					say.append(" (glowing ^bblue^?)");
-				if((isInvisible(seen))&&(canSeeInvisible(seer))&&(!CMStrings.contains(ambiances,"-INVISIBLE")))
+				if((isInvisible(seen))&&(canSeeInvisible(seer))&&(!pStats.isAmbiance("-INVISIBLE")))
 					say.append(" (^yinvisible^?)");
-				if((isSneaking(seen))&&(canSeeSneakers(seer))&&(!CMStrings.contains(ambiances,"-SNEAKING")))
+				if((isSneaking(seen))&&(canSeeSneakers(seer))&&(!pStats.isAmbiance("-SNEAKING")))
 					say.append(" (^ysneaking^?)");
-				if((isHidden(seen))&&(canSeeHidden(seer))&&(!CMStrings.contains(ambiances,"-HIDDEN")))
+				if((isHidden(seen))&&(canSeeHidden(seer))&&(!pStats.isAmbiance("-HIDDEN")))
 					say.append(" (^yhidden^?)");
-				if((!isGolem(seen))
-				&&(canSeeInfrared(seer))
-				&&(seen instanceof MOB)
-				&&(isInDark(seer.location()))
-				&&(!CMStrings.contains(ambiances,"-HEAT")))
+				if((!isGolem(seen))&&(canSeeInfrared(seer))&&(seen instanceof MOB)&&(isInDark(seer.location()))&&(!pStats.isAmbiance("-HEAT")))
 					say.append(" (^rheat aura^?)");
-				if((isABonusItems(seen))&&(canSeeBonusItems(seer))&&(!CMStrings.contains(ambiances,"-MAGIC")))
+				if((isABonusItems(seen))&&(canSeeBonusItems(seer))&&(!pStats.isAmbiance("-MAGIC")))
 					say.append(" (^wmagical aura^?)");
-				if((canSeeMetal(seer))&&(seen instanceof Item)&&(!CMStrings.contains(ambiances,"-METAL")))
+				if((canSeeMetal(seer))&&(seen instanceof Item)&&(!pStats.isAmbiance("-METAL")))
 					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 						say.append(" (^wmetallic aura^?)");
 					else
 					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
 						say.append(" (^wmithril aura^?)");
-
-				if((isGlowing(seen))&&(!(seen instanceof Room))&&(!CMStrings.contains(ambiances,"-GLOWING")))
+				if((isGlowing(seen))&&(!(seen instanceof Room))&&(!pStats.isAmbiance("-GLOWING")))
 					say.append(" (^gglowing^?)");
-				if(isBusy(seen)&&(!CMStrings.contains(ambiances,"-BUSY")))
+				if(isBusy(seen)&&(!pStats.isAmbiance("-BUSY")))
 					say.append(" (^gbusy^?)");
 				for(int i=0;i<ambiances.length;i++)
 					if(!ambiances[i].startsWith("-"))
@@ -837,12 +833,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 							say.append(" ("+ambiances[i]+")");
 					}
 			}
-			if(isBound(seen)&&(!CMStrings.contains(ambiances,"-BOUND")))
+			if(isBound(seen)&&(!pStats.isAmbiance("-BOUND")))
 				say.append(" (^Wbound^?)");
-			if(isFlying(seen)&&(!(seen instanceof Exit))&&(!CMStrings.contains(ambiances,"-FLYING")))
+			if(isFlying(seen)&&(!(seen instanceof Exit))&&(!pStats.isAmbiance("-FLYING")))
 				say.append(" (^pflying^?)");
-			if((isFalling(seen))
-			&&(!CMStrings.contains(ambiances,"-FALLING"))
+			if((isFalling(seen))&&(!pStats.isAmbiance("-FALLING"))
 			&&((!(seen instanceof MOB))
 				||(((MOB)seen).location()==null)
 				||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
