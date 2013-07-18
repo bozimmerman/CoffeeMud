@@ -1157,6 +1157,16 @@ public class CMParms
 		return s;
 	}
 
+	public final static Set<String> toStringSet(final List<?> V, final Set<String> S)
+	{
+		if((V==null)||(V.size()==0)){
+			return S;
+		}
+		for(int v=0;v<V.size();v++)
+			S.add(V.get(v).toString());
+		return S;
+	}
+
 	public final static String[] toStringArray(final Object[] O)
 	{
 		if(O==null) return new String[0];
