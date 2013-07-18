@@ -136,11 +136,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					if(w.get()==E)
 					{
 						e.remove();
-						if(oldSet.size()==0)
-							sets.remove(oldSet);
-						return;
+						break;
 					}
 				}
+				if(oldSet.size()==0)
+					sets.remove(oldKey);
 			}
 		}
 	}
@@ -314,6 +314,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					else
 						w.remove();
 				}
+				if(rawSet.size()==0)
+					sets.remove(key);
 			}
 		}
 	}

@@ -2139,6 +2139,8 @@ public class ListCmd extends StdCommand
 			}
 			str.append("\n\r");
 		}
+		if(str.length()==0)
+			str.append("No electronics found.\n\r");
 		if(mob.session()!=null)
 			mob.session().rawPrint(str.toString());
 	}
