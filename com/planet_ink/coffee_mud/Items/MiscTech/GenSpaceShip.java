@@ -52,8 +52,9 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		setDisplayText("a space ship is here.");
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setDescription("");
+		basePhyStats().setWeight(10000);
 		recoverPhyStats();
-		CMLib.flags().setGettable(this, false);
+		//CMLib.flags().setGettable(this, false);
 		CMLib.flags().setSavable(this, false);
 	}
 

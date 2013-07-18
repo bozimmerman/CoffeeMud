@@ -2154,7 +2154,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(showNumber+". Can contain : "+makeContainerTypes(E)
 					+"\n\r   Has a lid   : "+E.hasALid()
 					+"\n\r   Has a lock  : "+E.hasALock()
-					+"\n\r   Key name    : "+E.keyName());
+					+((E instanceof Exit)?("\n\r   Key name    : "+E.keyName()):"")); // portals use keys as roomids
 			return;
 		}
 		String change="NO";
@@ -2191,22 +2191,27 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(genGenericPrompt(mob,"Has a lock",E.hasALock()))
 			{
 				E.setLidsNLocks(E.hasALid(),E.isOpen(),true,true);
-				mob.tell("\n\rKey code: '"+E.keyName()+"'.");
-				String newName=mob.session().prompt("Enter something new\n\r:","");
-				if(newName.length()>0)
-					E.setKeyName(newName);
-				else
-					mob.tell("(no change)");
+				if(!(E instanceof Exit)) // portals use key names as roomids
+				{
+					mob.tell("\n\rKey code: '"+E.keyName()+"'.");
+					String newName=mob.session().prompt("Enter something new\n\r:","");
+					if(newName.length()>0)
+						E.setKeyName(newName);
+					else
+						mob.tell("(no change)");
+				}
 			}
 			else
 			{
-				E.setKeyName("");
+				if(!(E instanceof Exit)) // portals use key names as roomids
+					E.setKeyName("");
 				E.setLidsNLocks(E.hasALid(),E.isOpen(),false,false);
 			}
 		}
 		else
 		{
-			E.setKeyName("");
+			if(!(E instanceof Exit)) // portals use key names as roomids
+				E.setKeyName("");
 			E.setLidsNLocks(false,true,false,false);
 		}
 	}
