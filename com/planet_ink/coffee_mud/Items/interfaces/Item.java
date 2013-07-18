@@ -131,6 +131,8 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	 * If this Item is current Ticking due to its having Behaviors or other properties which
 	 * might grant it the ability to Tick, this method will cause that ticking to cease and
 	 * desist.  This means that it will lose its periodic thread calls to its tick() method.
+	 * This method also makes the item appear destroyed without actually being destroyed.
+	 * The whole idea is to make the item 'dormant' for storage.
 	 */
 	public void stopTicking();
 	/** 

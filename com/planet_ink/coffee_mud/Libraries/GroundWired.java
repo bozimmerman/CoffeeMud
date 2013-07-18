@@ -145,6 +145,16 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 	
+	public synchronized void unregisterAllElectronics(final String oldKey)
+	{
+		if(oldKey!=null)
+		{
+			LinkedList<WeakReference<Electronics>> oldSet=sets.get(oldKey);
+			if(oldSet!=null)
+				sets.remove(oldKey);
+		}
+	}
+	
 	public TickClient getServiceClient() { return serviceClient;}
 	protected STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents 
 													= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>(); 

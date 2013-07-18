@@ -93,7 +93,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			{
 				Environmental I3=(Environmental)SP.product.copyOf();
 				copyFix.put(SP.product,I3);
-				CMLib.threads().deleteTick(I3,-1);
+				stopTicking(I3);
 				storeInventory.add(new ShelfProduct(I3,SP.number,SP.price));
 			}
 		for(int i=0;i<E.enumerableInventory.size();i++)
@@ -103,10 +103,19 @@ public class DefaultCoffeeShop implements CoffeeShop
 			{
 				Environmental I3=copyFix.get(I2);
 				if(I3==null) I3=(Environmental)I2.copyOf();
-				CMLib.threads().deleteTick(I3,-1);
+				stopTicking(I3);
 				enumerableInventory.addElement(I3);
 			}
 		}
+	}
+	
+	protected void stopTicking(Environmental E)
+	{
+		if((E instanceof SpaceShip)&&(E instanceof Item))
+			((Item)E).stopTicking();
+		else
+		if(E!=null)
+			CMLib.threads().deleteTick(E, -1);
 	}
 	
 	public void destroyStoreInventory()
@@ -186,7 +195,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inEnumerableInventory(thisThang)))
 		{
 			Environmental E=(Environmental)thisThang.copyOf();
-			CMLib.threads().deleteTick(E,-1);
+			stopTicking(E);
 			if(!E.amDestroyed())
 			{
 				enumerableInventory.addElement(E);
@@ -199,7 +208,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			for(int v=0;v<number;v++)
 			{
 				copy=(Environmental)thisThang.copyOf();
-				CMLib.threads().deleteTick(copy,-1);
+				stopTicking(copy);
 				if(!copy.amDestroyed())
 				{
 					((InnKey)copy).hangOnRack(shopKeeper());
@@ -211,7 +220,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		{
 			Environmental copy=null;
 			thisThang=(Environmental)thisThang.copyOf();
-			CMLib.threads().deleteTick(thisThang,-1);
+			stopTicking(thisThang);
 			if(!thisThang.amDestroyed())
 			{
 				for(ShelfProduct SP : storeInventory)

@@ -113,6 +113,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public CMObject copyOf()
 	{
 		GenSpaceShip s=(GenSpaceShip)super.copyOf();
+		s.destroyed=false;
 		String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
 		return s;
@@ -121,8 +122,16 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public void stopTicking()
 	{
 		if(area!=null)
+		{
 			CMLib.threads().deleteAllTicks(area);
+			String key=area.Name();
+			String registryNum=area.getBlurbFlag("REGISTRY");
+			if(registryNum!=null) 
+				key+=registryNum;
+			CMLib.tech().unregisterAllElectronics(key);
+		}
 		super.stopTicking();
+		this.destroyed=false; // undo the weird thing
 	}
 
 	

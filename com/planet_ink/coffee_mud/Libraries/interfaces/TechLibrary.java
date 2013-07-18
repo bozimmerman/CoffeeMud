@@ -42,6 +42,14 @@ public interface TechLibrary extends CMLibrary
 	public void unregisterElectronics(Electronics E, String oldKey);
 	
 	/**
+	 * Unregisters all electronic components that belonged
+	 * in a complex circuitry, like a panel or a 
+	 * generator, of the given key.
+	 * @param oldKey the last key registered to this device
+	 */
+	public void unregisterAllElectronics(final String oldKey);
+	
+	/**
 	 * Registers an electronic component that belongs
 	 * in a complex circuitry, like a panel or a 
 	 * generator
