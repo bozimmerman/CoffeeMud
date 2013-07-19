@@ -43,9 +43,10 @@ public class UnderWater extends StdRoom implements Drink
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
+		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 	protected int baseThirst(){return 0;}
 	public long decayTime(){return 0;}
 	public void setDecayTime(long time){}

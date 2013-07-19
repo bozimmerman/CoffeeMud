@@ -44,7 +44,6 @@ public class Woods extends StdRoom
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

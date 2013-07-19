@@ -73,11 +73,9 @@ public class MagicShelter extends StdRoom
 			A.setSavable(false);
 			addEffect(A);
 		}
+		climask=Places.CLIMASK_NORMAL;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_MAGIC;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
-
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

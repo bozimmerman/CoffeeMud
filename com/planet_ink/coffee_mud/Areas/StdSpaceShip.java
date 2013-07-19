@@ -47,6 +47,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected TimeClock 	localClock  	=(TimeClock)CMClass.getCommon("DefaultTimeClock");
 	protected String		currency		="";
 	private long			expirationDate  =0;
+	protected int			atmosphere		=RawMaterial.RESOURCE_AIR; // at least for awhile...
 	protected SpaceObject	spaceTarget 	=null;
 	protected SpaceObject	spaceSource 	=null;
 	protected SpaceObject	orbiting		=null;
@@ -96,6 +97,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	public String getCurrency(){return currency;}
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
+	public int atmosphere() { return atmosphere; }
+	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
 	public long flags(){return 0;}
 	
 	public SpaceObject knownTarget(){return spaceTarget;}
@@ -143,6 +146,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	}
 	public void setSavable(boolean truefalse){CMLib.flags().setSavable(this, truefalse);}
 	public int climateType(){return Area.CLIMASK_NORMAL;}
+	public int deriveClimate() { return Area.CLIMASK_NORMAL; }
 	public void setClimateType(int newClimateType){}
 
 	public StdSpaceShip()

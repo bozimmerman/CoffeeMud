@@ -33,6 +33,18 @@
   30. New commands for moving in space ships: foreward, portside, aft, above, below, and starboard. Compass versions included of course.
   31. When entering "?" in the Affects/Behaviors command line modifier, it will now highlight the appropriate abilities/behaviors. It's awesome!
   32. New Property: Prop_ImproveGather, for modifying the yield of gathering skills based on masks
+//TODO: add climate editors for rooms (and MG!)
+//TODO: add room climates to genmaker! *AND* for DB as well.
+//TODO: add room climate info to guides
+//TODO: deriveAtmosphere
+//TODO: add atmosphere editors for rooms and areas (and MG!)
+//TODO: add atmosphere info to guides for areas and rooms
+//TODO: add atmosphere for rooms and areas to genmaker! *AND* for DB as well.
+//TODO: add breathes to races
+//TODO: add breathes to charstats
+//TODO: add breathe handlers
+//TODO: add breathe editors for races  (and MG!)
+//TODO: add breathes to races guides!
 # Build 5.7.10 Release 2/17/2013 (* DB CHANGE!) (** Thanks to TGMUD for publishing their changelogs!!!)
    0. Database Schema Updated! Run DBUpgrade, OR create table CMCHCL (see appropriate schema file), then:
    INSERT INTO CMCHCL VALUES (SELECT USERID, CMCLAN, CMCLRO from CMCHAR where CMCLAN != ''); // lastly:

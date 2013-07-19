@@ -40,8 +40,7 @@ public class IceRoom extends StdRoom
 		super();
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
+		climask=Places.CLIMASK_COLD;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
-	public int domainConditions(){return Room.CONDITION_COLD;}
-
 }

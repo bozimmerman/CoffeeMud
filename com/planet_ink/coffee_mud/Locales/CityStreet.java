@@ -43,6 +43,4 @@ public class CityStreet extends StdRoom
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
 }

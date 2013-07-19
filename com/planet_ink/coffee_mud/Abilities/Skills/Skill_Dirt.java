@@ -105,7 +105,7 @@ public class Skill_Dirt extends StdSkill
 	{
 		Room R=mob.location();
 		if(R==null) return false;
-		if((R.domainConditions()==Room.CONDITION_WET)
+		if(CMath.bset(R.deriveClimate(),Places.CLIMASK_WET)
 		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		 ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)

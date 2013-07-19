@@ -42,10 +42,10 @@ public class Shore extends StdRoom
 		name="the shore";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
 	protected int baseThirst(){return 1;}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
-	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_FISH),

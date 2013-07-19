@@ -43,6 +43,4 @@ public class TreeSurface extends ClimbableSurface
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
 }

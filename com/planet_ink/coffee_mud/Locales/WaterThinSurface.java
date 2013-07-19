@@ -41,9 +41,9 @@ public class WaterThinSurface extends WaterSurface
 		name="the water";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 	protected String UnderWaterLocaleID(){return "UnderWaterThinGrid";}
 	public CMObject newInstance()
 	{

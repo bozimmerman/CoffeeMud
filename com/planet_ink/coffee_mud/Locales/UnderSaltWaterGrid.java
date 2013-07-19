@@ -44,9 +44,10 @@ public class UnderSaltWaterGrid extends UnderWaterGrid
 		setDisplayText("Under the water");
 		setDescription("");
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
+		atmosphere=RawMaterial.RESOURCE_SALTWATER;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 	protected int baseThirst(){return 0;}
 
 

@@ -43,9 +43,9 @@ public class DesertThinGrid extends StdThinGrid
 		name="the desert";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
-	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public CMObject newInstance()
 	{

@@ -42,9 +42,10 @@ public class UnderWaterMaze extends StdMaze
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
+		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 	protected int baseThirst(){return 0;}
 
 

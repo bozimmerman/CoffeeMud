@@ -241,20 +241,20 @@ public class DefaultClimate implements Climate
 			// create a seasonal CHANCE graph
 			int[] seasonal=new int[seasonalWeather.length];
 			seasonal=addMaskAndReturn(seasonalWeather,seasonal);
-
-			if((A.climateType()&Area.CLIMASK_COLD)>0)
+			final int derivedClimate=A.deriveClimate();
+			if((derivedClimate&Area.CLIMASK_COLD)>0)
 				seasonal=addMaskAndReturn(seasonal,cold);
 
-			if((A.climateType()&Area.CLIMASK_HOT)>0)
+			if((derivedClimate&Area.CLIMASK_HOT)>0)
 				seasonal=addMaskAndReturn(seasonal,hot);
 
-			if((A.climateType()&Area.CLIMASK_DRY)>0)
+			if((derivedClimate&Area.CLIMASK_DRY)>0)
 				seasonal=addMaskAndReturn(seasonal,dry);
 
-			if((A.climateType()&Area.CLIMASK_WET)>0)
+			if((derivedClimate&Area.CLIMASK_WET)>0)
 				seasonal=addMaskAndReturn(seasonal,wet);
 
-			if((A.climateType()&Area.CLIMATE_WINDY)>0)
+			if((derivedClimate&Area.CLIMASK_WINDY)>0)
 				seasonal=addMaskAndReturn(seasonal,windy);
 
 			// reset the weather ticker!
@@ -390,21 +390,22 @@ public class DefaultClimate implements Climate
 		final CMProps.ListFile listFileEnum = CMProps.ListFile.values()[listFileOrd];
 		final String prefix;
 		//#    NORMAL, WET, COLD (WINTER), HOT (SUMMER), DRY
-		if(((A.climateType()&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
+		final int derivedClimate=A.deriveClimate();
+		if(((derivedClimate&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
 			prefix=CMProps.getListFileValue(listFileEnum, 2);
 		else
-		if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
+		if(((derivedClimate&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
 			prefix=CMProps.getListFileValue(listFileEnum, 3);
 		else
-		if((A.climateType()&Area.CLIMASK_WET)>0)
+		if((derivedClimate&Area.CLIMASK_WET)>0)
 			prefix=CMProps.getListFileValue(listFileEnum, 1);
 		else
-		if((A.climateType()&Area.CLIMASK_DRY)>0)
+		if((derivedClimate&Area.CLIMASK_DRY)>0)
 			prefix=CMProps.getListFileValue(listFileEnum, 4);
 		else
 			prefix=CMProps.getListFileValue(listFileEnum, 0);
 		final String suffix;
-		if((A.climateType()&Area.CLIMATE_WINDY)>0)
+		if((derivedClimate&Area.CLIMASK_WINDY)>0)
 			suffix=CMProps.getListFileValue(listFileEnum, 5);
 		else
 			suffix=CMProps.getListFileValue(listFileEnum, 6);

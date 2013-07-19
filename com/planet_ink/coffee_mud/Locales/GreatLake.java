@@ -42,9 +42,9 @@ public class GreatLake extends StdGrid
 		name="the lake";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public String getGridChildLocaleID(){return "WaterSurface";}
 	public List<Integer> resourceChoices(){return UnderWater.roomResources;}

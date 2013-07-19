@@ -41,9 +41,9 @@ public class DesertMaze extends StdMaze
 		super();
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
-	public int domainConditions(){return Room.CONDITION_HOT;}
 	protected int baseThirst(){return 4;}
 
 	public String getGridChildLocaleID(){return "Desert";}

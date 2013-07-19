@@ -56,7 +56,6 @@ public class EndlessThinSky extends StdThinGrid
 		}
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 
 	public CMObject newInstance()

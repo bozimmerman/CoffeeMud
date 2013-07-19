@@ -569,10 +569,10 @@ public class Modify extends StdCommand
 						newClimate=newClimate|Area.CLIMASK_COLD;
 						break;
 					case 'W':
-						newClimate=newClimate|Area.CLIMATE_WINDY;
+						newClimate=newClimate|Area.CLIMASK_WINDY;
 						break;
 					case 'D':
-						newClimate=newClimate|Area.CLIMATE_WINDY;
+						newClimate=newClimate|Area.CLIMASK_WINDY;
 						break;
 					case 'N':
 						// do nothing

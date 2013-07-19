@@ -54,10 +54,11 @@ public class UnderWaterGrid extends StdGrid
 			xsize=3;
 			ysize=3;
 		}
+		climask=Places.CLIMASK_WET;
+		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
 
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 	public String getGridChildLocaleID(){return "UnderWater";}
 	protected int baseThirst(){return 0;}
 

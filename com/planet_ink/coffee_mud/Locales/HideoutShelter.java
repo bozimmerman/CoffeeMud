@@ -74,7 +74,7 @@ public class HideoutShelter extends MagicShelter
 			A.setSavable(false);
 			addEffect(A);
 		}
+		climask=Places.CLIMASK_NORMAL;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 }

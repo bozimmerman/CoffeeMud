@@ -44,7 +44,6 @@ public class Mountains extends StdRoom
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_STONE),

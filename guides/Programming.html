@@ -3,7 +3,6 @@
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
   
   <title>Programming for CoffeeMud 5.8</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
-
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -3031,7 +3030,7 @@ com.planet_ink.coffee_mud.Rooms.StdMaze, because our sample classes
 extends them.</p>
       <p>Let's looks at an example of a standard grid room, which has
 much of the functionality we are interested in:</p>
-      <pre>public class RoadGrid extends com.planet_ink.coffee_mud.Locales.StdGrid<br />{<br />  public String ID()<br />  {<br />    return "RoadGrid";<br />  }<br /><br />  public RoadGrid()<br />  {<br />    super();<br />    name = "a road";<br />    basePhyStats.setWeight( 1 );<br />    recoverPhyStats();<br />  }<br /><br />  public String getGridChildLocaleID()<br />  {<br />    return "Road";<br />  }<br /><br />  public List&lt;Integer&gt; resourceChoices()<br />  {<br />    return Road.roomResources;<br />  }<br /><br />  public int domainType()<br />  {<br />    return Room.DOMAIN_OUTDOORS_PLAINS;<br />  }<br /><br />  public int domainConditions()<br />  {<br />    return Room.CONDITION_NORMAL;<br />  }<br />}<br /></pre>
+      <pre>public class RoadGrid extends com.planet_ink.coffee_mud.Locales.StdGrid<br />{<br />  public String ID()<br />  {<br />    return "RoadGrid";<br />  }<br /><br />  public RoadGrid()<br />  {<br />    super();<br />    name = "a road";<br />    basePhyStats.setWeight( 1 );<br />    recoverPhyStats();<br />  }<br /><br />  public String getGridChildLocaleID()<br />  {<br />    return "Road";<br />  }<br /><br />  public List&lt;Integer&gt; resourceChoices()<br />  {<br />    return Road.roomResources;<br />  }<br /><br />  public int domainType()<br />  {<br />    return Room.DOMAIN_OUTDOORS_PLAINS;<br />  }<br />}<br /></pre>
       <p>Here we see the standard RoadGrid. It's effects, behaviors,
 displaytext, description, and (since it is a grid type) size in the x
 and y are all defined by the builder. The features (and they aren't

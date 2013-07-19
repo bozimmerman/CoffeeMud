@@ -41,8 +41,7 @@ public class MagicFreeRoom extends StdRoom
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
 		addEffect(CMClass.getAbility("Prop_MagicFreedom"));
+		climask=Places.CLIMASK_NORMAL;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
 }

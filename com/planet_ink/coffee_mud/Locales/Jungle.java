@@ -42,9 +42,9 @@ public class Jungle extends StdRoom
 		name="the jungle";
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET|CLIMASK_HOT;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
-	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

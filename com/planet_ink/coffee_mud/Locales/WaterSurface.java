@@ -41,9 +41,9 @@ public class WaterSurface extends StdRoom implements Drink
 		name="the water";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 	public long decayTime(){return 0;}
 	public void setDecayTime(long time){}
 

@@ -41,8 +41,7 @@ public class StoneRoom extends StdRoom
 		recoverPhyStats();
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
+		climask=Places.CLIMASK_NORMAL;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
 }

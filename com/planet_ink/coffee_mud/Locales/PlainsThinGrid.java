@@ -44,7 +44,6 @@ public class PlainsThinGrid extends StdThinGrid
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public CMObject newInstance()
 	{

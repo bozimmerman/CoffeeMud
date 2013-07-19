@@ -40,8 +40,8 @@ public class FrozenPlains extends Plains
 	{
 		super();
 		recoverPhyStats();
+		climask=Places.CLIMASK_COLD;
 	}
-	public int domainConditions(){return Room.CONDITION_COLD;}
 
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_FUR)};

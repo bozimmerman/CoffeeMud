@@ -43,8 +43,6 @@ public class ClimbableSurface extends StdRoom
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_ROCKS;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
 
 	public void mountLadder(MOB mob, Rideable ladder)
 	{

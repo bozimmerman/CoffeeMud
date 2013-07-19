@@ -41,9 +41,9 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 		super();
 		name="the water";
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 	protected int baseThirst(){return 0;}
 
 	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}

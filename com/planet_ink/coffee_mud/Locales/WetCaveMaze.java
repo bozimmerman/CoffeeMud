@@ -41,9 +41,9 @@ public class WetCaveMaze extends StdMaze
 		super();
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public String getGridChildLocaleID(){return "WetCaveRoom";}
 	public int maxRange(){return 5;}

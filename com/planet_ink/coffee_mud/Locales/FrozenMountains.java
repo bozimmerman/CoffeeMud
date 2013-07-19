@@ -40,8 +40,8 @@ public class FrozenMountains extends Mountains
 	{
 		super();
 		recoverPhyStats();
+		climask=Places.CLIMASK_COLD;
 	}
-	public int domainConditions(){return Room.CONDITION_COLD;}
 
 	public List<Integer> resourceChoices(){return Mountains.roomResources;}
 }

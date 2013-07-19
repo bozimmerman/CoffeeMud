@@ -44,7 +44,9 @@ public class StdArea implements Area
 	protected String	archPath		="";
 	protected String	imageName   	="";
 	protected int   	theme			=0;
-	protected int   	climateID   	=Area.CLIMASK_NORMAL;
+	protected int		atmosphere		=Room.ATMOSPHERE_INHERIT;
+	protected int   	climask			=Area.CLIMASK_NORMAL;
+	protected int		derivedClimate	=-1;
 	protected long  	tickStatus  	=Tickable.STATUS_NOT;
 	protected long  	expirationDate  =0;
 	protected long  	lastPlayerTime  =System.currentTimeMillis();
@@ -94,6 +96,8 @@ public class StdArea implements Area
 		}
 	}
 	public String getCurrency(){return currency;}
+	public int atmosphere() { return atmosphere; }
+	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
 
 	protected Enumeration<String> allBlurbFlags()
 	{
@@ -202,6 +206,7 @@ public class StdArea implements Area
 		budget="";
 		ignoreMask="";
 		prejudiceFactors="";
+		derivedClimate=-1;
 	}
 	
 	public boolean amDestroyed(){return amDestroyed;}
@@ -276,6 +281,7 @@ public class StdArea implements Area
 				Log.errOut("StdArea","Area "+name()+" failed to start ticking.");
 		}
 		flag=newState;
+		derivedClimate=-1;
 	}
 	public State getAreaState(){return flag;}
 
@@ -399,6 +405,7 @@ public class StdArea implements Area
 		affects=new SVector<Ability>(1);
 		behaviors=new SVector<Behavior>(1);
 		scripts=new SVector<ScriptingEngine>(1);
+		derivedClimate=-1;
 		for(Enumeration<Behavior> e=areaA.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
@@ -576,14 +583,34 @@ public class StdArea implements Area
 		miscText="";
 		if(newMiscText.trim().length()>0)
 			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
+		derivedClimate=-1;
 	}
 
 	public String description()
 	{ return description;}
 	public void setDescription(String newDescription)
 	{ description=newDescription;}
-	public int climateType(){return climateID;}
-	public void setClimateType(int newClimateType){    climateID=newClimateType;}
+	public int climateType(){return climask;}
+	public void setClimateType(int newClimateType){    climask=newClimateType; derivedClimate=-1; }
+	public int deriveClimate()
+	{
+		if(derivedClimate!=CLIMASK_INHERIT)
+			return derivedClimate;
+		Stack<Area> areasToDo=new Stack<Area>();
+		areasToDo.push(this);
+		while(areasToDo.size()>0)
+		{
+			final Area A=areasToDo.pop();
+			derivedClimate=A.deriveClimate();
+			if(derivedClimate!=CLIMASK_INHERIT)
+				return derivedClimate;
+			for(Enumeration<Area> a=A.getParents();a.hasMoreElements();)
+				areasToDo.push(a.nextElement());
+		}
+		derivedClimate=Places.CLIMASK_NORMAL;
+		return derivedClimate;
+	}
+
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -1608,6 +1635,7 @@ public class StdArea implements Area
 	
 	public void addParent(Area area) 
 	{
+		derivedClimate=-1;
 		if(!canParent(area))
 			return;
 		for(final Iterator<Area> i=getParentsIterator(); i.hasNext();) 
@@ -1624,6 +1652,7 @@ public class StdArea implements Area
 	
 	public void removeParent(Area area) 
 	{ 
+		derivedClimate=-1;
 		if(isParent(area))
 			parents.remove(area);
 	}

@@ -42,9 +42,9 @@ public class JungleGrid extends StdGrid
 		name="the jungle";
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET|CLIMASK_HOT;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
-	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public String getGridChildLocaleID(){return "Jungle";}
 	public List<Integer> resourceChoices(){return Jungle.roomResources;}

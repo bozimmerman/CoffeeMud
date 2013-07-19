@@ -43,6 +43,4 @@ public class SpacePort extends StdRoom
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_SPACEPORT;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
 }

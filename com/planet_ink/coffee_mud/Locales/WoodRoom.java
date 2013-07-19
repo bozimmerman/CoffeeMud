@@ -40,8 +40,7 @@ public class WoodRoom extends StdRoom
 		super();
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
+		climask=Places.CLIMASK_NORMAL;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
 }

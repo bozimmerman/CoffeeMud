@@ -53,10 +53,11 @@ public class UnderWaterThinGrid extends StdThinGrid
 			xsize=3;
 			ysize=3;
 		}
+		climask=Places.CLIMASK_WET;
+		atmosphere=RawMaterial.RESOURCE_FRESHWATER;
 	}
 
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 	protected int baseThirst(){return 0;}
 
 	public CMObject newInstance()

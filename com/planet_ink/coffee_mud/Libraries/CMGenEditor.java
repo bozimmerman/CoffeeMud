@@ -1874,7 +1874,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			E.setSensesMask(current&((int)(PhyStats.ALLMASK-mask)));
 	}
 
-	protected void toggleClimateMask(Area A, int mask)
+	protected void toggleClimateMask(Places A, int mask)
 	{
 		int current=A.climateType();
 		if((current&mask)==0)
@@ -1883,9 +1883,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			A.setClimateType(current&((int)(PhyStats.ALLMASK-mask)));
 	}
 
-
-
-	protected void genClimateType(MOB mob, Area A, int showNumber, int showFlag)
+	protected void genClimateType(MOB mob, Places A, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -1896,7 +1894,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.session().println("    R) Wet and Rainy    : "+((A.climateType()&Area.CLIMASK_WET)>0));
 			mob.session().println("    H) Excessively hot  : "+((A.climateType()&Area.CLIMASK_HOT)>0));
 			mob.session().println("    C) Excessively cold : "+((A.climateType()&Area.CLIMASK_COLD)>0));
-			mob.session().println("    W) Very windy       : "+((A.climateType()&Area.CLIMATE_WINDY)>0));
+			mob.session().println("    W) Very windy       : "+((A.climateType()&Area.CLIMASK_WINDY)>0));
 			mob.session().println("    D) Very dry         : "+((A.climateType()&Area.CLIMASK_DRY)>0));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWD\n","\n").toUpperCase();
@@ -1905,7 +1903,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			case 'C': toggleClimateMask(A,Area.CLIMASK_COLD); break;
 			case 'H': toggleClimateMask(A,Area.CLIMASK_HOT); break;
 			case 'R': toggleClimateMask(A,Area.CLIMASK_WET); break;
-			case 'W': toggleClimateMask(A,Area.CLIMATE_WINDY); break;
+			case 'W': toggleClimateMask(A,Area.CLIMASK_WINDY); break;
 			case 'D': toggleClimateMask(A,Area.CLIMASK_DRY); break;
 			}
 		}

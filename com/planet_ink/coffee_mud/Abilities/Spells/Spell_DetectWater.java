@@ -85,7 +85,7 @@ public class Spell_DetectWater extends Spell
 			||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 				msg.append("Your liquid senses are saturated.  This is a very wet place.\n\r");
 			else
-			if(room.domainConditions()==Room.CONDITION_WET)
+			if(CMath.bset(room.deriveClimate(),Places.CLIMASK_WET))
 				msg.append("Your liquid senses are saturated.  This is a damp place.\n\r");
 			else
 			if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)

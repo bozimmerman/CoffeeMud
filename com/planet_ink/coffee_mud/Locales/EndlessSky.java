@@ -56,8 +56,6 @@ public class EndlessSky extends StdGrid
 		}
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

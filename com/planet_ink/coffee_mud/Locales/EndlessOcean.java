@@ -42,9 +42,9 @@ public class EndlessOcean extends StdGrid
 		name="the ocean";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public String getGridChildLocaleID(){return "SaltWaterSurface";}
 	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}

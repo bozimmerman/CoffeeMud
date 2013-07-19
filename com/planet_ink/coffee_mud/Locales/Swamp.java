@@ -42,9 +42,9 @@ public class Swamp extends StdRoom
 		name="the swamp";
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

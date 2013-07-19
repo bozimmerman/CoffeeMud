@@ -42,9 +42,9 @@ public class DesertGrid extends StdGrid
 		name="the desert";
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_HOT|CLIMASK_DRY;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
-	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public String getGridChildLocaleID(){return "Desert";}
 	public List<Integer> resourceChoices(){return Desert.roomResources;}

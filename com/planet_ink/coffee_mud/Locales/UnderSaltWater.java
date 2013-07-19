@@ -36,6 +36,8 @@ public class UnderSaltWater extends UnderWater
 	public UnderSaltWater()
 	{
 		super();
+		climask=Places.CLIMASK_WET;
+		atmosphere=RawMaterial.RESOURCE_SALTWATER;
 	}
 
 

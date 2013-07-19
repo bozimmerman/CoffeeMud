@@ -44,7 +44,6 @@ public class HillsGrid extends StdGrid
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_HILLS;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getGridChildLocaleID(){return "Hills";}
 	public List<Integer> resourceChoices(){return Hills.roomResources;}

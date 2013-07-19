@@ -43,7 +43,6 @@ public class MountainSurface extends ClimbableSurface
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public List<Integer> resourceChoices(){return Mountains.roomResources;}
 }

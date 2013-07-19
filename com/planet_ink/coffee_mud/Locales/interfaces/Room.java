@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Room extends PhysicalAgent, ItemPossessor
+public interface Room extends PhysicalAgent, ItemPossessor, Places
 {
 	public String roomID();
 	public void setRoomID(String newRoomID);
@@ -85,13 +85,7 @@ public interface Room extends PhysicalAgent, ItemPossessor
 		"WATERSURFACE",
 		"METAL"};
 
-	public final static int CONDITION_NORMAL=0;
-	public final static int CONDITION_WET=1;
-	public final static int CONDITION_HOT=2;
-	public final static int CONDITION_COLD=3;
-
 	public int domainType();
-	public int domainConditions();
 	public int myResource();
 	public void setResource(int resourceCode);
 	public List<Integer> resourceChoices();

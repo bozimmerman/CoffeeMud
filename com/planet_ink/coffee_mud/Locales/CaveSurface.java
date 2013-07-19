@@ -42,9 +42,9 @@ public class CaveSurface extends ClimbableSurface
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
 		basePhyStats.setWeight(4);
 		recoverPhyStats();
+		climask=Places.CLIMASK_NORMAL;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public int maxRange(){return 5;}
 	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}

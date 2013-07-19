@@ -55,11 +55,12 @@ public class Skill_WildernessLore extends StdSkill
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) a quick look at the terrain and feel(s) quite confused.");
 			return false;
 		}
+		final Room room=mob.location();
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_HANDS,"<S-NAME> take(s) a quick look at the terrain.");
-		if(mob.location().okMessage(mob,msg))
+		if(room.okMessage(mob,msg))
 		{
-			mob.location().send(mob,msg);
-			switch(mob.location().domainType())
+			room.send(mob,msg);
+			switch(room.domainType())
 			{
 			case Room.DOMAIN_INDOORS_METAL:
 				mob.tell("You are in a metal structure.");
@@ -125,17 +126,24 @@ public class Skill_WildernessLore extends StdSkill
 				mob.tell("You are inside, on the surface of the water.");
 				break;
 			}
-			switch(mob.location().domainConditions())
+			final int derivedClimate=room.deriveClimate();
+			if(derivedClimate!=Places.CLIMASK_NORMAL)
 			{
-			case Room.CONDITION_COLD:
-				mob.tell("It is usually cold here.");
-				break;
-			case Room.CONDITION_HOT:
-				mob.tell("It is usually warm here.");
-				break;
-			case Room.CONDITION_WET:
-				mob.tell("It is usually very wet here.");
-				break;
+				StringBuffer str=new StringBuffer("It is unusually ");
+				List<String> conditions=new Vector<String>();
+				if(CMath.bset(derivedClimate, Places.CLIMASK_WET))
+					conditions.add("wet");
+				if(CMath.bset(derivedClimate, Places.CLIMASK_HOT))
+					conditions.add("hot");
+				if(CMath.bset(derivedClimate, Places.CLIMASK_DRY))
+					conditions.add("dry");
+				if(CMath.bset(derivedClimate, Places.CLIMASK_COLD))
+					conditions.add("cold");
+				if(CMath.bset(derivedClimate, Places.CLIMASK_WINDY))
+					conditions.add("windy");
+				str.append(CMLib.english().toEnglishStringList(conditions.toArray(new String[0])));
+				str.append(" here.");
+				mob.tell(str.toString());
 			}
 		}
 		else

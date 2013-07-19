@@ -43,9 +43,9 @@ public class SwampThinGrid extends StdThinGrid
 		name="the swamp";
 		basePhyStats.setWeight(3);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public CMObject newInstance()
 	{

@@ -1075,12 +1075,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				domType=Room.outdoorDomainDescs[room.domainType()];
 			else
 				domType=Room.indoorDomainDescs[CMath.unsetb(room.domainType(),Room.INDOORS)];
-			switch(room.domainConditions())
-			{
-			case Room.CONDITION_COLD: domCond.append(" cold"); break;
-			case Room.CONDITION_HOT: domCond.append(" hot"); break;
-			case Room.CONDITION_WET: domCond.append(" wet"); break;
-			}
+			int climateType=room.deriveClimate();
+			if(CMath.bset(climateType, Places.CLIMASK_COLD)) domCond.append(" cold");
+			if(CMath.bset(climateType, Places.CLIMASK_WET)) domCond.append(" wet");
+			if(CMath.bset(climateType, Places.CLIMASK_HOT)) domCond.append(" hot");
+			if(CMath.bset(climateType, Places.CLIMASK_DRY)) domCond.append(" dry");
+			if(CMath.bset(climateType, Places.CLIMASK_WINDY)) domCond.append(" windy");
 			Say.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room)+"\n\r^!"+room.ID()+"^N: "+domType+" "+domCond.toString()+" <"+rscName+"> "+room.basePhyStats().weight()+"mv \n\r");
 		}
 		if(CMLib.flags().canBeSeenBy(room,mob))

@@ -40,8 +40,7 @@ public class HotRoom extends StdRoom
 		super();
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
+		climask=Places.CLIMASK_HOT;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
-	public int domainConditions(){return Room.CONDITION_HOT;}
-
 }

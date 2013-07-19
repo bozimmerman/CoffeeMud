@@ -40,9 +40,9 @@ public class StoneMaze extends StdMaze
 		super();
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
+		climask=Places.CLIMASK_NORMAL;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getGridChildLocaleID(){return "StoneRoom";}
 }

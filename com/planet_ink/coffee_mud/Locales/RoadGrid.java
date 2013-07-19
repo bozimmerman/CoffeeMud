@@ -44,7 +44,6 @@ public class RoadGrid extends StdGrid
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getGridChildLocaleID(){return "Road";}
 	public List<Integer> resourceChoices(){return Road.roomResources;}

@@ -41,9 +41,9 @@ public class CaveMaze extends StdMaze
 		super();
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
 		recoverPhyStats();
+		climask=Places.CLIMASK_NORMAL;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public int maxRange(){return 5;}
 	public String getGridChildLocaleID(){return "CaveRoom";}

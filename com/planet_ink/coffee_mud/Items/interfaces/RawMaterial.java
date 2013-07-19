@@ -64,6 +64,7 @@ public interface RawMaterial extends Item
 	public final static int MATERIAL_PRECIOUS=12<<8;
 	public final static int MATERIAL_ENERGY=13<<8;
 	public final static int MATERIAL_SYNTHETIC=14<<8;
+	public final static int MATERIAL_GAS=15<<8;
 
 	public final static int MATERIAL_MASK=255<<8;
 	
@@ -71,7 +72,7 @@ public interface RawMaterial extends Item
 		MATERIAL_UNKNOWN,MATERIAL_CLOTH,MATERIAL_LEATHER,MATERIAL_METAL,
 		MATERIAL_MITHRIL,MATERIAL_WOODEN,MATERIAL_GLASS,MATERIAL_VEGETATION,
 		MATERIAL_FLESH,MATERIAL_PAPER,MATERIAL_ROCK,MATERIAL_LIQUID,
-		MATERIAL_PRECIOUS,MATERIAL_ENERGY,MATERIAL_SYNTHETIC    
+		MATERIAL_PRECIOUS,MATERIAL_ENERGY,MATERIAL_SYNTHETIC,MATERIAL_GAS
 	};
 	
 	public final static String[] MATERIAL_DESCS={
@@ -89,7 +90,8 @@ public interface RawMaterial extends Item
 	"LIQUID",
 	"PRECIOUS",
 	"ENERGY",
-	"SYNTHETIC"};
+	"SYNTHETIC",
+	"GAS"};
 	
 	public final static String[] MATERIAL_NOUNDESCS={
 		"Unknown material",
@@ -106,7 +108,8 @@ public interface RawMaterial extends Item
 		"Liquid",
 		"Stone",
 		"Energy",
-		"Plastic"};
+		"Plastic",
+		"Gas"};
 	
 	public final static int RESOURCE_NOTHING=MATERIAL_UNKNOWN|0;
 	public final static int RESOURCE_MEAT=MATERIAL_FLESH|1;
@@ -289,6 +292,11 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_ELECTRICITY=MATERIAL_ENERGY|178;
 	public final static int RESOURCE_DEUTERIUM=MATERIAL_SYNTHETIC|179;
 	public final static int RESOURCE_SLIME=MATERIAL_LIQUID|180;
+	public final static int RESOURCE_AIR=MATERIAL_GAS|181;
+	public final static int RESOURCE_OXYGEN=MATERIAL_GAS|182;
+	public final static int RESOURCE_HYDROGEN=MATERIAL_GAS|183;
+	public final static int RESOURCE_FLOURINE=MATERIAL_GAS|184;
+	public final static int RESOURCE_NITROGEN=MATERIAL_GAS|185;
 	public final static int RESOURCE_MASK=255;
 
 	
@@ -474,6 +482,11 @@ public interface RawMaterial extends Item
 	"ELECTRICITY", // 178
 	"SYNTHETIC", // 179
 	"SLIME", // 180
+	"AIR", // 181
+	"OXYGEN", // 182
+	"HYDROGEN", // 183
+	"FLOURINE", // 184
+	"NITROGEN", // 185
 	};
 	
 	public final static String[] DEFAULT_RESOURCE_EFFECTS={
@@ -658,6 +671,11 @@ public interface RawMaterial extends Item
 	"",// 178
 	"",// 179
 	"Prop_UseSpellCast2(Spell_AcidSpray)",// 180
+	"", // 181
+	"", // 182
+	"", // 183
+	"", // 184
+	"" // 185
 	};
 	
 	public final static int RSCDATAINDX_CODE=0;
@@ -849,6 +867,11 @@ public interface RawMaterial extends Item
 	{RESOURCE_ELECTRICITY,   100,    0,    0,    0},
 	{RESOURCE_DEUTERIUM,     100,    0,    0,    0},
 	{RESOURCE_SLIME,  		   5,   10,    1,  750},
+	{RESOURCE_AIR,			   0,  100,    0,    0},
+	{RESOURCE_OXYGEN,		  10,  100,    0,    0},
+	{RESOURCE_HYDROGEN,		  20,  100,    0,    0},
+	{RESOURCE_FLOURINE,		  60,   40,    0,    0},
+	{RESOURCE_NITROGEN,		  10,  100,    0,    0},
 	};
 	// full code, base value, frequency, hardness (1-10), bouancy
 	
@@ -1055,6 +1078,11 @@ public interface RawMaterial extends Item
 		"",//RESOURCE_ELECTRICITY
 		"",//RESOURCE_DEUTERIUM
 		"horridly acidic",//RESOURCE_SLIME  
+		"",//RESOURCE_AIR
+		"",//RESOURCE_OXYGEN
+		"",//RESOURCE_HYDROGEN
+		"strong pungent smell",//RESOURCE_FLOURINE
+		"",//RESOURCE_NITROGEN
 		};
 	
 	/**

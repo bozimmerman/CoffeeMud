@@ -43,7 +43,6 @@ public class MountainsMaze extends StdMaze
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getGridChildLocaleID(){return "Mountains";}
 	public List<Integer> resourceChoices(){return Mountains.roomResources;}

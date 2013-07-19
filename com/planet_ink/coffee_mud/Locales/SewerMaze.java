@@ -43,9 +43,9 @@ public class SewerMaze extends StdMaze
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
-	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public String getGridChildLocaleID(){return "SewerRoom";}
 	public List<Integer> resourceChoices(){return new Vector();}

@@ -53,6 +53,9 @@ public class StdRoom implements Room
 	protected GridLocale 	gridParent=null;
 	protected long  	 	tickStatus=Tickable.STATUS_NOT;
 	protected long  	 	expirationDate=0;
+	protected int			atmosphere=ATMOSPHERE_INHERIT;
+	protected int			climask=CLIMASK_INHERIT;
+	protected int			derivedClimate=-1;
 	protected SVector<Ability>  		affects=null;
 	protected SVector<Behavior> 		behaviors=null;
 	protected SVector<ScriptingEngine>  scripts=null;
@@ -101,6 +104,9 @@ public class StdRoom implements Room
 		return name;
 	}
 
+	public int atmosphere() { return atmosphere; }
+	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
+	
 	public String image()
 	{
 		if(cachedImageName==null)
@@ -138,6 +144,7 @@ public class StdRoom implements Room
 
 		contents=new SVector<Item>();
 		inhabitants=new SVector<MOB>();
+		derivedClimate=-1;
 		affects=null;
 		behaviors=null;
 		scripts=null;
@@ -218,7 +225,21 @@ public class StdRoom implements Room
 		}
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;} 
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
+	public int climateType(){return climask;}
+	public void setClimateType(int climask){this.climask=climask;}
+	public int deriveClimate() 
+	{
+		if(derivedClimate>=0)
+			return derivedClimate;
+		if(getGridParent()!=null)
+			derivedClimate=getGridParent().deriveClimate();
+		else
+		if(climateType()!=CLIMASK_INHERIT)
+			derivedClimate=climateType();
+		else
+			derivedClimate=(myArea==null)?CLIMASK_NORMAL:myArea.deriveClimate();
+		return derivedClimate;
+	}
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
 	
@@ -333,9 +354,10 @@ public class StdRoom implements Room
 			myArea=newArea;
 			if(myArea!=null) myArea.addProperRoom(this);
 		}
+		derivedClimate=-1;
 	}
 
-	public void setGridParent(GridLocale room){gridParent=room;}
+	public void setGridParent(GridLocale room){gridParent=room; derivedClimate=-1; }
 	public GridLocale getGridParent(){return gridParent;}
 	
 	public void giveASky(int depth)
@@ -399,6 +421,7 @@ public class StdRoom implements Room
 				}
 			sky.clearGrid(null);
 		}
+		derivedClimate=-1;
 	}
 
 	public void clearSky()
@@ -418,6 +441,7 @@ public class StdRoom implements Room
 			skyGridRoom.destroy();
 			skyedYet=false;
 		}
+		derivedClimate=-1;
 	}
 
 	public List<Integer> resourceChoices(){return null;}
@@ -1901,14 +1925,17 @@ public class StdRoom implements Room
 	protected int baseThirst(){return 1;}
 	public int thirstPerRound(MOB mob)
 	{
-		switch(domainConditions())
-		{
-		case Room.CONDITION_HOT:
-			return getArea().getClimateObj().adjustWaterConsumption(baseThirst()+1,mob,this);
-		case Room.CONDITION_WET:
-			return getArea().getClimateObj().adjustWaterConsumption(baseThirst()-1,mob,this);
-		}
-		return getArea().getClimateObj().adjustWaterConsumption(baseThirst(),mob,this);
+		final int derivedClimate=deriveClimate();
+		int adjustment=0;
+		if(CMath.bset(derivedClimate, Places.CLIMASK_HOT))
+			adjustment+=1;
+		if(CMath.bset(derivedClimate, Places.CLIMASK_WET))
+			adjustment-=1;
+		if(CMath.bset(derivedClimate, Places.CLIMASK_DRY))
+			adjustment+=1;
+		if(CMath.bset(derivedClimate, Places.CLIMASK_WINDY))
+			adjustment+=1;
+		return getArea().getClimateObj().adjustWaterConsumption(baseThirst()+adjustment,mob,this);
 	}
 	public int minRange(){return Integer.MIN_VALUE;}
 	public int maxRange(){return((domainType()&Room.INDOORS)>0)?1:10;}

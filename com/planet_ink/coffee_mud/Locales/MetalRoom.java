@@ -41,8 +41,7 @@ public class MetalRoom extends StdRoom
 		name="the room";
 		basePhyStats.setWeight(1);
 		recoverPhyStats();
+		climask=Places.CLIMASK_NORMAL;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_METAL;}
-	public int domainConditions(){return Room.CONDITION_NORMAL;}
-
 }

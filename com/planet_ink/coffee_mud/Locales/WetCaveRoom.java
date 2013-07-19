@@ -40,8 +40,8 @@ public class WetCaveRoom extends CaveRoom
 	{
 		super();
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
 	}
-	public int domainConditions(){return Room.CONDITION_WET;}
 	public int maxRange(){return 5;}
 	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }
