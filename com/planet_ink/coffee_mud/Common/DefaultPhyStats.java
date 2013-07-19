@@ -194,7 +194,16 @@ public class DefaultPhyStats implements PhyStats
 		case 7: setArmor(CMath.s_parseIntExpression(val)); break;
 		case 8: setDamage(CMath.s_parseIntExpression(val)); break;
 		case 9: setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
-		case 10: ambiances=(val.trim().length()==0)?null:CMParms.toStringArray(CMParms.parseCommas(val,true)); break;
+		case 10:{
+			if(val.trim().length()==0)
+				ambiances=null;
+			else
+			{
+				ambiances=CMParms.toStringArray(CMParms.parseCommas(val,true)); 
+				Arrays.sort(ambiances);
+			}
+			break;
+		}
 		}
 	}
 	public String getStat(String code)
