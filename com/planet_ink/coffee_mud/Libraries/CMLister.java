@@ -40,6 +40,44 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	protected static final ListStringer stringer=new ListStringer();
 	@SuppressWarnings("unchecked")
 	protected static final Filterer<Object>[] NO_FILTER=new Filterer[0];
+	protected static class LikeRoomFilter implements Filterer<Object>
+	{
+		private Room likeRoom;
+		public LikeRoomFilter(Room R)
+		{
+			likeRoom=R;
+		}
+		@Override
+		public boolean passesFilter(Object obj) {
+			if((likeRoom!=null)&&(obj instanceof Room))
+			{
+				if((((Room)obj).roomID().length()>0)&&(!((Room)obj).getArea().Name().equals(likeRoom.getArea().Name())))
+					return false;
+			}
+			return true;
+		}
+	}
+
+	protected static class AbilityTypeFilter implements Filterer<Object>
+	{
+		private int ofType;
+		public AbilityTypeFilter(int typ)
+		{
+			ofType=typ;
+		}
+		@Override
+		public boolean passesFilter(Object obj) {
+			if(ofType>=0)
+			{
+				if(obj instanceof Ability)
+				{
+					if((((Ability)obj).classificationCode()&Ability.ALL_ACODES)!=ofType)
+						return false;
+				}
+			}
+			return true;
+		}
+	}
 
 	public String itemSeenString(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysmsgs)
 	{
@@ -385,9 +423,15 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	}
 	
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList)
-	{ return fourColumns(viewerM,reverseList,null);}
+	{ 
+		return fourColumns(viewerM,reverseList,null);
+	}
+	
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag)
-	{ return makeColumns(viewerM,reverseList,tag,4);}
+	{ 
+		return makeColumns(viewerM,reverseList,tag,4);
+	}
+	
 	public StringBuilder makeColumns(MOB viewerM, List<String> reverseList, String tag, int numCols)
 	{
 		StringBuilder topicBuffer=new StringBuilder("");

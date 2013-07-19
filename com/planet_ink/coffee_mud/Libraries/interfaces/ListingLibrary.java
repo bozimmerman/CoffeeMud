@@ -75,45 +75,6 @@ public interface ListingLibrary extends CMLibrary
 		}
 	}
 	
-	public static class LikeRoomFilter implements Filterer<Object>
-	{
-		private Room likeRoom;
-		public LikeRoomFilter(Room R)
-		{
-			likeRoom=R;
-		}
-		@Override
-		public boolean passesFilter(Object obj) {
-			if((likeRoom!=null)&&(obj instanceof Room))
-			{
-				if((((Room)obj).roomID().length()>0)&&(!((Room)obj).getArea().Name().equals(likeRoom.getArea().Name())))
-					return false;
-			}
-			return true;
-		}
-	}
-
-	public static class AbilityTypeFilter implements Filterer<Object>
-	{
-		private int ofType;
-		public AbilityTypeFilter(int typ)
-		{
-			ofType=typ;
-		}
-		@Override
-		public boolean passesFilter(Object obj) {
-			if(ofType>=0)
-			{
-				if(obj instanceof Ability)
-				{
-					if((((Ability)obj).classificationCode()&Ability.ALL_ACODES)!=ofType)
-						return false;
-				}
-			}
-			return true;
-		}
-	}
-	
 	public static class ColFixer
 	{
 		public static final int fixColWidth(final double colWidth, final MOB mob)
