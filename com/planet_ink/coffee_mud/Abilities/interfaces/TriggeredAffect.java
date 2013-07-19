@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 /**
- * PropertyAffect is an ability interface to denote those properties
+ * TriggeredAffect is an ability interface to denote those properties
  * that are typically non-removable inherent attributes of the things they affect.
  */
 public interface TriggeredAffect extends Ability
