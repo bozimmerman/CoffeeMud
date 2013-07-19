@@ -83,4 +83,55 @@ public class GenBattery extends GenElecItem implements Electronics.PowerSource
 			}
 		}
 	}
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_ACTIVATE:
+				if(!StdElecItem.isAllWiringConnected(this))
+				{
+					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
+					return false;
+				}
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				break;
+			case CMMsg.TYP_LOOK:
+				break;
+			case CMMsg.TYP_POWERCURRENT:
+				break;
+			}
+		}
+		return super.okMessage(host, msg);
+	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_ACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> activate(s) <T-NAME>.");
+				this.activate(true);
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> deactivate(s) <T-NAME>.");
+				this.activate(false);
+				break;
+			case CMMsg.TYP_LOOK:
+				super.executeMsg(host, msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
+				return;
+			}
+		}
+		super.executeMsg(host, msg);
+	}
+	
 }

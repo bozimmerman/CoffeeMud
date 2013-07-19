@@ -374,18 +374,18 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						synchronized(this)
 						{
 							LinkedList<WeakReference<Electronics>> rawSet=sets.get(key);
-							if((rawSet!=null) && (rawSet.size()>0) && (rawSet.getLast().get() != battery))
+							if((rawSet!=null) && (rawSet.size()>0) && (rawSet.getLast().get() != S))
 							{
 								for(Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
 								{
 									WeakReference<Electronics> W=w.next();
-									if(W.get()==battery)
+									if(W.get()==S)
 									{
 										w.remove();
 										break;
 									}
 								}
-								rawSet.addLast(new WeakReference<Electronics>(battery));
+								rawSet.addLast(new WeakReference<Electronics>(S));
 							}
 						}
 					}
