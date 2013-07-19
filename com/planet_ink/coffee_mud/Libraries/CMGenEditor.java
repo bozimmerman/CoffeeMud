@@ -2151,14 +2151,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		if((showFlag!=showNumber)&&(showFlag>-999)){
-			mob.tell(showNumber+". Can contain : "+makeContainerTypes(E)
-					+"\n\r   Has a lid   : "+E.hasALid()
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
+			String containStr="Can contain : "+makeContainerTypes(E)+"\n\r   ";
+			if(E instanceof Electronics)
+				containStr="";
+			mob.tell(showNumber+". "+containStr
+					+"Has a lid   : "+E.hasALid()
 					+"\n\r   Has a lock  : "+E.hasALock()
 					+"\n\r   Key name    : "+E.keyName()); // portals use keys as roomids, showing is OK
 			return;
 		}
 		String change="NO";
+		if(!(E instanceof Electronics))
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(change.length()>0))
 		{
 			mob.tell("\n\rCan only contain: "+makeContainerTypes(E));

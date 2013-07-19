@@ -289,7 +289,15 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			R.moveItemTo(me, Expire.Never, Move.Followers);
 		CMLib.map().delObjectInSpace(this);
 		if (area instanceof SpaceShip)
+		{
 			((SpaceShip)area).dockHere(R);
+			for(Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
+			{
+				Room R2=r.nextElement();
+				if(R2.getExitInDir(Directions.GATE)!=null)
+					R2.rawDoors()[Directions.GATE]=R;
+			}
+		}
 	}
 
 	@Override
