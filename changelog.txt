@@ -19,6 +19,7 @@
   17. The "sessions" archon command has been replaced with "list sessions".  On the bright side, all of the LIST [X] parms now have their own help entries.
   18. JavaScript embedded in Scriptable scripts can now access all the Scriptable commands and functions from within JavaScript.  See the Scriptable Guide.
   19. CoffeeMud now has a working computer console, working power source for the computer, and working example software.  New command: TYPE for interacting.
+      (No documentation, MUDGrinder support, and limited editor supp for Tech so far.  To use computer, create elecpanel, put battery inside, then activate computer)
   20. Bards songs/dances/plays now show an ambiance during performances (depending on the viewers ability to hear, of course).
   21. MUDGrinder Factions Manager now allows pre-loaded faction toggling.
   22. The changelog.txt has been reformatted, and is slightly easier to read now!
