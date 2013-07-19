@@ -140,6 +140,7 @@ public class Spell_Shatter extends Spell
 					case RawMaterial.MATERIAL_PRECIOUS:
 						break;
 					case RawMaterial.MATERIAL_ENERGY:
+					case RawMaterial.MATERIAL_GAS:
 						damage=0;
 						break;
 					}

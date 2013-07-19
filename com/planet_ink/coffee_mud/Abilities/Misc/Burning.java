@@ -120,6 +120,7 @@ public class Burning extends StdAbility
 					case RawMaterial.MATERIAL_METAL:
 					case RawMaterial.MATERIAL_MITHRIL:
 					case RawMaterial.MATERIAL_ENERGY:
+					case RawMaterial.MATERIAL_GAS:
 					case RawMaterial.MATERIAL_PRECIOUS:
 					case RawMaterial.MATERIAL_ROCK:
 					case RawMaterial.MATERIAL_UNKNOWN:
@@ -244,6 +245,7 @@ public class Burning extends StdAbility
 			case RawMaterial.MATERIAL_MITHRIL:
 			case RawMaterial.MATERIAL_PRECIOUS:
 			case RawMaterial.MATERIAL_ENERGY:
+			case RawMaterial.MATERIAL_GAS:
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_UNKNOWN:
 				mob.tell("Ouch!! "+CMStrings.capitalizeAndLower(affected.name())+" is HOT!");
@@ -281,6 +283,7 @@ public class Burning extends StdAbility
 				case RawMaterial.MATERIAL_MITHRIL:
 				case RawMaterial.MATERIAL_PRECIOUS:
 				case RawMaterial.MATERIAL_ENERGY:
+				case RawMaterial.MATERIAL_GAS:
 				case RawMaterial.MATERIAL_ROCK:
 				case RawMaterial.MATERIAL_UNKNOWN:
 					return true;

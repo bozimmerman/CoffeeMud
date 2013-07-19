@@ -186,6 +186,8 @@ public class Chant_SummonTornado extends Chant
 								break;
 							case RawMaterial.MATERIAL_ENERGY:
 								break;
+							case RawMaterial.MATERIAL_GAS:
+								break;
 							}
 							if(damage>0)
 								CMLib.combat().postItemDamage(mob, I, this, damage, CMMsg.TYP_COLD, null);

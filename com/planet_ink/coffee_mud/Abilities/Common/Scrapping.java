@@ -124,6 +124,7 @@ public class Scrapping extends CommonSkill
 		case RawMaterial.MATERIAL_LIQUID:
 		case RawMaterial.MATERIAL_PAPER:
 		case RawMaterial.MATERIAL_ENERGY:
+		case RawMaterial.MATERIAL_GAS:
 		case RawMaterial.MATERIAL_VEGETATION:
 			{ okMaterial=false; break;}
 		}

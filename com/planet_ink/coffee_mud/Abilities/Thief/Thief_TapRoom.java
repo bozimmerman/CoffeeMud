@@ -256,6 +256,7 @@ public class Thief_TapRoom extends ThiefSkill
 			&&(I.container()==null)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
+			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GAS)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_FLESH)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
 			&&(!(I instanceof Potion))

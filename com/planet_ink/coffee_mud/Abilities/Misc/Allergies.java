@@ -191,6 +191,7 @@ public class Allergies extends StdAbility
 			for(int code : RawMaterial.CODES.ALL())
 				if(((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
 				&&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
+				&&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GAS)
 				&&(code!=RawMaterial.RESOURCE_COTTON)
 				&&(code!=RawMaterial.RESOURCE_IRON)
 				&&(code!=RawMaterial.RESOURCE_WOOD))

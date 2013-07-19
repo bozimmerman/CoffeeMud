@@ -65,6 +65,7 @@ public class Spell_Meld extends Spell
 					RawMaterial.MATERIAL_ROCK,
 					RawMaterial.MATERIAL_PRECIOUS,
 					RawMaterial.MATERIAL_ENERGY,
+					RawMaterial.MATERIAL_GAS,
 					RawMaterial.MATERIAL_MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
 
 	protected int getHeiarchy(int material)

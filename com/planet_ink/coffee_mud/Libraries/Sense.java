@@ -1188,6 +1188,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			case RawMaterial.MATERIAL_LIQUID:
 			case RawMaterial.MATERIAL_METAL:
 			case RawMaterial.MATERIAL_ENERGY:
+			case RawMaterial.MATERIAL_GAS:
 			case RawMaterial.MATERIAL_MITHRIL:
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_PRECIOUS:

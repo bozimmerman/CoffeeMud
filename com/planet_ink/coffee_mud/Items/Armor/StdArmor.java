@@ -478,6 +478,7 @@ public class StdArmor extends StdContainer implements Armor
 					}
 					break;
 				case RawMaterial.MATERIAL_ENERGY:
+				case RawMaterial.MATERIAL_GAS:
 					break;
 				default:
 					if(CMLib.dice().rollPercentage()==1)

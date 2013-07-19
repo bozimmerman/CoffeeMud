@@ -608,6 +608,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				||(allowedArmorLevel==CharClass.ARMOR_OREONLY))
 					ok=false;
 				break;
+			case RawMaterial.MATERIAL_GAS:
+				if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
+				||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
+				||(allowedArmorLevel==CharClass.ARMOR_CLOTH)
+				||(allowedArmorLevel==CharClass.ARMOR_OREONLY))
+					ok=false;
+				break;
 			default:
 				if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
 				||(allowedArmorLevel==CharClass.ARMOR_OREONLY))
@@ -815,6 +822,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					break;
 				case RawMaterial.MATERIAL_UNKNOWN:
 				case RawMaterial.MATERIAL_ENERGY:
+				case RawMaterial.MATERIAL_GAS:
 				case RawMaterial.MATERIAL_LIQUID:
 				default:
 					ruinDescAdder=CMStrings.capitalizeFirstLetter(I2.name())+" is ruined beyond repair."; 

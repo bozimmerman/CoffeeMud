@@ -104,6 +104,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			case RawMaterial.MATERIAL_WOODEN:
 				useArray=leatherPoints;
 				break;
+			case RawMaterial.MATERIAL_GAS:
 			default:
 				useArray=clothPoints;
 				break;
@@ -513,6 +514,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					damage-=4;
 					baseattack-=20;
 					break;
+				case RawMaterial.MATERIAL_GAS:
 				default:
 					damage-=8;
 					baseattack-=30;
@@ -938,6 +940,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			case RawMaterial.MATERIAL_WOODEN:
 				useArray=leatherPoints;
 				break;
+			case RawMaterial.MATERIAL_GAS:
 			default:
 				useArray=clothPoints;
 				break;
