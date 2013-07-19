@@ -62,29 +62,25 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 	public boolean canContain(Environmental E)
 	{
 		if(!super.canContain(E)) return false;
-		if(E instanceof Electronics)
+		switch(panelType())
 		{
-			switch(panelType())
-			{
-			case ANY:
-				return true;
-			case ENGINE:
-				return E instanceof ShipComponent.ShipEngine;
-			case POWER:
-				return E instanceof PowerSource;
-			case SENSOR:
-				return E instanceof ShipComponent.ShipSensor;
-			case WEAPON:
-				return E instanceof ShipComponent.ShipWeapon;
-			case COMPUTER:
-				return E instanceof Software;
-			case ENVIRO_CONTROL:
-				return E instanceof ShipComponent.ShipEnviroControl;
-			case GENERATOR:
-				return E instanceof PowerGenerator;
-			default:
-				return true;
-			}
+		case ANY:
+			return true;
+		case WEAPON:
+			return E instanceof ShipComponent.ShipWeapon;
+		case ENGINE:
+			return E instanceof ShipComponent.ShipEngine;
+		case SENSOR:
+			return E instanceof ShipComponent.ShipSensor;
+		case POWER:
+			return E instanceof PowerSource;
+		case COMPUTER:
+			return E instanceof Electronics.Computer;
+		case ENVIRO_CONTROL:
+			return E instanceof ShipComponent.ShipEnviroControl;
+		case GENERATOR:
+			return E instanceof PowerGenerator;
+		
 		}
 		return true;
 	}
