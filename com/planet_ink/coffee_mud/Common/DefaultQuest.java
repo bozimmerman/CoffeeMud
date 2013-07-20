@@ -492,6 +492,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				}
 				if(cmd.equals("STEP"))
 				{
+					q.autoStepAfterDuration=false;
 					if((p.size()>1)&&(p.elementAt(1).equalsIgnoreCase("BREAK")))
 					{
 						q.lastLine=script.size();
@@ -501,6 +502,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if((p.size()>1)&&(p.elementAt(1).equalsIgnoreCase("BACK")))
 					{
 						if(startLine>=0) q.lastLine=q.startLine;
+					}
+					else
+					if((p.size()>1)&&(p.elementAt(1).equalsIgnoreCase("AUTO")))
+					{
+						if(startLine>=0) q.lastLine=v+1;
+						q.autoStepAfterDuration=true;
 					}
 					else
 						if(startLine>=0) q.lastLine=v+1;
@@ -3232,6 +3239,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				PO.preserveState=0;
 			for(int q=0;q<questState.addons.size();q++)
 				questState.addons.setElementAt(q,2,Integer.valueOf(0));
+			questState.autoStepAfterDuration=false;
 		}
 		cleanQuestStep();
 		stoppingQuest=true;
@@ -3441,8 +3449,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				ticksRemaining--;
 			if(ticksRemaining<0)
 			{
-				CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTTIMESTOP);
-				stopQuest();
+				if((questState!=null)&&(questState.autoStepAfterDuration))
+				{
+					stepQuest();
+				}
+				else
+				{
+					CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTTIMESTOP);
+					stopQuest();
+				}
 			}
 			tickStatus=Tickable.STATUS_END;
 		}
@@ -4275,6 +4290,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		public boolean error=false;
 		public boolean done=false;
 		public boolean beQuiet=false;
+		public boolean autoStepAfterDuration=false;
 		public int preserveState=0;
 		public int lastLine=0;
 		public int startLine;

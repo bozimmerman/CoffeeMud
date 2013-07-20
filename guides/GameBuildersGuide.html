@@ -869,8 +869,7 @@ COMPONENT Skill_Sleep</b></p>
 also be done from the MUDGrinder Components editor.</p>
       <p><br>
       <strong><a name="allqualifys"><font color="blue"><font size="5">All-Qualify
-Skills/Spells/etc..</font></font></a></strong>
-      </p>
+Skills/Spells/etc..</font></font></a></strong> </p>
       <p>An All-Qualify skill is
 one that is accessible to all of your
 character classes. &nbsp;They are divided into two catagories:
@@ -2113,12 +2112,12 @@ using the <strong>CREATE QUEST</strong>
 [SCRIPT] command, whether you use the load command to specify an
 external script, or include the script directly into the create
 command, the quest script commands are as follows:</p>
-      <p><span style="color: rgb(51, 102, 102);">SET NAME</span>
-      <span style="color: rgb(102, 51, 102);">[QUEST
+      <p><span style="color: rgb(51, 102, 102);">SET NAME</span> <span
+ style="color: rgb(102, 51, 102);">[QUEST
 NAME]</span> - the *unique*
 name of your quest. This is a required command!</p>
-      <p><span style="color: rgb(51, 102, 102);">SET DURATION</span>
-      <span style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET DURATION</span> <span
+ style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
 - Either a number of ticks (4 second periods) the quest will last once
 started, or a formula, or a number followed by the word minutes,
 seconds, hours, days, mudhours, or muddays. Use a simple
@@ -2126,16 +2125,16 @@ value of 0 to make your quest run continually. &nbsp;This is a
 required
 command!</p>
       <p style="color: rgb(51, 0, 0);"><span
- style="color: rgb(51, 102, 102);">SET WAIT</span>
-      <span style="color: rgb(102, 51, 102);">[#TICKS</span><span
+ style="color: rgb(51, 102, 102);">SET WAIT</span> <span
+ style="color: rgb(102, 51, 102);">[#TICKS</span><span
  style="color: rgb(102, 51, 102);">/TIME</span><span
  style="color: rgb(102, 51, 102);">]</span>
 - Either a&nbsp;number of
 ticks, or a formula, or a number followed by the word minutes, seconds,
 hours, days, mudhours, or muddays to minimally wait between auto-starts
 of the quest. Required for scheduled quests.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET INTERVAL</span>
-      <span style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET INTERVAL</span> <span
+ style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
 -&nbsp;Either a
 number of ticks (1-#TICKS), or a formula, or a number followed by the
 word minutes, seconds, hours, days, mudhours, or muddays to
@@ -2171,31 +2170,31 @@ SET DATE</span> <span style="color: rgb(102, 51, 102);">[#DAY]-[#MONTH]</span>
 - The real-life start-date of the quest. This is a valid substitute for
 the SET WAIT requirement.</p>
       <p style="color: rgb(51, 0, 0);"><span
- style="color: rgb(51, 102, 102);">SET MUDDAY</span>
-      <span style="color: rgb(102, 51, 102);">[#DAY]-[#MONTH]</span>
+ style="color: rgb(51, 102, 102);">SET MUDDAY</span> <span
+ style="color: rgb(102, 51, 102);">[#DAY]-[#MONTH]</span>
 - The start
 mud-date of the quest, according to the default global mud calendar.
 This is a valid substitute for the SET WAIT requirement.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MINPLAYERS</span>
-      <span style="color: rgb(102, 51, 102);">[#PLAYERS]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET MINPLAYERS</span> <span
+ style="color: rgb(102, 51, 102);">[#PLAYERS]</span>
 - Minimum number
 of players who must be online for a timed quest to automatically start.
 See SET PLAYERMASK.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET PLAYERMASK</span>
-      <span style="color: rgb(102, 51, 102);">[MASKSTRING]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET PLAYERMASK</span> <span
+ style="color: rgb(102, 51, 102);">[MASKSTRING]</span>
 - If this string is empty or not specified, then anyone is considered a
 player for the purposes of the MINPLAYERS setting above. However, you
 can specify a "zapper mask" to narrow down the definition of a player.
 See HELP ZAPPERMASKS for the list of valid mask values to put here.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET RUNLEVEL</span>
-      <span style="color: rgb(102, 51, 102);">[#LEVEL]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET RUNLEVEL</span> <span
+ style="color: rgb(102, 51, 102);">[#LEVEL]</span>
 - Normally, a timed quest will always run when its time comes up.
 Setting a value above -1 will prevent this quest from running when its
 time comes up if another quest is also running at the same or LOWER run
 level. This does not affect spawned quest copies, which will always run
 even when another of the same name (and runlevel) is active.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET PRESERVE</span>
-      <span style="color: rgb(102, 51, 102);">[#STEPS]</span>-
+      <p><span style="color: rgb(51, 102, 102);">SET PRESERVE</span> <span
+ style="color: rgb(102, 51, 102);">[#STEPS]</span>-
 If a number greater than 0 is issued, then when a STEP command is
 encountered and the commands following it are executed due to a
 MPSTEPQUEST Scriptable command, then any objects, behaviors, abilities,
@@ -2223,6 +2222,13 @@ duration settings from previous steps will be re-used. Numerous STEP
 commands may be places in your quest scripts. An MPSTOPQUEST command,
 or an expired duration, however, will always cause the entire quest to
 cease executing and all objects to be cleaned up. See also SET PRESERVE.</p>
+      <p><span style="color: rgb(51, 102, 102);">STEP&nbsp;<span
+ style="color: rgb(102, 51, 102);">AUTO</span></span><span
+ style="color: rgb(102, 51, 102);">-</span>This
+command is the same as the normal STEP command, except that when the
+normal duration runs out, the next step is automatically executed.
+&nbsp;The duration can still be short-cutted with MPSTEPQUEST or
+MPSTOPQUEST as usual.</p>
       <p><span style="color: rgb(51, 102, 102);">STEP <span
  style="color: rgb(102, 51, 102);">BACK</span></span><span
  style="color: rgb(102, 51, 102);">-</span>This
@@ -2248,24 +2254,24 @@ any other statements, will not be executed. This is used in conjunction
 with SET SPAWNABLE ANY to allow quest scripts which have been broken
 into several descrete steps to run independently. A SET SPAWNABLE ANY
 quest is considered successfully run when this command is encountered.</p>
-      <p><span style="color: rgb(51, 102, 102);">IMPORT MOBS</span>
-      <span style="color: rgb(102, 51, 102);">[XML
+      <p><span style="color: rgb(51, 102, 102);">IMPORT MOBS</span> <span
+ style="color: rgb(102, 51, 102);">[XML
 FILE PATH]</span>
 - this will import a list of custom mobs from a .CMARE file generated
 using the EXPORT ROOM MOBS command. The parameter must be the path and
 file name of the file, using the same format as the LOAD= command
 mentioned above. This list can then be accessed with the LOAD MOB, or
 LOAD MOBGROUP command.</p>
-      <p><span style="color: rgb(51, 102, 102);">IMPORT ITEMS</span>
-      <span style="color: rgb(102, 51, 102);">[XML
+      <p><span style="color: rgb(51, 102, 102);">IMPORT ITEMS</span> <span
+ style="color: rgb(102, 51, 102);">[XML
 FILE PATH]</span>
 - this will import a list of custom items from a .CMARE file generated
 using the EXPORT ROOM ITEMS command. The parameter must be the path and
 file name of the file, using the same format as the LOAD= command
 mentioned above. This list can then be accessed with the LOAD ITEM or
 LOAD ITEMGROUP command.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AREA</span>
-      <span style="color: rgb(102, 51, 102);">([AREA
+      <p><span style="color: rgb(51, 102, 102);">SET AREA</span> <span
+ style="color: rgb(102, 51, 102);">([AREA
 NAME OR NAMES])</span>
 - will set the current designated area to the area specified. Although
 this does nothing in itself, it is important for the several commands
@@ -2275,14 +2281,14 @@ the first area name as ANY, followed by your other area name choices,
 separated by spaces. If no area name is given, this will CLEAR the area
 designation. This can have a profound impact on how subsequent mob or
 item loading, or room setting commands work.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AREA</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET AREA</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AREAGROUP</span>
-      <span style="color: rgb(102, 51, 102);">([AREA
+      <p><span style="color: rgb(51, 102, 102);">SET AREAGROUP</span> <span
+ style="color: rgb(102, 51, 102);">([AREA
 NAME OR NAMES])</span>
 - essentially the same as set ROOMGROUP below, this will set the
 current designated roomgroup to the rooms in the area(s) specified.
@@ -2296,8 +2302,8 @@ If no area name is given, this will CLEAR the ROOMGROUP designation.
 This can have a profound impact on how subsequent mob or item loading,
 or room setting commands work. This command will automatically clear
 the AREA setting.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ROOMGROUP</span>
-      <span style="color: rgb(102, 51, 102);">([ROOM
+      <p><span style="color: rgb(51, 102, 102);">SET ROOMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">([ROOM
 NAME])</span>
 - will set the ROOMGROUP to the set specified. If an area has been
 previously designated, and not cleared (see SET AREA), then the rooms
@@ -2314,16 +2320,16 @@ names include map room IDs such as MyArea#123, or key words from the
 titles or descriptions of rooms. &nbsp;Rooms designated this way
 are
 available in Scripts using the QUESTROOM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">ROOMGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ROOMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing.&nbsp; &nbsp;Rooms designated this way are
 available in
 Scripts using the QUESTROOM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ROOM</span>
-      <span style="color: rgb(102, 51, 102);">([ROOM
+      <p><span style="color: rgb(51, 102, 102);">SET ROOM</span> <span
+ style="color: rgb(102, 51, 102);">([ROOM
 NAME])</span>
 - will set the current designated room to the set specified. If a room
 or area has been previously designated, and not cleared (see SET AREA),
@@ -2337,8 +2343,8 @@ room name is given, this will effectly clear the room designation (but
 it will not clear the area designation!). Valid room names include map
 room IDs such as MyArea#123, or key words from the titles or
 descriptions of rooms.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ROOM</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET ROOM</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
@@ -2375,17 +2381,16 @@ designation (but it will not clear the area designation!). Valid locale
 names may be Locale class names such as MountainSurface, StdRoom, etc,
 or they may be locale types such as stone, wooden, underwater,
 mountains, etc.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">LOCALEGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">LOCALEGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing.&nbsp; &nbsp;Rooms designated this way are
 available in
 Scripts using the QUESTROOM function.</p>
       <p><span style="color: rgb(51, 102, 102);">SET
-LOCALEGROUPAROUND</span>
-      <span style="color: rgb(102, 51, 102);">([#RADIUS]
+LOCALEGROUPAROUND</span> <span style="color: rgb(102, 51, 102);">([#RADIUS]
 [LOCALE])</span>
 - will set the ROOMGROUP to the ones with the specified class name. The
 rooms will be selected from the set of rooms which areup to RADIUS
@@ -2401,8 +2406,8 @@ or they may be locale types such as stone, wooden, underwater,
 mountains, etc.&nbsp; &nbsp;Rooms designated this way are
 available in
 Scripts using the QUESTROOM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span>
-      <span style="color: rgb(102, 51, 102);">([LOCALE])</span>
+      <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span> <span
+ style="color: rgb(102, 51, 102);">([LOCALE])</span>
 - will set the current designated room to the one with the specified
 class name. If a room or area has been previously designated, and not
 cleared (see SET AREA), then the room will be selected from the
@@ -2416,14 +2421,14 @@ clear the room designation (but it will not clear the area
 designation!). Valid locale names may be Locale class names such as
 MountainSurface, StdRoom, etc, or they may be locale types such as
 stone, wooden, underwater, mountains, etc.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOBGROUP</span>
-      <span style="color: rgb(102, 51, 102);">(RESELECT)
+      <p><span style="color: rgb(51, 102, 102);">SET MOBGROUP</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)
 ([MOB NAME])</span>
 - will designate a set of mobs with the given name. If the name ends
 with MASK=..., then a mask as described by the help entry for
@@ -2441,17 +2446,17 @@ as the RESELECT flag was also used in the previous SET MOB or SET
 MOBTYPE command.&nbsp; &nbsp;Mobs designated this way are
 available in
 Scripts using the QUESTMOB function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">MOBGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOBGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing.&nbsp;Mobs designated this way are available in
 Scripts
 using the QUESTMOB function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOB</span>
-      <span style="color: rgb(102, 51, 102);">(RESELECT)</span>
-      <span style="color: rgb(102, 51, 102);">([MOB
+      <p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)</span> <span
+ style="color: rgb(102, 51, 102);">([MOB
 NAME])</span>
 - will set the current mob to one with the given mob name. If the name
 ends with MASK=..., then a mask as described by the help entry for
@@ -2469,14 +2474,14 @@ previously set with SET MOB, or SET MOBTYPE. The RESELECT flag is an
 optional first flag which, if specified, designates that a mob may be
 chosen if previously chosen, so long as the RESELECT flag was also used
 in the previous SET MOB or SET MOBTYPE command.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOB</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span>
-      <span style="color: rgb(102, 51, 102);">(RESELECT)
+      <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)
 ([CLASS])</span>
 - will set the current mob to one with the given class name. Ths mob
 chosen will be selected from a MOBGROUP if one has been set. Otherwise,
@@ -2491,15 +2496,15 @@ with SET MOB, or SET MOBTYPE. The RESELECT flag is an optional first
 flag which, if specified, designates that a mob may be chosen if
 previously chosen, so long as the RESELECT flag was also used in the
 previous SET MOB or SET MOBTYPE command.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ITEMGROUP</span>
-      <span style="color: rgb(102, 51, 102);">(RESELECT)</span>
-      <span style="color: rgb(102, 51, 102);">([ITEM
+      <p><span style="color: rgb(51, 102, 102);">SET ITEMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)</span> <span
+ style="color: rgb(102, 51, 102);">([ITEM
 NAME])</span>
 - will designate a set of items with the given name. If the name ends
 with MASK=..., then a mask as described by the help entry for
@@ -2515,16 +2520,16 @@ specified, designates that items may be placed in the itemgroup even if
 previously set, so long as the RESELECT flag was also used in the
 previous SET ITEM or SET ITEMTYPE command. Items designated this way
 are available in Scripts using the QUESTITEM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">ITEMGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ITEMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing.&nbsp; Items designated this way are available in
 Scripts using the QUESTITEM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ITEM</span>
-      <span style="color: rgb(102, 51, 102);">(RESELECT)</span>
-      <span style="color: rgb(102, 51, 102);">([ITEM
+      <p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)</span> <span
+ style="color: rgb(102, 51, 102);">([ITEM
 NAME])</span>
 - will set the current item to one with the given name. The item chosen
 will be selected from those in the designated ROOMGROUP (if one is
@@ -2538,15 +2543,15 @@ been previously set with SET ITEM, or SET ITEMTYPE. The RESELECT flag
 is an optional first flag which, if specified, designates that an item
 may be chosen if previously chosen, so long as the RESELECT flag was
 also used in the previous SET ITEM or SET ITEMTYPE command.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ITEM</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ITEMTYPE</span>
-      <span style="color: rgb(102, 51, 102);">(RESELECT)</span>
-      <span style="color: rgb(102, 51, 102);">([CLASS])</span>
+      <p><span style="color: rgb(51, 102, 102);">SET ITEMTYPE</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)</span> <span
+ style="color: rgb(102, 51, 102);">([CLASS])</span>
 - will set the current item to one with the given class name. The item
 chosen will be selected from those in the designated ROOMGROUP (if one
 is designated), AREA (if one is designated) or the world. The item must
@@ -2559,8 +2564,8 @@ been previously set with SET ITEM, or SET ITEMTYPE. The RESELECT flag
 is an optional first flag which, if specified, designates that an item
 may be chosen if previously chosen, so long as the RESELECT flag was
 also used in the previous SET ITEM or SET ITEMTYPE command.</p>
-      <p><span style="color: rgb(51, 102, 102);">LOAD MOBGROUP</span>
-      <span style="color: rgb(102, 51, 102);">([#NUMBER])
+      <p><span style="color: rgb(51, 102, 102);">LOAD MOBGROUP</span> <span
+ style="color: rgb(102, 51, 102);">([#NUMBER])
 [MOB NAME]</span>
 - will instantiate all (or optionally, the given number) mobs of the
 given name from the set of mobs imported using the IMPORT MOBS command
@@ -2573,8 +2578,8 @@ designated, then this command will create each mob in that room or
 random room in the area. If a room or area has not been designated (or
 was cleared), then this command will designate a random room and area.
 This command will also designate the current mob to the last one loaded.</p>
-      <p><span style="color: rgb(51, 102, 102);">LOAD MOB</span>
-      <span style="color: rgb(102, 51, 102);">[MOB
+      <p><span style="color: rgb(51, 102, 102);">LOAD MOB</span> <span
+ style="color: rgb(102, 51, 102);">[MOB
 NAME]</span>
 - will instantiate a mob of the given name from the list of mobs
 imported using the IMPORT MOBS command above.Use a name of ANY to load
@@ -2585,9 +2590,9 @@ current mob. If a room, roomgroup, or area has been previously
 designated, then this command will create the mob in that room. If a
 room or area has not been designated (or was cleared), then this
 command will designate a random room and area.</p>
-      <p><span style="color: rgb(51, 102, 102);">LOAD ITEMGROUP</span>
-      <span style="color: rgb(102, 51, 102);">([#NUMBER])</span>
-      <span style="color: rgb(102, 51, 102);">[ITEM
+      <p><span style="color: rgb(51, 102, 102);">LOAD ITEMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">([#NUMBER])</span> <span
+ style="color: rgb(102, 51, 102);">[ITEM
 NAME]</span>
 - will instantiate all (or optionally, the given number) items of the
 given name from the list of items imported using the IMPORT ITEMS
@@ -2597,8 +2602,8 @@ command will create the item in that room. If a room or area has not
 been designated (or was cleared), then this command will designate a
 random room and area. This command will also designate the current item
 to the last one loaded. Use a name of ANY or ALL to load them all.</p>
-      <p><span style="color: rgb(51, 102, 102);">LOAD ITEM</span>
-      <span style="color: rgb(102, 51, 102);">[ITEM
+      <p><span style="color: rgb(51, 102, 102);">LOAD ITEM</span> <span
+ style="color: rgb(102, 51, 102);">[ITEM
 NAME]</span>
 - will instantiate an item of the given name from the list of items
 imported using the IMPORT ITEMS command above. This item will be set as
@@ -2629,8 +2634,8 @@ true,
 it will make it so that the death of the mob or mobs it is assigned to
 instantly ends the quest. &nbsp;This is an advanced coding
 feature; use it wisely..</p>
-      <p><span style="color: rgb(51, 102, 102);">GIVE BEHAVIOR</span>
-      <span style="color: rgb(102, 51, 102);">[BEHAVIOR
+      <p><span style="color: rgb(51, 102, 102);">GIVE BEHAVIOR</span> <span
+ style="color: rgb(102, 51, 102);">[BEHAVIOR
 ID] ([PARAMETERS])</span>
 - The behavior ID must be a valid behavior class name. The parameters
 are any parameters you wish to pass to the behavior. This command will
@@ -2641,8 +2646,8 @@ text that would be valid for the behavior id specified. The text may
 also optionally include embedded references to other quest objects. See
 below Object Specifiers in Parameters below for more information on
 using this feature.</p>
-      <p><span style="color: rgb(51, 102, 102);">GIVE ABILITY</span>
-      <span style="color: rgb(102, 51, 102);">[ABILITY
+      <p><span style="color: rgb(51, 102, 102);">GIVE ABILITY</span> <span
+ style="color: rgb(102, 51, 102);">[ABILITY
 ID] ([PARAMETERS])</span>
 - The ability ID must be a valid ability class name. The parameters are
 any parameters you wish to pass to the ability. This command will give
@@ -2652,8 +2657,8 @@ and include any text that would be valid for the ability id specified.
 The text may also optionally include embedded references to other quest
 objects. See below Object Specifiers in Parameters below for more
 information on using this feature.</p>
-      <p><span style="color: rgb(51, 102, 102);">GIVE AFFECT</span>
-      <span style="color: rgb(102, 51, 102);">[ABILITY
+      <p><span style="color: rgb(51, 102, 102);">GIVE AFFECT</span> <span
+ style="color: rgb(102, 51, 102);">[ABILITY
 ID] ([PARAMETERS]</span>)
 - The ability ID must be a valid ability class name. The parameters are
 any parameters you wish to pass to the ability. This command will give
@@ -2664,8 +2669,8 @@ would be valid for the ability id specified. The text may also
 optionally include embedded references to other quest objects. See
 below Object Specifiers in Parameters below for more information on
 using this feature.</p>
-      <p><span style="color: rgb(51, 102, 102);">GIVE FOLLOWER</span>
-      <span style="color: rgb(102, 51, 102);">[MOB
+      <p><span style="color: rgb(51, 102, 102);">GIVE FOLLOWER</span> <span
+ style="color: rgb(102, 51, 102);">[MOB
 NAME]</span>
 - The mob name is a mob which will be selected from the list of
 previously designated mobs (designated using the LOAD MOB, SET MOB, or
@@ -2673,23 +2678,23 @@ SET MOBTYPE commands). This mob will be made into a follower of the mob
 most recently designated using the SET MOB, SET MOBTYPE, or LOAD MOB
 command. This command does not change the current mob designation, nor
 does it change the location of either mob.</p>
-      <p><span style="color: rgb(51, 102, 102);">TAKE BEHAVIOR</span>
-      <span style="color: rgb(102, 51, 102);">[BEHAVIOR
+      <p><span style="color: rgb(51, 102, 102);">TAKE BEHAVIOR</span> <span
+ style="color: rgb(102, 51, 102);">[BEHAVIOR
 ID]</span>-
 The behavior ID must be a valid behavior class name. This command will
 take from the most recently designated mob, item, area, room or
 mobgroup (designated using the set or load commands), itemgroup, or
 roomgroup the above behavior.</p>
-      <p><span style="color: rgb(51, 102, 102);">TAKE</span>
-      <span style="color: rgb(51, 102, 102);">ABILITY</span>
-      <span style="color: rgb(102, 51, 102);">[ABILITY
+      <p><span style="color: rgb(51, 102, 102);">TAKE</span> <span
+ style="color: rgb(51, 102, 102);">ABILITY</span> <span
+ style="color: rgb(102, 51, 102);">[ABILITY
 ID]</span> - The ability ID
 must be a valid ability class name. This command will take from the
 currently designated mob, or mobgroup (designated using the set or load
 commands) the above ability.</p>
-      <p><span style="color: rgb(51, 102, 102);">TAKE</span>
-      <span style="color: rgb(51, 102, 102);">AFFECT</span>
-      <span style="color: rgb(102, 51, 102);">[ABILITY
+      <p><span style="color: rgb(51, 102, 102);">TAKE</span> <span
+ style="color: rgb(51, 102, 102);">AFFECT</span> <span
+ style="color: rgb(102, 51, 102);">[ABILITY
 ID]</span>
 - The ability ID must be a valid ability class name. This command will
 take from the currently designated mob, item, room, area, or mobgroup
@@ -2729,8 +2734,8 @@ evaluates to an Object Specifier which represents a group of objects
 will execute once for every object inside the group! See the discussion
 of Object Specifiers and Object Spcifiers in Parameters for more
 information.</p>
-      <p><span style="color: rgb(51, 102, 102);">&lt;OPTION&gt;
-      <span style="color: rgb(102, 51, 102);">([QUEST
+      <p><span style="color: rgb(51, 102, 102);">&lt;OPTION&gt; <span
+ style="color: rgb(102, 51, 102);">([QUEST
 SCRIPT COMMANDS]) <span style="color: rgb(51, 102, 102);">&lt;/OPTION&gt;</span></span></span>-
 Putting quest script commands inside of &lt;OPTION&gt; tags
 means that,
@@ -2801,23 +2806,23 @@ quest objects mentioned above, such
 as MOB, ITEM, ROOM and so forth, there are also extranous objects and
 groups intended for use when building logic problem mysteries. The
 commands for setting these are as follows:</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AGENT</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET AGENT</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the AGENT
 variable to the [OBJECT]. Will also set the MOB object. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this command listing. If the object resolves to a group of
 objects, a random one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the AGENTGROUP variable to the [OBJECT]. Will also set the
 MOBGROUP object to the same, as well as designate one random mob from
 the group as the AGENT and the MOB. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[#NUMBER]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span>
 - Sets the AGENTGROUP variable to the currently set MOBGROUP, selecting
 at most NUMBER mobs randomly from that list. Will also set the MOBGROUP
 object to the same, as well as designate one random mob from the group
@@ -2832,8 +2837,7 @@ object. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this command listing. If the object resolves to a group of
 objects, a random one from the group will be chosen.</p>
       <p><span style="color: rgb(51, 102, 102);">SET
-WHEREHAPPENEDGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+WHEREHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the WHEREHAPPENEDGROUP variable to the [OBJECT]. Will also set
 the ROOMGROUP object to the same, as well as designate one random room
 from the group as the WHEREHAPPENED and the ROOM. See <a
@@ -2841,8 +2845,7 @@ from the group as the WHEREHAPPENED and the ROOM. See <a
 above this
 command listing.</p>
       <p><span style="color: rgb(51, 102, 102);">SET
-WHEREHAPPENEDGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[#NUMBER]</span>
+WHEREHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]</span>
 - Sets the WHEREHAPPENEDGROUP variable to the currently set ROOMGROUP,
 selecting at most NUMBER rooms randomly from that list. Will also set
 the ROOMGROUP object to the same, as well as designate one random room
@@ -2850,16 +2853,16 @@ from the group as the WHEREHAPPENED and the ROOM. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET WHEREAT</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET WHEREAT</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the WHEREAT
 variable to the [OBJECT]. Will also set the ROOM object. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this command listing. If the object resolves to a group of
 objects, a random one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">WHEREATGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[</span><span
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">WHEREATGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[</span><span
  style="color: rgb(102, 51, 102);">OBJECT]</span>
 - Sets the WHEREATGROUP variable to the [OBJECT]. Will also set the
 ROOMGROUP object to the same, as well as designate one random room from
@@ -2867,9 +2870,9 @@ the group as the WHEREAT and the ROOM. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">WHEREATGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[</span><span
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">WHEREATGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[</span><span
  style="color: rgb(102, 51, 102);">#NUMBER]</span>
 - Sets the WHEREATGROUP variable to the currently set ROOMGROUP,
 selecting at most NUMBER rooms randomly from that list. Will also set
@@ -2894,19 +2897,17 @@ Specifiers</a> above this command
 listing. If the object resolves to a
 group of objects, a random one from the group will be chosen.</p>
       <p><span style="color: rgb(51, 102, 102);">SET
-WHENHAPPENEDGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+WHENHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the WHENHAPPENEDGROUP variable to the [OBJECT]. Will also
 designate one random time from the group as the WHENHAPPENED. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
       <p><span style="color: rgb(51, 102, 102);">SET
-WHENHAPPENEDGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[#</span><span
+WHENHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[#</span><span
  style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span
- style="color: rgb(102, 51, 102);">] ...</span>
-      <span style="color: rgb(102, 51, 102);">[#</span><span
+ style="color: rgb(102, 51, 102);">] ...</span> <span
+ style="color: rgb(102, 51, 102);">[#</span><span
  style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span
  style="color: rgb(102, 51, 102);">]</span>
 - Sets the
@@ -2915,16 +2916,16 @@ hours-differences given. Will also designate one random time from the
 group as the WHENHAPPENED. See <a href="ArchonTome.html#questcrobjsp">Object
 Specifiers</a> above this command
 listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the
 WHENHAPPENED variable to the timeclock [OBJECT]. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span>
-      <span style="color: rgb(102, 51, 102);">[#HOURS-DIFFERENCE]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span> <span
+ style="color: rgb(102, 51, 102);">[#HOURS-DIFFERENCE]</span>
 - Sets
 the WHENAT variable to the current time plus or minus the hours
 difference specified. See <a href="ArchonTome.html#questcrobjsp">Object
@@ -2942,8 +2943,8 @@ command listing.</p>
       <p><span style="color: rgb(51, 102, 102);">SET WHENATGROUP</span>
       <span style="color: rgb(102, 51, 102);">[#</span><span
  style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span
- style="color: rgb(102, 51, 102);">] ...</span>
-      <span style="color: rgb(102, 51, 102);">[#</span><span
+ style="color: rgb(102, 51, 102);">] ...</span> <span
+ style="color: rgb(102, 51, 102);">[#</span><span
  style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span
  style="color: rgb(102, 51, 102);">]</span>
 - Sets the WHENATGROUP list
@@ -2952,16 +2953,16 @@ Will also designate one random time from the group as the WHENAT. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET FACTION</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET FACTION</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the FACTION
 variable to the faction string [OBJECT]. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET FACTION</span>
-      <span style="color: rgb(102, 51, 102);">[FACTION
+      <p><span style="color: rgb(51, 102, 102);">SET FACTION</span> <span
+ style="color: rgb(102, 51, 102);">[FACTION
 NAME]</span> - Sets the
 FACTION variable to one of the given name or ANY to choose a random one.</p>
       <p><span style="color: rgb(51, 102, 102);">SET FACTIONGROUP</span>
@@ -2986,8 +2987,8 @@ NAME] ...
 the faction names. Will also designate one random faction from the
 group as the FACTION. The faction names are space delimited, and names
 grouped with double-quotes.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET TARGET</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET TARGET</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the TARGET
 variable to the [OBJECT]. Will also set the MOB or ITEM object
 depending on what gets designated. See <a
@@ -3014,8 +3015,8 @@ item from the group as the TARGET and either the MOB or ITEM. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET TOOL</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET TOOL</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the TOOL
 variable to the [OBJECT]. Will also set the MOB or ITEM object
 depending on what gets designated. See <a
@@ -3023,8 +3024,8 @@ depending on what gets designated. See <a
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the TOOLGROUP variable to the [OBJECT]. Will also set the
 MOBGROUP or ITEMGROUP object to the same (depending on what type of
 group is designated), as well as designate one random object from the
@@ -3032,8 +3033,8 @@ group as the TOOL, and either the MOB or ITEM. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[#NUMBER]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span>
 - Sets the TOOLGROUP variable to the currently set MOBGROUP (if one is
 currently set) or ITEMGROUP if not. It will select at most NUMBER
 objects randomly from that list. Will also re-set the MOBGROUP or
@@ -3042,99 +3043,99 @@ item from the group as the TOOL and either the MOB or ITEM. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOTIVE</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET MOTIVE</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the MOTIVE
 variable to the string [OBJECT]. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">MOTIVE</span>
-      <span style="color: rgb(102, 51, 102);">[STRING]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVE</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]</span>
 - Sets the MOTIVE
 variable to the string.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">MOTIVE</span><span
- style="color: rgb(51, 102, 102);">GROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVE</span><span
+ style="color: rgb(51, 102, 102);">GROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the
 MOTIVEGROUP variable to the [OBJECT]. Will also designate one random
 string from the group as the MOTIVE. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">MOTIVEGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[STRING]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVEGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]
 .. [STRING]</span> - Sets
 the MOTIVEGROUP to the set of strings specified. Will also designate
 one random string from the group as the MOTIVE. The strings are space
 delimited, and words grouped with double-quotes.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">MOTIVE</span><span
- style="color: rgb(51, 102, 102);">GROUP</span>
-      <span style="color: rgb(102, 51, 102);">[#NUMBER]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVE</span><span
+ style="color: rgb(51, 102, 102);">GROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]
 [OBJECT]</span>
 - Sets the MOTIVEGROUP variable to [NUMBER] of the items represented by
 [OBJECT]. Will also designate one random string from the group as the
 MOTIVE. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this command listing. [#NUMBER] may be a math expression.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">MOTIVEGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[#NUMBER]</span>
-      <span style="color: rgb(102, 51, 102);">[STRING]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVEGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]
 .. [STRING]</span>
 - Sets the MOTIVEGROUP to [NUMBER] of the set of strings specified.
 Will also designate one random string from the group as the MOTIVE. The
 strings are space delimited, and words grouped with double-quotes.
 [#NUMBER] may be a math expression.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ACTION</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET ACTION</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the ACTION
 variable to the string [OBJECT]. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">ACTION</span>
-      <span style="color: rgb(102, 51, 102);">[STRING]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTION</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]</span>
 - Sets the ACTION
 variable to the string.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">ACTION</span><span
- style="color: rgb(51, 102, 102);">GROUP</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTION</span><span
+ style="color: rgb(51, 102, 102);">GROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the
 ACTIONGROUP variable to the [OBJECT]. Will also designate one random
 string from the group as the ACTION. See <a
  href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">ACTIONGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[STRING]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTIONGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]
 .. [STRING]</span> - Sets
 the ACTIONGROUP to the set of strings specified. Will also designate
 one random string from the group as the ACTION. The strings are space
 delimited, and words grouped with double-quotes.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">ACTION</span><span
- style="color: rgb(51, 102, 102);">GROUP</span>
-      <span style="color: rgb(102, 51, 102);">[#NUMBER]</span>
-      <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTION</span><span
+ style="color: rgb(51, 102, 102);">GROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the
 ACTIONGROUP variable to [NUMBER] of the items represented by [OBJECT].
 Will also designate one random string from the group as the ACTION. See
       <a href="ArchonTome.html#questcrobjsp">Object
 Specifiers</a>
 above this command listing. [#NUMBER] may be a math expression.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span>
-      <span style="color: rgb(51, 102, 102);">ACTIONGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[#NUMBER]</span>
-      <span style="color: rgb(102, 51, 102);">[STRING]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTIONGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]
 .. [STRING]</span>
 - Sets the ACTIONGROUP to [NUMBER] of the set of strings specified.
 Will also designate one random string from the group as the ACTION. The
@@ -3154,15 +3155,14 @@ recognized.</p>
  color="#000000"><font size="3">Javascript
 is a wholly different language than the standard Scriptable/MOBPROG
 language OR the quest script language described in this document. You
-should read the JavaScripting section of the CoffeeMud</font>
-      <a href="Programming.html"><font size="3">Programming Guide</font></a>
-      <font size="3">for
+should read the JavaScripting section of the CoffeeMud</font> <a
+ href="Programming.html"><font size="3">Programming Guide</font></a> <font
+ size="3">for
 more information, as well as the following web sites
 which discuss the usage and syntax of the Javascript language itself:</font>
       <a href="http://www.mozilla.org/js/"><font size="3">http://www.mozilla.org/js/</font></a>
-      <font size="3">and</font>
-      <a href="http://www.mozilla.org/rhino/"><font size="3">http://www.mozilla.org/rhino/</font></a>
-      <font size="3">.</font></font></span></p>
+      <font size="3">and</font> <a href="http://www.mozilla.org/rhino/"><font
+ size="3">http://www.mozilla.org/rhino/</font></a> <font size="3">.</font></font></span></p>
       <p class="MsoNormal"><span style="font-size: 14pt; color: blue;"><font
  color="#000000" size="3"><span style="font-size: 14pt; color: blue;"><font
  color="#000000" size="3">Aside from the above
@@ -3180,8 +3180,7 @@ delimeter, it must first be escaped: \;</font></span></font></span></p>
 will also make a couple of useful
 methods available to your Javascript for assisting in setting up your
 quests. One is the <font face="Courier New"><font size="2">Quest
-quest()</font></font>
-      <font face="Times New Roman">method,
+quest()</font></font> <font face="Times New Roman">method,
 which, as you can see, returns a Quest object which represents to the
 current quest script. The Quest object returned has numerous useful
 methods on them for doing things like determining which mobs and items
@@ -3210,9 +3209,8 @@ your quest Script. There are several useful properties of the object,
 such as <font face="Courier New" size="2">area, room, mob, mobGroup,
 item,</font> and <font face="Courier New" size="2">envObject</font>
 which will refer to the last such objects SET by your quest script
-before Javascript was executed. The Vectors</font></font>
-      <font size="2"><font size="3"><span
- style="font-family: monospace;">loadedMobs</span></font></font><font
+before Javascript was executed. The Vectors</font></font> <font
+ size="2"><font size="3"><span style="font-family: monospace;">loadedMobs</span></font></font><font
  face="Courier New" size="2"><font face="Times New Roman" size="3">and</font></font>
       <font size="2"><font size="3"><span
  style="font-family: monospace;">loadedItems</span></font></font><font
@@ -3824,16 +3822,14 @@ items, to keep a collective treasury, to collect taxes from other
 players, and to override normal PK (playerkill) settings. Clans can be
 tyrannical, run by a select few, run by elected members, or run
 collectively. Clans can even be used as an alternative means of
-learning new Classes.
-      </p>
-      <p>
-Players may belong, by default, to a single clan from each clan
+learning new Classes. </p>
+      <p>Players may belong, by default, to a single clan from each
+clan
 category (which are inherited from their government by default).
 Since (again, by default) there is only one category, players can
 only belong to one clan. All of this can be changed of course,
 starting with the numeric requirements defined by the MAXCLANCATS
-setting.
-      </p>
+setting. </p>
       <p>By default, clans can be
 created and managed entirely by
 players. This ability can be removed by disabling the several clan
@@ -4011,14 +4007,12 @@ a
 basic structure to clans, and serve a purpose similar to the one
 Character Classes do for players. However, as clans are social
 arrangements, most aspects of governments deal with the structuring of
-these arrangements.
-      </p>
+these arrangements. </p>
       <p>By default, all
 governments belong to a "blank" category, which
 means that all governments are available for players to create clans
 out of. Governments with other categories are available to players
-as governed by the PUBLICCLANCATS setting.
-      </p>
+as governed by the PUBLICCLANCATS setting. </p>
       <p>By default, clan
 governments are defined in your resources
 directory in the file clangovernments.xml. The Archon commands
