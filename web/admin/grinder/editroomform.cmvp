@@ -147,7 +147,7 @@
 	<TD><FONT COLOR="#66FFFF"><B>Atmosphere:</B></FONT></TD>
     <TD COLSPAN=2>
 	<SELECT NAME=ATMOSPHERE>
-	@AreaData?ATMOSPHERE@
+	@RoomData?ATMOSPHERE@
 	</SELECT>
 	</TD>
 </TR>
