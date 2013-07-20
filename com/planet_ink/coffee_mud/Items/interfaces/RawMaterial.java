@@ -263,7 +263,7 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_LIMES=MATERIAL_VEGETATION|126;
 	public final static int RESOURCE_SAP=MATERIAL_LIQUID|127;      
 	public final static int RESOURCE_ONYX=MATERIAL_PRECIOUS|128;
-	public final static int RESOURCE_TURQUIOSE=MATERIAL_PRECIOUS|129;
+	public final static int RESOURCE_TURQUOISE=MATERIAL_PRECIOUS|129;
 	public final static int RESOURCE_PERIDOT=MATERIAL_PRECIOUS|130;
 	public final static int RESOURCE_QUARTZ=MATERIAL_PRECIOUS|131;
 	public final static int RESOURCE_LAPIS=MATERIAL_PRECIOUS|132;
@@ -295,7 +295,7 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_SPIDERSTEEL=MATERIAL_CLOTH|158;
 	public final static int RESOURCE_ASH=MATERIAL_VEGETATION|159;
 	public final static int RESOURCE_PERFUME=MATERIAL_LIQUID|160;
-	public final static int RESOURCE_ATLANTEANSTEEL=MATERIAL_MITHRIL|161;
+	public final static int RESOURCE_ATLANTITE=MATERIAL_MITHRIL|161;
 	public final static int RESOURCE_CHEESE=MATERIAL_VEGETATION|162;
 	public final static int RESOURCE_BEANS=MATERIAL_VEGETATION|163;
 	public final static int RESOURCE_CRANBERRIES=MATERIAL_VEGETATION|164;
@@ -323,790 +323,212 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_MASK=255;
 
 	
-	public final static String[] DEFAULT_RESOURCE_DESCS={
-	"NOTHING", //0
-	"MEAT",  //1
-	"BEEF", //2
-	"PORK", //3
-	"POULTRY", //4
-	"MUTTON", //5
-	"FISH",//6
-	"WHEAT", //7
-	"CORN", //8
-	"RICE", //9
-	"CARROTS", //10
-	"TOMATOES", //11
-	"PEPPERS", //12
-	"GREENS",//13
-	"FRUIT", //14
-	"APPLES", //15
-	"BERRIES", //16
-	"ORANGES", //17
-	"LEMONS", //18
-	"GRAPES", //19
-	"OLIVES",//20
-	"POTATOES", //21
-	"CACTUS", //22
-	"DATES", //23
-	"SEAWEED", //24
-	"STONE", //25
-	"LIMESTONE",//26
-	"FLINT", //27
-	"GRANITE", //28
-	"OBSIDIAN", //29
-	"MARBLE", //30
-	"SAND", //31
-	"JADE", //32
-	"IRON",//33
-	"LEAD", //34
-	"BRONZE", //35
-	"SILVER", //36
-	"GOLD", //37
-	"ZINC", //38
-	"COPPER", //39
-	"TIN", //40
-	"MITHRIL",//41
-	"ADAMANTITE", //42
-	"STEEL", //43
-	"BRASS", //44
-	"WOOD", //45
-	"PINE", //46
-	"BALSA", //47
-	"OAK", //48
-	"MAPLE",//49
-	"REDWOOD", //50
-	"HICKORY", //51
-	"SCALES", //52
-	"FUR", //53
-	"LEATHER", //54
-	"HIDE", //55
-	"WOOL",//56
-	"FEATHERS",//57 
-	"COTTON", //58
-	"HEMP",//59
-	"WATER",//60
-	"SALT WATER",//61
-	"LIQUID",//62
-	"GLASS",//63
-	"PAPER",//64
-	"CLAY",//65
-	"CHINA",//66
-	"DIAMOND",//67
-	"CRYSTAL",//68
-	"GEM", //69
-	"PEARL", //70
-	"PLATINUM",//71
-	"MILK",//72
-	"EGGS",//73
-	"HOPS",//74
-	"COFFEEBEANS",//75
-	"COFFEE",//76
-	"OPAL",//77
-	"TOPAZ",//78
-	"AMETHYST",//79
-	"GARNET",//80
-	"AMBER", //81
-	"AQUAMARINE", //82
-	"CRYSOBERYL", //83
-	"IRONWOOD", //84
-	"SILK", //85
-	"COCOA", //86
-	"BLOOD", //87
-	"BONE", //88
-	"COAL", //89
-	"LAMP OIL", //90
-	"POISON", // 91
-	"LIQUOR", // 92
-	"SUGAR", // 93
-	"HONEY", // 94
-	"BARLEY", // 95
-	"MUSHROOMS", // 96
-	"HERBS", // 97
-	"VINE", // 98
-	"FLOWERS", // 99
-	"PLASTIC", // 100
-	"RUBBER", // 101
-	"EBONY", // 102
-	"IVORY", // 103
-	"WAX", // 104
-	"NUTS", // 105
-	"BREAD", // 106
-	"CRACKER", // 107
-	"YEW", // 108
-	"DUST", // 109
-	"PIPEWEED", // 110
-	"ENERGY", // 111
-	"STRAWBERRIES", // 112
-	"BLUEBERRIES", // 113
-	"RASPBERRIES", // 114
-	"BOYSENBERRIES", // 115
-	"BLACKBERRIES", // 116
-	"SMURFBERRIES", // 117
-	"PEACHES", // 118
-	"PLUMS", // 119
-	"ONIONS", // 120
-	"CHERRIES", // 121
-	"GARLIC", // 122
-	"PINEAPPLES", // 123
-	"COCONUTS", // 124
-	"BANANAS", // 125
-	"LIMES", // 126
-	"SAP", // 127
-	"ONYX", // 128
-	"TURQUOISE", // 129
-	"PERIDOT", // 130
-	"QUARTZ", // 131
-	"LAPIS", // 133
-	"BLOODSTONE", // 133
-	"MOONSTONE", // 134
-	"ALEXANDRITE", // 135
-	"TEAK", // 136
-	"CEDAR", // 137
-	"ELM", // 138
-	"CHERRYWOOD", // 139
-	"BEECHWOOD", // 140
-	"WILLOW", // 141
-	"SYCAMORE", // 142
-	"SPRUCE", // 143
-	"MESQUITE", // 144
-	"BASALT", // 145
-	"SHALE", // 146
-	"PUMICE", // 147
-	"SANDSTONE", // 148
-	"SOAPSTONE", // 149
-	"SALMON", // 150
-	"CARP", // 151
-	"TROUT", // 152
-	"SHRIMP", // 153
-	"TUNA", // 154
-	"CATFISH", // 155
-	"BAMBOO", // 156
-	"SOAP", // 157
-	"SPIDERSTEEL", // 158
-	"ASH", // 159
-	"PERFUME", // 160
-	"ATLANTITE",//161
-	"CHEESE",//162
-	"BEANS",//163
-	"CRANBERRIES", // 164
-	"DRAGONBLOOD", // 165
-	"DRAGONMEAT", // 166
-	"RUBY",// 167
-	"EMERALD",// 168
-	"SAPPHIRE",// 169
-	"AGATE",// 170
-	"CITRINE",// 171
-	"REED",// 172
-	"ALABASTER",// 173
-	"CHROMIUM",// 174
-	"WHITE_GOLD",// 175
-	"DRAGONSCALES",// 176
-	"PLASMA", // 177
-	"ELECTRICITY", // 178
-	"SYNTHETIC", // 179
-	"SLIME", // 180
-	"AIR", // 181
-	"OXYGEN", // 182
-	"HYDROGEN", // 183
-	"FLOURINE", // 184
-	"NITROGEN", // 185
-	};
+	public static enum ResourceFlag
+	{
+		BERRY,
+		FISH
+	}
 	
-	public final static String[] DEFAULT_RESOURCE_EFFECTS={
-	"", //0
-	"",  //1
-	"", //2
-	"", //3
-	"", //4
-	"", //5
-	"",//6
-	"", //7
-	"", //8
-	"", //9
-	"", //10
-	"", //11
-	"", //12
-	"",//13
-	"", //14
-	"", //15
-	"", //16
-	"", //17
-	"Prop_UseSpellCast2(Spell_ShrinkMouth)", //18
-	"", //19
-	"",//20
-	"", //21
-	"", //22
-	"", //23
-	"", //24
-	"", //25
-	"",//26
-	"", //27
-	"", //28
-	"", //29
-	"", //30
-	"", //31
-	"", //32
-	"",//33
-	"", //34
-	"", //35
-	"", //36
-	"", //37
-	"", //38
-	"", //39
-	"", //40
-	"",//41
-	"", //42
-	"", //43
-	"", //44
-	"", //45
-	"", //46
-	"", //47
-	"", //48
-	"",//49
-	"", //50
-	"", //51
-	"", //52
-	"", //53
-	"", //54
-	"", //55
-	"",//56
-	"",//57 
-	"", //58
-	"",//59
-	"",//60
-	"",//61
-	"",//62
-	"",//63
-	"",//64
-	"",//65
-	"",//66
-	"",//67
-	"",//68
-	"", //69
-	"", //70
-	"",//71
-	"",//72
-	"",//73
-	"",//74
-	"Poison_Caffeine",//75
-	"Poison_Caffeine",//76
-	"",//77
-	"",//78
-	"",//79
-	"",//80
-	"", //81
-	"", //82
-	"", //83
-	"", //84
-	"", //85
-	"", //86
-	"", //87
-	"", //88
-	"", //89
-	"L", //90
-	"", // 91
-	"", // 92
-	"", // 93
-	"", // 94
-	"", // 95
-	"", // 96
-	"", // 97
-	"", // 98
-	"", // 99
-	"", // 100
-	"", // 101
-	"", // 102
-	"", // 103
-	"", // 104
-	"", // 105
-	"", // 106
-	"", // 107
-	"", // 108
-	"", // 109
-	"", // 110
-	"", // 111
-	"", // 112
-	"", // 113
-	"", // 114
-	"", // 115
-	"", // 116
-	"", // 117
-	"", // 118
-	"", // 119
-	"", // 120
-	"", // 121
-	"", // 122
-	"", // 123
-	"", // 124
-	"", // 125
-	"", // 126
-	"", // 127
-	"", // 128
-	"", // 129
-	"", // 130
-	"", // 131
-	"", // 133
-	"", // 133
-	"", // 134
-	"", // 135
-	"", // 136
-	"", // 137
-	"", // 138
-	"", // 139
-	"", // 140
-	"", // 141
-	"", // 142
-	"", // 143
-	"", // 144
-	"", // 145
-	"", // 146
-	"", // 147
-	"", // 148
-	"", // 149
-	"", // 150
-	"", // 151
-	"", // 152
-	"", // 153
-	"", // 154
-	"", // 155
-	"", // 156
-	"", // 157
-	"", // 158
-	"", // 159
-	"", // 160
-	"",//161
-	"",//162
-	"",//163
-	"", // 164
-	"Prop_UseSpellCast2(Prayer_MinorInfusion)", //165
-	"", //166
-	"",// 167
-	"",// 168
-	"",// 169
-	"",// 170
-	"",// 171
-	"",// 172
-	"",// 173
-	"",// 174
-	"",// 175
-	"",// 176
-	"",// 177
-	"",// 178
-	"",// 179
-	"Prop_UseSpellCast2(Spell_AcidSpray)",// 180
-	"", // 181
-	"", // 182
-	"", // 183
-	"", // 184
-	"" // 185
-	};
-	
-	public final static int RSCDATAINDX_CODE=0;
-	public final static int RSCDATAINDX_VALUE=1;
-	public final static int RSCDATAINDX_FREQ=2;
-	public final static int RSCDATAINDX_HARDNESS=3;
-	public final static int RSCDATAINDX_BOUANCY=4;
-	
-	public final static int[][] DEFAULT_RESOURCE_DATA={ 
-	// full code, base value, frequency, hardness (1-10), bouancy
-	{RESOURCE_NOTHING,  	   0,    0,    0,    0},
-	{RESOURCE_MEAT, 		   4,   20,    1, 3000},
-	{RESOURCE_BEEF, 		   6,   20,    1, 3000},
-	{RESOURCE_PORK, 		   8,   20,    1, 2500},
-	{RESOURCE_POULTRY,  	   3,   20,    1, 2000},
-	{RESOURCE_MUTTON,   	   4,   20,    1, 2800},
-	{RESOURCE_FISH, 		   5,  100,    1,  590},
-	{RESOURCE_WHEAT,		   1,   20,    1,  770},
-	{RESOURCE_CORN, 		   1,   20,    1,  720},
-	{RESOURCE_RICE, 		   1,   20,    1,  750},
-	{RESOURCE_CARROTS,  	   1,    5,    1,  720},
-	{RESOURCE_TOMATOES, 	   1,    5,    1,  640},
-	{RESOURCE_PEPPERS,  	   1,    5,    1,  640},
-	{RESOURCE_GREENS,   	   1,    5,    1,  540},
-	{RESOURCE_FRUIT,		   2,   10,    1,  720},
-	{RESOURCE_APPLES,   	   2,   10,    1,  640},
-	{RESOURCE_BERRIES,  	   2,   15,    1,  720},
-	{RESOURCE_ORANGES,  	   2,   10,    1,  640},
-	{RESOURCE_LEMONS,   	   2,   10,    1,  480},
-	{RESOURCE_GRAPES,   	   3,    5,    1,  680},
-	{RESOURCE_OLIVES,   	   2,    5,    1,  640},
-	{RESOURCE_POTATOES, 	   1,    5,    1,  770},
-	{RESOURCE_CACTUS,   	   2,    5,    1,  680},
-	{RESOURCE_DATES,		   2,    2,    1,  720},
-	{RESOURCE_SEAWEED,  	   1,   50,    1,  540},
-	{RESOURCE_STONE,		   1,   80,    5, 2500},
-	{RESOURCE_LIMESTONE,	   1,   20,    4, 1550},
-	{RESOURCE_FLINT,		   1,   10,    4, 2600},
-	{RESOURCE_GRANITE,  	   2,   10,    6, 2690},
-	{RESOURCE_OBSIDIAN, 	  10,    5,    6, 2650},
-	{RESOURCE_MARBLE,   	  20,    5,    5, 2560},
-	{RESOURCE_SAND, 		   1,   50,    1, 1600},
-	{RESOURCE_JADE, 		  50,    2,    5, 3800},
-	{RESOURCE_IRON, 		  20,   10,    6, 7900},
-	{RESOURCE_LEAD, 		  10,   10,    4,11300},
-	{RESOURCE_BRONZE,   	  10,   10,    5, 8100},
-	{RESOURCE_SILVER,   	  30,    2,    5,10500},
-	{RESOURCE_GOLD, 		 150,    1,    5,19320},
-	{RESOURCE_ZINC, 		  10,    5,    5, 7100},
-	{RESOURCE_COPPER,   	  10,   10,    5, 8900},
-	{RESOURCE_TIN,  		  10,   10,    4, 7300},
-	{RESOURCE_MITHRIL,  	 100,    1,    9, 3990},
-	{RESOURCE_ADAMANTITE,    175,    1,   10, 4500},
-	{RESOURCE_STEEL,		  75,    0,    8, 7840},
-	{RESOURCE_BRASS,		 120,    0,    6, 5500},
-	{RESOURCE_WOOD, 		   2,   10,    3,  920},
-	{RESOURCE_PINE, 		   4,   10,    3,  650},
-	{RESOURCE_BALSA,		   1,    5,    2,  130},
-	{RESOURCE_OAK,  		   5,   10,    3,  720},
-	{RESOURCE_MAPLE,		  10,    5,    3,  689},
-	{RESOURCE_REDWOOD,  	  20,    2,    3,  450},
-	{RESOURCE_HICKORY,  	   5,    5,    3,  830},
-	{RESOURCE_SCALES,   	  10,   20,    4, 1800},
-	{RESOURCE_FUR,  		  20,   20,    2,  890},
-	{RESOURCE_LEATHER,  	  10,   20,    2,  945},
-	{RESOURCE_HIDE, 		   4,   20,    2,  920},
-	{RESOURCE_WOOL, 		  10,   20,    1, 1310},
-	{RESOURCE_FEATHERS, 	  10,   20,    1,   20},
-	{RESOURCE_COTTON,   	   5,   20,    1,  590},
-	{RESOURCE_HEMP, 		   4,   10,    1,  720},
-	{RESOURCE_FRESHWATER,      0,  100,    0, 1000},
-	{RESOURCE_SALTWATER,	   0,  100,    0, 1030},
-	{RESOURCE_DRINKABLE,	   0,    1,    0, 1000},
-	{RESOURCE_GLASS,		  10,    0,    3, 2800},
-	{RESOURCE_PAPER,		  10,    0,    0,  920},
-	{RESOURCE_CLAY, 		   1,   50,    1, 1750},
-	{RESOURCE_CHINA,		  30,    0,    3, 2400},
-	{RESOURCE_DIAMOND,  	 500,    1,    9, 3510},
-	{RESOURCE_CRYSTAL,  	  10,    5,    3, 2200},
-	{RESOURCE_GEM,  		 100,    1,    3, 3500},
-	{RESOURCE_PEARL,		 380,    1,    4, 2000},
-	{RESOURCE_PLATINUM, 	  80,    1,    6,21450},
-	{RESOURCE_MILK, 		   2,   10,    0, 1020},
-	{RESOURCE_EGGS, 		   2,   10,    0, 1120},
-	{RESOURCE_HOPS, 		   2,   20,    1,  340},
-	{RESOURCE_COFFEEBEANS,     2,   10,    1,  560},
-	{RESOURCE_COFFEE,   	   0,   10,    0,  430},
-	{RESOURCE_OPAL, 		  80,    2,    5, 2250},
-	{RESOURCE_TOPAZ,		 200,    2,    5, 3570},
-	{RESOURCE_AMETHYST, 	 300,    2,    5, 2651},
-	{RESOURCE_GARNET,   	  70,    2,    5, 3870},
-	{RESOURCE_AMBER,		  80,    5,    5, 2500},
-	{RESOURCE_AQUAMARINE,     50,    2,    5, 2800},
-	{RESOURCE_CRYSOBERYL,     50,    2,    5, 2800},
-	{RESOURCE_IRONWOOD, 	  25,    5,    4,  990},
-	{RESOURCE_SILK, 		 200,    5,    1, 1100},
-	{RESOURCE_COCOA,		   4,    5,    0,  590},
-	{RESOURCE_BLOOD,		   1,  100,    0, 1025},
-	{RESOURCE_BONE, 		   1,  100,    5, 1600},
-	{RESOURCE_COAL, 		   1,   50,    1, 1800},
-	{RESOURCE_LAMPOIL,  	   1,   10,    1,  880},
-	{RESOURCE_POISON,   	   1,    1,    1, 1000},
-	{RESOURCE_LIQUOR,   	  10,    1,    1,  790},
-	{RESOURCE_SUGAR,		   1,   50,    1, 1600},
-	{RESOURCE_HONEY,		   1,   50,    1, 1600},
-	{RESOURCE_BARLEY,   	   1,   20,    1,  610},
-	{RESOURCE_MUSHROOMS,	   1,   20,    1,  500},
-	{RESOURCE_HERBS,		   1,   10,    1,  770},
-	{RESOURCE_VINE, 		   1,   10,    1,  880},
-	{RESOURCE_FLOWERS,  	   1,   10,    1,  720},
-	{RESOURCE_PLASTIC,  	  25,    0,    4,  950},
-	{RESOURCE_RUBBER,   	  25,    0,    1, 1506},
-	{RESOURCE_EBONY,		   5,    5,    5, 2910},
-	{RESOURCE_IVORY,		   5,    5,    3, 1840},
-	{RESOURCE_WAX,  		   1,    0,    0,  900},
-	{RESOURCE_NUTS, 		   0,   20,    0,  640},
-	{RESOURCE_BREAD,		   3,    0,    0,  660},
-	{RESOURCE_CRACKER,  	   2,    0,    0,  200},
-	{RESOURCE_YEW,  		  15,    2,    5,  850},
-	{RESOURCE_DUST, 		   0,   20,    0, 1120},
-	{RESOURCE_PIPEWEED, 	   3,   10,    1,  320},
-	{RESOURCE_ENERGY,   	  30,    0,    4,    0},
-	{RESOURCE_STRAWBERRIES,   10,    1,    1,  750},
-	{RESOURCE_BLUEBERRIES,    10,    1,    1,  750},
-	{RESOURCE_RASPBERRIES,    10,    1,    1,  750},
-	{RESOURCE_BOYSENBERRIES,  10,    1,    1,  750},
-	{RESOURCE_BLACKBERRIES,   10,    1,    1,  750},
-	{RESOURCE_SMURFBERRIES,   10,    1,    1,  750},
-	{RESOURCE_PEACHES,  	  10,    1,    1,  700},
-	{RESOURCE_PLUMS,		  10,    1,    1,  710},
-	{RESOURCE_ONIONS,   	  10,    1,    1,  760},
-	{RESOURCE_CHERRIES, 	  10,    1,    1,  810},
-	{RESOURCE_GARLIC,   	  10,    1,    1,  815},
-	{RESOURCE_PINEAPPLES,     10,    1,    1,  500},
-	{RESOURCE_COCONUTS, 	  10,    1,    2,  250},
-	{RESOURCE_BANANAS,  	  10,    1,    1,  790},
-	{RESOURCE_LIMES,		  10,    1,    1,  690},
-	{RESOURCE_SAP,  		  10,    1,    1, 1600},
-	{RESOURCE_ONYX, 		  70,    1,    8, 3300},
-	{RESOURCE_TURQUIOSE,	  70,    1,    8, 3300},
-	{RESOURCE_PERIDOT,  	  65,    1,    6, 3300},
-	{RESOURCE_QUARTZ,   	  25,    1,    5, 3300},
-	{RESOURCE_LAPIS,		  70,    1,    6, 3300},
-	{RESOURCE_BLOODSTONE,     85,    1,    8, 3300},
-	{RESOURCE_MOONSTONE,	  90,    1,    8, 3300},
-	{RESOURCE_ALEXANDRITE,    95,    1,    9, 3300},
-	{RESOURCE_TEAK, 		  20,    2,    3, 1000},
-	{RESOURCE_CEDAR,		  15,    2,    3,  900},
-	{RESOURCE_ELM,  		  15,    2,    3, 1100},
-	{RESOURCE_CHERRYWOOD,     17,    2,    3,  900},
-	{RESOURCE_BEECHWOOD,	  12,    2,    3,  975},
-	{RESOURCE_WILLOW,   	  12,    2,    1, 1000},
-	{RESOURCE_SYCAMORE, 	  11,    2,    2, 1000},
-	{RESOURCE_SPRUCE,   	  12,    2,    3,  990},
-	{RESOURCE_MESQUITE, 	   9,    2,    3, 1150},
-	{RESOURCE_BASALT,   	  10,    2,    4, 3300},
-	{RESOURCE_SHALE,		   5,    2,    2, 1200},
-	{RESOURCE_PUMICE,   	   5,    2,    4,  600},
-	{RESOURCE_SANDSTONE,	  10,    2,    2, 3500},
-	{RESOURCE_SOAPSTONE,	  60,    2,    5, 3600},
-	{RESOURCE_SALMON,   	   6,    1,    1, 1000},
-	{RESOURCE_CARP, 		   6,    1,    1, 1000},
-	{RESOURCE_TROUT,		   6,    1,    1, 1000},
-	{RESOURCE_SHRIMP,   	   6,    1,    1, 1000},
-	{RESOURCE_TUNA, 		   6,    1,    1, 1000},
-	{RESOURCE_CATFISH,  	   6,    1,    1, 1000},
-	{RESOURCE_BAMBOO,   	  15,   10,    4,  120},
-	{RESOURCE_SOAP, 		   1,    0,    1,  430},
-	{RESOURCE_SPIDERSTEEL,   150,    0,    2,  630},
-	{RESOURCE_ASH,  		   1,    0,    0,   50},
-	{RESOURCE_PERFUME,  	   1,    1,    1, 1000},
-	{RESOURCE_ATLANTEANSTEEL,200,    1,    6,  850},
-	{RESOURCE_CHEESE,   	  25,    0,    1,  640},
-	{RESOURCE_BEANS,		   1,   15,    1,  750},
-	{RESOURCE_CRANBERRIES,    10,    1,    1,  750},
-	{RESOURCE_DRAGONBLOOD,    10,  100,    0, 1025},
-	{RESOURCE_DRAGONMEAT,     40,   20,    1, 3000},
-	{RESOURCE_RUBY, 		 300,    1,    3, 3500},
-	{RESOURCE_EMERALD,  	 200,    1,    3, 3500},
-	{RESOURCE_SAPPHIRE, 	 180,    1,    3, 3500},
-	{RESOURCE_AGATE,		 100,    1,    3, 3500},
-	{RESOURCE_CITRINE,  	 100,    1,    3, 3500},
-	{RESOURCE_REED, 		   1,   50,    3,  830},
-	{RESOURCE_ALABASTER,	   5,   10,    4, 1550},
-	{RESOURCE_CHROMIUM, 	  80,    1,    6, 1550},
-	{RESOURCE_WHITE_GOLD,    150,    1,    5, 1450},
-	{RESOURCE_DRAGONSCALES,   50,    1,    6,  800},
-	{RESOURCE_PLASMA,  	 	 100,    0,    0,    0},
-	{RESOURCE_ELECTRICITY,   100,    0,    0,    0},
-	{RESOURCE_DEUTERIUM,     100,    0,    0,    0},
-	{RESOURCE_SLIME,  		   5,   10,    1,  750},
-	{RESOURCE_AIR,			   0,  100,    0,    0},
-	{RESOURCE_OXYGEN,		  10,  100,    0,    0},
-	{RESOURCE_HYDROGEN,		  20,  100,    0,    0},
-	{RESOURCE_FLOURINE,		  60,   40,    0,    0},
-	{RESOURCE_NITROGEN,		  10,  100,    0,    0},
-	};
-	// full code, base value, frequency, hardness (1-10), bouancy
-	
-	public static final int[] DEFAULT_FISHES={
-	RESOURCE_FISH,
-	RESOURCE_SALMON,
-	RESOURCE_CARP,
-	RESOURCE_TROUT,
-	RESOURCE_SHRIMP,
-	RESOURCE_TUNA,
-	RESOURCE_CATFISH
-	};
-	
-	public static final int[] DEFAULT_BERRIES={
-	RESOURCE_BERRIES,
-	RESOURCE_STRAWBERRIES,
-	RESOURCE_BLUEBERRIES,
-	RESOURCE_RASPBERRIES,
-	RESOURCE_BOYSENBERRIES,
-	RESOURCE_BLACKBERRIES,
-	RESOURCE_SMURFBERRIES,
-	RESOURCE_CRANBERRIES
-	};
-	
-	public final static String[] DEFAULT_RESOURCE_SMELLS={
-		"",//RESOURCE_NOTHING 
-		"",//RESOURCE_MEAT 
-		"",//RESOURCE_BEEF 
-		"",//RESOURCE_PORK 
-		"",//RESOURCE_POULTRY 
-		"",//RESOURCE_MUTTON 
-		"strong fishy",//RESOURCE_FISH 
-		"",//RESOURCE_WHEAT 
-		"",//RESOURCE_CORN 
-		"",//RESOURCE_RICE 
-		"",//RESOURCE_CARROTS 
-		"",//RESOURCE_TOMATOES 
-		"spicy",//RESOURCE_PEPPERS 
-		"very mild",//RESOURCE_GREENS 
-		"sweet and fruity",//RESOURCE_FRUIT 
-		"sweet apply",//RESOURCE_APPLES 
-		"sweet berry",//RESOURCE_BERRIES 
-		"citrusy",//RESOURCE_ORANGES 
-		"strong citrusy",//RESOURCE_LEMONS 
-		"mild sweet",//RESOURCE_GRAPES 
-		"pickly olive",//RESOURCE_OLIVES 
-		"",//RESOURCE_POTATOES 
-		"",//RESOURCE_CACTUS 
-		"sweet plumy",//RESOURCE_DATES 
-		"",//RESOURCE_SEAWEED 
-		"mild musty",//RESOURCE_STONE 
-		"",//RESOURCE_LIMESTONE 
-		"",//RESOURCE_FLINT 
-		"",//RESOURCE_GRANITE 
-		"",//RESOURCE_OBSIDIAN 
-		"",//RESOURCE_MARBLE 
-		"",//RESOURCE_SAND 
-		"",//RESOURCE_JADE 
-		"",//RESOURCE_IRON 
-		"",//RESOURCE_LEAD 
-		"",//RESOURCE_BRONZE 
-		"",//RESOURCE_SILVER 
-		"",//RESOURCE_GOLD 
-		"",//RESOURCE_ZINC 
-		"",//RESOURCE_COPPER 
-		"",//RESOURCE_TIN 
-		"",//RESOURCE_MITHRIL 
-		"",//RESOURCE_ADAMANTITE 
-		"",//RESOURCE_STEEL 
-		"",//RESOURCE_BRASS 
-		"",//RESOURCE_WOOD 
-		"fresh, clean piney",//RESOURCE_PINE 
-		"",//RESOURCE_BALSA 
-		"rich oaky",//RESOURCE_OAK 
-		"mild maply",//RESOURCE_MAPLE 
-		"",//RESOURCE_REDWOOD 
-		"",//RESOURCE_HICKORY 
-		"",//RESOURCE_SCALES 
-		"musky",//RESOURCE_FUR 
-		"strong leathery",//RESOURCE_LEATHER 
-		"mild stinky",//RESOURCE_HIDE 
-		"",//RESOURCE_WOOL 
-		"",//RESOURCE_FEATHERS 
-		"",//RESOURCE_COTTON 
-		"grassy",//RESOURCE_HEMP 
-		"",//RESOURCE_FRESHWATER 
-		"",//RESOURCE_SALTWATER 
-		"",//RESOURCE_DRINKABLE 
-		"",//RESOURCE_GLASS 
-		"",//RESOURCE_PAPER
-		"mild dusty",//RESOURCE_CLAY 
-		"",//RESOURCE_CHINA 
-		"",//RESOURCE_DIAMOND 
-		"",//RESOURCE_CRYSTAL 
-		"",//RESOURCE_GEM 
-		"",//RESOURCE_PEARL 
-		"",//RESOURCE_PLATINUM 
-		"mild milky",//RESOURCE_MILK 
-		"",//RESOURCE_EGGS 
-		"mild grainy",//RESOURCE_HOPS 
-		"mild coffee",//RESOURCE_COFFEEBEANS 
-		"rich coffee",//RESOURCE_COFFEE 
-		"",//RESOURCE_OPAL 
-		"",//RESOURCE_TOPAZ 
-		"",//RESOURCE_AMETHYST 
-		"",//RESOURCE_GARNET 
-		"",//RESOURCE_AMBER 
-		"",//RESOURCE_AQUAMARINE 
-		"",//RESOURCE_CRYSOBERYL 
-		"",//RESOURCE_IRONWOOD
-		"",//RESOURCE_SILK
-		"",//RESOURCE_COCOA
-		"strong salty",//RESOURCE_BLOOD
-		"",//RESOURCE_BONE
-		"chalky",//RESOURCE_COAL
-		"light oily",//RESOURCE_LAMPOIL
-		"",//RESOURCE_POISON
-		"alcohol",//RESOURCE_LIQUOR
-		"",//RESOURCE_SUGAR 
-		"",//RESOURCE_HONEY 
-		"",//RESOURCE_BARLEY 
-		"",//RESOURCE_MUSHROOMS
-		"fresh herbal",//RESOURCE_HERBS
-		"rich green",//RESOURCE_VINE
-		"nice floral",//RESOURCE_FLOWERS
-		"",//RESOURCE_PLASTIC 
-		"sour rubbery",//RESOURCE_RUBBER 
-		"",//RESOURCE_EBONY 
-		"",//RESOURCE_IVORY 
-		"",//RESOURCE_WAX 
-		"mild nutty",//RESOURCE_NUTS 
-		"",//RESOURCE_BREAD 
-		"",//RESOURCE_CRACKER 
-		"",//RESOURCE_YEW 
-		"dusty",//RESOURCE_DUST 
-		"strong grassy",//RESOURCE_PIPEWEED 
-		"",//RESOURCE_ENERGY 
-		"sweet berry",//RESOURCE_STRAWBERRIES
-		"sweet berry",//RESOURCE_BLUEBERRIES	
-		"sweet berry",//RESOURCE_RASPBERRIES	
-		"sweet berry",//RESOURCE_BOYSENBERRIES    
-		"sweet berry",//RESOURCE_BLACKBERRIES    
-		"sweet berry",//RESOURCE_SMURFBERRIES    
-		"peachy",//RESOURCE_PEACHES    
-		"sweey plumy",//RESOURCE_PLUMS    
-		"stinging oniony",//RESOURCE_ONIONS    
-		"cherry",//RESOURCE_CHERRIES	
-		"",//RESOURCE_GARLIC	
-		"fruity",//RESOURCE_PINEAPPLES    
-		"",//RESOURCE_COCONUTS    
-		"pungent banana",//RESOURCE_BANANAS    
-		"citrusy",//RESOURCE_LIMES    
-		"strong maply",//RESOURCE_SAP    
-		"",//RESOURCE_ONYX    
-		"",//RESOURCE_TURQUIOSE    
-		"",//RESOURCE_PERIDOT    
-		"",//RESOURCE_QUARTZ	
-		"",//RESOURCE_LAPIS    
-		"",//RESOURCE_BLOODSTONE	
-		"",//RESOURCE_MOONSTONE    
-		"",//RESOURCE_ALEXANDRITE    
-		"",//RESOURCE_TEAK    
-		"strong cedar",//RESOURCE_CEDAR    
-		"",//RESOURCE_ELM    
-		"",//RESOURCE_CHERRYWOOD	
-		"",//RESOURCE_BEECHWOOD    
-		"",//RESOURCE_WILLOW	
-		"",//RESOURCE_SYCAMORE    
-		"",//RESOURCE_SPRUCE	
-		"rich mesquite",//RESOURCE_MESQUITE    
-		"",//RESOURCE_BASALT	
-		"",//RESOURCE_SHALE    
-		"",//RESOURCE_PUMICE	
-		"",//RESOURCE_SANDSTONE    
-		"",//RESOURCE_SOAPSTONE    
-		"strong fishy",//RESOURCE_SALMON	
-		"strong fishy",//RESOURCE_CARP    
-		"strong fishy",//RESOURCE_TROUT    
-		"mild fishy",//RESOURCE_SHRIMP    
-		"strong fishy",//RESOURCE_TUNA    
-		"strong fishy",//RESOURCE_CATFISH    
-		"",//RESOURCE_BAMBOO	
-		"light fragrant",//RESOURCE_SOAP 
-		"",//RESOURCE_SPIDERSTEEL 
-		"dusty",//RESOURCE_ASH 
-		"strong fragrant",//RESOURCE_PERFUME
-		"",//RESOURCE_ATLANTEANSTEEL
-		"mild cheesy",
-		"",
-		"sweet berry",//RESOURCE_CRANERRIES  
-		"mild salty",//RESOURCE_DRAGONBLOOD
-		"mild salty",//RESOURCE_DRAGONMEAT
-		"",//RESOURCE_RUBY 
-		"",//RESOURCE_EMERALD 
-		"",//RESOURCE_SAPPHIRE 
-		"",//RESOURCE_AGATE 
-		"",//RESOURCE_CITRINE 
-		"",//RESOURCE_REED 
-		"",//RESOURCE_ALABASTER 
-		"",//RESOURCE_CHROMIUM
-		"",//RESOURCE_WHITE_GOLD
-		"",//RESOURCE_DRAGONSCALES
-		"",//RESOURCE_PLASMA
-		"",//RESOURCE_ELECTRICITY
-		"",//RESOURCE_DEUTERIUM
-		"horridly acidic",//RESOURCE_SLIME  
-		"",//RESOURCE_AIR
-		"",//RESOURCE_OXYGEN
-		"",//RESOURCE_HYDROGEN
-		"strong pungent smell",//RESOURCE_FLOURINE
-		"",//RESOURCE_NITROGEN
-		};
+	public static enum DefResource
+	{
+		NOTHING(RESOURCE_NOTHING,0,0,0,0,"","",null),
+		MEAT(RESOURCE_MEAT,4,20,1,3000,"","",null),
+		BEEF(RESOURCE_BEEF,6,20,1,3000,"","",null),
+		PORK(RESOURCE_PORK,8,20,1,2500,"","",null),
+		POULTRY(RESOURCE_POULTRY,3,20,1,2000,"","",null),
+		MUTTON(RESOURCE_MUTTON,4,20,1,2800,"","",null),
+		FISH(RESOURCE_FISH,5,100,1,590,"strong fishy","",ResourceFlag.FISH),
+		WHEAT(RESOURCE_WHEAT,1,20,1,770,"","",null),
+		CORN(RESOURCE_CORN,1,20,1,720,"","",null),
+		RICE(RESOURCE_RICE,1,20,1,750,"","",null),
+		CARROTS(RESOURCE_CARROTS,1,5,1,720,"","",null),
+		TOMATOES(RESOURCE_TOMATOES,1,5,1,640,"","",null),
+		PEPPERS(RESOURCE_PEPPERS,1,5,1,640,"spicy","",null),
+		GREENS(RESOURCE_GREENS,1,5,1,540,"very mild","",null),
+		FRUIT(RESOURCE_FRUIT,2,10,1,720,"sweet and fruity","",null),
+		APPLES(RESOURCE_APPLES,2,10,1,640,"sweet apply","",null),
+		BERRIES(RESOURCE_BERRIES,2,15,1,720,"sweet berry","",ResourceFlag.BERRY),
+		ORANGES(RESOURCE_ORANGES,2,10,1,640,"citrusy","",null),
+		LEMONS(RESOURCE_LEMONS,2,10,1,480,"strong citrusy","Prop_UseSpellCast2(Spell_ShrinkMouth)",null),
+		GRAPES(RESOURCE_GRAPES,3,5,1,680,"mild sweet","",null),
+		OLIVES(RESOURCE_OLIVES,2,5,1,640,"pickly olive","",null),
+		POTATOES(RESOURCE_POTATOES,1,5,1,770,"","",null),
+		CACTUS(RESOURCE_CACTUS,2,5,1,680,"","",null),
+		DATES(RESOURCE_DATES,2,2,1,720,"sweet plumy","",null),
+		SEAWEED(RESOURCE_SEAWEED,1,50,1,540,"","",null),
+		STONE(RESOURCE_STONE,1,80,5,2500,"mild musty","",null),
+		LIMESTONE(RESOURCE_LIMESTONE,1,20,4,1550,"","",null),
+		FLINT(RESOURCE_FLINT,1,10,4,2600,"","",null),
+		GRANITE(RESOURCE_GRANITE,2,10,6,2690,"","",null),
+		OBSIDIAN(RESOURCE_OBSIDIAN,10,5,6,2650,"","",null),
+		MARBLE(RESOURCE_MARBLE,20,5,5,2560,"","",null),
+		SAND(RESOURCE_SAND,1,50,1,1600,"","",null),
+		JADE(RESOURCE_JADE,50,2,5,3800,"","",null),
+		IRON(RESOURCE_IRON,20,10,6,7900,"","",null),
+		LEAD(RESOURCE_LEAD,10,10,4,11300,"","",null),
+		BRONZE(RESOURCE_BRONZE,10,10,5,8100,"","",null),
+		SILVER(RESOURCE_SILVER,30,2,5,10500,"","",null),
+		GOLD(RESOURCE_GOLD,150,1,5,19320,"","",null),
+		ZINC(RESOURCE_ZINC,10,5,5,7100,"","",null),
+		COPPER(RESOURCE_COPPER,10,10,5,8900,"","",null),
+		TIN(RESOURCE_TIN,10,10,4,7300,"","",null),
+		MITHRIL(RESOURCE_MITHRIL,100,1,9,3990,"","",null),
+		ADAMANTITE(RESOURCE_ADAMANTITE,175,1,10,4500,"","",null),
+		STEEL(RESOURCE_STEEL,75,0,8,7840,"","",null),
+		BRASS(RESOURCE_BRASS,120,0,6,5500,"","",null),
+		WOOD(RESOURCE_WOOD,2,10,3,920,"","",null),
+		PINE(RESOURCE_PINE,4,10,3,650,"fresh, clean piney","",null),
+		BALSA(RESOURCE_BALSA,1,5,2,130,"","",null),
+		OAK(RESOURCE_OAK,5,10,3,720,"rich oaky","",null),
+		MAPLE(RESOURCE_MAPLE,10,5,3,689,"mild maply","",null),
+		REDWOOD(RESOURCE_REDWOOD,20,2,3,450,"","",null),
+		HICKORY(RESOURCE_HICKORY,5,5,3,830,"","",null),
+		SCALES(RESOURCE_SCALES,10,20,4,1800,"","",null),
+		FUR(RESOURCE_FUR,20,20,2,890,"musky","",null),
+		LEATHER(RESOURCE_LEATHER,10,20,2,945,"strong leathery","",null),
+		HIDE(RESOURCE_HIDE,4,20,2,920,"mild stinky","",null),
+		WOOL(RESOURCE_WOOL,10,20,1,1310,"","",null),
+		FEATHERS(RESOURCE_FEATHERS,10,20,1,20,"","",null),
+		COTTON(RESOURCE_COTTON,5,20,1,590,"","",null),
+		HEMP(RESOURCE_HEMP,4,10,1,720,"grassy","",null),
+		WATER(RESOURCE_FRESHWATER,0,100,0,1000,"","",null),
+		SALT_WATER(RESOURCE_SALTWATER,0,100,0,1030,"","",null),
+		LIQUID(RESOURCE_DRINKABLE,0,1,0,1000,"","",null),
+		GLASS(RESOURCE_GLASS,10,0,3,2800,"","",null),
+		PAPER(RESOURCE_PAPER,10,0,0,920,"","",null),
+		CLAY(RESOURCE_CLAY,1,50,1,1750,"mild dusty","",null),
+		CHINA(RESOURCE_CHINA,30,0,3,2400,"","",null),
+		DIAMOND(RESOURCE_DIAMOND,500,1,9,3510,"","",null),
+		CRYSTAL(RESOURCE_CRYSTAL,10,5,3,2200,"","",null),
+		GEM(RESOURCE_GEM,100,1,3,3500,"","",null),
+		PEARL(RESOURCE_PEARL,380,1,4,2000,"","",null),
+		PLATINUM(RESOURCE_PLATINUM,80,1,6,21450,"","",null),
+		MILK(RESOURCE_MILK,2,10,0,1020,"mild milky","",null),
+		EGGS(RESOURCE_EGGS,2,10,0,1120,"","",null),
+		HOPS(RESOURCE_HOPS,2,20,1,340,"mild grainy","",null),
+		COFFEEBEANS(RESOURCE_COFFEEBEANS,2,10,1,560,"mild coffee","Poison_Caffeine",null),
+		COFFEE(RESOURCE_COFFEE,0,10,0,430,"rich coffee","Poison_Caffeine",null),
+		OPAL(RESOURCE_OPAL,80,2,5,2250,"","",null),
+		TOPAZ(RESOURCE_TOPAZ,200,2,5,3570,"","",null),
+		AMETHYST(RESOURCE_AMETHYST,300,2,5,2651,"","",null),
+		GARNET(RESOURCE_GARNET,70,2,5,3870,"","",null),
+		AMBER(RESOURCE_AMBER,80,5,5,2500,"","",null),
+		AQUAMARINE(RESOURCE_AQUAMARINE,50,2,5,2800,"","",null),
+		CRYSOBERYL(RESOURCE_CRYSOBERYL,50,2,5,2800,"","",null),
+		IRONWOOD(RESOURCE_IRONWOOD,25,5,4,990,"","",null),
+		SILK(RESOURCE_SILK,200,5,1,1100,"","",null),
+		COCOA(RESOURCE_COCOA,4,5,0,590,"","",null),
+		BLOOD(RESOURCE_BLOOD,1,100,0,1025,"strong salty","",null),
+		BONE(RESOURCE_BONE,1,100,5,1600,"","",null),
+		COAL(RESOURCE_COAL,1,50,1,1800,"chalky","",null),
+		LAMP_OIL(RESOURCE_LAMPOIL,1,10,1,880,"light oily","L",null),
+		POISON(RESOURCE_POISON,1,1,1,1000,"","",null),
+		LIQUOR(RESOURCE_LIQUOR,10,1,1,790,"alcohol","",null),
+		SUGAR(RESOURCE_SUGAR,1,50,1,1600,"","",null),
+		HONEY(RESOURCE_HONEY,1,50,1,1600,"","",null),
+		BARLEY(RESOURCE_BARLEY,1,20,1,610,"","",null),
+		MUSHROOMS(RESOURCE_MUSHROOMS,1,20,1,500,"","",null),
+		HERBS(RESOURCE_HERBS,1,10,1,770,"fresh herbal","",null),
+		VINE(RESOURCE_VINE,1,10,1,880,"rich green","",null),
+		FLOWERS(RESOURCE_FLOWERS,1,10,1,720,"nice floral","",null),
+		PLASTIC(RESOURCE_PLASTIC,25,0,4,950,"","",null),
+		RUBBER(RESOURCE_RUBBER,25,0,1,1506,"sour rubbery","",null),
+		EBONY(RESOURCE_EBONY,5,5,5,2910,"","",null),
+		IVORY(RESOURCE_IVORY,5,5,3,1840,"","",null),
+		WAX(RESOURCE_WAX,1,0,0,900,"","",null),
+		NUTS(RESOURCE_NUTS,0,20,0,640,"mild nutty","",null),
+		BREAD(RESOURCE_BREAD,3,0,0,660,"","",null),
+		CRACKER(RESOURCE_CRACKER,2,0,0,200,"","",null),
+		YEW(RESOURCE_YEW,15,2,5,850,"","",null),
+		DUST(RESOURCE_DUST,0,20,0,1120,"dusty","",null),
+		PIPEWEED(RESOURCE_PIPEWEED,3,10,1,320,"strong grassy","",null),
+		ENERGY(RESOURCE_ENERGY,30,0,4,0,"","",null),
+		STRAWBERRIES(RESOURCE_STRAWBERRIES,10,1,1,750,"sweet berry","",ResourceFlag.BERRY),
+		BLUEBERRIES(RESOURCE_BLUEBERRIES,10,1,1,750,"sweet berry","",ResourceFlag.BERRY),
+		RASPBERRIES(RESOURCE_RASPBERRIES,10,1,1,750,"sweet berry","",ResourceFlag.BERRY),
+		BOYSENBERRIES(RESOURCE_BOYSENBERRIES,10,1,1,750,"sweet berry","",ResourceFlag.BERRY),
+		BLACKBERRIES(RESOURCE_BLACKBERRIES,10,1,1,750,"sweet berry","",ResourceFlag.BERRY),
+		SMURFBERRIES(RESOURCE_SMURFBERRIES,10,1,1,750,"sweet berry","",ResourceFlag.BERRY),
+		PEACHES(RESOURCE_PEACHES,10,1,1,700,"peachy","",null),
+		PLUMS(RESOURCE_PLUMS,10,1,1,710,"sweey plumy","",null),
+		ONIONS(RESOURCE_ONIONS,10,1,1,760,"stinging oniony","",null),
+		CHERRIES(RESOURCE_CHERRIES,10,1,1,810,"cherry","",null),
+		GARLIC(RESOURCE_GARLIC,10,1,1,815,"","",null),
+		PINEAPPLES(RESOURCE_PINEAPPLES,10,1,1,500,"fruity","",null),
+		COCONUTS(RESOURCE_COCONUTS,10,1,2,250,"","",null),
+		BANANAS(RESOURCE_BANANAS,10,1,1,790,"pungent banana","",null),
+		LIMES(RESOURCE_LIMES,10,1,1,690,"citrusy","",null),
+		SAP(RESOURCE_SAP,10,1,1,1600,"strong maply","",null),
+		ONYX(RESOURCE_ONYX,70,1,8,3300,"","",null),
+		TURQUOISE(RESOURCE_TURQUOISE,70,1,8,3300,"","",null),
+		PERIDOT(RESOURCE_PERIDOT,65,1,6,3300,"","",null),
+		QUARTZ(RESOURCE_QUARTZ,25,1,5,3300,"","",null),
+		LAPIS(RESOURCE_LAPIS,70,1,6,3300,"","",null),
+		BLOODSTONE(RESOURCE_BLOODSTONE,85,1,8,3300,"","",null),
+		MOONSTONE(RESOURCE_MOONSTONE,90,1,8,3300,"","",null),
+		ALEXANDRITE(RESOURCE_ALEXANDRITE,95,1,9,3300,"","",null),
+		TEAK(RESOURCE_TEAK,20,2,3,1000,"","",null),
+		CEDAR(RESOURCE_CEDAR,15,2,3,900,"strong cedar","",null),
+		ELM(RESOURCE_ELM,15,2,3,1100,"","",null),
+		CHERRYWOOD(RESOURCE_CHERRYWOOD,17,2,3,900,"","",null),
+		BEECHWOOD(RESOURCE_BEECHWOOD,12,2,3,975,"","",null),
+		WILLOW(RESOURCE_WILLOW,12,2,1,1000,"","",null),
+		SYCAMORE(RESOURCE_SYCAMORE,11,2,2,1000,"","",null),
+		SPRUCE(RESOURCE_SPRUCE,12,2,3,990,"","",null),
+		MESQUITE(RESOURCE_MESQUITE,9,2,3,1150,"rich mesquite","",null),
+		BASALT(RESOURCE_BASALT,10,2,4,3300,"","",null),
+		SHALE(RESOURCE_SHALE,5,2,2,1200,"","",null),
+		PUMICE(RESOURCE_PUMICE,5,2,4,600,"","",null),
+		SANDSTONE(RESOURCE_SANDSTONE,10,2,2,3500,"","",null),
+		SOAPSTONE(RESOURCE_SOAPSTONE,60,2,5,3600,"","",null),
+		SALMON(RESOURCE_SALMON,6,1,1,1000,"strong fishy","",ResourceFlag.FISH),
+		CARP(RESOURCE_CARP,6,1,1,1000,"strong fishy","",ResourceFlag.FISH),
+		TROUT(RESOURCE_TROUT,6,1,1,1000,"strong fishy","",ResourceFlag.FISH),
+		SHRIMP(RESOURCE_SHRIMP,6,1,1,1000,"mild fishy","",ResourceFlag.FISH),
+		TUNA(RESOURCE_TUNA,6,1,1,1000,"strong fishy","",ResourceFlag.FISH),
+		CATFISH(RESOURCE_CATFISH,6,1,1,1000,"strong fishy","",ResourceFlag.FISH),
+		BAMBOO(RESOURCE_BAMBOO,15,10,4,120,"","",null),
+		SOAP(RESOURCE_SOAP,1,0,1,430,"light fragrant","",null),
+		SPIDERSTEEL(RESOURCE_SPIDERSTEEL,150,0,2,630,"","",null),
+		ASH(RESOURCE_ASH,1,0,0,50,"dusty","",null),
+		PERFUME(RESOURCE_PERFUME,1,1,1,1000,"strong fragrant","",null),
+		ATLANTITE(RESOURCE_ATLANTITE,200,1,6,850,"","",null),
+		CHEESE(RESOURCE_CHEESE,25,0,1,640,"mild cheesy","",null),
+		BEANS(RESOURCE_BEANS,1,15,1,750,"","",null),
+		CRANBERRIES(RESOURCE_CRANBERRIES,10,1,1,750,"sweet berry","",ResourceFlag.BERRY),
+		DRAGONBLOOD(RESOURCE_DRAGONBLOOD,10,100,0,1025,"mild salty","Prop_UseSpellCast2(Prayer_MinorInfusion)",null),
+		DRAGONMEAT(RESOURCE_DRAGONMEAT,40,20,1,3000,"mild salty","",null),
+		RUBY(RESOURCE_RUBY,300,1,3,3500,"","",null),
+		EMERALD(RESOURCE_EMERALD,200,1,3,3500,"","",null),
+		SAPPHIRE(RESOURCE_SAPPHIRE,180,1,3,3500,"","",null),
+		AGATE(RESOURCE_AGATE,100,1,3,3500,"","",null),
+		CITRINE(RESOURCE_CITRINE,100,1,3,3500,"","",null),
+		REED(RESOURCE_REED,1,50,3,830,"","",null),
+		ALABASTER(RESOURCE_ALABASTER,5,10,4,1550,"","",null),
+		CHROMIUM(RESOURCE_CHROMIUM,80,1,6,1550,"","",null),
+		WHITE_GOLD(RESOURCE_WHITE_GOLD,150,1,5,1450,"","",null),
+		DRAGONSCALES(RESOURCE_DRAGONSCALES,50,1,6,800,"","",null),
+		PLASMA(RESOURCE_PLASMA,100,0,0,0,"","",null),
+		ELECTRICITY(RESOURCE_ELECTRICITY,100,0,0,0,"","",null),
+		DEUTERIUM(RESOURCE_DEUTERIUM,100,0,0,0,"","",null),
+		SLIME(RESOURCE_SLIME,5,10,1,750,"horridly acidic","Prop_UseSpellCast2(Spell_AcidSpray)",null),
+		AIR(RESOURCE_AIR,0,100,0,0,"","",null),
+		OXYGEN(RESOURCE_OXYGEN,10,100,0,0,"","",null),
+		HYDROGEN(RESOURCE_HYDROGEN,20,100,0,0,"","",null),
+		FLOURINE(RESOURCE_FLOURINE,60,40,0,0,"strong pungent smell","",null),
+		NITROGEN(RESOURCE_NITROGEN,10,100,0,0,"","",null)
+		;
+		public final int code, value, frequency, hardness, bouancy;
+		public final String smell, effect, desc;
+		public final ResourceFlag flag;
+		private DefResource(int cod, int val, int freq, int hard, int bou, String sniff, String eff, ResourceFlag flg)
+		{
+			code=cod; value=val; frequency=freq;
+			hardness=hard; bouancy=bou;
+			smell=sniff; effect=eff; flag=flg;
+			desc=toString().replace('_', ' ');
+		}
+	}
 	
 	/**
 	 * Global resource/raw material code data collector
@@ -1125,15 +547,11 @@ public interface RawMaterial extends Item
 				String[][] addExtra = CMProps.instance().getStrsStarting("ADDMATERIAL_");
 				String[][] repExtra = CMProps.instance().getStrsStarting("REPLACEMATERIAL_");
 				
-				for(int i=0;i<DEFAULT_RESOURCE_DESCS.length;i++)
+				for(DefResource d : DefResource.values())
 				{
-					int material= DEFAULT_RESOURCE_DATA[i][0] & MATERIAL_MASK;
-					add(material, DEFAULT_RESOURCE_DESCS[i], DEFAULT_RESOURCE_SMELLS[i], 
-							DEFAULT_RESOURCE_DATA[i][1], DEFAULT_RESOURCE_DATA[i][2], 
-							DEFAULT_RESOURCE_DATA[i][3], DEFAULT_RESOURCE_DATA[i][4], 
-							CMParms.contains(DEFAULT_FISHES, i|material),
-							CMParms.contains(DEFAULT_BERRIES, i|material),
-							DEFAULT_RESOURCE_EFFECTS[i]);
+					int material= d.code & MATERIAL_MASK;
+					add(material, d.desc, d.smell, d.value, d.frequency, d.hardness, d.bouancy, 
+							d.flag==ResourceFlag.FISH,d.flag==ResourceFlag.BERRY,d.effect);
 				}
 				for(int i=0;i<addExtra.length + repExtra.length;i++)
 				{
@@ -1150,10 +568,10 @@ public interface RawMaterial extends Item
 					int oldResourceCode=-1;
 					if(replace)
 					{
-						int idx=CMParms.indexOf(DEFAULT_RESOURCE_DESCS, stat);
-						if(idx>=0)
+						DefResource r=(DefResource)CMath.s_valueOf(DefResource.class, stat.toUpperCase().trim().replace(' ','_'));
+						if(r!=null)
 						{
-							oldResourceCode=DEFAULT_RESOURCE_DATA[idx][0];
+							oldResourceCode=r.code;
 							type="REPLACE";
 						}
 						else

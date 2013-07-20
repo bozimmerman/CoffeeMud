@@ -67,7 +67,7 @@ public class Mountains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_AQUAMARINE),
 		Integer.valueOf(RawMaterial.RESOURCE_CRYSOBERYL),
 		Integer.valueOf(RawMaterial.RESOURCE_ONYX),
-		Integer.valueOf(RawMaterial.RESOURCE_TURQUIOSE),
+		Integer.valueOf(RawMaterial.RESOURCE_TURQUOISE),
 		Integer.valueOf(RawMaterial.RESOURCE_DIAMOND),
 		Integer.valueOf(RawMaterial.RESOURCE_CRYSTAL),
 		Integer.valueOf(RawMaterial.RESOURCE_QUARTZ),
