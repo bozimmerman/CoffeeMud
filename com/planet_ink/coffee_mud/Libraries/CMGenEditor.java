@@ -8192,6 +8192,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genGridLocaleY(mob,(GridZones)R,++showNumber,showFlag);
 				//((GridLocale)mob.location()).buildGrid();
 			}
+			genClimateType(mob,R,++showNumber,showFlag);
 			genBehaviors(mob,R,++showNumber,showFlag);
 			genAffects(mob,R,++showNumber,showFlag);
 			for(int x=R.getSaveStatIndex();x<R.getStatCodes().length;x++)
