@@ -244,9 +244,10 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					String material="something";
 					int t=CMath.s_int(DT.parm1);
+					RawMaterial.Material m;
 					if(((t&RawMaterial.RESOURCE_MASK)==0)
-					&&((t>>8)<RawMaterial.MATERIAL_MASK))
-						material=RawMaterial.MATERIAL_DESCS[t>>8].toLowerCase();
+					&&((m=RawMaterial.Material.findByMask(t))!=null))
+						material=m.desc().toLowerCase();
 					else
 					if(RawMaterial.CODES.IS_VALID(t))
 						material=RawMaterial.CODES.NAME(t).toLowerCase();
@@ -257,9 +258,10 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					String material="something";
 					int t=CMath.s_int(DT.parm1);
+					RawMaterial.Material m;
 					if(((t&RawMaterial.RESOURCE_MASK)==0)
-					&&((t>>8)<RawMaterial.MATERIAL_MASK))
-						material=RawMaterial.MATERIAL_DESCS[t>>8].toLowerCase();
+					&&((m=RawMaterial.Material.findByMask(t))!=null))
+						material=m.desc().toLowerCase();
 					else
 					if(RawMaterial.CODES.IS_VALID(t))
 						material=RawMaterial.CODES.NAME(t).toLowerCase();
@@ -1479,11 +1481,11 @@ public class StdDeity extends StdMOB implements Deity
 						if(found) 
 							DT.parm1=""+cd;
 						else
-						for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 						{
-							if(RawMaterial.MATERIAL_DESCS[i].startsWith(DT.parm1))
+							RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
+							if(m!=null)
 							{
-								DT.parm1=""+(i<<8);
+								DT.parm1=""+m.mask();
 								found=true;
 							}
 						}
@@ -1510,11 +1512,11 @@ public class StdDeity extends StdMOB implements Deity
 							DT.parm1=""+cd;
 						else
 						if(!found)
-						for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 						{
-							if(RawMaterial.MATERIAL_DESCS[i].startsWith(DT.parm1))
+							RawMaterial.Material m=RawMaterial.Material.startsWith(DT.parm1);
+							if(m!=null)
 							{
-								DT.parm1=""+(i<<8);
+								DT.parm1=""+m.mask();
 								found=true;
 							}
 						}

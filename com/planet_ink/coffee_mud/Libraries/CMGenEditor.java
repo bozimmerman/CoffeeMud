@@ -4567,7 +4567,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			newName=mob.session().prompt("Enter a material type to add/remove to requirements (?)\n\r:","");
 			if(newName.equals("?"))
-				mob.tell(CMParms.toStringList(RawMaterial.MATERIAL_DESCS));
+				mob.tell(CMParms.toStringList(RawMaterial.Material.values()));
 			else
 			if(newName.length()>0)
 			{
@@ -6754,7 +6754,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						}
 						if(word.equalsIgnoreCase("?"))
 						{
-							StringBuilder str=new StringBuilder(CMParms.toStringList(RawMaterial.MATERIAL_DESCS));
+							StringBuilder str=new StringBuilder(CMParms.toStringList(RawMaterial.Material.values()));
 							str.append(", ").append(CMParms.toStringList(RawMaterial.CODES.NAMES()));
 							mob.tell(str.toString());
 							continue;
@@ -6767,12 +6767,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							mob.tell("Resource or Material '"+word+"' removed.");
 						}
 						else
-						if(CMParms.containsIgnoreCase(RawMaterial.MATERIAL_DESCS, word)
+						if((RawMaterial.Material.findIgnoreCase(word)!=null)
 						||CMParms.containsIgnoreCase(RawMaterial.CODES.NAMES(), word))
 						{
 							curSet.add(word.toUpperCase().trim());
 							me.setStat("MATLIST", CMParms.toStringList(curSet.toArray(new String[0])));
-							if(CMParms.containsIgnoreCase(RawMaterial.MATERIAL_DESCS, word))
+							if(RawMaterial.Material.findIgnoreCase(word)!=null)
 								mob.tell("Material type '"+word+"' added.");
 							else
 								mob.tell("Raw resource '"+word+"' added.");
@@ -6853,7 +6853,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
 			showFlag=-999;
 		String choices="Your choices are: ";
-		String allComponents=CMParms.toStringList(RawMaterial.MATERIAL_DESCS)+","+CMParms.toStringList(RawMaterial.CODES.NAMES());
+		String allComponents=CMParms.toStringList(RawMaterial.Material.values())+","+CMParms.toStringList(RawMaterial.CODES.NAMES());
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			int showNumber=0;

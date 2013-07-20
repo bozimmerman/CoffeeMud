@@ -554,8 +554,8 @@ public class AbilityData extends StdWebMacro
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("MATLIST"),true);
-					for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-						str.append("<OPTION VALUE=\""+RawMaterial.MATERIAL_DESCS[i]+"\""+(list.contains(RawMaterial.MATERIAL_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[i]));
+					for(RawMaterial.Material m : RawMaterial.Material.values())
+						str.append("<OPTION VALUE=\""+m.name()+"\""+(list.contains(m.name())?" SELECTED":"")+">"+m.noun());
 					for(int i=0;i<RawMaterial.CODES.NAMES().length;i++)
 						str.append("<OPTION VALUE=\""+RawMaterial.CODES.NAMES()[i]+"\""+(list.contains(RawMaterial.CODES.NAMES()[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAMES()[i]));
 					str.append(", ");

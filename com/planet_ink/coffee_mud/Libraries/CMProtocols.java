@@ -217,7 +217,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		else
 		if(O instanceof Shield)
 		{
-			image=getHashedMXPImage(H,"SHIELD_"+RawMaterial.MATERIAL_DESCS[(((Shield)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+			image=getHashedMXPImage(H,"SHIELD_"+RawMaterial.Material.findByMask(((Shield)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) image=getHashedMXPImage(H,"SHIELD_*");
 		}
 		else
@@ -262,7 +262,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.CODES.NAME(((RawMaterial)O).material()));
 			if(image==null)
-				image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.MATERIAL_DESCS[(((RawMaterial)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+				image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.Material.findByMask(((RawMaterial)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) 
 				image=getHashedMXPImage(H,"RESOURCE_*");
 		}
@@ -270,7 +270,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(O instanceof DoorKey)
 		{
 			image=getHashedMXPImage(H,"KEY_"+RawMaterial.CODES.NAME(((DoorKey)O).material()));
-			image=getHashedMXPImage(H,"KEY_"+RawMaterial.MATERIAL_DESCS[(((DoorKey)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+			image=getHashedMXPImage(H,"KEY_"+RawMaterial.Material.findByMask(((DoorKey)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) image=getHashedMXPImage(H,"KEY_*");
 		}
 		else
@@ -423,7 +423,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			image=getHashedMXPImage(H,"FOOD_"+((Food)O).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.CODES.NAME(((Food)O).material()));
-			if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.MATERIAL_DESCS[(((Food)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+			if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.Material.findByMask(((Food)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) image=getHashedMXPImage(H,"FOOD_*");
 		}
 		else
@@ -431,14 +431,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			image=getHashedMXPImage(H,"DRINK_"+((Drink)O).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.CODES.NAME(((Item)O).material()));
-			if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.MATERIAL_DESCS[(((Item)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+			if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.Material.findByMask(((Item)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) image=getHashedMXPImage(H,"DRINK_*");
 		}
 		else
 		if(O instanceof Light)
 		{
 			image=getHashedMXPImage(H,"LIGHT_"+((Light)O).ID().toUpperCase());
-			image=getHashedMXPImage(H,"LIGHT_"+RawMaterial.MATERIAL_DESCS[(((Light)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+			image=getHashedMXPImage(H,"LIGHT_"+RawMaterial.Material.findByMask(((Light)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) image=getHashedMXPImage(H,"LIGHT_*");
 		}
 		else
@@ -446,7 +446,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			image=getHashedMXPImage(H,"CONTAINER_"+((Container)O).ID().toUpperCase());
 			String lid=((Container)O).hasALid()?"LID_":"";
-			if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+RawMaterial.MATERIAL_DESCS[(((Container)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+			if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+RawMaterial.Material.findByMask(((Container)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) image=getHashedMXPImage(H,"CONTAINER_"+lid+"*");
 		}
 		else
@@ -459,7 +459,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			image=getHashedMXPImage(H,"ITEM_"+((Item)O).ID().toUpperCase());
 			if(image==null) image=getHashedMXPImage(H,"ITEM_"+RawMaterial.CODES.NAME(((Item)O).material()));
-			if(image==null) image=getHashedMXPImage(H,"ITEM_"+RawMaterial.MATERIAL_DESCS[(((Item)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+			if(image==null) image=getHashedMXPImage(H,"ITEM_"+RawMaterial.Material.findByMask(((Item)O).material()&RawMaterial.MATERIAL_MASK).desc());
 			if(image==null) image=getHashedMXPImage(H,"ITEM_*");
 		}
 		if(image==null) image=getHashedMXPImage(H,"*");

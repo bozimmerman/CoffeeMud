@@ -68,48 +68,71 @@ public interface RawMaterial extends Item
 
 	public final static int MATERIAL_MASK=255<<8;
 	
-	public final static int MATERIAL_CODES[]={
-		MATERIAL_UNKNOWN,MATERIAL_CLOTH,MATERIAL_LEATHER,MATERIAL_METAL,
-		MATERIAL_MITHRIL,MATERIAL_WOODEN,MATERIAL_GLASS,MATERIAL_VEGETATION,
-		MATERIAL_FLESH,MATERIAL_PAPER,MATERIAL_ROCK,MATERIAL_LIQUID,
-		MATERIAL_PRECIOUS,MATERIAL_ENERGY,MATERIAL_SYNTHETIC,MATERIAL_GAS
-	};
-	
-	public final static String[] MATERIAL_DESCS={
-	"UNKNOWN",
-	"CLOTH",
-	"LEATHER",
-	"METAL",
-	"MITHRIL",
-	"WOODEN",
-	"GLASS",
-	"VEGETATION",
-	"FLESH",
-	"PAPER",
-	"ROCK",
-	"LIQUID",
-	"PRECIOUS",
-	"ENERGY",
-	"SYNTHETIC",
-	"GAS"};
-	
-	public final static String[] MATERIAL_NOUNDESCS={
-		"Unknown material",
-		"Cloth",
-		"Leather",
-		"Metal",
-		"Metal",
-		"Wood",
-		"Glass",
-		"Vegetation",
-		"Flesh",
-		"Paper",
-		"Rock",
-		"Liquid",
-		"Stone",
-		"Energy",
-		"Plastic",
-		"Gas"};
+	public static enum Material
+	{
+		UNKNOWN("Unknown material"),
+		CLOTH("Cloth"),
+		LEATHER("Leather"),
+		METAL("Metal"),
+		MITHRIL("Metal"),
+		WOODEN("Wood"),
+		GLASS("Glass"),
+		VEGETATION("Vegetation"),
+		FLESH("Flesh"),
+		PAPER("Paper"),
+		ROCK("Rock"),
+		LIQUID("Liquid"),
+		PRECIOUS("Stone"),
+		ENERGY("Energy"),
+		SYNTHETIC("Plastic"),
+		GAS("Gas")
+		;
+		private final static String[] descs=CMParms.toStringArray(values());
+		private final int mask;
+		private final String desc;
+		private final String noun;
+		private Material(String noun)
+		{
+			this.mask=(ordinal()==0)?0:(ordinal()<<8);
+			this.desc=this.toString();
+			this.noun=noun;
+		}
+		public static int size() { return values().length; }
+		public int mask() { return mask; }
+		public String noun() { return noun; }
+		public String desc() { return desc; }
+		public static String[] names() { return descs; }
+		public static Material findByMask(int mask)
+		{
+			int maskOrdinal=(mask<size())?mask:(mask&MATERIAL_MASK)>>8;
+			if(maskOrdinal < Material.values().length)
+				return Material.values()[maskOrdinal];
+			return null;
+		}
+		public static Material find(String name)
+		{
+			try {
+				return Material.valueOf(name);
+			} catch(Exception e) {
+				return null;
+			}
+		}
+		public static Material findIgnoreCase(String name)
+		{
+			return find(name.toUpperCase().trim());
+		}
+		public static Material startsWith(String name)
+		{
+			for(Material m : values())
+				if(m.desc.startsWith(name))
+					return m;
+			return null;
+		}
+		public static Material startsWithIgnoreCase(String name)
+		{
+			return startsWith(name.toUpperCase().trim());
+		}
+	}
 	
 	public final static int RESOURCE_NOTHING=MATERIAL_UNKNOWN|0;
 	public final static int RESOURCE_MEAT=MATERIAL_FLESH|1;
@@ -1148,18 +1171,17 @@ public interface RawMaterial extends Item
 					boolean fish=((String)V.elementAt(6)).equalsIgnoreCase("fish");
 					boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
 					String abilityID=(String)V.elementAt(7);
-					int material = CMParms.indexOfIgnoreCase(MATERIAL_DESCS,matStr);
-					if((material<0)||(material>=MATERIAL_CODES.length)) 
+					Material material=Material.findIgnoreCase(matStr);
+					if(material==null) 
 					{
 						Log.errOut("RawMaterial","Unknown material code in coffeemud.ini: "+matStr);
 						continue;
 					}
-					material=MATERIAL_CODES[material];
 					if(type.equalsIgnoreCase("ADD"))
-						add(material, stat, smell, value, frequ, hardness, bouancy, fish, berry, abilityID);
+						add(material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, abilityID);
 					else
 					if(type.equalsIgnoreCase("REPLACE")&&(oldResourceCode>=0))
-						replace(oldResourceCode, material, stat, smell, value, frequ, hardness, bouancy, fish, berry, abilityID);
+						replace(oldResourceCode, material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, abilityID);
 				}
 				String[] sortedNames = descs.clone();
 				Arrays.sort(sortedNames);
@@ -1467,14 +1489,15 @@ public interface RawMaterial extends Item
 		public SPairList<Integer,Double> getValueSortedBucket(int material)
 		{
 			material=(material&RawMaterial.MATERIAL_MASK)>>8;
-			if((material<0)||(material>=RawMaterial.MATERIAL_DESCS.length))
+			final int numMaterials=Material.values().length;
+			if((material<0)||(material>=numMaterials))
 				return null;
 			if(buckets == null)
 			{
-                SPairList<Integer,Double>[] newBuckets=new SPairList[RawMaterial.MATERIAL_DESCS.length];
-				for(int matIndex=0;matIndex<RawMaterial.MATERIAL_DESCS.length;matIndex++)
+				SPairList<Integer,Double>[] newBuckets=new SPairList[numMaterials];
+				for(int matIndex=0;matIndex<numMaterials;matIndex++)
 				{
-					int matCode = (matIndex << 8);
+					int matCode = Material.values()[matIndex].mask();
 					TreeSet<Pair<Integer,Double>> newBucket=new TreeSet<Pair<Integer,Double>>(
 						new Comparator<Pair<Integer,Double>>()
 						{

@@ -131,16 +131,16 @@ public class StdClanCommonItem extends StdClanItem
 	{
 		req=req.toUpperCase();
 		List V=new Vector();
-		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+		for(RawMaterial.Material m : RawMaterial.Material.values())
 		{
-			int x=req.indexOf(RawMaterial.MATERIAL_DESCS[i]);
+			int x=req.indexOf(m.desc());
 			if(x<0) continue;
 			if((x>0)&&Character.isLetter(req.charAt(x-1)))
 				continue;
-			if(((x+RawMaterial.MATERIAL_DESCS[i].length())<req.length())
-			&&Character.isLetter(req.charAt((x+RawMaterial.MATERIAL_DESCS[i].length()))))
+			if(((x+m.desc().length())<req.length())
+			&&Character.isLetter(req.charAt((x+m.desc().length()))))
 				continue;
-			V.add(Integer.valueOf(i<<8));
+			V.add(Integer.valueOf(m.mask()));
 		}
 		RawMaterial.CODES codes = RawMaterial.CODES.instance();
 		for(int s=0;s<codes.total();s++)

@@ -1770,7 +1770,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			itemDesc=comp.getStringType();
 		else
 		if(comp.getType()==AbilityComponent.CompType.MATERIAL)
-			itemDesc=RawMaterial.MATERIAL_DESCS[(int)comp.getLongType()>>8].toUpperCase();
+			itemDesc=RawMaterial.Material.findByMask((int)comp.getLongType()).desc().toUpperCase();
 		else
 		if(comp.getType()==AbilityComponent.CompType.RESOURCE)
 			itemDesc=RawMaterial.CODES.NAME((int)comp.getLongType()).toUpperCase();
@@ -1898,7 +1898,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			itemDesc=((amt>1)?(amt+" "+comp.getStringType()+"s"):CMLib.english().startWithAorAn(comp.getStringType()));
 		else
 		if(comp.getType()==AbilityComponent.CompType.MATERIAL)
-			itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.MATERIAL_DESCS[(int)comp.getLongType()>>8].toLowerCase();
+			itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.Material.findByMask((int)comp.getLongType()).noun().toLowerCase();
 		else
 		if(comp.getType()==AbilityComponent.CompType.RESOURCE)
 			itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase();

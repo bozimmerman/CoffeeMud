@@ -1236,12 +1236,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							{
 								str.append("\n\r<SELECT NAME="+fieldName+"_CUST_STR_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
 								if(compType==AbilityComponent.CompType.MATERIAL)
-									for(int x=0;x<RawMaterial.MATERIAL_CODES.length;x++)
+									for(RawMaterial.Material m : RawMaterial.Material.values())
 									{
-										str.append("<OPTION VALUE="+RawMaterial.MATERIAL_CODES[x]);
-										if((type==2)&&(comp!=null)&&(RawMaterial.MATERIAL_CODES[x]==comp.getLongType())) 
+										str.append("<OPTION VALUE="+m.mask());
+										if((type==2)&&(comp!=null)&&(m.mask()==comp.getLongType())) 
 											str.append(" SELECTED");
-										str.append(">"+RawMaterial.MATERIAL_DESCS[x]);
+										str.append(">"+m.noun());
 									}
 								else
 								if(compType==AbilityComponent.CompType.RESOURCE)
@@ -2088,9 +2088,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 				},
 				new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
-                    public void createChoices() {
+					public void createChoices() {
 						Vector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
-						V.addAll(new XVector<String>(RawMaterial.MATERIAL_DESCS));
+						V.addAll(new XVector<String>(RawMaterial.Material.names()));
 						createChoices(V);
 					}
 					public String convertFromItem(final ItemCraftor A, final Item I)
@@ -2106,7 +2106,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
 					public void createChoices() {
 						Vector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
-						V.addAll(new XVector<String>(RawMaterial.MATERIAL_DESCS));
+						V.addAll(new XVector<String>(RawMaterial.Material.names()));
 						V.addElement("");
 						createChoices(V);
 					}

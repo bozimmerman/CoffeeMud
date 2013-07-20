@@ -375,25 +375,24 @@ public class CommonSkill extends StdAbility
 						restV=CMParms.parseAny(setMat.substring(y+1),"-", true);
 						setMat=setMat.substring(0, y);
 					}
-					for(int j=0;j<RawMaterial.MATERIAL_DESCS.length;j++)
-						if(RawMaterial.MATERIAL_DESCS[j].equalsIgnoreCase(setMat))
-						{ 
-							x=RawMaterial.MATERIAL_CODES[j];
-							if((restV!=null)&&(restV.size()>0))
+					RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(setMat);
+					if(m!=null)
+					{ 
+						x=m.mask();
+						if((restV!=null)&&(restV.size()>0))
+						{
+							List<Integer> rscsV=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(x));
+							for(String sv : restV)
 							{
-								List<Integer> rscsV=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(x));
-								for(String sv : restV)
-								{
-									int code = RawMaterial.CODES.FIND_CaseSensitive(sv);
-									if(code >=0)
-										rscsV.remove(Integer.valueOf(code));
-								}
-								for(int codeDex=0;codeDex<rscsV.size()-1;codeDex++)
-									finalSet.add(rscsV.get(codeDex));
-								x=rscsV.get(rscsV.size()-1).intValue();
+								int code = RawMaterial.CODES.FIND_CaseSensitive(sv);
+								if(code >=0)
+									rscsV.remove(Integer.valueOf(code));
 							}
-							break;
+							for(int codeDex=0;codeDex<rscsV.size()-1;codeDex++)
+								finalSet.add(rscsV.get(codeDex));
+							x=rscsV.get(rscsV.size()-1).intValue();
 						}
+					}
 				}
 				if(x<0)
 					x=RawMaterial.CODES.FIND_IgnoreCase(setMat);

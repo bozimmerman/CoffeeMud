@@ -1050,7 +1050,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								final int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
 								if(code>=0)
-									buf.append(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[code>>8])+", ");
+									buf.append(RawMaterial.Material.findByMask(code).noun()+", ");
 							}
 						}
 						if(buf.toString().endsWith(", "))
@@ -1070,7 +1070,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								final int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
 								if(code>=0)
-									buf.append(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[code>>8])+", ");
+									buf.append(RawMaterial.Material.findByMask(code).noun()+", ");
 							}
 						}
 						if(buf.toString().endsWith(", "))
@@ -2728,7 +2728,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								final int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
 								if(code>=0)
-									parms.addElement(RawMaterial.MATERIAL_DESCS[(code&RawMaterial.MATERIAL_MASK)>>8]);
+									parms.addElement(RawMaterial.Material.findByMask(code&RawMaterial.MATERIAL_MASK).desc());
 							}
 							v=V.size();
 						}
@@ -3697,11 +3697,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 				break;
 			case 49: // +material
-				if((item!=null)&&CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
+				if((item!=null)&&CMParms.contains(entry.parms,RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).desc()))
 					return false;
 				break;
 			case 50: // -material
-				if((item!=null)&&(!CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8])))
+				if((item!=null)&&(!CMParms.contains(entry.parms,RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).desc())))
 					return false;
 				break;
 			case 57: // +wornOn

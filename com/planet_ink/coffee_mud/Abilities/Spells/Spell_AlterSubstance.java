@@ -76,10 +76,9 @@ public class Spell_AlterSubstance extends Spell
 		}
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
-		int newMaterial=-1;
-		newMaterial=CMParms.indexOfIgnoreCase(RawMaterial.MATERIAL_DESCS, material.toUpperCase().trim());
-		if(newMaterial<0)
-			newMaterial=CMParms.startsWith(RawMaterial.MATERIAL_DESCS, material.toUpperCase().trim());
+		RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(material);
+		if(m==null) m=RawMaterial.Material.startsWithIgnoreCase(material);
+		int newMaterial=(m==null)?-1:m.mask();
 		if(newMaterial>=0)
 		{
 			List<Integer> rscs = RawMaterial.CODES.COMPOSE_RESOURCES(newMaterial);
@@ -90,8 +89,8 @@ public class Spell_AlterSubstance extends Spell
 			}
 			else
 			{
-				material=RawMaterial.MATERIAL_DESCS[newMaterial];
-				newMaterial=(newMaterial<<8);
+				material=m.desc();
+				newMaterial=m.mask();
 			}
 		}
 		else
@@ -124,7 +123,7 @@ public class Spell_AlterSubstance extends Spell
 				oldMaterial=target.material();
 				target.setMaterial(newMaterial);
 				String oldResourceName=RawMaterial.CODES.NAME(oldMaterial);
-				String oldMaterialName=RawMaterial.MATERIAL_DESCS[(oldMaterial&RawMaterial.MATERIAL_MASK)>>8];
+				String oldMaterialName=RawMaterial.Material.findByMask(oldMaterial&RawMaterial.MATERIAL_MASK).desc();
 				String oldName=target.name().toUpperCase();
 				oldName=CMStrings.replaceAll(oldName,oldResourceName,material);
 				oldName=CMStrings.replaceAll(oldName,oldMaterialName,material);

@@ -1561,7 +1561,7 @@ public class ListCmd extends StdCommand
 	}
 	public String listMaterials()
 	{
-		return CMParms.toStringList(RawMaterial.MATERIAL_DESCS);
+		return CMParms.toStringList(RawMaterial.Material.values());
 	}
 	public String listEnvResources(Session viewerS, boolean shortList)
 	{
@@ -1586,7 +1586,7 @@ public class ListCmd extends StdCommand
 		for(int i : RawMaterial.CODES.ALL())
 		{
 			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(i).toLowerCase()),COL_LEN1+1));
-			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[(i&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()),COL_LEN2+1));
+			str.append(CMStrings.padRight(RawMaterial.Material.findByMask(i&RawMaterial.MATERIAL_MASK).noun(),COL_LEN2+1));
 			str.append(CMStrings.padRight(""+RawMaterial.CODES.VALUE(i),COL_LEN3+1));
 			str.append(CMStrings.padRight(""+RawMaterial.CODES.FREQUENCY(i),COL_LEN4+1));
 			str.append(CMStrings.padRight(""+RawMaterial.CODES.HARDNESS(i),COL_LEN5+1));

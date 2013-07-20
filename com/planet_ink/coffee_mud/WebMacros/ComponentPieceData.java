@@ -80,12 +80,12 @@ public class ComponentPieceData extends StdWebMacro
 					str.append("<SELECT NAME=\""+fixedCompID+"_PIECE_STRING_"+last+"\">");
 					if(C==AbilityComponent.CompType.MATERIAL)
 					{
-						for(int i=0;i<RawMaterial.MATERIAL_CODES.length;i++)
+						for(RawMaterial.Material m : RawMaterial.Material.values())
 						{
-							str.append("<OPTION VALUE="+RawMaterial.MATERIAL_CODES[i]);
-							if(RawMaterial.MATERIAL_CODES[i]==CMath.s_long(strType))
+							str.append("<OPTION VALUE="+m.desc());
+							if(m.mask()==CMath.s_long(strType))
 								str.append(" SELECTED");
-							str.append(">"+RawMaterial.MATERIAL_DESCS[i]);
+							str.append(">"+m.noun());
 						}
 					}
 					else

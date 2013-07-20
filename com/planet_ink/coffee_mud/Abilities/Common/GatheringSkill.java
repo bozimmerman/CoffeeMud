@@ -96,13 +96,13 @@ public class GatheringSkill extends CommonSkill
 						{
 							 int code=RawMaterial.CODES.FIND_CaseSensitive(sv);
 							 if(code >= 0)
-        						 notResources.add(Integer.valueOf(code));
+								 notResources.add(Integer.valueOf(code));
 						}
 					}
-					int matIndex=CMParms.indexOfIgnoreCase(RawMaterial.MATERIAL_DESCS, str);
-					if(matIndex>=0)
+					RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(str);
+					if(m!=null)
 					{
-						List<Integer> rscs=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(matIndex));
+						List<Integer> rscs=new XVector<Integer>(RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()));
 						maskV.addAll(rscs);
 						maskV.removeAll(notResources);
 						found=rscs.size()>0;

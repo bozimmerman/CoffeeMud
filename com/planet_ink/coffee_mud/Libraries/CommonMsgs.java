@@ -797,7 +797,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				response.append("It appears to be a bundle of `"+item.rawSecretIdentity()+"`.  ");
 
 			if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
-				response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
+				response.append("It is mostly made of a kind of "+RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).noun()+".  ");
 			else
 				response.append("It is mostly made of "+RawMaterial.CODES.NAME(item.material()).toLowerCase()+".  ");
 			if((item instanceof Recipe)&&((Recipe)item).getTotalRecipePages()>1)

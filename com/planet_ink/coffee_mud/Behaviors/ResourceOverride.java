@@ -62,18 +62,18 @@ public class ResourceOverride extends ActiveTicker
 				code=CMath.s_int(which);
 			if(code<0) code = RawMaterial.CODES.FIND_IgnoreCase(which);
 			if(code<0)
-				for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-				{
-					if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(which))
-					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0).intValue(); break;}
-				}
+			{
+				RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(which);
+				if(m!=null)
+					code=RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()).get(0).intValue();
+			}
 			if(code<0) code = RawMaterial.CODES.FIND_StartsWith(which);
 			if(code<0)
-				for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-				{
-					if(RawMaterial.MATERIAL_DESCS[i].startsWith(which))
-					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0).intValue(); break;}
-				}
+			{
+				RawMaterial.Material m=RawMaterial.Material.startsWith(which);
+				if(m!=null)
+					code=RawMaterial.CODES.COMPOSE_RESOURCES(m.mask()).get(0).intValue();
+			}
 			if(code>=0)
 			{
 				if(!rscs.contains(Integer.valueOf(code)))

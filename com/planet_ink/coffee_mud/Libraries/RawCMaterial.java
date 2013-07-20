@@ -42,7 +42,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	public int getRandomResourceOfMaterial(int material)
 	{
 		material=material&RawMaterial.MATERIAL_MASK;
-		if((material<0)||(material>=RawMaterial.MATERIAL_DESCS.length))
+		if((material<0)||(material>=RawMaterial.Material.values().length))
 			return -1;
 		RawMaterial.CODES codes = RawMaterial.CODES.instance();
 		int countDown=codes.total();
@@ -380,9 +380,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	
 	public String getMaterialDesc(int MASK)
 	{
-		MASK=(MASK&RawMaterial.MATERIAL_MASK)>>8;
-		if((MASK>=0)&&(MASK<RawMaterial.MATERIAL_DESCS.length))
-			return RawMaterial.MATERIAL_DESCS[MASK];
+		RawMaterial.Material m=RawMaterial.Material.findByMask(MASK);
+		if(m!=null)
+			return m.desc();
 		return "";
 	}
 	
@@ -395,21 +395,21 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	
 	public int getMaterialRelativeInt(String s)
 	{
-		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-			if(s.equalsIgnoreCase(RawMaterial.MATERIAL_DESCS[i]))
-				return i;
+		RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(s);
+		if(m!=null)
+			return m.ordinal();
 		return -1;
 	}
 	public int getMaterialCode(String s, boolean exact)
 	{
-		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-			if(s.equalsIgnoreCase(RawMaterial.MATERIAL_DESCS[i]))
-				return i<<8;
+		RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(s);
+		if(m!=null)
+			return m.mask();
 		if(exact) return -1;
 		s=s.toUpperCase();
-		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-			if(RawMaterial.MATERIAL_DESCS[i].startsWith(s)||s.startsWith(RawMaterial.MATERIAL_DESCS[i]))
-				return i<<8;
+		m=RawMaterial.Material.startsWith(s);
+		if(m!=null)
+			return m.mask();
 		return -1;
 	}
 	public int getResourceCode(String s, boolean exact)
@@ -817,9 +817,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	{
 		if((other==null)||(other.length()==0))
 			return null;
-		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(other))
-				return findMostOfMaterial(V,(i<<8));
+		RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(other);
+		if(m!=null)
+			return findMostOfMaterial(V,m.mask());
 		return null;
 	}
 

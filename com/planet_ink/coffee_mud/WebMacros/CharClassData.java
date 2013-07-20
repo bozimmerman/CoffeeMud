@@ -804,11 +804,11 @@ public class CharClassData extends StdWebMacro
 					str.append("<OPTION VALUE=\"*\"");
 					if(set.size()==0) str.append(" SELECTED");
 					str.append(">ANY");
-					for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+					for(RawMaterial.Material m : RawMaterial.Material.values())
 					{
-						str.append("<OPTION VALUE="+(i<<8));
-						if(set.contains(""+(i<<8))) str.append(" SELECTED");
-						str.append(">"+RawMaterial.MATERIAL_DESCS[i]);
+						str.append("<OPTION VALUE="+m.mask());
+						if(set.contains(""+m.mask())) str.append(" SELECTED");
+						str.append(">"+m.noun());
 					}
 					str.append(", ");
 				}
