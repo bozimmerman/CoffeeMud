@@ -1,9 +1,5 @@
 # Build 5.8.1 Release ?/?/2013
-//TODO: add climate editors for rooms (and MG!)
 //TODO: add room climates to genmaker! *AND* for DB as well.
-//TODO: add room climate info to guides
-//TODO: add atmosphere editors for rooms and areas (and MG!)
-//TODO: add atmosphere info to guides for areas and rooms
 //TODO: add atmosphere for rooms and areas to genmaker! *AND* for DB as well.
 //TODO: add breathes to races
 //TODO: add breathes to charstats
