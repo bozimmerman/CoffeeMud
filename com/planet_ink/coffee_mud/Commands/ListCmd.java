@@ -1009,7 +1009,10 @@ public class ListCmd extends StdCommand
 						PlayerAccount acct = oldSet.get(u);
 						PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
 						if(lib.getThinSortValue(selectedU,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
-						   selected=acct;
+						{
+							selected=acct;
+							selectedU=U;
+						}
 					}
 					oldSet.remove(selected);
 					allAccounts.add(selected);
@@ -1026,7 +1029,10 @@ public class ListCmd extends StdCommand
 						PlayerAccount acct = oldSet.get(u);
 						PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
 						if(CMath.s_long(lib.getThinSortValue(selectedU,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
-						   selected=acct;
+						{
+							selected=acct;
+							selectedU=U;
+						}
 					}
 					oldSet.remove(selected);
 					allAccounts.add(selected);
