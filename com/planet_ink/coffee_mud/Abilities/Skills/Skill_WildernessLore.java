@@ -126,7 +126,7 @@ public class Skill_WildernessLore extends StdSkill
 				mob.tell("You are inside, on the surface of the water.");
 				break;
 			}
-			final int derivedClimate=room.deriveClimate();
+			final int derivedClimate=room.getClimateType();
 			if(derivedClimate!=Places.CLIMASK_NORMAL)
 			{
 				StringBuffer str=new StringBuffer("It is unusually ");

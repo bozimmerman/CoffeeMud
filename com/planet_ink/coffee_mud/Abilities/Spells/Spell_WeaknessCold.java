@@ -74,7 +74,7 @@ public class Spell_WeaknessCold extends Spell
 			if(room!=null)
 			{
 				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_WINDY)
-				&&((room.deriveClimate()&Places.CLIMASK_COLD)>0)
+				&&((room.getClimateType()&Places.CLIMASK_COLD)>0)
 				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_COLD)))
 					CMLib.combat().postDamage(invoker,M,null,1,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The cold biting wind <DAMAGE> <T-NAME>!");
 				else

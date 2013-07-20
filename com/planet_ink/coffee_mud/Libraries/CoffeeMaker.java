@@ -1211,7 +1211,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		buf.append(CMLib.xml().convertXMLtoTag("ACLAS",area.ID()));
 		buf.append(CMLib.xml().convertXMLtoTag("ANAME",area.Name()));
 		buf.append(CMLib.xml().convertXMLtoTag("ADESC",area.description()));
-		buf.append(CMLib.xml().convertXMLtoTag("ACLIM",area.climateType()));
+		buf.append(CMLib.xml().convertXMLtoTag("ACLIM",area.getClimateTypeCode()));
 		buf.append(CMLib.xml().convertXMLtoTag("ASUBS",area.getSubOpList()));
 		buf.append(CMLib.xml().convertXMLtoTag("ATECH",area.getTheme()));
 		buf.append(CMLib.xml().convertXMLtoTag("ADATA",area.text()));

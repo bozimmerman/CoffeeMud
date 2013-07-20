@@ -1876,7 +1876,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void toggleClimateMask(Places A, int mask)
 	{
-		int current=A.climateType();
+		int current=A.getClimateTypeCode();
 		if((current&mask)==0)
 			A.setClimateType(current|mask);
 		else
@@ -1891,15 +1891,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
 		{
 			mob.session().println(""+showNumber+". Climate:");
-			int type=A.climateType();
+			int type=A.getClimateTypeCode();
 			mob.session().println("    I) Inherited        : "+(type==Places.CLIMASK_INHERIT));
 			if(type == Places.CLIMASK_INHERIT)
 				type=0;
-			mob.session().println("    R) Wet and Rainy    : "+((A.climateType()&Area.CLIMASK_WET)>0));
-			mob.session().println("    H) Excessively hot  : "+((A.climateType()&Area.CLIMASK_HOT)>0));
-			mob.session().println("    C) Excessively cold : "+((A.climateType()&Area.CLIMASK_COLD)>0));
-			mob.session().println("    W) Very windy       : "+((A.climateType()&Area.CLIMASK_WINDY)>0));
-			mob.session().println("    D) Very dry         : "+((A.climateType()&Area.CLIMASK_DRY)>0));
+			mob.session().println("    R) Wet and Rainy    : "+((A.getClimateTypeCode()&Area.CLIMASK_WET)>0));
+			mob.session().println("    H) Excessively hot  : "+((A.getClimateTypeCode()&Area.CLIMASK_HOT)>0));
+			mob.session().println("    C) Excessively cold : "+((A.getClimateTypeCode()&Area.CLIMASK_COLD)>0));
+			mob.session().println("    W) Very windy       : "+((A.getClimateTypeCode()&Area.CLIMASK_WINDY)>0));
+			mob.session().println("    D) Very dry         : "+((A.getClimateTypeCode()&Area.CLIMASK_DRY)>0));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWDI\n","\n").toUpperCase();
 			switch(c.charAt(0))

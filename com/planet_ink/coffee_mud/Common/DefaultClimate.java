@@ -241,7 +241,7 @@ public class DefaultClimate implements Climate
 			// create a seasonal CHANCE graph
 			int[] seasonal=new int[seasonalWeather.length];
 			seasonal=addMaskAndReturn(seasonalWeather,seasonal);
-			final int derivedClimate=A.deriveClimate();
+			final int derivedClimate=A.getClimateType();
 			if((derivedClimate&Area.CLIMASK_COLD)>0)
 				seasonal=addMaskAndReturn(seasonal,cold);
 
@@ -390,7 +390,7 @@ public class DefaultClimate implements Climate
 		final CMProps.ListFile listFileEnum = CMProps.ListFile.values()[listFileOrd];
 		final String prefix;
 		//#    NORMAL, WET, COLD (WINTER), HOT (SUMMER), DRY
-		final int derivedClimate=A.deriveClimate();
+		final int derivedClimate=A.getClimateType();
 		if(((derivedClimate&Area.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_WINTER))
 			prefix=CMProps.getListFileValue(listFileEnum, 2);
 		else

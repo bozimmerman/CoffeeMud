@@ -97,10 +97,11 @@ public class StdSpaceShip implements Area, SpaceShip
 	public String getCurrency(){return currency;}
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
-	public int atmosphere() { return atmosphere; }
+	public int getAtmosphereCode() { return atmosphere; }
 	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
+	public int getAtmosphere() { return atmosphere==ATMOSPHERE_INHERIT?RawMaterial.RESOURCE_AIR:atmosphere; }
 	public long flags(){return 0;}
-	
+
 	public SpaceObject knownTarget(){return spaceTarget;}
 	public void setKnownTarget(SpaceObject O){spaceTarget=O;}
 	public SpaceObject knownSource(){return spaceSource;}
@@ -145,8 +146,8 @@ public class StdSpaceShip implements Area, SpaceShip
 				&& (CMLib.flags().isSavable(this)));
 	}
 	public void setSavable(boolean truefalse){CMLib.flags().setSavable(this, truefalse);}
-	public int climateType(){return Area.CLIMASK_NORMAL;}
-	public int deriveClimate() { return Area.CLIMASK_NORMAL; }
+	public int getClimateTypeCode(){return Area.CLIMASK_NORMAL;}
+	public int getClimateType() { return Area.CLIMASK_NORMAL; }
 	public void setClimateType(int newClimateType){}
 
 	public StdSpaceShip()
@@ -1151,7 +1152,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return ""+climateType();
+		case 1: return ""+getClimateTypeCode();
 		case 2: return description();
 		case 3: return text();
 		case 4: return ""+getTheme();

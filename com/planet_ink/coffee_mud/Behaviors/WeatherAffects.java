@@ -337,17 +337,17 @@ public class WeatherAffects extends PuddleMaker
 				Room R=M.location();
 
 				
-				if((R.deriveClimate()&Places.CLIMASK_COLD)>0) 
+				if((R.getClimateType()&Places.CLIMASK_COLD)>0) 
 				{
 					if(coldChance>0) coldChance+=10;
 					if(coldChance>0) fluChance+=5; // yes, cold is related this way to flu
 					if(frostBiteChance>0) frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.5));
 				}
-				if((R.deriveClimate()&Places.CLIMASK_HOT)>0) 
+				if((R.getClimateType()&Places.CLIMASK_HOT)>0) 
 				{
 					if(heatExhaustionChance>0) heatExhaustionChance+=10;
 				}
-				if((R.deriveClimate()&Places.CLIMASK_WET)>0)
+				if((R.getClimateType()&Places.CLIMASK_WET)>0)
 				{
 					if(coldChance>0) coldChance+=5;
 					if(heatExhaustionChance>5) heatExhaustionChance-=5;
@@ -376,7 +376,7 @@ public class WeatherAffects extends PuddleMaker
 					if((coveredPlaces!=ALL_COVERED_CODE)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						Ability COLD=CMClass.getAbility("Disease_Cold");
-						if(CMLib.dice().rollPercentage()<(fluChance+(((M.location().deriveClimate()&Places.CLIMASK_WET)>0)?10:0)))
+						if(CMLib.dice().rollPercentage()<(fluChance+(((M.location().getClimateType()&Places.CLIMASK_WET)>0)?10:0)))
 							COLD=CMClass.getAbility("Disease_Flu");
 						if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null))
 							COLD.invoke(M,M,true,0);
@@ -687,7 +687,7 @@ public class WeatherAffects extends PuddleMaker
 			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP)
 			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			&&(!CMath.bset(R.deriveClimate(),Places.CLIMASK_WET)))
+			&&(!CMath.bset(R.getClimateType(),Places.CLIMASK_WET)))
 			{
 				Item I=R.getRandomItem();
 				if((I!=null)&&(CMLib.flags().isGettable(I)))
@@ -789,7 +789,7 @@ public class WeatherAffects extends PuddleMaker
 				default:
 					break;
 				}
-				if((R.deriveClimate()&Places.CLIMASK_WET)>0) 
+				if((R.getClimateType()&Places.CLIMASK_WET)>0) 
 					rustChance+=2;
 				if(CMLib.dice().rollPercentage()<rustChance)
 				{

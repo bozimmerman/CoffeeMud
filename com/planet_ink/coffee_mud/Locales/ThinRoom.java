@@ -58,11 +58,12 @@ public class ThinRoom implements Room {
 	public void initializeClass(){}
 	public String getContextName(Environmental E){return E==null?"nothing":E.name();}
 
-	public int atmosphere() { return ATMOSPHERE_INHERIT; }
+	public int getAtmosphereCode() { return ATMOSPHERE_INHERIT; }
+	public int getAtmosphere() { return (myArea!=null)?myArea.getAtmosphere():RawMaterial.RESOURCE_AIR; }
 	public void setAtmosphere(int resourceCode) { }
 	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;}
-	public int climateType(){return CLIMASK_INHERIT; }
-	public int deriveClimate() { return (myArea==null)?CLIMASK_NORMAL:myArea.deriveClimate(); }
+	public int getClimateTypeCode(){return CLIMASK_INHERIT; }
+	public int getClimateType() { return (myArea==null)?CLIMASK_NORMAL:myArea.getClimateType(); }
 	public void setClimateType(int climate){ }
 	public int myResource(){return -1;}
 	public void setResource(int resourceCode){}

@@ -2,7 +2,6 @@
 //TODO: add climate editors for rooms (and MG!)
 //TODO: add room climates to genmaker! *AND* for DB as well.
 //TODO: add room climate info to guides
-//TODO: deriveAtmosphere
 //TODO: add atmosphere editors for rooms and areas (and MG!)
 //TODO: add atmosphere info to guides for areas and rooms
 //TODO: add atmosphere for rooms and areas to genmaker! *AND* for DB as well.

@@ -1318,7 +1318,7 @@ public class RoomLoader
 		+") values ("
 		+"'"+A.Name()+"',"
 		+"'"+A.ID()+"',"
-		+""+A.climateType()+","
+		+""+A.getClimateTypeCode()+","
 		+"'"+A.getSubOpList()+"',"
 		+"?,"
 		+"?,"
@@ -1340,7 +1340,7 @@ public class RoomLoader
 		"UPDATE CMAREA SET "
 		+"CMAREA='"+A.Name()+"',"
 		+(ignoreType?"":"CMTYPE='"+A.ID()+"',")
-		+"CMCLIM="+A.climateType()+","
+		+"CMCLIM="+A.getClimateTypeCode()+","
 		+"CMSUBS='"+A.getSubOpList()+"',"
 		+"CMDESC=?,"
 		+"CMROTX=?,"

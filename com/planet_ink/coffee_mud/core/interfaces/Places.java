@@ -38,7 +38,17 @@ public interface Places extends PhysicalAgent
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial#MATERIAL_GAS
 	 * @return the RawMaterial resource, or -1
 	 */
-	public int atmosphere();
+	public int getAtmosphereCode();
+	
+	/**
+	 * Returns the resource (or -1) that represents the atmosphere of this area.
+	 * Since most rooms inherit their atmosphere from the area, this is important.
+	 * Return -1 to have this area inherit its atmosphere from parents (which
+	 * would ultimately go back to RESOURCE_AIR)
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial#MATERIAL_GAS
+	 * @return the RawMaterial resource, or -1
+	 */
+	public int getAtmosphere();
 	
 	/**
 	 * Sets the resource (or -1) that represents the atmosphere of this area.
@@ -56,7 +66,7 @@ public interface Places extends PhysicalAgent
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Places#CLIMASK_COLD
 	 * @return a CLIMASK bitmap
 	 */
-	public int climateType();
+	public int getClimateTypeCode();
 	/**
 	 * Returns a bitmap of climate flags for this area which will be used to influence
 	 * the weather for the area in addition to season and other factors.
@@ -72,7 +82,7 @@ public interface Places extends PhysicalAgent
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Places#CLIMASK_COLD
 	 * @return a derived climate
 	 */
-	public int deriveClimate();
+	public int getClimateType();
 	
 
 	/**	Bitmap climate flag meaning that the area has inherited weather.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */

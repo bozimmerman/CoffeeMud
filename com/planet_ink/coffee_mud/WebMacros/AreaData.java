@@ -234,7 +234,7 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("CLIMATES"))
 				{
-					int climate=A.climateType();
+					int climate=A.getClimateTypeCode();
 					if(httpReq.isUrlParameter("CLIMATE"))
 					{
 						climate=CMath.s_int(httpReq.getUrlParameter("CLIMATE"));

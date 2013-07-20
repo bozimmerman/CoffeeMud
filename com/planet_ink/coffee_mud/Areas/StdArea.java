@@ -45,6 +45,7 @@ public class StdArea implements Area
 	protected String	imageName   	="";
 	protected int   	theme			=0;
 	protected int		atmosphere		=Room.ATMOSPHERE_INHERIT;
+	protected int		derivedAtmo		=-1;
 	protected int   	climask			=Area.CLIMASK_NORMAL;
 	protected int		derivedClimate	=-1;
 	protected long  	tickStatus  	=Tickable.STATUS_NOT;
@@ -96,8 +97,30 @@ public class StdArea implements Area
 		}
 	}
 	public String getCurrency(){return currency;}
-	public int atmosphere() { return atmosphere; }
-	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
+	public int getAtmosphereCode() { return atmosphere; }
+	public void setAtmosphere(int resourceCode) 
+	{
+		atmosphere=resourceCode;
+		derivedAtmo=-1;
+	}
+	public int getAtmosphere()
+	{
+		if(derivedAtmo!=ATMOSPHERE_INHERIT)
+			return derivedAtmo;
+		Stack<Area> areasToDo=new Stack<Area>();
+		areasToDo.push(this);
+		while(areasToDo.size()>0)
+		{
+			final Area A=areasToDo.pop();
+			derivedAtmo=A.getClimateType();
+			if(derivedAtmo!=ATMOSPHERE_INHERIT)
+				return derivedAtmo;
+			for(Enumeration<Area> a=A.getParents();a.hasMoreElements();)
+				areasToDo.push(a.nextElement());
+		}
+		derivedAtmo=RawMaterial.RESOURCE_AIR;
+		return derivedAtmo;
+	}
 
 	protected Enumeration<String> allBlurbFlags()
 	{
@@ -207,6 +230,7 @@ public class StdArea implements Area
 		ignoreMask="";
 		prejudiceFactors="";
 		derivedClimate=-1;
+		derivedAtmo=-1;
 	}
 	
 	public boolean amDestroyed(){return amDestroyed;}
@@ -282,6 +306,7 @@ public class StdArea implements Area
 		}
 		flag=newState;
 		derivedClimate=-1;
+		derivedAtmo=-1;
 	}
 	public State getAreaState(){return flag;}
 
@@ -406,6 +431,7 @@ public class StdArea implements Area
 		behaviors=new SVector<Behavior>(1);
 		scripts=new SVector<ScriptingEngine>(1);
 		derivedClimate=-1;
+		derivedAtmo=-1;
 		for(Enumeration<Behavior> e=areaA.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
@@ -584,15 +610,20 @@ public class StdArea implements Area
 		if(newMiscText.trim().length()>0)
 			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
 		derivedClimate=-1;
+		derivedAtmo=-1;
 	}
 
 	public String description()
 	{ return description;}
 	public void setDescription(String newDescription)
 	{ description=newDescription;}
-	public int climateType(){return climask;}
-	public void setClimateType(int newClimateType){    climask=newClimateType; derivedClimate=-1; }
-	public int deriveClimate()
+	public int getClimateTypeCode(){return climask;}
+	public void setClimateType(int newClimateType)
+	{ 
+		climask=newClimateType; 
+		derivedClimate=-1; 
+	}
+	public int getClimateType()
 	{
 		if(derivedClimate!=CLIMASK_INHERIT)
 			return derivedClimate;
@@ -601,7 +632,7 @@ public class StdArea implements Area
 		while(areasToDo.size()>0)
 		{
 			final Area A=areasToDo.pop();
-			derivedClimate=A.deriveClimate();
+			derivedClimate=A.getClimateType();
 			if(derivedClimate!=CLIMASK_INHERIT)
 				return derivedClimate;
 			for(Enumeration<Area> a=A.getParents();a.hasMoreElements();)
@@ -610,7 +641,6 @@ public class StdArea implements Area
 		derivedClimate=Places.CLIMASK_NORMAL;
 		return derivedClimate;
 	}
-
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -1636,6 +1666,7 @@ public class StdArea implements Area
 	public void addParent(Area area) 
 	{
 		derivedClimate=-1;
+		derivedAtmo=-1;
 		if(!canParent(area))
 			return;
 		for(final Iterator<Area> i=getParentsIterator(); i.hasNext();) 
@@ -1653,6 +1684,7 @@ public class StdArea implements Area
 	public void removeParent(Area area) 
 	{ 
 		derivedClimate=-1;
+		derivedAtmo=-1;
 		if(isParent(area))
 			parents.remove(area);
 	}
@@ -1697,7 +1729,7 @@ public class StdArea implements Area
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return ""+climateType();
+		case 1: return ""+getClimateTypeCode();
 		case 2: return description();
 		case 3: return text();
 		case 4: return ""+getTheme();
