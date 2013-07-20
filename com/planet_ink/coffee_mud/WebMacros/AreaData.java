@@ -238,19 +238,46 @@ public class AreaData extends StdWebMacro
 					if(httpReq.isUrlParameter("CLIMATE"))
 					{
 						climate=CMath.s_int(httpReq.getUrlParameter("CLIMATE"));
+						if(climate>=0)
 						for(int i=1;;i++)
+						{
 							if(httpReq.isUrlParameter("CLIMATE"+(Integer.toString(i))))
-								climate=climate|CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
+							{
+								int newVal=CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
+								if(newVal<0)
+								{
+									climate=-1;
+									break;
+								}
+								climate=climate|newVal;
+							}
 							else
 								break;
+						}
 					}
+					str.append("<OPTION VALUE=-1 "+((climate<0)?"SELECTED":"")+">Inherited");
 					for(int i=1;i<Area.NUM_CLIMATES;i++)
 					{
 						String climstr=Area.CLIMATE_DESCS[i];
 						int mask=(int)CMath.pow(2,i-1);
 						str.append("<OPTION VALUE="+mask);
-						if((climate&mask)>0) str.append(" SELECTED");
+						if((climate>=0)&&((climate&mask)>0)) str.append(" SELECTED");
 						str.append(">"+climstr);
+					}
+				}
+				if(parms.containsKey("ATMOSPHERE"))
+				{
+					String atmoVal=httpReq.getUrlParameter("ATMOSPHERE");
+					if((atmoVal==null)||(!CMath.isNumber(atmoVal)))
+						atmoVal=""+A.getAtmosphereCode();
+					int atmo=CMath.s_int(atmoVal);
+					str.append("<OPTION VALUE=\"-1\"").append((atmo<0)?"SELECTED":"").append(">Inherited");
+					for(int r : RawMaterial.CODES.ALL_SBN())
+					{
+						str.append("<OPTION VALUE=\""+r+"\"");
+						if(r==atmo)
+							str.append(" SELECTED");
+						str.append(">"+RawMaterial.CODES.NAME(r));
 					}
 				}
 				if(parms.containsKey("THEME"))

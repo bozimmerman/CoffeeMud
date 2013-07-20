@@ -1877,6 +1877,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void toggleClimateMask(Places A, int mask)
 	{
 		int current=A.getClimateTypeCode();
+		if(current<0) current=0;
 		if((current&mask)==0)
 			A.setClimateType(current|mask);
 		else
@@ -1887,6 +1888,29 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
+			List<String> conditions=new Vector<String>();
+			if(A.getClimateTypeCode()==Places.CLIMASK_INHERIT)
+				conditions.add("Inherited");
+			else
+			{
+				if(CMath.bset(A.getClimateTypeCode(), Places.CLIMASK_WET))
+					conditions.add("wet");
+				if(CMath.bset(A.getClimateTypeCode(), Places.CLIMASK_HOT))
+					conditions.add("hot");
+				if(CMath.bset(A.getClimateTypeCode(), Places.CLIMASK_DRY))
+					conditions.add("dry");
+				if(CMath.bset(A.getClimateTypeCode(), Places.CLIMASK_COLD))
+					conditions.add("cold");
+				if(CMath.bset(A.getClimateTypeCode(), Places.CLIMASK_WINDY))
+					conditions.add("windy");
+				if(conditions.size()==0)
+					conditions.add("normal");
+			}
+			mob.session().println(""+showNumber+". Climate: "+CMLib.english().toEnglishStringList(conditions.toArray(new String[0])));
+			return;
+		}
 		String c="Q";
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!c.equals("\n")))
 		{
@@ -1895,12 +1919,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.session().println("    I) Inherited        : "+(type==Places.CLIMASK_INHERIT));
 			if(type == Places.CLIMASK_INHERIT)
 				type=0;
-			mob.session().println("    R) Wet and Rainy    : "+((A.getClimateTypeCode()&Area.CLIMASK_WET)>0));
-			mob.session().println("    H) Excessively hot  : "+((A.getClimateTypeCode()&Area.CLIMASK_HOT)>0));
-			mob.session().println("    C) Excessively cold : "+((A.getClimateTypeCode()&Area.CLIMASK_COLD)>0));
-			mob.session().println("    W) Very windy       : "+((A.getClimateTypeCode()&Area.CLIMASK_WINDY)>0));
-			mob.session().println("    D) Very dry         : "+((A.getClimateTypeCode()&Area.CLIMASK_DRY)>0));
-			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			mob.session().println("    R) Wet and Rainy    : "+((type&Area.CLIMASK_WET)>0));
+			mob.session().println("    H) Excessively hot  : "+((type&Area.CLIMASK_HOT)>0));
+			mob.session().println("    C) Excessively cold : "+((type&Area.CLIMASK_COLD)>0));
+			mob.session().println("    W) Very windy       : "+((type&Area.CLIMASK_WINDY)>0));
+			mob.session().println("    D) Very dry         : "+((type&Area.CLIMASK_DRY)>0));
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWDI\n","\n").toUpperCase();
 			switch(c.charAt(0))
 			{
@@ -2764,26 +2787,36 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		E.setMaterial(genAnyMaterialCode(mob,E,"Material Type",E.material(),showNumber,showFlag));
+		E.setMaterial(genAnyMaterialCode(mob,"Material Type",E.material(),false,showNumber,showFlag));
 	}
 	
-	protected int genAnyMaterialCode(MOB mob, Item E, String prompt, int currMat, int showNumber, int showFlag)
+	protected int genAnyMaterialCode(MOB mob, String prompt, int currMat, boolean inheritOk, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return currMat;
-		mob.tell(showNumber+". "+prompt+": '"+RawMaterial.CODES.NAME(E.material())+"'.");
+		String matName=(currMat<0)?"Inherited":RawMaterial.CODES.NAME(currMat);
+		mob.tell(showNumber+". "+prompt+": '"+matName+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return currMat;
 		boolean q=false;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
 		{
-			String newType=mob.session().prompt("Enter a new material (?)\n\r:",RawMaterial.CODES.NAME(E.material()));
+			matName=(currMat<0)?"Inherited":RawMaterial.CODES.NAME(currMat);
+			String newType=mob.session().prompt("Enter a new material (?)\n\r:",matName);
 			if(newType.equals("?"))
 			{
 				StringBuffer say=new StringBuffer("");
+				if(inheritOk)
+					say.append("Inherited, ");
 				for(String S : RawMaterial.CODES.NAMES())
 					say.append(S+", ");
 				mob.tell(say.toString().substring(0,say.length()-2));
 				q=false;
+			}
+			else
+			if(newType.equalsIgnoreCase("Inherited"))
+			{
+				q=true;
+				currMat=-1;
 			}
 			else
 			{
@@ -7008,7 +7041,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Electronics)
 			{
 				Electronics E=(Electronics)me;
-				E.setFuelType(genAnyMaterialCode(mob,me,"Energy type",E.fuelType(),++showNumber,showFlag));
+				E.setFuelType(genAnyMaterialCode(mob,"Energy type",E.fuelType(),false,++showNumber,showFlag));
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
 			}
@@ -7292,7 +7325,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Electronics)
 			{
 				Electronics E=(Electronics)me;
-				E.setFuelType(genAnyMaterialCode(mob,me,"Energy type",E.fuelType(),++showNumber,showFlag));
+				E.setFuelType(genAnyMaterialCode(mob,"Energy type",E.fuelType(),false,++showNumber,showFlag));
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
 			}
@@ -8193,6 +8226,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				//((GridLocale)mob.location()).buildGrid();
 			}
 			genClimateType(mob,R,++showNumber,showFlag);
+			R.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",R.getAtmosphereCode(),true,++showNumber,showFlag));
 			genBehaviors(mob,R,++showNumber,showFlag);
 			genAffects(mob,R,++showNumber,showFlag);
 			for(int x=R.getSaveStatIndex();x<R.getStatCodes().length;x++)
@@ -8323,6 +8357,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genAuthor(mob,myArea,++showNumber,showFlag);
 			getTheme(mob,myArea,++showNumber,showFlag);
 			genClimateType(mob,myArea,++showNumber,showFlag);
+			myArea.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",myArea.getAtmosphereCode(),true,++showNumber,showFlag));
 			genTimeClock(mob,myArea,++showNumber,showFlag);
 			genArchivePath(mob,myArea,++showNumber,showFlag);
 			genParentAreas(mob,myArea,++showNumber,showFlag);

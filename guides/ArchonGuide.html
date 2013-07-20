@@ -1034,6 +1034,14 @@ BLIZZARD, WINDY, DROUGHT, DUSTSTORM, COLD, HAIL, CLOUDY,&nbsp;
 SWIMMING, FLYING, CRAWLING, SITTING, CLIMBING, FALLING, INVISIBLE,
 HIDDEN, VISITED. &nbsp;You can also use &lt;ELSE&gt; to catch
 exceptions to your last VARIES tag.</p>
+<p>The room editor menu will also allow you to alter the climate or
+atmosphere. &nbsp;The climate influences how local weather impacts
+players in this particular place, and usually only matters for
+outdoor-type rooms. &nbsp;The atmosphere is what kind of stuff is
+breathed here; air is good for above gound rooms, and water for under
+the sea. Both of these fields will often be set to "inherited", which
+means that the room gets its value from the Area that it's in (more on
+that later). &nbsp;It's generally safe not to mess these these things.</p>
 <p>Rooms of the Grid and Maze sort present unique challenges to the
 molder of universes. In the first place, if you have SYSMSGS turned on,
 you will notice that the room ID displayed is a little different. In
@@ -1403,8 +1411,11 @@ properties.</p>
 <p>The <em>name</em> and <em>description</em> of the area may be
 changed by following the promptings. You may also tinker with the <em>climate</em>
 of your area, which will affect the types of weather that will blow
-through it, and how mild or severe the winters and summers may be. This
-is also where you may add <em>Staff</em>.
+through it, and how mild or severe the winters and summers may be, or
+the <span style="font-style: italic;">atmosphere</span> in the area,
+which will decide whether your players can breathe, or you can set them
+both to inherit their values from parent areas . This
+editor is also where you may add <em>Staff</em>.
 A player whose name is listed as Staff has no additional powers unless
 their player Security settings grant them specific AREA privileges. In
 that case, the player would be able to use their area privileges in the

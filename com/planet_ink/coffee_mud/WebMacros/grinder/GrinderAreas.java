@@ -165,15 +165,30 @@ public class GrinderAreas
 		if(httpReq.isUrlParameter("CLIMATE"))
 		{
 			int climate=CMath.s_int(httpReq.getUrlParameter("CLIMATE"));
-			for(int i=1;;i++)
-				if(httpReq.isUrlParameter("CLIMATE"+(Integer.toString(i))))
-					climate=climate|CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
-				else
-					break;
+			if(climate>=0)
+			{
+				for(int i=1;;i++)
+					if(httpReq.isUrlParameter("CLIMATE"+(Integer.toString(i))))
+					{
+						int newVal=CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
+						if(newVal<0)
+						{
+							climate=-1;
+							break;
+						}
+						climate=climate|newVal;
+					}
+					else
+						break;
+			}
 			A.setClimateType(climate);
 		}
 		else
-			A.setClimateType(0);
+			A.setClimateType(-1);
+		
+		// atmosphere
+		if(httpReq.isUrlParameter("ATMOSPHERE"))
+			A.setAtmosphere(CMath.s_int(httpReq.getUrlParameter("ATMOSPHERE")));
 
 		// tech level
 		if(httpReq.isUrlParameter("THEME"))

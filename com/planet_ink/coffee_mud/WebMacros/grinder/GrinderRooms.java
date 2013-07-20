@@ -112,11 +112,39 @@ public class GrinderRooms
 				return "Please enter a name for this room.";
 			R.setDisplayText(name);
 	
-	
 			// description
 			String desc=httpReq.getUrlParameter("DESCRIPTION");
 			if(desc==null)desc="";
 			R.setDescription(desc);
+			
+			// climate
+			if(httpReq.isUrlParameter("CLIMATE"))
+			{
+				int climate=CMath.s_int(httpReq.getUrlParameter("CLIMATE"));
+				if(climate>=0)
+				{
+					for(int i=1;;i++)
+						if(httpReq.isUrlParameter("CLIMATE"+(Integer.toString(i))))
+						{
+							int newVal=CMath.s_int(httpReq.getUrlParameter("CLIMATE"+(Integer.toString(i))));
+							if(newVal<0)
+							{
+								climate=-1;
+								break;
+							}
+							climate=climate|newVal;
+						}
+						else
+							break;
+				}
+				R.setClimateType(climate);
+			}
+			else
+				R.setClimateType(-1);
+			
+			// atmosphere
+			if(httpReq.isUrlParameter("ATMOSPHERE"))
+				R.setAtmosphere(CMath.s_int(httpReq.getUrlParameter("ATMOSPHERE")));
 	
 			// image
 			if(!skipImage)

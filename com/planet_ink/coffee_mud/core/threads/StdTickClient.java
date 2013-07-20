@@ -125,9 +125,9 @@ public class StdTickClient implements TickClient
 						return true;
 					}
 				}
-				catch(Exception t)
+				catch(Throwable t)
 				{
-					Log.errOut("TockClient",t);
+					Log.errOut(t);
 					return true;
 				}
 			}

@@ -165,6 +165,14 @@
 	</TD>
 </TR>
 <TR>
+	<TD><FONT COLOR="#66FFFF"><B>Atmosphere:</B></FONT></TD>
+    <TD COLSPAN=2>
+	<SELECT NAME=ATMOSPHERE>
+	@AreaData?ATMOSPHERE@
+	</SELECT>
+	</TD>
+</TR>
+<TR>
 	<TD><FONT COLOR="#66FFFF"><B>'Blurb' Flags:</B></FONT></TD>
     <TD COLSPAN=2>@AreaData?BLURBS@</TD>
 </TR>
