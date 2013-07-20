@@ -79,7 +79,7 @@ public class Spell_AlterSubstance extends Spell
 		RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(material);
 		if(m==null) m=RawMaterial.Material.startsWithIgnoreCase(material);
 		int newMaterial=(m==null)?-1:m.mask();
-		if(newMaterial>=0)
+		if((newMaterial>=0)&&(m!=null))
 		{
 			List<Integer> rscs = RawMaterial.CODES.COMPOSE_RESOURCES(newMaterial);
 			if(rscs.size()>0)
