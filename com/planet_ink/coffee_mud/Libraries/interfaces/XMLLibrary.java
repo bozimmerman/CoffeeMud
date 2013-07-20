@@ -79,15 +79,6 @@ public interface XMLLibrary extends CMLibrary
 	 * @return String Information corresponding to the tname
 	 */
 	public String returnXMLBlock(String Blob, String Tag);
-	
-	/**
-	 * Returns the value of the tag, if it exists in the given
-	 * tag collection
-	 * @param V the tag collection (container tag)
-	 * @param tag the tag to look for
-	 * @return its value, or null
-	 */
-	public String getValFromPieces(List<XMLpiece> V, String tag);
 	/**
 	 * Returns the contents of a container tag, searched for in
 	 * another container tags contents
@@ -111,6 +102,14 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the xml tag node for the given tag name
 	 */
 	public XMLpiece getPieceFromPieces(List<XMLpiece> V, String tag);
+	/**
+	 * Returns the value of the tag, if it exists in the given
+	 * tag collection
+	 * @param V the tag collection (container tag)
+	 * @param tag the tag to look for
+	 * @return its value, or null
+	 */
+	public String getValFromPieces(List<XMLpiece> V, String tag);
 	/**
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
@@ -177,6 +176,74 @@ public interface XMLLibrary extends CMLibrary
 	 */
 	public double getDoubleFromPieces(List<XMLpiece> V, String tag);
 	
+	/**
+	 * Returns the value of the tag, if it exists in the given
+	 * tag collection
+	 * @param V the tag collection (container tag)
+	 * @param tag the tag to look for
+	 * @param defValue the value to return if the tag doesn't exist
+	 * @return the tags value, or defValue
+	 */
+	public String getValFromPieces(List<XMLpiece> V, String tag, String defValue);
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+	 * <br><br><b>Usage:</b> String ThisColHead=getBoolFromPieces(ThisRow,"TD");
+	 * @param V Pieces to search
+	 * @param tag Tag to search for
+	 * @param defValue the value to return if the tag doesn't exist
+	 * @return the tags value, or defValue
+	 */
+	public boolean getBoolFromPieces(List<XMLpiece> V, String tag, boolean defValue);
+	
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+	 * <br><br><b>Usage:</b> String ThisColHead=getShortFromPieces(ThisRow,"TD");
+	 * @param V Pieces to search
+	 * @param tag Tag to search for
+	 * @param defValue the value to return if the tag doesn't exist
+	 * @return the tags value, or defValue
+	 */
+	public short getShortFromPieces(List<XMLpiece> V, String tag, short defVal);
+	
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+	 * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
+	 * @param V Pieces to search
+	 * @param tag Tag to search for
+	 * @param defValue the value to return if the tag doesn't exist
+	 * @return the tags value, or defValue
+	 */
+	public int getIntFromPieces(List<XMLpiece> V, String tag, int defVal);
+	
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+	 * <br><br><b>Usage:</b> String ThisColHead=getLongFromPieces(ThisRow,"TD");
+	 * @param V Pieces to search
+	 * @param tag Tag to search for
+	 * @param defValue the value to return if the tag doesn't exist
+	 * @return the tags value, or defValue
+	 */
+	public long getLongFromPieces(List<XMLpiece> V, String tag, long defVal);
+	
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+	 * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
+	 * @param V Pieces to search
+	 * @param tag Tag to search for
+	 * @param defValue the value to return if the tag doesn't exist
+	 * @return the tags value, or defValue
+	 */
+	public double getDoubleFromPieces(List<XMLpiece> V, String tag, double defVal);
 	/**
 	 * Parses all xml inside the given string buffer and returns
 	 * the root tags as a container collection.

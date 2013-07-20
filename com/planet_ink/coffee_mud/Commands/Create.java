@@ -340,6 +340,7 @@ public class Create extends StdCommand
 		thisAcct.setLastDateTime(System.currentTimeMillis());
 		thisAcct.setLastUpdated(System.currentTimeMillis());
 		thisAcct.setPassword(password);
+		CMLib.players().addAccount(thisAcct);
 		CMLib.database().DBCreateAccount(thisAcct);
 
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A new soul descends from the heavens and dissipates.\n\r");

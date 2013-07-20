@@ -2154,7 +2154,7 @@ public class StdRoom implements Room
 	}
 	
 	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
-	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT","AFFBEHAV","IMAGE"};
+	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT","AFFBEHAV","IMAGE","CLIMATE","ATMOSPHERE"};
 	private static String[] codes=null;
 	public String[] getStatCodes()
 	{
@@ -2173,6 +2173,8 @@ public class StdRoom implements Room
 		case 3: return text();
 		case 4: return CMLib.coffeeMaker().getExtraEnvPropertiesStr(this);
 		case 5: return rawImage();
+		case 6: return ""+getClimateTypeCode();
+		case 7: return ""+getAtmosphereCode();
 		default: return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
@@ -2192,6 +2194,15 @@ public class StdRoom implements Room
 			break;
 		}
 		case 5: setImage(val); break;
+		case 6: setClimateType((CMath.s_int(val)<0)?-1:CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
+		case 7: {
+			if(CMath.isMathExpression(val)) 
+				setAtmosphere(CMath.s_parseIntExpression(val));
+			int matCode=RawMaterial.CODES.FIND_IgnoreCase(val);
+			if(matCode>=0)
+				setAtmosphere(matCode);
+			break;
+		}
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

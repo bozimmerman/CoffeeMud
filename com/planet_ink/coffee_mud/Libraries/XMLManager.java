@@ -317,10 +317,15 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	public String getValFromPieces(List<XMLpiece> V, String tag)
 	{
+		return getValFromPieces(V, tag, "");
+	}
+
+	public String getValFromPieces(List<XMLpiece> V, String tag, String defVal)
+	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.value!=null))
 			return x.value;
-		return "";
+		return defVal;
 	}
 
 	public List<XMLpiece> getContentsFromPieces(List<XMLpiece> V, String tag)
@@ -387,6 +392,49 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public double getDoubleFromPieces(List<XMLpiece> V, String tag)
 	{
 		return s_double(getValFromPieces(V,tag));
+	}
+	
+	public boolean getBoolFromPieces(List<XMLpiece> V, String tag, boolean defVal)
+	{
+		String val=getValFromPieces(V,tag);
+		if((val==null)||(val.length()==0))
+			return false;
+		if(val.toUpperCase().trim().startsWith("T"))
+			return true;
+		return false;
+	}
+
+
+	public int getIntFromPieces(List<XMLpiece> V, String tag, int defVal)
+	{
+		XMLpiece x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value!=null))
+			return s_int(x.value);
+		return defVal;
+	}
+
+	public short getShortFromPieces(List<XMLpiece> V, String tag, short defVal)
+	{
+		XMLpiece x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value!=null))
+			return s_short(x.value);
+		return defVal;
+	}
+
+	public long getLongFromPieces(List<XMLpiece> V, String tag, long defVal)
+	{
+		XMLpiece x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value!=null))
+			return s_long(x.value);
+		return defVal;
+	}
+
+	public double getDoubleFromPieces(List<XMLpiece> V, String tag, double defVal)
+	{
+		XMLpiece x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value!=null))
+			return s_double(x.value);
+		return defVal;
 	}
 	
 	protected void changeTagState(State newState)

@@ -1715,7 +1715,9 @@ public class StdArea implements Area
 												  "DEVALRATE",
 												  "INVRESETRATE",
 												  "IGNOREMASK",
-												  "PRICEMASKS"};
+												  "PRICEMASKS",
+												  "ATMOSPHERE"
+												  };
 	private static String[] codes=null;
 	public String[] getStatCodes()
 	{
@@ -1740,6 +1742,7 @@ public class StdArea implements Area
 		case 9: return ""+invResetRate();
 		case 10: return ignoreMask();
 		case 11: return CMParms.toStringList(itemPricingAdjustments());
+		case 12: return ""+getAtmosphereCode();
 		default: return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
@@ -1748,7 +1751,7 @@ public class StdArea implements Area
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: setClimateType(CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
+		case 1: setClimateType((CMath.s_int(val)<0)?-1:CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
 		case 4: setTheme(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
@@ -1780,6 +1783,14 @@ public class StdArea implements Area
 		case 9: setInvResetRate(CMath.s_parseIntExpression(val)); break;
 		case 10: setIgnoreMask(val); break;
 		case 11: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
+		case 12: {
+			if(CMath.isMathExpression(val)) 
+				setAtmosphere(CMath.s_parseIntExpression(val));
+			int matCode=RawMaterial.CODES.FIND_IgnoreCase(val);
+			if(matCode>=0)
+				setAtmosphere(matCode);
+			break;
+		}
 		default: CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val); break;
 		}
 	}

@@ -339,6 +339,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			String password=CMLib.encoder().generateRandomPassword();
 			acct.setPassword(password);
+			CMLib.players().addAccount(acct);
 			CMLib.database().DBCreateAccount(acct);
 			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), acct.accountName(), "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), acct.accountName(),
 				"Password for "+acct.accountName(),
@@ -355,6 +356,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		{
 			acct.setPassword(pw);
+			CMLib.players().addAccount(acct);
 			CMLib.database().DBCreateAccount(acct);
 			StringBuffer doneText=new CMFile(Resources.buildResourcePath("text")+"doneacct.txt",null,true).text();
 			try { doneText = CMLib.webMacroFilter().virtualPageFilter(doneText);}catch(Exception ex){}
