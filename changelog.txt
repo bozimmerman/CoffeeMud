@@ -4,6 +4,7 @@
    3. Rooms "climate" is now an editable feature, usually inherited from the area Climate, but designatable at will.
 //TODO: add electronics to guides
 //TODO: add electronics to MG
+//TODO: The installation guide is rediculously outdated in parts. Fix it.
 # Build 5.8.0 Release 7/21/2013
    1. CoffeeMud and MiniWebServer are now integrated -- this means a much faster and better web service all around.
    ^^^Check out the altered WebServer guide, and make sure you integrate the pub. ini, admin.ini, and common.ini if you customized them.
