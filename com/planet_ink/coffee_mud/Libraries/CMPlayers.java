@@ -519,12 +519,19 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			V=new Vector<PlayerAccount>();
 			if(!allAccountsLoaded)
 			{
-				List<PlayerAccount> rV=CMLib.database().DBListAccounts(null);
-				for(PlayerAccount A : rV)
-					addAccount(A);
-				allAccountsLoaded=true;
+				if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTSNOCACHE))
+					V.addAll(CMLib.database().DBListAccounts(null));
+				else
+				{
+					List<PlayerAccount> rV=CMLib.database().DBListAccounts(null);
+					for(PlayerAccount A : rV)
+						addAccount(A);
+					allAccountsLoaded=true;
+					V.addAll(accountsList);
+				}
 			}
-			V.addAll(accountsList);
+			else
+				V.addAll(accountsList);
 			int code=getAccountThinSortCode(sort,false);
 			if(code<0)
 				return V.elements();

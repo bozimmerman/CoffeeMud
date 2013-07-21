@@ -71,8 +71,7 @@ compile the main program, <code>n</code> if you don't. Enter the name
 of your new MUD (this only works FIRST RUN; you cannot use this to
 change MUD's name in the FUTURE). Say <code>y</code> if you want to
 start your MUD now, and <code>n</code> if you don't. Hit enter after
-the nohup comes up. Send an email to <a href="mailto:wrichter@att.net">wrichter@att.net</a>
-if you have any problems with this script.</p>
+the nohup comes up.&nbsp;</p>
       <p>If you are using Windows, or you are using UNIX/Linux and have
 completed the above instructions...</p>
       <p class="bold">Congratulations!</p>
@@ -83,11 +82,11 @@ reading this document. If you couldn't care less, then go into the your
 CoffeeMud directory on a command line or DOS prompt and enter (for
 Windows or DOS users):</p>
       <p><code>java -classpath ".;.\lib\js.jar;.\lib\jzlib.jar"
--Xmx85535000 com.planet_ink.coffee_mud.application.MUD "Your Muds Name"</code></p>
+-Xmx85m com.planet_ink.coffee_mud.application.MUD "Your Muds Name"</code></p>
       <p>And for Unix, Linux, or FreeBSD users, the command differs
 only in the classpath:</p>
       <p><code>java -classpath ".:./lib/js.jar:./lib/jzlib.jar
--Xmx85535000 com.planet_ink.coffee_mud.application.MUD "Your Muds Name"</code></p>
+-Xmx85m com.planet_ink.coffee_mud.application.MUD "Your Muds Name"</code></p>
       <p>This will start up the CoffeeMud server. Remember to change
 the "Your Muds Name" text at the end to the unique name you want to
 give your mud. If you are running Windows, you might also get away with
@@ -100,7 +99,8 @@ mudLINUX.sh,</code> and then execute.</p>
       <p>Now, connect to the server on port 5555 using your telnet or
 other MUD client. Create yourself a new character. This new character
 will be your administrative player, or Archon, so most of the player
-settings, such as class, race, stats, etc. won't matter much. When your
+settings, such as class, race, stats, etc. won't matter much (though I
+would stay away from the Apprentice class). When your
 character logs in for the first time, you will see a book in a room.
 Your player should pick up the book and read it. The commands to do
 this are:</p>
@@ -111,7 +111,8 @@ magical conjurations. You will probably want to import a bunch of areas
 into your database right away. If so, you should enter:</p>
       <pre>ahelp import<br /></pre>
       <p>This will tell you how to import *.CMARE files, which are
-CoffeeMud formatted area files. Other formats are supported as well.
+CoffeeMud formatted area files.&nbsp;Other formats are supported as
+well.
 &nbsp;Another way to quickly see some content in your mud is to enter
 this long command:</p>
       <p><span style="font-family: monospace;">generate area
@@ -184,7 +185,8 @@ your olde one.</p>
         <li>
           <p>Open up the coffeemud.ini file that comes with the new
 version and also open up your olde customized coffeemud.ini file you
-saved away in step 2. Copy over from the old ini file the settings that
+saved away in step 2. Merge over from the old ini file the settings
+that
 differ from the new one. The idea here is that the new coffeemud.ini
 file may contain new settings you need to be aware of. However, your
 old custom settings will still apply in the new version -- especially
@@ -223,7 +225,9 @@ and remember where you put them!</p>
         <li>
           <p>From the command line, go into your CoffeeMud directory,
 and from there into fakedb data directory. Delete all the files
-matching fakedb.data.* Do NOT delete the fakedb.schema! If everything
+matching fakedb.data.*, praying you remembered where you saved this
+stuff away just 2 steps ago. &nbsp;Do NOT delete the fakedb.schema
+file! If everything
 went well, the new fakedb.schema from the new version of CoffeeMud is
 still in your fakedb data directory.</p>
         </li>
@@ -232,11 +236,6 @@ still in your fakedb data directory.</p>
 directory and enter the following: <code>java
 com.planet_ink.fakedb.DBUpgrade</code></p>
         </li>
-        <ul>
-          <li>NOTE: You may need to add the classpath variable to your
-database connector (if not FakeDB). Refer to the first-time
-installation instructions for the CLASSPATH format.</li>
-        </ul>
         <li>
           <p>Follow the instructions for this little program.</p>
         </li>
@@ -282,7 +281,13 @@ com.planet_ink.fakedb.DBUpgrade</code></p>
         <ul>
           <li>NOTE: You may need to add the classpath variable to your
 database connector (if not FakeDB). Refer to the first-time
-installation instructions for the CLASSPATH format.</li>
+installation instructions for the CLASSPATH format. &nbsp;For example,
+if you are using a MYSQL drive, the command might look like:</li>
+          <ul>
+            <li><code>java
+-cp "/myjavastuff/drivers/mysql-connector-java-5.1.6-bin.jar"
+com.planet_ink.fakedb.DBUpgrade</code></li>
+          </ul>
         </ul>
         <li>
           <p>Follow the instructions for this little program.</p>
@@ -308,7 +313,7 @@ file other than "coffeemud.ini" by putting a boot= myfile.ini entry in
 your startup line just before the name of your mud. Why would you want
 to? I don't know, but you can.</p>
       <p>If you are happy with the standard installation, you will
-usually also be content to leave the INI file alone. You will
+usually also be content to leave most of the INI file alone. You will
 eventually, however, probably find a need to at least modify the
 "START" setting. Any changes to the coffeemud.ini file will require
 that CoffeeMud be restarted before the changes will take effect.</p>
@@ -318,26 +323,33 @@ they just aren't discussed here. The best way to modify those "other"
 settings is through the Control Panel in the <a href="MUDGrinder.html">MUDGrinder</a>
 web site.</p>
       <ul>
-        <li> <span class="bold">SYSMSGS, ERRMSGS, WRNMSGS, DBGMSGS</span>
+        <li> <span class="bold">SYSMSGS, ERRMSGS, WRNMSGS, DBGMSGS,
+ACCMSGS, HLPMSGS</span>
           <p>These entries refer to logged system messages, logged
-error messages, and logged debug messages respectively. When logging is
+error messages, warning messages,&nbsp;debug messages, web server
+access logs, and help requests. When logging is
 directed to a file, that file is called "mud.log". The possible values
 for each of these settings is either "ON", which will direct the
 indicated messages to the screen only, "OFF" to disable the messages
-entirely, "FILE" to direct the messages to the "mud.log" file only, or
-"BOTH" for both screen and file output. By default, SYSMSGS, WRNMSGS,
+entirely, "FILE" to direct the messages to the "mud.log" file only,
+"OWNFILE" to direct the messages to a file of its very own, or
+"BOTH" for both screen and normal file output. By default, SYSMSGS,
+WRNMSGS,
 and ERRMSGS
-are set to "BOTH", while DBGMSGS is set to "OFF".</p>
+are set to "BOTH", while DBGMSGS and ACCMSGS are set to "OFF", and
+HLPMSGS set to "OWNFILE".</p>
         </li>
         <li> <span class="bold">PORT</span>
           <p>This is the TCP/IP port number which the main CoffeeMud
 server will listen on. By default the setting is 5555. If you would
-like to change this number to some other port, you may do so!</p>
+like to change this number to some other port, you may do so! You may
+also add other numbers, separated by commas, to listen on multiple
+ports!</p>
         </li>
         <li> <span class="bold">MUDSTATE</span>
           <p>This is a short description of the state of your mud as
-you want it published to the I3 network. A state is typically like
-"Development", or "Open Beta", or "Live", etc.</p>
+you want it published to the I3 or IMC2 network. A number from 0
+(meaning Development) to 3 (Live and Ready) is expected.</p>
         </li>
         <li> <span class="bold">START</span>
           <p>This setting designates the Room ID of the place on your
@@ -348,13 +360,14 @@ had better update this setting before new players start arriving.</p>
         </li>
         <li> <span class="bold">CHANNELS</span>
           <p>This is a comma separated list of channels which the users
-of your system may converse publicly on. An minimum character level may
-optionally be specified after each channel name. The channel names
+of your system may converse publicly on. The channel names
 given here are completely arbitrary and may be meaningful or whimsical
-terms, though the names may not contains spaces. A couple of standard
-channels are specified. The limit for the number of standard channels
+terms, though the names may not contains spaces. &nbsp;There are lots
+of options to peruse over here, and a couple of standard
+channels are specified to get you started. The limit for the number of
+standard channels
 plus any InterMud channels (see <span class="bold">I3CHANNELS</span>
-below) is 16 or 32, I forget.</p>
+below) is 48 or so. &nbsp;That's more than plenty, right?</p>
         </li>
         <li> <span class="bold">BACKLOG</span>
           <p>This TCP/IP setting denotes how many connections can be
@@ -363,7 +376,8 @@ queued up when the server is busy. Leave it at 6.</p>
         <li> <span class="bold">BIND</span>
           <p>This TCP/IP setting will limit the IP addresses which can
 connect to your server. It is commented out by default, which means
-that everyone is allowed to connect. Leave it that way.</p>
+that everyone is allowed to connect. Leave it that way, unless you want
+your mud to be secret.</p>
         </li>
         <li> <span class="bold">RUNI3SERVER</span>
           <p>This setting tells CoffeeMud whether to start up the
@@ -380,17 +394,18 @@ will have no effect.</p>
         <li> <span class="bold">I3CHANNELS</span>
           <p>This is a comma separated list of InterMud3 channels which
 the users of your system may converse publicly on. Each channel entry
-is separated by a comma. Each entry consists of a locate channel name
-(no spaces in the name), followed by a space, followed by a minimum
-character level to view or chat on the channel, followed by a space,
-followed by the name of the InterMud3 channel to map this local channel
+is separated by a comma. Each entry consists of a locale channel name
+(no spaces in the name), followed by a space, followed by a mask to
+limit who can view or chat on the channel, followed lastly by the name
+of the InterMud3 channel to map this local channel
 to. A couple of standard channels are specified. The limit for the
 number of standard channels (see <span class="bold">CHANNELS</span>
-above) plus any InterMud channels is 16 or 32, I forget.</p>
+above) plus any InterMud channels is 48.</p>
         </li>
         <li> <span class="bold">RUNWEBSERVERS</span>
           <p>This setting tells CoffeeMud whether to start up the
-built-in web servers. A value of "TRUE" will turn on the web servers.
+built-in web servers. A value of "pub,admin" will turn on both of the
+main web servers.
 Even if you don't wish to publish any of your MUDs information to the
 web, you may want to run the Admin web server so that you can use the
 MUDGrinder area editing tool. See the <a href="MUDGrinder.html">MUDGrinder
@@ -407,7 +422,7 @@ for your players. For more information on the CoffeeMud SMTP server in
 general, please read the <a href="SMTPServer.html">SMTPServer Guide</a>.</p>
         </li>
         <li> <span class="bold">ITEMS, MOBS, BEHAVIORS, ABILITIES,
-CHARCLASSES, RACES, COMMANDS, LOCALES, AREAS, EXITS</span>
+CHARCLASSES, RACES, COMMANDS, LOCALES, AREAS, EXITS, etc&nbsp;</span>
           <p>These settings each specify a path on your local drive
 which will contain Java class files. These class files are typically
 classes which you might want to use with your CoffeeMud system, but
@@ -445,6 +460,14 @@ for fakedb, and thus blank by default.</p>
 the database through your JDBC/ODBC driver. 1 or 2 is plenty. CoffeeMud
 is not especially database intensive.</p>
         </li>
+        <li> <span class="bold">DBREUSE, DBPINGINTERVALS</span>
+          <p>These are for tweeking how CoffeeMud uses database
+connections. &nbsp;DBREUSE is true to permit the mud to re-use existing
+connections over and over, instead of making new ones. &nbsp;When
+DBREUSE is true, DBPINGINTERVALS will help you keep them alive during
+dormancy by saying how frequently to ping those connections with a
+trivial query.</p>
+        </li>
       </ul>
       <p>* In Addition to the above, you will find other numerous flags
 and settings which allow you to better customize your CoffeeMud. Make
@@ -463,7 +486,7 @@ server will then attempt to boot two muds in the same Java environment,
 each relying to some extent on their own ini files for database and
 other information.</p>
       <p><code>java -classpath ".:./lib/js.jar:./lib/jzlib.jar
--Xmx85535000 com.planet_ink.coffee_mud.application.MUD
+-Xmx256m com.planet_ink.coffee_mud.application.MUD
 boot=coffeemud1.ini boot=coffeemud2.ini "Your Two-Headed Muds Common
 Name"</code></p>
       <p>The first BOOT parameter is considered by the CoffeeMud Engine
@@ -648,7 +671,7 @@ translation engine.</td>
 command line tool for updating this file.</td>
           </tr>
           <tr>
-            <td>mxp_images.txt</td>
+            <td>mxp_images.ini</td>
             <td>A definition table for the default image files used for
 mxp clients.</td>
           </tr>
@@ -677,6 +700,12 @@ find sample files for a variety of things.<br />
       <table border="1" width="100%">
         <tbody>
           <tr>
+            <td>areareaction.ini</td>
+            <td>A template for use by the Faction system for automatic
+mob reactions based on area. &nbsp;See AUTOREACTION in your
+coffeemud.ini file for more information on this system.</td>
+          </tr>
+          <tr>
             <td valign="top">deities.cmare<br />
             </td>
             <td valign="top">A cmare file with some example deities to
@@ -691,6 +720,14 @@ wizard when new factions are created. Do not modify this file!!<br />
             </td>
           </tr>
           <tr>
+            <td>FindRawMaterial.js</td>
+            <td>A sample Command class written in javascript as an
+example of how to write coffeemud commands in javascript. &nbsp;Use
+LOAD COMMAND resources/examples/FindRawMaterial.js to install it, and
+then
+enter FINDRAWMATERIAL IRON at the command line to run it.</td>
+          </tr>
+          <tr>
             <td valign="top">reputation.ini<br />
             </td>
             <td valign="top">Sample faction ini file, which you may add
@@ -701,21 +738,43 @@ of.<br />
           <tr>
             <td valign="top">Lemmings.js<br />
             </td>
-            <td valign="top">a sample MOB class written in javascript
+            <td valign="top">A&nbsp;sample MOB class written in
+javascript
 as an example on how to write coffeemud code. Use LOAD MOB
 resources/examples/Lemming.js to load it up, and see the Programmer's
 Guide for more information<br />
             </td>
           </tr>
           <tr>
+            <td>namereaction.ini</td>
+            <td>A template for use by the Faction system for automatic
+mob reactions
+based on mob name. &nbsp;See AUTOREACTION in your coffeemud.ini file
+for more
+information on this system.</td>
+          </tr>
+          <tr>
             <td>QuickWho</td>
-            <td>a sample Command class written in javascript as an
+            <td>Another sample Command class written in javascript as
+an
 example of how to write coffeemud commands in javascript. &nbsp;Use
 LOAD COMMAND resources/examples/QuickWho.js to install it, and then
 enter QUICKWHO at the command line to run it.</td>
           </tr>
+          <tr>
+            <td>racereaction.ini</td>
+            <td>A template for use by the Faction system for automatic
+mob reactions
+based on mob race. &nbsp;See AUTOREACTION in your coffeemud.ini file
+for more
+information on this system.</td>
+          </tr>
         </tbody>
       </table>
+      <p>The <code>resources/factions</code> directory is where you
+should put all of your&nbsp;faction definition files. &nbsp;The
+standard faction shipped with the mud, called Alignment, is found in
+there.</p>
       <p>The <code>resources/help</code> directory is where you'll
 find
 all of the files responsible for the numerous standard and archon HELP
@@ -731,6 +790,11 @@ sample program files:<br />
       </p>
       <table border="1" width="100%">
         <tbody>
+          <tr>
+            <td>autoplayer</td>
+            <td>Don't look in here -- it's barely even started.
+&nbsp;Just junk right now.</td>
+          </tr>
           <tr>
             <td valign="top">blackjack.script<br />
             </td>
@@ -1174,18 +1238,6 @@ selection.<br />
             <td>A text file describing the basic stats to new players</td>
           </tr>
           <tr>
-            <td>motd.txt</td>
-            <td>A text file shown to users when they log
-on. The existence of this file activates MOTD command, as well as the
-MOTD entry in the CONFIG command. Of course, since SYSTEM_NEWS
-journals are also displayed at boot time, and their subjects may be
-prefixed with MOTD, MOTM, or MOTY to make their redisplay perpetual,
-there really is no good reason to use this feature as an Message Of The
-Day per se. Instead, this file is best used for fancy introductions to
-your mud, or congratulations for having figured out how to log in
-perhaps.</td>
-          </tr>
-          <tr>
             <td valign="top">themes.txt<br />
             </td>
             <td valign="top">A text file shown to users when the
@@ -1208,9 +1260,10 @@ MUD Server. And we all know that would be bad.</p>
 called "fakedb". FakeDB stores its data into text formatted files
 inside the "resources/fakedb" directory of your CoffeeMud package.
 FakeDB is rather slow, and hardly a powerful or professional database
-system, but it is quite sufficient for CoffeeMud, and performs well the
+system, but it is quite sufficient for CoffeeMud tinkerers, and
+performs well the
 small tasks it was designed for.</p>
-      <p>For the more adventurous, CoffeeMud supports any JDBC or ODBC
+      <p>For the more serious, CoffeeMud supports any JDBC or ODBC
 compliant database system. This includes such systems as Microsoft
 Access, Microsoft SQL Server, PostgreSQL, MySQL, Oracle, IBM DB2, and
 others. While this document cannot cover the step by step installation
@@ -1235,10 +1288,10 @@ of a larger script. Please consult your database documentation for more
 information on this.</p>
       <p>In order to use your database with CoffeeMud, as specified in
 the section on Settings, you must provide CoffeeMud with a JDBC
-compliant Driver class. In many cases, you will be creating a System
+compliant Driver class. In a few cases, you may be creating a System
 ODBC Data Source. When this is the case, the driver "<code>sun.jdbc.odbc.JdbcOdbcDriver</code>"
 may be used to access the database.</p>
-      <p>Some systems, however, such as MySQL, IBM DB2, and Microsoft
+      <p>Most systems, however, such as MySQL, IBM DB2, and Microsoft
 SQL Server 2000, have native JDBC Drivers which may be used instead of
 the general ODBC Driver. These native JDBC Drivers tend to be far
 superior to their ODBC counterparts, and are highly recommended.</p>
@@ -1344,10 +1397,8 @@ MYSQL Connectors. Download the latest Connector/J, or whatever they are
 calling their JDBC Driver at the time.</p>
         </li>
         <li>
-          <p>Locate the mysql zip file you downloaded and
-unzip it ( if you don't know how to do that..I don't think running a
-mud should be on your list of priorities...) and run the setup.exe file
-there. Just hit Next for all the prompts.</p>
+          <p>Install MySQL -- consult the web site if you are having
+problems.</p>
         </li>
         <li>
           <p>Go to your coffeemud folder, open the <code>guides\database
@@ -1383,7 +1434,7 @@ coffeemud.ini file in a text editor, and look for the
 section that says:</p>
           <pre>DBCLASS=com.planet_ink.fakedb.Driver<br />DBSERVICE=jdbc:fakedb:resources/data<br />DBUSER=<br />DBPASS=<br />DBCONNECTIONS=2<br /></pre>
           <p>and change it to:</p>
-          <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=<br />DBPASS=<br />DBCONNECTIONS=4<br /></pre>
+          <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=<br />DBPASS=<br />DBREUSE=TRUE<br />DBPINGINTERVALMINS=60<br />DBCONNECTIONS=4<br /></pre>
         </li>
         <li>
           <p>Go back to the other file you downloaded in STEP 2,
@@ -1455,7 +1506,7 @@ coffeemud). Then save the changes.</p>
         </li>
         <li>
           <p>Edit the following settings in CoffeeMud/coffeemud.ini:</p>
-          <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=coffee<br />DBPASS=password<br />DBCONNECTIONS=4<br /></pre>
+          <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=coffee<br />DBPASS=password<br />DBREUSE=TRUE<br />DBPINGINTERVALMINS=60<br />DBCONNECTIONS=4<br /></pre>
           <p>(no quotes on the password here)<br />
 Save your changes and fire up CoffeeMud!</p>
         </li>
@@ -1499,7 +1550,7 @@ DatabaseManager utility was run.</p>
           <p>Open coffeemud.ini and scroll down to the ODBC Database
 fields section. Comment out the current settings (place a # in front of
 them) and add the following lines below them:</p>
-          <pre>#here are the settings for HSQLDB<br />DBCLASS=org.hsqldb.jdbcDriver<br />DBSERVICE=jdbc:hsqldb:file:coffeemud/coffeemud<br />DBUSER=sa<br />DBPASS=<br />DBCONNECTIONS=4<br /></pre>
+          <pre>#here are the settings for HSQLDB<br />DBCLASS=org.hsqldb.jdbcDriver<br />DBSERVICE=jdbc:hsqldb:file:coffeemud/coffeemud<br />DBUSER=sa<br />DBPASS=<br />DBREUSE=TRUE<br />DBPINGINTERVALMINS=60<br />DBCONNECTIONS=4<br /></pre>
           <p>The file: parameter of the DBSERVICE is the path to the
 database (relative from the root of the coffeemud directory) followed
 by the name of the database.</p>
@@ -1556,7 +1607,7 @@ find it this must be the root of the coffeemud install.</p>
           <p>Open coffeemud.ini and scroll down to the ODBC Database
 fields section. Comment out the current settings (place a # in front of
 them) and add the following lines below them:</p>
-          <pre>#here are the settings for IBM Cloudscape/Derby/ApacheDB<br />DBCLASS=org.apache.derby.jdbc.EmbeddedDriver<br />DBSERVICE=jdbc:derby:coffeemud<br />DBCONNECTIONS=2<br /></pre>
+          <pre>#here are the settings for IBM Cloudscape/Derby/ApacheDB<br />DBCLASS=org.apache.derby.jdbc.EmbeddedDriver<br />DBSERVICE=jdbc:derby:coffeemud<br />DBREUSE=TRUE<br />DBCONNECTIONS=2<br /></pre>
         </li>
         <li> Smile, you are done... well mostly
           <p>Currently there are some minor changes that must be made
