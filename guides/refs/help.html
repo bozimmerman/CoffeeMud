@@ -16,6 +16,8 @@
 			
 			<li> <a href="#ABJURER">ABJURER</a>
 			
+			<li> <a href="#ABOVE">ABOVE</a>
+			
 			<li> <a href="#ACTIVATE">ACTIVATE</a>
 			
 			<li> <a href="#AFFECT">AFFECT</a>
@@ -23,6 +25,12 @@
 			<li> <a href="#AFFECTS">AFFECTS</a>
 			
 			<li> <a href="#AFK">AFK</a>
+			
+			<li> <a href="#AFT">AFT</a>
+			
+			<li> <a href="#AFT_PORTSIDE">AFT_PORTSIDE</a>
+			
+			<li> <a href="#AFT_STARBOARD">AFT_STARBOARD</a>
 			
 			<li> <a href="#ALIAS">ALIAS</a>
 			
@@ -113,6 +121,8 @@
 			<li> <a href="#BEACON">BEACON</a>
 			
 			<li> <a href="#BEASTMASTER">BEASTMASTER</a>
+			
+			<li> <a href="#BELOW">BELOW</a>
 			
 			<li> <a href="#BID">BID</a>
 			
@@ -370,6 +380,12 @@
 			
 			<li> <a href="#FOLLOW">FOLLOW</a>
 			
+			<li> <a href="#FOREWARD">FOREWARD</a>
+			
+			<li> <a href="#FOREWARD_PORTSIDE">FOREWARD_PORTSIDE</a>
+			
+			<li> <a href="#FOREWARD_STARBOARD">FOREWARD_STARBOARD</a>
+			
 			<li> <a href="#FORMATION">FORMATION</a>
 			
 			<li> <a href="#FRIENDS">FRIENDS</a>
@@ -479,6 +495,8 @@
 			<li> <a href="#KILL">KILL</a>
 			
 			<li> <a href="#KNOCK">KNOCK</a>
+			
+			<li> <a href="#LADDER">LADDER</a>
 			
 			<li> <a href="#LAMP">LAMP</a>
 			
@@ -620,6 +638,8 @@
 			
 			<li> <a href="#POLL">POLL</a>
 			
+			<li> <a href="#PORTSIDE">PORTSIDE</a>
+			
 			<li> <a href="#POSE">POSE</a>
 			
 			<li> <a href="#POUR">POUR</a>
@@ -710,6 +730,8 @@
 			
 			<li> <a href="#ROOM_ID">ROOM_ID</a>
 			
+			<li> <a href="#ROPE">ROPE</a>
+			
 			<li> <a href="#RUINED">RUINED</a>
 			
 			<li> <a href="#RULES">RULES</a>
@@ -776,6 +798,8 @@
 			
 			<li> <a href="#STAND">STAND</a>
 			
+			<li> <a href="#STARBOARD">STARBOARD</a>
+			
 			<li> <a href="#STARVE">STARVE</a>
 			
 			<li> <a href="#STATS">STATS</a>
@@ -820,7 +844,11 @@
 			
 			<li> <a href="#TRAPPER">TRAPPER</a>
 			
+			<li> <a href="#TRAP_EXITPIT">TRAP_EXITPIT</a>
+			
 			<li> <a href="#TROPHIES">TROPHIES</a>
+			
+			<li> <a href="#TYPE">TYPE</a>
 			
 			<li> <a href="#TYPO">TYPO</a>
 			
@@ -904,8 +932,13 @@
 			</P>
 			
 			<p>
+			<a name="ABOVE"><B>ABOVE</B></a>
+			<pre>Command : ABOVE<BR>Usage   : ABOVE<BR>Example : above<BR>Short(s): <BR>Travel above deck from the room or location.</pre>
+			</P>
+			
+			<p>
 			<a name="ACTIVATE"><B>ACTIVATE</B></a>
-			<pre>Command : ACTIVATE<BR>Usage   : ACTIVATE ([PARAMETERS]) [ITEM]<BR>Usage   : ACTIVATE ([PARAMETERS]) ([ITEM])<BR>Example : activate stun phazer<BR>Example : activate console<BR>Example : activate warp drive console<BR>Example : activate thrust 100 console<BR>Short(s): A, ><BR>*** THIS COMMAND IS UNIMPLEMENTED ***<BR>This multi-purpose command is used to turn-on electrical devices (no parameters<BR>required), change settings on electrical devices (by including proper<BR>parameters), and operate computer consoles.  An item being activated always<BR>requires the target item unless the item is a computer console the player is<BR>sitting at, in which case it is implied.</pre>
+			<pre>Command : ACTIVATE<BR>Usage   : ACTIVATE ([COMMANDS]) [ITEM]<BR>Example : activate phazer<BR>Example : activate console<BR>Example : activate stun phazer<BR>This multi-purpose command is used to turn-on electrical devices, and, in some<BR>circumstances, cause the device to perform its function. (by including optional<BR>parameters), and operate computer consoles.</pre>
 			</P>
 			
 			<p>
@@ -921,6 +954,21 @@
 			<p>
 			<a name="AFK"><B>AFK</B></a>
 			<pre>Command : AFK<BR>Usage   : AFK ([OPTIONAL MESSAGE])<BR>Example : afk<BR>Example : afk I am eating.<BR>Short(s): <BR>Notifies the system that you are away from your keyboard.  Entering AFK again,<BR>or just entering a new command will reset this status. You may enter an<BR>optional message to give to those who attempt to TELL you something.</pre>
+			</P>
+			
+			<p>
+			<a name="AFT"><B>AFT</B></a>
+			<pre>Command : AFT<BR>Usage   : AFT<BR>Example : aft<BR>Short(s): <BR>Travel towards the rear of a ship.</pre>
+			</P>
+			
+			<p>
+			<a name="AFT_PORTSIDE"><B>AFT_PORTSIDE</B></a>
+			<pre>Command : AFT PORTSIDE<BR>Usage   : AFT PORTSIDE<BR>Example : aft portside<BR>Short(s): <BR>Travel towards the rear left of a ship.</pre>
+			</P>
+			
+			<p>
+			<a name="AFT_STARBOARD"><B>AFT_STARBOARD</B></a>
+			<pre>Command : AFT STARBOARD<BR>Usage   : AFT STARBOARD<BR>Example : aft starboard<BR>Short(s): <BR>Travel towards the rear right of a ship.</pre>
 			</P>
 			
 			<p>
@@ -1130,7 +1178,7 @@
 			
 			<p>
 			<a name="BARD"><B>BARD</B></a>
-			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Bard <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Bard<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Charisma 9+, Requires a base charisma of at least 9.  <BR><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Human, Humanoid, Elf, Dwarf, Halfling, or Elf-kin<BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Charisma                   <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Cha/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +(Wisdom/6)+1 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +? per lvl              <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/6)+(1d2) per lvl<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +10X(Str/18) per lvl   <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 10 level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>The following weapon types may not be used: Axe Blunt Flailed<BR>Hammer Polearm Staff .<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear non-metal armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Receives group bonus combat experience when in an intelligent<BR>            group, and more for a group with players.  Receives exploration<BR>            and pub-finding experience based on danger level.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> <BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Bard <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Bard<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Charisma (25), Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Charisma 9+<BR><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Human, Humanoid, Elf, Dwarf, Halfling, or Elf-kin<BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Charisma                   <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Cha/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +(Wisdom/6)+1 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/3)+(2d6) per lvl  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/6)+(1d2) per lvl<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +10X(Str/18) per lvl   <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 10 level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use swords, daggers, natural, or ranged weapons.<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear non-metal armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Receives group bonus combat experience when in an intelligent<BR>            group, and more for a group with players.  Receives exploration<BR>            and pub-finding experience based on danger level.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> <BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR>Bards are traveling singers, whose "songs" can possess powerful magic.  They<BR>are highly desired group members for the inspiration they bring to their team<BR>members, and the great stings they provide to their enemies.  They possess the<BR>same weapon and armor restrictions as thieves, but also qualify for many thief<BR>skills.<BR><BR>Bard is the basis for numerous sub-classes which the player may choose to gain<BR>levels in at any time.  These sub-classes include the Charlatan, Dancer,<BR>Minstrel, and the Jester.<BR><BR>How to play: The great strength of the bard is in his wide assortment of<BR>skills, and in his powerful songs.  The bard may try his hand as the lonesome<BR>traveler, but will find his skills still put him behind his peers.  It is in<BR>the company of other, more powerful classes, that the bard will flourish. And<BR>because of the unique nature of his magic, and how his skills will always<BR>affect groups, that groups will always want to have a bard along.<BR><BR>Bards are as weak as thieves in combat, and lack their general sneakiness, so<BR>in the company of others must the bard find his path to greatness, filling any<BR>skill gaps in almost any group with the appropriate magic or ability.<BR></pre>
+			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Bard <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Bard<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Charisma (25), Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Charisma 9+<BR><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Human, Humanoid, Elf, Dwarf, Halfling, or Elf-kin<BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Charisma                   <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Cha/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +(Wisdom/6)+1 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/3)+(2d6) per lvl  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/6)+(1d2) per lvl<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +10X(Str/18) per lvl   <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 10 level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use swords, daggers, natural, or ranged weapons.<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear non-metal armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> Receives group bonus combat experience when in an intelligent<BR>            group, and more for a group with players.  Receives exploration<BR>            and pub-finding experience based on danger level.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> <BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR>Bards are traveling singers, whose "songs" can possess powerful magic.  They<BR>are highly desired group members for the inspiration they bring to their team<BR>members, and the great stings they provide to their enemies.  They possess the<BR>same weapon and armor restrictions as thieves, but also qualify for many thief<BR>skills.<BR><BR>Bard is the basis for numerous sub-classes which the player may choose to gain<BR>levels in at any time.  These sub-classes include the Charlatan, Dancer,<BR>Minstrel, and the Jester.<BR><BR>How to play: The great strength of the bard is in his wide assortment of<BR>skills, and in his powerful songs.  The bard may try his hand as the lonesome<BR>traveler, but will find his skills still put him behind his peers.  It is in<BR>the company of other, more powerful classes, that the bard will flourish. And<BR>because of the unique nature of his magic, and how his skills will always<BR>affect groups, that groups will always want to have a bard along.<BR><BR>Bards are as weak as thieves in combat, and lack their general sneakiness, so<BR>in the company of others must the bard find his path to greatness, filling any<BR>skill gaps in almost any group with the appropriate magic or ability.<BR></pre>
 			</P>
 			
 			<p>
@@ -1146,6 +1194,11 @@
 			<p>
 			<a name="BEASTMASTER"><B>BEASTMASTER</B></a>
 			<pre><FONT COLOR=CYAN>Char Class: </I></U></BLINK></B></FONT>Beastmaster <FONT COLOR=CYAN>(</I></U></BLINK></B></FONT>Druid<FONT COLOR=CYAN>)</I></U></BLINK></B></FONT><BR><FONT COLOR=CYAN>Max-Stats :</I></U></BLINK></B></FONT> Dexterity (22), Constitution (22), Others (18)<BR><FONT COLOR=CYAN>Qualifiers:</I></U></BLINK></B></FONT> Dexterity 9+, Constitution 9+<BR><FONT COLOR=CYAN>Races     :</I></U></BLINK></B></FONT> Human, Humanoid, Elf, Dwarf, or Giant-kin<BR><FONT COLOR=CYAN>Prime Stat: </I></U></BLINK></B></FONT>Constitution               <FONT COLOR=CYAN>Attack Pts: </I></U></BLINK></B></FONT>+(Con/18) per level<BR><FONT COLOR=CYAN>Practices : </I></U></BLINK></B></FONT>5 +(Wisdom/6)+2 per level  <FONT COLOR=CYAN>Trains    : </I></U></BLINK></B></FONT>3 +1 per level<BR><FONT COLOR=CYAN>Hit Points: </I></U></BLINK></B></FONT>20 +(Con/2)+(2d7) per lvl  <FONT COLOR=CYAN>Mana      : </I></U></BLINK></B></FONT>100 +(Int/4)+(1d4) per lvl<BR><FONT COLOR=CYAN>Movement  : </I></U></BLINK></B></FONT>100 +10X(Str/18) per lvl   <FONT COLOR=CYAN>Damage Pts: </I></U></BLINK></B></FONT>+1 damage per 15 level(s)<BR><FONT COLOR=CYAN>Weapons   : </I></U></BLINK></B></FONT>Must use wooden, plant-based, or leather weapons.<BR><FONT COLOR=CYAN>Armor     : </I></U></BLINK></B></FONT>Must wear non-metal armor.<BR><FONT COLOR=CYAN>Bonuses   :</I></U></BLINK></B></FONT> When leading animals into battle, will not divide experience<BR>            among animal followers.  Can create a druidic connection with an<BR>            area.  Benefits from animal/plant/stone followers leveling. <BR>            Benefits from freeing animals from cities.<BR><FONT COLOR=CYAN>Limits    :</I></U></BLINK></B></FONT> Must remain Neutral to avoid skill and chant failure chances.<BR><FONT COLOR=CYAN>Desc.     : </I></U></BLINK></B></FONT><BR>Like Tarzan or Grizzly Adams, the BeastMaster is the lord of his particular<BR>jungle, being both the guardian and master steward of the animal kingdom.<BR>Unlike the other druids then, the beastmaster takes great pride in his animal<BR>changing abilities, and receives many more animal forms as he progresses in<BR>level.  The beastmaster is also more accutely aware of the dangers of the wild,<BR>and is thus a much more physical and able fighter than other druids tend to me.<BR><BR>How to play: The Beastmaster is the perfect loner druid class, though he is<BR>never truly alone with all the animals he can summon to his side. He also has<BR>numerous ways of enhancing his own innate fighting ability through magical<BR>chants, making him formidable even when adventuring without animal companions.</pre>
+			</P>
+			
+			<p>
+			<a name="BELOW"><B>BELOW</B></a>
+			<pre>Command : BELOW<BR>Usage   : BELOW<BR>Example : below<BR>Short(s): <BR>Travel below deck from the room or location.</pre>
 			</P>
 			
 			<p>
@@ -1230,7 +1283,7 @@
 			
 			<p>
 			<a name="CHARISMA"><B>CHARISMA</B></a>
-			<pre>Grace, charm, and the ability to get better prices from merchants is reflected<BR>in Charisma.</pre>
+			<pre>Grace, charm, followers, and the ability to get better prices from merchants is<BR>reflected in Charisma.</pre>
 			</P>
 			
 			<p>
@@ -1510,7 +1563,7 @@
 			
 			<p>
 			<a name="DEACTIVATE"><B>DEACTIVATE</B></a>
-			<pre>Command : DEACTIVATE<BR>Usage   : DEACTIVATE ([PARAMETERS]) [ITEM]<BR>Usage   : DEACTIVATE ([PARAMETERS]) ([ITEM])<BR>Example : deactivate stun phazer<BR>Example : deactivate console<BR>Example : deactivate warp drive console<BR>Example : deactivate thrust console<BR>Short(s): A, ><BR>*** THIS COMMAND IS UNIMPLEMENTED ***<BR>This multi-purpose command is used to turn-off electrical devices (no<BR>parameters required), undo settings on electrical devices (by including proper<BR>parameters), and shut down computer consoles.  An item being deactivated always<BR>requires the target item unless the item is a computer console the player is<BR>sitting at, in which case it is implied.</pre>
+			<pre>Command : DEACTIVATE<BR>Usage   : DEACTIVATE ([PARAMS]) [ITEM]<BR>Example : deactivate phazer<BR>Example : deactivate console<BR>Example : deactivate stun phazer<BR>This multi-purpose command is used to turn-off electrical devices, and cause it<BR>to stop doing whatever it is it was doing.  For wall panels, this may mean<BR>disconnecting the panel from the circuitry, effecting all other components in<BR>the panel.</pre>
 			</P>
 			
 			<p>
@@ -1695,7 +1748,7 @@
 			
 			<p>
 			<a name="ENTER"><B>ENTER</B></a>
-			<pre>Command : ENTER<BR>Usage   : ENTER [EXIT OR ROOM NAME]<BR>Example : enter door<BR>Example : enter portal<BR>Short(s): <BR>Moves the player or creature through some exit or portal as specified by the<BR>EXITS command.  Can be an alternative to the standard N,S,E,W,U,D commands.</pre>
+			<pre>Command : ENTER<BR>Usage   : ENTER [EXIT OR ROOM NAME]<BR>Usage   : ENTER [EXIT OR ROOM NAME]<BR>Example : enter door<BR>Example : enter portal<BR>Moves the player or creature through some exit or portal as specified by the<BR>EXITS command.  Can be an alternative to the standard N,S,E,W,U,D commands.</pre>
 			</P>
 			
 			<p>
@@ -1785,7 +1838,22 @@
 			
 			<p>
 			<a name="FOLLOW"><B>FOLLOW</B></a>
-			<pre>Command : FOLLOW<BR>Usage   : FOLLOW [MOB NAME]<BR>Example : follow gunther<BR>Short(s): FOL<BR>In order to form adventuring groups, one or more characters may choose to<BR>follow a leader character.  The leader then becomes the group leader, and is<BR>able to lead his or her followers around the map without their intervention. <BR>Followers may also come to the defence of a leader who is attacked, or who<BR>attacks another MOB.  Lastly, leaders have the privilege of the ORDER command,<BR>to keep the followers in line.  The number of followers one may have depends<BR>upon their Charisma score.<BR><BR>Use FOLLOW SELF to stop following someone else.<BR>To force a follower to stop following you, use ORDER &lt;MOBNAME> follow self<BR><BR>See also GROUP, NOFOLLOW, ORDER, FORMATION, and GTELL.</pre>
+			<pre>Command : FOLLOW<BR>Usage   : FOLLOW [MOB NAME]<BR>Example : follow gunther<BR>Short(s): FOL<BR>In order to form adventuring groups, one or more characters may choose to<BR>follow a leader character.  The leader then becomes the group leader, and is<BR>able to lead his or her followers around the map without their intervention. <BR>Followers may also come to the defence of a leader who is attacked, or who<BR>attacks another MOB.  Lastly, leaders have the privilege of the ORDER command,<BR>to keep the followers in line.  The number of followers one may have depends<BR>upon their Charisma score.<BR><BR>Use FOLLOW SELF to stop following someone else.<BR>To force a follower to stop following you, use NOFOLLOW &lt;MOBNAME><BR><BR>See also GROUP, NOFOLLOW, ORDER, FORMATION, and GTELL.</pre>
+			</P>
+			
+			<p>
+			<a name="FOREWARD"><B>FOREWARD</B></a>
+			<pre>Command : FOREWARD<BR>Usage   : FOREWARD<BR>Example : foreward<BR>Short(s): <BR>Travel towards the front of a ship.</pre>
+			</P>
+			
+			<p>
+			<a name="FOREWARD_PORTSIDE"><B>FOREWARD_PORTSIDE</B></a>
+			<pre>Command : FOREWARD PORTSIDE<BR>Usage   : FOREWARD PORTSIDE<BR>Example : foreward portside<BR>Short(s): <BR>Travel towards the front left of a ship.</pre>
+			</P>
+			
+			<p>
+			<a name="FOREWARD_STARBOARD"><B>FOREWARD_STARBOARD</B></a>
+			<pre>Command : FOREWARD STARBOARD<BR>Usage   : FOREWARD STARBOARD<BR>Example : foreward starboard<BR>Short(s): <BR>Travel towards the front right of a ship.</pre>
 			</P>
 			
 			<p>
@@ -2015,7 +2083,7 @@
 			
 			<p>
 			<a name="INTELLIGENCE"><B>INTELLIGENCE</B></a>
-			<pre>Memory and concentration, critical spell/skill damage, and the ability to gain<BR>greater proficiency in skills and spells through practice are reflected in<BR>Intelligence.</pre>
+			<pre>Memory and concentration, mana, critical spell/skill damage, and the ability to<BR>gain greater proficiency in skills and spells through practice are reflected in<BR>Intelligence.</pre>
 			</P>
 			
 			<p>
@@ -2061,6 +2129,11 @@
 			<p>
 			<a name="KNOCK"><B>KNOCK</B></a>
 			<pre>Command : KNOCK<BR>Usage   : KNOCK [DIRECTION/EXIT NAME]<BR>Example : knock east<BR>Example : knock door<BR>Short(s): <BR>Causes your character to knock on a door.  A knock can be heard in the area<BR>opposite the door, and many rooms into a large indoor area.</pre>
+			</P>
+			
+			<p>
+			<a name="LADDER"><B>LADDER</B></a>
+			<pre>Ladders are things you can use to help with climbing.  See also ROPE.</pre>
 			</P>
 			
 			<p>
@@ -2414,6 +2487,11 @@
 			</P>
 			
 			<p>
+			<a name="PORTSIDE"><B>PORTSIDE</B></a>
+			<pre>Command : PORTSIDE<BR>Usage   : PORTSIDE<BR>Example : portside<BR>Short(s): <BR>Travel towards the left side of a ship.</pre>
+			</P>
+			
+			<p>
 			<a name="POSE"><B>POSE</B></a>
 			<pre>Command : POSE<BR>Usage   : POSE [STANDING DESCRIPTION] ... <BR>Example : pose is standing here talking to himself.<BR>Short(s): <BR>Changes the message that is seen when a player is standing passively in a room.<BR> Use NOPOSE to turn off.</pre>
 			</P>
@@ -2639,6 +2717,11 @@
 			</P>
 			
 			<p>
+			<a name="ROPE"><B>ROPE</B></a>
+			<pre>Ropes and chains are great for helping with climbing problems, such as being in<BR>a pit.  Throwing ropes into rooms one must otherwise climb will cause them to<BR>hang there, allowing people in those rooms, or even in adjacent rooms, to use<BR>them for climbing.</pre>
+			</P>
+			
+			<p>
 			<a name="RUINED"><B>RUINED</B></a>
 			<pre>Items obtained from creatures and mobs can be ruined during combat.  A ruined<BR>item has no value, and can not be worn or used for its original or obvious<BR>purpose.</pre>
 			</P>
@@ -2804,6 +2887,11 @@
 			</P>
 			
 			<p>
+			<a name="STARBOARD"><B>STARBOARD</B></a>
+			<pre>Command : STARBOARD<BR>Usage   : STARBOARD<BR>Example : starboard<BR>Short(s): <BR>Travel towards the right side of a ship.</pre>
+			</P>
+			
+			<p>
 			<a name="STARVE"><B>STARVE</B></a>
 			<pre>If you don't eat, this will eventually happen, and you may just die.</pre>
 			</P>
@@ -2914,8 +3002,18 @@
 			</P>
 			
 			<p>
+			<a name="TRAP_EXITPIT"><B>TRAP_EXITPIT</B></a>
+			<pre>Trap       : Trap_ExitPit<BR>Targets    : Rooms<BR>Parameters : <BR>Example    : <BR>Description: <BR>A pit trap triggered when leaving the room.</pre>
+			</P>
+			
+			<p>
 			<a name="TROPHIES"><B>TROPHIES</B></a>
 			<pre>Clans can earn one or more of the available trophies by controlling the most<BR>areas through conquest, controlling the most area control points through<BR>conquest, or my having the most experience points.  See HELP CONQUEST and HELP<BR>CLANS for more information.</pre>
+			</P>
+			
+			<p>
+			<a name="TYPE"><B>TYPE</B></a>
+			<pre>Command : TYPE<BR>Usage   : TYPE [COMMAND OR MESSAGE] (INTO [DEVICE NAME])<BR>Example : type login bob password<BR>Example : type activate sensors into console<BR>Short(s): =<BR>Interacts with an electrical or technical device, such as a computer panel,<BR>hand-held scanner, or similar devices.  Specifying the device to type is not<BR>permitted if the user is already seated at a computer console.  Otherwise, the<BR>user must specify "into" and the name of the device to type commands into.</pre>
 			</P>
 			
 			<p>
@@ -3045,7 +3143,7 @@
 			
 			<p>
 			<a name="WISDOM"><B>WISDOM</B></a>
-			<pre>Intuition, wit, and the ability to gain more practice points per level is<BR>reflected in Wisdom. </pre>
+			<pre>Intuition, wit, mana, and the ability to gain more practice points per level is<BR>reflected in Wisdom. </pre>
 			</P>
 			
 			<p>

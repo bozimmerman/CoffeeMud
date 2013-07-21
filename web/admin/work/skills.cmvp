@@ -27,12 +27,12 @@
 		<ul>
 			@AbilityNext?RESET@
 			@loop@
-				<li>@AbilityNext?COMMON SKILL&THIEF SKILL&SKILL@<a href="#@AbilityID@">@AbilityID@</a>
+				<li>@AbilityNext?COMMON SKILL&THIEF SKILL&SKILL&SORTEDBYNAME@<a href="#@AbilityID@">@AbilityName@</a>
 			&nbsp;
 			@back@
 		</ul>
 		</td><td valign=top align=left>
-			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?COMMON SKILL&THIEF SKILL&SKILL@
+			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?COMMON SKILL&THIEF SKILL&SKILL&SORTEDBYNAME@
 				<br><a name="@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a>
 				<pre>@AbilityData?help&LIMIT=80@</pre></P> @back@
 		</td></tr></table></center>

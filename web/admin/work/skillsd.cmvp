@@ -27,12 +27,12 @@
 		<ul>
 			@AbilityNext?RESET@
 			@loop@
-				<li>@AbilityNext?SONG@<a href="#@AbilityID@">@AbilityName@</a>
+				<li>@AbilityNext?SONG&SORTEDBYNAME@<a href="#@AbilityID@">@AbilityName@</a>
 			&nbsp;
 			@back@
 		</ul>
 		</td><td valign=top align=left>
-			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?SONG@
+			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?SONG&SORTEDBYNAME@
 				<br><a name="@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a>
 				<pre>@AbilityData?help&LIMIT=80@</pre></P> @back@
 		</td></tr></table></center>

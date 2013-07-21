@@ -36,7 +36,8 @@ public class AbilityNext extends StdWebMacro
 {
 	public String name() { return "AbilityNext"; }
 
-	public String runMacro(HTTPRequest httpReq, String parm)
+	@SuppressWarnings("unchecked")
+    public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("ABILITY");
@@ -71,7 +72,31 @@ public class AbilityNext extends StdWebMacro
 		boolean allFlag =parms.containsKey("ALL");
 		boolean domainFlag=parms.containsKey("DOMAIN");
 		String domain=parms.get("DOMAIN");
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		
+		
+		final Enumeration<Ability> a;
+		if(!parms.containsKey("SORTEDBYNAME"))
+			a=CMClass.abilities();
+		else
+		if(httpReq.getRequestObjects().containsKey("ABILITIESSORTEDBYNAME"))
+			a=((Vector)httpReq.getRequestObjects().get("ABILITIESSORTEDBYNAME")).elements();
+		else
+		{
+			Vector<Ability> fullList=new Vector<Ability>();
+			for(Enumeration<Ability> aa=CMClass.abilities();aa.hasMoreElements();)
+				fullList.add(aa.nextElement());
+			Ability[] aaray=fullList.toArray(new Ability[0]);
+			Arrays.sort(aaray, new Comparator<Ability>(){
+				@Override public int compare(Ability o1, Ability o2) {
+					return o1.Name().compareToIgnoreCase(o2.Name());
+				}
+			});
+			fullList.clear();
+			fullList.addAll(Arrays.asList(aaray));
+			httpReq.getRequestObjects().put("ABILITIESSORTEDBYNAME",fullList);
+			a=fullList.elements();
+		}
+		for(;a.hasMoreElements();)
 		{
 			Ability A=a.nextElement();
 			boolean okToShow=true;
