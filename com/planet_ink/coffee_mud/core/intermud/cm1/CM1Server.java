@@ -88,16 +88,26 @@ public class CM1Server extends Thread
 		{
 			try
 			{
-				servChan = ServerSocketChannel.open();
-				ServerSocket serverSocket = servChan.socket();
-				servSelector = Selector.open();
-				if((page.getStr("BIND")!=null)&&(page.getStr("BIND").trim().length()>0))
-					serverSocket.bind (new InetSocketAddress(InetAddress.getByName(page.getStr("BIND")),port));
-				else
-					serverSocket.bind (new InetSocketAddress (port));
-				Log.sysOut("CM1Server","Started "+name+" on port "+port);
-				servChan.configureBlocking (false);
-				servChan.register (servSelector, SelectionKey.OP_ACCEPT);
+				try
+				{
+					servChan = ServerSocketChannel.open();
+					ServerSocket serverSocket = servChan.socket();
+					servSelector = Selector.open();
+					if((page.getStr("BIND")!=null)&&(page.getStr("BIND").trim().length()>0))
+						serverSocket.bind (new InetSocketAddress(InetAddress.getByName(page.getStr("BIND")),port));
+					else
+						serverSocket.bind (new InetSocketAddress (port));
+					Log.sysOut("CM1Server","Started "+name+" on port "+port);
+					servChan.configureBlocking (false);
+					servChan.register (servSelector, SelectionKey.OP_ACCEPT);
+				}
+				catch(IOException e)
+				{
+					Log.errOut(e);
+					Log.errOut("CM1Server failed to start.");
+					shutdownRequested=true;
+					break;
+				}
 				shutdownRequested = false;
 				while (!shutdownRequested)
 				{
