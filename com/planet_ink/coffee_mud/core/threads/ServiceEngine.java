@@ -130,6 +130,19 @@ public class ServiceEngine implements ThreadEngine
 		return null;
 	}
 	
+	public void executeRunnable(String threadGroupName, Runnable R)
+	{
+		try
+		{
+			getPoolExecutor(threadGroupName).execute(R);
+		}
+		catch(Exception e)
+		{
+			Log.errOut("ServiceEngine","ExecRun: "+e.getMessage());
+			Log.debugOut("ServiceEngine",e);
+		}
+	}
+	
 	public void executeRunnable(Runnable R)
 	{
 		try
@@ -1217,6 +1230,9 @@ public class ServiceEngine implements ThreadEngine
 	
 	public boolean activate() 
 	{
+		getPoolExecutor(null); // will cause the creation
+		
+		if(supportClient==null)
 		supportClient=startTickDown(new Tickable(){
 			private long tickStatus = Tickable.STATUS_NOT;
 			@Override public String ID() { return "THThreads"; }

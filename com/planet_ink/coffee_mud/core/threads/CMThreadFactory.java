@@ -29,10 +29,12 @@ public class CMThreadFactory implements ThreadFactory
 	private String 						serverName;
 	private final AtomicInteger 		counter		=new AtomicInteger();
 	private final SLinkedList<Thread> 	active 		= new SLinkedList<Thread>();
+	private final ThreadGroup			threadGroup;
 	
 	public CMThreadFactory(String serverName)
 	{
 		this.serverName=serverName;
+		this.threadGroup=Thread.currentThread().getThreadGroup();
 	}
 	public void setServerName(String newName)
 	{
@@ -40,7 +42,7 @@ public class CMThreadFactory implements ThreadFactory
 	}
 	public Thread newThread(Runnable r) 
 	{
-		final Thread t = new CMFactoryThread(r,serverName+"#"+counter.addAndGet(1));
+		final Thread t = new CMFactoryThread(threadGroup,r,serverName+"#"+counter.addAndGet(1));
 		active.add(t);
 		return t;
 	}

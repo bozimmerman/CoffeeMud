@@ -66,17 +66,16 @@ public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.8;
 	private static final long	  HOST_VERSION_MINOR	= 1;
-	private final static String[] STATE_STRING			= {"waiting","accepting","allowing"};
+	private static enum MudState {STARTING,WAITING,ACCEPTING,ALLOWING,STOPPED}
 
-	private int				state		= 0;
-	private ServerSocket	servsock	= null;
-	private boolean			acceptConns	= false;
-	private String			host		= "MyHost";
-	private int				port		= 5555;
-	private final long		startupTime = System.currentTimeMillis();
+	private MudState		  state		 = MudState.STOPPED;
+	private ServerSocket	  servsock	 = null;
+	private boolean			  acceptConns= false;
+	private String			  host		 = "MyHost";
+	private int				  port		 = 5555;
+	private final long		  startupTime= System.currentTimeMillis();
+	private final ThreadGroup threadGroup;
 
-	private static boolean				serverIsRunning		= false;
-	private static boolean				isOK 				= false;
 	private static boolean				bringDown			= false;
 	private static String				execExternalCommand	= null;
 	private static I3Server				i3server			= null;
@@ -93,344 +92,7 @@ public class MUD extends Thread implements MudHost
 	public MUD(String name)
 	{
 		super(name);
-	}
-
-	public static void fatalStartupError(Thread t, int type)
-	{
-		String str=null;
-		switch(type)
-		{
-		case 1:
-			str="ERROR: initHost() will not run without properties. Exiting.";
-			break;
-		case 2:
-			str="Map is empty?! Exiting.";
-			break;
-		case 3:
-			str="Database init failed. Exiting.";
-			break;
-		case 4:
-			str="Fatal exception. Exiting.";
-			break;
-		case 5:
-			str="MUD Server did not start. Exiting.";
-			break;
-		default:
-			str="Fatal error loading classes.  Make sure you start up coffeemud from the directory containing the class files.";
-			break;
-		}
-		Log.errOut(Thread.currentThread().getName(),str);
-		bringDown=true;
-		CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
-		CMLib.killThread(t,100,1);
-	}
-
-	protected static boolean initHost(Thread t)
-	{
-		if (!isOK)
-		{
-			CMLib.killThread(t,100,1);
-			return false;
-		}
-
-		CMProps page=CMProps.instance();
-		
-		if ((page == null) || (!page.isLoaded()))
-		{
-			fatalStartupError(t,1);
-			return false;
-		}
-		
-		char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		Vector<String> privacyV=new Vector<String>(1);
-		if(tCode!=MAIN_HOST)
-			privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true);
-		
-		long startWait=System.currentTimeMillis();
-		while (!serverIsRunning && isOK && ((System.currentTimeMillis() - startWait)< 90000))
-		{ try{ Thread.sleep(500); }catch(Exception e){ isOK=false;} }
-		
-		if((!isOK)||(!serverIsRunning))
-		{
-			fatalStartupError(t,5);
-			return false;
-		}
-		
-		Vector<String> compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
-		CMProps.setBoolVar(CMProps.Bool.ITEMDCOMPRESS,compress.contains("ITEMDESC"));
-		CMProps.setBoolVar(CMProps.Bool.MOBCOMPRESS,compress.contains("GENMOBS"));
-		CMProps.setBoolVar(CMProps.Bool.ROOMDCOMPRESS,compress.contains("ROOMDESC"));
-		CMProps.setBoolVar(CMProps.Bool.MOBDCOMPRESS,compress.contains("MOBDESC"));
-		Resources.setCompression(compress.contains("RESOURCES"));
-		Vector<String> nocache=CMParms.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
-		CMProps.setBoolVar(CMProps.Bool.MOBNOCACHE,nocache.contains("GENMOBS"));
-		CMProps.setBoolVar(CMProps.Bool.ROOMDNOCACHE,nocache.contains("ROOMDESC"));
-		CMProps.setBoolVar(CMProps.Bool.FILERESOURCENOCACHE, nocache.contains("FILERESOURCES"));
-		CMProps.setBoolVar(CMProps.Bool.CATALOGNOCACHE, nocache.contains("CATALOG"));
-		CMProps.setBoolVar(CMProps.Bool.MAPFINDSNOCACHE,nocache.contains("MAPFINDERS"));
-		CMProps.setBoolVar(CMProps.Bool.ACCOUNTSNOCACHE,nocache.contains("ACCOUNTS"));
-
-		DBConnector currentDBconnector=null;
-		String dbClass=page.getStr("DBCLASS");
-		if(tCode!=MAIN_HOST)
-		{
-			DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MAIN_HOST,CMLib.Library.DATABASE);
-			while((!MUD.bringDown)
-			&&((baseEngine==null)||(!baseEngine.isConnected()))) {
-				try {Thread.sleep(500);}catch(Exception e){ break;}
-				baseEngine=(DatabaseEngine)CMLib.library(MAIN_HOST,CMLib.Library.DATABASE);
-			}
-			if(MUD.bringDown) return false;
-			
-			if(page.getPrivateStr("DBCLASS").length()==0)
-			{
-				CMLib.registerLibrary(baseEngine);
-				dbClass="";
-			}
-		}
-		if(dbClass.length()>0)
-		{
-			String dbService=page.getStr("DBSERVICE");
-			String dbUser=page.getStr("DBUSER");
-			String dbPass=page.getStr("DBPASS");
-			int dbConns=page.getInt("DBCONNECTIONS");
-			int dbPingIntMins=page.getInt("DBPINGINTERVALMINS");
-			if(dbConns == 0)
-			{
-				Log.errOut(Thread.currentThread().getName(),"Fatal error: DBCONNECTIONS in INI file is "+dbConns);
-				System.exit(-1);
-			}
-			boolean dbReuse=page.getBoolean("DBREUSE");
-			boolean useQue=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUE);
-			boolean useQueStart=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUESTART);
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
-			currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbPingIntMins,dbReuse,useQue,useQueStart);
-			currentDBconnector.reconnect();
-			CMLib.registerLibrary(new DBInterface(currentDBconnector,CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true)));
-
-			DBConnection DBTEST=currentDBconnector.DBFetch();
-			if(DBTEST!=null) currentDBconnector.DBDone(DBTEST);
-			if((DBTEST!=null)&&(currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
-			{
-				Log.sysOut(Thread.currentThread().getName(),"Connected to "+currentDBconnector.service());
-				databases.add(currentDBconnector);
-			}
-			else
-			{
-				String DBerrors=currentDBconnector.errorStatus().toString();
-				Log.errOut(Thread.currentThread().getName(),"Fatal database error: "+DBerrors);
-				System.exit(-1);
-			}
-		}
-		else
-		if(CMLib.database()==null)
-		{
-			Log.errOut(Thread.currentThread().getName(),"No registered database!");
-			System.exit(-1);
-		}
-
-		// test the database
-		try {
-			CMFile F = new CMFile("/test.the.database",null,false);
-			if(F.exists())
-				Log.sysOut(Thread.currentThread().getName(),"Test file found .. hmm.. that was unexpected.");
-				
-		} catch(Exception e) {
-			Log.errOut(Thread.currentThread().getName(),e.getMessage());
-			Log.errOut(Thread.currentThread().getName(),"Database error! Panic shutdown!");
-			System.exit(-1);
-		}
-		
-		String webServersList=page.getPrivateStr("RUNWEBSERVERS");
-		if(webServersList.equalsIgnoreCase("true"))
-			webServersList="pub,admin";
-		if((webServersList.length()>0)&&(!webServersList.equalsIgnoreCase("false")))
-		{
-			Vector<String> serverNames=CMParms.parseCommas(webServersList,true);
-			for(int s=0;s<serverNames.size();s++)
-			{
-				String serverName=serverNames.elementAt(s);
-				try
-				{
-					StringBuffer commonProps=new CMFile("web/common.ini", null, true).text();
-					StringBuffer finalProps=new CMFile("web/"+serverName+".ini", null, true).text();
-					commonProps.append("\n").append(finalProps.toString());
-					MiniWebConfig config=new MiniWebConfig();
-					config.setFileManager(new CMFile.CMFileManager());
-					MiniWebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
-					if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
-						config.setDebugFlag(page.getStr("DBGMSGS"));
-					if(CMSecurity.isDebugging(DbgFlag.HTTPACCESS))
-						config.setAccessLogFlag(page.getStr("ACCMSGS"));
-					MiniWebServer webServer=new MiniWebServer(serverName,config);
-					config.setMiniWebServer(webServer);
-					webServer.start();
-					webServers.add(webServer);
-				}
-				catch(Exception e)
-				{
-					Log.errOut("HTTP server "+serverName+"NOT started: "+e.getMessage());
-				}
-			}
-		}
-
-		if(page.getPrivateStr("RUNSMTPSERVER").equalsIgnoreCase("true"))
-		{
-			smtpServerThread = new SMTPserver(CMLib.mud(0));
-			smtpServerThread.start();
-			serviceEngine.startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,(int)CMProps.getTicksPerMinute() * 5);
-		}
-
-		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading base classes");
-		if(!CMClass.loadAllCoffeeMudClasses(page))
-		{
-			fatalStartupError(t,0);
-			return false;
-		}
-		CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
-		CMLib.time().globalClock().initializeINIClock(page);
-		if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
-			CMLib.factions().reloadFactions(CMProps.getVar(CMProps.Str.PREFACTIONS));
-		
-		if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS"))||(privacyV.contains("JOURNALS")))
-		{
-			int numChannelsLoaded=0;
-			int numJournalsLoaded=0;
-			if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS")))
-				numChannelsLoaded=CMLib.channels().loadChannels(page.getStr("CHANNELS"),
-																page.getStr("ICHANNELS"),
-																page.getStr("IMC2CHANNELS"));
-			if((tCode==MAIN_HOST)||(privacyV.contains("JOURNALS")))
-			{
-				numJournalsLoaded=CMLib.journals().loadCommandJournals(page.getStr("COMMANDJOURNALS"));
-				numJournalsLoaded+=CMLib.journals().loadForumJournals(page.getStr("FORUMJOURNALS"));
-			}
-			Log.sysOut(Thread.currentThread().getName(),"Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
-		}
-
-		if((tCode==MAIN_HOST)||(page.getRawPrivateStr("SYSOPMASK")!=null)) // needs to be after journals, for journal flags
-		{
-			CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
-			CMSecurity.parseGroups(page);
-		}
-
-		if((tCode==MAIN_HOST)||(privacyV.contains("SOCIALS")))
-		{
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading socials");
-			CMLib.socials().unloadSocials();
-			if(CMLib.socials().numSocialSets()==0)
-				Log.errOut(Thread.currentThread().getName(),"WARNING: Unable to load socials from socials.txt!");
-			else
-				Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
-		}
-
-		if((tCode==MAIN_HOST)||(privacyV.contains("CLANS")))
-		{
-			CMLib.database().DBReadAllClans();
-			Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
-		}
-
-		if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
-			serviceEngine.startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
-
-		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting CM1");
-		startCM1();
-		
-		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting I3");
-		startIntermud3();
-
-		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting IMC2");
-		startIntermud2();
-		
-		try{Thread.sleep(500);}catch(Exception e){}
-		
-		if((tCode==MAIN_HOST)||(privacyV.contains("CATALOG")))
-		{
-			Log.sysOut(Thread.currentThread().getName(),"Loading catalog...");
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading catalog....");
-			CMLib.database().DBReadCatalogs();
-		}
-
-		if((tCode==MAIN_HOST)||(privacyV.contains("MAP")))
-		{
-			Log.sysOut(Thread.currentThread().getName(),"Loading map...");
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading rooms....");
-			CMLib.database().DBReadAllRooms(null);
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: preparing map....");
-			Log.sysOut(Thread.currentThread().getName(),"Preparing map...");
-			CMLib.database().DBReadArtifacts();
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
-			{
-				Area A=a.nextElement();
-				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: filling map ("+A.Name()+")");
-				A.fillInAreaRooms();
-			}
-			Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
-	
-			if(!CMLib.map().roomIDs().hasMoreElements())
-			{
-				Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
-				String id="START";//New Area#0";
-				Area newArea=CMClass.getAreaType("StdArea");
-				newArea.setName("New Area");
-				CMLib.map().addArea(newArea);
-				CMLib.database().DBCreateArea(newArea);
-				Room room=CMClass.getLocale("StdRoom");
-				room.setRoomID(id);
-				room.setArea(newArea);
-				room.setDisplayText("New Room");
-				room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!");
-				CMLib.database().DBCreateRoom(room);
-				Item I=CMClass.getMiscMagic("ManualArchon");
-				room.addItem(I);
-				CMLib.database().DBUpdateItems(room);
-			}
-			
-			CMLib.login().initStartRooms(page);
-			CMLib.login().initDeathRooms(page);
-			CMLib.login().initBodyRooms(page);
-		}
-
-		if((tCode==MAIN_HOST)||(privacyV.contains("QUESTS")))
-		{
-			CMLib.database().DBReadQuests(CMLib.mud(0));
-			if(CMLib.quests().numQuests()>0)
-				Log.sysOut(Thread.currentThread().getName(),"Quests loaded     : "+CMLib.quests().numQuests());
-		}
-		
-		if(tCode!=MAIN_HOST)
-		{
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Waiting for HOST0");
-			while((!MUD.bringDown)
-			&&(!CMProps.getBoolVar0(CMProps.Bool.MUDSTARTED))
-			&&(!CMProps.getBoolVar0(CMProps.Bool.MUDSHUTTINGDOWN)))
-				try{Thread.sleep(500);}catch(Exception e){ break;}
-			if((MUD.bringDown)
-			||(!CMProps.getBoolVar0(CMProps.Bool.MUDSTARTED))
-			||(CMProps.getBoolVar0(CMProps.Bool.MUDSHUTTINGDOWN)))
-				return false;
-		}
-		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: readying for connections.");
-		try
-		{
-			CMLib.activateLibraries();
-			Log.sysOut(Thread.currentThread().getName(),"Services and utilities started");
-		}
-		catch (Throwable th)
-		{
-			Log.errOut(Thread.currentThread().getName(),"CoffeeMud Server initHost() failed");
-			Log.errOut(Thread.currentThread().getName(),th);
-			fatalStartupError(t,4);
-			return false;
-		}
-
-		
-		for(int i=0;i<CMLib.hosts().size();i++)
-			CMLib.hosts().get(i).setAcceptConnections(true);
-		Log.sysOut(Thread.currentThread().getName(),"Initialization complete.");
-		CMProps.setBoolVar(CMProps.Bool.MUDSTARTED,true);
-		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"OK");
-		return true;
+		threadGroup=Thread.currentThread().getThreadGroup();
 	}
 
 	@Override
@@ -438,6 +100,7 @@ public class MUD extends Thread implements MudHost
 	{
 		serviceEngine.executeRunnable(new ConnectionAcceptor(sock));
 	}
+	public ThreadGroup threadGroup() { return threadGroup; }
 	
 	private class ConnectionAcceptor implements CMRunnable
 	{
@@ -450,7 +113,7 @@ public class MUD extends Thread implements MudHost
 		}
 		public void run()
 		{
-			state=1;
+			state=MudState.ACCEPTING;
 			startTime=System.currentTimeMillis();
 			try
 			{
@@ -532,7 +195,7 @@ public class MUD extends Thread implements MudHost
 					else
 					{
 						Log.sysOut(Thread.currentThread().getName(),"Connection from "+address);
-						state=2;
+						state=MudState.ALLOWING;
 						// also the intro page
 						CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,false,true);
 						String introFilename="text/intro.txt";
@@ -586,6 +249,7 @@ public class MUD extends Thread implements MudHost
 			}
 			finally
 			{
+				state=MudState.STOPPED;
 				startTime=0;
 			}
 		}
@@ -604,11 +268,9 @@ public class MUD extends Thread implements MudHost
 
 	public void run()
 	{
+		state=MudState.STARTING;
 		int q_len = 6;
 		Socket sock=null;
-		serverIsRunning = false;
-
-		if (!isOK)	return;
 
 		InetAddress bindAddr = null;
 
@@ -634,12 +296,10 @@ public class MUD extends Thread implements MudHost
 			Log.sysOut(Thread.currentThread().getName(),"MUD Server started on port: "+port);
 			if (bindAddr != null)
 				Log.sysOut(Thread.currentThread().getName(),"MUD Server bound to: "+bindAddr.toString());
-			serverIsRunning = true;
-
-			while(true)
+			CMLib.hosts().add(this);
+			while(servsock!=null)
 			{
-				state=0;
-				if(servsock==null) break;
+				state=MudState.WAITING;
 				sock=servsock.accept();
 				acceptConnection(sock);
 			}
@@ -652,9 +312,6 @@ public class MUD extends Thread implements MudHost
 			{
 				Log.errOut(Thread.currentThread().getName(),t);
 			}
-
-			if (!serverIsRunning)
-				isOK = false;
 		}
 
 		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Server cleaning up.");
@@ -671,6 +328,8 @@ public class MUD extends Thread implements MudHost
 		}
 
 		Log.sysOut(Thread.currentThread().getName(),"MUD on port "+port+" stopped!");
+		state=MudState.STOPPED;
+		CMLib.hosts().remove(this);
 	}
 	
 	public String getStatus()
@@ -679,7 +338,7 @@ public class MUD extends Thread implements MudHost
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
-		return STATE_STRING[state];
+		return state.toString();
 	}
 
 	public void shutdown(Session S, boolean keepItDown, String externalCommand)
@@ -962,6 +621,7 @@ public class MUD extends Thread implements MudHost
 					CMLib.killThread((Thread)CMLib.hosts().get(m),100,30);
 				} catch(Exception t){}
 			}
+		CMLib.hosts().clear();
 		if(!keepItDown)
 			CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN,false);
 	}
@@ -1176,15 +836,19 @@ public class MUD extends Thread implements MudHost
 
 	private static class HostGroup extends Thread
 	{
-		private static int	grpid=0;
-		private String  	name=null;
-		private String  	iniFile=null;
-		private String  	logName=null;
-		private char		threadCode=MAIN_HOST;
+		private static int	  grpid=0;
+		private String		  name=null;
+		private String		  iniFile=null;
+		private String		  logName=null;
+		private char		  threadCode=MAIN_HOST;
+		private boolean		  hostStarted=false;
+		private boolean		  failedStart=false;
+		//protected ThreadGroup threadGroup;
 		
 		public HostGroup(ThreadGroup G, String mudName, String iniFileName)
 		{
 			super(G,"HOST"+grpid);
+			//threadGroup=G;
 			synchronized("HostGroupInit".intern()) {
 				logName="mud"+((grpid>0)?("."+grpid):"");
 				grpid++;
@@ -1193,6 +857,340 @@ public class MUD extends Thread implements MudHost
 				setDaemon(true);
 				threadCode=G.getName().charAt(0);
 			}
+		}
+		
+		public boolean isStarted() { return hostStarted; }
+		public boolean failedToStart() { return failedStart; }
+
+		public void fatalStartupError(Thread t, int type)
+		{
+			String str=null;
+			switch(type)
+			{
+			case 1:
+				str="ERROR: initHost() will not run without properties. Exiting.";
+				break;
+			case 2:
+				str="Map is empty?! Exiting.";
+				break;
+			case 3:
+				str="Database init failed. Exiting.";
+				break;
+			case 4:
+				str="Fatal exception. Exiting.";
+				break;
+			case 5:
+				str="MUD Server did not start. Exiting.";
+				break;
+			default:
+				str="Fatal error loading classes.  Make sure you start up coffeemud from the directory containing the class files.";
+				break;
+			}
+			Log.errOut(Thread.currentThread().getName(),str);
+			bringDown=true;
+			CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
+			CMLib.killThread(t,100,1);
+		}
+
+		protected boolean initHost()
+		{
+			final Thread t=Thread.currentThread();
+			CMProps page=CMProps.instance();
+			
+			if ((page == null) || (!page.isLoaded()))
+			{
+				fatalStartupError(t,1);
+				return false;
+			}
+			
+			char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+			Vector<String> privacyV=new Vector<String>(1);
+			if(tCode!=MAIN_HOST)
+				privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true);
+			
+			Vector<String> compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
+			CMProps.setBoolVar(CMProps.Bool.ITEMDCOMPRESS,compress.contains("ITEMDESC"));
+			CMProps.setBoolVar(CMProps.Bool.MOBCOMPRESS,compress.contains("GENMOBS"));
+			CMProps.setBoolVar(CMProps.Bool.ROOMDCOMPRESS,compress.contains("ROOMDESC"));
+			CMProps.setBoolVar(CMProps.Bool.MOBDCOMPRESS,compress.contains("MOBDESC"));
+			Resources.setCompression(compress.contains("RESOURCES"));
+			Vector<String> nocache=CMParms.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
+			CMProps.setBoolVar(CMProps.Bool.MOBNOCACHE,nocache.contains("GENMOBS"));
+			CMProps.setBoolVar(CMProps.Bool.ROOMDNOCACHE,nocache.contains("ROOMDESC"));
+			CMProps.setBoolVar(CMProps.Bool.FILERESOURCENOCACHE, nocache.contains("FILERESOURCES"));
+			CMProps.setBoolVar(CMProps.Bool.CATALOGNOCACHE, nocache.contains("CATALOG"));
+			CMProps.setBoolVar(CMProps.Bool.MAPFINDSNOCACHE,nocache.contains("MAPFINDERS"));
+			CMProps.setBoolVar(CMProps.Bool.ACCOUNTSNOCACHE,nocache.contains("ACCOUNTS"));
+
+			DBConnector currentDBconnector=null;
+			String dbClass=page.getStr("DBCLASS");
+			if(tCode!=MAIN_HOST)
+			{
+				DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MAIN_HOST,CMLib.Library.DATABASE);
+				while((!MUD.bringDown)
+				&&((baseEngine==null)||(!baseEngine.isConnected()))) {
+					try {Thread.sleep(500);}catch(Exception e){ break;}
+					baseEngine=(DatabaseEngine)CMLib.library(MAIN_HOST,CMLib.Library.DATABASE);
+				}
+				if(MUD.bringDown) 
+					return false;
+				
+				if(page.getPrivateStr("DBCLASS").length()==0)
+				{
+					CMLib.registerLibrary(baseEngine);
+					dbClass="";
+				}
+			}
+			if(dbClass.length()>0)
+			{
+				String dbService=page.getStr("DBSERVICE");
+				String dbUser=page.getStr("DBUSER");
+				String dbPass=page.getStr("DBPASS");
+				int dbConns=page.getInt("DBCONNECTIONS");
+				int dbPingIntMins=page.getInt("DBPINGINTERVALMINS");
+				if(dbConns == 0)
+				{
+					Log.errOut(Thread.currentThread().getName(),"Fatal error: DBCONNECTIONS in INI file is "+dbConns);
+					System.exit(-1);
+				}
+				boolean dbReuse=page.getBoolean("DBREUSE");
+				boolean useQue=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUE);
+				boolean useQueStart=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUESTART);
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
+				currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbPingIntMins,dbReuse,useQue,useQueStart);
+				currentDBconnector.reconnect();
+				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true)));
+
+				DBConnection DBTEST=currentDBconnector.DBFetch();
+				if(DBTEST!=null) currentDBconnector.DBDone(DBTEST);
+				if((DBTEST!=null)&&(currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
+				{
+					Log.sysOut(Thread.currentThread().getName(),"Connected to "+currentDBconnector.service());
+					databases.add(currentDBconnector);
+				}
+				else
+				{
+					String DBerrors=currentDBconnector.errorStatus().toString();
+					Log.errOut(Thread.currentThread().getName(),"Fatal database error: "+DBerrors);
+					return false;
+				}
+			}
+			else
+			if(CMLib.database()==null)
+			{
+				Log.errOut(Thread.currentThread().getName(),"No registered database!");
+				return false;
+			}
+
+			// test the database
+			try {
+				CMFile F = new CMFile("/test.the.database",null,false);
+				if(F.exists())
+					Log.sysOut(Thread.currentThread().getName(),"Test file found .. hmm.. that was unexpected.");
+					
+			} catch(Exception e) {
+				Log.errOut(Thread.currentThread().getName(),e.getMessage());
+				Log.errOut(Thread.currentThread().getName(),"Database error! Panic shutdown!");
+				System.exit(-1);
+			}
+			
+			String webServersList=page.getPrivateStr("RUNWEBSERVERS");
+			if(webServersList.equalsIgnoreCase("true"))
+				webServersList="pub,admin";
+			if((webServersList.length()>0)&&(!webServersList.equalsIgnoreCase("false")))
+			{
+				Vector<String> serverNames=CMParms.parseCommas(webServersList,true);
+				for(int s=0;s<serverNames.size();s++)
+				{
+					String serverName=serverNames.elementAt(s);
+					try
+					{
+						StringBuffer commonProps=new CMFile("web/common.ini", null, true).text();
+						StringBuffer finalProps=new CMFile("web/"+serverName+".ini", null, true).text();
+						commonProps.append("\n").append(finalProps.toString());
+						MiniWebConfig config=new MiniWebConfig();
+						config.setFileManager(new CMFile.CMFileManager());
+						MiniWebServer.initConfig(config, Log.instance(), new ByteArrayInputStream(commonProps.toString().getBytes()));
+						if(CMSecurity.isDebugging(DbgFlag.HTTPREQ))
+							config.setDebugFlag(page.getStr("DBGMSGS"));
+						if(CMSecurity.isDebugging(DbgFlag.HTTPACCESS))
+							config.setAccessLogFlag(page.getStr("ACCMSGS"));
+						MiniWebServer webServer=new MiniWebServer(serverName,config);
+						config.setMiniWebServer(webServer);
+						webServer.start();
+						webServers.add(webServer);
+					}
+					catch(Exception e)
+					{
+						Log.errOut("HTTP server "+serverName+"NOT started: "+e.getMessage());
+					}
+				}
+			}
+
+			if(page.getPrivateStr("RUNSMTPSERVER").equalsIgnoreCase("true"))
+			{
+				smtpServerThread = new SMTPserver(CMLib.mud(0));
+				smtpServerThread.start();
+				serviceEngine.startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,(int)CMProps.getTicksPerMinute() * 5);
+			}
+
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading base classes");
+			if(!CMClass.loadAllCoffeeMudClasses(page))
+			{
+				fatalStartupError(t,0);
+				return false;
+			}
+			CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
+			CMLib.time().globalClock().initializeINIClock(page);
+			if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
+				CMLib.factions().reloadFactions(CMProps.getVar(CMProps.Str.PREFACTIONS));
+			
+			if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS"))||(privacyV.contains("JOURNALS")))
+			{
+				int numChannelsLoaded=0;
+				int numJournalsLoaded=0;
+				if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS")))
+					numChannelsLoaded=CMLib.channels().loadChannels(page.getStr("CHANNELS"),
+																	page.getStr("ICHANNELS"),
+																	page.getStr("IMC2CHANNELS"));
+				if((tCode==MAIN_HOST)||(privacyV.contains("JOURNALS")))
+				{
+					numJournalsLoaded=CMLib.journals().loadCommandJournals(page.getStr("COMMANDJOURNALS"));
+					numJournalsLoaded+=CMLib.journals().loadForumJournals(page.getStr("FORUMJOURNALS"));
+				}
+				Log.sysOut(Thread.currentThread().getName(),"Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
+			}
+
+			if((tCode==MAIN_HOST)||(page.getRawPrivateStr("SYSOPMASK")!=null)) // needs to be after journals, for journal flags
+			{
+				CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
+				CMSecurity.parseGroups(page);
+			}
+
+			if((tCode==MAIN_HOST)||(privacyV.contains("SOCIALS")))
+			{
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading socials");
+				CMLib.socials().unloadSocials();
+				if(CMLib.socials().numSocialSets()==0)
+					Log.errOut(Thread.currentThread().getName(),"WARNING: Unable to load socials from socials.txt!");
+				else
+					Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
+			}
+
+			if((tCode==MAIN_HOST)||(privacyV.contains("CLANS")))
+			{
+				CMLib.database().DBReadAllClans();
+				Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
+			}
+
+			if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
+				serviceEngine.startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
+
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting CM1");
+			startCM1();
+			
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting I3");
+			startIntermud3();
+
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting IMC2");
+			startIntermud2();
+			
+			try{Thread.sleep(500);}catch(Exception e){}
+			
+			if((tCode==MAIN_HOST)||(privacyV.contains("CATALOG")))
+			{
+				Log.sysOut(Thread.currentThread().getName(),"Loading catalog...");
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading catalog....");
+				CMLib.database().DBReadCatalogs();
+			}
+
+			if((tCode==MAIN_HOST)||(privacyV.contains("MAP")))
+			{
+				Log.sysOut(Thread.currentThread().getName(),"Loading map...");
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading rooms....");
+				CMLib.database().DBReadAllRooms(null);
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: preparing map....");
+				Log.sysOut(Thread.currentThread().getName(),"Preparing map...");
+				CMLib.database().DBReadArtifacts();
+				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				{
+					Area A=a.nextElement();
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: filling map ("+A.Name()+")");
+					A.fillInAreaRooms();
+				}
+				Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
+		
+				if(!CMLib.map().roomIDs().hasMoreElements())
+				{
+					Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
+					String id="START";//New Area#0";
+					Area newArea=CMClass.getAreaType("StdArea");
+					newArea.setName("New Area");
+					CMLib.map().addArea(newArea);
+					CMLib.database().DBCreateArea(newArea);
+					Room room=CMClass.getLocale("StdRoom");
+					room.setRoomID(id);
+					room.setArea(newArea);
+					room.setDisplayText("New Room");
+					room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!");
+					CMLib.database().DBCreateRoom(room);
+					Item I=CMClass.getMiscMagic("ManualArchon");
+					room.addItem(I);
+					CMLib.database().DBUpdateItems(room);
+				}
+				
+				CMLib.login().initStartRooms(page);
+				CMLib.login().initDeathRooms(page);
+				CMLib.login().initBodyRooms(page);
+			}
+
+			if((tCode==MAIN_HOST)||(privacyV.contains("QUESTS")))
+			{
+				CMLib.database().DBReadQuests(CMLib.mud(0));
+				if(CMLib.quests().numQuests()>0)
+					Log.sysOut(Thread.currentThread().getName(),"Quests loaded     : "+CMLib.quests().numQuests());
+			}
+			
+			if(tCode!=MAIN_HOST)
+			{
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Waiting for HOST0");
+				while((!MUD.bringDown)
+				&&(!CMProps.getBoolVar0(CMProps.Bool.MUDSTARTED))
+				&&(!CMProps.getBoolVar0(CMProps.Bool.MUDSHUTTINGDOWN)))
+					try{Thread.sleep(500);}catch(Exception e){ break;}
+				if((MUD.bringDown)
+				||(!CMProps.getBoolVar0(CMProps.Bool.MUDSTARTED))
+				||(CMProps.getBoolVar0(CMProps.Bool.MUDSHUTTINGDOWN)))
+					return false;
+			}
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: readying for connections.");
+			try
+			{
+				CMLib.activateLibraries();
+				Log.sysOut(Thread.currentThread().getName(),"Services and utilities started");
+			}
+			catch (Throwable th)
+			{
+				Log.errOut(Thread.currentThread().getName(),"CoffeeMud Server initHost() failed");
+				Log.errOut(Thread.currentThread().getName(),th);
+				fatalStartupError(t,4);
+				return false;
+			}
+
+			
+			for(int i=0;i<CMLib.hosts().size();i++)
+				CMLib.hosts().get(i).setAcceptConnections(true);
+			
+			StringBuffer str=new StringBuffer("");
+			for(int m=0;m<CMLib.hosts().size();m++)
+			{
+				MudHost mud=CMLib.hosts().get(m);
+				str.append(" "+mud.getPort());
+			}
+			CMProps.setVar(CMProps.Str.MUDPORTS,str.toString());
+			
+			Log.sysOut(Thread.currentThread().getName(),"Initialization complete.");
+			return true;
 		}
 
 		public void run()
@@ -1219,6 +1217,7 @@ public class MUD extends Thread implements MudHost
 			}
 			page.resetSystemVars();
 			CMProps.setBoolVar(CMProps.Bool.MUDSTARTED,false);
+			serviceEngine.activate();
 			
 			if(threadCode!=MAIN_HOST)
 			{
@@ -1266,49 +1265,67 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpLowVar(CMProps.Str.MUDNAME,name.replace('\'','`'));
 			try
 			{
-				isOK = true;
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting");
 				CMProps.setVar(CMProps.Str.MUDBINDADDRESS,page.getStr("BIND"));
 				CMProps.setIntVar(CMProps.Int.MUDBACKLOG,page.getInt("BACKLOG"));
 
-				if(MUD.isOK)
+				LinkedList<MUD> hostMuds=new LinkedList<MUD>();
+				String ports=page.getProperty("PORT");
+				int pdex=ports.indexOf(',');
+				while(pdex>0)
 				{
-					String ports=page.getProperty("PORT");
-					int pdex=ports.indexOf(',');
-					while(pdex>0)
-					{
-						MUD mud=new MUD("MUD@"+ports.substring(0,pdex));
-						mud.acceptConns=false;
-						mud.port=CMath.s_int(ports.substring(0,pdex));
-						ports=ports.substring(pdex+1);
-						mud.start();
-						CMLib.hosts().add(mud);
-						pdex=ports.indexOf(',');
-					}
-					MUD mud=new MUD("MUD@"+ports);
+					MUD mud=new MUD("MUD@"+ports.substring(0,pdex));
+					mud.state=MudState.STARTING;
 					mud.acceptConns=false;
-					mud.port=CMath.s_int(ports);
+					mud.port=CMath.s_int(ports.substring(0,pdex));
+					ports=ports.substring(pdex+1);
+					hostMuds.add(mud);
 					mud.start();
-					CMLib.hosts().add(mud);
+					pdex=ports.indexOf(',');
 				}
+				MUD mud=new MUD("MUD@"+ports);
+				mud.state=MudState.STARTING;
+				mud.acceptConns=false;
+				mud.port=CMath.s_int(ports);
+				hostMuds.add(mud);
+				mud.start();
+				
 
-				StringBuffer str=new StringBuffer("");
-				for(int m=0;m<CMLib.hosts().size();m++)
+				if(hostMuds.size()==0)
 				{
-					MudHost mud=CMLib.hosts().get(m);
-					str.append(" "+mud.getPort());
+					Log.errOut("HOST#"+this.threadCode+" could not start any listeners.");
+					return;
 				}
-				CMProps.setVar(CMProps.Str.MUDPORTS,str.toString());
-
-				Runtime.getRuntime().addShutdownHook(new Thread() {
-					public void run() {
-						if(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
-							MUD.globalShutdown(null,true,null);
+				
+				boolean oneStarted=false;
+				long timeout=System.currentTimeMillis()+60000;
+				while((!oneStarted) && (System.currentTimeMillis()<timeout))
+				{
+					int numStopped=0;
+					for(MUD m : hostMuds)
+						if(m.state==MudState.STOPPED)
+							numStopped++;
+						else
+						if(m.state!=MudState.STARTING)
+							oneStarted=true;
+					if(numStopped==hostMuds.size())
+					{
+						Log.errOut("HOST#"+this.threadCode+" could not start any listeners.");
+						failedStart=true;
+						return;
 					}
-				});
-
-				if(initHost(Thread.currentThread()))
+					try { Thread.sleep(100); }catch(Exception e){}
+				}
+				if(!oneStarted)
 				{
+					Log.errOut("HOST#"+this.threadCode+" could not start any listeners.");
+					failedStart=true;
+					return;
+				}
+
+				if(initHost())
+				{
+					hostStarted=true;
 					Thread joinable=null;
 					for(int i=0;i<CMLib.hosts().size();i++)
 						if(CMLib.hosts().get(i) instanceof Thread)
@@ -1320,6 +1337,10 @@ public class MUD extends Thread implements MudHost
 						joinable.join();
 					else
 						System.exit(-1);
+				}
+				else
+				{
+					failedStart=true;
 				}
 			}
 			catch(InterruptedException e)
@@ -1340,6 +1361,7 @@ public class MUD extends Thread implements MudHost
 	public static void main(String a[])
 	{
 		String nameID="";
+		Thread.currentThread().setName("CoffeeMud BOOT Thread");
 		Vector<String> iniFiles=new Vector<String>();
 		if(a.length>0)
 		{
@@ -1421,24 +1443,73 @@ public class MUD extends Thread implements MudHost
 		Log.instance().configureLog(Log.Type.kills, page.getStr("KILMSGS"));
 		Log.instance().configureLog(Log.Type.combat, page.getStr("CBTMSGS"));
 		Log.instance().configureLog(Log.Type.access, page.getStr("ACCMSGS"));
+
+		
+		Thread shutdownHook=new Thread() {
+			public void run() {
+				if(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+					MUD.globalShutdown(null,true,null);
+			}
+		};
+
 		while(!bringDown)
 		{
 			System.out.println();
 			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
 			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2013 Bo Zimmerman");
 			Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
-			HostGroup joinable=null;
 			CMLib.hosts().clear();
+			final LinkedList<HostGroup> myGroups=new LinkedList<HostGroup>();
+			HostGroup mainGroup=null;
 			for(int i=0;i<iniFiles.size();i++)
 			{
 				iniFile=iniFiles.elementAt(i);
 				ThreadGroup G=new ThreadGroup(i+"-MUD");
 				HostGroup H=new HostGroup(G,nameID,iniFile);
+				if(mainGroup==null)
+					mainGroup=H;
+				myGroups.add(H);
 				H.start();
-				if(joinable==null) joinable=H;
 			}
-			if(joinable!=null)
-				try{joinable.join();}catch(Exception e){e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e); }
+			if(mainGroup==null)
+			{
+				Log.errOut("CoffeeMud failed to start.");
+				MUD.bringDown=true;
+				CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN, true);
+			}
+			else
+			{
+				long timeout=System.currentTimeMillis()+1800000; /// 30 mins
+				int numPending=1;
+				while((numPending>0)&&(System.currentTimeMillis()<timeout))
+				{
+					numPending=0;
+					for(HostGroup g : myGroups)
+						if(!g.failedToStart() && !g.isStarted())
+							numPending++;
+					if(mainGroup.failedToStart())
+						break;
+					try { Thread.sleep(100); } catch(Exception e) {}
+				}
+				if(mainGroup.failedToStart())
+				{
+					Log.errOut("CoffeeMud failed to start.");
+					MUD.bringDown=true;
+					CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN, true);
+				}
+				else
+				{
+					if(shutdownHook!=null)
+					{
+						Runtime.getRuntime().addShutdownHook(shutdownHook);
+						shutdownHook=null;
+					}
+					CMProps.setBoolVar(CMProps.Bool.MUDSTARTED,true);
+					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"OK");
+					try{mainGroup.join();}catch(Exception e){e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e); }
+				}
+			}
+			
 			System.gc();
 			try{Thread.sleep(1000);}catch(Exception e){}
 			System.runFinalization();

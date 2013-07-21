@@ -69,6 +69,8 @@ public class OffLine extends Thread implements MudHost
 	{
 		super("MUD-OffLineServer");
 	}
+	
+	public ThreadGroup threadGroup() { return Thread.currentThread().getThreadGroup(); }
 
 	public static void fatalStartupError(Thread t, int type)
 	{

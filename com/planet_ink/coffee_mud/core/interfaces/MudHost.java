@@ -104,6 +104,13 @@ public interface MudHost
 		throws Exception;
 	
 	/**
+	 * Because thread groups are used to track configurations,
+	 * here is a way to get it.
+	 * @return the thread group this host was created under.
+	 */
+	public ThreadGroup threadGroup();
+	
+	/**
 	 * Sets whether this mud is accepting connections
 	 * @see com.planet_ink.coffee_mud.core.interfaces.MudHost#isAcceptingConnections()
 	 * @param truefalse whether it is accepting connections

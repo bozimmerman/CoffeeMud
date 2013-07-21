@@ -53,5 +53,6 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public List<Tickable> getNamedTickingObjects(String name);
 	public Runnable findRunnableByThread(final Thread thread);
 	public void executeRunnable(Runnable R);
+	public void executeRunnable(String threadGroupName, Runnable R);
 	public void debugDumpStack(final String ID, Thread theThread);
 }

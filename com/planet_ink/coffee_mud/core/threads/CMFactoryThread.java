@@ -19,10 +19,9 @@ public class CMFactoryThread extends Thread
 {
 	private volatile Runnable runnable = null;
 	
-	
-	public CMFactoryThread(Runnable runnable, String name)
+	public CMFactoryThread(ThreadGroup group, Runnable runnable, String name)
 	{
-		super(runnable,name);
+		super(Thread.currentThread().getThreadGroup(),runnable,name);
 		//this.runnable=runnable; the factory does not send a REAL runnable
 	}
 	
