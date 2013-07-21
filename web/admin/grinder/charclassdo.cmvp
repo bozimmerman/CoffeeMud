@@ -11,18 +11,20 @@
 <!--
 @if?CheckReqParm?FUNCTION=DELCLASS@
     var v='@MUDGrinder?DELCLASS@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Class deleted.');
     opener.Refresh();
     window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITCLASS@
     var v='@MUDGrinder?EDITCLASS@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Class created/modified.');
     opener.Refresh();
     window.close();

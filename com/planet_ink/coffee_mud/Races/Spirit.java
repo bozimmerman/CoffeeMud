@@ -41,6 +41,7 @@ public class Spirit extends Undead
 	public int shortestFemale(){return 60;}
 	public int heightVariance(){return 12;}
 	protected boolean destroyBodyAfterUse(){return true;}
+	public int[] getBreathables() { return breatheAnythingArray; }
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 

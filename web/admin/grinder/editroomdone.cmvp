@@ -9,7 +9,8 @@
 <HTML><BODY><SCRIPT LANGUAGE=JavaScript>
 <!--
 	var v='@RequestParameter?ERRMSG@';
-	if(v!='') alert(v);
+	if((v!='')&&(alert))
+		alert(v);
 	opener.Refresh();
 	window.close();
 //-->

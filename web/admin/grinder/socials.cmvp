@@ -27,16 +27,20 @@
         
         
         @if?CheckReqParm?FUNCTION=TOVFS@
-        	alert('@SocialData?TOVFS@');
+        	var v='@SocialData?TOVFS@';
+        	if(alert) alert(v);
         @endif@
         @if?CheckReqParm?FUNCTION=TOLFS@
-        	alert('@SocialData?TOLFS@');
+        	var v='@SocialData?TOLFS@';
+        	if(alert) alert(v);
         @endif@
         @if?CheckReqParm?FUNCTION=NOVFS@
-        	alert('@SocialData?NOVFS@');
+        	var v='@SocialData?NOVFS@';
+        	if(alert) alert(v);
         @endif@
         @if?CheckReqParm?FUNCTION=NOLFS@
-        	alert('@SocialData?NOLFS@');
+        	var v='@SocialData?NOLFS@';
+        	if(alert) alert(v);
         @endif@
         
         function ChangeVFS(me)
@@ -44,7 +48,7 @@
         	if(!me.checked)
         	{
         		@if?!SocialData?ISLFS@
-        			alert('You must have at least one socials.txt file!');
+        			if(alert) alert('You must have at least one socials.txt file!');
         			me.checked=true;
         		@else@
         			var txt='R';
@@ -76,7 +80,7 @@
         	if(!me.checked)
         	{
         		@if?!SocialData?ISVFS@
-        			alert('You must have at least one socials.txt file!');
+        			if(alert) alert('You must have at least one socials.txt file!');
         			me.checked=true;
         		@else@
         			var txt='R';

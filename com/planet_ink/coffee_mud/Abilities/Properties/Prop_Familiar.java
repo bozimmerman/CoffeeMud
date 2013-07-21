@@ -56,6 +56,8 @@ public class Prop_Familiar extends Property
 	protected MOB familiarWith=null;
 	protected boolean imthedaddy=false;
 	protected int familiarType=0;
+	protected int[] lastBreathablesSet=null;
+	protected int[] newBreathablesSet=null;
 
 	public String accountForYourself()
 	{
@@ -156,12 +158,6 @@ public class Prop_Familiar extends Property
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 				break;
 		case TURTLE:
-				if(((affectableStats.sensesMask()&PhyStats.CAN_NOT_BREATHE)>0)
-				&&(affected instanceof MOB)
-				&&(((MOB)affected).location()!=null)
-				&&((((MOB)affected).location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-					||(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
-					affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
 				break;
 		case CAT:
 				break;
@@ -239,8 +235,22 @@ public class Prop_Familiar extends Property
 				affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+1);
 				break;
 		case TURTLE:
+			{
+				final int[] breatheables=affectableStats.getBreathables();
+				if(breatheables.length==0)
+					return;
+				if((lastBreathablesSet!=breatheables)||(newBreathablesSet==null))
+				{
+					newBreathablesSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+2);
+					newBreathablesSet[newBreathablesSet.length-1]=RawMaterial.RESOURCE_SALTWATER;
+					newBreathablesSet[newBreathablesSet.length-2]=RawMaterial.RESOURCE_FRESHWATER;
+					Arrays.sort(newBreathablesSet);
+					lastBreathablesSet=breatheables;
+				}
+				affectableStats.setBreathables(newBreathablesSet);
 				affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+1);
 				break;
+			}
 		case CAT:
 				affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+1);
 				if(affectableStats.getStat(CharStats.STAT_SAVE_PARALYSIS)<500)

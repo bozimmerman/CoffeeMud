@@ -58,7 +58,9 @@ function openWindow()
 			break;
 		}
 	if(foundX<0)
-		window.alert("Unable to open another window.  10 is the limit!");
+	{
+		if(window.alert) window.alert("Unable to open another window.  10 is the limit!");
+	}
 	else
 		openThisWindow(foundX);
 }

@@ -45,6 +45,7 @@ public class Mold extends StdRace
 	public String racialCategory(){return "Vegetation";}
 	public boolean fertile(){return false;}
 	public boolean uncharmable(){return true;}
+	public int[] getBreathables() { return breatheAnythingArray; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };

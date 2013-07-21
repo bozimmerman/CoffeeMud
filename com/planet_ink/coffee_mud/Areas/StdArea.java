@@ -112,7 +112,7 @@ public class StdArea implements Area
 		while(areasToDo.size()>0)
 		{
 			final Area A=areasToDo.pop();
-			derivedAtmo=A.getClimateType();
+			derivedAtmo=A.getAtmosphereCode();
 			if(derivedAtmo!=ATMOSPHERE_INHERIT)
 				return derivedAtmo;
 			for(Enumeration<Area> a=A.getParents();a.hasMoreElements();)

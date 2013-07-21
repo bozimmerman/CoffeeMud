@@ -57,7 +57,7 @@ xmlhttpPost.prototype.exec = function(querystring,callbackFunc,tries)
 			self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 		else
-			alert('Failed to create http object!');
+			if(alert) alert('Failed to create http object!');
 	}
 	self.xmlHttpReq.open('POST', '/pub/SipletInterface', false);
 	self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -221,7 +221,7 @@ function goOffline()
 		myHttp.exec('DISCONNECT&TOKEN='+token,function(success,status,txt){errorState=false;},5);
 		myHttp=new xmlhttpPost();
 	}
-	//alert('Lost connection.'); // red is enough
+	//if(alert) alert('Lost connection.'); // red is enough
 }
 
 function BoxFocus()

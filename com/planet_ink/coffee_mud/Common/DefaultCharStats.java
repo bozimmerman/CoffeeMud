@@ -66,6 +66,7 @@ public class DefaultCharStats implements CharStats
 	protected String displayClassLevel=null;
 	protected short[] bodyAlterations=null;
 	protected long unwearableBitmap=0;
+	protected int[] breathables=null;
 	
 	public DefaultCharStats()
 	{
@@ -476,6 +477,16 @@ public class DefaultCharStats implements CharStats
 	{
 		if(newVal != null)
 			myRace=newVal;
+	}
+	
+	public int[] getBreathables() 
+	{ 
+		return (breathables!=null)?breathables:myRace.getBreathables(); 
+	}
+	
+	public void setBreathables(int[] newArray)
+	{
+		breathables=newArray;
 	}
 	public int getBodyPart(int racialPartNumber)
 	{

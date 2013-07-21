@@ -46,6 +46,7 @@ public class EarthElemental extends StdRace
 	public boolean fertile(){return false;}
 	public boolean uncharmable(){return true;}
 	protected boolean destroyBodyAfterUse(){return true;}
+	public int[] getBreathables() { return breatheAnythingArray; }
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}

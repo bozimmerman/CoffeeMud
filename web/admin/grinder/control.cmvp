@@ -70,12 +70,12 @@
 		{
 			if((prepend.length>0)&&(key.indexOf(prepend)==0))
 			{
-				alert('Do not include '+prepend+' in your tag.  It will be done automatically.');
+				if(alert) alert('Do not include '+prepend+' in your tag.  It will be done automatically.');
 				return;
 			}
 			if(key.length==0)
 			{
-				alert('You must enter a value.');
+				if(alert) alert('You must enter a value.');
 				return;
 			}
 			document.INIFORM.action='/grinder/control.cmvp';

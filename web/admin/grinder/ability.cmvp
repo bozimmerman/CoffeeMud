@@ -31,7 +31,7 @@
                 return;
             if(abilityid.indexOf(' ')>=0)
             {
-                window.alert('No spaces are allowed in your ID!');
+                if(window.alert) window.alert('No spaces are allowed in your ID!');
                 return;
             }
             document.RESOURCES.NEWABILITYID.value=abilityid;

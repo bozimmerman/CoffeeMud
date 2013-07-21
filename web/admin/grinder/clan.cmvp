@@ -9,7 +9,8 @@
 	<script language=JavaScript>
 	<!--
 		@if?CheckReqParm?CLAN=_NEWONE_@ 
-			window.alert('@MUDGrinder?ADDCLAN@');
+			var v='@MUDGrinder?ADDCLAN@'
+			if(window.alert) window.alert(v);
 		@endif@
 		function openUp2(named)
 		{

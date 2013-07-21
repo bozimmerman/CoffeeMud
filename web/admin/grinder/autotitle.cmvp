@@ -23,7 +23,7 @@
                 return;
             if(autotitleid.indexOf(' ')>=0)
             {
-                window.alert('No spaces are allowed in your ID!');
+                if(window.alert) window.alert('No spaces are allowed in your ID!');
                 return;
             }
             document.RESOURCES.NEWAUTOTITLEID.value=autotitleid;

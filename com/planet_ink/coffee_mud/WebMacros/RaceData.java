@@ -285,7 +285,7 @@ public class RaceData extends StdWebMacro
 			Item I=(Item)classes.elementAt(i);
 			str.append("<TR>");
 			str.append("<TD WIDTH=90%>");
-			str.append("<SELECT NAME="+c+"ITEM"+(numItems)+">");
+			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems)+">");
 			if(!one) str.append("<OPTION VALUE=\"\">Delete!");
 			if(items.contains(I))
 				str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")");
@@ -737,6 +737,45 @@ public class RaceData extends StdWebMacro
 						old=""+R.getStat("EVENTRACE");
 					}
 					str.append(raceDropDown(old));
+				}
+				if(parms.containsKey("BREATHES"))
+				{
+					int[] breathes=R.getBreathables();
+					if(httpReq.isUrlParameter("BREATHES"))
+					{
+						int breathe=CMath.s_int(httpReq.getUrlParameter("BREATHES"));
+						List<Integer> l=new Vector<Integer>();
+						if(breathe>=0)
+						{
+							l.add(Integer.valueOf(breathe));
+							for(int i=1;;i++)
+							{
+								if(httpReq.isUrlParameter("BREATHES"+(Integer.toString(i))))
+								{
+									breathe=CMath.s_int(httpReq.getUrlParameter("BREATHES"+(Integer.toString(i))));
+									if(breathe<0)
+									{
+										l.clear();
+										break;
+									}
+									l.add(Integer.valueOf(breathe));
+								}
+								else
+									break;
+							}
+							breathes=new int[l.size()];
+							for(int i=0;i<l.size();i++)
+								breathes[i]=l.get(i).intValue();
+						}
+					}
+					str.append("<OPTION VALUE=-1 "+((breathes.length==0)?"SELECTED":"")+">Anything");
+					for(int r : RawMaterial.CODES.ALL_SBN())
+					{
+						str.append("<OPTION VALUE="+r);
+						if(CMParms.indexOf(breathes, r)>=0) 
+							str.append(" SELECTED");
+						str.append(">"+RawMaterial.CODES.NAME(r));
+					}
 				}
 				if(parms.containsKey("BODY"))
 				{

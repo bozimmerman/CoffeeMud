@@ -13,7 +13,7 @@
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" BORDER="0"><P>
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-alert('Operation Completed:');
+if(alert) alert('Operation Completed:');
 document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@&FUNCTION=EDIT&ACTION=FIRSTTIME';
 //-->
 </SCRIPT>

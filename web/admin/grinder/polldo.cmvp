@@ -11,18 +11,20 @@
 <!--
 @if?CheckReqParm?FUNCTION=DELPOLL@
     var v='@PollData?DELETE@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Poll deleted.');
     opener.Refresh();
     window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITPOLL@
     var v='@PollData?EDIT@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Poll created/modified.');
     opener.Refresh();
     window.close();

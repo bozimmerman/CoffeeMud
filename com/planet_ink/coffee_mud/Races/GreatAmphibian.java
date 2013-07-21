@@ -52,7 +52,7 @@ public class GreatAmphibian extends StdRace
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
-
+	public int[] getBreathables() { return breatheAirWaterArray; }
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
@@ -86,22 +86,20 @@ public class GreatAmphibian extends StdRace
 		}
 		return naturalWeapon;
 	}
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		MOB mob=(MOB)affected;
-		if(mob.location()!=null)
-		{
-			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-			{
-				if((affectableStats.sensesMask()&PhyStats.CAN_NOT_BREATHE)==PhyStats.CAN_NOT_BREATHE)
-					affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
+		final MOB mob=(MOB)affected;
+		final Room R=mob.location();
+		if((R!=null)
+		&&((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+			||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+			||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+			||((RawMaterial.CODES.GET(R.getAtmosphere())&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
-			}
-		}
 	}
+	
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

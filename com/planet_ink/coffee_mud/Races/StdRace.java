@@ -41,6 +41,11 @@ public class StdRace implements Race
 {
 	public String	 ID(){	return "StdRace"; }
 	
+	protected static final int[] breatheAnythingArray = new int[0];
+	protected static final int[] breatheAirArray = new int[]{ RawMaterial.RESOURCE_AIR };
+	protected static final int[] breatheWaterArray = new int[]{ RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
+	protected static final int[] breatheAirWaterArray = new int[]{ RawMaterial.RESOURCE_AIR, RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
+	
 	private int[]   	   agingChart={0,1,3,15,35,53,70,74,78};
 	protected String	   baseStatChgDesc = null;
 	protected String	   sensesChgDesc = null;
@@ -72,6 +77,7 @@ public class StdRace implements Race
 	public boolean  	expless(){return false;}
 	public int[]		bodyMask(){return parts;}
 	public int[]		getAgingChart(){return agingChart;}
+	public int[]		getBreathables() { return breatheAirArray; }
 	protected String[]  racialEffectNames(){return null;}
 	protected int[] 	racialEffectLevels(){return null;}
 	protected String[]  racialEffectParms(){return null;}

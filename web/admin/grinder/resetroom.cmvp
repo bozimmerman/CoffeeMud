@@ -6,7 +6,8 @@
 @MUDGrinder?RESETROOM@
 <script language=JavaScript>
 <!--
-alert('@RequestParameter?ERRMSG@');
+var v='@RequestParameter?ERRMSG@';
+if(window.alert) alert(v);
 //-->
 </script>
 @AddFile?/grinder/modarea.cmvp@

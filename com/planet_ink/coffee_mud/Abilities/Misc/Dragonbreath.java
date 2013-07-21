@@ -68,7 +68,7 @@ public class Dragonbreath extends StdAbility
 			mob.tell("There doesn't appear to be anyone here worth breathing on.");
 			return false;
 		}
-		if(!CMLib.flags().canBreathe(mob))
+		if(!CMLib.flags().canBreatheHere(mob,mob.location()))
 		{
 			mob.tell("You can't breathe!");
 			return false;

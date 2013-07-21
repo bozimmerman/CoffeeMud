@@ -48,7 +48,7 @@ public class Chant_ExplosiveDecompression extends Chant
 	public void affectPhyStats(Physical affecting, PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
-		if(affecting instanceof MOB)
+		if((affected instanceof MOB)&&(((MOB)affected).charStats().getBreathables().length>0))
 			stats.setSensesMask(stats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 	}
 

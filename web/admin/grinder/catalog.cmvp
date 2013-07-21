@@ -48,7 +48,7 @@
             x=trim(x);
             if(x.length == 0)
             {
-                alert('Enter a name for your new catalog item');
+                if(alert) alert('Enter a name for your new catalog item');
                 return;
             }
             CatalogItem(itemcode,x);
@@ -59,7 +59,7 @@
             x=trim(x);
             if(x.length == 0)
             {
-                alert('Enter a name for your new catalog mob');
+                if(alert) alert('Enter a name for your new catalog mob');
                 return;
             }
             CatalogMob(mobcode,x);

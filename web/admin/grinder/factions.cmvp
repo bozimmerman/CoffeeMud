@@ -12,12 +12,12 @@
         {
             if(factionid.indexOf(' ')>=0)
             {
-                window.alert('No spaces are allowed in your ID!');
+                if(window.alert) window.alert('No spaces are allowed in your ID!');
                 return;
             }
             if(factionid.indexOf('.')<0)
             {
-                window.alert('Since Faction IDs are files, it should be given an .extention.');
+                if(window.alert) window.alert('Since Faction IDs are files, it should be given an .extention.');
                 return;
             }
             if(confirm('Load/Create a file in your resources directory called '+factionid+'?'))

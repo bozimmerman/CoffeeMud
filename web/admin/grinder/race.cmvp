@@ -61,7 +61,7 @@
                 return;
             if(raceid.indexOf(' ')>=0)
             {
-                window.alert('No spaces are allowed in your ID!');
+                if(window.alert) window.alert('No spaces are allowed in your ID!');
                 return;
             }
             document.RESOURCES.NEWRACEID.value=raceid;
@@ -164,6 +164,10 @@
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Base Weight: </FONT></TD>
 			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=BWEIGHT VALUE="@RaceData?BWEIGHT@"></TD>
 		</TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Availability: </FONT></TD>
+            <TD WIDTH=66%><SELECT NAME=PLAYABLEID>@RaceData?PLAYABLEID@</SELECT></TD>
+        </TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Weight Variance: </FONT></TD>
 			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=VWEIGHT VALUE="@RaceData?VWEIGHT@"></TD>
@@ -181,13 +185,13 @@
 			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=VHEIGHT VALUE="@RaceData?VHEIGHT@"></TD>
 		</TR>
 		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Breathables: </FONT></TD>
+			<TD WIDTH=66%><SELECT NAME=BREATHES MULTIPLE>@RaceData?BREATHES@</SELECT></TD>
+		</TR>
+		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Disabled Flags: </FONT></TD>
 			<TD WIDTH=66%><SELECT NAME=DISFLAGS MULTIPLE>@RaceData?DISFLAGS@</SELECT></TD>
 		</TR>
-        <TR>
-            <TD WIDTH=25%><FONT COLOR=YELLOW>Availability: </FONT></TD>
-            <TD WIDTH=66%><SELECT NAME=PLAYABLEID>@RaceData?PLAYABLEID@</SELECT></TD>
-        </TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Leave Text: </FONT></TD>
 			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=LEAVESTR VALUE="@RaceData?LEAVESTR@"></TD>

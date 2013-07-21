@@ -4,7 +4,7 @@
 <!--
 	var answer='@MUDGrinder?PAINTROOMS@';
 	if(answer!='')
-		window.alert(answer);
+		if(window.alert) window.alert(answer);
 //-->
 </SCRIPT>
 @AddFile?/grinder/map2.cmvp@

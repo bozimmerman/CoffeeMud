@@ -8,21 +8,23 @@
 </head>
 <body BGCOLOR=BLACK>
 <SCRIPT LANGUAGE=JavaScript>
-<!--
+//<!--
 @if?CheckReqParm?FUNCTION=DELRACE@
     var v='@MUDGrinder?DELRACE@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Race deleted.');
     opener.Refresh();
     window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITRACE@
     var v='@MUDGrinder?EDITRACE@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Race created/modified.');
     opener.Refresh();
     window.close();

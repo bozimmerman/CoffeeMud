@@ -42,6 +42,8 @@ public class Prayer_Gills extends Prayer
 	public String displayText(){return "(Gills)";}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
+	protected int[] lastSet=null;
+	protected int[] newSet=null;
 
 	public void unInvoke()
 	{
@@ -55,16 +57,23 @@ public class Prayer_Gills extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> gills vanish.");
 	}
 
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof MOB))
+		if(affectableStats.getBodyPart(Race.BODY_GILL)==0)
+			affectableStats.alterBodypart(Race.BODY_GILL,2);
+		super.affectCharStats(affected,affectableStats);
+		final int[] breatheables=affectableStats.getBreathables();
+		if(breatheables.length==0)
 			return;
-		MOB mob=(MOB)affected;
-		if((mob.location()!=null)
-		&&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
-			if((mob.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==PhyStats.CAN_NOT_BREATHE)
-				affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
+		if((lastSet!=breatheables)||(newSet==null))
+		{
+			newSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+2);
+			newSet[newSet.length-1]=RawMaterial.RESOURCE_SALTWATER;
+			newSet[newSet.length-2]=RawMaterial.RESOURCE_FRESHWATER;
+			Arrays.sort(newSet);
+			lastSet=breatheables;
+		}
+		affectableStats.setBreathables(newSet);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

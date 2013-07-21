@@ -11,18 +11,20 @@
 <!--
 @if?CheckReqParm?FUNCTION=DELABILITY@
     var v='@MUDGrinder?DELABILITY@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Ability created/modified.');
     opener.Refresh();
     window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITABILITY@
     var v='@MUDGrinder?EDITABILITY@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Ability created/modified.');
     opener.Refresh();
     window.close();

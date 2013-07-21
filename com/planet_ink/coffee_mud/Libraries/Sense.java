@@ -82,13 +82,21 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean allowsMovement(Area A)
 	{ return (A!=null)&&((A.phyStats().sensesMask()&PhyStats.SENSE_ROOMNOMOVEMENT)==0); }
 	public boolean canSmell(MOB M)
-	{ return canBreathe(M)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_SMELL)==0); }
+	{ return canBreatheHere(M,M.location())&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_SMELL)==0); }
 	public boolean canTaste(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_TASTE)==0); }
 	public boolean canSpeak(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_SPEAK)==0); }
 	public boolean canBreathe(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==0); }
+	public boolean canBreatheHere(MOB M, Room R)
+	{ 
+		return (canBreathe(M)
+				&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==0)
+				&&((R==null)
+					||(M.charStats().getBreathables().length==0)
+					||(Arrays.binarySearch(M.charStats().getBreathables(), R.getAtmosphere())>=0)));
+	}
 	public boolean canSeeMetal(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_METAL)==PhyStats.CAN_SEE_METAL); }
 	public boolean isReadable(Item I)

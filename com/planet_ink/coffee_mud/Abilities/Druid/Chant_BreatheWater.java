@@ -42,6 +42,8 @@ public class Chant_BreatheWater extends Chant
 	public String displayText(){return "(Fish Gills)";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	protected int[] lastSet=null;
+	protected int[] newSet=null;
 
 	public void unInvoke()
 	{
@@ -59,18 +61,18 @@ public class Chant_BreatheWater extends Chant
 		if(affectableStats.getBodyPart(Race.BODY_GILL)==0)
 			affectableStats.alterBodypart(Race.BODY_GILL,2);
 		super.affectCharStats(affected,affectableStats);
-	}
-
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		if(!(affected instanceof MOB))
+		final int[] breatheables=affectableStats.getBreathables();
+		if(breatheables.length==0)
 			return;
-		MOB mob=(MOB)affected;
-		if((mob.location()!=null)
-		&&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
-			if((mob.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==PhyStats.CAN_NOT_BREATHE)
-				affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
+		if((lastSet!=breatheables)||(newSet==null))
+		{
+			newSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+2);
+			newSet[newSet.length-1]=RawMaterial.RESOURCE_SALTWATER;
+			newSet[newSet.length-2]=RawMaterial.RESOURCE_FRESHWATER;
+			Arrays.sort(newSet);
+			lastSet=breatheables;
+		}
+		affectableStats.setBreathables(newSet);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

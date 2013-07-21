@@ -10,7 +10,8 @@
 @if?CheckReqParm?FUNCTION=DELALLQUALIFY@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-    window.alert('@MUDGrinder?DELALLQUALIFY@');
+    var v='@MUDGrinder?DELALLQUALIFY@';
+    if(window.alert) window.alert(v);
     opener.Refresh();
     window.close();
 //-->
@@ -19,7 +20,8 @@
 @if?CheckReqParm?FUNCTION=EDITALLQUALIFY@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-    window.alert('@MUDGrinder?EDITALLQUALIFY@');
+    var v='@MUDGrinder?EDITALLQUALIFY@';
+    if(window.alert) window.alert(v);
     opener.Refresh();
     window.close();
 //-->

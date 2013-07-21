@@ -10,8 +10,9 @@
 @if?CheckReqParm?FUNCTION=DELCOMPONENT@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-	window.alert('@MUDGrinder?DELCOMPONENT@');
-    opener.Refresh();
+	var v='@MUDGrinder?DELCOMPONENT@';
+	if(window.alert) window.alert(v);
+	opener.Refresh();
 	window.close();
 //-->
 </SCRIPT>
@@ -19,8 +20,9 @@
 @if?CheckReqParm?FUNCTION=EDITCOMPONENT@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-	window.alert('@MUDGrinder?EDITCOMPONENT@');
-    opener.Refresh();
+	var v='@MUDGrinder?EDITCOMPONENT@';
+	if(window.alert) window.alert(v);
+	opener.Refresh();
 	window.close();
 //-->
 </SCRIPT>

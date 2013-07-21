@@ -53,4 +53,10 @@ public class Skill_AllBreathing extends StdSkill
 		if(!CMLib.flags().canBreathe(mob))
 			affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
 	}
+	private static final int[] allBreathe=new int[0];
+	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMob, affectableStats);
+		affectableStats.setBreathables(allBreathe);
+	}
 }

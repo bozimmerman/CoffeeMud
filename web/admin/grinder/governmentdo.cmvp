@@ -10,7 +10,8 @@
 @if?CheckReqParm?FUNCTION=DELCLANGOVERNMENT@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-	window.alert('@MUDGrinder?DELCLANGOVERNMENT@');
+	var v='@MUDGrinder?DELCLANGOVERNMENT@';
+	if(window.alert) window.alert(v);
     opener.Refresh();
 	window.close();
 //-->
@@ -19,7 +20,8 @@
 @if?CheckReqParm?FUNCTION=EDITCLANGOVERNMENT@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-	window.alert('@MUDGrinder?EDITCLANGOVERNMENT@');
+	var v='@MUDGrinder?EDITCLANGOVERNMENT@';
+	if(window.alert) window.alert(v);
     opener.Refresh();
 	window.close();
 //-->

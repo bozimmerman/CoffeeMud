@@ -70,6 +70,7 @@ public class GenRace extends StdRace
 	protected boolean[] racialAbilityQuals=null;
 	protected String[] culturalAbilityNames=null;
 	protected int[] culturalAbilityProficiencies=null;
+	protected int[] sortedBreathables=new int[]{RawMaterial.RESOURCE_AIR};
 	protected boolean destroyBodyAfterUse=false;
 	protected String arriveStr="arrives";
 	protected String leaveStr="leaves";
@@ -106,6 +107,7 @@ public class GenRace extends StdRace
 	protected String[] racialEffectNames(){return racialEffectNames;}
 	protected int[] racialEffectLevels(){return racialEffectLevels;}
 	protected String[] racialEffectParms(){return racialEffectParms;}
+	public int[] getBreathables() { return sortedBreathables; }
 
 	protected String[] racialAbilityNames(){return racialAbilityNames;}
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
@@ -299,6 +301,7 @@ public class GenRace extends StdRace
 			str.append("</RABILITIES>");
 		}
 
+		str.append("<BREATHELIST>").append(CMParms.toStringList(sortedBreathables)).append("</BREATHELIST>");
 		if((racialEffectNames==null)||(racialEffectNames.length==0))
 			str.append("<REFFECTS/>");
 		else
@@ -514,6 +517,9 @@ public class GenRace extends StdRace
 			}
 		}
 
+		sortedBreathables=CMParms.toIntArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(raceData, "BREATHELIST",""+RawMaterial.RESOURCE_AIR),true));
+		Arrays.sort(sortedBreathables);
+		
 		xV=CMLib.xml().getContentsFromPieces(raceData,"REFFECTS");
 		racialEffectNames=null;
 		racialEffectParms=null;
@@ -566,7 +572,8 @@ public class GenRace extends StdRace
 									 "NUMCABLE","GETCABLE","GETCABLEPROF",
 									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL",
 									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING",
-									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP"
+									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP",
+									 "BREATHES"
 									 };
 	public String getStat(String code)
 	{
@@ -631,6 +638,7 @@ public class GenRace extends StdRace
 		case 42: return getRaceLocatorID(eventBuddy);
 		case 43: return getRaceLocatorID(weaponBuddy);
 		case 44: return helpEntry;
+		case 45: return CMParms.toStringList(sortedBreathables);
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -864,6 +872,12 @@ public class GenRace extends StdRace
 		case 44:
 		{
 			helpEntry=val;
+			break;
+		}
+		case 45:
+		{
+			sortedBreathables=CMParms.toIntArray(CMParms.parseCommas(val,true));
+			Arrays.sort(sortedBreathables);
 			break;
 		}
 		default:

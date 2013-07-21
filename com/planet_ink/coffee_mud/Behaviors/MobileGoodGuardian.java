@@ -86,7 +86,7 @@ public class MobileGoodGuardian extends Mobile
 			tickStatus=Tickable.STATUS_MISC+5+d;
 			Room room=thisRoom.getRoomInDir(d);
 			Exit exit=thisRoom.getExitInDir(d);
-			if((room!=null)&&(exit!=null)&&(okRoomForMe(thisRoom,room)))
+			if((room!=null)&&(exit!=null)&&(okRoomForMe(mob,thisRoom,room)))
 			{
 				tickStatus=Tickable.STATUS_MISC+20+d;
 				if(exit.isOpen())

@@ -10,7 +10,8 @@
 @if?CheckReqParm?FUNCTION=DELCLAN@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-	window.alert('@MUDGrinder?DELCLAN@');
+	var v='@MUDGrinder?DELCLAN@';
+	if(window.alert) window.alert(v);
 	window.close();
 //-->
 </SCRIPT>
@@ -18,7 +19,8 @@
 @if?CheckReqParm?FUNCTION=EDITCLAN@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-	window.alert('@MUDGrinder?EDITCLAN@');
+	var v='@MUDGrinder?EDITCLAN@';
+	if(window.alert) window.alert(v);
 	window.close();
 //-->
 </SCRIPT>

@@ -11,7 +11,7 @@
 	var msg='@RequestParameter?ERRMSG@';
 	msg=msg.trim();
 	if(msg.length()>0)
-		alert(msg);
+		if(alert) alert(msg);
 //-->
 </SCRIPT>
 @endif@

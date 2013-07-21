@@ -17,7 +17,7 @@
 		{
 			if(document.FILEBROWSE.FILE.value=='')
 			{
-				alert('No file name specified!');
+				if(alert) alert('No file name specified!');
 				return;
 			}
 			if(confirm('Save your changes?'))

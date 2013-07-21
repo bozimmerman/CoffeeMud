@@ -405,6 +405,25 @@ public interface CharStats extends CMCommon, Modifiable
 	 */
 	public String raceName();
 	/**
+	 * Returns resource codes of what this race can breathe as
+	 * an atmosphere.  The list is guarenteed sorted.  If the list
+	 * is empty, the race can breathe anything at all.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
+	 * @see #setBreathables(int[])
+	 * @return a list of resource codes that this race can breathe
+	 */
+	public int[] getBreathables();
+	
+	/**
+	 * Sets resource codes of what this race can breathe as
+	 * an atmosphere.  The list MUST BE sorted.  If the list
+	 * is empty, the race can breathe anything at all.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
+	 * @see #getBreathables()
+	 * @param newArray a list of resource codes that this race can breathe
+	 */
+	public void setBreathables(int[] newArray);
+	/**
 	 * Changes the apparant race of ths mob by setting a new name.  A value of null will
 	 * reset this setting, allowing the mobs TRUE race to be displayed through the
 	 * raceName method instead of the string set through this one.

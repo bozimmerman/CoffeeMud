@@ -2981,12 +2981,30 @@ public class StdMOB implements MOB
 				if (!isMonster)
 					curState().expendEnergy(this, maxState, false);
 
-				if ((!CMLib.flags().canBreathe(this)) && (!CMLib.flags().isGolem(this)))
+				if(!CMLib.flags().isGolem(this))
 				{
-					location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
-					CMLib.combat().postDamage(this, this, null,
-							(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
-							CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
+					if (!CMLib.flags().canBreathe(this))
+					{
+						location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
+						CMLib.combat().postDamage(this, this, null,
+								(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
+								CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
+					}
+					else
+					if(!CMLib.flags().canBreatheHere(this,location()))
+					{
+						final int atmo=location().getAtmosphere();
+						if((atmo&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+						{
+							location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> <S-IS-ARE> drowning in "+RawMaterial.CODES.NAME(atmo).toLowerCase()+"!^.^?") + CMLib.protocol().msp("choke.wav", 10));
+							CMLib.combat().postDamage(this, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1, null);
+						}
+						else
+						{
+							location().show(this, this, CMMsg.MSG_OK_VISUAL, ("^Z<S-NAME> <S-IS-ARE> choking on "+RawMaterial.CODES.NAME(atmo).toLowerCase()+"!^.^?") + CMLib.protocol().msp("choke.wav", 10));
+							CMLib.combat().postDamage(this, this, null, (int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)), CMMsg.MASK_ALWAYS | CMMsg.TYP_GAS, -1, null);
+						}
+					}
 				}
 
 				if (commandQueSize() == 0)

@@ -11,18 +11,20 @@
 <!--
 @if?CheckReqParm?FUNCTION=DELRECIPE@
     var v='@AbilityRecipeData?DELROW@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Recipe deleted.');
     opener.Refresh();
     window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=SAVE@
     var v='@AbilityRecipeData?SAVEROW@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Recipe created/modified.');
     opener.Refresh();
     window.close();

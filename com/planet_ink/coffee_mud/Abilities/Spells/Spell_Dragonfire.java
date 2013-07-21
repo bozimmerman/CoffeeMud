@@ -52,7 +52,7 @@ public class Spell_Dragonfire extends Spell
 			return false;
 		}
 		
-		if(!CMLib.flags().canBreathe(mob))
+		if(!CMLib.flags().canBreatheHere(mob,mob.location()))
 		{
 			mob.tell("You can't breathe!");
 			return false;

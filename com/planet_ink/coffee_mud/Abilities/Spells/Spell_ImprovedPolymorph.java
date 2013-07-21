@@ -186,7 +186,7 @@ public class Spell_ImprovedPolymorph extends Spell
 
 		int statDiff=targetStatTotal-fakeStatTotal;
 		if(CMLib.flags().canMove(fakeMOB)!=CMLib.flags().canMove(target)) statDiff+=100;
-		if(CMLib.flags().canBreathe(fakeMOB)!=CMLib.flags().canBreathe(target)) statDiff+=50;
+		if(CMLib.flags().canBreatheHere(fakeMOB,target.location())!=CMLib.flags().canBreatheHere(target,target.location())) statDiff+=50;
 		if(CMLib.flags().canSee(fakeMOB)!=CMLib.flags().canSee(target)) statDiff+=25;
 		if(CMLib.flags().canHear(fakeMOB)!=CMLib.flags().canHear(target)) statDiff+=10;
 		if(CMLib.flags().canSpeak(fakeMOB)!=CMLib.flags().canSpeak(target)) statDiff+=25;

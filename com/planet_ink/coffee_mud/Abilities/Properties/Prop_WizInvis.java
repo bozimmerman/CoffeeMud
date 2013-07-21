@@ -82,8 +82,6 @@ public class Prop_WizInvis extends Property
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLIMBING);
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 		}
-		if((affected instanceof MOB)&&(!CMLib.flags().canBreathe((MOB)affected)))
-			affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_SNEAKERS);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);

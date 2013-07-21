@@ -54,10 +54,7 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
-		{
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
-		}
 	}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

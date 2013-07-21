@@ -55,10 +55,7 @@ public class UnderWater extends StdRoom implements Drink
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
-		{
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
-		}
 	}
 
 	public static void makeSink(Physical P, Room room, int avg)

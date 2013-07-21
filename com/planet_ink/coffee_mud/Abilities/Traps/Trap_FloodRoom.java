@@ -138,11 +138,13 @@ public class Trap_FloodRoom extends StdTrap
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(sprung)
+		if(sprung && (affected instanceof MOB))
 		{
 			if((!disabled)&&((tickDown>2)&&(tickDown<13)))
 			{
-				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
+				if((((MOB)affected).charStats().getBreathables().length>0)
+				&&(Arrays.binarySearch(((MOB)affected).charStats().getBreathables(),RawMaterial.RESOURCE_FRESHWATER)<0))
+					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 			}
 		}

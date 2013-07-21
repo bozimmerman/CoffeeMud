@@ -344,7 +344,29 @@ public class GrinderRaces
 			R.setStat("WEAPONCLASS",((Environmental)V.get(0)).ID());
 			R.setStat("WEAPONXML",((Environmental)V.get(0)).text());
 		}
-		
+		int breathe=CMath.s_int(httpReq.getUrlParameter("BREATHES"));
+		List<Integer> l=new Vector<Integer>();
+		if(breathe>=0)
+		{
+			l.add(Integer.valueOf(breathe));
+			for(int i=1;;i++)
+			{
+				if(httpReq.isUrlParameter("BREATHES"+(Integer.toString(i))))
+				{
+					breathe=CMath.s_int(httpReq.getUrlParameter("BREATHES"+(Integer.toString(i))));
+					if(breathe<0)
+					{
+						l.clear();
+						break;
+					}
+					l.add(Integer.valueOf(breathe));
+				}
+				else
+					break;
+			}
+		}
+		R.setStat("BREATHES", CMParms.toStringList(l));
+				
 		DVector DV;
 		setDynAbilities(R,httpReq);
 		setDynEffects(R,httpReq);

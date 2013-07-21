@@ -313,7 +313,7 @@ public class Dragon extends StdMOB
 			return true;
 		}
 
-		if(!CMLib.flags().canBreathe(this))
+		if(!CMLib.flags().canBreatheHere(this,location()))
 		{
 			// ===== if you can't breathe, you can't breathe fire
 			return false;

@@ -695,7 +695,7 @@ public class MXP
 			E.setAttributeValue("PROMPT",prompt);
 			String href=E.getAttributeValue("HREF");
 			String hint=E.getAttributeValue("HINT");
-			if((href==null)||(href.trim().length()==0)) href="alert('Nothing done.');";
+			if((href==null)||(href.trim().length()==0)) href="if(window.alert) alert('Nothing done.');";
 			if((hint==null)||(hint.trim().length()==0)) hint="Click here!";
 			hint=Util.replaceAllIgnoreCase(hint,"RIGHT-CLICK","click");
 			hint=Util.replaceAllIgnoreCase(hint,"RIGHT-MOUSE","click mouse");

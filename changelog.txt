@@ -2,13 +2,6 @@
    1. QuestManager "STEP"ping feature now supports "STEP AUTO" to have steps proceed based on duration instead of MOBPROG triggers.
    2. Areas and Rooms now support "atmosphere" to designate what players have available for breathing.
    3. Rooms "climate" is now an editable feature, usually inherited from the area Climate, but designatable at will.
-//TODO: add room climates to genmaker! *AND* for DB as well.
-//TODO: add atmosphere for rooms and areas to genmaker! *AND* for DB as well.
-//TODO: add breathes to races
-//TODO: add breathes to charstats
-//TODO: add breathe handlers
-//TODO: add breathe editors for races  (and MG!)
-//TODO: add breathes to races guides!
 //TODO: add electronics to guides
 //TODO: add electronics to MG
 # Build 5.8.0 Release 7/21/2013

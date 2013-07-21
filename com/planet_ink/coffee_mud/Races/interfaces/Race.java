@@ -178,6 +178,14 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 */
 	public Weapon myNaturalWeapon();
 	/**
+	 * Returns resource codes of what this race can breathe as
+	 * an atmosphere.  The list is guarenteed sorted.  If the list
+	 * is empty, the race can breathe anything at all.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
+	 * @return a list of resource codes that this race can breathe
+	 */
+	public int[] getBreathables();
+	/**
 	 * Returns a Vector of RawMaterial objects (usually GenFoodResource, GenLiquidResource,
 	 * or GenResource items) representing what is left over of a member of this race
 	 * after they've been butchered and cut up.

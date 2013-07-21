@@ -16,12 +16,12 @@
 		var rvalue=document.NEWAREA.ROOM.options[rindex].value;
 		if(avalue=='')
 		{
-			alert('Please select an area');
+			if(window.alert) alert('Please select an area');
 			return;
 		}
 		if(rvalue=='')
 		{
-			alert('Please select a room');
+			if(window.alert) alert('Please select a room');
 			return;
 		}
 		opener.pickedRoom(avalue,rvalue,document.NEWAREA.REST.value);

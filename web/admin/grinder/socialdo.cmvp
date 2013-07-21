@@ -11,18 +11,20 @@
 <!--
 @if?CheckReqParm?FUNCTION=DELSOCIAL@
     var v='@SocialData?DELETE@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Social deleted.');
     opener.Refresh();
     window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITSOCIAL@
     var v='@SocialData?EDIT@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Social created/modified.');
     opener.Refresh();
     window.close();

@@ -51,6 +51,7 @@ public class Fish extends StdRace
 	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
 	protected int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	public int[] getBreathables() { return breatheWaterArray; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
@@ -90,24 +91,27 @@ public class Fish extends StdRace
 		return naturalWeapon;
 	}
 
-	public boolean isWaterRoom(Room R)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if(R==null) return false;
-		if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-		||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-		||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-			return true;
-		return false;
+		final MOB mob=(MOB)affected;
+		final Room R=mob.location();
+		if((R!=null)
+		&&((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+			||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+			||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+			||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+			||((RawMaterial.CODES.GET(R.getAtmosphere())&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
-
+	
 	public boolean okMessage(Environmental affected, CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.amISource((MOB)affected))
+		&&(msg.source().isMonster())
 		&&(msg.target() instanceof Room)
 		&&(msg.tool() instanceof Exit)
-		&&(!isWaterRoom((Room)msg.target())))
+		&&(Arrays.binarySearch(getBreathables(), ((Room)msg.target()).getAtmosphere())<0))
 		{
 			((MOB)affected).tell("That way looks too dry.");
 			return false;
@@ -115,22 +119,6 @@ public class Fish extends StdRace
 		return true;
 	}
 
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		MOB mob=(MOB)affected;
-		if((mob.location()!=null)&&(isWaterRoom(mob.location())))
-		{
-			if((affectableStats.sensesMask()&PhyStats.CAN_NOT_BREATHE)==PhyStats.CAN_NOT_BREATHE)
-				affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
-			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
-		}
-		else
-		{
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
-			if((affectableStats.disposition()&PhyStats.IS_SWIMMING)>0)
-				affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_SWIMMING);
-		}
-	}
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

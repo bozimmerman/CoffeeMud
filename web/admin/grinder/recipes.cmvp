@@ -33,7 +33,7 @@
         {
         	if(document.RESOURCES.ABILITY.selectedIndex<=0)
         	{
-        		alert('You must select a skill first.');
+        		if(window.alert) alert('You must select a skill first.');
         		return;
         	}
         	Recipe(-1);

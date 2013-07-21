@@ -2831,6 +2831,87 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return currMat;
 	}
 
+	protected void genBreathes(MOB mob, Race me, int showNumber, int showFlag) throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		boolean q=false;
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
+		{
+			StringBuilder matName=new StringBuilder("");
+			if(me.getBreathables().length==0)
+				matName.append("Anything");
+			else
+			for(int r : me.getBreathables())
+				if(matName.length()>0)
+					matName.append(", ").append(RawMaterial.CODES.NAME(r));
+				else
+					matName.append(RawMaterial.CODES.NAME(r));
+			mob.tell(showNumber+". Can breathe: '"+matName.toString()+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			String newType=mob.session().prompt("Enter a material to add/remove, or ANYTHING (?)\n\r:","");
+			if(newType.trim().length()==0)
+				return;
+			if(newType.equals("?"))
+			{
+				StringBuffer say=new StringBuffer("");
+				say.append("ANYTHING, ");
+				for(String S : RawMaterial.CODES.NAMES())
+					say.append(S+", ");
+				mob.tell(say.toString().substring(0,say.length()-2));
+				q=false;
+			}
+			else
+			if(newType.equalsIgnoreCase("ANYTHING"))
+			{
+				q=true;
+				me.setStat("BREATHES","");
+			}
+			else
+			{
+				q=false;
+				int newValue=RawMaterial.CODES.FIND_IgnoreCase(newType);
+				if(newValue>=0)
+				{
+					String newList;
+					int x=CMParms.indexOf(me.getBreathables(), newValue);
+					if(x>=0)
+					{
+						if(me.getBreathables().length==1)
+							newList=""+RawMaterial.RESOURCE_AIR;
+						else
+						{
+							StringBuilder str=new StringBuilder("");
+							for(int r : me.getBreathables())
+								if(r!=newValue)
+								{
+									if(str.length()>0)
+										str.append(", ").append(r);
+									else
+										str.append(r);
+								}
+							newList=str.toString();
+						}
+						mob.tell("You've removed "+RawMaterial.CODES.NAME(newValue));
+					}
+					else
+					{
+						StringBuilder str=new StringBuilder(CMParms.toStringList(me.getBreathables()));
+						if(str.length()>0)
+							str.append(", ").append(newValue);
+						else
+							str.append(newValue);
+						newList=str.toString();
+					}
+					me.setStat("BREATHES",newList);
+					mob.tell("You've added "+RawMaterial.CODES.NAME(newValue));
+				}
+				else
+					mob.tell("Unknown resource '"+newType+"' (no change)");
+			}
+		}
+	}
+
 	protected void genInstrumentType(MOB mob, MusicalInstrument E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -6988,6 +7069,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatInt(mob,me,++showNumber,showFlag,"Height Variance","VHEIGHT");
 			genRaceAvailability(mob,me,++showNumber,showFlag);
 			genDisableFlags(mob,me,++showNumber,showFlag);
+			genBreathes(mob,me,++showNumber,showFlag);
 			promptStatStr(mob,me,++showNumber,showFlag,"Leaving text","LEAVE");
 			promptStatStr(mob,me,++showNumber,showFlag,"Arriving text","ARRIVE");
 			genRaceBuddy(mob,me,++showNumber,showFlag,"Health Race","HEALTHRACE");

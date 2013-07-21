@@ -11,18 +11,20 @@
 <!--
 @if?CheckReqParm?FUNCTION=DELAUTOTITLE@
     var v='@AutoTitleData?DELETE@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Title deleted.');
     opener.Refresh();
     window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITAUTOTITLE@
     var v='@AutoTitleData?EDIT@';
-    if(v != '')
+    if((v != '')&&(alert))
         alert(v);
     else
+    if(alert)
         alert('Title created/modified.');
     opener.Refresh();
     window.close();

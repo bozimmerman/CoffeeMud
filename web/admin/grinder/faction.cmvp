@@ -61,7 +61,7 @@
                 return;
             if(factionid.indexOf(' ')>=0)
             {
-                window.alert('No spaces are allowed in your ID!');
+                if(window.alert) window.alert('No spaces are allowed in your ID!');
                 return;
             }
             document.RESOURCES.NEWFACTIONID.value=factionid;

@@ -43,6 +43,7 @@ public class Scarab extends StdRace
 	public int weightVariance(){return 5;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Insect";}
+	public int[] getBreathables() { return breatheAnythingArray; }
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,6 ,6 ,0 ,0 ,1 ,0 ,0 ,0 };
