@@ -65,6 +65,7 @@ public class DefaultSession implements Session
 	
 	private volatile Thread  runThread 			 = null;
 	private volatile Thread	 writeThread 		 = null;
+	protected String		 groupName			 = null;
 	protected SessionStatus  status 			 = SessionStatus.HANDSHAKE_OPEN;
 	protected long 			 lastStateChangeMs	 = System.currentTimeMillis();
 	protected int   		 snoopSuspensionStack= 0;
@@ -156,8 +157,9 @@ public class DefaultSession implements Session
 		}
 	}
 	
-	public void initializeSession(final Socket s, final String introTextStr)
+	public void initializeSession(final Socket s, final String groupName, final String introTextStr)
 	{
+		this.groupName=groupName;
 		sock[0]=s;
 		try
 		{
@@ -360,6 +362,12 @@ public class DefaultSession implements Session
 		try{Thread.sleep(50);}catch(Exception e){}
 		changeTelnetMode(rawout,TELNET_COMPRESS2,false);
 	}
+	
+	public String getGroupName()
+	{
+		return groupName;
+	}
+
 	
 	public void setFakeInput(String input)
 	{
@@ -1857,7 +1865,7 @@ public class DefaultSession implements Session
 		CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
 			
 		// the player quit message!
-		CMLib.threads().executeRunnable(new LoginLogoutThread(M,CMMsg.MSG_QUIT));
+		CMLib.threads().executeRunnable(groupName,new LoginLogoutThread(M,CMMsg.MSG_QUIT));
 		if(M.playerStats()!=null)
 			M.playerStats().setLastDateTime(System.currentTimeMillis());
 		Log.sysOut("Logout: "+name+" ("+CMLib.time().date2SmartEllapsedTime(System.currentTimeMillis()-userLoginTime,true)+")");
@@ -1986,7 +1994,7 @@ public class DefaultSession implements Session
 						callBack.setInput(input);
 						if(!callBack.waitForInput())
 						{
-							CMLib.threads().executeRunnable(new Runnable(){
+							CMLib.threads().executeRunnable(groupName,new Runnable(){
 								public void run(){
 									try {
 										callBack.callBack();

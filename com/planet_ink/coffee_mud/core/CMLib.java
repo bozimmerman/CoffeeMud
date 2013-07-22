@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMFactoryThread;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -313,7 +314,8 @@ public class CMLib
 		{
 			if((!privacyV.contains(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{
-				Log.debugOut("HOST"+Thread.currentThread().getThreadGroup().getName().charAt(0)+" sharing library "+lbry.toString());
+				if(CMSecurity.isDebugging(DbgFlag.BOOTSTRAPPER))
+					Log.debugOut("HOST"+Thread.currentThread().getThreadGroup().getName().charAt(0)+" sharing library "+lbry.toString());
 				lib.libraries[lbry.ordinal()]=libs[MudHost.MAIN_HOST].libraries[lbry.ordinal()];
 			}
 			else

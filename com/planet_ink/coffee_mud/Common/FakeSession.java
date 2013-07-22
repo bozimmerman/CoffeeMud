@@ -52,13 +52,14 @@ public class FakeSession implements Session
 	public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public long getTickStatus(){return 0;}
-	public void initializeSession(Socket s, String introTextStr)
+	public void initializeSession(Socket s, String groupName, String introTextStr)
 	{
 		if(introTextStr.equalsIgnoreCase("MEMORY"))
 			bout=new ByteArrayOutputStream();
 		else
 			theFile = new CMFile(introTextStr,null,true); 
 	}
+	public String getGroupName() { return Thread.currentThread().getThreadGroup().getName(); }
 	public boolean isLockedUpWriting(){return false;}
 	public void initializeClass(){}
 	public void run(){}

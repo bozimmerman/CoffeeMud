@@ -86,7 +86,7 @@ public class Spell_KnowFate extends Spell
 				int draws=0;
 				
 				Session fakeS=(Session)CMClass.getCommon("FakeSession");
-				fakeS.initializeSession(null,"MEMORY");
+				fakeS.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),"MEMORY");
 				for(int tries=0;tries<20;tries++)
 				{
 					MOB newMOB=(MOB)mob.copyOf();

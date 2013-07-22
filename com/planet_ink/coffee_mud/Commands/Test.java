@@ -1413,8 +1413,8 @@ public class Test extends StdCommand
 				mobs[1].setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 				Session S1=(Session)CMClass.getCommon("FakeSession");
 				Session S2=(Session)CMClass.getCommon("FakeSession");
-				S1.initializeSession(null, "MEMORY");
-				S2.initializeSession(null, "MEMORY");
+				S1.initializeSession(null,Thread.currentThread().getThreadGroup().getName(), "MEMORY");
+				S2.initializeSession(null,Thread.currentThread().getThreadGroup().getName(), "MEMORY");
 				mobs[0].setSession(S1);
 				mobs[1].setSession(S2);
 				try

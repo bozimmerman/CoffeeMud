@@ -238,7 +238,7 @@ public class Sessions extends StdLibrary implements SessionsList
 						{
 							if(!S.isRunning()) 
 							{
-								CMLib.threads().executeRunnable(S);
+								CMLib.threads().executeRunnable(S.getGroupName(), S);
 							}
 						}
 					}

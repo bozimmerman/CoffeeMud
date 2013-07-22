@@ -98,7 +98,7 @@ public class MUD extends Thread implements MudHost
 	@Override
 	public void acceptConnection(Socket sock) throws SocketException, IOException 
 	{
-		serviceEngine.executeRunnable(new ConnectionAcceptor(sock));
+		serviceEngine.executeRunnable(threadGroup.getName(),new ConnectionAcceptor(sock));
 	}
 	public ThreadGroup threadGroup() { return threadGroup; }
 	
@@ -212,7 +212,7 @@ public class MUD extends Thread implements MudHost
 						StringBuffer introText=Resources.getFileResource(introFilename,true);
 						try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 						Session S=(Session)CMClass.getCommon("DefaultSession");
-						S.initializeSession(sock, introText != null ? introText.toString() : null);
+						S.initializeSession(sock, threadGroup().getName(), introText != null ? introText.toString() : null);
 						CMLib.sessions().add(S);
 						sock = null;
 					}
@@ -992,7 +992,7 @@ public class MUD extends Thread implements MudHost
 			} catch(Exception e) {
 				Log.errOut(Thread.currentThread().getName(),e.getMessage());
 				Log.errOut(Thread.currentThread().getName(),"Database error! Panic shutdown!");
-				System.exit(-1);
+				return false;
 			}
 			
 			String webServersList=page.getPrivateStr("RUNWEBSERVERS");
@@ -1042,7 +1042,8 @@ public class MUD extends Thread implements MudHost
 				return false;
 			}
 			CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
-			CMLib.time().globalClock().initializeINIClock(page);
+			if((threadCode==MudHost.MAIN_HOST)||(CMLib.time()!=CMLib.library(MudHost.MAIN_HOST, CMLib.Library.TIME)))
+				CMLib.time().globalClock().initializeINIClock(page);
 			if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
 				CMLib.factions().reloadFactions(CMProps.getVar(CMProps.Str.PREFACTIONS));
 			
@@ -1179,9 +1180,6 @@ public class MUD extends Thread implements MudHost
 			}
 
 			
-			for(int i=0;i<CMLib.hosts().size();i++)
-				CMLib.hosts().get(i).setAcceptConnections(true);
-			
 			StringBuffer str=new StringBuffer("");
 			for(int m=0;m<CMLib.hosts().size();m++)
 			{
@@ -1189,8 +1187,9 @@ public class MUD extends Thread implements MudHost
 				str.append(" "+mud.getPort());
 			}
 			CMProps.setVar(CMProps.Str.MUDPORTS,str.toString());
-			
-			Log.sysOut(Thread.currentThread().getName(),"Initialization complete.");
+			CMProps.setBoolVar(CMProps.Bool.MUDSTARTED,true);
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"OK");
+			Log.sysOut(Thread.currentThread().getName(),"Host#"+threadCode+" initializated.");
 			return true;
 		}
 
@@ -1327,7 +1326,6 @@ public class MUD extends Thread implements MudHost
 
 				if(initHost())
 				{
-					hostStarted=true;
 					Thread joinable=null;
 					for(int i=0;i<CMLib.hosts().size();i++)
 						if(CMLib.hosts().get(i) instanceof Thread)
@@ -1336,9 +1334,12 @@ public class MUD extends Thread implements MudHost
 							break;
 						}
 					if(joinable!=null)
+					{
+						hostStarted=true;
 						joinable.join();
+					}
 					else
-						System.exit(-1);
+						failedStart=true;
 				}
 				else
 				{
@@ -1363,7 +1364,7 @@ public class MUD extends Thread implements MudHost
 	public static void main(String a[])
 	{
 		String nameID="";
-		Thread.currentThread().setName("CoffeeMud BOOT Thread");
+		Thread.currentThread().setName("Bootstrapper");
 		Vector<String> iniFiles=new Vector<String>();
 		if(a.length>0)
 		{
@@ -1506,8 +1507,9 @@ public class MUD extends Thread implements MudHost
 						Runtime.getRuntime().addShutdownHook(shutdownHook);
 						shutdownHook=null;
 					}
-					CMProps.setBoolVar(CMProps.Bool.MUDSTARTED,true);
-					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"OK");
+					for(int i=0;i<CMLib.hosts().size();i++)
+						CMLib.hosts().get(i).setAcceptConnections(true);
+					Log.sysOut(Thread.currentThread().getName(),"Initialization complete.");
 					try{mainGroup.join();}catch(Exception e){e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e); }
 				}
 			}

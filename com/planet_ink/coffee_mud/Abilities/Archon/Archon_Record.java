@@ -122,7 +122,7 @@ public class Archon_Record extends ArchonSkill
 						Log.sysOut("Record",mob.name()+" started recording "+target.name()+" to /"+filename+".");
 					Archon_Record A2=(Archon_Record)copyOf();
 					Session F=(Session)CMClass.getCommon("FakeSession");
-					F.initializeSession(null,filename);
+					F.initializeSession(null,Thread.currentThread().getThreadGroup().getName(),filename);
 					if(target.session()==null)
 						target.setSession(F);
 					A2.sess=F;

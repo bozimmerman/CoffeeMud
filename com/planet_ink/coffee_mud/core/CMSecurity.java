@@ -1166,7 +1166,7 @@ public class CMSecurity
 		JOURNALTHREAD("journal msg maint"), MAPTHREAD("room maint"), VACUUM("room/obj expiration"), AUTOPURGE("player/account purging"), PLAYERTHREAD("player maint"), 
 		OUTPUT("all raw session output"), EXPORT("area exporting"), STATSTHREAD("stats maint"), GEAS("geas/slavery parsing"), SMTPCLIENT("email sending"), 
 		MESSAGES("internal core msgs"), EVERYTHING("everything"), CMROOM("room db creation"), HTTPREQ("web requests"), CMJRNL("journal db activity"), IMPORT("area importing"),
-		PLAYERSTATS("player stat loading"), CLANS("clan maint"), BINOUT("binary telnet input"), BININ("binary telnet output");
+		PLAYERSTATS("player stat loading"), CLANS("clan maint"), BINOUT("binary telnet input"), BININ("binary telnet output"),BOOTSTRAPPER("Bootstrapper");
 		private final String desc;
 		DbgFlag(final String description){this.desc=description;}
 		public String description() { return desc;}

@@ -48,9 +48,16 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * Negotiates various telnet options (or attempts to), and 
 	 * prints the introTextStr to the user.
 	 * @param s the socket the user connected from
+	 * @param groupName the name of the thread group the session goes to
 	 * @param introTextStr introductory text string (Hello!)
 	 */
-	public void initializeSession(Socket s, String introTextStr);
+	public void initializeSession(Socket s, String groupName, String introTextStr);
+	
+	/**
+	 * Returns the group name to which this session belongs
+	 * @return the thread group name
+	 */
+	public String getGroupName();
 	
 	/**
 	 * Returns a list of standard/foreground telnet coded strings 
