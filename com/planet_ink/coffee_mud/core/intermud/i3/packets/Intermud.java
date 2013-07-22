@@ -366,7 +366,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 						continue;
 					}
 					connected = true;
-					input_thread = new Thread(this);
+					input_thread = new Thread(Thread.currentThread().getThreadGroup(),this);
 					input_thread.setDaemon(true);
 					input_thread.setName("I3Client:"+currentRouter.ip+"@"+currentRouter.port);
 					input_thread.start();

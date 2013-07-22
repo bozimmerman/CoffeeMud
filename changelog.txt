@@ -3,7 +3,6 @@
    2. Areas and Rooms now support "atmosphere" to designate what players have available for breathing.
    3. Rooms "climate" is now an editable feature, usually inherited from the area Climate, but designatable at will.
    4. Races now designate what sort of resource they can breathe, which means GenRaces have a new field you can edit.
-//TODO: I don't think Serviceengine.getPoolExecutor will really do what it says it does, also how will miniwebserver deal?
 //TODO: add breathe to programmers guide
 //TODO: add electronics to guides
 //TODO: add electronics to MG

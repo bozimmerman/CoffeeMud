@@ -1,4 +1,7 @@
 package com.planet_ink.coffee_mud.core.threads;
+
+import com.planet_ink.coffee_mud.core.Log;
+
 /*
 Portions Copyright 2002 Jeff Kamenek
 Portions Copyright 2002-2013 Bo Zimmerman
@@ -21,7 +24,8 @@ public class CMFactoryThread extends Thread
 	
 	public CMFactoryThread(ThreadGroup group, Runnable runnable, String name)
 	{
-		super(Thread.currentThread().getThreadGroup(),runnable,name);
+		super(group,runnable,name);
+		if(group==null) throw new java.lang.IllegalArgumentException();
 		//this.runnable=runnable; the factory does not send a REAL runnable
 	}
 	

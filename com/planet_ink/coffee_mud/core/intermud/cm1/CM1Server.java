@@ -95,7 +95,7 @@ public class CM1Server extends Thread
 					serverSocket.bind (new InetSocketAddress(InetAddress.getByName(page.getStr("BIND")),port));
 				else
 					serverSocket.bind (new InetSocketAddress (port));
-				Log.sysOut("CM1Server","Started "+name+" on port "+port);
+				Log.sysOut("Started "+name+" on port "+port);
 				servChan.configureBlocking (false);
 				servChan.register (servSelector, SelectionKey.OP_ACCEPT);
 			}

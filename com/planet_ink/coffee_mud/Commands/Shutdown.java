@@ -127,7 +127,8 @@ public class Shutdown extends StdCommand implements Tickable
 	
 	public void startShutdown(final MOB mob)
 	{
-		new Thread(){
+		new Thread(Thread.currentThread().getThreadGroup(),"Shutdown"+Thread.currentThread().getThreadGroup().getName().charAt(0))
+		{
 			public void run()
 			{
 				for(Session S : CMLib.sessions().allIterable())

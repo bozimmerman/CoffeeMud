@@ -461,7 +461,7 @@ public class CharGen extends StdCommand
 		final Race humanR=CMClass.getRace("Human");
 		for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 		{
-			new Thread() {
+			new Thread(Thread.currentThread().getThreadGroup(),"CharGen"+Thread.currentThread().getThreadGroup().getName().charAt(0)) {
 				CombatStats c;
 				int charClassDex;
 				String fileExp;

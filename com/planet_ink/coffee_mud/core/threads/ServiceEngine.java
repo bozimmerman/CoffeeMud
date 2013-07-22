@@ -838,7 +838,8 @@ public class ServiceEngine implements ThreadEngine
 		return "";
 	}
 
-	public boolean shutdown() {
+	public boolean shutdown() 
+	{
 		//int numTicks=tickGroup.size();
 		while(allTicks.size()>0)
 		{
@@ -1257,7 +1258,7 @@ public class ServiceEngine implements ThreadEngine
 		}, Tickable.TICKID_MISCELLANEOUS|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_UTILTHREAD_SLEEP, 1);
 		if(drivingThread==null)
 		{
-			drivingThread=new Thread(this,"Scheduler"+Thread.currentThread().getThreadGroup().getName().charAt(0));
+			drivingThread=new Thread(Thread.currentThread().getThreadGroup(),this,"Scheduler"+Thread.currentThread().getThreadGroup().getName().charAt(0));
 			drivingThread.setDaemon(true);
 			drivingThread.start();
 		}

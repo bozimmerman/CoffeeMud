@@ -52,6 +52,22 @@ public class Resources
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(rscs[c]==null) rscs[c]=this;
 	}
+	
+	public static void shareWith(char code)
+	{
+		if(Thread.currentThread().getThreadGroup().getName().charAt(0)==code)
+			initialize();
+		else
+		if(rscs[code]!=null)
+			rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)]=rscs[code];
+		else
+		{
+			initialize();
+			rscs[code]=rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+			
+		}
+	}
+	
 	public static final Resources initialize() { return new Resources(); }
 	public static final Resources instance()
 	{

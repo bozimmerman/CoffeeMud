@@ -678,6 +678,14 @@ public class CMProps extends Properties
 		p().sysBools[varNum.ordinal()]=Boolean.valueOf(val);
 	}
 
+	public static final void setBoolAllVar(final Bool varNum, final boolean val)
+	{
+		if(varNum==null) return;
+		for(CMProps p : CMProps.props)
+			if(p!=null)
+				p.sysBools[varNum.ordinal()]=Boolean.valueOf(val);
+	}
+
 	public static final void setBoolVar0(final Bool varNum, final boolean val)
 	{
 		if(varNum==null) return;
@@ -943,12 +951,13 @@ public class CMProps extends Properties
 
 	private static final String getRawListFileEntry(final String key) 
 	{
-		Properties rawListData=(Properties)Resources.getResource("PARSED_LISTFILE");
+		final String rscKey="PARSED_LISTFILE".intern();
+		Properties rawListData=(Properties)Resources.getResource(rscKey);
 		if(rawListData==null)
 		{
-			synchronized("PARSED_LISTFILE".intern())
+			synchronized(rscKey)
 			{
-				rawListData=(Properties)Resources.getResource("PARSED_LISTFILE");
+				rawListData=(Properties)Resources.getResource(rscKey);
 				if(rawListData==null)
 				{
 					rawListData=new Properties();
@@ -960,7 +969,7 @@ public class CMProps extends Properties
 							rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(Str.CHARSETINPUT)));
 						} catch(IOException e){}
 					}
-					Resources.submitResource("PARSED_LISTFILE", rawListData);
+					Resources.submitResource(rscKey, rawListData);
 					final Object[] set=p().sysLstFileLists; 
 					for(int i=0;i<set.length;i++)
 						set[i]=null;

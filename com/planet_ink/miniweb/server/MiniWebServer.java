@@ -184,7 +184,7 @@ public class MiniWebServer extends Thread
 	 */
 	private void startTimeoutThread()
 	{
-		timeoutThread=new Thread(getName()+"Timeout")
+		timeoutThread=new Thread(Thread.currentThread().getThreadGroup(),getName()+"Timeout")
 		{
 			public void run()
 			{

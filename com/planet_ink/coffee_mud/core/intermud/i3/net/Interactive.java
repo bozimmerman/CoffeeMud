@@ -573,7 +573,7 @@ class InputThread implements Runnable
 		user = u;
 		input_buffer = new Vector(10);
 		stream = new java.io.BufferedReader(new java.io.InputStreamReader(s.getInputStream()));
-		thread = new Thread(this);
+		thread = new Thread(Thread.currentThread().getThreadGroup(),this,"I3_"+Thread.currentThread().getName());
 		thread.setDaemon(true);
 		thread.start();
 	}

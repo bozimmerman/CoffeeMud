@@ -459,7 +459,7 @@ public class SMTPserver extends Thread implements Tickable
 				Resources.updateCachedMultiLists("mailinglists.txt");
 				updatedMailingLists=false;
 			}
-			new Thread(massMailer).start();
+			new Thread(Thread.currentThread().getThreadGroup(),massMailer,"MassMailer"+Thread.currentThread().getThreadGroup().getName().charAt(0)).start();
 		}
 		System.gc();
 		try{Thread.sleep(1000);}catch(Exception ex){}

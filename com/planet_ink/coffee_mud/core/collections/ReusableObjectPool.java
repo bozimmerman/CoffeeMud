@@ -53,7 +53,7 @@ public class ReusableObjectPool<T extends CMObject>
 				if(!isRunning)
 				{
 					isRunning = true;
-					new Thread(this).start();
+					new Thread(Thread.currentThread().getThreadGroup(),this,"PoolFixer"+Thread.currentThread().getThreadGroup().getName().charAt(0)).start();
 					return;
 				}
 			}

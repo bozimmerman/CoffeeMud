@@ -314,7 +314,7 @@ public class MUD extends Thread implements MudHost
 			}
 		}
 
-		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Server cleaning up.");
+		Log.sysOut(Thread.currentThread().getName(),"Server cleaning up.");
 
 		try
 		{
@@ -354,8 +354,8 @@ public class MUD extends Thread implements MudHost
 	
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
-		CMProps.setBoolVar(CMProps.Bool.MUDSTARTED,false);
-		CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
+		CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,false);
+		CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
 		serviceEngine.suspendAll();
 		if(S!=null)S.print("Closing MUD listeners to new connections...");
 		for(int i=0;i<CMLib.hosts().size();i++)
@@ -623,7 +623,7 @@ public class MUD extends Thread implements MudHost
 			}
 		CMLib.hosts().clear();
 		if(!keepItDown)
-			CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN,false);
+			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,false);
 	}
 
 
@@ -889,7 +889,8 @@ public class MUD extends Thread implements MudHost
 			}
 			Log.errOut(Thread.currentThread().getName(),str);
 			bringDown=true;
-			CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
+			
+			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
 			CMLib.killThread(t,100,1);
 		}
 
@@ -1016,7 +1017,7 @@ public class MUD extends Thread implements MudHost
 							config.setDebugFlag(page.getStr("DBGMSGS"));
 						if(CMSecurity.isDebugging(DbgFlag.HTTPACCESS))
 							config.setAccessLogFlag(page.getStr("ACCMSGS"));
-						MiniWebServer webServer=new MiniWebServer(serverName,config);
+						MiniWebServer webServer=new MiniWebServer(serverName+Thread.currentThread().getThreadGroup().getName().charAt(0),config);
 						config.setMiniWebServer(webServer);
 						webServer.start();
 						webServers.add(webServer);
@@ -1157,12 +1158,12 @@ public class MUD extends Thread implements MudHost
 			{
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Waiting for HOST0");
 				while((!MUD.bringDown)
-				&&(!CMProps.getBoolVar0(CMProps.Bool.MUDSTARTED))
-				&&(!CMProps.getBoolVar0(CMProps.Bool.MUDSHUTTINGDOWN)))
+				&&(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+				&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 					try{Thread.sleep(500);}catch(Exception e){ break;}
 				if((MUD.bringDown)
-				||(!CMProps.getBoolVar0(CMProps.Bool.MUDSTARTED))
-				||(CMProps.getBoolVar0(CMProps.Bool.MUDSHUTTINGDOWN)))
+				||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+				||(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 					return false;
 			}
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: readying for connections.");
@@ -1187,7 +1188,7 @@ public class MUD extends Thread implements MudHost
 				str.append(" "+mud.getPort());
 			}
 			CMProps.setVar(CMProps.Str.MUDPORTS,str.toString());
-			CMProps.setBoolVar(CMProps.Bool.MUDSTARTED,true);
+			CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,true);
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"OK");
 			Log.sysOut(Thread.currentThread().getName(),"Host#"+threadCode+" initializated.");
 			return true;
@@ -1198,7 +1199,7 @@ public class MUD extends Thread implements MudHost
 			CMLib.initialize(); // initialize the lib
 			CMClass.initialize(); // initialize the classes
 			Log.shareWith(MudHost.MAIN_HOST);
-			Resources.initialize();
+			Resources.shareWith(MudHost.MAIN_HOST);
 			
 			// wait for ini to be loaded, and for other matters
 			if(threadCode!=MAIN_HOST) {
@@ -1217,7 +1218,7 @@ public class MUD extends Thread implements MudHost
 				return;
 			}
 			page.resetSystemVars();
-			CMProps.setBoolVar(CMProps.Bool.MUDSTARTED,false);
+			CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,false);
 			serviceEngine.activate();
 			
 			if(threadCode!=MAIN_HOST)
@@ -1448,7 +1449,7 @@ public class MUD extends Thread implements MudHost
 		Log.instance().configureLog(Log.Type.access, page.getStr("ACCMSGS"));
 
 		
-		Thread shutdownHook=new Thread() {
+		Thread shutdownHook=new Thread("ShutdownHook") {
 			public void run() {
 				if(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
 					MUD.globalShutdown(null,true,null);
@@ -1478,7 +1479,7 @@ public class MUD extends Thread implements MudHost
 			{
 				Log.errOut("CoffeeMud failed to start.");
 				MUD.bringDown=true;
-				CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN, true);
+				CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN, true);
 			}
 			else
 			{
@@ -1498,19 +1499,16 @@ public class MUD extends Thread implements MudHost
 				{
 					Log.errOut("CoffeeMud failed to start.");
 					MUD.bringDown=true;
-					CMProps.setBoolVar(CMProps.Bool.MUDSHUTTINGDOWN, true);
+					CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN, true);
 				}
 				else
 				{
-					if(shutdownHook!=null)
-					{
-						Runtime.getRuntime().addShutdownHook(shutdownHook);
-						shutdownHook=null;
-					}
+					Runtime.getRuntime().addShutdownHook(shutdownHook);
 					for(int i=0;i<CMLib.hosts().size();i++)
 						CMLib.hosts().get(i).setAcceptConnections(true);
 					Log.sysOut(Thread.currentThread().getName(),"Initialization complete.");
 					try{mainGroup.join();}catch(Exception e){e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e); }
+					Runtime.getRuntime().removeShutdownHook(shutdownHook);
 				}
 			}
 			
