@@ -28,8 +28,9 @@
    licenses to their java profiling software.
 
    Jef Kamenek and David Walters, for single handedly adding 
-   the ANSI support, Archon Help, and some very important changes 
-   to the base MUD class.
+   the ANSI support, Archon Help, some changes to the base 
+   MUD class, and for contributions to the design of the web 
+   macro system.
 
    Thomas Neumann for the fakedb package.
 
