@@ -37,7 +37,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenComputerConsole extends StdComputerConsole
 {
 	public String ID(){	return "GenComputerConsole";}
-	protected String readableText="";
 	
 	public GenComputerConsole()
 	{
@@ -51,8 +50,7 @@ public class GenComputerConsole extends StdComputerConsole
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	public void setReadableText(String text){}
 	public void setMiscText(String newText)
 	{
 		miscText="";

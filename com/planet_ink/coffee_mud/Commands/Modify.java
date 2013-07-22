@@ -1235,6 +1235,7 @@ public class Modify extends StdCommand
 		}
 		List<Social> oldSocials = new Vector();
 		List<Social> allSocials = CMLib.socials().getSocialsSet(name);
+		if(allSocials==null) allSocials=new Vector();
 		for(int a = 0; a<allSocials.size();a++)
 			oldSocials.add((Social)allSocials.get(a).copyOf());
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  "+S.name()+"s.");

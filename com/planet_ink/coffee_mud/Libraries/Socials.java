@@ -344,7 +344,7 @@ public class Socials extends StdLibrary implements SocialsList
 		String name=socialsParse.firstElement().toUpperCase().trim();
 		String rest=socialsParse.size()>1?CMParms.combine(socialsParse,1):"";
 		List<Social> socials=getSocialsSet(socialsParse.firstElement());
-		if((socials.size()==0)
+		if(((socials==null)||(socials.size()==0))
 		&&((mob.session()==null)
 			||(!mob.session().confirm("The social '"+name+"' does not exist.  Create it (y/N)? ","N"))))
 			return false;

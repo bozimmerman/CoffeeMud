@@ -1413,6 +1413,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 
+		if(E instanceof Electronics.Computer) return;
+			
 		if((E instanceof Wand)
 		 ||(E instanceof SpellHolder)
 		 ||(E instanceof Light)
@@ -1440,8 +1442,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		
+		if(E instanceof Electronics.Computer) return;
 
-		if((E.isReadable())
+		if(E.isReadable()
 		 ||(E instanceof SpellHolder)
 		 ||(E instanceof Ammunition)
 		 ||(E instanceof Recipe)
