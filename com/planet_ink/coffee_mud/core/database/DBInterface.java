@@ -291,6 +291,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBTouchJournalMessage(String key)
 	{JournalLoader.DBTouchJournalMessage(key);}
 	
+	public void DBTouchJournalMessage(String key, long newDate)
+	{JournalLoader.DBTouchJournalMessage(key, newDate);}
+	
 	public void DBCreateRoom(Room room)
 	{RoomLoader.DBCreate(room);}
 	

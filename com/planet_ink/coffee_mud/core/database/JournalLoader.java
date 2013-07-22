@@ -465,8 +465,13 @@ public class JournalLoader
 	
 	public void DBTouchJournalMessage(String key)
 	{
+		DBTouchJournalMessage(key,System.currentTimeMillis());
+	}
+	
+	public void DBTouchJournalMessage(String key, long newDate)
+	{
 		key = DB.injectionClean(key);
-		String sql="UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+" WHERE CMJKEY='"+key+"'";
+		String sql="UPDATE CMJRNL SET CMUPTM="+newDate+" WHERE CMJKEY='"+key+"'";
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader",sql);
 		DB.update(sql);
 	}

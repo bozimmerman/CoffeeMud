@@ -190,7 +190,15 @@ public class YahooGroups extends StdWebMacro
 					if(startOfSubject<0)
 						startOfSubject=msgPage.indexOf("<em class=\"msg-newfont\"");
 					if(startOfSubject<0)
+					{
+						x=msgPage.indexOf("Message  does not exist in ");
+						if((x>0)&&(msgPage.substring(0,x).trim().endsWith("<div class=\"ygrp-contentblock\">")))
+						{
+							f.saveText(Integer.toString(lastMsgNum));
+							continue;
+						}
 						return "Failed: to find subject start in url:"+url+"/message/"+lastMsgNum;
+					}
 					startOfSubject=msgPage.indexOf(">",startOfSubject);
 					int endOfSubject=msgPage.indexOf("</em>",startOfSubject);
 					if(endOfSubject<0)
@@ -326,7 +334,7 @@ public class YahooGroups extends StdWebMacro
 					msg.subj=clearWebMacros(subject);
 					msg.msg=clearWebMacros(theMessage);
 					msg.date=postDate.getTime();
-					msg.update=System.currentTimeMillis();
+					msg.update=postDate.getTime();
 					msg.parent=parent;
 					msg.msgIcon="";
 					msg.data="";
@@ -344,7 +352,7 @@ public class YahooGroups extends StdWebMacro
 						}
 					CMLib.database().DBWriteJournal(forum.NAME(),msg);
 					if(parent.length()>0)
-						CMLib.database().DBTouchJournalMessage(parent);
+						CMLib.database().DBTouchJournalMessage(parent,msg.date);
 					JournalInfo.clearJournalCache(httpReq, forum.NAME());
 					CMLib.journals().clearJournalSummaryStats(forum.NAME());
 					f.saveText(Integer.toString(lastMsgNum));
