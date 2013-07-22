@@ -659,13 +659,6 @@ public class CMProps extends Properties
 		catch(Exception t) { return new String[0]; }
 	}
 
-	public static final boolean getBoolVar0(final Bool varNum)
-	{
-		if(varNum==null) return false;
-		if(instance(MudHost.MAIN_HOST).sysBools[varNum.ordinal()]==null) return false;
-		return instance(MudHost.MAIN_HOST).sysBools[varNum.ordinal()].booleanValue();
-	}
-
 	public static final boolean getBoolVar(final Bool varNum)
 	{
 		try { return p().sysBools[varNum.ordinal()].booleanValue(); } 
@@ -684,12 +677,6 @@ public class CMProps extends Properties
 		for(CMProps p : CMProps.props)
 			if(p!=null)
 				p.sysBools[varNum.ordinal()]=Boolean.valueOf(val);
-	}
-
-	public static final void setBoolVar0(final Bool varNum, final boolean val)
-	{
-		if(varNum==null) return;
-		instance(MudHost.MAIN_HOST).sysBools[varNum.ordinal()]=Boolean.valueOf(val);
 	}
 
 	public static final void setIntVar(final Int varNum, final int val)
