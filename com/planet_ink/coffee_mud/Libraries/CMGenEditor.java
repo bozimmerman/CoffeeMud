@@ -902,9 +902,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genArchivePath(MOB mob, Area A, int showNumber, int showFlag) throws IOException
-	{   A.setArchivePath(prompt(mob,A.getArchivePath(),showNumber,showFlag,"Archive Path",true,false,"Path/filename for EXPORT AREA command.  Enter NULL for default."));}
-
 	public Room changeRoomType(Room R, Room newRoom)
 	{
 		if((R==null)||(newRoom==null)) return R;
@@ -8441,7 +8438,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genClimateType(mob,myArea,++showNumber,showFlag);
 			myArea.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",myArea.getAtmosphereCode(),true,++showNumber,showFlag));
 			genTimeClock(mob,myArea,++showNumber,showFlag);
-			genArchivePath(mob,myArea,++showNumber,showFlag);
 			genParentAreas(mob,myArea,++showNumber,showFlag);
 			genChildAreas(mob,myArea,++showNumber,showFlag);
 			genSubOps(mob,myArea,++showNumber,showFlag);
