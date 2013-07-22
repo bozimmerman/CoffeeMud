@@ -213,8 +213,7 @@ public class YahooGroups extends StdWebMacro
 					else
 					{
 						startOfDate=msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
-						if(startOfDate<0)
-							System.out.println(msgPage);
+						//if(startOfDate<0) System.out.println(msgPage);
 						if(startOfDate<0)
 							return "Failed: to find date start in url:"+url+"/message/"+lastMsgNum;
 						startOfDate+=33;// MAGIC NUMBER

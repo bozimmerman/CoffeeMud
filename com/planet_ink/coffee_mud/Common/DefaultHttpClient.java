@@ -41,7 +41,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	public String ID(){return "DefaultHttpClient";}
 	public String name() { return ID();}
 	
-	private static enum HState { PREHEAD, INHEAD, INBODY, PRECHUNK, INCHUNK, POSTCHUNK }
+	private static enum HState { PREHEAD, INHEAD, INBODY, PRECHUNK, INCHUNK, POSTINCHUNK, POSTCHUNK }
 	
 	private volatile long tickStatus=Tickable.STATUS_NOT;
 	protected Map<String,String> reqHeaders=new CaselessTreeMap<String>();
@@ -215,6 +215,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		StringBuilder headBuilder=new StringBuilder();
 		int c=0;
 		int maxBytes=this.maxReadBytes;
+		int chunkSize=0;
 		while(c!=-1)
 		{
 			try
@@ -331,14 +332,13 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 							x++;
 						if(x<szStr.length())
 						{
-							maxBytes = Integer.parseInt(szStr.substring(x).trim(),16);
-							headBuilder.setLength(0);
+							chunkSize = Integer.parseInt(szStr.substring(x).trim(),16);
+							if(chunkSize==0)
+								state=HState.POSTCHUNK;
 						}
 						else
-						{
 							state=HState.POSTCHUNK;
-							
-						}
+						headBuilder.setLength(0);
 					} 
 					else if((c!='\r')&&(c!='\n')) 
 					{
@@ -348,10 +348,13 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				}
 			case INCHUNK: {
 				bodyBuilder.write(c);
-				if(bodyBuilder.size()==maxBytes)
-				{
+				if((--chunkSize)<=0)
+					state=HState.POSTINCHUNK;
+				break;
+			}
+			case POSTINCHUNK: {
+				if((c=='\n')&&(lastC=='\r'))
 					state=HState.PRECHUNK;
-				} // else keep going
 				break;
 			}
 			case POSTCHUNK: {
@@ -445,18 +448,12 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				int len=h.getResponseContentLength();
 				if((len > 0)&&((maxLength==0)||(len<=maxLength)))
 				{
-					byte[] buf=new byte[len];
-					int read=in.read(buf);
-					int readTotal=read;
-					while(readTotal < len)
-					{
-						if(read<0)
-							return null;
-						read=in.read(buf, readTotal, len-readTotal);
-						if(read>0)
-							readTotal+=read;
+					byte[] buffer = new byte[1024];
+					ByteArrayOutputStream bout=new ByteArrayOutputStream();
+					while ((len = in.read(buffer)) != -1) {
+					    bout.write(buffer, 0, len);
 					}
-					return buf;
+					return bout.toByteArray();
 				}
 			}
 				
@@ -466,18 +463,12 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 				int len=h.getResponseContentLength();
 				if((len > 0)&&((maxLength==0)||(len<=maxLength)))
 				{
-					byte[] buf=new byte[len];
-					int read=in.read(buf);
-					int readTotal=read;
-					while(readTotal < len)
-					{
-						if(read<0)
-							return null;
-						read=in.read(buf, readTotal, len-readTotal);
-						if(read>0)
-							readTotal+=read;
+					byte[] buffer = new byte[1024];
+					ByteArrayOutputStream bout=new ByteArrayOutputStream();
+					while ((len = in.read(buffer)) != -1) {
+						bout.write(buffer, 0, len);
 					}
-					return buf;
+					return bout.toByteArray();
 				}
 			}
 		} 
