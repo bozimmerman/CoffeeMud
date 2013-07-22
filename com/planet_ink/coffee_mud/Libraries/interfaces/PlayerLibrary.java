@@ -36,6 +36,7 @@ public interface PlayerLibrary extends CMLibrary
 	public void delPlayer(MOB oneToDel);
 	public MOB getPlayer(String calledThis);
 	public MOB getLoadPlayer(String last);
+	public MOB getLoadPlayerByEmail(String email);
 	public PlayerAccount getLoadAccount(String calledThis);
 	public PlayerAccount getLoadAccountByEmail(String email);
 	public PlayerAccount getAccount(String calledThis);

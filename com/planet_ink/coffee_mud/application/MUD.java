@@ -1365,7 +1365,7 @@ public class MUD extends Thread implements MudHost
 	public static void main(String a[])
 	{
 		String nameID="";
-		Thread.currentThread().setName("Bootstrapper");
+		Thread.currentThread().setName("MUD");
 		Vector<String> iniFiles=new Vector<String>();
 		if(a.length>0)
 		{

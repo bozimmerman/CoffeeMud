@@ -142,8 +142,7 @@ public class VFSLoader
 		 +""+System.currentTimeMillis()+","
 		 +"'"+creator+"',"
 		 +"?"
-		 +")",
-		 buf);
+		 +")",		 buf);
 	}
 	
 	

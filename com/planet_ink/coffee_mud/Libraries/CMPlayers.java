@@ -88,6 +88,23 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	
+	public MOB getLoadPlayerByEmail(String email)
+	{
+		for(Enumeration<MOB> e=players();e.hasMoreElements();)
+		{
+			MOB M=e.nextElement();
+			if((M!=null)&&(M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email))) 
+				return M;
+		}
+		for(Enumeration<ThinPlayer> e=thinPlayers("",null);e.hasMoreElements();)
+		{
+			ThinPlayer P=e.nextElement();
+			if(P.email.equalsIgnoreCase(email)) 
+				return getLoadPlayer(P.name);
+		}
+		return null;
+	}
+		
 	public PlayerAccount getLoadAccount(String calledThis)
 	{
 		PlayerAccount A = getAccount(calledThis);
