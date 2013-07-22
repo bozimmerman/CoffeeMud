@@ -66,7 +66,7 @@ public class Ignore extends StdCommand
 				return false;
 			}
 			name=CMStrings.capitalizeAndLower(name);
-			if(!CMLib.players().playerExists(name))
+			if((!CMLib.players().playerExists(name))&&(name.indexOf('@')<0))
 			{
 				mob.tell("No player by that name was found.");
 				return false;
