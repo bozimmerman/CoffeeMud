@@ -441,10 +441,6 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 			h.doRequest(urlStr);
 			if (h.getResponseCode() == 302) 
 			{
-				for(String key : h.getResponseHeaders().keySet())
-				{
-					System.out.println(key+"="+h.getResponseHeaders().get(key));
-				}
 				InputStream in=h.getResponseBody();
 				int len=h.getResponseContentLength();
 				if((len > 0)&&((maxLength==0)||(len<=maxLength)))
