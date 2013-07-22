@@ -88,65 +88,65 @@ public class CM1Server extends Thread
 		{
 			try
 			{
-				try
-				{
-					servChan = ServerSocketChannel.open();
-					ServerSocket serverSocket = servChan.socket();
-					servSelector = Selector.open();
-					if((page.getStr("BIND")!=null)&&(page.getStr("BIND").trim().length()>0))
-						serverSocket.bind (new InetSocketAddress(InetAddress.getByName(page.getStr("BIND")),port));
-					else
-						serverSocket.bind (new InetSocketAddress (port));
-					Log.sysOut("CM1Server","Started "+name+" on port "+port);
-					servChan.configureBlocking (false);
-					servChan.register (servSelector, SelectionKey.OP_ACCEPT);
-				}
-				catch(IOException e)
-				{
-					Log.errOut(e);
-					Log.errOut("CM1Server failed to start.");
-					shutdownRequested=true;
-					break;
-				}
+				servChan = ServerSocketChannel.open();
+				ServerSocket serverSocket = servChan.socket();
+				servSelector = Selector.open();
+				if((page.getStr("BIND")!=null)&&(page.getStr("BIND").trim().length()>0))
+					serverSocket.bind (new InetSocketAddress(InetAddress.getByName(page.getStr("BIND")),port));
+				else
+					serverSocket.bind (new InetSocketAddress (port));
+				Log.sysOut("CM1Server","Started "+name+" on port "+port);
+				servChan.configureBlocking (false);
+				servChan.register (servSelector, SelectionKey.OP_ACCEPT);
+			}
+			catch(IOException e)
+			{
+				Log.errOut(e);
+				Log.errOut("CM1Server failed to start.");
+				shutdownRequested=true;
+				break;
+			}
+			try
+			{
 				shutdownRequested = false;
 				while (!shutdownRequested)
 				{
 					try
 					{
-					   int n = servSelector.select();
-					   if (n == 0) continue;
-					   
-					   Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
-					   while (it.hasNext()) 
-					   {
-						  SelectionKey key = it.next();
-						  if (key.isAcceptable()) 
-						  {
-							 ServerSocketChannel server = (ServerSocketChannel) key.channel();
-							 SocketChannel channel = server.accept();
-							 if (channel != null) 
-							 {
-								RequestHandler handler=new RequestHandler(channel,page.getInt("IDLETIMEOUTMINS"));
-								channel.configureBlocking (false);
-								channel.register (servSelector, SelectionKey.OP_READ, handler);
-								handlers.put(channel,handler);
-								handler.sendMsg("CONNECTED TO "+name.toUpperCase());
-							 } 
-							 //sayHello (channel);
-						  }
-						  try
-						  {
-							  if (key.isReadable()) 
-							  {
-								  RequestHandler handler = (RequestHandler)key.attachment();
-								  if((!handler.isRunning())&&(!handler.needsClosing()))
-							  		  CMLib.threads().executeRunnable(handler);
-							  }
-						  }
-						  finally
-						  {
-							  it.remove();
-						  }
+						int n = servSelector.select();
+						if (n == 0) continue;
+						
+						Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
+						while (it.hasNext()) 
+						{
+							SelectionKey key = it.next();
+							if (key.isAcceptable()) 
+							{
+								ServerSocketChannel server = (ServerSocketChannel) key.channel();
+								SocketChannel channel = server.accept();
+								if (channel != null) 
+								{
+									RequestHandler handler=new RequestHandler(channel,page.getInt("IDLETIMEOUTMINS"));
+									channel.configureBlocking (false);
+									channel.register (servSelector, SelectionKey.OP_READ, handler);
+									handlers.put(channel,handler);
+									handler.sendMsg("CONNECTED TO "+name.toUpperCase());
+								} 
+								//sayHello (channel);
+							}
+							try
+							{
+								if (key.isReadable()) 
+								{
+									RequestHandler handler = (RequestHandler)key.attachment();
+									if((!handler.isRunning())&&(!handler.needsClosing()))
+										CMLib.threads().executeRunnable(handler);
+								}
+							}
+							finally
+							{
+								it.remove();
+							}
 						}
 						for(SocketChannel schan : handlers.keySet())
 							try

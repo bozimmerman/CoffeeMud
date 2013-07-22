@@ -676,7 +676,8 @@ public class MUD extends Thread implements MudHost
 		CM1Server cm1server = null;
 		try
 		{
-			if(page.getBoolean("RUNCM1SERVER"))
+			String runcm1=page.getPrivateStr("RUNCM1SERVER");
+			if((runcm1!=null)&&(runcm1.equalsIgnoreCase("TRUE")))
 			{
 				String iniFile = page.getStr("CM1CONFIG");
 				for(CM1Server s : cm1Servers)
@@ -1198,6 +1199,7 @@ public class MUD extends Thread implements MudHost
 			CMLib.initialize(); // initialize the lib
 			CMClass.initialize(); // initialize the classes
 			Log.shareWith(MudHost.MAIN_HOST);
+			Resources.initialize();
 			
 			// wait for ini to be loaded, and for other matters
 			if(threadCode!=MAIN_HOST) {
