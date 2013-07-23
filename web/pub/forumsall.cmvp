@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <link rel="coffeemud icon" href="images/coffeemud.ico" >
+    <!-- tell spiders to sod off -->
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+    <link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+    <link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="forums.css">
+    <title>Forums</title>
+    <script language=JavaScript>
+    <!--
+        var abort=false;
+        function DoMessage(jrnl,which)
+        {
+            if(abort) return; abort=true;
+            if(document.FORUM.JOURNAL.value!=jrnl)
+                document.FORUM.JOURNALPAGE.value='0';
+            else
+                document.FORUM.JOURNALPAGE.value=document.FORUM.CURRJOURNALPAGE.value;
+            document.FORUM.JOURNAL.value=jrnl;
+            document.FORUM.JOURNALMESSAGE.value=which;
+            document.FORUM.action='forummsg.cmvp';
+            document.FORUM.submit();
+        }
+        function Cancel(which)
+        {
+            if(abort) return; abort=true;
+            document.FORUM.action="forums.cmvp";
+            document.FORUM.JOURNALMESSAGE.value='';
+            document.FORUM.JOURNALPAGE.value='';
+            document.FORUM.submit();
+        }
+
+        function NextPage(jrnl,which)
+        {
+            if(abort) return; abort=true;
+            document.FORUM.action="forumsall.cmvp";
+            if(document.FORUM.JOURNAL.value!=jrnl)
+                document.FORUM.JOURNALPAGE.value='0';
+            else
+                document.FORUM.JOURNALPAGE.value=document.FORUM.CURRJOURNALPAGE.value;
+            document.FORUM.JOURNAL.value=jrnl;
+            document.FORUM.JOURNALMESSAGE.value='';
+            if(document.FORUM.JOURNALPAGE.value=='')
+                document.FORUM.JOURNALPAGE.value='0';
+            document.FORUM.JOURNALPAGE.value=document.FORUM.JOURNALPAGE.value+','+which;
+            document.FORUM.submit();
+        
+        }
+        function PrevPage(jrnl,which)
+        {
+            if(abort) return; abort=true;
+            document.FORUM.action="forumsall.cmvp";
+            if(document.FORUM.JOURNAL.value!=jrnl)
+                document.FORUM.JOURNALPAGE.value='0';
+            else
+                document.FORUM.JOURNALPAGE.value=document.FORUM.CURRJOURNALPAGE.value;
+            document.FORUM.JOURNAL.value=jrnl;
+            document.FORUM.JOURNALMESSAGE.value='';
+            var x=document.FORUM.JOURNALPAGE.value.lastIndexOf(',');
+            if(x>0)
+                document.FORUM.JOURNALPAGE.value=document.FORUM.JOURNALPAGE.value.substr(0,x);
+            else
+                document.FORUM.JOURNALPAGE.value='0';
+            document.FORUM.submit();
+        
+        }
+    //-->
+    </SCRIPT>
+</head>
+
+<body>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
+@AddRequestParameter?CURRJOURNAL=@@RequestParameter?JOURNAL@@ @
+<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=FORUMREFERER VALUE="forumsall.cmvp">
+<INPUT TYPE=HIDDEN NAME=DBSEARCH VALUE="@RequestParameter?DBSEARCH@">
+<INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="0">
+<INPUT TYPE=HIDDEN NAME=CURRJOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
+<INPUT TYPE=HIDDEN NAME=MESSAGEPAGE VALUE="">
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+    <TR>
+    <TD WIDTH=10px>&nbsp;</TD>
+    <TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
+        <IMG BORDER=0 SRC=images/cm50.gif>
+        </a>
+    </TD>
+    <TD ALIGN=RIGHT VALIGN=TOP>
+        <FONT COLOR=BLACK SIZE=-1>
+    @if?!Authenticate?SETPLAYER@ 
+        Login<INPUT TYPE=TEXT SIZE=10 VALUE="" NAME=LOGIN>&nbsp;
+        Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
+        <INPUT TYPE=SUBMIT VALUE=Login>
+    @else@
+        Logged in as <B>@PlayerData?NAME@</B>
+    @endif@
+    </TD>
+    </TR>
+</TABLE>
+<BR><BR>
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADING=0>
+<TR BGCOLOR=WHITE>
+    <TD COLSPAN=6>
+        <TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
+        <TR VALIGN=CENTER HEIGHT=15>
+            <TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
+            </TD>
+            <TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
+            <a href="javascript:Cancel('')" style="text-decoration:none">
+                <FONT COLOR=WHITE SIZE=-1>
+                &nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docbback.gif>&nbsp;&nbsp;<B>Forums</B>
+                </FONT>
+            </a>
+            </TD>
+        </TR>
+        </TABLE>
+    </TD>
+</TR>
+</TABLE>
+
+@ForumJournalNext?RESET@
+@loop@
+    @ForumJournalNext@
+
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=1 CELLPADDING=1>
+<TR HEIGHT=1>
+    <TD WIDTH=40px>&nbsp;</TD>
+    <TD WIDTH=40px>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD WIDTH=180px>&nbsp;</TD>
+    <TD WIDTH=60px>&nbsp;</TD>
+    <TD WIDTH=60px>&nbsp;</TD>
+</TR>
+<TR BGCOLOR=BLACK>
+    <TD COLSPAN=6>
+    @if?CheckReqParm?!DBSEARCH=@
+        &nbsp;<FONT COLOR=WHITE SIZE=-1><B>Search Results in Forum : @JournalName?NOCOLOR@</B></FONT>&nbsp;
+    @else@
+        &nbsp;<FONT COLOR=WHITE SIZE=-1><B>Threads in Forum : @JournalName?NOCOLOR@</B></FONT>&nbsp;
+    @endif@
+    </TD>
+</TR>
+<TR BGCOLOR=BLACK HEIGHT=20>
+    <TD COLSPAN=2>&nbsp;</TD>
+    <TD><FONT COLOR=WHITE SIZE=-1><B>Thread</B></FONT></TD>
+    <TD ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Last Post</B></FONT></TD>
+    <TD ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Replies</B></FONT></TD>
+    <TD ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Views</B></FONT></TD>
+</TR>
+@JournalMessageNext?RESET@
+@loop@
+    @JournalMessageNext@
+    <TR> 
+        <TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTGREY>
+            <IMG WIDTH=30 HEIGHT=30 SRC=@JournalInfo?MSGTYPEICON@>
+        </TD>
+        <TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTBLUE>
+            @AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @
+            @if?CheckReqParm?!MSGICON=@
+                <IMG WIDTH=30 HEIGHT=30 SRC=@JournalInfo?MSGICON@>
+            @endif@
+        </TD>
+        <TD BGCOLOR=LIGHTGREY>
+        <a href="javascript:DoMessage('@RequestParameter?JOURNAL@','@JournalInfo?KEY@');"><B><FONT COLOR=BLACK>@JournalInfo?SUBJECT@</FONT></B></a><BR>
+            <FONT COLOR=BLACK SIZE=-1>@JournalInfo?FROM@</FONT>
+        </TD>
+        <TD VALIGN=CENTER BGCOLOR=LIGHTBLUE>
+            <TABLE WIDTH=100% BORDER=0 CELLSPAN=0 CELLPADDING=0>
+            <TR><TD ALIGN=LEFT>
+                <FONT COLOR=BLACK SIZE=-1>@JournalInfo?DATEUPDATED@</FONT>
+                <FONT COLOR=DARKGRAY SIZE=-1>@JournalInfo?TIMEUPDATED@</FONT>
+                </TD>
+            </TR><TR><TD ALIGN=RIGHT>
+                <FONT COLOR=BLACK SIZE=-1>by @JournalInfo?FROM@</FONT>
+                </TD>
+            </TR>
+            </TABLE>
+        </TD>
+        <TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTGREY><FONT COLOR=BLACK SIZE=-1>@JournalInfo?REPLIES@</FONT></TD>
+        <TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTBLUE><FONT COLOR=BLACK SIZE=-1>@JournalInfo?VIEWS@</FONT></TD>
+    </TR>
+    @AddRequestParameter?LASTENTRYTIME=@@JournalInfo?UPDATED@@ @
+    @if?JournalInfo?ISLASTENTRY@
+        @AddRequestParameter?LASTENTRYTIME=@
+    @endif@
+@back@
+
+@AddRequestParameter?JOURNALLIMIT=@@JournalInfo?JOURNALLIMIT@@ @
+@if?CheckReqParm?!JOURNALLIMIT=0@
+    <TR BGCOLOR=WHITE>
+        <TD COLSPAN=6>
+            <TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
+            <TR VALIGN=CENTER HEIGHT=15>
+                @if?CheckReqParm?JOURNALPAGE=0@ @else@ @if?CheckReqParm?JOURNALPAGE= @ @else@ @if?CheckReqParm?CURRJOURNAL=@@RequestParameter?JOURNAL@@ @
+                <TD WIDTH=70px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:PrevPage('@RequestParameter?JOURNAL@','')">
+                <a href="javascript:PrevPage('')" style="text-decoration:none">
+                    <FONT COLOR=WHITE SIZE=-1>
+                    <IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docback.gif><B>Previous</B>
+                    </FONT>
+                </a>
+                </TD>
+                @endif@ @endif@ @endif@
+                <TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
+                </TD>
+                @if?CheckReqParm?!LASTENTRYTIME=@
+                <TD WIDTH=50px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:NextPage('@RequestParameter?JOURNAL@','@RequestParameter?LASTENTRYTIME@')">
+                <a href="javascript:NextPage('')" style="text-decoration:none">
+                    <FONT COLOR=WHITE SIZE=-1>
+                    <B>Next</B>&nbsp;&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docforward.gif>
+                    </FONT>
+                </a>
+                </TD>
+                @endif@
+            </TR>
+            </TABLE>
+        </TD>
+    </TR>
+@endif@
+</TABLE>
+@back@
+</FORM>
+</body>
+</html>

@@ -53,7 +53,6 @@ public class JournalInfo extends StdWebMacro
 		return null;
 	}
 
-
 	public static List<JournalsLibrary.JournalEntry> getMessages(HTTPRequest httpReq, String journalName)
 	{
 		String page=httpReq.getUrlParameter("JOURNALPAGE");
@@ -61,7 +60,10 @@ public class JournalInfo extends StdWebMacro
 		String parent=httpReq.getUrlParameter("JOURNALPARENT");
 		String dbsearch=httpReq.getUrlParameter("DBSEARCH");
 		if((parent!=null)&&(parent.length()>0))
+		{
 			page=mpage;
+			dbsearch=null;
+		}
 		if(page!=null)
 		{
 			if(page.length()==0) 
@@ -104,26 +106,8 @@ public class JournalInfo extends StdWebMacro
 					}
 				}
 				msgs.addAll(CMLib.database().DBReadJournalPageMsgs(journalName, parent, dbsearch, pageDate, limit));
-				if((dbsearch!=null)&&(dbsearch.length()>0)) // parent filtering
-				{
-					HashSet<String> parentKeys=new HashSet<String>();
-					HashSet<String> keysToLoad=new HashSet<String>();
-					for(Iterator<JournalsLibrary.JournalEntry> i =msgs.iterator(); i.hasNext();)
-					{
-						JournalsLibrary.JournalEntry entry=i.next();
-						if((entry.parent==null) || (entry.parent.length()==0))
-							parentKeys.add(entry.key);
-						else
-						{
-							if((!parentKeys.contains(entry.parent)) && (!keysToLoad.contains(entry.parent)))
-								keysToLoad.add(entry.parent);
-							i.remove();
-						}
-					}
-					for(String key : keysToLoad)
-						if(!parentKeys.contains(key))
-							msgs.add(CMLib.database().DBReadJournalEntry(journalName, key));
-				}
+				//if((dbsearch!=null)&&(dbsearch.length()>0)) // parent filtering
+				//	pageDate=mergeParentMessages(journalName, msgs, pageDate);
 			}
 			httpReq.getRequestObjects().put(httpkey,msgs);
 		}
@@ -201,6 +185,8 @@ public class JournalInfo extends StdWebMacro
 		}
 		else
 			entry= JournalInfo.getEntry(JournalInfo.getMessages(httpReq,journalName),msgKey);
+		if(entry==null)
+			entry=CMLib.database().DBReadJournalEntry(journalName, msgKey);
 		if(parms.containsKey("ISMESSAGE"))
 			return String.valueOf(entry!=null);
 		if(entry==null)	

@@ -227,6 +227,7 @@ public class JournalLoader
 		Journal = DB.injectionClean(Journal);
 		parent = DB.injectionClean(parent);
 		searchStr = DB.injectionClean(searchStr);
+		boolean searching=((searchStr!=null)&&(searchStr.length()>0));
 		
 		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
 		DBConnection D=null;
@@ -234,7 +235,10 @@ public class JournalLoader
 		{
 			D=DB.DBFetch();
 			String str="SELECT * FROM CMJRNL WHERE";
-			if((parent==null)||(parent.length()>0)||(newerDate==0))
+			if(newerDate==0)
+				str+=" CMUPTM <> 0";
+			else
+			if((parent==null)||(parent.length()>0))
 				str+=" CMUPTM > " + newerDate;
 			else
 				str+=" CMUPTM < " + newerDate;
@@ -243,7 +247,7 @@ public class JournalLoader
 				str += " AND CMJRNL='"+Journal+"'";
 			if(parent != null)
 				str += " AND CMPART='"+parent+"'";
-			if((searchStr!=null)&&(searchStr.length()>0))
+			if(searching)
 				str += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
 			str += " ORDER BY CMUPTM";
 			if((parent==null)||(parent.length()>0))
@@ -253,12 +257,32 @@ public class JournalLoader
 			
 			ResultSet R=D.query(str);
 			int cardinal=0;
-			JournalsLibrary.JournalEntry entry; 
+			JournalsLibrary.JournalEntry entry;
+			Map<String,JournalsLibrary.JournalEntry> parentKeysDone=new HashMap<String,JournalsLibrary.JournalEntry>();
 			while(((cardinal < limit)||(limit==0)) && R.next())
 			{
 				entry = DBReadJournalEntry(R); 
 				if((parent!=null)&&(CMath.bset(entry.attributes,JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY)))
 					continue;
+				if(searching)
+				{
+					long updated=entry.update;
+					String parentKey=((entry.parent!=null)&&(entry.parent.length()>0))?entry.parent:entry.key;
+					if(parentKeysDone.containsKey(parentKey))
+					{
+						parentKeysDone.get(parentKey).update=updated;
+						continue;
+					}
+					if((entry.parent!=null)&&(entry.parent.length()>0))
+					{
+						final JournalsLibrary.JournalEntry oldEntry=entry;
+						entry=DBReadJournalEntry(Journal, entry.parent);
+						if(entry==null)
+							entry=oldEntry;
+					}
+					parentKeysDone.put(entry.key,entry);
+					entry.update=updated;
+				}
 				entry.cardinal = ++cardinal;
 				journal.addElement(entry);
 			}

@@ -52,6 +52,15 @@
 			document.FORUM.DBSEARCH.value=which;
 			document.FORUM.submit();
 		}
+		function searchKeyPress(e,value)
+		{
+			if (typeof e == 'undefined' && window.event) { e = window.event; }
+			if (e.keyCode == 13)
+			{
+				DoSearch(value);
+			}
+		}
+
 		function NextPage(which)
 		{
 			if(abort) return; abort=true;
@@ -106,8 +115,7 @@
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
-<INPUT TYPE=HIDDEN NAME=DBSEARCH VALUE="">
-<INPUT TYPE=HIDDEN NAME=OLDDBSEARCH VALUE="@RequestParameter?DBSEARCH@">
+<INPUT TYPE=HIDDEN NAME=DBSEARCH VALUE="@RequestParameter?DBSEARCH@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
 <INPUT TYPE=HIDDEN NAME=MESSAGEPAGE VALUE="">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
@@ -225,7 +233,7 @@
 			<IMG WIDTH=30 HEIGHT=30 SRC=@JournalInfo?MSGTYPEICON@>
 		</TD>
 		<TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTBLUE>
-		    @AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @
+			@AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @
 			@if?CheckReqParm?!MSGICON=@
 				<IMG WIDTH=30 HEIGHT=30 SRC=@JournalInfo?MSGICON@>
 			@endif@
@@ -244,7 +252,7 @@
 				<FONT COLOR=BLACK SIZE=-1>by @JournalInfo?FROM@</FONT>
 				</TD>
 			</TR>
-		    </TABLE>
+			</TABLE>
 		</TD>
 		<TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTGREY><FONT COLOR=BLACK SIZE=-1>@JournalInfo?REPLIES@</FONT></TD>
 		<TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTBLUE><FONT COLOR=BLACK SIZE=-1>@JournalInfo?VIEWS@</FONT></TD>
@@ -298,7 +306,7 @@
 			</FONT>
 		</a>
 		</TD>
-		<TD>&nbsp;&nbsp;&nbsp;<INPUT TYPE=TEXT SIZE=50 VALUE="" NAME=SEARCHBOX></FONT></TD>
+		<TD>&nbsp;&nbsp;&nbsp;<INPUT TYPE=TEXT SIZE=50 VALUE="" NAME=SEARCHBOX ONKEYDOWN="searchKeyPress(event,this.value)"></FONT></TD>
 	@else@
 		<TD WIDTH=120px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoSearch('')">
 		<a href="javascript:DoSearch('')" style="text-decoration:none">

@@ -54,6 +54,12 @@
 			document.FORUM.action="forum.cmvp";
 			document.FORUM.submit();
 		}
+        function CancelTo(which)
+        {
+            if(abort) return; abort=true;
+            document.FORUM.action=which;
+            document.FORUM.submit();
+        }
 		function DeleteReply(which)
 		{
 			if(abort) return;
@@ -123,6 +129,7 @@
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
 <INPUT TYPE=HIDDEN NAME=MESSAGEPAGE VALUE="@RequestParameter?MESSAGEPAGE@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPARENT VALUE="">
+<INPUT TYPE=HIDDEN NAME=DBSEARCH VALUE="@RequestParameter?DBSEARCH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=QUOTEDMESSAGE VALUE="">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
@@ -176,7 +183,17 @@
 			</a>
 			</TD>
 			@endif@
-			<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
+            <TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT></TD>
+            <TD WIDTH=160px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:CancelTo('@RequestParameter?FORUMREFERER@')">
+			    @if?CheckReqParm?FORUMREFERER=@
+			        <FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
+			    @else@
+                    <a href="javascript:CancelTo('@RequestParameter?FORUMREFERER@')" style="text-decoration:none">
+                        <FONT COLOR=WHITE SIZE=-1>
+                        &nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docbback.gif>&nbsp;&nbsp;<B>All Search Results</B>
+                        </FONT>
+                    </a>
+			    @endif@
 			</TD>
 			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
 			<a href="javascript:Cancel('')" style="text-decoration:none">
