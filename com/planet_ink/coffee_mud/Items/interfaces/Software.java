@@ -39,5 +39,6 @@ public interface Software extends Item, Technical
 	public String getActivationMenu();
 	public String getScreenMessage();
 	public String getCurrentScreenDisplay();
+	public void setCircuitKey(String key);
 }
 

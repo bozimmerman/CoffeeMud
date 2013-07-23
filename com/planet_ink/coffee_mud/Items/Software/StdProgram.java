@@ -44,6 +44,7 @@ public class StdProgram extends StdItem implements Software
 	protected StringBuilder nextMsg = new StringBuilder("");
 	protected String currentScreen="";
 	protected int techLevel=-1;
+	protected String circuitKey="";
 
 	public StdProgram()
 	{
@@ -57,8 +58,12 @@ public class StdProgram extends StdItem implements Software
 		recoverPhyStats();
 	}
 	
-	public String getParentMenu() { return ""; }
+	public void setCircuitKey(String key) 
+	{ 
+		circuitKey=(key==null)?"":key; 
+	}
 	
+	public String getParentMenu() { return ""; }
 	public String getInternalName() { return "";}
 	
 	public boolean isActivationString(String word) { return false; }
