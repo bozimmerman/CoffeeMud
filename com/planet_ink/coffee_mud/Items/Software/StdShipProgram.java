@@ -161,17 +161,34 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 	{
 	}
 
+	protected ShipEngine findEngineByName(String name)
+	{
+		List<ShipEngine> engines=getEngines();
+		if(engines.size()==0) return null;
+		name=name.toUpperCase();
+		if(name.startsWith("ENGINE"))
+		{
+			String numStr=name.substring(6);
+			if(!CMath.isInteger(numStr))
+				return null;
+			int num=CMath.s_int(numStr);
+			if((num>0)&&(num<=engines.size()))
+				return engines.get(num-1);
+			return null;
+		}
+		ShipEngine E=(ShipEngine)CMLib.english().fetchEnvironmental(engines, name, true);
+		if(E==null)
+			E=(ShipEngine)CMLib.english().fetchEnvironmental(engines, name, false);
+		return E;
+	}
+	
 	@Override public boolean isCommandString(String word, boolean isActive)
 	{
-		if(!isActive)
-		{
-			word=word.toUpperCase();
-			return (word.startsWith("TELNET ")||word.equals("TELNET"));
-		}
-		else
-		{
-			return true;
-		}
+		Vector<String> parsed=CMParms.parse(word);
+		if(parsed.size()==0)
+			return false;
+		String uword=parsed.get(0).toUpperCase();
+		return findEngineByName(uword)!=null;
 	}
 
 	@Override public String getActivationMenu()

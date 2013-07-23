@@ -4473,15 +4473,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return ((Boolean)stack.firstElement()).booleanValue();
 	}
 
-	protected String functify(PhysicalAgent scripted,
-							  MOB source,
-							  Environmental target,
-							  MOB monster,
-							  Item primaryItem,
-							  Item secondaryItem,
-							  String msg,
-							  Object[] tmp,
-							  String evaluable)
+	public String functify(PhysicalAgent scripted,
+							MOB source,
+							Environmental target,
+							MOB monster,
+							Item primaryItem,
+							Item secondaryItem,
+							String msg,
+							Object[] tmp,
+							String evaluable)
 	{
 		if(evaluable.length()==0) return "";
 		StringBuffer results = new StringBuffer("");

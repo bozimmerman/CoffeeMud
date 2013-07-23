@@ -186,4 +186,9 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	{
 		return (sampleB==null)?"":sampleB.varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, varifyable);
 	}
+	@Override
+	public String functify(PhysicalAgent scripted, MOB source, Environmental target, MOB monster, Item primaryItem,
+							Item secondaryItem, String msg, Object[] tmp, String evaluable) {
+		return (sampleB==null)?"":sampleB.functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
+	}
 }

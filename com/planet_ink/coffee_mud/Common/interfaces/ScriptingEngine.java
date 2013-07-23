@@ -152,7 +152,32 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 						Object[] tmp,
 						String[][] eval,
 						int startEval);
-	
+
+	/**
+	 * Evaluates one of the boolean functions as a string
+	 * variable expression, which gives different and
+	 * informative results.  See the Green Table in the
+	 * Scripting Guide.
+	 * @param scripted the object that is scripted
+	 * @param source the source of the event
+	 * @param target the target of the event
+	 * @param monster a mob representation of the scripted object
+	 * @param primaryItem an item involved in the event
+	 * @param secondaryItem a second item involved in the event
+	 * @param msg a string message associated with the event
+	 * @param tmp miscellaneous local variables
+	 * @param evaluable the function expression
+	 * @return the results of the function expression
+	 */
+	public String functify(PhysicalAgent scripted,
+							MOB source,
+							Environmental target,
+							MOB monster,
+							Item primaryItem,
+							Item secondaryItem,
+							String msg,
+							Object[] tmp,
+							String evaluable);
 	/**
 	 * Calling this method forces this script to look for a trigger
 	 * dealing with the end of a quest (QUEST_TIME_PROG -1).
