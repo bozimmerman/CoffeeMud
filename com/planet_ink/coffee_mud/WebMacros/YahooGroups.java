@@ -255,9 +255,12 @@ public class YahooGroups extends StdWebMacro
 					if(startOfMsg<0)
 						return "Failed: to find message in url:"+url+"/message/"+lastMsgNum;
 					startOfMsg=msgPage.indexOf(">",startOfMsg);
-					int endOfMsg=msgPage.indexOf("</div>",startOfMsg);
+					int endOfMsg=msgPage.indexOf("<tr style=\"height:35px\">",startOfMsg);
 					if(endOfMsg<0)
 						return "Failed: to find end of msg in url:"+url+"/message/"+lastMsgNum;
+					endOfMsg=msgPage.lastIndexOf("</div>",endOfMsg);
+					if(endOfMsg<0)
+						return "Failed: to find end2 of msg in url:"+url+"/message/"+lastMsgNum;
 					String theMessage=msgPage.substring(startOfMsg+1,endOfMsg).trim();
 					while(theMessage.startsWith("<br>"))
 						theMessage=theMessage.substring(4).trim();
