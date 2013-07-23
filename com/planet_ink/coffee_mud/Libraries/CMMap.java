@@ -46,7 +46,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<PostOffice> 	postOfficeList   		= new SVector<PostOffice>();
 	public List<Auctioneer> 	auctionHouseList 		= new SVector<Auctioneer>();
 	public List<Banker> 		bankList		 		= new SVector<Banker>();
-	public List<SpaceObject>	space   		 		= new SVector<SpaceObject>();
+	public List<SpaceObject>	space   		 		= new SLinkedList<SpaceObject>(); // i guess we're only ever iterating
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
 	
 	public Map<Integer,List<WeakReference<MsgListener>>> 
@@ -279,9 +279,19 @@ public class CMMap extends StdLibrary implements WorldMap
 		return everywhereMOB;
 	}
 
-	public boolean isObjectInSpace(SpaceObject O){ return space.contains(O); }
-	public void delObjectInSpace(SpaceObject O){ space.remove(O); }
-	public void addObjectToSpace(SpaceObject O){ space.add(O); }
+	public boolean isObjectInSpace(SpaceObject O)
+	{
+		return space.contains(O); 
+	}
+	public void delObjectInSpace(SpaceObject O)
+	{ 
+		space.remove(O); 
+	}
+	public void addObjectToSpace(SpaceObject O)
+	{
+		if(!space.contains(O))
+			space.add(O);
+	}
 
 	public long getDistanceFrom(SpaceObject O1, SpaceObject O2)
 	{
@@ -317,6 +327,50 @@ public class CMMap extends StdLibrary implements WorldMap
 									+((O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2])*(O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2]))));
 	}
 
+	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs)
+	{
+		if(o instanceof SpaceObject)
+			return (SpaceObject)o;
+		if(o instanceof Item)
+		{
+			if(((Item)o).container()!=null)
+				return getSpaceObject(((Item)o).container(),ignoreMobs);
+			else
+				return getSpaceObject(((Item)o).owner(),ignoreMobs);
+		}
+		if(o instanceof MOB)
+			return ignoreMobs?null:getSpaceObject(((MOB)o).location(),false);
+		if(o instanceof Room)
+			return getSpaceObject(((Room)o).getArea(),ignoreMobs);
+		if(o instanceof Area)
+			for(Enumeration<Area> a=((Area)o).getParents();a.hasMoreElements();)
+			{
+				SpaceObject obj=getSpaceObject(a.nextElement(),ignoreMobs);
+				if(obj != null)
+					return obj;
+			}
+		return null;
+	}
+
+	//TODO: this algorithm is unacceptable
+	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance)
+	{
+		List<SpaceObject> within=new Vector<SpaceObject>(1);
+		if(ofObj==null)
+			return within;
+		for(Iterator<SpaceObject> i=space.iterator();i.hasNext();)
+		{
+			SpaceObject o=i.next();
+			if(o!=ofObj)
+			{
+				long dist=getDistanceFrom(o,ofObj);
+				if((dist>=minDistance)&&(dist<=maxDistance))
+					within.add(o);
+			}
+		}
+		return within;
+	}
+	
 	public String createNewExit(Room from, Room room, int direction)
 	{
 		Room opRoom=from.rawDoors()[direction];

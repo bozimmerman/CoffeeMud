@@ -6,7 +6,7 @@
 //TODO: manufacturers to all editors, makers, stats
 //TODO: add electronics to guides
 //TODO: add electronics to MG
-//TODO: YahooMsgs! skip: 1885, 2881, 2953, 3274
+//TODO: YahooMsgs! skip: 1885, 2881, 2953, 3274 test yahoo 100 times=100&command=copyamsg&journal=Announcements&user=bo_zimmerman&password=ez13942&url=http://games.groups.yahoo.com/group/coffeemud
 # Build 5.8.0 Release 7/21/2013
    1. CoffeeMud and MiniWebServer are now integrated -- this means a much faster and better web service all around.
    ^^^Check out the altered WebServer guide, and make sure you integrate the pub. ini, admin.ini, and common.ini if you customized them.

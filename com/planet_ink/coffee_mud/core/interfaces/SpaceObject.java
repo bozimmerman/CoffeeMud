@@ -37,12 +37,12 @@ public interface SpaceObject extends Environmental
 {
 	/**
 	 * The current absolute coordinates of  the object
-	 * @return 2 dimensional array of the coordinates
+	 * @return 3 dimensional array of the coordinates
 	 */
 	public long[] coordinates();
 	/**
 	 * Sets the current absolute coordinates of the object
-	 * @param coords 2  dimensional array of the coordinates in space
+	 * @param coords 3  dimensional array of the coordinates in space
 	 */
 	public void setCoords(long[] coords);
 	/**
@@ -66,17 +66,6 @@ public interface SpaceObject extends Environmental
 	 */
 	public void setVelocity(long v);
 	/**
-	 * Gets the current accelleration rate of the object,  per tick
-	 * @return the current accelleration rate
-	 */
-	public long accelleration();
-	/**
-	 * Sets the current accelleration rate of the object,  per tick
-	 * @param v current accelleration rate
-	 */
-	public void setAccelleration(long v);
-
-	/**
 	 * If this object is targeting another space object as a destination, this will return it
 	 * @return the target destination
 	 */
@@ -96,16 +85,6 @@ public interface SpaceObject extends Environmental
 	 * @param O the source of  this object
 	 */
 	public void setKnownSource(SpaceObject O);
-	/**
-	 * If this object is in orbit about another,  what is that other
-	 * @return the object about which this one is orbiting
-	 */
-	public SpaceObject orbiting();
-	/**
-	 * Sets this object in orbit about another
-	 * @param O the object about which this one is orbiting
-	 */
-	public void setOrbiting(SpaceObject O);
 	
 	/** distance constant useful for coordinates, is 1 mile*/
 	public static final long DISTANCE_MILE=1;
@@ -118,7 +97,7 @@ public interface SpaceObject extends Environmental
 	/** distance constant useful for coordinates, is 1 orbit*/
 	public static final long DISTANCE_ORBITING=3252;
 
-	/** velocity constant for the speed of light */
+	/** velocity constant for the speed of light, numbers are in 340m/s */
 	public static final long VELOCITY_LIGHT=833333;
 	/** velocity constant for the speed of sublight */
 	public static final long VELOCITY_SUBLIGHT=750000;

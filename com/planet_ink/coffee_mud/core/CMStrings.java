@@ -26,7 +26,8 @@ public class CMStrings
 	private static CMStrings inst=new CMStrings();
 	public final static CMStrings instance(){return inst;}
 	
-	public final static String SPACES="                                                                                                                                          ";
+	public final static String SPACES=repeat(" ",150);
+	
 	public final static String repeat(final String str1, final int times)
 	{
 		if(times<=0) return "";

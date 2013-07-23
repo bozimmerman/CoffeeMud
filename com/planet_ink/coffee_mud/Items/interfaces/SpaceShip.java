@@ -35,6 +35,8 @@ public interface SpaceShip extends SpaceObject
 
 	public void unDock(boolean toSpace);
 	
+	public Room getIsDocked();
+	
 	public Manufacturer getManufacturer();
 	
 	public void setManufacturer(Manufacturer it);
@@ -44,4 +46,6 @@ public interface SpaceShip extends SpaceObject
 	public void setShipArea(String xml);
 	
 	public void renameSpaceShip(String newName);
+	
+	public SpaceObject getShipSpaceObject();
 }

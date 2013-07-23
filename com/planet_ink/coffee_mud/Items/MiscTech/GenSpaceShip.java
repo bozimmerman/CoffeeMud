@@ -79,6 +79,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			R.setRoomID(area.Name()+"#0");
 			R.setSavable(false);
 			area.addProperRoom(R);
+			((SpaceShip)area).setKnownSource(this);
 			readableText=R.roomID();
 		}
 		return area;
@@ -88,15 +89,16 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	{
 		try {
 			area=CMLib.coffeeMaker().unpackAreaObjectFromXML(xml);
-			if(area!=null)
+			if(area instanceof SpaceShip)
 			{
 				area.setSavable(false);
+				((SpaceShip)area).setKnownSource(this);
 				for(Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
 					CMLib.flags().setSavable(r.nextElement(), false);
 			}
 			else
 			{
-				Log.warnOut("Failed to unpack an area for the space ship");
+				Log.warnOut("Failed to unpack a space ship area for the space ship");
 				getShipArea();
 			}
 		} catch (CMException e) {
@@ -231,19 +233,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	@Override
-	public long accelleration() 
-	{
-		return (area instanceof SpaceObject)?((SpaceObject)area).accelleration():0;
-	}
-
-	@Override
-	public void setAccelleration(long v) 
-	{
-		if (area instanceof SpaceObject)
-			((SpaceObject)area).setAccelleration(v);
-	}
-
-	@Override
 	public SpaceObject knownTarget() 
 	{
 		return (area instanceof SpaceObject)?((SpaceObject)area).knownTarget():null;
@@ -270,24 +259,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	@Override
-	public SpaceObject orbiting() 
-	{
-		return (area instanceof SpaceObject)?((SpaceObject)area).orbiting():null;
-	}
-
-	@Override
-	public void setOrbiting(SpaceObject O) 
-	{
-		if (area instanceof SpaceObject)
-			((SpaceObject)area).setOrbiting(O);
-	}
-
-	@Override
 	public void dockHere(Room R) 
 	{
 		if(!R.isContent(me))
 			R.moveItemTo(me, Expire.Never, Move.Followers);
-		CMLib.map().delObjectInSpace(this);
+		CMLib.map().delObjectInSpace(getShipSpaceObject());
 		if (area instanceof SpaceShip)
 		{
 			((SpaceShip)area).dockHere(R);
@@ -298,6 +274,10 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					R2.rawDoors()[Directions.GATE]=R;
 			}
 		}
+		SpaceObject planet=CMLib.map().getSpaceObject(R,true);
+		if(planet != null)
+			setCoords(planet.coordinates());
+		setVelocity(0);
 	}
 
 	@Override
@@ -305,10 +285,34 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	{
 		Room R=CMLib.map().roomLocation(this);
 		R.delItem(this);
+		setOwner(null);
 		if(toSpace)
-			CMLib.map().addObjectToSpace(this);
+		{
+			SpaceObject o = getShipSpaceObject();
+			if(o != null)
+				CMLib.map().addObjectToSpace(o);
+		}
 		if (area instanceof SpaceShip)
+		{
 			((SpaceShip)area).unDock(toSpace);
+			SpaceObject planet=CMLib.map().getSpaceObject(R,true);
+			if(planet != null)
+				setCoords(planet.coordinates());
+		}
+	}
+	
+	public SpaceObject getShipSpaceObject()
+	{
+		return this;
+	}
+
+	public Room getIsDocked()
+	{
+		if (area instanceof SpaceShip)
+			return ((SpaceShip)area).getIsDocked();
+		if(owner() instanceof Room)
+			return ((Room)owner());
+		return null;
 	}
 	
 	@Override public int getPrice() { return price; }

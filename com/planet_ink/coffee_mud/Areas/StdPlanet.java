@@ -50,8 +50,6 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	public long velocity=0;
 	public long velocity(){return velocity;}
 	public void setVelocity(long v){velocity=v;}
-	public long accelleration(){return 0;}
-	public void setAccelleration(long x){}
 	public void setName(String newName)
 	{
 		super.setName(newName);
@@ -62,7 +60,4 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	public void setKnownTarget(SpaceObject O){}
 	public SpaceObject knownSource(){return null;}
 	public void setKnownSource(SpaceObject O){}
-	public SpaceObject orbiting=null;
-	public SpaceObject orbiting(){return orbiting;}
-	public void setOrbiting(SpaceObject O){orbiting=O;}
 }

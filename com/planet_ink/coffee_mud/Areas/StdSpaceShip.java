@@ -40,7 +40,6 @@ public class StdSpaceShip implements Area, SpaceShip
 	public long[]   		coordinates 	=new long[3];
 	public double[] 		direction   	=new double[2];
 	public long 			velocity		=0;
-	public long 			accelleration   =0;
 	protected String[]  	xtraValues  	=null;
 	protected String		imageName   	="";
 	protected RoomnumberSet properRoomIDSet =null;
@@ -50,7 +49,6 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected int			atmosphere		=RawMaterial.RESOURCE_AIR; // at least for awhile...
 	protected SpaceObject	spaceTarget 	=null;
 	protected SpaceObject	spaceSource 	=null;
-	protected SpaceObject	orbiting		=null;
 	protected boolean   	amDestroyed 	=false;
 	protected String		name			="a space ship";
 	protected Room  		savedDock   	=null;
@@ -65,6 +63,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected PhyStats  	phyStats		=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected PhyStats  	basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected Area 			me			 	=this;
+	protected SpaceShip		shipItem		=null;
 	
 	protected SVector<Ability>  		affects=new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors=new SVector<Behavior>(1);
@@ -77,7 +76,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void initializeClass(){}
 	public long[] coordinates(){return coordinates;}
 	public double[] direction(){return direction;}
-	protected Room getDock(){ return CMLib.map().getRoom(savedDock);}
+	public Room getIsDocked(){ return CMLib.map().getRoom(savedDock);}
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
 	{
@@ -105,17 +104,19 @@ public class StdSpaceShip implements Area, SpaceShip
 	public SpaceObject knownTarget(){return spaceTarget;}
 	public void setKnownTarget(SpaceObject O){spaceTarget=O;}
 	public SpaceObject knownSource(){return spaceSource;}
-	public void setKnownSource(SpaceObject O){spaceSource=O;}
-	public SpaceObject orbiting(){return orbiting;}
-	public void setOrbiting(SpaceObject O){orbiting=O;}
 	public void setCoords(long[] coords){coordinates=coords;}
 	public void setDirection(double[] dir){direction=dir;}
 	public long velocity(){return velocity;}
 	public void setVelocity(long v){velocity=v;}
-	public long accelleration(){return accelleration;}
-	public void setAccelleration(long v){accelleration=v;}
 	public Manufacturer getManufacturer() { return manufacturer; }
 	public void setManufacturer(Manufacturer it) { if(it != null) this.manufacturer=it; }
+	public void setKnownSource(SpaceObject O)
+	{
+		if((O instanceof SpaceShip)&&(((SpaceShip)O).getShipArea()==this))
+			shipItem=(SpaceShip)O;
+		else
+			spaceSource=O;
+	}
 	
 	public void destroy()
 	{
@@ -125,7 +126,6 @@ public class StdSpaceShip implements Area, SpaceShip
 		direction=null;
 		spaceSource=null;
 		spaceTarget=null;
-		orbiting=null;
 		basePhyStats=phyStats;
 		miscText=null;
 		imageName=null;
@@ -573,64 +573,12 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void dockHere(Room R)
 	{
 		if(R==null) return;
-		if(getDock()!=null) unDock(false);
-		Room airLockRoom=null;
-		int airLockDir=-1;
-		Room backupRoom=null;
-		int backupDir=-1;
-		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
-		{
-			Room R2=e.nextElement();
-			if(R2!=null)
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-			{
-				if((R2.getRawExit(d)!=null)
-				&&((R2.rawDoors()[d]==null)||(R2.rawDoors()[d].getArea()!=this))
-				&&(R2.getRawExit(d).ID().endsWith("AirLock")))
-				{ 
-					airLockRoom=R2; 
-					R2.rawDoors()[d]=null; 
-					airLockDir=d; 
-					break;
-				}
-				
-				if((d<4)&&(R2.rawDoors()==null))
-				{
-					backupRoom=R2;
-					backupDir=d;
-				}
-			}
-			if(airLockDir>=0) break;
-		}
-		if(airLockRoom==null)
-		{
-			airLockRoom=backupRoom;
-			airLockDir=backupDir;
-		}
-		
-		if(airLockRoom!=null)
-		{
-			if(airLockRoom.rawDoors()[airLockDir]==null)
-				airLockRoom.rawDoors()[airLockDir]=R;
-			if(airLockRoom.getRawExit(airLockDir)==null)
-				airLockRoom.setRawExit(airLockDir,CMClass.getExit("GenAirLock"));
-			Item portal=CMClass.getMiscTech("GenSSPortal");
-			portal.setName(Name());
-			portal.setDisplayText(Name());
-			portal.setDescription(description());
-			portal.setReadableText(CMLib.map().getExtendedRoomID(R));
-			CMLib.flags().setGettable(portal,false);
-			R.addItem(portal);
-			portal.setExpirationDate(0);
-			savedDock=R;
-			CMLib.map().delObjectInSpace(this);
-			R.recoverRoomStats();
-		}
+		CMLib.map().delObjectInSpace(getShipSpaceObject());
 	}
 	public void unDock(boolean toSpace)
 	{
-		if(getDock()==null) return;
-		Room dock=getDock();
+		if(getIsDocked()==null) return;
+		Room dock=getIsDocked();
 		for(int i=0;i<dock.numItems();i++)
 		{
 			Item I=dock.getItem(i);
@@ -650,8 +598,15 @@ public class StdSpaceShip implements Area, SpaceShip
 		dock=null;
 		if(toSpace)
 		{
-			CMLib.map().addObjectToSpace(this);
+			SpaceObject o = getShipSpaceObject();
+			if(o != null)
+				CMLib.map().addObjectToSpace(o);
 		}
+	}
+
+	public SpaceObject getShipSpaceObject()
+	{
+		return shipItem;
 	}
 
 	public RoomnumberSet getCachedRoomnumbers()

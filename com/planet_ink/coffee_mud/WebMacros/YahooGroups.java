@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -116,6 +117,9 @@ public class YahooGroups extends StdWebMacro
 		if(command.equalsIgnoreCase("GETAMSG")||command.equalsIgnoreCase("COPYAMSG"))
 		{
 			HttpClient H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
+			int[] skipList=CMParms.toIntArray(CMParms.parseCommas(parms.get("SKIP"), true));
+			Arrays.sort(skipList);
+			
 			String user=parms.get("USER");
 			if(user==null)
 				return " @break@";
@@ -182,6 +186,8 @@ public class YahooGroups extends StdWebMacro
 				while((--numTimes)>=0)
 				{
 					lastMsgNum++;
+					if(Arrays.binarySearch(skipList, lastMsgNum)>=0)
+						continue;
 					b=H.getRawUrl(url+"/message/"+lastMsgNum,cookieSet.toString());
 					if(b==null)
 						return "Failed: to read message from url:"+url+"/message/"+lastMsgNum;
@@ -204,7 +210,7 @@ public class YahooGroups extends StdWebMacro
 					if(endOfSubject<0)
 						return "Failed: to find subject end in url:"+url+"/message/"+lastMsgNum;
 					String subject=msgPage.substring(startOfSubject+1,endOfSubject).trim();
-					if((subject.length()==0)||(subject.length()>100)||(subject.indexOf('<')>=0)||(subject.indexOf('>')>=0))
+					if((subject.length()==0)||(subject.length()>200)||(subject.indexOf('<')>=0)||(subject.indexOf('>')>=0))
 						return "Failed: to find VALID subject '"+subject+"' in url:"+url+"/message/"+lastMsgNum;
 					int startOfDate=msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
 					int endOfDate;
@@ -291,11 +297,17 @@ public class YahooGroups extends StdWebMacro
 						author="_"+author;
 					
 					String parent="";
-					if(subject.startsWith("RE:")||subject.startsWith("Re:"))
+					if(subject.toUpperCase().startsWith("RE:"))
 					{
-						String subj=subject.substring(3).trim();
-						if(subj.startsWith("[coffeemud]"))
-							subj=subj.substring(11).trim();
+						String subj=subject;
+						while(subj.toUpperCase().startsWith("RE:")||subj.toLowerCase().startsWith("[coffeemud]"))
+						{
+							if(subj.toUpperCase().startsWith("RE:"))
+								subj=subj.substring(3).trim();
+							if(subj.toLowerCase().startsWith("[coffeemud]"))
+								subj=subj.substring(11).trim();
+						}
+						
 						Vector<JournalEntry> journalEntries=CMLib.database().DBReadJournalPageMsgs(forum.NAME(), null, subj, 0, 0);
 						if((journalEntries!=null)&&(journalEntries.size()>0))
 						{
