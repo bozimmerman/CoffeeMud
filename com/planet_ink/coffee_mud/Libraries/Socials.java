@@ -348,6 +348,8 @@ public class Socials extends StdLibrary implements SocialsList
 		&&((mob.session()==null)
 			||(!mob.session().confirm("The social '"+name+"' does not exist.  Create it (y/N)? ","N"))))
 			return false;
+		if(socials==null)
+			socials=new Vector<Social>();
 		boolean resaveSocials=true;
 		while((resaveSocials)&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{

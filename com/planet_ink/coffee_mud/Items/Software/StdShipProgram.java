@@ -129,7 +129,7 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 
 	@Override public boolean checkActivate(MOB mob, String message)
 	{
-		List<String> parsed=CMParms.parse(message);
+		//List<String> parsed=CMParms.parse(message);
 		try
 		{
 			return false;
