@@ -33,9 +33,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public interface Electronics extends Item, Technical
 {
-	public int fuelType();
-	public void setFuelType(int resource);
-	
 	public long powerCapacity();
 	public void setPowerCapacity(long capacity);
 	
@@ -48,21 +45,25 @@ public interface Electronics extends Item, Technical
 	public boolean activated();
 	public void activate(boolean truefalse);
 	
-	public Manufacturer getManufacturer();
-	public void setManufacturer(Manufacturer manufacturer);
+	public String getManufacturerName();
+	public void setManufacturerName(String name);
 	
 	public interface PowerSource extends Electronics
 	{
 	}
 	
-	public interface PowerGenerator extends PowerSource
+	public interface FuelConsumer extends Electronics
 	{
 		public int[] getConsumedFuelTypes();
 		public void setConsumedFuelType(int[] resources);
-		public int getGeneratedAmountPerTick();
-		public void setGenerationAmountPerTick(int amt);
 		public int getTicksPerFuelConsume();
 		public void getTicksPerFuelConsume(int tick);
+	}
+	
+	public interface PowerGenerator extends PowerSource, FuelConsumer
+	{
+		public int getGeneratedAmountPerTick();
+		public void setGenerationAmountPerTick(int amt);
 	}
 	
 	public interface ElecPanel extends Electronics, Container

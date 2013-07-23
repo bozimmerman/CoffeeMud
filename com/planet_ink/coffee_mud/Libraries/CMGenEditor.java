@@ -2730,7 +2730,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genConsumedMaterials(MOB mob, Electronics.PowerGenerator E, int showNumber, int showFlag) throws IOException
+	protected void genConsumedMaterials(MOB mob, Electronics.FuelConsumer E, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		boolean q=false;
@@ -7124,7 +7124,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Electronics)
 			{
 				Electronics E=(Electronics)me;
-				E.setFuelType(genAnyMaterialCode(mob,"Energy type",E.fuelType(),false,++showNumber,showFlag));
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
 			}
@@ -7135,6 +7134,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
 				genConsumedMaterials(mob, E, ++showNumber, showFlag);
 				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), showNumber, showFlag, "Gen Amt/Tick"));
+			}
+			if(me instanceof Electronics.FuelConsumer)
+			{
+				Electronics.FuelConsumer E=(Electronics.FuelConsumer)me;
+				genConsumedMaterials(mob, E, ++showNumber, showFlag);
 			}
 			if(me instanceof PackagedItems)
 				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
@@ -7408,7 +7412,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Electronics)
 			{
 				Electronics E=(Electronics)me;
-				E.setFuelType(genAnyMaterialCode(mob,"Energy type",E.fuelType(),false,++showNumber,showFlag));
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
 			}

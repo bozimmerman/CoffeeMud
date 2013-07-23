@@ -131,11 +131,8 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 				
 			}
 			str.append("^X").append(CMStrings.centerPreserve(" -- Commands -- ",60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight("[ENGINE#/NAME] ([AFT/PORT/STARBOARD]) [AMOUNT]",60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight("Instructs the given engine to fire in the appropriate",60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight("direction. What happens, and how quickly, depends",60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight("largely on the capabilities of the engine. Direction",60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight("is optional, and if not given, AFT is assumed.",60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight("[ENGINEHELP] : Give details about engine commands.",60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight("[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]",60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("\n\r");
 			str.append("^N\n\r");
 		}
@@ -203,6 +200,8 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 		if(parsed.size()==0)
 			return false;
 		String uword=parsed.get(0).toUpperCase();
+		if(uword.startsWith("ENGINEHELP"))
+			return true;
 		return findEngineByName(uword)!=null;
 	}
 
@@ -242,6 +241,16 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 				return;
 			}
 			String uword=parsed.get(0).toUpperCase();
+			if(uword.equalsIgnoreCase("ENGINEHELP"))
+			{
+				super.addScreenMessage("^HENGINEHELP:^N"+"The ENGINE command instructs the given " +
+						"engine number or name to fire in the appropriate direction. What happens, " +
+						"and how quickly, depends largely on the capabilities of the engine. " +
+						"Giving a direction is optional, and if not given, AFT is assumed. All "+
+						"directions result in corrected bursts, except for AFT,which will result " +
+						"in sustained accelleration.");
+				return;
+			}
 			ShipEngine E=findEngineByName(uword);
 			if(E==null)
 			{

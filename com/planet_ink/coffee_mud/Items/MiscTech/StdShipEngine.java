@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipEngine extends StdElecItem implements ShipComponent.ShipEngine
+public class StdShipEngine extends StdElecGenerator implements ShipComponent.ShipEngine
 {
 	public String ID(){	return "StdShipEngine";}
 	public StdShipEngine()
@@ -59,60 +59,31 @@ public class StdShipEngine extends StdElecItem implements ShipComponent.ShipEngi
 	public int getThrust(){return thrust;}
 	public void setThrust(int current){thrust=current;}
 	
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected, affectableStats);
-		if(affected instanceof Room)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
-	}
-	
-	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		if(msg.amITarget(this))
 		{
-			if(msg.sourceMinor()==CMMsg.TYP_POWERCURRENT) 
+			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_GET:
+				clearFuelCache();
+				break;
+			case CMMsg.TYP_PUT:
+				clearFuelCache();
+				break;
+			case CMMsg.TYP_ACTIVATE:
+				this.activate(true);
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				this.activate(false);
+				break;
+			case CMMsg.TYP_LOOK:
+				super.executeMsg(myHost, msg);
+				return;
+			case CMMsg.TYP_POWERCURRENT:
+				break;
 			}
 		}
 	}
-	
-	public void destroy()
-	{
-		CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
-		super.destroy();
-	}
-	
-	public void setOwner(ItemPossessor newOwner)
-	{
-		final ItemPossessor prevOwner=super.owner;
-		super.setOwner(newOwner);
-		if(prevOwner != newOwner)
-		{
-			if(newOwner instanceof Room)
-			{
-				if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELECTRONICS))
-					CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
-			}
-			else
-			{
-				CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
-			}
-		}
-	}
-	
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking, tickID))
-			return false;
-		if(tickID==Tickable.TICKID_ELECTRONICS)
-		{
-			if(activated())
-			{
-			}
-		}
-		return true;
-	}
-	
 }

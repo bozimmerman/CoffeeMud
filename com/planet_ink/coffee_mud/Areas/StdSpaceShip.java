@@ -55,7 +55,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected String		displayText 	="";
 	protected String		description 	="";
 	protected String		miscText		="";
-	protected Manufacturer	manufacturer	=CMLib.tech().getDefaultManufacturer();
+	protected String		manufacturer	="RANDOM";
 	protected SVector<Room> myRooms 		=new SVector();
 	protected State   		flag			=State.ACTIVE;
 	protected long  		tickStatus  	=Tickable.STATUS_NOT;
@@ -110,8 +110,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void setDirection(double[] dir){if(dir!=null) direction=dir;}
 	public long velocity(){return velocity;}
 	public void setVelocity(long v){velocity=v;}
-	public Manufacturer getManufacturer() { return manufacturer; }
-	public void setManufacturer(Manufacturer it) { if(it != null) this.manufacturer=it; }
+	public String getManufacturerName() { return manufacturer; }
+	public void setManufacturerName(String name) { if(name!=null) manufacturer=name; }
 	public void setKnownSource(SpaceObject O)
 	{
 		if((O instanceof SpaceShip)&&(((SpaceShip)O).getShipArea()==this))
@@ -1114,7 +1114,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		case 3: return text();
 		case 4: return ""+getTheme();
 		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
-		case 6: return getManufacturer().name();
+		case 6: return getManufacturerName();
 		}
 		return "";
 	}
@@ -1149,7 +1149,7 @@ public class StdSpaceShip implements Area, SpaceShip
 			}
 			break;
 		}
-		case 6: setManufacturer(CMLib.tech().getManufacturer(val)); break;
+		case 6: setManufacturerName(val); break;
 		}
 	}
 	public boolean sameAs(Environmental E)

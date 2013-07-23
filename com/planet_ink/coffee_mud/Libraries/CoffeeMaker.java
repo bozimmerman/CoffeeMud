@@ -402,12 +402,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Electronics)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("FUELT",((Electronics)E).fuelType()));
 			text.append(CMLib.xml().convertXMLtoTag("POWC",""+((Electronics)E).powerCapacity()));
 			text.append(CMLib.xml().convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
 			text.append(CMLib.xml().convertXMLtoTag("EACT", ""+((Electronics)E).activated()));
 			text.append(CMLib.xml().convertXMLtoTag("TECHLVL", ""+((Electronics)E).techLevel()));
-			text.append(CMLib.xml().convertXMLtoTag("MANUFACT", ((Electronics)E).getManufacturer().name()));
+			text.append(CMLib.xml().convertXMLtoTag("MANUFACT", ((Electronics)E).getManufacturerName()));
 
 		}
 		if(E instanceof Electronics.ElecPanel)
@@ -420,8 +419,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toStringList(((Electronics.PowerGenerator)E).getConsumedFuelTypes())));
 			text.append(CMLib.xml().convertXMLtoTag("EGENAMT",""+((Electronics.PowerGenerator)E).getGeneratedAmountPerTick()));
+		}
+		if(E instanceof Electronics.FuelConsumer)
+		{
+			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toStringList(((Electronics.PowerGenerator)E).getConsumedFuelTypes())));
 		}
 		if(E instanceof Recipe)
 		{
@@ -2517,12 +2519,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Electronics)
 		{
-			((Electronics)E).setFuelType(CMLib.xml().getIntFromPieces(buf,"FUELT"));
 			((Electronics)E).setPowerCapacity(CMLib.xml().getIntFromPieces(buf,"POWC"));
 			((Electronics)E).setPowerRemaining(CMLib.xml().getIntFromPieces(buf,"POWR"));
 			((Electronics)E).activate(CMLib.xml().getBoolFromPieces(buf, "EACT"));
 			((Electronics)E).setTechLevel(CMLib.xml().getIntFromPieces(buf, "TECHLVL"));
-			((Electronics)E).setManufacturer(CMLib.tech().getManufacturer(CMLib.xml().getValFromPieces(buf, "MANUFACT")));
+			((Electronics)E).setManufacturerName(CMLib.xml().getValFromPieces(buf, "MANUFACT"));
 		}
 		if(E instanceof Electronics.ElecPanel)
 		{
@@ -2537,11 +2538,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Electronics.PowerGenerator)
 		{
 			((Electronics.PowerGenerator)E).setGenerationAmountPerTick(CMLib.xml().getIntFromPieces(buf,"EGENAMT"));
+		}
+		if(E instanceof Electronics.FuelConsumer)
+		{
 			List<String> mats = CMParms.parseCommas(CMLib.xml().getValFromPieces(buf,"ECONSTYP"),true);
 			int[] newMats = new int[mats.size()];
 			for(int x=0;x<mats.size();x++)
 				newMats[x]=CMath.s_int(mats.get(x).trim());
-			((Electronics.PowerGenerator)E).setConsumedFuelType(newMats);
+			((Electronics.FuelConsumer)E).setConsumedFuelType(newMats);
 		}
 		if(E instanceof Coins)
 		{

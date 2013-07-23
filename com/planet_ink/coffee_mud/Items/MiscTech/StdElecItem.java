@@ -42,7 +42,7 @@ public class StdElecItem extends StdItem implements Electronics
 	protected boolean 		activated		= false;
 	protected int 			fuelType		= RawMaterial.RESOURCE_ENERGY;
 	protected int			techLevel		= -1;
-	protected Manufacturer 	manufacturer	= CMLib.tech().getDefaultManufacturer();
+	protected String	 	manufacturer	= "RANDOM";
 	
 	public StdElecItem()
 	{
@@ -114,6 +114,6 @@ public class StdElecItem extends StdItem implements Electronics
 	public int powerNeeds(){return powerNeeds;}
 	public int techLevel() { return techLevel;}
 	public void setTechLevel(int lvl) { techLevel=lvl; }
-	public void setManufacturer(Manufacturer manufacturer) { if(manufacturer!=null) this.manufacturer=manufacturer; }
-	public Manufacturer getManufacturer() { return this.manufacturer; }
+	public String getManufacturerName() { return manufacturer; }
+	public void setManufacturerName(String name) { if(name!=null) manufacturer=name; }
 }

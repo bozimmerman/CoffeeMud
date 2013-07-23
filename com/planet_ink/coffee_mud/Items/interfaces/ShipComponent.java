@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public interface ShipComponent extends Electronics
 {
-	public interface ShipEngine extends ShipComponent
+	public interface ShipEngine extends ShipComponent, Electronics.FuelConsumer
 	{
 		public int getMaxThrust();
 		public void setMaxThrust(int max);

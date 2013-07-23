@@ -45,7 +45,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	protected String readableText="";
 	protected String owner = "";
 	protected int price = 1000;
-	protected Manufacturer manufacturer = CMLib.tech().getDefaultManufacturer();
 	protected Area area=null;
 
 	public GenSpaceShip()
@@ -190,8 +189,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public boolean activated(){return true;}
 	public int techLevel() { return -1;}
 	public void setTechLevel(int lvl) { }
-	public void setManufacturer(Manufacturer manufacturer) { if(manufacturer!=null) this.manufacturer=manufacturer; }
-	public Manufacturer getManufacturer() { return manufacturer; }
+	public String getManufacturerName() { return (area instanceof SpaceShip)?((SpaceShip)area).getManufacturerName():"Unknown"; }
+	public void setManufacturerName(String name) { if((name!=null)&&(area instanceof SpaceShip)) ((SpaceShip)area).setManufacturerName(name); }
 	
 	@Override
 	public long[] coordinates() 
@@ -525,7 +524,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 7: return ""+powerCapacity();
 		case 8: return ""+activated();
 		case 9: return ""+powerRemaining();
-		case 10: return getManufacturer().name();
+		case 10: return getManufacturerName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -552,7 +551,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 7: setPowerCapacity(CMath.s_parseIntExpression(val)); break;
 		case 8: activate(CMath.s_bool(val)); break;
 		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 10: setManufacturer(CMLib.tech().getManufacturer(val)); break;
+		case 10: setManufacturerName(val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
