@@ -168,79 +168,8 @@ public class StdWebMacro implements WebMacro
 		return s;
 	}
 	
-	protected String clearWebMacros(String s)
-	{
-		if(s.length()==0) return "";
-		return clearWebMacros(new StringBuffer(s));
-	}
-	
-	private String parseFoundMacro(StringBuffer s, int i, boolean lookOnly)
-	{
-		String foundMacro=null;
-		boolean extend=false;
-		for(int x=i+1;x<s.length();x++)
-		{
-			if((s.charAt(x)=='@')
-			&&(extend)
-			&&(x<(s.length()-1))
-			&&(s.charAt(x+1)=='@'))
-			{
-				if(!lookOnly)
-					s.deleteCharAt(x);
-				while((x<s.length())&&(s.charAt(x)=='@'))
-					x++;
-				x--;
-			}
-			else
-			if((s.charAt(x)=='@')
-			&&((!extend)||(x>=s.length()-1)||(s.charAt(x+1)!='@')))
-			{
-				foundMacro=s.substring(i+1,x);
-				break;
-			}
-			else
-			if((s.charAt(x)=='?')&&(Character.isLetterOrDigit(s.charAt(x-1))))
-				extend=true;
-			else
-			if(((x-i)>CMClass.longestWebMacro)&&(!extend))
-				break;
-		}
-		return foundMacro;
-	}
-	protected String clearWebMacros(StringBuffer s)
-	{
-		if(s.length()==0) return "";
-		for(int i=0;i<s.length();i++)
-		{
-			if(s.charAt(i)=='@')
-			{
-				String foundMacro=parseFoundMacro(s,i,false);
-				if((foundMacro!=null)&&(foundMacro.length()>0))
-				{
-					if(foundMacro.equalsIgnoreCase("break"))
-						i+=(foundMacro.length()+2);
-					else
-					if((foundMacro.startsWith("if?"))
-					||(foundMacro.equalsIgnoreCase("else"))
-					||(foundMacro.equalsIgnoreCase("loop"))
-					||(foundMacro.equalsIgnoreCase("back"))
-					||(foundMacro.equalsIgnoreCase("endif"))
-					||(foundMacro.equalsIgnoreCase("/jscript"))
-					||(foundMacro.equalsIgnoreCase("jscript")))
-						s.replace(i,i+foundMacro.length()+2,foundMacro);
-					else
-					{
-						int x=foundMacro.indexOf('?');
-						int len=foundMacro.length();
-						if(x>=0) foundMacro=foundMacro.substring(0,x);
-						WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
-						if(W!=null) s.replace(i,i+len+2,foundMacro);
-					}
-				}
-			}
-		}
-		return s.toString();
-	}
+	protected String clearWebMacros(String s) { return CMLib.webMacroFilter().clearWebMacros(s); }
+	protected String clearWebMacros(StringBuffer s) { return CMLib.webMacroFilter().clearWebMacros(s); }
 	
 	protected StringBuilder helpHelp(StringBuilder s){return helpHelp(s,70);}
 	protected StringBuilder helpHelp(StringBuilder s, int limit)

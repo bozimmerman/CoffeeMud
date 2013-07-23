@@ -1365,53 +1365,18 @@ public class Test extends StdCommand
 			}
 			if(what.equalsIgnoreCase("yahoo")&&(mob.session()!=null))
 			{
-				int numToDo=1;
-				int x=rest.indexOf(' ');
-				if((x>0)&&CMath.isInteger(rest.substring(0, x)))
+				if(commands.size()<8)
 				{
-					numToDo=CMath.s_int(rest.substring(0,x).trim());
-					rest=rest.substring(x+1).trim();
+					mob.tell("Usage: TEST YAHOO user password url numtimes skiplist journal");
 				}
-				WebMacro M=CMClass.getWebMacro("YAHOOGROUPS");
-				try {
-					for(int y=0;y<numToDo && (!mob.session().isStopped()); y++)
-					{
-						String resp=M.runMacro(new HTTPRequest(){
-							public final Hashtable<String,String> params=new Hashtable<String,String>();
-							public final Hashtable<String,Object> objects=new Hashtable<String,Object>();
-							@Override public String getHost() { return "localhost"; }
-							@Override public String getUrlPath() { return "localhost/file"; }
-							@Override public String getFullRequest() { return "GET "+getUrlPath(); }
-							@Override public String getUrlParameter(String name) { return params.get(name.toLowerCase()); }
-							@Override public boolean isUrlParameter(String name) { return params.containsKey(name.toLowerCase()); }
-							@Override public Map<String,String> getUrlParametersCopy() { return new XHashtable<String,String>(params); }
-							@Override public Set<String> getUrlParameters() { return params.keySet(); }
-							@Override public HTTPMethod getMethod() { return HTTPMethod.GET; }
-							@Override public String getHeader(String name) { return null; }
-							@Override public InetAddress getClientAddress() { try { return InetAddress.getLocalHost(); } catch (UnknownHostException e) { return null; } }
-							@Override public int getClientPort() { return 0; }
-							@Override public InputStream getBody() { return null; }
-							@Override public String getCookie(String name) { return null; }
-							@Override public Set<String> getCookieNames() { return objects.keySet(); }
-							@Override public List<MultiPartData> getMultiParts() { return new XVector<MultiPartData>(); }
-							@Override public double getSpecialEncodingAcceptability(String type) { return 0; }
-							@Override public String getFullHost() { return "localhost"; }
-							@Override public List<int[]> getRangeAZ() { return null; }
-							@Override public void addFakeUrlParameter(String name, String value) { params.put(name.toUpperCase(), value); }
-							@Override public void removeUrlParameter(String name) { params.remove(name.toUpperCase()); }
-							@Override public Map<String,Object> getRequestObjects() { return objects; }
-							@Override public float getHttpVer() { return (float)1.1; }
-						}, rest);
-						mob.tell(resp);
-						if((resp.indexOf('@')>=0)
-						||((resp.toLowerCase().trim().startsWith("fail"))&&(!resp.endsWith("DUP!")))
-						||(numToDo==1))
-							break;
-						CMLib.s_sleep(10000);
-					}
-					
-				} catch (HTTPServerException e) {
-					mob.tell(e.getMessage());
+				for(int i=1; i<2; i++)
+				{
+					String resp=CMLib.webMacroFilter().copyYahooGroupMsgs((String)commands.get(2), (String)commands.get(3), (String)commands.get(4), 
+							CMath.s_int((String)commands.get(5)), CMParms.toIntArray(CMParms.parseCommas((String)commands.get(6),true)), 
+							(String)commands.get(7));
+					mob.tell(resp);
+					if((resp.toLowerCase().trim().startsWith("fail"))&&(resp.endsWith("DUP!")))
+						i=0;
 				}
 			}
 			if((what.equalsIgnoreCase("all"))||(what.equalsIgnoreCase("escapefilterbug")))
