@@ -37,6 +37,7 @@ public interface Software extends Item, Technical
 	public boolean isDeActivationString(String word);
 	public boolean isCommandString(String word, boolean isActive);
 	public String getActivationMenu();
+	public void addScreenMessage(String msg);
 	public String getScreenMessage();
 	public String getCurrentScreenDisplay();
 	public void setCircuitKey(String key);

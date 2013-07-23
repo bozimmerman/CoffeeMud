@@ -84,15 +84,29 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 			
 			str.append("^H").append(CMStrings.padRight("Velocity",10));
 			str.append("^N").append(CMStrings.padRight(Long.toString(ship.velocity()),20));
+			str.append("^H").append(CMStrings.padRight("Direction",10));
+			str.append("^N").append(CMStrings.padRight(CMParms.toStringList(ship.direction()),20));
+			str.append("\n\r");
 			str.append("^H").append(CMStrings.padRight("Location",10));
 			SpaceObject orbiting=null;
 			for(SpaceObject orb : orbs)
 				if(orb instanceof Area)
 					orbiting=orb;
 			if(orbiting!=null)
-				str.append("^N").append(CMStrings.padRight("orbiting "+orbiting.name(),34));
+				str.append("^N").append(CMStrings.padRight("orbiting "+orbiting.name(),50));
 			else
-				str.append("^N").append(CMStrings.padRight(CMParms.toStringList(shipSpaceObject.coordinates()),34));
+				str.append("^N").append(CMStrings.padRight(CMParms.toStringList(shipSpaceObject.coordinates()),50));
+			str.append("^H").append(CMStrings.padRight("Facing",10));
+			str.append("^N").append(CMStrings.padRight(CMParms.toStringList(ship.direction()),20));
+			if(orbiting!=null)
+			{
+				str.append("^H").append(CMStrings.padRight("Altitude",10));
+				str.append("^N").append(CMStrings.padRight(Long.toString(CMLib.map().getDistanceFrom(shipSpaceObject, orbiting))+" miles",20));
+			}
+			else
+			{
+				str.append("\n\r");
+			}
 			str.append("\n\r");
 		}
 		
@@ -128,6 +142,11 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 		return str.toString();
 	}
 	
+	public String getCurrentScreenDisplay()
+	{
+		return this.getActivationMenu();
+	}
+
 	protected synchronized List<ShipEngine> getEngines()
 	{
 		if(engines == null)
@@ -157,10 +176,6 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 		return isCommandString(word,false); 
 	}
 	
-	@Override public void onDeactivate(MOB mob, String message)
-	{
-	}
-
 	protected ShipEngine findEngineByName(String name)
 	{
 		List<ShipEngine> engines=getEngines();
@@ -198,16 +213,7 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 
 	@Override public boolean checkActivate(MOB mob, String message)
 	{
-		//List<String> parsed=CMParms.parse(message);
-		try
-		{
-			return false;
-		}
-		catch(Exception e)
-		{
-			mob.tell("Ship software failure: "+e.getMessage());
-			return false;
-		}
+		return true;
 	}
 	
 	@Override public boolean checkDeactivate(MOB mob, String message)
@@ -229,8 +235,93 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 	{
 		synchronized(this)
 		{
-			
+			Vector<String> parsed=CMParms.parse(message);
+			if(parsed.size()==0)
+			{
+				super.addScreenMessage("Error: No command.");
+				return;
+			}
+			String uword=parsed.get(0).toUpperCase();
+			ShipEngine E=findEngineByName(uword);
+			if(E==null)
+			{
+				super.addScreenMessage("Error: Unknown engine '"+uword+"'.");
+				return;
+			}
+			int amount=0;
+			String dir="AFT";
+			if(parsed.size()>3)
+			{
+				super.addScreenMessage("Error: Too many parameters.");
+				return;
+			}
+			if(!CMath.isInteger(parsed.get(parsed.size()-1)))
+			{
+				super.addScreenMessage("Error: '"+parsed.get(parsed.size()-1)+" is not a valid amount.");
+				return;
+			}
+			amount=CMath.s_int(parsed.get(1));
+			if(parsed.size()==3)
+			{
+				if("aft".startsWith(parsed.get(1).toLowerCase()))
+					dir="AFT";
+				else
+				if("port".startsWith(parsed.get(1).toLowerCase()))
+					dir="PORT";
+				else
+				if("starboard".startsWith(parsed.get(1).toLowerCase()))
+					dir="STARBOARD";
+				else
+				{
+					super.addScreenMessage("Error: '"+parsed.get(1)+" is not a valid direction: AFT, PORT, or STARBOARD.");
+					return;
+				}
+			}
+			CMMsg msg;
+			if(amount>0)
+				msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, dir+" "+amount, CMMsg.NO_EFFECT,null);
+			else
+				msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
+			if(E.owner() instanceof Room)
+			{
+				if(((Room)E.owner()).okMessage(mob, msg))
+					((Room)E.owner()).send(mob, msg);
+			}
+			else
+			if(E.okMessage(mob, msg))
+				E.executeMsg(mob, msg);
 		}
+	}
+	
+	public void onActivate(MOB mob, String message)
+	{
+		onTyping(mob,message);
+	}
+	
+	public void onDeactivate(MOB mob, String message)
+	{
+		Vector<String> parsed=CMParms.parse(message);
+		if(parsed.size()==0)
+		{
+			super.addScreenMessage("Syntax Error!");
+			return;
+		}
+		String uword=parsed.get(0).toUpperCase();
+		ShipEngine E=findEngineByName(uword);
+		if(E!=null)
+		{
+			onTyping(mob,"\""+uword+"\" "+0);
+			return;
+		}
+		uword=message.toUpperCase();
+		E=findEngineByName(uword);
+		if(E==null)
+		{
+			super.addScreenMessage("Unknown engine '"+uword+"'!");
+			return;
+		}
+		onTyping(mob,"\""+uword+"\" "+0);
+		return;
 	}
 	
 	@Override public void onPowerCurrent(int value)

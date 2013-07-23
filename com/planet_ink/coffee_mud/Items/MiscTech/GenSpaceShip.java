@@ -220,6 +220,19 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	@Override
+	public double[] facing() 
+	{ 
+		return (area instanceof SpaceShip)?((SpaceShip)area).facing():new double[2];
+	}
+	
+	@Override
+	public void setFacing(double[] dir) 
+	{ 
+		if (area instanceof SpaceShip)
+			((SpaceShip)area).setFacing(dir);
+	}
+	
+	@Override
 	public long velocity() 
 	{
 		return (area instanceof SpaceObject)?((SpaceObject)area).velocity():0;

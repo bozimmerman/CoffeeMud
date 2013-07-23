@@ -48,4 +48,15 @@ public interface SpaceShip extends SpaceObject
 	public void renameSpaceShip(String newName);
 	
 	public SpaceObject getShipSpaceObject();
+	
+	/**
+	 * The direction of facing of this object in radians. 
+	 * @return 2 dimensional array for the direction of facing
+	 */
+	public double[] facing();
+	/**
+	 * Sets the direction of facing of this object in radians.
+	 * @param dir 2 dimensional array for the direction of facing
+	 */
+	public void setFacing(double[] dir);
 }

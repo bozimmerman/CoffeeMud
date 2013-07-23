@@ -64,6 +64,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected PhyStats  	basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected Area 			me			 	=this;
 	protected SpaceShip		shipItem		=null;
+	protected double[]		facing			=new double[2];
 	
 	protected SVector<Ability>  		affects=new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors=new SVector<Behavior>(1);
@@ -100,12 +101,13 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
 	public int getAtmosphere() { return atmosphere==ATMOSPHERE_INHERIT?RawMaterial.RESOURCE_AIR:atmosphere; }
 	public long flags(){return 0;}
-
+	public double[] facing() { return facing; }
+	public void setFacing(double[] dir) { if(dir!=null) this.facing=dir; }
 	public SpaceObject knownTarget(){return spaceTarget;}
 	public void setKnownTarget(SpaceObject O){spaceTarget=O;}
 	public SpaceObject knownSource(){return spaceSource;}
-	public void setCoords(long[] coords){coordinates=coords;}
-	public void setDirection(double[] dir){direction=dir;}
+	public void setCoords(long[] coords){if(coords!=null) coordinates=coords;}
+	public void setDirection(double[] dir){if(dir!=null) direction=dir;}
 	public long velocity(){return velocity;}
 	public void setVelocity(long v){velocity=v;}
 	public Manufacturer getManufacturer() { return manufacturer; }
