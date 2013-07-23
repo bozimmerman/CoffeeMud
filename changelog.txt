@@ -4,6 +4,7 @@
    3. Rooms "climate" is now an editable feature, usually inherited from the area Climate, but designatable at will.
    4. Races now designate what sort of resource they can breathe, which means GenRaces have a new field you can edit.
    5. New Archon command: JCONSOLE, for playing around with javascript commands (and accessing your muds running systems!!)
+   6. New Forum features: All Forums Search, and better threading for all searches.
 //TODO: manufacturers to all editors, makers, stats
 //TODO: add electronics to guides
 //TODO: add electronics to MG
