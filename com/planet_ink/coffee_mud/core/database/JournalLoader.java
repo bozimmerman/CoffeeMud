@@ -315,6 +315,45 @@ public class JournalLoader
 		return journal;
 	}
 	
+	public Vector<JournalsLibrary.JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr)
+	{
+		Journal = DB.injectionClean(Journal);
+		searchStr = DB.injectionClean(searchStr);
+		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
+			str += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
+			str += " ORDER BY CMUPTM";
+			str += " ASC";
+			
+			ResultSet R=D.query(str);
+			int cardinal=0;
+			JournalsLibrary.JournalEntry entry;
+			while(R.next())
+			{
+				entry = DBReadJournalEntry(R);
+				entry.cardinal = ++cardinal;
+				journal.addElement(entry);
+			}
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL)) Log.debugOut("JournalLoader","Query ("+journal.size()+"): "+str);
+			if((journal.size()>0)&&(!R.next()))
+				journal.lastElement().isLastEntry=true;
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("Journal",sqle);
+			return null;
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return journal;
+	}
+	
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
 	{
 		Journal = DB.injectionClean(Journal);

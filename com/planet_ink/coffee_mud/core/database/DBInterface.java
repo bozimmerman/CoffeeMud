@@ -252,6 +252,9 @@ public class DBInterface implements DatabaseEngine
 	public List<JournalEntry> DBReadJournalMsgs(String Journal)
 	{return JournalLoader.DBReadJournalMsgs(Journal);}
 	
+	public Vector<JournalsLibrary.JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr)
+	{return JournalLoader.DBSearchAllJournalEntries(Journal,  searchStr);}
+
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
 	{return JournalLoader.DBReadJournalMsgsNewerThan(Journal, to, olderDate);}
 	

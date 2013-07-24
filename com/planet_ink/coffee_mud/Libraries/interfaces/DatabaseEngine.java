@@ -113,6 +113,7 @@ public interface DatabaseEngine extends CMLibrary
 	public List<String> DBReadJournals();
 	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats);
 	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry);
+	public Vector<JournalsLibrary.JournalEntry> DBSearchAllJournalEntries(String Journal, String searchStr);
 	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats);
 	public void DBUpdateMessageReplies(String key, int numReplies);
 	public JournalsLibrary.JournalEntry DBReadJournalEntry(String Journal, String Key);
