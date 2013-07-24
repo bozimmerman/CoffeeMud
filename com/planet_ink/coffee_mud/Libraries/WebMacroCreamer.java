@@ -1194,6 +1194,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				int x=val.indexOf(';');
 				cookieSet.append((x>=0)?val.substring(0,x).trim():val.trim());
 			}
+		sess.cookieSet=cookieSet.toString();
 		StringBuilder s=new StringBuilder(new String(b));
 		CMStrings.convertHtmlToText(s);
 		String txt=s.toString();
@@ -1213,6 +1214,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		}
 		if(num<0)
 			return "Failed: No numbers found in "+sess.url+"/messages";
+		sess.numTotal=num;
 		if(Resources.isPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER"))
 			sess.lastMsgNum=CMath.s_int(Resources.getPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER"));
 		return "";
