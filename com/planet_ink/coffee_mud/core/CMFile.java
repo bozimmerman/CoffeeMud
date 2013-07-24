@@ -821,7 +821,6 @@ public class CMFile extends File
 			{
 				filename=info.path;
 				getVFSDirectory().delete(info);
-				CMLib.database().DBDeleteVFSFile(filename);
 			}
 			if(vfsBits<0) vfsBits=0;
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
@@ -911,7 +910,6 @@ public class CMFile extends File
 			{
 				filename=info.path;
 				if(vfsV()!=null) vfsV().delete(info);
-				CMLib.database().DBDeleteVFSFile(filename);
 			}
 			if(vfsBits<0) vfsBits=0;
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);

@@ -951,7 +951,12 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			yahooSession.numTimes=1;
 			String resp=copyYahooGroupMsg(yahooSession);
 			if((resp!=null)&&(resp.toLowerCase().startsWith("fail")))
+			{
 				Log.warnOut("Yahoo Groups Copier failure reported: "+resp);
+				yahooSession.lastMsgNum--;
+				yahooSession.numTotalTimes=-1;
+			}
+			Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(yahooSession.lastMsgNum));
 		}
 		finally
 		{
