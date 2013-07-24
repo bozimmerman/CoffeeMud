@@ -453,7 +453,7 @@ public class Resources
 			}
 		}
 		if(section.length()>0)
-			section=Thread.currentThread().getName().charAt(0)+section.toUpperCase().trim();
+			section=Thread.currentThread().getThreadGroup().getName().charAt(0)+section.toUpperCase().trim();
 		synchronized(propResources)
 		{
 			if(!propResources.containsKey(section))
