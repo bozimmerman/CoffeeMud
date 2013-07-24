@@ -54,6 +54,13 @@ public class StdElecCompItem extends StdElecItem
 	
 	private volatile String circuitKey=null;
 	
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(affected instanceof Room)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
+	}
+	
 	public void destroy()
 	{
 		if((!destroyed)&&(circuitKey!=null))
@@ -122,6 +129,9 @@ public class StdElecCompItem extends StdElecItem
 				this.activate(false);
 				break;
 			case CMMsg.TYP_LOOK:
+				super.executeMsg(host, msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+					msg.source().tell(name()+" is currently "+(activated()?"connected.\n\r":"deactivated/disconnected.\n\r"));
 				return;
 			}
 		}

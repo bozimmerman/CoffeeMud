@@ -32,10 +32,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdElecPanel extends StdElecContainer implements Electronics.ElecPanel
+public class StdElecPanel extends StdElecCompContainer implements Electronics.ElecPanel
 {
 	public String ID(){	return "StdElecPanel";}
-	private volatile String circuitKey=null;
 	
 	public StdElecPanel()
 	{
@@ -85,40 +84,6 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		return true;
 	}
 
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected, affectableStats);
-		if(affected instanceof Room)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
-	}
-	
-	public void destroy()
-	{
-		if((!destroyed)&&(circuitKey!=null))
-		{
-			CMLib.tech().unregisterElectronics(this,circuitKey);
-			circuitKey=null;
-		}
-		super.destroy();
-	}
-	public void setOwner(ItemPossessor owner)
-	{
-		final ItemPossessor prevOwner=super.owner;
-		super.setOwner(owner);
-		if(prevOwner != owner)
-		{
-			if(owner instanceof Room)
-			{
-				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
-			}
-			else
-			{
-				CMLib.tech().unregisterElectronics(this,circuitKey);
-				circuitKey=null;
-			}
-		}
-	}
-	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -135,9 +100,6 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				final Room locR=CMLib.map().roomLocation(this);
 				final MOB M=CMLib.map().getFactoryMOB(locR);
 				CMMsg deactivateMsg = CMClass.getMsg(M, null, null, CMMsg.MASK_ALWAYS|CMMsg.MASK_CNTRLMSG|CMMsg.MSG_DEACTIVATE,null);
-				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> disconnect(s) <T-NAME>.");
-				this.activate(false);
 				for(Item I : this.getContents())
 					if(I instanceof Electronics)
 					{
@@ -147,11 +109,6 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 					}
 				break;
 			}
-			case CMMsg.TYP_LOOK:
-				super.executeMsg(myHost, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(name()+" is currently "+(activated()?"connected.\n\r":"deactivated/disconnected.\n\r"));
-				return;
 			case CMMsg.TYP_POWERCURRENT:
 			{
 				final Room R=CMLib.map().roomLocation(this);

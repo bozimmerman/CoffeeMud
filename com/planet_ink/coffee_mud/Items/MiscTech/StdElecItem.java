@@ -66,6 +66,8 @@ public class StdElecItem extends StdItem implements Electronics
 	
 	public static final boolean isAllWiringConnected(Electronics E)
 	{
+		if(E instanceof Electronics.ElecPanel)
+			return isThisPanelActivated((Electronics.ElecPanel)E);
 		if(E.container() instanceof Electronics.ElecPanel)
 			return isThisPanelActivated((Electronics.ElecPanel)E.container());
 		return true;

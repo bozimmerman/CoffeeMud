@@ -54,6 +54,13 @@ public class StdElecCompContainer extends StdElecContainer
 	
 	private volatile String circuitKey=null;
 	
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(affected instanceof Room)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
+	}
+	
 	public void destroy()
 	{
 		if((!destroyed)&&(circuitKey!=null))
@@ -91,6 +98,8 @@ public class StdElecCompContainer extends StdElecContainer
 	
 	public static final boolean isAllWiringConnected(Electronics E)
 	{
+		if(E instanceof Electronics.ElecPanel)
+			return isThisPanelActivated((Electronics.ElecPanel)E);
 		if(E.container() instanceof Electronics.ElecPanel)
 			return isThisPanelActivated((Electronics.ElecPanel)E.container());
 		return true;
@@ -138,6 +147,9 @@ public class StdElecCompContainer extends StdElecContainer
 				this.activate(false);
 				break;
 			case CMMsg.TYP_LOOK:
+				super.executeMsg(host, msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+					msg.source().tell(name()+" is currently "+(activated()?"connected.\n\r":"deactivated/disconnected.\n\r"));
 				return;
 			}
 		}
