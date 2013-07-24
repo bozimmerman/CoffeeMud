@@ -226,7 +226,7 @@ public class Test extends StdCommand
 		if(commands.size()>1)
 		{
 			String what=((String)commands.elementAt(1)).toUpperCase().trim();
-			String rest=CMParms.combine(commands,2);
+			//String rest=CMParms.combine(commands,2);
 			if(what.equalsIgnoreCase("levelxptest"))
 			{
 				for(int i=0;i<100;i++)
