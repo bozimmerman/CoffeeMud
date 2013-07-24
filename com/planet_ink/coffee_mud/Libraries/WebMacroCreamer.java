@@ -1008,7 +1008,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						author=author.substring(0,author.indexOf('@'));
 				}
 				else
-				if(CMLib.login().isOkName(author))
+				if(CMLib.login().isOkName(author,false))
 					author="_"+author;
 				
 				String parent="";

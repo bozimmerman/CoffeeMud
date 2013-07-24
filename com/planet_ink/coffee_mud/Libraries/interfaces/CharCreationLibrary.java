@@ -42,7 +42,7 @@ public interface CharCreationLibrary extends CMLibrary
 	public List<CharClass> classQualifies(MOB mob, int theme);
 	// mob is optional
 	public List<Race> raceQualifies(MOB mob, int theme);
-	public boolean isOkName(String login);
+	public boolean isOkName(String login, boolean spacesOk);
 	public void reloadTerminal(MOB mob);
 	public void showTheNews(MOB mob);
 	public void notifyFriends(MOB mob, String message);

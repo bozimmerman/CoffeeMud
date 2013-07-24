@@ -234,7 +234,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		if(!CMLib.login().isOkName(mobID))
+		if(!CMLib.login().isOkName(mobID,false))
 		{
 			mob.tell("'"+mobID+"' is not a valid name.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -326,7 +326,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		if(!CMLib.login().isOkName(AcctName))
+		if(!CMLib.login().isOkName(AcctName,false))
 		{
 			mob.tell("Name '"+AcctName+"' is not permitted.\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");

@@ -136,12 +136,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return qualRaces;
 	}
 	
-	public boolean isOkName(String login)
+	public boolean isOkName(String login, boolean spacesOk)
 	{
 		if(login.length()>20) return false;
 		if(login.length()<3) return false;
 
-		if(login.trim().indexOf(' ')>=0) return false;
+		if((!spacesOk)&&(login.trim().indexOf(' ')>=0))
+			return false;
 
 		login=login.toUpperCase().trim();
 		Vector<String> V=CMParms.parse(login);
@@ -2781,7 +2782,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, ipAddress)))
 			return NewCharNameCheckResult.NO_NEW_PLAYERS;
 		else
-		if((!isOkName(login))
+		if((!isOkName(login,false))
 		|| (CMLib.players().playerExists(login))
 		|| (!skipAccountNameCheck && CMLib.players().accountExists(login)))
 			return NewCharNameCheckResult.BAD_USED_NAME;

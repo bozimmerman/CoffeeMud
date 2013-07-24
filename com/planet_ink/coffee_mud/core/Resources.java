@@ -519,7 +519,7 @@ public class Resources
 							try
 							{
 								String value=URLEncoder.encode(secMap.get(key),"UTF-8");
-								str.append(key).append("=").append(value);
+								str.append(key).append("=").append(value).append("\n");
 							} catch (UnsupportedEncodingException e) { }
 						}
 					}

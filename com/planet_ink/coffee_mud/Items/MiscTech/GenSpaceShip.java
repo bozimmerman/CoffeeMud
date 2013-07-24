@@ -357,14 +357,19 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			setReadableText(oldEntry.roomID());
 			setShipArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
 		}
-		if(Name().indexOf("[NAME]")>=0)
-			setName(CMStrings.replaceAll(displayText(), "[NAME]", newName));
-		else
-			setName(newName);
-		if(displayText().indexOf("[NAME]")>=0)
-			setDisplayText(CMStrings.replaceAll(displayText(), "[NAME]", newName));
-		else
-			setDisplayText(newName+" is here.");
+		for(String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP"})
+		{
+			for(String rubs : new String[]{"<>","[]","{}","()"})
+			{
+				if(Name().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
+					setName(CMStrings.replaceAll(Name(), rubs.charAt(0)+word+rubs.charAt(1), newName));
+			}
+			for(String rubs : new String[]{"<>","[]","{}","()"})
+			{
+				if(displayText().indexOf(rubs.charAt(0)+word+rubs.charAt(1))>=0)
+					setDisplayText(CMStrings.replaceAll(displayText(), rubs.charAt(0)+word+rubs.charAt(1), newName));
+			}
+		}
 	}
 	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -446,7 +451,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				@Override public void timedOut() { }
 				@Override public void callBack() {
 					if((this.input.trim().length()==0)
-					||(!CMLib.login().isOkName(this.input.trim()))
+					||(!CMLib.login().isOkName(this.input.trim(),true))
 					||(CMLib.tech().getMakeRegisteredKeys().contains(this.input.trim())))
 					{
 						session.println("^ZThat is not a permitted name.^N");

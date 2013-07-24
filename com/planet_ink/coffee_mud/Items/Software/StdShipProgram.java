@@ -65,18 +65,18 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 	protected String buildActivationMenu(List<ShipEngine> engines)
 	{
 		StringBuilder str=new StringBuilder();
-		str.append("^X").append(CMStrings.centerPreserve(" -- Fight Status -- ",60)).append("\n\r^.^N");
+		str.append("^X").append(CMStrings.centerPreserve(" -- Fight Status -- ",60)).append("^.^N\n\r");
 		final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
 		final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
 		final SpaceObject shipSpaceObject=(ship==null)?null:ship.getShipSpaceObject();
 		if(ship==null)
-			str.append("^Z").append(CMStrings.centerPreserve(" -- Can Not Determine -- ",60)).append("\n\r^.^N");
+			str.append("^Z").append(CMStrings.centerPreserve(" -- Can Not Determine -- ",60)).append("^.^N\n\r");
 		else
 		if(ship.getIsDocked() != null)
-			str.append("^H").append(CMStrings.padRight("Docked at ^w"+ship.getIsDocked().roomTitle(null),60)).append("\n\r^.^N");
+			str.append("^H").append(CMStrings.padRight("Docked at ^w"+ship.getIsDocked().roomTitle(null),60)).append("^.^N\n\r");
 		else
 		if((shipSpaceObject==null)||(!CMLib.map().isObjectInSpace(shipSpaceObject)))
-			str.append("^Z").append(CMStrings.centerPreserve(" -- System Malfunction-- ",60)).append("\n\r^.^N");
+			str.append("^Z").append(CMStrings.centerPreserve(" -- System Malfunction-- ",60)).append("^.^N\n\r");
 		else
 		{
 			long thirdOfOrbiting=SpaceObject.DISTANCE_ORBITING/2;
@@ -109,31 +109,29 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 			}
 			str.append("\n\r");
 		}
-		
-		str.append("^X").append(CMStrings.centerPreserve("",60)).append("\n\r");
 		str.append("^N\n\r");
 		
 		if((engines==null)||(engines.size()==0))
 			str.append(noActivationMenu);
 		else
 		{
-			str.append("^X").append(CMStrings.centerPreserve(" -- Engines -- ",60)).append("\n\r^.^N");
+			str.append("^X").append(CMStrings.centerPreserve(" -- Engines -- ",60)).append("^.^N\n\r");
 			int engineNumber=1;
 			for(ShipEngine engine : engines)
 			{
-				str.append("^H").append(CMStrings.padRight("ENGINE"+engineNumber,10));
-				str.append(CMStrings.padRight(engine.activated()?"^gACTIVE":"^rINACTIVE",10));
-				str.append("^H").append(CMStrings.padRight("Fuel",6));
-				str.append("^N").append(CMStrings.padRight(Long.toString(engine.powerRemaining()),14));
-				str.append("^H").append(CMStrings.padRight("Model",6));
-				str.append("^N").append(CMStrings.padRight(engine.Name(),34));
+				str.append("^H").append(CMStrings.padRight("ENGINE"+engineNumber,9));
+				str.append(CMStrings.padRight(engine.activated()?"^gACTIVE":"^rINACTIVE",9));
+				str.append("^H").append(CMStrings.padRight("Fuel",5));
+				str.append("^N").append(CMStrings.padRight(Long.toString(engine.powerRemaining()),11));
+				str.append("^H").append(CMStrings.padRight(engine.Name(),24));
+				str.append("^.^N\n\r");
 				engineNumber++;
-				
 			}
-			str.append("^X").append(CMStrings.centerPreserve(" -- Commands -- ",60)).append("\n\r");
+			str.append("^N\n\r");
+			str.append("^X").append(CMStrings.centerPreserve(" -- Commands -- ",60)).append("^.^N\n\r");
 			str.append("^H").append(CMStrings.padRight("[ENGINEHELP] : Give details about engine commands.",60)).append("\n\r");
 			str.append("^H").append(CMStrings.padRight("[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]",60)).append("\n\r");
-			str.append("^X").append(CMStrings.centerPreserve("",60)).append("\n\r");
+			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
 			str.append("^N\n\r");
 		}
 		return str.toString();
@@ -243,11 +241,11 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 			String uword=parsed.get(0).toUpperCase();
 			if(uword.equalsIgnoreCase("ENGINEHELP"))
 			{
-				super.addScreenMessage("^HENGINEHELP:^N"+"The ENGINE command instructs the given " +
+				super.addScreenMessage("^HENGINEHELP:^N\n\r^N"+"The ENGINE command instructs the given " +
 						"engine number or name to fire in the appropriate direction. What happens, " +
 						"and how quickly, depends largely on the capabilities of the engine. " +
 						"Giving a direction is optional, and if not given, AFT is assumed. All "+
-						"directions result in corrected bursts, except for AFT,which will result " +
+						"directions result in corrected bursts, except for AFT, which will result " +
 						"in sustained accelleration.");
 				return;
 			}
