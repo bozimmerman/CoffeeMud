@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdComputerConsole extends StdRideable implements ShipComponent, Electronics.Computer
+public class StdComputerConsole extends StdRideable implements ShipComponent, Electronics.Computer, Electronics.ElecPanel
 {
 	public String ID(){	return "StdComputerConsole";}
 

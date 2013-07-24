@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -82,7 +83,7 @@ public interface TechLibrary extends CMLibrary
 	 * @param key this devices key
 	 * @return true if an attempt to give power was made, false otherwise.
 	 */
-	public boolean seekBatteryPower(final Electronics E, final String key);
+	public boolean seekBatteryPower(final ElecPanel E, final String key);
 
 	/**
 	 * Retreives the default manufacturer for new products

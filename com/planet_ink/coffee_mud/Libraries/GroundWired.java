@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerGenerator;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerSource;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -213,7 +214,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return true;
 	}
 
-	protected void processElectricCurrents(final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<Electronics> panels) throws Exception
+	protected void processElectricCurrents(final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<ElecPanel> panels) throws Exception
 	{
 		CMMsg powerMsg=getPowerMsg(0);
 		for(PowerGenerator E : generators)
@@ -237,7 +238,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				availablePowerToDistribute+=B.powerRemaining();
 		if(availablePowerToDistribute==0)
 		{
-			for(Electronics E : panels)
+			for(ElecPanel E : panels)
 			{
 				powerMsg.setTarget(E);
 				powerMsg.setValue(0);
@@ -258,11 +259,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			remainingPowerToDistribute=availablePowerToDistribute;
 			double totalPowerNeeded=0.0;
-			for(Electronics E : panels)
+			for(ElecPanel E : panels)
 				totalPowerNeeded+=((E.powerNeeds()<=0)?1.0:E.powerNeeds());
 			if(totalPowerNeeded>0.0)
 			{
-				for(Electronics E : panels)
+				for(ElecPanel E : panels)
 				{
 					powerMsg.setTarget(E);
 					int powerToTake=0;
@@ -302,7 +303,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 
-	protected void fillElectronicLists(final String key, final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<Electronics> panels)
+	protected void fillCurrentLists(final String key, final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<ElecPanel> panels)
 	{
 		synchronized(this)
 		{
@@ -313,16 +314,20 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				{
 					WeakReference<Electronics> W=w.next();
 					Electronics E=W.get();
+					if(E==null)
+						w.remove();
+					else
 					if(E instanceof PowerGenerator)
 						generators.add((PowerGenerator)E);
 					else
 					if(E instanceof PowerSource)
 						batteries.add((PowerSource)E);
 					else
-					if(E!=null)
-						panels.add(E);
+					if(E instanceof ElecPanel)
+						panels.add((ElecPanel)E);
 					else
-						w.remove();
+					if((E.owner() instanceof ElecPanel)&&(!rawSet.contains(E.owner())))
+						panels.add((ElecPanel)E.owner());
 				}
 				if(rawSet.size()==0)
 					sets.remove(key);
@@ -336,8 +341,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		{
 			final List<PowerGenerator> generators = new LinkedList<PowerGenerator>();
 			final List<PowerSource> batteries = new LinkedList<PowerSource>();
-			final List<Electronics> panels = new LinkedList<Electronics>();
-			fillElectronicLists(key,generators,batteries,panels);
+			final List<ElecPanel> panels = new LinkedList<ElecPanel>();
+			fillCurrentLists(key,generators,batteries,panels);
 			processElectricCurrents(generators, batteries, panels);
 		}
 		catch(Exception e)
@@ -346,12 +351,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 
-	public boolean seekBatteryPower(final Electronics E, final String key)
+	public boolean seekBatteryPower(final ElecPanel E, final String key)
 	{
 		final List<PowerGenerator> generators = new LinkedList<PowerGenerator>();
 		final List<PowerSource> batteries = new LinkedList<PowerSource>();
-		final List<Electronics> panels = new LinkedList<Electronics>();
-		fillElectronicLists(key,generators,batteries,panels);
+		final List<ElecPanel> panels = new LinkedList<ElecPanel>();
+		fillCurrentLists(key,generators,batteries,panels);
 		
 		PowerSource battery = null;
 		final Room locR=CMLib.map().roomLocation(E);
@@ -398,7 +403,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 		try
 		{
-			final List<Electronics> finalPanel=new XVector<Electronics>(E);
+			final List<ElecPanel> finalPanel=new XVector<ElecPanel>(E);
 			final List<PowerSource> finalBatteries=new XVector<PowerSource>(battery);
 			processElectricCurrents(emptyGeneratorList, finalBatteries, finalPanel);
 			return true;

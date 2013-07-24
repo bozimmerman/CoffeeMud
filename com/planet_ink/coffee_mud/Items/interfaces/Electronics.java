@@ -38,7 +38,7 @@ public interface Electronics extends Item, Technical
 	
 	public long powerRemaining();
 	public void setPowerRemaining(long remaining);
-	
+
 	public int powerNeeds();
 	public void setPowerNeeds(int desires);
 	
