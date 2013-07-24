@@ -50,7 +50,7 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 	{
 		super();
 		setName("a shuttle operations disk");
-		setDisplayText("a small computer disk sits here.");
+		setDisplayText("a small software disk sits here.");
 		setDescription("It appears to be a program to operate a small shuttle or rocket.");
 
 		material=RawMaterial.RESOURCE_STEEL;

@@ -48,8 +48,8 @@ public class StdTelnetProgram extends StdProgram implements ArchonOnly
 	{
 		super();
 		setName("a telnet disk");
-		setDisplayText("a small computer disk sits here.");
-		setDescription("It appears to be a telnet computer program.");
+		setDisplayText("a small disk sits here.");
+		setDescription("It appears to be a telnet program.");
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=1000;

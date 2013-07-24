@@ -9,8 +9,8 @@ function newInstance()
 {
     var newOne=this.super$newInstance();
     newOne.setName("a diag program disk");
-    newOne.setDisplayText("a small computer disk sits here.");
-    newOne.setDescription("It appears to be a diagnostics terminal computer program.");
+    newOne.setDisplayText("a small disk sits here.");
+    newOne.setDescription("It appears to be a diagnostics terminal program.");
 	return newOne;
 }
 

@@ -49,9 +49,9 @@ public class StdProgram extends StdItem implements Software
 	public StdProgram()
 	{
 		super();
-		setName("a computer disk");
-		setDisplayText("a small computer disk sits here.");
-		setDescription("It appears to be a general computer program.");
+		setName("a software disk");
+		setDisplayText("a small disk sits here.");
+		setDescription("It appears to be a general software program.");
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=1000;
