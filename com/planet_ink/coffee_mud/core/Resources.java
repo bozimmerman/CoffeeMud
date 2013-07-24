@@ -494,9 +494,10 @@ public class Resources
 		{
 			secMap.put(key, value);
 		}
+		savePropResources();
 	}
 	
-	public static final void savePropResources()
+	private static final void savePropResources()
 	{
 		if(propResources!=null)
 		{
