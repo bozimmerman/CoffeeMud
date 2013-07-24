@@ -1054,6 +1054,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if(WIN!=null)
 							parent=WIN.key;
 					}
+					if(parent.length()==0)
+						subject=subj;
 				}
 				JournalsLibrary.JournalEntry msg = new JournalsLibrary.JournalEntry();
 				msg.from=author;
