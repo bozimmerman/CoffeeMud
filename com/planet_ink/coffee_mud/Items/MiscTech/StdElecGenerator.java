@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdElecGenerator extends StdElecContainer implements Electronics.PowerGenerator
+public class StdElecGenerator extends StdFuelConsumer implements Electronics.PowerGenerator
 {
 	public String ID(){	return "StdElecGenerator";}
 	public StdElecGenerator()
@@ -50,27 +50,8 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 		recoverPhyStats();
 	}
 	
-	private volatile String circuitKey=null;
-	
 	protected int   generatedAmtPerTick = 1;
-	protected int[] generatedFuelTypes  = new int[]{RawMaterial.RESOURCE_DEUTERIUM};
-	protected int   ticksPerFuelConsume = 10;
-	protected volatile int fuelTickDown	= 0;
 	
-	@Override
-	public int getTicksPerFuelConsume() { return ticksPerFuelConsume; }
-	@Override
-	public void getTicksPerFuelConsume(int tick) { ticksPerFuelConsume=tick; }
-	@Override
-	public long containTypes(){return Container.CONTAIN_RAWMATERIALS;}
-	@Override
-	public void setContainTypes(long containTypes){containType=CONTAIN_RAWMATERIALS;}
-	@Override
-    public int[] getConsumedFuelTypes() { return generatedFuelTypes; }
-	@Override
-    public void setConsumedFuelType(int[] resources) { 
-		generatedFuelTypes = resources;
-    }
 	@Override
     public int getGeneratedAmountPerTick() { return generatedAmtPerTick; }
 	@Override
@@ -78,101 +59,6 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 	{
 		generatedAmtPerTick=amt;
     }
-	@Override
-	public boolean canContain(Environmental E)
-	{
-		if(!super.canContain(E)) return false;
-		if(E instanceof RawMaterial)
-			return CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)E).material());
-		return false;
-	}
-	
-	public void destroy()
-	{
-		if((!destroyed)&&(circuitKey!=null))
-		{
-			CMLib.tech().unregisterElectronics(this,circuitKey);
-			circuitKey=null;
-		}
-		CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
-		super.destroy();
-	}
-	
-	public void setOwner(ItemPossessor newOwner)
-	{
-		final ItemPossessor prevOwner=super.owner;
-		super.setOwner(newOwner);
-		if(prevOwner != newOwner)
-		{
-			if(newOwner instanceof Room)
-			{
-				if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELECTRONICS))
-					CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
-				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
-			}
-			else
-			{
-				CMLib.tech().unregisterElectronics(this,circuitKey);
-				circuitKey=null;
-				CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
-			}
-		}
-	}
-	
-	protected void engineShutdown()
-	{
-		MOB deity=CMLib.map().deity();
-		CMMsg msg=CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_DEACTIVATE, "<T-NAME> sputters and shuts itself down.");
-		Room R=CMLib.map().roomLocation(this);
-		if((R!=null)&&(R.okMessage(deity, msg)))
-			R.send(deity, msg);
-	}
-
-	protected volatile List<Item> fuelCache=null;
-	protected synchronized List<Item> getFuel()
-	{
-		if(fuelCache==null)
-		{
-			fuelCache=getContents();
-		}
-		return fuelCache;
-	}
-	protected synchronized void clearFuelCache()
-	{
-		fuelCache=null;
-	}
-	
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking, tickID))
-			return false;
-		if(tickID==Tickable.TICKID_ELECTRONICS)
-		{
-			if(activated())
-			{
-				if(fuelTickDown <= 0)
-				{
-					fuelTickDown=getTicksPerFuelConsume();
-					boolean consumedFuel=false;
-					List<Item> fuel=getFuel();
-					for(Item I : fuel)
-					{
-						if((I instanceof RawMaterial)
-						&&(!I.amDestroyed())
-						&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
-						{
-							CMLib.materials().destroyResources(fuel, 1, ((RawMaterial)I).material(), -1, null, this);
-							consumedFuel=true;
-							break;
-						}
-					}
-					if(!consumedFuel)
-						engineShutdown();
-				}
-			}
-		}
-		return true;
-	}
 	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -198,7 +84,6 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 				this.activate(false);
 				break;
 			case CMMsg.TYP_LOOK:
-				super.executeMsg(myHost, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
 					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/shut down.\n\r"));
 				return;
@@ -212,7 +97,6 @@ public class StdElecGenerator extends StdElecContainer implements Electronics.Po
 						if(newAmount > powerCapacity())
 							newAmount=powerCapacity();
 						setPowerRemaining(newAmount);
-						fuelTickDown--;
 					}
 				}
 				break;

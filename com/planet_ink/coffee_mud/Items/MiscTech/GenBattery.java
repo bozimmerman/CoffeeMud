@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -31,11 +32,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenBattery extends GenElecItem implements Electronics.PowerSource
+public class GenBattery extends StdElecCompItem implements Electronics.PowerSource
 {
 	public String ID(){	return "GenBattery";}
-
-	private volatile String circuitKey=null;
 
 	public GenBattery()
 	{
@@ -51,62 +50,6 @@ public class GenBattery extends GenElecItem implements Electronics.PowerSource
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
 	}
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof GenBattery)) return false;
-		return super.sameAs(E);
-	}
-	
-	public void destroy()
-	{
-		if((!destroyed)&&(circuitKey!=null))
-		{
-			CMLib.tech().unregisterElectronics(this,circuitKey);
-			circuitKey=null;
-		}
-		super.destroy();
-	}
-	public void setOwner(ItemPossessor owner)
-	{
-		final ItemPossessor prevOwner=super.owner;
-		super.setOwner(owner);
-		if(prevOwner != owner)
-		{
-			if(owner instanceof Room)
-			{
-				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
-			}
-			else
-			{
-				CMLib.tech().unregisterElectronics(this,circuitKey);
-				circuitKey=null;
-			}
-		}
-	}
-	public boolean okMessage(Environmental host, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_ACTIVATE:
-				if(!StdElecItem.isAllWiringConnected(this))
-				{
-					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
-						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
-					return false;
-				}
-				break;
-			case CMMsg.TYP_DEACTIVATE:
-				break;
-			case CMMsg.TYP_LOOK:
-				break;
-			case CMMsg.TYP_POWERCURRENT:
-				break;
-			}
-		}
-		return super.okMessage(host, msg);
-	}
 	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
@@ -114,16 +57,6 @@ public class GenBattery extends GenElecItem implements Electronics.PowerSource
 		{
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_ACTIVATE:
-				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> activate(s) <T-NAME>.");
-				this.activate(true);
-				break;
-			case CMMsg.TYP_DEACTIVATE:
-				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> deactivate(s) <T-NAME>.");
-				this.activate(false);
-				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
@@ -134,4 +67,75 @@ public class GenBattery extends GenElecItem implements Electronics.PowerSource
 		super.executeMsg(host, msg);
 	}
 	
+	public boolean isGeneric(){return true;}
+
+	public String text()
+	{
+		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+	}
+
+	public void setMiscText(String newText)
+	{
+		miscText="";
+		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		recoverPhyStats();
+	}
+
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM"};
+	public String getStat(String code)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		switch(getCodeNum(code))
+		{
+		case 0: return ""+powerCapacity();
+		case 1: return ""+activated();
+		case 2: return ""+powerRemaining();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+	}
+	public void setStat(String code, String val)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 1: activate(CMath.s_bool(val)); break;
+		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+	}
+	protected int getCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes!=null) return codes;
+		String[] MYCODES=CMProps.getStatCodesList(GenBattery.MYCODES,this);
+		String[] superCodes=GenericBuilder.GENITEMCODES;
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenElecContainer)) return false;
+		String[] theCodes=getStatCodes();
+		for(int i=0;i<theCodes.length;i++)
+			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
+				return false;
+		return true;
+	}
 }

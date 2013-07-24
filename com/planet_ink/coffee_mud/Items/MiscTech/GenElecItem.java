@@ -65,17 +65,16 @@ public class GenElecItem extends StdElecItem
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"FUELTYPE","POWERCAP","ACTIVATED","POWERREM"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+fuelType();
-		case 1: return ""+powerCapacity();
-		case 2: return ""+activated();
-		case 3: return ""+powerRemaining();
+		case 0: return ""+powerCapacity();
+		case 1: return ""+activated();
+		case 2: return ""+powerRemaining();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -87,15 +86,9 @@ public class GenElecItem extends StdElecItem
 		else
 		switch(getCodeNum(code))
 		{
-		case 0:{
-				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
-				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
-				setFuelType(x); 
-				break;
-			   } 
-		case 1: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 2: activate(CMath.s_bool(val)); break;
-		case 3: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 0: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 1: activate(CMath.s_bool(val)); break;
+		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

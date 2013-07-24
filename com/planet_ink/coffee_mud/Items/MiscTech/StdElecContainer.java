@@ -40,7 +40,6 @@ public class StdElecContainer extends StdContainer implements Electronics
 	protected long 			power			= 100;
 	protected int 			powerNeeds		= 1;
 	protected boolean 		activated		= false;
-	protected int 			fuelType		= RawMaterial.RESOURCE_ENERGY;
 	protected int			techLevel		= -1;
 	protected String 		manufacturer	= "RANDOM";
 
@@ -55,34 +54,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 		baseGoldValue=0;
 		recoverPhyStats();
 	}
-	public boolean okMessage(Environmental host, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_ACTIVATE:
-				if(!StdElecItem.isAllWiringConnected(this))
-				{
-					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
-						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
-					return false;
-				}
-				break;
-			case CMMsg.TYP_DEACTIVATE:
-				break;
-			case CMMsg.TYP_LOOK:
-				break;
-			case CMMsg.TYP_POWERCURRENT:
-				break;
-			}
-		}
-		return super.okMessage(host, msg);
-	}
-	
 
-	public int fuelType(){return fuelType;}
-	public void setFuelType(int resource){fuelType=resource;}
 	public long powerCapacity(){return powerCapacity;}
 	public void setPowerCapacity(long capacity){powerCapacity=capacity;}
 	public long powerRemaining(){return power;}

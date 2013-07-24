@@ -177,8 +177,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		super.destroy();
 	}
 	
-	public int fuelType(){return -1;}
-	public void setFuelType(int resource){}
 	public long powerCapacity(){return 0;}
 	public void setPowerCapacity(long capacity){}
 	public long powerRemaining(){return 0;}
@@ -520,11 +518,10 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 3: return ""+containTypes();
 		case 4: return ""+rideBasis();
 		case 5: return ""+riderCapacity();
-		case 6: return ""+fuelType();
-		case 7: return ""+powerCapacity();
-		case 8: return ""+activated();
-		case 9: return ""+powerRemaining();
-		case 10: return getManufacturerName();
+		case 6: return ""+powerCapacity();
+		case 7: return ""+activated();
+		case 8: return ""+powerRemaining();
+		case 9: return getManufacturerName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -542,16 +539,10 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
 		case 4: break;
 		case 5: break;
-		case 6:{
-			int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
-			x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
-			setFuelType(x); 
-			break;
-		   } 
-		case 7: setPowerCapacity(CMath.s_parseIntExpression(val)); break;
-		case 8: activate(CMath.s_bool(val)); break;
-		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 10: setManufacturerName(val); break;
+		case 6: setPowerCapacity(CMath.s_parseIntExpression(val)); break;
+		case 7: activate(CMath.s_bool(val)); break;
+		case 8: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 9: setManufacturerName(val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

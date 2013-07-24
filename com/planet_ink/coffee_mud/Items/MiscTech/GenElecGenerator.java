@@ -64,7 +64,7 @@ public class GenElecGenerator extends StdElecGenerator
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","FUELTYPE","POWERCAP","POWERREM","CONSUMEDTYPES","GENAMTPER"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","POWERCAP","POWERREM","CONSUMEDTYPES","GENAMTPER"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -75,9 +75,8 @@ public class GenElecGenerator extends StdElecGenerator
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+fuelType();
-		case 5: return ""+powerCapacity();
-		case 6: 
+		case 4: return ""+powerCapacity();
+		case 5: 
 		{
 			StringBuilder str=new StringBuilder("");
 			for(int i=0;i<getConsumedFuelTypes().length;i++)
@@ -87,9 +86,9 @@ public class GenElecGenerator extends StdElecGenerator
 			}
 			return str.toString();
 		}
-		case 7: return ""+powerRemaining();
-		case 8: return ""+getGeneratedAmountPerTick();
-		case 9: return ""+activated();
+		case 6: return ""+powerRemaining();
+		case 7: return ""+getGeneratedAmountPerTick();
+		case 8: return ""+activated();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -105,14 +104,8 @@ public class GenElecGenerator extends StdElecGenerator
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4:{
-				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
-				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
-				setFuelType(x); 
-				break;
-			   } 
-		case 5: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 6:{
+		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 5:{
 				List<String> mats = CMParms.parseCommas(val,true);
 				int[] newMats = new int[mats.size()];
 				for(int x=0;x<mats.size();x++)
@@ -124,9 +117,9 @@ public class GenElecGenerator extends StdElecGenerator
 				super.setConsumedFuelType(newMats);
 				break;
 			   }
-		case 7: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 8: setGenerationAmountPerTick(CMath.s_parseIntExpression(val)); break;
-		case 9: activate(CMath.s_bool(val)); break;
+		case 6: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 7: setGenerationAmountPerTick(CMath.s_parseIntExpression(val)); break;
+		case 8: activate(CMath.s_bool(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

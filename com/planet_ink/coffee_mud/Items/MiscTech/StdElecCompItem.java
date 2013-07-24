@@ -31,15 +31,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipEngine extends StdElecGenerator implements ShipComponent.ShipEngine
+public class StdElecCompItem extends StdElecItem
 {
-	public String ID(){	return "StdShipEngine";}
-	public StdShipEngine()
+	public String ID(){	return "StdElecCompItem";}
+	public StdElecCompItem()
 	{
 		super();
-		setName("a ships engine");
-		basePhyStats.setWeight(50000);
-		setDisplayText("a ships engine sits here.");
+		setName("an electric component");
+		basePhyStats.setWeight(500);
+		setDisplayText("an electric component sits here.");
 		setDescription("");
 		baseGoldValue=500000;
 		basePhyStats().setLevel(1);
@@ -48,40 +48,84 @@ public class StdShipEngine extends StdElecGenerator implements ShipComponent.Shi
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdShipEngine)) return false;
+		if(!(E instanceof StdElecCompItem)) return false;
 		return super.sameAs(E);
 	}
-	protected int maxThrust=1000;
-	public int getMaxThrust(){return maxThrust;}
-	public void setMaxThrust(int max){maxThrust=max;}
-	protected int thrust=1000;
-	public int getThrust(){return thrust;}
-	public void setThrust(int current){thrust=current;}
 	
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	private volatile String circuitKey=null;
+	
+	public void destroy()
 	{
-		super.executeMsg(myHost, msg);
+		if((!destroyed)&&(circuitKey!=null))
+		{
+			CMLib.tech().unregisterElectronics(this,circuitKey);
+			circuitKey=null;
+		}
+		super.destroy();
+	}
+	
+	public void setOwner(ItemPossessor newOwner)
+	{
+		final ItemPossessor prevOwner=super.owner;
+		super.setOwner(newOwner);
+		if(prevOwner != newOwner)
+		{
+			if(newOwner instanceof Room)
+				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
+			else
+			{
+				CMLib.tech().unregisterElectronics(this,circuitKey);
+				circuitKey=null;
+			}
+		}
+	}
+	
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_GET:
-				clearFuelCache();
-				break;
-			case CMMsg.TYP_PUT:
-				clearFuelCache();
-				break;
 			case CMMsg.TYP_ACTIVATE:
-				this.activate(true);
+				if(!isAllWiringConnected(this))
+				{
+					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
+					return false;
+				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				this.activate(false);
 				break;
 			case CMMsg.TYP_LOOK:
-				return;
+				break;
 			case CMMsg.TYP_POWERCURRENT:
 				break;
 			}
 		}
+		return super.okMessage(host, msg);
 	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_ACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> activate(s) <T-NAME>.");
+				this.activate(true);
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> deactivate(s) <T-NAME>.");
+				this.activate(false);
+				break;
+			case CMMsg.TYP_LOOK:
+				return;
+			}
+		}
+		super.executeMsg(host, msg);
+	}
+	
 }

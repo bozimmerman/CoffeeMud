@@ -214,13 +214,6 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					return false;
 				}
 				else
-				if(!StdElecItem.isAllWiringConnected(this))
-				{
-					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
-						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
-					return false;
-				}
-				else
 				if(powerRemaining()<=0)
 				{
 					if((!CMLib.tech().seekBatteryPower(this, this.circuitKey))
@@ -405,6 +398,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				break;
 			case CMMsg.TYP_POWERCURRENT:
 				{
+					if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+						nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
 					final int powerToGive=msg.value();
 					if(powerToGive>0)
 					{
@@ -428,6 +423,10 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 						}
 					}
 					forceReadersSeeNew();
+					if(System.currentTimeMillis()>nextPowerCycleTmr)
+					{
+						deactivateSystem();
+					}
 				}
 				break;
 			}
@@ -475,7 +474,6 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		{
 			CMLib.tech().unregisterElectronics(this,circuitKey);
 			circuitKey=null;
-			CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
 		}
 		super.destroy();
 	}
@@ -487,40 +485,12 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		if(prevOwner != owner)
 		{
 			if(owner instanceof Room)
-			{
-				if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELECTRONICS))
-					CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
 				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
-			}
 			else
-			{
-				CMLib.threads().deleteTick(this,Tickable.TICKID_ELECTRONICS);
-				CMLib.tech().unregisterElectronics(this,circuitKey);
 				circuitKey=null;
-			}
 		}
 	}
 
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking, tickID))
-			return false;
-		if(tickID==Tickable.TICKID_ELECTRONICS)
-		{
-			if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-				nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
-			if(!activated())
-			{
-			}
-			else
-			if(System.currentTimeMillis()>nextPowerCycleTmr)
-			{
-				deactivateSystem();
-			}
-		}
-		return true;
-	}
-	
 	public void deactivateSystem()
 	{
 		if(activated())

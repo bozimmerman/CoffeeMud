@@ -65,10 +65,7 @@ public class GenElecPanel extends StdElecPanel
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-											"CONTAINTYPES","FUELTYPE","POWERCAP",
-											"ACTIVATED","POWERREM","PANTYPE"
-											};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","POWERCAP", "ACTIVATED","POWERREM","PANTYPE" };
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -79,11 +76,10 @@ public class GenElecPanel extends StdElecPanel
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+fuelType();
-		case 5: return ""+powerCapacity();
-		case 6: return ""+activated();
-		case 7: return ""+powerRemaining();
-		case 8: return ""+panelType();
+		case 4: return ""+powerCapacity();
+		case 5: return ""+activated();
+		case 6: return ""+powerRemaining();
+		case 7: return ""+panelType();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -99,19 +95,13 @@ public class GenElecPanel extends StdElecPanel
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4:{
-				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
-				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
-				setFuelType(x); 
-				break;
-			   } 
-		case 5: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 6: activate(CMath.s_bool(val)); break;
-		case 7: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 8: try{
+		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 5: activate(CMath.s_bool(val)); break;
+		case 6: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 7: try{
 					setPanelType(Electronics.ElecPanel.ElecPanelType.valueOf(val.toUpperCase().trim())); 
-        		}catch(Exception e){}
-        		break;
+				}catch(Exception e){}
+				break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

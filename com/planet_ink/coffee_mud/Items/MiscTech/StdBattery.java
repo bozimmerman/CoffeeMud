@@ -31,11 +31,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdBattery extends StdElecItem implements Electronics.PowerSource
+public class StdBattery extends StdElecCompItem implements Electronics.PowerSource
 {
 	public String ID(){	return "StdBattery";}
-
-	private volatile String circuitKey=null;
 
 	public StdBattery()
 	{
@@ -53,57 +51,6 @@ public class StdBattery extends StdElecItem implements Electronics.PowerSource
 		super.setPowerRemaining(1000);
 	}
 	
-	public boolean okMessage(Environmental host, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_ACTIVATE:
-				if(!StdElecItem.isAllWiringConnected(this))
-				{
-					if(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
-						msg.source().tell("The panel containing "+name()+" is not activated or connected.");
-					return false;
-				}
-				break;
-			case CMMsg.TYP_DEACTIVATE:
-				break;
-			case CMMsg.TYP_LOOK:
-				break;
-			case CMMsg.TYP_POWERCURRENT:
-				break;
-			}
-		}
-		return super.okMessage(host, msg);
-	}
-	
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_ACTIVATE:
-				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> activate(s) <T-NAME>.");
-				this.activate(true);
-				break;
-			case CMMsg.TYP_DEACTIVATE:
-				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> deactivate(s) <T-NAME>.");
-				this.activate(false);
-				break;
-			case CMMsg.TYP_LOOK:
-				super.executeMsg(host, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
-				return;
-			}
-		}
-		super.executeMsg(host, msg);
-	}
-	
 	public void setMiscText(String newText)
 	{
 		if(CMath.isInteger(newText))
@@ -117,30 +64,19 @@ public class StdBattery extends StdElecItem implements Electronics.PowerSource
 		return super.sameAs(E);
 	}
 	
-	public void destroy()
+	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		if((!destroyed)&&(circuitKey!=null))
+		if(msg.amITarget(this))
 		{
-			CMLib.tech().unregisterElectronics(this,circuitKey);
-			circuitKey=null;
-		}
-		super.destroy();
-	}
-	public void setOwner(ItemPossessor owner)
-	{
-		final ItemPossessor prevOwner=super.owner;
-		super.setOwner(owner);
-		if(prevOwner != owner)
-		{
-			if(owner instanceof Room)
+			switch(msg.targetMinor())
 			{
-				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
-			}
-			else
-			{
-				CMLib.tech().unregisterElectronics(this,circuitKey);
-				circuitKey=null;
+			case CMMsg.TYP_LOOK:
+				super.executeMsg(host, msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
+				return;
 			}
 		}
+		super.executeMsg(host, msg);
 	}
 }
