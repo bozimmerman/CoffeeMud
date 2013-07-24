@@ -1368,6 +1368,7 @@ public class Test extends StdCommand
 				if(commands.size()<8)
 				{
 					mob.tell("Usage: TEST YAHOO user password url numtimes skiplist journal");
+					return false;
 				}
 				for(int i=1; i<2; i++)
 				{

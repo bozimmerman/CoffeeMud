@@ -569,6 +569,8 @@ public class CMFile extends File
 					return new StringBuffer((String)data);
 				if(data instanceof StringBuffer)
 					return (StringBuffer)data;
+				if(data instanceof StringBuilder)
+					return new StringBuffer((StringBuilder)data);
 				if(data instanceof byte[])
 					return new StringBuffer(CMStrings.bytesToStr((byte[])data));
 			}
@@ -649,6 +651,8 @@ public class CMFile extends File
 					return new StringBuffer((String)data);
 				if(data instanceof StringBuffer)
 					return (StringBuffer)data;
+				if(data instanceof StringBuilder)
+					return new StringBuffer((StringBuilder)data);
 				if(data instanceof byte[])
 					return new StringBuffer(CMStrings.bytesToStr((byte[])data));
 			}
@@ -726,6 +730,8 @@ public class CMFile extends File
 					return CMStrings.strToBytes((String)data);
 				if(data instanceof StringBuffer)
 					return CMStrings.strToBytes(((StringBuffer)data).toString());
+				if(data instanceof StringBuilder)
+					return CMStrings.strToBytes(((StringBuilder)data).toString());
 			}
 			else
 			if(logErrors)
@@ -794,6 +800,9 @@ public class CMFile extends File
 		if(data instanceof StringBuffer)
 			O=data;
 		else
+		if(data instanceof StringBuilder)
+			O=new StringBuffer((StringBuilder)data);
+		else
 		if(data instanceof byte[])
 		{
 			StringBuffer test=textVersion((byte[])data);
@@ -828,6 +837,8 @@ public class CMFile extends File
 			File F=new File(getIOReadableLocalPathAndName());
 			if(O instanceof StringBuffer)
 				O=CMStrings.strToBytes(((StringBuffer)O).toString());
+			if(O instanceof StringBuilder)
+				O=CMStrings.strToBytes(((StringBuilder)data).toString());
 			if(O instanceof String)
 				O=CMStrings.strToBytes(((String)O));
 			if(O instanceof byte[])
@@ -883,6 +894,9 @@ public class CMFile extends File
 		else
 		if(data instanceof StringBuffer)
 			O=(StringBuffer)data;
+		else
+		if(data instanceof StringBuilder)
+			O=new StringBuffer((StringBuilder)data);
 		else
 		if(data instanceof byte[])
 			O=new StringBuffer(CMStrings.bytesToStr((byte[])data));

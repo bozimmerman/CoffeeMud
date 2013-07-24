@@ -119,7 +119,7 @@ public class JConsole extends StdCommand
 						try
 						{
 							Context cx=Context.enter();
-							session.rawPrint(cx.evaluateString(myScope, this.input.replace('`','\''),"<cmd>", 1, null).toString());
+							session.rawPrintln(cx.evaluateString(myScope, this.input.replace('`','\''),"<cmd>", 1, null).toString());
 						}
 						catch(Exception e)
 						{

@@ -10,7 +10,7 @@
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
-	    var abort=false;
+		var abort=false;
 		function DoReply(which)
 		{
 			if(abort) return;
@@ -54,12 +54,12 @@
 			document.FORUM.action="forum.cmvp";
 			document.FORUM.submit();
 		}
-        function CancelTo(which)
-        {
-            if(abort) return; abort=true;
-            document.FORUM.action=which;
-            document.FORUM.submit();
-        }
+		function CancelTo(which)
+		{
+			if(abort) return; abort=true;
+			document.FORUM.action=which;
+			document.FORUM.submit();
+		}
 		function DeleteReply(which)
 		{
 			if(abort) return;
@@ -183,18 +183,18 @@
 			</a>
 			</TD>
 			@endif@
-            <TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT></TD>
-            <TD WIDTH=160px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:CancelTo('@RequestParameter?FORUMREFERER@')">
-			    @if?CheckReqParm?FORUMREFERER=@
-			        <FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
-			    @else@
-                    <a href="javascript:CancelTo('@RequestParameter?FORUMREFERER@')" style="text-decoration:none">
-                        <FONT COLOR=WHITE SIZE=-1>
-                        &nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docbback.gif>&nbsp;&nbsp;<B>All Search Results</B>
-                        </FONT>
-                    </a>
-			    @endif@
-			</TD>
+			<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT></TD>
+			@if?CheckReqParm?FORUMREFERER=@
+			@else@
+				<TD WIDTH=160px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:CancelTo('@RequestParameter?FORUMREFERER@')">
+				
+					<a href="javascript:CancelTo('@RequestParameter?FORUMREFERER@')" style="text-decoration:none">
+						<FONT COLOR=WHITE SIZE=-1>
+						&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docbback.gif>&nbsp;&nbsp;<B>All Search Results</B>
+						</FONT>
+					</a>
+				</TD>
+			@endif@
 			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
 			<a href="javascript:Cancel('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
@@ -223,7 +223,7 @@
 	<TR BGCOLOR=LIGHTBLUE>
 		<TD VALIGN=TOP><FONT COLOR=BLUE>@JournalInfo?FROM@</FONT></TD>
 		<TD><FONT COLOR=BLACK SIZE=-1>
-		    @AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @
+			@AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @
 			@if?CheckReqParm?!MSGICON=@
 				<IMG WIDTH=15 HEIGHT=15 SRC=@JournalInfo?MSGICON@>
 			@endif@
@@ -286,7 +286,7 @@
 	<TR BGCOLOR=@RequestParameter?BGCOLOR@>
 		<TD VALIGN=TOP><FONT COLOR=BLUE>@JournalInfo?FROM@</FONT></TD>
 		<TD><FONT COLOR=BLACK SIZE=-1>
-		    @AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @
+			@AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @
 			@if?CheckReqParm?!MSGICON=@
 				<IMG WIDTH=15 HEIGHT=15 SRC=@JournalInfo?MSGICON@>
 			@endif@

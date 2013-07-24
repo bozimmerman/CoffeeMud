@@ -575,7 +575,7 @@ public class MUD extends Thread implements MudHost
 		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
 			e.nextElement().shutdown();
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...unloading resources");
-		Resources.clearResources();
+		Resources.shutdown();
 		Log.sysOut(Thread.currentThread().getName(),"Resources Cleared.");
 		if(S!=null)S.println("All resources unloaded");
 

@@ -2161,7 +2161,10 @@ public class CMMap extends StdLibrary implements WorldMap
 				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
 				@Override public String name() { return ID(); }
 				@Override public long getTickStatus() { return tickStatus; }
-				@Override public boolean tick(Tickable ticking, int tickID) {
+				@Override public boolean tick(Tickable ticking, int tickID) 
+				{
+					Resources.savePropResources();
+					
 					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAPTHREAD)))
 					{

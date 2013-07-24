@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.core.smtp;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMThreadFactory;
 import com.planet_ink.coffee_mud.core.threads.CMThreadPoolExecutor;
-import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -51,12 +50,13 @@ public class SMTPserver extends Thread implements Tickable
 	public String ID(){return "SMTPserver";}
 	public String name(){return "SMTPserver";}
 	public CMObject newInstance(){try{return getClass().newInstance();}catch(Exception e){return new SMTPserver(mud);}}
-	public void initializeClass(){}
+	public void initializeClass()
+	{
+	}
 	public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	
 	public long 		tickStatus=STATUS_NOT;
-	public long 		lastAllProcessing=System.currentTimeMillis();
 	public boolean 		isOK = false;
 	private MudHost 	mud;
 	public CMProps 		page=null;
@@ -393,6 +393,12 @@ public class SMTPserver extends Thread implements Tickable
 			MassMailer massMailer = new MassMailer(page,domain,oldEmailComplaints);
 			
 			TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
+			long lastAllProcessing=0;
+			if(Resources.isPropResource("SMTP","LASTALLPROCESING"))
+				lastAllProcessing=CMath.s_long(Resources.getPropResource("SMTP","LASTALLPROCESING"));
+			if(lastAllProcessing==0)
+				lastAllProcessing=System.currentTimeMillis()-(10*60*1000);
+			long nextAllProcessing=System.currentTimeMillis();
 			
 			// this is where it should attempt any mail forwarding
 			// remember, a 5 day old private mail message is a goner
@@ -405,36 +411,85 @@ public class SMTPserver extends Thread implements Tickable
 				if(smtpJournal.forward)
 				{
 					// Vector mailingList=?
-					final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
+					final List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgsNewerThan(journalName,"ALL",lastAllProcessing-1);
 					for(final JournalsLibrary.JournalEntry msg : msgs)
 					{
-						if(msg.to.equalsIgnoreCase("ALL"))
+						//if(msg.to.equalsIgnoreCase("ALL")) // implied by the query
+						final String subj=msg.subj;
+						final String msgStr=msg.msg.trim();
+						if((subj.equalsIgnoreCase("subscribe"))
+						||(msgStr.equalsIgnoreCase("subscribe")))
 						{
-							final String subj=msg.subj;
-							final String msgStr=msg.msg.trim();
-							if((subj.equalsIgnoreCase("subscribe"))
-							||(msgStr.equalsIgnoreCase("subscribe")))
+							// add to mailing list
+							CMLib.database().DBDeleteJournal(journalName,msg.key);
+							updatedMailingLists= CMLib.journals().subscribeToJournal(journalName, msg.from, false) || updatedMailingLists;
+						}
+						else
+						if((subj.equalsIgnoreCase("unsubscribe"))
+						||(msgStr.equalsIgnoreCase("unsubscribe")))
+						{
+							// remove from mailing list
+							CMLib.database().DBDeleteJournal(journalName,msg.key);
+							updatedMailingLists= CMLib.journals().unsubscribeFromJournal(journalName, msg.from, false) || updatedMailingLists;
+						}
+						else
+						{
+							if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 							{
-								// add to mailing list
-								CMLib.database().DBDeleteJournal(journalName,msg.key);
-								updatedMailingLists= CMLib.journals().subscribeToJournal(journalName, msg.from, false) || updatedMailingLists;
+								String jrnlSubj;
+								if(msg.subj.indexOf("["+journalName+"]")<0)
+								{
+									if(msg.subj.startsWith("RE: "))
+										jrnlSubj="RE: ["+journalName+"] "+msg.subj.substring(4);
+									else
+										jrnlSubj="["+journalName+"] "+msg.subj;
+								}
+								else
+									jrnlSubj=msg.subj;
+								String jrnlMessage=msg.msg;
+								if(jrnlMessage.startsWith("<HTML><BODY>"))
+								{
+									
+								}
+								else
+								{
+									if(jrnlMessage.indexOf("<HTML>")>0)
+									{
+										jrnlMessage=CMStrings.replaceAll(jrnlMessage,"<HTML>","");
+										jrnlMessage=CMStrings.replaceAll(jrnlMessage,"</HTML>","");
+										jrnlMessage=CMStrings.replaceAll(jrnlMessage,"<BODY>","");
+										jrnlMessage=CMStrings.replaceAll(jrnlMessage,"</BODY>","");
+									}
+									else
+										jrnlMessage="<HTML><BODY>"+jrnlMessage+"</BODY></HTML>";
+								}
+								Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+								List<String> mylist=lists.get(journalName);
+								if((mylist!=null)&&(mylist.contains(msg.from)))
+								{
+									for(int i=0;i<mylist.size();i++)
+									{
+										String emailToName=mylist.get(i);
+										if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
+											CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from,emailToName,jrnlSubj,jrnlMessage);
+									}
+								}
 							}
-							else
-							if((subj.equalsIgnoreCase("unsubscribe"))
-							||(msgStr.equalsIgnoreCase("unsubscribe")))
-							{
-								// remove from mailing list
+							if(!isAKeepAllJournal(journalName))
 								CMLib.database().DBDeleteJournal(journalName,msg.key);
-								updatedMailingLists= CMLib.journals().unsubscribeFromJournal(journalName, msg.from, false) || updatedMailingLists;
-							}
 							else
 							{
-								processJournalPosting(journalName, msg, massMailer);
+								Calendar IQE=Calendar.getInstance();
+								IQE.setTimeInMillis(msg.update);
+								IQE.add(Calendar.DATE,getJournalDays());
+								if(IQE.getTimeInMillis()<System.currentTimeMillis())
+									CMLib.database().DBDeleteJournal(journalName,msg.key);
 							}
 						}
 					}
 				}
 			}
+			Resources.setPropResource("SMTP", "LASTALLPROCESSING", Long.toString(nextAllProcessing));
 
 			// here is where the mail is actually sent
 			if((tickID==Tickable.TICKID_EMAIL)
@@ -453,7 +508,6 @@ public class SMTPserver extends Thread implements Tickable
 					}
 				}
 			}
-			lastAllProcessing=System.currentTimeMillis();
 			if(updatedMailingLists)
 			{
 				Resources.updateCachedMultiLists("mailinglists.txt");
@@ -465,63 +519,6 @@ public class SMTPserver extends Thread implements Tickable
 		try{Thread.sleep(1000);}catch(Exception ex){}
 		tickStatus=STATUS_NOT;
 		return true;
-	}
-
-	public void processJournalPosting(final String journalName, final JournalsLibrary.JournalEntry msg, final MassMailer massMailer)
-	{
-		if((msg.update>lastAllProcessing)&&(msg.to!=null)&&(!msg.to.equalsIgnoreCase("JOURNALINTRO")))
-		{
-			String jrnlSubj;
-			if(msg.subj.indexOf("["+journalName+"]")<0)
-			{
-				if(msg.subj.startsWith("RE: "))
-					jrnlSubj="RE: ["+journalName+"] "+msg.subj.substring(4);
-				else
-					jrnlSubj="["+journalName+"] "+msg.subj;
-			}
-			else
-				jrnlSubj=msg.subj;
-			String jrnlMessage=msg.msg;
-			if(jrnlMessage.startsWith("<HTML><BODY>"))
-			{
-				
-			}
-			else
-			{
-				if(jrnlMessage.indexOf("<HTML>")>0)
-				{
-					jrnlMessage=CMStrings.replaceAll(jrnlMessage,"<HTML>","");
-					jrnlMessage=CMStrings.replaceAll(jrnlMessage,"</HTML>","");
-					jrnlMessage=CMStrings.replaceAll(jrnlMessage,"<BODY>","");
-					jrnlMessage=CMStrings.replaceAll(jrnlMessage,"</BODY>","");
-				}
-				else
-				jrnlMessage="<HTML><BODY>"+jrnlMessage+"</BODY></HTML>";
-			}
-			Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
-			List<String> mylist=lists.get(journalName);
-			if((mylist!=null)&&(mylist.contains(msg.from)))
-			{
-				for(int i=0;i<mylist.size();i++)
-				{
-					String to2=mylist.get(i);
-					if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
-					{
-						CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from,to2,jrnlSubj,jrnlMessage);
-					}
-				}
-			}
-		}
-		if(!isAKeepAllJournal(journalName))
-			CMLib.database().DBDeleteJournal(journalName,msg.key);
-		else
-		{
-			Calendar IQE=Calendar.getInstance();
-			IQE.setTimeInMillis(msg.update);
-			IQE.add(Calendar.DATE,getJournalDays());
-			if(IQE.getTimeInMillis()<System.currentTimeMillis())
-				CMLib.database().DBDeleteJournal(journalName,msg.key);
-		}
 	}
 	
 	// interrupt does NOT interrupt the ServerSocket.accept() call...

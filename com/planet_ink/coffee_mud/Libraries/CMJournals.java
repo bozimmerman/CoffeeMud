@@ -345,7 +345,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							{
 								String from=entry.from;
 								String message=entry.msg;
-								Log.sysOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
+								Log.debugOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
 								CMLib.database().DBDeleteJournal(FMJ.NAME(),entry.key);
 							}
 						}

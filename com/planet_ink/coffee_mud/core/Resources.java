@@ -2,6 +2,9 @@ package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.collections.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
 
 
@@ -25,6 +28,8 @@ public class Resources
 {
 	private static final Resources[] rscs=new Resources[256];
 	private static boolean 	 compress=false;
+	private static Object propResourceSync=new Object();
+	private static Map<String,Map<String,String>> propResources;
 	
 	private final Map<String,Object> resources=new STreeMap<String,Object>(new Comparator<String>(){
 		public int compare(String o1, String o2) {
@@ -81,6 +86,11 @@ public class Resources
 	public static final Resources newResources(){ return new Resources();}
 
 	public static final void clearResources(){r()._clearResources();}
+	public static final void shutdown()
+	{
+		Resources.savePropResources();
+		r()._clearResources();
+	}
 	public static final void removeResource(final String ID){ r()._removeResource(ID);}
 	public static final Iterator<String> findResourceKeys(final String srch){return r()._findResourceKeys(srch);}
 	public static final Object getResource(final String ID){return r()._getResource(ID);}
@@ -392,5 +402,130 @@ public class Resources
 		}
 		if(removed) F.saveRaw(text);
 		return removed;
+	}
+
+	public static final Map<String,String> getAllPropResources(String section)
+	{
+		if(propResources==null)
+		{
+			synchronized(propResourceSync)
+			{
+				if(propResources==null)
+				{
+					CMFile file=new CMFile("::/coffeemud_properties.ini",null,false,true);
+					propResources=new TreeMap<String,Map<String,String>>();
+					if(file.exists())
+					{
+						Map<String,String> currSecMap=new TreeMap<String,String>();
+						propResources.put("", currSecMap);
+						final List<String> lines=Resources.getFileLineVector(file.text());
+						for(String line : lines)
+						{
+							line=line.trim();
+							if(line.startsWith("[")&&(line.endsWith("]")))
+							{
+								String currentSection=line.substring(1, line.length()-1).toUpperCase().trim();
+								if(propResources.containsKey(currentSection))
+									currSecMap=propResources.get(currentSection);
+								else
+									currSecMap=new TreeMap<String,String>();
+								propResources.put(currentSection, currSecMap);
+							}
+							else
+							if(line.startsWith("#"))
+								continue;
+							else
+							{
+								int eqSepIndex=line.indexOf('=');
+								if(eqSepIndex<0)
+									continue;
+								try
+								{
+									final String key=line.substring(0,eqSepIndex);
+									final String value=URLDecoder.decode(line.substring(eqSepIndex+1),"UTF-8");
+									currSecMap.put(key.toUpperCase().trim(), value);
+								}
+								catch(UnsupportedEncodingException e) { }
+							}
+						}
+					}
+				}
+			}
+		}
+		if(section.length()>0)
+			section=Thread.currentThread().getName().charAt(0)+section.toUpperCase().trim();
+		synchronized(propResources)
+		{
+			if(!propResources.containsKey(section))
+			{
+				propResources.put(section, new TreeMap<String,String>());
+			}
+			return propResources.get(section);
+		}
+	}
+	
+	public static final boolean isPropResource(String section, String key)
+	{
+		final Map<String,String> secMap = getAllPropResources(section);
+		key=key.toUpperCase().trim();
+		synchronized(secMap)
+		{
+			return secMap.containsKey(key);
+		}
+	}
+	
+	public static final String getPropResource(String section, String key)
+	{
+		final Map<String,String> secMap = getAllPropResources(section);
+		key=key.toUpperCase().trim();
+		synchronized(secMap)
+		{
+			if(!secMap.containsKey(key))
+				return "";
+			return secMap.get(key);
+		}
+	}
+	
+	public static final void setPropResource(String section, String key, String value)
+	{
+		final Map<String,String> secMap = getAllPropResources(section);
+		key=key.toUpperCase().trim();
+		synchronized(secMap)
+		{
+			secMap.put(key, value);
+		}
+	}
+	
+	public static final void savePropResources()
+	{
+		if(propResources!=null)
+		{
+			synchronized(propResourceSync)
+			{
+				if(propResources!=null)
+				{
+					StringBuilder str=new StringBuilder("");
+					for(String section : propResources.keySet())
+					{
+						Map<String,String> secMap=propResources.get(section);
+						if(secMap.size()==0)
+							continue;
+						if(str.length()>0)
+							str.append("\n");
+						str.append("["+section+"]\n");
+						for(String key : secMap.keySet())
+						{
+							try
+							{
+								String value=URLEncoder.encode(secMap.get(key),"UTF-8");
+								str.append(key).append("=").append(value);
+							} catch (UnsupportedEncodingException e) { }
+						}
+					}
+					CMFile file=new CMFile("::/coffeemud_properties.ini",null,false,true);
+					file.saveText(str);
+				}
+			}
+		}
 	}
 }

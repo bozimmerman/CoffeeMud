@@ -894,10 +894,10 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			}
 			if(num<0)
 				return "Failed: No numbers found in "+url+"/messages";
-			CMFile f=new CMFile("::/resources/lastyahoomsg.txt",null,false);
 			int lastMsgNum=-1;
-			if(f.exists() && f.canRead())
-				lastMsgNum=CMath.s_int(f.text().toString().trim());
+			if(Resources.isPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER"))
+				lastMsgNum=CMath.s_int(Resources.getPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER"));
+			
 			if(lastMsgNum>=num)
 				return lastMsgNum+"of "+num+" messages already processed";
 			while((--numTimes)>=0)
@@ -917,7 +917,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					x=msgPage.indexOf("Message  does not exist in ");
 					if((x>0)&&(msgPage.substring(0,x).trim().endsWith("<div class=\"ygrp-contentblock\">")))
 					{
-						f.saveText(Integer.toString(lastMsgNum));
+						Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(lastMsgNum));
 						continue;
 					}
 					return "Failed: to find subject start in url:"+url+"/message/"+lastMsgNum;
@@ -1075,16 +1075,16 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					&&(entry.subj.equals(msg.subj))
 					&&(entry.parent.equals(msg.parent)))
 					{
-						f.saveText(Integer.toString(lastMsgNum));
+						Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(lastMsgNum));
 						return "Failed: DUP!";
 					}
 				CMLib.database().DBWriteJournal(forum.NAME(),msg);
 				if(parent.length()>0)
 					CMLib.database().DBTouchJournalMessage(parent,msg.date);
 				CMLib.journals().clearJournalSummaryStats(forum.NAME());
-				f.saveText(Integer.toString(lastMsgNum));
+				Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(lastMsgNum));
 				if(numTimes>0)
-					CMLib.s_sleep(8000+Math.round(8000.0*CMath.random()));
+					CMLib.s_sleep(4000+Math.round(4000.0*CMath.random()));
 			}
 			return "Post "+lastMsgNum+" submitted.";
 		} catch (UnsupportedEncodingException e) {
