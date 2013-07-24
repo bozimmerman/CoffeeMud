@@ -430,18 +430,23 @@ public class MUD extends Thread implements MudHost
 			}
 		}catch(NoSuchElementException e){}
 		if(S!=null)S.println("done");
-		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Quests");
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.QUEST);e.hasMoreElements();)
-			e.nextElement().shutdown();
-
-		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Electronics");
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.TECH);e.hasMoreElements();)
-			e.nextElement().shutdown();
+		final CMLib.Library[][] libraryShutdownLists={
+				{CMLib.Library.QUEST,CMLib.Library.TECH,CMLib.Library.SESSIONS},
+				{CMLib.Library.STATS,CMLib.Library.THREADS},
+				{CMLib.Library.SOCIALS,CMLib.Library.CLANS,CMLib.Library.CHANNELS,CMLib.Library.JOURNALS,
+					CMLib.Library.POLLS,CMLib.Library.HELP,CMLib.Library.CATALOG,CMLib.Library.MAP,
+					CMLib.Library.PLAYERS
+				}
+		};
+		
+		for(CMLib.Library lib : libraryShutdownLists[0])
+		{
+			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
+			for(Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
+				e.nextElement().shutdown();
+		}
 
 		if(S!=null)S.println("Save thread stopped");
-		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Session Thread");
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.SESSIONS);e.hasMoreElements();)
-			e.nextElement().shutdown();
 
 		if(CMSecurity.isSaveFlag("ROOMMOBS")
 		||CMSecurity.isSaveFlag("ROOMITEMS")
@@ -539,43 +544,38 @@ public class MUD extends Thread implements MudHost
 			if(S!=null)S.println("SMTP Server stopped");
 		}
 
-		if(S!=null)S.print("Stopping all services...");
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.STATS);e.hasMoreElements();)
-			e.nextElement().shutdown();
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.THREADS);e.hasMoreElements();)
+		if(S!=null)S.print("Stopping all threads...");
+		for(CMLib.Library lib : libraryShutdownLists[1])
 		{
-			CMLibrary lib=e.nextElement();
-			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...shutting down Service Engine: " + lib.ID());
-			lib.shutdown();
+			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
+			for(Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
+				e.nextElement().shutdown();
 		}
 		if(S!=null)S.println("done");
 		Log.sysOut(Thread.currentThread().getName(),"Map Threads Stopped.");
 		
-		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.SOCIALS);e.hasMoreElements();)
-			e.nextElement().shutdown();
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.CLANS);e.hasMoreElements();)
-			e.nextElement().shutdown();
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.CHANNELS);e.hasMoreElements();)
-			e.nextElement().shutdown();
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.JOURNALS);e.hasMoreElements();)
-			e.nextElement().shutdown();
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.POLLS);e.hasMoreElements();)
-			e.nextElement().shutdown();
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.HELP);e.hasMoreElements();)
-			e.nextElement().shutdown();
-
-		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...unloading classes");
-		CMClass.shutdown();
-		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...unloading map");
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.CATALOG);e.hasMoreElements();)
-			e.nextElement().shutdown();
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.MAP);e.hasMoreElements();)
-			e.nextElement().shutdown();
-		for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.PLAYERS);e.hasMoreElements();)
-			e.nextElement().shutdown();
+		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down services...");
+		for(CMLib.Library lib : libraryShutdownLists[2])
+		{
+			CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
+			for(Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
+				e.nextElement().shutdown();
+		}
+		for(CMLib.Library lib : CMLib.Library.values())
+		{
+			boolean found=false;
+			for(CMLib.Library[] prevSet : libraryShutdownLists)
+				found=found||CMParms.contains(prevSet, lib);
+			if(!found)
+			{
+				CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down "+CMStrings.capitalizeAndLower(lib.name())+"...");
+				for(Enumeration<CMLibrary> e=CMLib.libraries(lib);e.hasMoreElements();)
+					e.nextElement().shutdown();
+			}
+		}
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...unloading resources");
 		Resources.shutdown();
+		
 		Log.sysOut(Thread.currentThread().getName(),"Resources Cleared.");
 		if(S!=null)S.println("All resources unloaded");
 
@@ -597,6 +597,8 @@ public class MUD extends Thread implements MudHost
 
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...unloading macros");
 		CMLib.lang().clear();
+		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...unloading classes");
+		CMClass.shutdown();
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 
 		try{Thread.sleep(500);}catch(Exception i){}
