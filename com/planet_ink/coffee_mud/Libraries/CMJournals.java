@@ -41,9 +41,6 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	protected final SHashtable<String,CommandJournal>	commandJournals=new SHashtable<String,CommandJournal>();
 	protected final SHashtable<String,ForumJournal>		forumJournals=new SHashtable<String,ForumJournal>();
 	
-	private TickClient serviceClient=null;
-	public TickClient getServiceClient() { return serviceClient;}
-	
 	@SuppressWarnings("unchecked")
     protected Hashtable<String,JournalSummaryStats> getSummaryStats()
 	{
@@ -359,28 +356,31 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	public boolean activate() 
 	{
 		if(serviceClient==null)
-			serviceClient=CMLib.threads().startTickDown(new Tickable(){
-				private long tickStatus=Tickable.STATUS_NOT;
-				@Override public String ID() { return "THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-				@Override public CMObject newInstance() { return this; }
-				@Override public CMObject copyOf() { return this; }
-				@Override public void initializeClass() { }
-				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-				@Override public String name() { return ID(); }
-				@Override public long getTickStatus() { return tickStatus; }
-				@Override public boolean tick(Tickable ticking, int tickID) {
-					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
-					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.JOURNALTHREAD)))
-					{
-						isDebugging=CMSecurity.isDebugging(DbgFlag.JOURNALTHREAD);
-						tickStatus=Tickable.STATUS_ALIVE;
-						expirationJournalSweep();
-						setThreadStatus(serviceClient,"sleeping");
-					}
-					tickStatus=Tickable.STATUS_NOT;
-					return true;
-				}
-			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+		{
+			name="THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+		}
+		return true;
+	}
+	
+	@Override public boolean tick(Tickable ticking, int tickID) 
+	{
+		tickStatus=Tickable.STATUS_ALIVE;
+		try
+		{
+			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.JOURNALTHREAD)))
+			{
+				isDebugging=CMSecurity.isDebugging(DbgFlag.JOURNALTHREAD);
+				tickStatus=Tickable.STATUS_ALIVE;
+				expirationJournalSweep();
+				setThreadStatus(serviceClient,"sleeping");
+			}
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+		}
 		return true;
 	}
 	
@@ -405,9 +405,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		clearCommandJournals();
 		clearForumJournals();
-		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
-			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
 			serviceClient=null;
 		}
 		return true;

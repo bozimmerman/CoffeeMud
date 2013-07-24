@@ -55,8 +55,6 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	public final AtomicInteger nextKey = new AtomicInteger(0);
 
-	private TickClient serviceClient=null;
-
 	protected CMMsg powerMsg = null;
 
 	public void initializeClass()
@@ -178,27 +176,29 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public boolean activate()
 	{
 		if(serviceClient==null)
-			serviceClient=CMLib.threads().startTickDown(new Tickable(){
-				private long tickStatus=Tickable.STATUS_NOT;
-				@Override public String ID() { return "THWired"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-				@Override public CMObject newInstance() { return this; }
-				@Override public CMObject copyOf() { return this; }
-				@Override public void initializeClass() { }
-				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-				@Override public String name() { return ID(); }
-				@Override public long getTickStatus() { return tickStatus; }
-				@Override public boolean tick(Tickable ticking, int tickID) {
-					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ELECTRICTHREAD))
-					{
-						isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
-						tickStatus=Tickable.STATUS_ALIVE;
-						runElectricCurrents();
-						setThreadStatus(serviceClient,"sleeping");
-					}
-					tickStatus=Tickable.STATUS_NOT;
-					return true;
-				}
-			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), 1);
+		{
+			name="THWired"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), 1);
+		}
+		return true;
+	}
+	
+	@Override public boolean tick(Tickable ticking, int tickID) 
+	{
+		try
+		{
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ELECTRICTHREAD))
+			{
+				isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
+				tickStatus=Tickable.STATUS_ALIVE;
+				runElectricCurrents();
+			}
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			setThreadStatus(serviceClient,"sleeping");
+		}
 		return true;
 	}
 	
@@ -206,9 +206,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		sets.clear();
 		manufacturers.clear();
-		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
-			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
 			serviceClient=null;
 		}
 		return true;

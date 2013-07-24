@@ -54,9 +54,6 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Map<String,SLinkedList<LocatedPair>>
 								scriptHostMap			= new STreeMap<String,SLinkedList<LocatedPair>>();
 
-	private TickClient 			thread	 = null;
-	public TickClient getServiceClient() { return thread;}
-	
 	private static final long EXPIRE_1MIN	= 1*60*1000;
 	private static final long EXPIRE_5MINS	= 5*60*1000;
 	private static final long EXPIRE_10MINS	= 10*60*1000;
@@ -2151,43 +2148,45 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	public boolean activate() 
 	{
-		if(thread==null)
-			thread=CMLib.threads().startTickDown(new Tickable(){
-				private long tickStatus=Tickable.STATUS_NOT;
-				@Override public String ID() { return "THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-				@Override public CMObject newInstance() { return this; }
-				@Override public CMObject copyOf() { return this; }
-				@Override public void initializeClass() { }
-				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-				@Override public String name() { return ID(); }
-				@Override public long getTickStatus() { return tickStatus; }
-				@Override public boolean tick(Tickable ticking, int tickID) 
-				{
-					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
-					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAPTHREAD)))
-					{
-						isDebugging=CMSecurity.isDebugging(DbgFlag.MAPTHREAD);
-						tickStatus=Tickable.STATUS_ALIVE;
-						roomMaintSweep();
-						setThreadStatus(thread,"sleeping");
-					}
-					tickStatus=Tickable.STATUS_NOT;
-					return true;
-				}
-			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+		if(serviceClient==null)
+		{
+			name="THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+		}
 		return true;
 	}
 	
+	@Override public boolean tick(Tickable ticking, int tickID) 
+	{
+		try
+		{
+			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAPTHREAD)))
+			{
+				isDebugging=CMSecurity.isDebugging(DbgFlag.MAPTHREAD);
+				tickStatus=Tickable.STATUS_ALIVE;
+				roomMaintSweep();
+			}
+			Resources.savePropResources();
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			setThreadStatus(serviceClient,"sleeping");
+		}
+		return true;
+	}
+
 	public boolean shutdown() 
 	{
 		areasList.clear();
 		deitiesList.clear();
 		space.clear();
 		globalHandlers.clear();
-		if((thread!=null)&&(thread.getClientObject()!=null))
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
-			CMLib.threads().deleteTick(thread.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
-			thread=null;
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			serviceClient=null;
 		}
 		return true;
 	}
@@ -2196,7 +2195,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		final boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
 		final boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
-		setThreadStatus(thread,"expiration sweep");
+		setThreadStatus(serviceClient,"expiration sweep");
 		final long currentTime=System.currentTimeMillis();
 		final boolean debug=CMSecurity.isDebugging(CMSecurity.DbgFlag.VACUUM);
 		final MOB expireM=getFactoryMOB(null);
@@ -2247,7 +2246,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					for(int s=0;s<stuffToGo.size();s++)
 					{
 						Environmental E=stuffToGo.elementAt(s);
-						setThreadStatus(thread,"expiring "+E.Name());
+						setThreadStatus(serviceClient,"expiring "+E.Name());
 						expireMsg.setTarget(E);
 						if(R.okMessage(expireM,expireMsg))
 							R.sendOthers(expireM,expireMsg);
@@ -2263,7 +2262,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				R=roomsToGo.elementAt(r);
 				expireM.setLocation(R);
 				expireMsg.setTarget(R);
-				setThreadStatus(thread,"expirating room "+getExtendedRoomID(R));
+				setThreadStatus(serviceClient,"expirating room "+getExtendedRoomID(R));
 				if(debug)
 				{
 					String roomID=getExtendedRoomID(R);
@@ -2275,7 +2274,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			
 		}
 		catch(java.util.NoSuchElementException e){}
-		setThreadStatus(thread,"title sweeping");
+		setThreadStatus(serviceClient,"title sweeping");
 		List<String> playerList=CMLib.database().getUserList();
 		try
 		{
@@ -2285,19 +2284,19 @@ public class CMMap extends StdLibrary implements WorldMap
 				LandTitle T=CMLib.law().getLandTitle(R);
 				if(T!=null)
 				{
-					setThreadStatus(thread,"checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
+					setThreadStatus(serviceClient,"checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
 					T.updateLot(playerList);
-					setThreadStatus(thread,"title sweeping");
+					setThreadStatus(serviceClient,"title sweeping");
 				}
 			}
 		}catch(NoSuchElementException nse){}
 		
-		setThreadStatus(thread,"cleaning scripts");
+		setThreadStatus(serviceClient,"cleaning scripts");
 		for(String areaKey : scriptHostMap.keySet())
 			cleanScriptHosts(scriptHostMap.get(areaKey), null, true);
 		
 		long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
-		setThreadStatus(thread,"checking");
+		setThreadStatus(serviceClient,"checking");
 		try
 		{
 			for(Enumeration<Room> r=rooms();r.hasMoreElements();)
@@ -2318,18 +2317,18 @@ public class CMMap extends StdLibrary implements WorldMap
 								if(ticked)
 								{
 									// we have a dead group.. let the group handler deal with it.
-									Log.errOut(thread.getName(),mob.name()+" in room "+R.roomID()+" unticked in dead group (Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+".");
+									Log.errOut(serviceClient.getName(),mob.name()+" in room "+R.roomID()+" unticked in dead group (Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+".");
 									continue;
 								}
 								else
-									Log.errOut(thread.getName(),mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+									Log.errOut(serviceClient.getName(),mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
 							}
 							else
-								Log.errOut(thread.getName(),"Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
-							setThreadStatus(thread,"destroying unticked mob "+mob.name());
+								Log.errOut(serviceClient.getName(),"Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
+							setThreadStatus(serviceClient,"destroying unticked mob "+mob.name());
 							if(CMLib.players().getPlayer(mob.Name())==null) mob.destroy();
 							R.delInhabitant(mob);
-							setThreadStatus(thread,"checking");
+							setThreadStatus(serviceClient,"checking");
 						}
 					}
 				}

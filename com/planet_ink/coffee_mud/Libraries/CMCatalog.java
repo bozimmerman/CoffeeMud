@@ -40,9 +40,6 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 {
 	public String ID(){return "CMCatalog";}
 	
-	private TickClient serviceClient=null;
-	public TickClient getServiceClient() { return serviceClient;}
-	
 	public DVector icatalog=new DVector(2);
 	public DVector mcatalog=new DVector(2);
 
@@ -716,39 +713,41 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	public boolean activate() 
 	{
 		if(serviceClient==null)
-			serviceClient=CMLib.threads().startTickDown(new Tickable(){
-				private long tickStatus=Tickable.STATUS_NOT;
-				@Override public String ID() { return "THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-				@Override public CMObject newInstance() { return this; }
-				@Override public CMObject copyOf() { return this; }
-				@Override public void initializeClass() { }
-				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-				@Override public String name() { return ID(); }
-				@Override public long getTickStatus() { return tickStatus; }
-				@Override public boolean tick(Tickable ticking, int tickID) {
-					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGTHREAD))
-					{
-						tickStatus=Tickable.STATUS_ALIVE;
-						isDebugging=CMSecurity.isDebugging(DbgFlag.CATALOGTHREAD);
-						setThreadStatus(serviceClient,"checking catalog references.");
-						String[] names = getCatalogItemNames();
-						for(int n=0;n<names.length;n++)
-						{
-							CataData data=getCatalogItemData(names[n]);
-							data.cleanHouse();
-						}
-						names = getCatalogMobNames();
-						for(int n=0;n<names.length;n++)
-						{
-							CataData data=getCatalogMobData(names[n]);
-							data.cleanHouse();
-						}
-						setThreadStatus(serviceClient,"sleeping");
-					}
-					tickStatus=Tickable.STATUS_NOT;
-					return true;
+		{
+			name="THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+		}
+		return true;
+	}
+	
+	@Override public boolean tick(Tickable ticking, int tickID) 
+	{
+		try
+		{
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGTHREAD))
+			{
+				tickStatus=Tickable.STATUS_ALIVE;
+				isDebugging=CMSecurity.isDebugging(DbgFlag.CATALOGTHREAD);
+				setThreadStatus(serviceClient,"checking catalog references.");
+				String[] names = getCatalogItemNames();
+				for(int n=0;n<names.length;n++)
+				{
+					CataData data=getCatalogItemData(names[n]);
+					data.cleanHouse();
 				}
-			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+				names = getCatalogMobNames();
+				for(int n=0;n<names.length;n++)
+				{
+					CataData data=getCatalogMobData(names[n]);
+					data.cleanHouse();
+				}
+			}
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			setThreadStatus(serviceClient,"sleeping");
+		}
 		return true;
 	}
 	
@@ -756,9 +755,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		icatalog=new DVector(2);
 		mcatalog=new DVector(2);
-		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
-			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
 			serviceClient=null;
 		}
 		return true;

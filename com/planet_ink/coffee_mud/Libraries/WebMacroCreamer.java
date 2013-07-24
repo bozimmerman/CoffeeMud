@@ -841,6 +841,81 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response) {
 	}
 
+	public boolean activate()
+	{
+		String flag=Resources.getPropResource("WEBMACROCREAMER", "RUNYAHOOMSGGRABBER");
+		if(flag.equalsIgnoreCase("TRUE"))
+		{
+			name="THCreamer"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK|Tickable.TICKID_LONGERMASK, 15 * 10);
+		}
+		return true;
+	}
+	public boolean shutdown()
+	{
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK|Tickable.TICKID_LONGERMASK))
+		{
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK|Tickable.TICKID_LONGERMASK);
+			serviceClient=null;
+		}
+		return true;
+	}
+
+	public TickClient getServiceClient() { return serviceClient;}
+	
+	@Override
+	public long getTickStatus() {
+		return tickStatus;
+	}
+	@Override
+	public boolean tick(Tickable ticking, int tickID) {
+		try
+		{
+			tickStatus=Tickable.STATUS_ALIVE;
+			String timesPerRunStr=Resources.getPropResource("WEBMACROCREAMER", "TIMESPERRUN");
+			if(!CMath.isInteger(timesPerRunStr))
+			{
+				Log.errOut("WebMacroCreamer var TIMESPERRUN not properly set.");
+				return true;
+			}
+			String yahooUsername=Resources.getPropResource("WEBMACROCREAMER", "YAHOOUSER");
+			if(yahooUsername.length()==0)
+			{
+				Log.errOut("WebMacroCreamer var YAHOOUSER not properly set.");
+				return true;
+			}
+			String yahooPassword=Resources.getPropResource("WEBMACROCREAMER", "YAHOOPASSWORD");
+			if(yahooUsername.length()==0)
+			{
+				Log.errOut("WebMacroCreamer var YAHOOPASSWORD not properly set.");
+				return true;
+			}
+			String yahooUrl=Resources.getPropResource("WEBMACROCREAMER", "YAHOOURL");
+			if(yahooUrl.length()==0)
+			{
+				Log.errOut("WebMacroCreamer var YAHOOURL not properly set.");
+				return true;
+			}
+			String forumName=Resources.getPropResource("WEBMACROCREAMER", "FORUM");
+			if(forumName.length()==0)
+			{
+				Log.errOut("WebMacroCreamer var FORUM not properly set.");
+				return true;
+			}
+			String skipList=Resources.getPropResource("WEBMACROCREAMER", "SKIPLIST");
+			int[] skipInts=CMParms.toIntArray(CMParms.parseCommas(skipList,true));
+			String resp=copyYahooGroupMsgs(yahooUsername, yahooPassword, yahooUrl, CMath.s_int(timesPerRunStr), skipInts, forumName);
+			if((resp!=null)&&(resp.toLowerCase().startsWith("fail")))
+				Log.warnOut("Yahoo Groups Copier failure reported: "+resp);
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			Resources.savePropResources();
+		}
+		return true;
+	}
+	
 	@Override
 	public String copyYahooGroupMsgs(String user, String password, String url, int numTimes, int[] skipList, String journal)
 	{
@@ -1076,7 +1151,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					&&(entry.parent.equals(msg.parent)))
 					{
 						Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(lastMsgNum));
-						return "Failed: DUP!";
+						Log.debugOut("WebMacroCreamer","Msg#"+lastMsgNum+" was a dup!");
+						continue;
 					}
 				CMLib.database().DBWriteJournal(forum.NAME(),msg);
 				if(parent.length()>0)

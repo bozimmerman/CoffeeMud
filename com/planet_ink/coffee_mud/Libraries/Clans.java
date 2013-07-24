@@ -48,9 +48,6 @@ public class Clans extends StdLibrary implements ClanManager
 	public List<Pair<Clan,Integer>>all2				  = new Vector<Pair<Clan,Integer>>();
 	public long	 		  		   lastGovernmentLoad = 0;
 
-	private TickClient serviceClient=null;
-	public TickClient getServiceClient() { return serviceClient;}
-
 	public String ID(){return "Clans";}
 
 	public boolean isCommonClanRelations(Clan C1, Clan C2, int relation)
@@ -1322,28 +1319,31 @@ public class Clans extends StdLibrary implements ClanManager
 	public boolean activate() 
 	{
 		if(serviceClient==null)
-			serviceClient=CMLib.threads().startTickDown(new Tickable(){
-				private long tickStatus=Tickable.STATUS_NOT;
-				@Override public String ID() { return "THClans"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-				@Override public CMObject newInstance() { return this; }
-				@Override public CMObject copyOf() { return this; }
-				@Override public void initializeClass() { }
-				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-				@Override public String name() { return ID(); }
-				@Override public long getTickStatus() { return tickStatus; }
-				@Override public boolean tick(Tickable ticking, int tickID) {
-					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
-					{
-						tickStatus=Tickable.STATUS_ALIVE;
-						isDebugging=CMSecurity.isDebugging(DbgFlag.CLANS);
-						setThreadStatus(serviceClient,"clan trophy scan");
-						clanTrophyScan();
-						setThreadStatus(serviceClient,"sleeping");
-					}
-					tickStatus=Tickable.STATUS_NOT;
-					return true;
-				}
-			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis()*CMProps.getTicksPerDay(), 1);
+		{
+			name="THClans"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis()*CMProps.getTicksPerDay(), 1);
+		}
+		return true;
+	}
+	
+	@Override public boolean tick(Tickable ticking, int tickID) 
+	{
+		try
+		{
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
+			{
+				tickStatus=Tickable.STATUS_ALIVE;
+				isDebugging=CMSecurity.isDebugging(DbgFlag.CLANS);
+				setThreadStatus(serviceClient,"clan trophy scan");
+				clanTrophyScan();
+				setThreadStatus(serviceClient,"sleeping");
+			}
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			setThreadStatus(serviceClient,"sleeping");
+		}
 		return true;
 	}
 	
@@ -1356,9 +1356,9 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 		all.clear();
 		all2.clear();
-		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
-			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
 			serviceClient=null;
 		}
 		return true;

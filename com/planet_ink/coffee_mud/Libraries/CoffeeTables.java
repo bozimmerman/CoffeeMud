@@ -37,9 +37,6 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 	public String ID(){return "CoffeeTables";}
 	public CoffeeTableRow todays=null;
 	
-	private TickClient serviceClient=null;
-	public TickClient getServiceClient() { return serviceClient;}
-	
 	public void update()
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STATS))
@@ -122,47 +119,49 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 	public boolean activate() 
 	{
 		if(serviceClient==null)
-			serviceClient=CMLib.threads().startTickDown(new Tickable(){
-				private long tickStatus=Tickable.STATUS_NOT;
-				@Override public String ID() { return "THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-				@Override public CMObject newInstance() { return this; }
-				@Override public CMObject copyOf() { return this; }
-				@Override public void initializeClass() { }
-				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-				@Override public String name() { return ID(); }
-				@Override public long getTickStatus() { return tickStatus; }
-				@Override public boolean tick(Tickable ticking, int tickID) {
-					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
-					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.STATSTHREAD)))
-					{
-						tickStatus=Tickable.STATUS_ALIVE;
-						isDebugging=CMSecurity.isDebugging(DbgFlag.STATSTHREAD);
-						setThreadStatus(serviceClient,"checking database health");
-						String ok=CMLib.database().errorStatus();
-						if((ok.length()!=0)&&(!ok.startsWith("OK")))
-						{
-							Log.errOut(serviceClient.getName(),"DB: "+ok);
-							CMLib.s_sleep(100000);
-						}
-						else
-						{
-							CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
-							CMLib.coffeeTables().update();
-						}
-						setThreadStatus(serviceClient,"sleeping");
-					}
-					tickStatus=Tickable.STATUS_NOT;
-					return true;
+		{
+			name="THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+		}
+		return true;
+	}
+	
+	@Override public boolean tick(Tickable ticking, int tickID) 
+	{
+		try
+		{
+			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.STATSTHREAD)))
+			{
+				tickStatus=Tickable.STATUS_ALIVE;
+				isDebugging=CMSecurity.isDebugging(DbgFlag.STATSTHREAD);
+				setThreadStatus(serviceClient,"checking database health");
+				String ok=CMLib.database().errorStatus();
+				if((ok.length()!=0)&&(!ok.startsWith("OK")))
+				{
+					Log.errOut(serviceClient.getName(),"DB: "+ok);
+					CMLib.s_sleep(100000);
 				}
-			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
+				else
+				{
+					CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
+					CMLib.coffeeTables().update();
+				}
+			}
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			setThreadStatus(serviceClient,"sleeping");
+		}
 		return true;
 	}
 	
 	public boolean shutdown() 
 	{
-		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
-			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
 			serviceClient=null;
 		}
 		return true;

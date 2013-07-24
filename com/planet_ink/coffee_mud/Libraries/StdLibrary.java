@@ -20,10 +20,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class StdLibrary implements CMLibrary
+public class StdLibrary implements CMLibrary, Tickable
 {
 	public String ID(){return "StdLibrary";}
-	public String name() { return ID();}
+	protected String name=ID();
+	public String name(){return name; }
+	protected long tickStatus=Tickable.STATUS_NOT;
+	protected TickClient serviceClient=null; 
 	public CMObject newInstance()
 	{
 		try
@@ -42,7 +45,7 @@ public class StdLibrary implements CMLibrary
 	public boolean activate(){ return true;}
 	public void propertiesLoaded(){ }
 	public boolean shutdown(){ return true;}
-	public TickClient getServiceClient() { return null;}
+	public TickClient getServiceClient() { return serviceClient;}
 	protected boolean isDebugging = false;
 	public void setThreadStatus(TickClient C, String msg)
 	{
@@ -52,5 +55,13 @@ public class StdLibrary implements CMLibrary
 			if(isDebugging)
 				Log.debugOut(C.getName(),msg);
 		}
+	}
+	@Override
+	public long getTickStatus() {
+		return Tickable.STATUS_NOT;
+	}
+	@Override
+	public boolean tick(Tickable ticking, int tickID) {
+		return false;
 	}
 }

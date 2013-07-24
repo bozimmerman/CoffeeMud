@@ -30,7 +30,6 @@ public class Sessions extends StdLibrary implements SessionsList
 {
 	public String ID(){return "Sessions";}
 	
-	private TickClient serviceClient=null;
 	private volatile long nextSweepTime = System.currentTimeMillis(); 
 	
 	public final SLinkedList<Session> all=new SLinkedList<Session>();
@@ -45,8 +44,6 @@ public class Sessions extends StdLibrary implements SessionsList
 			return false;
 		}
 	};
-	
-	public TickClient getServiceClient() { return serviceClient;}
 	
 	public Iterator<Session> all(){return all.iterator();}
 	public Iterable<Session> allIterable(){return all;}
@@ -220,51 +217,53 @@ public class Sessions extends StdLibrary implements SessionsList
 	{
 		nextSweepTime = System.currentTimeMillis()+MudHost.TIME_UTILTHREAD_SLEEP;
 		if(serviceClient==null)
-			serviceClient=CMLib.threads().startTickDown(new Tickable(){
-				private volatile long tickStatus=Tickable.STATUS_NOT;
-				@Override public String ID() { return "THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0); }
-				@Override public CMObject newInstance() { return this; }
-				@Override public CMObject copyOf() { return this; }
-				@Override public void initializeClass() { }
-				@Override public int compareTo(CMObject o) { return (o==this)?0:1; }
-				@Override public String name() { return ID(); }
-				@Override public long getTickStatus() { return tickStatus; }
-				@Override public boolean tick(Tickable ticking, int tickID) {
-					tickStatus=Tickable.STATUS_ALIVE;
-					final double numThreads=all.size();
-					if(numThreads>0.0)
+		{
+			name="THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, 100, 1);
+		}
+		return true;
+	}
+	
+	@Override public boolean tick(Tickable ticking, int tickID) 
+	{
+		tickStatus=Tickable.STATUS_ALIVE;
+		try
+		{
+			final double numThreads=all.size();
+			if(numThreads>0.0)
+			{
+				for(final Session S : all)
+				{
+					if(!S.isRunning()) 
 					{
-						for(final Session S : all)
-						{
-							if(!S.isRunning()) 
-							{
-								CMLib.threads().executeRunnable(S.getGroupName(), S);
-							}
-						}
+						CMLib.threads().executeRunnable(S.getGroupName(), S);
 					}
-					if(System.currentTimeMillis() >= nextSweepTime)
-					{
-						nextSweepTime = System.currentTimeMillis()+MudHost.TIME_UTILTHREAD_SLEEP;
-						if((!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
-						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
-						{
-							isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
-							sessionCheck();
-						}
-					}
-					tickStatus=Tickable.STATUS_NOT;
-					setThreadStatus(serviceClient,"sleeping");
-					return true;
 				}
-			}, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, 100, 1);
+			}
+			if(System.currentTimeMillis() >= nextSweepTime)
+			{
+				nextSweepTime = System.currentTimeMillis()+MudHost.TIME_UTILTHREAD_SLEEP;
+				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.UTILITHREAD))
+				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SESSIONTHREAD)))
+				{
+					isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
+					sessionCheck();
+				}
+			}
+		}
+		finally
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			setThreadStatus(serviceClient,"sleeping");
+		}
 		return true;
 	}
 	
 	public boolean shutdown() 
 	{
-		if((serviceClient!=null)&&(serviceClient.getClientObject()!=null))
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
-			CMLib.threads().deleteTick(serviceClient.getClientObject(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
 			serviceClient=null;
 		}
 		return true;
