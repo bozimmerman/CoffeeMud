@@ -41,7 +41,6 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	protected volatile long   nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
 	protected short 		  powerRemaining	= 0;
 	protected MOB 			  lastReader		= null;
-	protected ElecPanelType   panelType		 	= Electronics.ElecPanel.ElecPanelType.COMPUTER;
 	protected volatile long   nextSoftwareCheck = System.currentTimeMillis()+(10*1000);
 	protected List<Software>  software		 	= null;
 	protected boolean 		  activated		 	= false;
@@ -85,8 +84,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public String getManufacturerName() { return manufacturer; }
 	public void setManufacturerName(String name) { if(name!=null) manufacturer=name; }
 	
-	public ElecPanelType panelType(){return panelType;}
-	public void setPanelType(ElecPanelType type){panelType=type;}
+	public ElecPanelType panelType(){return ElecPanel.ElecPanelType.COMPUTER;}
+	public void setPanelType(ElecPanelType type){ }
 	
 	public boolean canContain(Environmental E)
 	{
