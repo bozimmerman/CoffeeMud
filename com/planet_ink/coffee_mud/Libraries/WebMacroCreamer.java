@@ -847,15 +847,15 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		if(flag.equalsIgnoreCase("TRUE"))
 		{
 			name="THCreamer"+Thread.currentThread().getThreadGroup().getName().charAt(0);
-			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK|Tickable.TICKID_LONGERMASK, 15 * 10);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, 2);
 		}
 		return true;
 	}
 	public boolean shutdown()
 	{
-		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK|Tickable.TICKID_LONGERMASK))
+		if(CMLib.threads().isTicking(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK))
 		{
-			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK|Tickable.TICKID_LONGERMASK);
+			CMLib.threads().deleteTick(this, TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK);
 			serviceClient=null;
 		}
 		return true;
@@ -867,6 +867,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	public long getTickStatus() {
 		return tickStatus;
 	}
+	
+	protected YahooGroupSession yahooSession=null;
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID) {
 		try
@@ -878,33 +881,71 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				Log.errOut("WebMacroCreamer var TIMESPERRUN not properly set.");
 				return true;
 			}
-			String yahooUsername=Resources.getPropResource("WEBMACROCREAMER", "YAHOOUSER");
-			if(yahooUsername.length()==0)
+			if(yahooSession==null)
 			{
-				Log.errOut("WebMacroCreamer var YAHOOUSER not properly set.");
-				return true;
+				String yahooUsername=Resources.getPropResource("WEBMACROCREAMER", "YAHOOUSER");
+				if(yahooUsername.length()==0)
+				{
+					Log.errOut("WebMacroCreamer var YAHOOUSER not properly set.");
+					return true;
+				}
+				String yahooPassword=Resources.getPropResource("WEBMACROCREAMER", "YAHOOPASSWORD");
+				if(yahooUsername.length()==0)
+				{
+					Log.errOut("WebMacroCreamer var YAHOOPASSWORD not properly set.");
+					return true;
+				}
+				String yahooUrl=Resources.getPropResource("WEBMACROCREAMER", "YAHOOURL");
+				if(yahooUrl.length()==0)
+				{
+					Log.errOut("WebMacroCreamer var YAHOOURL not properly set.");
+					return true;
+				}
+				String forumName=Resources.getPropResource("WEBMACROCREAMER", "FORUM");
+				if(forumName.length()==0)
+				{
+					Log.errOut("WebMacroCreamer var FORUM not properly set.");
+					return true;
+				}
+				String skipList=Resources.getPropResource("WEBMACROCREAMER", "sess.skipList");
+				int[] skipInts=CMParms.toIntArray(CMParms.parseCommas(skipList,true));
+				yahooSession.url=yahooUrl;
+				yahooSession.user=yahooUsername;
+				yahooSession.password=yahooPassword;
+				yahooSession.numTotalTimes=-1;
+				yahooSession.numTimes=1;
+				yahooSession.journal=forumName;
+				yahooSession.skipList=skipInts;
+				Arrays.sort(yahooSession.skipList);
 			}
-			String yahooPassword=Resources.getPropResource("WEBMACROCREAMER", "YAHOOPASSWORD");
-			if(yahooUsername.length()==0)
+			if(yahooSession.numTotalTimes<=0)
 			{
-				Log.errOut("WebMacroCreamer var YAHOOPASSWORD not properly set.");
-				return true;
+				if(yahooSession.H!=null)
+				{
+					yahooSession.H.finished();
+					yahooSession.H=null;
+				}
+				yahooSession.H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
+				try {
+					String resp=this.loginToYahooSession(yahooSession);
+					if(resp.length()>0)
+					{
+						Log.warnOut("Yahoo Groups Copier failure reported: "+resp);
+						return true;
+					}
+					yahooSession.numTotalTimes=CMath.s_int(timesPerRunStr);
+				} catch (UnsupportedEncodingException e) {
+					Log.errOut(Thread.currentThread().getName(),e);
+				}
+				finally {
+					yahooSession.H.finished();
+					yahooSession.H=null;
+				}
 			}
-			String yahooUrl=Resources.getPropResource("WEBMACROCREAMER", "YAHOOURL");
-			if(yahooUrl.length()==0)
-			{
-				Log.errOut("WebMacroCreamer var YAHOOURL not properly set.");
-				return true;
-			}
-			String forumName=Resources.getPropResource("WEBMACROCREAMER", "FORUM");
-			if(forumName.length()==0)
-			{
-				Log.errOut("WebMacroCreamer var FORUM not properly set.");
-				return true;
-			}
-			String skipList=Resources.getPropResource("WEBMACROCREAMER", "SKIPLIST");
-			int[] skipInts=CMParms.toIntArray(CMParms.parseCommas(skipList,true));
-			String resp=copyYahooGroupMsgs(yahooUsername, yahooPassword, yahooUrl, CMath.s_int(timesPerRunStr), skipInts, forumName);
+			
+			yahooSession.numTotalTimes--;
+			yahooSession.numTimes=1;
+			String resp=copyYahooGroupMsg(yahooSession);
 			if((resp!=null)&&(resp.toLowerCase().startsWith("fail")))
 				Log.warnOut("Yahoo Groups Copier failure reported: "+resp);
 		}
@@ -916,21 +957,236 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		return true;
 	}
 	
-	@Override
-	public String copyYahooGroupMsgs(String user, String password, String url, int numTimes, int[] skipList, String journal)
+	private static class YahooGroupSession
 	{
-		HttpClient H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
-		Arrays.sort(skipList);
-		
-		try {
-			final String loginUrl="http://login.yahoo.com?login="+URLEncoder.encode(user,"UTF8")+"&passwd="+URLEncoder.encode(password,"UTF8");
-			Map<String,List<String>> M = H.getHeaders(loginUrl);
-			if(M==null)
-				return "Fail: Http error hitting "+loginUrl;
-			StringBuilder cookieSet=new StringBuilder("");
-			List<String> cookies=M.get("Set-Cookie");
-			if(cookies==null)
-				return "Fail: Http get cookies from "+loginUrl;
+		protected HttpClient H=null;
+		protected int numTimes=-1;
+		protected int numTotalTimes=-1;
+		protected int lastMsgNum=-1;
+		protected int numTotal=-1;
+		protected int[] skipList=new int[0];
+		protected String url="";
+		protected String journal="";
+		protected String cookieSet="";
+		protected String user="";
+		protected String password="";
+	}
+	
+	public String copyYahooGroupMsg(YahooGroupSession sess)
+	{
+		while((--sess.numTimes)>=0)
+		{
+			sess.lastMsgNum++;
+			if(sess.lastMsgNum>=sess.numTotal)
+				return sess.lastMsgNum+"of "+sess.numTotal+" messages already processed";
+			if(Arrays.binarySearch(sess.skipList, sess.lastMsgNum)>=0)
+				continue;
+			byte[] b=sess.H.getRawUrl(sess.url+"/message/"+sess.lastMsgNum,sess.cookieSet);
+			if(b==null)
+				return "Failed: to read message from url:"+sess.url+"/message/"+sess.lastMsgNum;
+			String msgPage=new String(b);
+			int startOfSubject=msgPage.indexOf("<em class=\"msg-bg msg-bd\"");
+			if(startOfSubject<0)
+				startOfSubject=msgPage.indexOf("<em class=\"msg-newfont\"");
+			if(startOfSubject<0)
+			{
+				int x=msgPage.indexOf("Message  does not exist in ");
+				if((x>0)&&(msgPage.substring(0,x).trim().endsWith("<div class=\"ygrp-contentblock\">")))
+				{
+					Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(sess.lastMsgNum));
+					continue;
+				}
+				return "Failed: to find subject start in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			}
+			startOfSubject=msgPage.indexOf(">",startOfSubject);
+			int endOfSubject=msgPage.indexOf("</em>",startOfSubject);
+			if(endOfSubject<0)
+				return "Failed: to find subject end in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			String subject=msgPage.substring(startOfSubject+1,endOfSubject).trim();
+			if((subject.length()==0)||(subject.length()>200)||(subject.indexOf('<')>=0)||(subject.indexOf('>')>=0))
+				return "Failed: to find VALID subject '"+subject+"' in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			int startOfDate=msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
+			int endOfDate;
+			if(startOfDate>0)
+				startOfDate+=33;// MAGIC NUMBER
+			else
+			{
+				startOfDate=msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
+				//if(startOfDate<0) System.out.println(msgPage);
+				if(startOfDate<0)
+					return "Failed: to find date start in url:"+sess.url+"/message/"+sess.lastMsgNum;
+				startOfDate+=33;// MAGIC NUMBER
+			}
+			endOfDate=msgPage.indexOf("\"",startOfDate+1);
+			if(endOfDate<0)
+				return "Failed: to find date end in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			String dateStr=msgPage.substring(startOfDate,endOfDate).trim();
+			SimpleDateFormat  format = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'");
+			Date postDate;
+			try
+			{
+				postDate=format.parse(dateStr);
+			}
+			catch(ParseException p)
+			{
+				return "Failed: to parse date '"+dateStr+"' in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			}
+			int startOfAuthor=msgPage.indexOf("<span class=\"name\">");
+			if(startOfAuthor<0)
+				return "Failed: to find author start in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			startOfAuthor=msgPage.indexOf(">",startOfAuthor+4);
+			int endOfAuthor=msgPage.indexOf("</span>",startOfAuthor);
+			if(endOfAuthor<0)
+				return "Failed: to find author end in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			String author=msgPage.substring(startOfAuthor+1,endOfAuthor).trim();
+			author=CMStrings.replaceAll(author,"<wbr>","").trim();
+			if(author.indexOf("profiles.yahoo.com")>0)
+				author=author.substring(author.indexOf("\">")+2,author.lastIndexOf("</a>"));
+			if((author.length()==0)||(author.length()>100))
+				return "Failed: to find VALID author '"+author+"' in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			int startOfMsg=msgPage.indexOf("entry-content");
+			if(startOfMsg<0)
+				return "Failed: to find message in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			startOfMsg=msgPage.indexOf(">",startOfMsg);
+			int endOfMsg=msgPage.indexOf("<tr style=\"height:35px\">",startOfMsg);
+			if(endOfMsg<0)
+				return "Failed: to find end of msg in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			endOfMsg=msgPage.lastIndexOf("</div>",endOfMsg);
+			if(endOfMsg<0)
+				return "Failed: to find end2 of msg in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			String theMessage=msgPage.substring(startOfMsg+1,endOfMsg).trim();
+			while(theMessage.startsWith("<br>"))
+				theMessage=theMessage.substring(4).trim();
+			while(theMessage.endsWith("<br>"))
+				theMessage=theMessage.substring(0,theMessage.length()-4).trim();
+			theMessage=CMStrings.replaceAll(theMessage,"\n","");
+			theMessage=CMStrings.replaceAll(theMessage,"\r","");
+			if(theMessage.trim().length()==0)
+				return "Failed: to find lengthy msg in url:"+sess.url+"/message/"+sess.lastMsgNum;
+			JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(sess.journal);
+			if(forum==null)
+				return "Failed: bad forum given";
+			if(author.indexOf('@')>=0)
+			{
+				MOB aM=CMLib.players().getLoadPlayerByEmail(author);
+				if(aM!=null)
+					author=aM.Name();
+				else
+				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0)
+				{
+					PlayerAccount A=CMLib.players().getLoadAccountByEmail(author);
+					if(A==null)
+						author=author.substring(0,author.indexOf('@'));
+					else
+						author=A.accountName();
+				}
+				else
+					author=author.substring(0,author.indexOf('@'));
+			}
+			else
+			if(CMLib.login().isOkName(author,false))
+				author="_"+author;
+			
+			String parent="";
+			if(subject.toUpperCase().startsWith("RE:"))
+			{
+				String subj=subject;
+				while(subj.toUpperCase().startsWith("RE:")||subj.toLowerCase().startsWith("[coffeemud]"))
+				{
+					if(subj.toUpperCase().startsWith("RE:"))
+						subj=subj.substring(3).trim();
+					if(subj.toLowerCase().startsWith("[coffeemud]"))
+						subj=subj.substring(11).trim();
+				}
+				
+				Vector<JournalEntry> journalEntries=CMLib.database().DBReadJournalPageMsgs(forum.NAME(), null, subj, 0, 0);
+				if((journalEntries!=null)&&(journalEntries.size()>0))
+				{
+					JournalEntry WIN=null;
+					for(JournalEntry J : journalEntries)
+					{
+						if(J.subj.trim().equals(subj))
+							WIN=J;
+					}
+					if(WIN==null)
+					for(JournalEntry J : journalEntries)
+					{
+						if(J.subj.trim().equalsIgnoreCase(subj))
+							WIN=J;
+					}
+					if(WIN==null)
+					for(JournalEntry J : journalEntries)
+					{
+						if(J.subj.trim().indexOf(subj)>=0)
+							WIN=J;
+					}
+					if(WIN==null)
+					for(JournalEntry J : journalEntries)
+					{
+						if(J.subj.toLowerCase().trim().indexOf(subj.toLowerCase())>=0)
+							WIN=J;
+					}
+					
+					if(WIN!=null)
+						parent=WIN.key;
+				}
+				if(parent.length()==0)
+					subject=subj;
+			}
+			JournalsLibrary.JournalEntry msg = new JournalsLibrary.JournalEntry();
+			msg.from=author;
+			msg.subj=CMLib.webMacroFilter().clearWebMacros(subject);
+			msg.msg=CMLib.webMacroFilter().clearWebMacros(theMessage);
+			msg.date=postDate.getTime();
+			msg.update=postDate.getTime();
+			msg.parent=parent;
+			msg.msgIcon="";
+			msg.data="";
+			msg.to="ALL";
+			// check for dups
+			Vector<JournalsLibrary.JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date-1);
+			for(JournalsLibrary.JournalEntry entry : chckEntries)
+				if((entry.date == msg.date)
+				&&(entry.from.equals(msg.from))
+				&&(entry.subj.equals(msg.subj))
+				&&(entry.parent.equals(msg.parent)))
+				{
+					Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(sess.lastMsgNum));
+					Log.debugOut("WebMacroCreamer","Msg#"+sess.lastMsgNum+" was a dup!");
+					continue;
+				}
+			CMLib.database().DBWriteJournal(forum.NAME(),msg);
+			if(parent.length()>0)
+				CMLib.database().DBTouchJournalMessage(parent,msg.date);
+			CMLib.journals().clearJournalSummaryStats(forum.NAME());
+			Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(sess.lastMsgNum));
+		}
+		return "Post "+sess.lastMsgNum+" submitted.";
+	}
+	
+	
+	protected String loginToYahooSession(YahooGroupSession sess) throws UnsupportedEncodingException
+	{
+		final String loginUrl="http://login.yahoo.com?login="+URLEncoder.encode(sess.user,"UTF8")+"&passwd="+URLEncoder.encode(sess.password,"UTF8");
+		Map<String,List<String>> M = sess.H.getHeaders(loginUrl);
+		if(M==null)
+			return "Fail: Http error hitting "+loginUrl;
+		StringBuilder cookieSet=new StringBuilder("");
+		List<String> cookies=M.get("Set-Cookie");
+		if(cookies==null)
+			return "Fail: Http get cookies from "+loginUrl;
+		for(String val : cookies)
+		{
+			if(cookieSet.length()>0)
+				cookieSet.append(" ; ");
+			int x=val.indexOf(';');
+			cookieSet.append((x>=0)?val.substring(0,x).trim():val.trim());
+		}
+		byte[] b=sess.H.getRawUrl(sess.url+"/messages",cookieSet.toString());
+		if(b==null)
+			return "Failed: to read page: "+sess.url+"/messages";
+		cookies=M.get("Set-Cookie");
+		if(cookies!=null)
 			for(String val : cookies)
 			{
 				if(cookieSet.length()>0)
@@ -938,236 +1194,53 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				int x=val.indexOf(';');
 				cookieSet.append((x>=0)?val.substring(0,x).trim():val.trim());
 			}
-			byte[] b=H.getRawUrl(url+"/messages",cookieSet.toString());
-			if(b==null)
-				return "Failed: to read page: "+url+"/messages";
-			cookies=M.get("Set-Cookie");
-			if(cookies!=null)
-				for(String val : cookies)
-				{
-					if(cookieSet.length()>0)
-						cookieSet.append(" ; ");
-					int x=val.indexOf(';');
-					cookieSet.append((x>=0)?val.substring(0,x).trim():val.trim());
-				}
-			StringBuilder s=new StringBuilder(new String(b));
-			CMStrings.convertHtmlToText(s);
-			String txt=s.toString();
-			int x=txt.indexOf(" of ");
-			int num=-1;
-			while((num<0)&&(x>=0))
+		StringBuilder s=new StringBuilder(new String(b));
+		CMStrings.convertHtmlToText(s);
+		String txt=s.toString();
+		int x=txt.indexOf(" of ");
+		int num=-1;
+		while((num<0)&&(x>=0))
+		{
+			if(Character.isDigit(txt.charAt(x+4)))
 			{
-				if(Character.isDigit(txt.charAt(x+4)))
-				{
-					int y=4;
-					while(Character.isDigit(txt.charAt(x+y)))
-						y++;
-					num=CMath.s_int(txt.substring(x+4,x+y));
-				}
-				else
-					x=txt.indexOf(" of ",x+1);
+				int y=4;
+				while(Character.isDigit(txt.charAt(x+y)))
+					y++;
+				num=CMath.s_int(txt.substring(x+4,x+y));
 			}
-			if(num<0)
-				return "Failed: No numbers found in "+url+"/messages";
-			int lastMsgNum=-1;
-			if(Resources.isPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER"))
-				lastMsgNum=CMath.s_int(Resources.getPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER"));
-			
-			if(lastMsgNum>=num)
-				return lastMsgNum+"of "+num+" messages already processed";
-			while((--numTimes)>=0)
-			{
-				lastMsgNum++;
-				if(Arrays.binarySearch(skipList, lastMsgNum)>=0)
-					continue;
-				b=H.getRawUrl(url+"/message/"+lastMsgNum,cookieSet.toString());
-				if(b==null)
-					return "Failed: to read message from url:"+url+"/message/"+lastMsgNum;
-				String msgPage=new String(b);
-				int startOfSubject=msgPage.indexOf("<em class=\"msg-bg msg-bd\"");
-				if(startOfSubject<0)
-					startOfSubject=msgPage.indexOf("<em class=\"msg-newfont\"");
-				if(startOfSubject<0)
-				{
-					x=msgPage.indexOf("Message  does not exist in ");
-					if((x>0)&&(msgPage.substring(0,x).trim().endsWith("<div class=\"ygrp-contentblock\">")))
-					{
-						Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(lastMsgNum));
-						continue;
-					}
-					return "Failed: to find subject start in url:"+url+"/message/"+lastMsgNum;
-				}
-				startOfSubject=msgPage.indexOf(">",startOfSubject);
-				int endOfSubject=msgPage.indexOf("</em>",startOfSubject);
-				if(endOfSubject<0)
-					return "Failed: to find subject end in url:"+url+"/message/"+lastMsgNum;
-				String subject=msgPage.substring(startOfSubject+1,endOfSubject).trim();
-				if((subject.length()==0)||(subject.length()>200)||(subject.indexOf('<')>=0)||(subject.indexOf('>')>=0))
-					return "Failed: to find VALID subject '"+subject+"' in url:"+url+"/message/"+lastMsgNum;
-				int startOfDate=msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
-				int endOfDate;
-				if(startOfDate>0)
-					startOfDate+=33;// MAGIC NUMBER
-				else
-				{
-					startOfDate=msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
-					//if(startOfDate<0) System.out.println(msgPage);
-					if(startOfDate<0)
-						return "Failed: to find date start in url:"+url+"/message/"+lastMsgNum;
-					startOfDate+=33;// MAGIC NUMBER
-				}
-				endOfDate=msgPage.indexOf("\"",startOfDate+1);
-				if(endOfDate<0)
-					return "Failed: to find date end in url:"+url+"/message/"+lastMsgNum;
-				String dateStr=msgPage.substring(startOfDate,endOfDate).trim();
-				SimpleDateFormat  format = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'");
-				Date postDate;
-				try
-				{
-					postDate=format.parse(dateStr);
-				}
-				catch(ParseException p)
-				{
-					return "Failed: to parse date '"+dateStr+"' in url:"+url+"/message/"+lastMsgNum;
-				}
-				int startOfAuthor=msgPage.indexOf("<span class=\"name\">");
-				if(startOfAuthor<0)
-					return "Failed: to find author start in url:"+url+"/message/"+lastMsgNum;
-				startOfAuthor=msgPage.indexOf(">",startOfAuthor+4);
-				int endOfAuthor=msgPage.indexOf("</span>",startOfAuthor);
-				if(endOfAuthor<0)
-					return "Failed: to find author end in url:"+url+"/message/"+lastMsgNum;
-				String author=msgPage.substring(startOfAuthor+1,endOfAuthor).trim();
-				author=CMStrings.replaceAll(author,"<wbr>","").trim();
-				if(author.indexOf("profiles.yahoo.com")>0)
-					author=author.substring(author.indexOf("\">")+2,author.lastIndexOf("</a>"));
-				if((author.length()==0)||(author.length()>100))
-					return "Failed: to find VALID author '"+author+"' in url:"+url+"/message/"+lastMsgNum;
-				int startOfMsg=msgPage.indexOf("entry-content");
-				if(startOfMsg<0)
-					return "Failed: to find message in url:"+url+"/message/"+lastMsgNum;
-				startOfMsg=msgPage.indexOf(">",startOfMsg);
-				int endOfMsg=msgPage.indexOf("<tr style=\"height:35px\">",startOfMsg);
-				if(endOfMsg<0)
-					return "Failed: to find end of msg in url:"+url+"/message/"+lastMsgNum;
-				endOfMsg=msgPage.lastIndexOf("</div>",endOfMsg);
-				if(endOfMsg<0)
-					return "Failed: to find end2 of msg in url:"+url+"/message/"+lastMsgNum;
-				String theMessage=msgPage.substring(startOfMsg+1,endOfMsg).trim();
-				while(theMessage.startsWith("<br>"))
-					theMessage=theMessage.substring(4).trim();
-				while(theMessage.endsWith("<br>"))
-					theMessage=theMessage.substring(0,theMessage.length()-4).trim();
-				theMessage=CMStrings.replaceAll(theMessage,"\n","");
-				theMessage=CMStrings.replaceAll(theMessage,"\r","");
-				if(theMessage.trim().length()==0)
-					return "Failed: to find lengthy msg in url:"+url+"/message/"+lastMsgNum;
-				JournalsLibrary.ForumJournal forum=CMLib.journals().getForumJournal(journal);
-				if(forum==null)
-					return "Failed: bad forum given";
-				if(author.indexOf('@')>=0)
-				{
-					MOB aM=CMLib.players().getLoadPlayerByEmail(author);
-					if(aM!=null)
-						author=aM.Name();
-					else
-					if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0)
-					{
-						PlayerAccount A=CMLib.players().getLoadAccountByEmail(author);
-						if(A==null)
-							author=author.substring(0,author.indexOf('@'));
-						else
-							author=A.accountName();
-					}
-					else
-						author=author.substring(0,author.indexOf('@'));
-				}
-				else
-				if(CMLib.login().isOkName(author,false))
-					author="_"+author;
-				
-				String parent="";
-				if(subject.toUpperCase().startsWith("RE:"))
-				{
-					String subj=subject;
-					while(subj.toUpperCase().startsWith("RE:")||subj.toLowerCase().startsWith("[coffeemud]"))
-					{
-						if(subj.toUpperCase().startsWith("RE:"))
-							subj=subj.substring(3).trim();
-						if(subj.toLowerCase().startsWith("[coffeemud]"))
-							subj=subj.substring(11).trim();
-					}
-					
-					Vector<JournalEntry> journalEntries=CMLib.database().DBReadJournalPageMsgs(forum.NAME(), null, subj, 0, 0);
-					if((journalEntries!=null)&&(journalEntries.size()>0))
-					{
-						JournalEntry WIN=null;
-						for(JournalEntry J : journalEntries)
-						{
-							if(J.subj.trim().equals(subj))
-								WIN=J;
-						}
-						if(WIN==null)
-						for(JournalEntry J : journalEntries)
-						{
-							if(J.subj.trim().equalsIgnoreCase(subj))
-								WIN=J;
-						}
-						if(WIN==null)
-						for(JournalEntry J : journalEntries)
-						{
-							if(J.subj.trim().indexOf(subj)>=0)
-								WIN=J;
-						}
-						if(WIN==null)
-						for(JournalEntry J : journalEntries)
-						{
-							if(J.subj.toLowerCase().trim().indexOf(subj.toLowerCase())>=0)
-								WIN=J;
-						}
-						
-						if(WIN!=null)
-							parent=WIN.key;
-					}
-					if(parent.length()==0)
-						subject=subj;
-				}
-				JournalsLibrary.JournalEntry msg = new JournalsLibrary.JournalEntry();
-				msg.from=author;
-				msg.subj=CMLib.webMacroFilter().clearWebMacros(subject);
-				msg.msg=CMLib.webMacroFilter().clearWebMacros(theMessage);
-				msg.date=postDate.getTime();
-				msg.update=postDate.getTime();
-				msg.parent=parent;
-				msg.msgIcon="";
-				msg.data="";
-				msg.to="ALL";
-				// check for dups
-				Vector<JournalsLibrary.JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date-1);
-				for(JournalsLibrary.JournalEntry entry : chckEntries)
-					if((entry.date == msg.date)
-					&&(entry.from.equals(msg.from))
-					&&(entry.subj.equals(msg.subj))
-					&&(entry.parent.equals(msg.parent)))
-					{
-						Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(lastMsgNum));
-						Log.debugOut("WebMacroCreamer","Msg#"+lastMsgNum+" was a dup!");
-						continue;
-					}
-				CMLib.database().DBWriteJournal(forum.NAME(),msg);
-				if(parent.length()>0)
-					CMLib.database().DBTouchJournalMessage(parent,msg.date);
-				CMLib.journals().clearJournalSummaryStats(forum.NAME());
-				Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(lastMsgNum));
-				if(numTimes>0)
-					CMLib.s_sleep(4000+Math.round(4000.0*CMath.random()));
-			}
-			return "Post "+lastMsgNum+" submitted.";
+			else
+				x=txt.indexOf(" of ",x+1);
+		}
+		if(num<0)
+			return "Failed: No numbers found in "+sess.url+"/messages";
+		if(Resources.isPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER"))
+			sess.lastMsgNum=CMath.s_int(Resources.getPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER"));
+		return "";
+	}
+	
+	@Override
+	public String copyYahooGroupMsgs(String user, String password, String url, int numTimes, int[] skipList, String journal)
+	{
+		YahooGroupSession sess=new YahooGroupSession();
+		sess.url=url;
+		sess.user=user;
+		sess.password=password;
+		sess.numTimes=numTimes;
+		sess.skipList=skipList;
+		sess.journal=journal;
+		sess.H=(HttpClient)CMClass.getCommon("DefaultHttpClient");
+		Arrays.sort(sess.skipList);
+		
+		try {
+			String resp=this.loginToYahooSession(sess);
+			if(resp.length()>0)
+				return resp;
+			return copyYahooGroupMsg(sess);
 		} catch (UnsupportedEncodingException e) {
 			Log.errOut(Thread.currentThread().getName(),e);
 		}
 		finally {
-			H.finished();
+			sess.H.finished();
 		}
 		return " @break@";
 	}
