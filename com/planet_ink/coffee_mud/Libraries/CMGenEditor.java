@@ -7127,8 +7127,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
 			}
-			if(me instanceof Electronics.ElecPanel)
-				genPanelType(mob,(Electronics.ElecPanel)me,++showNumber,showFlag);
 			if(me instanceof Electronics.PowerGenerator)
 			{
 				Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
@@ -7415,13 +7413,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
 			}
-			if(me instanceof Electronics.ElecPanel)
+			if((me instanceof Electronics.ElecPanel)&&(!(me instanceof Electronics.Computer)))
 				genPanelType(mob,(Electronics.ElecPanel)me,++showNumber,showFlag);
 			if(me instanceof Electronics.PowerGenerator)
 			{
 				Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
-				genConsumedMaterials(mob, E, ++showNumber, showFlag);
 				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), showNumber, showFlag, "Gen Amt/Tick"));
+			}
+			if(me instanceof Electronics.FuelConsumer)
+			{
+				Electronics.FuelConsumer E=(Electronics.FuelConsumer)me;
+				genConsumedMaterials(mob, E, ++showNumber, showFlag);
 			}
 			genLidsNLocks(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
