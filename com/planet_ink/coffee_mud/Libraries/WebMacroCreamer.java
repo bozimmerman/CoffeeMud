@@ -907,8 +907,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					Log.errOut("WebMacroCreamer var FORUM not properly set.");
 					return true;
 				}
-				String skipList=Resources.getPropResource("WEBMACROCREAMER", "sess.skipList");
+				String skipList=Resources.getPropResource("WEBMACROCREAMER", "SKIPLIST");
 				int[] skipInts=CMParms.toIntArray(CMParms.parseCommas(skipList,true));
+				yahooSession=new YahooGroupSession();
 				yahooSession.url=yahooUrl;
 				yahooSession.user=yahooUsername;
 				yahooSession.password=yahooPassword;
@@ -931,15 +932,18 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 					if(resp.length()>0)
 					{
 						Log.warnOut("Yahoo Groups Copier failure reported: "+resp);
+						yahooSession.H.finished();
+						yahooSession.H=null;
 						return true;
 					}
 					yahooSession.numTotalTimes=CMath.s_int(timesPerRunStr);
 				} catch (UnsupportedEncodingException e) {
 					Log.errOut(Thread.currentThread().getName(),e);
-				}
-				finally {
 					yahooSession.H.finished();
 					yahooSession.H=null;
+					return true;
+				}
+				finally {
 				}
 			}
 			

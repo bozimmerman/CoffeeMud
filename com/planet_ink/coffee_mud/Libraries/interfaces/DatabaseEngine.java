@@ -175,7 +175,8 @@ public interface DatabaseEngine extends CMLibrary
 	public PollData DBReadPoll(String name);
 	public CMFile.CMVFSDir DBReadVFSDirectory();
 	public CMFile.CMVFSFile DBReadVFSFile(String filename);
-	public void DBCreateVFSFile(String filename, int bits, String creator, Object data);
+	public void DBCreateVFSFile(String filename, int bits, String creator, long updateTime, Object data);
+	public void DBUpSertVFSFile(String filename, int bits, String creator, long updateTime, Object data);
 	public void DBDeleteVFSFile(String filename);
 	public MOB.Tattoo parseTattoo(String tattoo);
 	public int DBRawExecute(String sql) throws CMException;

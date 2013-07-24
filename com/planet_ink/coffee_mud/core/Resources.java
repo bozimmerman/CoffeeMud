@@ -492,7 +492,10 @@ public class Resources
 		key=key.toUpperCase().trim();
 		synchronized(secMap)
 		{
-			secMap.put(key, value);
+			if((value==null)||(value.length()==0))
+				secMap.remove(key);
+			else
+				secMap.put(key, value);
 		}
 	}
 	

@@ -110,7 +110,7 @@ public class VFSLoader
 		return row;
 	}
 
-	public void DBCreate(String filename, int bits, String creator, Object data)
+	private String makeVBuf(Object data)
 	{
 		String buf=null;
 		if(data==null)
@@ -124,7 +124,13 @@ public class VFSLoader
 		else
 		if(data instanceof byte[])
 			buf=B64Encoder.B64encodeBytes((byte[])data);
-		else
+		return buf;
+	}
+	
+	public void DBCreate(String filename, int bits, String creator, long updateTime, Object data)
+	{
+		String buf=makeVBuf(data);
+		if(buf==null)
 		{
 			Log.errOut("VFSLoader","Unable to save "+filename+" due to illegal data type: "+data.getClass().getName());
 			return;
@@ -139,12 +145,52 @@ public class VFSLoader
 		 +") values ("
 		 +"'"+filename+"',"
 		 +""+(bits&CMFile.VFS_MASK_MASKSAVABLE)+","
-		 +""+System.currentTimeMillis()+","
+		 +""+updateTime+","
 		 +"'"+creator+"',"
 		 +"?"
-		 +")",		 buf);
+		 +")", buf);
 	}
 	
+	public void DBUpSert(String filename, int bits, String creator, long updateTime, Object data)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT CMFNAM FROM CMVFS WHERE CMFNAM='"+filename+"'");
+			if(!R.next())
+			{
+				R.close();
+				DB.DBDone(D);
+				D=null;
+				DBCreate(filename, bits, creator, updateTime, data);
+			}
+			else
+			{
+				R.close();
+				String buf=makeVBuf(data);
+				if(buf==null)
+				{
+					Log.errOut("VFSLoader","Unable to save "+filename+" due to illegal data type: "+data.getClass().getName());
+					return;
+				}
+				DB.updateWithClobs(
+						 "UPDATE CMVFS SET " +
+						 "CMDTYP="+(bits&CMFile.VFS_MASK_MASKSAVABLE)+", " +
+						 "CMMODD="+updateTime+","+
+						 "CMWHOM='"+creator+"', "+
+						 "CMDATA=? WHERE CMFNAM='"+filename+"'", buf);
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("VFSLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+	}
 	
 	public void DBDelete(String filename)
 	{

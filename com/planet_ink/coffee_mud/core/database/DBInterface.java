@@ -485,8 +485,11 @@ public class DBInterface implements DatabaseEngine
 	{ return VFSLoader.DBReadDirectory();}
 	public CMFile.CMVFSFile DBReadVFSFile(String filename)
 	{ return VFSLoader.DBRead(filename);}
-	public void DBCreateVFSFile(String filename, int bits, String creator, Object data)
-	{ VFSLoader.DBCreate(filename,bits,creator,data);}
+	public void DBCreateVFSFile(String filename, int bits, String creator, long updateTime, Object data)
+	{ VFSLoader.DBCreate(filename,bits,creator,updateTime,data);}
+	public void DBUpSertVFSFile(String filename, int bits, String creator, long updateTime, Object data)
+	{ VFSLoader.DBUpSert(filename,bits,creator,updateTime,data);}
+	
 	public void DBDeleteVFSFile(String filename)
 	{ VFSLoader.DBDelete(filename);}
 	

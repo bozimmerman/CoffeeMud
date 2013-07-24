@@ -827,7 +827,7 @@ public class CMFile extends File
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
 			info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
 			getVFSDirectory().add(info);
-			CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
+			CMLib.database().DBUpSertVFSFile(filename,vfsBits,author(),System.currentTimeMillis(),O);
 			return true;
 		}
 
@@ -917,7 +917,7 @@ public class CMFile extends File
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
 			info=new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
 			vfsV().add(info);
-			CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
+			CMLib.database().DBUpSertVFSFile(filename,vfsBits,author(),System.currentTimeMillis(),O);
 			return true;
 		}
 
@@ -986,7 +986,7 @@ public class CMFile extends File
 			vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
 			info=new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
 			vfsV().add(info);
-			CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),new StringBuffer(""));
+			CMLib.database().DBUpSertVFSFile(filename,vfsBits,author(),System.currentTimeMillis(),new StringBuffer(""));
 			return true;
 		}
 		String fullPath=getIOReadableLocalPathAndName();
