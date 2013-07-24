@@ -320,6 +320,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 						colorOverride[0]=colorOverride[0]+ColorLibrary.COLOR_ALLCOLORS[colorNum];
 					else
 						colorOverride[0]=ColorLibrary.COLOR_ALLCOLORS[colorNum]+ColorLibrary.COLOR_ALLCOLORS[colorNum]+colorOverride[0];
+					colorOverride[1]+=" "+ColorLibrary.COLOR_ALLCOLORNAMES[colorNum];
 				}
 			}
 		}
@@ -351,9 +352,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			CMChannel chan=new CMChannel();
 			if(x>0)
 			{
-				String[] colorOverride=new String[]{""};
+				String[] colorOverride=new String[]{"",""};
 				chan.mask=parseOutFlags(item.substring(x+1).trim(),chan.flags,colorOverride);
 				chan.colorOverride=colorOverride[0];
+				chan.colorOverrideStr=colorOverride[1];
 				item=item.substring(0,x);
 			}
 			chan.name=item.toUpperCase().trim();

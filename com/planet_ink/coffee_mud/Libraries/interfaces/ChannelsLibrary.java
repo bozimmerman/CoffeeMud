@@ -67,6 +67,7 @@ public interface ChannelsLibrary extends CMLibrary
 		public String imc2Name="";
 		public String mask="";
 		public String colorOverride="";
+		public String colorOverrideStr="";
 		public Set<ChannelFlag> flags=new HashSet<ChannelFlag>();
 		public List<ChannelMsg> queue=new SLinkedList<ChannelMsg>();
 		public CMChannel(){}
