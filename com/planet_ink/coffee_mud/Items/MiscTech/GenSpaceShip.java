@@ -285,8 +285,10 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			for(Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
 			{
 				Room R2=r.nextElement();
-				if(R2.getExitInDir(Directions.GATE)!=null)
-					R2.rawDoors()[Directions.GATE]=R;
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					if((R2.getRawExit(d)!=null)
+					&&((R2.rawDoors()[d]==null)||(R.rawDoors()[d].getArea()!=area)))
+						R2.rawDoors()[d]=R;
 			}
 		}
 		SpaceObject planet=CMLib.map().getSpaceObject(R,true);

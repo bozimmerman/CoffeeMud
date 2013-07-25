@@ -575,6 +575,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void dockHere(Room R)
 	{
 		if(R==null) return;
+		savedDock=R;
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
 	}
 	public void unDock(boolean toSpace)
@@ -597,7 +598,7 @@ public class StdSpaceShip implements Area, SpaceShip
 					R.rawDoors()[d]=null;
 			}
 		}
-		dock=null;
+		savedDock=null;
 		if(toSpace)
 		{
 			SpaceObject o = getShipSpaceObject();

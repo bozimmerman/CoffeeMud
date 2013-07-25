@@ -73,7 +73,12 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 			str.append("^Z").append(CMStrings.centerPreserve(" -- Can Not Determine -- ",60)).append("^.^N\n\r");
 		else
 		if(ship.getIsDocked() != null)
+		{
 			str.append("^H").append(CMStrings.padRight("Docked at ^w"+ship.getIsDocked().roomTitle(null),60)).append("^.^N\n\r");
+			SpaceObject planet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
+			if(planet!=null)
+				str.append("^H").append(CMStrings.padRight("On Planet ^w"+planet.Name(),60)).append("^.^N\n\r");
+		}
 		else
 		if((shipSpaceObject==null)||(!CMLib.map().isObjectInSpace(shipSpaceObject)))
 			str.append("^Z").append(CMStrings.centerPreserve(" -- System Malfunction-- ",60)).append("^.^N\n\r");

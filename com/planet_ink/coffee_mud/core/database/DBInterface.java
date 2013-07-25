@@ -333,7 +333,7 @@ public class DBInterface implements DatabaseEngine
 	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login)
 	{return MOBloader.DBUserSearch(Login);}
 	
-	public boolean DBReadUserOnly(MOB mob)
+	public String DBReadUserOnly(MOB mob)
 	{return MOBloader.DBReadUserOnly(mob);}
 	
 	public void DBCreateArea(Area A)

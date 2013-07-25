@@ -1228,7 +1228,8 @@ public class StdRoom implements Room
 	{
 		if((direction<0)||(direction>=exits.length))
 			return null;
-		if((gridParent!=null)&&(getRawExit(direction)==null)) getRoomInDir(direction);
+		if((gridParent!=null)&&(getRawExit(direction)==null)) 
+			getRoomInDir(direction);
 		return getRawExit(direction);
 	}
 

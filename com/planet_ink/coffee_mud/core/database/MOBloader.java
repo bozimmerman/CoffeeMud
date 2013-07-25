@@ -40,10 +40,10 @@ public class MOBloader
 	}
 	protected Room emptyRoom=null;
 
-	public boolean DBReadUserOnly(MOB mob)
+	public String DBReadUserOnly(MOB mob)
 	{
-		if(mob.Name().length()==0) return false;
-		boolean found=false;
+		if(mob.Name().length()==0) return null;
+		String locID=null;
 		DBConnection D=null;
 		try
 		{
@@ -94,7 +94,8 @@ public class MOBloader
 				int x=roomID.indexOf("||");
 				if(x>=0)
 				{
-					mob.setLocation(CMLib.map().getRoom(roomID.substring(x+2)));
+					locID=roomID.substring(x+2);
+					mob.setLocation(CMLib.map().getRoom(locID));
 					roomID=roomID.substring(0,x);
 				}
 				mob.setStartRoom(CMLib.map().getRoom(roomID));
@@ -134,7 +135,6 @@ public class MOBloader
 				if(pstats.getSavedPose().length()>0)
 					mob.setDisplayText(pstats.getSavedPose());
 				CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
-				found=true;
 			}
 			R.close();
 			R=D.query("SELECT * FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"'");
@@ -154,7 +154,7 @@ public class MOBloader
 		{
 			DB.DBDone(D);
 		}
-		return found;
+		return locID;
 	}
 
 	public void DBRead(MOB mob)
@@ -165,7 +165,7 @@ public class MOBloader
 		mob.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
 		mob.phyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
 		CMLib.players().addPlayer(mob);
-		DBReadUserOnly(mob);
+		String oldLocID=DBReadUserOnly(mob);
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
 		Room oldLoc=mob.location();
@@ -192,40 +192,47 @@ public class MOBloader
 					itemNums.put(itemNum,newItem);
 					boolean addToMOB=true;
 					String text=DBConnections.getResQuietly(R,"CMITTX");
-					if(text.startsWith("<ROOM"))
+					int roomX;
+					if(text.startsWith("<ROOM") && ((roomX=text.indexOf("/>"))>=0))
 					{
-						int roomX=text.indexOf("/>");
-						if(roomX>=0)
+						String roomXML=text.substring(0,roomX+2);
+						text=text.substring(roomX+2);
+						newItem.setMiscText(text);
+						List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(roomXML);
+						if((xml!=null)&&(xml.size()>0))
 						{
-							String roomXML=text.substring(0,roomX+2);
-							text=text.substring(roomX+2);
-							List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(roomXML);
-							if((xml!=null)&&(xml.size()>0))
+							final String roomID=xml.get(0).parms.get("ID");
+							final long expirationDate=CMath.s_long(xml.get(0).parms.get("EXPIRE"));
+							if(roomID.equalsIgnoreCase("SPACE") && (newItem instanceof SpaceObject))
 							{
-								final String roomID=xml.get(0).parms.get("ID");
-								final long expirationDate=CMath.s_long(xml.get(0).parms.get("EXPIRE"));
-								if(roomID.equalsIgnoreCase("SPACE") && (newItem instanceof SpaceObject))
+								CMLib.map().addObjectToSpace((SpaceObject)newItem);
+								addToMOB=false;
+							}
+							else
+							{
+								final Room itemR=CMLib.map().getRoom(roomID);
+								if(itemR!=null)
 								{
-									CMLib.map().addObjectToSpace((SpaceObject)newItem);
+									if(newItem instanceof SpaceShip)
+										((SpaceShip)newItem).dockHere(itemR);
+									else
+										itemR.addItem(newItem);
+									newItem.setExpirationDate(expirationDate);
 									addToMOB=false;
 								}
-								else
-								{
-									final Room itemR=CMLib.map().getRoom(roomID);
-									if(itemR!=null)
-									{
-										if(newItem instanceof SpaceShip)
-											((SpaceShip)newItem).dockHere(itemR);
-										else
-											itemR.addItem(newItem);
-										newItem.setExpirationDate(expirationDate);
-										addToMOB=false;
-									}
-								}
+							}
+							if((oldLocID!=null)&&(oldLocID.length()>0)&&(oldLoc==null)&&(newItem instanceof SpaceShip))
+							{
+								Area area=((SpaceShip)newItem).getShipArea();
+								if(area != null)
+									oldLoc=area.getRoom(oldLocID);
 							}
 						}
 					}
-					newItem.setMiscText(text);
+					else
+					{
+						newItem.setMiscText(text);
+					}
 					String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)
 					{

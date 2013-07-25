@@ -134,7 +134,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBViewJournalMessage(String key, int views);
 	public void DBTouchJournalMessage(String key);
 	public void DBTouchJournalMessage(String key, long newDate);
-	public boolean DBReadUserOnly(MOB mob);
+	public String DBReadUserOnly(MOB mob);
 	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login);
 	public void vassals(MOB mob, String liegeID);
 	public DVector worshippers(String deityID);
