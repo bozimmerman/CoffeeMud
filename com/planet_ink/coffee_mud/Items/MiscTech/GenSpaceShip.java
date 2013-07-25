@@ -287,7 +287,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 				Room R2=r.nextElement();
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					if((R2.getRawExit(d)!=null)
-					&&((R2.rawDoors()[d]==null)||(R.rawDoors()[d].getArea()!=area)))
+					&&((R2.rawDoors()[d]==null)||(R2.rawDoors()[d].getArea()!=area)))
 						R2.rawDoors()[d]=R;
 			}
 		}
