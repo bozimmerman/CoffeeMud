@@ -221,17 +221,18 @@ public class MOBloader
 									addToMOB=false;
 								}
 							}
-							if((oldLocID!=null)&&(oldLocID.length()>0)&&(oldLoc==null)&&(newItem instanceof SpaceShip))
-							{
-								Area area=((SpaceShip)newItem).getShipArea();
-								if(area != null)
-									oldLoc=area.getRoom(oldLocID);
-							}
 						}
 					}
 					else
 					{
 						newItem.setMiscText(text);
+					}
+					if((oldLoc==null)&&(oldLocID!=null)
+					&&(newItem instanceof SpaceShip))
+					{
+						Area area=((SpaceShip)newItem).getShipArea();
+						if(area != null)
+							oldLoc=area.getRoom(oldLocID);
 					}
 					String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)
