@@ -55,6 +55,7 @@ public class GenComputerConsole extends StdComputerConsole
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE);
 		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
