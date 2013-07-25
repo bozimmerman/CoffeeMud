@@ -7124,14 +7124,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Electronics)
 			{
 				Electronics E=(Electronics)me;
-				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
-				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
+				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
+				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 			}
 			if(me instanceof Electronics.PowerGenerator)
 			{
 				Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
 				genConsumedMaterials(mob, E, ++showNumber, showFlag);
-				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), showNumber, showFlag, "Gen Amt/Tick"));
+				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), ++showNumber, showFlag, "Gen Amt/Tick"));
 			}
 			if(me instanceof Electronics.FuelConsumer)
 			{
@@ -7410,15 +7410,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Electronics)
 			{
 				Electronics E=(Electronics)me;
-				E.setPowerCapacity(prompt(mob, E.powerCapacity(), showNumber, showFlag, "Pow Capacity"));
-				E.setPowerRemaining(prompt(mob, E.powerRemaining(), showNumber, showFlag, "Pow Remaining"));
+				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
+				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
 			}
 			if((me instanceof Electronics.ElecPanel)&&(!(me instanceof Electronics.Computer)))
 				genPanelType(mob,(Electronics.ElecPanel)me,++showNumber,showFlag);
 			if(me instanceof Electronics.PowerGenerator)
 			{
 				Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
-				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), showNumber, showFlag, "Gen Amt/Tick"));
+				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), ++showNumber, showFlag, "Gen Amt/Tick"));
 			}
 			if(me instanceof Electronics.FuelConsumer)
 			{

@@ -204,12 +204,23 @@ public class MOBloader
 							{
 								final String roomID=xml.get(0).parms.get("ID");
 								final long expirationDate=CMath.s_long(xml.get(0).parms.get("EXPIRE"));
-								final Room itemR=CMLib.map().getRoom(roomID);
-								if(itemR!=null)
+								if(roomID.equalsIgnoreCase("SPACE") && (newItem instanceof SpaceObject))
 								{
-									itemR.addItem(newItem);
-									newItem.setExpirationDate(expirationDate);
+									CMLib.map().addObjectToSpace((SpaceObject)newItem);
 									addToMOB=false;
+								}
+								else
+								{
+									final Room itemR=CMLib.map().getRoom(roomID);
+									if(itemR!=null)
+									{
+										if(newItem instanceof SpaceShip)
+											((SpaceShip)newItem).dockHere(itemR);
+										else
+											itemR.addItem(newItem);
+										newItem.setExpirationDate(expirationDate);
+										addToMOB=false;
+									}
 								}
 							}
 						}
@@ -905,7 +916,9 @@ public class MOBloader
 					CMLib.catalog().updateCatalogIntegrity(thisItem);
 					final Item cont=thisItem.ultimateContainer(null);
 					final String str=getDBItemUpdateString(mob,thisItem);
-					final String text="<ROOM ID=\""+CMLib.map().getExtendedRoomID((Room)cont.owner())+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
+					final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
+							"SPACE":CMLib.map().getExtendedRoomID((Room)cont.owner());
+					final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
 					strings.add(new DBPreparedBatchEntry(str,text));
 					done.add(""+thisItem);
 				}
