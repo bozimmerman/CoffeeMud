@@ -203,9 +203,9 @@ public class MOBloader
 						{
 							final String roomID=xml.get(0).parms.get("ID");
 							final long expirationDate=CMath.s_long(xml.get(0).parms.get("EXPIRE"));
-							if(roomID.equalsIgnoreCase("SPACE") && (newItem instanceof SpaceObject))
+							if(roomID.equalsIgnoreCase("SPACE") && (newItem instanceof SpaceShip))
 							{
-								CMLib.map().addObjectToSpace((SpaceObject)newItem);
+								CMLib.map().addObjectToSpace((SpaceShip)newItem);
 								addToMOB=false;
 							}
 							else
@@ -924,7 +924,7 @@ public class MOBloader
 					CMLib.catalog().updateCatalogIntegrity(thisItem);
 					final Item cont=thisItem.ultimateContainer(null);
 					final String str=getDBItemUpdateString(mob,thisItem);
-					final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
+					final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceShip)&&(CMLib.map().isObjectInSpace((SpaceShip)thisItem)))?
 							"SPACE":CMLib.map().getExtendedRoomID((Room)cont.owner());
 					final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
 					strings.add(new DBPreparedBatchEntry(str,text));
