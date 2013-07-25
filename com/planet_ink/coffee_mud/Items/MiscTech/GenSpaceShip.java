@@ -271,8 +271,13 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	public void dockHere(Room R) 
 	{
-		if(!R.isContent(me))
-			R.moveItemTo(me, Expire.Never, Move.Followers);
+		if(!R.isContent(this))
+		{
+			if(owner()==null)
+				R.addItem(this,Expire.Never);
+			else
+				R.moveItemTo(me, Expire.Never, Move.Followers);
+		}
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
 		if (area instanceof SpaceShip)
 		{
