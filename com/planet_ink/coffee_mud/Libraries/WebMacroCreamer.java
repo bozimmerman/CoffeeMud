@@ -1097,6 +1097,8 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				author="_"+author;
 			
 			String parent="";
+			if(subject.toLowerCase().startsWith("[coffeemud]"))
+				subject=subject.substring(11).trim();
 			if(subject.toUpperCase().startsWith("RE:"))
 			{
 				String subj=subject;
