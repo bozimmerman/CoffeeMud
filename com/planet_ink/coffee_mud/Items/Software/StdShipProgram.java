@@ -127,7 +127,7 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 				str.append("^H").append(CMStrings.padRight("ENGINE"+engineNumber,9));
 				str.append(CMStrings.padRight(engine.activated()?"^gACTIVE":"^rINACTIVE",9));
 				str.append("^H").append(CMStrings.padRight("Fuel",5));
-				str.append("^N").append(CMStrings.padRight(Long.toString(engine.powerRemaining()),11));
+				str.append("^N").append(CMStrings.padRight(Long.toString(engine.getFuelRemaining()),11));
 				str.append("^H").append(CMStrings.padRight(engine.Name(),24));
 				str.append("^.^N\n\r");
 				engineNumber++;

@@ -58,6 +58,7 @@ public interface Electronics extends Item, Technical
 		public void setConsumedFuelType(int[] resources);
 		public int getTicksPerFuelConsume();
 		public void getTicksPerFuelConsume(int tick);
+	    public int getFuelRemaining();
 	}
 	
 	public interface PowerGenerator extends PowerSource, FuelConsumer

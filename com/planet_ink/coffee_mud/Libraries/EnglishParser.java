@@ -1373,14 +1373,30 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(commands.size()==1)
 			return null;
 
+		Room R=(mob==null)?null:mob.location();
+		if(R==null) return null;
+		
 		int fromDex=-1;
 		int containerDex=commands.size()-1;
 		for(int i=commands.size()-2;i>=1;i--)
-			if(commands.get(i).equalsIgnoreCase("from"))
+			if(commands.get(i).equalsIgnoreCase("from") || commands.get(i).equalsIgnoreCase("in")|| commands.get(i).equalsIgnoreCase("on"))
 			{ fromDex=i; containerDex=i+1;  break;}
 		String possibleContainerID=CMParms.combine(commands,containerDex);
 
-		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
+		
+		Environmental E=R.fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,filter);
+		if(E==null)
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.getItem(i);
+				if((I instanceof Electronics.ElecPanel)
+				&&(((Electronics.ElecPanel)I).isOpen()))
+				{
+					E=R.fetchFromMOBRoomFavorsItems(mob,I,possibleContainerID,filter);
+					if(E instanceof Container)
+						break;
+				}
+			}
 		if((E!=null)
 		&&(E instanceof Item)
 		&&(((Item)E) instanceof Container)

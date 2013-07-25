@@ -70,6 +70,8 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
     public void setConsumedFuelType(int[] resources) { 
 		generatedFuelTypes = resources;
     }
+	@Override
+    public int getFuelRemaining() { return getFuel().size(); }
 	
 	@Override
 	public boolean canContain(Environmental E)
