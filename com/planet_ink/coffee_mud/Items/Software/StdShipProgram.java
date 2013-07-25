@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipProgram extends StdProgram implements ArchonOnly
+public class StdShipProgram extends StdProgram
 {
 	public String ID(){	return "StdShipProgram";}
 	
