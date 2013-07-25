@@ -900,7 +900,7 @@ public class MOBloader
 			for(int i=coll.numItems()-1;i>=0;i--)
 			{
 				final Item thisItem=coll.getItem(i);
-				if(thisItem!=null)
+				if((thisItem!=null)&&(!thisItem.amDestroyed()))
 				{
 					final Item cont=thisItem.ultimateContainer(null);
 					if(cont.owner() instanceof Room)

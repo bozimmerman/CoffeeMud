@@ -444,9 +444,9 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		else
 			setOwnerName(buyer.Name());
 		recoverPhyStats();
-		String registryNum=Double.toString(Math.random());
-		String randNum=CMStrings.limit(registryNum.substring(registryNum.indexOf('.')+1), 4);
-		renameSpaceShip("SS "+buyer.Name()+", Reg "+randNum);
+		//String registryNum=Double.toString(Math.random());
+		//String randNum=CMStrings.limit(registryNum.substring(registryNum.indexOf('.')+1), 4);
+		//renameSpaceShip("SS "+buyer.Name()+", Reg "+randNum);
 		final Session session=buyer.session();
 		final Room R=CMLib.map().roomLocation(this);
 		if(session!=null)
