@@ -58,30 +58,11 @@ public class StdShipEngine extends StdElecGenerator implements ShipComponent.Shi
 	public int getThrust(){return thrust;}
 	public void setThrust(int current){thrust=current;}
 	
+	@Override protected boolean willConsumeFuelIdle() { return getThrust()>0; }
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if(msg.amITarget(this))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_GET:
-				clearFuelCache();
-				break;
-			case CMMsg.TYP_PUT:
-				clearFuelCache();
-				break;
-			case CMMsg.TYP_ACTIVATE:
-				this.activate(true);
-				break;
-			case CMMsg.TYP_DEACTIVATE:
-				this.activate(false);
-				break;
-			case CMMsg.TYP_LOOK:
-				return;
-			case CMMsg.TYP_POWERCURRENT:
-				break;
-			}
-		}
+		StdShipThruster.executeThrusterMsg(this, myHost, msg);
 	}
 }

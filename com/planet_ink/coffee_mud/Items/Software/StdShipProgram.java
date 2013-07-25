@@ -267,9 +267,14 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 				super.addScreenMessage("Error: Too many parameters.");
 				return;
 			}
+			if(parsed.size()==1)
+			{
+				super.addScreenMessage("Error: No thrust amount given.");
+				return;
+			}
 			if(!CMath.isInteger(parsed.get(parsed.size()-1)))
 			{
-				super.addScreenMessage("Error: '"+parsed.get(parsed.size()-1)+" is not a valid amount.");
+				super.addScreenMessage("Error: '"+parsed.get(parsed.size()-1)+"' is not a valid amount.");
 				return;
 			}
 			amount=CMath.s_int(parsed.get(1));
@@ -284,16 +289,18 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 				if("starboard".startsWith(parsed.get(1).toLowerCase()))
 					dir="STARBOARD";
 				else
+				if("ventral".startsWith(parsed.get(1).toLowerCase()))
+					dir="VENTRAL";
+				else
+				if("dorsel".startsWith(parsed.get(1).toLowerCase()))
+					dir="DORSEL";
+				else
 				{
-					super.addScreenMessage("Error: '"+parsed.get(1)+" is not a valid direction: AFT, PORT, or STARBOARD.");
+					super.addScreenMessage("Error: '"+parsed.get(1)+" is not a valid direction: AFT, PORT, VENTRAL, DORSEL, or STARBOARD.");
 					return;
 				}
 			}
-			CMMsg msg;
-			if(amount>0)
-				msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, dir+" "+amount, CMMsg.NO_EFFECT,null);
-			else
-				msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, dir+" "+amount, CMMsg.NO_EFFECT,null);
 			if(E.owner() instanceof Room)
 			{
 				if(((Room)E.owner()).okMessage(mob, msg))
@@ -332,7 +339,15 @@ public class StdShipProgram extends StdProgram implements ArchonOnly
 			super.addScreenMessage("Unknown engine '"+uword+"'!");
 			return;
 		}
-		onTyping(mob,"\""+uword+"\" "+0);
+		CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
+		if(E.owner() instanceof Room)
+		{
+			if(((Room)E.owner()).okMessage(mob, msg))
+				((Room)E.owner()).send(mob, msg);
+		}
+		else
+		if(E.okMessage(mob, msg))
+			E.executeMsg(mob, msg);
 		return;
 	}
 	

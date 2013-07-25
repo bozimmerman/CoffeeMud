@@ -1830,7 +1830,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					buf.append("<RITEM>");
 					Item item=items.get(i);
-					if(item.isSavable())
+					if(item.isSavable() || (!andIsInDB))
 					{
 						buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
 						if(((item instanceof Container)&&(((Container)item).capacity()>0))

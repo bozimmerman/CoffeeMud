@@ -45,6 +45,7 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		setConsumedFuelType(new int[]{RawMaterial.RESOURCE_DEUTERIUM});
 	}
 	public boolean sameAs(Environmental E)
 	{
@@ -52,9 +53,11 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
 		return super.sameAs(E);
 	}
 	
-	protected int[] generatedFuelTypes  = new int[]{RawMaterial.RESOURCE_DEUTERIUM};
+	protected int[] generatedFuelTypes;;
 	protected int   ticksPerFuelConsume = 10;
 	protected volatile int fuelTickDown	= 0;
+
+	protected boolean willConsumeFuelIdle() { return true; }
 	
 	@Override
 	public long containTypes(){return Container.CONTAIN_RAWMATERIALS;}
@@ -65,13 +68,20 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
 	@Override
 	public void getTicksPerFuelConsume(int tick) { ticksPerFuelConsume=tick; }
 	@Override
-    public int[] getConsumedFuelTypes() { return generatedFuelTypes; }
+	public int[] getConsumedFuelTypes() { return generatedFuelTypes; }
 	@Override
-    public void setConsumedFuelType(int[] resources) { 
+	public void setConsumedFuelType(int[] resources) { 
 		generatedFuelTypes = resources;
-    }
+	}
 	@Override
-    public int getFuelRemaining() { return getFuel().size(); }
+	public int getFuelRemaining() 
+	{
+		int amt=0;
+		for(Item I : getFuel())
+			if(I instanceof RawMaterial)
+				amt+=I.phyStats().weight();
+		return amt;
+	}
 	
 	@Override
 	public boolean canContain(Environmental E)
@@ -131,7 +141,7 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
 				{
 					fuelTickDown--;
 				}
-				if(activated())
+				if(activated() && (willConsumeFuelIdle()))
 				{
 					if(fuelTickDown <= 0)
 					{

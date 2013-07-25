@@ -38,13 +38,14 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 	{
 		super();
 		setName("a thruster engine");
-		basePhyStats.setWeight(50000);
+		basePhyStats.setWeight(5000);
 		setDisplayText("a thruster engine sits here.");
 		setDescription("");
 		baseGoldValue=500000;
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		setCapacity(basePhyStats.weight()+10000);
 	}
 	public boolean sameAs(Environmental E)
 	{
@@ -57,4 +58,34 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 	protected int thrust=1000;
 	public int getThrust(){return thrust;}
 	public void setThrust(int current){thrust=current;}
+	
+	@Override protected boolean willConsumeFuelIdle() { return getThrust()>0; }
+	
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		executeThrusterMsg(this, myHost, msg);
+	}
+	
+	public static void executeThrusterMsg(ShipEngine me, Environmental myHost, CMMsg msg)
+	{
+		if(msg.amITarget(me))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_ACTIVATE:
+				me.activate(true);
+				//TODO:what does the ship need to know?
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				me.setThrust(0);
+				me.activate(false);
+				//TODO:what does the ship need to know?
+				break;
+			case CMMsg.TYP_POWERCURRENT:
+				//TODO:what does the ship need to know?
+				break;
+			}
+		}
+	}
 }
