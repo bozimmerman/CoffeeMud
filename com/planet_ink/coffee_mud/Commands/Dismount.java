@@ -67,12 +67,12 @@ public class Dismount extends StdCommand
 			   ||((RI.riding() instanceof Item)&&(!mob.location().isContent((Item)RI.riding())))
 			   ||(!CMLib.flags().canBeSeenBy(RI.riding(),mob)))
 			{
-				mob.tell("But "+RI.name()+" is not mounted to anything?!");
+				mob.tell("But "+RI.name(mob)+" is not mounted to anything?!");
 				return false;
 			}
 			if((RI instanceof MOB)&&(!CMLib.flags().isBoundOrHeld(RI))&&(!((MOB)RI).willFollowOrdersOf(mob)))
 			{
-				mob.tell(RI.name()+" may not want you to do that.");
+				mob.tell(RI.name(mob)+" may not want you to do that.");
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,"<S-NAME> dismount(s) <O-NAME> from <T-NAMESELF>.");

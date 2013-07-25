@@ -65,7 +65,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(building==null)
+			if(buildingI==null)
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -81,14 +81,14 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"<S-NAME> mess(es) up making "+building.name()+".");
+						commonTell(mob,"<S-NAME> mess(es) up making "+buildingI.name(mob)+".");
 					else
-						dropAWinner(mob,building);
+						dropAWinner(mob,buildingI);
 				}
-				building=null;
+				buildingI=null;
 			}
 		}
 		super.unInvoke();
@@ -156,7 +156,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			return true;
 		}
 		activity = CraftingActivity.CRAFTING;
-		building=null;
+		buildingI=null;
 		messedUp=false;
 		String materialDesc="";
 		String recipeName=CMParms.combine(commands,0);
@@ -211,8 +211,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 			CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 		}
-		building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-		if(building==null)
+		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+		if(buildingI==null)
 		{
 			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
@@ -220,42 +220,42 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 		itemName=CMLib.english().startWithAorAn(itemName);
-		building.setName(itemName);
-		startStr="<S-NAME> start(s) making "+building.name()+".";
-		displayText="You are making "+building.name();
-		verb="making "+building.name();
+		buildingI.setName(itemName);
+		startStr="<S-NAME> start(s) making "+buildingI.name()+".";
+		displayText="You are making "+buildingI.name();
+		verb="making "+buildingI.name();
 		playSound="crumple.wav";
-		building.setDisplayText(itemName+" lies here");
-		building.setDescription(itemName+". ");
-		building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-		building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
-		building.setMaterial(data[0][FOUND_CODE]);
+		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDescription(itemName+". ");
+		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+		buildingI.setMaterial(data[0][FOUND_CODE]);
 		String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-		addSpells(building,spell);
-		building.setSecretIdentity(getBrand(mob));
+		addSpells(buildingI,spell);
+		buildingI.setSecretIdentity(getBrand(mob));
 		if(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 		||(data[0][FOUND_CODE]==RawMaterial.RESOURCE_RICE))
-			building.setMaterial(RawMaterial.RESOURCE_PAPER);
-		if(building instanceof Recipe)
-			((Recipe)building).setTotalRecipePages(CMath.s_int(woodRequiredStr));
-		building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-		building.recoverPhyStats();
-		building.text();
-		building.recoverPhyStats();
+			buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
+		if(buildingI instanceof Recipe)
+			((Recipe)buildingI).setTotalRecipePages(CMath.s_int(woodRequiredStr));
+		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+		buildingI.recoverPhyStats();
+		buildingI.text();
+		buildingI.recoverPhyStats();
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

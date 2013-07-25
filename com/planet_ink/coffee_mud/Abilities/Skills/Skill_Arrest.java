@@ -92,7 +92,7 @@ public class Skill_Arrest extends StdSkill
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
-			mob.tell(target.name()+" has no warrants out here.");
+			mob.tell(target.name(mob)+" has no warrants out here.");
 			return false;
 		}
 		
@@ -107,7 +107,7 @@ public class Skill_Arrest extends StdSkill
 		{
 			if(mob.baseWeight()<(target.baseWeight()-450))
 			{
-				mob.tell(target.name()+" is way to big for you!");
+				mob.tell(target.name(mob)+" is way to big for you!");
 				return false;
 			}
 		}

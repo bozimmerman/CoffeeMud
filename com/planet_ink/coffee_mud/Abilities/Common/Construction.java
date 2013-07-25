@@ -861,7 +861,7 @@ public class Construction extends CraftingSkill
 			for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 			{
 				Room R=CMLib.map().getRoom(r.next());
-				if(R.displayText().equalsIgnoreCase(title))
+				if(R.displayText(mob).equalsIgnoreCase(title))
 				{
 					commonTell(mob,"That title has already been taken.  Choose another.");
 					return false;

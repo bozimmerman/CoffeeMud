@@ -68,7 +68,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	{
 		super();
 
-		building = null;
+		buildingI = null;
 		activity = CraftingActivity.CRAFTING;
 		messedUp = false;
 	}
@@ -78,7 +78,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(building==null)
+			if(buildingI==null)
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -94,7 +94,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
@@ -103,44 +103,44 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
-							building.destroy();
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
-							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up refitting "+buildingI.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up weaving "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up weaving "+buildingI.name()+".");
 					}
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
-							building.setUsesRemaining(100);
+							buildingI.setUsesRemaining(100);
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( building, recipeHolder );
-							building.destroy();
+							deconstructRecipeInto( buildingI, recipeHolder );
+							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
 						{
-							building.basePhyStats().setHeight(0);
-							building.recoverPhyStats();
+							buildingI.basePhyStats().setHeight(0);
+							buildingI.recoverPhyStats();
 						}
 						else
 						{
-							dropAWinner(mob,building);
+							dropAWinner(mob,buildingI);
 							if(key!=null)
 							{
 								dropAWinner(mob,key);
-								if(building instanceof Container)
-									key.setContainer((Container)building);
+								if(buildingI instanceof Container)
+									key.setContainer((Container)buildingI);
 							}
 						}
 					}
 				}
-				building=null;
+				buildingI=null;
 				key=null;
 				activity = CraftingActivity.CRAFTING;
 			}
@@ -310,60 +310,60 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			key=null;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,building,false)) return false;
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(!canMend(mob,buildingI,false)) return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			displayText="You are mending "+buildingI.name();
+			verb="mending "+buildingI.name();
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(building==null) return false;
-			if((building.material()!=RawMaterial.RESOURCE_COTTON)
-			&&(building.material()!=RawMaterial.RESOURCE_SILK)
-			&&(building.material()!=RawMaterial.RESOURCE_HEMP)
-			&&(building.material()!=RawMaterial.RESOURCE_VINE)
-			&&(building.material()!=RawMaterial.RESOURCE_WHEAT)
-			&&(building.material()!=RawMaterial.RESOURCE_SEAWEED))
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(buildingI==null) return false;
+			if((buildingI.material()!=RawMaterial.RESOURCE_COTTON)
+			&&(buildingI.material()!=RawMaterial.RESOURCE_SILK)
+			&&(buildingI.material()!=RawMaterial.RESOURCE_HEMP)
+			&&(buildingI.material()!=RawMaterial.RESOURCE_VINE)
+			&&(buildingI.material()!=RawMaterial.RESOURCE_WHEAT)
+			&&(buildingI.material()!=RawMaterial.RESOURCE_SEAWEED))
 			{
 				commonTell(mob,"That's not made of any sort of weavable material.  It can't be refitted.");
 				return false;
 			}
-			if(!(building instanceof Armor))
+			if(!(buildingI instanceof Armor))
 			{
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(building.phyStats().height()==0)
+			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,building.name()+" is already the right size.");
+				commonTell(mob,buildingI.name(mob)+" is already the right size.");
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) refitting "+building.name()+".";
-			displayText="You are refitting "+building.name();
-			verb="refitting "+building.name();
+			startStr="<S-NAME> start(s) refitting "+buildingI.name()+".";
+			displayText="You are refitting "+buildingI.name();
+			verb="refitting "+buildingI.name();
 		}
 		else
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			aborted=false;
@@ -426,8 +426,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-			if(building==null)
+			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			if(buildingI==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
@@ -441,82 +441,82 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				itemName="some "+itemName;
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
-			building.setName(itemName);
-			startStr="<S-NAME> start(s) weaving "+building.name()+".";
-			displayText="You are weaving "+building.name();
-			verb="weaving "+building.name();
-			building.setDisplayText(itemName+" lies here");
-			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			building.setMaterial(data[0][FOUND_CODE]);
-			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-			building.setSecretIdentity(getBrand(mob));
+			buildingI.setName(itemName);
+			startStr="<S-NAME> start(s) weaving "+buildingI.name()+".";
+			displayText="You are weaving "+buildingI.name();
+			verb="weaving "+buildingI.name();
+			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDescription(itemName+". ");
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+			buildingI.setMaterial(data[0][FOUND_CODE]);
+			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+			buildingI.setSecretIdentity(getBrand(mob));
 			int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			if(bundling)
 			{
-				building.setBaseValue(lostValue);
-				building.basePhyStats().setWeight(woodRequired);
+				buildingI.setBaseValue(lostValue);
+				buildingI.basePhyStats().setWeight(woodRequired);
 			}
-			addSpells(building,spell);
-			if(building instanceof Weapon)
+			addSpells(buildingI,spell);
+			if(buildingI instanceof Weapon)
 			{
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
+				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
 				for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
 				{
 					if(misctype.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
-						((Weapon)building).setWeaponClassification(cl);
+						((Weapon)buildingI).setWeaponClassification(cl);
 				}
-				building.basePhyStats().setDamage(armordmg);
-				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
-				((Weapon)building).setRawLogicalAnd((capacity>1));
+				buildingI.basePhyStats().setDamage(armordmg);
+				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
+				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
 			}
 			key=null;
-			if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
+			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
-				if((capacity>0)&&(building instanceof Container))
+				if((capacity>0)&&(buildingI instanceof Container))
 				{
-					((Container)building).setCapacity(capacity+woodRequired);
-					((Container)building).setContainTypes(canContain);
+					((Container)buildingI).setCapacity(capacity+woodRequired);
+					((Container)buildingI).setContainTypes(canContain);
 				}
-				((Armor)building).basePhyStats().setArmor(0);
+				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
-				setWearLocation(building,misctype,0);
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+				setWearLocation(buildingI,misctype,0);
 			}
 			else
-			if(building instanceof Container)
+			if(buildingI instanceof Container)
 			{
 				if(capacity>0)
 				{
-					((Container)building).setCapacity(capacity+woodRequired);
-					((Container)building).setContainTypes(canContain);
+					((Container)buildingI).setCapacity(capacity+woodRequired);
+					((Container)buildingI).setContainTypes(canContain);
 				}
 				if(misctype.equalsIgnoreCase("LID"))
-					((Container)building).setLidsNLocks(true,false,false,false);
+					((Container)buildingI).setLidsNLocks(true,false,false,false);
 				else
 				if(misctype.equalsIgnoreCase("LOCK"))
 				{
-					((Container)building).setLidsNLocks(true,false,true,false);
-					((Container)building).setKeyName(Double.toString(Math.random()));
+					((Container)buildingI).setLidsNLocks(true,false,true,false);
+					((Container)buildingI).setKeyName(Double.toString(Math.random()));
 					key=CMClass.getItem("GenKey");
-					((DoorKey)key).setKey(((Container)building).keyName());
+					((DoorKey)key).setKey(((Container)buildingI).keyName());
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
-					key.setDescription("looks like a key to "+building.name());
+					key.setDescription("looks like a key to "+buildingI.name());
 					key.recoverPhyStats();
 					key.text();
 				}
 			}
-			if(building instanceof Rideable)
+			if(buildingI instanceof Rideable)
 			{
-				setRideBasis((Rideable)building,misctype);
+				setRideBasis((Rideable)buildingI,misctype);
 			}
-			building.recoverPhyStats();
-			building.text();
-			building.recoverPhyStats();
+			buildingI.recoverPhyStats();
+			buildingI.text();
+			buildingI.recoverPhyStats();
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
@@ -525,7 +525,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
@@ -533,17 +533,17 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		if(autoGenerate>0)
 		{
 			if(key!=null) commands.addElement(key);
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,building,enhancedTypes);
+			enhanceItem(mob,buildingI,enhancedTypes);
 		}
 		else
 		if(bundling)

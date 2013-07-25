@@ -80,7 +80,7 @@ public class Thief_Alertness extends ThiefSkill
 					{
 						Item I=(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 						choices.removeElement(I);
-						mob.tell(I.name()+": "+I.description());
+						mob.tell(I.name(mob)+": "+I.description());
 						alert--;
 					}
 				}

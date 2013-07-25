@@ -1155,7 +1155,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						  }
 				case 'e': {   MOB victim=mob.getVictim();
 							  if((mob.isInCombat())&&(victim!=null)&&(CMLib.flags().canBeSeenBy(victim,mob)))
-								  buf.append(victim.displayName(mob));
+								  buf.append(victim.name(mob));
 							  c++; break; }
 				case 'E': {   MOB victim=mob.getVictim();
 							  if((mob.isInCombat())&&(victim!=null)&&(!victim.amDead())&&(CMLib.flags().canBeSeenBy(victim,mob)))
@@ -1199,7 +1199,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									case 'M': { buf.append(tank.maxState().getMana()); c++; break;}
 									case 'v': { buf.append(tank.curState().getMovement()); c++; break;}
 									case 'V': { buf.append(tank.maxState().getMovement()); c++; break;}
-									case 'e': {   buf.append(tank.displayName(mob)); c++; break;}
+									case 'e': {   buf.append(tank.name(mob)); c++; break;}
 									case 'E': {   if((mob.isInCombat())&&(CMLib.flags().canBeSeenBy(tank,mob)))
 													  buf.append(tank.healthText(mob)+"\n\r");
 												  c++;
@@ -1212,7 +1212,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case 'm': { buf.append("^<Mana^>"+mob.curState().getMana()+"^</Mana^>"); c++; break;}
 				case 'M': { buf.append("^<MaxMana^>"+mob.maxState().getMana()+"^</MaxMana^>"); c++; break;}
 				case 'r': {   if(mob.location()!=null)
-							  buf.append(mob.location().displayText());
+							  	buf.append(mob.location().displayText(mob));
 							  c++; break; }
 				case 'R': {   if((mob.location()!=null)&&CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))
 							  buf.append(mob.location().roomID());

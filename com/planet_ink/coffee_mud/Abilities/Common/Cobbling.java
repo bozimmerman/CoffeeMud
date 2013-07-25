@@ -65,7 +65,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(building==null)
+			if(buildingI==null)
 			{
 				messedUp=true;
 				unInvoke();
@@ -84,7 +84,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
@@ -93,36 +93,36 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
-							building.destroy();
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
-							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up refitting "+buildingI.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up cobbling "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up cobbling "+buildingI.name()+".");
 					}
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
-							building.setUsesRemaining(100);
+							buildingI.setUsesRemaining(100);
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( building, recipeHolder );
-							building.destroy();
+							deconstructRecipeInto( buildingI, recipeHolder );
+							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
 						{
-							building.basePhyStats().setHeight(0);
-							building.recoverPhyStats();
+							buildingI.basePhyStats().setHeight(0);
+							buildingI.recoverPhyStats();
 						}
 						else
-							dropAWinner(mob,building);
+							dropAWinner(mob,buildingI);
 					}
 				}
-				building=null;
+				buildingI=null;
 				activity = CraftingActivity.CRAFTING;
 			}
 		}
@@ -245,53 +245,53 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob, building,false)) return false;
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(!canMend(mob, buildingI,false)) return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			displayText="You are mending "+buildingI.name();
+			verb="mending "+buildingI.name();
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(building==null) return false;
-			if(!building.fitsOn(Wearable.WORN_FEET))
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(buildingI==null) return false;
+			if(!buildingI.fitsOn(Wearable.WORN_FEET))
 			{
 				commonTell(mob,"That's not footwear.  That can't be refitted.");
 				return false;
 			}
-			if(!(building instanceof Armor))
+			if(!(buildingI instanceof Armor))
 			{
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(building.phyStats().height()==0)
+			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,building.name()+" is already the right size.");
+				commonTell(mob,buildingI.name(mob)+" is already the right size.");
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) refitting "+building.name()+".";
-			displayText="You are refitting "+building.name();
-			verb="refitting "+building.name();
+			startStr="<S-NAME> start(s) refitting "+buildingI.name()+".";
+			displayText="You are refitting "+buildingI.name();
+			verb="refitting "+buildingI.name();
 		}
 		else
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			aborted=false;
@@ -348,8 +348,8 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-			if(building==null)
+			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			if(buildingI==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
@@ -360,42 +360,42 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 				itemName="some "+itemName;
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
-			building.setName(itemName);
-			startStr="<S-NAME> start(s) cobbling "+building.name()+".";
-			displayText="You are cobbling "+building.name();
-			verb="cobbling "+building.name();
+			buildingI.setName(itemName);
+			startStr="<S-NAME> start(s) cobbling "+buildingI.name()+".";
+			displayText="You are cobbling "+buildingI.name();
+			verb="cobbling "+buildingI.name();
 			playSound="sanding.wav";
-			building.setDisplayText(itemName+" lies here");
-			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			building.setMaterial(data[0][FOUND_CODE]);
+			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDescription(itemName+". ");
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+			buildingI.setMaterial(data[0][FOUND_CODE]);
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
-			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
-			if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
+			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
+			if(buildingI.basePhyStats().level()<1) buildingI.basePhyStats().setLevel(1);
 			int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-			building.setSecretIdentity(getBrand(mob));
+			buildingI.setSecretIdentity(getBrand(mob));
 			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			if(bundling) building.setBaseValue(lostValue);
-			addSpells(building,spell);
-			if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
+			if(bundling) buildingI.setBaseValue(lostValue);
+			addSpells(buildingI,spell);
+			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
-				((Armor)building).basePhyStats().setArmor(0);
+				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
-				setWearLocation(building,misctype,hardness);
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+				setWearLocation(buildingI,misctype,hardness);
 			}
-			if(building instanceof Container)
+			if(buildingI instanceof Container)
 				if(capacity>0)
 				{
-					((Container)building).setCapacity(capacity+woodRequired);
-					((Container)building).setContainTypes(canContain);
+					((Container)buildingI).setCapacity(capacity+woodRequired);
+					((Container)buildingI).setContainTypes(canContain);
 				}
-			building.recoverPhyStats();
-			building.text();
-			building.recoverPhyStats();
+			buildingI.recoverPhyStats();
+			buildingI.text();
+			buildingI.recoverPhyStats();
 		}
 
 
@@ -406,24 +406,24 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,building,enhancedTypes);
+			enhanceItem(mob,buildingI,enhancedTypes);
 		}
 		else
 		if(bundling)

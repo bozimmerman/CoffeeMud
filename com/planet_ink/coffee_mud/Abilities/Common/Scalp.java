@@ -135,12 +135,12 @@ public class Scalp extends CommonSkill
 		   ||(((DeadBody)I).charStats().getMyRace()==null)
 		   ||(((DeadBody)I).charStats().getMyRace().bodyMask()[Race.BODY_HEAD]==0))
 		{
-			commonTell(mob,"You can't scalp "+I.name()+".");
+			commonTell(mob,"You can't scalp "+I.name(mob)+".");
 			return false;
 		}
 		if(lastSoManyScalps.contains(I))
 		{
-			commonTell(mob,I.name()+" has already been scalped.");
+			commonTell(mob,I.name(mob)+" has already been scalped.");
 			return false;
 
 		}

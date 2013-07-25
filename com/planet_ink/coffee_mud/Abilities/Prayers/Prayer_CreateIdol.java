@@ -86,7 +86,7 @@ public class Prayer_CreateIdol extends Prayer
 		&&(msg.tool()==affected)
 		&&(!((MOB)msg.target()).willFollowOrdersOf(msg.source())))
 		{
-			msg.source().tell(msg.target().name()+" won`t accept "+msg.tool().name()+".");
+			msg.source().tell(((MOB)msg.target()).name(msg.source())+" won`t accept "+((Item)msg.tool()).name(msg.source())+".");
 			return false;
 		}
 		return super.okMessage(host,msg);

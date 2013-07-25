@@ -130,19 +130,19 @@ public class Scrapping extends CommonSkill
 		}
 		if(!okMaterial)
 		{
-			commonTell(mob,"You don't know how to scrap "+I.name()+".");
+			commonTell(mob,"You don't know how to scrap "+I.name(mob)+".");
 			return false;
 		}
 		
 		if(I instanceof RawMaterial)
 		{
-			commonTell(mob,I.name()+" already looks like scrap.");
+			commonTell(mob,I.name(mob)+" already looks like scrap.");
 			return false;
 		}
 		
 		if(CMLib.flags().enchanted(I))
 		{
-			commonTell(mob,I.name()+" is enchanted, and can't be scrapped.");
+			commonTell(mob,I.name(mob)+" is enchanted, and can't be scrapped.");
 			return false;
 		}
 		
@@ -170,7 +170,7 @@ public class Scrapping extends CommonSkill
 			Item I2=mob.location().getItem(i);
 			if((I2.container()!=null)&&(V.contains(I2.container())))
 			{
-				commonTell(mob,"You need to remove the contents of "+I2.name()+" first.");
+				commonTell(mob,"You need to remove the contents of "+I2.name(mob)+" first.");
 				return false;
 			}
 		}

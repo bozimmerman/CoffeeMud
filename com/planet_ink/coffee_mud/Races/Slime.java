@@ -111,36 +111,36 @@ public class Slime extends StdRace
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName(viewer) + "^r is unstable and almost disintegrated!^N";
+			return "^r" + mob.name(viewer) + "^r is unstable and almost disintegrated!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName(viewer) + "^r is nearing disintegration.^N";
+			return "^r" + mob.name(viewer) + "^r is nearing disintegration.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName(viewer) + "^r is noticeably disintegrating.^N";
+			return "^r" + mob.name(viewer) + "^r is noticeably disintegrating.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName(viewer) + "^y is very damaged and slightly disintegrated.^N";
+			return "^y" + mob.name(viewer) + "^y is very damaged and slightly disintegrated.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName(viewer) + "^y is very damaged.^N";
+			return "^y" + mob.name(viewer) + "^y is very damaged.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName(viewer) + "^p is starting to show major damage.^N";
+			return "^p" + mob.name(viewer) + "^p is starting to show major damage.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName(viewer) + "^p is definitely damaged.^N";
+			return "^p" + mob.name(viewer) + "^p is definitely damaged.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName(viewer) + "^g is disheveled and mildly damaged.^N";
+			return "^g" + mob.name(viewer) + "^g is disheveled and mildly damaged.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName(viewer) + "^g is noticeably disheveled.^N";
+			return "^g" + mob.name(viewer) + "^g is noticeably disheveled.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName(viewer) + "^g is slightly disheveled.^N";
+			return "^g" + mob.name(viewer) + "^g is slightly disheveled.^N";
 		else
-			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
+			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
 	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

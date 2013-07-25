@@ -497,7 +497,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						docks.add(R);
 					Room finalR=docks.get(CMLib.dice().roll(1, docks.size(), -1));
 					me.dockHere(finalR);
-					buyer.tell("You'll find your ship docked at '"+finalR.roomTitle(buyer)+"'.");
+					buyer.tell("You'll find your ship docked at '"+finalR.displayText(buyer)+"'.");
 					if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(me)))
 						buyer.playerStats().getExtItems().addItem(me);
 				}

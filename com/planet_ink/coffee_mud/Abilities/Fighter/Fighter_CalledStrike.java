@@ -161,7 +161,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target.name()+" already has a call against one of "+target.charStats().hisher()+" limbs.");
+			mob.tell(target.name(mob)+" already has a call against one of "+target.charStats().hisher()+" limbs.");
 			return false;
 		}
 
@@ -172,7 +172,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		if(remainingLimbList.size()==0)
 		{
 			if(!auto)
-				mob.tell("There is nothing left on "+target.name()+" to cut off!");
+				mob.tell("There is nothing left on "+target.name(mob)+" to cut off!");
 			return false;
 		}
 		if(mob.isMonster())

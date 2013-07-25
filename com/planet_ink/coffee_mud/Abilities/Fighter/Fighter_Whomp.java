@@ -139,7 +139,7 @@ public class Fighter_Whomp extends FighterSkill
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-250)))
 		{
-			mob.tell(target.name()+" is way too big to knock out!");
+			mob.tell(target.name(mob)+" is way too big to knock out!");
 			return false;
 		}
 

@@ -148,12 +148,12 @@ public class Follow extends StdCommand
 		}
 		if((target.isMonster())&&(!mob.isMonster()))
 		{
-			mob.tell("You cannot follow '"+target.name()+"'.");
+			mob.tell("You cannot follow '"+target.name(mob)+"'.");
 			return false;
 		}
 		if(CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
-			mob.tell(target.name()+" is not accepting followers.");
+			mob.tell(target.name(mob)+" is not accepting followers.");
 			return false;
 		}
 		MOB ultiTarget=target.amUltimatelyFollowing();

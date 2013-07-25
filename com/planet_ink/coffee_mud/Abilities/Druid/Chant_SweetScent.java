@@ -126,7 +126,7 @@ public class Chant_SweetScent extends Chant
 		if(target==null) return false;
 		if(!Druid_MyPlants.isMyPlant(target,mob))
 		{
-			mob.tell(target.name()+" is not one of your plants!");
+			mob.tell(target.name(mob)+" is not one of your plants!");
 			return false;
 		}
 

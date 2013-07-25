@@ -46,7 +46,6 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public int getBitmap();
 	public void setBitmap(int bitmap);
 	public String titledName();
-	public String displayName(MOB mob);
 	public String genericName();
 
 	/** Some general statistics about MOBs.  See the
@@ -57,7 +56,6 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public CharStats charStats();
 	public void recoverCharStats();
 	public void setBaseCharStats(CharStats newBaseCharStats);
-	public String displayText(MOB viewer);
 	public int maxCarry();
 	public int maxItems();
 	public int baseWeight();

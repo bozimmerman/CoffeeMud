@@ -116,11 +116,14 @@ public class Auction extends Channel implements Tickable
 							double finalAmount=liveData.bid-houseCut;
 							CMLib.coffeeShops().returnMoney(winnerM,liveData.currency,liveData.highBid-liveData.bid);
 							CMLib.coffeeShops().returnMoney(auctioneerM,liveData.currency,finalAmount);
-							auctioneerM.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,finalAmount)+" has been transferred to you as payment from "+winnerM.name()+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,houseCut)+".  The goods have also been transferred in exchange.");
+							auctioneerM.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,finalAmount)+" has been transferred to you as payment from "+winnerM.name(auctioneerM)
+									+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,houseCut)+".  The goods have also been transferred " +
+									"in exchange.");
 							if(CMLib.commands().postGet(winnerM,null,liveData.auctioningI,false)
 							||(winnerM.isMine(liveData.auctioningI)))
 							{
-								winnerM.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" has been transferred to "+auctioneerM.displayName(winnerM)+".  You should have received the auctioned goods.  This auction is complete.");
+								winnerM.tell(CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+" has been transferred to "+auctioneerM.name(winnerM)
+										+".  You should have received the auctioned goods.  This auction is complete.");
 								if(liveData.auctioningI instanceof LandTitle)
 								{
 									CMMsg msg=CMClass.getMsg(auctioneerM,winnerM,liveData.auctioningI,CMMsg.MASK_ALWAYS|CMMsg.TYP_GIVE,null);
@@ -130,8 +133,11 @@ public class Auction extends Channel implements Tickable
 							else
 							{
 								auctioneerM.moveItemTo(liveData.auctioningI);
-								auctioneerM.tell("Your transaction could not be completed because "+winnerM.name()+" was unable to collect the item.  Please contact "+winnerM.name()+" about receipt of "+liveData.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
-								winnerM.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+auctioneerM.displayName(winnerM)+" about receipt of "+liveData.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
+								auctioneerM.tell("Your transaction could not be completed because "+winnerM.name(auctioneerM)+" was unable to collect the item.  Please contact "
+										+winnerM.name(auctioneerM)+" about receipt of "+liveData.auctioningI.name(winnerM)+" for "
+										+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
+								winnerM.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+auctioneerM.name(winnerM)
+										+" about receipt of "+liveData.auctioningI.name(winnerM)+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 							}
 						}
 					}

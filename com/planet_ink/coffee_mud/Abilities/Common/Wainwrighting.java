@@ -68,7 +68,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(building==null)
+			if(buildingI==null)
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -120,34 +120,34 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
 						if(activity == CraftingActivity.LEARNING)
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up building "+building.name()+".");
-						building.destroy();
+							commonEmote(mob,"<S-NAME> mess(es) up building "+buildingI.name()+".");
+						buildingI.destroy();
 					}
 					else
 					if(activity==CraftingActivity.LEARNING)
 					{
-						deconstructRecipeInto( building, recipeHolder );
-						building.destroy();
+						deconstructRecipeInto( buildingI, recipeHolder );
+						buildingI.destroy();
 					}
 					else
 					{
-						dropAWinner(mob,building);
+						dropAWinner(mob,buildingI);
 						if(key!=null)
 						{
 							dropAWinner(mob,key);
-							if(building instanceof Container)
-								key.setContainer((Container)building);
+							if(buildingI instanceof Container)
+								key.setContainer((Container)buildingI);
 						}
 					}
 				}
-				building=null;
+				buildingI=null;
 				key=null;
 			}
 		}
@@ -221,7 +221,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
 		activity = CraftingActivity.CRAFTING;
-		building=null;
+		buildingI=null;
 		key=null;
 		messedUp=false;
 		int amount=-1;
@@ -275,8 +275,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		int lostValue=autoGenerate>0?0:
 			CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 			+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-		building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-		if(building==null)
+		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+		if(buildingI==null)
 		{
 			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
@@ -287,58 +287,58 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			itemName="a "+woodRequired+"# "+itemName;
 		else
 			itemName=CMLib.english().startWithAorAn(itemName);
-		building.setName(itemName);
-		startStr="<S-NAME> start(s) building "+building.name()+".";
-		displayText="You are building "+building.name();
-		verb="building "+building.name();
+		buildingI.setName(itemName);
+		startStr="<S-NAME> start(s) building "+buildingI.name()+".";
+		displayText="You are building "+buildingI.name();
+		verb="building "+buildingI.name();
 		playSound="hammer.wav";
-		building.setDisplayText(itemName+" lies here");
-		building.setDescription(itemName+". ");
-		building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-		building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-		building.setMaterial(data[0][FOUND_CODE]);
-		building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-		building.setSecretIdentity(getBrand(mob));
+		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDescription(itemName+". ");
+		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+		buildingI.setMaterial(data[0][FOUND_CODE]);
+		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+		buildingI.setSecretIdentity(getBrand(mob));
 		int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 		int riders=CMath.s_int(foundRecipe.get(RCP_NUMRIDERS));
 		String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-		addSpells(building,spell);
+		addSpells(buildingI,spell);
 		key=null;
-		if(building instanceof Rideable)
+		if(buildingI instanceof Rideable)
 		{
-			((Rideable)building).setRideBasis(Rideable.RIDEABLE_WAGON);
-			((Rideable)building).setRiderCapacity(riders);
+			((Rideable)buildingI).setRideBasis(Rideable.RIDEABLE_WAGON);
+			((Rideable)buildingI).setRiderCapacity(riders);
 		}
 
-		if((building instanceof Container)
-		&&(!(building instanceof Armor)))
+		if((buildingI instanceof Container)
+		&&(!(buildingI instanceof Armor)))
 		{
 			if(capacity>0)
 			{
-				((Container)building).setCapacity(capacity+woodRequired);
-				((Container)building).setContainTypes(canContain);
+				((Container)buildingI).setCapacity(capacity+woodRequired);
+				((Container)buildingI).setContainTypes(canContain);
 			}
 			if(misctype.equalsIgnoreCase("LID"))
-				((Container)building).setLidsNLocks(true,false,false,false);
+				((Container)buildingI).setLidsNLocks(true,false,false,false);
 			else
 			if(misctype.equalsIgnoreCase("LOCK"))
 			{
-				((Container)building).setLidsNLocks(true,false,true,false);
-				((Container)building).setKeyName(Double.toString(Math.random()));
+				((Container)buildingI).setLidsNLocks(true,false,true,false);
+				((Container)buildingI).setKeyName(Double.toString(Math.random()));
 				key=CMClass.getItem("GenKey");
-				((DoorKey)key).setKey(((Container)building).keyName());
+				((DoorKey)key).setKey(((Container)buildingI).keyName());
 				key.setName("a key");
 				key.setDisplayText("a small key sits here");
-				key.setDescription("looks like a key to "+building.name());
+				key.setDescription("looks like a key to "+buildingI.name());
 				key.recoverPhyStats();
 				key.text();
 			}
 		}
-		if(bundling) building.setBaseValue(lostValue);
-		building.recoverPhyStats();
-		building.text();
-		building.recoverPhyStats();
+		if(bundling) buildingI.setBaseValue(lostValue);
+		buildingI.recoverPhyStats();
+		buildingI.text();
+		buildingI.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
@@ -347,22 +347,22 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		else

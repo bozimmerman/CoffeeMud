@@ -64,16 +64,16 @@ public class Beacon extends StdCommand
 			}
 			if(M.getStartRoom()==M.location())
 			{
-				mob.tell(M.name()+" is already at their beacon.");
+				mob.tell(M.name(mob)+" is already at their beacon.");
 				return false;
 			}
 			if(!CMSecurity.isAllowed(mob,M.location(),CMSecurity.SecFlag.BEACON))
 			{
-				mob.tell("You cannot beacon "+M.name()+" there.");
+				mob.tell("You cannot beacon "+M.name(mob)+" there.");
 				return false;
 			}
 			M.setStartRoom(M.location());
-			mob.tell("You have modified "+M.name()+"'s beacon.");
+			mob.tell("You have modified "+M.name(mob)+"'s beacon.");
 		}
 		return false;
 	}

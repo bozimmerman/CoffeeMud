@@ -123,7 +123,7 @@ public class Fighter_BodyFlip extends FighterSkill
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target.name()+" is already on the floor!");
+			mob.tell(target.name(mob)+" is already on the floor!");
 			return false;
 		}
 
@@ -146,7 +146,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		}
 		if(CMLib.flags().isInFlight(target))
 		{
-			mob.tell(target.name()+" is flying and can't be flipped over!");
+			mob.tell(target.name(mob)+" is flying and can't be flipped over!");
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_ARM)<=1)

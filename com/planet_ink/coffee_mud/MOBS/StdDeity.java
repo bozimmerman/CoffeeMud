@@ -200,7 +200,7 @@ public class StdDeity extends StdMOB implements Deity
 					if(R==null)
 						buf.append("the player should be in some unknown place");
 					else
-						buf.append("the player should be in '"+R.roomTitle(null)+"'");
+						buf.append("the player should be in '"+R.displayText(null)+"'");
 				}
 				}
 				break;
@@ -1037,7 +1037,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(M.getWorshipCharID().equals(Name()))
 				{
 					if(!M.isMonster())
-						M.tell("Services for "+Name()+" are now starting at "+room.roomTitle(null)+".");
+						M.tell("Services for "+Name()+" are now starting at "+room.displayText(null)+".");
 					else
 					if(!CMLib.flags().isATrackingMonster(M))
 					{

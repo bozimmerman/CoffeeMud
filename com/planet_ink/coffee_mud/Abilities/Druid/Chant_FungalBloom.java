@@ -100,7 +100,7 @@ public class Chant_FungalBloom extends Chant
 		}
 		if(target.material()!=RawMaterial.RESOURCE_MUSHROOMS)
 		{
-			mob.tell(target.name()+" is not a fungus!");
+			mob.tell(target.name(mob)+" is not a fungus!");
 			return false;
 		}
 

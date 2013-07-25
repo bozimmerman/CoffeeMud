@@ -219,7 +219,7 @@ public class Spell_Cogniportive extends Spell
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			mob.tell(target.name()+" is already cogniportive!");
+			mob.tell(target.name(mob)+" is already cogniportive!");
 			return false;
 		}
 

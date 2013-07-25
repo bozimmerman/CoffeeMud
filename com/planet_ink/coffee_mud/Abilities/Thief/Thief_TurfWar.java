@@ -240,7 +240,7 @@ public class Thief_TurfWar extends ThiefSkill
 			{
 				for(Session S : CMLib.sessions().localOnlineIterable())
 					if((S.mob()!=null)&&(S.mob()!=mob)&&(isADefender(R,S.mob())))
-						S.mob().tell(mob.displayName(mob)+" has declared a turf war at '"+R.displayText()+"'.  You must immediately go and defend it to keep your tag.");
+						S.mob().tell(mob.name(mob)+" has declared a turf war at '"+R.displayText(mob)+"'.  You must immediately go and defend it to keep your tag.");
 				setTimeOfNextCast(mob);
 			}
 		}

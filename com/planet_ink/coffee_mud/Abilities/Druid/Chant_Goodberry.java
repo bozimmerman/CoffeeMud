@@ -92,7 +92,7 @@ public class Chant_Goodberry extends Chant
 		if((!(target instanceof Food))
 		||(!isBerry(target)))
 		{
-			mob.tell("This magic will not work on "+target.name()+".");
+			mob.tell("This magic will not work on "+target.name(mob)+".");
 			return false;
 		}
 

@@ -132,12 +132,12 @@ public class PollData extends StdWebMacro
 			}
 			if(create)
 			{
-				Log.sysOut(M.name()+" created poll "+P.getName());
+				Log.sysOut(M.Name()+" created poll "+P.getName());
 				CMLib.polls().createPoll(P);
 				return "Poll "+P.getName()+" created";
 			}
 			CMLib.polls().updatePoll(last, P);
-			Log.sysOut(M.name()+" updated poll "+P.getName());
+			Log.sysOut(M.Name()+" updated poll "+P.getName());
 			return "Poll "+last+" updated";
 		}
 		else
@@ -151,7 +151,7 @@ public class PollData extends StdWebMacro
 			if(P==null)
 				return "Unknown poll!";
 			CMLib.polls().deletePoll(P);
-			Log.sysOut(M.name()+" deleted poll "+last);
+			Log.sysOut(M.Name()+" deleted poll "+last);
 			return "Poll deleted.";
 		}
 		else

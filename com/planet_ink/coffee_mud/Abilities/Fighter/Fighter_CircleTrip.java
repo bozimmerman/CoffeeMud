@@ -152,7 +152,7 @@ public class Fighter_CircleTrip extends FighterSkill
 
 				if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 				{
-					mob.tell(target.name()+" is already on the floor!");
+					mob.tell(target.name(mob)+" is already on the floor!");
 					return false;
 				}
 
@@ -163,7 +163,7 @@ public class Fighter_CircleTrip extends FighterSkill
 				}
 				if(CMLib.flags().isInFlight(target))
 				{
-					mob.tell(target.name()+" is flying and can't be tripped!");
+					mob.tell(target.name(mob)+" is flying and can't be tripped!");
 					return false;
 				}
 

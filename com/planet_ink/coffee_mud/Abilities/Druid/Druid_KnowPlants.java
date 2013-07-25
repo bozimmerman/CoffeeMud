@@ -67,7 +67,7 @@ public class Druid_KnowPlants extends StdAbility
 		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
 		&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		{
-			mob.tell("Your plant knowledge can tell you nothing about "+I.name()+".");
+			mob.tell("Your plant knowledge can tell you nothing about "+I.name(mob)+".");
 			return false;
 		}
 
@@ -84,7 +84,7 @@ public class Druid_KnowPlants extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				StringBuffer str=new StringBuffer("");
-				str.append(I.name()+" is a kind of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".  ");
+				str.append(I.name(mob)+" is a kind of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".  ");
 				if(isPlant(I))
 					str.append("It was summoned by "+I.rawSecretIdentity()+".");
 				else

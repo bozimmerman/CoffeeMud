@@ -56,7 +56,7 @@ public class Spell_EnchantArmor extends Spell
 		}
 		if(target.phyStats().ability()>2)
 		{
-			mob.tell(target.name()+" cannot be enchanted further.");
+			mob.tell(target.name(mob)+" cannot be enchanted further.");
 			return false;
 		}
 

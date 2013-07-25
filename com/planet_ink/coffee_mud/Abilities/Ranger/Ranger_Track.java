@@ -202,7 +202,7 @@ public class Ranger_Track extends StdAbility
 				mob.location().send(mob,msg);
 				target.executeMsg(target,msg);
 				invoker=mob;
-				displayText="(Tracking "+target.name()+")";
+				displayText="(Tracking "+target.name(mob)+")";
 				Ranger_Track newOne=(Ranger_Track)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);

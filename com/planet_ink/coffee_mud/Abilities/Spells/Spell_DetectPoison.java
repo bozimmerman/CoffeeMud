@@ -101,7 +101,7 @@ public class Spell_DetectPoison extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer buf=new StringBuffer(target.name()+" contains: ");
+				StringBuffer buf=new StringBuffer(target.name(mob)+" contains: ");
 				if(offensiveAffects.size()==0)
 					buf.append("weak impurities, ");
 				else

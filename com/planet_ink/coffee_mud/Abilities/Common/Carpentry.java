@@ -69,7 +69,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(building==null)
+			if(buildingI==null)
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -85,7 +85,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
@@ -94,44 +94,44 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
-							building.destroy();
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
-							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up refitting "+buildingI.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up carving "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up carving "+buildingI.name()+".");
 					}
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
-							building.setUsesRemaining(100);
+							buildingI.setUsesRemaining(100);
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( building, recipeHolder );
-							building.destroy();
+							deconstructRecipeInto( buildingI, recipeHolder );
+							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
 						{
-							building.basePhyStats().setHeight(0);
-							building.recoverPhyStats();
+							buildingI.basePhyStats().setHeight(0);
+							buildingI.recoverPhyStats();
 						}
 						else
 						{
-							dropAWinner(mob,building);
+							dropAWinner(mob,buildingI);
 							if(key!=null)
 							{
 								dropAWinner(mob,key);
-								if(building instanceof Container)
-									key.setContainer((Container)building);
+								if(buildingI instanceof Container)
+									key.setContainer((Container)buildingI);
 							}
 						}
 					}
 				}
-				building=null;
+				buildingI=null;
 				key=null;
 				activity = CraftingActivity.CRAFTING;
 			}
@@ -300,54 +300,54 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob, building,false)) return false;
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(!canMend(mob, buildingI,false)) return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			displayText="You are mending "+buildingI.name();
+			verb="mending "+buildingI.name();
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(building==null) return false;
-			if((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(buildingI==null) return false;
+			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 			{
 				commonTell(mob,"That's not made of wood.  That can't be refitted.");
 				return false;
 			}
-			if(!(building instanceof Armor))
+			if(!(buildingI instanceof Armor))
 			{
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(building.phyStats().height()==0)
+			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,building.name()+" is already the right size.");
+				commonTell(mob,buildingI.name(mob)+" is already the right size.");
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) refitting "+building.name()+".";
-			displayText="You are refitting "+building.name();
-			verb="refitting "+building.name();
+			startStr="<S-NAME> start(s) refitting "+buildingI.name()+".";
+			displayText="You are refitting "+buildingI.name();
+			verb="refitting "+buildingI.name();
 		}
 		else
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			aborted=false;
 			key=null;
@@ -404,8 +404,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-			if(building==null)
+			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			if(buildingI==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
@@ -416,102 +416,102 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				itemName="a "+woodRequired+"# "+itemName;
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
-			building.setName(itemName);
-			startStr="<S-NAME> start(s) carving "+building.name()+".";
-			displayText="You are carving "+building.name();
+			buildingI.setName(itemName);
+			startStr="<S-NAME> start(s) carving "+buildingI.name()+".";
+			displayText="You are carving "+buildingI.name();
 			playSound="sawing.wav";
-			verb="carving "+building.name();
-			building.setDisplayText(itemName+" lies here");
-			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			building.setMaterial(data[0][FOUND_CODE]);
+			verb="carving "+buildingI.name();
+			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDescription(itemName+". ");
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+			buildingI.setMaterial(data[0][FOUND_CODE]);
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
-			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness));
-			if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
-			building.setSecretIdentity(getBrand(mob));
+			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness));
+			if(buildingI.basePhyStats().level()<1) buildingI.basePhyStats().setLevel(1);
+			buildingI.setSecretIdentity(getBrand(mob));
 			int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-			if(bundling) building.setBaseValue(lostValue);
+			if(bundling) buildingI.setBaseValue(lostValue);
 			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			addSpells(building,spell);
+			addSpells(buildingI,spell);
 			key=null;
-			if((building instanceof Container)
-			&&(!(building instanceof Armor)))
+			if((buildingI instanceof Container)
+			&&(!(buildingI instanceof Armor)))
 			{
 				if(capacity>0)
 				{
-					((Container)building).setCapacity(capacity+woodRequired);
-					((Container)building).setContainTypes(canContain);
+					((Container)buildingI).setCapacity(capacity+woodRequired);
+					((Container)buildingI).setContainTypes(canContain);
 				}
 				if(misctype.equalsIgnoreCase("LID"))
-					((Container)building).setLidsNLocks(true,false,false,false);
+					((Container)buildingI).setLidsNLocks(true,false,false,false);
 				else
 				if(misctype.equalsIgnoreCase("LOCK"))
 				{
-					((Container)building).setLidsNLocks(true,false,true,false);
-					((Container)building).setKeyName(Double.toString(Math.random()));
+					((Container)buildingI).setLidsNLocks(true,false,true,false);
+					((Container)buildingI).setKeyName(Double.toString(Math.random()));
 					key=(DoorKey)CMClass.getItem("GenKey");
-					key.setKey(((Container)building).keyName());
+					key.setKey(((Container)buildingI).keyName());
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
-					key.setDescription("looks like a key to "+building.name());
+					key.setDescription("looks like a key to "+buildingI.name());
 					key.recoverPhyStats();
 					key.text();
 				}
 			}
-			if(building instanceof Drink)
+			if(buildingI instanceof Drink)
 			{
-				if(CMLib.flags().isGettable(building))
+				if(CMLib.flags().isGettable(buildingI))
 				{
-					((Drink)building).setLiquidHeld(capacity*50);
-					((Drink)building).setThirstQuenched(250);
+					((Drink)buildingI).setLiquidHeld(capacity*50);
+					((Drink)buildingI).setThirstQuenched(250);
 					if((capacity*50)<250)
-						((Drink)building).setThirstQuenched(capacity*50);
-					((Drink)building).setLiquidRemaining(0);
+						((Drink)buildingI).setThirstQuenched(capacity*50);
+					((Drink)buildingI).setLiquidRemaining(0);
 				}
 			}
-			if(building instanceof Rideable)
+			if(buildingI instanceof Rideable)
 			{
-				setRideBasis((Rideable)building,misctype);
+				setRideBasis((Rideable)buildingI,misctype);
 				if(capacity==0)
-					((Rideable)building).setRiderCapacity(1);
+					((Rideable)buildingI).setRiderCapacity(1);
 				else
 				if(capacity<5)
-					((Rideable)building).setRiderCapacity(capacity);
+					((Rideable)buildingI).setRiderCapacity(capacity);
 			}
-			if(building instanceof Weapon)
+			if(buildingI instanceof Weapon)
 			{
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_BLUNT);
-				setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_SLASHING);
-				building.basePhyStats().setAttackAdjustment((abilityCode()+(hardness*5)-1));
-				building.basePhyStats().setDamage(armordmg+hardness);
-				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
-				((Weapon)building).setRawLogicalAnd((capacity>1));
-				if(!(building instanceof Container))
-					building.basePhyStats().setAttackAdjustment(building.basePhyStats().attackAdjustment()+(int)canContain);
+				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_BLUNT);
+				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
+				buildingI.basePhyStats().setAttackAdjustment((abilityCode()+(hardness*5)-1));
+				buildingI.basePhyStats().setDamage(armordmg+hardness);
+				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
+				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
+				if(!(buildingI instanceof Container))
+					buildingI.basePhyStats().setAttackAdjustment(buildingI.basePhyStats().attackAdjustment()+(int)canContain);
 			}
-			if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
+			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
-				((Armor)building).basePhyStats().setArmor(0);
+				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
-				setWearLocation(building,misctype,hardness);
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+				setWearLocation(buildingI,misctype,hardness);
 			}
-			if(building instanceof Light)
+			if(buildingI instanceof Light)
 			{
-				((Light)building).setDuration(capacity);
-				if((building instanceof Container)
+				((Light)buildingI).setDuration(capacity);
+				if((buildingI instanceof Container)
 				&&(!misctype.equals("SMOKE")))
 				{
-					((Light)building).setDuration(200);
-					((Container)building).setCapacity(0);
+					((Light)buildingI).setDuration(200);
+					((Container)buildingI).setCapacity(0);
 				}
 			}
-			building.recoverPhyStats();
-			building.text();
-			building.recoverPhyStats();
+			buildingI.recoverPhyStats();
+			buildingI.text();
+			buildingI.recoverPhyStats();
 		}
 
 
@@ -521,7 +521,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
@@ -529,17 +529,17 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		if(autoGenerate>0)
 		{
 			if(key!=null) commands.add(key);
-			commands.add(building);
+			commands.add(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,building,enhancedTypes);
+			enhanceItem(mob,buildingI,enhancedTypes);
 		}
 		else
 		if(bundling)

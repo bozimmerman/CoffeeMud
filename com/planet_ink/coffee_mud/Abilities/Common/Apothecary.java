@@ -96,14 +96,14 @@ public class Apothecary extends Cooking
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(building==null))
+		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(buildingI==null))
 			return false;
-		Ability A2=building.fetchEffect(0);
+		Ability A2=buildingI.fetchEffect(0);
 		if((A2!=null)
-		&&(building instanceof Drink))
+		&&(buildingI instanceof Drink))
 		{
-			((Drink)building).setLiquidType(RawMaterial.RESOURCE_POISON);
-			building.setMaterial(RawMaterial.RESOURCE_POISON);
+			((Drink)buildingI).setLiquidType(RawMaterial.RESOURCE_POISON);
+			buildingI.setMaterial(RawMaterial.RESOURCE_POISON);
 		}
 		return true;
 	}

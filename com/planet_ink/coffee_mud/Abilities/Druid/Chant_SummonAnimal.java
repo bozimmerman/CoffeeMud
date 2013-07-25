@@ -152,7 +152,7 @@ public class Chant_SummonAnimal extends Chant
 					CMLib.commands().postFollow(target,mob,true);
 					beneficialAffect(mob,target,asLevel,0);
 					if(target.amFollowing()!=mob)
-						mob.tell(target.name()+" seems unwilling to follow you.");
+						mob.tell(target.name(mob)+" seems unwilling to follow you.");
 				}
 				else
 				{

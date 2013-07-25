@@ -101,7 +101,7 @@ public class Chant_Unbreakable extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already unbreakable.");
+			mob.tell(target.name(mob)+" is already unbreakable.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

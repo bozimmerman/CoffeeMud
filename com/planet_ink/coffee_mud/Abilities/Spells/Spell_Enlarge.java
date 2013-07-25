@@ -57,7 +57,7 @@ public class Spell_Enlarge extends Spell
 		{
 			Item I=(Item)affected;
 			if(I.owner() instanceof MOB)
-				((MOB)I.owner()).tell(I.name()+" in your inventory shrinks back to size.");
+				((MOB)I.owner()).tell(I.name((MOB)I.owner())+" in your inventory shrinks back to size.");
 			else
 			{
 				Room R=CMLib.map().roomLocation(I);
@@ -80,7 +80,7 @@ public class Spell_Enlarge extends Spell
 		}
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already HUGE!");
+			mob.tell(target.name(mob)+" is already HUGE!");
 			return false;
 		}
 

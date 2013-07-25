@@ -248,13 +248,13 @@ public class TaxCollector extends StdBehavior
 			String owed=CMLib.beanCounter().nameCurrencyShort(currency,owe[OWE_TOTAL]);
 			if((!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(mob))))
 			{
-				msg.source().tell(mob.name()+" refuses your money.");
+				msg.source().tell(mob.name(msg.source())+" refuses your money.");
 				CMLib.commands().postSay(mob,msg.source(),"I don't accept that kind of currency.",false,false);
 				return false;
 			}
 			if(coins<owe[OWE_TOTAL])
 			{
-				msg.source().tell(mob.name()+" refuses your money.");
+				msg.source().tell(mob.name(msg.source())+" refuses your money.");
 				CMLib.commands().postSay(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
 				return false;
 			}

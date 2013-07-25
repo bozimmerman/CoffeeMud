@@ -48,7 +48,7 @@ public class Skill_Shuffle extends BardSkill
 	{
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
-			mob.tell(mob.name()+" must stand up first!");
+			mob.tell("You must stand up first!");
 			return false;
 		}
 

@@ -174,7 +174,7 @@ public class Spell_StoreSpell extends Spell
 		}
 		if(!(target instanceof Item))
 		{
-			mob.tell("You can't enchant '"+target.name()+"'.");
+			mob.tell("You can't enchant '"+target.name(mob)+"'.");
 			return false;
 		}
 

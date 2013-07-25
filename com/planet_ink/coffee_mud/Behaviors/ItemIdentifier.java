@@ -125,7 +125,7 @@ public class ItemIdentifier extends StdBehavior
 			msg.addTrailerMsg(newMsg);
 			newMsg=CMClass.getMsg(observer,I,null,CMMsg.MSG_EXAMINE,"<S-NAME> examine(s) <T-NAME> very closely.");
 			msg.addTrailerMsg(newMsg);
-			StringBuffer up=new StringBuffer(I.name()+" is made of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".\n\r");
+			StringBuffer up=new StringBuffer(I.name(observer)+" is made of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".\n\r");
 			if((I instanceof Armor)&&(((Armor)I).phyStats().height()>0))
 				up.append("It is a size "+((Armor)I).phyStats().height()+".\n\r");
 			int weight=I.phyStats().weight();

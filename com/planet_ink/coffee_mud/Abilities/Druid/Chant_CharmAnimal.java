@@ -189,7 +189,7 @@ public class Chant_CharmAnimal extends Chant
 
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell(target.name()+" is not an animal!");
+			mob.tell(target.name(mob)+" is not an animal!");
 			return false;
 		}
 
@@ -222,7 +222,7 @@ public class Chant_CharmAnimal extends Chant
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
-							mob.tell(target.name()+" seems unwilling to follow you.");
+							mob.tell(target.name(mob)+" seems unwilling to follow you.");
 					}
 				}
 			}

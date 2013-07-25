@@ -81,12 +81,12 @@ public class Spell_RepairingAura extends Spell
 		if(target==null) return false;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already repairing!");
+			mob.tell(target.name(mob)+" is already repairing!");
 			return false;
 		}
 		if((!(target instanceof Item))&&(!(target instanceof MOB)))
 		{
-			mob.tell(target.name()+" would not be affected by this spell.");
+			mob.tell(target.name(mob)+" would not be affected by this spell.");
 			return false;
 		}
 

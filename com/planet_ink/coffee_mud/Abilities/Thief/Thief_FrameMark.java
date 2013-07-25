@@ -81,7 +81,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
 			String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
-			mob.tell("You'll need at least "+costWords+" on hand to frame "+target.name()+".");
+			mob.tell("You'll need at least "+costWords+" on hand to frame "+target.name(mob)+".");
 			return false;
 		}
 

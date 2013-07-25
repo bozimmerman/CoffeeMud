@@ -86,7 +86,7 @@ public class Skill_ScrollCopy extends StdSkill
 
 		if(thisSpell==null)
 		{
-			mob.tell("That is not written on "+target.name()+".");
+			mob.tell("That is not written on "+target.name(mob)+".");
 			return false;
 		}
 

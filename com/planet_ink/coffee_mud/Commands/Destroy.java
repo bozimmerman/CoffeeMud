@@ -1369,7 +1369,7 @@ public class Destroy extends StdCommand
 				{
 					mob.tell("Clan '"+C.name()+"' is destroyed!");
 					C.destroyClan();
-					Log.sysOut("CreateEdit","Clan '"+C.name()+" destroyed by "+mob.name()+".");
+					Log.sysOut("CreateEdit","Clan '"+C.name()+" destroyed by "+mob.Name()+".");
 				}
 			}
 		}
@@ -1394,7 +1394,7 @@ public class Destroy extends StdCommand
 				{
 					mob.tell("Government '"+G.getName()+"' is destroyed!");
 					CMLib.clans().reSaveGovernmentsXML();
-					Log.sysOut("CreateEdit","Government '"+G.getName()+" destroyed by "+mob.name()+".");
+					Log.sysOut("CreateEdit","Government '"+G.getName()+" destroyed by "+mob.Name()+".");
 				}
 				else
 					mob.tell("You can't delete the last remaining clan government.");

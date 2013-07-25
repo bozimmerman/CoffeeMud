@@ -64,7 +64,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((building==null)
+			if((buildingI==null)
 			||(theSpell==null))
 			{
 				aborted=true;
@@ -73,9 +73,9 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			else
 			if(tickUp==0)
 			{
-				commonEmote(mob,"<S-NAME> start(s) brewing "+building.name()+".");
-				displayText="You are brewing "+building.name();
-				verb="brewing "+building.name();
+				commonEmote(mob,"<S-NAME> start(s) brewing "+buildingI.name()+".");
+				displayText="You are brewing "+buildingI.name();
+				verb="brewing "+buildingI.name();
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -153,27 +153,27 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
 						if(activity == CraftingActivity.LEARNING)
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
 						if(oldName.length()>0)
 							commonTell(mob,"Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
-						building.destroy();
+						buildingI.destroy();
 					}
 					else
 					if(activity==CraftingActivity.LEARNING)
 					{
-						deconstructRecipeInto( building, recipeHolder );
-						building.destroy();
+						deconstructRecipeInto( buildingI, recipeHolder );
+						buildingI.destroy();
 					}
 					else
-						mob.addItem(building);
+						mob.addItem(buildingI);
 				}
-				building=null;
+				buildingI=null;
 			}
 		}
 		super.unInvoke();
@@ -181,18 +181,18 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	
 	protected Item buildItem(Ability theSpell, int level)
 	{
-		building=CMClass.getItem("GenMultiPotion");
-		((Potion)building).setSpellList(theSpell.ID());
-		building.setName("a potion of "+theSpell.name().toLowerCase());
-		building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
-		building.basePhyStats().setLevel(level);
-		building.phyStats().setLevel(level);
-		((Drink)building).setThirstQuenched(10);
-		((Drink)building).setLiquidHeld(100);
-		((Drink)building).setLiquidRemaining(100);
-		building.setDescription("");
-		building.text();
-		return building;
+		buildingI=CMClass.getItem("GenMultiPotion");
+		((Potion)buildingI).setSpellList(theSpell.ID());
+		buildingI.setName("a potion of "+theSpell.name().toLowerCase());
+		buildingI.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
+		buildingI.basePhyStats().setLevel(level);
+		buildingI.phyStats().setLevel(level);
+		((Drink)buildingI).setThirstQuenched(10);
+		((Drink)buildingI).setLiquidHeld(100);
+		((Drink)buildingI).setLiquidRemaining(100);
+		buildingI.setDescription("");
+		buildingI.text();
+		return buildingI;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -207,8 +207,8 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			if(theSpell==null) return false;
 			int level=super.getCraftableSpellLevel(commands);
 			if(level<0) level=1;
-			building=buildItem(theSpell, level);
-			commands.addElement(building);
+			buildingI=buildItem(theSpell, level);
+			commands.addElement(buildingI);
 			return true;
 		}
 		if(commands.size()<1)
@@ -284,27 +284,27 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		}
 		else
 		{
-			building=getTarget(mob,null,givenTarget,CMParms.parse(pos),Wearable.FILTER_UNWORNONLY);
+			buildingI=getTarget(mob,null,givenTarget,CMParms.parse(pos),Wearable.FILTER_UNWORNONLY);
 			commands.remove(pos);
-			if(building==null) return false;
-			if(!mob.isMine(building))
+			if(buildingI==null) return false;
+			if(!mob.isMine(buildingI))
 			{
 				commonTell(mob,"You'll need to pick that up first.");
 				return false;
 			}
-			if(!(building instanceof Container))
+			if(!(buildingI instanceof Container))
 			{
-				commonTell(mob,"There's nothing in "+building.name()+" to brew!");
+				commonTell(mob,"There's nothing in "+buildingI.name(mob)+" to brew!");
 				return false;
 			}
-			if(!(building instanceof Drink))
+			if(!(buildingI instanceof Drink))
 			{
-				commonTell(mob,"You can't drink out of a "+building.name()+".");
+				commonTell(mob,"You can't drink out of a "+buildingI.name(mob)+".");
 				return false;
 			}
-			if(((Drink)building).liquidRemaining()==0)
+			if(((Drink)buildingI).liquidRemaining()==0)
 			{
-				commonTell(mob,"The "+building.name()+" contains no liquid base.  Water is probably fine.");
+				commonTell(mob,"The "+buildingI.name(mob)+" contains no liquid base.  Water is probably fine.");
 				return false;
 			}
 			String recipeName=CMParms.combine(commands,0);
@@ -341,7 +341,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
 
-			List<Item> V=((Container)building).getContents();
+			List<Item> V=((Container)buildingI).getContents();
 			// first check for all the right stuff
 			for(int i=2;i<recipe.size();i++)
 			{
@@ -358,7 +358,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					}
 					if(!ok)
 					{
-						commonTell(mob,"This brew requires "+ingredient.toLowerCase()+".  Please place some inside the "+building.name()+" and try again.");
+						commonTell(mob,"This brew requires "+ingredient.toLowerCase()+".  Please place some inside the "+buildingI.name(mob)+" and try again.");
 						return false;
 					}
 				}
@@ -378,7 +378,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				}
 				if(!ok)
 				{
-					commonTell(mob,"The "+I.name()+" must be removed from the "+building.name()+" before starting.");
+					commonTell(mob,"The "+I.name(mob)+" must be removed from the "+buildingI.name(mob)+" before starting.");
 					return false;
 				}
 			}
@@ -391,20 +391,20 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
-			oldName=building.name();
-			building.destroy();
-			building=buildItem(theSpell, theLevel);
+			oldName=buildingI.name();
+			buildingI.destroy();
+			buildingI=buildItem(theSpell, theLevel);
 			playSound="hotspring.wav";
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
 			if(duration<10) duration=10;
 
 			messedUp=!proficiencyCheck(mob,0,auto);
-			CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),null);
+			CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				building=(Item)msg.target();
+				buildingI=(Item)msg.target();
 				beneficialAffect(mob,mob,asLevel,duration);
 			}
 		}

@@ -159,7 +159,7 @@ public class Thief_Bind extends ThiefSkill
 				}
 				return false;
 			}
-			mob.tell(target.name()+" doesn't appear to be bound with ropes.");
+			mob.tell(target.name(mob)+" doesn't appear to be bound with ropes.");
 			return false;
 		}
 
@@ -169,7 +169,7 @@ public class Thief_Bind extends ThiefSkill
 
 		if((!CMLib.flags().isSleeping(target))&&(CMLib.flags().canMove(target)&&(!auto)))
 		{
-			mob.tell(target.name()+" doesn't look willing to cooperate.");
+			mob.tell(target.name(mob)+" doesn't look willing to cooperate.");
 			return false;
 		}
 		// the invoke method for spells receives as

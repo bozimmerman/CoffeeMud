@@ -82,11 +82,11 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
-						commonEmote(mob,"<S-NAME> mess(es) up crafting "+building.name()+".");
+						commonEmote(mob,"<S-NAME> mess(es) up crafting "+buildingI.name()+".");
 						if(myClan!=null)
 						{
 							myClan.setExp(myClan.getExp()+expRequired);
@@ -95,11 +95,11 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					}
 					else
 					{
-						dropAWinner(mob,building);
-						CMLib.commands().postGet(mob,null,building,true);
+						dropAWinner(mob,buildingI);
+						CMLib.commands().postGet(mob,null,buildingI,true);
 					}
 				}
-				building=null;
+				buildingI=null;
 			}
 		}
 		super.unInvoke();
@@ -237,7 +237,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			return true;
 		}
 		activity = CraftingActivity.CRAFTING;
-		building=null;
+		buildingI=null;
 		messedUp=false;
 		String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
@@ -309,8 +309,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if((amt2>0)&&(autoGenerate<=0))
 			CMLib.materials().destroyResources(mob.location(),amt2,data[1][FOUND_CODE],0,null);
 
-		building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-		if(building==null)
+		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+		if(buildingI==null)
 		{
 			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
@@ -326,7 +326,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			else
 				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),"of "+clanTypeName+" "+clanName);
 			if(misctype.length()>0)
-				building.setReadableText(misctype);
+				buildingI.setReadableText(misctype);
 		}
 		else
 		{
@@ -344,77 +344,77 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			}
 			
 			itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),"of "+A2.name()).toLowerCase();
-			building.setReadableText(A2.name());
+			buildingI.setReadableText(A2.name());
 		}
 		itemName=CMLib.english().startWithAorAn(itemName);
-		building.setName(itemName);
-		startStr="<S-NAME> start(s) crafting "+building.name()+".";
-		displayText="You are crafting "+building.name();
+		buildingI.setName(itemName);
+		startStr="<S-NAME> start(s) crafting "+buildingI.name()+".";
+		displayText="You are crafting "+buildingI.name();
 		playSound="sanding.wav";
-		verb="crafting "+building.name();
-		building.setDisplayText(itemName+" lies here");
-		building.setDescription(itemName+". ");
-		building.basePhyStats().setWeight(amt1+amt2);
-		building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-		building.setMaterial(data[0][FOUND_CODE]);
+		verb="crafting "+buildingI.name();
+		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDescription(itemName+". ");
+		buildingI.basePhyStats().setWeight(amt1+amt2);
+		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+		buildingI.setMaterial(data[0][FOUND_CODE]);
 		int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
-		building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
-		if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
+		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
+		if(buildingI.basePhyStats().level()<1) buildingI.basePhyStats().setLevel(1);
 		int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 		int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-		building.setSecretIdentity(getBrand(mob));
+		buildingI.setSecretIdentity(getBrand(mob));
 		String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-		if(building instanceof ClanItem)
+		if(buildingI instanceof ClanItem)
 		{
-			building.basePhyStats().setSensesMask(PhyStats.SENSE_UNLOCATABLE);
+			buildingI.basePhyStats().setSensesMask(PhyStats.SENSE_UNLOCATABLE);
 			if(clanC!=null)
-				((ClanItem)building).setClanID(clanC.clanID());
+				((ClanItem)buildingI).setClanID(clanC.clanID());
 			else
 			if(CMLib.clans().numClans()>0)
-				((ClanItem)building).setClanID(CMLib.clans().clans().nextElement().clanID());
-			((ClanItem)building).setCIType(CMath.s_int(foundRecipe.get(RCP_CITYPE)));
-			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
+				((ClanItem)buildingI).setClanID(CMLib.clans().clans().nextElement().clanID());
+			((ClanItem)buildingI).setCIType(CMath.s_int(foundRecipe.get(RCP_CITYPE)));
+			if(((ClanItem)buildingI).ciType()==ClanItem.CI_PROPAGANDA)
 			{
-				building.setMaterial(RawMaterial.RESOURCE_PAPER);
-				CMLib.flags().setReadable(building,true);
-				building.setReadableText("Read the glorious propaganda of "+clanTypeName+" "+clanName.toLowerCase()+"! Join and fight for us today!");
+				buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
+				CMLib.flags().setReadable(buildingI,true);
+				buildingI.setReadableText("Read the glorious propaganda of "+clanTypeName+" "+clanName.toLowerCase()+"! Join and fight for us today!");
 			}
 		}
 
-		if((building.isReadable())
-		&&((building.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
-			building.setMaterial(RawMaterial.RESOURCE_PAPER);
+		if((buildingI.isReadable())
+		&&((buildingI.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
+			buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
 
-		addSpells(building,spell);
-		if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
+		addSpells(buildingI,spell);
+		if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 		{
-			((Armor)building).basePhyStats().setArmor(0);
+			((Armor)buildingI).basePhyStats().setArmor(0);
 			if(armordmg!=0)
-				((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
-			setWearLocation(building,misctype,hardness);
+				((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+			setWearLocation(buildingI,misctype,hardness);
 		}
 
-		if(building instanceof Container)
+		if(buildingI instanceof Container)
 			if(capacity>0)
 			{
-				((Container)building).setCapacity(capacity+amt1+amt2);
-				((Container)building).setContainTypes(canContain);
+				((Container)buildingI).setCapacity(capacity+amt1+amt2);
+				((Container)buildingI).setContainTypes(canContain);
 			}
-		building.recoverPhyStats();
-		building.text();
-		building.recoverPhyStats();
+		buildingI.recoverPhyStats();
+		buildingI.text();
+		buildingI.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

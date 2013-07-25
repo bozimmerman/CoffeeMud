@@ -79,11 +79,11 @@ public class Thief_Racketeer extends ThiefSkill
 		{
 			if(invoker()==source)
 			{
-				source.tell(msg.target().name()+" is currently under your protection.");
+				source.tell(((Physical)msg.target()).name(source)+" is currently under your protection.");
 			}else
 			{
-				source.tell(msg.target().name()+" is under "+invoker().name()+"'s protection.");
-				invoker().tell("Word on the street is that "+source.name()+" is hassling "+msg.target().name()+" who is under your protection.");
+				source.tell(((Physical)msg.target()).name(source)+" is under "+invoker().name(source)+"'s protection.");
+				invoker().tell("Word on the street is that "+source.name(invoker())+" is hassling "+((Physical)msg.target()).name(invoker())+" who is under your protection.");
 			}
 			return false;
 		}
@@ -138,18 +138,18 @@ public class Thief_Racketeer extends ThiefSkill
 				&&(target.fetchBehavior("ItemMender")==null)&&(target.fetchBehavior("ItemIdentifier")==null)
 				&&(target.fetchBehavior("ItemRefitter")==null))
 		{
-			mob.tell("You can't get protection money from "+target.name()+".");
+			mob.tell("You can't get protection money from "+target.name(mob)+".");
 			return false;
 		}
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
-				mob.tell(target.name()+" has already been extracted from today.");
+				mob.tell(target.name(mob)+" has already been extracted from today.");
 			else
 			{
-				mob.tell(target.name()+" is already under "+A.invoker().name()+"'s protection.");
-				A.invoker().tell("Word on the street is that "+mob.name()+" is trying to push into your business with "
+				mob.tell(target.name(mob)+" is already under "+A.invoker().name(mob)+"'s protection.");
+				A.invoker().tell("Word on the street is that "+mob.name(A.invoker())+" is trying to push into your business with "
 									+target.name()+".");
 			}
 			return false;

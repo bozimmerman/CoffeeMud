@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.core.interfaces;
 import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
 import com.planet_ink.coffee_mud.Common.interfaces.PhyStats;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 
 /*
 Copyright 2000-2013 Bo Zimmerman
@@ -29,5 +30,7 @@ limitations under the License.
 */
 public interface Physical extends Environmental, Affectable
 {
-	
+	public String displayText(MOB viewer);
+	public String name(MOB viewerMob);
+	public String description(MOB viewerMob);
 }

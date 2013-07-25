@@ -101,7 +101,7 @@ public class Thief_Flay extends ThiefSkill
 			return false;
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target.name()+" must be prone or bound first.");
+			mob.tell(target.name(mob)+" must be prone or bound first.");
 			return false;
 		}
 		for(int i=0;i<target.numItems();i++)
@@ -109,7 +109,7 @@ public class Thief_Flay extends ThiefSkill
 			Item I=target.getItem(i);
 			if((I!=null)&&((I.amWearingAt(Wearable.WORN_BACK))||(I.amWearingAt(Wearable.WORN_TORSO))))
 			{
-				mob.tell(target.name()+" must be remove items worn on the torso or back first.");
+				mob.tell(target.name(mob)+" must be remove items worn on the torso or back first.");
 				return false;
 			}
 		}

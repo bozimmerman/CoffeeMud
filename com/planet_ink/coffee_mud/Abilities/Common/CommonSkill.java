@@ -434,13 +434,13 @@ public class CommonSkill extends StdAbility
 		AbilityMapper.AbilityLimits remainders = CMLib.ableMapper().getCommonSkillRemainder(studentM, this);
 		if(remainders.commonSkills<=0)
 		{
-			teacherM.tell(studentM.name()+" can not learn any more common skills.");
+			teacherM.tell(studentM.name(teacherM)+" can not learn any more common skills.");
 			studentM.tell("You have learned the maximum "+C.maxCommonSkills()+" common skills, and may not learn any more.");
 			return false;
 		}
 		if(remainders.specificSkillLimit<=0)
 		{
-			teacherM.tell(studentM.name()+" can not learn any more " + (crafting?"":"non-") + "crafting common skills.");
+			teacherM.tell(studentM.name(teacherM)+" can not learn any more " + (crafting?"":"non-") + "crafting common skills.");
 			final int max = crafting ? C.maxCraftingSkills() : C.maxNonCraftingSkills();
 			studentM.tell("You have learned the maximum "+max+""+(crafting?" ":" non-") + "crafting skills, and may not learn any more.");
 			return false;

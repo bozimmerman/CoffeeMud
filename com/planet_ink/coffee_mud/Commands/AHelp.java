@@ -137,7 +137,7 @@ public class AHelp extends StdCommand
 		if(thisTag==null)
 		{
 			mob.tell("No archon help is available on "+helpStr+" .\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
-			Log.errOut("Help: "+mob.name()+" wanted archon help on "+helpStr);
+			Log.errOut("Help: "+mob.Name()+" wanted archon help on "+helpStr);
 		}
 		else
 		if(!mob.isMonster())

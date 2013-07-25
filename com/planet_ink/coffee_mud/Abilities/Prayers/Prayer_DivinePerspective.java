@@ -52,7 +52,7 @@ public class Prayer_DivinePerspective extends Prayer
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if(invoker!=null)
-				invoker.tell("The perspective of '"+mob.name()+"' fades from your mind.");
+				invoker.tell("The perspective of '"+mob.name(invoker)+"' fades from your mind.");
 		super.unInvoke();
 
 	}

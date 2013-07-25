@@ -82,7 +82,7 @@ public class Spell_Permanency extends Spell
 				}
 				if(theOne==null)
 				{
-					mob.tell("There does not appear to be any of your spells on "+target.name()+" which can be made permanent.");
+					mob.tell("There does not appear to be any of your spells on "+target.name(mob)+" which can be made permanent.");
 					return false;
 				}
 				else

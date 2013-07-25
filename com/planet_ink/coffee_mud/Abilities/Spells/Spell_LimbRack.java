@@ -112,7 +112,7 @@ public class Spell_LimbRack extends Spell
 		&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]<=0)))
 		{
 			if(!auto)
-				mob.tell("There is nothing left on "+target.name()+" to rack off!");
+				mob.tell("There is nothing left on "+target.name(mob)+" to rack off!");
 			return false;
 		}
 		

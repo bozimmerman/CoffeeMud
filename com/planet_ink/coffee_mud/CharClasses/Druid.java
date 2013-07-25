@@ -334,7 +334,7 @@ public class Druid extends StdCharClass
 				int xp=msg.source().phyStats().level()*5;
 				if(xp>0)
 				{
-					druidM.tell("Your stewardship has benefitted "+msg.source().name()+".");
+					druidM.tell("Your stewardship has benefitted "+msg.source().name(druidM)+".");
 					CMLib.leveler().postExperience(druidM,null,null,xp,false);
 				}
 			}
@@ -375,7 +375,7 @@ public class Druid extends StdCharClass
 			if((((Integer)stuff[1]).intValue()<19)&&(!((List)stuff[2]).contains(""+msg.source())))
 			{
 				stuff[1]=Integer.valueOf(((Integer)stuff[1]).intValue()+1);
-				((MOB)host).tell("You have freed "+msg.source().name()+" from "+(msg.source().getStartRoom().getArea().name())+".");
+				((MOB)host).tell("You have freed "+msg.source().name((MOB)host)+" from "+(msg.source().getStartRoom().getArea().name())+".");
 				CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
 			}
 		}

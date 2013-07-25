@@ -152,7 +152,7 @@ public class Prayer_FlameWeapon extends Prayer
 		
 		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already enflamed.");
+			mob.tell(target.name(mob)+" is already enflamed.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

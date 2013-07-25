@@ -98,12 +98,12 @@ public class Thief_StripItem extends ThiefSkill
 		Item stolen=target.fetchItem(null,Wearable.FILTER_WORNONLY,itemToSteal);
 		if((stolen==null)||(!CMLib.flags().canBeSeenBy(stolen,mob)))
 		{
-			mob.tell(target.name()+" doesn't seem to be wearing '"+itemToSteal+"'.");
+			mob.tell(target.name(mob)+" doesn't seem to be wearing '"+itemToSteal+"'.");
 			return false;
 		}
 		if(stolen.amWearingAt(Wearable.WORN_WIELD))
 		{
-			mob.tell(target.name()+" is wielding "+stolen.name()+"! Try disarm!");
+			mob.tell(target.name(mob)+" is wielding "+stolen.name()+"! Try disarm!");
 			return false;
 		}
 

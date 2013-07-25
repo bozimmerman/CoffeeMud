@@ -252,7 +252,7 @@ public class Skill_ControlUndead extends StdSkill
 							CMLib.combat().makePeaceInGroup(mob);
 							invoker=mob;
 							if(target.amFollowing()!=mob)
-								mob.tell(target.name()+" seems unwilling to obey you.");
+								mob.tell(target.name(mob)+" seems unwilling to obey you.");
 						}
 					}
 					else

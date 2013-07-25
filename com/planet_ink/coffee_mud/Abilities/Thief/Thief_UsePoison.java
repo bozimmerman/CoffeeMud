@@ -74,7 +74,7 @@ public class Thief_UsePoison extends ThiefSkill
 		&&(!(target instanceof Drink))
 		&&(!(target instanceof Weapon)))
 		{
-			mob.tell("You don't know how to poison "+target.name()+".");
+			mob.tell("You don't know how to poison "+target.name(mob)+".");
 			return false;
 		}
 		Item poison=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,1));

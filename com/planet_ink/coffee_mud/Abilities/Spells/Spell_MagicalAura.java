@@ -83,7 +83,7 @@ public class Spell_MagicalAura extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("There is already a magical aura around "+target.name()+".");
+			mob.tell("There is already a magical aura around "+target.name(mob)+".");
 			return false;
 		}
 

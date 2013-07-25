@@ -71,7 +71,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((building==null)
+			if((buildingI==null)
 			||(getRequiredFire(mob,0)==null))
 			{
 				messedUp=true;
@@ -97,7 +97,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
@@ -106,27 +106,27 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
-							building.destroy();
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							buildingI.destroy();
 						}
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up smithing "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up smithing "+buildingI.name()+".");
 					}
 					else
 					if(activity==CraftingActivity.LEARNING)
 					{
-						deconstructRecipeInto( building, recipeHolder );
-						building.destroy();
+						deconstructRecipeInto( buildingI, recipeHolder );
+						buildingI.destroy();
 					}
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
-							building.setUsesRemaining(100);
+							buildingI.setUsesRemaining(100);
 						else
-							dropAWinner(mob,building);
+							dropAWinner(mob,buildingI);
 					}
 				}
-				building=null;
+				buildingI=null;
 				activity = CraftingActivity.CRAFTING;
 			}
 		}
@@ -311,25 +311,25 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,building,false)) return false;
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(!canMend(mob,buildingI,false)) return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			displayText="You are mending "+buildingI.name();
+			verb="mending "+buildingI.name();
 		}
 		else
 		{
 			activity = CraftingActivity.CRAFTING;
 			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			building=null;
+			buildingI=null;
 			messedUp=false;
 			aborted=false;
 			int amount=-1;
@@ -387,8 +387,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-			if(building==null)
+			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			if(buildingI==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
@@ -396,36 +396,36 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			itemName=CMLib.english().startWithAorAn(itemName);
-			building.setName(itemName);
-			startStr="<S-NAME> start(s) smithing "+building.name()+".";
-			displayText="You are smithing "+building.name();
-			verb="smithing "+building.name();
+			buildingI.setName(itemName);
+			startStr="<S-NAME> start(s) smithing "+buildingI.name()+".";
+			displayText="You are smithing "+buildingI.name();
+			verb="smithing "+buildingI.name();
 			playSound="tinktinktink2.wav";
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
-			building.setDisplayText(itemName+" lies here");
-			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			building.setBaseValue((CMath.s_int(foundRecipe.get(RCP_VALUE))/4)+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
-			building.setMaterial(data[0][FOUND_CODE]);
-			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
-			building.setSecretIdentity(getBrand(mob));
-			if(bundling) building.setBaseValue(lostValue);
-			addSpells(building,spell);
-			if(building instanceof Weapon)
+			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDescription(itemName+". ");
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.setBaseValue((CMath.s_int(foundRecipe.get(RCP_VALUE))/4)+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+			buildingI.setMaterial(data[0][FOUND_CODE]);
+			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
+			buildingI.setSecretIdentity(getBrand(mob));
+			if(bundling) buildingI.setBaseValue(lostValue);
+			addSpells(buildingI,spell);
+			if(buildingI instanceof Weapon)
 			{
-				Weapon w=(Weapon)building;
+				Weapon w=(Weapon)buildingI;
 				w.setWeaponClassification(specClass(foundRecipe.get(RCP_WEAPONCLASS)));
 				w.setWeaponType(specType(foundRecipe.get(RCP_WEAPONTYPE)));
 				w.setRanges(w.minRange(),CMath.s_int(foundRecipe.get(RCP_MAXRANGE)));
 			}
 			if(CMath.s_int(foundRecipe.get(RCP_HANDS))==2)
-				building.setRawLogicalAnd(true);
-			building.basePhyStats().setAttackAdjustment(CMath.s_int(foundRecipe.get(RCP_ATTACK))+(hardness*5)+(abilityCode()-1));
-			building.basePhyStats().setDamage(CMath.s_int(foundRecipe.get(RCP_ARMORDMG))+hardness);
+				buildingI.setRawLogicalAnd(true);
+			buildingI.basePhyStats().setAttackAdjustment(CMath.s_int(foundRecipe.get(RCP_ATTACK))+(hardness*5)+(abilityCode()-1));
+			buildingI.basePhyStats().setDamage(CMath.s_int(foundRecipe.get(RCP_ARMORDMG))+hardness);
 
-			building.recoverPhyStats();
-			building.text();
-			building.recoverPhyStats();
+			buildingI.recoverPhyStats();
+			buildingI.text();
+			buildingI.recoverPhyStats();
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
@@ -434,24 +434,24 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,building,enhancedTypes);
+			enhanceItem(mob,buildingI,enhancedTypes);
 		}
 		else
 		if(bundling)

@@ -111,7 +111,7 @@ public class Amputation extends StdAbility implements Amputator
 				String s=CMLib.utensils().niceCommaList(missingLimbNameSet(),true);
 				if(s.length()>0)
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-												  CMMsg.MSG_OK_VISUAL,"\n\r"+M.name()+" is missing "+M.charStats().hisher()+" "+s+".\n\r",
+												  CMMsg.MSG_OK_VISUAL,"\n\r"+M.name(msg.source())+" is missing "+M.charStats().hisher()+" "+s+".\n\r",
 												  CMMsg.NO_EFFECT,null,
 												  CMMsg.NO_EFFECT,null));
 			}
@@ -633,7 +633,7 @@ public class Amputation extends StdAbility implements Amputator
 			if((VN.size()==0)&&(fakeLimb==null))
 			{
 				if(!auto)
-					mob.tell("There is nothing left on "+target.name()+" to amputate!");
+					mob.tell("There is nothing left on "+target.name(mob)+" to amputate!");
 				return false;
 			}
 			if((choice.length()>0)&&(fakeLimb==null)&&(gone==null))
@@ -644,7 +644,7 @@ public class Amputation extends StdAbility implements Amputator
 				if(gone==null)
 				{
 					if(!auto)
-						mob.tell("There is nothing left on "+target.name()+" called '"+choice+"'!");
+						mob.tell("There is nothing left on "+target.name(mob)+" called '"+choice+"'!");
 					return false;
 				}
 			}

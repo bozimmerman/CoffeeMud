@@ -159,7 +159,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 								msg.othersCode(),msg.othersMessage());
 					else
 					{
-						msg.source().tell(msg.tool().name()+" has nothing you can fill this with.");
+						msg.source().tell(((Container)msg.tool()).name(msg.source())+" has nothing you can fill this with.");
 						return false;
 					}
 				}

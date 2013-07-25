@@ -863,7 +863,7 @@ public class StdLawBook extends StdItem
 					if(R==null)
 						str.append("Unknown");
 					else
-						str.append(R.displayText()+" ("+R.roomID()+")");
+						str.append(R.displayText(mob)+" ("+R.roomID()+")");
 				}
 				if(item.length()>0)
 					str.append(". Container: "+item+"\n\r");
@@ -1131,7 +1131,7 @@ public class StdLawBook extends StdItem
 				highest++;
 				Room R=CMLib.map().getRoom(s);
 				if(R!=null)
-					str.append((5+v)+". RELEASE ROOM: "+R.displayText()+"\n\r");
+					str.append((5+v)+". RELEASE ROOM: "+R.displayText(mob)+"\n\r");
 				else
 					str.append((5+v)+". RELEASE ROOM: Rooms called '"+s+"'.\n\r");
 			}
@@ -1219,7 +1219,7 @@ public class StdLawBook extends StdItem
 				highest++;
 				Room R=CMLib.map().getRoom(s);
 				if(R!=null)
-					str.append((5+v)+". JAIL ROOM: "+R.displayText()+"\n\r");
+					str.append((5+v)+". JAIL ROOM: "+R.displayText(mob)+"\n\r");
 				else
 					str.append((5+v)+". JAIL ROOM: Rooms called '"+s+"'.\n\r");
 			}
@@ -1384,10 +1384,10 @@ public class StdLawBook extends StdItem
 					Room R2=M.getStartRoom();
 					if(R2==null) R2=M.location();
 					if(B.isAnyOfficer(legalO,M))
-						duhOfficers.append(M.name()+" from room '"+R2.displayText()+"'\n\r");
+						duhOfficers.append(M.name(mob)+" from room '"+R2.displayText(mob)+"'\n\r");
 					else
 					if(B.isJudge(legalO,M))
-						duhJudge=M.name()+" from room '"+R2.displayText()+"'\n\r";
+						duhJudge=M.name(mob)+" from room '"+R2.displayText(mob)+"'\n\r";
 				}
 			}
 		}

@@ -51,7 +51,7 @@ public class Spell_Claireaudience extends Spell
 
 		if(canBeUninvoked()) scries.removeElement(mob);
 		if((canBeUninvoked())&&(invoker!=null))
-			invoker.tell("The sounds of '"+mob.name()+"' fade.");
+			invoker.tell("The sounds of '"+mob.name(invoker)+"' fade.");
 		super.unInvoke();
 
 	}

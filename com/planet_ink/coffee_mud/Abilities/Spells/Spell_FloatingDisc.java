@@ -95,7 +95,7 @@ public class Spell_FloatingDisc extends Spell
 		if((!(target instanceof Item))
 		||(!CMLib.flags().isGettable(((Item)target))))
 		{
-			mob.tell("You cannot float "+target.name()+"!");
+			mob.tell("You cannot float "+target.name(mob)+"!");
 			return false;
 		}
 

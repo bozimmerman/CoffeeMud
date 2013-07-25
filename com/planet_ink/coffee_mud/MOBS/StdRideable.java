@@ -138,6 +138,10 @@ public class StdRideable extends StdMOB implements Rideable
 				{}
 	}
 	public Iterator<Rider> riders() { return riders.iterator();}
+	public String displayText(MOB mob)
+	{
+		return super.displayText(mob); // StdMOB handles rideables
+	}
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
@@ -244,7 +248,7 @@ public class StdRideable extends StdMOB implements Rideable
 				{
 					if(!amRiding((Rider)msg.tool()))
 					{
-						msg.source().tell(msg.tool()+" is not "+stateString((Rider)msg.tool())+" "+name()+"!");
+						msg.source().tell(msg.tool()+" is not "+stateString((Rider)msg.tool())+" "+name(msg.source())+"!");
 						if(((Rider)msg.tool()).riding()==this)
 							((Rider)msg.tool()).setRiding(null);
 						return false;
@@ -253,7 +257,7 @@ public class StdRideable extends StdMOB implements Rideable
 				else
 				if(!amRiding(msg.source()))
 				{
-					msg.source().tell("You are not "+stateString(msg.source())+" "+name()+"!");
+					msg.source().tell("You are not "+stateString(msg.source())+" "+name(msg.source())+"!");
 					if(msg.source().riding()==this)
 						msg.source().setRiding(null);
 					return false;
@@ -265,47 +269,47 @@ public class StdRideable extends StdMOB implements Rideable
 		case CMMsg.TYP_SIT:
 			if(amRiding(msg.source()))
 			{
-				msg.source().tell("You are "+stateString(msg.source())+" "+name()+"!");
+				msg.source().tell("You are "+stateString(msg.source())+" "+name(msg.source())+"!");
 				msg.source().setRiding(this);
 				return false;
 			}
 			else
 			if(msg.amITarget(this))
 			{
-				msg.source().tell("You cannot simply sit on "+name()+", try 'mount'.");
+				msg.source().tell("You cannot simply sit on "+name(msg.source())+", try 'mount'.");
 				return false;
 			}
 			else
 			if(msg.source() instanceof Rideable)
 			{
-				msg.source().tell("You are not allowed on "+name()+".");
+				msg.source().tell("You are not allowed on "+name(msg.source())+".");
 				return false;
 			}
 			break;
 		case CMMsg.TYP_SLEEP:
 			if(amRiding(msg.source()))
 			{
-				msg.source().tell("You are "+stateString(msg.source())+" "+name()+"!");
+				msg.source().tell("You are "+stateString(msg.source())+" "+name(msg.source())+"!");
 				msg.source().setRiding(this);
 				return false;
 			}
 			else
 			if(msg.amITarget(this))
 			{
-				msg.source().tell("You cannot lie down on "+name()+".");
+				msg.source().tell("You cannot lie down on "+name(msg.source())+".");
 				return false;
 			}
 			else
 			if((msg.source() instanceof Rideable)&&(msg.source()!=this))
 			{
-				msg.source().tell("You are not allowed on "+name()+".");
+				msg.source().tell("You are not allowed on "+name(msg.source())+".");
 				return false;
 			}
 			break;
 		case CMMsg.TYP_MOUNT:
 			if(amRiding(msg.source()))
 			{
-				msg.source().tell(null,msg.source(),null,"<T-NAME> <T-IS-ARE> "+stateString(msg.source())+" "+name()+"!");
+				msg.source().tell(null,msg.source(),null,"<T-NAME> <T-IS-ARE> "+stateString(msg.source())+" "+name(msg.source())+"!");
 				msg.source().setRiding(this);
 				return false;
 			}
@@ -314,44 +318,47 @@ public class StdRideable extends StdMOB implements Rideable
 				Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
 				if(amRiding(whoWantsToRide))
 				{
-					msg.source().tell(whoWantsToRide.name()+" is "+stateString(whoWantsToRide)+" "+name()+"!");
+					msg.source().tell(whoWantsToRide.name(msg.source())+" is "+stateString(whoWantsToRide)+" "+name(msg.source())+"!");
 					whoWantsToRide.setRiding(this);
 					return false;
 				}
 				if((msg.tool() instanceof MOB)&&(!CMLib.flags().isBoundOrHeld((MOB)msg.tool())))
 				{
-					msg.source().tell(msg.tool().name()+" won't let you do that.");
+					msg.source().tell(((MOB)msg.tool()).name(msg.source())+" won't let you do that.");
 					return false;
 				}
 				if(riding()==whoWantsToRide)
 				{
-					msg.source().tell(msg.tool().name()+" can not be mounted to "+name()+"!");
+					if(msg.tool() instanceof Physical)
+						msg.source().tell(((Physical)msg.tool()).name(msg.source())+" can not be mounted to "+name(msg.source())+"!");
+					else
+						msg.source().tell(msg.tool().name()+" can not be mounted to "+name(msg.source())+"!");
 					return false;
 				}
 				if((msg.tool() instanceof Rideable)&&(msg.tool() instanceof MOB))
 				{
-					msg.source().tell(msg.tool().name()+" is not allowed on "+name()+".");
+					msg.source().tell(((MOB)msg.tool()).name(msg.source())+" is not allowed on "+name(msg.source())+".");
 					return false;
 				}
 				if((msg.tool() instanceof Rideable)
 				&&(msg.tool() instanceof Item)
 				&&(((Rideable)msg.tool()).rideBasis()!=Rideable.RIDEABLE_WAGON))
 				{
-					msg.source().tell(msg.tool().name()+" can not be mounted on "+name()+".");
+					msg.source().tell(((Item)msg.tool()).name(msg.source())+" can not be mounted on "+name(msg.source())+".");
 					return false;
 				}
 				if((basePhyStats().weight()*5<whoWantsToRide.basePhyStats().weight()))
 				{
-					msg.source().tell(name()+" is too small for "+whoWantsToRide.name()+".");
+					msg.source().tell(name(msg.source())+" is too small for "+whoWantsToRide.name(msg.source())+".");
 					return false;
 				}
 				if((numRiders()>=riderCapacity())
 				&&(!amRiding(whoWantsToRide)))
 				{
 					// for items
-					msg.source().tell("No more can fit on "+name()+".");
+					msg.source().tell("No more can fit on "+name(msg.source())+".");
 					// for mobs
-					// msg.source().tell("No more can fit on "+name()+".");
+					// msg.source().tell("No more can fit on "+name(msg.source())+".");
 					return false;
 				}
 				// protects from standard item rejection
@@ -397,12 +404,12 @@ public class StdRideable extends StdMOB implements Rideable
 					}
 					if(!ok)
 					{
-						msg.source().tell("You cannot ride "+name()+" that way.");
+						msg.source().tell("You cannot ride "+name(msg.source())+" that way.");
 						return false;
 					}
 					if(CMLib.flags().isSitting(msg.source()))
 					{
-						msg.source().tell("You cannot crawl while "+stateString(msg.source())+" "+name()+".");
+						msg.source().tell("You cannot crawl while "+stateString(msg.source())+" "+name(msg.source())+".");
 						return false;
 					}
 				}
@@ -424,7 +431,7 @@ public class StdRideable extends StdMOB implements Rideable
 		case CMMsg.TYP_SELL:
 			if(amRiding(msg.source()))
 			{
-				msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name()+".");
+				msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name(msg.source())+".");
 				return false;
 			}
 			break;
@@ -436,7 +443,7 @@ public class StdRideable extends StdMOB implements Rideable
 			|| ((!CMLib.utensils().reachableItem(msg.source(),msg.tool())))
 			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target()!=null)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target())))))
 		{
-			msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name()+".");
+			msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name(msg.source())+".");
 			return false;
 		}
 		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
@@ -445,7 +452,7 @@ public class StdRideable extends StdMOB implements Rideable
 			   &&((msg.source().riding()==this)
 				  ||(this.amRiding(msg.source()))))
 			{
-				msg.source().tell("You can't attack "+name()+" right now.");
+				msg.source().tell("You can't attack "+name(msg.source())+" right now.");
 				if(getVictim()==msg.source()) setVictim(null);
 				if(msg.source().getVictim()==this) msg.source().setVictim(null);
 				return false;
@@ -459,7 +466,7 @@ public class StdRideable extends StdMOB implements Rideable
 
 			{
 				MOB targ=(MOB)msg.target();
-				tell("You can't attack "+targ.name()+" right now.");
+				tell("You can't attack "+targ.name(this)+" right now.");
 				if(getVictim()==targ) setVictim(null);
 				if(targ.getVictim()==this) targ.setVictim(null);
 				return false;
@@ -478,7 +485,7 @@ public class StdRideable extends StdMOB implements Rideable
 			if((msg.target()==this)
 			&&(numRiders()>0)
 			&&(CMLib.flags().canBeSeenBy(this,msg.source())))
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,displayText(msg.source()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			break;
 		case CMMsg.TYP_DISMOUNT:
 			if((msg.tool()!=null)

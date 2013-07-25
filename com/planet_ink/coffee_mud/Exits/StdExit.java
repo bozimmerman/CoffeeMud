@@ -68,10 +68,13 @@ public class StdExit implements Exit
 	public boolean defaultsClosed(){return false;}
 	public String displayText(){ return "";}
 	public String description(){ return "";}
+	public String description(MOB viewerMob) { return description(); }
 	public String doorName(){return "door";}
 	public String closedText(){return "a closed door";}
 	public String closeWord(){return "close";}
 	public String openWord(){return "open";}
+	public String displayText(MOB viewer) { return displayText(); }
+	public String name(MOB viewerMob) { return name(); }
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public short exitUsage(short change){
 		if(change<0)
@@ -474,7 +477,7 @@ public class StdExit implements Exit
 			if(room==null)
 				Say.append("^Z(null)^.^? ");
 			else
-				Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.roomTitle(mob)+CMLib.flags().colorCodes(room,mob)+" ");
+				Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
@@ -489,7 +492,7 @@ public class StdExit implements Exit
 					Say.append(displayText()+CMLib.flags().colorCodes(this,mob));
 				else
 				if(room!=null)
-					Say.append(room.roomTitle(mob)+CMLib.flags().colorCodes(room,mob));
+					Say.append(room.displayText(mob)+CMLib.flags().colorCodes(room,mob));
 			}
 			else
 			if((CMLib.flags().canBeSeenBy(this,mob))&&(closedText().trim().length()>0))

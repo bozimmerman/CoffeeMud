@@ -43,6 +43,8 @@ public class ThinRoom implements Room {
 	public String Name(){return name();}
 	public String description(){return "";}
 	public String displayText(){return "";}
+	public String displayText(MOB mob){return "";}
+	public String description(MOB mob){return "";}
 	public int maxRange(){return 5;}
 	public int minRange(){return 0;}
 	public boolean isSavable(){ return false;}
@@ -147,9 +149,6 @@ public class ThinRoom implements Room {
 	public int pointsPerMove(MOB mob){return 0;}
 	public int thirstPerRound(MOB mob){return 0;}
 
-	public String roomTitle(MOB mob){return "";}
-	public String roomDescription(MOB mob){return "";}
-
 	public void send(MOB source, CMMsg msg){}
 	public void sendOthers(MOB source, CMMsg msg){}
 	public void showHappens(int allCode, String allMessage){}
@@ -225,6 +224,7 @@ public class ThinRoom implements Room {
 	public String image(){return "";}
 	public String rawImage(){return "";}
 	public void setImage(String newImage){}
+	public String name(MOB viewerMob) { return name(); }
 
 	public void addItem(Item item){}
 	public void addItem(Item item, Expire expire){}

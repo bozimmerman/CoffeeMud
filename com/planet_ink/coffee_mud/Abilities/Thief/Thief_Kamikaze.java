@@ -118,7 +118,7 @@ public class Thief_Kamikaze extends ThiefSkill
 
 		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{
-			mob.tell("You can't talk "+target.name()+" into a kamikaze mission.");
+			mob.tell("You can't talk "+target.name(mob)+" into a kamikaze mission.");
 			return false;
 		}
 
@@ -157,7 +157,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 		if(bombFound==null)
 		{
-			mob.tell(target.name()+" must have some bombs for this to work.");
+			mob.tell(target.name(mob)+" must have some bombs for this to work.");
 			return false;
 		}
 

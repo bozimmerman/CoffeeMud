@@ -117,7 +117,7 @@ public class Prayer_SeekersPrayer extends Prayer
 						else
 						if(p>0)
 							message.append(",");
-						message.append(" ").append(M.name()).append(" in \"").append(M.location().getArea().name()).append("\"");
+						message.append(" ").append(M.name(mob)).append(" in \"").append(M.location().getArea().name(mob)).append("\"");
 					}
 					message.append(".");
 					mob.tell(message.toString());

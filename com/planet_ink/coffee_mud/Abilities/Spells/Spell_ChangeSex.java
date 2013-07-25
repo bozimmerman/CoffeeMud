@@ -150,14 +150,14 @@ public class Spell_ChangeSex extends Spell
 		{
 			if(!(target instanceof CagedAnimal))
 			{
-				mob.tell("This spell won't have much effect on "+target.name()+".");
+				mob.tell("This spell won't have much effect on "+target.name(mob)+".");
 				return false;
 			}
 		}
 		else
 		if(!(target instanceof MOB))
 		{
-			mob.tell("This spell won't have much effect on "+target.name()+".");
+			mob.tell("This spell won't have much effect on "+target.name(mob)+".");
 			return false;
 		}
 

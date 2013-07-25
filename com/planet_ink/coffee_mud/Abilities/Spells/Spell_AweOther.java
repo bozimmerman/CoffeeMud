@@ -55,7 +55,7 @@ public class Spell_AweOther extends Spell
 			&&(msg.source().getVictim()!=target)
 			&&(msg.source().location()==target.location()))
 			{
-				msg.source().tell("You are too much in awe of "+target.name());
+				msg.source().tell("You are too much in awe of "+target.name(msg.source()));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

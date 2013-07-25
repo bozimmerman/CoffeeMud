@@ -70,7 +70,7 @@ public class Spell_FakeSpring extends Spell
 		{
 			if(msg.targetMinor()==CMMsg.TYP_FILL)
 			{
-				msg.source().tell(msg.target().name()+" is full.");
+				msg.source().tell(((Drink)msg.target()).name(msg.source())+" is full.");
 				return false;
 			}
 		}

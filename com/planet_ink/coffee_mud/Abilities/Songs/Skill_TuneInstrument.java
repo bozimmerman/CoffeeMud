@@ -56,7 +56,7 @@ public class Skill_TuneInstrument extends BardSkill
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target.name()+" is already tuned.");
+			mob.tell(target.name(mob)+" is already tuned.");
 			return false;
 		}
 

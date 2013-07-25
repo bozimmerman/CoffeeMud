@@ -235,7 +235,7 @@ public class Spell_Charm extends Spell
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
-							mob.tell(target.name()+" seems unwilling to follow you.");
+							mob.tell(target.name(mob)+" seems unwilling to follow you.");
 					}
 				}
 			}

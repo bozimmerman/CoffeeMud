@@ -88,14 +88,14 @@ public class Chant_MagneticField extends Chant
 			&&(CMLib.flags().isMetal(msg.target()))
 			&&(((MOB)affected).isMine(msg.target())))
 			{
-				msg.source().tell("The magnetic field around "+msg.target().name()+" prevents you from doing that.");
+				msg.source().tell("The magnetic field around "+((Item)msg.target()).name(msg.source())+" prevents you from doing that.");
 				return false;
 			}
 			if((msg.tool() instanceof Item)
 			&&(CMLib.flags().isMetal(msg.tool()))
 			&&(((MOB)affected).isMine(msg.tool())))
 			{
-				msg.source().tell("The magnetic field around "+msg.tool().name()+" prevents you from doing that.");
+				msg.source().tell("The magnetic field around "+((Item)msg.tool()).name(msg.source())+" prevents you from doing that.");
 				return false;
 			}
 		}

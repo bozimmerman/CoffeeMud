@@ -85,7 +85,7 @@ public class Spell_Ignite extends Spell
 		if((!(target instanceof MOB))
 		&&(!(target instanceof Item)))
 		{
-			mob.tell("You can't ignite '"+target.name()+"'!");
+			mob.tell("You can't ignite '"+target.name(mob)+"'!");
 			return false;
 		}
 

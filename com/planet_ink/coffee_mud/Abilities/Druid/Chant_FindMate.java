@@ -170,7 +170,7 @@ public class Chant_FindMate extends Chant
 		if((target.charStats().getStat(CharStats.STAT_GENDER)!='M')
 		&&(target.charStats().getStat(CharStats.STAT_GENDER)!='F'))
 		{
-			mob.tell(target.name()+" is incapable of mating!");
+			mob.tell(target.name(mob)+" is incapable of mating!");
 			return false;
 		}
 

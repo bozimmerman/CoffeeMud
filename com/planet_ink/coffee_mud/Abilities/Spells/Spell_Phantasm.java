@@ -79,7 +79,7 @@ public class Spell_Phantasm extends Spell
 			MOB mob=(MOB)affected;
 			if(msg.amITarget(mob)&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL))
 			{
-				msg.source().tell(mob.name()+" seems strangely unaffected by your magic.");
+				msg.source().tell(mob.name(msg.source())+" seems strangely unaffected by your magic.");
 				return false;
 			}
 		}

@@ -471,6 +471,8 @@ public class StdArea implements Area
 	}
 	public String displayText(){return "";}
 	public void setDisplayText(String newDisplayText){}
+	public String displayText(MOB viewer) { return displayText(); }
+	public String name(MOB viewerMob) { return name(); }
 	public String finalPrejudiceFactors()
 	{
 		String s=finalPrejudiceFactors(this);
@@ -613,10 +615,9 @@ public class StdArea implements Area
 		derivedAtmo=-1;
 	}
 
-	public String description()
-	{ return description;}
-	public void setDescription(String newDescription)
-	{ description=newDescription;}
+	public String description(){ return description;}
+	public void setDescription(String newDescription){ description=newDescription;}
+	public String description(MOB viewerMob) { return description(); }
 	public int getClimateTypeCode(){return climask;}
 	public void setClimateType(int newClimateType)
 	{ 

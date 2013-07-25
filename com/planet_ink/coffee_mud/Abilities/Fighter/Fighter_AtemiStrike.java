@@ -97,7 +97,7 @@ public class Fighter_AtemiStrike extends MonkSkill
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()/2)))
 		{
-			mob.tell(target.name()+" is too big to strike!");
+			mob.tell(target.name(mob)+" is too big to strike!");
 			return false;
 		}
 

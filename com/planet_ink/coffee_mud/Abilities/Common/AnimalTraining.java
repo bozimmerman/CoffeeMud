@@ -194,12 +194,12 @@ public class AnimalTraining extends CommonSkill
 			}
 			if((!M.isMonster())||(!CMLib.flags().isAnimalIntelligence(M)))
 			{
-				commonTell(mob,"You can't train "+M.name()+".");
+				commonTell(mob,"You can't train "+M.name(mob)+".");
 				return false;
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,M.name()+" doesn't seem willing to cooperate.");
+				commonTell(mob,M.name(mob)+" doesn't seem willing to cooperate.");
 				return false;
 			}
 			taming=M;
@@ -246,7 +246,7 @@ public class AnimalTraining extends CommonSkill
 		if(((skill instanceof Behavior)&&(M.fetchBehavior(((Behavior)skill).ID())!=null))
 		||(skill instanceof Ability)&&(M.fetchAbility(((Ability)skill).ID())!=null))
 		{
-			commonTell(mob,M.name()+" already knows how to do that.");
+			commonTell(mob,M.name(mob)+" already knows how to do that.");
 			return false;
 		}
 

@@ -67,7 +67,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(building==null)
+			if(buildingI==null)
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -88,7 +88,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
@@ -97,36 +97,36 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
-							building.destroy();
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
-							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up refitting "+buildingI.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up knitting "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up knitting "+buildingI.name()+".");
 					}
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
-							building.setUsesRemaining(100);
+							buildingI.setUsesRemaining(100);
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( building, recipeHolder );
-							building.destroy();
+							deconstructRecipeInto( buildingI, recipeHolder );
+							buildingI.destroy();
 						}
 						else
 						if(activity == CraftingActivity.REFITTING)
 						{
-							building.basePhyStats().setHeight(0);
-							building.recoverPhyStats();
+							buildingI.basePhyStats().setHeight(0);
+							buildingI.recoverPhyStats();
 						}
 						else
-							dropAWinner(mob,building);
+							dropAWinner(mob,buildingI);
 					}
 				}
-				building=null;
+				buildingI=null;
 				activity = CraftingActivity.CRAFTING;
 			}
 		}
@@ -277,53 +277,53 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,building,false)) return false;
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(!canMend(mob,buildingI,false)) return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			displayText="You are mending "+buildingI.name();
+			verb="mending "+buildingI.name();
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(building==null) return false;
-			if((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(buildingI==null) return false;
+			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 			{
 				commonTell(mob,"That's not made of cloth.  It can't be refitted.");
 				return false;
 			}
-			if(!(building instanceof Armor))
+			if(!(buildingI instanceof Armor))
 			{
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(building.phyStats().height()==0)
+			if(buildingI.phyStats().height()==0)
 			{
-				commonTell(mob,building.name()+" is already the right size.");
+				commonTell(mob,buildingI.name(mob)+" is already the right size.");
 				return false;
 			}
 			activity = CraftingActivity.REFITTING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) refitting "+building.name()+".";
-			displayText="You are refitting "+building.name();
-			verb="refitting "+building.name();
+			startStr="<S-NAME> start(s) refitting "+buildingI.name()+".";
+			displayText="You are refitting "+buildingI.name();
+			verb="refitting "+buildingI.name();
 		}
 		else
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			aborted=false;
@@ -379,8 +379,8 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-			if(building==null)
+			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			if(buildingI==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
@@ -394,52 +394,52 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 				itemName="some "+itemName;
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
-			building.setName(itemName);
-			startStr="<S-NAME> start(s) making "+building.name()+".";
-			displayText="You are making "+building.name();
+			buildingI.setName(itemName);
+			startStr="<S-NAME> start(s) making "+buildingI.name()+".";
+			displayText="You are making "+buildingI.name();
 			playSound="scissor.wav";
-			verb="making "+building.name();
-			building.setDisplayText(itemName+" lies here");
-			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			verb="making "+buildingI.name();
+			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDescription(itemName+". ");
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-1;
-			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			building.setMaterial(data[0][FOUND_CODE]);
-			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-			building.setSecretIdentity(getBrand(mob));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+			buildingI.setMaterial(data[0][FOUND_CODE]);
+			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+			buildingI.setSecretIdentity(getBrand(mob));
 			int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			if(bundling) building.setBaseValue(lostValue);
-			addSpells(building,spell);
-			if(building instanceof Weapon)
+			if(bundling) buildingI.setBaseValue(lostValue);
+			addSpells(buildingI,spell);
+			if(buildingI instanceof Weapon)
 			{
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_NATURAL);
-				setWeaponTypeClass((Weapon)building,misctype);
-				building.basePhyStats().setDamage(armordmg);
-				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
-				((Weapon)building).setRawLogicalAnd((capacity>1));
+				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_NATURAL);
+				setWeaponTypeClass((Weapon)buildingI,misctype);
+				buildingI.basePhyStats().setDamage(armordmg);
+				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
+				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
 			}
-			if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
+			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
-				if((capacity>0)&&(building instanceof Container))
+				if((capacity>0)&&(buildingI instanceof Container))
 				{
-					((Container)building).setCapacity(capacity+woodRequired);
-					((Container)building).setContainTypes(canContain);
+					((Container)buildingI).setCapacity(capacity+woodRequired);
+					((Container)buildingI).setContainTypes(canContain);
 				}
-				((Armor)building).basePhyStats().setArmor(0);
+				((Armor)buildingI).basePhyStats().setArmor(0);
 				if(armordmg!=0)
-					((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1)+hardness);
-				setWearLocation(building,misctype,0);
+					((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1)+hardness);
+				setWearLocation(buildingI,misctype,0);
 			}
-			if(building instanceof Rideable)
+			if(buildingI instanceof Rideable)
 			{
-				setRideBasis((Rideable)building,misctype);
+				setRideBasis((Rideable)buildingI,misctype);
 			}
-			building.recoverPhyStats();
-			building.text();
-			building.recoverPhyStats();
+			buildingI.recoverPhyStats();
+			buildingI.text();
+			buildingI.recoverPhyStats();
 		}
 
 
@@ -449,24 +449,24 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,building,enhancedTypes);
+			enhanceItem(mob,buildingI,enhancedTypes);
 		}
 		else
 		if(bundling)

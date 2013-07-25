@@ -169,7 +169,7 @@ public class Chant_SaplingWorkers extends Chant
 				beneficialAffect(mob,target,asLevel,0);
 				CMLib.commands().postFollow(target,mob,true);
 				if(target.amFollowing()!=mob)
-					mob.tell(target.name()+" seems unwilling to follow you.");
+					mob.tell(target.name(mob)+" seems unwilling to follow you.");
 			}
 		}
 		else

@@ -60,7 +60,7 @@ public class Chant_PlantChoke extends Chant
 			if((!mob.amDead())
 			&&(CMLib.flags().isInTheGame(mob,false)))
 			{
-				mob.tell(I.name()+" loosens its grip on your neck and falls off.");
+				mob.tell(I.name(mob)+" loosens its grip on your neck and falls off.");
 				I.setRawWornCode(0);
 				mob.location().moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 			}
@@ -144,7 +144,7 @@ public class Chant_PlantChoke extends Chant
 		if(target.getWearPositions(Wearable.WORN_NECK)==0)
 		{
 			if(!auto)
-				mob.tell("Ummm, "+target.name()+" doesn't HAVE a neck...");
+				mob.tell("Ummm, "+target.name(mob)+" doesn't HAVE a neck...");
 			return false;
 		}
 

@@ -69,7 +69,7 @@ public class Archon_Stinkify extends ArchonSkill
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> stinkier!");
 					target.playerStats().adjHygiene(PlayerStats.HYGIENE_DELIMIT+1);
-					Log.sysOut("Stinkify",mob.name()+" stinkied "+target.name()+".");
+					Log.sysOut("Stinkify",mob.Name()+" stinkied "+target.name()+".");
 				}
 				else
 					mob.tell(mob,target,null,"<T-NAME> is a mob.  Try a player.");

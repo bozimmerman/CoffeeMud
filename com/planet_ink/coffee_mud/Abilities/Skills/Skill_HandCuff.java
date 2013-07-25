@@ -197,7 +197,7 @@ public class Skill_HandCuff extends StdSkill
 				}
 				return false;
 			}
-			mob.tell(target.name()+" doesn't appear to be handcuffed.");
+			mob.tell(target.name(mob)+" doesn't appear to be handcuffed.");
 			return false;
 		}
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -205,12 +205,12 @@ public class Skill_HandCuff extends StdSkill
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
-			mob.tell(target.name()+" has no warrants out here.");
+			mob.tell(target.name(mob)+" has no warrants out here.");
 			return false;
 		}
 		if((CMLib.flags().isStanding(target))&&(!auto))
 		{
-			mob.tell(target.name()+" doesn't look willing to cooperate.");
+			mob.tell(target.name(mob)+" doesn't look willing to cooperate.");
 			return false;
 		}
 		// the invoke method for spells receives as

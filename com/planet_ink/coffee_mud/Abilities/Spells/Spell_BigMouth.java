@@ -72,7 +72,7 @@ public class Spell_BigMouth extends Spell
 					boolean isHit=CMLib.combat().rollToHit(msg.source(),target);
 					if(!isHit)
 					{
-						mob.tell("You fail to eat "+target.name()+".");
+						mob.tell("You fail to eat "+target.name(mob)+".");
 						if((!target.isInCombat())&&(target.isMonster())&&(target!=msg.source())
 						&&(target.location()==msg.source().location())&&(target.location().isInhabitant(msg.source()))
 						&&(CMLib.flags().canBeSeenBy(msg.source(),target)))
@@ -89,7 +89,7 @@ public class Spell_BigMouth extends Spell
 				else
 				if((!CMLib.flags().isGettable((Item)msg.target()))||(msg.target().displayText().length()==0))
 				{
-					mob.tell("You can not eat "+msg.target().name()+".");
+					mob.tell("You can not eat "+((Item)msg.target()).name(mob)+".");
 					return false;
 				}
 
@@ -101,7 +101,7 @@ public class Spell_BigMouth extends Spell
 			}
 			else
 			{
-				mob.tell(msg.target().name()+" is just too large for you to eat!");
+				mob.tell(((Physical)msg.target()).name(mob)+" is just too large for you to eat!");
 				return false;
 			}
 		}

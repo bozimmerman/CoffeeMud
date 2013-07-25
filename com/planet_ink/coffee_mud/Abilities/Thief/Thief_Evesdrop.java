@@ -119,7 +119,7 @@ public class Thief_Evesdrop extends ThiefSkill
 		}
 		if(CMLib.flags().canBeSeenBy(mob,target))
 		{
-			mob.tell(target.name()+" is watching you too closely.");
+			mob.tell(target.name(mob)+" is watching you too closely.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

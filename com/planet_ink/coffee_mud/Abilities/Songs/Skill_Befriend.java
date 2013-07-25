@@ -134,7 +134,7 @@ public class Skill_Befriend extends BardSkill
 				CMLib.commands().postFollow(target,mob,false);
 				CMLib.combat().makePeaceInGroup(mob);
 				if(target.amFollowing()!=mob)
-					mob.tell(target.name()+" seems unwilling to be your friend.");
+					mob.tell(target.name(mob)+" seems unwilling to be your friend.");
 			}
 		}
 		else

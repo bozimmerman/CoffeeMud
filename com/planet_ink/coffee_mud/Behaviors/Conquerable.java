@@ -757,7 +757,7 @@ public class Conquerable extends Arrest
 			&&(!CMLib.flags().isAnimalIntelligence(msg.source())))
 			{
 				MOB target=(MOB)msg.target();
-				msg.source().tell(target.name()+" is a fellow "+holdingClan+" member, and you must respect "+target.charStats().himher()+".");
+				msg.source().tell(target.name(msg.source())+" is a fellow "+holdingClan+" member, and you must respect "+target.charStats().himher()+".");
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

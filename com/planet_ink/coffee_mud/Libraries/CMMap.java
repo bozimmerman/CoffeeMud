@@ -603,7 +603,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			for(;rooms.hasMoreElements();)
 			{
 				room=rooms.nextElement();
-				if((CMLib.english().containsString(CMStrings.removeColors(room.displayText()),srchStr))
+				if((CMLib.english().containsString(CMStrings.removeColors(room.displayText(mob)),srchStr))
 				&&((mob==null)||CMLib.flags().canAccess(mob,room)))
 					foundRooms.add(room);
 				if((useTimer)&&((System.currentTimeMillis()-startTime)>maxTime))

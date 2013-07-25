@@ -82,19 +82,31 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	public String itemSeenString(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysmsgs)
 	{
 		if(useName)
-			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		{
+			if(item instanceof Physical)
+				return CMStrings.capitalizeFirstLetter(((Physical)item).name(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			else
+				return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		}
 		else
 		if((longLook)&&(item instanceof Item)&&(((Item)item).container()!=null))
-			return CMStrings.capitalizeFirstLetter("     "+item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			return CMStrings.capitalizeFirstLetter("     "+((Item)item).name(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		else
 		if(!item.name().equals(item.Name()))
-			return CMStrings.capitalizeFirstLetter(item.name()+" is here.")+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
-		else
-		if(item instanceof MOB)
-			return CMStrings.capitalizeFirstLetter(((MOB)item).displayText(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		{
+			if(item instanceof Physical)
+				return CMStrings.capitalizeFirstLetter(((Physical)item).name(viewerM)+" is here.")+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			else
+				return CMStrings.capitalizeFirstLetter(item.name()+" is here.")+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		}
 		else
 		if(item.displayText().length()>0)
-			return CMStrings.capitalizeFirstLetter(item.displayText())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		{
+			if(item instanceof Physical)
+				return CMStrings.capitalizeFirstLetter(((Physical)item).displayText(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			else
+				return CMStrings.capitalizeFirstLetter(item.displayText())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		}
 		else
 			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 	}
@@ -157,7 +169,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		for(int v=0;v<things.size();v++)
 		{
 			I=(Item)things.get(v);
-			if(CMLib.flags().canBeSeenBy(I,viewerM)&&(I.displayText().length()>0))
+			if(CMLib.flags().canBeSeenBy(I,viewerM)&&(I.displayText(viewerM).length()>0))
 			{
 				name=CMLib.materials().genericType(I).toLowerCase();
 				if(name.startsWith("item"))
@@ -209,8 +221,9 @@ public class CMLister extends StdLibrary implements ListingLibrary
 			item=items.get(0);
 			items.remove(item);
 			int reps=getReps(viewerM,item,items,useName,longLook);
+			String displayText=(item instanceof Physical)?((Physical)item).displayText(viewerM):item.displayText();
 			if(CMLib.flags().canBeSeenBy(item,viewerM)
-			&&((item.displayText().length()>0)
+			&&((displayText.length()>0)
 				||sysmsgs
 				||useName))
 			{
@@ -254,7 +267,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 						V.remove(0);
 						int reps2=getReps(viewerM,item2,V,useName,false);
 						if(CMLib.flags().canBeSeenBy(item2,viewerM)
-						&&((item2.displayText().length()>0)
+						&&((item2.displayText(viewerM).length()>0)
 							||sysmsgs
 							||(useName)))
 						{

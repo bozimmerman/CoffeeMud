@@ -640,7 +640,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						{
 							otherThanCoins=true;
 							String col=null;
-							col="["+CMStrings.padRight(I.name(),COL_LEN)+"] ";
+							col="["+CMStrings.padRight(I.name(mob),COL_LEN)+"] ";
 							if((++colNum)>2)
 							{
 								str.append("\n\r");

@@ -85,7 +85,7 @@ public class Spell_Blindness extends Spell
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
 		{
-			mob.tell(target.name()+" has no eyes, and would not be affected.");
+			mob.tell(target.name(mob)+" has no eyes, and would not be affected.");
 			return false;
 		}
 

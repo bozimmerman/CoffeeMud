@@ -67,7 +67,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(building==null)
+			if(buildingI==null)
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -83,7 +83,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
@@ -92,35 +92,35 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
-							building.destroy();
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							buildingI.destroy();
 						}
 						else
-							commonTell(mob,"<S-NAME> mess(es) up scrimshawing "+building.name()+".");
+							commonTell(mob,"<S-NAME> mess(es) up scrimshawing "+buildingI.name(mob)+".");
 					}
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
-							building.setUsesRemaining(100);
+							buildingI.setUsesRemaining(100);
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( building, recipeHolder );
-							building.destroy();
+							deconstructRecipeInto( buildingI, recipeHolder );
+							buildingI.destroy();
 						}
 						else
 						{
-							dropAWinner(mob,building);
+							dropAWinner(mob,buildingI);
 							if(key!=null)
 							{
 								dropAWinner(mob,key);
-								if(building instanceof Container)
-									key.setContainer((Container)building);
+								if(buildingI instanceof Container)
+									key.setContainer((Container)buildingI);
 							}
 						}
 					}
 				}
-				building=null;
+				buildingI=null;
 				key=null;
 				activity = CraftingActivity.CRAFTING;
 			}
@@ -259,23 +259,23 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,building,false)) return false;
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(!canMend(mob,buildingI,false)) return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			displayText="You are mending "+buildingI.name();
+			verb="mending "+buildingI.name();
 		}
 		else
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			key=null;
 			messedUp=false;
@@ -341,8 +341,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-			if(building==null)
+			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			if(buildingI==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
@@ -353,21 +353,21 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				itemName="a "+woodRequired+"# "+itemName;
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
-			building.setName(itemName);
-			startStr="<S-NAME> start(s) scrimshawing "+building.name()+".";
-			displayText="You are scrimshawing "+building.name();
-			verb="scrimshawing "+building.name();
-			building.setDisplayText(itemName+" lies here");
-			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
-			building.setMaterial(data[0][FOUND_CODE]);
-			building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-			building.setSecretIdentity(getBrand(mob));
+			buildingI.setName(itemName);
+			startStr="<S-NAME> start(s) scrimshawing "+buildingI.name()+".";
+			displayText="You are scrimshawing "+buildingI.name();
+			verb="scrimshawing "+buildingI.name();
+			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDescription(itemName+". ");
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+			buildingI.setMaterial(data[0][FOUND_CODE]);
+			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+			buildingI.setSecretIdentity(getBrand(mob));
 			int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			if(bundling) building.setBaseValue(lostValue);
-			addSpells(building,spell);
+			if(bundling) buildingI.setBaseValue(lostValue);
+			addSpells(buildingI,spell);
 			key=null;
 			final Session session=mob.session();
 			if((misctype.equalsIgnoreCase("statue"))
@@ -394,54 +394,54 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				}
 				else
 				{
-					building.setName(itemName+" of "+statue.trim());
-					building.setDisplayText(itemName+" of "+statue.trim()+" is here");
-					building.setDescription(itemName+" of "+statue.trim()+". ");
+					buildingI.setName(itemName+" of "+statue.trim());
+					buildingI.setDisplayText(itemName+" of "+statue.trim()+" is here");
+					buildingI.setDescription(itemName+" of "+statue.trim()+". ");
 				}
 			}
 			else
-			if(building instanceof Container)
+			if(buildingI instanceof Container)
 			{
 				if(capacity>0)
-					((Container)building).setCapacity(capacity+woodRequired);
+					((Container)buildingI).setCapacity(capacity+woodRequired);
 				if(misctype.equalsIgnoreCase("LID"))
-					((Container)building).setLidsNLocks(true,false,false,false);
+					((Container)buildingI).setLidsNLocks(true,false,false,false);
 				else
 				if(misctype.equalsIgnoreCase("LOCK"))
 				{
-					((Container)building).setLidsNLocks(true,false,true,false);
-					((Container)building).setKeyName(Double.toString(Math.random()));
+					((Container)buildingI).setLidsNLocks(true,false,true,false);
+					((Container)buildingI).setKeyName(Double.toString(Math.random()));
 					key=CMClass.getItem("GenKey");
-					((DoorKey)key).setKey(((Container)building).keyName());
+					((DoorKey)key).setKey(((Container)buildingI).keyName());
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
-					key.setDescription("looks like a key to "+building.name());
+					key.setDescription("looks like a key to "+buildingI.name());
 					key.recoverPhyStats();
 					key.text();
 				}
 			}
-			if(building instanceof Weapon)
+			if(buildingI instanceof Weapon)
 			{
-				((Weapon)building).basePhyStats().setAttackAdjustment(abilityCode()-1);
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
-				setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_BASHING,Weapon.TYPE_PIERCING);
-				building.basePhyStats().setDamage(capacity);
-				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
-				((Weapon)building).setRawLogicalAnd(false);
+				((Weapon)buildingI).basePhyStats().setAttackAdjustment(abilityCode()-1);
+				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_FLAILED);
+				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_BASHING,Weapon.TYPE_PIERCING);
+				buildingI.basePhyStats().setDamage(capacity);
+				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
+				((Weapon)buildingI).setRawLogicalAnd(false);
 			}
-			if(building instanceof Rideable)
+			if(buildingI instanceof Rideable)
 			{
-				setRideBasis((Rideable)building,misctype);
+				setRideBasis((Rideable)buildingI,misctype);
 			}
-			if(building instanceof Light)
+			if(buildingI instanceof Light)
 			{
-				((Light)building).setDuration(capacity);
-				if((building instanceof Container)&&(((Container)building).containTypes()!=Container.CONTAIN_SMOKEABLES))
-					((Container)building).setCapacity(0);
+				((Light)buildingI).setDuration(capacity);
+				if((buildingI instanceof Container)&&(((Container)buildingI).containTypes()!=Container.CONTAIN_SMOKEABLES))
+					((Container)buildingI).setCapacity(0);
 			}
-			building.recoverPhyStats();
-			building.text();
-			building.recoverPhyStats();
+			buildingI.recoverPhyStats();
+			buildingI.text();
+			buildingI.recoverPhyStats();
 		}
 
 
@@ -451,24 +451,24 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,building,enhancedTypes);
+			enhanceItem(mob,buildingI,enhancedTypes);
 		}
 		else
 		if(bundling)

@@ -47,7 +47,7 @@ public class Spell_Mend extends Spell
 		if(target==null) return false;
 		if(!target.subjectToWearAndTear())
 		{	
-			mob.tell(target.name()+" cannot be mended."); 
+			mob.tell(target.name(mob)+" cannot be mended."); 
 			return false;
 		}
 
@@ -65,7 +65,7 @@ public class Spell_Mend extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(target.usesRemaining()>=100)
-					mob.tell("Nothing happens to "+target.name()+".");
+					mob.tell("Nothing happens to "+target.name(mob)+".");
 				else
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to glow and mend!");

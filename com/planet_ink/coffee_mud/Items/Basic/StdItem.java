@@ -86,6 +86,8 @@ public class StdItem implements Item
 		if(phyStats().newName()!=null) return phyStats().newName();
 		return Name();
 	}
+	public String displayText(MOB viewer) { return displayText(); }
+	public String name(MOB viewerMob) { return name(); }
 	public String image()
 	{
 		if(cachedImageName==null)
@@ -565,6 +567,7 @@ public class StdItem implements Item
 		else
 			return (String)description;
 	}
+	public String description(MOB viewerMob) { return description(); }
 	
 	public void setDescription(String newDescription)
 	{

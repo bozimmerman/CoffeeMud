@@ -84,7 +84,7 @@ public class Fighter_Behead extends FighterSkill
 		Race R=target.charStats().getMyRace();
 		if(R.bodyMask()[Race.BODY_HEAD]<=0)
 		{
-			mob.tell(target.name()+" has no head!");
+			mob.tell(target.name(mob)+" has no head!");
 			return false;
 		}
 		

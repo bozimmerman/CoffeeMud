@@ -146,7 +146,7 @@ public class Chant_SummonMount extends Chant
 					if(target.isInCombat()) target.makePeace();
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
-						mob.tell(target.name()+" seems unwilling to follow you.");
+						mob.tell(target.name(mob)+" seems unwilling to follow you.");
 				}
 				invoker=mob;
 				target.addNonUninvokableEffect((Ability)copyOf());

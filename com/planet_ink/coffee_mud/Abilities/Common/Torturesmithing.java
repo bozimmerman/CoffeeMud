@@ -73,26 +73,26 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
 						if(activity == CraftingActivity.LEARNING)
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
-							commonTell(mob,"You've ruined "+building.name()+"!");
-						building.destroy();
+							commonTell(mob,"You've ruined "+buildingI.name(mob)+"!");
+						buildingI.destroy();
 					}
 					else
 					if(activity==CraftingActivity.LEARNING)
 					{
-						deconstructRecipeInto( building, recipeHolder );
-						building.destroy();
+						deconstructRecipeInto( buildingI, recipeHolder );
+						buildingI.destroy();
 					}
 					else
-						dropAWinner(mob,building);
+						dropAWinner(mob,buildingI);
 				}
-				building=null;
+				buildingI=null;
 			}
 		}
 		super.unInvoke();
@@ -195,7 +195,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		}
 
 		activity = CraftingActivity.CRAFTING;
-		building=null;
+		buildingI=null;
 		messedUp=false;
 		int amount=-1;
 		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
@@ -267,8 +267,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		int lostValue=autoGenerate>0?0:
 			CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null)
 			+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-		building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-		if(building==null)
+		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+		if(buildingI==null)
 		{
 			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
@@ -279,83 +279,83 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			itemName="a "+woodRequired+"# "+itemName;
 		else
 			itemName=CMLib.english().startWithAorAn(itemName);
-		building.setName(itemName);
-		startStr="<S-NAME> start(s) making "+building.name()+".";
-		displayText="You are making "+building.name();
-		verb="making "+building.name();
+		buildingI.setName(itemName);
+		startStr="<S-NAME> start(s) making "+buildingI.name()+".";
+		displayText="You are making "+buildingI.name();
+		verb="making "+buildingI.name();
 		playSound="hammer.wav";
-		building.setDisplayText(itemName+" lies here");
-		building.setDescription(itemName+". ");
-		building.basePhyStats().setWeight(woodRequired);
-		building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
-		building.setMaterial(data[0][FOUND_CODE]);
-		building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-		building.setSecretIdentity(getBrand(mob));
+		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDescription(itemName+". ");
+		buildingI.basePhyStats().setWeight(woodRequired);
+		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+		buildingI.setMaterial(data[0][FOUND_CODE]);
+		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+		buildingI.setSecretIdentity(getBrand(mob));
 		int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 		int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
 		String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-		addSpells(building,spell);
-		if(building instanceof Container)
+		addSpells(buildingI,spell);
+		if(buildingI instanceof Container)
 		{
-			((Container)building).setCapacity(capacity+woodRequired);
+			((Container)buildingI).setCapacity(capacity+woodRequired);
 			if(misctype.equalsIgnoreCase("LID"))
-				((Container)building).setLidsNLocks(true,false,false,false);
+				((Container)buildingI).setLidsNLocks(true,false,false,false);
 			else
 			if(misctype.equalsIgnoreCase("LOCK"))
 			{
-				((Container)building).setLidsNLocks(true,false,true,false);
-				((Container)building).setKeyName(Double.toString(Math.random()));
+				((Container)buildingI).setLidsNLocks(true,false,true,false);
+				((Container)buildingI).setKeyName(Double.toString(Math.random()));
 			}
 			else
-				((Container)building).setContainTypes(getContainerType(misctype));
+				((Container)buildingI).setContainTypes(getContainerType(misctype));
 		}
-		if(building instanceof Rideable)
+		if(buildingI instanceof Rideable)
 		{
-			setRideBasis((Rideable)building,misctype);
+			setRideBasis((Rideable)buildingI,misctype);
 			if(capacity==0)
-				((Rideable)building).setRiderCapacity(1);
+				((Rideable)buildingI).setRiderCapacity(1);
 			else
 			if(capacity<5)
-				((Rideable)building).setRiderCapacity(capacity);
+				((Rideable)buildingI).setRiderCapacity(capacity);
 		}
-		if((building instanceof Armor)&&(!(building instanceof FalseLimb)))
+		if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 		{
-			((Armor)building).basePhyStats().setArmor(0);
+			((Armor)buildingI).basePhyStats().setArmor(0);
 			if(armordmg!=0)
-				((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
-			setWearLocation(building,misctype,hardness);
+				((Armor)buildingI).basePhyStats().setArmor(armordmg+(abilityCode()-1));
+			setWearLocation(buildingI,misctype,hardness);
 		}
-		if(building instanceof Drink)
+		if(buildingI instanceof Drink)
 		{
-			if(CMLib.flags().isGettable(building))
+			if(CMLib.flags().isGettable(buildingI))
 			{
-				((Drink)building).setLiquidHeld(capacity*50);
-				((Drink)building).setThirstQuenched(250);
+				((Drink)buildingI).setLiquidHeld(capacity*50);
+				((Drink)buildingI).setThirstQuenched(250);
 				if((capacity*50)<250)
-					((Drink)building).setThirstQuenched(capacity*50);
-				((Drink)building).setLiquidRemaining(0);
+					((Drink)buildingI).setThirstQuenched(capacity*50);
+				((Drink)buildingI).setLiquidRemaining(0);
 			}
 		}
-		if(bundling) building.setBaseValue(lostValue);
-		building.recoverPhyStats();
-		building.text();
-		building.recoverPhyStats();
+		if(bundling) buildingI.setBaseValue(lostValue);
+		buildingI.recoverPhyStats();
+		buildingI.text();
+		buildingI.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

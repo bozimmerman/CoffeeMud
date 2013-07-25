@@ -94,7 +94,7 @@ public class Spell_Grow extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already HUGE!");
+			mob.tell(target.name(mob)+" is already HUGE!");
 			return false;
 		}
 

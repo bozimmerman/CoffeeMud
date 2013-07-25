@@ -110,7 +110,7 @@ public class ClanAssign extends StdCommand
 					}
 					if(!C.canBeAssigned(M, newPos))
 					{
-						mob.tell(M.name()+" may not be assigned to "+C.getRoleName(newPos,true,false)+".");
+						mob.tell(M.name(mob)+" may not be assigned to "+C.getRoleName(newPos,true,false)+".");
 						return false;
 					}
 					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ASSIGN,true))
@@ -151,7 +151,8 @@ public class ClanAssign extends StdCommand
 							}
 						}
 						// finally, promote
-						CMLib.clans().clanAnnounce(mob,M.name()+" of the "+C.getGovernmentName()+" "+C.clanID()+" changed from "+C.getRoleName(oldRole.second.intValue(),true,false)+" to "+C.getRoleName(newPos,true,false)+".");
+						CMLib.clans().clanAnnounce(mob,M.name()+" of the "+C.getGovernmentName()+" "+C.clanID()+" changed from "+C.getRoleName(oldRole.second.intValue(),true,false)
+								+" to "+C.getRoleName(newPos,true,false)+".");
 						C.addMember(M,newPos);
 						mob.tell(M.Name()+" of the "+C.getGovernmentName()+" "+C.clanID()+" has been assigned to be "+CMLib.english().startWithAorAn(C.getRoleName(newPos,false,false))+". ");
 						if((M.session()!=null)&&(M.session().mob()==M))

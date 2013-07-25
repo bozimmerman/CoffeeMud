@@ -65,7 +65,7 @@ public class Spell_Command extends Spell
 		
 		if((!target.mayIFight(mob))||(!target.isMonster()))
 		{
-			mob.tell("You can't command "+target.name()+".");
+			mob.tell("You can't command "+target.name(mob)+".");
 			return false;
 		}
 
@@ -92,7 +92,7 @@ public class Spell_Command extends Spell
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 				{
-					mob.tell("You can't command "+target.name()+" to do that.");
+					mob.tell("You can't command "+target.name(mob)+" to do that.");
 					return false;
 				}
 			}

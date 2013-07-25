@@ -150,7 +150,7 @@ public class Power_OctoGrapple extends SuperPower
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-200)))
 		{
-			mob.tell(target.name()+" is too big to grapple!");
+			mob.tell(target.name(mob)+" is too big to grapple!");
 			return false;
 		}
 

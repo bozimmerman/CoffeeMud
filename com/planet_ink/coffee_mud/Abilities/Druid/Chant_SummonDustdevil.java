@@ -217,7 +217,7 @@ public class Chant_SummonDustdevil extends Chant
 					beneficialAffect(mob,target,asLevel,0);
 					CMLib.commands().postFollow(target,mob,true);
 					if(target.amFollowing()!=mob)
-						mob.tell(target.name()+" seems unwilling to follow you.");
+						mob.tell(target.name(mob)+" seems unwilling to follow you.");
 				}
 			}
 		}

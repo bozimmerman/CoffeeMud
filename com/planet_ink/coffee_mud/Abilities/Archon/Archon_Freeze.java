@@ -113,7 +113,7 @@ public class Archon_Freeze extends ArchonSkill
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> frozen!");
 				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
-				Log.sysOut("Freeze",mob.name()+" freezed "+target.name()+".");
+				Log.sysOut("Freeze",mob.Name()+" freezed "+target.name()+".");
 			}
 		}
 		else

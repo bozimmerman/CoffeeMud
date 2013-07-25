@@ -121,7 +121,7 @@ public class Spell_Levitate extends Spell
 		}
 		else
 		{
-			mob.tell("You can't levitate "+target.name()+"!");
+			mob.tell("You can't levitate "+target.name(mob)+"!");
 			return false;
 		}
 

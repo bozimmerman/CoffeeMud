@@ -65,7 +65,7 @@ public class Paladin_Breakup extends StdAbility
 			return false;
 		if(!target.isInCombat())
 		{
-			mob.tell(target.name()+" is not fighting anyone!");
+			mob.tell(target.name(mob)+" is not fighting anyone!");
 			return false;
 		}
 

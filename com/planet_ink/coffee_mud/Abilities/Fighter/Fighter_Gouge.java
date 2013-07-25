@@ -118,7 +118,7 @@ public class Fighter_Gouge extends MonkSkill
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)<=0))
 		{
-			mob.tell(target.name()+" has no eyes!");
+			mob.tell(target.name(mob)+" has no eyes!");
 			return false;
 		}
 

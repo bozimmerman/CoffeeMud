@@ -289,6 +289,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	}
 	public String displayText(){return displayText;}
 	public void setDisplayText(String newDisplayText){ displayText=newDisplayText; }
+	public String displayText(MOB viewer) { return displayText(); };
+	public String name(MOB viewerMob) { return name(); }
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
@@ -304,10 +306,9 @@ public class StdSpaceShip implements Area, SpaceShip
 			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
 	}
 
-	public String description()
-	{ return description;}
-	public void setDescription(String newDescription)
-	{ description=newDescription;}
+	public String description() { return description;}
+	public void setDescription(String newDescription) { description=newDescription;}
+	public String description(MOB viewerMob) { return description(); }
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

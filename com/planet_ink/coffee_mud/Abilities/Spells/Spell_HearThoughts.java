@@ -94,7 +94,7 @@ public class Spell_HearThoughts extends Spell
 					else
 					if(target.charStats().getStat(CharStats.STAT_WISDOM)>=10)
 						adjective+="wise, ";
-					mob.tell("Regarding "+target.Name()+", a "+adjective+target.charStats().getMyRace().name()+" "+target.charStats().getCurrentClass().name()+" at "+room.displayText()+":");
+					mob.tell("Regarding "+target.Name()+", a "+adjective+target.charStats().getMyRace().name()+" "+target.charStats().getCurrentClass().name()+" at "+room.displayText(mob)+":");
 					StringBuilder thoughts=new StringBuilder("");
 					LegalBehavior LB=CMLib.law().getLegalBehavior(target.location());
 					Area AO=CMLib.law().getLegalObject(target.location());

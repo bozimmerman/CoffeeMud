@@ -184,7 +184,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				{
 					I.setUsesRemaining(100);
 					I.unWear();
-					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" carried by "+mob.name()+" is destroyed!");
+					msg=CMClass.getMsg(mob,null,I,CMMsg.MSG_OK_VISUAL,"<O-NAME> is destroyed!",null,"<O-NAME> carried by <S-NAME> is destroyed!");
 					if(R.okMessage(mob,msg))
 						R.send(mob,msg);
 					I.destroy();
@@ -196,7 +196,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				else
 				if(I.usesRemaining()<=10)
 				{
-					mob.tell(I.name()+" is looking really bad.");
+					mob.tell(I.name(mob)+" is looking really bad.");
 				}
 			}
 		}
@@ -1134,7 +1134,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(pct<0) pct=0;
 		final int numHealthDescs=CMProps.getListFileSize(CMProps.ListFile.HEALTH_CHART);
 		if(pct>=numHealthDescs) pct=numHealthDescs-1;
-		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.HEALTH_CHART,pct),"<MOB>",mob.displayName(viewer));
+		return CMStrings.replaceAll(CMProps.getListFileValue(CMProps.ListFile.HEALTH_CHART,pct),"<MOB>",mob.name(viewer));
 	}
 
 	public void resistanceMsgs(CMMsg msg, MOB source, MOB target)

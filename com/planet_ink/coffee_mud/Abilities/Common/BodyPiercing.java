@@ -58,10 +58,10 @@ public class BodyPiercing extends CommonSkill
 			{
 				MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonEmote(mob,"<S-NAME> mess(es) up the piercing on "+target.name()+".");
+					commonEmote(mob,"<S-NAME> mess(es) up the piercing on "+target.name(mob)+".");
 				else
 				{
-					commonEmote(mob,"<S-NAME> complete(s) the piercing on "+target.name()+".");
+					commonEmote(mob,"<S-NAME> complete(s) the piercing on "+target.name(mob)+".");
 					target.addTattoo(new MOB.Tattoo(writing));
 				}
 			}

@@ -95,7 +95,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			return false;
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target.name()+" must be prone or bound first.");
+			mob.tell(target.name(mob)+" must be prone or bound first.");
 			return false;
 		}
 		for(int i=0;i<target.numItems();i++)
@@ -103,7 +103,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			Item I=target.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 			{
-				mob.tell(target.name()+" must be undressed first.");
+				mob.tell(target.name(mob)+" must be undressed first.");
 				return false;
 			}
 		}

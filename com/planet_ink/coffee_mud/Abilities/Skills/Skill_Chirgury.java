@@ -101,7 +101,7 @@ public class Skill_Chirgury extends StdSkill
 		if((partSet[1] instanceof Integer)
 		&&(C!=null) && (C.getMyRace().bodyMask()[((Integer)partSet[1]).intValue()]<=0))
 		{
-			mob.tell(target.name()+" doesn't have a "+part);
+			mob.tell(target.name(mob)+" doesn't have a "+part);
 			return false;
 		}
 
@@ -109,13 +109,13 @@ public class Skill_Chirgury extends StdSkill
 			for(String raceCat : badRaceCats)
 				if(C.getMyRace().racialCategory().equalsIgnoreCase(raceCat))
 				{
-					mob.tell(target.name()+" doesn't have a "+part);
+					mob.tell(target.name(mob)+" doesn't have a "+part);
 					return false;
 				}
 
 		if((partCode==0)&&((!(target instanceof MOB))||(target.fetchEffect("Pregnancy")==null)))
 		{
-			mob.tell("A baby can not be removed from "+target.name()+".");
+			mob.tell("A baby can not be removed from "+target.name(mob)+".");
 			return false;
 		}
 
@@ -134,7 +134,7 @@ public class Skill_Chirgury extends StdSkill
 		Ability oldChirge=target.fetchEffect(ID());
 		if((oldChirge!=null)&&(oldChirge.text().indexOf(";"+parts[partCode])>=0))
 		{
-			mob.tell("That has already been removed from "+target.name()+".");
+			mob.tell("That has already been removed from "+target.name(mob)+".");
 			return false;
 		}
 

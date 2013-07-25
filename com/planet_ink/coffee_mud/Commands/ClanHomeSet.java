@@ -89,8 +89,8 @@ public class ClanHomeSet extends StdCommand
 			{
 				C.setRecall(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell("The "+C.getGovernmentName()+" "+C.clanID()+" home is now set to "+R.roomTitle(mob)+".");
-				CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" home is now set to "+R.roomTitle(mob)+".");
+				mob.tell("The "+C.getGovernmentName()+" "+C.clanID()+" home is now set to "+R.displayText(mob)+".");
+				CMLib.clans().clanAnnounce(mob,"The "+C.getGovernmentName()+" "+C.clanID()+" home is now set to "+R.displayText(mob)+".");
 				return true;
 			}
 		}

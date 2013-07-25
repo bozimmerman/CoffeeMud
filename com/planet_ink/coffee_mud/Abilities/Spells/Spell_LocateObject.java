@@ -133,7 +133,7 @@ public class Spell_LocateObject extends Spell
 					if((item!=null)
 					&&(CMLib.flags().canBeLocated((Item)item)))
 					{
-						String str=item.name()+" is in a place called '"+room.roomTitle(mob)+"'.";
+						String str=item.name()+" is in a place called '"+room.displayText(mob)+"'.";
 						itemsFound.add(str);
 					}
 					for(int i=0;i<room.numInhabitants();i++)
@@ -154,7 +154,7 @@ public class Spell_LocateObject extends Spell
 							if(room.okMessage(mob,msg2))
 							{
 								room.send(mob,msg2);
-								String str=item.name()+((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle(mob)+"'.";
+								String str=item.name()+((!levelAdjust)?"":("("+((Item)item).phyStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.displayText(mob)+"'.";
 								itemsFound.add(str);
 								break;
 							}

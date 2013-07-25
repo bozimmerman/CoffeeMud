@@ -105,7 +105,7 @@ public class Archon_Injure extends ArchonSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Log.sysOut("Archon_Injure",mob.name()+" injures "+target.name()+".");
+				Log.sysOut("Archon_Injure",mob.Name()+" injures "+target.name()+".");
 				Ability A2=CMClass.getAbility("Injury");
 				if(A2!=null)
 				{

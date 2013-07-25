@@ -86,7 +86,7 @@ public class Chant_SpeedAging extends Chant
 				{
 					if(target instanceof Food)
 					{
-						mob.tell(target.name()+" rots away!");
+						mob.tell(target.name(mob)+" rots away!");
 						((Item)target).destroy();
 					}
 					else

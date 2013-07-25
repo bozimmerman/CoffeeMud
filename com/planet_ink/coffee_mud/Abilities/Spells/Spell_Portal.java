@@ -98,7 +98,7 @@ public class Spell_Portal extends Spell
 		{
 			Room room=CMLib.map().getRandomRoom();
 			if((CMLib.flags().canAccess(mob,room))
-			&&(CMLib.english().containsString(room.displayText(),areaName)))
+			&&(CMLib.english().containsString(room.displayText(mob),areaName)))
 			{
 			   newRoom=room;
 			   break;

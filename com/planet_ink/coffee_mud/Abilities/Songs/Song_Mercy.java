@@ -75,7 +75,7 @@ public class Song_Mercy extends Song
 			&&(mob.location()==target.location())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell("You feel like showing "+target.name()+" mercy right now.");
+				msg.source().tell("You feel like showing "+target.name(msg.source())+" mercy right now.");
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

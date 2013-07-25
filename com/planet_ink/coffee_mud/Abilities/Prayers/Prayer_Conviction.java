@@ -104,7 +104,7 @@ public class Prayer_Conviction extends Prayer
 		}
 		if(!target.getWorshipCharID().equals(mob.getWorshipCharID()))
 		{
-			mob.tell(target.name()+" must worship your god for this prayer to work.");
+			mob.tell(target.name(mob)+" must worship your god for this prayer to work.");
 			return false;
 		}
 

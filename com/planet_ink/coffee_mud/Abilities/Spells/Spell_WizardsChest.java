@@ -112,13 +112,13 @@ public class Spell_WizardsChest extends Spell
 		
 		if(!((Container)target).isOpen())
 		{
-			mob.tell(target.name()+" must be opened before this magic will work.");
+			mob.tell(target.name(mob)+" must be opened before this magic will work.");
 			return false;
 		}
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already a wizards chest!");
+			mob.tell(target.name(mob)+" is already a wizards chest!");
 			return false;
 		}
 

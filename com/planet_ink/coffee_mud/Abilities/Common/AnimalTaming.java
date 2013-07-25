@@ -153,12 +153,12 @@ public class AnimalTaming extends CommonSkill
 			if((!M.isMonster())
 			   ||(!CMLib.flags().isAnimalIntelligence(M)))
 			{
-				commonTell(mob,"You can't tame "+M.name()+".");
+				commonTell(mob,"You can't tame "+M.name(mob)+".");
 				return false;
 			}
 			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
-				commonTell(mob,M.name()+" doesn't seem willing to cooperate.");
+				commonTell(mob,M.name(mob)+" doesn't seem willing to cooperate.");
 				return false;
 			}
 			taming=M;

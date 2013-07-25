@@ -73,7 +73,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted)&&(!helping))
+				if((buildingI!=null)&&(!aborted)&&(!helping))
 				{
 					if(messedUp)
 					{
@@ -82,27 +82,27 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 						else
 						if(activity == CraftingActivity.LEARNING)
 						{
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
-							building.destroy();
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
+							buildingI.destroy();
 						}
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up making "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up making "+buildingI.name()+".");
 					}
 					else
 					{
 						if(activity == CraftingActivity.MENDING)
-							building.setUsesRemaining(100);
+							buildingI.setUsesRemaining(100);
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( building, recipeHolder );
-							building.destroy();
+							deconstructRecipeInto( buildingI, recipeHolder );
+							buildingI.destroy();
 						}
 						else
-							dropAWinner(mob,building);
+							dropAWinner(mob,buildingI);
 					}
 				}
-				building=null;
+				buildingI=null;
 				activity = CraftingActivity.CRAFTING;
 			}
 		}
@@ -113,7 +113,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(building==null)
+			if(buildingI==null)
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -238,22 +238,22 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,building,false)) return false;
+			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			if(!canMend(mob,buildingI,false)) return false;
 			activity = CraftingActivity.MENDING;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+buildingI.name()+".";
+			displayText="You are mending "+buildingI.name();
+			verb="mending "+buildingI.name();
 		}
 		else
 		{
-			building=null;
+			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			aborted=false;
@@ -330,8 +330,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-			building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-			if(building==null)
+			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			if(buildingI==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
@@ -339,50 +339,50 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			itemName=CMLib.english().startWithAorAn(itemName);
-			building.setName(itemName);
-			startStr="<S-NAME> start(s) making "+building.name()+".";
-			displayText="You are making "+building.name();
-			verb="making "+building.name();
+			buildingI.setName(itemName);
+			startStr="<S-NAME> start(s) making "+buildingI.name()+".";
+			displayText="You are making "+buildingI.name();
+			verb="making "+buildingI.name();
 			playSound="sanding.wav";
-			building.setDisplayText(itemName+" lies here");
-			building.setDescription(itemName+". ");
-			building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-			building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+			buildingI.setDisplayText(itemName+" lies here");
+			buildingI.setDescription(itemName+". ");
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			if((woodRequired==0)&&(data[1][FOUND_CODE]>0))
-				building.setMaterial(data[1][FOUND_CODE]);
+				buildingI.setMaterial(data[1][FOUND_CODE]);
 			else
-				building.setMaterial(data[0][FOUND_CODE]);
+				buildingI.setMaterial(data[0][FOUND_CODE]);
 			int level=CMath.s_int(foundRecipe.get(RCP_LEVEL));
 			if(woodRequired==0) hardness=0;
-			building.basePhyStats().setLevel(level+hardness);
-			building.setSecretIdentity(getBrand(mob));
+			buildingI.basePhyStats().setLevel(level+hardness);
+			buildingI.setSecretIdentity(getBrand(mob));
 			String ammotype=foundRecipe.get(RCP_AMMOTYPE);
 			int capacity=CMath.s_int(foundRecipe.get(RCP_AMOCAPACITY));
 			int maxrange=CMath.s_int(foundRecipe.get(RCP_MAXRANGE));
 			int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-			if(bundling) building.setBaseValue(lostValue);
-			addSpells(building,spell);
-			if(building instanceof Weapon)
+			if(bundling) buildingI.setBaseValue(lostValue);
+			addSpells(buildingI,spell);
+			if(buildingI instanceof Weapon)
 			{
 				if(ammotype.length()>0)
 				{
-					((Weapon)building).setAmmoCapacity(capacity);
-					((Weapon)building).setAmmoRemaining(0);
-					((Weapon)building).setAmmunitionType(ammotype);
+					((Weapon)buildingI).setAmmoCapacity(capacity);
+					((Weapon)buildingI).setAmmoRemaining(0);
+					((Weapon)buildingI).setAmmunitionType(ammotype);
 				}
-				building.basePhyStats().setAttackAdjustment((abilityCode()-1+(hardness*5)));
-				building.basePhyStats().setDamage(armordmg+hardness);
-				((Weapon)building).setRanges(((Weapon)building).minRange(),maxrange);
+				buildingI.basePhyStats().setAttackAdjustment((abilityCode()-1+(hardness*5)));
+				buildingI.basePhyStats().setDamage(armordmg+hardness);
+				((Weapon)buildingI).setRanges(((Weapon)buildingI).minRange(),maxrange);
 			}
 			else
-			if((ammotype.length()>0)&&(building instanceof Ammunition))
+			if((ammotype.length()>0)&&(buildingI instanceof Ammunition))
 			{
-				((Ammunition)building).setAmmunitionType(ammotype);
-				building.setUsesRemaining(capacity);
+				((Ammunition)buildingI).setAmmunitionType(ammotype);
+				buildingI.setUsesRemaining(capacity);
 			}
-			building.recoverPhyStats();
-			building.text();
-			building.recoverPhyStats();
+			buildingI.recoverPhyStats();
+			buildingI.text();
+			buildingI.recoverPhyStats();
 		}
 
 
@@ -392,24 +392,24 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,building,enhancedTypes);
+			enhanceItem(mob,buildingI,enhancedTypes);
 		}
 		else
 		if(bundling)

@@ -96,7 +96,7 @@ public class Fighter_BodyToss extends MonkSkill
 		}
 		if(target.basePhyStats().weight()>(mob.basePhyStats().weight()*2))
 		{
-			mob.tell(target.name()+" is too big for you to toss!");
+			mob.tell(target.name(mob)+" is too big for you to toss!");
 			return false;
 		}
 

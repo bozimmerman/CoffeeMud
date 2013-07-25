@@ -96,13 +96,13 @@ public class Skill_Cage extends StdSkill
 			}
 			if(!ok)
 			{
-				mob.tell(target.name()+" won't seem to let you.");
+				mob.tell(target.name(mob)+" won't seem to let you.");
 				return false;
 			}
 
 			if(cage==null)
 			{
-				mob.tell("Cage "+target.name()+" where?");
+				mob.tell("Cage "+target.name(mob)+" where?");
 				return false;
 			}
 

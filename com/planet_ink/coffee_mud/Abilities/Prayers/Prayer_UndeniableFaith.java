@@ -117,12 +117,12 @@ public class Prayer_UndeniableFaith extends Prayer
 		if((target.getWorshipCharID().length()>0)
 		&&(CMLib.map().getDeity(target.getWorshipCharID())!=null))
 		{
-			if(!auto) mob.tell(target.name()+" worships "+target.getWorshipCharID()+", and may not be converted with this prayer.");
+			if(!auto) mob.tell(target.name(mob)+" worships "+target.getWorshipCharID()+", and may not be converted with this prayer.");
 			return false;
 		}
 		if((CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target)||(D==null)))
 		{
-			if(!auto) mob.tell(target.name()+" can not be converted with this prayer.");
+			if(!auto) mob.tell(target.name(mob)+" can not be converted with this prayer.");
 			return false;
 		}
 		if(!auto)
@@ -135,7 +135,7 @@ public class Prayer_UndeniableFaith extends Prayer
 			}
 			if(convertStack.contains(target))
 			{
-				mob.tell(target.name()+" must wait to be undeniably faithful again.");
+				mob.tell(target.name(mob)+" must wait to be undeniably faithful again.");
 				return false;
 			}
 		}

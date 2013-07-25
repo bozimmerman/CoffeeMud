@@ -91,7 +91,7 @@ public class Skill_FalseArrest extends BardSkill
 
 		if(B==null)
 		{
-			mob.tell(target.name()+" is not wanted for anything, anywhere.");
+			mob.tell(target.name(mob)+" is not wanted for anything, anywhere.");
 			return false;
 		}
 
@@ -117,7 +117,7 @@ public class Skill_FalseArrest extends BardSkill
 			mob.location().send(mob,msg);
 			if(!B.arrest(A2,mob,target))
 			{
-				mob.tell("You are not able to arrest "+target.name()+" at this time.");
+				mob.tell("You are not able to arrest "+target.name(mob)+" at this time.");
 				return false;
 			}
 		}

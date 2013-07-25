@@ -119,36 +119,36 @@ public class Dryad extends StdRace
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName(viewer) + "^r is mortally wounded and will soon die.^N";
+			return "^r" + mob.name(viewer) + "^r is mortally wounded and will soon die.^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName(viewer) + "^r is covered in blood.^N";
+			return "^r" + mob.name(viewer) + "^r is covered in blood.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName(viewer) + "^r is bleeding badly from lots of wounds.^N";
+			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of wounds.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName(viewer) + "^y has numerous bloody wounds and gashes.^N";
+			return "^y" + mob.name(viewer) + "^y has numerous bloody wounds and gashes.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName(viewer) + "^y has some bloody wounds and gashes.^N";
+			return "^y" + mob.name(viewer) + "^y has some bloody wounds and gashes.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName(viewer) + "^p has a few bloody wounds.^N";
+			return "^p" + mob.name(viewer) + "^p has a few bloody wounds.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName(viewer) + "^p is cut and bruised.^N";
+			return "^p" + mob.name(viewer) + "^p is cut and bruised.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName(viewer) + "^g has some minor cuts and bruises.^N";
+			return "^g" + mob.name(viewer) + "^g has some minor cuts and bruises.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName(viewer) + "^g has a few bruises and scratches.^N";
+			return "^g" + mob.name(viewer) + "^g has a few bruises and scratches.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName(viewer) + "^g has a few small bruises.^N";
+			return "^g" + mob.name(viewer) + "^g has a few small bruises.^N";
 		else
-			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
+			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
 	public List<RawMaterial> myResources()
 	{

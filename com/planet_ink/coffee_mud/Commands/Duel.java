@@ -63,7 +63,7 @@ public class Duel extends StdCommand
 			mob.tell("You may not duel yourself.");
 		else
 		if((mob.isMonster()))
-			mob.tell("You are not allowed to duel "+target.name()+".");
+			mob.tell("You are not allowed to duel "+target.name(mob)+".");
 		else
 		{
 			Tattoo uiT=target.findTattoo("IDUEL");
@@ -77,7 +77,7 @@ public class Duel extends StdCommand
 				target.addTattoo(new Tattoo("UDUEL",duelTicks));
 				long time = CMProps.getTickMillis() * duelTicks;
 				mob.location().show(mob, target, CMMsg.MSG_DUELCHALLENGE, "^X<S-NAME> <S-HAS-HAVE> challenged <T-NAME> to a duel, which <T-HE-SHE> <T-HAS-HAVE> "+(time/1000)+" seconds to consider.^.^N");
-				target.tell("^NEnter ^HDUEL "+mob.name()+"^N to accept this challenge and begin fighting.");
+				target.tell("^NEnter ^HDUEL "+mob.name(target)+"^N to accept this challenge and begin fighting.");
 				return true;
 			}
 			else

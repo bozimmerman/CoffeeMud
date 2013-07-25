@@ -206,7 +206,7 @@ public class Prayer_Rot extends Prayer
 		if((!(target instanceof Food))
 			&&(!(target instanceof Drink)))
 		{
-			mob.tell("You cannot rot "+target.name()+"!");
+			mob.tell("You cannot rot "+target.name(mob)+"!");
 			return false;
 		}
 

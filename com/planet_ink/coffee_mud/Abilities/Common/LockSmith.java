@@ -57,15 +57,15 @@ public class LockSmith extends CraftingSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"You've ruined "+building.name()+"!");
+						commonTell(mob,"You've ruined "+buildingI.name(mob)+"!");
 					else
 					if(!delock)
-						dropAWinner(mob,building);
+						dropAWinner(mob,buildingI);
 				}
-				building=null;
+				buildingI=null;
 			}
 		}
 		super.unInvoke();
@@ -94,13 +94,13 @@ public class LockSmith extends CraftingSkill
 			if((workingOn instanceof Container) && (mob.location()!=CMLib.map().roomLocation(workingOn)))
 			{
 				commonTell(mob,"You've stopped "+verb+".");
-				building=null;
+				buildingI=null;
 				unInvoke();
 				return super.tick(ticking, tickID);
 			}
 			if(tickDown<=1)
 			{
-				if(building==null) building=getBuilding(workingOn);
+				if(buildingI==null) buildingI=getBuilding(workingOn);
 				if((workingOn!=null)&&(mob.location()!=null)&&(!aborted))
 				{
 					if(workingOn instanceof Exit)
@@ -120,7 +120,7 @@ public class LockSmith extends CraftingSkill
 									commonTell(mob,"You've failed to remove the lock.");
 								else
 									commonTell(mob,"You've ruined the lock.");
-								building=null;
+								buildingI=null;
 								unInvoke();
 							}
 							else
@@ -130,11 +130,11 @@ public class LockSmith extends CraftingSkill
 								((Exit)workingOn).basePhyStats().setLevel(xlevel(mob));
 								((Exit)workingOn).recoverPhyStats();
 								((Exit)workingOn).setDoorsNLocks(true,false,true,!delock,!delock,!delock);
-								if(building instanceof DoorKey)
+								if(buildingI instanceof DoorKey)
 								{
-									if(((DoorKey)building).getKey().length()==0)
-										((DoorKey)building).setKey(keyCode);
-									((Exit)workingOn).setKeyName(((DoorKey)building).getKey());
+									if(((DoorKey)buildingI).getKey().length()==0)
+										((DoorKey)buildingI).setKey(keyCode);
+									((Exit)workingOn).setKeyName(((DoorKey)buildingI).getKey());
 								}
 								CMLib.database().DBUpdateExits(mob.location());
 								if((exit2!=null)
@@ -145,8 +145,8 @@ public class LockSmith extends CraftingSkill
 								{
 									exit2.basePhyStats().setLevel(xlevel(mob));
 									exit2.setDoorsNLocks(true,false,true,!delock,!delock,!delock);
-									if(building instanceof DoorKey)
-										exit2.setKeyName(((DoorKey)building).getKey());
+									if(buildingI instanceof DoorKey)
+										exit2.setKeyName(((DoorKey)buildingI).getKey());
 									CMLib.database().DBUpdateExits(room2);
 								}
 							}
@@ -163,17 +163,17 @@ public class LockSmith extends CraftingSkill
 									commonTell(mob,"You've failed to remove the lock.");
 								else
 									commonTell(mob,"You've ruined the lock.");
-								building=null;
+								buildingI=null;
 								unInvoke();
 							}
 							else
 							{
 								((Container)workingOn).setLidsNLocks(true,false,!delock,!delock);
-								if(building instanceof DoorKey)
+								if(buildingI instanceof DoorKey)
 								{
-									if(((DoorKey)building).getKey().length()==0)
-										((DoorKey)building).setKey(keyCode);
-									((Container)workingOn).setKeyName(((DoorKey)building).getKey());
+									if(((DoorKey)buildingI).getKey().length()==0)
+										((DoorKey)buildingI).setKey(keyCode);
+									((Container)workingOn).setKeyName(((DoorKey)buildingI).getKey());
 								}
 							}
 						}
@@ -198,7 +198,7 @@ public class LockSmith extends CraftingSkill
 		String startStr=null;
 		int duration=8;
 		activity = CraftingActivity.CRAFTING;
-		building=null;
+		buildingI=null;
 		boolean keyFlag=false;
 		workingOn=null;
 		messedUp=false;
@@ -317,29 +317,29 @@ public class LockSmith extends CraftingSkill
 			itemName=CMLib.english().startWithAorAn(itemName);
 			makeResource=data[0][FOUND_CODE];
 		}
-		building=getBuilding(workingOn);
-		if(building==null)
+		buildingI=getBuilding(workingOn);
+		if(buildingI==null)
 		{
 			commonTell(mob,"There's no such thing as a GenKey!!!");
 			return false;
 		}
-		if((makeResource>=0)&&(building!=null)) building.setMaterial(makeResource);
+		if((makeResource>=0)&&(buildingI!=null)) buildingI.setMaterial(makeResource);
 		duration=getDuration(25,mob,workingOn.phyStats().level(),8);
 		if(keyFlag) duration=duration/2;
-		building.setName(itemName);
+		buildingI.setName(itemName);
 		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
 		displayText="You are working on "+(keyFlag?"a key for ":"")+workingOn.name();
 		verb="working on "+(keyFlag?"a key for ":"")+workingOn.name();
 		playSound="drill.wav";
-		building.setDisplayText(itemName+" lies here");
-		building.setDescription(itemName+". ");
-		building.basePhyStats().setWeight(woodRequired);
-		building.setBaseValue(1);
-		building.basePhyStats().setLevel(1);
-		building.setSecretIdentity(getBrand(mob));
-		building.recoverPhyStats();
-		building.text();
-		building.recoverPhyStats();
+		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDescription(itemName+". ");
+		buildingI.basePhyStats().setWeight(woodRequired);
+		buildingI.setBaseValue(1);
+		buildingI.basePhyStats().setLevel(1);
+		buildingI.setSecretIdentity(getBrand(mob));
+		buildingI.recoverPhyStats();
+		buildingI.text();
+		buildingI.recoverPhyStats();
 
 		int proficiencyAddition=0;
 		if(workingOn.phyStats().level()>xlevel(mob))

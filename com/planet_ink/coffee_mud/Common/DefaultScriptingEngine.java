@@ -1101,7 +1101,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return makeParsableString((List)O);
 		else
 		if(O instanceof Room)
-			return ((Room)O).roomTitle(null);
+			return ((Room)O).displayText(null);
 		else
 		if(O instanceof Environmental)
 			return ((Environmental)O).Name();
@@ -1180,8 +1180,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(randMOB!=null)
 					middle=randMOB.name();
 				break;
-			case 'd': middle=(lastKnownLocation!=null)?lastKnownLocation.roomTitle(monster):""; break;
-			case 'D': middle=(lastKnownLocation!=null)?lastKnownLocation.roomDescription(monster):""; break;
+			case 'd': middle=(lastKnownLocation!=null)?lastKnownLocation.displayText(monster):""; break;
+			case 'D': middle=(lastKnownLocation!=null)?lastKnownLocation.description(monster):""; break;
 			case 'e':
 				if(source!=null)
 					middle=source.charStats().heshe();

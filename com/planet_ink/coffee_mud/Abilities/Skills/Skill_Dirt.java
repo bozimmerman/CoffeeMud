@@ -145,7 +145,7 @@ public class Skill_Dirt extends StdSkill
 
 		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
 		{
-			mob.tell(target.name()+" has no eyes, and would not be affected.");
+			mob.tell(target.name(mob)+" has no eyes, and would not be affected.");
 			return false;
 		}
 		
@@ -155,7 +155,7 @@ public class Skill_Dirt extends StdSkill
 			if(CMLib.flags().isSleeping(target))
 			{
 				if(!auto)
-					mob.tell(target.name()+" has "+target.charStats().hisher()+" eyes closed.");
+					mob.tell(target.name(mob)+" has "+target.charStats().hisher()+" eyes closed.");
 				return false;
 			}
 		}

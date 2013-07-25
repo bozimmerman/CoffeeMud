@@ -124,36 +124,36 @@ public class Vine extends StdRace
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName(viewer) + "^r is near destruction!^N";
+			return "^r" + mob.name(viewer) + "^r is near destruction!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName(viewer) + "^r is massively shredded and damaged.^N";
+			return "^r" + mob.name(viewer) + "^r is massively shredded and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName(viewer) + "^r is extremely shredded and damaged.^N";
+			return "^r" + mob.name(viewer) + "^r is extremely shredded and damaged.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName(viewer) + "^y is very shredded and damaged.^N";
+			return "^y" + mob.name(viewer) + "^y is very shredded and damaged.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName(viewer) + "^y is shredded and damaged.^N";
+			return "^y" + mob.name(viewer) + "^y is shredded and damaged.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName(viewer) + "^p is shredded and slightly damaged.^N";
+			return "^p" + mob.name(viewer) + "^p is shredded and slightly damaged.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName(viewer) + "^p is showing numerous threads.^N";
+			return "^p" + mob.name(viewer) + "^p is showing numerous threads.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName(viewer) + "^g is showing some threads.^N";
+			return "^g" + mob.name(viewer) + "^g is showing some threads.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName(viewer) + "^g is showing small threads.^N";
+			return "^g" + mob.name(viewer) + "^g is showing small threads.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName(viewer) + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
+			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
 	public List<RawMaterial> myResources()
 	{

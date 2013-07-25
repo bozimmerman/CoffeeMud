@@ -181,7 +181,10 @@ public class GenWallpaper implements Item
 	public String secretIdentity(){return "";}
 	public void setSecretIdentity(String newIdentity){}
 	public String displayText(){return "";}
+	public String displayText(MOB viewer) { return displayText(); }
+	public String name(MOB viewerMob) { return name(); }
 	public void setDisplayText(String newDisplayText){}
+	public String description(MOB viewerMob) { return description(); }
 	public String description()
 	{
 		if(description == null)

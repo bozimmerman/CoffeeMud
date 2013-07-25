@@ -54,7 +54,7 @@ public class NoFollow extends Follow
 			{
 				M=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 				if(M!=null)
-					mob.tell(M.displayName(mob)+" is not following you!");
+					mob.tell(M.name(mob)+" is not following you!");
 				else
 					mob.tell("There is noone here called '"+CMParms.combine(commands,1)+"' following you!");
 				return false;

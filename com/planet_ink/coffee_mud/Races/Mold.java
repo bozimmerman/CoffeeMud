@@ -155,36 +155,36 @@ public class Mold extends StdRace
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName(viewer) + "^r is near destruction!^N";
+			return "^r" + mob.name(viewer) + "^r is near destruction!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName(viewer) + "^r is massively scrapped and damaged.^N";
+			return "^r" + mob.name(viewer) + "^r is massively scrapped and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName(viewer) + "^r is extremely scrapped and damaged.^N";
+			return "^r" + mob.name(viewer) + "^r is extremely scrapped and damaged.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName(viewer) + "^y is very scrapped and damaged.^N";
+			return "^y" + mob.name(viewer) + "^y is very scrapped and damaged.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName(viewer) + "^y is scrapped and damaged.^N";
+			return "^y" + mob.name(viewer) + "^y is scrapped and damaged.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName(viewer) + "^p is scrapped and slightly damaged.^N";
+			return "^p" + mob.name(viewer) + "^p is scrapped and slightly damaged.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName(viewer) + "^p is showing numerous scrapes.^N";
+			return "^p" + mob.name(viewer) + "^p is showing numerous scrapes.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName(viewer) + "^g is showing some scrapes.^N";
+			return "^g" + mob.name(viewer) + "^g is showing some scrapes.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName(viewer) + "^g is showing small scrapes.^N";
+			return "^g" + mob.name(viewer) + "^g is showing small scrapes.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName(viewer) + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
+			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
 }
 

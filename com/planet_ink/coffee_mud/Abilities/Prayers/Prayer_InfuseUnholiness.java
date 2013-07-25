@@ -121,9 +121,9 @@ public class Prayer_InfuseUnholiness extends Prayer
 			
 			if(target instanceof Room) D=CMLib.law().getClericInfused((Room)target);
 			if(D!=null)
-				mob.tell("There is already an infused aura of "+D.Name()+" around "+target.name()+".");
+				mob.tell("There is already an infused aura of "+D.Name()+" around "+target.name(mob)+".");
 			else
-				mob.tell("There is already an infused aura around "+target.name()+".");
+				mob.tell("There is already an infused aura around "+target.name(mob)+".");
 			return false;
 		}
 		
@@ -142,7 +142,7 @@ public class Prayer_InfuseUnholiness extends Prayer
 				R=(Room)e.nextElement();
 				if(CMLib.law().getClericInfused((Room)target)==D)
 				{
-					mob.tell("There is already an unholy place of "+D.Name()+" in this area at "+R.roomTitle(mob)+".");
+					mob.tell("There is already an unholy place of "+D.Name()+" in this area at "+R.displayText(mob)+".");
 					return false;
 				}
 			}

@@ -61,7 +61,7 @@ public class Spell_AlterSubstance extends Spell
 				((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" reverts to its natural form.");
 			else
 			if(I.owner() instanceof MOB)
-				((MOB)I.owner()).tell(I.name()+" reverts to its natural form.");
+				((MOB)I.owner()).tell(I.name(((MOB)I.owner()))+" reverts to its natural form.");
 		}
 		super.unInvoke();
 	}

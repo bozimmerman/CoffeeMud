@@ -161,7 +161,7 @@ public class Prayer_AuraFear extends Prayer
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("The aura of fear is already surrounding "+target.name()+".");
+			mob.tell("The aura of fear is already surrounding "+target.name(mob)+".");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

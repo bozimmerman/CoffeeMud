@@ -124,7 +124,7 @@ public class Spell_Brainwash extends Spell
 		if(CMLib.flags().isAnimalIntelligence(target))
 		{
 			if(!auto)
-				mob.tell(target.name()+" doesn't have much to wash.");
+				mob.tell(target.name(mob)+" doesn't have much to wash.");
 			return false;
 		}
 		

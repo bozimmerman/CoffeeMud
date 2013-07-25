@@ -68,12 +68,12 @@ public class Prayer_Faithless extends Prayer
 		if(target==null) return false;
 		if((!auto)&&(target.charStats().getCurrentClass().baseClass().equals("Cleric")))
 		{
-			mob.tell(target.name()+" can not be affected by this prayer.");
+			mob.tell(target.name(mob)+" can not be affected by this prayer.");
 			return false;
 		}
 		if(CMLib.flags().isAnimalIntelligence(target)||CMLib.flags().isGolem(target))
 		{
-			if(!auto)mob.tell(target.name()+" can not be affected by this prayer.");
+			if(!auto)mob.tell(target.name(mob)+" can not be affected by this prayer.");
 			return false;
 		}
 

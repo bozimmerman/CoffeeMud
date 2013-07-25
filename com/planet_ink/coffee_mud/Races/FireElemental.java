@@ -86,36 +86,36 @@ public class FireElemental extends StdRace
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName(viewer) + "^r is almost put out!^N";
+			return "^r" + mob.name(viewer) + "^r is almost put out!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName(viewer) + "^r is flickering alot and is almost smoked out.^N";
+			return "^r" + mob.name(viewer) + "^r is flickering alot and is almost smoked out.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName(viewer) + "^r is flickering alot and smoking massively.^N";
+			return "^r" + mob.name(viewer) + "^r is flickering alot and smoking massively.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName(viewer) + "^y is flickering alot and smoking a lot.^N";
+			return "^y" + mob.name(viewer) + "^y is flickering alot and smoking a lot.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName(viewer) + "^y is flickering and smoking.^N";
+			return "^y" + mob.name(viewer) + "^y is flickering and smoking.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName(viewer) + "^p is flickering and smoking somewhat.^N";
+			return "^p" + mob.name(viewer) + "^p is flickering and smoking somewhat.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName(viewer) + "^p is showing large flickers.^N";
+			return "^p" + mob.name(viewer) + "^p is showing large flickers.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName(viewer) + "^g is showing some flickers.^N";
+			return "^g" + mob.name(viewer) + "^g is showing some flickers.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName(viewer) + "^g is showing small flickers.^N";
+			return "^g" + mob.name(viewer) + "^g is showing small flickers.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName(viewer) + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
+			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
 	public List<RawMaterial> myResources()
 	{

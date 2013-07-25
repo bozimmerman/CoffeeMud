@@ -127,14 +127,14 @@ public class Kill extends StdCommand
 					if(range>=0)
 						mob.setAtRange(range);
 				}
-				mob.tell("^f^<FIGHT^>You are now targeting "+target.name()+".^</FIGHT^>^?");
+				mob.tell("^f^<FIGHT^>You are now targeting "+target.name(mob)+".^</FIGHT^>^?");
 				mob.setVictim(target);
 				return false;
 			}
 		}
 		
 		if((!mob.mayPhysicallyAttack(target)))
-			mob.tell("You are not allowed to attack "+target.name()+".");
+			mob.tell("You are not allowed to attack "+target.name(mob)+".");
 		else
 		{
 			Item weapon=mob.fetchWieldedItem();

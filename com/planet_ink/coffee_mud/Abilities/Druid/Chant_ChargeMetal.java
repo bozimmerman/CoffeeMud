@@ -167,7 +167,7 @@ public class Chant_ChargeMetal extends Chant
 		else
 		if(target instanceof Item)
 		{
-			mob.tell(target.name()+" is not made of metal!");
+			mob.tell(target.name(mob)+" is not made of metal!");
 			return false;
 		}
 		// the invoke method for spells receives as

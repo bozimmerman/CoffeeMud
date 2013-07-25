@@ -87,36 +87,36 @@ public class Giant extends StdRace
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName(viewer) + "^r is almost fallen!^N";
+			return "^r" + mob.name(viewer) + "^r is almost fallen!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName(viewer) + "^r is covered in blood.^N";
+			return "^r" + mob.name(viewer) + "^r is covered in blood.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName(viewer) + "^r is bleeding badly from lots of large wounds.^N";
+			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of large wounds.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName(viewer) + "^y has enormous bloody wounds and gashes.^N";
+			return "^y" + mob.name(viewer) + "^y has enormous bloody wounds and gashes.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName(viewer) + "^y has some huge wounds and gashes.^N";
+			return "^y" + mob.name(viewer) + "^y has some huge wounds and gashes.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName(viewer) + "^p has a few huge bloody wounds.^N";
+			return "^p" + mob.name(viewer) + "^p has a few huge bloody wounds.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName(viewer) + "^p has huge cuts and is heavily bruised.^N";
+			return "^p" + mob.name(viewer) + "^p has huge cuts and is heavily bruised.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName(viewer) + "^g has some large cuts and huge bruises.^N";
+			return "^g" + mob.name(viewer) + "^g has some large cuts and huge bruises.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName(viewer) + "^g has large bruises and scratches.^N";
+			return "^g" + mob.name(viewer) + "^g has large bruises and scratches.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName(viewer) + "^g has a few small(?) bruises.^N";
+			return "^g" + mob.name(viewer) + "^g has a few small(?) bruises.^N";
 		else
-			return "^c" + mob.displayName(viewer) + "^c is in towering health^N";
+			return "^c" + mob.name(viewer) + "^c is in towering health^N";
 	}
 	public List<RawMaterial> myResources()
 	{

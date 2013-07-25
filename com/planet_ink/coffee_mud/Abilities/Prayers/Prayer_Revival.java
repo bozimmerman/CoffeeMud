@@ -101,7 +101,7 @@ public class Prayer_Revival extends Prayer
 					{
 						MOB M=(MOB)clerics.elementAt(CMLib.dice().roll(1,clerics.size(),-1));
 						if(M!=mob)
-							CMLib.commands().postSay(mob,null,"Preach it "+M.name()+"!",false,false);
+							CMLib.commands().postSay(mob,null,"Preach it "+M.name(mob)+"!",false,false);
 						else
 							CMLib.commands().postSay(mob,null,"I LOVE "+D.name()+"!",false,false);
 					}

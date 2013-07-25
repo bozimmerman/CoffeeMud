@@ -73,7 +73,7 @@ public class Thief_SilentGold extends ThiefSkill
 						mob.location().recoverRoomStats();
 						MOB victim=mob.getVictim();
 						mob.setVictim(null);
-						CMMsg msg2=CMClass.getMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently loot "+C.name()+" from the corpse of "+msg.source().name(),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+						CMMsg msg2=CMClass.getMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently loot <T-NAME> from the corpse of "+msg.source().name(mob),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);

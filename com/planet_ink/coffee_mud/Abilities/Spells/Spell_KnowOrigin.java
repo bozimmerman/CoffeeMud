@@ -84,7 +84,7 @@ public class Spell_KnowOrigin extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(target.name()+" seems to come from '"+R.roomTitle(mob)+"'.");
+				mob.tell(target.name(mob)+" seems to come from '"+R.displayText(mob)+"'.");
 			}
 		}
 		else

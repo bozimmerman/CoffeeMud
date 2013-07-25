@@ -129,7 +129,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			}
 			else
 			{
-				mob.tell("You can't turn "+target.name()+" into a '"+race+"'!");
+				mob.tell("You can't turn "+target.name(mob)+" into a '"+race+"'!");
 				return false;
 			}
 		}
@@ -155,7 +155,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		
 		if((R!=null)&&(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 		{
-			mob.tell("You can't turn "+target.name()+" into a '"+R.name()+"'!");
+			mob.tell("You can't turn "+target.name(mob)+" into a '"+R.name()+"'!");
 			return false;
 		}
 		
@@ -198,7 +198,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
-			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
+			mob.tell(target.name(mob)+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
 			success=false;
 		}
 		

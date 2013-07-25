@@ -54,7 +54,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((building==null)
+			if((buildingI==null)
 			||((fireRequired)&&(getRequiredFire(mob,0)==null))
 			||(theSpell==null))
 			{
@@ -66,15 +66,15 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			{
 				if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
 				{
-					commonEmote(mob,"<S-NAME> start(s) praying for "+building.name()+".");
-					displayText="You are praying for "+building.name();
-					verb="praying for "+building.name();
+					commonEmote(mob,"<S-NAME> start(s) praying for "+buildingI.name()+".");
+					displayText="You are praying for "+buildingI.name();
+					verb="praying for "+buildingI.name();
 				}
 				else
 				{
-					commonEmote(mob,"<S-NAME> start(s) brewing "+building.name()+".");
-					displayText="You are brewing "+building.name();
-					verb="brewing "+building.name();
+					commonEmote(mob,"<S-NAME> start(s) brewing "+buildingI.name()+".");
+					displayText="You are brewing "+buildingI.name();
+					verb="brewing "+buildingI.name();
 					playSound="hotspring.wav";
 				}
 			}
@@ -125,27 +125,27 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
 						if(activity==CraftingActivity.LEARNING)
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
 						if(oldName.length()>0)
 							commonTell(mob,"Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
-						building.destroy();
+						buildingI.destroy();
 					}
 					else
 					if(activity==CraftingActivity.LEARNING)
 					{
-						deconstructRecipeInto( building, recipeHolder );
-						building.destroy();
+						deconstructRecipeInto( buildingI, recipeHolder );
+						buildingI.destroy();
 					}
 					else
-						mob.addItem(building);
+						mob.addItem(buildingI);
 				}
-				building=null;
+				buildingI=null;
 			}
 		}
 		super.unInvoke();
@@ -175,16 +175,16 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 
 	protected Item buildItem(Ability theSpell, int level)
 	{
-		building=CMClass.getItem("GenPotion");
-		((Potion)building).setSpellList(theSpell.ID());
-		building.setName("a potion of "+theSpell.name().toLowerCase());
-		building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
-		building.setDescription("");
-		building.basePhyStats().setLevel(level);
-		building.phyStats().setLevel(level);
-		building.recoverPhyStats();
-		building.text();
-		return building;
+		buildingI=CMClass.getItem("GenPotion");
+		((Potion)buildingI).setSpellList(theSpell.ID());
+		buildingI.setName("a potion of "+theSpell.name().toLowerCase());
+		buildingI.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
+		buildingI.setDescription("");
+		buildingI.basePhyStats().setLevel(level);
+		buildingI.phyStats().setLevel(level);
+		buildingI.recoverPhyStats();
+		buildingI.text();
+		return buildingI;
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -195,8 +195,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null) return false;
 			int level=spellLevel(mob,theSpell);
-			building=buildItem(theSpell, level);
-			commands.addElement(building);
+			buildingI=buildItem(theSpell, level);
+			commands.addElement(buildingI);
 			return true;
 		}
 		if(super.checkStop(mob, commands))
@@ -248,30 +248,30 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		}
 		else
 		{
-			building=getTarget(mob,null,givenTarget,CMParms.parse(pos),Wearable.FILTER_UNWORNONLY);
+			buildingI=getTarget(mob,null,givenTarget,CMParms.parse(pos),Wearable.FILTER_UNWORNONLY);
 			commands.remove(pos);
-			if(building==null) return false;
-			if(!mob.isMine(building))
+			if(buildingI==null) return false;
+			if(!mob.isMine(buildingI))
 			{
 				commonTell(mob,"You'll need to pick that up first.");
 				return false;
 			}
-			if(!(building instanceof Container))
+			if(!(buildingI instanceof Container))
 			{
-				commonTell(mob,"There's nothing in "+building.name()+" to brew!");
+				commonTell(mob,"There's nothing in "+buildingI.name(mob)+" to brew!");
 				return false;
 			}
-			if(!(building instanceof Drink))
+			if(!(buildingI instanceof Drink))
 			{
-				commonTell(mob,"You can't drink out of a "+building.name()+".");
+				commonTell(mob,"You can't drink out of a "+buildingI.name(mob)+".");
 				return false;
 			}
-			if(((Drink)building).liquidRemaining()==0)
+			if(((Drink)buildingI).liquidRemaining()==0)
 			{
-				commonTell(mob,"The "+building.name()+" contains no liquid base.  Water is probably fine.");
+				commonTell(mob,"The "+buildingI.name(mob)+" contains no liquid base.  Water is probably fine.");
 				return false;
 			}
-			if(building.material()!=RawMaterial.RESOURCE_GLASS)
+			if(buildingI.material()!=RawMaterial.RESOURCE_GLASS)
 			{
 				commonTell(mob,"You can only brew into glass containers.");
 				return false;
@@ -321,15 +321,15 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			int resourceType=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
 
 			boolean found=false;
-			List<Item> V=((Container)building).getContents();
+			List<Item> V=((Container)buildingI).getContents();
 			if(resourceType>0)
 			{
-				if(((Drink)building).liquidType()==resourceType)
+				if(((Drink)buildingI).liquidType()==resourceType)
 				{
 					found=true;
 					if(V.size()>0)
 					{
-						commonTell(mob,"The extraneous stuff from the "+building.name()+" must be removed before starting.");
+						commonTell(mob,"The extraneous stuff from the "+buildingI.name(mob)+" must be removed before starting.");
 						return false;
 					}
 				}
@@ -341,13 +341,13 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 						found=true;
 					else
 					{
-						commonTell(mob,"The "+I.name()+" must be removed from the "+building.name()+" before starting.");
+						commonTell(mob,"The "+I.name(mob)+" must be removed from the "+buildingI.name(mob)+" before starting.");
 						return false;
 					}
 				}
 				if(!found)
 				{
-					commonTell(mob,"This potion requires "+ingredient+".  Please place some inside the "+building.name()+" and try again.");
+					commonTell(mob,"This potion requires "+ingredient+".  Please place some inside the "+buildingI.name(mob)+" and try again.");
 					return false;
 				}
 			}
@@ -360,20 +360,20 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
-			oldName=building.name();
-			building.destroy();
-			building=buildItem(theSpell, theSpellLevel);
-			building.setSecretIdentity(getBrand(mob));
+			oldName=buildingI.name();
+			buildingI.destroy();
+			buildingI=buildItem(theSpell, theSpellLevel);
+			buildingI.setSecretIdentity(getBrand(mob));
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
 			if(duration<10) duration=10;
 			messedUp=!proficiencyCheck(mob,0,auto);
 
-			CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),null);
+			CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				building=(Item)msg.target();
+				buildingI=(Item)msg.target();
 				beneficialAffect(mob,mob,asLevel,duration);
 			}
 		}

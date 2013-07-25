@@ -60,7 +60,7 @@ public class Chant_PlantConstriction extends Chant
 			if((!mob.amDead())
 			&&(CMLib.flags().isInTheGame(mob,false)))
 			{
-				mob.tell(I.name()+" loosens its grip on you and falls off.");
+				mob.tell(I.name(mob)+" loosens its grip on you and falls off.");
 				I.setRawWornCode(0);
 				mob.location().moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 			}
@@ -161,7 +161,7 @@ public class Chant_PlantConstriction extends Chant
 		if(positionChoices.size()==0)
 		{
 			if(!auto)
-				mob.tell("Ummm, "+target.name()+" doesn't have arms or legs to constrict...");
+				mob.tell("Ummm, "+target.name(mob)+" doesn't have arms or legs to constrict...");
 			return false;
 		}
 

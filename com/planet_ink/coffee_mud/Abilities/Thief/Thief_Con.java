@@ -89,13 +89,13 @@ public class Thief_Con extends ThiefSkill
 		||(!target.isMonster())
 		||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
 		{
-			mob.tell("You can't con "+target.name()+".");
+			mob.tell("You can't con "+target.name(mob)+".");
 			return false;
 		}
 
 		if(target.isInCombat())
 		{
-			mob.tell(target.name()+" is too busy fighting right now.");
+			mob.tell(target.name(mob)+" is too busy fighting right now.");
 			return false;
 		}
 
@@ -135,7 +135,7 @@ public class Thief_Con extends ThiefSkill
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 				{
-					mob.tell("You can't con "+target.name()+" to do that.");
+					mob.tell("You can't con "+target.name(mob)+" to do that.");
 					return false;
 				}
 			}

@@ -92,10 +92,10 @@ public class Thief_Appraise extends ThiefSkill
 				allWeight=(int)Math.round(CMath.mul(allWeight,deviance));
 			}
 			StringBuffer str=new StringBuffer("");
-			str.append(target.name()+" is made of "+RawMaterial.CODES.NAME(materialCode));
+			str.append(target.name(mob)+" is made of "+RawMaterial.CODES.NAME(materialCode));
 			str.append(" is worth about "+CMLib.beanCounter().nameCurrencyShort(mob,realValue)+".");
 			if(target instanceof Armor)
-				str.append("\n\r"+target.name()+" is a size "+height+".");
+				str.append("\n\r"+target.name(mob)+" is a size "+height+".");
 			if(weight!=allWeight)
 				str.append("\n\rIt weighs "+weight+" pounds empty and "+allWeight+" pounds right now.");
 			else

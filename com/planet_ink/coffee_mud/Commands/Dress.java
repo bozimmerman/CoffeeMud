@@ -109,7 +109,7 @@ public class Dress extends StdCommand
 				}
 				if(target.isInCombat())
 				{
-					mob.tell("Not while "+target.name()+" is in combat!");
+					mob.tell("Not while "+target.name(mob)+" is in combat!");
 					return false;
 				}
 				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -128,16 +128,16 @@ public class Dress extends StdCommand
 								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> put(s) <O-NAME> on <T-NAMESELF>.");
 							}
 							else
-								mob.tell("You cannot seem to get "+item.name()+" on "+target.name()+".");
+								mob.tell("You cannot seem to get "+item.name()+" on "+target.name(mob)+".");
 						}
 						else
-							mob.tell("You cannot seem to get "+item.name()+" to "+target.name()+".");
+							mob.tell("You cannot seem to get "+item.name()+" to "+target.name(mob)+".");
 					}
 				}
 			}
 		}
 		else
-			mob.tell(target.name()+" won't let you.");
+			mob.tell(target.name(mob)+" won't let you.");
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

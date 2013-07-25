@@ -134,13 +134,13 @@ public class Thief_Sap extends ThiefSkill
 
 			if(CMLib.flags().canBeSeenBy(mob,target))
 			{
-				mob.tell(target.name()+" is watching you way too closely.");
+				mob.tell(target.name(mob)+" is watching you way too closely.");
 				return false;
 			}
 
 			if(mob.baseWeight()<(target.baseWeight()-100))
 			{
-				mob.tell(target.name()+" is too big to knock out!");
+				mob.tell(target.name(mob)+" is too big to knock out!");
 				return false;
 			}
 		}

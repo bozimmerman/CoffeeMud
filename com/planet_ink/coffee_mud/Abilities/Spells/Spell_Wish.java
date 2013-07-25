@@ -359,7 +359,7 @@ public class Spell_Wish extends Spell
 			&&(!((MOB)target).isMonster())
 			&&(!mob.mayIFight((MOB)target)))
 			{
-				mob.tell("You cannot cast wish on "+target.name()+" until "+mob.charStats().heshe()+" permits you. You must both toggle your playerkill flags on.");
+				mob.tell("You cannot cast wish on "+target.name(mob)+" until "+mob.charStats().heshe()+" permits you. You must both toggle your playerkill flags on.");
 				return false;
 			}
 

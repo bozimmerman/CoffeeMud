@@ -7931,9 +7931,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(mob.session()!=null) mob.session().print("Changing player name...");
 			CMLib.players().renamePlayer(me, oldName);
 			if(mob.session()!=null) mob.session().println(".");
-			Log.sysOut("CMGenEditor",mob.name()+" changed user "+oldName+" to "+me.name());
+			Log.sysOut("CMGenEditor",mob.Name()+" changed user "+oldName+" to "+me.name());
 		}
-		Log.sysOut("CMGenEditor",mob.name()+" edited user "+me.name());
+		Log.sysOut("CMGenEditor",mob.Name()+" edited user "+me.name());
 		CMLib.database().DBUpdatePlayer(me);
 		CMLib.database().DBUpdateFollowers(me);
 	}

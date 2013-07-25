@@ -89,7 +89,7 @@ public class Package extends StdCommand
 			||(CMLib.flags().isEnspelled(I))
 			||(CMLib.flags().isOnFire(I)))
 			{
-				mob.tell("Items such as "+I.name()+" may not be packaged.");
+				mob.tell("Items such as "+I.name(mob)+" may not be packaged.");
 				return false;
 			}
 		}

@@ -348,13 +348,13 @@ public class Skill_Enslave extends StdSkill
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
-			mob.tell(target.name()+" would be too stupid to understand your instructions!");
+			mob.tell(target.name(mob)+" would be too stupid to understand your instructions!");
 			return false;
 		}
 		
 		if((!CMLib.flags().isBoundOrHeld(target))&&(target.fetchEffect(ID())==null)&&(!CMSecurity.isAllowed(mob,target.location(), CMSecurity.SecFlag.CMDMOBS)))
 		{
-			mob.tell(target.name()+" must be bound first.");
+			mob.tell(target.name(mob)+" must be bound first.");
 			return false;
 		}
 

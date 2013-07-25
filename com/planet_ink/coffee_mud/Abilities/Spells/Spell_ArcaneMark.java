@@ -57,7 +57,7 @@ public class Spell_ArcaneMark extends Spell
 		}
 		if((!(target instanceof Item))||(!target.isGeneric()))
 		{
-			mob.tell("You can't can't cast this on "+target.name()+".");
+			mob.tell("You can't can't cast this on "+target.name(mob)+".");
 			return false;
 		}
 		String message=CMParms.combine(commands,1);

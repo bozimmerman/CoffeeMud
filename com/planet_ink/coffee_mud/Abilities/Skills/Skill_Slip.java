@@ -122,7 +122,7 @@ public class Skill_Slip extends StdSkill
 		}
 		if(CMLib.flags().isInFlight(target))
 		{
-			mob.tell(target.name()+" is flying and can't slip!");
+			mob.tell(target.name(mob)+" is flying and can't slip!");
 			return false;
 		}
 		if(target.riding()!=null)

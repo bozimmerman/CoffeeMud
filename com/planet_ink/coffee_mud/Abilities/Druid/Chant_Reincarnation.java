@@ -171,7 +171,7 @@ public class Chant_Reincarnation extends Chant
 		Set<MOB> groupMembers=mob.getGroupMembers(new HashSet<MOB>());
 		if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!groupMembers.contains(target)))
 		{
-			mob.tell(target.name()+" is a player, so you must be group members, and your playerkill flags must be on for this to work.");
+			mob.tell(target.name(mob)+" is a player, so you must be group members, and your playerkill flags must be on for this to work.");
 			success=false;
 		}
 		

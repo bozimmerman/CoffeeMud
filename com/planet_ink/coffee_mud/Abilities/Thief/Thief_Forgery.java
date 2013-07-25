@@ -70,7 +70,7 @@ public class Thief_Forgery extends ThiefSkill
 		String forgeWhat=CMParms.combine(commands,0);
 		if(forgeWhat.length()==0)
 		{
-			mob.tell("Forge what onto '"+target.name()+"'?  Try a spell name, a room ID, or a bank note name.");
+			mob.tell("Forge what onto '"+target.name(mob)+"'?  Try a spell name, a room ID, or a bank note name.");
 			return false;
 		}
 

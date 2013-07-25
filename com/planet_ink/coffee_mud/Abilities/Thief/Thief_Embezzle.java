@@ -118,7 +118,7 @@ public class Thief_Embezzle extends ThiefSkill
 		}
 		if(!(target instanceof Banker))
 		{
-			mob.tell("You can't embezzle from "+target.name()+"'s accounts.");
+			mob.tell("You can't embezzle from "+target.name(mob)+"'s accounts.");
 			return false;
 		}
 		if(mob.isInCombat())
@@ -130,7 +130,7 @@ public class Thief_Embezzle extends ThiefSkill
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)
 		{
-			mob.tell(target.name()+" is watching "+target.charStats().hisher()+" books too closely.");
+			mob.tell(target.name(mob)+" is watching "+target.charStats().hisher()+" books too closely.");
 			return false;
 		}
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
@@ -154,7 +154,7 @@ public class Thief_Embezzle extends ThiefSkill
 		myCoins=bank.findDepositInventory(myAcct,"1");
 		if((myCoins==null)||(!(myCoins instanceof Coins)))
 		{
-			mob.tell("You don't have your own account with "+target.name()+".");
+			mob.tell("You don't have your own account with "+target.name(mob)+".");
 			return false;
 		}
 		List<String> accounts=bank.getAccountNames();

@@ -64,7 +64,7 @@ public class Spell_DetectWater extends Spell
 			if(((I instanceof Drink))
 			&&(((Drink)I).containsDrink())
 			&&(CMLib.flags().canBeSeenBy(I,mob)))
-				msg.append(I.name()+" contains some sort of liquid.\n\r");
+				msg.append(I.name(mob)+" contains some sort of liquid.\n\r");
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))

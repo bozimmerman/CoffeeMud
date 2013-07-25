@@ -93,36 +93,36 @@ public class GreatBird extends StdRace
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName(viewer) + "^r is hovering on deaths door!^N";
+			return "^r" + mob.name(viewer) + "^r is hovering on deaths door!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName(viewer) + "^r is covered in blood and matted feathers.^N";
+			return "^r" + mob.name(viewer) + "^r is covered in blood and matted feathers.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName(viewer) + "^r is bleeding badly from lots of wounds.^N";
+			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of wounds.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName(viewer) + "^y has numerous bloody matted feathers.^N";
+			return "^y" + mob.name(viewer) + "^y has numerous bloody matted feathers.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName(viewer) + "^y has some bloody matted feathers.^N";
+			return "^y" + mob.name(viewer) + "^y has some bloody matted feathers.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName(viewer) + "^p has a lot of missing feathers.^N";
+			return "^p" + mob.name(viewer) + "^p has a lot of missing feathers.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName(viewer) + "^p has a few missing feathers.^N";
+			return "^p" + mob.name(viewer) + "^p has a few missing feathers.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName(viewer) + "^g has a missing feather.^N";
+			return "^g" + mob.name(viewer) + "^g has a missing feather.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName(viewer) + "^g has a few feathers out of place.^N";
+			return "^g" + mob.name(viewer) + "^g has a few feathers out of place.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName(viewer) + "^g has a some ruffled feathers.^N";
+			return "^g" + mob.name(viewer) + "^g has a some ruffled feathers.^N";
 		else
-			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
+			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
 	public List<RawMaterial> myResources()
 	{

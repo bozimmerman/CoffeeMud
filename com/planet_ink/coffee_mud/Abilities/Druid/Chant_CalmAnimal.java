@@ -49,13 +49,13 @@ public class Chant_CalmAnimal extends Chant
 		if(target==null) return false;
 		if(!CMLib.flags().isAnimalIntelligence(target))
 		{
-			mob.tell(target.name()+" is not an animal!");
+			mob.tell(target.name(mob)+" is not an animal!");
 			return false;
 		}
 
 		if(!target.isInCombat())
 		{
-			mob.tell(target.name()+" doesn't seem particularly enraged at the moment.");
+			mob.tell(target.name(mob)+" doesn't seem particularly enraged at the moment.");
 			return false;
 		}
 

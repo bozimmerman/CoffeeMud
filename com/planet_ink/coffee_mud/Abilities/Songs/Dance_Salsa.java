@@ -77,19 +77,19 @@ public class Dance_Salsa extends Dance
 				switch(CMLib.dice().roll(1,5,0))
 				{
 				case 1:
-					mob.tell("You feel strange urgings towards "+M.displayName(mob)+".");
+					mob.tell("You feel strange urgings towards "+M.name(mob)+".");
 					break;
 				case 2:
-					mob.tell("You have strong happy feelings towards "+M.displayName(mob)+".");
+					mob.tell("You have strong happy feelings towards "+M.name(mob)+".");
 					break;
 				case 3:
-					mob.tell("You feel very appreciative of "+M.displayName(mob)+".");
+					mob.tell("You feel very appreciative of "+M.name(mob)+".");
 					break;
 				case 4:
-					mob.tell("You feel very close to "+M.displayName(mob)+".");
+					mob.tell("You feel very close to "+M.name(mob)+".");
 					break;
 				case 5:
-					mob.tell("You feel lovingly towards "+M.displayName(mob)+".");
+					mob.tell("You feel lovingly towards "+M.name(mob)+".");
 					break;
 				}
 		}

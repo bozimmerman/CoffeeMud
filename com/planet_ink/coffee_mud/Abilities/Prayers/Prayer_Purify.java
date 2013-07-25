@@ -59,7 +59,7 @@ public class Prayer_Purify extends Prayer
 		if((!(target instanceof Food))
 			&&(!(target instanceof Drink)))
 		{
-			mob.tell("You cannot purify "+target.name()+"!");
+			mob.tell("You cannot purify "+target.name(mob)+"!");
 			return false;
 		}
 

@@ -147,7 +147,7 @@ public class Spell_WizardLock extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already magically locked!");
+			mob.tell(target.name(mob)+" is already magically locked!");
 			return false;
 		}
 

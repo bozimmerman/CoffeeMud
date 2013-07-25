@@ -62,7 +62,7 @@ public class Pose extends StdCommand
 			if(mob.displayText().length()==0)
 				mob.tell("POSE how?");
 			else
-				mob.tell("Your current pose is: "+mob.displayText());
+				mob.tell("Your current pose is: "+mob.displayText(mob));
 			return false;
 		}
 		String combinedCommands=CMParms.combine(commands,1);

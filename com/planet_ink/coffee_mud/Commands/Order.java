@@ -103,7 +103,7 @@ public class Order extends StdCommand
 			}
 			if(!target.willFollowOrdersOf(mob))
 			{
-				mob.tell("You can't order '"+target.name()+"' around.");
+				mob.tell("You can't order '"+target.name(mob)+"' around.");
 				return false;
 			}
 		}
@@ -131,7 +131,7 @@ public class Order extends StdCommand
 				if((O instanceof Command)
 				&&((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))))
 				{
-					mob.tell("You can't order "+target.name()+" to '"+order+"'.");
+					mob.tell("You can't order "+target.name(mob)+" to '"+order+"'.");
 					continue;
 				}
 				if(O instanceof Ability)
@@ -140,7 +140,7 @@ public class Order extends StdCommand
 				{
 					if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 					{
-						mob.tell("You can't order "+target.name()+" to '"+order+"'.");
+						mob.tell("You can't order "+target.name(mob)+" to '"+order+"'.");
 						continue;
 					}
 				}
@@ -151,7 +151,7 @@ public class Order extends StdCommand
 				mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
 			else
 			if(!target.willFollowOrdersOf(mob))
-				mob.tell("You can't order '"+target.name()+"' around.");
+				mob.tell("You can't order '"+target.name(mob)+"' around.");
 			else
 			{
 				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,CMMsg.MSG_ORDER,CMMsg.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");

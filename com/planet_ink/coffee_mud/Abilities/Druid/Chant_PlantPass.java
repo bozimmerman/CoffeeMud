@@ -65,7 +65,7 @@ public class Chant_PlantPass extends Chant
 		for(int m=0;m<candidates.size();m++)
 		{
 			Room room=(Room)candidates.elementAt(m);
-			if(CMLib.english().containsString(room.displayText(),areaName))
+			if(CMLib.english().containsString(room.displayText(mob),areaName))
 			{
 			   newRoom=room;
 			   break;

@@ -279,13 +279,13 @@ public class Copy extends StdCommand
 					if(i==0)
 					{
 						if(number>1)
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newRoom.roomTitle(mob)+"s fall "+inDirName+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newRoom.displayText(mob)+"s fall "+inDirName+".");
 						else
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle(mob)+" falls "+inDirName+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.displayText(mob)+" falls "+inDirName+".");
 						Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+newRoom.roomID()+".");
 					}
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle(mob)+" falls "+inDirName+".");
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.displayText(mob)+" falls "+inDirName+".");
 					room=newRoom;
 				}
 			}

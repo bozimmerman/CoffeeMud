@@ -168,7 +168,7 @@ public class Consider extends StdCommand
 		{
 			Ability A=(Ability)mendors.elementAt(m);
 			if(m==0)
-				withWhat.append("You could probably help "+target.name()+" out with your "+A.name()+" skill");
+				withWhat.append("You could probably help "+target.name(mob)+" out with your "+A.name()+" skill");
 			else
 			if(m<mendors.size()-1)
 				withWhat.append(", your "+A.name()+" skill");

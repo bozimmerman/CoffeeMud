@@ -107,7 +107,7 @@ public class Chant_Shillelagh extends Chant
 		}
 		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already enchanted.");
+			mob.tell(target.name(mob)+" is already enchanted.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

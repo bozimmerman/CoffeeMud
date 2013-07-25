@@ -97,13 +97,13 @@ public class Prayer_LinkedHealth extends Prayer
 		}
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target.name()+"'s health is already linked with someones!");
+			mob.tell(target.name(mob)+"'s health is already linked with someones!");
 			return false;
 		}
 
 		if(!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
 		{
-			mob.tell(target.name()+" is not in your group.");
+			mob.tell(target.name(mob)+" is not in your group.");
 			return false;
 		}
 

@@ -63,7 +63,7 @@ public class Smelting extends CraftingSkill
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((building==null)
+			if((buildingI==null)
 			||(amountMaking<1)
 			||(getRequiredFire(mob,0)==null))
 			{
@@ -84,21 +84,21 @@ public class Smelting extends CraftingSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					amountMaking=amountMaking*(abilityCode());
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> ruin(s) "+building.name()+"!");
+						commonEmote(mob,"<S-NAME> ruin(s) "+buildingI.name()+"!");
 					else
 					for(int i=0;i<amountMaking;i++)
 					{
-						Item copy=(Item)building.copyOf();
-						copy.setMiscText(building.text());
+						Item copy=(Item)buildingI.copyOf();
+						copy.setMiscText(buildingI.text());
 						copy.recoverPhyStats();
 						mob.location().addItem(copy,ItemPossessor.Expire.Player_Drop);
 					}
 				}
-				building=null;
+				buildingI=null;
 			}
 		}
 		super.unInvoke();
@@ -147,7 +147,7 @@ public class Smelting extends CraftingSkill
 		Item fire=getRequiredFire(mob,0);
 		if(fire==null) return false;
 		activity = CraftingActivity.CRAFTING;
-		building=null;
+		buildingI=null;
 		messedUp=false;
 		String recipeName=CMParms.combine(commands,0);
 		int maxAmount=0;
@@ -209,7 +209,7 @@ public class Smelting extends CraftingSkill
 		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode2),0,null);
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
 		amountMaking+=amountMaking;
-		building=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
+		buildingI=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
 		playSound="sizzling.wav";
@@ -217,11 +217,11 @@ public class Smelting extends CraftingSkill
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

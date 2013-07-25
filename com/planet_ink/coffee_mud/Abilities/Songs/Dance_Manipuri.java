@@ -74,7 +74,7 @@ public class Dance_Manipuri extends Dance
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target))
 			{
-				msg.source().tell("You feel like letting "+target.name()+" be for awhile.");
+				msg.source().tell("You feel like letting "+target.name(msg.source())+" be for awhile.");
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

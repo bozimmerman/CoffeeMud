@@ -101,7 +101,7 @@ public class Chant_Rockfeet extends Chant
 		&&(target.getWearPositions(Wearable.WORN_FEET)==0))
 		{
 			if(!auto)
-				mob.tell(target.name()+" doesn't have hands or feet to affect...");
+				mob.tell(target.name(mob)+" doesn't have hands or feet to affect...");
 			return false;
 		}
 

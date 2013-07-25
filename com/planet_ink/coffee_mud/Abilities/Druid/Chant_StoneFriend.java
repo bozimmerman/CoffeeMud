@@ -175,7 +175,7 @@ public class Chant_StoneFriend extends Chant
 		   &&(!target.charStats().getMyRace().racialCategory().equals("Stone Golem"))
 		   &&(!target.charStats().getMyRace().racialCategory().equals("Metal Golem")))
 		{
-			mob.tell(target.name()+" is not an stone/metal golem or earth elemental!");
+			mob.tell(target.name(mob)+" is not an stone/metal golem or earth elemental!");
 			return false;
 		}
 
@@ -208,7 +208,7 @@ public class Chant_StoneFriend extends Chant
 						CMLib.commands().postFollow(target,mob,false);
 						CMLib.combat().makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)
-							mob.tell(target.name()+" seems unwilling to follow you.");
+							mob.tell(target.name(mob)+" seems unwilling to follow you.");
 					}
 				}
 			}

@@ -69,12 +69,12 @@ public class Undress extends StdCommand
 			   ||(!CMLib.flags().canBeSeenBy(item,mob))
 			   ||(item.amWearingAt(Wearable.IN_INVENTORY)))
 			{
-				mob.tell(target.name()+" doesn't seem to be equipped with '"+what+"'.");
+				mob.tell(target.name(mob)+" doesn't seem to be equipped with '"+what+"'.");
 				return false;
 			}
 			if(target.isInCombat())
 			{
-				mob.tell("Not while "+target.name()+" is in combat!");
+				mob.tell("Not while "+target.name(mob)+" is in combat!");
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -92,14 +92,14 @@ public class Undress extends StdCommand
 							mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> take(s) <O-NAME> off <T-NAMESELF>.");
 					}
 					else
-						mob.tell("You cannot seem to get "+item.name()+" off "+target.name()+".");
+						mob.tell("You cannot seem to get "+item.name()+" off "+target.name(mob)+".");
 				}
 				else
-					mob.tell("You cannot seem to get "+item.name()+" off of "+target.name()+".");
+					mob.tell("You cannot seem to get "+item.name()+" off of "+target.name(mob)+".");
 			}
 		}
 		else
-			mob.tell(target.name()+" won't let you.");
+			mob.tell(target.name(mob)+" won't let you.");
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}

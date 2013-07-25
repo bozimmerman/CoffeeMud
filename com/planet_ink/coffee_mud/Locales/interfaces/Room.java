@@ -160,9 +160,6 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public int pointsPerMove(MOB mob);
 	public int thirstPerRound(MOB mob);
 
-	public String roomTitle(MOB mob);
-	public String roomDescription(MOB mob);
-
 	public void send(MOB source, CMMsg msg);
 	public void sendOthers(MOB source, CMMsg msg);
 	public void showHappens(int allCode, String allMessage);

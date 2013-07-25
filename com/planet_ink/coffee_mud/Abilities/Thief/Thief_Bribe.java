@@ -64,7 +64,7 @@ public class Thief_Bribe extends ThiefSkill
 		||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3)
 		||(!target.isMonster()))
 		{
-			mob.tell("You can't bribe "+target.name()+".");
+			mob.tell("You can't bribe "+target.name(mob)+".");
 			return false;
 		}
 
@@ -91,7 +91,7 @@ public class Thief_Bribe extends ThiefSkill
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
 				{
-					mob.tell("You can't bribe "+target.name()+" to do that.");
+					mob.tell("You can't bribe "+target.name(mob)+" to do that.");
 					return false;
 				}
 			}

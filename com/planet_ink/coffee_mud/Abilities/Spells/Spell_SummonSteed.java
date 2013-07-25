@@ -126,7 +126,7 @@ public class Spell_SummonSteed extends Spell
 					CMLib.commands().postFollow(target,mob,true);
 					invoker=mob;
 					if (target.amFollowing() != mob)
-						mob.tell(target.name() + " seems unwilling to follow you.");
+						mob.tell(target.name(mob) + " seems unwilling to follow you.");
 				}
 				else
 				if(squabble.location()!=null)

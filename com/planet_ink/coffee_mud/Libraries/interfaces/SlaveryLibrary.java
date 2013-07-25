@@ -285,7 +285,7 @@ public interface SlaveryLibrary extends CMLibrary
 						return "HOLD";
 					}
 					que.remove(0);
-					CMLib.commands().postSay(me,null,"I got "+I.name()+"!",false,false);
+					CMLib.commands().postSay(me,null,"I got "+I.name(me)+"!",false,false);
 					return "HOLD";
 				}
 				// is it just sitting around?
@@ -316,7 +316,7 @@ public interface SlaveryLibrary extends CMLibrary
 						{
 							if(step==STEP_EVAL)
 							{
-								CMLib.commands().postSay(me,M,"I must have '"+I.name()+".  Give it to me now.",false,false);
+								CMLib.commands().postSay(me,M,"I must have '"+I.name(me)+".  Give it to me now.",false,false);
 								step=STEP_INT1;
 								return "HOLD";
 							}
@@ -329,7 +329,7 @@ public interface SlaveryLibrary extends CMLibrary
 							else
 							if(step==STEP_INT2)
 							{
-								CMLib.commands().postSay(me,M,"I MUST HAVE '"+I.name().toUpperCase()+".  GIVE IT TO ME NOW!!!!",false,false);
+								CMLib.commands().postSay(me,M,"I MUST HAVE '"+I.name(me).toUpperCase()+".  GIVE IT TO ME NOW!!!!",false,false);
 								step=STEP_INT3;
 								return "HOLD";
 							}

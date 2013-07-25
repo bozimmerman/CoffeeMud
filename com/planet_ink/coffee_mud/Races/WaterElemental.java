@@ -96,36 +96,36 @@ public class WaterElemental extends StdRace
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName(viewer) + "^r is almost dry!^N";
+			return "^r" + mob.name(viewer) + "^r is almost dry!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName(viewer) + "^r is dripping alot and is almost dried out.^N";
+			return "^r" + mob.name(viewer) + "^r is dripping alot and is almost dried out.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName(viewer) + "^r is dripping alot and steaming massively.^N";
+			return "^r" + mob.name(viewer) + "^r is dripping alot and steaming massively.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName(viewer) + "^y is dripping alot and steaming a lot.^N";
+			return "^y" + mob.name(viewer) + "^y is dripping alot and steaming a lot.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName(viewer) + "^y is dripping and steaming.^N";
+			return "^y" + mob.name(viewer) + "^y is dripping and steaming.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName(viewer) + "^p is dripping and starting to steam.^N";
+			return "^p" + mob.name(viewer) + "^p is dripping and starting to steam.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName(viewer) + "^p is dripping more.^N";
+			return "^p" + mob.name(viewer) + "^p is dripping more.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName(viewer) + "^g is showing some dripping.^N";
+			return "^g" + mob.name(viewer) + "^g is showing some dripping.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName(viewer) + "^g is showing small drips.^N";
+			return "^g" + mob.name(viewer) + "^g is showing small drips.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName(viewer) + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.name(viewer) + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
+			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
 	public List<RawMaterial> myResources()
 	{

@@ -64,7 +64,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(building==null)
+			if(buildingI==null)
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -96,26 +96,26 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 					{
 						if(activity == CraftingActivity.LEARNING)
-							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+building.name()+".");
+							commonEmote(mob,"<S-NAME> fail(s) to learn how to make "+buildingI.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up making "+building.name()+".");
-						building.destroy();
+							commonEmote(mob,"<S-NAME> mess(es) up making "+buildingI.name()+".");
+						buildingI.destroy();
 					}
 					else
 					if(activity==CraftingActivity.LEARNING)
 					{
-						deconstructRecipeInto( building, recipeHolder );
-						building.destroy();
+						deconstructRecipeInto( buildingI, recipeHolder );
+						buildingI.destroy();
 					}
 					else
-						dropAWinner(mob,building);
+						dropAWinner(mob,buildingI);
 				}
-				building=null;
+				buildingI=null;
 			}
 		}
 		super.unInvoke();
@@ -194,7 +194,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
 		activity = CraftingActivity.CRAFTING;
-		building=null;
+		buildingI=null;
 		int amount=-1;
 		if((commands.size()>1)&&(CMath.isNumber((String)commands.lastElement())))
 		{
@@ -254,8 +254,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		int lostValue=autoGenerate>0?0:
 			CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 			+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
-		building=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
-		if(building==null)
+		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+		if(buildingI==null)
 		{
 			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
@@ -266,39 +266,39 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			itemName="a "+woodRequired+"# "+itemName;
 		else
 			itemName=CMLib.english().startWithAorAn(itemName);
-		building.setName(itemName);
-		startStr="<S-NAME> start(s) making "+building.name()+".";
-		displayText="You are making "+building.name();
-		verb="making "+building.name();
+		buildingI.setName(itemName);
+		startStr="<S-NAME> start(s) making "+buildingI.name()+".";
+		displayText="You are making "+buildingI.name();
+		verb="making "+buildingI.name();
 		playSound="sanding.wav";
-		building.setDisplayText(itemName+" lies here");
-		building.setDescription(itemName+". ");
-		building.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
-		building.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-		building.setMaterial(data[0][FOUND_CODE]);
-		building.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-		if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
+		buildingI.setDisplayText(itemName+" lies here");
+		buildingI.setDescription(itemName+". ");
+		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired,bundling));
+		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+		buildingI.setMaterial(data[0][FOUND_CODE]);
+		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+		if(buildingI.basePhyStats().level()<1) buildingI.basePhyStats().setLevel(1);
 		String type=foundRecipe.get(RCP_TYPE);
 		for(int i=0;i<MusicalInstrument.TYPE_DESC.length;i++)
 			if(type.equalsIgnoreCase(MusicalInstrument.TYPE_DESC[i]))
-				((MusicalInstrument)building).setInstrumentType(i);
-		building.setSecretIdentity(getBrand(mob));
-		if(building instanceof Rideable)
+				((MusicalInstrument)buildingI).setInstrumentType(i);
+		buildingI.setSecretIdentity(getBrand(mob));
+		if(buildingI instanceof Rideable)
 		{
-			((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
-			((Rideable)building).setRiderCapacity(CMath.s_int(misctype));
-			if(((Rideable)building).riderCapacity()<=0)
-				((Rideable)building).setRiderCapacity(1);
+			((Rideable)buildingI).setRideBasis(Rideable.RIDEABLE_SIT);
+			((Rideable)buildingI).setRiderCapacity(CMath.s_int(misctype));
+			if(((Rideable)buildingI).riderCapacity()<=0)
+				((Rideable)buildingI).setRiderCapacity(1);
 		}
 		else
-		if(!(building instanceof FalseLimb))
+		if(!(buildingI instanceof FalseLimb))
 		{
-			setWearLocation(building,misctype,0);
+			setWearLocation(buildingI,misctype,0);
 		}
-		if(bundling) building.setBaseValue(lostValue);
-		building.recoverPhyStats();
-		building.text();
-		building.recoverPhyStats();
+		if(bundling) buildingI.setBaseValue(lostValue);
+		buildingI.recoverPhyStats();
+		buildingI.text();
+		buildingI.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
@@ -307,22 +307,22 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(buildingI.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}
 
 		if(autoGenerate>0)
 		{
-			commands.addElement(building);
+			commands.addElement(buildingI);
 			return true;
 		}
 
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),startStr);
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		else

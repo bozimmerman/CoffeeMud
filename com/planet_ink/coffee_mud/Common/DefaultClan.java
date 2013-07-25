@@ -603,19 +603,19 @@ public class DefaultClan implements Clan
 			{
 				Room R=CMLib.map().getRoom(getMorgue());
 				if(R!=null)
-					msg.append("^xMorgue          :^.^N "+R.displayText()+"\n\r");
+					msg.append("^xMorgue          :^.^N "+R.displayText(mob)+"\n\r");
 			}
 			if(getDonation().length()>0)
 			{
 				Room R=CMLib.map().getRoom(getDonation());
 				if(R!=null)
-					msg.append("^xDonations       :^.^N "+R.displayText()+"\n\r");
+					msg.append("^xDonations       :^.^N "+R.displayText(mob)+"\n\r");
 			}
 			if(getRecall().length()>0)
 			{
 				Room R=CMLib.map().getRoom(getRecall());
 				if(R!=null)
-					msg.append("^xRecall          :^.^N "+R.displayText()+"\n\r");
+					msg.append("^xRecall          :^.^N "+R.displayText(mob)+"\n\r");
 			}
 		}
 		final List<MemberRecord> members=getMemberList();

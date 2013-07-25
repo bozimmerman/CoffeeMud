@@ -219,7 +219,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 		if(!mob.mayIFight(target))
 		{
-			mob.tell("You are not allowed to put out a hit on "+target.name()+".");
+			mob.tell("You are not allowed to put out a hit on "+target.name(mob)+".");
 			return false;
 		}
 
@@ -230,7 +230,7 @@ public class Thief_ContractHit extends ThiefSkill
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
 			String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
-			mob.tell("You'll need at least "+costWords+" to put a hit out on "+target.name()+".");
+			mob.tell("You'll need at least "+costWords+" to put a hit out on "+target.name(mob)+".");
 			return false;
 		}
 

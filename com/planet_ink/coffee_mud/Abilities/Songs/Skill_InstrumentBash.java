@@ -68,7 +68,7 @@ public class Skill_InstrumentBash extends BardSkill
 
 		if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 		{
-			mob.tell(target.name()+" must stand up first!");
+			mob.tell(target.name(mob)+" must stand up first!");
 			return false;
 		}
 

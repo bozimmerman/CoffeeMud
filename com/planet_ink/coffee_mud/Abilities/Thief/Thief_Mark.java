@@ -141,7 +141,7 @@ public class Thief_Mark extends ThiefSkill
 		if((A!=null)&&(((Thief_Mark)A).mark==target))
 		{
 			mob.delEffect(A);
-			mob.tell("You remove your mark from "+target.displayName(mob));
+			mob.tell("You remove your mark from "+target.name(mob));
 			return true;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

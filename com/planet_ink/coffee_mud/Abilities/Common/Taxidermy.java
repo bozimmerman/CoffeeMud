@@ -59,12 +59,12 @@ public class Taxidermy extends CraftingSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((buildingI!=null)&&(!aborted))
 				{
 					if(messedUp)
 						commonTell(mob,"You've messed up stuffing "+foundShortName+"!");
 					else
-						dropAWinner(mob,building);
+						dropAWinner(mob,buildingI);
 				}
 			}
 		}
@@ -154,7 +154,7 @@ public class Taxidermy extends CraftingSkill
 		foundShortName=I.Name();
 		if((!(I instanceof DeadBody))||(((DeadBody)I).playerCorpse())||(((DeadBody)I).mobName().length()==0))
 		{
-			commonTell(mob,"You don't know how to stuff "+I.name()+".");
+			commonTell(mob,"You don't know how to stuff "+I.name(mob)+".");
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -162,7 +162,7 @@ public class Taxidermy extends CraftingSkill
 			Item I2=mob.location().getItem(i);
 			if(I2.container()==I)
 			{
-				commonTell(mob,"You need to remove the contents of "+I2.name()+" first.");
+				commonTell(mob,"You need to remove the contents of "+I2.name(mob)+" first.");
 				return false;
 			}
 		}
@@ -178,43 +178,43 @@ public class Taxidermy extends CraftingSkill
 		woodRequired=data[0][FOUND_AMT];
 
 		activity = CraftingActivity.CRAFTING;
-		building=null;
+		buildingI=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(building!=null)    foundShortName=I.Name();
+		if(buildingI!=null)    foundShortName=I.Name();
 		int duration=15+(woodRequired/3);
 		if(duration>65) duration=65;
 		duration=getDuration(duration,mob,1,10);
-		building=CMClass.getItem("GenItem");
-		building.basePhyStats().setWeight(woodRequired);
+		buildingI=CMClass.getItem("GenItem");
+		buildingI.basePhyStats().setWeight(woodRequired);
 		String name=((DeadBody)I).mobName();
 		String desc=((DeadBody)I).mobDescription();
 		I.setMaterial(data[0][FOUND_CODE]);
-		building.setName("the stuffed body of "+name);
+		buildingI.setName("the stuffed body of "+name);
 		CharStats C=(I instanceof DeadBody)?((DeadBody)I).charStats():null;
 		if((pose==null)||(C==null))
-			building.setDisplayText("the stuffed body of "+name+" stands here");
+			buildingI.setDisplayText("the stuffed body of "+name+" stands here");
 		else
 		{
-			pose=CMStrings.replaceAll(pose,"<S-NAME>",building.name());
+			pose=CMStrings.replaceAll(pose,"<S-NAME>",buildingI.name());
 			pose=CMStrings.replaceAll(pose,"<S-HIS-HER>",C.hisher());
 			pose=CMStrings.replaceAll(pose,"<S-HIM-HER>",C.himher());
 			pose=CMStrings.replaceAll(pose,"<S-HIM-HERSELF>",C.himher()+"self");
-			building.setDisplayText(pose);
+			buildingI.setDisplayText(pose);
 		}
-		building.setDescription(desc);
-		building.setSecretIdentity(getBrand(mob));
-		building.recoverPhyStats();
+		buildingI.setDescription(desc);
+		buildingI.setSecretIdentity(getBrand(mob));
+		buildingI.recoverPhyStats();
 		displayText="You are stuffing "+I.name();
 		verb="stuffing "+I.name();
 		playSound="scissor.wav";
-		CMMsg msg=CMClass.getMsg(mob,building,this,getActivityMessageType(),"<S-NAME> start(s) stuffing "+I.name()+".");
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),"<S-NAME> start(s) stuffing "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
+			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		I.destroy();

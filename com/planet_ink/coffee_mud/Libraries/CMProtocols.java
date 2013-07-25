@@ -846,7 +846,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				buf.write(Integer.toString(CMLib.map().getExtendedRoomID(R).hashCode()).getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAR);buf.write("NAME".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
-				buf.write(R.displayText().getBytes(Session.MSDP_CHARSET));
+				buf.write(R.displayText(M).getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAR);buf.write("AREA".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
 				buf.write(R.getArea().Name().getBytes(Session.MSDP_CHARSET));
@@ -1444,7 +1444,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								domType=Room.indoorDomainDescs[CMath.unsetb(room.domainType(),Room.INDOORS)];
 							doc.append("\"num\":").append(roomID.hashCode()).append(",")
 								.append("\"id\":\"").append(roomID).append("\",")
-								.append("\"name\":\"").append(MiniJSON.toJSONString(room.displayText())).append("\",")
+								.append("\"name\":\"").append(MiniJSON.toJSONString(room.displayText(mob))).append("\",")
 								.append("\"zone\":\"").append(MiniJSON.toJSONString(room.getArea().name())).append("\",")
 								.append("\"terrain\":\"").append(domType.toLowerCase()).append("\",")
 								.append("\"details\":\"").append("\",")
@@ -1475,8 +1475,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						StringBuilder doc=new StringBuilder("group {");
 						final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 						final MOB leaderM=(mob.amFollowing()==null)?mob:mob.amUltimatelyFollowing();
-						doc.append("\"groupname\":\"").append(leaderM.Name()).append("s group").append("\",")
-							.append("\"leader\":\"").append(leaderM.name()).append("\",")
+						doc.append("\"groupname\":\"").append(leaderM.name(mob)).append("s group").append("\",")
+							.append("\"leader\":\"").append(leaderM.name(mob)).append("\",")
 							.append("\"status\":\"").append("Private").append("\",")
 							.append("\"count\":").append(group.size()).append(",")
 							.append("\"members\":[");
@@ -1484,7 +1484,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						for(MOB M : group) {
 							if(comma) doc.append(",");
 							comma=true;
-							doc.append("{\"name\":\"").append(M.name()).append("\",")
+							doc.append("{\"name\":\"").append(M.name(mob)).append("\",")
 								.append("{\"info\":{")
 								.append("\"hp\":").append(M.curState().getHitPoints()).append(",")
 								.append("\"mhp\":").append(M.maxState().getHitPoints()).append(",")

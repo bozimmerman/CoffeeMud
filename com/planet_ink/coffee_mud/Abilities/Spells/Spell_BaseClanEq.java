@@ -120,7 +120,7 @@ public class Spell_BaseClanEq extends Spell
 		// Add clan power check end
 		if(target.fetchEffect("Prop_ClanEquipment")!=null)
 		{
-			mob.tell(target.name()+" is already clan enchanted.");
+			mob.tell(target.name(mob)+" is already clan enchanted.");
 			return false;
 		}
 

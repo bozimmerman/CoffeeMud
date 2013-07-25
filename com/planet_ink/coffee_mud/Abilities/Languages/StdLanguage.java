@@ -253,7 +253,7 @@ public class StdLanguage extends StdAbility implements Language
 				final Ability A=a.nextElement();
 				if((A instanceof Language)&&(!A.ID().equals(ID())))
 				{
-					msg.source().tell(msg.target().name()+" is already written in "+A.name()+" and can not have "+writtenName()+" writing added.");
+					msg.source().tell(P.name(msg.source())+" is already written in "+A.name()+" and can not have "+writtenName()+" writing added.");
 					return false;
 				}
 			}

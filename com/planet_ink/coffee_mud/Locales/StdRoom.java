@@ -102,6 +102,7 @@ public class StdRoom implements Room
 		if(phyStats().newName()!=null) return phyStats().newName();
 		return name;
 	}
+	public String name(MOB viewerMob) { return name(); }
 
 	public int getAtmosphereCode() { return atmosphere; }
 	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
@@ -1016,10 +1017,10 @@ public class StdRoom implements Room
 		return text;
 	}
 
-	public String roomTitle(MOB mob){
+	public String displayText(MOB mob){
 		return parseVaries(mob,displayText());
 	}
-	public String roomDescription(MOB mob){
+	public String description(MOB mob){
 		return parseVaries(mob,description());
 	}
 

@@ -126,12 +126,21 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							if(data.highBidderM!=null)
 							{
 								//CMLib.coffeeShops().returnMoney(data.auctioningM,data.currency,finalAmount);
-								CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" sold to "+data.highBidderM.Name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  When the high bidder comes to claim "+data.highBidderM.charStats().hisher()+" property, you will automatically receive your payment along with another notice.",data.auctioningI.Name());
-								CMLib.coffeeShops().auctionNotify(data.highBidderM,"You won the auction for "+data.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  Your winnings, along with the difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)+") will be given to you as soon as you claim your property.  To claim your winnings, come to "+name()+" at "+location().displayText()+" and enter the BUY command for the item again (you will not be charged).",data.auctioningI.Name());
+								CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" sold to "
+										+data.highBidderM.Name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)
+										+".  When the high bidder comes to claim "+data.highBidderM.charStats().hisher()
+										+" property, you will automatically receive your payment along with another notice.",data.auctioningI.Name());
+								CMLib.coffeeShops().auctionNotify(data.highBidderM,"You won the auction for "+data.auctioningI.name()+" for "
+										+CMLib.beanCounter().nameCurrencyShort(data.currency,data.bid)+".  Your winnings, along with the " +
+										"difference from your high bid ("+CMLib.beanCounter().nameCurrencyShort(data.currency,data.highBid-data.bid)
+										+") will be given to you as soon as you claim your property.  To claim your winnings, come to "+name()
+										+" at "+location().displayText(data.auctioningM)+" and enter the BUY command for the item again (you " +
+										"will not be charged).",data.auctioningI.Name());
 							}
 							else
 							{
-								CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" went unsold.  '"+data.auctioningI.name()+"' has been automatically returned to your inventory.",data.auctioningI.Name());
+								CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" went unsold.  '"+data.auctioningI.name()
+										+"' has been automatically returned to your inventory.",data.auctioningI.Name());
 								data.auctioningM.moveItemTo(data.auctioningI);
 								if(!CMLib.flags().isInTheGame(data.auctioningM,true))
 									CMLib.database().DBUpdatePlayerItems(data.auctioningM);

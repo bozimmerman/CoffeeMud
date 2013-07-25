@@ -52,7 +52,7 @@ public class Dance_Basse extends Dance
 			&&(msg.source().location()==target.location())
 			&&(CMLib.dice().rollPercentage()>((msg.source().phyStats().level()-(target.phyStats().level()+getXLEVELLevel(invoker()))*10))))
 			{
-				msg.source().tell("You are too much in awe of "+target.name());
+				msg.source().tell("You are too much in awe of "+target.name(msg.source()));
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();

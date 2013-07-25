@@ -126,7 +126,7 @@ public class Prayer_Stoning extends Prayer
 		
 		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMSecurity.isASysOp(mob)))
 		{
-			mob.tell(target.name()+" must be bound first.");
+			mob.tell(target.name(mob)+" must be bound first.");
 			return false;
 		}
 

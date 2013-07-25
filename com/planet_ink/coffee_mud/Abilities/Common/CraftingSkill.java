@@ -44,7 +44,7 @@ public class CraftingSkill extends GatheringSkill
 	public String name(){ return "Crafting Skill";}
 	public int classificationCode(){return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL;}
 	public String accountForYourself(){return name()+" requires: "+supportedResourceString();}
-	protected Item building=null;
+	protected Item buildingI=null;
 	protected Recipe recipeHolder = null;
 	protected boolean fireRequired=true;
 	protected enum CraftingActivity { CRAFTING, MENDING, LEARNING, REFITTING }
@@ -94,25 +94,25 @@ public class CraftingSkill extends GatheringSkill
 
 	protected void messedUpCrafting(MOB mob)
 	{
-		if(building!=null)
+		if(buildingI!=null)
 		{
-			if(building.usesRemaining()<100)
+			if(buildingI.usesRemaining()<100)
 			{
-				if(building.usesRemaining()>90)
-					building.setUsesRemaining(building.usesRemaining()+1);
+				if(buildingI.usesRemaining()>90)
+					buildingI.setUsesRemaining(buildingI.usesRemaining()+1);
 				else
-				if(building.usesRemaining()>80)
-					building.setUsesRemaining(building.usesRemaining()+3);
+				if(buildingI.usesRemaining()>80)
+					buildingI.setUsesRemaining(buildingI.usesRemaining()+3);
 				else
-				if(building.usesRemaining()>70)
-					building.setUsesRemaining(building.usesRemaining()+5);
+				if(buildingI.usesRemaining()>70)
+					buildingI.setUsesRemaining(buildingI.usesRemaining()+5);
 				else
-				if(building.usesRemaining()>60)
-					building.setUsesRemaining(building.usesRemaining()+7);
+				if(buildingI.usesRemaining()>60)
+					buildingI.setUsesRemaining(buildingI.usesRemaining()+7);
 				else
-					building.setUsesRemaining(building.usesRemaining()+10);
+					buildingI.setUsesRemaining(buildingI.usesRemaining()+10);
 			}
-			commonEmote(mob,"<S-NAME> mess(es) up mending "+building.name()+".");
+			commonEmote(mob,"<S-NAME> mess(es) up mending "+buildingI.name()+".");
 		}
 		
 	}
@@ -1119,27 +1119,27 @@ public class CraftingSkill extends GatheringSkill
 			commonTell(mob,"You've failed to specify which item to deconstruct and learn.");
 			return false;
 		}
-		building=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(building == null)
+		buildingI=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		if(buildingI == null)
 			return false;
-		if(building.owner() instanceof Room)
+		if(buildingI.owner() instanceof Room)
 		{
 			commonTell(mob,"You need to pick that up first.");
 			return false;
 		}
-		if(!mayICraft( mob, building ))
+		if(!mayICraft( mob, buildingI ))
 		{
-			commonTell(mob,"You can't learn anything about "+building.name()+" with "+name()+".");
+			commonTell(mob,"You can't learn anything about "+buildingI.name(mob)+" with "+name()+".");
 			return false;
 		}
-		if(!building.amWearingAt( Wearable.IN_INVENTORY ))
+		if(!buildingI.amWearingAt( Wearable.IN_INVENTORY ))
 		{
-			commonTell(mob,"You need to remove "+building.name()+" first.");
+			commonTell(mob,"You need to remove "+buildingI.name(mob)+" first.");
 			return false;
 		}
-		if((building instanceof Container)&&(((Container)building).getContents().size()>0))
+		if((buildingI instanceof Container)&&(((Container)buildingI).getContents().size()>0))
 		{
-			commonTell(mob,"You need to empty "+building.name()+" first.");
+			commonTell(mob,"You need to empty "+buildingI.name(mob)+" first.");
 			return false;
 		}
 		recipeHolder=null;
@@ -1165,15 +1165,15 @@ public class CraftingSkill extends GatheringSkill
 		activity = CraftingActivity.LEARNING;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		displayText="You are deconstructing "+building.name();
-		verb="deconstructing "+building.name();
+		displayText="You are deconstructing "+buildingI.name();
+		verb="deconstructing "+buildingI.name();
 		messedUp=!proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) deconstructing and studying <T-NAMESELF>.");
+		CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) deconstructing and studying <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			building=(Item)msg.target();
-			int duration = getDuration(10+building.phyStats().level(),mob,building.phyStats().level(),10);
+			buildingI=(Item)msg.target();
+			int duration = getDuration(10+buildingI.phyStats().level(),mob,buildingI.phyStats().level(),10);
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

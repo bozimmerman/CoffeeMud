@@ -72,7 +72,7 @@ public class Thief_Mug extends ThiefSkill
 		{
 			if(commands.size()<1)
 			{
-				mob.tell("Mug what from "+target.name()+"?");
+				mob.tell("Mug what from "+target.name(mob)+"?");
 				return false;
 			}
 			itemToSteal=CMParms.combine(commands,0);
@@ -84,7 +84,7 @@ public class Thief_Mug extends ThiefSkill
 		Item stolen=target.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemToSteal);
 		if(stolen instanceof Coins)
 		{
-			mob.tell("You can not mug that from "+target.name()+".");
+			mob.tell("You can not mug that from "+target.name(mob)+".");
 			return false;
 		}
 		boolean success=proficiencyCheck(mob,levelDiff,auto);

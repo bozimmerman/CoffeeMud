@@ -52,27 +52,27 @@ public class Fighter_Intimidate extends FighterSkill
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&((msg.amITarget(affected))))
 		{
-			MOB target=(MOB)msg.target();
-			MOB attacker=msg.source();
-			int levelDiff=((attacker.phyStats().level()-(target.phyStats().level()+((2*getXLEVELLevel(target)))))*10);
+			MOB targetM=(MOB)msg.target();
+			MOB attackerM=msg.source();
+			int levelDiff=((attackerM.phyStats().level()-(targetM.phyStats().level()+((2*getXLEVELLevel(targetM)))))*10);
 			// 1 level off = -10
 			// 10 levels off = -100
-			if((!target.isInCombat())
-			&&(msg.source().getVictim()!=target)
+			if((!targetM.isInCombat())
+			&&(msg.source().getVictim()!=targetM)
 			&&(levelDiff<0)
-			&&(attacker.location()==target.location())
-			&&((target.fetchAbility(ID())==null)||proficiencyCheck(null,(-(100+levelDiff))+(target.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
+			&&(attackerM.location()==targetM.location())
+			&&((targetM.fetchAbility(ID())==null)||proficiencyCheck(null,(-(100+levelDiff))+(targetM.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
 			{
-				attacker.tell("You are too intimidated by "+target.name());
-				if(target.location()!=lastRoom)
+				attackerM.tell("You are too intimidated by "+targetM.name(attackerM));
+				if(targetM.location()!=lastRoom)
 				{
-					lastRoom=target.location();
-					helpProficiency(target, 0);
+					lastRoom=targetM.location();
+					helpProficiency(targetM, 0);
 				}
-				if(target.getVictim()==msg.source())
+				if(targetM.getVictim()==msg.source())
 				{
-					target.makePeace();
-					target.setVictim(null);
+					targetM.makePeace();
+					targetM.setVictim(null);
 				}
 				return false;
 			}

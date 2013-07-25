@@ -161,7 +161,7 @@ public class Thief_HideOther extends ThiefSkill
 		if(!success)
 		{
 			if(highestMOB!=null)
-				beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to hide <T-NAMESELF> from "+highestMOB.displayName(mob)+" and fail(s).");
+				beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to hide <T-NAMESELF> from "+highestMOB.name(mob)+" and fail(s).");
 			else
 				beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to hide <T-NAMESELF> and fail(s).");
 		}

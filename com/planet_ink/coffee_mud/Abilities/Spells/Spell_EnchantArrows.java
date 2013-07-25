@@ -80,7 +80,7 @@ public class Spell_EnchantArrows extends Spell
 				mob.location().send(mob,msg);
 				Ability A=target.fetchEffect(ID());
 				if((A!=null)&&(CMath.s_int(A.text())>2))
-					mob.tell("You are not able to enchant "+target.name()+" further.");
+					mob.tell("You are not able to enchant "+target.name(mob)+" further.");
 				else
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows!");

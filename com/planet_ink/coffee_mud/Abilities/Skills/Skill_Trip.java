@@ -147,7 +147,7 @@ public class Skill_Trip extends StdSkill
 		}
 		if(CMLib.flags().isInFlight(target))
 		{
-			mob.tell(target.name()+" is flying and can't be tripped!");
+			mob.tell(target.name(mob)+" is flying and can't be tripped!");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

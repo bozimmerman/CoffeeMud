@@ -65,7 +65,7 @@ public class Wake extends StdCommand
 			}
 			if(!CMLib.flags().isSleeping(M))
 			{
-				mob.tell(M.name()+" is awake!");
+				mob.tell(M.name(mob)+" is awake!");
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,M,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to wake <T-NAME> up.");

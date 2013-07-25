@@ -85,7 +85,7 @@ public class Spell_SpyingStone extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already a spying stone!");
+			mob.tell(target.name(mob)+" is already a spying stone!");
 			return false;
 		}
 

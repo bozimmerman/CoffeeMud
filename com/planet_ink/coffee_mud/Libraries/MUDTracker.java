@@ -947,7 +947,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						{
 							final String inDir=((thisRoom instanceof SpaceShip)||(thisRoom.getArea() instanceof SpaceShip))?
 									Directions.getShipDirectionName(directionCode):Directions.getDirectionName(directionCode);
-							follower.tell("You follow "+mob.name()+" "+inDir+".");
+							follower.tell("You follow "+mob.name(follower)+" "+inDir+".");
 							if(!move(follower,directionCode,false,false,false,false, running))
 							{
 								//follower.setFollowing(null);
@@ -986,7 +986,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if((CMLib.flags().canBeSeenBy(e,mob))
 				&&((e.name().equalsIgnoreCase(desc))
 				||(e.displayText().equalsIgnoreCase(desc))
-				||(r.roomTitle(mob).equalsIgnoreCase(desc))
+				||(r.displayText(mob).equalsIgnoreCase(desc))
 				||(e.description().equalsIgnoreCase(desc))))
 				{
 					dir=d; break;

@@ -340,9 +340,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					boolean ignore=((target.playerStats()!=null)&&(target.playerStats().getIgnored().contains(mob.Name())));
 					CMMsg msg=null;
 					if((!CMLib.flags().isSeen(mob))||(!CMLib.flags().isSeen(target)))
-						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(target.name())+"\"^>You tell <T-NAME> '"+text+"'^</TELL^>^?^.",CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> tell(s) you '"+text+"'^</TELL^>^?^.",CMMsg.NO_EFFECT,null);
+						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(target.name(mob))+"\"^>You tell <T-NAME> '"+text+"'^</TELL^>^?^.",CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(mob.name(target))+"\"^><S-NAME> tell(s) you '"+text+"'^</TELL^>^?^.",CMMsg.NO_EFFECT,null);
 					else
-						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(target.name())+"\"^>You tell "+target.name()+" '"+text+"'^</TELL^>^?^.",CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.Name()+" tell(s) you '"+text+"'^</TELL^>^?^.",CMMsg.NO_EFFECT,null);
+						msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(target.name(mob))+"\"^>You tell "+target.name(mob)+" '"+text+"'^</TELL^>^?^.",CMMsg.MSG_TELL,"^t^<TELL \""+CMStrings.removeColors(mob.name(target))+"\"^>"+mob.Name()+" tell(s) you '"+text+"'^</TELL^>^?^.",CMMsg.NO_EFFECT,null);
 					if((mob.location().okMessage(mob,msg))
 					&&((ignore)||(target.okMessage(target,msg))))
 					{
@@ -350,7 +350,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						{
 							mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\"tell\",\"msg\":\""+
 									MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null, CMStrings.removeColors(msg.sourceMessage()), false))
-									+"\",\"player\":\""+mob.name()+"\"}");
+									+"\",\"player\":\""+mob.name(target)+"\"}");
 						}
 						mob.executeMsg(mob,msg);
 						if((mob!=target)&&(!ignore))
@@ -359,7 +359,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							{
 								target.session().sendGMCPEvent("comm.channel", "{\"chan\":\"tell\",\"msg\":\""+
 										MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, target, mob, target, null, CMStrings.removeColors(msg.targetMessage()), false))
-										+"\",\"player\":\""+mob.name()+"\"}");
+										+"\",\"player\":\""+mob.name(target)+"\"}");
 							}
 							target.executeMsg(target,msg);
 							if(msg.trailerMsgs()!=null)
@@ -393,7 +393,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			else
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(target.name())+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?",CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?",CMMsg.NO_EFFECT,null);
+				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(target.name(mob))+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?"
+					,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name(target))+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?",CMMsg.NO_EFFECT,null);
 				gmcpSaySend("say",mob, target, msg);
 				if(location.okMessage(mob,msg))
 					location.send(mob,msg);
@@ -403,7 +404,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(!isPrivate)
 		{
 			String str="<S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?");
-			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors((target==null)?mob.name():target.name())+"\"^>"+str,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^>"+str,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^>"+str);
+			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors((target==null)?mob.name(target):target.name(mob))+"\"^>"+str,"^T^<SAY \""
+					+CMStrings.removeColors(mob.name(target))+"\"^>"+str,"^T^<SAY \""+CMStrings.removeColors(mob.name(target))+"\"^>"+str);
 			gmcpSaySend("say",mob, target, msg);
 			if(location.okMessage(mob,msg))
 				location.send(mob,msg);
@@ -416,7 +418,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			mob.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 					MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, mob, mob, target, null, CMStrings.removeColors(msg.sourceMessage()), false))
-					+"\",\"player\":\""+mob.name()+"\"}");
+					+"\",\"player\":\""+mob.name(target)+"\"}");
 		}
 		final Room R=mob.location();
 		if(R!=null)
@@ -427,7 +429,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			{
 				M.session().sendGMCPEvent("comm.channel", "{\"chan\":\""+sayName+"\",\"msg\":\""+
 						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, mob, target, null, CMStrings.removeColors(msg.othersMessage()), false))
-						+"\",\"player\":\""+mob.name()+"\"}");
+						+"\",\"player\":\""+mob.name(target)+"\"}");
 			}
 		}
 	}
@@ -455,18 +457,18 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			int x=(int)(sniffedmob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
 			if(x<=1)
-				sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" has a slight aroma about "+sniffedmob.charStats().himher()+".");
+				sniffingmob.tell(sniffedmob.name(sniffingmob)+" has a slight aroma about "+sniffedmob.charStats().himher()+".");
 			else
 			if(x<=3)
-				sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" smells pretty sweaty.");
+				sniffingmob.tell(sniffedmob.name(sniffingmob)+" smells pretty sweaty.");
 			else
 			if(x<=7)
-				sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" stinks pretty bad.");
+				sniffingmob.tell(sniffedmob.name(sniffingmob)+" stinks pretty bad.");
 			else
 			if(x<15)
-				sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" smells most foul.");
+				sniffingmob.tell(sniffedmob.name(sniffingmob)+" smells most foul.");
 			else
-				sniffingmob.tell(sniffedmob.displayName(sniffingmob)+" reeks of noxious odors.");
+				sniffingmob.tell(sniffedmob.name(sniffingmob)+" reeks of noxious odors.");
 		}
 	}
 	
@@ -783,12 +785,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					response.append(CMLib.protocol().mxpImage(M," ALIGN=RIGHT H=70 W=70"));
 				response.append(M.healthText(mob)+"\n\r\n\r");
 				if(!M.description().equalsIgnoreCase(item.description()))
-					response.append(M.description()+"\n\r\n\r");
+					response.append(M.description(mob)+"\n\r\n\r");
 			}
 		}
 		else
 		{
-			response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
+			response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name(mob))+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
 			if((item instanceof RawMaterial)
 			&&(!CMLib.flags().isABonusItems(item))
 			&&(item.rawSecretIdentity().length()>0)
@@ -888,10 +890,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							+((item instanceof Container)?("\n\rCapac.: "+((Container)item).capacity()):"")
 							+"\n\rMisc  : "+item.text().length()+"\n\r"+item.text());
 		}
-		if(item.description().length()==0)
+		if(item.description(mob).length()==0)
 			buf.append("You don't see anything special about "+item.name());
 		else
-			buf.append(item.description());
+			buf.append(item.description(mob));
 		if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&(!item.ID().endsWith("Wallpaper")))
 			buf.append(examineItemString(mob,item));
 		if(item instanceof Container)
@@ -1085,10 +1087,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		if(CMLib.flags().canBeSeenBy(room,mob))
 		{
-			Say.append("^O^<RName^>" + room.roomTitle(mob)+"^</RName^>"+CMLib.flags().colorCodes(room,mob)+"^L\n\r");
+			Say.append("^O^<RName^>" + room.displayText(mob)+"^</RName^>"+CMLib.flags().colorCodes(room,mob)+"^L\n\r");
 			if((lookCode!=LOOK_BRIEFOK)||(!CMath.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
 			{
-				String roomDesc=room.roomDescription(mob);
+				String roomDesc=room.description(mob);
 				if(lookCode==LOOK_LONG)
 				{
 					Vector<String> keyWords=null;
@@ -1099,7 +1101,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						Item item=room.getItem(c);
 						if(item==null) continue;
 						if((item.container()==null)
-						&&(item.displayText().length()==0)
+						&&(item.displayText(mob).length()==0)
 						&&(CMLib.flags().canBeSeenBy(item,mob)))
 						{
 							keyWords=CMParms.parse(item.name().toUpperCase());
@@ -1250,19 +1252,19 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((R!=null)&&(E!=null)&&(CMLib.flags().canBeSeenBy(E,mob)))
 				exitDirs.add(Integer.valueOf(dir));
 		}
-		String title = room.displayText();
+		String title = room.displayText(mob);
 		// do continues first
 		Vector<Integer> continues = new Vector<Integer>();
 		for(int i=exitDirs.size()-1;i>=0;i--)
 		{
 			R = room.getRoomInDir(exitDirs.elementAt(i).intValue());
-			if((R!=null)&&(R.displayText().equalsIgnoreCase(title)))
+			if((R!=null)&&(R.displayText(mob).equalsIgnoreCase(title)))
 				continues.addElement(exitDirs.remove(i));
 		}
 		
 		if(continues.size()>0)
 		{
-			str.append("  ^L"+CMStrings.capitalizeFirstLetter(room.roomTitle(mob)).trim()+" continues ");
+			str.append("  ^L"+CMStrings.capitalizeFirstLetter(room.displayText(mob)).trim()+" continues ");
 			if(continues.size()==1)
 			{
 				if(useShipNames)
@@ -1372,8 +1374,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		MOB mob=msg.source();
 		if(CMLib.flags().canBeSeenBy(exit,mob))
 		{
-			if(exit.description().trim().length()>0)
-				mob.tell(exit.description());
+			if(exit.description(mob).trim().length()>0)
+				mob.tell(exit.description(mob));
 			else
 			if(mob.location()!=null)
 			{
@@ -1484,13 +1486,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if((!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 				&&(!viewedmob.charStats().getCurrentClass().raceless()))
 				{
-					myDescription.append(viewedmob.displayName(viewermob)+" the ");
+					myDescription.append(viewedmob.name(viewermob)+" the ");
 					if(viewedmob.charStats().getStat(CharStats.STAT_AGE)>0)
 						myDescription.append(viewedmob.charStats().ageName().toLowerCase()+" ");
 					myDescription.append(viewedmob.charStats().raceName());
 				}
 				else
-					myDescription.append(viewedmob.displayName(viewermob)+" ");
+					myDescription.append(viewedmob.name(viewermob)+" ");
 				if(levelStr!=null)
 					myDescription.append(" is "+levelStr+".\n\r");
 				else
@@ -1514,7 +1516,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(!viewermob.isMonster())
 				myDescription.append(CMLib.protocol().mxpImage(viewedmob," ALIGN=RIGHT H=70 W=70"));
 			myDescription.append(viewedmob.healthText(viewermob)+"\n\r\n\r");
-			myDescription.append(viewedmob.description()+"\n\r\n\r");
+			myDescription.append(viewedmob.description(viewermob)+"\n\r\n\r");
 
 			StringBuilder eq=CMLib.commands().getEquipment(viewermob,viewedmob);
 			if(eq.length() > 0)
@@ -1561,12 +1563,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				else
 				if((msg.target() instanceof Item)&&(((Item)msg.target()).isReadable()))
 				{
-					text=((Item)msg.target()).readableText();
+					Item targetI=(Item)msg.target();
+					text=targetI.readableText();
 					if(((text==null)||(text.length()==0))
-					&&(msg.target().description().length()>0)
-					&&((msg.target().displayText().length()==0)
-					   ||(!CMLib.flags().isGettable((Item)msg.target()))))
-						text=msg.target().description();
+					&&(targetI.description(mob).length()>0)
+					&&((targetI.displayText(mob).length()==0)
+					   ||(!CMLib.flags().isGettable(targetI))))
+						text=targetI.description(mob);
 				}
 				if((text!=null)
 				&&(text.length()>0))
@@ -1578,7 +1581,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							mob.tell("It says '"+buf.toString()+"'.");
 						else
 						if(msg.target() instanceof Electronics)
-							mob.tell("There is nothing on "+msg.target().name()+".");
+							mob.tell("There is nothing on "+((Electronics)msg.target()).name(mob)+".");
+						else
+						if(msg.target() instanceof Physical)
+							mob.tell("There is nothing written on "+((Physical)msg.target()).name(mob)+".");
 						else
 							mob.tell("There is nothing written on "+msg.target().name()+".");
 					}
@@ -1587,7 +1593,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 				else
 				if(msg.target() instanceof Electronics)
-					mob.tell("There is nothing on "+msg.target().name()+".");
+					mob.tell("There is nothing on "+((Electronics)msg.target()).name(mob)+".");
+				else
+				if(msg.target() instanceof Physical)
+					mob.tell("There is nothing written on "+((Physical)msg.target()).name(mob)+".");
 				else
 					mob.tell("There is nothing written on "+msg.target().name()+".");
 			}

@@ -129,19 +129,19 @@ public class Skill_CollectBounty extends StdSkill
 
 		if(judge==null)
 		{
-			mob.tell("You must present "+target.name()+" to the judge.");
+			mob.tell("You must present "+target.name(mob)+" to the judge.");
 			return false;
 		}
 
 		List<LegalWarrant> warrants=getWarrantsOf(target,R);
 		if(warrants.size()==0)
 		{
-			mob.tell(target.name()+" is not wanted for anything here.");
+			mob.tell(target.name(mob)+" is not wanted for anything here.");
 			return false;
 		}
 		if((target.amDead())||(!CMLib.flags().isInTheGame(target,true)))
 		{
-			mob.tell(target.name()+" is not _really_ here.");
+			mob.tell(target.name(mob)+" is not _really_ here.");
 			return false;
 		}
 		for(int w=0;w<warrants.size();w++)
@@ -149,7 +149,7 @@ public class Skill_CollectBounty extends StdSkill
 			LegalWarrant W=warrants.get(w);
 			if(W.crime().equalsIgnoreCase("pardoned"))
 			{
-				mob.tell(target.name()+" has been pardoned, and is no longer a criminal.");
+				mob.tell(target.name(mob)+" has been pardoned, and is no longer a criminal.");
 				return false;
 			}
 		}

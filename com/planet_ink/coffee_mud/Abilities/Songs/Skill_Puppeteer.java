@@ -156,7 +156,7 @@ public class Skill_Puppeteer extends BardSkill
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell(target.name()+" is already animated!");
+			mob.tell(target.name(mob)+" is already animated!");
 			return false;
 		}
 		if((!target.Name().toLowerCase().endsWith(" puppet"))
