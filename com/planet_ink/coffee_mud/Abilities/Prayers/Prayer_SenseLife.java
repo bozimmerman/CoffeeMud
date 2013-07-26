@@ -69,7 +69,7 @@ public class Prayer_SenseLife extends Prayer
 			MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(!CMLib.flags().isGolem(M))
-			&&(M.charStats().getMyRace().fertile())
+			&&(M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace()))
 			&&(M!=mob))
 				return true;
 		}

@@ -135,7 +135,7 @@ public class Spell_SummonMonster extends Spell
 				||(M.basePhyStats().level()>level+range)
 				||(M.isGeneric())
 				||(!CMLib.flags().isEvil(M))
-				||(!M.baseCharStats().getMyRace().fertile())
+				||(!M.baseCharStats().getMyRace().canBreedWith(M.baseCharStats().getMyRace()))
 				||CMLib.flags().isGolem(M)
 				){ M.destroy(); try{Thread.sleep(1);}catch(Exception e1){} continue;}
 				choices.addElement(M);

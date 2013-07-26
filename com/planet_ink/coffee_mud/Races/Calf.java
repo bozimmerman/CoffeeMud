@@ -35,7 +35,7 @@ import java.util.*;
 public class Calf extends Cow
 {
 	public String ID(){	return "Calf"; }
-	public String name(){ return "Calf"; }
+	public String name(){ return "Cow"; }
 	public int shortestMale(){return 36;}
 	public int shortestFemale(){return 36;}
 	public int heightVariance(){return 6;}
@@ -55,6 +55,14 @@ public class Calf extends Cow
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	
+	public boolean canBreedWith(Race R) 
+	{ 
+		if((!super.sameAs(R))&&(R!=null))
+			return R.ID().equals("Bull")||R.ID().equals("Cow");
+		return true;
+	} 
+
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

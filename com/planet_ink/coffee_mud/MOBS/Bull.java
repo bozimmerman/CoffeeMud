@@ -49,6 +49,7 @@ public class Bull extends StdMOB
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(7);
 		basePhyStats().setArmor(90);
+		baseCharStats().setStat(CharStats.STAT_GENDER, 'M');
 		baseCharStats().setMyRace(CMClass.getRace("Bull"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

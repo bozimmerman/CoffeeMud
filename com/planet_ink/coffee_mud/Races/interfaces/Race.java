@@ -148,11 +148,6 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	public Race mixRace(Race race, String newRaceID, String newRaceName);
 	
 	/**
-	 * Whether this race, generally speaking, can procreate.
-	 * @return whether this race is capable of procreating
-	 */
-	public boolean fertile();
-	/**
 	 * Returns a vector of Item objects representing the standard
 	 * clothing, weapons, or other objects commonly given to players
 	 * of this race just starting out.
@@ -256,7 +251,15 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the adjusted amount of experience to gain
 	 */
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount);
-	
+	/**
+	 * Returns true if the given race is actually the same as the
+	 * current race.  Usually just ID().equals(ID()), or if either
+	 * is human.  Passing the race to itself in this method is a good
+	 * way to check for general fertility.
+	 * @param R the race to check
+	 * @return true if its the same as this one, false otherwise
+	 */
+	public boolean canBreedWith(Race R);
 	/**
 	 * Whether this race can be associated with a character class.
 	 * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass

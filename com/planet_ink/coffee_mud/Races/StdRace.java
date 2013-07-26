@@ -117,6 +117,17 @@ public class StdRace implements Race
 
 	public Race healthBuddy(){return this;}
 	
+	public boolean canBreedWith(Race R) 
+	{
+		if(!fertile())
+			return false;
+		if(R==null)
+			return false;
+		if(ID().equals("Human")||R.ID().equals("Human"))
+			return true;
+		return ID().equals(R.ID()); 
+	} 
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 
@@ -251,13 +262,9 @@ public class StdRace implements Race
 						||(myChar.curState().getFatigue()>=CharState.FATIGUED_MILLIS));
 				if((myChar.charStats().getStat(CharStats.STAT_GENDER)==('F'))
 				&&(msg.source().charStats().getStat(CharStats.STAT_GENDER)==('M'))
-				&&(fertile())
 				&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 				&&(msg.source().fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
-				&&((ID().equals("Human"))
-				   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
-				   ||(msg.source().charStats().getMyRace().ID().equals(ID())))
-				&&(msg.source().charStats().getMyRace().fertile())
+				&&(msg.source().charStats().getMyRace().canBreedWith(this))
 				&&((msg.source().charStats().getStat(CharStats.STAT_AGE)==0)
 						||((msg.source().charStats().ageCategory()>Race.AGE_CHILD)
 								&&(msg.source().charStats().ageCategory()<Race.AGE_OLD)))

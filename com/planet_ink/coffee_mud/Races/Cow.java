@@ -54,6 +54,13 @@ public class Cow extends StdRace
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
+	public boolean canBreedWith(Race R) 
+	{ 
+		if((!super.sameAs(R))&&(R!=null))
+			return R.ID().equals("Bull")||R.ID().equals("Calf")||R.ID().equals("Buffalo");
+		return true;
+	} 
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

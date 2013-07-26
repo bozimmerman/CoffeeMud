@@ -49,6 +49,7 @@ public class Cow extends StdMOB implements Drink
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(2);
 		basePhyStats().setArmor(90);
+		baseCharStats().setStat(CharStats.STAT_GENDER, 'F');
 		baseCharStats().setMyRace(CMClass.getRace("Cow"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

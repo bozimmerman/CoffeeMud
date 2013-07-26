@@ -152,11 +152,9 @@ public class Chant_FindMate extends Chant
 		if((mate.charStats().getStat(CharStats.STAT_GENDER)!='M')
 		&&(mate.charStats().getStat(CharStats.STAT_GENDER)!='F'))
 			return false;
-		String materace=mate.charStats().getMyRace().ID();
-		String merace=mate.charStats().getMyRace().ID();
-		if(((merace.equals("Human"))
-		   ||(materace.equals("Human"))
-		   ||(merace.equals(materace)))
+		if(((mate.charStats().getMyRace().ID().equals("Human"))
+		   ||(mate.charStats().getMyRace().ID().equals("Human"))
+		   ||(mate.charStats().getMyRace().canBreedWith(mate.charStats().getMyRace())))
 		&&(mate.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 		&&(CMLib.flags().canBeSeenBy(mate,forMe)))
 			return true;

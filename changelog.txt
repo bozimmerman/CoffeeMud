@@ -10,6 +10,7 @@
    9. New Artisan skills: Master Drilling, M. Farming, M. Fishing, M. Foraging, M. Mining, M. Shearing, M. Chopping, M. Butchering
   10. More New Artisan Skills: Master Cooking, M. FoodPrep, M. Baking, M. Distilling -- make more than one dish at a time!
   11. Split command will now double as GET [AMOUNT] from [BUNDLE] (kept getting requests to add a split command, though GET worked).
+  12. And yet more Artisan Goodness: Animal Husbandry
 //TODO: add electronics to guides
 //TODO: add electronics to MG
 //TODO: http://games.groups.yahoo.com/group/coffeemud skip=1885,2881,2953,3274,15908,15914,16267

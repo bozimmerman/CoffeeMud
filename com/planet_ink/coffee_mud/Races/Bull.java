@@ -48,6 +48,13 @@ public class Bull extends Buffalo
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
 
+	public boolean canBreedWith(Race R) 
+	{ 
+		if((!super.sameAs(R))&&(R!=null))
+			return R.ID().equals("Cow")||R.ID().equals("Calf");
+		return true;
+	} 
+	
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
