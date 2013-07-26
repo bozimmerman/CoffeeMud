@@ -2154,7 +2154,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult charcrStatInit(final LoginSession loginObj, final Session session, final int bonusPoints)
 	{
 		final MOB mob=loginObj.mob;
-		if(CMProps.getIntVar(CMProps.Int.STARTSTAT)>0)
+		int startStat=CMProps.getIntVar(CMProps.Int.STARTSTAT);
+		if((CMSecurity.isDisabled(CMSecurity.DisFlag.ATTRIBS)&&(startStat<=0)))
+			startStat=10;
+		if(startStat>0)
 		{
 			mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.Int.STARTSTAT));
 			for(int i=0;i<bonusPoints;i++)

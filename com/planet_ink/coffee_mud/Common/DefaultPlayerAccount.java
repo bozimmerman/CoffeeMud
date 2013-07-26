@@ -330,7 +330,15 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 	public void setPlayerNames(Vector<String> names) {
 		if(names != null)
+		{
 			players = new SVector<String>(names);
+			for(String name : players)
+			{
+				MOB M=CMLib.players().getPlayer(name);
+				if((M!=null)&&(M.playerStats()!=null)&&(M.playerStats().getAccount()==null))
+					M.playerStats().setAccount(this);
+			}
+		}
 	}
 	public int numPlayers() { return players.size();}
 	public boolean isSet(String flagName) { return acctFlags.contains(flagName.toUpperCase());}

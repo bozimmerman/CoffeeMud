@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-@if?!Authenticate@ Not authenticated @else@
+@if?!Authenticate@ <a href="/access.cmvp">Not authenticated</a> @else@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <html>
 <head>
@@ -95,6 +95,7 @@
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=BLUE>Hit Points: </FONT></TD>
 		<TD WIDTH=20%><FONT COLOR=BLACK>@PlayerData?HITPOINTS@</FONT><FONT COLOR=BLUE>/</FONT><FONT COLOR=BLACK>@PlayerData?BASEHITPOINTS@</FONT></TD>
+		@if?IsDisabled?ATTRIBS@ <TD WIDTH=42 COLSPAN=6>&nbsp;</TD>@else@
 		<TD WIDTH=20% ALIGN=RIGHT><FONT COLOR=BLUE>Stats:&nbsp;&nbsp;&nbsp;</FONT></TD>
 		<TD WIDTH=7% ALIGN=LEFT><FONT COLOR=BLUE>Str</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?STRENGTH@</FONT></TD>
@@ -102,16 +103,19 @@
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?INTELLIGENCE@</FONT></TD>
 		<TD WIDTH=7% ALIGN=LEFT><FONT COLOR=BLUE>Dex</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?DEXTERITY@</FONT></TD>
+		@endif@
 	</TR>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=BLUE>Mana: </FONT></TD>
 		<TD WIDTH=40% COLSPAN=2><FONT COLOR=BLACK>@PlayerData?MANA@</FONT><FONT COLOR=BLUE>/</FONT><FONT COLOR=BLACK>@PlayerData?BASEMANA@</FONT></TD>
+		@if?IsDisabled?ATTRIBS@ <TD WIDTH=42 COLSPAN=6>&nbsp;</TD>@else@
 		<TD WIDTH=7% ALIGN=LEFT><FONT COLOR=BLUE>Wis</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?WISDOM@</FONT></TD>
 		<TD WIDTH=7% ALIGN=LEFT><FONT COLOR=BLUE>Con</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?CONSTITUTION@</FONT></TD>
 		<TD WIDTH=7% ALIGN=LEFT><FONT COLOR=BLUE>Chr</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?CHARISMA@</FONT></TD>
+		@endif@
 	</TR>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=BLUE>Movement: </FONT></TD>

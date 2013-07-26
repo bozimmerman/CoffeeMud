@@ -140,19 +140,22 @@ public class Score extends Affect
 			}
 			msg.append("\n\r");
 		}
-		msg.append("\n\r^NYour stats are: ");
-		msg.append(CMLib.protocol().mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
-		msg.append("\n\r");
-		CharStats CT=mob.charStats();
-		if(parm.equalsIgnoreCase("BASE")) CT=mob.baseCharStats();
-		msg.append("^N^!");
-		for(int i : CharStats.CODES.BASE())
-			msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",15)
-					+": "
-					+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
-					+"/"
-					+(CT.getMaxStat(i))+"\n\r");
-		msg.append("^?\n\r");
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.ATTRIBS))
+		{
+			msg.append("\n\r^NYour stats are: ");
+			msg.append(CMLib.protocol().mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
+			msg.append("\n\r");
+			CharStats CT=mob.charStats();
+			if(parm.equalsIgnoreCase("BASE")) CT=mob.baseCharStats();
+			msg.append("^N^!");
+			for(int i : CharStats.CODES.BASE())
+				msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",15)
+						+": "
+						+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
+						+"/"
+						+(CT.getMaxStat(i))+"\n\r");
+			msg.append("^?\n\r");
+		}
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? ^<HELP^>hit points^</HELP^>, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? ^<HELP^>mana^</HELP^>, and ^H");
 		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? ^<HELP^>movement^</HELP^>.\n\r");

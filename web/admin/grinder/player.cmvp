@@ -326,6 +326,7 @@
 				<FONT COLOR=WHITE>@PlayerData?HITPOINTS@</FONT><FONT COLOR=YELLOW>/</FONT><FONT COLOR=WHITE>@PlayerData?BASEHITPOINTS@</FONT>
 			@endif@
 		</TD>
+		@if?IsDisabled?ATTRIBS@ <TD WIDTH=62 COLSPAN=7>&nbsp;</TD>@else@
 		<TD WIDTH=20% ALIGN=RIGHT><FONT COLOR=YELLOW>Stats:&nbsp;&nbsp;&nbsp;</FONT></TD>
 		<TD WIDTH=7% ALIGN=LEFT><FONT COLOR=YELLOW>Str</FONT></TD>
 		<TD WIDTH=7%>
@@ -351,6 +352,7 @@
 				<FONT COLOR=WHITE>@PlayerData?DEXTERITY@</FONT>
 			@endif@
 		</TD>
+		@endif@
 	</TR>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Mana: </FONT></TD>
@@ -361,6 +363,7 @@
 				<FONT COLOR=WHITE>@PlayerData?MANA@</FONT><FONT COLOR=YELLOW>/</FONT><FONT COLOR=WHITE>@PlayerData?BASEMANA@</FONT>
 			@endif@
 		</TD>
+		@if?IsDisabled?ATTRIBS@ <TD WIDTH=42 COLSPAN=6>&nbsp;</TD>@else@
 		<TD WIDTH=7% ALIGN=LEFT><FONT COLOR=YELLOW>Wis</FONT></TD>
 		<TD WIDTH=7%>
 			@if?CheckReqParm?FUNCTION=EDIT@
@@ -385,6 +388,7 @@
 				<FONT COLOR=WHITE>@PlayerData?CHARISMA@</FONT>
 			@endif@
 		</TD>
+		@endif@
 	</TR>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=YELLOW>Movement: </FONT></TD>

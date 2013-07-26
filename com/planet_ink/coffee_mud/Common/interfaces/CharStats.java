@@ -53,12 +53,8 @@ public interface CharStats extends CMCommon, Modifiable
 	public static final int STAT_CHARISMA=4;
 	/** stat constant for  charisma*/
 	public static final int STAT_WISDOM=5;
-	/** constant for number of stat codes 0 - this-1 which are base stats */
-	public static final int DEFAULT_NUM_BASE_STATS=6;
 	/** stat constant for  gender*/
 	public static final int STAT_GENDER=6;
-	/** constant for first stat code which is a saving throw  */
-	public static final int DEFAULT_NUM_SAVE_START=7;
 	/** stat constant for  save vs paralysis*/
 	public static final int STAT_SAVE_PARALYSIS=7;
 	/** stat constant for  save vs fire*/
