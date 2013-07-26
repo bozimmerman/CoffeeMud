@@ -43,63 +43,80 @@ public class Split extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Split how much?");
+			mob.tell("Split what, how much?");
 			return false;
 		}
 		String itemID=CMParms.combine(commands,1);
 		long numGold=CMLib.english().numPossibleGold(mob,itemID);
-		if(numGold<0)
+		if(numGold>0)
 		{
-			mob.tell("Split how much?!?");
-			return false;
-		}
-		String currency=CMLib.english().numPossibleGoldCurrency(mob,itemID);
-		double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
-
-		int num=0;
-		Set<MOB> H=mob.getGroupMembers(new SHashSet<MOB>());
-		
-		for(Iterator<MOB> i=H.iterator();i.hasNext();)
-		{
-			final MOB recipientM=i.next();
-			if((!recipientM.isMonster())
-			&&(recipientM!=mob)
-			&&(recipientM.location()==mob.location())
-			&&(mob.location().isInhabitant(recipientM)))
-				num++;
-			else
+			String currency=CMLib.english().numPossibleGoldCurrency(mob,itemID);
+			double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
+	
+			int num=0;
+			Set<MOB> H=mob.getGroupMembers(new SHashSet<MOB>());
+			
+			for(Iterator<MOB> i=H.iterator();i.hasNext();)
 			{
-				H.remove(recipientM);
+				final MOB recipientM=i.next();
+				if((!recipientM.isMonster())
+				&&(recipientM!=mob)
+				&&(recipientM.location()==mob.location())
+				&&(mob.location().isInhabitant(recipientM)))
+					num++;
+				else
+				{
+					H.remove(recipientM);
+				}
+			}
+			if(num==0)
+			{
+				mob.tell("No one appears to be eligible to receive any of your money.");
+				return false;
+			}
+	
+			double totalAbsoluteValue=CMath.mul(numGold,denom);
+			totalAbsoluteValue=CMath.div(totalAbsoluteValue,num+1);
+			if((totalAbsoluteValue*num)>CMLib.beanCounter().getTotalAbsoluteValue(mob,currency))
+			{
+				mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denom)+".");
+				return false;
+			}
+			List<Coins> V=CMLib.beanCounter().makeAllCurrency(currency,totalAbsoluteValue);
+			CMLib.beanCounter().subtractMoney(mob,totalAbsoluteValue*num);
+			for(Iterator e=H.iterator();e.hasNext();)
+			{
+				MOB recipient=(MOB)e.next();
+				for(int v=0;v<V.size();v++)
+				{
+					Coins C=V.get(v);
+					C=(Coins)C.copyOf();
+					mob.addItem(C);
+					CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+					if(mob.location().okMessage(mob,newMsg))
+						mob.location().send(mob,newMsg);
+					C.putCoinsBack();
+				}
 			}
 		}
-		if(num==0)
+		else
+		if((commands.size()>2)&&(CMath.isInteger((String)commands.lastElement())))
 		{
-			mob.tell("No one appears to be eligible to receive any of your money.");
-			return false;
-		}
-
-		double totalAbsoluteValue=CMath.mul(numGold,denom);
-		totalAbsoluteValue=CMath.div(totalAbsoluteValue,num+1);
-		if((totalAbsoluteValue*num)>CMLib.beanCounter().getTotalAbsoluteValue(mob,currency))
-		{
-			mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denom)+".");
-			return false;
-		}
-		List<Coins> V=CMLib.beanCounter().makeAllCurrency(currency,totalAbsoluteValue);
-		CMLib.beanCounter().subtractMoney(mob,totalAbsoluteValue*num);
-		for(Iterator e=H.iterator();e.hasNext();)
-		{
-			MOB recipient=(MOB)e.next();
-			for(int v=0;v<V.size();v++)
+			int howMuch=CMath.s_int((String)commands.lastElement());
+			if(howMuch<=0)
 			{
-				Coins C=V.get(v);
-				C=(Coins)C.copyOf();
-				mob.addItem(C);
-				CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
-				if(mob.location().okMessage(mob,newMsg))
-					mob.location().send(mob,newMsg);
-				C.putCoinsBack();
+				mob.tell("Split what, how much?");
+				return false;
 			}
+			commands.remove(commands.size()-1);
+			Vector<String> v=CMParms.parse("GET "+howMuch+" FROM \""+CMParms.combine(commands,1)+"\"");
+			Command c=CMClass.getCommand("Get");
+			return c.execute(mob, v, metaFlags);
+		}
+		else
+		{
+			mob.tell("Split what, how much?");
+			return false;
 		}
 		return false;
 	}
