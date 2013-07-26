@@ -40,7 +40,7 @@ public class MasterFoodPrep extends Baking
 {
 	private String cookingID="";
 	public String ID() { return "MasterFoodPrep"+cookingID; }
-	public String name(){ return "MasterFoodPrep"+cookingID;}
+	public String name(){ return "Master Food Prep"+cookingID;}
 	private static final String[] triggerStrings = {"MFOODPREPPING","MFPREP","MASTERFOODPREPPING","MASTERFPREP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected List<String> noUninvokes=new ArrayList<String>(0);

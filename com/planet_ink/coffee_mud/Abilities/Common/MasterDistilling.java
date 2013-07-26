@@ -40,7 +40,7 @@ public class MasterDistilling extends Baking
 {
 	private String cookingID="";
 	public String ID() { return "MasterDistilling"+cookingID; }
-	public String name(){ return "MasterDistilling"+cookingID;}
+	public String name(){ return "Master Distilling"+cookingID;}
 	private static final String[] triggerStrings = {"MDISTILLING","MASTERDISTILLING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected List<String> noUninvokes=new ArrayList<String>(0);

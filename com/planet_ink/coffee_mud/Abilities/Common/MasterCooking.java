@@ -40,7 +40,7 @@ public class MasterCooking extends Cooking
 {
 	private String cookingID="";
 	public String ID() { return "MasterCooking"+cookingID; }
-	public String name(){ return "MasterCooking"+cookingID;}
+	public String name(){ return "Master Cooking"+cookingID;}
 	private static final String[] triggerStrings = {"MCOOK","MCOOKING","MASTERCOOK","MASTERCOOKING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected List<String> noUninvokes=new ArrayList<String>(0);
