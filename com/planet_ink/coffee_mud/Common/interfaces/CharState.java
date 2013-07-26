@@ -60,7 +60,9 @@ public interface CharState extends CMCommon, Modifiable
 	/** constant representing how many ticks a MOB can  be hungry before death */
 	public final static int DEATH_HUNGER_TICKS=(30*30)*12; // 12 hours
 	/** constant for how many fatigue points are lost per tick of rest */
-	public final static long REST_PER_TICK=CMProps.getTickMillis()*200;
+	public final static long REST_PER_SLEEP=CMProps.getTickMillis()*200;
+	/** constant for how many fatigue points are lost per tick of rest */
+	public final static long REST_PER_SIT=CMProps.getTickMillis()*10;
 	/** constant for how many fatigue points are required to be considered fatigued */
 	public final static long FATIGUED_MILLIS=CMProps.getTickMillis()*3000;
 	/** constant for how many fatigue points are required to be considered exhausted */

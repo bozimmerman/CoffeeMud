@@ -46,6 +46,16 @@ public interface SpaceObject extends Environmental
 	 */
 	public void setCoords(long[] coords);
 	/**
+	 * The current radius of  the object
+	 * @return the radius, in decameters
+	 */
+	public long radius();
+	/**
+	 * Set the current radius of  the object
+	 * @param radius the current radius of  the object
+	 */
+	public void setRadius(long radius);
+	/**
 	 * The direction of travel of this object in radians. 
 	 * @return 2 dimensional array for the direction of movement
 	 */
@@ -86,27 +96,63 @@ public interface SpaceObject extends Environmental
 	 */
 	public void setKnownSource(SpaceObject O);
 	
-	/** distance constant useful for coordinates, is 1 mile*/
-	public static final long DISTANCE_MILE=1;
-	/** distance constant useful for coordinates, is 1 lightyear*/
-	public static final long DISTANCE_LIGHTYEAR=2000000000;
-	/** distance constant useful for coordinates, is 1 galaxy*/
-	public static final long DISTANCE_AROUNDGALAXY=DISTANCE_LIGHTYEAR*100;
-	/** distance constant useful for coordinates, is 1 planet*/
-	public static final long DISTANCE_PLANETRADIUS=3976;
-	/** distance constant useful for coordinates, is 1 orbit*/
-	public static final long DISTANCE_ORBITING=3252;
+	/** distance constant useful for coordinates, is 1 kilometer, in decameters*/
+	public static final long DISTANCE_KILOMETER=100;
+	/** distance constant useful for coordinates, is 1 lightyear, in decameters*/
+	public static final long DISTANCE_LIGHTYEAR=946073047258080L;
+	/** distance constant useful for coordinates, is 1 galaxy, in decameters*/
+	public static final long DISTANCE_AROUNDGALAXY=DISTANCE_LIGHTYEAR*1000L;
+	/** distance constant useful for coordinates, is 1 planet, in decameters*/
+	public static final long DISTANCE_PLANETRADIUS=639875;
+	/** distance constant useful for coordinates, is 1 orbit, in decameters*/
+	public static final long DISTANCE_ORBITING=Math.round(DISTANCE_PLANETRADIUS*1.03);
+	/** distance constant useful for weapon fire, in decameters*/
+	public static final long DISTANCE_POINTBLANK=20000;
 
-	/** velocity constant for the speed of light, numbers are in 340m/s */
-	public static final long VELOCITY_LIGHT=833333;
+	/** accelleration at which you are happy, in decameters/s */
+	public static final long ACCELLERATION_G=1;
+	/** accelleration at which you pass out, in decameters/s */ 
+	public static final long ACCELLERATION_PASSOUT=ACCELLERATION_G*5;
+	/** accelleration in atmosphere, in decameters/s */
+	public static final long ACCELLERATION_TYPICALROCKET=ACCELLERATION_G*2;
+	/** accelleration in space, in decameters/s */
+	public static final long ACCELLERATION_TYPICALSPACEROCKET=ACCELLERATION_G*3;
+	/** accelleration at which you are unconscious, in decameters/s */
+	public static final long ACCELLERATION_UNCONSCIOUSNESS=ACCELLERATION_G*15;
+	/** accelleration at which you are severely damaged (40" fall), in decameters/s */
+	public static final long ACCELLERATION_DAMAGED=ACCELLERATION_G*30;
+	/** accelleration at which you are devestated, in decameters/s */
+	public static final long ACCELLERATION_INSTANTDEATH=ACCELLERATION_G*60;
+
+	// thrust=mass * accelleration
+	// accelleration = thrust/mass
+	
+	// engine efficiency=specific impulse
+	// add max velocity to engines (specific impulse) -- so current velocity affects how much accelleration you'll get!
+	
+	// graviton drives -- you need lots of gravity for this to work
+	
+	// inertia drive -- modify the mass in the t=ma equation.  a=f(m/i)
+	
+	// outer mold line coefficient
+	/** drag coefficient of a streamlined body */
+	public static final double ATMOSPHERIC_DRAG_STREAMLINE=0.05;
+	/** drag coefficient of a brick body */
+	public static final double ATMOSPHERIC_DRAG_BRICK=0.30;
+	
+	//force equation in air= A=((thrust / (m * inertial dampener <= 1 ))-1)*(1- OML))
+	//force equation in space= A=(thrust / (m * inertial dampener <= 1 )
+	
+	/** velocity constant for the speed of light, numbers are in dm/s */
+	public static final long VELOCITY_LIGHT=29979245;
 	/** velocity constant for the speed of sublight */
-	public static final long VELOCITY_SUBLIGHT=750000;
+	public static final long VELOCITY_SUBLIGHT=26981325;
 	/** velocity constant for the speed of sound */
-	public static final long VELOCITY_SOUND=1;
+	public static final long VELOCITY_SOUND=34;
 	/** velocity constant for the speed of orbiting */
-	public static final long VELOCITY_ORBITING=311;
-	/** velocity constant for the speed required to escape 1g */
-	public static final long VELOCITY_ESCAPE=442;
+	public static final long VELOCITY_ORBITING=11188;
+	///** velocity constant for the speed required to escape 1g */
+	//public static final long VELOCITY_ESCAPE=15901;
 	/** velocity constant for the speed warp 1 */
 	public static final long VELOCITY_WARP1=VELOCITY_LIGHT;
 	/** velocity constant for the speed warp 2 */
@@ -146,5 +192,5 @@ public interface SpaceObject extends Environmental
 	/** velocity constant for the speed transwarp 9 */
 	public static final long VELOCITY_TRANSWARP9=VELOCITY_LIGHT*729;
 	/** velocity constant for the speed transwarp 10 */
-	public static final long VELOCITY_TRANSWARP10=VELOCITY_LIGHT*1000;
+	public static final long VELOCITY_TRANSWARP10=VELOCITY_LIGHT*1000; // btw, this means it would take 1 rl year to travel the gallaxy
 }

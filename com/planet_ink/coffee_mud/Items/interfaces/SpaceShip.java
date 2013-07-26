@@ -50,6 +50,17 @@ public interface SpaceShip extends SpaceObject
 	public SpaceObject getShipSpaceObject();
 	
 	/**
+	 * The Outer Mold Line coefficient -- how streamlined are you?
+	 * @return the coefficient, from 0.05-0.3
+	 */
+	public double getOMLCoeff();
+	/**
+	 * Set the Outer Mold Line coefficient -- how streamlined are you?
+	 * @param coeff the Outer Mold Line coefficient
+	 */
+	public void setOMLCoeff(double coeff);
+	
+	/**
 	 * The direction of facing of this object in radians. 
 	 * @return 2 dimensional array for the direction of facing
 	 */

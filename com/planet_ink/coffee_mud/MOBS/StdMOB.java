@@ -3033,27 +3033,29 @@ public class StdMOB implements MOB
 				if (!isMonster)
 				{
 					if (CMLib.flags().isSleeping(this))
-						curState().adjFatigue(-CharState.REST_PER_TICK, maxState());
+						curState().adjFatigue(-CharState.REST_PER_SLEEP, maxState());
+					else 
+					if (CMLib.flags().isSitting(this))
+						curState().adjFatigue(-CharState.REST_PER_SIT, maxState());
 					else 
 					if (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.IMMORT))
 					{
-						curState().adjFatigue(CMProps.getTickMillis(), maxState());
-						if ((curState().getFatigue() > CharState.FATIGUED_MILLIS) 
-						&& (!isMonster)
-						&& (CMLib.dice().rollPercentage() == 1)
-						&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+						curState().adjFatigue(Math.round(CMProps.getTickMillis() * (1.0-(charStats().getStat(CharStats.STAT_CONSTITUTION)*4.0))), maxState());
+						if (curState().getFatigue() > CharState.FATIGUED_MILLIS)
 						{
-							Ability theYawns = CMClass.getAbility("Disease_Yawning");
-							if (theYawns != null)
-								theYawns.invoke(this, this, true, 0);
-						}
-						if ((curState().getFatigue() > (CharState.FATIGUED_EXHAUSTED_MILLIS)) 
-						&& (!isMonster)
-						&& (CMLib.dice().rollPercentage() == 1))
-						{
-							location().show(this, null, CMMsg.MSG_OK_ACTION, "<S-NAME> fall(s) asleep from exhaustion!!");
-							basePhyStats().setDisposition(basePhyStats().disposition() | PhyStats.IS_SLEEPING);
-							phyStats().setDisposition(phyStats().disposition() | PhyStats.IS_SLEEPING);
+							boolean smallChance=(CMLib.dice().rollPercentage() == 1);
+							if(smallChance && (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+							{
+								Ability theYawns = CMClass.getAbility("Disease_Yawning");
+								if (theYawns != null)
+									theYawns.invoke(this, this, true, 0);
+							}
+							if (smallChance && curState().getFatigue() > (CharState.FATIGUED_EXHAUSTED_MILLIS))
+							{
+								location().show(this, null, CMMsg.MSG_OK_ACTION, "<S-NAME> fall(s) asleep from exhaustion!!");
+								basePhyStats().setDisposition(basePhyStats().disposition() | PhyStats.IS_SLEEPING);
+								phyStats().setDisposition(phyStats().disposition() | PhyStats.IS_SLEEPING);
+							}
 						}
 					}
 				} 
