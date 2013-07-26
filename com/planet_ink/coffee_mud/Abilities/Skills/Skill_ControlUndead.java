@@ -241,7 +241,7 @@ public class Skill_ControlUndead extends StdSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if((mob.phyStats().level()-target.phyStats().level())>6)
+					if(((mob.phyStats().level()-target.phyStats().level())>1)||(target.phyStats().level()==1))
 					{
 						if(!target.isMonster())
 							success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|CMMsg.MASK_ALWAYS);
@@ -261,7 +261,6 @@ public class Skill_ControlUndead extends StdSkill
 						target.makePeace();
 						beneficialAffect(mob,target,asLevel,5);
 					}
-
 				}
 			}
 		}
