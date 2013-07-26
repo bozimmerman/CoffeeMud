@@ -34,6 +34,11 @@ import java.util.*;
 public class StdFuelConsumer extends StdElecCompContainer implements Electronics.FuelConsumer
 {
 	public String ID(){	return "StdFuelConsumer";}
+	
+	protected int[] generatedFuelTypes;
+	protected int   ticksPerFuelConsume = 10;
+	protected volatile int fuelTickDown	= 0;
+	
 	public StdFuelConsumer()
 	{
 		super();
@@ -53,10 +58,6 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
 		return super.sameAs(E);
 	}
 	
-	protected int[] generatedFuelTypes;;
-	protected int   ticksPerFuelConsume = 10;
-	protected volatile int fuelTickDown	= 0;
-
 	protected boolean willConsumeFuelIdle() { return true; }
 	
 	@Override

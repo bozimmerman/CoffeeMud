@@ -64,7 +64,7 @@ public class GenElecGenerator extends StdElecGenerator
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","POWERCAP","POWERREM","CONSUMEDTYPES","GENAMTPER"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","POWERCAP","POWERREM","CONSUMEDTYPES","GENAMTPER","MANUFACTURER"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -89,6 +89,7 @@ public class GenElecGenerator extends StdElecGenerator
 		case 6: return ""+powerRemaining();
 		case 7: return ""+getGeneratedAmountPerTick();
 		case 8: return ""+activated();
+		case 9: return ""+getManufacturerName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -120,6 +121,7 @@ public class GenElecGenerator extends StdElecGenerator
 		case 6: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
 		case 7: setGenerationAmountPerTick(CMath.s_parseIntExpression(val)); break;
 		case 8: activate(CMath.s_bool(val)); break;
+		case 9: setManufacturerName(val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

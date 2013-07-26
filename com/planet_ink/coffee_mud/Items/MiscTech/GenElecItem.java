@@ -65,7 +65,7 @@ public class GenElecItem extends StdElecItem
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -75,6 +75,7 @@ public class GenElecItem extends StdElecItem
 		case 0: return ""+powerCapacity();
 		case 1: return ""+activated();
 		case 2: return ""+powerRemaining();
+		case 3: return ""+getManufacturerName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -89,6 +90,7 @@ public class GenElecItem extends StdElecItem
 		case 0: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
 		case 1: activate(CMath.s_bool(val)); break;
 		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 3: setManufacturerName(val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

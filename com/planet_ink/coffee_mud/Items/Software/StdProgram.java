@@ -43,7 +43,6 @@ public class StdProgram extends StdItem implements Software
 	
 	protected StringBuilder nextMsg = new StringBuilder("");
 	protected String currentScreen="";
-	protected int techLevel=-1;
 	protected String circuitKey="";
 
 	public StdProgram()
@@ -62,6 +61,9 @@ public class StdProgram extends StdItem implements Software
 	{ 
 		circuitKey=(key==null)?"":key; 
 	}
+
+	public int techLevel() { return phyStats().ability();}
+	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
 	
 	public String getParentMenu() { return ""; }
 	public String getInternalName() { return "";}
@@ -207,9 +209,4 @@ public class StdProgram extends StdItem implements Software
 		}
 		super.executeMsg(host, msg);
 	}
-
-	@Override
-    public int techLevel() { return techLevel; }
-	@Override
-    public void setTechLevel(int level) { techLevel=level; }
 }

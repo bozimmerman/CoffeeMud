@@ -5,8 +5,6 @@
    4. Races now designate what sort of resource they can breathe, which means GenRaces have a new field you can edit.
    5. New Archon command: JCONSOLE, for playing around with javascript commands (and accessing your muds running systems!!)
    6. New Forum features: All Forums Search, and better threading for all searches.
-//BUG: stdrideable items are a displayText() problem...
-//TODO: manufacturers to all editors, makers, stats
 //TODO: add electronics to guides
 //TODO: add electronics to MG
 //TODO: http://games.groups.yahoo.com/group/coffeemud skip=1885,2881,2953,3274,15908,15914,16267
@@ -25,7 +23,7 @@
   11. Consolidated Session and Tick threads: check new coffeemud.ini file for new MAXWORKERTHREADS and MINWORKERTHREADS. Major drop in thread usage!
   12. MUDGrinder Control Panel now supports Debug flags, and the whole flag business has been put into its own "Tab"
   13. Web Server now supports @for?@ @next@ loops! See the web server guide for usage, or checkout an example in control.cmvp
-  14. MUDGrinder Control Panel "Channels" editor is now much friendlier and easy to use.
+  14. MUDGrinder Control Panel "Channels" editor is now muchfffffff friendlier and easy to use.
   15. CoffeeMud now supports MSDP as specified at the tintin sourceforge web site
   16. Siplet now also supports MSDP, in an undocumented, testable sorta way.  Usage \MSDP ([JSON OBJECT]).  Example: \MSDP {"LIST":"LISTS"}
   17. The "sessions" archon command has been replaced with "list sessions".  On the bright side, all of the LIST [X] parms now have their own help entries.

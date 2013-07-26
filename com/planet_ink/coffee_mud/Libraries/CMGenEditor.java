@@ -7124,19 +7124,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Electronics)
 			{
 				Electronics E=(Electronics)me;
+				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
+				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
 			}
-			if(me instanceof Electronics.PowerGenerator)
+			if(me instanceof ShipComponent.ShipEngine)
 			{
-				Electronics.PowerGenerator E=(Electronics.PowerGenerator)me;
-				genConsumedMaterials(mob, E, ++showNumber, showFlag);
-				E.setGenerationAmountPerTick(prompt(mob, E.getGeneratedAmountPerTick(), ++showNumber, showFlag, "Gen Amt/Tick"));
-			}
-			if(me instanceof Electronics.FuelConsumer)
-			{
-				Electronics.FuelConsumer E=(Electronics.FuelConsumer)me;
-				genConsumedMaterials(mob, E, ++showNumber, showFlag);
+				ShipComponent.ShipEngine E=(ShipComponent.ShipEngine)me;
+				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Max velocity"));
 			}
 			if(me instanceof PackagedItems)
 				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
@@ -7410,8 +7407,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Electronics)
 			{
 				Electronics E=(Electronics)me;
+				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
 				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
 				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
+				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
 			}
 			if((me instanceof Electronics.ElecPanel)&&(!(me instanceof Electronics.Computer)))
 				genPanelType(mob,(Electronics.ElecPanel)me,++showNumber,showFlag);
@@ -7424,6 +7423,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				Electronics.FuelConsumer E=(Electronics.FuelConsumer)me;
 				genConsumedMaterials(mob, E, ++showNumber, showFlag);
+			}
+			if(me instanceof ShipComponent.ShipEngine)
+			{
+				ShipComponent.ShipEngine E=(ShipComponent.ShipEngine)me;
+				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
+				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Max velocity"));
 			}
 			genLidsNLocks(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);

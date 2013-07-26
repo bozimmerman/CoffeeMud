@@ -45,7 +45,6 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	protected List<Software>  software		 	= null;
 	protected boolean 		  activated		 	= false;
 	protected String 		  currentMenu		= "";
-	protected int			  techLevel			= -1;
 	protected String		  manufacturer 		= "RANDOM";
 	
 	public StdComputerConsole()
@@ -79,8 +78,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public void activate(boolean truefalse){ activated=truefalse; }
 	public void setActiveMenu(String internalName) { currentMenu=internalName; }
 	public String getActiveMenu() { return currentMenu; }
-	public int techLevel() { return techLevel;}
-	public void setTechLevel(int lvl) { techLevel=lvl; }
+	public int techLevel() { return phyStats().ability();}
+	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
 	public String getManufacturerName() { return manufacturer; }
 	public void setManufacturerName(String name) { if(name!=null) manufacturer=name; }
 	

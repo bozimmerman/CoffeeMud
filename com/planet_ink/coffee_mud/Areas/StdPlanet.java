@@ -33,23 +33,29 @@ import java.util.*;
 */
 public class StdPlanet extends StdTimeZone implements SpaceObject
 {
+	public String ID(){	return "StdPlanet";}
+
 	public StdPlanet()
 	{
 		super();
 
 		myClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
+		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
 	}
 
-	public String ID(){	return "StdPlanet";}
-	public long[] coordinates=new long[3];
+	protected long[]	coordinates	= new long[3];
+	protected double[]	direction	= new double[2];
+	protected long		velocity	= 0;
+	protected long		radius		= SpaceObject.DISTANCE_PLANETRADIUS;
+	
 	public long[] coordinates(){return coordinates;}
 	public void setCoords(long[] coords){coordinates=coords;}
-	public double[] direction=new double[2];
 	public double[] direction(){return direction;}
 	public void setDirection(double[] dir){direction=dir;}
-	public long velocity=0;
 	public long velocity(){return velocity;}
 	public void setVelocity(long v){velocity=v;}
+	public long radius() { return radius; }
+	public void setRadius(long radius) { this.radius=radius; }
 	public void setName(String newName)
 	{
 		super.setName(newName);

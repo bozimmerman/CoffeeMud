@@ -40,7 +40,6 @@ public class StdElecContainer extends StdContainer implements Electronics
 	protected long 			power			= 100;
 	protected int 			powerNeeds		= 1;
 	protected boolean 		activated		= false;
-	protected int			techLevel		= -1;
 	protected String 		manufacturer	= "RANDOM";
 
 	public StdElecContainer()
@@ -63,8 +62,8 @@ public class StdElecContainer extends StdContainer implements Electronics
 	public void activate(boolean truefalse){activated=truefalse;}
 	public void setPowerNeeds(int amt){ powerNeeds=amt;}
 	public int powerNeeds(){return powerNeeds;}
-	public int techLevel() { return techLevel;}
-	public void setTechLevel(int lvl) { techLevel=lvl; }
+	public int techLevel() { return phyStats().ability();}
+	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
 	public String getManufacturerName() { return manufacturer; }
 	public void setManufacturerName(String name) { if(name!=null) manufacturer=name; }
 }

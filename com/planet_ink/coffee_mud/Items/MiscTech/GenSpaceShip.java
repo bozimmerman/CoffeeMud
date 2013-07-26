@@ -185,8 +185,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public void setPowerRemaining(long remaining){}
 	public void activate(boolean truefalse){}
 	public boolean activated(){return true;}
-	public int techLevel() { return -1;}
-	public void setTechLevel(int lvl) { }
+	public int techLevel() { return phyStats().ability();}
+	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
 	public String getManufacturerName() { return (area instanceof SpaceShip)?((SpaceShip)area).getManufacturerName():"Unknown"; }
 	public void setManufacturerName(String name) { if((name!=null)&&(area instanceof SpaceShip)) ((SpaceShip)area).setManufacturerName(name); }
 	
@@ -268,6 +268,29 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			((SpaceObject)area).setKnownSource(O);
 	}
 
+	@Override
+	public long radius() {
+		return (area instanceof SpaceObject)?((SpaceObject)area).radius():50;
+	}
+
+	@Override
+	public void setRadius(long radius) {
+		if (area instanceof SpaceObject)
+			((SpaceObject)area).setRadius(radius);
+	}
+
+	@Override
+	public double getOMLCoeff() {
+		return (area instanceof SpaceShip)?((SpaceShip)area).getOMLCoeff()
+				:SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK-SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE)/2.0);
+	}
+
+	@Override
+	public void setOMLCoeff(double coeff) {
+		if (area instanceof SpaceShip)
+			((SpaceShip)area).setOMLCoeff(coeff);
+	}
+	
 	@Override
 	public void dockHere(Room R) 
 	{

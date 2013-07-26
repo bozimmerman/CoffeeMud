@@ -248,6 +248,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 			str.append(CMLib.xml().convertXMLtoTag("BLURBS",CMLib.xml().getXMLList(V)));
 			str.append(CMLib.xml().convertXMLtoTag("AATMO",((Area)E).getAtmosphereCode()));
+			if(E instanceof SpaceObject)
+				str.append(CMLib.xml().convertXMLtoTag("SSRADIUS",((SpaceObject)E).radius()));
 			if(E instanceof GridZones)
 				str.append(CMLib.xml().convertXMLtoTag("XGRID",((GridZones)E).xGridSize())
 						  +CMLib.xml().convertXMLtoTag("YGRID",((GridZones)E).yGridSize()));
@@ -392,7 +394,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(CMLib.xml().convertXMLtoTag("CAPA",((Weapon)item).ammunitionCapacity()));
 			
 			if(E instanceof SpaceShip)
+			{
 				text.append(CMLib.xml().convertXMLtoTag("SSAREA",CMLib.xml().parseOutAngleBrackets(getAreaObjectXML(((SpaceShip)item).getShipArea(), null, null, null, true).toString())));
+				text.append(CMLib.xml().convertXMLtoTag("SSOML",((SpaceShip)item).getOMLCoeff()+""));
+				text.append(CMLib.xml().convertXMLtoTag("SSRADIUS",((SpaceShip)item).radius()));
+			}
 		}
 
 		if(E instanceof Coins)
@@ -405,7 +411,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("POWC",""+((Electronics)E).powerCapacity()));
 			text.append(CMLib.xml().convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
 			text.append(CMLib.xml().convertXMLtoTag("EACT", ""+((Electronics)E).activated()));
-			text.append(CMLib.xml().convertXMLtoTag("TECHLVL", ""+((Electronics)E).techLevel()));
 			text.append(CMLib.xml().convertXMLtoTag("MANUFACT", ((Electronics)E).getManufacturerName()));
 
 		}
@@ -416,6 +421,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof ShipComponent.ShipEngine)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipComponent.ShipEngine)E).getMaxThrust()));
+			text.append(CMLib.xml().convertXMLtoTag("SSIMPL",""+((ShipComponent.ShipEngine)E).getSpecificImpulse()));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{
@@ -1923,6 +1929,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Area)
 		{
 			((Area)E).setArchivePath(CMLib.xml().getValFromPieces(V,"ARCHP"));
+			if(E instanceof SpaceObject)
+				((SpaceObject)E).setRadius(CMLib.xml().getLongFromPieces(V,"SSRADIUS"));
 			if(E instanceof SpaceShip)
 				((Area)E).setDisplayText(CMLib.xml().getValFromPieces(V,"DISP"));
 			((Area)E).setAuthorID(CMLib.xml().getValFromPieces(V,"AUTHOR"));
@@ -2509,7 +2517,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			item.setRawProperLocationBitmap(CMLib.xml().getLongFromPieces(buf,"WORNB"));
 			item.setReadableText(CMLib.xml().getValFromPieces(buf,"READ"));
 			if(item instanceof SpaceShip)
+			{
 				((SpaceShip)item).setShipArea(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(buf,"SSAREA")));
+				((SpaceShip)item).setOMLCoeff(CMLib.xml().getDoubleFromPieces(buf,"SSOML"));
+				((SpaceShip)item).setRadius(CMLib.xml().getLongFromPieces(buf,"SSRADIUS"));
+			}
 		}
 
 		if(E instanceof Rideable)
@@ -2522,7 +2534,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((Electronics)E).setPowerCapacity(CMLib.xml().getIntFromPieces(buf,"POWC"));
 			((Electronics)E).setPowerRemaining(CMLib.xml().getIntFromPieces(buf,"POWR"));
 			((Electronics)E).activate(CMLib.xml().getBoolFromPieces(buf, "EACT"));
-			((Electronics)E).setTechLevel(CMLib.xml().getIntFromPieces(buf, "TECHLVL"));
 			((Electronics)E).setManufacturerName(CMLib.xml().getValFromPieces(buf, "MANUFACT"));
 		}
 		if(E instanceof Electronics.ElecPanel)
@@ -2534,6 +2545,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof ShipComponent.ShipEngine)
 		{
 			((ShipComponent.ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
+			((ShipComponent.ShipEngine)E).setSpecificImpulse(CMLib.xml().getIntFromPieces(buf,"SSIMPL"));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{

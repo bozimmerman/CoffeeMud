@@ -55,9 +55,12 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 	protected int maxThrust=1000;
 	public int getMaxThrust(){return maxThrust;}
 	public void setMaxThrust(int max){maxThrust=max;}
-	protected int thrust=1000;
+	protected int thrust=0;
 	public int getThrust(){return thrust;}
 	public void setThrust(int current){thrust=current;}
+	protected long specificImpulse=SpaceObject.VELOCITY_SUBLIGHT;
+	public long getSpecificImpulse() { return specificImpulse; }
+	public void setSpecificImpulse(long amt) { specificImpulse = amt; }
 	
 	@Override protected boolean willConsumeFuelIdle() { return getThrust()>0; }
 	

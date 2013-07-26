@@ -37,34 +37,36 @@ public class StdSpaceShip implements Area, SpaceShip
 {
 	protected static Climate climateObj=null;
 	
-	public long[]   		coordinates 	=new long[3];
-	public double[] 		direction   	=new double[2];
-	public long 			velocity		=0;
-	protected String[]  	xtraValues  	=null;
-	protected String		imageName   	="";
-	protected RoomnumberSet properRoomIDSet =null;
-	protected TimeClock 	localClock  	=(TimeClock)CMClass.getCommon("DefaultTimeClock");
-	protected String		currency		="";
-	private long			expirationDate  =0;
-	protected int			atmosphere		=RawMaterial.RESOURCE_AIR; // at least for awhile...
-	protected SpaceObject	spaceTarget 	=null;
-	protected SpaceObject	spaceSource 	=null;
-	protected boolean   	amDestroyed 	=false;
-	protected String		name			="a space ship";
-	protected Room  		savedDock   	=null;
-	protected String		displayText 	="";
-	protected String		description 	="";
-	protected String		miscText		="";
-	protected String		manufacturer	="RANDOM";
-	protected SVector<Room> myRooms 		=new SVector();
-	protected State   		flag			=State.ACTIVE;
-	protected long  		tickStatus  	=Tickable.STATUS_NOT;
-	protected String		author  		=""; // will be used for owner, I guess.
-	protected PhyStats  	phyStats		=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats  	basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected Area 			me			 	=this;
-	protected SpaceShip		shipItem		=null;
-	protected double[]		facing			=new double[2];
+	public long[]   		coordinates 	= new long[3];
+	public double[] 		direction   	= new double[2];
+	public long 			velocity		= 0;
+	protected String[]  	xtraValues  	= null;
+	protected String		imageName   	= "";
+	protected RoomnumberSet properRoomIDSet = null;
+	protected TimeClock 	localClock  	= (TimeClock)CMClass.getCommon("DefaultTimeClock");
+	protected String		currency		= "";
+	private long			expirationDate  = 0;
+	protected int			atmosphere		= RawMaterial.RESOURCE_AIR; // at least for awhile...
+	protected SpaceObject	spaceTarget 	= null;
+	protected SpaceObject	spaceSource 	= null;
+	protected boolean   	amDestroyed 	= false;
+	protected String		name			= "a space ship";
+	protected Room  		savedDock   	= null;
+	protected String		displayText 	= "";
+	protected String		description 	= "";
+	protected String		miscText		= "";
+	protected String		manufacturer	= "RANDOM";
+	protected long 			radius			= 50;
+	protected double		omlCoeff		= SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK-SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE)/2.0);
+	protected SVector<Room> myRooms 		= new SVector();
+	protected State   		flag			= State.ACTIVE;
+	protected long  		tickStatus  	= Tickable.STATUS_NOT;
+	protected String		author  		= ""; // will be used for owner, I guess.
+	protected PhyStats  	phyStats		= (PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats  	basePhyStats	= (PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected Area 			me			 	= this;
+	protected SpaceShip		shipItem		= null;
+	protected double[]		facing			= new double[2];
 	
 	protected SVector<Ability>  		affects=new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors=new SVector<Behavior>(1);
@@ -89,6 +91,8 @@ public class StdSpaceShip implements Area, SpaceShip
 		}
 		return climateObj;
 	}
+	public double getOMLCoeff() { return omlCoeff; }
+    public void setOMLCoeff(double coeff) { omlCoeff=coeff; }
 	public void setAuthorID(String authorID){author=authorID;}
 	public String getAuthorID(){return author;}
 	public TimeClock getTimeObj(){return localClock;}
@@ -100,6 +104,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	public int getAtmosphereCode() { return atmosphere; }
 	public void setAtmosphere(int resourceCode) { atmosphere=resourceCode; }
 	public int getAtmosphere() { return atmosphere==ATMOSPHERE_INHERIT?RawMaterial.RESOURCE_AIR:atmosphere; }
+	public long radius() { return radius; }
+	public void setRadius(long radius) { this.radius=radius; }
 	public long flags(){return 0;}
 	public double[] facing() { return facing; }
 	public void setFacing(double[] dir) { if(dir!=null) this.facing=dir; }
@@ -289,7 +295,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	}
 	public String displayText(){return displayText;}
 	public void setDisplayText(String newDisplayText){ displayText=newDisplayText; }
-	public String displayText(MOB viewer) { return displayText(); };
+	public String displayText(MOB viewer) { return displayText(); }
 	public String name(MOB viewerMob) { return name(); }
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
