@@ -135,6 +135,19 @@ public class MOBloader
 				if(pstats.getSavedPose().length()>0)
 					mob.setDisplayText(pstats.getSavedPose());
 				CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
+				if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)&&(pstats.getAccount()==null))
+				{
+					// yes, this can happen when you wiggle in and out of the account system.
+					for(Enumeration<PlayerAccount> a = CMLib.players().accounts(); a.hasMoreElements();)
+					{
+						PlayerAccount pA=a.nextElement();
+						if(pA.findPlayer(mob.Name())!=null)
+						{
+							pstats.setAccount(pA);
+							break;
+						}
+					}
+				}
 			}
 			R.close();
 			R=D.query("SELECT * FROM CMCHCL WHERE CMUSERID='"+mob.Name()+"'");

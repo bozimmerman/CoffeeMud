@@ -740,8 +740,11 @@ public class DefaultPlayerStats implements PlayerStats
 		
 		str = CMLib.xml().getValFromPieces(xml,"ACCOUNT");
 		if(debug) Log.debugOut("ACCOUNT="+str);
-		if((str != null)&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
-			account = CMLib.players().getLoadAccount(str);
+		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+		{
+			if((str != null)&&(str.length()>0))
+				account = CMLib.players().getLoadAccount(str);
+		}
 	}
 
 	private String getLevelDateTimesStr()
