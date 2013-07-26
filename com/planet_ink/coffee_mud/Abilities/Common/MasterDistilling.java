@@ -65,7 +65,8 @@ public class MasterDistilling extends Baking
 			for(int i=0;i<mob.numEffects();i++)
 			{
 				Ability A=mob.fetchEffect(i);
-				if((A instanceof MasterDistilling)&&(noUninvokes.size()<5))
+				if(((A instanceof MasterDistilling)||A.ID().equals("Distilling"))
+				&&(noUninvokes.size()<5))
 					noUninvokes.add(A.ID());
 			}
 			this.noUninvokes=noUninvokes;

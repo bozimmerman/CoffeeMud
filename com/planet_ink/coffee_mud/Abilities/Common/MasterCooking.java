@@ -65,7 +65,8 @@ public class MasterCooking extends Cooking
 			for(int i=0;i<mob.numEffects();i++)
 			{
 				Ability A=mob.fetchEffect(i);
-				if((A instanceof MasterCooking)&&(noUninvokes.size()<5))
+				if(((A instanceof MasterCooking)||A.ID().equals("Cooking"))
+				&&(noUninvokes.size()<5))
 					noUninvokes.add(A.ID());
 			}
 			this.noUninvokes=noUninvokes;

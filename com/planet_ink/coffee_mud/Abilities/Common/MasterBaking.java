@@ -65,7 +65,8 @@ public class MasterBaking extends Baking
 			for(int i=0;i<mob.numEffects();i++)
 			{
 				Ability A=mob.fetchEffect(i);
-				if((A instanceof MasterBaking)&&(noUninvokes.size()<5))
+				if(((A instanceof MasterBaking)||A.ID().equals("Baking"))
+				&&(noUninvokes.size()<5))
 					noUninvokes.add(A.ID());
 			}
 			this.noUninvokes=noUninvokes;

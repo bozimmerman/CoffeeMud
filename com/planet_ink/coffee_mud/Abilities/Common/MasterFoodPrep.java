@@ -65,7 +65,8 @@ public class MasterFoodPrep extends Baking
 			for(int i=0;i<mob.numEffects();i++)
 			{
 				Ability A=mob.fetchEffect(i);
-				if((A instanceof MasterFoodPrep)&&(noUninvokes.size()<5))
+				if(((A instanceof MasterFoodPrep)||A.ID().equals("FoodPrep"))
+				&&(noUninvokes.size()<5))
 					noUninvokes.add(A.ID());
 			}
 			this.noUninvokes=noUninvokes;
