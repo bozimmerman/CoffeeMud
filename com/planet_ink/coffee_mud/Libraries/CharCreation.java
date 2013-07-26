@@ -2212,10 +2212,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			for(int i : CharStats.CODES.BASE())
 			{
 				total += CT.getStat(i);
-				statstr.append(CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
-						+": "+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
+				statstr.append("^H"+CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
+						+"^N: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"^N/^w"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"^N\n\r");
 			}
-			statstr.append(CMStrings.padRight("STATS TOTAL",15)+": "+total+"/"+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*6));
+			statstr.append("^w"+CMStrings.padRight("STATS TOTAL",15)+"^N: ^w"+total+"^N/^w"+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*6)+"^.^N");
 			session.println(statstr.toString());
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 			&&(!mob.baseCharStats().getMyRace().classless())
@@ -2234,12 +2234,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(loginObj.statPoints == 0)
 				{
 					session.println("\n\r^!You have no more points remaining.^N");
-					promptStr = "^!Enter a Stat to remove points, ? for help, R for random roll, or ENTER to complete.^N\n\r: ^N";
+					promptStr = "^NEnter a Stat to remove points, ? for help, R for random roll, or ENTER to complete.^N\n\r: ^N";
 				}
 				else
 				{
-					session.println("\n\r^!You have "+loginObj.statPoints+" points remaining.^N");
-					promptStr = "^!Enter a Stat to add or remove points, ? for help, or R for random roll.^N\n\r: ^N";
+					session.println("\n\r^NYou have ^w"+loginObj.statPoints+"^N points remaining.^N");
+					promptStr = "^NEnter a Stat to add or remove points, ? for help, or R for random roll.^N\n\r: ^N";
 				}
 					
 				session.promptPrint(promptStr);
