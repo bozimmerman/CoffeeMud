@@ -167,7 +167,46 @@ public class Shell extends StdCommand
 		return dirs;
 	}
 	
-	
+	public static final String incorporateBaseDir(String currentPath, String filename)
+	{
+		String starter="";
+		if(filename.startsWith("::")||filename.startsWith("//"))
+		{
+			starter=filename.substring(0,2);
+			filename=filename.substring(2);
+		}
+		if(!filename.startsWith("/"))
+		{
+			boolean didSomething=true;
+			while(didSomething)
+			{
+				didSomething=false;
+				if(filename.startsWith(".."))
+				{
+					filename=filename.substring(2);
+					int x=currentPath.lastIndexOf('/');
+					if(x>=0)
+						currentPath=currentPath.substring(0,x);
+					else
+						currentPath="";
+					didSomething=true;
+				}
+				if((filename.startsWith("."))&&(!(filename.startsWith(".."))))
+				{
+					filename=filename.substring(1);
+					didSomething=true;
+				}
+				while(filename.startsWith("/")) filename=filename.substring(1);
+			}
+			if((currentPath.length()>0)&&(filename.length()>0))
+				filename=currentPath+"/"+filename;
+			else
+			if(currentPath.length()>0)
+				filename=currentPath;
+		}
+		return starter+filename;
+	}
+
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -223,7 +262,7 @@ public class Shell extends StdCommand
 		case 0: // directory
 		{
 			cp_options opts=new cp_options(commands);
-			CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,opts.recurse,true);
+			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,true);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid directory!^N");
@@ -286,7 +325,7 @@ public class Shell extends StdCommand
 			}
 			String source=(String)commands.elementAt(1);
 			String target=CMParms.combine(commands,2);
-			CMFile[] dirs=CMFile.getFileList(pwd,source,mob,opts.recurse,true);
+			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid source!^N");
@@ -299,7 +338,7 @@ public class Shell extends StdCommand
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
 				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
-			CMFile DD=new CMFile(CMFile.incorporateBaseDir(pwd,target),mob);
+			CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
 			java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			for(CMFile SF: ddirs)
 			{
@@ -369,7 +408,7 @@ public class Shell extends StdCommand
 		}
 		case 2: // cd
 		{
-			CMFile newDir=new CMFile(CMFile.incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
+			CMFile newDir=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			String changeTo=newDir.getVFSPathAndName();
 			if(!newDir.exists())
 			{
@@ -390,7 +429,7 @@ public class Shell extends StdCommand
 		case 3: // delete
 		{
 			cp_options opts=new cp_options(commands);
-			CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,opts.recurse,false);
+			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,opts.recurse,false);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid filename!^N");
@@ -426,7 +465,7 @@ public class Shell extends StdCommand
 		}
 		case 4: // type
 		{
-			CMFile[] dirs=CMFile.getFileList(pwd,CMParms.combine(commands,1),mob,false,false);
+			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob,false,false);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid filename!^N");
@@ -460,7 +499,7 @@ public class Shell extends StdCommand
 		}
 		case 5: // makedirectory
 		{
-			CMFile CF=new CMFile(CMFile.incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
+			CMFile CF=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if(CF.exists())
 			{
 				mob.tell("^xError: file already exists!^N");
@@ -483,7 +522,7 @@ public class Shell extends StdCommand
 		{
 			String substring=CMParms.combine(commands,1).trim();
 			if(substring.length()==0) substring="*";
-			CMFile[] dirs=CMFile.getFileList(pwd,substring,mob,true,true);
+			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,substring),mob,true,true);
 			StringBuffer msg=new StringBuffer("");
 			if(dirs.length==0)
 			{
@@ -519,7 +558,7 @@ public class Shell extends StdCommand
 				mob.tell("^xError: you must specify a search string^N");
 				return false;
 			}
-			CMFile[] dirs=CMFile.getFileList(pwd,"*",mob,true,true);
+			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,"*"),mob,true,true);
 			if(dirs.length==0)
 			{
 				mob.tell("^xError: no files found!^N");
@@ -571,7 +610,7 @@ public class Shell extends StdCommand
 		}
 		case 8: // edit
 		{
-			CMFile file=new CMFile(CMFile.incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
+			CMFile file=new CMFile(incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if((!file.canWrite())
 			||(file.isDirectory()))
 			{
@@ -619,7 +658,7 @@ public class Shell extends StdCommand
 			}
 			String source=(String)commands.elementAt(1);
 			String target=CMParms.combine(commands,2);
-			CMFile[] dirs=CMFile.getFileList(pwd,source,mob,opts.recurse,true);
+			CMFile[] dirs=CMFile.getFileList(incorporateBaseDir(pwd,source),mob,opts.recurse,true);
 			if(dirs==null)
 			{
 				mob.tell("^xError: invalid source!^N");
@@ -632,7 +671,7 @@ public class Shell extends StdCommand
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
 				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
-			CMFile DD=new CMFile(CMFile.incorporateBaseDir(pwd,target),mob);
+			CMFile DD=new CMFile(incorporateBaseDir(pwd,target),mob);
 			java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			java.util.List<CMFile> dirsLater=new Vector<CMFile>();
 			for(int d=0;d<ddirs.size();d++)

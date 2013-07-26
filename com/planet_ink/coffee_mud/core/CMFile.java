@@ -34,9 +34,12 @@ public class CMFile extends File
 {
 	private static final long serialVersionUID = -3965083655590304708L;
 
+	/** Flag for a CMVFSDir object, allowing you to open it */
 	public static final int  VFS_MASK_MASKSAVABLE=1+2+4;
 	
+	/** Flag for opening a CMFile to suppress error logging */
 	public static final int FLAG_LOGERRORS 	= 1;
+	/** Flag for opening a CMFile to force allowing a given user to open despite security */
 	public static final int FLAG_FORCEALLOW = 2;
 
 	//private static final int VFS_MASK_BINARY=1;
@@ -68,11 +71,26 @@ public class CMFile extends File
 	private boolean demandLocal=false;
 	private String parentDir=null;
 
+	/**
+	 * Constructor for a CMFS file from a full path. The creating/opening
+	 * user may be null to ignore user security features.  Will always
+	 * suppress error logging, and if a user is given, they must have
+	 * permission to open/create the file.
+	 * @param absolutePath the path to the file to open/create
+	 * @param user the user to check for permissions on
+	 */
 	public CMFile (final String absolutePath, final MOB user)
 	{
 		this(absolutePath,user,0);
 	}
 	
+	/**
+	 * Constructor for a CMFS file from a full path. The creating/opening
+	 * user may be null to ignore user security features.
+	 * @param absolutePath the path to the file to open/create
+	 * @param user the user to check for permissions on
+	 * @param flagBitmap bitmap flag to turn on error logging or force allow
+	 */
 	public CMFile (String absolutePath, final MOB user, final int flagBitmap)
 	{ 
 		super(parsePathParts(absolutePath)[2]);
@@ -186,6 +204,11 @@ public class CMFile extends File
 			vfsBits=vfsBits|CMFile.VFS_MASK_ISLOCAL;
 	}
 
+	/**
+	 * 
+	 * @author Bo Zimmerman
+	 *
+	 */
 	public static class CMVFSFile 
 	{
 		public String fName;
@@ -1219,48 +1242,6 @@ public class CMFile extends File
 		return myRsc;
 	}
 
-	public static final String incorporateBaseDir(String currentPath, String filename)
-	{
-		String starter="";
-		if(filename.startsWith("::")||filename.startsWith("//"))
-		{
-			starter=filename.substring(0,2);
-			filename=filename.substring(2);
-		}
-		if(!filename.startsWith("/"))
-		{
-			boolean didSomething=true;
-			while(didSomething)
-			{
-				didSomething=false;
-				if(filename.startsWith(".."))
-				{
-					filename=filename.substring(2);
-					int x=currentPath.lastIndexOf('/');
-					if(x>=0)
-						currentPath=currentPath.substring(0,x);
-					else
-						currentPath="";
-					didSomething=true;
-				}
-				if((filename.startsWith("."))&&(!(filename.startsWith(".."))))
-				{
-					filename=filename.substring(1);
-					didSomething=true;
-				}
-				while(filename.startsWith("/")) filename=filename.substring(1);
-			}
-			if((currentPath.length()>0)&&(filename.length()>0))
-				filename=currentPath+"/"+filename;
-			else
-			if(currentPath.length()>0)
-				filename=currentPath;
-		}
-		return starter+filename;
-	}
-
-	public static final CMFile[] getFileList(final String currentPath, final String filename, final MOB user, final boolean recurse, final boolean expandDirs)
-	{ return getFileList(incorporateBaseDir(currentPath,filename),user,recurse,expandDirs);}
 	public static final CMFile[] getFileList(final String parse, final MOB user, final boolean recurse, final boolean expandDirs)
 	{
 		final boolean demandLocal=parse.trim().startsWith("//");

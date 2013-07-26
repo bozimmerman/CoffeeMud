@@ -56,7 +56,7 @@ public class FileNext extends StdWebMacro
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
 			httpReq.addFakeUrlParameter("PATH",directory.getVFSPathAndName());
-			CMFile[] dirs=CMFile.getFileList(path,"",M,false,true);
+			CMFile[] dirs=CMFile.getFileList(path,M,false,true);
 			for(int d=0;d<dirs.length;d++)
 				fileList.addElement(dirs[d].getName());
 			
