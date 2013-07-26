@@ -2234,12 +2234,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(loginObj.statPoints == 0)
 				{
 					session.println("\n\r^!You have no more points remaining.^N");
-					promptStr = "^!Enter a Stat Name to remove a point, R for a random roll, or ENTER when done.^N\n\r: ^N";
+					promptStr = "^!Enter a Stat to remove points, ? for help, R for random roll, or ENTER to complete.^N\n\r: ^N";
 				}
 				else
 				{
 					session.println("\n\r^!You have "+loginObj.statPoints+" points remaining.^N");
-					promptStr = "^!Enter a Stat Name to add or remove a point, or R for a random roll.^N\n\r: ^N";
+					promptStr = "^!Enter a Stat to add or remove points, ? for help, or R for random roll.^N\n\r: ^N";
 				}
 					
 				session.promptPrint(promptStr);
@@ -2294,6 +2294,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.CHARCR_STATDONE;
 				return null;
 			}
+		}
+		if(prompt.trim().equals("?"))
+		{
+			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,CMFile.FLAG_LOGERRORS).text();
+			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
+			session.println(null,null,null,"\n\r\n\r"+introText.toString());
+			loginObj.state=LoginState.CHARCR_STATSTART;
+			return null;
 		}
 		if(prompt.toLowerCase().startsWith("r"))
 		{

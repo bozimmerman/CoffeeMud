@@ -3032,15 +3032,12 @@ public class StdMOB implements MOB
 				tickStatus = Tickable.STATUS_OTHER;
 				if (!isMonster)
 				{
-					if (CMLib.flags().isSleeping(this))
+					if (CMLib.flags().isSleeping(this)) 
 						curState().adjFatigue(-CharState.REST_PER_SLEEP, maxState());
-					else 
-					if (CMLib.flags().isSitting(this))
-						curState().adjFatigue(-CharState.REST_PER_SIT, maxState());
-					else 
+					else // rest/sit isn't here because fatigue is sleepiness, not exhaustion per se
 					if (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.IMMORT))
 					{
-						curState().adjFatigue(Math.round(CMProps.getTickMillis() * (1.0-(charStats().getStat(CharStats.STAT_CONSTITUTION)*4.0))), maxState());
+						curState().adjFatigue(Math.round(CMProps.getTickMillis()), maxState());
 						if (curState().getFatigue() > CharState.FATIGUED_MILLIS)
 						{
 							boolean smallChance=(CMLib.dice().rollPercentage() == 1);
