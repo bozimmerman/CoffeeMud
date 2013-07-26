@@ -47,7 +47,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 	protected List<Integer> pathOut=null;
-	protected int hygeineLoss=0;
+	protected int hygieneLoss=0;
 	protected String theNoun=null;
 	protected Room currRoom=null;
 	protected Vector theGroup=null;
@@ -74,7 +74,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 						for(int g=0;g<theGroup.size();g++)
 						{
 							MOB M=(MOB)theGroup.elementAt(g);
-							if(M.playerStats()!=null) M.playerStats().adjHygiene(hygeineLoss);
+							if(M.playerStats()!=null) M.playerStats().adjHygiene(hygieneLoss);
 							switch(CMLib.dice().roll(1,10,0))
 							{
 							case 1: M.tell("You think you are being taken through '"+roomDesc+"'."); break;
@@ -339,7 +339,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 					break;
 				}
 				}
-				underA.hygeineLoss=(int)PlayerStats.HYGIENE_DELIMIT/theTrail.size();
+				underA.hygieneLoss=(int)PlayerStats.HYGIENE_DELIMIT/theTrail.size();
 				underA.storage=rooms;
 				underA.pathOut=theTrail;
 			}

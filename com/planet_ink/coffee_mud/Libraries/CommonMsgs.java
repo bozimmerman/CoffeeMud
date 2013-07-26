@@ -1314,7 +1314,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return exit.viewableText(mob, room.getRoomInDir(dir)).toString().trim()   +" is " + inDirName;
 	}
 		
-	public boolean isHygenicMessage(final CMMsg msg, final int minHygeine, final long adjHygiene)
+	public boolean isHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene)
 	{
 		if((msg.sourceMajor(CMMsg.MASK_MOVE)
 		||((msg.tool() instanceof Social)
@@ -1324,15 +1324,21 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return false;
 	}
 	
-	public void handleHygenicMessage(final CMMsg msg, final int minHygeine, final long adjHygiene)
+	public void handleHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene)
 	{
-		if(isHygenicMessage(msg,minHygeine,adjHygiene))
+		if(isHygienicMessage(msg,minHygiene,adjHygiene))
 		{
 			final MOB mob=msg.source();
 			if(mob.playerStats().getHygiene()>adjHygiene)
 			{
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
-				mob.tell("You feel a little cleaner.");
+				if(mob.playerStats().getHygiene()>(PlayerStats.HYGIENE_DELIMIT/2))
+					mob.tell("You feel a little cleaner, but are still very dirty.");
+				else
+				if(mob.playerStats().getHygiene()<1500)
+					mob.tell("You feel a little cleaner; almost perfect.");
+				else
+					mob.tell("You feel a little cleaner.");
 			}
 			else
 			if(adjHygiene==0)

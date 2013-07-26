@@ -46,6 +46,7 @@ public class Dyeing extends CommonSkill
 	protected String writing="";
 	protected boolean brightFlag = false;
 	protected boolean lightFlag = false;
+	protected boolean darkFlag = false;
 	protected boolean canBeDoneSittingDown() { return true; }
 	
 	public Dyeing()
@@ -124,6 +125,7 @@ public class Dyeing extends CommonSkill
 					String prefix="";
 					if(brightFlag) prefix="bright ";
 					if(lightFlag) prefix="light ";
+					if(darkFlag) prefix="dark ";
 					
 					found.setName(fixColor(found.Name(),writing.charAt(0),prefix+writing));
 					found.setDisplayText(fixColor(found.displayText(),writing.charAt(0),prefix+writing));
@@ -163,7 +165,7 @@ public class Dyeing extends CommonSkill
 			return false;
 		}
 		writing=CMParms.combine(commands,0).toLowerCase();
-		boolean darkFlag=false;
+		darkFlag=false;
 		brightFlag=false;
 		lightFlag=false;
 		if(writing.startsWith("dark "))

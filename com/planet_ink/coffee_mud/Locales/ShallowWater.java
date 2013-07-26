@@ -66,7 +66,7 @@ public class ShallowWater extends StdRoom implements Drink
 	{
 		super.executeMsg(myHost,msg);
 		
-		CMLib.commands().handleHygenicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
+		CMLib.commands().handleHygienicMessage(msg, 100, PlayerStats.HYGIENE_WATERCLEAN);
 		
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 		{

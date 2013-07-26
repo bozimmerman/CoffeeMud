@@ -713,14 +713,14 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	/** Constant for private messenging, means the last private msg was a TELL */
 	public static final int REPLY_TELL=2;
 	
-	/** Constant for hygeine system, denotes ceiling of stinkiness before emoting */
+	/** Constant for hygiene system, denotes ceiling of stinkiness before emoting */
 	public final static long HYGIENE_DELIMIT=5000;
-	/** Constant for hygeine system, denotes amount of cleaning water does per tick */
+	/** Constant for hygiene system, denotes amount of cleaning water does per tick */
 	public final static long HYGIENE_WATERCLEAN=-1000;
-	/** Constant for hygeine system, denotes amount of dirtiness from using common skills */
+	/** Constant for hygiene system, denotes amount of dirtiness from using common skills */
 	public final static long HYGIENE_COMMONDIRTY=2;
-	/** Constant for hygeine system, denotes amount of dirtiness from fighting */
+	/** Constant for hygiene system, denotes amount of dirtiness from fighting */
 	public final static long HYGIENE_FIGHTDIRTY=1;
-	/** Constant for hygeine system, denotes amount of cleaning water does per tick */
+	/** Constant for hygiene system, denotes amount of cleaning water does per tick */
 	public final static long HYGIENE_RAINCLEAN=-100;
 }
