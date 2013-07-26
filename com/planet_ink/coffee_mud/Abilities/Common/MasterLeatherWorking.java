@@ -206,7 +206,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(recipes==null)
 		{
-			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
+			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
 			recipes=loadList(str);
 			if(recipes.size()==0)
 				Log.errOut("LeatherWorking","Recipes not found!");

@@ -267,7 +267,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected static ChattyGroup[] loadChatData(String resourceName)
 	{
-		StringBuffer rsc=new CMFile(Resources.makeFileResourceName(resourceName),null,true).text();
+		StringBuffer rsc=new CMFile(Resources.makeFileResourceName(resourceName),null,CMFile.FLAG_LOGERRORS).text();
 		return parseChatData(rsc);
 	}
 

@@ -559,7 +559,7 @@ public class Create extends StdCommand
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r");
-			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true).text();
+			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS).text();
 			StringBuffer inst=new StringBuffer("");
 			List<String> V=new Vector();
 			if(buf!=null) V=Resources.getFileLineVector(buf);
@@ -596,7 +596,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true);
+		CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
 		F.saveText("\n"+parms,true);
 		Resources.removeResource("skills/expertises.txt");
 		CMLib.expertises().recompileExpertises();
@@ -608,7 +608,7 @@ public class Create extends StdCommand
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r");
-			StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true).text();
+			StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS).text();
 			StringBuffer inst=new StringBuffer("");
 			List<String> V=new Vector();
 			if(buf!=null) V=Resources.getFileLineVector(buf);
@@ -637,7 +637,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
+		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
 		F.saveText("\n"+parms,true);
 		Resources.removeResource("titles.txt");
 		CMLib.titles().reloadAutoTitles();
@@ -1051,7 +1051,7 @@ public class Create extends StdCommand
 				if((!mob.isMonster())&&(mob.session().confirm("Create a new faction with ID/filename: 'resources/"+name+"' (N/y)? ","N")))
 				{
 					//name=Resources.buildResourcePath("")+name;
-					StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,true).text();
+					StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,CMFile.FLAG_LOGERRORS).text();
 					if((template==null)||(template.length()==0))
 					{
 						mob.tell("The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.");

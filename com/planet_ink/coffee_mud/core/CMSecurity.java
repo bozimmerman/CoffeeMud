@@ -317,7 +317,7 @@ public class CMSecurity
 						subPath=dir.trim();
 						dir="";
 					}
-					CMFile F=new CMFile(path,null,true,false);
+					CMFile F=new CMFile(path,null,CMFile.FLAG_LOGERRORS);
 					if((F.exists())&&(F.canRead())&&(F.isDirectory()))
 					{
 						String[] files=F.list();

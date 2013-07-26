@@ -78,7 +78,7 @@ public class Taxidermy extends CraftingSkill
 		if(V==null)
 		{
 			V=new Vector();
-			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
+			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
 			List<String> strV=Resources.getFileLineVector(str);
 			List<String> V2=null;
 			boolean header=true;

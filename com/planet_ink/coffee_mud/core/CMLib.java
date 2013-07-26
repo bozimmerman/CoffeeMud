@@ -148,8 +148,6 @@ public class CMLib
 				V.add(l().libraries[lbry.ordinal()]);
 		return V.elements();
 	}
-	public static final CMFile newFile(final String currentPath, final String filename, final boolean pleaseLogErrors)
-	{ return new CMFile(currentPath,filename,null,pleaseLogErrors,false); }
 
 	public static final DatabaseEngine database(){return (DatabaseEngine)l().libraries[Library.DATABASE.ordinal()];}
 	public static final ThreadEngine threads(){return (ThreadEngine)l().libraries[Library.THREADS.ordinal()];}

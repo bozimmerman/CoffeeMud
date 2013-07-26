@@ -137,8 +137,8 @@ public class Quests extends StdLibrary implements QuestManager
 		||(!Q.script().toUpperCase().trim().equalsIgnoreCase(holidayDefinition)))
 		{
 			Q=null;
-			CMFile lF=new CMFile("//"+Resources.makeFileResourceName(holidayFilename),null,false);
-			CMFile vF=new CMFile("::"+Resources.makeFileResourceName(holidayFilename),null,false);
+			CMFile lF=new CMFile("//"+Resources.makeFileResourceName(holidayFilename),null);
+			CMFile vF=new CMFile("::"+Resources.makeFileResourceName(holidayFilename),null);
 			if((lF.exists())&&(!vF.exists())&&(lF.canRead())&&(vF.canWrite()))
 			{
 				byte[] O=lF.raw();
@@ -154,7 +154,7 @@ public class Quests extends StdLibrary implements QuestManager
 					  +"CREATE QUEST "+holidayDefinition+"\n\r"
 					  +"SAVE QUESTS";
 		}
-		CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null,false);
+		CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
 		if((!F.exists())||(!F.canRead())||(!F.canWrite()))
 		{
 			return "The file '"+Resources.makeFileResourceName(holidayFilename)+"' does not exist, and is required for this feature.";
@@ -165,7 +165,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 	
 	@SuppressWarnings("unchecked")
-    public String listHolidays(Area A, String otherParms)
+	public String listHolidays(Area A, String otherParms)
 	{
 		Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -210,7 +210,7 @@ public class Quests extends StdLibrary implements QuestManager
 					if((!contains) && (areaName != null))
 					for(int l=2;l<areaLine.size();l++)
 						if(areaName.equalsIgnoreCase(areaLine.get(l)))
-						{    contains=true; break;}
+						{	contains=true; break;}
 				}
 				else
 				{
@@ -252,7 +252,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@SuppressWarnings("unchecked")
-    public String createHoliday(String named, String areaName, boolean save)
+	public String createHoliday(String named, String areaName, boolean save)
 	{
 		Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -292,7 +292,7 @@ public class Quests extends StdLibrary implements QuestManager
 		}
 		if(save)
 		{
-			CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null,false);
+			CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
 			F.saveText(getDefaultHoliData(named,areaName),true);
 			Quest Q=fetchQuest("holidays");
 			if(Q!=null) Q.setScript(holidayDefinition);
@@ -319,7 +319,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 	
 	@SuppressWarnings("unchecked")
-    public String deleteHoliday(int holidayNumber)
+	public String deleteHoliday(int holidayNumber)
 	{
 		Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -341,7 +341,7 @@ public class Quests extends StdLibrary implements QuestManager
 			step=steps.get(v);
 			buf.append(step+"\n\r");
 		}
-		CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null,false);
+		CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
 		F.saveText(buf);
 		Quest Q=fetchQuest("holidays");
 		if(Q!=null) Q.setScript(holidayDefinition);
@@ -349,7 +349,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@SuppressWarnings("unchecked")
-    public String getHolidayName(int index)
+	public String getHolidayName(int index)
 	{
 		Object resp=getHolidayFile();
 		if(resp instanceof String){ return "";}
@@ -385,7 +385,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 	
 	@SuppressWarnings("unchecked")
-    public int getHolidayIndex(String named)
+	public int getHolidayIndex(String named)
 	{
 		Object resp=getHolidayFile();
 		if(resp instanceof String){ return -1;}
@@ -501,7 +501,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 	
 	@SuppressWarnings("unchecked")
-    public void modifyHoliday(MOB mob, int holidayNumber)
+	public void modifyHoliday(MOB mob, int holidayNumber)
 	{
 		Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -566,7 +566,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@SuppressWarnings("unchecked")
-    public String alterHoliday(String oldName, RawHolidayData newData)
+	public String alterHoliday(String oldName, RawHolidayData newData)
 	{
 		DVector settings=newData.settings;
 		DVector behaviors=newData.behaviors;
@@ -762,7 +762,7 @@ public class Quests extends StdLibrary implements QuestManager
 			else
 				buf.append(step+"\n\r");
 		}
-		CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null,false);
+		CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null);
 		F.saveText(buf);
 		Quest Q=fetchQuest("holidays");
 		if(Q!=null) Q.setScript(holidayDefinition);
@@ -1264,10 +1264,11 @@ public class Quests extends StdLibrary implements QuestManager
 	}
  
 	@SuppressWarnings("unchecked")
-    public DVector getQuestTemplate(MOB mob, String fileToGet)
+	public DVector getQuestTemplate(MOB mob, String fileToGet)
 	{
 		// user security doesn't matter, because this is read-only & system files.
-		CMFile tempF=new CMFile(Resources.makeFileResourceName("quests/templates"),null,true,CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.CMDQUESTS));
+		final int fileOpenFlag=CMFile.FLAG_LOGERRORS|(CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.CMDQUESTS)?CMFile.FLAG_FORCEALLOW:0);
+		CMFile tempF=new CMFile(Resources.makeFileResourceName("quests/templates"),null,fileOpenFlag);
 		if((!tempF.exists())||(!tempF.isDirectory()))
 			return null;
 		CMFile[] files=tempF.listFiles();
@@ -1573,7 +1574,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 	
 	@SuppressWarnings("unchecked")
-    public Quest questMaker(MOB mob)
+	public Quest questMaker(MOB mob)
 	{
 		if(mob.isMonster()) return null;
 		DVector questTemplates=getQuestTemplate(mob,null);
@@ -1847,7 +1848,7 @@ public class Quests extends StdLibrary implements QuestManager
 			&&(mob.session().confirm("Create the new quest: "+name+" (y/N)? ","N")))
 			{
 				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
-				CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),mob,true,false);
+				CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),mob,CMFile.FLAG_LOGERRORS);
 				newQF.saveText(script);
 				Q.setScript("LOAD=quests/"+name+".quest");
 				if((Q.name().trim().length()==0)||(Q.duration()<0))

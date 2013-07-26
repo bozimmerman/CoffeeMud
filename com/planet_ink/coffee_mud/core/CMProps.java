@@ -370,7 +370,7 @@ public class CMProps extends Properties
 		if(props[c]==null) props[c]=this;
 		try
 		{
-			final CMFile F=new CMFile(filename,null,false);
+			final CMFile F=new CMFile(filename,null);
 			if(F.exists())
 			{
 				this.load(new ByteArrayInputStream(F.textUnformatted().toString().getBytes()));
@@ -389,7 +389,7 @@ public class CMProps extends Properties
 	{
 		try
 		{
-			this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
+			this.load(new ByteArrayInputStream(new CMFile(filename,null).raw()));
 			loaded=true;
 		}
 		catch(IOException e)
@@ -407,7 +407,7 @@ public class CMProps extends Properties
 
 		try
 		{
-			this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
+			this.load(new ByteArrayInputStream(new CMFile(filename,null).raw()));
 			loaded=true;
 		}
 		catch(IOException e)
@@ -949,7 +949,7 @@ public class CMProps extends Properties
 				{
 					rawListData=new Properties();
 					final String listFileName=CMProps.p().getProperty("LISTFILE");
-					final CMFile F=new CMFile(listFileName,null,true);
+					final CMFile F=new CMFile(listFileName,null,CMFile.FLAG_LOGERRORS);
 					if(F.exists())
 					{
 						try{
@@ -1485,7 +1485,7 @@ public class CMProps extends Properties
 
 	public static final List<String> loadEnumerablePage(final String iniFile)
 	{
-		final StringBuffer str=new CMFile(iniFile,null,true).text();
+		final StringBuffer str=new CMFile(iniFile,null,CMFile.FLAG_LOGERRORS).text();
 		if((str==null)||(str.length()==0)) return new Vector<String>();
 		final List<String> page=Resources.getFileLineVector(str);
 		for(int p=0;p<(page.size()-1);p++)

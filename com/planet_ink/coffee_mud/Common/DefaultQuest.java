@@ -237,7 +237,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			index=internalFiles.indexOf(named.toUpperCase().trim());
 			if(index>=0) return (StringBuffer)internalFiles.elementAt(index,2);
 		}
-		StringBuffer buf=new CMFile(Resources.makeFileResourceName(named),null,true).text();
+		StringBuffer buf=new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS).text();
 		return buf;
 	}
 

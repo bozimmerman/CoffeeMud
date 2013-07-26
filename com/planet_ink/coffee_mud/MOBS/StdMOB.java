@@ -1415,10 +1415,10 @@ public class StdMOB implements MOB
 		return name();
 	}
 
-	public String displayText(MOB viewer) 
+	public String displayText(MOB viewerMob) 
 	{
 		if ((displayText.length() == 0)
-		|| (!name(viewer).equals(Name()))
+		|| (!name(viewerMob).equals(Name()))
 		|| (!titledName().equals(Name()))
 		|| (CMLib.flags().isSleeping(this))
 		|| (CMLib.flags().isSitting(this))
@@ -1430,8 +1430,8 @@ public class StdMOB implements MOB
 		|| (isInCombat()))
 		{
 			StringBuffer sendBack = null;
-			if (!name(viewer).equals(Name()))
-				sendBack = new StringBuffer(name(viewer));
+			if (!name(viewerMob).equals(Name()))
+				sendBack = new StringBuffer(name(viewerMob));
 			else
 				sendBack = new StringBuffer(titledName());
 			sendBack.append(" ");
@@ -1440,10 +1440,10 @@ public class StdMOB implements MOB
 			if (riding() != null)
 			{
 				sendBack.append(" " + riding().stateString(this) + " ");
-				if (riding() == viewer)
+				if (riding() == viewerMob)
 					sendBack.append("YOU");
 				else 
-				if (!CMLib.flags().canBeSeenBy(riding(), viewer))
+				if (!CMLib.flags().canBeSeenBy(riding(), viewerMob))
 				{
 					if (riding() instanceof Item)
 						sendBack.append("something");
@@ -1472,10 +1472,10 @@ public class StdMOB implements MOB
 							if (r == me.numRiders() - 1)
 								sendBack.append("and ");
 						}
-						if (rider == viewer)
+						if (rider == viewerMob)
 							sendBack.append("you");
 						else 
-						if (!CMLib.flags().canBeSeenBy(riding(), viewer))
+						if (!CMLib.flags().canBeSeenBy(riding(), viewerMob))
 						{
 							if (riding() instanceof Item)
 								sendBack.append("something");
@@ -1491,10 +1491,10 @@ public class StdMOB implements MOB
 			if ((isInCombat()) && (CMLib.flags().canMove(this)) && (!CMLib.flags().isSleeping(this)))
 			{
 				sendBack.append(" fighting ");
-				if (getVictim() == viewer)
+				if (getVictim() == viewerMob)
 					sendBack.append("YOU");
 				else 
-				if (!CMLib.flags().canBeSeenBy(getVictim(), viewer))
+				if (!CMLib.flags().canBeSeenBy(getVictim(), viewerMob))
 					sendBack.append("someone");
 				else
 					sendBack.append(getVictim().name());
@@ -1514,10 +1514,10 @@ public class StdMOB implements MOB
 							if (v == whoseAhead.size() - 1)
 								sendBack.append("and ");
 						}
-						if (ahead == viewer)
+						if (ahead == viewerMob)
 							sendBack.append("you");
 						else 
-						if (!CMLib.flags().canBeSeenBy(ahead, viewer))
+						if (!CMLib.flags().canBeSeenBy(ahead, viewerMob))
 							sendBack.append("someone");
 						else
 							sendBack.append(ahead.name());

@@ -539,7 +539,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	
 	public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save)
 	{
-		StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true).text();
+		StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,CMFile.FLAG_LOGERRORS).text();
 		try
 		{
 			testRecipeParsing(str,recipeFormat,save?recipeFilename:null);
@@ -783,7 +783,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			saveBuf.append("\n");
 		}
-		CMFile file = new CMFile((saveToVFS?"::":"//")+Resources.buildResourcePath("skills")+recipeFilename,null,true);
+		CMFile file = new CMFile((saveToVFS?"::":"//")+Resources.buildResourcePath("skills")+recipeFilename,null,CMFile.FLAG_LOGERRORS);
 		if(!file.canWrite())
 			Log.errOut("CMAbleParms","File: "+recipeFilename+" can not be written");
 		else
@@ -792,7 +792,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			file.saveText(saveBuf);
 			if(!saveToVFS)
 			{
-				file = new CMFile("::"+Resources.buildResourcePath("skills")+recipeFilename,null,true);
+				file = new CMFile("::"+Resources.buildResourcePath("skills")+recipeFilename,null,CMFile.FLAG_LOGERRORS);
 				if((file.exists())&&(file.canWrite()))
 				{
 					file.saveText(saveBuf);
@@ -2452,7 +2452,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				parseError = "No file";
 				return;
 			}
-			CMFile F = new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true);
+			CMFile F = new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,CMFile.FLAG_LOGERRORS);
 			wasVFS=F.isVFSFile();
 			StringBuffer str=F.text();
 			columns = parseRecipeFormatColumns(recipeFormat);

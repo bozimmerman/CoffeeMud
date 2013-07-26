@@ -47,7 +47,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 			return "[Unauthorized]";
 		if(!CMSecurity.isASysOp(M))
 			return "[Unallowed]";
-		CMFile sourcesF = new CMFile("/web/admin/work",M,true);
+		CMFile sourcesF = new CMFile("/web/admin/work",M,CMFile.FLAG_LOGERRORS);
 		if((!sourcesF.canRead())||(!sourcesF.isDirectory())||(sourcesF.list().length==0))
 			return "[Unsourced]";
 		CMFile[] sourceFiles = sourcesF.listFiles();
@@ -59,7 +59,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 			if(sf.getName().endsWith(".cmvp"))
 			{
 				int sfLen=sf.getName().length();
-				CMFile df=new CMFile("/guides/refs/"+sf.getName().substring(0,sfLen-5)+".html",M,false);
+				CMFile df=new CMFile("/guides/refs/"+sf.getName().substring(0,sfLen-5)+".html",M);
 				if(!df.canWrite())
 					return "[Unwrittable: "+df.getName()+"]";
 				byte[] savable = CMLib.webMacroFilter().virtualPageFilter(httpReq, httpReq.getRequestObjects(), processStartTime, lastFoundMacro, new StringBuffer(new String(sf.raw()))).toString().getBytes();

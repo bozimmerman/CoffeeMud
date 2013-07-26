@@ -218,7 +218,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED: clancraft.txt");
 		if(V==null)
 		{
-			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+"clancraft.txt",null,true).text();
+			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+"clancraft.txt",null,CMFile.FLAG_LOGERRORS).text();
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("StdClanItem","Recipes not found!");

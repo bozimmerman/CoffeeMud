@@ -51,7 +51,7 @@ public class JRun extends StdCommand
 		commands.removeElementAt(0);
 
 		String fn = (String)commands.elementAt(0);
-		StringBuffer ft = new CMFile(fn,mob,true).text();
+		StringBuffer ft = new CMFile(fn,mob,CMFile.FLAG_LOGERRORS).text();
 		if((ft==null)||(ft.length()==0))
 		{
 			mob.tell("File '"+fn+"' could not be found.");

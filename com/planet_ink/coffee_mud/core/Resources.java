@@ -172,7 +172,7 @@ public class Resources
 			prefix=filename.substring(0,2);
 			filename=filename.substring(2);
 		}
-		new CMFile(prefix+buildResourcePath(filename),null,false).saveText(str);
+		new CMFile(prefix+buildResourcePath(filename),null).saveText(str);
 	}
 
 	public static final boolean removeMultiLists(final String filename)
@@ -223,7 +223,7 @@ public class Resources
 				prefix=filename.substring(0,2);
 				filename=filename.substring(2);
 			}
-			V=getFileLineVector(new CMFile(prefix+"resources/"+filename,null,false).text());
+			V=getFileLineVector(new CMFile(prefix+"resources/"+filename,null).text());
 		}catch(Exception e){}
 		if((V!=null)&&(V.size()>0))
 		{
@@ -320,7 +320,7 @@ public class Resources
 	public final boolean _isFileResource(final String filename)
 	{
 		if(_getResource(filename)!=null) return true;
-		if(new CMFile(makeFileResourceName(filename),null,false).exists())
+		if(new CMFile(makeFileResourceName(filename),null).exists())
 			return true;
 		return false;
 	}
@@ -346,7 +346,7 @@ public class Resources
 		Object rsc=_getResource(filename);
 		if(rsc != null)
 			return _toStringBuffer(rsc);
-		StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors).text();
+		StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors?CMFile.FLAG_LOGERRORS:0).text();
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
 			_submitResource(filename,buf);
 		return buf;
@@ -359,7 +359,7 @@ public class Resources
 		return _saveFileResource(filename,null,_toStringBuffer(obj));
 	}
 
-	public final boolean _saveFileResource(String filename, final MOB whom, final StringBuffer myRsc)
+	public final boolean _saveFileResource(String filename, final MOB whoM, final StringBuffer myRsc)
 	{
 		final boolean vfsFile=filename.trim().startsWith("::");
 		final boolean localFile=filename.trim().startsWith("//");
@@ -367,7 +367,7 @@ public class Resources
 		if(!filename.startsWith("resources/"))
 			filename="resources/"+filename;
 		filename=(vfsFile?"::":localFile?"//":"")+filename;
-		return new CMFile(filename,whom,false).saveRaw(myRsc);
+		return new CMFile(filename,whoM).saveRaw(myRsc);
 	}
 
 	public final boolean _findRemoveProperty(final CMFile F, final String match)
@@ -412,7 +412,7 @@ public class Resources
 			{
 				if(propResources==null)
 				{
-					CMFile file=new CMFile("::/coffeemud_properties.ini",null,false,true);
+					CMFile file=new CMFile("::/coffeemud_properties.ini",null,CMFile.FLAG_FORCEALLOW);
 					propResources=new TreeMap<String,Map<String,String>>();
 					if(file.exists())
 					{
@@ -525,7 +525,7 @@ public class Resources
 							} catch (UnsupportedEncodingException e) { }
 						}
 					}
-					CMFile file=new CMFile("::/coffeemud_properties.ini",null,false,true);
+					CMFile file=new CMFile("::/coffeemud_properties.ini",null,CMFile.FLAG_FORCEALLOW);
 					file.saveText(str);
 				}
 			}

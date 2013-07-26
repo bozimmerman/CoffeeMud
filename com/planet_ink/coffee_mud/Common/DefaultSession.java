@@ -298,7 +298,7 @@ public class DefaultSession implements Session
 									String[] paths=CMLib.protocol().mxpImagePath("intro.jpg");
 									if(paths[0].length()>0)
 									{
-										CMFile introDir=new CMFile("/web/pub/images/mxp",null,false,true);
+										CMFile introDir=new CMFile("/web/pub/images/mxp",null,CMFile.FLAG_FORCEALLOW);
 										String introFilename=paths[1];
 										if(introDir.isDirectory())
 										{

@@ -90,7 +90,7 @@ public class Export extends StdCommand
 			if(S!=null) mob.tell("Writing file...");
 			if(fileName.indexOf('.')<0)
 				fileName=fileName+".cmare";
-			new CMFile(fileName,mob,false).saveText(xml);
+			new CMFile(fileName,mob).saveText(xml);
 			if(S!=null) mob.tell("File '"+fileName+"' written.");
 		}
 	}
@@ -186,7 +186,7 @@ public class Export extends StdCommand
 					if(S!=null) mob.tell("You are not allowed to export to a file.");
 					return false;
 				}
-				CMFile F=new CMFile(fileName,mob,false);
+				CMFile F=new CMFile(fileName,mob);
 				if(F.isDirectory())
 					fileNameCode=2;
 			}
@@ -453,7 +453,7 @@ public class Export extends StdCommand
 			{
 				Object O=i.next();
 				String filename=(String)O;
-				StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,true).text();
+				StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
 				if((buf!=null)&&(buf.length()>0))
 				{
 					str.append("<FILE NAME=\""+filename+"\">");

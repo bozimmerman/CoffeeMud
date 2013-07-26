@@ -613,7 +613,7 @@ public class Destroy extends StdCommand
 		}
 
 		String classID=CMParms.combine(commands,2);
-		CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true);
+		CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,CMFile.FLAG_LOGERRORS);
 		boolean removed=Resources.findRemoveProperty(F, classID);
 		if(removed)
 		{
@@ -644,7 +644,7 @@ public class Destroy extends StdCommand
 			return false;
 		}
 		CMLib.titles().dispossesTitle(classID);
-		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
+		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
 		boolean removed=Resources.findRemoveProperty(F, classID);
 		if(removed)
 		{
@@ -1274,7 +1274,7 @@ public class Destroy extends StdCommand
 				{
 					try
 					{
-						CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null,false);
+						CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null);
 						if(F2.exists()) 
 							F2.deleteAll();
 						else

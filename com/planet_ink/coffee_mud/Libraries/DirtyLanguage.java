@@ -135,7 +135,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	protected Hashtable<String,DVector> loadFileSections(String filename)
 	{
 		Hashtable<String,DVector> parserSections=new Hashtable<String,DVector>();
-		CMFile F=new CMFile(filename,null,false,true);
+		CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
 		if(!F.exists()){ Log.errOut("Language file "+filename+" not found! This mud is in deep doo-doo!"); return null;}
 		StringBuffer alldata=F.text();
 		List<String> V=Resources.getFileLineVector(alldata);
@@ -621,7 +621,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		StringBuffer buf=new StringBuffer("");
 		for(int f=0;f<fileData.size();f++)
 			buf.append(((String)fileData.elementAt(f,2))+"\n\r");
-		CMFile F=new CMFile(filename,null,false,true);
+		CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
 		if((F.exists())&&(F.canWrite()))
 			F.saveText(buf);
 	}

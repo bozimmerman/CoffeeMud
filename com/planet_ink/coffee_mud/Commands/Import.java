@@ -913,7 +913,7 @@ public class Import extends StdCommand
 				filename="::"+filename;
 			}
 			
-			if(new CMFile(filename,mob,false).exists())
+			if(new CMFile(filename,mob).exists())
 			{
 				if(noDelete)
 					continue;
@@ -2787,12 +2787,12 @@ public class Import extends StdCommand
 					else
 					{
 						try{
-							CMFile F2=new CMFile(areaFileName,M,true);
+							CMFile F2=new CMFile(areaFileName,M,CMFile.FLAG_LOGERRORS);
 							if((F2.exists())&&(!F2.isDirectory()))
 							{
 								int x=F2.getAbsolutePath().lastIndexOf('/');
 								String path=F2.getAbsolutePath().substring(0,x)+"/"+mobprg;
-								StringBuffer buf=new CMFile(path,M,true).text();
+								StringBuffer buf=new CMFile(path,M,CMFile.FLAG_LOGERRORS).text();
 								if((buf==null)||(buf.length()==0))
 									returnAnError(session,"Unknown MobPrg: "+mobprg,compileErrors,commands);
 								else
@@ -4432,7 +4432,7 @@ public class Import extends StdCommand
 			for(int areaFile=commands.size()-1;areaFile>=0;areaFile--)
 			{
 				String areaFileName=(String)commands.elementAt(areaFile);
-				CMFile F=new CMFile(areaFileName,mob,true);
+				CMFile F=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
 				CMFile[] FF=F.listFiles();
 				if((FF!=null)&&(FF.length>0))
 				{
@@ -4490,7 +4490,7 @@ public class Import extends StdCommand
 					continue;
 				baseFilesAlreadyDone.add(baseAreaFileName.toLowerCase());
 				areaFileName=baseAreaFileName+".zon";
-				CF=new CMFile(areaFileName,mob,true);
+				CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
 				buf=CF.text();
 				final StringBuffer finalBuf=new StringBuffer("");
 				String eoln=CMStrings.determineEOLN(buf);
@@ -4506,21 +4506,21 @@ public class Import extends StdCommand
 					finalBuf.append("#AREA").append(eoln).append(buf.substring(startDex,wldDivDex)).append(eoln).append(eoln);
 					resetsStr="#RESETS"+eoln+buf.substring(wldDivDex+(eoln.length()*2))+eoln+eoln;
 					areaFileName=baseAreaFileName+".wld";
-					CF=new CMFile(areaFileName,mob,true);
+					CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
 					buf=CF.text();
 				}
 				if((buf!=null)&&(buf.length()>0))
 				{
 					finalBuf.append("#ROOMS").append(eoln).append(buf.toString()).append(eoln).append(eoln);
 					areaFileName=baseAreaFileName+".mob";
-					CF=new CMFile(areaFileName,mob,true);
+					CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
 					buf=CF.text();
 				}
 				if((buf!=null)&&(buf.length()>0))
 				{
 					finalBuf.append("#MOBILES").append(eoln).append(buf.toString()).append(eoln).append(eoln);
 					areaFileName=baseAreaFileName+".obj";
-					CF=new CMFile(areaFileName,mob,true);
+					CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
 					buf=CF.text();
 				}
 				if((buf!=null)&&(buf.length()>0))
@@ -4534,7 +4534,7 @@ public class Import extends StdCommand
 			}
 			else
 			{
-				CF=new CMFile(areaFileName,mob,true);
+				CF=new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS);
 				buf=CF.text();
 			}
 			if((buf==null)||(buf.length()==0))

@@ -1476,7 +1476,7 @@ public class ListCmd extends StdCommand
 		String fileName=Log.instance().getLogFilename(Log.Type.help);
 		if(fileName==null)
 			return "This feature requires that help request log entries be directed to a file.";
-		CMFile f=new CMFile(fileName,mob,true);
+		CMFile f=new CMFile(fileName,mob,CMFile.FLAG_LOGERRORS);
 		if((!f.exists())||(!f.canRead()))
 			return "File '"+f.getName()+"' does not exist.";
 		List<String> V=Resources.getFileLineVector(f.text());

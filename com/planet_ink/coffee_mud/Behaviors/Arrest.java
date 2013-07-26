@@ -382,7 +382,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			return super.externalFiles();
 		if(lawName.equalsIgnoreCase("laws.ini"))
 			return super.externalFiles();
-		if(new CMFile(Resources.makeFileResourceName(lawName),null,false).exists())
+		if(new CMFile(Resources.makeFileResourceName(lawName),null).exists())
 			return new XVector(lawName);
 		return super.externalFiles();
 	}
@@ -435,7 +435,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 				}
 				if(lawprops.isEmpty())
-					lawprops.load(new ByteArrayInputStream(new CMFile(Resources.makeFileResourceName(lawName),null,false).raw()));
+					lawprops.load(new ByteArrayInputStream(new CMFile(Resources.makeFileResourceName(lawName),null).raw()));
 			}
 			catch(IOException e)
 			{

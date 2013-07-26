@@ -784,7 +784,7 @@ public class QuestMaker extends StdWebMacro
 				}
 				script=CMStrings.replaceAll(script,"$#AUTHOR",M.Name());
 				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
-				CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),M,true,false);
+				CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),M,CMFile.FLAG_LOGERRORS);
 				if(!newQF.saveText(script))
 				{
 					httpReq.addFakeUrlParameter("QMPAGEERRORS","Unable to save your quest.  Please consult the log.");

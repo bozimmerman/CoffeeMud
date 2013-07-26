@@ -140,15 +140,15 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		String filename;
 		filename="factions/"+factionID+".ini";
-		if(new CMFile(Resources.makeFileResourceName(filename),null,false).exists())
+		if(new CMFile(Resources.makeFileResourceName(filename),null).exists())
 			return filename;
 		filename="factions/"+factionID;
-		if(new CMFile(Resources.makeFileResourceName(filename),null,false).exists())
+		if(new CMFile(Resources.makeFileResourceName(filename),null).exists())
 			return filename;
 		filename=factionID+".ini";
-		if(new CMFile(Resources.makeFileResourceName(filename),null,false).exists())
+		if(new CMFile(Resources.makeFileResourceName(filename),null).exists())
 			return filename;
-		if(new CMFile(Resources.makeFileResourceName(factionID),null,false).exists())
+		if(new CMFile(Resources.makeFileResourceName(factionID),null).exists())
 			return factionID;
 		filename=factionID;
 		if(filename.indexOf('/')<0)
@@ -170,7 +170,7 @@ public class Factions extends StdLibrary implements FactionManager
 			Resources.removeResource(F.factionID());
 			return null;
 		}
-		CMFile f=new CMFile(Resources.makeFileResourceName(makeFactionFilename(factionID)),null,true);
+		CMFile f=new CMFile(Resources.makeFileResourceName(makeFactionFilename(factionID)),null,CMFile.FLAG_LOGERRORS);
 		if(!f.exists()) return null;
 		StringBuffer buf=f.text();
 		if((buf!=null)&&(buf.length()>0))

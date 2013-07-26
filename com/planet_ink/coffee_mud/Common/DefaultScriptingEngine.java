@@ -507,7 +507,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	private StringBuffer getResourceFileData(String named)
 	{
 		if(getQuest("*")!=null) return getQuest("*").getResourceFileData(named);
-		return new CMFile(Resources.makeFileResourceName(named),null,true).text();
+		return new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS).text();
 	}
 
 	public String getScript(){ return myScript;}
@@ -7167,7 +7167,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null) return null;
 				}
 				String scriptname=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
-				if(!new CMFile(Resources.makeFileResourceName(scriptname),null,false,true).exists())
+				if(!new CMFile(Resources.makeFileResourceName(scriptname),null,CMFile.FLAG_FORCEALLOW).exists())
 					logError(scripted,"MPUNLOADSCRIPT","Runtime","File does not exist: "+Resources.makeFileResourceName(scriptname));
 				else
 				{

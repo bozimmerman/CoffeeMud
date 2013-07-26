@@ -490,9 +490,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	protected synchronized void saveAllManufacturers()
 	{
 		final String filename=getManufacturersFilename();
-		CMFile xmlFile=new CMFile(filename, null, false, true);
+		CMFile xmlFile=new CMFile(filename, null, CMFile.FLAG_FORCEALLOW);
 		if(!xmlFile.exists())
-			xmlFile=new CMFile("::"+filename, null, false, true);
+			xmlFile=new CMFile("::"+filename, null, CMFile.FLAG_FORCEALLOW);
 		final StringBuilder xmlStr=new StringBuilder("<MANUFACTURERS>");
 		for(Manufacturer man : manufacturers.values())
 			if(man != defaultManufacturer)
@@ -504,7 +504,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	protected void loadAllManufacturers()
 	{
 		final String filename=getManufacturersFilename();
-		CMFile xmlFile=new CMFile(filename, null, false, true);
+		CMFile xmlFile=new CMFile(filename, null, CMFile.FLAG_FORCEALLOW);
 		manufacturers.clear();
 		if(xmlFile.exists() && xmlFile.canRead())
 		{

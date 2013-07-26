@@ -79,7 +79,7 @@ public class DumpFile extends StdCommand
 			if (Resources.getResource(fn) != null)
 				wipeAfter = false;
 
-			StringBuffer ft = new CMFile(fn,mob,true).text();
+			StringBuffer ft = new CMFile(fn,mob,CMFile.FLAG_LOGERRORS).text();
 			if (ft != null && ft.length() > 0)
 			{
 				fileText.append("\n\r");

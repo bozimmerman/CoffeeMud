@@ -691,7 +691,7 @@ public class MUDGrinder extends StdWebMacro
 			if(last==null) return " @break@";
 			F=CMLib.factions().getFaction(last);
 			if(F==null) return " @break@";
-			CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null,true);
+			CMFile F2=new CMFile(Resources.makeFileResourceName(CMLib.factions().makeFactionFilename(F.factionID())),null,CMFile.FLAG_LOGERRORS);
 			if(F2.exists()) F2.deleteAll();
 			Log.sysOut("Grinder",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
 			Resources.removeResource(F.factionID());
@@ -710,7 +710,7 @@ public class MUDGrinder extends StdWebMacro
 			//boolean create=false;
 			if(F==null){
 				//create=true;
-				StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,true).text();
+				StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,CMFile.FLAG_LOGERRORS).text();
 				if((template==null)||(template.length()==0))
 					return "The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.";
 				//Resources.submitResource(last,template);

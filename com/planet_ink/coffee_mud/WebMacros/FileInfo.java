@@ -49,7 +49,7 @@ public class FileInfo extends StdWebMacro
 		if(M==null) return "[authentication error]";
 		try
 		{
-			CMFile F=new CMFile(path+"/"+file,M,false);
+			CMFile F=new CMFile(path+"/"+file,M);
 			if(parms.containsKey("ISDIRECTORY"))
 				return ""+F.isDirectory();
 			if(parms.containsKey("ISFILE"))

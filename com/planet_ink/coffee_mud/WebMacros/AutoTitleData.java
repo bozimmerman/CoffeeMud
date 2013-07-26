@@ -39,7 +39,7 @@ public class AutoTitleData extends StdWebMacro
 	public String deleteTitle(String title)
 	{
 		CMLib.titles().dispossesTitle(title);
-		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
+		CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
 		if(F.exists())
 		{
 			boolean removed=Resources.findRemoveProperty(F, title);
@@ -91,7 +91,7 @@ public class AutoTitleData extends StdWebMacro
 					return err;
 				}
 			}
-			CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
+			CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,CMFile.FLAG_LOGERRORS);
 			F.saveText("\n"+newTitle+"="+newMask,true);
 			Resources.removeResource("titles.txt");
 			CMLib.titles().reloadAutoTitles();

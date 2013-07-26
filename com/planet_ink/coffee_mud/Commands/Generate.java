@@ -83,12 +83,12 @@ public class Generate extends StdCommand
 		CMFile file = null;
 		if((commands.size()>3)&&((String)commands.elementAt(3)).equalsIgnoreCase("FROM"))
 		{
-			file = new CMFile(Resources.buildResourcePath((String)commands.elementAt(4)),mob,false);	
+			file = new CMFile(Resources.buildResourcePath((String)commands.elementAt(4)),mob);	
 			commands.removeElementAt(3);
 			commands.removeElementAt(3);
 		}
 		else
-			file = new CMFile(Resources.buildResourcePath("randareas/example.xml"),mob,false);
+			file = new CMFile(Resources.buildResourcePath("randareas/example.xml"),mob);
 		if(!file.canRead())
 		{
 			mob.tell("Random data file '"+file.getCanonicalPath()+"' not found.  Aborting.");

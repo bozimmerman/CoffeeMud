@@ -66,7 +66,7 @@ public class FileData extends StdWebMacro
 		if(filename.length()==0) return null;
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return null;
-		CMFile F=new CMFile(filename,M,false);
+		CMFile F=new CMFile(filename,M);
 		if((!F.exists())||(!F.canRead())) return null;
 		return F.raw();
 	}

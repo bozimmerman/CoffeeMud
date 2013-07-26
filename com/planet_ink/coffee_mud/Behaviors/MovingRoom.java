@@ -108,7 +108,7 @@ public class MovingRoom extends ActiveTicker
 	protected static synchronized String loadInfo()
 	{
 		StringBuffer str=new StringBuffer("");
-		List<String> V=Resources.getFileLineVector(new CMFile("resources/movingroom.xml",null,true).text());
+		List<String> V=Resources.getFileLineVector(new CMFile("resources/movingroom.xml",null,CMFile.FLAG_LOGERRORS).text());
 		for(int v=0;v<V.size();v++)
 			str.append(V.get(v));
 		String theString = str.toString();

@@ -359,7 +359,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			acct.setPassword(pw);
 			CMLib.database().DBCreateAccount(acct);
 			CMLib.players().addAccount(acct);
-			StringBuffer doneText=new CMFile(Resources.buildResourcePath("text")+"doneacct.txt",null,true).text();
+			StringBuffer doneText=new CMFile(Resources.buildResourcePath("text")+"doneacct.txt",null,CMFile.FLAG_LOGERRORS).text();
 			try { doneText = CMLib.webMacroFilter().virtualPageFilter(doneText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+doneText.toString());
 		}
@@ -873,7 +873,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			acct.setFlag(PlayerAccount.FLAG_ANSI, true);
 		}
-		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newacct.txt",null,true).text();
+		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newacct.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
@@ -896,7 +896,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			finishCreateAccount(loginObj, loginObj.acct, loginObj.login, loginObj.password, "", session);
 			return null;
 		}
-		StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text();
+		StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);}catch(Exception ex){}
 		session.println(null,null,null,emailIntro.toString());
 		loginObj.state=LoginState.ACCTCREATE_EMAILPROMPT;
@@ -1170,7 +1170,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
 		session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
 		// if its not a new account, do this?
-		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,true).text();
+		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		if(acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
@@ -1298,7 +1298,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final String cmd=parms[0].toUpperCase().trim();
 		if(cmd.equalsIgnoreCase("?")||(("HELP").startsWith(cmd)))
 		{
-			StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
+			StringBuffer accountHelp=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,CMFile.FLAG_LOGERRORS).text();
 			try { accountHelp = CMLib.webMacroFilter().virtualPageFilter(accountHelp);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+accountHelp.toString());
 			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
@@ -1724,7 +1724,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		loginObj.login=CMStrings.capitalizeAndLower(loginObj.login.trim());
 		Log.sysOut("Creating user: "+loginObj.login);
 		
-		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text();
+		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText); }catch(Exception ex){}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		String password=(loginObj.acct!=null)?loginObj.acct.getPasswordStr():"";
@@ -1796,7 +1796,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult charcrEmailStart(final LoginSession loginObj, final Session session)
 	{
-		StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text();
+		StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { emailIntro = CMLib.webMacroFilter().virtualPageFilter(emailIntro);}catch(Exception ex){}
 		session.println(null,null,null,emailIntro.toString());
 		loginObj.state=LoginState.CHARCR_EMAILPROMPT;
@@ -1957,7 +1957,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(CMath.bset(themeCode,Area.THEME_TECHNOLOGY)){ selections+="/T";}
 		if(selections.length()==0)
 			selections="/F";
-		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,true).text();
+		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 		session.println(null,null,null,introText.toString());
 		session.promptPrint("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r: ");
@@ -2017,7 +2017,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
-			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text();
+			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"races.txt",null,CMFile.FLAG_LOGERRORS).text();
 			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,introText.toString());
 		}
@@ -2046,7 +2046,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final MOB mob=loginObj.mob;
 
 		if(raceStr.trim().equalsIgnoreCase("?")||(raceStr.length()==0))
-			session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text().toString());
+			session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"races.txt",null,CMFile.FLAG_LOGERRORS).text().toString());
 		else
 		{
 			Race newRace=CMClass.getRace(raceStr);
@@ -2167,7 +2167,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		else
 		{
-			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text();
+			StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,CMFile.FLAG_LOGERRORS).text();
 			try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
@@ -2495,7 +2495,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 		&&!mob.baseCharStats().getMyRace().classless())
-			session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
+			session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,CMFile.FLAG_LOGERRORS).text().toString());
 		loginObj.state=LoginState.CHARCR_CLASSSTART;
 		return null;
 	}
@@ -2520,7 +2520,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		String ClassStr=loginObj.lastInput;
 		if(ClassStr.trim().equalsIgnoreCase("?"))
 		{
-			session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
+			session.println(null,null,null,"\n\r"+new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,CMFile.FLAG_LOGERRORS).text().toString());
 			loginObj.state=LoginState.CHARCR_CLASSSTART;
 			return null;
 		}
@@ -2643,7 +2643,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		
 		if((F.choiceIntro()!=null)&&(F.choiceIntro().length()>0))
 		{
-			StringBuffer intro = new CMFile(Resources.makeFileResourceName(F.choiceIntro()),null,true).text();
+			StringBuffer intro = new CMFile(Resources.makeFileResourceName(F.choiceIntro()),null,CMFile.FLAG_LOGERRORS).text();
 			try { intro = CMLib.webMacroFilter().virtualPageFilter(intro);}catch(Exception ex){}
 			session.println(null,null,null,"\n\r\n\r"+intro.toString());
 		}
@@ -2702,7 +2702,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.setStartRoom(getDefaultStartRoom(mob));
 		mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
 
-		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text();
+		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try { introText = CMLib.webMacroFilter().virtualPageFilter(introText);}catch(Exception ex){}
 		session.println(null,null,null,"\n\r\n\r"+introText.toString());
 		loginObj.state=LoginState.CHARCR_FINISH;

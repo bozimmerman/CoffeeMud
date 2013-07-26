@@ -81,7 +81,7 @@ public class QuestMgr extends StdWebMacro
 				CMLib.quests().delQuest(Q);
 				CMLib.quests().save();
 				httpReq.addFakeUrlParameter("QUEST","");
-				CMFile F=new CMFile(Resources.makeFileResourceName("quests/"+Q.name()+".quest"),M,false,true);
+				CMFile F=new CMFile(Resources.makeFileResourceName("quests/"+Q.name()+".quest"),M,CMFile.FLAG_FORCEALLOW);
 				if(F.exists())
 				{
 					Log.sysOut("QuestMgr",name+" deleted quest '"+Q.name()+"'");
@@ -141,7 +141,7 @@ public class QuestMgr extends StdWebMacro
 		&&(Q.script().toUpperCase().trim().startsWith("LOAD=")))
 		{
 			String fileName=Q.script().trim().substring(5);
-			redirectF=new CMFile(Resources.makeFileResourceName(fileName),null,true);
+			redirectF=new CMFile(Resources.makeFileResourceName(fileName),null,CMFile.FLAG_LOGERRORS);
 			if((!redirectF.exists())||(!redirectF.canRead()))
 				return "Unable to load redirected file '"+fileName+"'";
 		}

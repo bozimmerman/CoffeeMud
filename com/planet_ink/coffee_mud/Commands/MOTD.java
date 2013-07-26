@@ -74,7 +74,7 @@ public class MOTD extends StdCommand
 			StringBuffer buf=new StringBuffer("");
 			try
 			{
-				String msg = new CMFile(Resources.buildResourcePath("text")+"motd.txt",null,false).text().toString();
+				String msg = new CMFile(Resources.buildResourcePath("text")+"motd.txt",null).text().toString();
 				if(msg.length()>0)
 				{
 					if(msg.startsWith("<cmvp>"))

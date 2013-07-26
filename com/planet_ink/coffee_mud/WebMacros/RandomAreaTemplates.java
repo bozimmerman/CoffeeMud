@@ -65,7 +65,7 @@ public class RandomAreaTemplates extends StdWebMacro
 					while(templateDirs.size()>0)
 					{
 						String templateDirPath=templateDirs.remove(0);
-						CMFile templateDir=new CMFile(Resources.buildResourcePath("randareas/"+templateDirPath),M,false);
+						CMFile templateDir=new CMFile(Resources.buildResourcePath("randareas/"+templateDirPath),M);
 						for(CMFile file : templateDir.listFiles())
 						{
 							if(file.isDirectory() && file.canRead())

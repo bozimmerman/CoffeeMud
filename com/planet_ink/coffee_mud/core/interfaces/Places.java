@@ -28,6 +28,7 @@ limitations under the License.
 */
 public interface Places extends PhysicalAgent
 {
+	/** a constant code for {@link Places#getAtmosphereCode()} that denotes that the atmo is inherited from a parent */
 	public final static int ATMOSPHERE_INHERIT = -1;
 	
 	/**
@@ -107,13 +108,4 @@ public interface Places extends PhysicalAgent
 	public final static int NUM_CLIMATES=6;
 	/**	Bitmap climate flag meaning that the area has all weather modifiers.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */
 	public final static int ALL_CLIMATE_MASK=31;
-	
-	/** Legacy value for old Room domainConditions() */
-	//public final static int CONDITION_NORMAL=CLIMASK_NORMAL;
-	/** Legacy value for old Room domainConditions() */
-	//public final static int CONDITION_WET=CLIMASK_WET;
-	/** Legacy value for old Room domainConditions() */
-	//public final static int CONDITION_HOT=CLIMASK_HOT;
-	/** Legacy value for old Room domainConditions() */
-	//public final static int CONDITION_COLD=CLIMASK_COLD;
 }

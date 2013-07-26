@@ -110,7 +110,7 @@ public class Archon_Record extends ArchonSkill
 			{
 				mob.location().send(mob,msg);
 				String filename="/"+target.Name()+System.currentTimeMillis()+".log";
-				CMFile file=new CMFile(filename,null,true);
+				CMFile file=new CMFile(filename,null,CMFile.FLAG_LOGERRORS);
 				if(!file.canWrite())
 				{
 					if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))

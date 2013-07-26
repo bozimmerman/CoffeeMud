@@ -299,7 +299,7 @@ public class Shell extends StdCommand
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
 				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
-			CMFile DD=new CMFile(pwd,target,mob,false);
+			CMFile DD=new CMFile(CMFile.incorporateBaseDir(pwd,target),mob);
 			java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			for(CMFile SF: ddirs)
 			{
@@ -338,7 +338,7 @@ public class Shell extends StdCommand
 						target="//"+target;
 					else
 						target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
-					DF=new CMFile(target,mob,false);
+					DF=new CMFile(target,mob);
 				}
 				else
 				if(dirs.length>1)
@@ -369,7 +369,7 @@ public class Shell extends StdCommand
 		}
 		case 2: // cd
 		{
-			CMFile newDir=new CMFile(pwd,CMParms.combine(commands,1),mob,false);
+			CMFile newDir=new CMFile(CMFile.incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			String changeTo=newDir.getVFSPathAndName();
 			if(!newDir.exists())
 			{
@@ -460,7 +460,7 @@ public class Shell extends StdCommand
 		}
 		case 5: // makedirectory
 		{
-			CMFile CF=new CMFile(pwd,CMParms.combine(commands,1),mob,false);
+			CMFile CF=new CMFile(CMFile.incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if(CF.exists())
 			{
 				mob.tell("^xError: file already exists!^N");
@@ -571,7 +571,7 @@ public class Shell extends StdCommand
 		}
 		case 8: // edit
 		{
-			CMFile file=new CMFile(pwd,CMParms.combine(commands,1),mob,false);
+			CMFile file=new CMFile(CMFile.incorporateBaseDir(pwd,CMParms.combine(commands,1)),mob);
 			if((!file.canWrite())
 			||(file.isDirectory()))
 			{
@@ -632,7 +632,7 @@ public class Shell extends StdCommand
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
 				target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
-			CMFile DD=new CMFile(pwd,target,mob,false);
+			CMFile DD=new CMFile(CMFile.incorporateBaseDir(pwd,target),mob);
 			java.util.List<CMFile> ddirs=sortDirsUp(dirs);
 			java.util.List<CMFile> dirsLater=new Vector<CMFile>();
 			for(int d=0;d<ddirs.size();d++)
@@ -673,7 +673,7 @@ public class Shell extends StdCommand
 						target="//"+target;
 					else
 						target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
-					DF=new CMFile(target,mob,false);
+					DF=new CMFile(target,mob);
 				}
 				else
 				if(dirs.length>1)

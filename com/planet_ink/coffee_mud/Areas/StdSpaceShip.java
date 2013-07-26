@@ -295,7 +295,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	}
 	public String displayText(){return displayText;}
 	public void setDisplayText(String newDisplayText){ displayText=newDisplayText; }
-	public String displayText(MOB viewer) { return displayText(); }
+	public String displayText(MOB viewerMob) { return displayText(); }
 	public String name(MOB viewerMob) { return name(); }
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

@@ -471,7 +471,7 @@ public class StdArea implements Area
 	}
 	public String displayText(){return "";}
 	public void setDisplayText(String newDisplayText){}
-	public String displayText(MOB viewer) { return displayText(); }
+	public String displayText(MOB viewerMob) { return displayText(); }
 	public String name(MOB viewerMob) { return name(); }
 	public String finalPrejudiceFactors()
 	{

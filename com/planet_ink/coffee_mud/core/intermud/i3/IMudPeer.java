@@ -61,7 +61,7 @@ public class IMudPeer implements PersistentPeer
 		if(myobj instanceof Intermud)
 		{
 			try{
-				CMFile F=new CMFile("resources/ppeer."+myID,null,false);
+				CMFile F=new CMFile("resources/ppeer."+myID,null);
 				if(!F.exists()) return;
 				
 				ObjectInputStream in=new ObjectInputStream(new ByteArrayInputStream(F.raw()));
@@ -111,7 +111,7 @@ public class IMudPeer implements PersistentPeer
 				out.writeObject(((Intermud)myobj).name_servers);
 				out.flush();
 				bout.flush();
-				new CMFile("::resources/ppeer."+myID,null,false).saveRaw(bout.toByteArray());
+				new CMFile("::resources/ppeer."+myID,null).saveRaw(bout.toByteArray());
 				out.close();
 				bout.close();
 			}

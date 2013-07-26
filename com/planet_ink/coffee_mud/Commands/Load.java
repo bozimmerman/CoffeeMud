@@ -161,7 +161,7 @@ public class Load extends StdCommand
 			else
 			if(what.equalsIgnoreCase("RESOURCE"))
 			{
-				CMFile F=new CMFile(name,mob,true);
+				CMFile F=new CMFile(name,mob,CMFile.FLAG_LOGERRORS);
 				if((!F.exists())||(!F.canRead()))
 					mob.tell("File '"+name+"' could not be accessed.");
 				else

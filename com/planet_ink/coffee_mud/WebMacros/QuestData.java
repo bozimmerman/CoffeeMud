@@ -99,7 +99,7 @@ public class QuestData extends StdWebMacro
 				&&(script.toString().toUpperCase().trim().startsWith("LOAD=")))
 				{
 					String fileName=script.toString().trim().substring(5);
-					CMFile F=new CMFile(Resources.makeFileResourceName(fileName),null,true);
+					CMFile F=new CMFile(Resources.makeFileResourceName(fileName),null,CMFile.FLAG_LOGERRORS);
 					if((F.exists())&&(F.canRead()))
 						script=F.text();
 					script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\n\r","\n"));

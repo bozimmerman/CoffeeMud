@@ -197,7 +197,7 @@ public class MUD extends Thread implements MudHost
 						Log.sysOut(Thread.currentThread().getName(),"Connection from "+address);
 						state=MudState.ALLOWING;
 						// also the intro page
-						CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,false,true);
+						CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,CMFile.FLAG_FORCEALLOW);
 						String introFilename="text/intro.txt";
 						if(introDir.isDirectory())
 						{
@@ -988,7 +988,7 @@ public class MUD extends Thread implements MudHost
 
 			// test the database
 			try {
-				CMFile F = new CMFile("/test.the.database",null,false);
+				CMFile F = new CMFile("/test.the.database",null);
 				if(F.exists())
 					Log.sysOut(Thread.currentThread().getName(),"Test file found .. hmm.. that was unexpected.");
 					
@@ -1009,8 +1009,8 @@ public class MUD extends Thread implements MudHost
 					String serverName=serverNames.elementAt(s);
 					try
 					{
-						StringBuffer commonProps=new CMFile("web/common.ini", null, true).text();
-						StringBuffer finalProps=new CMFile("web/"+serverName+".ini", null, true).text();
+						StringBuffer commonProps=new CMFile("web/common.ini", null, CMFile.FLAG_LOGERRORS).text();
+						StringBuffer finalProps=new CMFile("web/"+serverName+".ini", null, CMFile.FLAG_LOGERRORS).text();
 						commonProps.append("\n").append(finalProps.toString());
 						MiniWebConfig config=new MiniWebConfig();
 						config.setFileManager(new CMFile.CMFileManager());

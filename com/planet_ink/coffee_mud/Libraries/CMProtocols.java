@@ -144,7 +144,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(H==null)
 		{
 			H=new Hashtable<String,String>();
-			List<String> V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null,false).text());
+			List<String> V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null).text());
 			if((V!=null)&&(V.size()>0))
 			{
 				String s=null;

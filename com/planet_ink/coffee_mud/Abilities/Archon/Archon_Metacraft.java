@@ -266,7 +266,7 @@ public class Archon_Metacraft extends ArchonSkill
 		&&(!toWHERE.equals("SELF"))
 		&&(!toWHERE.equals("HERE")))
 		{
-			CMFile file = new CMFile(toWHERE,mob,false);
+			CMFile file = new CMFile(toWHERE,mob);
 			if(!file.canWrite())
 				mob.tell("Unable to open file '"+toWHERE+"' for writing.");
 			else
@@ -279,7 +279,7 @@ public class Archon_Metacraft extends ArchonSkill
 					{
 						Object O=i.next();
 						String filename=(String)O;
-						StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,true).text();
+						StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,CMFile.FLAG_LOGERRORS).text();
 						if((buf!=null)&&(buf.length()>0))
 						{
 							str.append("<FILE NAME=\""+filename+"\">");

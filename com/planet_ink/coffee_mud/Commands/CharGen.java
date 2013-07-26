@@ -882,7 +882,7 @@ public class CharGen extends StdCommand
 		mob.tell("");
 		if(fileExp!=null)
 		{
-			CMFile file=new CMFile(fileExp,mob,false);
+			CMFile file=new CMFile(fileExp,mob);
 			if(file.canWrite())
 			{
 				StringBuffer buf=new StringBuffer("");

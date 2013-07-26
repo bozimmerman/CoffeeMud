@@ -48,22 +48,22 @@ public class SocialData extends StdWebMacro
 		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("SOCIAL");
 		if(parms.containsKey("ISVFS"))
-			return ""+(new CMFile("::/resources/socials.txt",null,true).exists());
+			return ""+(new CMFile("::/resources/socials.txt",null,CMFile.FLAG_LOGERRORS).exists());
 		if(parms.containsKey("ISLFS"))
-			return ""+(new CMFile("///resources/socials.txt",null,true).exists());
+			return ""+(new CMFile("///resources/socials.txt",null,CMFile.FLAG_LOGERRORS).exists());
 		if(parms.containsKey("NEWVFS"))
 		{
-			CMFile lf=new CMFile("///resources/socials.txt",null,true);
+			CMFile lf=new CMFile("///resources/socials.txt",null,CMFile.FLAG_LOGERRORS);
 			if(!lf.exists()) return "true";
-			CMFile vf=new CMFile("::/resources/socials.txt",null,true);
+			CMFile vf=new CMFile("::/resources/socials.txt",null,CMFile.FLAG_LOGERRORS);
 			if(!vf.exists()) return "false";
 			return ""+(vf.lastModified() > lf.lastModified());
 		}
 		if(parms.containsKey("NEWLFS"))
 		{
-			CMFile lf=new CMFile("///resources/socials.txt",null,true);
+			CMFile lf=new CMFile("///resources/socials.txt",null,CMFile.FLAG_LOGERRORS);
 			if(!lf.exists()) return "false";
-			CMFile vf=new CMFile("::/resources/socials.txt",null,true);
+			CMFile vf=new CMFile("::/resources/socials.txt",null,CMFile.FLAG_LOGERRORS);
 			if(!vf.exists()) return "true";
 			return ""+(vf.lastModified() < lf.lastModified());
 		}
@@ -71,13 +71,13 @@ public class SocialData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			CMFile lf=new CMFile("///resources/socials.txt",M,true);
+			CMFile lf=new CMFile("///resources/socials.txt",M,CMFile.FLAG_LOGERRORS);
 			if(!lf.exists()) return "No local file.";
-			CMFile vf=new CMFile("::/resources/socials.txt",M,false);
+			CMFile vf=new CMFile("::/resources/socials.txt",M);
 			if(vf.exists()) 
 				if(!vf.delete())
 					return "Unable to delete existing vfs file.";
-			vf=new CMFile("::/resources/socials.txt",M,false);
+			vf=new CMFile("::/resources/socials.txt",M);
 			if(!vf.canWrite())
 				return "Unable to write new vfs file.";
 			byte[] raw=lf.raw();
@@ -90,13 +90,13 @@ public class SocialData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			CMFile lf=new CMFile("::/resources/socials.txt",M,true);
+			CMFile lf=new CMFile("::/resources/socials.txt",M,CMFile.FLAG_LOGERRORS);
 			if(!lf.exists()) return "No vfs file.";
-			CMFile vf=new CMFile("///resources/socials.txt",M,false);
+			CMFile vf=new CMFile("///resources/socials.txt",M);
 			if(vf.exists()) 
 				if(!vf.delete())
 					return "Unable to delete existing local file.";
-			vf=new CMFile("///resources/socials.txt",M,false);
+			vf=new CMFile("///resources/socials.txt",M);
 			if(!vf.canWrite())
 				return "Unable to write new local file.";
 			byte[] raw=lf.raw();
@@ -109,7 +109,7 @@ public class SocialData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			CMFile vf=new CMFile("::/resources/socials.txt",M,false);
+			CMFile vf=new CMFile("::/resources/socials.txt",M);
 			if(vf.exists()) 
 				if(!vf.delete())
 					return "Unable to delete existing vfs file.";
@@ -120,7 +120,7 @@ public class SocialData extends StdWebMacro
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null) return "[authentication error]";
-			CMFile vf=new CMFile("///resources/socials.txt",M,false);
+			CMFile vf=new CMFile("///resources/socials.txt",M);
 			if(vf.exists()) 
 				if(!vf.delete())
 					return "Unable to delete existing local file.";

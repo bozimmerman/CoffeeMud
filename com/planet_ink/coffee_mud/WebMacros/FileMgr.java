@@ -66,7 +66,7 @@ public class FileMgr extends StdWebMacro
 		if(!path.endsWith("/")) path+="/";
 		for(int l=0;l<list.length;l++)
 		{
-			CMFile F2=new CMFile(path+list[l],null,true);
+			CMFile F2=new CMFile(path+list[l],null,CMFile.FLAG_LOGERRORS);
 			if(F2.isDirectory())
 				compileFilenamesList(F2,regex,V);
 			else
@@ -80,7 +80,7 @@ public class FileMgr extends StdWebMacro
 		Pattern P=Pattern.compile(regex,Pattern.CASE_INSENSITIVE|Pattern.DOTALL|Pattern.MULTILINE);
 		for(int f=0;f<files.size();f++)
 		{
-			StringBuffer buf=new CMFile((String)files.elementAt(f),null,false).text();
+			StringBuffer buf=new CMFile((String)files.elementAt(f),null).text();
 			if(P.matcher(buf).find())
 				V.addElement(files.elementAt(f));
 		}
@@ -114,7 +114,7 @@ public class FileMgr extends StdWebMacro
 				if(parms.containsKey("LOCAL"))
 					prefix="//";
 			}
-			CMFile F=new CMFile(prefix+filePath+file,M,false);
+			CMFile F=new CMFile(prefix+filePath+file,M);
 			String last=F.getVFSPathAndName();
 			if(parms.containsKey("DELETE"))
 			{
@@ -138,7 +138,7 @@ public class FileMgr extends StdWebMacro
 					// code for "moving" files between vfs/local
 					if(!parms.containsKey("VFS") && !parms.containsKey("BOTH"))
 					{
-						CMFile dF=new CMFile("::"+filePath+file,M,false);
+						CMFile dF=new CMFile("::"+filePath+file,M);
 						if(dF.canVFSEquiv())
 						{
 							if(!dF.deleteVFS())
@@ -149,7 +149,7 @@ public class FileMgr extends StdWebMacro
 					}
 					if(!parms.containsKey("LOCAL") && !parms.containsKey("BOTH"))
 					{
-						CMFile dF=new CMFile("//"+filePath+file,M,false);
+						CMFile dF=new CMFile("//"+filePath+file,M);
 						if(dF.canLocalEquiv())
 						{
 							if(!dF.deleteLocal())
@@ -164,7 +164,7 @@ public class FileMgr extends StdWebMacro
 						returnMsg.append("File `"+prefix+last+"` not updated -- error!");
 					if(parms.containsKey("BOTH"))
 					{
-						F=new CMFile("//"+filePath+file,M,false);
+						F=new CMFile("//"+filePath+file,M);
 						if((!F.canWrite())
 						||(!F.saveText(s)))
 							returnMsg.append("File `//"+last+"` not updated -- error!");
@@ -174,7 +174,7 @@ public class FileMgr extends StdWebMacro
 				else
 				if((!F.canWrite())||(!F.saveText(s)))
 				{
-					F=new CMFile("::"+filePath+file,M,false);
+					F=new CMFile("::"+filePath+file,M);
 					if((F.canWrite())&&(F.saveText(s)))
 						return "File `"+last+"` updated.";
 					return "File `"+last+"` not updated -- error!";
@@ -276,7 +276,7 @@ public class FileMgr extends StdWebMacro
 				{
 					if((d.getVariables().containsKey("filename"))&&(d.getData()!=null))
 					{
-						F=new CMFile(prefix+filePath+d.getVariables().get("filename"),M,false);
+						F=new CMFile(prefix+filePath+d.getVariables().get("filename"),M);
 						last=F.getVFSPathAndName();
 						buf=d.getData();
 					}

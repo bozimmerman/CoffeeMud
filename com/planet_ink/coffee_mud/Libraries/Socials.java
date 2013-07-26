@@ -150,7 +150,7 @@ public class Socials extends StdLibrary implements SocialsList
 		{
 			soc=new Hashtable<String,List<Social>>();
 			Resources.submitResource("PARSED_SOCIALS: "+filename,soc);
-			List<String> V=Resources.getFileLineVector(new CMFile(filename,null,true).text());
+			List<String> V=Resources.getFileLineVector(new CMFile(filename,null,CMFile.FLAG_LOGERRORS).text());
 			putSocialsInHash(soc,V);
 			unloadDerivedResources();
 		}
@@ -833,7 +833,7 @@ public class Socials extends StdLibrary implements SocialsList
 			buf.append('\n');
 		}
 		// allowed is forced because this is already protected by SOCIALS security flag
-		if(!new CMFile(filename,whom,false,true).saveText(buf))
+		if(!new CMFile(filename,whom,CMFile.FLAG_FORCEALLOW).saveText(buf))
 			Log.errOut("Socials","Unable to save socials.txt!");
 		unloadDerivedResources();
 	}

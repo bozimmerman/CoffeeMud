@@ -135,7 +135,7 @@ public class Unload extends StdCommand
 			else
 			if(str.equalsIgnoreCase("help"))
 			{
-				CMFile F=new CMFile("//resources/help",mob,false);
+				CMFile F=new CMFile("//resources/help",mob);
 				if((F.exists())&&(F.canRead())&&(F.canWrite())&&(F.isDirectory()))
 				{
 					CMLib.help().unloadHelpFile(mob);
@@ -287,26 +287,26 @@ public class Unload extends StdCommand
 			if(((String)commands.elementAt(1)).equalsIgnoreCase("FILE"))
 			{
 				String which=CMParms.combine(commands,2);
-				CMFile F1=new CMFile(which,mob,false,true);
+				CMFile F1=new CMFile(which,mob,CMFile.FLAG_FORCEALLOW);
 				if(!F1.exists())
 				{
 					int x=which.indexOf(':');
 					if(x<0) x=which.lastIndexOf(' ');
-					if(x>=0) F1=new CMFile(which.substring(x+1).trim(),mob,false,true);
+					if(x>=0) F1=new CMFile(which.substring(x+1).trim(),mob,CMFile.FLAG_FORCEALLOW);
 				}
 				if(!F1.exists())
 				{
-					F1=new CMFile(Resources.buildResourcePath(which),mob,false,true);
+					F1=new CMFile(Resources.buildResourcePath(which),mob,CMFile.FLAG_FORCEALLOW);
 					if(!F1.exists())
 					{
 						int x=which.indexOf(':');
 						if(x<0) x=which.lastIndexOf(' ');
-						if(x>=0) F1=new CMFile(Resources.buildResourcePath(which.substring(x+1).trim()),mob,false,true);
+						if(x>=0) F1=new CMFile(Resources.buildResourcePath(which.substring(x+1).trim()),mob,CMFile.FLAG_FORCEALLOW);
 					}
 				}
 				if(F1.exists())
 				{
-					CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,true);
+					CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,CMFile.FLAG_LOGERRORS);
 					if((!F2.exists())||(!F2.canRead()))
 					{
 						mob.tell("Inaccessible file resource: '"+which+"'");
@@ -330,26 +330,26 @@ public class Unload extends StdCommand
 			}
 			else
 			{
-				CMFile F1=new CMFile(str,mob,false,true);
+				CMFile F1=new CMFile(str,mob,CMFile.FLAG_FORCEALLOW);
 				if(!F1.exists())
 				{
 					int x=str.indexOf(':');
 					if(x<0) x=str.lastIndexOf(' ');
-					if(x>=0) F1=new CMFile(str.substring(x+1).trim(),mob,false,true);
+					if(x>=0) F1=new CMFile(str.substring(x+1).trim(),mob,CMFile.FLAG_FORCEALLOW);
 				}
 				if(!F1.exists())
 				{
-					F1=new CMFile(Resources.buildResourcePath(str),mob,false,true);
+					F1=new CMFile(Resources.buildResourcePath(str),mob,CMFile.FLAG_FORCEALLOW);
 					if(!F1.exists())
 					{
 						int x=str.indexOf(':');
 						if(x<0) x=str.lastIndexOf(' ');
-						if(x>=0) F1=new CMFile(Resources.buildResourcePath(str.substring(x+1).trim()),mob,false,true);
+						if(x>=0) F1=new CMFile(Resources.buildResourcePath(str.substring(x+1).trim()),mob,CMFile.FLAG_FORCEALLOW);
 					}
 				}
 				if(F1.exists())
 				{
-					CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,true);
+					CMFile F2=new CMFile(F1.getVFSPathAndName(),mob,CMFile.FLAG_LOGERRORS);
 					if((!F2.exists())||(!F2.canRead()))
 					{
 						mob.tell("Inaccessible file resource: '"+str+"'");

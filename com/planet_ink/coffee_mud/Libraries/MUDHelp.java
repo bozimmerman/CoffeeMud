@@ -980,7 +980,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			if(arcHelpFile==null)
 			{
 				arcHelpFile=new Properties();
-				CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,true);
+				CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,CMFile.FLAG_LOGERRORS);
 				if((directory.canRead())&&(directory.isDirectory()))
 				{
 					String[] list=directory.list();
@@ -992,10 +992,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&item.toUpperCase().endsWith(".INI")
 						&&(item.toUpperCase().startsWith("ARC_")))
 						{
-							arcHelpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+							arcHelpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
 							/*
 							Properties chker=new Properties();
-							chker.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+							chker.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
 							for(Object key : chker.keySet())
 								System.out.println(item+": "+key);
 							*/
@@ -1058,7 +1058,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			if(helpFile==null)
 			{
 				helpFile=new Properties();
-				CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,true);
+				CMFile directory=new CMFile(Resources.buildResourcePath("help"),null,CMFile.FLAG_LOGERRORS);
 				if((directory.canRead())&&(directory.isDirectory()))
 				{
 					String[] list=directory.list();
@@ -1070,10 +1070,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&item.toUpperCase().endsWith(".INI")
 						&&(!item.toUpperCase().startsWith("ARC_")))
 						{
-							helpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+							helpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
 							/*
 							Properties chker=new Properties();
-							chker.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
+							chker.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,CMFile.FLAG_LOGERRORS).raw()));
 							for(Object key : chker.keySet())
 								System.out.println(item+": "+key);
 							*/
@@ -1132,7 +1132,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			Resources.removeResource("ARCHON HELP FILE");
 
 		// also the intro page
-		CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,false,true);
+		CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,CMFile.FLAG_FORCEALLOW);
 		if(introDir.isDirectory())
 		{
 			CMFile[] files=introDir.listFiles();

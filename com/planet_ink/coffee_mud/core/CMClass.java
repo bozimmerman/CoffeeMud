@@ -1689,7 +1689,7 @@ public class CMClass extends ClassLoader
 	public static final boolean loadListToObj(final Object collection, final String filePath, final Class<?> ancestorCl, final boolean quiet)
 	{
 		final CMClass loader=new CMClass();
-		final CMFile file=new CMFile(filePath,null,true);
+		final CMFile file=new CMFile(filePath,null,CMFile.FLAG_LOGERRORS);
 		final Vector<String> fileList=new Vector<String>();
 		if(file.canRead())
 		{
@@ -1859,7 +1859,7 @@ public class CMClass extends ClassLoader
 		x=loc.indexOf(floc);
 		loc=loc.substring(x+floc.length());
 		loc=loc.replace(File.separatorChar,'/');
-		return new CMFile("/"+loc,null,false);
+		return new CMFile("/"+loc,null);
 	}
 
 	/**
@@ -2024,7 +2024,7 @@ public class CMClass extends ClassLoader
 			} catch(Exception t){}
 		}
 		/* Try to load it from our repository */
-		final CMFile CF=new CMFile(pathName,null,false);
+		final CMFile CF=new CMFile(pathName,null);
 		final byte[] classData=CF.raw();
 		if((classData==null)||(classData.length==0))
 		{

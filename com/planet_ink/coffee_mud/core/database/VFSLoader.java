@@ -45,7 +45,7 @@ public class VFSLoader
 	public CMFile.CMVFSDir DBReadDirectory()
 	{
 		DBConnection D=null;
-		CMFile.CMVFSDir root=new CMFile.CMVFSDir(null,"",CMFile.VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
+		CMFile.CMVFSDir root=new CMFile.CMVFSDir(null,"");
 		try
 		{
 			D=DB.DBFetch();

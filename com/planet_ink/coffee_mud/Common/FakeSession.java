@@ -57,7 +57,7 @@ public class FakeSession implements Session
 		if(introTextStr.equalsIgnoreCase("MEMORY"))
 			bout=new ByteArrayOutputStream();
 		else
-			theFile = new CMFile(introTextStr,null,true); 
+			theFile = new CMFile(introTextStr,null,CMFile.FLAG_LOGERRORS); 
 	}
 	public String getGroupName() { return Thread.currentThread().getThreadGroup().getName(); }
 	public boolean isLockedUpWriting(){return false;}

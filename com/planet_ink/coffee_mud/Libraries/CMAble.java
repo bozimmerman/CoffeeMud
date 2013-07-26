@@ -2065,7 +2065,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(H==null)
 		{
 			H=new Hashtable();
-			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true).text();
+			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS).text();
 			List<String> V=new Vector();
 			if(buf!=null)
 				V=Resources.getFileLineVector(buf);
@@ -2114,7 +2114,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 	public void alterAbilityComponentFile(String compID, boolean delete)
 	{
-		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
+		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS);
 		if(delete)
 		{
 			Resources.findRemoveProperty(F, compID);
@@ -2261,7 +2261,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		bothMaps=new TreeMap<String,Map<String,AbilityMapping>>();
 		bothMaps.put("ALL", new TreeMap<String,AbilityMapping>());
 		bothMaps.put("EACH", new TreeMap<String,AbilityMapping>());
-		CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null,false);
+		CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null);
 		if(f.exists() && f.canRead())
 		{
 			List<String> list = Resources.getFileLineVector(f.text());
@@ -2376,7 +2376,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				handleEachAndClassAbility(completeAbleMap.get(ID), newMap, ID);
 
 		// now just save it
-		CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null,false);
+		CMFile f = new CMFile(Resources.makeFileResourceName("skills/allqualifylist.txt"),null);
 		List<String> set=new Vector<String>(0);
 		if(f.exists() && f.canRead())
 		{
