@@ -45,6 +45,7 @@ public class CommonSkill extends StdAbility
 	public String supportedResourceString(){return "";}
 	public static final Map<String,Integer[]> resourcesMap=new Hashtable<String,Integer[]>();
 	protected static Item fakeFire=null;
+	protected static final List<String> uninvokeEmpties=new ReadOnlyList<String>(new ArrayList<String>(0));
 	
 	protected volatile Room activityRoom=null;
 	protected boolean aborted=false;
@@ -71,6 +72,7 @@ public class CommonSkill extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
+	protected List<String> getUninvokeException() { return uninvokeEmpties; }
 	public int classificationCode()	{	return Ability.ACODE_COMMON_SKILL; }
 	protected boolean canBeDoneSittingDown() { return false; }
 	protected int getActivityMessageType() { return canBeDoneSittingDown()?CMMsg.MSG_HANDS|CMMsg.MASK_SOUND:CMMsg.MSG_NOISYMOVEMENT; }
@@ -530,7 +532,9 @@ public class CommonSkill extends StdAbility
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+			if((A!=null)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+			&&(!getUninvokeException().contains(A.ID())))
 			{
 				if(A instanceof CommonSkill)
 					((CommonSkill)A).aborted=true;

@@ -158,10 +158,15 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"MasterFarming",false,CMParms.parseSemicolons("Farming(100)",true),"+WIS 16");
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"MasterForaging",false,CMParms.parseSemicolons("Foraging(100)",true),"+CHA 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"MasterDistilling",false,CMParms.parseSemicolons("Distilling(100)",true),"+CHA 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),27,"MasterChopping",false,CMParms.parseSemicolons("Chopping(100)",true),"+STR 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),27,"MasterFoodPrep",false,CMParms.parseSemicolons("FoodPrep(100)",true),"+DEX 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),28,"MasterDigging",false,CMParms.parseSemicolons("Digging(100)",true),"+CON 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),28,"MasterCooking",false,CMParms.parseSemicolons("Cooking(100)",true),"+INT 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),29,"MasterMining",false,CMParms.parseSemicolons("Mining(100)",true),"+STR 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),29,"MasterBaking",false,CMParms.parseSemicolons("Baking(100)",true),"+CON 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Lore",false);
+		
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

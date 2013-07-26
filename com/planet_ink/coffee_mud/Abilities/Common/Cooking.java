@@ -81,9 +81,20 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		verb=cookWord();
 	}
 
+	protected int getDuration(MOB mob, int level)
+	{
+		return getDuration(40,mob,level,5);
+	}
+	
 	public boolean isMineForCooking(MOB mob, Container cooking)
 	{
-		if(mob.isMine(cooking)) 
+		for(int a=0;a<mob.numEffects();a++)
+		{
+			Ability A=mob.fetchEffect(a);
+			if((A instanceof Cooking) && (((Cooking)A).cookingPot==cooking) && (A!=this))
+				return false;
+		}
+		if(mob.isMine(cooking))
 			return true;
 		if((mob.location()==cooking.owner())
 		&&((CMLib.flags().isOnFire(cooking))
@@ -733,6 +744,15 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's nothing in "+target.name(mob)+" to "+cookWordShort()+"!");
 			return false;
 		}
+		for(int a=0;a<mob.numEffects();a++)
+		{
+			Ability A=mob.fetchEffect(a);
+			if((A instanceof Cooking) && (((Cooking)A).cookingPot==target))
+			{
+				commonTell(mob,"That is already in use.");
+				return false;
+			}
+		}
 		if(!isMineForCooking(mob,(Container)target))
 		{
 			commonTell(mob,"You probably need to pick that up first.");
@@ -763,7 +783,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		int duration=getDuration(40,mob,1,5);
+		int duration=getDuration(mob, 1);
 		cookingPot=(Container)target;
 		oldPotContents=potContents(cookingPot);
 
@@ -888,6 +908,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		}
 
 		buildingI=buildItem(mob,finalRecipe,cookingPot.getContents());
+		duration=getDuration(mob, CMath.isInteger((String)finalRecipe.get(RCP_LEVEL))?CMath.s_int((String)finalRecipe.get(RCP_LEVEL)):1);
 		//***********************************************
 		//* done figuring out recipe
 		//***********************************************
