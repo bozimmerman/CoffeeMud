@@ -358,7 +358,7 @@ HELP_QUALCRAFT3=<EXPERTISE>The ability to craft items of the highest quality. It
 DATA_=Fine,Beautiful,Exquisite
 
 QUICKCRAFT@x1=Quick Worker @x2,10,TIME,-SKILLFLAG "+COMMON SKILL",,+WIS {10+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to craft items more quickly and efficiently.
+HELP_=<EXPERTISE>The ability to craft and gather items more quickly and efficiently.
 
 LTHLCRAFT@x1=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+CON {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more deadly than usual.

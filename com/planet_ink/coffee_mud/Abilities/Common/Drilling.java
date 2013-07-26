@@ -53,6 +53,12 @@ public class Drilling extends GatheringSkill
 		verb="drilling";
 	}
 
+	protected int getDuration(MOB mob, int level)
+	{
+		return getDuration(35,mob,level,10);
+	}
+	protected int baseYield() { return 1; }
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -199,7 +205,7 @@ public class Drilling extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		int duration=getDuration(35,mob,1,10);
+		int duration=getDuration(mob,1);
 		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) drilling.");
 		if(mob.location().okMessage(mob,msg))
 		{

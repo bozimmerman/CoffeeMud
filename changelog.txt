@@ -7,6 +7,7 @@
    6. New Forum features: All Forums Search, and better threading for all searches.
    7. Can now disable CharStats (attribute) display
    8. New WebMacro: IsDisabled
+   9. New Artisan skills: Master Drilling, M. Farming, M. Fishing, M. Foraging, M. Mining, M. Shearing, M. Chopping, M. Butchering
 //TODO: add electronics to guides
 //TODO: add electronics to MG
 //TODO: http://games.groups.yahoo.com/group/coffeemud skip=1885,2881,2953,3274,15908,15914,16267

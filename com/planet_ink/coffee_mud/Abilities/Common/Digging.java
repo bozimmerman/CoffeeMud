@@ -52,6 +52,12 @@ public class Digging extends GatheringSkill
 		verb="digging";
 	}
 
+	protected int getDuration(MOB mob, int level)
+	{
+		return getDuration(60,mob,level,15);
+	}
+	protected int baseYield() { return 1; }
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -151,7 +157,7 @@ public class Digging extends GatheringSkill
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		
-		int duration=getDuration(60,mob,1,15);
+		int duration=getDuration(mob,1);
 		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) digging for gems.");
 		if(mob.location().okMessage(mob,msg))
 		{

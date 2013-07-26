@@ -50,6 +50,15 @@ public class Butchering extends GatheringSkill
 		verb="skinning and butchering";
 	}
 
+	protected int getDuration(MOB mob, int weight)
+	{
+		int duration=((weight/(10+getXLEVELLevel(mob))));
+		duration = super.getDuration(duration, mob, 1, 3);
+		if(duration>40) duration=40;
+		return duration;
+	}
+	protected int baseYield() { return 1; }
+	
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -162,9 +171,7 @@ public class Butchering extends GatheringSkill
 			body=(DeadBody)I;
 			verb="skinning and butchering "+I.name();
 			playSound="ripping.wav";
-			int duration=((I.phyStats().weight()/(10+getXLEVELLevel(mob))));
-			if(duration<3) duration=3;
-			if(duration>40) duration=40;
+			int duration=getDuration(mob,I.phyStats().weight());
 			beneficialAffect(mob,mob,asLevel,duration);
 			body.emptyPlease(false);
 			body.destroy();

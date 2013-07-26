@@ -51,6 +51,12 @@ public class Fishing extends GatheringSkill
 		verb="fishing";
 	}
 
+	protected int getDuration(MOB mob, int level)
+	{
+		return getDuration(45,mob,level,15);
+	}
+	protected int baseYield() { return 1; }
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -148,7 +154,7 @@ public class Fishing extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		int duration=getDuration(45,mob,1,15);
+		int duration=getDuration(mob,1);
 		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) fishing.");
 		if(mob.location().okMessage(mob,msg))
 		{

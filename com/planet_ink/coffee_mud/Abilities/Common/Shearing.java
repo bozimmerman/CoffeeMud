@@ -50,6 +50,15 @@ public class Shearing extends CommonSkill
 		verb="shearing";
 	}
 
+	protected int getDuration(MOB mob, int weight)
+	{
+		int duration=((weight/(10+getXLEVELLevel(mob))));
+		duration = super.getDuration(duration, mob, 1, 10);
+		if(duration>40) duration=40;
+		return duration;
+	}
+	protected int baseYield() { return 1; }
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((sheep!=null)
@@ -92,12 +101,16 @@ public class Shearing extends CommonSkill
 					{
 						mob.location().show(mob,null,sheep,getActivityMessageType(),"<S-NAME> manage(s) to shear <O-NAME>.");
 						spreadImmunity(sheep);
-						Vector V=getMyWool(sheep);
-						for(int v=0;v<V.size();v++)
+						int yield=abilityCode()<=0?1:abilityCode();
+						for(int i=0;i<yield;i++)
 						{
-							RawMaterial I=(RawMaterial)V.elementAt(v);
-							I=(RawMaterial)I.copyOf();
-							mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
+							Vector V=getMyWool(sheep);
+							for(int v=0;v<V.size();v++)
+							{
+								RawMaterial I=(RawMaterial)V.elementAt(v);
+								I=(RawMaterial)I.copyOf();
+								mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
+							}
 						}
 					}
 				}
@@ -152,9 +165,7 @@ public class Shearing extends CommonSkill
 			sheep=target;
 			verb="shearing "+target.name();
 			playSound="scissor.wav";
-			int duration=(target.phyStats().weight()/(10+getXLEVELLevel(mob)));
-			if(duration<10) duration=10;
-			if(duration>40) duration=40;
+			int duration=getDuration(mob,target.phyStats().weight());
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

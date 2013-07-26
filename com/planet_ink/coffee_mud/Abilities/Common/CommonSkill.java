@@ -54,8 +54,9 @@ public class CommonSkill extends StdAbility
 	protected volatile int tickUp=0;
 	protected String verb="working";
 	protected String playSound=null;
-	protected int yield=1;
+	protected int yield=baseYield();
 
+	protected int baseYield() { return 1; }
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected String displayText="(Doing something productive)";
 	public String displayText(){return displayText;}
@@ -571,6 +572,7 @@ public class CommonSkill extends StdAbility
 		mob.curState().adjMana(-consumed[0],mob.maxState());
 		mob.curState().adjMovement(-consumed[1],mob.maxState());
 		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
+		setAbilityCode(baseYield());
 		activityRoom=mob.location();
 		if(!bundling)
 			helpProficiency(mob, 0);

@@ -52,6 +52,12 @@ public class Chopping extends GatheringSkill
 		verb="looking";
 	}
 
+	protected int getDuration(MOB mob, int level)
+	{
+		return getDuration(40,mob,level,15);
+	}
+	protected int baseYield() { return 1; }
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -143,7 +149,7 @@ public class Chopping extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
-		int duration=getDuration(40,mob,1,15);
+		int duration=getDuration(mob,1);
 		CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),"<S-NAME> start(s) looking for a good tree to chop.");
 		if(mob.location().okMessage(mob,msg))
 		{

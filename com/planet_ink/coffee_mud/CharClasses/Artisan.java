@@ -146,13 +146,21 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"MasterCostuming",false,CMParms.parseSemicolons("Costuming(100)",true),"+INT 16");
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"MasterLeatherWorking",false,CMParms.parseSemicolons("LeatherWorking(100)",true),"+CON 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"MasterShearing",false,CMParms.parseSemicolons("Shearing(100)",true),"+WIS 16");
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"MasterArmorsmithing",false,CMParms.parseSemicolons("Armorsmithing(100)",true),"+STR 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"MasterDrilling",false,CMParms.parseSemicolons("Drilling(100)",true),"+INT 16");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"MasterWeaponsmithing",false,CMParms.parseSemicolons("Weaponsmithing(100);Specialization_*",true),"+STR 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"MasterFishing",false,CMParms.parseSemicolons("Fishing(100)",true),"+DEX 16");
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Scrapping",true);
-
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"MasterFarming",false,CMParms.parseSemicolons("Farming(100)",true),"+WIS 16");
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"MasterForaging",false,CMParms.parseSemicolons("Foraging(100)",true),"+CHA 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),27,"MasterChopping",false,CMParms.parseSemicolons("Chopping(100)",true),"+STR 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),28,"MasterDigging",false,CMParms.parseSemicolons("Digging(100)",true),"+CON 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),29,"MasterMining",false,CMParms.parseSemicolons("Mining(100)",true),"+STR 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Lore",false);
 	}
 
