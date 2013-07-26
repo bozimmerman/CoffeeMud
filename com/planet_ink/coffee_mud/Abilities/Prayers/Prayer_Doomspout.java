@@ -49,7 +49,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	String godName="The Demon";
 	protected boolean ispoke=false;
 
-	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

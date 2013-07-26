@@ -42,6 +42,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int abilityCode(){return 0;}
+	public int spreadBitmap() { return 0; }
 	public int difficultyLevel(){return 4;}
 	int plagueDown=8;
 	double drawups=1.0;

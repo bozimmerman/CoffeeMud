@@ -55,8 +55,9 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
 	protected boolean DISEASE_REQSEE(){return false;}
 
+	public int spreadBitmap() { return 0; }
+	public int abilityCode() { return spreadBitmap(); }
 	public int difficultyLevel(){return 0;}
-	public int abilityCode(){return 0;}
 	protected boolean processing=false;
 
 	protected int diseaseTick=DISEASE_DELAY();
@@ -133,7 +134,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			// when this spell is on a MOBs Affected list,
 			// it should consistantly prevent the mob
 			// from trying to do ANYTHING except sleep
-			if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_DAMAGE))
+			if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_DAMAGE))
 			&&(msg.amISource(mob))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.tool()!=null)
@@ -145,7 +146,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			&&(CMLib.dice().rollPercentage()>(((MOB)msg.target()).charStats().getSave(CharStats.STAT_SAVE_DISEASE)+70)))
 				catchIt(mob,(MOB)msg.target());
 			else
-			if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))
+			if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT))
 			&&(msg.amISource(mob)||msg.amITarget(mob))
 			&&(msg.target() instanceof MOB)
 			&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE)||CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
@@ -155,7 +156,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 					&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
 				catchIt(mob,msg.amITarget(mob)?msg.source():(MOB)msg.target());
 			else
-			if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_STD))
+			if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_STD))
 			&&((msg.amITarget(mob))||(msg.amISource(mob)))
 			&&(msg.tool() instanceof Social)
 			&&(msg.target() instanceof MOB)
@@ -174,8 +175,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_DRINK:
-					if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
-					||(CMath.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
+					if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
+					||(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
 					{
 						if((myItem instanceof Drink)
 						&&(msg.amITarget(myItem)))
@@ -183,8 +184,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 					}
 					break;
 				case CMMsg.TYP_EAT:
-					if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
-					||(CMath.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
+					if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
+					||(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
 					{
 
 						if((myItem instanceof Food)
@@ -193,7 +194,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 					}
 					break;
 				case CMMsg.TYP_GET:
-					if(CMath.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))
+					if(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT))
 					{
 						if((!(myItem instanceof Drink))
 						  &&(!(myItem instanceof Food))

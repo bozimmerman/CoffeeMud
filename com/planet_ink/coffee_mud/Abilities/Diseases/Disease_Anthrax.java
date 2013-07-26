@@ -48,7 +48,7 @@ public class Disease_Anthrax extends Disease
 	protected String DISEASE_DONE(){return "Your anthrax wounds clear up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) ill.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> watch(s) black necrotic wounds appear on <S-HIS-HER> flesh.";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_CONTACT;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_CONTACT;}
 	private boolean norecurse=false;
 	protected int conDown=0;
 	protected int conTickDown=60;

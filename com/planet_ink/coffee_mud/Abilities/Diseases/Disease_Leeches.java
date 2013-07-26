@@ -49,7 +49,7 @@ public class Disease_Leeches extends Disease
 	protected String DISEASE_DONE(){return "The leeches get full and fall off.";}
 	protected String DISEASE_START(){return "^G<S-NAME> <S-HAS-HAVE> leeches covering <S-HIM-HER>!^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> cringe(s) from the leeches.";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_STD;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
 	public int difficultyLevel(){return 0;}
 	protected int hp=Integer.MAX_VALUE;
 	protected String thename="";

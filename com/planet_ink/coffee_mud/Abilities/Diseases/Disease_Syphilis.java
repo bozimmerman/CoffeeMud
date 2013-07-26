@@ -48,7 +48,7 @@ public class Disease_Syphilis extends Disease
 	protected String DISEASE_DONE(){return "Your syphilis clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) some uncomfortable red sores on <S-HIS-HER> privates.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_STD;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
 	public int difficultyLevel(){return 0;}
 	protected int conDown=0;
 	private boolean norecurse=false;

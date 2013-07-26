@@ -59,7 +59,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		super.unInvoke();
 	}
 
-	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

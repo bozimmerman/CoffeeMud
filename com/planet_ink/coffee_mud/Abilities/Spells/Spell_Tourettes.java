@@ -45,7 +45,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 
 	int plagueDown=4;
 
-	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
 	public void unInvoke()
 	{

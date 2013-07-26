@@ -494,8 +494,8 @@ public class StdRace implements Race
 			final Ability A=a.nextElement();
 			if((A!=null)&&(A instanceof DiseaseAffect))
 			{
-				if((CMath.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
-				||(CMath.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
+				if((CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
+				||(CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
 					bodyI.addNonUninvokableEffect((Ability)A.copyOf());
 			}
 		}

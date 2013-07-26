@@ -48,7 +48,7 @@ public class Disease_Chlamydia extends Disease
 	protected String DISEASE_DONE(){return "Your chlamydia clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_STD;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_STD;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

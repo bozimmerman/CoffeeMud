@@ -46,7 +46,6 @@ public interface DiseaseAffect extends Ability
 	/** denotes a diseases spread by taking physical damage from someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_DAMAGE=16;
 
-	
 	/**
 	 * This method returns the level from 0-9 of how difficult it
 	 * is to cure this disease through mundane or magical means.
@@ -55,4 +54,12 @@ public interface DiseaseAffect extends Ability
 	 * @return the curing difficulty level 0-9
 	 */
 	public int difficultyLevel();
+
+	/**
+	 * This method returns a bitmap constant denoting how the
+	 * disease is spread.
+	 * @see DiseaseAffect#SPREAD_CONSUMPTION
+	 * @return the bitmap denoting how spread
+	 */
+	public int spreadBitmap();
 }

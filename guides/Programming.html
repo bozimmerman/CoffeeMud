@@ -4136,7 +4136,7 @@ emote on a regular basis. Here you can see a pair of methods being used
 to designate how often the emote/damage cycle occurs (in ticks) as well
 as the text of the emote. Any damage or other consequences of the
 disease are defined later.</p>
-      <pre>  public int abilityCode()<br />  {<br />    return DiseaseAffect.SPREAD_CONSUMPTION<br />           |DiseaseAffect.SPREAD_PROXIMITY<br />           |DiseaseAffect.SPREAD_CONTACT<br />           |DiseaseAffect.SPREAD_STD;<br />  }<br /></pre>
+      <pre>  public int spreadBitmap()<br />  {<br />    return DiseaseAffect.SPREAD_CONSUMPTION<br />           |DiseaseAffect.SPREAD_PROXIMITY<br />           |DiseaseAffect.SPREAD_CONTACT<br />           |DiseaseAffect.SPREAD_STD;<br />  }<br /></pre>
       <p>This important method is used to define how the disease is
 spread. Some aspects of disease catching must be coded by the
 programmer of the disease. Some aspects are handled by the engine,

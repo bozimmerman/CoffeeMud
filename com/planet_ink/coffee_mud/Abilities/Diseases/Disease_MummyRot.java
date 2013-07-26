@@ -47,6 +47,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_DISEASE;}
 	public int abilityCode(){return 0;}
+	public int spreadBitmap() { return 0; }
 	public int difficultyLevel(){return 2;}
 
 	int conDown=1;

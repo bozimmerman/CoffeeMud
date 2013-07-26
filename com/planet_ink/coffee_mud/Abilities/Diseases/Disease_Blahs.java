@@ -48,7 +48,7 @@ public class Disease_Blahs extends Disease
 	protected String DISEASE_DONE(){return "You feel a little better.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) the blahs.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> sigh(s).";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

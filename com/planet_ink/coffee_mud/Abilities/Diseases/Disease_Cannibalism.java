@@ -74,7 +74,7 @@ public class Disease_Cannibalism extends Disease
 	  return "^G<S-NAME> hunger(s) for "+ desiredMeat +" meat.^?";
    }
 	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 
 	public void unInvoke()
 	{

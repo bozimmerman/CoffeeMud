@@ -47,7 +47,7 @@ public class Disease_Malaria extends Disease
 	protected String DISEASE_DONE(){return "Your malaria clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with malaria.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	public int difficultyLevel(){return 1;}
 	private boolean norecurse=false;
 	protected int conDown=0;

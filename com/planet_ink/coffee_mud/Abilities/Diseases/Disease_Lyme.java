@@ -47,7 +47,7 @@ public class Disease_Lyme extends Disease
 	protected String DISEASE_DONE(){return "Your lyme disease goes away.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) lyme disease!^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
 	public int difficultyLevel(){return 5;}
 	int days=0;
 

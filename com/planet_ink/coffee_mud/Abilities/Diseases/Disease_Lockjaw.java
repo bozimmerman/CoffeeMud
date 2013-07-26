@@ -48,7 +48,7 @@ public class Disease_Lockjaw extends Disease
 	protected String DISEASE_DONE(){return "Your lockjaw is cured.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) lockjaw!^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	public int spreadBitmap(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
