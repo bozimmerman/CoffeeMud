@@ -93,46 +93,42 @@ public class AnimalHusbandry extends CommonSkill
 					MOB wifeM=husbanding[1];
 					if((husbandM==null)||(wifeM==null))
 						commonTell(mob,"You've failed to husband properly...");
-					if((husbandM==null)||(wifeM==null))
-						commonTell(mob,"You've failed to husband "+husbandM.name(mob)+" and "+wifeM.name(mob)+" properly...");
+					else
+					if(wifeM.fetchEffect("Pregnancy")!=null)
+						commonTell(mob,wifeM.name()+" is already pregnant.");
 					else
 					{
-						if(wifeM.fetchEffect("Pregnancy")!=null)
-							commonTell(mob,wifeM.name()+" is already pregnant.");
+						Social S=CMLib.socials().fetchSocial("MATE", wifeM, true);
+						if(S!=null)
+						{
+							if(husbanding[0].charStats().getMyRace().canBreedWith(husbanding[1].charStats().getMyRace()))
+							{
+								Ability A=CMClass.getAbility("Chant_Fertility");
+								if(A!=null) A.startTickDown(husbandM, wifeM, 2);
+								A=CMClass.getAbility("Chant_Fertility");
+								if(A!=null) A.startTickDown(wifeM, husbandM, 2);
+							}
+							S.invoke(husbandM, new XVector<String>("MATE",wifeM.name()), wifeM, false);
+						}
 						else
 						{
-							Social S=CMLib.socials().fetchSocial("MATE", wifeM, true);
-							if(S!=null)
+							if(proficiencyCheck(mob, 0, false))
 							{
-								if(husbanding[0].charStats().getMyRace().canBreedWith(husbanding[1].charStats().getMyRace()))
+								Ability A=CMClass.getAbility("Pregnancy");
+								if((A!=null)
+								&&(wifeM.fetchAbility(A.ID())==null)
+								&&(wifeM.fetchEffect(A.ID())==null))
 								{
-									Ability A=CMClass.getAbility("Chant_Fertility");
-									if(A!=null) A.startTickDown(husbandM, wifeM, 2);
-									A=CMClass.getAbility("Chant_Fertility");
-									if(A!=null) A.startTickDown(wifeM, husbandM, 2);
-								}
-								S.invoke(husbandM, new XVector<String>("MATE",wifeM.name()), wifeM, false);
-							}
-							else
-							{
-								if(proficiencyCheck(mob, 0, false))
-								{
-									Ability A=CMClass.getAbility("Pregnancy");
-									if((A!=null)
-									&&(wifeM.fetchAbility(A.ID())==null)
-									&&(wifeM.fetchEffect(A.ID())==null))
-									{
-										A.invoke(husbandM,wifeM,true,0);
-									}
+									A.invoke(husbandM,wifeM,true,0);
 								}
 							}
-							mob.location().show(mob,husbandM,wifeM,getActivityMessageType(),"<S-NAME> manage(s) to coax <T-NAME> into doing <T-HIS-HER> duty towards <O-NAME>.");
-							Ability A=wifeM.fetchEffect("Pregnancy");
-							if(A!=null) 
-							{
-								A.makeNonUninvokable();
-								A.setSavable(true);
-							}
+						}
+						mob.location().show(mob,husbandM,wifeM,getActivityMessageType(),"<S-NAME> manage(s) to coax <T-NAME> into doing <T-HIS-HER> duty towards <O-NAME>.");
+						Ability A=wifeM.fetchEffect("Pregnancy");
+						if(A!=null) 
+						{
+							A.makeNonUninvokable();
+							A.setSavable(true);
 						}
 					}
 				}
