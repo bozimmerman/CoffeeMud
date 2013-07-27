@@ -57,7 +57,7 @@ public class Cow extends StdRace
 	public boolean canBreedWith(Race R) 
 	{ 
 		if((!super.sameAs(R))&&(R!=null))
-			return R.ID().equals("Bull")||R.ID().equals("Calf")||R.ID().equals("Buffalo");
+			return R.ID().equals("Bull")||R.ID().equals("Buffalo");
 		return true;
 	} 
 

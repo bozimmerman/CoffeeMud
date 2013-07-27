@@ -69,6 +69,7 @@ public class Age extends StdAbility
 	protected Race myRace=null;
 	protected double divisor=0.0;
 	protected long lastSoiling=0;
+	protected long lastFollowCheck=0;
 
 	public final static String happyBabyEmoter="min=1 max=500 chance=100;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
@@ -113,6 +114,34 @@ public class Age extends StdAbility
 		&&(CMLib.flags().isInTheGame((MOB)((Item)babe).owner(),true)))
 			following=(MOB)((Item)babe).owner();
 		Room room=CMLib.map().roomLocation(babe);
+		if((room!=null)&&(following==null))
+		{
+			boolean lastFollowEllapsed=false;
+			if(lastFollowCheck>0)
+				lastFollowEllapsed=(System.currentTimeMillis()-lastFollowCheck)>(60 * 60 * 1000);
+			MOB babeM = null;
+			if((babe instanceof MOB)
+			&&(CMLib.flags().isAnimalIntelligence((MOB)babe) || lastFollowEllapsed)
+			&&(((MOB)babe).isMonster()))
+				babeM=(MOB)babe;
+			else
+			if((!(babe instanceof CagedAnimal))
+			||(!lastFollowEllapsed && !CMLib.flags().isAnimalIntelligence(babeM=((CagedAnimal)babe).unCageMe())))
+				babeM=null;
+			if(babeM!=null)
+			for(int i=0;i<room.numInhabitants();i++)
+			{
+				MOB M=room.fetchInhabitant(i);
+				if((M!=null)
+				&&(M!=babe)
+				&&(babeM.description().toUpperCase().indexOf(M.Name().toUpperCase())>=0))
+					following=M;
+			}
+			if((following!=null)&&(babe instanceof MOB))
+				CMLib.commands().postFollow((MOB)babe, following, true);
+		}
+		if((following==null)&&(lastFollowCheck==0))
+			lastFollowCheck=System.currentTimeMillis();
 		if((following!=null)&&(babe.description().toUpperCase().indexOf(following.Name().toUpperCase())<0)&&(room!=null))
 		{
 			MOB M=null;
@@ -206,16 +235,20 @@ public class Age extends StdAbility
 						if(A!=null) A.setMiscText(text());
 						Ability B=I.fetchEffect(ID());
 						if(B!=null)	I.delEffect(B);
-						Ability STAT=babe.fetchEffect("Prop_StatTrainer");
-						if(STAT!=null)
-							STAT.setMiscText("CHA=10 CON=7 DEX=3 INT=3 STR=2 WIS=2");
+						if(!CMLib.flags().isAnimalIntelligence(babe))
+						{
+							Ability STAT=babe.fetchEffect("Prop_StatTrainer");
+							if(STAT!=null)
+								STAT.setMiscText("CHA=10 CON=7 DEX=3 INT=3 STR=2 WIS=2");
+						}
 						babe.text();
 						babe.bringToLife(R,true);
 						CMLib.beanCounter().clearZeroMoney(babe,null);
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
 						I.destroy();
-						CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
+						if(!CMLib.flags().isAnimalIntelligence(babe))
+							CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
 					}
 				}
 			}

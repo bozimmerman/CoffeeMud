@@ -97,7 +97,10 @@ public class Chant_SpeedBirth extends Chant
 				}
 				else
 				if(days<1)
-					remain=20000;
+				{
+					if(end > System.currentTimeMillis())
+						remain=(end-System.currentTimeMillis())+19999;
+				}
 				else
 					remain=remain/2;
 				A.setMiscText((start-remain)+"/"+(end-remain)+rest);

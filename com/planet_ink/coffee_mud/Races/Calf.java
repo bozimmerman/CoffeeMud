@@ -51,16 +51,14 @@ public class Calf extends Cow
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,13);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,10);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	
 	public boolean canBreedWith(Race R) 
 	{ 
-		if((!super.sameAs(R))&&(R!=null))
-			return R.ID().equals("Bull")||R.ID().equals("Cow");
-		return true;
+		return false; // too young
 	} 
 
 	public List<RawMaterial> myResources()

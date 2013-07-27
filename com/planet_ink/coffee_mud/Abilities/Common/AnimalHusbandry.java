@@ -104,7 +104,7 @@ public class AnimalHusbandry extends CommonSkill
 							Social S=CMLib.socials().fetchSocial("MATE", wifeM, true);
 							if(S!=null)
 							{
-								if(husbanding[0].charStats().getMyRace().name().equalsIgnoreCase(husbanding[1].charStats().getMyRace().name()))
+								if(husbanding[0].charStats().getMyRace().canBreedWith(husbanding[1].charStats().getMyRace()))
 								{
 									Ability A=CMClass.getAbility("Chant_Fertility");
 									if(A!=null) A.startTickDown(husbandM, wifeM, 2);
@@ -209,6 +209,11 @@ public class AnimalHusbandry extends CommonSkill
 				else
 				if(M.charStats().getStat(CharStats.STAT_GENDER)=='F')
 				{
+					if(!M.isGeneric())
+					{
+						commonTell(mob,"I'm sorry, "+M.name(mob)+" just won't work out as a mother.");
+						return false;
+					}
 					if(husbanding[1]!=null)
 					{
 						commonTell(mob,"You can't use two females!");

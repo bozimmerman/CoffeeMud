@@ -41,7 +41,10 @@ public class Chant_SpeedAging extends Chant
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
-	protected int overridemana(){return Ability.COST_ALL;}
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

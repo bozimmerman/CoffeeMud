@@ -51,7 +51,7 @@ public class Bull extends Buffalo
 	public boolean canBreedWith(Race R) 
 	{ 
 		if((!super.sameAs(R))&&(R!=null))
-			return R.ID().equals("Cow")||R.ID().equals("Calf");
+			return R.ID().equals("Cow");
 		return true;
 	} 
 	
@@ -71,6 +71,8 @@ public class Bull extends Buffalo
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,19);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public List<RawMaterial> myResources()
 	{

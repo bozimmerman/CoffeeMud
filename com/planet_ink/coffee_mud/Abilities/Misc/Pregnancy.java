@@ -264,25 +264,29 @@ public class Pregnancy extends StdAbility
 							babe.baseState().setHitPoints(1);
 							babe.baseState().setMana(0);
 							babe.baseState().setMovement(0);
-							if(CMLib.dice().rollPercentage()>50)
+							babe.recoverCharStats();
+							if(!CMLib.flags().isAnimalIntelligence(babe))
 							{
-								Ability A=mob.fetchEffect("Allergies");
-								if(A!=null)
+								if(CMLib.dice().rollPercentage()>50)
 								{
-									A=(Ability)A.copyOf();
-									babe.addNonUninvokableEffect(A);
+									Ability A=mob.fetchEffect("Allergies");
+									if(A!=null)
+									{
+										A=(Ability)A.copyOf();
+										babe.addNonUninvokableEffect(A);
+									}
+									else
+									{
+										A=CMClass.getAbility("Allergies");
+										if(A!=null) A.invoke(babe,babe,true,0);
+									}
 								}
-								else
+								Ability STAT=CMClass.getAbility("Prop_StatTrainer");
+								if(STAT!=null)
 								{
-									A=CMClass.getAbility("Allergies");
-									if(A!=null) A.invoke(babe,babe,true,0);
+									STAT.setMiscText("CHA=10 CON=6 DEX=2 INT=2 STR=1 WIS=1");
+									babe.addNonUninvokableEffect(STAT);
 								}
-							}
-							Ability STAT=CMClass.getAbility("Prop_StatTrainer");
-							if(STAT!=null)
-							{
-								STAT.setMiscText("CHA=10 CON=6 DEX=2 INT=2 STR=1 WIS=1");
-								babe.addNonUninvokableEffect(STAT);
 							}
 							Ability SAFE=CMClass.getAbility("Prop_SafePet");
 							if(SAFE!=null)

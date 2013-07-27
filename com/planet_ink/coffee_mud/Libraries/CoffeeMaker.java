@@ -3242,39 +3242,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	public void setCharStats(CharStats E, String props)
 	{
-		int x=0;
-		for(int y=props.indexOf('|');y>=0;y=props.indexOf('|'))
-		{
-			try
-			{
-				E.setStat(x,Integer.valueOf(props.substring(0,y)).intValue());
-			}
-			catch(Exception e)
-			{
-				E.setStat(x,CMath.s_int(props.substring(0,y)));
-			}
-			x++;
-			props=props.substring(y+1);
-		}
+		final String[] split=props.split("\\|");
+		final int totalStats=CharStats.CODES.TOTAL();
+		for(int x=0;x<split.length && (x<totalStats);x++)
+			E.setStat(x,CMath.s_int(split[x]));
 	}
 
 	public void setCharState(CharState E, String props)
 	{
 		int[] nums=new int[6];
-		int x=0;
-		for(int y=props.indexOf('|');y>=0;y=props.indexOf('|'))
-		{
-			try
-			{
-				nums[x]=Integer.valueOf(props.substring(0,y)).intValue();
-			}
-			catch(Exception e)
-			{
-				nums[x]=CMath.s_int(props.substring(0,y));
-			}
-			x++;
-			props=props.substring(y+1);
-		}
+		final String[] split=props.split("\\|");
+		final int totalStats=6;
+		for(int x=0;x<split.length && (x<totalStats);x++)
+			nums[x]=CMath.s_int(split[x]);
 		E.setFatigue(nums[0]);
 		E.setHitPoints(nums[1]);
 		E.setHunger(nums[2]);

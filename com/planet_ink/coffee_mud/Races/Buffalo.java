@@ -64,6 +64,8 @@ public class Buffalo extends Cow
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,17);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public List<RawMaterial> myResources()
 	{
