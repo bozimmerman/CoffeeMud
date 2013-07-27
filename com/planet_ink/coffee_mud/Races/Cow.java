@@ -68,6 +68,17 @@ public class Cow extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	
+	public Race mixRace(Race race, String newRaceID, String newRaceName)
+	{
+		if((race!=null)&&(race.ID().equalsIgnoreCase("Bull")))
+			return CMClass.getRace("Cow");
+		if((race!=null)&&(race.ID().equalsIgnoreCase("Buffalo")))
+			return CMClass.getRace("Buffalo");
+		
+		return super.mixRace(race, newRaceID, newRaceName);
+	}
+	
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)

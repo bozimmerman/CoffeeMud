@@ -114,8 +114,11 @@ public class Pregnancy extends StdAbility
 				else
 				{
 					R=R.mixRace(CMClass.getRace("Human"),halfRace,"Half "+CMStrings.capitalizeAndLower(R.name()));
-					CMClass.addRace(R);
-					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+					if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
+					{
+						CMClass.addRace(R);
+						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+					}
 				}
 			}
 		}
@@ -133,8 +136,11 @@ public class Pregnancy extends StdAbility
 				else
 				{
 					R=R.mixRace(CMClass.getRace("Halfling"),halfRace,CMStrings.capitalizeAndLower(R.name())+"ling");
-					CMClass.addRace(R);
-					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+					if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
+					{
+						CMClass.addRace(R);
+						CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+					}
 				}
 			}
 		}
@@ -158,8 +164,11 @@ public class Pregnancy extends StdAbility
 			else
 			{
 				R=FIRSTR.mixRace(SECONDR,halfRace,FIRSTR.name()+"-"+SECONDR.name());
-				CMClass.addRace(R);
-				CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+				if(R.isGeneric() && (!R.ID().equals(race1))&& (!R.ID().equals(race2)))
+				{
+					CMClass.addRace(R);
+					CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+				}
 			}
 		}
 		return R;

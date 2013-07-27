@@ -67,6 +67,19 @@ public class Buffalo extends Cow
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	public Race mixRace(Race race, String newRaceID, String newRaceName)
+	{
+		if((race!=null)&&(race.ID().equalsIgnoreCase("Buffalo")))
+			return CMClass.getRace("Buffalo");
+		if((race!=null)&&(race.ID().equalsIgnoreCase("Cow")))
+		{
+			if(ID().equals("Buffalo"))
+				return CMClass.getRace("Buffalo");
+			return CMClass.getRace("Cow");
+		}
+		return super.mixRace(race, newRaceID, newRaceName);
+	}
+	
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
