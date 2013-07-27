@@ -229,6 +229,12 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			StringBuffer buf=new StringBuffer("");
 			int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(29,mob.session()),
@@ -253,7 +259,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 						if(toggler>1) buf.append("\n\r");
 						toggler=toggleTop;
 					}
-					if((level<=xlevel(mob))
+					if(((level<=xlevel(mob))||allFlag)
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));

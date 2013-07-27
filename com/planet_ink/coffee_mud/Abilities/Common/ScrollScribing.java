@@ -165,6 +165,12 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			StringBuffer buf=new StringBuffer("Scrolls you know how to enscribe:\n\r");
 			int colWidth=ListingLibrary.ColFixer.fixColWidth(25,mob.session());
 			buf.append(CMStrings.padRight("Spell",colWidth)+" "+CMStrings.padRight("Spell",colWidth)+" "+CMStrings.padRight("Spell",colWidth));
@@ -178,8 +184,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					String spell=V.get(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(spellLevel(mob,A)>=0)
-					&&(xlevel(mob)>=spellLevel(mob,A))
+					&&((spellLevel(mob,A)>=0)||(allFlag))
+					&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
 						buf.append(CMStrings.padRight(A.name(),colWidth)+((toggler!=toggleTop)?" ":"\n\r"));

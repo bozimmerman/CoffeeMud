@@ -215,6 +215,12 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
 			buf.append(CMStrings.padRight("Spell",cols[0])+" "+CMStrings.padRight("Spell",cols[0])+" "+CMStrings.padRight("Spell",cols[0]));
 			int toggler=1;
@@ -227,8 +233,8 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					String spell=V.get(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(spellLevel(mob,A)>=0)
-					&&(xlevel(mob)>=spellLevel(mob,A))
+					&&((spellLevel(mob,A)>=0)||(allFlag))
+					&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
 						buf.append(CMStrings.padRight(A.name(),cols[0])+((toggler!=toggleTop)?" ":"\n\r"));

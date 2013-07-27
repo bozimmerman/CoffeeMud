@@ -169,6 +169,12 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -180,7 +186,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 					String mat=V.get(RCP_MATERIAL);
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5) mat="";
-					if((level<=xlevel(mob))
+					if(((level<=xlevel(mob))||allFlag)
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+" "+mat.toLowerCase()+"\n\r");
 				}

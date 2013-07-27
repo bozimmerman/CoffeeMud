@@ -187,6 +187,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			StringBuffer buf=new StringBuffer("");
 			buf.append(CMStrings.padRight("Item",cols[0])+" "
 					   +CMStrings.padRight("Exp",cols[1])+" "
@@ -202,7 +208,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					String item=replacePercent(V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int(V.get(RCP_LEVEL));
 					int exp=CMath.s_int(V.get(RCP_EXP));
-					if((level<=xlevel(mob))
+					if(((level<=xlevel(mob))||allFlag)
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						String mat1=V.get(RCP_MATERIAL1);

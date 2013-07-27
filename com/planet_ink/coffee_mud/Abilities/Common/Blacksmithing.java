@@ -215,6 +215,12 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",cols[0])+" "+CMStrings.padRight("Lvl",cols[1])+" Metals required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -224,7 +230,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 					String item=replacePercent(V.get(RCP_FINALNAME),"");
 					int level=CMath.s_int(V.get(RCP_LEVEL));
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
-					if((level<=xlevel(mob))
+					if(((level<=xlevel(mob))||allFlag)
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
 				}

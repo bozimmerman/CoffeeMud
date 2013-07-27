@@ -161,6 +161,12 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(23,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(3,mob.session()),
@@ -179,7 +185,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 					if(wood.length()>5) type="";
 					String race=V.get(RCP_RACES).trim();
 					String itype=CMStrings.capitalizeAndLower(V.get(RCP_TYPE).toLowerCase()).trim();
-					if((level<xlevel(mob))
+					if(((level<=xlevel(mob))||allFlag)
 					&&((race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(itype,cols[2])+" "+wood+" "+type+"\n\r");

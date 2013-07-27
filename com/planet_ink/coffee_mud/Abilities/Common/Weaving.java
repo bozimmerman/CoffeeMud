@@ -262,6 +262,12 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			StringBuffer buf=new StringBuffer("");
 			int toggler=1;
 			int toggleTop=2;
@@ -286,7 +292,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 						if(toggler>1) buf.append("\n\r");
 						toggler=toggleTop;
 					}
-					if((level<=xlevel(mob))
+					if(((level<=xlevel(mob))||allFlag)
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));

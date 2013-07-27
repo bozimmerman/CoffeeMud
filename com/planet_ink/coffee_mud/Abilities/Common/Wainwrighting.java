@@ -192,6 +192,12 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(25,mob.session()),
 					ListingLibrary.ColFixer.fixColWidth(5,mob.session()),
@@ -207,7 +213,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 					int level=CMath.s_int(V.get(RCP_LEVEL));
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					int capacity=CMath.s_int(V.get(RCP_CAPACITY));
-					if((level<=xlevel(mob))
+					if(((level<=xlevel(mob))||allFlag)
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(""+capacity,cols[2])+" "+wood+"\n\r");
 				}

@@ -686,6 +686,12 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		&&((String)commands.firstElement()).equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("^xRecipe",colWidth)+"^.^? ^B^~wIngredients required^N\n\r");
 			for(int r=0;r<allRecipes.size();r++)
 			{
@@ -695,7 +701,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					String item=Vr.get(RCP_FINALFOOD);
 					if(item.length()==0) continue;
 					int level=CMath.s_int(Vr.get(RCP_LEVEL));
-					if((level<=xlevel(mob))
+					if(((level<=xlevel(mob))||allFlag)
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						StringBuilder line=new StringBuilder("");

@@ -220,7 +220,13 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		String pos=(String)commands.lastElement();
 		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement()).equalsIgnoreCase("LIST")))
 		{
-			//String mask=CMParms.combine(commands,1);
+			String mask=CMParms.combine(commands,1);
+			boolean allFlag=false;
+			if(mask.equalsIgnoreCase("all"))
+			{
+				allFlag=true;
+				mask="";
+			}
 			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
 			int[] cols={
 					ListingLibrary.ColFixer.fixColWidth(20,mob.session()),
@@ -238,7 +244,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(level>=0)
-					&&(xlevel(mob)>=level))
+					&&((level<=xlevel(mob))||allFlag))
 					{
 						buf.append(CMStrings.padRight(A.name(),cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" ");
 						for(int i=2;i<V.size();i++)
