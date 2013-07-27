@@ -250,14 +250,14 @@ public class Pregnancy extends StdAbility
 							}
 							Race R=getRace(babe,race1,race2);
 							if(R==null) R=mob.baseCharStats().getMyRace();
-							String name="a baby "+((gender=='M')?"boy":"girl")+" "+R.name().toLowerCase();
+							String name=CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
 							babe.setName(name);
 							CMLib.factions().setAlignment(babe,Faction.Align.GOOD);
 							for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(mob))
 								babe.setClan(p.first.clanID(),p.first.getAutoPosition());
 							babe.setLiegeID(mob.getLiegeID());
 							babe.setDescription(desc);
-							babe.setDisplayText(name+" is here");
+							babe.setDisplayText(name+" is here.");
 							CMLib.beanCounter().clearZeroMoney(babe,null);
 							babe.baseCharStats().setMyRace(R);
 							babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
@@ -315,6 +315,9 @@ public class Pregnancy extends StdAbility
 							I.basePhyStats().setAbility(CagedAnimal.ABILITY_MOBPROGRAMMATICALLY);
 							if(AGE != null)
 								I.addNonUninvokableEffect((Ability)AGE.copyOf());
+							name=CMLib.english().startWithAorAn(R.makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 1)).toLowerCase();
+							I.setName(name);
+							I.setDisplayText(name+" is here.");
 							I.recoverPhyStats();
 							mob.location().addItem(I);
 							Behavior B=CMClass.getBehavior("Emoter");

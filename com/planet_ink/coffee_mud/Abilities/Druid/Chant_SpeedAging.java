@@ -70,7 +70,16 @@ public class Chant_SpeedAging extends Chant
 			&&(mobt.getLiegeID().length()>0))
 				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 		}
-				
+
+		if((target instanceof Item)
+		||((target instanceof MOB)
+			&&(((MOB)target).isMonster())
+			&&(CMLib.flags().isAnimalIntelligence((MOB)target))
+			&&(CMLib.law().doesHavePriviledgesHere(mob, mob.location()))))
+		{
+			type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
+		}
+		
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{

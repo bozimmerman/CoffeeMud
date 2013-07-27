@@ -275,8 +275,9 @@ public class Age extends StdAbility
 				{
 					if(babe.Name().indexOf(' ')>0)
 					{
-						babe.setName(CMStrings.replaceAll(babe.Name()," baby "," young "));
-						babe.setDisplayText(CMStrings.replaceAll(babe.displayText()," baby "," young "));
+						String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 3)).toLowerCase();
+						babe.setName(name);
+						babe.setDisplayText(name+" is here.");
 					}
 					babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 					babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
@@ -504,11 +505,9 @@ public class Age extends StdAbility
 					if(liege==null) liege=babe.amFollowing();
 					if(babe.Name().indexOf(' ')>0)
 					{
-						babe.setName(CMStrings.replaceAll(babe.Name(),"young boy ","male "));
-						babe.setName(CMStrings.replaceAll(babe.Name(),"baby boy ","male "));
-						babe.setName(CMStrings.replaceAll(babe.Name(),"young girl ","female "));
-						babe.setName(CMStrings.replaceAll(babe.Name(),"baby girl ","female "));
-						babe.setDisplayText(babe.Name()+" stands here.");
+						String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 4)).toLowerCase();
+						babe.setName(name);
+						babe.setDisplayText(name+" stands here.");
 					}
 					CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 					if(liege!=babe.amFollowing())
@@ -522,7 +521,101 @@ public class Age extends StdAbility
 					babe.text();
 				}
 			}
+		} // start here
+		else
+		if((affected instanceof MOB)
+		&&(((MOB)affected).amFollowing()!=null)
+		&&(((MOB)affected).amFollowing().playerStats()==null)
+		&&(((MOB)affected).amFollowing().isMonster())
+		&&(((MOB)affected).location().isInhabitant((MOB)affected))
+		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing())))
+		{
+			MOB babe=(MOB)affected;
+			if(getMyRace()==null) return;
+			babe.setBitmap(CMath.setb(babe.getBitmap(),MOB.ATT_AUTOASSIST));
+			if(ellapsed>=myRace.getAgingChart()[2])
+			{
+				Room R=CMLib.map().roomLocation(affected);
+				if(R!=null)
+				{
+					if(babe.Name().indexOf(' ')>0)
+					{
+						String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 3)).toLowerCase();
+						babe.setName(name);
+						babe.setDisplayText(name+" is here.");
+					}
+					babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
+					babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
+					babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,5);
+					babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6);
+					babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,6);
+					babe.baseCharStats().setStat(CharStats.STAT_WISDOM,6);
+					babe.basePhyStats().setHeight(babe.basePhyStats().height()*5);
+					babe.basePhyStats().setWeight(babe.basePhyStats().weight()*5);
+					babe.baseState().setHitPoints(4);
+					babe.baseState().setMana(25);
+					babe.baseState().setMovement(50);
+					Behavior B=CMClass.getBehavior("MudChat");
+					if(B!=null)
+						babe.addBehavior(B);
+					else
+						babe.delEffect(this);
+					babe.recoverCharStats();
+					babe.recoverPhyStats();
+					babe.recoverMaxState();
+					babe.text();
+				}
+			}
+			else
+			if(ellapsed>=myRace.getAgingChart()[3])
+			{
+				Ability A=babe.fetchEffect("Prop_SafePet");
+				if(A!=null)babe.delEffect(A);
+
+				if(babe.Name().indexOf(' ')>0)
+				{
+					String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 4)).toLowerCase();
+					babe.setName(name);
+					babe.setDisplayText(name+" stands here.");
+				}
+				
+				babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
+				babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
+				babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,10);
+				babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,10);
+				babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,10);
+				babe.baseCharStats().setStat(CharStats.STAT_WISDOM,10);
+				getMyRace().setHeightWeight(babe.basePhyStats(), (char)babe.baseCharStats().getStat(CharStats.STAT_GENDER));
+				babe.baseState().setHitPoints(15);
+				babe.baseState().setMana(25);
+				babe.baseState().setMovement(80);
+				babe.recoverCharStats();
+				babe.recoverPhyStats();
+				babe.recoverMaxState();
+				babe.text();
+			}
+			else
+			if(ellapsed>=myRace.getAgingChart()[5])
+			{
+				if(babe.Name().indexOf(' ')>0)
+				{
+					String name=CMLib.english().startWithAorAn(getMyRace().makeMobName((char)babe.baseCharStats().getStat(CharStats.STAT_GENDER), 5)).toLowerCase();
+					babe.setName(name);
+					babe.setDisplayText(name+" stands here.");
+				}
+				babe.baseState().setHitPoints(20);
+				babe.baseState().setMana(25);
+				babe.baseState().setMovement(100);
+				Ability A=babe.fetchEffect(ID());
+				babe.delEffect(A);
+				babe.recoverCharStats();
+				babe.recoverPhyStats();
+				babe.recoverMaxState();
+				babe.text();
+			}
 		}
+		
+		
 		norecurse=false;
 	}
 
