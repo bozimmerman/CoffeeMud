@@ -384,7 +384,7 @@ public class Age extends StdAbility
 					}
 					if((!newMan.clans().iterator().hasNext())&&(liege!=null))
 						for(Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(liege))
-    						newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+							newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
 					if(CMLib.clans().findRivalrousClan(newMan)!=null)
 					{
 						Clan C = CMLib.clans().findRivalrousClan(newMan);
@@ -521,14 +521,15 @@ public class Age extends StdAbility
 					babe.text();
 				}
 			}
-		} // start here
+		}
 		else
 		if((affected instanceof MOB)
 		&&(((MOB)affected).amFollowing()!=null)
 		&&(((MOB)affected).amFollowing().playerStats()==null)
 		&&(((MOB)affected).amFollowing().isMonster())
 		&&(((MOB)affected).location().isInhabitant((MOB)affected))
-		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing())))
+		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing()))
+		&&(CMLib.law().getLandOwnerName(((MOB)affected).location()).length()>0))
 		{
 			MOB babe=(MOB)affected;
 			if(getMyRace()==null) return;
