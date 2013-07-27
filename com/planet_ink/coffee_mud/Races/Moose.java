@@ -73,6 +73,42 @@ public class Moose extends StdRace
 		}
 		return naturalWeapon;
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				return name().toLowerCase()+" calf";
+			case Race.AGE_YOUNGADULT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "young "+name().toLowerCase()+" bull";
+				case 'F': case 'f': return "young "+name().toLowerCase()+" cow";
+				default: return "young "+name().toLowerCase();
+				}
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
+			default:
+				switch(gender)
+				{
+				case 'M': case 'm': return name().toLowerCase()+" bull";
+				case 'F': case 'f': return name().toLowerCase()+" cow";
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "old male "+name().toLowerCase();
+				case 'F': case 'f': return "old female "+name().toLowerCase();
+				default: return "old "+name().toLowerCase();
+				}
+		}
+	}
+	
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

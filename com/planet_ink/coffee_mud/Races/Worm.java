@@ -71,6 +71,10 @@ public class Worm extends StdRace
 	{
 		return "shuffles";
 	}
+	public String makeMobName(char gender, int age)
+	{
+		return makeMobName('N',age);
+	}
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)

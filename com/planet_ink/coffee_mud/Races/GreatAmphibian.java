@@ -87,6 +87,20 @@ public class GreatAmphibian extends StdRace
 		return naturalWeapon;
 	}
 	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" tadpole";
+			case Race.AGE_CHILD:
+				return name().toLowerCase()+" polliwog";
+			default : 
+				return super.makeMobName('N', age);
+		}
+	}
+
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		final MOB mob=(MOB)affected;

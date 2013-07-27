@@ -94,6 +94,25 @@ public class Dog extends StdRace
 		}
 		return body;
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return "puppy";
+			case Race.AGE_CHILD:
+				switch(gender)
+				{
+				case 'M': case 'm': return "boy puppy";
+				case 'F': case 'f': return "girl puppy";
+				default: return "young "+name().toLowerCase();
+				}
+			default:
+				return super.makeMobName(gender, age);
+		}
+	}
+	
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

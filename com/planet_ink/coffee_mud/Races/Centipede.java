@@ -88,6 +88,20 @@ public class Centipede extends StdRace
 		}
 		return naturalWeapon;
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" larva";
+			case Race.AGE_CHILD:
+				return name().toLowerCase()+" pupa";
+			default : 
+				return name().toLowerCase();
+		}
+	}
+
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

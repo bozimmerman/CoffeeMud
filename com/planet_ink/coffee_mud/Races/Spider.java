@@ -88,6 +88,18 @@ public class Spider extends StdRace
 		}
 		return naturalWeapon;
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				return "baby "+name().toLowerCase();
+			default : 
+				return super.makeMobName('N', age);
+		}
+	}
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

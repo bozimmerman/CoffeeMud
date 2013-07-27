@@ -74,6 +74,42 @@ public class Unicorn extends StdRace
 		return naturalWeapon;
 	}
 
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" foal";
+			case Race.AGE_CHILD:
+			case Race.AGE_YOUNGADULT:
+				switch(gender)
+				{
+				case 'M': case 'm': return name().toLowerCase()+" colt";
+				case 'F': case 'f': return name().toLowerCase()+" filly";
+				default: return "young "+name().toLowerCase();
+				}
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
+			default:
+				switch(gender)
+				{
+				case 'M': case 'm': return name().toLowerCase()+" stud";
+				case 'F': case 'f': return name().toLowerCase()+" stallion";
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "old male "+name().toLowerCase();
+				case 'F': case 'f': return "old female "+name().toLowerCase();
+				default: return "old "+name().toLowerCase();
+				}
+		}
+	}
+	
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

@@ -106,6 +106,25 @@ public class Wolf extends StdRace
 		}
 		return naturalWeapon;
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" pup";
+			case Race.AGE_CHILD:
+				switch(gender)
+				{
+				case 'M': case 'm': return "boy "+name().toLowerCase()+" pup";
+				case 'F': case 'f': return "girl "+name().toLowerCase()+" pup";
+				default: return "young "+name().toLowerCase();
+				}
+			default:
+				return super.makeMobName(gender, age);
+		}
+	}
+	
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

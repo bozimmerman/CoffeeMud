@@ -68,6 +68,26 @@ public class Minotaur extends Cow
 	{
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				return name().toLowerCase()+" calf";
+			case Race.AGE_YOUNGADULT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "young "+name().toLowerCase()+" bull";
+				case 'F': case 'f': return "young "+name().toLowerCase()+" cow";
+				default: return "young "+name().toLowerCase();
+				}
+			default:
+				return super.makeMobName(gender, age);
+		}
+	}
+	
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

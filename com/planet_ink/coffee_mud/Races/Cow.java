@@ -71,11 +71,13 @@ public class Cow extends StdRace
 	
 	public Race mixRace(Race race, String newRaceID, String newRaceName)
 	{
-		if((race!=null)&&(race.ID().equalsIgnoreCase("Bull")))
-			return CMClass.getRace("Cow");
-		if((race!=null)&&(race.ID().equalsIgnoreCase("Buffalo")))
-			return CMClass.getRace("Buffalo");
-		
+		if(ID().equals("Cow"))
+		{
+			if((race!=null)&&(race.ID().equalsIgnoreCase("Bull")))
+				return CMClass.getRace("Cow");
+			if((race!=null)&&(race.ID().equalsIgnoreCase("Buffalo")))
+				return CMClass.getRace("Buffalo");
+		}
 		return super.mixRace(race, newRaceID, newRaceName);
 	}
 	
@@ -91,6 +93,43 @@ public class Cow extends StdRace
 		}
 		return naturalWeapon;
 	}
+	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				return "calf";
+			case Race.AGE_YOUNGADULT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "young bull";
+				case 'F': case 'f': return "young cow";
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
+			default:
+				switch(gender)
+				{
+				case 'M': case 'm': return "bull";
+				case 'F': case 'f': return "cow";
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "old bull";
+				case 'F': case 'f': return "old cow";
+				default: return "old "+name().toLowerCase();
+				}
+		}
+	}
+	
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

@@ -90,6 +90,11 @@ public class WaterElemental extends StdRace
 		}
 		return naturalWeapon;
 	}
+	
+	public String makeMobName(char gender, int age)
+	{
+		return makeMobName('N',Race.AGE_MATURE);
+	}
 
 	public String healthText(MOB viewer, MOB mob)
 	{

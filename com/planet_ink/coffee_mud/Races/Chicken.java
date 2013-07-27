@@ -83,6 +83,42 @@ public class Chicken extends StdRace
 		return naturalWeapon;
 	}
 
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				switch(gender)
+				{
+				case 'M': case 'm': return "cockrell";
+				case 'F': case 'f': return "chick";
+				default: return super.makeMobName(gender, age);
+				}
+			case Race.AGE_YOUNGADULT:
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
+				switch(gender)
+				{
+				case 'M': case 'm': return "rooster";
+				case 'F': case 'f': return "hen";
+				default: return super.makeMobName(gender, age);
+				}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "old rooster";
+				case 'F': case 'f': return "old hen";
+				default: return super.makeMobName(gender, age);
+				}
+			default : 
+				return super.makeMobName(gender, age);
+		}
+	}
+
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

@@ -88,7 +88,22 @@ public class GreatBird extends StdRace
 		}
 		return naturalWeapon;
 	}
-		public String healthText(MOB viewer, MOB mob)
+	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" chick";
+			case Race.AGE_CHILD:
+				return "young "+name().toLowerCase();
+			default : 
+				return super.makeMobName(gender, age);
+		}
+	}
+	
+	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 

@@ -133,6 +133,26 @@ public class Owl extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect health.^N";
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" fledgling";
+			case Race.AGE_CHILD:
+				switch(gender)
+				{
+				case 'm': case 'M': return "male owlet"; 
+				case 'f': case 'F': return "female owlet"; 
+				default: return "owlet"; 
+				}
+				
+			default : 
+				return super.makeMobName(gender, age);
+		}
+	}
+
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

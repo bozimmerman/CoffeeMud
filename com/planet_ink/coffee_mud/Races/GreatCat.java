@@ -74,6 +74,20 @@ public class GreatCat extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return "baby "+name().toLowerCase()+" kitten";
+			case Race.AGE_CHILD:
+				return "young "+name().toLowerCase()+" kitten";
+			default : 
+				return super.makeMobName(gender, age);
+		}
+	}
+	
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)

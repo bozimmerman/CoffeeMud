@@ -142,6 +142,21 @@ public class TreeGolem extends StdRace
 		else
 			return "^c" + mob.name(viewer) + "^c is in perfect condition.^N";
 	}
+	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+				return name().toLowerCase()+" seedling";
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				return name().toLowerCase()+" sapling";
+			default : 
+				return super.makeMobName('N', age);
+		}
+	}
+	
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

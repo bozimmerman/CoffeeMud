@@ -32,17 +32,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Deer extends StdRace
+public class Goat extends StdRace
 {
-	public String ID(){	return "Deer"; }
-	public String name(){ return "Deer"; }
-	public int shortestMale(){return 38;}
-	public int shortestFemale(){return 38;}
-	public int heightVariance(){return 6;}
-	public int lightestWeight(){return 150;}
-	public int weightVariance(){return 50;}
-	public long forbiddenWornBits(){return ~(Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
-	public String racialCategory(){return "Equine";}
+	public String ID(){	return "Goat"; }
+	public String name(){ return "Goat"; }
+	public int shortestMale(){return 36;}
+	public int shortestFemale(){return 36;}
+	public int heightVariance(){return 12;}
+	public int lightestWeight(){return 50;}
+	public int weightVariance(){return 60;}
+	public long forbiddenWornBits(){return ~(Wearable.WORN_HEAD|Wearable.WORN_FEET|Wearable.WORN_NECK|Wearable.WORN_EARS|Wearable.WORN_EYES);}
+	public String racialCategory(){return "Ovine";}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
@@ -57,8 +57,8 @@ public class Deer extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,18);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,5);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,1);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
@@ -66,10 +66,10 @@ public class Deer extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName("a set of sharp horns");
+			naturalWeapon.setName("a pair of hooves");
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;
 	}
@@ -80,15 +80,15 @@ public class Deer extends StdRace
 			case Race.AGE_INFANT:
 			case Race.AGE_TODDLER:
 			case Race.AGE_CHILD:
-				return "fawn";
+				return "goat kid";
 			case Race.AGE_YOUNGADULT:
 			case Race.AGE_MATURE:
 			case Race.AGE_MIDDLEAGED:
 			default:
 				switch(gender)
 				{
-				case 'M': case 'm': return "stag";
-				case 'F': case 'f': return "doe";
+				case 'M': case 'm': return "billy "+name().toLowerCase();
+				case 'F': case 'f': return "nanny "+name().toLowerCase();
 				default: return name().toLowerCase();
 				}
 			case Race.AGE_OLD:
@@ -96,8 +96,8 @@ public class Deer extends StdRace
 			case Race.AGE_ANCIENT:
 				switch(gender)
 				{
-				case 'M': case 'm': return "old buck";
-				case 'F': case 'f': return "old doe";
+				case 'M': case 'm': return "old billy "+name().toLowerCase();
+				case 'F': case 'f': return "old nanny "+name().toLowerCase();
 				default: return "old "+name().toLowerCase();
 				}
 		}
@@ -110,16 +110,16 @@ public class Deer extends StdRace
 			return "^r" + mob.name(viewer) + "^r is hovering on deaths door!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name(viewer) + "^r is covered in blood and matted hair.^N";
+			return "^r" + mob.name(viewer) + "^r is covered in blood and matted wool.^N";
 		else
 		if(pct<.30)
 			return "^r" + mob.name(viewer) + "^r is bleeding badly from lots of wounds.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name(viewer) + "^y has large patches of bloody matted fur.^N";
+			return "^y" + mob.name(viewer) + "^y has large patches of bloody matted hair.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name(viewer) + "^y has some bloody matted fur.^N";
+			return "^y" + mob.name(viewer) + "^y has some bloody matted wool.^N";
 		else
 		if(pct<.60)
 			return "^p" + mob.name(viewer) + "^p has a lot of cuts and gashes.^N";
@@ -128,10 +128,10 @@ public class Deer extends StdRace
 			return "^p" + mob.name(viewer) + "^p has a few cut patches.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name(viewer) + "^g has a cut patch of fur.^N";
+			return "^g" + mob.name(viewer) + "^g has a cut patch of wool.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name(viewer) + "^g has some disheveled fur.^N";
+			return "^g" + mob.name(viewer) + "^g has some disheveled hairs.^N";
 		else
 		if(pct<.99)
 			return "^g" + mob.name(viewer) + "^g has some misplaced hairs.^N";
@@ -144,14 +144,12 @@ public class Deer extends StdRace
 		{
 			if(resources.size()==0)
 			{
-				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" horns",RawMaterial.RESOURCE_BONE));
-				for(int i=0;i<7;i++)
+				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
-					("a strip of "+name().toLowerCase()+" leather",RawMaterial.RESOURCE_LEATHER));
+					("some "+name().toLowerCase()+" wool",RawMaterial.RESOURCE_WOOL));
 				for(int i=0;i<3;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MUTTON));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
@@ -159,5 +157,15 @@ public class Deer extends StdRace
 			}
 		}
 		return resources;
+	}
+	public DeadBody getCorpseContainer(MOB mob, Room room)
+	{
+		DeadBody body=super.getCorpseContainer(mob,room);
+		if((body!=null)&&(CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+		{
+			Ability A=CMClass.getAbility("Disease_Anthrax");
+			if(A!=null) body.addNonUninvokableEffect(A);
+		}
+		return body;
 	}
 }

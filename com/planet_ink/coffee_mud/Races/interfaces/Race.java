@@ -164,6 +164,17 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return a string describing his health
 	 */
 	public String healthText(MOB viewer, MOB mob);
+
+	/**
+	 * Sends back a generic mob name appropriate to a mob of this
+	 * race, at the given gender and age-group.
+	 * 
+	 * @param gender the gender of the mob
+	 * @param age the age category
+	 * @return a good name
+	 */
+	public String makeMobName(char gender, int age);
+	
 	/**
 	 * Returns a Weapon object representing what a member of this
 	 * race fights with when unarmed.  This method may change what it

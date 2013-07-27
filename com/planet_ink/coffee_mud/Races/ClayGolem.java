@@ -52,4 +52,5 @@ public class ClayGolem extends StoneGolem
 		}
 		return resources;
 	}
+	
 }

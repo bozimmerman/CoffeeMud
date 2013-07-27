@@ -135,6 +135,53 @@ public class StdRace implements Race
 	public void affectCharStats(MOB affectedMob, CharStats charStats)
 	{
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "boy infant "+name().toLowerCase();
+				case 'F': case 'f': return "girl infant "+name().toLowerCase();
+				default: return "baby "+name().toLowerCase();
+				}
+			case Race.AGE_TODDLER:
+				switch(gender)
+				{
+				case 'M': case 'm': return "baby boy "+name().toLowerCase();
+				case 'F': case 'f': return "baby girl "+name().toLowerCase();
+				default: return "baby "+name().toLowerCase();
+				}
+			case Race.AGE_CHILD:
+				switch(gender)
+				{
+				case 'M': case 'm': return "little boy "+name().toLowerCase();
+				case 'F': case 'f': return "little girl "+name().toLowerCase();
+				default: return "young "+name().toLowerCase();
+				}
+			case Race.AGE_YOUNGADULT:
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
+			default:
+				switch(gender)
+				{
+				case 'M': case 'm': return "male "+name().toLowerCase();
+				case 'F': case 'f': return "female "+name().toLowerCase();
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "old male "+name().toLowerCase();
+				case 'F': case 'f': return "old female "+name().toLowerCase();
+				default: return "old "+name().toLowerCase();
+				}
+		}
+	}
+	
 	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats)
 	{
 		if((baseStats.getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT)))

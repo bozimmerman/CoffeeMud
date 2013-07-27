@@ -74,6 +74,54 @@ public class Bull extends Buffalo
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	
+	public Race mixRace(Race race, String newRaceID, String newRaceName)
+	{
+		if(ID().equalsIgnoreCase("Bull"))
+		{
+			if((race!=null)&&(race.ID().equalsIgnoreCase("Buffalo")))
+				return CMClass.getRace("Buffalo");
+			if((race!=null)&&(race.ID().equalsIgnoreCase("Cow")))
+				return CMClass.getRace("Cow");
+		}
+		return super.mixRace(race, newRaceID, newRaceName);
+	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				return "calf";
+			case Race.AGE_YOUNGADULT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "young bull";
+				case 'F': case 'f': return "young cow";
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
+			default:
+				switch(gender)
+				{
+				case 'M': case 'm': return "bull";
+				case 'F': case 'f': return "cow";
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "old bull";
+				case 'F': case 'f': return "old cow";
+				default: return "old "+name().toLowerCase();
+				}
+		}
+	}
+	
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)

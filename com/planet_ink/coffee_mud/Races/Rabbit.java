@@ -86,6 +86,40 @@ public class Rabbit extends StdRace
 		}
 		return naturalWeapon;
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				switch(gender)
+				{
+				case 'M': case 'm': return "boy bunny";
+				case 'F': case 'f': return "girl bunny";
+				default: return "bunny";
+				}
+			case Race.AGE_YOUNGADULT:
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
+			default:
+				switch(gender)
+				{
+				case 'M': case 'm': return name().toLowerCase()+" buck";
+				case 'F': case 'f': return name().toLowerCase()+" doe";
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "old "+name().toLowerCase()+" buck";
+				case 'F': case 'f': return "old "+name().toLowerCase()+" doe";
+				default: return "old "+name().toLowerCase();
+				}
+		}
+	}
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

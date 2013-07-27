@@ -81,6 +81,12 @@ public class AirElemental extends StdRace
 		}
 		return naturalWeapon;
 	}
+	
+	public String makeMobName(char gender, int age)
+	{
+		return makeMobName('N',Race.AGE_MATURE);
+	}
+
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

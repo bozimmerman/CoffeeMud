@@ -81,6 +81,22 @@ public class Snake extends StdRace
 		}
 		return naturalWeapon;
 	}
+	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+				return name().toLowerCase()+" hatchling";
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" neonate";
+			case Race.AGE_CHILD:
+				return name().toLowerCase()+"let";
+			default : 
+				return super.makeMobName('N', age);
+		}
+	}
+
 	public String healthText(MOB viewer, MOB mob)
 	{
 		double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

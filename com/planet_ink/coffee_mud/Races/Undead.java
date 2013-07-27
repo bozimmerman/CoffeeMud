@@ -83,6 +83,21 @@ public class Undead extends StdRace
 			msg.source().tell(name()+" stinks of grime and decay.");
 	}
 	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+				return name().toLowerCase()+" of a baby";
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" of a toddler";
+			case Race.AGE_CHILD:
+				return name().toLowerCase()+" of a child";
+			default : 
+				return super.makeMobName('N', age);
+		}
+	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((myHost!=null)&&(myHost instanceof MOB))

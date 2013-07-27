@@ -61,6 +61,25 @@ public class Fido extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" puppy";
+			case Race.AGE_CHILD:
+				switch(gender)
+				{
+				case 'M': case 'm': return "boy "+name().toLowerCase()+" puppy";
+				case 'F': case 'f': return "girl "+name().toLowerCase()+" puppy";
+				default: return "young "+name().toLowerCase();
+				}
+			default:
+				return super.makeMobName(gender, age);
+		}
+	}
+	
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)

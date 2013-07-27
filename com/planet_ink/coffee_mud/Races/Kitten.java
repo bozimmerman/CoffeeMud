@@ -62,4 +62,39 @@ public class Kitten extends Cat
 		}
 		return resources;
 	}
+	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				switch(gender)
+				{
+				case 'M': case 'm': return "boy kitten";
+				case 'F': case 'f': return "girl kitten";
+				default: return "kitten";
+				}
+			case Race.AGE_YOUNGADULT:
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
+			default:
+				switch(gender)
+				{
+				case 'M': case 'm': return "male cat";
+				case 'F': case 'f': return "female cat";
+				default: return "cat";
+				}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "old male cat";
+				case 'F': case 'f': return "old female cat";
+				default: return "old cat";
+				}
+		}
+	}
 }

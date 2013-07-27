@@ -47,4 +47,18 @@ public class Alligator extends GreatLizard
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
+	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" hatchling";
+			case Race.AGE_CHILD:
+				return "young "+name().toLowerCase();
+			default : 
+				return super.makeMobName(gender, age);
+		}
+	}
 }

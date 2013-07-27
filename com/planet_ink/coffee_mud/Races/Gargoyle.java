@@ -59,4 +59,8 @@ public class Gargoyle extends StoneGolem
 		if(!CMLib.flags().isSleeping(affected))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
+	public String makeMobName(char gender, int age)
+	{
+		return makeMobName('N',Race.AGE_MATURE);
+	}
 }

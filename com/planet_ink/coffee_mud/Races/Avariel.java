@@ -77,6 +77,21 @@ public class Avariel extends StdRace
 		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-1);
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+10);
 	}
+	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+				return name().toLowerCase()+" chick";
+			case Race.AGE_CHILD:
+				return "young "+name().toLowerCase();
+			default : 
+				return super.makeMobName(gender, age);
+		}
+	}
+
 	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

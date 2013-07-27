@@ -69,15 +69,54 @@ public class Buffalo extends Cow
 	}
 	public Race mixRace(Race race, String newRaceID, String newRaceName)
 	{
-		if((race!=null)&&(race.ID().equalsIgnoreCase("Buffalo")))
-			return CMClass.getRace("Buffalo");
-		if((race!=null)&&(race.ID().equalsIgnoreCase("Cow")))
+		if(ID().equalsIgnoreCase("Buffalo"))
 		{
-			if(ID().equals("Buffalo"))
+			if((race!=null)&&(race.ID().equalsIgnoreCase("Buffalo")))
 				return CMClass.getRace("Buffalo");
-			return CMClass.getRace("Cow");
+			if((race!=null)&&(race.ID().equalsIgnoreCase("Cow")))
+			{
+				if(ID().equals("Buffalo"))
+					return CMClass.getRace("Buffalo");
+				return CMClass.getRace("Cow");
+			}
 		}
 		return super.mixRace(race, newRaceID, newRaceName);
+	}
+	
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				return name().toLowerCase()+" calf";
+			case Race.AGE_YOUNGADULT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "young "+name().toLowerCase()+" bull";
+				case 'F': case 'f': return "young "+name().toLowerCase()+" cow";
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_MATURE:
+			case Race.AGE_MIDDLEAGED:
+			default:
+				switch(gender)
+				{
+				case 'M': case 'm': return name().toLowerCase()+" bull";
+				case 'F': case 'f': return name().toLowerCase()+" cow";
+				default: return name().toLowerCase();
+				}
+			case Race.AGE_OLD:
+			case Race.AGE_VENERABLE:
+			case Race.AGE_ANCIENT:
+				switch(gender)
+				{
+				case 'M': case 'm': return "old "+name().toLowerCase()+" bull";
+				case 'F': case 'f': return "old "+name().toLowerCase()+" cow";
+				default: return "old "+name().toLowerCase();
+				}
+		}
 	}
 	
 	public List<RawMaterial> myResources()
