@@ -34,6 +34,12 @@ import java.util.*;
 public class StdShipEngine extends StdElecGenerator implements ShipComponent.ShipEngine
 {
 	public String ID(){	return "StdShipEngine";}
+	
+	protected float 	installedFactor	= 1.0F;
+	protected int		maxThrust		= 1000;
+	protected int		thrust			= 0;
+	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
+
 	public StdShipEngine()
 	{
 		super();
@@ -51,13 +57,12 @@ public class StdShipEngine extends StdElecGenerator implements ShipComponent.Shi
 		if(!(E instanceof StdShipEngine)) return false;
 		return super.sameAs(E);
 	}
-	protected int maxThrust=1000;
+	public float getInstalledFactor() { return installedFactor; }
+	public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
 	public int getMaxThrust(){return maxThrust;}
 	public void setMaxThrust(int max){maxThrust=max;}
-	protected int thrust=0;
 	public int getThrust(){return thrust;}
 	public void setThrust(int current){thrust=current;}
-	protected long specificImpulse=SpaceObject.VELOCITY_SUBLIGHT;
 	public long getSpecificImpulse() { return specificImpulse; }
 	public void setSpecificImpulse(long amt) { specificImpulse = amt; }
 	
@@ -66,6 +71,6 @@ public class StdShipEngine extends StdElecGenerator implements ShipComponent.Shi
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		StdShipThruster.executeThrusterMsg(this, myHost, msg);
+		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, msg);
 	}
 }

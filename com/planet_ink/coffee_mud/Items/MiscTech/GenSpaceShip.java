@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -46,6 +47,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	protected String owner = "";
 	protected int price = 1000;
 	protected Area area=null;
+	protected Manufacturer  cachedManufact  = null;
+	protected String	 	manufacturer	= "RANDOM";
 
 	public GenSpaceShip()
 	{
@@ -187,8 +190,18 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	public boolean activated(){return true;}
 	public int techLevel() { return phyStats().ability();}
 	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
-	public String getManufacturerName() { return (area instanceof SpaceShip)?((SpaceShip)area).getManufacturerName():"Unknown"; }
-	public void setManufacturerName(String name) { if((name!=null)&&(area instanceof SpaceShip)) ((SpaceShip)area).setManufacturerName(name); }
+	public String getManufacturerName() { return manufacturer; }
+	public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	public Manufacturer getFinalManufacturer()
+	{
+		if(cachedManufact==null)
+		{
+			cachedManufact=CMLib.tech().getManufacturer(getManufacturerName().toUpperCase().trim());
+			if(cachedManufact==null)
+				cachedManufact=CMLib.tech().getDefaultManufacturer();
+		}
+		return cachedManufact;
+	}
 	
 	@Override
 	public long[] coordinates() 
@@ -406,15 +419,17 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if(msg.amITarget(this) 
-		&& ((msg.targetMinor()==CMMsg.TYP_OPEN)||(msg.targetMinor()==CMMsg.TYP_CLOSE)||(msg.targetMinor()==CMMsg.TYP_LOCK)||(msg.targetMinor()==CMMsg.TYP_UNLOCK)))
+		if(msg.amITarget(this))
 		{
-			msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
-			msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
-			msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
-			msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
-			msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
-			msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
+			if((msg.targetMinor()==CMMsg.TYP_OPEN)||(msg.targetMinor()==CMMsg.TYP_CLOSE)||(msg.targetMinor()==CMMsg.TYP_LOCK)||(msg.targetMinor()==CMMsg.TYP_UNLOCK))
+			{
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
+				msg.setSourceMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAME>", "a hatch on <T-NAME>"));
+				msg.setTargetMessage(CMStrings.replaceAll(msg.othersMessage(), "<T-NAMESELF>", "a hatch on <T-NAMESELF>"));
+			}
 		}
 		return true;
 	}
@@ -423,9 +438,33 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	{
 		super.executeMsg(myHost,msg);
 
+		if(msg.amITarget(this))
+		{
+			if((msg.targetMinor()==CMMsg.TYP_GET)&&(msg.tool() instanceof ShopKeeper))
+				transferOwnership(msg.source());
+			else
+			if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+			{
+				String[] parts=msg.targetMessage().split(" ");
+				TechCommand command=TechCommand.findCommand(parts);
+				if(command!=null)
+				{
+					Object[] parms=command.confirmAndTranslate(parts);
+					if(parms!=null)
+					{
+						if(command==Technical.TechCommand.FORCE)
+						{
+							//ShipComponent.ShipEngine.ThrustPort dir=(ShipComponent.ShipEngine.ThrustPort)parms[0];
+							//int amount=((Integer)parms[1]).intValue();
+							//TODO: how does the dir affect velocity and direction given thrust and facing?
+						}
+					}
+				}
+			}
+		}
+		else
 		if((msg.targetMinor()==CMMsg.TYP_SELL)
 		&&(msg.tool()==this)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof ShopKeeper))
 		{
 			setOwnerName("");
@@ -439,19 +478,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		&&((msg.source().Name().equals(getOwnerName()))
 			||(msg.source().getLiegeID().equals(getOwnerName())&&msg.source().isMarriedToLiege())
 			||(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER)))
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker))
 		&&(!(msg.target() instanceof Auctioneer))
 		&&(!(msg.target() instanceof PostOffice)))
 			transferOwnership((MOB)msg.target());
-		else
-		if((msg.targetMinor()==CMMsg.TYP_GET)
-		&&(msg.target()==this)
-		&&(msg.tool() instanceof ShopKeeper))
-		{
-			transferOwnership(msg.source());
-		}
 	}
 
 	protected void transferOwnership(final MOB buyer)

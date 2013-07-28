@@ -334,7 +334,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
 			int lostValue=autoGenerate>0?0:
-				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
+				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)

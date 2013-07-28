@@ -443,7 +443,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=autoGenerate>0?0:
-				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,buildingI)
+				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,buildingI)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			if(bundling) buildingI.setBaseValue(lostValue);
 			buildingI.text();

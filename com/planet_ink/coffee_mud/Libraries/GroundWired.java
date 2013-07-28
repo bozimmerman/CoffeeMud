@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Electronics.Computer;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerGenerator;
 import com.planet_ink.coffee_mud.Items.interfaces.Electronics.PowerSource;
@@ -54,7 +55,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public final static List<PowerGenerator> emptyGeneratorList=new ArrayList<PowerGenerator>();
 
 	public final AtomicInteger nextKey = new AtomicInteger(0);
-
+	
 	protected CMMsg powerMsg = null;
 
 	public void initializeClass()
@@ -121,7 +122,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		keys.addAll(sets.keySet());
 		return keys;
 	}
-	
+
 	public synchronized void unregisterElectronics(final Electronics E, final String oldKey)
 	{
 		if((oldKey!=null)&&(E!=null))
@@ -157,6 +158,55 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public TickClient getServiceClient() { return serviceClient;}
 	protected STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>> currents 
 													= new STreeMap<PowerGenerator,Pair<List<PowerSource>,List<Electronics>>>(); 
+
+	protected final static Iterator<Electronics.Computer> emptyComputerIterator= new Iterator<Electronics.Computer>() {
+		@Override public boolean hasNext() { return false; }
+		@Override public Computer next() { return null; }
+		@Override public void remove() { }
+	};
+	protected final static Iterator<Room> emptyComputerRoomIterator= new Iterator<Room>() {
+		@Override public boolean hasNext() { return false; }
+		@Override public Room next() { return null; }
+		@Override public void remove() { }
+	};
+
+	protected final static Filterer<WeakReference<Electronics>> computerFilterer=new Filterer<WeakReference<Electronics>>(){
+		@Override public boolean passesFilter(WeakReference<Electronics> obj) {
+			return obj.get() instanceof Electronics.Computer;
+		}
+	};
+	
+	protected final static Converter<WeakReference<Electronics>,Electronics.Computer> computerConverter=new Converter<WeakReference<Electronics>,Electronics.Computer>(){
+		public Electronics.Computer convert(WeakReference<Electronics> obj) { return (Electronics.Computer)obj.get(); }
+	};
+	
+	protected final static Converter<Electronics.Computer,Room> computerRoomConverter=new Converter<Electronics.Computer,Room>(){
+		public Room convert(Electronics.Computer obj) 
+		{ 
+			return CMLib.map().roomLocation(obj); 
+		}
+	};
+	
+	public synchronized Iterator<Electronics.Computer> getComputers(String key)
+	{
+		LinkedList<WeakReference<Electronics>> oldSet=sets.get(key);
+		if(oldSet==null)
+			return emptyComputerIterator;
+		return new ConvertingIterator<WeakReference<Electronics>,Electronics.Computer>(new FilteredIterator<WeakReference<Electronics>>(oldSet.iterator(), computerFilterer),computerConverter);
+	}
+	
+	public synchronized Iterator<Room> getComputerRooms(String key)
+	{
+		return new FilteredIterator<Room>(new ConvertingIterator<Electronics.Computer,Room>(getComputers(key),computerRoomConverter), new Filterer<Room>(){
+			private Set<Room> done=new HashSet<Room>();
+			@Override public boolean passesFilter(Room obj) {
+				if(done.contains(obj))
+					return false;
+				done.add(obj);
+				return true;
+			}
+		});
+	}
 	
 	protected CMMsg getPowerMsg(int powerAmt)
 	{
@@ -474,6 +524,14 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public Manufacturer getManufacturer(String name)
 	{
 		if(name==null) return null;
+		if(name.equals("RANDOM"))
+		{
+			int which=CMLib.dice().roll(1, manufacturers.size(), 0);
+			Iterator<Manufacturer> i=manufacterers();
+			while((which-->1)&&(i.hasNext()))
+				i.next();
+			return i.next();
+		}
 		return manufacturers.get(name.toUpperCase().trim());
 	}
 	

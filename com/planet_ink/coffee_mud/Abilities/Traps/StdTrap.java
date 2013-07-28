@@ -505,7 +505,7 @@ public class StdTrap extends StdAbility implements Trap
 
 	protected void destroyResources(Room room, int resource, int number)
 	{
-		CMLib.materials().destroyResources(room,number,resource,-1,null);
+		CMLib.materials().destroyResourcesValue(room,number,resource,-1,null);
 	}
 
 	protected int findNumberOfResource(Room room, int resource)

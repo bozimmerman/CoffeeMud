@@ -83,6 +83,11 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
 				amt+=I.phyStats().weight();
 		return amt;
 	}
+	@Override
+	public int getTotalFuelCapacity()
+	{
+		return capacity();
+	}
 	
 	@Override
 	public boolean canContain(Environmental E)
@@ -114,6 +119,25 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
 	protected synchronized void clearFuelCache()
 	{
 		fuelCache=null;
+	}
+
+	public boolean consumeFuel(int amount)
+	{
+		List<Item> fuel=getFuel();
+		for(Item I : fuel)
+		{
+			if((I instanceof RawMaterial)
+			&&(!I.amDestroyed())
+			&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
+			{
+				amount-=CMLib.materials().destroyResourcesAmt(fuel, amount, ((RawMaterial)I).material());
+				if(amount<=0)
+					break;
+			}
+		}
+		if(amount>0)
+			engineShutdown();
+		return amount>0;
 	}
 	
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -147,21 +171,7 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
 					if(fuelTickDown <= 0)
 					{
 						fuelTickDown=getTicksPerFuelConsume();
-						boolean consumedFuel=false;
-						List<Item> fuel=getFuel();
-						for(Item I : fuel)
-						{
-							if((I instanceof RawMaterial)
-							&&(!I.amDestroyed())
-							&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
-							{
-								CMLib.materials().destroyResources(fuel, 1, ((RawMaterial)I).material(), -1, null, this);
-								consumedFuel=true;
-								break;
-							}
-						}
-						if(!consumedFuel)
-							engineShutdown();
+						consumeFuel(1);
 					}
 				}
 				break;

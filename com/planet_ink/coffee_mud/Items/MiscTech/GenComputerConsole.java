@@ -60,7 +60,8 @@ public class GenComputerConsole extends StdComputerConsole
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
-							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM",
+							  "MANUFACTURER","INSTALLFACT"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -78,6 +79,7 @@ public class GenComputerConsole extends StdComputerConsole
 		case 8: return ""+activated();
 		case 9: return ""+powerRemaining();
 		case 10: return ""+getManufacturerName();
+		case 11: return ""+getInstalledFactor();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -105,6 +107,7 @@ public class GenComputerConsole extends StdComputerConsole
 		case 8: activate(CMath.s_bool(val)); break;
 		case 9: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
 		case 10: setManufacturerName(val); break;
+		case 11: setInstalledFactor(CMath.s_float(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

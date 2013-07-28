@@ -52,7 +52,7 @@ public class StdElecCompContainer extends StdElecContainer
 		return super.sameAs(E);
 	}
 	
-	private volatile String circuitKey=null;
+	protected volatile String circuitKey=null;
 	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{

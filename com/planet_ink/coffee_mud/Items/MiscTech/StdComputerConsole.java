@@ -38,6 +38,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public String ID(){	return "StdComputerConsole";}
 
 	protected volatile String circuitKey		= null;
+	protected float 		  installedFactor	= 1.0F;
 	protected volatile long   nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
 	protected short 		  powerRemaining	= 0;
 	protected MOB 			  lastReader		= null;
@@ -46,6 +47,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	protected boolean 		  activated		 	= false;
 	protected String 		  currentMenu		= "";
 	protected String		  manufacturer 		= "RANDOM";
+	protected Manufacturer	  cachedManufact	= null;
 	
 	public StdComputerConsole()
 	{
@@ -66,6 +68,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		recoverPhyStats();
 	}
 
+	public float getInstalledFactor() { return installedFactor; }
+	public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
 	public int fuelType(){return RawMaterial.RESOURCE_ENERGY;}
 	public void setFuelType(int resource){}
 	public long powerCapacity(){return 1;}
@@ -81,7 +85,17 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public int techLevel() { return phyStats().ability();}
 	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
 	public String getManufacturerName() { return manufacturer; }
-	public void setManufacturerName(String name) { if(name!=null) manufacturer=name; }
+	public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	public Manufacturer getFinalManufacturer()
+	{
+		if(cachedManufact==null)
+		{
+			cachedManufact=CMLib.tech().getManufacturer(manufacturer.toUpperCase().trim());
+			if(cachedManufact==null)
+				cachedManufact=CMLib.tech().getDefaultManufacturer();
+		}
+		return cachedManufact;
+	}
 	
 	public ElecPanelType panelType(){return ElecPanel.ElecPanelType.COMPUTER;}
 	public void setPanelType(ElecPanelType type){ }

@@ -122,4 +122,18 @@ public interface TechLibrary extends CMLibrary
 	 * @return the set to return
 	 */
 	public Iterator<Manufacturer> manufacterers();
+	
+	/**
+	 * Return all the rooms containing computers in the
+	 * given circuit key.
+	 * @param key the circuit key
+	 * @return an iterator of rooms
+	 */
+	public Iterator<Room> getComputerRooms(String key);
+	/**
+	 * Return all the computers in the given circuit key.
+	 * @param key the circuit key
+	 * @return an iterator of computers
+	 */
+	public Iterator<Electronics.Computer> getComputers(String key);
 }

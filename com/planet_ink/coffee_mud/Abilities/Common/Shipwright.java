@@ -317,7 +317,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				return false;
 			int woodDestroyed=woodRequired;
 			int lostValue=autoGenerate>0?0:
-				CMLib.materials().destroyResources(mob.location(),woodDestroyed,data[0][FOUND_CODE],0,null)
+				CMLib.materials().destroyResourcesValue(mob.location(),woodDestroyed,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)

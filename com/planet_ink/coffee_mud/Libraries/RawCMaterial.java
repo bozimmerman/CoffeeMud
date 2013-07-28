@@ -711,14 +711,25 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 	
 	
-	public int destroyResources(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never)
-	{ return destroyResources(getAllItems(E),howMuch,finalMaterial,otherMaterial,never,null);}
-	public int destroyResources(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never)
-	{ return destroyResources(getAllItems(E),howMuch,finalMaterial,otherMaterial,never,null);}
-	public int destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+	public int destroyResourcesAmt(MOB E, int howMuch, int finalMaterial)
+	{ return destroyResourcesAmt(getAllItems(E),howMuch,finalMaterial);}
+	public int destroyResourcesAmt(Room E, int howMuch, int finalMaterial)
+	{ return destroyResourcesAmt(getAllItems(E),howMuch,finalMaterial);}
+	public int destroyResourcesAmt(List<Item> V, int howMuch, int finalMaterial)
+	{	return destroyResourcesAll(V,howMuch,finalMaterial,-1,null,null)[1]; }
+	public int destroyResourcesValue(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never)
+	{ return destroyResourcesValue(getAllItems(E),howMuch,finalMaterial,otherMaterial,never,null);}
+	public int destroyResourcesValue(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never)
+	{ return destroyResourcesValue(getAllItems(E),howMuch,finalMaterial,otherMaterial,never,null);}
+	public int destroyResourcesValue(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+	{	return destroyResourcesAll(V,howMuch,finalMaterial,otherMaterial,never,C)[0]; }
+	
+	
+	protected int[] destroyResourcesAll(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
 	{
 		int lostValue=0;
-		if((V==null)||(V.size()==0)) return 0;
+		int lostAmt=0;
+		if((V==null)||(V.size()==0)) return new int[]{0,0};
 		
 		if((howMuch>0)||(otherMaterial>0))
 		for(int i=V.size()-1;i>=0;i--)
@@ -761,6 +772,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				if(I.basePhyStats().weight()>howMuch)
 				{
 					I.basePhyStats().setWeight(I.basePhyStats().weight()-howMuch);
+					lostAmt+=howMuch;
 					Environmental E=makeResource(finalMaterial,null,true,I.rawSecretIdentity());
 					if(E instanceof Item)
 						lostValue+=(((Item)E).value()*howMuch);
@@ -769,6 +781,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				}
 				else
 				{
+					lostAmt+=I.basePhyStats().weight();
 					howMuch-=I.basePhyStats().weight();
 					lostValue+=I.value();
 					((RawMaterial)I).quickDestroy();
@@ -780,7 +793,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				}
 			}
 		}
-		return lostValue;
+		return new int[]{lostValue,lostAmt};
 	}
 	
 	public Item findFirstResource(Room E, String other){return findFirstResource(getAllItems(E),other);}

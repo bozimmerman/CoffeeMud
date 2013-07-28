@@ -30,8 +30,13 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public interface ShipComponent extends Electronics
 {
+	public float getInstalledFactor();
+	public void setInstalledFactor(float pct);
+	
 	public interface ShipEngine extends ShipComponent, Electronics.FuelConsumer
 	{
+		public enum ThrustPort { AFT, PORT, VENTRAL, DORSEL, STARBOARD, FORWARD }
+		
 		public int getMaxThrust();
 		public void setMaxThrust(int max);
 		public int getThrust();

@@ -418,6 +418,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((Electronics.ElecPanel)E).panelType().name()));
 		}
+		if(E instanceof ShipComponent)
+		{
+			text.append(CMLib.xml().convertXMLtoTag("INSTF",""+((ShipComponent)E).getInstalledFactor()));
+		}
 		if(E instanceof ShipComponent.ShipEngine)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipComponent.ShipEngine)E).getMaxThrust()));
@@ -2541,6 +2545,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final String panelType=CMLib.xml().getValFromPieces(buf,"SSPANELT");
 			ElecPanelType type = (ElecPanelType)CMath.s_valueOf(ElecPanelType.class, panelType);
 			if(type != null) ((Electronics.ElecPanel)E).setPanelType(type);
+		}
+		if(E instanceof ShipComponent)
+		{
+			((ShipComponent)E).setInstalledFactor((float)CMLib.xml().getDoubleFromPieces(buf,"INSTF"));
 		}
 		if(E instanceof ShipComponent.ShipEngine)
 		{

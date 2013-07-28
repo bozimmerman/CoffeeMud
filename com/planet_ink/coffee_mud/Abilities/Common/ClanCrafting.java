@@ -311,9 +311,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if((amt1>0)&&(autoGenerate<=0))
-			CMLib.materials().destroyResources(mob.location(),amt1,data[0][FOUND_CODE],0,null);
+			CMLib.materials().destroyResourcesValue(mob.location(),amt1,data[0][FOUND_CODE],0,null);
 		if((amt2>0)&&(autoGenerate<=0))
-			CMLib.materials().destroyResources(mob.location(),amt2,data[1][FOUND_CODE],0,null);
+			CMLib.materials().destroyResourcesValue(mob.location(),amt2,data[1][FOUND_CODE],0,null);
 
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)

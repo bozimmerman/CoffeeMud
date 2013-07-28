@@ -41,6 +41,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 	protected int 			powerNeeds		= 1;
 	protected boolean 		activated		= false;
 	protected String 		manufacturer	= "RANDOM";
+	protected Manufacturer  cachedManufact  = null;
 
 	public StdElecContainer()
 	{
@@ -65,5 +66,15 @@ public class StdElecContainer extends StdContainer implements Electronics
 	public int techLevel() { return phyStats().ability();}
 	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
 	public String getManufacturerName() { return manufacturer; }
-	public void setManufacturerName(String name) { if(name!=null) manufacturer=name; }
+	public void setManufacturerName(String name) { cachedManufact = null; if(name!=null) manufacturer=name; }
+	public Manufacturer getFinalManufacturer()
+	{
+		if(cachedManufact==null)
+		{
+			cachedManufact=CMLib.tech().getManufacturer(manufacturer.toUpperCase().trim());
+			if(cachedManufact==null)
+				cachedManufact=CMLib.tech().getDefaultManufacturer();
+		}
+		return cachedManufact;
+	}
 }

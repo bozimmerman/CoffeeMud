@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -47,6 +48,7 @@ public interface Electronics extends Item, Technical
 	
 	public String getManufacturerName();
 	public void setManufacturerName(String name);
+	public Manufacturer getFinalManufacturer();
 	
 	public interface PowerSource extends Electronics
 	{
@@ -58,7 +60,9 @@ public interface Electronics extends Item, Technical
 		public void setConsumedFuelType(int[] resources);
 		public int getTicksPerFuelConsume();
 		public void getTicksPerFuelConsume(int tick);
-	    public int getFuelRemaining();
+		public int getFuelRemaining();
+		public boolean consumeFuel(int amount);
+		public int getTotalFuelCapacity();
 	}
 	
 	public interface PowerGenerator extends PowerSource, FuelConsumer

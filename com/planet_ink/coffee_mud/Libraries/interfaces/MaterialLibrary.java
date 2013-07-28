@@ -48,9 +48,12 @@ public interface MaterialLibrary extends CMLibrary
 	public int getRandomResourceOfMaterial(int material);
 	public boolean rebundle(Item I);
 	public boolean quickDestroy(Item I);
-	public int destroyResources(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never);
-	public int destroyResources(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never);
-	public int destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
+	public int destroyResourcesValue(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never);
+	public int destroyResourcesValue(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never);
+	public int destroyResourcesValue(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
+	public int destroyResourcesAmt(MOB E, int howMuch, int finalMaterial);
+	public int destroyResourcesAmt(Room E, int howMuch, int finalMaterial);
+	public int destroyResourcesAmt(List<Item> V, int howMuch, int finalMaterial);
 	public Item fetchFoundOtherEncoded(Room E, String otherRequired);
 	public Item fetchFoundOtherEncoded(MOB E, String otherRequired);
 	public Item findMostOfMaterial(Room E, int material);

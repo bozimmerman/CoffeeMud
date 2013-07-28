@@ -37,10 +37,6 @@ public interface SpaceShip extends SpaceObject
 	
 	public Room getIsDocked();
 	
-	public String getManufacturerName();
-	
-	public void setManufacturerName(String name);
-	
 	public Area getShipArea();
 	
 	public void setShipArea(String xml);

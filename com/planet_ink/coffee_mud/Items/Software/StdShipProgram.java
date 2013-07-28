@@ -261,7 +261,7 @@ public class StdShipProgram extends StdProgram
 				return;
 			}
 			int amount=0;
-			String dir="AFT";
+			ShipEngine.ThrustPort portDir=ShipEngine.ThrustPort.AFT;
 			if(parsed.size()>3)
 			{
 				super.addScreenMessage("Error: Too many parameters.");
@@ -280,27 +280,32 @@ public class StdShipProgram extends StdProgram
 			amount=CMath.s_int(parsed.get(1));
 			if(parsed.size()==3)
 			{
+				portDir=(ShipEngine.ThrustPort)CMath.s_valueOf(ShipEngine.ThrustPort.class, parsed.get(1).toUpperCase().trim());
+				if(portDir!=null) { }
+				else
 				if("aft".startsWith(parsed.get(1).toLowerCase()))
-					dir="AFT";
+					portDir=ShipEngine.ThrustPort.AFT;
 				else
 				if("port".startsWith(parsed.get(1).toLowerCase()))
-					dir="PORT";
+					portDir=ShipEngine.ThrustPort.PORT;
 				else
 				if("starboard".startsWith(parsed.get(1).toLowerCase()))
-					dir="STARBOARD";
+					portDir=ShipEngine.ThrustPort.STARBOARD;
 				else
 				if("ventral".startsWith(parsed.get(1).toLowerCase()))
-					dir="VENTRAL";
+					portDir=ShipEngine.ThrustPort.VENTRAL;
 				else
 				if("dorsel".startsWith(parsed.get(1).toLowerCase()))
-					dir="DORSEL";
+					portDir=ShipEngine.ThrustPort.DORSEL;
 				else
 				{
 					super.addScreenMessage("Error: '"+parsed.get(1)+" is not a valid direction: AFT, PORT, VENTRAL, DORSEL, or STARBOARD.");
 					return;
 				}
 			}
-			CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, dir+" "+amount, CMMsg.NO_EFFECT,null);
+
+			String code=Technical.TechCommand.THRUST.makeCommand(portDir,Integer.valueOf(amount));
+			CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(E.owner() instanceof Room)
 			{
 				if(((Room)E.owner()).okMessage(mob, msg))
