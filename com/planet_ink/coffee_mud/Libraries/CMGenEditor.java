@@ -300,6 +300,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help)
 	throws IOException
 	{
+		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, help,Double.MIN_VALUE,Double.MAX_VALUE);
+	}
+	
+	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help, double minValue, double maxValue)
+	throws IOException
+	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
 		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
@@ -311,7 +317,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(help);
 			else
 			if(CMath.isNumber(newName))
-				return CMath.s_double(newName);
+			{
+				double d=CMath.s_double(newName);
+				if(d<minValue)
+					mob.session().println("Min value is: "+minValue);
+				else
+				if(d>maxValue)
+					mob.session().println("Max value is: "+maxValue);
+				else
+					return d;
+			}
 			else
 				break;
 		}
@@ -4477,6 +4492,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genGridLocaleY(MOB mob, GridZones E, int showNumber, int showFlag) throws IOException
 	{ E.setYGridSize(prompt(mob,E.yGridSize(),showNumber,showFlag,"Size (Y)")); }
 
+	protected void genLocationCoords(MOB mob, LocationRoom E, int showNumber, int showFlag) throws IOException
+	{ 
+		double[] newDir=new double[2];
+		newDir[0]=prompt(mob,E.getDirectionFromCore()[0],showNumber,showFlag,"Dir From Core (H)","This is a horizontal direction in radians from 0 to 2PI.",0,2*Math.PI); 
+		newDir[1]=prompt(mob,E.getDirectionFromCore()[1],showNumber,showFlag,"Dir From Core (V)","This is a vertical direction in radians from 0 to 2PI.",0,2*Math.PI);
+		E.setDirectionFromCore(newDir);
+	}
+
 	public void wornLocation(MOB mob, long[] oldWornLocation, boolean[] logicalAnd, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -8327,6 +8350,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genGridLocaleX(mob,(GridZones)R,++showNumber,showFlag);
 				genGridLocaleY(mob,(GridZones)R,++showNumber,showFlag);
 				//((GridLocale)mob.location()).buildGrid();
+			}
+			if(R instanceof LocationRoom)
+			{
+				genLocationCoords(mob,(LocationRoom)R, ++showNumber, showFlag);
 			}
 			genClimateType(mob,R,++showNumber,showFlag);
 			R.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",R.getAtmosphereCode(),true,++showNumber,showFlag));

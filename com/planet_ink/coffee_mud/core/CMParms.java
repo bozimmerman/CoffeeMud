@@ -1188,6 +1188,18 @@ public class CMParms
 		return s;
 	}
 	
+	public final static double[] toDoubleArray(final List<?> V)
+	{
+		if((V==null)||(V.size()==0)){
+			double[] s=new double[0];
+			return s;
+		}
+		final double[] s=new double[V.size()];
+		for(int v=0;v<V.size();v++)
+			s[v]=CMath.s_double(V.get(v).toString());
+		return s;
+	}
+	
 	public final static int[] toIntArray(final List<?> V)
 	{
 		if((V==null)||(V.size()==0)){

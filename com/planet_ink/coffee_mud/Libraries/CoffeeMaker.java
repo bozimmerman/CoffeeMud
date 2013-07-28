@@ -201,6 +201,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				str.append(CMLib.xml().convertXMLtoTag("XGRID",((GridLocale)E).xGridSize()));
 				str.append(CMLib.xml().convertXMLtoTag("YGRID",((GridLocale)E).yGridSize()));
 			}
+			if(E instanceof LocationRoom)
+				str.append(CMLib.xml().convertXMLtoTag("COREDIR",CMParms.toStringList(((LocationRoom)E).getDirectionFromCore())));
 			str.append(getExtraEnvPropertiesStr(E));
 			str.append(getGenScripts((Room)E,false));
 			return str.toString();
@@ -1926,6 +1928,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((GridLocale)E).setXGridSize(CMLib.xml().getIntFromPieces(V,"XGRID"));
 				((GridLocale)E).setYGridSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
 			}
+			if(E instanceof LocationRoom)
+				((LocationRoom)E).setDirectionFromCore(CMParms.toDoubleArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(V,"COREDIR"),true)));
 			((Room)E).setClimateType(CMLib.xml().getIntFromPieces(V,"RCLIM",((Room)E).getClimateTypeCode()));
 			((Room)E).setAtmosphere(CMLib.xml().getIntFromPieces(V,"RATMO",((Room)E).getAtmosphereCode()));
 		}

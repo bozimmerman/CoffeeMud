@@ -65,4 +65,32 @@ public class SpacePort extends StdRoom implements LocationRoom
 		if((dir!=null)&&(dir.length==2))
 			dirFromCore=dir;
 	}
+	
+	private final static String[] MYCODES={"COREDIR"};
+	public String getStat(String code)
+	{
+		switch(getLocCodeNum(code))
+		{
+		case 0: return CMParms.toStringList(this.getDirectionFromCore());
+		default: return super.getStat(code);
+		}
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getLocCodeNum(code))
+		{
+		case 0: this.setDirectionFromCore(CMParms.toDoubleArray(CMParms.parseCommas(val,true))); break;
+		default: super.setStat(code, val); break;
+		}
+	}
+	protected int getLocCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes() 
+	{ 
+		return (codes != null) ? codes : (codes =  CMProps.getStatCodesList(CMParms.appendToArray(super.getStatCodes(), MYCODES),this));
+	}
 }
