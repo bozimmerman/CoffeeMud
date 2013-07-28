@@ -227,8 +227,8 @@ public class MOBloader
 								final Room itemR=CMLib.map().getRoom(roomID);
 								if(itemR!=null)
 								{
-									if(newItem instanceof SpaceShip)
-										((SpaceShip)newItem).dockHere(itemR);
+									if((newItem instanceof SpaceShip)&&(itemR instanceof LocationRoom))
+										((SpaceShip)newItem).dockHere((LocationRoom)itemR);
 									else
 										itemR.addItem(newItem);
 									newItem.setExpirationDate(expirationDate);

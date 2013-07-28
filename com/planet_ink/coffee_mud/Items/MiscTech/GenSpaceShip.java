@@ -262,7 +262,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 	
 	@Override
-	public void dockHere(Room R) 
+	public void dockHere(LocationRoom R) 
 	{
 		if(!R.isContent(this))
 		{
@@ -293,25 +293,25 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	public void unDock(boolean toSpace) 
 	{
-		Room R=CMLib.map().roomLocation(this);
-		R.delItem(this);
-		setOwner(null);
+		LocationRoom R=getIsDocked();
+		if(R!=null)
+		{
+			R.delItem(this);
+			setOwner(null);
+		}
+		if (area instanceof SpaceShip)
+			((SpaceShip)area).unDock(toSpace);
+		if(R!=null)
+		{
+			setCoords(R.coordinates());
+			setDirection(R.getDirectionFromCore());
+			setFacing(R.getDirectionFromCore());
+		}
 		if(toSpace)
 		{
 			SpaceObject o = getShipSpaceObject();
 			if(o != null)
 				CMLib.map().addObjectToSpace(o);
-		}
-		if (area instanceof SpaceShip)
-		{
-			((SpaceShip)area).unDock(toSpace);
-			SpaceObject planet=CMLib.map().getSpaceObject(R,true);
-			if(planet != null)
-			{
-				//TODO: look at where I am, calculate vector from center of planet -- that becomes
-				// new FACING and new DIRECTION.
-				setCoords(new long[]{planet.coordinates()[0]+planet.radius(),planet.coordinates()[1]+planet.radius()});
-			}
 		}
 	}
 	
@@ -322,12 +322,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	@Override 
-	public Room getIsDocked()
+	public LocationRoom getIsDocked()
 	{
 		if (area instanceof SpaceShip)
 			return ((SpaceShip)area).getIsDocked();
-		if(owner() instanceof Room)
-			return ((Room)owner());
+		if(owner() instanceof LocationRoom)
+			return ((LocationRoom)owner());
 		return null;
 	}
 	
@@ -435,16 +435,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 								direction()[0]+=Math.sin(ke1/ke2);
 								*/
 								//TODO: how does the dir affect velocity and direction given thrust and facing?
+								break;
 							}
-							while(facing[0]>360.0)
-								facing[0]-=360.0;
-							while(facing[1]>360.0)
-								facing[1]-=360.0;
-							while(facing[0]<0.0)
-								facing[0]+=360.0;
-							while(facing[1]<0.0)
-								facing[1]+=360.0;
 							}
+							facing[0]=facing[0]%(2*Math.PI);
+							facing[1]=facing[1]%(2*Math.PI);
 						}
 					}
 				}
@@ -473,6 +468,43 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			transferOwnership((MOB)msg.target());
 	}
 
+	protected LocationRoom findNearestDocks(Room R)
+	{
+		List<LocationRoom> docks=new XVector<LocationRoom>();
+		if(R!=null)
+		{
+			TrackingLibrary.TrackingFlags flags;
+			flags = new TrackingLibrary.TrackingFlags()
+					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+					.plus(TrackingLibrary.TrackingFlag.NOAIR)
+					.plus(TrackingLibrary.TrackingFlag.NOHOMES)
+					.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY)
+					.plus(TrackingLibrary.TrackingFlag.NOWATER);
+			List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
+			for(Room R2 : rooms)
+				if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+				&&(R2 instanceof LocationRoom)
+				&&(R.getArea().inMyMetroArea(R2.getArea())))
+					docks.add((LocationRoom)R2);
+			if(docks.size()==0)
+				for(Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
+				{
+					Room R2=r.nextElement();
+					if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+					&&(R2 instanceof LocationRoom))
+						docks.add((LocationRoom)R2);
+				}
+			if(docks.size()==0)
+				for(Room R2 : rooms)
+					if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+					&&(R2 instanceof LocationRoom))
+						docks.add((LocationRoom)R2);
+		}
+		if(docks.size()==0)
+			return null;
+		return docks.get(CMLib.dice().roll(1, docks.size(), -1));
+	}
+	
 	protected void transferOwnership(final MOB buyer)
 	{
 		if(CMLib.clans().checkClanPrivilege(buyer, getOwnerName(), Clan.Function.PROPERTY_OWNER))
@@ -509,37 +541,17 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					}
 					me.renameSpaceShip(this.input.trim());
 					buyer.tell(name()+" is now signed over to "+getOwnerName()+".");
-					List<Room> docks=new XVector<Room>();
-					if(R!=null)
+					LocationRoom finalR=findNearestDocks(R);
+					if(finalR==null)
 					{
-						TrackingLibrary.TrackingFlags flags;
-						flags = new TrackingLibrary.TrackingFlags()
-								.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-								.plus(TrackingLibrary.TrackingFlag.NOAIR)
-								.plus(TrackingLibrary.TrackingFlag.NOHOMES)
-								.plus(TrackingLibrary.TrackingFlag.UNLOCKEDONLY)
-								.plus(TrackingLibrary.TrackingFlag.NOWATER);
-						List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
-						for(Room R2 : rooms)
-							if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)&&(R.getArea().inMyMetroArea(R2.getArea())))
-								docks.add(R2);
-						if(docks.size()==0)
-							for(Enumeration<Room> r=R.getArea().getMetroMap();r.hasMoreElements();)
-							{
-								Room R2=r.nextElement();
-								if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-									docks.add(R2);
-							}
-						if(docks.size()==0)
-							for(Room R2 : rooms)
-								if(R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-									docks.add(R2);
+						Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
+						buyer.tell("Nowhere was found to dock your ship.  Please contact the administrators!.");
 					}
-					if(docks.size()==0)
-						docks.add(R);
-					Room finalR=docks.get(CMLib.dice().roll(1, docks.size(), -1));
-					me.dockHere(finalR);
-					buyer.tell("You'll find your ship docked at '"+finalR.displayText(buyer)+"'.");
+					else
+					{
+						me.dockHere(finalR);
+						buyer.tell("You'll find your ship docked at '"+finalR.displayText(buyer)+"'.");
+					}
 					if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(me)))
 						buyer.playerStats().getExtItems().addItem(me);
 				}
@@ -551,7 +563,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			buyer.tell(name()+" is now signed over to "+getOwnerName()+".");
 			if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(this)))
 				buyer.playerStats().getExtItems().addItem(this);
-			dockHere(R);
+			LocationRoom finalR=findNearestDocks(R);
+			if(finalR==null)
+				Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of spaceport.");
+			else
+				dockHere(finalR);
 		}
 	}
 

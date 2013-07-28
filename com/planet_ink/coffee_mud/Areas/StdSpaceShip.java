@@ -48,7 +48,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected int			atmosphere		= RawMaterial.RESOURCE_AIR; // at least for awhile...
 	protected boolean   	amDestroyed 	= false;
 	protected String		name			= "a space ship";
-	protected Room  		savedDock   	= null;
+	protected LocationRoom  savedDock   	= null;
 	protected String		displayText 	= "";
 	protected String		description 	= "";
 	protected String		miscText		= "";
@@ -72,7 +72,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public String ID(){    return "StdSpaceShip";}
 	
 	public void initializeClass(){}
-	public Room getIsDocked(){ return CMLib.map().getRoom(savedDock);}
+	public LocationRoom getIsDocked(){ return (LocationRoom)CMLib.map().getRoom(savedDock);}
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
 	{
@@ -601,7 +601,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		return false;
 	}
 	public void fillInAreaRoom(Room R){}
-	public void dockHere(Room R)
+	public void dockHere(LocationRoom R)
 	{
 		if(R==null) return;
 		savedDock=R;

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.interfaces;
+package com.planet_ink.coffee_mud.Locales.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -13,6 +13,12 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -29,43 +35,36 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface SpaceShip extends SpaceObject
+/**
+ * This is a type of room that can be located as a coordinate on a
+ * planet's surface.
+ * @author Bo Zimmerman
+ *
+ */
+public interface LocationRoom extends Room
 {
-	public void dockHere(LocationRoom R);
-
-	public void unDock(boolean toSpace);
-	
-	public LocationRoom getIsDocked();
-	
-	public Area getShipArea();
-	
-	public void setShipArea(String xml);
-	
-	public void renameSpaceShip(String newName);
-	
-	public SpaceObject getShipSpaceObject();
-	
-	public int getMass();
+	/**
+	 * Coordinates of the place -- must be on its planet surface.
+	 * Completely derived from the location of its planets code,
+	 * the radius of the planet, and the direction from core.
+	 * @see LocationRoom#getDirectionFromCore()
+	 * @return Coordinates of the place
+	 */
+	public long[] coordinates();
 	
 	/**
-	 * The Outer Mold Line coefficient -- how streamlined are you?
-	 * @return the coefficient, from 0.05-0.3
+	 * Returns the direction from the core of the planet to the 
+	 * location of this place on its surface.  Distance from core
+	 * is always the radius of the planet.
+	 * @return direction to this place from planets core.
 	 */
-	public double getOMLCoeff();
-	/**
-	 * Set the Outer Mold Line coefficient -- how streamlined are you?
-	 * @param coeff the Outer Mold Line coefficient
-	 */
-	public void setOMLCoeff(double coeff);
+	public double[] getDirectionFromCore();
 	
 	/**
-	 * The direction of facing of this object in radians. 
-	 * @return 2 dimensional array for the direction of facing
+	 * Sets the direction from the core of the planet to the 
+	 * location of this place on its surface.  Distance from core
+	 * is always the radius of the planet.
+	 * @param dir direction to this place from planets core.
 	 */
-	public double[] facing();
-	/**
-	 * Sets the direction of facing of this object in radians.
-	 * @param dir 2 dimensional array for the direction of facing
-	 */
-	public void setFacing(double[] dir);
+	public void setDirectionFromCore(double[] dir);
 }

@@ -32,9 +32,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class SpacePort extends StdRoom
+public class SpacePort extends StdRoom implements LocationRoom
 {
 	public String ID(){return "SpacePort";}
+	protected double[] dirFromCore = new double[2];
+	
 	public SpacePort()
 	{
 		super();
@@ -43,4 +45,24 @@ public class SpacePort extends StdRoom
 		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_SPACEPORT;}
+	
+	@Override
+	public long[] coordinates() 
+	{
+		SpaceObject planet=CMLib.map().getSpaceObject(this,true);
+		if(planet!=null)
+			return CMLib.map().getLocation(planet.coordinates(),dirFromCore,planet.radius());
+		return new long[]{0,0,0};
+	}
+	@Override
+	public double[] getDirectionFromCore() 
+	{
+		return dirFromCore;
+	}
+	@Override
+	public void setDirectionFromCore(double[] dir) 
+	{
+		if((dir!=null)&&(dir.length==2))
+			dirFromCore=dir;
+	}
 }

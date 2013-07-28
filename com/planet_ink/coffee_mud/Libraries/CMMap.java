@@ -317,6 +317,18 @@ public class CMMap extends StdLibrary implements WorldMap
 		O.coordinates()[2]=O.coordinates()[2]+Math.round(CMath.mul(O.velocity(),z1));
 	}
 
+	public long[] getLocation(long[] oldLocation, double[] direction, long distance)
+	{
+		double x1=Math.cos(Math.toRadians(direction[0]))*Math.sin(Math.toRadians(direction[1]));
+		double y1=Math.sin(Math.toRadians(direction[0]))*Math.sin(Math.toRadians(direction[1]));
+		double z1=Math.cos(direction[1]);
+		long[] location=new long[3];
+		location[0]=oldLocation[0]+Math.round(CMath.mul(distance,x1));
+		location[1]=oldLocation[1]+Math.round(CMath.mul(distance,y1));
+		location[2]=oldLocation[2]+Math.round(CMath.mul(distance,z1));
+		return location;
+	}
+
 	public long getRelativeVelocity(SpaceObject O1, SpaceObject O2)
 	{
 		return Math.round(Math.sqrt(((O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0])*(O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0]))
