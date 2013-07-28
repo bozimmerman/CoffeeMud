@@ -64,7 +64,7 @@ public class StdArea implements Area
 	protected PhyStats  basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	
 	protected STreeMap<String,String> blurbFlags	 =new STreeMap<String,String>();
-	protected STreeMap<String, Room>  properRooms    =new STreeMap<String, Room>(new RoomIDComparator());
+	protected STreeMap<String, Room>  properRooms	=new STreeMap<String, Room>(new RoomIDComparator());
 	protected RoomnumberSet 		  properRoomIDSet=null;
 	protected RoomnumberSet 		  metroRoomIDSet =null;
 	protected SLinkedList<Area> 	  children  	 =new SLinkedList<Area>();
@@ -235,7 +235,7 @@ public class StdArea implements Area
 	
 	public boolean amDestroyed(){return amDestroyed;}
 	public boolean isSavable()
-	{    
+	{	
 		return ((!amDestroyed) 
 				&& (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 				&& (CMLib.flags().isSavable(this)));
@@ -279,7 +279,7 @@ public class StdArea implements Area
 		basePhyStats.copyInto(phyStats);
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			A.affectPhyStats(me,phyStats);
-        } });
+		} });
 	}
 	public void setBasePhyStats(PhyStats newStats)
 	{
@@ -366,7 +366,7 @@ public class StdArea implements Area
 						newnum=CMath.s_int(roomID);
 						if(newnum>=0)
 						{
-							if(newnum>=highest)    highest=newnum;
+							if(newnum>=highest)	highest=newnum;
 							if(newnum<=lowest) lowest=newnum;
 							set.addx(newnum);
 						}
@@ -419,7 +419,7 @@ public class StdArea implements Area
 		me=this;
 		basePhyStats=(PhyStats)areaA.basePhyStats().copyOf();
 		phyStats=(PhyStats)areaA.phyStats().copyOf();
-		properRooms    =new STreeMap<String, Room>(new RoomIDComparator());
+		properRooms	=new STreeMap<String, Room>(new RoomIDComparator());
 		properRoomIDSet=null;
 		metroRoomIDSet =null;
 
@@ -768,7 +768,7 @@ public class StdArea implements Area
 		} });
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			A.executeMsg(me,msg);
-        } });
+		} });
 
 		if((msg.sourceMinor()==CMMsg.TYP_RETIRE)
 		&&(amISubOp(msg.source().Name())))
@@ -813,7 +813,7 @@ public class StdArea implements Area
 			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
-	        } });
+			} });
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
@@ -842,19 +842,19 @@ public class StdArea implements Area
 		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
-        } });
+		} });
 	}
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
-        }});
+		}});
 	}
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
-        } });
+		} });
 	}
 
 	public void addNonUninvokableEffect(Ability to)

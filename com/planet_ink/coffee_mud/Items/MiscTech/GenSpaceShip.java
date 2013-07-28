@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -43,12 +44,17 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, PrivateProperty
 {
 	public String ID(){	return "GenSpaceShip";}
-	protected String readableText="";
-	protected String owner = "";
-	protected int price = 1000;
-	protected Area area=null;
-	protected Manufacturer  cachedManufact  = null;
+	protected String 		readableText	= "";
+	protected String 		owner 			= "";
+	protected int 			price 			= 1000;
+	protected Area 			area			= null;
+	protected Manufacturer	cachedManufact  = null;
 	protected String	 	manufacturer	= "RANDOM";
+	public long[]   		coordinates 	= new long[3];
+	public double[] 		direction   	= new double[2];
+	public long 			velocity		= 0;
+	protected SpaceObject	spaceTarget 	= null;
+	protected double[]		facing			= new double[2];
 
 	public GenSpaceShip()
 	{
@@ -180,18 +186,22 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		super.destroy();
 	}
 	
-	public long powerCapacity(){return 0;}
-	public void setPowerCapacity(long capacity){}
-	public long powerRemaining(){return 0;}
-	public void setPowerNeeds(int amt){}
-	public int powerNeeds(){return 0;}
-	public void setPowerRemaining(long remaining){}
-	public void activate(boolean truefalse){}
-	public boolean activated(){return true;}
-	public int techLevel() { return phyStats().ability();}
-	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
-	public String getManufacturerName() { return manufacturer; }
-	public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	@Override public long powerCapacity(){return 0;}
+	@Override public void setPowerCapacity(long capacity){}
+	@Override public long powerRemaining(){return 0;}
+	@Override public void setPowerNeeds(int amt){}
+	@Override public int powerNeeds(){return 0;}
+	@Override public void setPowerRemaining(long remaining){}
+	@Override public void activate(boolean truefalse){}
+	@Override public boolean activated(){return true;}
+	@Override public int techLevel() { return phyStats().ability();}
+	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
+	@Override public String getManufacturerName() { return manufacturer; }
+	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	
+	@Override public int getMass(){ return (area instanceof SpaceShip)?((SpaceShip)area).getMass(): 1000; }
+
+	@Override
 	public Manufacturer getFinalManufacturer()
 	{
 		if(cachedManufact==null)
@@ -203,70 +213,17 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		return cachedManufact;
 	}
 	
-	@Override
-	public long[] coordinates() 
-	{
-		return (area instanceof SpaceObject)?((SpaceObject)area).coordinates():new long[3];
-	}
-
-	@Override
-	public void setCoords(long[] coords) 
-	{
-		if (area instanceof SpaceObject)
-			((SpaceObject)area).setCoords(coords);
-	}
-
-	@Override
-	public double[] direction() 
-	{
-		return (area instanceof SpaceObject)?((SpaceObject)area).direction():new double[2];
-	}
-
-	@Override
-	public void setDirection(double[] dir) 
-	{
-		if (area instanceof SpaceObject)
-			((SpaceObject)area).setDirection(dir);
-	}
-
-	@Override
-	public double[] facing() 
-	{ 
-		return (area instanceof SpaceShip)?((SpaceShip)area).facing():new double[2];
-	}
+	@Override public long[] coordinates(){return coordinates;}
+	@Override public double[] direction(){return direction;}
+	@Override public double[] facing() { return facing; }
+	@Override public void setFacing(double[] dir) { if(dir!=null) this.facing=dir; }
+	@Override public SpaceObject knownTarget(){return spaceTarget;}
+	@Override public void setKnownTarget(SpaceObject O){spaceTarget=O;}
+	@Override public void setCoords(long[] coords){if(coords!=null) coordinates=coords;}
+	@Override public void setDirection(double[] dir){if(dir!=null) direction=dir;}
+	@Override public long velocity(){return velocity;}
+	@Override public void setVelocity(long v){velocity=v;}
 	
-	@Override
-	public void setFacing(double[] dir) 
-	{ 
-		if (area instanceof SpaceShip)
-			((SpaceShip)area).setFacing(dir);
-	}
-	
-	@Override
-	public long velocity() 
-	{
-		return (area instanceof SpaceObject)?((SpaceObject)area).velocity():0;
-	}
-
-	@Override
-	public void setVelocity(long v) 
-	{
-		if (area instanceof SpaceObject)
-			((SpaceObject)area).setVelocity(v);
-	}
-
-	@Override
-	public SpaceObject knownTarget() 
-	{
-		return (area instanceof SpaceObject)?((SpaceObject)area).knownTarget():null;
-	}
-
-	@Override
-	public void setKnownTarget(SpaceObject O) 
-	{
-		if (area instanceof SpaceObject)
-			((SpaceObject)area).setKnownTarget(O);
-	}
 
 	@Override
 	public SpaceObject knownSource() 
@@ -350,15 +307,21 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			((SpaceShip)area).unDock(toSpace);
 			SpaceObject planet=CMLib.map().getSpaceObject(R,true);
 			if(planet != null)
-				setCoords(planet.coordinates());
+			{
+				//TODO: look at where I am, calculate vector from center of planet -- that becomes
+				// new FACING and new DIRECTION.
+				setCoords(new long[]{planet.coordinates()[0]+planet.radius(),planet.coordinates()[1]+planet.radius()});
+			}
 		}
 	}
 	
+	@Override
 	public SpaceObject getShipSpaceObject()
 	{
 		return this;
 	}
 
+	@Override 
 	public Room getIsDocked()
 	{
 		if (area instanceof SpaceShip)
@@ -381,8 +344,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		if(C!=null) return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
-	@Override
-	public String getTitleID() { return this.toString(); }
+	@Override public String getTitleID() { return this.toString(); }
 
 	public void renameSpaceShip(String newName)
 	{
@@ -454,9 +416,35 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					{
 						if(command==Technical.TechCommand.FORCE)
 						{
-							//ShipComponent.ShipEngine.ThrustPort dir=(ShipComponent.ShipEngine.ThrustPort)parms[0];
-							//int amount=((Integer)parms[1]).intValue();
-							//TODO: how does the dir affect velocity and direction given thrust and facing?
+							ThrustPort dir=(ThrustPort)parms[0];
+							int amount=((Integer)parms[1]).intValue();
+							switch(dir)
+							{
+							case STARBOARD: facing[0]-=amount; break;
+							case PORT: facing[0]+=amount; break;
+							case DORSEL: facing[1]-=amount; break;
+							case VENTRAL: facing[1]+=amount; break;
+							case FORWARD: break;
+							case AFT: 
+							{
+								// remember you are moving in a direction, but facing a different one.
+								/*
+								int mass=getMass();
+								double ke1=0.5*(velocity*velocity); // *mass
+								double ke2=0.5*(amount*amount); // *mass
+								direction()[0]+=Math.sin(ke1/ke2);
+								*/
+								//TODO: how does the dir affect velocity and direction given thrust and facing?
+							}
+							while(facing[0]>360.0)
+								facing[0]-=360.0;
+							while(facing[1]>360.0)
+								facing[1]-=360.0;
+							while(facing[0]<0.0)
+								facing[0]+=360.0;
+							while(facing[1]<0.0)
+								facing[1]+=360.0;
+							}
 						}
 					}
 				}

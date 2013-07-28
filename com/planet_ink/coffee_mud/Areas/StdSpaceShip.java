@@ -37,25 +37,21 @@ public class StdSpaceShip implements Area, SpaceShip
 {
 	protected static Climate climateObj=null;
 	
-	public long[]   		coordinates 	= new long[3];
-	public double[] 		direction   	= new double[2];
-	public long 			velocity		= 0;
 	protected String[]  	xtraValues  	= null;
+	protected volatile int	mass			= -1;
+	protected SpaceObject	spaceSource 	= null;
 	protected String		imageName   	= "";
 	protected RoomnumberSet properRoomIDSet = null;
 	protected TimeClock 	localClock  	= (TimeClock)CMClass.getCommon("DefaultTimeClock");
 	protected String		currency		= "";
 	private long			expirationDate  = 0;
 	protected int			atmosphere		= RawMaterial.RESOURCE_AIR; // at least for awhile...
-	protected SpaceObject	spaceTarget 	= null;
-	protected SpaceObject	spaceSource 	= null;
 	protected boolean   	amDestroyed 	= false;
 	protected String		name			= "a space ship";
 	protected Room  		savedDock   	= null;
 	protected String		displayText 	= "";
 	protected String		description 	= "";
 	protected String		miscText		= "";
-	protected String		manufacturer	= "RANDOM";
 	protected long 			radius			= 50;
 	protected double		omlCoeff		= SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE + ((SpaceObject.ATMOSPHERIC_DRAG_BRICK-SpaceObject.ATMOSPHERIC_DRAG_STREAMLINE)/2.0);
 	protected SVector<Room> myRooms 		= new SVector();
@@ -66,7 +62,6 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected PhyStats  	basePhyStats	= (PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected Area 			me			 	= this;
 	protected SpaceShip		shipItem		= null;
-	protected double[]		facing			= new double[2];
 	
 	protected SVector<Ability>  		affects=new SVector<Ability>(1);
 	protected SVector<Behavior> 		behaviors=new SVector<Behavior>(1);
@@ -77,8 +72,6 @@ public class StdSpaceShip implements Area, SpaceShip
 	public String ID(){    return "StdSpaceShip";}
 	
 	public void initializeClass(){}
-	public long[] coordinates(){return coordinates;}
-	public double[] direction(){return direction;}
 	public Room getIsDocked(){ return CMLib.map().getRoom(savedDock);}
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
@@ -107,17 +100,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public long radius() { return radius; }
 	public void setRadius(long radius) { this.radius=radius; }
 	public long flags(){return 0;}
-	public double[] facing() { return facing; }
-	public void setFacing(double[] dir) { if(dir!=null) this.facing=dir; }
-	public SpaceObject knownTarget(){return spaceTarget;}
-	public void setKnownTarget(SpaceObject O){spaceTarget=O;}
 	public SpaceObject knownSource(){return spaceSource;}
-	public void setCoords(long[] coords){if(coords!=null) coordinates=coords;}
-	public void setDirection(double[] dir){if(dir!=null) direction=dir;}
-	public long velocity(){return velocity;}
-	public void setVelocity(long v){velocity=v;}
-	public String getManufacturerName() { return manufacturer; }
-	public void setManufacturerName(String name) { if(name!=null) manufacturer=name; }
 	public void setKnownSource(SpaceObject O)
 	{
 		if((O instanceof SpaceShip)&&(((SpaceShip)O).getShipArea()==this))
@@ -125,15 +108,52 @@ public class StdSpaceShip implements Area, SpaceShip
 		else
 			spaceSource=O;
 	}
+	@Override public long[] coordinates()  { return (shipItem!=null)?shipItem.coordinates():new long[3]; }
+	@Override public void setCoords(long[] coords) { if (shipItem!=null) shipItem.setCoords(coords); }
+	@Override public double[] direction() { return (shipItem!=null)?shipItem.direction():new double[2]; }
+	@Override public void setDirection(double[] dir) { if (shipItem!=null) shipItem.setDirection(dir); }
+	@Override public double[] facing() { return (shipItem!=null)?shipItem.facing():new double[2]; }
+	@Override public void setFacing(double[] dir) { if (shipItem!=null) shipItem.setFacing(dir); }
+	@Override public long velocity() { return (shipItem!=null)?shipItem.velocity():0; }
+	@Override public void setVelocity(long v) { if (shipItem!=null) shipItem.setVelocity(v); }
+	@Override public SpaceObject knownTarget() { return (shipItem!=null)?shipItem.knownTarget():null; }
+	@Override public void setKnownTarget(SpaceObject O) { if (shipItem!=null) shipItem.setKnownTarget(O); }
 	
+	public int getMass()
+	{
+		int mass=this.mass;
+		if(mass<0)
+		{
+			int newMass=phyStats().weight();
+			for(Enumeration<Room> r=getProperMap(); r.hasMoreElements();)
+			{
+				Room R=r.nextElement();
+				if(R!=null)
+				{
+					for(int i=0;i<R.numItems();i++)
+					{
+						Item I=R.getItem(i);
+						if(I!=null) 
+							newMass += I.phyStats().weight();
+					}
+					for(int i=0;i<R.numInhabitants();i++)
+					{
+						MOB M=R.fetchInhabitant(i);
+						if(M!=null) 
+							newMass += M.phyStats().weight();
+					}
+				}
+			}
+			this.mass=newMass;
+		}
+		return mass;
+	}
+
 	public void destroy()
 	{
 		CMLib.map().registerWorldObjectDestroyed(this,null,this);
 		phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-		coordinates=null;
-		direction=null;
 		spaceSource=null;
-		spaceTarget=null;
 		basePhyStats=phyStats;
 		miscText=null;
 		imageName=null;
@@ -438,7 +458,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		} });
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			A.executeMsg(me,msg);
-        }});
+		}});
+		if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.sourceMinor()==CMMsg.TYP_GET))
+			mass=-1;
 	}
 
 	public Enumeration<Room> getCompleteMap(){return getProperMap();}
@@ -1105,7 +1127,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public String finalDevalueRate(){ return "";}
    
 	public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS","MANUFACTURER"};
+	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS"};
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
@@ -1122,7 +1144,6 @@ public class StdSpaceShip implements Area, SpaceShip
 		case 3: return text();
 		case 4: return ""+getTheme();
 		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
-		case 6: return getManufacturerName();
 		}
 		return "";
 	}
@@ -1157,7 +1178,6 @@ public class StdSpaceShip implements Area, SpaceShip
 			}
 			break;
 		}
-		case 6: setManufacturerName(val); break;
 		}
 	}
 	public boolean sameAs(Environmental E)

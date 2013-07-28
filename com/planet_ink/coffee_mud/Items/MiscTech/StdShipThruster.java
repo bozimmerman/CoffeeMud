@@ -114,7 +114,8 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(thrust);
 
-		int fuelToConsume=thrust; // can it be this simple?  since 1acc==1g, why not?
+		
+		int fuelToConsume=Math.round(CMath.ceiling(thrust/3));
 		if(me.consumeFuel(fuelToConsume))
 		{
 			String code=Technical.TechCommand.FORCE.makeCommand(portDir,Integer.valueOf(amount));
@@ -178,7 +179,7 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 				break;
 			case CMMsg.TYP_POWERCURRENT:
 			{
-				int fuelToConsume=me.getThrust(); // can it be this simple?  since 1acc==1g, why not?
+				int fuelToConsume=Math.round(CMath.ceiling(me.getThrust()/3));
 				if(me.consumeFuel(fuelToConsume))
 				{
 					String code=Technical.TechCommand.FORCE.makeCommand(ThrustPort.AFT,Integer.valueOf(me.getThrust()));
