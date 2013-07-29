@@ -2151,7 +2151,8 @@ public class CMClass extends ClassLoader
 				c.common=baseC.common;
 			else
 				c.common=loadHashListToObj(prefix+"Common/",page.getStr("COMMON"),CMObjectType.COMMON.ancestorName);
-			if(c.common.size()==0) return false;
+			if(c.common.size()==0) 
+				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("WEBMACROS")))
 				c.webMacros=baseC.webMacros;
@@ -2691,6 +2692,7 @@ public class CMClass extends ClassLoader
 		for(int c=0;c<clss.length;c++)
 			if(clss[c]!=null)
 				clss[c].unload();
+		classLoaderSync[0]=false;
 	}
 
 	/**

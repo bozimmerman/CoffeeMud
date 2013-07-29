@@ -1226,6 +1226,9 @@ public class ServiceEngine implements ThreadEngine
 				Log.errOut("Scheduler",e);
 			}
 		}
+		threadPools=new CMThreadPoolExecutor[256];
+		drivingThread=null;
+		supportClient=null;
 		Log.sysOut("ServiceEngine","Scheduler stopped");
 	}
 	

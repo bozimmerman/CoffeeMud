@@ -68,6 +68,7 @@ public class MUD extends Thread implements MudHost
 	private static final long	  HOST_VERSION_MINOR	= 1;
 	private static enum MudState {STARTING,WAITING,ACCEPTING,ALLOWING,STOPPED}
 
+
 	private MudState		  state		 = MudState.STOPPED;
 	private ServerSocket	  servsock	 = null;
 	private boolean			  acceptConns= false;
@@ -76,6 +77,7 @@ public class MUD extends Thread implements MudHost
 	private final long		  startupTime= System.currentTimeMillis();
 	private final ThreadGroup threadGroup;
 
+	private static volatile int	 		grpid				= 0;
 	private static boolean				bringDown			= false;
 	private static String				execExternalCommand	= null;
 	private static I3Server				i3server			= null;
@@ -839,7 +841,6 @@ public class MUD extends Thread implements MudHost
 
 	private static class HostGroup extends Thread
 	{
-		private static int	  grpid=0;
 		private String		  name=null;
 		private String		  iniFile=null;
 		private String		  logName=null;
@@ -1461,6 +1462,7 @@ public class MUD extends Thread implements MudHost
 		while(!bringDown)
 		{
 			System.out.println();
+			grpid=0;
 			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud v"+HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
 			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2013 Bo Zimmerman");
 			Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
