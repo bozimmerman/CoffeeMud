@@ -42,7 +42,7 @@ public interface Technical
 	public static enum TechCommand 
 	{
 		THRUST(ShipEngine.ThrustPort.class, Integer.class),
-		FORCE(ShipEngine.ThrustPort.class, Integer.class, Long.class),
+		ACCELLLERATION(ShipEngine.ThrustPort.class, Integer.class, Long.class),
 		COMPONANTFAILURE(ElecPanelType.class, String[].class)
 		;
 		private Class<?>[] parms;

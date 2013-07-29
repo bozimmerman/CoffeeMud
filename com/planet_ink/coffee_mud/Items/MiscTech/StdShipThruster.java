@@ -116,12 +116,12 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 		
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(thrust);
-
+		int accelleration=thrust/ship.getMass();
 		
-		int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()));
+		int fuelToConsume=(int)Math.round(CMath.ceiling(accelleration*me.getFuelEfficiency()));
 		if(me.consumeFuel(fuelToConsume))
 		{
-			String code=Technical.TechCommand.FORCE.makeCommand(portDir,Integer.valueOf(amount),Long.valueOf(me.getSpecificImpulse()));
+			String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Integer.valueOf(amount),Long.valueOf(me.getSpecificImpulse()));
 			CMMsg msg=CMClass.getMsg(mob, ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(ship.okMessage(mob, msg))
 			{
@@ -166,7 +166,6 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 	public static void executeThrusterMsg(ShipEngine me, Environmental myHost, String circuitKey, CMMsg msg)
 	{
 		
-
 		if(msg.amITarget(me))
 		{
 			switch(msg.targetMinor())
@@ -185,11 +184,12 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 				int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()));
 				if(me.consumeFuel(fuelToConsume))
 				{
-					String code=Technical.TechCommand.FORCE.makeCommand(ThrustPort.AFT,Integer.valueOf(me.getThrust()),Long.valueOf(me.getSpecificImpulse()));
 					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 					if(obj instanceof SpaceShip)
 					{
 						final SpaceShip ship=(SpaceShip)obj;
+						int accelleration=me.getThrust()/ship.getMass();
+						String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Integer.valueOf(accelleration),Long.valueOf(me.getSpecificImpulse()));
 						CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(ship.okMessage(msg.source(), msg2))
 							ship.executeMsg(msg.source(), msg2);

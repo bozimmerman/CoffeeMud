@@ -414,7 +414,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 					Object[] parms=command.confirmAndTranslate(parts);
 					if(parms!=null)
 					{
-						if(command==Technical.TechCommand.FORCE)
+						if(command==Technical.TechCommand.ACCELLLERATION)
 						{
 							ThrustPort dir=(ThrustPort)parms[0];
 							int amount=((Integer)parms[1]).intValue();
@@ -428,6 +428,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 							case FORWARD: break;
 							case AFT: 
 							{
+								//TODO: apply inertial dampeners and OML
+								//TODO: gravity is separate
+								//TODO: inertial dampeners are separate?
+								//force equation in air= A=((thrust / (m * inertial dampener <= 1 ))-1)*(1- OML))
+								//force equation in space= A=(thrust / (m * inertial dampener <= 1 )
+								
 								// remember you are moving in a direction, but facing a different one.
 								/*
 								int mass=getMass();
