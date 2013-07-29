@@ -39,6 +39,7 @@ public class StdShipEngine extends StdElecGenerator implements ShipComponent.Shi
 	protected int		maxThrust		= 1000;
 	protected int		thrust			= 0;
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
+	protected double	fuelEfficiency	= 0.33;
 
 	public StdShipEngine()
 	{
@@ -57,6 +58,8 @@ public class StdShipEngine extends StdElecGenerator implements ShipComponent.Shi
 		if(!(E instanceof StdShipEngine)) return false;
 		return super.sameAs(E);
 	}
+	public double getFuelEfficiency() { return fuelEfficiency; }
+	public void setFuelEfficiency(double amt) { fuelEfficiency=amt; }
 	public float getInstalledFactor() { return installedFactor; }
 	public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
 	public int getMaxThrust(){return maxThrust;}

@@ -128,7 +128,7 @@ public interface WorldMap extends CMLibrary
 	/************************************************************************/
 	/**							 SPACE METHODS 								*/
 	/************************************************************************/
-	public long getRelativeVelocity(SpaceObject O1, SpaceObject O2);
+	public long getRelativeSpeed(SpaceObject O1, SpaceObject O2);
 	public boolean isObjectInSpace(SpaceObject O);
 	public void delObjectInSpace(SpaceObject O);
 	public void addObjectToSpace(SpaceObject O);

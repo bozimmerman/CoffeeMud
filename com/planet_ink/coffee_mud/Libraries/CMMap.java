@@ -296,31 +296,38 @@ public class CMMap extends StdLibrary implements WorldMap
 									+CMath.mul((O1.coordinates()[1]-O2.coordinates()[1]),(O1.coordinates()[1]-O2.coordinates()[1]))
 									+CMath.mul((O1.coordinates()[2]-O2.coordinates()[2]),(O1.coordinates()[2]-O2.coordinates()[2]))));
 	}
+
+	public double[] getDirectionChange()
+	{
+		//magnitude=sqrt(oldveloc^2 + newveloc^2);
+		return null;
+	}
+	
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
 	{
 		double[] dir=new double[2];
 		double x=TO.coordinates()[0]-FROM.coordinates()[0];
 		double y=TO.coordinates()[1]-FROM.coordinates()[1];
 		double z=TO.coordinates()[2]-FROM.coordinates()[2];
-		dir[0]=Math.toDegrees(Math.acos(x/Math.sqrt((x*x)+(y*y))));
-		dir[1]=Math.toDegrees(Math.acos(z/Math.sqrt((z*z)+(y*y))));
+		dir[0]=Math.acos(x/Math.sqrt((x*x)+(y*y)));
+		dir[1]=Math.acos(z/Math.sqrt((z*z)+(y*y)));
 		return dir;
 	}
 
 	public void moveSpaceObject(SpaceObject O)
 	{
-		double x1=Math.cos(Math.toRadians(O.direction()[0]))*Math.sin(Math.toRadians(O.direction()[1]));
-		double y1=Math.sin(Math.toRadians(O.direction()[0]))*Math.sin(Math.toRadians(O.direction()[1]));
+		double x1=Math.cos(O.direction()[0])*Math.sin(O.direction()[1]);
+		double y1=Math.sin(O.direction()[0])*Math.sin(O.direction()[1]);
 		double z1=Math.cos(O.direction()[1]);
-		O.coordinates()[0]=O.coordinates()[0]+Math.round(CMath.mul(O.velocity(),x1));
-		O.coordinates()[1]=O.coordinates()[1]+Math.round(CMath.mul(O.velocity(),y1));
-		O.coordinates()[2]=O.coordinates()[2]+Math.round(CMath.mul(O.velocity(),z1));
+		O.coordinates()[0]=O.coordinates()[0]+Math.round(CMath.mul(O.speed(),x1));
+		O.coordinates()[1]=O.coordinates()[1]+Math.round(CMath.mul(O.speed(),y1));
+		O.coordinates()[2]=O.coordinates()[2]+Math.round(CMath.mul(O.speed(),z1));
 	}
 
 	public long[] getLocation(long[] oldLocation, double[] direction, long distance)
 	{
-		double x1=Math.cos(Math.toRadians(direction[0]))*Math.sin(Math.toRadians(direction[1]));
-		double y1=Math.sin(Math.toRadians(direction[0]))*Math.sin(Math.toRadians(direction[1]));
+		double x1=Math.cos(direction[0])*Math.sin(direction[1]);
+		double y1=Math.sin(direction[0])*Math.sin(direction[1]);
 		double z1=Math.cos(direction[1]);
 		long[] location=new long[3];
 		location[0]=oldLocation[0]+Math.round(CMath.mul(distance,x1));
@@ -329,11 +336,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		return location;
 	}
 
-	public long getRelativeVelocity(SpaceObject O1, SpaceObject O2)
+	public long getRelativeSpeed(SpaceObject O1, SpaceObject O2)
 	{
-		return Math.round(Math.sqrt(((O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0])*(O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0]))
-									+((O1.velocity()*O1.coordinates()[1])-(O2.velocity()*O2.coordinates()[1])*(O1.velocity()*O1.coordinates()[1])-(O2.velocity()*O2.coordinates()[1]))
-									+((O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2])*(O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2]))));
+		return Math.round(Math.sqrt(((O1.speed()*O1.coordinates()[0])-(O2.speed()*O2.coordinates()[0])*(O1.speed()*O1.coordinates()[0])-(O2.speed()*O2.coordinates()[0]))
+									+((O1.speed()*O1.coordinates()[1])-(O2.speed()*O2.coordinates()[1])*(O1.speed()*O1.coordinates()[1])-(O2.speed()*O2.coordinates()[1]))
+									+((O1.speed()*O1.coordinates()[2])-(O2.speed()*O2.coordinates()[2])*(O1.speed()*O1.coordinates()[2])-(O2.speed()*O2.coordinates()[2]))));
 	}
 
 	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs)

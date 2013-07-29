@@ -45,15 +45,14 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 
 	protected long[]	coordinates	= new long[3];
 	protected double[]	direction	= new double[2];
-	protected long		velocity	= 0;
 	protected long		radius		= SpaceObject.DISTANCE_PLANETRADIUS;
 	
 	public long[] coordinates(){return coordinates;}
 	public void setCoords(long[] coords){coordinates=coords;}
 	public double[] direction(){return direction;}
 	public void setDirection(double[] dir){direction=dir;}
-	public long velocity(){return velocity;}
-	public void setVelocity(long v){velocity=v;}
+	public long speed(){return 0;}
+	public void setSpeed(long v){}
 	public long radius() { return radius; }
 	public void setRadius(long radius) { this.radius=radius; }
 	public void setName(String newName)

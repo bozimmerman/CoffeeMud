@@ -428,6 +428,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipComponent.ShipEngine)E).getMaxThrust()));
 			text.append(CMLib.xml().convertXMLtoTag("SSIMPL",""+((ShipComponent.ShipEngine)E).getSpecificImpulse()));
+			text.append(CMLib.xml().convertXMLtoTag("SSFEFF",""+((ShipComponent.ShipEngine)E).getFuelEfficiency()));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{
@@ -2558,6 +2559,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			((ShipComponent.ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
 			((ShipComponent.ShipEngine)E).setSpecificImpulse(CMLib.xml().getIntFromPieces(buf,"SSIMPL"));
+			((ShipComponent.ShipEngine)E).setFuelEfficiency(CMLib.xml().getDoubleFromPieces(buf,"SSFEFF"));
 		}
 		if(E instanceof Electronics.PowerGenerator)
 		{

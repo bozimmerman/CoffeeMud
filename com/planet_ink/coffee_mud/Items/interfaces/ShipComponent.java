@@ -43,6 +43,8 @@ public interface ShipComponent extends Electronics
 		public void setThrust(int max);
 		public long getSpecificImpulse();
 		public void setSpecificImpulse(long amt);
+		public double getFuelEfficiency();
+		public void setFuelEfficiency(double amt);
 	}
 	public interface ShipWeapon extends ShipComponent
 	{

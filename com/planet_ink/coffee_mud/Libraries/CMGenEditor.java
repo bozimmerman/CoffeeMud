@@ -4495,8 +4495,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genLocationCoords(MOB mob, LocationRoom E, int showNumber, int showFlag) throws IOException
 	{ 
 		double[] newDir=new double[2];
-		newDir[0]=prompt(mob,E.getDirectionFromCore()[0],showNumber,showFlag,"Dir From Core (H)","This is a horizontal direction in radians from 0 to 2PI.",0,2*Math.PI); 
-		newDir[1]=prompt(mob,E.getDirectionFromCore()[1],showNumber,showFlag,"Dir From Core (V)","This is a vertical direction in radians from 0 to 2PI.",0,2*Math.PI);
+		newDir[0]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore()[0]),showNumber,showFlag,"Horiz. Dir From Core","This is a horizontal direction in degrees from 0 to 360.",0,360));
+		newDir[1]=Math.toRadians(prompt(mob,Math.toDegrees(E.getDirectionFromCore()[1]),showNumber,showFlag,"Vert. Dir From Core","This is a vertical direction in degrees from 0 to 360.",0,360));
 		E.setDirectionFromCore(newDir);
 	}
 
@@ -7157,6 +7157,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ShipComponent.ShipEngine E=(ShipComponent.ShipEngine)me;
 				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
 				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Max velocity"));
+				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
 			}
 			if(me instanceof ShipComponent)
 			{
@@ -7457,6 +7458,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ShipComponent.ShipEngine E=(ShipComponent.ShipEngine)me;
 				E.setMaxThrust(prompt(mob, E.getMaxThrust(), ++showNumber, showFlag, "Max thrust"));
 				E.setSpecificImpulse(prompt(mob, E.getSpecificImpulse(), ++showNumber, showFlag, "Max velocity"));
+				E.setFuelEfficiency(prompt(mob, E.getFuelEfficiency()*100.0, ++showNumber, showFlag, "Fuel Effic. %")/100.0);
 			}
 			if(me instanceof ShipComponent)
 			{

@@ -52,7 +52,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	protected String	 	manufacturer	= "RANDOM";
 	public long[]   		coordinates 	= new long[3];
 	public double[] 		direction   	= new double[2];
-	public long 			velocity		= 0;
+	public long 			speed			= 0;
 	protected SpaceObject	spaceTarget 	= null;
 	protected double[]		facing			= new double[2];
 
@@ -221,8 +221,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public void setKnownTarget(SpaceObject O){spaceTarget=O;}
 	@Override public void setCoords(long[] coords){if(coords!=null) coordinates=coords;}
 	@Override public void setDirection(double[] dir){if(dir!=null) direction=dir;}
-	@Override public long velocity(){return velocity;}
-	@Override public void setVelocity(long v){velocity=v;}
+	@Override public long speed(){return speed;}
+	@Override public void setSpeed(long v){speed=v;}
 	
 
 	@Override
@@ -287,7 +287,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		SpaceObject planet=CMLib.map().getSpaceObject(R,true);
 		if(planet != null)
 			setCoords(planet.coordinates());
-		setVelocity(0);
+		setSpeed(0);
 	}
 
 	@Override
@@ -418,6 +418,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						{
 							ThrustPort dir=(ThrustPort)parms[0];
 							int amount=((Integer)parms[1]).intValue();
+							//long specificImpulse=((Long)parms[2]).longValue();
 							switch(dir)
 							{
 							case STARBOARD: facing[0]-=amount; break;

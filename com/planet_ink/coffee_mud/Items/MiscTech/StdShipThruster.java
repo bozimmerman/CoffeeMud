@@ -40,6 +40,7 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 	protected int		maxThrust		= 1000;
 	protected int		thrust			= 0;
 	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
+	protected double	fuelEfficiency	= 0.33;
 	
 	public StdShipThruster()
 	{
@@ -59,6 +60,8 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 		if(!(E instanceof StdShipThruster)) return false;
 		return super.sameAs(E);
 	}
+	public double getFuelEfficiency() { return fuelEfficiency; }
+	public void setFuelEfficiency(double amt) { fuelEfficiency=amt; }
 	public float getInstalledFactor() { return installedFactor; }
 	public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
 	public int getMaxThrust(){return maxThrust;}
@@ -115,10 +118,10 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 			me.setThrust(thrust);
 
 		
-		int fuelToConsume=Math.round(CMath.ceiling(thrust/3));
+		int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()));
 		if(me.consumeFuel(fuelToConsume))
 		{
-			String code=Technical.TechCommand.FORCE.makeCommand(portDir,Integer.valueOf(amount));
+			String code=Technical.TechCommand.FORCE.makeCommand(portDir,Integer.valueOf(amount),Long.valueOf(me.getSpecificImpulse()));
 			CMMsg msg=CMClass.getMsg(mob, ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(ship.okMessage(mob, msg))
 			{
@@ -179,10 +182,10 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 				break;
 			case CMMsg.TYP_POWERCURRENT:
 			{
-				int fuelToConsume=Math.round(CMath.ceiling(me.getThrust()/3));
+				int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()));
 				if(me.consumeFuel(fuelToConsume))
 				{
-					String code=Technical.TechCommand.FORCE.makeCommand(ThrustPort.AFT,Integer.valueOf(me.getThrust()));
+					String code=Technical.TechCommand.FORCE.makeCommand(ThrustPort.AFT,Integer.valueOf(me.getThrust()),Long.valueOf(me.getSpecificImpulse()));
 					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 					if(obj instanceof SpaceShip)
 					{

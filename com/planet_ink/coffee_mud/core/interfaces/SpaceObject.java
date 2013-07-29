@@ -66,15 +66,15 @@ public interface SpaceObject extends Environmental
 	 */
 	public void setDirection(double[] dir);
 	/**
-	 * The velocity of the object through space
-	 * @return the velocity
+	 * The speed of the object through space
+	 * @return the speed
 	 */
-	public long velocity();
+	public long speed();
 	/**
-	 * Sets the velocify of the object through space
-	 * @param v the velocity
+	 * Sets the speed of the object through space
+	 * @param v the speed
 	 */
-	public void setVelocity(long v);
+	public void setSpeed(long v);
 	/**
 	 * If this object is targeting another space object as a destination, this will return it
 	 * @return the target destination

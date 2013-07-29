@@ -114,8 +114,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override public void setDirection(double[] dir) { if (shipItem!=null) shipItem.setDirection(dir); }
 	@Override public double[] facing() { return (shipItem!=null)?shipItem.facing():new double[2]; }
 	@Override public void setFacing(double[] dir) { if (shipItem!=null) shipItem.setFacing(dir); }
-	@Override public long velocity() { return (shipItem!=null)?shipItem.velocity():0; }
-	@Override public void setVelocity(long v) { if (shipItem!=null) shipItem.setVelocity(v); }
+	@Override public long speed() { return (shipItem!=null)?shipItem.speed():0; }
+	@Override public void setSpeed(long v) { if (shipItem!=null) shipItem.setSpeed(v); }
 	@Override public SpaceObject knownTarget() { return (shipItem!=null)?shipItem.knownTarget():null; }
 	@Override public void setKnownTarget(SpaceObject O) { if (shipItem!=null) shipItem.setKnownTarget(O); }
 	
