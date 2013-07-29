@@ -20,7 +20,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-    private int compareTo(T arg0, Object arg1)
+	protected int compareTo(T arg0, Object arg1)
 	{
 		if(arg0 != null)
 			return ((Comparable)arg0).compareTo(arg1);
@@ -148,12 +148,11 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 		return new ReadOnlyIterator<T>(list.iterator());
     }
 
-	@SuppressWarnings("unchecked")
     @Override
     public synchronized int lastIndexOf(Object arg0) {
 		int firstIndex=indexOf(arg0);
 		if(firstIndex<0) return -1;
-		while((firstIndex<list.size())&&(list.get(firstIndex).compareTo((T)arg0)==0))
+		while((firstIndex<list.size())&&(compareTo(list.get(firstIndex),arg0)==0))
 			firstIndex++;
 		return firstIndex;
     }
