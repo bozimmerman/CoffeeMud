@@ -208,7 +208,8 @@ public class DefaultSession implements Session
 			//changeTelnetMode(rawout,TELNET_SUPRESS_GO_AHEAD,true);
 			changeTelnetMode(rawout,TELNET_NAWS,true);
 			//changeTelnetMode(rawout,TELNET_BINARY,true);
-			rawBytesOut(rawout,TELNETGABYTES);
+			if(mightSupportTelnetMode(TELNET_GA))
+				rawBytesOut(rawout,TELNETGABYTES);
 			rawout.flush();
 
 			Charset charSet=Charset.forName(CMProps.getVar(CMProps.Str.CHARSETINPUT));
@@ -410,7 +411,8 @@ public class DefaultSession implements Session
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_LOGOUT));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_TERMTYPE));
 			telnetSupportSet.add(Integer.valueOf(Session.TELNET_NAWS));
-			telnetSupportSet.add(Integer.valueOf(Session.TELNET_SUPRESS_GO_AHEAD));
+			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_GA));
+			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_SUPRESS_GO_AHEAD));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_COMPRESS2));
 			//telnetSupportSet.add(Integer.valueOf(Session.TELNET_LINEMODE));
 		}
@@ -887,7 +889,7 @@ public class DefaultSession implements Session
 	public void promptPrint(String msg)
 	{
 		print(msg);
-		if((!getClientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag))
+		if((!getClientTelnetMode(TELNET_SUPRESS_GO_AHEAD)) && (!killFlag) && mightSupportTelnetMode(TELNET_GA))
 			try { rawBytesOut(rawout, TELNETGABYTES); } catch(Exception e){}
 	}
 
