@@ -1369,7 +1369,7 @@ public class Test extends StdCommand
 			{
 				long t1=System.currentTimeMillis();
 				RTree tree=new RTree();
-				List<BoundedObject> setToAdd=new Vector<BoundedObject>();
+				List<BoundedObject> origSet=new Vector<BoundedObject>();
 				List<long[]> samples=new Vector<long[]>();
 				Random r=new Random(System.currentTimeMillis());
 				for(int g=0;g<15;g++)
@@ -1393,14 +1393,22 @@ public class Test extends StdCommand
 							}
 							public String toString() { return "g"+grp+"#"+num; }
 						};
-						setToAdd.add(obj);
+						origSet.add(obj);
 					}
 					samples.add(new long[]{gcenterX,gcenterY,gcenterZ});
 				}
+				List<BoundedObject> setToAdd=new Vector<BoundedObject>(origSet.size());
+				List<BoundedObject> randomSet=new Vector<BoundedObject>(origSet.size());
+				setToAdd.addAll(origSet);
 				while(setToAdd.size()>0)
 				{
 					BoundedObject O=setToAdd.remove(r.nextInt(setToAdd.size()));
+					if((tree.contains(O))||(tree.leafSearch(O)))
+					{ mob.tell("Error25-0"); return false;}
 					tree.insert(O);
+					if((!tree.contains(O))||(!tree.leafSearch(O)))
+					{ mob.tell("Error25-0.1"); return false;}
+					randomSet.add(O);
 				}
 				long totalSize=0;
 				for(int gnum=0; gnum<samples.size();gnum++)
@@ -1409,30 +1417,69 @@ public class Test extends StdCommand
 					long[] pt=samples.get(gnum);
 					tree.query(setToAdd,pt[0],pt[1],pt[2]);
 					totalSize+=setToAdd.size();
-					for(int i=0;i<setToAdd.size();i++)
-						if(!setToAdd.get(i).toString().startsWith("g"+gnum+"#"))
-						{ mob.tell("Error25-1"); return false;}
 				}
 				mob.tell("Average set size="+(totalSize/samples.size())+", time="+((System.currentTimeMillis()-t1))+", count="+tree.count());
+				for(BoundedObject O : origSet)
+				{
+					if((!tree.contains(O))||(!tree.leafSearch(O)))
+					{ mob.tell("Error25-0.2"); return false;}
+				}
 				for(int gnum=0; gnum<samples.size();gnum++)
 				{
 					setToAdd.clear();
 					long[] pt=samples.get(gnum);
 					tree.query(setToAdd,pt[0],pt[1],pt[2]);
+					if(setToAdd.size()!=100)
+					{ mob.tell("Error25-1"); return false;}
+					for(int i=0;i<setToAdd.size();i++)
+						if(!setToAdd.get(i).toString().startsWith("g"+gnum+"#"))
+						{ mob.tell("Error25-1.1"); return false;}
+				}
+				for(int gnum=0; gnum<samples.size();gnum++)
+				{
+					setToAdd.clear();
+					long[] pt=samples.get(gnum);
+					tree.query(setToAdd,pt[0],pt[1],pt[2]);
+					for(int i2=0;i2<setToAdd.size();i2++)
+					{
+						BoundedObject O2=setToAdd.get(i2);
+						if((!tree.contains(O2))||(!tree.leafSearch(O2)))
+						{ mob.tell("Error25-1.99#"+gnum+"/"+i2+"/"+setToAdd.size()); return false;}
+					}
+					for(int i2=0;i2<setToAdd.size();i2++) // remove dups
+					{
+						BoundedObject O2=setToAdd.get(i2);
+						for(int i3=setToAdd.size()-1;i3>i2;i3--) // remove dups
+							if(setToAdd.get(i3)==O2)
+							{
+								setToAdd.remove(i3);
+								System.out.println("Removed Dup");
+							}
+					}
 					for(int i=0;i<setToAdd.size();i++)
 					{
 						int ct=tree.count();
 						BoundedObject O=setToAdd.get(i);
+						if((!tree.contains(O))&&(!tree.leafSearch(O)))
+						{ mob.tell("Error25-2#"+gnum+"/"+i); return false;}
 						if(!tree.remove(O))
-						{ mob.tell("Error25-2"); return false;}
+						{ mob.tell("Error25-3#"+gnum+"/"+i); return false;}
+						for(int i2=i+1;i2<setToAdd.size();i2++)
+						{
+							BoundedObject O2=setToAdd.get(i2);
+							if((!tree.contains(O2))&&(!tree.leafSearch(O2)))
+							{ mob.tell("Error25-3.2#"+gnum+"/"+i+"/"+i2+"/"+setToAdd.size()); return false;}
+						}
 						if(tree.contains(O))
-						{ mob.tell("Error25-3"); return false;}
+						{ mob.tell("Error25-4#"+gnum+"/"+i); return false;}
 						List<BoundedObject> dblCheck=new Vector<BoundedObject>(setToAdd.size()-i);
-						tree.query(setToAdd,pt[0],pt[1],pt[2]);
+						tree.query(dblCheck,pt[0],pt[1],pt[2]);
 						if(dblCheck.contains(O))
-						{ mob.tell("Error25-4"); return false;}
+						{ mob.tell("Error25-5#"+gnum+"/"+i); return false;}
+						if(tree.leafSearch(O))
+						{ mob.tell("Error25-6#"+gnum+"/"+i); return false;}
 						if(tree.count()!=ct-1)
-						{ mob.tell("Error25-5#"+gnum+":"+tree.count()+"/"+(ct-1)); return false;}
+						{ mob.tell("Error25-7#"+gnum+"/"+i+":"+tree.count()+"/"+(ct-1)); return false;}
 					}
 				}
 				

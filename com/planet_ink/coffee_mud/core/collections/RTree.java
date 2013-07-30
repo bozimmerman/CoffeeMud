@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.core.collections;
 
-import java.util.Vector;
-import java.util.Collection;
+import java.lang.ref.WeakReference;
+import java.util.*;
 
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
@@ -23,11 +23,13 @@ public class RTree<T extends BoundedObject> {
 	private RTreeNode root;
 	private int maxSize;
 	private int minSize;
+	private Map<T,List<WeakReference<TrackingVector<T>>>> trackMap = new HashMap<T,List<WeakReference<TrackingVector<T>>>>();
 	private QuadraticNodeSplitter splitter;
 	
 	
 	public boolean intersects(BoundedCube one, BoundedCube two)
 	{
+		/*
 		return 	  one.contains(two.lx,two.ty,two.iz)
 				||one.contains(two.rx,two.ty,two.iz)
 				||one.contains(two.lx,two.by,two.iz)
@@ -36,19 +38,23 @@ public class RTree<T extends BoundedObject> {
 				||one.contains(two.rx,two.ty,two.oz)
 				||one.contains(two.lx,two.by,two.oz)
 				||one.contains(two.rx,two.by,two.oz);
+		*/
+		return (one.rx >=two.lx) && (one.lx <=two.rx) 
+			&& (one.by >= two.ty) && (one.ty <= two.by)
+			&& (one.oz >= two.iz) && (one.iz <= two.oz);
 	}
 	
 	public class RTreeNode implements BoundedObject {
 		RTreeNode parent;
 		BoundedCube box;
 		Vector<RTreeNode> children;
-		Vector<T> data;
+		TrackingVector<T> data;
 		
 		public RTreeNode() {}
 
 		public RTreeNode(boolean isLeaf)	{
 			if (isLeaf) {
-				data = new Vector<T>(maxSize+1);
+				data = new TrackingVector<T>(trackMap,maxSize+1);
 			} else {
 				children = new Vector<RTreeNode>(maxSize+1);
 			}
@@ -385,6 +391,22 @@ public class RTree<T extends BoundedObject> {
 			}
 		}
 	}
+	private boolean query(BoundedObject obj, RTreeNode node) 
+	{
+		if (node == null) 
+			return false;
+		if (node.isLeaf()) {
+			return node.data.contains(obj);
+		} else {
+			for (int i = 0; i < node.children.size(); i++) {
+				if (intersects(node.children.get(i).box, obj.getBounds())) {
+					if(query(obj, node.children.get(i)))
+						return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Returns one item that intersects the query box, or null if nothing intersects
@@ -471,10 +493,10 @@ public class RTree<T extends BoundedObject> {
 	 */
 	public boolean remove(T o) {
 		if(root==null) return false;
-		RTreeNode n = chooseLeaf(o, root);
+		final RTreeNode n = chooseLeaf(o, root);
 		if(n.isLeaf())
 		{
-			n.data.remove(o);
+			n.data.removeAllTrackedEntries(o);
 			n.computeMBR();
 			return true;
 		}
@@ -507,10 +529,18 @@ public class RTree<T extends BoundedObject> {
 		if (root == null)
 			return false;
 
-		RTreeNode n = chooseLeaf(o, root);
-		if(n.isLeaf())
-			return n.data.contains(o);
-		return false;
+		if(!trackMap.containsKey(o))
+			return false;
+		
+		return query(o, root);
+	}
+
+	public boolean leafSearch(T o) {
+		if (o == null) 
+			return false;
+		if (root == null)
+			return false;
+		return firstLeafSearch(o, root)!=null;
 	}
 	
 	/**
@@ -554,6 +584,23 @@ public class RTree<T extends BoundedObject> {
 				return null;
 			
 			return chooseLeaf(o, maxnode);
+		}
+	}
+	
+	private RTreeNode firstLeafSearch(T o, RTreeNode n) {
+		assert(n != null);
+		if (n.isLeaf()) {
+			return n.data.contains(o)?n:null;
+		} else {
+			for (int i = 0; i < n.children.size(); i++) {
+				RTreeNode n2=n.children.get(i);
+				if(n2.isLeaf() && n2.data.contains(o))
+					return n2;
+				RTreeNode n3=firstLeafSearch(o,n2);
+				if(n3!=null)
+					return n3;
+			}
+			return null;
 		}
 	}
 	
