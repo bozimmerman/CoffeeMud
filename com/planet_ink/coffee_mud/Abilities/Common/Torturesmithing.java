@@ -187,7 +187,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5) mat="";
 					if(((level<=xlevel(mob))||allFlag)
-					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+" "+mat.toLowerCase()+"\n\r");
 				}
 			}

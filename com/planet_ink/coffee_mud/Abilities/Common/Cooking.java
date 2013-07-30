@@ -702,7 +702,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					if(item.length()==0) continue;
 					int level=CMath.s_int(Vr.get(RCP_LEVEL));
 					if(((level<=xlevel(mob))||allFlag)
-					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						StringBuilder line=new StringBuilder("");
 						line.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),colWidth)+"^w ");

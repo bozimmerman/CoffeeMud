@@ -7162,7 +7162,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof ShipComponent)
 			{
 				ShipComponent E=(ShipComponent)me;
-				E.setInstalledFactor((float)prompt(mob, (double)E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
+				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
 			}
 			if(me instanceof PackagedItems)
 				((PackagedItems)me).setNumberOfItemsInPackage(prompt(mob,((PackagedItems)me).numberOfItemsInPackage(),++showNumber,showFlag,"Number of items in the package"));
@@ -7463,7 +7463,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof ShipComponent)
 			{
 				ShipComponent E=(ShipComponent)me;
-				E.setInstalledFactor((float)prompt(mob, (double)E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
+				E.setInstalledFactor((float)prompt(mob, E.getInstalledFactor(), ++showNumber, showFlag, "Installed Factor"));
 			}
 			genLidsNLocks(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);

@@ -275,8 +275,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			else
 				R.moveItemTo(me, Expire.Never, Move.Followers);
 		}
-		if(R instanceof LocationRoom)
-			setCoords(((LocationRoom)R).coordinates());
+		setCoords(R.coordinates());
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
 		if (area instanceof SpaceShip)
 		{
@@ -583,7 +582,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override
 	public BoundedCube getBounds() 
 	{
-		return new RTree.BoundedObject.BoundedCube(coordinates(),radius());
+		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",

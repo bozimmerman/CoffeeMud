@@ -108,8 +108,7 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 		final SpaceShip ship=(SpaceShip)obj;
 		if((portDir==null)||(amount<0))
 			return reportError(me, controlI, mob, me.name(mob)+" rumbles loudly, but accomplishes nothing.","Failure: "+me.name(mob)+": exhaust control.");
-		int thrust=amount;
-		thrust=(int)Math.round(me.getInstalledFactor() * thrust);
+		int thrust=Math.round(me.getInstalledFactor() * amount);
 		if(thrust > me.getMaxThrust())
 			thrust=me.getMaxThrust();
 		thrust=(int)Math.round(manufacturer.getReliabilityPct() * thrust);

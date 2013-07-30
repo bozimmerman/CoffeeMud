@@ -143,7 +143,7 @@ public class Smelting extends CraftingSkill
 					String metal1=V.get(RCP_METALONE).toLowerCase();
 					String metal2=V.get(RCP_METALTWO).toLowerCase();
 					if(((level<=xlevel(mob))||allFlag)
-					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(metal1,cols[2])+" "+metal2+"\n\r");
 				}
 			}

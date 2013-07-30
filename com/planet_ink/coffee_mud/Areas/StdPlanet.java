@@ -2,7 +2,8 @@ package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.collections.RTree.BoundedObject.BoundedCube;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -74,6 +75,6 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	@Override
 	public BoundedCube getBounds() 
 	{
-		return new RTree.BoundedObject.BoundedCube(coordinates(),radius());
+		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
 }

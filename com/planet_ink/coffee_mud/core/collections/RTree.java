@@ -1,9 +1,10 @@
 package com.planet_ink.coffee_mud.core.collections;
 
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.Collection;
 
-import com.planet_ink.coffee_mud.core.collections.RTree.BoundedObject.BoundedCube;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 
 /**
  * 2D R-Tree implementation for Android.
@@ -18,76 +19,12 @@ import com.planet_ink.coffee_mud.core.collections.RTree.BoundedObject.BoundedCub
  * https://github.com/pruby/xppylons/blob/master/src/com/untamedears/xppylons/rtree/AABB.java
  * (No license found)
  */
-public class RTree {
+public class RTree<T extends BoundedObject> {
 	private RTreeNode root;
 	private int maxSize;
 	private int minSize;
 	private QuadraticNodeSplitter splitter;
 	
-	public interface BoundedObject
-	{
-		public BoundedCube getBounds();
-
-		public static class BoundedCube
-		{
-			public long lx,ty,iz =0;
-			public long rx,by,oz=0;
-			
-			public BoundedCube()
-			{
-				super();
-			}
-			
-			public BoundedCube(long lx, long rx, long ty, long by, long iz, long oz)
-			{
-				super();
-				this.lx=lx; this.rx=rx;
-				this.ty=ty; this.by=by;
-				this.iz=iz; this.oz=oz;
-			}
-			
-			public BoundedCube(long[] coords, long radius)
-			{
-				super();
-				this.lx=coords[0]-radius; this.rx=coords[0]+radius;
-				this.ty=coords[1]-radius; this.by=coords[1]+radius;
-				this.iz=coords[2]-radius; this.oz=coords[2]+radius;
-			}
-			
-			public BoundedCube(BoundedCube l)
-			{
-				super();
-				set(l);
-			}
-			
-			public void set(BoundedCube l)
-			{
-				this.lx=l.lx; this.rx=l.rx;
-				this.ty=l.ty; this.by=l.by;
-				this.iz=l.iz; this.oz=l.oz;
-			}
-			public void union(BoundedCube l)
-			{
-				if(l.lx < lx) lx=l.lx;
-				if(l.rx > rx) rx=l.rx;
-				if(l.ty < ty) ty=l.ty;
-				if(l.by > by) by=l.by;
-				if(l.iz < iz) iz=l.iz;
-				if(l.oz > oz) oz=l.oz;
-			}
-			
-			public boolean contains(long x, long y, long z)
-			{
-				return ((x>=lx)&&(x<=rx)
-				&&(y>=ty)&&(y<=by)
-				&&(z>=iz)&&(z<=oz));
-			}
-			
-			public long width() { return rx-lx; }
-			public long height() { return by-ty; }
-			public long depth() { return oz-iz; }
-		}
-	}
 	
 	public boolean intersects(BoundedCube one, BoundedCube two)
 	{
@@ -104,16 +41,16 @@ public class RTree {
 	public class RTreeNode implements BoundedObject {
 		RTreeNode parent;
 		BoundedCube box;
-		ArrayList<RTreeNode> children;
-		ArrayList<BoundedObject> data;
+		Vector<RTreeNode> children;
+		Vector<T> data;
 		
 		public RTreeNode() {}
 
 		public RTreeNode(boolean isLeaf)	{
 			if (isLeaf) {
-				data = new ArrayList<BoundedObject>(maxSize+1);
+				data = new Vector<T>(maxSize+1);
 			} else {
-				children = new ArrayList<RTreeNode>(maxSize+1);
+				children = new Vector<RTreeNode>(maxSize+1);
 			}
 		}
 
@@ -179,7 +116,7 @@ public class RTree {
 			}
 		}
 
-		public ArrayList<? extends BoundedObject> getSubItems() {
+		public Vector<? extends BoundedObject> getSubItems() {
 			return isLeaf() ? data : children;
 		}
 
@@ -217,7 +154,7 @@ public class RTree {
 
 			// Choose seeds. Would write a function for this, but it requires returning 2 objects
 			BoundedObject seed1 = null, seed2 = null;
-			ArrayList<? extends BoundedObject> list;
+			Vector<? extends BoundedObject> list;
 			if (isleaf)
 				list = n.data;
 			else
@@ -345,7 +282,7 @@ public class RTree {
 				int difmax = Integer.MIN_VALUE;
 				int nmax_index = -1;
 				for (int i = 0; i < n.data.size(); i++) {
-					BoundedObject node = n.data.get(i);
+					T node = n.data.get(i);
 					int d1 = expansionNeeded(node.getBounds(), g1.box);
 					int d2 = expansionNeeded(node.getBounds(), g2.box);
 					int dif = Math.abs(d1 - d2);
@@ -357,7 +294,7 @@ public class RTree {
 				assert(nmax_index != -1);
 
 				// Distribute Entry
-				BoundedObject nmax = n.data.remove(nmax_index);
+				T nmax = n.data.remove(nmax_index);
 
 				// ... to the one with the least expansion
 				int overlap1 = expansionNeeded(nmax.getBounds(), g1.box);
@@ -427,14 +364,14 @@ public class RTree {
 	 * @param results A collection to store the query results
 	 * @param box The query
 	 */
-	public void query(Collection<? super BoundedObject> results) {
+	public void query(Collection<T> results) {
 		BoundedCube box = new BoundedCube(Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE);
 		query(results, box, root);
 	}
-	public void query(Collection<? super BoundedObject> results, BoundedCube box) {
+	public void query(Collection<T> results, BoundedCube box) {
 		query(results, box, root);
 	}
-	private void query(Collection<? super BoundedObject> results, BoundedCube box, RTreeNode node) {
+	private void query(Collection<T> results, BoundedCube box, RTreeNode node) {
 		if (node == null) return;
 		if (node.isLeaf()) {
 			for (int i = 0; i < node.data.size(); i++)
@@ -453,10 +390,10 @@ public class RTree {
 	 * Returns one item that intersects the query box, or null if nothing intersects
 	 * the query box.
 	 */
-	public BoundedObject queryOne(BoundedCube box) {
+	public T queryOne(BoundedCube box) {
 		return queryOne(box,root);
 	}
-	private BoundedObject queryOne(BoundedCube box, RTreeNode node) {
+	private T queryOne(BoundedCube box, RTreeNode node) {
 		if (node == null) return null;
 		if (node.isLeaf()) {
 			for (int i = 0; i < node.data.size(); i++) {
@@ -468,7 +405,7 @@ public class RTree {
 		} else {
 			for (int i = 0; i < node.children.size(); i++) {
 				if (intersects(node.children.get(i).box, box)) {
-					BoundedObject result = queryOne(box,node.children.get(i));
+					T result = queryOne(box,node.children.get(i));
 					if (result != null) return result;
 				}
 			}
@@ -482,10 +419,10 @@ public class RTree {
 	 * @param px Point X coordinate
 	 * @param py Point Y coordinate
 	 */
-	public void query(Collection<? super BoundedObject> results, long px, long py, long pz) {
+	public void query(Collection<T> results, long px, long py, long pz) {
 		query(results, px, py, pz, root);
 	}
-	private void query(Collection<? super BoundedObject> results, long px, long py, long pz, RTreeNode node) {
+	private void query(Collection<T> results, long px, long py, long pz, RTreeNode node) {
 		if (node == null) return;
 		if (node.isLeaf()) {
 			for (int i = 0; i < node.data.size(); i++) {
@@ -505,10 +442,10 @@ public class RTree {
 	/**
 	 * Returns one item that intersects the query point, or null if no items intersect that point.
 	 */
-	public BoundedObject queryOne(long px, long py, long pz) {
+	public T queryOne(long px, long py, long pz) {
 		return queryOne(px, py, pz, root);
 	}
-	private BoundedObject queryOne(long px, long py, long pz, RTreeNode node) {
+	private T queryOne(long px, long py, long pz, RTreeNode node) {
 		if (node == null) return null;
 		if (node.isLeaf()) {
 			for (int i = 0; i < node.data.size(); i++) {
@@ -520,7 +457,7 @@ public class RTree {
 		} else {
 			for (int i = 0; i < node.children.size(); i++) {
 				if (node.children.get(i).box.contains(px, py, pz)) {
-					BoundedObject result = queryOne(px, py, pz, node.children.get(i));
+					T result = queryOne(px, py, pz, node.children.get(i));
 					if (result != null) return result;
 				}
 			}
@@ -532,11 +469,16 @@ public class RTree {
 	 * Removes the specified object if it is in the tree.
 	 * @param o
 	 */
-	public void remove(BoundedObject o) {
+	public boolean remove(T o) {
+		if(root==null) return false;
 		RTreeNode n = chooseLeaf(o, root);
-		assert(n.isLeaf());
-		n.data.remove(o);
-		n.computeMBR();
+		if(n.isLeaf())
+		{
+			n.data.remove(o);
+			n.computeMBR();
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -544,7 +486,7 @@ public class RTree {
 	 * while in the R-tree, the result is undefined.
 	 * @throws NullPointerException If o == null
 	 */
-	public void insert(BoundedObject o) {
+	public void insert(T o) {
 		if (o == null) throw new NullPointerException("Cannot store null object");
 		if (root == null)
 			root = new RTreeNode(true);
@@ -559,15 +501,16 @@ public class RTree {
 		}
 	}
 
-	public boolean contains(BoundedObject o) {
+	public boolean contains(T o) {
 		if (o == null) 
 			return false;
 		if (root == null)
 			return false;
 
 		RTreeNode n = chooseLeaf(o, root);
-		assert(n.isLeaf());
-		return n.data.contains(o);
+		if(n.isLeaf())
+			return n.data.contains(o);
+		return false;
 	}
 	
 	/**
@@ -589,7 +532,7 @@ public class RTree {
 		}
 	}
 
-	private RTreeNode chooseLeaf(BoundedObject o, RTreeNode n) {
+	private RTreeNode chooseLeaf(T o, RTreeNode n) {
 		assert(n != null);
 		if (n.isLeaf()) {
 			return n;

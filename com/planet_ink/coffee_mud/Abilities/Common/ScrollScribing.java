@@ -186,7 +186,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					if((A!=null)
 					&&((spellLevel(mob,A)>=0)||(allFlag))
 					&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag))
-					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
+					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
 						buf.append(CMStrings.padRight(A.name(),colWidth)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;

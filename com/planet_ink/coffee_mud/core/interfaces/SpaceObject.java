@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * This interface is still in development.  It will some day represent an object in space
  * @author Bo Zimmerman
  */
-public interface SpaceObject extends Environmental, RTree.BoundedObject
+public interface SpaceObject extends Environmental, BoundedObject
 {
 	/**
 	 * The current absolute coordinates of  the object

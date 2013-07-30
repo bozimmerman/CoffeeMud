@@ -154,7 +154,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5) material="";
 					if(((level<=xlevel(mob))||allFlag)
-					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+" "+material.toLowerCase()+"\n\r");
 				}
 			}

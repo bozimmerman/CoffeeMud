@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -1363,22 +1365,77 @@ public class Test extends StdCommand
 			{
 				
 			}
-			if(what.equalsIgnoreCase("yahoo")&&(mob.session()!=null))
+			if(what.equalsIgnoreCase("rtree")&&(mob.session()!=null))
 			{
-				if(commands.size()<8)
+				long t1=System.currentTimeMillis();
+				RTree tree=new RTree();
+				List<BoundedObject> setToAdd=new Vector<BoundedObject>();
+				List<long[]> samples=new Vector<long[]>();
+				Random r=new Random(System.currentTimeMillis());
+				for(int g=0;g<15;g++)
 				{
-					mob.tell("Usage: TEST YAHOO user password url numtimes skiplist journal");
-					return false;
+					long gcenterX=r.nextLong();
+					if(gcenterX<0) gcenterX=gcenterX*-1;
+					long gcenterY=r.nextLong();
+					if(gcenterY<0) gcenterY=gcenterY*-1;
+					long gcenterZ=r.nextLong();
+					if(gcenterZ<0) gcenterZ=gcenterZ*-1;
+					final long grp=g;
+					for(int i=0;i<100;i++)
+					{
+						int dist=r.nextInt(0x0fff);
+						final BoundedObject.BoundedCube cube=new BoundedObject.BoundedCube(gcenterX-dist,gcenterX+dist,gcenterY-dist,gcenterY+dist,gcenterZ-dist,gcenterZ+dist);
+						final int num=i;
+						BoundedObject obj=new BoundedObject(){
+							@Override
+							public BoundedCube getBounds() {
+								return cube;
+							}
+							public String toString() { return "g"+grp+"#"+num; }
+						};
+						setToAdd.add(obj);
+					}
+					samples.add(new long[]{gcenterX,gcenterY,gcenterZ});
 				}
-				for(int i=1; i<2; i++)
+				while(setToAdd.size()>0)
 				{
-					String resp=CMLib.webMacroFilter().copyYahooGroupMsgs((String)commands.get(2), (String)commands.get(3), (String)commands.get(4), 
-							CMath.s_int((String)commands.get(5)), CMParms.toIntArray(CMParms.parseCommas((String)commands.get(6),true)), 
-							(String)commands.get(7));
-					mob.tell(resp);
-					if((resp.toLowerCase().trim().startsWith("fail"))&&(resp.endsWith("DUP!")))
-						i=0;
+					BoundedObject O=setToAdd.remove(r.nextInt(setToAdd.size()));
+					tree.insert(O);
 				}
+				long totalSize=0;
+				for(int gnum=0; gnum<samples.size();gnum++)
+				{
+					setToAdd.clear();
+					long[] pt=samples.get(gnum);
+					tree.query(setToAdd,pt[0],pt[1],pt[2]);
+					totalSize+=setToAdd.size();
+					for(int i=0;i<setToAdd.size();i++)
+						if(!setToAdd.get(i).toString().startsWith("g"+gnum+"#"))
+						{ mob.tell("Error25-1"); return false;}
+				}
+				mob.tell("Average set size="+(totalSize/samples.size())+", time="+((System.currentTimeMillis()-t1))+", count="+tree.count());
+				for(int gnum=0; gnum<samples.size();gnum++)
+				{
+					setToAdd.clear();
+					long[] pt=samples.get(gnum);
+					tree.query(setToAdd,pt[0],pt[1],pt[2]);
+					for(int i=0;i<setToAdd.size();i++)
+					{
+						int ct=tree.count();
+						BoundedObject O=setToAdd.get(i);
+						if(!tree.remove(O))
+						{ mob.tell("Error25-2"); return false;}
+						if(tree.contains(O))
+						{ mob.tell("Error25-3"); return false;}
+						List<BoundedObject> dblCheck=new Vector<BoundedObject>(setToAdd.size()-i);
+						tree.query(setToAdd,pt[0],pt[1],pt[2]);
+						if(dblCheck.contains(O))
+						{ mob.tell("Error25-4"); return false;}
+						if(tree.count()!=ct-1)
+						{ mob.tell("Error25-5#"+gnum+":"+tree.count()+"/"+(ct-1)); return false;}
+					}
+				}
+				
 			}
 			if((what.equalsIgnoreCase("all"))||(what.equalsIgnoreCase("escapefilterbug")))
 			{

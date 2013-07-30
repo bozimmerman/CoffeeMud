@@ -3,7 +3,8 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.core.collections.RTree.BoundedObject;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -47,7 +48,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<PostOffice> 	postOfficeList   		= new SVector<PostOffice>();
 	public List<Auctioneer> 	auctionHouseList 		= new SVector<Auctioneer>();
 	public List<Banker> 		bankList		 		= new SVector<Banker>();
-	public RTree				space		 			= new RTree();
+	public RTree<SpaceObject>	space		 			= new RTree<SpaceObject>();
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
 	
 	public Map<Integer,List<WeakReference<MsgListener>>> 
@@ -399,19 +400,18 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, long minDistance, long maxDistance)
 	{
-		List within=new Vector(1);
+		List<SpaceObject> within=new Vector<SpaceObject>(1);
 		if(ofObj==null)
 			return within;
 		synchronized(space)
 		{
-			space.query(within, new RTree.BoundedObject.BoundedCube(ofObj.coordinates(), maxDistance));
+			space.query(within, new BoundedObject.BoundedCube(ofObj.coordinates(), maxDistance));
 		}
-		for(Iterator i=within.iterator();i.hasNext();)
+		for(Iterator<SpaceObject> i=within.iterator();i.hasNext();)
 		{
-			SpaceObject o=(SpaceObject)i.next();
+			SpaceObject o=i.next();
 			if(o!=ofObj)
 			{
 				long dist=getDistanceFrom(o,ofObj);

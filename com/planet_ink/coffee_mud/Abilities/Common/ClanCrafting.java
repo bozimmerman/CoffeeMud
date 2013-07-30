@@ -209,7 +209,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					int level=CMath.s_int(V.get(RCP_LEVEL));
 					int exp=CMath.s_int(V.get(RCP_EXP));
 					if(((level<=xlevel(mob))||allFlag)
-					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						String mat1=V.get(RCP_MATERIAL1);
 						String mat2=V.get(RCP_MATERIAL2);
