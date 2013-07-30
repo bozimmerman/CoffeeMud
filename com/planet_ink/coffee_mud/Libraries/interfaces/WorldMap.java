@@ -136,6 +136,7 @@ public interface WorldMap extends CMLibrary
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO);
 	public long[] getLocation(long[] oldLocation, double[] direction, long distance);
 	public void moveSpaceObject(SpaceObject O);
+	public void moveSpaceObject(SpaceObject O, long x, long y, long z);
 	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs);
 	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance);
 	

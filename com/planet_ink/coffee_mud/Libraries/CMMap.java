@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.collections.RTree.BoundedObject;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -46,7 +47,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<PostOffice> 	postOfficeList   		= new SVector<PostOffice>();
 	public List<Auctioneer> 	auctionHouseList 		= new SVector<Auctioneer>();
 	public List<Banker> 		bankList		 		= new SVector<Banker>();
-	public List<SpaceObject>	space   		 		= new SLinkedList<SpaceObject>(); // i guess we're only ever iterating
+	public RTree				space		 			= new RTree();
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
 	
 	public Map<Integer,List<WeakReference<MsgListener>>> 
@@ -278,16 +279,24 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public boolean isObjectInSpace(SpaceObject O)
 	{
-		return space.contains(O); 
+		synchronized(space)
+		{
+			return space.contains(O);
+		}
 	}
 	public void delObjectInSpace(SpaceObject O)
 	{ 
-		space.remove(O); 
+		synchronized(space)
+		{
+			space.remove(O);
+		}
 	}
 	public void addObjectToSpace(SpaceObject O)
 	{
-		if(!space.contains(O))
-			space.add(O);
+		synchronized(space)
+		{
+			space.insert(O); // won't accept dups, so is ok
+		}
 	}
 
 	public long getDistanceFrom(SpaceObject O1, SpaceObject O2)
@@ -314,14 +323,26 @@ public class CMMap extends StdLibrary implements WorldMap
 		return dir;
 	}
 
+	public void moveSpaceObject(SpaceObject O, long x, long y, long z)
+	{
+		synchronized(space)
+		{
+			space.remove(O);
+			O.coordinates()[0]=x;
+			O.coordinates()[1]=y;
+			O.coordinates()[2]=z;
+			space.insert(O);
+		}
+	}
+	
 	public void moveSpaceObject(SpaceObject O)
 	{
 		double x1=Math.cos(O.direction()[0])*Math.sin(O.direction()[1]);
 		double y1=Math.sin(O.direction()[0])*Math.sin(O.direction()[1]);
 		double z1=Math.cos(O.direction()[1]);
-		O.coordinates()[0]=O.coordinates()[0]+Math.round(CMath.mul(O.speed(),x1));
-		O.coordinates()[1]=O.coordinates()[1]+Math.round(CMath.mul(O.speed(),y1));
-		O.coordinates()[2]=O.coordinates()[2]+Math.round(CMath.mul(O.speed(),z1));
+		moveSpaceObject(O,O.coordinates()[0]+Math.round(CMath.mul(O.speed(),x1)),
+						O.coordinates()[1]+Math.round(CMath.mul(O.speed(),y1)),
+						O.coordinates()[2]=O.coordinates()[2]+Math.round(CMath.mul(O.speed(),z1)));
 	}
 
 	public long[] getLocation(long[] oldLocation, double[] direction, long distance)
@@ -368,20 +389,26 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 
-	//TODO: this algorithm is unacceptable
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance)
 	{
-		List<SpaceObject> within=new Vector<SpaceObject>(1);
+		List within=new Vector(1);
 		if(ofObj==null)
 			return within;
-		for(Iterator<SpaceObject> i=space.iterator();i.hasNext();)
+		synchronized(space)
 		{
-			SpaceObject o=i.next();
+			space.query(within, new RTree.BoundedObject.BoundedCube(ofObj.coordinates(), maxDistance));
+		}
+		for(Iterator i=within.iterator();i.hasNext();)
+		{
+			SpaceObject o=(SpaceObject)i.next();
 			if(o!=ofObj)
 			{
 				long dist=getDistanceFrom(o,ofObj);
 				if((dist>=minDistance)&&(dist<=maxDistance))
+				{
 					within.add(o);
+				}
 			}
 		}
 		return within;

@@ -46,6 +46,14 @@ public class RTree {
 				this.iz=iz; this.oz=oz;
 			}
 			
+			public BoundedCube(long[] coords, long radius)
+			{
+				super();
+				this.lx=coords[0]-radius; this.rx=coords[0]+radius;
+				this.ty=coords[1]-radius; this.by=coords[1]+radius;
+				this.iz=coords[2]-radius; this.oz=coords[2]+radius;
+			}
+			
 			public BoundedCube(BoundedCube l)
 			{
 				super();
@@ -81,7 +89,7 @@ public class RTree {
 		}
 	}
 	
-	public static boolean intersects(BoundedCube one, BoundedCube two)
+	public boolean intersects(BoundedCube one, BoundedCube two)
 	{
 		return 	  one.contains(two.lx,two.ty,two.iz)
 				||one.contains(two.rx,two.ty,two.iz)
@@ -408,19 +416,25 @@ public class RTree {
 		root = null;
 	}
 
+	public void clear()
+	{
+		splitter = new QuadraticNodeSplitter();
+		root = null;
+	}
+	
 	/**
 	 * Adds items whose AABB intersects the query AABB to results
 	 * @param results A collection to store the query results
 	 * @param box The query
 	 */
-	public void query(Collection<BoundedObject> results) {
+	public void query(Collection<? super BoundedObject> results) {
 		BoundedCube box = new BoundedCube(Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE);
 		query(results, box, root);
 	}
-	public void query(Collection<BoundedObject> results, BoundedCube box) {
+	public void query(Collection<? super BoundedObject> results, BoundedCube box) {
 		query(results, box, root);
 	}
-	private void query(Collection<BoundedObject> results, BoundedCube box, RTreeNode node) {
+	private void query(Collection<? super BoundedObject> results, BoundedCube box, RTreeNode node) {
 		if (node == null) return;
 		if (node.isLeaf()) {
 			for (int i = 0; i < node.data.size(); i++)
@@ -537,11 +551,25 @@ public class RTree {
 
 		RTreeNode n = chooseLeaf(o, root);
 		assert(n.isLeaf());
-		n.data.add(o);
-		n.computeMBR();
-		splitter.split(n);
+		if(!n.data.contains(o))
+		{
+			n.data.add(o);
+			n.computeMBR();
+			splitter.split(n);
+		}
 	}
 
+	public boolean contains(BoundedObject o) {
+		if (o == null) 
+			return false;
+		if (root == null)
+			return false;
+
+		RTreeNode n = chooseLeaf(o, root);
+		assert(n.isLeaf());
+		return n.data.contains(o);
+	}
+	
 	/**
 	 * Counts the number of items in the tree.
 	 */

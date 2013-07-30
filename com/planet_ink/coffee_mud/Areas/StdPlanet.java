@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.collections.RTree.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -47,22 +48,32 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	protected double[]	direction	= new double[2];
 	protected long		radius		= SpaceObject.DISTANCE_PLANETRADIUS;
 	
-	public long[] coordinates(){return coordinates;}
-	public void setCoords(long[] coords){coordinates=coords;}
-	public double[] direction(){return direction;}
-	public void setDirection(double[] dir){direction=dir;}
-	public long speed(){return 0;}
-	public void setSpeed(long v){}
-	public long radius() { return radius; }
-	public void setRadius(long radius) { this.radius=radius; }
-	public void setName(String newName)
+	@Override public long[] coordinates(){return coordinates;}
+	@Override public void setCoords(long[] coords)
+	{
+		if((coords!=null)&&(coords.length==3)) 
+			CMLib.map().moveSpaceObject(this,coords[0],coords[1],coords[2]);
+	}
+	@Override public double[] direction(){return direction;}
+	@Override public void setDirection(double[] dir){direction=dir;}
+	@Override public long speed(){return 0;}
+	@Override public void setSpeed(long v){}
+	@Override public long radius() { return radius; }
+	@Override public void setRadius(long radius) { this.radius=radius; }
+	@Override public void setName(String newName)
 	{
 		super.setName(newName);
 		myClock.setLoadName(newName);
 	}
 
-	public SpaceObject knownTarget(){return null;}
-	public void setKnownTarget(SpaceObject O){}
-	public SpaceObject knownSource(){return null;}
-	public void setKnownSource(SpaceObject O){}
+	@Override public SpaceObject knownTarget(){return null;}
+	@Override public void setKnownTarget(SpaceObject O){}
+	@Override public SpaceObject knownSource(){return null;}
+	@Override public void setKnownSource(SpaceObject O){}
+	
+	@Override
+	public BoundedCube getBounds() 
+	{
+		return new RTree.BoundedObject.BoundedCube(coordinates(),radius());
+	}
 }

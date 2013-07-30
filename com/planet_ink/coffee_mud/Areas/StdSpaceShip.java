@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Areas;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.collections.RTree.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -118,6 +119,12 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override public void setSpeed(long v) { if (shipItem!=null) shipItem.setSpeed(v); }
 	@Override public SpaceObject knownTarget() { return (shipItem!=null)?shipItem.knownTarget():null; }
 	@Override public void setKnownTarget(SpaceObject O) { if (shipItem!=null) shipItem.setKnownTarget(O); }
+	
+	@Override
+	public BoundedCube getBounds() 
+	{
+		return new RTree.BoundedObject.BoundedCube(coordinates(),radius());
+	}
 	
 	public int getMass()
 	{
@@ -768,14 +775,14 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		behaviors.removeElement(to);
 	}
-  public void delAllBehaviors()
-  {
-	  boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
-	  if(didSomething) behaviors.clear();
-	  behaviors=null;
-	  if(didSomething && ((scripts==null)||(scripts.size()==0)))
-		CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
-  }
+	public void delAllBehaviors()
+	{
+		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
+		if(didSomething) behaviors.clear();
+		behaviors=null;
+		if(didSomething && ((scripts==null)||(scripts.size()==0)))
+			CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
+	}
 	public int numBehaviors()
 	{
 		return behaviors.size();

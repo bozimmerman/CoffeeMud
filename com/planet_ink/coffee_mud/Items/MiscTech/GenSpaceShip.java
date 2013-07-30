@@ -219,7 +219,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public void setFacing(double[] dir) { if(dir!=null) this.facing=dir; }
 	@Override public SpaceObject knownTarget(){return spaceTarget;}
 	@Override public void setKnownTarget(SpaceObject O){spaceTarget=O;}
-	@Override public void setCoords(long[] coords){if(coords!=null) coordinates=coords;}
+	@Override public void setCoords(long[] coords)
+	{
+		if((coords!=null)&&(coords.length==3)) 
+			CMLib.map().moveSpaceObject(this,coords[0],coords[1],coords[2]);
+	}
 	@Override public void setDirection(double[] dir){if(dir!=null) direction=dir;}
 	@Override public long speed(){return speed;}
 	@Override public void setSpeed(long v){speed=v;}
@@ -271,6 +275,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			else
 				R.moveItemTo(me, Expire.Never, Move.Followers);
 		}
+		if(R instanceof LocationRoom)
+			setCoords(((LocationRoom)R).coordinates());
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
 		if (area instanceof SpaceShip)
 		{
@@ -284,9 +290,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 						R2.rawDoors()[d]=R;
 			}
 		}
-		SpaceObject planet=CMLib.map().getSpaceObject(R,true);
-		if(planet != null)
-			setCoords(planet.coordinates());
 		setSpeed(0);
 	}
 
@@ -301,17 +304,17 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 		if (area instanceof SpaceShip)
 			((SpaceShip)area).unDock(toSpace);
-		if(R!=null)
-		{
-			setCoords(R.coordinates());
-			setDirection(R.getDirectionFromCore());
-			setFacing(R.getDirectionFromCore());
-		}
 		if(toSpace)
 		{
 			SpaceObject o = getShipSpaceObject();
 			if(o != null)
 				CMLib.map().addObjectToSpace(o);
+		}
+		if(R!=null)
+		{
+			setCoords(R.coordinates());
+			setDirection(R.getDirectionFromCore());
+			setFacing(R.getDirectionFromCore());
 		}
 	}
 	
@@ -578,6 +581,11 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 	}
 
+	@Override
+	public BoundedCube getBounds() 
+	{
+		return new RTree.BoundedObject.BoundedCube(coordinates(),radius());
+	}
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
