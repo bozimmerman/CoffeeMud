@@ -3,6 +3,8 @@ package com.planet_ink.coffee_mud.core.collections;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.planet_ink.coffee_mud.core.collections.RTree.BoundedObject.BoundedCube;
+
 /**
  * 2D R-Tree implementation for Android.
  * Uses algorithms from: http://www.sai.msu.su/~megera/postgres/gist/papers/Rstar3.pdf
@@ -22,7 +24,64 @@ public class RTree {
 	private int minSize;
 	private QuadraticNodeSplitter splitter;
 	
-	public static boolean intersects(CubeL one, CubeL two)
+	public interface BoundedObject
+	{
+		public BoundedCube getBounds();
+
+		public static class BoundedCube
+		{
+			public long lx,ty,iz =0;
+			public long rx,by,oz=0;
+			
+			public BoundedCube()
+			{
+				super();
+			}
+			
+			public BoundedCube(long lx, long rx, long ty, long by, long iz, long oz)
+			{
+				super();
+				this.lx=lx; this.rx=rx;
+				this.ty=ty; this.by=by;
+				this.iz=iz; this.oz=oz;
+			}
+			
+			public BoundedCube(BoundedCube l)
+			{
+				super();
+				set(l);
+			}
+			
+			public void set(BoundedCube l)
+			{
+				this.lx=l.lx; this.rx=l.rx;
+				this.ty=l.ty; this.by=l.by;
+				this.iz=l.iz; this.oz=l.oz;
+			}
+			public void union(BoundedCube l)
+			{
+				if(l.lx < lx) lx=l.lx;
+				if(l.rx > rx) rx=l.rx;
+				if(l.ty < ty) ty=l.ty;
+				if(l.by > by) by=l.by;
+				if(l.iz < iz) iz=l.iz;
+				if(l.oz > oz) oz=l.oz;
+			}
+			
+			public boolean contains(long x, long y, long z)
+			{
+				return ((x>=lx)&&(x<=rx)
+				&&(y>=ty)&&(y<=by)
+				&&(z>=iz)&&(z<=oz));
+			}
+			
+			public long width() { return rx-lx; }
+			public long height() { return by-ty; }
+			public long depth() { return oz-iz; }
+		}
+	}
+	
+	public static boolean intersects(BoundedCube one, BoundedCube two)
 	{
 		return 	  one.contains(two.lx,two.ty,two.iz)
 				||one.contains(two.rx,two.ty,two.iz)
@@ -34,78 +93,17 @@ public class RTree {
 				||one.contains(two.rx,two.by,two.oz);
 	}
 	
-	public static class CubeL
-	{
-		private long lx,ty,iz =0;
-		private long rx,by,oz=0;
-		
-		public CubeL()
-		{
-			super();
-		}
-		
-		public CubeL(long lx, long rx, long ty, long by, long iz, long oz)
-		{
-			super();
-			this.lx=lx; this.rx=rx;
-			this.ty=ty; this.by=by;
-			this.iz=iz; this.oz=oz;
-		}
-		
-		public CubeL(CubeL l)
-		{
-			super();
-			set(l);
-		}
-		
-		public void set(CubeL l)
-		{
-			this.lx=l.lx; this.rx=l.rx;
-			this.ty=l.ty; this.by=l.by;
-			this.iz=l.iz; this.oz=l.oz;
-		}
-		public void union(CubeL l)
-		{
-			if(l.lx < lx) lx=l.lx;
-			if(l.rx > rx) rx=l.rx;
-			if(l.ty < ty) ty=l.ty;
-			if(l.by > by) by=l.by;
-			if(l.iz < iz) iz=l.iz;
-			if(l.oz > oz) oz=l.oz;
-		}
-		
-		public boolean contains(long x, long y, long z)
-		{
-			return ((x>=lx)&&(x<=rx)
-			&&(y>=ty)&&(y<=by)
-			&&(z>=iz)&&(z<=oz));
-		}
-		
-		public long width() { return rx-lx; }
-		public long height() { return by-ty; }
-		public long depth() { return oz-iz; }
-	}
-	
-	public static interface BoundedObject
-	{
-		public CubeL getBounds();
-	}
-	
-	public static interface RTreeViewable extends BoundedObject
-	{
-	}
-	
 	public class RTreeNode implements BoundedObject {
 		RTreeNode parent;
-		CubeL box;
+		BoundedCube box;
 		ArrayList<RTreeNode> children;
-		ArrayList<RTreeViewable> data;
+		ArrayList<BoundedObject> data;
 		
 		public RTreeNode() {}
 
 		public RTreeNode(boolean isLeaf)	{
 			if (isLeaf) {
-				data = new ArrayList<RTreeViewable>(maxSize+1);
+				data = new ArrayList<BoundedObject>(maxSize+1);
 			} else {
 				children = new ArrayList<RTreeNode>(maxSize+1);
 			}
@@ -133,7 +131,7 @@ public class RTree {
 
 		public void computeMBR(boolean doParents) {
 			if (box == null)
-				box = new CubeL();
+				box = new BoundedCube();
 			
 			if (!isLeaf()) {
 				if (children.isEmpty())
@@ -177,7 +175,7 @@ public class RTree {
 			return isLeaf() ? data : children;
 		}
 
-		public CubeL getBounds() {
+		public BoundedCube getBounds() {
 			return box;
 		}
 		
@@ -218,7 +216,7 @@ public class RTree {
 				list = n.children;
 
 			long maxD = Long.MIN_VALUE;
-			CubeL box = new CubeL();
+			BoundedCube box = new BoundedCube();
 			for (int i = 0; i < list.size(); i++) {
 				for (int j=0; j<list.size(); j++) {
 					if (i == j) continue;
@@ -241,9 +239,9 @@ public class RTree {
 
 			// Distribute
 			RTreeNode group1 = new RTreeNode(isleaf);
-			group1.box = new CubeL(seed1.getBounds());
+			group1.box = new BoundedCube(seed1.getBounds());
 			RTreeNode group2 = new RTreeNode(isleaf);
-			group2.box = new CubeL(seed2.getBounds());
+			group2.box = new BoundedCube(seed2.getBounds());
 			if (isleaf)
 				distributeLeaves(n, group1, group2);
 			else
@@ -351,7 +349,7 @@ public class RTree {
 				assert(nmax_index != -1);
 
 				// Distribute Entry
-				RTreeViewable nmax = n.data.remove(nmax_index);
+				BoundedObject nmax = n.data.remove(nmax_index);
 
 				// ... to the one with the least expansion
 				int overlap1 = expansionNeeded(nmax.getBounds(), g1.box);
@@ -415,14 +413,14 @@ public class RTree {
 	 * @param results A collection to store the query results
 	 * @param box The query
 	 */
-	public void query(Collection<RTreeViewable> results) {
-		CubeL box = new CubeL(Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE);
+	public void query(Collection<BoundedObject> results) {
+		BoundedCube box = new BoundedCube(Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE);
 		query(results, box, root);
 	}
-	public void query(Collection<RTreeViewable> results, CubeL box) {
+	public void query(Collection<BoundedObject> results, BoundedCube box) {
 		query(results, box, root);
 	}
-	private void query(Collection<RTreeViewable> results, CubeL box, RTreeNode node) {
+	private void query(Collection<BoundedObject> results, BoundedCube box, RTreeNode node) {
 		if (node == null) return;
 		if (node.isLeaf()) {
 			for (int i = 0; i < node.data.size(); i++)
@@ -441,10 +439,10 @@ public class RTree {
 	 * Returns one item that intersects the query box, or null if nothing intersects
 	 * the query box.
 	 */
-	public BoundedObject queryOne(CubeL box) {
+	public BoundedObject queryOne(BoundedCube box) {
 		return queryOne(box,root);
 	}
-	private BoundedObject queryOne(CubeL box, RTreeNode node) {
+	private BoundedObject queryOne(BoundedCube box, RTreeNode node) {
 		if (node == null) return null;
 		if (node.isLeaf()) {
 			for (int i = 0; i < node.data.size(); i++) {
@@ -532,7 +530,7 @@ public class RTree {
 	 * while in the R-tree, the result is undefined.
 	 * @throws NullPointerException If o == null
 	 */
-	public void insert(RTreeViewable o) {
+	public void insert(BoundedObject o) {
 		if (o == null) throw new NullPointerException("Cannot store null object");
 		if (root == null)
 			root = new RTreeNode(true);
@@ -568,7 +566,7 @@ public class RTree {
 		if (n.isLeaf()) {
 			return n;
 		} else {
-			CubeL box = o.getBounds();
+			BoundedCube box = o.getBounds();
 
 			int maxOverlap = Integer.MAX_VALUE;
 			RTreeNode maxnode = null;
@@ -591,7 +589,7 @@ public class RTree {
 	/**
 	 * Returns the amount that other will need to be expanded to fit this.
 	 */
-	private static int expansionNeeded(CubeL one, CubeL two) {
+	private static int expansionNeeded(BoundedCube one, BoundedCube two) {
 		int total = 0;
 
 		if(two.lx < one.lx) total += one.lx - two.lx;
@@ -606,7 +604,7 @@ public class RTree {
 		return total;
 	}
 	
-	private static long area(CubeL rect) {
+	private static long area(BoundedCube rect) {
 		return rect.width() * rect.height() * rect.depth();
 	}
 }
