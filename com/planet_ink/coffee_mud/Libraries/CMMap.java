@@ -400,7 +400,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance)
+	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, long minDistance, long maxDistance)
 	{
 		List within=new Vector(1);
 		if(ofObj==null)
@@ -421,6 +421,15 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 		}
+		Collections.sort(within, new Comparator<SpaceObject>(){
+			@Override public int compare(SpaceObject o1, SpaceObject o2) {
+				final long distTo1=getDistanceFrom(o1,ofObj);
+				final long distTo2=getDistanceFrom(o2,ofObj);
+				if(distTo1==distTo2)
+					return 0;
+				return distTo1>distTo2?1:-1;
+			}
+		});
 		return within;
 	}
 	
