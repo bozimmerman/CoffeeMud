@@ -284,6 +284,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return space.contains(O);
 		}
 	}
+
 	public void delObjectInSpace(SpaceObject O)
 	{ 
 		synchronized(space)
@@ -291,10 +292,14 @@ public class CMMap extends StdLibrary implements WorldMap
 			space.remove(O);
 		}
 	}
-	public void addObjectToSpace(SpaceObject O)
+
+	public void addObjectToSpace(SpaceObject O, long[] coords)
 	{
 		synchronized(space)
 		{
+			O.coordinates()[0]=coords[0];
+			O.coordinates()[1]=coords[1];
+			O.coordinates()[2]=coords[2];
 			space.insert(O); // won't accept dups, so is ok
 		}
 	}
@@ -323,7 +328,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return dir;
 	}
 
-	public void moveSpaceObject(SpaceObject O, long x, long y, long z)
+	protected void moveSpaceObject(SpaceObject O, long x, long y, long z)
 	{
 		synchronized(space)
 		{
@@ -333,6 +338,11 @@ public class CMMap extends StdLibrary implements WorldMap
 			O.coordinates()[2]=z;
 			space.insert(O);
 		}
+	}
+	
+	public void moveSpaceObject(SpaceObject O, long[] coords)
+	{
+		moveSpaceObject(O, coords[0], coords[1], coords[2]);
 	}
 	
 	public void moveSpaceObject(SpaceObject O)

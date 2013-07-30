@@ -635,12 +635,6 @@ public class StdSpaceShip implements Area, SpaceShip
 			}
 		}
 		savedDock=null;
-		if(toSpace)
-		{
-			SpaceObject o = getShipSpaceObject();
-			if(o != null)
-				CMLib.map().addObjectToSpace(o);
-		}
 	}
 
 	public SpaceObject getShipSpaceObject()

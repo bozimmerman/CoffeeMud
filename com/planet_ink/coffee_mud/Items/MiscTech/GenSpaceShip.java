@@ -222,7 +222,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public void setCoords(long[] coords)
 	{
 		if((coords!=null)&&(coords.length==3)) 
-			CMLib.map().moveSpaceObject(this,coords[0],coords[1],coords[2]);
+			CMLib.map().moveSpaceObject(this,coords);
 	}
 	@Override public void setDirection(double[] dir){if(dir!=null) direction=dir;}
 	@Override public long speed(){return speed;}
@@ -304,17 +304,16 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		}
 		if (area instanceof SpaceShip)
 			((SpaceShip)area).unDock(toSpace);
+		if(R!=null)
+		{
+			setDirection(R.getDirectionFromCore());
+			setFacing(R.getDirectionFromCore());
+		}
 		if(toSpace)
 		{
 			SpaceObject o = getShipSpaceObject();
-			if(o != null)
-				CMLib.map().addObjectToSpace(o);
-		}
-		if(R!=null)
-		{
-			setCoords(R.coordinates());
-			setDirection(R.getDirectionFromCore());
-			setFacing(R.getDirectionFromCore());
+			if((o != null)&&(R!=null))
+				CMLib.map().addObjectToSpace(o,R.coordinates());
 		}
 	}
 	

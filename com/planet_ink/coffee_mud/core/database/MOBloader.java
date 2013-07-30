@@ -218,8 +218,7 @@ public class MOBloader
 							final long expirationDate=CMath.s_long(xml.get(0).parms.get("EXPIRE"));
 							if(roomID.startsWith("SPACE.") && (newItem instanceof SpaceShip))
 							{
-								CMLib.map().addObjectToSpace((SpaceShip)newItem);
-								((SpaceShip)newItem).setCoords(CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
+								CMLib.map().addObjectToSpace((SpaceShip)newItem,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
 								addToMOB=false;
 							}
 							else
