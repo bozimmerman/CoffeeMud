@@ -85,7 +85,14 @@ public class StdShipProgram extends StdProgram
 		else
 		{
 			long thirdOfOrbiting=SpaceObject.DISTANCE_ORBITING/2;
-			List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,SpaceObject.DISTANCE_ORBITING-thirdOfOrbiting,SpaceObject.DISTANCE_ORBITING+thirdOfOrbiting);
+			List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,SpaceObject.DISTANCE_ORBITING,SpaceObject.DISTANCE_ORBITING+thirdOfOrbiting);
+			SpaceObject orbiting=null;
+			for(SpaceObject orb : orbs)
+				if(orb instanceof Area)
+				{
+					orbiting=orb; // since they are sorted, this would be the nearest.
+					break;
+				}
 			
 			str.append("^H").append(CMStrings.padRight("Speed",10));
 			str.append("^N").append(CMStrings.padRight(Long.toString(ship.speed()),20));
@@ -94,10 +101,6 @@ public class StdShipProgram extends StdProgram
 			str.append("^N").append(CMStrings.padRight(dirStr,20));
 			str.append("\n\r");
 			str.append("^H").append(CMStrings.padRight("Location",10));
-			SpaceObject orbiting=null;
-			for(SpaceObject orb : orbs)
-				if(orb instanceof Area)
-					orbiting=orb;
 			if(orbiting!=null)
 				str.append("^N").append(CMStrings.padRight("orbiting "+orbiting.name(),50));
 			else
