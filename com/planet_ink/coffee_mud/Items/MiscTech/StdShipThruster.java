@@ -115,12 +115,11 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 		
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(thrust);
+		int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*manufacturer.getEfficiencyPct()));
 		int accelleration=thrust/ship.getMass();
-		
-		int fuelToConsume=(int)Math.round(CMath.ceiling(accelleration*me.getFuelEfficiency()));
 		if(me.consumeFuel(fuelToConsume))
 		{
-			String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Integer.valueOf(amount),Long.valueOf(me.getSpecificImpulse()));
+			String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Integer.valueOf(accelleration),Long.valueOf(me.getSpecificImpulse()));
 			CMMsg msg=CMClass.getMsg(mob, ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(ship.okMessage(mob, msg))
 			{
@@ -180,7 +179,8 @@ public class StdShipThruster extends StdFuelConsumer implements ShipComponent.Sh
 				break;
 			case CMMsg.TYP_POWERCURRENT:
 			{
-				int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()));
+				final Manufacturer manufacturer=me.getFinalManufacturer();
+				int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*manufacturer.getEfficiencyPct()));
 				if(me.consumeFuel(fuelToConsume))
 				{
 					final SpaceObject obj=CMLib.map().getSpaceObject(me, true);

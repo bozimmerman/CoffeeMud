@@ -59,7 +59,7 @@ public interface Manufacturer extends CMCommon
 	/**
 	 * Returns a pct, from 0-2, to multiply by the power requirements
 	 * of electronic items for certain purposes.  A 1.0 means perfectly
-	 * standard.  A 2.0 means super-standard.  A 0.5 means sub standard.
+	 * standard.  A 2.0 means very inefficient.  A 0.5 means super efficient.
 	 * @return a pct, from 0-2
 	 */
 	public double getEfficiencyPct();
@@ -67,7 +67,7 @@ public interface Manufacturer extends CMCommon
 	/**
 	 * Sets a pct, from 0-2, to multiply by the power requirements
 	 * of electronic items for certain purposes.  A 1.0 means perfectly
-	 * standard.  A 2.0 means super-standard.  A 0.5 means sub standard.
+	 * standard.  A 2.0 means very inefficient.  A 0.5 means super efficient.
 	 * @param pct, from 0-2
 	 */
 	public void setEfficiencyPct(double pct);
