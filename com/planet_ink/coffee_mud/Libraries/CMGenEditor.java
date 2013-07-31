@@ -7548,6 +7548,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(me instanceof AmmunitionWeapon)
 				genWeaponAmmo(mob,me,++showNumber,showFlag);
+			if(me instanceof Electronics)
+			{
+				Electronics E=(Electronics)me;
+				E.setManufacturerName(prompt(mob, E.getManufacturerName(), ++showNumber, showFlag, "Manufacturer"));
+				E.setPowerCapacity(prompt(mob, E.powerCapacity(), ++showNumber, showFlag, "Pow Capacity"));
+				E.setPowerRemaining(prompt(mob, E.powerRemaining(), ++showNumber, showFlag, "Pow Remaining"));
+				E.activate(prompt(mob, E.activated(), ++showNumber, showFlag, "Activated"));
+			}
 			genRejuv(mob,me,++showNumber,showFlag);
 			if(((!(me instanceof AmmunitionWeapon)) || (!((AmmunitionWeapon)me).requiresAmmunition()))
 			&&(!(me instanceof Wand)))
