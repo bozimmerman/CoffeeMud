@@ -60,6 +60,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 		minRange=0;
 		maxRange=10;
 		material=RawMaterial.RESOURCE_STEEL;
+		activate(true);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
 		recoverPhyStats();
@@ -159,7 +160,6 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 						setPowerRemaining(powerRemaining()-powerConsumed);
 						if(msg.value()>0)
 							msg.setValue((int)Math.round(successFactor*msg.value()));
-	System.out.println("dam: "+msg.value());
 					}
 					else
 					{

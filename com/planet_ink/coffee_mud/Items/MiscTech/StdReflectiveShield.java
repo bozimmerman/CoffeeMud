@@ -46,7 +46,7 @@ public class StdReflectiveShield extends StdElecItem
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.activate(false);
+		super.activate(true);
 		super.setRawProperLocationBitmap(Wearable.WORN_ABOUT_BODY);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
@@ -58,7 +58,7 @@ public class StdReflectiveShield extends StdElecItem
 	
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
-		mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The reflective field around <S-NAME> reflects the "+msg.tool().name()+" attack from <T-NAME>.");
+		msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The reflective field around <S-NAME> reflects the "+msg.tool().name()+" damage."));
 		return false;
 	}
 	
@@ -97,7 +97,7 @@ public class StdReflectiveShield extends StdElecItem
 					successFactor=m.getReliabilityPct()*successFactor;
 					int weaponTech=((Electronics)msg.tool()).techLevel();
 					int myTech=techLevel();
-					int techDiff=Math.min(Math.max(myTech-weaponTech,10),-10);
+					int techDiff=Math.max(Math.min(myTech-weaponTech,10),-10);
 					if(techDiff!= 0) successFactor+=(0.05)*techDiff;
 					if(doesShield(mob, msg, successFactor))
 					{

@@ -46,7 +46,7 @@ public class StdAbsorbantShield extends StdReflectiveShield
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.activate(false);
+		super.activate(true);
 		super.setRawProperLocationBitmap(Wearable.WORN_ABOUT_BODY);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
@@ -71,15 +71,15 @@ public class StdAbsorbantShield extends StdReflectiveShield
 			msg.setValue((int)Math.round(successFactor*msg.value()));
 			final String showDamage = CMProps.getVar(CMProps.Str.SHOWDAMAGE).equalsIgnoreCase("YES")?" ("+Math.round(successFactor*100.0)+")":"";
 			if(successFactor>=0.75)
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The sparkling field around <S-NAME> absorbs most"+showDamage+" of the "+msg.tool().name()+" attack from <T-NAME>.");
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The sparkling field around <S-NAME> absorbs most"+showDamage+" of the <O-NAMENOART> damage."));
 			else
 			if(successFactor>=0.50)
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The sparkling field around <S-NAME> absorbs much"+showDamage+" of the "+msg.tool().name()+" attack from <T-NAME>.");
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The sparkling field around <S-NAME> absorbs much"+showDamage+" of the <O-NAMENOART> damage."));
 			else
 			if(successFactor>=0.25)
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The sparkling field around <S-NAME> absorbs some"+showDamage+" of the "+msg.tool().name()+" attack from <T-NAME>.");
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The sparkling field around <S-NAME> absorbs some"+showDamage+" of the <O-NAMENOART> damage."));
 			else
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The sparkling field around <S-NAME> absorbs a little"+showDamage+" of the "+msg.tool().name()+" attack from <T-NAME>.");
+				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The sparkling field around <S-NAME> absorbs a little"+showDamage+" of the <O-NAMENOART> damage."));
 		}
 		return true;
 	}

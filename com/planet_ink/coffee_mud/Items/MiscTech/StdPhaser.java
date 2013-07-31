@@ -49,7 +49,7 @@ public class StdPhaser extends StdElecWeapon
 		basePhyStats().setDamage(20);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.activate(false);
+		super.activate(true);
 		super.setRawLogicalAnd(false);
 		super.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 		super.setPowerCapacity(1000);
