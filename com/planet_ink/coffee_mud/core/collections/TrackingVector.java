@@ -82,7 +82,7 @@ public class TrackingVector<T> extends Vector<T>
 		}
 	}
 	
-	@Override public boolean add(T e)
+	@Override public synchronized boolean add(T e)
 	{
 		if(super.add(e))
 		{
@@ -92,7 +92,7 @@ public class TrackingVector<T> extends Vector<T>
 		return false;
 	}
 	
-	@Override public void addElement(T e)
+	@Override public synchronized void addElement(T e)
 	{
 		super.addElement(e);
 		addTrackedEntry(e);
@@ -105,14 +105,14 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends T> arg0) {
+	public synchronized boolean addAll(Collection<? extends T> arg0) {
 		for(T o : arg0)
 			addTrackedEntry(o);
 		return super.addAll(arg0);
 	}
 
 	@Override
-	public boolean addAll(int arg0, Collection<? extends T> arg1) {
+	public synchronized boolean addAll(int arg0, Collection<? extends T> arg1) {
 		for(T o : arg1)
 			addTrackedEntry(o);
 		return super.addAll(arg0, arg1);
@@ -141,7 +141,7 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public T remove(int arg0) {
+	public synchronized T remove(int arg0) {
 		T x=super.remove(arg0);
 		if(x!=null)
 			removeTrackedEntry(x);
@@ -149,7 +149,7 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> arg0) {
+	public synchronized boolean removeAll(Collection<?> arg0) {
 		for(Object e : arg0)
 			removeTrackedEntry(e);
 		return super.removeAll(arg0);
