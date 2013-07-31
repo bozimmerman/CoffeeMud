@@ -12,6 +12,7 @@
   11. Split command will now double as GET [AMOUNT] from [BUNDLE] (kept getting requests to add a split command, though GET worked).
   12. And yet more Artisan Goodness: Animal Husbandry -- lots of race baby naming and aging-system tweaking behind this simple funness.
   13. Crafting Skill owners can now LIST ALL to see what recipes are coming down the road.
+//TODO: create/modify/destroy manufacturer
 //TODO: add electronics to guides
 //TODO: add electronics to MG
 //TODO: http://games.groups.yahoo.com/group/coffeemud skip=1885,2881,2953,3274,15908,15914,16267

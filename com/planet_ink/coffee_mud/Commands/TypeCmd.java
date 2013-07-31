@@ -101,5 +101,4 @@ public class TypeCmd extends Go
 		return false;
 	}
 	public boolean canBeOrdered(){return true;}
-
 }

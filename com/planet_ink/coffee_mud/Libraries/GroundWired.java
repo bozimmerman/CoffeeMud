@@ -524,6 +524,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public Manufacturer getManufacturer(String name)
 	{
 		if(name==null) return null;
+		if(manufacturers.size()==0)
+			return getDefaultManufacturer();
 		if(name.equals("RANDOM"))
 		{
 			int which=CMLib.dice().roll(1, manufacturers.size(), 0);

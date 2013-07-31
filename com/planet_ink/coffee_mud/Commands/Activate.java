@@ -99,7 +99,10 @@ public class Activate extends StdCommand
 				item=(Item)E;
 			}
 			else
+			{
+				item=(Item)E;
 				commands.removeElementAt(commands.size()-1);
+			}
 		}
 		if(E==null)
 		{
@@ -109,7 +112,7 @@ public class Activate extends StdCommand
 		else
 		if(item==null)
 		{
-			mob.tell("You can't activate "+E.name()+"'.");
+			mob.tell("You can't activate "+E.name()+".");
 			return false;
 		}
 
@@ -122,7 +125,4 @@ public class Activate extends StdCommand
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
 	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
-
-	
 }

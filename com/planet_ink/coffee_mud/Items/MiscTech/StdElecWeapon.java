@@ -101,7 +101,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
 				{
 					msg.source().tell(name()+" is currently "+(activated()?"activated":"deactivated")
-							+" and is at "+Math.round(powerRemaining()/powerCapacity()*100)+"% power.");
+							+" and is at "+Math.round(CMath.div(powerRemaining(),powerCapacity())*100.0)+"% power.");
 				}
 				break;
 			case CMMsg.TYP_ACTIVATE:
@@ -134,12 +134,12 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 					{
 						String msgStr;
 						if(weaponClassification()==Weapon.CLASS_RANGED)
-							msgStr="<S-YOUPOSS> <T-NAME> goes *click* and does not fire.";
+							msgStr="<S-YOUPOSS> <T-NAMENOART> goes *click* and does not fire.";
 						else
 						if(activated())
-							msgStr="<S-YOUPOSS> <T-NAME> seems to be out of power.";
+							msgStr="<S-YOUPOSS> <T-NAMENOART> seems to be out of power.";
 						else
-							msgStr="<S-YOUPOSS> <T-NAME> seems to be turned off.";
+							msgStr="<S-YOUPOSS> <T-NAMENOART> seems to be turned off.";
 						CMMsg msg2=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,msgStr);
 						if((mob.location()!=null)&&(mob.location().okMessage(myHost, msg2)))
 							mob.location().send(mob, msg2);
@@ -153,16 +153,17 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 					double successFactor=0.5;
 					final Manufacturer m=getFinalManufacturer();
 					successFactor=m.getReliabilityPct()*successFactor;
-					int weaponTech=((Electronics)msg.tool()).techLevel();
-					int myTech=techLevel();
-					int techDiff=Math.min(Math.max(myTech-weaponTech,10),-10);
-					successFactor+=(0.05)*techDiff;
-					long powerConsumed=Math.round(msg.value()*m.getEfficiencyPct());
+					long powerConsumed=Math.round(phyStats().damage()*m.getEfficiencyPct());
 					if(powerRemaining()>=powerConsumed)
 					{
 						setPowerRemaining(powerRemaining()-powerConsumed);
 						if(msg.value()>0)
 							msg.setValue((int)Math.round(successFactor*msg.value()));
+	System.out.println("dam: "+msg.value());
+					}
+					else
+					{
+						setPowerRemaining(0);
 					}
 				}
 				break;

@@ -99,7 +99,10 @@ public class Deactivate extends StdCommand
 				item=(Item)E;
 			}
 			else
+			{
 				commands.removeElementAt(commands.size()-1);
+				item=(Item)E;
+			}
 		}
 		if(E==null)
 		{
@@ -121,7 +124,4 @@ public class Deactivate extends StdCommand
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
 	public double actionsCost(final MOB mob, final List<String> cmds){return CMProps.getActionCost(ID());}
 	public boolean canBeOrdered(){return true;}
-	public boolean securityCheck(MOB mob){return CMSecurity.isASysOp(mob);}
-
-	
 }

@@ -98,7 +98,7 @@ public class StdReflectiveShield extends StdElecItem
 					int weaponTech=((Electronics)msg.tool()).techLevel();
 					int myTech=techLevel();
 					int techDiff=Math.min(Math.max(myTech-weaponTech,10),-10);
-					successFactor+=(0.05)*techDiff;
+					if(techDiff!= 0) successFactor+=(0.05)*techDiff;
 					if(doesShield(mob, msg, successFactor))
 					{
 						long powerConsumed=Math.round(msg.value()*m.getEfficiencyPct());
@@ -134,7 +134,7 @@ public class StdReflectiveShield extends StdElecItem
 				if(CMLib.flags().canBeSeenBy(this, msg.source()))
 				{
 					msg.source().tell(name()+" is currently "+(activated()?"activated":"deactivated")
-							+" and is at "+Math.round(powerRemaining()/powerCapacity()*100)+"% power.");
+							+" and is at "+Math.round(CMath.div(powerRemaining(),powerCapacity())*100.0)+"% power.");
 				}
 				return;
 			case CMMsg.TYP_ACTIVATE:

@@ -39,7 +39,7 @@ public interface BoundedObject
 
 	public static class BoundedCube implements Comparable<BoundedCube>
 	{
-		public long lx,ty,iz =0;
+		public long lx,ty,iz=0;
 		public long rx,by,oz=0;
 		
 		public BoundedCube()
@@ -97,7 +97,7 @@ public interface BoundedObject
 		public long depth() { return oz-iz; }
 
 		@Override
-		public int compareTo(BoundedCube o) 
+		public int compareTo(BoundedCube o)
 		{
 			if(lx<o.lx) return -1;
 			if(lx>o.lx) return 1;

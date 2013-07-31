@@ -111,7 +111,7 @@ public class StdDisruptor extends StdElecWeapon
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
-					if(msg.targetMessage().length()>0)
+					if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
 					{
 						List<String> V=CMParms.parse(msg.targetMessage());
 						if(V.size()>0)
@@ -129,30 +129,48 @@ public class StdDisruptor extends StdElecWeapon
 				break;
 			}
 		}
+		else
+		if((owner() instanceof MOB) && msg.amISource((MOB)owner()) && (!amWearingAt(Item.IN_INVENTORY)))
+		{
+			super.executeMsg(myHost,msg);
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_DAMAGE:
+				if(msg.tool() ==this)
+				{
+					switch(state)
+					{
+					default:
+					case 0: {
+						if(msg.value()>0)
+							msg.setValue(1);
+						break;
+					}
+					}
+				}
+				break;
+			}
+		}
 		return true;
 	}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
-
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
-				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-				{
-					msg.source().tell(name()+" is currently "+(activated()?("set to "+getStateName()):"deactivated")
-							+" and is at "+Math.round(powerRemaining()/powerCapacity()*100)+"% power.");
-				}
-				break;
+				super.executeMsg(myHost,msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source())&&(activated()))
+					msg.source().tell(name()+" is currently set to "+getStateName()+".");
+				return;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
 					int newState=state;
-					if(msg.targetMessage().length()>0)
+					if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0))
 					{
 						List<String> V=CMParms.parse(msg.targetMessage());
 						if(V.size()>0)
@@ -164,14 +182,17 @@ public class StdDisruptor extends StdElecWeapon
 					}
 					state=newState;
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> set(s) <T-NAME> on "+this.getStateName()+".");
+					recoverPhyStats();
+					msg.source().recoverPhyStats();
 				}
 				this.activate(true);
-				break;
+				return;
 			}
 		}
 		else
 		if((owner() instanceof MOB) && msg.amISource((MOB)owner()) && (!amWearingAt(Item.IN_INVENTORY)))
 		{
+			super.executeMsg(myHost,msg);
 			MOB mob=(MOB)owner();
 			switch(msg.targetMinor())
 			{
@@ -200,6 +221,11 @@ public class StdDisruptor extends StdElecWeapon
 								((MOB)msg.target()).basePhyStats().setDisposition(((MOB)msg.target()).basePhyStats().disposition()|PhyStats.IS_SLEEPING);
 								((MOB)msg.target()).phyStats().setDisposition(((MOB)msg.target()).phyStats().disposition()|PhyStats.IS_SLEEPING);
 							}
+							if(mob.getVictim()==msg.source())
+								mob.makePeace();
+							if(msg.source().getVictim()==mob)
+								mob.makePeace();
+							msg.setValue(0);
 						}
 						break;
 					}
@@ -213,9 +239,7 @@ public class StdDisruptor extends StdElecWeapon
 							{
 								if(targ instanceof MOB)
 								{
-									if(((MOB)targ).curState().getHitPoints()>0)
-										CMLib.combat().postDamage(mob,(MOB)targ,this,(((MOB)targ).curState().getHitPoints()*100),CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_BURSTING,"^S<S-NAME> <DAMAGES> <T-NAME> with <O-NAME> and <T-HE-SHE> disintegrates!^?");
-									else
+									if((!((MOB)targ).amDead())||(((MOB)targ).curState().getHitPoints()>0))
 										CMLib.combat().postDeath(msg.source(), (MOB)targ, msg);
 								}
 								else
@@ -236,6 +260,8 @@ public class StdDisruptor extends StdElecWeapon
 			default:
 				break;
 			}
+			return;
 		}
+		super.executeMsg(myHost,msg);
 	}
 }
