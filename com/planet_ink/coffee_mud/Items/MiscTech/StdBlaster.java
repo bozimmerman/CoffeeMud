@@ -44,6 +44,7 @@ public class StdBlaster extends StdElecWeapon
 		setDescription("");
 		baseGoldValue=500;
 		basePhyStats().setLevel(1);
+		basePhyStats().setDamage(20);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		super.activate(false);

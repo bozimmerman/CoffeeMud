@@ -51,12 +51,10 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
-		recoverPhyStats();
 		wornLogicalAnd=false;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		basePhyStats().setAttackAdjustment(0);
 		basePhyStats().setDamage(0);
-		basePhyStats().setAbility(0);
 		activated=true;
 		baseGoldValue=15;
 		minRange=0;
@@ -105,6 +103,16 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 					msg.source().tell(name()+" is currently "+(activated()?"activated":"deactivated")
 							+" and is at "+Math.round(powerRemaining()/powerCapacity()*100)+"% power.");
 				}
+				break;
+			case CMMsg.TYP_ACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> activate(s) <T-NAME>.");
+				this.activate(true);
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> deactivate(s) <T-NAME>.");
+				this.activate(false);
 				break;
 			}
 		}
@@ -157,16 +165,6 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 							msg.setValue((int)Math.round(successFactor*msg.value()));
 					}
 				}
-				break;
-			case CMMsg.TYP_ACTIVATE:
-				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> activate(s) <T-NAME>.");
-				this.activate(true);
-				break;
-			case CMMsg.TYP_DEACTIVATE:
-				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> deactivate(s) <T-NAME>.");
-				this.activate(false);
 				break;
 			}
 		}
