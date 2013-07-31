@@ -189,13 +189,21 @@ public class DefaultCoffeeShop implements CoffeeShop
 		return enumerableInventory.iterator();
 	}
 
+	protected Environmental preSaleCopyFix(Environmental thisThang)
+	{
+		Environmental E=(Environmental)thisThang.copyOf();
+		stopTicking(E);
+		if(E instanceof Electronics)
+			CMLib.tech().fixItemTechLevel((Electronics)E);
+		return E;
+	}
+	
 	public Environmental addStoreInventory(Environmental thisThang, int number, int price)
 	{
 		if(number<0) number=1;
 		if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inEnumerableInventory(thisThang)))
 		{
-			Environmental E=(Environmental)thisThang.copyOf();
-			stopTicking(E);
+			Environmental E=preSaleCopyFix(thisThang);
 			if(!E.amDestroyed())
 			{
 				enumerableInventory.addElement(E);
@@ -207,8 +215,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			Environmental copy=null;
 			for(int v=0;v<number;v++)
 			{
-				copy=(Environmental)thisThang.copyOf();
-				stopTicking(copy);
+				copy=preSaleCopyFix(thisThang);
 				if(!copy.amDestroyed())
 				{
 					((InnKey)copy).hangOnRack(shopKeeper());
@@ -219,8 +226,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		else
 		{
 			Environmental copy=null;
-			thisThang=(Environmental)thisThang.copyOf();
-			stopTicking(thisThang);
+			thisThang=preSaleCopyFix(thisThang);
 			if(!thisThang.amDestroyed())
 			{
 				for(ShelfProduct SP : storeInventory)

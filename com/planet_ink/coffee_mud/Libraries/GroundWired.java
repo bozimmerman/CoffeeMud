@@ -55,6 +55,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public final static List<PowerGenerator> emptyGeneratorList=new ArrayList<PowerGenerator>();
 
 	public final AtomicInteger nextKey = new AtomicInteger(0);
+
+	public int globalTechLevel = 0;
+	public long globalTechReachedOn=0;
 	
 	protected CMMsg powerMsg = null;
 
@@ -62,8 +65,38 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		super.initializeClass();
 		loadAllManufacturers();
+		globalTechLevel=CMath.s_int(Resources.getPropResource("TECH", "GLOBALLEVEL"));
+		globalTechReachedOn=CMath.s_long(Resources.getPropResource("TECH", "GLOBALREACHEDON"));
 	}
-	
+
+	public int getRandomGlobalTechLevel()
+	{
+		return  CMLib.dice().rollGaussian(1, 10, globalTechLevel-1);
+	}
+
+	protected void bumpTechLevel()
+	{
+		globalTechLevel++;
+		Resources.setPropResource("TECH", "GLOBALLEVEL",""+globalTechLevel);
+		Resources.setPropResource("TECH", "GLOBALREACHEDON","0");
+	}
+
+	public void fixItemTechLevel(Electronics I)
+	{
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.TECHLEVEL)) && (I.getManufacturerName().equalsIgnoreCase("RANDOM")))
+		{
+			I.getFinalManufacturer();
+			I.setTechLevel(getRandomGlobalTechLevel());
+			String oldName=I.Name();
+			String newName=CMLib.english().startWithAorAn(I.getManufacturerName()+" "+CMLib.english().cleanArticles(oldName));
+			I.setName(newName);
+			if(I.displayText().indexOf(oldName)>0)
+				I.setDisplayText(CMStrings.replaceAll(I.displayText(), oldName, newName));
+			else
+				I.setDisplayText(newName+" is here.");
+		}
+	}
+
 	public synchronized String registerElectrics(final Electronics E, final String oldKey)
 	{
 		final ItemPossessor possessor=(E==null)?null:E.owner();
@@ -527,12 +560,26 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		if(manufacturers.size()==0)
 			return getDefaultManufacturer();
 		if(name.equals("RANDOM"))
+			return null;
+		return manufacturers.get(name.toUpperCase().trim());
+	}
+	
+	public Manufacturer getManufacturerOf(Electronics E, String name)
+	{
+		if(name==null) return null;
+		if(manufacturers.size()==0)
+			return getDefaultManufacturer();
+		if(name.equals("RANDOM"))
 		{
-			int which=CMLib.dice().roll(1, manufacturers.size(), 0);
-			Iterator<Manufacturer> i=manufacterers();
-			while((which-->1)&&(i.hasNext()))
-				i.next();
-			return i.next();
+			if(E==null)
+				return null;
+			List<Manufacturer> subManufacturers=new ArrayList<Manufacturer>();
+			for(Manufacturer f : manufacturers.values())
+				if(CMLib.masking().maskCheck(f.getItemMask(), E, true))
+					subManufacturers.add(f);
+			if(subManufacturers.size()==0)
+				return getDefaultManufacturer();
+			return subManufacturers.get(CMLib.dice().roll(1, subManufacturers.size(), -1));
 		}
 		return manufacturers.get(name.toUpperCase().trim());
 	}

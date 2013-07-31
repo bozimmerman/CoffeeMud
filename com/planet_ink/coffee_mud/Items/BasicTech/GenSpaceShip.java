@@ -205,7 +205,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	{
 		if(cachedManufact==null)
 		{
-			cachedManufact=CMLib.tech().getManufacturer(getManufacturerName().toUpperCase().trim());
+			cachedManufact=CMLib.tech().getManufacturerOf(this,getManufacturerName().toUpperCase().trim());
 			if(cachedManufact==null)
 				cachedManufact=CMLib.tech().getDefaultManufacturer();
 		}

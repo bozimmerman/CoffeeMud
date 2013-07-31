@@ -41,6 +41,9 @@ public class DefaultManufacturer implements Manufacturer
 	protected byte 		maxTechLevelDiff= 10;
 	protected double	efficiency		= 1.0;
 	protected double	reliability		= 1.0;
+	protected String	rawItemMask		= "";
+	
+	protected MaskingLibrary.CompiledZapperMask compiledItemMask = null;
 	
 	public String name() { return name;}
 	
@@ -95,6 +98,26 @@ public class DefaultManufacturer implements Manufacturer
 		reliability=CMath.div(Math.round(pct*100),100.0);
 	}
 
+	public void setItemMask(String newMask)
+	{
+		if((newMask==null)||(newMask.trim().length()==0))
+		{
+			newMask="";
+			rawItemMask=newMask.trim();
+			compiledItemMask=null;
+		}
+		else
+		{
+			rawItemMask=newMask.trim();
+			compiledItemMask=CMLib.masking().getPreCompiledMask(rawItemMask);
+		}
+	}
+	
+	public MaskingLibrary.CompiledZapperMask getItemMask()
+	{
+		return compiledItemMask;
+	}
+	
 	public String getXml()
 	{
 		StringBuilder xml=new StringBuilder("");

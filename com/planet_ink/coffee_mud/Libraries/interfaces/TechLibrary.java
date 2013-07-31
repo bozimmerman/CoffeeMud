@@ -111,12 +111,22 @@ public interface TechLibrary extends CMLibrary
 	
 	/**
 	 * Retrieves the manufacturer of the given name, or null
-	 * if it is not found.
+	 * if it is not found.  Can not handle RANDOM!!
 	 * @param name the manufacturer to fetch
 	 * @return the manufacturer found, or null
 	 */
 	public Manufacturer getManufacturer(String name);
 	
+	/**
+	 * Retrieves the manufacturer of the given name, or null
+	 * if it is not found.  If random is sent, it will find
+	 * a random manufacturer for the given item.
+	 * @param E for random manufacturers, the item to check
+	 * @param name the manufacturer to fetch
+	 * @return the manufacturer found, or null
+	 */
+	public Manufacturer getManufacturerOf(Electronics E, String name);
+
 	/**
 	 * Returns an iterator of manufacturers
 	 * @return the set to return
@@ -136,4 +146,20 @@ public interface TechLibrary extends CMLibrary
 	 * @return an iterator of computers
 	 */
 	public Iterator<Electronics.Computer> getComputers(String key);
+	
+	/**
+	 * Returns a random gaussian-distributed tech level from the
+	 * current low tech level bound to bound+10.
+	 * @return a random valid tech level;
+	 */
+	public int getRandomGlobalTechLevel();
+	
+	/**
+	 * "Fixes" the tech level of the given item by making sure
+	 * it's manufacturer is non-random, and by assigning a random
+	 * tech level within the valid range, and modifying its name
+	 * and displaytext to reflect the new tech level
+	 * @param I An electronics item that needs fixing
+	 */
+	public void fixItemTechLevel(Electronics I);
 }

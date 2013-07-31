@@ -93,15 +93,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 	public String cleanArticles(String s)
 	{
-		boolean didSomething=true;
-		while(didSomething)
-		{
-			didSomething=false;
-			String lowStr=s.toLowerCase();
-			for(int a=0;a<articles.length;a++)
-				if(lowStr.startsWith(articles[a]+" "))
-					return s.substring(articles[a].length()+1);
-		}
+		String lowStr=s.toLowerCase();
+		for(int a=0;a<articles.length;a++)
+			if(lowStr.startsWith(articles[a]+" "))
+				return s.substring(articles[a].length()+1);
 		return s;
 	}
 

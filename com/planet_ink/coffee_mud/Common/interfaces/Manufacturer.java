@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -88,6 +89,22 @@ public interface Manufacturer extends CMCommon
 	 * @param pct, from 0-2
 	 */
 	public void setReliabilityPct(double pct);
+
+	/**
+	 * Sets the item mask that describes what kind of items this
+	 * manufacturer makes.
+	 * @see MaskingLibrary
+	 * @param newMask the zapperMask
+	 */
+	public void setItemMask(String newMask);
+	
+	/**
+	 * Returns the item mask that describes what kind of items this
+	 * manufacturer makes.
+	 * @see MaskingLibrary
+	 * @return the zapperMask, compiled
+	 */
+	public MaskingLibrary.CompiledZapperMask getItemMask();
 
 	/**
 	 * Returns an Xml document representing this manufacturer.

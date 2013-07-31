@@ -70,7 +70,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 	{
 		if(cachedManufact==null)
 		{
-			cachedManufact=CMLib.tech().getManufacturer(manufacturer.toUpperCase().trim());
+			cachedManufact=CMLib.tech().getManufacturerOf(this,manufacturer.toUpperCase().trim());
 			if(cachedManufact==null)
 				cachedManufact=CMLib.tech().getDefaultManufacturer();
 		}
