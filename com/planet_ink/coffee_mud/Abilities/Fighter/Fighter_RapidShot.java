@@ -55,9 +55,9 @@ public class Fighter_RapidShot extends FighterSkill
 		if(mob.isInCombat())
 		{
 			Item w=mob.fetchWieldedItem();
-			if((w instanceof Weapon)
+			if((w instanceof AmmunitionWeapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
-			&&(((Weapon)w).ammunitionType().length()>0)
+			&&(((AmmunitionWeapon)w).ammunitionType().length()>0)
 			&&((mob.rangeToTarget()>=w.minRange())||((w.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOMINRANGE)==PhyStats.SENSE_ITEMNOMINRANGE))
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{

@@ -147,7 +147,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		{
 			Weapon W=(Weapon)I;
 			if((W.weaponClassification()!=Weapon.CLASS_BLUNT)
-			||(W.requiresAmmunition()))
+			||((W instanceof AmmunitionWeapon) && ((AmmunitionWeapon)W).requiresAmmunition()))
 				return false;
 			return true;
 		}

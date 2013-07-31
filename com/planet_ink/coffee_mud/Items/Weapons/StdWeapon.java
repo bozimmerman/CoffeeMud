@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdWeapon extends StdItem implements Weapon
+public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 {
 	public String ID(){    return "StdWeapon";}
 	protected int     weaponType=TYPE_NATURAL;
@@ -265,7 +265,7 @@ public class StdWeapon extends StdItem implements Weapon
 		return true;
 	}
 
-	public boolean inventoryAmmoCheck(MOB M)
+	protected boolean inventoryAmmoCheck(MOB M)
 	{
 		if(M==null) return false;
 		for(int i=0;i<M.numItems();i++)

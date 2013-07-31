@@ -2070,8 +2070,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						if(I instanceof Ammunition)
 							return ""+((Ammunition)I).usesRemaining();
-						if((I instanceof Weapon)&&(((Weapon)I).requiresAmmunition()))
-							return ""+((Weapon)I).ammunitionCapacity();
+						if((I instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)I).requiresAmmunition()))
+							return ""+((AmmunitionWeapon)I).ammunitionCapacity();
 						return "";
 					}
 				},

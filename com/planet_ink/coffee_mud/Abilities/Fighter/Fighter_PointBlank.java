@@ -74,9 +74,9 @@ public class Fighter_PointBlank extends FighterSkill
 		}
 		else
 		if((msg.source()==affected)
-		&&(msg.target() instanceof Weapon))
+		&&(msg.target() instanceof AmmunitionWeapon))
 		{
-			Weapon W=(Weapon)msg.target();
+			AmmunitionWeapon W=(AmmunitionWeapon)msg.target();
 			if((W.weaponClassification()==Weapon.CLASS_RANGED)
 			&&(W.ammunitionType().length()>0))
 			{
@@ -125,9 +125,9 @@ public class Fighter_PointBlank extends FighterSkill
 			checkDown=5;
 			Item w=mob.fetchWieldedItem();
 			if((w!=null)
-			&&(w instanceof Weapon)
+			&&(w instanceof AmmunitionWeapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
-			&&(((Weapon)w).ammunitionType().length()>0)
+			&&(((AmmunitionWeapon)w).ammunitionType().length()>0)
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
 				if((CMLib.dice().rollPercentage()<5)&&(mob.isInCombat())&&(mob.rangeToTarget() == 0))

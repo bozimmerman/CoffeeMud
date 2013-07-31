@@ -370,11 +370,14 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			addSpells(buildingI,spell);
 			if(buildingI instanceof Weapon)
 			{
-				if(ammotype.length()>0)
+				if(buildingI instanceof AmmunitionWeapon)
 				{
-					((Weapon)buildingI).setAmmoCapacity(capacity);
-					((Weapon)buildingI).setAmmoRemaining(0);
-					((Weapon)buildingI).setAmmunitionType(ammotype);
+					if(ammotype.length()>0)
+					{
+						((AmmunitionWeapon)buildingI).setAmmoCapacity(capacity);
+						((AmmunitionWeapon)buildingI).setAmmoRemaining(0);
+						((AmmunitionWeapon)buildingI).setAmmunitionType(ammotype);
+					}
 				}
 				buildingI.basePhyStats().setAttackAdjustment((abilityCode()-1+(hardness*5)));
 				buildingI.basePhyStats().setDamage(armordmg+hardness);

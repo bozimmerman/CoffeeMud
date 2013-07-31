@@ -404,7 +404,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			image=getHashedMXPImage(H,"WEAPON_"+Weapon.CLASS_DESCS[((Weapon)O).weaponClassification()]);
 			if(image==null) image=getHashedMXPImage(H,"WEAPON_"+Weapon.TYPE_DESCS[((Weapon)O).weaponType()]);
-			if(image==null) image=getHashedMXPImage(H,"WEAPON_"+((Weapon)O).ammunitionType().toUpperCase().replace(' ','_'));
+			if(O instanceof AmmunitionWeapon)
+				if(image==null) image=getHashedMXPImage(H,"WEAPON_"+((AmmunitionWeapon)O).ammunitionType().toUpperCase().replace(' ','_'));
 			if(image==null) image=getHashedMXPImage(H,"WEAPON_*");
 		}
 		else

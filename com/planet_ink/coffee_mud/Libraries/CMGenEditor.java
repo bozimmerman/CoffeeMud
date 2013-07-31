@@ -2625,36 +2625,39 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String defaultAmmo=(W.requiresAmmunition())?"Y":"N";
+		if(!(W instanceof AmmunitionWeapon))
+			return;
+		AmmunitionWeapon AW=(AmmunitionWeapon)W;
+		String defaultAmmo=(AW.requiresAmmunition())?"Y":"N";
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			mob.tell(showNumber+". Ammo required: "+W.requiresAmmunition()+" ("+W.ammunitionType()+")");
+			mob.tell(showNumber+". Ammo required: "+AW.requiresAmmunition()+" ("+AW.ammunitionType()+")");
 			return;
 		}
 
 		if(mob.session().confirm("Does this weapon require ammunition (default="+defaultAmmo+") (Y/N)?",defaultAmmo))
 		{
-			mob.tell("\n\rAmmo type: '"+W.ammunitionType()+"'.");
+			mob.tell("\n\rAmmo type: '"+AW.ammunitionType()+"'.");
 			String newName=mob.session().prompt("Enter a new one\n\r:","");
 			if(newName.length()>0)
 			{
-				W.setAmmunitionType(newName);
-				mob.tell("(Remember to create a GenAmmunition item with '"+W.ammunitionType()+"' in the secret identity, and the uses remaining above 0!");
+				AW.setAmmunitionType(newName);
+				mob.tell("(Remember to create a GenAmmunition item with '"+AW.ammunitionType()+"' in the secret identity, and the uses remaining above 0!");
 			}
 			else
 				mob.tell("(no change)");
-			mob.tell("\n\rAmmo capacity: '"+W.ammunitionCapacity()+"'.)");
+			mob.tell("\n\rAmmo capacity: '"+AW.ammunitionCapacity()+"'.)");
 			int newValue=CMath.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 			if(newValue>0)
-				W.setAmmoCapacity(newValue);
+				AW.setAmmoCapacity(newValue);
 			else
 				mob.tell("(no change)");
-			W.setAmmoRemaining(W.ammunitionCapacity());
+			AW.setAmmoRemaining(AW.ammunitionCapacity());
 		}
 		else
 		{
-			W.setAmmunitionType("");
-			W.setAmmoCapacity(0);
+			AW.setAmmunitionType("");
+			AW.setAmmoCapacity(0);
 		}
 	}
 	protected void genWeaponRanges(MOB mob, Weapon W, int showNumber, int showFlag)
@@ -7543,9 +7546,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);
 			}
 			else
+			if(me instanceof AmmunitionWeapon)
 				genWeaponAmmo(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
-			if((!me.requiresAmmunition())&&(!(me instanceof Wand)))
+			if(((!(me instanceof AmmunitionWeapon)) || (!((AmmunitionWeapon)me).requiresAmmunition()))
+			&&(!(me instanceof Wand)))
 				genCondition(mob,me,++showNumber,showFlag);
 			genAbility(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);

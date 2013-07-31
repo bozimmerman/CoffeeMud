@@ -158,7 +158,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(I instanceof Armor)
 			return (I.rawProperLocationBitmap()&Wearable.WORN_FEET)==0;
 		if(I instanceof Weapon)
-			return !((Weapon)I).requiresAmmunition();
+			return !((I instanceof AmmunitionWeapon) && ((AmmunitionWeapon)I).requiresAmmunition());
 		if(I instanceof Container)
 			return true;
 		if((I instanceof Drink)&&(!(I instanceof Potion)))

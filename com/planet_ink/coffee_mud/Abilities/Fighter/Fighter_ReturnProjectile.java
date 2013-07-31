@@ -77,10 +77,12 @@ public class Fighter_ReturnProjectile extends FighterSkill
 				CMLib.commands().postDrop(msg.source(),w,true,false,false);
 			}
 			else
-			if(((Weapon)w).requiresAmmunition())
+			if((w instanceof AmmunitionWeapon) && ((AmmunitionWeapon)w).requiresAmmunition())
 			{
 				Weapon neww=CMClass.getWeapon("GenWeapon");
-				String ammo=((Weapon)w).ammunitionType();
+				String ammo="";
+				if(neww instanceof AmmunitionWeapon)
+					ammo=((AmmunitionWeapon)w).ammunitionType();
 				if(ammo.length()==0) return true;
 				if(ammo.endsWith("s"))
 					ammo=ammo.substring(0,ammo.length()-1);

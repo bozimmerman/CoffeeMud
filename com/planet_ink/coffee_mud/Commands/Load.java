@@ -79,7 +79,7 @@ public class Load extends StdCommand
 		if(tryArchon)
 		{
 			final Item I=mob.fetchWieldedItem();
-			if((I instanceof Weapon)&&((Weapon)I).requiresAmmunition())
+			if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
 				tryArchon=false;
 			for(final String aList : ARCHON_LIST)
 				if(what.equalsIgnoreCase(aList))
@@ -108,12 +108,12 @@ public class Load extends StdCommand
 			{
 				commands.removeElementAt(0);
 				final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
-				final List<Weapon> items=new XVector<Weapon>();
+				final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
 				for(final Iterator<Item> i=baseItems.iterator();i.hasNext();)
 				{
 					final Item I=i.next();
-					if((I instanceof Weapon)&&((Weapon)I).requiresAmmunition())
-						items.add((Weapon)I);
+					if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
+						items.add((AmmunitionWeapon)I);
 				}
 				boolean doneOne=false;
 				if(baseItems.size()==0)
@@ -122,7 +122,7 @@ public class Load extends StdCommand
 				if(items.size()==0)
 					mob.tell("You can't seem to load that.");
 				else
-				for(final Weapon W : items)
+				for(final AmmunitionWeapon W : items)
 				{
 					Ammunition ammunition = getNextAmmunition(W.ammunitionType(),ammos);
 					if(ammunition==null)

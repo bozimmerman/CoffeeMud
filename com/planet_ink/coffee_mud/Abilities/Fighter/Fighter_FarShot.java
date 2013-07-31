@@ -74,9 +74,9 @@ public class Fighter_FarShot extends FighterSkill
 		}
 		else
 		if((msg.source()==affected)
-		&&(msg.target() instanceof Weapon))
+		&&(msg.target() instanceof AmmunitionWeapon))
 		{
-			Weapon targetW=(Weapon)msg.target();
+			AmmunitionWeapon targetW=(AmmunitionWeapon)msg.target();
 			if((targetW.weaponClassification()==Weapon.CLASS_RANGED)
 			&&(targetW.ammunitionType().length()>0))
 			{
@@ -126,9 +126,9 @@ public class Fighter_FarShot extends FighterSkill
 			checkDown=5;
 			Item w=mob.fetchWieldedItem();
 			if((w!=null)
-			&&(w instanceof Weapon)
+			&&(w instanceof AmmunitionWeapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
-			&&(((Weapon)w).ammunitionType().length()>0)
+			&&(((AmmunitionWeapon)w).ammunitionType().length()>0)
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
 				if((CMLib.dice().rollPercentage()<10)&&(mob.isInCombat()) && (mob.rangeToTarget() > 0))

@@ -1931,9 +1931,12 @@ public class Import extends StdCommand
 		case 0: I.setWeaponClassification(Weapon.CLASS_RANGED);
 				if(name.toUpperCase().indexOf("BOW")>=0)
 				{
-					I.setAmmoCapacity(20);
-					I.setAmmoRemaining(20);
-					I.setAmmunitionType("arrows");
+					if(I instanceof AmmunitionWeapon)
+					{
+						((AmmunitionWeapon)I).setAmmoCapacity(20);
+						((AmmunitionWeapon)I).setAmmoRemaining(20);
+						((AmmunitionWeapon)I).setAmmunitionType("arrows");
+					}
 					I.setRanges(1,3);
 					I.setRawLogicalAnd(true);
 				}

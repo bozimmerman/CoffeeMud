@@ -47,9 +47,9 @@ public class Reset extends StdCommand
 		throws java.io.IOException
 	{
 		int nochange=0;
-		if(I instanceof Weapon)
+		if(I instanceof AmmunitionWeapon)
 		{
-			Weapon W=(Weapon)I;
+			AmmunitionWeapon W=(AmmunitionWeapon)I;
 			if((W.requiresAmmunition())&&(W.ammunitionCapacity()>0))
 			{
 				String str=mob.session().prompt(lead+I.Name()+" requires ("+W.ammunitionType()+"): ");

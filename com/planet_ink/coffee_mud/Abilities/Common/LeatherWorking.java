@@ -195,7 +195,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		if(I instanceof Weapon)
 		{
 			Weapon W=(Weapon)I;
-			if((W.requiresAmmunition())||(W.weaponClassification()==Weapon.CLASS_FLAILED))
+			if(((W instanceof AmmunitionWeapon) && ((AmmunitionWeapon)W).requiresAmmunition())
+			||(W.weaponClassification()==Weapon.CLASS_FLAILED))
 				return true;
 			return false;
 		}

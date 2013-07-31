@@ -68,13 +68,13 @@ public class Spell_ResistArrows extends Spell
 		&&(msg.tool()!=null)
 		&&(msg.source().getVictim()==mob)
 		&&(msg.source().rangeToTarget()>0)
-		&&(msg.tool() instanceof Weapon)
+		&&(msg.tool() instanceof AmmunitionWeapon)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
-		&&(((Weapon)msg.tool()).requiresAmmunition())
+		&&(((AmmunitionWeapon)msg.tool()).requiresAmmunition())
 		&&(!mob.amDead())
 		&&(CMLib.dice().rollPercentage()<35))
 		{
-			mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the "+((Weapon)msg.tool()).ammunitionType()+" from <T-NAME>!");
+			mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the "+((AmmunitionWeapon)msg.tool()).ammunitionType()+" from <T-NAME>!");
 			return false;
 		}
 		return super.okMessage(myHost,msg);

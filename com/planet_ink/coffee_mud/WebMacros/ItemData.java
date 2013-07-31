@@ -606,14 +606,14 @@ public class ItemData extends StdWebMacro
 						if(I instanceof Ammunition)
 							old=""+((Ammunition)I).ammunitionType();
 						else
-						if(I instanceof Weapon)
-							old=""+((Weapon)I).ammunitionType();
+						if(I instanceof AmmunitionWeapon)
+							old=""+((AmmunitionWeapon)I).ammunitionType();
 					}
 					str.append(old);
 					break;
 				case 47: // ammo capacity
-					if((firstTime)&&(I instanceof Weapon))
-						old=""+((Weapon)I).ammunitionCapacity();
+					if((firstTime)&&(I instanceof AmmunitionWeapon))
+						old=""+((AmmunitionWeapon)I).ammunitionCapacity();
 					str.append(old);
 					break;
 				case 48: // readable spell

@@ -802,10 +802,10 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_RELOAD:
-			if((this instanceof Weapon)
-			&&(((Weapon)this).requiresAmmunition()))
+			if((this instanceof AmmunitionWeapon)
+			&&(((AmmunitionWeapon)this).requiresAmmunition()))
 			{
-				if(((Weapon)this).ammunitionRemaining()>=((Weapon)this).ammunitionCapacity())
+				if(((AmmunitionWeapon)this).ammunitionRemaining()>=((AmmunitionWeapon)this).ammunitionCapacity())
 				{
 					mob.tell(name()+" is already loaded.");
 					return false;
@@ -814,10 +814,10 @@ public class StdItem implements Item
 			}
 			break;
 		case CMMsg.TYP_UNLOAD:
-			if((this instanceof Weapon)
-			&&(((Weapon)this).requiresAmmunition()))
+			if((this instanceof AmmunitionWeapon)
+			&&(((AmmunitionWeapon)this).requiresAmmunition()))
 			{
-				if(((Weapon)this).ammunitionRemaining()<=0)
+				if(((AmmunitionWeapon)this).ammunitionRemaining()<=0)
 				{
 					mob.tell(name()+" is not loaded.");
 					return false;

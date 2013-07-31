@@ -171,7 +171,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			Weapon W=(Weapon)I;
 			if(((W.weaponClassification()!=Weapon.CLASS_BLUNT)&&(W.weaponClassification()!=Weapon.CLASS_STAFF))
-			||(W.requiresAmmunition()))
+			||((W instanceof AmmunitionWeapon) && ((AmmunitionWeapon)W).requiresAmmunition()))
 				return false;
 			return true;
 		}

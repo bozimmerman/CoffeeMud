@@ -818,8 +818,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						response.append("one handed ");
 					response.append(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])+" damage.  ");
 				}
-				if(((Weapon)item).requiresAmmunition())
-					response.append("It requires ammunition of type '"+((Weapon)item).ammunitionType()+"'.  ");
+				if((item instanceof AmmunitionWeapon) && ((AmmunitionWeapon)item).requiresAmmunition())
+					response.append("It requires ammunition of type '"+((AmmunitionWeapon)item).ammunitionType()+"'.  ");
 			}
 			else
 			if((item instanceof Armor)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))

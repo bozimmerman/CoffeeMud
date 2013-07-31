@@ -374,15 +374,15 @@ public class GrinderItems
 					if(I instanceof Ammunition)
 						((Ammunition)I).setAmmunitionType(old);
 					else
-					if((I instanceof Weapon)&&(!(I instanceof Wand)))
-						((Weapon)I).setAmmunitionType(old);
+					if((I instanceof AmmunitionWeapon)&&(!(I instanceof Wand)))
+						((AmmunitionWeapon)I).setAmmunitionType(old);
 					break;
 				case 47: // ammo capacity
-					if((I instanceof Weapon)&&(!(I instanceof Wand)))
+					if((I instanceof AmmunitionWeapon)&&(!(I instanceof Wand)))
 					{
-						((Weapon)I).setAmmoCapacity(CMath.s_int(old));
-						if((((Weapon)I).requiresAmmunition())||(((Weapon)I).ammunitionCapacity()>0))
-							((Weapon)I).setAmmoRemaining(CMath.s_int(old));
+						((AmmunitionWeapon)I).setAmmoCapacity(CMath.s_int(old));
+						if((((AmmunitionWeapon)I).requiresAmmunition())||(((AmmunitionWeapon)I).ammunitionCapacity()>0))
+							((AmmunitionWeapon)I).setAmmoRemaining(CMath.s_int(old));
 					}
 					break;
 				case 48: // readable spell

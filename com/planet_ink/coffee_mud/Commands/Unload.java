@@ -59,7 +59,7 @@ public class Unload extends StdCommand
 		if(tryArchon)
 		{
 			final Item I=mob.fetchWieldedItem();
-			if((I instanceof Weapon)&&((Weapon)I).requiresAmmunition())
+			if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
 				tryArchon=false;
 			for(final String aList : ARCHON_LIST)
 				if(str.equalsIgnoreCase(aList))
@@ -69,12 +69,12 @@ public class Unload extends StdCommand
 		{
 			commands.removeElementAt(0);
 			final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
-			final List<Weapon> items=new XVector<Weapon>();
+			final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
 			for(final Iterator<Item> i=baseItems.iterator();i.hasNext();)
 			{
 				final Item I=i.next();
-				if((I instanceof Weapon)&&((Weapon)I).requiresAmmunition())
-					items.add((Weapon)I);
+				if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
+					items.add((AmmunitionWeapon)I);
 			}
 			if(baseItems.size()==0)
 				mob.tell("You don't seem to have that.");
@@ -82,7 +82,7 @@ public class Unload extends StdCommand
 			if(items.size()==0)
 				mob.tell("You can't seem to unload that.");
 			else
-			for(final Weapon W : items)
+			for(final AmmunitionWeapon W : items)
 			{
 				Item ammunition=CMLib.coffeeMaker().makeAmmunition(W.ammunitionType(),W.ammunitionRemaining());
 				CMMsg newMsg=CMClass.getMsg(mob,W,ammunition,CMMsg.MSG_UNLOAD,"<S-NAME> unload(s) <O-NAME> from <T-NAME>.");

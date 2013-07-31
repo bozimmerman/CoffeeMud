@@ -172,7 +172,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		if(I instanceof Weapon)
 		{
 			Weapon W=(Weapon)I;
-			if((W.requiresAmmunition())||(W.weaponClassification()==Weapon.CLASS_FLAILED))
+			if(((W instanceof AmmunitionWeapon)&&((AmmunitionWeapon)W).requiresAmmunition())
+			||(W.weaponClassification()==Weapon.CLASS_FLAILED))
 				return true;
 			return (isANativeItem(I.Name()));
 		}

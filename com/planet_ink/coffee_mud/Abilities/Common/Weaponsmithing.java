@@ -203,7 +203,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(!(I instanceof Weapon))
 			return false;
 		Weapon W=(Weapon)I;
-		if(W.requiresAmmunition())
+		if((W instanceof AmmunitionWeapon)&&((AmmunitionWeapon)W).requiresAmmunition())
 			return false;
 		return true;
 	}

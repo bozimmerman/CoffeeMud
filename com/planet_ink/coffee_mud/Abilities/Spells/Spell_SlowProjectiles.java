@@ -49,7 +49,7 @@ public class Spell_SlowProjectiles extends Spell
 		&&(msg.source().getVictim()==msg.target())
 		&&(msg.source().rangeToTarget()>0)
 		&&(msg.tool() instanceof Weapon)
-		&&(((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)&&(((Weapon)msg.tool()).requiresAmmunition())
+		&&(((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)&&(msg.tool() instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)msg.tool()).requiresAmmunition())
 			||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)))
 		&&(msg.source().location()!=null)
 		&&(msg.source().location()==affected)

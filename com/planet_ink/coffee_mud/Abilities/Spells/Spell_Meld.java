@@ -302,14 +302,17 @@ public class Spell_Meld extends Spell
 					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
 					gc.basePhyStats().setAttackAdjustment((itemOne.basePhyStats().attackAdjustment()+itemTwo.basePhyStats().attackAdjustment())/2);
 					gc.basePhyStats().setDamage((itemOne.basePhyStats().damage()+itemTwo.basePhyStats().damage())/2);
-					if(itemOne instanceof Weapon)
-						gc.setAmmoCapacity(((Weapon)itemOne).ammunitionCapacity());
-					if(itemTwo instanceof Weapon)
-						gc.setAmmoCapacity(((Weapon)itemTwo).ammunitionCapacity() + gc.ammunitionCapacity());
-					if((itemOne instanceof Weapon)&&(((Weapon)itemOne).ammunitionType().length()>0))
-						gc.setAmmunitionType(((Weapon)itemOne).ammunitionType());
-					if((itemTwo instanceof Weapon)&&(((Weapon)itemTwo).ammunitionType().length()>0))
-						gc.setAmmunitionType(((Weapon)itemTwo).ammunitionType());
+					if(gc instanceof AmmunitionWeapon)
+					{
+						if(itemOne instanceof AmmunitionWeapon)
+							((AmmunitionWeapon)gc).setAmmoCapacity(((AmmunitionWeapon)itemOne).ammunitionCapacity());
+						if(itemTwo instanceof AmmunitionWeapon)
+							((AmmunitionWeapon)gc).setAmmoCapacity(((AmmunitionWeapon)itemTwo).ammunitionCapacity() + ((AmmunitionWeapon)gc).ammunitionCapacity());
+						if((itemOne instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)itemOne).ammunitionType().length()>0))
+							((AmmunitionWeapon)gc).setAmmunitionType(((AmmunitionWeapon)itemOne).ammunitionType());
+						if((itemTwo instanceof AmmunitionWeapon)&&(((AmmunitionWeapon)itemTwo).ammunitionType().length()>0))
+							((AmmunitionWeapon)gc).setAmmunitionType(((AmmunitionWeapon)itemTwo).ammunitionType());
+					}
 					if(itemOne instanceof Weapon)
 						gc.setWeaponType(((Weapon)itemOne).weaponType());
 					else

@@ -392,8 +392,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(CMLib.xml().convertXMLtoTag("CAPA",((Container)item).capacity()));
 				text.append(CMLib.xml().convertXMLtoTag("CONT",((Container)item).containTypes()));
 			}
-			if(E instanceof Weapon)
-				text.append(CMLib.xml().convertXMLtoTag("CAPA",((Weapon)item).ammunitionCapacity()));
+			if(E instanceof AmmunitionWeapon)
+				text.append(CMLib.xml().convertXMLtoTag("CAPA",((AmmunitionWeapon)item).ammunitionCapacity()));
 			
 			if(E instanceof SpaceShip)
 			{
@@ -2520,8 +2520,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((Container)item).setContainTypes(CMLib.xml().getLongFromPieces(buf,"CONT"));
 
 			}
-			if(item instanceof Weapon)
-				((Weapon)item).setAmmoCapacity(CMLib.xml().getIntFromPieces(buf,"CAPA"));
+			if(item instanceof AmmunitionWeapon)
+				((AmmunitionWeapon)item).setAmmoCapacity(CMLib.xml().getIntFromPieces(buf,"CAPA"));
 			item.setRawLogicalAnd(CMLib.xml().getBoolFromPieces(buf,"WORNL"));
 			item.setRawProperLocationBitmap(CMLib.xml().getLongFromPieces(buf,"WORNB"));
 			item.setReadableText(CMLib.xml().getValFromPieces(buf,"READ"));

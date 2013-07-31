@@ -137,6 +137,16 @@ public class StdReflectiveShield extends StdElecItem
 							+" and is at "+Math.round(powerRemaining()/powerCapacity()*100)+"% power.");
 				}
 				return;
+			case CMMsg.TYP_ACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, fieldOnStr(null));
+				this.activate(true);
+				break;
+			case CMMsg.TYP_DEACTIVATE:
+				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, fieldDeadStr(null));
+				this.activate(false);
+				break;
 			}
 		}
 		else if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Item.IN_INVENTORY)))
