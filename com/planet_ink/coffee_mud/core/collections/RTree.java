@@ -350,24 +350,7 @@ public class RTree<T extends BoundedObject> {
 	 * @param maxChildren Maximum children in a node. Node splits at this number + 1
 	 */
 	public RTree(int minChildren, int maxChildren) {
-		trackMap = new TreeMap<T,List<WeakReference<TrackingVector<T>>>>(new Comparator<T>(){
-			@Override
-			public int compare(T o1, T o2) {
-				if(o1==null)
-				{
-					if(o2==null)
-					{
-						return 0;
-					}
-					return -1;
-				}
-				else
-				if(o2==null)
-					return 1;
-				else
-					return o1.getBounds().compareTo(o2.getBounds());
-			}
-		});
+		trackMap = new LinkedHashMap<T,List<WeakReference<TrackingVector<T>>>>();
 		if (minChildren < 2 || minChildren > maxChildren/2)
 			throw new IllegalArgumentException("2 <= minChildren <= maxChildren/2");
 		splitter = new QuadraticNodeSplitter();
