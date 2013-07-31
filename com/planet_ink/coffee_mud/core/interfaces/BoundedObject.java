@@ -37,7 +37,7 @@ public interface BoundedObject
 {
 	public BoundedCube getBounds();
 
-	public static class BoundedCube
+	public static class BoundedCube implements Comparable<BoundedCube>
 	{
 		public long lx,ty,iz =0;
 		public long rx,by,oz=0;
@@ -95,5 +95,23 @@ public interface BoundedObject
 		public long width() { return rx-lx; }
 		public long height() { return by-ty; }
 		public long depth() { return oz-iz; }
+
+		@Override
+		public int compareTo(BoundedCube o) 
+		{
+			if(lx<o.lx) return -1;
+			if(lx>o.lx) return 1;
+			if(rx<o.rx) return -1;
+			if(rx>o.rx) return 1;
+			if(ty<o.ty) return -1;
+			if(ty>o.ty) return 1;
+			if(by<o.by) return -1;
+			if(by>o.by) return 1;
+			if(iz<o.iz) return -1;
+			if(iz>o.iz) return 1;
+			if(oz<o.oz) return -1;
+			if(oz>o.oz) return 1;
+			return 0;
+		}
 	}
 }
