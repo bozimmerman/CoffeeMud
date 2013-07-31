@@ -146,6 +146,8 @@ public class StdDisruptor extends StdElecWeapon
 							msg.setValue(1);
 						break;
 					}
+					case 1: break;
+					case 2: break;
 					}
 				}
 				break;
@@ -205,8 +207,8 @@ public class StdDisruptor extends StdElecWeapon
 						Ability A=CMClass.getAbility("Amputation");
 						if((A!=null)&&(msg.target() instanceof Physical))
 							A.invoke(mob, (Physical)msg.target(), true, 0);
+						break;
 					}
-					//$FALL-THROUGH$
 					default:
 					case 0: {
 						if(msg.value()>0)
@@ -224,7 +226,7 @@ public class StdDisruptor extends StdElecWeapon
 							if(mob.getVictim()==msg.source())
 								mob.makePeace();
 							if(msg.source().getVictim()==mob)
-								mob.makePeace();
+								msg.source().makePeace();
 							msg.setValue(0);
 						}
 						break;

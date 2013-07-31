@@ -220,7 +220,7 @@ public class StdPhaser extends StdElecWeapon
 							if(mob.getVictim()==msg.source())
 								mob.makePeace();
 							if(msg.source().getVictim()==mob)
-								mob.makePeace();
+								msg.source().makePeace();
 							msg.setValue(0);
 						}
 						break;

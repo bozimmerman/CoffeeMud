@@ -60,7 +60,7 @@ public class StdAbsorbantShield extends StdReflectiveShield
 	{
 		if(msg.value()<=0) 
 			return true;
-		if(successFactor>=1.0)
+		if((successFactor>=1.0)||((successFactor>0.0)&&(msg.value()==1)))
 		{
 			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The sparkling field around <S-NAME> completely absorbs the "+msg.tool().name()+" attack from <T-NAME>.");
 			msg.setValue(0);
