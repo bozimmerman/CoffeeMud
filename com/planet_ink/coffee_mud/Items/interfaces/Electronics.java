@@ -41,7 +41,6 @@ public interface Electronics extends Item, Technical
 	public void setPowerRemaining(long remaining);
 
 	public int powerNeeds();
-	public void setPowerNeeds(int desires);
 	
 	public boolean activated();
 	public void activate(boolean truefalse);
@@ -75,7 +74,7 @@ public interface Electronics extends Item, Technical
 	{
 		public static enum ElecPanelType
 		{
-			ANY,WEAPON,ENGINE,SENSOR,POWER,COMPUTER,ENVIRO_CONTROL,GENERATOR
+			ANY,WEAPON,ENGINE,SENSOR,POWER,COMPUTER,ENVIRO_CONTROL,GENERATOR,DAMPENER
 		}
 		
 		public ElecPanelType panelType();

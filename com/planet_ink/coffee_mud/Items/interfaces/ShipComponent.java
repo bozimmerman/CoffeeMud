@@ -58,4 +58,8 @@ public interface ShipComponent extends Electronics
 	{
 		
 	}
+	public interface ShipInertialDampener extends ShipComponent
+	{
+		
+	}
 }
