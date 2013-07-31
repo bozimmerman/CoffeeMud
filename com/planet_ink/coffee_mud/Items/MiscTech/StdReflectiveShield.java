@@ -58,7 +58,22 @@ public class StdReflectiveShield extends StdElecItem
 	
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
-		msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The reflective field around <S-NAME> reflects the "+msg.tool().name()+" damage."));
+		if(mob.location()!=null)
+		{
+			if(msg.tool() instanceof Weapon)
+			{
+				String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
+				if(s.indexOf("<DAMAGE>")>0)
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it reflects off the shield around"));
+				else
+				if(s.indexOf("<DAMAGES>")>0)
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "reflects off the shield around"));
+				else
+					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The reflective field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
+			}
+			else
+				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The reflective field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
+		}
 		return false;
 	}
 	
