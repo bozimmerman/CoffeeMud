@@ -66,11 +66,11 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 		recoverPhyStats();
 	}
 
-
-	public int weaponType(){return weaponType;}
-	public int weaponClassification(){return weaponClassification;}
-	public void setWeaponType(int newType){weaponType=newType;}
-	public void setWeaponClassification(int newClassification){weaponClassification=newClassification;}
+	
+	@Override public int weaponType(){return weaponType;}
+	@Override public int weaponClassification(){return weaponClassification;}
+	@Override public void setWeaponType(int newType){weaponType=newType;}
+	@Override public void setWeaponClassification(int newClassification){weaponClassification=newClassification;}
 
 	public String secretIdentity()
 	{
@@ -177,48 +177,38 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 		return true;
 	}
 
+	@Override 
 	public void setUsesRemaining(int newUses)
 	{
 		if(newUses==Integer.MAX_VALUE)
 			newUses=100;
 		super.setUsesRemaining(newUses);
 	}
-
+	@Override
 	public String missString()
 	{
 		return CMLib.combat().standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
 	}
+	@Override 
 	public String hitString(int damageAmount)
 	{
 		return CMLib.combat().standardHitString(weaponType, weaponClassification,damageAmount,name());
 	}
+	@Override 
 	public int minRange()
 	{
 		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMINRANGE))
 			return 0;
 		return minRange;
 	}
+	@Override 
 	public int maxRange()
 	{
 		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMAXRANGE))
 			return 100;
 		return maxRange;
 	}
-	public void setRanges(int min, int max){minRange=min;maxRange=max;}
+	@Override public void setRanges(int min, int max){minRange=min;maxRange=max;}
 	
-	public boolean subjectToWearAndTear() { return false; }
-	
-	public void recoverOwner()
-	{
-		final ItemPossessor myOwner=owner;
-		if(myOwner instanceof MOB)
-		{
-			((MOB)myOwner).recoverCharStats();
-			((MOB)myOwner).recoverMaxState();
-			((MOB)myOwner).recoverPhyStats();
-		}
-		else
-		if(myOwner!=null)
-			myOwner.recoverPhyStats();
-	}
+	@Override public boolean subjectToWearAndTear() { return false; }
 }

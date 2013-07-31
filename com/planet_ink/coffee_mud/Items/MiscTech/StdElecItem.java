@@ -38,7 +38,6 @@ public class StdElecItem extends StdItem implements Electronics
 	
 	protected long 			powerCapacity	= 100;
 	protected long 			power			= 100;
-	protected int 			powerNeeds		= 1;
 	protected boolean 		activated		= false;
 	protected String	 	manufacturer	= "RANDOM";
 	protected Manufacturer  cachedManufact  = null;
@@ -73,18 +72,18 @@ public class StdElecItem extends StdItem implements Electronics
 		return true;
 	}
 	
-	public long powerCapacity(){return powerCapacity;}
-	public void setPowerCapacity(long capacity){powerCapacity=capacity;}
-	public long powerRemaining(){return power;}
-	public void setPowerRemaining(long remaining){power=remaining;}
-	public boolean activated(){ return activated; }
-	public void activate(boolean truefalse){activated=truefalse;}
-	public void setPowerNeeds(int amt){ powerNeeds=amt;}
-	public int powerNeeds(){return powerNeeds;}
-	public int techLevel() { return phyStats().ability();}
-	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
-	public String getManufacturerName() { return manufacturer; }
-	public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	@Override public long powerCapacity(){return powerCapacity;}
+	@Override public void setPowerCapacity(long capacity){powerCapacity=capacity;}
+	@Override public long powerRemaining(){return power;}
+	@Override public void setPowerRemaining(long remaining){power=remaining;}
+	@Override public boolean activated(){ return activated; }
+	@Override public void activate(boolean truefalse){activated=truefalse;}
+	@Override public int powerNeeds(){return (int)Math.min(powerCapacity-power,Integer.MAX_VALUE);}
+	@Override public int techLevel() { return phyStats().ability();}
+	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
+	@Override public String getManufacturerName() { return manufacturer; }
+	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	@Override 
 	public Manufacturer getFinalManufacturer()
 	{
 		if(cachedManufact==null)

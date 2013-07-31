@@ -68,24 +68,23 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		recoverPhyStats();
 	}
 
-	public float getInstalledFactor() { return installedFactor; }
-	public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
-	public int fuelType(){return RawMaterial.RESOURCE_ENERGY;}
-	public void setFuelType(int resource){}
-	public long powerCapacity(){return 1;}
-	public void setPowerCapacity(long capacity){}
-	public void setPowerNeeds(int amt){}
-	public int powerNeeds(){return 1;}
-	public long powerRemaining(){return powerRemaining;}
-	public void setPowerRemaining(long remaining){ powerRemaining=(remaining>0)?(short)1:(short)0; }
-	public boolean activated(){return activated;}
-	public void activate(boolean truefalse){ activated=truefalse; }
-	public void setActiveMenu(String internalName) { currentMenu=internalName; }
-	public String getActiveMenu() { return currentMenu; }
-	public int techLevel() { return phyStats().ability();}
-	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
-	public String getManufacturerName() { return manufacturer; }
-	public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	@Override public float getInstalledFactor() { return installedFactor; }
+	@Override public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
+	@Override public long powerCapacity(){return 1;}
+	@Override public void setPowerCapacity(long capacity){}
+	@Override public int powerNeeds(){return 1;}
+	@Override public long powerRemaining(){return powerRemaining;}
+	@Override public void setPowerRemaining(long remaining){ powerRemaining=(remaining>0)?(short)1:(short)0; }
+	@Override public boolean activated(){return activated;}
+	@Override public void activate(boolean truefalse){ activated=truefalse; }
+	@Override public void setActiveMenu(String internalName) { currentMenu=internalName; }
+	@Override public String getActiveMenu() { return currentMenu; }
+	@Override public int techLevel() { return phyStats().ability();}
+	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
+	@Override public String getManufacturerName() { return manufacturer; }
+	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	
+	@Override
 	public Manufacturer getFinalManufacturer()
 	{
 		if(cachedManufact==null)
@@ -97,8 +96,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		return cachedManufact;
 	}
 	
-	public ElecPanelType panelType(){return ElecPanel.ElecPanelType.COMPUTER;}
-	public void setPanelType(ElecPanelType type){ }
+	@Override public ElecPanelType panelType(){return ElecPanel.ElecPanelType.COMPUTER;}
+	@Override public void setPanelType(ElecPanelType type){ }
 	
 	public boolean canContain(Environmental E)
 	{
@@ -203,6 +202,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		return readers;
 	}
 	
+	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -248,6 +248,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		return super.okMessage(host,msg);
 	}
 
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -449,6 +450,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		super.executeMsg(host,msg);
 	}
 	
+	@Override
 	public void forceReadersSeeNew()
 	{
 		if(activated())
@@ -480,6 +482,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		}
 	}
 
+	@Override
 	public void destroy()
 	{
 		if((!destroyed)&&(circuitKey!=null))
@@ -490,6 +493,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		super.destroy();
 	}
 	
+	@Override
 	public void setOwner(ItemPossessor owner)
 	{
 		final ItemPossessor prevOwner=super.owner;
