@@ -66,7 +66,8 @@ IF "%1" == "docs" GOTO :DOCS
 %JAVACPATH% com/planet_ink/coffee_mud/Items/ClanItems/*.java
 %JAVACPATH% com/planet_ink/coffee_mud/Items/interfaces/*.java
 %JAVACPATH% com/planet_ink/coffee_mud/Items/MiscMagic/*.java
-%JAVACPATH% com/planet_ink/coffee_mud/Items/MiscTech/*.java
+%JAVACPATH% com/planet_ink/coffee_mud/Items/BasicTech/*.java
+%JAVACPATH% com/planet_ink/coffee_mud/Items/ShipTech/*.java
 %JAVACPATH% com/planet_ink/coffee_mud/Items/Software/*.java
 %JAVACPATH% com/planet_ink/coffee_mud/Items/Weapons/*.java
 %JAVACPATH% com/planet_ink/coffee_mud/Libraries/interfaces/*.java

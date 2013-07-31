@@ -165,7 +165,8 @@ com.planet_ink.coffee_mud.Items.Basic \
 com.planet_ink.coffee_mud.Items.ClanItems \
 com.planet_ink.coffee_mud.Items.interfaces \
 com.planet_ink.coffee_mud.Items.MiscMagic \
-com.planet_ink.coffee_mud.Items.MiscTech \
+com.planet_ink.coffee_mud.Items.BasicTech \
+com.planet_ink.coffee_mud.Items.ShipTech \
 com.planet_ink.coffee_mud.Items.Software \
 com.planet_ink.coffee_mud.Items.Weapons \
 com.planet_ink.coffee_mud.Libraries.interfaces \
@@ -553,7 +554,8 @@ com.planet_ink.coffee_mud.Items.Basic : $(call PACKAGE_OBJS,com.planet_ink.coffe
 com.planet_ink.coffee_mud.Items.ClanItems : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.ClanItems)
 com.planet_ink.coffee_mud.Items.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.interfaces)
 com.planet_ink.coffee_mud.Items.MiscMagic : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.MiscMagic)
-com.planet_ink.coffee_mud.Items.MiscTech : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.MiscTech)
+com.planet_ink.coffee_mud.Items.BasicTech : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.BasicTech)
+com.planet_ink.coffee_mud.Items.ShipTech : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.ShipTech)
 com.planet_ink.coffee_mud.Items.Software : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.Software)
 com.planet_ink.coffee_mud.Items.Weapons : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.Weapons)
 com.planet_ink.coffee_mud.Libraries.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Libraries.interfaces)

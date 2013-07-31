@@ -120,7 +120,11 @@ public class CMClass extends ClassLoader
 	/** stat constant for clan items type objects */
 	CLANITEM("com.planet_ink.coffee_mud.Items.interfaces.ClanItem"),
 	/** stat constant for misc tech type objects */
-	MISCTECH("com.planet_ink.coffee_mud.Items.interfaces.Electronics"),
+	TECH("com.planet_ink.coffee_mud.Items.interfaces.Electronics"),
+	/** stat constant for misc tech type objects */
+	SHIPTECH("com.planet_ink.coffee_mud.Items.interfaces.ShipComponent"),
+	/** stat constant for misc tech type objects */
+	SOFTWARE("com.planet_ink.coffee_mud.Items.interfaces.Software"),
 	/** stat constant for webmacros type objects */
 	WEBMACRO("com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro"),
 	/** stat constant for common type objects */
@@ -141,7 +145,9 @@ public class CMClass extends ClassLoader
 		CMObjectType.ARMOR,
 		CMObjectType.CLANITEM,
 		CMObjectType.MISCMAGIC,
-		CMObjectType.MISCTECH,
+		CMObjectType.TECH,
+		CMObjectType.SHIPTECH,
+		CMObjectType.SOFTWARE,
 		CMObjectType.WEAPON
 	};
 
@@ -160,7 +166,7 @@ public class CMClass extends ClassLoader
 	protected XVector<Weapon>   		 weapons=new XVector<Weapon>();
 	protected XVector<Armor>			 armor=new XVector<Armor>();
 	protected XVector<MiscMagic>		 miscMagic=new XVector<MiscMagic>();
-	protected XVector<Electronics>  	 miscTech=new XVector<Electronics>();
+	protected XVector<Electronics>  	 tech=new XVector<Electronics>();
 	protected XVector<ClanItem> 		 clanItems=new XVector<ClanItem>();
 	protected XVector<Area> 			 areaTypes=new XVector<Area>();
 	protected XVector<Command>  		 commands=new XVector<Command>();
@@ -276,10 +282,12 @@ public class CMClass extends ClassLoader
 			case AREA: return O instanceof Area;
 			case COMMAND: return O instanceof Command;
 			case CLANITEM: return O instanceof ClanItem;
-			case MISCTECH: return O instanceof Electronics;
+			case TECH: return O instanceof Electronics;
 			case WEBMACRO: return O instanceof WebMacro;
 			case COMMON: return O instanceof CMCommon;
 			case LIBRARY: return O instanceof CMLibrary;
+			case SOFTWARE: return O instanceof Software;
+			case SHIPTECH: return O instanceof ShipComponent;
 		}
 		return false;
 	}
@@ -310,10 +318,12 @@ public class CMClass extends ClassLoader
 			case AREA: return CMClass.getAreaType(ID);
 			case COMMAND: return CMClass.getCommand(ID);
 			case CLANITEM: return CMClass.getClanItem(ID);
-			case MISCTECH: return CMClass.getMiscMagic(ID);
+			case TECH: return CMClass.getTech(ID);
 			case WEBMACRO: return CMClass.getWebMacro(ID);
 			case COMMON: return CMClass.getCommon(ID);
 			case LIBRARY: return CMClass.getLibrary(ID);
+			case SHIPTECH: return CMClass.getTech(ID);
+			case SOFTWARE: return CMClass.getTech(ID);
 		}
 		return null;
 	}
@@ -337,7 +347,6 @@ public class CMClass extends ClassLoader
 		if(O instanceof Area) return CMObjectType.AREA;
 		if(O instanceof CMLibrary) return CMObjectType.LIBRARY;
 		if(O instanceof CMCommon) return CMObjectType.COMMON;
-		if(O instanceof Electronics) return CMObjectType.MISCTECH;
 		if(O instanceof Command) return CMObjectType.COMMAND;
 		if(O instanceof Clan) return CMObjectType.CLAN;
 		if(O instanceof ClanItem) return CMObjectType.CLANITEM;
@@ -345,6 +354,9 @@ public class CMClass extends ClassLoader
 		if(O instanceof Armor) return CMObjectType.ARMOR;
 		if(O instanceof Weapon) return CMObjectType.WEAPON;
 		if(O instanceof Item) return CMObjectType.ITEM;
+		if(O instanceof Software) return CMObjectType.SOFTWARE;
+		if(O instanceof ShipComponent) return CMObjectType.SHIPTECH;
+		if(O instanceof Electronics) return CMObjectType.TECH;
 		return null;
 	}
 
@@ -408,10 +420,12 @@ public class CMClass extends ClassLoader
 		case AREA: return c().areaTypes;
 		case COMMAND: return c().commands;
 		case CLANITEM: return c().clanItems;
-		case MISCTECH: return c().miscTech;
+		case TECH: return c().tech;
 		case WEBMACRO: return c().webMacros;
 		case COMMON: return c().common;
 		case LIBRARY: return c().libraries;
+		case SHIPTECH: return c().tech;
+		case SOFTWARE: return c().tech;
 		}
 		return null;
 	}
@@ -499,7 +513,7 @@ public class CMClass extends ClassLoader
 	 * An enumeration of all the stored misc Tech in this classloader for this thread
 	 * @return an enumeration of all the stored misc Tech in this classloader for this thread
 	 */
-	public static final Enumeration<Electronics>miscTech(){return c().miscTech.elements();}
+	public static final Enumeration<Electronics>tech(){return c().tech.elements();}
 	/**
 	 * An enumeration of all the stored clan Items in this classloader for this thread
 	 * @return an enumeration of all the stored clan Items in this classloader for this thread
@@ -590,7 +604,7 @@ public class CMClass extends ClassLoader
 	 * Returns a new instance of a misc tech object of the given ID from your classloader
 	 * @return a new instance of a misc tech object of the given ID
 	 */
-	public static final Item		getMiscTech(final String calledThis) { return (Item)getNewGlobal(c().miscTech,calledThis);}
+	public static final Item		getTech(final String calledThis) { return (Item)getNewGlobal(c().tech,calledThis);}
 	/**
 	 * Returns a new instance of a armor object of the given ID from your classloader
 	 * @return a new instance of a armor object of the given ID
@@ -664,7 +678,7 @@ public class CMClass extends ClassLoader
 		namesList.addAll(getAllItemClassNames(weapons(),NonArchon,NonGeneric,NonStandard));
 		namesList.addAll(getAllItemClassNames(armor(),NonArchon,NonGeneric,NonStandard));
 		namesList.addAll(getAllItemClassNames(miscMagic(),NonArchon,NonGeneric,NonStandard));
-		namesList.addAll(getAllItemClassNames(miscTech(),NonArchon,NonGeneric,NonStandard));
+		namesList.addAll(getAllItemClassNames(tech(),NonArchon,NonGeneric,NonStandard));
 		namesList.addAll(getAllItemClassNames(clanItems(),NonArchon,NonGeneric,NonStandard));
 	}
 
@@ -695,7 +709,7 @@ public class CMClass extends ClassLoader
 		if(thisItem==null) thisItem=(Item)getNewGlobal(c().weapons,calledThis);
 		if(thisItem==null) thisItem=(Item)getNewGlobal(c().miscMagic,calledThis);
 		if(thisItem==null) thisItem=(Item)getNewGlobal(c().clanItems,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(c().miscTech,calledThis);
+		if(thisItem==null) thisItem=(Item)getNewGlobal(c().tech,calledThis);
 		return thisItem;
 	}
 
@@ -724,7 +738,7 @@ public class CMClass extends ClassLoader
 		if(thisItem==null) thisItem=(Item)getGlobal(c().weapons,itemID);
 		if(thisItem==null) thisItem=(Item)getGlobal(c().miscMagic,itemID);
 		if(thisItem==null) thisItem=(Item)getGlobal(c().clanItems,itemID);
-		if(thisItem==null) thisItem=(Item)getGlobal(c().miscTech,itemID);
+		if(thisItem==null) thisItem=(Item)getGlobal(c().tech,itemID);
 		return thisItem;
 	}
 
@@ -783,7 +797,7 @@ public class CMClass extends ClassLoader
 	{
 		return races.size()+charClasses.size()+MOBs.size()+abilities.size()+locales.size()+exits.size()
 			  +items.size()+behaviors.size()+weapons.size()+armor.size()+miscMagic.size()+clanItems.size()
-			  +miscTech.size()+areaTypes.size()+common.size()+libraries.size()+commands.size()
+			  +tech.size()+areaTypes.size()+common.size()+libraries.size()+commands.size()
 			  +webMacros.size();
 	}
 
@@ -1090,7 +1104,7 @@ public class CMClass extends ClassLoader
 		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().armor,calledThis);
 		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().weapons,calledThis);
 		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().miscMagic,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().miscTech,calledThis);
+		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().tech,calledThis);
 		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().MOBs,calledThis);
 		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().abilities,calledThis);
 		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().clanItems,calledThis);
@@ -2385,19 +2399,23 @@ public class CMClass extends ClassLoader
 				if(c.clanItems.size()>0) Log.sysOut(Thread.currentThread().getName(),"Clan Items loaded : "+c.clanItems.size());
 			}
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("MISCTECH")))
-				c.miscTech=baseC.miscTech;
+			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("TECH")))
+				c.tech=baseC.tech;
 			else
 			{
-				c.miscTech=loadVectorListToObj(prefix+"Items/MiscTech/",page.getStr("MISCTECH"),CMObjectType.MISCTECH.ancestorName);
-				if(c.miscTech.size()>0) Log.sysOut(Thread.currentThread().getName(),"Electronics loaded: "+c.miscTech.size());
-				Vector tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),"com.planet_ink.coffee_mud.Items.interfaces.Software");
-				if(tempV.size()>0) c.miscTech.addAll(tempV);
+				Vector tempV;
+				c.tech=loadVectorListToObj(prefix+"Items/BasicTech/",page.getStr("TECH"),CMObjectType.TECH.ancestorName);
+				
+				tempV=loadVectorListToObj(prefix+"Items/ShipTech/",page.getStr("SHIPTECH"),CMObjectType.SHIPTECH.ancestorName);
+				if(tempV.size()>0) c.tech.addAll(tempV);
+				tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),CMObjectType.SOFTWARE.ancestorName);
+				if(tempV.size()>0) c.tech.addAll(tempV);
+				if(c.tech.size()>0) Log.sysOut(Thread.currentThread().getName(),"Electronics loaded: "+c.tech.size());
 
-				c.miscTech.sort();
+				c.tech.sort();
 			}
 
-			if((c.items.size()+c.weapons.size()+c.armor.size()+c.miscTech.size()+c.miscMagic.size()+c.clanItems.size())==0)
+			if((c.items.size()+c.weapons.size()+c.armor.size()+c.tech.size()+c.miscMagic.size()+c.clanItems.size())==0)
 				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("BEHAVIOR")))
@@ -2713,7 +2731,7 @@ public class CMClass extends ClassLoader
 		weapons.clear();
 		armor.clear();
 		miscMagic.clear();
-		miscTech.clear();
+		tech.clear();
 		areaTypes.clear();
 		clanItems.clear();
 		commands.clear();

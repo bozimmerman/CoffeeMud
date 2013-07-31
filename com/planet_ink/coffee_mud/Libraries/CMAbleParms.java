@@ -1326,7 +1326,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						V.addAll(new XVector<Armor>(CMClass.armor()));
 						V.addAll(new XVector<Item>(CMClass.basicItems()));
 						V.addAll(new XVector<MiscMagic>(CMClass.miscMagic()));
-						V.addAll(new XVector<Electronics>(CMClass.miscTech()));
+						V.addAll(new XVector<Electronics>(CMClass.tech()));
 						V.addAll(new XVector<Weapon>(CMClass.weapons()));
 						Vector<Item> V2=new Vector<Item>();
 						Item I;

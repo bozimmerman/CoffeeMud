@@ -3789,7 +3789,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.armor(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.weapons(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.miscMagic(),-1).toString());
-					mob.tell(CMLib.lister().reallyList(mob,CMClass.miscTech(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.tech(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.clanItems(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.basicItems(),-1).toString());
 					mob.tell(CMLib.lister().reallyList(mob,CMClass.mobTypes(),-1).toString());

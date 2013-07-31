@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.BasicTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,9 +32,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdElecPanel extends StdElecCompContainer implements Electronics.ElecPanel
+public class StdElecPanel extends StdElecContainer implements Electronics.ElecPanel
 {
 	public String ID(){	return "StdElecPanel";}
+	
+	protected volatile int powerNeeds=0;
 	
 	public StdElecPanel()
 	{
@@ -51,6 +53,7 @@ public class StdElecPanel extends StdElecCompContainer implements Electronics.El
 	protected ElecPanelType panelType=ElecPanelType.ANY;
 	public ElecPanelType panelType(){return panelType;}
 	public void setPanelType(ElecPanelType type){panelType=type;}
+	@Override public int powerNeeds(){return powerNeeds; }
 
 	public String displayText()
 	{
@@ -145,7 +148,7 @@ public class StdElecPanel extends StdElecCompContainer implements Electronics.El
 						}
 					}
 				}
-				setPowerNeeds((int)Math.round(totalPowerReq));
+				powerNeeds=(int)Math.round(totalPowerReq);
 				CMClass.returnMsg(powerMsg);
 				msg.setValue(powerRemaining);
 				break;

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.ShipTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -14,7 +14,9 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
@@ -32,21 +34,13 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenElecPanel extends StdElecPanel
+public class GenComputerConsole extends StdComputerConsole
 {
-	public String ID(){	return "GenElecPanel";}
-	protected String readableText="";
-	public GenElecPanel()
+	public String ID(){	return "GenComputerConsole";}
+	
+	public GenComputerConsole()
 	{
 		super();
-		setName("a generic electronics panel");
-		basePhyStats.setWeight(2);
-		setDisplayText("a generic electric panel is mounted here.");
-		setDescription("");
-		baseGoldValue=5;
-		basePhyStats().setLevel(1);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
 	public boolean isGeneric(){return true;}
@@ -56,16 +50,18 @@ public class GenElecPanel extends StdElecPanel
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	public void setReadableText(String text){}
 	public void setMiscText(String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE);
 		recoverPhyStats();
 	}
-
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","POWERCAP", "ACTIVATED","POWERREM","PANTYPE" };
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
+							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
+							  "POWERCAP","ACTIVATED","POWERREM",
+							  "MANUFACTURER","INSTFACT"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -76,10 +72,13 @@ public class GenElecPanel extends StdElecPanel
 		case 1: return ""+hasALid();
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
-		case 4: return ""+powerCapacity();
-		case 5: return ""+activated();
-		case 6: return ""+powerRemaining();
-		case 7: return ""+panelType();
+		case 4: return ""+rideBasis();
+		case 5: return ""+riderCapacity();
+		case 6: return ""+powerCapacity();
+		case 7: return ""+activated();
+		case 8: return ""+powerRemaining();
+		case 9: return ""+getManufacturerName();
+		case 10: return ""+getInstalledFactor();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -95,13 +94,13 @@ public class GenElecPanel extends StdElecPanel
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 5: activate(CMath.s_bool(val)); break;
-		case 6: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 7: try{
-					setPanelType(Electronics.ElecPanel.ElecPanelType.valueOf(val.toUpperCase().trim())); 
-				}catch(Exception e){}
-				break;
+		case 4: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
+		case 5: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
+		case 6: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 7: activate(CMath.s_bool(val)); break;
+		case 8: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 9: setManufacturerName(val); break;
+		case 10: setInstalledFactor(CMath.s_float(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -116,7 +115,7 @@ public class GenElecPanel extends StdElecPanel
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenElecPanel.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenComputerConsole.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -128,10 +127,10 @@ public class GenElecPanel extends StdElecPanel
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenElecPanel)) return false;
-		String[] theCodes=getStatCodes();
-		for(int i=0;i<theCodes.length;i++)
-			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
+		if(!(E instanceof GenComputerConsole)) return false;
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		return true;
 	}

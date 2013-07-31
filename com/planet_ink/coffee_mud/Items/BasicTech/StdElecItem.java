@@ -1,5 +1,5 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
-import com.planet_ink.coffee_mud.Items.Basic.StdContainer;
+package com.planet_ink.coffee_mud.Items.BasicTech;
+import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,39 +32,57 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdElecContainer extends StdContainer implements Electronics
+public class StdElecItem extends StdItem implements Electronics
 {
-	public String ID(){	return "StdElecContainer";}
-
+	public String ID(){	return "StdElecItem";}
+	
 	protected long 			powerCapacity	= 100;
 	protected long 			power			= 100;
 	protected boolean 		activated		= false;
-	protected String 		manufacturer	= "RANDOM";
+	protected String	 	manufacturer	= "RANDOM";
 	protected Manufacturer  cachedManufact  = null;
-
-	public StdElecContainer()
+	
+	public StdElecItem()
 	{
 		super();
-		setName("an electronic container");
-		setDisplayText("an electronic container sits here.");
+		setName("a piece of electronics");
+		setDisplayText("a small piece of electronics sits here.");
 		setDescription("You can't tell what it is by looking at it.");
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
 		recoverPhyStats();
 	}
-
+	
+	protected static final boolean isThisPanelActivated(Electronics.ElecPanel E)
+	{
+		if(!E.activated())
+			return false;
+		if(E.container() instanceof Electronics.ElecPanel)
+			return isThisPanelActivated((Electronics.ElecPanel)E.container());
+		return true;
+	}
+	
+	public static final boolean isAllWiringConnected(Electronics E)
+	{
+		if(E instanceof Electronics.ElecPanel)
+			return isThisPanelActivated((Electronics.ElecPanel)E);
+		if(E.container() instanceof Electronics.ElecPanel)
+			return isThisPanelActivated((Electronics.ElecPanel)E.container());
+		return true;
+	}
+	
 	@Override public long powerCapacity(){return powerCapacity;}
 	@Override public void setPowerCapacity(long capacity){powerCapacity=capacity;}
 	@Override public long powerRemaining(){return power;}
 	@Override public void setPowerRemaining(long remaining){power=remaining;}
-	@Override public boolean activated(){return activated;}
+	@Override public boolean activated(){ return activated; }
 	@Override public void activate(boolean truefalse){activated=truefalse;}
-	public int powerNeeds(){return 0;}
+	@Override public int powerNeeds(){return (int)Math.min(powerCapacity-power,Integer.MAX_VALUE);}
 	@Override public int techLevel() { return phyStats().ability();}
 	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
 	@Override public String getManufacturerName() { return manufacturer; }
-	@Override public void setManufacturerName(String name) { cachedManufact = null; if(name!=null) manufacturer=name; }
+	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
 	@Override 
 	public Manufacturer getFinalManufacturer()
 	{

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.BasicTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,12 +10,12 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -32,22 +32,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenElecGenerator extends StdElecGenerator
+public class GenElecPanel extends StdElecPanel
 {
-	public String ID(){	return "GenElecGenerator";}
+	public String ID(){	return "GenElecPanel";}
 	protected String readableText="";
-	public GenElecGenerator()
+	public GenElecPanel()
 	{
 		super();
-		setName("a generic generator");
+		setName("a generic electronics panel");
 		basePhyStats.setWeight(2);
-		setDisplayText("a generic generator sits here.");
+		setDisplayText("a generic electric panel is mounted here.");
 		setDescription("");
 		baseGoldValue=5;
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -64,7 +65,8 @@ public class GenElecGenerator extends StdElecGenerator
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","POWERCAP","POWERREM","CONSUMEDTYPES","GENAMTPER","MANUFACTURER"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES",
+										   "POWERCAP", "ACTIVATED","POWERREM","PANTYPE"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -76,20 +78,9 @@ public class GenElecGenerator extends StdElecGenerator
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
 		case 4: return ""+powerCapacity();
-		case 5: 
-		{
-			StringBuilder str=new StringBuilder("");
-			for(int i=0;i<getConsumedFuelTypes().length;i++)
-			{
-				if(i>0) str.append(", ");
-				str.append(RawMaterial.CODES.NAME(getConsumedFuelTypes()[i]));
-			}
-			return str.toString();
-		}
+		case 5: return ""+activated();
 		case 6: return ""+powerRemaining();
-		case 7: return ""+getGeneratedAmountPerTick();
-		case 8: return ""+activated();
-		case 9: return ""+getManufacturerName();
+		case 7: return ""+panelType();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -106,22 +97,12 @@ public class GenElecGenerator extends StdElecGenerator
 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
 		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 5:{
-				List<String> mats = CMParms.parseCommas(val,true);
-				int[] newMats = new int[mats.size()];
-				for(int x=0;x<mats.size();x++)
-				{
-					int rsccode = RawMaterial.CODES.FIND_CaseSensitive(mats.get(x).trim());
-					if(rsccode > 0)
-						newMats[x] = rsccode;
-				}
-				super.setConsumedFuelType(newMats);
+		case 5: activate(CMath.s_bool(val)); break;
+		case 6: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 7: try{
+					setPanelType(Electronics.ElecPanel.ElecPanelType.valueOf(val.toUpperCase().trim())); 
+				}catch(Exception e){}
 				break;
-			   }
-		case 6: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 7: setGenerationAmountPerTick(CMath.s_parseIntExpression(val)); break;
-		case 8: activate(CMath.s_bool(val)); break;
-		case 9: setManufacturerName(val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -136,7 +117,7 @@ public class GenElecGenerator extends StdElecGenerator
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenElecGenerator.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenElecPanel.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -148,7 +129,7 @@ public class GenElecGenerator extends StdElecGenerator
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenElecGenerator)) return false;
+		if(!(E instanceof GenElecPanel)) return false;
 		String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.ShipTech;
 import com.planet_ink.coffee_mud.Items.Basic.StdContainer;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -33,10 +33,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdElecGenerator extends StdFuelConsumer implements Electronics.PowerGenerator
+public class StdCompGenerator extends StdCompFuelConsumer implements Electronics.PowerGenerator
 {
-	public String ID(){	return "StdElecGenerator";}
-	public StdElecGenerator()
+	public String ID(){	return "StdCompGenerator";}
+	public StdCompGenerator()
 	{
 		super();
 		setName("a generator");

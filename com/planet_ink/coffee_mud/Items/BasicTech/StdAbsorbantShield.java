@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.BasicTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;

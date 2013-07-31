@@ -45,7 +45,7 @@ public interface CMObject extends Cloneable, Comparable<CMObject>
 	 * the ClassLoader.  Class categories include Libraries, Common, 
 	 * Areas, Abilities, Behaviors, CharClasses, Commands, Exits
 	 * Locales, MOBS, Races, WebMacros, Basic Items, Armor, 
-	 * Weapons, ClanItems, MiscTech.  The name is typically identical
+	 * Weapons, ClanItems, Tech.  The name is typically identical
 	 * to the class name.
 	 * @return the name of this class
 	 */

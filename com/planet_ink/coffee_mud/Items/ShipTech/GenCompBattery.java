@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.ShipTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,12 +10,12 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -32,23 +32,41 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenElecContainer extends StdElecContainer
+public class GenCompBattery extends StdElecCompItem implements Electronics.PowerSource
 {
-	public String ID(){	return "GenElecContainer";}
-	protected String readableText="";
-	public GenElecContainer()
+	public String ID(){	return "GenCompBattery";}
+
+	public GenCompBattery()
 	{
 		super();
-		setName("a generic electric container");
+		setName("a generic battery");
 		basePhyStats.setWeight(2);
-		setDisplayText("a generic electric container sits here.");
+		setDisplayText("a generic battery sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
+		super.setPowerCapacity(1000);
+		super.setPowerRemaining(1000);
 	}
-
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_LOOK:
+				super.executeMsg(host, msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
+				return;
+			}
+		}
+		super.executeMsg(host, msg);
+	}
+	
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -56,8 +74,6 @@ public class GenElecContainer extends StdElecContainer
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -65,21 +81,18 @@ public class GenElecContainer extends StdElecContainer
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+hasALock();
-		case 1: return ""+hasALid();
-		case 2: return ""+capacity();
-		case 3: return ""+containTypes();
-		case 4: return ""+powerCapacity();
-		case 5: return ""+activated();
-		case 6: return ""+powerRemaining();
-		case 7: return ""+getManufacturerName();
+		case 0: return ""+powerCapacity();
+		case 1: return ""+activated();
+		case 2: return ""+powerRemaining();
+		case 3: return ""+getManufacturerName();
+		case 4: return ""+getInstalledFactor();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -91,14 +104,11 @@ public class GenElecContainer extends StdElecContainer
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
-		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
-		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
-		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
-		case 4: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 5: activate(CMath.s_bool(val)); break;
-		case 6: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 7: setManufacturerName(val); break;
+		case 0: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 1: activate(CMath.s_bool(val)); break;
+		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 3: setManufacturerName(val); break;
+		case 4: setInstalledFactor(CMath.s_float(val)); break; 
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -113,7 +123,7 @@ public class GenElecContainer extends StdElecContainer
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenElecContainer.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenCompBattery.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -125,7 +135,7 @@ public class GenElecContainer extends StdElecContainer
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenElecContainer)) return false;
+		if(!(E instanceof GenCompBattery)) return false;
 		String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))

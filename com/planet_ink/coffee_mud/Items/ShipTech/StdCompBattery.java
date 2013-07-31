@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.ShipTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -31,26 +31,52 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdBlaster extends StdElecWeapon
+public class StdCompBattery extends StdElecCompItem implements Electronics.PowerSource
 {
-	public String ID(){	return "StdBlaster";}
+	public String ID(){	return "StdBattery";}
 
-	public StdBlaster()
+	public StdCompBattery()
 	{
 		super();
-		setName("a blaster gun");
-		basePhyStats.setWeight(5);
-		setDisplayText("a blaster gun");
+		setName("a battery");
+		basePhyStats.setWeight(2);
+		setDisplayText("a battery sits here.");
 		setDescription("");
-		baseGoldValue=500;
+		baseGoldValue=5;
 		basePhyStats().setLevel(1);
-		basePhyStats().setDamage(20);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.activate(false);
-		super.setRawLogicalAnd(false);
-		super.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
+		super.activate(true);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
+	}
+	
+	public void setMiscText(String newText)
+	{
+		if(CMath.isInteger(newText))
+			this.setPowerCapacity(CMath.s_int(newText));
+		super.setMiscText(newText);
+	}
+	
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenCompBattery)) return false;
+		return super.sameAs(E);
+	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_LOOK:
+				super.executeMsg(host, msg);
+				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
+				return;
+			}
+		}
+		super.executeMsg(host, msg);
 	}
 }

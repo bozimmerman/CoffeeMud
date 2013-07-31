@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.BasicTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,12 +10,12 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -32,41 +32,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenBattery extends StdElecCompItem implements Electronics.PowerSource
+public class GenElecItem extends StdElecItem
 {
-	public String ID(){	return "GenBattery";}
-
-	public GenBattery()
+	public String ID(){	return "GenElecItem";}
+	protected String readableText="";
+	public GenElecItem()
 	{
 		super();
-		setName("a generic battery");
+		setName("a generic electric item");
 		basePhyStats.setWeight(2);
-		setDisplayText("a generic battery sits here.");
+		setDisplayText("a generic electric item sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.setPowerCapacity(1000);
-		super.setPowerRemaining(1000);
 	}
-	
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_LOOK:
-				super.executeMsg(host, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
-				return;
-			}
-		}
-		super.executeMsg(host, msg);
-	}
-	
+
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -74,6 +56,8 @@ public class GenBattery extends StdElecCompItem implements Electronics.PowerSour
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){readableText=text;}
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -121,7 +105,7 @@ public class GenBattery extends StdElecCompItem implements Electronics.PowerSour
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenBattery.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenElecItem.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -133,7 +117,7 @@ public class GenBattery extends StdElecCompItem implements Electronics.PowerSour
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenElecContainer)) return false;
+		if(!(E instanceof GenElecItem)) return false;
 		String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))

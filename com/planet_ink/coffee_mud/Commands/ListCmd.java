@@ -2442,7 +2442,7 @@ public class ListCmd extends StdCommand
 		case 24: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_POISON).toString()); break;
 		case 25: s.println(listTicks(mob.session(),CMParms.combine(commands,1)).toString()); break;
 		case 26: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.miscMagic()).toString()); break;
-		case 27: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.miscTech()).toString()); break;
+		case 27: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.tech()).toString()); break;
 		case 28: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.clanItems()).toString()); break;
 		case 29: s.println(journalList(mob.session(),listWord).toString()); break;
 		case 30: s.wraplessPrintln(roomPropertyDetails(mob.session(),mob.location().getArea(),rest).toString()); break;

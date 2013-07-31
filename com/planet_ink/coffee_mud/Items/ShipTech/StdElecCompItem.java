@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.ShipTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.BasicTech.StdElecItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -31,9 +32,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdElecCompItem extends StdElecItem
+public class StdElecCompItem extends StdElecItem implements ShipComponent
 {
 	public String ID(){	return "StdElecCompItem";}
+	
+	protected float installedFactor = 1.0f;
+	
 	public StdElecCompItem()
 	{
 		super();
@@ -46,6 +50,10 @@ public class StdElecCompItem extends StdElecItem
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
+	
+	@Override public float getInstalledFactor() { return installedFactor; }
+	@Override public void setInstalledFactor(float pct) { installedFactor=pct; }
+	
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof StdElecCompItem)) return false;
@@ -137,5 +145,4 @@ public class StdElecCompItem extends StdElecItem
 		}
 		super.executeMsg(host, msg);
 	}
-	
 }

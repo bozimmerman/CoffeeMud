@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.ShipTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -31,15 +31,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdFuelConsumer extends StdElecCompContainer implements Electronics.FuelConsumer
+public class StdCompFuelConsumer extends StdElecCompContainer implements Electronics.FuelConsumer
 {
-	public String ID(){	return "StdFuelConsumer";}
+	public String ID(){	return "StdCompFuelConsumer";}
 	
 	protected int[] generatedFuelTypes;
 	protected int   ticksPerFuelConsume = 10;
 	protected volatile int fuelTickDown	= 0;
 	
-	public StdFuelConsumer()
+	public StdCompFuelConsumer()
 	{
 		super();
 		setName("a fuel consuming engine");
@@ -54,7 +54,7 @@ public class StdFuelConsumer extends StdElecCompContainer implements Electronics
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdFuelConsumer)) return false;
+		if(!(E instanceof StdCompFuelConsumer)) return false;
 		return super.sameAs(E);
 	}
 	

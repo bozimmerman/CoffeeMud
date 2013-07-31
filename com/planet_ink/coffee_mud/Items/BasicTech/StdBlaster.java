@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.BasicTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -31,52 +31,26 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdBattery extends StdElecCompItem implements Electronics.PowerSource
+public class StdBlaster extends StdElecWeapon
 {
-	public String ID(){	return "StdBattery";}
+	public String ID(){	return "StdBlaster";}
 
-	public StdBattery()
+	public StdBlaster()
 	{
 		super();
-		setName("a battery");
-		basePhyStats.setWeight(2);
-		setDisplayText("a battery sits here.");
+		setName("a blaster gun");
+		basePhyStats.setWeight(5);
+		setDisplayText("a blaster gun");
 		setDescription("");
-		baseGoldValue=5;
+		baseGoldValue=500;
 		basePhyStats().setLevel(1);
+		basePhyStats().setDamage(20);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.activate(true);
+		super.activate(false);
+		super.setRawLogicalAnd(false);
+		super.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
-	}
-	
-	public void setMiscText(String newText)
-	{
-		if(CMath.isInteger(newText))
-			this.setPowerCapacity(CMath.s_int(newText));
-		super.setMiscText(newText);
-	}
-	
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof GenBattery)) return false;
-		return super.sameAs(E);
-	}
-	
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_LOOK:
-				super.executeMsg(host, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
-				return;
-			}
-		}
-		super.executeMsg(host, msg);
 	}
 }

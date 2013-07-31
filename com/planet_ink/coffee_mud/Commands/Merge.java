@@ -215,7 +215,7 @@ public class Merge extends StdCommand
 			sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
-			sortEnumeratedList(CMClass.miscTech(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.tech(),allKnownFields,allFieldsMsg);
 			mob.tell("Valid field names are "+allFieldsMsg.toString());
 			return false;
 		}
@@ -337,7 +337,7 @@ public class Merge extends StdCommand
 			sortEnumeratedList(CMClass.armor(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			sortEnumeratedList(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
-			sortEnumeratedList(CMClass.miscTech(),allKnownFields,allFieldsMsg);
+			sortEnumeratedList(CMClass.tech(),allKnownFields,allFieldsMsg);
 		}
 
 		allKnownFields.add("REJUV");

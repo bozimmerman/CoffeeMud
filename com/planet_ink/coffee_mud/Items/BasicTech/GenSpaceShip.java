@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscTech;
+package com.planet_ink.coffee_mud.Items.BasicTech;
 import com.planet_ink.coffee_mud.Items.Basic.StdPortal;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
@@ -189,7 +189,6 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public long powerCapacity(){return 0;}
 	@Override public void setPowerCapacity(long capacity){}
 	@Override public long powerRemaining(){return 0;}
-	@Override public void setPowerNeeds(int amt){}
 	@Override public int powerNeeds(){return 0;}
 	@Override public void setPowerRemaining(long remaining){}
 	@Override public void activate(boolean truefalse){}
