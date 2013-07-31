@@ -117,6 +117,11 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 				break;
 			}
 		}
+		else
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(weaponClassification()==Weapon.CLASS_THROWN))
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,CMMsg.MSG_EXPIRE|CMMsg.MASK_ALWAYS,null));
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
