@@ -16,7 +16,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
+/**
+ * A tracking vector keeps track of which other tracking vectors that items of the
+ * same type have been added to so that, if desired, items can be removed from 
+ * all vectors at once.  The constructor requires a map to keep track of the
+ * objects.
+ * 
+ * This class is required for RTree
+ * 
+ * @author Bo Zimmerman
+ *
+ * @param <T>
+ */
 public class TrackingVector<T> extends Vector<T>
 {
 	private static final long serialVersionUID = 3331770309040710349L;
