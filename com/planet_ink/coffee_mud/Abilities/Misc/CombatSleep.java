@@ -62,7 +62,7 @@ public class CombatSleep extends StdAbility
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.sourceMajor()>0))
 		{
-			mob.tell("You are way too drowsy.");
+			mob.tell("You are way too unconscious.");
 			return false;
 		}
 		return super.okMessage(myHost,msg);
@@ -135,16 +135,16 @@ public class CombatSleep extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> make(s) <T-NAMESELF> fall asleep!^?");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),auto?"":"^S<S-NAME> make(s) <T-NAMESELF> go unconscious!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,3-levelDiff,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
+					success=maliciousAffect(mob,target,asLevel,3-levelDiff,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
 					if(success)
 						if(target.location()==mob.location())
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
+							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) unconscious!!");
 				}
 				target.makePeace();
 				if(mob.getVictim()==target) 
@@ -152,7 +152,7 @@ public class CombatSleep extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,auto?"":"^S<S-NAME> tr(ys) to make <T-NAMESELF> fall asleep, but fails.^?");
+			return maliciousFizzle(mob,target,auto?"":"^S<S-NAME> tr(ys) to make <T-NAMESELF> go unconscious, but fails.^?");
 
 		// return whether it worked
 		return success;
