@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenCompBattery extends StdElecCompItem implements Electronics.PowerSource
+public class GenCompBattery extends StdCompBattery implements Electronics.PowerSource
 {
 	public String ID(){	return "GenCompBattery";}
 
@@ -49,22 +49,6 @@ public class GenCompBattery extends StdElecCompItem implements Electronics.Power
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
-	}
-	
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_LOOK:
-				super.executeMsg(host, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()))
-					msg.source().tell(name()+" is currently "+(activated()?"delivering power.\n\r":"deactivated/disconnected.\n\r"));
-				return;
-			}
-		}
-		super.executeMsg(host, msg);
 	}
 	
 	public boolean isGeneric(){return true;}
