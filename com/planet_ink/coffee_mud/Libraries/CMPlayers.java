@@ -841,17 +841,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			{
 				tickStatus=Tickable.STATUS_ALIVE;
 				isDebugging=CMSecurity.isDebugging(DbgFlag.PLAYERTHREAD);
-				setThreadStatus(serviceClient,"checking database health");
-				String ok=CMLib.database().errorStatus();
-				if((ok.length()!=0)&&(!ok.startsWith("OK")))
+				if(checkDatabase())
 				{
-					Log.errOut(serviceClient.getName(),"DB: "+ok);
-					CMLib.s_sleep(100000);
-				}
-				else
-				{
-					setThreadStatus(serviceClient,"pinging connections");
-					CMLib.database().pingAllConnections();
 					setThreadStatus(serviceClient,"not saving players");
 					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)))

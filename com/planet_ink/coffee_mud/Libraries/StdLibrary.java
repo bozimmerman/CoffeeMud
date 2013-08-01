@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.CMClass;
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
@@ -63,5 +64,25 @@ public class StdLibrary implements CMLibrary, Tickable
 	@Override
 	public boolean tick(Tickable ticking, int tickID) {
 		return false;
+	}
+	
+	protected boolean checkDatabase()
+	{
+		setThreadStatus(serviceClient,"pinging connections");
+		CMLib.database().pingAllConnections();
+		setThreadStatus(serviceClient,"checking database health");
+		String ok=CMLib.database().errorStatus();
+		if((ok.length()!=0)&&(!ok.startsWith("OK")))
+		{
+			Log.errOut("DB: "+ok+" for "+serviceClient.getName());
+			CMLib.database().pingAllConnections();
+			ok=CMLib.database().errorStatus();
+			if((ok.length()!=0)&&(!ok.startsWith("OK")))
+			{
+				Log.errOut("DB: "+ok+": "+serviceClient.getName()+" skipped.");
+				return false;
+			}
+		}
+		return true;
 	}
 }

@@ -82,6 +82,10 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			return E instanceof ShipComponent.ShipEnviroControl;
 		case GENERATOR:
 			return E instanceof PowerGenerator;
+		case DAMPENER:
+			return E instanceof ShipComponent.ShipInertialDampener;
+		default:
+			break;
 		
 		}
 		return true;

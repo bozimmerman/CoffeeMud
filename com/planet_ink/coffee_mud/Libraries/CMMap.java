@@ -2230,7 +2230,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				isDebugging=CMSecurity.isDebugging(DbgFlag.MAPTHREAD);
 				tickStatus=Tickable.STATUS_ALIVE;
-				roomMaintSweep();
+				if(checkDatabase())
+					roomMaintSweep();
 			}
 			Resources.savePropResources();
 		}
