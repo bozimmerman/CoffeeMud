@@ -198,7 +198,10 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	@Override public String getManufacturerName() { return manufacturer; }
 	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
 	
-	@Override public int getMass(){ return (area instanceof SpaceShip)?((SpaceShip)area).getMass(): 1000; }
+	@Override public int getMass()
+	{ 
+		return basePhyStats().weight()+((area instanceof SpaceShip)?((SpaceShip)area).getMass(): 1000); 
+	}
 
 	@Override
 	public Manufacturer getFinalManufacturer()
