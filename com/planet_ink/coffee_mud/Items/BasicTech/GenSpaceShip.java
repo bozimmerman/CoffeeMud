@@ -52,6 +52,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	protected String	 	manufacturer	= "RANDOM";
 	public long[]   		coordinates 	= new long[3];
 	public double[] 		direction   	= new double[2];
+	public double			orientation		= 0.0;
 	public long 			speed			= 0;
 	protected SpaceObject	spaceTarget 	= null;
 	protected double[]		facing			= new double[2];
@@ -217,6 +218,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	
 	@Override public long[] coordinates(){return coordinates;}
 	@Override public double[] direction(){return direction;}
+	@Override public double orientation() { return orientation; }
+	@Override public void setOrientation(double dir) { orientation =dir; }
 	@Override public double[] facing() { return facing; }
 	@Override public void setFacing(double[] dir) { if(dir!=null) this.facing=dir; }
 	@Override public SpaceObject knownTarget(){return spaceTarget;}

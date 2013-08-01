@@ -68,4 +68,15 @@ public interface SpaceShip extends SpaceObject
 	 * @param dir 2 dimensional array for the direction of facing
 	 */
 	public void setFacing(double[] dir);
+	
+	/**
+	 * The orientation of the top of the object in radians. 
+	 * @return radian for the direction of orientation
+	 */
+	public double orientation();
+	/**
+	 * Sets the orientation of the top of the object in radians.
+	 * @param dir radian for the direction of orientation
+	 */
+	public void setOrientation(double dir);
 }
