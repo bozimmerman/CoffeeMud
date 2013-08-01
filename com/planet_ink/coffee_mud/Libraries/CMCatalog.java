@@ -42,6 +42,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	
 	public DVector icatalog=new DVector(2);
 	public DVector mcatalog=new DVector(2);
+	public volatile CMFile.CMVFSDir catalogFileMobsRoot = null;
+	public volatile CMFile.CMVFSDir catalogFileItemsRoot = null;
 
 	public void changeCatalogFlag(Physical P, boolean truefalse)
 	{
@@ -143,7 +145,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		List<String> nameList=new ArrayList<String>(catalog.size());
 		for(int x=0;x<catalog.size();x++)
-			if((catName==null)||(catName.equals(((CataData)catalog.elementAt(x, 2)).catatory())))
+			if((catName==null)||(catName.equals(((CataData)catalog.elementAt(x, 2)).category())))
 				nameList.add(((Environmental)catalog.elementAt(x, 1)).Name());
 		return nameList.toArray(new String[0]);
 	}
@@ -152,8 +154,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		List<String> catalogList=new SortedListWrap<String>(new ArrayList<String>(2));
 		for(int x=0;x<catalog.size();x++)
-			if(!catalogList.contains(((CataData)catalog.elementAt(x, 2)).catatory()))
-				catalogList.add(((CataData)catalog.elementAt(x, 2)).catatory());
+			if(!catalogList.contains(((CataData)catalog.elementAt(x, 2)).category()))
+				catalogList.add(((CataData)catalog.elementAt(x, 2)).category());
 		return catalogList.toArray(new String[0]);
 	}
 	
@@ -313,9 +315,15 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			||(((DBIdentifiable)E).databaseID().trim().length()==0))
 				continue;
 			if(E instanceof MOB)
+			{
 				CMLib.database().DBDeleteMOB(roomID,(MOB)E);
+				this.catalogFileMobsRoot=null;
+			}
 			else
+			{
 				CMLib.database().DBDeleteItem(roomID,(Item)E);
+				this.catalogFileItemsRoot=null;
+			}
 		}
 		for(Environmental E : updatables)
 		{
@@ -338,9 +346,15 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			||(((DBIdentifiable)E).databaseID().trim().length()==0))
 				continue;
 			if(E instanceof MOB)
+			{
 				CMLib.database().DBUpdateMOB(roomID,(MOB)E);
+				this.catalogFileMobsRoot=null;
+			}
 			else
+			{
 				CMLib.database().DBUpdateItem(roomID,(Item)E);
+				this.catalogFileItemsRoot=null;
+			}
 		}
 	}
 	
@@ -349,7 +363,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		addCatalog(null,PA);
 	}
 	
-	public void addCatalog(String catalog, Physical PA)
+	public void addCatalog(String catagory, Physical PA)
 	{
 		if((PA==null)||(!(PA instanceof DBIdentifiable))||(!((DBIdentifiable)PA).canSaveDatabaseID())) 
 			return;
@@ -360,15 +374,21 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			PA=(Physical)origP.copyOf();
 			submitToCatalog(PA);
 			if(PA instanceof Item)
+			{
 				CMLib.database().DBCreateThisItem("CATALOG_ITEMS",(Item)PA);
+				this.catalogFileItemsRoot=null;
+			}
 			else
 			if(PA instanceof MOB)
+			{
 				CMLib.database().DBCreateThisMOB("CATALOG_MOBS",(MOB)PA);
+				this.catalogFileMobsRoot=null;
+			}
 			CataData data=getCatalogData(PA);
 			if(data!=null)
 			{
-				if(catalog != null) 
-					data.setCatagory(catalog);
+				if(catagory != null) 
+					data.setCatagory(catagory);
 				data.addReference(origP);
 			}
 		}
@@ -418,6 +438,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				icatalog.removeElement(P);
 			}
 			CMLib.database().DBDeleteItem("CATALOG_ITEMS",(Item)P);
+			this.catalogFileItemsRoot=null;
 		}
 		else
 		if(P instanceof MOB)
@@ -427,6 +448,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				mcatalog.removeElement(P);
 			}
 			CMLib.database().DBDeleteMOB("CATALOG_MOBS",(MOB)P);
+			this.catalogFileMobsRoot=null;
 		}
 		if(data!=null)
 		{
@@ -473,6 +495,33 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 	
+	public void updateCatalogCatagory(Physical modelP, String newCat)
+	{
+		if((modelP==null)
+		||(!(modelP instanceof DBIdentifiable))
+		||(!((DBIdentifiable)modelP).canSaveDatabaseID())) 
+			return;
+		synchronized(getSync(modelP).intern())
+		{
+			CataData data=getCatalogData(modelP);
+			if(data!=null)
+			{
+				data.setCatagory(newCat.toUpperCase().trim());
+				if(modelP instanceof MOB)
+				{
+					CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)modelP);
+					this.catalogFileMobsRoot=null;
+				}
+				else
+				{
+					CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)modelP);
+					this.catalogFileItemsRoot=null;
+				}
+			}
+		}
+		
+	}
+	
 	public void updateCatalog(Physical modelP)
 	{
 		if((modelP==null)
@@ -503,9 +552,15 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			}
 			cataP=getCatalogObj(cataP);
 			if(cataP instanceof MOB)
+			{
 				CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)cataP);
+				this.catalogFileMobsRoot=null;
+			}
 			else
+			{
 				CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)cataP);
+				this.catalogFileItemsRoot=null;
+			}
 			
 			CataData data = getCatalogData(cataP);
 			if(data!=null)
@@ -879,7 +934,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			return V;
 		}
 
-		public String catatory()
+		public String category()
 		{
 			return catagory;
 		}
@@ -1102,46 +1157,152 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 	
-	public CMFile.CMVFSFile getCatalogFile(String filename)
+	protected CMFile.CMVFSDir getCatalogMobsRoot(CMFile.CMVFSDir rootRoot)
 	{
-		if(filename.startsWith("mobs/"))
+		if(catalogFileMobsRoot == null)
 		{
-			filename=filename.substring(5);
-			if(filename.length()==0)
-			{
-				
-			}
-			else
-			{
-				//TODO: else: is it a custom catagory?
-				
-			}
+			CMFile.CMVFSDir newRoot=getCatalogRoot(mcatalog, "mobs", rootRoot);
+			if(newRoot==null) return null;
+			catalogFileMobsRoot=newRoot;
 		}
-		else
-		if(filename.startsWith("items/"))
-		{
-			filename=filename.substring(6);
-			if(filename.length()==0)
-			{
-				
-			}
-			else
-			{
-				//TODO: else: is it a custom catagory?
-				
-			}
-		}
-		else
-		if(filename.equals("mobs"))
-		{
-			
-		}
-		else
-		if(filename.equals("items"))
-		{
-			
-		}
-		return null;
+		return catalogFileMobsRoot;
 	}
 
+	protected CMFile.CMVFSDir getCatalogItemsRoot(CMFile.CMVFSDir rootRoot)
+	{
+		if(catalogFileItemsRoot == null)
+		{
+			CMFile.CMVFSDir newRoot=getCatalogRoot(icatalog, "items", rootRoot);
+			if(newRoot==null) return null;
+			catalogFileItemsRoot=newRoot;
+		}
+		return catalogFileItemsRoot;
+	}
+
+	public CMFile.CMVFSDir getCatalogRoot(final CMFile.CMVFSDir root)
+	{
+		return new CMFile.CMVFSDir(root,root.path+"catalog/") {
+			private CMFile.CMVFSFile[] myFiles=null;
+			private CMFile.CMVFSFile[] oldFiles=null;
+			@Override protected CMFile.CMVFSFile[] getFiles() {
+				if((myFiles==null)||(oldFiles!=super.files)||(catalogFileItemsRoot==null)||(catalogFileMobsRoot==null))
+				{
+					oldFiles=super.files;
+					if(super.files!=null)
+						myFiles=Arrays.copyOf(super.files, super.files.length+2);
+					else
+						myFiles=new CMFile.CMVFSFile[2];
+					myFiles[myFiles.length-2]=getCatalogMobsRoot(this);
+					myFiles[myFiles.length-1]=getCatalogItemsRoot(this);
+					Arrays.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+				}
+				return myFiles;
+			}
+		};
+	}
+	
+	protected CMFile.CMVFSDir getCatalogRoot(final DVector catalog, String rootName, CMFile.CMVFSDir rootRoot)
+	{
+		if(catalog.size()==0)
+			return null;
+		CMFile.CMVFSDir catalogFileRoot=new CMFile.CMVFSDir(rootRoot, 48, rootRoot.path+rootName+"/");
+		
+		HashMap<String,List<Physical>> usedCats=new HashMap<String,List<Physical>>();
+		for(int i=0;i<catalog.size();i++)
+		{
+			final Physical obj=(Physical)catalog.elementAt(i, 1);
+			CataData data=(CataData)catalog.elementAt(i, 2);
+			
+			catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.path+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
+			{
+				@Override public Object readData()
+				{
+					if(obj instanceof MOB)
+						return CMLib.coffeeMaker().getMobXML((MOB)obj);
+					else
+					if(obj instanceof Item)
+						return CMLib.coffeeMaker().getItemXML((Item)obj);
+					else
+						return null;
+				}
+			});
+			
+			if(!usedCats.containsKey(data.category()))
+				usedCats.put(data.category(), new Vector<Physical>());
+			List<Physical> list=usedCats.get(data.category());
+			list.add(obj);
+		}
+		catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.path+"all.cmare",48,System.currentTimeMillis(),"SYS")
+		{
+			@Override public Object readData()
+			{
+				String tagName=(catalog.elementAt(0,1) instanceof MOB)?"MOBS":"ITEMS";
+				StringBuilder str=new StringBuilder("<"+tagName+">");
+				for(int i=0;i<catalog.size();i++)
+				{
+					final Physical obj=(Physical)catalog.elementAt(i, 1);
+					if(obj instanceof MOB)
+						str.append(CMLib.coffeeMaker().getMobXML((MOB)obj));
+					else
+					if(obj instanceof Item)
+						str.append(CMLib.coffeeMaker().getItemXML((Item)obj));
+				}
+				str.append("</"+tagName+">");
+				return str.toString();
+			}
+		});
+		for(String cat : usedCats.keySet())
+		{
+			CMFile.CMVFSDir catagoryRoot=catalogFileRoot;
+			if(cat.length()==0)
+			{
+				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.path+"GLOBAL/");
+				catalogFileRoot.add(catagoryRoot);
+			}
+			else
+			{
+				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.path+cat+"/");
+				catalogFileRoot.add(catagoryRoot);
+			}
+			final List<Physical> objs=usedCats.get(cat);
+			if(objs.size()>0)
+			{
+				for(final Physical obj : objs)
+				{
+					catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.path+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
+					{
+						@Override public Object readData()
+						{
+							if(obj instanceof MOB)
+								return CMLib.coffeeMaker().getMobXML((MOB)obj);
+							else
+							if(obj instanceof Item)
+								return CMLib.coffeeMaker().getItemXML((Item)obj);
+							else
+								return null;
+						}
+					});
+				}
+			}
+			catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.path+"all.cmare",48,System.currentTimeMillis(),"SYS")
+			{
+				@Override public Object readData()
+				{
+					String tagName=(objs.get(0) instanceof MOB)?"MOBS":"ITEMS";
+					StringBuilder str=new StringBuilder("<"+tagName+">");
+					for(final Physical obj : objs)
+					{
+						if(obj instanceof MOB)
+							str.append(CMLib.coffeeMaker().getMobXML((MOB)obj));
+						else
+						if(obj instanceof Item)
+							str.append(CMLib.coffeeMaker().getItemXML((Item)obj));
+					}
+					str.append("</"+tagName+">");
+					return str.toString();
+				}
+			});
+		}
+		return catalogFileRoot;
+	}
 }

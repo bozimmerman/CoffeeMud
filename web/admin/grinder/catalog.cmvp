@@ -95,12 +95,19 @@
         function ToMob()
         {
             document.RESOURCES.MODE.value='';
+            document.RESOURCES.CATACAT.value='';
             document.RESOURCES.OPTIONALCOLUMN.value='';
+            Refresh(document.RESOURCES.SORTBY.value);
+        }
+        function ToCat(cat)
+        {
+            document.RESOURCES.CATACAT.value=cat;
             Refresh(document.RESOURCES.SORTBY.value);
         }
         function ToItem()
         {
             document.RESOURCES.MODE.value='ITEM';
+            document.RESOURCES.CATACAT.value='';
             document.RESOURCES.OPTIONALCOLUMN.value='';
             Refresh(document.RESOURCES.SORTBY.value);
         }
@@ -133,6 +140,8 @@
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="catalogs.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
+<INPUT TYPE=HIDDEN NAME=CATACAT VALUE="@RequestParameter?CATACAT@">
+@AddRequestParameter?CURRCAT=@@RequestParameter?CATACAT@@ @
 <INPUT TYPE=HIDDEN NAME=SORTBY VALUE="@RequestParameter?SORTBY@">
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Catalog Manager</H2></FONT></TD></TR>
@@ -140,6 +149,33 @@
         <TR>
         <TD WIDTH=50% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>MOBs</FONT></TD>
         <TD WIDTH=50% ALIGN=CENTER><a href="javascript:ToItem()"><FONT COLOR=WHITE>Items</FONT></a></TD>
+        </TR>
+        <TR>
+        <TD WIDTH=100% COLSPAN=2>
+        <TABLE WIDTH=100% BORDER=1>
+            @CatalogCatNext?RESET@
+                @if?CheckReqParm?CURRCAT=@
+                    <TD WIDTH=@CatalogCatNext?MOBS&WIDTH@% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK>All</FONT></TD>
+                @else@
+                    <TD WIDTH=@CatalogCatNext?MOBS&WIDTH@% ALIGN=CENTER><a href="javascript:ToCat('')"><FONT COLOR=WHITE>All</FONT></a></TD>
+                @endif@
+            @loop@
+                @CatalogCatNext?MOBS&ALL@
+                @if?CheckReqParm?CATACAT=@@RequestParameter?CURRCAT@@ @
+                <TD WIDTH=@CatalogCatNext?MOBS&WIDTH@% ALIGN=CENTER BGCOLOR=WHITE>
+                    <FONT COLOR=BLACK>@RequestParameter?CATACAT@</FONT>
+                </TD>
+                @else@
+                <TD WIDTH=@CatalogCatNext?MOBS&WIDTH@% ALIGN=CENTER BGCOLOR=BLACK>
+                    <a href="javascript:ToCat('@RequestParameter?CATACAT@')">
+                    <FONT COLOR=WHITE>@RequestParameter?CATACAT@</FONT>
+                    </a>
+                </TD>
+                @endif@
+            @back@
+        </TABLE>
+        @AddRequestParameter?CATACAT=@@RequestParameter?CURRCAT@@ @
+        </TD>
         </TR>
         <TR><TD WIDTH=100% COLSPAN=2 VALIGN=TOP>
             <TABLE WIDTH=100% BORDER=1>
@@ -182,6 +218,34 @@
         <TR>
         <TD WIDTH=50% ALIGN=CENTER><a href="javascript:ToMob()"><FONT COLOR=WHITE>MOBs</FONT></a></TD>
         <TD WIDTH=50% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Items</FONT></TD>
+        </TR>
+        <TR>
+        <TD WIDTH=100% COLSPAN=2>
+        <TABLE WIDTH=100% BORDER=1>
+            @CatalogCatNext?RESET@
+                @if?CheckReqParm?CURRCAT=@
+                    <TD WIDTH=@CatalogCatNext?ITEMS&WIDTH@% ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK>All</FONT></TD>
+                @else@
+                    <TD WIDTH=@CatalogCatNext?ITEMS&WIDTH@% ALIGN=CENTER><a href="javascript:ToCat('')"><FONT COLOR=WHITE>All</FONT></a></TD>
+                @endif@
+            @loop@
+                @CatalogCatNext?ITEMS&ALL@
+                
+                @if?CheckReqParm?CATACAT=@@RequestParameter?CURRCAT@@ @
+                <TD WIDTH=@CatalogCatNext?ITEMS&WIDTH@% ALIGN=CENTER BGCOLOR=WHITE>
+                    <FONT COLOR=BLACK>@RequestParameter?CATACAT@</FONT>
+                </TD>
+                @else@
+                <TD WIDTH=@CatalogCatNext?ITEMS&WIDTH@% ALIGN=CENTER BGCOLOR=BLACK>
+                    <a href="javascript:ToCat('@RequestParameter?CATACAT@')">
+                    <FONT COLOR=WHITE>@RequestParameter?CATACAT@</FONT>
+                    </a>
+                </TD>
+                @endif@
+            @back@
+        </TABLE>
+        @AddRequestParameter?CATACAT=@@RequestParameter?CURRCAT@@ @
+        </TD>
         </TR>
         <TR><TD WIDTH=100% COLSPAN=2 VALIGN=TOP>
             <TABLE WIDTH=100% BORDER=1>

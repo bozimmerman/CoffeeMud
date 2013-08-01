@@ -8,10 +8,12 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -40,6 +42,8 @@ public class Catalog extends StdCommand
 	private final String[] access={"CATALOG"};
 	public String[] getAccessWords(){return access;}
 	
+	protected TreeMap<String,String> currentCats=new TreeMap<String,String>();
+	
 	public boolean catalog(Room R, MOB mob, Physical P)
 		throws java.io.IOException
 	{
@@ -51,33 +55,60 @@ public class Catalog extends StdCommand
 			mob.tell("The object '"+P.Name()+"' can not be cataloged.");
 			return false;
 		}
-		String msg="<S-NAME> catalog(s) <T-NAMESELF>.";
+		String newCat=currentCats.get(mob.Name());
+		if(newCat==null) newCat="";
+		String msg="<S-NAME> catalog(s) <T-NAMESELF> into category '"+newCat+"'.";
+		CataData data=CMLib.catalog().getCatalogData(cataP);
+		String oldCat=(data!=null)?data.category():"";
+		String catagory=(data!=null)?" in category '"+oldCat+"'":"";
+		/*
 		if(CMLib.flags().isCataloged(P))
 		{
-			mob.tell("The object '"+P.Name()+"' is already cataloged.");
+			mob.tell("The object '"+P.Name()+"' is already cataloged"+catagory+".");
 			return false;
 		}
+		*/
 		if(cataP!=null)
 		{
 			CMLib.catalog().changeCatalogUsage(P,true);
 			StringBuffer diffs=CMLib.catalog().checkCatalogIntegrity(P);
 			if((diffs==null)||(diffs.length()==0))
 			{
-				mob.tell("The object '"+cataP.Name()+"' already exists in the catalog, exactly as it is.");
-				return true;
+				if((data!=null)&&(!data.category().equals(newCat)))
+				{
+					if((mob.session()==null)
+					||(!mob.session().confirm("The object '"+cataP.Name()+"' already exists in the catalog"+catagory+" , exactly as it is.  Would you like to change it to category '"+newCat+"'(y/N)?","N")))
+					{
+						return false;
+					}
+					else
+					{
+						CMLib.catalog().updateCatalogCatagory(cataP,newCat);
+						return true;
+					}
+				}
+				else
+				{
+					mob.tell("The object '"+cataP.Name()+"' already exists in the catalog"+catagory+" , exactly as it is.");
+					return true;
+				}
 			}
+			if((data!=null)&&(!data.category().equals(newCat)))
+				diffs.insert(0,"New category: '"+newCat+"', ");
 			if((mob.session()==null)
-			||(!mob.session().confirm("Cataloging that object will change the existing cataloged '"+P.Name()+"' by altering the following properties: "+diffs.toString()+".  Please confirm (y/N)?","Y")))
+			||(!mob.session().confirm("Cataloging that object will change the existing cataloged '"+P.Name()+"'"+catagory+" by altering the following properties: "+diffs.toString()+".  Please confirm (y/N)?","Y")))
 			{
 				CMLib.catalog().changeCatalogUsage(origP,false);
 				return false;
 			}
 			msg="<S-NAME> modif(ys) the cataloged version of <T-NAMESELF>.";
+			if((data!=null)&&(!data.category().equals(newCat)))
+				CMLib.catalog().updateCatalogCatagory(cataP,newCat);
 			CMLib.catalog().updateCatalog(P);
 		}
 		else
 		{
-			CMLib.catalog().addCatalog(P);
+			CMLib.catalog().addCatalog(newCat,P);
 		}
 		R.show(mob,P,CMMsg.MSG_OK_VISUAL,msg);
 		return true;
@@ -168,7 +199,7 @@ public class Catalog extends StdCommand
 		
 	}
 	
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(final MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Room R=mob.location();
@@ -230,6 +261,60 @@ public class Catalog extends StdCommand
 				}
 			}
 			else
+			if(((String)commands.firstElement()).equalsIgnoreCase("CATAGORY")||((String)commands.firstElement()).equalsIgnoreCase("CATEGORY"))
+			{
+				commands.removeElementAt(0);
+				String ID=CMParms.combine(commands,0);
+				if(ID.equalsIgnoreCase("none"))
+				{
+					commands.add("");
+					ID="";
+				}
+				String oldCat=currentCats.get(mob.Name());
+				if(oldCat == null) oldCat="";
+				mob.tell("Your current category is '"+oldCat+"'.");
+				if(commands.size()>0)
+				{
+					ID=ID.toUpperCase().trim();
+					if(ID.length()>0)
+					{
+						if((!CMParms.contains(CMLib.catalog().getItemCatalogCatagories(),ID))
+						&&(!CMParms.contains(CMLib.catalog().getMobCatalogCatagories(),ID)))
+						{
+							final Session session=mob.session();
+							final String newCat=ID;
+							if(newCat.equalsIgnoreCase("GLOBAL")||newCat.equalsIgnoreCase("NONE"))
+								mob.tell("That is not a valid new catagory to create.");
+							else
+							if(session!=null)
+								session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N"){
+									@Override public void showPrompt() { session.promptPrint("Create new category '"+newCat+"' (y/N)?");}
+									@Override public void timedOut() {}
+									@Override public void callBack() {
+										if(this.confirmed)
+										{
+											currentCats.put(mob.Name(), newCat);
+											mob.tell("Your category is now '"+newCat+"' for new mob/item catalog additions.");
+											mob.tell("To change back to the global category, enter CATALOG CATAGORY NONE");
+										}
+									}
+								});
+						}
+						else
+						{
+							currentCats.put(mob.Name(), ID);
+							mob.tell("Your category is now '"+ID+"' for new mob/item catalog additions.");
+							mob.tell("To change back to the global category, enter CATALOG CATAGORY NONE");
+						}
+					}
+					else
+					{
+						currentCats.remove(mob.Name());
+						mob.tell("Your category is now '' (the global category).");
+					}
+				}
+			}
+			else
 			if(((String)commands.firstElement()).equalsIgnoreCase("LIST"))
 			{
 				commands.removeElementAt(0);
@@ -242,13 +327,15 @@ public class Catalog extends StdCommand
 				CatalogLibrary.CataData data;
 				if((whatKind==0)||(whatKind==1)) 
 				{
-					list.append("^HMobs\n\r^N");
+					String cat=currentCats.get(mob.Name());
+					if(cat==null) cat="";
+					list.append("^HMobs ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight("Name",34)+" ");
 					list.append(CMStrings.padRight("#",3));
 					list.append(CMStrings.padRight("Name",34)+" ");
 					list.append(CMStrings.padRight("#",3));
 					list.append("\n\r"+CMStrings.repeat("-",78)+"\n\r");
-					String[] names=CMLib.catalog().getCatalogMobNames();
+					String[] names=CMLib.catalog().getCatalogMobNames(cat);
 					for(int i=0;i<names.length;i++)
 					{
 						M=CMLib.catalog().getCatalogMob(names[i]);
@@ -272,13 +359,15 @@ public class Catalog extends StdCommand
 				}
 				if((whatKind==0)||(whatKind==2)) 
 				{
-					list.append("^HItems\n\r^N");
+					String cat=currentCats.get(mob.Name());
+					if(cat==null) cat="";
+					list.append("^HItems ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight("Name",34)+" ");
 					list.append(CMStrings.padRight("#",3)+" ");
 					list.append(CMStrings.padRight("Rate",6)+" ");
 					list.append(CMStrings.padRight("Mask",31)+" ");
 					list.append("\n\r"+CMStrings.repeat("-",78)+"\n\r");
-					String[] names=CMLib.catalog().getCatalogItemNames();
+					String[] names=CMLib.catalog().getCatalogItemNames(cat);
 					for(int i=0;i<names.length;i++)
 					{
 						I=CMLib.catalog().getCatalogItem(names[i]);

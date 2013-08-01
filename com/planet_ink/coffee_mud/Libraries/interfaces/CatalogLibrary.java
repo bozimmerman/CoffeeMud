@@ -54,6 +54,8 @@ public interface CatalogLibrary extends CMLibrary
 	public CataData getCatalogItemData(String name);
 	public CataData getCatalogMobData(String name);
 	public CataData getCatalogData(Physical P);
+	public void addCatalog(String catagory, Physical PA);
+	public void updateCatalogCatagory(Physical modelP, String newCat);
 	public void delCatalog(Physical P);
 	public void addCatalog(Physical PA);
 	public void submitToCatalog(Physical P);
@@ -67,7 +69,7 @@ public interface CatalogLibrary extends CMLibrary
 	public void updateRoomContent(String roomID, Vector<RoomContent> content);
 	public void newInstance(Physical P);
 	public void bumpDeathPickup(Physical P);
-	public CMFile.CMVFSFile getCatalogFile(String filename);
+	public CMFile.CMVFSDir getCatalogRoot(CMFile.CMVFSDir resourcesRoot);
 	
 	public static interface RoomContent
 	{
@@ -98,7 +100,7 @@ public interface CatalogLibrary extends CMLibrary
 		public Physical getLiveReference();
 		public int getDeathsPicksups();
 		public void bumpDeathPickup();
-		public String catatory();
+		public String category();
 		public void setCatagory(String cat);
 		
 		public String data();

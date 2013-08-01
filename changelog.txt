@@ -12,6 +12,9 @@
   11. Split command will now double as GET [AMOUNT] from [BUNDLE] (kept getting requests to add a split command, though GET worked).
   12. And yet more Artisan Goodness: Animal Husbandry -- lots of race baby naming and aging-system tweaking behind this simple funness.
   13. Crafting Skill owners can now LIST ALL to see what recipes are coming down the road.
+  14. Catalog items and mobs can now be flagged in categories (does not change the global unique name rule). 
+  15. Catalog items and mobs can now be accessed via the VFS at /resources/catalog/mobs/.. and /resources/catalog/items/.. as CMARE files.
+  
 //TODO: create/modify/destroy manufacturer
 //TODO: add electronics to guides
 //TODO: add electronics to MG

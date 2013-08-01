@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.core.interfaces.MudHost;
@@ -57,6 +58,8 @@ public class CMFile extends File
 	private static final String outCharSet = Charset.defaultCharset().name();
 	
 	private static CMVFSDir[] vfs=new CMVFSDir[256];
+	private static CatalogLibrary catalogAdded=null;
+	
 	private boolean logErrors=false;
 
 	private int vfsBits=0;
@@ -252,20 +255,36 @@ public class CMFile extends File
 					((CMVFSDir)f2).files=((CMVFSDir)this).files;
 			}
 		}
+		
+		public Object readData()
+		{
+			CMVFSFile f=CMLib.database().DBReadVFSFile(path);
+			if(f!=null)
+				return f.data;
+			return null;
+		}
 	}
 	
-	public static final class CMVFSDir extends CMVFSFile
+	public static class CMVFSDir extends CMVFSFile
 	{
-		private CMVFSFile[] files=null;
+		protected CMVFSFile[] files=null;
 		public CMVFSDir parent=null;
 		
-		private static Comparator<CMVFSFile> fcomparator=new Comparator<CMVFSFile>() {
+		public static Comparator<CMVFSFile> fcomparator=new Comparator<CMVFSFile>() {
 			public int compare(final CMVFSFile arg0, final CMVFSFile arg1) { return arg0.uName.compareTo(arg1.uName); }
 		};
+		
+		protected CMVFSFile[] getFiles() { return files; }
 		
 		public CMVFSDir(final CMVFSDir parent, final String path)
 		{
 			super(path,VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
+			this.parent=parent;
+		}
+
+		public CMVFSDir(final CMVFSDir parent, final int mask, final String path)
+		{
+			super(path,mask|VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
 			this.parent=parent;
 		}
 
@@ -286,13 +305,13 @@ public class CMFile extends File
 					{
 						final CMVFSDir key = new CMVFSDir(currDir,currDir.path+p+"/");
 						int dex = -1;
-						if(currDir.files!=null)
-							dex=Arrays.binarySearch(currDir.files, key, fcomparator);
+						if(currDir.getFiles()!=null)
+							dex=Arrays.binarySearch(currDir.getFiles(), key, fcomparator);
 						if(dex>=0)
 						{
-							if(currDir.files[dex] instanceof CMVFSDir)
+							if(currDir.getFiles()[dex] instanceof CMVFSDir)
 							{
-								currDir=(CMVFSDir)currDir.files[dex];
+								currDir=(CMVFSDir)currDir.getFiles()[dex];
 								continue;
 							}
 							return null; // found a step, but its a file, not a subdir
@@ -300,7 +319,7 @@ public class CMFile extends File
 						else
 						if(!create)
 							return null;
-						if(currDir.files==null) currDir.files=new CMVFSFile[0];
+						if(currDir.getFiles()==null) currDir.files=new CMVFSFile[0];
 						currDir.files=Arrays.copyOf(currDir.files, currDir.files.length+1);
 						currDir.files[currDir.files.length-1]=key;
 						Arrays.sort(currDir.files,fcomparator);
@@ -316,13 +335,13 @@ public class CMFile extends File
 			if(x==f.path.length()-1)
 				x=f.path.lastIndexOf('/',x-1);
 			CMVFSDir subDir=this;
-			if(x>0)
+			if((x>0)&&(!f.path.substring(0,x+1).equals(path)))
 				subDir=fetchSubDir(f.path.substring(0,x),true);
 			if(subDir!=null)
 			synchronized(subDir)
 			{
 				if(subDir.files==null) subDir.files=new CMVFSFile[0];
-				final CMVFSFile old = subDir.get(f.uName);
+				final CMVFSFile old = subDir.get(f);
 				if(old!=null)
 					f.copyInto(old);
 				else
@@ -330,9 +349,12 @@ public class CMFile extends File
 					subDir.files=Arrays.copyOf(subDir.files, subDir.files.length+1);
 					if(CMath.bset(f.mask, CMFile.VFS_MASK_DIRECTORY))
 					{
-						CMVFSDir d = new CMVFSDir(subDir,f.path,f.mask,f.modifiedDateTime,f.author);
-						f.copyInto(d);
-						f=d;
+						if(!(f instanceof CMVFSDir))
+						{
+							CMVFSDir d = new CMVFSDir(subDir,f.path,f.mask,f.modifiedDateTime,f.author);
+							f.copyInto(d);
+							f=d;
+						}
 					}
 					subDir.files[subDir.files.length-1]=f;
 				}
@@ -381,16 +403,24 @@ public class CMFile extends File
 		
 		private final synchronized CMVFSFile get(final String fileName)
 		{
-			if(files==null) return null;
+			if(getFiles()==null) return null;
 			final CMVFSFile key = new CMVFSFile(fileName, 0, 0, "");
-			int dex = Arrays.binarySearch(files, key, fcomparator);
-			if(dex>=0) return files[dex];
+			int dex = Arrays.binarySearch(getFiles(), key, fcomparator);
+			if(dex>=0) return getFiles()[dex];
+			return null;
+		}
+		
+		private final synchronized CMVFSFile get(final CMVFSFile file)
+		{
+			if(getFiles()==null) return null;
+			int dex = Arrays.binarySearch(getFiles(), file, fcomparator);
+			if(dex>=0) return file;
 			return null;
 		}
 		
 		public final synchronized CMVFSFile fetch(final String filePath)
 		{
-			if(files==null) return null;
+			if(getFiles()==null) return null;
 			final int x=filePath.lastIndexOf('/');
 			CMVFSDir dir = this;
 			if(x>=0)
@@ -1069,12 +1099,6 @@ public class CMFile extends File
 		final CMVFSDir vfs=getVFSDirectory();
 		if(vfs==null) return null;
 		final String vfsFilename=vfsifyFilename(filename);
-		if(vfsFilename.startsWith("resources/catalog/"))
-		{
-			CMVFSFile file = CMLib.catalog().getCatalogFile(filename.substring(18));
-			if(file != null)
-				return file;
-		}
 		return vfs.fetch(vfsFilename);
 	}
 
@@ -1082,11 +1106,7 @@ public class CMFile extends File
 	{
 		final CMVFSFile file=getVFSInfo(filename);
 		if(file!=null)
-		{
-			final CMVFSFile f=CMLib.database().DBReadVFSFile(file.path);
-			if((f!=null)&&(f.data != null))
-				return f.data;
-		}
+			return file.readData();
 		return null;
 	}
 
@@ -1133,8 +1153,8 @@ public class CMFile extends File
 		{
 			if(vfsSrchDir.length()>0)
 				vfs=vfs.fetchSubDir(vfsSrchDir, false);
-			if((vfs!=null)&&(vfs.files!=null)&&(vfs.files.length>0))
-				for(CMVFSFile file : vfs.files)
+			if((vfs!=null)&&(vfs.getFiles()!=null)&&(vfs.getFiles().length>0))
+				for(CMVFSFile file : vfs.getFiles())
 				{
 					CMFile CF=new CMFile(prefix+file.path,accessor);
 					if((CF.canRead())
@@ -1195,6 +1215,12 @@ public class CMFile extends File
 				else
 					vvfs=vfs[threadCode]=vfs[MudHost.MAIN_HOST]=CMLib.database().DBReadVFSDirectory();
 			}
+		}
+		if((catalogAdded!=CMLib.catalog()))
+		{
+			catalogAdded=CMLib.catalog();
+			CMVFSDir dir=vvfs.fetchSubDir("/resources", true);
+			vvfs.add(CMLib.catalog().getCatalogRoot(dir));
 		}
 		return vvfs;
 	}

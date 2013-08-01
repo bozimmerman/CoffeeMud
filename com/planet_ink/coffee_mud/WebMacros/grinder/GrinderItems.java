@@ -53,7 +53,7 @@ public class GrinderItems
 		  "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
 		  "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
 		  "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED",
-		  "CATARATE","CATALIVE","CATAMASK","BITE","MAXUSES"};
+		  "CATARATE","CATALIVE","CATAMASK","BITE","MAXUSES","CATACAT"};
 	public static String editItem(HTTPRequest httpReq,
 								  java.util.Map<String,String> parms,
 								  MOB whom,
@@ -580,6 +580,13 @@ public class GrinderItems
 					if(I instanceof Wand)
 						((Wand)I).setMaxUses(CMath.s_int(old));
 					break;
+				case 89: // catacat
+					if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						cataData.setCatagory(old.toUpperCase().trim());
+					}
+					break;
 				}
 			}
 			if(I.isGeneric()&&(!CMLib.flags().isCataloged(I)))
@@ -602,7 +609,10 @@ public class GrinderItems
 				httpReq.addFakeUrlParameter("ITEM",itemCode);
 				if(I2==null)
 				{
-					CMLib.catalog().addCatalog(I);
+					String catagory=null;
+					if(cataData!=null)
+						catagory=cataData.category();
+					CMLib.catalog().addCatalog(catagory,I);
 					Log.infoOut("GrinderItems",whom.Name()+" created catalog ITEM "+I.Name());
 				}
 				else

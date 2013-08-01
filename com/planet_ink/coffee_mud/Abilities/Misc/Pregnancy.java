@@ -326,21 +326,24 @@ public class Pregnancy extends StdAbility
 							I.text();
 							if((!mob.isMonster())&&(mob.soulMate()==null))
 							{
-								CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_BIRTHS);
 								if((CMLib.dice().rollPercentage()<20)&&(mob.fetchEffect("Disease_Depression")==null))
 								{
 									Ability A=CMClass.getAbility("Disease_Depression");
 									if(A!=null) A.invoke(mob,mob,true,0);
 								}
 							}
-							List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
-							for(int i=0;i<channels.size();i++)
-								CMLib.commands().postChannel(mob,channels.get(i),mob.name()+" has just given birth to "+I.name()+"!",true);
-							String parent=mob.Name();
-							if(mob.isMonster()&&(otherParentM!=null))
-								parent=otherParentM.Name();
-							if(AGE!=null)
-								CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.basePhyStats().ability()+"/"+I.text());
+							if((mob.playerStats()!=null)||((otherParentM!=null)&&(otherParentM.playerStats()!=null)))
+							{
+								CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_BIRTHS);
+								List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
+								for(int i=0;i<channels.size();i++)
+									CMLib.commands().postChannel(mob,channels.get(i),mob.name()+" has just given birth to "+I.name()+"!",true);
+								String parent=mob.Name();
+								if(mob.isMonster()&&(otherParentM!=null))
+									parent=otherParentM.Name();
+								if(AGE!=null)
+									CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.basePhyStats().ability()+"/"+I.text());
+							}
 						}
 						else
 							mob.tell("You are in labor!!");

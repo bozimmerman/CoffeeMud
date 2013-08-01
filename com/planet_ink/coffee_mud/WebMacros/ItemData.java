@@ -60,7 +60,8 @@ public class ItemData extends StdWebMacro
 	  "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
 	  "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
 	  "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
-	  "CATALIVE","CATAMASK","BITE","MAXUSES","ISELECTRONIC"};
+	  "CATALIVE","CATAMASK","BITE","MAXUSES","ISELECTRONIC",
+	  "CATACAT"};
 	
 	public ItemData()
 	{
@@ -978,6 +979,16 @@ public class ItemData extends StdWebMacro
 					break;
 				case 93: // iselectronic
 					str.append(I instanceof Electronics);
+					break;
+				case 95: // catacat
+					if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+					{
+						String name=itemCode.substring(8);
+						CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
+						if(data!=null)
+							old=data.category();
+					}
+					str.append(old+", ");
 					break;
 				}
 				if(firstTime)

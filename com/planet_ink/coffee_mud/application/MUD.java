@@ -994,8 +994,8 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut(Thread.currentThread().getName(),"Test file found .. hmm.. that was unexpected.");
 					
 			} catch(Exception e) {
-				Log.errOut(Thread.currentThread().getName(),e.getMessage());
-				Log.errOut(Thread.currentThread().getName(),"Database error! Panic shutdown!");
+				Log.errOut(e);
+				Log.errOut("Database error! Panic shutdown!");
 				return false;
 			}
 			

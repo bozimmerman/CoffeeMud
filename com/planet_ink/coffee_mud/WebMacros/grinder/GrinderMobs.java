@@ -52,7 +52,8 @@ public class GrinderMobs
 	  "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
 	  "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
 	  "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
-	  "MINDAYS","ISAUCTION","DEITYID","VARMONEY"};
+	  "MINDAYS","ISAUCTION","DEITYID","VARMONEY",
+	  "CATACAT"};
 	public static String senses(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setSensesMask(0);
@@ -364,6 +365,7 @@ public class GrinderMobs
 		if(mobCode==null) return "@break@";
 
 		String newClassID=httpReq.getUrlParameter("CLASSES");
+		CatalogLibrary.CataData cataData=null;
 		synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
 		{
 			if(R!=null)
@@ -724,6 +726,13 @@ public class GrinderMobs
 				case 66: // money variation
 					M.setMoneyVariation(CMath.s_double(old));
 					break;
+				case 67: // catacat
+					if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+					{
+						if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+						cataData.setCatagory(old.toUpperCase().trim());
+					}
+					break;
 				}
 			}
 
@@ -862,11 +871,19 @@ public class GrinderMobs
 					newMobCode=mobCode;
 					if(M2==null)
 					{
-						CMLib.catalog().addCatalog(M);
+						String catagory=null;
+						if(cataData!=null)
+							catagory=cataData.category();
+						CMLib.catalog().addCatalog(catagory,M);
 						Log.infoOut("GrinderItems",whom.Name()+" created catalog MOB "+M.Name());
 					}
 					else
 					{
+						if(cataData!=null)
+						{
+							CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(M.Name());
+							data.build(cataData.data());
+						}
 						CMLib.catalog().updateCatalog(M);
 						Log.infoOut("GrinderItems",whom.Name()+" updated catalog MOB "+M.Name());
 					}

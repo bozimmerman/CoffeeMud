@@ -760,7 +760,7 @@ public class RoomLoader
 						if(catalog)
 						{
 							String text=DBConnections.getResQuietly(R,"CMITTX");
-							int x=text.lastIndexOf("<CATALOGDATA>");
+							int x=text.lastIndexOf("<CATALOGDATA");
 							if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
 							{
 								cataData=stuff.cataData.get("CATADATAFOR"+roomID.toUpperCase());
@@ -846,7 +846,25 @@ public class RoomLoader
 						&&(NUMID.indexOf(MOBID+"@")>=0))
 							newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf('@')));
 						else
-							newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));
+						{
+							String text=DBConnections.getResQuietly(R,"CMCHTX");
+							if(catalog)
+							{
+								int x=text.lastIndexOf("<CATALOGDATA");
+								if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
+								{
+									cataData=stuff.cataData.get("CATADATAFOR"+roomID.toUpperCase());
+									if(cataData==null)
+									{
+										cataData=new Hashtable<String,String>();
+										stuff.cataData.put("CATADATAFOR"+roomID.toUpperCase(),cataData);
+									}
+									cataData.put(NUMID,text.substring(x));
+									text=text.substring(0,x);
+								}
+							}
+							newMOB.setMiscText(text);
+						}
 						newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
 						newMOB.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
 						newMOB.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
@@ -1160,6 +1178,13 @@ public class RoomLoader
 		if((CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))&&(!catalog))
 		   thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf('@')));
 		
+		String text=thisMOB.text();
+		if(catalog)
+		{
+			CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(thisMOB.Name());
+			if(dataM!=null)
+				text+=dataM.data();
+		}
 		return new DBPreparedBatchEntry(
 		"INSERT INTO CMROCH ("
 		+"CMROID, "
@@ -1180,7 +1205,7 @@ public class RoomLoader
 		+thisMOB.basePhyStats().rejuv()+","
 		+"'"+ride+"'"
 		+")",
-		thisMOB.text()+" ");
+		text+" ");
 	}
 	
 	public void DBUpdateTheseMOBs(Room room, List<MOB> mobs)

@@ -53,7 +53,8 @@ public class MobData extends StdWebMacro
 	  "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
 	  "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
 	  "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
-	  "MINDAYS","ISAUCTION","DEITYID","VARMONEY"};
+	  "MINDAYS","ISAUCTION","DEITYID","VARMONEY",
+	  "CATACAT"};
 	
 	public static int getShopCardinality(ShopKeeper SK, Environmental O)
 	{
@@ -1580,6 +1581,16 @@ public class MobData extends StdWebMacro
 			case 64: // varmoney
 				if(firstTime) old=""+M.getMoneyVariation();
 				str.append(old);
+				break;
+			case 65: // catacat
+				if((firstTime)&&(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-")))
+				{
+					String name=mobCode.substring(8);
+					CatalogLibrary.CataData data=CMLib.catalog().getCatalogMobData(name);
+					if(data!=null)
+						old=data.category();
+				}
+				str.append(old+", ");
 				break;
 			}
 			if(firstTime)
