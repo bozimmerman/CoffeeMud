@@ -150,6 +150,21 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return total + modifier;
 	}
 	
+	public int rollLow(int number, int die, int modifier)
+	{
+		if(number<=0) 
+			return modifier;
+		int total=0;
+		for(int i=0;i<number;i++)
+		{
+			double gauss=Math.abs(randomizer.nextGaussian() * die);
+			gauss=gauss*0.5;
+			while((gauss < 1.0) || (gauss > (die+0.9999999999)))
+				gauss=Math.abs(randomizer.nextGaussian() * die);
+			total+=(int)Math.round(Math.floor(gauss));
+		}
+		return total + modifier;
+	}
 	
 	public int pick(int[] set)
 	{

@@ -285,6 +285,7 @@ public class CMProps extends Properties
 		TOD_CHANGE_INSIDE,
 		WEATHER_ENDS,
 		WEAPON_HIT_DESCS,
+		TECH_LEVEL_NAMES,
 		WEATHER_CLEAR, // try to always and forever keep these at the end...
 		WEATHER_CLOUDY, // try to always and forever keep these at the end...
 		WEATHER_WINDY, // try to always and forever keep these at the end...
@@ -974,6 +975,14 @@ public class CMProps extends Properties
 		if(p().sysLstFileLists[var.ordinal()]==null)
 			p().sysLstFileLists[var.ordinal()]=new int[]{(CMath.s_int(getRawListFileEntry(var.getKey())))};
 		return ((int[])p().sysLstFileLists[var.ordinal()])[0];
+	}
+
+	public static final String[] getListFileStringList(final ListFile var)
+	{
+		if(var==null) return new String[0];
+		if(p().sysLstFileLists[var.ordinal()]==null)
+			p().sysLstFileLists[var.ordinal()]=CMParms.toStringArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),true));
+		return ((String[])p().sysLstFileLists[var.ordinal()]);
 	}
 
 	public static final int[] getListFileIntList(final ListFile var)

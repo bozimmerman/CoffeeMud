@@ -71,7 +71,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 
 	public int getRandomGlobalTechLevel()
 	{
-		return  CMLib.dice().rollGaussian(1, 10, globalTechLevel-1);
+		return  CMLib.dice().rollLow(1, 10, globalTechLevel-1);
 	}
 
 	protected void bumpTechLevel()
@@ -90,6 +90,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			String oldName=I.Name();
 			String newName=CMLib.english().startWithAorAn(I.getManufacturerName()+" "+CMLib.english().cleanArticles(oldName));
 			I.setName(newName);
+			final String[] marks=CMProps.getListFileStringList(CMProps.ListFile.TECH_LEVEL_NAMES);
+			if(marks.length>0)
+				newName+=" "+marks[I.techLevel()%marks.length];
 			if(I.displayText().indexOf(oldName)>0)
 				I.setDisplayText(CMStrings.replaceAll(I.displayText(), oldName, newName));
 			else
