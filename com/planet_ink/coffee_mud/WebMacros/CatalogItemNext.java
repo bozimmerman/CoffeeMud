@@ -84,7 +84,7 @@ public class CatalogItemNext extends StdWebMacro
 		String catagory=httpReq.getUrlParameter("CATACAT");
 		if(catagory!=null)
 		{
-			if(catagory.equalsIgnoreCase("GLOBAL"))
+			if(catagory.equalsIgnoreCase("UNCATEGORIZED"))
 				catagory="";
 			else
 			if(catagory.length()==0)

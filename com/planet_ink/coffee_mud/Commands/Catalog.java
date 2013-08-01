@@ -283,7 +283,7 @@ public class Catalog extends StdCommand
 						{
 							final Session session=mob.session();
 							final String newCat=ID;
-							if(newCat.equalsIgnoreCase("GLOBAL")||newCat.equalsIgnoreCase("NONE"))
+							if(newCat.equalsIgnoreCase("GLOBAL")||newCat.equalsIgnoreCase("NONE")||newCat.equalsIgnoreCase("UNCATEGORIZED"))
 								mob.tell("That is not a valid new catagory to create.");
 							else
 							if(session!=null)

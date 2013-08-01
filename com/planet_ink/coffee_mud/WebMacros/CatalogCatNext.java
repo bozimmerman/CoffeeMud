@@ -55,11 +55,11 @@ public class CatalogCatNext extends StdWebMacro
 			return ""+100/(cats.length+1);
 		String lastID=null;
 		if((last!=null)&&(last.equalsIgnoreCase("")))
-			last="GLOBAL";
+			last="UNCATEGORIZED";
 		for(String cat : cats)
 		{
 			if(cat.length()==0)
-				cat="GLOBAL";
+				cat="UNCATEGORIZED";
 			if((last==null)||((lastID!=null)&&(last.equals(lastID))&&(!cat.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("CATACAT",cat);

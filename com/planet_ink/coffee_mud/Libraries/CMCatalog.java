@@ -1256,12 +1256,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			CMFile.CMVFSDir catagoryRoot=catalogFileRoot;
 			if(cat.length()==0)
 			{
-				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.path+"GLOBAL/");
+				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.path+"uncategorized/");
 				catalogFileRoot.add(catagoryRoot);
 			}
 			else
 			{
-				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.path+cat+"/");
+				catagoryRoot=new CMFile.CMVFSDir(catalogFileRoot, 48, catalogFileRoot.path+cat.toLowerCase()+"/");
 				catalogFileRoot.add(catagoryRoot);
 			}
 			final List<Physical> objs=usedCats.get(cat);

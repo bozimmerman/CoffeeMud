@@ -1,12 +1,12 @@
 # Build 5.8.1 Release ?/?/2013
    1. QuestManager "STEP"ping feature now supports "STEP AUTO" to have steps proceed based on duration instead of MOBPROG triggers.
    2. Areas and Rooms now support "atmosphere" to designate what players have available for breathing.
-   3. Rooms "climate" is now an editable feature, usually inherited from the area Climate, but designatable at will.
+   3. Rooms "climate" is now an editable feature, usually inherited from the area Climate, but modifiable at will.
    4. Races now designate what sort of resource they can breathe, which means GenRaces have a new field you can edit.
    5. New Archon command: JCONSOLE, for playing around with javascript commands (and accessing your muds running systems!!)
    6. New Forum features: All Forums Search, and better threading for all searches.
    7. Can now disable CharStats (attribute) display
-   8. New WebMacro: IsDisabled
+   8. New WebMacros: IsDisabled, CatalogCatNext
    9. New Artisan skills: Master Drilling, M. Farming, M. Fishing, M. Foraging, M. Mining, M. Shearing, M. Chopping, M. Butchering
   10. More New Artisan Skills: Master Cooking, M. FoodPrep, M. Baking, M. Distilling -- make more than one dish at a time!
   11. Split command will now double as GET [AMOUNT] from [BUNDLE] (kept getting requests to add a split command, though GET worked).
