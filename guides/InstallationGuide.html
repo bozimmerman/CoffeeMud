@@ -1,15 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>Installing and Using CoffeeMud 5.8</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors -->
-</head>
+  
+  <title>Installing and Using CoffeeMud 5.8</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors --></head>
+
 <body>
 <center>
-<table border="1" bordercolor="gray" cellpadding="5" cellspacing="0"
- width="100%">
+<table border="1" bordercolor="gray" cellpadding="5" cellspacing="0" width="100%">
   <tbody>
     <tr>
       <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
@@ -42,8 +39,7 @@
         <li><a href="#shutdown">Offline/ Shutdown</a></li>
       </ul>
       </td>
-      <td align="left" valign="top"> <img src="images/zip.jpg"
- alt="unzipping" />
+      <td align="left" valign="top"> <img src="images/zip.jpg" alt="unzipping" />
       <h2><a name="installation">Installation</a></h2>
       <p>The first and most critical step in installing CoffeeMud 5.8
 is to make sure that you have downloaded and installed the latest
@@ -128,8 +124,7 @@ engine, you should do the following:</p>
         <li>Go through the <a href="../coffeemud.ini">coffeemud.ini</a>
 file, and use the <a href="MUDGrinder.html">MudGrinders</a> Control
 Panel.</li>
-        <li
- style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+        <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">
           <ul>
             <li>Set your DOMAIN field</li>
           </ul>
@@ -387,8 +382,7 @@ A value of "TRUE" will turn on the I3 server and make the connection.</p>
         <li> <span class="bold">I3PORT</span>
           <p>This is the TCP/IP port number which the main InterMud3
 server will listen on. By default the setting is 27766. If you would
-like to change this number to some other port, you may do so. If the <span
- class="bold">RUNI3SERVER</span> entry above is FALSE, this setting
+like to change this number to some other port, you may do so. If the <span class="bold">RUNI3SERVER</span> entry above is FALSE, this setting
 will have no effect.</p>
         </li>
         <li> <span class="bold">I3CHANNELS</span>
@@ -410,8 +404,7 @@ Even if you don't wish to publish any of your MUDs information to the
 web, you may want to run the Admin web server so that you can use the
 MUDGrinder area editing tool. See the <a href="MUDGrinder.html">MUDGrinder
 Guide</a> for more information on this tool. For more information on
-the CoffeeMud web server in general, please read the <a
- href="WebServer.html">WebServer Guide</a>.</p>
+the CoffeeMud web server in general, please read the <a href="WebServer.html">WebServer Guide</a>.</p>
         </li>
         <li> <span class="bold">RUNSMTPSERVER</span>
           <p>This setting tells CoffeeMud whether to start up the
@@ -473,8 +466,7 @@ trivial query.</p>
 and settings which allow you to better customize your CoffeeMud. Make
 sure you check out the Control Panel feature in the MUDGrinder to
 modify most of&nbsp;them.</p>
-      <p><img style="width: 73px; height: 73px;"
- src="images/sprockets.jpg" alt="packages" /> </p>
+      <p><img style="width: 73px; height: 73px;" src="images/sprockets.jpg" alt="packages" /> </p>
       <h2><a name="multihosts">Multiple Hosts</a></h2>
       <p>There may be circumstances under which you may want to run
 your mud not only on multiple ports, but with multiple configurations,
@@ -611,8 +603,7 @@ also contains the <code>pub/images</code> to store image files
 displayed by the public web pages, as well as the <code>pub/sounds</code>
 directory where MSP sound files are stored for players to access.</p>
       <p>The directory <span style="font-family: monospace;">pub/images/mxp</span>
-contains all of the MXP displayable images, including the file <span
- style="font-family: monospace;">pub/images/mxp/intro.jpg</span>,
+contains all of the MXP displayable images, including the file <span style="font-family: monospace;">pub/images/mxp/intro.jpg</span>,
 which is the image displayed when players who have MXP compliant mud
 clients log into your mud. To use multiple/random intros, just insert
 numbers before the extension for additional ones (intro1.jpg,
@@ -690,6 +681,11 @@ charts and tables for user modification.</td>
           </tr>
         </tbody>
       </table>
+      <p>The <code>resources/catalog</code> directory is not locally
+accessible, and exists only in the coffeemud database file system
+(VFS). &nbsp;It is completely system generated, and contains xml (*.cmare)
+versions of all the mobs and items you use in your Catalog system. &nbsp;See
+the Archon's or Game Builder's guide for more information.</p>
       <p>The <code>resources/fakedb</code> directory is where all
 area, room, mob, journal, and player data is stored when the FAKEDB
 system is being used. When FAKEDB is not being used, this directory is
@@ -892,8 +888,7 @@ above.<br />
 sample quests. Each quest is in its own directory, along with any
 supporting Scriptable *.script files, and any supporting mob or item
 *.cmare files. The CREATE QUEST command is used to load each of these
-*.quest files. Quests may also be loaded via the MUDGrinder.</p>
-      <p>The <code>resources/randareas</code> directory contains
+*.quest files. Quests may also be loaded via the MUDGrinder.</p><p>The <code>resources/randareas</code> directory contains
 sample
 random area data templates, which all end with the *.xml extension. The
 sample file "example.xml" is in this directory, which contains
@@ -1447,9 +1442,7 @@ folder.&nbsp;<code>.</code></p>
 above to the classpath string. &nbsp;For example:</li>
         <ul>
           <li><span style="font-family: monospace;">java -classpath
-".;.\lib\js.jar;.\lib\jzlib.jar;.\lib\</span><span
- style="font-family: monospace;">mysql-connector-java-5.1.6-bin.jar</span><span
- style="font-family: monospace;">" -Xms64m ....</span></li>
+".;.\lib\js.jar;.\lib\jzlib.jar;.\lib\</span><span style="font-family: monospace;">mysql-connector-java-5.1.6-bin.jar</span><span style="font-family: monospace;">" -Xms64m ....</span></li>
           <li>** Your version of the connector jar file may vary!</li>
         </ul>
         <li>
@@ -1461,16 +1454,13 @@ launch the mud.bat.</p>
 CoffeeMud on a UN*X or Linux machine</a></h3>
       <ul>
         <li>
-          <p>Download and install mysql from <a
- href="http://www.mysql.com/downloads/index.html">http://www.mysql.com/downloads/index.html</a>.
+          <p>Download and install mysql from <a href="http://www.mysql.com/downloads/index.html">http://www.mysql.com/downloads/index.html</a>.
 Make sure mysqld is being run at boot time, and not by the root user.</p>
         </li>
         <li>
-          <p>Download and install the mysql jdbc api from <a
- href="http://www.mysql.com/downloads/api-jdbc-stable.html">http://www.mysql.com/downloads/api-jdbc-stable.html</a>.
+          <p>Download and install the mysql jdbc api from <a href="http://www.mysql.com/downloads/api-jdbc-stable.html">http://www.mysql.com/downloads/api-jdbc-stable.html</a>.
 Extract the .tar.gz file to a temporary directory. Then copy the
-extracted driver JAR file into your <span
- style="font-family: monospace;">/CoffeeMud/lib</span> directory.</p>
+extracted driver JAR file into your <span style="font-family: monospace;">/CoffeeMud/lib</span> directory.</p>
         </li>
         <li>Open up the mudUNIX.sh file and add the name of the JAR
 file above to the classpath string. &nbsp;For example:</li>
@@ -1479,8 +1469,7 @@ file above to the classpath string. &nbsp;For example:</li>
 -classpath
 ".:./lib/js.jar:./lib/jzlib.jar:./lib/mysql-connector-java-5.1.6-bin.jar"
 -Xms65535000 ....</span></li>
-          <li>** Your version of the connector jar file may vary!<span
- style="font-family: monospace;"><br />
+          <li>** Your version of the connector jar file may vary!<span style="font-family: monospace;"><br />
             </span></li>
         </ul>
         <li>
@@ -1569,8 +1558,7 @@ killConnections()</code> function.</p>
 with CoffeeMud</a></h3>
       <ul>
         <li> Get the database software
-          <p>Go to <a
- href="http://db.apache.org/derby/derby_downloads.html">http://db.apache.org/derby/derby_downloads.html</a>
+          <p>Go to <a href="http://db.apache.org/derby/derby_downloads.html">http://db.apache.org/derby/derby_downloads.html</a>
 and download the distribution( lib or bin, unless you want to build the
 whole project ).</p>
         </li>
@@ -1642,8 +1630,7 @@ Path&gt;\doc\pdf\tuning.pdf.</p>
       </ul>
       <br />
       <br />
-      <img src="images/nuked.jpg"
- alt="offline and shutdown applications" />
+      <img src="images/nuked.jpg" alt="offline and shutdown applications" />
       <h2><a name="shutdown">The OffLine And Shutdown Applications</a></h2>
       <p>In the off chance you should need to keep your mud down while
 database, or other software (or hardware?) maintenance is going on, a
@@ -1673,5 +1660,4 @@ is located, and enter:</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>
