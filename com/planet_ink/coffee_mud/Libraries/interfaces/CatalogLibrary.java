@@ -34,8 +34,16 @@ import java.util.*;
 */
 public interface CatalogLibrary extends CMLibrary
 {
+	public static final String ITEMCAT="ITEMS".intern();
+	public static final String MOBSCAT="MOBS".intern();
+	
 	public String[] getCatalogItemNames();
+	public String[] getCatalogItemNames(String catagory);
 	public String[] getCatalogMobNames();
+	public String[] getCatalogMobNames(String catagory);
+	public String[] getMobCatalogCatagories();
+	public String[] getItemCatalogCatagories();
+	public void setCatagory(Physical P, String catagory);
 	public Item[] getCatalogItems();
 	public MOB[] getCatalogMobs();
 	public boolean isCatalogObj(Environmental E);
@@ -59,6 +67,7 @@ public interface CatalogLibrary extends CMLibrary
 	public void updateRoomContent(String roomID, Vector<RoomContent> content);
 	public void newInstance(Physical P);
 	public void bumpDeathPickup(Physical P);
+	public CMFile.CMVFSFile getCatalogFile(String filename);
 	
 	public static interface RoomContent
 	{
@@ -89,6 +98,8 @@ public interface CatalogLibrary extends CMLibrary
 		public Physical getLiveReference();
 		public int getDeathsPicksups();
 		public void bumpDeathPickup();
+		public String catatory();
+		public void setCatagory(String cat);
 		
 		public String data();
 		

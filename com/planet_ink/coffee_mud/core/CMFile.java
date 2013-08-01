@@ -1068,7 +1068,14 @@ public class CMFile extends File
 	{
 		final CMVFSDir vfs=getVFSDirectory();
 		if(vfs==null) return null;
-		return vfs.fetch(vfsifyFilename(filename));
+		final String vfsFilename=vfsifyFilename(filename);
+		if(vfsFilename.startsWith("resources/catalog/"))
+		{
+			CMVFSFile file = CMLib.catalog().getCatalogFile(filename.substring(18));
+			if(file != null)
+				return file;
+		}
+		return vfs.fetch(vfsFilename);
 	}
 
 	private static final Object getVFSData(final String filename)

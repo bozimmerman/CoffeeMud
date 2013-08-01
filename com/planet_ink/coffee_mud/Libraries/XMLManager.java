@@ -118,7 +118,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		}
 		return s;
 	}
-
+	
 	public String restoreAngleBrackets(String s)
 	{
 		if(s==null) return null;
