@@ -375,12 +375,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	}
 
 
-	protected String buildQualifyingClassList(List<CharClass> classes, String finalConnector)
+	protected String buildQualifyingClassList(MOB mob, List<CharClass> classes, String finalConnector)
 	{
 		StringBuilder list = new StringBuilder("");
+		int highestAttribute=-1;
+		for(int attrib : CharStats.CODES.BASE())
+			if((highestAttribute<0)
+			||(mob.baseCharStats().getStat(attrib)>mob.baseCharStats().getStat(highestAttribute)))
+				highestAttribute=attrib;
 		for(Iterator<CharClass> i=classes.iterator(); i.hasNext(); )
 		{
 			CharClass C = i.next();
+			if(C.getAttackAttribute()==highestAttribute)
+				list.append("^H");
+			else
+				list.append("^w");
 			if(!i.hasNext())
 			{
 				if (list.length()>0)
@@ -2221,7 +2230,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			&&(!mob.baseCharStats().getMyRace().classless())
 			&&(randomRoll || qualifyingClassListV.size()>0)
 			&&((qualifyingClassListV.size()!=1)||(!CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-"))))
-				session.println("\n\rThis would qualify you for ^H"+buildQualifyingClassList(qualifyingClassListV,"and")+"^N.");
+				session.println("\n\rThis would qualify you for ^H"+buildQualifyingClassList(mob,qualifyingClassListV,"and")+"^N.");
 			if(randomRoll)
 			{
 				session.promptPrint("^!Would you like to re-roll (y/N)?^N");
@@ -2517,7 +2526,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.baseCharStats().setMyClasses("StdCharClass");
 		mob.baseCharStats().setMyLevels("0");
 		List<CharClass> qualClassesV=classQualifies(mob,loginObj.theme);
-		String listOfClasses = buildQualifyingClassList(qualClassesV, "or");
+		String listOfClasses = buildQualifyingClassList(mob, qualClassesV, "or");
 		session.println("\n\r^!Please choose from the following Classes:");
 		session.print("^H[" + listOfClasses + "]^N");
 		session.promptPrint("\n\r: ");

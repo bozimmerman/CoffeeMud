@@ -1,14 +1,8 @@
-
 ^yYour stats below reflect your physical and mental gifts.  They can be boosted through the use of ^HTraining points^?, which are granted at first level, and are gained at a rate of one per level.  These training points are also needed to gain new spells and abilities which your class qualifies for, but does not get at first level.^N
 
-^ZStrength:^.^? Physical strength and fighting prowess is reflected in strength.
-
-^ZDexterity:^.^? Agility and the ability to dodge blows is reflected in Dexterity.
-
-^ZConstitution:^.^? Health, stamina, and the ability to live through harder fights is reflected in Constitution.
-
-^ZIntelligence:^.^? Memory and concentration, and the ability to gain greater proficiency in skills is reflected in Intelligence.
-
-^ZWisdom:^.^? Intuition, wit, and the ability to gain more practice points per level is reflected in Wisdom.
-
-^ZCharisma:^.^? Grace, charm, and the ability to get better prices from merchants is reflected in Charisma.
+^ZStrength:^.^? Physical strength and fighting prowess is reflected in strength. Fighter-types love their muscles.
+^ZDexterity:^.^? Agility and the ability to dodge blows is reflected in Dexterity.  Thieves need all of this they can get.
+^ZConstitution:^.^? Health, stamina, and the ability to live through harder fights is reflected in Constitution. Druids adore health.
+^ZIntelligence:^.^? Memory and concentration, and the ability to gain greater proficiency in skills is reflected in Intelligence. Mages require intellect.
+^ZWisdom:^.^? Intuition, wit, and the ability to gain more practice points per level is reflected in Wisdom. Clerics use wisdom best.
+^ZCharisma:^.^? Grace, charm, and the ability to get better prices from merchants is reflected in Charisma. Bards live off their charm.
