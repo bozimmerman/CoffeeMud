@@ -13,9 +13,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 /* 
    Mostly Copyright 2000-2013 Bo Zimmerman
 
-   Functions for diff, match and patch (C) 2006 Google
-   Computes the difference between two texts to create a patch.
-   Applies the patch onto another text, allowing for errors.
+   Functions for diff (C) 2006 Google
    Author: fraser@google.com (Neil Fraser)
 
    Licensed under the Apache License, Version 2.0 (the "License");
