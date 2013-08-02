@@ -23,26 +23,9 @@ public class RTree<T extends BoundedObject> {
 	private RTreeNode root;
 	private int maxSize;
 	private int minSize;
-	private Map<T,List<WeakReference<TrackingVector<T>>>> trackMap;
+	private SLinkedHashtable<T,List<WeakReference<TrackingVector<T>>>> trackMap;
 	private QuadraticNodeSplitter splitter;
 	
-	
-	public boolean intersects(BoundedCube one, BoundedCube two)
-	{
-		/*
-		return 	  one.contains(two.lx,two.ty,two.iz)
-				||one.contains(two.rx,two.ty,two.iz)
-				||one.contains(two.lx,two.by,two.iz)
-				||one.contains(two.rx,two.by,two.iz)
-				||one.contains(two.lx,two.ty,two.oz)
-				||one.contains(two.rx,two.ty,two.oz)
-				||one.contains(two.lx,two.by,two.oz)
-				||one.contains(two.rx,two.by,two.oz);
-		*/
-		return (one.rx >=two.lx) && (one.lx <=two.rx) 
-			&& (one.by >= two.ty) && (one.ty <= two.by)
-			&& (one.oz >= two.iz) && (one.iz <= two.oz);
-	}
 	
 	public class RTreeNode implements BoundedObject {
 		RTreeNode parent;
@@ -350,7 +333,7 @@ public class RTree<T extends BoundedObject> {
 	 * @param maxChildren Maximum children in a node. Node splits at this number + 1
 	 */
 	public RTree(int minChildren, int maxChildren) {
-		trackMap = new LinkedHashMap<T,List<WeakReference<TrackingVector<T>>>>();
+		trackMap = new SLinkedHashtable<T,List<WeakReference<TrackingVector<T>>>>();
 		if (minChildren < 2 || minChildren > maxChildren/2)
 			throw new IllegalArgumentException("2 <= minChildren <= maxChildren/2");
 		splitter = new QuadraticNodeSplitter();
@@ -382,11 +365,11 @@ public class RTree<T extends BoundedObject> {
 		if (node == null) return;
 		if (node.isLeaf()) {
 			for (int i = 0; i < node.data.size(); i++)
-				if (intersects(node.data.get(i).getBounds(), box))
+				if (node.data.get(i).getBounds().intersects(box))
 					results.add(node.data.get(i));
 		} else {
 			for (int i = 0; i < node.children.size(); i++) {
-				if (intersects(node.children.get(i).box, box)) {
+				if (node.children.get(i).box.intersects(box)) {
 					query(results, box, node.children.get(i));
 				}
 			}
@@ -400,7 +383,7 @@ public class RTree<T extends BoundedObject> {
 			return node.data.contains(obj);
 		} else {
 			for (int i = 0; i < node.children.size(); i++) {
-				if (intersects(node.children.get(i).box, obj.getBounds())) {
+				if (node.children.get(i).box.intersects(obj.getBounds())) {
 					if(query(obj, node.children.get(i)))
 						return true;
 				}
@@ -420,14 +403,14 @@ public class RTree<T extends BoundedObject> {
 		if (node == null) return null;
 		if (node.isLeaf()) {
 			for (int i = 0; i < node.data.size(); i++) {
-				if (intersects(node.data.get(i).getBounds(), box)) {
+				if (node.data.get(i).getBounds().intersects(box)) {
 					return node.data.get(i);
 				}
 			}
 			return null;
 		} else {
 			for (int i = 0; i < node.children.size(); i++) {
-				if (intersects(node.children.get(i).box, box)) {
+				if (node.children.get(i).box.intersects(box)) {
 					T result = queryOne(box,node.children.get(i));
 					if (result != null) return result;
 				}
@@ -536,6 +519,11 @@ public class RTree<T extends BoundedObject> {
 		return query(o, root);
 	}
 
+	public Enumeration<T> objects()
+	{
+		return trackMap.keys();
+	}
+	
 	public boolean leafSearch(T o) {
 		if (o == null) 
 			return false;

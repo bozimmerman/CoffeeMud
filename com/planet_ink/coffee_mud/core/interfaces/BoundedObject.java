@@ -85,6 +85,14 @@ public interface BoundedObject
 			if(l.oz > oz) oz=l.oz;
 		}
 		
+		public boolean intersects(BoundedCube two)
+		{
+			if(two==null) return false;
+			return (rx >=two.lx) && (lx <=two.rx) 
+				&& (by >= two.ty) && (ty <= two.by)
+				&& (oz >= two.iz) && (iz <= two.oz);
+		}
+		
 		public boolean contains(long x, long y, long z)
 		{
 			return ((x>=lx)&&(x<=rx)

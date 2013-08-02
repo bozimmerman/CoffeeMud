@@ -400,6 +400,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 
+	public Enumeration<SpaceObject> getSpaceObjects() { return this.space.objects(); }
+	
 	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, long minDistance, long maxDistance)
 	{
 		List<SpaceObject> within=new Vector<SpaceObject>(1);
@@ -409,6 +411,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			space.query(within, new BoundedObject.BoundedCube(ofObj.coordinates(), maxDistance));
 		}
+		if(within.size()<=1)
+			return within;
 		for(Iterator<SpaceObject> i=within.iterator();i.hasNext();)
 		{
 			SpaceObject o=i.next();

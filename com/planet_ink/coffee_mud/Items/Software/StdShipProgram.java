@@ -84,13 +84,17 @@ public class StdShipProgram extends StdProgram
 			str.append("^Z").append(CMStrings.centerPreserve(" -- System Malfunction-- ",60)).append("^.^N\n\r");
 		else
 		{
-			long thirdOfOrbiting=SpaceObject.DISTANCE_ORBITING/2;
-			List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,SpaceObject.DISTANCE_ORBITING,SpaceObject.DISTANCE_ORBITING+thirdOfOrbiting);
-			SpaceObject orbiting=null;
+			List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(shipSpaceObject,0,SpaceObject.DISTANCE_LIGHTMINUTE);
+			SpaceObject orbitingPlanet=null;
+			SpaceObject altitudePlanet=null;
 			for(SpaceObject orb : orbs)
 				if(orb instanceof Area)
 				{
-					orbiting=orb; // since they are sorted, this would be the nearest.
+					long distance=CMLib.map().getDistanceFrom(shipSpaceObject, orb);
+					if((distance > orb.radius())&&(distance < orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS))
+						altitudePlanet=orb; // since they are sorted, this would be the nearest.
+					if((distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MIN)&&(distance<orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX))
+						orbitingPlanet=orb; // since they are sorted, this would be the nearest.
 					break;
 				}
 			
@@ -101,17 +105,17 @@ public class StdShipProgram extends StdProgram
 			str.append("^N").append(CMStrings.padRight(dirStr,20));
 			str.append("\n\r");
 			str.append("^H").append(CMStrings.padRight("Location",10));
-			if(orbiting!=null)
-				str.append("^N").append(CMStrings.padRight("orbiting "+orbiting.name(),50));
+			if(orbitingPlanet!=null)
+				str.append("^N").append(CMStrings.padRight("orbiting "+orbitingPlanet.name(),50));
 			else
 				str.append("^N").append(CMStrings.padRight(CMParms.toStringList(shipSpaceObject.coordinates()),50));
 			str.append("^H").append(CMStrings.padRight("Facing",10));
 			String facStr=new StringBuilder(""+Math.round(Math.toDegrees(ship.facing()[0])*100)/100.0).append(" mark ").append(Math.round(Math.toDegrees(ship.facing()[0])*100)/100.0).toString();
 			str.append("^N").append(CMStrings.padRight(facStr,20));
-			if(orbiting!=null)
+			if(altitudePlanet!=null)
 			{
 				str.append("^H").append(CMStrings.padRight("Altitude",10));
-				str.append("^N").append(CMStrings.padRight(Long.toString((CMLib.map().getDistanceFrom(shipSpaceObject, orbiting)-orbiting.radius())/10)+"km",20));
+				str.append("^N").append(CMStrings.padRight(Long.toString((CMLib.map().getDistanceFrom(shipSpaceObject, altitudePlanet)-altitudePlanet.radius())/10)+"km",20));
 			}
 			else
 			{

@@ -269,6 +269,27 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return true;
 	}
 	
+	public void runSpace()
+	{
+		for(Enumeration<SpaceObject> o = CMLib.map().getSpaceObjects(); o.hasMoreElements(); )
+		{
+			SpaceObject O=o.nextElement();
+			if(O.speed()>0)
+			{
+				CMLib.map().moveSpaceObject(O);
+				List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, O.radius());
+				for(SpaceObject cO : cOs)
+					if(cO != O)
+					{
+						// we have a collision!
+						// we might also have a landing, or something near one...
+					}
+				
+			}
+		}
+		// other than just moving everything "out there" is there anything else to do?
+	}
+	
 	@Override public boolean tick(Tickable ticking, int tickID) 
 	{
 		try
@@ -277,7 +298,14 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			{
 				isDebugging=CMSecurity.isDebugging(DbgFlag.UTILITHREAD);
 				tickStatus=Tickable.STATUS_ALIVE;
-				runElectricCurrents();
+				try
+				{
+					runElectricCurrents();
+				}
+				finally
+				{
+					runSpace();
+				}
 			}
 		}
 		finally

@@ -100,14 +100,30 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static final long DISTANCE_KILOMETER=100;
 	/** distance constant useful for coordinates, is 1 lightyear, in decameters*/
 	public static final long DISTANCE_LIGHTYEAR=946073047258080L;
+	/** distance constant useful for coordinates, is 1 lightmonth, in decameters*/
+	public static final long DISTANCE_LIGHTMONTH=DISTANCE_LIGHTYEAR/12;
+	/** distance constant useful for coordinates, is 1 lightday, in decameters*/
+	public static final long DISTANCE_LIGHTDAY=DISTANCE_LIGHTYEAR/365;
+	/** distance constant useful for coordinates, is 1 lightday, in decameters*/
+	public static final long DISTANCE_LIGHTHOUR=DISTANCE_LIGHTDAY/24;
+	/** distance constant useful for coordinates, is 1 lighthour, in decameters*/
+	public static final long DISTANCE_LIGHTMINUTE=DISTANCE_LIGHTHOUR/60;
+	/** distance constant useful for coordinates, is 1 lightsecond, in decameters*/
+	public static final long DISTANCE_LIGHTSECOND=DISTANCE_LIGHTMINUTE/60;
 	/** distance constant useful for coordinates, is 1 galaxy, in decameters*/
 	public static final long DISTANCE_AROUNDGALAXY=DISTANCE_LIGHTYEAR*1000L;
 	/** distance constant useful for coordinates, is 1 planet, in decameters*/
 	public static final long DISTANCE_PLANETRADIUS=639875;
-	/** distance constant useful for coordinates, is 1 orbit, in decameters*/
-	public static final long DISTANCE_ORBITING=Math.round(DISTANCE_PLANETRADIUS*1.03);
 	/** distance constant useful for weapon fire, in decameters*/
 	public static final long DISTANCE_POINTBLANK=20000;
+	
+	/** constant useful for multiplying by radius -- this one to find the orbiting radius*/
+	public static final double MULTIPLIER_ORBITING_RADIUS_MIN=1.029;
+	/** constant useful for multiplying by radius -- this one to find the orbiting radius*/
+	public static final double MULTIPLIER_ORBITING_RADIUS_MAX=1.031;
+	
+	/** multiplying by radius -- this one to find the orbiting radius*/
+	public static final double MULTIPLIER_GRAVITY_RADIUS=1.10;
 
 	/** accelleration at which you are happy, in decameters/s */
 	public static final long ACCELLERATION_G=1;
