@@ -804,11 +804,11 @@ public class Shell extends StdCommand
 			StringBuilder text1=new StringBuilder("");
 			for(String s : Resources.getFileLineVector(file1.text()))
 				if(s.trim().length()>0)
-					text1.append(s.trim()).append("\r");
+					text1.append(s.trim()).append("\n\r");
 			StringBuilder text2=new StringBuilder("");
 			for(String s : Resources.getFileLineVector(file2.text()))
 				if(s.trim().length()>0)
-					text2.append(s.trim()).append("\r");
+					text2.append(s.trim()).append("\n\r");
 			LinkedList<CMStrings.Diff> diffs=CMStrings.diff_main(text1.toString(), text2.toString(), false);
 			boolean flipFlop=false;
 			for(CMStrings.Diff d : diffs)
@@ -816,7 +816,7 @@ public class Shell extends StdCommand
 				StringBuilder str=new StringBuilder("\n\r^H"+d.operation.toString()+": ");
 				str.append(flipFlop?"^N":"^w");
 				flipFlop=!flipFlop;
-				str.append(CMStrings.replaceAll(CMStrings.replaceAll(d.text,"\n",""),"\r","\n\r"));
+				str.append(d.text);
 				mob.session().colorOnlyPrintln(str.toString());
 			}
 			mob.tell("^HDONE.");
