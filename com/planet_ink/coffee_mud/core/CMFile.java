@@ -169,7 +169,7 @@ public class CMFile extends File
 
 		if((info!=null)&&((!demandLocal)||(!localFile.exists())))
 		{
-			vfsBits=vfsBits|info.mask;
+			vfsBits=vfsBits|info.getMaskBits(accessor);
 			author=info.author;
 			modifiedDateTime=info.modifiedDateTime;
 		}
@@ -258,6 +258,11 @@ public class CMFile extends File
 				&&(((CMVFSDir)f2).files==null))
 					((CMVFSDir)f2).files=((CMVFSDir)this).files;
 			}
+		}
+		
+		public int getMaskBits(MOB accessor)
+		{
+			return mask;
 		}
 		
 		public Object readData()

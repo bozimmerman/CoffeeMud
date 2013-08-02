@@ -2451,6 +2451,13 @@ public class CMMap extends StdLibrary implements WorldMap
 												//todo: make these writeable
 												myFiles.add(new CMFile.CMVFSFile(this.path+statName,256,System.currentTimeMillis(),"SYS")
 												{
+													@Override public int getMaskBits(MOB accessor)
+													{
+														if((accessor==null)||(CMSecurity.isAllowed(accessor,R,CMSecurity.SecFlag.CMDROOMS)))
+															return this.mask;
+														return this.mask|48;
+													}
+													
 													@Override public Object readData()
 													{
 														return statValue;
