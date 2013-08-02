@@ -593,7 +593,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
 							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM",
-							  "MANUFACTURER"};
+							  "MANUFACTURER","AREA"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -610,6 +610,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 7: return ""+activated();
 		case 8: return ""+powerRemaining();
 		case 9: return getManufacturerName();
+		case 10: return (area==null)?"":CMLib.coffeeMaker().getAreaXML(area, null, null, null, true).toString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -631,6 +632,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 7: activate(CMath.s_bool(val)); break;
 		case 8: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
 		case 9: setManufacturerName(val); break;
+		case 10: this.setShipArea(val); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
