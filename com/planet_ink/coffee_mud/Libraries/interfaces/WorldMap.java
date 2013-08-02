@@ -108,6 +108,7 @@ public interface WorldMap extends CMLibrary
 	public String createNewExit(Room from, Room room, int direction);
 	public Area areaLocation(CMObject E);
 	public boolean explored(Room R);
+	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root);
 	
 	/************************************************************************/
 	/**						WORLD OBJECT INDEXES							*/

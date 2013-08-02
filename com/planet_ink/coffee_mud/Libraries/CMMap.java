@@ -2406,4 +2406,77 @@ public class CMMap extends StdLibrary implements WorldMap
 				expireM.destroy();
 		}
 	}
+	
+	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root)
+	{
+		return new CMFile.CMVFSDir(root,root.path+"map/") {
+			@Override protected CMFile.CMVFSFile[] getFiles() {
+				List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>(numAreas());
+				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				{
+					final Area A=a.nextElement();
+					myFiles.add(new CMFile.CMVFSFile(this.path+A.Name().replace(' ', '_')+".cmare",48,System.currentTimeMillis(),"SYS")
+					{
+						@Override public Object readData()
+						{
+							return CMLib.coffeeMaker().getAreaXML(A, null, null, null, true);
+						}
+					});
+					myFiles.add(new CMFile.CMVFSDir(this,this.path+A.Name().toLowerCase()+"/") {
+						@Override protected CMFile.CMVFSFile[] getFiles() {
+							List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
+							for(Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
+							{
+								final Room R=r.nextElement();
+								if(R.roomID().length()>0)
+								{
+									String roomID=R.roomID();
+									if(roomID.startsWith(A.Name()+"#"))
+										roomID=roomID.substring(A.Name().length()+1);
+									myFiles.add(new CMFile.CMVFSFile(this.path+R.roomID().replace(' ', '_')+".cmare",48,System.currentTimeMillis(),"SYS")
+									{
+										@Override public Object readData()
+										{
+											return CMLib.coffeeMaker().getRoomXML(R, null, null, true);
+										}
+									});
+									myFiles.add(new CMFile.CMVFSDir(this,this.path+roomID+"/") {
+										@Override protected CMFile.CMVFSFile[] getFiles() {
+											List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
+											String[] stats=R.getStatCodes();
+											for(int i=0;i<stats.length;i++)
+											{
+												final String statName=stats[i];
+												final String statValue=R.getStat(statName);
+												//todo: make these writeable
+												myFiles.add(new CMFile.CMVFSFile(this.path+statName,256,System.currentTimeMillis(),"SYS")
+												{
+													@Override public Object readData()
+													{
+														return statValue;
+													}
+													@Override public void saveData(String filename, int vfsBits, String author, Object O)
+													{
+														R.setStat(statName, O.toString());
+														CMLib.database().DBUpdateRoom(R);
+													}
+												});
+											}
+											Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+											return myFiles.toArray(new CMFile.CMVFSFile[0]);
+										}
+									});
+								}
+							}
+							Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+							return myFiles.toArray(new CMFile.CMVFSFile[0]);
+						}
+					});
+				}
+				Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+				return myFiles.toArray(new CMFile.CMVFSFile[0]);
+			}
+		};
+	}
+	
 }

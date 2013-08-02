@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.core.interfaces.MudHost;
@@ -51,6 +52,7 @@ public class CMFile extends File
 	private static final int VFS_MASK_NOWRITELOCAL=32;
 	private static final int VFS_MASK_NOREADVFS=64;
 	private static final int VFS_MASK_NOREADLOCAL=128;
+	private static final int VFS_MASK_NODELETEANY=256;
 
 	private static final char pathSeparator=File.separatorChar;
 	
@@ -58,7 +60,9 @@ public class CMFile extends File
 	private static final String outCharSet = Charset.defaultCharset().name();
 	
 	private static CMVFSDir[] vfs=new CMVFSDir[256];
-	private static CatalogLibrary catalogAdded=null;
+	
+	private static CatalogLibrary catalogPluginAdded=null;
+	private static WorldMap mapPluginAdded=null;
 	
 	private boolean logErrors=false;
 
@@ -263,6 +267,12 @@ public class CMFile extends File
 				return f.data;
 			return null;
 		}
+		public void saveData(String filename, int vfsBits, String author, Object O)
+		{
+			CMVFSFile info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author);
+			getVFSDirectory().add(info);
+			CMLib.database().DBUpSertVFSFile(filename,vfsBits,author,System.currentTimeMillis(),O);
+		}
 	}
 	
 	public static class CMVFSDir extends CMVFSFile
@@ -392,6 +402,8 @@ public class CMFile extends File
 				else
 				{
 					final List<CMVFSFile> list = new Vector<CMVFSFile>();
+					if(subDir.files==null)
+						return false;
 					list.addAll(Arrays.asList(subDir.files));
 					if(!list.remove(file))
 						return false;
@@ -551,6 +563,8 @@ public class CMFile extends File
 	{
 		if(!exists()) return false;
 		if(!canWrite()) return false;
+		if(CMath.bset(vfsBits, CMFile.VFS_MASK_NODELETEANY))
+			return false;
 		if(!mayDeleteIfDirectory()) return false;
 		if((canLocalEquiv())&&(localFile!=null))
 			return localFile.delete();
@@ -560,6 +574,8 @@ public class CMFile extends File
 	{
 		if(!exists()) return false;
 		if(!canWrite()) return false;
+		if(CMath.bset(vfsBits, CMFile.VFS_MASK_NODELETEANY))
+			return false;
 		if(!mayDeleteIfDirectory()) return false;
 		if(canVFSEquiv())
 		{
@@ -579,6 +595,8 @@ public class CMFile extends File
 	{
 		if(!exists()) return false;
 		if(!canWrite()) return false;
+		if(CMath.bset(vfsBits, CMFile.VFS_MASK_NODELETEANY))
+			return false;
 		if(!mayDeleteIfDirectory()) return false;
 		if(demandVFS)
 			return deleteVFS();
@@ -594,6 +612,8 @@ public class CMFile extends File
 	{
 		if(!exists()) return false;
 		if(!canWrite()) return false;
+		if(CMath.bset(vfsBits, CMFile.VFS_MASK_NODELETEANY))
+			return false;
 		if(!mayDeleteIfDirectory()) return false;
 		if((isVFSDirectory())&&(!demandLocal))
 			return deleteVFS();
@@ -841,7 +861,7 @@ public class CMFile extends File
 		return text;
 	}
 
-	public final boolean saveRaw(Object data)
+	public boolean saveRaw(Object data)
 	{
 		if(data==null)
 		{
@@ -886,9 +906,7 @@ public class CMFile extends File
 			}
 			if(vfsBits<0) vfsBits=0;
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
-			info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
-			getVFSDirectory().add(info);
-			CMLib.database().DBUpSertVFSFile(filename,vfsBits,author(),System.currentTimeMillis(),O);
+			info.saveData(filename,vfsBits,author(),O);
 			return true;
 		}
 
@@ -934,8 +952,8 @@ public class CMFile extends File
 		return false;
 	}
 
-	public final boolean saveText(Object data){ return saveText(data,false);}
-	public final boolean saveText(Object data, boolean append)
+	public boolean saveText(Object data){ return saveText(data,false);}
+	public boolean saveText(Object data, boolean append)
 	{
 		if(data==null)
 		{
@@ -975,9 +993,7 @@ public class CMFile extends File
 			}
 			if(vfsBits<0) vfsBits=0;
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
-			info=new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
-			vfsV().add(info);
-			CMLib.database().DBUpSertVFSFile(filename,vfsBits,author(),System.currentTimeMillis(),O);
+			info.saveData(filename,vfsBits,author(),O);
 			return true;
 		}
 
@@ -1216,11 +1232,17 @@ public class CMFile extends File
 					vvfs=vfs[threadCode]=vfs[MudHost.MAIN_HOST]=CMLib.database().DBReadVFSDirectory();
 			}
 		}
-		if((catalogAdded!=CMLib.catalog())&&(CMLib.catalog()!=null))
+		if((catalogPluginAdded!=CMLib.catalog())&&(CMLib.catalog()!=null))
 		{
-			catalogAdded=CMLib.catalog();
+			catalogPluginAdded=CMLib.catalog();
 			CMVFSDir dir=vvfs.fetchSubDir("/resources", true);
 			vvfs.add(CMLib.catalog().getCatalogRoot(dir));
+		}
+		if((mapPluginAdded!=CMLib.map())&&(CMLib.map()!=null))
+		{
+			mapPluginAdded=CMLib.map();
+			CMVFSDir dir=vvfs.fetchSubDir("/resources", true);
+			vvfs.add(CMLib.map().getMapRoot(dir));
 		}
 		return vvfs;
 	}
