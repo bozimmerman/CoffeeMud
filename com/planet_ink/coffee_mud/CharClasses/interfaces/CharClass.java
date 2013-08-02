@@ -87,7 +87,11 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 
 	/**
 	 * Returns whether this given mob qualifies for this class, and
-	 * optionally gives them an error message.
+	 * optionally gives them an error message. There are strange rules
+	 * here.  If the mob is null, then this method returns true unless
+	 * subclassing is on, and this class is not a subclass.  If the
+	 * mob has a class of StdCharClass, then char creation rules apply,
+	 * otherwise train rules apply.
 	 * @param mob the mob to evaluate the worthiness of
 	 * @param quiet false to give the mob error messages, true for silence
 	 * @return whether the given mob is worthy of this class

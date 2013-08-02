@@ -1216,7 +1216,7 @@ public class CMFile extends File
 					vvfs=vfs[threadCode]=vfs[MudHost.MAIN_HOST]=CMLib.database().DBReadVFSDirectory();
 			}
 		}
-		if((catalogAdded!=CMLib.catalog()))
+		if((catalogAdded!=CMLib.catalog())&&(CMLib.catalog()!=null))
 		{
 			catalogAdded=CMLib.catalog();
 			CMVFSDir dir=vvfs.fetchSubDir("/resources", true);

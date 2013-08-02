@@ -894,7 +894,7 @@ public class MUD extends Thread implements MudHost
 			bringDown=true;
 			
 			CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
-			CMLib.killThread(t,100,1);
+			//CMLib.killThread(t,100,1);
 		}
 
 		protected boolean initHost()

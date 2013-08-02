@@ -154,18 +154,57 @@ public class StdCharClass implements CharClass
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STDCLASSES) && (!isGeneric()))
 			return false;
+		
+		String multiClassRule=CMProps.getVar(CMProps.Str.MULTICLASS);
+		String multiClassFirstRule=multiClassRule;
+		String multiClassSecondRule="";
+		int x=multiClassRule.indexOf('-');
+		if(x>0)
+		{
+			multiClassFirstRule=multiClassRule.substring(0, x);
+			multiClassSecondRule=multiClassRule.substring(x+1);
+		}
+		
+		String changeToBaseClassID=baseClass();
+		String changeToClassID=ID();
+		SubClassRule changeToSubClassRule = getSubClassRule();
+		
+		String canOnlyBeClassID="";
+		String canOnlyBeBaseClassID="";
+		if(multiClassSecondRule.length()>0)
+		{
+			if(multiClassSecondRule.startsWith("GRP-"))
+			{
+				CharClass possibleClass=CMClass.findCharClass(multiClassSecondRule.substring(4));
+				if(possibleClass != null)
+					canOnlyBeBaseClassID=possibleClass.ID();
+				multiClassSecondRule="NO";
+			}
+			else
+			{
+				CharClass possibleClass=CMClass.findCharClass(multiClassSecondRule);
+				if(possibleClass != null)
+					canOnlyBeClassID=possibleClass.ID();
+				multiClassSecondRule="NO";
+			}
+		}
+		
 		if(mob == null)
 		{
-			if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("SUB"))
-			||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-SUB")))
+			if(multiClassFirstRule.equals("SUB")||multiClassSecondRule.equals("SUB"))
 			{
-				if((baseClass().equals(ID()))||(getSubClassRule()==SubClassRule.ANY))
+				if((changeToBaseClassID.equals(changeToClassID))||(changeToSubClassRule==SubClassRule.ANY))
 					return true;
+				return false;
 			}
 			else
 				return true;
-			return false;
 		}
+		
+		CharClass curClass = mob.baseCharStats().getCurrentClass();
+		String currentClassID=curClass.ID();
+		String currentBaseClassID=curClass.baseClass();
+		
 		for(Pair<String,Integer> minReq : getMinimumStatRequirements())
 		{
 			int statCode=CharStats.CODES.findWhole(minReq.first, true);
@@ -205,24 +244,27 @@ public class StdCharClass implements CharClass
 		}
 		if((!mob.isMonster())&&(mob.basePhyStats().level()>0))
 		{
-			CharClass curClass = mob.baseCharStats().getCurrentClass();
-			if(curClass.ID().equals(ID()))
+			if(currentClassID.equals(changeToClassID))
 			{
 				if(!quiet)
 					mob.tell("But you are already a "+name()+"!");
 				return false;
 			}
-			if(curClass.ID().equalsIgnoreCase("StdCharClass"))
+			if(currentClassID.equalsIgnoreCase("StdCharClass")) // this is the starting character rule
 			{
-				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("NO"))
-				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("MULTI")))
+				if((canOnlyBeClassID.length()>0)&&(!changeToClassID.equals(canOnlyBeClassID)))
+					return false;
+				if((canOnlyBeBaseClassID.length()>0)&&(!changeToBaseClassID.equals(canOnlyBeBaseClassID)))
+					return false;
+				if((multiClassRule.equals("NO"))||(multiClassRule.equals("MULTI")))
 					return true;
-				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("SUB"))
-				&&((baseClass().equals(ID()))
-					||(getSubClassRule()==SubClassRule.ANY)))
-						return true;
-				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-"))
-				&&(getSubClassRule()==SubClassRule.ANY))
+				if((multiClassRule.equals("SUB")||multiClassSecondRule.equals("BASE"))
+				&&(changeToBaseClassID.equals(changeToClassID)||(changeToSubClassRule==SubClassRule.ANY)))
+					return true;
+				if((multiClassSecondRule.equals("SUBONLY"))
+				&&((!changeToBaseClassID.equals(changeToClassID))||(changeToSubClassRule==SubClassRule.ANY)))
+					return true;
+				if(multiClassFirstRule.equals("APP")&&(getSubClassRule()==SubClassRule.ANY))
 					return true;
 				if(!quiet)
 					mob.tell("You can't train to be a "+name()+"!");
@@ -236,43 +278,39 @@ public class StdCharClass implements CharClass
 				return false;
 			}
 			else
-			if(curClass.getSubClassRule()==SubClassRule.ANY)
+			if(curClass.getSubClassRule()==SubClassRule.ANY) // if you are an apprentice
 			{
-				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("NO"))
-				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-NO"))
-				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("MULTI"))
-				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-MULTI")))
+				if(multiClassFirstRule.equals("NO")
+				||multiClassSecondRule.equals("NO")
+				||multiClassFirstRule.equals("MULTI")
+				||multiClassSecondRule.equals("MULTI"))
 					return true;
-				if(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("SUB")
-				||CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-SUB"))
+				if(multiClassFirstRule.equals("SUB")||multiClassSecondRule.equals("SUB"))
 				{
-					if((baseClass().equals(ID()))||(baseClass().equals(curClass.baseClass())))
+					if((changeToBaseClassID.equals(changeToClassID))||(changeToBaseClassID.equals(currentBaseClassID)))
 						return true;
 					if(!quiet)
-						mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
+						mob.tell("You must be a "+changeToBaseClassID+" type to become a "+name()+".");
 				}
 				return false;
 			}
 			else
 			{
-				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("MULTI"))
-				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-MULTI")))
+				if(multiClassFirstRule.equals("MULTI")||multiClassSecondRule.equals("MULTI"))
 					return true;
 				else
-				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("NO"))
-				||(CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-NO")))
+				if(multiClassFirstRule.equals("NO")||(multiClassSecondRule.equals("NO")))
 					mob.tell("You should be happy to be a "+curClass.name()+".");
 				else
-				if((CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("SUB") 
-				|| CMProps.getVar(CMProps.Str.MULTICLASS).startsWith("APP-SUB")))
+				if(multiClassFirstRule.equals("SUB")|| multiClassSecondRule.equals("SUB"))
 				{
-					if(curClass.baseClass().equals(baseClass())||(curClass.getSubClassRule()==SubClassRule.ANY))
+					if(currentBaseClassID.equals(changeToBaseClassID)||(curClass.getSubClassRule()==SubClassRule.ANY))
 						return true;
 					boolean doesBaseHaveAnAny=false;
 					for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=c.nextElement();
-						if((C.baseClass().equals(curClass.baseClass()))&&(C.getSubClassRule()==SubClassRule.ANY))
+						if((C.baseClass().equals(currentBaseClassID))&&(C.getSubClassRule()==SubClassRule.ANY))
 						{
 							doesBaseHaveAnAny=true;
 							break;
@@ -281,7 +319,7 @@ public class StdCharClass implements CharClass
 					if(doesBaseHaveAnAny)
 						return true;
 					if(!quiet)
-						mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
+						mob.tell("You must be a "+changeToBaseClassID+" type to become a "+name()+".");
 				}
 			}
 			return false;

@@ -14,6 +14,7 @@
   13. Crafting Skill owners can now LIST ALL to see what recipes are coming down the road.
   14. Catalog items and mobs can now be flagged in categories (does not change the global unique name rule). 
   15. Catalog items and mobs can now be accessed via the VFS at /resources/catalog/mobs/.. and /resources/catalog/items/.. as CMARE files.
+  16. Some new multiclassing system options:  NO-BASE, NO-SUBONLY, NO-[X], and NO-GRP-[X] -- see the coffeemud.ini
   
 //TODO: create/modify/destroy manufacturer
 //TODO: add electronics to guides
