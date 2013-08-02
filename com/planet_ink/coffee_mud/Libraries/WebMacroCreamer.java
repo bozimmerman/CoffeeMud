@@ -952,10 +952,14 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			String resp=copyYahooGroupMsg(yahooSession);
 			if((resp!=null)&&(resp.toLowerCase().startsWith("fail")))
 			{
+				yahooSession.lastFailedNum=yahooSession.lastMsgNum;
 				Log.warnOut("Yahoo Groups Copier failure reported: "+resp);
 				yahooSession.lastMsgNum--;
 				yahooSession.numTotalTimes=-1;
 			}
+			else
+			if(yahooSession.lastFailedNum==yahooSession.lastMsgNum)
+				Log.warnOut("Yahoo Groups Copier recovered on message "+yahooSession.lastMsgNum);
 			Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(yahooSession.lastMsgNum));
 		}
 		finally
@@ -979,6 +983,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		protected String cookieSet="";
 		protected String user="";
 		protected String password="";
+		protected int lastFailedNum=-1;
 	}
 	
 	public String copyYahooGroupMsg(YahooGroupSession sess)
