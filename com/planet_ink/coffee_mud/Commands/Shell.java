@@ -803,10 +803,12 @@ public class Shell extends StdCommand
 			}
 			StringBuilder text1=new StringBuilder("");
 			for(String s : Resources.getFileLineVector(file1.text()))
-				text1.append(s).append("\r");
+				if(s.trim().length()>0)
+					text1.append(s.trim()).append("\r");
 			StringBuilder text2=new StringBuilder("");
 			for(String s : Resources.getFileLineVector(file2.text()))
-				text2.append(s).append("\r");
+				if(s.trim().length()>0)
+					text2.append(s.trim()).append("\r");
 			LinkedList<CMStrings.Diff> diffs=CMStrings.diff_main(text1.toString(), text2.toString(), false);
 			boolean flipFlop=false;
 			for(CMStrings.Diff d : diffs)
