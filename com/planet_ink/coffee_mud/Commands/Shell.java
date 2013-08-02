@@ -814,9 +814,8 @@ public class Shell extends StdCommand
 				StringBuilder str=new StringBuilder("\n\r^H"+d.operation.toString()+": ");
 				str.append(flipFlop?"^N":"^w");
 				flipFlop=!flipFlop;
-				str.append(d.text);
-				if(mob.session()!=null)
-					mob.session().colorOnlyPrintln(str.toString());
+				str.append(CMStrings.replaceAll(CMStrings.replaceAll(d.text,"\n",""),"\r","\n\r"));
+				mob.session().colorOnlyPrintln(str.toString());
 			}
 			mob.tell("^HDONE.");
 			return false;
