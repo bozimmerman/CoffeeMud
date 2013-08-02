@@ -113,8 +113,8 @@ public class StdSpaceShip implements Area, SpaceShip
 	@Override public long[] coordinates()  { return (shipItem!=null)?shipItem.coordinates():new long[3]; }
 	@Override public void setCoords(long[] coords) { if (shipItem!=null) shipItem.setCoords(coords); }
 	@Override public double[] direction() { return (shipItem!=null)?shipItem.direction():new double[2]; }
-	@Override public double orientation() { return (shipItem!=null)?shipItem.orientation():0; }
-	@Override public void setOrientation(double dir) { if (shipItem!=null) shipItem.setOrientation(dir); }
+	@Override public double roll() { return (shipItem!=null)?shipItem.roll():0; }
+	@Override public void setRoll(double dir) { if (shipItem!=null) shipItem.setRoll(dir); }
 	@Override public void setDirection(double[] dir) { if (shipItem!=null) shipItem.setDirection(dir); }
 	@Override public double[] facing() { return (shipItem!=null)?shipItem.facing():new double[2]; }
 	@Override public void setFacing(double[] dir) { if (shipItem!=null) shipItem.setFacing(dir); }

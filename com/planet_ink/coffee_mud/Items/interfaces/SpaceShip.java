@@ -73,10 +73,10 @@ public interface SpaceShip extends SpaceObject
 	 * The orientation of the top of the object in radians. 
 	 * @return radian for the direction of orientation
 	 */
-	public double orientation();
+	public double roll();
 	/**
 	 * Sets the orientation of the top of the object in radians.
 	 * @param dir radian for the direction of orientation
 	 */
-	public void setOrientation(double dir);
+	public void setRoll(double dir);
 }
