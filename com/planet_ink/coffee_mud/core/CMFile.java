@@ -1240,13 +1240,17 @@ public class CMFile extends File
 		if((catalogPluginAdded!=CMLib.catalog())&&(CMLib.catalog()!=null))
 		{
 			catalogPluginAdded=CMLib.catalog();
-			CMVFSDir dir=vvfs.fetchSubDir("/resources", true);
+			CMVFSDir dir=vvfs.fetchSubDir("/resources/catalog", false);
+			if(dir!=null) vvfs.delete(dir);
+			dir=vvfs.fetchSubDir("/resources", true);
 			vvfs.add(CMLib.catalog().getCatalogRoot(dir));
 		}
 		if((mapPluginAdded!=CMLib.map())&&(CMLib.map()!=null))
 		{
 			mapPluginAdded=CMLib.map();
-			CMVFSDir dir=vvfs.fetchSubDir("/resources", true);
+			CMVFSDir dir=vvfs.fetchSubDir("/resources/map", false);
+			if(dir!=null) vvfs.delete(dir);
+			dir=vvfs.fetchSubDir("/resources", true);
 			vvfs.add(CMLib.map().getMapRoot(dir));
 		}
 		return vvfs;
