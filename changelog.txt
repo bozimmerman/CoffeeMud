@@ -15,11 +15,13 @@
   14. Catalog items and mobs can now be flagged in categories (does not change the global unique name rule). 
   15. Catalog items and mobs can now be accessed via the VFS at /resources/catalog/mobs/.. and /resources/catalog/items/.. as CMARE files.
   16. Some new multiclassing system options:  NO-BASE, NO-SUBONLY, NO-[X], and NO-GRP-[X] -- see the coffeemud.ini
-  
+  17. SHELL command now (finally) supports diff (thanks google code!).  
 //TODO: create/modify/destroy manufacturer
 //TODO: add electronics to guides
 //TODO: add electronics to MG
 //TODO: http://games.groups.yahoo.com/group/coffeemud skip=1885,2881,2953,3274,15908,15914,16267
+# Build 5.8.0.1 Release 7/22/2013
+  Bug fix release -- removed Go-Ahead chars for tinyfugue
 # Build 5.8.0 Release 7/21/2013
    1. CoffeeMud and MiniWebServer are now integrated -- this means a much faster and better web service all around.
    ^^^Check out the altered WebServer guide, and make sure you integrate the pub. ini, admin.ini, and common.ini if you customized them.

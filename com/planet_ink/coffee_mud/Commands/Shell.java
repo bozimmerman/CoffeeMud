@@ -53,7 +53,7 @@ public class Shell extends StdCommand
 			{"&","SEARCHTEXT","GREP","ST"},
 			{"/","EDIT"},
 			{"~","MOVE","MV"},
-			//{"?","COMPAREFILES","DIFF","CF"},
+			{"?","COMPAREFILES","DIFF","CF"},
 	};
 	
 	protected final static String[] badTextExtensions={
@@ -759,7 +759,66 @@ public class Shell extends StdCommand
 		}
 		case 10: // compare files
 		{
-			mob.tell("^xNot yet implemented.^N");
+			if(commands.size()==2)
+				commands.addElement(".");
+			if(commands.size()<3)
+			{
+				mob.tell("^xError  : first and second files be specified!^N");
+				return false;
+			}
+			String firstFilename=(String)commands.elementAt(1);
+			String secondFilename=CMParms.combine(commands,2);
+			CMFile file1=new CMFile(incorporateBaseDir(pwd,firstFilename),mob);
+			if((!file1.canRead())
+			||(file1.isDirectory()))
+			{
+				mob.tell("^xError: You are not authorized to read the first file.^N");
+				return false;
+			}
+			String prefix="";
+			if(secondFilename.equals("."))
+			{
+				if(file1.isVFSFile())
+				{
+					prefix="//";
+					secondFilename=CMFile.vfsifyFilename(firstFilename);
+				}
+				else
+				if(file1.isLocalFile())
+				{
+					prefix="::";
+					secondFilename=CMFile.vfsifyFilename(firstFilename);
+				}
+				else
+				{
+					mob.tell("^xError  : first and second files be specified!^N");
+					return false;
+				}
+			}
+			CMFile file2=new CMFile(prefix+incorporateBaseDir(pwd,secondFilename),mob);
+			if((!file2.canRead())||(file2.isDirectory()))
+			{
+				mob.tell("^xError: You are not authorized to read the second file.^N");
+				return false;
+			}
+			StringBuilder text1=new StringBuilder("");
+			for(String s : Resources.getFileLineVector(file1.text()))
+				text1.append(s).append("\r");
+			StringBuilder text2=new StringBuilder("");
+			for(String s : Resources.getFileLineVector(file2.text()))
+				text2.append(s).append("\r");
+			LinkedList<CMStrings.Diff> diffs=CMStrings.diff_main(text1.toString(), text2.toString(), false);
+			boolean flipFlop=false;
+			for(CMStrings.Diff d : diffs)
+			{
+				StringBuilder str=new StringBuilder("\n\r^H"+d.operation.toString()+": ");
+				str.append(flipFlop?"^N":"^w");
+				flipFlop=!flipFlop;
+				str.append(d.text);
+				if(mob.session()!=null)
+					mob.session().colorOnlyPrintln(str.toString());
+			}
+			mob.tell("^HDONE.");
 			return false;
 		}
 		default:
