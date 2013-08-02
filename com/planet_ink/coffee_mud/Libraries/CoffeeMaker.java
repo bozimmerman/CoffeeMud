@@ -334,6 +334,21 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return "";
 	}
 
+	protected void possibleAddElectronicsManufacturers(Item I, Set<CMObject> custom)
+	{
+		if((I instanceof Electronics)
+		&&(custom!=null)
+		&&(!((Electronics)I).getManufacturerName().equalsIgnoreCase("RANDOM"))
+		&&(!custom.contains(((Electronics)I).getFinalManufacturer())))
+			custom.add(((Electronics)I).getFinalManufacturer());
+	}
+	
+	protected void possibleAddElectronicsManufacturers(MOB M, Set<CMObject> custom)
+	{
+		for(int i=0;i<M.numItems();i++)
+			possibleAddElectronicsManufacturers(M.getItem(i),custom);
+	}
+	
 	public String getGenMobInventory(MOB M)
 	{
 		StringBuilder itemstr=new StringBuilder("");
@@ -1021,6 +1036,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						return unpackErr("Custom","?type?"+ablk.tag);
 				}
 				else
+				if(ablk.tag.equalsIgnoreCase("MANUFACTURER"))
+				{
+					Manufacturer M=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
+					if(M!=null)
+					{
+						M.setXml(ablk.value);
+						if(CMLib.tech().getManufacturer(M.name())==null)
+							custom.add(M);
+					}
+					else
+						return unpackErr("Custom","?type?"+ablk.tag);
+				}
+				else
 					return unpackErr("Custom","??"+ablk.tag);
 			}
 		}
@@ -1428,6 +1456,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						continue;
 				}
 				buf.append(getMobXML(mob));
+				possibleAddElectronicsManufacturers(mob, custom);
 				possiblyAddCustomRace(mob, custom);
 				possiblyAddCustomClass(mob, custom);
 				fillFileSet(mob,files);
@@ -1812,6 +1841,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					{
 						possiblyAddCustomRace(mob, custom);
 						possiblyAddCustomClass(mob, custom);
+						possibleAddElectronicsManufacturers(mob, custom);
 
 						buf.append("<RMOB>");
 						buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
@@ -1859,6 +1889,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.basePhyStats().ability()));
 						buf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
 						buf.append("</RITEM>");
+						possibleAddElectronicsManufacturers(item, custom);
 						fillFileSet(item,files);
 					}
 				}
@@ -2938,6 +2969,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		str.append(getGenScripts(mob,true));
 
+		possibleAddElectronicsManufacturers(mob, custom);
+		
 		str.append(getGenMobInventory(mob));
 
 		str.append(getFactionXML(mob));
@@ -2946,6 +2979,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB thisMOB=mob.fetchFollower(f);
+			possibleAddElectronicsManufacturers(thisMOB, custom);
 			if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing()))
 			{
 				fols.append("<FOLLOWER>");

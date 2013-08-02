@@ -442,6 +442,9 @@ public class Export extends StdCommand
 				else
 				if(o instanceof Ability)
 					str.append(CMLib.coffeeMaker().getGenAbilityXML((Ability)o));
+				else
+				if(o instanceof Manufacturer)
+					str.append("<MANUFACTURER>").append(((Manufacturer)o).getXml()).append("</MANUFACTURER>");
 			}
 			str.append("</CUSTOM>");
 			xml+=str.toString();

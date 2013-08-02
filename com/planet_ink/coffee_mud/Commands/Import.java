@@ -1020,6 +1020,32 @@ public class Import extends StdCommand
 					CMLib.database().DBCreateAbility(A.ID(),CMClass.getSimpleClassName(A),A.getStat("ALLXML"));
 				}
 			}
+			else
+			if(custom.get(c) instanceof Manufacturer)
+			{
+				Manufacturer M=(Manufacturer)custom.get(c);
+				if(customBother.contains(M.name()))
+				   continue;
+	
+				Manufacturer eM=CMLib.tech().getManufacturer(M.name());
+				if(eM==null)
+				{
+					if(!noPrompt)
+						if(!mob.session().confirm("Custom Manufacturer '"+M.name()+"' found, import (Y/n)?","Y"))
+							continue;
+					CMLib.tech().addManufacturer(eM);
+				}
+				else
+				{
+					if(noDelete)
+						continue;
+					else
+					if(!noPrompt)
+						if(!mob.session().confirm("Custom Manufacturer '"+M.name()+"' found which would override your existing one.  Import anyway (Y/n)?","Y"))
+							continue;
+					eM.setXml(M.getXml());
+				}
+			}
 		}
 	}
 	
