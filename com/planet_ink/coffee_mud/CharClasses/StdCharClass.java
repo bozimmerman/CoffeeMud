@@ -433,7 +433,7 @@ public class StdCharClass implements CharClass
 					formula=formula.substring(0, x)+"d"+formula.substring(x+4,y)+formula.substring(y+1);
 			}
 			formula=CMStrings.replaceAlls(formula, manaDescReplacePairs);
-			manaDesc=CMProps.getIntVar(CMProps.Int.STARTMANA)+" +"+formula+" per lvl";
+			manaDesc=CMProps.getIntVar(CMProps.Int.STARTMANA)+" +"+formula+" /lvl";
 		}
 		return manaDesc;
 	}
