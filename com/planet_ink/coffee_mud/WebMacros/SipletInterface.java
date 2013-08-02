@@ -234,7 +234,20 @@ public class SipletInterface extends StdWebMacro
 					{
 						p.lastTouched=System.currentTimeMillis();
 						p.siplet.sendData(data);
-						success=p.siplet.isConnectedToURL();
+						if(p.siplet.isConnectedToURL())
+						{
+							CMLib.s_sleep(10);
+							if(p.siplet.isConnectedToURL())
+							{
+								p.lastTouched=System.currentTimeMillis();
+								p.siplet.readURLData();
+								data = p.siplet.getURLData();
+								final String jscript = p.siplet.getJScriptCommands();
+								success=p.siplet.isConnectedToURL();
+								p.response=Boolean.toString(success)+';'+data+token+';'+jscript+token+';';
+								return p.response;
+							}
+						}
 					}
 				}
 			}

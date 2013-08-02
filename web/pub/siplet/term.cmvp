@@ -312,6 +312,33 @@ function sendData(me)
 	myHttp.exec('SENDDATA&TOKEN='+theapplet+'&DATA='+s,function(success,status,txt){
 		if(!success)
 			goOffline();
+		else
+		{
+			var tk=theapplet+";";
+			var x=txt.indexOf(tk);
+			if(x<0)
+				goOffline();
+			else
+			{
+				var data=txt.substr(0,x);
+				var s="";
+				s=s+data;
+				addToWindow(s);
+				
+				txt=txt.substr(x+tk.length);
+				x=txt.indexOf(tk);
+				if(x>0)
+				{
+					data=txt.substr(0,x);
+					s="";
+					s=s+data;
+					if(s.length>0)
+						eval(s);
+				}
+				lastReceived = new Date().getTime();
+				setTimeout(displayData,pingDelay);
+			}
+		}
 	});
 }
 
