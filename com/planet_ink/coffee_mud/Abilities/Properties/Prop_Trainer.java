@@ -39,8 +39,8 @@ public class Prop_Trainer extends Prop_StatTrainer
 	public String ID() { return "Prop_Trainer"; }
 	public String name(){ return "THE Training MOB";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public String accountForYourself()
-	{ return "Trainer";	}
+	public String accountForYourself() { return "Trainer";	}
+	
 	private boolean built=false;
 
 	private void addCharClassIfNotFound(MOB mob, CharClass C)
