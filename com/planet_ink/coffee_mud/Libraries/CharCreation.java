@@ -386,21 +386,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		for(Iterator<CharClass> i=classes.iterator(); i.hasNext(); )
 		{
 			CharClass C = i.next();
-			if(C.getAttackAttribute()==highestAttribute)
-				list.append("^H");
-			else
-				list.append("^w");
+			String color=(C.getAttackAttribute()==highestAttribute)?"^H":"^w";
 			if(!i.hasNext())
 			{
 				if (list.length()>0)
 				{
-					list.append("^?"+finalConnector+" ^?");
+					list.append("^N"+finalConnector+" "+color);
 				}
 				list.append(C.name());
 			}
 			else
 			{
-				list.append(C.name()+"^?, ^?");
+				list.append(color+C.name()+"^N, ");
 			}
 		}
 		return list.toString();
@@ -2528,7 +2525,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		List<CharClass> qualClassesV=classQualifies(mob,loginObj.theme);
 		String listOfClasses = buildQualifyingClassList(mob, qualClassesV, "or");
 		session.println("\n\r^!Please choose from the following Classes:");
-		session.print("^H[" + listOfClasses + "]^N");
+		session.print("^N[" + listOfClasses + "^N]");
 		session.promptPrint("\n\r: ");
 		loginObj.state=LoginState.CHARCR_CLASSPICKED;
 		return LoginResult.INPUT_REQUIRED;
