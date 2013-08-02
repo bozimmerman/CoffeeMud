@@ -236,7 +236,7 @@ public class JournalLoader
 			D=DB.DBFetch();
 			String str="SELECT * FROM CMJRNL WHERE";
 			if(newerDate==0)
-				str+=" CMUPTM <> 0";
+				str+=" CMUPTM > 0";
 			else
 			if((parent==null)||(parent.length()>0))
 				str+=" CMUPTM > " + newerDate;
