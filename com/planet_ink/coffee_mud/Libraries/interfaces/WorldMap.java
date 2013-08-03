@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.*;
+import java.util.Map.Entry;
 /* 
    Copyright 2000-2013 Bo Zimmerman
 
@@ -140,6 +141,7 @@ public interface WorldMap extends CMLibrary
 	public void moveSpaceObject(SpaceObject O, long[] coords);
 	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs);
 	public Enumeration<SpaceObject> getSpaceObjects();
+	public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries();
 	public List<SpaceObject> getSpaceObjectsWithin(SpaceObject ofObj, long minDistance, long maxDistance);
 	
 	/************************************************************************/

@@ -17,7 +17,8 @@
   16. Some new multiclassing system options:  NO-BASE, NO-SUBONLY, NO-[X], and NO-GRP-[X] -- see the coffeemud.ini
   17. SHELL command now (finally) supports diff (thanks google code!).  
   18. Similar to #15, the entire world map, w/ cmare files, and down to room properties, is in VFS at /resources/map/... can edit properties!
-  
+
+//TODO: move object to rtree  
 //TODO: create/modify/destroy manufacturer
 //TODO: add electronics to guides
 //TODO: add electronics to MG

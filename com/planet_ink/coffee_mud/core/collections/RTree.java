@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.core.collections;
 
 import java.lang.ref.WeakReference;
 import java.util.*;
+import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
@@ -522,6 +523,11 @@ public class RTree<T extends BoundedObject> {
 	public Enumeration<T> objects()
 	{
 		return trackMap.keys();
+	}
+	
+	public Enumeration<Entry<T, List<WeakReference<TrackingVector<T>>>>> objectEntries()
+	{
+		return trackMap.entries();
 	}
 	
 	public boolean leafSearch(T o) {

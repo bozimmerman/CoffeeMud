@@ -85,6 +85,32 @@ public interface BoundedObject
 			if(l.oz > oz) oz=l.oz;
 		}
 		
+		public BoundedCube expand(double[] direction, long distance)
+		{
+			BoundedCube cube=new BoundedCube(this);
+			double x1=Math.cos(direction[0])*Math.sin(direction[1]);
+			double y1=Math.sin(direction[0])*Math.sin(direction[1]);
+			double z1=Math.cos(direction[1]);
+			long[] oldCenter=new long[]{((lx+rx)/2),((ty+rx)/2),((iz+oz)/2)};
+			long[] newCenter=new long[]{
+					oldCenter[0]+Math.round(CMath.mul(distance,x1)),
+					oldCenter[1]+Math.round(CMath.mul(distance,y1)),
+					oldCenter[2]+Math.round(CMath.mul(distance,z1))};
+			if(newCenter[0]>oldCenter[0])
+				cube.rx+=newCenter[0]-oldCenter[0];
+			else
+				cube.lx+=newCenter[0]-oldCenter[0];
+			if(newCenter[1]>oldCenter[1])
+				cube.ty+=newCenter[1]-oldCenter[1];
+			else
+				cube.by+=newCenter[1]-oldCenter[1];
+			if(newCenter[2]>oldCenter[2])
+				cube.iz+=newCenter[2]-oldCenter[2];
+			else
+				cube.oz+=newCenter[2]-oldCenter[2];
+			return cube;
+		}
+		
 		public boolean intersects(BoundedCube two)
 		{
 			if(two==null) return false;

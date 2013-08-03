@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -274,14 +275,28 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		for(Enumeration<SpaceObject> o = CMLib.map().getSpaceObjects(); o.hasMoreElements(); )
 		{
 			SpaceObject O=o.nextElement();
-			if(O.speed()>0)
+			if(!(O instanceof Area))
 			{
-				CMLib.map().moveSpaceObject(O);
-				List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, O.radius());
+				BoundedCube cube=O.getBounds();
+				if(O.speed()>0)
+				{
+	    			CMLib.map().moveSpaceObject(O);
+	    			cube=cube.expand(O.direction(),O.speed());
+				}
+				List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.DISTANCE_LIGHTMINUTE);
 				for(SpaceObject cO : cOs)
 					if(cO != O)
 					{
-						// we have a collision!
+						if(cO.getBounds().intersects(cube))
+						{
+							// we have a collision! or landing
+						}
+						else
+						if((cO instanceof Area)
+						&&((CMLib.map().getDistanceFrom(O, cO)-cO.radius())<=(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_RADIUS)))
+						{
+							// gravity 
+						}
 						// we might also have a landing, or something near one...
 						// maybe good to use the entryset<o,list> so you always have
 						// the nearby things. 
@@ -290,7 +305,6 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						// when moving ships, collisions are better if you are looking
 						// in a radius that includes the speed.
 					}
-				
 			}
 		}
 	}

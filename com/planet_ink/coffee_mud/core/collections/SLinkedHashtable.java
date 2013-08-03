@@ -100,6 +100,10 @@ public class SLinkedHashtable<K,F> implements java.util.Map<K,F>, java.io.Serial
 		return new IteratorEnumeration<F>(H.values().iterator());
 	}
 
+	public synchronized Enumeration<Map.Entry<K,F>>entries() {
+		return new IteratorEnumeration<Map.Entry<K,F>>(H.entrySet().iterator());
+	}
+
 	@Override
 	public synchronized Set<java.util.Map.Entry<K, F>> entrySet() {
 		return H.entrySet();
