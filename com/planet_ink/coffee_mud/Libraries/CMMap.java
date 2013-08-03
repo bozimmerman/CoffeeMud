@@ -1535,6 +1535,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		CMLib.database().DBDeleteArea(A);
 		delArea(A);
+		A.destroy(); // why not?
 	}
 
 	public CMMsg resetMsg=null;
