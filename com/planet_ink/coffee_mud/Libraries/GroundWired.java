@@ -285,7 +285,10 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						// we might also have a landing, or something near one...
 						// maybe good to use the entryset<o,list> so you always have
 						// the nearby things. 
-						// this is important because this needs to do gravity also
+						// this is important because this needs to do gravity also.
+						// do gravity first.
+						// when moving ships, collisions are better if you are looking
+						// in a radius that includes the speed.
 					}
 				
 			}
