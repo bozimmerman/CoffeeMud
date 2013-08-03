@@ -283,11 +283,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						// we have a collision!
 						// we might also have a landing, or something near one...
+						// maybe good to use the entryset<o,list> so you always have
+						// the nearby things. 
+						// this is important because this needs to do gravity also
 					}
 				
 			}
 		}
-		// other than just moving everything "out there" is there anything else to do?
 	}
 	
 	@Override public boolean tick(Tickable ticking, int tickID) 
