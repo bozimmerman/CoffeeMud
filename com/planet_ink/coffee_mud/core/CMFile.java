@@ -911,7 +911,14 @@ public class CMFile extends File
 			}
 			if(vfsBits<0) vfsBits=0;
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
-			info.saveData(filename,vfsBits,author(),O);
+			if(info!=null)
+				info.saveData(filename,vfsBits,author(),O);
+			else
+			{
+				info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author);
+				getVFSDirectory().add(info);
+				CMLib.database().DBUpSertVFSFile(filename,vfsBits,author,System.currentTimeMillis(),O);
+			}
 			return true;
 		}
 
@@ -998,7 +1005,14 @@ public class CMFile extends File
 			}
 			if(vfsBits<0) vfsBits=0;
 			vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
-			info.saveData(filename,vfsBits,author(),O);
+			if(info!=null)
+				info.saveData(filename,vfsBits,author(),O);
+			else
+			{
+				info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author);
+				getVFSDirectory().add(info);
+				CMLib.database().DBUpSertVFSFile(filename,vfsBits,author,System.currentTimeMillis(),O);
+			}
 			return true;
 		}
 

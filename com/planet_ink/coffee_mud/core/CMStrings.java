@@ -2420,12 +2420,14 @@ public class CMStrings
 		if (text1.length() > text2.length()) {
 			return hm;
 			//return new String[]{hm[0], hm[1], hm[2], hm[3], hm[4]};
-		} else {
+		} else if(hm!=null) {
 			return new String[]{hm[2], hm[3], hm[0], hm[1], hm[4]};
+		} else {
+			return new String[]{};
 		}
 	}
 
-	/**
+	/**f
 	 * Does a substring of shorttext exist within longtext such that the
 	 * substring is at least half the length of longtext?
 	 * @author fraser@google.com (Neil Fraser)
@@ -2570,8 +2572,8 @@ public class CMStrings
 			}
 		}
 		while (thisDiff != null) {
-			if (prevDiff.operation == DiffOperation.DELETE &&
-					thisDiff.operation == DiffOperation.INSERT) {
+			if ((prevDiff!=null)&&(prevDiff.operation == DiffOperation.DELETE &&
+					thisDiff.operation == DiffOperation.INSERT)) {
 				String deletion = prevDiff.text;
 				String insertion = thisDiff.text;
 				int overlap_length1 = diff_commonOverlap(deletion, insertion);
@@ -2633,8 +2635,8 @@ public class CMStrings
 		Diff nextDiff = pointer.hasNext() ? pointer.next() : null;
 		// Intentionally ignore the first and last element (don't need checking).
 		while (nextDiff != null) {
-			if (prevDiff.operation == DiffOperation.EQUAL &&
-					nextDiff.operation == DiffOperation.EQUAL) {
+			if ((prevDiff!=null)&&(thisDiff!=null)&&(prevDiff.operation == DiffOperation.EQUAL &&
+					nextDiff.operation == DiffOperation.EQUAL)) {
 				// This is a single edit surrounded by equalities.
 				equality1 = prevDiff.text;
 				edit = thisDiff.text;
@@ -2868,8 +2870,8 @@ public class CMStrings
 		Diff nextDiff = pointer.hasNext() ? pointer.next() : null;
 		// Intentionally ignore the first and last element (don't need checking).
 		while (nextDiff != null) {
-			if (prevDiff.operation == DiffOperation.EQUAL &&
-					nextDiff.operation == DiffOperation.EQUAL) {
+			if ((prevDiff!=null)&&(thisDiff!=null)&&(prevDiff.operation == DiffOperation.EQUAL &&
+					nextDiff.operation == DiffOperation.EQUAL)) {
 				// This is a single edit surrounded by equalities.
 				if (thisDiff.text.endsWith(prevDiff.text)) {
 					// Shift the edit over the previous equality.
