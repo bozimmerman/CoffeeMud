@@ -290,6 +290,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						if(cO.getBounds().intersects(cube))
 						{
 							// we have a collision! or landing
+							// if destroyed, break
 						}
 						else
 						if((cO instanceof Area)
