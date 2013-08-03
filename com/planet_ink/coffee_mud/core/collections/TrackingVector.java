@@ -34,17 +34,39 @@ public class TrackingVector<T> extends Vector<T>
 
 	private final Map<T,List<WeakReference<TrackingVector<T>>>> tracker;
 	private final WeakReference<TrackingVector<T>> myRef=new WeakReference<TrackingVector<T>>(this);
+	private final WeakReference<TrackBack<T>> trackBackRef;
+	
+	public interface TrackBack<T>
+	{
+		public void removed(T o);
+	}
 	
 	public TrackingVector(Map<T,List<WeakReference<TrackingVector<T>>>> tracker)
 	{
 		super();
 		this.tracker=tracker;
+		trackBackRef=null;
 	}
 
 	public TrackingVector(Map<T,List<WeakReference<TrackingVector<T>>>> tracker, int sz)
 	{
 		super(sz);
 		this.tracker=tracker;
+		trackBackRef=null;
+	}
+
+	public TrackingVector(Map<T,List<WeakReference<TrackingVector<T>>>> tracker, TrackBack<T> obj)
+	{
+		super();
+		this.tracker=tracker;
+		this.trackBackRef=new WeakReference<TrackBack<T>>(obj);
+	}
+
+	public TrackingVector(Map<T,List<WeakReference<TrackingVector<T>>>> tracker, int sz, TrackBack<T> obj)
+	{
+		super(sz);
+		this.tracker=tracker;
+		this.trackBackRef=new WeakReference<TrackBack<T>>(obj);
 	}
 
 	protected void addTrackedEntry(T e)
@@ -137,9 +159,9 @@ public class TrackingVector<T> extends Vector<T>
 	}
 	
 	
-	@Override
+    @Override
 	public boolean remove(Object arg0) {
-		if(super.remove(arg0))
+		if(removeOnlyFromMe(arg0))
 		{
 			removeTrackedEntry(arg0);
 			return true;
@@ -147,15 +169,23 @@ public class TrackingVector<T> extends Vector<T>
 		return false;
 	}
 
-	public boolean removeOnlyFromMe(Object arg0) {
-		return super.remove(arg0);
+	@SuppressWarnings("unchecked")
+    public boolean removeOnlyFromMe(Object arg0) {
+		boolean success=super.remove(arg0);
+		if((trackBackRef!=null)&&(trackBackRef.get()!=null))
+			trackBackRef.get().removed((T)arg0);
+		return success;
 	}
 
 	@Override
 	public synchronized T remove(int arg0) {
 		T x=super.remove(arg0);
 		if(x!=null)
+		{
 			removeTrackedEntry(x);
+			if((trackBackRef!=null)&&(trackBackRef.get()!=null))
+				trackBackRef.get().removed(x);
+		}
 		return x;
 	}
 

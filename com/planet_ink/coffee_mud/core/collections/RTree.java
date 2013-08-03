@@ -33,12 +33,17 @@ public class RTree<T extends BoundedObject> {
 		BoundedCube box;
 		Vector<RTreeNode> children;
 		TrackingVector<T> data;
+		final RTreeNode me=this;
 		
 		public RTreeNode() {}
 
 		public RTreeNode(boolean isLeaf)	{
 			if (isLeaf) {
-				data = new TrackingVector<T>(trackMap,maxSize+1);
+				data = new TrackingVector<T>(trackMap,maxSize+1,new TrackingVector.TrackBack<T>() {
+					@Override public void removed(T o) {
+						me.computeMBR(true);
+					}
+				});
 			} else {
 				children = new Vector<RTreeNode>(maxSize+1);
 			}
@@ -376,23 +381,7 @@ public class RTree<T extends BoundedObject> {
 			}
 		}
 	}
-	private boolean query(BoundedObject obj, RTreeNode node) 
-	{
-		if (node == null) 
-			return false;
-		if (node.isLeaf()) {
-			return node.data.contains(obj);
-		} else {
-			for (int i = 0; i < node.children.size(); i++) {
-				if (node.children.get(i).box.intersects(obj.getBounds())) {
-					if(query(obj, node.children.get(i)))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
+	
 	/**
 	 * Returns one item that intersects the query box, or null if nothing intersects
 	 * the query box.
@@ -476,16 +465,31 @@ public class RTree<T extends BoundedObject> {
 	 * Removes the specified object if it is in the tree.
 	 * @param o
 	 */
-	public boolean remove(T o) {
+	public boolean remove(T o) 
+	{
 		if(root==null) return false;
-		final RTreeNode n = chooseLeaf(o, root);
-		if(n.isLeaf())
+		boolean removed=false;
+		TrackingVector<T> v=null;
+		synchronized(trackMap)
 		{
-			n.data.removeAllTrackedEntries(o);
-			n.computeMBR();
-			return true;
+			List<WeakReference<TrackingVector<T>>> nodes = trackMap.get(o);
+			if(nodes!=null)
+			{
+				int i=0;
+				while((v==null)&&(i<nodes.size()))
+				{
+					WeakReference<TrackingVector<T>> r  = nodes.get(i++);
+					if(r!=null)
+						v=r.get();
+				}
+			}
 		}
-		return false;
+		if(v!=null)
+		{
+			v.removeAllTrackedEntries(o);
+			removed=true;
+		}
+		return removed;
 	}
 
 	/**
@@ -507,6 +511,8 @@ public class RTree<T extends BoundedObject> {
 			splitter.split(n);
 		}
 	}
+	
+	
 
 	public boolean contains(T o) {
 		if (o == null) 
@@ -514,10 +520,7 @@ public class RTree<T extends BoundedObject> {
 		if (root == null)
 			return false;
 
-		if(!trackMap.containsKey(o))
-			return false;
-		
-		return query(o, root);
+		return trackMap.containsKey(o);
 	}
 
 	public Enumeration<T> objects()
