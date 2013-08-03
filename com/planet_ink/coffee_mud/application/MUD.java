@@ -652,7 +652,7 @@ public class MUD extends Thread implements MudHost
 				case 0: playstate = "MudLib Development"; break;
 				case 1: playstate = "Restricted Access"; break;
 				case 2: playstate = "Beta Testing"; break;
-				case 3: playstate = "Open for public"; break;
+				case 3: playstate = "Open to the public"; break;
 				default: playstate = "MudLib Development"; break;
 				}
 				IMudInterface imud=new IMudInterface(CMProps.getVar(CMProps.Str.MUDNAME),
