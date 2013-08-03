@@ -44,6 +44,7 @@ public class StdItem implements Item
 	protected int   		myUses=Integer.MAX_VALUE;
 	protected long  		myWornCode=Wearable.IN_INVENTORY;
 	protected String		miscText="";
+	protected Rideable 		riding=null;
 	protected String		rawImageName=null;
 	protected String		cachedImageName=null;
 	protected String		secretIdentity=null;
@@ -88,6 +89,10 @@ public class StdItem implements Item
 	}
 	public String displayText(MOB viewerMob) { return displayText(); }
 	public String name(MOB viewerMob) { return name(); }
+	public void setDatabaseID(String id){databaseID=id;}
+	public boolean canSaveDatabaseID(){ return true;}
+	public String databaseID(){return databaseID;}
+	
 	public String image()
 	{
 		if(cachedImageName==null)
@@ -211,7 +216,6 @@ public class StdItem implements Item
 		}
 	}
 
-	protected Rideable riding=null;
 	public Rideable riding(){return riding;}
 	public void setRiding(Rideable ride)
 	{
@@ -232,19 +236,17 @@ public class StdItem implements Item
 			setExpirationDate(0);
 		recoverPhyStats();
 	}
+	
 	public long expirationDate()
 	{
 		return dispossessionTime;
 	}
 	
-	public void setDatabaseID(String id){databaseID=id;}
-	public boolean canSaveDatabaseID(){ return true;}
-	public String databaseID(){return databaseID;}
-	
 	public void setExpirationDate(long time)
 	{
 		dispossessionTime=time;
 	}
+	
 	public boolean amDestroyed()
 	{
 		return destroyed;
@@ -259,11 +261,13 @@ public class StdItem implements Item
 			return false;
 		return (myWornCode & wornCode)==wornCode;
 	}
+	
 	public boolean fitsOn(long wornCode)
 	{
 		if(wornCode<=0)	return true;
 		return ((properWornBitmap & wornCode)==wornCode);
 	}
+	
 	public void wearEvenIfImpossible(MOB mob)
 	{
 		for(long code : Wearable.CODES.ALL_ORDERED())
@@ -275,6 +279,7 @@ public class StdItem implements Item
 			}
 		}
 	}
+	
 	public boolean wearIfPossible(MOB mob, long wearCode)
 	{
 		if(wearCode<=0)
@@ -288,6 +293,7 @@ public class StdItem implements Item
 		}
 		return false;
 	}
+	
 	public boolean wearIfPossible(MOB mob)
 	{
 		for(long code : Wearable.CODES.ALL_ORDERED())
@@ -295,6 +301,7 @@ public class StdItem implements Item
 				return true;
 		return false;
 	}
+	
 	public void wearAt(long wornCode)
 	{
 		if(wornCode==Wearable.IN_INVENTORY)
@@ -310,17 +317,25 @@ public class StdItem implements Item
 	}
 
 	public long rawProperLocationBitmap()
-	{ return properWornBitmap;}
+	{ 
+		return properWornBitmap;
+	}
+	
 	public boolean rawLogicalAnd()
-	{ return wornLogicalAnd;}
+	{ 
+		return wornLogicalAnd;
+	}
+	
 	public void setRawProperLocationBitmap(long newValue)
 	{
 		properWornBitmap=newValue;
 	}
+	
 	public void setRawLogicalAnd(boolean newAnd)
 	{
 		wornLogicalAnd=newAnd;
 	}
+	
 	public boolean compareProperLocations(Item toThis)
 	{
 		if(toThis.rawLogicalAnd()!=wornLogicalAnd)
@@ -380,6 +395,7 @@ public class StdItem implements Item
 	{
 		return myWornCode;
 	}
+	
 	public void setRawWornCode(long newValue)
 	{
 		myWornCode=newValue;
@@ -406,6 +422,7 @@ public class StdItem implements Item
 	{
 		return baseGoldValue()+(10*phyStats().ability());
 	}
+	
 	public int baseGoldValue(){return baseGoldValue;}
 	public void setBaseValue(int newValue)
 	{
@@ -448,31 +465,37 @@ public class StdItem implements Item
 			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
 		}});
 	}
+	
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
 		}});
 	}
+	
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
 		}});
 	}
+	
 	public void setMiscText(String newText)
 	{
 		miscText=newText;
 	}
+	
 	public String text()
 	{
 		return miscText;
 	}
+	
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public long getTickStatus(){return tickStatus;}
+	
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(destroyed) 
@@ -522,6 +545,7 @@ public class StdItem implements Item
 	{
 		return myContainer;
 	}
+	
 	public String rawSecretIdentity(){return ((secretIdentity==null)?"":secretIdentity);}
 	public String secretIdentity()
 	{
@@ -544,6 +568,7 @@ public class StdItem implements Item
 	{
 		return displayText;
 	}
+	
 	public void setDisplayText(String newDisplayText)
 	{
 		displayText=newDisplayText;
@@ -584,14 +609,17 @@ public class StdItem implements Item
 	{
 		myContainer=newContainer;
 	}
+	
 	public int numberOfItems()
 	{
 		return 1;
 	}
+	
 	public int usesRemaining()
 	{
 		return myUses;
 	}
+	
 	public void setUsesRemaining(int newUses)
 	{
 		myUses=newUses;
@@ -1207,6 +1235,7 @@ public class StdItem implements Item
 		destroyed=true; // WHY?!?!?
 		CMLib.threads().deleteTick(this,-1);
 	}
+	
 	public void destroy()
 	{
 		if((phyStats().sensesMask()&PhyStats.SENSE_UNDESTROYABLE)>0)
@@ -1365,6 +1394,7 @@ public class StdItem implements Item
 			affects.add(keepThisOne);
 		}
 	}
+	
 	public Enumeration<Ability> effects(){return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();}
 
 	public int numEffects()
@@ -1372,6 +1402,7 @@ public class StdItem implements Item
 		if(affects==null) return 0;
 		return affects.size();
 	}
+	
 	public Ability fetchEffect(int index)
 	{
 		if(affects==null) return null;
@@ -1382,6 +1413,7 @@ public class StdItem implements Item
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	
 	public Ability fetchEffect(String ID)
 	{
 		if(affects==null) return null;
@@ -1410,6 +1442,7 @@ public class StdItem implements Item
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
+	
 	public void delAllBehaviors()
 	{
 		boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
@@ -1418,6 +1451,7 @@ public class StdItem implements Item
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
+	
 	public void delBehavior(Behavior to)
 	{
 		if(behaviors==null) return;
@@ -1427,12 +1461,18 @@ public class StdItem implements Item
 				CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 		}
 	}
+	
 	public int numBehaviors()
 	{
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
-	public Enumeration<Behavior> behaviors() { return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();}
+	
+	public Enumeration<Behavior> behaviors() 
+	{ 
+		return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();
+	}
+	
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null) return null;
@@ -1443,6 +1483,7 @@ public class StdItem implements Item
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	
 	public Behavior fetchBehavior(String ID)
 	{
 		if(behaviors==null) return null;
@@ -1451,6 +1492,7 @@ public class StdItem implements Item
 				return B;
 		return null;
 	}
+	
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
 		final List<Behavior> behaviors=this.behaviors;
@@ -1484,6 +1526,7 @@ public class StdItem implements Item
 			scripts.addElement(S);
 		}
 	}
+	
 	public void delScript(ScriptingEngine S)
 	{
 		if(scripts!=null)
@@ -1497,6 +1540,7 @@ public class StdItem implements Item
 			}
 		}
 	}
+	
 	public void delAllScripts()
 	{
 		boolean didSomething=(scripts!=null)&&(scripts.size()>0);
@@ -1505,9 +1549,13 @@ public class StdItem implements Item
 		if(didSomething && ((behaviors==null)||(behaviors.size()==0)))
 		  CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 	}
+	
 	public int numScripts(){return (scripts==null)?0:scripts.size();}
+	
 	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
+	
 	public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+	
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
