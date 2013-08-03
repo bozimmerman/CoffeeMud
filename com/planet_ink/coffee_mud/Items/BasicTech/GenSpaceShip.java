@@ -591,9 +591,12 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
-							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",
-							  "FUELTYPE","POWERCAP","ACTIVATED","POWERREM",
-							  "MANUFACTURER","AREA"};
+											"CONTAINTYPES","RIDEBASIS","MOBSHELD",
+											"FUELTYPE","POWERCAP","ACTIVATED","POWERREM",
+											"MANUFACTURER","AREA","COORDS","RADIUS",
+											"ROLL","DIRECTION","SPEED","FACING","OWNER",
+											"PRICE"
+										  };
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -611,6 +614,14 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 8: return ""+powerRemaining();
 		case 9: return getManufacturerName();
 		case 10: return (area==null)?"":CMLib.coffeeMaker().getAreaXML(area, null, null, null, true).toString();
+		case 11: return CMParms.toStringList(coordinates());
+		case 12: return ""+radius();
+		case 13: return ""+roll();
+		case 14: return CMParms.toStringList(direction());
+		case 15: return ""+speed();
+		case 16: return CMParms.toStringList(facing());
+		case 17: return getOwnerName();
+		case 18: return ""+getPrice();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -632,7 +643,15 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		case 7: activate(CMath.s_bool(val)); break;
 		case 8: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
 		case 9: setManufacturerName(val); break;
-		case 10: this.setShipArea(val); break;
+		case 10: setShipArea(val); break;
+		case 11: setCoords(CMParms.toLongArray(CMParms.parseCommas(val, true))); break;
+		case 12: setRadius(CMath.s_long(val)); break;
+		case 13: setRoll(CMath.s_double(val)); break;
+		case 14: setDirection(CMParms.toDoubleArray(CMParms.parseCommas(val,true))); break;
+		case 15: setSpeed(CMath.s_long(val)); break;
+		case 16: setFacing(CMParms.toDoubleArray(CMParms.parseCommas(val,true))); break;
+		case 17: setOwnerName(val); break;
+		case 18: setPrice(CMath.s_int(val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

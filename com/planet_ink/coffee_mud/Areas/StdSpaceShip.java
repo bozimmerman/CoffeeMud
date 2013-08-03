@@ -1131,7 +1131,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public String finalDevalueRate(){ return "";}
    
 	public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS"};
+	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","THEME","BLURBS","OMLCOEFF","RADIUS"};
 	public String[] getStatCodes(){return CODES;}
 	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
@@ -1148,6 +1148,8 @@ public class StdSpaceShip implements Area, SpaceShip
 		case 3: return text();
 		case 4: return ""+getTheme();
 		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
+		case 6: return ""+getOMLCoeff();
+		case 7: return ""+radius();
 		}
 		return "";
 	}
@@ -1182,6 +1184,8 @@ public class StdSpaceShip implements Area, SpaceShip
 			}
 			break;
 		}
+		case 6: setOMLCoeff(CMath.s_double(val)); break;
+		case 7: setRadius(CMath.s_long(val)); break;
 		}
 	}
 	public boolean sameAs(Environmental E)
