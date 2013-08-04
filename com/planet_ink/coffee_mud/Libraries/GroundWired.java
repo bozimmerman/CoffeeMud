@@ -574,14 +574,14 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	
 	public void addManufacturer(Manufacturer manufacturer)
 	{
-		if(manufacturer==null) return;
+		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
 		manufacturers.put(manufacturer.name().toUpperCase().trim(), manufacturer);
 		saveAllManufacturers();
 	}
 	
 	public void delManufacturer(Manufacturer manufacturer)
 	{
-		if(manufacturer==null) return;
+		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
 		Manufacturer found=getManufacturer(manufacturer.name());
 		if(found==manufacturer)
 			manufacturers.remove(manufacturer.name().toUpperCase().trim());
@@ -590,7 +590,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	
 	public void updateManufacturer(Manufacturer manufacturer)
 	{
-		if(manufacturer==null) return;
+		if((manufacturer==null)||(manufacturer==defaultManufacturer)) return;
 		Manufacturer found=getManufacturer(manufacturer.name());
 		if((found==null)||(found!=manufacturer))
 		{

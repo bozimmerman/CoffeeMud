@@ -2142,7 +2142,13 @@ public class ListCmd extends StdCommand
 		str.append(CMStrings.padRight("Rel.", 4));
 		str.append("\n\r");
 		str.append(CMStrings.repeat("-", 75)).append("\n\r");
-		for(Iterator<Manufacturer> i =CMLib.tech().manufacterers();i.hasNext();)
+		List<Manufacturer> l=new XVector<Manufacturer>(CMLib.tech().manufacterers());
+		Collections.sort(l,new Comparator<Manufacturer>(){
+			@Override public int compare(Manufacturer o1, Manufacturer o2) {
+				return o1.name().compareToIgnoreCase(o2.name());
+			}
+		});
+		for(Iterator<Manufacturer> i =l.iterator();i.hasNext();)
 		{
 			Manufacturer M=i.next();
 			str.append(CMStrings.padRight(M.name(), 20)).append(" ");

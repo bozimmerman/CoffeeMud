@@ -10,13 +10,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import java.util.List;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -120,6 +120,43 @@ public class Reset extends StdCommand
 		}
 	}
 
+	public void makeManufacturer(String[] names, TechType[] types)
+	{
+		if(names.length%3!=0)
+			Log.errOut("Test: Not /3 names: "+CMParms.toStringList(names));
+		else
+		{
+			for(String name : names)
+				CMLib.tech().delManufacturer(CMLib.tech().getManufacturer(name));
+			for(int i=0;i<6;i++)
+			{
+				Manufacturer M=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
+				M.setName(names[i]);
+				if(i%3==0)
+				{
+					M.setMinTechLevelDiff((byte)0);
+					M.setMaxTechLevelDiff((byte)(M.getMinTechLevelDiff()+CMLib.dice().roll(1, 3, 2)));
+				}
+				else
+				if(i%3==1)
+				{
+					M.setMinTechLevelDiff((byte)3);
+					M.setMaxTechLevelDiff((byte)(M.getMinTechLevelDiff()+CMLib.dice().roll(1, 3, 2)));
+				}
+				else
+				if(i%3==2)
+				{
+					M.setMinTechLevelDiff((byte)(8-CMLib.dice().roll(1, 3, 0)));
+					M.setMaxTechLevelDiff((byte)10);
+				}
+				M.setEfficiencyPct(0.75+CMath.div(CMLib.dice().rollGaussian(1, 50, 0),100.0));
+				M.setReliabilityPct(0.75+CMath.div(CMLib.dice().rollGaussian(1, 50, 0),100.0));
+				M.setManufactureredTypesList(CMParms.toStringList(types));
+				CMLib.tech().addManufacturer(M);
+			}
+		}
+	}
+	
 	protected int rightImportMat(MOB mob, Item I, boolean openOnly)
 		throws java.io.IOException
 	{
@@ -1298,6 +1335,172 @@ public class Reset extends StdCommand
 			if(A.getAreaState()!=Area.State.ACTIVE) 
 				A.setAreaState(Area.State.ACTIVE);
 			mob.tell("Done.");
+		}
+		else
+		if(s.equalsIgnoreCase("manufacturers"))
+		{
+			TechType[] types;
+			String[] names;
+
+			types=new TechType[]{TechType.SHIP_SOFTWARE};
+			names=new String[]{
+			"Nanoapp",
+			"ExaSoft",
+			"Cryptosoft",
+			"M.S. Corp",
+			"AmLogic",
+			"InnovaSoft",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_COMPUTER};
+			names=new String[]{
+			"IniProc",
+			"picoSystems",
+			"cybProc",
+			"GuthrieTronics",
+			"SolidCorp",
+			"DelCorp",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_SPACESHIP};
+			names=new String[]{
+			"AtomiCorp",
+			"FrontierCorp",
+			"Vargas",
+			"JarviSys",
+			"Solar Corp",
+			"DynamiCorp",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_ENGINE};
+			names=new String[]{
+			"Aczev Ltd",
+			"ItsukCorp",
+			"E.B.H. Ltd",
+			"Globomotors",
+			"Bowers Eng.",
+			"DynamiDrive",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_SENSOR};
+			names=new String[]{
+			"BunovaCorp",
+			"Censys",
+			"Dering-Hao",
+			"ProgressTek",
+			"NetCorp",
+			"McNeil Ltd",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_DAMPENER};
+			names=new String[]{
+			"S.H. Ltd",
+			"Malik-Ni",
+			"HsuiCorp",
+			"RiddleCorp",
+			"TotCorp",
+			"Apex Ltd",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_ENVIRO_CONTROL};
+			names=new String[]{
+			"YehCorp",
+			"A.O.P. Ltd",
+			"Callahan",
+			"Innovatak",
+			"SharpeyTek",
+			"Holtz-Derkova",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_POWER};
+			names=new String[]{
+			"Optcel",
+			"Shinacells",
+			"Choe Corp",
+			"hyDat Ltd",
+			"LumoDigital",
+			"Li-Lai Ltd",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_WEAPON};
+			names=new String[]{
+			"A.S.U. Ltd",
+			"Mi-Gievora",
+			"A.T.F. Corp",
+			"Paragon Systems",
+			"Physionetics",
+			"DestructoCorp",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_SHIELD};
+			names=new String[]{
+			"Lee-Lavanchy",
+			"Hsaio GmbH",
+			"Kikko-Thoran",
+			"LarsonTek",
+			"ElectriCorp",
+			"Grant DefCorp",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.SHIP_SHIELD,TechType.SHIP_WEAPON};
+			names=new String[]{
+			"Hsaio",
+			"Toy-Miyazu",
+			"Minova",
+			"DiversiCorp",
+			"Unidynamics",
+			"Nucleomatic",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.ANY};
+			names=new String[]{
+			"enTek",
+			"triNet",
+			"ReadyTek",
+			"GenTech",
+			"GeneralCorp",
+			"A.C.M.E.",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.PERSONAL_WEAPON};
+			names=new String[]{
+			"Chu",
+			"Asan",
+			"Noda",
+			"Ocano",
+			"PhaseCorp",
+			"Chao-Itsuk",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.PERSONAL_SHIELD};
+			names=new String[]{
+			"Xiu-Nova",
+			"I.B.B. Ltd",
+			"M.O.B. Corp",
+			"BoltonTek",
+			"Maddox",
+			"Digital Defense Corp",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.PERSONAL_SENSOR};
+			names=new String[]{
+			"cenApp",
+			"virGenCorp",
+			"Umin-Kahi Ltd",
+			"Tyrrell",
+			"ArcrSys",
+			"Tsaka Corp",
+			};
+			makeManufacturer(names, types);
+			types=new TechType[]{TechType.PERSONAL_WEAPON,TechType.PERSONAL_SENSOR,TechType.PERSONAL_SHIELD};
+			names=new String[]{
+			"MilSec",
+			"A.O.H. Corp",
+			"GenScience",
+			"PersoTek",
+			"StrateTek",
+			"Maynard",
+			};
 		}
 		else
 			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, MOBSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.");

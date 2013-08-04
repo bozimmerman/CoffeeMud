@@ -221,7 +221,7 @@ public class Test extends StdCommand
 		mobs[0].bringToLife(R,true);
 		mobs[1].bringToLife(R,true);
 	}
-	
+
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -1365,7 +1365,7 @@ public class Test extends StdCommand
 			{
 				
 			}
-			if(what.equalsIgnoreCase("rtree")&&(mob.session()!=null))
+			if((what.equalsIgnoreCase("all")||what.equalsIgnoreCase("rtree"))&&(mob.session()!=null))
 			{
 				long t1=System.currentTimeMillis();
 				RTree tree=new RTree();
