@@ -53,12 +53,14 @@ public class Paladin_Goodness extends PaladinSkill
 		if(tickTock)
 		{
 			MOB mob=invoker;
-			for(int m=0;m<mob.location().numInhabitants();m++)
+			Room R=(mob!=null)?mob.location():null;
+			if(R!=null)
+			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB target=mob.location().fetchInhabitant(m);
+				MOB target=R.fetchInhabitant(m);
 				if((target!=null)
 				&&(CMLib.flags().isEvil(target))
-				&&((paladinsGroup.contains(target))
+				&&((paladinsGroup!=null)&&(paladinsGroup.contains(target))
 					||((target.getVictim()==invoker)&&(target.rangeToTarget()==0)))
 				&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 				{
