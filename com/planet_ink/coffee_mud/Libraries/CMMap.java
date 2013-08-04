@@ -43,13 +43,20 @@ public class CMMap extends StdLibrary implements WorldMap
 	public final int			QUADRANT_WIDTH   		= 10;
 	public static MOB   		deityStandIn	 		= null;
 	public long 				lastVReset  	 		= 0;
-	public List<Area>   		areasList   	 		= new SVector<Area>();
+	public CMNSortSVec<Area>	areasList   	 		= new CMNSortSVec<Area>();
 	public List<Deity>  		deitiesList 	 		= new SVector<Deity>();
 	public List<PostOffice> 	postOfficeList   		= new SVector<PostOffice>();
 	public List<Auctioneer> 	auctionHouseList 		= new SVector<Auctioneer>();
 	public List<Banker> 		bankList		 		= new SVector<Banker>();
 	public RTree<SpaceObject>	space		 			= new RTree<SpaceObject>();
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
+
+	protected static final Comparator<Area>	areaComparator = new Comparator<Area>(){
+		@Override public int compare(Area o1, Area o2) {
+			if(o1==null) return (o2==null)?0:-1;
+			return o1.Name().compareToIgnoreCase(o2.Name());
+		}
+	};
 	
 	public Map<Integer,List<WeakReference<MsgListener>>> 
 								globalHandlers   		= new SHashtable<Integer,List<WeakReference<MsgListener>>>();
@@ -84,6 +91,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		return -1;
 	}
 
+	public void renamedArea(Area theA)
+	{
+		areasList.reSort(theA);
+	}
+
 	// areas
 	public int numAreas() { return areasList.size(); }
 	public void addArea(Area newOne)
@@ -91,19 +103,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		areasList.add(newOne);
 		if((newOne instanceof SpaceObject)&&(!space.contains((SpaceObject)newOne)))
 			space.insert((SpaceObject)newOne);
-		reSortAreas();
 	}
 	
-	public void reSortAreas()
-	{
-		Collections.sort(areasList,new Comparator<Area>(){
-			@Override public int compare(Area o1, Area o2) {
-				if(o1==null) return (o2==null)?0:-1;
-				return o1.Name().compareToIgnoreCase(o2.Name());
-			}
-		});
-	}
-
 	public void delArea(Area oneToDel)
 	{
 		areasList.remove(oneToDel);
@@ -118,16 +119,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		Area A=finder.get(calledThis.toLowerCase());
 		if((A!=null)&&(!A.amDestroyed()))
 			return A;
-		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
-		for(Enumeration<Area> a=areas();a.hasMoreElements();)
+		A=areasList.find(calledThis);
+		if((A!=null)&&(!A.amDestroyed()))
 		{
-			A=a.nextElement();
-			if(A.Name().equalsIgnoreCase(calledThis))
-			{
-				if(!disableCaching)
-					finder.put(calledThis.toLowerCase(), A);
-				return A;
-			}
+			if(!CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE))
+				finder.put(calledThis.toLowerCase(), A);
+			return A;
 		}
 		return null;
 	}

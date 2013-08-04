@@ -264,7 +264,11 @@ public class StdArea implements Area
 		}
 		return set;
 	}
-	public void setName(String newName){name=newName;}
+	public void setName(String newName)
+	{
+		name=newName;
+		CMLib.map().renamedArea(this);
+	}
 	public String Name(){return name;}
 	public PhyStats phyStats()
 	{

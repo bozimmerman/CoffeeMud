@@ -204,6 +204,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	{
 		name=newName;
 		localClock.setLoadName(newName);
+		CMLib.map().renamedArea(this);
 	}
 	public String Name(){return name;}
 	public void renameSpaceShip(String newName)

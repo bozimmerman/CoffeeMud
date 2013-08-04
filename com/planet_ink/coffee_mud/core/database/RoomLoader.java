@@ -140,6 +140,10 @@ public class RoomLoader
 		{
 			Log.errOut("Area",sqle);
 		}
+		catch(Exception sqle)
+		{
+			Log.errOut("Area",sqle);
+		}
 		finally
 		{
 			DB.DBDone(D);

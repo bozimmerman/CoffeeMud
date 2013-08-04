@@ -122,11 +122,6 @@
 	<SELECT NAME=AREA HEIGHT=10>
 	@MUDGrinder?AREALIST&NOINSTANCE@
 	</SELECT>
-	<SCRIPT LANGUAGE=JavaScript>
-	<!--
-		Sort(document.SELECTAREA.AREA);
-	-->
-	</SCRIPT>
 	<BR>
 	@if?CheckAuthCode?ALLMODAREAS=true@
 	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="New" ONCLICK="Clicked('newarea.cmvp');">
@@ -148,9 +143,6 @@
 			<OPTION VALUE="@RequestParameter?RTEMPLATE@">@RequestParameter?RTEMPLATE@
 		@back@
 		</SELECT>
-		<SCRIPT LANGUAGE=JavaScript>
-			Sort(document.SELECTAREA.RANDOMTEMPLATES);
-		</SCRIPT>
 		<br>
 		<INPUT TYPE=BUTTON NAME=NEWTEMPLATE VALUE="New" ONCLICK="Clicked('rtemplatenew.cmvp');">
 		<INPUT TYPE=BUTTON NAME=MODTEMPLATE VALUE="Edit" ONCLICK="Clicked('rtemplateedit.cmvp');">

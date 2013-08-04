@@ -52,7 +52,7 @@ public interface WorldMap extends CMLibrary
 	public Area getFirstArea();
 	public Area getRandomArea();
 	public void obliterateArea(Area theOne);
-	public void reSortAreas();
+	public void renamedArea(Area theA);
 	
 	/************************************************************************/
 	/**							 ROOMS										*/
