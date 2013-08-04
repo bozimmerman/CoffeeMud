@@ -1432,7 +1432,7 @@
 		<INPUT TYPE=HIDDEN NAME=FIELD VALUE="">
 		<INPUT TYPE=HIDDEN NAME=VALUE VALUE="">
 		<TABLE WIDTH=100% BORDER=1>
-		<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>Subsystem Disable Switches</B></FONT></TD></TR>
+		<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>Subsystem Disable Switches</B>&nbsp;&nbsp;<font size=-1><i>(These are temporary -- please edit your coffeemud.ini for permanent changes)</i></font></FONT></TD></TR>
 		@ControlPanel?DISABLERESET@
 		@loop@
 		@ControlPanel?DISABLENEXT@
@@ -1450,7 +1450,7 @@
 		@if?ControlPanel?ISDEBUGGING@
 			<BR>
 			<TABLE WIDTH=100% BORDER=1>
-			<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>Debug Switches</B> <i><FONT SIZE=-1>(Requires DBGMSGS from INI file)</I></FONT></FONT></TD></TR>
+			<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=LEFT><FONT COLOR=BLACK><B>Debug Switches</B> <i><FONT SIZE=-1>(Requires DBGMSGS from INI file)</I></FONT>&nbsp;&nbsp;<font size=-1><i>(These are temporary -- please edit your coffeemud.ini for permanent changes)</i></font></FONT></TD></TR>
 			@ControlPanel?DEBUGRESET@
 			@loop@
 			@ControlPanel?DEBUGNEXT@
