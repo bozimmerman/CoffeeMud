@@ -1430,7 +1430,7 @@ public class DefaultFaction implements Faction, MsgListener
 		recalc();
 		return true;
 	}
-	public class DefaultFactionRange implements Faction.FRange
+	public class DefaultFactionRange implements Faction.FRange, Comparable<Faction.FRange>
 	{
 		public int low;
 		public int high;
@@ -1474,6 +1474,12 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			Random gen = new Random();
 			return high - gen.nextInt(high-low);
+		}
+		@Override
+		public int compareTo(FRange o) {
+			if(low < o.low()) return -1;
+			if(high > o.high()) return 1;
+			return 0;
 		}
 	}
 
