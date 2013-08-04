@@ -90,6 +90,32 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
+	public void manufacturer(MOB mob, Vector commands) throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY MANUFACTURER [NAME]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+
+		String manufacturerID=CMParms.combine(commands,2);
+		
+		Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
+		if((manufacturer==null)||(manufacturer==CMLib.tech().getDefaultManufacturer()))
+		{
+			mob.tell("There's no manufacturer called '"+manufacturerID+"' Try LIST MANUFACTURERS.\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+
+		if(mob.session().confirm("This will complete OBLITERATE the manufacturer '"+manufacturerID+"' forever.  This means all the stuff that is made by this manufacturer will get transferred to ACME. Are you SURE?! (y/N)?","N"))
+		{
+			CMLib.tech().delManufacturer(manufacturer);
+			mob.location().recoverRoomStats();
+			Log.sysOut(mob.Name()+" destroyed manufacturer "+manufacturer.name()+".");
+		}
+	}
 
 	public void accounts(MOB mob, Vector commands)
 	throws IOException
@@ -1299,6 +1325,13 @@ public class Destroy extends StdCommand
 			mobs(mob,commands);
 		}
 		else
+		if(commandType.equals("MANUFACTURER"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			manufacturer(mob,commands);
+		}
+		else
 		if(commandType.equals("POLL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS)) return errorOut(mob);
@@ -1461,7 +1494,7 @@ public class Destroy extends StdCommand
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.");
+						+"EXIT, ITEM, AREA, USER, MOB, QUEST, FACTION, SESSION, TICKS, THREAD, HOLIDAY, JOURNAL, SOCIAL, CLASS, ABILITY, MANUFACTURER, LANGUAGE, COMPONENT, RACE, EXPERTISE, TITLE, CLAN, BAN, GOVERNMENT, NOPURGE, BUG, TYPO, IDEA, POLL, DEBUGFLAG, DISABLEFLAG, or a ROOM.");
 				}
 			}
 		}

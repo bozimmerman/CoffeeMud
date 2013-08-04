@@ -2038,6 +2038,7 @@ public class ListCmd extends StdCommand
 		/*69*/new ListCmdEntry("WORLD",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		/*70*/new ListCmdEntry("PLANETS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		/*71*/new ListCmdEntry("CURRENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS,SecFlag.CMDMOBS}),
+		/*72*/new ListCmdEntry("MANUFACTURERS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS}),
 	};
 
 	public boolean pause(Session sess) 
@@ -2127,6 +2128,43 @@ public class ListCmd extends StdCommand
 			return null;
 	}
 
+	public void listManufacturers(MOB mob, Vector commands)
+	{
+		StringBuffer str=new StringBuffer("");
+		str.append(CMStrings.padRight("Name", 20)).append(" ");
+		str.append(CMStrings.padRight("Tech", 5)).append(" ");
+		str.append(CMStrings.padRight("Eff.", 4)).append(" ");
+		str.append(CMStrings.padRight("Rel.", 4)).append(" ");
+		str.append("!");
+		str.append(CMStrings.padRight("Name", 20)).append(" ");
+		str.append(CMStrings.padRight("Tech", 5)).append(" ");
+		str.append(CMStrings.padRight("Eff.", 4)).append(" ");
+		str.append(CMStrings.padRight("Rel.", 4));
+		str.append("\n\r");
+		str.append(CMStrings.repeat("-", 75)).append("\n\r");
+		for(Iterator<Manufacturer> i =CMLib.tech().manufacterers();i.hasNext();)
+		{
+			Manufacturer M=i.next();
+			str.append(CMStrings.padRight(M.name(), 20)).append(" ");
+			str.append(CMStrings.padRight(M.getMinTechLevelDiff()+"-"+M.getMaxTechLevelDiff(), 5)).append(" ");
+			str.append(CMStrings.padRight(Math.round(M.getEfficiencyPct()*100.0)+"%", 4)).append(" ");
+			str.append(CMStrings.padRight(Math.round(M.getReliabilityPct()*100.0)+"%", 4)).append(" ");
+			if(i.hasNext())
+			{
+				M=i.next();
+				str.append("!");
+				str.append(CMStrings.padRight(M.name(), 20)).append(" ");
+				str.append(CMStrings.padRight(M.getMinTechLevelDiff()+"-"+M.getMaxTechLevelDiff(), 5)).append(" ");
+				str.append(CMStrings.padRight(Math.round(M.getEfficiencyPct()*100.0)+"%", 4)).append(" ");
+				str.append(CMStrings.padRight(Math.round(M.getReliabilityPct()*100.0)+"%", 4));
+			}
+			str.append("\n\r");
+		}
+		str.append("\n\r");
+		if(mob.session()!=null)
+			mob.session().rawPrint(str.toString());
+	}
+	
 	public void listCurrents(MOB mob, Vector commands)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -2505,6 +2543,7 @@ public class ListCmd extends StdCommand
 		case 69: listAreas(mob, commands, new WorldFilter(mob.location())); break;
 		case 70: listAreas(mob, commands, planetsFilter); break;
 		case 71: listCurrents(mob, commands); break;
+		case 72: listManufacturers(mob, commands); break;
 		case 999: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");

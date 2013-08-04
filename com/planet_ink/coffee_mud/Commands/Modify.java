@@ -1324,6 +1324,30 @@ public class Modify extends StdCommand
 		copyMOB.destroy();
 	}
 	
+	public void manufacturer(MOB mob, Vector commands) throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY MANUFACTURER [NAME]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+
+		String manufacturerID=CMParms.combine(commands,2);
+		
+		Manufacturer manufacturer=CMLib.tech().getManufacturer(manufacturerID);
+		if((manufacturer==null)||(manufacturer==CMLib.tech().getDefaultManufacturer()))
+		{
+			mob.tell("There's no manufacturer called '"+manufacturerID+"' Try LIST MANUFACTURERS.\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+
+		CMLib.genEd().modifyManufacturer(mob, manufacturer);
+		mob.location().recoverRoomStats();
+		Log.sysOut(mob.Name()+" modified manufacturer "+manufacturer.name()+".");
+	}
+
 	public void mobs(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -1449,6 +1473,12 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
 			items(mob,commands);
+		}
+		else
+		if(commandType.equals("MANUFACTURER"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
+			manufacturer(mob,commands);
 		}
 		else
 		if(commandType.equals("RECIPE"))
@@ -1987,7 +2017,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, MANUFACTURER, GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM.");
 		}
 		return false;
 	}
