@@ -106,7 +106,7 @@ public class TrailTo extends StdCommand
 		if(where.equalsIgnoreCase("everyarea"))
 		{
 			StringBuffer str=new StringBuffer("");
-			for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=a.nextElement();
 				String trail = CMLib.tracking().getTrailToDescription(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms,5);

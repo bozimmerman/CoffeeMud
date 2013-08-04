@@ -239,7 +239,7 @@ public class DefaultClan implements Clan
 	public List<Area> getControlledAreas()
 	{
 		Vector<Area> done=new Vector<Area>();
-		for(Enumeration<Area> e=CMLib.map().sortedAreas();e.hasMoreElements();)
+		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			Area A=e.nextElement();
 			LegalBehavior B=CMLib.law().getLegalBehavior(A);

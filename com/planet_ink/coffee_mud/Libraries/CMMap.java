@@ -44,7 +44,6 @@ public class CMMap extends StdLibrary implements WorldMap
 	public static MOB   		deityStandIn	 		= null;
 	public long 				lastVReset  	 		= 0;
 	public List<Area>   		areasList   	 		= new SVector<Area>();
-	public List<Area>   		sortedAreas 	 		= null;
 	public List<Deity>  		deitiesList 	 		= new SVector<Deity>();
 	public List<PostOffice> 	postOfficeList   		= new SVector<PostOffice>();
 	public List<Auctioneer> 	auctionHouseList 		= new SVector<Auctioneer>();
@@ -89,46 +88,37 @@ public class CMMap extends StdLibrary implements WorldMap
 	public int numAreas() { return areasList.size(); }
 	public void addArea(Area newOne)
 	{
-		sortedAreas=null;
 		areasList.add(newOne);
+		if((newOne instanceof SpaceObject)&&(!space.contains((SpaceObject)newOne)))
+			space.insert((SpaceObject)newOne);
+		reSortAreas();
+	}
+	
+	public void reSortAreas()
+	{
+		Collections.sort(areasList,new Comparator<Area>(){
+			@Override public int compare(Area o1, Area o2) {
+				if(o1==null) return (o2==null)?0:-1;
+				return o1.Name().compareToIgnoreCase(o2.Name());
+			}
+		});
 	}
 
 	public void delArea(Area oneToDel)
 	{
-		sortedAreas=null;
 		areasList.remove(oneToDel);
+		if((oneToDel instanceof SpaceObject)&&(space.contains((SpaceObject)oneToDel)))
+			space.remove((SpaceObject)oneToDel);
 		Resources.removeResource("SYSTEM_AREA_FINDER_CACHE");
-	}
-
-	public Enumeration<Area> sortedAreas()
-	{
-		if(sortedAreas==null)
-		{
-			Vector<Area> V=new Vector<Area>();
-			Area A=null;
-			for(Enumeration<Area> e=areas();e.hasMoreElements();)
-			{
-				A=e.nextElement();
-				String upperName=A.Name().toUpperCase();
-				for(int v=0;v<=V.size();v++)
-					if(v==V.size())
-					{ V.addElement(A); break;}
-					else
-					if(upperName.compareTo(V.elementAt(v).Name().toUpperCase())<=0)
-					{ V.insertElementAt(A,v); break;}
-			}
-			sortedAreas=V;
-		}
-		return (sortedAreas==null)?sortedAreas():new IteratorEnumeration<Area>(sortedAreas.iterator());
 	}
 
 	public Area getArea(String calledThis)
 	{
-		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
 		final Map<String,Area> finder=getAreaFinder();
 		Area A=finder.get(calledThis.toLowerCase());
 		if((A!=null)&&(!A.amDestroyed()))
 			return A;
+		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
 		for(Enumeration<Area> a=areas();a.hasMoreElements();)
 		{
 			A=a.nextElement();

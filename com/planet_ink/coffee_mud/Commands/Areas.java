@@ -44,7 +44,7 @@ public class Areas extends StdCommand
 		throws java.io.IOException
 	{
 		String expression=null;
-		Enumeration<Area> a=CMLib.map().sortedAreas();
+		Enumeration<Area> a=CMLib.map().areas();
 		int addStat=-1;
 		String append="";
 		
@@ -131,7 +131,7 @@ public class Areas extends StdCommand
 		for(;a.hasMoreElements();)
 		{
 			Area A=a.nextElement();
-			if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceShip)))
+			if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
 			{
 				final String levelStr = (addStat>=0?(Integer.toString(A.getAreaIStats()[addStat])+":"):"");
 				String name=levelStr+((!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")");

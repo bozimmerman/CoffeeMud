@@ -46,7 +46,7 @@ public class Weather extends StdCommand
 		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(((String)commands.elementAt(1)).equalsIgnoreCase("WORLD")))
 		{
 			StringBuffer tellMe=new StringBuffer("");
-			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if((CMLib.flags().canAccess(mob,A))

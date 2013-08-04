@@ -146,7 +146,7 @@ public class HolidayData extends StdWebMacro
 							int areaNum=2;
 							boolean reallyAll=true;
 							
-							for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();areaNum++)
+							for(Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
 								if(areaCodes.contains("AREAGROUP"+areaNum))
 									areaNames.add(((Area)e.nextElement()).Name().toUpperCase());
 								else

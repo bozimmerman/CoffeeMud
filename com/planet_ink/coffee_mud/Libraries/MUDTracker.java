@@ -1096,7 +1096,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
-			for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=a.nextElement();
 				if(A.name().equalsIgnoreCase(where))

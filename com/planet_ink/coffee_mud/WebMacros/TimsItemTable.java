@@ -51,7 +51,7 @@ public class TimsItemTable extends StdWebMacro
 		{
 			str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
 			Vector onesDone=new Vector();
-			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)

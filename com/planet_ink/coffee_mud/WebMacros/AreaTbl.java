@@ -49,7 +49,7 @@ public class AreaTbl extends StdWebMacro
 
 		Vector areasVec=new Vector();
 
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))

@@ -136,7 +136,7 @@ public class GrinderHolidays {
 		{
 			int areaNum=2;
 			boolean reallyAll=true;
-			for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();areaNum++)
+			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
 				if(areaCodes.contains("AREAGROUP"+areaNum))
 					areaGroup.append(" \"" + ((Area)e.nextElement()).Name()+"\"");
 				else

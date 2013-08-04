@@ -49,10 +49,10 @@ public interface WorldMap extends CMLibrary
 	public Area findArea(String calledThis);
 	public Area getDefaultParentArea();
 	public Enumeration<Area> areas();
-	public Enumeration<Area> sortedAreas();
 	public Area getFirstArea();
 	public Area getRandomArea();
 	public void obliterateArea(Area theOne);
+	public void reSortAreas();
 	
 	/************************************************************************/
 	/**							 ROOMS										*/

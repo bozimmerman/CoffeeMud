@@ -580,7 +580,7 @@ public class ListCmd extends StdCommand
 		List<List<Area>> areaLinkGroups=new Vector<List<Area>>();
 		Enumeration<Area> a;
 		if(rest.equalsIgnoreCase("world"))
-			a=CMLib.map().sortedAreas();
+			a=CMLib.map().areas();
 		else
 			a=new XVector<Area>(mob.location().getArea()).elements();
 		for(;a.hasMoreElements();)
@@ -1375,7 +1375,7 @@ public class ListCmd extends StdCommand
 	{
 		StringBuilder msg=new StringBuilder("");
 		final int COL_LEN=ListingLibrary.ColFixer.fixColWidth(25.0,viewerS);
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			msg.append(CMStrings.padRight(A.Name(),COL_LEN)+": ");
@@ -2269,10 +2269,10 @@ public class ListCmd extends StdCommand
 			if(sorted.size()>0)
 				a=new IteratorEnumeration<Area>(sorted.values().iterator());
 			else
-				a=CMLib.map().sortedAreas();
+				a=CMLib.map().areas();
 		}
 		else
-			a=CMLib.map().sortedAreas();
+			a=CMLib.map().areas();
 		for(;a.hasMoreElements();)
 		{
 			Area A=a.nextElement();
@@ -2487,7 +2487,7 @@ public class ListCmd extends StdCommand
 		case 51: s.wraplessPrintln(roomExpires(mob.session(),mob.location().getArea().getProperMap(),mob.location()).toString()); break;
 		case 52: s.wraplessPrintln(listTitles(mob.session())); break;
 		case 53: s.wraplessPrintln(roomResources(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
-		case 54: s.wraplessPrintln(areaConquests(mob.session(),CMLib.map().sortedAreas()).toString()); break;
+		case 54: s.wraplessPrintln(areaConquests(mob.session(),CMLib.map().areas()).toString()); break;
 		case 55: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;
 		case 56: s.wraplessPrintln(listRecipes(mob,CMParms.combine(commands,1))); break;
 		case 57: s.wraplessPrint(listHelpFileRequests(mob,CMParms.combine(commands,1))); break;

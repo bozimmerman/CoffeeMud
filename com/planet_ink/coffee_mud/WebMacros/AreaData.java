@@ -534,7 +534,7 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("PARENT"))
 				{
-					List<String> V=CMParms.toNameVector(CMLib.map().sortedAreas());
+					List<String> V=CMParms.toNameVector(CMLib.map().areas());
 					List<String> theAreas=new LinkedList<String>();
 					int num=1;
 					if(!httpReq.isUrlParameter("PARENT"+num))
@@ -583,7 +583,7 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("CHILDREN"))
 				{
 					Area defaultParentArea=CMLib.map().getDefaultParentArea();
-					List<String> V=CMParms.toNameVector(CMLib.map().sortedAreas());
+					List<String> V=CMParms.toNameVector(CMLib.map().areas());
 					List<String> theAreas=new LinkedList<String>();
 					int num=1;
 					if(!httpReq.isUrlParameter("CHILDREN"+num))
