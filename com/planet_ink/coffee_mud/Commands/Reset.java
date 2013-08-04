@@ -126,11 +126,15 @@ public class Reset extends StdCommand
 			Log.errOut("Test: Not /3 names: "+CMParms.toStringList(names));
 		else
 		{
-			for(String name : names)
-				CMLib.tech().delManufacturer(CMLib.tech().getManufacturer(name));
 			for(int i=0;i<6;i++)
 			{
-				Manufacturer M=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
+				Manufacturer M=CMLib.tech().getManufacturer(names[i]);
+				if((M!=null)&&(M!=CMLib.tech().getDefaultManufacturer()))
+				{
+					Log.errOut("Dup Reset Manufacturer Name: "+names[i]);
+					continue;
+				}
+				M=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
 				M.setName(names[i]);
 				if(i%3==0)
 				{
@@ -1341,7 +1345,9 @@ public class Reset extends StdCommand
 		{
 			TechType[] types;
 			String[] names;
-
+			List<Manufacturer> m=new XVector<Manufacturer>(CMLib.tech().manufacterers());
+			for(Manufacturer M : m)
+				CMLib.tech().delManufacturer(M);
 			types=new TechType[]{TechType.SHIP_SOFTWARE};
 			names=new String[]{
 			"Nanoapp",
