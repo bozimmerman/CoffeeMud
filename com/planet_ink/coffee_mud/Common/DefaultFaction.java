@@ -67,6 +67,7 @@ public class DefaultFaction implements Faction, MsgListener
 	protected SVector<String>   					 defaults=new SVector<String>();
 	protected SVector<String>   					 autoDefaults=new SVector<String>();
 	protected SHashtable<String,FRange> 			 ranges=new SHashtable<String,FRange>();
+	protected PrioritizingLimitedMap<Integer,FRange> rangeRangeMap=new PrioritizingLimitedMap<Integer,FRange>(10,60000,600000,100);
 	protected SHashtable<String,String[]>   		 affBehavs=new SHashtable<String,String[]>();
 	protected double								 rateModifier=1.0;
 	protected SHashtable<String,FactionChangeEvent[]>changes=new SHashtable<String,FactionChangeEvent[]>();
@@ -280,14 +281,17 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 	}
 
-	private void recalc() {
+	private void recalc() 
+	{
 		minimum=Integer.MAX_VALUE;
 		maximum=Integer.MIN_VALUE;
+		int num=0;
 		for(Enumeration<Faction.FRange> e=ranges();e.hasMoreElements();)
 		{
 			Faction.FRange FR=e.nextElement();
 			if(FR.high()>maximum) maximum=FR.high();
 			if(FR.low()<minimum) minimum=FR.low();
+			num++;
 		}
 		if(minimum==Integer.MAX_VALUE) minimum=Integer.MIN_VALUE;
 		if(maximum==Integer.MIN_VALUE) maximum=Integer.MAX_VALUE;
@@ -300,6 +304,7 @@ public class DefaultFaction implements Faction, MsgListener
 		middle=minimum+(int)Math.round(CMath.div(maximum-minimum,2.0));
 		difference=CMath.abs(maximum-minimum);
 		lastFactionDataChange[0]=System.currentTimeMillis();
+		rangeRangeMap=new PrioritizingLimitedMap<Integer,FRange>(num*5,60000,600000,100);
 	}
 
 	public String getTagValue(String tag)
@@ -594,22 +599,27 @@ public class DefaultFaction implements Faction, MsgListener
 
 	public FRange fetchRange(int faction)
 	{
+		final Integer I=Integer.valueOf(faction);
+		FRange R=rangeRangeMap.get(I);
+		if(R!=null) 
+			return R;
 		for (Enumeration<FRange> e=ranges.elements();e.hasMoreElements();)
 		{
-			FRange R = e.nextElement();
+			R = e.nextElement();
 			if ( (faction >= R.low()) && (faction <= R.high()))
+			{
+				rangeRangeMap.put(I, R);
 				return R;
+			}
 		}
 		return null;
 	}
+
 	public String fetchRangeName(int faction)
 	{
-		for (Enumeration<FRange> e=ranges.elements();e.hasMoreElements();)
-		{
-			FRange R = e.nextElement();
-			if ( (faction >= R.low()) && (faction <= R.high()))
-				return R.name();
-		}
+		FRange R= fetchRange(faction);
+		if(R!=null)
+			return R.name();
 		return "";
 	}
 
