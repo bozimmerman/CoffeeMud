@@ -2487,8 +2487,85 @@ public class CMMap extends StdLibrary implements WorldMap
 											return CMLib.coffeeMaker().getRoomXML(R, null, null, true);
 										}
 									});
+									myFiles.add(new CMFile.CMVFSDir(this,this.path+roomID.replace(' ', '_').toLowerCase()+"/") {
+										@Override protected CMFile.CMVFSFile[] getFiles() {
+											List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
+											myFiles.add(new CMFile.CMVFSFile(this.path+"items.cmare",48,System.currentTimeMillis(),"SYS")
+											{
+												@Override public Object readData()
+												{
+													return CMLib.coffeeMaker().getRoomItems(R, new TreeMap<String,List<Item>>(), null, -1);
+												}
+											});
+											myFiles.add(new CMFile.CMVFSFile(this.path+"mobs.cmare",48,System.currentTimeMillis(),"SYS")
+											{
+												@Override public Object readData()
+												{
+													return CMLib.coffeeMaker().getRoomMobs(R, null, null, new TreeMap<String,List<MOB>>());
+												}
+											});
+											myFiles.add(new CMFile.CMVFSDir(this,this.path+"mobs/") {
+												@Override protected CMFile.CMVFSFile[] getFiles() {
+													List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
+													final Room R2=CMLib.coffeeMaker().makeNewRoomContent(R, false);
+													for(int i=0;i<R2.numInhabitants();i++)
+													{
+														final MOB M=R2.fetchInhabitant(i);
+														myFiles.add(new CMFile.CMVFSFile(this.path+R2.getContextName(M).toLowerCase().replace(' ', '_')+".cmare",48,System.currentTimeMillis(),"SYS")
+														{
+															@Override public Object readData()
+															{
+																return CMLib.coffeeMaker().getMobXML(M);
+															}
+														});
+														myFiles.add(new CMFile.CMVFSDir(this,this.path+R2.getContextName(M).toLowerCase().replace(' ', '_')+"/") {
+															@Override protected CMFile.CMVFSFile[] getFiles() {
+																List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
+																Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+																addMapStatFiles(myFiles,R,M,this);
+																return myFiles.toArray(new CMFile.CMVFSFile[0]);
+															}
+														});
+													}
+													Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+													return myFiles.toArray(new CMFile.CMVFSFile[0]);
+												}
+											});
+											myFiles.add(new CMFile.CMVFSDir(this,this.path+"items/") {
+												@Override protected CMFile.CMVFSFile[] getFiles() {
+													List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
+													final Room R2=CMLib.coffeeMaker().makeNewRoomContent(R, false);
+													for(int i=0;i<R2.numItems();i++)
+													{
+														final Item I=R2.getItem(i);
+														myFiles.add(new CMFile.CMVFSFile(this.path+R2.getContextName(I).toLowerCase().replace(' ', '_')+".cmare",48,System.currentTimeMillis(),"SYS")
+														{
+															@Override public Object readData()
+															{
+																return CMLib.coffeeMaker().getItemXML(I);
+															}
+														});
+														myFiles.add(new CMFile.CMVFSDir(this,this.path+R2.getContextName(I).toLowerCase().replace(' ', '_')+"/") {
+															@Override protected CMFile.CMVFSFile[] getFiles() {
+																List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
+																Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+																addMapStatFiles(myFiles,R,I,this);
+																return myFiles.toArray(new CMFile.CMVFSFile[0]);
+															}
+														});
+													}
+													Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+													return myFiles.toArray(new CMFile.CMVFSFile[0]);
+												}
+											});
+											addMapStatFiles(myFiles,R,R,this);
+											Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
+											return myFiles.toArray(new CMFile.CMVFSFile[0]);
+										}
+									});
 								}
 							}
+							addMapStatFiles(myFiles,null,A,this);
 							Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
 							return myFiles.toArray(new CMFile.CMVFSFile[0]);
 						}
