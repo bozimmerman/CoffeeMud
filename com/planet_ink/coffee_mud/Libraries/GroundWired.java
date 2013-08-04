@@ -670,6 +670,8 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	{
 		final String filename=getManufacturersFilename();
 		CMFile xmlFile=new CMFile(filename, null, CMFile.FLAG_FORCEALLOW);
+		if((!xmlFile.exists())||(!xmlFile.canRead()))
+			xmlFile=new CMFile("/resources/examples/manufacturers.xml", null, CMFile.FLAG_FORCEALLOW);
 		manufacturers.clear();
 		if(xmlFile.exists() && xmlFile.canRead())
 		{
