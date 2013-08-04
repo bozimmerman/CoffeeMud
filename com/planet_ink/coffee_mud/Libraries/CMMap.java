@@ -321,11 +321,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		synchronized(space)
 		{
-			space.remove(O);
+			boolean reAdd=space.contains(O);
+			if(reAdd) space.remove(O);
 			O.coordinates()[0]=x;
 			O.coordinates()[1]=y;
 			O.coordinates()[2]=z;
-			space.insert(O);
+			if(reAdd) space.insert(O);
 		}
 	}
 	
