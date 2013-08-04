@@ -1437,6 +1437,7 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Destroying area "+A.name());
 		A.setAreaState(Area.State.STOPPED);
 		DB.update("DELETE FROM CMAREA WHERE CMAREA='"+A.Name()+"'");
+		DB.update("DELETE FROM CMPDAT WHERE CMPLID='"+A.Name()+"' AND CMSECT='TIMECLOCK'");
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done destroying area "+A.name()+".");
 	}
