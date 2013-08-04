@@ -72,13 +72,13 @@ public interface Electronics extends Item, Technical
 	
 	public interface ElecPanel extends Electronics, Container
 	{
-		public static final Technical.TechType[] PANELTYPES={ 
-			Technical.TechType.ANY,Technical.TechType.SHIP_WEAPON,Technical.TechType.SHIP_ENGINE,Technical.TechType.SHIP_SENSOR,
-			Technical.TechType.SHIP_POWER,Technical.TechType.SHIP_COMPUTER,Technical.TechType.SHIP_SOFTWARE,
-			Technical.TechType.SHIP_ENVIRO_CONTROL,Technical.TechType.SHIP_GENERATOR,Technical.TechType.SHIP_DAMPENER
+		public static final TechType[] PANELTYPES={ 
+			TechType.ANY,TechType.SHIP_WEAPON,TechType.SHIP_SHIELD,TechType.SHIP_ENGINE,TechType.SHIP_SENSOR,
+			TechType.SHIP_POWER,TechType.SHIP_COMPUTER,TechType.SHIP_SOFTWARE,
+			TechType.SHIP_ENVIRO_CONTROL,TechType.SHIP_GENERATOR,TechType.SHIP_DAMPENER
 		};
-		public Technical.TechType panelType();
-		public void setPanelType(Technical.TechType type);
+		public TechType panelType();
+		public void setPanelType(TechType type);
 	}
 	
 	public interface Computer extends Electronics.ElecPanel
