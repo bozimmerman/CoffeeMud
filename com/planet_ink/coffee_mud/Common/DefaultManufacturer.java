@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Poll.PollOption;
 import com.planet_ink.coffee_mud.Common.interfaces.Poll.PollResult;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -39,9 +40,12 @@ public class DefaultManufacturer implements Manufacturer
 	public String ID(){return "DefaultManufacturer";}
 	protected String 	name			= "ACME";
 	protected byte 		maxTechLevelDiff= 10;
+	protected byte 		minTechLevelDiff= 0;
 	protected double	efficiency		= 1.0;
 	protected double	reliability		= 1.0;
 	protected String	rawItemMask		= "";
+	
+	protected Set<TechType> types		= new HashSet<TechType>();
 	
 	protected MaskingLibrary.CompiledZapperMask compiledItemMask = null;
 	
@@ -72,6 +76,16 @@ public class DefaultManufacturer implements Manufacturer
 		this.maxTechLevelDiff = max;
 	}
 	
+	public byte getMinTechLevelDiff()
+	{
+		return minTechLevelDiff;
+	}
+
+	public void setMinTechLevelDiff(byte min)
+	{
+		this.minTechLevelDiff = min;
+	}
+	
 	public void setName(String name)
 	{
 		this.name=name;
@@ -98,6 +112,10 @@ public class DefaultManufacturer implements Manufacturer
 		reliability=CMath.div(Math.round(pct*100),100.0);
 	}
 
+	public String getItemMaskStr()
+	{
+		return rawItemMask;
+	}
 	public void setItemMask(String newMask)
 	{
 		if((newMask==null)||(newMask.trim().length()==0))
@@ -113,6 +131,35 @@ public class DefaultManufacturer implements Manufacturer
 		}
 	}
 	
+	public boolean isManufactureredType(Technical T)
+	{
+		if(T==null) 
+			return false;
+		if(types.contains(TechType.ANY))
+			return true;
+		for(TechType type : types)
+			if(type == T.getTechType())
+				return true;
+		return false;
+	}
+	
+	public String getManufactureredTypesList()
+	{
+		return CMParms.toStringList(types);
+	}
+	
+	public void setManufactureredTypesList(String list)
+	{
+		Set<TechType> newTypes=new HashSet<TechType>();
+		for(String s : CMParms.parseCommas(list,true))
+		{
+			TechType t=(TechType)CMath.s_valueOf(TechType.class, s.toUpperCase().trim());
+			if(t!=null)
+				newTypes.add(t);
+		}
+		this.types=newTypes;
+	}
+	
 	public MaskingLibrary.CompiledZapperMask getItemMask()
 	{
 		return compiledItemMask;
@@ -122,8 +169,11 @@ public class DefaultManufacturer implements Manufacturer
 	{
 		StringBuilder xml=new StringBuilder("");
 		xml.append("<NAME>"+CMLib.xml().parseOutAngleBrackets(name)+"</NAME>");
-		xml.append("<TECHDIFF>"+maxTechLevelDiff+"</TECHDIFF>");
+		xml.append("<MAXTECHDIFF>"+maxTechLevelDiff+"</MAXTECHDIFF>");
+		xml.append("<MINTECHDIFF>"+minTechLevelDiff+"</MINTECHDIFF>");
 		xml.append("<EFFICIENCY>"+efficiency+"</EFFICIENCY>");
+		xml.append("<MASK>"+CMLib.xml().parseOutAngleBrackets(getItemMaskStr())+"</MASK>");
+		xml.append("<TYPES>"+getManufactureredTypesList()+"</TYPES>");
 		xml.append("<RELIABILITY>"+reliability+"</RELIABILITY>");
 		return xml.toString();
 	}
@@ -132,8 +182,11 @@ public class DefaultManufacturer implements Manufacturer
 	{
 		List<XMLpiece> xpc = CMLib.xml().parseAllXML(xml);
 		setName(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xpc,"NAME")));
-		setMaxTechLevelDiff((byte)CMath.s_short(CMLib.xml().getValFromPieces(xpc,"TECHDIFF")));
+		setMaxTechLevelDiff((byte)CMath.s_short(CMLib.xml().getValFromPieces(xpc,"MAXTECHDIFF")));
+		setMinTechLevelDiff((byte)CMath.s_short(CMLib.xml().getValFromPieces(xpc,"MINTECHDIFF")));
 		setEfficiencyPct(CMLib.xml().getDoubleFromPieces(xpc,"EFFICIENCY"));
 		setReliabilityPct(CMLib.xml().getDoubleFromPieces(xpc,"RELIABILITY"));
+		setItemMask(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xpc, "MASK")));
+		setManufactureredTypesList(CMLib.xml().getValFromPieces(xpc,"TYPES"));
 	}
 }

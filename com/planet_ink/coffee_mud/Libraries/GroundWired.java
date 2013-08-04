@@ -628,6 +628,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			for(Manufacturer f : manufacturers.values())
 				if(CMLib.masking().maskCheck(f.getItemMask(), E, true))
 					subManufacturers.add(f);
+			for(Iterator<Manufacturer> f =subManufacturers.iterator();f.hasNext();)
+			{
+				Manufacturer M=f.next();
+				if((E.techLevel() < globalTechLevel+M.getMinTechLevelDiff())
+				||(E.techLevel() > globalTechLevel+M.getMaxTechLevelDiff()))
+					f.remove();
+			}
 			if(subManufacturers.size()==0)
 				return getDefaultManufacturer();
 			return subManufacturers.get(CMLib.dice().roll(1, subManufacturers.size(), -1));

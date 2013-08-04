@@ -83,6 +83,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
 	@Override public String getManufacturerName() { return manufacturer; }
 	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
+	@Override public TechType getTechType() { return TechType.SHIP_COMPUTER; }
 	
 	@Override
 	public Manufacturer getFinalManufacturer()
@@ -96,8 +97,8 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		return cachedManufact;
 	}
 	
-	@Override public ElecPanelType panelType(){return ElecPanel.ElecPanelType.COMPUTER;}
-	@Override public void setPanelType(ElecPanelType type){ }
+	@Override public TechType panelType(){return TechType.SHIP_SOFTWARE;}
+	@Override public void setPanelType(TechType type){ }
 	
 	public boolean canContain(Environmental E)
 	{

@@ -42,6 +42,7 @@ public interface GenericEditor extends CMLibrary
 	public void modifyClan(MOB mob, Clan C) throws IOException;
 	public void modifyGenAbility(MOB mob, Ability me) throws IOException;
 	public void modifyGenLanguage(MOB mob, Language me) throws IOException;
+	public void modifyManufacturer(MOB mob, Manufacturer me) throws IOException;
 	public void modifyGenCraftSkill(MOB mob, Ability me) throws IOException;
 	public void modifyGenClass(MOB mob, CharClass me) throws IOException;
 	public void modifyGenExit(MOB mob, Exit me) throws IOException;

@@ -46,20 +46,4 @@ public interface ShipComponent extends Electronics
 		public double getFuelEfficiency();
 		public void setFuelEfficiency(double amt);
 	}
-	public interface ShipWeapon extends ShipComponent
-	{
-		
-	}
-	public interface ShipSensor extends ShipComponent
-	{
-		
-	}
-	public interface ShipEnviroControl extends ShipComponent
-	{
-		
-	}
-	public interface ShipInertialDampener extends ShipComponent
-	{
-		
-	}
 }

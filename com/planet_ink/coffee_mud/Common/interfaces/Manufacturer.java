@@ -36,7 +36,26 @@ import java.util.*;
  */
 public interface Manufacturer extends CMCommon
 {
-
+	
+	/**
+	 * Returns whether the given item will be manufacturered by this manufacturer.
+	 * @param T the item type
+	 * @return true if this manufacturer will do it
+	 */
+	public boolean isManufactureredType(Technical T);
+	
+	/**
+	 * Returns a comma-delimited list of the types of things this manufacturer will make.
+	 * @return a comma-delimited list of the types of things this manufacturer will make.
+	 */
+	public String getManufactureredTypesList();
+	
+	/**
+	 * Sets the comma-delimited list of the types of things this manufacturer will make.
+	 * @return the comma-delimited list of the types of things this manufacturer will make.
+	 */
+	public void setManufactureredTypesList(String list);
+	
 	/**
 	 * Returns a positive difference from Max Tech Level-10.  This is
 	 * the maximum tech level this manufacturer can manage. 
@@ -50,6 +69,20 @@ public interface Manufacturer extends CMCommon
 	 * @param max a number from 0-10
 	 */
 	public void setMaxTechLevelDiff(byte max);
+	
+	/**
+	 * Returns a positive difference from Max Tech Level-10.  This is
+	 * the minimum tech level this manufacturer can manage. 
+	 * @return a number from 0-10
+	 */
+	public byte getMinTechLevelDiff();
+
+	/**
+	 * Sets a positive difference from Max Tech Level-10.  This is
+	 * the minimum tech level this manufacturer will make.
+	 * @param min a number from 0-10
+	 */
+	public void setMinTechLevelDiff(byte min);
 	
 	/**
 	 * Sets the name of the manufacturer
@@ -105,6 +138,14 @@ public interface Manufacturer extends CMCommon
 	 * @return the zapperMask, compiled
 	 */
 	public MaskingLibrary.CompiledZapperMask getItemMask();
+	
+	/**
+	 * Returns the item mask that describes what kind of items this
+	 * manufacturer makes.
+	 * @see MaskingLibrary
+	 * @return the zapperMask, not compiled
+	 */
+	public String getItemMaskStr();
 
 	/**
 	 * Returns an Xml document representing this manufacturer.

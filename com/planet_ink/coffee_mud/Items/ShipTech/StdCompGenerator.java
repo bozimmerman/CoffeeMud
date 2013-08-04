@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -59,6 +60,8 @@ public class StdCompGenerator extends StdCompFuelConsumer implements Electronics
 	{
 		generatedAmtPerTick=amt;
     }
+
+	@Override public TechType getTechType() { return TechType.SHIP_GENERATOR; }
 	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

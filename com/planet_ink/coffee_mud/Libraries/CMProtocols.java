@@ -345,7 +345,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,key);
 			else
-			image=getHashedMXPImage(H,"POWERSOURCE");
+				image=getHashedMXPImage(H,"POWERSOURCE");
 		}
 		else
 		if(O instanceof Electronics.ElecPanel)
@@ -354,7 +354,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,key);
 			else
-			image=getHashedMXPImage(H,"ELECPANEL");
+			if(H.containsKey(((Electronics.ElecPanel) O).panelType().toString()))
+				image=getHashedMXPImage(H,((Electronics.ElecPanel) O).panelType().toString());
+			else
+			if(H.containsKey(((Electronics.ElecPanel) O).getTechType().toString()))
+				image=getHashedMXPImage(H,((Electronics.ElecPanel) O).getTechType().toString());
+			else
+				image=getHashedMXPImage(H,"ELECPANEL");
 		}
 		else
 		if(O instanceof ShipComponent)
@@ -363,22 +369,24 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if(H.containsKey(key))
 				image=getHashedMXPImage(H,key);
 			else
-			if(O instanceof ShipComponent.ShipEngine)
-				image=getHashedMXPImage(H,"SHIPCOMP_ENGINE");
-			else
-			if(O instanceof ShipComponent.ShipEnviroControl)
-				image=getHashedMXPImage(H,"SHIPCOMP_ENVIRO");
-			else
-			if(O instanceof ShipComponent.ShipSensor)
-				image=getHashedMXPImage(H,"SHIPCOMP_SENSOR");
-			else
-			if(O instanceof ShipComponent.ShipWeapon)
-				image=getHashedMXPImage(H,"SHIPCOMP_WEAPON");
+				image=getHashedMXPImage(H,((ShipComponent) O).getTechType().toString());
 			if(image==null) image=getHashedMXPImage(H,"SHIPCOMP_*");
 		}
 		else
 		if(O instanceof Software)
 			image=getHashedMXPImage(H,"ITEM_SOFTWARE");
+		else
+		if(O instanceof Technical)
+		{
+			String key;
+			key = "TECHNICAL_"+((Technical)O).getTechType().toString();
+			if(!H.containsKey(key))
+				key = "ELECTRONICS_"+((Technical)O).getTechType().toString();
+			if(!H.containsKey(key))
+				key = "ELECTRONICS_*";
+			image=getHashedMXPImage(H,key);
+			if(image==null) image=getHashedMXPImage(H,"TECH_*");
+		}
 		else
 		if(O instanceof Armor)
 		{

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -71,6 +72,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon
 	@Override public int weaponClassification(){return weaponClassification;}
 	@Override public void setWeaponType(int newType){weaponType=newType;}
 	@Override public void setWeaponClassification(int newClassification){weaponClassification=newClassification;}
+	@Override public TechType getTechType() { return TechType.PERSONAL_WEAPON; }
 
 	public String secretIdentity()
 	{

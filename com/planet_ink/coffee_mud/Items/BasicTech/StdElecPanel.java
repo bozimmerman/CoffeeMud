@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -50,9 +51,11 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		this.recoverPhyStats();
 	}
 	
-	protected ElecPanelType panelType=ElecPanelType.ANY;
-	public ElecPanelType panelType(){return panelType;}
-	public void setPanelType(ElecPanelType type){panelType=type;}
+	@Override public TechType getTechType() { return TechType.SHIP_PANEL; }
+
+	protected TechType panelType=TechType.ANY;
+	public TechType panelType(){return panelType;}
+	public void setPanelType(TechType type){panelType=type;}
 	@Override public int powerNeeds(){return powerNeeds; }
 
 	public String displayText()
@@ -64,30 +67,8 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 	public boolean canContain(Environmental E)
 	{
 		if(!super.canContain(E)) return false;
-		switch(panelType())
-		{
-		case ANY:
+		if((E instanceof Technical)&&(panelType()==((Technical)E).getTechType()))
 			return true;
-		case WEAPON:
-			return E instanceof ShipComponent.ShipWeapon;
-		case ENGINE:
-			return E instanceof ShipComponent.ShipEngine;
-		case SENSOR:
-			return E instanceof ShipComponent.ShipSensor;
-		case POWER:
-			return E instanceof PowerSource;
-		case COMPUTER:
-			return E instanceof Electronics.Computer;
-		case ENVIRO_CONTROL:
-			return E instanceof ShipComponent.ShipEnviroControl;
-		case GENERATOR:
-			return E instanceof PowerGenerator;
-		case DAMPENER:
-			return E instanceof ShipComponent.ShipInertialDampener;
-		default:
-			break;
-		
-		}
 		return true;
 	}
 

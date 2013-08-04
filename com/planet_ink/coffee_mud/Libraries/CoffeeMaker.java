@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel.ElecPanelType;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -2580,7 +2580,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Electronics.ElecPanel)
 		{
 			final String panelType=CMLib.xml().getValFromPieces(buf,"SSPANELT");
-			ElecPanelType type = (ElecPanelType)CMath.s_valueOf(ElecPanelType.class, panelType);
+			Technical.TechType type = (Technical.TechType)CMath.s_valueOf(Technical.TechType.class, panelType);
 			if(type != null) ((Electronics.ElecPanel)E).setPanelType(type);
 		}
 		if(E instanceof ShipComponent)

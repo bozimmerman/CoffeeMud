@@ -100,7 +100,7 @@ public class GenElecPanel extends StdElecPanel
 		case 5: activate(CMath.s_bool(val)); break;
 		case 6: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
 		case 7: try{
-					setPanelType(Electronics.ElecPanel.ElecPanelType.valueOf(val.toUpperCase().trim())); 
+					setPanelType(TechType.valueOf(val.toUpperCase().trim())); 
 				}catch(Exception e){}
 				break;
 		default:

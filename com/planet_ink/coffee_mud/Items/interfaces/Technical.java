@@ -10,8 +10,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.Electronics.ElecPanel.ElecPanelType;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -36,14 +36,29 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface Technical
 {
+
+	/**
+	 * Standard technical item types
+	 * @author Bo Zimmerman
+	 */
+	public static enum TechType 
+	{
+		ANY, GIZMO, 
+		PERSONAL_WEAPON, PERSONAL_SENSOR, PERSONAL_SHIELD,
+		SHIP_SPACESHIP,SHIP_PANEL,
+		SHIP_WEAPON,SHIP_ENGINE,SHIP_SENSOR,SHIP_POWER,SHIP_COMPUTER,SHIP_SOFTWARE,SHIP_ENVIRO_CONTROL,SHIP_GENERATOR,SHIP_DAMPENER
+	}
+	
 	public int techLevel();
 	public void setTechLevel(int level);
+	
+	public TechType getTechType();
 	
 	public static enum TechCommand 
 	{
 		THRUST(ShipEngine.ThrustPort.class, Integer.class),
 		ACCELLLERATION(ShipEngine.ThrustPort.class, Integer.class, Long.class),
-		COMPONANTFAILURE(ElecPanelType.class, String[].class)
+		COMPONANTFAILURE(Technical.TechType.class, String[].class)
 		;
 		private Class<?>[] parms;
 		private TechCommand(Class<?>... parms )
@@ -139,6 +154,4 @@ public interface Technical
 			return (TechCommand)CMath.s_valueOf(TechCommand.class, parts[0].toUpperCase().trim());
 		}
 	}
-	
-	
 }

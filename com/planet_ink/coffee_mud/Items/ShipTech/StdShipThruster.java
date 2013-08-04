@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -60,21 +61,23 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(!(E instanceof StdShipThruster)) return false;
 		return super.sameAs(E);
 	}
-	public double getFuelEfficiency() { return fuelEfficiency; }
-	public void setFuelEfficiency(double amt) { fuelEfficiency=amt; }
-	public float getInstalledFactor() { return installedFactor; }
-	public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
-	public int getMaxThrust(){return maxThrust;}
-	public void setMaxThrust(int max){maxThrust=max;}
-	public int getThrust(){return thrust;}
-	public void setThrust(int current){thrust=current;}
-	public long getSpecificImpulse() { return specificImpulse; }
+	@Override public double getFuelEfficiency() { return fuelEfficiency; }
+	@Override public void setFuelEfficiency(double amt) { fuelEfficiency=amt; }
+	@Override public float getInstalledFactor() { return installedFactor; }
+	@Override public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
+	@Override public int getMaxThrust(){return maxThrust;}
+	@Override public void setMaxThrust(int max){maxThrust=max;}
+	@Override public int getThrust(){return thrust;}
+	@Override public void setThrust(int current){thrust=current;}
+	@Override public long getSpecificImpulse() { return specificImpulse; }
+	@Override 
 	public void setSpecificImpulse(long amt) 
 	{ 
 		if(amt > 0)
 			specificImpulse = amt; 
 	}
 	
+	@Override public TechType getTechType() { return TechType.SHIP_ENGINE; }
 	@Override protected boolean willConsumeFuelIdle() { return getThrust()>0; }
 	
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -129,7 +132,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		}
 		else
 		{
-			String code=Technical.TechCommand.COMPONANTFAILURE.makeCommand(Electronics.ElecPanel.ElecPanelType.ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
+			String code=Technical.TechCommand.COMPONANTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure:_"+me.name().replace(' ','_')+":_insufficient_fuel.");
 			for(Iterator<Electronics.Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
 			{
 				Electronics.Computer C=c.next();
@@ -205,7 +208,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 					else
 					if(me.okMessage(msg.source(), msg2))
 						me.executeMsg(msg.source(), msg2);
-					String code=Technical.TechCommand.COMPONANTFAILURE.makeCommand(Electronics.ElecPanel.ElecPanelType.ENGINE, "Failure: "+me.name()+": insufficient_fuel.");
+					String code=Technical.TechCommand.COMPONANTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_fuel.");
 					for(Iterator<Electronics.Computer> c=CMLib.tech().getComputers(circuitKey);c.hasNext();)
 					{
 						Electronics.Computer C=c.next();

@@ -216,8 +216,42 @@ public class Create extends StdCommand
 		Log.sysOut("Items",mob.Name()+" created item "+newItem.ID()+".");
 	}
 
-	public void players(MOB mob, Vector commands)
-	throws IOException
+	public void manufacturer(MOB mob, Vector commands) throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE MANUFACTURER [NEW NAME]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+
+		String manufacturerID=CMParms.combine(commands,2);
+		Manufacturer manufacturer=(Manufacturer)CMClass.getCommon("DefaultManufacturer");
+		if(manufacturer==null)
+		{
+			mob.tell("DefaultManufacturer not found.");
+			Log.errOut("DefaultManufacturer was not found in common classes.");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		
+		Manufacturer manuCheck=CMLib.tech().getManufacturer(manufacturerID);
+		if(((manuCheck!=null)&&(manuCheck!=CMLib.tech().getDefaultManufacturer()))
+		||manufacturerID.equalsIgnoreCase("RANDOM"))
+		{
+			mob.tell("There's already a manufacturer called '"+manufacturerID+"'.\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+
+		manufacturer.setName(manufacturerID);
+		CMLib.tech().addManufacturer(manufacturer);
+		CMLib.genEd().modifyManufacturer(mob, manufacturer);
+		mob.location().recoverRoomStats();
+		Log.sysOut(mob.Name()+" created manufacturer "+manufacturer.name()+".");
+	}
+
+	public void players(MOB mob, Vector commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -942,6 +976,13 @@ public class Create extends StdCommand
 			items(mob,commands);
 		}
 		else
+		if(commandType.equals("MANUFACTURER"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			manufacturer(mob,commands);
+		}
+		else
 		if(commandType.equals("ROOM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)) return errorOut(mob);
@@ -1289,7 +1330,7 @@ public class Create extends StdCommand
 					}
 					else
 					{
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, DISABLEFLAG, NEWS, USER, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, LANGUAGE, CRAFTSKILL, MANUFACTURER, ALLQUALIFY, CLASS, POLL, DEBUGFLAG, DISABLEFLAG, NEWS, USER, or ROOM.");
 						return false;
 					}
 				}
@@ -1318,7 +1359,7 @@ public class Create extends StdCommand
 				}
 				else
 				{
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, USER, DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, MOB, COMPONENT, GOVERNMENT, MANUFACTURER, HOLIDAY, CLAN, RACE, ABILITY, LANGUAGE, CRAFTSKILL, ALLQUALIFY, CLASS, POLL, USER, DEBUGFLAG, NEWS, DISABLEFLAG, ROOM.");
 					return false;
 				}
 			}

@@ -71,6 +71,7 @@ public class StdProgram extends StdItem implements Software
 	public boolean isActivationString(String word) { return false; }
 	public boolean isDeActivationString(String word) { return false; }
 	public boolean isCommandString(String word, boolean isActive) { return false; }
+	@Override public TechType getTechType() { return TechType.SHIP_SOFTWARE; }
 
 	public String getActivationMenu() { return ""; }
 	

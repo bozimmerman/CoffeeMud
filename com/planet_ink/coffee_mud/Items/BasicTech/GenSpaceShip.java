@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ShipComponent.ShipEngine.ThrustPort;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -71,6 +72,8 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 	}
 
 	public boolean isGeneric(){return true;}
+	
+	@Override public TechType getTechType() { return TechType.SHIP_SPACESHIP; }
 
 	public Area getShipArea()
 	{

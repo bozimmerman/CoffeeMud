@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -664,15 +665,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				if(newName.equalsIgnoreCase("?"))
 				{
-					mob.tell("Component Types: "+CMParms.toStringList(Electronics.ElecPanel.ElecPanelType.values()));
+					mob.tell("Component Types: "+CMParms.toStringList(Electronics.ElecPanel.PANELTYPES));
 					continueThis=true;
 				}
 				else
 				{
-					Electronics.ElecPanel.ElecPanelType newType=null;
-					for(int i=0;i<Electronics.ElecPanel.ElecPanelType.values().length;i++)
-						if(Electronics.ElecPanel.ElecPanelType.values()[i].name().equalsIgnoreCase(newName))
-							newType=Electronics.ElecPanel.ElecPanelType.values()[i];
+					TechType newType=null;
+					for(int i=0;i<TechType.values().length;i++)
+						if(TechType.values()[i].name().equalsIgnoreCase(newName))
+							newType=TechType.values()[i];
 					if(newType==null)
 					{
 						mob.tell("'"+newName+"' is not recognized.  Try '?' for a list.");
@@ -8577,5 +8578,42 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID,mapped.qualLevel,mapped.abilityID,mapped.defaultProficiency,100,"",mapped.autoGain,false,true,
 				 CMParms.parseSpaces(mapped.originalSkillPreReqList.trim(), true), mapped.extraMask,null);
+	}
+	
+	@Override
+	public void modifyManufacturer(MOB mob, Manufacturer me) throws IOException
+	{
+		int showFlag=-1;
+		if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
+			showFlag=-999;
+		boolean ok=false;
+		while(!ok)
+		{
+			int showNumber=0;
+			String newName=prompt(mob,me.name(),++showNumber,showFlag,"Name: ");
+			if(!newName.equals(me.name()))
+			{
+				CMLib.tech().delManufacturer(me);
+				me.setName(newName);
+				CMLib.tech().addManufacturer(me);
+			}
+			me.setEfficiencyPct(CMath.div(prompt(mob,Math.round(me.getEfficiencyPct()*100),++showNumber,showFlag,"Efficiency % (50-150): "),100.0));
+			me.setReliabilityPct(CMath.div(prompt(mob,Math.round(me.getEfficiencyPct()*100),++showNumber,showFlag,"Reliability % (0-100): "),100.0));
+			me.setItemMask(prompt(mob,me.getItemMaskStr(),++showNumber,showFlag,"Item Mask (?): "));
+			me.setMinTechLevelDiff((byte)prompt(mob,(short)me.getMinTechLevelDiff(),++showNumber,showFlag,"Min Tech Diff: "));
+			me.setMaxTechLevelDiff((byte)prompt(mob,(short)me.getMaxTechLevelDiff(),++showNumber,showFlag,"Max Tech Diff: "));
+			if(me.getMaxTechLevelDiff()<me.getMinTechLevelDiff())
+				me.setMaxTechLevelDiff(me.getMinTechLevelDiff());
+			me.setManufactureredTypesList(promptCommaList(mob,me.getManufactureredTypesList(),++showNumber,showFlag,"Manufact. Types: ",
+					"Choices: "+CMParms.toStringList(TechType.values()),CMEvalStrChoice.INSTANCE,TechType.values()));
+			if(showFlag<-900){ ok=true; break;}
+			if(showFlag>0){ showFlag=-1; continue;}
+			showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
 	}
 }
