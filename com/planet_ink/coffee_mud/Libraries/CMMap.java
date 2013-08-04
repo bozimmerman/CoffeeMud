@@ -337,12 +337,15 @@ public class CMMap extends StdLibrary implements WorldMap
 	
 	public void moveSpaceObject(SpaceObject O)
 	{
-		double x1=Math.cos(O.direction()[0])*Math.sin(O.direction()[1]);
-		double y1=Math.sin(O.direction()[0])*Math.sin(O.direction()[1]);
-		double z1=Math.cos(O.direction()[1]);
-		moveSpaceObject(O,O.coordinates()[0]+Math.round(CMath.mul(O.speed(),x1)),
-						O.coordinates()[1]+Math.round(CMath.mul(O.speed(),y1)),
-						O.coordinates()[2]=O.coordinates()[2]+Math.round(CMath.mul(O.speed(),z1)));
+		if(O.speed()>0)
+		{
+			double x1=Math.cos(O.direction()[0])*Math.sin(O.direction()[1]);
+			double y1=Math.sin(O.direction()[0])*Math.sin(O.direction()[1]);
+			double z1=Math.cos(O.direction()[1]);
+			moveSpaceObject(O,O.coordinates()[0]+Math.round(CMath.mul(O.speed(),x1)),
+							O.coordinates()[1]+Math.round(CMath.mul(O.speed(),y1)),
+							O.coordinates()[2]=O.coordinates()[2]+Math.round(CMath.mul(O.speed(),z1)));
+		}
 	}
 
 	public long[] getLocation(long[] oldLocation, double[] direction, long distance)
