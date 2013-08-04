@@ -2401,6 +2401,14 @@ public class CMMap extends StdLibrary implements WorldMap
 				expireM.destroy();
 		}
 	}
+	
+	
+	protected final static char[] cmfsFilenameifyChars=new char[]{'/','\\',' '};
+	
+	protected String cmfsFilenameify(String str)
+	{
+		return CMStrings.replaceAllofAny(str, cmfsFilenameifyChars, '_').toLowerCase().trim();
+	}
 
 	// this is a beautiful idea, but im scared of the memory of all the final refs
 	protected void addMapStatFiles(final List<CMFile.CMVFSFile> myFiles, final Room R, final Environmental E, final CMFile.CMVFSDir root)
@@ -2462,14 +2470,14 @@ public class CMMap extends StdLibrary implements WorldMap
 				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					final Area A=a.nextElement();
-					myFiles.add(new CMFile.CMVFSFile(this.path+A.Name().replace(' ', '_')+".cmare",48,System.currentTimeMillis(),"SYS")
+					myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(A.Name())+".cmare",48,System.currentTimeMillis(),"SYS")
 					{
 						@Override public Object readData()
 						{
 							return CMLib.coffeeMaker().getAreaXML(A, null, null, null, true);
 						}
 					});
-					myFiles.add(new CMFile.CMVFSDir(this,this.path+A.Name().toLowerCase()+"/") {
+					myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(A.Name())+"/") {
 						@Override protected CMFile.CMVFSFile[] getFiles() {
 							List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 							for(Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
@@ -2480,14 +2488,14 @@ public class CMMap extends StdLibrary implements WorldMap
 									String roomID=R.roomID();
 									if(roomID.startsWith(A.Name()+"#"))
 										roomID=roomID.substring(A.Name().length()+1);
-									myFiles.add(new CMFile.CMVFSFile(this.path+R.roomID().replace(' ', '_')+".cmare",48,System.currentTimeMillis(),"SYS")
+									myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R.roomID())+".cmare",48,System.currentTimeMillis(),"SYS")
 									{
 										@Override public Object readData()
 										{
 											return CMLib.coffeeMaker().getRoomXML(R, null, null, true);
 										}
 									});
-									myFiles.add(new CMFile.CMVFSDir(this,this.path+roomID.replace(' ', '_').toLowerCase()+"/") {
+									myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(roomID).toLowerCase()+"/") {
 										@Override protected CMFile.CMVFSFile[] getFiles() {
 											List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 											myFiles.add(new CMFile.CMVFSFile(this.path+"items.cmare",48,System.currentTimeMillis(),"SYS")
@@ -2511,18 +2519,18 @@ public class CMMap extends StdLibrary implements WorldMap
 													for(int i=0;i<R2.numInhabitants();i++)
 													{
 														final MOB M=R2.fetchInhabitant(i);
-														myFiles.add(new CMFile.CMVFSFile(this.path+R2.getContextName(M).toLowerCase().replace(' ', '_')+".cmare",48,System.currentTimeMillis(),"SYS")
+														myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R2.getContextName(M))+".cmare",48,System.currentTimeMillis(),"SYS")
 														{
 															@Override public Object readData()
 															{
 																return CMLib.coffeeMaker().getMobXML(M);
 															}
 														});
-														myFiles.add(new CMFile.CMVFSDir(this,this.path+R2.getContextName(M).toLowerCase().replace(' ', '_')+"/") {
+														myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(M))+"/") {
 															@Override protected CMFile.CMVFSFile[] getFiles() {
 																List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
-																Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
 																addMapStatFiles(myFiles,R,M,this);
+																Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
 																return myFiles.toArray(new CMFile.CMVFSFile[0]);
 															}
 														});
@@ -2538,18 +2546,18 @@ public class CMMap extends StdLibrary implements WorldMap
 													for(int i=0;i<R2.numItems();i++)
 													{
 														final Item I=R2.getItem(i);
-														myFiles.add(new CMFile.CMVFSFile(this.path+R2.getContextName(I).toLowerCase().replace(' ', '_')+".cmare",48,System.currentTimeMillis(),"SYS")
+														myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R2.getContextName(I))+".cmare",48,System.currentTimeMillis(),"SYS")
 														{
 															@Override public Object readData()
 															{
 																return CMLib.coffeeMaker().getItemXML(I);
 															}
 														});
-														myFiles.add(new CMFile.CMVFSDir(this,this.path+R2.getContextName(I).toLowerCase().replace(' ', '_')+"/") {
+														myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(I))+"/") {
 															@Override protected CMFile.CMVFSFile[] getFiles() {
 																List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
-																Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
 																addMapStatFiles(myFiles,R,I,this);
+																Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
 																return myFiles.toArray(new CMFile.CMVFSFile[0]);
 															}
 														});

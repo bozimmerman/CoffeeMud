@@ -88,7 +88,7 @@ public class CMFile extends File
 	 */
 	public CMFile (final String absolutePath, final MOB user)
 	{
-		this(absolutePath,user,0);
+		this(null, absolutePath,user,0);
 	}
 	
 	/**
@@ -99,6 +99,16 @@ public class CMFile extends File
 	 * @param flagBitmap bitmap flag to turn on error logging or force allow
 	 */
 	public CMFile (String absolutePath, final MOB user, final int flagBitmap)
+	{ 
+		this(null, absolutePath,user,flagBitmap);
+	}
+	
+	private CMFile (CMVFSFile info, final String absolutePath, final MOB user)
+	{
+		this(info, absolutePath,user,0);
+	}
+	
+	private CMFile (CMVFSFile info, String absolutePath, final MOB user, final int flagBitmap)
 	{ 
 		super(parsePathParts(absolutePath)[2]);
 		boolean pleaseLogErrors=(flagBitmap&FLAG_LOGERRORS)>0;
@@ -117,7 +127,8 @@ public class CMFile extends File
 		localPath=path.replace('/',pathSeparator);
 		// fill in all we can
 		vfsBits=0;
-		CMVFSFile info=getVFSInfo(absolutePath);
+		if(info==null)
+			info=getVFSInfo(absolutePath);
 		String ioPath=getIOReadableLocalPathAndName();
 		localFile=new File(ioPath);
 		if(!localFile.exists())
@@ -179,12 +190,17 @@ public class CMFile extends File
 			if(localFile.isHidden()) vfsBits=vfsBits|CMFile.VFS_MASK_HIDDEN;
 		}
 
+		boolean doesFilenameExistInVFS=(info!=null) && (info.path.equalsIgnoreCase(absolutePath) || info.path.equalsIgnoreCase(absolutePath+"/"));
+		boolean doesExistAsPathInVFS= (info!=null) && doesFilenameExistInVFS && ((info instanceof CMVFSDir)||(CMath.bset(info.mask, CMFile.VFS_MASK_DIRECTORY)));
+		if((info!=null)&&(!doesFilenameExistInVFS)) 
+			Log.errOut("CMFile '"+absolutePath+"' != '"+info.path+"' fetch/create error.");
+
 		boolean isADirectory=((localFile!=null)&&(localFile.exists())&&(localFile.isDirectory()))
-						   ||doesExistAsPathInVFS(absolutePath);
+						   ||doesExistAsPathInVFS;
 		boolean allowedToTraverseAsDirectory=isADirectory
 										   &&((accessor==null)||CMSecurity.canTraverseDir(accessor,accessor.location(),absolutePath));
 		boolean allowedToWriteVFS=((forceAllow)||(accessor==null)||(CMSecurity.canAccessFile(accessor,accessor.location(),absolutePath,true)));
-		boolean allowedToReadVFS=(doesFilenameExistInVFS(absolutePath)&&allowedToWriteVFS)||allowedToTraverseAsDirectory;
+		boolean allowedToReadVFS=(doesFilenameExistInVFS&&allowedToWriteVFS)||allowedToTraverseAsDirectory;
 		boolean allowedToWriteLocal=((forceAllow)||(accessor==null)||(CMSecurity.canAccessFile(accessor,accessor.location(),absolutePath,false)));
 		boolean allowedToReadLocal=(localFile!=null)
 									&&(localFile.exists())
@@ -320,13 +336,14 @@ public class CMFile extends File
 					{
 						final CMVFSDir key = new CMVFSDir(currDir,currDir.path+p+"/");
 						int dex = -1;
-						if(currDir.getFiles()!=null)
-							dex=Arrays.binarySearch(currDir.getFiles(), key, fcomparator);
-						if(dex>=0)
+						CMVFSFile[] files=currDir.getFiles();
+						if(files!=null)
+							dex=Arrays.binarySearch(files, key, fcomparator);
+						if((files!=null)&&(dex>=0))
 						{
-							if(currDir.getFiles()[dex] instanceof CMVFSDir)
+							if(files[dex] instanceof CMVFSDir)
 							{
-								currDir=(CMVFSDir)currDir.getFiles()[dex];
+								currDir=(CMVFSDir)files[dex];
 								continue;
 							}
 							return null; // found a step, but its a file, not a subdir
@@ -334,7 +351,7 @@ public class CMFile extends File
 						else
 						if(!create)
 							return null;
-						if(currDir.getFiles()==null) currDir.files=new CMVFSFile[0];
+						if(files==null) currDir.files=new CMVFSFile[0];
 						currDir.files=Arrays.copyOf(currDir.files, currDir.files.length+1);
 						currDir.files[currDir.files.length-1]=key;
 						Arrays.sort(currDir.files,fcomparator);
@@ -420,24 +437,25 @@ public class CMFile extends File
 		
 		private final synchronized CMVFSFile get(final String fileName)
 		{
-			if(getFiles()==null) return null;
+			CMVFSFile[] files=getFiles();
+			if(files==null) return null;
 			final CMVFSFile key = new CMVFSFile(fileName, 0, 0, "");
-			int dex = Arrays.binarySearch(getFiles(), key, fcomparator);
-			if(dex>=0) return getFiles()[dex];
+			int dex = Arrays.binarySearch(files, key, fcomparator);
+			if(dex>=0) return files[dex];
 			return null;
 		}
 		
 		private final synchronized CMVFSFile get(final CMVFSFile file)
 		{
-			if(getFiles()==null) return null;
-			int dex = Arrays.binarySearch(getFiles(), file, fcomparator);
+			CMVFSFile[] files=getFiles();
+			if(files==null) return null;
+			int dex = Arrays.binarySearch(files, file, fcomparator);
 			if(dex>=0) return file;
 			return null;
 		}
 		
 		public final synchronized CMVFSFile fetch(final String filePath)
 		{
-			if(getFiles()==null) return null;
 			final int x=filePath.lastIndexOf('/');
 			CMVFSDir dir = this;
 			if(x>=0)
@@ -1145,20 +1163,6 @@ public class CMFile extends File
 		return null;
 	}
 
-	private static final boolean doesFilenameExistInVFS(final String filename)
-	{
-		return getVFSInfo(filename)!=null;
-	}
-
-	private static boolean doesExistAsPathInVFS(String filename)
-	{
-		CMVFSFile file=getVFSInfo(filename);
-		if(file==null) return false;
-		if((file instanceof CMVFSDir)||(CMath.bset(file.mask, CMFile.VFS_MASK_DIRECTORY)))
-			return true;
-		return false;
-	}
-
 	public final boolean isVFSDirectory()
 	{
 		String dir=getVFSPathAndName().toLowerCase();
@@ -1188,10 +1192,11 @@ public class CMFile extends File
 		{
 			if(vfsSrchDir.length()>0)
 				vfs=vfs.fetchSubDir(vfsSrchDir, false);
-			if((vfs!=null)&&(vfs.getFiles()!=null)&&(vfs.getFiles().length>0))
-				for(CMVFSFile file : vfs.getFiles())
+			CMVFSFile[] vfsFiles=(vfs!=null)?vfs.getFiles():null;
+			if((vfsFiles!=null)&&(vfsFiles.length>0))
+				for(CMVFSFile file : vfsFiles)
 				{
-					CMFile CF=new CMFile(prefix+file.path,accessor);
+					CMFile CF=new CMFile(file,prefix+file.path,accessor);
 					if((CF.canRead())
 					&&(!fcheck.contains(file.uName)))
 					{

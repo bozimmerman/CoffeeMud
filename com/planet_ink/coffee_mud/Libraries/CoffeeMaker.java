@@ -984,7 +984,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public String fillCustomVectorFromXML(List<XMLpiece> xml, List<CMObject> custom, Map<String,String> externalFiles)
 	{
 		List<XMLLibrary.XMLpiece> aV=CMLib.xml().getContentsFromPieces(xml,"CUSTOM");
-		if(aV!=null)
+		if((aV!=null)&&(custom!=null))
 		{
 			for(int r=0;r<aV.size();r++)
 			{
@@ -1053,7 +1053,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 		}
 		aV=CMLib.xml().getContentsFromPieces(xml,"FILES");
-		if(aV!=null)
+		if((aV!=null)&&(externalFiles!=null))
 		{
 			for(int r=0;r<aV.size();r++)
 			{
@@ -1469,7 +1469,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		if(mob==null) return;
 		Race R=mob.baseCharStats().getMyRace();
-		if(R==null) return;
+		if((R==null)||(custom==null)) return;
 		if((R.isGeneric()) &&(!custom.contains(R)))
 			custom.add(R);
 		for(Ability A : R.racialAbilities(null))
@@ -1482,6 +1482,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	
 	protected void possiblyAddCustomClass(final MOB mob, Set<CMObject> custom)
 	{
+		if(custom!=null)
 		for(int c=0;c<mob.baseCharStats().numClasses();c++)
 		{
 			CharClass C=mob.baseCharStats().getMyClass(c);

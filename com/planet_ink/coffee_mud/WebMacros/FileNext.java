@@ -38,6 +38,16 @@ public class FileNext extends StdWebMacro
 	public String name() { return "FileNext"; }
 	public boolean isAdminMacro()	{return true;}
 
+	public String trimSlash(String path)
+	{
+		path=path.trim();
+		while(path.startsWith("/"))
+			path=path.substring(1);
+		while(path.endsWith("/"))
+			path=path.substring(0,path.length()-1);
+		return path;
+	}
+	
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -51,15 +61,31 @@ public class FileNext extends StdWebMacro
 			if(last!=null) httpReq.removeUrlParameter("FILE");
 			return "";
 		}
- 		CMFile directory=new CMFile(path,M);
+		String fileKey="CMFSFILE_"+trimSlash(path);
+		String pathKey="DIRECTORYFILES_"+trimSlash(path);
+		CMFile directory=(CMFile)httpReq.getRequestObjects().get(fileKey);
+		if(directory==null)
+		{
+			directory=new CMFile(path,M);
+			httpReq.getRequestObjects().put(fileKey, directory);
+		}
 		XVector fileList=new XVector();
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
 			httpReq.addFakeUrlParameter("PATH",directory.getVFSPathAndName());
-			CMFile[] dirs=CMFile.getFileList(path,M,false,true);
+			CMFile[] dirs=(CMFile[])httpReq.getRequestObjects().get(pathKey);
+			if(dirs==null)
+			{
+				dirs=CMFile.getFileList(path,M,false,true);
+				httpReq.getRequestObjects().put(pathKey, dirs);
+				for(CMFile file : dirs)
+				{
+					String filepath=path.endsWith("/")?path+file.getName():path+"/"+file.getName();
+					httpReq.getRequestObjects().put("CMFSFILE_"+trimSlash(filepath), file);
+				}
+			}
 			for(int d=0;d<dirs.length;d++)
 				fileList.addElement(dirs[d].getName());
-			
 		}
 		fileList.sort();
 		String lastID="";

@@ -38,6 +38,16 @@ public class FileInfo extends StdWebMacro
 	public String name() { return "FileInfo"; }
 	public boolean isAdminMacro()	{return true;}
 
+	public String trimSlash(String path)
+	{
+		path=path.trim();
+		while(path.startsWith("/"))
+			path=path.substring(1);
+		while(path.endsWith("/"))
+			path=path.substring(0,path.length()-1);
+		return path;
+	}
+	
 	public String runMacro(HTTPRequest httpReq, String parm)
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
@@ -49,7 +59,14 @@ public class FileInfo extends StdWebMacro
 		if(M==null) return "[authentication error]";
 		try
 		{
-			CMFile F=new CMFile(path+"/"+file,M);
+			String filepath=path.endsWith("/")?path+file:path+"/"+file;
+			String pathKey="CMFSFILE_"+trimSlash(filepath);
+			CMFile F=(CMFile)httpReq.getRequestObjects().get(pathKey);
+			if(F==null)
+			{
+				F=new CMFile(filepath,M);
+				httpReq.getRequestObjects().put(pathKey, F);
+			}
 			if(parms.containsKey("ISDIRECTORY"))
 				return ""+F.isDirectory();
 			if(parms.containsKey("ISFILE"))
