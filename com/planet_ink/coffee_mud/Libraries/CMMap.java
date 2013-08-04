@@ -2401,6 +2401,59 @@ public class CMMap extends StdLibrary implements WorldMap
 				expireM.destroy();
 		}
 	}
+
+	// this is a beautiful idea, but im scared of the memory of all the final refs
+	protected void addMapStatFiles(final List<CMFile.CMVFSFile> myFiles, final Room R, final Environmental E, final CMFile.CMVFSDir root)
+	{
+		String[] stats=E.getStatCodes();
+		final String oldName=E.Name();
+		for(int i=0;i<stats.length;i++)
+		{
+			final String statName=stats[i];
+			final String statValue=E.getStat(statName);
+			//todo: make these writeable
+			myFiles.add(new CMFile.CMVFSFile(root.path+statName,256,System.currentTimeMillis(),"SYS")
+			{
+				@Override public int getMaskBits(MOB accessor)
+				{
+					if(accessor==null)
+						return this.mask;
+					if((E instanceof Area)&&(CMSecurity.isAllowed(accessor,((Area)E).getRandomProperRoom(),CMSecurity.SecFlag.CMDAREAS)))
+						return this.mask;
+					else
+					if(CMSecurity.isAllowed(accessor,R,CMSecurity.SecFlag.CMDROOMS))
+						return this.mask;
+					else
+					if((E instanceof MOB) && CMSecurity.isAllowed(accessor,R,CMSecurity.SecFlag.CMDMOBS))
+						return this.mask;
+					else
+					if((E instanceof Item) && CMSecurity.isAllowed(accessor,R,CMSecurity.SecFlag.CMDITEMS))
+						return this.mask;
+					return this.mask|48;
+				}
+				
+				@Override public Object readData()
+				{
+					return statValue;
+				}
+				@Override public void saveData(String filename, int vfsBits, String author, Object O)
+				{
+					E.setStat(statName, O.toString());
+					if(E instanceof Area)
+						CMLib.database().DBUpdateArea(oldName, (Area)E);
+					else
+					if(E instanceof Room)
+						CMLib.database().DBUpdateRoom((Room)E);
+					else
+					if(E instanceof MOB)
+						CMLib.database().DBUpdateMOB(R.roomID(), (MOB)E);
+					else
+					if(E instanceof Item)
+						CMLib.database().DBUpdateItem(R.roomID(), (Item)E);
+				}
+			});
+		}
+	}
 	
 	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root)
 	{
@@ -2433,39 +2486,6 @@ public class CMMap extends StdLibrary implements WorldMap
 										@Override public Object readData()
 										{
 											return CMLib.coffeeMaker().getRoomXML(R, null, null, true);
-										}
-									});
-									myFiles.add(new CMFile.CMVFSDir(this,this.path+roomID+"/") {
-										@Override protected CMFile.CMVFSFile[] getFiles() {
-											List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
-											String[] stats=R.getStatCodes();
-											for(int i=0;i<stats.length;i++)
-											{
-												final String statName=stats[i];
-												final String statValue=R.getStat(statName);
-												//todo: make these writeable
-												myFiles.add(new CMFile.CMVFSFile(this.path+statName,256,System.currentTimeMillis(),"SYS")
-												{
-													@Override public int getMaskBits(MOB accessor)
-													{
-														if((accessor==null)||(CMSecurity.isAllowed(accessor,R,CMSecurity.SecFlag.CMDROOMS)))
-															return this.mask;
-														return this.mask|48;
-													}
-													
-													@Override public Object readData()
-													{
-														return statValue;
-													}
-													@Override public void saveData(String filename, int vfsBits, String author, Object O)
-													{
-														R.setStat(statName, O.toString());
-														CMLib.database().DBUpdateRoom(R);
-													}
-												});
-											}
-											Collections.sort(myFiles,CMFile.CMVFSDir.fcomparator);
-											return myFiles.toArray(new CMFile.CMVFSFile[0]);
 										}
 									});
 								}
