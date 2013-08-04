@@ -1344,6 +1344,7 @@ public class Modify extends StdCommand
 		}
 
 		CMLib.genEd().modifyManufacturer(mob, manufacturer);
+		CMLib.tech().updateManufacturer(manufacturer);
 		mob.location().recoverRoomStats();
 		Log.sysOut(mob.Name()+" modified manufacturer "+manufacturer.name()+".");
 	}

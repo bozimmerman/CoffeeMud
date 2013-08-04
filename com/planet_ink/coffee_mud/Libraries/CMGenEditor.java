@@ -8598,7 +8598,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				CMLib.tech().addManufacturer(me);
 			}
 			me.setEfficiencyPct(CMath.div(prompt(mob,Math.round(me.getEfficiencyPct()*100),++showNumber,showFlag,"Efficiency % (50-150): "),100.0));
-			me.setReliabilityPct(CMath.div(prompt(mob,Math.round(me.getEfficiencyPct()*100),++showNumber,showFlag,"Reliability % (0-100): "),100.0));
+			me.setReliabilityPct(CMath.div(prompt(mob,Math.round(me.getReliabilityPct()*100),++showNumber,showFlag,"Reliability % (0-100): "),100.0));
 			me.setItemMask(prompt(mob,me.getItemMaskStr(),++showNumber,showFlag,"Item Mask (?): "));
 			me.setMinTechLevelDiff((byte)prompt(mob,(short)me.getMinTechLevelDiff(),++showNumber,showFlag,"Min Tech Diff: "));
 			me.setMaxTechLevelDiff((byte)prompt(mob,(short)me.getMaxTechLevelDiff(),++showNumber,showFlag,"Max Tech Diff: "));
