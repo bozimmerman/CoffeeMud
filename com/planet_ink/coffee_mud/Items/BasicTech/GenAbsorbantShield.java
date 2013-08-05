@@ -40,6 +40,8 @@ public class GenAbsorbantShield extends GenPersonalShield
 		super();
 		setName("an absorption shield generator");
 		setDisplayText("an absorption shield generator sits here.");
+		setDescription("The absorption shield generator is worn about the body and activated to use. It absorbs all manner of weapon types. ");
+		setDescription("The integrity shield generator is worn about the body and activated to use. It protects against disruption and disintegration beams. ");
 	}
 	
 	@Override protected String fieldOnStr(MOB viewerM) { return "A sparkling field of energy surrounds "+name(viewerM)+"."; }

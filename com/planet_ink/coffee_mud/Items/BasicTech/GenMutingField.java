@@ -41,14 +41,13 @@ public class GenMutingField extends GenPersonalShield
 		super();
 		setName("a muting field generator");
 		setDisplayText("a muting field generator sits here.");
+		setDescription("The muting field generator is worn about the body and activated to use. It neutralizes sonic and stunning weapon damage. ");
 	}
 	
 	protected String fieldOnStr(MOB viewerM) { return "A thick field of energy surrounds "+name(viewerM)+"."; }
 	
 	protected String fieldDeadStr(MOB viewerM) { return "The thick field around <S-NAME> flickers and dies out."; }
 	
-	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
-
 	@Override 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{

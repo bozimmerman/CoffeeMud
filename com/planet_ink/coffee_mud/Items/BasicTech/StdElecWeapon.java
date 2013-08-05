@@ -82,6 +82,8 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 			return Weapon.TYPE_MELTING;
 		case STUN:
 			return Weapon.TYPE_SONICING;
+		case MAIM:
+			return Weapon.TYPE_SLASHING;
 		default:
 			return weaponType;
 		}

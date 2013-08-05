@@ -32,17 +32,20 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenPhaser extends GenElecWeapon
+public class GenDisruptor2 extends GenElecWeapon
 {
-	public String ID(){	return "GenPhaser";}
+	public String ID(){	return "GenDisruptor2";}
+
+	protected int state=0;
 	
-	public GenPhaser()
+	public GenDisruptor2()
 	{
 		super();
-		setName("a phaser");
-		setDisplayText("a phaser");
+		setName("a disruptor type II weapon");
+		basePhyStats.setWeight(5);
+		setDisplayText("a disruptor type II ");
+		setDescription("There are three activation settings: stun, maim, and disrupt.");
 		super.mode = ModeType.KILL;
-		super.modeTypes = new ModeType[]{ ModeType.STUN, ModeType.KILL };
-		setDescription("There are two activation settings: stun, and kill.");
+		super.modeTypes = new ModeType[]{ ModeType.STUN, ModeType.MAIM, ModeType.DISRUPT };
 	}
 }

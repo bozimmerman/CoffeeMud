@@ -39,10 +39,10 @@ public class StdPersonalShield extends StdElecItem
 	public StdPersonalShield()
 	{
 		super();
-		setName("a weak personal shield generator");
+		setName("a personal shield generator");
 		basePhyStats.setWeight(2);
-		setDisplayText("a weak personal shield generator sits here.");
-		setDescription("");
+		setDisplayText("a personal shield generator sits here.");
+		setDescription("The muting field generator is worn about the body and activated to use. It neutralizes weapon damage. ");
 		baseGoldValue=2500;
 		basePhyStats().setLevel(1);
 		recoverPhyStats();

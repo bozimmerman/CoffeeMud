@@ -32,17 +32,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenPhaser extends GenElecWeapon
+public class GenPhaser2 extends GenElecWeapon
 {
-	public String ID(){	return "GenPhaser";}
+	public String ID(){	return "GenPhaser2";}
 	
-	public GenPhaser()
+	public GenPhaser2()
 	{
 		super();
-		setName("a phaser");
-		setDisplayText("a phaser");
+		setName("a type-II phaser");
+		setDisplayText("a type-II phaser");
 		super.mode = ModeType.KILL;
-		super.modeTypes = new ModeType[]{ ModeType.STUN, ModeType.KILL };
-		setDescription("There are two activation settings: stun, and kill.");
+		super.modeTypes = new ModeType[]{ ModeType.STUN, ModeType.KILL, ModeType.DISINTEGRATE };
+		setDescription("There are three activation settings: stun, kill, and disintegrate.");
 	}
 }

@@ -41,14 +41,13 @@ public class GenDeflectionShield extends GenPersonalShield
 		super();
 		setName("a deflection shield generator");
 		setDisplayText("a deflection shield generator sits here.");
+		setDescription("The deflection shield generator is worn about the body and activated to use. It deflects all manner of weapon types. ");
 	}
 	
 	protected String fieldOnStr(MOB viewerM) { return "A deflectant field of energy surrounds "+name(viewerM)+"."; }
 	
 	protected String fieldDeadStr(MOB viewerM) { return "The deflection field around <S-NAME> flickers and dies out."; }
 	
-	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
-
 	@Override 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
