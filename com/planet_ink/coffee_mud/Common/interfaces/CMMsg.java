@@ -953,8 +953,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_POUR=109;
 	/** MINOR_MASK minor action code type, denoting a specific glance at the exits */
 	public static final int TYP_LOOK_EXITS=110;
-	/** MINOR_MASK minor action code type, denoting a lasor action*/
-	public static final int TYP_LASOR=111;
+	/** MINOR_MASK minor action code type, denoting a laser action*/
+	public static final int TYP_LASER=111;
 	/** MINOR_MASK minor action code type, denoting a sonic action*/
 	public static final int TYP_SONIC=112;
 
@@ -983,7 +983,7 @@ public interface CMMsg extends CMCommon
 		"FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
 		"LIFE", "BID", "CLANEVENT", "UNLOAD", "DUELCHALLENGE", "LEGALWARRANT", "DIG", 
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
-		"LASOR","SONIC"
+		"LASER","SONIC"
 	};
 	
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */

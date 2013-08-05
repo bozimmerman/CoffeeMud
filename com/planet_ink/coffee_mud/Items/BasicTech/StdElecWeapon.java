@@ -45,7 +45,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	protected ModeType	mode 					= ModeType.NORMAL;
 	protected ModeType[]modeTypes 				= new ModeType[]{ ModeType.NORMAL };
 
-	protected enum ModeType { STUN, NORMAL, KILL, DISINTEGRATE, MAIM, DISRUPT, LASOR, SONIC }
+	protected enum ModeType { STUN, NORMAL, KILL, DISINTEGRATE, MAIM, DISRUPT, LASER, SONIC }
 	
 	public StdElecWeapon()
 	{
@@ -73,8 +73,8 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	{
 		switch(mode)
 		{
-		case LASOR:
-			return Weapon.TYPE_LASORING;
+		case LASER:
+			return Weapon.TYPE_LASERING;
 		case SONIC:
 			return Weapon.TYPE_SONICING;
 		case DISRUPT:
@@ -133,7 +133,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		case NORMAL:
 		case MAIM:
 		case KILL:
-		case LASOR:
+		case LASER:
 		case SONIC:
 			break;
 		case DISINTEGRATE:
@@ -258,7 +258,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 					}
 					case NORMAL:
 					case KILL:
-					case LASOR:
+					case LASER:
 					case SONIC:
 					{
 						// this is normal...

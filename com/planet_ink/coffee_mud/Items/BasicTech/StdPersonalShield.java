@@ -32,18 +32,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdReflectiveShield extends StdElecItem
+public class StdPersonalShield extends StdElecItem
 {
-	public String ID(){	return "StdReflectiveShield";}
+	public String ID(){	return "StdPersonalShield";}
 
-	public StdReflectiveShield()
+	public StdPersonalShield()
 	{
 		super();
-		setName("a reflective shield generator");
+		setName("a weak personal shield generator");
 		basePhyStats.setWeight(2);
-		setDisplayText("a reflective shield generator sits here.");
+		setDisplayText("a weak personal shield generator sits here.");
 		setDescription("");
-		baseGoldValue=500;
+		baseGoldValue=2500;
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
@@ -53,9 +53,9 @@ public class StdReflectiveShield extends StdElecItem
 		super.setPowerRemaining(1000);
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "A glossy transparent field of energy surrounds "+name(viewerM)+"."; }
+	protected String fieldOnStr(MOB viewerM) { return "A field of energy surrounds "+name(viewerM)+"."; }
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The reflective field around <S-NAME> flickers and dies out."; }
+	protected String fieldDeadStr(MOB viewerM) { return "The field around <S-NAME> flickers and dies out."; }
 	
 	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
 
@@ -87,7 +87,7 @@ public class StdReflectiveShield extends StdElecItem
 	
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof StdReflectiveShield)) return false;
+		if(!(E instanceof StdPersonalShield)) return false;
 		return super.sameAs(E);
 	}
 	
@@ -108,12 +108,14 @@ public class StdReflectiveShield extends StdElecItem
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DAMAGE: // remember 50% miss rate
-				if((msg.tool() instanceof Electronics)&&(activated())&&(powerRemaining()>0))
+				if((activated())&&(powerRemaining()>0))
 				{
 					double successFactor=0.5;
 					final Manufacturer m=getFinalManufacturer();
 					successFactor=m.getReliabilityPct()*successFactor;
-					int weaponTech=((Electronics)msg.tool()).techLevel();
+					int weaponTech=CMLib.tech().getGlobalTechLevel();
+					if(msg.tool() instanceof Electronics)
+						weaponTech=((Electronics)msg.tool()).techLevel();
 					int myTech=techLevel();
 					int techDiff=Math.max(Math.min(myTech-weaponTech,10),-10);
 					if(techDiff!= 0) successFactor+=(0.05)*techDiff;
@@ -127,12 +129,14 @@ public class StdReflectiveShield extends StdElecItem
 								return false;
 						}
 						else
-						{
 							setPowerRemaining(0);
-							CMMsg msg2=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(msg.source()));
-							if(mob.location()!=null)
-								mob.location().send(mob, msg2);
-						}
+					}
+					if(powerRemaining()<=0)
+					{
+						setPowerRemaining(0);
+						CMMsg msg2=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(msg.source()));
+						if(mob.location()!=null)
+							mob.location().send(mob, msg2);
 					}
 				}
 				break;

@@ -65,7 +65,7 @@ public class Immunities extends StdAbility
 		{"POISON",Integer.valueOf(CMMsg.TYP_POISON)},
 		{"UNDEAD",Integer.valueOf(CMMsg.TYP_UNDEAD)},
 		{"LEGAL",Integer.valueOf(CMMsg.TYP_LEGALWARRANT)},
-		{"LASOR",Integer.valueOf(CMMsg.TYP_LASOR)},
+		{"LASER",Integer.valueOf(CMMsg.TYP_LASER)},
 		{"SONIC",Integer.valueOf(CMMsg.TYP_SONIC)},
 	});
 	

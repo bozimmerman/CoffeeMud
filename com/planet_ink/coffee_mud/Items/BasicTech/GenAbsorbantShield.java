@@ -31,32 +31,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdAbsorbantShield extends StdReflectiveShield
+public class GenAbsorbantShield extends GenPersonalShield
 {
-	public String ID(){	return "StdAbsorbantShield";}
+	public String ID(){	return "GenAbsorbantShield";}
 
-	public StdAbsorbantShield()
+	public GenAbsorbantShield()
 	{
 		super();
 		setName("an absorption shield generator");
-		basePhyStats.setWeight(2);
 		setDisplayText("an absorption shield generator sits here.");
-		setDescription("");
-		baseGoldValue=500;
-		basePhyStats().setLevel(1);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.activate(true);
-		super.setRawProperLocationBitmap(Wearable.WORN_ABOUT_BODY);
-		super.setPowerCapacity(1000);
-		super.setPowerRemaining(1000);
 	}
 	
 	@Override protected String fieldOnStr(MOB viewerM) { return "A sparkling field of energy surrounds "+name(viewerM)+"."; }
 	
 	@Override protected String fieldDeadStr(MOB viewerM) { return "The sparkling field around <S-NAME> flickers and dies out."; }
 	
-	@Override protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
+	@Override 
+	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		if(msg.value()<=0) 
 			return true;
@@ -84,14 +75,9 @@ public class StdAbsorbantShield extends StdReflectiveShield
 		return true;
 	}
 	
-	@Override protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
+	@Override 
+	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
 	{
 		return activated();
-	}
-	
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof StdAbsorbantShield)) return false;
-		return super.sameAs(E);
 	}
 }

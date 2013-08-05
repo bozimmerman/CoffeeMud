@@ -1083,8 +1083,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		switch(weaponClassification)
 		{
-		case Weapon.CLASS_RANGED: return (weaponType==Weapon.TYPE_LASORING) ? 5 : 0;
-		case Weapon.CLASS_THROWN: return (weaponType==Weapon.TYPE_LASORING) ? 5 : 1;
+		case Weapon.CLASS_RANGED: return (weaponType==Weapon.TYPE_LASERING) ? 5 : 0;
+		case Weapon.CLASS_THROWN: return (weaponType==Weapon.TYPE_LASERING) ? 5 : 1;
 		default:
 			switch(weaponType)
 			{
@@ -1095,7 +1095,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				return 4;
 			case Weapon.TYPE_SHOOT:
 				return 0;
-			case Weapon.TYPE_LASORING:
+			case Weapon.TYPE_LASERING:
 				return 5;
 			default:
 				return 3;
@@ -1177,7 +1177,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		case CMMsg.TYP_CAST_SPELL:  tackOn="<S-NAME> resist(s) the "+((tool==null)?"magical attack":tool)+endPart; break;
 		case CMMsg.TYP_PARALYZE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"paralysis":tool)+endPart; break;
 		case CMMsg.TYP_SONIC:  tackOn="<S-NAME> shake(s) off the "+((tool==null)?"sonic":tool)+endPart; break;
-		case CMMsg.TYP_LASOR:  tackOn="<S-NAME> dodge(s) the "+((tool==null)?"lasor":tool)+endPart; break;
+		case CMMsg.TYP_LASER:  tackOn="<S-NAME> dodge(s) the "+((tool==null)?"laser":tool)+endPart; break;
 		}
 		if(tackOn!=null)
 		{

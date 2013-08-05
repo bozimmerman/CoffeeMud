@@ -43,7 +43,7 @@ public interface Weapon extends Item
 	public final static int TYPE_GASSING=8;
 	public final static int TYPE_MELTING=9;
 	public final static int TYPE_STRIKING=10;
-	public final static int TYPE_LASORING=11;
+	public final static int TYPE_LASERING=11;
 	public final static int TYPE_SONICING=12;
 	public final static String[] TYPE_DESCS={
 	"NATURAL",
@@ -57,7 +57,7 @@ public interface Weapon extends Item
 	"GASSING",
 	"MELTING",
 	"STRIKING",
-	"LASORING",
+	"LASERING",
 	"SONICING"};
 
 	// weapon classifications

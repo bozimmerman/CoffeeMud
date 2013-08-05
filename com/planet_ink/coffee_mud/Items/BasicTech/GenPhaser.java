@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.BasicTech.StdElecWeapon.ModeType;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -31,28 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdDisruptor extends StdElecWeapon
+public class GenPhaser extends GenElecWeapon
 {
-	public String ID(){	return "StdDisruptor";}
-
-	protected int state=0;
+	public String ID(){	return "GenPhaser";}
 	
-	public StdDisruptor()
+	public GenPhaser()
 	{
 		super();
-		setName("a disruptor weapon");
-		basePhyStats.setWeight(5);
+		setName("a phaser");
 		setDisplayText("a phaser");
-		setDescription("There are three activation settings: stun, maim, and kill.");
-		baseGoldValue=500;
-		basePhyStats().setLevel(1);
-		basePhyStats().setDamage(20);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.activate(true);
-		super.setRawLogicalAnd(false);
-		super.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
-		super.setPowerCapacity(1000);
-		super.setPowerRemaining(1000);
+		super.mode = ModeType.KILL;
+		super.modeTypes = new ModeType[]{ ModeType.STUN, ModeType.KILL, ModeType.DISINTEGRATE };
 	}
 }

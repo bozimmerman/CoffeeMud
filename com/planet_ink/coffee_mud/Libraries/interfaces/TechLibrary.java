@@ -155,6 +155,12 @@ public interface TechLibrary extends CMLibrary
 	public int getRandomGlobalTechLevel();
 	
 	/**
+	 * Returns the global tech level
+	 * @return the global tech level
+	 */
+	public int getGlobalTechLevel();
+	
+	/**
 	 * "Fixes" the tech level of the given item by making sure
 	 * it's manufacturer is non-random, and by assigning a random
 	 * tech level within the valid range, and modifying its name

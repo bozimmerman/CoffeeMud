@@ -251,8 +251,8 @@ public class StdArmor extends StdContainer implements Armor
 				case CMMsg.TYP_SONIC:
 					weaponType=Weapon.TYPE_SONICING;
 					break;
-				case CMMsg.TYP_LASOR:
-					weaponType=Weapon.TYPE_LASORING;
+				case CMMsg.TYP_LASER:
+					weaponType=Weapon.TYPE_LASERING;
 					break;
 				}
 			}
@@ -273,9 +273,12 @@ public class StdArmor extends StdContainer implements Armor
 						if(CMLib.dice().rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,5,0));
 						break;
+					case Weapon.TYPE_LASERING:
+						if(CMLib.dice().rollPercentage()<75)
+							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,75,0));
+						break;
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
-					case Weapon.TYPE_LASORING:
 						if(CMLib.dice().rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,15,0));
 						break;
@@ -299,7 +302,11 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_GASSING:
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
-					case Weapon.TYPE_LASORING:
+					case Weapon.TYPE_LASERING:
+						break;
+					case Weapon.TYPE_SONICING:
+						if(CMLib.dice().rollPercentage()<75)
+							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,75,0));
 						break;
 					case Weapon.TYPE_STRIKING:
 					case Weapon.TYPE_FROSTING:
@@ -330,6 +337,10 @@ public class StdArmor extends StdContainer implements Armor
 						if(CMLib.dice().rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,5,0));
 						break;
+					case Weapon.TYPE_LASERING:
+						if(CMLib.dice().rollPercentage()<50)
+							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,50,0));
+						break;
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
 						if(CMLib.dice().rollPercentage()<25)
@@ -337,6 +348,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					case Weapon.TYPE_BASHING:
 					case Weapon.TYPE_NATURAL:
+					case Weapon.TYPE_SONICING:
 						if(CMLib.dice().rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-1);
 						break;
@@ -362,6 +374,10 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_FROSTING:
 					case Weapon.TYPE_GASSING:
 						break;
+					case Weapon.TYPE_LASERING:
+						if(CMLib.dice().rollPercentage()<35)
+							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,35,0));
+						break;
 					case Weapon.TYPE_MELTING:
 						if(CMLib.dice().rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,15,0));
@@ -386,6 +402,7 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					case Weapon.TYPE_STRIKING:
 					case Weapon.TYPE_NATURAL:
+					case Weapon.TYPE_SONICING:
 						if(CMLib.dice().rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-2);
 						break;
@@ -403,12 +420,17 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_FROSTING:
 					case Weapon.TYPE_GASSING:
 						break;
+					case Weapon.TYPE_LASERING:
+						if(CMLib.dice().rollPercentage()<20)
+							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,25,0));
+						break;
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_MELTING:
 						if(CMLib.dice().rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,10,0));
 						break;
 					case Weapon.TYPE_BURNING:
+					case Weapon.TYPE_SONICING:
 						if(CMLib.dice().rollPercentage()==1)
 							setUsesRemaining(usesRemaining()-1);
 						break;
@@ -434,6 +456,14 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
 					case Weapon.TYPE_GASSING:
+						break;
+					case Weapon.TYPE_LASERING:
+						if((CMLib.dice().rollPercentage()<50)&&((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS))
+							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,50,0));
+						break;
+					case Weapon.TYPE_SONICING:
+						if(CMLib.dice().rollPercentage()<35)
+							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,35,0));
 						break;
 					case Weapon.TYPE_MELTING:
 						if(CMLib.dice().rollPercentage()<5)
@@ -473,8 +503,13 @@ public class StdArmor extends StdContainer implements Armor
 						if(CMLib.dice().rollPercentage()<20)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,5,0));
 						break;
+					case Weapon.TYPE_LASERING:
+						if(CMLib.dice().rollPercentage()<50)
+							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,50,0));
+						break;
 					case Weapon.TYPE_BASHING:
 					case Weapon.TYPE_NATURAL:
+					case Weapon.TYPE_SONICING:
 						if(CMLib.dice().rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-2);
 						break;

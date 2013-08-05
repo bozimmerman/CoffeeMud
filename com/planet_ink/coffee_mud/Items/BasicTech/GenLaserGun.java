@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.BasicTech.StdElecWeapon.ModeType;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -31,26 +32,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdBlaster extends StdElecWeapon
+public class GenLaserGun extends GenElecWeapon
 {
-	public String ID(){	return "StdBlaster";}
+	public String ID(){	return "GenLaserGun";}
 
-	public StdBlaster()
+	public GenLaserGun()
 	{
 		super();
-		setName("a blaster gun");
+		setName("a laser pistol");
 		basePhyStats.setWeight(5);
-		setDisplayText("a blaster gun");
-		setDescription("");
-		baseGoldValue=500;
-		basePhyStats().setLevel(1);
-		basePhyStats().setDamage(20);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.activate(false);
-		super.setRawLogicalAnd(false);
-		super.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
-		super.setPowerCapacity(1000);
-		super.setPowerRemaining(1000);
+		setDisplayText("a laser pistol is sitting here");
+		super.mode = ModeType.LASER;
+		super.modeTypes = new ModeType[]{ ModeType.LASER };
 	}
 }

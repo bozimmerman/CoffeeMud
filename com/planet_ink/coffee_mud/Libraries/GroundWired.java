@@ -70,6 +70,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		globalTechReachedOn=CMath.s_long(Resources.getPropResource("TECH", "GLOBALREACHEDON"));
 	}
 
+	public int getGlobalTechLevel()
+	{
+		return globalTechLevel;
+	}
+	
 	public int getRandomGlobalTechLevel()
 	{
 		return  CMLib.dice().rollLow(1, 10, globalTechLevel-1);
