@@ -913,9 +913,7 @@ public class MUD extends Thread implements MudHost
 			}
 			
 			char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-			Vector<String> privacyV=new Vector<String>(1);
-			if(tCode!=MAIN_HOST)
-				privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true);
+			boolean checkPrivate=(tCode!=MAIN_HOST);
 			
 			Vector<String> compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
 			CMProps.setBoolVar(CMProps.Bool.ITEMDCOMPRESS,compress.contains("ITEMDESC"));
@@ -968,7 +966,7 @@ public class MUD extends Thread implements MudHost
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
 				currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbPingIntMins,dbReuse,useQue,useQueStart);
 				currentDBconnector.reconnect();
-				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true)));
+				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
 
 				DBConnection DBTEST=currentDBconnector.DBFetch();
 				if(DBTEST!=null) currentDBconnector.DBDone(DBTEST);
@@ -1052,18 +1050,18 @@ public class MUD extends Thread implements MudHost
 			CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
 			if((threadCode==MudHost.MAIN_HOST)||(CMLib.time()!=CMLib.library(MudHost.MAIN_HOST, CMLib.Library.TIME)))
 				CMLib.time().globalClock().initializeINIClock(page);
-			if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("FACTIONS")))
 				CMLib.factions().reloadFactions(CMProps.getVar(CMProps.Str.PREFACTIONS));
 			
-			if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS"))||(privacyV.contains("JOURNALS")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CHANNELS"))||(checkPrivate&&CMProps.isPrivateToMe("JOURNALS")))
 			{
 				int numChannelsLoaded=0;
 				int numJournalsLoaded=0;
-				if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS")))
+				if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CHANNELS")))
 					numChannelsLoaded=CMLib.channels().loadChannels(page.getStr("CHANNELS"),
 																	page.getStr("ICHANNELS"),
 																	page.getStr("IMC2CHANNELS"));
-				if((tCode==MAIN_HOST)||(privacyV.contains("JOURNALS")))
+				if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("JOURNALS")))
 				{
 					numJournalsLoaded=CMLib.journals().loadCommandJournals(page.getStr("COMMANDJOURNALS"));
 					numJournalsLoaded+=CMLib.journals().loadForumJournals(page.getStr("FORUMJOURNALS"));
@@ -1077,7 +1075,7 @@ public class MUD extends Thread implements MudHost
 				CMSecurity.parseGroups(page);
 			}
 
-			if((tCode==MAIN_HOST)||(privacyV.contains("SOCIALS")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("SOCIALS")))
 			{
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading socials");
 				CMLib.socials().unloadSocials();
@@ -1087,13 +1085,13 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
 			}
 
-			if((tCode==MAIN_HOST)||(privacyV.contains("CLANS")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CLANS")))
 			{
 				CMLib.database().DBReadAllClans();
 				Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
 			}
 
-			if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("FACTIONS")))
 				serviceEngine.startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting CM1");
@@ -1107,14 +1105,14 @@ public class MUD extends Thread implements MudHost
 			
 			try{Thread.sleep(500);}catch(Exception e){}
 			
-			if((tCode==MAIN_HOST)||(privacyV.contains("CATALOG")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CATALOG")))
 			{
 				Log.sysOut(Thread.currentThread().getName(),"Loading catalog...");
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading catalog....");
 				CMLib.database().DBReadCatalogs();
 			}
 
-			if((tCode==MAIN_HOST)||(privacyV.contains("MAP")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("MAP")))
 			{
 				Log.sysOut(Thread.currentThread().getName(),"Loading map...");
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading rooms....");
@@ -1154,7 +1152,7 @@ public class MUD extends Thread implements MudHost
 				CMLib.login().initBodyRooms(page);
 			}
 
-			if((tCode==MAIN_HOST)||(privacyV.contains("QUESTS")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("QUESTS")))
 			{
 				CMLib.database().DBReadQuests(CMLib.mud(0));
 				if(CMLib.quests().numQuests()>0)
@@ -1259,7 +1257,7 @@ public class MUD extends Thread implements MudHost
 			}
 			
 			DBConnector currentDBconnector=new DBConnector();
-			CMLib.registerLibrary(new DBInterface(currentDBconnector,CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true)));
+			CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
 			CMProps.setVar(CMProps.Str.MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
 			
 			// an arbitrary dividing line. After threadCode 0 

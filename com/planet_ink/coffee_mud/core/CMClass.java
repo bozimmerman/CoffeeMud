@@ -1539,9 +1539,8 @@ public class CMClass extends ClassLoader
 	public final void intializeClasses()
 	{
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		final Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true);
 		for(CMObjectType o : CMObjectType.values())
-			if((tCode==MudHost.MAIN_HOST)||(privacyV.contains(o.toString())))
+			if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe(o.toString())))
 			{
 				Object set = CMClass.getClassSet(o); 
 				if(set instanceof List)
@@ -2145,8 +2144,6 @@ public class CMClass extends ClassLoader
 		while((tCode!=MudHost.MAIN_HOST)&&(!classLoaderSync[0]))
 		{try{Thread.sleep(500);}catch(Exception e){ break;}}
 
-		final Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true);
-
 		try
 		{
 			final String prefix="com/planet_ink/coffee_mud/";
@@ -2161,14 +2158,14 @@ public class CMClass extends ClassLoader
 				return false;
 			}
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("COMMON")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("COMMON")))
 				c.common=baseC.common;
 			else
 				c.common=loadHashListToObj(prefix+"Common/",page.getStr("COMMON"),CMObjectType.COMMON.ancestorName);
 			if(c.common.size()==0) 
 				return false;
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("WEBMACROS")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("WEBMACROS")))
 				c.webMacros=baseC.webMacros;
 			else
 			{
@@ -2182,7 +2179,7 @@ public class CMClass extends ClassLoader
 				}
 			}
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("RACE")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("RACE")))
 				c.races=baseC.races;
 			else
 			{
@@ -2191,7 +2188,7 @@ public class CMClass extends ClassLoader
 			}
 			if(c.races.size()==0) return false;
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("CHARCLASS")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("CHARCLASS")))
 				c.charClasses=baseC.charClasses;
 			else
 			{
@@ -2200,7 +2197,7 @@ public class CMClass extends ClassLoader
 			}
 			if(c.charClasses.size()==0) return false;
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("MOB")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("MOB")))
 				c.MOBs=baseC.MOBs;
 			else
 			{
@@ -2209,7 +2206,7 @@ public class CMClass extends ClassLoader
 			}
 			if(c.MOBs.size()==0) return false;
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("EXIT")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("EXIT")))
 				c.exits=baseC.exits;
 			else
 			{
@@ -2218,7 +2215,7 @@ public class CMClass extends ClassLoader
 			}
 			if(c.exits.size()==0) return false;
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("AREA")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("AREA")))
 				c.areaTypes=baseC.areaTypes;
 			else
 			{
@@ -2227,7 +2224,7 @@ public class CMClass extends ClassLoader
 			}
 			if(c.areaTypes.size()==0) return false;
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("LOCALE")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("LOCALE")))
 				c.locales=baseC.locales;
 			else
 			{
@@ -2236,7 +2233,7 @@ public class CMClass extends ClassLoader
 			}
 			if(c.locales.size()==0) return false;
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("ABILITY")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("ABILITY")))
 				c.abilities=baseC.abilities;
 			else
 			{
@@ -2359,7 +2356,7 @@ public class CMClass extends ClassLoader
 				}
 			}
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("ITEM")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("ITEM")))
 				c.items=baseC.items;
 			else
 			{
@@ -2367,7 +2364,7 @@ public class CMClass extends ClassLoader
 				if(c.items.size()>0) Log.sysOut(Thread.currentThread().getName(),"Basic Items loaded: "+c.items.size());
 			}
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("WEAPON")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("WEAPON")))
 				c.weapons=baseC.weapons;
 			else
 			{
@@ -2375,7 +2372,7 @@ public class CMClass extends ClassLoader
 				if(c.weapons.size()>0) Log.sysOut(Thread.currentThread().getName(),"Weapons loaded    : "+c.weapons.size());
 			}
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("ARMOR")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("ARMOR")))
 				c.armor=baseC.armor;
 			else
 			{
@@ -2383,7 +2380,7 @@ public class CMClass extends ClassLoader
 				if(c.armor.size()>0) Log.sysOut(Thread.currentThread().getName(),"Armor loaded      : "+c.armor.size());
 			}
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("MISCMAGIC")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("MISCMAGIC")))
 				c.miscMagic=baseC.miscMagic;
 			else
 			{
@@ -2391,7 +2388,7 @@ public class CMClass extends ClassLoader
 				if(c.miscMagic.size()>0) Log.sysOut(Thread.currentThread().getName(),"Magic Items loaded: "+c.miscMagic.size());
 			}
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("CLANITEMS")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("CLANITEMS")))
 				c.clanItems=baseC.clanItems;
 			else
 			{
@@ -2399,7 +2396,7 @@ public class CMClass extends ClassLoader
 				if(c.clanItems.size()>0) Log.sysOut(Thread.currentThread().getName(),"Clan Items loaded : "+c.clanItems.size());
 			}
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("TECH")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("TECH")))
 				c.tech=baseC.tech;
 			else
 			{
@@ -2418,7 +2415,7 @@ public class CMClass extends ClassLoader
 			if((c.items.size()+c.weapons.size()+c.armor.size()+c.tech.size()+c.miscMagic.size()+c.clanItems.size())==0)
 				return false;
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("BEHAVIOR")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("BEHAVIOR")))
 				c.behaviors=baseC.behaviors;
 			else
 			{
@@ -2427,7 +2424,7 @@ public class CMClass extends ClassLoader
 			}
 			if(c.behaviors.size()==0) return false;
 
-			if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("COMMAND")))
+			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("COMMAND")))
 			{
 				c.commands=baseC.commands;
 				c.commandWords=baseC.commandWords;
@@ -2448,13 +2445,13 @@ public class CMClass extends ClassLoader
 		reloadCommandWords();
 
 		// misc startup stuff
-		if((tCode==MudHost.MAIN_HOST)||(privacyV.contains("CHARCLASS")))
+		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("CHARCLASS")))
 			for(int i=0;i<c.charClasses.size();i++)
 			{
 				CharClass C=c.charClasses.elementAt(i);
 				C.copyOf();
 			}
-		if((tCode==MudHost.MAIN_HOST)||(privacyV.contains("RACE")))
+		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("RACE")))
 		{
 			for(int r=0;r<c.races.size();r++)
 			{
@@ -2480,7 +2477,7 @@ public class CMClass extends ClassLoader
 					Log.sysOut(Thread.currentThread().getName(),"GenRaces loaded   : "+loaded);
 			}
 		}
-		if((tCode==MudHost.MAIN_HOST)||(privacyV.contains("CHARCLASS")))
+		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("CHARCLASS")))
 		{
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: reading genClasses");
 			final List<DatabaseEngine.AckRecord> genClasses=CMLib.database().DBReadClasses();
@@ -2503,7 +2500,7 @@ public class CMClass extends ClassLoader
 		}
 		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: initializing classes");
 		c.intializeClasses();
-		if((tCode==MudHost.MAIN_HOST)||(privacyV.contains("EXPERTISES")))
+		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("EXPERTISES")))
 		{
 			CMLib.expertises().recompileExpertises();
 			Log.sysOut(Thread.currentThread().getName(),"Expertises defined: "+CMLib.expertises().numExpertises());

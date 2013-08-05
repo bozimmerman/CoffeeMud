@@ -218,8 +218,7 @@ public class CMLib
 		{
 			final int code=lbry.ordinal();
 			if(l()==null) CMLib.initialize();
-			final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(), true);
-			if((!privacyV.contains(lbry.toString())
+			if((!CMProps.isPrivateToMe(lbry.toString())
 			&&(libs[MudHost.MAIN_HOST]!=l())))
 			{
 				if(libs[MudHost.MAIN_HOST].libraries[code]==null)
@@ -288,10 +287,9 @@ public class CMLib
 	public static final void propertiesLoaded() 
 	{
 		final CMLib lib=l();
-		final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(), true);
 		for(Library lbry : Library.values())
 		{
-			if((!privacyV.contains(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
+			if((!CMProps.isPrivateToMe(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{}
 			else
 			if(lib.libraries[lbry.ordinal()]==null)
@@ -307,10 +305,9 @@ public class CMLib
 	public static final void activateLibraries() 
 	{
 		final CMLib lib=l();
-		final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(), true);
 		for(Library lbry : Library.values())
 		{
-			if((!privacyV.contains(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
+			if((!CMProps.isPrivateToMe(lbry.toString())&&(libs[MudHost.MAIN_HOST]!=lib)))
 			{
 				if(CMSecurity.isDebugging(DbgFlag.BOOTSTRAPPER))
 					Log.debugOut("HOST"+Thread.currentThread().getThreadGroup().getName().charAt(0)+" sharing library "+lbry.toString());

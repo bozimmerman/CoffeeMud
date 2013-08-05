@@ -1,7 +1,19 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
+import com.planet_ink.coffee_mud.core.database.ClanLoader;
 import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
+import com.planet_ink.coffee_mud.core.database.DataLoader;
+import com.planet_ink.coffee_mud.core.database.GAbilityLoader;
+import com.planet_ink.coffee_mud.core.database.GCClassLoader;
+import com.planet_ink.coffee_mud.core.database.GRaceLoader;
+import com.planet_ink.coffee_mud.core.database.JournalLoader;
+import com.planet_ink.coffee_mud.core.database.MOBloader;
+import com.planet_ink.coffee_mud.core.database.PollLoader;
+import com.planet_ink.coffee_mud.core.database.QuestLoader;
+import com.planet_ink.coffee_mud.core.database.RoomLoader;
+import com.planet_ink.coffee_mud.core.database.StatLoader;
+import com.planet_ink.coffee_mud.core.database.VFSLoader;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -39,6 +51,11 @@ import java.util.*;
 */
 public interface DatabaseEngine extends CMLibrary
 {
+	public static enum DatabaseTables {
+		DBABILITY,DBCHARCLASS,DBRACE,DBPLAYERS,DBMAP,
+		DBSTATS,DBPOLLS,DBVFS,DBJOURNALS,DBQUEST,DBCLANS
+	};
+	
 	public String errorStatus();
 	public void resetConnections();
 	public DBConnector getConnector();

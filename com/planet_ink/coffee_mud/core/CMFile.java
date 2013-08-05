@@ -1243,8 +1243,7 @@ public class CMFile extends File
 				vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
 			else
 			{
-				Vector<String> privateV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PRIVATERESOURCES).toUpperCase(),true);
-				if(privateV.contains("DBVFS"))
+				if(CMProps.isPrivateToMe("DBVFS"))
 					vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
 				else
 				if(vfs[MudHost.MAIN_HOST]!=null)

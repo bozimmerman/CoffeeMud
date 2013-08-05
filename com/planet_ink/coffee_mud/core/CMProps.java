@@ -117,7 +117,6 @@ public class CMProps extends Properties
 		ITEMLOOTPOLICY,
 		AUCTIONRATES,
 		DEFAULTPROMPT,
-		PRIVATERESOURCES,
 		CHARCREATIONSCRIPTS,
 		CHARSETINPUT,
 		CHARSETOUTPUT,
@@ -346,6 +345,7 @@ public class CMProps extends Properties
 	protected final Map<String,Double>	skillComActionCostExceptions=new HashMap<String,Double>();
 	protected final Map<String,Double>	cmdActionCostExceptions		=new HashMap<String,Double>();
 	protected final Map<String,Double>	cmdComActionCostExceptions	=new HashMap<String,Double>();
+	protected final Map<String,ThreadGroup> privateSet=new HashMap<String,ThreadGroup>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> commonCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
@@ -1065,6 +1065,29 @@ public class CMProps extends Properties
 		return (String)CMLib.dice().doublePick(getSLstFileVar(varCode));
 	}
 	
+	public static boolean isPrivateToMe(final String s)
+	{
+		return p().privateSet.containsKey(s.toUpperCase().trim());
+	}
+	
+	public static Set<String> getPrivateSubSet(final String mask)
+	{
+		Set<String> newSet=new HashSet<String>();
+		for(String s : p().privateSet.keySet())
+			if(Pattern.matches(mask, s))
+				newSet.add(s);
+		return newSet;
+	}
+	
+	public static ThreadGroup getPrivateOwner(final String s)
+	{
+		final String tag=s.toUpperCase().trim();
+		for(CMProps p : CMProps.props)
+			if((p!=null)&&p.privateSet.containsKey(tag))
+				return p.privateSet.get(tag);
+		return null;
+	}
+	
 	public final void resetSystemVars()
 	{
 		if(CMLib.lang()!=null)
@@ -1079,8 +1102,12 @@ public class CMProps extends Properties
 		MILLIS_PER_MUDHOUR=getLong("MILLISPERMUDHOUR");
 		if(MILLIS_PER_MUDHOUR < TIME_TICK)
 			MILLIS_PER_MUDHOUR = 600000;
+
+		List<String> privateList=CMParms.parseCommas(getStr("PRIVATERESOURCES").toUpperCase(),true);
+		privateSet.clear();
+		for(String s : privateList)
+			privateSet.put(s.trim(),Thread.currentThread().getThreadGroup());
 		
-		setVar(Str.PRIVATERESOURCES,getStr("PRIVATERESOURCES"));
 		setVar(Str.BADNAMES,getStr("BADNAMES"));
 		setVar(Str.MULTICLASS,getStr("CLASSSYSTEM"));
 		setVar(Str.PKILL,getStr("PLAYERKILL"));
