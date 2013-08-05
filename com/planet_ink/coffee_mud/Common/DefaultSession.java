@@ -368,7 +368,11 @@ public class DefaultSession implements Session
 	{
 		return groupName;
 	}
-
+	
+	public void setGroupName(String group)
+	{
+		groupName=group;
+	}
 	
 	public void setFakeInput(String input)
 	{

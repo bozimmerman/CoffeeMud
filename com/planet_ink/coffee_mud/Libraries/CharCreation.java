@@ -1994,6 +1994,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	protected LoginResult charcrThemeDone(final LoginSession loginObj, final Session session)
 	{
+		final int themeDex=CMath.firstBitSetIndex(loginObj.theme);
+		if((themeDex>=0)&&(themeDex<Area.THEME_DESCS.length))
+		{
+			ThreadGroup privateGroup=CMProps.getPrivateOwner(Area.THEME_DESCS[themeDex]+"PLAYERS");
+			if(privateGroup!=null)
+				session.setGroupName(privateGroup.getName());
+		}
 		final MOB mob=loginObj.mob;
 		session.setMob(loginObj.mob);
 		executeScript(mob,getLoginScripts().get("THEME"));

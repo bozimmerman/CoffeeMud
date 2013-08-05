@@ -564,6 +564,17 @@ public class CMath
 	 * @return the number without the bitmasks bits turned on.
 	 */
 	public final static long unsetb(final long num, final int bitmask) { return num & (~bitmask);}
+	
+	/**
+	 * Returns the bit index (0 based) of the first bit set in the given mask.
+	 * @param bits the bits to check
+	 * @return the first bit set, as an index (1=0, 2=1, 4=2, 8=3, etc..)
+	 */
+	public final static int firstBitSetIndex(int bits) 
+	{
+		return ((bits & 0x80000000)!=0) ? 31 : firstBitSetIndex((bits << 1) | 1) - 1;
+	}
+	
 	/**
 	 * Returns true if the bitnumberth bit (0...) is set 
 	 * in the given number

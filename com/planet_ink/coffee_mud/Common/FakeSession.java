@@ -60,6 +60,7 @@ public class FakeSession implements Session
 			theFile = new CMFile(introTextStr,null,CMFile.FLAG_LOGERRORS); 
 	}
 	public String getGroupName() { return Thread.currentThread().getThreadGroup().getName(); }
+	public void setGroupName(String group) {}
 	public boolean isLockedUpWriting(){return false;}
 	public void initializeClass(){}
 	public void run(){}

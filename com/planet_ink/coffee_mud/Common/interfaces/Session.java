@@ -60,6 +60,12 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public String getGroupName();
 	
 	/**
+	 * Sets the group name to which this session belongs
+	 * @param group the thread group name
+	 */
+	public void setGroupName(String group);
+	
+	/**
 	 * Returns a list of standard/foreground telnet coded strings 
 	 * indexed by coffeemud color code.  May be from the standard list, 
 	 * or read from player records for a customized list.
