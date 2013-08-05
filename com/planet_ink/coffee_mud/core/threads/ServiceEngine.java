@@ -181,13 +181,20 @@ public class ServiceEngine implements ThreadEngine
 	
 	public TickClient startTickDown(Tickable E, int tickID, int numTicks)
 	{ 
-		return startTickDown(E,tickID,CMProps.getTickMillis(),numTicks); 
+		return startTickDown(Thread.currentThread().getThreadGroup(),E,tickID,CMProps.getTickMillis(),numTicks); 
 	}
 	
-	public synchronized TickClient startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks)
+	public TickClient startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks)
+	{
+		return startTickDown(Thread.currentThread().getThreadGroup(),E,tickID,TICK_TIME,numTicks); 
+	}
+	
+	public synchronized TickClient startTickDown(ThreadGroup group, Tickable E, int tickID, long TICK_TIME, int numTicks)
 	{
 		TickableGroup tock=null;
-		char threadGroupNum=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		if(group==null)
+			group=Thread.currentThread().getThreadGroup();
+		char threadGroupNum=group.getName().charAt(0);
 		for(TickableGroup almostTock : allTicks)
 		{
 			if(almostTock.contains(E,tickID)) 
