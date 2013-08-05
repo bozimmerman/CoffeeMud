@@ -33,27 +33,27 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenStealthShield extends GenTickerShield
+public class GenShrouderField extends GenTickerShield
 {
 
-	public String ID(){	return "GenStealthShield";}
+	public String ID(){	return "GenShrouderField";}
 	
-	public GenStealthShield()
+	public GenShrouderField()
 	{
 		super();
-		setName("a personal stealth generator");
-		setDisplayText("a personal stealth generator sits here.");
+		setName("a personal shroud field generator");
+		setDisplayText("a personal shroud field generator sits here.");
 		setDescription("");
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "A stealth field surrounds "+name(viewerM)+"."; }
+	protected String fieldOnStr(MOB viewerM) { return "An eclipsing field surrounds "+name(viewerM)+"."; }
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The field around <S-NAME> flickers and dies out as <S-HE-SHE> fade(s) back into view."; }
+	protected String fieldDeadStr(MOB viewerM) { return "The eclipsing field around <S-NAME> flickers and dies out as <S-HE-SHE> fade(s) back into view."; }
 	
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(activated() && (affected==owner()) && (owner() instanceof MOB) && (!amWearingAt(Item.IN_INVENTORY)) && (powerRemaining() > 0))
-			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 		super.affectPhyStats(affected, affectableStats);
 	}
 }
