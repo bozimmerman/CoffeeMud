@@ -58,7 +58,7 @@ public class GenPersonalShield extends StdPersonalShield
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
 	}
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","LAYER","LAYERATTRIB"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -69,6 +69,8 @@ public class GenPersonalShield extends StdPersonalShield
 		case 1: return ""+activated();
 		case 2: return ""+powerRemaining();
 		case 3: return ""+getManufacturerName();
+		case 4: return ""+getClothingLayer();
+		case 5: return ""+getLayerAttributes();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -84,6 +86,8 @@ public class GenPersonalShield extends StdPersonalShield
 		case 1: activate(CMath.s_bool(val)); break;
 		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
 		case 3: setManufacturerName(val); break;
+		case 4: setClothingLayer((short)CMath.s_parseIntExpression(val)); break;
+		case 5: setLayerAttributes((short)CMath.s_parseListLongExpression(Armor.LAYERMASK_DESCS,val)); break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

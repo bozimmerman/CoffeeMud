@@ -33,11 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenTickerShield extends GenElecItem
+public class GenTickerShield extends StdElecItem implements Armor
 {
 
 	public String ID(){	return "GenTickerShield";}
 	
+	short layer=0;
+	short layerAttributes=0;
+	String readableText="";
+
 	public GenTickerShield()
 	{
 		super();
@@ -133,15 +137,39 @@ public class GenTickerShield extends GenElecItem
 				}
 				return;
 			case CMMsg.TYP_ACTIVATE:
+			{
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldOnStr(null));
 				this.activate(true);
+				Physical P=owner();
+				if(P!=null)
+				{
+					P.recoverPhyStats();
+					if(P instanceof MOB)
+					{
+						((MOB)P).recoverCharStats();
+						((MOB)P).recoverMaxState();
+					}
+				}
 				break;
+			}
 			case CMMsg.TYP_DEACTIVATE:
+			{
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldDeadStr(null));
 				this.activate(false);
+				Physical P=owner();
+				if(P!=null)
+				{
+					P.recoverPhyStats();
+					if(P instanceof MOB)
+					{
+						((MOB)P).recoverCharStats();
+						((MOB)P).recoverMaxState();
+					}
+				}
 				break;
+			}
 			}
 		}
 		else if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Item.IN_INVENTORY)))
@@ -156,5 +184,101 @@ public class GenTickerShield extends GenElecItem
 			}
 		}
 		super.executeMsg(host, msg);
+	}
+	
+
+	@Override public short getClothingLayer(){return layer;}
+	@Override public void setClothingLayer(short newLayer){layer=newLayer;}
+	@Override public short getLayerAttributes(){return layerAttributes;}
+	@Override public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
+
+	@Override 
+	public boolean canWear(MOB mob, long where)
+	{
+		if(where==0) return (whereCantWear(mob)==0);
+		if((rawProperLocationBitmap()&where)!=where)
+			return false;
+		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;
+	}
+	
+	public boolean isGeneric(){return true;}
+
+	public String text()
+	{
+		return CMLib.coffeeMaker().getPropertiesStr(this,false);
+	}
+
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){readableText=text;}
+	
+	public void setMiscText(String newText)
+	{
+		miscText="";
+		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
+		recoverPhyStats();
+	}
+
+	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","LAYER","LAYERATTRIB"};
+	public String getStat(String code)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		switch(getCodeNum(code))
+		{
+		case 0: return ""+powerCapacity();
+		case 1: return ""+activated();
+		case 2: return ""+powerRemaining();
+		case 3: return ""+getManufacturerName();
+		case 4: return ""+getClothingLayer();
+		case 5: return ""+getLayerAttributes();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+	}
+	public void setStat(String code, String val)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
+		case 1: activate(CMath.s_bool(val)); break;
+		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
+		case 3: setManufacturerName(val); break;
+		case 4: setClothingLayer((short)CMath.s_parseIntExpression(val)); break;
+		case 5: setLayerAttributes((short)CMath.s_parseListLongExpression(Armor.LAYERMASK_DESCS,val)); break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+	}
+	protected int getCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes!=null) return codes;
+		String[] MYCODES=CMProps.getStatCodesList(GenTickerShield.MYCODES,this);
+		String[] superCodes=GenericBuilder.GENITEMCODES;
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenTickerShield)) return false;
+		String[] theCodes=getStatCodes();
+		for(int i=0;i<theCodes.length;i++)
+			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
+				return false;
+		return true;
 	}
 }

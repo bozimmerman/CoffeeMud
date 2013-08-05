@@ -18,6 +18,7 @@
   17. SHELL command now (finally) supports diff (thanks google code!).  
   18. Similar to #15, the entire world map, w/ cmare files, is in VFS at /resources/map/... along with editable properties files.
 
+//TODO: finish the idea of marshaling tech players and areas to proper threadgroups
 //TODO: make the tech install skill!!!
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
 //      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)

@@ -32,9 +32,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdPersonalShield extends StdElecItem
+public class StdPersonalShield extends StdElecItem implements Armor
 {
 	public String ID(){	return "StdPersonalShield";}
+
+	short layer=0;
+	short layerAttributes=0;
 
 	public StdPersonalShield()
 	{
@@ -175,15 +178,39 @@ public class StdPersonalShield extends StdElecItem
 				}
 				return;
 			case CMMsg.TYP_ACTIVATE:
+			{
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldOnStr(null));
 				this.activate(true);
+				Physical P=owner();
+				if(P!=null)
+				{
+					P.recoverPhyStats();
+					if(P instanceof MOB)
+					{
+						((MOB)P).recoverCharStats();
+						((MOB)P).recoverMaxState();
+					}
+				}
 				break;
+			}
 			case CMMsg.TYP_DEACTIVATE:
+			{
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldDeadStr(null));
 				this.activate(false);
+				Physical P=owner();
+				if(P!=null)
+				{
+					P.recoverPhyStats();
+					if(P instanceof MOB)
+					{
+						((MOB)P).recoverCharStats();
+						((MOB)P).recoverMaxState();
+					}
+				}
 				break;
+			}
 			default:
 				super.executeMsg(host,msg);
 				break;
@@ -202,4 +229,19 @@ public class StdPersonalShield extends StdElecItem
 		}
 		super.executeMsg(host, msg);
 	}
+
+	@Override public short getClothingLayer(){return layer;}
+	@Override public void setClothingLayer(short newLayer){layer=newLayer;}
+	@Override public short getLayerAttributes(){return layerAttributes;}
+	@Override public void setLayerAttributes(short newAttributes){layerAttributes=newAttributes;}
+
+	@Override 
+	public boolean canWear(MOB mob, long where)
+	{
+		if(where==0) return (whereCantWear(mob)==0);
+		if((rawProperLocationBitmap()&where)!=where)
+			return false;
+		return mob.freeWearPositions(where,getClothingLayer(),getLayerAttributes())>0;
+	}
+	
 }
