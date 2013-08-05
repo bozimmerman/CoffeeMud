@@ -20,9 +20,9 @@
 
 //TODO: make lasors, sonic weapons, lasor and sonic shields
 //TODO: make enviro control systems
-//TODO: make sensor systems
 //TODO: some way to reposition planets? esp relative to nearby ones
-//TODO: create solar systems, esp stars.  planets should be thin areas, solar systems a type of spaceobject area that 
+//TODO: create solar systems, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough. 
+//TODO: make sensor systems
 //TODO: add electronics to guides
 //TODO: add electronics to MG
 //TODO: http://games.groups.yahoo.com/group/coffeemud skip=1885,2881,2953,3274,15908,15914,16267
