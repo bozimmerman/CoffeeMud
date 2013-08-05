@@ -146,9 +146,9 @@ public class RandomMonsters extends ActiveTicker
 		if(maxMonsters<minMonsters) maxMonsters=minMonsters;
 		avgMonsters=CMLib.dice().roll(1,(maxMonsters-minMonsters),minMonsters);
 		parms=newParms;
-		alreadyTriedLoad=false;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;
+		alreadyTriedLoad=false;
 	}
 
 	public RandomMonsters()
@@ -170,10 +170,22 @@ public class RandomMonsters extends ActiveTicker
 	{
 		List<MOB> monsters=null;
 		int x=theseparms.indexOf(';');
+		String thangName="null";
+		if(thang instanceof Room)
+			thangName=CMLib.map().getExtendedRoomID((Room)thang);
+		else
+		if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
+			thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
+		else
+		if(thang!=null)
+			thangName=thang.name();
+		String thangID=CMClass.classID(thang);
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 		{
-			Log.errOut("RandomMonsters","Blank XML/filename: '"+filename+"'.");
+			if(alreadyTriedLoad) return null;
+			alreadyTriedLoad=true;
+			Log.errOut("Blank XML/filename: '"+filename+"' on Behavior RandomMonsters on object "+thangName+" ("+thangID+").");
 			return null;
 		}
 		int start=filename.indexOf("<MOBS>");
@@ -185,23 +197,18 @@ public class RandomMonsters extends ActiveTicker
 			if(monsters!=null) return monsters;
 			monsters=new Vector();
 			String error=CMLib.coffeeMaker().addMOBsFromXML(filename,monsters,null);
-			String thangName="null";
-			if(thang instanceof Room)
-				thangName=CMLib.map().getExtendedRoomID((Room)thang);
-			else
-			if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-				thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
-			else
-			if(thang!=null)
-				thangName=thang.name();
 			if(error.length()>0)
 			{
-				Log.errOut("RandomMonsters","Error on import of xml for '"+thangName+"': "+error+".");
+				if(alreadyTriedLoad) return null;
+				alreadyTriedLoad=true;
+				Log.errOut("RandomMonsters: Error on import of xml for '"+thangName+"' ("+thangID+"): "+error+".");
 				return null;
 			}
 			if(monsters.size()<=0)
 			{
-				Log.errOut("RandomMonsters","No mobs loaded for '"+thangName+"'.");
+				if(alreadyTriedLoad) return null;
+				alreadyTriedLoad=true;
+				Log.errOut("RandomMonsters: No mobs loaded for '"+thangName+"' ("+thangID+").");
 				return null;
 			}
 			Resources.submitResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode(),monsters);
@@ -216,36 +223,27 @@ public class RandomMonsters extends ActiveTicker
 			{
 				alreadyTriedLoad=true;
 				StringBuffer buf=Resources.getFileResource(filename,true);
-				String thangName="null";
-				if(thang instanceof Room)
-					thangName=CMLib.map().getExtendedRoomID((Room)thang);
-				else
-				if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-					thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
-				else
-				if(thang!=null)
-					thangName=thang.name();
 
 				if((buf==null)||(buf.length()<20))
 				{
-					Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+thangName+"'.");
+					Log.errOut("RandomMonsters: Unknown XML file: '"+filename+"' for '"+thangName+"' ("+thangID+").");
 					return null;
 				}
 				if(buf.substring(0,20).indexOf("<MOBS>")<0)
 				{
-					Log.errOut("RandomMonsters","Invalid XML file: '"+filename+"' for '"+thangName+"'.");
+					Log.errOut("RandomMonsters: Invalid XML file: '"+filename+"' for '"+thangName+"' ("+thangID+").");
 					return null;
 				}
 				monsters=new Vector();
 				String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),monsters,null);
 				if(error.length()>0)
 				{
-					Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+thangName+"': "+error+".");
+					Log.errOut("RandomMonsters: Error on import of: '"+filename+"' for '"+thangName+"' ("+thangID+"): "+error+".");
 					return null;
 				}
 				if(monsters.size()<=0)
 				{
-					Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+thangName+"'.");
+					Log.errOut("RandomMonsters: No mobs loaded: '"+filename+"' for '"+thangName+"' ("+thangID+").");
 					return null;
 				}
 

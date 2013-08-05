@@ -196,10 +196,22 @@ public class RandomItems extends ActiveTicker
 	{
 		List<Item> items=null;
 		int x=theseparms.indexOf(';');
+		String thangName="null";
+		if(thang instanceof Room)
+			thangName=CMLib.map().getExtendedRoomID((Room)thang);
+		else
+		if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
+			thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
+		else
+		if(thang!=null)
+			thangName=thang.name();
+		String thangID=CMClass.classID(thang);
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 		{
-			Log.errOut("RandomItems","Blank XML/filename: '"+filename+"'.");
+			if(alreadyTriedLoad) return null;
+			alreadyTriedLoad=true;
+			Log.errOut("RandomItems: Blank XML/filename: '"+filename+"' on object "+thangName+" ("+thangID+").");
 			return null;
 		}
 		int start=filename.indexOf("<ITEMS>");
@@ -211,23 +223,18 @@ public class RandomItems extends ActiveTicker
 			if(items!=null) return items;
 			items=new Vector();
 			String error=CMLib.coffeeMaker().addItemsFromXML(filename,items,null);
-			String thangName="null";
-			if(thang instanceof Room)
-				thangName=CMLib.map().getExtendedRoomID((Room)thang);
-			else
-			if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-				thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
-			else
-			if(thang!=null)
-				thangName=thang.name();
 			if(error.length()>0)
 			{
-				Log.errOut("RandomItems","Error on import of xml for '"+thangName+"': "+error+".");
+				if(alreadyTriedLoad) return null;
+				alreadyTriedLoad=true;
+				Log.errOut("RandomItems: Error on import of xml for '"+thangName+"' ("+thangID+"): "+error+".");
 				return null;
 			}
 			if(items.size()<=0)
 			{
-				Log.errOut("RandomItems","No items loaded for '"+thangName+"'.");
+				if(alreadyTriedLoad) return null;
+				alreadyTriedLoad=true;
+				Log.errOut("RandomItems: No items loaded for '"+thangName+"' ("+thangID+").");
 				return null;
 			}
 			Resources.submitResource("RANDOMITEMS-XML/"+filename.length()+"/"+filename.hashCode(),items);
@@ -242,36 +249,27 @@ public class RandomItems extends ActiveTicker
 			{
 				alreadyTriedLoad=true;
 				StringBuffer buf=Resources.getFileResource(filename,true);
-				String thangName="null";
-				if(thang instanceof Room)
-					thangName=CMLib.map().getExtendedRoomID((Room)thang);
-				else
-				if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
-					thangName=CMLib.map().getExtendedRoomID(((MOB)thang).getStartRoom());
-				else
-				if(thang!=null)
-					thangName=thang.name();
 
 				if((buf==null)||(buf.length()<20))
 				{
-					Log.errOut("RandomItems","Unknown XML file: '"+filename+"' for '"+thangName+"'.");
+					Log.errOut("RandomItems: Unknown XML file: '"+filename+"' for '"+thangName+"' ("+thangID+").");
 					return null;
 				}
 				if(buf.substring(0,20).indexOf("<ITEMS>")<0)
 				{
-					Log.errOut("RandomItems","Invalid XML file: '"+filename+"' for '"+thangName+"'.");
+					Log.errOut("RandomItems: Invalid XML file: '"+filename+"' for '"+thangName+"' ("+thangID+").");
 					return null;
 				}
 				items=new Vector();
 				String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,null);
 				if(error.length()>0)
 				{
-					Log.errOut("RandomItems","Error on import of: '"+filename+"' for '"+thangName+"': "+error+".");
+					Log.errOut("RandomItems: Error on import of: '"+filename+"' for '"+thangName+"' ("+thangID+"): "+error+".");
 					return null;
 				}
 				if(items.size()<=0)
 				{
-					Log.errOut("RandomItems","No items loaded: '"+filename+"' for '"+thangName+"'.");
+					Log.errOut("RandomItems: No items loaded: '"+filename+"' for '"+thangName+"' ("+thangID+").");
 					return null;
 				}
 

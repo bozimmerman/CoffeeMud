@@ -66,10 +66,10 @@ public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.8;
 	private static final long	  HOST_VERSION_MINOR	= 1;
-	private static enum MudState {STARTING,WAITING,ACCEPTING,ALLOWING,STOPPED}
+	private static enum MudState {STARTING,WAITING,ACCEPTING,STOPPED}
 
 
-	private MudState		  state		 = MudState.STOPPED;
+	private volatile MudState state		 = MudState.STOPPED;
 	private ServerSocket	  servsock	 = null;
 	private boolean			  acceptConns= false;
 	private String			  host		 = "MyHost";
@@ -100,6 +100,7 @@ public class MUD extends Thread implements MudHost
 	@Override
 	public void acceptConnection(Socket sock) throws SocketException, IOException 
 	{
+		setState(MudState.ACCEPTING);
 		serviceEngine.executeRunnable(threadGroup.getName(),new ConnectionAcceptor(sock));
 	}
 	public ThreadGroup threadGroup() { return threadGroup; }
@@ -115,7 +116,6 @@ public class MUD extends Thread implements MudHost
 		}
 		public void run()
 		{
-			state=MudState.ACCEPTING;
 			startTime=System.currentTimeMillis();
 			try
 			{
@@ -197,7 +197,6 @@ public class MUD extends Thread implements MudHost
 					else
 					{
 						Log.sysOut(Thread.currentThread().getName(),"Connection from "+address);
-						state=MudState.ALLOWING;
 						// also the intro page
 						CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,CMFile.FLAG_FORCEALLOW);
 						String introFilename="text/intro.txt";
@@ -251,7 +250,6 @@ public class MUD extends Thread implements MudHost
 			}
 			finally
 			{
-				state=MudState.STOPPED;
 				startTime=0;
 			}
 		}
@@ -268,9 +266,15 @@ public class MUD extends Thread implements MudHost
 		return "English";
 	}
 
+	public void setState(MudState st)
+	{
+		if(st!=state)
+			state=st;
+	}
+	
 	public void run()
 	{
-		state=MudState.STARTING;
+		setState(MudState.STARTING);
 		int q_len = 6;
 		Socket sock=null;
 
@@ -301,7 +305,7 @@ public class MUD extends Thread implements MudHost
 			CMLib.hosts().add(this);
 			while(servsock!=null)
 			{
-				state=MudState.WAITING;
+				setState(MudState.WAITING);
 				sock=servsock.accept();
 				acceptConnection(sock);
 			}
@@ -330,7 +334,7 @@ public class MUD extends Thread implements MudHost
 		}
 
 		Log.sysOut(Thread.currentThread().getName(),"MUD on port "+port+" stopped!");
-		state=MudState.STOPPED;
+		setState(MudState.STOPPED);
 		CMLib.hosts().remove(this);
 	}
 	
@@ -1280,7 +1284,7 @@ public class MUD extends Thread implements MudHost
 				while(pdex>0)
 				{
 					MUD mud=new MUD("MUD@"+ports.substring(0,pdex));
-					mud.state=MudState.STARTING;
+					mud.setState(MudState.STARTING);
 					mud.acceptConns=false;
 					mud.port=CMath.s_int(ports.substring(0,pdex));
 					ports=ports.substring(pdex+1);
@@ -1289,7 +1293,7 @@ public class MUD extends Thread implements MudHost
 					pdex=ports.indexOf(',');
 				}
 				MUD mud=new MUD("MUD@"+ports);
-				mud.state=MudState.STARTING;
+				mud.setState(MudState.STARTING);
 				mud.acceptConns=false;
 				mud.port=CMath.s_int(ports);
 				hostMuds.add(mud);
