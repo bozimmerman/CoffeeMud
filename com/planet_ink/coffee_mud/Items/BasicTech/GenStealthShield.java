@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.util.*;
 
@@ -32,16 +33,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdPersonalShield extends StdElecItem
+public class GenStealthShield extends GenElecItem
 {
-	public String ID(){	return "StdPersonalShield";}
 
-	public StdPersonalShield()
+	public String ID(){	return "GenStealthShield";}
+	
+	public GenStealthShield()
 	{
 		super();
-		setName("a weak personal shield generator");
+		setName("a personal stealth generator");
 		basePhyStats.setWeight(2);
-		setDisplayText("a weak personal shield generator sits here.");
+		setDisplayText("a personal stealth generator sits here.");
 		setDescription("");
 		baseGoldValue=2500;
 		basePhyStats().setLevel(1);
@@ -49,53 +51,59 @@ public class StdPersonalShield extends StdElecItem
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		super.activate(true);
 		super.setRawProperLocationBitmap(Wearable.WORN_ABOUT_BODY);
-		super.setPowerCapacity(1000);
-		super.setPowerRemaining(1000);
+		super.setPowerCapacity(100);
+		super.setPowerRemaining(100);
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "A field of energy surrounds "+name(viewerM)+"."; }
+	protected String fieldOnStr(MOB viewerM) { return "A stealth field surrounds "+name(viewerM)+"."; }
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The field around <S-NAME> flickers and dies out."; }
+	protected String fieldDeadStr(MOB viewerM) { return "The field around <S-NAME> flickers and dies out as <S-HE-SHE> fade(s) back into view."; }
 	
 	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
 
-	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if(mob.location()!=null)
+		if(activated() && (affected==owner()) && (owner() instanceof MOB) && (!amWearingAt(Item.IN_INVENTORY)) && (powerRemaining() > 0))
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
+		super.affectPhyStats(affected, affectableStats);
+	}
+	
+	@Override
+	public void setOwner(ItemPossessor owner)
+	{
+		final ItemPossessor prevOwner=super.owner;
+		super.setOwner(owner);
+		if((prevOwner != owner)&&(owner!=null))
 		{
-			if(msg.tool() instanceof Weapon)
-			{
-				String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
-				if(s.indexOf("<DAMAGE> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it reflects off the shield around"));
-				else
-				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "reflects off the shield around"));
-				else
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
-			}
-			else
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
+			if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELECTRONICS))
+				CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
 		}
-		return false;
 	}
 	
-	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		return (Math.random() >= successFactor) && activated();
-	}
-	
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof StdPersonalShield)) return false;
-		return super.sameAs(E);
-	}
-	
-	public void setMiscText(String newText)
-	{
-		if(CMath.isInteger(newText))
-			this.setPowerCapacity(CMath.s_int(newText));
-		super.setMiscText(newText);
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(activated() && (tickID==Tickable.TICKID_ELECTRONICS))
+		{
+			if(!amWearingAt(Item.IN_INVENTORY))
+			setPowerRemaining(powerRemaining()-1);
+			if(powerRemaining()<=0)
+			{
+				setPowerRemaining(0);
+				if(owner() instanceof MOB)
+				{
+					MOB mob=(MOB)owner();
+					CMMsg msg=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(mob));
+					if(mob.location()!=null)
+						mob.location().send(mob, msg);
+				}
+				else
+					activate(false);
+			}
+		}
+		return !amDestroyed();
 	}
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -112,44 +120,11 @@ public class StdPersonalShield extends StdElecItem
 				if(activated())
 					msg.addTrailerMsg(CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(msg.source())));
 				break;
-			case CMMsg.TYP_DAMAGE: // remember 50% miss rate
-				if((activated())&&(powerRemaining()>0)&&(!amWearingAt(Item.IN_INVENTORY)))
-				{
-					double successFactor=0.5;
-					final Manufacturer m=getFinalManufacturer();
-					successFactor=m.getReliabilityPct()*successFactor;
-					int weaponTech=CMLib.tech().getGlobalTechLevel();
-					if(msg.tool() instanceof Electronics)
-						weaponTech=((Electronics)msg.tool()).techLevel();
-					int myTech=techLevel();
-					int techDiff=Math.max(Math.min(myTech-weaponTech,10),-10);
-					if(techDiff!= 0) successFactor+=(0.05)*techDiff;
-					if(doesShield(mob, msg, successFactor))
-					{
-						long powerConsumed=Math.round(msg.value()*m.getEfficiencyPct());
-						if(powerRemaining()>=powerConsumed)
-						{
-							setPowerRemaining(powerRemaining()-powerConsumed);
-							if(!doShield(mob,msg, successFactor))
-								return false;
-						}
-						else
-							setPowerRemaining(0);
-					}
-					if(powerRemaining()<=0)
-					{
-						setPowerRemaining(0);
-						CMMsg msg2=CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(msg.source()));
-						if(mob.location()!=null)
-							mob.location().send(mob, msg2);
-					}
-				}
-				break;
 			}
 		}
 		return true;
 	}
-
+	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(msg.amITarget(this))
