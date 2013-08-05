@@ -55,7 +55,7 @@ public class GenTickerShield extends GenElecItem
 		super.setPowerRemaining(100);
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "A field surrounds "+name(viewerM)+"."; }
+	protected String fieldOnStr(MOB viewerM) { return "A field surrounds <O-NAME>."; }
 	
 	protected String fieldDeadStr(MOB viewerM) { return "The around <S-NAME> flickers and dies out as <S-HE-SHE> fade(s) back into view."; }
 	
@@ -134,12 +134,12 @@ public class GenTickerShield extends GenElecItem
 				return;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, fieldOnStr(null));
+					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldOnStr(null));
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, fieldDeadStr(null));
+					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldDeadStr(null));
 				this.activate(false);
 				break;
 			}
@@ -151,7 +151,7 @@ public class GenTickerShield extends GenElecItem
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(owner(), msg.source()) &&(activated())&&(powerRemaining()>0))
-					msg.source().tell(fieldOnStr(msg.source()));
+					msg.source().tell(msg.source(),this,owner(),fieldOnStr(msg.source()));
 				return;
 			}
 		}

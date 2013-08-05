@@ -53,9 +53,19 @@ public class StdPersonalShield extends StdElecItem
 		super.setPowerRemaining(1000);
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "A field of energy surrounds "+name(viewerM)+"."; }
+	protected String fieldOnStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?
+			"A field of energy surrounds <O-NAME>.":
+			"A field of energy surrounds <T-NAME>."; 
+	}
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The field around <S-NAME> flickers and dies out."; }
+	protected String fieldDeadStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?"" +
+			"The field around <O-NAME> flickers and dies out.":
+			"The field around <T-NAME> flickers and dies out."; 
+	}
 	
 	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
 
@@ -72,10 +82,10 @@ public class StdPersonalShield extends StdElecItem
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "reflects off the shield around"));
 				else
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the <O-NAMENOART> damage.");
 			}
 			else
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the <O-NAMENOART> damage.");
 		}
 		return false;
 	}
@@ -166,13 +176,16 @@ public class StdPersonalShield extends StdElecItem
 				return;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, fieldOnStr(null));
+					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldOnStr(null));
 				this.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
-					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, fieldDeadStr(null));
+					msg.source().location().show(msg.source(), this, owner(), CMMsg.MSG_OK_VISUAL, fieldDeadStr(null));
 				this.activate(false);
+				break;
+			default:
+				super.executeMsg(host,msg);
 				break;
 			}
 		}
@@ -183,7 +196,7 @@ public class StdPersonalShield extends StdElecItem
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
 				if(CMLib.flags().canBeSeenBy(owner(), msg.source()) &&(activated())&&(powerRemaining()>0))
-					msg.source().tell(fieldOnStr(msg.source()));
+					msg.source().tell(msg.source(),this,owner(),fieldOnStr(msg.source()));
 				return;
 			}
 		}

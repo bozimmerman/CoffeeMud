@@ -44,9 +44,21 @@ public class GenIntegrityShield extends GenPersonalShield
 		setDescription("The integrity shield generator is worn about the body and activated to use. It protects against disruption and disintegration beams. ");
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "An integrity field surrounds "+name(viewerM)+"."; }
+	@Override
+	protected String fieldOnStr(MOB viewerM) 
+	{
+		return (owner() instanceof MOB)?
+			"An integrity field surrounds <O-NAME>.":
+			"An integrity field surrounds <T-NAME>."; 
+	}
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The integrity field around <S-NAME> flickers and dies out."; }
+	@Override
+	protected String fieldDeadStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?
+			"The integrity field around <O-NAME> flickers and dies out.":
+			"The integrity field around <T-NAME> flickers and dies out."; 
+	}
 	
 	@Override 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
@@ -62,10 +74,10 @@ public class GenIntegrityShield extends GenPersonalShield
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "is neutralized by the shield around"));
 				else
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> neutralizes the "+msg.tool().name()+" damage.");
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> neutralizes the <O-NAMENOART> damage.");
 			}
 			else
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> neutralizes the "+msg.tool().name()+" damage.");
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> neutralizes the <O-NAMENOART> damage.");
 		}
 		return false;
 	}

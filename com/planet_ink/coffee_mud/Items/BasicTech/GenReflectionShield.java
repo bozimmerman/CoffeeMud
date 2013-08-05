@@ -44,9 +44,21 @@ public class GenReflectionShield extends GenPersonalShield
 		setDescription("The reflection shield generator is worn about the body and activated to use. It protects against laser type weapons. ");
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "A glassy field of energy surrounds "+name(viewerM)+"."; }
+	@Override
+	protected String fieldOnStr(MOB viewerM) 
+	{
+		return (owner() instanceof MOB)?
+			"A reflecting field of energy surrounds <O-NAME>.":
+			"A reflecting field of energy surrounds <T-NAME>."; 
+	}
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The glassy field around <S-NAME> flickers and dies out."; }
+	@Override
+	protected String fieldDeadStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?
+			"The reflecting field around <O-NAME> flickers and dies out.":
+			"The reflecting field around <T-NAME> flickers and dies out."; 
+	}
 	
 	@Override 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
@@ -62,10 +74,10 @@ public class GenReflectionShield extends GenPersonalShield
 				if(s.indexOf("<DAMAGES>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "reflects off the shield around"));
 				else
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the <O-NAMENOART> damage.");
 			}
 			else
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> reflects the <O-NAMENOART> damage.");
 		}
 		return false;
 	}

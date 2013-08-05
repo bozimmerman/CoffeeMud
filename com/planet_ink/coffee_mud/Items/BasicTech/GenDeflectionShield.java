@@ -44,9 +44,21 @@ public class GenDeflectionShield extends GenPersonalShield
 		setDescription("The deflection shield generator is worn about the body and activated to use. It deflects all manner of weapon types. ");
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "A deflectant field of energy surrounds "+name(viewerM)+"."; }
+	@Override
+	protected String fieldOnStr(MOB viewerM) 
+	{
+		return (owner() instanceof MOB)?
+			"A deflectant field of energy surrounds <O-NAME>.":
+			"A deflectant field of energy surrounds <T-NAME>."; 
+	}
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The deflection field around <S-NAME> flickers and dies out."; }
+	@Override
+	protected String fieldDeadStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?
+			"The deflection field around <O-NAME> flickers and dies out.":
+			"The deflection field around <T-NAME> flickers and dies out."; 
+	}
 	
 	@Override 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
@@ -62,10 +74,10 @@ public class GenDeflectionShield extends GenPersonalShield
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "deflects off the shield around"));
 				else
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> deflects the "+msg.tool().name()+" damage.");
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> deflects the <O-NAMENOART> damage.");
 			}
 			else
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> deflects the "+msg.tool().name()+" damage.");
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> deflects the <O-NAMENOART> damage.");
 		}
 		return false;
 	}

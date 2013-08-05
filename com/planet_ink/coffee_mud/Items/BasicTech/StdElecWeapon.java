@@ -223,6 +223,9 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 				this.activate(false);
 				break;
 			}
+			default:
+				super.executeMsg(myHost,msg);
+				break;
 			}
 		}
 		else

@@ -44,9 +44,21 @@ public class GenEnergyShield extends GenPersonalShield
 		setDescription("The energy shield generator is worn about the body and activated to use. It protects against standard blaster and energy fire. ");
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "An energy field surrounds "+name(viewerM)+"."; }
+	@Override
+	protected String fieldOnStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?
+			"An energy field surrounds <O-NAME>.":
+			"An energy field surrounds <T-NAME>."; 
+	}
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The energy field around <S-NAME> flickers and dies out."; }
+	@Override
+	protected String fieldDeadStr(MOB viewerM) 
+	{
+		return (owner() instanceof MOB)?
+			"The energy field around <O-NAME> flickers and dies out.":
+			"The energy field around <T-NAME> flickers and dies out."; 
+	}
 	
 	@Override 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
@@ -62,10 +74,10 @@ public class GenEnergyShield extends GenPersonalShield
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "is absorbed by the shield around"));
 				else
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the "+msg.tool().name()+" damage.");
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the <O-NAMENOART> damage.");
 			}
 			else
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the "+msg.tool().name()+" damage.");
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the <O-NAMENOART> damage.");
 		}
 		return false;
 	}

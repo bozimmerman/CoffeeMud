@@ -46,9 +46,21 @@ public class GenEclipseField extends GenTickerShield
 		setDescription("");
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "An eclipsing field surrounds "+name(viewerM)+"."; }
+	@Override
+	protected String fieldOnStr(MOB viewerM) 
+	{
+		return (owner() instanceof MOB)?
+			"An eclipsing field surrounds <O-NAME>.":
+			"An eclipsing field surrounds <T-NAME>."; 
+	}
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The eclipsing field around <S-NAME> flickers and dies out as <S-HE-SHE> fade(s) back into view."; }
+	@Override
+	protected String fieldDeadStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?
+			"The eclipsing field around <O-NAME> flickers and dies out as <O-HE-SHE> fade(s) back into view.":
+			"The eclipsing field around <T-NAME> flickers and dies out as <T-HE-SHE> fade(s) back into view."; 
+	}
 	
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{

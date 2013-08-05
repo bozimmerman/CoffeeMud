@@ -44,9 +44,21 @@ public class GenMutingField extends GenPersonalShield
 		setDescription("The muting field generator is worn about the body and activated to use. It neutralizes sonic and stunning weapon damage. ");
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "A thick field of energy surrounds "+name(viewerM)+"."; }
-	
-	protected String fieldDeadStr(MOB viewerM) { return "The thick field around <S-NAME> flickers and dies out."; }
+	@Override
+	protected String fieldOnStr(MOB viewerM) 
+	{
+		return (owner() instanceof MOB)?
+			"An dense field surrounds <O-NAME>.":
+			"An dense field surrounds <T-NAME>."; 
+	}
+
+	@Override
+	protected String fieldDeadStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?
+			"The dense field around <O-NAME> flickers and dies out.":
+			"The dense field around <T-NAME> flickers and dies out."; 
+	}
 	
 	@Override 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
@@ -63,10 +75,10 @@ public class GenMutingField extends GenPersonalShield
 				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
 					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "is absorbed by the shield around"));
 				else
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the "+msg.tool().name()+" damage.");
+					mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the <O-NAMENOART> damage.");
 			}
 			else
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the "+msg.tool().name()+" damage.");
+				mob.location().show(mob,msg.source(),msg.tool(),CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the <O-NAMENOART> damage.");
 		}
 		return false;
 	}

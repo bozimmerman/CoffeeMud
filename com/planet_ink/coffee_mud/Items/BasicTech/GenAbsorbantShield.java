@@ -44,9 +44,21 @@ public class GenAbsorbantShield extends GenPersonalShield
 		setDescription("The integrity shield generator is worn about the body and activated to use. It protects against disruption and disintegration beams. ");
 	}
 	
-	@Override protected String fieldOnStr(MOB viewerM) { return "A sparkling field of energy surrounds "+name(viewerM)+"."; }
+	@Override 
+	protected String fieldOnStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?
+			"A sparkling field of energy surrounds <O-NAME>.":
+			"A sparkling field of energy surrounds <T-NAME>."; 
+	}
 	
-	@Override protected String fieldDeadStr(MOB viewerM) { return "The sparkling field around <S-NAME> flickers and dies out."; }
+	@Override 
+	protected String fieldDeadStr(MOB viewerM) 
+	{ 
+		return (owner() instanceof MOB)?
+			"The sparkling field around <O-NAME> flickers and dies out.":
+			"The sparkling field around <T-NAME> flickers and dies out."; 
+	}
 	
 	@Override 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)

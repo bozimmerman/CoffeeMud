@@ -41,8 +41,8 @@ public class GenPhaser extends GenElecWeapon
 		super();
 		setName("a phaser");
 		setDisplayText("a phaser");
+		setDescription("There are two activation settings: stun, and kill.");
 		super.mode = ModeType.KILL;
 		super.modeTypes = new ModeType[]{ ModeType.STUN, ModeType.KILL };
-		setDescription("There are two activation settings: stun, and kill.");
 	}
 }
