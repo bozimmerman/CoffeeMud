@@ -45,7 +45,7 @@ public class GenDisruptor extends GenElecWeapon
 		basePhyStats.setWeight(5);
 		setDisplayText("a disruptor");
 		setDescription("There are two activation settings: stun, and disrupt.");
-		super.mode = ModeType.KILL;
+		super.mode = ModeType.DISRUPT;
 		super.modeTypes = new ModeType[]{ ModeType.STUN, ModeType.DISRUPT };
 	}
 }

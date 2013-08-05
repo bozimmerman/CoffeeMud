@@ -69,6 +69,9 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		recoverPhyStats();
 	}
 
+	// this method is the reason not to make the types an editable field; the
+	// murder-motel-like interaction between shields and weapons is finely 
+	// balanced based on what this does.
 	@Override public int weaponType()
 	{
 		switch(mode)
