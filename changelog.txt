@@ -17,7 +17,7 @@
   16. Some new multiclassing system options:  NO-BASE, NO-SUBONLY, NO-[X], and NO-GRP-[X] -- see the coffeemud.ini
   17. SHELL command now (finally) supports diff (thanks google code!).  
   18. Similar to #15, the entire world map, w/ cmare files, is in VFS at /resources/map/... along with editable properties files.
-
+  19. (Tech) numerous gun and shield types created -- most of them templates for a murder-motel-type game
 //TODO: finish the idea of marshaling tech players and areas to proper threadgroups
 //TODO: make personal sensor systems
 //TODO: make the tech install skill!!!
