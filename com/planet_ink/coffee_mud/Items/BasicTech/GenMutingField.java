@@ -32,41 +32,42 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenReflectiveShield extends GenPersonalShield
+public class GenMutingField extends GenPersonalShield
 {
-	public String ID(){	return "GenReflectiveShield";}
+	public String ID(){	return "GenMutingField";}
 
-	public GenReflectiveShield()
+	public GenMutingField()
 	{
 		super();
-		setName("a reflective shield generator");
-		setDisplayText("a reflective shield generator sits here.");
+		setName("a muting field generator");
+		setDisplayText("a muting field generator sits here.");
 	}
 	
-	protected String fieldOnStr(MOB viewerM) { return "A glossy transparent field of energy surrounds "+name(viewerM)+"."; }
+	protected String fieldOnStr(MOB viewerM) { return "A thick field of energy surrounds "+name(viewerM)+"."; }
 	
-	protected String fieldDeadStr(MOB viewerM) { return "The reflective field around <S-NAME> flickers and dies out."; }
+	protected String fieldDeadStr(MOB viewerM) { return "The thick field around <S-NAME> flickers and dies out."; }
 	
 	@Override public TechType getTechType() { return TechType.PERSONAL_SHIELD; }
 
 	@Override 
 	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
 	{
+		mob.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_NOT_HEAR);
 		if(mob.location()!=null)
 		{
 			if(msg.tool() instanceof Weapon)
 			{
 				String s="^F"+((Weapon)msg.tool()).hitString(0)+"^N";
-				if(s.indexOf("<DAMAGE>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it reflects off the shield around"));
+				if(s.indexOf("<DAMAGE> <T-HIM-HER>")>0)
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "it`s absorbed by the shield around"));
 				else
-				if(s.indexOf("<DAMAGES>")>0)
-					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGE>", "reflects off the shield around"));
+				if(s.indexOf("<DAMAGES> <T-HIM-HER>")>0)
+					mob.location().show(msg.source(),msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,CMStrings.replaceAll(s, "<DAMAGES>", "is absorbed by the shield around"));
 				else
-					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The reflective field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
+					mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the "+msg.tool().name()+" damage.");
 			}
 			else
-				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The reflective field around <S-NAME> reflects the "+msg.tool().name()+" damage.");
+				mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The field around <S-NAME> absorbs the "+msg.tool().name()+" damage.");
 		}
 		return false;
 	}
@@ -74,6 +75,15 @@ public class GenReflectiveShield extends GenPersonalShield
 	@Override 
 	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
 	{
-		return activated() ?( (Math.random() >= successFactor) ) : false ;
+		if(!activated())
+			return false;
+		if((msg.tool() instanceof Electronics) 
+		&& (msg.tool() instanceof Weapon) 
+		&& (Math.random() >= successFactor)
+		&& (((Weapon)msg.tool()).weaponType()==Weapon.TYPE_SONICING))
+		{
+			return true;
+		}
+		return false;
 	}
 }
