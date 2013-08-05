@@ -738,7 +738,8 @@ public interface CharStats extends CMCommon, Modifiable
 	};
 
 	/** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
-	public static int[] DEFAULT_STAT_MSG_MAP= {-1, // strength
+	public static int[] DEFAULT_STAT_MSG_MAP= {
+		   -1, // strength
 		   -1, // intelligence
 		   -1, // dexterity
 		   -1, // constitution

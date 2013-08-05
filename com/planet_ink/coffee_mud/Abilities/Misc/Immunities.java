@@ -65,6 +65,8 @@ public class Immunities extends StdAbility
 		{"POISON",Integer.valueOf(CMMsg.TYP_POISON)},
 		{"UNDEAD",Integer.valueOf(CMMsg.TYP_UNDEAD)},
 		{"LEGAL",Integer.valueOf(CMMsg.TYP_LEGALWARRANT)},
+		{"LASOR",Integer.valueOf(CMMsg.TYP_LASOR)},
+		{"SONIC",Integer.valueOf(CMMsg.TYP_SONIC)},
 	});
 	
 	public void setMiscText(String text)

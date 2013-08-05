@@ -248,6 +248,12 @@ public class StdArmor extends StdContainer implements Armor
 				case CMMsg.TYP_ELECTRIC:
 					weaponType=Weapon.TYPE_STRIKING;
 					break;
+				case CMMsg.TYP_SONIC:
+					weaponType=Weapon.TYPE_SONICING;
+					break;
+				case CMMsg.TYP_LASOR:
+					weaponType=Weapon.TYPE_LASORING;
+					break;
 				}
 			}
 			int oldUses=usesRemaining();
@@ -269,10 +275,12 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
+					case Weapon.TYPE_LASORING:
 						if(CMLib.dice().rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,15,0));
 						break;
 					case Weapon.TYPE_NATURAL:
+					case Weapon.TYPE_SONICING:
 						if(CMLib.dice().rollPercentage()==1)
 							setUsesRemaining(usesRemaining()-1);
 						break;
@@ -291,6 +299,7 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_GASSING:
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
+					case Weapon.TYPE_LASORING:
 						break;
 					case Weapon.TYPE_STRIKING:
 					case Weapon.TYPE_FROSTING:

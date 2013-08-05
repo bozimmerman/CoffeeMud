@@ -105,6 +105,12 @@ public class Spell_CombatPrecognition extends Spell
 				case CMMsg.TYP_ACID:
 					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"acid attack":tool)+" from <T-NAME>.");
 					break;
+				case CMMsg.TYP_SONIC:
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"sonic attack":tool)+" from <T-NAME>.");
+					break;
+				case CMMsg.TYP_LASOR:
+					msg2=CMClass.getMsg(mob,msg.source(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"lasor attack":tool)+" from <T-NAME>.");
+					break;
 				}
 				if((msg2!=null)&&(mob.location()!=null)&&(mob.location().okMessage(mob,msg2)))
 				{
