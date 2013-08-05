@@ -19,6 +19,7 @@
   18. Similar to #15, the entire world map, w/ cmare files, is in VFS at /resources/map/... along with editable properties files.
 
 //TODO: finish the idea of marshaling tech players and areas to proper threadgroups
+//TODO: make personal sensor systems
 //TODO: make the tech install skill!!!
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
 //      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)
@@ -26,7 +27,7 @@
 //TODO: retest private libs, private dbtables, private classes
 //TODO: some way to reposition planets? esp relative to nearby ones
 //TODO: create solar systems, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough. 
-//TODO: make sensor systems
+//TODO: make ship sensor systems
 //TODO: add electronics to guides
 //TODO: add electronics to MG
 //TODO: http://games.groups.yahoo.com/group/coffeemud skip=1885,2881,2953,3274,15908,15914,16267
