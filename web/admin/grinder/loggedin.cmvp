@@ -21,6 +21,11 @@
 			document.SELECTAREA.action='/grinder/'+action;
 			document.SELECTAREA.submit();
 		}
+        function Refresh()
+        {
+            document.SELECTAREA.action='/grinder/loggedin.cmvp';
+            document.SELECTAREA.submit();
+        }
 		function Clicked2(action)
 		{
 			document.SELECTAREA.action=action;
@@ -119,8 +124,17 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 
 @block?AREAEDITOR@
+    @if?MUDGrinder?ISSPACE@
+        <FONT SIZE=-1>
+         <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=AREA @if?CheckReqParm?AREAMASKTYPE=&||AREAMASKTYPE=AREA@CHECKED@endif@ ONCLICK="Refresh();">Mundane
+         <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=PLANET @if?CheckReqParm?AREAMASKTYPE=PLANET@CHECKED@endif@ ONCLICK="Refresh();">Space
+        </FONT>
+    @endif@
+    @if?CheckReqParm?AREAMASKTYPE=@
+        @AddRequestParameter?AREAMASKTYPE=AREA@
+    @endif@
 	<SELECT NAME=AREA HEIGHT=10>
-	@MUDGrinder?AREALIST&NOINSTANCE@
+	@MUDGrinder?@@RequestParameter?AREAMASKTYPE@@LIST&NOINSTANCE@
 	</SELECT>
 	<BR>
 	@if?CheckAuthCode?ALLMODAREAS=true@

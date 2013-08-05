@@ -109,8 +109,11 @@ public class TrailTo extends StdCommand
 			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=a.nextElement();
-				String trail = CMLib.tracking().getTrailToDescription(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms,5);
-				str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trail+"\n\r");
+				if(!(A instanceof SpaceObject))
+				{
+					String trail = CMLib.tracking().getTrailToDescription(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms,5);
+					str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trail+"\n\r");
+				}
 			}
 			if(confirm) Log.rawSysOut(str.toString());
 			return str.toString();

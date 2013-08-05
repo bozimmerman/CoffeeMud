@@ -115,7 +115,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 		{
 			int x=CMath.s_int(text);
 			if((x>=0)&&(x<modeTypes.length))
-			mode=modeTypes[x];
+				mode=modeTypes[x];
 		}
 		else
 		{
@@ -130,6 +130,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
+		if(mode!=null)
 		switch(mode)
 		{
 		case STUN: 

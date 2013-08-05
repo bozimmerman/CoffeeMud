@@ -35,14 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderAreas
 {
-	public static String getAreaList(Area pickedA, MOB mob, boolean noInstances)
+	public static String getAreaList(Enumeration<Area> a, Area pickedA, MOB mob, boolean noInstances)
 	{
 		StringBuffer AreaList=new StringBuffer("");
 		boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS));
 		boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDAREAS));
-		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+		for(;a.hasMoreElements();)
 		{
-			Area A=(Area)a.nextElement();
+			Area A=a.nextElement();
 			if((everywhere||(A.amISubOp(mob.Name())&&anywhere))
 			&&((!noInstances)||(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))))
 				if((pickedA!=null)&&(pickedA==A))

@@ -42,8 +42,9 @@ public class FilteredEnumeration<K> implements Enumeration<K>
 		while((nextElement==null) && (enumer.hasMoreElements()))
 		{
 			nextElement = enumer.nextElement();
-			if(filterer.equals(nextElement))
+			if(filterer.passesFilter(nextElement))
 				return;
+			nextElement = null;
 		}
 	}
 	

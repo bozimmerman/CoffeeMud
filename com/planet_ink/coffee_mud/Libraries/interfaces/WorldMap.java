@@ -49,6 +49,8 @@ public interface WorldMap extends CMLibrary
 	public Area findArea(String calledThis);
 	public Area getDefaultParentArea();
 	public Enumeration<Area> areas();
+	public Enumeration<Area> mundaneAreas();
+	public Enumeration<Area> spaceAreas();
 	public Area getFirstArea();
 	public Area getRandomArea();
 	public void obliterateArea(Area theOne);
@@ -166,6 +168,20 @@ public interface WorldMap extends CMLibrary
 		public LocatedPair(final Room room, final PhysicalAgent obj)
 		{ this.roomW=new WeakReference<Room>(room); this.objW=new WeakReference<PhysicalAgent>(obj);}
 	}
+	
+	public static Filterer<Area> planetsAreaFilter=new Filterer<Area>() {
+		@Override
+		public boolean passesFilter(Area obj) {
+			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip));
+		}
+	};
+	
+	public static Filterer<Area> mundaneAreaFilter=new Filterer<Area>() {
+		@Override
+		public boolean passesFilter(Area obj) {
+			return !(obj instanceof SpaceObject);
+		}
+	};
 	
 	public static class CrossExit
 	{

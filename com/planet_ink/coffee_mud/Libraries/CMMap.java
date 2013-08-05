@@ -98,6 +98,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	// areas
 	public int numAreas() { return areasList.size(); }
+	
 	public void addArea(Area newOne)
 	{
 		areasList.add(newOne);
@@ -172,6 +173,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 	public Enumeration<Area> areas() { return new IteratorEnumeration<Area>(areasList.iterator()); }
+	public Enumeration<Area> mundaneAreas() { return new FilteredEnumeration<Area>(areas(),mundaneAreaFilter); }
+	public Enumeration<Area> spaceAreas() { return new FilteredEnumeration<Area>(areas(),planetsAreaFilter); }
+	
 	public Enumeration<String> roomIDs(){ return new WorldMap.CompleteRoomIDEnumerator(this);}
 	public Area getFirstArea()
 	{

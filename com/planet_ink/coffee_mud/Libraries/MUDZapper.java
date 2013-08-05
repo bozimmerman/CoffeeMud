@@ -4345,14 +4345,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return true;
 				for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 					if(e.nextElement().amISubOp(E.name))
-					return true;
+						return true;
 				break;
 			case 111: // -subop
 				if(CMSecurity.isASysOp(E))
 					return false;
 				for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 					if(e.nextElement().amISubOp(E.name))
-					return false;
+						return false;
 				break;
 			case 0: // -class
 			{

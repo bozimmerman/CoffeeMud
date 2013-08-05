@@ -48,18 +48,22 @@ public class AreaNext extends StdWebMacro
 			if(last!=null) httpReq.removeUrlParameter("AREA");
 			return "";
 		}
+		boolean all=parms.containsKey("SPACE")||parms.containsKey("ALL");
 		String lastID="";
 		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))
+			if((!(A instanceof SpaceObject))||all)
 			{
-				httpReq.addFakeUrlParameter("AREA",A.Name());
-				if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
-					return "";
-				last=A.Name();
+				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))
+				{
+					httpReq.addFakeUrlParameter("AREA",A.Name());
+					if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
+						return "";
+					last=A.Name();
+				}
+				lastID=A.Name();
 			}
-			lastID=A.Name();
 		}
 		httpReq.addFakeUrlParameter("AREA","");
 		if(parms.containsKey("EMPTYOK"))
