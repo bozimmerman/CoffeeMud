@@ -33,16 +33,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenShrouderField extends GenTickerShield
+public class GenEclipseField extends GenTickerShield
 {
 
-	public String ID(){	return "GenShrouderField";}
+	public String ID(){	return "GenEclipseField";}
 	
-	public GenShrouderField()
+	public GenEclipseField()
 	{
 		super();
-		setName("a personal shroud field generator");
-		setDisplayText("a personal shroud field generator sits here.");
+		setName("a personal eclipse field generator");
+		setDisplayText("a personal eclipse field generator sits here.");
 		setDescription("");
 	}
 	
