@@ -1014,6 +1014,13 @@ public class StdMOB implements MOB
 		if (!location().isInhabitant(this))
 			location().addInhabitant(this);
 		pleaseDestroy = false;
+		
+		if(session()!=null)
+		{
+			Area area=CMLib.map().areaLocation(location());
+			if(area!=null)
+				CMLib.login().moveSessionToCorrectThreadGroup(session(), area.getTheme());
+		}
 
 		// will ensure no duplicate ticks, this obj, this id
 		kickFlag = true;

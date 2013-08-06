@@ -832,7 +832,7 @@ public class GenCharClass extends StdCharClass
 		case 16: otherLimitations=val;break;
 		case 17: otherBonuses=val;break;
 		case 18: qualifications=val;break;
-		case 19: selectability=CMath.s_parseBitIntExpression(Area.THEME_DESCS,val); break;
+		case 19: selectability=CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES,val); break;
 		case 20: adjPStats=null;if(val.length()>0){adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,val);}break;
 		case 21: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
 		case 22: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;

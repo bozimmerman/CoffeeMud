@@ -1992,15 +1992,33 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return null;
 	}
 	
+	public void moveSessionToCorrectThreadGroup(final Session session, int theme)
+	{
+		final int themeDex=CMath.firstBitSetIndex(theme);
+		if((themeDex>=0)&&(themeDex<Area.THEME_BIT_NAMES.length))
+		{
+			ThreadGroup privateGroup=CMProps.getPrivateOwner(Area.THEME_BIT_NAMES[themeDex]+"PLAYERS");
+			if((privateGroup!=null)
+			&&(privateGroup.getName().length()>0)
+			&&(!privateGroup.getName().equals(session.getGroupName())))
+			{
+				if(session.getGroupName().length()>0)
+				{
+					if(CMLib.library(session.getGroupName().charAt(0), CMLib.Library.SESSIONS)
+					!= CMLib.library(privateGroup.getName().charAt(0), CMLib.Library.SESSIONS))
+					{
+						((Sessions)CMLib.library(session.getGroupName().charAt(0), CMLib.Library.SESSIONS)).remove(session);
+						((Sessions)CMLib.library(privateGroup.getName().charAt(0), CMLib.Library.SESSIONS)).add(session);
+					}
+				}
+				session.setGroupName(privateGroup.getName());
+			}
+		}
+	}
+	
 	protected LoginResult charcrThemeDone(final LoginSession loginObj, final Session session)
 	{
-		final int themeDex=CMath.firstBitSetIndex(loginObj.theme);
-		if((themeDex>=0)&&(themeDex<Area.THEME_DESCS.length))
-		{
-			ThreadGroup privateGroup=CMProps.getPrivateOwner(Area.THEME_DESCS[themeDex]+"PLAYERS");
-			if(privateGroup!=null)
-				session.setGroupName(privateGroup.getName());
-		}
+		moveSessionToCorrectThreadGroup(session,loginObj.theme);
 		final MOB mob=loginObj.mob;
 		session.setMob(loginObj.mob);
 		executeScript(mob,getLoginScripts().get("THEME"));

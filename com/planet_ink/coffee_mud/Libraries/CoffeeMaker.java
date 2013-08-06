@@ -778,6 +778,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					exit=CMClass.getExit(CMLib.xml().getValFromPieces(xxV,"EXID"));
 					if(exit==null) return unpackErr("Room","null 'exit' in room "+newRoom.roomID());
+					exit.setTemporaryDoorLink("{{#"+newRoom.roomID()+"#}}");
 					exit.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
 					newRoom.setRawExit(dir,exit);
 				}

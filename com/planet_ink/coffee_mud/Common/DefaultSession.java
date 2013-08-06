@@ -62,7 +62,6 @@ public class DefaultSession implements Session
 
 	private static final String		TIMEOUT_MSG		= "Timed Out.";
 	
-	
 	private volatile Thread  runThread 			 = null;
 	private volatile Thread	 writeThread 		 = null;
 	protected String		 groupName			 = null;
@@ -106,7 +105,7 @@ public class DefaultSession implements Session
 	protected boolean   	 connectionComplete	 = false;
 	protected ReentrantLock  writeLock 			 = new ReentrantLock(true);
 	protected LoginSession	 loginSession 		 = null;
-	
+
 	protected ColorState	 currentColor		 = ColorLibrary.COLORSTATE_NORMAL;
 	protected ColorState	 lastColor			 = ColorLibrary.COLORSTATE_NORMAL;
 	protected long			 lastStart			 = System.currentTimeMillis();
@@ -2140,6 +2139,7 @@ public class DefaultSession implements Session
 								CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 						}
 					}
+					
 					needPrompt=true;
 					if((!killFlag)&&(mob!=null))
 					{

@@ -700,7 +700,7 @@ public class GenRace extends StdRace
 		case 6: heightVariance=CMath.s_parseIntExpression(val); break;
 		case 7: shortestFemale=CMath.s_parseIntExpression(val); break;
 		case 8: shortestMale=CMath.s_parseIntExpression(val); break;
-		case 9: availability=CMath.s_parseBitIntExpression(Area.THEME_DESCS,val); break;
+		case 9: availability=CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES,val); break;
 		case 10: leaveStr=val;break;
 		case 11: arriveStr=val;break;
 		case 12:

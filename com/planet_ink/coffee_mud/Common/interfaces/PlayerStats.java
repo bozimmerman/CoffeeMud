@@ -667,7 +667,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	
 	/**
 	 * Returns the theme used to create this player.
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_DESCS
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_BIT_NAMES
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setTheme(int)
 	 * @return the theme used to create this player.
 	 */
@@ -675,7 +675,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	
 	/**
 	 * Sets the theme used to create this player.
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_DESCS
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_BIT_NAMES
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTheme()
 	 * @param theme the theme used to create this player.
 	 */

@@ -41,6 +41,7 @@ public interface CharCreationLibrary extends CMLibrary
 	// mob is optional
 	public List<CharClass> classQualifies(MOB mob, int theme);
 	// mob is optional
+	public void moveSessionToCorrectThreadGroup(final Session session, int theme);
 	public List<Race> raceQualifies(MOB mob, int theme);
 	public boolean isOkName(String login, boolean spacesOk);
 	public void reloadTerminal(MOB mob);

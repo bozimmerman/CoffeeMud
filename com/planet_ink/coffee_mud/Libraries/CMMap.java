@@ -1440,15 +1440,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		final Area area=areaLocation(E);
 		if(area != null)
 		{
-			switch(area.getTheme())
-			{
-			case Area.THEME_FANTASY: 
-				return CMProps.getPrivateOwner("FANTASYAREAS");
-			case Area.THEME_HEROIC: 
-				return CMProps.getPrivateOwner("HEROICAREAS");
-			case Area.THEME_TECHNOLOGY: 
-				return CMProps.getPrivateOwner("TECHAREAS");
-			}
+			final int theme=area.getTheme();
+			if((theme>0)&&(theme<Area.THEME_NAMES.length))
+				return CMProps.getPrivateOwner(Area.THEME_NAMES[theme]+"AREAS");
 		}
 		return null;
 	}

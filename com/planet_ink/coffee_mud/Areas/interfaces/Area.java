@@ -567,7 +567,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 		}
 	}
 	
-	public final static String[] THEME_DESCS={"FANTASY","TECH","HEROIC","SKILLONLY"};
+	public final static String[] THEME_BIT_NAMES={"FANTASY","TECH","HEROIC","SKILLONLY"};
 	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_INHERIT=0;
 	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
@@ -578,7 +578,9 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public final static int THEME_HEROIC=4;
 	/**	Bitmap flag meaning that the object only supports usage of above in Skills.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_SKILLONLYMASK=8;
-	/**	Indexed description of the THEME_ bitmap constants in all possible combinations.  
+	/** Indexed description of the THEME_ bitmap constants in all possible combinations -- in upper/single word format */
+	public final static String[] THEME_NAMES={"INHERITED","FANTASY","TECH","FANTAST+TECH","HEROIC","HEROIC+FANTASY","HEROIC+TECH","ALL","SKILLONLY"};
+	/**	Indexed description of the THEME_ bitmap constants in all possible combinations.  In readable format.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY 
 	 */
 	public final static String[] THEME_PHRASE={"Inherited",   		  // 0

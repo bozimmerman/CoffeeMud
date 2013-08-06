@@ -1788,7 +1788,7 @@ public class StdArea implements Area
 		case 1: setClimateType((CMath.s_int(val)<0)?-1:CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
-		case 4: setTheme(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
+		case 4: setTheme(CMath.s_parseBitIntExpression(Area.THEME_BIT_NAMES,val)); break;
 		case 5:
 		{
 			if(val.startsWith("+"))

@@ -124,7 +124,6 @@ public class RoomLoader
 				A.setDescription(DBConnections.getRes(R,"CMDESC"));
 				String miscData=DBConnections.getRes(R,"CMROTX");
 				A.setTheme((int)DBConnections.getLongRes(R,"CMTECH"));
-				A.setAreaState(Area.State.ACTIVE);
 				if((currentRecordPos%updateBreak)==0)
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
 				
@@ -134,6 +133,10 @@ public class RoomLoader
 			for(Pair<Area,String> a : areasLoaded)
 			{
 				a.first.setMiscText(a.second);
+			}
+			for(Pair<Area,String> a : areasLoaded)
+			{
+				a.first.setAreaState(Area.State.ACTIVE);
 			}
 		}
 		catch(SQLException sqle)
