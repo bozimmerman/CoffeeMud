@@ -146,6 +146,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				createCurrencySet(defaultCurrencies,defaultCurrencyDefinition);
 				createCurrencySet(defaultCurrencies,goldStandard);
 				createCurrencySet(defaultCurrencies,copperStandard);
+				createCurrencySet(defaultCurrencies,creditStandard);
+				createCurrencySet(defaultCurrencies,dollarStandard);
 			}
 			if(defaultCurrencies.containsKey(code))
 				return defaultCurrencies.get(code);

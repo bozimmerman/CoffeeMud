@@ -23,14 +23,15 @@
   22. IMPORT now accepts zip files containing *.cmare files.
   23. Say command: if a player speaks same language as person being addressed is speaking, they will try to speak it.  
       Also, untargeted speaking, when only one other person is in the room, will assume to be addressing them. New DISABLE=AUTOLANGUAGE
-//TODO: make personal sensor systems
+//TODO: make personal scanner/tricorder systems
 //TODO: make the tech install skill!!!
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
 //      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)
 //TODO: make enviro control systems
 //TODO: retest private libs, private dbtables, private classes, private area objects, private players
 //TODO: some way to reposition planets? esp relative to nearby ones
-//TODO: create solar systems, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough. 
+//TODO: create solar systems, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough.
+//TODO: MoneyChanger behavior to discount currency by its distant origin (farther planet is from origin of currency, less its worth).
 //TODO: make ship sensor systems
 //TODO: add electronics to guides
 //TODO: add electronics to MG
