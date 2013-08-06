@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
@@ -47,7 +48,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	public String supportedResourceString(){return "WOODEN|HEMP|SILK|CLOTH";}
 	public String parametersFormat(){ return 
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tN_A\tN_A\tCODED_SPELL_LIST";}
+		+"ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tSTATUE||\tN_A\tCODED_SPELL_LIST";}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
@@ -56,7 +57,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_VALUE=4;
 	protected static final int RCP_CLASSTYPE=5;
 	protected static final int RCP_WOODTYPE=6;
-	//private static final int RCP_CAPACITY=7;
+	protected static final int RCP_MISCTYPE=7;
+	//protected static final int RCP_MISCTEXT=8;
 	protected static final int RCP_SPELL=9;
 
 	public boolean supportsDeconstruction() { return false; }
@@ -99,10 +101,12 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		return super.getComponentDescription( mob, recipe, RCP_WOOD );
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, Vector commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
 			return true;
+		final Session session=mob.session();
 		int autoGenerate=0;
 		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
@@ -164,6 +168,15 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		activity = CraftingActivity.CRAFTING;
 		buildingI=null;
 		messedUp=false;
+		String statue=null;
+		if((commands.size()>1)&&((String)commands.lastElement()).startsWith("STATUE="))
+		{
+			statue=(((String)commands.lastElement()).substring(7)).trim();
+			if(statue.length()==0)
+				statue=null;
+			else
+				commands.removeElementAt(commands.size()-1);
+		}
 		String materialDesc="";
 		String recipeName=CMParms.combine(commands,0);
 		List<String> foundRecipe=null;
@@ -208,6 +221,29 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 											null);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
+		
+		String misctype=(foundRecipe.size()>RCP_MISCTYPE)?foundRecipe.get(RCP_MISCTYPE).trim():"";
+		if((misctype.equalsIgnoreCase("statue"))
+		&&(session!=null)
+		&&((statue==null)||(statue.trim().length()==0)))
+		{
+			final Ability me=this;
+			final Physical target=givenTarget;
+			if(session!=null)
+			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+				@Override public void showPrompt() {session.promptPrint("What is this of?\n\r: ");}
+				@Override public void timedOut() {}
+				@Override public void callBack() {
+					String of=this.input;
+					if((of.trim().length()==0)||(of.indexOf('<')>=0))
+						return;
+					Vector newCommands=(Vector)originalCommands.clone();
+					newCommands.add("STATUE="+of);
+					me.invoke(mob, newCommands, target, auto, asLevel);
+				}
+			});
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -224,7 +260,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+		String itemName=foundRecipe.get(RCP_FINALNAME).toLowerCase();
 		itemName=CMLib.english().startWithAorAn(itemName);
 		buildingI.setName(itemName);
 		startStr="<S-NAME> start(s) making "+buildingI.name()+".";
@@ -248,6 +284,25 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		buildingI.recoverPhyStats();
 		buildingI.text();
 		buildingI.recoverPhyStats();
+
+		if((misctype.equalsIgnoreCase("statue"))
+		&&(statue!=null)
+		&&(statue.trim().length()>0))
+		{
+			if(buildingI.Name().indexOf('%')>0)
+			{
+				buildingI.setName(CMStrings.replaceAll(buildingI.Name(), "%", statue.trim()));
+				buildingI.setDisplayText(CMStrings.replaceAll(buildingI.displayText(), "%", statue.trim()));
+				buildingI.setDescription(CMStrings.replaceAll(buildingI.description(), "%", statue.trim()));
+			}
+			else
+			{
+				buildingI.setName(itemName+" of "+statue.trim());
+				buildingI.setDisplayText(itemName+" of "+statue.trim()+" is here");
+				buildingI.setDescription(itemName+" of "+statue.trim()+". ");
+			}
+			verb="making "+buildingI.name();
+		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

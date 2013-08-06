@@ -342,8 +342,35 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(amount>woodRequired) woodRequired=amount;
+			
+			final Session session=mob.session();
+			if((misctype.equalsIgnoreCase("statue"))
+			&&(session!=null)
+			&&((statue==null)||(statue.trim().length()==0)))
+			{
+				final Ability me=this;
+				final Physical target=givenTarget;
+				if(session!=null)
+				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+					@Override public void showPrompt() {session.promptPrint("What is this a statue of?\n\r: ");}
+					@Override public void timedOut() {}
+					@Override public void callBack() {
+						String of=this.input;
+						if((of.trim().length()==0)||(of.indexOf('<')>=0))
+							return;
+						Vector newCommands=(Vector)originalCommands.clone();
+						newCommands.add("STATUE="+of);
+						me.invoke(mob, newCommands, target, auto, asLevel);
+					}
+				});
+				return false;
+			}
+			
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
+			
+			
+			
 			int lostValue=autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
@@ -375,35 +402,14 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(bundling) buildingI.setBaseValue(lostValue);
 			addSpells(buildingI,spell);
 			key=null;
-			final Session session=mob.session();
+			
 			if((misctype.equalsIgnoreCase("statue"))
-			&&((session!=null)||((statue!=null)&&(statue.trim().length()>0))))
+			&&(statue!=null)
+			&&(statue.trim().length()>0))
 			{
-				if((statue==null)||(statue.trim().length()==0))
-				{
-					final Ability me=this;
-					final Physical target=givenTarget;
-					if(session!=null)
-					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
-						@Override public void showPrompt() {session.promptPrint("What is this a statue of?\n\r: ");}
-						@Override public void timedOut() {}
-						@Override public void callBack() {
-							String of=this.input;
-							if((of.trim().length()==0)||(of.indexOf('<')>=0))
-								return;
-							Vector newCommands=(Vector)originalCommands.clone();
-							newCommands.add("STATUE="+of);
-							me.invoke(mob, newCommands, target, auto, asLevel);
-						}
-					});
-					return false;
-				}
-				else
-				{
-					buildingI.setName(itemName+" of "+statue.trim());
-					buildingI.setDisplayText(itemName+" of "+statue.trim()+" is here");
-					buildingI.setDescription(itemName+" of "+statue.trim()+". ");
-				}
+				buildingI.setName(itemName+" of "+statue.trim());
+				buildingI.setDisplayText(itemName+" of "+statue.trim()+" is here");
+				buildingI.setDescription(itemName+" of "+statue.trim()+". ");
 			}
 			else
 			if(buildingI instanceof Container)

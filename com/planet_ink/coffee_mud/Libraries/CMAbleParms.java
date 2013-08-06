@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.RawMaterial.Material;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -767,7 +768,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		}
 	}
 
-	public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<String> columnsV, boolean saveToVFS)
+	public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<? extends Object> columnsV, boolean saveToVFS)
 	{
 		StringBuffer saveBuf = new StringBuffer("");
 		for(int r=0;r<rowsV.size();r++)
@@ -776,7 +777,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			int dataDex = 0;
 			for(int c=0;c<columnsV.size();c++)
 			{
-				if(columnsV.elementAt(c) !=null)
+				if(columnsV.elementAt(c) instanceof String)
 					saveBuf.append(columnsV.elementAt(c));
 				else
 					saveBuf.append(dataRow.elementAt(dataDex++,2));
@@ -1236,22 +1237,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							{
 								str.append("\n\r<SELECT NAME="+fieldName+"_CUST_STR_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
 								if(compType==AbilityComponent.CompType.MATERIAL)
-									for(RawMaterial.Material m : RawMaterial.Material.values())
+								{
+									RawMaterial.Material[] M=RawMaterial.Material.values();
+									Arrays.sort(M,new Comparator<RawMaterial.Material>(){
+										@Override public int compare(Material o1, Material o2) { return o1.name().compareToIgnoreCase(o2.name()); }
+									});
+									for(RawMaterial.Material m : M)
 									{
 										str.append("<OPTION VALUE="+m.mask());
 										if((type==2)&&(comp!=null)&&(m.mask()==comp.getLongType())) 
 											str.append(" SELECTED");
 										str.append(">"+m.noun());
 									}
+								}
 								else
 								if(compType==AbilityComponent.CompType.RESOURCE)
+								{
+									List<Pair<String,Integer>> L=new Vector<Pair<String,Integer>>();
 									for(int x=0;x<RawMaterial.CODES.TOTAL();x++)
+										L.add(new Pair<String,Integer>(RawMaterial.CODES.NAME(x),Integer.valueOf(RawMaterial.CODES.GET(x))));
+									Collections.sort(L,new Comparator<Pair<String,Integer>>(){
+										@Override public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2) {
+											return o1.first.compareToIgnoreCase(o2.first);
+										}
+									});
+									for(Pair<String,Integer> p : L)
 									{
-										str.append("<OPTION VALUE="+RawMaterial.CODES.GET(x));
-										if((type==2)&&(comp!=null)&&(RawMaterial.CODES.GET(x)==comp.getLongType())) 
+										str.append("<OPTION VALUE="+p.second);
+										if((type==2)&&(comp!=null)&&(p.second.longValue()==comp.getLongType())) 
 											str.append(" SELECTED");
-										str.append(">"+RawMaterial.CODES.NAME(x));
+										str.append(">"+p.first);
 									}
+								}
 								str.append("</SELECT>");
 							}
 							str.append("\n\r<SELECT NAME="+fieldName+"_CUST_LOC_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
@@ -1943,7 +1960,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						if(rsc) str.append("CHECKED ");
 						str.append("VALUE=\"RESOURCE\">");
 						str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE>");
-						for(String S : RawMaterial.CODES.NAMES())
+						String[] Ss=RawMaterial.CODES.NAMES().clone();
+						Arrays.sort(Ss);
+						for(String S : Ss)
 						{
 							String VALUE = S.equals("NOTHING")?"":S;
 							str.append("<OPTION VALUE=\""+VALUE+"\"");
@@ -2089,8 +2108,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
 					public void createChoices() {
-						Vector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
-						V.addAll(new XVector<String>(RawMaterial.Material.names()));
+						XVector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
+						Collections.sort(V);
+						XVector<String> V2=new XVector<String>(RawMaterial.Material.names());
+						Collections.sort(V2);
+						V.addAll(V2);
 						createChoices(V);
 					}
 					public String convertFromItem(final ItemCraftor A, final Item I)
@@ -2105,8 +2127,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				},
 				new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
 					public void createChoices() {
-						Vector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
-						V.addAll(new XVector<String>(RawMaterial.Material.names()));
+						XVector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
+						Collections.sort(V);
+						XVector<String> V2=new XVector<String>(RawMaterial.Material.names());
+						Collections.sort(V2);
+						V.addAll(V2);
 						V.addElement("");
 						createChoices(V);
 					}
@@ -2379,7 +2404,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						}
 						StringBuffer str=new StringBuffer("");
 						str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE MULTIPLE>");
-						for(String S : RawMaterial.CODES.NAMES())
+						String[] Ss=RawMaterial.CODES.NAMES().clone();
+						Arrays.sort(Ss);
+						for(String S : Ss)
 							str.append("<OPTION VALUE=\""+S+"\" "
 									+((S.equalsIgnoreCase(rsc))?"SELECTED":"")+">"
 									+CMStrings.capitalizeAndLower(S));
@@ -2772,8 +2799,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			}
 			return choices;
 		}
-		public DVector createChoices(Vector<? extends Object> V) { return createChoices(V.elements());}
-		public DVector createChoices(String[] S) { return createChoices(new XVector<String>(S).elements());}
+		public DVector createChoices(Vector<? extends Object> V) 
+		{
+			return createChoices(V.elements());
+		}
+		public DVector createChoices(String[] S) 
+		{
+			XVector<String> X=new XVector<String>(S);
+			Collections.sort(X);
+			return createChoices(X.elements());
+		}
 		public DVector createBinaryChoices(String[] S) { 
 			if(choices != null) return choices;
 			choices = createChoices(new XVector<String>(S).elements());

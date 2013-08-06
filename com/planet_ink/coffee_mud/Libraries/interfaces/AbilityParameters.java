@@ -71,7 +71,7 @@ public interface AbilityParameters extends CMLibrary
 	public void testRecipeParsing(StringBuffer recipesString, String recipeFormat) throws CMException;
 	public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat);
 	public Map<String,AbilityParmEditor> getEditors();
-	public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<String> columnsV, boolean saveVFS);
+	public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<? extends Object> columnsV, boolean saveVFS);
 	public StringBuffer getRecipeList(ItemCraftor iA);
 	public String makeRecipeFromItem(final ItemCraftor C, final Item I) throws CMException;
 	
@@ -81,7 +81,7 @@ public interface AbilityParameters extends CMLibrary
 		public String recipeFormat();
 		public Vector<DVector> dataRows();
 		@SuppressWarnings("rawtypes")
-        public Vector columns();
+		public Vector columns();
 		public int[] columnLengths();
 		public String[] columnHeaders();
 		public int numberOfDataColumns();

@@ -1,17 +1,20 @@
-a piece of paper	5	40	1	1	GenReadable	WOOD			
-a leaflet	5	40	1	1	GenReadable	WOOD			
-a flyer	5	40	1	1	GenReadable	WOOD			
-a poster	5	40	3	1	GenReadable	WOOD			
+a piece of paper	1	40	1	1	GenReadable	WOOD			
+a leaflet	2	40	1	1	GenReadable	WOOD			
+a flyer	3	40	1	1	GenReadable	WOOD			
+a posterboard	4	40	3	1	GenReadable	WOOD			
 a banner	5	40	5	1	GenReadable	WOOD			
+a sheet of parchment	6	10	1	1	GenReadable	HIDE			
+a % trading card	7	20	4	3	GenReadable	WOOD	STATUE		
+a sheet of rice paper	8	10	1	2	GenReadable	RICE			
+a canvas	9	20	10	5	GenReadable	COTTON			
 a sheet of vellum	10	30	1	1	GenReadable	LEATHER			
-a sheet of parchment	5	10	1	1	GenReadable	HIDE			
-a canvas	5	20	10	5	GenReadable	COTTON			
+a poster of %	12	40	3	1	GenReadable	WOOD	STATUE		
 a sheet of silkscreen	15	50	5	20	GenReadable	SILK			
 a scroll	15	60	10	20	GenScroll	SILK			
-a sheet of rice paper	8	10	1	2	GenReadable	RICE			
 a recipe page	17	15	1	1	GenRecipe	WOOD			
 a small recipe book	20	30	5	5	GenRecipe	WOOD			
 a nice recipe book	22	45	10	10	GenRecipe	WOOD			
 a large recipe book	24	60	25	15	GenRecipe	WOOD			
 a huge recipe book	26	70	50	20	GenRecipe	WOOD			
 an enormous recipe book	28	90	100	25	GenRecipe	WOOD			
+a deck of cards	30	60	104	50	StdDeckOfCards	WOOD			
