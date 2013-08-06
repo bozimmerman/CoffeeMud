@@ -46,6 +46,7 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 		setDisplayText("an electric component sits here.");
 		setDescription("");
 		baseGoldValue=500000;
+		setUsesRemaining(100);
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
@@ -144,5 +145,11 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 			}
 		}
 		super.executeMsg(host, msg);
+	}
+	
+	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return true;
 	}
 }

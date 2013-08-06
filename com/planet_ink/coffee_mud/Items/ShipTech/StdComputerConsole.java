@@ -57,6 +57,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		basePhyStats.setWeight(20);
 		setDescription("");
 		baseGoldValue=5;
+		setUsesRemaining(100);
 		containType=Container.CONTAIN_SSCOMPONENTS;
 		rideBasis=Rideable.RIDEABLE_TABLE;
 		riderCapacity=1;
@@ -103,6 +104,13 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	public boolean canContain(Environmental E)
 	{
 		return E instanceof Software;
+	}
+
+	
+	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return true;
 	}
 
 	public String putString(Rider R)

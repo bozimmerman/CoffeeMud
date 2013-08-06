@@ -46,6 +46,7 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 		setDisplayText("a component container sits here.");
 		setDescription("");
 		baseGoldValue=500000;
+		setUsesRemaining(100);
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
@@ -53,6 +54,12 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 	
 	@Override public float getInstalledFactor() { return installedFactor; }
 	@Override public void setInstalledFactor(float pct) { installedFactor=pct; }
+	
+	@Override
+	public boolean subjectToWearAndTear()
+	{
+		return true;
+	}
 	
 	public boolean sameAs(Environmental E)
 	{
