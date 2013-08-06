@@ -54,7 +54,7 @@ public interface DatabaseEngine extends CMLibrary
 	public static enum DatabaseTables {
 		DBABILITY,DBCHARCLASS,DBRACE,DBPLAYERS,DBMAP,
 		DBSTATS,DBPOLLS,DBVFS,DBJOURNALS,DBQUEST,DBCLANS
-	};
+	}
 	
 	public String errorStatus();
 	public void resetConnections();
