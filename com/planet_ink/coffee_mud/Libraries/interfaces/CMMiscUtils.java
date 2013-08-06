@@ -49,6 +49,7 @@ public interface CMMiscUtils extends CMLibrary
 	public long[][] compileConditionalRange(List<String> condV, int numDigits, final int startOfRange, final int endOfRange);
 	
 	public void outfit(MOB mob, List<Item> items);
+	public Language getLanguageSpoken(Physical P);
 	public boolean reachableItem(MOB mob, Environmental E);
 	public void extinguish(MOB source, Physical target, boolean mundane);
 	public boolean armorCheck(MOB mob, int allowedArmorLevel);

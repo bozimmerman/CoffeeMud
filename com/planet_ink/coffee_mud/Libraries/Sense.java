@@ -1067,6 +1067,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				});
 		return V;
 	}
+	
 	public List<Ability> domainAffects(final Physical P, final int domain)
 	{
 		return domainAnyAffects(P,domain);

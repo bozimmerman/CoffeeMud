@@ -100,7 +100,7 @@ public class Say extends StdCommand
 			toFlag=true;
 		}
 
-		Room R=mob.location();
+		final Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
 			mob.tell(theWord+" what?");
@@ -123,6 +123,7 @@ public class Say extends StdCommand
 		String whom="";
 		String theWordSuffix="";
 		Environmental target=null;
+		Physical langTarget=null;
 		if(commands.size()>2)
 		{
 			whom=((String)commands.elementAt(1)).toUpperCase();
@@ -151,11 +152,14 @@ public class Say extends StdCommand
 						target=null;
 				}
 
-				if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
+				if(target!=null)
+				{
 					commands.removeElementAt(1);
+					if(target instanceof Physical)
+						langTarget=(Physical)target;
+				}
 				else
 				{
-					target=null;
 					if(theWord.toUpperCase().startsWith("YELL"))
 					{
 						int dir=Directions.getGoodCompassDirectionCode(whom);
@@ -188,6 +192,42 @@ public class Say extends StdCommand
 				}
 			}
 		}
+		
+		// if you are the only one in the room to talk to
+		// then grab a random mob and assume that's who
+		// you are addressing.
+		if((langTarget==null)&&(target==null)&&(R.numInhabitants()==2))
+		{
+			for(int r=0;r<R.numInhabitants();r++)
+			{
+				MOB M=R.fetchInhabitant(r);
+				if(M!=mob)
+				{
+					langTarget=M;
+					target=M;
+					break;
+				}
+			}
+		}
+	
+		// if you are addressing someone speaking a language that you
+		// can speak, then speak it.
+		Language[] langSwap=null;
+		if((langTarget!=null)&&(!mob.isMonster()))
+		{
+			Language hisL=CMLib.utensils().getLanguageSpoken(langTarget);
+			Language myL=CMLib.utensils().getLanguageSpoken(mob);
+			if((hisL==null)&&(myL!=null))
+				langSwap=new Language[]{null,myL};
+			else
+			if((hisL!=null)&&((myL==null)||(!hisL.ID().equals(myL.ID()))))
+			{
+				Language myTargetL = (Language)mob.fetchEffect(hisL.ID());
+				if(myTargetL!=null)
+					langSwap=new Language[]{myTargetL,myL};
+			}
+		}
+		
 		String combinedCommands;
 		if(commands.size()==2)
 			combinedCommands=(String)commands.get(1);
@@ -219,6 +259,13 @@ public class Say extends StdCommand
 	
 		gmcpSaySend("say", mob, target, msg);
 		
+		if(langSwap!=null)
+		{
+			if(langSwap[1]!=null)
+				langSwap[1].setBeingSpoken(langSwap[1].ID(), false);
+			if(langSwap[0]!=null)
+				langSwap[0].setBeingSpoken(langSwap[0].ID(), true);
+		}
 		final boolean useShipDirs=(R instanceof SpaceShip)||(R.getArea() instanceof SpaceShip);
 		if(R.okMessage(mob,msg))
 		{
@@ -249,6 +296,13 @@ public class Say extends StdCommand
 					}
 				}
 			}
+		}
+		if(langSwap!=null)
+		{
+			if(langSwap[0]!=null)
+				langSwap[0].setBeingSpoken(langSwap[0].ID(), false);
+			if(langSwap[1]!=null)
+				langSwap[1].setBeingSpoken(langSwap[1].ID(), true);
 		}
 		return false;
 	}

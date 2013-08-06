@@ -2511,14 +2511,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				{
 					final MOB TM=(MOB)E;
-					Language L=null;
-					Ability A=null;
-					for(int i=0;i<TM.numEffects();i++)
-					{
-						A=TM.fetchEffect(i);
-						if((A instanceof Language) && (((Language)A).beingSpoken(A.ID())))
-							L=(Language)A;
-					}
+					Language L=CMLib.utensils().getLanguageSpoken(TM);
 					if((L!=null)
 					&&(!L.ID().equalsIgnoreCase("Common"))
 					&&(L.ID().equalsIgnoreCase(arg2)||L.Name().equalsIgnoreCase(arg2)||arg2.equalsIgnoreCase("any")))
@@ -4874,14 +4867,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((E!=null)&&(E instanceof MOB))
 				{
 					final MOB TM=(MOB)E;
-					Language L=null;
-					Ability A=null;
-					for(int i=0;i<TM.numEffects();i++)
-					{
-						A=TM.fetchEffect(i);
-						if((A instanceof Language) && (((Language)A).beingSpoken(A.ID())))
-							L=(Language)A;
-					}
+					Language L=CMLib.utensils().getLanguageSpoken(TM);
 					if(L!=null)
 						results.append(L.Name());
 					else
