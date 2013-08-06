@@ -474,7 +474,6 @@ public class StdLanguage extends StdAbility implements Language
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 		   ||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)))
-		&&(msg.tool() !=null)
 		&&(msg.sourceMessage()!=null)
 		&&(msg.tool() instanceof Language)
 		&&(msg.tool().ID().equals(ID())))
