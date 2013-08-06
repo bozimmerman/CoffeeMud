@@ -229,7 +229,6 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		{
 			final Ability me=this;
 			final Physical target=givenTarget;
-			if(session!=null)
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
 				@Override public void showPrompt() {session.promptPrint("What is this of?\n\r: ");}
 				@Override public void timedOut() {}

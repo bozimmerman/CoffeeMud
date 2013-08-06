@@ -541,7 +541,6 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			{
 				final Ability me=this;
 				final Physical target=givenTarget;
-				if(session!=null)
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
 					@Override public void showPrompt() {session.promptPrint("What is this item a representation of?\n\r: ");}
 					@Override public void timedOut() {}
