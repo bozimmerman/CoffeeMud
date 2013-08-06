@@ -2323,6 +2323,11 @@ public class CMClass extends ClassLoader
 					c.abilities.addAll(tempV);
 					if(size>0) Log.sysOut(Thread.currentThread().getName(),"Heroics loaded    : "+size);
 
+					tempV=loadVectorListToObj(prefix+"Abilities/Tech/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
+					size=tempV.size();
+					c.abilities.addAll(tempV);
+					if(size>0) Log.sysOut(Thread.currentThread().getName(),"Tech Skills loaded: "+size);
+
 					tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Traps loaded      : "+tempV.size());
 					c.abilities.addAll(tempV);

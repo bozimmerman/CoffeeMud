@@ -152,6 +152,7 @@ com.planet_ink.coffee_mud.Abilities.Songs \
 com.planet_ink.coffee_mud.Abilities.Specializations \
 com.planet_ink.coffee_mud.Abilities.Spells \
 com.planet_ink.coffee_mud.Abilities.SuperPowers \
+com.planet_ink.coffee_mud.Abilities.Tech \
 com.planet_ink.coffee_mud.Abilities.Thief \
 com.planet_ink.coffee_mud.Abilities.Traps \
 com.planet_ink.coffee_mud.Areas.interfaces \
@@ -526,6 +527,7 @@ com.planet_ink.coffee_mud.Abilities.Songs : $(call PACKAGE_OBJS,com.planet_ink.c
 com.planet_ink.coffee_mud.Abilities.Specializations : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Specializations)
 com.planet_ink.coffee_mud.Abilities.Spells : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Spells)
 com.planet_ink.coffee_mud.Abilities.SuperPowers : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.SuperPowers)
+com.planet_ink.coffee_mud.Abilities.Tech : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Tech)
 com.planet_ink.coffee_mud.Abilities.Thief : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Thief)
 com.planet_ink.coffee_mud.Abilities.Traps : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Abilities.Traps)
 com.planet_ink.coffee_mud.Areas.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Areas.interfaces)
