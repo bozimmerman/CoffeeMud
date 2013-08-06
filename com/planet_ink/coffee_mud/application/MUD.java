@@ -1038,7 +1038,7 @@ public class MUD extends Thread implements MudHost
 			{
 				smtpServerThread = new SMTPserver(CMLib.mud(0));
 				smtpServerThread.start();
-				serviceEngine.startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,(int)CMProps.getTicksPerMinute() * 5);
+				serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),smtpServerThread,Tickable.TICKID_EMAIL,CMProps.getTickMillis(),(int)CMProps.getTicksPerMinute() * 5);
 			}
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading base classes");
@@ -1092,7 +1092,7 @@ public class MUD extends Thread implements MudHost
 			}
 
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("FACTIONS")))
-				serviceEngine.startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
+				serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),CMLib.factions(),Tickable.TICKID_MOB,CMProps.getTickMillis(),10);
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting CM1");
 			startCM1();

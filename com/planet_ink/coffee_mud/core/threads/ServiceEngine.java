@@ -189,7 +189,7 @@ public class ServiceEngine implements ThreadEngine
 		return startTickDown(CMLib.map().getOwnedThreadGroup(E),E,tickID,TICK_TIME,numTicks); 
 	}
 	
-	private synchronized TickClient startTickDown(ThreadGroup group, Tickable E, int tickID, long TICK_TIME, int numTicks)
+	public synchronized TickClient startTickDown(ThreadGroup group, Tickable E, int tickID, long TICK_TIME, int numTicks)
 	{
 		TickableGroup tock=null;
 		if(group==null)

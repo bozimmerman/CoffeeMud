@@ -141,7 +141,8 @@ public class GenExit extends StdExit
 	public int openDelayTicks()	{ return openDelayTicks;}
 	public void setOpenDelayTicks(int numTicks){openDelayTicks=numTicks;}
 	
-	public String temporaryDoorLink(){
+	public String temporaryDoorLink()
+	{
 		if(keyName.startsWith("{#"))
 		{
 			int x=keyName.indexOf("#}");
@@ -152,6 +153,11 @@ public class GenExit extends StdExit
 	}
 	public void setTemporaryDoorLink(String link)
 	{
+		if(link.startsWith("{{#"))
+		{
+			super.setTemporaryDoorLink(link);
+			return;
+		}
 		if(keyName.startsWith("{#"))
 		{
 			int x=keyName.indexOf("#}");
