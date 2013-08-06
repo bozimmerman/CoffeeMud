@@ -123,7 +123,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static final double MULTIPLIER_ORBITING_RADIUS_MAX=1.031;
 	
 	/** multiplying by radius -- this one to find the orbiting radius*/
-	public static final double MULTIPLIER_GRAVITY_RADIUS=1.10;
+	public static final double MULTIPLIER_GRAVITY_RADIUS=MULTIPLIER_ORBITING_RADIUS_MAX/2;
 
 	/** accelleration at which you are happy, in decameters/s */
 	public static final long ACCELLERATION_G=1;
