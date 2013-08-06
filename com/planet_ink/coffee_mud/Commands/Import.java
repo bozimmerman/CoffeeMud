@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.io.IOException;
+import java.io.InputStream;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -4471,14 +4472,15 @@ public class Import extends StdCommand
 				}
 			}
 		}
-
+		
 		Vector mobData=new Vector(); // outside the for loop -- why?
 		Vector objectData=new Vector(); // outside the for loop -- why?
 		
 		multiArea=commands.size()>1;
 		HashSet<String> baseFilesAlreadyDone=new HashSet<String>();
-		for(int areaFile=0;areaFile<commands.size();areaFile++)
+		while(commands.size()>0)
 		{
+			Object O=commands.remove(0);
 		Vector areaData=new Vector();
 		Vector roomData=new Vector();
 		Vector resetData=new Vector();
@@ -4495,18 +4497,64 @@ public class Import extends StdCommand
 		String areaFileName=null;
 		CMFile CF=null;
 		boolean zonFormat=false;
-		if(commands.elementAt(areaFile) instanceof StringBuffer)
+		if(O instanceof StringBuffer)
 		{
 			areaFileName="memory.cmare";
-			buf=(StringBuffer)commands.elementAt(areaFile);
+			buf=(StringBuffer)O;
+		}
+		else
+		if(O instanceof Pair)
+		{
+			areaFileName=((Pair)O).first.toString();
+			buf=(StringBuffer)((Pair)O).second;
+		}
+		else
+		if(O instanceof java.util.zip.ZipInputStream)
+		{
+			java.util.zip.ZipInputStream i=(java.util.zip.ZipInputStream)O;
+			java.util.zip.ZipEntry entry=i.getNextEntry();
+			if(entry==null)
+			{
+				i.close();
+				continue;
+			}
+			byte[] data = new byte[(int)entry.getSize()];
+			int dex=0;
+			int read=i.read(data);
+			while((read>=0)&&(dex < entry.getSize()))
+			{
+				dex+=read;
+				read=i.read(data, dex, (int)entry.getSize()-dex);
+			}
+			i.closeEntry();
+			if(commands.size()==0)
+			{
+				commands.add(new Pair<String,StringBuffer>("unzip:"+entry.getName(),new StringBuffer(new String(data))));
+				commands.add(i);
+			}
+			else
+			{
+				commands.add(0,new Pair<String,StringBuffer>("unzip:"+entry.getName(),new StringBuffer(new String(data))));
+				commands.add(1,i);
+			}
+			continue;
 		}
 		else
 		{
-			areaFileName=(String)commands.elementAt(areaFile);
+			areaFileName=(String)O;
 			int x=areaFileName.lastIndexOf('.');
 			final String ext=(x>0)?areaFileName.toLowerCase().substring(x+1):"";
 			// read in the .are file
 			
+			if(ext.equalsIgnoreCase("zip"))
+			{
+				java.util.zip.ZipInputStream i=new java.util.zip.ZipInputStream(new CMFile(areaFileName,mob,CMFile.FLAG_LOGERRORS).getRawStream());
+				if(commands.size()==0)
+					commands.add(i);
+				else
+					commands.add(0,i);
+				continue;
+			}
 			if(ext.equals("zon")
 			|| ext.endsWith("wld")
 			|| ext.endsWith("obj")
@@ -4827,8 +4875,9 @@ public class Import extends StdCommand
 				for(int m=0;m<mobs.size();m++)
 				{
 					MOB M=(MOB)mobs.elementAt(m);
-					for(int af=areaFile+1;af<commands.size();af++)
-						if(M.Name().equalsIgnoreCase((String)commands.elementAt(af)))
+					for(int af=0;af<commands.size();af++)
+						if((commands.elementAt(af) instanceof String)
+						&&(M.Name().equalsIgnoreCase((String)commands.elementAt(af))))
 						{
 							if(names==null) names=new Vector();
 							names.addElement(commands.elementAt(af));

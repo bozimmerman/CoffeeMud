@@ -107,8 +107,21 @@ public class Say extends StdCommand
 			return false;
 		}
 
+		Vector<Room> yellRooms=new Vector<Room>();
+		if(theWord.toUpperCase().startsWith("YELL"))
+		{
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
+				Room R2=R.getRoomInDir(d);
+				Exit E2=R.getExitInDir(d);
+				if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
+					yellRooms.add(R2);
+			}
+		}
+		
 		
 		String whom="";
+		String theWordSuffix="";
 		Environmental target=null;
 		if(commands.size()>2)
 		{
@@ -141,7 +154,38 @@ public class Say extends StdCommand
 				if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 					commands.removeElementAt(1);
 				else
+				{
 					target=null;
+					if(theWord.toUpperCase().startsWith("YELL"))
+					{
+						int dir=Directions.getGoodCompassDirectionCode(whom);
+						if(dir >=0)
+						{
+							commands.removeElementAt(1);
+							yellRooms=new Vector<Room>();
+							if(theWord.toUpperCase().startsWith("YELL"))
+							{
+								Room R2=R.getRoomInDir(dir);
+								Exit E2=R.getExitInDir(dir);
+								if(R2!=null)
+								{
+									theWordSuffix=" "+Directions.getDirectionName(dir);
+									yellRooms.add(R2);
+									if((E2!=null)&&(E2.isOpen()))
+									{
+										for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+										{
+											Room R3=R2.getRoomInDir(d);
+											Exit E3=R2.getExitInDir(d);
+											if((R3!=null)&&(E3!=null)&&(E3.isOpen()))
+												yellRooms.add(R3);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 		String combinedCommands;
@@ -166,10 +210,10 @@ public class Say extends StdCommand
 			theWord+="(s) to";
 		else
 			theWord+="(s)";
-		String fromSelf="^T^<SAY \""+CMStrings.removeColors((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
-		String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+		String fromSelf="^T^<SAY \""+CMStrings.removeColors((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+		String toTarget="^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		if(target==null)
-			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+" '"+combinedCommands+"'^</SAY^>^?");
+			msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+theWordSuffix+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
 	
@@ -180,23 +224,31 @@ public class Say extends StdCommand
 		{
 			R.send(mob,msg);
 			if(theWord.toUpperCase().startsWith("YELL"))
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
+				int dirCode=-1;
+				Room R3=R;
+				for(Room R2 : yellRooms)
 				{
-					Room R2=R.getRoomInDir(d);
-					Exit E2=R.getExitInDir(d);
-					if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
+					int newDirCode=CMLib.map().getRoomDir(R, R2);
+					if(newDirCode<0)
+						newDirCode=CMLib.map().getRoomDir(R3, R2);
+					else
+						R3=R2;
+					if(newDirCode>=0)
+						dirCode=newDirCode;
+					Environmental tool=msg.tool();
+					int opDirCode=-1;
+					if(dirCode>=0)
+						opDirCode=Directions.getOpDirectionCode(dirCode);
+					final String inDirName=(dirCode<0)?"":(useShipDirs?Directions.getShipInDirectionName(opDirCode):Directions.getInDirectionName(opDirCode));
+					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+inDirName+"^?");
+					if((R2.okMessage(mob,msg))
+					&&((tool==null)||(tool.okMessage(mob,msg))))
 					{
-						Environmental tool=msg.tool();
-						final int opDirCode=Directions.getOpDirectionCode(d);
-						final String inDirName=useShipDirs?Directions.getShipInDirectionName(opDirCode):Directions.getInDirectionName(opDirCode);
-						msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+inDirName+"^?");
-						if((R2.okMessage(mob,msg))
-						&&((tool==null)||(tool.okMessage(mob,msg))))
-						{
-							R2.sendOthers(mob,msg);
-						}
+						R2.sendOthers(mob,msg);
 					}
 				}
+			}
 		}
 		return false;
 	}
