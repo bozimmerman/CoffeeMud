@@ -484,7 +484,10 @@ public class RoomLoader
 					else
 					{
 						if(newExit!=null)
+						{
+							newExit.setTemporaryDoorLink("{{#"+roomID+"#}}");
 							newExit.setMiscText(exitMiscText);
+						}
 						if(direction>=Directions.NUM_DIRECTIONS())
 							Log.errOut("RoomLoader",CMLib.map().getExtendedRoomID(thisRoom)+" has an invalid direction #"+direction);
 						else

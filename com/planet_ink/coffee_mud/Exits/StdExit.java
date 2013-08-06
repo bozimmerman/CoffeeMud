@@ -639,6 +639,13 @@ public class StdExit implements Exit
 	}
 	public void setTemporaryDoorLink(String link)
 	{
+		if(link.startsWith("{{#"))
+		{
+			int x=link.indexOf("#}}");
+			if(x>=0)
+				lastRoomID=link.substring(3,x);
+			return;
+		}
 		if(miscText.startsWith("{#"))
 		{
 			int x=miscText.indexOf("#}");
