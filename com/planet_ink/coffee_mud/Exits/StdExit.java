@@ -46,6 +46,7 @@ public class StdExit implements Exit
 	protected boolean   amDestroyed=false;
 	protected short 	usage=0;
 	
+	protected String					lastRoomID="";
 	protected SVector<Ability>  		affects=null;
 	protected SVector<Behavior> 		behaviors=null;
 	protected SVector<ScriptingEngine>  scripts=null;
@@ -311,6 +312,8 @@ public class StdExit implements Exit
 		case CMMsg.TYP_OK_ACTION:
 			return true;
 		case CMMsg.TYP_ENTER:
+			if(msg.target() instanceof Room)
+				lastRoomID=CMLib.map().getExtendedRoomID((Room)msg.target());
 			if((hasADoor())&&(!isOpen())&&(mob.phyStats().height()>=0))
 			{
 				if(!CMLib.flags().canBeSeenBy(this,mob))
@@ -510,7 +513,7 @@ public class StdExit implements Exit
 		} });
 		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 			A.executeMsg(me,msg);
-        }});
+		}});
 
 		MOB mob=msg.source();
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
@@ -615,6 +618,7 @@ public class StdExit implements Exit
 	public void setExitParams(String newDoorName, String newCloseWord, String newOpenWord, String newClosedText){}
 	public String keyName()    { return (hasALock()?miscText:""); }
 	public void setKeyName(String newKeyName){miscText=temporaryDoorLink()+newKeyName;}
+	public Room lastRoomUsedFrom() { return CMLib.map().getRoom(lastRoomID); }
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{}//exits will never be asked this, so this method should always do NOTHING
@@ -623,7 +627,8 @@ public class StdExit implements Exit
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}//exits will never be asked this, so this method should always do NOTHING
 
-	public String temporaryDoorLink(){
+	public String temporaryDoorLink()
+	{
 		if(miscText.startsWith("{#"))
 		{
 			int x=miscText.indexOf("#}");
@@ -637,7 +642,8 @@ public class StdExit implements Exit
 		if(miscText.startsWith("{#"))
 		{
 			int x=miscText.indexOf("#}");
-			if(x>=0) miscText=miscText.substring(x+2);
+			if(x>=0) 
+				miscText=miscText.substring(x+2,x);
 		}
 		if(link.length()>0)
 			miscText="{#"+link+"#}"+miscText;

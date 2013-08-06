@@ -730,6 +730,8 @@ public class RoomLoader
 				String roomID=DBConnections.getRes(R,"CMROID");
 				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
 					continue;
+				if((!catalog)&&(roomID.startsWith("CATALOG_")))
+					continue;
 				itemNums=stuff.itemNums.get("NUMSFOR"+roomID.toUpperCase());
 				if(itemNums==null)
 				{
@@ -751,6 +753,8 @@ public class RoomLoader
 				{
 					newItem.setDatabaseID(itemNum);
 					itemNums.put(itemNum,newItem);
+					Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
+					newItem.setOwner(room); // temporary measure to make sure item behavior thread group is properly assigned
 					String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)
 					{
@@ -816,6 +820,8 @@ public class RoomLoader
 				String roomID=DBConnections.getRes(R,"CMROID");
 				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
 					continue;
+				if((!catalog)&&(roomID.startsWith("CATALOG_")))
+					continue;
 				String NUMID=DBConnections.getRes(R,"CMCHNM");
 				String MOBID=DBConnections.getRes(R,"CMCHID");
 
@@ -837,6 +843,8 @@ public class RoomLoader
 					Log.errOut("Room","Couldn't find MOB '"+MOBID+"'");
 				else
 				{
+					Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
+					newMOB.setLocation(room); // temporary measure to make sure thread group is properly assigned
 					newMOB.setDatabaseID(NUMID);
 					itemNums.put(NUMID,newMOB);
 					if(thisRoom!=null)
@@ -1351,7 +1359,7 @@ public class RoomLoader
 		+"'"+A.getSubOpList()+"',"
 		+"?,"
 		+"?,"
-		+A.getTheme()+")",
+		+A.getThemeCode()+")",
 		new String[][]{{A.description()+" ",A.text()+" "}});
 		A.setAreaState(Area.State.ACTIVE);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
@@ -1373,7 +1381,7 @@ public class RoomLoader
 		+"CMSUBS='"+A.getSubOpList()+"',"
 		+"CMDESC=?,"
 		+"CMROTX=?,"
-		+"CMTECH="+A.getTheme()+" "
+		+"CMTECH="+A.getThemeCode()+" "
 		+"WHERE CMAREA='"+keyName+"'",
 		new String[]{A.description()+" ",A.text()+" "});
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))

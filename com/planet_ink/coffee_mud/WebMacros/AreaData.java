@@ -284,7 +284,7 @@ public class AreaData extends StdWebMacro
 				{
 					String level=httpReq.getUrlParameter("THEME");
 					if((level==null)||(level.length()==0))
-						level=""+A.getTheme();
+						level=""+A.getThemeCode();
 					for(int i=1;i<Area.THEME_PHRASE.length;i++)
 					{
 						str.append("<OPTION VALUE="+i);

@@ -1402,6 +1402,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		else
 		if(E instanceof Ability)
 			return roomLocation(((Ability)E).affecting());
+		else
+		if(E instanceof Exit)
+			return roomLocation(((Exit)E).lastRoomUsedFrom());
 		return null;
 	}
 	public Area getStartArea(Environmental E)
@@ -1432,6 +1435,24 @@ public class CMMap extends StdLibrary implements WorldMap
 		return roomLocation(E);
 	}
 
+	public ThreadGroup getOwnedThreadGroup(CMObject E)
+	{
+		final Area area=areaLocation(E);
+		if(area != null)
+		{
+			switch(area.getTheme())
+			{
+			case Area.THEME_FANTASY: 
+				return CMProps.getPrivateOwner("FANTASYAREAS");
+			case Area.THEME_HEROIC: 
+				return CMProps.getPrivateOwner("HEROICAREAS");
+			case Area.THEME_TECHNOLOGY: 
+				return CMProps.getPrivateOwner("TECHAREAS");
+			}
+		}
+		return null;
+	}
+	
 	public Area areaLocation(CMObject E)
 	{
 		if(E==null) return null;
@@ -1442,13 +1463,16 @@ public class CMMap extends StdLibrary implements WorldMap
 			return ((Room)E).getArea();
 		else
 		if(E instanceof MOB)
-			return ((MOB)E).location().getArea();
+			return areaLocation(((MOB)E).location());
 		else
-		if((E instanceof Item)&&(((Item)E).owner() instanceof Room))
-			return ((Room)((Item)E).owner()).getArea();
+		if(E instanceof Item)
+			return areaLocation(((Item) E).owner());
 		else
-		if((E instanceof Item)&&(((Item)E).owner() instanceof MOB))
-		   return (((MOB)((Item)E).owner()).location()).getArea();
+		if((E instanceof Ability)&&(((Ability)E).affecting()!=null))
+			return areaLocation(((Ability)E).affecting());
+		else
+		if(E instanceof Exit)
+			return areaLocation(((Exit)E).lastRoomUsedFrom());
 		return null;
 	}
 

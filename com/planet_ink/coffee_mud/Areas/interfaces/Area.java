@@ -51,6 +51,15 @@ public interface Area extends Economics, PhysicalAgent, Places
 	/**
 	 * Returns the technology level supported by this area.  Activities within
 	 * rooms within this area will be affected by the results of this flag.
+	 * May return THEME_INHERIT if the area inherits a theme from above.
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
+	 * @return a bitmap of the themes supported by this area.
+	 */
+	public int getThemeCode();
+	/**
+	 * Returns the technology level supported by this area.  Activities within
+	 * rooms within this area will be affected by the results of this flag.
+	 * May result in consulting parent areas to determine a theme
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY
 	 * @return a bitmap of the themes supported by this area.
 	 */
@@ -560,6 +569,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 	
 	public final static String[] THEME_DESCS={"FANTASY","TECH","HEROIC","SKILLONLY"};
 	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
+	public final static int THEME_INHERIT=0;
+	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_FANTASY=1;
 	/**	Bitmap flag meaning that the object supports technology.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTheme() */
 	public final static int THEME_TECHNOLOGY=2;
@@ -570,7 +581,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	/**	Indexed description of the THEME_ bitmap constants in all possible combinations.  
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY 
 	 */
-	public final static String[] THEME_PHRASE={"Unknown",   		  // 0
+	public final static String[] THEME_PHRASE={"Inherited",   		  // 0
 											   "Fantasy",   		  // 1
 											   "Technical", 		  // 2
 											   "Fantasy & Technical", // 3

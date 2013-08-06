@@ -2717,12 +2717,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Theme setting: '"+Area.THEME_PHRASE[A.getTheme()]+"'.");
+		mob.tell(showNumber+". Theme setting: '"+Area.THEME_PHRASE[A.getThemeCode()]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
 		{
-			String newType=mob.session().prompt("Enter a new level (?)\n\r",Area.THEME_PHRASE[A.getTheme()]);
+			String newType=mob.session().prompt("Enter a new level (?)\n\r",Area.THEME_PHRASE[A.getThemeCode()]);
 			if(newType.equals("?"))
 			{
 				StringBuffer say=new StringBuffer("");

@@ -242,6 +242,7 @@ public class StdSpaceShip implements Area, SpaceShip
 	public void setNextWeatherType(int weatherCode){}
 	public void setCurrentWeatherType(int weatherCode){}
 	public int getTheme(){return Area.THEME_TECHNOLOGY;}
+	public int getThemeCode(){return Area.THEME_TECHNOLOGY;}
 	public void setTheme(int level){}
 
 	public String image(){return imageName;}
@@ -1147,7 +1148,7 @@ public class StdSpaceShip implements Area, SpaceShip
 		case 1: return ""+getClimateTypeCode();
 		case 2: return description();
 		case 3: return text();
-		case 4: return ""+getTheme();
+		case 4: return ""+getThemeCode();
 		case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
 		case 6: return ""+getOMLCoeff();
 		case 7: return ""+radius();

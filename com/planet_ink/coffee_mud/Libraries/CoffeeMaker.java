@@ -898,6 +898,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					newItem.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
 					newItem.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
 					newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(iblk.contents,"IUSES"));
+					newItem.setOwner(newRoom); // temporary measure to take care of behaviors
 					newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
 					newItem.setContainer(null);
 					newItem.recoverPhyStats();
@@ -1262,7 +1263,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		buf.append(CMLib.xml().convertXMLtoTag("ADESC",area.description()));
 		buf.append(CMLib.xml().convertXMLtoTag("ACLIM",area.getClimateTypeCode()));
 		buf.append(CMLib.xml().convertXMLtoTag("ASUBS",area.getSubOpList()));
-		buf.append(CMLib.xml().convertXMLtoTag("ATECH",area.getTheme()));
+		buf.append(CMLib.xml().convertXMLtoTag("ATECH",area.getThemeCode()));
 		buf.append(CMLib.xml().convertXMLtoTag("ADATA",area.text()));
 		if(andRooms)
 		{

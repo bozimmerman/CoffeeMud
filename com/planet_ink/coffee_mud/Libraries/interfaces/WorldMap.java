@@ -110,6 +110,7 @@ public interface WorldMap extends CMLibrary
 	public boolean isClearableRoom(Room room);
 	public String createNewExit(Room from, Room room, int direction);
 	public Area areaLocation(CMObject E);
+	public ThreadGroup getOwnedThreadGroup(CMObject E);
 	public boolean explored(Room R);
 	public CMFile.CMVFSDir getMapRoot(final CMFile.CMVFSDir root);
 	

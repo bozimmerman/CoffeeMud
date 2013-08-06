@@ -233,4 +233,10 @@ public interface Exit extends PhysicalAgent, Readable
 	 * @param link the room id of the room that will be linked in later
 	 */
 	public void setTemporaryDoorLink(String link);
+	
+	/**
+	 * Returns the very last room from or to which this exit was used.
+	 * @return the last room that mattered to this exit
+	 */
+	public Room lastRoomUsedFrom();
 }

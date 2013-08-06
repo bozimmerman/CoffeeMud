@@ -181,15 +181,15 @@ public class ServiceEngine implements ThreadEngine
 	
 	public TickClient startTickDown(Tickable E, int tickID, int numTicks)
 	{ 
-		return startTickDown(Thread.currentThread().getThreadGroup(),E,tickID,CMProps.getTickMillis(),numTicks); 
+		return startTickDown(E,tickID,CMProps.getTickMillis(),numTicks); 
 	}
 	
 	public TickClient startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks)
 	{
-		return startTickDown(Thread.currentThread().getThreadGroup(),E,tickID,TICK_TIME,numTicks); 
+		return startTickDown(CMLib.map().getOwnedThreadGroup(E),E,tickID,TICK_TIME,numTicks); 
 	}
 	
-	public synchronized TickClient startTickDown(ThreadGroup group, Tickable E, int tickID, long TICK_TIME, int numTicks)
+	private synchronized TickClient startTickDown(ThreadGroup group, Tickable E, int tickID, long TICK_TIME, int numTicks)
 	{
 		TickableGroup tock=null;
 		if(group==null)
@@ -1244,7 +1244,7 @@ public class ServiceEngine implements ThreadEngine
 		getPoolExecutor(null); // will cause the creation
 		
 		if(supportClient==null)
-		supportClient=startTickDown(new Tickable(){
+		supportClient=startTickDown(null,new Tickable(){
 			private long tickStatus = Tickable.STATUS_NOT;
 			@Override public String ID() { return "THThreads"; }
 			@Override public CMObject newInstance() { return this; }
