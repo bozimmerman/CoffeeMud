@@ -650,7 +650,7 @@ public class StdExit implements Exit
 		{
 			int x=miscText.indexOf("#}");
 			if(x>=0) 
-				miscText=miscText.substring(x+2,x);
+				miscText=miscText.substring(x+2);
 		}
 		if(link.length()>0)
 			miscText="{#"+link+"#}"+miscText;
