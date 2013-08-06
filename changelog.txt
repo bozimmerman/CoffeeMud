@@ -18,7 +18,7 @@
   17. SHELL command now (finally) supports diff (thanks google code!).  
   18. Similar to #15, the entire world map, w/ cmare files, is in VFS at /resources/map/... along with editable properties files.
   19. (Tech) numerous gun and shield types created -- most of them templates for a murder-motel-type game
-//TODO: finish the idea of marshaling tech players and areas to proper threadgroups
+  20. PRIVATE setting in coffeemud.ini expanded to allow moving players and area objects between hosts.
 //TODO: make personal sensor systems
 //TODO: make the tech install skill!!!
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
