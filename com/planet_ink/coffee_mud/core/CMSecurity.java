@@ -629,9 +629,9 @@ public class CMSecurity
 	public static final DbgFlag setDebugVar(final String anyFlag, final boolean delete)
 	{
 		String flag = anyFlag.toUpperCase().trim();
-		DbgFlag disFlag = (DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), flag);
-		if(disFlag!=null)
-			return setDebugVar(disFlag,delete);
+		DbgFlag dbgFlag = (DbgFlag)CMath.s_valueOf(CMSecurity.DbgFlag.values(), flag);
+		if(dbgFlag!=null)
+			return setDebugVar(dbgFlag,delete);
 		return null;
 	}
 	
@@ -1190,7 +1190,7 @@ public class CMSecurity
 		STATS("statistics system"), STATSTHREAD("statistics auto-saving"), POLLCACHE("player poll caching"), SESSIONTHREAD("session monitoring"), SMTPCLIENT("email client"), 
 		THINGRIDS("Thin uncached grids"), FATGRIDS("Standard cached grids"), STDRACES("Standard Player Races"), STDCLASSES("Standard Player Classes"),
 		CHANNELAUCTION("Auction Channel"), ELECTRICTHREAD("Electric Threads"), MOBTEACHER("MOBTeacher"),MSDP("MSDP variables"),GMCP("GMCP variables"), ATTRIBS("Char Stats"),
-		TECHLEVEL("TechLeveling")
+		TECHLEVEL("TechLeveling"),AUTOLANGUAGE("Auto language switching")
 		;
 		private final String desc;
 		DisFlag(final String description){this.desc=description;}

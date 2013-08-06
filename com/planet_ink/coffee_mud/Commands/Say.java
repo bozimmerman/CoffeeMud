@@ -193,38 +193,41 @@ public class Say extends StdCommand
 			}
 		}
 		
-		// if you are the only one in the room to talk to
-		// then grab a random mob and assume that's who
-		// you are addressing.
-		if((langTarget==null)&&(target==null)&&(R.numInhabitants()==2))
+		Language[] langSwap=null;
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOLANGUAGE))
 		{
-			for(int r=0;r<R.numInhabitants();r++)
+			// if you are the only one in the room to talk to
+			// then grab a random mob and assume that's who
+			// you are addressing.
+			if((langTarget==null)&&(target==null)&&(R.numInhabitants()==2))
 			{
-				MOB M=R.fetchInhabitant(r);
-				if(M!=mob)
+				for(int r=0;r<R.numInhabitants();r++)
 				{
-					langTarget=M;
-					target=M;
-					break;
+					MOB M=R.fetchInhabitant(r);
+					if(M!=mob)
+					{
+						langTarget=M;
+						target=M;
+						break;
+					}
 				}
 			}
-		}
-	
-		// if you are addressing someone speaking a language that you
-		// can speak, then speak it.
-		Language[] langSwap=null;
-		if((langTarget!=null)&&(!mob.isMonster()))
-		{
-			Language hisL=CMLib.utensils().getLanguageSpoken(langTarget);
-			Language myL=CMLib.utensils().getLanguageSpoken(mob);
-			if((hisL==null)&&(myL!=null)&&(mob.fetchAbility("Common")!=null))
-				langSwap=new Language[]{null,myL};
-			else
-			if((hisL!=null)&&((myL==null)||(!hisL.ID().equals(myL.ID()))))
+		
+			// if you are addressing someone speaking a language that you
+			// can speak, then speak it.
+			if((langTarget!=null)&&(!mob.isMonster()))
 			{
-				Language myTargetL = (Language)mob.fetchEffect(hisL.ID());
-				if(myTargetL!=null)
-					langSwap=new Language[]{myTargetL,myL};
+				Language hisL=CMLib.utensils().getLanguageSpoken(langTarget);
+				Language myL=CMLib.utensils().getLanguageSpoken(mob);
+				if((hisL==null)&&(myL!=null)&&(mob.fetchAbility("Common")!=null))
+					langSwap=new Language[]{null,myL};
+				else
+				if((hisL!=null)&&((myL==null)||(!hisL.ID().equals(myL.ID()))))
+				{
+					Language myTargetL = (Language)mob.fetchEffect(hisL.ID());
+					if(myTargetL!=null)
+						langSwap=new Language[]{myTargetL,myL};
+				}
 			}
 		}
 		
