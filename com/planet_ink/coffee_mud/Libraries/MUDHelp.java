@@ -428,6 +428,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				type=Ability.ACODE_CHANT;
 				name=name.substring(6);
 			}
+			else
+			if(name.startsWith("TECH_"))
+			{
+				type=Ability.ACODE_TECH;
+				name=name.substring(5);
+			}
 			name=name.replace('_',' ');
 			Vector<Ability> helpedPreviously=new Vector<Ability>();
 			String subTag=tag;

@@ -290,6 +290,7 @@ public class GenAbility extends StdAbility
 		case Ability.ACODE_SKILL: break;
 		case Ability.ACODE_SPELL: armorCheck=CharClass.ARMOR_CLOTH; break;
 		case Ability.ACODE_SUPERPOWER: break;
+		case Ability.ACODE_TECH: break;
 		case Ability.ACODE_THIEF_SKILL: armorCheck=CharClass.ARMOR_LEATHER; break;
 		case Ability.ACODE_TRAP: break;
 		default:

@@ -145,6 +145,8 @@ public class Qualify  extends Skills
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_PRAYER,-1,"\n\r^HPrayers:^? ",shortOnly));
 		if(showAll||"POWERS".startsWith(qual)||"SUPER POWERS".startsWith(qual))
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_SUPERPOWER,-1,"\n\r^HSuper Powers:^? ",shortOnly));
+		if(showAll||"TECHS".startsWith(qual)||"TECH SKILLS".startsWith(qual))
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_TECH,-1,"\n\r^HTech Skills:^? ",shortOnly));
 		if(showAll||"CHANTS".startsWith(qual)||"DRUID CHANTS".startsWith(qual))
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_CHANT,-1,"\n\r^HDruidic Chants:^? ",shortOnly));
 		if(showAll||"SONGS".startsWith(qual)||"BARD SONGS".startsWith(qual))

@@ -92,6 +92,7 @@ public class Report extends Skills
 				V.addElement(Integer.valueOf(Ability.ACODE_SPELL));
 				V.addElement(Integer.valueOf(Ability.ACODE_PRAYER));
 				V.addElement(Integer.valueOf(Ability.ACODE_SUPERPOWER));
+				V.addElement(Integer.valueOf(Ability.ACODE_TECH));
 				V.addElement(Integer.valueOf(Ability.ACODE_CHANT));
 				V.addElement(Integer.valueOf(Ability.ACODE_SONG));
 				say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
@@ -105,6 +106,7 @@ public class Report extends Skills
 				Vector V=new Vector();
 				V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 				V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
+				V.addElement(Integer.valueOf(Ability.ACODE_TECH));
 				V.addElement(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
 				say.append("\n\r^NMy skills:^? "+getAbilities(null,mob,V,Ability.ALL_ACODES,false,level));
 			}
@@ -120,6 +122,9 @@ public class Report extends Skills
 			else
 			if("SONGS".startsWith(s))
 				say.append("\n\r^NMy songs:^? "+getAbilities(null,mob,Ability.ACODE_SONG,-1,false,level));
+			else
+			if("TECH SKILLS".startsWith(s))
+				say.append("\n\r^NMy tech skills:^? "+getAbilities(null,mob,Ability.ACODE_TECH,-1,false,level));
 			
 			
 			if(say.length()==0)

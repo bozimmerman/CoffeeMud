@@ -74,6 +74,7 @@ public class PlayerClass extends StdCharClass
 		case Ability.ACODE_TRAP:
 		case Ability.ACODE_LANGUAGE: 
 		case Ability.ACODE_PROPERTY:
+		case Ability.ACODE_TECH:
 			return true;
 		case Ability.ACODE_CHANT:
 		case Ability.ACODE_PRAYER:

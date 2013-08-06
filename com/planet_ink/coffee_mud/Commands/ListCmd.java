@@ -2017,6 +2017,7 @@ public class ListCmd extends StdCommand
 		/*69*/new ListCmdEntry("PLANETS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS}),
 		/*70*/new ListCmdEntry("CURRENTS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS,SecFlag.CMDROOMS,SecFlag.CMDMOBS}),
 		/*71*/new ListCmdEntry("MANUFACTURERS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS}),
+		/*72*/new ListCmdEntry("TECHSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 	};
 
 	public boolean pause(Session sess) 
@@ -2527,6 +2528,7 @@ public class ListCmd extends StdCommand
 		case 69: listAreas(mob, commands, WorldMap.planetsAreaFilter); break;
 		case 70: listCurrents(mob, commands); break;
 		case 71: listManufacturers(mob, commands); break;
+		case 72: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_TECH).toString()); break;
 		case 999: listSql(mob,rest); break;
 		default:
 			s.println("List broke?!");

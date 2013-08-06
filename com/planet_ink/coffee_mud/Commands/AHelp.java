@@ -112,6 +112,19 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
+					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					{
+						Ability A=a.nextElement();
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_TECH))
+							V.addElement(A.ID());
+					}
+					if(V.size()>0)
+					{
+						theRest.append("\n\rTech Skills:\n\r");
+						theRest.append(CMLib.lister().fourColumns(mob,V));
+					}
+					
+					V.clear();
 					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
 						Behavior B=(Behavior)b.nextElement();
