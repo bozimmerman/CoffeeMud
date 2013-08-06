@@ -217,7 +217,7 @@ public class Say extends StdCommand
 		{
 			Language hisL=CMLib.utensils().getLanguageSpoken(langTarget);
 			Language myL=CMLib.utensils().getLanguageSpoken(mob);
-			if((hisL==null)&&(myL!=null))
+			if((hisL==null)&&(myL!=null)&&(mob.fetchAbility("Common")!=null))
 				langSwap=new Language[]{null,myL};
 			else
 			if((hisL!=null)&&((myL==null)||(!hisL.ID().equals(myL.ID()))))
