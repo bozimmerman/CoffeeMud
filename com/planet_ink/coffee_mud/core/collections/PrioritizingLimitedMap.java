@@ -30,9 +30,10 @@ limitations under the License.
 public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T, K>
 {
 	protected int  		 itemLimit;
+	protected final int  origItemLimit;
 	protected final long touchAgeLimitMillis;
 	protected final long maxAgeLimitMillis;
-	protected int 		 threshHoldToExpand;
+	protected final int  threshHoldToExpand;
 	
 	
 	private class LinkedEntry<V,W> extends Pair<V,W>
@@ -40,6 +41,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		public volatile LinkedEntry<V,W> next=null;
 		public volatile LinkedEntry<V,W> prev=null;
 		public volatile int 			 priority=0;
+		public volatile boolean			 causedExpand=false;
 		public volatile int  			 index=0;
 		public volatile long			 lastTouch=System.currentTimeMillis(); 
 		public final	long  			 birthDate=System.currentTimeMillis();
@@ -69,6 +71,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	{
 		if(itemLimit<=0) itemLimit=1;
 		this.itemLimit=itemLimit;
+		this.origItemLimit=itemLimit;
 		this.touchAgeLimitMillis=(touchAgeLimitMillis > Integer.MAX_VALUE) ? Integer.MAX_VALUE : touchAgeLimitMillis;
 		this.maxAgeLimitMillis=(maxAgeLimitMillis > Integer.MAX_VALUE) ? Integer.MAX_VALUE : maxAgeLimitMillis;
 		this.threshHoldToExpand=threshHoldToExpand;
@@ -204,8 +207,11 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 				if((prev.lastTouch<touchTimeout)||(prev.birthDate<maxAgeTimeout))
 					remove(prev.first);
 				else
-				if(prev.priority > this.threshHoldToExpand)
-					expands=1; // dont want to count the same ones every time through
+				if((prev.priority > threshHoldToExpand)&&(!prev.causedExpand))
+				{
+					prev.causedExpand=true;
+					expands++;
+				}
 				prev=pprev;
 			}
 			itemLimit+=expands;
