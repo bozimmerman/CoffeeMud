@@ -43,7 +43,6 @@ public class StdProgram extends StdItem implements Software
 	
 	protected StringBuilder nextMsg = new StringBuilder("");
 	protected String currentScreen="";
-	protected String circuitKey="";
 
 	public StdProgram()
 	{
@@ -52,15 +51,13 @@ public class StdProgram extends StdItem implements Software
 		setDisplayText("a small disk sits here.");
 		setDescription("It appears to be a general software program.");
 
+		basePhyStats.setWeight(1);
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=1000;
 		recoverPhyStats();
 	}
 	
-	public void setCircuitKey(String key) 
-	{ 
-		circuitKey=(key==null)?"":key; 
-	}
+	public void setCircuitKey(String key) {}
 
 	public int techLevel() { return phyStats().ability();}
 	public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
@@ -71,7 +68,7 @@ public class StdProgram extends StdItem implements Software
 	public boolean isActivationString(String word) { return false; }
 	public boolean isDeActivationString(String word) { return false; }
 	public boolean isCommandString(String word, boolean isActive) { return false; }
-	@Override public TechType getTechType() { return TechType.SHIP_SOFTWARE; }
+	@Override public TechType getTechType() { return TechType.PERSONAL_SOFTWARE; }
 
 	public String getActivationMenu() { return ""; }
 	

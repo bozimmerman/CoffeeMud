@@ -1,4 +1,4 @@
-//extends com.planet_ink.coffee_mud.Items.Software.StdProgram
+//extends com.planet_ink.coffee_mud.Items.Software.StdShipProgram
 //implements com.planet_ink.coffee_mud.Items.interfaces.ArchonOnly
 
 function ID(){	return "StdDiagProgram";}
