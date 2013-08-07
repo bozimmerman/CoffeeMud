@@ -24,7 +24,8 @@
   23. Say command: if a player speaks same language as person being addressed is speaking, they will try to speak it.  
       Also, untargeted speaking, when only one other person is in the room, will assume to be addressing them. New DISABLE=AUTOLANGUAGE
   24. (Tech) New TriCorder item (portable computer).  Also, internally, class names and locations are shifting as tech takes shape.
-//TODO: make personal scanner/tricorder systems
+//TODO: finish personal scanner/tricorder software
+//TODO: bug: my space ship had a manufacturer name of RANDOM, and it had a techlevel marking (which might be ok, and just not matter)
 //TODO: make the tech install skill!!!
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
 //      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)

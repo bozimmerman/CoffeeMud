@@ -2155,7 +2155,7 @@ public class ListCmd extends StdCommand
 		StringBuffer str=new StringBuffer("");
 		for(String key : CMLib.tech().getMakeRegisteredKeys())
 		{
-			str.append("Registered key: "+key+"\n\r");
+			str.append("Registered key: "+key+" : "+(CMLib.tech().isCurrentActive(key)?"Activated":"Suspended")+"\n\r");
 			str.append(CMStrings.padRight("Name", 30)).append(" ");
 			str.append(CMStrings.padRight("Room", 30)).append(" ");
 			str.append("\n\r");

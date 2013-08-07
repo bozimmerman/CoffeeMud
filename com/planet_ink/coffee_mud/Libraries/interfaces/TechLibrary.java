@@ -61,6 +61,15 @@ public interface TechLibrary extends CMLibrary
 	public String registerElectrics(Electronics E, String oldKey);
 	
 	/**
+	 * Returns whether the currents at the given key are still 
+	 * active.  Some currents go inactive when players leave
+	 * the game, or their areas may be suspended by the system.
+	 * @param key the current key
+	 * @return true if the area is active
+	 */
+	public boolean isCurrentActive(final String key);
+	
+	/**
 	 * Returns a new exclusive list of all the registered electronics
 	 * keys being processed.
 	 * @return the list of keys
