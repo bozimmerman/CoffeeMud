@@ -1885,14 +1885,16 @@ public class DefaultSession implements Session
 		{
 			boolean inTheGame=CMLib.flags().isInTheGame(M,true);
 			PlayerStats pstats=M.playerStats();
-			if(pstats!=null) {
-				CMLib.players().suspendResumePlayer(M, true);
+			if(pstats!=null)
 				pstats.setLastDateTime(System.currentTimeMillis());
-			}
 			if(inTheGame)
 				CMLib.database().DBUpdateFollowers(M);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
+			{
+				if(pstats!=null) // cant do this when logouts are suspended -- folks might get killed!
+					CMLib.players().suspendResumePlayer(M, true);
 				M.removeFromGame(true,killSession);
+			}
 		}
 	}
 	public SessionStatus getStatus()
