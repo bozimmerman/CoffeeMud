@@ -116,6 +116,8 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static final long DISTANCE_PLANETRADIUS=639875;
 	/** distance constant useful for weapon fire, in decameters*/
 	public static final long DISTANCE_POINTBLANK=20000;
+	/** distance constant useful for coordinates, is 1 galaxy, in decameters*/
+	public static final long DISTANCE_BETWEENSTARS=DISTANCE_LIGHTYEAR*4;
 	
 	/** constant useful for multiplying by radius -- this one to find the orbiting radius*/
 	public static final double MULTIPLIER_ORBITING_RADIUS_MIN=1.029;
