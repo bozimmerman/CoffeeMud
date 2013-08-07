@@ -41,6 +41,7 @@ public interface PlayerLibrary extends CMLibrary
 	public PlayerAccount getLoadAccountByEmail(String email);
 	public PlayerAccount getAccount(String calledThis);
 	public void addAccount(PlayerAccount acct);
+	public void suspendResumePlayer(MOB M, boolean suspend);
 	public boolean accountExists(String name);
 	public Enumeration<MOB> players();
 	public Enumeration<PlayerAccount> accounts();

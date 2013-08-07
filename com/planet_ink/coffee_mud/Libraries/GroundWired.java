@@ -282,11 +282,15 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			SpaceObject O=o.nextElement();
 			if(!(O instanceof Area))
 			{
+				if((O instanceof SpaceShip)
+				&&(((SpaceShip)O).getShipArea()!=null)
+				&&(((SpaceShip)O).getShipArea().getAreaState()!=Area.State.ACTIVE))
+					continue;
 				BoundedCube cube=O.getBounds();
 				if(O.speed()>0)
 				{
-	    			CMLib.map().moveSpaceObject(O);
-	    			cube=cube.expand(O.direction(),O.speed());
+					CMLib.map().moveSpaceObject(O);
+					cube=cube.expand(O.direction(),O.speed());
 				}
 				List<SpaceObject> cOs=CMLib.map().getSpaceObjectsWithin(O, 0, SpaceObject.DISTANCE_LIGHTMINUTE);
 				for(SpaceObject cO : cOs)
@@ -442,8 +446,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		}
 	}
 
-	protected void fillCurrentLists(final String key, final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<ElecPanel> panels)
+	protected Area fillCurrentLists(final String key, final List<PowerGenerator> generators, final List<PowerSource> batteries, final List<ElecPanel> panels)
 	{
+		Area areaLocation=null;
 		synchronized(this)
 		{
 			LinkedList<WeakReference<Electronics>> rawSet=sets.get(key);
@@ -456,22 +461,27 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					if(E==null)
 						w.remove();
 					else
-					if(E instanceof PowerGenerator)
-						generators.add((PowerGenerator)E);
-					else
-					if(E instanceof PowerSource)
-						batteries.add((PowerSource)E);
-					else
-					if(E instanceof ElecPanel)
-						panels.add((ElecPanel)E);
-					else
-					if((E.owner() instanceof ElecPanel)&&(!rawSet.contains(E.owner())))
-						panels.add((ElecPanel)E.owner());
+					{
+						if(E instanceof PowerGenerator)
+							generators.add((PowerGenerator)E);
+						else
+						if(E instanceof PowerSource)
+							batteries.add((PowerSource)E);
+						else
+						if(E instanceof ElecPanel)
+							panels.add((ElecPanel)E);
+						else
+						if((E.owner() instanceof ElecPanel)&&(!rawSet.contains(E.owner())))
+							panels.add((ElecPanel)E.owner());
+						if(areaLocation == null)
+							areaLocation=CMLib.map().areaLocation(E);
+					}
 				}
 				if(rawSet.size()==0)
 					sets.remove(key);
 			}
 		}
+		return areaLocation;
 	}
 	
 	protected void runElectricCurrent(final String key)
@@ -481,7 +491,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			final List<PowerGenerator> generators = new LinkedList<PowerGenerator>();
 			final List<PowerSource> batteries = new LinkedList<PowerSource>();
 			final List<ElecPanel> panels = new LinkedList<ElecPanel>();
-			fillCurrentLists(key,generators,batteries,panels);
+			
+			Area A=fillCurrentLists(key,generators,batteries,panels);
+			if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE))
+				return;
+			
 			processElectricCurrents(generators, batteries, panels);
 		}
 		catch(Exception e)

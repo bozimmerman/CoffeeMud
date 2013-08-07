@@ -1886,6 +1886,7 @@ public class DefaultSession implements Session
 			boolean inTheGame=CMLib.flags().isInTheGame(M,true);
 			PlayerStats pstats=M.playerStats();
 			if(pstats!=null) {
+				CMLib.players().suspendResumePlayer(M, true);
 				pstats.setLastDateTime(System.currentTimeMillis());
 			}
 			if(inTheGame)
@@ -2119,6 +2120,8 @@ public class DefaultSession implements Session
 						acct=mob.playerStats().getAccount();
 					if((!killFlag)&&((mob!=null)))
 					{
+						if(mob.playerStats()!=null)
+							CMLib.players().suspendResumePlayer(mob, false);
 						userLoginTime=System.currentTimeMillis();
 						StringBuilder loginMsg=new StringBuilder("");
 						loginMsg.append(getAddress()).append(" "+terminalType)
