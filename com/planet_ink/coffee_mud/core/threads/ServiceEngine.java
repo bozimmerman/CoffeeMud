@@ -273,56 +273,6 @@ public class ServiceEngine implements ThreadEngine
 		return false;
 	}
 	
-	public boolean isHere(Tickable E2, Room here)
-	{
-		if(E2==null)
-			return false;
-		else
-		if(E2==here)
-			return true;
-		else
-		if((E2 instanceof MOB)
-		&&(((MOB)E2).location()==here))
-			return true;
-		else
-		if((E2 instanceof Item)
-		&&(((Item)E2).owner()==here))
-			return true;
-		else
-		if((E2 instanceof Item)
-		&&(((Item)E2).owner()!=null)
-		&&(((Item)E2).owner() instanceof MOB)
-		&&(((MOB)((Item)E2).owner()).location()==here))
-			return true;
-		else
-		if(E2 instanceof Exit)
-		{
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				if(here.getRawExit(d)==E2)
-					return true;
-		}
-		return false;
-	}
-
-	public boolean isHere(Tickable E2, Area here)
-	{
-		if(E2==null)
-			return false;
-		else
-		if(E2==here)
-			return true;
-		else
-		if(E2 instanceof Room)
-			return ((Room)E2).getArea()==here;
-		else
-		if(E2 instanceof MOB)
-			return isHere(((MOB)E2).location(),here);
-		else
-		if(E2 instanceof Item)
-			return isHere(((Item)E2).owner(),here);
-		return false;
-	}
-
 	public String systemReport(final String itemCode)
 	{
 		long totalMOBMillis=0;
@@ -627,6 +577,7 @@ public class ServiceEngine implements ThreadEngine
 		TickableGroup almostTock=null;
 		TickClient C=null;
 		Tickable E2=null;
+		final WorldMap map=CMLib.map();
 		for(Iterator<TickableGroup> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
@@ -642,14 +593,14 @@ public class ServiceEngine implements ThreadEngine
 							almostTock.delTicker(C);
 					}
 					else
-					if(isHere(E2,here))
+					if(map.isHere(E2,here))
 					{
 						if(C.tickTicker(false))
 							almostTock.delTicker(C);
 					}
 					else
 					if((E2 instanceof Ability)
-					&&(isHere(((Ability)E2).affecting(),here)))
+					&&(map.isHere(((Ability)E2).affecting(),here)))
 					{
 						if(C.tickTicker(false))
 							almostTock.delTicker(C);
@@ -662,11 +613,67 @@ public class ServiceEngine implements ThreadEngine
 		}
 	}
 
+	public void suspendResumeRecurse(CMObject O, boolean skipEmbeddedAreas, boolean suspend)
+	{
+		if(O instanceof Item)
+		{
+			Item I=(Item)O;
+			suspendResumeTicking(I, -1, suspend);
+			if((I instanceof SpaceShip)&&(!skipEmbeddedAreas))
+				suspendResumeRecurse(((SpaceShip)I).getShipArea(),true,suspend);
+		}
+		else
+		if(O instanceof MOB)
+		{
+			MOB M=(MOB)O;
+			for(int i=0;i<M.numItems();i++)
+			{
+				Item I=M.getItem(i);
+				suspendResumeRecurse(I,skipEmbeddedAreas,suspend);
+			}
+			final PlayerStats pStats=M.playerStats();
+			if(pStats!=null)
+			{
+				ItemCollection collection=pStats.getExtItems();
+				if(collection!=null)
+				for(int i=0;i<collection.numItems();i++)
+				{
+					Item I=collection.getItem(i);
+					suspendResumeRecurse(I,skipEmbeddedAreas,suspend);
+				}
+			}
+			else
+			{
+				// dont suspend players -- they are handled differently
+				suspendResumeTicking(M, -1, suspend);
+			}
+		}
+		else
+		if(O instanceof Room)
+		{
+			Room R=(Room)O;
+			suspendResumeTicking(R, -1, suspend);
+			for(int i=0;i<R.numInhabitants();i++)
+				suspendResumeRecurse(R.fetchInhabitant(i),skipEmbeddedAreas,suspend);
+			for(int i=0;i<R.numItems();i++)
+				suspendResumeRecurse(R.getItem(i),skipEmbeddedAreas,suspend);
+		}
+		else
+		if(O instanceof Area)
+		{
+			Area A=(Area)O;
+			A.setAreaState(suspend?Area.State.FROZEN:Area.State.ACTIVE);
+			for(Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
+				suspendResumeRecurse(r.nextElement(),skipEmbeddedAreas,suspend);
+		}
+	}
+	
 	public void deleteAllTicks(Tickable ticker)
 	{
 		if(ticker==null)
 			return;
 		deleteTick(ticker, -1);
+		WorldMap map=CMLib.map();
 		if(ticker instanceof Room)
 		{
 			TickableGroup almostTock=null;
@@ -681,11 +688,11 @@ public class ServiceEngine implements ThreadEngine
 					{
 						C=i.next();
 						E2=C.getClientObject();
-						if(isHere(E2,(Room)ticker))
+						if(map.isHere(E2,(Room)ticker))
 							almostTock.delTicker(C);
 						else
 						if((E2 instanceof Ability)
-						&&(isHere(((Ability)E2).affecting(),(Room)ticker)))
+						&&(map.isHere(((Ability)E2).affecting(),(Room)ticker)))
 							almostTock.delTicker(C);
 						else
 							continue;
@@ -718,11 +725,11 @@ public class ServiceEngine implements ThreadEngine
 					{
 						C=i.next();
 						E2=C.getClientObject();
-						if(isHere(E2,(Area)ticker))
+						if(map.isHere(E2,(Area)ticker))
 							almostTock.delTicker(C);
 						else
 						if((E2 instanceof Ability)
-						&&(isHere(((Ability)E2).affecting(),(Area)ticker)))
+						&&(map.isHere(((Ability)E2).affecting(),(Area)ticker)))
 							almostTock.delTicker(C);
 						else
 							continue;
@@ -1105,7 +1112,7 @@ public class ServiceEngine implements ThreadEngine
 						{
 							StringBuffer str=null;
 							long code=ticker.getTickStatus();
-							String codeWord=CMLib.threads().getTickStatusSummary(ticker);
+							String codeWord=getTickStatusSummary(ticker);
 							String msg=null;
 							if(ticker instanceof Environmental)
 								str=new StringBuffer("LOCKED GROUP "+almostTock.getName()+": "+almostTock.getStatus()+": "+ticker.name()+" ("+((Environmental)ticker).ID()+") @"+CMLib.time().date2String(tickClient.getLastStartTime())+", status("+code+" ("+codeWord+"), tickID "+tickClient.getTickID());
@@ -1163,7 +1170,7 @@ public class ServiceEngine implements ThreadEngine
 			for(int i=0;i<tockClients.size();i++)
 			{
 				TickClient c=tockClients.elementAt(i);
-				CMLib.threads().startTickDown(c.getClientObject(),c.getTickID(),c.getTotalTickDown());
+				startTickDown(c.getClientObject(),c.getTickID(),c.getTotalTickDown());
 			}
 		}
 

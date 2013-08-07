@@ -1970,6 +1970,56 @@ public class CMMap extends StdLibrary implements WorldMap
 		return responseSet;
 	}
 
+	public boolean isHere(CMObject E2, Room here)
+	{
+		if(E2==null)
+			return false;
+		else
+		if(E2==here)
+			return true;
+		else
+		if((E2 instanceof MOB)
+		&&(((MOB)E2).location()==here))
+			return true;
+		else
+		if((E2 instanceof Item)
+		&&(((Item)E2).owner()==here))
+			return true;
+		else
+		if((E2 instanceof Item)
+		&&(((Item)E2).owner()!=null)
+		&&(((Item)E2).owner() instanceof MOB)
+		&&(((MOB)((Item)E2).owner()).location()==here))
+			return true;
+		else
+		if(E2 instanceof Exit)
+		{
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				if(here.getRawExit(d)==E2)
+					return true;
+		}
+		return false;
+	}
+
+	public boolean isHere(CMObject E2, Area here)
+	{
+		if(E2==null)
+			return false;
+		else
+		if(E2==here)
+			return true;
+		else
+		if(E2 instanceof Room)
+			return ((Room)E2).getArea()==here;
+		else
+		if(E2 instanceof MOB)
+			return isHere(((MOB)E2).location(),here);
+		else
+		if(E2 instanceof Item)
+			return isHere(((Item)E2).owner(),here);
+		return false;
+	}
+
 	protected DVector getAllPlayersHere(Area area, boolean includeLocalFollowers)
 	{
 		DVector playersHere=new DVector(2);

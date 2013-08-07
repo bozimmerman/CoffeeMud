@@ -1892,7 +1892,7 @@ public class DefaultSession implements Session
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
 			{
 				if(pstats!=null) // cant do this when logouts are suspended -- folks might get killed!
-					CMLib.players().suspendResumePlayer(M, true);
+					CMLib.threads().suspendResumeRecurse(M, false, true);
 				M.removeFromGame(true,killSession);
 			}
 		}
@@ -2123,7 +2123,7 @@ public class DefaultSession implements Session
 					if((!killFlag)&&((mob!=null)))
 					{
 						if(mob.playerStats()!=null)
-							CMLib.players().suspendResumePlayer(mob, false);
+							CMLib.threads().suspendResumeRecurse(mob, false, false);
 						userLoginTime=System.currentTimeMillis();
 						StringBuilder loginMsg=new StringBuilder("");
 						loginMsg.append(getAddress()).append(" "+terminalType)

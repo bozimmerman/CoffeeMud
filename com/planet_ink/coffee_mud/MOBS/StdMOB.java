@@ -60,8 +60,10 @@ public class StdMOB implements MOB
 
 	protected PlayerStats		playerStats		= null;
 
+	protected boolean			amDestroyed		= false;
 	protected boolean			removeFromGame	= false;
 	protected boolean			amDead			= false;
+	
 	protected volatile Room		location		= null;
 	protected volatile Room		lastLocation	= null;
 	protected Rideable			riding			= null;
@@ -107,7 +109,6 @@ public class StdMOB implements MOB
 	protected MOB				soulMate		= null;
 	protected int				atRange			= -1;
 	protected long				peaceTime		= 0;
-	protected boolean			amDestroyed		= false;
 	protected boolean			kickFlag		= false;
 	protected boolean			imMobile		= false;
 	protected MOB				me 				= this;

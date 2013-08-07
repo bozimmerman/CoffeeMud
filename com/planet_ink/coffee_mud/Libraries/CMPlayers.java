@@ -609,41 +609,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return false;
 	}
 
-	public void suspendResumePlayer(MOB M, boolean suspend)
-	{
-		/*
-		if(suspend)
-			CMLib.threads().suspendTicking(M, -1);
-		else
-			CMLib.threads().resumeTicking(M, -1);
-		for(int i=0;i<M.numItems();i++)
-		{
-			Item I=M.getItem(i);
-			if(suspend)
-				CMLib.threads().suspendTicking(I, -1);
-			else
-				CMLib.threads().resumeTicking(I, -1);
-		}
-		final PlayerStats pStats=M.playerStats();
-		if(pStats!=null)
-		{
-			ItemCollection collection=pStats.getExtItems();
-			if(collection!=null)
-			for(int i=0;i<collection.numItems();i++)
-			{
-				Item I=collection.getItem(i);
-				if(suspend)
-					CMLib.threads().suspendTicking(I, -1);
-				else
-					CMLib.threads().resumeTicking(I, -1);
-				if((I instanceof SpaceShip)
-				&&(((SpaceShip)I).getShipArea()!=null))
-					((SpaceShip)I).getShipArea().setAreaState(suspend?Area.State.FROZEN:Area.State.ACTIVE);
-			}
-		}
-		*/
-	}
-	
 	private boolean autoPurge()
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.AUTOPURGE))

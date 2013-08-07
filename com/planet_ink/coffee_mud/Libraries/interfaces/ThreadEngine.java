@@ -38,6 +38,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public void deleteAllTicks(Tickable E);
 	public void suspendTicking(Tickable E, int tickID);
 	public void resumeTicking(Tickable E, int tickID);
+	public void suspendResumeRecurse(CMObject O, boolean skipEmbeddedAreas, boolean suspend);
 	public boolean isSuspended(Tickable E, int tickID);
 	public void suspendAll();
 	public void resumeAll();

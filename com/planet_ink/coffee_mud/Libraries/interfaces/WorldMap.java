@@ -94,6 +94,8 @@ public interface WorldMap extends CMLibrary
 	public Environmental findFirstShopStocker(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
 	public List<Item> findInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
 	public Item findFirstInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+	public boolean isHere(CMObject E2, Area here);
+	public boolean isHere(CMObject E2, Room here);
 	
 	/************************************************************************/
 	/**							 ROOM-AREA-UTILITIES						*/
