@@ -53,15 +53,36 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	protected volatile LinkedEntry<T,K>  tail=null;
 	protected final TreeMap<T,LinkedEntry<T,K>> map=new TreeMap<T,LinkedEntry<T,K>>(); 
 
+	/**
+	 * Constructed a "limit" tree-based map.
+	 * All the parameters here are somewhat fuzzy.  The itemLimit will be ignored if lots of youngsters
+	 * come flooding in.  If the itemLimit is exceeded by more than 2* the touch/max age, then those
+	 * ages will be similarly multiplied to clean out older and older entries in order to at least
+	 * approach the itemLimit standards.  The threshold to expand is the only hard limit.
+	 * @param itemLimit the number of items to try to limit this map to
+	 * @param touchAgeLimitMillis the age of last-touching that makes an item too old to keep
+	 * @param maxAgeLimitMillis the longest amount of time any entry is allowed to live, regardless of touching
+	 * @param threshHoldToExpand the number of touches on any given item before the limit expands to accommodate
+	 */
     public PrioritizingLimitedMap(int itemLimit, long touchAgeLimitMillis, long maxAgeLimitMillis, int threshHoldToExpand)
 	{
 		if(itemLimit<=0) itemLimit=1;
 		this.itemLimit=itemLimit;
-		this.touchAgeLimitMillis=touchAgeLimitMillis;
-		this.maxAgeLimitMillis=maxAgeLimitMillis;
+		this.touchAgeLimitMillis=(touchAgeLimitMillis > Integer.MAX_VALUE) ? Integer.MAX_VALUE : touchAgeLimitMillis;
+		this.maxAgeLimitMillis=(maxAgeLimitMillis > Integer.MAX_VALUE) ? Integer.MAX_VALUE : maxAgeLimitMillis;
 		this.threshHoldToExpand=threshHoldToExpand;
 	}
 	
+	/**
+	 * Constructed a "limit" tree-based map.
+	 * All the parameters here are somewhat fuzzy.  The itemLimit will be ignored if lots of youngsters
+	 * come flooding in.  If the itemLimit is exceeded by more than 2* the touch/max age, then those
+	 * ages will be similarly multiplied to clean out older and older entries in order to at least
+	 * approach the itemLimit standards. 
+	 * @param itemLimit the number of items to try to limit this map to
+	 * @param touchAgeLimitMillis the age of last-touching that makes an item too old to keep
+	 * @param maxAgeLimitMillis the longest amount of time any entry is allowed to live, regardless of touching
+     */
     public PrioritizingLimitedMap(int itemLimit, long touchAgeLimitMillis, long maxAgeLimitMillis)
 	{
 		this(itemLimit,touchAgeLimitMillis,maxAgeLimitMillis,Integer.MAX_VALUE);
@@ -74,7 +95,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		if(p!=null)
 		{
 			markFoundAgain(p);
-			trimDeadwood();
+			trimDeadwood(1);
 			return p.second;
 		}
 		return null;
@@ -94,26 +115,26 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	public Enumeration<T> prioritizedKeys()
 	{
 		return new Enumeration<T>()
-				{
-					private LinkedEntry<T,K>ptr=head;
-					@Override
-					public boolean hasMoreElements()
-					{
-						return ptr!=null;
-					}
+		{
+			private LinkedEntry<T,K>ptr=head;
+			@Override
+			public boolean hasMoreElements()
+			{
+				return ptr!=null;
+			}
 
-					@Override
-					public T nextElement()
-					{
-						if(ptr!=null)
-						{
-							 T elem=ptr.first;
-							 ptr=ptr.next;
-							 return elem;
-						}
-						return null;
-					}
-				};
+			@Override
+			public T nextElement()
+			{
+				if(ptr!=null)
+				{
+					 T elem=ptr.first;
+					 ptr=ptr.next;
+					 return elem;
+				}
+				return null;
+			}
+		};
 	}
 	
 	@Override
@@ -165,16 +186,19 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		}
 	}
 	
-	private void trimDeadwood()
+	private void trimDeadwood(int multiplier)
 	{
 		if(map.size() > itemLimit)
 		{
 			LinkedEntry<T,K> prev=tail;
-			final long touchTimeout=System.currentTimeMillis()-touchAgeLimitMillis;
-			final long maxAgeTimeout=System.currentTimeMillis()-maxAgeLimitMillis;
+			final long touchTimeout=System.currentTimeMillis()-(touchAgeLimitMillis*multiplier);
+			final long maxAgeTimeout=System.currentTimeMillis()-(maxAgeLimitMillis*multiplier);
 			int expands=0;
+			int counter=0;
 			while((prev != null)&&(prev != head)&&(prev.index <=0)&&(map.size() > itemLimit))
 			{
+				if(counter++>map.size())
+					break; // failsafe to broken links
 				final LinkedEntry<T,K> pprev=prev.prev;
 				if((prev.lastTouch<touchTimeout)||(prev.birthDate<maxAgeTimeout))
 					remove(prev.first);
@@ -184,6 +208,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 				prev=pprev;
 			}
 			itemLimit+=expands;
+			if((map.size() > itemLimit) && (((multiplier+1)*itemLimit)<map.size()))
+				trimDeadwood(multiplier+1); // addition to better enforce the item limit w/o being crazy
 		}
 	}
 	
@@ -214,7 +240,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 				p.second=arg1;
 			markFoundAgain(p);
 		}
-		trimDeadwood();
+		trimDeadwood(1);
 		return arg1;
     }
 
