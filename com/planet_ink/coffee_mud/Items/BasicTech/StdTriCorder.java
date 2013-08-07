@@ -1,7 +1,6 @@
-package com.planet_ink.coffee_mud.Items.ShipTech;
-import com.planet_ink.coffee_mud.Items.Basic.StdRideable;
+package com.planet_ink.coffee_mud.Items.BasicTech;
+import com.planet_ink.coffee_mud.Items.Basic.StdContainer;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.TimeMs;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -34,101 +33,46 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdComputerConsole extends StdRideable implements ShipComponent, Electronics.Computer, Electronics.ElecPanel
+public class StdTriCorder extends StdElecContainer implements Electronics.Computer
 {
-	public String ID(){	return "StdComputerConsole";}
+	public String ID(){	return "StdTriCorder";}
 
-	protected volatile String circuitKey		= null;
-	protected float 		  installedFactor	= 1.0F;
-	protected short 		  powerRemaining	= 0;
-	protected boolean 		  activated		 	= false;
-	protected volatile long   nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
+	protected final static int POWER_RATE		= 4; // how often (in ticks) an activated tricorder loses a tick of power. at 1000 power, this is 1 hr/rate (4 hrs total)
+	
 	protected MOB 			  lastReader		= null;
 	protected volatile long   nextSoftwareCheck = System.currentTimeMillis()+(10*1000);
 	protected List<Software>  software		 	= null;
 	protected String 		  currentMenu		= "";
-	protected String		  manufacturer 		= "RANDOM";
-	protected Manufacturer	  cachedManufact	= null;
-	
-	public StdComputerConsole()
+	protected int			  nextPowerCycleCtr = POWER_RATE+1;
+
+	public StdTriCorder()
 	{
 		super();
-		setName("a computer console");
-		setDisplayText("a computer console is here");
-		basePhyStats.setWeight(20);
-		setDescription("");
-		baseGoldValue=5;
-		setUsesRemaining(100);
-		containType=Container.CONTAIN_SSCOMPONENTS;
-		rideBasis=Rideable.RIDEABLE_TABLE;
-		riderCapacity=1;
-		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE|PhyStats.SENSE_ITEMNOTGET);
-		setLidsNLocks(false,true,false,false);
-		capacity=50;
-		material=RawMaterial.RESOURCE_STEEL;
-		activate(true);
+		setName("a personal scanning device");
+		basePhyStats.setWeight(2);
+		setDisplayText("a personal scanning device sits here.");
+		setDescription("For all your scanning and mobile computing needs.");
+		baseGoldValue=2500;
+		basePhyStats().setLevel(1);
 		recoverPhyStats();
+		setMaterial(RawMaterial.RESOURCE_STEEL);
+		super.activate(true);
+		setLidsNLocks(false,true,false,false);
+		setCapacity(3);
+		super.setPowerCapacity(1000);
+		super.setPowerRemaining(1000);
 	}
 
-	@Override public float getInstalledFactor() { return installedFactor; }
-	@Override public void setInstalledFactor(float pct) { if((pct>=0.0)&&(pct<=2.0)) installedFactor=pct; }
-	@Override public long powerCapacity(){return 1;}
-	@Override public void setPowerCapacity(long capacity){}
-	@Override public int powerNeeds(){return 1;}
-	@Override public long powerRemaining(){return powerRemaining;}
-	@Override public void setPowerRemaining(long remaining){ powerRemaining=(remaining>0)?(short)1:(short)0; }
-	@Override public boolean activated(){return activated;}
-	@Override public void activate(boolean truefalse){ activated=truefalse; }
+	@Override public TechType panelType(){return TechType.PERSONAL_SOFTWARE;}
+	@Override public void setPanelType(TechType type){ }
 	@Override public void setActiveMenu(String internalName) { currentMenu=internalName; }
 	@Override public String getActiveMenu() { return currentMenu; }
-	@Override public int techLevel() { return phyStats().ability();}
-	@Override public void setTechLevel(int lvl) { basePhyStats.setAbility(lvl); recoverPhyStats(); }
-	@Override public String getManufacturerName() { return manufacturer; }
-	@Override public void setManufacturerName(String name) { cachedManufact=null; if(name!=null) manufacturer=name; }
-	@Override public TechType getTechType() { return TechType.SHIP_COMPUTER; }
-	
-	@Override
-	public Manufacturer getFinalManufacturer()
-	{
-		if(cachedManufact==null)
-		{
-			cachedManufact=CMLib.tech().getManufacturerOf(this,manufacturer.toUpperCase().trim());
-			if(cachedManufact==null)
-				cachedManufact=CMLib.tech().getDefaultManufacturer();
-		}
-		return cachedManufact;
-	}
-	
-	@Override public TechType panelType(){return TechType.SHIP_SOFTWARE;}
-	@Override public void setPanelType(TechType type){ }
+	@Override public TechType getTechType() { return TechType.PERSONAL_SENSOR; }
 	
 	@Override 
 	public boolean canContain(Environmental E)
 	{
-		return (E instanceof Software) && (((Software)E).getTechType()==TechType.SHIP_SOFTWARE);
-	}
-
-	
-	@Override
-	public boolean subjectToWearAndTear()
-	{
-		return true;
-	}
-
-	public String putString(Rider R)
-	{
-		return "in";
-	}
-	
-	public String stateStringSubject(Rider R)
-	{
-		return "being used by";
-	}
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected, affectableStats);
-		if(affected instanceof Room)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
+		return (E instanceof Software) && (((Software)E).getTechType()==TechType.PERSONAL_SOFTWARE);
 	}
 
 	public List<Software> getSoftware()
@@ -139,10 +83,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 			final LinkedList<Software> softwareList=new LinkedList<Software>();
 			for(Item I : list)
 				if(I instanceof Software)
-				{
-					((Software)I).setCircuitKey(circuitKey);
 					softwareList.add((Software)I);
-				}
 			nextSoftwareCheck=System.currentTimeMillis()+(10*1000);
 			software=softwareList;
 		}
@@ -193,23 +134,14 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		return str.toString();
 	}
 	
+	@Override
 	public List<MOB> getCurrentReaders()
 	{
 		List<MOB> readers=new LinkedList<MOB>();
 		if(amDestroyed())
 			return readers;
-		final MOB lastReader=this.lastReader;
-		if(lastReader!=null)
-		{
-			if(((lastReader==owner())||(lastReader.location()==owner()))
-			&&(CMLib.flags().isInTheGame(lastReader, true)))
-				readers.add(lastReader);
-			else
-				this.lastReader=null;
-		}
-		for(Rider R : riders)
-			if(R instanceof MOB)
-				readers.add((MOB)R);
+		if(owner() instanceof MOB)
+			readers.add((MOB)owner());
 		return readers;
 	}
 	
@@ -220,10 +152,13 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		{
 			switch(msg.targetMinor())
 			{
-			case CMMsg.TYP_POWERCURRENT:
-				break;
 			case CMMsg.TYP_READ:
 			case CMMsg.TYP_WRITE:
+				if(this.amWearingAt(Item.IN_INVENTORY))
+				{
+					msg.source().tell(name()+" needs to be held first.");
+					return false;
+				}
 				if(!activated())
 				{
 					msg.source().tell(name()+" is not activated/booted up.");
@@ -231,6 +166,11 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				}
 				return true;
 			case CMMsg.TYP_ACTIVATE:
+				if(this.amWearingAt(Item.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				{
+					msg.source().tell(name()+" needs to be held first.");
+					return false;
+				}
 				if((msg.targetMessage()==null)&&(activated()))
 				{
 					msg.source().tell(name()+" is already booted up.");
@@ -239,15 +179,16 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				else
 				if(powerRemaining()<=0)
 				{
-					if((!CMLib.tech().seekBatteryPower(this, this.circuitKey))
-					||(powerRemaining()<=0))
-					{
-						msg.source().tell(name()+" won't seem to power up. Perhaps it needs power?");
-						return false;
-					}
+					msg.source().tell(name()+" won't seem to power up. Perhaps it needs power?");
+					return false;
 				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
+				if(this.amWearingAt(Item.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				{
+					msg.source().tell(name()+" needs to be held first.");
+					return false;
+				}
 				if((msg.targetMessage()==null)&&(!activated()))
 				{
 					msg.source().tell(name()+" is already shut down.");
@@ -345,7 +286,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()))
+				if(CMLib.flags().canBeSeenBy(this, msg.source()) && (!amWearingAt(Item.IN_INVENTORY)))
 					msg.source().tell(name()+" is currently "+(activated()?"booted up and the screen ready to be read.\n\r":"deactivated.\n\r"));
 				return;
 			case CMMsg.TYP_ACTIVATE:
@@ -420,45 +361,47 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					deactivateSystem();
 				}
 				break;
-			case CMMsg.TYP_POWERCURRENT:
-				{
-					if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-						nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
-					final int powerToGive=msg.value();
-					if(powerToGive>0)
-					{
-						if(powerRemaining()==0)
-							setPowerRemaining(1);
-						nextPowerCycleTmr=System.currentTimeMillis()+(8*1000);
-					}
-					if(activated())
-					{
-						final List<Software> software=getSoftware();
-						CMMsg msg2=CMClass.getMsg(msg.source(), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
-						synchronized(software)
-						{
-							for(Software sw : software)
-							{
-								msg2.setTarget(sw);
-								msg2.setValue(((powerToGive>0)?1:0)+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
-								if(sw.okMessage(host, msg2))
-									sw.executeMsg(host, msg2);
-							}
-						}
-					}
-					forceReadersSeeNew();
-					if(System.currentTimeMillis()>nextPowerCycleTmr)
-					{
-						deactivateSystem();
-					}
-				}
-				break;
 			}
 		}
 		else
-		if((msg.source()==this.lastReader)&&(msg.target() instanceof Electronics.ElecPanel)&&(msg.targetMinor()==CMMsg.TYP_READ))
-			this.lastReader=null;
+		if((msg.source()==this.lastReader)&&(msg.targetMinor()==CMMsg.TYP_READ)&&(msg.target() instanceof Electronics.ElecPanel))
+			this.lastReader=null; // whats this do?
 		super.executeMsg(host,msg);
+	}
+
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(tickID==Tickable.TICKID_ELECTRONICS)
+		{
+			if(activated() && owner() instanceof MOB)
+			{
+				MOB mob=(MOB)owner();
+				final List<Software> software=getSoftware();
+				CMMsg msg2=CMClass.getMsg(mob, null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
+				synchronized(software) // this is how software ticks, even tricorder software...
+				{
+					for(Software sw : software)
+					{
+						msg2.setTarget(sw);
+						msg2.setValue(1+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
+						if(sw.okMessage(mob, msg2))
+							sw.executeMsg(mob, msg2);
+					}
+				}
+			}
+			forceReadersSeeNew();
+			if(--nextPowerCycleCtr<=0)
+			{
+				nextPowerCycleCtr=POWER_RATE;
+				setPowerRemaining(this.powerRemaining()-1);
+				if(powerRemaining()<=0)
+					deactivateSystem();
+			}
+		}
+		return true;
 	}
 	
 	@Override
@@ -483,6 +426,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		}
 	}
 	
+	@Override
 	public void forceReadersMenu()
 	{
 		if(activated())
@@ -492,32 +436,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 				CMLib.commands().postRead(M, this, "", true);
 		}
 	}
-
-	@Override
-	public void destroy()
-	{
-		if((!destroyed)&&(circuitKey!=null))
-		{
-			CMLib.tech().unregisterElectronics(this,circuitKey);
-			circuitKey=null;
-		}
-		super.destroy();
-	}
 	
-	@Override
-	public void setOwner(ItemPossessor owner)
-	{
-		final ItemPossessor prevOwner=super.owner;
-		super.setOwner(owner);
-		if(prevOwner != owner)
-		{
-			if(owner instanceof Room)
-				circuitKey=CMLib.tech().registerElectrics(this,circuitKey);
-			else
-				circuitKey=null;
-		}
-	}
-
 	protected void deactivateSystem()
 	{
 		if(activated())
@@ -534,12 +453,13 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 						sw.executeMsg(msg2.source(), msg2);
 				}
 			}
-			setPowerRemaining(0);
 			activate(false);
-			List<MOB> readers=getCurrentReaders();
-			for(MOB M : readers)
+			if(owner() instanceof MOB)
+			{
+				MOB M=(MOB)owner();
 				if(CMLib.flags().canBeSeenBy(this, M))
 					M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "The screen on <T-NAME> goes blank.");
+			}
 		}
 	}
 }
