@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Software;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.Items.BasicTech.GenElecItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -11,6 +12,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -37,28 +40,102 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipProgram extends StdProgram
+public class GenShipProgram extends GenSoftware
 {
-	public String ID(){	return "StdShipProgram";}
+	public String ID(){	return "GenShipProgram";}
 	
 	protected String circuitKey="";
+	protected String readableText="";
 
-	public StdShipProgram()
+	public GenShipProgram()
 	{
 		super();
 		setName("a software disk");
 		setDisplayText("a small disk sits here.");
 		setDescription("It appears to be a general software program.");
-
-		material=RawMaterial.RESOURCE_STEEL;
-		baseGoldValue=1000;
-		recoverPhyStats();
 	}
 	
+	@Override 
 	public void setCircuitKey(String key) 
 	{ 
 		circuitKey=(key==null)?"":key; 
 	}
 
 	@Override public TechType getTechType() { return TechType.SHIP_SOFTWARE; }
+	
+	@Override public String getParentMenu() { return ""; }
+	@Override public String getInternalName() { return "";}
+	
+	@Override 
+	public boolean isActivationString(String word) 
+	{ 
+		return super.isActivationString(word); 
+	}
+	
+	@Override 
+	public boolean isDeActivationString(String word) 
+	{ 
+		return super.isDeActivationString(word); 
+	}
+	
+	@Override 
+	public boolean isCommandString(String word, boolean isActive) 
+	{ 
+		return super.isCommandString(word, isActive); 
+	}
+
+	@Override 
+	public String getActivationMenu() 
+	{ 
+		return super.getActivationMenu(); 
+	}
+	
+	@Override 
+	public boolean checkActivate(MOB mob, String message)
+	{
+		return super.checkActivate(mob, message);
+	}
+	
+	@Override 
+	public boolean checkDeactivate(MOB mob, String message)
+	{
+		return super.checkDeactivate(mob, message);
+	}
+	
+	@Override 
+	public boolean checkTyping(MOB mob, String message)
+	{
+		return super.checkTyping(mob, message);
+	}
+	
+	@Override 
+	public boolean checkPowerCurrent(int value)
+	{
+		return super.checkPowerCurrent(value);
+	}
+	
+	@Override 
+	public void onActivate(MOB mob, String message)
+	{
+		super.onActivate(mob, message);
+	}
+	
+	@Override 
+	public void onDeactivate(MOB mob, String message)
+	{
+		super.onDeactivate(mob, message);
+	}
+	
+	@Override 
+	public void onTyping(MOB mob, String message)
+	{
+		super.onTyping(mob, message);
+	}
+	
+	@Override 
+	public void onPowerCurrent(int value)
+	{
+		super.onPowerCurrent(value);
+	}
+	
 }

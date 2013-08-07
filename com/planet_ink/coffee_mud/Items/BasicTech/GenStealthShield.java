@@ -68,4 +68,24 @@ public class GenStealthShield extends GenTickerShield
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		super.affectPhyStats(affected, affectableStats);
 	}
+	
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Item.IN_INVENTORY)))
+		{
+			if((msg.targetMinor()==CMMsg.TYP_LOOK)&&(msg.source()!=owner()))
+			{
+				if((msg.tool() instanceof Technical)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				{
+					if(((Technical)msg.tool()).techLevel()>techLevel())
+						return true;
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 }

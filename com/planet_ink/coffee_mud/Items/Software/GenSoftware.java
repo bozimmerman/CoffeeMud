@@ -1,4 +1,6 @@
-package com.planet_ink.coffee_mud.Items.BasicTech;
+package com.planet_ink.coffee_mud.Items.Software;
+import com.planet_ink.coffee_mud.Items.Basic.StdItem;
+import com.planet_ink.coffee_mud.Items.BasicTech.GenElecItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -10,12 +12,17 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2013 Bo Zimmerman
@@ -32,15 +39,20 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenTriCorder extends StdTriCorder
+public class GenSoftware extends StdProgram
 {
-	public String ID(){	return "GenTriCorder";}
+	public String ID(){	return "GenSoftware";}
 	
-	public GenTriCorder()
+	protected String readableText="";
+
+	public GenSoftware()
 	{
 		super();
+		setName("a software minidisk");
+		setDisplayText("a minidisk sits here.");
+		setDescription("It appears to be a tricorder minidisk software program.");
 	}
-
+	
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -48,6 +60,8 @@ public class GenTriCorder extends StdTriCorder
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){readableText=text;}
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -55,59 +69,28 @@ public class GenTriCorder extends StdTriCorder
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		switch(getCodeNum(code))
-		{
-		case 0: return ""+powerCapacity();
-		case 1: return ""+activated();
-		case 2: return ""+powerRemaining();
-		case 3: return ""+getManufacturerName();
-		default:
-			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
-		}
+		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		else
-		switch(getCodeNum(code))
-		{
-		case 0: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
-		case 1: activate(CMath.s_bool(val)); break;
-		case 2: setPowerRemaining(CMath.s_parseLongExpression(val)); break;
-		case 3: setManufacturerName(val); break;
-		default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
-			break;
-		}
-	}
-	protected int getCodeNum(String code){
-		for(int i=0;i<MYCODES.length;i++)
-			if(code.equalsIgnoreCase(MYCODES[i])) return i;
-		return -1;
+		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 	}
 	private static String[] codes=null;
 	public String[] getStatCodes()
 	{
-		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenTriCorder.MYCODES,this);
-		String[] superCodes=GenericBuilder.GENITEMCODES;
-		codes=new String[superCodes.length+MYCODES.length];
-		int i=0;
-		for(;i<superCodes.length;i++)
-			codes[i]=superCodes[i];
-		for(int x=0;x<MYCODES.length;i++,x++)
-			codes[i]=MYCODES[x];
-		return codes;
+		if(codes==null)
+			codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
+		return codes; 
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenTriCorder)) return false;
+		if(!(E instanceof GenSoftware)) return false;
 		String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))

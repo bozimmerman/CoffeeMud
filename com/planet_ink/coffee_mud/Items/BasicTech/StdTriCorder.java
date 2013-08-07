@@ -48,19 +48,20 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 	public StdTriCorder()
 	{
 		super();
-		setName("a personal scanning device");
+		setName("a tri-corder");
 		basePhyStats.setWeight(2);
 		setDisplayText("a personal scanning device sits here.");
 		setDescription("For all your scanning and mobile computing needs.");
 		baseGoldValue=2500;
 		basePhyStats().setLevel(1);
-		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		super.activate(true);
 		setLidsNLocks(false,true,false,false);
 		setCapacity(3);
 		super.setPowerCapacity(1000);
 		super.setPowerRemaining(1000);
+		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE);
+		recoverPhyStats();
 	}
 
 	@Override public TechType panelType(){return TechType.PERSONAL_SOFTWARE;}
@@ -90,9 +91,14 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		return software;
 	}
 	
+	public void setReadableText(String text)
+	{
+		// important that this does nothing
+	}
+	
 	public String readableText()
 	{
-		final StringBuilder str=new StringBuilder(super.readableText());
+		final StringBuilder str=new StringBuilder("");
 		str.append("\n\r");
 		if(!activated())
 			str.append("The screen is blank.  Try activating/booting it first.");
@@ -143,6 +149,18 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 		if(owner() instanceof MOB)
 			readers.add((MOB)owner());
 		return readers;
+	}
+	
+	@Override
+	public void setOwner(ItemPossessor owner)
+	{
+		final ItemPossessor prevOwner=super.owner;
+		super.setOwner(owner);
+		if((prevOwner != owner)&&(owner!=null))
+		{
+			if(!CMLib.threads().isTicking(this, Tickable.TICKID_ELECTRONICS))
+				CMLib.threads().startTickDown(this, Tickable.TICKID_ELECTRONICS, 1);
+		}
 	}
 	
 	@Override
@@ -223,7 +241,7 @@ public class StdTriCorder extends StdElecContainer implements Electronics.Comput
 						{
 							if(S.getInternalName().equals(currentMenu))
 							{
-								if(msg.targetMessage().trim().equals("<"))
+								if(msg.targetMessage().trim().equals("<") && (currentMenu.length()>0))
 								{
 									msgs.add(CMClass.getMsg(msg.source(),S,null,CMMsg.NO_EFFECT,CMMsg.MASK_ALWAYS|CMMsg.TYP_DEACTIVATE,CMMsg.NO_EFFECT,null));
 								}

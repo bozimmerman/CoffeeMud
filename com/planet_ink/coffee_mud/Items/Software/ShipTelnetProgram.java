@@ -35,16 +35,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdTelnetProgram extends StdShipProgram implements ArchonOnly
+public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 {
-	public String ID(){	return "StdTelnetProgram";}
+	public String ID(){	return "StdShipTelnetProgram";}
 	
 	protected Socket sock = null;
 	protected BufferedInputStream reader=null;
 	protected BufferedWriter writer=null;
 	protected volatile long nextPowerCycleTmr = System.currentTimeMillis()+(8*1000);
 	
-	public StdTelnetProgram()
+	public ShipTelnetProgram()
 	{
 		super();
 		setName("a telnet disk");

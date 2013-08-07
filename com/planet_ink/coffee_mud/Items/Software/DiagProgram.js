@@ -1,7 +1,7 @@
-//extends com.planet_ink.coffee_mud.Items.Software.StdShipProgram
+//extends com.planet_ink.coffee_mud.Items.Software.GenSoftware
 //implements com.planet_ink.coffee_mud.Items.interfaces.ArchonOnly
 
-function ID(){	return "StdDiagProgram";}
+function ID(){	return "ShipDiagProgram";}
 
 var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;
 

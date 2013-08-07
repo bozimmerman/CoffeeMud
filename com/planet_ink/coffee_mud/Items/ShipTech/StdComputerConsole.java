@@ -149,9 +149,14 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		return software;
 	}
 	
+	public void setReadableText(String text)
+	{
+		// important that this does nothing
+	}
+	
 	public String readableText()
 	{
-		final StringBuilder str=new StringBuilder(super.readableText());
+		final StringBuilder str=new StringBuilder("");
 		str.append("\n\r");
 		if(!activated())
 			str.append("The screen is blank.  Try activating/booting it first.");
@@ -280,7 +285,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 					{
 						for(final Software S : software)
 						{
-							if(S.getInternalName().equals(currentMenu))
+							if(S.getInternalName().equals(currentMenu) && (currentMenu.length()>0))
 							{
 								if(msg.targetMessage().trim().equals("<"))
 								{

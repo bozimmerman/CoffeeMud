@@ -75,7 +75,7 @@ public class TypeCmd extends Go
 					}
 				if(typeIntoThis!=null)
 				{
-					while(commands.size()>=x)
+					while(commands.size()>x)
 						commands.remove(commands.size()-1);
 				}
 				else

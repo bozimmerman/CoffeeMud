@@ -63,8 +63,8 @@ public interface ItemCollection extends CMObject
 	 * Returns a random item in this collection, or null
 	 * @return a random item in this collection, or null
 	 */
-  public Item getRandomItem();
-  
+	public Item getRandomItem();
+
 	/**
 	 * An enumeration of all the items at this possessor.
 	 * @return enumeration of all the items at this possessor.
