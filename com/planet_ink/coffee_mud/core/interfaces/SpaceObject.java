@@ -123,7 +123,6 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static final double MULTIPLIER_ORBITING_RADIUS_MIN=1.029;
 	/** constant useful for multiplying by radius -- this one to find the orbiting radius*/
 	public static final double MULTIPLIER_ORBITING_RADIUS_MAX=1.031;
-	
 	/** multiplying by radius -- this one to find the orbiting radius*/
 	public static final double MULTIPLIER_GRAVITY_RADIUS=MULTIPLIER_ORBITING_RADIUS_MAX/2;
 
