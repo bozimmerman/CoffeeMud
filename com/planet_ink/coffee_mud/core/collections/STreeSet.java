@@ -38,7 +38,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 			this.T.addAll(E);
 	}
 	
-	public STreeSet(K... E)
+	public STreeSet(K[] E)
 	{
 		T=new TreeSet<K>();
 		if(E!=null)

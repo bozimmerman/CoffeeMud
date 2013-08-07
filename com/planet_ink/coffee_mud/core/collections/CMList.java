@@ -42,13 +42,6 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	{
 	}
 	
-	public CMList(final K... E)
-	{
-		if(E!=null)
-			for(K o : E)
-				add(o);
-	}
-	
 	public CMList(final Enumeration<K> E)
 	{
 		if(E!=null)

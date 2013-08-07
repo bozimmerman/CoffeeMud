@@ -30,7 +30,7 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 		L=new LinkedList<K>();
 	}
 	
-	public SLinkedList(K... E)
+	public SLinkedList(K[] E)
 	{
 		L=new LinkedList<K>();
 		if(E!=null)

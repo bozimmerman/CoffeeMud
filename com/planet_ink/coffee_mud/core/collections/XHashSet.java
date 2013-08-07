@@ -34,12 +34,25 @@ public class XHashSet<T> extends HashSet<T>
 			addAll(V);
 	}
 	
-	public XHashSet(T... E)
+	public XHashSet(T[] E)
 	{
 		super();
 		if(E!=null)
 			for(T o : E)
 				add(o);
+	}
+	
+	public XHashSet(T E)
+	{
+		super();
+		if(E!=null)
+			add(E);
+	}
+	
+	
+	public XHashSet()
+	{
+		super();
 	}
 	
 	public XHashSet(Set<T> E)

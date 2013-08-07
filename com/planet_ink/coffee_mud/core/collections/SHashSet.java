@@ -40,7 +40,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 				T.add(o);
 	}
 	
-	public SHashSet(K... V)
+	public SHashSet(K[] V)
 	{
 		T=new HashSet<K>();
 		if(V!=null)

@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Archon_Injure extends ArchonSkill
 {
 	public String ID() { return "Archon_Injure"; }

@@ -51,7 +51,7 @@ public class STreeVector<T extends CMObject> implements Serializable, Iterable<T
 			addAll(E);
 	}
 	
-	public STreeVector(T... E)
+	public STreeVector(T[] E)
 	{
 		V=new Vector<T>();
 		S=new TreeMap<String,T>();

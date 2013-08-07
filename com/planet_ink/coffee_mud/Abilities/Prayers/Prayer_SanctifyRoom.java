@@ -44,10 +44,12 @@ public class Prayer_SanctifyRoom extends Prayer
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	
-	public static final SHashSet MSG_CODESH=new SHashSet(Integer.valueOf(CMMsg.TYP_GET),
-														 Integer.valueOf(CMMsg.TYP_PULL),
-														 Integer.valueOf(CMMsg.TYP_PUSH),
-														 Integer.valueOf(CMMsg.TYP_CAST_SPELL));
+	public static final SHashSet MSG_CODESH=new SHashSet(new Integer[]{
+		Integer.valueOf(CMMsg.TYP_GET),
+		Integer.valueOf(CMMsg.TYP_PULL),
+		Integer.valueOf(CMMsg.TYP_PUSH),
+		Integer.valueOf(CMMsg.TYP_CAST_SPELL)
+	});
 
 	protected boolean inRoom(MOB mob, Room R)
 	{

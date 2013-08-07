@@ -34,17 +34,30 @@ public class XVector<T> extends Vector<T>
 			addAll(V);
 	}
 	
+	public XVector()
+	{
+		super();
+	}
+	
 	public XVector(int size, boolean boo)
 	{
 		super(size);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public XVector(T... E)
 	{
 		super();
 		if(E!=null)
 			for(T o : E)
 				add(o);
+	}
+	
+	public XVector(T E)
+	{
+		super();
+		if(E!=null)
+			add(E);
 	}
 	
 	public XVector(Set<T> E)

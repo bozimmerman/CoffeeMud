@@ -143,7 +143,7 @@ public class LifeScanProgram extends GenSoftware
 								(isIndoors && (!willIndoors))?"O":
 								(!isIndoors && (willIndoors))?"I":
 								"";
-				numFound+=getScanMsg(R2, new HashSet<Room>(), dirBuilder+dirBCode+((char)(((int)'a')+d)), depthLeft-1, scanMsg, str);
+				numFound+=getScanMsg(R2, new HashSet<Room>(), dirBuilder+dirBCode+((char)('a'+d)), depthLeft-1, scanMsg, str);
 			}
 		}
 		return numFound;

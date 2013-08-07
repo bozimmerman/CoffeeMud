@@ -45,7 +45,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 			this.addAll(E);
 	}
 	
-	public SVector(T... E)
+	public SVector(T[] E)
 	{
 		super();
 		if(E!=null)

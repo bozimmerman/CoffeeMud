@@ -27,7 +27,7 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 	private volatile Iterator<Iterable<K>> listIter = null; 
 	private volatile Iterator<K> iter = null; 
 	
-	public MultiListEnumeration(final Iterable<K>... esets) 
+	public MultiListEnumeration(final Iterable<K>[] esets) 
 	{
 		if((esets!=null)&&(esets.length>0))
 			lists.addAll(Arrays.asList(esets));

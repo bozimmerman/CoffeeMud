@@ -22,17 +22,28 @@ public final class ReadOnlyVector<T> extends Vector<T>
 {
 	private static final long serialVersionUID = -9175373358592311411L;
 
+	  public ReadOnlyVector()
+	  {
+		  super();
+	  }
+	  
 	  public ReadOnlyVector(List<T> E)
 	  {
 		  if(E!=null)
 			  super.addAll(E);
 	  }
 	  
-	  public ReadOnlyVector(T... E)
+	  public ReadOnlyVector(T[] E)
 	  {
 		  if(E!=null)
 			  for(T o : E)
 				  super.add(o);
+	  }
+	  
+	  public ReadOnlyVector(T E)
+	  {
+		  if(E!=null)
+			  super.add(E);
 	  }
 	  
 	  public ReadOnlyVector(Enumeration<T> E)
