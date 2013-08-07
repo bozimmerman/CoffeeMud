@@ -82,7 +82,7 @@ public class StdFactoryMOB extends StdMOB
 			if((curState==baseState)||(curState==maxState))
 				curState=(CharState)CMClass.getCommon("DefaultCharState");
 			super.destroy();
-			pleaseDestroy=false;
+			removeFromGame=false;
 			charStats=savedCStats;
 			phyStats=savedPStats;
 			curState=savedCState;

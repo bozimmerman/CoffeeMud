@@ -60,13 +60,13 @@ public class StdMOB implements MOB
 
 	protected PlayerStats		playerStats		= null;
 
+	protected boolean			removeFromGame	= false;
 	protected boolean			amDead			= false;
 	protected volatile Room		location		= null;
 	protected volatile Room		lastLocation	= null;
 	protected Rideable			riding			= null;
 
 	protected volatile Session	mySession		= null;
-	protected boolean			pleaseDestroy	= false;
 	protected Object			description		= null;
 	protected String			displayText		= "";
 	protected String			rawImageName	= null;
@@ -450,7 +450,7 @@ public class StdMOB implements MOB
 		baseState = (CharState) M.baseState().copyOf();
 		curState = (CharState) M.curState().copyOf();
 		maxState = (CharState) M.maxState().copyOf();
-		pleaseDestroy = false;
+		removeFromGame = false;
 
 		inventory= new SVector<Item>();
 		abilitys= new CMUniqSortSVec<Ability>();
@@ -828,11 +828,11 @@ public class StdMOB implements MOB
 	}
 
 	public boolean amDead() {
-		return amDead || pleaseDestroy;
+		return amDead || removeFromGame;
 	}
 
 	public boolean amActive() {
-		return !pleaseDestroy;
+		return !removeFromGame;
 	}
 
 	public void dispossess(boolean giveMsg) 
@@ -922,7 +922,7 @@ public class StdMOB implements MOB
 
 	public void removeFromGame(boolean preserveFollowers, boolean killSession) 
 	{
-		pleaseDestroy = true;
+		removeFromGame = true;
 		if ((location != null) && (location.isInhabitant(this)))
 		{
 			location().delInhabitant(this);
@@ -968,7 +968,7 @@ public class StdMOB implements MOB
 	public void bringToLife() 
 	{
 		amDead = false;
-		pleaseDestroy = false;
+		removeFromGame = false;
 
 		// will ensure no duplicate ticks, this obj, this id
 		kickFlag = true;
@@ -1013,7 +1013,7 @@ public class StdMOB implements MOB
 		}
 		if (!location().isInhabitant(this))
 			location().addInhabitant(this);
-		pleaseDestroy = false;
+		removeFromGame = false;
 		
 		if(session()!=null)
 		{
@@ -1638,7 +1638,7 @@ public class StdMOB implements MOB
 
 	public boolean dequeCommand() 
 	{
-		while ((!pleaseDestroy) && (!amDestroyed) && ((session() == null) || (!session().isStopped())))
+		while ((!removeFromGame) && (!amDestroyed) && ((session() == null) || (!session().isStopped())))
 		{
 			QMCommand doCommand = null;
 			synchronized (commandQue)
@@ -2919,7 +2919,7 @@ public class StdMOB implements MOB
 
 	public boolean tick(final Tickable ticking, final int tickID) 
 	{
-		if (pleaseDestroy)
+		if (removeFromGame)
 			return false;
 		tickStatus = Tickable.STATUS_START;
 		if (tickID == Tickable.TICKID_MOB)
@@ -2927,7 +2927,7 @@ public class StdMOB implements MOB
 			final boolean isMonster = isMonster();
 			if (amDead)
 			{
-				boolean isOk = !pleaseDestroy;
+				boolean isOk = !removeFromGame;
 				tickStatus = Tickable.STATUS_DEAD;
 				if (isMonster)
 				{
@@ -3163,7 +3163,7 @@ public class StdMOB implements MOB
 		if (lastTickedTime >= 0)
 			lastTickedTime = System.currentTimeMillis();
 		tickStatus = Tickable.STATUS_NOT;
-		return !pleaseDestroy;
+		return !removeFromGame;
 	}
 
 	public boolean isPlayer() {

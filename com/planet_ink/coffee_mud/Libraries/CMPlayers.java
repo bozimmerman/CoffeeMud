@@ -611,6 +611,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	public void suspendResumePlayer(MOB M, boolean suspend)
 	{
+		/*
 		if(suspend)
 			CMLib.threads().suspendTicking(M, -1);
 		else
@@ -640,6 +641,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					((SpaceShip)I).getShipArea().setAreaState(suspend?Area.State.FROZEN:Area.State.ACTIVE);
 			}
 		}
+		*/
 	}
 	
 	private boolean autoPurge()
