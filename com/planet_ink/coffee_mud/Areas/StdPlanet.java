@@ -73,6 +73,8 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	@Override public SpaceObject knownSource(){return null;}
 	@Override public void setKnownSource(SpaceObject O){}
 	
+	@Override public long getMass() { return radius * MULTIPLIER_PLANET_MASS;} 
+	
 	@Override
 	public BoundedCube getBounds() 
 	{

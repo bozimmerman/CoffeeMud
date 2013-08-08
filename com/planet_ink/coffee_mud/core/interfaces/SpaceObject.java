@@ -97,6 +97,15 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * @param O the source of  this object
 	 */
 	public void setKnownSource(SpaceObject O);
+	
+	/**
+	 * Returns the mass of this object, derived from its
+	 * radius and type, or perhaps from other things. Either way, its derived.
+	 * The mass of space ships is what it is, but the mass of planets will
+	 * be off by about 15 zeroes, as there just aren't enough bits.
+	 * @return the mass of this object
+	 */
+	public long getMass();
 
 	/** distance constant useful for coordinates, is 1 kilometer, in decameters*/
 	public static final long DISTANCE_KILOMETER=100;
@@ -128,6 +137,9 @@ public interface SpaceObject extends Environmental, BoundedObject
 	/** multiplying by radius -- this one to find the orbiting radius*/
 	public static final double MULTIPLIER_GRAVITY_RADIUS=MULTIPLIER_ORBITING_RADIUS_MAX/2;
 
+	/** multiplier by radius to get planets mass -- only off by 15 zeroes or so 9333072865794100410 is the actual number*/
+	public static final long MULTIPLIER_PLANET_MASS=933L;
+	
 	/** accelleration at which you are happy, in decameters/s */
 	public static final long ACCELLERATION_G=1;
 	/** accelleration at which you pass out, in decameters/s */

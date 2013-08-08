@@ -119,10 +119,10 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 		if(portDir==ThrustPort.AFT) // when thrusting aft, the thrust is continual, so save it
 			me.setThrust(thrust);
 		int fuelToConsume=(int)Math.round(CMath.ceiling(thrust*me.getFuelEfficiency()*manufacturer.getEfficiencyPct()));
-		int accelleration=thrust/ship.getMass();
+		long accelleration=thrust/ship.getMass();
 		if(me.consumeFuel(fuelToConsume))
 		{
-			String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Integer.valueOf(accelleration),Long.valueOf(me.getSpecificImpulse()));
+			String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Integer.valueOf((int)accelleration),Long.valueOf(me.getSpecificImpulse()));
 			CMMsg msg=CMClass.getMsg(mob, ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(ship.okMessage(mob, msg))
 			{
@@ -190,8 +190,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipComponen
 					if(obj instanceof SpaceShip)
 					{
 						final SpaceShip ship=(SpaceShip)obj;
-						int accelleration=me.getThrust()/ship.getMass();
-						String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Integer.valueOf(accelleration),Long.valueOf(me.getSpecificImpulse()));
+						long accelleration=me.getThrust()/ship.getMass();
+						String code=Technical.TechCommand.ACCELLLERATION.makeCommand(ThrustPort.AFT,Integer.valueOf((int)accelleration),Long.valueOf(me.getSpecificImpulse()));
 						CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(ship.okMessage(msg.source(), msg2))
 							ship.executeMsg(msg.source(), msg2);

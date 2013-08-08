@@ -58,6 +58,8 @@ public class StdThinPlanet extends StdThinArea implements SpaceObject
 
 	public TimeClock getTimeObj(){return myClock;}
 
+	@Override public long getMass() { return radius * MULTIPLIER_PLANET_MASS;} 
+	
 	public void addChild(Area area) 
 	{
 		super.addChild(area);

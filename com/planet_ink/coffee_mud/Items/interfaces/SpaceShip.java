@@ -45,8 +45,6 @@ public interface SpaceShip extends SpaceObject
 	
 	public SpaceObject getShipSpaceObject();
 	
-	public int getMass();
-	
 	/**
 	 * The Outer Mold Line coefficient -- how streamlined are you?
 	 * @return the coefficient, from 0.05-0.3

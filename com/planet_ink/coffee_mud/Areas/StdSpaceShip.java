@@ -129,9 +129,9 @@ public class StdSpaceShip implements Area, SpaceShip
 		return new BoundedObject.BoundedCube(coordinates(),radius());
 	}
 	
-	public int getMass()
+	public long getMass()
 	{
-		int mass=this.mass;
+		long mass=this.mass;
 		if(mass<0)
 		{
 			int newMass=phyStats().weight();
