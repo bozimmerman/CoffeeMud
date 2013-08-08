@@ -304,10 +304,25 @@ public class CMMap extends StdLibrary implements WorldMap
 									+CMath.mul((O1.coordinates()[2]-O2.coordinates()[2]),(O1.coordinates()[2]-O2.coordinates()[2]))));
 	}
 
-	public double[] getDirectionChange()
+	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
 	{
-		//magnitude=sqrt(oldveloc^2 + newveloc^2);
-		return null;
+		final double[] oldDirection=O.direction();
+		final long oldSpeed=O.speed();
+		if((oldDirection[0]==newDirection[0])&&(oldDirection[1]==newDirection[1]))
+		{
+			O.setSpeed(oldSpeed+newAccelleration);
+			return;
+		}
+		final double[] c={
+			(oldSpeed*Math.cos(oldDirection[0])*Math.sin(oldDirection[1])) + (newAccelleration*Math.cos(newDirection[0])*Math.sin(newDirection[1])),
+			(oldSpeed*Math.sin(oldDirection[0])*Math.sin(oldDirection[1])) + (newAccelleration*Math.sin(newDirection[0])*Math.sin(newDirection[1])),
+			(oldSpeed*Math.cos(oldDirection[1])) + (newAccelleration*Math.cos(newDirection[1]))
+		};
+		if(c[0]<0)
+			O.direction()[0]=Math.PI-Math.asin(c[1]/Math.sqrt((c[0]*c[0])+(c[1]*c[1])));
+		else
+			O.direction()[0]=Math.asin(c[1]/Math.sqrt((c[0]*c[0])+(c[1]*c[1])));
+		O.setSpeed(Math.round(Math.sqrt((c[0]*c[0])+(c[1]*c[1])+(c[2]*c[2]))));
 	}
 	
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
