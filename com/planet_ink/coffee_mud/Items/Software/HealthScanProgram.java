@@ -104,15 +104,22 @@ public class HealthScanProgram extends GenSoftware
 			}
 			str.append(".\n\r");
 		}
+		int found=0;
 		for(int a=0;a<M.numAllEffects();a++)
 		{
 			Ability A=M.fetchEffect(a);
 			if((A instanceof HealthCondition)&&(!(A instanceof DiseaseAffect))) // diseases handled above
 			{
+				found++;
 				String desc=((HealthCondition)A).getHealthConditionDesc();
 				if(desc.length()>0)
 					str.append(desc).append("\n\r");
 			}
+		}
+		if(found==0)
+		{
+			if(CMLib.flags().isSleeping(M))
+				str.append(M.name(viewerM)+" is sleeping.\n\r");
 		}
 		if(str.length()==0)
 			return "No life signs detected.";
