@@ -132,6 +132,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public List<Ability> domainAnyAffects(Physical P, int domain);
 	public List<Ability> domainAffects(Physical P, int domain);
 	public List<Ability> domainAbilities(MOB M, int domain);
+	public String getAge(MOB M);
 	public boolean canAccess(MOB mob, Area A);
 	public boolean canAccess(MOB mob, Room R);
 	public boolean isMetal(Environmental E);

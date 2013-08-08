@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Skill_ArrestingSap extends StdSkill
+public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 {
 	public String ID() { return "Skill_ArrestingSap"; }
 	public String name(){ return "Arresting Sap";}
@@ -51,6 +51,12 @@ public class Skill_ArrestingSap extends StdSkill
 	protected boolean utterSafety=false;
 	public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Unconscious";
+	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

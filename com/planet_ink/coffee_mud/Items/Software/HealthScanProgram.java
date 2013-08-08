@@ -79,8 +79,11 @@ public class HealthScanProgram extends GenSoftware
 		StringBuilder str=new StringBuilder("");
 		char gender=(char)M.charStats().getStat(CharStats.STAT_GENDER);
 		String genderName=(gender=='M')?"male":(gender=='F')?"female":"neuter";
-		str.append(M.name(viewerM)+" is a "+genderName+" "+M.charStats().getMyRace().name()+"\n\r");
-		str.append(CMath.toPct(M.curState().getHitPoints()/M.maxState().getHitPoints())+M.healthText(viewerM));
+		str.append(M.name(viewerM)+" is a "+genderName+" "+M.charStats().getMyRace().name()+".\n\r");
+		String age=CMLib.flags().getAge(M);
+		str.append("Biological age: "+age+".\n\r");
+		str.append("Health: "+CMath.toPct(M.curState().getHitPoints()/M.maxState().getHitPoints())
+				+"  "+CMStrings.removeColors(M.healthText(viewerM))+"\n\r");
 		List<Ability> diseases=CMLib.flags().domainAffects(M, Ability.ACODE_DISEASE);
 		for(Ability A : diseases)
 		{
@@ -119,19 +122,19 @@ public class HealthScanProgram extends GenSoftware
 	@Override 
 	public boolean isActivationString(String word) 
 	{ 
-		return "lifescan".startsWith(word.toLowerCase()); 
+		return "healthscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
 	}
 	
 	@Override 
 	public boolean isDeActivationString(String word) 
 	{ 
-		return "lifescan".startsWith(word.toLowerCase()); 
+		return false; 
 	}
 	
 	@Override 
 	public boolean isCommandString(String word, boolean isActive) 
 	{ 
-		return "lifescan".startsWith(word.toLowerCase());
+		return "healthscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
 
 	@Override 
@@ -159,7 +162,26 @@ public class HealthScanProgram extends GenSoftware
 		Room R=mob.location();
 		if(R==null) 
 			return null;
-		return R.fetchInhabitant(name);
+		MOB M=R.fetchInhabitant(name);
+		if(M==null)
+		{
+			PhysicalAgent I=R.fetchFromMOBRoomFavorsItems(mob, null, name, Wearable.FILTER_ANY);
+			if(I instanceof CagedAnimal)
+			{
+				M=((CagedAnimal)I).unCageMe();
+				if(M!=null)
+				{
+					Ability ageA=M.fetchEffect("Age");
+					if(ageA==null)
+					{
+						ageA=I.fetchEffect("Age");
+						if(ageA!=null)
+							M.addNonUninvokableEffect(ageA);
+					}
+				}
+			}
+		}
+		return M;
 	}
 	
 	@Override 
@@ -185,7 +207,7 @@ public class HealthScanProgram extends GenSoftware
 		}
 		if((M==null)||(!isAlive(M)))
 		{
-			super.addScreenMessage("Failure: HEALTHSCAN cannot track target '"+name+"'");
+			super.addScreenMessage("Failure: HEALTHSCAN cannot track target \""+name+"\"");
 			return false;
 		}
 		lastMOBChecked=new WeakReference<MOB>(M);

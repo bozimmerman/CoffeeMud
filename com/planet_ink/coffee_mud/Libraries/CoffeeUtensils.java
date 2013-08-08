@@ -69,7 +69,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return id;
 	}
-	
+
 	public String getFormattedDate(Environmental E)
 	{
 		String date=CMStrings.padRight("Unknown",11);

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class Thief_Sap extends ThiefSkill
+public class Thief_Sap extends ThiefSkill implements HealthCondition
 {
 	public String ID() { return "Thief_Sap"; }
 	public String name(){ return "Sap";}
@@ -47,6 +47,12 @@ public class Thief_Sap extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Unconscious";
+	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

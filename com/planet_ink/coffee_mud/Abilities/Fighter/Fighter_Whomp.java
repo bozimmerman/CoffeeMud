@@ -34,7 +34,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Fighter_Whomp extends FighterSkill
+public class Fighter_Whomp extends FighterSkill implements HealthCondition
 {
 	public String ID() { return "Fighter_Whomp"; }
 	public String name(){ return "Whomp";}
@@ -47,6 +47,12 @@ public class Fighter_Whomp extends FighterSkill
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Unconscious";
+	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

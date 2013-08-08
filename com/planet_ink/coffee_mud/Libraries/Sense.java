@@ -254,7 +254,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				return true;
 		return false;
 	}
-	
+
 	public boolean isReallyEvil(Physical P)
 	{
 		if(P instanceof MOB)
@@ -283,12 +283,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return isReallyEvil(P);
 	}
 
-  public boolean isTracking(MOB M)
-  {
+	public boolean isTracking(MOB M)
+	{
 		if(M!=null)
 			return flaggedAffects(M,Ability.FLAG_TRACKING).size()>0;
 		return false;
-  }
+	}
+	
 	public boolean isATrackingMonster(MOB M)
 	{
 		if(M==null) return false;
@@ -315,6 +316,24 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			}
 		}
 		return false;
+	}
+
+	public String getAge(MOB M)
+	{
+		Ability A=M.fetchEffect("Age");
+		if((A==null)||(A.displayText().length()==0))
+		{
+			if(M.baseCharStats().getStat(CharStats.STAT_AGE)==0)
+				return "unknown";
+			return M.baseCharStats().getStat(CharStats.STAT_AGE)+" year(s) old";
+		}
+		else
+		{
+			String s=A.displayText();
+			if(s.startsWith("(")) s=s.substring(1);
+			if(s.endsWith(")")) s=s.substring(0,s.length()-1);
+			return s;
+		}
 	}
 	
 	public boolean isGood(Physical P)

@@ -216,7 +216,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				return str.substring(start,i);
 			break;
 		default:
-			if(Character.isLetter(str.charAt(i)))
+			if(Character.isLetter(str.charAt(i)) && (start<0))
 				start=i;
 			break;
 		}

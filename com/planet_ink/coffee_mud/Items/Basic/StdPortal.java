@@ -140,7 +140,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		return R;
 	}
 	
-	public Room lastRoomUsedFrom() { return CMLib.map().roomLocation(this); }
+	public Room lastRoomUsedFrom() { return getDestinationRoom(); }
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

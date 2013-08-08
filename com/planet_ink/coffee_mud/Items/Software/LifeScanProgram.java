@@ -73,7 +73,58 @@ public class LifeScanProgram extends GenSoftware
 	{
 		return CMClass.getMsg(CMLib.map().getFactoryMOB(R), null, this, CMMsg.MASK_CNTRLMSG|CMMsg.MSG_LOOK, null); // cntrlmsg is important
 	}
-
+	
+	public void getDirDesc(String dirBuilder, StringBuilder str, boolean useShipDirs)
+	{
+		int numDone=0;
+		int numTotal=0;
+		for(int d=0;d<dirBuilder.length();d++)
+			numTotal+=(Character.isLowerCase(dirBuilder.charAt(d))?1:0);
+		if(dirBuilder.length()==0)
+			str.append(" here");
+		else
+		for(int d=0;d<dirBuilder.length();d++)
+		{
+			if(dirBuilder.charAt(d)=='S')
+			{
+				if(numDone==0)
+					str.append(" inside a ship");
+				else
+				if(numDone<numTotal-1)
+					str.append(", inside a ship");
+				else
+					str.append(", and then inside a ship");
+				numDone++;
+				continue;
+			}
+			String locDesc="";
+			if(dirBuilder.charAt(d)=='D')
+			{
+				locDesc="behind a door ";
+				d++;
+			}
+			if(dirBuilder.charAt(d)=='I')
+			{
+				locDesc="inside a room ";
+				d++;
+			}
+			if(dirBuilder.charAt(d)=='o')
+			{
+				locDesc="outdoors ";
+				d++;
+			}
+			int dir=dirBuilder.charAt(d)-'a';
+			if(numDone==0)
+				str.append(" ").append(locDesc).append(useShipDirs?Directions.getShipDirectionName(dir):Directions.getDirectionName(dir));
+			else
+			if(numDone<numTotal-1)
+				str.append(", ").append(locDesc).append(useShipDirs?Directions.getShipDirectionName(dir):Directions.getDirectionName(dir));
+			else
+				str.append(", and then ").append(locDesc).append(useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir));
+			numDone++;
+		}
+	}
+	
 	public int getScanMsg(Room R, Set<Room> roomsDone, String dirBuilder, int depthLeft, CMMsg scanMsg, StringBuilder str)
 	{
 		if((R==null)||(roomsDone.contains(R))) return 0;
@@ -90,43 +141,63 @@ public class LifeScanProgram extends GenSoftware
 				{
 					numFound++;
 					str.append("A "+M.charStats().getMyRace().name());
-					int numDone=0;
-					int numTotal=0;
-					for(int d=0;d<dirBuilder.length();d++)
-						numTotal+=(Character.isLowerCase(dirBuilder.charAt(d))?1:0);
-					if(dirBuilder.length()==0)
-						str.append(" here");
-					else
-					for(int d=0;d<dirBuilder.length();d++)
-					{
-						String locDesc="";
-						if(dirBuilder.charAt(d)=='D')
-						{
-							locDesc="behind a door ";
-							d++;
-						}
-						if(dirBuilder.charAt(d)=='I')
-						{
-							locDesc="inside a room ";
-							d++;
-						}
-						if(dirBuilder.charAt(d)=='o')
-						{
-							locDesc="outdoors ";
-							d++;
-						}
-						int dir=dirBuilder.charAt(d)-'a';
-						if(numDone==0)
-							str.append(" ").append(locDesc).append(useShipDirs?Directions.getShipDirectionName(dir):Directions.getDirectionName(dir));
-						else
-						if(numDone<numTotal-1)
-							str.append(", ").append(locDesc).append(useShipDirs?Directions.getShipDirectionName(dir):Directions.getDirectionName(dir));
-						else
-							str.append(", and then ").append(locDesc).append(useShipDirs?Directions.getShipInDirectionName(dir):Directions.getInDirectionName(dir));
-						numDone++;
-					}
+					getDirDesc(dirBuilder, str, useShipDirs);
 					str.append(".\n\r");
 				}
+			}
+			for(int i=0;i<M.numItems();i++)
+			{
+				Item I=M.getItem(i);
+				if(I instanceof CagedAnimal)
+				{
+					MOB M2=((CagedAnimal)I).unCageMe();
+					if(isAlive(M2))
+					{
+						numFound++;
+						str.append("A "+M2.charStats().getMyRace().name());
+						getDirDesc(dirBuilder, str, useShipDirs);
+						str.append(".\n\r");
+					}
+					M2.destroy();
+				}
+			}
+		}
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I=R.getItem(i);
+			if(I instanceof CagedAnimal)
+			{
+				MOB M=((CagedAnimal)I).unCageMe();
+				if(isAlive(M))
+				{
+					numFound++;
+					str.append("A "+M.charStats().getMyRace().name());
+					getDirDesc(dirBuilder, str, useShipDirs);
+					str.append(".\n\r");
+				}
+				M.destroy();
+			}
+			if((I instanceof SpaceShip)&&(depthLeft>0))
+			{
+				Room shipR=null;
+				for(Enumeration<Room> r=((SpaceShip)I).getShipArea().getProperMap(); r.hasMoreElements(); )
+				{
+					Room R2=r.nextElement();
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						if(R2.getRoomInDir(d)==R)
+						{
+							Exit E2=R2.getExitInDir(d);
+							if(E2==null) continue;
+							shipR=R2;
+							break;
+						}
+					}
+					if(shipR!=null)
+						break;
+				}
+				if(shipR!=null)
+					numFound+=getScanMsg(shipR,roomsDone, dirBuilder+'S', depthLeft-1, scanMsg, str);
 			}
 		}
 		if(depthLeft>0)
@@ -143,7 +214,7 @@ public class LifeScanProgram extends GenSoftware
 								(isIndoors && (!willIndoors))?"O":
 								(!isIndoors && (willIndoors))?"I":
 								"";
-				numFound+=getScanMsg(R2, new HashSet<Room>(), dirBuilder+dirBCode+((char)('a'+d)), depthLeft-1, scanMsg, str);
+				numFound+=getScanMsg(R2, roomsDone, dirBuilder+dirBCode+((char)('a'+d)), depthLeft-1, scanMsg, str);
 			}
 		}
 		return numFound;
@@ -167,19 +238,19 @@ public class LifeScanProgram extends GenSoftware
 	@Override 
 	public boolean isActivationString(String word) 
 	{ 
-		return "lifescan".startsWith(word.toLowerCase()); 
+		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
 	}
 	
 	@Override 
 	public boolean isDeActivationString(String word) 
 	{ 
-		return "lifescan".startsWith(word.toLowerCase()); 
+		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
 	}
 	
 	@Override 
 	public boolean isCommandString(String word, boolean isActive) 
 	{ 
-		return "lifescan".startsWith(word.toLowerCase());
+		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
 
 	@Override 
