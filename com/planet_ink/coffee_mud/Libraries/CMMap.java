@@ -322,6 +322,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			O.direction()[0]=Math.PI-Math.asin(c[1]/Math.sqrt((c[0]*c[0])+(c[1]*c[1])));
 		else
 			O.direction()[0]=Math.asin(c[1]/Math.sqrt((c[0]*c[0])+(c[1]*c[1])));
+		O.direction()[1]=Math.acos(c[2]/Math.sqrt((c[0]*c[0])+(c[1]*c[1])+(c[2]*c[2])));
 		O.setSpeed(Math.round(Math.sqrt((c[0]*c[0])+(c[1]*c[1])+(c[2]*c[2]))));
 	}
 	
