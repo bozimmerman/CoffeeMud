@@ -474,7 +474,10 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		} 
 		catch (Exception e) 
 		{
-			Log.errOut("HttpClient",e);
+			if(e.getMessage()==null)
+				Log.errOut("HttpClient",e);
+			else
+				Log.errOut("HttpClient: "+e.getMessage());
 			return null;
 		}
 		finally {
@@ -516,7 +519,10 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		}
 		catch (Exception e) 
 		{
-			Log.errOut("HttpClient",e);
+			if(e.getMessage()==null)
+				Log.errOut("HttpClient",e);
+			else
+				Log.errOut("HttpClient: "+e.getMessage());
 			return null;
 		}
 		finally {
