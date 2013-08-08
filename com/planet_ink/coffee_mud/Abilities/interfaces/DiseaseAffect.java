@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.interfaces;
+import java.lang.reflect.Method;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -46,6 +48,13 @@ public interface DiseaseAffect extends Ability
 	/** denotes a diseases spread by taking physical damage from someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_DAMAGE=16;
 
+	/**
+	 * Descriptions of the SPREAD_ constants
+	 */
+	public final static String[] SPREAD_DESCS = {
+		"sexual contact", "direct contact", "proximity", "ingestion", "blood contact"
+	};
+	
 	/**
 	 * This method returns the level from 0-9 of how difficult it
 	 * is to cure this disease through mundane or magical means.

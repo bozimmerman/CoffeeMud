@@ -123,6 +123,16 @@ public class CMath
 	}
 
 	/**
+	 * Append st,nd,rd for a number
+	 * @param num the number
+	 * @return the number with st,nd,rd appendage only
+	 */
+	public final static String appendNumAppendage(final int num)
+	{
+		return num+numAppendage(num);
+	}
+	
+	/**
 	 * Return true if the char is a roman numeral digit
 	 * @param c the char
 	 * @return true if is roman
