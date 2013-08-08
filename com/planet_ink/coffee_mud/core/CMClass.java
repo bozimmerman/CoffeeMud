@@ -510,10 +510,20 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Enumeration<MiscMagic>  miscMagic(){return c().miscMagic.elements();}
 	/**
+	 * An enumeration of all the stored misc Magic in this classloader for this thread
+	 * @return an enumeration of all the stored misc Magic in this classloader for this thread
+	 */
+	public static final Enumeration<MiscMagic>  miscMagic(Filterer<MiscMagic> f){return new FilteredEnumeration<MiscMagic>(c().miscMagic.elements(),f);}
+	/**
 	 * An enumeration of all the stored misc Tech in this classloader for this thread
 	 * @return an enumeration of all the stored misc Tech in this classloader for this thread
 	 */
 	public static final Enumeration<Electronics>tech(){return c().tech.elements();}
+	/**
+	 * An enumeration of all the stored misc Tech in this classloader for this thread
+	 * @return an enumeration of all the stored misc Tech in this classloader for this thread
+	 */
+	public static final Enumeration<Electronics>tech(Filterer<Electronics> f){return new FilteredEnumeration<Electronics>(c().tech.elements(),f);}
 	/**
 	 * An enumeration of all the stored clan Items in this classloader for this thread
 	 * @return an enumeration of all the stored clan Items in this classloader for this thread
@@ -534,6 +544,11 @@ public class CMClass extends ClassLoader
 	 * @return an enumeration of all the stored abilities in this classloader for this thread
 	 */
 	public static final Enumeration<Ability>	abilities(){return c().abilities.elements();}
+	/**
+	 * An enumeration of all the stored abilities in this classloader for this thread
+	 * @return an enumeration of all the stored abilities in this classloader for this thread
+	 */
+	public static final Enumeration<Ability>	abilities(Filterer<Ability> f){return new FilteredEnumeration<Ability>(c().abilities.elements(),f);}
 	/**
 	 * An enumeration of all the stored webmacros in this classloader for this thread
 	 * @return an enumeration of all the stored webmacros in this classloader for this thread

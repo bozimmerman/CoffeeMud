@@ -40,38 +40,37 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class LifeScanProgram extends GenSoftware
+public class EmissionScanProgram extends GenSoftware
 {
-	public String ID(){	return "LifeScanProgram";}
+	public String ID(){	return "EmissionScanProgram";}
 	
 	protected final static short AUTO_TICKDOWN=4;
 	
 	protected boolean activated=false;
 	protected short activatedTickdown=AUTO_TICKDOWN;
 	
-	public LifeScanProgram()
+	public EmissionScanProgram()
 	{
 		super();
 		setName("a lifescan minidisk");
 		setDisplayText("a minidisk sits here.");
-		setDescription("Lifescan software, for small computer/scanners, will reveal life in the surrounding area.");
-		super.setCurrentScreenDisplay("LIFESCAN: Activate for continual scanning, type for on-demand.\n\r");
-		basePhyStats().setWeight(1); // the higher the weight, the wider the scan
+		setDescription("Emissions software, for small computer/scanners, will locate electronic and wave emissions.");
+		super.setCurrentScreenDisplay("EMISSIONSCAN: Activate for continual scanning, type for on-demand.\n\r");
+		basePhyStats().setWeight(2); // the higher the weight, the wider the scan
 		recoverPhyStats();
 	}
 	
 	@Override public String getParentMenu() { return ""; }
 	@Override public String getInternalName() { return "";}
 	
-	public boolean isAlive(MOB M)
+	public boolean isEmitting(Item I)
 	{
-		// there you have it, the definition of "life" -- is biological, and can reproduce
-		return ((M!=null)&&(!CMLib.flags().isGolem(M)) && (M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace())));
+		return ((I instanceof Electronics)&&(((Electronics)I).activated()));
 	}
 	
 	public CMMsg getScanMsg(Room R)
 	{
-		return CMClass.getMsg(CMLib.map().getFactoryMOB(R), null, this, CMMsg.MASK_CNTRLMSG|CMMsg.MSG_LOOK, null); // cntrlmsg is important
+		return CMClass.getMsg(CMLib.map().getFactoryMOB(R), null, this, CMMsg.MASK_CNTRLMSG|CMMsg.MSG_SNIFF, null); // cntrlmsg is important
 	}
 	
 	public void getDirDesc(String dirBuilder, StringBuilder str, boolean useShipDirs)
@@ -125,7 +124,7 @@ public class LifeScanProgram extends GenSoftware
 		}
 	}
 	
-	public int getScanMsg(Room R, Set<Room> roomsDone, String dirBuilder, int depthLeft, CMMsg scanMsg, StringBuilder str)
+	public int getScanMsg(MOB viewerM, Room R, Set<Room> roomsDone, String dirBuilder, int depthLeft, CMMsg scanMsg, StringBuilder str)
 	{
 		if((R==null)||(roomsDone.contains(R))) return 0;
 		roomsDone.add(R);
@@ -134,48 +133,62 @@ public class LifeScanProgram extends GenSoftware
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			MOB M=R.fetchInhabitant(m);
-			if(isAlive(M))
-			{
-				scanMsg.setTarget(M);
-				if(R.okMessage(scanMsg.source(), scanMsg))
-				{
-					numFound++;
-					str.append("A "+M.charStats().getMyRace().name());
-					getDirDesc(dirBuilder, str, useShipDirs);
-					str.append(".\n\r");
-				}
-			}
+			if(M!=null)
 			for(int i=0;i<M.numItems();i++)
 			{
 				Item I=M.getItem(i);
-				if(I instanceof CagedAnimal)
+				if(isEmitting(I))
 				{
-					MOB M2=((CagedAnimal)I).unCageMe();
-					if(isAlive(M2))
+					scanMsg.setTarget(I);
+					if(R.okMessage(scanMsg.source(), scanMsg))
 					{
 						numFound++;
-						str.append("A "+M2.charStats().getMyRace().name());
+						if(roomsDone.size()==1)
+						{
+							if(CMLib.flags().canBeSeenBy(M, viewerM))
+								str.append("Something on "+M.name(viewerM));
+							else
+								str.append("Something on someone");
+						}
+						else
+							str.append("Something");
 						getDirDesc(dirBuilder, str, useShipDirs);
 						str.append(".\n\r");
+						break;
 					}
-					M2.destroy();
 				}
 			}
 		}
 		for(int i=0;i<R.numItems();i++)
 		{
 			Item I=R.getItem(i);
-			if(I instanceof CagedAnimal)
+			if(isEmitting(I))
 			{
-				MOB M=((CagedAnimal)I).unCageMe();
-				if(isAlive(M))
+				scanMsg.setTarget(I);
+				if(R.okMessage(scanMsg.source(), scanMsg))
 				{
 					numFound++;
-					str.append("A "+M.charStats().getMyRace().name());
+					if(roomsDone.size()==1)
+					{
+						Item C=I.ultimateContainer(null);
+						if((C!=null)&&(C!=I))
+						{
+							if(CMLib.flags().canBeSeenBy(C, viewerM))
+								str.append("Something in "+C.name(viewerM));
+							else
+								str.append("Something inside something else");
+						}
+						else
+						if(CMLib.flags().canBeSeenBy(I, viewerM))
+							str.append(I.name(viewerM));
+						else
+							str.append("Something");
+					}
+					else
+						str.append("Something");
 					getDirDesc(dirBuilder, str, useShipDirs);
 					str.append(".\n\r");
 				}
-				M.destroy();
 			}
 			if((I instanceof SpaceShip)&&(depthLeft>0))
 			{
@@ -197,7 +210,7 @@ public class LifeScanProgram extends GenSoftware
 						break;
 				}
 				if(shipR!=null)
-					numFound+=getScanMsg(shipR,roomsDone, dirBuilder+'S', depthLeft-1, scanMsg, str);
+					numFound+=getScanMsg(viewerM,shipR,roomsDone, dirBuilder+'S', depthLeft-1, scanMsg, str);
 			}
 		}
 		if(depthLeft>0)
@@ -214,43 +227,43 @@ public class LifeScanProgram extends GenSoftware
 								(isIndoors && (!willIndoors))?"O":
 								(!isIndoors && (willIndoors))?"I":
 								"";
-				numFound+=getScanMsg(R2, roomsDone, dirBuilder+dirBCode+((char)('a'+d)), depthLeft-1, scanMsg, str);
+				numFound+=getScanMsg(viewerM,R2, roomsDone, dirBuilder+dirBCode+((char)('a'+d)), depthLeft-1, scanMsg, str);
 			}
 		}
 		return numFound;
 	}
 	
-	public String getScanMsg()
+	public String getScanMsg(MOB viewerM)
 	{
 		final Room R=CMLib.map().roomLocation(this);
 		if(R==null) return "";
 		StringBuilder str=new StringBuilder("");
-		int numFound=getScanMsg(R,new HashSet<Room>(), "",phyStats().weight()+1,getScanMsg(R),str);
+		int numFound=getScanMsg(viewerM, R,new HashSet<Room>(), "",phyStats().weight()+1,getScanMsg(R),str);
 		if(activated)
-			super.setCurrentScreenDisplay("LIFESCAN: Activated: "+numFound+" found last scan.\n\r");
+			super.setCurrentScreenDisplay("EMISSIONSCAN: Activated: "+numFound+" found last scan.\n\r");
 		else
-			super.setCurrentScreenDisplay("LIFESCAN: Activate for continual scanning, type for on-demand.\n\r");
+			super.setCurrentScreenDisplay("EMISSIONSCAN: Activate for continual scanning, type for on-demand.\n\r");
 		if(str.length()==0)
-			return "No life signs detected.";
+			return "No emissions detected.";
 		return str.toString().toLowerCase();
 	}
 	
 	@Override 
 	public boolean isActivationString(String word) 
 	{ 
-		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
+		return "emissionscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
 	}
 	
 	@Override 
 	public boolean isDeActivationString(String word) 
 	{ 
-		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
+		return "emissionscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase())); 
 	}
 	
 	@Override 
 	public boolean isCommandString(String word, boolean isActive) 
 	{ 
-		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
+		return "emissionscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
 
 	@Override 
@@ -289,8 +302,8 @@ public class LifeScanProgram extends GenSoftware
 		super.onActivate(mob, message);
 		this.activated=true;
 		activatedTickdown=AUTO_TICKDOWN;
-		//TODO: lifescan for particular races? Is that a special version of lifescan?
-		String scan=getScanMsg();
+		//TODO: emissionscan for particular items? Is that a special version of emissionscan?
+		String scan=getScanMsg(mob);
 		if(scan.length()>0)
 			super.addScreenMessage(scan);
 	}
@@ -300,7 +313,7 @@ public class LifeScanProgram extends GenSoftware
 	{
 		super.onDeactivate(mob, message);
 		if(activated)
-			super.addScreenMessage("Life scanning deactivated.");
+			super.addScreenMessage("Emission scanning deactivated.");
 		this.activated=false;
 	}
 	
@@ -308,7 +321,7 @@ public class LifeScanProgram extends GenSoftware
 	public void onTyping(MOB mob, String message)
 	{
 		super.onTyping(mob, message);
-		String scan=getScanMsg();
+		String scan=getScanMsg(mob);
 		if(scan.length()>0)
 			super.addScreenMessage(scan);
 	}
@@ -319,7 +332,8 @@ public class LifeScanProgram extends GenSoftware
 		super.onPowerCurrent(value);
 		if((value != 0)&&(activated)&&(--activatedTickdown>=0)) // means there was power to give, 2 means is active menu, which doesn't apply 
 		{
-			String scan=getScanMsg();
+			MOB M=(owner() instanceof MOB)?((MOB)owner()):null;
+			String scan=getScanMsg(M);
 			if(scan.length()>0)
 				super.addScreenMessage(scan);
 		}

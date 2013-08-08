@@ -51,7 +51,7 @@ public class HealthScanProgram extends GenSoftware
 	{
 		super();
 		setName("a healthscan minidisk");
-		setDisplayText("a small disk sits here.");
+		setDisplayText("a minidisk sits here.");
 		setDescription("Healthscan software, for small computer/scanners, will diagnose anomalies in organic life.");
 		super.setCurrentScreenDisplay("HEALTHSCAN [TARGET] : Check health of the living target.\n\r");
 		basePhyStats().setWeight(1); // the higher the weight, the wider the scan
