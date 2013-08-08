@@ -43,6 +43,7 @@ public interface EnglishParsing extends CMLibrary
 	public String getFirstWord(final String str);
 	public String properIndefiniteArticle(String str);
 	public String toEnglishStringList(final String[] V);
+	public String toEnglishStringList(final List<? extends Object> V);
 	public String insertUnColoredAdjective(String str, String adjective);
 	public String startWithAorAn(String str);
 	public CMObject findCommand(MOB mob, List<String> commands);

@@ -51,6 +51,12 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 
 	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Profound mental compulsion disorder.";
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))

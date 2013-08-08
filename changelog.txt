@@ -25,6 +25,7 @@
       Also, untargeted speaking, when only one other person is in the room, will assume to be addressing them. New DISABLE=AUTOLANGUAGE
   24. (Tech) New TriCorder item (portable computer).  Also, internally, class names and locations are shifting as tech takes shape.
 //TODO: finish personal scanner/tricorder software
+//TODO: ships should have turn rate, derived from the mass of the ship. formula=
 //TODO: bug: my space ship had a manufacturer name of RANDOM, and it had a techlevel marking (which might be ok, and just not matter)
 //TODO: make the tech install skill!!!
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.

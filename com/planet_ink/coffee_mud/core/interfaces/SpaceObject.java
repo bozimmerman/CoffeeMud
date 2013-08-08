@@ -62,6 +62,8 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public double[] direction();
 	/**
 	 * Sets the direction of travel of this object in radians.
+	 * direction[0] <= PI
+	 * direction[1] <= 2PI
 	 * @param dir 2 dimensional array for the direction of movement
 	 */
 	public void setDirection(double[] dir);
@@ -95,7 +97,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	 * @param O the source of  this object
 	 */
 	public void setKnownSource(SpaceObject O);
-	
+
 	/** distance constant useful for coordinates, is 1 kilometer, in decameters*/
 	public static final long DISTANCE_KILOMETER=100;
 	/** distance constant useful for coordinates, is 1 lightyear, in decameters*/
@@ -118,7 +120,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static final long DISTANCE_POINTBLANK=20000;
 	/** distance constant useful for coordinates, is 1 galaxy, in decameters*/
 	public static final long DISTANCE_BETWEENSTARS=DISTANCE_LIGHTYEAR*4;
-	
+
 	/** constant useful for multiplying by radius -- this one to find the orbiting radius*/
 	public static final double MULTIPLIER_ORBITING_RADIUS_MIN=1.029;
 	/** constant useful for multiplying by radius -- this one to find the orbiting radius*/
@@ -128,7 +130,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 
 	/** accelleration at which you are happy, in decameters/s */
 	public static final long ACCELLERATION_G=1;
-	/** accelleration at which you pass out, in decameters/s */ 
+	/** accelleration at which you pass out, in decameters/s */
 	public static final long ACCELLERATION_PASSOUT=ACCELLERATION_G*5;
 	/** accelleration in atmosphere, in decameters/s */
 	public static final long ACCELLERATION_TYPICALROCKET=ACCELLERATION_G*2;

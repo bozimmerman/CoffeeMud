@@ -34,7 +34,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Bleeding extends StdAbility
+public class Bleeding extends StdAbility implements HealthCondition
 {
 	public String ID() { return "Bleeding"; }
 	public String name(){ return "Bleeding";}
@@ -47,6 +47,12 @@ public class Bleeding extends StdAbility
 
 	public double healthPct(MOB mob){ return CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Bleeding externally and excessively.";
+	}
+	
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)

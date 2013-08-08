@@ -36,7 +36,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Regeneration extends StdAbility
+public class Regeneration extends StdAbility implements HealthCondition
 {
 	private static final int maxTickDown=3;
 	protected int regenTick=maxTickDown;
@@ -54,7 +54,12 @@ public class Regeneration extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	protected int permanentDamage=0;
 
-
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Possesses regenerative cells.";
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

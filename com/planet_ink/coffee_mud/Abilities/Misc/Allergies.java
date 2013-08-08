@@ -35,7 +35,7 @@ import java.util.*;
 */
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Allergies extends StdAbility
+public class Allergies extends StdAbility implements HealthCondition
 {
 	public String ID() { return "Allergies"; }
 	public String name(){ return "Allergies";}
@@ -46,9 +46,22 @@ public class Allergies extends StdAbility
 	public int classificationCode(){return Ability.ACODE_PROPERTY;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	protected HashSet resourceAllergies=new HashSet();
-	protected HashSet raceAllergies=new HashSet();
+	protected Set<Integer> resourceAllergies=new HashSet<Integer>();
+	protected Set<Race> raceAllergies=new HashSet<Race>();
 	protected int allergicCheckDown=0;
+	
+	@Override
+	public String getHealthConditionDesc()
+	{
+		List<String> list=new ArrayList<String>();
+		for(Integer I : resourceAllergies)
+			list.add(RawMaterial.CODES.NAME(I.intValue()).toLowerCase());
+		for(Race R : raceAllergies)
+			list.add(R.name()+" dander");
+		if(list.size()==0) return "";
+		return "Suffers from allergies to "+CMLib.english().toEnglishStringList(list)+".";
+	}
+	
 	
 	public void setMiscText(String newText)
 	{

@@ -586,6 +586,23 @@ public class CMath
 	}
 	
 	/**
+	 * Returns the bit index (0 based) of the first bit set in the given mask.
+	 * @param bits the bits to check
+	 * @return the first bit set, as an index (1=0, 2=1, 4=2, 8=3, etc..)
+	 */
+	public final static int[] getAllBitsSet(int bits) 
+	{
+		List<Integer> bitsSet=new ArrayList<Integer>();
+		for(int i=0;i<32;i++)
+			if(isSet(bits,i))
+				bitsSet.add(Integer.valueOf(i));
+		int[] ret=new int[bitsSet.size()];
+		for(int i=0;i<bitsSet.size();i++)
+			ret[i]=bitsSet.get(i).intValue();
+		return ret;
+	}
+	
+	/**
 	 * Returns true if the bitnumberth bit (0...) is set 
 	 * in the given number
 	 * @param number the given number

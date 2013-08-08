@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class CombatSleep extends StdAbility
+public class CombatSleep extends StdAbility implements HealthCondition
 {
 	public String ID() { return "CombatSleep"; }
 	public String name(){return "Combat Sleep";}
@@ -48,6 +48,12 @@ public class CombatSleep extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Unconsciousness.";
+	}
+	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

@@ -48,6 +48,12 @@ public class Disease extends StdAbility implements DiseaseAffect
 	public int classificationCode(){return Ability.ACODE_DISEASE;}
 	protected boolean DISEASE_MALICIOUS(){return true;}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Suffering the effects of "+name();
+	}
+	
 	protected int DISEASE_TICKS(){return 48;}
 	protected int DISEASE_DELAY(){return 5;}
 	protected String DISEASE_DONE(){return "Your disease has run its course.";}

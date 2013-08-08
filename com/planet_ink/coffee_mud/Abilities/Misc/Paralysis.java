@@ -34,7 +34,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Paralysis extends StdAbility
+public class Paralysis extends StdAbility implements HealthCondition
 {
 	public String ID() { return "Paralysis"; }
 	public String name(){ return "Paralysis";}
@@ -48,6 +48,12 @@ public class Paralysis extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Paralysis";
+	}
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

@@ -35,7 +35,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class WingFlying extends StdAbility
+public class WingFlying extends StdAbility implements HealthCondition
 {
 	public String ID() { return "WingFlying"; }
 	public String name(){ return "Winged Flight";}
@@ -49,6 +49,12 @@ public class WingFlying extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Weak Paralysis";
+	}
+	
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);

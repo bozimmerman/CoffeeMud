@@ -316,8 +316,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		double x=TO.coordinates()[0]-FROM.coordinates()[0];
 		double y=TO.coordinates()[1]-FROM.coordinates()[1];
 		double z=TO.coordinates()[2]-FROM.coordinates()[2];
-		dir[0]=Math.acos(x/Math.sqrt((x*x)+(y*y)));
-		dir[1]=Math.acos(z/Math.sqrt((z*z)+(y*y)));
+		if(x<0)
+			dir[0]=Math.PI-Math.asin(y/Math.sqrt((x*x)+(y*y)));
+		else
+			dir[0]=Math.asin(y/Math.sqrt((x*x)+(y*y)));
+		dir[1]=Math.acos(z/Math.sqrt((z*z)+(y*y)+(x*x)));
 		return dir;
 	}
 

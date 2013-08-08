@@ -47,6 +47,12 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 
 	public int spreadBitmap(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Mental compulsion disorder: Tourettes Syndrome.";
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

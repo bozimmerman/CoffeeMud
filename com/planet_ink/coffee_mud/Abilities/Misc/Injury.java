@@ -36,7 +36,7 @@ import java.util.*;
 */
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Injury extends StdAbility
+public class Injury extends StdAbility implements HealthCondition
 {
 	public String ID() { return "Injury"; }
 	public String name(){ return "Injury";}
@@ -50,7 +50,8 @@ public class Injury extends StdAbility
 	public final static int[] INJURYCHANCE={
 		3,3,3,11,3,12,5,35,13,5,3,0,0,3,3,3};
 	
-	public String displayText()
+	@Override
+	public String getHealthConditionDesc()
 	{
 		StringBuffer buf=new StringBuffer("");
 		Object[] O=null;
@@ -90,7 +91,14 @@ public class Injury extends StdAbility
 		}
 		catch(Exception e){}
 		if(buf.length()==0) return "";
-		return "(Injuries:"+buf.substring(1)+")";
+		return buf.substring(1);
+	}
+	
+	public String displayText()
+	{
+		String buf=getHealthConditionDesc();
+		if(buf.length()==0) return "";
+		return "(Injuries:"+buf+")";
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}

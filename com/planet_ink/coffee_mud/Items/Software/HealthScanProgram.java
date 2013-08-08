@@ -84,10 +84,32 @@ public class HealthScanProgram extends GenSoftware
 		List<Ability> diseases=CMLib.flags().domainAffects(M, Ability.ACODE_DISEASE);
 		for(Ability A : diseases)
 		{
+			int[] spreadBits=new int[0];
 			if(A instanceof DiseaseAffect)
+			{
 				str.append(CMath.appendNumAppendage(((DiseaseAffect)A).difficultyLevel())).append(" level");
-			str.append(A.name()+" has been detected.  ");
-			
+				spreadBits=CMath.getAllBitsSet(((DiseaseAffect)A).spreadBitmap());
+			}
+			str.append(A.name()+" has been detected");
+			if(spreadBits.length>0)
+			{
+				str.append(", which is spread by: ");
+				List<String> spreadList=new ArrayList<String>();
+				for(int i : spreadBits)
+					spreadList.add(DiseaseAffect.SPREAD_DESCS[i]);
+				str.append(CMLib.english().toEnglishStringList(spreadList.toArray(new String[0])));
+			}
+			str.append(".\n\r");
+		}
+		for(int a=0;a<M.numAllEffects();a++)
+		{
+			Ability A=M.fetchEffect(a);
+			if((A instanceof HealthCondition)&&(!(A instanceof DiseaseAffect))) // diseases handled above
+			{
+				String desc=((HealthCondition)A).getHealthConditionDesc();
+				if(desc.length()>0)
+					str.append(desc).append("\n\r");
+			}
 		}
 		if(str.length()==0)
 			return "No life signs detected.";
@@ -156,7 +178,7 @@ public class HealthScanProgram extends GenSoftware
 		Room R=(M!=null)?M.location():null;
 		if(R!=null)
 		{
-			CMMsg lookCheck=this.getScanMsg(M.location());
+			CMMsg lookCheck=this.getScanMsg(R);
 			lookCheck.setTarget(M);
 			if(!R.okMessage(lookCheck.source(), lookCheck))
 				M=null;

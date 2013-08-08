@@ -46,6 +46,13 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	public int difficultyLevel(){return 4;}
 	int plagueDown=8;
 	double drawups=1.0;
+
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "A rotting foot condition.";
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))

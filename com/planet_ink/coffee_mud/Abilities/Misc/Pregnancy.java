@@ -37,14 +37,15 @@ import java.util.*;
 */
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Pregnancy extends StdAbility
+public class Pregnancy extends StdAbility implements HealthCondition
 {
 	public String ID() { return "Pregnancy"; }
 	public String name(){ return "Pregnancy";}
 	protected long monthsRemaining=-1;
 	protected long daysRemaining=-1;
 
-	public String displayText()
+	@Override
+	public String getHealthConditionDesc()
 	{
 		int x=text().indexOf('/');
 		if(x>0)
@@ -56,13 +57,21 @@ public class Pregnancy extends StdAbility
 			long days=(System.currentTimeMillis()-start)/divisor; // down to days;
 			long months=days/CMLib.time().globalClock().getDaysInMonth();
 			if(days<1)
-				return "(less than 1 day pregnant)";
+				return "less than 1 day pregnant";
 			else
 			if(months<1)
-				return "("+days+" day(s) pregnant)";
+				return days+" day(s) pregnant";
 			else
-				return "("+months+" month(s) pregnant)";
+				return months+" month(s) pregnant";
 		}
+		return "";
+	}
+	
+	public String displayText()
+	{
+		String text=getHealthConditionDesc();
+		if(text.length()>0)
+			return "(is "+text+")";
 		return "";
 	}
 	protected int canAffectCode(){return CAN_MOBS;}

@@ -36,17 +36,20 @@ import java.util.*;
 */
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public class Amputation extends StdAbility implements Amputator
+public class Amputation extends StdAbility implements Amputator, HealthCondition
 {
 	public String ID() { return "Amputation"; }
 	public String name(){ return "Amputation";}
 	public String displayText(){
-		StringBuffer buf=new StringBuffer("");
-		for(int i=0;i<missingLimbNameSet().size();i++)
-			buf.append(", "+missingLimbNameSet().get(i));
-		if(buf.length()==0) return "";
-		return "(Missing your"+buf.substring(1)+")";
+		if(missingLimbNameSet().size()==0) return "";
+		return "(Missing your"+CMLib.english().toEnglishStringList(missingLimbNameSet())+")";
 	}
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Missing "+CMLib.english().toEnglishStringList(missingLimbNameSet());
+	}
+	
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

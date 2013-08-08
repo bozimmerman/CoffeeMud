@@ -47,6 +47,12 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	
 	int plagueDown=5;
 	
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return "Internally infested by numerous worm-like parasites.";
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!(affected instanceof MOB))

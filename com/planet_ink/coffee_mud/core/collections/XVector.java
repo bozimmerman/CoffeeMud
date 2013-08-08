@@ -44,7 +44,6 @@ public class XVector<T> extends Vector<T>
 		super(size);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public XVector(T... E)
 	{
 		super();

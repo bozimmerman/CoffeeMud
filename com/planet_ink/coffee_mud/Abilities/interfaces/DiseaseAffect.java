@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * DiseaseAffect is an ability interface to denote those properties, 
  * affects, or Disease objects that act as curable physical diseases.
  */
-public interface DiseaseAffect extends Ability
+public interface DiseaseAffect extends HealthCondition 
 {
 	/** denotes a diseases spread by sex with someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_STD=1;

@@ -63,7 +63,23 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return s.toString();
 	}
 
-	
+	public String toEnglishStringList(final List<? extends Object> V)
+	{
+		if((V==null)||(V.size()==0)){
+			return "";
+		}
+		if(V.size()==1) return V.get(0).toString();
+		final StringBuffer s=new StringBuffer("");
+		for(int v=0;v<V.size()-1;v++)
+		{
+			if(v>0) s.append(", ");
+			s.append(V.get(v).toString());
+		}
+		s.append(" and ");
+		s.append(V.get(V.size()-1).toString());
+		return s.toString();
+	}
+
 	public boolean isAnArticle(String s)
 	{
 		s=s.toLowerCase();

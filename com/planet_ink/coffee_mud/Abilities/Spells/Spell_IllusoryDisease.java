@@ -51,6 +51,12 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 		affectableStats.setStat(CharStats.STAT_STRENGTH,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_STRENGTH),2.0)));
 	}
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		return ""; // not really a condition
+	}
+	
 	public int abilityCode(){return 0;}
 
 	public boolean tick(Tickable ticking, int tickID)

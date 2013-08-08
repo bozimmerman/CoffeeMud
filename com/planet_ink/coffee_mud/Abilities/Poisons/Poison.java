@@ -35,7 +35,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("rawtypes")
-public class Poison extends StdAbility
+public class Poison extends StdAbility implements HealthCondition
 {
 	public String ID() { return "Poison"; }
 	public String name(){ return "Poison";}
@@ -62,6 +62,15 @@ public class Poison extends StdAbility
 
 	protected int poisonTick=3;
 
+	@Override
+	public String getHealthConditionDesc()
+	{
+		if(name().toUpperCase().endsWith("S"))
+			return "Suffering from "+name();
+		else
+			return "Suffering from "+name()+" poisoning.";
+	}
+	
 	protected boolean catchIt(MOB mob, Physical target)
 	{
 		MOB poisoner=invoker;
