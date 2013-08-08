@@ -75,7 +75,8 @@ public interface Electronics extends Item, Technical
 		public static final TechType[] PANELTYPES={ 
 			TechType.ANY,TechType.SHIP_WEAPON,TechType.SHIP_SHIELD,TechType.SHIP_ENGINE,TechType.SHIP_SENSOR,
 			TechType.SHIP_POWER,TechType.SHIP_COMPUTER,TechType.SHIP_SOFTWARE,
-			TechType.SHIP_ENVIRO_CONTROL,TechType.SHIP_GENERATOR,TechType.SHIP_DAMPENER
+			TechType.SHIP_ENVIRO_CONTROL,TechType.SHIP_GENERATOR,TechType.SHIP_DAMPENER,
+			TechType.SHIP_TRACTOR
 		};
 		public TechType panelType();
 		public void setPanelType(TechType type);
