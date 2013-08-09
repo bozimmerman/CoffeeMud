@@ -11,6 +11,12 @@
 	<script language=JavaScript>
 	<!--
 		var abort=false;
+        function Register()
+        {
+            document.FORUM.LASTPAGE.value='forum.cmvp?@RequestParametersEncoded@';
+            document.FORUM.action='register.cmvp';
+            document.FORUM.submit();
+        }
 		function DoMessage(which)
 		{
 			if(abort) return; abort=true;
@@ -131,6 +137,10 @@
 		Login<INPUT TYPE=TEXT SIZE=10 VALUE="" NAME=LOGIN>&nbsp;
 		Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
 		<INPUT TYPE=SUBMIT VALUE=Login>
+        @if?IsAccountSystem@
+            <INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
+            <INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
+        @endif@
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
 		@if?ForumInfo?ISSMTPFORWARD@

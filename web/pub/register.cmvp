@@ -19,6 +19,10 @@
 			document.ACCESS.LASTPAGE.value='access.cmvp';
 			Clicked('register.cmvp');
 		}
+        function Back()
+        {
+            Clicked('@RequestParameter?LASTPAGE@');
+        }
 	//-->
 	</SCRIPT>
 </head>
@@ -40,8 +44,16 @@
 		var errorCode='@AccountCreate?CREATE&LOGIN@';
 		if(errorCode=='')
 		{
-			var newloc='@RequestParameter?LASTPAGE@?AUTH=@RequestParameter?AUTH@';
-			document.write(newloc);
+		    var lp='@RequestParameter?LASTPAGE@';
+		    var x=lp.indexOf('AUTH=');
+		    if(x<0) x=lp.indexOf('auth=');
+		    if(x>=0)
+		       lp=lp.substr(0,x)+'FAKE'+lp.substr(x);
+		    if(lp.indexOf('?')<0)
+		      lp=lp+'?';
+		    else
+		      lp=lp+'&';
+			var newloc=lp+'AUTH=@RequestParameter?AUTH@';
 			Clicked(newloc);
 		}
 		else
@@ -68,7 +80,10 @@
 			if((errorCode=='NO_NEW_PLAYERS')||(errorCode=='NO_NEW_LOGINS')||(errorCode=='CREATE_LIMIT_REACHED'))
 			{
 				document.write('This system is not accepting new accounts at this time.  Please try again later.');
-				document.location.href=document.LOGIN.LASTPAGE.value;
+				if(window.setTimeout)
+                    window.setTimeout(Back,1000);
+                else
+                    Back();
 			}
 			else
 				document.write(errorCode);
@@ -76,15 +91,6 @@
 	//-->
 	</SCRIPT>
 	</FONT></B><P>
-	@else@
-	<SCRIPT LANGUAGE=JavaScript>
-	<!--
-		function Back()
-		{
-			var newloc='@RequestParameter?LASTPAGE@';
-			Clicked(newloc);
-		}
-	</SCRIPT>
 	@endif@
 	Please create your new @MudInfo?NAME@ account here.<BR>
 	If you already have a player account, click the Back link above and enter your credentials.<P>
