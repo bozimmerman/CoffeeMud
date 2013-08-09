@@ -62,7 +62,7 @@ public class Prayer_CallUndead extends Prayer
 			{ 
 				allHere=false;
 				if((CMLib.flags().canAccess(mob,M.location()))
-				&&(M.fetchEffect("Skill_Track")==null))
+				&&(!CMLib.flags().isTracking(M)))
 				{
 					target=M;
 					oldRoom=M.location(); 

@@ -254,7 +254,7 @@ public class Prop_ClosedDayNight extends Property
 					if((R!=null)&&(R!=mob.location()))
 					{
 						// still tracking...
-						if(mob.fetchEffect("Skill_Track")!=null)
+						if(CMLib.flags().isTracking(mob))
 							return true;
 						ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(affected);
 						if(sk!=null)
