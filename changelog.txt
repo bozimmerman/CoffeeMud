@@ -25,6 +25,7 @@
       Also, untargeted speaking, when only one other person is in the room, will assume to be addressing them. New DISABLE=AUTOLANGUAGE
   24. (Tech) New TriCorder item (portable computer).  Also, internally, class names and locations are shifting as tech takes shape.
   25. New GENERATEable area target in /resources/randreas/example.xml: random_dungeon (rand level, theme, aggro, size, etc)
+  26. For those using account system, can now register for an account from ANY page in the forum system (really an oversight)
 //TODO: engines should have max turn thrust, different from max thrust
 //TODO: bug: my space ship had a manufacturer name of RANDOM, and it had a techlevel marking (which might be ok, and just not matter)
 //TODO: make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
