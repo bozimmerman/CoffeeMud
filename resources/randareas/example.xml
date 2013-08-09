@@ -55,7 +55,7 @@ Any tag may contain zero or more of the following meta-attributes:
           every tag and object in the room's "room group".  An identifier whose name 
           starts with "__" will persist throughout the entire area.  Otherwise, any
           variables defined using this command will persist only for one room. 
-"predefine" identical to "define", but always evaluated.
+"predefine" identical to "define", but always evaluated when struck.
 "select"  Used mostly by container tags, this attribute allows you to specify how 
           multiple choices are resolved by this tag.  More than one selection may be
           made, which makes sense when selecting MOB tags for a ROOM.  However, 
