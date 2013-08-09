@@ -2154,8 +2154,8 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 
 <!-- 
 JUNK IDEAS: 
-1 foot of rope, Bottle, iron spike, broken box, ripped hat, torn sack, rotten random food,
-Metal file, Chisel, iron wire, blanke,t rag, tweezer, locket ,false wooden teeth, squished frog, puddle of blood,
+rotten random food,
+Metal file, Chisel, iron wire, blanket, rag, tweezer, locket ,false wooden teeth, squished frog, puddle of blood,
 axe head, broken wooden crown, wooden practice sword, bull horn, door handle, broken stick, a pile of corks, broken pipe,
 mice skulls, stick of black chalk, half-eaten sasage covered in mold, rusted iron lock, broken holy symbol, glass eye,
 13 <race> ears on wooden chain, clothespin, worn leather-wrapped ball, belt buckle, broken knitting needle, mummified <race> hand,
@@ -2168,25 +2168,45 @@ horse shoe, comb, a chair leg,
  -->
 <ITEM id="dungeon_junk" select="all" requires="level_range=int,theme=prison;rats;kobolds;random">
     <ITEM select="all" condition="$theme='rats' or $theme='random'">
-        <ITEM class="GenItem" name="some $broken_metal_word armor scraps" display="$item_name are sitting here" material="IRON" level="$level_range" />
+        <ITEM class="GenItem" name="some $metal_broken_word armor scraps" display="$item_name are sitting here" material="IRON" level="$level_range" />
         <ITEM class="GenResource" name="the bones of a dead aventurer" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
         <ITEM class="GenItem" name="a string of beads" display="a string of beads lie here" material="BONE" level="$level_range" weight=1 />
         <ITEM class="GenItem" name="a wax candle stub" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="a stub of rope" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
+        <ITEM class="GenEmptyDrink" name="a small bottle" display="$item_name lies here" material="GLASS" level="$level_range" liquidheld=100 weight=3 />
+        <ITEM class="GenWeapon" define="r=$random_cheap_metal" name="(a(n)) $r spike" display="$item_name lies here" material="$r" level="$level_range" weight=3 damage="1"/>
+        <ITEM class="GenItem" name="((a)n) $wooden_broken_word box" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="((a)n) $cloth_broken_word cloth hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="((a)n) $cloth_broken_word sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        
     <!--TODO: finish -->
     </ITEM>
     <ITEM select="all" condition="$theme='prison' or $theme='random'">
-        <ITEM class="GenItem" name="some $broken_metal_word handcuffs scraps" display="$item_name were discarded here" material="IRON" level="$level_range" />
-        <ITEM class="GenWeapon" name="a $broken_wooden_word night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
+        <ITEM class="GenItem" name="some $metal_broken_word handcuffs scraps" display="$item_name were discarded here" material="IRON" level="$level_range" />
+        <ITEM class="GenWeapon" name="a $wooden_broken_word night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
         <ITEM class="GenResource" name="the bones of a dead prisoner" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
         <ITEM class="GenItem" name="some prayer beads" display="a string of prayer beads lie here" material="BONE" level="$level_range" weight=1 />
         <ITEM class="GenItem" name="a melted wax clob" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="a makeshift noose" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
+        <ITEM class="GenEmptyDrink" name="a small bottle" display="$item_name lies here" material="GLASS" level="$level_range" liquidheld=100 weight=3 />
+        <ITEM class="GenItem" define="r=$random_cheap_metal" name="(a(n)) $r file" display="$item_name lies here" material="$r" level="$level_range" weight=1 />
+        <ITEM class="GenWeapon" define="r=$random_cheap_metal" name="(a(n)) $r shank" display="$item_name lies here" material="$r" level="$level_range" weight=3  damage="1"/>
+        <ITEM class="GenItem" name="((a)n) $wooden_broken_word cigar box" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="((a)n) $cloth_broken_word wardens hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="((a)n) $cloth_broken_word laundry sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
     <!--TODO: Insert values: lots of things, dead guards again are good -->
     </ITEM>
     <ITEM select="all" condition="$theme='kobolds' or $theme='random'">
-        <ITEM class="GenItem" name="some $broken_wooden_word shield pieces" display="$item_name are sitting here" material="IRON" level="$level_range" />
+        <ITEM class="GenItem" name="some $wooden_broken_word shield pieces" display="$item_name are sitting here" material="IRON" level="$level_range" />
         <ITEM class="GenResource" name="the bones of a dead critter" display="$item_name rest here" material="BONE" level="$level_range" weight="2" />
         <ITEM class="GenItem" name="a candle wick" display="$item_name lies here" material="COTTON" level="$level_range" weight=1 />
         <ITEM class="GenItem" name="a string of tiny prayer bones" display="a string of tiny prayer bones lie here" material="BONE" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="a one foot length of rope" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
+        <ITEM class="GenEmptyDrink" name="a small clay jug" display="$item_name lies here" material="CLAY" level="$level_range" liquidheld=100 weight=3 />
+        <ITEM class="GenWeapon" define="r=$random_cheap_metal" name="(a(n)) $r shard" display="$item_name lies here" material="$r" level="$level_range" weight=3  damage="1"/>
+        <ITEM class="GenItem" name="((a)n) $wooden_broken_word crate" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=3/>
+        <ITEM class="GenItem" name="((a)n) $cloth_broken_word hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="a small $cloth_broken_word sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
     <!--TODO: Insert values: lots of things I guess -->
     </ITEM>
 </ITEM>
@@ -2514,6 +2534,17 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 <STRING>brown</STRING>
 <STRING>gray</STRING>
 </STRING>
+
+<STRING id="random_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
+<STRING id="random_metal" insert="random_cheap_metal" select="any-1"><string>silver</string><string>gold</string><string>zinc</string><string>copper</string><string>steel</string><string>chromium</string><string>white_gold</string><string>dragonscales</string></STRING>
+<STRING id="random_mithril" insert="random_metal" select="any-1"><string>mithril</string><string>adamantite</string><string>atlantite</string></STRING>
+<STRING id="random_wood" select="any-1">
+    <string>wood</string><string>pine</string><string>balsa</string><string>oak</string><string>maple</string><string>redwood</string><string>hickory</string><string>ironwood</string>
+    <string>yew</string><string>teak</string><string>cedar</string><string>elm</string><string>cherrywood</string><string>beechwood</string><string>willow</string><string>sycamore</string>
+    <string>spruce</string><string>mesquite</string><string>reed</string><string>bamboo</string>
+</STRING>
+<STRING id="random_cheap_cloth" select="any-1"><string>hide</string><string>wool</string><string>cotton</string><string>hemp</string></STRING>
+<STRING id="random_cloth" insert="random_cheap_cloth" select="any-1"><string>spidersteel</string><string>silk</string><string>feathers</string><string>fur</string></STRING>
 
 <STRING id="roomrun_desc" select="any-1">
 <STRING condition="$ROOMTAG_NODERUN='ns'">north-south</STRING>
