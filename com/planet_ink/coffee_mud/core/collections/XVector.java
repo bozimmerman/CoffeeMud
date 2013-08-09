@@ -44,8 +44,7 @@ public class XVector<T> extends Vector<T>
 		super(size);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public XVector(T... E)
+	public XVector(T[] E)
 	{
 		super();
 		if(E!=null)
@@ -58,6 +57,22 @@ public class XVector<T> extends Vector<T>
 		super();
 		if(E!=null)
 			add(E);
+	}
+	
+	public XVector(T E, T E2)
+	{
+		this(E);
+		if(E2!=null)
+			add(E2);
+	}
+	
+	public XVector(T E, T E2, T E3)
+	{
+		this(E);
+		if(E2!=null)
+			add(E2);
+		if(E3!=null)
+			add(E3);
 	}
 	
 	public XVector(Set<T> E)
