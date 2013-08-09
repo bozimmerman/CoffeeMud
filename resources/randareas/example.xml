@@ -2154,7 +2154,7 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 
 <!-- 
 JUNK IDEAS: 
-Prayer beads, wax candle stub, 1 foot of rope, Bottle, iron spike, broken box, ripped hat, torn sack, rotten random food, 
+1 foot of rope, Bottle, iron spike, broken box, ripped hat, torn sack, rotten random food,
 Metal file, Chisel, iron wire, blanke,t rag, tweezer, locket ,false wooden teeth, squished frog, puddle of blood,
 axe head, broken wooden crown, wooden practice sword, bull horn, door handle, broken stick, a pile of corks, broken pipe,
 mice skulls, stick of black chalk, half-eaten sasage covered in mold, rusted iron lock, broken holy symbol, glass eye,
@@ -2170,17 +2170,23 @@ horse shoe, comb, a chair leg,
     <ITEM select="all" condition="$theme='rats' or $theme='random'">
         <ITEM class="GenItem" name="some $broken_metal_word armor scraps" display="$item_name are sitting here" material="IRON" level="$level_range" />
         <ITEM class="GenResource" name="the bones of a dead aventurer" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
+        <ITEM class="GenItem" name="a string of beads" display="a string of beads lie here" material="BONE" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="a wax candle stub" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
     <!--TODO: finish -->
     </ITEM>
     <ITEM select="all" condition="$theme='prison' or $theme='random'">
         <ITEM class="GenItem" name="some $broken_metal_word handcuffs scraps" display="$item_name were discarded here" material="IRON" level="$level_range" />
         <ITEM class="GenWeapon" name="a $broken_wooden_word night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
         <ITEM class="GenResource" name="the bones of a dead prisoner" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
+        <ITEM class="GenItem" name="some prayer beads" display="a string of prayer beads lie here" material="BONE" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="a melted wax clob" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
     <!--TODO: Insert values: lots of things, dead guards again are good -->
     </ITEM>
     <ITEM select="all" condition="$theme='kobolds' or $theme='random'">
         <ITEM class="GenItem" name="some $broken_wooden_word shield pieces" display="$item_name are sitting here" material="IRON" level="$level_range" />
         <ITEM class="GenResource" name="the bones of a dead critter" display="$item_name rest here" material="BONE" level="$level_range" weight="2" />
+        <ITEM class="GenItem" name="a candle wick" display="$item_name lies here" material="COTTON" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="a string of tiny prayer bones" display="a string of tiny prayer bones lie here" material="BONE" level="$level_range" weight=1 />
     <!--TODO: Insert values: lots of things I guess -->
     </ITEM>
 </ITEM>
