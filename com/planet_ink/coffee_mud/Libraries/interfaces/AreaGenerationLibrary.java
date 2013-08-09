@@ -41,7 +41,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public Room buildRoom(XMLLibrary.XMLpiece piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException;
 	public void checkRequirements(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException;
 	public Map<String,String> getUnfilledRequirements(Map<String,Object> defined, XMLLibrary.XMLpiece piece);
-	public Area buildArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, int direction) throws CMException;
+	public Area findArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, int directions) throws CMException;
 	public boolean fillInArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, Area A, int direction) throws CMException;
 	public LayoutManager getLayoutManager(String named);
 	

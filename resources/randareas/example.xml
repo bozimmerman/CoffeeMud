@@ -55,6 +55,7 @@ Any tag may contain zero or more of the following meta-attributes:
           every tag and object in the room's "room group".  An identifier whose name 
           starts with "__" will persist throughout the entire area.  Otherwise, any
           variables defined using this command will persist only for one room. 
+"predefine" identical to "define", but always evaluated.
 "select"  Used mostly by container tags, this attribute allows you to specify how 
           multiple choices are resolved by this tag.  More than one selection may be
           made, which makes sense when selecting MOB tags for a ROOM.  However, 
@@ -227,25 +228,26 @@ Required details: "id" "value"
 
 -->
 <AREADATA>
-<AREA id="maze_dungeon" class="StdArea" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random">
+<AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random">
     <NAME>$areaname</NAME><SIZE>$areasize</SIZE>
+    <CLASS select="any"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
     <ROOM id="dungeon_rooms" insert="dungeon_hallways,dungeon_interior,dungeon_leaf" />
     <BEHAVIOR select="all" id="dungeon_behaviors">
         <BEHAVIOR condition="$theme='kobolds'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
         <BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
     </BEHAVIOR>
 </AREA>
-<AREA id="grid_dungeon" class="StdArea" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
-    <NAME>$areaname</NAME><SIZE>$areasize</SIZE><ROOM insert="dungeon_rooms" /><BEHAVIOR select="all" insert="dungeon_behaviors" />
+<AREA id="grid_dungeon" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
 </AREA>
-<AREA id="box_dungeon" class="StdArea" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
-    <NAME>$areaname</NAME><SIZE>$areasize</SIZE><ROOM insert="dungeon_rooms" /><BEHAVIOR select="all" insert="dungeon_behaviors" />
+<AREA id="box_dungeon" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
 </AREA>
-<AREA id="cross_dungeon" class="StdArea" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
-    <NAME>$areaname</NAME><SIZE>$areasize</SIZE><ROOM insert="dungeon_rooms" /><BEHAVIOR select="all" insert="dungeon_behaviors" />
+<AREA id="cross_dungeon" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
 </AREA>
-<AREA id="tree_dungeon" class="StdArea" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
-    <NAME>$areaname</NAME><SIZE>$areasize</SIZE><ROOM insert="dungeon_rooms" /><BEHAVIOR select="all" insert="dungeon_behaviors" />
+<AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
+</AREA>
+<AREA id="random_dungeon" select="pick-1" requires="areaname=$" 
+        insert="maze_dungeon,grid_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
+        predefine="areasize=20?60,level_range=1?91,aggrochance=20+$level_range,theme=random" >
 </AREA>
 
 <ROOM id="dungeon_hallways" select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">

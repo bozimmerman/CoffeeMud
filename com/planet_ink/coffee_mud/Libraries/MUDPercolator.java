@@ -177,9 +177,41 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 	
 	
+	
+	public Area findArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, int directions) throws CMException
+	{
+		String tagName="AREA";
+		List<XMLLibrary.XMLpiece> choices = getAllChoices(tagName, piece, defined,true);
+		if((choices==null)||(choices.size()==0)) 
+		{
+			return null;
+		}
+		while(choices.size()>0)
+		{
+			XMLLibrary.XMLpiece valPiece = choices.get(CMLib.dice().roll(1,choices.size(),-1));
+			choices.remove(valPiece);
+			Map<String,Object> rDefined=new Hashtable<String,Object>();
+			rDefined.putAll(defined);
+			Area A=buildArea(valPiece,rDefined,directions);
+			if(A!=null)
+			{
+				defineReward(valPiece,null,rDefined);
+				for(Iterator<String> e=rDefined.keySet().iterator();e.hasNext();)
+				{
+					String key=e.next();
+					if(key.startsWith("_"))
+						defined.put(key,rDefined.get(key));
+				}
+				return A;
+			}
+		}
+		return null;
+	}
+	
 	public Area buildArea(XMLLibrary.XMLpiece piece, Map<String,Object> defined, int direction) throws CMException
 	{
 		defined.put("DIRECTION",Directions.getDirectionName(direction).toLowerCase());
+
 		String classID = findString("class",piece,defined);
 		Area A = CMClass.getAreaType(classID);
 		if(A == null) 
@@ -1045,7 +1077,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	
 	protected void defineReward(XMLLibrary.XMLpiece piece, String value, Map<String,Object> defined) throws CMException
 	{
-		String defineString = CMLib.xml().getParmValue(piece.parms,"DEFINE");
+		defineReward(CMLib.xml().getParmValue(piece.parms,"DEFINE"),piece,value,defined);
+	}
+	
+	public void preDefineReward(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	{
+		defineReward(CMLib.xml().getParmValue(piece.parms,"PREDEFINE"),piece,piece.value,defined);
+	}
+	
+	protected void defineReward(String defineString, XMLLibrary.XMLpiece piece, String value, Map<String,Object> defined) throws CMException
+	{
 		if((defineString!=null)&&(defineString.trim().length()>0))
 		{
 			Vector<String> V=CMParms.parseCommas(defineString,true);
@@ -1126,6 +1167,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		if((!skipTest)&&(!testCondition(piece,defined)))
 			return new Vector<XMLpiece>(1);
+		
+		preDefineReward(piece, defined);
 		
 		List<XMLpiece> choices = new Vector<XMLpiece>();
 		String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");

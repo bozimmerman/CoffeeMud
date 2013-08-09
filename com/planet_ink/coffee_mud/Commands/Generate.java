@@ -183,7 +183,7 @@ public class Generate extends StdCommand
 				break;
 			}
 			case AREA:
-				Area A=CMLib.percolator().buildArea(piece, definedIDs, direction);
+				Area A=CMLib.percolator().findArea(piece, definedIDs, direction);
 				if(A!=null)
 					V.addElement(A);
 				break;
