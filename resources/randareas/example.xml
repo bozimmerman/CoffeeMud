@@ -246,8 +246,8 @@ Required details: "id" "value"
 <AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
 </AREA>
 <AREA id="random_dungeon" select="any" requires="areaname=$" 
-        insert="maze_dungeon,grid_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
-        predefine="areasize=$randomareasize,level_range=$randomlevelrange,aggrochance=20+$level_range,theme=$randomtheme" >
+    insert="maze_dungeon,grid_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
+    predefine="areasize=$randomareasize,level_range=$randomlevelrange,aggrochance=10+$level_range,theme=$randomtheme" >
 </AREA>
 <string id="randomareasize" select="any-1"><string condition="$areasize!=''">$areasize</string><string condition="$areasize=''">30?60</string></string>
 <string id="randomlevelrange" select="any-1"><string condition="$level_range!=''">$level_range</string><string condition="$level_range=''">1?91</string></string>
@@ -613,32 +613,32 @@ Required details: "id" "value"
     </ROOM>
     <ROOM select="all" condition="$theme='kobolds' or $theme='random'">
         <ROOM class="CaveRoom">
-            <TITLE>a kobold nursury</TITLE>
+            <TITLE>a $__nasty_race_lname nursury</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size kobold nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-                    <DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size kobold nursury. This place is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-                    <DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size kobold nursury. Conditions here are $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-                    <DESCRIPTION>This is (a(n)) $dungeonadj_phys_size kobold nursury. It is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-                    <DESCRIPTION>You are confused by (a(n)) $dungeonadj_phys_size kobold nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. This place is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. Conditions here are $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>This is (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. It is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>You are confused by (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>It's amazing those creatures ever see adulthood.</DESCRIPTION>
-                    <DESCRIPTION>You are astonished that kobolds actually seem worse as children. </DESCRIPTION>
-                    <DESCRIPTION>It just didn't seem kobolds could be any worse, but they can. </DESCRIPTION>
-                    <DESCRIPTION>You discover that kobolds start off smaller and meaner.</DESCRIPTION>
-                    <DESCRIPTION>It is just astonishing that kobolds live past this age. </DESCRIPTION>
+                    <DESCRIPTION>You are astonished that $__nasty_race_pname actually seem worse as children. </DESCRIPTION>
+                    <DESCRIPTION>It just didn't seem $__nasty_race_pname could be any worse, but they can. </DESCRIPTION>
+                    <DESCRIPTION>You discover that $__nasty_race_pname start off smaller and meaner.</DESCRIPTION>
+                    <DESCRIPTION>It is just astonishing that $__nasty_race_pname live past this age. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_badsmell</DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>
             <EXIT class="Door" />
-            <MOB select="repeat-2?6" insert="dungeon_koboldkid" />
-            <MOB class="GenMob" level="($level_range) / 2" id="dungeon_koboldkid" race="Kobold" gender="$anygender">
+            <MOB select="repeat-2?6" insert="nasty_lair_kid" />
+            <MOB class="GenMob" level="($level_range) / 2" id="nasty_lair_kid" race="$__nasty_race_id" gender="$anygender">
                 <NAME select="pick-1">
-                    <NAME pickweight="5">(a(n)) $nasty_animal_word kobold child</NAME>
-                    <NAME pickweight="1">a kobold kid</NAME>
+                    <NAME pickweight="5">(a(n)) $nasty_animal_word $__nasty_race_lname child</NAME>
+                    <NAME pickweight="1">a $__nasty_race_lname kid</NAME>
                 </NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name sneaks around.</DISPLAY>
@@ -663,16 +663,16 @@ Required details: "id" "value"
                     <BEHAVIOR class="CombatAbilities" parms="" />
                 </BEHAVIOR>
                 <ITEM class="GenArmor" LEVEL="$mob_level">
-                    <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj diaper</NAME><NAME>(a(n)) $kobold_item_adj diaper</NAME></NAME>
+                    <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj diaper</NAME><NAME>(a(n)) $smallragged_item_adj diaper</NAME></NAME>
                     <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
                 </ITEM>
                 <ITEM class="GenItem" LEVEL="$mob_level" condition="1?2=1">
-                    <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj toy</NAME><NAME>(a(n)) $kobold_item_adj toy</NAME></NAME>
+                    <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj toy</NAME><NAME>(a(n)) $smallragged_item_adj toy</NAME></NAME>
                     <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>OAK</MATERIAL>
                 </ITEM>
             </MOB>
-            <MOB class="GenMob" level="(1.10 * ($level_range)) + 1" race="Kobold" gender="F">
-                <NAME>a kobold nanny</NAME>
+            <MOB class="GenMob" level="(1.10 * ($level_range)) + 1" race="$__nasty_race_id" gender="F">
+                <NAME>a $__nasty_race_lname nanny</NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
                     <DISPLAY pickweight="1">$mob_name charges at a kid.</DISPLAY>
@@ -697,25 +697,25 @@ Required details: "id" "value"
                 </BEHAVIOR>
                 <ITEM select="pick-1?3">
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather hat</NAME><NAME>(a(n)) $kobold_item_adj hat</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather hat</NAME><NAME>(a(n)) $smallragged_item_adj hat</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather blouse</NAME><NAME>(a(n)) $kobold_item_adj blouse</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather blouse</NAME><NAME>(a(n)) $smallragged_item_adj blouse</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather dress</NAME><NAME>a pair of $kobold_item_adj dress</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather dress</NAME><NAME>a pair of $smallragged_item_adj dress</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather sleeves</NAME><NAME>a pair of $kobold_item_adj sleeves</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
                     </ITEM>
                 </ITEM>
                 <ITEM select="pick-1">
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>a sharp $kobold_item_adj stick</NAME>
+                        <NAME>a sharp $smallragged_item_adj stick</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <MATERIAL>OAK</MATERIAL>
                         <WEAPONCLASS>DAGGER</WEAPONCLASS>
@@ -737,25 +737,25 @@ Required details: "id" "value"
                     <DESCRIPTION>This is $ROOM_TITLE.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>
             <EXIT class="Door" />
-            <MOB select="repeat-1?3" insert="dungeon_koboldguard" />
+            <MOB select="repeat-1?3" insert="nasty_lair_guard" />
         </ROOM>
         <ROOM class="CaveRoom">
-            <TITLE>a kobold workshop</TITLE>
+            <TITLE>a $__nasty_race_lname workshop</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size kobold workshop.</DESCRIPTION>
-                    <DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size kobold workshop. </DESCRIPTION>
-                    <DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size kobold workshop. </DESCRIPTION>
-                    <DESCRIPTION>This is (a(n)) $dungeonadj_phys_size kobold workshop. </DESCRIPTION>
+                    <DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size $__nasty_race_lname workshop.</DESCRIPTION>
+                    <DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size $__nasty_race_lname workshop. </DESCRIPTION>
+                    <DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size $__nasty_race_lname workshop. </DESCRIPTION>
+                    <DESCRIPTION>This is (a(n)) $dungeonadj_phys_size $__nasty_race_lname workshop. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>Trap-Making implements are all over the place.</DESCRIPTION>
                     <DESCRIPTION>Junk is scattered all over the place. </DESCRIPTION>
                     <DESCRIPTION>Explosive components and trip wires are all over. </DESCRIPTION>
-                    <DESCRIPTION>Pieces of kobold traps are scattered about. </DESCRIPTION>
+                    <DESCRIPTION>Pieces of $__nasty_race_lname traps are scattered about. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>You do not feel safe here.</DESCRIPTION>
@@ -764,12 +764,12 @@ Required details: "id" "value"
                     <DESCRIPTION>You can't imagine a more dangerous spot to be standing in. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>
             <EXIT class="Door" />
-            <MOB select="repeat-1?3" insert="kobold_tinkerer" />
-            <MOB class="GenMob" level="$level_range" id="kobold_tinkerer" race="Kobold" gender="$anygender">
-                <NAME>a kobold tinkerer</NAME>
+            <MOB select="repeat-1?3" insert="nasty_lair_tinkerer" />
+            <MOB class="GenMob" level="$level_range" id="nasty_lair_tinkerer" race="$__nasty_race_id" gender="$anygender">
+                <NAME>a $__nasty_race_lname tinkerer</NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
                     <DISPLAY pickweight="1">$mob_name seems disturbed by the interruption.</DISPLAY>
@@ -795,25 +795,25 @@ Required details: "id" "value"
                 </BEHAVIOR>
                 <ITEM select="pick-1?3">
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj pointy leather cap</NAME><NAME>(a(n)) $kobold_item_adj pointy cap</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj pointy leather cap</NAME><NAME>(a(n)) $smallragged_item_adj pointy cap</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather workvest</NAME><NAME>(a(n)) $kobold_item_adj workvest</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather workvest</NAME><NAME>(a(n)) $smallragged_item_adj workvest</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather work pants</NAME><NAME>a pair of $kobold_item_adj work pants</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather work pants</NAME><NAME>a pair of $smallragged_item_adj work pants</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather sleeves</NAME><NAME>a pair of $kobold_item_adj sleeves</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
                     </ITEM>
                 </ITEM>
                 <ITEM select="pick-1">
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>(a(n)) $kobold_item_adj tool</NAME>
+                        <NAME>(a(n)) $smallragged_item_adj tool</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <MATERIAL>IRON</MATERIAL>
                         <WEAPONCLASS>DAGGER</WEAPONCLASS>
@@ -836,13 +836,13 @@ Required details: "id" "value"
                     <DESCRIPTION>This is $ROOM_TITLE.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>The kobolds must store their food here, if you can call it "food".</DESCRIPTION>
+                    <DESCRIPTION>The $__nasty_race_pname must store their food here, if you can call it "food".</DESCRIPTION>
                     <DESCRIPTION>This appears to be where they store their foodstuff.</DESCRIPTION>
-                    <DESCRIPTION>The kobolds seem to keep their edibles stored here.</DESCRIPTION>
-                    <DESCRIPTION>What the kobolds call food seems to be stored here.</DESCRIPTION>
+                    <DESCRIPTION>The $__nasty_race_pname seem to keep their edibles stored here.</DESCRIPTION>
+                    <DESCRIPTION>What the $__nasty_race_pname call food seems to be stored here.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>
             <ITEM select="any-2">
                 <ITEM class="GenFoodResource" weight="10" name="some $nasty_word meat" display="$item_name is stored here" material="MEAT" />
@@ -863,13 +863,13 @@ Required details: "id" "value"
                     <DESCRIPTION>This is $ROOM_TITLE.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>The kobolds must store their $nasty_word crap and junk here.</DESCRIPTION>
+                    <DESCRIPTION>The $__nasty_race_pname must store their $nasty_word crap and junk here.</DESCRIPTION>
                     <DESCRIPTION>This appears to be where they store their $nasty_word junk.</DESCRIPTION>
-                    <DESCRIPTION>The kobolds seem to keep their $nasty_word crap stored here.</DESCRIPTION>
-                    <DESCRIPTION>What the kobolds think is important seems to be stored here.</DESCRIPTION>
+                    <DESCRIPTION>The $__nasty_race_pname seem to keep their $nasty_word crap stored here.</DESCRIPTION>
+                    <DESCRIPTION>What the $__nasty_race_pname think is important seems to be stored here.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>
             <ITEM select="any-5"><ITEM class="metacraft" name="anything" /><ITEM class="metacraft" name="anything" /><ITEM class="metacraft" name="anything" /><ITEM class="metacraft" name="anything" /><ITEM class="metacraft" name="anything" /></ITEM>
             <MOB select="all" insert="$dungeon_rat" condition="1?2=1" />
@@ -879,16 +879,16 @@ Required details: "id" "value"
             <TITLE>a kitchen</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in (a(n)) $nasty_word kobold kitchen.</DESCRIPTION>
-                    <DESCRIPTION>You're inside (a(n)) $nasty_word kobold kitchen. </DESCRIPTION>
-                    <DESCRIPTION>You've found (a(n)) $nasty_word kobold kitchen. </DESCRIPTION>
-                    <DESCRIPTION>This is (a(n)) $nasty_word kobold kitchen. </DESCRIPTION>
+                    <DESCRIPTION>You are standing in (a(n)) $nasty_word $__nasty_race_lname kitchen.</DESCRIPTION>
+                    <DESCRIPTION>You're inside (a(n)) $nasty_word $__nasty_race_lname kitchen. </DESCRIPTION>
+                    <DESCRIPTION>You've found (a(n)) $nasty_word $__nasty_race_lname kitchen. </DESCRIPTION>
+                    <DESCRIPTION>This is (a(n)) $nasty_word $__nasty_race_lname kitchen. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>This place is an astounding mess.</DESCRIPTION>
                     <DESCRIPTION>Food and clutter is scattered all over the place. </DESCRIPTION>
                     <DESCRIPTION>Splatter and mess are everywhere you look. </DESCRIPTION>
-                    <DESCRIPTION>Pieces of kobold meals are scattered about. </DESCRIPTION>
+                    <DESCRIPTION>Pieces of $__nasty_race_lname meals are scattered about. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>You do not feel sanitary here.</DESCRIPTION>
@@ -898,12 +898,12 @@ Required details: "id" "value"
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_badsmell</DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>
             <EXIT class="Door" />
-            <MOB select="repeat-1?3" insert="kobold_cook" />
-            <MOB class="GenMob" level="$level_range" id="kobold_cook" race="Kobold" gender="F">
-                <NAME>a kobold cook</NAME>
+            <MOB select="repeat-1?3" insert="nasty_lair_cook" />
+            <MOB class="GenMob" level="$level_range" id="nasty_lair_cook" race="$__nasty_race_id" gender="F">
+                <NAME>a $__nasty_race_lname cook</NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
                     <DISPLAY pickweight="1">$mob_name charges a burning potroast.</DISPLAY>
@@ -928,21 +928,21 @@ Required details: "id" "value"
                 </BEHAVIOR>
                 <ITEM select="pick-1?3">
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather chefs hat</NAME><NAME>(a(n)) $kobold_item_adj chefs hat</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather chefs hat</NAME><NAME>(a(n)) $smallragged_item_adj chefs hat</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather apron</NAME><NAME>a pair of $kobold_item_adj apron</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather apron</NAME><NAME>a pair of $smallragged_item_adj apron</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>BODY</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather sleeves</NAME><NAME>a pair of $kobold_item_adj sleeves</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
                     </ITEM>
                 </ITEM>
                 <ITEM select="pick-1">
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>(a(n)) $kobold_item_adj rolling pin</NAME>
+                        <NAME>(a(n)) $smallragged_item_adj rolling pin</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <MATERIAL>OAK</MATERIAL>
                         <WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -964,10 +964,10 @@ Required details: "id" "value"
             <TITLE>a common room</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in (a(n)) $nasty_word kobold common room.</DESCRIPTION>
-                    <DESCRIPTION>You're inside (a(n)) $nasty_word kobold common room. </DESCRIPTION>
-                    <DESCRIPTION>You've found (a(n)) $nasty_word kobold common room. </DESCRIPTION>
-                    <DESCRIPTION>This is (a(n)) $nasty_word kobold common room. </DESCRIPTION>
+                    <DESCRIPTION>You are standing in (a(n)) $nasty_word $__nasty_race_lname common room.</DESCRIPTION>
+                    <DESCRIPTION>You're inside (a(n)) $nasty_word $__nasty_race_lname common room. </DESCRIPTION>
+                    <DESCRIPTION>You've found (a(n)) $nasty_word $__nasty_race_lname common room. </DESCRIPTION>
+                    <DESCRIPTION>This is (a(n)) $nasty_word $__nasty_race_lname common room. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>This place is one of mess and clutter.</DESCRIPTION>
@@ -981,10 +981,10 @@ Required details: "id" "value"
                     <DESCRIPTION>You can't imagine a more chaotic spot to be standing in. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>
             <EXIT class="Open" />
-            <MOB select="repeat-2?5" insert="dungeon_koboldpeon" />
+            <MOB select="repeat-2?5" insert="nasty_lair_peon" />
             <ITEM select="pick-1?2" >
                 <ITEM pickweight="1" class="metacraft" name="chair"/>
                 <ITEM pickweight="2" class="metacraft" name="bench"/>
@@ -995,7 +995,7 @@ Required details: "id" "value"
                 <ITEM class="metacraft" name="pants"/>
             </ITEM>
         </ROOM>
-        <ROOM class="CaveRoom">
+        <ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='random'">
             <TITLE>a hatchery</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
@@ -1016,10 +1016,10 @@ Required details: "id" "value"
                     <DESCRIPTION>You can't imagine a quieter spot in this lair to be standing in. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>            
             <EXIT class="Door" />
-            <MOB select="repeat-1?2" insert="dungeon_koboldguard" />
+            <MOB select="repeat-1?2" insert="nasty_lair_guard" />
             <ITEM class="GenFoodResource" id="kobold_egg" name="some $nasty_word kobold eggs" display="$item_name are here" material="EGGS" />
             <ITEM select="2?13" insert="kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg" />
         </ROOM>
@@ -1027,10 +1027,10 @@ Required details: "id" "value"
             <TITLE>the throne room</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in the $nasty_word kobold throne room.</DESCRIPTION>
-                    <DESCRIPTION>You're inside the $nasty_word kobold throne room. </DESCRIPTION>
-                    <DESCRIPTION>You've found the $nasty_word kobold throne room. </DESCRIPTION>
-                    <DESCRIPTION>This is the $nasty_word kobold throne room. </DESCRIPTION>
+                    <DESCRIPTION>You are standing in the $nasty_word $__nasty_race_lname throne room.</DESCRIPTION>
+                    <DESCRIPTION>You're inside the $nasty_word $__nasty_race_lname throne room. </DESCRIPTION>
+                    <DESCRIPTION>You've found the $nasty_word $__nasty_race_lname throne room. </DESCRIPTION>
+                    <DESCRIPTION>This is the $nasty_word $__nasty_race_lname throne room. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>This room is so plain, you can hardly believe royalty resides here.</DESCRIPTION>
@@ -1040,16 +1040,16 @@ Required details: "id" "value"
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>You don't really feel in any awe.</DESCRIPTION>
-                    <DESCRIPTION>This place seems like any other kobold room. </DESCRIPTION>
+                    <DESCRIPTION>This place seems like any other $__nasty_race_lname room. </DESCRIPTION>
                     <DESCRIPTION>This must be the most boring room in the whole place. </DESCRIPTION>
                     <DESCRIPTION>You can't imagine a more boring spot in this lair to be standing in. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>            
             <EXIT class="LockedDoor" text="$areaname thronekey"/>
-            <MOB select="repeat-5" insert="dungeon_koboldguard" />
-            <MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="kobold_king" race="Kobold" gender="M">
+            <MOB select="repeat-5" insert="nasty_lair_guard" />
+            <MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="nasty_lair_king" race="$__nasty_race_id" gender="M">
                 <NAME>King $fantasy_name</NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
@@ -1075,21 +1075,21 @@ Required details: "id" "value"
                 </BEHAVIOR>
                 <ITEM select="pick-1?3">
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj crown</NAME><NAME>(a(n)) $kobold_item_adj crown</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj crown</NAME><NAME>(a(n)) $smallragged_item_adj crown</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>GOLD</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj golden belt</NAME><NAME>(a(n)) $kobold_item_adj gold belt</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj golden belt</NAME><NAME>(a(n)) $smallragged_item_adj gold belt</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>GOLD</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj golden shoes</NAME><NAME>a pair of $kobold_item_adj gold shoes</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj golden shoes</NAME><NAME>a pair of $smallragged_item_adj gold shoes</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>GOLD</MATERIAL><PROPERWORN>FEET</PROPERWORN>
                     </ITEM>
                 </ITEM>
                 <ITEM select="pick-1">
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>(a(n)) $kobold_item_adj sceptor</NAME>
+                        <NAME>(a(n)) $smallragged_item_adj sceptor</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <MATERIAL>GOLD</MATERIAL>
                         <WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -1097,7 +1097,7 @@ Required details: "id" "value"
                     </ITEM>
                 </ITEM>
             </MOB>
-            <ITEM class="GenChair"  name="(a(n)) $kobold_item_adj throne" display="$ITEM_NAME is here"/>
+            <ITEM class="GenChair"  name="(a(n)) $smallragged_item_adj throne" display="$ITEM_NAME is here"/>
         </ROOM>
     </ROOM>
     <ROOM select="all" condition="$theme='rats' or $theme='random'">
@@ -1149,7 +1149,7 @@ Required details: "id" "value"
                     <DESCRIPTION>You can't imagine a more insane spot to be standing in. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-                <DESCRIPTION select="any-1">$dungeon_kobold_exit</DESCRIPTION>
+                <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>
             <EXIT class="LockedDoor" text="$areaname labkey" />
             <MOB class="GenMob" level="(1.20 * ($level_range)) + 1" race="_humanoid_races" gender="$anygender">
@@ -1444,7 +1444,7 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
     </ROOM>
 </ROOM>
 
-<STRING id="dungeon_kobold_exit" select="all">
+<STRING id="nasty_lair_exit" select="all">
     <STRING select="any-1">
         <STRING>The stinky hole you came through is to the $roomexits_desc_long.</STRING>
         <STRING>The way out of here is $roomexits_desc_long.</STRING>
@@ -1878,11 +1878,11 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
         </MOB>
     </MOB>
     
-    <MOB select="all" id="dungeon_kobold" condition="$theme='kobolds' or $theme='random'">
-        <MOB class="GenMob" level="$level_range" id="dungeon_koboldguard" race="Kobold" gender="$anygender">
+    <MOB select="all" id="nasty_lair_monster" condition="$theme='kobolds' or $theme='random'">
+        <MOB class="GenMob" level="$level_range" id="nasty_lair_guard" race="$__nasty_race_id" gender="$anygender">
             <NAME select="pick-1">
-                <NAME pickweight="1">(a(n)) $nasty_animal_word kobold guard</NAME>
-                <NAME pickweight="1">(a(n)) kobold guard</NAME>
+                <NAME pickweight="1">(a(n)) $nasty_animal_word $__nasty_race_lname guard</NAME>
+                <NAME pickweight="1">(a(n)) $__nasty_race_lname guard</NAME>
             </NAME>
             <DISPLAY select="pick-1">
                 <DISPLAY pickweight="1">$mob_name sneaks towards you.</DISPLAY>
@@ -1911,41 +1911,41 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
                 <BEHAVIOR class="CombatAbilities" parms="" />
             </BEHAVIOR>
             <ITEM select="all">
-                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="a kobold key" material="iron" condition="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1"/>
-                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname labkey"  name="a wierd kobold key" material="copper" condition="1?20=1 or (1?2=1 and $__labkey&lt;1)" define="__labkey+=1"/>
-                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname thronekey"  name="a golden kobold key" material="gold" condition="1?10=1 or (1?2=1 and $__thronekey&lt;1)" define="__thronekey+=1"/>
+                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="a $__nasty_race_lname key" material="iron" condition="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1"/>
+                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname labkey"  name="a wierd $__nasty_race_lname key" material="copper" condition="1?20=1 or (1?2=1 and $__labkey&lt;1)" define="__labkey+=1"/>
+                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname thronekey"  name="a golden $__nasty_race_lname key" material="gold" condition="1?10=1 or (1?2=1 and $__thronekey&lt;1)" define="__thronekey+=1"/>
                 <ITEM class="GenShield" LEVEL="$mob_level" material="OAK" name="a wooden shield" display="a wooden shield sits here"/>
                 <ITEM select="pick-1?3">
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather cap</NAME><NAME>(a(n)) $kobold_item_adj cap</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather cap</NAME><NAME>(a(n)) $smallragged_item_adj cap</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather vest</NAME><NAME>(a(n)) $kobold_item_adj vest</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather vest</NAME><NAME>(a(n)) $smallragged_item_adj vest</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather pants</NAME><NAME>a pair of $kobold_item_adj pants</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather pants</NAME><NAME>a pair of $smallragged_item_adj pants</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather sleeves</NAME><NAME>a pair of $kobold_item_adj sleeves</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather gloves</NAME><NAME>a pair of $kobold_item_adj gloves</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather gloves</NAME><NAME>a pair of $smallragged_item_adj gloves</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HANDS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather hat</NAME><NAME>(a(n)) $kobold_item_adj hat</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather hat</NAME><NAME>(a(n)) $smallragged_item_adj hat</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather blouse</NAME><NAME>(a(n)) $kobold_item_adj blouse</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather blouse</NAME><NAME>(a(n)) $smallragged_item_adj blouse</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather dress</NAME><NAME>a pair of $kobold_item_adj dress</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather dress</NAME><NAME>a pair of $smallragged_item_adj dress</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenDrink" LEVEL="1" NAME="a ragged waterskin" material="LEATHER" properworn="inventory">
@@ -1957,28 +1957,28 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
                 </ITEM>
                 <ITEM select="pick-1">
                     <ITEM pickweight="3" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>(a(n)) $kobold_item_adj spear</NAME>
+                        <NAME>(a(n)) $smallragged_item_adj spear</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <WEAPONCLASS>POLEARM</WEAPONCLASS>
                         <WEAPONTYPE>PIERCING</WEAPONTYPE>
                         <MATERIAL>OAK</MATERIAL>
                     </ITEM>
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>(a(n)) $kobold_item_adj dagger</NAME>
+                        <NAME>(a(n)) $smallragged_item_adj dagger</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <WEAPONCLASS>DAGGER</WEAPONCLASS>
                         <WEAPONTYPE>PIERCING</WEAPONTYPE>
                         <MATERIAL>IRON</MATERIAL>
                     </ITEM>
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>a sharp $kobold_item_adj stick</NAME>
+                        <NAME>a sharp $smallragged_item_adj stick</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <MATERIAL>OAK</MATERIAL>
                         <WEAPONCLASS>DAGGER</WEAPONCLASS>
                         <WEAPONTYPE>PIERCING</WEAPONTYPE>
                     </ITEM>
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>a spiked $kobold_item_adj mace</NAME>
+                        <NAME>a spiked $smallragged_item_adj mace</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <MATERIAL>IRON</MATERIAL>
                         <WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -1987,10 +1987,10 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
                 </ITEM>
             </ITEM>
         </MOB>
-        <MOB class="GenMob" level="$level_range" id="dungeon_koboldpeon" race="Kobold" gender="$anygender">
+        <MOB class="GenMob" level="$level_range" id="nasty_lair_peon" race="$__nasty_race_id" gender="$anygender">
             <NAME select="pick-1">
-                <NAME pickweight="5">(a(n)) $nasty_animal_word kobold</NAME>
-                <NAME pickweight="1">(a(n)) kobold</NAME>
+                <NAME pickweight="5">(a(n)) $nasty_animal_word $__nasty_race_lname</NAME>
+                <NAME pickweight="1">(a(n)) $__nasty_race_lname</NAME>
             </NAME>
             <DISPLAY select="pick-1">
                 <DISPLAY pickweight="1">$mob_name sneaks towards you.</DISPLAY>
@@ -2022,35 +2022,35 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
             <ITEM select="all">
                 <ITEM select="pick-1?3">
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather cap</NAME><NAME>(a(n)) $kobold_item_adj cap</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather cap</NAME><NAME>(a(n)) $smallragged_item_adj cap</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather vest</NAME><NAME>(a(n)) $kobold_item_adj vest</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather vest</NAME><NAME>(a(n)) $smallragged_item_adj vest</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather pants</NAME><NAME>a pair of $kobold_item_adj pants</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather pants</NAME><NAME>a pair of $smallragged_item_adj pants</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather sleeves</NAME><NAME>a pair of $kobold_item_adj sleeves</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather gloves</NAME><NAME>a pair of $kobold_item_adj gloves</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather gloves</NAME><NAME>a pair of $smallragged_item_adj gloves</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HANDS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather hat</NAME><NAME>(a(n)) $kobold_item_adj hat</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather hat</NAME><NAME>(a(n)) $smallragged_item_adj hat</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-                        <NAME select="any-1"><NAME>(a(n)) $kobold_item_adj leather blouse</NAME><NAME>(a(n)) $kobold_item_adj blouse</NAME></NAME>
+                        <NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather blouse</NAME><NAME>(a(n)) $smallragged_item_adj blouse</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-                        <NAME select="any-1"><NAME>a pair of $kobold_item_adj leather dress</NAME><NAME>a pair of $kobold_item_adj dress</NAME></NAME>
+                        <NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather dress</NAME><NAME>a pair of $smallragged_item_adj dress</NAME></NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
                     </ITEM>
                     <ITEM pickweight="1" class="GenDrink" LEVEL="1" NAME="a ragged waterskin" material="LEATHER" properworn="inventory">
@@ -2062,28 +2062,28 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
                 </ITEM>
                 <ITEM select="pick-1">
                     <ITEM pickweight="3" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>(a(n)) $kobold_item_adj spear</NAME>
+                        <NAME>(a(n)) $smallragged_item_adj spear</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <WEAPONCLASS>POLEARM</WEAPONCLASS>
                         <WEAPONTYPE>PIERCING</WEAPONTYPE>
                         <MATERIAL>OAK</MATERIAL>
                     </ITEM>
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>(a(n)) $kobold_item_adj dagger</NAME>
+                        <NAME>(a(n)) $smallragged_item_adj dagger</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <WEAPONCLASS>DAGGER</WEAPONCLASS>
                         <WEAPONTYPE>PIERCING</WEAPONTYPE>
                         <MATERIAL>IRON</MATERIAL>
                     </ITEM>
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>a sharp $kobold_item_adj stick</NAME>
+                        <NAME>a sharp $smallragged_item_adj stick</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <MATERIAL>OAK</MATERIAL>
                         <WEAPONCLASS>DAGGER</WEAPONCLASS>
                         <WEAPONTYPE>PIERCING</WEAPONTYPE>
                     </ITEM>
                     <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                        <NAME>a spiked $kobold_item_adj mace</NAME>
+                        <NAME>a spiked $smallragged_item_adj mace</NAME>
                         <DISPLAY>$item_name has been left here"</DISPLAY>
                         <MATERIAL>IRON</MATERIAL>
                         <WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -2151,15 +2151,54 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 
 <STRING id="anygender" select="any-1"> <STRING>M</STRING> <STRING>F</STRING></STRING>
 
-<ITEM id="dungeon_items" select="all" requires="level_range=int,theme=prison;rats;kobolds;random">
+
+<!-- 
+JUNK IDEAS: 
+Prayer beads, wax candle, 1 foot of rope, Bottle, iron spike, broken box, ripped hat, torn sack, rotten random food, 
+Metal file, Chisel, iron wire, blanke,t rag, tweezer, locket ,false wooden teeth, squished frog, puddle of blood,
+ 
+
+ -->
+<ITEM id="dungeon_junk" select="all" requires="level_range=int,theme=prison;rats;kobolds;random">
     <ITEM select="all" condition="$theme='rats' or $theme='random'">
-    <!--TODO: Insert values: adventurer corpses are good -->
+        <ITEM class="GenItem" name="some $broken_metal_word armor scraps" display="$item_name are sitting here" material="IRON" level="$level_range" />
+        <ITEM class="GenResource" name="the bones of a dead aventurer" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
+    <!--TODO: finish -->
     </ITEM>
     <ITEM select="all" condition="$theme='prison' or $theme='random'">
+        <ITEM class="GenItem" name="some $broken_metal_word handcuffs scraps" display="$item_name were discarded here" material="IRON" level="$level_range" />
+        <ITEM class="GenWeapon" name="a $broken_wooden_word night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
+        <ITEM class="GenResource" name="the bones of a dead prisoner" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
     <!--TODO: Insert values: lots of things, dead guards again are good -->
     </ITEM>
     <ITEM select="all" condition="$theme='kobolds' or $theme='random'">
+        <ITEM class="GenItem" name="some $broken_wooden_word shield pieces" display="$item_name are sitting here" material="IRON" level="$level_range" />
+        <ITEM class="GenResource" name="the bones of a dead critter" display="$item_name rest here" material="BONE" level="$level_range" weight="2" />
     <!--TODO: Insert values: lots of things I guess -->
+    </ITEM>
+</ITEM>
+
+<!-- 
+TODO: mundane items
+http://oldguardgamingaccoutrements.blogspot.com/2009/03/100-item-list-of-random-objects-for.html
+http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
+-->
+<ITEM id="dungeon_mundane_items" select="all" requires="level_range=int,theme=prison;rats;kobolds;random">
+    <ITEM select="all" condition="$theme='rats' or $theme='random'">
+    </ITEM>
+    <ITEM select="all" condition="$theme='prison' or $theme='random'">
+    </ITEM>
+    <ITEM select="all" condition="$theme='kobolds' or $theme='random'">
+    </ITEM>
+</ITEM>
+
+<!-- TODO: treasure items-->
+<ITEM id="dungeon_treasure_items" select="all" requires="level_range=int,theme=prison;rats;kobolds;random">
+    <ITEM select="all" condition="$theme='rats' or $theme='random'">
+    </ITEM>
+    <ITEM select="all" condition="$theme='prison' or $theme='random'">
+    </ITEM>
+    <ITEM select="all" condition="$theme='kobolds' or $theme='random'">
     </ITEM>
 </ITEM>
 
@@ -2382,7 +2421,11 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 </STRING>
 
 <STRING id="ragged_word" select="any-1">
+    <STRING></STRING>
     <STRING>ragged</STRING>
+    <STRING>scraggy</STRING>
+    <STRING>battered</STRING>
+    <STRING>tattered</STRING>
     <STRING>worn</STRING>
     <STRING>old</STRING>
 </STRING>
@@ -2392,18 +2435,52 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
     <STRING>notched</STRING>
 </STRING>
 
+<STRING id="wooden_broken_word" select="any-1">
+    <STRING>broken</STRING>
+    <STRING>destroyed</STRING>
+    <STRING>shredded</STRING>
+    <STRING>rotted</STRING>
+    <STRING>mutilated</STRING>
+    <STRING>rotten</STRING>
+</STRING>
+
+<STRING id="cloth_ragged_word" select="any-1" insert="ragged_word">
+    <STRING>patched</STRING>
+    <STRING>shabby</STRING>
+    <STRING>frazzled</STRING>
+    <STRING>frayed</STRING>
+    <STRING>threadbare</STRING>
+</STRING>
+
+<STRING id="cloth_broken_word" select="any-1">
+    <STRING>torn up</STRING>
+    <STRING>destroyed</STRING>
+    <STRING>shredded</STRING>
+    <STRING>ripped up</STRING>
+    <STRING>mutilated</STRING>
+</STRING>
+
 <STRING id="metal_ragged_word" select="any-1" insert="ragged_word">
     <STRING>rusted</STRING>
     <STRING>dented</STRING>
 </STRING>
 
-<STRING id="kobold_item_adj" select="any-1">
+<STRING id="metal_broken_word" select="any-1">
+    <STRING>broken</STRING>
+    <STRING>busted</STRING>
+    <STRING>crumpled</STRING>
+    <STRING>twisted</STRING>
+    <STRING>crushed</STRING>
+    <STRING>pulverized</STRING>
+</STRING>
+
+<STRING id="smallragged_item_adj" select="any-1">
     <STRING>$small_word</STRING>
-    <STRING>$small_word kobold</STRING>
+    <STRING>$small_word $__nasty_race_lname</STRING>
     <STRING>$ragged_word</STRING>
-    <STRING>$ragged_word kobold</STRING>
+    <STRING>$ragged_word $__nasty_race_lname</STRING>
     <STRING>$small_word $ragged_word</STRING>
-    <STRING>$small_word $ragged_word kobold</STRING>
+    <STRING>$small_word $ragged_word $__nasty_race_lname</STRING>
 </STRING>
 
 <STRING id="insect_color" select="any-1" insert="mammal_color">
@@ -2521,6 +2598,19 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 <STRING id="dungeonadj_nonphys" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values" />
 <STRING id="dungeonadj_phys" select="any-1" insert="dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
 <STRING id="dungeonadj_any" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
+
+<STRING id="__nasty_race_id" select="any-1">
+	<string condition="$theme='kobolds' or $theme='random'">Kobold</string>
+</STRING>
+<STRING id="__nasty_race_uname" select="any-1">
+	<string condition="$theme='kobolds' or $theme='random'">Kobold</string>
+</STRING>
+<STRING id="__nasty_race_lname" select="any-1">
+	<string condition="$theme='kobolds' or $theme='random'">kobold</string>
+</STRING>
+<STRING id="__nasty_race_pname" select="any-1">
+	<string condition="$theme='kobolds' or $theme='random'">kobolds</string>
+</STRING>
 
 <STRING id="fantasy_name" select="any-1">
     <STRING id="fantasy_name_values" select="all">
