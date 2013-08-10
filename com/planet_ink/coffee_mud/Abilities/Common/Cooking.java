@@ -446,7 +446,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem("GenFood");
 			Food food=(Food)buildingI;
 			buildingI.setName(((messedUp)?"burnt ":"")+finalDishName);
-			buildingI.setDisplayText("some "+((messedUp)?"burnt ":"")+finalDishName+" has been left here");
+			buildingI.setDisplayText("some "+((messedUp)?"burnt ":"")+finalDishName+" is here");
 			buildingI.setDescription("It looks "+((messedUp)?"burnt!":"good!"));
 			food.setNourishment(0);
 			if(!messedUp)
@@ -518,7 +518,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			//building.setMiscText(cooking.text());
 			//building.recoverPhyStats();
 			buildingI.setName(((messedUp)?"spoiled ":"")+finalDishName);
-			buildingI.setDisplayText("some "+((messedUp)?"spoiled ":"")+finalDishName+" has been left here.");
+			buildingI.setDisplayText("some "+((messedUp)?"spoiled ":"")+finalDishName+" is here.");
 			buildingI.setDescription("It looks "+((messedUp)?"spoiled!":"good!"));
 			Drink drink=(Drink)buildingI;
 			int liquidType=RawMaterial.RESOURCE_FRESHWATER;
@@ -557,7 +557,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			buildingI=CMClass.getItem(foodType);
 			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":"burnt ";
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
-			buildingI.setDisplayText("some "+((messedUp)?ruinWord:"")+finalDishName+" has been left here");
+			buildingI.setDisplayText("some "+((messedUp)?ruinWord:"")+finalDishName+" is here");
 			if(buildingI instanceof Drink)
 			{
 				Drink drink=(Drink)buildingI;
@@ -601,7 +601,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
 			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":"burnt ";
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
-			buildingI.setDisplayText("some "+((messedUp)?ruinWord:"")+finalDishName+" has been left here");
+			buildingI.setDisplayText("some "+((messedUp)?ruinWord:"")+finalDishName+" is here");
 			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
 			playSound=defaultFoodSound;
 		}

@@ -195,9 +195,11 @@ with areas, its details will cause variables beginning with ITEM_ to be defined.
 Required details: 
 "class": normally the CoffeeMud class the item will be made from, though it may also be the
 word catalog in order to select an item from your catalog, in which case "name" also becomes
-a required detail.  This may also be equal to the word "metacraft", which which case "name"
-again becomes a required detail, whose value is either the name of the item to metacraft, 
-the word "anything", or the word "any-" followed by the ID of the common skill to use.
+a required detail.  This may also be equal to the word "metacraft", which which case "name" 
+again becomes a required detail, whose value is either the name of the item to metacraft, the 
+word "anything", or the word "any-" followed by the ID of the common skill to use.  Level 
+is also significant here, as it will help determine which recipes are allowed; use "any" to
+stick with whatever the craft skill makes, or a number expression to set an upper limit.
 
 Optional Objects: (See below for details on these object tag types and their details) 
 "MOB","ITEM","AFFECT", "CONTENT", "BEHAVIOR", "EXIT"
@@ -2151,12 +2153,10 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 
 <STRING id="anygender" select="any-1"> <STRING>M</STRING> <STRING>F</STRING></STRING>
 
+<ITEM id="any_random_junk" select="any-1" insert="dungeon_junk" predefine="theme=random" />
 
 <!-- 
 JUNK IDEAS: 
-rotten random food,
-Metal file, Chisel, iron wire, blanket, rag, tweezer, locket ,false wooden teeth, squished frog, puddle of blood,
-axe head, broken wooden crown, wooden practice sword, bull horn, door handle, broken stick, a pile of corks, broken pipe,
 mice skulls, stick of black chalk, half-eaten sasage covered in mold, rusted iron lock, broken holy symbol, glass eye,
 13 <race> ears on wooden chain, clothespin, worn leather-wrapped ball, belt buckle, broken knitting needle, mummified <race> hand,
 mummified <animal> paw, ball of twine, a whittled branch, a smooth rock, a <colored> colored stone,  a puzzle piece, broken bowl,
@@ -2164,21 +2164,39 @@ single playing card, a griffon feather, a rusted key (to nothing), bound lock of
 a busted pully, a finger bone, a <race> skull, tiny scrap of unintelligible writing, a nail, a hatchet handle, baby rattle,
 horse shoe, comb, a chair leg, 
  
-
  -->
 <ITEM id="dungeon_junk" select="all" requires="level_range=int,theme=prison;rats;kobolds;random">
     <ITEM select="all" condition="$theme='rats' or $theme='random'">
-        <ITEM class="GenItem" name="some $metal_broken_word armor scraps" display="$item_name are sitting here" material="IRON" level="$level_range" />
+        <ITEM class="GenItem" name="some $metal_broken_word armor scraps" display="$item_name are sitting here" material="$random_cheap_metal" level="$level_range" />
         <ITEM class="GenResource" name="the bones of a dead aventurer" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
         <ITEM class="GenItem" name="a string of beads" display="a string of beads lie here" material="BONE" level="$level_range" weight=1 />
         <ITEM class="GenItem" name="a wax candle stub" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
         <ITEM class="GenItem" name="a stub of rope" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
         <ITEM class="GenEmptyDrink" name="a small bottle" display="$item_name lies here" material="GLASS" level="$level_range" liquidheld=100 weight=3 />
-        <ITEM class="GenWeapon" define="r=$random_cheap_metal" name="(a(n)) $r spike" display="$item_name lies here" material="$r" level="$level_range" weight=3 damage="1"/>
-        <ITEM class="GenItem" name="((a)n) $wooden_broken_word box" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
-        <ITEM class="GenItem" name="((a)n) $cloth_broken_word cloth hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-        <ITEM class="GenItem" name="((a)n) $cloth_broken_word sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-        
+        <ITEM class="GenWeapon" name="(a(n)) $item_material spike" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="1"/>
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word box" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $cloth_broken_word cloth hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $cloth_broken_word sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $item_material pick" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
+        <ITEM class="GenItem" name="a bit of $item_material wire" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) $cloth_broken_word blanket" display="$item_name lies here" material="$random_wood" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="a dirty $cloth_broken_word $item_material rag" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $item_material tweezer" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) $metal_broken_word locket" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="some false wooden teeth" display="$item_name are here" material="$random_wood" level="$level_range" weight=1 />
+        <ITEM class="GenFood" name="a squished frog"  display="$item_name lies here" material="MEAT" level="$level_range"  weight=1 nourishment=1 />
+        <ITEM class="GenLiquidResource" name="a puddle of blood"  display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
+        <ITEM class="GenItem" name="(a(n)) $item_material axe head" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word wooden bracelet" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+        <ITEM class="metacraft" name="any-Cooking" level="$level_range" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+        <ITEM class="metacraft" name="any-Baking" level="$level_range" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+        <ITEM class="metacraft" name="any-FoodPrep" level="$level_range" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+        <ITEM class="GenWeapon" name="(a(n)) $wooden_broken_word wooden sword" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 damage="1"/>
+        <ITEM class="GenItem" name="a pair of bull horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) $metal_broken_word metal handle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word $item_material stick" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="a pile of corks" display="$item_name are here" material="OAK" level="$level_range" weight=1 />
+        <ITEM class="GenWeapon" name="(a(n)) $metal_broken_word $item_material pipe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="2"/>
     <!--TODO: finish -->
     </ITEM>
     <ITEM select="all" condition="$theme='prison' or $theme='random'">
@@ -2189,11 +2207,30 @@ horse shoe, comb, a chair leg,
         <ITEM class="GenItem" name="a melted wax clob" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
         <ITEM class="GenItem" name="a makeshift noose" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
         <ITEM class="GenEmptyDrink" name="a small bottle" display="$item_name lies here" material="GLASS" level="$level_range" liquidheld=100 weight=3 />
-        <ITEM class="GenItem" define="r=$random_cheap_metal" name="(a(n)) $r file" display="$item_name lies here" material="$r" level="$level_range" weight=1 />
-        <ITEM class="GenWeapon" define="r=$random_cheap_metal" name="(a(n)) $r shank" display="$item_name lies here" material="$r" level="$level_range" weight=3  damage="1"/>
-        <ITEM class="GenItem" name="((a)n) $wooden_broken_word cigar box" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
-        <ITEM class="GenItem" name="((a)n) $cloth_broken_word wardens hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-        <ITEM class="GenItem" name="((a)n) $cloth_broken_word laundry sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $item_material file" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+        <ITEM class="GenWeapon" name="(a(n)) $item_material shank" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3  damage="1"/>
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word cigar box" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $cloth_broken_word wardens hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $cloth_broken_word laundry sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $item_material chisel" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
+        <ITEM class="GenItem" name="a twisted $item_material wire noose" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) $cloth_broken_word sheet" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $cloth_broken_word $item_material rag" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="A locket with (a(n)) $metal_broken_word chain" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) $item_material tooth" display="$item_name is here" material="$random_metal" level="$level_range" weight=1 />
+        <ITEM class="GenFood" name="a dead cockroach"  display="$item_name lies here" material="MEAT" level="$level_range"  weight=1 nourishment=1 />
+        <ITEM class="GenLiquidResource" name="a pool of blood"  display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
+        <ITEM class="GenItem" name="(a(n)) $metal_broken_word $item_material handaxe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word wooden crown" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+        <ITEM class="metacraft" name="any-Cooking" level="$level_range" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+        <ITEM class="metacraft" name="any-Baking" level="$level_range" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+        <ITEM class="metacraft" name="any-FoodPrep" level="$level_range" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+        <ITEM class="GenWeapon" name="(a(n)) $wooden_broken_word makeshift wooden sword" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 damage="1"/>
+        <ITEM class="GenItem" name="a pair of deer horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) $metal_broken_word door handle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word $item_material handle" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="a pile of bottle corks" display="$item_name are here" material="OAK" level="$level_range" weight=1 />
+        <ITEM class="GenWeapon" name="(a(n)) $item_material pipe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="2"/>
     <!--TODO: Insert values: lots of things, dead guards again are good -->
     </ITEM>
     <ITEM select="all" condition="$theme='kobolds' or $theme='random'">
@@ -2203,10 +2240,30 @@ horse shoe, comb, a chair leg,
         <ITEM class="GenItem" name="a string of tiny prayer bones" display="a string of tiny prayer bones lie here" material="BONE" level="$level_range" weight=1 />
         <ITEM class="GenItem" name="a one foot length of rope" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
         <ITEM class="GenEmptyDrink" name="a small clay jug" display="$item_name lies here" material="CLAY" level="$level_range" liquidheld=100 weight=3 />
-        <ITEM class="GenWeapon" define="r=$random_cheap_metal" name="(a(n)) $r shard" display="$item_name lies here" material="$r" level="$level_range" weight=3  damage="1"/>
-        <ITEM class="GenItem" name="((a)n) $wooden_broken_word crate" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=3/>
-        <ITEM class="GenItem" name="((a)n) $cloth_broken_word hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenWeapon" name="(a(n)) $item_material shard" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3  damage="1"/>
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word crate" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=3/>
+        <ITEM class="GenItem" name="(a(n)) $cloth_broken_word hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
         <ITEM class="GenItem" name="a small $cloth_broken_word sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $item_material pick head" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
+        <ITEM class="GenItem" name="a short length of $item_material wire" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) $cloth_broken_word bedroll" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="a greasy $cloth_broken_word $item_material rag" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="(a(n)) $item_material half-tweezer" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) $metal_broken_word $item_material locket" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) unidentified tooth" display="$item_name is here" material="bone" level="$level_range" weight=1 />
+        <ITEM class="GenFood" name="a dead frog"  display="$item_name lies here" material="MEAT" level="$level_range"  weight=1 nourishment=1 />
+        <ITEM class="GenLiquidResource" name="a glob of blood"  display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word $item_material axe handle" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 />
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word wooden helmet" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+        <ITEM class="metacraft" name="any-Cooking" level="$level_range" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+        <ITEM class="metacraft" name="any-Baking" level="$level_range" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+        <ITEM class="metacraft" name="any-FoodPrep" level="$level_range" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
+        <ITEM class="GenWeapon" name="(a(n)) $wooden_broken_word wooden practice sword" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 damage="1"/>
+        <ITEM class="GenItem" name="a pair of small horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
+        <ITEM class="GenItem" name="(a(n)) $metal_broken_word door hinge" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
+        <ITEM class="GenItem" name="(a(n)) $wooden_broken_word $item_material sticker" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+        <ITEM class="GenItem" name="a pile of wine corks" display="$item_name are here" material="OAK" level="$level_range" weight=1 />
+        <ITEM class="GenWeapon" name="(a(n)) small $item_material pipe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="2"/>
     <!--TODO: Insert values: lots of things I guess -->
     </ITEM>
 </ITEM>
