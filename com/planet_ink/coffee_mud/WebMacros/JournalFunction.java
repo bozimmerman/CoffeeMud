@@ -89,7 +89,7 @@ public class JournalFunction extends StdWebMacro
 			if((to==null)||(M==null)||(to.equalsIgnoreCase("all"))) to="ALL";
 			if((!to.equals("ALL"))&&(!to.toUpperCase().trim().startsWith("MASK=")))
 			{
-				if(!CMLib.players().playerExists(to))
+				if(!CMLib.players().playerExists(to) && (!CMLib.players().accountExists(to)))
 					return "Post not submitted -- TO user does not exist.  Try 'All'.";
 				to=CMStrings.capitalizeAndLower(to);
 			}
