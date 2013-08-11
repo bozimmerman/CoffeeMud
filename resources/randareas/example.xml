@@ -100,7 +100,10 @@ any embedded variables or identifiers, so long as they are preceded with a $ cha
 A string beginning with a $ character will be assumed to be an identifier, and will be
 searched for within the list of defined variables and identifiers.  If the identifier
 resolves to a tag, the tag will be parsed as a string.  If the identifier resolves to
-a string, so much the easier.  
+a string, so much the easier.  Tag names can also be embedded in {} characters; for
+example: ${tagname}. When embedded in this way, the tagname may be preceeded by "u:" to
+force to all-uppercase, "l:" to force all-lowercase, "p:" to force plural, or "c:" to
+force to be capitalized (first letter upper, rest lower).
 
 Objects:
 Each basic tag type may contain other basic tag types to help define them.  For instance,
@@ -230,22 +233,22 @@ Required details: "id" "value"
 
 -->
 <AREADATA>
-<AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random">
+<AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random">
     <NAME>$areaname</NAME><SIZE>$areasize</SIZE>
     <CLASS select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
     <ROOM id="dungeon_rooms" insert="dungeon_hallways,dungeon_interior,dungeon_leaf" />
     <BEHAVIOR select="all" id="dungeon_behaviors">
-        <BEHAVIOR condition="$theme='kobolds'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
+        <BEHAVIOR condition="$theme='kobolds' or $theme='goblins'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
         <BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
     </BEHAVIOR>
 </AREA>
-<AREA id="grid_dungeon" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
+<AREA id="grid_dungeon" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random" >
 </AREA>
-<AREA id="box_dungeon" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
+<AREA id="box_dungeon" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random" >
 </AREA>
-<AREA id="cross_dungeon" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
+<AREA id="cross_dungeon" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random" >
 </AREA>
-<AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random" >
+<AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random" >
 </AREA>
 <AREA id="random_dungeon" select="any" requires="areaname=$" 
     insert="maze_dungeon,grid_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
@@ -253,7 +256,14 @@ Required details: "id" "value"
 </AREA>
 <string id="randomareasize" select="any-1"><string condition="$areasize!=''">$areasize</string><string condition="$areasize=''">30?60</string></string>
 <string id="randomlevelrange" select="any-1"><string condition="$level_range!=''">$level_range</string><string condition="$level_range=''">1?91</string></string>
-<string id="randomtheme" select="any-1"><string>prison</string><string>rats</string><string>kobolds</string><string>random</string></string>
+<string id="randomtheme" select="any-1"><string>prison</string><string>rats</string><string>kobolds</string><string>goblins</string><string>orcs</string><string>trolls</string><string>random</string></string>
+
+<STRING id="nasty_race_name" select="any-1">
+	<string condition="$theme='kobolds' or $theme='random'" define="nasty_race_name">kobold</string>
+	<string condition="$theme='goblins' or $theme='random'" define="nasty_race_name">goblin</string>
+	<string condition="$theme='orcs' or $theme='random'" define="nasty_race_name">orc</string>
+	<string condition="$theme='trolls' or $theme='random'" define="nasty_race_name">troll</string>
+</STRING>
 
 <ROOM id="dungeon_hallways" select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
     <ROOM class="CaveRoom" pickweight="5">
@@ -527,16 +537,16 @@ Required details: "id" "value"
             </DESCRIPTION>
             <MOB class="GenMob" like="dungeon_prisonguard" level="$level_range" race="$_prisoner_races" name="Dr. $fantasy_name" display="$torture_prisonguard_disp" />
             <ITEM select="any-2">
-                <ITEM class="metacraft"  name="Whipping Post"/>
-                <ITEM class="metacraft"  name="Torture Bed"/>
-                <ITEM class="metacraft"  name="Stockade"/>
-                <ITEM class="metacraft"  name="Gallows"/>
-                <ITEM class="metacraft"  name="Torture Rack"/>
-                <ITEM class="metacraft"  name="Spanish watercloth"/>
-                <ITEM class="metacraft"  name="Garucha Gallows"/>
-                <ITEM class="metacraft"  name="Garotte Bed"/>
-                <ITEM class="metacraft"  name="Brank Helmet"/>
-                <ITEM class="metacraft"  name="The Machine"/>
+                <ITEM class="metacraft" name="Whipping Post" level="any"/>
+                <ITEM class="metacraft" name="Torture Bed" level="any"/>
+                <ITEM class="metacraft" name="Stockade" level="any"/>
+                <ITEM class="metacraft" name="Gallows" level="any"/>
+                <ITEM class="metacraft" name="Torture Rack" level="any"/>
+                <ITEM class="metacraft" name="Spanish watercloth" level="any"/>
+                <ITEM class="metacraft" name="Garucha Gallows" level="any"/>
+                <ITEM class="metacraft" name="Garotte Bed" level="any"/>
+                <ITEM class="metacraft" name="Brank Helmet" level="any"/>
+                <ITEM class="metacraft" name="The Machine" level="any"/>
             </ITEM>
             <STRING id="torture_prisonguard_disp" select="any-1">
                 <STRING>$MOB_NAME is enjoying his work here.</STRING>
@@ -613,23 +623,23 @@ Required details: "id" "value"
             <MOB select="repeat-2?5" insert="dungeon_prisonguard" />
         </ROOM>
     </ROOM>
-    <ROOM select="all" condition="$theme='kobolds' or $theme='random'">
-        <ROOM class="CaveRoom">
-            <TITLE>a $__nasty_race_lname nursury</TITLE>
+    <ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
+        <ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
+            <TITLE>a $nasty_picked_race nursury</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-                    <DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. This place is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-                    <DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. Conditions here are $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-                    <DESCRIPTION>This is (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. It is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-                    <DESCRIPTION>You are confused by (a(n)) $dungeonadj_phys_size $__nasty_race_lname nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. This place is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. Conditions here are $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>This is (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. It is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+                    <DESCRIPTION>You are confused by (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>It's amazing those creatures ever see adulthood.</DESCRIPTION>
-                    <DESCRIPTION>You are astonished that $__nasty_race_pname actually seem worse as children. </DESCRIPTION>
-                    <DESCRIPTION>It just didn't seem $__nasty_race_pname could be any worse, but they can. </DESCRIPTION>
-                    <DESCRIPTION>You discover that $__nasty_race_pname start off smaller and meaner.</DESCRIPTION>
-                    <DESCRIPTION>It is just astonishing that $__nasty_race_pname live past this age. </DESCRIPTION>
+                    <DESCRIPTION>You are astonished that ${nasty_picked_race}s actually seem worse as children. </DESCRIPTION>
+                    <DESCRIPTION>It just didn't seem ${nasty_picked_race}s could be any worse, but they can. </DESCRIPTION>
+                    <DESCRIPTION>You discover that ${nasty_picked_race}s start off smaller and meaner.</DESCRIPTION>
+                    <DESCRIPTION>It is just astonishing that ${nasty_picked_race}s live past this age. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_badsmell</DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
@@ -637,10 +647,10 @@ Required details: "id" "value"
             </DESCRIPTION>
             <EXIT class="Door" />
             <MOB select="repeat-2?6" insert="nasty_lair_kid" />
-            <MOB class="GenMob" level="($level_range) / 2" id="nasty_lair_kid" race="$__nasty_race_id" gender="$anygender">
+            <MOB class="GenMob" level="($level_range) / 2" id="nasty_lair_kid" race="$nasty_picked_race" gender="$anygender">
                 <NAME select="pick-1">
-                    <NAME pickweight="5">(a(n)) $nasty_animal_word $__nasty_race_lname child</NAME>
-                    <NAME pickweight="1">a $__nasty_race_lname kid</NAME>
+                    <NAME pickweight="5">(a(n)) $nasty_animal_word ${l:mob_race} child</NAME>
+                    <NAME pickweight="1">a ${l:mob_race} kid</NAME>
                 </NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name sneaks around.</DISPLAY>
@@ -673,8 +683,8 @@ Required details: "id" "value"
                     <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>OAK</MATERIAL>
                 </ITEM>
             </MOB>
-            <MOB class="GenMob" level="(1.10 * ($level_range)) + 1" race="$__nasty_race_id" gender="F">
-                <NAME>a $__nasty_race_lname nanny</NAME>
+            <MOB class="GenMob" level="(1.10 * ($level_range)) + 1" race="$nasty_picked_race" gender="F">
+                <NAME>a ${l:mob_race} nanny</NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
                     <DISPLAY pickweight="1">$mob_name charges at a kid.</DISPLAY>
@@ -744,20 +754,20 @@ Required details: "id" "value"
             <EXIT class="Door" />
             <MOB select="repeat-1?3" insert="nasty_lair_guard" />
         </ROOM>
-        <ROOM class="CaveRoom">
-            <TITLE>a $__nasty_race_lname workshop</TITLE>
+        <ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='goblins' or $theme='random'" predefine="nasty_picked_race=${l:nasty_race_name}">
+            <TITLE>a $nasty_picked_race workshop</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size $__nasty_race_lname workshop.</DESCRIPTION>
-                    <DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size $__nasty_race_lname workshop. </DESCRIPTION>
-                    <DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size $__nasty_race_lname workshop. </DESCRIPTION>
-                    <DESCRIPTION>This is (a(n)) $dungeonadj_phys_size $__nasty_race_lname workshop. </DESCRIPTION>
+                    <DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size $nasty_picked_race workshop.</DESCRIPTION>
+                    <DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size $nasty_picked_race workshop. </DESCRIPTION>
+                    <DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size $nasty_picked_race workshop. </DESCRIPTION>
+                    <DESCRIPTION>This is (a(n)) $dungeonadj_phys_size $nasty_picked_race workshop. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>Trap-Making implements are all over the place.</DESCRIPTION>
                     <DESCRIPTION>Junk is scattered all over the place. </DESCRIPTION>
                     <DESCRIPTION>Explosive components and trip wires are all over. </DESCRIPTION>
-                    <DESCRIPTION>Pieces of $__nasty_race_lname traps are scattered about. </DESCRIPTION>
+                    <DESCRIPTION>Pieces of $nasty_picked_race traps are scattered about. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>You do not feel safe here.</DESCRIPTION>
@@ -770,8 +780,8 @@ Required details: "id" "value"
             </DESCRIPTION>
             <EXIT class="Door" />
             <MOB select="repeat-1?3" insert="nasty_lair_tinkerer" />
-            <MOB class="GenMob" level="$level_range" id="nasty_lair_tinkerer" race="$__nasty_race_id" gender="$anygender">
-                <NAME>a $__nasty_race_lname tinkerer</NAME>
+            <MOB class="GenMob" level="$level_range" id="nasty_lair_tinkerer" race="$nasty_picked_race" gender="$anygender">
+                <NAME>a ${l:mob_race} tinkerer</NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
                     <DISPLAY pickweight="1">$mob_name seems disturbed by the interruption.</DISPLAY>
@@ -838,10 +848,10 @@ Required details: "id" "value"
                     <DESCRIPTION>This is $ROOM_TITLE.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>The $__nasty_race_pname must store their food here, if you can call it "food".</DESCRIPTION>
+                    <DESCRIPTION>The ${nasty_race_name}s must store their food here, if you can call it "food".</DESCRIPTION>
                     <DESCRIPTION>This appears to be where they store their foodstuff.</DESCRIPTION>
-                    <DESCRIPTION>The $__nasty_race_pname seem to keep their edibles stored here.</DESCRIPTION>
-                    <DESCRIPTION>What the $__nasty_race_pname call food seems to be stored here.</DESCRIPTION>
+                    <DESCRIPTION>The ${nasty_race_name}s seem to keep their edibles stored here.</DESCRIPTION>
+                    <DESCRIPTION>What the ${nasty_race_name}s call food seems to be stored here.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
                 <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
@@ -865,32 +875,38 @@ Required details: "id" "value"
                     <DESCRIPTION>This is $ROOM_TITLE.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>The $__nasty_race_pname must store their $nasty_word crap and junk here.</DESCRIPTION>
+                    <DESCRIPTION>The ${nasty_race_name}s must store their $nasty_word crap and junk here.</DESCRIPTION>
                     <DESCRIPTION>This appears to be where they store their $nasty_word junk.</DESCRIPTION>
-                    <DESCRIPTION>The $__nasty_race_pname seem to keep their $nasty_word crap stored here.</DESCRIPTION>
-                    <DESCRIPTION>What the $__nasty_race_pname think is important seems to be stored here.</DESCRIPTION>
+                    <DESCRIPTION>The ${nasty_race_name}s seem to keep their $nasty_word crap stored here.</DESCRIPTION>
+                    <DESCRIPTION>What the ${nasty_race_name}s think is important seems to be stored here.</DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
                 <DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
             </DESCRIPTION>
-            <ITEM select="any-5"><ITEM class="metacraft" name="anything" /><ITEM class="metacraft" name="anything" /><ITEM class="metacraft" name="anything" /><ITEM class="metacraft" name="anything" /><ITEM class="metacraft" name="anything" /></ITEM>
+            <ITEM select="any-5">
+            	<ITEM class="metacraft" name="anything" level="$level_range"/>
+            	<ITEM class="metacraft" name="anything" level="$level_range" />
+            	<ITEM class="metacraft" name="anything" level="$level_range" />
+            	<ITEM class="metacraft" name="anything" level="$level_range" />
+            	<ITEM class="metacraft" name="anything" level="$level_range" />
+            </ITEM>
             <MOB select="all" insert="$dungeon_rat" condition="1?2=1" />
             <EXIT class="LockedDoor"  text="$areaname storekey"/>
         </ROOM>
-        <ROOM class="CaveRoom">
+        <ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
             <TITLE>a kitchen</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in (a(n)) $nasty_word $__nasty_race_lname kitchen.</DESCRIPTION>
-                    <DESCRIPTION>You're inside (a(n)) $nasty_word $__nasty_race_lname kitchen. </DESCRIPTION>
-                    <DESCRIPTION>You've found (a(n)) $nasty_word $__nasty_race_lname kitchen. </DESCRIPTION>
-                    <DESCRIPTION>This is (a(n)) $nasty_word $__nasty_race_lname kitchen. </DESCRIPTION>
+                    <DESCRIPTION>You are standing in (a(n)) $nasty_word $nasty_picked_race kitchen.</DESCRIPTION>
+                    <DESCRIPTION>You're inside (a(n)) $nasty_word $nasty_picked_race kitchen. </DESCRIPTION>
+                    <DESCRIPTION>You've found (a(n)) $nasty_word $nasty_picked_race kitchen. </DESCRIPTION>
+                    <DESCRIPTION>This is (a(n)) $nasty_word $nasty_picked_race kitchen. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>This place is an astounding mess.</DESCRIPTION>
                     <DESCRIPTION>Food and clutter is scattered all over the place. </DESCRIPTION>
                     <DESCRIPTION>Splatter and mess are everywhere you look. </DESCRIPTION>
-                    <DESCRIPTION>Pieces of $__nasty_race_lname meals are scattered about. </DESCRIPTION>
+                    <DESCRIPTION>Pieces of $nasty_picked_race meals are scattered about. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>You do not feel sanitary here.</DESCRIPTION>
@@ -904,8 +920,8 @@ Required details: "id" "value"
             </DESCRIPTION>
             <EXIT class="Door" />
             <MOB select="repeat-1?3" insert="nasty_lair_cook" />
-            <MOB class="GenMob" level="$level_range" id="nasty_lair_cook" race="$__nasty_race_id" gender="F">
-                <NAME>a $__nasty_race_lname cook</NAME>
+            <MOB class="GenMob" level="$level_range" id="nasty_lair_cook" race="$nasty_picked_race" gender="F">
+                <NAME>a ${l:mob_race} cook</NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
                     <DISPLAY pickweight="1">$mob_name charges a burning potroast.</DISPLAY>
@@ -953,23 +969,23 @@ Required details: "id" "value"
                 </ITEM>
             </MOB>
             <ITEM class="GenTable" name="(a(n)) $nasty_word chopping table" display="$ITEM_NAME is here"/>
-            <ITEM class="metacraft" name="Oven" />
+            <ITEM class="metacraft" name="Oven" level="any"/>
             <ITEM select="1?3" >
-                <ITEM class="metacraft" name="Baking Pot" />
-                <ITEM class="metacraft" name="Pan" />
-                <ITEM class="metacraft" name="Pitcher" />
-                <ITEM class="metacraft" name="Cup" />
-                <ITEM class="metacraft" name="Bowl" />
+                <ITEM class="metacraft" name="Baking Pot"  level="any"/>
+                <ITEM class="metacraft" name="Pan"  level="any"/>
+                <ITEM class="metacraft" name="Pitcher"  level="any"/>
+                <ITEM class="metacraft" name="Cup"  level="any"/>
+                <ITEM class="metacraft" name="Bowl"  level="any"/>
             </ITEM>
         </ROOM>
-        <ROOM class="CaveRoom">
+        <ROOM class="CaveRoom" predefine="nasty_picked_race=$nasty_race_name">
             <TITLE>a common room</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in (a(n)) $nasty_word $__nasty_race_lname common room.</DESCRIPTION>
-                    <DESCRIPTION>You're inside (a(n)) $nasty_word $__nasty_race_lname common room. </DESCRIPTION>
-                    <DESCRIPTION>You've found (a(n)) $nasty_word $__nasty_race_lname common room. </DESCRIPTION>
-                    <DESCRIPTION>This is (a(n)) $nasty_word $__nasty_race_lname common room. </DESCRIPTION>
+                    <DESCRIPTION>You are standing in (a(n)) $nasty_word $nasty_picked_race common room.</DESCRIPTION>
+                    <DESCRIPTION>You're inside (a(n)) $nasty_word $nasty_picked_race common room. </DESCRIPTION>
+                    <DESCRIPTION>You've found (a(n)) $nasty_word $nasty_picked_race common room. </DESCRIPTION>
+                    <DESCRIPTION>This is (a(n)) $nasty_word $nasty_picked_race common room. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>This place is one of mess and clutter.</DESCRIPTION>
@@ -988,13 +1004,13 @@ Required details: "id" "value"
             <EXIT class="Open" />
             <MOB select="repeat-2?5" insert="nasty_lair_peon" />
             <ITEM select="pick-1?2" >
-                <ITEM pickweight="1" class="metacraft" name="chair"/>
-                <ITEM pickweight="2" class="metacraft" name="bench"/>
+                <ITEM pickweight="1" class="metacraft" name="chair" level="any"/>
+                <ITEM pickweight="2" class="metacraft" name="bench" level="any"/>
             </ITEM>
             <ITEM select="1?2" >
-                <ITEM class="metacraft" name="hammock"/>
-                <ITEM class="metacraft" name="whip"/>
-                <ITEM class="metacraft" name="pants"/>
+                <ITEM class="metacraft" name="hammock" level="any"/>
+                <ITEM class="metacraft" name="whip" level="any"/>
+                <ITEM class="metacraft" name="pants" level="any"/>
             </ITEM>
         </ROOM>
         <ROOM class="CaveRoom" condition="$theme='kobolds' or $theme='random'">
@@ -1025,14 +1041,14 @@ Required details: "id" "value"
             <ITEM class="GenFoodResource" id="kobold_egg" name="some $nasty_word kobold eggs" display="$item_name are here" material="EGGS" />
             <ITEM select="2?13" insert="kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg" />
         </ROOM>
-        <ROOM class="CaveRoom" condition="$__throneroom&lt;1" define="__throneroom+=1">
+        <ROOM class="CaveRoom" condition="$__throneroom&lt;1" define="__throneroom+=1" predefine="nasty_picked_race=${l:nasty_race_name}">
             <TITLE>the throne room</TITLE>
             <DESCRIPTION>
                 <DESCRIPTION select="any-1">
-                    <DESCRIPTION>You are standing in the $nasty_word $__nasty_race_lname throne room.</DESCRIPTION>
-                    <DESCRIPTION>You're inside the $nasty_word $__nasty_race_lname throne room. </DESCRIPTION>
-                    <DESCRIPTION>You've found the $nasty_word $__nasty_race_lname throne room. </DESCRIPTION>
-                    <DESCRIPTION>This is the $nasty_word $__nasty_race_lname throne room. </DESCRIPTION>
+                    <DESCRIPTION>You are standing in the $nasty_word $nasty_picked_race throne room.</DESCRIPTION>
+                    <DESCRIPTION>You're inside the $nasty_word $nasty_picked_race throne room. </DESCRIPTION>
+                    <DESCRIPTION>You've found the $nasty_word $nasty_picked_race throne room. </DESCRIPTION>
+                    <DESCRIPTION>This is the $nasty_word $nasty_picked_race throne room. </DESCRIPTION>
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>This room is so plain, you can hardly believe royalty resides here.</DESCRIPTION>
@@ -1042,7 +1058,7 @@ Required details: "id" "value"
                 </DESCRIPTION>
                 <DESCRIPTION select="any-1">
                     <DESCRIPTION>You don't really feel in any awe.</DESCRIPTION>
-                    <DESCRIPTION>This place seems like any other $__nasty_race_lname room. </DESCRIPTION>
+                    <DESCRIPTION>This place seems like any other $nasty_race_name room. </DESCRIPTION>
                     <DESCRIPTION>This must be the most boring room in the whole place. </DESCRIPTION>
                     <DESCRIPTION>You can't imagine a more boring spot in this lair to be standing in. </DESCRIPTION>
                 </DESCRIPTION>
@@ -1051,7 +1067,7 @@ Required details: "id" "value"
             </DESCRIPTION>            
             <EXIT class="LockedDoor" text="$areaname thronekey"/>
             <MOB select="repeat-5" insert="nasty_lair_guard" />
-            <MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="nasty_lair_king" race="$__nasty_race_id" gender="M">
+            <MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="nasty_lair_king" race="$nasty_picked_race" gender="M">
                 <NAME>King $fantasy_name</NAME>
                 <DISPLAY select="pick-1">
                     <DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
@@ -1195,10 +1211,10 @@ Required details: "id" "value"
             <ITEM class="GenTable" name="(a(n)) $nasty_word table" display="$ITEM_NAME is here">
                 <CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
             </ITEM>
-            <ITEM class="metacraft" name="Scroll Case">
+            <ITEM class="metacraft" name="Scroll Case" level="any">
                 <CONTENT><ITEM select="any-2" insert="any_scrollscribing_item,any_scrollscribing_item" /></CONTENT>
             </ITEM>
-            <ITEM class="metacraft" name="Potion Rack">
+            <ITEM class="metacraft" name="Potion Rack" level="any">
                 <CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
             </ITEM>
         </ROOM>
@@ -1540,14 +1556,32 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
             <STRING>You hear $dungeonadj_feeling sounds coming from all around you.</STRING>
             <STRING>You wonder if an execution occurred here.</STRING>
         </STRING>
-        <STRING select="all" condition="$theme='kobolds' or ($theme='random' and 1?10=1)">
+        <STRING select="all" condition="$theme='goblins' or ($theme='random' and 1?10=1)">
             <STRING>You hear $dungeonadj_feeling snickering nearby.</STRING>
             <STRING>You hear the $dungeonadj_feeling sounds of pattering feet nearby.</STRING>
-            <STRING>You hear faint but $dungeonadj_feeling yipping sounds echoing around you.</STRING>
+            <STRING>You hear faint but $dungeonadj_feeling squealing sounds echoing around you.</STRING>
             <STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
-            <STRING>It smells like something $dungeonadj_feeling sprayed in here.</STRING>
+            <STRING>It smells like something $dungeonadj_feeling died in here.</STRING>
             <STRING>Bits of a sprung trap are splayed about.</STRING>
-            <STRING>Several faint $dungeonadj_feeling yipping voices echo in the distance.</STRING>
+            <STRING>Several faint $dungeonadj_feeling squealing voices echo in the distance.</STRING>
+        </STRING>
+        <STRING select="all" condition="$theme='orcs' or ($theme='random' and 1?10=1)">
+            <STRING>You hear $dungeonadj_feeling voices nearby.</STRING>
+            <STRING>You hear the $dungeonadj_feeling sounds of marching feet nearby.</STRING>
+            <STRING>You hear faint but $dungeonadj_feeling shouting voices echoing around you.</STRING>
+            <STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
+            <STRING>It smells like something $dungeonadj_feeling died in here.</STRING>
+            <STRING>Bits of a dead $_humanoid_races are splayed about.</STRING>
+            <STRING>Several faint $dungeonadj_feeling argueing voices echo in the distance.</STRING>
+        </STRING>
+        <STRING select="all" condition="$theme='trolls' or ($theme='random' and 1?10=1)">
+            <STRING>You hear $dungeonadj_feeling growling nearby.</STRING>
+            <STRING>You hear the $dungeonadj_feeling sounds of heavy footsteps nearby.</STRING>
+            <STRING>You hear faint but $dungeonadj_feeling loud cries echoing around you.</STRING>
+            <STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
+            <STRING>It smells like something $dungeonadj_feeling died in here.</STRING>
+            <STRING>Bits of a dead $_humanoid_races are splayed about.</STRING>
+            <STRING>Several faint $dungeonadj_feeling gutteral voices echo in the distance.</STRING>
         </STRING>
         <STRING select="all" condition="$theme='rats' or ($theme='random' and 1?10=1)">
             <STRING>You hear $dungeonadj_feeling squeeking nearby.</STRING>
@@ -1562,7 +1596,7 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
     </STRING>
 </STRING>
 
-<MOB id="dungeon_mobs" select="all" requires="level_range=int,theme=prison;rats;kobolds;random,aggrochance=int">
+<MOB id="dungeon_mobs" select="all" requires="level_range=int,theme=prison;rats;kobolds;orcs;trolls;goblins;random,aggrochance=int">
     <MOB select="all" condition="$theme='rats' or $theme='random'">
         <MOB class="GenMob" level="$level_range" id="dungeon_rat" race="Rat" gender="$anygender">
             <NAME>(a(n)) $nasty_animal_word $mammal_color rat</NAME>
@@ -1880,11 +1914,11 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
         </MOB>
     </MOB>
     
-    <MOB select="all" id="nasty_lair_monster" condition="$theme='kobolds' or $theme='random'">
-        <MOB class="GenMob" level="$level_range" id="nasty_lair_guard" race="$__nasty_race_id" gender="$anygender">
+    <MOB select="all" id="nasty_lair_monster" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
+        <MOB class="GenMob" level="$level_range" id="nasty_lair_guard" race="$nasty_race_name" gender="$anygender">
             <NAME select="pick-1">
-                <NAME pickweight="1">(a(n)) $nasty_animal_word $__nasty_race_lname guard</NAME>
-                <NAME pickweight="1">(a(n)) $__nasty_race_lname guard</NAME>
+                <NAME pickweight="1">(a(n)) $nasty_animal_word ${l:mob_race} guard</NAME>
+                <NAME pickweight="1">(a(n)) ${l:mob_race} guard</NAME>
             </NAME>
             <DISPLAY select="pick-1">
                 <DISPLAY pickweight="1">$mob_name sneaks towards you.</DISPLAY>
@@ -1913,9 +1947,9 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
                 <BEHAVIOR class="CombatAbilities" parms="" />
             </BEHAVIOR>
             <ITEM select="all">
-                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="a $__nasty_race_lname key" material="iron" condition="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1"/>
-                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname labkey"  name="a wierd $__nasty_race_lname key" material="copper" condition="1?20=1 or (1?2=1 and $__labkey&lt;1)" define="__labkey+=1"/>
-                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname thronekey"  name="a golden $__nasty_race_lname key" material="gold" condition="1?10=1 or (1?2=1 and $__thronekey&lt;1)" define="__thronekey+=1"/>
+                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="a ${l:mob_race} key" material="iron" condition="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1"/>
+                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname labkey"  name="a wierd ${l:mob_race} key" material="copper" condition="1?20=1 or (1?2=1 and $__labkey&lt;1)" define="__labkey+=1"/>
+                <ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname thronekey"  name="a golden ${l:mob_race} key" material="gold" condition="1?10=1 or (1?2=1 and $__thronekey&lt;1)" define="__thronekey+=1"/>
                 <ITEM class="GenShield" LEVEL="$mob_level" material="OAK" name="a wooden shield" display="a wooden shield sits here"/>
                 <ITEM select="pick-1?3">
                     <ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
@@ -1989,10 +2023,10 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
                 </ITEM>
             </ITEM>
         </MOB>
-        <MOB class="GenMob" level="$level_range" id="nasty_lair_peon" race="$__nasty_race_id" gender="$anygender">
+        <MOB class="GenMob" level="$level_range" id="nasty_lair_peon" race="$nasty_race_name" gender="$anygender">
             <NAME select="pick-1">
-                <NAME pickweight="5">(a(n)) $nasty_animal_word $__nasty_race_lname</NAME>
-                <NAME pickweight="1">(a(n)) $__nasty_race_lname</NAME>
+                <NAME pickweight="5">(a(n)) $nasty_animal_word ${l:mob_race}</NAME>
+                <NAME pickweight="1">(a(n)) ${l:mob_race}</NAME>
             </NAME>
             <DISPLAY select="pick-1">
                 <DISPLAY pickweight="1">$mob_name sneaks towards you.</DISPLAY>
@@ -2145,11 +2179,11 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
     </ITEM>
 </MOB>
         
-<ITEM class="metacraft" name="any-alchemy" id="any_alchemy_item"/>
-<ITEM class="metacraft" name="any-herbalism" id="any_herbalism_item"/>
-<ITEM class="metacraft" name="any-apothecary" id="any_apothecary_item"/>
-<ITEM class="metacraft" name="any-distilling" id="any_distilling_item"/>
-<ITEM class="metacraft" name="any-scrollscribing" id="any_scrollscribing_item"/>
+<ITEM class="metacraft" name="any-alchemy" id="any_alchemy_item" level="$level_range"/>
+<ITEM class="metacraft" name="any-herbalism" id="any_herbalism_item" level="$level_range"/>
+<ITEM class="metacraft" name="any-apothecary" id="any_apothecary_item" level="$level_range"/>
+<ITEM class="metacraft" name="any-distilling" id="any_distilling_item" level="$level_range"/>
+<ITEM class="metacraft" name="any-scrollscribing" id="any_scrollscribing_item" level="$level_range"/>
 
 <STRING id="anygender" select="any-1"> <STRING>M</STRING> <STRING>F</STRING></STRING>
 
@@ -2566,11 +2600,11 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 
 <STRING id="smallragged_item_adj" select="any-1">
     <STRING>$small_word</STRING>
-    <STRING>$small_word $__nasty_race_lname</STRING>
+    <STRING>$small_word $nasty_race_name</STRING>
     <STRING>$ragged_word</STRING>
-    <STRING>$ragged_word $__nasty_race_lname</STRING>
+    <STRING>$ragged_word $nasty_race_name</STRING>
     <STRING>$small_word $ragged_word</STRING>
-    <STRING>$small_word $ragged_word $__nasty_race_lname</STRING>
+    <STRING>$small_word $ragged_word $nasty_race_name</STRING>
 </STRING>
 
 <STRING id="insect_color" select="any-1" insert="mammal_color">
@@ -2699,19 +2733,6 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 <STRING id="dungeonadj_nonphys" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values" />
 <STRING id="dungeonadj_phys" select="any-1" insert="dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
 <STRING id="dungeonadj_any" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
-
-<STRING id="__nasty_race_id" select="any-1">
-	<string condition="$theme='kobolds' or $theme='random'">Kobold</string>
-</STRING>
-<STRING id="__nasty_race_uname" select="any-1">
-	<string condition="$theme='kobolds' or $theme='random'">Kobold</string>
-</STRING>
-<STRING id="__nasty_race_lname" select="any-1">
-	<string condition="$theme='kobolds' or $theme='random'">kobold</string>
-</STRING>
-<STRING id="__nasty_race_pname" select="any-1">
-	<string condition="$theme='kobolds' or $theme='random'">kobolds</string>
-</STRING>
 
 <STRING id="fantasy_name" select="any-1">
     <STRING id="fantasy_name_values" select="all">

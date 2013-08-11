@@ -190,23 +190,351 @@ public class ListCmd extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-	public StringBuilder roomTypes(Session viewerS, Vector these, Room likeRoom)
-	{return roomTypes(viewerS, these.elements(),likeRoom);}
-	public StringBuilder roomTypes(Session viewerS, Enumeration these, Room likeRoom)
+	
+	public String cataMark(Environmental E)
+	{
+		if(E==null) return "";
+		if(CMLib.catalog().isCatalogObj(E))
+			return "^g";
+		return "";
+	}
+	
+	public boolean canShowTo(MOB showTo, MOB show)
+	{
+		if((show!=null)
+		&&(show.session()!=null)
+		&&(showTo!=null)
+		&&(((show.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
+			||((CMSecurity.isAllowedAnywhere(showTo,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(showTo,CMSecurity.SecFlag.WIZINV))
+				&&(showTo.phyStats().level()>=show.phyStats().level()))))
+			return true;
+		return false;
+	}
+
+	public StringBuffer getStuff(MOB mob, Vector commands, int start, Enumeration<Room> r)
+	{
+		boolean mobOnly=false;
+		boolean itemOnly=false;
+		boolean roomOnly=false;
+		boolean exitOnly=false;
+		boolean zapperMask=false;
+		boolean zapperMask2=false;
+		MaskingLibrary.CompiledZapperMask compiledZapperMask=null;
+		String who="";
+		if(commands.size()>start)
+			who=commands.get(start).toString().toUpperCase();
+		
+		StringBuffer lines=new StringBuffer("");
+		String rest=CMParms.combine(commands,start);
+		if((who.equals("ROOM"))
+		||(who.equals("ROOMS")))
+		{
+			roomOnly=true;
+			commands.remove(start);
+			rest=CMParms.combine(commands,start);
+		}
+		else
+		if((who.equals("EXIT "))
+		||(who.equals("EXITS")))
+		{
+			exitOnly=true;
+			commands.remove(start);
+			rest=CMParms.combine(commands,start);
+		}
+		else
+		if((who.equals("ITEM"))
+		||(who.equals("ITEMS")))
+		{
+			itemOnly=true;
+			commands.remove(start);
+			rest=CMParms.combine(commands,start);
+		}
+		else
+		if((who.equals("MOB"))
+		||(who.equals("MOBS")))
+		{
+			mobOnly=true;
+			commands.remove(start);
+			rest=CMParms.combine(commands,start);
+		}
+		else
+		if(who.equals("MOBMASK")||who.equals("MOBMASK="))
+		{
+			mobOnly=true;
+			zapperMask=true;
+			commands.remove(start);
+			lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+			compiledZapperMask=CMLib.masking().maskCompile(CMParms.combine(commands,start));
+			rest="";
+		}
+		else
+		if(who.equals("ITEMMASK")||who.equals("ITEMMASK="))
+		{
+			itemOnly=true;
+			zapperMask=true;
+			commands.remove(start);
+			lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
+			compiledZapperMask=CMLib.masking().maskCompile(CMParms.combine(commands,start));
+			rest="";
+		}
+		else
+		if(who.equals("MOBMASK2")||who.equals("MOBMASK2="))
+		{
+			mobOnly=true;
+			zapperMask2=true;
+			commands.remove(start);
+			rest=CMParms.combine(commands,start);
+			lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(rest)+"\n\r");
+		}
+		else
+		if(who.equals("ITEMMASK2")||who.equals("ITEMMASK2="))
+		{
+			itemOnly=true;
+			zapperMask2=true;
+			commands.remove(start);
+			rest=CMParms.combine(commands,start);
+			lines.append("^xMask used:^?^.^N "+CMLib.masking().maskDesc(rest)+"\n\r");
+		}
+		Room R = null;
+
+		try
+		{
+			for(;r.hasMoreElements();)
+			{
+				R=r.nextElement();
+				if((R!=null)&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))&&(CMLib.flags().canAccess(mob,R.getArea())))
+				{
+					if((!mobOnly)&&(!itemOnly)&&(!exitOnly))
+						if((rest.length()==0)
+						||CMLib.english().containsString(R.displayText(),rest)
+						||CMLib.english().containsString(R.description(),rest))
+						{
+							lines.append("^!"+CMStrings.padRight("*",17)+"^?| ");
+							lines.append(R.displayText(mob));
+							lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+							lines.append("\n\r");
+						}
+					if(exitOnly)
+					{
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+						{
+							Exit E=R.getRawExit(d);
+							if((E!=null)
+							&&((rest.length()==0)
+								||((E.Name().length()>0)&&(CMLib.english().containsString(E.Name(),rest)))
+								||((E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),rest))
+								||(CMLib.english().containsString(E.viewableText(mob,R).toString(),rest))))
+							{
+								lines.append("^!"+CMStrings.padRight(Directions.getDirectionName(d),17)+"^N| ");
+								lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+								lines.append("\n\r");
+							}
+						}
+					}
+					if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
+						for(int i=0;i<R.numItems();i++)
+						{
+							Item I=R.getItem(i);
+							if((zapperMask)&&(itemOnly))
+							{
+								if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
+								{
+									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
+									lines.append(R.displayText(mob));
+									lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+									lines.append("\n\r");
+								}
+							}
+							else
+							if((zapperMask2)&&(itemOnly))
+							{
+								if(CMLib.masking().maskCheck(rest,I,true))
+								{
+									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
+									lines.append(R.displayText(mob));
+									lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+									lines.append("\n\r");
+								}
+							}
+							else
+							if((rest.length()==0)
+							||(CMLib.english().containsString(I.name(),rest))
+							||(CMLib.english().containsString(I.displayText(),rest))
+							||(CMLib.english().containsString(I.description(),rest)))
+							{
+								lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
+								lines.append(R.displayText(mob));
+								lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+								lines.append("\n\r");
+							}
+						}
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&((M.isMonster())||(canShowTo(mob,M))))
+						{
+							if((!itemOnly)&&(!roomOnly)&&(!exitOnly))
+								if((zapperMask)&&(mobOnly))
+								{
+									if(CMLib.masking().maskCheck(compiledZapperMask,M,true))
+									{
+										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
+										lines.append(R.displayText(mob));
+										lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+										lines.append("\n\r");
+									}
+								}
+								else
+								if((zapperMask2)&&(mobOnly))
+								{
+									if(CMLib.masking().maskCheck(rest,M,true))
+									{
+										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
+										lines.append(R.displayText(mob));
+										lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+										lines.append("\n\r");
+									}
+								}
+								else
+								if((rest.length()==0)
+								||(CMLib.english().containsString(M.name(),rest))
+								||(CMLib.english().containsString(M.displayText(),rest))
+								||(CMLib.english().containsString(M.description(),rest)))
+								{
+									lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
+									lines.append(R.displayText(mob));
+									lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+									lines.append("\n\r");
+								}
+							if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
+							{
+								for(int i=0;i<M.numItems();i++)
+								{
+									Item I=M.getItem(i);
+									if((zapperMask)&&(itemOnly))
+									{
+										if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
+										{
+											lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
+											lines.append("INV: "+cataMark(M)+M.name(mob)+"^N");
+											lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+											lines.append("\n\r");
+										}
+									}
+									else
+									if((zapperMask2)&&(itemOnly))
+									{
+										if(CMLib.masking().maskCheck(rest,I,true))
+										{
+											lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
+											lines.append("INV: "+cataMark(M)+M.name(mob)+"^N");
+											lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+											lines.append("\n\r");
+										}
+									}
+									else
+									if((rest.length()==0)
+									||(CMLib.english().containsString(I.name(),rest))
+									||(CMLib.english().containsString(I.displayText(),rest))
+									||(CMLib.english().containsString(I.description(),rest)))
+									{
+										lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
+										lines.append("INV: "+cataMark(M)+M.name(mob)+"^N");
+										lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+										lines.append("\n\r");
+									}
+								}
+								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+								if(SK!=null)
+								for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+								{
+									Environmental E=i.next();
+									if((zapperMask)&&(E instanceof Item)&&(itemOnly))
+									{
+										if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
+										{
+											lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+											lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
+											lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+											lines.append("\n\r");
+										}
+									}
+									else
+									if((zapperMask)&&(E instanceof MOB)&&(mobOnly))
+									{
+										if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
+										{
+											lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+											lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
+											lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+											lines.append("\n\r");
+										}
+									}
+									else
+									if((zapperMask2)&&(E instanceof Item)&&(itemOnly))
+									{
+										if(CMLib.masking().maskCheck(rest,E,true))
+										{
+											lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+											lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
+											lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+											lines.append("\n\r");
+										}
+									}
+									else
+									if((zapperMask2)&&(E instanceof MOB)&&(mobOnly))
+									{
+										if(CMLib.masking().maskCheck(rest,E,true))
+										{
+											lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+											lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
+											lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+											lines.append("\n\r");
+										}
+									}
+									else
+									if((rest.length()==0)
+									||(CMLib.english().containsString(E.name(),rest))
+									||(CMLib.english().containsString(E.displayText(),rest))
+									||(CMLib.english().containsString(E.description(),rest)))
+									{
+										lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+										lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
+										lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
+										lines.append("\n\r");
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}catch(NoSuchElementException nse){}
+		return lines;
+	}
+	
+	public StringBuilder roomTypes(MOB mob, Enumeration<Room> these, Room likeRoom, Vector commands)
 	{
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
-		Room thisThang=null;
-		String thisOne=null;
-		for(Enumeration r=these;r.hasMoreElements();)
+		if(commands.size()==1)
 		{
-			thisThang=(Room)r.nextElement();
-			thisOne=thisThang.roomID();
-			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-				lines.append(CMStrings.padRightPreserve(thisOne,30)+": "+thisThang.ID()+"\n\r");
+			Room thisThang=null;
+			String thisOne=null;
+			for(Enumeration r=these;r.hasMoreElements();)
+			{
+				thisThang=(Room)r.nextElement();
+				thisOne=thisThang.roomID();
+				if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
+					lines.append(CMStrings.padRightPreserve(thisOne,30)+": "+thisThang.ID()+"\n\r");
+			}
+			lines.append("\n\r");
 		}
-		lines.append("\n\r");
+		else
+		{
+			lines.append(getStuff(mob, commands, 1, these));
+		}
 		return lines;
 	}
 
@@ -2446,7 +2774,7 @@ public class ListCmd extends StdCommand
 		case 4: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.weapons()).toString()); break;
 		case 5: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.mobTypes()).toString()); break;
 		case 6: s.wraplessPrintln(roomDetails(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
-		case 7: s.wraplessPrintln(roomTypes(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
+		case 7: s.wraplessPrintln(roomTypes(mob,mob.location().getArea().getMetroMap(),mob.location(),commands).toString()); break;
 		case 8: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.locales()).toString()); break;
 		case 9: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.behaviors()).toString()); break;
 		case 10: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.exits()).toString()); break;

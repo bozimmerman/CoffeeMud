@@ -22,7 +22,8 @@ public class CMException extends CoffeeMudException
 {
 	static final long serialVersionUID=0;
 	
-	public CMException(String s) {
+	public CMException(String s) 
+	{
 		super(s);
 	}
 	public CMException(String s, Exception e)

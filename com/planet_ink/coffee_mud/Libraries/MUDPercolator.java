@@ -586,6 +586,66 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return exitChoices.get(CMLib.dice().roll(1,exitChoices.size(),-1));
 	}
 
+	private static class Varidentifier
+	{
+		public int outerStart=-1;
+		public int outerEnd=-1;
+		public String var=null;
+		public boolean toLowerCase=false;
+		public boolean toUpperCase=false;
+		public boolean toCapitalized=false;
+		public boolean toPlural=false;
+	}
+	
+	protected List<Varidentifier> parseVariables(String str)
+	{
+		int x=str.indexOf('$');
+		List<Varidentifier> list=new XVector<Varidentifier>();
+		while((x>=0)&&(x<str.length()-1))
+		{
+			Varidentifier var = new Varidentifier();
+			var.outerStart=x;
+			x++;
+			if((x<str.length())&&(str.charAt(x)=='{'))
+			{
+				int varstart=var.outerStart;
+				x++;
+				while((x<str.length()-2)&&(str.charAt(x+1)==':'))
+				{
+					if((str.charAt(x)=='l')||(str.charAt(x)=='L'))
+						var.toLowerCase=true;
+					else
+					if((str.charAt(x)=='u')||(str.charAt(x)=='U'))
+						var.toUpperCase=true;
+					else
+					if((str.charAt(x)=='p')||(str.charAt(x)=='P'))
+						var.toPlural=true;
+					else
+					if((str.charAt(x)=='c')||(str.charAt(x)=='C'))
+						var.toPlural=true;
+					x+=2;
+					varstart+=2;
+				}
+				while((x<str.length())&&(str.charAt(x)!='}'))
+					x++;
+				var.var = str.substring(varstart+2,x);
+				if(x<str.length())
+					x++;
+				var.outerEnd=x;
+			}
+			else
+			{
+				while((x<str.length())&&((str.charAt(x)=='_')||Character.isLetterOrDigit(str.charAt(x))))
+					x++;
+				var.var = str.substring(var.outerStart+1,x);
+				var.outerEnd=x;
+			}
+			list.add(var);
+			x=str.indexOf('$',var.outerEnd);
+		}
+		return list;
+	}
+	
 	protected String fillOutStatCode(Modifiable E, List<String> ignoreStats, String stat, String defPrefix, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
 	{
 		String value = null;
@@ -593,22 +653,34 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			if((defPrefix!=null)&&(defPrefix.length()>0))
 			{
-				String preValue = findOptionalUnfixedDirectStringValue(stat,piece,defined);
-				int start=(preValue!=null)?preValue.toUpperCase().indexOf("$"+defPrefix.toUpperCase()):-1;
-				while((start>=0)&&(preValue!=null))
+
+				String preValue=defPrefix;
+				while(preValue != null)
 				{
-					int end=start+defPrefix.length()+1;
-					while((end<preValue.length())&&(Character.isLetterOrDigit(preValue.charAt(end))||(preValue.charAt(end)=='_')))
-						end++;
-					String otherStat=preValue.substring(start+defPrefix.length()+1,end);
-					List<String> newStatsList=new XVector<String>(ignoreStats);
-					newStatsList.add(stat.toUpperCase());
-					fillOutStatCode(E,newStatsList,otherStat,defPrefix,piece,defined);
-					ignoreStats.add(otherStat.toUpperCase());
-					start=preValue.toUpperCase().indexOf("$"+defPrefix.toUpperCase(),start+defPrefix.length());
+					preValue = null;
+					try
+					{
+						value = findString(stat,piece,defined);
+					}
+					catch(CMException e)
+					{
+						if((e.getCause() instanceof CMException)&&(e.getCause().getMessage().startsWith("$")))
+							preValue=e.getCause().getMessage().substring(1);
+					}
+					if(preValue != null)
+					{
+						if(preValue.toUpperCase().startsWith(defPrefix.toUpperCase()))
+						{
+							List<String> newStatsList=new XVector<String>(ignoreStats);
+							newStatsList.add(stat.toUpperCase());
+							fillOutStatCode(E,newStatsList,preValue.toUpperCase().substring(defPrefix.length()),defPrefix,piece,defined);
+							ignoreStats.add(preValue.toUpperCase());
+						}
+					}
 				}
 			}
-			value = findOptionalString(stat,piece,defined);
+			if(value == null)
+				value = findOptionalString(stat,piece,defined);
 			if(value != null) 
 			{
 				E.setStat(stat, value);
@@ -1172,18 +1244,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			defineReward(piece.parent,value,defined);
 	}
 
-	public String findOptionalUnfixedDirectStringValue(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
-	{
-		tagName=tagName.toUpperCase().trim();
-		String asParm = CMLib.xml().getParmValue(piece.parms,tagName);
-		if(asParm != null) return asParm;
-		
-		Object asDefined = defined.get(tagName);
-		if(asDefined instanceof String) 
-			return (String)asDefined;
-		return null;
-	}
-	
 	public String findString(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		tagName=tagName.toUpperCase().trim();
@@ -1545,23 +1605,22 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	
 	protected String strFilter(String str, Map<String,Object> defined) throws CMException
 	{
-		int x=str.indexOf('$');
-		while((x>=0)&&(x<str.length()-1))
+		List<Varidentifier> vars=parseVariables(str);
+		for(int v=vars.size()-1;v>=0;v--)
 		{
-			int start=x;
-			x++;
-			while((x<str.length())&&((str.charAt(x)=='_')||Character.isLetterOrDigit(str.charAt(x))))
-				x++;
-			String var = str.substring(start+1,x);
-			Object val = defined.get(var.toUpperCase().trim());
+			Varidentifier V=vars.get(v);
+			Object val = defined.get(V.var.toUpperCase().trim());
 			if(val instanceof XMLLibrary.XMLpiece) 
 				val = findString("STRING",(XMLLibrary.XMLpiece)val,defined);
 			if(val == null) 
-				throw new CMException("Unknown variable '$"+var+"' in str '"+str+"'");
-			str=str.substring(0,start)+val.toString()+str.substring(x);
-			x=str.indexOf('$');
+				throw new CMException("Unknown variable '$"+V.var+"' in str '"+str+"'",new CMException("$"+V.var));
+			if(V.toUpperCase) val=val.toString().toUpperCase();
+			if(V.toLowerCase) val=val.toString().toLowerCase();
+			if(V.toPlural) val=CMLib.english().makePlural(val.toString());
+			if(V.toCapitalized) val=CMStrings.capitalizeAndLower(val.toString());
+			str=str.substring(0,V.outerStart)+val.toString()+str.substring(V.outerEnd);
 		}
-		x=str.toLowerCase().indexOf("(a(n))");
+		int x=str.toLowerCase().indexOf("(a(n))");
 		while((x>=0)&&(x<str.length()-8))
 		{
 			if((Character.isWhitespace(str.charAt(x+6)))

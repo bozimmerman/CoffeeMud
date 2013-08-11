@@ -133,30 +133,30 @@ public class Where extends StdCommand
 					areaFlag=true;
 					who=who.substring(5).trim();
 				}
-
+				// no else here, EVAR!!!
 				if((who.toUpperCase().startsWith("ROOM "))
-				||(who.toUpperCase().startsWith("ROOMS ")))
+				||(who.toUpperCase().startsWith("ROOMS")))
 				{
 					roomOnly=true;
 					who=who.substring(5).trim();
 				}
-				else
+				
 				if((who.toUpperCase().startsWith("EXIT "))
-				||(who.toUpperCase().startsWith("EXITS ")))
+				||(who.toUpperCase().startsWith("EXITS")))
 				{
 					exitOnly=true;
 					who=who.substring(5).trim();
 				}
 				else
 				if((who.toUpperCase().startsWith("ITEM "))
-				||(who.toUpperCase().startsWith("ITEMS ")))
+				||(who.toUpperCase().startsWith("ITEMS")))
 				{
 					itemOnly=true;
 					who=who.substring(5).trim();
 				}
 				else
 				if((who.toUpperCase().startsWith("MOB "))
-				||(who.toUpperCase().startsWith("MOBS ")))
+				||(who.toUpperCase().startsWith("MOBS")))
 				{
 					mobOnly=true;
 					who=who.substring(4).trim();
@@ -211,7 +211,8 @@ public class Where extends StdCommand
 						if((R!=null)&&(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))&&(CMLib.flags().canAccess(mob,R.getArea())))
 						{
 							if((!mobOnly)&&(!itemOnly)&&(!exitOnly))
-								if(CMLib.english().containsString(R.displayText(),who)
+								if((who.length()==0)
+								||CMLib.english().containsString(R.displayText(),who)
 								||CMLib.english().containsString(R.description(),who))
 								{
 									lines.append("^!"+CMStrings.padRight("*",17)+"^?| ");
@@ -225,7 +226,8 @@ public class Where extends StdCommand
 								{
 									Exit E=R.getRawExit(d);
 									if((E!=null)
-									&&(((E.Name().length()>0)&&(CMLib.english().containsString(E.Name(),who)))
+									&&((who.length()==0)
+											||((E.Name().length()>0)&&(CMLib.english().containsString(E.Name(),who)))
 											||((E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),who))
 											||(CMLib.english().containsString(E.viewableText(mob,R).toString(),who))))
 									{
@@ -261,7 +263,8 @@ public class Where extends StdCommand
 										}
 									}
 									else
-									if((CMLib.english().containsString(I.name(),who))
+									if((who.length()==0)
+									||(CMLib.english().containsString(I.name(),who))
 									||(CMLib.english().containsString(I.displayText(),who))
 									||(CMLib.english().containsString(I.description(),who)))
 									{
@@ -299,7 +302,8 @@ public class Where extends StdCommand
 											}
 										}
 										else
-										if((CMLib.english().containsString(M.name(),who))
+										if((who.length()==0)
+										||(CMLib.english().containsString(M.name(),who))
 										||(CMLib.english().containsString(M.displayText(),who))
 										||(CMLib.english().containsString(M.description(),who)))
 										{
@@ -335,7 +339,8 @@ public class Where extends StdCommand
 												}
 											}
 											else
-											if((CMLib.english().containsString(I.name(),who))
+											if((who.length()==0)
+											||(CMLib.english().containsString(I.name(),who))
 											||(CMLib.english().containsString(I.displayText(),who))
 											||(CMLib.english().containsString(I.description(),who)))
 											{
@@ -394,7 +399,8 @@ public class Where extends StdCommand
 												}
 											}
 											else
-											if((CMLib.english().containsString(E.name(),who))
+											if((who.length()==0)
+											||(CMLib.english().containsString(E.name(),who))
 											||(CMLib.english().containsString(E.displayText(),who))
 											||(CMLib.english().containsString(E.description(),who)))
 											{
