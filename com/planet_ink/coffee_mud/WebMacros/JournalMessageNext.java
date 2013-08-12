@@ -67,7 +67,11 @@ public class JournalMessageNext extends StdWebMacro
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		cardinal++;
 		JournalsLibrary.JournalEntry entry = null;
-		List<JournalsLibrary.JournalEntry> msgs = JournalInfo.getMessages(httpReq, journalName);
+		String page=httpReq.getUrlParameter("JOURNALPAGE");
+		String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
+		String parent=httpReq.getUrlParameter("JOURNALPARENT");
+		String dbsearch=httpReq.getUrlParameter("DBSEARCH");
+		List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(journalName,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
 		while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
 		{
 			entry = JournalInfo.getNextEntry(msgs,last);
