@@ -1042,10 +1042,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						for(int i=skillContents.size()-1;i>=0;i--)
 							if((levelLimit>0) && (skillContents.get(i).item.basePhyStats().level() > levelLimit))
 								skillContents.remove(i);
-						if((skillContents!=null)&&(skillContents.size()>0))
+						if(skillContents.size()>0)
 							contents.addAll(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).asList());
 						if(contents.size()==0)
-							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+((skillContents==null)?"null":Integer.toString(skillContents.size()))+" from "+skill.ID());
+							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+Integer.toString(skillContents.size())+" from "+skill.ID());
 					}
 				}
 			}
@@ -1062,9 +1062,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							skillContents=skill.craftAllItemSets(material);
 						else
 							skillContents=skill.craftAllItemSets();
-						for(int i=skillContents.size()-1;i>=0;i--)
-							if((levelLimit>0) && (skillContents.get(i).item.basePhyStats().level() > levelLimit))
-								skillContents.remove(i);
+						if(skillContents!=null)
+							for(int i=skillContents.size()-1;i>=0;i--)
+								if((levelLimit>0) && (skillContents.get(i).item.basePhyStats().level() > levelLimit))
+									skillContents.remove(i);
 						if((skillContents==null)||(skillContents.size()==0))
 							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
 						break;
@@ -1464,7 +1465,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(CMath.isMathExpression(value))
 					{
 						double val=CMath.parseMathExpression(value);
-						if((double)Math.round(val)==val)
+						if(Math.round(val)==val)
 							value=""+Math.round(val);
 						else
 							value=""+val;
