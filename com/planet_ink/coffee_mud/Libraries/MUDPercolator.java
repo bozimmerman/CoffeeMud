@@ -1024,7 +1024,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(recipe.equalsIgnoreCase("anything"))
 			{
 				long startTime=System.currentTimeMillis();
-				while((contents.size()==0)&&((System.currentTimeMillis()-startTime)<500))
+				while((contents.size()==0)&&((System.currentTimeMillis()-startTime)<1000))
 				{
 					ItemCraftor skill=craftors.get(CMLib.dice().roll(1,craftors.size(),-1));
 					if(skill.fetchRecipes().size()>0)
@@ -1158,7 +1158,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				String name = fillOutStatCode(I,ignoreStats,"NAME","ITEM_",piece,defined);
 				if((name == null)||(name.length()==0)) 
+				{
+					name = fillOutStatCode(I,ignoreStats,"NAME","ITEM_",piece,defined);
 					throw new CMException("Unable to build an item without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
+				}
 				I.setName(name);
 			}
 			ignoreStats.addAll(Arrays.asList(new String[]{"CLASS","NAME"}));

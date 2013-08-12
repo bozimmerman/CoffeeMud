@@ -517,7 +517,7 @@ Required details: "id" "value"
 				<STRING>$MOB_NAME has the best punishment money can buy.</STRING>
 			</STRING>
 			<ITEM class="GenBed"  name="(a(n)) $dungeonadj_fancy bed" display="$ITEM_NAME is made here"/>
-			<ITEM class="GenChair"  name="(a(n)) $dungeonadj_fancy chair" display="$ITEM_NAME is waiting to me rested upon"/>
+			<ITEM class="GenChair" name="(a(n)) $dungeonadj_fancy chair" display="$ITEM_NAME is waiting to me rested upon"/>
 			<ITEM select="any-2">
 				<ITEM class="GenFountain" name="(a(n)) $dungeonadj_fancy fountain" display="$ITEM_NAME has been built here" />
 				<ITEM class="GenMirror" name="a mirror" display="a mirror is for gazing in" />
@@ -717,9 +717,12 @@ Required details: "id" "value"
 				</ITEM>
 				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 			</MOB>
-			<ITEM class="GenChair"  name="(a(n)) $smallragged_item_adj throne" display="$ITEM_NAME is here"/>
-			<ITEM class="GenContainer" name="The Kings Chest" display="The Kings Chest is here" HASALID="true" HASALOCK="true" READABLETEXT="$areaname thronekey">
-				<CONTENT insert="dungeon_treasure_items" />
+			<ITEM class="GenChair"  name="(a(n)) $dungeonadj_fancy chair" display="$ITEM_NAME is here"/>
+			<ITEM class="GenTable"  name="(a(n)) $dungeonadj_fancy desk" display="$ITEM_NAME is here"/>
+			<ITEM class="GenContainer" name="The wardens chest" display="The wardens chest is here" HASLID="true" HASLOCK="true" READABLETEXT="$areaname thronekey">
+				<CONTENT>
+					<ITEM select="all" insert="dungeon_treasure_items" />
+				</CONTENT>
 			</ITEM>
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__laundry&lt;2" define="__laundry+=1">
@@ -1271,8 +1274,10 @@ Required details: "id" "value"
 				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 			</MOB>
 			<ITEM class="GenChair"  name="(a(n)) $smallragged_item_adj throne" display="$ITEM_NAME is here"/>
-			<ITEM class="GenContainer" name="The Kings Chest" display="The Kings Chest is here" HASALID="true" HASALOCK="true" READABLETEXT="$areaname thronekey">
-				<CONTENT insert="dungeon_treasure_items" />
+			<ITEM class="GenContainer" name="The kings chest" display="The kings chest is here" HASLID="true" HASLOCK="true" READABLETEXT="$areaname thronekey">
+				<CONTENT>
+					<ITEM select="all" insert="dungeon_treasure_items" />
+				</CONTENT>
 			</ITEM>
 		</ROOM>
 	</ROOM>
@@ -1487,8 +1492,10 @@ Required details: "id" "value"
 				</ABILITY>
 			</MOB>
 			<EXIT class="Open" />
-			<ITEM class="GenContainer" name="The Dragons Chest" display="The Dragons Chest is here" HASALID="true">
-				<CONTENT insert="dungeon_treasure_items" />
+			<ITEM class="GenContainer" name="The Dragons Chest" display="The Dragons Chest is here" HASLID="true">
+				<CONTENT>
+					<ITEM select="all" insert="dungeon_treasure_items" />
+				</CONTENT>
 			</ITEM>
 		</ROOM>
 		<ROOM class="CaveRoom">
