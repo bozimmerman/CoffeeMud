@@ -444,9 +444,12 @@ public class Dragon extends StdMOB
 					if(location().okMessage(TastyMorsel,EatMsg))
 					{
 						location().send(TastyMorsel,EatMsg);
-						Stomach.bringMobHere(TastyMorsel,false);
-						CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
-						Stomach.send(TastyMorsel,enterMsg);
+						if(EatMsg.value()==0)
+						{
+							Stomach.bringMobHere(TastyMorsel,false);
+							CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+							Stomach.send(TastyMorsel,enterMsg);
+						}
 					}
 				}
 			}
@@ -513,6 +516,7 @@ public class Dragon extends StdMOB
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2)));
 				if(damage<(TastyMorsel.phyStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
+				if(DigestMsg.value()!=0) damage=damage/2;
 				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
