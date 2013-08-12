@@ -200,7 +200,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public static boolean robberyCheck(LandTitle A, CMMsg msg)
 	{
-		if(msg.targetMinor()==CMMsg.TYP_GET)
+		if((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 		{
 			if((msg.target() instanceof Item)
 			&&(((Item)msg.target()).owner() ==msg.source().location())

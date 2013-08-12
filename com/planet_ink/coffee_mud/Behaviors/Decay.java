@@ -155,7 +155,7 @@ public class Decay extends ActiveTicker
 			else
 			if(affecting instanceof Item)
 			{
-				if((msg.targetMinor()==CMMsg.TYP_GET)
+				if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 				&&(CMLib.masking().maskCheck(getParms(),msg.source(),true)))
 				{
 					activated=true;

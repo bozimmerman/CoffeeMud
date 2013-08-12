@@ -48,7 +48,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 	{
 		if((msg.amITarget(littlePlants))
 		&&(!processing)
-		&&(msg.targetMinor()==CMMsg.TYP_GET))
+		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
 			processing=true;
 			Ability A=littlePlants.fetchEffect(ID());

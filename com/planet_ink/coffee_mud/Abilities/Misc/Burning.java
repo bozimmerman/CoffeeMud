@@ -268,7 +268,7 @@ public class Burning extends StdAbility
 		if((affected!=null)
 		&&(affected instanceof Item)
 		&&(msg.amITarget(affected))
-		&&(msg.targetMinor()==CMMsg.TYP_GET))
+		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
 			if((msg.tool()==null)||(!(msg.tool() instanceof Item)))
 				return ouch(msg.source());

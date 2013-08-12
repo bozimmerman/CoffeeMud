@@ -1265,7 +1265,8 @@ public class CMStrings
 		private StringExpToken() { }
 	}
 
-	private static StringExpToken nextToken(final List<StringExpToken> tokens, final int[] index) {
+	private static StringExpToken nextToken(final List<StringExpToken> tokens, final int[] index) 
+	{
 		if(index[0]>=tokens.size()) return null;
 		return tokens.get(index[0]++);
 	}
@@ -1401,37 +1402,21 @@ public class CMStrings
 		}
 	}
 
-	/*
-	 * case STRING_EXP_TOKEN_EVALUATOR: case STRING_EXP_TOKEN_OPENPAREN: case STRING_EXP_TOKEN_CLOSEPAREN: case STRING_EXP_TOKEN_WORD: case
-	 * STRING_EXP_TOKEN_CONST: case STRING_EXP_TOKEN_COMBINER:
-	 */
-	public final static String matchSimpleConst(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		final int[] i = index.clone();
-		StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if((token.type != STRING_EXP_TOKEN_STRCONST)
-		&& (token.type != STRING_EXP_TOKEN_UKNCONST))
-			return null;
-		index[0] = i[0];
-		return token.value;
-	}
-
-	public final static Double matchSimpleNumber(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+	private final static StringExpToken matchSimpleValue(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		final int[] i = index.clone();
 		final StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
 		if((token.type != STRING_EXP_TOKEN_NUMCONST)
+		&& (token.type != STRING_EXP_TOKEN_STRCONST)
 		&& (token.type != STRING_EXP_TOKEN_UKNCONST))
 			return null;
 		index[0] = i[0];
-		return Double.valueOf(token.numValue);
+		return token;
 	}
 	
-	public final static String matchCombinedString(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+	private static StringExpToken matchCombinedValue(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -1439,7 +1424,7 @@ public class CMStrings
 			return null;
 		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
 		{
-			final String testInside = matchCombinedString(tokens, i, variables);
+			final StringExpToken testInside = matchCombinedValue(tokens, i, variables);
 			if (testInside != null)
 			{
 				token = nextToken(tokens, i);
@@ -1450,46 +1435,7 @@ public class CMStrings
 			}
 		}
 		i = index.clone();
-		final String leftValue = matchSimpleConst(tokens, i, variables);
-		if (leftValue == null)
-			return null;
-		final int[] i2 = i.clone();
-		token = nextToken(tokens, i2);
-		if ((token == null) || (token.type != STRING_EXP_TOKEN_COMBINER))
-		{
-			index[0] = i[0];
-			return leftValue;
-		}
-		if(!token.value.equals("+")) 
-			throw new Exception("Can't combine a string using '"+token.value+"'");
-		i[0] = i2[0];
-		final String rightValue = matchCombinedString(tokens, i, variables);
-		if (rightValue == null)
-			return null;
-		index[0] = i[0];
-		return leftValue + rightValue;
-	}
-
-	public final static Double matchCombinedNum(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		int[] i = index.clone();
-		StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
-		{
-			final Double testInside = matchCombinedNum(tokens, i, variables);
-			if (testInside != null)
-			{
-				token = nextToken(tokens, i);
-				if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
-					return null;
-				index[0] = i[0];
-				return testInside;
-			}
-		}
-		i = index.clone();
-		final Double leftValue = matchSimpleNumber(tokens, i, variables);
+		final StringExpToken leftValue = matchSimpleValue(tokens, i, variables);
 		if (leftValue == null)
 			return null;
 		final int[] i2 = i.clone();
@@ -1500,44 +1446,61 @@ public class CMStrings
 			return leftValue;
 		}
 		i[0] = i2[0];
-		final Double rightValue = matchCombinedNum(tokens, i, variables);
+		final StringExpToken rightValue = matchCombinedValue(tokens, i, variables);
 		if (rightValue == null)
 			return null;
 		index[0] = i[0];
+		if((leftValue.type==STRING_EXP_TOKEN_STRCONST)||(rightValue.type==STRING_EXP_TOKEN_STRCONST))
+		{
+			if(!token.value.equals("+")) 
+				throw new Exception("Can't combine a string using '"+token.value+"'");
+			index[0] = i[0];
+			StringExpToken result=new StringExpToken();
+			result.type=STRING_EXP_TOKEN_STRCONST;
+			result.value=leftValue.value + rightValue.value;
+			return result;
+		}
+		StringExpToken result=new StringExpToken();
+		result.type=STRING_EXP_TOKEN_NUMCONST;
 		if(token.value.equals("+"))
 		{
 			index[0] = i[0];
-			return Double.valueOf(leftValue.doubleValue() + rightValue.doubleValue());
+			result.numValue=leftValue.numValue + rightValue.numValue;
+			return result;
 		}
 		else
 		if(token.value.equals("-")) 
 		{
 			index[0] = i[0];
-			return Double.valueOf(leftValue.doubleValue() - rightValue.doubleValue());
+			result.numValue=leftValue.numValue - rightValue.numValue;
+			return result;
 		}
 		else
 		if(token.value.equals("*")) 
 		{
 			index[0] = i[0];
-			return Double.valueOf(leftValue.doubleValue() * rightValue.doubleValue());
+			result.numValue=leftValue.numValue * rightValue.numValue;
+			return result;
 		}
 		else
 		if(token.value.equals("/")) 
 		{
 			index[0] = i[0];
-			return Double.valueOf(leftValue.doubleValue() / rightValue.doubleValue());
+			result.numValue=leftValue.numValue / rightValue.numValue;
+			return result;
 		}
 		else
 		if(token.value.equals("?")) 
 		{
 			index[0] = i[0];
-			return Double.valueOf(Math.round((Math.random() * (rightValue.doubleValue()-leftValue.doubleValue())) + leftValue.doubleValue())) ;
+			result.numValue=Math.round((Math.random() * (rightValue.numValue-leftValue.numValue)) + leftValue.numValue);
+			return result;
 		}
 		else
 			throw new Exception("Unknown math combiner "+token.value);
 	}
 	
-	public final static Boolean matchStringEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+	private static Boolean matchValueEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -1555,7 +1518,7 @@ public class CMStrings
 		else
 		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
 		{
-			final Boolean testInside = matchStringEvaluation(tokens, i, variables);
+			final Boolean testInside = matchValueEvaluation(tokens, i, variables);
 			if (testInside != null)
 			{
 				token = nextToken(tokens, i);
@@ -1566,7 +1529,7 @@ public class CMStrings
 			}
 		}
 		i = index.clone();
-		final String leftValue = matchCombinedString(tokens, i, variables);
+		final StringExpToken leftValue = matchCombinedValue(tokens, i, variables);
 		if (leftValue == null)
 			return null;
 		token = nextToken(tokens, i);
@@ -1574,10 +1537,29 @@ public class CMStrings
 			return null;
 		if (token.type != STRING_EXP_TOKEN_EVALUATOR)
 			return null;
-		final String rightValue = matchCombinedString(tokens, i, variables);
+		final StringExpToken rightValue = matchCombinedValue(tokens, i, variables);
 		if (rightValue == null)
 			return null;
-		final int compare = leftValue.compareToIgnoreCase(rightValue);
+		final int compare;
+		if((leftValue.type==STRING_EXP_TOKEN_STRCONST)||(rightValue.type==STRING_EXP_TOKEN_STRCONST))
+		{
+			compare = leftValue.value.compareToIgnoreCase(rightValue.value);
+		}
+		else
+		if((leftValue.type==STRING_EXP_TOKEN_NUMCONST)||(rightValue.type==STRING_EXP_TOKEN_NUMCONST))
+		{
+			compare = Double.valueOf(leftValue.numValue).compareTo(Double.valueOf(rightValue.numValue));
+		}
+		else
+		if(token.value.equalsIgnoreCase("IN"))
+		{
+			compare = leftValue.value.compareToIgnoreCase(rightValue.value);
+		}
+		else
+		{
+			// the great assumption -- when both are unknown, assume they are numbers!
+			compare = Double.valueOf(leftValue.value).compareTo(Double.valueOf(rightValue.value));
+		}
 		final Boolean result;
 		if (token.value.equals(">"))
 			result = new Boolean(compare > 0);
@@ -1597,80 +1579,14 @@ public class CMStrings
 			result = new Boolean(compare != 0);
 		else
 		if (token.value.equalsIgnoreCase("IN"))
-			result = new Boolean(rightValue.toUpperCase().indexOf(leftValue.toUpperCase())>=0);
+			result = new Boolean(rightValue.value.toUpperCase().indexOf(leftValue.value.toUpperCase())>=0);
 		else
 			return null;
 		index[0] = i[0];
 		return result;
 	}
 
-	public final static Boolean matchNumEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
-	{
-		int[] i = index.clone();
-		StringExpToken token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if(token.type == STRING_EXP_TOKEN_NOT)
-		{
-			final Boolean testInside = matchExpression(tokens, i, variables);
-			if (testInside != null)
-			{
-				index[0] = i[0];
-				return new Boolean(!testInside.booleanValue());
-			}
-		}
-		else
-		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
-		{
-			final Boolean testInside = matchNumEvaluation(tokens, i, variables);
-			if (testInside != null)
-			{
-				token = nextToken(tokens, i);
-				if (token.type != STRING_EXP_TOKEN_CLOSEPAREN)
-					return null;
-				index[0] = i[0];
-				return testInside;
-			}
-		}
-		i = index.clone();
-		final Double leftValue = matchCombinedNum(tokens, i, variables);
-		if (leftValue == null)
-			return null;
-		token = nextToken(tokens, i);
-		if (token == null)
-			return null;
-		if (token.type != STRING_EXP_TOKEN_EVALUATOR)
-			return null;
-		final Double rightValue = matchCombinedNum(tokens, i, variables);
-		if (rightValue == null)
-			return null;
-		final Boolean result;
-		if (token.value.equals(">"))
-			result = new Boolean(leftValue.doubleValue() > rightValue.doubleValue());
-		else if (token.value.equals(">="))
-			result = new Boolean(leftValue.doubleValue() >= rightValue.doubleValue());
-		else if (token.value.equals("<"))
-			result = new Boolean(leftValue.doubleValue() < rightValue.doubleValue());
-		else if (token.value.equals("<="))
-			result = new Boolean(leftValue.doubleValue() <= rightValue.doubleValue());
-		else if (token.value.equals("="))
-			result = new Boolean(leftValue.doubleValue() == rightValue.doubleValue());
-		else if (token.value.equals("!="))
-			result = new Boolean(leftValue.doubleValue() != rightValue.doubleValue());
-		else if (token.value.equals("<>"))
-			result = new Boolean(leftValue.doubleValue() != rightValue.doubleValue());
-		else if (token.value.equals("><"))
-			result = new Boolean(leftValue.doubleValue() != rightValue.doubleValue());
-		else
-		if (token.value.equalsIgnoreCase("IN"))
-			throw new Exception("Can't use IN operator on numbers.");
-		else
-			return null;
-		index[0] = i[0];
-		return result;
-	}
-	
-	public final static Boolean matchExpression(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
+	private static Boolean matchExpression(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -1702,8 +1618,7 @@ public class CMStrings
 		if(leftExpression == null)
 		{
 			i = index.clone();
-			leftExpression = matchStringEvaluation(tokens, i, variables);
-			if(leftExpression == null) leftExpression = matchNumEvaluation(tokens, i, variables);
+			leftExpression = matchValueEvaluation(tokens, i, variables);
 		}
 		if (leftExpression == null) return null;
 		final int[] i2 = i.clone();

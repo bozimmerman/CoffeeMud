@@ -85,7 +85,7 @@ public class ServiceEngine implements ThreadEngine
 		int maxThreads = CMProps.getIntVar(CMProps.Int.MAXWORKERTHREADS);
 		if(maxThreads<=0) maxThreads=Integer.MAX_VALUE;
 		final String sessionThreadGroupName="Worker"+threadGroupNum;
-		threadPools[threadGroupNum] = new CMThreadPoolExecutor(sessionThreadGroupName,minThreads, maxThreads, 5, TimeUnit.MINUTES, (LONG_TICK_TIMEOUT/60000), 1024);
+		threadPools[threadGroupNum] = new CMThreadPoolExecutor(sessionThreadGroupName,minThreads, maxThreads, CMProps.getTickMillis()-1, TimeUnit.MILLISECONDS, (LONG_TICK_TIMEOUT/60000), 1024);
 		threadPools[threadGroupNum].setThreadFactory(new CMThreadFactory(sessionThreadGroupName));
 		return threadPools[threadGroupNum];
 	}

@@ -428,6 +428,8 @@ public class Sounder extends StdBehavior
 				lookFor=msg.targetMinor();
 			break;
 		case CMMsg.TYP_GET:
+		case CMMsg.TYP_PUSH:
+		case CMMsg.TYP_PULL:
 		case CMMsg.TYP_REMOVE:
 		case CMMsg.TYP_WEAR:
 		case CMMsg.TYP_HOLD:

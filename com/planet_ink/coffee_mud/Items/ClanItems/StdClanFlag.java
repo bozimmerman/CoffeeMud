@@ -141,6 +141,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 			if(msg.source().getClanRole(clanID())==null)
 			{
 				if((msg.targetMinor()==CMMsg.TYP_GET)
+				||(msg.targetMinor()==CMMsg.TYP_PUSH)
+				||(msg.targetMinor()==CMMsg.TYP_PULL)
 				||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 				{
 					Room R=CMLib.map().roomLocation(this);

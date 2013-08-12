@@ -59,6 +59,8 @@ public class Dance_Swords extends Dance
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GET:
+			case CMMsg.TYP_PUSH:
+			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_REMOVE:
 				if(affected instanceof MOB)
 					undanceMe((MOB)affected,null);

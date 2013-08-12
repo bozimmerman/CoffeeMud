@@ -150,7 +150,7 @@ public class Allergies extends StdAbility implements HealthCondition
 					if(A!=null) A.invoke(msg.source(),msg.source(),true,0);
 				}
 				else
-				if((msg.targetMinor()==CMMsg.TYP_GET)
+				if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 				&&((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material())))))
 				{
 					Ability A=CMClass.getAbility("Poison_Hives");

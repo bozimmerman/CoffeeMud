@@ -58,7 +58,7 @@ public class Thief_ConcealItem extends ThiefSkill
 	{
 		super.executeMsg(host,msg);
 		if((msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_GET))
+		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
 			Physical P=affected;
 			unInvoke();

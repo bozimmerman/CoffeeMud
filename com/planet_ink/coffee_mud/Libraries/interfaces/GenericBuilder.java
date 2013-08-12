@@ -35,20 +35,22 @@ import java.util.*;
 */
 public interface GenericBuilder extends CMLibrary
 {
-	public final static String[] GENITEMCODES={
+	public final static String[] GENITEMCODES = {
 			"CLASS","USES","LEVEL","ABILITY","NAME",
 			"DISPLAY","DESCRIPTION","SECRET","PROPERWORN",
 			"WORNAND","BASEGOLD","ISREADABLE","ISDROPPABLE",
 			"ISREMOVABLE","MATERIAL","AFFBEHAV",
 			"DISPOSITION","WEIGHT","ARMOR",
-			"DAMAGE","ATTACK","READABLETEXT","IMG"};
-	public final static String[] GENMOBCODES={
+			"DAMAGE","ATTACK","READABLETEXT","IMG"
+	};
+	public final static String[] GENMOBCODES = {
 			"CLASS","RACE","LEVEL","ABILITY","NAME",
 			"DISPLAY","DESCRIPTION","MONEY","ALIGNMENT",
 			"DISPOSITION","SENSES","ARMOR",
 			"DAMAGE","ATTACK","SPEED","AFFBEHAV",
 			"ABLES","INVENTORY","TATTS","EXPS","IMG",
-			"FACTIONS","VARMONEY"};
+			"FACTIONS","VARMONEY"
+	};
 	
 	public boolean get(int x, int m);
 	public String getGenMOBTextUnpacked(MOB mob, String newText);

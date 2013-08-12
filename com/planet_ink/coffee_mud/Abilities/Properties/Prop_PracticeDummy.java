@@ -93,7 +93,7 @@ public class Prop_PracticeDummy extends Property
 				return false;
 			}
 			else
-			if((msg.targetMinor()==CMMsg.TYP_GET)
+			if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item))
 			{

@@ -1391,8 +1391,12 @@ public class ListCmd extends StdCommand
 		mob.tell(head.toString());
 	}
 
-	public StringBuilder listRaces(Session viewerS, Enumeration these, boolean shortList)
+	public StringBuilder listRaces(Session viewerS, Enumeration these, String rest)
 	{
+		List<String> parms=CMParms.parse(rest.toUpperCase());
+		boolean shortList=parms.contains("SHORT");
+		if(shortList) parms.remove("SHORT");
+		String restRest=CMParms.combine(parms).trim();
 		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
@@ -1401,21 +1405,34 @@ public class ListCmd extends StdCommand
 		{
 			Vector raceNames=new Vector();
 			for(Enumeration e=these;e.hasMoreElements();)
-				raceNames.addElement(((Race)e.nextElement()).ID());
+			{
+				Race R=(Race)e.nextElement();
+				if((restRest.length()==0)
+				||(CMLib.english().containsString(R.ID(), restRest))
+				||(CMLib.english().containsString(R.name(), restRest))
+				||(CMLib.english().containsString(R.racialCategory(), restRest)))
+					raceNames.addElement(R.ID());
+			}
 			lines.append(CMParms.toStringList(raceNames));
 		}
 		else
 		for(Enumeration e=these;e.hasMoreElements();)
 		{
-			Race thisThang=(Race)e.nextElement();
-			if(++column>3)
+			Race R=(Race)e.nextElement();
+			if((restRest.length()==0)
+			||(CMLib.english().containsString(R.ID(), restRest))
+			||(CMLib.english().containsString(R.name(), restRest))
+			||(CMLib.english().containsString(R.racialCategory(), restRest)))
 			{
-				lines.append("\n\r");
-				column=1;
+				if(++column>3)
+				{
+					lines.append("\n\r");
+					column=1;
+				}
+				lines.append(CMStrings.padRight(R.ID()
+											+(R.isGeneric()?"*":"")
+											+" ("+R.racialCategory()+")",COL_LEN));
 			}
-			lines.append(CMStrings.padRight(thisThang.ID()
-										+(thisThang.isGeneric()?"*":"")
-										+" ("+thisThang.racialCategory()+")",COL_LEN));
 		}
 		lines.append("\n\r");
 		return lines;
@@ -1876,8 +1893,10 @@ public class ListCmd extends StdCommand
 	{
 		return CMParms.toStringList(RawMaterial.Material.values());
 	}
-	public String listEnvResources(Session viewerS, boolean shortList)
+	public String listEnvResources(Session viewerS, String rest)
 	{
+		List<String> parms=CMParms.parse(rest.toUpperCase());
+		boolean shortList=parms.contains("SHORT");
 		if(shortList)
 			return CMParms.toStringList(RawMaterial.CODES.NAMES());
 		StringBuilder str=new StringBuilder("");
@@ -1898,26 +1917,33 @@ public class ListCmd extends StdCommand
 		str.append("Locales\n\r");
 		for(int i : RawMaterial.CODES.ALL())
 		{
-			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(i).toLowerCase()),COL_LEN1+1));
-			str.append(CMStrings.padRight(RawMaterial.Material.findByMask(i&RawMaterial.MATERIAL_MASK).noun(),COL_LEN2+1));
-			str.append(CMStrings.padRight(""+RawMaterial.CODES.VALUE(i),COL_LEN3+1));
-			str.append(CMStrings.padRight(""+RawMaterial.CODES.FREQUENCY(i),COL_LEN4+1));
-			str.append(CMStrings.padRight(""+RawMaterial.CODES.HARDNESS(i),COL_LEN5+1));
-			StringBuilder locales=new StringBuilder("");
-			for(Enumeration e=CMClass.locales();e.hasMoreElements();)
+			String resourceName=CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(i).toLowerCase());
+			String materialName=RawMaterial.Material.findByMask(i&RawMaterial.MATERIAL_MASK).noun().toLowerCase();
+			if((rest.length()==0)
+			||(resourceName.indexOf(rest)>=0)
+			||(materialName.indexOf(rest)>=0))
 			{
-				Room R=(Room)e.nextElement();
-				if(!(R instanceof GridLocale))
-					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(Integer.valueOf(i))))
-						locales.append(R.ID()+" ");
+				str.append(CMStrings.padRight(resourceName,COL_LEN1+1));
+				str.append(CMStrings.padRight(materialName,COL_LEN2+1));
+				str.append(CMStrings.padRight(""+RawMaterial.CODES.VALUE(i),COL_LEN3+1));
+				str.append(CMStrings.padRight(""+RawMaterial.CODES.FREQUENCY(i),COL_LEN4+1));
+				str.append(CMStrings.padRight(""+RawMaterial.CODES.HARDNESS(i),COL_LEN5+1));
+				StringBuilder locales=new StringBuilder("");
+				for(Enumeration e=CMClass.locales();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					if(!(R instanceof GridLocale))
+						if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(Integer.valueOf(i))))
+							locales.append(R.ID()+" ");
+				}
+				while(locales.length()>COL_LEN6)
+				{
+					str.append(locales.toString().substring(0,COL_LEN6)+"\n\r"+CMStrings.padRight(" ",COL_LEN7));
+					locales=new StringBuilder(locales.toString().substring(COL_LEN6));
+				}
+				str.append(locales.toString());
+				str.append("\n\r");
 			}
-			while(locales.length()>COL_LEN6)
-			{
-				str.append(locales.toString().substring(0,COL_LEN6)+"\n\r"+CMStrings.padRight(" ",COL_LEN7));
-				locales=new StringBuilder(locales.toString().substring(COL_LEN6));
-			}
-			str.append(locales.toString());
-			str.append("\n\r");
 		}
 		return str.toString();
 	}
@@ -2770,7 +2796,7 @@ public class ListCmd extends StdCommand
 		case 0:	s.wraplessPrintln(unlinkedExits(mob.session(),commands)); break;
 		case 1: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.basicItems()).toString()); break;
 		case 2: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.armor()).toString()); break;
-		case 3: s.wraplessPrintln(listEnvResources(mob.session(),rest.equalsIgnoreCase("SHORT"))); break;
+		case 3: s.wraplessPrintln(listEnvResources(mob.session(),rest)); break;
 		case 4: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.weapons()).toString()); break;
 		case 5: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.mobTypes()).toString()); break;
 		case 6: s.wraplessPrintln(roomDetails(mob.session(),mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
@@ -2778,7 +2804,7 @@ public class ListCmd extends StdCommand
 		case 8: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.locales()).toString()); break;
 		case 9: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.behaviors()).toString()); break;
 		case 10: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.exits()).toString()); break;
-		case 11: s.wraplessPrintln(listRaces(s,CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
+		case 11: s.wraplessPrintln(listRaces(s,CMClass.races(),rest).toString()); break;
 		case 12: s.wraplessPrintln(listCharClasses(s,CMClass.charClasses(),rest.equalsIgnoreCase("SHORT")).toString()); break;
 		case 13: s.wraplessPrintln(listSubOps(mob.session()).toString()); break;
 		case 14: s.wraplessPrintln(CMLib.lister().reallyList(mob,CMClass.abilities(),Ability.ACODE_SPELL).toString()); break;

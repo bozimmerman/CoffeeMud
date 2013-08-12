@@ -366,7 +366,7 @@ public class StdClanItem extends StdItem implements ClanItem
 	public static boolean stdExecuteMsg(Environmental myHost, CMMsg msg)
 	{
 		if((msg.amITarget(myHost))
-		&&(msg.targetMinor()==CMMsg.TYP_GET)
+		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 		&&(((ClanItem)myHost).clanID().length()>0)
 		&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 		{

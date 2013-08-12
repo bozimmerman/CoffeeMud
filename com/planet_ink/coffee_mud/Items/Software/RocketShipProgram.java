@@ -382,6 +382,8 @@ public class RocketShipProgram extends GenShipProgram
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GET:
+			case CMMsg.TYP_PUSH:
+			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_PUT:
 				engines=null;
 				break;

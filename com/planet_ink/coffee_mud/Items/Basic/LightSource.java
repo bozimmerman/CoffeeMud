@@ -242,6 +242,8 @@ public class LightSource extends StdItem implements Light
 				{
 				case CMMsg.TYP_DROP:
 				case CMMsg.TYP_GET:
+				case CMMsg.TYP_PUSH:
+				case CMMsg.TYP_PULL:
 				case CMMsg.TYP_REMOVE:
 					if(msg.source()!=null)
 					{

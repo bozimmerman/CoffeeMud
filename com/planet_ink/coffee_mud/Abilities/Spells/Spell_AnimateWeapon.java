@@ -101,6 +101,8 @@ public class Spell_AnimateWeapon extends Spell
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GET:
+			case CMMsg.TYP_PUSH:
+			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_REMOVE:
 				unInvoke();
 				break;

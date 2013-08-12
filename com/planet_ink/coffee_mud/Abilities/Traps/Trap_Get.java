@@ -54,7 +54,7 @@ public class Trap_Get extends Trap_Trap
 
 		if(msg.amITarget(affected))
 		{
-			if(msg.targetMinor()==CMMsg.TYP_GET)
+			if((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 			{
 				spring(msg.source());
 			}

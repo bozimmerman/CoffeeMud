@@ -207,7 +207,7 @@ public class Thief_TapRoom extends ThiefSkill
 				}
 				else
 				if((msg.target()==affected)
-				&&(msg.targetMinor()==CMMsg.TYP_GET)
+				&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 				&&(text().startsWith("SRC;")))
 				{
 					canBeUninvoked=true;

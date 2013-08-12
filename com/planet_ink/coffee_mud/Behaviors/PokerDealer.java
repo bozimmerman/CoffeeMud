@@ -305,7 +305,7 @@ public class PokerDealer extends StdBehavior
 		
 		// if someone tries to pick money up off the ground here
 		// they need to be stopped COLD.
-		if((msg.targetMinor()==CMMsg.TYP_GET)
+		if(((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 		&&(msg.source().location()==CMLib.map().roomLocation(host))
 		&&(msg.target() instanceof Coins)
 		&&(!msg.targetMajor(CMMsg.MASK_INTERMSG))

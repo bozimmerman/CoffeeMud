@@ -211,7 +211,7 @@ public class Prop_InstantDeath extends Property
 			else
 			if(affecting instanceof Item)
 			{
-				if(msg.targetMinor()==CMMsg.TYP_GET)
+				if((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL))
 					activated=true;
 			}
 			else

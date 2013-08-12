@@ -3512,29 +3512,29 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		switch(getGenItemCodeNum(code))
 		{
-		case 0: return I.ID();
-		case 1: return ""+I.usesRemaining();
-		case 2: return ""+I.basePhyStats().level();
-		case 3: return ""+I.basePhyStats().ability();
-		case 4: return I.Name();
-		case 5: return I.displayText();
-		case 6: return I.description();
-		case 7: return I.rawSecretIdentity();
-		case 8: return ""+I.rawProperLocationBitmap();
-		case 9: return ""+I.rawLogicalAnd();
-		case 10: return ""+I.baseGoldValue();
-		case 11: return ""+(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE));
-		case 12: return ""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP));
-		case 13: return ""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE));
-		case 14: return ""+I.material();
-		case 15: return getExtraEnvPropertiesStr(I);
-		case 16: return ""+I.basePhyStats().disposition();
-		case 17: return ""+I.basePhyStats().weight();
-		case 18: return ""+I.basePhyStats().armor();
-		case 19: return ""+I.basePhyStats().damage();
-		case 20: return ""+I.basePhyStats().attackAdjustment();
-		case 21: return I.readableText();
-		case 22: return I.rawImage();
+		case 0: return I.ID(); // class
+		case 1: return ""+I.usesRemaining(); // uses
+		case 2: return ""+I.basePhyStats().level(); // level
+		case 3: return ""+I.basePhyStats().ability(); // ability
+		case 4: return I.Name(); // name
+		case 5: return I.displayText(); // display
+		case 6: return I.description(); // description
+		case 7: return I.rawSecretIdentity(); // secret
+		case 8: return ""+I.rawProperLocationBitmap(); // properworn
+		case 9: return ""+I.rawLogicalAnd(); // wornand
+		case 10: return ""+I.baseGoldValue(); // basegold
+		case 11: return ""+(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE)); // isreadable
+		case 12: return ""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP)); // isdroppable
+		case 13: return ""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE)); // isremovable
+		case 14: return ""+I.material(); // material
+		case 15: return getExtraEnvPropertiesStr(I); // affbehav
+		case 16: return ""+I.basePhyStats().disposition(); // disposition
+		case 17: return ""+I.basePhyStats().weight(); // weight
+		case 18: return ""+I.basePhyStats().armor();  // armor
+		case 19: return ""+I.basePhyStats().damage();  // damage
+		case 20: return ""+I.basePhyStats().attackAdjustment(); // attack
+		case 21: return I.readableText(); // readabletext
+		case 22: return I.rawImage(); // img
 		//case 23: return getGenScripts(I,false);
 		}
 		return "";
@@ -3544,16 +3544,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		switch(getGenItemCodeNum(code))
 		{
-		case 0: break;
-		case 1: I.setUsesRemaining(CMath.s_parseIntExpression(val)); break;
-		case 2: I.basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 3: I.basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
-		case 4: I.setName(val); break;
-		case 5: I.setDisplayText(val); break;
-		case 6: I.setDescription(val); break;
-		case 7: I.setSecretIdentity(val); break;
+		case 0: break; // class
+		case 1: I.setUsesRemaining(CMath.s_parseIntExpression(val)); break; // uses
+		case 2: I.basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break; // level
+		case 3: I.basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break; // ability
+		case 4: I.setName(val); break; // name
+		case 5: I.setDisplayText(val); break; // display
+		case 6: I.setDescription(val); break; // description
+		case 7: I.setSecretIdentity(val); break; // secret
 		case 8: {
-				  if(CMath.isLong(val)||(val.trim().length()==0))
+				  if(CMath.isLong(val)||(val.trim().length()==0)) // properworn
 					  I.setRawProperLocationBitmap(CMath.s_long(val)); 
 				  else
 				  {
@@ -3570,12 +3570,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				  }
 				  break;
 				}
-		case 9: I.setRawLogicalAnd(CMath.s_bool(val)); break;
-		case 10: I.setBaseValue(CMath.s_parseIntExpression(val)); break;
-		case 11: CMLib.flags().setReadable(I,CMath.s_bool(val)); break;
-		case 12: CMLib.flags().setDroppable(I,CMath.s_bool(val)); break;
-		case 13: CMLib.flags().setRemovable(I,CMath.s_bool(val)); break;
-		case 14: if(CMath.isInteger(val)||(val.trim().length()==0))
+		case 9: I.setRawLogicalAnd(CMath.s_bool(val)); break; // wornand
+		case 10: I.setBaseValue(CMath.s_parseIntExpression(val)); break; // basegold
+		case 11: CMLib.flags().setReadable(I,CMath.s_bool(val)); break; // isreadable
+		case 12: CMLib.flags().setDroppable(I,CMath.s_bool(val)); break; // isdroppable
+		case 13: CMLib.flags().setRemovable(I,CMath.s_bool(val)); break; // isremovable
+		case 14: if(CMath.isInteger(val)||(val.trim().length()==0)) // material
 					I.setMaterial(CMath.s_int(val)); 
 				 else
 				 {
@@ -3586,12 +3586,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case 15: {
 					 I.delAllEffects(true);
 					 I.delAllBehaviors();
-					 setExtraEnvProperties(I,CMLib.xml().parseAllXML(val));
+					 setExtraEnvProperties(I,CMLib.xml().parseAllXML(val)); // affbehav
 					 break;
 				 }
 		case 16:{
 				  if(CMath.isInteger(val)||(val.trim().length()==0))
-					 I.basePhyStats().setDisposition(CMath.s_parseIntExpression(val));
+					 I.basePhyStats().setDisposition(CMath.s_parseIntExpression(val)); // disposition
 				  else
 				  {
 					  I.basePhyStats().setDisposition(0);
@@ -3606,12 +3606,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				  }
 				  break;
 		}
-		case 17: I.basePhyStats().setWeight(CMath.s_parseIntExpression(val)); break;
-		case 18: I.basePhyStats().setArmor(CMath.s_parseIntExpression(val)); break;
-		case 19: I.basePhyStats().setDamage(CMath.s_parseIntExpression(val)); break;
-		case 20: I.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
-		case 21: I.setReadableText(val); break;
-		case 22: I.setImage(val); break;
+		case 17: I.basePhyStats().setWeight(CMath.s_parseIntExpression(val)); break; // weight
+		case 18: I.basePhyStats().setArmor(CMath.s_parseIntExpression(val)); break; // armor
+		case 19: I.basePhyStats().setDamage(CMath.s_parseIntExpression(val)); break; // damage
+		case 20: I.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break; // attack
+		case 21: I.setReadableText(val); break; // readabletext
+		case 22: I.setImage(val); break; // img
 		/*case 23:
 		{
 			while(I.numScripts()>0)
@@ -3644,29 +3644,29 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		switch(getGenMobCodeNum(code))
 		{
-		case 0: return CMClass.classID(M);
-		case 1: return M.baseCharStats().getMyRace().ID();
-		case 2: return ""+M.basePhyStats().level();
-		case 3: return ""+M.basePhyStats().ability();
-		case 4: return M.Name();
-		case 5: return M.displayText();
-		case 6: return M.description();
+		case 0: return CMClass.classID(M); // class
+		case 1: return M.baseCharStats().getMyRace().ID(); // race
+		case 2: return ""+M.basePhyStats().level(); // level
+		case 3: return ""+M.basePhyStats().ability(); // ability
+		case 4: return M.Name(); // name
+		case 5: return M.displayText(); // display
+		case 6: return M.description(); // description
 		case 7: {
-				String money=""+CMLib.beanCounter().getMoney(M);
+				String money=""+CMLib.beanCounter().getMoney(M); // money
 				//CMLib.beanCounter().clearZeroMoney(M,null);  WHY THE HECK WAS THIS EVER HERE?!?!
 				return money;
 				}
-		case 8: return ""+M.fetchFaction(CMLib.factions().AlignID());
-		case 9: return ""+M.basePhyStats().disposition();
-		case 10: return ""+M.basePhyStats().sensesMask();
-		case 11: return ""+M.basePhyStats().armor();
-		case 12: return ""+M.basePhyStats().damage();
-		case 13: return ""+M.basePhyStats().attackAdjustment();
-		case 14: return ""+M.basePhyStats().speed();
-		case 15: return getExtraEnvPropertiesStr(M);
-		case 16: return getGenMobAbilities(M);
+		case 8: return ""+M.fetchFaction(CMLib.factions().AlignID()); // alignment
+		case 9: return ""+M.basePhyStats().disposition(); // disposition
+		case 10: return ""+M.basePhyStats().sensesMask(); // senses
+		case 11: return ""+M.basePhyStats().armor(); // armor
+		case 12: return ""+M.basePhyStats().damage(); // damage
+		case 13: return ""+M.basePhyStats().attackAdjustment(); // attack
+		case 14: return ""+M.basePhyStats().speed(); // speed
+		case 15: return getExtraEnvPropertiesStr(M); // affbehav
+		case 16: return getGenMobAbilities(M); // ables
 		case 17:{
-					StringBuilder str=new StringBuilder(getGenMobInventory(M));
+					StringBuilder str=new StringBuilder(getGenMobInventory(M)); // inventory
 					int x=str.indexOf("<IID>");
 					while(x>0)
 					{
@@ -3685,19 +3685,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 					return str.toString();
 				}
-		case 18:{StringBuilder str=new StringBuilder("");
+		case 18:{StringBuilder str=new StringBuilder(""); // tatts
 				 for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
 					 str.append(e.nextElement().toString()+";");
 				 return str.toString();
 				}
-		case 19:{StringBuilder str=new StringBuilder("");
+		case 19:{StringBuilder str=new StringBuilder(""); // exps
 				 for(Enumeration<String> x=M.expertises();x.hasMoreElements();)
 					str.append(x.nextElement()).append(';');
 				 return str.toString();
 				}
-		case 20: return M.rawImage();
-		case 21: return M.getFactionListing();
-		case 22: return ""+M.getMoneyVariation();
+		case 20: return M.rawImage(); // img
+		case 21: return M.getFactionListing(); // factions
+		case 22: return ""+M.getMoneyVariation(); // varmoney
 		//case 23: return getGenScripts(M,false);
 		}
 		return "";
@@ -3707,22 +3707,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		switch(getGenMobCodeNum(code))
 		{
-		case 0: break;
-		case 1: M.baseCharStats().setMyRace(CMClass.getRace(val)); break;
-		case 2: M.basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 3: M.basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
-		case 4: M.setName(val); break;
-		case 5: M.setDisplayText(val); break;
-		case 6: M.setDescription(val); break;
-		case 7: CMLib.beanCounter().setMoney(M,CMath.s_parseIntExpression(val)); break;
-		case 8: if(CMath.s_int(val)==Integer.MAX_VALUE)
+		case 0: break; // class
+		case 1: M.baseCharStats().setMyRace(CMClass.getRace(val)); break; // race
+		case 2: M.basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break; // level
+		case 3: M.basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break; // ability
+		case 4: M.setName(val); break; // name
+		case 5: M.setDisplayText(val); break; // display
+		case 6: M.setDescription(val); break; // description
+		case 7: CMLib.beanCounter().setMoney(M,CMath.s_parseIntExpression(val)); break; // money
+		case 8: if(CMath.s_int(val)==Integer.MAX_VALUE) // alignment
 					M.removeFaction(CMLib.factions().AlignID());
 				else
 					M.addFaction(CMLib.factions().AlignID(),CMath.s_parseIntExpression(val));
 				break;
 		case 9: 
 			{
-				  if(CMath.isInteger(val)||(val.trim().length()==0))
+				  if(CMath.isInteger(val)||(val.trim().length()==0)) // disposition
 					 M.basePhyStats().setDisposition(CMath.s_parseIntExpression(val));
 				  else
 				  {
@@ -3740,7 +3740,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 		case 10: 
 			{
-				  if(CMath.isInteger(val)||(val.trim().length()==0))
+				  if(CMath.isInteger(val)||(val.trim().length()==0)) // senses
 					 M.basePhyStats().setSensesMask(CMath.s_parseIntExpression(val));
 				  else
 				  {
@@ -3756,49 +3756,49 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				  }
 				  break;
 			}
-		case 11: M.basePhyStats().setArmor(CMath.s_parseIntExpression(val)); break;
-		case 12: M.basePhyStats().setDamage(CMath.s_parseIntExpression(val)); break;
-		case 13: M.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
-		case 14: M.basePhyStats().setSpeed(CMath.s_parseMathExpression(val)); break;
+		case 11: M.basePhyStats().setArmor(CMath.s_parseIntExpression(val)); break; // armor
+		case 12: M.basePhyStats().setDamage(CMath.s_parseIntExpression(val)); break; // damage
+		case 13: M.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break; // attack
+		case 14: M.basePhyStats().setSpeed(CMath.s_parseMathExpression(val)); break; // speed
 		case 15: {
 					 M.delAllEffects(true);
 					 M.delAllBehaviors();
-					 setExtraEnvProperties(M,CMLib.xml().parseAllXML(val));
+					 setExtraEnvProperties(M,CMLib.xml().parseAllXML(val)); // affbehav
 					 break;
 				 }
 		case 16:
 			{
 				String extras=getExtraEnvPropertiesStr(M);
 				M.delAllAbilities();
-				setExtraEnvProperties(M,CMLib.xml().parseAllXML(extras));
+				setExtraEnvProperties(M,CMLib.xml().parseAllXML(extras)); // ables
 				setGenMobAbilities(M,CMLib.xml().parseAllXML(val));
 				break;
 			}
 		case 17:
 			{
 				M.delAllItems(true);
-				setGenMobInventory(M,CMLib.xml().parseAllXML(val));
+				setGenMobInventory(M,CMLib.xml().parseAllXML(val)); // inventory
 			}
 			break;
 		case 18:
 			{
 				Vector<String> V9=CMParms.parseSemicolons(val,true);
-				for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+				for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();) // tatts
 					M.delTattoo(e.nextElement());
 				for(int v=0;v<V9.size();v++) M.addTattoo(CMLib.database().parseTattoo(V9.elementAt(v)));
 			}
 			break;
 		case 19:
 			{
-				Vector<String> V9=CMParms.parseSemicolons(val,true);
+				Vector<String> V9=CMParms.parseSemicolons(val,true); // exps
 				M.delAllExpertises();
 				for(int v=0;v<V9.size();v++) M.addExpertise(V9.elementAt(v));
 			}
 			break;
-		case 20: M.setImage(val); break;
+		case 20: M.setImage(val); break; // img
 		case 21:
 			{
-				Vector<String> V10=CMParms.parseSemicolons(val,true);
+				Vector<String> V10=CMParms.parseSemicolons(val,true); // factions
 				for(int v=0;v<V10.size();v++)
 				{
 					String s=V10.elementAt(v);
@@ -3809,7 +3809,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				}
 				break;
 			}
-		case 22: M.setMoneyVariation(CMath.s_parseMathExpression(val)); break;
+		case 22: M.setMoneyVariation(CMath.s_parseMathExpression(val)); break; // varmoney
 		/*case 23:
 		{
 			while(M.numScripts()>0)

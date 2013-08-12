@@ -36,6 +36,15 @@ public class ObjectGuardian extends StdBehavior
 {
 	public String ID(){return "ObjectGuardian";}
 
+	protected boolean sentinal=false;
+	
+	public void setParms(String parameters)
+	{
+		super.setParms(parameters);
+		List<String> parts=CMParms.parse(parameters.toUpperCase());
+		sentinal=parts.contains("SENTINAL")||parts.contains("SENTINEL");
+	}
+	
 	public String accountForYourself()
 	{ 
 		return "valuable object guarding";
@@ -46,7 +55,7 @@ public class ObjectGuardian extends StdBehavior
 		if(!super.okMessage(oking,msg)) return false;
 		MOB mob=msg.source();
 		MOB monster=(MOB)oking;
-		if(parms.toUpperCase().indexOf("SENTINAL")>=0)
+		if(sentinal)
 		{
 			if(!canActAtAll(monster)) return true;
 			if(monster.amFollowing()!=null)  return true;
@@ -69,7 +78,8 @@ public class ObjectGuardian extends StdBehavior
 			}
 		}
 		else
-		if((mob!=monster)&&(msg.sourceMinor()==CMMsg.TYP_GET))
+		if((mob!=monster)
+		&&((msg.sourceMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
 			CMMsg msgs=CMClass.getMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");
 			if(monster.location().okMessage(monster,msgs))

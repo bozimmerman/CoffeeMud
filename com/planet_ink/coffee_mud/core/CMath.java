@@ -1140,7 +1140,9 @@ public class CMath
 	 * @return the result of the expression
 	 */
 	public final static int parseIntExpression(final String formula) throws ArithmeticException
-	{return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0));}
+	{
+		return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0));
+	}
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
