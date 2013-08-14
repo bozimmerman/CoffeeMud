@@ -2517,7 +2517,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					final String statName=stats[i];
 					final String statValue=E.getStat(statName);
-					myFiles.add(new CMFile.CMVFSFile(root.path+statName,256,System.currentTimeMillis(),"SYS")
+					myFiles.add(new CMFile.CMVFSFile(this.path+statName,256,System.currentTimeMillis(),"SYS")
 					{
 						@Override public int getMaskBits(MOB accessor)
 						{
