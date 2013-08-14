@@ -684,43 +684,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		String value = null;
 		if(!ignoreStats.contains(stat.toUpperCase().trim())) 
 		{
-			if((defPrefix!=null)&&(defPrefix.length()>0))
-			{
-				String preValue=defPrefix;
-				while(preValue != null)
-				{
-					preValue = null;
-					try
-					{
-						value = findString(E,ignoreStats,defPrefix,stat,piece,defined);
-					}
-					catch(CMException e)
-					{
-						if((e.getCause() instanceof CMException)&&(e.getCause().getMessage().startsWith("$")))
-						{
-							preValue=e.getCause().getMessage().substring(1);
-						}
-					}
-					if(preValue != null)
-					{
-						if(preValue.toUpperCase().startsWith(defPrefix.toUpperCase()))
-						{
-							preValue=preValue.toUpperCase().substring(defPrefix.length());
-							if((E.isStat(preValue))&&(!ignoreStats.contains(preValue.toUpperCase())))
-							{
-								List<String> newStatsList=new XVector<String>(ignoreStats);
-								newStatsList.add(stat.toUpperCase());
-								fillOutStatCode(E,newStatsList,defPrefix,preValue,piece,defined);
-								ignoreStats.add(preValue.toUpperCase());
-							}
-							else
-								preValue=null;
-						}
-						else
-							preValue=null;
-					}
-				}
-			}
 			if(value == null)
 				value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,defined);
 			if(value != null) 
@@ -777,18 +740,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		addDefinition("MOB_NAME",M.Name(),defined);
 		M.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
 		
-		String value = findOptionalString(M,ignoreStats,"MOB_","LEVEL",piece,defined);
+		String value = fillOutStatCode(M,ignoreStats,"MOB_","LEVEL",piece,defined);
 		if(value != null) {
-			M.setStat("LEVEL", value);
-			addDefinition("MOB_LEVEL",M.getStat("LEVEL"),defined);
 			CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
 		}
-		value = findOptionalString(M,ignoreStats,"MOB_","GENDER",piece,defined);
+		value = fillOutStatCode(M,ignoreStats,"MOB_","GENDER",piece,defined);
 		if(value != null)
 			M.baseCharStats().setStat(CharStats.STAT_GENDER,value.charAt(0));
 		else
 			M.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.dice().rollPercentage()>50?'M':'F');
-		value = findOptionalString(M,ignoreStats,"MOB_","RACE",piece,defined);
+		value = fillOutStatCode(M,ignoreStats,"MOB_","RACE",piece,defined);
 		if(value != null)
 		{
 			Race R=CMClass.getRace(value);
@@ -995,7 +956,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				recipe=classRest.substring(1).trim();
 				int lvlDex=recipe.indexOf('<');
-				String lvlStr=(lvlDex>0)?strFilter(null,null,null,recipe.substring(lvlDex+1).trim(),defined):null;
+				String lvlStr=(lvlDex>0)?strFilter(null,null,null,recipe.substring(lvlDex+1).trim(),piece, defined):null;
 				if((lvlStr!=null)&&(CMath.isMathExpression(lvlStr)))
 				{
 					levelLimit=CMath.parseIntExpression(lvlStr);
@@ -1335,7 +1296,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 				}
 				if(definition==null) definition="!";
-				definition=strFilter(E,ignoreStats,defPrefix,definition,defined);
+				definition=strFilter(E,ignoreStats,defPrefix,definition,piece, defined);
 				if(CMath.isMathExpression(definition))
 					definition=Integer.toString(CMath.s_parseIntExpression(definition));
 				if(defVar.trim().length()>0)
@@ -1351,7 +1312,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		tagName=tagName.toUpperCase().trim();
 		String asParm = CMLib.xml().getParmValue(piece.parms,tagName);
-		if(asParm != null) return strFilter(E,ignoreStats,defPrefix,asParm,defined);
+		if(asParm != null) return strFilter(E,ignoreStats,defPrefix,asParm,piece, defined);
 		
 		Object asDefined = defined.get(tagName);
 		if(asDefined instanceof String) 
@@ -1368,7 +1329,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
 				
-			String value=strFilter(E,ignoreStats,defPrefix,valPiece.value,defined);
+			String value=strFilter(E,ignoreStats,defPrefix,valPiece.value,piece, defined);
 			defineReward(E,ignoreStats,defPrefix,valPiece,value,defined);
 			
 			String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
@@ -1640,7 +1601,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else
 		if(selection.startsWith("FIRST-"))
 		{
-			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),defined));
+			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
 			if((num<0)||(num>choices.size())) throw new CMException("Can't pick first "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 			selectedChoicesV=new Vector<XMLpiece>();
 			for(int v=0;v<num;v++)
@@ -1649,7 +1610,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else
 		if(selection.startsWith("LIMIT-"))
 		{
-			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),defined));
+			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
 			if(num<0) throw new CMException("Can't pick limit "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 			selectedChoicesV=new Vector<XMLpiece>();
 			if(choices.size()<=num)
@@ -1664,7 +1625,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else
 		if(selection.startsWith("LAST-"))
 		{
-			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),defined));
+			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
 			if((num<0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 			selectedChoicesV=new Vector<XMLpiece>();
 			for(int v=choices.size()-num;v<choices.size();v++)
@@ -1673,7 +1634,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else
 		if(selection.startsWith("PICK-"))
 		{
-			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),defined));
+			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
 			if((num<0)||(num>choices.size())) throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 			selectedChoicesV=new Vector<XMLpiece>();
 			List<XMLLibrary.XMLpiece> cV=new XVector<XMLLibrary.XMLpiece>(choices);
@@ -1707,7 +1668,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else
 		if(selection.startsWith("ANY-"))
 		{
-			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),defined));
+			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
 			if((num<0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 			selectedChoicesV=new Vector<XMLpiece>();
 			List<XMLLibrary.XMLpiece> cV=new XVector<XMLLibrary.XMLpiece>(choices);
@@ -1721,7 +1682,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else
 		if(selection.startsWith("REPEAT-"))
 		{
-			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),defined));
+			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
 			if(num<0) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 			selectedChoicesV=new Vector<XMLpiece>();
 			List<XMLLibrary.XMLpiece> cV=new XVector<XMLLibrary.XMLpiece>(choices);
@@ -1734,7 +1695,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else
 		if((selection.trim().length()>0)&&CMath.isMathExpression(selection))
 		{
-			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),defined));
+			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
 			if((num<0)||(num>choices.size())) throw new CMException("Can't pick any "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 			selectedChoicesV=new Vector<XMLpiece>();
 			List<XMLLibrary.XMLpiece> cV=new XVector<XMLLibrary.XMLpiece>(choices);
@@ -1750,17 +1711,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return selectedChoicesV;
 	}
 	
-	protected String strFilter(Modifiable E, List<String> ignoreStats, String defPrefix, String str, Map<String,Object> defined) throws CMException
+	protected String strFilter(Modifiable E, List<String> ignoreStats, String defPrefix, String str, XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		List<Varidentifier> vars=parseVariables(str);
 		boolean killArticles=str.toLowerCase().startsWith("(a(n))");
-		for(int v=vars.size()-1;v>=0;v--)
+		while(vars.size()>0)
 		{
-			Varidentifier V=vars.get(v);
+			Varidentifier V=vars.remove(vars.size()-1);
 			Object val;
 			if(V.isMathExpression)
 			{
-				String expression=strFilter(E,ignoreStats,defPrefix,V.var,defined);
+				String expression=strFilter(E,ignoreStats,defPrefix,V.var,piece, defined);
 				if(CMath.isMathExpression(expression))
 				{
 					if(expression.indexOf('.')>0)
@@ -1775,6 +1736,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				val = defined.get(V.var.toUpperCase().trim());
 			if(val instanceof XMLLibrary.XMLpiece) 
 				val = findString(E,ignoreStats,defPrefix,"STRING",(XMLLibrary.XMLpiece)val,defined);
+			if((val == null)&&(defPrefix!=null)&&(defPrefix.length()>0)&&(E!=null))
+			{
+				String preValue=V.var;
+				if(preValue.toUpperCase().startsWith(defPrefix.toUpperCase()))
+				{
+					preValue=preValue.toUpperCase().substring(defPrefix.length());
+					if((E.isStat(preValue))
+					&&((ignoreStats==null)||(!ignoreStats.contains(preValue.toUpperCase()))))
+					{
+						val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined);
+						if(ignoreStats!=null)
+							ignoreStats.add(preValue.toUpperCase());
+					}
+				}
+			}
 			if(val == null) 
 				throw new CMException("Unknown variable '$"+V.var+"' in str '"+str+"'",new CMException("$"+V.var));
 			if(V.toUpperCase) val=val.toString().toUpperCase();
@@ -1783,6 +1759,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(V.toCapitalized) val=CMStrings.capitalizeAndLower(val.toString());
 			if(killArticles) val=CMLib.english().cleanArticles(val.toString());
 			str=str.substring(0,V.outerStart)+val.toString()+str.substring(V.outerEnd);
+			if(vars.size()==0)
+				vars=parseVariables(str);
 		}
 		int x=str.toLowerCase().indexOf("(a(n))");
 		while((x>=0)&&(x<str.length()-8))

@@ -1408,34 +1408,34 @@ Required details: "id" "value"
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
-			<MOB class="GenMob" predefine="dragonlevel=$level_range" level="$dragonlevel" id="rats_dragon" race="Dragon" gender="F">
+			<MOB class="GenMob" level="$level_range" id="rats_dragon" race="Dragon" gender="F">
 				<NAME select="all">
-					<NAME condition="$dragonlevel<10">a hatchling $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<20 and $dragonlevel>=10">a very young $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<30 and $dragonlevel>=20">a young $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<40 and $dragonlevel>=30">a subadult $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<70 and $dragonlevel>=40">an adult $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<80 and $dragonlevel>=70">an old $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<85 and $dragonlevel>=80">a very old $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel>=85">a ancient $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<10">a hatchling $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<20 and $mob_level>=10">a very young $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<30 and $mob_level>=20">a young $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<70 and $mob_level>=40">an adult $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<80 and $mob_level>=70">an old $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<85 and $mob_level>=80">a very old $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level>=85">a ancient $dragoncolor dragon</NAME>
 				</NAME>
 				<DISPLAY>$mob_name is guarding her brood.</DISPLAY>
 				<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
 				<BEHAVIOR select="all">
-					<BEHAVIOR condition="$dragonlevel>=40" class="MOBEater" parms="" />
+					<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
 					<BEHAVIOR class="ObjectGuardian" parms="" />
 					<BEHAVIOR class="CombatAbilities" parms="" />
 				</BEHAVIOR>
 				<ABILITY select="all">
-					<ABILITY condition="$dragonlevel>=10" class="Skill_Trip" parms="" />
-					<ABILITY condition="$dragonlevel>=20" class="Dragonbreath" parms="" />
-					<ABILITY condition="$dragonlevel>=30" class="Spell_DetectInvisible" parms="" />
-					<ABILITY condition="$dragonlevel>=40" class="Spell_Fear" parms="" />
-					<ABILITY condition="$dragonlevel>=50" class="Spell_Hold" parms="" />
-					<ABILITY condition="$dragonlevel>=60" class="Spell_Slow" parms="" />
-					<ABILITY condition="$dragonlevel>=70" class="Spell_GravitySlam" parms="" />
-					<ABILITY condition="$dragonlevel>=80" class="Spell_SpellTurning" parms="" />
-					<ABILITY condition="$dragonlevel>=90" class="Spell_ResistSlashing" parms="" />
+					<ABILITY condition="$mob_level>=10" class="Skill_Trip" parms="" />
+					<ABILITY condition="$mob_level>=20" class="Dragonbreath" parms="" />
+					<ABILITY condition="$mob_level>=30" class="Spell_DetectInvisible" parms="" />
+					<ABILITY condition="$mob_level>=40" class="Spell_Fear" parms="" />
+					<ABILITY condition="$mob_level>=50" class="Spell_Hold" parms="" />
+					<ABILITY condition="$mob_level>=60" class="Spell_Slow" parms="" />
+					<ABILITY condition="$mob_level>=70" class="Spell_GravitySlam" parms="" />
+					<ABILITY condition="$mob_level>=80" class="Spell_SpellTurning" parms="" />
+					<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
 				</ABILITY>
 			</MOB>
 			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="a $dungeonadj_feeling dragon egg" display="$item_name is here" material="EGGS" />
@@ -1461,34 +1461,34 @@ Required details: "id" "value"
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
-			<MOB class="GenMob" predefine="dragonlevel=(1.20 * ($level_range)) + 1" level="$dragonlevel" id="rats_dragon" race="Dragon" gender="$anygender">
+			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" id="rats_dragon" race="Dragon" gender="$anygender">
 				<NAME select="all">
-					<NAME condition="$dragonlevel<10">a hatchling $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<20 and $dragonlevel>=10">a very young $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<30 and $dragonlevel>=20">a young $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<40 and $dragonlevel>=30">a subadult $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<70 and $dragonlevel>=40">an adult $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<80 and $dragonlevel>=70">an old $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel<85 and $dragonlevel>=80">a very old $dragoncolor dragon</NAME>
-					<NAME condition="$dragonlevel>=85">a ancient $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<10">a hatchling $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<20 and $mob_level>=10">a very young $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<30 and $mob_level>=20">a young $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<40 and $mob_level>=30">a subadult $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<70 and $mob_level>=40">an adult $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<80 and $mob_level>=70">an old $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level<85 and $mob_level>=80">a very old $dragoncolor dragon</NAME>
+					<NAME condition="$mob_level>=85">a ancient $dragoncolor dragon</NAME>
 				</NAME>
 				<DISPLAY>$mob_name watches you intently.</DISPLAY>
 				<DESCRIPTION>$mob_name is majestic, but simply being in its presence makes you uneasy.</DESCRIPTION>
 				<BEHAVIOR select="all">
-					<BEHAVIOR condition="$dragonlevel>=40" class="MOBEater" parms="" />
+					<BEHAVIOR condition="$mob_level>=40" class="MOBEater" parms="" />
 					<BEHAVIOR class="ObjectGuardian" parms="" />
 					<BEHAVIOR class="CombatAbilities" parms="" />
 				</BEHAVIOR>
 				<ABILITY select="all">
-					<ABILITY condition="$dragonlevel>=10" class="Skill_Trip" parms="" />
-					<ABILITY condition="$dragonlevel>=20" class="Dragonbreath" parms="" />
-					<ABILITY condition="$dragonlevel>=30" class="Spell_DetectInvisible" parms="" />
-					<ABILITY condition="$dragonlevel>=40" class="Spell_Fear" parms="" />
-					<ABILITY condition="$dragonlevel>=50" class="Spell_Hold" parms="" />
-					<ABILITY condition="$dragonlevel>=60" class="Spell_Slow" parms="" />
-					<ABILITY condition="$dragonlevel>=70" class="Spell_GravitySlam" parms="" />
-					<ABILITY condition="$dragonlevel>=80" class="Spell_SpellTurning" parms="" />
-					<ABILITY condition="$dragonlevel>=90" class="Spell_ResistSlashing" parms="" />
+					<ABILITY condition="$mob_level>=10" class="Skill_Trip" parms="" />
+					<ABILITY condition="$mob_level>=20" class="Dragonbreath" parms="" />
+					<ABILITY condition="$mob_level>=30" class="Spell_DetectInvisible" parms="" />
+					<ABILITY condition="$mob_level>=40" class="Spell_Fear" parms="" />
+					<ABILITY condition="$mob_level>=50" class="Spell_Hold" parms="" />
+					<ABILITY condition="$mob_level>=60" class="Spell_Slow" parms="" />
+					<ABILITY condition="$mob_level>=70" class="Spell_GravitySlam" parms="" />
+					<ABILITY condition="$mob_level>=80" class="Spell_SpellTurning" parms="" />
+					<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
 				</ABILITY>
 			</MOB>
 			<EXIT class="Open" />
