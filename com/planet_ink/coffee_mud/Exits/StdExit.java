@@ -105,12 +105,13 @@ public class StdExit implements Exit
 	{
 		return basePhyStats;
 	}
+	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>() {
+		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
+	};
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
-			A.affectPhyStats(me,phyStats);
-        }});
+		eachEffect(recoverPhyStatsEffectApplicable);
 	}
 	public void setBasePhyStats(PhyStats newStats)
 	{

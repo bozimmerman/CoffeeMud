@@ -1572,6 +1572,8 @@ public class CMProps extends Properties
 			else
 				V.add(myClassName.toUpperCase());
 		}
+		if(V.size()==0)
+			return null;
 		for(final Iterator<String> v=V.iterator();v.hasNext();)
 		{
 			myClassName = v.next();
@@ -1596,7 +1598,8 @@ public class CMProps extends Properties
 	public static final String[] getExtraStatCodesHolder(final CMObject O)
 	{
 		final List<String> addedStatCodesV = getStatCodeExtentions(O);
-		if(addedStatCodesV == null) return null;
+		if((addedStatCodesV == null)||(addedStatCodesV.size()==0)) 
+			return null;
 		final String[] statHolder= new String[addedStatCodesV.size()];
 		for(int s=0;s<statHolder.length;s++)
 			statHolder[s]="";

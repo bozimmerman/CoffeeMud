@@ -130,12 +130,13 @@ public class StdItem implements Item
 		return basePhyStats;
 	}
 
+	private final EachApplicable<Ability> recoverPhyStatsEffectApplicable=new EachApplicable<Ability>() {
+		public final void apply(final Ability A) { A.affectPhyStats(me,phyStats); } 
+	};
 	public void recoverPhyStats()
 	{
 		basePhyStats.copyInto(phyStats);
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
-			A.affectPhyStats(me,phyStats);
-		} });
+		eachEffect(recoverPhyStatsEffectApplicable);
 		if(((phyStats().ability()>0)&&abilityImbuesMagic())||(this instanceof MiscMagic))
 			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 		if((owner()!=null)
@@ -461,23 +462,47 @@ public class StdItem implements Item
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 		}
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
-			if(A.bubbleAffect()) A.affectPhyStats(affected,affectableStats);
-		}});
+		final List<Ability> affects=this.affects;
+		if((affects!=null)&&(affects.size()>0))
+		try
+		{
+			for(int a=0;a<affects.size();a++)
+			{
+				final Ability A=affects.get(a);
+				if((A!=null)&&(A.bubbleAffect()))
+					A.affectPhyStats(affected,affectableStats); 
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
-			if(A.bubbleAffect()) A.affectCharStats(affectedMob,affectableStats);
-		}});
+		final List<Ability> affects=this.affects;
+		if((affects!=null)&&(affects.size()>0))
+		try
+		{
+			for(int a=0;a<affects.size();a++)
+			{
+				final Ability A=affects.get(a);
+				if((A!=null)&&(A.bubbleAffect()))
+					A.affectCharStats(affectedMob,affectableStats); 
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
-		eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
-			if(A.bubbleAffect()) A.affectCharState(affectedMob,affectableMaxState);
-		}});
+		final List<Ability> affects=this.affects;
+		if((affects!=null)&&(affects.size()>0))
+		try
+		{
+			for(int a=0;a<affects.size();a++)
+			{
+				final Ability A=affects.get(a);
+				if((A!=null)&&(A.bubbleAffect()))
+					A.affectCharState(affectedMob,affectableMaxState); 
+			}
+		} catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public void setMiscText(String newText)
@@ -1356,7 +1381,7 @@ public class StdItem implements Item
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
-		if(affects==null) return;
+		if((affects!=null)&&(affects.size()>0))
 		try
 		{
 			for(int a=0;a<affects.size();a++)

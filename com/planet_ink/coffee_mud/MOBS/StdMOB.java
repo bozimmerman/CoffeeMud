@@ -594,7 +594,8 @@ public class StdMOB implements MOB
 		basePhyStats.copyInto(phyStats);
 		if (location() != null)
 			location().affectPhyStats(this, phyStats);
-		phyStats().setWeight(phyStats().weight() + (int) Math.round(CMath.div(getMoney(), 100.0)));
+		if(getMoney()>0)
+			phyStats().setWeight(phyStats().weight() + (int) Math.round(CMath.div(getMoney(), 100.0)));
 		final Rideable riding = riding();
 		if (riding != null)
 			riding.affectPhyStats(this, phyStats);
@@ -604,8 +605,7 @@ public class StdMOB implements MOB
 		final CharStats cStats = charStats;
 		if (cStats != null)
 		{
-			final int num = charStats().numClasses();
-			for (int c = 0; c < num; c++)
+			for (int c = 0; c < cStats.numClasses(); c++)
 				cStats.getMyClass(c).affectPhyStats(this, phyStats);
 			cStats.getMyRace().affectPhyStats(this, phyStats);
 		}

@@ -217,6 +217,7 @@ public class StdRoom implements Room
 			addScript((ScriptingEngine)SE.copyOf());
 		}
 	}
+	
 	public CMObject copyOf()
 	{
 		try
