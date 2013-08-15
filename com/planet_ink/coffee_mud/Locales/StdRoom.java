@@ -1251,7 +1251,7 @@ public class StdRoom implements Room
 		// now handle trailer msgs
 		if(depth<3)
 		{
-			if(msg.trailerMsgs()!=null)
+			if((msg.trailerMsgs()!=null)&&(msg.trailerMsgs().size()>0))
 			{
 				for(CMMsg msg2 : msg.trailerMsgs())
 					if((msg!=msg2)
@@ -1560,7 +1560,7 @@ public class StdRoom implements Room
 	public void eachInhabitant(final EachApplicable<MOB> applier)
 	{
 		final List<MOB> inhabitants=this.inhabitants;
-		if(contents!=null)
+		if((inhabitants!=null)&&(inhabitants.size()>0))
 		try{
 			for(int a=0;a<inhabitants.size();a++)
 			{
@@ -1690,7 +1690,7 @@ public class StdRoom implements Room
 	public void eachItem(final EachApplicable<Item> applier)
 	{
 		final List<Item> contents=this.contents;
-		if(contents!=null)
+		if((contents!=null)&&(contents.size()>0))
 		try{
 			for(int a=0;a<contents.size();a++)
 			{
@@ -1976,7 +1976,7 @@ public class StdRoom implements Room
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
 		final List<Ability> affects=this.affects;
-		if(affects==null) return;
+		if((affects!=null)&&(affects.size()>0))
 		try
 		{
 			for(int a=0;a<affects.size();a++)
@@ -2090,7 +2090,7 @@ public class StdRoom implements Room
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
 		final List<Behavior> behaviors=this.behaviors;
-		if(behaviors!=null)
+		if((behaviors!=null)&&(behaviors.size()>0))
 		try{
 			for(int a=0;a<behaviors.size();a++)
 			{
@@ -2145,7 +2145,7 @@ public class StdRoom implements Room
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
 		final List<ScriptingEngine> scripts=this.scripts;
-		if(scripts!=null)
+		if((scripts!=null)&&(scripts.size()>0))
 		try{
 			for(int a=0;a<scripts.size();a++)
 			{
