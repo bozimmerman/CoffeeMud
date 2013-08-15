@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.net;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -49,7 +50,12 @@ public class ListenThread extends Thread {
 	public void run() {
 		while( listen!=null && !listen.isClosed() ) {
 			Socket client;
-
+			if(CMSecurity.isDisabled(DisFlag.I3))
+			{
+				clients.clear();
+				CMLib.s_sleep(100);
+				continue;
+			}
 			try {
 				client = listen.accept();
 				synchronized( clients ) {
@@ -66,6 +72,7 @@ public class ListenThread extends Thread {
 		try
 		{
 			if(listen!=null) listen.close();
+			this.interrupt();
 		}
 		catch(Exception e){}
 	}

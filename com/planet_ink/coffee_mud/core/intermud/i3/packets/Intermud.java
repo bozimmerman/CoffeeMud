@@ -271,6 +271,12 @@ public class Intermud implements Runnable, Persistent, Serializable
 				@Override public long getTickStatus() { return tickStatus; }
 				@Override public boolean tick(Tickable ticking, int tickID) {
 					try {
+						if(CMSecurity.isDisabled(CMSecurity.DisFlag.I3))
+						{
+							lastPingTime=System.currentTimeMillis()-(40  * 60 * 1000);
+							return true;
+						}
+						else
 						if((System.currentTimeMillis()-lastPingTime)>(60  * 60 * 1000)) // one hour
 						{
 							Log.errOut("Intermud","No I3 Ping sent in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-lastPingTime, TimeUnit.MILLISECONDS, false));
@@ -491,7 +497,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 		}
 		lastPingTime = System.currentTimeMillis();
 		
-		while( connected && (!shutdown)) {
+		while( connected && (!shutdown))
+		{
 			Vector data;
 
 			try { Thread.sleep(100); }
@@ -504,6 +511,11 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 			}
 			
+			if(CMSecurity.isDisabled(CMSecurity.DisFlag.I3))
+			{
+				continue;
+			}
+			else
 			if((System.currentTimeMillis()-lastPingTime)>( 30 * 60 * 1000))
 			{
 				lastPingTime=System.currentTimeMillis();
@@ -520,6 +532,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 							try
 							{
 								CMLib.hosts().get(0).executeCommand("START I3");
+								PingPacket.lastPingResponse=System.currentTimeMillis()-(50 * 60 * 1000);
 								Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 							}
 							catch(Exception e){}

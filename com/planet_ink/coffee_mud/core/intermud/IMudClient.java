@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -99,12 +100,13 @@ public class IMudClient implements I3Interface
 
 	public boolean i3online()
 	{
-		return Intermud.isConnected();
+		return Intermud.isConnected() && (!CMSecurity.isDisabled(DisFlag.I3));
 	}
 	
 	public boolean imc2online()
 	{
-		if(imc2==null) return false;
+		if((imc2==null)||(CMSecurity.isDisabled(DisFlag.IMC2)))
+			return false;
 		return imc2.imc_active==IMC2Driver.IA_UP;
 	}
 	public void imc2mudInfo(MOB mob, String parms)

@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -185,7 +186,11 @@ public class ServerThread implements Tickable
 		CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT, 250, 1);
 	}
 
-	@Override public boolean tick(Tickable ticking, int tickID) {
+	@Override public boolean tick(Tickable ticking, int tickID) 
+	{
+		if(CMSecurity.isDisabled(DisFlag.I3))
+			return running;
+		
 		tickStatus=Tickable.STATUS_ALIVE;
 		ServerObject[] things;
 		ServerUser[] users;

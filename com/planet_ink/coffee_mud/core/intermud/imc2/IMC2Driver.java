@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 
 import java.io.*;
@@ -1533,6 +1534,11 @@ public final class IMC2Driver extends Thread {
 			long timeSinceLastPing=System.currentTimeMillis();
 			while (!shutdown) 
 			{
+				if(CMSecurity.isDisabled(DisFlag.IMC2))
+				{
+					CMLib.s_sleep(100);
+					continue;
+				}
 				if((System.currentTimeMillis()-timeSinceLastPing) > (30 * 60 * 1000))
 				{
 					imc_client.imc_send_ping("Server01");
@@ -1582,8 +1588,11 @@ public final class IMC2Driver extends Thread {
 				return;
 			while (!shutdown) 
 			{
-//  			tracef(1, "call_out: process call outs");
-				imc_client.imc_read_from_socket(in);
+				if(!CMSecurity.isDisabled(DisFlag.IMC2))
+				{
+//	  			tracef(1, "call_out: process call outs");
+					imc_client.imc_read_from_socket(in);
+				}
 				try {
 					sleep(100);
 				}
