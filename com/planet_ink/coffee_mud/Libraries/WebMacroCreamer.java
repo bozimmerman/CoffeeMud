@@ -846,8 +846,11 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		String flag=Resources.getPropResource("WEBMACROCREAMER", "RUNYAHOOMSGGRABBER");
 		if(flag.equalsIgnoreCase("TRUE"))
 		{
+			int tickCount=CMath.s_int(Resources.getPropResource("WEBMACROCREAMER", "YAHOOTICKSPERRUN"));
+			if(tickCount<2)
+				tickCount=2;
 			name="THCreamer"+Thread.currentThread().getThreadGroup().getName().charAt(0);
-			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, 2);
+			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, tickCount);
 		}
 		return true;
 	}
@@ -992,7 +995,10 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		{
 			sess.lastMsgNum++;
 			if(sess.lastMsgNum>=sess.numTotal)
+			{
+				sess.lastMsgNum=sess.numTotal-1;
 				return sess.lastMsgNum+"of "+sess.numTotal+" messages already processed";
+			}
 			if(Arrays.binarySearch(sess.skipList, sess.lastMsgNum)>=0)
 				continue;
 			byte[] b=sess.H.getRawUrl(sess.url+"/message/"+sess.lastMsgNum,sess.cookieSet);
