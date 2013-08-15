@@ -641,7 +641,7 @@ public class MUD extends Thread implements MudHost
 		CMProps page=CMProps.instance();
 		try
 		{
-			if(page.getBoolean("RUNI3SERVER")&&(tCode==MAIN_HOST))
+			if(page.getBoolean("RUNI3SERVER")&&(tCode==MAIN_HOST)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.I3)))
 			{
 				if(i3server!=null) I3Server.shutdown();
 				i3server=null;
@@ -715,7 +715,7 @@ public class MUD extends Thread implements MudHost
 		CMProps page=CMProps.instance();
 		try
 		{
-			if(page.getBoolean("RUNIMC2CLIENT")&&(tCode==MAIN_HOST))
+			if(page.getBoolean("RUNIMC2CLIENT")&&(tCode==MAIN_HOST)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.IMC2)))
 			{
 				imc2server=new IMC2Driver();
 				if(!imc2server.imc_startup(false,
