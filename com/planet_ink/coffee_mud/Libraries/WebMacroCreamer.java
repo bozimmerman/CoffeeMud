@@ -994,7 +994,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		while((--sess.numTimes)>=0)
 		{
 			sess.lastMsgNum++;
-			if(sess.lastMsgNum>=sess.numTotal)
+			if(sess.lastMsgNum>sess.numTotal)
 			{
 				sess.lastMsgNum=sess.numTotal-1;
 				return sess.lastMsgNum+"of "+sess.numTotal+" messages already processed";
