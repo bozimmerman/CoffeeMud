@@ -277,6 +277,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 							CMLib.threads().executeRunnable(new Runnable() {
 								public void run() {
 									try {
+										lastPingTime=System.currentTimeMillis()-(40  * 60 * 1000);
 										CMLib.hosts().get(0).executeCommand("START I3");
 										Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 									} catch(Exception e){}
