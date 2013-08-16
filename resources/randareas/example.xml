@@ -232,7 +232,9 @@ A pure container tag that contains one or more ITEM tags, as above.
 ----------------------------------------
 Exit tags:
 Required detail: "class"
-Optional Objects: "AFFECT","BEHAVIOR"
+Optional Objects: "AFFECT","BEHAVIOR", "CLASS","NAME","DISPLAY","DESCRIPTION","DOOR",
+"LEVEL","ABILITY","ISREADABLE","AFFBEHAV","DISPOSITION", "READABLETEXT","HASADOOR",
+"DEFCLOSED","HASALOCK","DEFLOCKED",	"KEYNAME"
 
 ----------------------------------------
 Faction tags:
