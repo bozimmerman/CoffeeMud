@@ -12,11 +12,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /* 
@@ -37,6 +39,8 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdSpaceShip implements Area, SpaceShip
 {
+	private static final long STALE_AIR_INTERVAL = 5 * 60 * 1000;
+	
 	protected static Climate climateObj=null;
 	
 	protected String[]  	xtraValues  	= null;
@@ -64,12 +68,16 @@ public class StdSpaceShip implements Area, SpaceShip
 	protected PhyStats  	basePhyStats	= (PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected Area 			me			 	= this;
 	protected SpaceShip		shipItem		= null;
+	protected volatile long nextStaleCheck	= System.currentTimeMillis() + STALE_AIR_INTERVAL;
+	protected volatile long nextStaleWarn	= System.currentTimeMillis() + (60 * 1000);
 	
-	protected SVector<Ability>  		affects=new SVector<Ability>(1);
-	protected SVector<Behavior> 		behaviors=new SVector<Behavior>(1);
-	protected SVector<ScriptingEngine>  scripts=new SVector<ScriptingEngine>(1);
-	protected SLinkedList<Area> 		parents=new SLinkedList<Area>();
-	protected STreeMap<String,String>   blurbFlags=new STreeMap<String,String>();
+	protected SVector<Ability>  		affects			= new SVector<Ability>(1);
+	protected SVector<Behavior> 		behaviors		= new SVector<Behavior>(1);
+	protected SVector<ScriptingEngine>  scripts			= new SVector<ScriptingEngine>(1);
+	protected SLinkedList<Area> 		parents			= new SLinkedList<Area>();
+	protected STreeMap<String,String>   blurbFlags		= new STreeMap<String,String>();
+	protected List<Pair<Room,Integer>>	shipExitCache	= new SLinkedList<Pair<Room,Integer>>();
+	protected Set<String> 				staleAirList	= new HashSet<String>();
 
 	public String ID(){    return "StdSpaceShip";}
 	
@@ -473,6 +481,32 @@ public class StdSpaceShip implements Area, SpaceShip
 		}});
 		if((msg.sourceMinor()==CMMsg.TYP_DROP)||(msg.sourceMinor()==CMMsg.TYP_GET))
 			mass=-1;
+
+		if(msg.amITarget(this))
+		{
+			if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+			{
+				String[] parts=msg.targetMessage().split(" ");
+				TechCommand command=TechCommand.findCommand(parts);
+				if(command!=null)
+				{
+					Object[] parms=command.confirmAndTranslate(parts);
+					if(parms!=null)
+					{
+						if((command==Technical.TechCommand.AIRREFRESH)&&(staleAirList.size()>0))
+						{
+							double pct=((Integer)parms[0]).doubleValue()/100.0;
+							int numToClear=(int)Math.round(CMath.mul(staleAirList.size(),pct));
+							while((numToClear>0)&&(staleAirList.size()>0))
+							{
+								staleAirList.remove(staleAirList.iterator().next());
+								numToClear--;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public Enumeration<Room> getCompleteMap(){return getProperMap();}
@@ -489,6 +523,90 @@ public class StdSpaceShip implements Area, SpaceShip
 	}
 
 	public long getTickStatus(){ return tickStatus;}
+	
+	protected void doAtmosphereChanges()
+	{
+		for(Pair<Room,Integer> p : shipExitCache)
+		{
+			Room R=p.first;
+			Exit E=R.getExitInDir(p.second.intValue());
+			if((E!=null)&&(E.isOpen()))
+			{
+				Room exitRoom=R;
+				Room otherRoom=R.getRoomInDir(p.second.intValue());
+				int atmo=otherRoom.getAtmosphere();
+				String atmoName=(atmo==0)?"vacuum":RawMaterial.CODES.NAME(atmo).toLowerCase();
+				
+				Set<Room> doneRooms=new HashSet<Room>();
+				LinkedList<Room> toDoRooms=new LinkedList<Room>();
+				toDoRooms.add(R);
+				while(toDoRooms.size()>0)
+				{
+					R=toDoRooms.removeFirst();
+					doneRooms.add(R);
+					staleAirList.remove(R.roomID());
+					if(R.getAtmosphere() != atmo)
+					{
+						if(atmo==0)
+						{
+							R.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()+" rushed out of the room.");
+							if(R!=exitRoom) exitRoom.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()+" rushed out of the room.");
+						}
+						else
+						{
+							R.showHappens(CMMsg.MSG_OK_ACTION, atmoName+" rushes into the room.");
+							if(R!=exitRoom) exitRoom.showHappens(CMMsg.MSG_OK_ACTION, atmoName+" rushes into the room.");
+						}
+						R.setAtmosphere(atmo);
+						break;
+					}
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						Room R2=R.getRoomInDir(d);
+						Exit E2=R.getExitInDir(d);
+						if((R2!=null)&&(R2.getArea()==R.getArea())&&(E2!=null)&&(E2.isOpen())&&(!doneRooms.contains(R2)))
+							toDoRooms.add(R2);
+					}
+				}
+			}
+		}
+		if((System.currentTimeMillis() > nextStaleWarn)&&(staleAirList.size()>0))
+		{
+			nextStaleWarn = System.currentTimeMillis() + (60 * 1000);
+			for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+			{
+				Room R=r.nextElement();
+				if((staleAirList.contains(R.roomID()))
+				&&(R.numInhabitants()>0)
+				&&(R.numPCInhabitants()>0))
+				{
+					int atmo=R.getAtmosphere();
+					if(atmo>0)
+					for(int i=0;i<R.numInhabitants();i++)
+					{
+						MOB M=R.fetchInhabitant(i);
+						if((M!=null)
+						&&(!M.isMonster())
+						&&(!CMLib.flags().canBreatheThis(M,RawMaterial.RESOURCE_NOTHING)))
+							M.tell("The "+RawMaterial.CODES.NAME(atmo).toLowerCase()+" is seaming a bit stale.");
+					}
+				}
+			}
+		}
+		if(System.currentTimeMillis() >= nextStaleCheck)
+		{
+			nextStaleCheck=System.currentTimeMillis()+STALE_AIR_INTERVAL;
+			for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+			{
+				Room R=r.nextElement();
+				if(!staleAirList.contains(R.roomID()))
+					staleAirList.add(R.roomID());
+				else
+					R.setAtmosphere(RawMaterial.RESOURCE_NOTHING); // WE NOW HAVE A VACUUM HERE!!!
+			}
+		}
+	}
+	
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(flag==State.STOPPED) return false;
@@ -508,12 +626,15 @@ public class StdSpaceShip implements Area, SpaceShip
 			eachEffect(new EachApplicable<Ability>(){ public final void apply(final Ability A) {
 				if(!A.tick(ticking,tickID))
 					A.unInvoke();
-	        }});
+			}});
+			doAtmosphereChanges();
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 
+	
+	
 	public String getWeatherDescription(){return "There is no weather here.";}
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -613,11 +734,23 @@ public class StdSpaceShip implements Area, SpaceShip
 		return false;
 	}
 	public void fillInAreaRoom(Room R){}
-	public void dockHere(LocationRoom R)
+	public void dockHere(LocationRoom roomR)
 	{
-		if(R==null) return;
-		savedDock=R;
+		if(roomR==null) return;
+		savedDock=roomR;
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
+		shipExitCache.clear();
+		for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+		{
+			Room R=r.nextElement();
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				if((R.getRawExit(d)!=null)
+				&&((R.rawDoors()[d]==null)||(R.rawDoors()[d].getArea()!=this)))
+				{
+					R.rawDoors()[d]=roomR;
+					shipExitCache.add(new Pair<Room,Integer>(R,Integer.valueOf(d)));
+				}
+		}
 	}
 	public void unDock(boolean toSpace)
 	{
@@ -639,6 +772,7 @@ public class StdSpaceShip implements Area, SpaceShip
 					R.rawDoors()[d]=null;
 			}
 		}
+		shipExitCache.clear();
 		savedDock=null;
 	}
 

@@ -89,14 +89,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_SPEAK)==0); }
 	public boolean canBreathe(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==0); }
-	public boolean canBreatheHere(MOB M, Room R)
+	public boolean canBreatheThis(MOB M, int atmoResource)
 	{ 
 		return (canBreathe(M)
 				&&((M.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==0)
-				&&((R==null)
+				&&((atmoResource<0)
 					||(M.charStats().getBreathables().length==0)
-					||(Arrays.binarySearch(M.charStats().getBreathables(), R.getAtmosphere())>=0)));
+					||(Arrays.binarySearch(M.charStats().getBreathables(), atmoResource)>=0)));
 	}
+	public boolean canBreatheHere(MOB M, Room R)
+	{ return (M!=null)&&(canBreatheThis(M,(R==null)?-1:R.getAtmosphere())); }
 	public boolean canSeeMetal(MOB M)
 	{ return (M!=null)&&((M.phyStats().sensesMask()&PhyStats.CAN_SEE_METAL)==PhyStats.CAN_SEE_METAL); }
 	public boolean isReadable(Item I)

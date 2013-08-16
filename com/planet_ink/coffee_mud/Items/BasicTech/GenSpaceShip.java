@@ -286,17 +286,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 		setCoords(R.coordinates());
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
 		if (area instanceof SpaceShip)
-		{
 			((SpaceShip)area).dockHere(R);
-			for(Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
-			{
-				Room R2=r.nextElement();
-				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-					if((R2.getRawExit(d)!=null)
-					&&((R2.rawDoors()[d]==null)||(R2.rawDoors()[d].getArea()!=area)))
-						R2.rawDoors()[d]=R;
-			}
-		}
 		setSpeed(0);
 	}
 
@@ -414,7 +404,7 @@ public class GenSpaceShip extends StdPortal implements Electronics, SpaceShip, P
 			if((msg.targetMinor()==CMMsg.TYP_GET)&&(msg.tool() instanceof ShopKeeper))
 				transferOwnership(msg.source());
 			else
-			if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+			if((msg.targetMinor()==CMMsg.TYP_ACTIVATE)&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))&&(msg.targetMessage()!=null))
 			{
 				String[] parts=msg.targetMessage().split(" ");
 				TechCommand command=TechCommand.findCommand(parts);
