@@ -772,19 +772,62 @@ Required details: "id" "value"
 		</ROOM>
 	</ROOM>
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
-		<ROOM class="WoodRoom" condition="$__shoproom&lt;2" define="__shoproom+=1">
-			<TITLE>a shop of some sort?</TITLE>
+		<ROOM id="town_shop" class="WoodRoom" define="shoptype=$next_shop_type,patronname=$fantasy_name">
+			<TITLE select="pick-1">
+				<TITLE pickweight=1>${c:patronname}'s ${c:shoptype} Shop</TITLE>
+				<TITLE pickweight=1>${c:patronname}'s ${c:shoptype} Store</TITLE>
+				<TITLE pickweight=2 condition="shoptype='weapon'">The ${c:smithywords} and ${c:weaponsmithywords}</TITLE> 
+				<TITLE pickweight=2 condition="shoptype='armor'">The ${c:smithywords} and ${c:armorsmithywords}</TITLE> 
+				<TITLE pickweight=1 condition="shoptype='general'">${c:patronname}'s dry goods</TITLE>
+			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>a shop.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+				</DESCRIPTION>
+                <DESCRIPTION select="any-1">
+                </DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>When you're done shopping, the exit is $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false">
 				<AFFECT class="Prop_ClosedDayNight" />
 			</EXIT>
 			<AFFECT class="Prop_ClosedDayNight" />
+            <MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" race="$_humanoid_races" gender="$anygender">
+                <NAME>$patronname</NAME>
+                <DISPLAY select="pick-1">
+                    <DISPLAY pickweight="1">$mob_name is ready to serve.</DISPLAY>
+                    <DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+                </DISPLAY>
+                <ALIGNMENT>10000</ALIGNMENT>
+                <ABILITY select="all">
+                    <ABILITY condition="1?3=1" class="Skill_Trip" />
+                    <ABILITY condition="1?3=1" class="Skill_Dirt" />
+                    <ABILITY condition="1?3=1" class="Thief_Distract" />
+                </ABILITY>
+                <BEHAVIOR select="all">
+                    <BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+                    <BEHAVIOR class="MudChat" parms="" />
+                    <BEHAVIOR class="Scavenger" parms="" />
+                    <BEHAVIOR class="CombatAbilities" parms="" />
+                </BEHAVIOR>
+                <ITEM class="GenArmor" LEVEL="$mob_level">
+                    <NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
+                    <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
+                </ITEM>
+                <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+                    <NAME>(a(n)) ${shoptype}working tool</NAME>
+                    <DISPLAY>$item_name has been left here"</DISPLAY>
+                    <MATERIAL>IRON</MATERIAL>
+                    <WEAPONCLASS>DAGGER</WEAPONCLASS>
+                    <WEAPONTYPE>PIERCING</WEAPONTYPE>
+                </ITEM>
+            </MOB>
 		</ROOM>
 	</ROOM>
 	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
@@ -3288,6 +3331,16 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 <STRING>gray</STRING>
 </STRING>
 
+<STRING id="next_shop_type" select="any-1">
+<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1">weapon</STRING>
+<STRING condition="$__numshoptypes_armor &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_armor+=1,__numshoptypes_all+=1">armor</STRING>
+<STRING condition="$__numshoptypes_leather &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_leather+=1,__numshoptypes_all+=1">leather</STRING>
+<STRING condition="$__numshoptypes_cloth &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_cloth+=1,__numshoptypes_all+=1">tailor</STRING>
+<STRING condition="$__numshoptypes_food &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_food+=1,__numshoptypes_all+=1">food</STRING>
+<STRING condition="$__numshoptypes_general &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_general+=1,__numshoptypes_all+=1">general</STRING>
+<STRING condition="$__numshoptypes_wood &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_wood+=1,__numshoptypes_all+=1">wood</STRING>
+</STRING>
+
 <STRING id="random_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
 <STRING id="random_metal" insert="random_cheap_metal" select="any-1"><string>silver</string><string>gold</string><string>zinc</string><string>copper</string><string>steel</string><string>chromium</string><string>white_gold</string><string>dragonscales</string></STRING>
 <STRING id="random_mithril" insert="random_metal" select="any-1"><string>mithril</string><string>adamantite</string><string>atlantite</string></STRING>
@@ -3298,6 +3351,10 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 </STRING>
 <STRING id="random_cheap_cloth" select="any-1"><string>hide</string><string>wool</string><string>cotton</string><string>hemp</string></STRING>
 <STRING id="random_cloth" insert="random_cheap_cloth" select="any-1"><string>spidersteel</string><string>silk</string><string>feathers</string><string>fur</string></STRING>
+
+<STRING id="smithywords" select="any-1"><STRING>hammer</STRING><STRING>anvil</STRING><STRING>forge</STRING><STRING>fire</STRING><STRING>steel</STRING></STRING>
+<STRING id="weaponsmithywords" select="any-1"><STRING>sword</STRING><STRING>axe</STRING><STRING>mace</STRING><STRING>arms</STRING><STRING>spear</STRING><STRING>dagger</STRING></STRING>
+<STRING id="armorsmithywords" select="any-1"><STRING>shield</STRING><STRING>armor</STRING><STRING>bracer</STRING><STRING>chain</STRING><STRING>plate</STRING></STRING>
 
 <STRING id="roomrun_desc" select="any-1">
 <STRING condition="$ROOMTAG_NODERUN='ns'">north-south</STRING>
@@ -3411,7 +3468,57 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 
 <STRING id="fantasy_name" select="any-1">
 	<STRING id="fantasy_name_values" select="all">
-		<STRING>Orrothbur</STRING><STRING>Ashash</STRING><STRING>Rynaugh</STRING><STRING>Moperche</STRING><STRING>Post</STRING><STRING>Iaus</STRING><STRING>Voravor</STRING><STRING>Coonnkim</STRING><STRING>Ineet</STRING><STRING>Hooph</STRING><STRING>End'inao</STRING><STRING>Kaintmos</STRING><STRING>Dynh</STRING><STRING>Chatany</STRING><STRING>Ashiskel</STRING><STRING>Ingydar</STRING><STRING>Ing'mor</STRING><STRING>Samoing</STRING><STRING>Isach</STRING><STRING>Ghauska</STRING><STRING>Cijyv</STRING><STRING>Kalaw</STRING><STRING>Tonium</STRING><STRING>Eeme</STRING><STRING>W'rayeld</STRING><STRING>Rarisa</STRING><STRING>Chakalden</STRING><STRING>Essd</STRING><STRING>Nalay</STRING><STRING>Kalkele</STRING><STRING>Wareld</STRING><STRING>Vorcha</STRING><STRING>Ild'arda</STRING><STRING>Oldert</STRING><STRING>Laypach</STRING><STRING>Aormy</STRING><STRING>Elmem</STRING><STRING>Nunik</STRING><STRING>Ison</STRING><STRING>Hin'hono</STRING><STRING>Rayss</STRING><STRING>Stekimmor</STRING><STRING>Iusto</STRING><STRING>Laper</STRING><STRING>Leendale</STRING><STRING>Sulid</STRING><STRING>Eene</STRING><STRING>Garnys</STRING><STRING>Torm</STRING><STRING>Bur'augh</STRING><STRING>Oldrd</STRING><STRING>Danel</STRING><STRING>Athemos</STRING><STRING>Agev</STRING><STRING>Schupolche</STRING><STRING>Rak'tai</STRING><STRING>Schaest</STRING><STRING>Nysper</STRING><STRING>Aldnys</STRING><STRING>Oznyi</STRING><STRING>Schoskal</STRING><STRING>Llyhin</STRING><STRING>Aldustough</STRING><STRING>Ashad</STRING><STRING>Ormvcha</STRING><STRING>Asiss</STRING><STRING>Mos'qua</STRING><STRING>Lor'eche</STRING><STRING>Adelm</STRING><STRING>Isk</STRING><STRING>Hulody</STRING><STRING>Inaworny</STRING><STRING>Daruche</STRING><STRING>Omden</STRING><STRING>Qua'ade</STRING><STRING>Tiaver</STRING><STRING>Sasesi</STRING><STRING>Sulunt</STRING><STRING>Istantan</STRING><STRING>Sifys</STRING><STRING>Lyburkin</STRING><STRING>Em-ildyb</STRING><STRING>Hatd</STRING><STRING>Ighteirr'e</STRING><STRING>Bleall</STRING><STRING>Mor'shyo</STRING><STRING>Taives</STRING><STRING>Shy'athe</STRING><STRING>Ustr</STRING><STRING>Onsay</STRING><STRING>Oldrilrad</STRING><STRING>Tanetia</STRING><STRING>Lerdan</STRING><STRING>Hopald</STRING><STRING>Vyzihe</STRING><STRING>Che'ildy</STRING><STRING>Aradu</STRING><STRING>Mosden</STRING><STRING>Taiechgha</STRING><STRING>Huyyte</STRING><STRING>Citih</STRING><STRING>Kimiar</STRING><STRING>Aldqueo</STRING><STRING>Dodory</STRING><STRING>Est-ris</STRING><STRING>Sunyw</STRING><STRING>Dyndeli</STRING><STRING>Rayjtan</STRING><STRING>Zanor</STRING><STRING>Kelis</STRING><STRING>Etrile</STRING><STRING>Morust</STRING><STRING>Jeinn</STRING><STRING>Metog</STRING><STRING>Snasorm</STRING><STRING>Ishyo</STRING><STRING>Waechold</STRING><STRING>Omiston</STRING><STRING>Hirifet</STRING><STRING>Serjina</STRING><STRING>Echnn</STRING><STRING>Garadril</STRING><STRING>Rirothenth</STRING><STRING>Etiph</STRING><STRING>Kalina</STRING><STRING>Tin'rad</STRING><STRING>Usteld</STRING><STRING>Lakal</STRING><STRING>Raywar</STRING><STRING>Brepol</STRING><STRING>Heysper</STRING><STRING>Kimenu</STRING><STRING>Angyd</STRING><STRING>Elmperon</STRING><STRING>Athsam</STRING><STRING>Radwor</STRING><STRING>Nytor</STRING><STRING>Darith</STRING><STRING>Ir'mora</STRING><STRING>Tainal</STRING><STRING>Gabod</STRING><STRING>Umh</STRING><STRING>Qua'hin</STRING><STRING>Ertin</STRING><STRING>Oiao</STRING><STRING>Suinaest</STRING><STRING>Mim</STRING><STRING>Smeythad</STRING><STRING>Orrert</STRING><STRING>Ser'uma</STRING><STRING>Hin'ran</STRING><STRING>Cluath</STRING><STRING>Kelhin </STRING><STRING>Aughworine</STRING><STRING>Endquausk</STRING><STRING>Crilves</STRING><STRING>Undl</STRING><STRING>Athale</STRING><STRING>Eawe</STRING><STRING>Ashkim</STRING><STRING>Cipray</STRING><STRING>Toress</STRING><STRING>Yuthenth</STRING><STRING>Rothkim</STRING><STRING>Whakin</STRING><STRING>Pol'chao</STRING><STRING>Vetang</STRING><STRING>Witod</STRING><STRING>Kelurne</STRING><STRING>Rilrr</STRING><STRING>Delirina</STRING><STRING>Anhin</STRING><STRING>Augh'kim</STRING><STRING>Oughorm</STRING><STRING>Yertai</STRING><STRING>Tuat</STRING><STRING>Reskel</STRING><STRING>Taialemorrada</STRING><STRING>Adil</STRING><STRING>Lyedyn</STRING><STRING>Erodi</STRING><STRING>Issrad</STRING><STRING>Dra'alde</STRING><STRING>Ghaikim</STRING><STRING>Dud</STRING><STRING>Kimundgar</STRING><STRING>Acone</STRING><STRING>Ghaunt</STRING><STRING>Zhol</STRING><STRING>Rulira</STRING><STRING>Rilwar</STRING><STRING>Erane</STRING><STRING>Essad</STRING><STRING>Yosi</STRING><STRING>Chadque</STRING><STRING>Emrodi</STRING><STRING>Tasovo</STRING><STRING>Ineage</STRING><STRING>Garryn</STRING><STRING>Denoma</STRING><STRING>Ald'ser</STRING><STRING>Sieq</STRING><STRING>Echlas</STRING><STRING>Uskhin</STRING><STRING>Ciled</STRING><STRING>Buryl</STRING><STRING>Elmen</STRING><STRING>Rayyer</STRING><STRING>Stoia</STRING><STRING>Yiril</STRING><STRING>Usktas</STRING><STRING>Ynysu</STRING><STRING>Ough'oughe</STRING><STRING>Nysycha</STRING><STRING>Burshy</STRING><STRING>Cium</STRING><STRING>Rancertan</STRING><STRING>Enthrilper</STRING><STRING>Sotir</STRING><STRING>Ightper</STRING><STRING>Ormina</STRING><STRING>Warend</STRING><STRING>Kinkaldra</STRING><STRING>Samlye</STRING><STRING>Esttech</STRING><STRING>Per'oro</STRING><STRING>Itshy-ton</STRING><STRING>Serkely</STRING><STRING>At'nal</STRING><STRING>Sam'ess</STRING><STRING>Atyrr</STRING><STRING>Tin'ia</STRING><STRING>Nalghai</STRING><STRING>Kim'kim</STRING><STRING>Rynton</STRING><STRING>Oldoughi</STRING><STRING>Ineoqua</STRING><STRING>Sakak</STRING><STRING>Veraw</STRING><STRING>Ibydi</STRING><STRING>Garpol</STRING><STRING>Cyrilund</STRING><STRING>Dyn'drao</STRING><STRING>Toner</STRING><STRING>Untvor</STRING><STRING>Pitairoth</STRING><STRING>Cepoti</STRING><STRING>Raluka</STRING><STRING>Sn'imther</STRING><STRING>Gardar</STRING><STRING>Phayq</STRING><STRING>Cycod</STRING><STRING>Pesim</STRING><STRING>Imrod</STRING><STRING>Sayyaw</STRING>	
+		<STRING>Orrothbur</STRING><STRING>Ashash</STRING><STRING>Rynaugh</STRING><STRING>Moperche</STRING><STRING>Post</STRING>
+		<STRING>Iaus</STRING><STRING>Voravor</STRING><STRING>Coonnkim</STRING><STRING>Ineet</STRING><STRING>Hooph</STRING>
+		<STRING>End'inao</STRING><STRING>Kaintmos</STRING><STRING>Dynh</STRING><STRING>Chatany</STRING><STRING>Ashiskel</STRING>
+		<STRING>Ingydar</STRING><STRING>Ing'mor</STRING><STRING>Samoing</STRING><STRING>Isach</STRING><STRING>Ghauska</STRING>
+		<STRING>Cijyv</STRING><STRING>Kalaw</STRING><STRING>Tonium</STRING><STRING>Eeme</STRING><STRING>W'rayeld</STRING>
+		<STRING>Rarisa</STRING><STRING>Chakalden</STRING><STRING>Essd</STRING><STRING>Nalay</STRING><STRING>Kalkele</STRING>
+		<STRING>Wareld</STRING><STRING>Vorcha</STRING><STRING>Ild'arda</STRING><STRING>Oldert</STRING><STRING>Laypach</STRING>
+		<STRING>Aormy</STRING><STRING>Elmem</STRING><STRING>Nunik</STRING><STRING>Ison</STRING><STRING>Hin'hono</STRING>
+		<STRING>Rayss</STRING><STRING>Stekimmor</STRING><STRING>Iusto</STRING><STRING>Laper</STRING><STRING>Leendale</STRING>
+		<STRING>Sulid</STRING><STRING>Eene</STRING><STRING>Garnys</STRING><STRING>Torm</STRING><STRING>Bur'augh</STRING>
+		<STRING>Oldrd</STRING><STRING>Danel</STRING><STRING>Athemos</STRING><STRING>Agev</STRING><STRING>Schupolche</STRING>
+		<STRING>Rak'tai</STRING><STRING>Schaest</STRING><STRING>Nysper</STRING><STRING>Aldnys</STRING><STRING>Oznyi</STRING>
+		<STRING>Schoskal</STRING><STRING>Llyhin</STRING><STRING>Aldustough</STRING><STRING>Ashad</STRING><STRING>Ormvcha</STRING>
+		<STRING>Asiss</STRING><STRING>Mos'qua</STRING><STRING>Lor'eche</STRING><STRING>Adelm</STRING><STRING>Isk</STRING>
+		<STRING>Hulody</STRING><STRING>Inaworny</STRING><STRING>Daruche</STRING><STRING>Omden</STRING><STRING>Qua'ade</STRING>
+		<STRING>Tiaver</STRING><STRING>Sasesi</STRING><STRING>Sulunt</STRING><STRING>Istantan</STRING><STRING>Sifys</STRING>
+		<STRING>Lyburkin</STRING><STRING>Em-ildyb</STRING><STRING>Hatd</STRING><STRING>Ighteirr'e</STRING><STRING>Bleall</STRING>
+		<STRING>Mor'shyo</STRING><STRING>Taives</STRING><STRING>Shy'athe</STRING><STRING>Ustr</STRING><STRING>Onsay</STRING>
+		<STRING>Oldrilrad</STRING><STRING>Tanetia</STRING><STRING>Lerdan</STRING><STRING>Hopald</STRING><STRING>Vyzihe</STRING>
+		<STRING>Che'ildy</STRING><STRING>Aradu</STRING><STRING>Mosden</STRING><STRING>Taiechgha</STRING><STRING>Huyyte</STRING>
+		<STRING>Citih</STRING><STRING>Kimiar</STRING><STRING>Aldqueo</STRING><STRING>Dodory</STRING><STRING>Est-ris</STRING>
+		<STRING>Sunyw</STRING><STRING>Dyndeli</STRING><STRING>Rayjtan</STRING><STRING>Zanor</STRING><STRING>Kelis</STRING>
+		<STRING>Etrile</STRING><STRING>Morust</STRING><STRING>Jeinn</STRING><STRING>Metog</STRING><STRING>Snasorm</STRING>
+		<STRING>Ishyo</STRING><STRING>Waechold</STRING><STRING>Omiston</STRING><STRING>Hirifet</STRING><STRING>Serjina</STRING>
+		<STRING>Echnn</STRING><STRING>Garadril</STRING><STRING>Rirothenth</STRING><STRING>Etiph</STRING><STRING>Kalina</STRING>
+		<STRING>Tin'rad</STRING><STRING>Usteld</STRING><STRING>Lakal</STRING><STRING>Raywar</STRING><STRING>Brepol</STRING>
+		<STRING>Heysper</STRING><STRING>Kimenu</STRING><STRING>Angyd</STRING><STRING>Elmperon</STRING><STRING>Athsam</STRING>
+		<STRING>Radwor</STRING><STRING>Nytor</STRING><STRING>Darith</STRING><STRING>Ir'mora</STRING><STRING>Tainal</STRING>
+		<STRING>Gabod</STRING><STRING>Umh</STRING><STRING>Qua'hin</STRING><STRING>Ertin</STRING><STRING>Oiao</STRING>
+		<STRING>Suinaest</STRING><STRING>Mim</STRING><STRING>Smeythad</STRING><STRING>Orrert</STRING><STRING>Ser'uma</STRING>
+		<STRING>Hin'ran</STRING><STRING>Cluath</STRING><STRING>Kelhin </STRING><STRING>Aughworine</STRING><STRING>Endquausk</STRING>
+		<STRING>Crilves</STRING><STRING>Undl</STRING><STRING>Athale</STRING><STRING>Eawe</STRING><STRING>Ashkim</STRING>
+		<STRING>Cipray</STRING><STRING>Toress</STRING><STRING>Yuthenth</STRING><STRING>Rothkim</STRING><STRING>Whakin</STRING>
+		<STRING>Pol'chao</STRING><STRING>Vetang</STRING><STRING>Witod</STRING><STRING>Kelurne</STRING><STRING>Rilrr</STRING>
+		<STRING>Delirina</STRING><STRING>Anhin</STRING><STRING>Augh'kim</STRING><STRING>Oughorm</STRING><STRING>Yertai</STRING>
+		<STRING>Tuat</STRING><STRING>Reskel</STRING><STRING>Taialemorrada</STRING><STRING>Adil</STRING><STRING>Lyedyn</STRING>
+		<STRING>Erodi</STRING><STRING>Issrad</STRING><STRING>Dra'alde</STRING><STRING>Ghaikim</STRING><STRING>Dud</STRING>
+		<STRING>Kimundgar</STRING><STRING>Acone</STRING><STRING>Ghaunt</STRING><STRING>Zhol</STRING><STRING>Rulira</STRING>
+		<STRING>Rilwar</STRING><STRING>Erane</STRING><STRING>Essad</STRING><STRING>Yosi</STRING><STRING>Chadque</STRING>
+		<STRING>Emrodi</STRING><STRING>Tasovo</STRING><STRING>Ineage</STRING><STRING>Garryn</STRING><STRING>Denoma</STRING>
+		<STRING>Ald'ser</STRING><STRING>Sieq</STRING><STRING>Echlas</STRING><STRING>Uskhin</STRING><STRING>Ciled</STRING>
+		<STRING>Buryl</STRING><STRING>Elmen</STRING><STRING>Rayyer</STRING><STRING>Stoia</STRING><STRING>Yiril</STRING>
+		<STRING>Usktas</STRING><STRING>Ynysu</STRING><STRING>Ough'oughe</STRING><STRING>Nysycha</STRING><STRING>Burshy</STRING>
+		<STRING>Cium</STRING><STRING>Rancertan</STRING><STRING>Enthrilper</STRING><STRING>Sotir</STRING><STRING>Ightper</STRING>
+		<STRING>Ormina</STRING><STRING>Warend</STRING><STRING>Kinkaldra</STRING><STRING>Samlye</STRING><STRING>Esttech</STRING>
+		<STRING>Per'oro</STRING><STRING>Itshy-ton</STRING><STRING>Serkely</STRING><STRING>At'nal</STRING><STRING>Sam'ess</STRING>
+		<STRING>Atyrr</STRING><STRING>Tin'ia</STRING><STRING>Nalghai</STRING><STRING>Kim'kim</STRING><STRING>Rynton</STRING>
+		<STRING>Oldoughi</STRING><STRING>Ineoqua</STRING><STRING>Sakak</STRING><STRING>Veraw</STRING><STRING>Ibydi</STRING>
+		<STRING>Garpol</STRING><STRING>Cyrilund</STRING><STRING>Dyn'drao</STRING><STRING>Toner</STRING><STRING>Untvor</STRING>
+		<STRING>Pitairoth</STRING><STRING>Cepoti</STRING><STRING>Raluka</STRING><STRING>Sn'imther</STRING><STRING>Gardar</STRING>
+		<STRING>Phayq</STRING><STRING>Cycod</STRING><STRING>Pesim</STRING><STRING>Imrod</STRING><STRING>Sayyaw</STRING>	
 	</STRING>
 </STRING>
 </AREADATA>
