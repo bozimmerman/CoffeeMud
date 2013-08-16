@@ -9,7 +9,9 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.Basic.GenContainer;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -32,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenExit extends StdExit
+public class GenExit extends StdExit implements Modifiable
 {
 	protected String 	name="a walkway";
 	protected String 	description="Looks like an ordinary path from here to there.";
@@ -165,5 +167,94 @@ public class GenExit extends StdExit
 		}
 		if(link.length()>0)
 			keyName="{#"+link+"#}"+keyName;
+	}
+	
+	public int getSaveStatIndex(){return getStatCodes().length;}
+	private static final String[] CODES={
+		"CLASS","NAME","DISPLAY","DESCRIPTION","DOOR",
+		"LEVEL","ABILITY","ISREADABLE","AFFBEHAV","DISPOSITION",
+		"READABLETEXT","HASADOOR","DEFCLOSED","HASALOCK","DEFLOCKED",
+		"KEYNAME"
+	};
+	public String[] getStatCodes(){return CODES;}
+	public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+	protected int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return ID(); // class
+		case 1: return name(); // name
+		case 2: return displayText(); // display
+		case 3: return description(); // description
+		case 4: return doorName(); // door
+		case 5: return ""+basePhyStats().level(); // level
+		case 6: return ""+basePhyStats().ability(); // ability
+		case 7: return ""+isReadable(); // isreadable
+		case 8: return CMLib.coffeeMaker().getExtraEnvPropertiesStr(this); // affbehav
+		case 9: return ""+basePhyStats().disposition(); // disposition
+		case 10: return ""+readableText(); // readabletext
+		case 11: return ""+hasADoor(); // hasadoor
+		case 12: return ""+defaultsClosed(); // defclosed
+		case 13: return ""+hasALock(); // hasalock
+		case 14: return ""+defaultsLocked(); // deflocked
+		case 15: return ""+keyName(); // keyname
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: setName(val); break; // name
+		case 2: setDisplayText(val); break; // display
+		case 3: setDescription(val); break; // description
+		case 4: doorName=val; break; // door
+		case 5: basePhyStats().setLevel(CMath.parseIntExpression(val)); break; // level
+		case 6: basePhyStats().setAbility(CMath.parseIntExpression(val)); break; // ability
+		case 7: setReadable(CMath.s_bool(val)); break; // isreadable
+		case 8: { // affbehav
+					delAllEffects(true);
+					delAllBehaviors();
+					CMLib.coffeeMaker().setExtraEnvProperties(this,CMLib.xml().parseAllXML(val)); // affbehav
+					break;
+				} // affbehav
+		case 9: { // disposition
+					if(CMath.isInteger(val)||(val.trim().length()==0))
+						basePhyStats().setDisposition(CMath.s_parseIntExpression(val)); // disposition
+					else
+					{
+						basePhyStats().setDisposition(0);
+						Vector<String> V=CMParms.parseCommas(val,true);
+						for(Enumeration<String> e=V.elements();e.hasMoreElements();)
+						{
+							val=e.nextElement();
+							int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
+							if(dispIndex>=0)
+								basePhyStats().setDisposition(basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
+						}
+					}
+					break;
+				} //disposition
+		case 10: setReadableText(val); break; // readabletext
+		case 11: hasADoor=CMath.s_bool(val); break; // hasadoor
+		case 12: doorDefaultsClosed=CMath.s_bool(val); break; // defclosed
+		case 13: hasALock=CMath.s_bool(val); break; // hasalock
+		case 14: doorDefaultsLocked=CMath.s_bool(val); break; // deflocked
+		case 15: setKeyName(val); break; // keyname
+		}
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenExit)) return false;
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		return true;
 	}
 }
