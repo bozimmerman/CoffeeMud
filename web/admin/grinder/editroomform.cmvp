@@ -135,22 +135,6 @@
 	<TD><FONT COLOR="#66FFFF"><B>GIF filename:</B></FONT></TD>
     <TD COLSPAN=2><INPUT TYPE=TEXT NAME=IMAGE SIZE=50 VALUE="@RoomData?IMAGE@"></TD>
 </TR>
-<TR>
-	<TD><FONT COLOR="#66FFFF"><B>Climate:</B></FONT></TD>
-    <TD COLSPAN=2>
-	<SELECT NAME=CLIMATE MULTIPLE>
-	@RoomData?CLIMATES@
-	</SELECT>
-	</TD>
-</TR>
-<TR>
-	<TD><FONT COLOR="#66FFFF"><B>Atmosphere:</B></FONT></TD>
-    <TD COLSPAN=2>
-	<SELECT NAME=ATMOSPHERE>
-	@RoomData?ATMOSPHERE@
-	</SELECT>
-	</TD>
-</TR>
 @if?RoomData?ISGRID@
 <TR>
 	<TD><FONT COLOR="#66FFFF"><B>Grid Sizes:</B></FONT></TD>

@@ -118,6 +118,7 @@ public class GrinderRooms
 			R.setDescription(desc);
 			
 			// climate
+			/*
 			if(httpReq.isUrlParameter("CLIMATE"))
 			{
 				int climate=CMath.s_int(httpReq.getUrlParameter("CLIMATE"));
@@ -141,10 +142,10 @@ public class GrinderRooms
 			}
 			else
 				R.setClimateType(-1);
-			
+			*/
 			// atmosphere
-			if(httpReq.isUrlParameter("ATMOSPHERE"))
-				R.setAtmosphere(CMath.s_int(httpReq.getUrlParameter("ATMOSPHERE")));
+			//if(httpReq.isUrlParameter("ATMOSPHERE"))
+			//	R.setAtmosphere(CMath.s_int(httpReq.getUrlParameter("ATMOSPHERE")));
 	
 			// image
 			if(!skipImage)

@@ -8371,8 +8371,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genLocationCoords(mob,(LocationRoom)R, ++showNumber, showFlag);
 			}
-			genClimateType(mob,R,++showNumber,showFlag);
-			R.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",R.getAtmosphereCode(),true,++showNumber,showFlag));
+			//genClimateType(mob,R,++showNumber,showFlag);
+			//R.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",R.getAtmosphereCode(),true,++showNumber,showFlag));
 			genBehaviors(mob,R,++showNumber,showFlag);
 			genAffects(mob,R,++showNumber,showFlag);
 			for(int x=R.getSaveStatIndex();x<R.getStatCodes().length;x++)

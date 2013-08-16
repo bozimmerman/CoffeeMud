@@ -33,7 +33,6 @@
 //TODO: make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
 //      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)
-//TODO: make enviro control systems
 //TODO: retest private libs, private dbtables, private classes, private area objects, private players
 //TODO: some way to reposition planets? esp relative to nearby ones
 //TODO: create solar systems, esp stars.  planets should be thin areas, solar systems are triggered to load when players fly near enough.
@@ -42,7 +41,6 @@
 //TODO: make ship sensor systems
 //TODO: add electronics to guides
 //TODO: add electronics to MG
-//TODO: http://games.groups.yahoo.com/group/coffeemud skip=1885,2881,2953,3274,15908,15914,16267
 # Build 5.8.0.1 Release 7/22/2013
   Bug fix release -- removed Go-Ahead chars for tinyfugue
 # Build 5.8.0 Release 7/21/2013
