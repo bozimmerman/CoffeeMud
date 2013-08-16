@@ -996,7 +996,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			sess.lastMsgNum++;
 			if(sess.lastMsgNum>sess.numTotal)
 			{
-				sess.lastMsgNum=sess.numTotal-1;
+				sess.lastMsgNum=sess.numTotal;
 				return sess.lastMsgNum+"of "+sess.numTotal+" messages already processed";
 			}
 			if(Arrays.binarySearch(sess.skipList, sess.lastMsgNum)>=0)
