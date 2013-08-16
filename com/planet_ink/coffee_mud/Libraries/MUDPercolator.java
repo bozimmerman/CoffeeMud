@@ -684,8 +684,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		String value = null;
 		if(!ignoreStats.contains(stat.toUpperCase().trim())) 
 		{
-			if(value == null)
-				value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,defined);
+			value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,defined);
 			if(value != null) 
 			{
 				E.setStat(stat, value);

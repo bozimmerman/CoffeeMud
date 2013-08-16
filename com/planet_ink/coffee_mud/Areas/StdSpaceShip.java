@@ -495,35 +495,19 @@ public class StdSpaceShip implements Area, SpaceShip
 					{
 						if((command==Technical.TechCommand.AIRREFRESH)&&(staleAirList.size()>0))
 						{
-							double pct=((Integer)parms[0]).doubleValue()/100.0;
+							double pct=((Double)parms[0]).doubleValue();
 							int atmoResource=((Integer)parms[1]).intValue();
 							int numToClear=(int)Math.round(CMath.mul(staleAirList.size(),pct));
 							while((numToClear>0)&&(staleAirList.size()>0))
 							{
 								String roomID=staleAirList.iterator().next();
 								staleAirList.remove(roomID);
-								Room R=getRoom(roomID);
-								if(R.getAtmosphere()!=atmoResource)
-								{
-									String atmoName=(atmoResource==0)?"vacuum":RawMaterial.CODES.NAME(atmoResource).toLowerCase();
-									R.showHappens(CMMsg.MSG_OK_ACTION, atmoName+" rushes into the room.");
-									if(atmoResource==getAtmosphere())
-										R.setAtmosphere(-1);
-									else
-										R.setAtmosphere(atmoResource);
-								}
+								changeRoomAir(getRoom(roomID),null,atmoResource);
 								numToClear--;
 							}
-							Room R=getRandomMetroRoom();
-							if(R.getAtmosphere()!=atmoResource)
-							{
-								String atmoName=(atmoResource==0)?"vacuum":RawMaterial.CODES.NAME(atmoResource).toLowerCase();
-								R.showHappens(CMMsg.MSG_OK_ACTION, atmoName+" rushes into the room.");
-								if(atmoResource==getAtmosphere())
-									R.setAtmosphere(-1);
-								else
-									R.setAtmosphere(atmoResource);
-							}
+							changeRoomAir(getRandomMetroRoom(),null,atmoResource);
+							for(Pair<Room,Integer> p  : shipExitCache)
+								changeRoomAir(p.first,null,atmoResource);
 						}
 					}
 				}
@@ -546,10 +530,35 @@ public class StdSpaceShip implements Area, SpaceShip
 
 	public long getTickStatus(){ return tickStatus;}
 	
+	protected boolean changeRoomAir(Room R, Room notifyRoom, int atmoResource)
+	{
+		if(R==null)
+			return false;
+		if(R.getAtmosphere()!=atmoResource)
+		{
+			if(atmoResource==0)
+			{
+				R.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()+" rushes out of the room.");
+				if((notifyRoom!=null)&&(notifyRoom!=R))
+					notifyRoom.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()+" rushes out of the room.");
+			}
+			else
+			{
+				R.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(atmoResource).toLowerCase()+" rushes into the room.");
+				if((notifyRoom!=null)&&(notifyRoom!=R))
+					notifyRoom.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(atmoResource).toLowerCase()+" rushes into the room.");
+			}
+			if(atmoResource==getAtmosphere())
+				R.setAtmosphere(-1);
+			else
+				R.setAtmosphere(atmoResource);
+			return true;
+		}
+		return false;
+	}
+	
 	protected void moveAtmosphereOut(Set<Room> doneRooms, Room startRoom, int atmo)
 	{
-		String atmoName=(atmo==0)?"vacuum":RawMaterial.CODES.NAME(atmo).toLowerCase();
-		
 		LinkedList<Room> toDoRooms=new LinkedList<Room>();
 		toDoRooms.add(startRoom);
 		while(toDoRooms.size()>0)
@@ -557,21 +566,8 @@ public class StdSpaceShip implements Area, SpaceShip
 			Room R=toDoRooms.removeFirst();
 			doneRooms.add(R);
 			staleAirList.remove(R.roomID());
-			if(R.getAtmosphere() != atmo)
-			{
-				if(atmo==0)
-				{
-					R.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()+" rushed out of the room.");
-					if(R!=startRoom) startRoom.showHappens(CMMsg.MSG_OK_ACTION, RawMaterial.CODES.NAME(R.getAtmosphere()).toLowerCase()+" rushed out of the room.");
-				}
-				else
-				{
-					R.showHappens(CMMsg.MSG_OK_ACTION, atmoName+" rushes into the room.");
-					if(R!=startRoom) startRoom.showHappens(CMMsg.MSG_OK_ACTION, atmoName+" rushes into the room.");
-				}
-				R.setAtmosphere(atmo);
+			if(changeRoomAir(R,startRoom,atmo))
 				break;
-			}
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
 				Room R2=R.getRoomInDir(d);

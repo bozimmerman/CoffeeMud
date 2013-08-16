@@ -69,13 +69,6 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 	
 	protected volatile String circuitKey=null;
 	
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected, affectableStats);
-		if(affected instanceof Room)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
-	}
-	
 	public void destroy()
 	{
 		if((!destroyed)&&(circuitKey!=null))
@@ -139,6 +132,14 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 			case CMMsg.TYP_LOOK:
 				break;
 			case CMMsg.TYP_POWERCURRENT:
+				if((!(this instanceof Electronics.FuelConsumer)) 
+				&&(!(this instanceof Electronics.PowerGenerator))
+				&& activated() && (powerNeeds()>0) && (msg.value()>0))
+				{
+					double amtToTake=Math.min((double)powerNeeds(), (double)msg.value());
+					amtToTake *= getFinalManufacturer().getEfficiencyPct();
+					setPowerRemaining(Math.min(powerCapacity(), Math.round(amtToTake) + powerRemaining()));
+				}
 				break;
 			}
 		}

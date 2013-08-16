@@ -124,12 +124,6 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	{
 		return "being used by";
 	}
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected, affectableStats);
-		if(affected instanceof Room)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
-	}
 
 	public List<Software> getSoftware()
 	{

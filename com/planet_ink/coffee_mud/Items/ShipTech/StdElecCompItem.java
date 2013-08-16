@@ -37,15 +37,17 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 	public String ID(){	return "StdElecCompItem";}
 	
 	protected float installedFactor = 1.0f;
+	private volatile String circuitKey=null;
+	
 	
 	public StdElecCompItem()
 	{
 		super();
 		setName("an electric component");
-		basePhyStats.setWeight(500);
 		setDisplayText("an electric component sits here.");
 		setDescription("");
-		baseGoldValue=500000;
+		baseGoldValue=50000;
+		basePhyStats.setWeight(500);
 		setUsesRemaining(100);
 		basePhyStats().setLevel(1);
 		recoverPhyStats();
@@ -59,15 +61,6 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 	{
 		if(!(E instanceof StdElecCompItem)) return false;
 		return super.sameAs(E);
-	}
-	
-	private volatile String circuitKey=null;
-	
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected, affectableStats);
-		if(affected instanceof Room)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ROOMCIRCUITED);
 	}
 	
 	public void destroy()
@@ -115,6 +108,16 @@ public class StdElecCompItem extends StdElecItem implements ShipComponent
 			case CMMsg.TYP_LOOK:
 				break;
 			case CMMsg.TYP_POWERCURRENT:
+				if((!(this instanceof Electronics.FuelConsumer)) 
+				&&(!(this instanceof Electronics.PowerGenerator))
+				&& activated() 
+				&& (powerNeeds()>0) 
+				&& (msg.value()>0))
+				{
+					double amtToTake=Math.min((double)powerNeeds(), (double)msg.value());
+					amtToTake *= getFinalManufacturer().getEfficiencyPct();
+					setPowerRemaining(Math.min(powerCapacity(), Math.round(amtToTake) + powerRemaining()));
+				}
 				break;
 			}
 		}

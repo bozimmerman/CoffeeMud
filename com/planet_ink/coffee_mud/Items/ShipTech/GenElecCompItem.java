@@ -32,23 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenCompBattery extends StdCompBattery implements Electronics.PowerSource
+public class GenElecCompItem extends StdElecCompItem
 {
-	public String ID(){	return "GenCompBattery";}
+	public String ID(){	return "GenElecCompItem";}
 
-	public GenCompBattery()
+	public GenElecCompItem()
 	{
 		super();
-		setName("a generic battery");
-		setDisplayText("a generic battery sits here.");
+		setName("a generic ship component");
+		setDisplayText("a generic ship component sits here.");
 		setDescription("");
-		basePhyStats.setWeight(2);
-		baseGoldValue=5;
-		basePhyStats().setLevel(1);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_STEEL);
-		super.setPowerCapacity(1000);
-		super.setPowerRemaining(1000);
 	}
 	
 	public boolean isGeneric(){return true;}
@@ -107,7 +100,7 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-		String[] MYCODES=CMProps.getStatCodesList(GenCompBattery.MYCODES,this);
+		String[] MYCODES=CMProps.getStatCodesList(GenElecCompItem.MYCODES,this);
 		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -119,7 +112,7 @@ public class GenCompBattery extends StdCompBattery implements Electronics.PowerS
 	}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenCompBattery)) return false;
+		if(!(E instanceof GenElecCompItem)) return false;
 		String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)
 			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
