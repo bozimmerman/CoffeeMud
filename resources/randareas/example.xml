@@ -240,7 +240,7 @@ Required details: "id" "value"
 
 -->
 <AREADATA>
-<AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random">
+<AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random">
 	<NAME>$areaname</NAME><SIZE>$areasize</SIZE>
 	<CLASS select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
 	<ROOM id="dungeon_rooms" insert="dungeon_hallways,dungeon_interior,dungeon_leaf" />
@@ -249,13 +249,15 @@ Required details: "id" "value"
 		<BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
 	</BEHAVIOR>
 </AREA>
-<AREA id="grid_dungeon" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random" >
+<AREA id="grid_dungeon" like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random" >
 </AREA>
-<AREA id="box_dungeon" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random" >
+<AREA id="square_dungeon" like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random" >
 </AREA>
-<AREA id="cross_dungeon" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random" >
+<AREA id="box_dungeon" like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random" >
 </AREA>
-<AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;random" >
+<AREA id="cross_dungeon" like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random" >
+</AREA>
+<AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random" >
 </AREA>
 <AREA id="random_dungeon" select="any" requires="areaname=$" 
 	insert="maze_dungeon,grid_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
@@ -263,7 +265,7 @@ Required details: "id" "value"
 </AREA>
 <string id="randomareasize" select="any-1"><string condition="$areasize!=''">$areasize</string><string condition="$areasize=''">30?60</string></string>
 <string id="randomlevelrange" select="any-1"><string condition="$level_range!=''">$level_range</string><string condition="$level_range=''">1?91</string></string>
-<string id="randomtheme" select="any-1"><string>prison</string><string>rats</string><string>kobolds</string><string>goblins</string><string>orcs</string><string>trolls</string><string>random</string></string>
+<string id="randomtheme" select="any-1"><string>prison</string><string>rats</string><string>kobolds</string><string>goblins</string><string>orcs</string><string>trolls</string><string>town</string><string>random</string></string>
 
 <STRING id="nasty_race_name" select="any-1">
 	<string condition="$theme='kobolds' or $theme='random'" define="nasty_race_name">kobold</string>
@@ -765,6 +767,22 @@ Required details: "id" "value"
 					</CONTENT>
 				</ITEM>
 			</ITEM>
+		</ROOM>
+	</ROOM>
+	<ROOM select="all" condition="$theme='town' or $theme='random'">
+		<ROOM class="WoodRoom" condition="$__shoproom&lt;2" define="__shoproom+=1">
+			<TITLE>a shop of some sort?</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>a shop.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<AFFECT class="Prop_ClosedDayNight" />
 		</ROOM>
 	</ROOM>
 	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
@@ -1856,7 +1874,7 @@ Required details: "id" "value"
 	</STRING>
 </STRING>
 
-<MOB id="dungeon_mobs" select="all" requires="level_range=int,theme=prison;rats;kobolds;orcs;trolls;goblins;random,aggrochance=int">
+<MOB id="dungeon_mobs" select="all" requires="level_range=int,theme=prison;rats;kobolds;orcs;trolls;town;goblins;random,aggrochance=int">
 	<MOB select="all" condition="$theme='rats' or $theme='random'">
 		<MOB class="GenMob" level="$level_range" id="dungeon_rat" race="Rat" gender="$anygender">
 			<NAME>(a(n)) $nasty_animal_word $mammal_color rat</NAME>
