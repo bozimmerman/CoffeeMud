@@ -1174,8 +1174,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				&&(entry.parent.equals(msg.parent)))
 				{
 					Resources.setPropResource("WEBMACROCREAMER", "LASTYAHOOMSGNUMBER",Integer.toString(sess.lastMsgNum));
-					Log.debugOut("WebMacroCreamer","Msg#"+sess.lastMsgNum+" was a dup!");
-					continue;
+					return "Msg#"+sess.lastMsgNum+" was a dup!";
 				}
 			CMLib.database().DBWriteJournal(forum.NAME(),msg);
 			if(parent.length()>0)
