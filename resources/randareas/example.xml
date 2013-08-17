@@ -3333,12 +3333,12 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 
 <STRING id="next_shop_type" select="any-1">
 <STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1">weapon</STRING>
-<STRING condition="$__numshoptypes_armor &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_armor+=1,__numshoptypes_all+=1">armor</STRING>
-<STRING condition="$__numshoptypes_leather &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_leather+=1,__numshoptypes_all+=1">leather</STRING>
-<STRING condition="$__numshoptypes_cloth &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_cloth+=1,__numshoptypes_all+=1">tailor</STRING>
-<STRING condition="$__numshoptypes_food &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_food+=1,__numshoptypes_all+=1">food</STRING>
-<STRING condition="$__numshoptypes_general &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_general+=1,__numshoptypes_all+=1">general</STRING>
-<STRING condition="$__numshoptypes_wood &lt 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_wood+=1,__numshoptypes_all+=1">wood</STRING>
+<STRING condition="$__numshoptypes_armor &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_armor+=1,__numshoptypes_all+=1">armor</STRING>
+<STRING condition="$__numshoptypes_leather &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_leather+=1,__numshoptypes_all+=1">leather</STRING>
+<STRING condition="$__numshoptypes_cloth &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_cloth+=1,__numshoptypes_all+=1">tailor</STRING>
+<STRING condition="$__numshoptypes_food &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_food+=1,__numshoptypes_all+=1">food</STRING>
+<STRING condition="$__numshoptypes_general &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_general+=1,__numshoptypes_all+=1">general</STRING>
+<STRING condition="$__numshoptypes_wood &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_wood+=1,__numshoptypes_all+=1">wood</STRING>
 </STRING>
 
 <STRING id="random_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
