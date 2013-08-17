@@ -177,28 +177,38 @@ public class Generate extends StdCommand
 			{
 			case LIBRARY:
 			{
+				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
 				String s=CMLib.percolator().findString("STRING", piece, definedIDs);
 				if(s!=null)
 					V.addElement(s);
 				break;
 			}
 			case AREA:
+				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
 				Area A=CMLib.percolator().findArea(piece, definedIDs, direction);
 				if(A!=null)
 					V.addElement(A);
 				break;
 			case MOB:
+				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
 				V.addAll(CMLib.percolator().findMobs(piece, definedIDs));
 				break;
 			case LOCALE:
 			{
 				Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
+				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
 				Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
 				if(R!=null)
 					V.addElement(R);
 				break;
 			}
 			case ITEM:
+				CMLib.percolator().preDefineReward(null, null, null, piece, definedIDs);
+				CMLib.percolator().defineReward(null, null, null, piece, piece.value,definedIDs);
 				V.addAll(CMLib.percolator().findItems(piece, definedIDs));
 				break;
 			default:

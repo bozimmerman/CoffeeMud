@@ -198,18 +198,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				continue;
 			Map<String,Object> rDefined=new Hashtable<String,Object>();
 			rDefined.putAll(defined);
+			defineReward(null,null,null,valPiece,null,rDefined);
 			Area A=buildArea(valPiece,rDefined,directions);
-			if(A!=null)
+			for(Iterator<String> e=rDefined.keySet().iterator();e.hasNext();)
 			{
-				defineReward(null,null,null,valPiece,null,rDefined);
-				for(Iterator<String> e=rDefined.keySet().iterator();e.hasNext();)
-				{
-					String key=e.next();
-					if(key.startsWith("_"))
-						defined.put(key,rDefined.get(key));
-				}
-				return A;
+				String key=e.next();
+				if(key.startsWith("_"))
+					defined.put(key,rDefined.get(key));
 			}
+			return A;
 		}
 		return null;
 	}
@@ -548,20 +545,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			Map<String,Object> rDefined=new Hashtable<String,Object>();
 			rDefined.putAll(defined);
 			Exit[] rExits=exits.clone();
+			defineReward(null,null,null,valPiece,null,rDefined);
 			Room R=buildRoom(valPiece,rDefined,rExits,directions);
-			if(R!=null)
+			for(Iterator<String> e=rDefined.keySet().iterator();e.hasNext();)
 			{
-				defineReward(null,null,null,valPiece,null,rDefined);
-				for(Iterator<String> e=rDefined.keySet().iterator();e.hasNext();)
-				{
-					String key=e.next();
-					if(key.startsWith("_"))
-						defined.put(key,rDefined.get(key));
-				}
-				for(int e=0;e<rExits.length;e++)
-					exits[e]=rExits[e];
-				return R;
+				String key=e.next();
+				if(key.startsWith("_"))
+					defined.put(key,rDefined.get(key));
 			}
+			for(int e=0;e<rExits.length;e++)
+				exits[e]=rExits[e];
+			return R;
 		}
 		return null;
 	}
@@ -1256,7 +1250,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 	
-	protected void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, String value, Map<String,Object> defined) throws CMException
+	public void defineReward(Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, String value, Map<String,Object> defined) throws CMException
 	{
 		defineReward(E,ignoreStats,defPrefix,CMLib.xml().getParmValue(piece.parms,"DEFINE"),piece,value,defined,true);
 	}
