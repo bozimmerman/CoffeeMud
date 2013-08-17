@@ -207,9 +207,9 @@ Required details:
 word catalog in order to select an item from your catalog, in which case "name" also becomes
 a required detail.  This may also start with the string "metacraft:", in which case the 
 remainder of the "class" value becomes either the name of the item to metacraft, the word "anything", 
-or the word "any-" followed by the ID of the common skill to use. "metacraft:" class strings 
-may also end with the characters "<" followed by a math expression evaluating to an upper level 
-limit for the item to craft.
+"all", or the words "any-" or "all-" followed by the ID of the common skill to use. 
+"metacraft:" class strings may also end with the characters "<" followed by a math expression 
+evaluating to an upper level limit for the item to craft.
 
 Optional Objects: (See below for details on these object tag types and their details) 
 "MOB","ITEM","AFFECT", "CONTENT", "BEHAVIOR", "EXIT"
@@ -262,12 +262,12 @@ Required details: "id" "value"
 <AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random" >
 </AREA>
 <AREA id="random_dungeon" select="any" requires="areaname=$" 
-	insert="maze_dungeon,grid_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
+	insert="maze_dungeon,grid_dungeon,square_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
 	predefine="areasize=$randomareasize,level_range=$randomlevelrange,aggrochance=10+$level_range,theme=$randomtheme" >
 </AREA>
 <string id="randomareasize" select="any-1"><string condition="$areasize!=''">$areasize</string><string condition="$areasize=''">30?60</string></string>
 <string id="randomlevelrange" select="any-1"><string condition="$level_range!=''">$level_range</string><string condition="$level_range=''">1?91</string></string>
-<string id="randomtheme" select="any-1"><string>prison</string><string>rats</string><string>kobolds</string><string>goblins</string><string>orcs</string><string>trolls</string><string>town</string><string>random</string></string>
+<string id="randomtheme" select="any-1"><string condition="$theme!=''">$theme</string><string select="all" condition="$theme=''"><string>prison</string><string>rats</string><string>kobolds</string><string>goblins</string><string>orcs</string><string>trolls</string><string>town</string><string>random</string></string></string>
 
 <STRING id="nasty_race_name" select="any-1">
 	<string condition="$theme='kobolds' or $theme='random'" define="nasty_race_name">kobold</string>
@@ -776,9 +776,9 @@ Required details: "id" "value"
 			<TITLE select="pick-1">
 				<TITLE pickweight=1>${c:patronname}'s ${c:shoptype} Shop</TITLE>
 				<TITLE pickweight=1>${c:patronname}'s ${c:shoptype} Store</TITLE>
-				<TITLE pickweight=2 condition="shoptype='weapon'">The ${c:smithywords} and ${c:weaponsmithywords}</TITLE> 
-				<TITLE pickweight=2 condition="shoptype='armor'">The ${c:smithywords} and ${c:armorsmithywords}</TITLE> 
-				<TITLE pickweight=1 condition="shoptype='general'">${c:patronname}'s dry goods</TITLE>
+				<TITLE pickweight=2 condition="$shoptype='weapon'">The ${c:smithywords} and ${c:weaponsmithywords}</TITLE> 
+				<TITLE pickweight=2 condition="$shoptype='armor'">The ${c:smithywords} and ${c:armorsmithywords}</TITLE> 
+				<TITLE pickweight=1 condition="$shoptype='general'">${c:patronname}'s Dry Goods</TITLE>
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
@@ -786,8 +786,8 @@ Required details: "id" "value"
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 				</DESCRIPTION>
-                <DESCRIPTION select="any-1">
-                </DESCRIPTION>
+				<DESCRIPTION select="any-1">
+				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
 					<DESCRIPTION>The street is $roomexits_desc_long.</DESCRIPTION>
@@ -798,36 +798,71 @@ Required details: "id" "value"
 				<AFFECT class="Prop_ClosedDayNight" />
 			</EXIT>
 			<AFFECT class="Prop_ClosedDayNight" />
-            <MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" race="$_humanoid_races" gender="$anygender">
-                <NAME>$patronname</NAME>
-                <DISPLAY select="pick-1">
-                    <DISPLAY pickweight="1">$mob_name is ready to serve.</DISPLAY>
-                    <DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-                </DISPLAY>
-                <ALIGNMENT>10000</ALIGNMENT>
-                <ABILITY select="all">
-                    <ABILITY condition="1?3=1" class="Skill_Trip" />
-                    <ABILITY condition="1?3=1" class="Skill_Dirt" />
-                    <ABILITY condition="1?3=1" class="Thief_Distract" />
-                </ABILITY>
-                <BEHAVIOR select="all">
-                    <BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-                    <BEHAVIOR class="MudChat" parms="" />
-                    <BEHAVIOR class="Scavenger" parms="" />
-                    <BEHAVIOR class="CombatAbilities" parms="" />
-                </BEHAVIOR>
-                <ITEM class="GenArmor" LEVEL="$mob_level">
-                    <NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
-                    <DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
-                </ITEM>
-                <ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-                    <NAME>(a(n)) ${shoptype}working tool</NAME>
-                    <DISPLAY>$item_name has been left here"</DISPLAY>
-                    <MATERIAL>IRON</MATERIAL>
-                    <WEAPONCLASS>DAGGER</WEAPONCLASS>
-                    <WEAPONTYPE>PIERCING</WEAPONTYPE>
-                </ITEM>
-            </MOB>
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" race="$_humanoid_races" gender="$anygender">
+				<NAME>$patronname</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is ready to serve.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>WAIST,LEGS</PROPERWORN>
+					<LAYER>4</LAYER>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) ${shoptype}working tool</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY select="all">
+					<ITEM select="all" condition="$shoptype='weapon'">
+						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='armor'">
+						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='general'">
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-glassblowing<$mob_level" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-pottery<$mob_level" material="clay" basegold="${stat:basegold} * 10"/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='leather'">
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenArmor=GenWeapon" material="leather" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather" basegold="${stat:basegold} * 10"/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='wood'">
+						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$random_wood" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-fletching<$mob_level" material="$random_wood" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-cobbler<$mob_level" material="$random_wood" basegold="${stat:basegold} * 10"/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='tailor'">
+						<ITEM class="metacraft:all-tailoring<$mob_level" material="$random_cheap_cloth" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$random_cheap_cloth" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp" basegold="${stat:basegold} * 10"/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='food'">
+						<ITEM class="metacraft:all-cooking<$mob_level" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-mastercooking<$mob_level" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-baking<$mob_level" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-masterbaking<$mob_level" basegold="${stat:basegold} * 10"/>
+					</ITEM>
+				</SHOPINVENTORY>
+			</MOB>
 		</ROOM>
 	</ROOM>
 	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">

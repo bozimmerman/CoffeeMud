@@ -179,6 +179,37 @@ public class CMStrings
 			return Integer.parseInt(s.substring(x));
 	}
 
+	@SuppressWarnings("unchecked")
+	public final static Map.Entry<Character,String>[] splitMulti(final String str, char[] splitters)
+	{
+		List<Map.Entry<Character,String>> list=new ArrayList<Map.Entry<Character,String>>();
+		char curC='\0';
+		StringBuilder curStr=new StringBuilder("");
+		for(int i=0;i<str.length();i++)
+			if(contains(splitters,str.charAt(i)))
+			{
+				final Character finalC=Character.valueOf(curC);
+				final String finalStr=curStr.toString();
+				list.add(new Map.Entry<Character,String>(){
+					@Override public Character getKey() { return finalC; }
+					@Override public String getValue() { return finalStr; }
+					@Override public String setValue(String value) { return finalStr; }
+				});
+				curStr.setLength(0);
+				curC=str.charAt(i);
+			}
+			else
+				curStr.append(str.charAt(i));
+		final Character finalC=Character.valueOf(curC);
+		final String finalStr=curStr.toString();
+		list.add(new Map.Entry<Character,String>(){
+			@Override public Character getKey() { return finalC; }
+			@Override public String getValue() { return finalStr; }
+			@Override public String setValue(String value) { return finalStr; }
+		});
+		return list.toArray(new Map.Entry[0]);
+	}
+	
 	public final static boolean containsWordIgnoreCase(final String thisStr, final String word)
 	{
 		if((thisStr==null)

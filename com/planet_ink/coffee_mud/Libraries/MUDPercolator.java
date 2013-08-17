@@ -43,6 +43,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 {
 	public String ID(){return "MUDPercolator";}
 
+	protected final static char[] splitters=new char[]{'<','>','='}; 
+	protected final static Triad<Integer,Integer,Class<?>[]> emptyMetacraftFilter = new Triad<Integer,Integer,Class<?>[]>(Integer.valueOf(-1),Integer.valueOf(-1),new Class<?>[0]);
+	
 	private SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
 	
 	public LayoutManager getLayoutManager(String named) 
@@ -934,28 +937,90 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return V;
 	}
 
+	protected String getMetacraftFilter(String recipe, XMLLibrary.XMLpiece piece, Map<String,Object> defined, Triad<Integer,Integer,Class<?>[]> filter) throws CMException
+	{
+		int levelLimit=-1;
+		int levelFloor=-1;
+		Class<?>[] deriveClasses=new Class[0]; 
+		Map.Entry<Character, String>[] otherParms=CMStrings.splitMulti(recipe, splitters);
+		recipe=otherParms[0].getValue();
+		if(otherParms.length==1) 
+			return recipe;
+		for(int i=1;i<otherParms.length;i++)
+		{
+			if(otherParms[i].getKey().charValue()=='<')
+			{
+				String lvlStr=strFilter(null,null,null,otherParms[i].getValue().trim(),piece, defined);
+				if(CMath.isMathExpression(lvlStr))
+				{
+					levelLimit=CMath.parseIntExpression(lvlStr);
+					if((levelLimit==0)||(levelLimit<levelFloor)) 
+						levelLimit=-1;
+				}
+			}
+			else
+			if(otherParms[i].getKey().charValue()=='>')
+			{
+				String lvlStr=strFilter(null,null,null,otherParms[i].getValue().trim(),piece, defined);
+				if(CMath.isMathExpression(lvlStr))
+				{
+					levelFloor=CMath.parseIntExpression(lvlStr);
+					if((levelFloor==0)||((levelFloor>levelLimit)&&(levelLimit>0))) 
+						levelFloor=-1;
+				}
+			}
+			else
+			if(otherParms[i].getKey().charValue()=='=')
+			{
+				String classStr=strFilter(null,null,null,otherParms[i].getValue().trim(),piece, defined);
+				Object O=CMClass.getItemPrototype(classStr);
+				if(O!=null)
+				{
+					deriveClasses=Arrays.copyOf(deriveClasses, deriveClasses.length+1);
+					deriveClasses[deriveClasses.length-1]=O.getClass();
+				}
+				else
+					throw new CMException("Unknown metacraft class= "+classStr);
+			}
+		}
+		if(levelLimit>0)
+			filter.first=Integer.valueOf(levelLimit);
+		if(levelFloor>0)
+			filter.second=Integer.valueOf(levelFloor);
+		if(deriveClasses.length>0)
+			filter.third=deriveClasses;
+		return recipe; 
+	}
+	
+	protected boolean checkMetacraftItem(Item I, Triad<Integer,Integer,Class<?>[]> filter)
+	{
+		final int levelLimit=filter.first.intValue();
+		final int levelFloor=filter.second.intValue();
+		final Class<?>[] deriveClasses=filter.third;
+		if(((levelLimit>0) && (I.basePhyStats().level() > levelLimit))
+		||((levelFloor>0) && (I.basePhyStats().level() < levelFloor)))
+			return false;
+		if(deriveClasses.length==0)
+			return true;
+		for(Class<?> C : deriveClasses)
+			if(C.isAssignableFrom(I.getClass()))
+				return true;
+		return false;
+	}
+	
 	protected List<Item> buildItem(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String classID = findString("class",piece,defined);
 		List<Item> contents = new Vector<Item>();
 		final List<String> ignoreStats=new XVector<String>();
-		Item I;
 		if(classID.toLowerCase().startsWith("metacraft"))
 		{
 			String classRest=classID.substring(9).toLowerCase().trim();
-			int levelLimit=-1;
+			Triad<Integer,Integer,Class<?>[]> filter = new Triad<Integer,Integer,Class<?>[]>(Integer.valueOf(-1),Integer.valueOf(-1),new Class<?>[0]);
 			String recipe="anything";
 			if(classRest.startsWith(":"))
 			{
-				recipe=classRest.substring(1).trim();
-				int lvlDex=recipe.indexOf('<');
-				String lvlStr=(lvlDex>0)?strFilter(null,null,null,recipe.substring(lvlDex+1).trim(),piece, defined):null;
-				if((lvlStr!=null)&&(CMath.isMathExpression(lvlStr)))
-				{
-					levelLimit=CMath.parseIntExpression(lvlStr);
-					if(levelLimit==0) levelLimit=-1;
-					recipe=recipe.substring(0,lvlDex).toLowerCase().trim();
-				}
+				recipe=getMetacraftFilter(classRest.substring(1).trim(), piece, defined, filter);
 			}
 			else
 			{
@@ -993,13 +1058,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							for(ItemCraftor.ItemKeyPair pair : V)
 								skillContents.add(pair);
 						}
-						for(int i=skillContents.size()-1;i>=0;i--)
-							if((levelLimit>0) && (skillContents.get(i).item.basePhyStats().level() > levelLimit))
-								skillContents.remove(i);
-						if(skillContents.size()>0)
-							contents.addAll(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).asList());
-						if(contents.size()==0)
+						if(skillContents.size()==0) // preliminary error messaging, just for the craft skills themselves
 							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+Integer.toString(skillContents.size())+" from "+skill.ID());
+						else
+						for(int i=skillContents.size()-1;i>=0;i--)
+						{
+							Item I=skillContents.get(i).item;
+							if(!checkMetacraftItem(I, filter))
+								skillContents.remove(i);
+						}
+						if(skillContents.size()>0)
+							contents.add(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item);
 					}
 				}
 			}
@@ -1016,17 +1085,49 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							skillContents=skill.craftAllItemSets(material);
 						else
 							skillContents=skill.craftAllItemSets();
-						if(skillContents!=null)
-							for(int i=skillContents.size()-1;i>=0;i--)
-								if((levelLimit>0) && (skillContents.get(i).item.basePhyStats().level() > levelLimit))
-									skillContents.remove(i);
-						if((skillContents==null)||(skillContents.size()==0))
+						if((skillContents==null)||(skillContents.size()==0)) // this is just for checking the skills themselves
 							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
+						else
+						for(int i=skillContents.size()-1;i>=0;i--)
+						{
+							Item I=skillContents.get(i).item;
+							if(!checkMetacraftItem(I, filter))
+								skillContents.remove(i);
+						}
 						break;
 					}
 				}
 				if((skillContents!=null)&&(skillContents.size()>0))
-					contents.addAll(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).asList());
+					contents.add(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item);
+			}
+			else
+			if(recipe.toLowerCase().startsWith("all"))
+			{
+				List<ItemCraftor.ItemKeyPair> skillContents=null;
+				recipe=recipe.substring(3).startsWith("-")?recipe.substring(4):"";
+				for(ItemCraftor skill : craftors)
+				{
+					if(skill.ID().equalsIgnoreCase(recipe)||(recipe.length()==0))
+					{
+						if(material>=0)
+							skillContents=skill.craftAllItemSets(material);
+						else
+							skillContents=skill.craftAllItemSets();
+						if((skillContents==null)||(skillContents.size()==0)) // this is just for checking the skills themselves
+							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
+						else
+						for(int i=skillContents.size()-1;i>=0;i--)
+						{
+							Item I=skillContents.get(i).item;
+							if(!checkMetacraftItem(I, filter))
+								skillContents.remove(i);
+						}
+						while((skillContents!=null)&&(skillContents.size()>0))
+							contents.add(skillContents.remove(0).item);
+						if(recipe.length()>0)
+							break;
+					}
+				}
 			}
 			else
 			{
@@ -1042,14 +1143,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							pair=skill.craftItem(recipe);
 						if(pair!=null)
 						{
-							contents.addAll(pair.asList());
+							contents.add(pair.item);
 							break;
 						}
 					}
 				}
 				for(int i=contents.size()-1;i>=0;i--)
-					if((levelLimit>0) && (contents.get(i).basePhyStats().level() > levelLimit))
+				{
+					Item I=contents.get(i);
+					if(!checkMetacraftItem(I, filter))
 						contents.remove(i);
+				}
 				if(contents.size()==0)
 					for(ItemCraftor skill : craftors)
 					{
@@ -1063,23 +1167,33 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								pair=skill.craftItem(recipe);
 							if(pair!=null)
 							{
-								contents.addAll(pair.asList());
+								contents.add(pair.item);
 								break;
 							}
 						}
 					}
 				for(int i=contents.size()-1;i>=0;i--)
-					if((levelLimit>0) && (contents.get(i).basePhyStats().level() > levelLimit))
+				{
+					Item I=contents.get(i);
+					if(!checkMetacraftItem(I, filter))
 						contents.remove(i);
+				}
 			}
 			if(contents.size()==0)
-				throw new CMException("Unable to metacraft an item called '"+recipe+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-			I=contents.get(0);
-			addDefinition("ITEM_CLASS",I.ID(),defined);
-			addDefinition("ITEM_NAME",I.Name(),defined); // define so we can mess with it
-			addDefinition("ITEM_LEVEL",""+I.basePhyStats().level(),defined); // define so we can mess with it
-			fillOutStatCode(I,ignoreStats,"ITEM_","NAME",piece,defined);
-			fillOutStatCode(I,ignoreStats,"ITEM_","LEVEL",piece,defined);
+			{
+				if(filter.equals(emptyMetacraftFilter))
+					throw new CMException("Unable to metacraft an item called '"+recipe+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
+				else
+					return new ArrayList<Item>(0);
+			}
+			for(Item I : contents)
+			{
+				addDefinition("ITEM_CLASS",I.ID(),defined);
+				addDefinition("ITEM_NAME",I.Name(),defined); // define so we can mess with it
+				addDefinition("ITEM_LEVEL",""+I.basePhyStats().level(),defined); // define so we can mess with it
+				fillOutStatCode(I,ignoreStats,"ITEM_","NAME",piece,defined);
+				fillOutStatCode(I,ignoreStats,"ITEM_","LEVEL",piece,defined);
+			}
 			ignoreStats.addAll(Arrays.asList(new String[]{"CLASS","MATERIAL","NAME","LEVEL"}));
 		}
 		else
@@ -1088,7 +1202,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			String name = findString("NAME",piece,defined);
 			if((name == null)||(name.length()==0)) 
 				throw new CMException("Unable to build a catalog item without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-			I = CMLib.catalog().getCatalogItem(name);
+			Item I = CMLib.catalog().getCatalogItem(name);
 			if(I==null)
 				throw new CMException("Unable to find cataloged item called '"+name+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 			I=(Item)I.copyOf();
@@ -1100,7 +1214,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		else
 		{
-			I = CMClass.getItem(classID);
+			Item I = CMClass.getItem(classID);
 			if(I == null) throw new CMException("Unable to build item on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 			contents.add(I);
 			addDefinition("ITEM_CLASS",classID,defined);
@@ -1119,43 +1233,46 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			addDefinition("ITEM_NAME",I.Name(),defined); // define so we can mess with it
 		}
 		
-		fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
-		I.recoverPhyStats();
-		CMLib.itemBuilder().balanceItemByLevel(I);
-		I.recoverPhyStats();
-		fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
-		I.recoverPhyStats();
-		
-		if(I instanceof Container)
+		for(Item I : contents)
 		{
-			List<Item> V= findContents(piece,defined);
+			fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
+			I.recoverPhyStats();
+			CMLib.itemBuilder().balanceItemByLevel(I);
+			I.recoverPhyStats();
+			fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
+			I.recoverPhyStats();
+			
+			if(I instanceof Container)
+			{
+				List<Item> V= findContents(piece,defined);
+				for(int i=0;i<V.size();i++)
+				{
+					Item I2=V.get(i);
+					I2.setContainer((Container)I);
+					contents.add(I2);
+				}
+			}
+			{
+				List<Ability> V= findAffects(piece,defined);
+				for(int i=0;i<V.size();i++)
+				{
+					Ability A=V.get(i);
+					A.setSavable(true);
+					I.addNonUninvokableEffect(A);
+				}
+			}
+			List<Behavior> V = findBehaviors(piece,defined);
 			for(int i=0;i<V.size();i++)
 			{
-				Item I2=V.get(i);
-				I2.setContainer((Container)I);
-				contents.add(I2);
+				Behavior B=V.get(i);
+				B.setSavable(true);
+				I.addBehavior(B);
 			}
+			I.recoverPhyStats();
+			I.text();
+			I.setMiscText(I.text());
+			I.recoverPhyStats();
 		}
-		{
-			List<Ability> V= findAffects(piece,defined);
-			for(int i=0;i<V.size();i++)
-			{
-				Ability A=V.get(i);
-				A.setSavable(true);
-				I.addNonUninvokableEffect(A);
-			}
-		}
-		List<Behavior> V = findBehaviors(piece,defined);
-		for(int i=0;i<V.size();i++)
-		{
-			Behavior B=V.get(i);
-			B.setSavable(true);
-			I.addBehavior(B);
-		}
-		I.recoverPhyStats();
-		I.text();
-		I.setMiscText(I.text());
-		I.recoverPhyStats();
 		return contents;
 	}
 	
@@ -1725,6 +1842,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				else
 					throw new CMException("Invalid math expression '$"+expression+"' in str '"+str+"'");
 			}
+			else
+			if(V.var.toUpperCase().startsWith("STAT:") && (E!=null) && (E.isStat(V.var.substring(5))))
+				val=E.getStat(V.var.substring(5));
 			else
 				val = defined.get(V.var.toUpperCase().trim());
 			if(val instanceof XMLLibrary.XMLpiece) 

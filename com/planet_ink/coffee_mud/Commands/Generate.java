@@ -53,6 +53,11 @@ public class Generate extends StdCommand
 
 	public void createNewPlace(MOB mob, Room oldR, Room R, int direction) 
 	{
+		if(R.roomID().length()==0)
+		{
+			R.setArea(oldR.getArea());
+			R.setRoomID(oldR.getArea().getNewRoomID(oldR, direction));
+		}
 		Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
 		if(E==null) E = CMClass.getExit("Open");
 		oldR.setRawExit(direction, E);
@@ -245,6 +250,10 @@ public class Generate extends StdCommand
 			{
 				Room R=(Room)V.elementAt(v);
 				createNewPlace(mob,mob.location(),R,direction);
+				CMLib.database().DBCreateRoom(R);
+				CMLib.database().DBUpdateExits(R);
+				CMLib.database().DBUpdateItems(R);
+				CMLib.database().DBUpdateMOBs(R);
 				Log.sysOut("Generate",mob.Name()+" generated room "+R.roomID());
 			}
 			else
