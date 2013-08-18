@@ -91,7 +91,7 @@ public class Prop_Hidden extends Property
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(ticksSinceLoss<9999)
+		if(ticksSinceLoss<999999)
 			ticksSinceLoss++;
 		return super.tick(ticking,tickID);
 	}
@@ -111,9 +111,11 @@ public class Prop_Hidden extends Property
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
 			if(affected instanceof Item)
 			{
-				if((((Item)affected).owner()!=null)
-				&&(((Item)affected).owner() instanceof Room))
-					affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
+				if((((Item)affected).owner() instanceof Room)
+				&&((!(affected instanceof Container))
+					||(!((Container)affected).hasALid())
+					||(!((Container)affected).isOpen())))
+						affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 			}
 			else
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
