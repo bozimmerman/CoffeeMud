@@ -798,7 +798,7 @@ Required details: "id" "value"
 				<AFFECT class="Prop_ClosedDayNight" />
 			</EXIT>
 			<AFFECT class="Prop_ClosedDayNight" />
-			<MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" race="$_humanoid_races" gender="$anygender">
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" id="shop_patron" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
 				<NAME>$patronname</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is ready to serve.</DISPLAY>
@@ -808,7 +808,8 @@ Required details: "id" "value"
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
-					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="Fighterness" parms=""  condition="$shoptype!='potion' and $shoptype!='magic' and $shoptype!='jewelry'"/>
+					<BEHAVIOR class="Mageness" parms=""  condition="$shoptype='potion' or $shoptype='magic' or $shoptype='jewelry'"/>
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
@@ -826,40 +827,58 @@ Required details: "id" "value"
 				</ITEM>
 				<SHOPINVENTORY select="all">
 					<ITEM select="all" condition="$shoptype='weapon'">
-						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$random_cheap_metal"/>
+						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$random_cheap_metal"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='armor'">
-						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$random_cheap_metal"/>
+						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$random_cheap_metal"/>
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='magic'">
+						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand"/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$random_cheap_metal"/>
+						<ITEM select="any-5" insert="any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item" />
+						<ITEM select="any-5" insert="any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item" />
+						<ITEM select="any-5" insert="any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item" />
+					</ITEM>
+					<ITEM select="all" condition="$shoptype='jewelry'">
+						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$random_cheap_metal"/>
+					</ITEM>
+					<MOB select="all" condition="$shoptype='pet'">
+						<MOB class="Monkey" /><MOB class="Dog" /><MOB class="Fox" /><MOB class="Duck" /><MOB class="Falcon" /><MOB class="Bee" />
+						<MOB class="Tiger" /><MOB class="Rat" /><MOB class="Puppy" /><MOB class="Pig" /><MOB class="Lizard" /><MOB class="Lion" />
+					</MOB>
+					<ITEM select="all" condition="$shoptype='potion'">
+						<ITEM class="metacraft:all-alchemy<$mob_level"/>
+						<ITEM class="metacraft:all-herbalism<$mob_level"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='general'">
-						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$random_cheap_metal" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-glassblowing<$mob_level" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-pottery<$mob_level" material="clay" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather"/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather"/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$random_cheap_metal"/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp"/>
+						<ITEM class="metacraft:all-glassblowing<$mob_level"/>
+						<ITEM class="metacraft:all-pottery<$mob_level" material="clay"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='leather'">
-						<ITEM class="metacraft:all-leatherworking<$mob_level=GenArmor=GenWeapon" material="leather" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenArmor=GenWeapon" material="leather"/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='wood'">
-						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$random_wood" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-fletching<$mob_level" material="$random_wood" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-cobbler<$mob_level" material="$random_wood" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$random_wood"/>
+						<ITEM class="metacraft:all-fletching<$mob_level" material="$random_wood"/>
+						<ITEM class="metacraft:all-cobbler<$mob_level" material="$random_wood"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='tailor'">
-						<ITEM class="metacraft:all-tailoring<$mob_level" material="$random_cheap_cloth" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$random_cheap_cloth" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-tailoring<$mob_level" material="$random_cheap_cloth"/>
+						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$random_cheap_cloth"/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='food'">
-						<ITEM class="metacraft:all-cooking<$mob_level" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-mastercooking<$mob_level" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-baking<$mob_level" basegold="${stat:basegold} * 10"/>
-						<ITEM class="metacraft:all-masterbaking<$mob_level" basegold="${stat:basegold} * 10"/>
+						<ITEM class="metacraft:all-cooking<$mob_level"/>
+						<ITEM class="metacraft:all-mastercooking<$mob_level"/>
+						<ITEM class="metacraft:all-baking<$mob_level"/>
+						<ITEM class="metacraft:all-masterbaking<$mob_level"/>
 					</ITEM>
 				</SHOPINVENTORY>
 			</MOB>
@@ -3367,17 +3386,23 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 </STRING>
 
 <STRING id="next_shop_type" select="any-1">
-<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1">weapon</STRING>
-<STRING condition="$__numshoptypes_armor &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_armor+=1,__numshoptypes_all+=1">armor</STRING>
-<STRING condition="$__numshoptypes_leather &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_leather+=1,__numshoptypes_all+=1">leather</STRING>
-<STRING condition="$__numshoptypes_cloth &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_cloth+=1,__numshoptypes_all+=1">tailor</STRING>
-<STRING condition="$__numshoptypes_food &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_food+=1,__numshoptypes_all+=1">food</STRING>
-<STRING condition="$__numshoptypes_general &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_general+=1,__numshoptypes_all+=1">general</STRING>
-<STRING condition="$__numshoptypes_wood &lt;1 or $__numshoptypes_all &gt; 5" define="__numshoptypes_wood+=1,__numshoptypes_all+=1">wood</STRING>
+<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1">weapon</STRING>
+<STRING condition="$__numshoptypes_armor &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_armor+=1,__numshoptypes_all+=1">armor</STRING>
+<STRING condition="$__numshoptypes_leather &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_leather+=1,__numshoptypes_all+=1">leather</STRING>
+<STRING condition="$__numshoptypes_cloth &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_cloth+=1,__numshoptypes_all+=1">tailor</STRING>
+<STRING condition="$__numshoptypes_food &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_food+=1,__numshoptypes_all+=1">food</STRING>
+<STRING condition="$__numshoptypes_general &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_general+=1,__numshoptypes_all+=1">general</STRING>
+<STRING condition="$__numshoptypes_wood &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_wood+=1,__numshoptypes_all+=1">wood</STRING>
+<STRING condition="$__numshoptypes_magic &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_magic+=1,__numshoptypes_all+=1">magic</STRING>
+<STRING condition="$__numshoptypes_potion &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_potion+=1,__numshoptypes_all+=1">potion</STRING>
+<STRING condition="$__numshoptypes_jewelry &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_jewelry+=1,__numshoptypes_all+=1">jewelry</STRING>
+<STRING condition="$__numshoptypes_pet &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_pet+=1,__numshoptypes_all+=1">pet</STRING>
+
 </STRING>
 
 <STRING id="random_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
-<STRING id="random_metal" insert="random_cheap_metal" select="any-1"><string>silver</string><string>gold</string><string>zinc</string><string>copper</string><string>steel</string><string>chromium</string><string>white_gold</string><string>dragonscales</string></STRING>
+<STRING id="random_rich_metal" select="any-1"><string>silver</string><string>gold</string><string>copper</string><string>white_gold</string></STRING>
+<STRING id="random_metal" insert="random_cheap_metal,random_rich_metal" select="any-1"><string>zinc</string><string>steel</string><string>chromium</string><string>dragonscales</string></STRING>
 <STRING id="random_mithril" insert="random_metal" select="any-1"><string>mithril</string><string>adamantite</string><string>atlantite</string></STRING>
 <STRING id="random_wood" select="any-1">
 	<string>wood</string><string>pine</string><string>balsa</string><string>oak</string><string>maple</string><string>redwood</string><string>hickory</string><string>ironwood</string>
@@ -3385,7 +3410,8 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	<string>spruce</string><string>mesquite</string><string>reed</string><string>bamboo</string>
 </STRING>
 <STRING id="random_cheap_cloth" select="any-1"><string>hide</string><string>wool</string><string>cotton</string><string>hemp</string></STRING>
-<STRING id="random_cloth" insert="random_cheap_cloth" select="any-1"><string>spidersteel</string><string>silk</string><string>feathers</string><string>fur</string></STRING>
+<STRING id="random_rich_cloth" select="any-1"><string>spidersteel</string><string>silk</string><string>feathers</string><string>fur</string></STRING>
+<STRING id="random_cloth" insert="random_cheap_cloth,random_rich_cloth" select="any-1"></STRING>
 
 <STRING id="smithywords" select="any-1"><STRING>hammer</STRING><STRING>anvil</STRING><STRING>forge</STRING><STRING>fire</STRING><STRING>steel</STRING></STRING>
 <STRING id="weaponsmithywords" select="any-1"><STRING>sword</STRING><STRING>axe</STRING><STRING>mace</STRING><STRING>arms</STRING><STRING>spear</STRING><STRING>dagger</STRING></STRING>
