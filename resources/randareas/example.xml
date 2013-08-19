@@ -209,7 +209,8 @@ a required detail.  This may also start with the string "metacraft:", in which c
 remainder of the "class" value becomes either the name of the item to metacraft, the word "anything", 
 "all", or the words "any-" or "all-" followed by the ID of the common skill to use. 
 "metacraft:" class strings may also end with the characters "<" followed by a math expression 
-evaluating to an upper level limit for the item to craft.
+evaluating to an upper level limit for the item to craft, ">" for a lower limit, or "=" followed
+by a the base class ID to to filter in.
 
 Optional Objects: (See below for details on these object tag types and their details) 
 "MOB","ITEM","AFFECT", "CONTENT", "BEHAVIOR", "EXIT"
@@ -296,13 +297,13 @@ Required details: "id" "value"
 
 <STRING id="dungeon_hallways_street_desc" select="all">
 	<STRING select="any-1" action="PREPEND">
-		<STRING>You stand in (a(n)) $dungeonadj_any $_dungeon_tunnelword that runs steeply $roomrun_desc_long.</STRING> 
-		<STRING>This $dungeonadj_any $_dungeon_tunnelword runs steeply $roomrun_desc_long.</STRING> 
-		<STRING>You are in (a(n)) $dungeonadj_any $_dungeon_tunnelword running $roomrun_desc_long.</STRING> 
-		<STRING>This $dungeonadj_any $_dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
-		<STRING>You are walking through (a(n)) $dungeonadj_any $_dungeon_tunnelword running $roomrun_desc_long.</STRING>
-		<STRING>This $dungeonadj_any $_dungeon_tunnelword heads $roomrun_desc_long.</STRING>
-		<STRING>This $dungeonadj_any $_dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
+		<STRING>You stand in (a(n)) $adj_any $_dungeon_tunnelword that runs steeply $roomrun_desc_long.</STRING> 
+		<STRING>This $adj_any $_dungeon_tunnelword runs steeply $roomrun_desc_long.</STRING> 
+		<STRING>You are in (a(n)) $adj_any $_dungeon_tunnelword running $roomrun_desc_long.</STRING> 
+		<STRING>This $adj_any $_dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
+		<STRING>You are walking through (a(n)) $adj_any $_dungeon_tunnelword running $roomrun_desc_long.</STRING>
+		<STRING>This $adj_any $_dungeon_tunnelword heads $roomrun_desc_long.</STRING>
+		<STRING>This $adj_any $_dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
 	</STRING>
 	<STRING select="all" id="dungeon_other_exits" action="APPEND" >
 		<STRING select="all" condition="(!('n' IN $ROOMTAG_NODERUN)) and $ROOMLINK_N!=''" action="APPEND" >
@@ -376,17 +377,17 @@ Required details: "id" "value"
 
 <STRING id="dungeon_crawlways_street_desc"  select="all">
 	<STRING select="any-1" action="prepend">
-		<STRING>You are in (a(n)) $dungeonadj_anynosize $_dungeon_tunnelword that runs narrowly $roomrun_desc_long.</STRING> 
-		<STRING>This $dungeonadj_anynosize $_dungeon_tunnelword runs narrowly $roomrun_desc_long.</STRING> 
-		<STRING>You are in (a(n)) $dungeonadj_anynosize $_dungeon_tunnelword squeezing $roomrun_desc_long.</STRING> 
-		<STRING>This $dungeonadj_anynosize $_dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
-		<STRING>You are going through (a(n)) $dungeonadj_anynosize $_dungeon_tunnelword running $roomrun_desc_long.</STRING>
-		<STRING>This $dungeonadj_anynosize $_dungeon_tunnelword heads $roomrun_desc_long.</STRING>
-		<STRING>This $dungeonadj_anynosize $_dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
+		<STRING>You are in (a(n)) $adj_anynosize $_dungeon_tunnelword that runs narrowly $roomrun_desc_long.</STRING> 
+		<STRING>This $adj_anynosize $_dungeon_tunnelword runs narrowly $roomrun_desc_long.</STRING> 
+		<STRING>You are in (a(n)) $adj_anynosize $_dungeon_tunnelword squeezing $roomrun_desc_long.</STRING> 
+		<STRING>This $adj_anynosize $_dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
+		<STRING>You are going through (a(n)) $adj_anynosize $_dungeon_tunnelword running $roomrun_desc_long.</STRING>
+		<STRING>This $adj_anynosize $_dungeon_tunnelword heads $roomrun_desc_long.</STRING>
+		<STRING>This $adj_anynosize $_dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
 	</STRING>
 	<STRING select="any-1">
-		<STRING>The $dungeonadj_phys_nosize ceiling is very low.</STRING>
-		<STRING>The $dungeonadj_phys_nosize ceiling is lower than usual.</STRING>
+		<STRING>The $adj_phys_nosize ceiling is very low.</STRING>
+		<STRING>The $adj_phys_nosize ceiling is lower than usual.</STRING>
 	</STRING>
 	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
 </STRING>
@@ -403,13 +404,13 @@ Required details: "id" "value"
 
 <STRING id="dungeon_interior_desc" select="all">
 	<STRING select="any-1" action="PREPEND">
-		<STRING>You are standing  in (a(n)) $dungeonadj_any $_dungeon_tunnelword that branches $roomexits_desc_long.</STRING> 
-		<STRING>This $dungeonadj_any $_dungeon_tunnelword branches steeply $roomexits_desc_long.</STRING> 
-		<STRING>You are in (a(n)) $dungeonadj_any $_dungeon_tunnelword running $roomexits_desc_long.</STRING> 
-		<STRING>This $dungeonadj_any $_dungeon_tunnelword runs $roomexits_desc_long.</STRING> 
-		<STRING>You are walking through (a(n)) $dungeonadj_any $_dungeon_tunnelword heading $roomexits_desc_long.</STRING>
-		<STRING>This $dungeonadj_any $_dungeon_tunnelword heads $roomexits_desc_long.</STRING>
-		<STRING>This $dungeonadj_any $_dungeon_tunnelword seems to head $roomexits_desc_long.</STRING>
+		<STRING>You are standing  in (a(n)) $adj_any $_dungeon_tunnelword that branches $roomexits_desc_long.</STRING> 
+		<STRING>This $adj_any $_dungeon_tunnelword branches steeply $roomexits_desc_long.</STRING> 
+		<STRING>You are in (a(n)) $adj_any $_dungeon_tunnelword running $roomexits_desc_long.</STRING> 
+		<STRING>This $adj_any $_dungeon_tunnelword runs $roomexits_desc_long.</STRING> 
+		<STRING>You are walking through (a(n)) $adj_any $_dungeon_tunnelword heading $roomexits_desc_long.</STRING>
+		<STRING>This $adj_any $_dungeon_tunnelword heads $roomexits_desc_long.</STRING>
+		<STRING>This $adj_any $_dungeon_tunnelword seems to head $roomexits_desc_long.</STRING>
 	</STRING>
 	<STRING select="any-2" insert="dungeon_random_blurbs" action="APPEND" />
 	<STRING select="all" insert="dungeon_other_exits" action="APPEND" />
@@ -440,12 +441,12 @@ Required details: "id" "value"
 			<TITLE>a large $nasty_word cage</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size_large $nasty_word prison cell.</DESCRIPTION>
-					<DESCRIPTION>You are in (a(n)) $dungeonadj_phys_size_large crowded $nasty_word cell for common prisoners.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size_large $nasty_word prisoner's holding cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_large $nasty_word prison cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_large crowded $nasty_word cell for common prisoners.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_large $nasty_word prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size_large $nasty_word prison cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_large crowded $nasty_word cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_phys_size_large $nasty_word prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $nasty_word prison cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large crowded $nasty_word cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $nasty_word prisoner's holding cell.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The $nasty_word barred walls hold everything in.</DESCRIPTION>
@@ -465,20 +466,20 @@ Required details: "id" "value"
 			<TITLE>(a(n)) $nasty_word solitary cell</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are in (a(n)) $dungeonadj_phys_size_small $nasty_word solitary cell.</DESCRIPTION>
-					<DESCRIPTION>You are in (a(n)) $dungeonadj_phys_size_small $nasty_word cell for solitary confinement.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size_small $nasty_word solitary prisoner's holding cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_small $nasty_word solitary cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_small $nasty_word cell for solitary confinement.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_small $nasty_word solitary prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_small $nasty_word solitary cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_small $nasty_word cell for solitary confinement.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_phys_size_small $nasty_word solitary prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $nasty_word solitary cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $nasty_word cell for solitary confinement.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $nasty_word solitary prisoner's holding cell.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>Everything here is totally $dungeonadj_dark.</DESCRIPTION>
-					<DESCRIPTION>This room is completely $dungeonadj_dark.</DESCRIPTION>
-					<DESCRIPTION>This $dungeonadj_dark room is $dungeonadj_feeling.</DESCRIPTION>
-					<DESCRIPTION>Life here is $dungeonadj_dark and $dungeonadj_phys_size_small.</DESCRIPTION>
-					<DESCRIPTION>This room is $dungeonadj_dark and $dungeonadj_phys_size_small.</DESCRIPTION>
-					<DESCRIPTION>This $dungeonadj_feeling is $dungeonadj_dark room.</DESCRIPTION>
+					<DESCRIPTION>Everything here is totally $adj_dark.</DESCRIPTION>
+					<DESCRIPTION>This room is completely $adj_dark.</DESCRIPTION>
+					<DESCRIPTION>This $adj_dark room is $adj_feeling.</DESCRIPTION>
+					<DESCRIPTION>Life here is $adj_dark and $adj_phys_size_small.</DESCRIPTION>
+					<DESCRIPTION>This room is $adj_dark and $adj_phys_size_small.</DESCRIPTION>
+					<DESCRIPTION>This $adj_feeling is $adj_dark room.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
@@ -489,23 +490,23 @@ Required details: "id" "value"
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="StoneRoom" condition="$__luxuryCell&lt;2" define="__luxuryCell+=1">
-			<TITLE>a private $dungeonadj_fancy cell</TITLE>
+			<TITLE>a private $adj_fancy cell</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are in (a(n)) $dungeonadj_phys_size_large $dungeonadj_light solitary cell for discerning tastes.</DESCRIPTION>
-					<DESCRIPTION>You are in (a(n)) $dungeonadj_phys_size_large $dungeonadj_light cell for solitary enjoyment.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size_large $dungeonadj_light solitary prisoner's holding apartment.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_large $dungeonadj_light solitary cell for prisoners of wealth.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_large $dungeonadj_light cell for solitary refinement.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_large $dungeonadj_light solitary prisoner's holding suite.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_large $adj_light solitary cell for discerning tastes.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_large $adj_light cell for solitary enjoyment.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_phys_size_large $adj_light solitary prisoner's holding apartment.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_light solitary cell for prisoners of wealth.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_light cell for solitary refinement.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_light solitary prisoner's holding suite.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>Everything here is totally $dungeonadj_light.</DESCRIPTION>
-					<DESCRIPTION>This room is completely $dungeonadj_light.</DESCRIPTION>
-					<DESCRIPTION>This $dungeonadj_light room is $dungeonadj_fancy.</DESCRIPTION>
-					<DESCRIPTION>Life here is $dungeonadj_light and $dungeonadj_fancy.</DESCRIPTION>
-					<DESCRIPTION>This room is $dungeonadj_light and $dungeonadj_fancy.</DESCRIPTION>
-					<DESCRIPTION>This $dungeonadj_fancy is $dungeonadj_light room.</DESCRIPTION>
+					<DESCRIPTION>Everything here is totally $adj_light.</DESCRIPTION>
+					<DESCRIPTION>This room is completely $adj_light.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light room is $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>Life here is $adj_light and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This room is $adj_light and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy is $adj_light room.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -520,21 +521,21 @@ Required details: "id" "value"
 				<STRING>$MOB_NAME has the best cell sold.</STRING>
 				<STRING>$MOB_NAME has the best punishment money can buy.</STRING>
 			</STRING>
-			<ITEM class="GenBed"  name="(a(n)) $dungeonadj_fancy bed" display="$ITEM_NAME is made here"/>
-			<ITEM class="GenChair" name="(a(n)) $dungeonadj_fancy chair" display="$ITEM_NAME is waiting to me rested upon"/>
+			<ITEM class="GenBed"  name="(a(n)) $adj_fancy bed" display="$ITEM_NAME is made here"/>
+			<ITEM class="GenChair" name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is waiting to me rested upon"/>
 			<ITEM select="any-2">
-				<ITEM class="GenFountain" name="(a(n)) $dungeonadj_fancy fountain" display="$ITEM_NAME has been built here" />
+				<ITEM class="GenFountain" name="(a(n)) $adj_fancy fountain" display="$ITEM_NAME has been built here" />
 				<ITEM class="GenMirror" name="a mirror" display="a mirror is for gazing in" />
-				<ITEM class="GenTub"  name="(a(n)) $dungeonadj_fancy tub" display="$ITEM_NAME is here" />
-				<ITEM class="GenTable" name="(a(n)) $dungeonadj_fancy table" display="$ITEM_NAME is here" />
-				<ITEM class="GenPiano" name="(a(n)) $dungeonadj_fancy piano" display="$ITEM_NAME is here" />
-				<ITEM class="GenPipe" name="(a(n)) $dungeonadj_fancy pipe" display="$ITEM_NAME has been put aside for a moment" />
-				<ITEM class="GenCigar" name="(a(n)) $dungeonadj_fancy cigar" display="$ITEM_NAME is here waiting to be enjoyed." />
+				<ITEM class="GenTub"  name="(a(n)) $adj_fancy tub" display="$ITEM_NAME is here" />
+				<ITEM class="GenTable" name="(a(n)) $adj_fancy table" display="$ITEM_NAME is here" />
+				<ITEM class="GenPiano" name="(a(n)) $adj_fancy piano" display="$ITEM_NAME is here" />
+				<ITEM class="GenPipe" name="(a(n)) $adj_fancy pipe" display="$ITEM_NAME has been put aside for a moment" />
+				<ITEM class="GenCigar" name="(a(n)) $adj_fancy cigar" display="$ITEM_NAME is here waiting to be enjoyed." />
 			</ITEM>
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__torturechamber&lt;1" define="__torturechamber+=1">
-			<TITLE>(a(n)) $dungeonadj_feeling torture chamber</TITLE>
+			<TITLE>(a(n)) $adj_feeling torture chamber</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You are standing in (a(n)) $nasty_word torture chamber.</DESCRIPTION>
@@ -545,10 +546,10 @@ Required details: "id" "value"
 					<DESCRIPTION>This is (a(n)) $nasty_word room obviously meant for pain.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>Just the sight of this $dungeonadj_feeling room makes you talk.</DESCRIPTION>
-					<DESCRIPTION>All manner of $dungeonadj_feeling instruments for human suffering abound here.</DESCRIPTION>
-					<DESCRIPTION>This $nasty_word room of suffering makes you feel $dungeonadj_feeling.</DESCRIPTION>
-					<DESCRIPTION>You feel $dungeonadj_feeling just standing in this place.</DESCRIPTION>
+					<DESCRIPTION>Just the sight of this $adj_feeling room makes you talk.</DESCRIPTION>
+					<DESCRIPTION>All manner of $adj_feeling instruments for human suffering abound here.</DESCRIPTION>
+					<DESCRIPTION>This $nasty_word room of suffering makes you feel $adj_feeling.</DESCRIPTION>
+					<DESCRIPTION>You feel $adj_feeling just standing in this place.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
@@ -573,7 +574,10 @@ Required details: "id" "value"
 				<STRING>$MOB_NAME is tidying up for the next guest.</STRING>
 				<STRING>$MOB_NAME is curious about how you feel.</STRING>
 			</STRING>
-			<EXIT class="Door" />
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" DISPOSITION="ISHIDDEN"/>
+				<EXIT pickweight=2 class="GenDoor"/>
+			</EXIT>
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__pitroom&lt;2" define="__pitroom+=1">
@@ -621,7 +625,7 @@ Required details: "id" "value"
 					<DESCRIPTION>You probably didn`t need to know that.</DESCRIPTION>
 					<DESCRIPTION>This is not what you were looking for.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_badsmell</DESCRIPTION>
+				<DESCRIPTION select="any-1">$random_badsmell</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -698,21 +702,21 @@ Required details: "id" "value"
 				</BEHAVIOR>
 				<ITEM select="pick-1?3">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $dungeonadj_fancy wardens hat</NAME><NAME>(a(n)) $dungeonadj_fancy wardens hat</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_fancy wardens hat</NAME><NAME>(a(n)) $adj_fancy wardens hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" capacity=100 containtypes="DAGGERS,ONE-HANDED WEAPONS,SWORDS,OTHER WEAPONS">
-						<NAME select="any-1"><NAME>(a(n)) $dungeonadj_fancy weapon belt</NAME><NAME>(a(n)) $dungeonadj_fancy weapon belt</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_fancy weapon belt</NAME><NAME>(a(n)) $adj_fancy weapon belt</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>SILVER</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $dungeonadj_fancy warden shoes</NAME><NAME>a pair of $dungeonadj_fancy warden shoes</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_fancy warden shoes</NAME><NAME>a pair of $adj_fancy warden shoes</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>DRAGONSCALES</MATERIAL><PROPERWORN>FEET</PROPERWORN>
 					</ITEM>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $dungeonadj_fancy nightstick</NAME>
+						<NAME>(a(n)) $adj_fancy nightstick</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>GOLD</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -721,8 +725,8 @@ Required details: "id" "value"
 				</ITEM>
 				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 			</MOB>
-			<ITEM class="GenChair"  name="(a(n)) $dungeonadj_fancy chair" display="$ITEM_NAME is here"/>
-			<ITEM class="GenTable"  name="(a(n)) $dungeonadj_fancy desk" display="$ITEM_NAME is here"/>
+			<ITEM class="GenChair"  name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is here"/>
+			<ITEM class="GenTable"  name="(a(n)) $adj_fancy desk" display="$ITEM_NAME is here"/>
 			<ITEM class="GenContainer" name="The wardens chest" display="The wardens chest is here" HASLID="true" HASLOCK="false">
 				<CONTENT>
 					<ITEM select="all" insert="dungeon_treasure_items" />
@@ -783,11 +787,44 @@ Required details: "id" "value"
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>a shop.</DESCRIPTION>
+					<DESCRIPTION>This is the $tidy_word $adj_phys_size_large $shoptype shop of $patronname.</DESCRIPTION>
+					<DESCRIPTION>This is the $tidy_word $shoptype shop of $patronname.</DESCRIPTION>
+					<DESCRIPTION>This is the $tidy_word $adj_phys_size_small $shoptype shop of $patronname.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $patronname is $tidy_word and $adj_phys_size_large.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $patronname is $adj_phys_size_small and $tidy_word.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $patronname is $tidy_word.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
+					<DESCRIPTION>${c:pshoptypes} line shelves and racks throughout the store.</DESCRIPTION>
+					<DESCRIPTION>${c:pshoptypes} are stacked on shelves and racks all over the place.</DESCRIPTION>
+					<DESCRIPTION>${c:pshoptypes} are lined on shelves and racks behind the counter.</DESCRIPTION>
+					<DESCRIPTION>${c:pshoptypes} are piled on tables and counters around the store.</DESCRIPTION>
+					<DESCRIPTION>Shelves and racks all around the store are full of $pshoptypes.</DESCRIPTION>
+					<DESCRIPTION>Shelves and racks all around the store are lined with $pshoptypes.</DESCRIPTION>
+					<DESCRIPTION>Shelves and racks all around the store are piled with $pshoptypes.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
+					<DESCRIPTION select="any-1" condition="$shoptype='weapon' or $shoptype='armor'">
+						<DESCRIPTION>Smoke from the $adj_burning forge stings your eyes.</DESCRIPTION>
+						<DESCRIPTION>A smoking forge in the back is bright with fire.</DESCRIPTION>
+						<DESCRIPTION>The $adj_burning heat from a forge lights the room.</DESCRIPTION>
+						<DESCRIPTION>The $adj_light store is lit from a adj_burning forge.</DESCRIPTION>
+						<DESCRIPTION>A $adj_burning forge can be seen in the back.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION select="any-1" condition="$shoptype='food'">
+						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION></DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION select="any-1" condition="$shoptype!='weapon' and $shoptype!='armor' and $shoptype!='food'">
+						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION></DESCRIPTION>
+					</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
@@ -890,11 +927,11 @@ Required details: "id" "value"
 			<TITLE>a $nasty_picked_race nursury</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. This place is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. Conditions here are $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. It is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
-					<DESCRIPTION>You are confused by (a(n)) $dungeonadj_phys_size $nasty_picked_race nursury. Everything here is $dungeonadj_phys_nosize and $nasty_word.</DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size $nasty_picked_race nursury. Everything here is $adj_phys_nosize and $nasty_word.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_phys_size $nasty_picked_race nursury. This place is $adj_phys_nosize and $nasty_word.</DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_phys_size $nasty_picked_race nursury. Conditions here are $adj_phys_nosize and $nasty_word.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size $nasty_picked_race nursury. It is $adj_phys_nosize and $nasty_word.</DESCRIPTION>
+					<DESCRIPTION>You are confused by (a(n)) $adj_phys_size $nasty_picked_race nursury. Everything here is $adj_phys_nosize and $nasty_word.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>It`s amazing those creatures ever see adulthood.</DESCRIPTION>
@@ -903,7 +940,7 @@ Required details: "id" "value"
 					<DESCRIPTION>You discover that ${nasty_picked_race}s start off smaller and meaner.</DESCRIPTION>
 					<DESCRIPTION>It is just astonishing that ${nasty_picked_race}s live past this age. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_badsmell</DESCRIPTION>
+				<DESCRIPTION select="any-1">$random_badsmell</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -1024,10 +1061,10 @@ Required details: "id" "value"
 			<TITLE>a $nasty_picked_race workshop</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $dungeonadj_phys_size $nasty_picked_race workshop.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size $nasty_picked_race workshop. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $dungeonadj_phys_size $nasty_picked_race workshop. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size $nasty_picked_race workshop. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size $nasty_picked_race workshop.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_phys_size $nasty_picked_race workshop. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_phys_size $nasty_picked_race workshop. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size $nasty_picked_race workshop. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Trap-Making implements are all over the place.</DESCRIPTION>
@@ -1160,7 +1197,10 @@ Required details: "id" "value"
 				<ITEM class="metacraft:anything<$level_range" />
 			</ITEM>
 			<MOB select="all" insert="$dungeon_rat" condition="1?2=1" />
-			<EXIT class="LockedDoor"  text="$areaname storekey"/>
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" hasalock="true" deflocked="true" disposition="ISHIDDEN" keyname="$areaname storekey"/>
+				<EXIT pickweight=2 class="GenDoor" hasalock="true" deflocked="true" keyname="$areaname storekey"/>
+			</EXIT>
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
@@ -1184,7 +1224,7 @@ Required details: "id" "value"
 					<DESCRIPTION>This can't be a good place to be. </DESCRIPTION>
 					<DESCRIPTION>You can't imagine a more disgusting spot to be standing in. </DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION select="any-1">$dungeon_random_badsmell</DESCRIPTION>
+				<DESCRIPTION select="any-1">$random_badsmell</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -1309,7 +1349,10 @@ Required details: "id" "value"
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>			
-			<EXIT class="Door" />
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
+				<EXIT pickweight=2 class="GenDoor"/>
+			</EXIT>
 			<MOB select="repeat-1?2" insert="nasty_lair_guard" />
 			<ITEM class="GenFoodResource" id="kobold_egg" name="some $nasty_word kobold eggs" display="$item_name are here" material="EGGS" />
 			<ITEM select="2?13" insert="kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg" />
@@ -1432,10 +1475,10 @@ Required details: "id" "value"
 			<TITLE>a laboratory</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $dungeonadj_feeling laboratory.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $dungeonadj_feeling laboratory. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $dungeonadj_feeling laboratory. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_feeling laboratory.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_feeling laboratory. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are everywhere.</DESCRIPTION>
@@ -1452,7 +1495,10 @@ Required details: "id" "value"
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
-			<EXIT class="LockedDoor" text="$areaname labkey" />
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" hasalock="true" deflocked="true" disposition="ISHIDDEN" keyname="$areaname labkey"/>
+				<EXIT pickweight=2 class="GenDoor" hasalock="true" deflocked="true" keyname="$areaname labkey"/>
+			</EXIT>
 			<MOB class="GenMob" level="(1.20 * ($level_range)) + 1" race="_humanoid_races" gender="$anygender">
 				<NAME>doctor $fantasy_name</NAME>
 				<DISPLAY select="pick-1">
@@ -1474,17 +1520,17 @@ Required details: "id" "value"
 				</BEHAVIOR>
 				<ITEM select="pick-1?2">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $dungeonadj_fancy pointy hat</NAME><NAME>(a(n)) $dungeonadj_fancy hat</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_fancy pointy hat</NAME><NAME>(a(n)) $adj_fancy hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $dungeonadj_fancy sparkling robe</NAME><NAME>(a(n)) $dungeonadj_fancy robe</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_fancy sparkling robe</NAME><NAME>(a(n)) $adj_fancy robe</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO,LEGS,ARMS</PROPERWORN>
 					</ITEM>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenStaff" LEVEL="$mob_level">
-						<NAME>(a(n)) $dungeonadj_fancy staff</NAME>
+						<NAME>(a(n)) $adj_fancy staff</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>STAFF</WEAPONCLASS>
@@ -1508,10 +1554,10 @@ Required details: "id" "value"
 			<TITLE>a hatchery</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $dungeonadj_feeling dragon hatchery.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $dungeonadj_feeling dragon hatchery. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $dungeonadj_feeling dragon hatchery. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_feeling dragon hatchery. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_feeling dragon hatchery.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_feeling dragon hatchery. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_feeling dragon hatchery. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_feeling dragon hatchery. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Large eggs are set carefully about the room.</DESCRIPTION>
@@ -1557,7 +1603,7 @@ Required details: "id" "value"
 					<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
 				</ABILITY>
 			</MOB>
-			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="a $dungeonadj_feeling dragon egg" display="$item_name is here" material="EGGS" />
+			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="a $adj_feeling dragon egg" display="$item_name is here" material="EGGS" />
 			<ITEM select="2?5" insert="dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg" />
 			<EXIT class="Open" />
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
@@ -1566,10 +1612,10 @@ Required details: "id" "value"
 			<TITLE>a dragon's lair</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $dungeonadj_feeling dragon's lair.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $dungeonadj_feeling dragon's lair. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $dungeonadj_feeling dragon's lair. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_feeling dragon's lair. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_feeling dragon's lair.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_feeling dragon's lair. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_feeling dragon's lair. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_feeling dragon's lair. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
@@ -1651,14 +1697,17 @@ Required details: "id" "value"
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You feel the $dungeonadj_general shadow of death here.</DESCRIPTION>
-					<DESCRIPTION>The smell of $dungeonadj_general decay hangs like a fog.</DESCRIPTION>
-					<DESCRIPTION>The $dungeonadj_general aura of the afterlife has found a home here.</DESCRIPTION>
-					<DESCRIPTION>The cold feelings of $dungeonadj_general decay have found no rest here.</DESCRIPTION>
+					<DESCRIPTION>You feel the $adj_general shadow of death here.</DESCRIPTION>
+					<DESCRIPTION>The smell of $adj_general decay hangs like a fog.</DESCRIPTION>
+					<DESCRIPTION>The $adj_general aura of the afterlife has found a home here.</DESCRIPTION>
+					<DESCRIPTION>The cold feelings of $adj_general decay have found no rest here.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
-			<EXIT class="Open" />
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
+				<EXIT pickweight=2 class="GenDoor"/>
+			</EXIT>
 			<MOB select="repeat-1?2" insert="dungeon_zombie" />
 			<MOB select="any-1" insert="dungeon_mummy" />
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
@@ -1681,7 +1730,10 @@ Required details: "id" "value"
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>
-			<EXIT class="Door" />
+			<EXIT select="pick-1">
+				<EXIT pickweight=1 class="GenDoor" disposition="ISHIDDEN"/>
+				<EXIT pickweight=2 class="GenDoor"/>
+			</EXIT>
 			<AFFECT class="Prop_RoomDark" />
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
@@ -1873,18 +1925,18 @@ Required details: "id" "value"
 <STRING id="dungeon_random_blurb" select="any-1">
 	<STRING id="dungeon_random_blurbs" select="all">
 		<STRING select="any-1">
-			<STRING>The $dungeonadj_any walls are nearly pitch black.</STRING>
-			<STRING>The walls here are $dungeonadj_any.</STRING>
-			<STRING>The walls are $dungeonadj_any.</STRING>
-			<STRING>The walls are $dungeonadj_any and just slightly $dungeonadj_any.</STRING>
-			<STRING>The $dungeonadj_any walls are tall and sheer.</STRING>
+			<STRING>The $adj_any walls are nearly pitch black.</STRING>
+			<STRING>The walls here are $adj_any.</STRING>
+			<STRING>The walls are $adj_any.</STRING>
+			<STRING>The walls are $adj_any and just slightly $adj_any.</STRING>
+			<STRING>The $adj_any walls are tall and sheer.</STRING>
 		</STRING>
 		<STRING select="any-1">
-			<STRING>The $dungeonadj_any floor has been worn down by years of use.</STRING>
-			<STRING>The floor is $dungeonadj_any and appears unscathed by mass footfall.</STRING>
-			<STRING>The $dungeonadj_any floor is bare and dirtless.</STRING>
+			<STRING>The $adj_any floor has been worn down by years of use.</STRING>
+			<STRING>The floor is $adj_any and appears unscathed by mass footfall.</STRING>
+			<STRING>The $adj_any floor is bare and dirtless.</STRING>
 			<STRING>The floor has bits of bones and rotten flesh.</STRING>
-			<STRING>The $dungeonadj_any floor has bits of rotten and half-eaten animal parts.</STRING>
+			<STRING>The $adj_any floor has bits of rotten and half-eaten animal parts.</STRING>
 			<STRING>Earthly spines jut out from the ceiling and the floor.</STRING>
 			<STRING>Sharp pointed rocks on the ceiling and floor provide plenty of navigational obstacles.</STRING>
 		</STRING>
@@ -1894,84 +1946,86 @@ Required details: "id" "value"
 		<STRING>You might have just stepped on a frog.</STRING>
 		<STRING>Something indescribable makes you feel lonesome and sad here.</STRING>
 		<STRING select="any-1">
-			<STRING>The $dungeonadj_any ceiling is too far above you to see clearly.</STRING>
-			<STRING>The ceiling is $dungeonadj_any.</STRING>
-			<STRING>The $dungeonadj_any ceiling is unsettling.</STRING>
+			<STRING>The $adj_any ceiling is too far above you to see clearly.</STRING>
+			<STRING>The ceiling is $adj_any.</STRING>
+			<STRING>The $adj_any ceiling is unsettling.</STRING>
 		</STRING>
 		<STRING select="any-1">
 			<STRING>A layer of dirt upon the ground is marked with various tracks.</STRING>
 			<STRING>Dust has settled on the ground from scarce use.</STRING>
 		</STRING>
 		<STRING condition="1?10 &lt;= 2">
-			<STRING select="any-1"  id="dungeon_random_badsmell">
-				<STRING select="all" id="dungeon_random_badsmells">
+			<STRING select="any-1"  id="random_badsmell">
+				<STRING select="all" id="random_badsmells">
 					<STRING>The stench is quite unbearable.</STRING>
 					<STRING>A musty, dank smell wafts through the air.</STRING>
 					<STRING>You think you smell brimstone.</STRING>
 					<STRING>The first thing you notice is the stench.</STRING>
 					<STRING>The stink in here is horrible.</STRING>
+					<STRING>The foul smells here are overwhelming.</STRING>
+					<STRING>You detect offensive odors all around..</STRING>
 				</STRING>
 			</STRING>
 		</STRING>
 		<STRING select="any-1">
-			<STRING>The air is $dungeonadj_nonphys.</STRING>
-			<STRING>$dungeonadj_nonphys air hovers around you.</STRING>
-			<STRING>This air is $dungeonadj_nonphys and $dungeonadj_nonphys.</STRING>
-			<STRING>The air is not quite as $dungeonadj_nonphys here.</STRING>
+			<STRING>The air is $adj_nonphys.</STRING>
+			<STRING>$adj_nonphys air hovers around you.</STRING>
+			<STRING>This air is $adj_nonphys and $adj_nonphys.</STRING>
+			<STRING>The air is not quite as $adj_nonphys here.</STRING>
 		</STRING>
-		<STRING>This place is $dungeonadj_anynosize.</STRING>
-		<STRING>You feel $dungeonadj_nonphys.</STRING>
+		<STRING>This place is $adj_anynosize.</STRING>
+		<STRING>You feel $adj_nonphys.</STRING>
 		<STRING>You thought you felt a breeze.</STRING>
 		<STRING select="any-1">
 			<STRING>You think you heard a sound of faint trickling in the distance.</STRING>
 			<STRING>The walls seems to groan.</STRING>
-			<STRING>Faint $dungeonadj_feeling sounds can be heard in the distance.</STRING>
+			<STRING>Faint $adj_feeling sounds can be heard in the distance.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='prison' or ($theme='random' and 1?10=1)">
-			<STRING>You are certain you just heard (a(n)) $dungeonadj_feeling scream coming from somewhere.</STRING>
-			<STRING>You can hear the $dungeonadj_feeling sounds of human suffering.</STRING>
-			<STRING>You hear $dungeonadj_feeling tortured screams in the distance.</STRING>
-			<STRING>You hear $dungeonadj_feeling screams of suffering in the distance.</STRING>
-			<STRING>You hear $dungeonadj_feeling sounds coming from all around you.</STRING>
-			<STRING>You hear $dungeonadj_feeling sounds coming from all around you.</STRING>
+			<STRING>You are certain you just heard (a(n)) $adj_feeling scream coming from somewhere.</STRING>
+			<STRING>You can hear the $adj_feeling sounds of human suffering.</STRING>
+			<STRING>You hear $adj_feeling tortured screams in the distance.</STRING>
+			<STRING>You hear $adj_feeling screams of suffering in the distance.</STRING>
+			<STRING>You hear $adj_feeling sounds coming from all around you.</STRING>
+			<STRING>You hear $adj_feeling sounds coming from all around you.</STRING>
 			<STRING>You wonder if an execution occurred here.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='goblins' or ($theme='random' and 1?10=1)">
-			<STRING>You hear $dungeonadj_feeling snickering nearby.</STRING>
-			<STRING>You hear the $dungeonadj_feeling sounds of pattering feet nearby.</STRING>
-			<STRING>You hear faint but $dungeonadj_feeling squealing sounds echoing around you.</STRING>
+			<STRING>You hear $adj_feeling snickering nearby.</STRING>
+			<STRING>You hear the $adj_feeling sounds of pattering feet nearby.</STRING>
+			<STRING>You hear faint but $adj_feeling squealing sounds echoing around you.</STRING>
 			<STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
-			<STRING>It smells like something $dungeonadj_feeling died in here.</STRING>
+			<STRING>It smells like something $adj_feeling died in here.</STRING>
 			<STRING>Bits of a sprung trap are splayed about.</STRING>
-			<STRING>Several faint $dungeonadj_feeling squealing voices echo in the distance.</STRING>
+			<STRING>Several faint $adj_feeling squealing voices echo in the distance.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='orcs' or ($theme='random' and 1?10=1)">
-			<STRING>You hear $dungeonadj_feeling voices nearby.</STRING>
-			<STRING>You hear the $dungeonadj_feeling sounds of marching feet nearby.</STRING>
-			<STRING>You hear faint but $dungeonadj_feeling shouting voices echoing around you.</STRING>
+			<STRING>You hear $adj_feeling voices nearby.</STRING>
+			<STRING>You hear the $adj_feeling sounds of marching feet nearby.</STRING>
+			<STRING>You hear faint but $adj_feeling shouting voices echoing around you.</STRING>
 			<STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
-			<STRING>It smells like something $dungeonadj_feeling died in here.</STRING>
+			<STRING>It smells like something $adj_feeling died in here.</STRING>
 			<STRING>Bits of a dead $_humanoid_races are splayed about.</STRING>
-			<STRING>Several faint $dungeonadj_feeling argueing voices echo in the distance.</STRING>
+			<STRING>Several faint $adj_feeling argueing voices echo in the distance.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='trolls' or ($theme='random' and 1?10=1)">
-			<STRING>You hear $dungeonadj_feeling growling nearby.</STRING>
-			<STRING>You hear the $dungeonadj_feeling sounds of heavy footsteps nearby.</STRING>
-			<STRING>You hear faint but $dungeonadj_feeling loud cries echoing around you.</STRING>
+			<STRING>You hear $adj_feeling growling nearby.</STRING>
+			<STRING>You hear the $adj_feeling sounds of heavy footsteps nearby.</STRING>
+			<STRING>You hear faint but $adj_feeling loud cries echoing around you.</STRING>
 			<STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
-			<STRING>It smells like something $dungeonadj_feeling died in here.</STRING>
+			<STRING>It smells like something $adj_feeling died in here.</STRING>
 			<STRING>Bits of a dead $_humanoid_races are splayed about.</STRING>
-			<STRING>Several faint $dungeonadj_feeling gutteral voices echo in the distance.</STRING>
+			<STRING>Several faint $adj_feeling gutteral voices echo in the distance.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='rats' or ($theme='random' and 1?10=1)">
-			<STRING>You hear $dungeonadj_feeling squeeking nearby.</STRING>
-			<STRING>You hear the $dungeonadj_feeling sounds of tiny pattering feet nearby.</STRING>
-			<STRING>You hear faint but $dungeonadj_feeling animal sounds echoing around you.</STRING>
+			<STRING>You hear $adj_feeling squeeking nearby.</STRING>
+			<STRING>You hear the $adj_feeling sounds of tiny pattering feet nearby.</STRING>
+			<STRING>You hear faint but $adj_feeling animal sounds echoing around you.</STRING>
 			<STRING>Something has left droppings here.</STRING>
-			<STRING>Some $dungeonadj_feeling creature obviously relieved itself here.</STRING>
+			<STRING>Some $adj_feeling creature obviously relieved itself here.</STRING>
 			<STRING>Bits of half-eaten trash can be seen around here.</STRING>
 			<STRING>Bits of some half-eaten creature are here.</STRING>
-			<STRING>Was that the sound of something $dungeonadj_feeling?</STRING>
+			<STRING>Was that the sound of something $adj_feeling?</STRING>
 		</STRING>
 	</STRING>
 </STRING>
@@ -3105,21 +3159,22 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	<STRING>Wolf</STRING>
 </STRING>
 
-<STRING id="dungeonadj_phys_size" select="any-1">
-	<STRING id="dungeonadj_phys_size_values" insert="dungeonadj_phys_size_large_values,dungeonadj_phys_size_small_values" />
+<STRING id="adj_phys_size" select="any-1">
+	<STRING id="adj_phys_size_values" insert="adj_phys_size_large_values,adj_phys_size_small_values" />
 </STRING>
-<STRING id="dungeonadj_phys_size_large" select="any-1">
-	<STRING id="dungeonadj_phys_size_large_values">
+<STRING id="adj_phys_size_large" select="any-1">
+	<STRING id="adj_phys_size_large_values">
 		<STRING>huge</STRING>
 		<STRING>broad</STRING>
 		<STRING>wide</STRING>
 		<STRING>large</STRING>
 		<STRING>spacious</STRING>
 		<STRING>expansive</STRING>
+		<STRING>roomy</STRING>
 	</STRING>
 </STRING>
-<STRING id="dungeonadj_phys_size_small" select="any-1">
-	<STRING id="dungeonadj_phys_size_small_values">
+<STRING id="adj_phys_size_small" select="any-1">
+	<STRING id="adj_phys_size_small_values">
 		<STRING>narrow</STRING>
 		<STRING>cramped</STRING>
 		<STRING>tight</STRING>
@@ -3127,8 +3182,8 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 		<STRING>constricted</STRING>
 	</STRING>
 </STRING>
-<STRING id="dungeonadj_phys_nosize" select="any-1">
-	<STRING id="dungeonadj_phys_nosize_values">
+<STRING id="adj_phys_nosize" select="any-1">
+	<STRING id="adj_phys_nosize_values">
 		<STRING>jagged</STRING>
 		<STRING>smooth</STRING>
 		<STRING>rocky</STRING>
@@ -3162,6 +3217,23 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	</STRING>
 </STRING>
 
+<STRING id="tidy_word" select="any-1">
+	<STRING id="tidy_word_values" select="all">
+		<STRING>clean</STRING>
+		<STRING>neat</STRING>
+		<STRING>nice</STRING>
+		<STRING>fragrant</STRING>
+		<STRING>lovely</STRING>
+		<STRING>pleasant</STRING>
+		<STRING>mundane</STRING>
+		<STRING>cheery</STRING>
+		<STRING>peaceful</STRING>
+		<STRING>bustling</STRING>
+		<STRING>warm</STRING>
+		<STRING>tidy</STRING>
+	</STRING>
+</STRING>
+	
 <STRING id="nasty_animal_word" select="any-1" insert="nasty_word_values">
 	<STRING>oversized</STRING>
 	<STRING>runt</STRING>
@@ -3185,8 +3257,8 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	<STRING>oversized</STRING>
 </STRING>
 
-<STRING id="dungeonadj_feeling" select="any-1" >
-	<STRING id="dungeonadj_feeling_values">
+<STRING id="adj_feeling" select="any-1" >
+	<STRING id="adj_feeling_values">
 		<STRING>ghastly</STRING>
 		<STRING>unpleasant</STRING>
 		<STRING>creepy</STRING>
@@ -3204,8 +3276,8 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	</STRING>
 </STRING>
 
-<STRING id="dungeonadj_general" select="any-1">
-	<STRING id="dungeonadj_general_values">
+<STRING id="adj_general" select="any-1">
+	<STRING id="adj_general_values">
 		<STRING>dank</STRING>
 		<STRING>quiet</STRING>
 		<STRING>musty</STRING>
@@ -3220,8 +3292,8 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	</STRING>
 </STRING>
 
-<STRING id="dungeonadj_dark" select="any-1">
-	<STRING id="dungeonadj_dark_values">
+<STRING id="adj_dark" select="any-1">
+	<STRING id="adj_dark_values">
 		<STRING>dark</STRING>
 		<STRING>black</STRING>
 		<STRING>unlit</STRING>
@@ -3234,10 +3306,9 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	</STRING>
 </STRING>
 
-<STRING id="dungeonadj_light" select="any-1">
-	<STRING id="dungeonadj_light_values">
+<STRING id="adj_light" select="any-1">
+	<STRING id="adj_light_values">
 		<STRING>bright</STRING>
-		<STRING>light</STRING>
 		<STRING>well lit</STRING>
 		<STRING>illuminated</STRING>
 		<STRING>candescent</STRING>
@@ -3246,8 +3317,20 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	</STRING>
 </STRING>
 
-<STRING id="dungeonadj_fancy" select="any-1">
-	<STRING id="dungeonadj_fancy_values">
+<STRING id="adj_burning" select="any-1">
+	<STRING id="adj_burning_values">
+		<STRING>burning</STRING>
+		<STRING>flaming</STRING>
+		<STRING>scorching hot</STRING>
+		<STRING>extremely hot</STRING>
+		<STRING>blazing</STRING>
+		<STRING>smoldering</STRING>
+		<STRING>scalding hot</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_fancy" select="any-1">
+	<STRING id="adj_fancy_values">
 		<STRING>posh</STRING>
 		<STRING>fancy</STRING>
 		<STRING>comfortable</STRING>
@@ -3389,17 +3472,17 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 </STRING>
 
 <STRING id="next_shop_type" select="any-1">
-<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1">weapon</STRING>
-<STRING condition="$__numshoptypes_armor &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_armor+=1,__numshoptypes_all+=1">armor</STRING>
-<STRING condition="$__numshoptypes_leather &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_leather+=1,__numshoptypes_all+=1">leather</STRING>
-<STRING condition="$__numshoptypes_cloth &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_cloth+=1,__numshoptypes_all+=1">tailor</STRING>
-<STRING condition="$__numshoptypes_food &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_food+=1,__numshoptypes_all+=1">food</STRING>
-<STRING condition="$__numshoptypes_general &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_general+=1,__numshoptypes_all+=1">general</STRING>
-<STRING condition="$__numshoptypes_wood &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_wood+=1,__numshoptypes_all+=1">wood</STRING>
-<STRING condition="$__numshoptypes_magic &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_magic+=1,__numshoptypes_all+=1">magic</STRING>
-<STRING condition="$__numshoptypes_potion &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_potion+=1,__numshoptypes_all+=1">potion</STRING>
-<STRING condition="$__numshoptypes_jewelry &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_jewelry+=1,__numshoptypes_all+=1">jewelry</STRING>
-<STRING condition="$__numshoptypes_pet &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_pet+=1,__numshoptypes_all+=1">pet</STRING>
+<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1,pshoptypes=weapons">weapon</STRING>
+<STRING condition="$__numshoptypes_armor &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_armor+=1,__numshoptypes_all+=1,pshoptypes=armor">armor</STRING>
+<STRING condition="$__numshoptypes_leather &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_leather+=1,__numshoptypes_all+=1,pshoptypes=leather goods">leather</STRING>
+<STRING condition="$__numshoptypes_cloth &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_cloth+=1,__numshoptypes_all+=1,pshoptypes=clothes">tailor</STRING>
+<STRING condition="$__numshoptypes_food &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_food+=1,__numshoptypes_all+=1,pshoptypes=baked goods">food</STRING>
+<STRING condition="$__numshoptypes_general &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_general+=1,__numshoptypes_all+=1,pshoptypes=all kinds of things">general</STRING>
+<STRING condition="$__numshoptypes_wood &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_wood+=1,__numshoptypes_all+=1,pshoptypes=wooden items">wood</STRING>
+<STRING condition="$__numshoptypes_magic &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_magic+=1,__numshoptypes_all+=1,pshoptypes=magical items">magic</STRING>
+<STRING condition="$__numshoptypes_potion &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_potion+=1,__numshoptypes_all+=1,pshoptypes=potions">potion</STRING>
+<STRING condition="$__numshoptypes_jewelry &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_jewelry+=1,__numshoptypes_all+=1,pshoptypes=jewels">jewelry</STRING>
+<STRING condition="$__numshoptypes_pet &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_pet+=1,__numshoptypes_all+=1,pshoptypes=boxes of animals">pet</STRING>
 
 </STRING>
 
@@ -3525,10 +3608,10 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 <STRING pickweight=1 define="dragon_alignment=-10000">gold</STRING>
 </STRING>
 
-<STRING id="dungeonadj_anynosize" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_nosize_values" />
-<STRING id="dungeonadj_nonphys" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values" />
-<STRING id="dungeonadj_phys" select="any-1" insert="dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
-<STRING id="dungeonadj_any" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
+<STRING id="adj_anynosize" select="any-1" insert="adj_general_values,adj_feeling_values,adj_phys_nosize_values" />
+<STRING id="adj_nonphys" select="any-1" insert="adj_general_values,adj_feeling_values" />
+<STRING id="adj_phys" select="any-1" insert="adj_phys_size_values,adj_phys_nosize_values" />
+<STRING id="adj_any" select="any-1" insert="adj_general_values,adj_feeling_values,adj_phys_size_values,adj_phys_nosize_values" />
 
 <STRING id="fantasy_name" select="any-1">
 	<STRING id="fantasy_name_values" select="all">
