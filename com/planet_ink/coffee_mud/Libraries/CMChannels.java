@@ -96,6 +96,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		&&(CMLib.masking().maskCheck(chan.mask,M,true))
 		&&((!areaReq)
 		   ||(sender.location()==null)
+		   ||(R==null)
 		   ||(R.getArea()==sender.location().getArea()))
 		&&(!CMath.isSet(pstats.getChannelMask(),i)))
 			return true;

@@ -85,8 +85,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 		switch(getCodeNum(code))
 		{
 		case 0: break;
-		case 1: friends=getHashFrom(val); break;
-		case 2: ignored=getHashFrom(val); break;
+		case 1: { friends.clear(); friends.addAll(getHashFrom(val)); break; }
+		case 2: { ignored.clear(); ignored.addAll(getHashFrom(val)); break; }
 		case 3: lastIP=val; break;
 		case 4: lastDateTime=CMath.s_long(val); break;
 		case 5: notes=val; break;

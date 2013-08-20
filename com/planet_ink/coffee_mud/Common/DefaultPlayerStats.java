@@ -135,8 +135,8 @@ public class DefaultPlayerStats implements PlayerStats
 		switch(getCodeNum(code))
 		{
 		case 0: break;
-		case 1: friends=getHashFrom(val); break;
-		case 2: ignored=getHashFrom(val); break;
+		case 1: { friends.clear(); friends.addAll(getHashFrom(val)); break; }
+		case 2: { ignored.clear(); ignored.addAll(getHashFrom(val)); break; }
 		case 3: setTitleXML(CMLib.xml().parseAllXML(val)); break;
 		case 4: setAliasXML(CMLib.xml().parseAllXML(val)); break;
 		case 5: lastIP=val; break;
@@ -153,7 +153,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 16: wrap=CMath.s_int(val); break;
 		case 17: setBirthday(val); break;
 		case 18: accountExpires=CMath.s_long(val); break;
-		case 19: introductions=getHashFrom(val); break;
+		case 19: { introductions.clear(); introductions.addAll(getHashFrom(val)); break; }
 		case 20: pageBreak=CMath.s_int(val); break;
 		case 21: savedPose=val; break;
 		case 22: theme=CMath.s_int(val); break;
@@ -623,13 +623,16 @@ public class DefaultPlayerStats implements PlayerStats
 		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(xmlStr);
 		String str=CMLib.xml().getValFromPieces(xml,"FRIENDS");
 		if(debug) Log.debugOut("FRIENDS="+str);
-		friends=getHashFrom(str);
+		friends.clear();
+		friends.addAll(getHashFrom(str));
 		str=CMLib.xml().getValFromPieces(xml,"IGNORED");
 		if(debug) Log.debugOut("IGNORED="+str);
-		ignored=getHashFrom(str);
+		ignored.clear();
+		ignored.addAll(getHashFrom(str));
 		str=CMLib.xml().getValFromPieces(xml,"INTROS");
 		if(debug) Log.debugOut("INTROS="+str);
-		introductions=getHashFrom(str);
+		introductions.clear();
+		introductions.addAll(getHashFrom(str));
 		str=CMLib.xml().getValFromPieces(xml, "THEME");
 		if(debug) Log.debugOut("THEME="+str);
 		if(CMath.isInteger(str))
