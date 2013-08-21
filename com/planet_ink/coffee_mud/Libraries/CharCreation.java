@@ -2529,7 +2529,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return null;
 		}
 		else
-		if((qualClassesV.size()==1)||(session.isStopped()))
+		if((qualClassesV.size()==1)||(session==null)||(session.isStopped()))
 		{
 			mob.baseCharStats().setCurrentClass(qualClassesV.get(0));
 			loginObj.state=LoginState.CHARCR_CLASSDONE;
