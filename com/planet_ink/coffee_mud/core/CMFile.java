@@ -193,7 +193,7 @@ public class CMFile extends File
 		boolean doesFilenameExistInVFS=(info!=null) && (info.path.equalsIgnoreCase(absolutePath) || info.path.equalsIgnoreCase(absolutePath+"/"));
 		boolean doesExistAsPathInVFS= (info!=null) && doesFilenameExistInVFS && ((info instanceof CMVFSDir)||(CMath.bset(info.mask, CMFile.VFS_MASK_DIRECTORY)));
 		if((info!=null)&&(!doesFilenameExistInVFS))
-			Log.debugOut(new Exception("CMFile '"+absolutePath+"' != '"+info.path+"' fetch/create error."));
+			Log.debugOut(new Exception("CMFile sent: '"+absolutePath+"' != vfs found:'"+info.path+"' fetch/create error."));
 
 		boolean isADirectory=((localFile!=null)&&(localFile.exists())&&(localFile.isDirectory()))
 						   ||doesExistAsPathInVFS;
