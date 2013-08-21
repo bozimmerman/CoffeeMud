@@ -246,7 +246,7 @@ Required details: "id" "value"
 <AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random">
 	<NAME>$areaname</NAME><SIZE>$areasize</SIZE>
 	<CLASS select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
-	<ROOM id="dungeon_rooms" insert="dungeon_hallways,dungeon_interior,dungeon_leaf" />
+	<ROOM id="dungeon_rooms" insert="dungeon_hallways,dungeon_interior,leaf_rooms" />
 	<BEHAVIOR select="all" id="dungeon_behaviors">
 		<BEHAVIOR condition="$theme='kobolds' or $theme='goblins'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
 		<BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
@@ -416,7 +416,7 @@ Required details: "id" "value"
 	<STRING select="all" insert="dungeon_other_exits" action="APPEND" />
 </STRING>
 
-<ROOM id="dungeon_leaf" select="any-1" condition="$roomtag_nodetype='leaf'">
+<ROOM id="leaf_rooms" select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM select="all" condition="$theme='prison' or $theme='random'">
 		<ROOM class="CaveRoom">
 			<TITLE>(a(n)) $nasty_word prison cell</TITLE>
@@ -812,20 +812,25 @@ Required details: "id" "value"
 						<DESCRIPTION>A $adj_burning forge can be seen in the back.</DESCRIPTION>
 					</DESCRIPTION>
 					<DESCRIPTION select="any-1" condition="$shoptype='food'">
-						<DESCRIPTION></DESCRIPTION>
-						<DESCRIPTION></DESCRIPTION>
-						<DESCRIPTION></DESCRIPTION>
-						<DESCRIPTION></DESCRIPTION>
-						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION>Sweat and spicy spells from the ovens float around the room.</DESCRIPTION>
+						<DESCRIPTION>A thin layer of flour coats the floor.</DESCRIPTION>
+						<DESCRIPTION>Delicious smells can be detected from the cooking area.</DESCRIPTION>
+						<DESCRIPTION>Your mouth begins to water just being here.</DESCRIPTION>
+						<DESCRIPTION>You can almost taste all the great smells in here.</DESCRIPTION>
 					</DESCRIPTION>
 					<DESCRIPTION select="any-1" condition="$shoptype!='weapon' and $shoptype!='armor' and $shoptype!='food'">
-						<DESCRIPTION></DESCRIPTION>
-						<DESCRIPTION></DESCRIPTION>
-						<DESCRIPTION></DESCRIPTION>
-						<DESCRIPTION></DESCRIPTION>
-						<DESCRIPTION></DESCRIPTION>
+						<DESCRIPTION>Tools, workbenches, and other clutter make it hard to get around.</DESCRIPTION>
+						<DESCRIPTION>Price tags seem to hang off everything.  Is this a garage sale?</DESCRIPTION>
+						<DESCRIPTION>You feel like this probably a honest place to shop.</DESCRIPTION>
+						<DESCRIPTION>The way the light catches the merchandise makes your wallet feel heavier.</DESCRIPTION>
+						<DESCRIPTION>There's so much here you feel you could probably spend all day.</DESCRIPTION>
+						<DESCRIPTION>You don't suppose this place gets visitors every day.</DESCRIPTION>
+						<DESCRIPTION>By the footprints on the floor, you guess this place sees lots of patrons.</DESCRIPTION>
+						<DESCRIPTION>The store is quaint and rustic, and it appears everything is bad on-premises.</DESCRIPTION>
+						<DESCRIPTION>The shop seems decorated rather exoticly for such mundane wares.</DESCRIPTION>
 					</DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION select="any-1" insert="store_sign_descs" />
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
 					<DESCRIPTION>The street is $roomexits_desc_long.</DESCRIPTION>
@@ -917,6 +922,90 @@ Required details: "id" "value"
 						<ITEM class="metacraft:all-mastercooking<$mob_level"/>
 						<ITEM class="metacraft:all-baking<$mob_level"/>
 						<ITEM class="metacraft:all-masterbaking<$mob_level"/>
+					</ITEM>
+				</SHOPINVENTORY>
+			</MOB>
+			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use 'list' to see what is for sale, 'view [itemname]' see more information, 'buy [itemname]' to buy something, or 'sell [itemname]' to try to sell something of yours." />
+		</ROOM>
+		<ROOM id="town_postoffice" class="WoodRoom"  condition="$__postoffice&lt;1" define="__postoffice+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Post Office</TITLE>
+				<TITLE>${c:areaname} Post Office</TITLE>
+				<TITLE>The ${c:areaname} Post</TITLE>
+				<TITLE>The Post Office</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $tidy_word $adj_phys_size_large ${c:areaname} Post Office.</DESCRIPTION>
+					<DESCRIPTION>This is the $tidy_word $adj_phys_size_small ${c:areaname} Post Office.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Post Office is $adj_phys_size_small and $tidy_word.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Post Office is $tidy_word.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Rows and stacks of boxes line the room awaiting delivery.</DESCRIPTION>
+					<DESCRIPTION>Piles of assorted mail lay untouched in the corners, collecting cobwebs.</DESCRIPTION>
+					<DESCRIPTION>A long counter divides the room in half, and ropes held keep the long lines of people in order.</DESCRIPTION>
+					<DESCRIPTION>Mailboxes line the walls along side an assortment of wanted posters.</DESCRIPTION>
+					<DESCRIPTION>A very outdated copy of the ${c:areaname} Most Wanted list hangs near the door.</DESCRIPTION>
+					<DESCRIPTION>Envelopes of all sizes are heaped into hugh piles around the room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Delivery men wander in and out carrying bags of mail.</DESCRIPTION>
+					<DESCRIPTION>This run down building is still quite busy with delivery boys and patrons.</DESCRIPTION>
+					<DESCRIPTION>Postmen are working hard sorting packages.</DESCRIPTION>
+					<DESCRIPTION>Several large crates have been pried open by curious postal workers.</DESCRIPTION>
+					<DESCRIPTION>For a slight fee, the postmaster will see that your letter is delivered promptly.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use 'list' to see what is in your box, 'deposit [itemname]' to mail an item, 'withdraw [itemname]' to remove an item." />
+			<ITEM class="GenWallpaper" name="WANTED posters wall" description="Faces of various known Killers and Thieves can barely be seen." />
+			<AFFECT class="Prop_ClosedDayNight" />
+			<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
+				<NAME select="any-1">
+					<NAME>Postal clerk ${c:patronname}</NAME>
+					<NAME>Postman ${c:patronname}</NAME>
+				</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is moving very slowly.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, rain or shine.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>(a(n)) postal uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) letter opener</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY>
+					<ITEM select="repeat-20">
+						<ITEM class="metacraft" name="a piece of paper"/>
 					</ITEM>
 				</SHOPINVENTORY>
 			</MOB>
@@ -3612,6 +3701,52 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 <STRING id="adj_nonphys" select="any-1" insert="adj_general_values,adj_feeling_values" />
 <STRING id="adj_phys" select="any-1" insert="adj_phys_size_values,adj_phys_nosize_values" />
 <STRING id="adj_any" select="any-1" insert="adj_general_values,adj_feeling_values,adj_phys_size_values,adj_phys_nosize_values" />
+
+<STRING id="street_word_1" select="any-1">
+	<STRING id="street_words_1" select="all">
+		<STRING>Amber</STRING><STRING>Auburn</STRING><STRING>Bent</STRING><STRING>Big</STRING><STRING>Birch</STRING>
+		<STRING>Blue</STRING><STRING>Bright</STRING><STRING>Broad</STRING><STRING>Burning</STRING><STRING>Calm</STRING>
+		<STRING>Cinder</STRING><STRING>Clear</STRING><STRING>Cold</STRING><STRING>Colonial</STRING><STRING>Cool</STRING>
+		<STRING>Cotton</STRING><STRING>Cozy</STRING><STRING>Crimson</STRING><STRING>Crystal</STRING><STRING>Dewy</STRING>
+		<STRING>Dusty</STRING><STRING>Easy</STRING><STRING>Emerald</STRING><STRING>Fallen</STRING><STRING>Foggy</STRING>
+		<STRING>Gentle</STRING><STRING>Golden</STRING><STRING>Grand</STRING><STRING>Green</STRING><STRING>Happy</STRING>
+		<STRING>Harvest</STRING><STRING>Hazy</STRING><STRING>Heather</STRING><STRING>Hidden</STRING><STRING>High</STRING>
+		<STRING>Honey</STRING><STRING>Hush</STRING><STRING>Indian</STRING><STRING>Iron</STRING><STRING>Ivory</STRING>
+		<STRING>Jagged</STRING><STRING>Lazy</STRING><STRING>Little</STRING><STRING>Lone</STRING><STRING>Lonely</STRING>
+		<STRING>Long</STRING><STRING>Lost</STRING><STRING>Merry</STRING><STRING>Middle</STRING><STRING>Misty</STRING>
+		<STRING>Noble</STRING><STRING>Old</STRING><STRING>Orange</STRING><STRING>Pearl</STRING><STRING>Pied</STRING>
+		<STRING>Pleasant</STRING><STRING>Pretty</STRING><STRING>Quaint</STRING><STRING>Quaking</STRING><STRING>Quiet</STRING>
+		<STRING>Red</STRING><STRING>Rocky</STRING><STRING>Rose</STRING><STRING>Rough</STRING><STRING>Round</STRING>
+		<STRING>Rustic</STRING><STRING>Sandy</STRING><STRING>Shady</STRING><STRING>Silent</STRING><STRING>Silver</STRING>
+		<STRING>Sleepy</STRING><STRING>Small</STRING><STRING>Square</STRING><STRING>Still</STRING><STRING>Stony</STRING>
+		<STRING>Strong</STRING><STRING>Sunny</STRING><STRING>Sweet</STRING><STRING>Tawny</STRING><STRING>Tender</STRING>
+		<STRING>Thunder</STRING><STRING>Turning</STRING><STRING>Twin</STRING><STRING>Umber</STRING><STRING>Velvet</STRING>
+		<STRING>White</STRING><STRING>Windy</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="street_word_2" select="any-1">
+	<STRING id="street_words_2" select="all">
+		<STRING>Acorn</STRING><STRING>Anchor</STRING><STRING>Apple</STRING><STRING>Autumn</STRING><STRING>Axe</STRING>
+		<STRING>Barn</STRING><STRING>Beacon</STRING><STRING>Bear</STRING><STRING>Beaver</STRING><STRING>Berry</STRING>
+		<STRING>Bird</STRING><STRING>Blossom</STRING><STRING>Bluff</STRING><STRING>Branch</STRING><STRING>Bridge</STRING>
+		<STRING>Brook</STRING><STRING>Butterfly</STRING><STRING>Butternut</STRING><STRING>Castle</STRING><STRING>Chestnut</STRING>
+		<STRING>Cider</STRING><STRING>Cloud</STRING><STRING>Cottage</STRING><STRING>Creek</STRING><STRING>Crow</STRING>
+		<STRING>Dale</STRING><STRING>Deer</STRING><STRING>Diamond</STRING><STRING>Dove</STRING><STRING>Elk</STRING>
+		<STRING>Elm</STRING><STRING>Embers</STRING><STRING>Fawn</STRING><STRING>Feather</STRING><STRING>Flower</STRING>
+		<STRING>Forest</STRING><STRING>Fox</STRING><STRING>Gate</STRING><STRING>Goat</STRING><STRING>Goose</STRING>
+		<STRING>Grove</STRING><STRING>Harbor</STRING><STRING>Hickory</STRING><STRING>Hills</STRING><STRING>Holly</STRING>
+		<STRING>Horse</STRING><STRING>Island</STRING><STRING>Lake</STRING><STRING>Lamb</STRING><STRING>Leaf</STRING>
+		<STRING>Log</STRING><STRING>Maple</STRING><STRING>Mill</STRING><STRING>Mountain</STRING><STRING>Nectar</STRING>
+		<STRING>Nest</STRING><STRING>Nut</STRING><STRING>Oak</STRING><STRING>Panda</STRING><STRING>Peach</STRING>
+		<STRING>Pebble</STRING><STRING>Pine</STRING><STRING>Pioneer</STRING><STRING>Pond</STRING><STRING>Pony</STRING>
+		<STRING>Prairie</STRING><STRING>Pumpkin</STRING><STRING>Quail</STRING><STRING>Rabbit</STRING><STRING>Rise</STRING>
+		<STRING>River</STRING><STRING>Robin</STRING><STRING>Rock</STRING><STRING>Shadow</STRING><STRING>Sky</STRING>
+		<STRING>Snake</STRING><STRING>Spring</STRING><STRING>Squirrel</STRING><STRING>Stone</STRING><STRING>Swan</STRING>
+		<STRING>Timber</STRING><STRING>Treasure</STRING><STRING>Turtle</STRING><STRING>View</STRING><STRING>Wagon</STRING>
+		<STRING>Willow</STRING><STRING>Zephyr</STRING>
+	</STRING>
+</STRING>
 
 <STRING id="fantasy_name" select="any-1">
 	<STRING id="fantasy_name_values" select="all">
