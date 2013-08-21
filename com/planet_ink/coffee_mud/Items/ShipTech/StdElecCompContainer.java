@@ -137,7 +137,10 @@ public class StdElecCompContainer extends StdElecContainer implements ShipCompon
 				&& activated() && (powerNeeds()>0) && (msg.value()>0))
 				{
 					double amtToTake=Math.min((double)powerNeeds(), (double)msg.value());
+					msg.setValue(msg.value()-(int)Math.round(amtToTake));
 					amtToTake *= getFinalManufacturer().getEfficiencyPct();
+					if(subjectToWearAndTear() && (usesRemaining()<=200))
+						amtToTake *= CMath.div(usesRemaining(), 100.0);
 					setPowerRemaining(Math.min(powerCapacity(), Math.round(amtToTake) + powerRemaining()));
 				}
 				break;

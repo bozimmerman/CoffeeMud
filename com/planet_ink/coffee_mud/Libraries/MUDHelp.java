@@ -923,11 +923,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					thisTag=rHelpFile.getProperty("NOCHANNEL");
 				else
 					thisTag=rHelpFile.getProperty("CHANNEL");
-				thisTag=CMStrings.replaceAll(thisTag,"[CHANNEL]",s.toUpperCase());
-				thisTag=CMStrings.replaceAll(thisTag,"[channel]",s.toLowerCase());
-				String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
-				thisTag=CMStrings.replaceAll(thisTag,"[EXTRA]",extra);
-				return new StringBuilder(thisTag);
+				if(thisTag != null)
+				{
+					thisTag=CMStrings.replaceAll(thisTag,"[CHANNEL]",s.toUpperCase());
+					thisTag=CMStrings.replaceAll(thisTag,"[channel]",s.toLowerCase());
+					String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
+					thisTag=CMStrings.replaceAll(thisTag,"[EXTRA]",extra);
+					return new StringBuilder(thisTag);
+				}
 			}
 		}
 		

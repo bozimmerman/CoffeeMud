@@ -80,7 +80,9 @@ public class StdCompBattery extends StdElecCompItem implements Electronics.Power
 				return;
 			case CMMsg.TYP_POWERCURRENT:
 				if(activated() 
-				&& ((Math.random() > super.getInstalledFactor())||(Math.random() > super.getFinalManufacturer().getReliabilityPct())) 
+				&& ((Math.random() > super.getInstalledFactor())
+					||(Math.random() > super.getFinalManufacturer().getReliabilityPct())
+					||((subjectToWearAndTear())&&(usesRemaining()<=100)&&(Math.random()>CMath.div(usesRemaining(), 100))))
 				&& (Math.random() > 0.9))
 				{
 					Room R=CMLib.map().roomLocation(this);

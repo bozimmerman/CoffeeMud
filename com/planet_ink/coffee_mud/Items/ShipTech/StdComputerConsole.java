@@ -66,6 +66,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 		setLidsNLocks(false,true,false,false);
 		capacity=50;
 		material=RawMaterial.RESOURCE_STEEL;
+		setUsesRemaining(100);
 		activate(true);
 		recoverPhyStats();
 	}
@@ -112,7 +113,7 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 	@Override
 	public boolean subjectToWearAndTear()
 	{
-		return true;
+		return((usesRemaining()<=1000)&&(usesRemaining()>=0));
 	}
 
 	public String putString(Rider R)
@@ -436,12 +437,25 @@ public class StdComputerConsole extends StdRideable implements ShipComponent, El
 						CMMsg msg2=CMClass.getMsg(msg.source(), null, null, CMMsg.NO_EFFECT,null,CMMsg.MSG_POWERCURRENT,null,CMMsg.NO_EFFECT,null);
 						synchronized(software)
 						{
-							for(Software sw : software)
+							if((Math.random()<getFinalManufacturer().getReliabilityPct()*getInstalledFactor())
+							&&(subjectToWearAndTear() && (Math.random() < CMath.div(usesRemaining(), 100))))
 							{
-								msg2.setTarget(sw);
-								msg2.setValue(((powerToGive>0)?1:0)+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
-								if(sw.okMessage(host, msg2))
-									sw.executeMsg(host, msg2);
+								for(Software sw : software)
+								{
+									msg2.setTarget(sw);
+									msg2.setValue(((powerToGive>0)?1:0)+(this.getActiveMenu().equals(sw.getInternalName())?1:0));
+									if(sw.okMessage(host, msg2))
+										sw.executeMsg(host, msg2);
+								}
+							}
+							else
+							if(Math.random() > 0.99)
+							{
+								List<MOB> readers=getCurrentReaders();
+								for(MOB M : readers)
+									if(CMLib.flags().canBeSeenBy(this, M))
+										M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, "<T-NAME> blue screens!!\n\r^.^N'");
+								deactivateSystem();
 							}
 						}
 					}
