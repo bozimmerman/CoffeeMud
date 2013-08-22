@@ -777,7 +777,7 @@ Required details: "id" "value"
 		</ROOM>
 	</ROOM>
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
-		<ROOM id="town_shop" class="WoodRoom" define="shoptype=$next_shop_type,patronname=$fantasy_name">
+		<ROOM id="town_shop" class="WoodRoom" condition="$__numshoptypes_all &lt;=10" define="shoptype=$next_shop_type,patronname=$fantasy_name">
 			<TITLE select="pick-1">
 				<TITLE pickweight=1>${c:patronname}'s ${c:shoptype} Shop</TITLE>
 				<TITLE pickweight=1>${c:patronname}'s ${c:shoptype} Store</TITLE>
