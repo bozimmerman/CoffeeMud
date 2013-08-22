@@ -317,7 +317,12 @@ public class HTTPReqProcessor implements HTTPFileGetter
 		if(newPath == null)
 			finalFile = mgr.createFileFromPath(fullPathStr.replace('/', mgr.getFileSeparator()));
 		else
-			finalFile=mgr.createFileFromPath((newPath.second+fullPathStr.substring(newPath.first.length())).replace('/', mgr.getFileSeparator())); // subtract one for the /
+		{
+			String newFullPath=fullPathStr.substring(newPath.first.length());
+			if(newFullPath.startsWith("/")&&newPath.second.endsWith("/"))
+				newFullPath=newFullPath.substring(1);
+			finalFile=mgr.createFileFromPath((newPath.second+newFullPath).replace('/', mgr.getFileSeparator())); // subtract one for the /
+		}
 		// see if the path we have is complete, or if there's an implicit default page requested.
 		if(request.getUrlPath().endsWith("/"))
 			finalFile=mgr.createFileFromPath(finalFile,config.getDefaultPage());
