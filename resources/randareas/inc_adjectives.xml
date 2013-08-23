@@ -109,6 +109,7 @@
 	<STRING>short</STRING>
 	<STRING>little</STRING>
 	<STRING>undersized</STRING>
+	<STRING>puny</STRING>
 </STRING>
 
 <STRING id="adj_large" select="any-1">
@@ -116,6 +117,7 @@
 	<STRING>huge</STRING>
 	<STRING>big</STRING>
 	<STRING>oversized</STRING>
+	<STRING>massive</STRING>
 </STRING>
 
 <STRING id="adj_scary_feeling" select="any-1" >
