@@ -70,6 +70,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			String id = CMLib.xml().getParmValue(piece.parms,"ID");
 			if((id!=null)&&(id.length()>0))
 				defined.put(id.toUpperCase().trim(),piece);
+			String load = CMLib.xml().getParmValue(piece.parms,"LOAD");
+			if((load!=null)&&(load.length()>0))
+			{
+				piece.parms.remove("LOAD");
+				CMFile file = new CMFile(load,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+				if(file.exists() && file.canRead())
+				{
+					List<XMLpiece> addPieces=CMLib.xml().parseAllXML(file.text());
+					piece.contents.addAll(addPieces);
+				}
+			}
 			buildDefinedIDSet(piece.contents,defined);
 		}
 	}
@@ -892,7 +903,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		Set<String> clearSet=new HashSet<String>();
 		for(String key : defined.keySet())
-			if(key.toUpperCase().startsWith(prefix.toUpperCase()) && (!exceptSet.contains(key.toUpperCase())))
+			if(key.toUpperCase().startsWith(prefix.toUpperCase()) 
+			&& (!exceptSet.contains(key.toUpperCase()))
+			&& (!key.startsWith("_")))
 				clearSet.add(key);
 		for(String key : clearSet)
 			defined.remove(key);
@@ -1233,8 +1246,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			addDefinition("ITEM_NAME",I.Name(),defined); // define so we can mess with it
 		}
 		
-		for(Item I : contents)
+		for(int it=0;it<contents.size();it++) // no iterator, please!!
 		{
+			Item I=(Item)contents.get(it);
 			fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
 			I.recoverPhyStats();
 			CMLib.itemBuilder().balanceItemByLevel(I);

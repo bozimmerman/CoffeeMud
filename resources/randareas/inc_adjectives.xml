@@ -15,10 +15,10 @@
 -->
 <!--  include file full of useful adjectives and adjective string selectors -->
 
-<STRING id="adj_anynosize" select="any-1" insert="adj_mustydark_values,adj_feeling_values,adj_phys_nosize_values" />
-<STRING id="adj_nonphys" select="any-1" insert="adj_mustydark_values,adj_feeling_values" />
+<STRING id="adj_anynosize" select="any-1" insert="adj_mustydark_values,adj_scary_feeling,adj_phys_nosize_values" />
+<STRING id="adj_nonphys" select="any-1" insert="adj_mustydark_values,adj_scary_feeling" />
 <STRING id="adj_phys" select="any-1" insert="adj_phys_size_values,adj_phys_nosize_values" />
-<STRING id="adj_any" select="any-1" insert="adj_mustydark_values,adj_feeling_values,adj_phys_size_values,adj_phys_nosize_values" />
+<STRING id="adj_any" select="any-1" insert="adj_mustydark_values,adj_scary_feeling,adj_phys_size_values,adj_phys_nosize_values" />
 
 <STRING id="adj_phys_size" select="any-1">
 	<STRING id="adj_phys_size_values" insert="adj_phys_size_large_values,adj_phys_size_small_values" />

@@ -106,3 +106,46 @@
 	<STRING pickweight="100" condition="'corner' IN $ROOMTAG_NODEFLAGS">Corner of a</STRING>
 	<STRING pickweight="1">A</STRING>
 </STRING>
+
+<STRING id="desc_exits" select="all">
+	<STRING select="all" condition="(!('n' IN $ROOMTAG_NODERUN)) and $ROOMLINK_N!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_N!=''" action="APPEND" >To the north is $ROOMTITLE_N.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_N=''" action="APPEND" >There is an exit to the north.</STRING>
+	</STRING>
+	<STRING select="all" condition="(!('s' IN $ROOMTAG_NODERUN)) and $ROOMLINK_S!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_S!=''" action="APPEND" >To the south is $ROOMTITLE_S.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_S=''" action="APPEND" >There is an exit to the south.</STRING>
+	</STRING>
+	<STRING select="all" condition="(!('e' IN $ROOMTAG_NODERUN)) and $ROOMLINK_E!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_E!=''" action="APPEND" >To the east is $ROOMTITLE_E.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_E=''" action="APPEND" >There is an exit to the east.</STRING>
+	</STRING>
+	<STRING select="all" condition="(!('w' IN $ROOMTAG_NODERUN)) and $ROOMLINK_W!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_W!=''" action="APPEND" >To the west is $ROOMTITLE_W.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_W=''" action="APPEND" >There is an exit to the west.</STRING>
+	</STRING>
+	<STRING select="all" condition="(!('u' IN $ROOMTAG_NODERUN)) and $ROOMLINK_U!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_U!=''" action="APPEND" >Above you is $ROOMTITLE_U.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_U=''" action="APPEND" >There is an exit above you.</STRING>
+	</STRING>
+	<STRING select="all" condition="(!('d' IN $ROOMTAG_NODERUN)) and $ROOMLINK_D!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_D!=''" action="APPEND" >Below you is $ROOMTITLE_D.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_D=''" action="APPEND" >There is an exit below you.</STRING>
+	</STRING>
+	<STRING select="all" condition="(!('ne' IN $ROOMTAG_NODERUN)) and $ROOMLINK_NE!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_NE!=''" action="APPEND" >To the northeast is $ROOMTITLE_NE.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_NE=''" action="APPEND" >There is an exit to the northeast.</STRING>
+	</STRING>
+	<STRING select="all" condition="(!('nw' IN $ROOMTAG_NODERUN)) and $ROOMLINK_NW!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_NW!=''" action="APPEND" >To the northwest is $ROOMTITLE_NW.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_NW=''" action="APPEND" >There is an exit to the northwest.</STRING>
+	</STRING>
+	<STRING select="all" condition="(!('se' IN $ROOMTAG_NODERUN)) and $ROOMLINK_SE!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_SE!=''" action="APPEND" >To the southeast is $ROOMTITLE_SE.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_SE=''" action="APPEND" >There is an exit to the southeast.</STRING>
+	</STRING>
+	<STRING select="all" condition="(!('sw' IN $ROOMTAG_NODERUN)) and $ROOMLINK_SW!=''" action="APPEND" >
+		<STRING select="any-1" condition="$ROOMTITLE_SW!=''" action="APPEND" >To the southwest is $ROOMTITLE_SW.</STRING>
+		<STRING select="any-1" condition="$ROOMTITLE_SW=''" action="APPEND" >There is an exit to the southwest.</STRING>
+	</STRING>
+</STRING>
