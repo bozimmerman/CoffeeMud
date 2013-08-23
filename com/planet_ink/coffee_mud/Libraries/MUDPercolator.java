@@ -537,7 +537,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				continue;
 			defineReward(null,null,null,valPiece,null,defined);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
-				Log.debugOut("MUDPercolator","Found Mob: "+valPiece.value);
+				Log.debugOut("MUDPercolator","Build Mob: "+CMStrings.limit(valPiece.value,80)+"...");
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			MOB M=buildMob(valPiece,defined);
 			V.add(M);
@@ -564,6 +564,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			rDefined.putAll(defined);
 			Exit[] rExits=exits.clone();
 			defineReward(null,null,null,valPiece,null,rDefined);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+				Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(valPiece.value,80)+"...");
 			Room R=buildRoom(valPiece,rDefined,rExits,directions);
 			for(Iterator<String> e=rDefined.keySet().iterator();e.hasNext();)
 			{
@@ -590,6 +592,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				continue;
 			defineReward(null,null,null,valPiece,null,defined);
 			Exit[] theseExits=exits.clone();
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+				Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(valPiece.value,80)+"...");
 			Room R=buildRoom(valPiece,defined,theseExits,direction);
 			DV.addElement(R,theseExits);
 		}
@@ -609,7 +613,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				continue;
 			defineReward(null,null,null,valPiece,null,defined);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
-				Log.debugOut("MUDPercolator","Found Exit: "+valPiece.value);
+				Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(valPiece.value,80)+"...");
 			Exit E=buildExit(valPiece,defined);
 			if(E!=null)
 				exitChoices.add(E);
@@ -844,7 +848,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
-				Log.debugOut("MUDPercolator","Found Exit: "+valPiece.value);
+				Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(valPiece.value,80)+"...");
 			defineReward(null,null,null,valPiece,null,defined);
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			Exit E=buildExit(valPiece,defined);
@@ -928,9 +932,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			XMLLibrary.XMLpiece valPiece = choices.get(c);
 			if(valPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(valPiece.parms,"VALIDATE")),valPiece, defined))
 				continue;
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-				Log.debugOut("MUDPercolator","Found Item: "+valPiece.value);
 			defineReward(null,null,null,valPiece,null,defined);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+				Log.debugOut("MUDPercolator","Build Item: "+CMStrings.limit(valPiece.value,80)+"...");
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			try{
 				V.addAll(buildItem(valPiece,defined));
