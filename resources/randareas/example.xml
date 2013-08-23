@@ -2516,7 +2516,7 @@ Required details: "id" "value"
 				<DISPLAY pickweight="1">$mob_name sneaks towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name charges at you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name is patrolling here.</DISPLAY>
-				<DISPLAY pickweight="1">$mob_name is lets out a loud YIP!.</DISPLAY>
+				<DISPLAY condition="theme='kobolds' pickweight="1">$mob_name is lets out a loud YIP!.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name is scowling at you.</DISPLAY>
 				<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
