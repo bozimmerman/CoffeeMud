@@ -1,0 +1,72 @@
+<!--  
+   Copyright 2013-2013 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file with fantasy names and fantasy name selectors -->
+
+<STRING id="fantasy_name" select="any-1">
+	<STRING id="fantasy_name_values" select="all">
+		<STRING>Orrothbur</STRING><STRING>Ashash</STRING><STRING>Rynaugh</STRING><STRING>Moperche</STRING><STRING>Post</STRING>
+		<STRING>Iaus</STRING><STRING>Voravor</STRING><STRING>Coonnkim</STRING><STRING>Ineet</STRING><STRING>Hooph</STRING>
+		<STRING>End'inao</STRING><STRING>Kaintmos</STRING><STRING>Dynh</STRING><STRING>Chatany</STRING><STRING>Ashiskel</STRING>
+		<STRING>Ingydar</STRING><STRING>Ing'mor</STRING><STRING>Samoing</STRING><STRING>Isach</STRING><STRING>Ghauska</STRING>
+		<STRING>Cijyv</STRING><STRING>Kalaw</STRING><STRING>Tonium</STRING><STRING>Eeme</STRING><STRING>W'rayeld</STRING>
+		<STRING>Rarisa</STRING><STRING>Chakalden</STRING><STRING>Essd</STRING><STRING>Nalay</STRING><STRING>Kalkele</STRING>
+		<STRING>Wareld</STRING><STRING>Vorcha</STRING><STRING>Ild'arda</STRING><STRING>Oldert</STRING><STRING>Laypach</STRING>
+		<STRING>Aormy</STRING><STRING>Elmem</STRING><STRING>Nunik</STRING><STRING>Ison</STRING><STRING>Hin'hono</STRING>
+		<STRING>Rayss</STRING><STRING>Stekimmor</STRING><STRING>Iusto</STRING><STRING>Laper</STRING><STRING>Leendale</STRING>
+		<STRING>Sulid</STRING><STRING>Eene</STRING><STRING>Garnys</STRING><STRING>Torm</STRING><STRING>Bur'augh</STRING>
+		<STRING>Oldrd</STRING><STRING>Danel</STRING><STRING>Athemos</STRING><STRING>Agev</STRING><STRING>Schupolche</STRING>
+		<STRING>Rak'tai</STRING><STRING>Schaest</STRING><STRING>Nysper</STRING><STRING>Aldnys</STRING><STRING>Oznyi</STRING>
+		<STRING>Schoskal</STRING><STRING>Llyhin</STRING><STRING>Aldustough</STRING><STRING>Ashad</STRING><STRING>Ormvcha</STRING>
+		<STRING>Asiss</STRING><STRING>Mos'qua</STRING><STRING>Lor'eche</STRING><STRING>Adelm</STRING><STRING>Isk</STRING>
+		<STRING>Hulody</STRING><STRING>Inaworny</STRING><STRING>Daruche</STRING><STRING>Omden</STRING><STRING>Qua'ade</STRING>
+		<STRING>Tiaver</STRING><STRING>Sasesi</STRING><STRING>Sulunt</STRING><STRING>Istantan</STRING><STRING>Sifys</STRING>
+		<STRING>Lyburkin</STRING><STRING>Em-ildyb</STRING><STRING>Hatd</STRING><STRING>Ighteirr'e</STRING><STRING>Bleall</STRING>
+		<STRING>Mor'shyo</STRING><STRING>Taives</STRING><STRING>Shy'athe</STRING><STRING>Ustr</STRING><STRING>Onsay</STRING>
+		<STRING>Oldrilrad</STRING><STRING>Tanetia</STRING><STRING>Lerdan</STRING><STRING>Hopald</STRING><STRING>Vyzihe</STRING>
+		<STRING>Che'ildy</STRING><STRING>Aradu</STRING><STRING>Mosden</STRING><STRING>Taiechgha</STRING><STRING>Huyyte</STRING>
+		<STRING>Citih</STRING><STRING>Kimiar</STRING><STRING>Aldqueo</STRING><STRING>Dodory</STRING><STRING>Est-ris</STRING>
+		<STRING>Sunyw</STRING><STRING>Dyndeli</STRING><STRING>Rayjtan</STRING><STRING>Zanor</STRING><STRING>Kelis</STRING>
+		<STRING>Etrile</STRING><STRING>Morust</STRING><STRING>Jeinn</STRING><STRING>Metog</STRING><STRING>Snasorm</STRING>
+		<STRING>Ishyo</STRING><STRING>Waechold</STRING><STRING>Omiston</STRING><STRING>Hirifet</STRING><STRING>Serjina</STRING>
+		<STRING>Echnn</STRING><STRING>Garadril</STRING><STRING>Rirothenth</STRING><STRING>Etiph</STRING><STRING>Kalina</STRING>
+		<STRING>Tin'rad</STRING><STRING>Usteld</STRING><STRING>Lakal</STRING><STRING>Raywar</STRING><STRING>Brepol</STRING>
+		<STRING>Heysper</STRING><STRING>Kimenu</STRING><STRING>Angyd</STRING><STRING>Elmperon</STRING><STRING>Athsam</STRING>
+		<STRING>Radwor</STRING><STRING>Nytor</STRING><STRING>Darith</STRING><STRING>Ir'mora</STRING><STRING>Tainal</STRING>
+		<STRING>Gabod</STRING><STRING>Umh</STRING><STRING>Qua'hin</STRING><STRING>Ertin</STRING><STRING>Oiao</STRING>
+		<STRING>Suinaest</STRING><STRING>Mim</STRING><STRING>Smeythad</STRING><STRING>Orrert</STRING><STRING>Ser'uma</STRING>
+		<STRING>Hin'ran</STRING><STRING>Cluath</STRING><STRING>Kelhin </STRING><STRING>Aughworine</STRING><STRING>Endquausk</STRING>
+		<STRING>Crilves</STRING><STRING>Undl</STRING><STRING>Athale</STRING><STRING>Eawe</STRING><STRING>Ashkim</STRING>
+		<STRING>Cipray</STRING><STRING>Toress</STRING><STRING>Yuthenth</STRING><STRING>Rothkim</STRING><STRING>Whakin</STRING>
+		<STRING>Pol'chao</STRING><STRING>Vetang</STRING><STRING>Witod</STRING><STRING>Kelurne</STRING><STRING>Rilrr</STRING>
+		<STRING>Delirina</STRING><STRING>Anhin</STRING><STRING>Augh'kim</STRING><STRING>Oughorm</STRING><STRING>Yertai</STRING>
+		<STRING>Tuat</STRING><STRING>Reskel</STRING><STRING>Taialemorrada</STRING><STRING>Adil</STRING><STRING>Lyedyn</STRING>
+		<STRING>Erodi</STRING><STRING>Issrad</STRING><STRING>Dra'alde</STRING><STRING>Ghaikim</STRING><STRING>Dud</STRING>
+		<STRING>Kimundgar</STRING><STRING>Acone</STRING><STRING>Ghaunt</STRING><STRING>Zhol</STRING><STRING>Rulira</STRING>
+		<STRING>Rilwar</STRING><STRING>Erane</STRING><STRING>Essad</STRING><STRING>Yosi</STRING><STRING>Chadque</STRING>
+		<STRING>Emrodi</STRING><STRING>Tasovo</STRING><STRING>Ineage</STRING><STRING>Garryn</STRING><STRING>Denoma</STRING>
+		<STRING>Ald'ser</STRING><STRING>Sieq</STRING><STRING>Echlas</STRING><STRING>Uskhin</STRING><STRING>Ciled</STRING>
+		<STRING>Buryl</STRING><STRING>Elmen</STRING><STRING>Rayyer</STRING><STRING>Stoia</STRING><STRING>Yiril</STRING>
+		<STRING>Usktas</STRING><STRING>Ynysu</STRING><STRING>Ough'oughe</STRING><STRING>Nysycha</STRING><STRING>Burshy</STRING>
+		<STRING>Cium</STRING><STRING>Rancertan</STRING><STRING>Enthrilper</STRING><STRING>Sotir</STRING><STRING>Ightper</STRING>
+		<STRING>Ormina</STRING><STRING>Warend</STRING><STRING>Kinkaldra</STRING><STRING>Samlye</STRING><STRING>Esttech</STRING>
+		<STRING>Per'oro</STRING><STRING>Itshy-ton</STRING><STRING>Serkely</STRING><STRING>At'nal</STRING><STRING>Sam'ess</STRING>
+		<STRING>Atyrr</STRING><STRING>Tin'ia</STRING><STRING>Nalghai</STRING><STRING>Kim'kim</STRING><STRING>Rynton</STRING>
+		<STRING>Oldoughi</STRING><STRING>Ineoqua</STRING><STRING>Sakak</STRING><STRING>Veraw</STRING><STRING>Ibydi</STRING>
+		<STRING>Garpol</STRING><STRING>Cyrilund</STRING><STRING>Dyn'drao</STRING><STRING>Toner</STRING><STRING>Untvor</STRING>
+		<STRING>Pitairoth</STRING><STRING>Cepoti</STRING><STRING>Raluka</STRING><STRING>Sn'imther</STRING><STRING>Gardar</STRING>
+		<STRING>Phayq</STRING><STRING>Cycod</STRING><STRING>Pesim</STRING><STRING>Imrod</STRING><STRING>Sayyaw</STRING>	
+	</STRING>
+</STRING>

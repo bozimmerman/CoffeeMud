@@ -1,5 +1,20 @@
 <?xml version="1.0"?>
-<!--  
+<!-- ----------------------------------------------------------------------------
+Copyright 2013-2013 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
 Instructions:
 The following is some guidelines on how to write an XML document for the random
 area generator, accessed via the GENERATE command.  Since the purpose of this
@@ -14,6 +29,7 @@ Tags are always evaluated recursively, from first to last.
 Any tag may contain zero or more of the following meta-attributes:
 "id"      exposes the tag to either the Generate command, or to the "insert" 
           or "like" attributes.
+"load"    the xml inside the file named is inserted into the tag
 "like"    a comma separated list of other tag "id"s of the SAME TYPE. These may
           NOT be container tags.  This will allow the current tag to be parsed 
           as if it contained the same tags and attributes as the listed tags. 
@@ -243,6 +259,12 @@ Required details: "id" "value"
 
 -->
 <AREADATA>
+
+<STRING load="inc_roomruns.xml" />
+<STRING load="inc_adjectives.xml" />
+<STRING load="inc_streetnames.xml" />
+<STRING load="inc_fantasynames.xml" />
+
 <AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random">
 	<NAME>$areaname</NAME><SIZE>$areasize</SIZE>
 	<CLASS select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
@@ -419,15 +441,15 @@ Required details: "id" "value"
 <ROOM id="leaf_rooms" select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM select="all" condition="$theme='prison' or $theme='random'">
 		<ROOM class="CaveRoom">
-			<TITLE>(a(n)) $nasty_word prison cell</TITLE>
+			<TITLE>(a(n)) $adj_nasty prison cell</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $nasty_word prison cell.</DESCRIPTION>
-					<DESCRIPTION>You are in (a(n)) $nasty_word cell for common prisoners.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $nasty_word prisoner's holding cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word prison cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word cell for common prisoners.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_nasty prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty prisoner's holding cell.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
@@ -438,21 +460,21 @@ Required details: "id" "value"
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
-			<TITLE>a large $nasty_word cage</TITLE>
+			<TITLE>a large $adj_nasty cage</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size_large $nasty_word prison cell.</DESCRIPTION>
-					<DESCRIPTION>You are in (a(n)) $adj_phys_size_large crowded $nasty_word cell for common prisoners.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $adj_phys_size_large $nasty_word prisoner's holding cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $nasty_word prison cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_phys_size_large crowded $nasty_word cell for common prisoners.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $nasty_word prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size_large $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_large crowded $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_phys_size_large $adj_nasty prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large crowded $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_large $adj_nasty prisoner's holding cell.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>The $nasty_word barred walls hold everything in.</DESCRIPTION>
-					<DESCRIPTION>Open $nasty_word bars are anchored into the floor and ceiling.</DESCRIPTION>
-					<DESCRIPTION>The $nasty_word bars make this room like a cage.</DESCRIPTION>
-					<DESCRIPTION>A set of $nasty_word bars surround you.</DESCRIPTION>
+					<DESCRIPTION>The $adj_nasty barred walls hold everything in.</DESCRIPTION>
+					<DESCRIPTION>Open $adj_nasty bars are anchored into the floor and ceiling.</DESCRIPTION>
+					<DESCRIPTION>The $adj_nasty bars make this room like a cage.</DESCRIPTION>
+					<DESCRIPTION>A set of $adj_nasty bars surround you.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
@@ -463,23 +485,23 @@ Required details: "id" "value"
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
-			<TITLE>(a(n)) $nasty_word solitary cell</TITLE>
+			<TITLE>(a(n)) $adj_nasty solitary cell</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are in (a(n)) $adj_phys_size_small $nasty_word solitary cell.</DESCRIPTION>
-					<DESCRIPTION>You are in (a(n)) $adj_phys_size_small $nasty_word cell for solitary confinement.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $adj_phys_size_small $nasty_word solitary prisoner's holding cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $nasty_word solitary cell.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $nasty_word cell for solitary confinement.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $nasty_word solitary prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_small $adj_nasty solitary cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_phys_size_small $adj_nasty cell for solitary confinement.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_phys_size_small $adj_nasty solitary prisoner's holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $adj_nasty solitary cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $adj_nasty cell for solitary confinement.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size_small $adj_nasty solitary prisoner's holding cell.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Everything here is totally $adj_dark.</DESCRIPTION>
 					<DESCRIPTION>This room is completely $adj_dark.</DESCRIPTION>
-					<DESCRIPTION>This $adj_dark room is $adj_feeling.</DESCRIPTION>
+					<DESCRIPTION>This $adj_dark room is $adj_scary_feeling.</DESCRIPTION>
 					<DESCRIPTION>Life here is $adj_dark and $adj_phys_size_small.</DESCRIPTION>
 					<DESCRIPTION>This room is $adj_dark and $adj_phys_size_small.</DESCRIPTION>
-					<DESCRIPTION>This $adj_feeling is $adj_dark room.</DESCRIPTION>
+					<DESCRIPTION>This $adj_scary_feeling is $adj_dark room.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
@@ -535,21 +557,21 @@ Required details: "id" "value"
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__torturechamber&lt;1" define="__torturechamber+=1">
-			<TITLE>(a(n)) $adj_feeling torture chamber</TITLE>
+			<TITLE>(a(n)) $adj_scary_feeling torture chamber</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $nasty_word torture chamber.</DESCRIPTION>
-					<DESCRIPTION>You are in (a(n)) $nasty_word cell room obviously meant for pain.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $nasty_word chamber of torture and pain.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word torture chamber.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word chamber of torture and pain.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word room obviously meant for pain.</DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty torture chamber.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty cell room obviously meant for pain.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_nasty chamber of torture and pain.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty torture chamber.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty chamber of torture and pain.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty room obviously meant for pain.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>Just the sight of this $adj_feeling room makes you talk.</DESCRIPTION>
-					<DESCRIPTION>All manner of $adj_feeling instruments for human suffering abound here.</DESCRIPTION>
-					<DESCRIPTION>This $nasty_word room of suffering makes you feel $adj_feeling.</DESCRIPTION>
-					<DESCRIPTION>You feel $adj_feeling just standing in this place.</DESCRIPTION>
+					<DESCRIPTION>Just the sight of this $adj_scary_feeling room makes you talk.</DESCRIPTION>
+					<DESCRIPTION>All manner of $adj_scary_feeling instruments for human suffering abound here.</DESCRIPTION>
+					<DESCRIPTION>This $adj_nasty room of suffering makes you feel $adj_scary_feeling.</DESCRIPTION>
+					<DESCRIPTION>You feel $adj_scary_feeling just standing in this place.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
@@ -581,13 +603,13 @@ Required details: "id" "value"
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__pitroom&lt;2" define="__pitroom+=1">
-			<TITLE>(a(n)) $nasty_word pit</TITLE>
+			<TITLE>(a(n)) $adj_nasty pit</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $nasty_word pit.</DESCRIPTION>
-					<DESCRIPTION>You are in (a(n)) $nasty_word pit.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $nasty_word pit.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word pit.</DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty pit.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty pit.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_nasty pit.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty pit.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Its little more than a great hole surrounded by a metal cage.</DESCRIPTION>
@@ -605,13 +627,13 @@ Required details: "id" "value"
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="$__latrine&lt;2" define="__latrine+=1">
-			<TITLE>(a(n)) $nasty_word latrine</TITLE>
+			<TITLE>(a(n)) $adj_nasty latrine</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing knee deep in (a(n)) $nasty_word latrine.</DESCRIPTION>
-					<DESCRIPTION>You are in (a(n)) $nasty_word latrine.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $nasty_word latrine.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word latrine.</DESCRIPTION>
+					<DESCRIPTION>You are standing knee deep in (a(n)) $adj_nasty latrine.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty latrine.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_nasty latrine.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty latrine.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>You now realize what happens to all the waste generated here.</DESCRIPTION>
@@ -787,12 +809,12 @@ Required details: "id" "value"
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>This is the $tidy_word $adj_phys_size_large $shoptype shop of $patronname.</DESCRIPTION>
-					<DESCRIPTION>This is the $tidy_word $shoptype shop of $patronname.</DESCRIPTION>
-					<DESCRIPTION>This is the $tidy_word $adj_phys_size_small $shoptype shop of $patronname.</DESCRIPTION>
-					<DESCRIPTION>The $shoptype shop of $patronname is $tidy_word and $adj_phys_size_large.</DESCRIPTION>
-					<DESCRIPTION>The $shoptype shop of $patronname is $adj_phys_size_small and $tidy_word.</DESCRIPTION>
-					<DESCRIPTION>The $shoptype shop of $patronname is $tidy_word.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large $shoptype shop of $patronname.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $shoptype shop of $patronname.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small $shoptype shop of $patronname.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $patronname is $adj_tidy and $adj_phys_size_large.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $patronname is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The $shoptype shop of $patronname is $adj_tidy.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>${c:pshoptypes} line shelves and racks throughout the store.</DESCRIPTION>
@@ -870,22 +892,22 @@ Required details: "id" "value"
 				</ITEM>
 				<SHOPINVENTORY select="all">
 					<ITEM select="all" condition="$shoptype='weapon'">
-						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$random_cheap_metal"/>
-						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$random_cheap_metal"/>
+						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$any_cheap_metal"/>
+						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$any_cheap_metal"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='armor'">
-						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$random_cheap_metal"/>
-						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$random_cheap_metal"/>
+						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$any_cheap_metal"/>
+						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$any_cheap_metal"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='magic'">
 						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand"/>
-						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$random_cheap_metal"/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal"/>
 						<ITEM select="any-5" insert="any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item" />
 						<ITEM select="any-5" insert="any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item" />
 						<ITEM select="any-5" insert="any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item" />
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='jewelry'">
-						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$random_cheap_metal"/>
+						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$any_cheap_metal"/>
 					</ITEM>
 					<MOB select="all" condition="$shoptype='pet'">
 						<MOB class="Monkey" /><MOB class="Dog" /><MOB class="Fox" /><MOB class="Duck" /><MOB class="Falcon" /><MOB class="Bee" />
@@ -898,7 +920,7 @@ Required details: "id" "value"
 					<ITEM select="all" condition="$shoptype='general'">
 						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather"/>
 						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather"/>
-						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$random_cheap_metal"/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$any_cheap_metal"/>
 						<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp"/>
 						<ITEM class="metacraft:all-glassblowing<$mob_level"/>
 						<ITEM class="metacraft:all-pottery<$mob_level" material="clay"/>
@@ -908,13 +930,13 @@ Required details: "id" "value"
 						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='wood'">
-						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$random_wood"/>
-						<ITEM class="metacraft:all-fletching<$mob_level" material="$random_wood"/>
-						<ITEM class="metacraft:all-cobbler<$mob_level" material="$random_wood"/>
+						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$any_wood"/>
+						<ITEM class="metacraft:all-fletching<$mob_level" material="$any_wood"/>
+						<ITEM class="metacraft:all-cobbler<$mob_level" material="$any_wood"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='tailor'">
-						<ITEM class="metacraft:all-tailoring<$mob_level" material="$random_cheap_cloth"/>
-						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$random_cheap_cloth"/>
+						<ITEM class="metacraft:all-tailoring<$mob_level" material="$any_cheap_cloth"/>
+						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$any_cheap_cloth"/>
 						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='food'">
@@ -927,7 +949,12 @@ Required details: "id" "value"
 			</MOB>
 			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use 'list' to see what is for sale, 'view [itemname]' see more information, 'buy [itemname]' to buy something, or 'sell [itemname]' to try to sell something of yours." />
 		</ROOM>
-		<ROOM id="town_postoffice" class="WoodRoom"  condition="$__postoffice&lt;1" define="__postoffice+=1">
+		<!--
+		TODO: , MAYOR/SULTAN/PRINCE/CHIEFs office (is judge), trainer/teacher (same), prison, bank, auction hall
+		TODO: second priority: day care, stables, clan bank,  
+		TODO: (repeatable -- but only if above done): BAR, DINER/CAFE/, INN, city guard hq, healer/temple, park, 
+		 -->
+		<ROOM id="town_postoffice" class="WoodRoom"  condition="$__postoffice&lt;1 and $__numshoptypes_all &gt; 10" define="__postoffice+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Post Office</TITLE>
 				<TITLE>${c:areaname} Post Office</TITLE>
@@ -936,10 +963,10 @@ Required details: "id" "value"
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>This is the $tidy_word $adj_phys_size_large ${c:areaname} Post Office.</DESCRIPTION>
-					<DESCRIPTION>This is the $tidy_word $adj_phys_size_small ${c:areaname} Post Office.</DESCRIPTION>
-					<DESCRIPTION>The ${c:areaname} Post Office is $adj_phys_size_small and $tidy_word.</DESCRIPTION>
-					<DESCRIPTION>The ${c:areaname} Post Office is $tidy_word.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Post Office.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Post Office.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Post Office is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Post Office is $adj_tidy.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Rows and stacks of boxes line the room awaiting delivery.</DESCRIPTION>
@@ -1010,17 +1037,98 @@ Required details: "id" "value"
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
+		<ROOM id="town_school" class="WoodRoom"  condition="$__school&lt;1 and $__numshoptypes_all &gt; 10" define="__school+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Training Academy</TITLE>
+				<TITLE>${c:areaname} Training Academy</TITLE>
+				<TITLE>The Training Academy</TITLE>
+			</TITLE>
+			<STRING id="ugh">
+				<STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING>
+				<STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING>
+			</STRING>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_phys_size_large $adj_roomwords ${c:areaname} Training Academy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Training Academy is $adj_phys_size_large and $adj_roomwords.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION></DESCRIPTION>
+					<DESCRIPTION></DESCRIPTION>
+					<DESCRIPTION></DESCRIPTION>
+					<DESCRIPTION></DESCRIPTION>
+					<DESCRIPTION></DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>${c:adj_personality} students train here under the watchful eye of ${adj_personality} teachers.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_personality} trainers are here showing students the ropes.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_personality} students are driving their trainers nuts.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_personality} students busily learning their craft.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the exit.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the exit.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted near the exit.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use 'list' to see what is in your box, 'deposit [itemname]' to mail an item, 'withdraw [itemname]' to remove an item." />
+			<ITEM class="GenWallpaper" name="WANTED posters wall" description="Faces of various known Killers and Thieves can barely be seen." />
+			<AFFECT class="Prop_ClosedDayNight" />
+			<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
+				<NAME select="any-1">
+					<NAME>Postal clerk ${c:patronname}</NAME>
+					<NAME>Postman ${c:patronname}</NAME>
+				</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is moving very slowly.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, rain or shine.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>(a(n)) postal uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>(a(n)) letter opener</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY>
+					<ITEM select="repeat-20">
+						<ITEM class="metacraft" name="a piece of paper"/>
+					</ITEM>
+				</SHOPINVENTORY>
+			</MOB>
+		</ROOM>
 	</ROOM>
 	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
 		<ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
 			<TITLE>a $nasty_picked_race nursury</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size $nasty_picked_race nursury. Everything here is $adj_phys_nosize and $nasty_word.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $adj_phys_size $nasty_picked_race nursury. This place is $adj_phys_nosize and $nasty_word.</DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $adj_phys_size $nasty_picked_race nursury. Conditions here are $adj_phys_nosize and $nasty_word.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_phys_size $nasty_picked_race nursury. It is $adj_phys_nosize and $nasty_word.</DESCRIPTION>
-					<DESCRIPTION>You are confused by (a(n)) $adj_phys_size $nasty_picked_race nursury. Everything here is $adj_phys_nosize and $nasty_word.</DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size $nasty_picked_race nursury. Everything here is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_phys_size $nasty_picked_race nursury. This place is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_phys_size $nasty_picked_race nursury. Conditions here are $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size $nasty_picked_race nursury. It is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
+					<DESCRIPTION>You are confused by (a(n)) $adj_phys_size $nasty_picked_race nursury. Everything here is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>It`s amazing those creatures ever see adulthood.</DESCRIPTION>
@@ -1037,7 +1145,7 @@ Required details: "id" "value"
 			<MOB select="repeat-2?6" insert="nasty_lair_kid" />
 			<MOB class="GenMob" level="($level_range) / 2" id="nasty_lair_kid" race="$nasty_picked_race" gender="$anygender">
 				<NAME select="pick-1">
-					<NAME pickweight="5">(a(n)) $nasty_animal_word ${l:mob_race} child</NAME>
+					<NAME pickweight="5">(a(n)) $adj_nasty_animal ${l:mob_race} child</NAME>
 					<NAME pickweight="1">a ${l:mob_race} kid</NAME>
 				</NAME>
 				<DISPLAY select="pick-1">
@@ -1063,11 +1171,11 @@ Required details: "id" "value"
 					<BEHAVIOR class="CombatAbilities" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj diaper</NAME><NAME>(a(n)) $smallragged_item_adj diaper</NAME></NAME>
+					<NAME select="any-1"><NAME>(a(n)) $adj_smallragged diaper</NAME><NAME>(a(n)) $adj_smallragged diaper</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
 				</ITEM>
 				<ITEM class="GenItem" LEVEL="$mob_level" condition="1?2=1">
-					<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj toy</NAME><NAME>(a(n)) $smallragged_item_adj toy</NAME></NAME>
+					<NAME select="any-1"><NAME>(a(n)) $adj_smallragged toy</NAME><NAME>(a(n)) $adj_smallragged toy</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>OAK</MATERIAL>
 				</ITEM>
 				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
@@ -1098,25 +1206,25 @@ Required details: "id" "value"
 				</BEHAVIOR>
 				<ITEM select="pick-1?3">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather hat</NAME><NAME>(a(n)) $smallragged_item_adj hat</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather hat</NAME><NAME>(a(n)) $adj_smallragged hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather blouse</NAME><NAME>(a(n)) $smallragged_item_adj blouse</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather blouse</NAME><NAME>(a(n)) $adj_smallragged blouse</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather dress</NAME><NAME>a pair of $smallragged_item_adj dress</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather dress</NAME><NAME>a pair of $adj_smallragged dress</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather sleeves</NAME><NAME>a pair of $adj_smallragged sleeves</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
 					</ITEM>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>a sharp $smallragged_item_adj stick</NAME>
+						<NAME>a sharp $adj_smallragged stick</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
@@ -1199,25 +1307,25 @@ Required details: "id" "value"
 				</BEHAVIOR>
 				<ITEM select="pick-1?3">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj pointy leather cap</NAME><NAME>(a(n)) $smallragged_item_adj pointy cap</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged pointy leather cap</NAME><NAME>(a(n)) $adj_smallragged pointy cap</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather workvest</NAME><NAME>(a(n)) $smallragged_item_adj workvest</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather workvest</NAME><NAME>(a(n)) $adj_smallragged workvest</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather work pants</NAME><NAME>a pair of $smallragged_item_adj work pants</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather work pants</NAME><NAME>a pair of $adj_smallragged work pants</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather sleeves</NAME><NAME>a pair of $adj_smallragged sleeves</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
 					</ITEM>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $smallragged_item_adj tool</NAME>
+						<NAME>(a(n)) $adj_smallragged tool</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
@@ -1226,7 +1334,7 @@ Required details: "id" "value"
 				</ITEM>
 				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 			</MOB>
-			<ITEM class="GenTable" name="(a(n)) $nasty_word table" display="$ITEM_NAME is here"/>
+			<ITEM class="GenTable" name="(a(n)) $adj_nasty table" display="$ITEM_NAME is here"/>
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
 		<ROOM class="CaveRoom">
@@ -1251,10 +1359,10 @@ Required details: "id" "value"
 				<DESCRIPTION select="any-1">$nasty_lair_exit</DESCRIPTION>
 			</DESCRIPTION>
 			<ITEM select="any-2">
-				<ITEM class="GenFoodResource" weight="10" name="some $nasty_word meat" display="$item_name is stored here" material="MEAT" />
-				<ITEM class="GenFoodResource" weight="10" name="some $nasty_word bread" display="$item_name is stored here" material="bread" />
-				<ITEM class="GenFoodResource" weight="10" name="some $nasty_word mushrooms" display="$item_name is stored here" material="mushrooms" />
-				<ITEM class="GenFoodResource" weight="10" name="some $nasty_word fish" display="$item_name is stored here" material="fish" />
+				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty meat" display="$item_name is stored here" material="MEAT" />
+				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty bread" display="$item_name is stored here" material="bread" />
+				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty mushrooms" display="$item_name is stored here" material="mushrooms" />
+				<ITEM class="GenFoodResource" weight="10" name="some $adj_nasty fish" display="$item_name is stored here" material="fish" />
 			</ITEM>
 			<MOB select="all" insert="$dungeon_rat" condition="1?2=1" />
 			<EXIT class="LockedDoor"  text="$areaname storekey"/>
@@ -1270,9 +1378,9 @@ Required details: "id" "value"
 					<DESCRIPTION>This is $ROOM_TITLE.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>The ${nasty_race_name}s must store their $nasty_word crap and junk here.</DESCRIPTION>
-					<DESCRIPTION>This appears to be where they store their $nasty_word junk.</DESCRIPTION>
-					<DESCRIPTION>The ${nasty_race_name}s seem to keep their $nasty_word crap stored here.</DESCRIPTION>
+					<DESCRIPTION>The ${nasty_race_name}s must store their $adj_nasty crap and junk here.</DESCRIPTION>
+					<DESCRIPTION>This appears to be where they store their $adj_nasty junk.</DESCRIPTION>
+					<DESCRIPTION>The ${nasty_race_name}s seem to keep their $adj_nasty crap stored here.</DESCRIPTION>
 					<DESCRIPTION>What the ${nasty_race_name}s think is important seems to be stored here.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
@@ -1296,10 +1404,10 @@ Required details: "id" "value"
 			<TITLE>a kitchen</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $nasty_word $nasty_picked_race kitchen.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $nasty_word $nasty_picked_race kitchen. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $nasty_word $nasty_picked_race kitchen. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word $nasty_picked_race kitchen. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty $nasty_picked_race kitchen.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_nasty $nasty_picked_race kitchen. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_nasty $nasty_picked_race kitchen. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty $nasty_picked_race kitchen. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>This place is an astounding mess.</DESCRIPTION>
@@ -1345,21 +1453,21 @@ Required details: "id" "value"
 				</BEHAVIOR>
 				<ITEM select="pick-1?3">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather chefs hat</NAME><NAME>(a(n)) $smallragged_item_adj chefs hat</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather chefs hat</NAME><NAME>(a(n)) $adj_smallragged chefs hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather apron</NAME><NAME>a pair of $smallragged_item_adj apron</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather apron</NAME><NAME>a pair of $adj_smallragged apron</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>BODY</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather sleeves</NAME><NAME>a pair of $adj_smallragged sleeves</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
 					</ITEM>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $smallragged_item_adj rolling pin</NAME>
+						<NAME>(a(n)) $adj_smallragged rolling pin</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -1368,7 +1476,7 @@ Required details: "id" "value"
 				</ITEM>
 				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 			</MOB>
-			<ITEM class="GenTable" name="(a(n)) $nasty_word chopping table" display="$ITEM_NAME is here"/>
+			<ITEM class="GenTable" name="(a(n)) $adj_nasty chopping table" display="$ITEM_NAME is here"/>
 			<ITEM class="metacraft:Oven"/>
 			<ITEM select="1?3" >
 				<ITEM class="metacraft:Baking Pot" />
@@ -1383,10 +1491,10 @@ Required details: "id" "value"
 			<TITLE>a common room</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $nasty_word $nasty_picked_race common room.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $nasty_word $nasty_picked_race common room. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $nasty_word $nasty_picked_race common room. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word $nasty_picked_race common room. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty $nasty_picked_race common room.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_nasty $nasty_picked_race common room. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_nasty $nasty_picked_race common room. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty $nasty_picked_race common room. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>This place is one of mess and clutter.</DESCRIPTION>
@@ -1419,10 +1527,10 @@ Required details: "id" "value"
 			<TITLE>a hatchery</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $nasty_word kobold hatchery.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $nasty_word kobold hatchery. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $nasty_word kobold hatchery. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $nasty_word kobold hatchery. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty kobold hatchery.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_nasty kobold hatchery. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_nasty kobold hatchery. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty kobold hatchery. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Kobold eggs are scattered about haphazardly.</DESCRIPTION>
@@ -1443,7 +1551,7 @@ Required details: "id" "value"
 				<EXIT pickweight=2 class="GenDoor"/>
 			</EXIT>
 			<MOB select="repeat-1?2" insert="nasty_lair_guard" />
-			<ITEM class="GenFoodResource" id="kobold_egg" name="some $nasty_word kobold eggs" display="$item_name are here" material="EGGS" />
+			<ITEM class="GenFoodResource" id="kobold_egg" name="some $adj_nasty kobold eggs" display="$item_name are here" material="EGGS" />
 			<ITEM select="2?13" insert="kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg,kobold_egg" />
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 		</ROOM>
@@ -1451,10 +1559,10 @@ Required details: "id" "value"
 			<TITLE>the throne room</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in the $nasty_word $nasty_picked_race throne room.</DESCRIPTION>
-					<DESCRIPTION>You're inside the $nasty_word $nasty_picked_race throne room. </DESCRIPTION>
-					<DESCRIPTION>You've found the $nasty_word $nasty_picked_race throne room. </DESCRIPTION>
-					<DESCRIPTION>This is the $nasty_word $nasty_picked_race throne room. </DESCRIPTION>
+					<DESCRIPTION>You are standing in the $adj_nasty $nasty_picked_race throne room.</DESCRIPTION>
+					<DESCRIPTION>You're inside the $adj_nasty $nasty_picked_race throne room. </DESCRIPTION>
+					<DESCRIPTION>You've found the $adj_nasty $nasty_picked_race throne room. </DESCRIPTION>
+					<DESCRIPTION>This is the $adj_nasty $nasty_picked_race throne room. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>This room is so plain, you can hardly believe royalty resides here.</DESCRIPTION>
@@ -1500,21 +1608,21 @@ Required details: "id" "value"
 				</BEHAVIOR>
 				<ITEM select="pick-1?3">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj crown</NAME><NAME>(a(n)) $smallragged_item_adj crown</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged crown</NAME><NAME>(a(n)) $adj_smallragged crown</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>GOLD</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj golden belt</NAME><NAME>(a(n)) $smallragged_item_adj gold belt</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged golden belt</NAME><NAME>(a(n)) $adj_smallragged gold belt</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>GOLD</MATERIAL><PROPERWORN>WAIST</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj golden shoes</NAME><NAME>a pair of $smallragged_item_adj gold shoes</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged golden shoes</NAME><NAME>a pair of $adj_smallragged gold shoes</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>GOLD</MATERIAL><PROPERWORN>FEET</PROPERWORN>
 					</ITEM>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $smallragged_item_adj sceptor</NAME>
+						<NAME>(a(n)) $adj_smallragged sceptor</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>GOLD</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -1523,7 +1631,7 @@ Required details: "id" "value"
 				</ITEM>
 				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 			</MOB>
-			<ITEM class="GenChair"  name="(a(n)) $smallragged_item_adj throne" display="$ITEM_NAME is here"/>
+			<ITEM class="GenChair"  name="(a(n)) $adj_smallragged throne" display="$ITEM_NAME is here"/>
 			<ITEM class="GenContainer" name="The kings chest" display="The kings chest is here" HASLID="true" HASLOCK="true" READABLETEXT="$areaname thronekey">
 				<CONTENT>
 					<ITEM select="all" insert="dungeon_treasure_items" />
@@ -1564,10 +1672,10 @@ Required details: "id" "value"
 			<TITLE>a laboratory</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $adj_feeling laboratory.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $adj_feeling laboratory. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $adj_feeling laboratory. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_scary_feeling laboratory.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_scary_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_scary_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_scary_feeling laboratory. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are everywhere.</DESCRIPTION>
@@ -1628,7 +1736,7 @@ Required details: "id" "value"
 				</ITEM>
 				<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 			</MOB>
-			<ITEM class="GenTable" name="(a(n)) $nasty_word table" display="$ITEM_NAME is here">
+			<ITEM class="GenTable" name="(a(n)) $adj_nasty table" display="$ITEM_NAME is here">
 				<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
 			</ITEM>
 			<ITEM class="metacraft:Scroll Case">
@@ -1643,10 +1751,10 @@ Required details: "id" "value"
 			<TITLE>a hatchery</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $adj_feeling dragon hatchery.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $adj_feeling dragon hatchery. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $adj_feeling dragon hatchery. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_feeling dragon hatchery. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_scary_feeling dragon hatchery.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_scary_feeling dragon hatchery. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_scary_feeling dragon hatchery. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_scary_feeling dragon hatchery. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>Large eggs are set carefully about the room.</DESCRIPTION>
@@ -1692,7 +1800,7 @@ Required details: "id" "value"
 					<ABILITY condition="$mob_level>=90" class="Spell_ResistSlashing" parms="" />
 				</ABILITY>
 			</MOB>
-			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="a $adj_feeling dragon egg" display="$item_name is here" material="EGGS" />
+			<ITEM class="GenFood" weight="100" NOURISHMENT="10000" bite="500" id="dragon_egg" name="a $adj_scary_feeling dragon egg" display="$item_name is here" material="EGGS" />
 			<ITEM select="2?5" insert="dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg" />
 			<EXIT class="Open" />
 			<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
@@ -1701,10 +1809,10 @@ Required details: "id" "value"
 			<TITLE>a dragon's lair</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $adj_feeling dragon's lair.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $adj_feeling dragon's lair. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $adj_feeling dragon's lair. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_feeling dragon's lair. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_scary_feeling dragon's lair.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $adj_scary_feeling dragon's lair. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $adj_scary_feeling dragon's lair. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_scary_feeling dragon's lair. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
@@ -1786,10 +1894,10 @@ Required details: "id" "value"
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You feel the $adj_general shadow of death here.</DESCRIPTION>
-					<DESCRIPTION>The smell of $adj_general decay hangs like a fog.</DESCRIPTION>
-					<DESCRIPTION>The $adj_general aura of the afterlife has found a home here.</DESCRIPTION>
-					<DESCRIPTION>The cold feelings of $adj_general decay have found no rest here.</DESCRIPTION>
+					<DESCRIPTION>You feel the $adj_mustydark shadow of death here.</DESCRIPTION>
+					<DESCRIPTION>The smell of $adj_mustydark decay hangs like a fog.</DESCRIPTION>
+					<DESCRIPTION>The $adj_mustydark aura of the afterlife has found a home here.</DESCRIPTION>
+					<DESCRIPTION>The cold feelings of $adj_mustydark decay have found no rest here.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
 			</DESCRIPTION>			
@@ -1876,10 +1984,10 @@ Required details: "id" "value"
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You feel like some $nasty_word critters live here.</DESCRIPTION>
-					<DESCRIPTION>This seems like a place some $nasty_word critters call home.</DESCRIPTION>
-					<DESCRIPTION>Some $nasty_word little critters definitely lives here.</DESCRIPTION>
-					<DESCRIPTION>You aren't sure the $nasty_word little critters would be happy to see you.</DESCRIPTION>
+					<DESCRIPTION>You feel like some $adj_nasty critters live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $adj_nasty critters call home.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_nasty little critters definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren't sure the $adj_nasty little critters would be happy to see you.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
@@ -1899,10 +2007,10 @@ Required details: "id" "value"
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You feel like some $nasty_word spiders live here.</DESCRIPTION>
-					<DESCRIPTION>This seems like a place some $nasty_word spiders call home.</DESCRIPTION>
-					<DESCRIPTION>Some $nasty_word little spiders definitely lives here.</DESCRIPTION>
-					<DESCRIPTION>You aren't sure the $nasty_word little spiders would be happy to see you.</DESCRIPTION>
+					<DESCRIPTION>You feel like some $adj_nasty spiders live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $adj_nasty spiders call home.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_nasty little spiders definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren't sure the $adj_nasty little spiders would be happy to see you.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
@@ -1922,10 +2030,10 @@ Required details: "id" "value"
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You feel like some $nasty_word reptiles live here.</DESCRIPTION>
-					<DESCRIPTION>This seems like a place some $nasty_word reptiles call home.</DESCRIPTION>
-					<DESCRIPTION>Some $nasty_word little reptiles definitely lives here.</DESCRIPTION>
-					<DESCRIPTION>You aren't sure the $nasty_word little reptiles would be happy to see you.</DESCRIPTION>
+					<DESCRIPTION>You feel like some $adj_nasty reptiles live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $adj_nasty reptiles call home.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_nasty little reptiles definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren't sure the $adj_nasty little reptiles would be happy to see you.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
@@ -1945,10 +2053,10 @@ Required details: "id" "value"
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You feel like some $nasty_word snakes live here.</DESCRIPTION>
-					<DESCRIPTION>This seems like a place some $nasty_word snakes call home.</DESCRIPTION>
-					<DESCRIPTION>Some $nasty_word little snakes definitely lives here.</DESCRIPTION>
-					<DESCRIPTION>You aren't sure the $nasty_word little snakes would be happy to see you.</DESCRIPTION>
+					<DESCRIPTION>You feel like some $adj_nasty snakes live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $adj_nasty snakes call home.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_nasty little snakes definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren't sure the $adj_nasty little snakes would be happy to see you.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurb</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_leaf_exit</DESCRIPTION>
@@ -2068,53 +2176,53 @@ Required details: "id" "value"
 		<STRING select="any-1">
 			<STRING>You think you heard a sound of faint trickling in the distance.</STRING>
 			<STRING>The walls seems to groan.</STRING>
-			<STRING>Faint $adj_feeling sounds can be heard in the distance.</STRING>
+			<STRING>Faint $adj_scary_feeling sounds can be heard in the distance.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='prison' or ($theme='random' and 1?10=1)">
-			<STRING>You are certain you just heard (a(n)) $adj_feeling scream coming from somewhere.</STRING>
-			<STRING>You can hear the $adj_feeling sounds of human suffering.</STRING>
-			<STRING>You hear $adj_feeling tortured screams in the distance.</STRING>
-			<STRING>You hear $adj_feeling screams of suffering in the distance.</STRING>
-			<STRING>You hear $adj_feeling sounds coming from all around you.</STRING>
-			<STRING>You hear $adj_feeling sounds coming from all around you.</STRING>
+			<STRING>You are certain you just heard (a(n)) $adj_scary_feeling scream coming from somewhere.</STRING>
+			<STRING>You can hear the $adj_scary_feeling sounds of human suffering.</STRING>
+			<STRING>You hear $adj_scary_feeling tortured screams in the distance.</STRING>
+			<STRING>You hear $adj_scary_feeling screams of suffering in the distance.</STRING>
+			<STRING>You hear $adj_scary_feeling sounds coming from all around you.</STRING>
+			<STRING>You hear $adj_scary_feeling sounds coming from all around you.</STRING>
 			<STRING>You wonder if an execution occurred here.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='goblins' or ($theme='random' and 1?10=1)">
-			<STRING>You hear $adj_feeling snickering nearby.</STRING>
-			<STRING>You hear the $adj_feeling sounds of pattering feet nearby.</STRING>
-			<STRING>You hear faint but $adj_feeling squealing sounds echoing around you.</STRING>
+			<STRING>You hear $adj_scary_feeling snickering nearby.</STRING>
+			<STRING>You hear the $adj_scary_feeling sounds of pattering feet nearby.</STRING>
+			<STRING>You hear faint but $adj_scary_feeling squealing sounds echoing around you.</STRING>
 			<STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
-			<STRING>It smells like something $adj_feeling died in here.</STRING>
+			<STRING>It smells like something $adj_scary_feeling died in here.</STRING>
 			<STRING>Bits of a sprung trap are splayed about.</STRING>
-			<STRING>Several faint $adj_feeling squealing voices echo in the distance.</STRING>
+			<STRING>Several faint $adj_scary_feeling squealing voices echo in the distance.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='orcs' or ($theme='random' and 1?10=1)">
-			<STRING>You hear $adj_feeling voices nearby.</STRING>
-			<STRING>You hear the $adj_feeling sounds of marching feet nearby.</STRING>
-			<STRING>You hear faint but $adj_feeling shouting voices echoing around you.</STRING>
+			<STRING>You hear $adj_scary_feeling voices nearby.</STRING>
+			<STRING>You hear the $adj_scary_feeling sounds of marching feet nearby.</STRING>
+			<STRING>You hear faint but $adj_scary_feeling shouting voices echoing around you.</STRING>
 			<STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
-			<STRING>It smells like something $adj_feeling died in here.</STRING>
+			<STRING>It smells like something $adj_scary_feeling died in here.</STRING>
 			<STRING>Bits of a dead $_humanoid_races are splayed about.</STRING>
-			<STRING>Several faint $adj_feeling argueing voices echo in the distance.</STRING>
+			<STRING>Several faint $adj_scary_feeling argueing voices echo in the distance.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='trolls' or ($theme='random' and 1?10=1)">
-			<STRING>You hear $adj_feeling growling nearby.</STRING>
-			<STRING>You hear the $adj_feeling sounds of heavy footsteps nearby.</STRING>
-			<STRING>You hear faint but $adj_feeling loud cries echoing around you.</STRING>
+			<STRING>You hear $adj_scary_feeling growling nearby.</STRING>
+			<STRING>You hear the $adj_scary_feeling sounds of heavy footsteps nearby.</STRING>
+			<STRING>You hear faint but $adj_scary_feeling loud cries echoing around you.</STRING>
 			<STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
-			<STRING>It smells like something $adj_feeling died in here.</STRING>
+			<STRING>It smells like something $adj_scary_feeling died in here.</STRING>
 			<STRING>Bits of a dead $_humanoid_races are splayed about.</STRING>
-			<STRING>Several faint $adj_feeling gutteral voices echo in the distance.</STRING>
+			<STRING>Several faint $adj_scary_feeling gutteral voices echo in the distance.</STRING>
 		</STRING>
 		<STRING select="all" condition="$theme='rats' or ($theme='random' and 1?10=1)">
-			<STRING>You hear $adj_feeling squeeking nearby.</STRING>
-			<STRING>You hear the $adj_feeling sounds of tiny pattering feet nearby.</STRING>
-			<STRING>You hear faint but $adj_feeling animal sounds echoing around you.</STRING>
+			<STRING>You hear $adj_scary_feeling squeeking nearby.</STRING>
+			<STRING>You hear the $adj_scary_feeling sounds of tiny pattering feet nearby.</STRING>
+			<STRING>You hear faint but $adj_scary_feeling animal sounds echoing around you.</STRING>
 			<STRING>Something has left droppings here.</STRING>
-			<STRING>Some $adj_feeling creature obviously relieved itself here.</STRING>
+			<STRING>Some $adj_scary_feeling creature obviously relieved itself here.</STRING>
 			<STRING>Bits of half-eaten trash can be seen around here.</STRING>
 			<STRING>Bits of some half-eaten creature are here.</STRING>
-			<STRING>Was that the sound of something $adj_feeling?</STRING>
+			<STRING>Was that the sound of something $adj_scary_feeling?</STRING>
 		</STRING>
 	</STRING>
 </STRING>
@@ -2122,7 +2230,7 @@ Required details: "id" "value"
 <MOB id="dungeon_mobs" select="all" requires="level_range=int,theme=prison;rats;kobolds;orcs;trolls;town;goblins;random,aggrochance=int">
 	<MOB select="all" condition="$theme='rats' or $theme='random'">
 		<MOB class="GenMob" level="$level_range" id="dungeon_rat" race="Rat" gender="$anygender">
-			<NAME>(a(n)) $nasty_animal_word $mammal_color rat</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $mammal_color rat</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name squeeks at you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
@@ -2142,7 +2250,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_bat" race="Bat" gender="$anygender">
-			<NAME>(a(n)) $nasty_animal_word $mammal_color bat</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $mammal_color bat</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name dives at you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name bares its teeth at you.</DISPLAY>
@@ -2162,7 +2270,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_spider" race="Spider" gender="$anygender">
-			<NAME>(a(n)) $nasty_animal_word $insect_color spider</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $insect_color spider</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name opens its mandibles at you.</DISPLAY>
@@ -2182,7 +2290,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_blob" race="Blob" gender="N">
-			<NAME>(a(n)) $nasty_animal_word $creature_color blob</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $creature_color blob</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name looks very menacing.</DISPLAY>
@@ -2203,7 +2311,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_scorpion" race="Scorpion" gender="$anygender">
-			<NAME>(a(n)) $nasty_animal_word scorpion</NAME>
+			<NAME>(a(n)) $adj_nasty_animal scorpion</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name snaps its tail at you.</DISPLAY>
@@ -2223,7 +2331,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_snake" race="Snake" gender="$anygender">
-			<NAME>(a(n)) $nasty_animal_word $reptile_color snake</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $reptile_color snake</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name slinks towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name shows its fangs you.</DISPLAY>
@@ -2243,7 +2351,7 @@ Required details: "id" "value"
 			</BEHAVIOR>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="dungeon_lizard" race="Lizard" gender="$anygender">
-			<NAME>(a(n)) $nasty_animal_word $reptile_color lizard</NAME>
+			<NAME>(a(n)) $adj_nasty_animal $reptile_color lizard</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name creeps towards you.</DISPLAY>
 				<DISPLAY pickweight="1">$mob_name flicks its tounge you.</DISPLAY>
@@ -2293,28 +2401,28 @@ Required details: "id" "value"
 			</BEHAVIOR>
 			<ITEM select="all">
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME>(a(n)) $any_colored_color_word prisoner`s jumpsuit</NAME>
+					<NAME>(a(n)) $adj_colored_color prisoner`s jumpsuit</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,ARMS,LEGS</PROPERWORN>
 					<WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>a sharp $wooden_ragged_word stick</NAME>
+						<NAME>a sharp $adj_wooden_ragged stick</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $metal_ragged_word lead pipe</NAME>
+						<NAME>(a(n)) $adj_metal_ragged lead pipe</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>LEAD</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $metal_ragged_word shank</NAME>
+						<NAME>(a(n)) $adj_metal_ragged shank</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
@@ -2421,14 +2529,14 @@ Required details: "id" "value"
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $wooden_ragged_word nightstick</NAME>
+						<NAME>(a(n)) $adj_wooden_ragged nightstick</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $metal_ragged_word sword</NAME>
+						<NAME>(a(n)) $adj_metal_ragged sword</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<WEAPONCLASS>SWORD</WEAPONCLASS>
@@ -2443,7 +2551,7 @@ Required details: "id" "value"
 	<MOB select="all" id="nasty_lair_monster" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
 		<MOB class="GenMob" level="$level_range" id="nasty_lair_guard" race="$nasty_race_name" gender="$anygender">
 			<NAME select="pick-1">
-				<NAME pickweight="1">(a(n)) $nasty_animal_word ${l:mob_race} guard</NAME>
+				<NAME pickweight="1">(a(n)) $adj_nasty_animal ${l:mob_race} guard</NAME>
 				<NAME pickweight="1">(a(n)) ${l:mob_race} guard</NAME>
 			</NAME>
 			<DISPLAY select="pick-1">
@@ -2479,35 +2587,35 @@ Required details: "id" "value"
 				<ITEM class="GenShield" LEVEL="$mob_level" material="OAK" name="a wooden shield" display="a wooden shield sits here"/>
 				<ITEM select="pick-1?3">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather cap</NAME><NAME>(a(n)) $smallragged_item_adj cap</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather cap</NAME><NAME>(a(n)) $adj_smallragged cap</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather vest</NAME><NAME>(a(n)) $smallragged_item_adj vest</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather vest</NAME><NAME>(a(n)) $adj_smallragged vest</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather pants</NAME><NAME>a pair of $smallragged_item_adj pants</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather pants</NAME><NAME>a pair of $adj_smallragged pants</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather sleeves</NAME><NAME>a pair of $adj_smallragged sleeves</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather gloves</NAME><NAME>a pair of $smallragged_item_adj gloves</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather gloves</NAME><NAME>a pair of $adj_smallragged gloves</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HANDS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather hat</NAME><NAME>(a(n)) $smallragged_item_adj hat</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather hat</NAME><NAME>(a(n)) $adj_smallragged hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather blouse</NAME><NAME>(a(n)) $smallragged_item_adj blouse</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather blouse</NAME><NAME>(a(n)) $adj_smallragged blouse</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather dress</NAME><NAME>a pair of $smallragged_item_adj dress</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather dress</NAME><NAME>a pair of $adj_smallragged dress</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenDrink" LEVEL="1" NAME="a ragged waterskin" material="LEATHER" properworn="inventory">
@@ -2519,28 +2627,28 @@ Required details: "id" "value"
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="3" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $smallragged_item_adj spear</NAME>
+						<NAME>(a(n)) $adj_smallragged spear</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<WEAPONCLASS>POLEARM</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 						<MATERIAL>OAK</MATERIAL>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $smallragged_item_adj dagger</NAME>
+						<NAME>(a(n)) $adj_smallragged dagger</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 						<MATERIAL>IRON</MATERIAL>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>a sharp $smallragged_item_adj stick</NAME>
+						<NAME>a sharp $adj_smallragged stick</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>a spiked $smallragged_item_adj mace</NAME>
+						<NAME>a spiked $adj_smallragged mace</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -2552,7 +2660,7 @@ Required details: "id" "value"
 		</MOB>
 		<MOB class="GenMob" level="$level_range" id="nasty_lair_peon" race="$nasty_race_name" gender="$anygender">
 			<NAME select="pick-1">
-				<NAME pickweight="5">(a(n)) $nasty_animal_word ${l:mob_race}</NAME>
+				<NAME pickweight="5">(a(n)) $adj_nasty_animal ${l:mob_race}</NAME>
 				<NAME pickweight="1">(a(n)) ${l:mob_race}</NAME>
 			</NAME>
 			<DISPLAY select="pick-1">
@@ -2585,35 +2693,35 @@ Required details: "id" "value"
 			<ITEM select="all">
 				<ITEM select="pick-1?3">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather cap</NAME><NAME>(a(n)) $smallragged_item_adj cap</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather cap</NAME><NAME>(a(n)) $adj_smallragged cap</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather vest</NAME><NAME>(a(n)) $smallragged_item_adj vest</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather vest</NAME><NAME>(a(n)) $adj_smallragged vest</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather pants</NAME><NAME>a pair of $smallragged_item_adj pants</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather pants</NAME><NAME>a pair of $adj_smallragged pants</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather sleeves</NAME><NAME>a pair of $smallragged_item_adj sleeves</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather sleeves</NAME><NAME>a pair of $adj_smallragged sleeves</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>ARMS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather gloves</NAME><NAME>a pair of $smallragged_item_adj gloves</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather gloves</NAME><NAME>a pair of $adj_smallragged gloves</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HANDS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather hat</NAME><NAME>(a(n)) $smallragged_item_adj hat</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather hat</NAME><NAME>(a(n)) $adj_smallragged hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-						<NAME select="any-1"><NAME>(a(n)) $smallragged_item_adj leather blouse</NAME><NAME>(a(n)) $smallragged_item_adj blouse</NAME></NAME>
+						<NAME select="any-1"><NAME>(a(n)) $adj_smallragged leather blouse</NAME><NAME>(a(n)) $adj_smallragged blouse</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender='F'">
-						<NAME select="any-1"><NAME>a pair of $smallragged_item_adj leather dress</NAME><NAME>a pair of $smallragged_item_adj dress</NAME></NAME>
+						<NAME select="any-1"><NAME>a pair of $adj_smallragged leather dress</NAME><NAME>a pair of $adj_smallragged dress</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>LEGS</PROPERWORN>
 					</ITEM>
 					<ITEM pickweight="1" class="GenDrink" LEVEL="1" NAME="a ragged waterskin" material="LEATHER" properworn="inventory">
@@ -2625,28 +2733,28 @@ Required details: "id" "value"
 				</ITEM>
 				<ITEM select="pick-1">
 					<ITEM pickweight="3" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $smallragged_item_adj spear</NAME>
+						<NAME>(a(n)) $adj_smallragged spear</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<WEAPONCLASS>POLEARM</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 						<MATERIAL>OAK</MATERIAL>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>(a(n)) $smallragged_item_adj dagger</NAME>
+						<NAME>(a(n)) $adj_smallragged dagger</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 						<MATERIAL>IRON</MATERIAL>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>a sharp $smallragged_item_adj stick</NAME>
+						<NAME>a sharp $adj_smallragged stick</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>OAK</MATERIAL>
 						<WEAPONCLASS>DAGGER</WEAPONCLASS>
 						<WEAPONTYPE>PIERCING</WEAPONTYPE>
 					</ITEM>
 					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-						<NAME>a spiked $smallragged_item_adj mace</NAME>
+						<NAME>a spiked $adj_smallragged mace</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>IRON</MATERIAL>
 						<WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -2677,28 +2785,28 @@ Required details: "id" "value"
 	</BEHAVIOR>
 	<ITEM select="pick-1">
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-			<NAME>(a(n)) $ragged_word spear</NAME>
+			<NAME>(a(n)) $adj_ragged spear</NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<WEAPONCLASS>POLEARM</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>OAK</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="2" class="GenWeapon" LEVEL="$mob_level">
-			<NAME>(a(n)) $ragged_word sword</NAME>
+			<NAME>(a(n)) $adj_ragged sword</NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<WEAPONCLASS>SWORD</WEAPONCLASS>
 			<WEAPONTYPE>SLASHING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-			<NAME>(a(n)) $ragged_word dagger</NAME>
+			<NAME>(a(n)) $adj_ragged dagger</NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<WEAPONCLASS>DAGGER</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-			<NAME>a spiked $ragged_word mace</NAME>
+			<NAME>a spiked $adj_ragged mace</NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<MATERIAL>IRON</MATERIAL>
 			<WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -2726,28 +2834,28 @@ Required details: "id" "value"
 	</BEHAVIOR>
 	<ITEM select="pick-1">
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-			<NAME>(a(n)) $ragged_word polearm</NAME>
+			<NAME>(a(n)) $adj_ragged polearm</NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<WEAPONCLASS>POLEARM</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="2" class="GenWeapon" LEVEL="$mob_level">
-			<NAME>(a(n)) $ragged_word blade</NAME>
+			<NAME>(a(n)) $adj_ragged blade</NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<WEAPONCLASS>SWORD</WEAPONCLASS>
 			<WEAPONTYPE>SLASHING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-			<NAME>(a(n)) $ragged_word frogsticker</NAME>
+			<NAME>(a(n)) $adj_ragged frogsticker</NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<WEAPONCLASS>DAGGER</WEAPONCLASS>
 			<WEAPONTYPE>PIERCING</WEAPONTYPE>
 			<MATERIAL>IRON</MATERIAL>
 		</ITEM>
 		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-			<NAME>a spiked $ragged_word club</NAME>
+			<NAME>a spiked $adj_ragged club</NAME>
 			<DISPLAY>$item_name has been left here"</DISPLAY>
 			<MATERIAL>WOOD</MATERIAL>
 			<WEAPONCLASS>BLUNT</WEAPONCLASS>
@@ -2829,224 +2937,224 @@ Required details: "id" "value"
 
 <ITEM id="dungeon_junk" select="all" requires="level_range=int,theme=prison;rats;kobolds;orcs;trolls;goblins;random">
 	<ITEM select="all" condition="$theme='rats' or $theme='trolls' $theme='random'">
-		<ITEM class="GenItem" name="some $metal_broken_word armor scraps" display="$item_name are sitting here" material="$random_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="some $adj_metal_broken armor scraps" display="$item_name are sitting here" material="$any_cheap_metal" level="$level_range" />
 		<ITEM class="GenResource" name="the bones of a dead aventurer" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
 		<ITEM class="GenItem" name="a string of beads" display="a string of beads lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a wax candle stub" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a stub of rope" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
 		<ITEM class="GenEmptyDrink" name="a small bottle" display="$item_name lies here" material="GLASS" level="$level_range" liquidheld=100 weight=3 />
-		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} spike" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="1"/>
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word box" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word cloth hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} pick" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
-		<ITEM class="GenItem" name="a bit of ${l:item_material} wire" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word blanket" display="$item_name lies here" material="$random_wood" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="a dirty $cloth_broken_word ${l:item_material} rag" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} tweezer" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word locket" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="some false wooden teeth" display="$item_name are here" material="$random_wood" level="$level_range" weight=1 />
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} spike" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken box" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken cloth hat"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken sack"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} pick" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
+		<ITEM class="GenItem" name="a bit of ${l:item_material} wire" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken blanket" display="$item_name lies here" material="$any_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a dirty $adj_cloth_broken ${l:item_material} rag" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} tweezer" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken locket" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="some false wooden teeth" display="$item_name are here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="GenFood" name="a squished frog"  display="$item_name lies here" material="MEAT" level="$level_range"  weight=1 nourishment=1 />
 		<ITEM class="GenLiquidResource" name="a puddle of blood" display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} axe head" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word wooden bracelet" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} axe head" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken wooden bracelet" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="metacraft:any-Cooking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 		<ITEM class="metacraft:any-Baking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-		<ITEM class="GenWeapon" name="(a(n)) $wooden_broken_word wooden sword" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenWeapon" name="(a(n)) $adj_wooden_broken wooden sword" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
 		<ITEM class="GenItem" name="a pair of bull horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word metal handle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word ${l:item_material} stick" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken metal handle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
 		<ITEM class="GenItem" name="a pile of corks" display="$item_name are here" material="OAK" level="$level_range" weight=1 />
-		<ITEM class="GenWeapon" name="(a(n)) $metal_broken_word ${l:item_material} pipe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="2"/>
+		<ITEM class="GenWeapon" name="(a(n)) $adj_metal_broken ${l:item_material} pipe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="2"/>
 		<ITEM class="GenItem" name="a rat skull" display="$item_name lies here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a stick of black chalk" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} lock" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} lock" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
 		<ITEM class="metacraft:any-Cooking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 		<ITEM class="metacraft:any-Baking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} holy symbol" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word ${l:item_material} holy symbol" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="GenLimb" name="a cracked glass eye" display="$item_name lies here" material="GLASS" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="$any_plural_digit $any_humanoid_race toes on a $metal_broken_word chain" display="$item_name lie here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word clothespin" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="$any_plural_digit $any_humanoid_race toes on a $adj_metal_broken chain" display="$item_name lie here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken clothespin" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a worn leather ball" display="$item_name lies here" material="LEATHER" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} belt buckle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} knitting needle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} belt buckle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} knitting needle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
 		<ITEM class="GenLimb" name="a mummified $any_humanoid_race hand" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
 		<ITEM class="GenLimb" name="a mummified $any_mammal_race paw" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a ball of twine" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) whittled ${l:item_material} stick" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a ball of twine" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) whittled ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
 		<ITEM class="GenItem" name="a smooth rock" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a dyed $any_colored_color_word stone" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a dyed $any_colored_color_word stick" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a puzzle piece" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word bowl" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a dyed $adj_colored_color stone" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a dyed $adj_colored_color stick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a puzzle piece" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken bowl" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
 		<ITEM class="GenPlayingCard" name="a playing card" ability="0?62" />
 		<ITEM class="GenItem" name="(a(n)) $any_avian_race feather" display="$item_name lies here" material="FEATHERS" level="$level_range" weight=1 />
-		<ITEM class="GenKey" name="(a(n)) $metal_broken_word key" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
+		<ITEM class="GenKey" name="(a(n)) $adj_metal_broken key" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
 		<ITEM class="GenItem" name="a clump of bloody $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} toothpick" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a clump of ${l:item_material}" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} fishhook" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} toothpick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a clump of ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} fishhook" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
 		<ITEM class="GenItem" name="a gnawed-on $any_humanoid_race finger bone" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a bloody $any_humanoid_race skull" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenReadable" name="a scrap of paper" display="$item_name lies here" material="PAPER" level="$level_range" weight=1 description="There's something written on it." READABLETEXT="Something totally unintelligible."/>
-		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} nail" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="1"/>
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word hatchet handle" display="$item_name is sitting here" material="$random_wood" level="$level_range" />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word baby rattle" display="$item_name is here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word horse shoe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1/>
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} nail" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken hatchet handle" display="$item_name is sitting here" material="$any_wood" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken baby rattle" display="$item_name is here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken horse shoe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1/>
 		<ITEM class="GenItem" name="a bloody comb" display="$item_name lie here" material="$ramdom_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} chair leg" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 damage="1"/>
-		<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $metal_broken_word $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
-		<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $metal_broken_word $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
-		<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $metal_broken_word $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
-		<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $metal_broken_word $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} chair leg" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+		<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $adj_metal_broken $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
 	</ITEM>
 	<ITEM select="all" condition="$theme='prison' or $theme='random'">
-		<ITEM class="GenItem" name="some $metal_broken_word handcuffs scraps" display="$item_name were discarded here" material="IRON" level="$level_range" />
-		<ITEM class="GenWeapon" name="a $wooden_broken_word night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
+		<ITEM class="GenItem" name="some $adj_metal_broken handcuffs scraps" display="$item_name were discarded here" material="IRON" level="$level_range" />
+		<ITEM class="GenWeapon" name="a $adj_wooden_broken night stick" display="$item_name is lying here" material="WOOD" level="$level_range" attack="-10" damage="1"/>
 		<ITEM class="GenResource" name="the bones of a dead prisoner" display="$item_name rest here" material="BONE" level="$level_range" weight="10" />
 		<ITEM class="GenItem" name="some prayer beads" display="a string of prayer beads lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a melted wax clob" display="$item_name lies here" material="WAX" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a makeshift noose" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
 		<ITEM class="GenEmptyDrink" name="a small bottle" display="$item_name lies here" material="GLASS" level="$level_range" liquidheld=100 weight=3 />
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} file" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} shank" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3  damage="1"/>
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word cigar box" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word wardens hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word laundry sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} chisel" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
-		<ITEM class="GenItem" name="a twisted ${l:item_material} wire noose" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word sheet" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word ${l:item_material} rag" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="A locket with (a(n)) $metal_broken_word chain" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} tooth" display="$item_name is here" material="$random_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} file" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} shank" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3  damage="1"/>
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken cigar box" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken wardens hat"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken laundry sack"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} chisel" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
+		<ITEM class="GenItem" name="a twisted ${l:item_material} wire noose" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken sheet" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken ${l:item_material} rag" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="A locket with (a(n)) $adj_metal_broken chain" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} tooth" display="$item_name is here" material="$any_metal" level="$level_range" weight=1 />
 		<ITEM class="GenFood" name="a dead cockroach"  display="$item_name lies here" material="MEAT" level="$level_range"  weight=1 nourishment=1 />
 		<ITEM class="GenLiquidResource" name="a pool of blood"  display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} handaxe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word wooden crown" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} handaxe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken wooden crown" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="metacraft:any-Cooking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 		<ITEM class="metacraft:any-Baking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-		<ITEM class="GenWeapon" name="(a(n)) $wooden_broken_word makeshift wooden sword" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenWeapon" name="(a(n)) $adj_wooden_broken makeshift wooden sword" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
 		<ITEM class="GenItem" name="a pair of deer horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word door handle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word ${l:item_material} handle" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken door handle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} handle" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
 		<ITEM class="GenItem" name="a pile of bottle corks" display="$item_name are here" material="OAK" level="$level_range" weight=1 />
-		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} pipe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="2"/>
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} pipe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="2"/>
 		<ITEM class="GenItem" name="a small pile of rat skulls" display="$item_name are here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a stick of white chalk" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} door lock" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} door lock" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
 		<ITEM class="metacraft:any-Cooking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 		<ITEM class="metacraft:any-Baking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} religious trinket" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word ${l:item_material} religious symbol" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} religious trinket" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} religious symbol" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="GenLimb" name="a glass eye" display="$item_name lies here" material="GLASS" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="$any_plural_digit $any_humanoid_race fingers on a $metal_broken_word chain" display="$item_name lie here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word clothespin" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word leather ball" display="$item_name lies here" material="LEATHER" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word belt buckle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} sewing needle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="$any_plural_digit $any_humanoid_race fingers on a $adj_metal_broken chain" display="$item_name lie here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken clothespin" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken leather ball" display="$item_name lies here" material="LEATHER" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken belt buckle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} sewing needle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
 		<ITEM class="GenLimb" name="a mummified $any_humanoid_race foot" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
 		<ITEM class="GenLimb" name="a mummified $any_mammal_race leg" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a strand of ${l:item_material} string" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) whittled $wooden_broken_word ${l:item_material} stick" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a strand of ${l:item_material} string" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) whittled $adj_wooden_broken ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
 		<ITEM class="GenItem" name="a smooth stone" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a dyed $any_colored_color_word rock" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a dyed $any_colored_color_word ${l:item_material} stick" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} puzzle piece" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word pot" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a dyed $adj_colored_color rock" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a dyed $adj_colored_color ${l:item_material} stick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} puzzle piece" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken pot" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
 		<ITEM class="GenPlayingCard" name="a playing card" ability="0?62" />
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word $any_avian_race feather" display="$item_name lies here" material="FEATHERS" level="$level_range" weight=1 />
-		<ITEM class="GenKey" name="(a(n)) $metal_broken_word ${l:item_material} key" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken $any_avian_race feather" display="$item_name lies here" material="FEATHERS" level="$level_range" weight=1 />
+		<ITEM class="GenKey" name="(a(n)) $adj_metal_broken ${l:item_material} key" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
 		<ITEM class="GenItem" name="a cherished locke of $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word toothpick" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a bit of bloody ${l:item_material}" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word pully" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken toothpick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a bit of bloody ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken pully" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
 		<ITEM class="GenItem" name="(a(n)) $any_humanoid_race finger bone" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="(a(n)) $any_humanoid_race skull" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenReadable" name="a slip of paper" display="$item_name lies here" material="PAPER" level="$level_range" weight=1 description="There's something written on it." READABLETEXT="see $fantasy_name"/>
-		<ITEM class="GenWeapon" name="a bloody ${l:item_material} nail" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="1"/>
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word axe handle" display="$item_name is sitting here" material="$random_wood" level="$level_range" />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word bloody chew-toy" display="$item_name is here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a rusty $metal_broken_word horse shoe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1/>
-		<ITEM class="GenItem" name="a dirty comb" display="$item_name lie here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} table leg" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 damage="1"/>
-		<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $metal_broken_word rusted $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
-		<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $metal_broken_word rusted $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
-		<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $metal_broken_word rusted $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
-		<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $metal_broken_word rusted $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+		<ITEM class="GenWeapon" name="a bloody ${l:item_material} nail" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken axe handle" display="$item_name is sitting here" material="$any_wood" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken bloody chew-toy" display="$item_name is here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a rusty $adj_metal_broken horse shoe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1/>
+		<ITEM class="GenItem" name="a dirty comb" display="$item_name lie here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} table leg" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $adj_metal_broken rusted $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $adj_metal_broken rusted $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $adj_metal_broken rusted $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+		<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $adj_metal_broken rusted $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
 	</ITEM>
 	<ITEM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='random'">
-		<ITEM class="GenItem" name="some $wooden_broken_word shield pieces" display="$item_name are sitting here" material="IRON" level="$level_range" />
+		<ITEM class="GenItem" name="some $adj_wooden_broken shield pieces" display="$item_name are sitting here" material="IRON" level="$level_range" />
 		<ITEM class="GenResource" name="the bones of a dead critter" display="$item_name rest here" material="BONE" level="$level_range" weight="2" />
 		<ITEM class="GenItem" name="a candle wick" display="$item_name lies here" material="COTTON" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a string of tiny prayer bones" display="a string of tiny prayer bones lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="a one foot length of rope" display="$item_name lies here" material="HEMP" level="$level_range" weight=3 />
 		<ITEM class="GenEmptyDrink" name="a small clay jug" display="$item_name lies here" material="CLAY" level="$level_range" liquidheld=100 weight=3 />
-		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} shard" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3  damage="1"/>
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word crate" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=3/>
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word hat"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="a small $cloth_broken_word sack"  display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} pick head" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 />
-		<ITEM class="GenItem" name="a short length of ${l:item_material} wire" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word bedroll" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="a greasy $cloth_broken_word ${l:item_material} rag" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} half-tweezer" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} locket" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} shard" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3  damage="1"/>
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken crate" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=3/>
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken hat"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a small $adj_cloth_broken sack"  display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} pick head" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 />
+		<ITEM class="GenItem" name="a short length of ${l:item_material} wire" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken bedroll" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a greasy $adj_cloth_broken ${l:item_material} rag" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} half-tweezer" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} locket" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="(a(n)) unidentified tooth" display="$item_name is here" material="bone" level="$level_range" weight=1 />
 		<ITEM class="GenFood" name="a dead frog"  display="$item_name lies here" material="MEAT" level="$level_range"  weight=1 nourishment=1 />
 		<ITEM class="GenLiquidResource" name="a glob of blood"  display="$item_name is here" material="BLOOD" level="$level_range"  weight=1 LIQUIDHELD=1 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word ${l:item_material} axe handle" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word wooden helmet" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} axe handle" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken wooden helmet" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="metacraft:any-Cooking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 		<ITEM class="metacraft:any-Baking < $level_range" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-		<ITEM class="GenWeapon" name="(a(n)) $wooden_broken_word wooden practice sword" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenWeapon" name="(a(n)) $adj_wooden_broken wooden practice sword" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
 		<ITEM class="GenItem" name="a pair of small horns" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word door hinge" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word ${l:item_material} sticker" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken door hinge" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} sticker" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
 		<ITEM class="GenItem" name="a pile of wine corks" display="$item_name are here" material="OAK" level="$level_range" weight=1 />
-		<ITEM class="GenWeapon" name="(a(n)) small ${l:item_material} pipe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="2"/>
+		<ITEM class="GenWeapon" name="(a(n)) small ${l:item_material} pipe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="2"/>
 		<ITEM class="GenItem" name="a collection of rat skulls" display="$item_name are here" material="BONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a stick of $any_colored_color_word chalk" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} lockpick" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="a stick of $adj_colored_color chalk" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} lockpick" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
 		<ITEM class="metacraft:any-Cooking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
 		<ITEM class="metacraft:any-Baking < $level_range" name="some half-eaten $item_name covered in mold" display="$item_name sits here" weight=1 description="Its been here awhile."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} holy symbol" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word ${l:item_material} holy symbol" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken ${l:item_material} holy symbol" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
 		<ITEM class="GenLimb" name="a glass eyeball" display="$item_name lies here" material="GLASS" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="$any_plural_digit $any_humanoid_race ears on a $metal_broken_word chain" display="$item_name lie here" material="$random_cheap_metal" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} clothespin" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word leather toy" display="$item_name lies here" material="LEATHER" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) ${l:item_material} belt buckle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range"  weight=1/>
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} needle" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="$any_plural_digit $any_humanoid_race ears on a $adj_metal_broken chain" display="$item_name lie here" material="$any_cheap_metal" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} clothespin" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken leather toy" display="$item_name lies here" material="LEATHER" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) ${l:item_material} belt buckle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} needle" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range"  weight=1/>
 		<ITEM class="GenLimb" name="a mummified $any_humanoid_race arm" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
 		<ITEM class="GenLimb" name="a mummified $any_mammal_race head" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a clump of ${l:item_material}" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range" weight=1 />
-		<ITEM class="GenWeapon" name="a sharpened ${l:item_material} stick" display="$item_name is sitting here" material="$random_wood" level="$level_range"  damage="1" weight=1/>
+		<ITEM class="GenItem" name="a clump of ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+		<ITEM class="GenWeapon" name="a sharpened ${l:item_material} stick" display="$item_name is sitting here" material="$any_wood" level="$level_range"  damage="1" weight=1/>
 		<ITEM class="GenItem" name="a jagged stone" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a dyed $any_colored_color_word pebble" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a dyed $any_colored_color_word ${l:item_material} branch" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $cloth_broken_word ${l:item_material} puzzle piece" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a small $wooden_broken_word bowl" display="$item_name is sitting here" material="$random_wood" level="$level_range"  weight=1/>
+		<ITEM class="GenItem" name="a dyed $adj_colored_color pebble" display="$item_name lies here" material="STONE" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a dyed $adj_colored_color ${l:item_material} branch" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken ${l:item_material} puzzle piece" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a small $adj_wooden_broken bowl" display="$item_name is sitting here" material="$any_wood" level="$level_range"  weight=1/>
 		<ITEM class="GenPlayingCard" name="a playing card" ability="0?62" />
 		<ITEM class="GenItem" name="a dirty $any_avian_race feather" display="$item_name lies here" material="FEATHERS" level="$level_range" weight=1 />
-		<ITEM class="GenKey" name="a rusty worn ${l:item_material} key" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
+		<ITEM class="GenKey" name="a rusty worn ${l:item_material} key" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1 READABLETEXT="opensnothing"/>
 		<ITEM class="GenItem" name="a dirty locke of $any_humanoid_race hair" display="$item_name lies here" material="MEAT" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a dirty wooden toothpick" display="$item_name lies here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a bit of dirty ${l:item_material}" display="$item_name lies here" material="$random_cheap_cloth" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="(a(n)) $metal_broken_word ${l:item_material} hook" display="$item_name is sitting here" material="$random_cheap_metal" level="$level_range" />
+		<ITEM class="GenItem" name="a dirty wooden toothpick" display="$item_name lies here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a bit of dirty ${l:item_material}" display="$item_name lies here" material="$any_cheap_cloth" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="(a(n)) $adj_metal_broken ${l:item_material} hook" display="$item_name is sitting here" material="$any_cheap_metal" level="$level_range" />
 		<ITEM class="GenItem" name="(a(n)) $any_humanoid_race knuckle bone" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenItem" name="(a(n)) $any_humanoid_race jawbone" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
 		<ITEM class="GenReadable" name="a scrap of paper" display="$item_name lies here" material="PAPER" level="$level_range" weight=1 description="There's something written on it." READABLETEXT="$[0?99]-$[0?999]-$[0?999]"/>
-		<ITEM class="GenWeapon" name="a rusted ${l:item_material} nail" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=3 damage="1"/>
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word pick handle" display="$item_name is sitting here" material="$random_wood" level="$level_range" />
-		<ITEM class="GenItem" name="(a(n)) $wooden_broken_word bloody baby rattle" display="$item_name is here" material="$random_wood" level="$level_range" weight=1 />
-		<ITEM class="GenItem" name="a dirty $metal_broken_word horse shoe" display="$item_name lies here" material="$random_cheap_metal" level="$level_range" weight=1/>
+		<ITEM class="GenWeapon" name="a rusted ${l:item_material} nail" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken pick handle" display="$item_name is sitting here" material="$any_wood" level="$level_range" />
+		<ITEM class="GenItem" name="(a(n)) $adj_wooden_broken bloody baby rattle" display="$item_name is here" material="$any_wood" level="$level_range" weight=1 />
+		<ITEM class="GenItem" name="a dirty $adj_metal_broken horse shoe" display="$item_name lies here" material="$any_cheap_metal" level="$level_range" weight=1/>
 		<ITEM class="GenItem" name="a bloody hair comb made of bone" display="$item_name lie here" material="BONE" level="$level_range" weight=1 />
-		<ITEM class="GenLimb" name="(a(n)) ${l:item_material} wooden leg" display="$item_name lies here" material="$random_wood" level="$level_range" weight=3 damage="1"/>
-		<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $metal_broken_word bloody $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
-		<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $metal_broken_word bloody $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
-		<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $metal_broken_word bloody $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
-		<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $metal_broken_word bloody $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+		<ITEM class="GenLimb" name="(a(n)) ${l:item_material} wooden leg" display="$item_name lies here" material="$any_wood" level="$level_range" weight=3 damage="1"/>
+		<ITEM class="metacraft:any-Weaponsmithing < $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" damage=1  attack=-10 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-Armorsmithing < $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" />
+		<ITEM class="metacraft:any-MasterWeaponsmithing < $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" damage=1 attack=-10 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
+		<ITEM class="metacraft:any-MasterArmorsmithing < $level_range" name="(a(n)) $adj_metal_broken bloody $item_name" display="$item_name lies here" armor=0 affbehav="<BEHAVES /><AFFECS />" condition="$level_range>30" />
 	</ITEM>
 </ITEM>
 
@@ -3248,298 +3356,8 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	<STRING>Wolf</STRING>
 </STRING>
 
-<STRING id="adj_phys_size" select="any-1">
-	<STRING id="adj_phys_size_values" insert="adj_phys_size_large_values,adj_phys_size_small_values" />
-</STRING>
-<STRING id="adj_phys_size_large" select="any-1">
-	<STRING id="adj_phys_size_large_values">
-		<STRING>huge</STRING>
-		<STRING>broad</STRING>
-		<STRING>wide</STRING>
-		<STRING>large</STRING>
-		<STRING>spacious</STRING>
-		<STRING>expansive</STRING>
-		<STRING>roomy</STRING>
-	</STRING>
-</STRING>
-<STRING id="adj_phys_size_small" select="any-1">
-	<STRING id="adj_phys_size_small_values">
-		<STRING>narrow</STRING>
-		<STRING>cramped</STRING>
-		<STRING>tight</STRING>
-		<STRING>small</STRING>
-		<STRING>constricted</STRING>
-	</STRING>
-</STRING>
-<STRING id="adj_phys_nosize" select="any-1">
-	<STRING id="adj_phys_nosize_values">
-		<STRING>jagged</STRING>
-		<STRING>smooth</STRING>
-		<STRING>rocky</STRING>
-		<STRING>grey</STRING>
-		<STRING>coarse</STRING>
-		<STRING>uneven</STRING>
-		<STRING>craggy</STRING>
-		<STRING>rough</STRING>
-		<STRING>cracked</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="nasty_word" select="any-1">
-	<STRING id="nasty_word_values" select="all">
-		<STRING>dirty</STRING>
-		<STRING>filthy</STRING>
-		<STRING>muddy</STRING>
-		<STRING>nasty</STRING>
-		<STRING>smelly</STRING>
-		<STRING>grotesque</STRING>
-		<STRING>unpleasant</STRING>
-		<STRING>creepy</STRING>
-		<STRING>eerie</STRING>
-		<STRING>harsh</STRING>
-		<STRING>scary</STRING>
-		<STRING>quiet</STRING>
-		<STRING>musty</STRING>
-		<STRING>damp</STRING>
-		<STRING>wet</STRING>
-		<STRING>cold</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="tidy_word" select="any-1">
-	<STRING id="tidy_word_values" select="all">
-		<STRING>clean</STRING>
-		<STRING>neat</STRING>
-		<STRING>nice</STRING>
-		<STRING>fragrant</STRING>
-		<STRING>lovely</STRING>
-		<STRING>pleasant</STRING>
-		<STRING>mundane</STRING>
-		<STRING>cheery</STRING>
-		<STRING>peaceful</STRING>
-		<STRING>bustling</STRING>
-		<STRING>warm</STRING>
-		<STRING>tidy</STRING>
-	</STRING>
-</STRING>
-	
-<STRING id="nasty_animal_word" select="any-1" insert="nasty_word_values">
-	<STRING>oversized</STRING>
-	<STRING>runt</STRING>
-	<STRING>slithering</STRING>
-	<STRING>hungry</STRING>
-	<STRING>dour</STRING>
-	<STRING>grim</STRING>
-</STRING>
-
-<STRING id="small_word" select="any-1">
-	<STRING>small</STRING>
-	<STRING>short</STRING>
-	<STRING>little</STRING>
-	<STRING>undersized</STRING>
-</STRING>
-
-<STRING id="large_word" select="any-1">
-	<STRING>large</STRING>
-	<STRING>huge</STRING>
-	<STRING>big</STRING>
-	<STRING>oversized</STRING>
-</STRING>
-
-<STRING id="adj_feeling" select="any-1" >
-	<STRING id="adj_feeling_values">
-		<STRING>ghastly</STRING>
-		<STRING>unpleasant</STRING>
-		<STRING>creepy</STRING>
-		<STRING>eerie</STRING>
-		<STRING>harsh</STRING>
-		<STRING>lonely</STRING>
-		<STRING>grating</STRING>
-		<STRING>scary</STRING>
-		<STRING>sinister</STRING>
-		<STRING>dreary</STRING>
-		<STRING>dour</STRING>
-		<STRING>grim</STRING>
-		<STRING>gloomy</STRING>
-		<STRING>unsettling</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="adj_general" select="any-1">
-	<STRING id="adj_general_values">
-		<STRING>dank</STRING>
-		<STRING>quiet</STRING>
-		<STRING>musty</STRING>
-		<STRING>moldy</STRING>
-		<STRING>chilling</STRING>
-		<STRING>damp</STRING>
-		<STRING>still</STRING>
-		<STRING>dark</STRING>
-		<STRING>wet</STRING>
-		<STRING>cold</STRING>
-		<STRING>black</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="adj_dark" select="any-1">
-	<STRING id="adj_dark_values">
-		<STRING>dark</STRING>
-		<STRING>black</STRING>
-		<STRING>unlit</STRING>
-		<STRING>lightless</STRING>
-		<STRING>dim</STRING>
-		<STRING>unilluminated</STRING>
-		<STRING>darkened</STRING>
-		<STRING>pitch-black</STRING>
-		<STRING>pitch-dark</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="adj_light" select="any-1">
-	<STRING id="adj_light_values">
-		<STRING>bright</STRING>
-		<STRING>well lit</STRING>
-		<STRING>illuminated</STRING>
-		<STRING>candescent</STRING>
-		<STRING>well-lighted</STRING>
-		<STRING>lighted</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="adj_burning" select="any-1">
-	<STRING id="adj_burning_values">
-		<STRING>burning</STRING>
-		<STRING>flaming</STRING>
-		<STRING>scorching hot</STRING>
-		<STRING>extremely hot</STRING>
-		<STRING>blazing</STRING>
-		<STRING>smoldering</STRING>
-		<STRING>scalding hot</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="adj_fancy" select="any-1">
-	<STRING id="adj_fancy_values">
-		<STRING>posh</STRING>
-		<STRING>fancy</STRING>
-		<STRING>comfortable</STRING>
-		<STRING>rich</STRING>
-		<STRING>elaborate</STRING>
-		<STRING>luxuriant</STRING>
-		<STRING>fanciful</STRING>
-		<STRING>puffed</STRING>
-		<STRING>nice</STRING>
-		<STRING>beautiful</STRING>
-		<STRING>frilly</STRING>
-		<STRING>ornamental</STRING>
-		<STRING>comfy</STRING>
-		<STRING>cozy</STRING>
-		<STRING>snug</STRING>
-		<STRING>easy</STRING>
-		<STRING>homey</STRING>
-		<STRING>homelike</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="any_color_word" select="any-1">
-	<STRING>white</STRING>
-	<STRING>green</STRING>
-	<STRING>blue</STRING>
-	<STRING>red</STRING>
-	<STRING>yellow</STRING>
-	<STRING>cyan</STRING>
-	<STRING>purple</STRING>
-	<STRING>dark white</STRING>
-	<STRING>dark green</STRING>
-	<STRING>dark blue</STRING>
-	<STRING>dark red</STRING>
-	<STRING>dark yellow</STRING>
-	<STRING>dark cyan</STRING>
-	<STRING>dark purple</STRING>
-</STRING>
-
 <string id="any_plural_digit" select="any-1"><string>2</string><string>3</string><string>4</string><string>5</string><string>6</string><string>7</string><string>8</string><string>9</string></string>
 <string id="any_digit" insert="any_plural_digit" select="any-1"><string>0</string><string>1</string></string>
-
-<STRING id="any_colored_color_word" select="any-1">
-	<STRING>^wwhite^?</STRING>
-	<STRING>^ggreen^?</STRING>
-	<STRING>^bblue^?</STRING>
-	<STRING>^rred^?</STRING>
-	<STRING>^yyellow^?</STRING>
-	<STRING>^ccyan^?</STRING>
-	<STRING>^ppurple^?</STRING>
-	<STRING>^Wdark white^?</STRING>
-	<STRING>^Gdark green^?</STRING>
-	<STRING>^Bdark blue^?</STRING>
-	<STRING>^Rdark red^?</STRING>
-	<STRING>^Ydark yellow^?</STRING>
-	<STRING>^Cdark cyan^?</STRING>
-	<STRING>^Pdark purple^?</STRING>
-</STRING>
-
-<STRING id="ragged_word" select="any-1">
-	<STRING></STRING>
-	<STRING>ragged</STRING>
-	<STRING>scraggy</STRING>
-	<STRING>battered</STRING>
-	<STRING>tattered</STRING>
-	<STRING>worn</STRING>
-	<STRING>old</STRING>
-</STRING>
-
-<STRING id="wooden_ragged_word" select="any-1" insert="ragged_word">
-	<STRING>splintered</STRING>
-	<STRING>notched</STRING>
-</STRING>
-
-<STRING id="wooden_broken_word" select="any-1">
-	<STRING>broken</STRING>
-	<STRING>destroyed</STRING>
-	<STRING>shredded</STRING>
-	<STRING>rotted</STRING>
-	<STRING>mutilated</STRING>
-	<STRING>rotten</STRING>
-</STRING>
-
-<STRING id="cloth_ragged_word" select="any-1" insert="ragged_word">
-	<STRING>patched</STRING>
-	<STRING>shabby</STRING>
-	<STRING>frazzled</STRING>
-	<STRING>frayed</STRING>
-	<STRING>threadbare</STRING>
-</STRING>
-
-<STRING id="cloth_broken_word" select="any-1">
-	<STRING>torn up</STRING>
-	<STRING>destroyed</STRING>
-	<STRING>shredded</STRING>
-	<STRING>ripped up</STRING>
-	<STRING>mutilated</STRING>
-</STRING>
-
-<STRING id="metal_ragged_word" select="any-1" insert="ragged_word">
-	<STRING>rusted</STRING>
-	<STRING>dented</STRING>
-</STRING>
-
-<STRING id="metal_broken_word" select="any-1">
-	<STRING>broken</STRING>
-	<STRING>busted</STRING>
-	<STRING>crumpled</STRING>
-	<STRING>twisted</STRING>
-	<STRING>crushed</STRING>
-	<STRING>pulverized</STRING>
-</STRING>
-
-<STRING id="smallragged_item_adj" select="any-1">
-	<STRING>$small_word</STRING>
-	<STRING>$small_word $nasty_race_name</STRING>
-	<STRING>$ragged_word</STRING>
-	<STRING>$ragged_word $nasty_race_name</STRING>
-	<STRING>$small_word $ragged_word</STRING>
-	<STRING>$small_word $ragged_word $nasty_race_name</STRING>
-</STRING>
 
 <STRING id="insect_color" select="any-1" insert="mammal_color">
 <STRING>green</STRING>
@@ -3575,232 +3393,34 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 
 </STRING>
 
-<STRING id="random_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
-<STRING id="random_rich_metal" select="any-1"><string>silver</string><string>gold</string><string>copper</string><string>white_gold</string></STRING>
-<STRING id="random_metal" insert="random_cheap_metal,random_rich_metal" select="any-1"><string>zinc</string><string>steel</string><string>chromium</string><string>dragonscales</string></STRING>
-<STRING id="random_mithril" insert="random_metal" select="any-1"><string>mithril</string><string>adamantite</string><string>atlantite</string></STRING>
-<STRING id="random_wood" select="any-1">
+<STRING id="any_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
+<STRING id="any_rich_metal" select="any-1"><string>silver</string><string>gold</string><string>copper</string><string>white_gold</string></STRING>
+<STRING id="any_metal" insert="any_cheap_metal,any_rich_metal" select="any-1"><string>zinc</string><string>steel</string><string>chromium</string><string>dragonscales</string></STRING>
+<STRING id="any_mithril" insert="any_metal" select="any-1"><string>mithril</string><string>adamantite</string><string>atlantite</string></STRING>
+<STRING id="any_wood" select="any-1">
 	<string>wood</string><string>pine</string><string>balsa</string><string>oak</string><string>maple</string><string>redwood</string><string>hickory</string><string>ironwood</string>
 	<string>yew</string><string>teak</string><string>cedar</string><string>elm</string><string>cherrywood</string><string>beechwood</string><string>willow</string><string>sycamore</string>
 	<string>spruce</string><string>mesquite</string><string>reed</string><string>bamboo</string>
 </STRING>
-<STRING id="random_cheap_cloth" select="any-1"><string>hide</string><string>wool</string><string>cotton</string><string>hemp</string></STRING>
-<STRING id="random_rich_cloth" select="any-1"><string>spidersteel</string><string>silk</string><string>feathers</string><string>fur</string></STRING>
-<STRING id="random_cloth" insert="random_cheap_cloth,random_rich_cloth" select="any-1"></STRING>
+<STRING id="any_cheap_cloth" select="any-1"><string>hide</string><string>wool</string><string>cotton</string><string>hemp</string></STRING>
+<STRING id="any_rich_cloth" select="any-1"><string>spidersteel</string><string>silk</string><string>feathers</string><string>fur</string></STRING>
+<STRING id="any_cloth" insert="any_cheap_cloth,any_rich_cloth" select="any-1"></STRING>
 
 <STRING id="smithywords" select="any-1"><STRING>hammer</STRING><STRING>anvil</STRING><STRING>forge</STRING><STRING>fire</STRING><STRING>steel</STRING></STRING>
 <STRING id="weaponsmithywords" select="any-1"><STRING>sword</STRING><STRING>axe</STRING><STRING>mace</STRING><STRING>arms</STRING><STRING>spear</STRING><STRING>dagger</STRING></STRING>
 <STRING id="armorsmithywords" select="any-1"><STRING>shield</STRING><STRING>armor</STRING><STRING>bracer</STRING><STRING>chain</STRING><STRING>plate</STRING></STRING>
 
-<STRING id="roomrun_desc" select="any-1">
-<STRING condition="$ROOMTAG_NODERUN='ns'">north-south</STRING>
-<STRING condition="$ROOMTAG_NODERUN='ew'">east-west</STRING>
-<STRING condition="$ROOMTAG_NODERUN='ud'">ascending</STRING>
-<STRING condition="$ROOMTAG_NODERUN='nwse'">northwest-southeast</STRING>
-<STRING condition="$ROOMTAG_NODERUN='nesw'">northeast-southwest</STRING>
-<STRING condition="$ROOMTAG_NODERUN=''">winding</STRING>
-</STRING>
-
-<STRING id="roomrun_desc_long" select="any-1">
-<STRING condition="$ROOMTAG_NODERUN='ns'">north and south</STRING>
-<STRING condition="$ROOMTAG_NODERUN='ew'">east and west</STRING>
-<STRING condition="$ROOMTAG_NODERUN='ud'">ascending and descending</STRING>
-<STRING condition="$ROOMTAG_NODERUN='nwse'">northwest and southeast</STRING>
-<STRING condition="$ROOMTAG_NODERUN='nesw'">northeast and southwest</STRING>
-<STRING condition="$ROOMTAG_NODERUN=''">around</STRING>
-</STRING>
-
-<STRING id="roomexits_desc_long" select="any-1">
-<STRING condition="$ROOMTAG_NODEEXITS=',n,'">north</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,'">north and south</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,'">north, south, and east</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,'">north, south, east, and west</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,u,'">north, south, east, west, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,u,d,'">north, south, east, west, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,d,'">north, south, east, west, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,u,'">north, south, east, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,u,d,'">north, south, east, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,d,'">north, south, east, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,'">north, south, and west</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,u,'">north, south, west, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,u,d,'">north, south, west, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,d,'">north, south, west, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,u,'">north, south, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,u,d,'">north, south, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,s,d,'">north, south, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,e,'">north and east</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,'">north, east, and west</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,u,'">north, east, west, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,u,d,'">north, east, west, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,d,'">north, east, west, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,e,u,'">north, east, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,e,u,d,'">north, east, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,e,d,'">north, east, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,w,'">north and west</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,w,u,'">north, west, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,w,u,d,'">north, west, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,w,d,'">north, west, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,u,'">north and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,u,d,'">north, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',n,d,'">north and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,'">south</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,e,'">south and east</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,'">south, east, and west</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,u,'">south, east, west, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,u,d,'">south, east, west, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,d,'">south, east, west, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,e,u,'">south, east, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,e,u,d,'">south, east, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,e,d,'">south, east, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,w,'">south and west</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,w,u,'">south, west, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,w,u,d,'">south, west, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,w,d,'">south, west, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,u,'">south and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,u,d,'">south, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',s,d,'">south and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',e,'">east</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',e,w,'">east and west</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',e,w,u,'">east, west, and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',e,w,u,d,'">east, west, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',e,w,d,'">east, west, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',e,u,'">east and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',e,u,d,'">east, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',e,d,'">east and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',w,'">west</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',w,u,'">west and upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',w,u,d,'">west, upwards, and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',w,d,'">west and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',u,'">upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',u,d,'">upwards and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',d,'">downwards</STRING>
-</STRING>
-
-<STRING id="a_streetprefix" select="pick-1">
-<STRING pickweight="100" condition="'tee' IN $ROOMTAG_NODEFLAGS">T-Intersection in a</STRING>
-<STRING pickweight="100" condition="'gate' IN $ROOMTAG_NODEFLAGS">Entrance to a</STRING>
-<STRING pickweight="100" condition="'intersection' IN $ROOMTAG_NODEFLAGS">Intersection in a</STRING>
-<STRING pickweight="100" condition="'corner' IN $ROOMTAG_NODEFLAGS">Corner of a</STRING>
-<STRING pickweight="1">A</STRING>
-</STRING>
-
 <STRING id="dragoncolor" select="pick-1">
-<STRING pickweight=2 define="dragon_alignment=-10000">white</STRING>
-<STRING pickweight=2 define="dragon_alignment=-10000">black</STRING>
-<STRING pickweight=2 define="dragon_alignment=-10000">blue</STRING>
-<STRING pickweight=2 define="dragon_alignment=-10000">green</STRING>
-<STRING pickweight=2 define="dragon_alignment=-10000">red</STRING>
-<STRING pickweight=1 define="dragon_alignment=-10000">brass</STRING>
-<STRING pickweight=1 define="dragon_alignment=-10000">copper</STRING>
-<STRING pickweight=1 define="dragon_alignment=-10000">bronze</STRING>
-<STRING pickweight=1 define="dragon_alignment=-10000">silver</STRING>
-<STRING pickweight=1 define="dragon_alignment=-10000">gold</STRING>
+	<STRING pickweight=2 define="dragon_alignment=-10000">white</STRING>
+	<STRING pickweight=2 define="dragon_alignment=-10000">black</STRING>
+	<STRING pickweight=2 define="dragon_alignment=-10000">blue</STRING>
+	<STRING pickweight=2 define="dragon_alignment=-10000">green</STRING>
+	<STRING pickweight=2 define="dragon_alignment=-10000">red</STRING>
+	<STRING pickweight=1 define="dragon_alignment=10000">brass</STRING>
+	<STRING pickweight=1 define="dragon_alignment=10000">copper</STRING>
+	<STRING pickweight=1 define="dragon_alignment=10000">bronze</STRING>
+	<STRING pickweight=1 define="dragon_alignment=10000">silver</STRING>
+	<STRING pickweight=1 define="dragon_alignment=10000">gold</STRING>
 </STRING>
 
-<STRING id="adj_anynosize" select="any-1" insert="adj_general_values,adj_feeling_values,adj_phys_nosize_values" />
-<STRING id="adj_nonphys" select="any-1" insert="adj_general_values,adj_feeling_values" />
-<STRING id="adj_phys" select="any-1" insert="adj_phys_size_values,adj_phys_nosize_values" />
-<STRING id="adj_any" select="any-1" insert="adj_general_values,adj_feeling_values,adj_phys_size_values,adj_phys_nosize_values" />
-
-<STRING id="street_word_1" select="any-1">
-	<STRING id="street_words_1" select="all">
-		<STRING>Amber</STRING><STRING>Auburn</STRING><STRING>Bent</STRING><STRING>Big</STRING><STRING>Birch</STRING>
-		<STRING>Blue</STRING><STRING>Bright</STRING><STRING>Broad</STRING><STRING>Burning</STRING><STRING>Calm</STRING>
-		<STRING>Cinder</STRING><STRING>Clear</STRING><STRING>Cold</STRING><STRING>Colonial</STRING><STRING>Cool</STRING>
-		<STRING>Cotton</STRING><STRING>Cozy</STRING><STRING>Crimson</STRING><STRING>Crystal</STRING><STRING>Dewy</STRING>
-		<STRING>Dusty</STRING><STRING>Easy</STRING><STRING>Emerald</STRING><STRING>Fallen</STRING><STRING>Foggy</STRING>
-		<STRING>Gentle</STRING><STRING>Golden</STRING><STRING>Grand</STRING><STRING>Green</STRING><STRING>Happy</STRING>
-		<STRING>Harvest</STRING><STRING>Hazy</STRING><STRING>Heather</STRING><STRING>Hidden</STRING><STRING>High</STRING>
-		<STRING>Honey</STRING><STRING>Hush</STRING><STRING>Indian</STRING><STRING>Iron</STRING><STRING>Ivory</STRING>
-		<STRING>Jagged</STRING><STRING>Lazy</STRING><STRING>Little</STRING><STRING>Lone</STRING><STRING>Lonely</STRING>
-		<STRING>Long</STRING><STRING>Lost</STRING><STRING>Merry</STRING><STRING>Middle</STRING><STRING>Misty</STRING>
-		<STRING>Noble</STRING><STRING>Old</STRING><STRING>Orange</STRING><STRING>Pearl</STRING><STRING>Pied</STRING>
-		<STRING>Pleasant</STRING><STRING>Pretty</STRING><STRING>Quaint</STRING><STRING>Quaking</STRING><STRING>Quiet</STRING>
-		<STRING>Red</STRING><STRING>Rocky</STRING><STRING>Rose</STRING><STRING>Rough</STRING><STRING>Round</STRING>
-		<STRING>Rustic</STRING><STRING>Sandy</STRING><STRING>Shady</STRING><STRING>Silent</STRING><STRING>Silver</STRING>
-		<STRING>Sleepy</STRING><STRING>Small</STRING><STRING>Square</STRING><STRING>Still</STRING><STRING>Stony</STRING>
-		<STRING>Strong</STRING><STRING>Sunny</STRING><STRING>Sweet</STRING><STRING>Tawny</STRING><STRING>Tender</STRING>
-		<STRING>Thunder</STRING><STRING>Turning</STRING><STRING>Twin</STRING><STRING>Umber</STRING><STRING>Velvet</STRING>
-		<STRING>White</STRING><STRING>Windy</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="street_word_2" select="any-1">
-	<STRING id="street_words_2" select="all">
-		<STRING>Acorn</STRING><STRING>Anchor</STRING><STRING>Apple</STRING><STRING>Autumn</STRING><STRING>Axe</STRING>
-		<STRING>Barn</STRING><STRING>Beacon</STRING><STRING>Bear</STRING><STRING>Beaver</STRING><STRING>Berry</STRING>
-		<STRING>Bird</STRING><STRING>Blossom</STRING><STRING>Bluff</STRING><STRING>Branch</STRING><STRING>Bridge</STRING>
-		<STRING>Brook</STRING><STRING>Butterfly</STRING><STRING>Butternut</STRING><STRING>Castle</STRING><STRING>Chestnut</STRING>
-		<STRING>Cider</STRING><STRING>Cloud</STRING><STRING>Cottage</STRING><STRING>Creek</STRING><STRING>Crow</STRING>
-		<STRING>Dale</STRING><STRING>Deer</STRING><STRING>Diamond</STRING><STRING>Dove</STRING><STRING>Elk</STRING>
-		<STRING>Elm</STRING><STRING>Embers</STRING><STRING>Fawn</STRING><STRING>Feather</STRING><STRING>Flower</STRING>
-		<STRING>Forest</STRING><STRING>Fox</STRING><STRING>Gate</STRING><STRING>Goat</STRING><STRING>Goose</STRING>
-		<STRING>Grove</STRING><STRING>Harbor</STRING><STRING>Hickory</STRING><STRING>Hills</STRING><STRING>Holly</STRING>
-		<STRING>Horse</STRING><STRING>Island</STRING><STRING>Lake</STRING><STRING>Lamb</STRING><STRING>Leaf</STRING>
-		<STRING>Log</STRING><STRING>Maple</STRING><STRING>Mill</STRING><STRING>Mountain</STRING><STRING>Nectar</STRING>
-		<STRING>Nest</STRING><STRING>Nut</STRING><STRING>Oak</STRING><STRING>Panda</STRING><STRING>Peach</STRING>
-		<STRING>Pebble</STRING><STRING>Pine</STRING><STRING>Pioneer</STRING><STRING>Pond</STRING><STRING>Pony</STRING>
-		<STRING>Prairie</STRING><STRING>Pumpkin</STRING><STRING>Quail</STRING><STRING>Rabbit</STRING><STRING>Rise</STRING>
-		<STRING>River</STRING><STRING>Robin</STRING><STRING>Rock</STRING><STRING>Shadow</STRING><STRING>Sky</STRING>
-		<STRING>Snake</STRING><STRING>Spring</STRING><STRING>Squirrel</STRING><STRING>Stone</STRING><STRING>Swan</STRING>
-		<STRING>Timber</STRING><STRING>Treasure</STRING><STRING>Turtle</STRING><STRING>View</STRING><STRING>Wagon</STRING>
-		<STRING>Willow</STRING><STRING>Zephyr</STRING>
-	</STRING>
-</STRING>
-
-<STRING id="fantasy_name" select="any-1">
-	<STRING id="fantasy_name_values" select="all">
-		<STRING>Orrothbur</STRING><STRING>Ashash</STRING><STRING>Rynaugh</STRING><STRING>Moperche</STRING><STRING>Post</STRING>
-		<STRING>Iaus</STRING><STRING>Voravor</STRING><STRING>Coonnkim</STRING><STRING>Ineet</STRING><STRING>Hooph</STRING>
-		<STRING>End'inao</STRING><STRING>Kaintmos</STRING><STRING>Dynh</STRING><STRING>Chatany</STRING><STRING>Ashiskel</STRING>
-		<STRING>Ingydar</STRING><STRING>Ing'mor</STRING><STRING>Samoing</STRING><STRING>Isach</STRING><STRING>Ghauska</STRING>
-		<STRING>Cijyv</STRING><STRING>Kalaw</STRING><STRING>Tonium</STRING><STRING>Eeme</STRING><STRING>W'rayeld</STRING>
-		<STRING>Rarisa</STRING><STRING>Chakalden</STRING><STRING>Essd</STRING><STRING>Nalay</STRING><STRING>Kalkele</STRING>
-		<STRING>Wareld</STRING><STRING>Vorcha</STRING><STRING>Ild'arda</STRING><STRING>Oldert</STRING><STRING>Laypach</STRING>
-		<STRING>Aormy</STRING><STRING>Elmem</STRING><STRING>Nunik</STRING><STRING>Ison</STRING><STRING>Hin'hono</STRING>
-		<STRING>Rayss</STRING><STRING>Stekimmor</STRING><STRING>Iusto</STRING><STRING>Laper</STRING><STRING>Leendale</STRING>
-		<STRING>Sulid</STRING><STRING>Eene</STRING><STRING>Garnys</STRING><STRING>Torm</STRING><STRING>Bur'augh</STRING>
-		<STRING>Oldrd</STRING><STRING>Danel</STRING><STRING>Athemos</STRING><STRING>Agev</STRING><STRING>Schupolche</STRING>
-		<STRING>Rak'tai</STRING><STRING>Schaest</STRING><STRING>Nysper</STRING><STRING>Aldnys</STRING><STRING>Oznyi</STRING>
-		<STRING>Schoskal</STRING><STRING>Llyhin</STRING><STRING>Aldustough</STRING><STRING>Ashad</STRING><STRING>Ormvcha</STRING>
-		<STRING>Asiss</STRING><STRING>Mos'qua</STRING><STRING>Lor'eche</STRING><STRING>Adelm</STRING><STRING>Isk</STRING>
-		<STRING>Hulody</STRING><STRING>Inaworny</STRING><STRING>Daruche</STRING><STRING>Omden</STRING><STRING>Qua'ade</STRING>
-		<STRING>Tiaver</STRING><STRING>Sasesi</STRING><STRING>Sulunt</STRING><STRING>Istantan</STRING><STRING>Sifys</STRING>
-		<STRING>Lyburkin</STRING><STRING>Em-ildyb</STRING><STRING>Hatd</STRING><STRING>Ighteirr'e</STRING><STRING>Bleall</STRING>
-		<STRING>Mor'shyo</STRING><STRING>Taives</STRING><STRING>Shy'athe</STRING><STRING>Ustr</STRING><STRING>Onsay</STRING>
-		<STRING>Oldrilrad</STRING><STRING>Tanetia</STRING><STRING>Lerdan</STRING><STRING>Hopald</STRING><STRING>Vyzihe</STRING>
-		<STRING>Che'ildy</STRING><STRING>Aradu</STRING><STRING>Mosden</STRING><STRING>Taiechgha</STRING><STRING>Huyyte</STRING>
-		<STRING>Citih</STRING><STRING>Kimiar</STRING><STRING>Aldqueo</STRING><STRING>Dodory</STRING><STRING>Est-ris</STRING>
-		<STRING>Sunyw</STRING><STRING>Dyndeli</STRING><STRING>Rayjtan</STRING><STRING>Zanor</STRING><STRING>Kelis</STRING>
-		<STRING>Etrile</STRING><STRING>Morust</STRING><STRING>Jeinn</STRING><STRING>Metog</STRING><STRING>Snasorm</STRING>
-		<STRING>Ishyo</STRING><STRING>Waechold</STRING><STRING>Omiston</STRING><STRING>Hirifet</STRING><STRING>Serjina</STRING>
-		<STRING>Echnn</STRING><STRING>Garadril</STRING><STRING>Rirothenth</STRING><STRING>Etiph</STRING><STRING>Kalina</STRING>
-		<STRING>Tin'rad</STRING><STRING>Usteld</STRING><STRING>Lakal</STRING><STRING>Raywar</STRING><STRING>Brepol</STRING>
-		<STRING>Heysper</STRING><STRING>Kimenu</STRING><STRING>Angyd</STRING><STRING>Elmperon</STRING><STRING>Athsam</STRING>
-		<STRING>Radwor</STRING><STRING>Nytor</STRING><STRING>Darith</STRING><STRING>Ir'mora</STRING><STRING>Tainal</STRING>
-		<STRING>Gabod</STRING><STRING>Umh</STRING><STRING>Qua'hin</STRING><STRING>Ertin</STRING><STRING>Oiao</STRING>
-		<STRING>Suinaest</STRING><STRING>Mim</STRING><STRING>Smeythad</STRING><STRING>Orrert</STRING><STRING>Ser'uma</STRING>
-		<STRING>Hin'ran</STRING><STRING>Cluath</STRING><STRING>Kelhin </STRING><STRING>Aughworine</STRING><STRING>Endquausk</STRING>
-		<STRING>Crilves</STRING><STRING>Undl</STRING><STRING>Athale</STRING><STRING>Eawe</STRING><STRING>Ashkim</STRING>
-		<STRING>Cipray</STRING><STRING>Toress</STRING><STRING>Yuthenth</STRING><STRING>Rothkim</STRING><STRING>Whakin</STRING>
-		<STRING>Pol'chao</STRING><STRING>Vetang</STRING><STRING>Witod</STRING><STRING>Kelurne</STRING><STRING>Rilrr</STRING>
-		<STRING>Delirina</STRING><STRING>Anhin</STRING><STRING>Augh'kim</STRING><STRING>Oughorm</STRING><STRING>Yertai</STRING>
-		<STRING>Tuat</STRING><STRING>Reskel</STRING><STRING>Taialemorrada</STRING><STRING>Adil</STRING><STRING>Lyedyn</STRING>
-		<STRING>Erodi</STRING><STRING>Issrad</STRING><STRING>Dra'alde</STRING><STRING>Ghaikim</STRING><STRING>Dud</STRING>
-		<STRING>Kimundgar</STRING><STRING>Acone</STRING><STRING>Ghaunt</STRING><STRING>Zhol</STRING><STRING>Rulira</STRING>
-		<STRING>Rilwar</STRING><STRING>Erane</STRING><STRING>Essad</STRING><STRING>Yosi</STRING><STRING>Chadque</STRING>
-		<STRING>Emrodi</STRING><STRING>Tasovo</STRING><STRING>Ineage</STRING><STRING>Garryn</STRING><STRING>Denoma</STRING>
-		<STRING>Ald'ser</STRING><STRING>Sieq</STRING><STRING>Echlas</STRING><STRING>Uskhin</STRING><STRING>Ciled</STRING>
-		<STRING>Buryl</STRING><STRING>Elmen</STRING><STRING>Rayyer</STRING><STRING>Stoia</STRING><STRING>Yiril</STRING>
-		<STRING>Usktas</STRING><STRING>Ynysu</STRING><STRING>Ough'oughe</STRING><STRING>Nysycha</STRING><STRING>Burshy</STRING>
-		<STRING>Cium</STRING><STRING>Rancertan</STRING><STRING>Enthrilper</STRING><STRING>Sotir</STRING><STRING>Ightper</STRING>
-		<STRING>Ormina</STRING><STRING>Warend</STRING><STRING>Kinkaldra</STRING><STRING>Samlye</STRING><STRING>Esttech</STRING>
-		<STRING>Per'oro</STRING><STRING>Itshy-ton</STRING><STRING>Serkely</STRING><STRING>At'nal</STRING><STRING>Sam'ess</STRING>
-		<STRING>Atyrr</STRING><STRING>Tin'ia</STRING><STRING>Nalghai</STRING><STRING>Kim'kim</STRING><STRING>Rynton</STRING>
-		<STRING>Oldoughi</STRING><STRING>Ineoqua</STRING><STRING>Sakak</STRING><STRING>Veraw</STRING><STRING>Ibydi</STRING>
-		<STRING>Garpol</STRING><STRING>Cyrilund</STRING><STRING>Dyn'drao</STRING><STRING>Toner</STRING><STRING>Untvor</STRING>
-		<STRING>Pitairoth</STRING><STRING>Cepoti</STRING><STRING>Raluka</STRING><STRING>Sn'imther</STRING><STRING>Gardar</STRING>
-		<STRING>Phayq</STRING><STRING>Cycod</STRING><STRING>Pesim</STRING><STRING>Imrod</STRING><STRING>Sayyaw</STRING>	
-	</STRING>
-</STRING>
 </AREADATA>

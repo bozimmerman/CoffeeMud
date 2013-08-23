@@ -1,0 +1,108 @@
+<!--  
+   Copyright 2013-2013 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file with descriptors for rows and columns of rooms and different exit directions -->
+
+<STRING id="roomrun_desc" select="any-1">
+<STRING condition="$ROOMTAG_NODERUN='ns'">north-south</STRING>
+<STRING condition="$ROOMTAG_NODERUN='ew'">east-west</STRING>
+<STRING condition="$ROOMTAG_NODERUN='ud'">ascending</STRING>
+<STRING condition="$ROOMTAG_NODERUN='nwse'">northwest-southeast</STRING>
+<STRING condition="$ROOMTAG_NODERUN='nesw'">northeast-southwest</STRING>
+<STRING condition="$ROOMTAG_NODERUN=''">winding</STRING>
+</STRING>
+
+<STRING id="roomrun_desc_long" select="any-1">
+	<STRING condition="$ROOMTAG_NODERUN='ns'">north and south</STRING>
+	<STRING condition="$ROOMTAG_NODERUN='ew'">east and west</STRING>
+	<STRING condition="$ROOMTAG_NODERUN='ud'">ascending and descending</STRING>
+	<STRING condition="$ROOMTAG_NODERUN='nwse'">northwest and southeast</STRING>
+	<STRING condition="$ROOMTAG_NODERUN='nesw'">northeast and southwest</STRING>
+	<STRING condition="$ROOMTAG_NODERUN=''">around</STRING>
+</STRING>
+
+<STRING id="roomexits_desc_long" select="any-1">
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,'">north</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,'">north and south</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,'">north, south, and east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,'">north, south, east, and west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,u,'">north, south, east, west, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,u,d,'">north, south, east, west, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,d,'">north, south, east, west, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,u,'">north, south, east, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,u,d,'">north, south, east, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,d,'">north, south, east, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,'">north, south, and west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,u,'">north, south, west, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,u,d,'">north, south, west, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,d,'">north, south, west, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,u,'">north, south, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,u,d,'">north, south, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,d,'">north, south, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,'">north and east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,'">north, east, and west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,u,'">north, east, west, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,u,d,'">north, east, west, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,d,'">north, east, west, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,u,'">north, east, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,u,d,'">north, east, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,d,'">north, east, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,'">north and west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,u,'">north, west, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,u,d,'">north, west, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,d,'">north, west, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,u,'">north and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,u,d,'">north, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,d,'">north and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,'">south</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,'">south and east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,'">south, east, and west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,u,'">south, east, west, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,u,d,'">south, east, west, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,d,'">south, east, west, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,u,'">south, east, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,u,d,'">south, east, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,d,'">south, east, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,'">south and west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,u,'">south, west, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,u,d,'">south, west, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,d,'">south, west, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,u,'">south and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,u,d,'">south, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,d,'">south and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,'">east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,'">east and west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,u,'">east, west, and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,u,d,'">east, west, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,d,'">east, west, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,u,'">east and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,u,d,'">east, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,d,'">east and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,'">west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,u,'">west and upwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,u,d,'">west, upwards, and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,d,'">west and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',u,'">upwards</STRING>
+<STRING condition="$ROOMTAG_NODEEXITS=',u,d,'">upwards and downwards</STRING>
+<STRING condition="$ROOMTAG_NODEEXITS=',d,'">downwards</STRING>
+</STRING>
+
+<STRING id="a_streetprefix" select="pick-1">
+	<STRING pickweight="100" condition="'tee' IN $ROOMTAG_NODEFLAGS">T-Intersection in a</STRING>
+	<STRING pickweight="100" condition="'gate' IN $ROOMTAG_NODEFLAGS">Entrance to a</STRING>
+	<STRING pickweight="100" condition="'intersection' IN $ROOMTAG_NODEFLAGS">Intersection in a</STRING>
+	<STRING pickweight="100" condition="'corner' IN $ROOMTAG_NODEFLAGS">Corner of a</STRING>
+	<STRING pickweight="1">A</STRING>
+</STRING>

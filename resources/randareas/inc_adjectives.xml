@@ -1,0 +1,408 @@
+<!--  
+   Copyright 2013-2013 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  include file full of useful adjectives and adjective string selectors -->
+
+<STRING id="adj_anynosize" select="any-1" insert="adj_mustydark_values,adj_feeling_values,adj_phys_nosize_values" />
+<STRING id="adj_nonphys" select="any-1" insert="adj_mustydark_values,adj_feeling_values" />
+<STRING id="adj_phys" select="any-1" insert="adj_phys_size_values,adj_phys_nosize_values" />
+<STRING id="adj_any" select="any-1" insert="adj_mustydark_values,adj_feeling_values,adj_phys_size_values,adj_phys_nosize_values" />
+
+<STRING id="adj_phys_size" select="any-1">
+	<STRING id="adj_phys_size_values" insert="adj_phys_size_large_values,adj_phys_size_small_values" />
+</STRING>
+<STRING id="adj_phys_size_large" select="any-1">
+	<STRING id="adj_phys_size_large_values">
+		<STRING>huge</STRING>
+		<STRING>broad</STRING>
+		<STRING>wide</STRING>
+		<STRING>large</STRING>
+		<STRING>spacious</STRING>
+		<STRING>expansive</STRING>
+		<STRING>roomy</STRING>
+	</STRING>
+</STRING>
+<STRING id="adj_phys_size_small" select="any-1">
+	<STRING id="adj_phys_size_small_values">
+		<STRING>narrow</STRING>
+		<STRING>cramped</STRING>
+		<STRING>tight</STRING>
+		<STRING>small</STRING>
+		<STRING>constricted</STRING>
+	</STRING>
+</STRING>
+<STRING id="adj_phys_nosize" select="any-1">
+	<STRING id="adj_phys_nosize_values">
+		<STRING>jagged</STRING>
+		<STRING>smooth</STRING>
+		<STRING>rocky</STRING>
+		<STRING>grey</STRING>
+		<STRING>coarse</STRING>
+		<STRING>uneven</STRING>
+		<STRING>craggy</STRING>
+		<STRING>rough</STRING>
+		<STRING>cracked</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_nasty" select="any-1">
+	<STRING id="adj_nasty_values" select="all">
+		<STRING>dirty</STRING>
+		<STRING>filthy</STRING>
+		<STRING>muddy</STRING>
+		<STRING>nasty</STRING>
+		<STRING>smelly</STRING>
+		<STRING>grotesque</STRING>
+		<STRING>unpleasant</STRING>
+		<STRING>creepy</STRING>
+		<STRING>eerie</STRING>
+		<STRING>harsh</STRING>
+		<STRING>scary</STRING>
+		<STRING>quiet</STRING>
+		<STRING>musty</STRING>
+		<STRING>damp</STRING>
+		<STRING>wet</STRING>
+		<STRING>cold</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_tidy" select="any-1">
+	<STRING id="adj_tidy_values" select="all">
+		<STRING>clean</STRING>
+		<STRING>neat</STRING>
+		<STRING>nice</STRING>
+		<STRING>fragrant</STRING>
+		<STRING>lovely</STRING>
+		<STRING>pleasant</STRING>
+		<STRING>mundane</STRING>
+		<STRING>cheery</STRING>
+		<STRING>peaceful</STRING>
+		<STRING>bustling</STRING>
+		<STRING>warm</STRING>
+		<STRING>tidy</STRING>
+	</STRING>
+</STRING>
+	
+<STRING id="adj_nasty_animal" select="any-1" insert="adj_nasty_values">
+	<STRING>oversized</STRING>
+	<STRING>runt</STRING>
+	<STRING>slithering</STRING>
+	<STRING>hungry</STRING>
+	<STRING>dour</STRING>
+	<STRING>grim</STRING>
+</STRING>
+
+<STRING id="adj_small" select="any-1">
+	<STRING>small</STRING>
+	<STRING>short</STRING>
+	<STRING>little</STRING>
+	<STRING>undersized</STRING>
+</STRING>
+
+<STRING id="adj_large" select="any-1">
+	<STRING>large</STRING>
+	<STRING>huge</STRING>
+	<STRING>big</STRING>
+	<STRING>oversized</STRING>
+</STRING>
+
+<STRING id="adj_scary_feeling" select="any-1" >
+	<STRING id="adj_scary_feeling_values">
+		<STRING>ghastly</STRING>
+		<STRING>unpleasant</STRING>
+		<STRING>creepy</STRING>
+		<STRING>eerie</STRING>
+		<STRING>harsh</STRING>
+		<STRING>lonely</STRING>
+		<STRING>grating</STRING>
+		<STRING>scary</STRING>
+		<STRING>sinister</STRING>
+		<STRING>dreary</STRING>
+		<STRING>dour</STRING>
+		<STRING>grim</STRING>
+		<STRING>gloomy</STRING>
+		<STRING>unsettling</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_feeling" select="any-1" insert="adj_feeling_bad,adj_feeling_good" />
+
+<STRING id="adj_feeling_bad" select="any-1">
+	<STRING>angry</STRING><STRING>bewildered</STRING><STRING>clumsy</STRING><STRING>defeated</STRING>
+	<STRING>embarrassed</STRING><STRING>fierce</STRING><STRING>grumpy</STRING><STRING>helpless</STRING>
+	<STRING>itchy</STRING><STRING>jealous</STRING><STRING>lazy</STRING><STRING>mysterious</STRING>
+	<STRING>nervous</STRING><STRING>obnoxious</STRING><STRING>panicky</STRING><STRING>repulsive</STRING>
+	<STRING>scary</STRING><STRING>thoughtless</STRING><STRING>uptight</STRING><STRING>worried</STRING>
+</STRING>
+
+<STRING id="adj_feeling_good" select="any-1">
+	<STRING>agreeable</STRING><STRING>brave</STRING><STRING>calm</STRING><STRING>delightful</STRING>
+	<STRING>eager</STRING><STRING>faithful</STRING><STRING>gentle</STRING><STRING>happy</STRING>
+	<STRING>jolly</STRING><STRING>kind</STRING><STRING>lively</STRING><STRING>nice</STRING>
+	<STRING>obedient</STRING><STRING>proud</STRING><STRING>relieved</STRING><STRING>silly</STRING>
+	<STRING>thankful</STRING><STRING>victorious</STRING><STRING>witty</STRING><STRING>zealous</STRING>
+</STRING>
+
+<STRING id="adj_taste" select="any-1">
+	<STRING>bitter</STRING><STRING>delicious</STRING><STRING>fresh</STRING><STRING>greasy</STRING>
+	<STRING>juicy</STRING><STRING>hot</STRING><STRING>icy</STRING><STRING>nutritious</STRING>
+	<STRING>prickly</STRING><STRING>rotten</STRING><STRING>salty</STRING><STRING>yummy</STRING>
+	<STRING>sticky</STRING><STRING>strong</STRING><STRING>sweet</STRING><STRING>tart</STRING>
+	<STRING>tasteless</STRING>
+</STRING>
+
+<STRING id="adj_sound" select="any-1">
+	<STRING>cooing</STRING>	<STRING>deafening</STRING><STRING>faint</STRING><STRING>hissing</STRING>
+	<STRING>loud</STRING><STRING>melodic</STRING><STRING>noisy</STRING><STRING>purring</STRING>
+	<STRING>quiet</STRING><STRING>raspy</STRING><STRING>screeching</STRING><STRING>thundering</STRING>
+	<STRING>voiceless</STRING><STRING>whispering</STRING>
+</STRING>
+
+<STRING id="adj_mustydark" select="any-1">
+	<STRING id="adj_mustydark_values">
+		<STRING>dank</STRING>
+		<STRING>quiet</STRING>
+		<STRING>musty</STRING>
+		<STRING>moldy</STRING>
+		<STRING>chilling</STRING>
+		<STRING>damp</STRING>
+		<STRING>still</STRING>
+		<STRING>dark</STRING>
+		<STRING>wet</STRING>
+		<STRING>cold</STRING>
+		<STRING>black</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_dark" select="any-1">
+	<STRING id="adj_dark_values">
+		<STRING>dark</STRING>
+		<STRING>black</STRING>
+		<STRING>unlit</STRING>
+		<STRING>lightless</STRING>
+		<STRING>dim</STRING>
+		<STRING>unilluminated</STRING>
+		<STRING>darkened</STRING>
+		<STRING>pitch-black</STRING>
+		<STRING>pitch-dark</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_light" select="any-1">
+	<STRING id="adj_light_values">
+		<STRING>bright</STRING>
+		<STRING>well lit</STRING>
+		<STRING>illuminated</STRING>
+		<STRING>candescent</STRING>
+		<STRING>well-lighted</STRING>
+		<STRING>lighted</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_burning" select="any-1">
+	<STRING id="adj_burning_values">
+		<STRING>burning</STRING>
+		<STRING>flaming</STRING>
+		<STRING>scorching hot</STRING>
+		<STRING>extremely hot</STRING>
+		<STRING>blazing</STRING>
+		<STRING>smoldering</STRING>
+		<STRING>scalding hot</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_roomwords" select="any-1">
+	<STRING>tidy</STRING><STRING>cluttered</STRING><STRING>messy</STRING><STRING>organized</STRING><STRING>comfortable</STRING>
+	<STRING>cramped</STRING><STRING>neat</STRING><STRING>relaxing</STRING><STRING>claustrophobic</STRING><STRING>cozy</STRING>
+	<STRING>seedy</STRING><STRING>damp</STRING><STRING>snug</STRING><STRING>rectangular</STRING>
+	<STRING>foreboding</STRING><STRING>spacious</STRING><STRING>well appointed</STRING><STRING>stark</STRING>
+	<STRING>condemned</STRING><STRING>darkened</STRING><STRING>dilapidated</STRING><STRING>furnished</STRING>
+	<STRING>handsome</STRING><STRING>lofty</STRING><STRING>modest</STRING><STRING>modular</STRING>
+	<STRING>palatial</STRING><STRING>prefabricated</STRING><STRING>rambling</STRING><STRING>secure</STRING>
+	<STRING>split-level</STRING><STRING>sprawling</STRING><STRING>unfurnished</STRING><STRING>vaulted</STRING>
+</STRING>
+
+<STRING id="adj_fancy" select="any-1">
+	<STRING id="adj_fancy_values">
+		<STRING>posh</STRING>
+		<STRING>fancy</STRING>
+		<STRING>comfortable</STRING>
+		<STRING>rich</STRING>
+		<STRING>elaborate</STRING>
+		<STRING>luxuriant</STRING>
+		<STRING>fanciful</STRING>
+		<STRING>puffed</STRING>
+		<STRING>nice</STRING>
+		<STRING>beautiful</STRING>
+		<STRING>frilly</STRING>
+		<STRING>ornamental</STRING>
+		<STRING>comfy</STRING>
+		<STRING>cozy</STRING>
+		<STRING>snug</STRING>
+		<STRING>easy</STRING>
+		<STRING>homey</STRING>
+		<STRING>homelike</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="adj_color" select="any-1">
+	<STRING>white</STRING>
+	<STRING>green</STRING>
+	<STRING>blue</STRING>
+	<STRING>red</STRING>
+	<STRING>yellow</STRING>
+	<STRING>cyan</STRING>
+	<STRING>purple</STRING>
+	<STRING>dark white</STRING>
+	<STRING>dark green</STRING>
+	<STRING>dark blue</STRING>
+	<STRING>dark red</STRING>
+	<STRING>dark yellow</STRING>
+	<STRING>dark cyan</STRING>
+	<STRING>dark purple</STRING>
+</STRING>
+
+<STRING id="adj_colored_color" select="any-1">
+	<STRING>^wwhite^?</STRING>
+	<STRING>^ggreen^?</STRING>
+	<STRING>^bblue^?</STRING>
+	<STRING>^rred^?</STRING>
+	<STRING>^yyellow^?</STRING>
+	<STRING>^ccyan^?</STRING>
+	<STRING>^ppurple^?</STRING>
+	<STRING>^Wdark white^?</STRING>
+	<STRING>^Gdark green^?</STRING>
+	<STRING>^Bdark blue^?</STRING>
+	<STRING>^Rdark red^?</STRING>
+	<STRING>^Ydark yellow^?</STRING>
+	<STRING>^Cdark cyan^?</STRING>
+	<STRING>^Pdark purple^?</STRING>
+</STRING>
+
+<STRING id="adj_ragged" select="any-1">
+	<STRING></STRING>
+	<STRING>ragged</STRING>
+	<STRING>scraggy</STRING>
+	<STRING>battered</STRING>
+	<STRING>tattered</STRING>
+	<STRING>worn</STRING>
+	<STRING>old</STRING>
+</STRING>
+
+<STRING id="adj_wooden_ragged" select="any-1" insert="adj_ragged">
+	<STRING>splintered</STRING>
+	<STRING>notched</STRING>
+</STRING>
+
+<STRING id="adj_wooden_broken" select="any-1">
+	<STRING>broken</STRING>
+	<STRING>destroyed</STRING>
+	<STRING>shredded</STRING>
+	<STRING>rotted</STRING>
+	<STRING>mutilated</STRING>
+	<STRING>rotten</STRING>
+</STRING>
+
+<STRING id="adj_cloth_ragged" select="any-1" insert="adj_ragged">
+	<STRING>patched</STRING>
+	<STRING>shabby</STRING>
+	<STRING>frazzled</STRING>
+	<STRING>frayed</STRING>
+	<STRING>threadbare</STRING>
+</STRING>
+
+<STRING id="adj_cloth_broken" select="any-1">
+	<STRING>torn up</STRING>
+	<STRING>destroyed</STRING>
+	<STRING>shredded</STRING>
+	<STRING>ripped up</STRING>
+	<STRING>mutilated</STRING>
+</STRING>
+
+<STRING id="adj_metal_ragged" select="any-1" insert="adj_ragged">
+	<STRING>rusted</STRING>
+	<STRING>dented</STRING>
+</STRING>
+
+<STRING id="adj_metal_broken" select="any-1">
+	<STRING>broken</STRING>
+	<STRING>busted</STRING>
+	<STRING>crumpled</STRING>
+	<STRING>twisted</STRING>
+	<STRING>crushed</STRING>
+	<STRING>pulverized</STRING>
+</STRING>
+
+<STRING id="adj_smallragged" select="any-1">
+	<STRING>$adj_small</STRING>
+	<STRING>$adj_small $nasty_race_name</STRING>
+	<STRING>$adj_ragged</STRING>
+	<STRING>$adj_ragged $nasty_race_name</STRING>
+	<STRING>$adj_small $adj_ragged</STRING>
+	<STRING>$adj_small $adj_ragged $nasty_race_name</STRING>
+</STRING>
+
+<STRING id="adj_personality" select="any-1" insert="adj_personality_positive,adj_personality_negative" />
+
+<STRING id="adj_strange" select="any-1">
+	<STRING>strange</STRING><STRING>weird</STRING><STRING>unusual</STRING><STRING>unidentifiable</STRING>
+	<STRING>odd</STRING><STRING>unfamiliar</STRING><STRING>bizarre</STRING><STRING>mysterious</STRING>
+	<STRING>inexplicable</STRING><STRING>puzzling</STRING><STRING>baffling</STRING>
+</STRING>
+
+<STRING id="adj_useful" select="any-1">
+	<STRING>functional</STRING><STRING>practical</STRING><STRING>convenient</STRING><STRING>serviceable</STRING>
+	<STRING>beneficial</STRING><STRING>advantageous</STRING><STRING>valuable</STRING><STRING>fruitful</STRING>
+	<STRING>helpful</STRING><STRING>worthwhile</STRING><STRING>rewarding</STRING><STRING>constructive</STRING>
+</STRING>
+
+<STRING id="adj_personality_positive" select="any-1">
+	<STRING>adaptable</STRING><STRING>adventurous</STRING><STRING>affable</STRING><STRING>affectionate</STRING><STRING>agreeable</STRING><STRING>ambitious</STRING>
+	<STRING>amiable</STRING><STRING>amicable</STRING><STRING>amusing</STRING><STRING>brave</STRING><STRING>bright</STRING><STRING>broad-minded</STRING><STRING>calm</STRING>
+	<STRING>careful</STRING><STRING>charming</STRING><STRING>communicative</STRING><STRING>compassionate</STRING><STRING>conscientious</STRING><STRING>considerate</STRING>
+	<STRING>convivial</STRING><STRING>courageous</STRING><STRING>courteous</STRING><STRING>creative</STRING><STRING>decisive</STRING><STRING>determined</STRING>
+	<STRING>diligent</STRING><STRING>diplomatic</STRING><STRING>discreet</STRING><STRING>dynamic</STRING><STRING>easygoing</STRING><STRING>emotional</STRING>
+	<STRING>energetic</STRING><STRING>enthusiastic</STRING><STRING>exuberant</STRING><STRING>fair-minded</STRING><STRING>faithful</STRING><STRING>fearless</STRING>
+	<STRING>forceful</STRING><STRING>frank</STRING><STRING>friendly</STRING><STRING>funny</STRING><STRING>generous</STRING><STRING>gentle</STRING><STRING>good</STRING>
+	<STRING>gregarious</STRING><STRING>hard-working</STRING><STRING>helpful</STRING><STRING>honest</STRING><STRING>humorous</STRING><STRING>imaginative</STRING>
+	<STRING>impartial</STRING><STRING>independent</STRING><STRING>intellectual</STRING><STRING>intelligent</STRING><STRING>intuitive</STRING><STRING>inventive</STRING>
+	<STRING>kind</STRING><STRING>loving</STRING><STRING>loyal</STRING><STRING>modest</STRING><STRING>neat</STRING><STRING>nice</STRING><STRING>optimistic</STRING>
+	<STRING>passionate</STRING><STRING>patient</STRING><STRING>persistent</STRING><STRING>pioneering</STRING><STRING>philosophical</STRING><STRING>placid</STRING>
+	<STRING>plucky</STRING><STRING>polite</STRING><STRING>powerful</STRING><STRING>practical</STRING><STRING>pro-active</STRING><STRING>quick-witted</STRING>
+	<STRING>quiet</STRING><STRING>rational</STRING><STRING>reliable</STRING><STRING>reserved</STRING><STRING>resourceful</STRING><STRING>romantic</STRING>
+	<STRING>self-confident</STRING><STRING>self-disciplined</STRING><STRING>sensible</STRING><STRING>sensitive</STRING><STRING>shy</STRING><STRING>sincere</STRING>
+	<STRING>sociable</STRING><STRING>straightforward</STRING><STRING>sympathetic</STRING><STRING>thoughtful</STRING><STRING>tidy</STRING><STRING>tough</STRING>
+	<STRING>unassuming</STRING><STRING>understanding</STRING><STRING>versatile</STRING><STRING>warmhearted</STRING><STRING>willing</STRING><STRING>witty</STRING>
+</STRING>
+
+<STRING id="adj_personality_negative" select="any-1">
+	<STRING>aggressive</STRING><STRING>aloof</STRING><STRING>arrogant</STRING><STRING>belligerent</STRING><STRING>big-headed</STRING><STRING>bitchy</STRING>
+	<STRING>boastful</STRING><STRING>bone-idle</STRING><STRING>boring</STRING><STRING>bossy</STRING><STRING>callous</STRING><STRING>cantankerous</STRING>
+	<STRING>careless</STRING><STRING>changeable</STRING><STRING>clinging</STRING><STRING>compulsive</STRING><STRING>conservative</STRING><STRING>cowardly</STRING>
+	<STRING>cruel</STRING><STRING>cunning</STRING><STRING>cynical</STRING><STRING>deceitful</STRING><STRING>detached</STRING><STRING>dishonest</STRING>
+	<STRING>dogmatic</STRING><STRING>domineering</STRING><STRING>finicky</STRING><STRING>flirtatious</STRING><STRING>foolish</STRING><STRING>foolhardy</STRING>
+	<STRING>fussy</STRING><STRING>greedy</STRING><STRING>grumpy</STRING><STRING>gullible</STRING><STRING>harsh</STRING><STRING>impatient</STRING>
+	<STRING>impolite</STRING><STRING>impulsive</STRING><STRING>inconsiderate</STRING><STRING>inconsistent</STRING><STRING>indecisive</STRING><STRING>indiscreet</STRING>
+	<STRING>inflexible</STRING><STRING>interfering</STRING><STRING>intolerant</STRING><STRING>irresponsible</STRING><STRING>jealous</STRING><STRING>lazy</STRING>
+	<STRING>Machiavellian</STRING><STRING>materialistic</STRING><STRING>mean</STRING><STRING>miserly</STRING><STRING>moody</STRING><STRING>narrow-minded</STRING>
+	<STRING>nasty</STRING><STRING>naughty</STRING><STRING>nervous</STRING><STRING>obsessive</STRING><STRING>obstinate</STRING><STRING>overcritical</STRING>
+	<STRING>overemotional</STRING><STRING>parsimonious</STRING><STRING>patronizing</STRING><STRING>perverse</STRING><STRING>pessimistic</STRING><STRING>pompous</STRING>
+	<STRING>possessive</STRING><STRING>pusillanimous</STRING><STRING>quarrelsome</STRING><STRING>quick-tempered</STRING><STRING>resentful</STRING><STRING>rude</STRING>
+	<STRING>ruthless</STRING><STRING>sarcastic</STRING><STRING>secretive</STRING><STRING>selfish</STRING><STRING>self-centred</STRING><STRING>self-indulgent</STRING>
+	<STRING>silly</STRING><STRING>sneaky</STRING><STRING>stingy</STRING><STRING>stubborn</STRING><STRING>stupid</STRING><STRING>superficial</STRING>
+	<STRING>tactless</STRING><STRING>timid</STRING><STRING>touchy</STRING><STRING>thoughtless</STRING><STRING>truculent</STRING><STRING>unkind</STRING>
+	<STRING>unpredictable</STRING><STRING>unreliable</STRING><STRING>untidy</STRING><STRING>untrustworthy</STRING><STRING>vague</STRING><STRING>vain</STRING>
+	<STRING>vengeful</STRING><STRING>vulgar</STRING><STRING>weak-willed</STRING>
+</STRING>
