@@ -1256,7 +1256,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		
 		for(int it=0;it<contents.size();it++) // no iterator, please!!
 		{
-			Item I=(Item)contents.get(it);
+			Item I=contents.get(it);
 			fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
 			I.recoverPhyStats();
 			CMLib.itemBuilder().balanceItemByLevel(I);
