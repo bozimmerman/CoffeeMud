@@ -2451,8 +2451,8 @@ Required details: "id" "value"
 				<BEHAVIOR class="Scavenger" parms="" />
 			</BEHAVIOR>
 			<ITEM select="all">
-				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname cellkey" name="a jail key" material="iron" condition="1?10=1 or (1?2=1 and $__maincellkey&lt;2)" define="__maincellkey+=1"/>
-				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname luxurykey"  name="a golden jail key" material="gold" condition="1?10=1 or (1?2=1 and $__goldcellkey&lt;1)" define="__goldcellkey+=1"/>
+				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname cellkey" name="a jail key" material="iron" validate="1?10=1 or (1?2=1 and $__maincellkey&lt;2)" define="__maincellkey+=1"/>
+				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname luxurykey"  name="a golden jail key" material="gold" validate="1?10=1 or (1?2=1 and $__goldcellkey&lt;1)" define="__goldcellkey+=1"/>
 				<ITEM class="GenShield" LEVEL="$mob_level" material="OAK" name="a wooden shield" display="a wooden shield sits here"/>
 				<ITEM select="any-1?4">
 					<ITEM class="GenArmor" LEVEL="$mob_level">
