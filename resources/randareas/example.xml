@@ -909,7 +909,7 @@ Required details: "id" "value"
 			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` see more information, `buy [itemname]` to buy something, or `sell [itemname]` to try to sell something of yours." />
 		</ROOM>
 		<!--
-		TODO: , MAYOR/SULTAN/PRINCE/CHIEFs office (is judge), trainer/teacher (same), prison, bank, auction hall
+		TODO: , MAYOR/SULTAN/PRINCE/CHIEFs office (is judge), prison, bank, auction hall
 		TODO: second priority: day care, stables, clan bank,  
 		TODO: (repeatable -- but only if above done): BAR, DINER/CAFE/, INN, city guard hq, healer/temple, park, 
 		 -->
@@ -996,33 +996,52 @@ Required details: "id" "value"
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
+		<ROOM id="town_prison" class="WoodRoom"  condition="$__prison&lt;1 and $__numshoptypes_all &gt; 10" define="__prison+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Prison</TITLE>
+				<TITLE>${c:areaname} Jail</TITLE>
+				<TITLE>The Jail</TITLE>
+				<TITLE>The Prison</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION></DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION></DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION></DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long, not that it matters now.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long, which doesn't matter anymore.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" hasalock="true" deflocked="true" leve=91 />
+		</ROOM>
 		<ROOM id="town_school" class="WoodRoom"  condition="$__school&lt;1 and $__numshoptypes_all &gt; 10" define="__school+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Training Academy</TITLE>
 				<TITLE>${c:areaname} Training Academy</TITLE>
 				<TITLE>The Training Academy</TITLE>
 			</TITLE>
-			<STRING id="ugh">
-				<STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING>
-				<STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING>
-			</STRING>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>This is the $adj_phys_size_large $adj_roomwords ${c:areaname} Training Academy.</DESCRIPTION>
 					<DESCRIPTION>The ${c:areaname} Training Academy is $adj_phys_size_large and $adj_roomwords.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>${c:adj_strange} training equipment and devices are all over the place.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_strange} and $adj_useful training equipment and devices are all over the place.</DESCRIPTION>
 					<DESCRIPTION>Piles of $adj_strange books and devices are here for the use of students.</DESCRIPTION>
-					<DESCRIPTION></DESCRIPTION>
-					<DESCRIPTION></DESCRIPTION>
-					<DESCRIPTION></DESCRIPTION>
+					<DESCRIPTION>${c:adj_strange} and $adj_useful training equipment and books for use by the students sit on shelves.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>${c:adj_personality} students train here under the watchful eye of ${adj_personality} teachers.</DESCRIPTION>
 					<DESCRIPTION>${c:adj_personality} trainers are here showing students the ropes.</DESCRIPTION>
-					<DESCRIPTION>${c:adj_personality} students are driving their trainers nuts.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_personality} students are driving their trainers $adj_crazy.</DESCRIPTION>
 					<DESCRIPTION>${c:adj_personality} students busily learning their craft.</DESCRIPTION>
+					<DESCRIPTION>All over the room, ${c:adj_personality} students train at the feet of ${adj_personality} teachers.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION id="store_sign_descs" select="any-1">
 					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
@@ -1035,45 +1054,39 @@ Required details: "id" "value"
 					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
 				</DESCRIPTION>
 			</DESCRIPTION>
-			<EXIT class="GenDoor" defclosed="false">
-				<AFFECT class="Prop_ClosedDayNight" />
-			</EXIT>
+			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `train [classname]` to change classes, `train [statname]` improve a stat, `gain [skillname]`  to learn a new skill, or `practice [skillname]` to improve a skill." />
-			<AFFECT class="Prop_ClosedDayNight" />
 			<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
 				<NAME select="any-1">
-					<NAME>Postal clerk ${c:patronname}</NAME>
-					<NAME>Postman ${c:patronname}</NAME>
+					<NAME>Guildmaster ${c:patronname}</NAME>
+					<NAME>Master ${c:patronname}</NAME>
+					<NAME>Professor ${c:patronname}</NAME>
 				</NAME>
 				<DISPLAY select="pick-1">
-					<DISPLAY pickweight="1">$mob_name is moving very slowly.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is waiting to show you wisdom.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
-					<DISPLAY pickweight="1">$mob_name is here, rain or shine.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, ready to teach.</DISPLAY>
 				</DISPLAY>
 				<ALIGNMENT>10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
-					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="MOBTeacher" parms="" />
 				</BEHAVIOR>
+				<AFFECT class="Prop_Trainer" parms="ALL" />
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1"><NAME>(a(n)) postal uniform</NAME></NAME>
+					<NAME select="any-1"><NAME>a simple robe</NAME></NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN>
 				</ITEM>
 				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
-					<NAME>(a(n)) letter opener</NAME>
+					<NAME>a ruler</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
-					<MATERIAL>IRON</MATERIAL>
-					<WEAPONCLASS>DAGGER</WEAPONCLASS>
-					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
-				<SHOPINVENTORY>
-					<ITEM select="repeat-20">
-						<ITEM class="metacraft" name="a piece of paper"/>
-					</ITEM>
-				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
 	</ROOM>
@@ -2539,9 +2552,9 @@ Required details: "id" "value"
 				<BEHAVIOR class="CombatAbilities" parms="" />
 			</BEHAVIOR>
 			<ITEM select="all">
-				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="a ${l:mob_race} key" material="iron" condition="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1"/>
-				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname labkey"  name="a wierd ${l:mob_race} key" material="copper" condition="1?20=1 or (1?2=1 and $__labkey&lt;1)" define="__labkey+=1"/>
-				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname thronekey"  name="a golden ${l:mob_race} key" material="gold" condition="1?10=1 or (1?2=1 and $__thronekey&lt;1)" define="__thronekey+=1"/>
+				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname storekey" name="a ${l:mob_race} key" material="iron" validate="1?10=1 or (1?2=1 and $__storekey&lt;2)" define="__storekey+=1"/>
+				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname labkey"  name="a wierd ${l:mob_race} key" material="copper" validate="1?20=1 or (1?2=1 and $__labkey&lt;1)" define="__labkey+=1"/>
+				<ITEM class="GenKey" LEVEL="1" READABLETEXT="$areaname thronekey"  name="a golden ${l:mob_race} key" material="gold" validate="1?10=1 or (1?2=1 and $__thronekey&lt;1)" define="__thronekey+=1"/>
 				<ITEM class="GenShield" LEVEL="$mob_level" material="OAK" name="a wooden shield" display="a wooden shield sits here"/>
 				<ITEM select="pick-1?3">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level" condition="$mob_gender!='F'">

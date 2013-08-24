@@ -56,7 +56,15 @@
 		<STRING>cracked</STRING>
 	</STRING>
 </STRING>
-
+<STRING id="adj_crazy" select="any-1">
+ <STRING>balmy</STRING><STRING>barmy</STRING><STRING>bats</STRING><STRING>batty</STRING><STRING>bedlam</STRING><STRING>bonkers</STRING><STRING>brainsick</STRING><STRING>bughouse</STRING>
+ <STRING>certifiable</STRING><STRING>crackbrained</STRING><STRING>cracked</STRING><STRING>crackers</STRING><STRING>crackpot</STRING><STRING>cranky</STRING><STRING>crazed</STRING>
+ <STRING>crazy</STRING><STRING>cuckoo</STRING><STRING>daffy</STRING><STRING>daft</STRING><STRING>demented</STRING><STRING>deranged</STRING><STRING>fruity</STRING>
+ <STRING>gaga</STRING><STRING>haywire</STRING><STRING>kooky</STRING><STRING>loco</STRING><STRING>loony</STRING><STRING>loony tunes</STRING><STRING>lunatic</STRING>
+ <STRING>mad</STRING><STRING>maniacal</STRING><STRING>mental</STRING><STRING>meshuga</STRING><STRING>moonstruck</STRING><STRING>non compos mentis</STRING>
+ <STRING>nuts</STRING><STRING>nutty</STRING><STRING>psycho</STRING><STRING>psychotic</STRING><STRING>scatty</STRING><STRING>screwy</STRING>
+ <STRING>unbalanced</STRING><STRING>unhinged</STRING><STRING>wacko</STRING><STRING>wacky</STRING>
+ </STRING>
 <STRING id="adj_nasty" select="any-1">
 	<STRING id="adj_nasty_values" select="all">
 		<STRING>dirty</STRING>
