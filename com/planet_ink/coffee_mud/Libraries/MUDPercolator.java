@@ -440,6 +440,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(List<LayoutNode> group : roomGroups)
 			{
 				groupDefined = groupDefinitions.get(group);
+				
 				for(LayoutNode node : group)
 					if(node!=magicRoom)
 						processRoom(A,direction,piece,node,groupDefined);
@@ -447,7 +448,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					String key=e.next();
 					if(key.startsWith("__"))
+					{
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+							Log.debugOut("AREADEF:"+key+"="+CMStrings.limit(groupDefined.get(key).toString(), 10));
 						defined.put(key, groupDefined.get(key));
+						for(List<LayoutNode> group2 : roomGroups)
+						{
+							Map<String,Object> groupDefined2 = groupDefinitions.get(group2);
+							if(groupDefined2!=groupDefined)
+								groupDefined2.put(key, groupDefined.get(key));
+						}
+					}
 				}
 			}
 
@@ -500,8 +511,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(Iterator<String> e=groupDefined.keySet().iterator();e.hasNext();)
 			{
 				String key=e.next();
-				if(groupDefined.get(key) instanceof String)
-				defs.append(", "+key+"="+((String)groupDefined.get(key)));
+				defs.append(key+"="+CMStrings.limit(groupDefined.get(key).toString(),10)+",");
 			}
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
 				Log.debugOut("MUDPercolator","DEFS: "+defs.toString());
@@ -571,7 +581,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				String key=e.next();
 				if(key.startsWith("_"))
+				{
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+						Log.debugOut("RGDEF:"+key+"="+CMStrings.limit(rDefined.get(key).toString(), 10));
 					defined.put(key,rDefined.get(key));
+				}
 			}
 			for(int e=0;e<rExits.length;e++)
 				exits[e]=rExits[e];
@@ -1568,11 +1582,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						else
 							value=""+val;
 					}
-					fixed.put(id.var,value);
+					fixed.put(id.var.toUpperCase(),value);
 				} catch(CMException e) {}
 			}
-			boolean test= CMStrings.parseStringExpression(condition,fixed, true);
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+			boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),fixed, true);
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MudPercolator","TEST:"+condition+"="+test);
 			return test;
 		} 

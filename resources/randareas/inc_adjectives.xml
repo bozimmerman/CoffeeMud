@@ -378,6 +378,34 @@
 	<STRING>helpful</STRING><STRING>worthwhile</STRING><STRING>rewarding</STRING><STRING>constructive</STRING>
 </STRING>
 
+<STRING id="adj_quiet" select="any-1">
+	<STRING>muted</STRING><STRING>peaceful</STRING><STRING>reticent</STRING><STRING>silent</STRING><STRING>hushed</STRING>
+	<STRING>muffled</STRING><STRING>muted</STRING><STRING>quieted</STRING><STRING>reserved</STRING><STRING>still</STRING>
+</STRING>
+
+<STRING id="adj_conservative" select="any-1">
+	<STRING>middle-of-the-road</STRING><STRING>timid</STRING><STRING>traditional</STRING><STRING>bourgeois</STRING>
+	<STRING>firm</STRING><STRING>fuddy-duddy</STRING><STRING>stable</STRING><STRING>steady</STRING><STRING>tory</STRING>
+	<STRING>controlled</STRING><STRING>conventional</STRING><STRING>fogyish</STRING><STRING>guarded</STRING>
+	<STRING>obstinate</STRING><STRING>old guard</STRING><STRING>old line</STRING><STRING>orthodox</STRING>
+	<STRING>sober</STRING><STRING>traditionalistic</STRING><STRING>unchanging</STRING><STRING>uncreative</STRING><STRING>undaring</STRING>
+	<STRING>unimaginative</STRING><STRING>unprogressive</STRING>
+</STRING>
+
+<STRING id="adj_subdued" select="any-1">
+	<STRING>hushed</STRING><STRING>low-key</STRING><STRING>mellow</STRING><STRING>muted</STRING><STRING>restrained</STRING>
+	<STRING>sober</STRING><STRING>solemn</STRING><STRING>unobtrusive</STRING><STRING>chastened</STRING><STRING>dim</STRING>
+	<STRING>domesticated</STRING><STRING>grave</STRING><STRING>moderated</STRING><STRING>repressed</STRING><STRING>tempered</STRING>
+	<STRING>inobtrusive</STRING><STRING>neutral</STRING><STRING>serious</STRING><STRING>subtle</STRING><STRING>tasteful</STRING>
+	<STRING>toned down</STRING>
+</STRING>
+
+<STRING id="adj_noisy" select="any-1">
+	<STRING>boisterous</STRING><STRING>cacophonous</STRING><STRING>clamorous</STRING><STRING>rambunctious</STRING><STRING>riotous</STRING><STRING>rowdy</STRING>
+	<STRING>vociferous</STRING><STRING>blusterous</STRING><STRING>booming</STRING><STRING>chattering</STRING><STRING>clangorous</STRING><STRING>deafening</STRING>
+	<STRING>disorderly</STRING><STRING>obstreperous</STRING><STRING>rackety</STRING><STRING>strepitous</STRING><STRING>tumultous</STRING><STRING>turbulent</STRING>
+</STRING>
+
 <STRING id="adj_personality_positive" select="any-1">
 	<STRING>adaptable</STRING><STRING>adventurous</STRING><STRING>affable</STRING><STRING>affectionate</STRING><STRING>agreeable</STRING><STRING>ambitious</STRING>
 	<STRING>amiable</STRING><STRING>amicable</STRING><STRING>amusing</STRING><STRING>brave</STRING><STRING>bright</STRING><STRING>broad-minded</STRING><STRING>calm</STRING>

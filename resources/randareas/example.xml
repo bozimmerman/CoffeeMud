@@ -487,7 +487,7 @@ Required details: "id" "value"
 					<DESCRIPTION>This $adj_light room is $adj_fancy.</DESCRIPTION>
 					<DESCRIPTION>Life here is $adj_light and $adj_fancy.</DESCRIPTION>
 					<DESCRIPTION>This room is $adj_light and $adj_fancy.</DESCRIPTION>
-					<DESCRIPTION>This $adj_fancy is $adj_light room.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy room is $adj_light.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_prison_exit</DESCRIPTION>
 			</DESCRIPTION>
@@ -906,13 +906,87 @@ Required details: "id" "value"
 					</ITEM>
 				</SHOPINVENTORY>
 			</MOB>
-			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` see more information, `buy [itemname]` to buy something, or `sell [itemname]` to try to sell something of yours." />
+			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
 		</ROOM>
 		<!--
-		TODO: , MAYOR/SULTAN/PRINCE/CHIEFs office (is judge), prison, bank, auction hall
-		TODO: second priority: day care, stables, clan bank,  
-		TODO: (repeatable -- but only if above done): BAR, DINER/CAFE/, INN, city guard hq, healer/temple, park, 
+		TODO: MAYOR/SULTAN/PRINCE/CHIEFs office (is judge)
+		TODO: third priority: day care, stables, clan bank,
+		TODO: fourth priority (non-repeatable -- only if above done): INN, city guard hq, park
+		TODO: fourth priority (repeatable -- but only if above done): BAR, DINER/CAFE/, healer/temple, park, home
 		 -->
+		<ROOM id="town_auctionhall" class="WoodRoom"  condition="$__auctionhall&lt;1 and $__numshoptypes_all &gt; 10" define="__auctionhall+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Auction Hall</TITLE>
+				<TITLE>${c:areaname} Auction Hall</TITLE>
+				<TITLE>The Auction Hall</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_noisy $adj_phys_size_large ${c:areaname} Auction Hall.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_noisy $adj_phys_size_small ${c:areaname} Auction Hall.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Auction Hall is $adj_phys_size_small and $adj_noisy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Auction Hall is $adj_noisy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Tables with various items line the walls, all of which are marked for auction.</DESCRIPTION>
+					<DESCRIPTION>The lots up for auction sit in open boxes near the back of the room.</DESCRIPTION>
+					<DESCRIPTION>Around the room are the available lots sitting on individual tables with little tags.</DESCRIPTION>
+					<DESCRIPTION>The upcoming auction lots can be seen on tables around the room.</DESCRIPTION>
+					<DESCRIPTION>All the lots up for auction rest quietly on tables with numbered tags tied neatly to them.</DESCRIPTION>
+					<DESCRIPTION>A long table behind the auctioneer is covered with all the upcoming lots.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>People stand around here chatting, shouting, and generally trying to catch a good deal.</DESCRIPTION>
+					<DESCRIPTION>This run down building is quite busy with folks trying to win a cheap deal.</DESCRIPTION>
+					<DESCRIPTION>People are here selling, people are here shouting prices, people are talking about the lots.  Lots of people.</DESCRIPTION>
+					<DESCRIPTION>People talking and walking around view and discuss the lots.  Other people shout bids to the auctioneer.</DESCRIPTION>
+					<DESCRIPTION>Bustling folks examine and discuss the upcoming lots while attentive people shout bits to the auctioneer.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for auction, `bid [amount] [itemname]` make a bid, `sell [itemname]` to put an item up for auction, or `view [itemname]` to get more information." />
+			<AFFECT class="Prop_ClosedDayNight" />
+			<MOB class="GenAuctioneer" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+				<NAME>Auctioneer ${c:patronname}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is shouting out prices.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>-10000?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a colonel`s uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>an auction pointer</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+			</MOB>
+		</ROOM>
 		<ROOM id="town_postoffice" class="WoodRoom"  condition="$__postoffice&lt;1 and $__numshoptypes_all &gt; 10" define="__postoffice+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Post Office</TITLE>
@@ -996,6 +1070,79 @@ Required details: "id" "value"
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
+		<ROOM id="town_bank" class="WoodRoom"  condition="$__bank&lt;1 and $__numshoptypes_all &gt; 10" define="__bank+=1,__townsecond+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Bank</TITLE>
+				<TITLE>${c:areaname} Bank and Trust</TITLE>
+				<TITLE>The Bank</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Bank.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Bank.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Bank is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Bank is $adj_tidy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything in this $adj_fancy building is $adj_light and $adj_quiet.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy building is completely $adj_light and $adj_quiet.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light and $adj_quiet room is $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere here is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy building is $adj_light and $adj_fancy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>A long counter divides the room in half, and ropes held keep the long lines of people in order.</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The furniture and decore here is very $adj_conservative and $adj_subdued.</DESCRIPTION>
+					<DESCRIPTION>Even the art and furnishings here is $adj_conservative and $adj_subdued.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_conservative} and $adj_subdued tapestries, paintings and furnishings adorn the room.</DESCRIPTION>
+					<DESCRIPTION>The $adj_subdued art and tapenstries, and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
+			<AFFECT class="Prop_ClosedDayNight" />
+			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+				<NAME>Bank clerk ${c:patronname}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, looking dapper.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a money clip</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+			</MOB>
+		</ROOM>
 		<ROOM id="town_prison" class="WoodRoom"  condition="$__prison&lt;1 and $__numshoptypes_all &gt; 10" define="__prison+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Prison</TITLE>
@@ -1005,20 +1152,28 @@ Required details: "id" "value"
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION></DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty prison cell.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty cell for common prisoners.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION></DESCRIPTION>
-				</DESCRIPTION>
-				<DESCRIPTION select="any-1">
-					<DESCRIPTION></DESCRIPTION>
+					<STRING>You hear $adj_scary_feeling squeeking coming from the corner.</STRING>
+					<STRING>You hear the $adj_scary_feeling sounds of tiny pattering around you.</STRING>
+					<STRING>Something has left droppings here.</STRING>
+					<STRING>Some $adj_scary_feeling soul obviously relieved itself here.</STRING>
+					<STRING>Bits of half-eaten trash can be seen around here.</STRING>
+					<STRING>Bits of some half-eaten mold are here.</STRING>
+					<STRING>Was that the sound of something $adj_scary_feeling?</STRING>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The exit is to the $roomexits_desc_long, not that it matters now.</DESCRIPTION>
 					<DESCRIPTION>The street is to the $roomexits_desc_long, which doesn't matter anymore.</DESCRIPTION>
 				</DESCRIPTION>
 			</DESCRIPTION>
-			<EXIT class="GenDoor" hasalock="true" deflocked="true" leve=91 />
+			<EXIT class="GenDoor" hasalock="true" deflocked="true" leve=91 keyname="$areaname prisonkey" />
 		</ROOM>
 		<ROOM id="town_school" class="WoodRoom"  condition="$__school&lt;1 and $__numshoptypes_all &gt; 10" define="__school+=1,__townsecond+=1">
 			<TITLE select="any-1">

@@ -47,11 +47,32 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected int canImproveCode(){return Behavior.CAN_AREAS;}
 
 	protected boolean loadAttempt=false;
-
-	protected String getLawParms(){ return getParms();}
 	protected Hashtable finesAssessed=new Hashtable();
+	
 	public boolean isFullyControlled(){return true;}
 
+	protected String getLawParms()
+	{ 
+		String parms=getParms();
+		int x=parms.indexOf(';');
+		if(x>=0)
+			return parms.substring(0, x).trim();
+		return parms;
+	}
+	
+	public Properties getExtraLawParms()
+	{
+		String parms=getParms();
+		Properties p=new Properties();
+		int x=parms.indexOf(';');
+		if(x>=0)
+		{
+			parms=parms.substring(x+1).trim();
+			p.putAll(CMParms.parseEQParms(parms));
+		}
+		return p;
+	}
+	
 	public String accountForYourself()
 	{ 
 		return "legaliness";
@@ -446,6 +467,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				}
 				return (Law)CMClass.getCommon("DefaultLawSet");
 			}
+			lawprops.putAll(getExtraLawParms());
 			loadAttempt=true;
 			laws=(Law)CMClass.getCommon("DefaultLawSet");
 			laws.initialize(this,lawprops,modifiableNames,modifiableLaw);
