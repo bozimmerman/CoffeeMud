@@ -267,6 +267,16 @@
 	</STRING>
 </STRING>
 
+<STRING id="adj_majestic" select="any-1">
+	<STRING id="adj_majestic_values">
+		<STRING>stately</STRING><STRING>dignified</STRING><STRING>distinguished</STRING><STRING>solemn</STRING><STRING>magnificent</STRING>
+		<STRING>grand</STRING><STRING>splendid</STRING><STRING>resplendent</STRING><STRING>glorious</STRING><STRING>sumptuous</STRING>
+		<STRING>impressive</STRING><STRING>august</STRING><STRING>noble</STRING><STRING>awe-inspiring</STRING><STRING>monumental</STRING>
+		<STRING>palatial; statuesque</STRING><STRING>Olympian</STRING><STRING>imposing</STRING><STRING>marvelous</STRING><STRING>sonorous</STRING>
+		<STRING>resounding</STRING><STRING>heroic</STRING>
+	</STRING>
+</STRING>
+
 <STRING id="adj_color" select="any-1">
 	<STRING>white</STRING>
 	<STRING>green</STRING>

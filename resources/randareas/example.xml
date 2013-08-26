@@ -909,11 +909,102 @@ Required details: "id" "value"
 			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
 		</ROOM>
 		<!--
-		TODO: MAYOR/SULTAN/PRINCE/CHIEFs office (is judge)
-		TODO: third priority: day care, stables, clan bank,
-		TODO: fourth priority (non-repeatable -- only if above done): INN, city guard hq, park
+		TODO: third priority: clan bank,
+		TODO: fourth priority (non-repeatable -- only if above done): day care, stables, INN, guard station, park
 		TODO: fourth priority (repeatable -- but only if above done): BAR, DINER/CAFE/, healer/temple, park, home
 		 -->
+		<ROOM id="town_guardstation" class="WoodRoom"  condition="$__numshoptypes_all &gt; 10 and __townsecond &gt; 5 and __townthird &gt; 0" define="__townforth+=1">
+		</ROOM>
+		<ROOM id="town_clanbank" class="WoodRoom"  condition="$__clanbank&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__clanbank+=1,__townthird+=1">
+		</ROOM>
+		<ROOM id="town_cityhall" class="WoodRoom"  condition="$__cityhall&lt;1 and $__numshoptypes_all &gt; 10" define="__cityhall+=1,__townsecond+=1,judgename=$fantasy_name">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} $__cityhalltype</TITLE>
+				<TITLE>${c:areaname} $__cityhalltype</TITLE>
+				<TITLE>The $__cityhalltype</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_fancy, $adj_majestic, $adj_phys_size_large ${c:areaname} $__cityhalltype.</DESCRIPTION>
+					<DESCRIPTION>The $adj_majestic ${c:areaname} $__cityhalltype is $adj_phys_size_large and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>The $adj_phys_size_large $adj_majestic ${c:areaname} $__cityhalltype is $adj_fancy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The $adj_majestic markings of officialdom and justice adorn this $adj_light room.  The $adj_conservative people here clearly want to be in charge.</DESCRIPTION>
+					<DESCRIPTION>From the furniture, to the $adj_majestic art, this $adj_light room says $adj_conservative office and justice.</DESCRIPTION>
+					<DESCRIPTION>The $adj_conservative markings of $adj_majestic officialdom and justice adorn this building.</DESCRIPTION>
+					<DESCRIPTION>From the $adj_light floors to the $adj_majestic furnishings and all the other $adj_conservative markings of officialdom, you are impressed with this building.</DESCRIPTION>
+					<DESCRIPTION>All around this $adj_light building is $adj_majestic and $adj_conservative furnishings speaking of authority and justice.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>In this building the business of the ${l:__citytype} is done and its judgements made.</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Petitioners and ${l:__cityattendant}s go about their activities here.</DESCRIPTION>
+					<DESCRIPTION>Petitioners line up patiently here, while ${l:__cityattendant}s see to their own business.</DESCRIPTION>
+					<DESCRIPTION>In one area of the building, petitioners await their opportunity for an audience.  Elsewhere, ${l:__cityattendant}s roam about quietly.</DESCRIPTION>
+					<DESCRIPTION>${c:__cityattendant}s see to the orderly admission of petitioners for an audience here.</DESCRIPTION>
+					<DESCRIPTION>Although not a crowded place, there are petitioners and ${l:__cityattendant}s here all the time.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<MOB class="GenMob" level="30+(($level_range) * 1.1)<91" race="$_humanoid_races" gender="$anygender">
+				<NAME>$__chieftype ${c:judgename}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is ready to dispense justice.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>-10000?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a ${l:__chieftype}`s uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a gavel</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
+				</ITEM>
+			</MOB>
+			<MOB select="repeat-3">
+				<MOB id=town_cityguard" class="GenMob" level="$level_range" race="$_humanoid_races" gender="$anygender">
+					<NAME>(a(n)) ${c:__officertype}</NAME>
+					<DISPLAY select="pick-1">
+						<DISPLAY pickweight="1">$mob_name is here, smiling happily.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name is prepared to knock some heads together.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name is watching you carefully.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name is on the beat.</DISPLAY>
+					</DISPLAY>
+					<ALIGNMENT>0</ALIGNMENT>
+					<BEHAVIOR select="all">
+						<BEHAVIOR class="Fighterness" parms="" />
+					</BEHAVIOR>
+					<ITEM class="GenArmor" LEVEL="$mob_level">
+						<NAME select="any-1"><NAME>a ${l:__officertype}`s uniform</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>COTTON</MATERIAL>
+						<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					</ITEM>
+					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+						<NAME>a ${l:__officertype} night stick</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>WOOD</MATERIAL>
+						<WEAPONCLASS>BLUNT</WEAPONCLASS>
+						<WEAPONTYPE>BASHING</WEAPONTYPE>
+					</ITEM>
+				</MOB>
+			</MOB>
+		</ROOM>
 		<ROOM id="town_auctionhall" class="WoodRoom"  condition="$__auctionhall&lt;1 and $__numshoptypes_all &gt; 10" define="__auctionhall+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Auction Hall</TITLE>
@@ -960,7 +1051,7 @@ Required details: "id" "value"
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for auction, `bid [amount] [itemname]` make a bid, `sell [itemname]` to put an item up for auction, or `view [itemname]` to get more information." />
 			<AFFECT class="Prop_ClosedDayNight" />
 			<MOB class="GenAuctioneer" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
-				<NAME>Auctioneer ${c:patronname}</NAME>
+				<NAME>Auctioneer ${c:fantasy_name}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is shouting out prices.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is calling for bids.</DISPLAY>
@@ -1036,8 +1127,8 @@ Required details: "id" "value"
 			<AFFECT class="Prop_ClosedDayNight" />
 			<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
 				<NAME select="any-1">
-					<NAME>Postal clerk ${c:patronname}</NAME>
-					<NAME>Postman ${c:patronname}</NAME>
+					<NAME>Postal clerk ${c:fantasy_name}</NAME>
+					<NAME>Postman ${c:fantasy_name}</NAME>
 				</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is moving very slowly.</DISPLAY>
@@ -1116,7 +1207,7 @@ Required details: "id" "value"
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
 			<AFFECT class="Prop_ClosedDayNight" />
 			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
-				<NAME>Bank clerk ${c:patronname}</NAME>
+				<NAME>Bank clerk ${c:fantasy_name}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
@@ -1211,11 +1302,11 @@ Required details: "id" "value"
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `train [classname]` to change classes, `train [statname]` improve a stat, `gain [skillname]`  to learn a new skill, or `practice [skillname]` to improve a skill." />
-			<MOB class="GenPostman" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" prejudice="SELL=1.0 ; BUY=2.0">
+			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
 				<NAME select="any-1">
-					<NAME>Guildmaster ${c:patronname}</NAME>
-					<NAME>Master ${c:patronname}</NAME>
-					<NAME>Professor ${c:patronname}</NAME>
+					<NAME>Guildmaster ${c:fantasy_name}</NAME>
+					<NAME>Master ${c:fantasy_name}</NAME>
+					<NAME>Professor ${c:fantasy_name}</NAME>
 				</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is waiting to show you wisdom.</DISPLAY>
@@ -3505,19 +3596,32 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 </STRING>
 
 <STRING id="next_shop_type" select="any-1">
-<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1,pshoptypes=weapons">weapon</STRING>
-<STRING condition="$__numshoptypes_armor &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_armor+=1,__numshoptypes_all+=1,pshoptypes=armor">armor</STRING>
-<STRING condition="$__numshoptypes_leather &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_leather+=1,__numshoptypes_all+=1,pshoptypes=leather goods">leather</STRING>
-<STRING condition="$__numshoptypes_cloth &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_cloth+=1,__numshoptypes_all+=1,pshoptypes=clothes">tailor</STRING>
-<STRING condition="$__numshoptypes_food &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_food+=1,__numshoptypes_all+=1,pshoptypes=baked goods">food</STRING>
-<STRING condition="$__numshoptypes_general &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_general+=1,__numshoptypes_all+=1,pshoptypes=all kinds of things">general</STRING>
-<STRING condition="$__numshoptypes_wood &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_wood+=1,__numshoptypes_all+=1,pshoptypes=wooden items">wood</STRING>
-<STRING condition="$__numshoptypes_magic &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_magic+=1,__numshoptypes_all+=1,pshoptypes=magical items">magic</STRING>
-<STRING condition="$__numshoptypes_potion &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_potion+=1,__numshoptypes_all+=1,pshoptypes=potions">potion</STRING>
-<STRING condition="$__numshoptypes_jewelry &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_jewelry+=1,__numshoptypes_all+=1,pshoptypes=jewels">jewelry</STRING>
-<STRING condition="$__numshoptypes_pet &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_pet+=1,__numshoptypes_all+=1,pshoptypes=boxes of animals">pet</STRING>
-
+	<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1,pshoptypes=weapons">weapon</STRING>
+	<STRING condition="$__numshoptypes_armor &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_armor+=1,__numshoptypes_all+=1,pshoptypes=armor">armor</STRING>
+	<STRING condition="$__numshoptypes_leather &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_leather+=1,__numshoptypes_all+=1,pshoptypes=leather goods">leather</STRING>
+	<STRING condition="$__numshoptypes_cloth &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_cloth+=1,__numshoptypes_all+=1,pshoptypes=clothes">tailor</STRING>
+	<STRING condition="$__numshoptypes_food &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_food+=1,__numshoptypes_all+=1,pshoptypes=baked goods">food</STRING>
+	<STRING condition="$__numshoptypes_general &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_general+=1,__numshoptypes_all+=1,pshoptypes=all kinds of things">general</STRING>
+	<STRING condition="$__numshoptypes_wood &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_wood+=1,__numshoptypes_all+=1,pshoptypes=wooden items">wood</STRING>
+	<STRING condition="$__numshoptypes_magic &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_magic+=1,__numshoptypes_all+=1,pshoptypes=magical items">magic</STRING>
+	<STRING condition="$__numshoptypes_potion &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_potion+=1,__numshoptypes_all+=1,pshoptypes=potions">potion</STRING>
+	<STRING condition="$__numshoptypes_jewelry &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_jewelry+=1,__numshoptypes_all+=1,pshoptypes=jewels">jewelry</STRING>
+	<STRING condition="$__numshoptypes_pet &lt;1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_pet+=1,__numshoptypes_all+=1,pshoptypes=boxes of animals">pet</STRING>
 </STRING>
+
+<STRING id="__citygovttype" select="any-1" define="__citygovttype">
+	<STRING define="__chieftype=Chief,__officertype=Warrior,__cityhalltype=Villiage Hall,__citytype=Villiage,__cityattendant=Subchief">Chiefdom</STRING>
+	<STRING define="__chieftype=Prince,__officertype=Royalguard,__cityhalltype=City Palace,__citytype=Kingdom,__cityattendant=Courtier">Principality</STRING>
+	<STRING define="__chieftype=Mayor,__officertype=Cityguard,__cityhalltype=City Hall,__citytype=City,__cityattendant=Bureaucrat">Mayorality</STRING>
+	<STRING define="__chieftype=Lord,__officertype=Manorguard,__cityhalltype=Lords Manor,__citytype=Town,__cityattendant=Attendant">Aristocracy</STRING>
+	<STRING define="__chieftype=Captain,__officertype=Lieutenant,__cityhalltype=Captains Office,__citytype=Military Base,__cityattendant=Lieutenant">Dictatorship</STRING>
+	<STRING define="__chieftype=Bishop,__officertype=Paladin,__cityhalltype=Head Temple,__citytype=Holy City,__cityattendant=Priest">Theocracy</STRING>
+</STRING>
+<STRING id="__officertype" select="any-1" predefine="temp=$__citygovttype">$__officertype</STRING>
+<STRING id="__chieftype" select="any-1" predefine="temp=$__citygovttype">$__chieftype</STRING>
+<STRING id="__cityhalltype" select="any-1" predefine="temp=$__citygovttype">$__cityhalltype</STRING>
+<STRING id="__citytype" select="any-1" predefine="temp=$__citygovttype">$__citytype</STRING>
+<STRING id="__cityattendant" select="any-1" predefine="temp=$__citygofttype">$__cityattendant</STRING>
 
 <STRING id="any_cheap_metal" select="any-1"><string>iron</string><string>lead</string><string>bronze</string><string>tin</string><string>brass</string></STRING>
 <STRING id="any_rich_metal" select="any-1"><string>silver</string><string>gold</string><string>copper</string><string>white_gold</string></STRING>
