@@ -97,7 +97,14 @@ public class GenBanker extends StdBanker
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setWhatIsSoldMask(CMath.s_long(val)); break;
+		case 0:{
+			if((val.length()==0)||(CMath.isLong(val)))
+				setWhatIsSoldMask(CMath.s_long(val));
+			else
+			if(CMParms.containsIgnoreCase(ShopKeeper.DEAL_DESCS,val))
+				setWhatIsSoldMask(CMParms.indexOfIgnoreCase(ShopKeeper.DEAL_DESCS,val));
+			break;
+		}
 		case 1: setPrejudiceFactors(val); break;
 		case 2: setBankChain(val); break;
 		case 3: setCoinInterest(CMath.s_double(val)); break;
