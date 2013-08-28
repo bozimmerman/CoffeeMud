@@ -2207,6 +2207,12 @@ public class DefaultSession implements Session
 					if(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
 					{
 						M.setSession(null);
+						if(M.location()==null)
+							M.setLocation(M.getStartRoom());
+						if(M.location()==null)
+							M.setLocation(CMLib.map().getStartRoom(M));
+						if(M.location()==null)
+							M.setLocation(CMLib.map().getRandomRoom());
 						CMLib.commands().postSleep(M);
 						M.setSession(this);
 						M.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SLEEPING);

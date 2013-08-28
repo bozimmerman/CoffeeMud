@@ -833,14 +833,17 @@ public class Modify extends StdCommand
 				synchronized(("SYNC"+room.roomID()).intern())
 				{
 					room=CMLib.map().getRoom(room);
-					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					if(room != null)
 					{
-						Exit exit=room.getRawExit(d);
-						if((exit!=null)&&(exit==thisExit))
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
-							CMLib.database().DBUpdateExits(room);
-							room.getArea().fillInAreaRoom(room);
-							break;
+							Exit exit=room.getRawExit(d);
+							if((exit!=null)&&(exit==thisExit))
+							{
+								CMLib.database().DBUpdateExits(room);
+								room.getArea().fillInAreaRoom(room);
+								break;
+							}
 						}
 					}
 				}
