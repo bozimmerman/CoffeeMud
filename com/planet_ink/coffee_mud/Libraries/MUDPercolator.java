@@ -48,6 +48,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	
 	private SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
 	
+	private interface BuildCallback
+	{
+		public void willBuild(Environmental E, XMLLibrary.XMLpiece xmlPiece);
+	}
+	
 	public LayoutManager getLayoutManager(String named) 
 	{
 		Class<LayoutManager> mgr = mgrs.get(named.toUpperCase().trim());
@@ -134,7 +139,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			I.setSavable(true);
 			I.setExpirationDate(0);
 		}
-		List<Ability> aV = findAffects(piece,defined);
+		List<Ability> aV = findAffects(piece,defined,null);
 		for(int i=0;i<aV.size();i++) {
 			Ability A=aV.get(i);
 			A.setSavable(true);
@@ -278,7 +283,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if((roomsLayout==null)||(roomsLayout.size()==0))
 			throw new CMException("Unable to fill area of size "+size+" off layout "+layoutManager.name());
 		
-		List<Ability> aV = findAffects(piece,defined);
+		List<Ability> aV = findAffects(piece,defined,null);
 		for(int i=0;i<aV.size();i++)
 		{
 			Ability AB=aV.get(i);
@@ -536,6 +541,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	
 	public List<MOB> findMobs(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
+		return findMobs(piece, defined, null);
+	}
+	
+	public List<MOB> findMobs(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
+	{
 		List<MOB> V = new Vector<MOB>();
 		String tagName="MOB";
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
@@ -550,6 +560,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				Log.debugOut("MUDPercolator","Build Mob: "+CMStrings.limit(valPiece.value,80)+"...");
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			MOB M=buildMob(valPiece,defined);
+			if(callBack != null)
+				callBack.willBuild(M, valPiece);
 			V.add(M);
 			clearNewlyDefined(defined, definedSet, tagName+"_");
 		}
@@ -811,7 +823,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			I.setSavable(true);
 			I.wearIfPossible(M);
 		}
-		List<Ability> aV = findAffects(piece,defined);
+		List<Ability> aV = findAffects(piece,defined,null);
 		for(int i=0;i<aV.size();i++) {
 			Ability A=aV.get(i);
 			A.setSavable(true);
@@ -823,7 +835,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			B.setSavable(true);
 			M.addBehavior(B);
 		}
-		List<Ability> abV = findAbilities(piece,defined);
+		List<Ability> abV = findAbilities(piece,defined,null);
 		for(int i=0;i<abV.size();i++) {
 			Ability A=abV.get(i);
 			A.setSavable(true);
@@ -832,11 +844,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 		if(SK!=null)
 		{
-			List<Environmental> iV = findShopInventory(piece,defined);
+			List<Triad<Environmental,Integer,Long>> iV = findShopInventory(piece,defined);
 			if(iV.size()>0)
 				SK.getShop().emptyAllShelves();
 			for(int i=0;i<iV.size();i++)
-				SK.getShop().addStoreInventory(iV.get(i));
+				SK.getShop().addStoreInventory(iV.get(i).first,iV.get(i).second.intValue(),iV.get(i).third.intValue());
 		}
 		
 		M.recoverCharStats();
@@ -882,7 +894,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		addDefinition("EXIT_CLASS",classID,defined);
 		ignoreStats.add("CLASS");
 		fillOutStatCodes(E,ignoreStats,"EXIT_",piece,defined);
-		List<Ability> aV = findAffects(piece,defined);
+		List<Ability> aV = findAffects(piece,defined,null);
 		for(int i=0;i<aV.size();i++)
 		{
 			Ability A=aV.get(i);
@@ -902,15 +914,29 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return E;
 	}
 	
-	protected List<Environmental> findShopInventory(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	protected List<Triad<Environmental,Integer,Long>> findShopInventory(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
-		List<Environmental> V = new Vector<Environmental>();
+		final List<Triad<Environmental,Integer,Long>> V = new Vector<Triad<Environmental,Integer,Long>>();
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,"SHOPINVENTORY", piece, defined,true);
 		if((choices==null)||(choices.size()==0)) return V;
-		XMLLibrary.XMLpiece shopPiece = choices.get(CMLib.dice().roll(1,choices.size(),-1));
-		V.addAll(findItems(shopPiece,defined));
-		V.addAll(findMobs(shopPiece,defined));
-		V.addAll(findAbilities(shopPiece,defined));
+		for(int c=0;c<choices.size();c++)
+		{
+			XMLLibrary.XMLpiece shopPiece = choices.get(c);
+			if(shopPiece.parms.containsKey("VALIDATE") && !testCondition(CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(shopPiece.parms,"VALIDATE")),shopPiece, defined))
+				continue;
+			final BuildCallback callBack=new BuildCallback(){
+				@Override public void willBuild(Environmental E, XMLpiece xmlPiece) {
+					int number;
+					try{ number=CMath.s_parseIntExpression(CMLib.xml().getParmValue(xmlPiece.parms, "NUMBER")); } catch(Exception e){ number=1; }
+					int price;
+					try{ price=CMath.parseIntExpression(CMLib.xml().getParmValue(xmlPiece.parms, "PRICE")); } catch(Exception e){ price=-1; }
+					V.add(new Triad<Environmental,Integer,Long>(E,Integer.valueOf(number),Long.valueOf(price)));
+				}
+			};
+			findItems(shopPiece,defined,callBack);
+			findMobs(shopPiece,defined,callBack);
+			findAbilities(shopPiece,defined,callBack);
+		}
 		return V;
 	}
 
@@ -937,6 +963,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	
 	public List<Item> findItems(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
+		return findItems(piece, defined, null);
+	}
+	
+	public List<Item> findItems(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
+	{
 		List<Item> V = new Vector<Item>();
 		String tagName="ITEM";
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
@@ -951,7 +982,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				Log.debugOut("MUDPercolator","Build Item: "+CMStrings.limit(valPiece.value,80)+"...");
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			try{
-				V.addAll(buildItem(valPiece,defined));
+				for(Item I : buildItem(valPiece,defined))
+				{
+					if(callBack != null)
+						callBack.willBuild(I, valPiece);
+					V.add(I);
+				}
 			}catch(CMException e){ 
 				throw e;
 			}
@@ -1293,7 +1329,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			{
-				List<Ability> V= findAffects(piece,defined);
+				List<Ability> V= findAffects(piece,defined,null);
 				for(int i=0;i<V.size();i++)
 				{
 					Ability A=V.get(i);
@@ -1316,13 +1352,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return contents;
 	}
 	
-	protected List<Ability> findAffects(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
-	{ return findAbilities("AFFECT",piece,defined);}
+	protected List<Ability> findAffects(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
+	{ return findAbilities("AFFECT",piece,defined,callBack);}
 
-	protected List<Ability> findAbilities(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
-	{ return findAbilities("ABILITY",piece,defined);}
+	protected List<Ability> findAbilities(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
+	{ return findAbilities("ABILITY",piece,defined,callBack);}
 	
-	protected List<Ability> findAbilities(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	protected List<Ability> findAbilities(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
 	{
 		List<Ability> V = new Vector<Ability>();
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
@@ -1335,6 +1371,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			defineReward(null,null,null,valPiece,null,defined);
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			Ability A=buildAbility(valPiece,defined);
+			if(callBack != null)
+				callBack.willBuild(A, valPiece);
 			V.add(A);
 			clearNewlyDefined(defined, definedSet, tagName+"_");
 		}

@@ -237,6 +237,10 @@ Optional details: (See Archon's Guide)
 "WEIGHT","ARMOR", "DAMAGE","ATTACK","READABLETEXT","IMG"
 (plus or minus many many others depending upon class)
 
+"ShopKeeper" type classes may use "SHOPINVENTORY" tags to hold ITEM, MOB, or ABILITY tags
+to designate what else is sold.  Also, those ITEM, MOB, or ABILITY tags may contain
+optional PRICE or NUMBER attributes.
+
 ----------------------------------------
 Affect, Ability, Behavior tags:
 Required detail: "class"
@@ -851,73 +855,289 @@ Required details: "id" "value"
 				</ITEM>
 				<SHOPINVENTORY select="all">
 					<ITEM select="all" condition="$shoptype='weapon'">
-						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$any_cheap_metal"/>
-						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$any_cheap_metal"/>
+						<ITEM class="metacraft:all-weaponsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:all-masterweaponsmithing<$mob_level" material="$any_cheap_metal" number=20/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='armor'">
-						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$any_cheap_metal"/>
-						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$any_cheap_metal"/>
+						<ITEM class="metacraft:all-armorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:all-masterarmorsmithing<$mob_level" material="$any_cheap_metal" number=20/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='magic'">
-						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand"/>
-						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal"/>
-						<ITEM select="any-5" insert="any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item" />
-						<ITEM select="any-5" insert="any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item" />
-						<ITEM select="any-5" insert="any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item" />
+						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand" number=20/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal" number=20/>
+						<ITEM select="any-5" insert="any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item" number=20/>
+						<ITEM select="any-5" insert="any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item" number=20/>
+						<ITEM select="any-5" insert="any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item" number=20/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='jewelry'">
-						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$any_cheap_metal"/>
+						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$any_cheap_metal" number=20/>
 					</ITEM>
 					<MOB select="all" condition="$shoptype='pet'">
-						<MOB class="Monkey" /><MOB class="Dog" /><MOB class="Fox" /><MOB class="Duck" /><MOB class="Falcon" /><MOB class="Bee" />
-						<MOB class="Tiger" /><MOB class="Rat" /><MOB class="Puppy" /><MOB class="Pig" /><MOB class="Lizard" /><MOB class="Lion" />
+						<MOB class="Monkey" number=20/><MOB class="Dog" number=20/><MOB class="Fox" number=20/><MOB class="Duck" number=20/><MOB class="Falcon" number=20/><MOB class="Bee" number=20/>
+						<MOB class="Tiger" number=20/><MOB class="Rat" number=20/><MOB class="Puppy" number=20/><MOB class="Pig" number=20/><MOB class="Lizard" number=20/><MOB class="Lion" number=20/>
 					</MOB>
 					<ITEM select="all" condition="$shoptype='potion'">
-						<ITEM class="metacraft:all-alchemy<$mob_level"/>
-						<ITEM class="metacraft:all-herbalism<$mob_level"/>
+						<ITEM class="metacraft:all-alchemy<$mob_level" number=20/>
+						<ITEM class="metacraft:all-herbalism<$mob_level" number=20/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='general'">
-						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather"/>
-						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather"/>
-						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$any_cheap_metal"/>
-						<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp"/>
-						<ITEM class="metacraft:all-glassblowing<$mob_level"/>
-						<ITEM class="metacraft:all-pottery<$mob_level" material="clay"/>
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather" number=20/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenContainer=GenDrink" material="leather" number=20/>
+						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenContainer=GenDrink=LightSource=GenRideable" material="$any_cheap_metal" number=20/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenContainer=GenRideable" material="hemp" number=20/>
+						<ITEM class="metacraft:all-glassblowing<$mob_level" number=20/>
+						<ITEM class="metacraft:all-pottery<$mob_level" material="clay" number=20/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='leather'">
-						<ITEM class="metacraft:all-leatherworking<$mob_level=GenArmor=GenWeapon" material="leather"/>
-						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather"/>
+						<ITEM class="metacraft:all-leatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number=20/>
+						<ITEM class="metacraft:all-masterleatherworking<$mob_level=GenArmor=GenWeapon" material="leather" number=20/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='wood'">
-						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$any_wood"/>
-						<ITEM class="metacraft:all-fletching<$mob_level" material="$any_wood"/>
-						<ITEM class="metacraft:all-cobbler<$mob_level" material="$any_wood"/>
+						<ITEM class="metacraft:all-carpentry<$mob_level=GenWeapon=GenArmor=GenContainer" material="$any_wood" number=20/>
+						<ITEM class="metacraft:all-fletching<$mob_level" material="$any_wood" number=20/>
+						<ITEM class="metacraft:all-cobbler<$mob_level" material="$any_wood" number=20/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='tailor'">
-						<ITEM class="metacraft:all-tailoring<$mob_level" material="$any_cheap_cloth"/>
-						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$any_cheap_cloth"/>
-						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp"/>
+						<ITEM class="metacraft:all-tailoring<$mob_level" material="$any_cheap_cloth" number=20/>
+						<ITEM class="metacraft:all-mastertailoring<$mob_level" material="$any_cheap_cloth" number=20/>
+						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp" number=20/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='food'">
-						<ITEM class="metacraft:all-cooking<$mob_level"/>
-						<ITEM class="metacraft:all-mastercooking<$mob_level"/>
-						<ITEM class="metacraft:all-baking<$mob_level"/>
-						<ITEM class="metacraft:all-masterbaking<$mob_level"/>
+						<ITEM class="metacraft:all-cooking<$mob_level" number=20/>
+						<ITEM class="metacraft:all-mastercooking<$mob_level" number=20/>
+						<ITEM class="metacraft:all-baking<$mob_level" number=20/>
+						<ITEM class="metacraft:all-masterbaking<$mob_level" number=20/>
 					</ITEM>
 				</SHOPINVENTORY>
 			</MOB>
 			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
 		</ROOM>
 		<!--
-		TODO: third priority: clan bank,
-		TODO: fourth priority (non-repeatable -- only if above done): day care, stables, INN, guard station, park
-		TODO: fourth priority (repeatable -- but only if above done): BAR, DINER/CAFE/, healer/temple, park, home
+		TODO: third priority: INN, park, healer/temple
+		TODO: fourth priority (repeatable -- but only if above done): BAR, DINER/CAFE, home
 		 -->
-		<ROOM id="town_guardstation" class="WoodRoom"  condition="$__numshoptypes_all &gt; 10 and __townsecond &gt; 5 and __townthird &gt; 0" define="__townforth+=1">
+		<ROOM id="town_stables" class="WoodRoom"  condition="$__townstables&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__townstables+=1,__townthird+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Stables</TITLE>
+				<TITLE>${c:areaname} Stables</TITLE>
+				<TITLE>The Stables</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_untidy $adj_filthy ${c:areaname} Stables.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_filthy $adj_phys_size_small ${c:areaname} Stables.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Stables is $adj_phys_size_small and $adj_filthy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Stables is $adj_filthy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything about this $adj_untidy barn is $adj_ragged and $adj_smelly.</DESCRIPTION>
+					<DESCRIPTION>This $adj_untidy barn seems completely $adj_ragged and $adj_smelly.</DESCRIPTION>
+					<DESCRIPTION>This $adj_ragged and $adj_smelly barn is quite $adj_untidy.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere of the barn is $adj_ragged, $adj_smelly and $adj_untidy.</DESCRIPTION>
+					<DESCRIPTION>This whole barn is $adj_ragged, $adj_smelly and $adj_untidy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_untidy barn seems $adj_ragged and $adj_smelly.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Mounts can be both purchased and housed here, for a fee.</DESCRIPTION>
+					<DESCRIPTION>You can both purchase mounts here, and stable them for a time.</DESCRIPTION>
+					<DESCRIPTION>There are are horses for sale, and stables for rent to house your own mounts.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Straw covers the floor, and bags of feed sit near a water trough.</DESCRIPTION>
+					<DESCRIPTION>The floor is covered in a bed of straw.  Feed bags, water buckets, and other tools hang on the walls.</DESCRIPTION>
+					<DESCRIPTION>Through the smell and jumble you can see feed bags and other vitals on the hay covered floor.</DESCRIPTION>
+					<DESCRIPTION>Everything a growing animal needs is scattered around here, with various implements you can only guess about hanging on the walls.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `buy [itemname]` to acquire a horse, `borrow [amount]` to borrow money." />
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="PETS">
+				<NAME>Stable-Master ${c:fantasy_name}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is here working.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="Nanny" parms="RATE=1.0 NAME=&quot;${c:areaname} Stables&quot; WATCHES=&quot;mounts,wagons,followers&quot;" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a stablehand`s uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a shovel</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>POLEARM</WEAPONCLASS>
+					<WEAPONTYPE>SLASHING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY>
+					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
+					<ITEM class="GenRideable" name="a $mammal_color horse" display="$mob_name is here" number=20/>
+				</SHOPINVENTORY>
+			</MOB>
 		</ROOM>
-		<ROOM id="town_clanbank" class="WoodRoom"  condition="$__clanbank&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__clanbank+=1,__townthird+=1">
+		<ROOM id="town_daycare" class="WoodRoom"  condition="$__towndaycare&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__towndaycare+=1,__townthird+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Day Care</TITLE>
+				<TITLE>${c:areaname} ${c:adj_happy} Day Care</TITLE>
+				<TITLE>The Day Care</TITLE>
+				<TITLE>The ${c:adj_happy} Day Care</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_untidy $adj_happy ${c:areaname} Day Care.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_happy $adj_phys_size_small ${c:areaname} Day Care.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Day Care is $adj_phys_size_small and $adj_happy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Day Care is $adj_happy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything about this $adj_feeling_good room is $adj_light and $adj_noisy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_feeling_good room seems completely $adj_light and $adj_noisy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light and $adj_noisy room is quite $adj_feeling_good.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere of the room is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
+					<DESCRIPTION>This whole room is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
+					<DESCRIPTION>This $adj_feeling_good room seems $adj_light and $adj_noisy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>The walls are all painted $adj_colored_color and toys are scattered on the $adj_untidy floor.</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything from the furnishings, to the stuff, to the toddlers scream $noun_fun.</DESCRIPTION>
+					<DESCRIPTION>Children full of $noun_fun bounce around here.</DESCRIPTION>
+					<DESCRIPTION>Nannies are here chasing $adj_lots of children around has they enjoy their $noun_fun.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_lots} of children run around having $noun_fun.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
+			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER">
+				<NAME>Bank clerk ${c:fantasy_name}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is exhausted.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is running around yelling.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Nanny" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a nanny`s uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a ruler</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
+				</ITEM>
+			</MOB>
 		</ROOM>
-		<ROOM id="town_cityhall" class="WoodRoom"  condition="$__cityhall&lt;1 and $__numshoptypes_all &gt; 10" define="__cityhall+=1,__townsecond+=1,judgename=$fantasy_name">
+		<ROOM id="town_clanbank" class="WoodRoom"  condition="$__townclanbank&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__townclanbank+=1,__townthird+=1">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Clan Bank</TITLE>
+				<TITLE>${c:areaname} Clan Bank and Trust</TITLE>
+				<TITLE>The Clan Bank</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_large ${c:areaname} Clan Bank.</DESCRIPTION>
+					<DESCRIPTION>This is the $adj_tidy $adj_phys_size_small ${c:areaname} Clan Bank.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Clan Bank is $adj_phys_size_small and $adj_tidy.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} Clan Bank is $adj_tidy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything about this $adj_fancy building is $adj_light and $adj_quiet.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy building seems completely $adj_light and $adj_quiet.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light and $adj_quiet building is quite $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere of the building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This whole building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy building seems $adj_light and $adj_fancy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>A long counter divides the room in half, and ropes held keep the long lines of people in order.</DESCRIPTION>
+				<DESCRIPTION>Like most banks,</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>the furnishings and decore here is very $adj_conservative and $adj_subdued.</DESCRIPTION>
+					<DESCRIPTION>the art and furniture here is $adj_conservative and $adj_subdued.</DESCRIPTION>
+					<DESCRIPTION>${c:adj_conservative} and $adj_subdued art and furnishings adorn the room.</DESCRIPTION>
+					<DESCRIPTION>$adj_subdued art and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>Tasteful banners of all the clans are hung from the ceiling.</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the counter.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the counter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false">
+				<AFFECT class="Prop_ClosedDayNight" />
+			</EXIT>
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
+			<AFFECT class="Prop_ClosedDayNight" />
+			<MOB class="GenBanker" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER">
+				<NAME>Bank clerk ${c:fantasy_name}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is here to serve.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here, looking dapper.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Scavenger" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a conservative uniform</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a money clip</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+			</MOB>
+		</ROOM>
+		<ROOM id="town_cityhall" class="WoodRoom"  condition="$__towncityhall&lt;1 and $__numshoptypes_all &gt; 10" define="__towncityhall+=1,__townsecond+=1,judgename=$fantasy_name">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} $__cityhalltype</TITLE>
 				<TITLE>${c:areaname} $__cityhalltype</TITLE>
@@ -1005,7 +1225,7 @@ Required details: "id" "value"
 				</MOB>
 			</MOB>
 		</ROOM>
-		<ROOM id="town_auctionhall" class="WoodRoom"  condition="$__auctionhall&lt;1 and $__numshoptypes_all &gt; 10" define="__auctionhall+=1,__townsecond+=1">
+		<ROOM id="town_auctionhall" class="WoodRoom"  condition="$__townauctionhall&lt;1 and $__numshoptypes_all &gt; 10" define="__townauctionhall+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Auction Hall</TITLE>
 				<TITLE>${c:areaname} Auction Hall</TITLE>
@@ -1078,7 +1298,7 @@ Required details: "id" "value"
 				</ITEM>
 			</MOB>
 		</ROOM>
-		<ROOM id="town_postoffice" class="WoodRoom"  condition="$__postoffice&lt;1 and $__numshoptypes_all &gt; 10" define="__postoffice+=1,__townsecond+=1">
+		<ROOM id="town_postoffice" class="WoodRoom"  condition="$__townpostoffice&lt;1 and $__numshoptypes_all &gt; 10" define="__townpostoffice+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Post Office</TITLE>
 				<TITLE>${c:areaname} Post Office</TITLE>
@@ -1155,13 +1375,11 @@ Required details: "id" "value"
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<ITEM select="repeat-20">
-						<ITEM class="metacraft" name="a piece of paper"/>
-					</ITEM>
+					<ITEM class="metacraft" name="a piece of paper" number=100/>
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
-		<ROOM id="town_bank" class="WoodRoom"  condition="$__bank&lt;1 and $__numshoptypes_all &gt; 10" define="__bank+=1,__townsecond+=1">
+		<ROOM id="town_bank" class="WoodRoom"  condition="$__townbank&lt;1 and $__numshoptypes_all &gt; 10" define="__townbank+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Bank</TITLE>
 				<TITLE>${c:areaname} Bank and Trust</TITLE>
@@ -1187,7 +1405,7 @@ Required details: "id" "value"
 					<DESCRIPTION>The furniture and decore here is very $adj_conservative and $adj_subdued.</DESCRIPTION>
 					<DESCRIPTION>Even the art and furnishings here is $adj_conservative and $adj_subdued.</DESCRIPTION>
 					<DESCRIPTION>${c:adj_conservative} and $adj_subdued tapestries, paintings and furnishings adorn the room.</DESCRIPTION>
-					<DESCRIPTION>The $adj_subdued art and tapenstries, and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
+					<DESCRIPTION>The $adj_subdued art and tapestries, and the $adj_conservative furnishings adorn the room.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION id="store_sign_descs" select="any-1">
 					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
@@ -1234,7 +1452,7 @@ Required details: "id" "value"
 				</ITEM>
 			</MOB>
 		</ROOM>
-		<ROOM id="town_prison" class="WoodRoom"  condition="$__prison&lt;1 and $__numshoptypes_all &gt; 10" define="__prison+=1,__townsecond+=1">
+		<ROOM id="town_prison" class="WoodRoom"  condition="$__townprison&lt;1 and $__numshoptypes_all &gt; 10" define="__townprison+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Prison</TITLE>
 				<TITLE>${c:areaname} Jail</TITLE>
@@ -1266,7 +1484,7 @@ Required details: "id" "value"
 			</DESCRIPTION>
 			<EXIT class="GenDoor" hasalock="true" deflocked="true" leve=91 keyname="$areaname prisonkey" />
 		</ROOM>
-		<ROOM id="town_school" class="WoodRoom"  condition="$__school&lt;1 and $__numshoptypes_all &gt; 10" define="__school+=1,__townsecond+=1">
+		<ROOM id="town_school" class="WoodRoom"  condition="$__townschool&lt;1 and $__numshoptypes_all &gt; 10" define="__townschool+=1,__townsecond+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Training Academy</TITLE>
 				<TITLE>${c:areaname} Training Academy</TITLE>
@@ -3577,23 +3795,31 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 <string id="any_digit" insert="any_plural_digit" select="any-1"><string>0</string><string>1</string></string>
 
 <STRING id="insect_color" select="any-1" insert="mammal_color">
-<STRING>green</STRING>
-<STRING>dark green</STRING>
+	<STRING>green</STRING>
+	<STRING>dark green</STRING>
 </STRING>
 
 <STRING id="reptile_color" select="any-1">
-<STRING>green</STRING>
-<STRING>dark green</STRING>
-<STRING>light green</STRING>
-<STRING>reddish</STRING>
-<STRING>pale</STRING>
+	<STRING>green</STRING>
+	<STRING>dark green</STRING>
+	<STRING>light green</STRING>
+	<STRING>reddish</STRING>
+	<STRING>pale</STRING>
 </STRING>
 
 <STRING id="mammal_color" select="any-1">
-<STRING>black</STRING>
-<STRING>brown</STRING>
-<STRING>gray</STRING>
+	<STRING>black</STRING>
+	<STRING>brown</STRING>
+	<STRING>gray</STRING>
 </STRING>
+
+<STRING id="noun_fun" select="any-1">
+	<STRING>enjoyment</STRING><STRING>entertainment</STRING><STRING>amusement</STRING><STRING>pleasure</STRING><STRING>jollification</STRING>
+	<STRING>merrymaking; recreation</STRING><STRING>diversion</STRING><STRING>leisure</STRING><STRING>merriment</STRING><STRING>cheerfulness</STRING>
+	<STRING>cheeriness</STRING><STRING>jollity</STRING><STRING>joviality</STRING><STRING>jocularity</STRING><STRING>gaiety</STRING>
+	<STRING>mirth</STRING><STRING>laughter</STRING><STRING>hilarity</STRING><STRING>glee</STRING><STRING>gladness</STRING>
+	<STRING>lightheartedness</STRING><STRING>levity</STRING>
+</STRING> 
 
 <STRING id="next_shop_type" select="any-1">
 	<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1,pshoptypes=weapons">weapon</STRING>
