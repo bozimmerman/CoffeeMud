@@ -46,15 +46,18 @@ public class Sleep extends StdCommand
 			mob.tell("You are already asleep!");
 			return false;
 		}
+		Room R=mob.location();
+		if(R==null)
+			return false;
 		if(commands.size()<=1)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SLEEP,"<S-NAME> lay(s) down and take(s) a nap.");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+			if(R.okMessage(mob,msg))
+				R.send(mob,msg);
 			return false;
 		}
 		String possibleRideable=CMParms.combine(commands,1);
-		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
+		Environmental E=R.fetchFromRoomFavorItems(null,possibleRideable);
 		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			mob.tell("You don't see '"+possibleRideable+"' here.");
@@ -74,8 +77,8 @@ public class Sleep extends StdCommand
 			sourceMountStr=CMStrings.replaceAll(sourceMountStr,"<T-NAMESELF>",E.name());
 		}
 		CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_SLEEP,sourceMountStr,mountStr,mountStr);
-		if(mob.location().okMessage(mob,msg))
-			mob.location().send(mob,msg);
+		if(R.okMessage(mob,msg))
+			R.send(mob,msg);
 		return false;
 	}
 	public double combatActionsCost(final MOB mob, final List<String> cmds){return CMProps.getCombatActionCost(ID());}
