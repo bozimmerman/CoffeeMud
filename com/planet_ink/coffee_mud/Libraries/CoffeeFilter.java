@@ -630,10 +630,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					}
 					break;
 				case '^':
-				{
-					loop=convertEscape(CS, buf, loop);
-					break;
-				}
+					if(loop<buf.length()-1)
+						loop=convertEscape(CS, buf, loop);
+				break;
 			default:
 				break;
 			}
@@ -1246,9 +1245,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					}
 					case '^':
 					{
-						final int oldLoop=loop;
-						loop=convertEscape(S, buf, loop);
-						if(wrap>0) len=(loop-oldLoop)+len+1;
+						if(loop<buf.length()-1)
+						{
+							final int oldLoop=loop;
+							loop=convertEscape(S, buf, loop);
+							if(wrap>0) len=(loop-oldLoop)+len+1;
+						}
 						break;
 					}
 					default:
