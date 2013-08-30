@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.MOBS;
+package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -31,38 +32,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Rabbit extends StdMOB
+
+public class Squirrel extends Rodent
 {
-	public String ID(){return "Rabbit";}
-	public Rabbit()
-	{
-		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
-		username="a rabbit";
-		setDescription("It\\`s small, cute, and fluffy with a cute cotton-ball tail.");
-		setDisplayText("A rabbit hops by.");
-		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
-		setMoney(0);
-		basePhyStats.setWeight(5 + Math.abs(randomizer.nextInt() % 5));
-		setWimpHitPoint(2);
-
-		basePhyStats().setDamage(2);
-
-		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
-		baseCharStats().setMyRace(CMClass.getRace("Rabbit"));
-		baseCharStats().getMyRace().startRacing(this,false);
-
-		basePhyStats().setAbility(0);
-		basePhyStats().setLevel(1);
-		basePhyStats().setArmor(90);
-
-		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
-
-		recoverMaxState();
-		resetToMaxState();
-		recoverPhyStats();
-		recoverCharStats();
-	}
-
+	public String ID(){	return "Squirrel"; }
+	public String name(){ return "Squirrel"; }
 }

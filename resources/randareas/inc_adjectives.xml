@@ -305,6 +305,15 @@
 	</STRING>
 </STRING>
 
+<STRING id="adj_beautiful" select="any-1">
+	<STRING>attractive</STRING><STRING>pretty</STRING><STRING>handsome</STRING><STRING>good-looking</STRING><STRING>alluring</STRING>
+	<STRING>prepossessing</STRING><STRING>lovely</STRING><STRING>charming</STRING><STRING>delightful</STRING><STRING>appealing</STRING>
+	<STRING>engaging</STRING><STRING>winsome</STRING><STRING>ravishing</STRING><STRING>gorgeous</STRING><STRING>stunning</STRING>
+	<STRING>arresting</STRING><STRING>glamorous</STRING><STRING>bewitching</STRING><STRING>beguiling</STRING><STRING>graceful</STRING>
+	<STRING>elegant</STRING><STRING>exquisite</STRING><STRING>aesthetic</STRING><STRING>artistic</STRING><STRING>decorative</STRING>
+	<STRING>magnificent</STRING><STRING>divine</STRING><STRING>easy on the eye</STRING><STRING>comely</STRING><STRING>fair</STRING>
+</STRING>
+
 <STRING id="adj_majestic" select="any-1">
 	<STRING id="adj_majestic_values">
 		<STRING>stately</STRING><STRING>dignified</STRING><STRING>distinguished</STRING><STRING>solemn</STRING><STRING>magnificent</STRING>
