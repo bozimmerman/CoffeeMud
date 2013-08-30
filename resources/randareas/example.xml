@@ -913,9 +913,48 @@ Required details: "id" "value"
 			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
 		</ROOM>
 		<!--
-		TODO: third priority: INN, park, healer/temple
+		TODO: third priority: INN, healer/temple
 		TODO: fourth priority (repeatable -- but only if above done): BAR, DINER/CAFE, home
 		 -->
+		<ROOM id="town_park" class="WoodsGrid" condition="$__townpark&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__townpark+=1,__townthird+=1" xsize="3?5" ysize="3?5">
+			<TITLE select="any-1">
+				<TITLE>The ${c:areaname} Park</TITLE>
+				<TITLE>${c:areaname} Park</TITLE>
+				<TITLE>The Park</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				You are wandering around the ${c:areaname} park. Seeing the sky through the trees makes you feel glorious. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are strolling through ${c:areaname} park. The sky above and the fresh air do you good. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. There doesn't appear to be any clear paths through the trees.
+				&lt;P&gt;
+				You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes and $adj_lots of grass and dirt underfoot.
+				&lt;P&gt;
+				You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes. Also, there is $adj_lots of grass and dirt underfoot.
+				&lt;P&gt;
+				You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes.  There is $adj_lots of grass and dirt underfoot.
+				&lt;P&gt;
+				You are in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes.  Grass and dirt are underfoot.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. The sky through the trees makes you feel $adj_feeling_good. There is $adj_lots of grass and dirt underfoot.
+				&lt;P&gt;
+				You are strolling through ${c:areaname} park. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are wandering around the ${c:areaname} park. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. There are $adj_lots of trees and $adj_lots of bushes and $adj_lots of grass and dirt underfoot.  There is also $adj_lots of fresh air.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. ${c:adj_beautiful} trees and shrubs surround you at every step.
+				&lt;P&gt;
+				You are walking around in ${c:areaname} park. You feel like you could wander around here forever.
+				&lt;P&gt;
+			</DESCRIPTION>
+			<EXIT class="Open" />
+			<MOB select="repeat-15">
+				<MOB class="Bee" /><MOB class="Doe" /><MOB class="Fox" /><MOB class="Duck" /><MOB class="Rabbit" /><MOB class="Squirrel" />
+			</MOB>
+		</ROOM>
 		<ROOM id="town_stables" class="WoodRoom"  condition="$__townstables&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__townstables+=1,__townthird+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Stables</TITLE>
