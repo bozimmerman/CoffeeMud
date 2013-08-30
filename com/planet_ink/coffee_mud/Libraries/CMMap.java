@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.Map.Entry;
 /*
@@ -385,7 +386,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public long getRelativeSpeed(SpaceObject O1, SpaceObject O2)
 	{
-		return Math.round(Math.sqrt(((O1.speed()*O1.coordinates()[0])-(O2.speed()*O2.coordinates()[0])*(O1.speed()*O1.coordinates()[0])-(O2.speed()*O2.coordinates()[0]))
+		//TODO: fix this -- multiplying things by coordinates is a Bad Idea (TM)
+		return Math.round(Math.sqrt(( (O1.speed()*O1.coordinates()[0])-(O2.speed()*O2.coordinates()[0])*(O1.speed()*O1.coordinates()[0])-(O2.speed()*O2.coordinates()[0]))
 									+((O1.speed()*O1.coordinates()[1])-(O2.speed()*O2.coordinates()[1])*(O1.speed()*O1.coordinates()[1])-(O2.speed()*O2.coordinates()[1]))
 									+((O1.speed()*O1.coordinates()[2])-(O2.speed()*O2.coordinates()[2])*(O1.speed()*O1.coordinates()[2])-(O2.speed()*O2.coordinates()[2]))));
 	}
