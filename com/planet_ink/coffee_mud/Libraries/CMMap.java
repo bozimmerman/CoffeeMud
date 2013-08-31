@@ -328,14 +328,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		final double accelerationMultiplier = acceleration / currentSpeed;
 		
 		double newDirectionYaw;
-		if(yawDelta < 0.01)
+		if(yawDelta < 0.1)
 			newDirectionYaw = directionYaw;
 		else
 			newDirectionYaw = directionYaw + ((directionYaw > facingYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
 		if (newDirectionYaw < 0.0)
 			newDirectionYaw = (Math.PI * 2.0) + newDirectionYaw;
 		double newDirectionPitch;
-		if(pitchDelta < 0.01)
+		if(pitchDelta < 0.1)
 			newDirectionPitch = directionPitch;
 		else
 			newDirectionPitch = directionPitch + ((directionPitch > facingPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
