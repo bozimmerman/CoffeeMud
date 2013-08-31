@@ -305,26 +305,57 @@ public class CMMap extends StdLibrary implements WorldMap
 									+CMath.mul((O1.coordinates()[2]-O2.coordinates()[2]),(O1.coordinates()[2]-O2.coordinates()[2]))));
 	}
 
-	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
+	public static void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
 	{
-		final double[] oldDirection=O.direction();
-		final long oldSpeed=O.speed();
-		if((oldDirection[0]==newDirection[0])&&(oldDirection[1]==newDirection[1]))
-		{
-			O.setSpeed(oldSpeed+newAccelleration);
-			return;
-		}
-		final double[] c={
-			(oldSpeed*Math.cos(oldDirection[0])*Math.sin(oldDirection[1])) + (newAccelleration*Math.cos(newDirection[0])*Math.sin(newDirection[1])),
-			(oldSpeed*Math.sin(oldDirection[0])*Math.sin(oldDirection[1])) + (newAccelleration*Math.sin(newDirection[0])*Math.sin(newDirection[1])),
-			(oldSpeed*Math.cos(oldDirection[1])) + (newAccelleration*Math.cos(newDirection[1]))
-		};
-		if(c[0]<0)
-			O.direction()[0]=Math.PI-Math.asin(c[1]/Math.sqrt((c[0]*c[0])+(c[1]*c[1])));
+		final double directionYaw = O.direction()[0];
+		double directionPitch = O.direction()[1];
+		if(directionPitch > Math.PI)
+			directionPitch = Math.abs(Math.PI-directionPitch);
+		
+		final double facingYaw = newDirection[0];
+		double facingPitch = newDirection[1];
+		if(facingPitch > Math.PI)
+			facingPitch = Math.abs(Math.PI-facingPitch);
+		
+		final double currentSpeed = O.speed();
+		final double acceleration = newAccelleration;
+		
+		final double directionCombinedAngle = directionYaw + directionPitch; 
+		final double facingCombinedAngle = facingYaw + facingPitch;
+		final double anglesDelta = (directionCombinedAngle >  facingCombinedAngle) ? (directionCombinedAngle - facingCombinedAngle) : (facingCombinedAngle - directionCombinedAngle);
+		final double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
+		final double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
+		final double accelerationMultiplier = acceleration / currentSpeed;
+		
+		double newDirectionYaw;
+		if(yawDelta < 0.01)
+			newDirectionYaw = directionYaw;
 		else
-			O.direction()[0]=Math.asin(c[1]/Math.sqrt((c[0]*c[0])+(c[1]*c[1])));
-		O.direction()[1]=Math.acos(c[2]/Math.sqrt((c[0]*c[0])+(c[1]*c[1])+(c[2]*c[2])));
-		O.setSpeed(Math.round(Math.sqrt((c[0]*c[0])+(c[1]*c[1])+(c[2]*c[2]))));
+			newDirectionYaw = directionYaw + ((directionYaw > facingYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
+		if (newDirectionYaw < 0.0)
+			newDirectionYaw = (Math.PI * 2.0) + newDirectionYaw;
+		double newDirectionPitch;
+		if(pitchDelta < 0.01)
+			newDirectionPitch = directionPitch;
+		else
+			newDirectionPitch = directionPitch + ((directionPitch > facingPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
+		if (newDirectionPitch < 0.0)
+			newDirectionPitch = (Math.PI * 2.0) + newDirectionPitch;
+		
+		double newSpeed = currentSpeed + Math.round(acceleration * Math.cos(anglesDelta));
+		if(newSpeed < 0)
+		{
+			newSpeed = -newSpeed;
+			newDirectionYaw = facingYaw;
+			newDirectionPitch = facingPitch;
+		}
+		
+		O.direction()[0]=newDirectionYaw;
+		if((O.direction()[0]>Math.PI)&&(O.direction()[1]<=Math.PI))
+			O.direction()[1]=Math.PI+newDirectionPitch;
+		else
+			O.direction()[1]=newDirectionPitch;
+		O.setSpeed(Math.round(newSpeed));
 	}
 	
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
@@ -338,6 +369,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		else
 			dir[0]=Math.asin(y/Math.sqrt((x*x)+(y*y)));
 		dir[1]=Math.acos(z/Math.sqrt((z*z)+(y*y)+(x*x)));
+		if(dir[1] > Math.PI)
+			dir[1] = Math.abs(Math.PI-dir[1]);
 		return dir;
 	}
 
