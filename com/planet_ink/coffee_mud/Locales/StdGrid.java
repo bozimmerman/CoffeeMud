@@ -302,10 +302,9 @@ public class StdGrid extends StdRoom implements GridLocale
 			};
 		return EmptyIterator.INSTANCE;
 	}
-	protected void halfLink(Room room, 
-							Room loc, 
-							int dirCode, 
-							Exit o)
+	
+	
+	protected void halfLink(Room room, Room loc, int dirCode, Exit o)
 	{
 		if(room==null) return;
 		if(loc==null) return;
@@ -346,11 +345,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		return defaultRoom;
 	}
 	
-	protected void linkRoom(Room room, 
-							Room loc, 
-							int dirCode, 
-							Exit o, 
-							Exit ao)
+	protected void linkRoom(Room room, Room loc, int dirCode, Exit o, Exit ao)
 	{
 		if(loc==null) return;
 		if(room==null) return;
