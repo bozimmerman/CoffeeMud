@@ -761,7 +761,100 @@ Required details: "id" "value"
 			</ITEM>
 		</ROOM>
 	</ROOM>
+	<!--
+	TODO: third priority: INN
+	TODO: fourth priority (repeatable -- but only if above done): BAR, DINER/CAFE, home
+	 -->
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
+		<ROOM id="town_temple" class="WoodRoom"  condition="$__towntemple&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__towntemple+=1,__townthird+=1">
+			<TITLE select="any-1">
+				<TITLE>The Temple of ${c:areaname}</TITLE>
+				<TITLE>${c:areaname} Temple</TITLE>
+				<TITLE>The Temple</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is the $adj_sactified  ${c:areaname} temple of the gods.</DESCRIPTION>
+					<DESCRIPTION>The ${c:areaname} temple of the gods is $adj_sactified.</DESCRIPTION>
+					<DESCRIPTION>Your are in the $adj_sactified ${c:areaname} temple of the gods.</DESCRIPTION>
+					<DESCRIPTION>Your are in the $adj_sactified temple of the gods.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything about this $adj_light sanctuary is $adj_fancy and $adj_beautiful.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light building seems completely $adj_fancy and $adj_beautiful.</DESCRIPTION>
+					<DESCRIPTION>This $adj_fancy and $adj_beautiful church is quite $adj_light.</DESCRIPTION>
+					<DESCRIPTION>The atmosphere of the sanctuary is $adj_fancy, $adj_beautiful and $adj_light.</DESCRIPTION>
+					<DESCRIPTION>This whole barn is $adj_ragged, $adj_beautiful and $adj_light.</DESCRIPTION>
+					<DESCRIPTION>This $adj_light church seems $adj_fancy and $adj_beautiful.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Worshippers gather here to show their devotion to the gods and get aid.</DESCRIPTION>
+					<DESCRIPTION>Those sick in body and spirit gather here to show devotion to the gods.</DESCRIPTION>
+					<DESCRIPTION>Those devoted to the gods come here to kneel in prayer and seek healing.</DESCRIPTION>
+					<DESCRIPTION>Services to the gods are held here for the devoted, and in between is healing for the sick.</DESCRIPTION>
+					<DESCRIPTION>People gather here for healing and devotion services night and day.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>An ornate sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A holy sign is hanging above the alter.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what spells are available, `buy [spellname]` to have a spell cast on you." />
+			<MOB class="GenMob" level="($level_range) * 1.05 > 30" race="$_humanoid_races" gender="$anygender">
+				<NAME>Stable-Master ${c:fantasy_name}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name is ready to tend your wounds.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="Healer" />
+					<BEHAVIOR class="Clericness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a healer`s robe</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a holy sceptor</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>WOOD</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY>
+					<ITEM class="Prayer_CureDisease"number=1000/>
+					<ITEM class="Prayer_Heal" number=1000/>
+					<ITEM class="Prayer_Bless" number=1000/>
+					<ITEM class="Prayer_RemovePoison" number=1000/>
+					<ITEM class="Prayer_CureBlindness" number=1000/>
+					<ITEM class="Prayer_CureDeafness" number=1000/>
+					<ITEM class="Prayer_RestoreVoice" number=1000/>
+					<ITEM class="Prayer_RestoreSmell" number=1000/>
+					<ITEM class="Prayer_Restoration" number=1000/>
+					<ITEM class="Prayer_RemoveCurse" number=1000/>
+				</SHOPINVENTORY>
+			</MOB>
+			<ITEM class="GenContainer" LEVEL="1" isgettable="false" capacity=100000 hasalid=false>
+				<NAME>the sacrificial pit</NAME>
+				<DISPLAY>$item_name sits here"</DISPLAY>
+				<MATERIAL>STONE</MATERIAL>
+				<AFFECT class="Prop_Trashcan"></AFFECT>
+			</ITEM>
+			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false>
+				<NAME>a fountain</NAME>
+				<DISPLAY>$item_name flows from the wall"</DISPLAY>
+				<MATERIAL>STONE</MATERIAL>
+			</ITEM>
+		</ROOM>
 		<ROOM id="town_shop" class="WoodRoom" condition="$__numshoptypes_all &lt;=10" define="shoptype=$next_shop_type,patronname=$fantasy_name">
 			<TITLE select="pick-1">
 				<TITLE pickweight=1>${c:patronname}`s ${c:shoptype} Shop</TITLE>
@@ -846,7 +939,7 @@ Required details: "id" "value"
 					<PROPERWORN>WAIST,LEGS</PROPERWORN>
 					<LAYER>4</LAYER>
 				</ITEM>
-				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>(a(n)) ${shoptype}working tool</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -911,11 +1004,12 @@ Required details: "id" "value"
 				</SHOPINVENTORY>
 			</MOB>
 			<ITEM class="GenWallpaper" name="a sign" isreadable="true" readableText="Use `list` to see what is for sale, `view [itemname]` to see more information, `buy [itemname]` to buy something, `value [itemname]` to value your item, or `sell [itemname]` to try to sell something of yours." />
+			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false condition="$shoptype='food'">
+				<NAME>a drinking fountain</NAME>
+				<DISPLAY>$item_name flows from the wall"</DISPLAY>
+				<MATERIAL>STONE</MATERIAL>
+			</ITEM>
 		</ROOM>
-		<!--
-		TODO: third priority: INN, healer/temple
-		TODO: fourth priority (repeatable -- but only if above done): BAR, DINER/CAFE, home
-		 -->
 		<ROOM id="town_park" class="WoodsGrid" condition="$__townpark&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__townpark+=1,__townthird+=1" xsize="3?5" ysize="3?5">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Park</TITLE>
@@ -1016,7 +1110,7 @@ Required details: "id" "value"
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN>
 				</ITEM>
-				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a shovel</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
@@ -1092,7 +1186,7 @@ Required details: "id" "value"
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN>
 				</ITEM>
-				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a ruler</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
@@ -1167,7 +1261,7 @@ Required details: "id" "value"
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN>
 				</ITEM>
-				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a money clip</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -1226,7 +1320,7 @@ Required details: "id" "value"
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN>
 				</ITEM>
-				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a gavel</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>
@@ -1254,7 +1348,7 @@ Required details: "id" "value"
 						<MATERIAL>COTTON</MATERIAL>
 						<PROPERWORN>TORSO,LEGS</PROPERWORN>
 					</ITEM>
-					<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+					<ITEM class="GenWeapon" LEVEL="$mob_level">
 						<NAME>a ${l:__officertype} night stick</NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY>
 						<MATERIAL>WOOD</MATERIAL>
@@ -1328,7 +1422,7 @@ Required details: "id" "value"
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN>
 				</ITEM>
-				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>an auction pointer</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -1406,7 +1500,7 @@ Required details: "id" "value"
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN>
 				</ITEM>
-				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>(a(n)) letter opener</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -1482,7 +1576,7 @@ Required details: "id" "value"
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN>
 				</ITEM>
-				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a money clip</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>IRON</MATERIAL>
@@ -1583,7 +1677,7 @@ Required details: "id" "value"
 					<MATERIAL>COTTON</MATERIAL>
 					<PROPERWORN>TORSO,LEGS</PROPERWORN>
 				</ITEM>
-				<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
 					<NAME>a ruler</NAME>
 					<DISPLAY>$item_name has been left here"</DISPLAY>
 					<MATERIAL>WOOD</MATERIAL>

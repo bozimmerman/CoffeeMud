@@ -44,6 +44,19 @@
 	</STRING>
 </STRING>
 
+<STRING id="adj_sactified" select="any-1">
+	<STRING>sacred</STRING><STRING>consecrated</STRING><STRING>hallowed</STRING><STRING>sanctified</STRING><STRING>sacrosanct</STRING>
+	<STRING>venerated</STRING><STRING>revered</STRING><STRING>divine</STRING><STRING>religious</STRING><STRING>blessed</STRING>
+	<STRING>dedicated</STRING>
+</STRING>
+
+<STRING id="adj_holyperson" select="any-1">
+	<STRING>saintly</STRING><STRING>godly</STRING><STRING>saintlike</STRING><STRING>pious</STRING><STRING>pietistic</STRING>
+	<STRING>religious</STRING><STRING>devout</STRING><STRING>Gods-fearing</STRING><STRING>spiritual</STRING><STRING>righteous</STRING>
+	<STRING>good</STRING><STRING>virtuous</STRING><STRING>angelic</STRING><STRING>sinless</STRING><STRING>pure</STRING>
+	<STRING>numinous</STRING><STRING>beatific</STRING><STRING>canonized</STRING><STRING>beatified</STRING><STRING>ordained</STRING>
+</STRING>
+
 <STRING id="adj_phys_nosize" select="any-1">
 	<STRING id="adj_phys_nosize_values">
 		<STRING>jagged</STRING>
@@ -116,12 +129,14 @@
 		<STRING>fragrant</STRING>
 		<STRING>lovely</STRING>
 		<STRING>pleasant</STRING>
-		<STRING>mundane</STRING>
 		<STRING>cheery</STRING>
 		<STRING>peaceful</STRING>
-		<STRING>bustling</STRING>
 		<STRING>warm</STRING>
 		<STRING>tidy</STRING>
+		<STRING>orderly</STRING>
+		<STRING>shipshape</STRING>
+		<STRING>immaculate</STRING>
+		<STRING>uncluttered</STRING>
 	</STRING>
 </STRING>
 	
