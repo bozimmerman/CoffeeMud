@@ -40,7 +40,6 @@ public class StdMaze extends StdGrid
 		super();
 	}
 
-
 	protected Room getGridRoom(int x, int y)
 	{
 		Room R=super.getGridRoom(x,y);
