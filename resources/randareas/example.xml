@@ -195,6 +195,10 @@ Required details:
 Optional Objects: (See below for details on these object tag types and their details) 
 "MOB","ITEM","AFFECT", "BEHAVIOR", "EXIT"
 
+You can also specify a "LAYOUT" attribute on a room tag, in which case all rooms contained inside
+that room tag (or inserted, or whatever) are used to build multiple rooms from that layout,
+much as specified above on the AREA tag. 
+
 ----------------------------------------
 MOB Basic tags:
 Parsed with variables from the generate command, and from any defined variables internal, and
