@@ -1662,7 +1662,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		for(int p=0;p<piece.contents.size();p++)
 		{
 			XMLLibrary.XMLpiece subPiece = piece.contents.get(p);
-			if(subPiece.tag.equalsIgnoreCase(tagName) && (!subPiece.parms.containsKey("LAYOUT")))
+			if(subPiece.tag.equalsIgnoreCase(tagName) && ((!subPiece.parms.containsKey("LAYOUT"))||(!subPiece.tag.equalsIgnoreCase("ROOM"))))
 				choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName,piece.contents.get(p),defined,false));
 		}
 		return selectChoices(E,ignoreStats,defPrefix,choices,piece,defined);
