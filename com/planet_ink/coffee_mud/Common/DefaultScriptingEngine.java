@@ -1687,12 +1687,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 
-	public void setVar(String name, String key, String val)
+	public void setVar(String baseName, String key, String val)
 	{
-		DVector V=getScriptVarSet(name,key);
+		DVector V=getScriptVarSet(baseName,key);
 		for(int v=0;v<V.size();v++)
 		{
-			name=(String)V.elementAt(v,1);
+			String name=(String)V.elementAt(v,1);
 			key=((String)V.elementAt(v,2)).toUpperCase();
 			Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+name);
 			if((H==null)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))

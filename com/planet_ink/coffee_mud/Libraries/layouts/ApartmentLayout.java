@@ -22,40 +22,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class MazeLayout extends AbstractLayout 
+public class ApartmentLayout extends AbstractLayout 
 {
-	public String name() { return "MAZE";}
-	
-	public void fillMaze(LayoutSet lSet, LayoutNode p, int width, int height)
-	{
-		Vector<Integer> dirs = new Vector<Integer>();
-		for(int i=0;i<4;i++)
-			dirs.add(Integer.valueOf(i));
-		Vector<Integer> rdirs = new Vector<Integer>();
-		while(dirs.size()>0)
-		{
-			int x = r.nextInt(dirs.size());
-			Integer dir = dirs.elementAt(x);
-			dirs.removeElementAt(x);
-			rdirs.addElement(dir);
-		}
-		for(int r=0;r<rdirs.size();r++)
-		{
-			Integer dir = rdirs.elementAt(r);
-			LayoutNode p2 = lSet.makeNextNode(p, dir.intValue());
-			if((!lSet.isUsed(p2.coord()))
-			&&(p2.coord()[0]>=0)
-			&&(p2.coord()[1]<=0)
-			&&(p2.coord()[0]<width)
-			&&(p2.coord()[1]>-height))
-			{
-				lSet.use(p2,LayoutTypes.street);
-				p.crossLink(p2);
-				fillMaze(lSet,p2,width,height);
-			}
-		}
-		
-	}
+	public String name() { return "APARTMENT";}
 	
 	public Vector<LayoutNode> generate(int num, int dir) 
 	{
@@ -81,7 +50,7 @@ public class MazeLayout extends AbstractLayout
 			n.flagGateExit(dir);
 			lSet.use(n,LayoutTypes.street);
 			n.flag(LayoutFlags.gate);
-			fillMaze(lSet,n,diameter+plusX,diameter);
+			//fillMaze(lSet,n,diameter+plusX,diameter);
 			lSet.fillInFlags();
 		}
 		return set;
