@@ -1,9 +1,12 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutRuns;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 
 /*
@@ -70,22 +73,47 @@ public class ApartmentLayout extends AbstractLayout
 		
 		LayoutSet lSet = new LayoutSet(set,num);
 		LayoutNode n = null;
+		int hallwayDirection=dir;
+		int sidewayDirection=dir;
+		int halfNumHallway = (int)Math.round(Math.floor(numHallways/2));
+		int fullNumHallway = numHallways;
 		switch(dir)
 		{
-		case Directions.NORTH: n=new DefaultLayoutNode(new long[]{1,0}); break;
-		case Directions.SOUTH: n=new DefaultLayoutNode(new long[]{1,hallwayLength+1}); break;
-		case Directions.EAST: n=new DefaultLayoutNode(new long[]{0,1}); break;
-		case Directions.WEST: n=new DefaultLayoutNode(new long[]{hallwayLength+1,1}); break;
-		case Directions.NORTHEAST: n=new DefaultLayoutNode(new long[]{0,1}); break;
-		case Directions.NORTHWEST: n=new DefaultLayoutNode(new long[]{hallwayLength+1,1}); break;
-		case Directions.SOUTHEAST: n=new DefaultLayoutNode(new long[]{0,hallwayLength+1}); break;
-		case Directions.SOUTHWEST: n=new DefaultLayoutNode(new long[]{hallwayLength+1,hallwayLength+1}); break;
+		case Directions.NORTH: n=new DefaultLayoutNode(new long[]{0,hallwayLength}); sidewayDirection=Directions.EAST; break;
+		case Directions.SOUTH: n=new DefaultLayoutNode(new long[]{fullNumHallway,0}); sidewayDirection=Directions.WEST; break;
+		case Directions.EAST: n=new DefaultLayoutNode(new long[]{0,0}); sidewayDirection=Directions.SOUTH; break;
+		case Directions.WEST: n=new DefaultLayoutNode(new long[]{fullNumHallway,hallwayLength}); sidewayDirection=Directions.NORTH; break;
+		case Directions.NORTHEAST: n=new DefaultLayoutNode(new long[]{0,hallwayLength}); sidewayDirection=Directions.EAST; hallwayDirection=Directions.NORTH; break;
+		case Directions.NORTHWEST: n=new DefaultLayoutNode(new long[]{fullNumHallway,hallwayLength}); sidewayDirection=Directions.WEST; hallwayDirection=Directions.NORTH; break;
+		case Directions.SOUTHEAST: n=new DefaultLayoutNode(new long[]{0,0}); sidewayDirection=Directions.SOUTH; hallwayDirection=Directions.EAST; break;
+		case Directions.SOUTHWEST: n=new DefaultLayoutNode(new long[]{fullNumHallway,0}); sidewayDirection=Directions.WEST; hallwayDirection=Directions.SOUTH; break;
 		}
 		if(n!=null)
 		{
+			java.util.List<LayoutNode> hallways=new ArrayList<LayoutNode>();
+			hallways.add(n);
 			n.flagGateExit(dir);
 			lSet.use(n,LayoutTypes.street);
 			n.flag(LayoutFlags.gate);
+			n.flag(LayoutFlags.tee);
+			for(int h=1;h<numHallways;h++)
+			{
+				LayoutNode prevNode=n;
+				LayoutNode nextNode=lSet.getNextNode(prevNode, sidewayDirection);
+				nextNode.crossLink(prevNode);
+				lSet.use(nextNode,LayoutTypes.street);
+				nextNode.flag(LayoutFlags.tee);
+				switch(sidewayDirection)
+				{
+				case Directions.NORTH:case Directions.SOUTH: nextNode.flagRun(LayoutRuns.ns); break; 
+				case Directions.EAST:case Directions.WEST: nextNode.flagRun(LayoutRuns.ew); break; 
+				}
+				hallways.add(nextNode);
+			}
+			for(LayoutNode hallwayN : hallways)
+			{
+				
+			}
 			//fillMaze(lSet,n,diameter+plusX,diameter);
 			lSet.fillInFlags();
 		}
