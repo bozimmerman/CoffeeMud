@@ -26,24 +26,60 @@ public class ApartmentLayout extends AbstractLayout
 {
 	public String name() { return "APARTMENT";}
 	
+	public void fillMaze(LayoutSet lSet, LayoutNode p, int width, int height)
+	{
+		Vector<Integer> dirs = new Vector<Integer>();
+		for(int i=0;i<4;i++)
+			dirs.add(Integer.valueOf(i));
+		Vector<Integer> rdirs = new Vector<Integer>();
+		while(dirs.size()>0)
+		{
+			int x = r.nextInt(dirs.size());
+			Integer dir = dirs.elementAt(x);
+			dirs.removeElementAt(x);
+			rdirs.addElement(dir);
+		}
+		for(int r=0;r<rdirs.size();r++)
+		{
+			Integer dir = rdirs.elementAt(r);
+			LayoutNode p2 = lSet.makeNextNode(p, dir.intValue());
+			if((!lSet.isUsed(p2.coord()))
+			&&(p2.coord()[0]>=0)
+			&&(p2.coord()[1]<=0)
+			&&(p2.coord()[0]<width)
+			&&(p2.coord()[1]>-height))
+			{
+				lSet.use(p2,LayoutTypes.street);
+				p.crossLink(p2);
+				fillMaze(lSet,p2,width,height);
+			}
+		}
+		
+	}
+	
 	public Vector<LayoutNode> generate(int num, int dir) 
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
-		int diameter = (int)Math.round(Math.sqrt(num));
-		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
+		int hallwayLength=num/3;
+		int numHallways=1;
+		while(hallwayLength > 7)
+		{
+			hallwayLength = hallwayLength / 2;
+			numHallways *= 2;
+		}
 		
 		LayoutSet lSet = new LayoutSet(set,num);
 		LayoutNode n = null;
 		switch(dir)
 		{
-		case Directions.NORTH: n=new DefaultLayoutNode(new long[]{(diameter+plusX)/2,0}); break;
-		case Directions.SOUTH: n=new DefaultLayoutNode(new long[]{(diameter+plusX)/2,-diameter+1}); break;
-		case Directions.EAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
-		case Directions.WEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
-		case Directions.NORTHEAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
-		case Directions.NORTHWEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
-		case Directions.SOUTHEAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
-		case Directions.SOUTHWEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
+		case Directions.NORTH: n=new DefaultLayoutNode(new long[]{1,0}); break;
+		case Directions.SOUTH: n=new DefaultLayoutNode(new long[]{1,hallwayLength+1}); break;
+		case Directions.EAST: n=new DefaultLayoutNode(new long[]{0,1}); break;
+		case Directions.WEST: n=new DefaultLayoutNode(new long[]{hallwayLength+1,1}); break;
+		case Directions.NORTHEAST: n=new DefaultLayoutNode(new long[]{0,1}); break;
+		case Directions.NORTHWEST: n=new DefaultLayoutNode(new long[]{hallwayLength+1,1}); break;
+		case Directions.SOUTHEAST: n=new DefaultLayoutNode(new long[]{0,hallwayLength+1}); break;
+		case Directions.SOUTHWEST: n=new DefaultLayoutNode(new long[]{hallwayLength+1,hallwayLength+1}); break;
 		}
 		if(n!=null)
 		{
