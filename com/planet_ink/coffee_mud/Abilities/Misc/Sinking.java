@@ -192,9 +192,16 @@ public class Sinking extends StdAbility
 
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
-			||(!CMLib.flags().isGettable(item))
-			||CMLib.flags().isInFlight(item.ultimateContainer(null))
-			||(CMLib.flags().isWaterWorthy(item.ultimateContainer(null)))
+			||(!CMLib.flags().isGettable(item)))
+			{
+				unInvoke();
+				return false;
+			}
+			
+			final Item ultContainerI=item.ultimateContainer(null);
+			
+			if(CMLib.flags().isInFlight(ultContainerI)
+			||(CMLib.flags().isWaterWorthy(ultContainerI))
 			||(item.container()!=null)
 			||(item.phyStats().weight()<1))
 			{
@@ -233,6 +240,7 @@ public class Sinking extends StdAbility
 		&&(affected.phyStats().weight()>=1))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FALLING);
 	}
+
 	public void setAffectedOne(Physical P)
 	{
 		if(P instanceof Room)
@@ -240,6 +248,7 @@ public class Sinking extends StdAbility
 		else
 			super.setAffectedOne(P);
 	}
+
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto) return false;
