@@ -512,7 +512,7 @@ Required details: "id" "value"
 				<STRING>$MOB_NAME has the best punishment money can buy.</STRING>
 			</STRING>
 			<ITEM class="GenBed"  name="(a(n)) $adj_fancy bed" display="$ITEM_NAME is made here"  isgettable="false" />
-			<ITEM class="GenChair" name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is waiting to me rested upon" isgettable="false" />
+			<ITEM class="GenChair" name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" />
 			<ITEM select="any-2">
 				<ITEM class="GenFountain" name="(a(n)) $adj_fancy fountain" display="$ITEM_NAME has been built here" isgettable="false" />
 				<ITEM class="GenMirror" name="a mirror" display="a mirror is for gazing in" />
@@ -772,7 +772,7 @@ Required details: "id" "value"
 	 -->
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
 
-		<ROOM id="town_inn" layout="APARTMENT"  condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
+		<ROOM id="town_inn" room_layout="APARTMENT" room_size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
 			<ROOM id="town_inn_desk" class="WoodRoom"  condition="($__towninndesk&lt;1) and ('gate' in $ROOMTAG_NODEFLAGS)" define="__towninndesk+=1">
 				<TITLE select="any-1">
 					<TITLE>The ${c:areaname} INN</TITLE>
@@ -804,7 +804,7 @@ Required details: "id" "value"
 				<EXIT class="GenDoor" defclosed="false" condition="$ROOMLINK_DIR = $ROOMTAG_NODEGATEEXIT" />
 				<EXIT class="Open" condition="$ROOMLINK_DIR != $ROOMTAG_NODEGATEEXIT" />
 				<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what rooms are available, `buy [keyname]` to get a room key, after which just find the right room and let yourself in." />
-				<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="INNKEEPER">
+				<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="INNKEEPER">
 					<NAME>Innkeeper ${c:fantasy_name}</NAME>
 					<DISPLAY select="pick-1">
 						<DISPLAY pickweight="1">$mob_name looks bored.</DISPLAY>
@@ -830,6 +830,11 @@ Required details: "id" "value"
 						<WEAPONCLASS>STAFF</WEAPONCLASS>
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
+					<SHOPINVENTORY>
+						<ITEM select="repeat-6">
+							<ITEM class="StdInnKey" />
+						</ITEM>
+					</SHOPINVENTORY>
 				</MOB>
 			</ROOM>
 			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
@@ -846,6 +851,27 @@ Required details: "id" "value"
 					<STRING select="all" action="APPEND" insert="desc_exits" />
 				</DESCRIPTION>
 				<EXIT class="Open" />
+			</ROOM>
+			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='leaf'" define="__innroomnumber+=1">
+				<TITLE>Room number $__innroomnumber</TITLE>
+				<DESCRIPTION>
+					<STRING select="any-1" action="PREPEND">
+						<STRING>You stand in (a(n)) $adj_any $noun_hallway that runs $roomrun_desc_long.</STRING> 
+						<STRING>This $adj_any $noun_hallway runs steeply $roomrun_desc_long.</STRING> 
+						<STRING>You are in (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</STRING> 
+						<STRING>This $adj_any $noun_hallway runs $roomrun_desc_long.</STRING> 
+						<STRING>You are walking through (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</STRING>
+						<STRING>This $adj_any $noun_hallway heads $roomrun_desc_long.</STRING>
+					</STRING>
+					<STRING select="all" action="APPEND" insert="desc_exits" />
+				</DESCRIPTION>
+				<EXIT class="GenDoor" hasalock="true" deflocked="true" level="$level_range" keyname="INN$__innroomnumber" />
+				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
+				<ITEM class="GenChair" name="a chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" />
+				<ITEM class="GenMirror" name="a mirror" display="$ITEM_NAME is on the wall." description="You see yourself." isgettable="false" />
+				<ITEM class="GenTub"  name="a tub" display="$ITEM_NAME is here" isgettable="false" />
+				<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+				<ITEM class="GenContainer" name="a trunk" display="$ITEM_NAME sits at the foot of the bed" HASLID="true" />
 			</ROOM>
 		</ROOM>
 		
@@ -914,7 +940,7 @@ Required details: "id" "value"
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<ITEM class="Prayer_CureDisease"number=1000/>
+					<ITEM class="Prayer_CureDisease" number=1000/>
 					<ITEM class="Prayer_Heal" number=1000/>
 					<ITEM class="Prayer_Bless" number=1000/>
 					<ITEM class="Prayer_RemovePoison" number=1000/>
@@ -1698,7 +1724,7 @@ Required details: "id" "value"
 					<DESCRIPTION>The street is to the $roomexits_desc_long, which doesn't matter anymore.</DESCRIPTION>
 				</DESCRIPTION>
 			</DESCRIPTION>
-			<EXIT class="GenDoor" hasalock="true" deflocked="true" leve=91 keyname="$areaname prisonkey" />
+			<EXIT class="GenDoor" hasalock="true" deflocked="true" level=91 keyname="$areaname prisonkey" />
 		</ROOM>
 		<ROOM id="town_school" class="WoodRoom"  condition="$__townschool&lt;1 and $__numshoptypes_all &gt; 10" define="__townschool+=1,__townsecond+=1">
 			<TITLE select="any-1">
