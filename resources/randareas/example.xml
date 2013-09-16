@@ -172,7 +172,8 @@ Required details:
 "class"        The CoffeeMud class type to use to create the area.
 "name"         The name of the area.  Must be unique to your MUD.
 "layout"       The name of the layout generator to use.  At the moment, supported 
-               layouts include MAZE, BOXCITY, BOXCITYSQUARE, CROSS, GRIDCITY, TREE
+               layouts include MAZE, BOXCITY, BOXCITYSQUARE, CROSS, GRIDCITY, TREE,
+               APARTMENT
 "size"         The number of rooms to create in the area.
 
 Optional objects: (See below for details on these object tag types and their details)
@@ -510,10 +511,10 @@ Required details: "id" "value"
 				<STRING>$MOB_NAME has the best cell sold.</STRING>
 				<STRING>$MOB_NAME has the best punishment money can buy.</STRING>
 			</STRING>
-			<ITEM class="GenBed"  name="(a(n)) $adj_fancy bed" display="$ITEM_NAME is made here"  isgettable="false"/>
-			<ITEM class="GenChair" name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is waiting to me rested upon"  isgettable="false"/>
+			<ITEM class="GenBed"  name="(a(n)) $adj_fancy bed" display="$ITEM_NAME is made here"  isgettable="false" />
+			<ITEM class="GenChair" name="(a(n)) $adj_fancy chair" display="$ITEM_NAME is waiting to me rested upon" isgettable="false" />
 			<ITEM select="any-2">
-				<ITEM class="GenFountain" name="(a(n)) $adj_fancy fountain" display="$ITEM_NAME has been built here"  isgettable="false"/>
+				<ITEM class="GenFountain" name="(a(n)) $adj_fancy fountain" display="$ITEM_NAME has been built here" isgettable="false" />
 				<ITEM class="GenMirror" name="a mirror" display="a mirror is for gazing in" />
 				<ITEM class="GenTub"  name="(a(n)) $adj_fancy tub" display="$ITEM_NAME is here"  isgettable="false"/>
 				<ITEM class="GenTable" name="(a(n)) $adj_fancy table" display="$ITEM_NAME is here"  isgettable="false"/>
@@ -771,6 +772,83 @@ Required details: "id" "value"
 	 -->
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
 
+		<ROOM id="town_inn" layout="APARTMENT"  condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
+			<ROOM id="town_inn_desk" class="WoodRoom"  condition="($__towninndesk&lt;1) and ('gate' in $ROOMTAG_NODEFLAGS)" define="__towninndesk+=1">
+				<TITLE select="any-1">
+					<TITLE>The ${c:areaname} INN</TITLE>
+					<TITLE>${c:areaname} INN</TITLE>
+					<TITLE>The INN</TITLE>
+				</TITLE>
+				<DESCRIPTION>
+					<DESCRIPTION select="any-1">
+						<DESCRIPTION>This is the $adj_tidy $adj_fancy ${c:areaname} INN.</DESCRIPTION>
+						<DESCRIPTION>This is the $adj_cozy $adj_fancy ${c:areaname} INN.</DESCRIPTION>
+						<DESCRIPTION>The ${c:areaname} INN is $adj_cozy and $adj_fancy.</DESCRIPTION>
+						<DESCRIPTION>The ${c:areaname} INN is $adj_fancy.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION select="any-1">
+						<DESCRIPTION>Everything about this $adj_feeling_good place is $adj_light and $adj_quiet.</DESCRIPTION>
+						<DESCRIPTION>This $adj_feeling_good place seems completely $adj_light and $adj_quiet.</DESCRIPTION>
+						<DESCRIPTION>This $adj_light and $adj_quiet place is quite $adj_feeling_good.</DESCRIPTION>
+						<DESCRIPTION>The atmosphere of the place is $adj_light, $adj_quiet and $adj_feeling_good.</DESCRIPTION>
+						<DESCRIPTION>This whole place is $adj_light, $adj_noisy and $adj_feeling_good.</DESCRIPTION>
+						<DESCRIPTION>This $adj_feeling_good place seems $adj_light and $adj_quiet.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION id="store_sign_descs" select="any-1">
+						<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+						<DESCRIPTION>A sign is posted by the front desk.</DESCRIPTION>
+						<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION>The hallway to the rooms is beyond the front desk. $desc_exits</DESCRIPTION>
+				</DESCRIPTION>
+				<EXIT class="GenDoor" defclosed="false" condition="$ROOMLINK_DIR = $ROOMTAG_NODEGATEEXIT" />
+				<EXIT class="Open" condition="$ROOMLINK_DIR != $ROOMTAG_NODEGATEEXIT" />
+				<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what rooms are available, `buy [keyname]` to get a room key, after which just find the right room and let yourself in." />
+				<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="INNKEEPER">
+					<NAME>Innkeeper ${c:fantasy_name}</NAME>
+					<DISPLAY select="pick-1">
+						<DISPLAY pickweight="1">$mob_name looks bored.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name has rooms available.</DISPLAY>
+						<DISPLAY pickweight="1">$mob_name welcomes you.</DISPLAY>
+					</DISPLAY>
+					<ALIGNMENT>10000</ALIGNMENT>
+					<BEHAVIOR select="all">
+						<BEHAVIOR class="MudChat" parms="" />
+						<BEHAVIOR class="Fighterness" parms="" />
+					</BEHAVIOR>
+					<ITEM class="GenArmor" LEVEL="$mob_level">
+						<NAME select="any-1"><NAME>a conservative suit</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>COTTON</MATERIAL>
+						<PROPERWORN>TORSO,LEGS</PROPERWORN>
+					</ITEM>
+					<ITEM class="GenWeapon" LEVEL="$mob_level" WORNAND="true">
+						<NAME>a broom</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>WOOD</MATERIAL>
+						<WEAPONCLASS>STAFF</WEAPONCLASS>
+						<WEAPONTYPE>BASHING</WEAPONTYPE>
+					</ITEM>
+				</MOB>
+			</ROOM>
+			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+				<TITLE>$a_streetprefix $roomrun_desc hallway</TITLE>
+				<DESCRIPTION>
+					<STRING select="any-1" action="PREPEND">
+						<STRING>You stand in (a(n)) $adj_any $noun_hallway that runs $roomrun_desc_long.</STRING> 
+						<STRING>This $adj_any $noun_hallway runs steeply $roomrun_desc_long.</STRING> 
+						<STRING>You are in (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</STRING> 
+						<STRING>This $adj_any $noun_hallway runs $roomrun_desc_long.</STRING> 
+						<STRING>You are walking through (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</STRING>
+						<STRING>This $adj_any $noun_hallway heads $roomrun_desc_long.</STRING>
+					</STRING>
+					<STRING select="all" action="APPEND" insert="desc_exits" />
+				</DESCRIPTION>
+				<EXIT class="Open" />
+			</ROOM>
+		</ROOM>
+		
 		<ROOM id="town_temple" class="WoodRoom"  condition="$__towntemple&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__towntemple+=1,__townthird+=1">
 			<TITLE select="any-1">
 				<TITLE>The Temple of ${c:areaname}</TITLE>
@@ -3958,6 +4036,14 @@ http://mikemonaco.files.wordpress.com/2011/03/mundane-items-table2.pdf
 	<STRING>mirth</STRING><STRING>laughter</STRING><STRING>hilarity</STRING><STRING>glee</STRING><STRING>gladness</STRING>
 	<STRING>lightheartedness</STRING><STRING>levity</STRING>
 </STRING> 
+
+<STRING id="noun_hallway" select="any-1">
+	<STRING>corridor</STRING>
+	<STRING>hallway</STRING>
+	<STRING>hall</STRING>
+	<STRING>passage</STRING>
+	<STRING>passageway</STRING>
+</STRING>
 
 <STRING id="next_shop_type" select="any-1">
 	<STRING condition="$__numshoptypes_weapon &lt; 1 or $__numshoptypes_all &gt; 10" define="__numshoptypes_weapon+=1,__numshoptypes_all+=1,pshoptypes=weapons">weapon</STRING>

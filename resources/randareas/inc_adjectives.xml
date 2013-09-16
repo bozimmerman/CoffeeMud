@@ -81,6 +81,11 @@
 	<STRING>unbalanced</STRING><STRING>unhinged</STRING><STRING>wacko</STRING><STRING>wacky</STRING>
 </STRING>
 
+<STRING id="adj_cozy" select="any-1">
+	<STRING>snug</STRING><STRING>comfortable</STRING><STRING>warm</STRING><STRING>homelike</STRING><STRING>homey</STRING><STRING>homely</STRING><STRING>welcoming</STRING>
+	<STRING>safe</STRING><STRING>sheltered</STRING><STRING>secure</STRING><STRING>down-home</STRING><STRING>homestyle</STRING><STRING>comfy</STRING><STRING>toasty</STRING>
+</STRING>
+
 <STRING id="adj_nasty" select="any-1">
 	<STRING id="adj_nasty_values" select="all">
 		<STRING>dirty</STRING>
@@ -334,8 +339,8 @@
 		<STRING>stately</STRING><STRING>dignified</STRING><STRING>distinguished</STRING><STRING>solemn</STRING><STRING>magnificent</STRING>
 		<STRING>grand</STRING><STRING>splendid</STRING><STRING>resplendent</STRING><STRING>glorious</STRING><STRING>sumptuous</STRING>
 		<STRING>impressive</STRING><STRING>august</STRING><STRING>noble</STRING><STRING>awe-inspiring</STRING><STRING>monumental</STRING>
-		<STRING>palatial; statuesque</STRING><STRING>Olympian</STRING><STRING>imposing</STRING><STRING>marvelous</STRING><STRING>sonorous</STRING>
-		<STRING>resounding</STRING><STRING>heroic</STRING>
+		<STRING>palatial</STRING><STRING>statuesque</STRING><STRING>Olympian</STRING><STRING>imposing</STRING><STRING>marvelous</STRING>
+		<STRING>sonorous</STRING><STRING>resounding</STRING><STRING>heroic</STRING>
 	</STRING>
 </STRING>
 
