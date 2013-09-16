@@ -94,7 +94,7 @@ public class Authenticate extends StdWebMacro
 						FILTER[i]^=email.charAt(i % email.length());
 				NetworkInterface ni = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
 				byte[] mac = ni.getHardwareAddress();
-				if(mac != null)
+				if((mac != null) && (mac.length > 0))
 				{
 					for(int i=0;i<256;i++)
 						FILTER[i]^=Math.abs(mac[i % mac.length]);
