@@ -59,6 +59,15 @@ public class ApartmentLayout extends AbstractLayout
 		}
 		
 	}
+
+	public void setRunFromDirection(LayoutNode node, int dir)
+	{
+		switch(dir)
+		{
+		case Directions.NORTH:case Directions.SOUTH: node.flagRun(LayoutRuns.ns); break; 
+		case Directions.EAST:case Directions.WEST: node.flagRun(LayoutRuns.ew); break; 
+		}
+	}
 	
 	public Vector<LayoutNode> generate(int num, int dir) 
 	{
@@ -75,7 +84,6 @@ public class ApartmentLayout extends AbstractLayout
 		LayoutNode n = null;
 		int hallwayDirection=dir;
 		int sidewayDirection=dir;
-		int halfNumHallway = (int)Math.round(Math.floor(numHallways/2));
 		int fullNumHallway = numHallways;
 		switch(dir)
 		{
@@ -96,25 +104,53 @@ public class ApartmentLayout extends AbstractLayout
 			lSet.use(n,LayoutTypes.street);
 			n.flag(LayoutFlags.gate);
 			n.flag(LayoutFlags.tee);
+			setRunFromDirection(n,sidewayDirection);
 			for(int h=1;h<numHallways;h++)
 			{
 				LayoutNode prevNode=n;
 				LayoutNode nextNode=lSet.getNextNode(prevNode, sidewayDirection);
 				nextNode.crossLink(prevNode);
 				lSet.use(nextNode,LayoutTypes.street);
-				nextNode.flag(LayoutFlags.tee);
-				switch(sidewayDirection)
-				{
-				case Directions.NORTH:case Directions.SOUTH: nextNode.flagRun(LayoutRuns.ns); break; 
-				case Directions.EAST:case Directions.WEST: nextNode.flagRun(LayoutRuns.ew); break; 
-				}
-				hallways.add(nextNode);
-			}
-			for(LayoutNode hallwayN : hallways)
-			{
+				setRunFromDirection(nextNode,sidewayDirection);
 				
+				prevNode=nextNode;
+				nextNode=lSet.getNextNode(prevNode, sidewayDirection);
+				nextNode.crossLink(prevNode);
+				lSet.use(nextNode,LayoutTypes.street);
+				setRunFromDirection(nextNode,sidewayDirection);
+				
+				prevNode=nextNode;
+				nextNode=lSet.getNextNode(prevNode, sidewayDirection);
+				nextNode.crossLink(prevNode);
+				lSet.use(nextNode,LayoutTypes.street);
+				setRunFromDirection(nextNode,sidewayDirection);
+				nextNode.flag(LayoutFlags.tee);
+				
+				hallways.add(nextNode);
+				n=nextNode;
 			}
-			//fillMaze(lSet,n,diameter+plusX,diameter);
+			for(LayoutNode hallwayNode : hallways)
+			{
+				LayoutNode prevNode=hallwayNode;
+				for(int h=0;h<hallwayLength;h++)
+				{
+					LayoutNode nextNode=lSet.getNextNode(prevNode, hallwayDirection);
+					nextNode.crossLink(prevNode);
+					lSet.use(nextNode,LayoutTypes.street);
+					setRunFromDirection(nextNode,hallwayDirection);
+					
+					prevNode=nextNode; // this should stick
+					
+					nextNode=lSet.getNextNode(prevNode, sidewayDirection);
+					nextNode.crossLink(prevNode);
+					lSet.use(nextNode,LayoutTypes.leaf);
+					
+					nextNode=lSet.getNextNode(prevNode, Directions.getOpDirectionCode(sidewayDirection));
+					nextNode.crossLink(prevNode);
+					lSet.use(nextNode,LayoutTypes.leaf);
+					
+				}
+			}
 			lSet.fillInFlags();
 		}
 		return set;
