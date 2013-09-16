@@ -127,27 +127,50 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	public String getClericRequirements(){return clericReqs;}
-	public void setClericRequirements(String reqs){clericReqs=reqs;}
-	public String getWorshipRequirements(){return worshipReqs;}
-	public void setWorshipRequirements(String reqs){worshipReqs=reqs;}
-	public String getClericRitual(){
+	public String getClericRequirements()
+	{
+		return clericReqs;
+	}
+	public void setClericRequirements(String reqs)
+	{
+		clericReqs=reqs;
+	}
+	public String getWorshipRequirements()
+	{
+		return worshipReqs;
+	}
+	public void setWorshipRequirements(String reqs)
+	{
+		worshipReqs=reqs;
+	}
+	
+	public String getClericRitual()
+	{
 		if(clericRitual.trim().length()==0) return "SAY Bless me "+name();
-		return clericRitual;}
-	public void setClericRitual(String ritual){
+		return clericRitual;
+	}
+	public void setClericRitual(String ritual)
+	{
 		clericRitual=ritual;
 		parseTriggers(clericTriggers,ritual);
 	}
-	public String getWorshipRitual(){
-		if(worshipRitual.trim().length()==0) return "SAY Bless me "+name();
-		return worshipRitual;}
-	public void setWorshipRitual(String ritual){
+	public String getWorshipRitual()
+	{
+		if(worshipRitual.trim().length()==0) 
+			return "SAY Bless me "+name();
+		return worshipRitual;
+	}
+	public void setWorshipRitual(String ritual)
+	{
 		worshipRitual=ritual;
 		parseTriggers(worshipTriggers,ritual);
 	}
-	public String getServiceRitual(){
-		return serviceRitual;}
-	public void setServiceRitual(String ritual){
+	public String getServiceRitual()
+	{
+		return serviceRitual;
+	}
+	public void setServiceRitual(String ritual)
+	{
 		if((ritual==null)||(ritual.length()==0))
 			ritual="SAY Bless us "+name()+"&wait 10&wait 10&SAY May "+name()+" bless you all&ALLSAY Amen.&SAY Go in peace";
 		serviceRitual=ritual;
@@ -608,10 +631,7 @@ public class StdDeity extends StdMOB implements Deity
 		return false;
 	}
 
-	public boolean triggerCheck(CMMsg msg,
-								List<DeityTrigger> V,
-								Map<String, boolean[]> trigParts,
-								Map<String, Long> trigTimes)
+	public boolean triggerCheck(CMMsg msg, List<DeityTrigger> V, Map<String, boolean[]> trigParts, Map<String, Long> trigTimes)
 	{
 		boolean recheck=false;
 		for(int v=0;v<V.size();v++)
@@ -1696,10 +1716,13 @@ public class StdDeity extends StdMOB implements Deity
 	}
 	public void delCurse(Ability to)
 	{
-		if(curses.size()==0) return;
-		for(DeityPower P : curses)
-			if(P.power==to)
-				curses.remove(to);
+		if((curses.size()==0)||(to==null)) return;
+		for(int a=numCurses()-1;a>=0;a--)
+		{
+			Ability A=fetchCurse(a);
+			if(A==to)
+				curses.remove(a);
+		}
 	}
 	public int numCurses()
 	{
@@ -1748,7 +1771,9 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	public String getClericSin()
-	{ return clericSin;}
+	{ 
+		return clericSin;
+	}
 	public void setClericSin(String ritual)
 	{
 		clericSin=ritual;
@@ -1762,7 +1787,9 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	public String getWorshipSin()
-	{ return worshipSin;}
+	{
+		return worshipSin;
+	}
 	public void setWorshipSin(String ritual)
 	{
 		worshipSin=ritual;
