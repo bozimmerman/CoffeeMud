@@ -767,7 +767,6 @@ Required details: "id" "value"
 		</ROOM>
 	</ROOM>
 	<!--
-	TODO: third priority: INN
 	TODO: fourth priority (repeatable -- but only if above done): BAR, DINER/CAFE, home
 	 -->
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
