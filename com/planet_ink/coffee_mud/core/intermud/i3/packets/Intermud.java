@@ -284,6 +284,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 								public void run() {
 									try {
 										lastPingTime=System.currentTimeMillis()-(40  * 60 * 1000);
+										logMemory();
 										CMLib.hosts().get(0).executeCommand("START I3");
 										Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 									} catch(Exception e){}
@@ -485,8 +486,20 @@ public class Intermud implements Runnable, Persistent, Serializable
 		return thread.connected;
 	}
 
-	public void run() {
-
+	public void logMemory()
+	{
+		try
+		{
+			System.gc();
+			Thread.sleep(1500);
+		}catch(Exception e){}
+		long free=Runtime.getRuntime().freeMemory()/1024;
+		long total=Runtime.getRuntime().totalMemory()/1024;
+		Log.errOut("Intermud", "Memory usage: "+(total-free)+"kb");
+	}
+	
+	public void run() 
+	{
 		try {
 			connection.setSoTimeout(60000);
 			input = new DataInputStream(connection.getInputStream());
@@ -531,6 +544,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 						public void run() {
 							try
 							{
+								logMemory();
 								CMLib.hosts().get(0).executeCommand("START I3");
 								PingPacket.lastPingResponse=System.currentTimeMillis()-(50 * 60 * 1000);
 								Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");

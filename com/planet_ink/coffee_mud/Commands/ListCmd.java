@@ -1105,8 +1105,8 @@ public class ListCmd extends StdCommand
 		StringBuilder buf=new StringBuilder("");
 		long totalTime=System.currentTimeMillis()-CMSecurity.getStartTime();
 		buf.append("The system has been running for ^H"+CMLib.english().returnTime(totalTime,0)+"^?.\n\r");
-		long free=Runtime.getRuntime().freeMemory()/1000;
-		long total=Runtime.getRuntime().totalMemory()/1000;
+		long free=Runtime.getRuntime().freeMemory()/1024;
+		long total=Runtime.getRuntime().totalMemory()/1024;
 		buf.append("The system is utilizing ^H"+(total-free)+"^?kb out of ^H"+total+"^?kb.\n\r");
 		buf.append("\n\r^xTickables report:^.^N\n\r");
 		String totalTickers=CMLib.threads().systemReport("totalTickers");
