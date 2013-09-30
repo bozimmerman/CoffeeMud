@@ -148,7 +148,7 @@ public class Socials extends StdLibrary implements SocialsList
 		Map<String,List<Social>> soc=(Map<String,List<Social>>)Resources.getResource("PARSED_SOCIALS: "+filename);
 		if(soc==null)
 		{
-			soc=new Hashtable<String,List<Social>>();
+			soc=new SHashtable<String,List<Social>>();
 			Resources.submitResource("PARSED_SOCIALS: "+filename,soc);
 			List<String> V=Resources.getFileLineVector(new CMFile(filename,null,CMFile.FLAG_LOGERRORS).text());
 			putSocialsInHash(soc,V);

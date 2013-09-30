@@ -853,7 +853,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						else
 						{
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', !mobgroup '"+mobName+":"+mask+"'.");
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', !mobgroup '"+mobName+":"+maskStr+"'.");
 							break;
 						}
 						q.envObject=q.mobGroup;
@@ -924,7 +924,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						}
 						else
 						{
-							errorOccurred(q,isQuiet,"Quest '"+name()+"', !itemgroup '"+itemName+":"+mask+"'.");
+							errorOccurred(q,isQuiet,"Quest '"+name()+"', !itemgroup '"+itemName+":"+maskStr+"'.");
 							break;
 						}
 						q.envObject=q.itemGroup;

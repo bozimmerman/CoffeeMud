@@ -186,6 +186,77 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return true;
 	}
 	
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if(CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD)
+		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		&&(msg.sourceMessage()!=null)
+		&&((msg.sourceMajor()&CMMsg.MASK_MAGIC)==0))
+		{
+			String said=CMStrings.getSayFromMessage(msg.sourceMessage());
+			if("RESET INSTANCE".equalsIgnoreCase(said))
+			{
+				Room returnToRoom=null;
+				Room thisRoom=msg.source().location();
+				if(thisRoom.getArea()==this)
+				{
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						Room R=thisRoom.getRoomInDir(d);
+						if((R!=null)&&(R.getArea()!=null)&&(R.getArea()!=this))
+							returnToRoom=R;
+					}
+				}
+				if(returnToRoom==null)
+				{
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_ACTION,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT, "You must be at an entrance to reset the area."));
+					return;
+				}
+				Area A=this.getParentArea();
+				if(A instanceof StdAutoGenInstance)
+				{
+					StdAutoGenInstance parentA=(StdAutoGenInstance)A;
+					synchronized(parentA.instanceChildren)
+					{
+						for(int i=parentA.instanceChildren.size()-1;i>=0;i--) 
+						{
+							List<WeakReference<MOB>> V=parentA.instanceChildren.elementAt(i).mobs;
+							if(parentA.instanceChildren.elementAt(i).A==this)
+							{
+								for(WeakReference<MOB> wM : V)
+								{
+									MOB M=wM.get();
+									if((M!=null)
+									&&CMLib.flags().isInTheGame(M,true)
+									&&(M.location()!=null)
+									&&(M.location()!=returnToRoom)
+									&&(M.location().getArea()==this))
+									{
+										returnToRoom.bringMobHere(M, true);
+										CMLib.commands().postLook(M, true);
+									}
+								}
+								parentA.instanceChildren.remove(i);
+								MOB mob=CMClass.sampleMOB();
+								for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+								{
+									Room R=e.nextElement();
+									R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+								}
+								msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance has been reset."));
+								CMLib.map().delArea(this);
+								destroy();
+								return;
+							}
+						}
+					}
+				}
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,"The instance failed to reset."));
+			}
+		}
+	}
+	
 	@SuppressWarnings({"unchecked","rawtypes"})
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -361,6 +432,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 								 "------------------------------------------------------^N^.");
 					try
 					{
+						piece=CMLib.percolator().processLikeParm("AREA", piece, definedIDs);
 						if(!CMLib.percolator().fillInArea(piece, definedIDs, newA, direction))
 						{
 							msg.source().tell("Failed to enter the new area.  Try again later.");

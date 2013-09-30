@@ -1598,6 +1598,29 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return finalValue.toString().trim();
 	}
 
+	public XMLLibrary.XMLpiece processLikeParm(String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	{
+		String like = CMLib.xml().getParmValue(piece.parms,"LIKE");
+		if(like!=null)
+		{
+			Vector<String> V=CMParms.parseCommas(like,true);
+			XMLLibrary.XMLpiece origPiece = piece; 
+			piece=piece.copyOf();
+			for(int v=0;v<V.size();v++)
+			{
+				String s = V.elementAt(v);
+				if(s.startsWith("$")) s=s.substring(1).trim();
+				XMLLibrary.XMLpiece likePiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
+				if((likePiece == null)||(!likePiece.tag.equalsIgnoreCase(tagName)))
+					throw new CMException("Invalid like: '"+s+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
+				piece.contents.addAll(likePiece.contents);
+				piece.parms.putAll(likePiece.parms);
+				piece.parms.putAll(origPiece.parms);
+			}
+		}
+		return piece;
+	}
+	
 	protected List<XMLpiece> getAllChoices(Modifiable E, List<String> ignoreStats, String defPrefix, String tagName, XMLLibrary.XMLpiece piece, Map<String,Object> defined, boolean skipTest) throws CMException
 	{
 		if((!skipTest)&&(!testCondition(piece,defined)))
@@ -1635,28 +1658,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			if(!container)
-			{
-				String like = CMLib.xml().getParmValue(piece.parms,"LIKE");
-				if(like!=null)
-				{
-					Vector<String> V=CMParms.parseCommas(like,true);
-					XMLLibrary.XMLpiece origPiece = piece; 
-					piece=piece.copyOf();
-					for(int v=0;v<V.size();v++)
-					{
-						String s = V.elementAt(v);
-						if(s.startsWith("$")) s=s.substring(1).trim();
-						XMLLibrary.XMLpiece likePiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
-						if((likePiece == null)||(!likePiece.tag.equalsIgnoreCase(tagName)))
-							throw new CMException("Invalid like: '"+s+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-						piece.contents.addAll(likePiece.contents);
-						piece.parms.putAll(likePiece.parms);
-						piece.parms.putAll(origPiece.parms);
-						choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName,likePiece,defined,false));
-					}
-				}
-				return new XVector<XMLpiece>(piece);
-			}
+				return new XVector<XMLpiece>(processLikeParm(tagName,piece,defined));
 		}
 		
 		for(int p=0;p<piece.contents.size();p++)
@@ -1847,12 +1849,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(selection.equals("ALL")) 
 			selectedChoicesV=choices;
 		else
-		if((choices.size()==0)&&(!selection.startsWith("ANY-0"))
+		if((choices.size()==0)
+		&&(!selection.startsWith("ANY-0"))
 		&&(!selection.startsWith("FIRST-0"))
 		&&(!selection.startsWith("LAST-0"))
 		&&(!selection.startsWith("PICK-0"))
-		&&(!selection.startsWith("LIMIT-"))
-		&&(!selection.equals("ANY"))) 
+		&&(!selection.startsWith("LIMIT-")))
 			throw new CMException("Can't make selection among NONE: on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 		else
 		if(selection.equals("FIRST"))

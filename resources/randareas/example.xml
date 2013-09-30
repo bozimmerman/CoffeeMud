@@ -771,7 +771,7 @@ Required details: "id" "value"
 	 -->
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
 
-		<ROOM id="town_inn" room_layout="APARTMENT" room_size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
+		<ROOM id="town_inn" room_layout="APARTMENT" room_size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
 			<ROOM id="town_inn_desk" class="WoodRoom"  condition="($__towninndesk&lt;1) and ('gate' in $ROOMTAG_NODEFLAGS)" define="__towninndesk+=1">
 				<TITLE select="any-1">
 					<TITLE>The ${c:areaname} INN</TITLE>
@@ -874,7 +874,7 @@ Required details: "id" "value"
 			</ROOM>
 		</ROOM>
 		
-		<ROOM id="town_temple" class="WoodRoom"  condition="$__towntemple&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__towntemple+=1,__townthird+=1">
+		<ROOM id="town_temple" class="WoodRoom"  condition="$__towntemple&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towntemple+=1,__townthird+=1">
 			<TITLE select="any-1">
 				<TITLE>The Temple of ${c:areaname}</TITLE>
 				<TITLE>${c:areaname} Temple</TITLE>
@@ -1118,7 +1118,7 @@ Required details: "id" "value"
 				<MATERIAL>STONE</MATERIAL>
 			</ITEM>
 		</ROOM>
-		<ROOM id="town_park" class="WoodsGrid" condition="$__townpark&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__townpark+=1,__townthird+=1" xsize="3?5" ysize="3?5">
+		<ROOM id="town_park" class="WoodsGrid" condition="$__townpark&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townpark+=1,__townthird+=1" xsize="3?5" ysize="3?5">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Park</TITLE>
 				<TITLE>${c:areaname} Park</TITLE>
@@ -1157,7 +1157,7 @@ Required details: "id" "value"
 				<MOB class="Bee" /><MOB class="Doe" /><MOB class="Fox" /><MOB class="Duck" /><MOB class="Rabbit" /><MOB class="Squirrel" />
 			</MOB>
 		</ROOM>
-		<ROOM id="town_stables" class="WoodRoom"  condition="$__townstables&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__townstables+=1,__townthird+=1">
+		<ROOM id="town_stables" class="WoodRoom"  condition="$__townstables&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townstables+=1,__townthird+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Stables</TITLE>
 				<TITLE>${c:areaname} Stables</TITLE>
@@ -1234,7 +1234,7 @@ Required details: "id" "value"
 				</SHOPINVENTORY>
 			</MOB>
 		</ROOM>
-		<ROOM id="town_daycare" class="WoodRoom"  condition="$__towndaycare&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__towndaycare+=1,__townthird+=1">
+		<ROOM id="town_daycare" class="WoodRoom"  condition="$__towndaycare&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towndaycare+=1,__townthird+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Day Care</TITLE>
 				<TITLE>${c:areaname} ${c:adj_happy} Day Care</TITLE>
@@ -1303,7 +1303,7 @@ Required details: "id" "value"
 				</ITEM>
 			</MOB>
 		</ROOM>
-		<ROOM id="town_clanbank" class="WoodRoom"  condition="$__townclanbank&lt;1 and $__numshoptypes_all &gt; 10 and __townsecond &gt; 5" define="__townclanbank+=1,__townthird+=1">
+		<ROOM id="town_clanbank" class="WoodRoom"  condition="$__townclanbank&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townclanbank+=1,__townthird+=1">
 			<TITLE select="any-1">
 				<TITLE>The ${c:areaname} Clan Bank</TITLE>
 				<TITLE>${c:areaname} Clan Bank and Trust</TITLE>
