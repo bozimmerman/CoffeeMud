@@ -532,8 +532,8 @@ public class ServiceEngine implements ThreadEngine
 		TickableGroup almostTock=null;
 		TickClient C=null;
 		Tickable E2=null;
-		boolean doItems=((tickID==0)||(tickID==Tickable.TICKID_ROOM_ITEM_REJUV));
-		boolean doMobs=((tickID==0)||(tickID==Tickable.TICKID_MOB));
+		boolean doItems=((tickID<=0)||(tickID==Tickable.TICKID_ROOM_ITEM_REJUV));
+		boolean doMobs=((tickID<=0)||(tickID==Tickable.TICKID_MOB));
 		for(Iterator<TickableGroup> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
@@ -559,7 +559,7 @@ public class ServiceEngine implements ThreadEngine
 					&&(((MOB)E2).basePhyStats().rejuv()!=PhyStats.NO_REJUV)
 					&&(((MOB)E2).phyStats().rejuv()>0))
 					{
-						((MOB)E2).phyStats().setRejuv(PhyStats.NO_REJUV);
+						((MOB)E2).phyStats().setRejuv(-1);
 						if(C.tickTicker(true))
 							almostTock.delTicker(C);
 					}

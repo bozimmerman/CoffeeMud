@@ -7453,7 +7453,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				String rest="";
 				if(tt.length>2)
 					rest=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
-				int tickID=0;
+				int tickID=-1;
 				if(rest.equalsIgnoreCase("item")||rest.equalsIgnoreCase("items"))
 					tickID=Tickable.TICKID_ROOM_ITEM_REJUV;
 				else
