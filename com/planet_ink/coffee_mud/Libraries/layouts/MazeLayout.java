@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 
+import java.util.List;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
@@ -57,7 +58,7 @@ public class MazeLayout extends AbstractLayout
 		
 	}
 	
-	public Vector<LayoutNode> generate(int num, int dir) 
+	public List<LayoutNode> generate(int num, int dir) 
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int diameter = (int)Math.round(Math.sqrt(num));

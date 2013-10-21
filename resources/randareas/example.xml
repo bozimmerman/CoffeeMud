@@ -160,6 +160,7 @@ The layout of an area will cause its rooms to be logically grouped up into stree
 are always done first, followed by streets, and others.  The layout will automatically
 define certain variables for each room to help with parsing the rooms details.  These
 variables include:
+AREA_NUMLEAFS: the number of leaf rooms for the whole area
 ROOMTAG_NODETYPE: one of surround, leaf, offleaf, street, square, interior
 ROOMTAG_NODERUN: for streets, which way they run.  Values are ns, ew, nwse, nesw
 ROOMTAG_NODEFLAGS: various rooms flags. Values include: corner, gate, intersection, tee, offleaf 
@@ -830,7 +831,7 @@ Required details: "id" "value"
 						<WEAPONTYPE>BASHING</WEAPONTYPE>
 					</ITEM>
 					<SHOPINVENTORY>
-						<ITEM select="repeat-6">
+						<ITEM select="repeat-$AREA_NUMLEAFS">
 							<ITEM class="StdInnKey" />
 						</ITEM>
 					</SHOPINVENTORY>

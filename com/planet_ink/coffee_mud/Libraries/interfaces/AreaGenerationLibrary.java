@@ -51,7 +51,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public static interface LayoutManager
 	{
 		public String name();
-		public Vector<LayoutNode> generate(int num, int dir);
+		public List<LayoutNode> generate(int num, int dir);
 	}
 	
 	public static interface LayoutNode 

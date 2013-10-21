@@ -272,13 +272,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	@SuppressWarnings("unchecked")
 	public Room layOutRooms(Area A, LayoutManager layoutManager, int size, int direction, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
-		Vector<LayoutNode> roomsLayout = layoutManager.generate(size,direction);
+		List<LayoutNode> roomsLayout = layoutManager.generate(size,direction);
 		if((roomsLayout==null)||(roomsLayout.size()==0))
 			throw new CMException("Unable to fill area of size "+size+" off layout "+layoutManager.name());
+		int numLeafs=0;
+		for(int i=0;i<roomsLayout.size();i++)
+		{
+			LayoutNode node=roomsLayout.get(i);
+			if(node.type()==LayoutTypes.leaf) 
+				numLeafs++;
+		}
+		defined.put("AREA_NUMLEAFS", ""+numLeafs);
 		
 		// now break our rooms into logical groups, generate those rooms.
 		List<List<LayoutNode>> roomGroups = new Vector<List<LayoutNode>>();
-		LayoutNode magicRoomNode = roomsLayout.firstElement();
+		LayoutNode magicRoomNode = roomsLayout.get(0);
 		HashSet<LayoutNode> nodesDone=new HashSet<LayoutNode>();
 		boolean keepLooking=true;
 		while(keepLooking)
@@ -286,7 +294,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			keepLooking=false;
 			for(int i=0;i<roomsLayout.size();i++)
 			{
-				LayoutNode node=roomsLayout.elementAt(i);
+				LayoutNode node=roomsLayout.get(i);
 				if(node.type()==LayoutTypes.leaf) 
 				{
 					Vector<LayoutNode> group=new Vector<LayoutNode>();
@@ -320,7 +328,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			keepLooking=false;
 			for(int i=0;i<roomsLayout.size();i++)
 			{
-				LayoutNode node=roomsLayout.elementAt(i);
+				LayoutNode node=roomsLayout.get(i);
 				if(node.type()==LayoutTypes.street) 
 				{
 					List<LayoutNode> group=new Vector<LayoutNode>();
@@ -386,7 +394,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		
 		while(roomsLayout.size() >0)
 		{
-			LayoutNode node=roomsLayout.firstElement();
+			LayoutNode node=roomsLayout.get(0);
 			Vector<LayoutNode> group=new Vector<LayoutNode>();
 			group.add(node);
 			nodesDone.add(node);

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
@@ -87,7 +88,7 @@ public class BoxCityLayout extends AbstractLayout
 		return lSet.fillMaze(n);
 	}
 	
-	public Vector<LayoutNode> generate(int num, int dir) 
+	public List<LayoutNode> generate(int num, int dir) 
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int diameter = (int)Math.round(Math.sqrt(num));

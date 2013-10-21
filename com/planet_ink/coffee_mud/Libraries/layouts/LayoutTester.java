@@ -25,7 +25,7 @@ public class LayoutTester
 {
 	public static void draw(LayoutManager layout, int size, int dir)
 	{
-		Vector<LayoutNode> V=layout.generate(size, dir);
+		List<LayoutNode> V=layout.generate(size, dir);
 		
 		System.out.println("Layout "+layout.name()+", size="+V.size()+": "+continuityCheck(V));
 		long lowestX=Long.MAX_VALUE;
@@ -63,11 +63,11 @@ public class LayoutTester
 			}
 		}
 	}
-	public static boolean continuityCheck(Vector<LayoutNode> set)
+	public static boolean continuityCheck(List<LayoutNode> set)
 	{
 		for(int s=0;s<set.size();s++)
 		{
-			LayoutNode node = set.elementAt(s);
+			LayoutNode node = set.get(s);
 			for(Enumeration<LayoutNode> e=node.links().elements();e.hasMoreElements();)
 				if(!set.contains(e.nextElement()))
 					return false;

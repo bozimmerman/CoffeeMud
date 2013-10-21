@@ -3,6 +3,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.*;
 import com.planet_ink.coffee_mud.core.Directions;
 
@@ -42,7 +43,7 @@ public abstract class AbstractLayout implements LayoutManager
 	}
 	
 	public abstract String name();
-	public abstract Vector<LayoutNode> generate(int num, int dir);
+	public abstract List<LayoutNode> generate(int num, int dir);
 	
 	public static int getDirection(LayoutNode from, LayoutNode to)
 	{
