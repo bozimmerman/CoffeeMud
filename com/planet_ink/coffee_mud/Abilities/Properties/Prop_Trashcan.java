@@ -54,6 +54,8 @@ public class Prop_Trashcan extends Property
 				for(Item I : trashables)
 					I.destroy();
 				lastAddition=0;
+				trashables.clear();
+				CMLib.threads().deleteTick(this, Tickable.TICKID_PROPERTY_SPECIAL);
 			}
 			return false;
 		}
@@ -73,12 +75,12 @@ public class Prop_Trashcan extends Property
 		else
 		synchronized(trashables)
 		{
-			lastAddition=System.currentTimeMillis()-10;
 			if(lastAddition==0)
 			{
 				CMLib.threads().deleteTick(this, Tickable.TICKID_PROPERTY_SPECIAL);
 				CMLib.threads().startTickDown(this, Tickable.TICKID_PROPERTY_SPECIAL, tickDelay);
 			}
+			lastAddition=System.currentTimeMillis()-10;
 			trashables.add(I);
 		}
 	}
