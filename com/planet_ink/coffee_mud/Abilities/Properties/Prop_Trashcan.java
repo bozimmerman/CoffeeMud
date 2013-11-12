@@ -70,7 +70,7 @@ public class Prop_Trashcan extends Property
 	
 	protected void process(Item I)
 	{
-		if(tickDelay==0)
+		if(tickDelay<=0)
 			I.destroy();
 		else
 		synchronized(trashables)
