@@ -36,7 +36,7 @@ public class Prop_RoomWatch extends Property
 {
 	public String ID() { return "Prop_RoomWatch"; }
 	public String name(){ return "Different Room Can Watch";}
-	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	protected Vector newRooms=null;
 
 	public String accountForYourself()
