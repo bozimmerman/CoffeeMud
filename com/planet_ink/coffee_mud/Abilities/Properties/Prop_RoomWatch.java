@@ -67,10 +67,11 @@ public class Prop_RoomWatch extends Property
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().length()>0))
 		{
+			final Room thisRoom=CMLib.map().roomLocation(affected);
 			for(int r=0;r<newRooms.size();r++)
 			{
 				Room R=(Room)newRooms.elementAt(r);
-				if((R!=null)&&(R.fetchEffect(ID())==null))
+				if((R!=null)&&(R.fetchEffect(ID())==null)&&(R!=thisRoom))
 				{
 					CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),
 								  CMMsg.NO_EFFECT,null,
