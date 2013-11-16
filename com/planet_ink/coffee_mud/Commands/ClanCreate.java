@@ -155,6 +155,7 @@ public class ClanCreate extends StdCommand
 															return;
 														}
 														*/
+														newClan.setGovernmentID(govtType);
 														newRoleID=newClan.getTopQualifiedRoleID(Clan.Function.ASSIGN,mob);
 														if((newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)
 														&&(newClan.getRolesList().length>1))
@@ -165,7 +166,6 @@ public class ClanCreate extends StdCommand
 														}
 														else
 														{
-															newClan.setGovernmentID(govtType);
 															break;
 														}
 													}
