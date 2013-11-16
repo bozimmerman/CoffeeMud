@@ -768,9 +768,133 @@ Required details: "id" "value"
 		</ROOM>
 	</ROOM>
 	<!--
-	TODO: fourth priority (repeatable -- but only if above done): BAR, DINER/CAFE, home
+	TODO: fourth priority (repeatable -- but only if above done): home
 	 -->
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
+
+		<ROOM id="town_cafe" class="WoodRoom"  condition="$__townthird &gt; 5" define="patronname=$fantasy_name">
+			<TITLE select="any-1">
+				<TITLE>${c:patronname}'s Cafe</TITLE>
+				<TITLE>${c:patronname}'s Diner</TITLE>
+				<TITLE>The ${c:street_name_1} ${c:street_name_2}</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is a $adj_noisy $adj_phys_size_large diner.</DESCRIPTION>
+					<DESCRIPTION>This is a $adj_noisy $adj_phys_size_small hole-in-the-wall cafe.</DESCRIPTION>
+					<DESCRIPTION>This dive is $adj_phys_size_small and $adj_noisy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>${c:any_wood} tables are lined neatly here.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Patrons sit around talking and enjoying their meals.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+				<NAME>${c:patronname}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is taking food orders.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is cleaning the tables.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>-10000?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a cook`s apron</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>a rolling pin</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>OAK</MATERIAL>
+					<WEAPONCLASS>BLUNT</WEAPONCLASS>
+					<WEAPONTYPE>BASHING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY>
+					<ITEM select="all" insert="any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item" number=300 />
+				</SHOPINVENTORY>
+			</MOB>
+		</ROOM>
+		
+		<ROOM id="town_bar" class="WoodRoom"  condition="$__townthird &gt; 5" define="patronname=$fantasy_name">
+			<TITLE select="any-1">
+				<TITLE>${c:patronname}'s Bar</TITLE>
+				<TITLE>${c:patronname}'s Pub</TITLE>
+				<TITLE>The ${c:street_name_1} ${c:street_name_2}</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is a $adj_noisy $adj_phys_size_large pub.</DESCRIPTION>
+					<DESCRIPTION>This is a $adj_noisy $adj_phys_size_small hole-in-the-wall bar.</DESCRIPTION>
+					<DESCRIPTION>This dive is $adj_phys_size_small and $adj_noisy.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Tables are scattered around the room, with the bar proper in the back.</DESCRIPTION>
+					<DESCRIPTION>Tall $any_wood stools line the long bar, with a few scattered tables and chairs around.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>People stand around here talking, shouting, and getting really drunk.</DESCRIPTION>
+					<DESCRIPTION>The smell of smoke and stale alcohol make the place reek.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION id="store_sign_descs" select="any-1">
+					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
+					<DESCRIPTION>A sign is hanging above the door.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted by the bar.</DESCRIPTION>
+					<DESCRIPTION>A sign is posted on the bar.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is up for sale `buy [itemname]` to get something, or `view [itemname]` to get more information." />
+			<MOB class="GenShopKeeper" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender">
+				<NAME>${c:patronname}</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name will take your order now.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is taking drink orders.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is cleaning the bar.</DISPLAY>
+				</DISPLAY>
+				<ALIGNMENT>-10000?10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Fighterness" parms="" />
+				</BEHAVIOR>
+				<ITEM class="GenArmor" LEVEL="$mob_level">
+					<NAME select="any-1"><NAME>a bartender`s apron</NAME></NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>COTTON</MATERIAL>
+					<PROPERWORN>TORSO,LEGS</PROPERWORN>
+				</ITEM>
+				<ITEM class="GenWeapon" LEVEL="$mob_level">
+					<NAME>an lime peeler</NAME>
+					<DISPLAY>$item_name has been left here"</DISPLAY>
+					<MATERIAL>IRON</MATERIAL>
+					<WEAPONCLASS>DAGGER</WEAPONCLASS>
+					<WEAPONTYPE>PIERCING</WEAPONTYPE>
+				</ITEM>
+				<SHOPINVENTORY>
+					<ITEM select="all" insert="any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item," number=300 />
+				</SHOPINVENTORY>
+			</MOB>
+		</ROOM>
 
 		<ROOM id="town_inn" room_layout="APARTMENT" room_size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
 			<ROOM id="town_inn_desk" class="WoodRoom"  condition="($__towninndesk&lt;1) and ('gate' in $ROOMTAG_NODEFLAGS)" define="__towninndesk+=1">
