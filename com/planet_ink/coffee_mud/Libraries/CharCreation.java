@@ -979,20 +979,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		if(loginObj.player==null)
 		{
-			if(newCharactersAllowed(loginObj.login,session,loginObj.acct,CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=0))
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 			{
-				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+				if(newAccountsAllowed(loginObj.login,session,loginObj.acct))
 				{
 					session.promptPrint("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?");
 					loginObj.state=LoginState.LOGIN_NEWACCOUNT_CONFIRM;
 					return LoginResult.INPUT_REQUIRED;
 				}
-				else
-				{
-					session.promptPrint("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?");
-					loginObj.state=LoginState.LOGIN_NEWCHAR_CONFIRM;
-					return LoginResult.INPUT_REQUIRED;
-				}
+			}
+			else
+			if(newCharactersAllowed(loginObj.login,session,loginObj.acct,false))
+			{
+				session.promptPrint("\n\r'"+CMStrings.capitalizeAndLower(loginObj.login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?");
+				loginObj.state=LoginState.LOGIN_NEWCHAR_CONFIRM;
+				return LoginResult.INPUT_REQUIRED;
 			}
 			loginObj.state=LoginState.LOGIN_START;
 			return null;
@@ -2817,18 +2818,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return namedChoices;
 	}
 
-	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean skipAccountNameCheck)
+	public NewCharNameCheckResult finishNameCheck(String login, String ipAddress)
 	{
-		if((CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS))
-		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, login))
-		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, ipAddress)))
-			return NewCharNameCheckResult.NO_NEW_PLAYERS;
-		else
-		if((!isOkName(login,false))
-		|| (CMLib.players().playerExists(login))
-		|| (!skipAccountNameCheck && CMLib.players().accountExists(login)))
-			return NewCharNameCheckResult.BAD_USED_NAME;
-		else
 		if((CMProps.getIntVar(CMProps.Int.MUDTHEME)==0)
 		||((CMSecurity.isDisabled(CMSecurity.DisFlag.LOGINS))
 			&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_LOGINS, login))
@@ -2842,6 +2833,39 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, ipAddress)))
 			return NewCharNameCheckResult.CREATE_LIMIT_REACHED;
 		return NewCharNameCheckResult.OK;
+	}
+	
+	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean skipAccountNameCheck)
+	{
+		final boolean accountSystemEnabled = CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1;
+
+		if(((CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS)&&(!accountSystemEnabled))
+			||(CMSecurity.isDisabled(CMSecurity.DisFlag.NEWCHARACTERS)))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, login))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, ipAddress)))
+			return NewCharNameCheckResult.NO_NEW_PLAYERS;
+		else
+		if((!isOkName(login,false))
+		|| (CMLib.players().playerExists(login))
+		|| (!skipAccountNameCheck && CMLib.players().accountExists(login)))
+			return NewCharNameCheckResult.BAD_USED_NAME;
+		else
+			return finishNameCheck(login,ipAddress);
+	}
+	
+	public NewCharNameCheckResult newAccountNameCheck(String login, String ipAddress)
+	{
+		if((CMSecurity.isDisabled(CMSecurity.DisFlag.NEWPLAYERS))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, login))
+		&&(!CMProps.isOnWhiteList(CMProps.SYSTEMWL_NEWPLAYERS, ipAddress)))
+			return NewCharNameCheckResult.NO_NEW_PLAYERS;
+		else
+		if((!isOkName(login,false))
+		|| (CMLib.players().playerExists(login))
+		|| (CMLib.players().accountExists(login)))
+			return NewCharNameCheckResult.BAD_USED_NAME;
+		else
+			return finishNameCheck(login,ipAddress);
 	}
 	
 	public boolean newCharactersAllowed(String login, Session session, PlayerAccount acct, boolean skipAccountNameCheck)
@@ -2859,6 +2883,37 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return false;
 		case CREATE_LIMIT_REACHED:
 			session.println("\n\rThat name is unrecognized.\n\rAlso, the maximum daily new player limit has already been reached for your location.");
+			return false;
+		default:
+			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.");
+			return false;
+		case OK:
+			if((acct!=null)
+			&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)<=acct.numPlayers())
+			&&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
+			{
+				session.println("You may only have "+CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)+" characters.  Please retire one to create another.");
+				return false;
+			}
+			return true;
+		}
+	}
+
+	public boolean newAccountsAllowed(String login, Session session, PlayerAccount acct)
+	{
+		switch(newAccountNameCheck(login,session.getAddress()))
+		{
+		case NO_NEW_PLAYERS:
+			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.");
+			return false;
+		case BAD_USED_NAME:
+			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\rThat name is also not available for new accounts.\n\r  Choose another name (no spaces allowed)!\n\r");
+			return false;
+		case NO_NEW_LOGINS:
+			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r");
+			return false;
+		case CREATE_LIMIT_REACHED:
+			session.println("\n\rThat name is unrecognized.\n\rAlso, the maximum daily new account limit has already been reached for your location.");
 			return false;
 		default:
 			session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.");

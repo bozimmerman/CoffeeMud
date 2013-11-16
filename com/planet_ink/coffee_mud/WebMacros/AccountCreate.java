@@ -113,7 +113,7 @@ public class AccountCreate extends StdWebMacro
 				return AccountCreateErrors.NO_VERIFYKEY.toString();
 		}
 		name = CMStrings.capitalizeAndLower(name);
-		CharCreationLibrary.NewCharNameCheckResult checkResult=CMLib.login().newCharNameCheck(name, httpReq.getClientAddress().getHostAddress(), false);
+		CharCreationLibrary.NewCharNameCheckResult checkResult=CMLib.login().newAccountNameCheck(name, httpReq.getClientAddress().getHostAddress());
 		if(checkResult!=CharCreationLibrary.NewCharNameCheckResult.OK)
 			return checkResult.toString();
 		PlayerAccount acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");

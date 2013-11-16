@@ -50,6 +50,7 @@ public interface CharCreationLibrary extends CMLibrary
 	public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
 	public LoginResult loginSystem(Session session, LoginSession loginObj) throws java.io.IOException;
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean checkPlayerName);
+	public NewCharNameCheckResult newAccountNameCheck(String login, String ipAddress);
 	public void pageRooms(CMProps page, Map<String, String> table, String start);
 	public void initStartRooms(CMProps page);
 	public void initDeathRooms(CMProps page);

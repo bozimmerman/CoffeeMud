@@ -1184,7 +1184,7 @@ public class CMSecurity
 		SCRIPTABLE("MOBProg scripting"), MCCP("MCCP compression"), LOGOUTS("player logouts"), THINAREAS("thin uncached areas"), UTILITHREAD("thread & session monitoring"), 
 		THREADTHREAD("thread monitoring"), EQUIPSIZE("armor size fitting"), RETIREREASON("early char delete prompt"), MAXCONNSPERACCOUNT("connections per account limit"), 
 		ALLERGIES("auto player allergies"), LOGINS("non-archin player logins"), NEWPLAYERS("new player creation"), MAXNEWPERIP("new character per ip limit"), 
-		MAXCONNSPERIP("connections per ip limit"), CLANTICKS("clan ticks/automation"), CATALOGTHREAD("catalog house-cleaning"), 
+		MAXCONNSPERIP("connections per ip limit"), CLANTICKS("clan ticks/automation"), CATALOGTHREAD("catalog house-cleaning"), NEWCHARACTERS("new character creation"),
 		CATALOGCACHE("catalog instance caching"), SAVETHREAD("Player/Journal/Map/Table maintenance"), JOURNALTHREAD("journal house-cleaning"), MAPTHREAD("map house-cleaning"), 
 		AUTOPURGE("player purging"), PURGEACCOUNTS("account purging"), PLAYERTHREAD("player maintenance/house cleaning"), MSSP("MSSP protocol support"), 
 		STATS("statistics system"), STATSTHREAD("statistics auto-saving"), POLLCACHE("player poll caching"), SESSIONTHREAD("session monitoring"), SMTPCLIENT("email client"), 
