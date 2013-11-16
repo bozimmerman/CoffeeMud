@@ -67,7 +67,7 @@ public class Retire extends StdCommand
 					{
 						Log.sysOut("Retire","Retired: "+mob.Name());
 						CMLib.players().obliteratePlayer(mob,true,false);
-						mob.session().logout(true);
+						session.logout(true);
 					}
 					else
 					session.prompt(new InputCallback(InputCallback.Type.PROMPT,"") {
@@ -82,7 +82,7 @@ public class Retire extends StdCommand
 						{
 							Log.sysOut("Retire","Retired: "+mob.Name()+": "+this.input);
 							CMLib.players().obliteratePlayer(mob,true,false);
-							mob.session().logout(true);
+							session.logout(true);
 						}
 					});
 				}
