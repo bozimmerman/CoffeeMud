@@ -2757,7 +2757,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final MOB mob=loginObj.mob;
 		boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
-		if(emailPassword)
+		if(emailPassword && (loginObj.acct==null))
 		{
 			String password=CMLib.encoder().generateRandomPassword();
 			mob.playerStats().setPassword(password);
