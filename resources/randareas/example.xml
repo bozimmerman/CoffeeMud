@@ -772,7 +772,31 @@ Required details: "id" "value"
 	 -->
 	<ROOM select="all" condition="$theme='town' or $theme='random'">
 
-		<ROOM id="town_cafe" class="WoodRoom"  condition="$__townthird &gt; 5" define="patronname=$fantasy_name">
+		<ROOM id="town_home" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townhome+=1,patronname=$fantasy_name">
+			<TITLE select="any-1">
+				<TITLE>${c:patronname}'s house</TITLE>
+				<TITLE>A house</TITLE>
+			</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>This is a simple townperson's home.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The furnishings are sparse and practical.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
+					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
+				</DESCRIPTION>
+			</DESCRIPTION>
+			<EXIT class="GenDoor" defclosed="false" />
+			<ITEM select="all">
+				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
+				<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here with chairs around it." isgettable="false" />
+			</ITEM>
+		</ROOM>
+		
+		<ROOM id="town_cafe" class="WoodRoom"  condition="$__townthird &gt; 5" define="__towncafe+=1,patronname=$fantasy_name">
 			<TITLE select="any-1">
 				<TITLE>${c:patronname}'s Cafe</TITLE>
 				<TITLE>${c:patronname}'s Diner</TITLE>
@@ -830,9 +854,14 @@ Required details: "id" "value"
 					<ITEM select="all" insert="any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item" number=300 />
 				</SHOPINVENTORY>
 			</MOB>
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
 		</ROOM>
 		
-		<ROOM id="town_bar" class="WoodRoom"  condition="$__townthird &gt; 5" define="patronname=$fantasy_name">
+		<ROOM id="town_bar" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townbar+=1,patronname=$fantasy_name">
 			<TITLE select="any-1">
 				<TITLE>${c:patronname}'s Bar</TITLE>
 				<TITLE>${c:patronname}'s Pub</TITLE>
@@ -894,6 +923,8 @@ Required details: "id" "value"
 					<ITEM select="all" insert="any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item," number=300 />
 				</SHOPINVENTORY>
 			</MOB>
+			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
+			<ITEM class="GenTable" name="the bar" MOBSHELD=20 display="$ITEM_NAME is here" isgettable="false" />
 		</ROOM>
 
 		<ROOM id="town_inn" room_layout="APARTMENT" room_size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
