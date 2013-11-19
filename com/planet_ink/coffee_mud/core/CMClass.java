@@ -1495,12 +1495,20 @@ public class CMClass extends ClassLoader
 	 */
 	public static final void sortCMObjectsByID(final List<CMObject> V) 
 	{
-		final TreeMap<String,CMObject> hashed=new TreeMap<String,CMObject>();
-		for(CMObject E : V)
-			hashed.put(E.ID().toUpperCase(),E);
-		V.clear();
-		for(String key : hashed.keySet())
-			V.add(hashed.get(key));
+		Collections.sort(V,new Comparator<CMObject>(){
+			public int compare(CMObject o1, CMObject o2) {
+				if(o1 == null) 
+				{
+					if (o2 == null)
+						return 0;
+					return -1;
+				}
+				else
+				if(o2 == null)
+					return 1;
+				return o1.ID().compareTo(o2.ID());
+			}
+		});
 	}
 
 	/**
@@ -1509,23 +1517,20 @@ public class CMClass extends ClassLoader
 	 */
 	public static final void sortEnvironmentalsByName(final List<Environmental> V) 
 	{
-		final TreeMap<String,LinkedList<Environmental>> nameHash=new TreeMap<String,LinkedList<Environmental>>();
-		String name;
-		LinkedList<Environmental> list;
-		for(Environmental E : V)
-		{
-			name=E.Name().toUpperCase();
-			list = nameHash.get(name);
-			if(list==null)
-			{
-				list=new LinkedList<Environmental>();
-				nameHash.put(name,list);
+		Collections.sort(V,new Comparator<Environmental>(){
+			public int compare(Environmental o1, Environmental o2) {
+				if(o1 == null) 
+				{
+					if (o2 == null)
+						return 0;
+					return -1;
+				}
+				else
+				if(o2 == null)
+					return 1;
+				return o1.name().compareToIgnoreCase(o2.name());
 			}
-			list.add(E);
-		}
-		V.clear();
-		for(LinkedList<Environmental> l : nameHash.values())
-			V.addAll(l);
+		});
 	}
 
 	/**
