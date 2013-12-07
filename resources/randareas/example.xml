@@ -775,21 +775,25 @@ Required details: "id" "value"
 		<ROOM id="town_home" class="WoodRoom"  condition="$__townthird &gt; 5" define="__townhome+=1,patronname=$fantasy_name">
 			<TITLE select="any-1">
 				<TITLE>${c:patronname}'s house</TITLE>
+				<TITLE>${c:patronname}'s home</TITLE>
 				<TITLE>A house</TITLE>
+				<TITLE>The ${c:patronname} house</TITLE>
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>This is a simple townperson's home.</DESCRIPTION>
+					<DESCRIPTION>This is the home of the ${c:patronname} family.</DESCRIPTION>
+					<DESCRIPTION>This is the house of ${c:patronname}.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>The furnishings are sparse and practical.</DESCRIPTION>
+					<DESCRIPTION>The furnishings are sparse and ${adj_useful}.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The exit is to the $roomexits_desc_long.</DESCRIPTION>
 					<DESCRIPTION>The street is to the $roomexits_desc_long.</DESCRIPTION>
 				</DESCRIPTION>
 			</DESCRIPTION>
-			<EXIT class="GenDoor" defclosed="false" />
+			<EXIT class="GenDoor" defclosed="true" />
 			<ITEM select="all">
 				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
 				<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here with chairs around it." isgettable="false" />

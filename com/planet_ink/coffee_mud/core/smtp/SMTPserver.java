@@ -321,19 +321,22 @@ public class SMTPserver extends Thread implements Tickable
 			while(true)
 			{
 				sock=servsock.accept();
-				while(CMLib.threads().isAllSuspended())
-					Thread.sleep(1000);
-				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER))
-					Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
-				if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-					threadPool.execute(new ProcessSMTPrequest(sock,this));
-				else
+				if(sock != null)
 				{
-					sock.getOutputStream().write(("421 Mud down.. try later.\r\n").getBytes());
-					sock.getOutputStream().flush();
-					sock.close();
+					while(CMLib.threads().isAllSuspended())
+						Thread.sleep(1000);
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SMTPSERVER))
+						Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
+					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+						threadPool.execute(new ProcessSMTPrequest(sock,this));
+					else
+					{
+						sock.getOutputStream().write(("421 Mud down.. try later.\r\n").getBytes());
+						sock.getOutputStream().flush();
+						sock.close();
+					}
+					sock=null;
 				}
-				sock=null;
 			}
 		}
 		catch(Exception e)

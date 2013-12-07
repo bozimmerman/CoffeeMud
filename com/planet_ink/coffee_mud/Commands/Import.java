@@ -4619,7 +4619,7 @@ public class Import extends StdCommand
 		}
 		try
 		{
-			if(areaFileName.toUpperCase().trim().endsWith(".LST"))
+			if((areaFileName!=null)&&(areaFileName.toUpperCase().trim().endsWith(".LST")))
 			{
 				if(session!=null) session.println("Unpacking areas lists from file : '"+areaFileName+"'...");
 				String filePrefix="";
@@ -4627,7 +4627,7 @@ public class Import extends StdCommand
 				if(c>=0) filePrefix=areaFileName.substring(0,c+1);
 				c=0;
 				String fn="";
-				while((buf.length()>0)&&(c<buf.length()))
+				while((buf!=null)&&(buf.length()>0)&&(c<buf.length()))
 				{
 					switch(buf.charAt(c))
 					{
@@ -4649,7 +4649,7 @@ public class Import extends StdCommand
 					commands.addElement(filePrefix+fn);
 				continue;
 			}
-			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AREAS>")>=0))
+			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AREAS>")>=0))
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
 				{
@@ -4723,7 +4723,7 @@ public class Import extends StdCommand
 				continue;
 			}
 			else
-			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AREA>")>=0))
+			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AREA>")>=0))
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
 				{
@@ -4769,7 +4769,7 @@ public class Import extends StdCommand
 				continue;
 			}
 			else
-			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
+			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
 				{
@@ -4816,7 +4816,7 @@ public class Import extends StdCommand
 				continue;
 			}
 			else
-			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
+			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTMOBS))
 				{
@@ -4850,7 +4850,7 @@ public class Import extends StdCommand
 				continue;
 			}
 			else
-			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<PLAYERS>")>=0))
+			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<PLAYERS>")>=0))
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTPLAYERS))
 				{
@@ -4937,7 +4937,7 @@ public class Import extends StdCommand
 				continue;
 			}
 			else
-			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
+			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMPORTITEMS))
 				{
