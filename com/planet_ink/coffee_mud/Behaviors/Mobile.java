@@ -41,9 +41,10 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	
 	protected boolean wander=false;
 	protected boolean dooropen=false;
+	protected boolean firstRun=false;
 	protected int leash=0;
-	protected Hashtable leashHash=null;
-	protected Vector restrictedLocales=null;
+	protected Map<Room,Integer> leashHash=null;
+	protected List<Integer> restrictedLocales=null;
 	protected long[] altStatusTaker=null;
 	protected long tickStatus=Tickable.STATUS_NOT;
 	protected int ticksSuspended=0;
@@ -113,6 +114,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		wander=false;
 		dooropen=false;
 		leash=0;
+		firstRun=true;
 		leashHash=null;
 		restrictedLocales=null;
 		leash=CMParms.getParmInt(newParms,"LEASH",0);
@@ -137,9 +139,9 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				{
 					restrictedLocales.clear();
 					for(int i=0;i<Room.indoorDomainDescs.length;i++)
-						restrictedLocales.addElement(Integer.valueOf(Room.INDOORS+i));
+						restrictedLocales.add(Integer.valueOf(Room.INDOORS+i));
 					for(int i=0;i<Room.outdoorDomainDescs.length;i++)
-						restrictedLocales.addElement(Integer.valueOf(i));
+						restrictedLocales.add(Integer.valueOf(i));
 				}
 				else
 				{
@@ -152,10 +154,10 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 					if(code>=0)
 					{
 						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-							restrictedLocales.removeElement(Integer.valueOf(code));
+							restrictedLocales.remove(Integer.valueOf(code));
 						else
 						if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-							restrictedLocales.addElement(Integer.valueOf(code));
+							restrictedLocales.add(Integer.valueOf(code));
 					}
 					code=-1;
 					for(int i=0;i<Room.outdoorDomainDescs.length;i++)
@@ -164,10 +166,10 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 					if(code>=0)
 					{
 						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-							restrictedLocales.removeElement(Integer.valueOf(code));
+							restrictedLocales.remove(Integer.valueOf(code));
 						else
 						if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-							restrictedLocales.addElement(Integer.valueOf(code));
+							restrictedLocales.add(Integer.valueOf(code));
 					}
 
 				}
@@ -177,6 +179,28 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			restrictedLocales=null;
 	}
 
+	public boolean emergencyMove(MOB mob, Room room)
+	{
+		if(!CMLib.flags().canBreatheHere(mob, room)) // the fish exception
+		{
+			int dir=-1;
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
+				Room R=room.getRoomInDir(d);
+				if((R!=null)&&(okRoomForMe(mob,room,R)))
+				{
+					dir=d;
+					CMLib.tracking().walk(mob, dir, true, true);
+					if(mob.location()!=room)
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_MISC2+0;
@@ -188,38 +212,44 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		}
 		if((ticking instanceof MOB)
 		&&(!((MOB)ticking).isInCombat())
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY))
-		&&(canAct(ticking,tickID)))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY)))
 		{
-			Vector objections=null;
 			final MOB mob=(MOB)ticking;
 			final Room room=mob.location();
-			if(room==null) return true;
-			
-			if((room.getArea()!=null)
-			&&(room.getArea().getAreaState()!=Area.State.ACTIVE))
-				return true;
-			
-			if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>1))
+			if(firstRun)
 			{
-				tickDown=0;
-				return true;
+				firstRun=true;
+				emergencyMove(mob,room);
 			}
-			
-			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			if(canAct(ticking,tickID))
 			{
-				Room R=room.getRoomInDir(d);
-				if((R!=null)&&(!okRoomForMe(mob,room,R)))
+				Vector objections=null;
+				if(room==null) return true;
+				
+				if((room.getArea()!=null)
+				&&(room.getArea().getAreaState()!=Area.State.ACTIVE))
+					return true;
+				
+				if((!CMLib.flags().canWorkOnSomething(mob)) && (CMLib.dice().roll(1,100,0)>1))
 				{
-					if(objections==null) objections=new Vector();
-					objections.addElement(R);
+					tickDown=0;
+					return true;
 				}
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				{
+					Room R=room.getRoomInDir(d);
+					if((R!=null)&&(!okRoomForMe(mob,room,R)))
+					{
+						if(objections==null) objections=new Vector();
+						objections.addElement(R);
+					}
+				}
+				tickStatus=Tickable.STATUS_MISC2+16;
+				altStatusTaker=new long[1];
+				CMLib.tracking().beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
+				if(mob.location()==room)
+					tickDown=0;
 			}
-			tickStatus=Tickable.STATUS_MISC2+16;
-			altStatusTaker=new long[1];
-			CMLib.tracking().beMobile((MOB)ticking,dooropen,wander,false,objections!=null,altStatusTaker,objections);
-			if(mob.location()==room)
-				tickDown=0;
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;
