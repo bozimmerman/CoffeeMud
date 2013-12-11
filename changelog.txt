@@ -29,7 +29,7 @@
   26. New GENERATEable themes in /resources/randreas/example.xml: orcs, trolls, and goblins.  Also, lots of work done to fill it all out.
   27. New DISABLE flags: IMC2, I3 -- alternative means to turn them off.  At runtime, it puts those systems into idle.
   28. Another DISABLE flag: NEWCHARACTERS -- used for account-based muds to turn off (or not) char creation when NEWPLAYERS (accts) are.
-//TODO: disguise should check badnameslist
+  29: Disguise now checks badnameslist
 //TODO: export/import account/account data
 //TODO: make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.

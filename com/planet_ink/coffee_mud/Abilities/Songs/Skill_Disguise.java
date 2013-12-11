@@ -267,6 +267,12 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			else
+			if(CMLib.login().isBadName(how))
+			{
+				mob.tell("You cannot disguise yourself as that.");
+				return false;
+			}
+			else
 				how=CMStrings.capitalizeAndLower(how);
 			break;
 		}

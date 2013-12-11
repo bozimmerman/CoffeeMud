@@ -136,6 +136,25 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		return qualRaces;
 	}
 	
+	public boolean isBadName(String login)
+	{
+		login=login.toUpperCase().trim();
+		if(login.equalsIgnoreCase("all"))
+			return true;
+		for(int i=0;i<DEFAULT_BADNAMES.length;i++)
+			if(CMLib.english().containsString(login, DEFAULT_BADNAMES[i]))
+				return true;
+		Vector<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.Str.BADNAMES),true);
+		for(int v2=0;v2<V2.size();v2++)
+		{
+			String str2=V2.elementAt(v2);
+			if(str2.length()>0)
+				if(CMLib.english().containsString(login, str2))
+					return true;
+		}
+		return false;
+	}
+	
 	public boolean isOkName(String login, boolean spacesOk)
 	{
 		if(login.length()>20) return false;
@@ -152,25 +171,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((" THE A AN ").indexOf(" "+str+" ")>=0)
 				V.removeElementAt(v);
 		}
-		for(int v=0;v<V.size();v++)
-		{
-			String str=V.elementAt(v);
-			if(DEFAULT_BADNAMES.indexOf(" "+str+" ")>=0)
-				return false;
-		}
-		Vector<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.Str.BADNAMES),true);
-		for(int v2=0;v2<V2.size();v2++)
-		{
-			String str2=V2.elementAt(v2);
-			if(str2.length()>0)
-			for(int v=0;v<V.size();v++)
-			{
-				String str=V.elementAt(v);
-				if((str.length()>0)
-				&&(str.equalsIgnoreCase(str2)))
-					return false;
-			}
-		}
+
+		if(isBadName(login))
+			return false;
 
 		for(int c=0;c<login.length();c++)
 			if((login.charAt(c)!=' ')&&(!Character.isLetter(login.charAt(c))))

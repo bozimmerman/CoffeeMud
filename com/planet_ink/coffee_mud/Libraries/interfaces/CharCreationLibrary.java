@@ -44,6 +44,7 @@ public interface CharCreationLibrary extends CMLibrary
 	public void moveSessionToCorrectThreadGroup(final Session session, int theme);
 	public List<Race> raceQualifies(MOB mob, int theme);
 	public boolean isOkName(String login, boolean spacesOk);
+	public boolean isBadName(String login);
 	public void reloadTerminal(MOB mob);
 	public void showTheNews(MOB mob);
 	public void notifyFriends(MOB mob, String message);
@@ -97,7 +98,7 @@ public interface CharCreationLibrary extends CMLibrary
 	
 	public enum NewCharNameCheckResult { OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED }
 	
-	public final static String DEFAULT_BADNAMES = " LIST DELETE QUIT NEW HERE YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE NIGGER ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST NOBODY SOMEBODY MESSIAH ADMIN SYSOP ";
+	public final static String[] DEFAULT_BADNAMES = new String[]{"LIST","DELETE","QUIT","NEW","HERE","YOU","SHIT","FUCK","CUNT","FAGGOT","ASSHOLE","NIGGER","ARSEHOLE","PUSSY","COCK","SLUT","BITCH","DAMN","CRAP","GOD","JESUS","CHRIST","NOBODY","SOMEBODY","MESSIAH","ADMIN","SYSOP"};
 	
 	public enum LoginResult
 	{
