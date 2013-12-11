@@ -513,7 +513,7 @@ public class IMudClient implements I3Interface
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
 	}
 
-	public String getMudInfo(Mud mudToShow)
+	public String getMudInfo(I3Mud mudToShow)
 	{
 		StringBuilder buf=new StringBuilder("");
 		buf.append(CMStrings.padRight("Name",10)+": "+mudToShow.mud_name+"\n\r");
@@ -528,29 +528,26 @@ public class IMudClient implements I3Interface
 		return buf.toString();
 	}
 	
-	public List<Mud> mudFinder(String parms)
+	public List<I3Mud> mudFinder(String parms)
 	{
 		MudList list=Intermud.getAllMudsList();
 		if(list==null) return null;
-		Hashtable l=list.getMuds();
-		for(Enumeration e=l.elements();e.hasMoreElements();)
+		Map<String,I3Mud> l=list.getMuds();
+		for(I3Mud m : l.values())
 		{
-			Mud m=(Mud)e.nextElement();
 			if(m.mud_name.equals(parms))
-				return new XVector<Mud>(m);
+				return new XVector<I3Mud>(m);
 		}
-		for(Enumeration e=l.elements();e.hasMoreElements();)
+		for(I3Mud m : l.values())
 		{
-			Mud m=(Mud)e.nextElement();
 			if(m.mud_name.equalsIgnoreCase(parms))
-				return new XVector<Mud>(m);
+				return new XVector<I3Mud>(m);
 		}
 		if(parms.startsWith("*")&&(!parms.endsWith("*")))
 		{
-			List<Mud> muds=new XVector<Mud>();
-			for(Enumeration e=l.elements();e.hasMoreElements();)
+			List<I3Mud> muds=new XVector<I3Mud>();
+			for(I3Mud m : l.values())
 			{
-				Mud m=(Mud)e.nextElement();
 				if(m.mud_name.toLowerCase().endsWith(parms.toLowerCase()))
 					muds.add(m);
 			}
@@ -558,10 +555,9 @@ public class IMudClient implements I3Interface
 		}
 		if(parms.endsWith("*")&&(!parms.startsWith("*")))
 		{
-			List<Mud> muds=new XVector<Mud>();
-			for(Enumeration e=l.elements();e.hasMoreElements();)
+			List<I3Mud> muds=new XVector<I3Mud>();
+			for(I3Mud m : l.values())
 			{
-				Mud m=(Mud)e.nextElement();
 				if(m.mud_name.toLowerCase().startsWith(parms.toLowerCase()))
 					muds.add(m);
 			}
@@ -569,19 +565,17 @@ public class IMudClient implements I3Interface
 		}
 		if(parms.endsWith("*")&&(parms.startsWith("*")))
 		{
-			List<Mud> muds=new XVector<Mud>();
-			for(Enumeration e=l.elements();e.hasMoreElements();)
+			List<I3Mud> muds=new XVector<I3Mud>();
+			for(I3Mud m : l.values())
 			{
-				Mud m=(Mud)e.nextElement();
 				if(m.mud_name.toLowerCase().indexOf(parms.toLowerCase())>=0)
 					muds.add(m);
 			}
 			return muds;
 		}
-		List<Mud> muds=new XVector<Mud>();
-		for(Enumeration e=l.elements();e.hasMoreElements();)
+		List<I3Mud> muds=new XVector<I3Mud>();
+		for(I3Mud m : l.values())
 		{
-			Mud m=(Mud)e.nextElement();
 			if((m.state<0)&&(CMLib.english().containsString(m.mud_name,parms)))
 				muds.add(m);
 		}
@@ -593,11 +587,11 @@ public class IMudClient implements I3Interface
 		if((mob==null)||(!i3online())) return;
 		if(mob.isMonster()) return;
 		StringBuffer buf=new StringBuffer("\n\r");
-		List<Mud> muds=this.mudFinder(parms);
+		List<I3Mud> muds=this.mudFinder(parms);
 		if(muds.size()==0)
 			buf.append("Not found!");
 		else
-		for(Mud mudToShow : muds)
+		for(I3Mud mudToShow : muds)
 		{
 			buf.append(CMStrings.padRight("Name",10)+": "+mudToShow.mud_name+"\n\r");
 			buf.append(CMStrings.padRight("Address",10)+": "+mudToShow.address+"\n\r");
@@ -652,16 +646,14 @@ public class IMudClient implements I3Interface
 		Vector V=new Vector();
 		if(list!=null)
 		{
-			Hashtable l=list.getMuds();
-			for(Enumeration e=l.elements();e.hasMoreElements();)
+			for(I3Mud m : list.getMuds().values())
 			{
-				Mud m=(Mud)e.nextElement();
 				if(m.state<0)
 				{
 					boolean done=false;
 					for(int v=0;v<V.size();v++)
 					{
-						Mud m2=(Mud)V.elementAt(v);
+						I3Mud m2=(I3Mud)V.elementAt(v);
 						if(m2.mud_name.toUpperCase().compareTo(m.mud_name.toUpperCase())>0)
 						{
 							V.insertElementAt(m,v);
@@ -674,7 +666,7 @@ public class IMudClient implements I3Interface
 			}
 			for(int v=0;v<V.size();v++)
 			{
-				Mud m=(Mud)V.elementAt(v);
+				I3Mud m=(I3Mud)V.elementAt(v);
 				buf.append("["+CMStrings.padRight(m.mud_name,20)+"]["+CMStrings.padRight(m.base_mudlib,20)+"] "+m.address+" ("+m.player_port+")\n\r");
 			}
 		}

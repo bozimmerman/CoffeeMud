@@ -27,6 +27,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -552,11 +553,12 @@ public abstract class Interactive implements ServerUser {
 @SuppressWarnings({"unchecked","rawtypes"})
 class InputThread implements Runnable 
 {
-	private Vector  				input_buffer;
+	private List<String>  			input_buffer;
 	private BufferedReader 			stream;
 	private boolean 				destructed;
 	private Thread  				thread;
 	private Interactive 			user;
+	private volatile long			internalSize=0;
 
 	/**
 	 * Constructs and starts the thread which accepts user
@@ -598,7 +600,11 @@ class InputThread implements Runnable
 				return;
 			}
 			synchronized( this ) {
-				input_buffer.addElement(msg);
+				input_buffer.add(msg);
+				internalSize+=(msg.length()*2);
+			}
+			if(internalSize > (10 * 1024 * 1024)) {
+				Log.errOut("Excessive buffer size: "+internalSize);
 			}
 			try { Thread.sleep(10); }
 			catch( InterruptedException e ) { }
@@ -613,6 +619,7 @@ class InputThread implements Runnable
 	public void stop() {
 		destructed = true;
 		CMLib.killThread(thread,500,1);
+		input_buffer.clear();
 	}
 
 	protected synchronized String nextMessage() {
@@ -620,8 +627,9 @@ class InputThread implements Runnable
 
 		synchronized( input_buffer ) {
 			if( input_buffer.size() > 0 ) {
-				msg = (String)input_buffer.elementAt(0);
-				input_buffer.removeElementAt(0);
+				msg = (String)input_buffer.get(0);
+				input_buffer.remove(0);
+				internalSize-=(msg.length()*2);
 			}
 			else {
 				msg = null;

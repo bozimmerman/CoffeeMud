@@ -199,7 +199,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 */
 	static public boolean isUp(String mud) {
 		if(!isConnected()) return false;
-		Mud m = thread.getMud(mud);
+		I3Mud m = thread.getMud(mud);
 
 		if( m == null )
 			return false;
@@ -436,7 +436,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 			list = (Hashtable)packet.elementAt(7);
 			keys = list.keys();
 			while( keys.hasMoreElements() ) {
-				Mud mud = new Mud();
+				I3Mud mud = new I3Mud();
 				Object info;
 
 				mud.mud_name = (String)keys.nextElement();
@@ -945,12 +945,12 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Adds a mud to the list of known muds.
 	 * @param m the mud to add
 	 */
-	public void addMud(Mud m) {
+	public void addMud(I3Mud m) {
 		muds.addMud(m);
 		modified = Persistent.MODIFIED;
 	}
 
-	private Mud getMud(String mud_name) {
+	private I3Mud getMud(String mud_name) {
 		return muds.getMud(getMudNameFor(mud_name));
 	}
 
@@ -958,7 +958,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	 * Removed a mud from the list of known muds.
 	 * @param m the mud to remove
 	 */
-	public void removeMud(Mud m) {
+	public void removeMud(I3Mud m) {
 		muds.removeMud(m);
 		modified = Persistent.MODIFIED;
 	}
@@ -994,18 +994,13 @@ public class Intermud implements Runnable, Persistent, Serializable
 
 	private String getMudNameFor(String mud)
 	{
-		Enumeration list = muds.getMuds().keys();
 		mud = mud.toLowerCase().replace('.', ' ');
-		while( list.hasMoreElements() ) {
-			String str = (String)list.nextElement();
-
+		for(String str : muds.getMuds().keySet()) {
 			if( mud.equalsIgnoreCase(str) ) {
 				return str;
 			}
 		}
-		list = muds.getMuds().keys();
-		while( list.hasMoreElements() ) {
-			String str = (String)list.nextElement();
+    	for(String str : muds.getMuds().keySet()) {
 			if( CMLib.english().containsString(str,mud) ) {
 				return str;
 			}

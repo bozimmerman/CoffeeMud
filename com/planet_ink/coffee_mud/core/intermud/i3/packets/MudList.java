@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Hashtable;
+import java.util.Map;
 import java.io.Serializable;
 
 /**
@@ -44,7 +45,7 @@ public class MudList implements Serializable
 	public static final long serialVersionUID=0;
 	
 	private int id;
-	private Hashtable list;
+	private Map<String,I3Mud> list;
 	private int modified;
 
 	public MudList() {
@@ -67,7 +68,7 @@ public class MudList implements Serializable
 		modified = x;
 	}
 
-	public void addMud(Mud mud) {
+	public void addMud(I3Mud mud) {
 		if(( mud.mud_name == null )||( mud.mud_name.length() == 0 )) 
 		{
 			return;
@@ -89,11 +90,11 @@ public class MudList implements Serializable
 		modified = Persistent.MODIFIED;
 	}
 
-	public Mud getMud(String mud) {
+	public I3Mud getMud(String mud) {
 		if( !list.containsKey(mud) ) {
 			return null;
 		}
-		Mud tmp = (Mud)list.get(mud);
+		I3Mud tmp = (I3Mud)list.get(mud);
 
 		if( tmp.modified == Persistent.DELETED ) {
 			return null;
@@ -101,7 +102,7 @@ public class MudList implements Serializable
 		return tmp;
 	}
 
-	public void removeMud(Mud mud) {
+	public void removeMud(I3Mud mud) {
 		if( mud.mud_name == null ) {
 			return;
 		}
@@ -117,7 +118,7 @@ public class MudList implements Serializable
 		id = x;
 	}
 
-	public Hashtable getMuds() {
+	public Map<String,I3Mud> getMuds() {
 		return list;
 	}
 }

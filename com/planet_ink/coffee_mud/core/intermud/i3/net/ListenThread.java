@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.net;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -61,6 +62,11 @@ public class ListenThread extends Thread {
 				synchronized( clients ) {
 					clients.addElement(client);
 				}
+				if(CMSecurity.isDebugging(DbgFlag.I3))
+					Log.debugOut("I3Connection: "+client.getRemoteSocketAddress());
+				else
+				if(clients.size()>100)
+					Log.errOut("Excessive I3 connections: "+client.getRemoteSocketAddress());
 			}
 			catch( java.io.IOException e ) {
 			}
@@ -72,6 +78,7 @@ public class ListenThread extends Thread {
 		try
 		{
 			if(listen!=null) listen.close();
+			clients.clear();
 			this.interrupt();
 		}
 		catch(Exception e){}

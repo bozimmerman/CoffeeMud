@@ -30,7 +30,7 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class Mud implements Serializable
+public class I3Mud implements Serializable
 {
 	public static final long serialVersionUID=0;
 	
@@ -48,11 +48,11 @@ public class Mud implements Serializable
 	public int    tcp_port;
 	public int    udp_port;
    
-	public Mud() {
+	public I3Mud() {
 		super();
 	}
 	
-	public Mud(Mud other) {
+	public I3Mud(I3Mud other) {
 		super();
 		address = other.address;
 		admin_email = other.admin_email;

@@ -20,29 +20,11 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-/**
- * com.planet_ink.coffee_mud.core.intermud.i3.server.ServerThread
- * Copyright (c) 1996 George Reese
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  	  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Copyright (c) 1996 George Reese
- * The actual thread that runs the mud.
- */
-
 
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * The Server class uses exactly one thread ServerThread object
@@ -60,14 +42,14 @@ public class ServerThread implements Tickable
 {
 	private java.util.Date  boot_time=null;
 	private int 			count  = 1;
-	private Hashtable   	interactives;
 	private String  		mud_name;
-	private Hashtable   	objects;
 	private int 			port;
 	private boolean 		running;
 	private ImudServices	intermuds;
 	private ListenThread 	listen_thread=null;
 	private volatile long 	tickStatus=Tickable.STATUS_NOT;
+	private Map<String,ServerObject> objects;
+	private Map<String,ServerUser>   interactives;
 
 	protected ServerThread(String mname, 
 						   int mport,
@@ -274,11 +256,10 @@ public class ServerThread implements Tickable
 
 	protected synchronized ServerUser[] getInteractives() {
 		ServerUser[] tmp = new ServerUser[interactives.size()];
-		Enumeration e = interactives.elements();
 		int i = 0;
 
-		while( e.hasMoreElements() ) {
-			tmp[i++] = (ServerUser)e.nextElement();
+		for(ServerUser U : interactives.values()) {
+			tmp[i++] = U;
 		}
 		return tmp;
 	}
@@ -307,11 +288,9 @@ public class ServerThread implements Tickable
 	
 	protected synchronized ServerObject[] getObjects() {
 		ServerObject[] tmp = new ServerObject[objects.size()];
-		Enumeration e = objects.elements();
 		int i = 0;
-
-		while( e.hasMoreElements() ) {
-			tmp[i++] = (ServerObject)e.nextElement();
+		for(ServerObject O : objects.values()) {
+			tmp[i++] = O;
 		}
 		return tmp;
 	}
