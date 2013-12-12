@@ -57,7 +57,7 @@ public class Authenticate extends StdWebMacro
 		String login=getLogin(httpReq);
 		if((parms!=null)&&(parms.containsKey("SETPLAYER")))
 			httpReq.addFakeUrlParameter("PLAYER",login);
-		if((parms!=null)&&(parms.containsKey("SETACCOUNT"))&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0))
+		if((parms!=null)&&(parms.containsKey("SETACCOUNT"))&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1))
 		{
 			MOB mob=getAuthenticatedMob(httpReq);
 			if((mob!=null)&&(mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))
@@ -166,7 +166,7 @@ public class Authenticate extends StdWebMacro
 				mob.playerStats().setLastDateTime(System.currentTimeMillis());
 			return true;
 		}
-		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0)
+		if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 		{
 			final PlayerAccount acct=CMLib.players().getLoadAccount(login);
 			if((acct!=null)
@@ -198,9 +198,9 @@ public class Authenticate extends StdWebMacro
 			mob=CMLib.players().getLoadPlayer(login);
 			if((mob==null)
 			||(mob.playerStats()==null)
-			||((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0) && (mob.playerStats().getAccount()==null)))
+			||((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1) && (mob.playerStats().getAccount()==null)))
 			{
-				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0)
+				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 				{
 					PlayerAccount acct=CMLib.players().getLoadAccount(login);
 					if((acct!=null)
@@ -232,7 +232,7 @@ public class Authenticate extends StdWebMacro
 		String login=httpReq.getUrlParameter("LOGIN");
 		if((login!=null)&&(login.length()>0))
 		{
-			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>0)
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
 			{
 				PlayerAccount acct = CMLib.players().getLoadAccount(login);
 				if(acct != null)
