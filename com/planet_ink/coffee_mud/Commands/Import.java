@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -4850,7 +4849,7 @@ public class Import extends StdCommand
 				continue;
 			}
 			else
-			if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<PLAYERS>")>=0))
+			if((buf!=null)&&(buf.length()>20)&&((buf.substring(0,20).indexOf("<PLAYERS>")>=0)||(buf.substring(0,20).indexOf("<ACCOUNTS>")>=0)))
 			{
 				if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTPLAYERS))
 				{
@@ -4860,21 +4859,37 @@ public class Import extends StdCommand
 				if(CF!=null) buf=CF.textUnformatted();
 				if(session!=null)
 					session.rawPrint("Unpacking players from file: '"+areaFileName+"'...");
-				Vector mobs=new Vector();
+				List<MOB> mobs=new Vector();
+				List<PlayerAccount> accounts=new Vector();
 				String error=CMLib.coffeeMaker().fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0) importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 				if(error.length()==0)
-					error=CMLib.coffeeMaker().addPLAYERsFromXML(buf.toString(),mobs,session);
+					error=CMLib.coffeeMaker().addPlayersAndAccountsFromXML(buf.toString(),accounts,mobs,session);
 				if(session!=null)	
 					session.rawPrintln("!");
 				if(error.length()>0)
 					return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
 				
 				Vector names=null;
+				if(accounts.size()>0)
+				{
+					for(int m=0;m<accounts.size();m++)
+					{
+						PlayerAccount A=(PlayerAccount)accounts.get(m);
+						for(int af=0;af<commands.size();af++)
+							if((commands.elementAt(af) instanceof String)
+							&&(A.accountName().equalsIgnoreCase((String)commands.elementAt(af))))
+							{
+								if(names==null) names=new Vector();
+								names.addElement(commands.elementAt(af));
+							}
+					}
+				}
+				else
 				for(int m=0;m<mobs.size();m++)
 				{
-					MOB M=(MOB)mobs.elementAt(m);
+					MOB M=(MOB)mobs.get(m);
 					for(int af=0;af<commands.size();af++)
 						if((commands.elementAt(af) instanceof String)
 						&&(M.Name().equalsIgnoreCase((String)commands.elementAt(af))))
@@ -4886,9 +4901,30 @@ public class Import extends StdCommand
 				if(names!=null)
 				for(int n=0;n<names.size();n++)
 					commands.removeElement(names.elementAt(n));
+				for(int m=0;m<accounts.size();m++)
+				{
+					PlayerAccount A=(PlayerAccount)accounts.get(m);
+					if(CMLib.players().accountExists(A.accountName()))
+					{
+						if(!prompt)
+						{
+							returnAnError(session,"Account '"+A.accountName()+"' already exists.  Skipping.",compileErrors,commands);
+							continue;
+						}
+						else
+						if((session!=null)&&(!session.confirm("Account: \""+A.accountName()+"\" exists, obliterate first?","Y")))
+							continue;
+						else
+							CMLib.players().obliterateAccountOnly(CMLib.players().getLoadAccount(A.accountName()));
+					}
+					A.setLastUpdated(System.currentTimeMillis());
+					Log.sysOut("Import","Imported account: "+A.accountName());
+					CMLib.database().DBCreateAccount(A);
+					CMLib.players().addAccount(A);
+				}
 				for(int m=0;m<mobs.size();m++)
 				{
-					MOB M=(MOB)mobs.elementAt(m);
+					MOB M=(MOB)mobs.get(m);
 					if(names!=null)
 					{
 						boolean found=false;
@@ -4933,7 +4969,7 @@ public class Import extends StdCommand
 					M.removeFromGame(false,true);
 				}
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
-				if(session!=null) session.println("PLAYER(s) successfully imported!");
+				if(session!=null) session.println("Player(s)/Account(s) successfully imported!");
 				continue;
 			}
 			else

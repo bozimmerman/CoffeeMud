@@ -104,7 +104,8 @@ public interface GenericBuilder extends CMLibrary
 	public void populateShops(Environmental E, List<XMLpiece> buf);
 	public void setGenPropertiesStr(Environmental E, List<XMLpiece> buf);
 	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files);
-	public String addPLAYERsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
+	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files);
+	public String addPlayersAndAccountsFromXML(String xmlBuffer, List<PlayerAccount> addAccounts, List<MOB> addMobs, Session S);
 	public String getExtraEnvPropertiesStr(Environmental E);
 	public void fillFileSet(List<String> V, Set<String> H);
 	public void fillFileSet(Environmental E, Set<String> H);

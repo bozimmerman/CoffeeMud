@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
@@ -2891,9 +2890,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 	}
 
-	public String getPlayerXML(MOB mob,
-							   Set<CMObject> custom,
-							   Set<String> files)
+	public String getAccountXML(PlayerAccount account, Set<CMObject> custom, Set<String> files)
+	{
+		if(account==null) return "";
+		if(account.accountName().length()==0) return "";
+		StringBuilder xml=new StringBuilder("");
+		xml.append("<NAME>").append(account.accountName()).append("</NAME>");
+		xml.append("<PASS>").append(account.getPasswordStr()).append("</PASS>");
+		xml.append("<AXML>").append(account.getXML()).append("</AXML>");
+		xml.append("<PLAYERS>");
+		for(Enumeration<MOB> m=account.getLoadPlayers(); m.hasMoreElements(); )
+		{
+			MOB M=m.nextElement();
+			xml.append("<PLAYER>").append(getPlayerXML(M,custom,files)).append("</PLAYER>");
+		}
+		xml.append("</PLAYERS>");
+		return xml.toString();
+	}
+	
+	public String getPlayerXML(MOB mob, Set<CMObject> custom, Set<String> files)
 	{
 		if(mob==null) return "";
 		if(mob.Name().length()==0) return "";
@@ -3002,14 +3017,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return str.toString();
 	}
 
-	public String addPLAYERsFromXML(String xmlBuffer,
-									List<MOB> addHere,
-									Session S)
+	protected String addPlayersOnlyFromXML(List<XMLLibrary.XMLpiece> mV, List<MOB> addMobs, Session S)
 	{
-		List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(xmlBuffer);
-		if(xml==null) return unpackErr("PLAYERs","null 'xml'");
-		List<XMLLibrary.XMLpiece> mV=CMLib.xml().getContentsFromPieces(xml,"PLAYERS");
-		if(mV==null) return unpackErr("PLAYERs","null 'mV'");
 		for(int m=0;m<mV.size();m++)
 		{
 			XMLLibrary.XMLpiece mblk=mV.get(m);
@@ -3121,12 +3130,53 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			mob.recoverPhyStats();
 			mob.recoverMaxState();
 			mob.resetToMaxState();
-			addHere.add(mob);
+			addMobs.add(mob);
 		}
 		return "";
 	}
-
-
+	
+	public String addPlayersAndAccountsFromXML(String xmlBuffer, List<PlayerAccount> addAccounts, List<MOB> addMobs, Session S)
+	{
+		List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(xmlBuffer);
+		if(xml==null) return unpackErr("PLAYERs","null 'xml'");
+		List<XMLLibrary.XMLpiece> mV=CMLib.xml().getContentsFromPieces(xml,"PLAYERS");
+		if(mV!=null)
+			return addPlayersOnlyFromXML(mV,addMobs,S);
+		else
+		{
+			mV=CMLib.xml().getContentsFromPieces(xml,"ACCOUNTS");
+			if(mV==null) return unpackErr("PLAYERs","null 'mV'");
+			for(int m=0;m<mV.size();m++)
+			{
+				XMLLibrary.XMLpiece mblk=mV.get(m);
+				if((!mblk.tag.equalsIgnoreCase("ACCOUNT"))||(mblk.contents==null))
+					return unpackErr("ACCOUNTs","bad 'mblk'");
+				PlayerAccount account = null;
+				account = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+				String name=CMLib.xml().getValFromPieces(mblk.contents, "NAME");
+				String password=CMLib.xml().getValFromPieces(mblk.contents, "PASS");
+				XMLLibrary.XMLpiece xmlPiece=CMLib.xml().getPieceFromPieces(mblk.contents, "AXML");
+				String accountXML=xmlPiece.value;
+				XMLLibrary.XMLpiece playersPiece=CMLib.xml().getPieceFromPieces(mblk.contents, "PLAYERS");
+				Vector<String> names = new Vector<String>();
+				List<MOB> accountMobs=new Vector<MOB>();
+				String err=addPlayersOnlyFromXML(playersPiece.contents,accountMobs,S);
+				if(err.length()>0) return err;
+				addMobs.addAll(accountMobs);
+				for(MOB M : accountMobs)
+				{
+					M.playerStats().setAccount(account);
+					names.add(M.Name());
+				}
+				account.setAccountName(CMStrings.capitalizeAndLower(name));
+				account.setPassword(password);
+				account.setPlayerNames(names);
+				account.setXML(accountXML);
+				addAccounts.add(account);
+			}
+		}
+		return "";
+	}
 
 	public String getExtraEnvPropertiesStr(Environmental E)
 	{

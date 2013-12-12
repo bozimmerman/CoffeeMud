@@ -114,12 +114,19 @@ public class Export extends StdCommand
 		if((!commandType.equalsIgnoreCase("ROOM"))
 		&&(!commandType.equalsIgnoreCase("WORLD"))
 		&&(!commandType.equalsIgnoreCase("PLAYER"))
+		&&(!(commandType.equalsIgnoreCase("ACCOUNT")&&(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)))
 		&&(!commandType.equalsIgnoreCase("AREA")))
 		{
-			if(S!=null) mob.tell("Export what?  Room, World, Player, or Area?");
+			if(S!=null) 
+			{
+				if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+					mob.tell("Export what?  Room, World, Player, Account, or Area?");
+				else
+					mob.tell("Export what?  Room, World, Player, or Area?");
+			}
 			return false;
 		}
-		if(commandType.equalsIgnoreCase("PLAYER"))
+		if(commandType.equalsIgnoreCase("PLAYER")||commandType.equalsIgnoreCase("ACCOUNT"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORTPLAYERS))
 			{
@@ -142,7 +149,8 @@ public class Export extends StdCommand
 				||sub.equalsIgnoreCase("MOBS")
 				||sub.equalsIgnoreCase("WEAPONS")
 				||sub.equalsIgnoreCase("ARMOR"))
-			&&(!commandType.equalsIgnoreCase("PLAYER")))
+			&&(!commandType.equalsIgnoreCase("PLAYER"))
+			&&(!commandType.equalsIgnoreCase("ACCOUNT")))
 			{
 				subType=sub;
 				commands.removeElementAt(0);
@@ -153,6 +161,13 @@ public class Export extends StdCommand
 			else
 			if((commandType.equalsIgnoreCase("PLAYER"))
 			&&(CMLib.players().getLoadPlayer(sub)!=null))
+			{
+				subType=sub;
+				commands.removeElementAt(0);
+			}
+			else
+			if((commandType.equalsIgnoreCase("ACCOUNT"))
+			&&(CMLib.players().getLoadAccount(sub)!=null))
 			{
 				subType=sub;
 				commands.removeElementAt(0);
@@ -251,6 +266,25 @@ public class Export extends StdCommand
 				}
 				if(fileNameCode==2) fileName=fileName+"/player";
 				xml=x.toString()+"</PLAYERS>";
+				if(S!=null)
+					S.rawPrintln("!");
+			}
+			else
+			if(commandType.equalsIgnoreCase("ACCOUNT"))
+			{
+				StringBuffer x=new StringBuffer("<ACCOUNTS>");
+				if(S!=null)
+					S.rawPrint("Reading accounts and players...");
+				for(Enumeration<PlayerAccount> a=CMLib.players().accounts("",null);a.hasMoreElements();)
+				{
+					PlayerAccount A=a.nextElement();
+					//if(S!=null) S.rawPrint(".");
+					x.append("\r\n<ACCOUNT>");
+					x.append(CMLib.coffeeMaker().getAccountXML(A,custom,files));
+					x.append("</ACCOUNT>");
+				}
+				if(fileNameCode==2) fileName=fileName+"/account";
+				xml=x.toString()+"</ACCOUNTS>";
 				if(S!=null)
 					S.rawPrintln("!");
 			}
