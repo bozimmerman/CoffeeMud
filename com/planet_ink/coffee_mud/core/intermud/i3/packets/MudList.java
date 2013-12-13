@@ -94,7 +94,7 @@ public class MudList implements Serializable
 		if( !list.containsKey(mud) ) {
 			return null;
 		}
-		I3Mud tmp = (I3Mud)list.get(mud);
+		I3Mud tmp = list.get(mud);
 
 		if( tmp.modified == Persistent.DELETED ) {
 			return null;

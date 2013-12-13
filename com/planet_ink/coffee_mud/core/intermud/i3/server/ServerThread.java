@@ -87,7 +87,7 @@ public class ServerThread implements Tickable
 		ServerObject ob;
 
 		if( objects.containsKey(str) ) {
-			ob = (ServerObject)objects.get(str);
+			ob = objects.get(str);
 			if( ob.getDestructed() ) {
 				ob = null;
 			}

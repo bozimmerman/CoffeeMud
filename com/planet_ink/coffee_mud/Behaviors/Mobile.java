@@ -81,8 +81,8 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		{
 			if(currentRoom==null) return false;
 			if(leashHash==null)    leashHash=new Hashtable();
-			Integer DISTNOW=(Integer)leashHash.get(currentRoom);
-			Integer DISTLATER=(Integer)leashHash.get(newRoom);
+			Integer DISTNOW=leashHash.get(currentRoom);
+			Integer DISTLATER=leashHash.get(newRoom);
 			if(DISTNOW==null)
 			{
 				DISTNOW=Integer.valueOf(0);

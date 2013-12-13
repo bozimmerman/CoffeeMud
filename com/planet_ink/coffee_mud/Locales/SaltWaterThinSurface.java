@@ -45,6 +45,8 @@ public class SaltWaterThinSurface extends SaltWaterSurface
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 	protected String UnderWaterLocaleID(){return "UnderSaltWaterThinGrid";}
+	protected int UnderWaterDomainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
+	protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof UnderSaltWaterGrid)||(thatSea instanceof UnderSaltWaterThinGrid);}
 	public CMObject newInstance()
 	{
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.THINGRIDS))

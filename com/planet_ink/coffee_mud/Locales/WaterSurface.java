@@ -48,6 +48,8 @@ public class WaterSurface extends StdRoom implements Drink
 	public void setDecayTime(long time){}
 
 	protected String UnderWaterLocaleID(){return "UnderWaterGrid";}
+	protected int UnderWaterDomainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
+	protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof UnderWaterGrid)||(thatSea instanceof UnderWaterThinGrid);}
 
 	public void giveASky(int depth)
 	{
@@ -62,8 +64,7 @@ public class WaterSurface extends StdRoom implements Drink
 			return;
 		
 		if((rawDoors()[Directions.DOWN]==null)
-		&&((domainType()&Room.INDOORS)==0)
-		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+		&&(domainType()!=UnderWaterDomainType())
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 		&&(CMProps.getIntVar(CMProps.Int.SKYSIZE)!=0))
 		{
@@ -91,7 +92,7 @@ public class WaterSurface extends StdRoom implements Drink
 				}
 				if((thatSea!=null)
 				&&(thatSea.roomID().length()==0)
-				&&((thatSea instanceof UnderWaterGrid)||(thatSea instanceof UnderWaterThinGrid)))
+				&&(IsUnderWaterFatClass(thatSea)))
 				{
 					sea.rawDoors()[d]=thatSea;
 					sea.setRawExit(d,getRawExit(d));
@@ -116,11 +117,11 @@ public class WaterSurface extends StdRoom implements Drink
 		Room room=rawDoors()[Directions.DOWN];
 		if(room==null) return;
 		if((room.roomID().length()==0)
-		&&((room instanceof UnderWaterGrid)||(room instanceof UnderWaterThinGrid)))
+		&&(IsUnderWaterFatClass(room)))
 		{
 			((GridLocale)room).clearGrid(null);
-			rawDoors()[Directions.UP]=null;
-			setRawExit(Directions.UP,null);
+			rawDoors()[Directions.DOWN]=null;
+			setRawExit(Directions.DOWN,null);
 			CMLib.map().emptyRoom(room,null);
 			room.destroy();
 			skyedYet=false;
@@ -136,6 +137,7 @@ public class WaterSurface extends StdRoom implements Drink
 		}
 		return super.okMessage(myHost,msg);
 	}
+
 	public static int isOkWaterSurfaceAffect(Room room, CMMsg msg)
 	{
 		if(CMLib.flags().isSleeping(room))

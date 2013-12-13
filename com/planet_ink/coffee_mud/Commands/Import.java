@@ -4876,7 +4876,7 @@ public class Import extends StdCommand
 				{
 					for(int m=0;m<accounts.size();m++)
 					{
-						PlayerAccount A=(PlayerAccount)accounts.get(m);
+						PlayerAccount A=accounts.get(m);
 						for(int af=0;af<commands.size();af++)
 							if((commands.elementAt(af) instanceof String)
 							&&(A.accountName().equalsIgnoreCase((String)commands.elementAt(af))))
@@ -4889,7 +4889,7 @@ public class Import extends StdCommand
 				else
 				for(int m=0;m<mobs.size();m++)
 				{
-					MOB M=(MOB)mobs.get(m);
+					MOB M=mobs.get(m);
 					for(int af=0;af<commands.size();af++)
 						if((commands.elementAt(af) instanceof String)
 						&&(M.Name().equalsIgnoreCase((String)commands.elementAt(af))))
@@ -4903,7 +4903,7 @@ public class Import extends StdCommand
 					commands.removeElement(names.elementAt(n));
 				for(int m=0;m<accounts.size();m++)
 				{
-					PlayerAccount A=(PlayerAccount)accounts.get(m);
+					PlayerAccount A=accounts.get(m);
 					if(CMLib.players().accountExists(A.accountName()))
 					{
 						if(!prompt)
@@ -4924,7 +4924,7 @@ public class Import extends StdCommand
 				}
 				for(int m=0;m<mobs.size();m++)
 				{
-					MOB M=(MOB)mobs.get(m);
+					MOB M=mobs.get(m);
 					if(names!=null)
 					{
 						boolean found=false;

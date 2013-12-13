@@ -379,6 +379,7 @@ public class Masonry extends CraftingSkill
 								R2.setArea(R.getArea());
 								R2.rawDoors()[Directions.UP]=R;
 								R2.setRawExit(Directions.UP,CMClass.getExit("Open"));
+								R.clearSky();
 								R.rawDoors()[Directions.DOWN]=R2;
 								R.setRawExit(Directions.DOWN,CMClass.getExit("Open"));
 								LandTitle title=CMLib.law().getLandTitle(R);

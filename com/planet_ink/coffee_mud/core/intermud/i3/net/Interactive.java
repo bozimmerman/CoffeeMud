@@ -627,7 +627,7 @@ class InputThread implements Runnable
 
 		synchronized( input_buffer ) {
 			if( input_buffer.size() > 0 ) {
-				msg = (String)input_buffer.get(0);
+				msg = input_buffer.get(0);
 				input_buffer.remove(0);
 				internalSize-=(msg.length()*2);
 			}

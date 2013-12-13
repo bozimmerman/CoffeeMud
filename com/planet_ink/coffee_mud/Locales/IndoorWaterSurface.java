@@ -32,8 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
-public class IndoorWaterSurface extends StdRoom implements Drink
+public class IndoorWaterSurface extends WaterSurface implements Drink
 {
 	public String ID(){return "IndoorWaterSurface";}
 	public IndoorWaterSurface()
@@ -44,35 +43,8 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 		climask=Places.CLIMASK_WET;
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
-	public long decayTime(){return 0;}
-	public void setDecayTime(long time){}
 
-
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
-		{
-		case -1: return false;
-		case 1: return true;
-		}
-		return super.okMessage(myHost,msg);
-	}
-
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		super.executeMsg(myHost,msg);
-		UnderWater.sinkAffects(this,msg);
-	}
-	public int thirstQuenched(){return 1000;}
-	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
-	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return RawMaterial.RESOURCE_FRESHWATER;}
-	public void setLiquidType(int newLiquidType){}
-	public void setThirstQuenched(int amount){}
-	public void setLiquidHeld(int amount){}
-	public void setLiquidRemaining(int amount){}
-	public boolean containsDrink(){return true;}
-	public boolean disappearsAfterDrinking(){return false;}
-	public int amountTakenToFillMe(Drink theSource){return 0;}
-	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
+	protected String UnderWaterLocaleID(){return "IndoorUnderWaterGrid";}
+	protected int UnderWaterDomainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
+	protected boolean IsUnderWaterFatClass(Room thatSea){return (thatSea instanceof IndoorUnderWaterGrid)||(thatSea instanceof IndoorUnderWaterThinGrid);}
 }
