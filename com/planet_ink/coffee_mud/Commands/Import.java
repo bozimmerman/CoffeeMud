@@ -6296,7 +6296,7 @@ public class Import extends StdCommand
 			Log.errOut("Import",nrf.toString());
 		}
 
-		if(session!=null) session.print("\n\nSaving all areas imported...");
+		if((doneRooms.size()>0)&&(session!=null)) session.print("\n\nSaving all areas imported...");
 		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			Room saveRoom=(Room)e.nextElement();

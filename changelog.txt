@@ -32,8 +32,7 @@
   29: Disguise now checks badnameslist
   30. IndoorWaterSurface now generates IndoorUnderWaterGrid - would normally shy from this as a backward compatibility issue, but its an oversight.
   31. New locales: IndoorUnderWaterGrid, IndoorUnderWaterThinGrid, and IndoorWaterThinSurface classes
-  
-//TODO: export/import account/account data - just test!
+  32. Can now export/import entire accounts
 //TODO: make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
 //      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)

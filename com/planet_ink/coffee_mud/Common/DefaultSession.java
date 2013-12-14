@@ -2067,6 +2067,10 @@ public class DefaultSession implements Session
 			}
 			}
 		}
+		catch(Throwable t)
+		{
+			Log.errOut(t);
+		}
 		finally
 		{
 			synchronized(this)
