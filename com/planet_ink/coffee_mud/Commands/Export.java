@@ -358,6 +358,20 @@ public class Export extends StdCommand
 			xml=x.toString()+"</PLAYERS>";
 		}
 		else
+		if(commandType.equalsIgnoreCase("ACCOUNT"))
+		{
+			StringBuffer x=new StringBuffer("<ACCOUNTS>");
+			PlayerAccount A=CMLib.players().getLoadAccount(subType);
+			if(A!=null)
+			{
+				x.append("\r\n<ACCOUNT>");
+				x.append(CMLib.coffeeMaker().getAccountXML(A,custom,files));
+				x.append("</ACCOUNT>");
+			}
+			if(fileNameCode==2) fileName=fileName+"/player";
+			xml=x.toString()+"</ACCOUNTS>";
+		}
+		else
 		if(subType.equalsIgnoreCase("MOBS"))
 		{
 			if(fileNameCode==2) fileName=fileName+"/mobs";
