@@ -229,7 +229,7 @@ public class Load extends StdCommand
 					}
 					CMObjectType whatType=CMClass.findObjectType(what);
 					if(whatType==null)
-						mob.tell("Don't know how to load a '"+what+"'.  Try one of the following: "+ARCHON_LIST);
+						mob.tell("Don't know how to load a '"+what+"'.  Try one of the following: "+CMParms.toStringList(ARCHON_LIST));
 					else
 					{
 						Object O=CMClass.getObjectOrPrototype(unloadClassName);
