@@ -1092,11 +1092,10 @@ public class StdArea implements Area
 		statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]=0;
 		statData[Area.Stats.VISITABLE_ROOMS.ordinal()]=getProperRoomnumbers().roomCountAllAreas();
 		long totalAlignments=0;
-		Room R=null;
 		MOB mob=null;
 		for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
-			R=r.nextElement();
+			final Room R=r.nextElement();
 			if(R instanceof GridLocale)
 				statData[Area.Stats.VISITABLE_ROOMS.ordinal()]--;
 			if((R.domainType()&Room.INDOORS)>0)
