@@ -2495,12 +2495,13 @@ public class CMMap extends StdLibrary implements WorldMap
 				Room R=r.nextElement();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB mob=R.fetchInhabitant(m);
+					final MOB mob=R.fetchInhabitant(m);
 					if((mob!=null)&&(mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
 					{
-						boolean ticked=CMLib.threads().isTicking(mob,Tickable.TICKID_MOB);
-						boolean isDead=mob.amDead();
-						String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
+						final boolean ticked=CMLib.threads().isTicking(mob,Tickable.TICKID_MOB);
+						final boolean isDead=mob.amDead();
+						final Room startR=mob.getStartRoom();
+						final String wasFrom=(startR!=null)?startR.roomID():"NULL";
 						if(!ticked)
 						{
 							if(CMLib.players().getPlayer(mob.Name())==null)

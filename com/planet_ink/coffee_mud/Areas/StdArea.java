@@ -65,7 +65,7 @@ public class StdArea implements Area
 	protected PhyStats  basePhyStats	=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	
 	protected STreeMap<String,String> blurbFlags	 =new STreeMap<String,String>();
-	protected STreeMap<String, Room>  properRooms	=new STreeMap<String, Room>(new RoomIDComparator());
+	protected STreeMap<String, Room>  properRooms	 =new STreeMap<String, Room>(new RoomIDComparator());
 	protected RoomnumberSet 		  properRoomIDSet=null;
 	protected RoomnumberSet 		  metroRoomIDSet =null;
 	protected SLinkedList<Area> 	  children  	 =new SLinkedList<Area>();
