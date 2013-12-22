@@ -1329,9 +1329,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(isHygienicMessage(msg,minHygiene,adjHygiene))
 		{
 			final MOB mob=msg.source();
-			if(mob.playerStats().getHygiene()>adjHygiene)
+			if(mob.playerStats().getHygiene()>(-adjHygiene))
 			{
-				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
+				mob.playerStats().adjHygiene(adjHygiene);
 				if(mob.playerStats().getHygiene()>(PlayerStats.HYGIENE_DELIMIT/2))
 					mob.tell("You feel a little cleaner, but are still very dirty.");
 				else
