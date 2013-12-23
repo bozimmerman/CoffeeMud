@@ -52,9 +52,11 @@ public class QuestLoader
 				String questName=DBConnections.getRes(R,"CMQUESID");
 				String questScript=DBConnections.getRes(R,"CMQSCRPT");
 				String questWinners=DBConnections.getRes(R,"CMQWINNS");
+				long flags=DBConnections.getLongRes(R, "CMQFLAGS");
 				Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
 				Q.setScript(questScript);
 				Q.setWinners(questWinners);
+				Q.setFlags(flags);
 				if(Q.name().length()==0)
 					Q.setName(questName);
 				if(Q.name().length()==0)
@@ -88,11 +90,13 @@ public class QuestLoader
 		"INSERT INTO CMQUESTS ("
 		+"CMQUESID, "
 		+"CMQUTYPE, "
+		+"CMQFLAGS, "
 		+"CMQSCRPT, "
 		+"CMQWINNS "
 		+") values ("
 		+"'"+Q.name()+"',"
 		+"'"+CMClass.classID(Q)+"',"
+		+Q.getFlags()+","
 		+"?,"
 		+"?"
 		+")", new String[][]{{Q.script()+" ",Q.getWinnerStr()+" "}});
@@ -121,11 +125,13 @@ public class QuestLoader
 				"INSERT INTO CMQUESTS ("
 				+"CMQUESID, "
 				+"CMQUTYPE, "
+				+"CMQFLAGS, "
 				+"CMQSCRPT, "
 				+"CMQWINNS "
 				+") values ("
 				+"'"+Q.name()+"',"
 				+"'"+CMClass.classID(Q)+"',"
+				+Q.getFlags()+","
 				+"?,"
 				+"?"
 				+")");

@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 import java.io.IOException;
 
@@ -788,6 +787,7 @@ public class Modify extends StdCommand
 						else
 						{
 							Q.setSuspended(false);
+							CMLib.database().DBUpdateQuest(Q);
 							mob.tell("Quest '"+Q.name()+"' enabled.");
 						}
 						break;
@@ -801,6 +801,7 @@ public class Modify extends StdCommand
 							if(Q.running())
 								Q.stopQuest();
 							Q.setSuspended(true);
+							CMLib.database().DBUpdateQuest(Q);
 							mob.tell("Quest '"+Q.name()+"' disabled.");
 						}
 						break;

@@ -109,6 +109,7 @@ public class QuestMgr extends StdWebMacro
 				if(!Q.suspended())
 					return "Quest '"+Q.name()+"' was not disabled.";
 				Q.setSuspended(false);
+				CMLib.database().DBUpdateQuest(Q);
 				return "Quest '"+Q.name()+"' enabled.";
 			}
 			if(parms.containsKey("DISABLE"))
@@ -118,6 +119,7 @@ public class QuestMgr extends StdWebMacro
 				Q.setSuspended(true);
 				if(Q.running())
 					Q.stopQuest();
+				CMLib.database().DBUpdateQuest(Q);
 				return "Quest '"+Q.name()+"' disabled.";
 			}
 			if(parms.containsKey("STEP"))

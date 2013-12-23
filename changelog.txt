@@ -1,4 +1,5 @@
 # Build 5.8.1 Release ?/?/2013
+   0. **** Database Schema Changes Were Made **** Make sure you follow the Installation Guide to upgrade your database. 
    1. QuestManager "STEP"ping feature now supports "STEP AUTO" to have steps proceed based on duration instead of MOBPROG triggers.
    2. Areas and Rooms now support "atmosphere" to designate what players have available for breathing.
    3. Rooms "climate" is now an editable feature, usually inherited from the area Climate, but modifiable at will.
@@ -33,6 +34,7 @@
   30. IndoorWaterSurface now generates IndoorUnderWaterGrid - would normally shy from this as a backward compatibility issue, but its an oversight.
   31. New locales: IndoorUnderWaterGrid, IndoorUnderWaterThinGrid, and IndoorWaterThinSurface classes
   32. Can now export/import entire accounts
+  33. Quests will now save/restore their suspended status.
 //TODO: make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
 //      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)

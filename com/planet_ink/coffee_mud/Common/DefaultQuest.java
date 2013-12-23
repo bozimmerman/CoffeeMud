@@ -117,8 +117,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 9: return ""+waitInterval();
 		case 10: return SPAWN_DESCS[getSpawn()];
 		case 11: return displayName();
-		case 13: return Boolean.toString(durable);
 		case 12: break; // instructions should fall through
+		case 13: return Boolean.toString(durable);
+		case 14: return ""+author();
 		}
 		return questState.getStat(named);
 	}
@@ -3438,7 +3439,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.QUESTS)
 		||(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
 		||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-		||(suspended))
+		||(suspended()))
 			return true;
 
 		tickStatus=Tickable.STATUS_START;
@@ -3767,6 +3768,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return x;
 	}
 
+	public long getFlags()
+	{
+		return suspended()?FLAG_SUSPENDED:0;
+	}
+	
+	public void setFlags(long flags)
+	{
+		if(CMath.bset(flags,FLAG_SUSPENDED))
+		{
+			setSuspended(true);
+		}
+	}
+	
 	public Environmental getQuestThing(Iterator<? extends Environmental> e, int dex, CMClass.CMObjectType type, int[] num)
 	{
 		if(e==null) return null;

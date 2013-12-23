@@ -632,6 +632,18 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if the quest is successfully put into a non-running wait state
 	 */
 	public boolean resetWaitRemaining(long minusEllapsed);
+	/**
+	 * Returns flag bitmap
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#FLAG_SUSPENDED
+	 * @return the flag bitmap
+	 */
+	public long getFlags();
+	/**
+	 * Sets the flag bitmap
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#FLAG_SUSPENDED
+	 * @param flags the flag bitmap
+	 */
+	public void setFlags(long flags);
 	
 	/** A quest spawn flag denoting that this quest does not spawn its steps */
 	public final static int SPAWN_NO=0;
@@ -641,6 +653,9 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public final static int SPAWN_ANY=2;
 	/** Descriptions of the several quest step spawn flags */
 	public final static String[] SPAWN_DESCS={"FALSE","TRUE","ALL"};
+	
+	/** A quest flag @see {@link Quest#getFlags()} */
+	public final static int FLAG_SUSPENDED=1;
 	
 	/** The list of BASIC non-iterative variable codes that pertain to a quest object */
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
