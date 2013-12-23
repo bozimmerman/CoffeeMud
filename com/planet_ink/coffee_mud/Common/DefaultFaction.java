@@ -1267,16 +1267,29 @@ public class DefaultFaction implements Faction, MsgListener
 		public boolean just100(){return just100;}
 		public void setDirection(int newVal){direction=newVal;}
 		public void setFactor(double newVal){factor=newVal;}
-		public void setTargetZapper(String newVal)
+		public void setTargetZapper(String newVal) { targetZapperStr=newVal; }
+		public MaskingLibrary.CompiledZapperMask compiledTargetZapper()
 		{
-			targetZapperStr=newVal;
-			compiledTargetZapper=null;
-			if(newVal.trim().length()>0)
-				compiledTargetZapper=CMLib.masking().maskCompile(newVal);
+			if(compiledTargetZapper == null)
+			{
+				if(targetZapperStr.trim().length()>0)
+					compiledTargetZapper=CMLib.masking().maskCompile(targetZapperStr);
+			}
+			return compiledTargetZapper;
 		}
-		public MaskingLibrary.CompiledZapperMask compiledTargetZapper(){return compiledTargetZapper;}
-		public MaskingLibrary.CompiledZapperMask compiledSourceZapper(){return compiledSourceZapper;}
-		public String getTriggerParm(String parmName) {
+		public MaskingLibrary.CompiledZapperMask compiledSourceZapper()
+		{
+			if(compiledSourceZapper == null)
+			{
+				String sourceZapperStr=savedTriggerParms.get("MASK");
+				if((sourceZapperStr!=null)&&(sourceZapperStr.length()>0))
+					compiledSourceZapper=CMLib.masking().maskCompile(sourceZapperStr);
+			}
+			return compiledSourceZapper;
+		}
+		
+		public String getTriggerParm(String parmName) 
+		{
 			if((triggerParms==null)||(triggerParms.length()==0))
 				return "";
 			String S=savedTriggerParms.get(parmName);
@@ -1397,11 +1410,9 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		public boolean applies(MOB source, MOB target)
 		{
-			if((compiledTargetZapper!=null)
-			&&(!CMLib.masking().maskCheck(compiledTargetZapper,target,false)))
+			if(!CMLib.masking().maskCheck(compiledTargetZapper(),target,false))
 				return false;
-			if((compiledSourceZapper!=null)
-			&&(!CMLib.masking().maskCheck(compiledSourceZapper,target,false)))
+			if(!CMLib.masking().maskCheck(compiledSourceZapper(),target,false))
 				return false;
 			return true;
 		}
@@ -1412,9 +1423,6 @@ public class DefaultFaction implements Faction, MsgListener
 			triggerParms=newVal;
 			savedTriggerParms=CMParms.parseEQParms(newVal);
 			compiledSourceZapper=null;
-			String S=savedTriggerParms.get("MASK");
-			if((S!=null)&&(S.length()>0))
-				compiledSourceZapper=CMLib.masking().maskCompile(S);
 		}
 		public Object stateVariable(int x){ return ((x>=0)&&(x<stateVariables.length))?stateVariables[x]:null;}
 		public void setStateVariable(int x, Object newVal)
