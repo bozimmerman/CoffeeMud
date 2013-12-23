@@ -88,9 +88,16 @@ public class Spell_MagicItem extends Spell
 			return false;
 		}
 
+		
 		if((wandThis.ID().equals("Spell_Stoneskin"))
 		||(wandThis.ID().equals("Spell_MirrorImage"))
-		||(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
+		||(CMath.bset(wandThis.flags(), FLAG_SUMMONING)))
+		{
+			mob.tell("That spell cannot be used to enchant anything.");
+			return false;
+		}
+		
+		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
 		||(((StdAbility)wandThis).usageCost(null,true)[0]>45))
 		{
 			mob.tell("That spell is too powerful to enchant into anything.");
