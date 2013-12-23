@@ -1177,6 +1177,12 @@ public class CMStrings
 			return thisStr;
 		return thisStr.substring(0,thisMuch);
 	}
+	public final static String trimQuotes(final String thisStr)
+	{
+		if(thisStr.startsWith("\"")&&thisStr.endsWith("\""))
+			return thisStr.substring(1,thisStr.length()-1);
+		return thisStr;
+	}
 	public final static String padRight(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors=lengthMinusColors(thisStr);

@@ -38,6 +38,7 @@ public class Prop_RoomWatch extends Property
 	public String name(){ return "Different Room Can Watch";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	protected Vector newRooms=null;
+	protected String prefix=null;
 
 	public String accountForYourself()
 	{ return "Different View of "+text();	}
@@ -46,6 +47,7 @@ public class Prop_RoomWatch extends Property
 	{
 		super.setMiscText(newText);
 		newRooms=null;
+		prefix=null;
 	}
 	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -57,7 +59,18 @@ public class Prop_RoomWatch extends Property
 			newRooms=new Vector();
 			for(int v=0;v<V.size();v++)
 			{
-				Room R=CMLib.map().getRoom((String)V.elementAt(v));
+				String roomID=(String)V.elementAt(v);
+				int x=roomID.indexOf('=');
+				if(x>0)
+				{
+					String var=roomID.substring(0,x).trim().toLowerCase();
+					if(var.equalsIgnoreCase("prefix"))
+					{
+						prefix=CMStrings.trimQuotes(roomID.substring(x+1).trim());
+						continue;
+					}
+				}
+				Room R=CMLib.map().getRoom(roomID);
 				if(R!=null) newRooms.addElement(R);
 			}
 		}
@@ -76,7 +89,7 @@ public class Prop_RoomWatch extends Property
 					CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),
 								  CMMsg.NO_EFFECT,null,
 								  CMMsg.NO_EFFECT,null,
-								  CMMsg.MSG_OK_VISUAL,msg.othersMessage());
+								  CMMsg.MSG_OK_VISUAL,(prefix!=null)?(prefix+msg.othersMessage()):msg.othersMessage());
 					if(R.okMessage(msg.source(),msg2))
 					for(int i=0;i<R.numInhabitants();i++)
 					{
