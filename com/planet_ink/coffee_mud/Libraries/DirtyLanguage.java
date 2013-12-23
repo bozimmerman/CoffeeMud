@@ -334,6 +334,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		if(parserSections==null)
 		{
 			parserSections=loadFileSections("resources/parser_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
+			if(parserSections == null)
+				parserSections=new Hashtable<String,DVector>();
 			Resources.submitResource(parserKey,parserSections);
 		}
 		return parserSections.get(parser);
@@ -347,6 +349,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		if(translationSections==null)
 		{
 			translationSections=loadFileSections("resources/translation_"+language.toUpperCase()+"_"+country.toUpperCase()+".properties");
+			if(translationSections == null)
+				translationSections=new Hashtable<String,DVector>();
 			Resources.submitResource(translatorKey,translationSections);
 		}
 		return translationSections.get(parser);
