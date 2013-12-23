@@ -47,6 +47,7 @@ public class IMudInterface implements ImudServices, Serializable
 	public String version="CoffeeMud vX.X";
 	public String name="CoffeeMud";
 	public String i3state="Development";
+	public Room   universalR=null;
 	public int port=5555;
 	public List<CMChannel> channels=new XVector<CMChannel>(
 			new CMChannel[]{new CMChannel("I3CHAT","diku_chat",""),
@@ -142,6 +143,15 @@ public class IMudInterface implements ImudServices, Serializable
 		return CMLib.sessions().findPlayerOnline(mobName, true);
 	}
 
+	protected Room getUniversalRoom()
+	{
+		if(universalR==null)
+		{
+			universalR=CMClass.getLocale("StdRoom");		
+		}
+		return universalR;
+	}
+	
 	public String fixColors(String str)
 	{
 		StringBuffer buf=new StringBuffer(str);
@@ -195,14 +205,6 @@ public class IMudInterface implements ImudServices, Serializable
 		return str.trim();
 	}
 
-	public void destroymob(MOB mob)
-	{
-		if(mob==null) return;
-		Room R=mob.location();
-		mob.destroy();
-		if(R!=null) R.destroy();
-	}
-
 	/**
 	 * Handles an incoming I3 packet asynchronously.
 	 * An implementation should make sure that asynchronously
@@ -249,7 +251,7 @@ public class IMudInterface implements ImudServices, Serializable
 					ck.message_target=fixColors(CMProps.applyINIFilter(ck.message_target,CMProps.Str.CHANNELFILTER));
 				MOB mob=CMClass.getFactoryMOB();
 				mob.setName(ck.sender_name+"@"+ck.sender_mud);
-				mob.setLocation(CMClass.getLocale("StdRoom"));
+				mob.setLocation(getUniversalRoom());
 				MOB targetMOB=null;
 				boolean killtargetmob=false;
 				if(ck.type==Packet.CHAN_TARGET)
@@ -261,7 +263,7 @@ public class IMudInterface implements ImudServices, Serializable
 						killtargetmob=true;
 						targetMOB=CMClass.getFactoryMOB();
 						targetMOB.setName(ck.target_visible_name+"@"+ck.target_mud);
-						targetMOB.setLocation(CMClass.getLocale("StdRoom"));
+						targetMOB.setLocation(getUniversalRoom());
 					}
 					String msgs=socialFixIn(ck.message);
 					msgs=CMProps.applyINIFilter(msgs,CMProps.Str.EMOTEFILTER);
@@ -294,8 +296,8 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(M.location().okMessage(M,msg)))
 						M.executeMsg(M,msg);
 				}
-				destroymob(mob);
-				if((targetMOB!=null)&&(killtargetmob)) destroymob(targetMOB);
+				mob.destroy();
+				if((targetMOB!=null)&&(killtargetmob)) targetMOB.destroy();
 			}
 			break;
 		case Packet.LOCATE_QUERY:
@@ -542,16 +544,26 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.TELL:
 			{
 				TellPacket tk=(TellPacket)packet;
-				MOB mob=CMClass.getFactoryMOB();
-				mob.setName(tk.sender_name+"@"+tk.sender_mud);
-				mob.setLocation(CMClass.getLocale("StdRoom"));
 				MOB smob=findSessMob(tk.target_name);
 				if(smob!=null)
 				{
+					MOB mob=null;
+					PlayerStats pstats=smob.playerStats();
+					if(pstats!=null)
+					{
+						if((pstats.replyTo()!=null)&&(pstats.replyTo().Name().indexOf('@')>=0))
+							mob=pstats.replyTo();
+						else
+							mob=CMClass.getFactoryMOB();
+						pstats.setReplyTo(mob, PlayerStats.REPLY_TELL);
+					}
+					else
+						mob=CMClass.getFactoryMOB();
+    				mob.setName(tk.sender_name+"@"+tk.sender_mud);
+    				mob.setLocation(getUniversalRoom());
 					tk.message=fixColors(CMProps.applyINIFilter(tk.message,CMProps.Str.SAYFILTER));
 					CMLib.commands().postSay(mob,smob,tk.message,true,true);
 				}
-				destroymob(mob);
 			}
 			break;
 		default:
