@@ -45,6 +45,8 @@ public class Spell_Spellbinding extends Spell
 	protected int overrideMana(){return 0;}
 	public String displayText()
 	{
+		if(spellbindings.size()==0)
+			return "";
 		StringBuffer bindings=new StringBuffer("");
 		for(int i=0;i<spellbindings.size();i++)
 			bindings.append(" "+((String)spellbindings.elementAt(i,1)));
@@ -54,6 +56,8 @@ public class Spell_Spellbinding extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
+	public boolean isAutoInvoked(){ return spellbindings.size()>0; }
+	
 	protected DVector spellbindings=new DVector(2);
 	protected final static int COST_STATIC=50;
 	
@@ -80,11 +84,9 @@ public class Spell_Spellbinding extends Spell
 			return super.text();
 		try
 		{
-
 			ByteArrayOutputStream bytes=new ByteArrayOutputStream();
 			new ObjectOutputStream(bytes).writeObject(spellbindings);
 			return CMParms.toSemicolonList(bytes.toByteArray())+";";
-
 		}
 		catch(Exception e)
 		{

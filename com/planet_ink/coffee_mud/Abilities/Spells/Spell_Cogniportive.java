@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -111,14 +110,9 @@ public class Spell_Cogniportive extends Spell
 		return "";
 	}
 
-	public void waveIfAble(MOB mob,
-						   Environmental afftarget,
-						   Item me)
+	public void waveIfAble(MOB mob, Environmental afftarget, Item me)
 	{
-		if((mob!=null)
-		   &&(mob.isMine(me))
-		   &&(mob.location()!=null)
-		   &&(me!=null))
+		if((mob!=null) && (mob.isMine(me)) && (mob.location()!=null) && (me!=null))
 		{
 			if(text().length()==0)
 				setMiscText(establishHome(mob,me,false));

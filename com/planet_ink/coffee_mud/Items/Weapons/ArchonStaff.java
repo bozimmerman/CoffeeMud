@@ -92,9 +92,20 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		return true;
 	}
 	
-	public void waveIfAble(MOB mob,
-						   Physical afftarget,
-						   String message)
+	public boolean checkWave(MOB mob, String message)
+	{
+		if(message==null)
+			return false;
+		List<String> parms=CMParms.paramParse(message.toUpperCase());
+		for(int i=0;i<MAGIC_WORDS.length;i++)
+			if(parms.contains(MAGIC_WORDS[i]))
+			{
+				return (mob.isMine(this)) && (!amWearingAt(Wearable.IN_INVENTORY));
+			}
+		return super.checkWave(mob, message);
+	}
+	
+	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		if((mob.isMine(this))
 		   &&(!this.amWearingAt(Wearable.IN_INVENTORY)))
@@ -209,6 +220,16 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell("You feel refreshed!");
+					return;
+				}
+				else
+				if(message.toUpperCase().equals("BLAST"))
+				{
+					if(!safetyCheck(mob,message)) return;
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" zaps <T-NAME> with unworldly energy.");
+					target.curState().setHitPoints(1);
+					target.curState().setMana(1);
+					target.curState().setMovement(1);
 					return;
 				}
 				else

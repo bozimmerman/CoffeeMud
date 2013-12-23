@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /**
@@ -240,6 +241,16 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		return CMProps.getListFileValueByHash(CMProps.ListFile.MAGIC_WORDS,hash);
 	}
 
+	public boolean checkWave(MOB mob, String message, Wand me)
+	{
+		if((mob.isMine(me))&&(!me.amWearingAt(Wearable.IN_INVENTORY)))
+		{
+			int x=message.toUpperCase().indexOf(secretWord.toUpperCase());
+			return (x>=0);
+		}
+		return false;
+	}
+	
 	/*
 	 * ********************** Staff/Wand Clan Eq **********************
 	 */
@@ -394,8 +405,9 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 						for(CMMsg msg2 : trailers)
 							if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 								alreadyWanding=true;
-					if(!alreadyWanding)
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
+					final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
+					if((!alreadyWanding)&&(checkWave(mob,said,(Wand)affected)))
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));
 				}
 				break;
 			default:

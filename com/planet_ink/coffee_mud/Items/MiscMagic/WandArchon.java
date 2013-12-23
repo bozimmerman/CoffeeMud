@@ -128,9 +128,20 @@ public class WandArchon extends StdWand implements ArchonOnly
 		return true;
 	}
 	
-	public void waveIfAble(MOB mob,
-						   Physical afftarget,
-						   String message)
+	public boolean checkWave(MOB mob, String message)
+	{
+		if(message==null)
+			return false;
+		List<String> parms=CMParms.paramParse(message.toUpperCase());
+		for(int i=0;i<MAGIC_WORDS.length;i++)
+			if(parms.contains(MAGIC_WORDS[i]))
+			{
+				return (mob.isMine(this)) && (!amWearingAt(Wearable.IN_INVENTORY));
+			}
+		return super.checkWave(mob, message);
+	}
+	
+	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		if((mob.isMine(this))
 		   &&(message!=null)

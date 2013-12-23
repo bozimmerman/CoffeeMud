@@ -124,69 +124,24 @@ public class StdWand extends StdItem implements Wand
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 
-	public void waveIfAble(MOB mob,
-						   Physical afftarget,
-						   String message)
+	public boolean checkWave(MOB mob, String message)
 	{
-		if((mob.isMine(this))
-		   &&(!this.amWearingAt(Wearable.IN_INVENTORY))
-		   &&(message != null))
-		{
-			Physical target=null;
-			if((mob.location()!=null))
-				target=afftarget;
-			int x=message.toUpperCase().indexOf(this.magicWord().toUpperCase());
-			if(x>=0)
-			{
-				message=message.substring(x+this.magicWord().length());
-				int y=message.indexOf('\'');
-				if(y>=0) message=message.substring(0,y);
-				message=message.trim();
-				Ability wandUse=mob.fetchAbility("Skill_WandUse");
-				if((wandUse==null)||(!wandUse.proficiencyCheck(null,0,false)))
-					mob.tell(this.name()+" glows faintly for a moment, then fades.");
-				else
-				{
-					Ability A=this.getSpell();
-					if(A==null)
-						mob.tell("Something seems wrong with "+this.name()+".");
-					else
-					if(this.usesRemaining()<=0)
-						mob.tell(this.name()+" seems spent.");
-					else
-					{
-						wandUse.setInvoker(mob);
-						A=(Ability)A.newInstance();
-						if(useTheWand(A,mob,wandUse.abilityCode()))
-						{
-							Vector V=new Vector();
-							if(target!=null)
-								V.addElement(target.name());
-							V.addElement(message);
-							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly.");
-							this.setUsesRemaining(this.usesRemaining()-1);
-							int level=phyStats().level();
-							int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-							if(level<lowest)
-								level=lowest;
-							A.invoke(mob, V, target, true,level);
-							wandUse.helpProficiency(mob, 0);
-							return;
-						}
-					}
-				}
-			}
-		}
+		return StdWand.checkWave(mob, message, this);
+	}
+	
+	public void waveIfAble(MOB mob, Physical afftarget, String message)
+	{
+		StdWand.waveIfAble(mob, afftarget, message, this);
 	}
 
-	public static void waveIfAble(MOB mob,
-								  Physical afftarget,
-								  String message,
-								  Wand me)
+	public static boolean checkWave(MOB mob, String message, Wand me)
 	{
-		if((mob.isMine(me))
-		   &&(message!=null)
-		   &&(!me.amWearingAt(Wearable.IN_INVENTORY)))
+		return (mob.isMine(me)) && (message!=null) && (!me.amWearingAt(Wearable.IN_INVENTORY)) && (message.toUpperCase().indexOf(me.magicWord().toUpperCase()) >= 0);
+	}
+	
+	public static void waveIfAble(MOB mob, Physical afftarget, String message, Wand me)
+	{
+		if((mob.isMine(me)) &&(message!=null) &&(!me.amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			Physical target=null;
 			if(mob.location()!=null)
@@ -255,12 +210,9 @@ public class StdWand extends StdItem implements Wand
 					for(CMMsg msg2 : trailers)
 						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 							alreadyWanding=true;
-				if(!alreadyWanding)
-				{
-					String said=CMStrings.getSayFromMessage(msg.sourceMessage());
-					if((said!=null)&&said.toUpperCase().indexOf(magicWord().toUpperCase())>=0)
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));
-				}
+				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
+				if((!alreadyWanding)&&(checkWave(mob,said)))
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));
 			}
 			break;
 		default:

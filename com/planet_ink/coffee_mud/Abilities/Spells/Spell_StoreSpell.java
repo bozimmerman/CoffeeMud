@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -73,10 +72,7 @@ public class Spell_StoreSpell extends Spell
 		return name;
 	}
 
-	public void waveIfAble(MOB mob,
-						   Physical afftarget,
-						   String message,
-						   Item me)
+	public void waveIfAble(MOB mob, Physical afftarget, String message, Item me)
 	{
 		if((mob.isMine(me))&&(!me.amWearingAt(Wearable.IN_INVENTORY))&&(message!=null))
 		{

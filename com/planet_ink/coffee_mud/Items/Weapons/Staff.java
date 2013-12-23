@@ -102,13 +102,16 @@ public class Staff extends StdWeapon implements Wand
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 
-	public void waveIfAble(MOB mob,
-						   Physical afftarget,
-						   String message)
+	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		StdWand.waveIfAble(mob,afftarget,message,this);
 	}
 
+	public boolean checkWave(MOB mob, String message)
+	{
+		return StdWand.checkWave(mob, message, this);
+	}
+	
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -128,12 +131,9 @@ public class Staff extends StdWeapon implements Wand
 					for(CMMsg msg2 : trailers)
 						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 							alreadyWanding=true;
-				if(!alreadyWanding)
-				{
-					String said=CMStrings.getSayFromMessage(msg.sourceMessage());
-					if((said!=null)&&said.toUpperCase().indexOf(magicWord().toUpperCase())>=0)
-						msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,CMStrings.getSayFromMessage(msg.sourceMessage()),CMMsg.NO_EFFECT,null));
-				}
+				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
+				if((!alreadyWanding)&&(checkWave(mob,said)))
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));
 			}
 			break;
 		default:

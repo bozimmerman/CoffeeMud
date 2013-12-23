@@ -35,9 +35,8 @@ public interface Wand extends MiscMagic
 	public void setSpell(Ability theSpell);
 	public Ability getSpell();
 	
-	public void waveIfAble(MOB mob, 
-						   Physical afftarget, 
-						   String message);
+	public boolean checkWave(MOB mob, String message);
+	public void waveIfAble(MOB mob, Physical afftarget, String message);
 	public String magicWord();
 	public int maxUses();
 	public void setMaxUses(int maxUses);
