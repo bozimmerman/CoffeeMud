@@ -252,7 +252,8 @@ public class CMProps extends Properties
 		CATALOGNOCACHE,
 		MAPFINDSNOCACHE,
 		HASHPASSWORDS,
-		ACCOUNTSNOCACHE
+		ACCOUNTSNOCACHE,
+		PLAYERSNOCACHE
 	}
 
 	public enum StrList

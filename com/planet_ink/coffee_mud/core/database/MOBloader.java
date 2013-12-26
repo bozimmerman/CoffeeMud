@@ -391,6 +391,7 @@ public class MOBloader
 		mob.recoverPhyStats();
 		mob.recoverMaxState();
 		mob.resetToMaxState();
+		CMLib.threads().suspendResumeRecurse(mob, false, true);
 		// wont add if same name already exists
 	}
 
