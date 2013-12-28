@@ -18,7 +18,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
@@ -125,6 +124,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		String description = findString(R,ignoreStats,"ROOM_","description",piece,defined);
 		R.setDescription(description);
 		addDefinition("ROOM_DESCRIPTION",description,defined);
+		fillOutCopyCodes(R, ignoreStats, "ROOM_", piece, defined);
 		fillOutStatCodes(R, ignoreStats, "ROOM_", piece, defined);
 		List<MOB> mV = findMobs(piece,defined);
 		for(int i=0;i<mV.size();i++) 
@@ -738,7 +738,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						var.toPlural=true;
 					else
 					if((str.charAt(x)=='c')||(str.charAt(x)=='C'))
-						var.toPlural=true;
+						var.toCapitalized=true;
 					x+=2;
 					varstart+=2;
 				}
@@ -800,12 +800,81 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			fillOutStatCode(E,ignoreStats,defPrefix,stat,piece,defined);
 		}
 	}
+
+	protected void fillOutCopyStats(final Modifiable E, final Modifiable E2)
+	{
+		if((E2 instanceof MOB)&&(!((MOB)E2).isGeneric()))
+		{
+			for(String stat : GenericBuilder.GENMOBCODES)
+			{
+				E.setStat(stat, CMLib.coffeeMaker().getGenMobStat((MOB)E2,stat));
+			}
+		}
+		else
+		if((E2 instanceof Item)&&(!((Item)E2).isGeneric()))
+		{
+			for(String stat : GenericBuilder.GENITEMCODES)
+			{
+				E.setStat(stat,CMLib.coffeeMaker().getGenItemStat((Item)E2,stat));
+			}
+		}
+		else
+		for(String stat : E2.getStatCodes())
+		{
+			E.setStat(stat, E2.getStat(stat));
+		}
+	}
+	
+	protected boolean fillOutCopyCodes(final Modifiable E, List<String> ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	{
+		String copyStatID = findOptionalString(E,ignoreStats,defPrefix,"COPYOF",piece,defined);
+		if(copyStatID!=null)
+		{
+			Vector<String> V=CMParms.parseCommas(copyStatID,true);
+			for(int v=0;v<V.size();v++)
+			{
+				String s = V.elementAt(v);
+				if(s.startsWith("$")) s=s.substring(1).trim();
+				XMLLibrary.XMLpiece statPiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
+				if(statPiece == null)
+				{
+					Object o=CMClass.getMOBPrototype(s);
+					if(o==null) o=CMClass.getItemPrototype(s);
+					if(o==null) o=CMClass.getObjectOrPrototype(s);
+					if(!(o instanceof Modifiable))
+						throw new CMException("Invalid copystat: '"+s+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
+					Modifiable E2=(Modifiable)o;
+					fillOutCopyStats(E,E2);
+				}
+				else
+				{
+					XMLLibrary.XMLpiece likePiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
+					if(likePiece == null)
+						throw new CMException("Invalid copystat: '"+s+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
+					final BuildCallback callBack=new BuildCallback()
+					{
+						@Override public void willBuild(Environmental E2, XMLpiece xmlPiece) 
+						{
+							fillOutCopyStats(E,E2);
+						}
+					};
+					findItems(likePiece,defined,callBack);
+					findMobs(likePiece,defined,callBack);
+					findAbilities(likePiece,defined,callBack);
+					findExits(likePiece,defined,callBack);
+				}
+			}
+			return V.size()>0;
+		}
+		return false;
+	}
 	
 	protected MOB buildMob(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String classID = findString("class",piece,defined);
 		MOB M = null;
 		final List<String> ignoreStats=new XVector<String>();
+		boolean copyFilled = false;
 		if(classID.equalsIgnoreCase("catalog"))
 		{
 			String name = findString("NAME",piece,defined);
@@ -817,6 +886,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			M=(MOB)M.copyOf();
 			CMLib.catalog().changeCatalogUsage(M,true);
 			addDefinition("MOB_CLASS",M.ID(),defined);
+			copyFilled=true;
 		}
 		else
 		{
@@ -826,14 +896,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			
 			if(M.isGeneric())
 			{
+				copyFilled = fillOutCopyCodes(M,ignoreStats,"MOB_",piece,defined);
 				String name = fillOutStatCode(M,ignoreStats,"MOB_","NAME",piece,defined);
-				if((name == null)||(name.length()==0)) 
+				if((!copyFilled) && ((name == null)||(name.length()==0)))
 					throw new CMException("Unable to build a mob without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-				M.setName(name);
+				if((name != null)&&(name.length()>0))
+					M.setName(name);
 			}
 		}
 		addDefinition("MOB_NAME",M.Name(),defined);
-		M.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
+		if(!copyFilled)
+			M.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
 		
 		String value = fillOutStatCode(M,ignoreStats,"MOB_","LEVEL",piece,defined);
 		if(value != null) {
@@ -921,6 +994,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	
 	public List<Exit> findExits(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
+		return findExits(piece,defined,null);
+	}
+	
+	public List<Exit> findExits(XMLLibrary.XMLpiece piece, Map<String,Object> defined, BuildCallback callBack) throws CMException
+	{
 		List<Exit> V = new Vector<Exit>();
 		String tagName="EXIT";
 		List<XMLLibrary.XMLpiece> choices = getAllChoices(null,null,null,tagName, piece, defined,true);
@@ -935,6 +1013,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			defineReward(null,null,null,valPiece,null,defined);
 			Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 			Exit E=buildExit(valPiece,defined);
+			if(callBack != null)
+				callBack.willBuild(E, valPiece);
 			V.add(E);
 			clearNewlyDefined(defined, definedSet, tagName+"_");
 	   }
@@ -950,6 +1030,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(E == null) throw new CMException("Unable to build exit on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 		addDefinition("EXIT_CLASS",classID,defined);
 		ignoreStats.add("CLASS");
+		fillOutCopyCodes(E,ignoreStats,"EXIT_",piece,defined);
 		fillOutStatCodes(E,ignoreStats,"EXIT_",piece,defined);
 		List<Ability> aV = findAffects(piece,defined,null);
 		for(int i=0;i<aV.size();i++)
@@ -1358,13 +1439,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			
 			if(I.isGeneric())
 			{
+				boolean filledOut = fillOutCopyCodes(I,ignoreStats,"ITEM_",piece,defined);
 				String name = fillOutStatCode(I,ignoreStats,"ITEM_","NAME",piece,defined);
-				if((name == null)||(name.length()==0)) 
-				{
-					name = fillOutStatCode(I,ignoreStats,"ITEM_","NAME",piece,defined);
+				if((!filledOut) && ((name == null)||(name.length()==0))) 
 					throw new CMException("Unable to build an item without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-				}
-				I.setName(name);
+				if((name != null)&&(name.length()>0))
+					I.setName(name);
 			}
 			ignoreStats.addAll(Arrays.asList(new String[]{"CLASS","NAME"}));
 			addDefinition("ITEM_NAME",I.Name(),defined); // define so we can mess with it

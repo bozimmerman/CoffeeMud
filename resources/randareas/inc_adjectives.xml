@@ -44,6 +44,13 @@
 	</STRING>
 </STRING>
 
+<STRING id="adj_drunk" select="any-1">
+	<STRING>drunk</STRING><STRING>intoxicated</STRING><STRING>inebriated</STRING><STRING>impaired</STRING><STRING>plastered</STRING><STRING>smashed</STRING>
+	<STRING>bombed</STRING><STRING>sloshed</STRING><STRING>sozzled</STRING><STRING>sauced</STRING><STRING>lubricated</STRING><STRING>well-oiled</STRING>
+	<STRING>blasted</STRING><STRING>blitzed</STRING><STRING>baked</STRING><STRING>fried</STRING><STRING>wasted</STRING><STRING>pissed</STRING>
+	<STRING>loaded</STRING><STRING>trashed</STRING><STRING>hammered</STRING><STRING>pickled</STRING><STRING>ripped</STRING>
+</STRING>
+
 <STRING id="adj_sactified" select="any-1">
 	<STRING>sacred</STRING><STRING>consecrated</STRING><STRING>hallowed</STRING><STRING>sanctified</STRING><STRING>sacrosanct</STRING>
 	<STRING>venerated</STRING><STRING>revered</STRING><STRING>divine</STRING><STRING>religious</STRING><STRING>blessed</STRING>

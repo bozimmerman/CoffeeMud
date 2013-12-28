@@ -39,6 +39,8 @@ Any tag may contain zero or more of the following meta-attributes:
           and the resulting tags added as contents of the host tag as if they were
           already inside it.  Remember, the listed tags will be parsed first, so
           any "condition", "select" or other operations will occur.
+"copyof"  a tag "id"or standard class id. This will cause the stats and attributes 
+          and other details of the listed items into the current object.
 "validate" a boolean expression which must evaluate to true for the tag to be finally
           built into an object.  Check "condition" below for more information....
 "condition" the value is a boolean expression which must evaluate to true for the
@@ -278,7 +280,7 @@ Required details: "id" "value"
 <AREA id="maze_dungeon" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random">
 	<NAME>$areaname</NAME><SIZE>$areasize</SIZE>
 	<CLASS select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
-	<ROOM id="dungeon_rooms" insert="dungeon_hallways,dungeon_interior,leaf_rooms" />
+	<ROOM id="other_rooms" insert="hallway_rooms,interior_rooms,leaf_rooms" />
 	<BEHAVIOR select="all" id="dungeon_behaviors">
 		<BEHAVIOR condition="$theme='kobolds' or $theme='goblins'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
 		<BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
@@ -294,7 +296,7 @@ Required details: "id" "value"
 </AREA>
 <AREA id="tree_dungeon" like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;goblins;orcs;trolls;town;random" >
 </AREA>
-<AREA id="random_dungeon" select="any" requires="areaname=$" 
+<AREA id="random_dungeon" select="any" requires="areaname=$" condition="$theme!='town'"
 	insert="maze_dungeon,grid_dungeon,square_dungeon,box_dungeon,cross_dungeon,tree_dungeon" 
 	predefine="areasize=$randomareasize,level_range=$randomlevelrange,aggrochance=10+$level_range,theme=$randomtheme" >
 </AREA>
@@ -309,7 +311,7 @@ Required details: "id" "value"
 	<string condition="$theme='trolls' or $theme='random'" define="nasty_race_name">troll</string>
 </STRING>
 
-<ROOM id="dungeon_hallways" select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+<ROOM id="hallway_rooms" select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="CaveRoom" pickweight="5" condition="$theme!='town'">
 		<TITLE>$a_streetprefix $_dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
@@ -326,7 +328,7 @@ Required details: "id" "value"
 		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 	</ROOM>
 	<ROOM class="Road" pickweight="1" condition="$theme='town'">
-		<TITLE>$a_streetprefix $street_name</TITLE>
+		<TITLE>$a_streetprefix $_street_name</TITLE>
 		<DESCRIPTION></DESCRIPTION>
 		<EXIT class="Open" />
 	</ROOM>
@@ -388,7 +390,7 @@ Required details: "id" "value"
 	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
 </STRING>
 
-<ROOM id="dungeon_interior" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
+<ROOM id="interior_rooms" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="CaveRoom" condition="$theme!='town'">
 		<TITLE>$a_streetprefix $_dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_interior_desc</DESCRIPTION>
@@ -396,8 +398,8 @@ Required details: "id" "value"
 		<MOB condition="1?3=1" select="any-1" insert="dungeon_mobs" />
 		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 	</ROOM>
-	<ROOM class="CaveRoom" condition="$theme='town'">
-		<TITLE>$a_streetprefix $street_name</TITLE>
+	<ROOM class="Road" condition="$theme='town'">
+		<TITLE>$a_streetprefix $_street_name</TITLE>
 		<DESCRIPTION></DESCRIPTION>
 		<EXIT class="Open" />
 	</ROOM>
@@ -850,6 +852,7 @@ Required details: "id" "value"
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a cook`s apron</NAME></NAME>
@@ -892,8 +895,9 @@ Required details: "id" "value"
 					<DESCRIPTION>Tall $any_wood stools line the long bar, with a few scattered tables and chairs around.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>People stand around here talking, shouting, and getting really drunk.</DESCRIPTION>
+					<DESCRIPTION>People stand around here talking, shouting, and getting really $adj_drunk.</DESCRIPTION>
 					<DESCRIPTION>The smell of smoke and stale alcohol make the place reek.</DESCRIPTION>
+					<DESCRIPTION>Lots of $adj_drunk people are smoking, drinking, and staggering around.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION id="store_sign_descs" select="any-1">
 					<DESCRIPTION>A sign is posted on the wall.</DESCRIPTION>
@@ -918,7 +922,9 @@ Required details: "id" "value"
 				<ALIGNMENT>-10000?10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a bartender`s apron</NAME></NAME>
@@ -983,6 +989,7 @@ Required details: "id" "value"
 					</DISPLAY>
 					<ALIGNMENT>10000</ALIGNMENT>
 					<BEHAVIOR select="all">
+						<BEHAVIOR class="CommonSpeaker" parms="" />
 						<BEHAVIOR class="MudChat" parms="" />
 						<BEHAVIOR class="Fighterness" parms="" />
 					</BEHAVIOR>
@@ -1091,6 +1098,7 @@ Required details: "id" "value"
 				<ALIGNMENT>10000</ALIGNMENT>
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="Healer" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 					<BEHAVIOR class="Clericness" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
@@ -1107,16 +1115,16 @@ Required details: "id" "value"
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
 				<SHOPINVENTORY>
-					<ITEM class="Prayer_CureDisease" number=1000/>
-					<ITEM class="Prayer_Heal" number=1000/>
-					<ITEM class="Prayer_Bless" number=1000/>
-					<ITEM class="Prayer_RemovePoison" number=1000/>
-					<ITEM class="Prayer_CureBlindness" number=1000/>
-					<ITEM class="Prayer_CureDeafness" number=1000/>
-					<ITEM class="Prayer_RestoreVoice" number=1000/>
-					<ITEM class="Prayer_RestoreSmell" number=1000/>
-					<ITEM class="Prayer_Restoration" number=1000/>
-					<ITEM class="Prayer_RemoveCurse" number=1000/>
+					<ABILITY class="Prayer_CureDisease" number=1000/>
+					<ABILITY class="Prayer_Heal" number=1000/>
+					<ABILITY class="Prayer_Bless" number=1000/>
+					<ABILITY class="Prayer_RemovePoison" number=1000/>
+					<ABILITY class="Prayer_CureBlindness" number=1000/>
+					<ABILITY class="Prayer_CureDeafness" number=1000/>
+					<ABILITY class="Prayer_RestoreVoice" number=1000/>
+					<ABILITY class="Prayer_RestoreSmell" number=1000/>
+					<ABILITY class="Prayer_Restoration" number=1000/>
+					<ABILITY class="Prayer_RemoveCurse" number=1000/>
 				</SHOPINVENTORY>
 			</MOB>
 			<ITEM class="GenContainer" LEVEL="1" isgettable="false" capacity=100000 hasalid=false>
@@ -1207,6 +1215,7 @@ Required details: "id" "value"
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="Fighterness" parms=""  condition="$shoptype!='potion' and $shoptype!='magic' and $shoptype!='jewelry'"/>
 					<BEHAVIOR class="Mageness" parms=""  condition="$shoptype='potion' or $shoptype='magic' or $shoptype='jewelry'"/>
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>(a(n)) apron</NAME></NAME>
@@ -1322,7 +1331,12 @@ Required details: "id" "value"
 			</DESCRIPTION>
 			<EXIT class="Open" />
 			<MOB select="repeat-15">
-				<MOB class="Bee" /><MOB class="Doe" /><MOB class="Fox" /><MOB class="Duck" /><MOB class="Rabbit" /><MOB class="Squirrel" />
+				<MOB class="genmob" copyof="Bee"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Doe"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Fox"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Duck"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Rabbit"><BEHAVIOR CLASS="Mobile" /></MOB>
+				<MOB class="genmob" copyof="Squirrel"><BEHAVIOR CLASS="Mobile" /></MOB>
 			</MOB>
 		</ROOM>
 		<ROOM id="town_stables" class="WoodRoom"  condition="$__townstables&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__townstables+=1,__townthird+=1">
@@ -1379,6 +1393,7 @@ Required details: "id" "value"
 				<BEHAVIOR select="all">
 					<BEHAVIOR class="Nanny" parms="RATE=1.0 NAME=&quot;${c:areaname} Stables&quot; WATCHES=&quot;mounts,wagons,followers&quot;" />
 					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a stablehand`s uniform</NAME></NAME>
@@ -1442,8 +1457,8 @@ Required details: "id" "value"
 			</DESCRIPTION>
 			<EXIT class="GenDoor" defclosed="false" />
 			<ITEM class="GenWallpaper" name="sign" isreadable="true" readableText="Use `list` to see what is in your account, `deposit [itemname]` to deposit and item or money, `withdraw [itemname]` to remove an item or money, `borrow [amount]` to borrow money." />
-			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="$anygender" WHATISELL="CLAN BANKER">
-				<NAME>Bank clerk ${c:fantasy_name}</NAME>
+			<MOB class="GenMob" level="($level_range) * 1.05" race="$_humanoid_races" gender="F">
+				<NAME>Nanny ${c:fantasy_name}</NAME>
 				<DISPLAY select="pick-1">
 					<DISPLAY pickweight="1">$mob_name is exhausted.</DISPLAY>
 					<DISPLAY pickweight="1">$mob_name is here.</DISPLAY>
@@ -1455,6 +1470,7 @@ Required details: "id" "value"
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Nanny" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a nanny`s uniform</NAME></NAME>
@@ -1492,7 +1508,7 @@ Required details: "id" "value"
 					<DESCRIPTION>This whole building is $adj_light, $adj_quiet and $adj_fancy.</DESCRIPTION>
 					<DESCRIPTION>This $adj_fancy building seems $adj_light and $adj_fancy.</DESCRIPTION>
 				</DESCRIPTION>
-				<DESCRIPTION>A long counter divides the room in half, and ropes held keep the long lines of people in order.</DESCRIPTION>
+				<DESCRIPTION>A long counter divides the room in half, and ropes keep the long lines of people in order.</DESCRIPTION>
 				<DESCRIPTION>Like most banks,</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>the furnishings and decore here is very $adj_conservative and $adj_subdued.</DESCRIPTION>
@@ -1691,6 +1707,7 @@ Required details: "id" "value"
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>a colonel`s uniform</NAME></NAME>
@@ -1769,6 +1786,7 @@ Required details: "id" "value"
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="any-1"><NAME>(a(n)) postal uniform</NAME></NAME>
@@ -1878,13 +1896,13 @@ Required details: "id" "value"
 					<DESCRIPTION>This is (a(n)) $adj_nasty prisoner`s holding cell.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<STRING>You hear $adj_scary_feeling squeeking coming from the corner.</STRING>
-					<STRING>You hear the $adj_scary_feeling sounds of tiny pattering around you.</STRING>
-					<STRING>Something has left droppings here.</STRING>
-					<STRING>Some $adj_scary_feeling soul obviously relieved itself here.</STRING>
-					<STRING>Bits of half-eaten trash can be seen around here.</STRING>
-					<STRING>Bits of some half-eaten mold are here.</STRING>
-					<STRING>Was that the sound of something $adj_scary_feeling?</STRING>
+					<DESCRIPTION>You hear $adj_scary_feeling squeeking coming from the corner.</DESCRIPTION>
+					<DESCRIPTION>You hear the $adj_scary_feeling sounds of tiny pattering around you.</DESCRIPTION>
+					<DESCRIPTION>Something has left droppings here.</DESCRIPTION>
+					<DESCRIPTION>Some $adj_scary_feeling soul obviously relieved itself here.</DESCRIPTION>
+					<DESCRIPTION>Bits of half-eaten trash can be seen around here.</DESCRIPTION>
+					<DESCRIPTION>Bits of some half-eaten mold are here.</DESCRIPTION>
+					<DESCRIPTION>Was that the sound of something $adj_scary_feeling?</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>The exit is to the $roomexits_desc_long, not that it matters now.</DESCRIPTION>
@@ -1945,6 +1963,7 @@ Required details: "id" "value"
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Fighterness" parms="" />
 					<BEHAVIOR class="MOBTeacher" parms="" />
+					<BEHAVIOR class="CommonSpeaker" parms="" />
 				</BEHAVIOR>
 				<AFFECT class="Prop_Trainer" parms="ALL" />
 				<ITEM class="GenArmor" LEVEL="$mob_level">

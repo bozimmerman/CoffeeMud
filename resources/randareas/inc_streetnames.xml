@@ -15,7 +15,7 @@
 -->
 <!--  include file with street name parts and street name builders/selectors -->
 
-<STRING id="street_name" select="any-1" define="street_name">
+<STRING id="_street_name" select="any-1" define="_street_name">
 	<STRING>$street_name_1 $street_name_2 Road</STRING>
 	<STRING>$street_name_1 $street_name_2 Street</STRING>
 	<STRING>$street_name_1 $street_name_2 Lane</STRING>

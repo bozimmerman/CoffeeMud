@@ -1580,6 +1580,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(!found)return null;
 		return val;
 	}
+	
 	protected String getGStatValue(Environmental E, String arg2)
 	{
 		if(E==null) return null;
@@ -1685,7 +1686,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(found) return val;
 		return null;
 	}
-
 
 	public void setVar(String baseName, String key, String val)
 	{

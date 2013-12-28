@@ -100,11 +100,16 @@
 </STRING>
 
 <STRING id="a_streetprefix" select="pick-1">
-	<STRING pickweight="100" condition="'tee' IN $ROOMTAG_NODEFLAGS">T-Intersection in a</STRING>
-	<STRING pickweight="100" condition="'gate' IN $ROOMTAG_NODEFLAGS">Entrance to a</STRING>
-	<STRING pickweight="100" condition="'intersection' IN $ROOMTAG_NODEFLAGS">Intersection in a</STRING>
-	<STRING pickweight="100" condition="'corner' IN $ROOMTAG_NODEFLAGS">Corner of a</STRING>
-	<STRING pickweight="1">A</STRING>
+	<STRING pickweight="100" condition="($room_class!='Road') and ('tee' IN $ROOMTAG_NODEFLAGS)">T-Intersection in a</STRING>
+	<STRING pickweight="100" condition="($room_class!='Road') and ('gate' IN $ROOMTAG_NODEFLAGS)">Entrance to a</STRING>
+	<STRING pickweight="100" condition="($room_class!='Road') and ('intersection' IN $ROOMTAG_NODEFLAGS)">Intersection in a</STRING>
+	<STRING pickweight="100" condition="($room_class!='Road') and ('corner' IN $ROOMTAG_NODEFLAGS)">Corner of a</STRING>
+	<STRING pickweight="1" condition="$room_class!='Road'">A</STRING>
+	<STRING pickweight="100" condition="($room_class='Road') and ('tee' IN $ROOMTAG_NODEFLAGS)">T-Intersection at</STRING>
+	<STRING pickweight="100" condition="($room_class='Road') and ('gate' IN $ROOMTAG_NODEFLAGS)">Entrance to</STRING>
+	<STRING pickweight="100" condition="($room_class='Road') and ('intersection' IN $ROOMTAG_NODEFLAGS)">Intersection at</STRING>
+	<STRING pickweight="100" condition="($room_class='Road') and ('corner' IN $ROOMTAG_NODEFLAGS)">Corner of</STRING>
+	<STRING pickweight="1" condition="$room_class='Road'"></STRING>
 </STRING>
 
 <STRING id="desc_exits" select="all">
