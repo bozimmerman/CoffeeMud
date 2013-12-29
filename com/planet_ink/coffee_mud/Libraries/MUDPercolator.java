@@ -640,18 +640,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				Exit[] rExits=exits.clone();
 				R=buildRoom(valPiece,rDefined,rExits,directions);
-				for(Iterator<String> e=rDefined.keySet().iterator();e.hasNext();)
-				{
-					String key=e.next();
-					if(key.startsWith("_"))
-					{
-						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
-							Log.debugOut("RGDEF:"+key+"="+CMStrings.limit(rDefined.get(key).toString(), 10));
-						defined.put(key,rDefined.get(key));
-					}
-				}
 				for(int e=0;e<rExits.length;e++)
 					exits[e]=rExits[e];
+			}
+			for(Iterator<String> e=rDefined.keySet().iterator();e.hasNext();)
+			{
+				String key=e.next();
+				if(key.startsWith("_"))
+				{
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR)) 
+						Log.debugOut("RGDEF:"+key+"="+CMStrings.limit(rDefined.get(key).toString(), 10));
+					defined.put(key,rDefined.get(key));
+				}
 			}
 			return R;
 		}
@@ -1749,7 +1749,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		else
 		if(piece.tag.equalsIgnoreCase(tagName))
 		{
-			if((piece.parms.containsKey("LAYOUT")) && (piece.tag.equalsIgnoreCase("ROOM")))
+			if((piece.parms.containsKey("LAYOUT")) && (piece.tag.equalsIgnoreCase("ROOM")) && (!defined.containsKey("ROOM_LAYOUT")))
 				return new XVector<XMLpiece>(processLikeParm(tagName,piece,defined));
 				
 			boolean container=false;

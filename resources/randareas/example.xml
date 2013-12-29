@@ -1021,22 +1021,22 @@ Required details: "id" "value"
 			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 				<TITLE>$a_streetprefix $roomrun_desc hallway</TITLE>
 				<DESCRIPTION>
-					<STRING select="any-1" action="PREPEND">
-						<STRING>You stand in (a(n)) $adj_any $noun_hallway that runs $roomrun_desc_long.</STRING> 
-						<STRING>This $adj_any $noun_hallway runs steeply $roomrun_desc_long.</STRING> 
-						<STRING>You are in (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</STRING> 
-						<STRING>This $adj_any $noun_hallway runs $roomrun_desc_long.</STRING> 
-						<STRING>You are walking through (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</STRING>
-						<STRING>This $adj_any $noun_hallway heads $roomrun_desc_long.</STRING>
-					</STRING>
-					<STRING select="all" action="APPEND" insert="desc_exits" />
+					<DESCRIPTION select="any-1" action="PREPEND">
+						<DESCRIPTION>You stand in (a(n)) $adj_any $noun_hallway that runs $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>This $adj_any $noun_hallway runs steeply $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>You are in (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>This $adj_any $noun_hallway runs $roomrun_desc_long.</DESCRIPTION> 
+						<DESCRIPTION>You are walking through (a(n)) $adj_any $noun_hallway running $roomrun_desc_long.</DESCRIPTION>
+						<DESCRIPTION>This $adj_any $noun_hallway heads $roomrun_desc_long.</DESCRIPTION>
+					</DESCRIPTION>
+					<DESCRIPTION select="all" action="APPEND" insert="desc_exits" />
 				</DESCRIPTION>
 				<EXIT class="Open" />
 			</ROOM>
 			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='leaf'" define="__innroomnumber+=1">
 				<TITLE>Room number $__innroomnumber</TITLE>
 				<DESCRIPTION>
-					<STRING select="all" action="APPEND" insert="desc_exits" />
+					<DESCRIPTION select="all" action="APPEND" insert="desc_exits" />
 				</DESCRIPTION>
 				<EXIT class="GenDoor" hasalock="true" deflocked="true" level="$level_range" keyname="INN$__innroomnumber" />
 				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />

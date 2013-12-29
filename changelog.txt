@@ -27,7 +27,7 @@
   24. (Tech) New TriCorder item (portable computer).  Also, internally, class names and locations are shifting as tech takes shape.
   25. New GENERATEable area target in /resources/randreas/example.xml: random_dungeon (rand level, theme, aggro, size, etc)
   26. For those using account system, can now register for an account from ANY page in the forum system (really an oversight)
-  26. New GENERATEable themes in /resources/randreas/example.xml: orcs, trolls, and goblins.  Also, lots of work done to fill it all out.
+  26. New GENERATEable themes in /resources/randreas/example.xml: town, orcs, trolls, and goblins.  Also, lots of work done to fill it all out.
   27. New DISABLE flags: IMC2, I3 -- alternative means to turn them off.  At runtime, it puts those systems into idle.
   28. Another DISABLE flag: NEWCHARACTERS -- used for account-based muds to turn off (or not) char creation when NEWPLAYERS (accts) are.
   29: Disguise now checks badnameslist
@@ -35,7 +35,6 @@
   31. New locales: IndoorUnderWaterGrid, IndoorUnderWaterThinGrid, and IndoorWaterThinSurface classes
   32. Can now export/import entire accounts
   33. Quests will now save/restore their suspended status.
-//BUG: Fix INNs
 
 //TODO: make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.

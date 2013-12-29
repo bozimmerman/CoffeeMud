@@ -279,14 +279,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 						else
 						if((System.currentTimeMillis()-lastPingTime)>(60  * 60 * 1000)) // one hour
 						{
-							Log.errOut("Intermud","No I3 Ping sent in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-lastPingTime, TimeUnit.MILLISECONDS, false));
+							Log.errOut("I3SaveTick","No I3 Ping sent in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-lastPingTime, TimeUnit.MILLISECONDS, false));
 							CMLib.threads().executeRunnable(new Runnable() {
 								public void run() {
 									try {
 										lastPingTime=System.currentTimeMillis()-(40  * 60 * 1000);
 										logMemory();
 										CMLib.hosts().get(0).executeCommand("START I3");
-										Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
+										Log.errOut("I3SaveTick","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 									} catch(Exception e){}
 								}
 							});
@@ -538,8 +538,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 				else
 				if((System.currentTimeMillis()-PingPacket.lastPingResponse)>(60  * 60 * 1000)) // one hour
 				{
-					PingPacket.lastPingResponse=System.currentTimeMillis();
 					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-PingPacket.lastPingResponse, TimeUnit.SECONDS, false));
+					PingPacket.lastPingResponse=System.currentTimeMillis();
 					CMLib.threads().executeRunnable(new Runnable() {
 						public void run() {
 							try
