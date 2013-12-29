@@ -21,6 +21,13 @@
 	<STRING>$street_name_1 $street_name_2 Lane</STRING>
 </STRING>
 
+<STRING id="_square_name" select="any-1" define="_square_name">
+	<STRING>$street_name_1 $street_name_2 Square</STRING>
+</STRING>
+
+<STRING id="_loop_name" select="any-1" define="_loop_name">
+	<STRING>$street_name_1 $street_name_2 Loop</STRING>
+</STRING>
 
 <STRING id="street_name_1" select="any-1">
 	<STRING id="street_names_1" select="all">

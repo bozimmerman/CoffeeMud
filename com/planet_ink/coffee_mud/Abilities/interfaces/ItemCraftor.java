@@ -88,9 +88,10 @@ public interface ItemCraftor extends Ability
 	 * only contains the finished item, but a second element will
 	 * occur when a key is required and also generated.
 	 * @param material the rawmaterial code to make the item out of
+	 * @param forceLevels forces crafted item to have a level if it otherwise doesn't
 	 * @return a vector of vectors of item(s)
 	 */
-	public List<ItemKeyPair> craftAllItemSets(int material);
+	public List<ItemKeyPair> craftAllItemSets(int material, boolean forceLevels);
 	
 	/**
 	 * Crafts every item of a type supported by this class of 
@@ -98,9 +99,10 @@ public interface ItemCraftor extends Ability
 	 * as a vector in the returned vector. The item vector usually
 	 * only contains the finished item, but a second element will
 	 * occur when a key is required and also generated.
+	 * @param forceLevels forces crafted item to have a level if it otherwise doesn't
 	 * @return a vector of vectors of item vector(s)
 	 */
-	public List<ItemKeyPair> craftAllItemSets();
+	public List<ItemKeyPair> craftAllItemSets(boolean forceLevels);
 	
 	/**
 	 * Crafts the item specified by the recipe name, of a supported
@@ -114,14 +116,15 @@ public interface ItemCraftor extends Ability
 	
 	/**
 	 * Crafts the item specified by the recipe name, of the specified
-	 * material type which this class can produce.
+	 * material type which this class can produce or -1 for any material.
 	 * Returns a vector containing the finished Item.  A second element is
 	 * rare, but will occur when a key is required and also generated.
 	 * @param recipeName the name of the item to make
-	 * @param material the rawmaterial code to make the item out of
+	 * @param material the rawmaterial code to make the item out of, or -1
+	 * @param forceLevels forces crafted item to have a level if it otherwise doesn't
 	 * @return a vector of Item(s)
 	 */
-	public ItemKeyPair craftItem(String recipeName, int material);
+	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels);
 	
 	/**
 	 * Returns a Vector of Integer objects where each Integer

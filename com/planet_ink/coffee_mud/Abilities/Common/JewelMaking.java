@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -16,8 +17,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
-
 
 import java.util.*;
 
@@ -248,16 +247,14 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		final Vector originalCommands=(Vector)commands.clone();
 		if(super.checkStop(mob, commands))
 			return true;
-		int autoGenerate=0;
+		
 		fireRequired=true;
-		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{
-			autoGenerate=((Integer)commands.firstElement()).intValue();
-			commands.removeElementAt(0);
-			givenTarget=null;
-		}
+		
+		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		givenTarget=parsedVars.givenTarget;
+
 		DVector enhancedTypes=enhancedTypes(mob,commands);
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, jewel mount <gem name> <item name>, jewel refit <item name>, jewel learn <item>, jewel scan, jewel mend <item name>, or jewel stop to cancel.");
@@ -338,7 +335,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				commonTell(mob,CMStrings.capitalizeAndLower(word)+" what jewel onto what item?");
 				return false;
 			}
-			Item fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			aborted=false;
@@ -425,7 +422,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			Item fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
@@ -443,7 +440,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
-			Item fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
@@ -493,7 +490,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				if(V.size()>0)
 				{
 					int level=CMath.s_int(V.get(RCP_LEVEL));
-					if((autoGenerate>0)||(level<=xlevel(mob)))
+					if((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
 						break;
@@ -509,14 +506,14 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			if(!bundling)
 			{
-				Item fire=getRequiredFire(mob,autoGenerate);
+				Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 				if(fire==null) return false;
 			}
 			else
 				fireRequired=false;
 			
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
@@ -528,7 +525,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 												woodRequired,"metal",pm,
 												otherRequired.length()>0?1:0,otherRequired,null,
 												false,
-												autoGenerate,
+												parsedVars.autoGenerate,
 												enhancedTypes);
 			if(data==null) return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -561,7 +558,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			
 			
 			
-			int lostValue=autoGenerate>0?0:
+			int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -641,7 +638,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			displayText="You are "+verb;
 		}
 
-		if(autoGenerate>0)
+		if(parsedVars.autoGenerate>0)
 		{
 			commands.addElement(buildingI);
 			return true;

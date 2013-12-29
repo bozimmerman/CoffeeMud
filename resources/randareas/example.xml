@@ -246,8 +246,8 @@ Optional details: (See Archon's Guide)
 (plus or minus many many others depending upon class)
 
 "ShopKeeper" type classes may use "SHOPINVENTORY" tags to hold ITEM, MOB, or ABILITY tags
-to designate what else is sold.  Also, those ITEM, MOB, or ABILITY tags may contain
-optional PRICE or NUMBER attributes.
+to designate what else is sold.  Also, the SHOPINVENTORY or those ITEM, MOB, or ABILITY tags 
+may contain optional PRICE or NUMBER attributes.
 
 ----------------------------------------
 Affect, Ability, Behavior tags:
@@ -398,7 +398,12 @@ Required details: "id" "value"
 		<MOB condition="1?3=1" select="any-1" insert="dungeon_mobs" />
 		<ITEM condition="1?10=1" select="any-1" insert="dungeon_junk" />
 	</ROOM>
-	<ROOM class="Road" condition="$theme='town'">
+	<ROOM class="Road" condition="$theme='town' and $roomtag_nodetype='square'">
+		<TITLE>$a_streetprefix $_square_name</TITLE>
+		<DESCRIPTION></DESCRIPTION>
+		<EXIT class="Open" />
+	</ROOM>
+	<ROOM class="Road" condition="$theme='town' and $roomtag_nodetype!='square'">
 		<TITLE>$a_streetprefix $_street_name</TITLE>
 		<DESCRIPTION></DESCRIPTION>
 		<EXIT class="Open" />
@@ -867,8 +872,8 @@ Required details: "id" "value"
 					<WEAPONCLASS>BLUNT</WEAPONCLASS>
 					<WEAPONTYPE>BASHING</WEAPONTYPE>
 				</ITEM>
-				<SHOPINVENTORY>
-					<ITEM select="all" insert="any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item" number=300 />
+				<SHOPINVENTORY number=300 price="$item_level">
+					<ITEM select="all" insert="any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item,any_baking_item,any_cooking_item,any_foodprep_item" />
 				</SHOPINVENTORY>
 			</MOB>
 			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
@@ -939,15 +944,15 @@ Required details: "id" "value"
 					<WEAPONCLASS>DAGGER</WEAPONCLASS>
 					<WEAPONTYPE>PIERCING</WEAPONTYPE>
 				</ITEM>
-				<SHOPINVENTORY>
-					<ITEM select="all" insert="any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item," number=300 />
+				<SHOPINVENTORY number=300 price="$item_level">
+					<ITEM select="all" insert="any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item,any_distilling_item," />
 				</SHOPINVENTORY>
 			</MOB>
 			<ITEM class="GenTable" name="a table" display="$ITEM_NAME is here" isgettable="false" />
 			<ITEM class="GenTable" name="the bar" MOBSHELD=20 display="$ITEM_NAME is here" isgettable="false" />
 		</ROOM>
 
-		<ROOM id="town_inn" room_layout="APARTMENT" room_size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
+		<ROOM id="town_inn" layout="APARTMENT" size=10 condition="$__towninn&lt;1 and $__numshoptypes_all &gt; 10 and $__townsecond &gt; 5" define="__towninn+=1,__townthird+=1">
 			<ROOM id="town_inn_desk" class="WoodRoom"  condition="($__towninndesk&lt;1) and ('gate' in $ROOMTAG_NODEFLAGS)" define="__towninndesk+=1">
 				<TITLE select="any-1">
 					<TITLE>The ${c:areaname} INN</TITLE>
@@ -1135,7 +1140,7 @@ Required details: "id" "value"
 			</ITEM>
 			<ITEM class="GenFountain" LEVEL="$mob_level" isgettable="false" liquidheld=1000000 hasalid=false>
 				<NAME>a fountain</NAME>
-				<DISPLAY>$item_name flows from the wall"</DISPLAY>
+				<DISPLAY>$item_name flows from the wall</DISPLAY>
 				<MATERIAL>STONE</MATERIAL>
 			</ITEM>
 		</ROOM>
@@ -1243,9 +1248,21 @@ Required details: "id" "value"
 					<ITEM select="all" condition="$shoptype='magic'">
 						<ITEM class="metacraft:all-glassblowing<$mob_level=GenWand" number=20/>
 						<ITEM class="metacraft:all-blacksmithing<$mob_level=GenWand" material="$any_cheap_metal" number=20/>
-						<ITEM select="any-5" insert="any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item,any_scrollscribing_item" number=20/>
-						<ITEM select="any-5" insert="any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item,any_alchemy_item" number=20/>
-						<ITEM select="any-5" insert="any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item,any_herbalism_item" number=20/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-scrollscribing < $level_range" number=20 price="$item_level * 100"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-alchemy < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
+						<ITEM class="metacraft:any-herbalism < $level_range" number=20 price="$item_level * 10"/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='jewelry'">
 						<ITEM class="metacraft:all-jewelmaking<$mob_level" material="$any_cheap_metal" number=20/>
@@ -1255,8 +1272,12 @@ Required details: "id" "value"
 						<MOB class="Tiger" number=20/><MOB class="Rat" number=20/><MOB class="Puppy" number=20/><MOB class="Pig" number=20/><MOB class="Lizard" number=20/><MOB class="Lion" number=20/>
 					</MOB>
 					<ITEM select="all" condition="$shoptype='potion'">
-						<ITEM class="metacraft:all-alchemy<$mob_level" number=20/>
-						<ITEM class="metacraft:all-herbalism<$mob_level" number=20/>
+					    <ITEM select="repeat-40">
+							<ITEM class="metacraft:any-alchemy<$mob_level" number=200 price="$item_level * 9"/>
+						</ITEM>
+					    <ITEM select="repeat-40">
+							<ITEM class="metacraft:any-herbalism<$mob_level" number=200 price="$item_level * 9"/>
+					    </ITEM>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='general'">
 						<ITEM class="metacraft:all-leatherworking<$mob_level=GenContainer=GenDrink" material="leather" number=20/>
@@ -1281,10 +1302,10 @@ Required details: "id" "value"
 						<ITEM class="metacraft:all-weaving<$mob_level=GenArmor=GenWeapon" material="hemp" number=20/>
 					</ITEM>
 					<ITEM select="all" condition="$shoptype='food'">
-						<ITEM class="metacraft:all-cooking<$mob_level" number=20/>
-						<ITEM class="metacraft:all-mastercooking<$mob_level" number=20/>
-						<ITEM class="metacraft:all-baking<$mob_level" number=20/>
-						<ITEM class="metacraft:all-masterbaking<$mob_level" number=20/>
+						<ITEM class="metacraft:all-cooking<$mob_level" number=20 price="$item_level * 2"/>
+						<ITEM class="metacraft:all-mastercooking<$mob_level" number=20 price="$item_level * 2"/>
+						<ITEM class="metacraft:all-baking<$mob_level" number=20 price="$item_level * 2"/>
+						<ITEM class="metacraft:all-masterbaking<$mob_level" number=20 price="$item_level * 2"/>
 					</ITEM>
 				</SHOPINVENTORY>
 			</MOB>

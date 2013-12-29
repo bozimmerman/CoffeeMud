@@ -273,7 +273,7 @@ public class Test extends StdCommand
 						ItemCraftor I=(ItemCraftor)A;
 						if((theRest.length()==0)||(I.ID().toUpperCase().indexOf(theRest)>=0))
 						{
-							List<ItemCraftor.ItemKeyPair> set=I.craftAllItemSets();
+							List<ItemCraftor.ItemKeyPair> set=I.craftAllItemSets(false);
 							for(ItemCraftor.ItemKeyPair KP : set)
 							{
 								if((KP.item instanceof Armor)||(KP.item instanceof Weapon))
@@ -298,7 +298,7 @@ public class Test extends StdCommand
 					if(A instanceof ItemCraftor)
 					{
 						ItemCraftor I=(ItemCraftor)A;
-						allSets.put(I,I.craftAllItemSets());
+						allSets.put(I,I.craftAllItemSets(false));
 					}
 				}
 				mob.tell("Sorting...");

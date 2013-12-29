@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -15,8 +16,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
-
 
 import java.util.*;
 
@@ -233,15 +232,12 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		int autoGenerate=0;
-		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{
-			autoGenerate=((Integer)commands.firstElement()).intValue();
-			commands.removeElementAt(0);
-			givenTarget=null;
-		}
+		
+		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		givenTarget=parsedVars.givenTarget;
+
 		DVector enhancedTypes=enhancedTypes(mob,commands);
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"leatherwork list\" for a list, \"leatherwork refit <item>\" to resize, \"leatherwork learn <item>\", \"leatherwork scan\", \"leatherwork mend <item>\", or \"leatherwork stop\" to cancel.");
@@ -406,7 +402,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
@@ -422,14 +418,14 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 												(multiplier==3)?"metal":null,
 												(multiplier==3)?pm1:null,
 												bundling,
-												autoGenerate,
+												parsedVars.autoGenerate,
 												enhancedTypes);
 			if(data==null) return false;
 			fixDataForComponents(data,componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			int lostValue=autoGenerate>0?0:
+			int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -515,7 +511,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			displayText="You are "+verb;
 		}
 
-		if(autoGenerate>0)
+		if(parsedVars.autoGenerate>0)
 		{
 			commands.addElement(buildingI);
 			return true;

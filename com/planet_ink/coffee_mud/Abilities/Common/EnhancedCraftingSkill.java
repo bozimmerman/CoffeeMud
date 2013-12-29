@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -341,7 +339,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	{
 		return "Not implemented";
 	}
-
+	
 	public DVector enhancedTypes(MOB mob, Vector commands)
 	{
 		String cmd=null;

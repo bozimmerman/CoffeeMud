@@ -197,7 +197,7 @@ public class ItemGenerator extends ActiveTicker
 			List<ItemCraftor.ItemKeyPair> skillSet=null;
 			for(ItemCraftor skill : skills)
 			{
-				skillSet=skill.craftAllItemSets();
+				skillSet=skill.craftAllItemSets(false);
 				if(skillSet!=null)
 				for(ItemCraftor.ItemKeyPair materialSet: skillSet)
 					allItems.add(materialSet.item);

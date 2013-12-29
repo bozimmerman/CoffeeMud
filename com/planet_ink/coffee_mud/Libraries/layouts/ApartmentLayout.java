@@ -77,21 +77,21 @@ public class ApartmentLayout extends AbstractLayout
 			for(int h=1;h<numHallways;h++)
 			{
 				LayoutNode prevNode=n;
-				LayoutNode nextNode=lSet.getNextNode(prevNode, sidewayDirection);
-				nextNode.crossLink(prevNode);
+				LayoutNode nextNode=lSet.makeNextNode(prevNode, sidewayDirection);
 				lSet.use(nextNode,LayoutTypes.street);
+				nextNode.crossLink(prevNode);
 				setRunFromDirection(nextNode,sidewayDirection);
 				
 				prevNode=nextNode;
-				nextNode=lSet.getNextNode(prevNode, sidewayDirection);
-				nextNode.crossLink(prevNode);
+				nextNode=lSet.makeNextNode(prevNode, sidewayDirection);
 				lSet.use(nextNode,LayoutTypes.street);
+				nextNode.crossLink(prevNode);
 				setRunFromDirection(nextNode,sidewayDirection);
 				
 				prevNode=nextNode;
-				nextNode=lSet.getNextNode(prevNode, sidewayDirection);
-				nextNode.crossLink(prevNode);
+				nextNode=lSet.makeNextNode(prevNode, sidewayDirection);
 				lSet.use(nextNode,LayoutTypes.street);
+				nextNode.crossLink(prevNode);
 				setRunFromDirection(nextNode,sidewayDirection);
 				nextNode.flag(LayoutFlags.tee);
 				
@@ -103,21 +103,20 @@ public class ApartmentLayout extends AbstractLayout
 				LayoutNode prevNode=hallwayNode;
 				for(int h=0;h<hallwayLength;h++)
 				{
-					LayoutNode nextNode=lSet.getNextNode(prevNode, hallwayDirection);
-					nextNode.crossLink(prevNode);
+					LayoutNode nextNode=lSet.makeNextNode(prevNode, hallwayDirection);
 					lSet.use(nextNode,LayoutTypes.street);
+					nextNode.crossLink(prevNode);
 					setRunFromDirection(nextNode,hallwayDirection);
 					
 					prevNode=nextNode; // this should stick
 					
-					nextNode=lSet.getNextNode(prevNode, sidewayDirection);
-					nextNode.crossLink(prevNode);
+					nextNode=lSet.makeNextNode(prevNode, sidewayDirection);
 					lSet.use(nextNode,LayoutTypes.leaf);
-					
-					nextNode=lSet.getNextNode(prevNode, Directions.getOpDirectionCode(sidewayDirection));
 					nextNode.crossLink(prevNode);
-					lSet.use(nextNode,LayoutTypes.leaf);
 					
+					nextNode=lSet.makeNextNode(prevNode, Directions.getOpDirectionCode(sidewayDirection));
+					lSet.use(nextNode,LayoutTypes.leaf);
+					nextNode.crossLink(prevNode);
 				}
 			}
 			lSet.fillInFlags();

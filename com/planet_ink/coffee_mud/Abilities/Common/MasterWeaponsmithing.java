@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -13,7 +14,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 
@@ -59,20 +59,17 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		int autoGenerate=0;
-		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{
-			autoGenerate=((Integer)commands.firstElement()).intValue();
-			commands.removeElementAt(0);
-		}
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
+		
+		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith scan\", \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel.");
 			return false;
 		}
-		if(autoGenerate>0)
-			commands.insertElementAt(Integer.valueOf(autoGenerate),0);
+		if(parsedVars.autoGenerate>0)
+			commands.insertElementAt(Integer.valueOf(parsedVars.autoGenerate),0);
 		return super.invoke(mob,commands,givenTarget,auto,asLevel);
 	}
 

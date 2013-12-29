@@ -25,7 +25,8 @@ limitations under the License.
 public class BoxCitySquareLayout extends BoxCityLayout 
 {
 	public String name() { return "BOXCITYSQUARE";}
-	public void drawABox(LayoutSet lSet, int width, int height)
+	
+	protected void drawABox(LayoutSet lSet, int width, int height)
 	{
 		lSet.drawABox(width, height);
 		int x = 0 + ((width - 0)/2);

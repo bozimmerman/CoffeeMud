@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -15,8 +16,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
-
 
 import java.util.*;
 
@@ -232,16 +231,13 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		int autoGenerate=0;
 		fireRequired=true;
-		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{
-			autoGenerate=((Integer)commands.firstElement()).intValue();
-			commands.removeElementAt(0);
-			givenTarget=null;
-		}
+		
+		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		givenTarget=parsedVars.givenTarget;
+
 		DVector enhancedTypes=enhancedTypes(mob,commands);
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", \"weaponsmith learn <item>\", \"weaponsmith mend <item>\", or \"weaponsmith stop\" to cancel.");
@@ -290,7 +286,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 						if(toggler>1) buf.append("\n\r");
 						toggler=toggleTop;
 					}
-					if(((autoGenerate>0)
+					if(((parsedVars.autoGenerate>0)
 						||(((level<=xlevel(mob))||(allFlag))&&((canDo(V.get(RCP_WEAPONCLASS),mob)))))
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
@@ -315,7 +311,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			Item fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			if(fire==null) return false;
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
@@ -333,7 +329,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		{
 			activity = CraftingActivity.CRAFTING;
-			Item fire=getRequiredFire(mob,autoGenerate);
+			Item fire=getRequiredFire(mob,parsedVars.autoGenerate);
 			if(fire==null) return false;
 			buildingI=null;
 			messedUp=false;
@@ -353,7 +349,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				if(V.size()>0)
 				{
 					int level=CMath.s_int(V.get(RCP_LEVEL));
-					if((autoGenerate>0)||((level<=mob.phyStats().level())
+					if((parsedVars.autoGenerate>0)||((level<=mob.phyStats().level())
 										&&(canDo(V.get(RCP_WEAPONCLASS),mob))))
 					{
 						foundRecipe=V;
@@ -368,7 +364,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 			if(componentsFoundList==null) return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
@@ -382,7 +378,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 												woodRequired,"metal",pm,
 												otherRequired.length()>0?1:0,otherRequired,null,
 												false,
-												autoGenerate,
+												parsedVars.autoGenerate,
 												enhancedTypes);
 			if(data==null) return false;
 			fixDataForComponents(data,componentsFoundList);
@@ -390,7 +386,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			int lostValue=autoGenerate>0?0:
+			int lostValue=parsedVars.autoGenerate>0?0:
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
 				+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -445,7 +441,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			displayText="You are "+verb;
 		}
 
-		if(autoGenerate>0)
+		if(parsedVars.autoGenerate>0)
 		{
 			commands.addElement(buildingI);
 			return true;

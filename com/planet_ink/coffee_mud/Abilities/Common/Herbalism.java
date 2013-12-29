@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
@@ -17,7 +18,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 
@@ -84,7 +84,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	public String parametersFile(){ return "herbalism.txt";}
 	protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0); }
+	public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0,false); }
 
 	public boolean supportsDeconstruction() { return true; }
 
@@ -200,9 +200,11 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		if(super.checkStop(mob, commands))
 			return true;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,-1);
-		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		
+		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		givenTarget=parsedVars.givenTarget;
+		if(parsedVars.autoGenerate>0)
 		{
-			commands.removeElementAt(0);
 			Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
 			if(theSpell==null) return false;
 			int level=super.getCraftableSpellLevel(commands);

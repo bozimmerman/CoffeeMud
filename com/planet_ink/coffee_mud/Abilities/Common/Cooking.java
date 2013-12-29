@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -16,7 +17,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 
 import java.util.*;
 
@@ -638,10 +638,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		oldPotContents=null;
 		activity = CraftingActivity.CRAFTING;
 		List<List<String>> allRecipes=addRecipes(mob,loadRecipes());
-		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		
+		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		givenTarget=parsedVars.givenTarget;
+		
+		if(parsedVars.autoGenerate>0)
 		{
 			finalAmount=1;
-			commands.removeElementAt(0);
 			List<String> finalRecipe=null;
 			String recipeName=null;
 			if((commands.size()>0)&&(commands.firstElement() instanceof String))
@@ -663,18 +666,23 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				}
 			}
 			if(finalRecipe==null)
-			for(int r=0;r<allRecipes.size();r++)
-			{
-				List<String> Vr=allRecipes.get(r);
-				if(Vr.size()>0)
-				{
-					String item=Vr.get(RCP_FINALFOOD);
-					if(replacePercent(item,"").toLowerCase().indexOf(recipeName.toLowerCase())>=0)
-					{ finalRecipe=Vr; break;}
-				}
-			}
+    			for(int r=0;r<allRecipes.size();r++)
+    			{
+    				List<String> Vr=allRecipes.get(r);
+    				if(Vr.size()>0)
+    				{
+    					String item=Vr.get(RCP_FINALFOOD);
+    					if(replacePercent(item,"").toLowerCase().indexOf(recipeName.toLowerCase())>=0)
+    					{ finalRecipe=Vr; break;}
+    				}
+    			}
 			if(finalRecipe==null) return false;
 			buildingI=buildItem(mob,finalRecipe,null);
+			if(parsedVars.forceLevels)
+			{
+				buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
+				buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
+			}
 			commands.addElement(buildingI);
 			return true;
 		}

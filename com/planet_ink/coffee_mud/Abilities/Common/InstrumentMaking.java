@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -15,8 +16,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
-
 
 import java.util.*;
 
@@ -130,14 +129,11 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		int autoGenerate=0;
-		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{
-			autoGenerate=((Integer)commands.firstElement()).intValue();
-			commands.removeElementAt(0);
-			givenTarget=null;
-		}
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
+		
+		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
+		givenTarget=parsedVars.givenTarget;
+
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what Instrument? Enter \"instrumentmake list\" for a list, \"instrumentmake learn <item>\" to gain recipes, or \"instrumentmake stop\" to cancel.");
@@ -217,8 +213,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			{
 				String race=V.get(RCP_RACES).trim();
 				int level=CMath.s_int(V.get(RCP_LEVEL));
-				if(((autoGenerate>0)||(level<=xlevel(mob)))
-				&&((autoGenerate>0)||(race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
+				if(((parsedVars.autoGenerate>0)||(level<=xlevel(mob)))
+				&&((parsedVars.autoGenerate>0)||(race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 				{
 					foundRecipe=V;
 					break;
@@ -232,7 +228,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		}
 		
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName), autoGenerate);
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),parsedVars.autoGenerate);
 		if(componentsFoundList==null) return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
 		woodRequired=adjustWoodRequired(woodRequired,mob);
@@ -251,13 +247,13 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 											woodRequired,"material",pm,
 											0,null,null,
 											bundling,
-											autoGenerate,
+											parsedVars.autoGenerate,
 											null);
 		if(data==null) return false;
 		woodRequired=data[0][FOUND_AMT];
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		int lostValue=autoGenerate>0?0:
+		int lostValue=parsedVars.autoGenerate>0?0:
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 			+CMLib.ableMapper().destroyAbilityComponents(componentsFoundList);
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -318,7 +314,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			displayText="You are "+verb;
 		}
 
-		if(autoGenerate>0)
+		if(parsedVars.autoGenerate>0)
 		{
 			commands.addElement(buildingI);
 			return true;

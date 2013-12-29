@@ -193,9 +193,9 @@ public class Archon_Metacraft extends ArchonSkill
 				{
 					List<ItemCraftor.ItemKeyPair> V=null;
 					if(material>=0)
-						V=skill.craftAllItemSets(material);
+						V=skill.craftAllItemSets(material,false);
 					else
-						V=skill.craftAllItemSets();
+						V=skill.craftAllItemSets(false);
 					
 					if(V!=null)
 						for(ItemCraftor.ItemKeyPair L: V)
@@ -208,7 +208,7 @@ public class Archon_Metacraft extends ArchonSkill
 				else
 				if(material>=0)
 				{
-					ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material);
+					ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material,false);
 					if(pair!=null) items.addAll(pair.asList());
 				}
 				else
@@ -220,7 +220,7 @@ public class Archon_Metacraft extends ArchonSkill
 			else
 			if(material>=0)
 			{
-				ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material);
+				ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material,false);
 				if(pair!=null) items.addAll(pair.asList());
 			}
 			else

@@ -88,13 +88,18 @@ public class BoxCityLayout extends AbstractLayout
 		return lSet.fillMaze(n);
 	}
 	
+	protected void drawABox(LayoutSet lSet, int width, int height)
+	{
+		lSet.drawABox(width, height);
+	}
+	
 	public List<LayoutNode> generate(int num, int dir) 
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int diameter = (int)Math.round(Math.sqrt(num));
 		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
 		LayoutSet lSet = new LayoutSet(set,num);
-		lSet.drawABox(diameter+plusX,diameter);
+		drawABox(lSet,diameter+plusX,diameter);
 		TreeSet<Integer> yposUsed = new TreeSet<Integer>();
 		TreeSet<Integer> xposUsed = new TreeSet<Integer>();
 		xposUsed.add(Integer.valueOf(0));

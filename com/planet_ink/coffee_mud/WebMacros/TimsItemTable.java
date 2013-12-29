@@ -128,7 +128,7 @@ public class TimsItemTable extends StdWebMacro
 			}
 			for(ItemCraftor skill : craftingSkills)
 			{
-				List<ItemCraftor.ItemKeyPair> pairs=skill.craftAllItemSets();
+				List<ItemCraftor.ItemKeyPair> pairs=skill.craftAllItemSets(false);
 				if(pairs!=null)
 					for(ItemCraftor.ItemKeyPair IP : pairs)
 						if(IP.item instanceof Weapon)

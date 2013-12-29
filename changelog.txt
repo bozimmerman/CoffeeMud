@@ -35,7 +35,8 @@
   31. New locales: IndoorUnderWaterGrid, IndoorUnderWaterThinGrid, and IndoorWaterThinSurface classes
   32. Can now export/import entire accounts
   33. Quests will now save/restore their suspended status.
-//BUG: Fix Bar Shop Inventory, Fix INNs
+//BUG: Fix INNs
+
 //TODO: make the tech install skill!!! all put/remove commands should check msg.value() for pct chance/competence
 //TODO: make components interact badly based on techlevel -- generators/batteries affect things they power, software affects controlled.
 //      this encourages equality in tech level, which will bleed out into the comparative components (weapons, shields)
