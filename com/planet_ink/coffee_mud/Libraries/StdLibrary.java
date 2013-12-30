@@ -8,7 +8,7 @@ import com.planet_ink.coffee_mud.core.collections.DVector;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
 /*
-Copyright 2008-2013 Bo Zimmerman
+Copyright 2008-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

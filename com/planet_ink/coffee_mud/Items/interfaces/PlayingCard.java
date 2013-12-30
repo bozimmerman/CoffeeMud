@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.Items.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
 /*
-Copyright 2005-2013 Bo Zimmerman
+Copyright 2005-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

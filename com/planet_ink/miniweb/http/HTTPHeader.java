@@ -3,7 +3,7 @@ package com.planet_ink.miniweb.http;
 import com.planet_ink.miniweb.interfaces.HTTPIOHandler;
 
 /*
-Copyright 2012-2013 Bo Zimmerman
+Copyright 2012-2014 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
