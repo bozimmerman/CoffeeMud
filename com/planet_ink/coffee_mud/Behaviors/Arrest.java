@@ -503,7 +503,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB M=R.fetchInhabitant(i);
-			if(M.isMonster()
+			if((M!=null)
+			&&M.isMonster()
 			&&(M!=accused)
 			&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)
 			&&(CMLib.dice().rollPercentage()<=(CMLib.flags().isEvil(accused)?25:(CMLib.flags().isGood(accused)?95:50))))
@@ -851,7 +852,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public boolean isTheJudge(Law laws, MOB M)
 	{
-		if(((M.isMonster()||M.soulMate()!=null))
+		if((M!=null)
+		&&((M.isMonster()||M.soulMate()!=null))
 		&&(!CMLib.flags().isMobile(M))
 		&&(M.location()!=null))
 		{
