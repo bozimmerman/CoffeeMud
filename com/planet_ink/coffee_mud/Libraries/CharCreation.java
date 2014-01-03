@@ -1518,8 +1518,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(player.name.equalsIgnoreCase(parms[1]))
 					delMeChk=player;
 			}
+			String properName=CMStrings.capitalizeAndLower(parms[1]);
 			if(delMeChk==null)
 			{
+				acct.delPlayer(properName);
 				session.println("The character '"+CMStrings.capitalizeAndLower(parms[1])+"' is unknown.");
 				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
 				return null;
