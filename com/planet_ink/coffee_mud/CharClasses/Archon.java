@@ -57,6 +57,8 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"PlantLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Scrapping",false);
 		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"AstroEngineering",100,"",true,true);
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Common",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Resistance",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Multiwatch",100,"",true,true);

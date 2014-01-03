@@ -32,16 +32,19 @@ import java.util.*;
    limitations under the License.
 */
 
-public class ShipEngineering extends TechSkill
+public class AstroEngineering extends TechSkill
 {
-	public String ID() { return "ShipEngineering"; }
-	public String name(){ return "Astronautic Engineering";}
+	public String ID() { return "AstroEngineering"; }
+	public String name(){ return "Astro Engineering";}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected  int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
+	private static final String[] triggerStrings = {"ASTROENGINEER","ASTROENGINEERING","AE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -59,5 +62,44 @@ public class ShipEngineering extends TechSkill
 			return true;
 
 		return true;
+	}
+	
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		if(commands.size()<1)
+		{
+			mob.tell("What would you like to install or repair?");
+			return false;
+		}
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,(String)commands.elementAt(0));
+		if(target==null)
+		{
+			target=mob.location().findItem(null,(String)commands.elementAt(0));
+			if((target!=null)&&(CMLib.flags().isGettable(target)))
+			{
+				mob.tell("You don't have that.");
+				return false;
+			}
+		}
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
+		{
+			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
+			return false;
+		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+
+		boolean success=proficiencyCheck(mob,0,auto);
+
+		if(success)
+		{
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",CMMsg.MSG_WRITE,CMParms.combine(commands,1),CMMsg.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+		}
+		else
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> attempt(s) to write on <T-NAMESELF>, but mess(es) up.");
+		return success;
 	}
 }
