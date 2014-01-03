@@ -285,7 +285,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 								CMLib.threads().executeRunnable(new Runnable() {
 									public void run() {
 										try {
-											//logMemory();
+											I3Server.shutdown();
 											CMLib.hosts().get(0).executeCommand("START I3");
 											Log.errOut("I3SaveTick","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 										} catch(Exception e){}
@@ -544,6 +544,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 							try
 							{
 								//logMemory();
+								I3Server.shutdown();
 								CMLib.hosts().get(0).executeCommand("START I3");
 								Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 							}
