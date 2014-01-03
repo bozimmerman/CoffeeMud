@@ -488,7 +488,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 		return thread.connected;
 	}
 
-	private void logMemory()
+	public void logMemory()
 	{
 		try
 		{
