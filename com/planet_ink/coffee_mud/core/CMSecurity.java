@@ -1190,7 +1190,7 @@ public class CMSecurity
 		STATS("statistics system"), STATSTHREAD("statistics auto-saving"), POLLCACHE("player poll caching"), SESSIONTHREAD("session monitoring"), SMTPCLIENT("email client"), 
 		THINGRIDS("Thin uncached grids"), FATGRIDS("Standard cached grids"), STDRACES("Standard Player Races"), STDCLASSES("Standard Player Classes"),
 		CHANNELAUCTION("Auction Channel"), ELECTRICTHREAD("Electric Threads"), MOBTEACHER("MOBTeacher"),MSDP("MSDP variables"),GMCP("GMCP variables"), ATTRIBS("Char Stats"),
-		TECHLEVEL("TechLeveling"),AUTOLANGUAGE("Auto language switching"), I3("InterMud3"),IMC2("InterMud2")
+		TECHLEVEL("TechLeveling"),AUTOLANGUAGE("Auto language switching"), I3("InterMud3"),IMC2("InterMud2"),SLOW_AGEING("Real Ageing")
 		;
 		private final String desc;
 		DisFlag(final String description){this.desc=description;}

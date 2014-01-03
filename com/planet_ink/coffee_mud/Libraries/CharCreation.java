@@ -1532,6 +1532,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				{
 					CMLib.players().obliteratePlayer(M, true, false);
 				}
+				else
+					acct.delPlayer(delMe.name);
 				session.println(delMe.name+" has been deleted.");
 			}
 			else
