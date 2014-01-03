@@ -274,14 +274,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 						if(CMSecurity.isDisabled(CMSecurity.DisFlag.I3))
 						{
 							lastPingSentTime=System.currentTimeMillis();
-							return true;
+							return !shutdown;
 						}
 						else
 						{
 							long ellapsedTime = System.currentTimeMillis()-imud.getLastPacketReceivedTime(); 
 							if(ellapsedTime>(60  * 60 * 1000)) // one hour
 							{
-								Log.errOut("I3SaveTick","No I3 Ping sent in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.MILLISECONDS, false));
+								Log.errOut("I3SaveTick","No I3 Ping sent in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.MILLISECONDS, false)+". Connected="+Intermud.isConnected());
 								CMLib.threads().executeRunnable(new Runnable() {
 									public void run() {
 										try {
@@ -297,7 +297,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 					}
 					catch( PersistenceException e ) {
 					}
-					return true;
+					return !shutdown;
 				}
 			}, Tickable.TICKID_SUPPORT, 30).getClientObject();
 		}
@@ -531,14 +531,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 				continue;
 			}
 			else
-			if((System.currentTimeMillis()-lastPingSentTime)>( 30 * 60 * 1000))
+			if((!shutdown) && (System.currentTimeMillis()-lastPingSentTime)>( 30 * 60 * 1000))
 			{
 				lastPingSentTime=System.currentTimeMillis();
 				try { new MudAuthRequest(I3Server.getMudName()).send(); } catch(Exception e) { }
 				long ellapsedTime = System.currentTimeMillis() - intermud.getLastPacketReceivedTime();
 				if(ellapsedTime>(60  * 60 * 1000)) // one hour
 				{
-					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.SECONDS, false));
+					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.SECONDS, false)+". Connected="+Intermud.isConnected());
 					CMLib.threads().executeRunnable(new Runnable() {
 						public void run() {
 							try
