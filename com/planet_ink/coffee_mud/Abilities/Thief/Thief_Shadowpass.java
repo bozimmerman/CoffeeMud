@@ -50,7 +50,7 @@ public class Thief_Shadowpass extends ThiefSkill
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room R=mob.location();
-		if((!auto)&&(!CMLib.flags().isInDark(R)))
+		if((!auto)&&(!CMLib.flags().isInDark(R))||(R==null))
 		{
 			mob.tell("You can only shadowpass from the shadows to the shadows.");
 			return false;
