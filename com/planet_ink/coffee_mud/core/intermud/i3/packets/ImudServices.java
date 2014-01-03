@@ -78,7 +78,7 @@ public interface ImudServices {
 	 * @return the name of this mud
 	 */
 	public abstract String getMudName();
-
+	
 	/**
 	 * Returns the mask of a remote channel
 	 * @param str the remote channel
@@ -108,6 +108,11 @@ public interface ImudServices {
 	 * @return the player port for this mud
 	 */
 	public abstract int getMudPort();
+
+	/**
+	 * @return the last packet received time
+	 */
+	public abstract long getLastPacketReceivedTime();
 
 	/**
 	 * Given a local channel name, returns the remote

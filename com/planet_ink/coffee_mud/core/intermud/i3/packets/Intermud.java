@@ -206,7 +206,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 		return (m.state == -1);
 	}
 
-	private volatile long		lastPingTime;
+	private volatile long		lastPingSentTime;
 	private boolean 			connected;
 	private Socket  			connection;
 	private Thread  			input_thread;
@@ -225,7 +225,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	public int  			   	password;
 	public NameServer		   	currentRouter;
 
-	private Intermud(ImudServices imud, PersistentPeer p)
+	private Intermud(final ImudServices imud, PersistentPeer p)
 	{
 		super();
 		intermud = imud;
@@ -273,23 +273,25 @@ public class Intermud implements Runnable, Persistent, Serializable
 					try {
 						if(CMSecurity.isDisabled(CMSecurity.DisFlag.I3))
 						{
-							lastPingTime=System.currentTimeMillis()-(40  * 60 * 1000);
+							lastPingSentTime=System.currentTimeMillis();
 							return true;
 						}
 						else
-						if((System.currentTimeMillis()-lastPingTime)>(60  * 60 * 1000)) // one hour
 						{
-							Log.errOut("I3SaveTick","No I3 Ping sent in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-lastPingTime, TimeUnit.MILLISECONDS, false));
-							CMLib.threads().executeRunnable(new Runnable() {
-								public void run() {
-									try {
-										lastPingTime=System.currentTimeMillis()-(40  * 60 * 1000);
-										logMemory();
-										CMLib.hosts().get(0).executeCommand("START I3");
-										Log.errOut("I3SaveTick","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
-									} catch(Exception e){}
-								}
-							});
+							long ellapsedTime = System.currentTimeMillis()-imud.getLastPacketReceivedTime(); 
+							if(ellapsedTime>(60  * 60 * 1000)) // one hour
+							{
+								Log.errOut("I3SaveTick","No I3 Ping sent in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.MILLISECONDS, false));
+								CMLib.threads().executeRunnable(new Runnable() {
+									public void run() {
+										try {
+											//logMemory();
+											CMLib.hosts().get(0).executeCommand("START I3");
+											Log.errOut("I3SaveTick","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
+										} catch(Exception e){}
+									}
+								});
+							}
 						}
 						save();
 					}
@@ -508,7 +510,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 			input = null;
 			connected = false;
 		}
-		lastPingTime = System.currentTimeMillis();
+		lastPingSentTime = System.currentTimeMillis();
 		
 		while( connected && (!shutdown))
 		{
@@ -529,24 +531,20 @@ public class Intermud implements Runnable, Persistent, Serializable
 				continue;
 			}
 			else
-			if((System.currentTimeMillis()-lastPingTime)>( 30 * 60 * 1000))
+			if((System.currentTimeMillis()-lastPingSentTime)>( 30 * 60 * 1000))
 			{
-				lastPingTime=System.currentTimeMillis();
+				lastPingSentTime=System.currentTimeMillis();
 				try { new MudAuthRequest(I3Server.getMudName()).send(); } catch(Exception e) { }
-				if(PingPacket.lastPingResponse==0)
-					PingPacket.lastPingResponse=System.currentTimeMillis()-(30  * 60 * 1000);
-				else
-				if((System.currentTimeMillis()-PingPacket.lastPingResponse)>(60  * 60 * 1000)) // one hour
+				long ellapsedTime = System.currentTimeMillis() - intermud.getLastPacketReceivedTime();
+				if(ellapsedTime>(60  * 60 * 1000)) // one hour
 				{
-					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(System.currentTimeMillis()-PingPacket.lastPingResponse, TimeUnit.SECONDS, false));
-					PingPacket.lastPingResponse=System.currentTimeMillis();
+					Log.errOut("Intermud","No I3 Ping received in "+CMLib.time().date2EllapsedTime(ellapsedTime, TimeUnit.SECONDS, false));
 					CMLib.threads().executeRunnable(new Runnable() {
 						public void run() {
 							try
 							{
 								//logMemory();
 								CMLib.hosts().get(0).executeCommand("START I3");
-								PingPacket.lastPingResponse=System.currentTimeMillis()-(50 * 60 * 1000);
 								Log.errOut("Intermud","Restarted your Intermud system.  To stop receiving these messages, DISABLE the I3 system.");
 							}
 							catch(Exception e){}

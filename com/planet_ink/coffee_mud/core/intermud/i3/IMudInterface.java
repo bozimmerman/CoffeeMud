@@ -53,6 +53,8 @@ public class IMudInterface implements ImudServices, Serializable
 			new CMChannel[]{new CMChannel("I3CHAT","diku_chat",""),
 							new CMChannel("I3GOSSIP","diku_immortals",""),
 							new CMChannel("GREET","diku_code","")});
+	
+	private static volatile long lastPacketReceivedTime = System.currentTimeMillis();
 
 	String[][] i3ansi_conversion=
 	{
@@ -205,6 +207,11 @@ public class IMudInterface implements ImudServices, Serializable
 		return str.trim();
 	}
 
+	public long getLastPacketReceivedTime()
+	{
+		return lastPacketReceivedTime;
+	}
+	
 	/**
 	 * Handles an incoming I3 packet asynchronously.
 	 * An implementation should make sure that asynchronously
@@ -225,6 +232,7 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.CHAN_MESSAGE:
 		case Packet.CHAN_TARGET:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				ChannelPacket ck=(ChannelPacket)packet;
 				String channelName=ck.channel;
 				CMMsg msg=null;
@@ -302,6 +310,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.LOCATE_QUERY:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				LocateQueryPacket lk=(LocateQueryPacket)packet;
 				String stat="online";
 				String name=CMStrings.capitalizeAndLower(lk.user_name);
@@ -330,6 +339,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.LOCATE_REPLY:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				LocateReplyPacket lk=(LocateReplyPacket)packet;
 				MOB smob=findSessMob(lk.target_name);
 				if(smob!=null)
@@ -338,6 +348,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.FINGER_REQUEST:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				FingerRequest lk=(FingerRequest)packet;
 				Packet pkt;
 				MOB M=CMLib.players().getLoadPlayer(lk.target_name);
@@ -370,6 +381,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.FINGER_REPLY:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				FingerReply lk=(FingerReply)packet;
 				MOB smob=findSessMob(lk.target_name);
 				if(smob!=null)
@@ -395,6 +407,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.MAUTH_REQUEST:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				MudAuthRequest lk=(MudAuthRequest)packet;
 				if(lk.sender_mud.equalsIgnoreCase(I3Server.getMudName()))
 				{
@@ -411,12 +424,13 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.MAUTH_REPLY:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				MudAuthReply lk=(MudAuthReply)packet;
 				if(lk.sender_mud.equalsIgnoreCase(I3Server.getMudName()))
 				{
 					if(CMSecurity.isDebugging(DbgFlag.I3))
 						Log.debugOut("I3","I replied to my mud-auth.");
-					PingPacket.lastPingResponse=System.currentTimeMillis();
+					lastPacketReceivedTime=System.currentTimeMillis();
 				}
 				else
 					Log.sysOut("I3","MUD "+lk.sender_mud+" replied to my mud-auth with key "+lk.key+".");
@@ -424,6 +438,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.WHO_REPLY:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				WhoPacket wk=(WhoPacket)packet;
 				MOB smob=findSessMob(wk.target_name);
 				if(smob!=null)
@@ -450,6 +465,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.CHAN_WHO_REP:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				ChannelWhoReply wk=(ChannelWhoReply)packet;
 				MOB smob=findSessMob(wk.target_name);
 				if(smob!=null)
@@ -472,6 +488,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.CHAN_WHO_REQ:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				ChannelWhoRequest wk=(ChannelWhoRequest)packet;
 				ChannelWhoReply wkr=new ChannelWhoReply();
 				wkr.target_name=wk.sender_name;
@@ -495,6 +512,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.CHAN_USER_REQ:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				ChannelUserRequest wk=(ChannelUserRequest)packet;
 				ChannelUserReply wkr=new ChannelUserReply();
 				wkr.target_name=wk.sender_name;
@@ -512,6 +530,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.WHO_REQUEST:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				WhoPacket wk=(WhoPacket)packet;
 				WhoPacket wkr=new WhoPacket();
 				wkr.type=Packet.WHO_REPLY;
@@ -543,6 +562,7 @@ public class IMudInterface implements ImudServices, Serializable
 			break;
 		case Packet.TELL:
 			{
+				lastPacketReceivedTime=System.currentTimeMillis();
 				TellPacket tk=(TellPacket)packet;
 				MOB smob=findSessMob(tk.target_name);
 				if(smob!=null)

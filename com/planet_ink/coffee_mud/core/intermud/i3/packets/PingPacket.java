@@ -35,8 +35,6 @@ import java.util.Vector;
 @SuppressWarnings("rawtypes")
 public class PingPacket extends Packet 
 {
-	public static volatile long lastPingResponse=0;
-	
 	public PingPacket()
 	{
 		super();
