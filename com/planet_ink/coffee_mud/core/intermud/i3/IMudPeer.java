@@ -84,7 +84,7 @@ public class IMudPeer implements PersistentPeer
 			}
 			catch(Exception e)
 			{
-				Log.errOut("IMudPeer",e.getMessage());
+				Log.errOut("IMudPeer","Unable to read "+"resources/ppeer."+myID);
 			}
 		}
 		isRestoring=false;
