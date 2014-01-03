@@ -32,10 +32,10 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Engineering extends TechSkill
+public class ShipEngineering extends TechSkill
 {
-	public String ID() { return "Engineering"; }
-	public String name(){ return "Engineering";}
+	public String ID() { return "ShipEngineering"; }
+	public String name(){ return "Astronautic Engineering";}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected  int canTargetCode(){return 0;}
