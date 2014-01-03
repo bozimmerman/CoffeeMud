@@ -83,7 +83,7 @@ public interface CoffeeShop extends CMCommon
 	
 	/**
 	 * Returns the number of items this shop currently has for sale.  Does not
-	 * take number of duplicates into account.  For that call totalStockSize
+	 * take number of duplicates into account.  For that call totalStockSizeIncludingDuplicates
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#totalStockSizeIncludingDuplicates()
 	 * @return the number of items for sale.
 	 */
