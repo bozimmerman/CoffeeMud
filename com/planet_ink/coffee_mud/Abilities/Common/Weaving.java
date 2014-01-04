@@ -235,7 +235,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
-		DVector enhancedTypes=enhancedTypes(mob,commands);
+		PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		if(commands.size()==0)
 		{

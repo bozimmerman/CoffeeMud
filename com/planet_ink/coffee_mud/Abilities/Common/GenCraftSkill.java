@@ -418,7 +418,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		CraftParms parsedVars=super.parseAutoGenerate(auto,givenTarget,commands);
 		givenTarget=parsedVars.givenTarget;
 
-		DVector enhancedTypes=enhancedTypes(mob,commands);
+		PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,parsedVars.autoGenerate);
 		final String noun=CMStrings.capitalizeAndLower(triggerStrings()[0]);
 		final String verbing=V(ID,V_VERB).toString();

@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Log;
-import com.planet_ink.coffee_mud.core.collections.DVector;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
 /*

@@ -2074,9 +2074,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 
-	protected DVector getAllPlayersHere(Area area, boolean includeLocalFollowers)
+	protected PairVector<MOB,String> getAllPlayersHere(Area area, boolean includeLocalFollowers)
 	{
-		DVector playersHere=new DVector(2);
+		PairVector<MOB,String> playersHere=new PairVector<MOB,String>();
 		MOB M=null;
 		Room R=null;
 		for(Session S : CMLib.sessions().localOnlineIterable())
@@ -2107,10 +2107,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		Area.State oldFlag=area.getAreaState();
 		area.setAreaState(Area.State.FROZEN);
-		DVector playersHere=getAllPlayersHere(area,true);
+		PairVector<MOB,String> playersHere=getAllPlayersHere(area,true);
 		for(int p=0;p<playersHere.size();p++)
 		{
-			MOB M=(MOB)playersHere.elementAt(p,1);
+			MOB M=playersHere.elementAt(p).first;
 			Room R=M.location();
 			R.delInhabitant(M);
 		}
@@ -2119,8 +2119,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		area.fillInAreaRooms();
 		for(int p=0;p<playersHere.size();p++)
 		{
-			MOB M=(MOB)playersHere.elementAt(p,1);
-			Room R=getRoom((String)playersHere.elementAt(p,2));
+			MOB M=playersHere.elementAt(p).first;
+			Room R=getRoom(playersHere.elementAt(p).second);
 			if(R==null) R=M.getStartRoom();
 			if(R==null) R=getStartRoom(M);
 			if(R!=null) 

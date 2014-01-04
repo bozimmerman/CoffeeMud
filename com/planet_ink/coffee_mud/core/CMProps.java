@@ -327,7 +327,6 @@ public class CMProps extends Properties
 	protected final List<String>channelFilter=new Vector<String>();
 	protected final List<String>emoteFilter=new Vector<String>();
 	protected final List<String>poseFilter=new Vector<String>();
-	protected final DVector 	newusersByIP=new DVector(2);
 	protected String[][]		statCodeExtensions = null;
 	protected Pattern[][]		whiteLists = new Pattern[0][];
 	protected int   			pkillLevelDiff=26;
@@ -346,6 +345,7 @@ public class CMProps extends Properties
 	protected final Map<String,Double>	skillComActionCostExceptions=new HashMap<String,Double>();
 	protected final Map<String,Double>	cmdActionCostExceptions		=new HashMap<String,Double>();
 	protected final Map<String,Double>	cmdComActionCostExceptions	=new HashMap<String,Double>();
+	protected final PairVector<String,Long> newusersByIP=new PairVector<String,Long>();
 	protected final Map<String,ThreadGroup> privateSet=new HashMap<String,ThreadGroup>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> commonCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> skillsCost  =new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
@@ -882,13 +882,13 @@ public class CMProps extends Properties
 	public static final int getCountNewUserByIP(final String address)
 	{
 		int count=0;
-		final DVector DV=p().newusersByIP;
+		final PairVector<String,Long> DV=p().newusersByIP;
 		synchronized(DV)
 		{
 			for(int i=DV.size()-1;i>=0;i--)
-				if(((String)DV.elementAt(i,1)).equalsIgnoreCase(address))
+				if(DV.elementAt(i).first.equalsIgnoreCase(address))
 				{
-					if(System.currentTimeMillis()>(((Long)DV.elementAt(i,2)).longValue()))
+					if(System.currentTimeMillis()>(DV.elementAt(i).second.longValue()))
 						DV.removeElementAt(i);
 					else
 						count++;
@@ -898,7 +898,7 @@ public class CMProps extends Properties
 	}
 	public static final void addNewUserByIP(final String address)
 	{
-		final DVector DV=p().newusersByIP;
+		final PairVector<String,Long> DV=p().newusersByIP;
 		synchronized(DV)
 		{
 			DV.addElement(address,Long.valueOf(System.currentTimeMillis()+TimeManager.MILI_DAY));

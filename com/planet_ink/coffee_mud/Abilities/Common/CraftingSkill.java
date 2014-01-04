@@ -391,7 +391,7 @@ public class CraftingSkill extends GatheringSkill
 											 String req2Desc, int[] req2,
 											 boolean bundle,
 											 int autoGeneration,
-											 DVector eduMods)
+											 PairVector<Integer,Integer> eduMods)
 	{
 		int[][] data=new int[2][2];
 		if((req1Desc!=null)&&(req1Desc.length()==0)) req1Desc=null;

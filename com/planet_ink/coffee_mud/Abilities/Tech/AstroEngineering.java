@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("rawtypes")
 public class AstroEngineering extends TechSkill
 {
 	public String ID() { return "AstroEngineering"; }

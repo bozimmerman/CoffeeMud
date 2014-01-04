@@ -84,7 +84,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		int completion=16;
 		Item fire=getRequiredFire(mob,0);
 		if(fire==null) return false;
-		DVector enhancedTypes=enhancedTypes(mob,commands);
+		PairVector<Integer,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		buildingI=null;
 		messedUp=false;
 		int woodRequired=50;

@@ -60,13 +60,13 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 											 String req2Desc, int[] req2,
 											 boolean bundle,
 											 int autoGeneration,
-											 DVector expMods)
+											 PairVector<Integer,Integer> expMods)
 	{
 		if(expMods!=null)
 		for(int t=0;t<expMods.size();t++)
 		{
-			int type=((Integer)expMods.elementAt(t,1)).intValue();
-			int stage=((Integer)expMods.elementAt(t,2)).intValue();
+			int type=expMods.elementAt(t).first.intValue();
+			int stage=expMods.elementAt(t).second.intValue();
 			switch(type)
 			{
 			case TYPE_LITECRAFT:
@@ -340,10 +340,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return "Not implemented";
 	}
 	
-	public DVector enhancedTypes(MOB mob, Vector commands)
+	public PairVector<Integer,Integer> enhancedTypes(MOB mob, Vector commands)
 	{
 		String cmd=null;
-		DVector types=null;
+		PairVector<Integer,Integer> types=null;
 		materialAdjustments=0;
 		if((commands!=null)&&(commands.size()>0)&&(commands.firstElement() instanceof String))
 		{
@@ -380,7 +380,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 									if(cmd.equalsIgnoreCase(def.data[s]))
 									{
 										commands.removeElementAt(0);
-										if(types==null) types=new DVector(2);
+										if(types==null) types=new PairVector<Integer,Integer>();
 										if(!types.contains(Integer.valueOf(code)))
 										{
 											types.addElement(Integer.valueOf(code),Integer.valueOf(s));
@@ -438,7 +438,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 	}
 
-	public void enhanceItem(MOB mob, Item item, DVector types)
+	public void enhanceItem(MOB mob, Item item, PairVector<Integer,Integer> types)
 	{
 		if(types==null) return;
 		EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
@@ -449,8 +449,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		{
 			for(int t=0;t<types.size();t++)
 			{
-				int type=((Integer)types.elementAt(t,1)).intValue();
-				int stage=((Integer)types.elementAt(t,2)).intValue();
+				int type=types.elementAt(t).first.intValue();
+				int stage=types.elementAt(t).second.intValue();
 				final String expertiseID=CMLib.expertises().getApplicableExpertise(ID(),type);
 				ExpertiseLibrary.ExpertiseDefinition def = CMLib.expertises().getDefinition(expertiseID+CMath.convertToRoman(1));
 				if(def==null) def = CMLib.expertises().getDefinition(expertiseID+1);

@@ -70,7 +70,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer estats(PhyStats E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
-		DVector theclasses=new DVector(2);
+		PairVector<String,String> theclasses=new PairVector<String,String>();
 		if(httpReq.isUrlParameter(c+"ESTATS1"))
 		{
 			int num=1;
@@ -100,7 +100,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=(String)theclasses.elementAt(i,1);
+			String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+c+"ESTATS"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -108,7 +108,7 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=65%>");
-			str.append("<INPUT TYPE=TEXT NAME="+c+"ESTATSV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=4 MAXLENGTH=4>");
+			str.append("<INPUT TYPE=TEXT NAME="+c+"ESTATSV"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=4 MAXLENGTH=4>");
 			str.append("</TD>");
 			str.append("</TR>");
 		}
@@ -131,7 +131,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer cstats(CharStats E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
-		DVector theclasses=new DVector(2);
+		PairVector<String,String> theclasses=new PairVector<String,String>();
 		if(httpReq.isUrlParameter(c+"CSTATS1"))
 		{
 			int num=1;
@@ -158,7 +158,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=(String)theclasses.elementAt(i,1);
+			String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+c+"CSTATS"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -166,7 +166,7 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=65%>");
-			str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATSV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=4 MAXLENGTH=4>");
+			str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATSV"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=4 MAXLENGTH=4>");
 			str.append("</TD>");
 			str.append("</TR>");
 		}
@@ -189,7 +189,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer cstate(CharState E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
-		DVector theclasses=new DVector(2);
+		PairVector<String,String> theclasses=new PairVector<String,String>();
 		if(httpReq.isUrlParameter(c+"CSTATE1"))
 		{
 			int num=1;
@@ -216,7 +216,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=(String)theclasses.elementAt(i,1);
+			String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+c+"CSTATE"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -224,7 +224,7 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=65%>");
-			str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATEV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=4 MAXLENGTH=4>");
+			str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATEV"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=4 MAXLENGTH=4>");
 			str.append("</TD>");
 			str.append("</TR>");
 		}
@@ -355,7 +355,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer dynAbilities(List<Ability> ables, String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		StringBuffer str=new StringBuffer("");
-		DVector theclasses=new DVector(4);
+		QuadVector<String,String,String,String> theclasses=new QuadVector<String,String,String,String>();
 		if(httpReq.isUrlParameter("RABLES1"))
 		{
 			int num=1;
@@ -398,7 +398,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=(String)theclasses.elementAt(i,1);
+			String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=RABLES"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -406,13 +406,13 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=25%>");
-			str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,4))+"\" SIZE=3 MAXLENGTH=3>");
+			str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).fourth+"\" SIZE=3 MAXLENGTH=3>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=15%>");
-			str.append(font+"<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>%</B></I></FONT>");
+			str.append(font+"<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=3 MAXLENGTH=3>%</B></I></FONT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=25%>");
-			str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,3)).equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
+			str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(theclasses.elementAt(i).third.equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
 			str.append("</TD>");
 			str.append("</TR>");
 		}
@@ -447,7 +447,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer dynEffects(String ID, List<Ability> ables, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		StringBuffer str=new StringBuffer("");
-		DVector theclasses=new DVector(3);
+		TriadVector<String,String,String> theclasses=new TriadVector<String,String,String>();
 		if(httpReq.isUrlParameter("REFFS1"))
 		{
 			int num=1;
@@ -482,7 +482,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=(String)theclasses.elementAt(i,1);
+			String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=REFFS"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -490,10 +490,10 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=25%>");
-			str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=REFLVL"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,3))+"\" SIZE=3 MAXLENGTH=3>");
+			str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=REFLVL"+(i+1)+" VALUE=\""+theclasses.elementAt(i).third+"\" SIZE=3 MAXLENGTH=3>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=40%>");
-			str.append("<INPUT TYPE=TEXT NAME=REFPRM"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=25>");
+			str.append("<INPUT TYPE=TEXT NAME=REFPRM"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=25>");
 			str.append("</TD>");
 			str.append("</TR>");
 		}
@@ -521,7 +521,7 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer cabilities(Race E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
 	{
 		StringBuffer str=new StringBuffer("");
-		DVector theclasses=new DVector(2);
+		PairVector<String,String> theclasses=new PairVector<String,String>();
 		if(httpReq.isUrlParameter("CABLES1"))
 		{
 			int num=1;
@@ -548,7 +548,7 @@ public class RaceData extends StdWebMacro
 		str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 		for(int i=0;i<theclasses.size();i++)
 		{
-			String theclass=(String)theclasses.elementAt(i,1);
+			String theclass=theclasses.elementAt(i).first;
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CABLES"+(i+1)+">");
 			str.append("<OPTION VALUE=\"\">Delete!");
@@ -556,7 +556,7 @@ public class RaceData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=65%>");
-			str.append(font+"Pct:</B></I></FONT> <INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
+			str.append(font+"Pct:</B></I></FONT> <INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+theclasses.elementAt(i).second+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
 			str.append("</TD>");
 			str.append("</TR>");
 		}
