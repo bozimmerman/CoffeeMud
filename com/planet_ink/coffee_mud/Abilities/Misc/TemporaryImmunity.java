@@ -46,7 +46,7 @@ public class TemporaryImmunity extends StdAbility
 	public boolean canBeUninvoked(){return true;}
 	public boolean isAutoInvoked(){return true;}
 	public final static long IMMUNITY_TIME=36000000;
-	protected DVector set=new DVector(2);
+	protected PairVector<String,Long> set=new PairVector<String,Long>();
 
 	public TemporaryImmunity()
 	{
@@ -65,7 +65,7 @@ public class TemporaryImmunity extends StdAbility
 			makeLongLasting();
 			for(int s=set.size()-1;s>=0;s--)
 			{
-				Long L=(Long)set.elementAt(s,2);
+				Long L=set.elementAt(s).second;
 				if((System.currentTimeMillis()-L.longValue())>IMMUNITY_TIME)
 					set.removeElementAt(s);
 			}
@@ -80,7 +80,7 @@ public class TemporaryImmunity extends StdAbility
 		if(set.size()==0) return "";
 		StringBuffer str=new StringBuffer("");
 		for(int s=0;s<set.size();s++)
-			str.append(((String)set.elementAt(s,1))+"/"+((Long)set.elementAt(s,2)).longValue()+";");
+			str.append(set.elementAt(s).first+"/"+set.elementAt(s).second.longValue()+";");
 		return str.toString();
 	}
 
@@ -90,7 +90,7 @@ public class TemporaryImmunity extends StdAbility
 		{
 			str=str.substring(1);
 			if(set.indexOf(str)>=0)
-				set.setElementAt(set.indexOf(str),2,Long.valueOf(System.currentTimeMillis()));
+				set.setElementAt(new Pair<String,Long>(str,Long.valueOf(System.currentTimeMillis())),set.indexOfFirst(str));
 			else
 				set.addElement(str,Long.valueOf(System.currentTimeMillis()));
 		}
