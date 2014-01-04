@@ -30,6 +30,7 @@ limitations under the License.
  * An object to abstractly access the CoffeeMud File System (CMFS), which
  * is a layer of database-based files (VFS) on top of the normal systems
  * file system.  It uses the unix path system.
+ * 
  * @author Bo Zimmerman
  */
 public class CMFile extends File
@@ -242,6 +243,13 @@ public class CMFile extends File
 		public String author;
 		public Object data = null;
 		
+		/**
+		 * 
+		 * @param path
+		 * @param mask
+		 * @param modifiedDateTime
+		 * @param author
+		 */
 		public CMVFSFile(final String path, final int mask, final long modifiedDateTime, final String author) 
 		{
 			this.path=path;
@@ -257,6 +265,10 @@ public class CMFile extends File
 			this.author=author;
 		}
 		
+		/**
+		 * 
+		 * @param f2
+		 */
 		public void copyInto(final CMVFSFile f2)
 		{
 			f2.author=author;
@@ -276,11 +288,20 @@ public class CMFile extends File
 			}
 		}
 		
+		/**
+		 * 
+		 * @param accessor
+		 * @return
+		 */
 		public int getMaskBits(MOB accessor)
 		{
 			return mask;
 		}
 		
+		/**
+		 * 
+		 * @return
+		 */
 		public Object readData()
 		{
 			CMVFSFile f=CMLib.database().DBReadVFSFile(path);
@@ -288,6 +309,14 @@ public class CMFile extends File
 				return f.data;
 			return null;
 		}
+		
+		/**
+		 * 
+		 * @param filename
+		 * @param vfsBits
+		 * @param author
+		 * @param O
+		 */
 		public void saveData(String filename, int vfsBits, String author, Object O)
 		{
 			CMVFSFile info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author);
@@ -296,6 +325,11 @@ public class CMFile extends File
 		}
 	}
 	
+	/**
+	 * 
+	 * @author BZ
+	 *
+	 */
 	public static class CMVFSDir extends CMVFSFile
 	{
 		protected CMVFSFile[] files=null;
@@ -307,12 +341,24 @@ public class CMFile extends File
 		
 		protected CMVFSFile[] getFiles() { return files; }
 		
+		/**
+		 * 
+		 * @param parent
+		 * @param mask
+		 * @param path
+		 */
 		public CMVFSDir(final CMVFSDir parent, final String path)
 		{
 			super(path,VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
 			this.parent=parent;
 		}
 
+		/**
+		 * 
+		 * @param parent
+		 * @param mask
+		 * @param path
+		 */
 		public CMVFSDir(final CMVFSDir parent, final int mask, final String path)
 		{
 			super(path,mask|VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
@@ -325,6 +371,13 @@ public class CMFile extends File
 			this.parent=parent;
 		}
 
+		/**
+		 * Returns a subdirectory of this directory at the given path, and
+		 * possibly creates it if not found.
+		 * @param path the path to look down
+		 * @param create true to create if not found, false just to search
+		 * @return the found subdir, or null
+		 */
 		public synchronized CMVFSDir fetchSubDir(final String path, final boolean create)
 		{
 			final String[] ppath=path.split("/");
@@ -361,6 +414,11 @@ public class CMFile extends File
 			return currDir;
 		}
 
+		/**
+		 * Adds the given vfs file to this directory
+		 * @param f the file to add
+		 * @return true if successful, false otherwise
+		 */
 		public final boolean add(CMVFSFile f)
 		{
 			int x=f.path.lastIndexOf('/');
@@ -397,6 +455,11 @@ public class CMFile extends File
 			return true;
 		}
 		
+		/**
+		 * Deletes the given VFS file from this directory.
+		 * @param file the file to delete
+		 * @return true if deleted, false otherwise
+		 */
 		public final boolean delete(final CMVFSFile file)
 		{
 			final CMVFSDir dir = vfsV();
@@ -454,6 +517,11 @@ public class CMFile extends File
 			return null;
 		}
 		
+		/**
+		 * Returns the vfs file at the given path starting here.
+		 * @param filePath the path to get the file from
+		 * @return the file at that path, or null if nonexistant.
+		 */
 		public final synchronized CMVFSFile fetch(final String filePath)
 		{
 			final int x=filePath.lastIndexOf('/');
@@ -477,6 +545,11 @@ public class CMFile extends File
 	@Override
 	public final CMFile getParentFile(){return new CMFile(path,accessor);}
 
+	/**
+	 * Weird function.  Returns true if the file is a readable non-directory,
+	 * or an existing specified VFS directory.
+	 * @return true under weird conditions
+	 */
 	public final boolean mustOverwrite()
 	{
 		if(!isDirectory())
@@ -527,7 +600,18 @@ public class CMFile extends File
 		return true;
 	}
 
+	/**
+	 * Returns true if this file was opened only as a vfs file,
+	 * and not as a local file.  This is a request status.
+	 * @return true if this file was opened only as a vfs file
+	 */
 	public final boolean demandedVFS(){return demandVFS;}
+
+	/**
+	 * Returns true if this file was opened only as a local file,
+	 * and not as a VFS file.  This is a request status.
+	 * @return true if this file was opened only as a local file
+	 */
 	public final boolean demandedLocal(){return demandLocal;}
 	@Override
 	public final boolean isDirectory(){return exists()&&CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY);}
@@ -537,10 +621,30 @@ public class CMFile extends File
 	public final boolean isFile(){return canRead()&&(!CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY));}
 	@Override
 	public final long lastModified(){return modifiedDateTime;}
+	/**
+	 * Returns the author of this file, if available.
+	 * @return the author of this file
+	 */
 	public final String author(){return ((author!=null))?author:"SYS_UNK";}
+	/**
+	 * 
+	 * @return
+	 */
 	public final boolean isLocalFile(){return CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL);}
+	/**
+	 * 
+	 * @return
+	 */
 	public final boolean isVFSFile(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL));}
+	/**
+	 * 
+	 * @return
+	 */
 	public final boolean canVFSEquiv(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS));}
+	/**
+	 * 
+	 * @return
+	 */
 	public final boolean canLocalEquiv(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL));}
 	@Override
 	public final String getName(){return name;}
@@ -548,18 +652,33 @@ public class CMFile extends File
 	public final String getAbsolutePath(){return "/"+getVFSPathAndName();}
 	@Override
 	public final String getCanonicalPath(){return getVFSPathAndName();}
+	
+	/**
+	 * Returns local file path and name in simple form.
+	 * @return local file path and name
+	 */
 	public final String getLocalPathAndName()
 	{
 		if(path.length()==0)
 			return name;
 		return localPath+pathSeparator+name;
 	}
+	/**
+	 * Returns the local path and name that can be used
+	 * for a local file.  If empty, returns "."
+	 * @return the local path and name
+	 */
 	public final String getIOReadableLocalPathAndName()
 	{
 		final String s=getLocalPathAndName();
 		if(s.trim().length()==0) return ".";
 		return s;
 	}
+	
+	/**
+	 * Returns the path and name of this file.
+	 * @return the path and name of this file
+	 */
 	public final String getVFSPathAndName()
 	{
 		if(path.length()==0)
@@ -567,6 +686,11 @@ public class CMFile extends File
 		return path+'/'+name;
 	}
 
+	/**
+	 * If this file is a directory and the directory
+	 * is empty of other directories.
+	 * @return true if the file is a deletable director
+	 */
 	public final boolean mayDeleteIfDirectory()
 	{
 		if(!isDirectory()) return true;
@@ -582,6 +706,11 @@ public class CMFile extends File
 		return true;
 	}
 
+	/**
+	 * If permitted, deletes this file from local 
+	 * filesystem
+	 * @return true if deleted, false otherwise
+	 */
 	public final boolean deleteLocal()
 	{
 		if(!exists()) return false;
@@ -593,6 +722,12 @@ public class CMFile extends File
 			return localFile.delete();
 		return false;
 	}
+	
+	/**
+	 * If permitted, deletes this file from VFS 
+	 * (database) filesystem
+	 * @return true if deleted, false otherwise
+	 */
 	public final boolean deleteVFS()
 	{
 		if(!exists()) return false;
@@ -614,6 +749,12 @@ public class CMFile extends File
 		return false;
 	}
 
+	/**
+	 * Same as delete, though it deletes both vfs and local
+	 * versions of a file unless the file is specified as
+	 * vfs or local.
+	 * @return true if 2 files deleted, false otherwise
+	 */
 	public final boolean deleteAll()
 	{
 		if(!exists()) return false;
@@ -649,11 +790,23 @@ public class CMFile extends File
 		return false;
 	}
 
+	/**
+	 * Reads and returns all of the data in this file as an
+	 * converted text stream.  This means the line-ends
+	 * are converted to mud-format.
+	 * @return all of the data in this file as a stream
+	 */
 	public final InputStream getTextStream()
 	{
 		return new ByteArrayInputStream(text().toString().getBytes());
 	}
 	
+	/**
+	 * Reads and returns all of the data in this file as an
+	 * converted text stringbuffer.  This means the line-ends
+	 * are converted to mud-format.
+	 * @return all of the data in this file as a stringbuffer
+	 */
 	public final StringBuffer text()
 	{
 		final StringBuffer buf=new StringBuffer("");
@@ -731,11 +884,23 @@ public class CMFile extends File
 		return buf;
 	}
 
+	/**
+	 * Reads and returns all of the data in this file as an
+	 * unconverted text stream.  This means the line-ends
+	 * aren't converted to mud-format.
+	 * @return all of the data in this file as a stream
+	 */
 	public final InputStream getUnformattedTextStream()
 	{
 		return new ByteArrayInputStream(text().toString().getBytes());
 	}
 	
+	/**
+	 * Reads and returns all of the data in this file as an
+	 * unconverted text stringbuffer.  This means the line-ends
+	 * aren't converted to mud-format.
+	 * @return all of the data in this file as a stringbuffer
+	 */
 	public final StringBuffer textUnformatted()
 	{
 		final StringBuffer buf=new StringBuffer("");
@@ -808,11 +973,20 @@ public class CMFile extends File
 		return buf;
 	}
 
+	/**
+	 * Reads and returns all of the data in this file as a byte
+	 * input stream.
+	 * @return all of the data in this file as a stream
+	 */
 	public final InputStream getRawStream()
 	{
 		return new ByteArrayInputStream(raw());
 	}
 	
+	/**
+	 * Reads and returns all of the data in this file as a byte array.
+	 * @return all of the data in this file as a byte array
+	 */
 	public final byte[] raw()
 	{
 		byte[] buf=new byte[0];
@@ -875,6 +1049,12 @@ public class CMFile extends File
 		return buf;
 	}
 
+	/**
+	 * Converts the given bytes to a stringbuffer, if it is one,
+	 * or returns null otherwise.
+	 * @param bytes the bytes to convert
+	 * @return stringbuffer if its text, or null otherwise
+	 */
 	public final StringBuffer textVersion(byte[] bytes)
 	{
 		final StringBuffer text=new StringBuffer(CMStrings.bytesToStr(bytes));
@@ -884,6 +1064,12 @@ public class CMFile extends File
 		return text;
 	}
 
+	/**
+	 * Saves the given data to local file if demanded, or vfs
+	 * file if not.
+	 * @param data string, stringbuffer, byte[], or string convertable
+	 * @return true if happened without errors, false otherwise
+	 */
 	public boolean saveRaw(Object data)
 	{
 		if(data==null)
@@ -982,7 +1168,21 @@ public class CMFile extends File
 		return false;
 	}
 
+	/**
+	 * Saves the given text data to local file if demanded, or vfs
+	 * file if not.
+	 * @param data string, stringbuffer, byte[], or string convertable
+	 * @return true if happened without errors, false otherwise
+	 */
 	public boolean saveText(Object data){ return saveText(data,false);}
+	
+	/**
+	 * Saves the given text data to local file if demanded, or vfs
+	 * file if not.
+	 * @param data string, stringbuffer, byte[], or string convertable
+	 * @param append true to append, false to overwrite
+	 * @return true if happened without errors, false otherwise
+	 */
 	public boolean saveText(Object data, boolean append)
 	{
 		if(data==null)
@@ -1163,6 +1363,11 @@ public class CMFile extends File
 		return null;
 	}
 
+	/**
+	 * If this file represents (or could represent) a VFS (database) dir,
+	 * returns true.
+	 * @return true if this file represents (or could represent) a VFS (database) dir
+	 */
 	public final boolean isVFSDirectory()
 	{
 		String dir=getVFSPathAndName().toLowerCase();
@@ -1171,6 +1376,10 @@ public class CMFile extends File
 		return (file instanceof CMVFSDir);
 	}
 	
+	/**
+	 * If this file represents (or could represent) a local dir, true
+	 * @return if this file represents (or could represent) a local dir
+	 */
 	public final boolean isLocalDirectory()
 	{
 		return (localFile!=null)&&(localFile.isDirectory());
@@ -1232,6 +1441,10 @@ public class CMFile extends File
 		return finalDir;
 	}
 
+	/**
+	 * Returns the entire VFS (database file) tree.
+	 * @return the entire VFS tree.
+	 */
 	public static final CMVFSDir getVFSDirectory()
 	{
 		CMVFSDir vvfs=vfsV();
@@ -1288,6 +1501,14 @@ public class CMFile extends File
 		return new String[]{absolutePath,path,name};
 	}
 	
+	/**
+	 * Converts DOS style path/names to VFS type names.
+	 * Removes any VFS prefixes like :: or //
+	 * Removes any prefix path separator
+	 * Changes separators to /
+	 * @param filename the filename to convert
+	 * @return the converted and cleaned filename
+	 */
 	public static final String vfsifyFilename(String filename)
 	{
 		filename=filename.trim();
@@ -1324,14 +1545,22 @@ public class CMFile extends File
 		return myRsc;
 	}
 
-	public static final CMFile[] getFileList(final String parse, final MOB user, final boolean recurse, final boolean expandDirs)
+	/**
+	 * Returns CMFiles list for a directory at a given path 
+	 * @param path the full path of the directory to get list from 
+	 * @param user user, for security checks
+	 * @param recurse true to recurse deep dirs, false otherwise
+	 * @param expandDirs if path is a dir, return contents, otherwise self
+	 * @return list for a directory at a given path
+	 */
+	public static final CMFile[] getFileList(final String path, final MOB user, final boolean recurse, final boolean expandDirs)
 	{
-		final boolean demandLocal=parse.trim().startsWith("//");
-		final boolean demandVFS=parse.trim().startsWith("::");
-		CMFile dirTest=new CMFile(parse,user);
+		final boolean demandLocal=path.trim().startsWith("//");
+		final boolean demandVFS=path.trim().startsWith("::");
+		CMFile dirTest=new CMFile(path,user);
 		if((dirTest.exists())&&(dirTest.isDirectory())&&(dirTest.canRead())&&(!recurse))
 		{ return expandDirs?dirTest.listFiles():new CMFile[]{dirTest};}
-		final String vsPath=vfsifyFilename(parse);
+		final String vsPath=vfsifyFilename(path);
 		String fixedName=vsPath;
 		int x=vsPath.lastIndexOf('/');
 		String fixedPath="";
