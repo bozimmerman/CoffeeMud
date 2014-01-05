@@ -117,7 +117,8 @@ public class ResourceOverride extends ActiveTicker
 					for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 					{
 						R=e.nextElement();
-						if(((roomTypes.size()==0)||(roomTypes.contains(Integer.valueOf(R.domainType()))))
+						if((R!=null)
+						&&((roomTypes.size()==0)||(roomTypes.contains(Integer.valueOf(R.domainType()))))
 						&&(!rscs.contains(Integer.valueOf(R.myResource()))))
 							R.setResource(rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue());
 					}
