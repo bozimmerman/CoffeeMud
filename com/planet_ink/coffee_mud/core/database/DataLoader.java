@@ -51,6 +51,8 @@ public class DataLoader
 		{
 			D=DB.DBFetch();
 			ResultSet R=null;
+			playerID = DB.injectionClean(playerID);
+			section = DB.injectionClean(section);
 			R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
 			while(R.next())
 			{
@@ -82,6 +84,7 @@ public class DataLoader
 		try
 		{
 			D=DB.DBFetch();
+			playerID = DB.injectionClean(playerID);
 			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
 			while(R.next())
 			{
@@ -117,6 +120,8 @@ public class DataLoader
 		{
 			D=DB.DBFetch();
 			ResultSet R=null;
+			playerID = DB.injectionClean(playerID);
+			section = DB.injectionClean(section);
 			R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
 			while(R.next())
 				rows++;
@@ -141,6 +146,7 @@ public class DataLoader
 		try
 		{
 			D=DB.DBFetch();
+			section = DB.injectionClean(section);
 			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
 			while(R.next())
 			{
@@ -178,6 +184,7 @@ public class DataLoader
 		try
 		{
 			D=DB.DBFetch();
+			key = DB.injectionClean(key);
 			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
 			while(R.next())
 			{
@@ -212,6 +219,9 @@ public class DataLoader
 		{
 			D=DB.DBFetch();
 			ResultSet R=null;
+			playerID = DB.injectionClean(playerID);
+			section = DB.injectionClean(section);
+			key = DB.injectionClean(key);
 			R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'");
 			while(R.next())
 			{
@@ -244,6 +254,7 @@ public class DataLoader
 		try
 		{
 			D=DB.DBFetch();
+			section = DB.injectionClean(section);
 			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
 			while(R.next())
 			{
@@ -278,8 +289,12 @@ public class DataLoader
 			D=DB.DBFetch();
 			StringBuffer orClause=new StringBuffer("");
 			for(int i=0;i<sections.size();i++)
-				orClause.append("CMSECT='"+(sections.get(i))+"' OR ");
+			{
+				String section = DB.injectionClean(sections.get(i));
+				orClause.append("CMSECT='"+section+"' OR ");
+			}
 			String clause=orClause.toString().substring(0,orClause.length()-4);
+			playerID = DB.injectionClean(playerID);
 			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
 			while(R.next())
 			{
@@ -311,6 +326,7 @@ public class DataLoader
 			try
 			{
 				D=DB.DBFetch();
+				key = DB.injectionClean(key);
 				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
 				boolean exists=R.next();
 				DB.DBDone(D);
@@ -334,6 +350,7 @@ public class DataLoader
 	
 	public void DBUpdate(String key, String xml)
 	{
+		key = DB.injectionClean(key);
 		DB.updateWithClobs("UPDATE CMPDAT SET CMPDAT=? WHERE CMPKEY='"+key+"'", xml);
 	}
 	
@@ -343,6 +360,8 @@ public class DataLoader
 		try
 		{
 			D=DB.DBFetch();
+			playerID = DB.injectionClean(playerID);
+			section = DB.injectionClean(section);
 			D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
 			try{Thread.sleep(500);}catch(Exception e){}
 			if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'")>0)
@@ -386,6 +405,9 @@ public class DataLoader
 		try
 		{
 			D=DB.DBFetch();
+			playerID = DB.injectionClean(playerID);
+			section = DB.injectionClean(section);
+			key = DB.injectionClean(key);
 			D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+key+"' AND CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
 			try{Thread.sleep(500);}catch(Exception e){}
 			if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"' AND CMPLID='"+playerID+"' AND CMSECT='"+section+"'")>0)
@@ -403,14 +425,18 @@ public class DataLoader
 	
 	public void DBDelete(String section)
 	{
+		section = DB.injectionClean(section);
 		DB.update("DELETE FROM CMPDAT WHERE CMSECT='"+section+"'");
 		try{Thread.sleep(500);}catch(Exception e){}
 		if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'")>0)
 			Log.errOut("Failed to delete data from section "+section+".");
 	}
 	
-	public void DBCreate(String player, String section, String key, String data)
+	public void DBCreate(String playerID, String section, String key, String data)
 	{
+		playerID = DB.injectionClean(playerID);
+		section = DB.injectionClean(section);
+		key = DB.injectionClean(key);
 		DB.updateWithClobs(
 		 "INSERT INTO CMPDAT ("
 		 +"CMPLID, "
@@ -418,7 +444,7 @@ public class DataLoader
 		 +"CMPKEY, "
 		 +"CMPDAT "
 		 +") values ("
-		 +"'"+player+"',"
+		 +"'"+playerID+"',"
 		 +"'"+section+"',"
 		 +"'"+key+"',"
 		 +"?"
