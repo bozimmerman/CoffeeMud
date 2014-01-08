@@ -593,8 +593,8 @@ public class CraftingSkill extends GatheringSkill
 		String s=null;
 		for(int r=0;r<recipes.size();r++)
 		{
-			s=((recipes.get(r)).get(RCP_FINALNAME));
-			s=replacePercent(((recipes.get(r)).get(RCP_FINALNAME)),"").trim();
+			s=recipes.get(r).get(RCP_FINALNAME);
+			s=replacePercent(s,"").trim();
 			pair=craftItem(s,material,forceLevels);
 			if(pair==null) continue;
 			built=pair.item;

@@ -1223,6 +1223,25 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			filter.third=deriveClasses;
 		return recipe; 
 	}
+
+	@SuppressWarnings("unchecked")
+    protected List<ItemCraftor.ItemKeyPair> craftAllOfThisRecipe(ItemCraftor skill, int material, Map<String,Object> defined)
+	{
+		List<ItemCraftor.ItemKeyPair> skillContents=(List<ItemCraftor.ItemKeyPair>)defined.get("____COFFEEMUD_"+skill.ID()+"_"+material+"_true");
+		if(skillContents==null)
+		{
+			if(material>=0)
+				skillContents=skill.craftAllItemSets(material, true);
+			else
+				skillContents=skill.craftAllItemSets(true);
+			if(skillContents==null)
+				return null;
+			defined.put("____COFFEEMUD_"+skill.ID()+"_"+material+"_true",skillContents);
+		}
+		List<ItemCraftor.ItemKeyPair> skillContentsCopy=new Vector<ItemCraftor.ItemKeyPair>(skillContents.size());
+		skillContentsCopy.addAll(skillContents);
+		return skillContentsCopy;
+	}
 	
 	protected boolean checkMetacraftItem(Item I, Triad<Integer,Integer,Class<?>[]> filter)
 	{
@@ -1240,7 +1259,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return false;
 	}
 	
-	protected List<Item> buildItem(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+    protected List<Item> buildItem(XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String classID = findString("class",piece,defined);
 		List<Item> contents = new Vector<Item>();
@@ -1280,16 +1299,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					ItemCraftor skill=craftors.get(CMLib.dice().roll(1,craftors.size(),-1));
 					if(skill.fetchRecipes().size()>0)
 					{
-						List<ItemCraftor.ItemKeyPair> skillContents=null;
-						if(material>=0)
-							skillContents=skill.craftAllItemSets(material, true);
-						else
-						{
-							skillContents=new Vector<ItemCraftor.ItemKeyPair>();
-							List<ItemCraftor.ItemKeyPair> V=skill.craftAllItemSets(true);
-							for(ItemCraftor.ItemKeyPair pair : V)
-								skillContents.add(pair);
-						}
+						List<ItemCraftor.ItemKeyPair> skillContents=craftAllOfThisRecipe(skill,material,defined);
 						if(skillContents.size()==0) // preliminary error messaging, just for the craft skills themselves
 							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+Integer.toString(skillContents.size())+" from "+skill.ID());
 						else
@@ -1313,10 +1323,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					if(skill.ID().equalsIgnoreCase(recipe))
 					{
-						if(material>=0)
-							skillContents=skill.craftAllItemSets(material, true);
-						else
-							skillContents=skill.craftAllItemSets(true);
+						skillContents=craftAllOfThisRecipe(skill,material,defined);
 						if((skillContents==null)||(skillContents.size()==0)) // this is just for checking the skills themselves
 							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
 						else
@@ -1341,10 +1348,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					if(skill.ID().equalsIgnoreCase(recipe)||(recipe.length()==0))
 					{
-						if(material>=0)
-							skillContents=skill.craftAllItemSets(material, true);
-						else
-							skillContents=skill.craftAllItemSets(true);
+						skillContents=craftAllOfThisRecipe(skill,material,defined);
 						if((skillContents==null)||(skillContents.size()==0)) // this is just for checking the skills themselves
 							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
 						else
