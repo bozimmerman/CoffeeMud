@@ -302,7 +302,7 @@ Required details: "id" "value"
 </AREA>
 <string id="randomareasize" select="any-1"><string condition="$areasize!=''">$areasize</string><string condition="$areasize=''">30?60</string></string>
 <string id="randomlevelrange" select="any-1"><string condition="$level_range!=''">$level_range</string><string condition="$level_range=''">1?91</string></string>
-<string id="randomtheme" select="any-1"><string condition="$theme!=''">$theme</string><string select="all" condition="$theme=''"><string>prison</string><string>rats</string><string>kobolds</string><string>goblins</string><string>orcs</string><string>trolls</string><string>town</string><string>random</string></string></string>
+<string id="randomtheme" select="any-1"><string condition="$theme!=''">$theme</string><string select="all" condition="$theme=''"><string>prison</string><string>rats</string><string>kobolds</string><string>goblins</string><string>orcs</string><string>trolls</string><string>random</string></string></string>
 
 <STRING id="nasty_race_name" select="any-1">
 	<string condition="$theme='kobolds' or $theme='random'" define="nasty_race_name">kobold</string>
