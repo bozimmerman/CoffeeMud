@@ -74,8 +74,7 @@ public class StdContainer extends StdItem implements Container
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
-				if((msg.tool()!=null)
-				&&(msg.tool() instanceof Item))
+				if(msg.tool() instanceof Item)
 				{
 					if(!CMLib.flags().isDroppable((Item)msg.tool()))
 					{
@@ -210,8 +209,7 @@ public class StdContainer extends StdItem implements Container
 				}
 				break;
 			case CMMsg.TYP_REMOVE:
-				if((msg.tool()!=null)
-				&&(msg.tool() instanceof Item))
+				if(msg.tool() instanceof Item)
 				{
 					Item newitem=(Item)msg.tool();
 					if(newitem.container()==this)

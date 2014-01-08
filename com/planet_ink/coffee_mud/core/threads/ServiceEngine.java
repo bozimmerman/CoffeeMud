@@ -1210,7 +1210,7 @@ public class ServiceEngine implements ThreadEngine
 				{
 					for(final TickableGroup T : allTicks) 
 					{
-						if(!getPoolExecutor(T.getThreadGroupName()).isActiveOrQueued(T)) 
+						if(!T.isAwake() && (!getPoolExecutor(T.getThreadGroupName()).isActiveOrQueued(T))) 
 						{
 							if (T.getNextTickTime() <= now) {
 								if(now + T.getTickInterval() < nextWake)

@@ -72,6 +72,29 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		return true;
 	}
 
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if(msg.amITarget(this))
+		{
+			//MOB mob=msg.source();
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_PUT:
+				if(msg.tool() instanceof Item)
+				{
+					//if((msg.value()<=0)||(msg.sourceMajor(CMMsg.MASK_))
+					//{
+						
+					//}
+				}
+				break;
+			}
+		}
+		return true;
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))
