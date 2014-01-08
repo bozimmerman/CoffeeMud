@@ -1310,7 +1310,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								skillContents.remove(i);
 						}
 						if(skillContents.size()>0)
-							contents.add(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item);
+							contents.add((Item)skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item.copyOf());
 					}
 				}
 			}
@@ -1337,7 +1337,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 				}
 				if((skillContents!=null)&&(skillContents.size()>0))
-					contents.add(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item);
+					contents.add((Item)skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item.copyOf());
 			}
 			else
 			if(recipe.toLowerCase().startsWith("all"))
@@ -1359,7 +1359,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								skillContents.remove(i);
 						}
 						while((skillContents!=null)&&(skillContents.size()>0))
-							contents.add(skillContents.remove(0).item);
+							contents.add((Item)skillContents.remove(0).item.copyOf());
 						if(recipe.length()>0)
 							break;
 					}
