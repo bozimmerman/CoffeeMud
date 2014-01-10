@@ -356,6 +356,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					for(String key : getAutoGenVariables().keySet())
 						if(key.equalsIgnoreCase("AREA_ID")||key.equalsIgnoreCase("AREA_IDS")||key.equalsIgnoreCase("AREAID")||key.equalsIgnoreCase("AREAIDS"))
 							idChoices.addAll(CMParms.parseCommas(getAutoGenVariables().get(key),true));
+//TODO: fix this
+//FIXME: this can select an area tag with inserts that don't resolve to isolated (real) areas.
 					if(idChoices.size()==0)
 					{
 						for(Object key : definedIDs.keySet())
@@ -410,6 +412,8 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					if(!definedIDs.containsKey("AGGROCHANCE"))
 						definedIDs.put("AGGROCHANCE", ""+msg.source().basePhyStats().level());
 					XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+//TODO: fix this
+//FIXME: this can maybe pick town.
 					if(!definedIDs.containsKey("THEME"))
 					{
 						Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
