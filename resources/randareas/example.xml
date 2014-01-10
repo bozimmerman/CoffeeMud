@@ -737,7 +737,7 @@ Required details: "id" "value"
 			<ITEM class="GenTable"  name="(a(n)) $adj_fancy desk" display="$ITEM_NAME is here"  isgettable="false"/>
 			<ITEM class="GenContainer" name="The wardens chest" display="The wardens chest is here" HASLID="true" HASLOCK="false">
 				<CONTENT>
-					<ITEM select="all" insert="dungeon_treasure_items" />
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
 				</CONTENT>
 				<AFFECT condition="1?3=1" class="Prop_Hidden" />
 			</ITEM>
@@ -1035,9 +1035,7 @@ Required details: "id" "value"
 			</ROOM>
 			<ROOM class="WoodRoom"  condition="$roomtag_nodetype='leaf'" define="__innroomnumber+=1">
 				<TITLE>Room number $__innroomnumber</TITLE>
-				<DESCRIPTION>
-					<DESCRIPTION select="all" action="APPEND" insert="desc_exits" />
-				</DESCRIPTION>
+				<DESCRIPTION>$desc_exits</DESCRIPTION>
 				<EXIT class="GenDoor" hasalock="true" deflocked="true" level="$level_range" keyname="INN$__innroomnumber" />
 				<ITEM class="GenBed"  name="a bed" display="$ITEM_NAME is made here"  isgettable="false" />
 				<ITEM class="GenChair" name="a chair" display="$ITEM_NAME is waiting to be rested upon" isgettable="false" />
@@ -2518,7 +2516,7 @@ Required details: "id" "value"
 			<ITEM class="GenChair"  name="(a(n)) $adj_smallragged throne" display="$ITEM_NAME is here"  isgettable="false"/>
 			<ITEM class="GenContainer" name="The kings chest" display="The kings chest is here" HASLID="true" HASLOCK="true" READABLETEXT="$areaname thronekey">
 				<CONTENT>
-					<ITEM select="all" insert="dungeon_treasure_items" />
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
 				</CONTENT>
 				<AFFECT condition="1?3=1" class="Prop_Hidden" />
 			</ITEM>
@@ -2740,7 +2738,7 @@ Required details: "id" "value"
 			<EXIT class="Open" />
 			<ITEM class="GenContainer" name="The Dragons Chest" display="The Dragons Chest is here" HASLID="true">
 				<CONTENT>
-					<ITEM select="all" insert="dungeon_treasure_items" />
+					<ITEM select="any-5" insert="dungeon_treasure_items" />
 				</CONTENT>
 				<AFFECT condition="1?3=1" class="Prop_Hidden" />
 			</ITEM>

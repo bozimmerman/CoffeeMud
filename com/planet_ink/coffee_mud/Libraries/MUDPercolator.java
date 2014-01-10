@@ -540,6 +540,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				exits[linkDir.intValue()]=linkNode.room().getExitInDir(opDir);
 				groupDefined.put("ROOMTITLE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),linkNode.room().displayText(null));
 			}
+			//else groupDefined.put("ROOMTITLE_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"");
 			groupDefined.put("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
 		}
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
@@ -1468,7 +1469,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			addDefinition("ITEM_NAME",I.Name(),defined); // define so we can mess with it
 		}
 		
-		for(int it=0;it<contents.size();it++) // no iterator, please!!
+		int contentSize=contents.size();
+		for(int it=0;it<contentSize;it++) // no iterator, please!!
 		{
 			Item I=contents.get(it);
 			fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
@@ -1776,7 +1778,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(subPiece.tag.equalsIgnoreCase(tagName))
 				choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName,subPiece,defined,false));
 		}
-		return selectChoices(E,ignoreStats,defPrefix,choices,piece,defined);
+		return selectChoices(E,tagName,ignoreStats,defPrefix,choices,piece,defined);
 	}
 
 	protected boolean testCondition(String condition, XMLLibrary.XMLpiece piece, Map<String,Object> defined)
@@ -1946,7 +1948,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		checkRequirements(defined,CMLib.xml().getParmValue(piece.parms,"REQUIRES"));
 	}
 	
-	protected List<XMLpiece> selectChoices(Modifiable E, List<String> ignoreStats, String defPrefix, List<XMLpiece> choices, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
+	protected List<XMLpiece> selectChoices(Modifiable E, String tagName, List<String> ignoreStats, String defPrefix, List<XMLpiece> choices, XMLLibrary.XMLpiece piece, Map<String,Object> defined) throws CMException
 	{
 		String selection = CMLib.xml().getParmValue(piece.parms,"SELECT");
 		if(selection == null) return choices;
@@ -1964,7 +1966,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		&&(!selection.startsWith("LAST-0"))
 		&&(!selection.startsWith("PICK-0"))
 		&&(!selection.startsWith("LIMIT-")))
-			throw new CMException("Can't make selection among NONE: on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+		{
+			throw new CMException("Can't make selection among NONE: on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+		}
 		else
 		if(selection.equals("FIRST"))
 			selectedChoicesV= new XVector<XMLpiece>(choices.get(0));
@@ -1972,7 +1976,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(selection.startsWith("FIRST-"))
 		{
 			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
-			if((num<0)||(num>choices.size())) throw new CMException("Can't pick first "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			if((num<0)||(num>choices.size())) throw new CMException("Can't pick first "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			selectedChoicesV=new Vector<XMLpiece>();
 			for(int v=0;v<num;v++)
 				selectedChoicesV.add(choices.get(v));
@@ -1981,7 +1985,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(selection.startsWith("LIMIT-"))
 		{
 			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
-			if(num<0) throw new CMException("Can't pick limit "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			if(num<0) throw new CMException("Can't pick limit "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			selectedChoicesV=new Vector<XMLpiece>();
 			if(choices.size()<=num)
 				selectedChoicesV.addAll(choices);
@@ -1996,7 +2000,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(selection.startsWith("LAST-"))
 		{
 			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
-			if((num<0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			if((num<0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			selectedChoicesV=new Vector<XMLpiece>();
 			for(int v=choices.size()-num;v<choices.size();v++)
 				selectedChoicesV.add(choices.get(v));
@@ -2005,7 +2009,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(selection.startsWith("PICK-"))
 		{
 			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
-			if((num<0)||(num>choices.size())) throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			if((num<0)||(num>choices.size())) throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			selectedChoicesV=new Vector<XMLpiece>();
 			List<XMLLibrary.XMLpiece> cV=new XVector<XMLLibrary.XMLpiece>(choices);
 			for(int v=0;v<num;v++)
@@ -2039,7 +2043,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(selection.startsWith("ANY-"))
 		{
 			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
-			if((num<0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			if((num<0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			selectedChoicesV=new Vector<XMLpiece>();
 			List<XMLLibrary.XMLpiece> cV=new XVector<XMLLibrary.XMLpiece>(choices);
 			for(int v=0;v<num;v++)
@@ -2053,7 +2057,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(selection.startsWith("REPEAT-"))
 		{
 			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
-			if(num<0) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			if(num<0) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			selectedChoicesV=new Vector<XMLpiece>();
 			List<XMLLibrary.XMLpiece> cV=new XVector<XMLLibrary.XMLpiece>(choices);
 			for(int v=0;v<num;v++)
@@ -2066,7 +2070,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if((selection.trim().length()>0)&&CMath.isMathExpression(selection))
 		{
 			int num=CMath.parseIntExpression(strFilter(E,ignoreStats,defPrefix,selection.substring(selection.indexOf('-')+1),piece, defined));
-			if((num<0)||(num>choices.size())) throw new CMException("Can't pick any "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			if((num<0)||(num>choices.size())) throw new CMException("Can't pick any "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 			selectedChoicesV=new Vector<XMLpiece>();
 			List<XMLLibrary.XMLpiece> cV=new XVector<XMLLibrary.XMLpiece>(choices);
 			for(int v=0;v<num;v++)
@@ -2077,7 +2081,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 		}
 		else
-			throw new CMException("Illegal select type '"+selection+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
+			throw new CMException("Illegal select type '"+selection+"' on piece '"+piece.tag+"', Tag: "+tagName+", Data: "+CMParms.toStringList(piece.parms)+":"+CMStrings.limit(piece.value,100));
 		return selectedChoicesV;
 	}
 	
