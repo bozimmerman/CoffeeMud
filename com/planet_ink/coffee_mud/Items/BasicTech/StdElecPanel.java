@@ -78,16 +78,16 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			return false;
 		if(msg.amITarget(this))
 		{
-			//MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
-				if(msg.tool() instanceof Item)
+				if(msg.tool() instanceof ShipComponent)
 				{
-					//if((msg.value()<=0)||(msg.sourceMajor(CMMsg.MASK_))
-					//{
-						
-					//}
+					if(msg.value()<=0)
+					{
+						msg.source().tell("You don't know how to install "+((ShipComponent)msg.tool()).name(msg.source())+" into "+name(msg.source())+".");
+						return false;
+					}
 				}
 				break;
 			}
@@ -101,6 +101,15 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_PUT:
+				if(msg.tool() instanceof ShipComponent)
+				{
+					if(msg.value()<=0)
+    					((ShipComponent)msg.tool()).setInstalledFactor((float)1.0);
+					else
+    					((ShipComponent)msg.tool()).setInstalledFactor((float)CMath.div(msg.value(), 100.0));
+				}
+				break;
 			case CMMsg.TYP_ACTIVATE:
 				if((msg.source().location()!=null)&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 					msg.source().location().show(msg.source(), this, CMMsg.MSG_OK_VISUAL, "<S-NAME> connect(s) <T-NAME>.");
