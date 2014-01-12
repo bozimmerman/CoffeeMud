@@ -3454,13 +3454,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((Economics)E).setItemPricingAdjustments(ipric);
 			}
 		}
-		List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"BEHAVES");
-		if(V==null)
-		{
-			Log.errOut("CoffeeMaker","Error parsing 'BEHAVES' of "+identifier(E,null)+".  Load aborted");
-			return;
-		}
 		if(E instanceof PhysicalAgent)
+		{
+			List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"BEHAVES");
+			if(V==null)
+			{
+				Log.errOut("CoffeeMaker","Error parsing 'BEHAVES' of "+identifier(E,null)+".  Load aborted");
+				return;
+			}
 			for(int i=0;i<V.size();i++)
 			{
 				XMLLibrary.XMLpiece ablk=V.get(i);
@@ -3479,12 +3480,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				newOne.setParms(CMLib.xml().restoreAngleBrackets(bparms));
 				((PhysicalAgent)E).addBehavior(newOne);
 			}
+		}
 		if(E instanceof Area)
 			addAutoPropsToAreaIfNecessary((Area)E);
 
 		if(E instanceof Physical)
 		{
-			V=CMLib.xml().getContentsFromPieces(buf,"AFFECS");
+			List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"AFFECS");
 			if(V==null)
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'AFFECS' of "+identifier(E,null)+".  Load aborted");
