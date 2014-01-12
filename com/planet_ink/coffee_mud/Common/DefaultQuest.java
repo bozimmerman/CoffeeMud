@@ -41,30 +41,30 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 {
 	public String ID(){return "DefaultQuest";}
 
-	protected String name="";
-	protected String author="";
-	protected String displayName="";
-	protected String startDate="";
-	protected int duration=450; // about 30 minutes
-	protected String rawScriptParameter="";
-	protected SVector<String> winners=new SVector<String>();
-	protected boolean durable=false;
-	protected int minWait=-1;
-	protected int minPlayers=-1;
-	protected String playerMask="";
-	protected int runLevel=-1;
-	protected int maxWait=-1;
-	protected int waitRemaining=-1;
-	protected int ticksRemaining=-1;
-	protected long lastStartDateTime=System.currentTimeMillis();
-	private boolean stoppingQuest=false;
-	protected int spawn=SPAWN_NO;
-	private QuestState questState=new QuestState();
-	private boolean copy=false;
-	private boolean suspended=false;
-	private Hashtable stepEllapsedTimes=new Hashtable();
-	public DVector internalFiles=null;
-	private int[] resetData=null;
+	protected String 	name="";
+	protected String 	author="";
+	protected String 	displayName="";
+	protected String 	startDate="";
+	protected int 		duration=450; // about 30 minutes
+	protected String 	rawScriptParameter="";
+	protected boolean 	durable=false;
+	protected int 		minWait=-1;
+	protected int 		minPlayers=-1;
+	protected String 	playerMask="";
+	protected int 		runLevel=-1;
+	protected int 		maxWait=-1;
+	protected int 		waitRemaining=-1;
+	protected int 		ticksRemaining=-1;
+	protected long 		lastStartDateTime=System.currentTimeMillis();
+	private boolean 	stoppingQuest=false;
+	protected int 		spawn=SPAWN_NO;
+	private QuestState 	questState=new QuestState();
+	private boolean 	copy=false;
+	private boolean 	suspended=false;
+	public DVector 		internalFiles=null;
+	private int[] 		resetData=null;
+	private Map<String,Long> 	stepEllapsedTimes=new Hashtable<String,Long>();
+	protected SVector<String> 	winners=new SVector<String>();
 
 	// the unique name of the quest
 	public String name(){return name;}
