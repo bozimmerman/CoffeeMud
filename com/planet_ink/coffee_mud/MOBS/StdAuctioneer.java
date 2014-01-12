@@ -138,6 +138,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 										"will not be charged).",data.auctioningI.Name());
 							}
 							else
+							if(data.auctioningM!=null)
 							{
 								CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" went unsold.  '"+data.auctioningI.name()
 										+"' has been automatically returned to your inventory.",data.auctioningI.Name());
