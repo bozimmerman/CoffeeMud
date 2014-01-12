@@ -147,6 +147,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 									CMLib.database().DBUpdatePlayerItems(data.auctioningM);
 								CMLib.coffeeShops().cancelAuction(auctionHouse(), data);
 							}
+							else
+							{
+								CMLib.coffeeShops().cancelAuction(auctionHouse(), data);
+							}
 						}
 					}
 				}
