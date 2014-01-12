@@ -38,10 +38,14 @@ public class Prop_Doppleganger extends Property
 	public String name(){ return "Doppleganger";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	//protected boolean lastLevelChangers=true;
+	protected Physical lastOwner=null;
 	private int maxLevel=Integer.MAX_VALUE;
 	private int minLevel=Integer.MIN_VALUE;
-	protected Physical lastOwner=null;
 	protected int lastLevel=Integer.MIN_VALUE;
+	protected int levelAdd=0;
+	protected double levelPct=0.0;
+	protected boolean matchPlayersOnly=false;
+	protected boolean matchPlayersFollowersOnly=false;
 
 	public long flags(){return Ability.FLAG_ADJUSTER;}
 
@@ -51,8 +55,24 @@ public class Prop_Doppleganger extends Property
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		maxLevel=CMParms.getParmInt(text,"MAX",Integer.MAX_VALUE);
-		minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
+		levelAdd=0;
+		levelPct=1.0;
+		maxLevel=Integer.MAX_VALUE;
+		minLevel=Integer.MIN_VALUE;
+		if(CMath.isInteger(text))
+			levelAdd=CMath.s_int(text);
+		else
+		if(CMath.isPct(text))
+			levelPct=CMath.s_pct(text);
+		else
+		{
+			maxLevel=CMParms.getParmInt(text,"MAX",Integer.MAX_VALUE);
+			minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
+			levelAdd=CMParms.getParmInt(text, "LEVELADD", 0);
+			levelPct=CMParms.getParmInt(text, "LEVELPCT", 100)/100.0;
+			matchPlayersFollowersOnly=CMParms.getParmBool(text, "PLAYERSNFOLS", false);
+			matchPlayersOnly=CMParms.getParmBool(text, "PLAYERSONLY", false);
+		}
 	}
 
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -63,8 +83,7 @@ public class Prop_Doppleganger extends Property
 		{
 			lastOwner=((Item)affected).owner();
 			lastLevel=lastOwner.phyStats().level();
-			int level=((MOB)lastOwner).phyStats().level()+CMath.s_int(text());
-			if(text().endsWith("%")) level=(int)Math.round(CMath.mul(level,CMath.s_pct(text())));
+			int level=(int)Math.round(CMath.mul(((MOB)lastOwner).phyStats().level(),levelPct))+levelAdd;
 			if(level<minLevel) level=minLevel;
 			if(level>maxLevel) level=maxLevel;
 			((Item)affected).basePhyStats().setLevel(level);
@@ -83,7 +102,16 @@ public class Prop_Doppleganger extends Property
 	{
 		if((mob==affected)||(mob==null)) return false;
 		if(mob.fetchEffect(ID())!=null) return false;
-		if(mob.isMonster())return true;
+		if(mob.isMonster()) 
+		{
+			if(matchPlayersFollowersOnly)
+			{
+				final MOB folM=mob.amUltimatelyFollowing();
+				return (folM!=null)&& (!folM.isMonster());
+			}
+			return (!matchPlayersOnly);
+		}
+		
 		if((!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.CMDMOBS))
 		&&(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.CMDROOMS))
 		&&(!CMLib.flags().isUnattackable(mob)))
@@ -133,8 +161,7 @@ public class Prop_Doppleganger extends Property
 				}
 				if(num>0)
 				{
-					int level=(int)Math.round(CMath.div(total,num))+CMath.s_int(text());
-					if(text().endsWith("%")) level=(int)Math.round(CMath.mul(CMath.div(total,num),CMath.s_pct(text())));
+					int level=(int)Math.round(CMath.mul(CMath.div(total,num),levelPct))+levelAdd;
 					if(level<minLevel) level=minLevel;
 					if(level>maxLevel) level=maxLevel;
 					if(level!=mob.basePhyStats().level())

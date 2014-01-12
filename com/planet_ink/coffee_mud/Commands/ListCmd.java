@@ -234,6 +234,11 @@ public class ListCmd extends StdCommand
 			rest=CMParms.combine(commands,start);
 		}
 		else
+		if(who.equalsIgnoreCase("RESOURCE")||who.equalsIgnoreCase("RESOURCES")||who.equalsIgnoreCase("ENVRESOURCES")||(who.equalsIgnoreCase("TYPE")||who.equalsIgnoreCase("TYPES")))
+		{
+			return new StringBuffer(roomResources(mob.session(), r, mob.location()).toString());
+		}
+		else
 		if((who.equals("EXIT "))
 		||(who.equals("EXITS")))
 		{

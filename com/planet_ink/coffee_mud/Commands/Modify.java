@@ -1306,6 +1306,40 @@ public class Modify extends StdCommand
 		{
 			String command=((String)commands.elementAt(3)).toUpperCase();
 			String restStr=CMParms.combine(commands,4);
+			if(command.equalsIgnoreCase("PROFICIENCIES")||command.equalsIgnoreCase("PROFICIENCY"))
+			{
+				int prof=CMath.s_int(restStr);
+				for(int a=0;a<M.numAbilities();a++)
+					M.fetchAbility(a).setProficiency(prof);
+				for(int a=0;a<M.numEffects();a++)
+				{
+					Ability A=M.fetchEffect(a);
+					if((A!=null)&&(A.isNowAnAutoEffect()))
+						A.setProficiency(prof);
+				}
+				mob.tell("All of "+M.Name()+"'s skill proficiencies set to "+prof);	
+				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+" skill proficiencies.");
+			}
+			else
+			if(command.toUpperCase().startsWith("PROFICIENCY(")&&command.endsWith(")"))
+			{
+				int prof=CMath.s_int(restStr);
+				String ableName=command.substring(12,command.length()-1).trim();
+				Ability A=M.findAbility(ableName);
+				if(A==null)
+				{
+					mob.tell("...but failed to specify an valid ability name.  Try one of: "+CMParms.toCMObjectStringList(M.abilities()));
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+					return;
+				}
+				A.setProficiency(prof);
+				Ability eA=M.fetchEffect(A.ID());
+				if((eA!=null)&&(eA.isNowAnAutoEffect()))
+					eA.setProficiency(prof);
+				mob.tell(M.Name()+"'s skill proficiency in "+A.ID()+" set to "+prof);	
+				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+" skill proficiency in "+A.ID()+".");
+			}
+			else
 			if(CMLib.coffeeMaker().isAnyGenStat(M, command))
 			{
 				CMLib.coffeeMaker().setAnyGenStat(M,command, restStr);
@@ -1319,9 +1353,14 @@ public class Modify extends StdCommand
 			{
 				STreeSet<String> set=new STreeSet<String>();
 				set.addAll(CMLib.coffeeMaker().getAllGenStats(M));
+				set.add("PROFICIENCIES");
+				set.add("PROFICIENCY(ABILITY_ID)");
 				mob.tell("...but failed to specify an aspect.  Try one of: "+CMParms.toStringList(set));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			}
+			CMLib.database().DBUpdatePlayer(M);
+			if(CMLib.flags().isInTheGame(M,true))
+				CMLib.database().DBUpdateFollowers(M);
 		}
 		copyMOB.setSession(null); // prevents logoffs.
 		copyMOB.setLocation(null);

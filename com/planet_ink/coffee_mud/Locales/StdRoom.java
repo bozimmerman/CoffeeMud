@@ -64,7 +64,7 @@ public class StdRoom implements Room
 
 	// base move points and thirst points per round
 	protected int myResource=-1;
-	protected long resourceFound=0;
+	protected long lastResourceTime=0;
 	protected boolean amDestroyed=false;
 	protected boolean skyedYet=false;
 	
@@ -452,14 +452,14 @@ public class StdRoom implements Room
 	public void setResource(int resourceCode)
 	{
 		myResource=resourceCode;
-		resourceFound= (resourceCode>=0) ? resourceFound=System.currentTimeMillis() : 0;
+		lastResourceTime= (resourceCode>=0) ? lastResourceTime=System.currentTimeMillis() : 0;
 	}
 
 	public int myResource()
 	{
-		if(resourceFound!=0)
+		if(lastResourceTime!=0)
 		{
-			if(resourceFound<(System.currentTimeMillis()-(30*TimeManager.MILI_MINUTE)))
+			if(lastResourceTime<(System.currentTimeMillis()-(30*TimeManager.MILI_MINUTE)))
 				setResource(-1);
 		}
 		if(myResource<0)

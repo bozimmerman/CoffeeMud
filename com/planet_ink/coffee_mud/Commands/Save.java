@@ -79,7 +79,7 @@ public class Save extends StdCommand
 			lastCommand=((String)commands.lastElement()).toUpperCase();
 		}
 		
-		if(lastCommand.equals("USERS"))
+		if(lastCommand.equals("USERS")||lastCommand.equals("PLAYERS")||lastCommand.equals("CHARACTERS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))
 			{
@@ -191,7 +191,7 @@ public class Save extends StdCommand
 			mob.tell("Quest list saved.");
 		}
 		else
-		if(firstCommand.equals("USER"))
+		if(firstCommand.equals("USER")||firstCommand.equals("PLAYER")||firstCommand.equals("CHARACTER")||firstCommand.equals("CHAR"))
 		{
 			MOB M=CMLib.players().getPlayer(lastCommand);
 			if(M==null)

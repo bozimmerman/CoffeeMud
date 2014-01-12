@@ -36,6 +36,8 @@
   32. Can now export/import entire accounts
   33. Quests will now save/restore their suspended status.
   34. Characters logged out for over 1 mud year will not have their age advance more than 1 year.  See SLOW_AGEING DISABLE flag to revert to previous alg.
+  35. Archons can now use MODIFY command to set one/all skill proficiencies to a set value.
+  36. Prop_Doppleganger has new parms to help you fine-tune who the mob considers for part of duplication.
 # Build 5.8.0.1 Release 7/22/2013
   Bug fix release -- removed Go-Ahead chars for tinyfugue
 # Build 5.8.0 Release 7/21/2013
