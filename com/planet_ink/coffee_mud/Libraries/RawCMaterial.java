@@ -284,7 +284,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				if(number<=0) number=1;
 				if(number>=(I.basePhyStats().weight()-1))
 					number=I.basePhyStats().weight();
-				I.basePhyStats().setWeight(I.basePhyStats().weight());
+				I.basePhyStats().setWeight(I.basePhyStats().weight()); // wtf?
 				int loseValue=0;
 				int loseNourishment=0;
 				int loseThirstHeld=0;
@@ -297,7 +297,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					if(E instanceof Item)
 					{
 						((Item)E).setContainer(C);
-						loseValue+=I.baseGoldValue();
+						loseValue+=((Item)E).baseGoldValue();
 						if((E instanceof Decayable)&&(I instanceof Decayable))
 							((Decayable)E).setDecayTime(((Decayable)I).decayTime());
 						if((E instanceof Food)&&(I instanceof Food))
@@ -751,6 +751,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					Environmental E=makeResource(otherMaterial,null,true,I.rawSecretIdentity());
 					if(E instanceof Item)
 						lostValue+=((Item)E).value();
+					if(I.baseGoldValue()>=(I.basePhyStats().weight()*((Item)E).value()))
+						I.setBaseValue(I.baseGoldValue()-((Item)E).value());
 					adjustResourceName(I);
 				}
 				else
@@ -776,6 +778,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					Environmental E=makeResource(finalMaterial,null,true,I.rawSecretIdentity());
 					if(E instanceof Item)
 						lostValue+=(((Item)E).value()*howMuch);
+					if(I.baseGoldValue()>=(I.basePhyStats().weight()*((Item)E).value()))
+						I.setBaseValue(I.baseGoldValue()-((Item)E).value());
 					adjustResourceName(I);
 					howMuch=0;
 				}

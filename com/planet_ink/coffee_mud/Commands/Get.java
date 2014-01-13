@@ -41,14 +41,11 @@ public class Get extends StdCommand
 	public String[] getAccessWords(){return access;}
 
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
-	{ return get(mob,container,getThis,quiet,"get",false);}
+	{ 
+		return get(mob,container,getThis,quiet,"get",false);
+	}
 
-	public static boolean get(MOB mob,
-							  Item container,
-							  Item getThis,
-							  boolean quiet,
-							  String getWord,
-							  boolean optimize)
+	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet, String getWord, boolean optimize)
 	{
 		Room R=mob.location();
 		String theWhat="<T-NAME>";
