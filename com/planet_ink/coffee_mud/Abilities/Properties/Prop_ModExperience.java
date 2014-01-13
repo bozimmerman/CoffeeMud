@@ -39,6 +39,7 @@ public class Prop_ModExperience extends Property
 	public String name(){ return "Modifying Experience Gained";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_AREAS|Ability.CAN_ROOMS;}
 	protected String operationFormula = "";
+	protected boolean selfXP=false;
 	protected LinkedList<CMath.CompiledOperation> operation = null;
 	protected MaskingLibrary.CompiledZapperMask   mask = null;
 
@@ -66,12 +67,19 @@ public class Prop_ModExperience extends Property
 		super.setMiscText(newText);
 		operation = null;
 		mask=null;
+		selfXP=false;
 		String s=newText.trim();
 		int x=s.indexOf(';');
 		if(x>=0)
 		{
 			mask=CMLib.masking().getPreCompiledMask(s.substring(x+1).trim());
 			s=s.substring(0,x).trim();
+		}
+		x=s.indexOf("SELF");
+		if(x>=0)
+		{
+			selfXP=true;
+			s=s.substring(0,x)+s.substring(x+4);
 		}
 		operationFormula="Amount "+s;
 		if(s.startsWith("="))
@@ -103,7 +111,7 @@ public class Prop_ModExperience extends Property
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(operation != null)
-		&&((((msg.target()==affected) || (msg.source()==affected))&&(affected instanceof MOB))
+		&&((((msg.target()==affected) || (selfXP && (msg.source()==affected))&&(affected instanceof MOB)))
 		   ||((affected instanceof Item)
 			   &&(msg.source()==((Item)affected).owner())
 			   &&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))

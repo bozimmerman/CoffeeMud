@@ -101,8 +101,7 @@ public class Prayer_FeedTheDead extends Prayer
 				CMLib.leveler().postExperience(mob,null,null,-amount,false);
 				if((mob.phyStats().level()>target.phyStats().level())&&(target.isMonster()))
 					amount+=(mob.phyStats().level()-target.phyStats().level())
-						  *(mob.phyStats().level()/10)
-						  *amount;
+						  *(mob.phyStats().level()/10);
 				CMLib.leveler().postExperience(target,null,null,amount,false);
 			}
 		}
