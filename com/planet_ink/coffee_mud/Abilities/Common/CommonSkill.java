@@ -533,7 +533,7 @@ public class CommonSkill extends StdAbility
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)||(A.ID().equalsIgnoreCase("AstroEngineering")))
 			&&(!getUninvokeException().contains(A.ID())))
 			{
 				if(A instanceof CommonSkill)

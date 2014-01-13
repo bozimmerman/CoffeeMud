@@ -85,8 +85,17 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 				{
 					if(msg.value()<=0)
 					{
-						msg.source().tell("You don't know how to install "+((ShipComponent)msg.tool()).name(msg.source())+" into "+name(msg.source())+".");
-						return false;
+						Ability installA=msg.source().fetchAbility("AstroEngineering");
+						if(installA==null)
+						{
+							msg.source().tell("You don't know how to install "+((ShipComponent)msg.tool()).name(msg.source())+" into "+name(msg.source())+".");
+							return false;
+						}
+						else
+						{
+							installA.invoke(msg.source(),new XVector("INSTALL",msg.tool()), (Physical)msg.target(), false, 0);
+							return false;
+						}
 					}
 				}
 				break;
@@ -102,7 +111,7 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_PUT:
-				if(msg.tool() instanceof ShipComponent)
+				if((msg.tool() instanceof ShipComponent)&&(msg.value()>=0))
 				{
 					if(msg.value()<=0)
     					((ShipComponent)msg.tool()).setInstalledFactor((float)1.0);
