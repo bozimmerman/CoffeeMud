@@ -14,9 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
-
 import java.util.*;
 
 /* 
@@ -34,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("unchecked")
 public class StdPortal extends StdContainer implements Rideable, Exit
 {
 	public String ID(){    return "StdPortal";}
@@ -134,9 +131,9 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	protected Room getDestinationRoom()
 	{
 		Room R=null;
-		Vector V=CMParms.parseSemicolons(readableText(),true);
+		List<String> V=CMParms.parseSemicolons(readableText(),true);
 		if(V.size()>0)
-			R=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
+			R=CMLib.map().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
 	}
 	
@@ -206,10 +203,10 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	
 	public StringBuilder viewableText(MOB mob, Room myRoom)
 	{
-		Vector V=CMParms.parseSemicolons(readableText(),true);
+		List<String> V=CMParms.parseSemicolons(readableText(),true);
 		Room room=myRoom;
 		if(V.size()>0)
-			room=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
+			room=CMLib.map().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		if(room==null) return empty;
 		StringBuilder Say=new StringBuilder("");
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))

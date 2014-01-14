@@ -2293,14 +2293,14 @@ public class DefaultSession implements Session
 					if(alias.length()>0)
 					{
 						CMDS.remove(0);
-						Vector<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+						List<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
 						for(String stuff : all_stuff)
 						{
 							List THIS_CMDS=new XVector(CMDS);
 							ALL_CMDS.addElement(THIS_CMDS);
-							Vector preCommands=CMParms.parse(stuff);
+							List<String> preCommands=CMParms.parse(stuff);
 							for(int v=preCommands.size()-1;v>=0;v--)
-								THIS_CMDS.add(0,preCommands.elementAt(v));
+								THIS_CMDS.add(0,preCommands.get(v));
 						}
 						echoOn=true;
 					}

@@ -834,13 +834,13 @@ public class Test extends StdCommand
 			}
 			if(what.equalsIgnoreCase("cmparms")||what.equalsIgnoreCase("all"))
 			{
-				Vector V=CMParms.parseAny("blah~BLAH~BLAH!",'~',true);
+				List<String> V=CMParms.parseAny("blah~BLAH~BLAH!",'~',true);
 				if(V.size()!=3){ mob.tell("Error cmparms-1"); return false;}
 				if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~")){ mob.tell("Error cmparms-2"); return false;}
 				
 				V=CMParms.parseAny("blah~~",'~',true);
 				if(V.size()!=1){ mob.tell("Error cmparms-3"); return false;}
-				if(!V.firstElement().equals("blah")){ mob.tell("Error cmparms-4"); return false;}
+				if(!V.get(0).equals("blah")){ mob.tell("Error cmparms-4"); return false;}
 				
 				V=CMParms.parseAny("blah~~",'~',false);
 				if(V.size()!=3){ mob.tell("Error cmparms-5"); return false;}
@@ -852,7 +852,7 @@ public class Test extends StdCommand
 				
 				V=CMParms.parseAny("blah~~~~","~~",true);
 				if(V.size()!=1){ mob.tell("Error cmparms-9"); return false;}
-				if(!V.firstElement().equals("blah")){ mob.tell("Error cmparms-10"); return false;}
+				if(!V.get(0).equals("blah")){ mob.tell("Error cmparms-10"); return false;}
 				
 				V=CMParms.parseAny("blah~~~~","~~",false);
 				if(V.size()!=3){ mob.tell("Error cmparms-11"); return false;}
@@ -860,9 +860,9 @@ public class Test extends StdCommand
 				
 				V=CMParms.parseSentences("blah. blahblah. poo");
 				if(V.size()!=3){ mob.tell("Error cmparms-13"); return false;}
-				if(!V.firstElement().equals("blah.")){ mob.tell("Error cmparms-14:"+V.firstElement()); return false;}
-				if(!V.elementAt(1).equals("blahblah.")){ mob.tell("Error cmparms-15:"+V.elementAt(1)); return false;}
-				if(!V.elementAt(2).equals("poo")){ mob.tell("Error cmparms-16:"+V.elementAt(2)); return false;}
+				if(!V.get(0).equals("blah.")){ mob.tell("Error cmparms-14:"+V.get(0)); return false;}
+				if(!V.get(1).equals("blahblah.")){ mob.tell("Error cmparms-15:"+V.get(1)); return false;}
+				if(!V.get(2).equals("poo")){ mob.tell("Error cmparms-16:"+V.get(2)); return false;}
 				
 				V=CMParms.parseAny("blah~BLAH~BLAH!~",'~',true);
 				if(V.size()!=3){ mob.tell("Error cmparms-17"); return false;}

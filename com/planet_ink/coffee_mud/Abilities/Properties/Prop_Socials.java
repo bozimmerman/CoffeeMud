@@ -49,7 +49,7 @@ public class Prop_Socials extends Property
 		socials.clear();
 		wornOnly=false;
 		mask=null;
-		Vector<String> socialsV=CMParms.parseAny(newText, ';', false);
+		List<String> socialsV=CMParms.parseAny(newText, ';', false);
 		List<String> lines = new Vector<String>();
 		for(String social : socialsV)
 		{

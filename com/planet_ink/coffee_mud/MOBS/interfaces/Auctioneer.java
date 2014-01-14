@@ -13,7 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.Vector;
+
+import java.util.*;
 
 
 /*
@@ -109,16 +110,18 @@ public interface Auctioneer extends ShopKeeper
 		public int minDays=0;
 		public AuctionRates()
 		{
-			Vector<String> ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.AUCTIONRATES),true);
-			while(ratesV.size()<7)ratesV.addElement("0");
-			liveListPrice=CMath.s_double(ratesV.elementAt(0));
-			timeListPrice=CMath.s_double(ratesV.elementAt(1));
-			timeListPct=CMath.s_pct(ratesV.elementAt(2));
-			liveCutPct=CMath.s_pct(ratesV.elementAt(3));
-			timeCutPct=CMath.s_pct(ratesV.elementAt(4));
-			minDays=CMath.s_int(ratesV.elementAt(5));
-			maxDays=CMath.s_int(ratesV.elementAt(6));
-			if(minDays>maxDays) minDays=maxDays; 
+			List<String> ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.AUCTIONRATES),true);
+			while(ratesV.size()<7)
+				ratesV.add("0");
+			liveListPrice=CMath.s_double(ratesV.get(0));
+			timeListPrice=CMath.s_double(ratesV.get(1));
+			timeListPct=CMath.s_pct(ratesV.get(2));
+			liveCutPct=CMath.s_pct(ratesV.get(3));
+			timeCutPct=CMath.s_pct(ratesV.get(4));
+			minDays=CMath.s_int(ratesV.get(5));
+			maxDays=CMath.s_int(ratesV.get(6));
+			if(minDays>maxDays) 
+				minDays=maxDays; 
 		}
 		public AuctionRates(Auctioneer A)
 		{

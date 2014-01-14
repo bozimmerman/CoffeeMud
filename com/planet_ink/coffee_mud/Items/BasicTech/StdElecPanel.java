@@ -72,7 +72,8 @@ public class StdElecPanel extends StdElecContainer implements Electronics.ElecPa
 		return true;
 	}
 
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+    public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;

@@ -69,7 +69,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(currencies.containsKey(code))
 			return currencies.get(code);
 		currency=currency.substring(x+1).trim();
-		Vector<String> CV=CMParms.parseSemicolons(currency,true);
+		List<String> CV=CMParms.parseSemicolons(currency,true);
 		Vector<MoneyDenomination> DV=new Vector<MoneyDenomination>();
 		String s=null;
 		String num=null;
@@ -77,7 +77,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		Vector<String> currencyNames=new Vector<String>();
 		for(int v=0;v<CV.size();v++)
 		{
-			s=CV.elementAt(v);
+			s=CV.get(v);
 			x=s.indexOf(' ');
 			if(x<0) continue;
 			num=s.substring(0,x).trim();

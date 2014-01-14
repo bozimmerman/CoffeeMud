@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -47,10 +46,10 @@ public class Prop_CommonTwister extends Property
 	{
 		super.setMiscText(text);
 		changes.clear();
-		Vector V=CMParms.parseSemicolons(text,true);
+		List<String> V=CMParms.parseSemicolons(text,true);
 		for(int v=0;v<V.size();v++)
 		{
-			String s=(String)V.elementAt(v);
+			String s=V.get(v);
 			String skill=CMParms.getParmStr(s,"SKILL","");
 			String mask=CMParms.getParmStr(s,"MASK","");
 			if((skill.length()>0)&&(mask.length()>0))

@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -32,13 +31,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Prop_NoChannel extends Property
 {
 	public String ID() { return "Prop_NoChannel"; }
 	public String name(){ return "Channel Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	protected Vector channels=null;
+	protected List<String> channels=null;
 	protected boolean receive=true;
 	protected boolean sendOK=false;
 
@@ -51,10 +49,12 @@ public class Prop_NoChannel extends Property
 		channels=CMParms.parseSemicolons(newText.toUpperCase(),true);
 		int x=channels.indexOf("SENDOK");
 		sendOK=(x>=0);
-		if(sendOK) channels.removeElementAt(x);
+		if(sendOK) 
+			channels.remove(x);
 		x=channels.indexOf("QUIET");
 		receive=(x<0);
-		if(!receive) channels.removeElementAt(x);
+		if(!receive) 
+			channels.remove(x);
 	}
 	
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)

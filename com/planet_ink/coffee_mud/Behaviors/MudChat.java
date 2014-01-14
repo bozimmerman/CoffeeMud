@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 /*
    Copyright 2000-2014 Bo Zimmerman
@@ -75,10 +74,10 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	{
 		if(newParms.startsWith("+"))
 		{
-			Vector V=CMParms.parseSemicolons(newParms.substring(1),false);
+			List<String> V=CMParms.parseSemicolons(newParms.substring(1),false);
 			StringBuffer rsc=new StringBuffer("");
 			for(int v=0;v<V.size();v++)
-				rsc.append(((String)V.elementAt(v))+"\n\r");
+				rsc.append(V.get(v)+"\n\r");
 			ChattyGroup[] addGroups=parseChatData(rsc);
 			ArrayList<ChattyEntry> newList=new ArrayList<ChattyEntry>(addedChatEntries.length);
 			for(ChattyEntry CE : addedChatEntries)

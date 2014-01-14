@@ -1737,11 +1737,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			whatToDo=CMProps.getVar(CMProps.Str.MOBDEATH).toUpperCase();
 		else
 			whatToDo=CMProps.getVar(CMProps.Str.PLAYERDEATH).toUpperCase();
-		Vector<String> whatsToDo=CMParms.parseCommas(whatToDo,true);
+		List<String> whatsToDo=CMParms.parseCommas(whatToDo,true);
 		double[] fakeVarVals={1.0,1.0,1.0};
 		for(int w=0;w<whatsToDo.size();w++)
 		{
-			whatToDo=whatsToDo.elementAt(w);
+			whatToDo=whatsToDo.get(w);
 			if(whatToDo.startsWith("OUT ")&&(CMath.isMathExpression(whatToDo.substring(4).trim(),fakeVarVals)))
 				return true;
 		}

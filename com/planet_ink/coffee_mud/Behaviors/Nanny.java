@@ -692,7 +692,7 @@ public class Nanny extends StdBehavior
 		if(x>0) dropOffs=null;
 		hourlyRate=CMParms.getParmDouble(parms,"RATE",2.0);
 		place=CMParms.getParmStr(parms,"NAME","nursery");
-		Vector watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
+		List<String> watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
 		String watch=null;
 		watchesBabies=false;
 		watchesChildren=false;
@@ -704,7 +704,7 @@ public class Nanny extends StdBehavior
 		watchesMOBFollowers=false;
 		for(int w=0;w<watches.size();w++)
 		{
-			watch=(String)watches.elementAt(w);
+			watch=watches.get(w);
 			if(watch.startsWith("BAB")) watchesBabies=true;
 			if(watch.startsWith("CHI")) watchesChildren=true;
 			if(watch.startsWith("MOU")) watchesMounts=true;

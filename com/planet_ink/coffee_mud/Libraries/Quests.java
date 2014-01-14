@@ -980,7 +980,7 @@ public class Quests extends StdLibrary implements QuestManager
 	{
 		int pndex=stats.indexOf("PRICEMASKS");
 		String priceStr=(pndex<0)?"":(String)stats.elementAt(pndex,2);
-		Vector<String> priceV=CMParms.parseCommas(priceStr,true);
+		List<String> priceV=CMParms.parseCommas(priceStr,true);
 		for(int v=0;v<=priceV.size();v++)
 		{
 			if((showFlag>0)&&(showFlag!=showNumber)){ if(v<priceV.size())showNumber++; continue;}
@@ -991,7 +991,7 @@ public class Quests extends StdLibrary implements QuestManager
 					if(((showFlag<=-999)&&CMLib.genEd().prompt(mob,false,showNumber,showFlag,"Add new price factor"))
 					||(showNumber==showFlag))
 					{
-						priceV.addElement("1.0");
+						priceV.add("1.0");
 						v-=1;
 					}
 					else
@@ -1000,7 +1000,7 @@ public class Quests extends StdLibrary implements QuestManager
 				}
 				continue;
 			}
-			String priceLine=priceV.elementAt(v);
+			String priceLine=priceV.get(v);
 			double priceFactor=0.0;
 			String mask="";
 			int x=priceLine.indexOf(' ');
@@ -1017,7 +1017,7 @@ public class Quests extends StdLibrary implements QuestManager
 				priceFactor=CMLib.genEd().prompt(mob,priceFactor,showNumber,showFlag,"Price Factor (enter 0 to delete)");
 				if(priceFactor==0.0)
 				{
-					priceV.removeElementAt(v);
+					priceV.remove(v);
 					v--;
 					if((showFlag==showNumber)) break;
 					showNumber--;
@@ -1025,7 +1025,7 @@ public class Quests extends StdLibrary implements QuestManager
 				}
 				mob.tell(showNumber+". Price Factor: "+Math.round(priceFactor*100.0)+"%: "+mask);
 				mask=CMLib.genEd().prompt(mob,mask,showNumber,showFlag,"Item mask for this price",CMLib.masking().maskHelp("\n\r","disallow"));
-				priceV.setElementAt(priceFactor+" "+mask,v);
+				priceV.set(v,priceFactor+" "+mask);
 			}
 			showNumber++;
 		}
@@ -1066,14 +1066,14 @@ public class Quests extends StdLibrary implements QuestManager
 		int mndex=behaviors.indexOf(MUDCHAT);
 		String mudChatStr=(mndex<0)?"":(String)behaviors.elementAt(mndex,2);
 		if(mudChatStr.startsWith("+")) mudChatStr=mudChatStr.substring(1);
-		Vector<String> rawMCV=CMParms.parseSemicolons(mudChatStr,true);
+		List<String> rawMCV=CMParms.parseSemicolons(mudChatStr,true);
 		List<List<String>> mudChatV=new Vector<List<String>>();
 		String s=null;
 		List<String> V=new Vector<String>();
 		mudChatV.add(V);
 		for(int r=0;r<rawMCV.size();r++)
 		{
-			s=rawMCV.elementAt(r);
+			s=rawMCV.get(r);
 			if(s.startsWith("(")&&s.endsWith(")"))
 			{
 				if(V.size()>0)

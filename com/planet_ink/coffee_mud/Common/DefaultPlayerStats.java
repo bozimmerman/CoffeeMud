@@ -540,10 +540,10 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if((bday!=null)&&(bday.length()>0))
 		{
-			Vector<String> V=CMParms.parseCommas(bday,true);
+			List<String> V=CMParms.parseCommas(bday,true);
 			birthday=new int[4];
 			for(int v=0;(v<V.size()) && (v<birthday.length);v++)
-				birthday[v]=CMath.s_int(V.elementAt(v));
+				birthday[v]=CMath.s_int(V.get(v));
 			if(V.size()<4)
 			{
 				TimeClock C=CMLib.time().globalClock();
@@ -710,18 +710,18 @@ public class DefaultPlayerStats implements PlayerStats
 		levelInfo.clear();
 		if(str.length()>0)
 		{
-			Vector<String> sets=CMParms.parseSemicolons(str,true);
+			List<String> sets=CMParms.parseSemicolons(str,true);
 			for(int ss=0;ss<sets.size();ss++)
 			{
-				String sStr=sets.elementAt(ss);
-				Vector<String> twin=CMParms.parseCommas(sStr,true);
+				String sStr=sets.get(ss);
+				List<String> twin=CMParms.parseCommas(sStr,true);
 				if((twin.size()!=2)&&(twin.size()!=3))  continue;
-				if(CMath.s_int(twin.firstElement())>=lastNum)
+				if(CMath.s_int(twin.get(0))>=lastNum)
 				{
-					levelInfo.addElement(Integer.valueOf(CMath.s_int(twin.firstElement())),
-											  Long.valueOf(CMath.s_long(twin.elementAt(1))),
-											  (twin.size()>2)?(String)twin.elementAt(2):"");
-					lastNum=CMath.s_int(twin.firstElement());
+					levelInfo.addElement(Integer.valueOf(CMath.s_int(twin.get(0))),
+											  Long.valueOf(CMath.s_long(twin.get(1))),
+											  (twin.size()>2)?(String)twin.get(2):"");
+					lastNum=CMath.s_int(twin.get(0));
 				}
 			}
 		}

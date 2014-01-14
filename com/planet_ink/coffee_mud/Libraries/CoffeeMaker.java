@@ -735,10 +735,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if(dir>255)
 				{
 					String xdata=CMLib.xml().getValFromPieces(xblk.contents,"XDATA");
-					Vector<String> CEs=CMParms.parseSemicolons(xdata.trim(),true);
+					List<String> CEs=CMParms.parseSemicolons(xdata.trim(),true);
 					for(int ces=0;ces<CEs.size();ces++)
 					{
-						Vector<String> SCE=CMParms.parse(CEs.elementAt(ces).trim());
+						Vector<String> SCE=CMParms.parse(CEs.get(ces).trim());
 						WorldMap.CrossExit CE=new WorldMap.CrossExit();
 						if(SCE.size()<3) continue;
 						CE.x=CMath.s_int(SCE.elementAt(0));
@@ -1102,14 +1102,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(CMProps.getVar(CMProps.Str.AUTOAREAPROPS).trim().length()>0)
 			{
 				String props=CMProps.getVar(CMProps.Str.AUTOAREAPROPS).trim();
-				Vector<String> allProps=CMParms.parseSemicolons(props,true);
+				List<String> allProps=CMParms.parseSemicolons(props,true);
 				String prop=null;
 				String parms=null;
 				Ability A=null;
 				Behavior B=null;
 				for(int v=0;v<allProps.size();v++)
 				{
-					prop=allProps.elementAt(v);
+					prop=allProps.get(v);
 					parms="";
 					int x=prop.indexOf('(');
 					if(x>=0)
@@ -2876,14 +2876,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 				}
 			}
-			Vector<String> V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
+			List<String> V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
 			for(Enumeration<MOB.Tattoo> e=((MOB)E).tattoos();e.hasMoreElements();)
 				((MOB)E).delTattoo(e.nextElement());
-			for(int v=0;v<V9.size();v++) ((MOB)E).addTattoo(CMLib.database().parseTattoo(V9.elementAt(v)));
+			for(int v=0;v<V9.size();v++) 
+				((MOB)E).addTattoo(CMLib.database().parseTattoo(V9.get(v)));
 
 			V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"EDUS"),true);
 			((MOB)E).delAllExpertises();
-			for(int v=0;v<V9.size();v++) ((MOB)E).addExpertise(V9.elementAt(v));
+			for(int v=0;v<V9.size();v++) 
+				((MOB)E).addExpertise(V9.get(v));
 
 			if(E instanceof ShopKeeper)
 				populateShops(E,buf);
@@ -3610,11 +3612,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				  else
 				  {
 					  I.setRawProperLocationBitmap(0);
-					  Vector<String> V=CMParms.parseCommas(val,true);
+					  List<String> V=CMParms.parseCommas(val,true);
 					  Wearable.CODES codes = Wearable.CODES.instance();
-					  for(Enumeration<String> e=V.elements();e.hasMoreElements();)
+					  for(Iterator<String> e=V.iterator();e.hasNext();)
 					  {
-						  val=e.nextElement();
+						  val=e.next();
 						  int wornIndex=codes.findDex_ignoreCase(val);
 						  if(wornIndex>=0)
 							  I.setRawProperLocationBitmap(I.rawProperLocationBitmap()|codes.get(wornIndex));
@@ -3647,10 +3649,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				  else
 				  {
 					  I.basePhyStats().setDisposition(0);
-					  Vector<String> V=CMParms.parseCommas(val,true);
-					  for(Enumeration<String> e=V.elements();e.hasMoreElements();)
+					  List<String> V=CMParms.parseCommas(val,true);
+					  for(Iterator<String> e=V.iterator();e.hasNext();)
 					  {
-						  val=e.nextElement();
+						  val=e.next();
 						  int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
 						  if(dispIndex>=0)
 							  I.basePhyStats().setDisposition(I.basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
@@ -3779,10 +3781,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				  else
 				  {
 					  M.basePhyStats().setDisposition(0);
-					  Vector<String> V=CMParms.parseCommas(val,true);
-					  for(Enumeration<String> e=V.elements();e.hasMoreElements();)
+					  List<String> V=CMParms.parseCommas(val,true);
+					  for(Iterator<String> e=V.iterator();e.hasNext();)
 					  {
-						  val=e.nextElement();
+						  val=e.next();
 						  int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
 						  if(dispIndex>=0)
 							  M.basePhyStats().setDisposition(M.basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
@@ -3797,10 +3799,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				  else
 				  {
 					  M.basePhyStats().setSensesMask(0);
-					  Vector<String> V=CMParms.parseCommas(val,true);
-					  for(Enumeration<String> e=V.elements();e.hasMoreElements();)
+					  List<String> V=CMParms.parseCommas(val,true);
+					  for(Iterator<String> e=V.iterator();e.hasNext();)
 					  {
-						  val=e.nextElement();
+						  val=e.next();
 						  int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.CAN_SEE_CODES,val);
 						  if(dispIndex>=0)
 							  M.basePhyStats().setSensesMask(M.basePhyStats().sensesMask()|(int)CMath.pow(2,dispIndex));
@@ -3834,26 +3836,28 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			break;
 		case 18:
 			{
-				Vector<String> V9=CMParms.parseSemicolons(val,true);
+				List<String> V9=CMParms.parseSemicolons(val,true);
 				for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();) // tatts
 					M.delTattoo(e.nextElement());
-				for(int v=0;v<V9.size();v++) M.addTattoo(CMLib.database().parseTattoo(V9.elementAt(v)));
+				for(int v=0;v<V9.size();v++) 
+					M.addTattoo(CMLib.database().parseTattoo(V9.get(v)));
 			}
 			break;
 		case 19:
 			{
-				Vector<String> V9=CMParms.parseSemicolons(val,true); // exps
+				List<String> V9=CMParms.parseSemicolons(val,true); // exps
 				M.delAllExpertises();
-				for(int v=0;v<V9.size();v++) M.addExpertise(V9.elementAt(v));
+				for(int v=0;v<V9.size();v++) 
+					M.addExpertise(V9.get(v));
 			}
 			break;
 		case 20: M.setImage(val); break; // img
 		case 21:
 			{
-				Vector<String> V10=CMParms.parseSemicolons(val,true); // factions
+				List<String> V10=CMParms.parseSemicolons(val,true); // factions
 				for(int v=0;v<V10.size();v++)
 				{
-					String s=V10.elementAt(v);
+					String s=V10.get(v);
 					int x=s.lastIndexOf('(');
 					int y=s.lastIndexOf(")");
 					if((x>0)&&(y>x))

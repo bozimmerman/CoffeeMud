@@ -140,10 +140,10 @@ public class Affect extends StdCommand
 				{
 					String s=CMLib.coffeeFilter().fullOutFilter(S,mob,null,null,null,disp,true);
 					s=CMStrings.replaceAll(s,"\r","");
-					Vector<String> V=CMParms.parseAny(s,'\n',true);
+					List<String> V=CMParms.parseAny(s,'\n',true);
 					disps=new String[V.size()];
 					for(int d=0;d<V.size();d++)
-						disps[d]=V.elementAt(d);
+						disps[d]=V.get(d);
 					colnum=NUM_COLS;
 				}
 				for(int d=0;d<disps.length;d++) 

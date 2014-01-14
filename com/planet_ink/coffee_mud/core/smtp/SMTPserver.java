@@ -171,12 +171,12 @@ public class SMTPserver extends Thread implements Tickable
 		TreeMap<String, JournalsLibrary.SMTPJournal> set=new TreeMap<String, JournalsLibrary.SMTPJournal>(); 
 		if((journalStr==null)||(journalStr.length()>0))
 		{
-			Vector<String> V=CMParms.parseCommas(journalStr,true);
+			List<String> V=CMParms.parseCommas(journalStr,true);
 			if(V.size()>0)
 			{
 				for(int v=0;v<V.size();v++)
 				{
-					String s=V.elementAt(v).trim();
+					String s=V.get(v).trim();
 					String parm="";
 					int x=s.indexOf('(');
 					if((x>0)&&(s.endsWith(")")))
@@ -184,14 +184,14 @@ public class SMTPserver extends Thread implements Tickable
 						parm=s.substring(x+1,s.length()-1).trim();
 						s=s.substring(0,x).trim();
 					}
-					Vector<String> PV=CMParms.parseSpaces(parm,true);
+					List<String> PV=CMParms.parseSpaces(parm,true);
 					StringBuffer crit=new StringBuffer("");
 					boolean forward=false;
 					boolean subscribeOnly=false;
 					boolean keepAll=false;
 					for(int pv=0;pv<PV.size();pv++)
 					{
-						String ps=PV.elementAt(pv);
+						String ps=PV.get(pv);
 						if(ps.equalsIgnoreCase("forward"))
 							forward=true;
 						else

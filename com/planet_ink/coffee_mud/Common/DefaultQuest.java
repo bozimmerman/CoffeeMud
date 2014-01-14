@@ -4040,13 +4040,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return s;
 	}
 
-	private Object getObjectIfSpecified(Vector<String> parms, List args, int startp, int object0vector1)
+	private Object getObjectIfSpecified(List<String> parms, List args, int startp, int object0vector1)
 		throws CMException
 	{
 		if(parms.size()-startp==0) throw new CMException("Not specified");
-		StringBuffer allParms=new StringBuffer(parms.elementAt(startp));
+		StringBuffer allParms=new StringBuffer(parms.get(startp));
 		for(int p=startp+1;p<parms.size();p++)
-			allParms.append(parms.elementAt(p));
+			allParms.append(parms.get(p));
 		Object O=null;
 		XVector V=new XVector();
 		int lastI=0;

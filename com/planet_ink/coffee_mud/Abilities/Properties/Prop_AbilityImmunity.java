@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -39,7 +38,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	public String name(){ return "Ability Immunity";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	public String accountForYourself() { return "Immunity";	}
-	protected Vector diseases=new Vector();
+	protected List<String> diseases=new Vector();
 	protected Vector messages=new Vector();
 	protected boolean owner = false;
 	protected boolean wearer = false;
@@ -57,7 +56,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 		wearer = false;
 		for(int d=0;d<diseases.size();d++)
 		{
-			String s=(String)diseases.elementAt(d);
+			String s=diseases.get(d);
 			if(s.equalsIgnoreCase("owner"))
 				owner=true;
 			else
@@ -70,7 +69,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 					messages.addElement("");
 				else
 				{
-					diseases.setElementAt(s.substring(0,x).trim(),d);
+					diseases.set(d,s.substring(0,x).trim());
 					messages.addElement(s.substring(x+1).trim());
 				}
 			}
@@ -91,8 +90,8 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 			Ability d = (Ability)msg.tool();
 			for(int i = 0; i < diseases.size(); i++)
 			{
-				if((CMLib.english().containsString(d.ID(),((String)diseases.elementAt(i))))
-				||(CMLib.english().containsString(d.name(),((String)diseases.elementAt(i)))))
+				if((CMLib.english().containsString(d.ID(),diseases.get(i)))
+				||(CMLib.english().containsString(d.name(),diseases.get(i))))
 				{
 					if(msg.target() instanceof MOB)
 						((MOB)msg.target()).tell("You are immune to "+msg.tool().name()+".");

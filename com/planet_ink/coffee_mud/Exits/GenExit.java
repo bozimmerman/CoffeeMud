@@ -229,10 +229,10 @@ public class GenExit extends StdExit implements Modifiable
 					else
 					{
 						basePhyStats().setDisposition(0);
-						Vector<String> V=CMParms.parseCommas(val,true);
-						for(Enumeration<String> e=V.elements();e.hasMoreElements();)
+						List<String> V=CMParms.parseCommas(val,true);
+						for(Iterator<String> e=V.iterator();e.hasNext();)
 						{
-							val=e.nextElement();
+							val=e.next();
 							int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
 							if(dispIndex>=0)
 								basePhyStats().setDisposition(basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));

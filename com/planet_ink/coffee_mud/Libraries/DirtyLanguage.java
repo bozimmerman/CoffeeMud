@@ -367,14 +367,14 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	
 	public boolean insertExpansion(List<String> MORE_CMDS, String str, int m, int strLen, boolean nothingDone)
 	{
-		Vector<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
-		MORE_CMDS.set(m,expansion.elementAt(0));
-		String expStr=expansion.elementAt(0);
+		List<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
+		MORE_CMDS.set(m,expansion.get(0));
+		String expStr=expansion.get(0);
 		if(expStr.length()<=strLen) nothingDone=false;
 		boolean insert=m<MORE_CMDS.size()-1;
 		for(int e=1;e<expansion.size();e++)
 		{
-			expStr=expansion.elementAt(e);
+			expStr=expansion.get(e);
 			if(expStr.length()<=strLen) nothingDone=false;
 			if(insert)
 				MORE_CMDS.add(m+e,expStr);

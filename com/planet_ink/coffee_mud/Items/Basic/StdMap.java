@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 
@@ -73,11 +71,11 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 	public void doMapArea()
 	{
-		Vector V=CMParms.parseSemicolons(getMapArea(),true);
+		List<String> V=CMParms.parseSemicolons(getMapArea(),true);
 		String newName="";
 		for(int v=0;v<V.size();v++)
 		{
-			String areaName=(String)V.elementAt(v);
+			String areaName=V.get(v);
 			if(areaName.length()>0)
 			{
 				if(newName.length()==0)
@@ -192,11 +190,11 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 
 	public Hashtable makeMapRooms(int width)
 	{
-		Vector mapAreas=CMParms.parseSemicolons(getMapArea(),true);
+		List<String> mapAreas=CMParms.parseSemicolons(getMapArea(),true);
 		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
-			Area A=CMLib.map().getArea((String)mapAreas.elementAt(a));
+			Area A=CMLib.map().getArea(mapAreas.get(a));
 			if(A!=null)
 			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{

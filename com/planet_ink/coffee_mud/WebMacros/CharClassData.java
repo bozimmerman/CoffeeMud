@@ -613,7 +613,7 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("NOWEAPS"))
 				{
 					String old=httpReq.getUrlParameter("NOWEAPS");
-					Vector set=null;
+					List<String> set=null;
 					if(old==null)
 					{
 						C=C.makeGenCharClass();
@@ -625,7 +625,7 @@ public class CharClassData extends StdWebMacro
 						String id="";
 						set=new Vector();
 						for(int i=0;httpReq.isUrlParameter("NOWEAPS"+id);id=""+(++i))
-							set.addElement(httpReq.getUrlParameter("NOWEAPS"+id));
+							set.add(httpReq.getUrlParameter("NOWEAPS"+id));
 					}
 					for(int i=0;i<Weapon.CLASS_DESCS.length;i++)
 					{
@@ -786,7 +786,7 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("WEAPMATS"))
 				{
 					String old=httpReq.getUrlParameter("WEAPMATS");
-					Vector set=null;
+					List<String> set=null;
 					if(old==null)
 					{
 						C=C.makeGenCharClass();
@@ -799,7 +799,7 @@ public class CharClassData extends StdWebMacro
 						set=new Vector();
 						for(int i=0;httpReq.isUrlParameter("WEAPMATS"+id);id=""+(++i))
 							if(CMath.isInteger(httpReq.getUrlParameter("WEAPMATS"+id)))
-								set.addElement(httpReq.getUrlParameter("WEAPMATS"+id));
+								set.add(httpReq.getUrlParameter("WEAPMATS"+id));
 					}
 					str.append("<OPTION VALUE=\"*\"");
 					if(set.size()==0) str.append(" SELECTED");

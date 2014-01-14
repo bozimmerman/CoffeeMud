@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("rawtypes")
 public class TemporaryImmunity extends StdAbility
 {
 	public String ID() { return "TemporaryImmunity"; }
@@ -97,10 +96,10 @@ public class TemporaryImmunity extends StdAbility
 		else
 		{
 			set.clear();
-			Vector V=CMParms.parseSemicolons(str,true);
+			List<String> V=CMParms.parseSemicolons(str,true);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=(String)V.elementAt(v);
+				String s=V.get(v);
 				int x=s.indexOf('/');
 				if(x>0)
 					set.addElement(s.substring(0,x),Long.valueOf(CMath.s_long(s.substring(x+1))));

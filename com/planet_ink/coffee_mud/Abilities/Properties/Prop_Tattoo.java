@@ -31,16 +31,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Prop_Tattoo extends Property
 {
 	public String ID() { return "Prop_Tattoo"; }
 	public String name(){ return "A Tattoo";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 
-	public static Vector getTattoos(MOB mob)
+	public static List<String> getTattoos(MOB mob)
 	{
-		Vector tattos=new Vector();
+		List<String> tattos=new Vector<String>();
 		Ability A=mob.fetchAbility("Prop_Tattoo");
 		if(A!=null)
 			tattos=CMParms.parseSemicolons(A.text().toUpperCase(),true);
@@ -58,10 +57,10 @@ public class Prop_Tattoo extends Property
 		if(affected instanceof MOB)
 		{
 			MOB M=(MOB)affected;
-			Vector V=CMParms.parseSemicolons(text,true);
+			List<String> V=CMParms.parseSemicolons(text,true);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=(String)V.elementAt(v);
+				String s=V.get(v);
 				int x=s.indexOf(' ');
 				if((x>0)&&(CMath.isNumber(s.substring(0,x))))
 					M.addTattoo(new MOB.Tattoo(s.substring(x+1).trim(),CMath.s_int(s.substring(0,x))));

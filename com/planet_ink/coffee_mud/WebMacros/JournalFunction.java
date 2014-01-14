@@ -111,7 +111,7 @@ public class JournalFunction extends StdWebMacro
 			}
 			String date=httpReq.getUrlParameter("DATE");
 			String icon=httpReq.getUrlParameter("MSGICON");
-			Vector<String> flags=CMParms.parseCommas(httpReq.getUrlParameter("FLAGS"), true);
+			List<String> flags=CMParms.parseCommas(httpReq.getUrlParameter("FLAGS"), true);
 			if((flags.size()>0)&&(forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 				return "Post not submitted -- Unauthorized flags.";
 			String text=httpReq.getUrlParameter("NEWTEXT");

@@ -527,7 +527,7 @@ public class MUDGrinder extends StdWebMacro
 			if(R==null) return "@break@";
 			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
-			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
+			final List<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
 			String errMsg;
 			if((multiFlag)&&(multiRoomList.size()>0))
 			{
@@ -840,7 +840,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
-			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
+			final List<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
 			List<Room> rooms = new LinkedList<Room>();
 			if((multiFlag)&&(multiRoomList.size()>0))
 			{
@@ -883,7 +883,7 @@ public class MUDGrinder extends StdWebMacro
 			if(mob==null) return "@break@";
 			final String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 			final boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
-			final Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
+			final List<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
 			List<Room> rooms = new LinkedList<Room>();
 			if((multiFlag)&&(multiRoomList.size()>0))
 			{
@@ -940,11 +940,11 @@ public class MUDGrinder extends StdWebMacro
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null) return "@break@";
 			String like=httpReq.getUrlParameter("ROOM");
-			Vector likeList=CMParms.parseCommas(like,true);
+			List<String> likeList=CMParms.parseCommas(like,true);
 			Vector RS=new Vector();
 			for(int l=0;l<likeList.size();l++)
 			{
-				like=(String)likeList.elementAt(l);
+				like=likeList.get(l);
 				String roomID=quickfind(A,like.toUpperCase());
 				Room R=null;
 				if(roomID!=null) R=CMLib.map().getRoom(roomID);

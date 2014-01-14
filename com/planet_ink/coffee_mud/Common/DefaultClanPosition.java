@@ -174,7 +174,7 @@ public class DefaultClanPosition implements ClanPosition
 		case PLURALNAME: pluralName=val; break;
 		case INNERMASK: innerMaskStr=val; break;
 		case FUNCTIONS:{
-			final Vector<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
+			final List<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
 			for(int a=0;a<Clan.Function.values().length;a++)
 				if(functionChart[a]!=Clan.Authority.MUST_VOTE_ON)
 					functionChart[a]=Clan.Authority.CAN_NOT_DO;

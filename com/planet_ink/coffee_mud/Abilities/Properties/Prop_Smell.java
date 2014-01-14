@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /* 
@@ -75,11 +73,11 @@ public class Prop_Smell extends Property
 	public DVector getSmells()
 	{
 		if(smells!=null) return smells;
-		Vector allsmells=CMParms.parseSemicolons(text(),true);
+		List<String> allsmells=CMParms.parseSemicolons(text(),true);
 		smells=new DVector(3);
 		for(int i=0;i<allsmells.size();i++)
 		{
-			String smell=(String)allsmells.elementAt(i);
+			String smell=allsmells.get(i);
 			if(smell.length()>0)
 			{
 				int pct=100;

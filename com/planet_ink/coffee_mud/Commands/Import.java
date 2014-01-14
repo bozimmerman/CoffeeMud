@@ -2112,10 +2112,10 @@ public class Import extends StdCommand
 	protected static MOB getMOB(String OfThisID,
 								Room putInRoom,
 								Session session,
-								Vector mobData,
-								Vector mobProgData,
-								Vector specialData,
-								Vector shopData,
+								List mobData,
+								List mobProgData,
+								List specialData,
+								List shopData,
 								Hashtable areaMOBS,
 								Hashtable doneMOBS,
 								String areaFileName,
@@ -2161,14 +2161,14 @@ public class Import extends StdCommand
 		for(int m=0;m<mobData.size();m++)
 		{
 			List<String> objV=null;
-			if(mobData.elementAt(m) instanceof List)
-				objV=(List)mobData.elementAt(m);
+			if(mobData.get(m) instanceof List)
+				objV=(List)mobData.get(m);
 			else
-			if(mobData.elementAt(m) instanceof String)
+			if(mobData.get(m) instanceof String)
 			{
-				String s=(String)mobData.elementAt(m);
+				String s=(String)mobData.get(m);
 				if((!s.toUpperCase().trim().startsWith("#MOB"))&&(s.length()>0))
-					returnAnError(session,"Eating mob immaterial line: "+mobData.elementAt(m),compileErrors,commands);
+					returnAnError(session,"Eating mob immaterial line: "+mobData.get(m),compileErrors,commands);
 				continue;
 			}
 			else
@@ -2281,7 +2281,7 @@ public class Import extends StdCommand
 				M=CMClass.getMOB("GenRideable");
 			for(int i=0;i<shopData.size();i++)
 			{
-				String s=((String)shopData.elementAt(i)).trim();
+				String s=((String)shopData.get(i)).trim();
 				if(("#"+s).startsWith(OfThisID+" ")||("#"+s).startsWith(OfThisID+"\t")||("#"+s).startsWith(OfThisID+"	"))
 				{
 					M=CMClass.getMOB("GenShopkeeper");
@@ -2751,7 +2751,7 @@ public class Import extends StdCommand
 			}
 			for(int mp=0;mp<mobProgData.size();mp++)
 			{
-				String s=(String)mobProgData.elementAt(mp);
+				String s=(String)mobProgData.get(mp);
 				String rest=null;
 				if(s.startsWith("#")&&(s.length()>1)&&(CMath.isNumber(""+s.charAt(1))))
 				{
@@ -2762,11 +2762,11 @@ public class Import extends StdCommand
 						mp++;
 						if(mp<mobProgData.size())
 						{
-							String s1=(String)mobProgData.elementAt(mp);
+							String s1=(String)mobProgData.get(mp);
 							//s1=CMStrings.replaceAll(s1, ";", "\\;");
 							b.append(s1);
 							//b.append(";");
-							s=(String)mobProgData.elementAt(mp);
+							s=(String)mobProgData.get(mp);
 						}
 						else
 							break;
@@ -2881,7 +2881,7 @@ public class Import extends StdCommand
 
 			for(int mp=0;mp<specialData.size();mp++)
 			{
-				String s=(String)specialData.elementAt(mp);
+				String s=(String)specialData.get(mp);
 				if(s.startsWith("M "))
 				{
 					String MOBID=CMParms.getBit(s,1);
@@ -3286,8 +3286,8 @@ public class Import extends StdCommand
 	private static Item getItem(String OfThisID,
 								Session session,
 								String areaName,
-								Vector objectData,
-								Vector objProgData,
+								List objectData,
+								List objProgData,
 								Hashtable areaItems,
 								Hashtable doneItems,
 								Hashtable areaRooms,
@@ -3312,14 +3312,14 @@ public class Import extends StdCommand
 		for(int o=0;o<objectData.size();o++)
 		{
 			List<String> objV=null;
-			if(objectData.elementAt(o) instanceof List)
-				objV=(List)objectData.elementAt(o);
+			if(objectData.get(o) instanceof List)
+				objV=(List)objectData.get(o);
 			else
-			if(objectData.elementAt(o) instanceof String)
+			if(objectData.get(o) instanceof String)
 			{
-				String s=(String)objectData.elementAt(o);
+				String s=(String)objectData.get(o);
 				if((!s.toUpperCase().trim().startsWith("#OBJ"))&&(s.length()>0))
-					returnAnError(session,"Eating immaterial line: "+objectData.elementAt(o)+", area="+areaName,compileErrors,commands);
+					returnAnError(session,"Eating immaterial line: "+objectData.get(o)+", area="+areaName,compileErrors,commands);
 				continue;
 			}
 			else
@@ -3428,14 +3428,14 @@ public class Import extends StdCommand
 			boolean forgiveZeroes=false;
 			if((codeStr2.indexOf('~')>=0)&&(codeStr2.lastIndexOf('~')>codeStr2.indexOf('~')))
 			{
-				Vector V=CMParms.parseSquiggles(codeStr2);
+				List<String> V=CMParms.parseSquiggles(codeStr2);
 				if(V.size()==4)
 				{
 					forgiveZeroes=true;
-					codeStr2="'"+((String)V.elementAt(0))+"' "
-							+"'"+((String)V.elementAt(1))+"' "
-							+"'"+((String)V.elementAt(2))+"' "
-							+"'"+((String)V.elementAt(3))+"'";
+					codeStr2="'"+((String)V.get(0))+"' "
+							+"'"+((String)V.get(1))+"' "
+							+"'"+((String)V.get(2))+"' "
+							+"'"+((String)V.get(3))+"'";
 				}
 				else
 					returnAnError(session,"Invalid object codeStr2 line: "+codeStr2+", item not aborted, but stuff will be wrong!",compileErrors,commands);

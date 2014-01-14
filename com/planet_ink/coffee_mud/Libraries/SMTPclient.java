@@ -534,11 +534,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	{
 		public SMTPHostAuth(String unparsedServerInfo)
 		{
-			Vector<String> info=CMParms.parseCommas(unparsedServerInfo,false);
+			List<String> info=CMParms.parseCommas(unparsedServerInfo,false);
 			if(info.size()==0) return;
 			host = info.remove(0);
 			if((info.size()==0)||(host.length()==0)) return;
-			String s=info.elementAt(0);
+			String s=info.get(0);
 			if(s.equalsIgnoreCase("plain")||s.equalsIgnoreCase("login"))
 				authType=info.remove(0).toUpperCase().trim();
 			else

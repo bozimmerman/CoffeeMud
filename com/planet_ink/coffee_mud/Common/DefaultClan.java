@@ -124,9 +124,9 @@ public class DefaultClan implements Clan
 			else
 			{
 				lastClanKillRecord=V.get(0).xml;
-				Vector<String> V2=CMParms.parseSemicolons(lastClanKillRecord,true);
+				List<String> V2=CMParms.parseSemicolons(lastClanKillRecord,true);
 				for(int v=0;v<V2.size();v++)
-					clanKills.add(Long.valueOf(CMath.s_long(V2.elementAt(v))));
+					clanKills.add(Long.valueOf(CMath.s_long(V2.get(v))));
 			}
 		}
 	}

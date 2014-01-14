@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.miniweb.interfaces.*;
+
 import java.util.*;
 
 /* 
@@ -66,7 +67,7 @@ public class AccountData extends StdWebMacro
 			if(parms.containsKey("FLAGS"))
 			{
 				String old=httpReq.getUrlParameter("FLAGS");
-				Vector set=null;
+				List<String> set=null;
 				if(old==null)
 				{
 					String matList=A.getStat("FLAG");
@@ -77,7 +78,7 @@ public class AccountData extends StdWebMacro
 					String id="";
 					set=new Vector();
 					for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
-						set.addElement(httpReq.getUrlParameter("FLAG"+id));
+						set.add(httpReq.getUrlParameter("FLAG"+id));
 				}
 				StringBuffer str=new StringBuffer("");
 				for(int i=0;i<PlayerAccount.FLAG_DESCS.length;i++)

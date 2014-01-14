@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /*
@@ -33,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Concierge extends StdBehavior
 {
 	public String ID(){return "Concierge";}
@@ -58,7 +56,7 @@ public class Concierge extends StdBehavior
 			basePrice=CMath.s_double(newParm);
 			return;
 		}
-		Vector V=CMParms.parseSemicolons(newParm,true);
+		List<String> V=CMParms.parseSemicolons(newParm,true);
 		String s=null;
 		int x=0;
 		double price=0;
@@ -66,7 +64,7 @@ public class Concierge extends StdBehavior
 		Area A=null;
 		for(int v=0;v<V.size();v++)
 		{
-			s=(String)V.elementAt(v);
+			s=V.get(v);
 			x=s.indexOf('=');
 			if(x>0)
 			{
@@ -96,7 +94,8 @@ public class Concierge extends StdBehavior
 		return ((Double)rates.elementAt(rateIndex,2)).doubleValue();
 	}
 	
-	public Environmental findDestination(MOB observer, MOB mob, String where)
+	@SuppressWarnings("unchecked")
+    public Environmental findDestination(MOB observer, MOB mob, String where)
 	{
 		DVector stringsToDo=null;
 		if(rates.size()==0) return CMLib.map().findArea(where);

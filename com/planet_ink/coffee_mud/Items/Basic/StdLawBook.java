@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -848,12 +847,12 @@ public class StdLawBook extends StdItem
 			String S=theLaw.getInternalStr("TREASURY").trim();
 			String room="*";
 			String item="";
-			Vector V=CMParms.parseSemicolons(S,false);
+			List<String> V=CMParms.parseSemicolons(S,false);
 			if((S.length()==0)||(V.size()==0))
 				str.append("Not defined");
 			else
 			{
-				room=(String)V.firstElement();
+				room=V.get(0);
 				if(V.size()>1) item=CMParms.combine(V,1);
 				if(room.equalsIgnoreCase("*")) 
 					str.append("Any (*)");

@@ -69,14 +69,14 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
 		if(x<0) return null;
 		String Xstr=txt.substring(1,x);
 		String Ystr=txt.substring(x+3,txt.length()-1);
-		Vector<String> XV=CMParms.parseCommas(Xstr,true);
-		Vector<String> YV=CMParms.parseCommas(Ystr,true);
+		List<String> XV=CMParms.parseCommas(Xstr,true);
+		List<String> YV=CMParms.parseCommas(Ystr,true);
 		xs=new int[XV.size()];
 		for(int v=0;v<XV.size();v++)
-			xs[v]=CMath.s_int(XV.elementAt(v));
+			xs[v]=CMath.s_int(XV.get(v));
 		ys=new long[YV.size()];
 		for(int v=0;v<YV.size();v++)
-			ys[v]=CMath.s_long(YV.elementAt(v));
+			ys[v]=CMath.s_long(YV.get(v));
 		return this;
 	}
 	

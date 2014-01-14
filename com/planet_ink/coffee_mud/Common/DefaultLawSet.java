@@ -151,11 +151,11 @@ public class DefaultLawSet implements Law
 		Item I=null;
 		if((tres!=null)&&(tres.length()>0))
 		{
-			Vector<String> V=CMParms.parseSemicolons(tres,false);
+			List<String> V=CMParms.parseSemicolons(tres,false);
 			if(V.size()>0)
 			{
 				Room R=null;
-				String room=V.firstElement();
+				String room=V.get(0);
 				String item="";
 				if(V.size()>1) item=CMParms.combine(V,1);
 				if(!room.equalsIgnoreCase("*"))
@@ -517,10 +517,10 @@ public class DefaultLawSet implements Law
 				{
 					otherCrimes.add(CMParms.parse(words.substring(0,x)));
 					String[] bits=new String[Law.BIT_NUMBITS];
-					Vector<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
+					List<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
 					for(int i=0;i<Law.BIT_NUMBITS;i++)
 						if(i<parsed.size())
-							bits[i]=parsed.elementAt(i);
+							bits[i]=parsed.get(i);
 						else
 							bits[i]="";
 					otherBits.add(bits);
@@ -530,10 +530,10 @@ public class DefaultLawSet implements Law
 				{
 					bannedSubstances.add(CMParms.parse(words.substring(0,x)));
 					String[] bits=new String[Law.BIT_NUMBITS];
-					Vector<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
+					List<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
 					for(int i=0;i<Law.BIT_NUMBITS;i++)
 						if(i<parsed.size())
-							bits[i]=parsed.elementAt(i);
+							bits[i]=parsed.get(i);
 						else
 							bits[i]="";
 					bannedBits.add(bits);
@@ -565,10 +565,10 @@ public class DefaultLawSet implements Law
 	private String[] getInternalBits(String bitStr)
 	{
 		String[] bits=new String[Law.BIT_NUMBITS];
-		Vector<String> parsed=CMParms.parseSemicolons(bitStr,false);
+		List<String> parsed=CMParms.parseSemicolons(bitStr,false);
 		for(int i=0;i<Law.BIT_NUMBITS;i++)
 			if(i<parsed.size())
-				bits[i]=parsed.elementAt(i);
+				bits[i]=parsed.get(i);
 			else
 				bits[i]="";
 		return bits;

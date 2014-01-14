@@ -220,12 +220,12 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 			{
 				geasStep g=new geasStep(geasSteps);
 				Map<String,String> map=poss.get(i);
-				Vector<String> all=CMParms.parseSemicolons(map.get("INSTR"),true);
+				List<String> all=CMParms.parseSemicolons(map.get("INSTR"),true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 					Log.debugOut("GEAS",CMParms.toStringList(all));
 				g.que=new Vector<List<String>>();
 				for(int a=0;a<all.size();a++)
-					g.que.add(CMParms.parse(all.elementAt(a)));
+					g.que.add(CMParms.parse(all.get(a)));
 				if(you!=null)   map.put("%c",you.name());
 				map.put("%n",me.name());
 				for(int q=0;q<g.que.size();q++)

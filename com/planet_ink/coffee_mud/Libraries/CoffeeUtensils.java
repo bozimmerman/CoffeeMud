@@ -679,18 +679,18 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		final String lootPolicyStr=CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY);
 		if((lootPolicy==null)||(lastLootPolicyHash!=lootPolicyStr.hashCode()))
 		{
-			Vector<String> lootPolicies=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY),true);
+			List<String> lootPolicies=(!mob.isMonster())?new Vector<String>():CMParms.parseCommas(CMProps.getVar(CMProps.Str.ITEMLOOTPOLICY),true);
 			TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask> policies=new TriadVector<Integer,Integer,MaskingLibrary.CompiledZapperMask>();
 			for(int p=0;p<lootPolicies.size();p++)
 			{
-				String s=lootPolicies.elementAt(p).toUpperCase().trim();
+				String s=lootPolicies.get(p).toUpperCase().trim();
 				if(s.length()==0) continue;
 				MaskingLibrary.CompiledZapperMask compiledMask=null;
 				int maskDex=s.indexOf("MASK=");
 				if(maskDex>=0)
 				{
 					s=s.substring(0,maskDex).trim();
-					compiledMask=CMLib.masking().maskCompile(lootPolicies.elementAt(p).substring(maskDex+5).trim());
+					compiledMask=CMLib.masking().maskCompile(lootPolicies.get(p).substring(maskDex+5).trim());
 				}
 				else
 					compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY();

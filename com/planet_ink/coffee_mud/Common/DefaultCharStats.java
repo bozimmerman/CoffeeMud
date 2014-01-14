@@ -273,6 +273,7 @@ public class DefaultCharStats implements CharStats
 			return displayClassName()+" "+levelStr;
 		return "level "+levelStr+" "+displayClassName();
 	}
+	
 	public String displayClassLevelOnly(MOB mob)
 	{
 		if(mob==null) return "";
@@ -296,9 +297,10 @@ public class DefaultCharStats implements CharStats
 				str.append(stats[x]+";");
 		return str.toString();
 	}
+	
 	public void setNonBaseStatsFromString(String str)
 	{
-		Vector<String> V=CMParms.parseSemicolons(str,false);
+		List<String> V=CMParms.parseSemicolons(str,false);
 		CharStats.CODES C = CharStats.CODES.instance(); 
 		for(int x : C.all())
 			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER)&&(V.size()>0))
@@ -309,12 +311,19 @@ public class DefaultCharStats implements CharStats
 				stats[x]=(short)val;
 			}
 	}
-	public void setRaceName(String newRaceName){raceName=newRaceName;}
-	public String raceName(){
+	
+	public void setRaceName(String newRaceName)
+	{
+		raceName=newRaceName;
+	}
+	
+	public String raceName()
+	{
 		if(raceName!=null) return raceName;
 		if(myRace!=null) return myRace.name();
 		return "MOB";
 	}
+	
 	public CharClass getMyClass(int i)
 	{
 		if((myClasses==null)
@@ -323,6 +332,7 @@ public class DefaultCharStats implements CharStats
 			return CMClass.getCharClass("StdCharClass");
 		return myClasses[i];
 	}
+	
 	public int getClassLevel(String aClass)
 	{
 		if(myClasses==null)    return -1;
@@ -333,6 +343,7 @@ public class DefaultCharStats implements CharStats
 			   return myLevels[i].intValue();
 		return -1;
 	}
+	
 	public int getClassLevel(CharClass aClass)
 	{
 		if((myClasses==null)||(aClass==null))    return -1;
@@ -507,12 +518,12 @@ public class DefaultCharStats implements CharStats
 	
 	public void setBodyPartsFromStringAfterRace(String str)
 	{
-		Vector<String> V=CMParms.parseSemicolons(str,true);
+		List<String> V=CMParms.parseSemicolons(str,true);
 		bodyAlterations=null;
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
 		{
 			if(V.size()<=i) break;
-			int val=CMath.s_int(V.elementAt(i));
+			int val=CMath.s_int(V.get(i));
 			int num=getMyRace().bodyMask()[i];
 			if(num!=val) alterBodypart(i,val-num);
 		}

@@ -797,8 +797,8 @@ public interface CharStats extends CMCommon, Modifiable
 		private String[] statAttributionDescriptions=new String[0];
 		private int[] statCMMsgMapping=new int[0];
 		
-		@SuppressWarnings("rawtypes")
-		public CODES(){
+		public CODES()
+		{
 			super();
 			char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 			if(insts==null) insts=new CODES[256];
@@ -825,13 +825,13 @@ public interface CharStats extends CMCommon, Modifiable
 				boolean replace = i>=addExtra.length;
 				String stat = array[0].toUpperCase().trim();
 				String p=array[1];
-				Vector V=CMParms.parseCommas(p, false);
+				List<String> V=CMParms.parseCommas(p, false);
 				if(V.size()!=4)
 				{
 					Log.errOut("CharStats","Bad coffeemud.ini charstat row, requires 4 ; separated entries: "+p);
 					continue;
 				}
-				String type=((String)V.firstElement()).toUpperCase().trim();
+				String type=V.get(0).toUpperCase().trim();
 				int oldStatCode=-1;
 				if(replace)
 				{
@@ -847,9 +847,9 @@ public interface CharStats extends CMCommon, Modifiable
 						continue;
 					}
 				}
-				String abbr=(String)V.elementAt(1);
-				String desc=((String)V.elementAt(2)).toUpperCase();
-				String adj=((String)V.elementAt(3)).toUpperCase();
+				String abbr=V.get(1);
+				String desc=V.get(2).toUpperCase();
+				String adj=V.get(3).toUpperCase();
 				if(type.equalsIgnoreCase("BASE"))
 				{
 					addBaseStat(abbr, desc, stat, adj, -1);

@@ -770,10 +770,10 @@ public class CharGen extends StdCommand
 								}
 								if(c.failSkillCheck!=null)
 								{
-									Vector V=CMParms.parseSemicolons(B1.getStat("RECORD"),true);
+									List<String> V=CMParms.parseSemicolons(B1.getStat("RECORD"),true);
 									for(int v=0;v<V.size();v++)
 									{
-										String s=((String)V.elementAt(v)).trim();
+										String s=V.get(v).trim();
 										boolean failed=false;
 										if(s.startsWith("!"))
 										{

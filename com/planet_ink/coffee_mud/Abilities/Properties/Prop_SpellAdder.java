@@ -102,11 +102,11 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		if(spellV!=null) return spellV;
 		spellV=new Vector();
 		String names=getParmString(text());
-		Vector set=CMParms.parseSemicolons(names,true);
+		List<String> set=CMParms.parseSemicolons(names,true);
 		String thisOne=null;
 		for(int s=0;s<set.size();s++)
 		{
-			thisOne=(String)set.elementAt(s);
+			thisOne=set.get(s);
 			if(thisOne.equalsIgnoreCase("NOUNINVOKE"))
 			{
 				this.uninvocable=false;

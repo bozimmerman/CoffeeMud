@@ -134,7 +134,7 @@ public class Prayer_Prophecy extends Prayer
 				if(possibleBetterName.length()>0)
 					name=possibleBetterName;
 				name=name.replace('_',' ');
-				Vector<String> V=CMParms.parseSpaces(name,true);
+				List<String> V=CMParms.parseSpaces(name,true);
 				for(int v=V.size()-1;v>=0;v--)
 				{
 					if(CMath.isNumber(V.get(v)))

@@ -95,12 +95,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return spellsV;
 			}
 		}
-		Vector<String> V=CMParms.parseSemicolons(spells,true);
+		List<String> V=CMParms.parseSemicolons(spells,true);
 		Ability lastSpell=null;
 		Ability A=null;
 		for(int v=0;v<V.size();v++)
 		{
-			spells=V.elementAt(v); 
+			spells=V.get(v); 
 			A=CMClass.getAbility(spells);
 			if(A==null)
 			{

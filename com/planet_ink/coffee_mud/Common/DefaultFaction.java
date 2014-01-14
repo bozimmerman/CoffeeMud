@@ -250,11 +250,11 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 			if(key.startsWith("FACTOR"))
 			{
-				Vector<String> factor=CMParms.parseSemicolons(words,false);
+				List<String> factor=CMParms.parseSemicolons(words,false);
 				if(factor.size()>2)
-					factors.add(new DefaultFactionZapFactor(CMath.s_double(factor.elementAt(0)),
-											 CMath.s_double(factor.elementAt(1)),
-											 factor.elementAt(2)));
+					factors.add(new DefaultFactionZapFactor(CMath.s_double(factor.get(0)),
+											 CMath.s_double(factor.get(1)),
+											 factor.get(2)));
 			}
 			if(key.startsWith("RELATION"))
 			{
@@ -1248,7 +1248,7 @@ public class DefaultFaction implements Faction, MsgListener
 		private boolean selfTargetOK=false;
 		private boolean just100=false;
 		private Object[] stateVariables=new Object[0];
-		private Hashtable<String,String> savedTriggerParms=new Hashtable<String,String>();
+		private Map<String,String> savedTriggerParms=new Hashtable<String,String>();
 		private String triggerParms="";
 		private Faction myFaction;
 		private MaskingLibrary.CompiledZapperMask compiledTargetZapper=null;
@@ -1310,9 +1310,9 @@ public class DefaultFaction implements Faction, MsgListener
 		public DefaultFactionChangeEvent(Faction F, String key)
 		{
 			myFaction=F;
-			Vector v = CMParms.parseSemicolons(key,false);
+			List<String> v = CMParms.parseSemicolons(key,false);
 			
-			String trigger =(String)v.elementAt(0);
+			String trigger =v.get(0);
 			triggerParms="";
 			int x=trigger.indexOf('(');
 			if((x>0)&&(trigger.endsWith(")")))
@@ -1322,17 +1322,17 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 			
 			setEventID(trigger);
-			setDirection((String)v.elementAt(1));
-			String amt=((String)v.elementAt(2)).trim();
+			setDirection(v.get(1));
+			String amt=v.get(2).trim();
 			if(amt.endsWith("%"))
 				setFactor(CMath.s_pct(amt));
 			else
 				setFactor(1.0);
 
 			if(v.size()>3)
-				setFlags((String)v.elementAt(3));
+				setFlags(v.get(3));
 			if(v.size()>4)
-				setTargetZapper((String)v.elementAt(4));
+				setTargetZapper(v.get(4));
 		}
 
 		public boolean setEventID(String newID)
@@ -1472,14 +1472,14 @@ public class DefaultFaction implements Faction, MsgListener
 		public DefaultFactionRange(Faction F, String key)
 		{
 			myFaction=F;
-			Vector<String> v = CMParms.parseSemicolons(key,false);
-			Name = v.elementAt(2);
-			low = CMath.s_int( v.elementAt(0));
-			high = CMath.s_int( v.elementAt(1));
+			List<String> v = CMParms.parseSemicolons(key,false);
+			Name = v.get(2);
+			low = CMath.s_int( v.get(0));
+			high = CMath.s_int( v.get(1));
 			if(v.size()>3)
-				CodeName=v.elementAt(3);
+				CodeName=v.get(3);
 			if(v.size()>4)
-				AlignEquiv = CMLib.factions().getAlignEnum(v.elementAt(4));
+				AlignEquiv = CMLib.factions().getAlignEnum(v.get(4));
 			else
 				AlignEquiv = Faction.Align.INDIFF;
 		}
@@ -1881,10 +1881,10 @@ public class DefaultFaction implements Faction, MsgListener
 		public DefaultFactionAbilityUsage(){}
 		public DefaultFactionAbilityUsage(String key)
 		{
-			Vector<String> v = CMParms.parseSemicolons(key,false);
-			setAbilityFlag(v.firstElement());
-			low = CMath.s_int( v.elementAt(1));
-			high = CMath.s_int( v.elementAt(2));
+			List<String> v = CMParms.parseSemicolons(key,false);
+			setAbilityFlag(v.get(0));
+			low = CMath.s_int( v.get(1));
+			high = CMath.s_int( v.get(2));
 		}
 		public String toString()
 		{

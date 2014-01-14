@@ -831,10 +831,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		String copyStatID = findOptionalString(E,ignoreStats,defPrefix,"COPYOF",piece,defined);
 		if(copyStatID!=null)
 		{
-			Vector<String> V=CMParms.parseCommas(copyStatID,true);
+			List<String> V=CMParms.parseCommas(copyStatID,true);
 			for(int v=0;v<V.size();v++)
 			{
-				String s = V.elementAt(v);
+				String s = V.get(v);
 				if(s.startsWith("$")) s=s.substring(1).trim();
 				XMLLibrary.XMLpiece statPiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
 				if(statPiece == null)
@@ -1628,10 +1628,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		if((defineString!=null)&&(defineString.trim().length()>0))
 		{
-			Vector<String> V=CMParms.parseCommas(defineString,true);
-			for(Enumeration<String> e=V.elements();e.hasMoreElements();)
+			List<String> V=CMParms.parseCommas(defineString,true);
+			for(Iterator<String> e=V.iterator();e.hasNext();)
 			{
-				String defVar=e.nextElement();
+				String defVar=e.next();
 				String definition=value;
 				int x=defVar.indexOf('=');
 				if(x==0) continue;
@@ -1711,12 +1711,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		String like = CMLib.xml().getParmValue(piece.parms,"LIKE");
 		if(like!=null)
 		{
-			Vector<String> V=CMParms.parseCommas(like,true);
+			List<String> V=CMParms.parseCommas(like,true);
 			XMLLibrary.XMLpiece origPiece = piece; 
 			piece=piece.copyOf();
 			for(int v=0;v<V.size();v++)
 			{
-				String s = V.elementAt(v);
+				String s = V.get(v);
 				if(s.startsWith("$")) s=s.substring(1).trim();
 				XMLLibrary.XMLpiece likePiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
 				if((likePiece == null)||(!likePiece.tag.equalsIgnoreCase(tagName)))
@@ -1740,10 +1740,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
 		if(inserter!=null)
 		{
-			Vector<String> V=CMParms.parseCommas(inserter,true);
+			List<String> V=CMParms.parseCommas(inserter,true);
 			for(int v=0;v<V.size();v++)
 			{
-				String s = V.elementAt(v);
+				String s = V.get(v);
 				if(s.startsWith("$")) s=s.substring(1).trim();
 				XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
 				if(insertPiece == null)
@@ -1886,10 +1886,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		Map<String,String> set=new Hashtable<String,String>();
 		if(requirements==null) return set;
 		requirements = requirements.trim();
-		Vector<String> reqs = CMParms.parseCommas(requirements,true);
+		List<String> reqs = CMParms.parseCommas(requirements,true);
 		for(int r=0;r<reqs.size();r++)
 		{
-			String reqVariable=reqs.elementAt(r);
+			String reqVariable=reqs.get(r);
 			if(reqVariable.startsWith("$")) reqVariable=reqVariable.substring(1).trim();
 			String validValues=null;
 			int x=reqVariable.indexOf('=');
@@ -1924,10 +1924,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		if(requirements==null) return;
 		requirements = requirements.trim();
-		Vector<String> reqs = CMParms.parseCommas(requirements,true);
+		List<String> reqs = CMParms.parseCommas(requirements,true);
 		for(int r=0;r<reqs.size();r++)
 		{
-			String reqVariable=reqs.elementAt(r);
+			String reqVariable=reqs.get(r);
 			if(reqVariable.startsWith("$")) reqVariable=reqVariable.substring(1).trim();
 			String validValues=null;
 			int x=reqVariable.indexOf('=');

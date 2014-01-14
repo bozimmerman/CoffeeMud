@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -65,11 +64,11 @@ public class BardMap extends GenMap
 	public Hashtable makeMapRooms(int width)
 	{
 		String newText=getMapArea();
-		Vector mapAreas=CMParms.parseSemicolons(newText,true);
+		List<String> mapAreas=CMParms.parseSemicolons(newText,true);
 		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
-			String area=(String)mapAreas.elementAt(a);
+			String area=mapAreas.get(a);
 			Room room=CMLib.map().getRoom(area);
 			if(room!=null)
 			{

@@ -915,13 +915,13 @@ public class MUD extends Thread implements MudHost
 			char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 			boolean checkPrivate=(tCode!=MAIN_HOST);
 			
-			Vector<String> compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
+			List<String> compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
 			CMProps.setBoolVar(CMProps.Bool.ITEMDCOMPRESS,compress.contains("ITEMDESC"));
 			CMProps.setBoolVar(CMProps.Bool.MOBCOMPRESS,compress.contains("GENMOBS"));
 			CMProps.setBoolVar(CMProps.Bool.ROOMDCOMPRESS,compress.contains("ROOMDESC"));
 			CMProps.setBoolVar(CMProps.Bool.MOBDCOMPRESS,compress.contains("MOBDESC"));
 			Resources.setCompression(compress.contains("RESOURCES"));
-			Vector<String> nocache=CMParms.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
+			List<String> nocache=CMParms.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
 			CMProps.setBoolVar(CMProps.Bool.MOBNOCACHE,nocache.contains("GENMOBS"));
 			CMProps.setBoolVar(CMProps.Bool.ROOMDNOCACHE,nocache.contains("ROOMDESC"));
 			CMProps.setBoolVar(CMProps.Bool.FILERESOURCENOCACHE, nocache.contains("FILERESOURCES"));
@@ -1007,10 +1007,10 @@ public class MUD extends Thread implements MudHost
 				webServersList="pub,admin";
 			if((webServersList.length()>0)&&(!webServersList.equalsIgnoreCase("false")))
 			{
-				Vector<String> serverNames=CMParms.parseCommas(webServersList,true);
+				List<String> serverNames=CMParms.parseCommas(webServersList,true);
 				for(int s=0;s<serverNames.size();s++)
 				{
-					String serverName=serverNames.elementAt(s);
+					String serverName=serverNames.get(s);
 					try
 					{
 						StringBuffer commonProps=new CMFile("web/common.ini", null, CMFile.FLAG_LOGERRORS).text();
@@ -1378,14 +1378,14 @@ public class MUD extends Thread implements MudHost
 			for(int i=0;i<a.length;i++)
 				nameID+=" "+a[i];
 			nameID=nameID.trim();
-			Vector<String> V=CMParms.paramParse(nameID);
+			List<String> V=CMParms.paramParse(nameID);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=V.elementAt(v);
+				String s=V.get(v);
 				if(s.toUpperCase().startsWith("BOOT=")&&(s.length()>5))
 				{
 					iniFiles.addElement(s.substring(5));
-					V.removeElementAt(v);
+					V.remove(v);
 					v--;
 				}
 			}

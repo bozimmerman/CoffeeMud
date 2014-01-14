@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -346,11 +347,11 @@ public class QuestMaker extends StdWebMacro
 					list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
 					list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
 					list.append("<TD><SELECT NAME="+httpKeyName+">");
-					Vector <String>options=CMParms.parseCommas(defValue.toUpperCase(),true);
-					if(optionalEntry) options.insertElementAt("",0);
+					List<String> options=CMParms.parseCommas(defValue.toUpperCase(),true);
+					if(optionalEntry) options.add(0,"");
 					for(int o=0;o<options.size();o++)
 					{
-						String val=options.elementAt(o);
+						String val=options.get(o);
 						list.append("<OPTION VALUE=\""+val+"\" ");
 						if(val.equalsIgnoreCase(oldValue)) list.append("SELECTED");
 						list.append(">");
@@ -752,13 +753,15 @@ public class QuestMaker extends StdWebMacro
 							case QuestManager.QM_COMMAND_$ITEMXML:
 							case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
 							{
-								Vector V=CMParms.parseSemicolons(val,true);
+								List<String> V=CMParms.parseSemicolons(val,true);
 								val="";
 								for(int v1=0;v1<V.size();v1++)
 								{
-									Item I=RoomData.getItemFromCode(RoomData.getItemCache(),(String)V.elementAt(v1));
-									if(I==null) I=RoomData.getItemFromAnywhere(RoomData.getItemCache(),(String)V.elementAt(v1));
-									if(I==null) I=RoomData.getItemFromCatalog((String)V.elementAt(v1));
+									Item I=RoomData.getItemFromCode(RoomData.getItemCache(),V.get(v1));
+									if(I==null) 
+										I=RoomData.getItemFromAnywhere(RoomData.getItemCache(),V.get(v1));
+									if(I==null) 
+										I=RoomData.getItemFromCatalog(V.get(v1));
 									if(I!=null)
 										val+=CMLib.coffeeMaker().getItemXML(I).toString();
 								}
@@ -767,12 +770,12 @@ public class QuestMaker extends StdWebMacro
 							case QuestManager.QM_COMMAND_$MOBXML:
 							case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
 							{
-								Vector V=CMParms.parseSemicolons(val,true);
+								List<String> V=CMParms.parseSemicolons(val,true);
 								val="";
 								for(int v1=0;v1<V.size();v1++)
 								{
-									MOB M2=RoomData.getMOBFromCode(RoomData.getMOBCache(),(String)V.elementAt(v1));
-									if(M2==null) M2=RoomData.getMOBFromCatalog((String)V.elementAt(v1));
+									MOB M2=RoomData.getMOBFromCode(RoomData.getMOBCache(),V.get(v1));
+									if(M2==null) M2=RoomData.getMOBFromCatalog(V.get(v1));
 									if(M2!=null)
 										val+=CMLib.coffeeMaker().getMobXML(M2).toString();
 								}

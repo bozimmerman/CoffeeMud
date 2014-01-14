@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -39,7 +38,7 @@ public class MovingRoom extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_ROOMS;}
 
 	public Vector listOfRooms=new Vector();
-	protected Vector roomInfos=new Vector();
+	protected List<String> roomInfos=new Vector();
 	public Vector messageInfo=new Vector();
 	public Vector mapInfo=new Vector();
 	protected Vector stubs=new Vector();
@@ -118,7 +117,7 @@ public class MovingRoom extends ActiveTicker
 	protected void parseMovingXML(String roomToParse)
 	{
 		Vector V = new Vector();
-		String theFullBlock=CMLib.xml().returnXMLBlock(roomToParse, roomInfos.elementAt(0).toString().toUpperCase());
+		String theFullBlock=CMLib.xml().returnXMLBlock(roomToParse, roomInfos.get(0).toString().toUpperCase());
 		String theStopsBlock=CMLib.xml().returnXMLBlock(theFullBlock, "STOPS");
 		String theNormalDirBlock=CMLib.xml().returnXMLBlock(theFullBlock, "NORMALDIRECTION");
 		String theReverseDirBlock=CMLib.xml().returnXMLBlock(theFullBlock, "REVERSEDIRECTION");
@@ -341,7 +340,7 @@ public class MovingRoom extends ActiveTicker
 						{
 							Log.errOut("MovingRoom","Previous room links exists, "+subwayRoom.roomID()+" "+currentStopRoom.roomID()+" not unlinking exit.");
 						}
-						super.setParms("min="+roomInfos.elementAt(2)+" max="+roomInfos.elementAt(2)+" chance=100;"+roomInfos.elementAt(0)+";"+roomInfos.elementAt(1)+";"+roomInfos.elementAt(2));
+						super.setParms("min="+roomInfos.get(2)+" max="+roomInfos.get(2)+" chance=100;"+roomInfos.get(0)+";"+roomInfos.get(1)+";"+roomInfos.get(2));
 						currentStatus=1;
 				  	}
 					else
@@ -384,7 +383,7 @@ public class MovingRoom extends ActiveTicker
 						{
 							Log.errOut("MovingRoom","Previous room links exists, "+subwayRoom.roomID()+" "+currentStopRoom.roomID()+" not unlinking exit.");
 						}
-						super.setParms("min="+roomInfos.elementAt(2)+" max="+roomInfos.elementAt(2)+" chance=100;"+roomInfos.elementAt(0)+";"+roomInfos.elementAt(1)+";"+roomInfos.elementAt(2));
+						super.setParms("min="+roomInfos.get(2)+" max="+roomInfos.get(2)+" chance=100;"+roomInfos.get(0)+";"+roomInfos.get(1)+";"+roomInfos.get(2));
 						currentStatus=1;
 					}
 				}
@@ -419,7 +418,7 @@ public class MovingRoom extends ActiveTicker
 						{
 							Log.errOut("MovingRoom","Previous room links exists, "+subwayRoom.roomID()+" "+nextStopRoom.roomID()+" not linking exits.");
 						}
-						super.setParms("min="+roomInfos.elementAt(1)+" max="+roomInfos.elementAt(1)+" chance=100;"+roomInfos.elementAt(0)+";"+roomInfos.elementAt(1)+";"+roomInfos.elementAt(2));
+						super.setParms("min="+roomInfos.get(1)+" max="+roomInfos.get(1)+" chance=100;"+roomInfos.get(0)+";"+roomInfos.get(1)+";"+roomInfos.get(2));
 						currentStop = nextStop;
 				  	}
 					else
@@ -451,7 +450,7 @@ public class MovingRoom extends ActiveTicker
 						{
 							Log.errOut("MovingRoom","Previous room links exists, "+subwayRoom.roomID()+" "+nextStopRoom.roomID()+" not linking exits.");
 						}
-						super.setParms("min="+roomInfos.elementAt(1)+" max="+roomInfos.elementAt(1)+" chance=100;"+roomInfos.elementAt(0)+";"+roomInfos.elementAt(1)+";"+roomInfos.elementAt(2));
+						super.setParms("min="+roomInfos.get(1)+" max="+roomInfos.get(1)+" chance=100;"+roomInfos.get(0)+";"+roomInfos.get(1)+";"+roomInfos.get(2));
 						currentStop = nextStop;
 					}
 				}

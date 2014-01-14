@@ -47,7 +47,7 @@ public class Thief_TapRoom extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public boolean norecurse=false;
 
-	public boolean isMyPair(Vector myParsedTextV, Item I)
+	public boolean isMyPair(List<String> myParsedTextV, Item I)
 	{
 		Thief_TapRoom A=null;
 		if(I instanceof Drink)
@@ -57,9 +57,9 @@ public class Thief_TapRoom extends ThiefSkill
 			&&(A.text().startsWith("DST;")||A.text().startsWith("SRC;"))
 			&&(!text().startsWith(A.text().substring(0,4))))
 			{
-				Vector p2=A.getParsedText();
+				List<String> p2=A.getParsedText();
 				if((p2.size()==myParsedTextV.size())
-				&&(((String)myParsedTextV.lastElement()).equals(p2.lastElement())))
+				&&((myParsedTextV.get(myParsedTextV.size()-1)).equals(p2.get(p2.size()-1))))
 					return true;
 			}
 		}
@@ -68,9 +68,9 @@ public class Thief_TapRoom extends ThiefSkill
 
 	public Item getMyPair()
 	{
-		Vector p=getParsedText();
+		List<String> p=getParsedText();
 		Room R=null;
-		if(p.size()>=2)  R=CMLib.map().getRoom((String)p.elementAt(1));
+		if(p.size()>=2)  R=CMLib.map().getRoom(p.get(1));
 		if(R==null) return null;
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)
@@ -132,9 +132,9 @@ public class Thief_TapRoom extends ThiefSkill
 					return false;
 				}
 				int roomsLeft=0;
-				Vector V=getParsedText();
+				List<String> V=getParsedText();
 				if(V.size()>3)
-					roomsLeft=CMath.s_int((String)V.elementAt(3));
+					roomsLeft=CMath.s_int(V.get(3));
 				if(roomsLeft<=0)
 				{
 					msg.source().tell("Go any further, and your tap line won't work at all.  Better just put it down here...");
@@ -145,7 +145,10 @@ public class Thief_TapRoom extends ThiefSkill
 		return true;
 	}
 
-	public int maxRange(){return(invoker()==null)?50:adjustedLevel(invoker(),0);}
+	public int maxRange()
+	{
+		return (invoker()==null)?50:adjustedLevel(invoker(),0);
+	}
 
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
@@ -161,7 +164,7 @@ public class Thief_TapRoom extends ThiefSkill
 				&&(text().startsWith("DST;")))
 				{
 					Room newRoom=(Room)msg.target();
-					Vector p=getParsedText();
+					List<String> p=getParsedText();
 					if(p.size()<2)
 					{
 						canBeUninvoked=true;
@@ -176,7 +179,7 @@ public class Thief_TapRoom extends ThiefSkill
 						{
 							pairA=(Thief_TapRoom)pairI.fetchEffect(ID());
 							if((pairA!=null)&&(pairA.getParsedText().size()>0))
-								lastRoom=CMLib.map().getRoom((String)pairA.getParsedText().elementAt(1));
+								lastRoom=CMLib.map().getRoom(pairA.getParsedText().get(1));
 						}
 						boolean ok=lastRoom==newRoom;
 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -196,11 +199,11 @@ public class Thief_TapRoom extends ThiefSkill
 							msg.addTrailerMsg(CMClass.getMsg(msg.source(),I,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,"You stretch out another length of tap-line here using some of <T-NAME>",null,"<S-NAME> do(es) something in the corner with <T-NAME>"));
 							int roomsLeft=0;
 							if(p.size()>3)
-								roomsLeft=CMath.s_int((String)p.elementAt(3));
-							p.setElementAt((""+(roomsLeft-1)),3);
+								roomsLeft=CMath.s_int(p.get(3));
+							p.set(3,(""+(roomsLeft-1)));
 							super.miscText=CMParms.toSemicolonList(p);
-							Vector p2=pairA.getParsedText();
-							p2.setElementAt(CMLib.map().getExtendedRoomID(newRoom),1);
+							List<String> p2=pairA.getParsedText();
+							p2.set(1,CMLib.map().getExtendedRoomID(newRoom));
 							pairA.miscText=CMParms.toSemicolonList(p2);
 						}
 					}
@@ -230,9 +233,9 @@ public class Thief_TapRoom extends ThiefSkill
 						}
 						else
 						{
-							Vector p=getParsedText();
+							List<String> p=getParsedText();
 							Room R=null;
-							if(p.size()>=2)  R=CMLib.map().getRoom((String)p.elementAt(1));
+							if(p.size()>=2)  R=CMLib.map().getRoom(p.get(1));
 							CMMsg msg2=(CMMsg)msg.copyOf();
 							msg2.setOthersMessage("^TFrom "+I.name()+" "+msg2.othersMessage());
 							if((R!=null)&&(R.okMessage(msg.source(),msg2)))
@@ -305,7 +308,10 @@ public class Thief_TapRoom extends ThiefSkill
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 	}
 
-	public Vector getParsedText(){return CMParms.parseSemicolons(text(),false);}
+	public List<String> getParsedText()
+	{
+		return CMParms.parseSemicolons(text(),false);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

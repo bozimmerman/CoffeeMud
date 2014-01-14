@@ -804,7 +804,7 @@ public class CMProps extends Properties
 		return isOnWhiteList(p(), listNum, chk);
 	}
 
-	public static final void setUpCosts(final String fieldName, final Map<String,ExpertiseLibrary.SkillCostDefinition> map, final Vector<String> fields)
+	public static final void setUpCosts(final String fieldName, final Map<String,ExpertiseLibrary.SkillCostDefinition> map, final List<String> fields)
 	{
 		final double[] doubleChecker=new double[10];
 		for(String field : fields)
@@ -924,12 +924,12 @@ public class CMProps extends Properties
 	{
 		if(val==null) return 0;
 		set.clear();
-		final Vector<String> V=CMParms.parseCommas(val,true);
+		final List<String> V=CMParms.parseCommas(val,true);
 		String s=null;
 		double endVal=0;
 		for(int v=0;v<V.size();v++)
 		{
-			s=V.elementAt(v);
+			s=V.get(v);
 			if(CMath.isNumber(s)){ endVal=CMath.s_double(s); continue;}
 			int x=s.indexOf(' ');
 			if(CMath.isDouble(s.substring(x+1).trim()))
@@ -991,10 +991,10 @@ public class CMProps extends Properties
 		if(var==null) return new int[0];
 		if(p().sysLstFileLists[var.ordinal()]==null)
 		{
-			final Vector<String> V=CMParms.parseCommas(getRawListFileEntry(var.getKey()), true);
+			final List<String> V=CMParms.parseCommas(getRawListFileEntry(var.getKey()), true);
 			final int[] set=new int[V.size()];
 			for(int v=0;v<V.size();v++)
-				set[v]=CMath.s_int(V.elementAt(v));
+				set[v]=CMath.s_int(V.get(v));
 			p().sysLstFileLists[var.ordinal()]=set;
 		}
 		return ((int[])p().sysLstFileLists[var.ordinal()]);
@@ -1022,10 +1022,10 @@ public class CMProps extends Properties
 		if(var==null) return new String[0][0][];
 		if(p().sysLstFileLists[var.ordinal()]==null)
 		{
-			Vector<String> V=CMParms.parseSemicolons(getRawListFileEntry(var.getKey()),true);
+			List<String> V=CMParms.parseSemicolons(getRawListFileEntry(var.getKey()),true);
 			Object[][] subSet=new Object[V.size()][];
 			for(int v=0;v<V.size();v++)
-				subSet[v]=CMParms.toStringArray(CMParms.parseCommas(V.elementAt(v),false));
+				subSet[v]=CMParms.toStringArray(CMParms.parseCommas(V.get(v),false));
 			Object[][][] finalSet=new Object[subSet.length][][];
 			for(int s=0;s<subSet.length;s++)
 			{
@@ -1238,15 +1238,15 @@ public class CMProps extends Properties
 			setIntVar(Int.EXVIEW,0);
 
 		s=getStr("EXPIRATIONS");
-		Vector<String> V=CMParms.parseCommas(s,false);
+		List<String> V=CMParms.parseCommas(s,false);
 		for(int i=0;i<5;i++)
 		{
 			final int ordNum =Int.EXPIRE_MONSTER_EQ.ordinal()+i;
 			final Int expEnum=Int.values()[ordNum];
 			if(V.size()>0)
 			{
-				setIntVar(expEnum,V.elementAt(0));
-				V.removeElementAt(0);
+				setIntVar(expEnum,V.get(0));
+				V.remove(0);
 			}
 			else
 			switch(expEnum)
@@ -1326,23 +1326,23 @@ public class CMProps extends Properties
 
 		V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 
-		if(V.size()>0) setIntVar(Int.INJPCTCHANCE,CMath.s_int(V.elementAt(0)));
+		if(V.size()>0) setIntVar(Int.INJPCTCHANCE,CMath.s_int(V.get(0)));
 		else setIntVar(Int.INJPCTCHANCE,100);
-		if(V.size()>1) setIntVar(Int.INJPCTHP,CMath.s_int(V.elementAt(1)));
+		if(V.size()>1) setIntVar(Int.INJPCTHP,CMath.s_int(V.get(1)));
 		else setIntVar(Int.INJPCTHP,40);
-		if(V.size()>2) setIntVar(Int.INJPCTHPAMP,CMath.s_int(V.elementAt(2)));
+		if(V.size()>2) setIntVar(Int.INJPCTHPAMP,CMath.s_int(V.get(2)));
 		else setIntVar(Int.INJPCTHPAMP,10);
-		if(V.size()>3) setIntVar(Int.INJPCTCHANCEAMP,CMath.s_int(V.elementAt(3)));
+		if(V.size()>3) setIntVar(Int.INJPCTCHANCEAMP,CMath.s_int(V.get(3)));
 		else setIntVar(Int.INJPCTCHANCEAMP,100);
-		if(V.size()>4) setIntVar(Int.INJMULTIPLIER,CMath.s_int(V.elementAt(4)));
+		if(V.size()>4) setIntVar(Int.INJMULTIPLIER,CMath.s_int(V.get(4)));
 		else setIntVar(Int.INJMULTIPLIER,4);
-		if(V.size()>5) setIntVar(Int.INJMINLEVEL,CMath.s_int(V.elementAt(5)));
+		if(V.size()>5) setIntVar(Int.INJMINLEVEL,CMath.s_int(V.get(5)));
 		else setIntVar(Int.INJMINLEVEL,10);
-		if(V.size()>6) setIntVar(Int.INJBLEEDMINLEVEL,CMath.s_int(V.elementAt(6)));
+		if(V.size()>6) setIntVar(Int.INJBLEEDMINLEVEL,CMath.s_int(V.get(6)));
 		else setIntVar(Int.INJBLEEDMINLEVEL,15);
-		if(V.size()>7) setIntVar(Int.INJBLEEDPCTHP,CMath.s_int(V.elementAt(7)));
+		if(V.size()>7) setIntVar(Int.INJBLEEDPCTHP,CMath.s_int(V.get(7)));
 		else setIntVar(Int.INJBLEEDPCTHP,20);
-		if(V.size()>8) setIntVar(Int.INJBLEEDPCTCHANCE,CMath.s_int(V.elementAt(8)));
+		if(V.size()>8) setIntVar(Int.INJBLEEDPCTCHANCE,CMath.s_int(V.get(8)));
 		else setIntVar(Int.INJBLEEDPCTCHANCE,100);
 
 		String stateVar=getStr("STARTHP");

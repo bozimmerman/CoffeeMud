@@ -318,33 +318,33 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		ID=row.substring(0,x).toUpperCase();
 		row=row.substring(x+1);
-		Vector<String> parts=CMParms.parseCommas(row,false);
+		List<String> parts=CMParms.parseCommas(row,false);
 		if(parts.size()!=11)
 			return "Error: Expertise row malformed (Requires 11 entries/10 commas): "+ID+"="+row;
-		name=parts.elementAt(0);
+		name=parts.get(0);
 		if(name.length()==0)
 			return "Error: Expertise name ("+name+") malformed: "+ID+"="+row;
-		if(!CMath.isInteger(parts.elementAt(1)))
-			return "Error: Expertise num ("+(parts.elementAt(1))+") malformed: "+ID+"="+row;
-		levels=CMath.s_int(parts.elementAt(1));
+		if(!CMath.isInteger(parts.get(1)))
+			return "Error: Expertise num ("+(parts.get(1))+") malformed: "+ID+"="+row;
+		levels=CMath.s_int(parts.get(1));
 		flags.clear();
-		flags.addAll(CMParms.parseAny(parts.elementAt(2).toUpperCase(),'|',true));
+		flags.addAll(CMParms.parseAny(parts.get(2).toUpperCase(),'|',true));
 		
-		skillMask=parts.elementAt(3);
+		skillMask=parts.get(3);
 		if(skillMask.length()==0)
 			return "Error: Expertise skill mask ("+skillMask+") malformed: "+ID+"="+row;
 		skillsToRegister=CMLib.masking().getAbilityEduReqs(skillMask);
 		if(skillsToRegister.size()==0)
 			return "Error: Expertise no skills ("+skillMask+") found: "+ID+"="+row;
-		listMask=skillMask+" "+(parts.elementAt(4));
-		finalMask=((parts.elementAt(5)));
+		listMask=skillMask+" "+(parts.get(4));
+		finalMask=((parts.get(5)));
 		for(int i=6;i<11;i++)
-			costs[i-6]=parts.elementAt(i);
+			costs[i-6]=parts.get(i);
 		didOne=false;
 		for(int u=0;u<completeUsageMap.length;u++)
 			didOne=didOne||flags.contains(ExpertiseLibrary.XFLAG_CODES[u]);
 		if(!didOne)
-			return "Error: No flags ("+parts.elementAt(2).toUpperCase()+") were set: "+ID+"="+row;
+			return "Error: No flags ("+parts.get(2).toUpperCase()+") were set: "+ID+"="+row;
 		if(addIfPossible)
 		{
 			String baseName=CMStrings.replaceAll(CMStrings.replaceAll(ID,"@X2",""),"@X1","").toUpperCase();

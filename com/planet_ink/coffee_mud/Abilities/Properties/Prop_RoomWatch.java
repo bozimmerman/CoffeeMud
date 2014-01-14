@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 /* 
    Copyright 2000-2014 Bo Zimmerman
@@ -55,11 +54,11 @@ public class Prop_RoomWatch extends Property
 		super.executeMsg(myHost,msg);
 		if(newRooms==null)
 		{
-			Vector V=CMParms.parseSemicolons(text(),true);
+			List<String> V=CMParms.parseSemicolons(text(),true);
 			newRooms=new Vector();
 			for(int v=0;v<V.size();v++)
 			{
-				String roomID=(String)V.elementAt(v);
+				String roomID=V.get(v);
 				int x=roomID.indexOf('=');
 				if(x>0)
 				{

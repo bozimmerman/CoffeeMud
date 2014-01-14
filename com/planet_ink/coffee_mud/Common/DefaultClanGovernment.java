@@ -470,7 +470,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			break;
 		}
 		case VOTEFUNCS:{
-			final Vector<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
+			final List<String> funcs=CMParms.parseCommas(val.toUpperCase().trim(), true);
 			for(ClanPosition pos : positions)
 			{
 				for(int a=0;a<Function.values().length;a++)

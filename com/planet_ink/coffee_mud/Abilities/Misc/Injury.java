@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /* 
@@ -198,18 +196,18 @@ public class Injury extends StdAbility implements HealthCondition
 		else
 		{
 			injuries=new Vector[Race.BODY_PARTS];
-			Vector sets=CMParms.parseSemicolons(txt,true);
+			List<String> sets=CMParms.parseSemicolons(txt,true);
 			for(int s=0;s<sets.size();s++)
 			{
-				String set=(String)sets.elementAt(s);
-				Vector<String> V=CMParms.parseAny(set,':',false);
+				String set=sets.get(s);
+				List<String> V=CMParms.parseAny(set,':',false);
 				if(V.size()==3)
 				{
-					int part=CMath.s_int(V.firstElement());
+					int part=CMath.s_int(V.get(0));
 					if((part>=0)&&(part<Race.BODY_PARTS))
 					{
-						String msg=V.elementAt(1);
-						int hurt=CMath.s_int(V.lastElement());
+						String msg=V.get(1);
+						int hurt=CMath.s_int(V.get(V.size()-1));
 						if(injuries[part]==null)
 							injuries[part] = new Vector();
 						injuries[part].addElement(new Object[]{msg,Integer.valueOf(hurt)});

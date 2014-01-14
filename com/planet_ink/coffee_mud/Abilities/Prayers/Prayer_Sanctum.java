@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -89,8 +88,8 @@ public class Prayer_Sanctum extends Prayer
 						String t="No fighting!";
 						if(text().indexOf(';')>0)
 						{
-							Vector V=CMParms.parseSemicolons(text(),true);
-							t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+							List<String> V=CMParms.parseSemicolons(text(),true);
+							t=V.get(CMLib.dice().roll(1,V.size(),-1));
 						}
 						CMLib.commands().postSay(mob,msg.source(),t,false,false);
 					}
@@ -102,8 +101,8 @@ public class Prayer_Sanctum extends Prayer
 					String t="You feel too peaceful here.";
 					if(text().indexOf(';')>0)
 					{
-						Vector V=CMParms.parseSemicolons(text(),true);
-						t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+						List<String> V=CMParms.parseSemicolons(text(),true);
+						t=V.get(CMLib.dice().roll(1,V.size(),-1));
 					}
 					msg.source().tell(t);
 				}

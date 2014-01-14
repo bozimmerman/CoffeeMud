@@ -587,7 +587,7 @@ public class RoomData extends StdWebMacro
 		return fixtures.toArray(new Pair[0]);
 	}
 	
-	public static Pair<String,String>[] makeMergableRoomFields(Room R, Vector<String> multiRoomList)
+	public static Pair<String,String>[] makeMergableRoomFields(Room R, List<String> multiRoomList)
 	{
 		List<Pair<String,String>> fixtures=new Vector<Pair<String,String>>();
 		R=(Room)R.copyOf();
@@ -895,7 +895,7 @@ public class RoomData extends StdWebMacro
 
 		String multiFlagStr=httpReq.getUrlParameter("MULTIROOMFLAG");
 		boolean multiFlag=(multiFlagStr!=null)&& multiFlagStr.equalsIgnoreCase("on");
-		Vector<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
+		List<String> multiRoomList=CMParms.parseSemicolons(httpReq.getUrlParameter("MULTIROOMLIST"),false);
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		boolean useRoomItems=true;
 		if(R==null)

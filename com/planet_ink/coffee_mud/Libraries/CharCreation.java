@@ -144,10 +144,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		for(int i=0;i<DEFAULT_BADNAMES.length;i++)
 			if(CMLib.english().containsString(login, DEFAULT_BADNAMES[i]))
 				return true;
-		Vector<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.Str.BADNAMES),true);
+		List<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.Str.BADNAMES),true);
 		for(int v2=0;v2<V2.size();v2++)
 		{
-			String str2=V2.elementAt(v2);
+			String str2=V2.get(v2);
 			if(str2.length()>0)
 				if(CMLib.english().containsString(login, str2))
 					return true;
@@ -302,9 +302,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		Hashtable<String,List<String>> extraScripts=new Hashtable<String,List<String>>();
 		final String[] VALID_SCRIPT_CODES={"PASSWORD","EMAIL","ANSI","THEME","RACE","GENDER","STATS","CLASS","FACTIONS","END"}; 				   
-		Vector<String> extras=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CHARCREATIONSCRIPTS),true);
-		for(int e=0;e<extras.size();e++) {
-			String s=extras.elementAt(e);
+		List<String> extras=CMParms.parseCommas(CMProps.getVar(CMProps.Str.CHARCREATIONSCRIPTS),true);
+		for(int e=0;e<extras.size();e++) 
+		{
+			String s=extras.get(e);
 			int x=s.indexOf(':');
 			String code="END";
 			if(x>0) {
@@ -2940,10 +2941,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public void setGlobalBitmaps(MOB mob)
 	{
 		if(mob==null) return;
-		Vector<String> defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.DEFAULTPLAYERFLAGS).toUpperCase(),true);
+		List<String> defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.Str.DEFAULTPLAYERFLAGS).toUpperCase(),true);
 		for(int v=0;v<defaultFlagsV.size();v++)
 		{
-			int x=CMParms.indexOf(MOB.AUTODESC,defaultFlagsV.elementAt(v));
+			int x=CMParms.indexOf(MOB.AUTODESC,defaultFlagsV.get(v));
 			if(x>=0)
 				mob.setBitmap(mob.getBitmap()|(int)CMath.pow(2,x));
 		}

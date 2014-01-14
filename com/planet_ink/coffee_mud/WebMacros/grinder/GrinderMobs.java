@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 /*
@@ -591,19 +592,19 @@ public class GrinderMobs
 				}
 				case 40: // tattoos
 					{
-						Vector V=CMParms.parseSemicolons(old,true);
+						List<String> V=CMParms.parseSemicolons(old,true);
 						for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
 							M.delTattoo(e.nextElement());
 						for(int v=0;v<V.size();v++)
-							M.addTattoo(CMLib.database().parseTattoo((String)V.elementAt(v)));
+							M.addTattoo(CMLib.database().parseTattoo(V.get(v)));
 					}
 					break;
 				case 41: // expertises
 					{
-						Vector V=CMParms.parseSemicolons(old,true);
+						List<String> V=CMParms.parseSemicolons(old,true);
 						M.delAllExpertises();
 						for(int v=0;v<V.size();v++)
-							M.addExpertise((String)V.elementAt(v));
+							M.addExpertise(V.get(v));
 					}
 					break;
 				case 42: // budget

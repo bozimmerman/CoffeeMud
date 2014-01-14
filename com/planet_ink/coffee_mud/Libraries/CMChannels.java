@@ -302,13 +302,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
 	public String parseOutFlags(String mask, Set<ChannelFlag> flags, String[] colorOverride)
 	{
-		Vector<String> V=CMParms.parseSpaces(mask,true);
+		List<String> V=CMParms.parseSpaces(mask,true);
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			String s=V.elementAt(v).toUpperCase();
+			String s=V.get(v).toUpperCase();
 			if(CMParms.contains(CMParms.toStringArray(ChannelFlag.values()), s))
 			{
-				V.removeElementAt(v);
+				V.remove(v);
 				flags.add(ChannelFlag.valueOf(s));
 			}
 			else
@@ -316,7 +316,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				int colorNum=CMParms.indexOf(ColorLibrary.COLOR_ALLCOLORNAMES, s);
 				if(colorNum>=0)
 				{
-					V.removeElementAt(v);
+					V.remove(v);
 					if(s.startsWith("BG"))
 						colorOverride[0]=colorOverride[0]+ColorLibrary.COLOR_ALLCOLORS[colorNum];
 					else

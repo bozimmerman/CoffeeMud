@@ -301,9 +301,8 @@ public class StdBook extends StdItem
 	private String getParm(String parmName)
 	{
 		if(readableText().length()==0) return "";
-		Hashtable h=CMParms.parseEQParms(readableText().toUpperCase(),
-										 new String[]{"READ","WRITE","REPLY","ADMIN"});
-		String req=(String)h.get(parmName.toUpperCase().trim());
+		Map<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN"});
+		String req=h.get(parmName.toUpperCase().trim());
 		if(req==null) req="";
 		return req;
 	}

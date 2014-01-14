@@ -106,9 +106,9 @@ public class PresenceReaction extends StdAbility
 			addAffectOrBehavior(parms.substring(1));
 		else
 		{
-			Vector parsed=CMParms.parseAny(parms,"~~",true);
-			for(Enumeration e=parsed.elements();e.hasMoreElements();)
-				addAffectOrBehavior((String)e.nextElement());
+			List<String> parsed=CMParms.parseAny(parms,"~~",true);
+			for(Iterator<String> e=parsed.iterator();e.hasNext();)
+				addAffectOrBehavior((String)e.next());
 		}
 	}
 

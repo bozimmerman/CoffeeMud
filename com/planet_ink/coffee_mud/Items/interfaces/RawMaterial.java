@@ -536,8 +536,8 @@ public interface RawMaterial extends Item
 	 */
 	public class CODES
 	{
-		@SuppressWarnings("rawtypes")
-		public CODES(){
+		public CODES()
+		{
 			super();
 			char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 			if(insts==null) insts=new CODES[256];
@@ -559,7 +559,7 @@ public interface RawMaterial extends Item
 					boolean replace = i>=addExtra.length;
 					String stat = array[0].toUpperCase().trim();
 					String p=array[1];
-					Vector V=CMParms.parseCommas(p, false);
+					List<String> V=CMParms.parseCommas(p, false);
 					if(V.size()!=8) {
 						Log.errOut("RawMaterial","Bad coffeemud.ini material row (requires 8 elements, separated by ,): "+p);
 						continue;
@@ -580,15 +580,15 @@ public interface RawMaterial extends Item
 							continue;
 						}
 					}
-					String matStr=((String)V.elementAt(0)).toUpperCase();
-					String smell=((String)V.elementAt(1)).toUpperCase();
-					int value=CMath.s_int((String)V.elementAt(2));
-					int frequ=CMath.s_int((String)V.elementAt(3));
-					int hardness=CMath.s_int((String)V.elementAt(4));
-					int bouancy=CMath.s_int((String)V.elementAt(5));
-					boolean fish=((String)V.elementAt(6)).equalsIgnoreCase("fish");
-					boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
-					String abilityID=(String)V.elementAt(7);
+					String matStr=V.get(0).toUpperCase();
+					String smell=V.get(1).toUpperCase();
+					int value=CMath.s_int(V.get(2));
+					int frequ=CMath.s_int(V.get(3));
+					int hardness=CMath.s_int(V.get(4));
+					int bouancy=CMath.s_int(V.get(5));
+					boolean fish=V.get(6).equalsIgnoreCase("fish");
+					boolean berry=V.get(6).equalsIgnoreCase("berry");
+					String abilityID=V.get(7);
 					Material material=Material.findIgnoreCase(matStr);
 					if(material==null) 
 					{
@@ -855,7 +855,6 @@ public interface RawMaterial extends Item
 		 * @param code the material/resource code
 		 * @return an ability, if any.
 		 */
-		@SuppressWarnings("rawtypes")
 		public static Ability[] EFFECTA(int code)
 		{
 			CODES c=c();
@@ -866,7 +865,7 @@ public interface RawMaterial extends Item
 			{
 				As = c.effectAs[cd];
 				if(As!=null) return As;
-				Vector effectsV=CMParms.parseSafeSemicolonList(c.effect(code),true);
+				List<String> effectsV=CMParms.parseSafeSemicolonList(c.effect(code),true);
 				if(effectsV.size()==0)
 					c.effectAs[cd]=new Ability[0];
 				else
@@ -874,9 +873,9 @@ public interface RawMaterial extends Item
 					String abilityID;
 					String parms;
 					Vector<Ability> listA=new Vector<Ability>();
-					for(Enumeration e=effectsV.elements();e.hasMoreElements();)
+					for(Iterator<String> e=effectsV.iterator();e.hasNext();)
 					{
-						abilityID=(String)e.nextElement();
+						abilityID=(String)e.next();
 						parms="";
 						if((abilityID==null)||(abilityID.length()==0)) continue;
 						if(abilityID.charAt(abilityID.length()-1)==')')

@@ -63,10 +63,10 @@ public class Factions extends StdLibrary implements FactionManager
 	
 	public void reloadFactions(String factionList)
 	{
-		Vector<String> preLoadFactions=CMParms.parseSemicolons(factionList,true);
+		List<String> preLoadFactions=CMParms.parseSemicolons(factionList,true);
 		clearFactions();
 		for(int i=0;i<preLoadFactions.size();i++)
-			getFaction(preLoadFactions.elementAt(i));
+			getFaction(preLoadFactions.get(i));
 	}
 	
 	public java.util.Map<String,FRange> rangeCodeNames(){ return hashedFactionRanges; }
@@ -757,7 +757,7 @@ public class Factions extends StdLibrary implements FactionManager
 				error=false;
 				String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.defaults()),showNumber,showFlag,"Other default values with zapper masks (semicolon delimited).\n\r    ");
 				if((showFlag!=showNumber)&&(showFlag>-999)) break;
-				Vector<String> V=CMParms.parseSemicolons(newDefaults,true);
+				List<String> V=CMParms.parseSemicolons(newDefaults,true);
 				if(V.size()==0)
 				{
 					mob.tell("This field may not be empty.");

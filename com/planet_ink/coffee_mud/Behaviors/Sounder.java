@@ -67,22 +67,22 @@ public class Sounder extends StdBehavior
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		Vector emote=CMParms.parseSemicolons(newParms,true);
+		List<String> emote=CMParms.parseSemicolons(newParms,true);
 		triggers=new int[emote.size()];
 		strings=new String[emote.size()];
 
 		if(emote.size()>0)
 		{
-			String s=(String)emote.firstElement();
+			String s=emote.get(0);
 			minTicks=23;
 			minTicks=CMParms.getParmInt(newParms,"min",minTicks);
 			maxTicks=23;
 			maxTicks=CMParms.getParmInt(newParms,"max",maxTicks);
 			if((minTicks!=23)||(maxTicks!=23))
-				emote.removeElementAt(0);
+				emote.remove(0);
 			for(int v=0;v<emote.size();v++)
 			{
-				s=((String)emote.elementAt(v)).trim();
+				s=emote.get(v).trim();
 				s=CMStrings.replaceAll(s,"$n","<S-NAME>");
 				s=CMStrings.replaceAll(s,"$N","<S-NAME>");
 				s=CMStrings.replaceAll(s,"$e","<S-HE-SHE>");

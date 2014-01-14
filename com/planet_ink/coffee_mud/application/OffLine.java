@@ -417,14 +417,14 @@ public class OffLine extends Thread implements MudHost
 			for(int i=0;i<a.length;i++)
 				nameID+=" "+a[i];
 			nameID=nameID.trim();
-			Vector<String> V=CMParms.paramParse(nameID);
+			List<String> V=CMParms.paramParse(nameID);
 			for(int v=0;v<V.size();v++)
 			{
-				String s=V.elementAt(v);
+				String s=V.get(v);
 				if(s.toUpperCase().startsWith("BOOT=")&&(s.length()>5))
 				{
 					iniFile=s.substring(5);
-					V.removeElementAt(v);
+					V.remove(v);
 					v--;
 				}
 			}

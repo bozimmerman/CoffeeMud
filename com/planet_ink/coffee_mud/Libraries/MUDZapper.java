@@ -886,11 +886,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("+"))
 							{
-								Vector<String> V3=CMParms.parseAny(str2.substring(1),'&',true);
+								List<String> V3=CMParms.parseAny(str2.substring(1),'&',true);
 								String str3=null;
 								for(int v3=0;v3<V3.size();v3++)
 								{
-									str3=CMStrings.replaceAll(CMStrings.capitalizeAndLower(V3.elementAt(v3)),"_"," ");
+									str3=CMStrings.replaceAll(CMStrings.capitalizeAndLower(V3.get(v3)),"_"," ");
 									if(str3.startsWith("!"))
 										buf.append("not "+str3.substring(1));
 									else
@@ -985,11 +985,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								break;
 							if(str2.startsWith("-"))
 							{
-								Vector<String> V3=CMParms.parseAny(str2.substring(1),'&',true);
+								List<String> V3=CMParms.parseAny(str2.substring(1),'&',true);
 								String str3=null;
 								for(int v3=0;v3<V3.size();v3++)
 								{
-									str3=CMStrings.replaceAll(CMStrings.capitalizeAndLower(V3.elementAt(v3)),"_"," ");
+									str3=CMStrings.replaceAll(CMStrings.capitalizeAndLower(V3.get(v3)),"_"," ");
 									if(str3.startsWith("!"))
 										buf.append("not "+str3.substring(1));
 									else

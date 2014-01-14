@@ -339,13 +339,13 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("ABILITY_FLAGS"))
 				{
-					Vector<String> list=new Vector<String>();
+					List<String> list=new Vector<String>();
 					if(httpReq.isUrlParameter("ABILITY_FLAGS"))
 					{
 						String id="";
 						int num=0;
 						for(;httpReq.isUrlParameter("ABILITY_FLAGS"+id);id=""+(++num))
-							list.addElement(httpReq.getUrlParameter("ABILITY_FLAGS"+id));
+							list.add(httpReq.getUrlParameter("ABILITY_FLAGS"+id));
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("FLAGS"),true);
@@ -377,13 +377,13 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("USAGEMASK"))
 				{
-					Vector<String> list=new Vector<String>();
+					List<String> list=new Vector<String>();
 					if(httpReq.isUrlParameter("USAGEMASK"))
 					{
 						String id="";
 						int num=0;
 						for(;httpReq.isUrlParameter("USAGEMASK"+id);id=""+(++num))
-							list.addElement(httpReq.getUrlParameter("USAGEMASK"+id));
+							list.add(httpReq.getUrlParameter("USAGEMASK"+id));
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("USAGEMASK"),true);
@@ -393,13 +393,13 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CANAFFECTMASK"))
 				{
-					Vector<String> list=new Vector<String>();
+					List<String> list=new Vector<String>();
 					if(httpReq.isUrlParameter("CANAFFECTMASK"))
 					{
 						String id="";
 						int num=0;
 						for(;httpReq.isUrlParameter("CANAFFECTMASK"+id);id=""+(++num))
-							list.addElement(httpReq.getUrlParameter("CANAFFECTMASK"+id));
+							list.add(httpReq.getUrlParameter("CANAFFECTMASK"+id));
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("CANAFFECTMASK"),true);
@@ -409,13 +409,13 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CANTARGETMASK"))
 				{
-					Vector<String> list=new Vector<String>();
+					List<String> list=new Vector<String>();
 					if(httpReq.isUrlParameter("CANTARGETMASK"))
 					{
 						String id="";
 						int num=0;
 						for(;httpReq.isUrlParameter("CANTARGETMASK"+id);id=""+(++num))
-							list.addElement(httpReq.getUrlParameter("CANTARGETMASK"+id));
+							list.add(httpReq.getUrlParameter("CANTARGETMASK"+id));
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("CANTARGETMASK"),true);
@@ -544,13 +544,13 @@ public class AbilityData extends StdWebMacro
 				
 				if(parms.containsKey("MATLIST"))
 				{
-					Vector<String> list=new Vector<String>();
+					List<String> list=new Vector<String>();
 					if(httpReq.isUrlParameter("MATLIST"))
 					{
 						String id="";
 						int num=0;
 						for(;httpReq.isUrlParameter("MATLIST"+id);id=""+(++num))
-							list.addElement(httpReq.getUrlParameter("MATLIST"+id).toUpperCase().trim());
+							list.add(httpReq.getUrlParameter("MATLIST"+id).toUpperCase().trim());
 					} 
 					else 
 						list=CMParms.parseCommas(A.getStat("MATLIST"),true);
@@ -563,13 +563,13 @@ public class AbilityData extends StdWebMacro
 				
 				if(parms.containsKey("POSTCASTAFFECT"))
 				{
-					Vector<String> list=new Vector<String>();
+					List<String> list=new Vector<String>();
 					if(httpReq.isUrlParameter("POSTCASTAFFECT"))
 					{
 						String id="";
 						int num=0;
 						for(;httpReq.isUrlParameter("POSTCASTAFFECT"+id);id=""+(++num))
-							list.addElement(httpReq.getUrlParameter("POSTCASTAFFECT"+id).toUpperCase());
+							list.add(httpReq.getUrlParameter("POSTCASTAFFECT"+id).toUpperCase());
 					} 
 					else 
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTAFFECT").toUpperCase(),true);
@@ -586,13 +586,13 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("POSTCASTABILITY"))
 				{
-					Vector<String> list=new Vector<String>();
+					List<String> list=new Vector<String>();
 					if(httpReq.isUrlParameter("POSTCASTABILITY"))
 					{
 						String id="";
 						int num=0;
 						for(;httpReq.isUrlParameter("POSTCASTABILITY"+id);id=""+(++num))
-							list.addElement(httpReq.getUrlParameter("POSTCASTABILITY"+id).toUpperCase());
+							list.add(httpReq.getUrlParameter("POSTCASTABILITY"+id).toUpperCase());
 					} 
 					else 
 						list=CMParms.parseSemicolons(A.getStat("POSTCASTABILITY").toUpperCase(),true);

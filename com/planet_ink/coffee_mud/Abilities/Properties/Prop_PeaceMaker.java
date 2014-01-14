@@ -14,7 +14,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
 import java.util.*;
 
 /* 
@@ -32,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Prop_PeaceMaker extends Property
 {
 	public String ID() { return "Prop_PeaceMaker"; }
@@ -61,8 +59,8 @@ public class Prop_PeaceMaker extends Property
 						String t="No fighting!";
 						if(text().length()>0)
 						{
-							Vector V=CMParms.parseSemicolons(text(),true);
-							t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+							List<String> V=CMParms.parseSemicolons(text(),true);
+							t=V.get(CMLib.dice().roll(1,V.size(),-1));
 						}
 						CMLib.commands().postSay(mob,msg.source(),t,false,false);
 					}
@@ -74,8 +72,8 @@ public class Prop_PeaceMaker extends Property
 					String t="You feel too peaceful here.";
 					if(text().length()>0)
 					{
-						Vector V=CMParms.parseSemicolons(text(),true);
-						t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+						List<String> V=CMParms.parseSemicolons(text(),true);
+						t=V.get(CMLib.dice().roll(1,V.size(),-1));
 					}
 					msg.source().tell(t);
 				}

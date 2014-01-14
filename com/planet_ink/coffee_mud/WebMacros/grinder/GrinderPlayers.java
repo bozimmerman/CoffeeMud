@@ -216,27 +216,27 @@ public class GrinderPlayers extends GrinderMobs
 			case 56: M.basePhyStats().setSpeed(CMath.s_double(old)); break;
 			case 57: 
 			{
-				Vector V=CMParms.parseCommas(old.toUpperCase(),true);
+				List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 				M.delAllExpertises();
 				for(int v=0;v<V.size();v++)
-					if(CMLib.expertises().getDefinition((String)V.elementAt(v))!=null)
-						M.addExpertise((String)V.elementAt(v));
+					if(CMLib.expertises().getDefinition(V.get(v))!=null)
+						M.addExpertise(V.get(v));
 				break;
 			}
 			case 58: 
 			{
-				Vector V=CMParms.parseCommas(old.toUpperCase(),true);
+				List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 				for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
 					M.delTattoo(e.nextElement());
 				for(int v=0;v<V.size();v++)
-					M.addTattoo(CMLib.database().parseTattoo((String)V.elementAt(v)));
+					M.addTattoo(CMLib.database().parseTattoo((String)V.get(v)));
 				break;
 			}
 			case 59: 
 			{
 				if(M.playerStats()!=null)
 				{
-					Vector V=CMParms.parseCommas(old.toUpperCase(),true);
+					List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 					M.playerStats().getSetSecurityFlags(CMParms.toSemicolonList(V));
 				}
 				break;

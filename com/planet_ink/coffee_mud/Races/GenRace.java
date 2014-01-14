@@ -410,10 +410,10 @@ public class GenRace extends StdRace
 		setStat("EVENTRACE",CMLib.xml().getValFromPieces(raceData,"EVENTRACE"));
 		setStat("WEAPONRACE",CMLib.xml().getValFromPieces(raceData,"WEAPONRACE"));
 		String body=CMLib.xml().getValFromPieces(raceData,"BODY");
-		Vector V=CMParms.parseSemicolons(body,false);
+		List<String> V=CMParms.parseSemicolons(body,false);
 		for(int v=0;v<V.size();v++)
 			if(v<bodyMask().length)
-				bodyMask()[v]=CMath.s_int((String)V.elementAt(v));
+				bodyMask()[v]=CMath.s_int(V.get(v));
 		adjPStats=null;
 		String eStats=CMLib.xml().getValFromPieces(raceData,"ESTATS");
 		if(eStats.length()>0){ adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
@@ -431,9 +431,9 @@ public class GenRace extends StdRace
 		String saState=CMLib.xml().getValFromPieces(raceData,"STARTASTATE");
 		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
 		String aging=CMLib.xml().getValFromPieces(raceData,"AGING");
-		Vector aV=CMParms.parseCommas(aging,true);
+		List<String> aV=CMParms.parseCommas(aging,true);
 		for(int v=0;v<aV.size();v++)
-			getAgingChart()[v]=CMath.s_int((String)aV.elementAt(v));
+			getAgingChart()[v]=CMath.s_int((String)aV.get(v));
 		clrStatChgDesc();
 		// now RESOURCES!
 		List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(raceData,"RESOURCES");
@@ -714,10 +714,10 @@ public class GenRace extends StdRace
 		}
 		case 13:
 		{
-			Vector V=CMParms.parseSemicolons(val,false);
+			List<String> V=CMParms.parseSemicolons(val,false);
 			for(int v=0;v<V.size();v++)
 				if(v<bodyMask().length)
-					bodyMask()[v]=CMath.s_int((String)V.elementAt(v));
+					bodyMask()[v]=CMath.s_int(V.get(v));
 			break;
 		}
 		case 14: adjPStats=null;clrStatChgDesc();if(val.length()>0){adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,val);}break;
@@ -842,10 +842,10 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 39: {
-					Vector aV=CMParms.parseCommas(val,true);
+					List<String> aV=CMParms.parseCommas(val,true);
 					for(int v=0;v<aV.size();v++)
 					{
-						int x=CMath.s_int((String)aV.elementAt(v));
+						int x=CMath.s_int(aV.get(v));
 						if(x<0)
 							getAgingChart()[v]=Integer.MAX_VALUE;
 						else

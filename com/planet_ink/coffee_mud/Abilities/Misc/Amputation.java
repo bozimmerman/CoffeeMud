@@ -15,8 +15,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-
-
 import java.util.*;
 
 /* 
@@ -59,7 +57,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	protected Vector missingLimbs=null;
+	protected List<String> missingLimbs=null;
 	private int[] amputations=new int[Race.BODY_PARTS];
 	private long badWearLocations=0;
 	private static final long[] LEFT_LOCS={Wearable.WORN_LEFT_FINGER,Wearable.WORN_LEFT_WRIST};
@@ -264,7 +262,7 @@ public class Amputation extends StdAbility implements Amputator, HealthCondition
 		int l1=0;
 		for(int v=0;v<missingLimbs.size();v++)
 		{
-			String s=((String)missingLimbs.elementAt(v)).toUpperCase();
+			String s=missingLimbs.get(v).toUpperCase();
 			left=s.startsWith("LEFT ");
 			right=s.startsWith("RIGHT ");
 			code=Race.BODYPARTHASH.get(s.substring(right?6:left?5:0).trim());

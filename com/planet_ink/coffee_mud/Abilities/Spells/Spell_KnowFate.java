@@ -67,7 +67,7 @@ public class Spell_KnowFate extends Spell
 					String alias=mob.playerStats().getAlias(aliasNames[i]);
 					if(alias.length()>0)
 					{
-						  Vector<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+						List<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
 						  for(String stuff : all_stuff)
 						  {
 							Vector preCommands=CMParms.parse(stuff);

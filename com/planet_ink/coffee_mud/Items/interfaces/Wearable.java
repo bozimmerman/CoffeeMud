@@ -428,8 +428,8 @@ public interface Wearable extends Environmental
 	 */
 	public class CODES
 	{
-		@SuppressWarnings("rawtypes")
-		public CODES(){
+		public CODES()
+		{
 			super();
 			char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 			if(insts==null) insts=new CODES[256];
@@ -451,8 +451,9 @@ public interface Wearable extends Environmental
 					boolean replace = i>=addExtra.length;
 					String stat = array[0].toLowerCase().trim().replace('_',' ');
 					String p=array[1];
-					Vector V=CMParms.parseCommas(p, false);
-					if(V.size()!=6){
+					List<String> V=CMParms.parseCommas(p, false);
+					if(V.size()!=6)
+					{
 						Log.errOut("Wearable","Bad coffeemud.ini wear loc row (requires 6 elements, separated by ,): "+p);
 						continue;
 					}
@@ -471,22 +472,22 @@ public interface Wearable extends Environmental
 							continue;
 						}
 					}
-					String dependencyMaskStr=((String)V.elementAt(0)).toLowerCase();
+					String dependencyMaskStr=((String)V.get(0)).toLowerCase();
 					long dependencyMask=0;
-					Vector<String> subLocs = CMParms.parseAny(dependencyMaskStr, '|', true);
+					List<String> subLocs = CMParms.parseAny(dependencyMaskStr, '|', true);
 					for(int s=0;s<subLocs.size();s++)
 					{
-						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, subLocs.elementAt(s).toLowerCase());
+						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, subLocs.get(s).toLowerCase());
 						if(idx>=0) 
 							dependencyMask|=DEFAULT_WORN_CODES[idx];
 						else
-							Log.errOut("Wearable","Bad dependency mask in coffeemud.ini file: "+subLocs.elementAt(s).toLowerCase());
+							Log.errOut("Wearable","Bad dependency mask in coffeemud.ini file: "+subLocs.get(s).toLowerCase());
 					}
-					double armorStrength=CMath.s_double((String)V.elementAt(1));
-					int wornOrder=CMath.s_int((String)V.elementAt(2));
-					double clothWeight=CMath.s_double((String)V.elementAt(3));
-					double leatherWeight=CMath.s_double((String)V.elementAt(4));
-					double metalWeight=CMath.s_double((String)V.elementAt(5));
+					double armorStrength=CMath.s_double(V.get(1));
+					int wornOrder=CMath.s_int(V.get(2));
+					double clothWeight=CMath.s_double(V.get(3));
+					double leatherWeight=CMath.s_double(V.get(4));
+					double metalWeight=CMath.s_double(V.get(5));
 					if(type.equalsIgnoreCase("ADD"))
 						add(stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight);
 					else

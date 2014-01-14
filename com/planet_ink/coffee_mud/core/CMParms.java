@@ -176,10 +176,7 @@ public class CMParms
 		return combined.toString().trim();
 	}
 
-	public final static Vector<String> parse(final String str)
-	{   return parse(str,-1);   }
-
-	public final static Vector<String> paramParse(final String str)
+	public final static List<String> paramParse(final String str)
 	{
 		final Vector<String> commands=parse(str);
 		String s;
@@ -212,6 +209,11 @@ public class CMParms
 			}
 		}
 		return commands;
+	}
+
+	public final static Vector<String> parse(final String str)
+	{   
+		return parse(str,-1);   
 	}
 
 	public final static Vector<String> parse(final String str, final int upTo)
@@ -267,15 +269,15 @@ public class CMParms
 		return commands;
 	}
 
-	public final static Vector<String> parseCommas(final String s, final boolean ignoreNulls)
+	public final static List<String> parseCommas(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,',',ignoreNulls);
 	}
 
-	public final static Vector<String> parseCommandFlags(final String s, final String[] flags)
+	public final static List<String> parseCommandFlags(final String s, final String[] flags)
 	{
 		if((s==null)||(s.length()==0)) return new Vector<String>(1);
-		final Vector<String> V=parseCommas(s,true);
+		final List<String> V=parseCommas(s,true);
 		final Vector<String> finalV=new Vector<String>(V.size());
 		int index;
 		for(String flag : V)
@@ -287,12 +289,12 @@ public class CMParms
 		return V;
 	}
 
-	public final static Vector<String> parseTabs(final String s, final boolean ignoreNulls)
+	public final static List<String> parseTabs(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,'\t',ignoreNulls);
 	}
 
-	public final static Vector<String> parseAny(final String s, final String delimeter, final boolean ignoreNulls)
+	public final static List<String> parseAny(final String s, final String delimeter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
 		if((s==null)||(s.length()==0)) return V;
@@ -319,7 +321,7 @@ public class CMParms
 		return V;
 	}
 	
-	public final static Vector<String> parseAnyWords(final String s, final String delimeter, final boolean ignoreNulls)
+	public final static List<String> parseAnyWords(final String s, final String delimeter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
 		if((s==null)||(s.length()==0)) return V;
@@ -348,7 +350,7 @@ public class CMParms
 		return V;
 	}
 
-	public final static Vector<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls)
+	public final static List<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
 		if((s==null)||(s.length()==0)) return V;
@@ -368,7 +370,7 @@ public class CMParms
 		return V;
 	}
 	
-	public final static Vector<String> parseSquiggles(final String s)
+	public final static List<String> parseSquiggles(final String s)
 	{
 		return parseAny(s,'~',false);
 	}
@@ -392,17 +394,17 @@ public class CMParms
 		return V;
 	}
 
-	public final static Vector<String> parseSquiggleDelimited(final String s, final boolean ignoreNulls)
+	public final static List<String> parseSquiggleDelimited(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,'~',ignoreNulls);
 	}
 
-	public final static Vector<String> parseSemicolons(final String s, final boolean ignoreNulls)
+	public final static List<String> parseSemicolons(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,';',ignoreNulls);
 	}
 
-	public final static Vector<String> parseSpaces(final String s, final boolean ignoreNulls)
+	public final static List<String> parseSpaces(final String s, final boolean ignoreNulls)
 	{
 		return parseAny(s,' ',ignoreNulls);
 	}
@@ -435,16 +437,24 @@ public class CMParms
 	}
 	
 	public final static String getCleanBit(final String s, final int which)
-	{ return cleanBit(getBit(s,which));}
+	{ 
+		return cleanBit(getBit(s,which));
+	}
 
 	public final static String getPastBitClean(final String s, final int which)
-	{ return cleanBit(getPastBit(s,which));}
+	{ 
+		return cleanBit(getPastBit(s,which));
+	}
 
 	public final static String getPastBit(final String s, final int which)
-	{ return (String)getBitWork(s,which,1); }
+	{ 
+		return (String)getBitWork(s,which,1); 
+	}
 
 	public final static String getBit(final String s, final int which)
-	{ return (String)getBitWork(s,which,0); }
+	{ 
+		return (String)getBitWork(s,which,0); 
+	}
 
 	public final static Object getBitWork(final String s, final int which, final int op)
 	{
@@ -555,7 +565,13 @@ public class CMParms
 		return defaultVal;
 	}
 
-	private static int[] makeIntArray(final int x, final int y){ int[] xy=new int[2]; xy[0]=x;xy[1]=y;return xy;}
+	private static int[] makeIntArray(final int x, final int y)
+	{ 
+		int[] xy=new int[2]; 
+		xy[0]=x;
+		xy[1]=y;
+		return xy;
+	}
 
 	public final static int[] getParmCompare(String text, final String key, final int value)
 	{
@@ -624,6 +640,7 @@ public class CMParms
 		if(found) return x;
 		return -1;
 	}
+
 	private static int stringContains(final Vector<String> V, final char combiner, final StringBuffer buf, int lastIndex)
 	{
 		final String str=buf.toString().trim();
@@ -738,7 +755,7 @@ public class CMParms
 		return stringContains(V,combiner,buf,lastIndex);
 	}
 
-	public final static Hashtable<String,String> parseEQParms(final String str, final String[] parmList)
+	public final static Map<String,String> parseEQParms(final String str, final String[] parmList)
 	{
 		final Hashtable<String,String> h=new Hashtable<String,String>();
 		int lastEQ=-1;
@@ -748,7 +765,9 @@ public class CMParms
 		{
 			c=Character.toUpperCase(str.charAt(x));
 			if(Character.isLetter(c))
+			{
 				for(int p=0;p<parmList.length;p++)
+				{
 					if((Character.toUpperCase(parmList[p].charAt(0)) == c)
 					&&((str.length()-x) >= parmList[p].length())
 					&&(str.substring(x,x+parmList[p].length()).equalsIgnoreCase(parmList[p])))
@@ -771,6 +790,8 @@ public class CMParms
 							lastEQ=chkX;
 						}
 					}
+				}
+			}
 		}
 		if((lastParm!=null)&&(lastEQ>0))
 		{
@@ -782,9 +803,9 @@ public class CMParms
 		return h;
 	}
 
-	public final static Hashtable<String,String> parseEQParms(final String parms)
+	public final static Map<String,String> parseEQParms(final String parms)
 	{
-		final Hashtable<String,String> h=new Hashtable<String,String>();
+		final Map<String,String> h=new Hashtable<String,String>();
 		int state=0;
 		int start=-1;
 		String parmName=null;
@@ -886,9 +907,9 @@ public class CMParms
 		return h;
 	}
 
-	public final static Hashtable<String,String> parseEQParms(final List<String> parms, final int start, final int end)
+	public final static Map<String,String> parseEQParms(final List<String> parms, final int start, final int end)
 	{
-		final Hashtable<String,String> h=new Hashtable<String,String>();
+		final Map<String,String> h=new Hashtable<String,String>();
 		for(Object O : parms)
 			h.putAll(parseEQParms((String)O));
 		return h;
@@ -960,12 +981,14 @@ public class CMParms
 	{
 		final StringBuffer buf1=new StringBuffer(str1.toLowerCase());
 		for(int i=buf1.length()-1;i>=0;i--)
+		{
 			if((buf1.charAt(i)!=' ')
 			&&(buf1.charAt(i)!='\'')
 			&&(buf1.charAt(i)!='\"')
 			&&(buf1.charAt(i)!='`')
 			&&(!Character.isLetterOrDigit(buf1.charAt(i))))
 				buf1.setCharAt(i,' ');
+		}
 		final Vector<String> V=CMParms.parse(buf1.toString());
 		return stringContains(V,str2.toCharArray(),new int[]{0},0);
 	}
@@ -1285,7 +1308,7 @@ public class CMParms
 		return buf1.toString();
 	}
 
-	public final static Vector<String> parseSafeSemicolonList(final String list, final boolean ignoreNulls)
+	public final static List<String> parseSafeSemicolonList(final String list, final boolean ignoreNulls)
 	{
 		if(list==null) return new Vector<String>();
 		final StringBuffer buf1=new StringBuffer(list);
@@ -1310,12 +1333,12 @@ public class CMParms
 
 	public final static byte[] fromByteList(final String str)
 	{
-		final Vector<String> V=CMParms.parseSemicolons(str,true);
+		final List<String> V=CMParms.parseSemicolons(str,true);
 		if(V.size()>0)
 		{
 			final byte[] bytes=new byte[V.size()];
 			for(int b=0;b<V.size();b++)
-				bytes[b]=Byte.parseByte(V.elementAt(b));
+				bytes[b]=Byte.parseByte(V.get(b));
 			return bytes;
 		}
 		return new byte[0];
@@ -1334,7 +1357,7 @@ public class CMParms
 		return s;
 	}
 
-	public final static Vector<String> toNameVector(final Set<? extends Environmental> V)
+	public final static List<String> toNameVector(final Set<? extends Environmental> V)
 	{
 		final Vector<String> s=new Vector<String>();
 		if((V==null)||(V.size()==0))
@@ -1344,7 +1367,7 @@ public class CMParms
 		return s;
 	}
 
-	public final static Vector<String> toNameVector(final Enumeration<? extends Environmental> V)
+	public final static List<String> toNameVector(final Enumeration<? extends Environmental> V)
 	{
 		final Vector<String> s=new Vector<String>();
 		if(V==null) return s;
@@ -1579,7 +1602,7 @@ public class CMParms
 	}
 
 
-	public final static Vector<Object> copyFlattenVector(final List<?> V)
+	public final static List<Object> copyFlattenVector(final List<?> V)
 	{
 		final Vector<Object> V2=new Vector<Object>();
 		for(int v=0;v<V.size();v++)
@@ -1602,6 +1625,7 @@ public class CMParms
 				return i;
 		return -1;
 	}
+	
 	public final static int indexOfIgnoreCase(final Enumeration<?> supported, final String key)
 	{
 		if(supported==null) return -1;
@@ -1614,6 +1638,7 @@ public class CMParms
 		}
 		return -1;
 	}
+	
 	public final static int indexOf(final int[] supported, final int x)
 	{
 		if(supported==null) return -1;
@@ -1622,6 +1647,7 @@ public class CMParms
 				return i;
 		return -1;
 	}
+	
 	public final static int indexOf(final long[] supported, final long x)
 	{
 		if(supported==null) return -1;
@@ -1630,6 +1656,7 @@ public class CMParms
 				return i;
 		return -1;
 	}
+	
 	public final static int indexOf(final Enumeration<?> supported, final Object key)
 	{
 		if(supported==null) return -1;
@@ -1642,6 +1669,7 @@ public class CMParms
 		}
 		return -1;
 	}
+	
 	public final static int indexOfIgnoreCase(final Iterator<?> supported, final String key)
 	{
 		if(supported==null) return -1;
@@ -1654,6 +1682,7 @@ public class CMParms
 		}
 		return -1;
 	}
+	
 	public final static int indexOf(final Iterator<?> supported, final Object key)
 	{
 		if(supported==null) return -1;
@@ -1666,6 +1695,7 @@ public class CMParms
 		}
 		return -1;
 	}
+	
 	public final static int indexOfIgnoreCase(final String[] supported, final String expertise)
 	{
 		if(supported==null) return -1;
@@ -1687,7 +1717,10 @@ public class CMParms
 	}
 	
 	public final static boolean contains(final String[] supported, final String expertise)
-	{ return indexOf(supported,expertise)>=0;}
+	{ 
+		return indexOf(supported,expertise)>=0;
+	}
+	
 	public final static boolean contains(final Enumeration<String> supported, final String expertise)
 	{ 
 		for(;supported.hasMoreElements();)
@@ -1695,15 +1728,32 @@ public class CMParms
 				return true;
 		return false;
 	}
+	
 	public final static boolean contains(final char[] supported, final char c)
-	{    for(char c2 : supported) if(c2==c) return true; return false;}
+	{    
+		for(char c2 : supported) 
+			if(c2==c) 
+				return true; 
+		return false;
+	}
+	
 	public final static boolean contains(final byte[] supported, final byte b)
-	{    for(byte b2 : supported) if(b2==b) return true; return false; }
+	{    
+		for(byte b2 : supported) 
+			if(b2==b) 
+				return true; 
+		return false; 
+	}
+	
 	public final static boolean containsIgnoreCase(final String[] supported, final String expertise)
-	{ return indexOfIgnoreCase(supported,expertise)>=0;}
+	{ 
+		return indexOfIgnoreCase(supported,expertise)>=0;
+	}
 
 	public final static boolean containsIgnoreCase(final List<?> supported, final String str)
-	{ return indexOfIgnoreCase(supported,str)>=0;}
+	{ 
+		return indexOfIgnoreCase(supported,str)>=0;
+	}
 
 	public final static int indexOf(final Object[] supported, final Object expertise)
 	{
@@ -1714,10 +1764,17 @@ public class CMParms
 				return i;
 		return -1;
 	}
+	
 	public final static boolean contains(final Object[] supported, final Object expertise)
-	{ return indexOf(supported,expertise)>=0;}
+	{ 
+		return indexOf(supported,expertise)>=0;
+	}
+	
 	public final static boolean contains(final int[] supported, final int x)
-	{ return indexOf(supported,x)>=0;}
+	{ 
+		return indexOf(supported,x)>=0;
+	}
+	
 	public final static boolean contains(final ByteBuffer buf, final byte[] bytes, final int pos)
 	{ 
 		for(int i=0;i<bytes.length && (i+pos)<buf.limit();i++)
@@ -1725,6 +1782,7 @@ public class CMParms
 				return false;
 		return true;
 	}
+	
 	public final static int containIndex(final ByteBuffer buf, final byte[][] bytes, final int pos)
 	{ 
 		for(int x=0;x<bytes.length;x++)

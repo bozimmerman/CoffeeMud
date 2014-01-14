@@ -862,16 +862,16 @@ public class GenCharClass extends StdCharClass
 				 break;
 		case 32:
 		{
-				 Vector V=CMParms.parseCommas(val,true);
-				 if(V.size()>0)
-				 {
-					disallowedWeaponSet=new HashSet();
-					for(int v=0;v<V.size();v++)
-						disallowedWeaponSet.add(Integer.valueOf(CMath.s_int((String)V.elementAt(v))));
-				 }
-				 else
-					 disallowedWeaponSet=null;
-				 break;
+			List<String> V=CMParms.parseCommas(val,true);
+			if(V.size()>0)
+			{
+				disallowedWeaponSet=new HashSet();
+				for(int v=0;v<V.size();v++)
+					disallowedWeaponSet.add(Integer.valueOf(CMath.s_int(V.get(v))));
+			}
+			else
+				disallowedWeaponSet=null;
+			break;
 		}
 		case 33: if(CMath.s_int(val)==0) outfitChoices=null; break;
 		case 34: {   if(outfitChoices==null) outfitChoices=new Vector();
@@ -962,16 +962,16 @@ public class GenCharClass extends StdCharClass
 				 break;
 		case 47:
 		{
-				 Vector V=CMParms.parseCommas(val,true);
-				 if(V.size()>0)
-				 {
-					 requiredWeaponMaterials=new HashSet();
-					 for(int v=0;v<V.size();v++)
-						 requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int((String)V.elementAt(v))));
-				 }
-				 else
-					 requiredWeaponMaterials=null;
-				 break;
+			List<String> V=CMParms.parseCommas(val,true);
+			if(V.size()>0)
+			{
+				requiredWeaponMaterials=new HashSet();
+				for(int v=0;v<V.size();v++)
+					requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int((String)V.get(v))));
+			}
+			else
+				requiredWeaponMaterials=null;
+			 break;
 		}
 		case 48: requiredArmorSourceMinor=CMath.s_int(val); break;
 		case 49:
